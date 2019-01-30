@@ -1,0 +1,12 @@
+node_modules
+*.log
+lib
+dist
+test-lib/**/*.js
+coverage
+.nyc_output
+.idea
+package-lock.json
+.prettierignore
+.vscode
+.editorconfig
