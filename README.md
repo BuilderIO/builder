@@ -1,8 +1,8 @@
-<img width="575" height="172" src="https://i.imgur.com/vFV3tIJ.gif" style="margin: 100px" alt="Builder logo" />
+<img width="569" height="166" src="https://imgur.com/o8pV1Gt.gif" style="margin: 100px" alt="Builder logo" />
 
 Drag and drop page building for any website. Use your React components, publish remotely
 
-<img width="734" height="534" src="https://i.imgur.com/KZ6bfLX.gif" alt="Editor example" />
+<img src="https://imgur.com/bvMGmnA.gif" alt="Editor example" />
 
 ## What is it good for?
 
