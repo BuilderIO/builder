@@ -1,4 +1,4 @@
-<p align="center"><img width="569" height="166" src="https://imgur.com/mZQU6Wl.gif" alt="Builder logo" /></p>
+<p align="center"><img width="502" height="125" src="https://imgur.com/B9CUJxo.gif" alt="Builder logo" /></p>
 <br />
 <p align="center">Drag and drop page building for any website. Use your React components, publish remotely</p>
 <br />
