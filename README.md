@@ -3,7 +3,7 @@
 <p align="center">Drag and drop page building for any website. Use your React components, publish remotely</p>
 <br />
 
-<p align="center"><img src="https://imgur.com/kBjPL8s.gif" alt="Editor example" /></p>
+<p align="center"><img src="https://imgur.com/lHDo3Mq.gif" alt="Editor example" /></p>
 
 <br /><br /><br />
 
