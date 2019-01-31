@@ -1,8 +1,17 @@
-<img width="569" height="166" src="https://imgur.com/o8pV1Gt.gif" style="margin: 100px" alt="Builder logo" />
+<p align="center"><img width="569" height="166" src="https://imgur.com/o8pV1Gt.gif" style="margin: 100px" alt="Builder logo" /></p>
 
-Drag and drop page building for any website. Use your React components, publish remotely
+<br />
 
-<img src="https://imgur.com/bvMGmnA.gif" alt="Editor example" />
+
+<p align="center">Drag and drop page building for any website. Use your React components, publish remotely</p>
+
+<br /><br />
+
+
+
+<p align="center"><img style="margin: 100px" src="https://imgur.com/bvMGmnA.gif" alt="Editor example" /></p>
+
+<br /><br />
 
 ## What is it good for?
 
