@@ -26,7 +26,7 @@
 npm install --save @builder.io/react
 ```
 
-Create a free account at [builder.io](https://builder.io) and grab your [API key](https://builder.io/account/organization)
+Grab a free account at [builder.io](https://builder.io) and find your [API key](https://builder.io/account/organization)
 
 ```ts
 import { builder, BuilderComponent } from '@builder.io/react'
@@ -73,7 +73,7 @@ import './simple-page'
 
 Open the dashboard and use it!
 
-See our [docs site](https://builder.io/c/docs) 
+See our [docs site](https://builder.io/c/docs/custom-react-components) for additional help and information, or contact us if you run into any issues or questions!
 
 For Builder decorator support you need to be using typescript or babel with legacy decorators.
 Alternatively you can use the alternative syntax:
