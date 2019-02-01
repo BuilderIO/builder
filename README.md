@@ -1,6 +1,6 @@
-<br /><br />
+<br />
 <p align="center"><img width="502" height="125" src="https://imgur.com/B9CUJxo.gif" alt="Builder logo" /></p>
-<h2 align="center">Drag and drop page building for any website.</h2> 
+<h3 align="center">Drag and drop page building for any website.</h3> 
 <p align="center">Design with your React components, publish remotely</p>
 <br />
 <br />
