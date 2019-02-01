@@ -39,9 +39,9 @@ Then in your router
 <Route path="/something" render={() => <BuilderComponent model="page" />}>
 ```
 
-Create a new page and open your-dev-url:port/something and edit
+Create a new page and open your-dev-url:port/something and edit!
 
-[gif]
+See our [docs site](https://builder.io/c/docs/react) for more info or contact us if you run into any issues or questions!
 
 ### Using your components
 
@@ -71,11 +71,9 @@ import './simple-page'
 <Route path="/something" render={() => <BuilderComponent model="page">}>
 ```
 
-Open the dashboard and use it
+Open the dashboard and use it!
 
-[gif]
-
-More docs on builder APIs and such at [builder.io/c/docs](https://builder.io/c/docs)
+See our [docs site](https://builder.io/c/docs) 
 
 For Builder decorator support you need to be using typescript or babel with legacy decorators.
 Alternatively you can use the alternative syntax:
@@ -83,20 +81,31 @@ Alternatively you can use the alternative syntax:
 ```tsx
 import { builderBlocks } from '@builder.io/react'
 
+BuilderBlock({
+  name: 'Simple Text',
+  inputs: [{ name: 'text', type: 'string' }]
+})(SimpleText)
+
 class SimpleText extends React.Component {
   render() {
     return <h1>{this.props.text}</h1>
   }
 }
-
-builderBlocks.add(SimpleText, {
-  name: 'Simple Text',
-  inputs: [{ name: 'text', type: 'string' }]
-})
 ```
 
+## Don't use React?
 
+Builder webcomponents support all sites and frameworks!
+
+```
+<script src="https://builder.io/webcomponents"></script>
+<builder-component name="page"></builder-component>
+```
+
+See our official docs on Builder Webcomponents [here](https://builder.io/c/docs/webcomponents-sdk)
+
+Additionally see our [HTML API](https://builder.io/c/docs/html-api) for server side rendering 
 
 ## Troubleshooting and feedback
 
-Problems? Requests? Open an issue. Always want feedback, interesting new use cases, happy to help.
+Problems? Requests? Open an issue. We always want to hear feedback and interesting new use cases and are happy to help.
