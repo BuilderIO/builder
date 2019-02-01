@@ -79,7 +79,7 @@ For Builder decorator support you need to be using typescript or babel with lega
 Alternatively you can use the alternative syntax:
 
 ```tsx
-import { builderBlocks } from '@builder.io/react'
+import { BuilderBlock } from '@builder.io/react'
 
 BuilderBlock({
   name: 'Simple Text',
