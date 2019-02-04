@@ -15,7 +15,7 @@
   "author": "Steve Sewell <sewell.steve@gmail.com>",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/BuilderIO/builder"
   },
   "license": "MIT",
   "engines": {

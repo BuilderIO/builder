@@ -40,6 +40,7 @@ export interface BuilderBlockProps {
   child?: boolean
   index?: number
   size?: Size
+  emailMode?: boolean
 }
 
 function capitalize(str: string) {
@@ -352,11 +353,14 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
                   </React.Fragment>
                 </TagName>
               )}
-              <style className="builder-style">
-                {(InnerComponent && !isBlock
-                  ? `.${this.id} > * { height: 100%; width: 100%; }`
-                  : '') + this.css}
-              </style>
+              {/* TODO: email mode style handling */}
+              {!this.props.emailMode && (
+                <style className="builder-style">
+                  {(InnerComponent && !isBlock
+                    ? `.${this.id} > * { height: 100%; width: 100%; }`
+                    : '') + this.css}
+                </style>
+              )}
             </React.Fragment>
           )
         }}

@@ -16,6 +16,7 @@ export interface BuilderBlocksProps {
   parent?: any
   dataPath?: string
   className?: string
+  emailMode?: boolean
 }
 
 interface BuilderBlocksState {
