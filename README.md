@@ -81,16 +81,16 @@ Alternatively you can use the alternative syntax:
 ```tsx
 import { BuilderBlock } from '@builder.io/react'
 
-BuilderBlock({
-  name: 'Simple Text',
-  inputs: [{ name: 'text', type: 'string' }]
-})(SimpleText)
-
 class SimpleText extends React.Component {
   render() {
     return <h1>{this.props.text}</h1>
   }
 }
+
+BuilderBlock({
+  name: 'Simple Text',
+  inputs: [{ name: 'text', type: 'string' }]
+})(SimpleText)
 ```
 
 ## Don't use React?
