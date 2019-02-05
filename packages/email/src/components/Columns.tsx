@@ -26,13 +26,8 @@ const defaultBlocks: any[] = [] // TODO
         {
           name: 'width',
           type: 'number',
-          hideFromUI: true,
+          advanced: true,
           helperText: 'Width %, e.g. set to 50 to fill half of the space'
-        },
-        {
-          name: 'link',
-          type: 'string',
-          helperText: 'Optionally set a url that clicking this column will link to'
         }
       ],
       defaultValue: [{ blocks: defaultBlocks }, { blocks: defaultBlocks }],
@@ -83,7 +78,7 @@ export class Columns extends React.Component<ColumnsProps> {
             <tr>
               {this.props.columns.map((col, index) => (
                 // TODO: width
-                <td>
+                <td style={{ width: col.width }}>
                   <BuilderBlocks
                     blocks={col.content}
                     dataPath={`columns.${index}.blocks`}

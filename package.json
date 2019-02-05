@@ -1,9 +1,7 @@
 {
   "name": "@builder.io/builder",
   "private": true,
-  "dependencies": {
-    "@builder.io/email": "0.0.33-19"
-  },
+  "dependencies": {},
   "devDependencies": {},
   "scripts": {}
 }

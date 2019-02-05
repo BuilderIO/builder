@@ -17,7 +17,10 @@ interface BoxProps {
       type: 'uiBlocks',
       hideFromUI: true
     }
-  ]
+  ],
+  defaultStyles: {
+    height: '400px'
+  }
   // Share these hooks across the projects
   // hooks: {
   //   'BlocksOverlay::debounceNextTickUpdateStyles#updateStyles': () => convert margin selectors to paddings of table
