@@ -1,17 +1,17 @@
-import { BuilderBlock, BuilderBlocks } from '@builder.io/react'
-import React from 'react'
-import { Block } from './Block'
+import { BuilderBlock, BuilderBlocks } from '@builder.io/react';
+import React from 'react';
+import { Block } from './Block';
 
 interface ImageProps {
-  altText?: string
-  image?: string
-  height?: number
-  width?: number
-  builderBlock?: any
-  attributes?: any
+  altText?: string;
+  image?: string;
+  height?: number;
+  width?: number;
+  builderBlock?: any;
+  attributes?: any;
 }
 
-const DEFAULT_ASPECT_RATIO = 0.7041
+const DEFAULT_ASPECT_RATIO = 0.7041;
 
 @BuilderBlock({
   name: 'Email:Image',
@@ -20,7 +20,8 @@ const DEFAULT_ASPECT_RATIO = 0.7041
   defaultStyles: {
     minHeight: '20px',
     minWidth: '20px',
-    overflow: 'hidden'
+    overflow: 'hidden',
+    fontSize: '0px',
   },
   inputs: [
     {
@@ -33,63 +34,68 @@ const DEFAULT_ASPECT_RATIO = 0.7041
       defaultValue:
         'https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d',
       onChange: (options: Map<string, any>) => {
-        const DEFAULT_ASPECT_RATIO = 0.7041
+        const DEFAULT_ASPECT_RATIO = 0.7041;
         function loadImage(url: string, timeout = 60000): Promise<HTMLImageElement> {
           return new Promise((resolve, reject) => {
-            const img = document.createElement('img')
-            let loaded = false
+            const img = document.createElement('img');
+            let loaded = false;
             img.onload = () => {
-              loaded = true
-              resolve(img)
-            }
+              loaded = true;
+              resolve(img);
+            };
 
             img.addEventListener('error', event => {
-              console.warn('Image load failed', event.error)
-              reject(event.error)
-            })
+              console.warn('Image load failed', event.error);
+              reject(event.error);
+            });
 
-            img.src = url
+            img.src = url;
             setTimeout(() => {
               if (!loaded) {
-                reject(new Error('Image load timed out'))
+                reject(new Error('Image load timed out'));
               }
-            }, timeout)
-          })
+            }, timeout);
+          });
         }
 
         function round(num: number) {
-          return Math.round(num * 1000) / 1000
+          return Math.round(num * 1000) / 1000;
         }
 
         // // TODO
-        const value = options.get('image')
-        const aspectRatio = options.get('aspectRatio')
+        const value = options.get('image');
+        const aspectRatio = options.get('aspectRatio');
         if (value && (!aspectRatio || aspectRatio === DEFAULT_ASPECT_RATIO)) {
           return loadImage(value).then(img => {
-            const possiblyUpdatedAspectRatio = options.get('aspectRatio')
+            const possiblyUpdatedAspectRatio = options.get('aspectRatio');
             if (
               options.get('image') === value &&
               (!possiblyUpdatedAspectRatio || possiblyUpdatedAspectRatio === DEFAULT_ASPECT_RATIO)
             ) {
               if (img.width && img.height) {
-                options.set('aspectRatio', round(img.height / img.width))
-                options.set('height', img.height)
-                options.set('width', img.width)
+                options.set('aspectRatio', round(img.height / img.width));
+                options.set('height', img.height);
+                options.set('width', img.width);
               }
             }
-          })
+          });
         }
-      }
+      },
+    },
+    {
+      name: 'altText',
+      type: 'string',
+      helperText: 'Text to display when the user has images off',
     },
     {
       name: 'height',
       type: 'number',
-      hideFromUI: true
+      hideFromUI: true,
     },
     {
       name: 'width',
       type: 'number',
-      hideFromUI: true
+      hideFromUI: true,
     },
     {
       name: 'aspectRatio',
@@ -97,14 +103,9 @@ const DEFAULT_ASPECT_RATIO = 0.7041
       helperText:
         "This is the ratio of height/width, e.g. set to 1.5 for a 300px wide and 200px tall photo. Set to 0 to not force the image to maintain it's aspect ratio",
       advanced: true,
-      defaultValue: DEFAULT_ASPECT_RATIO
+      defaultValue: DEFAULT_ASPECT_RATIO,
     },
-    {
-      name: 'altText',
-      type: 'string',
-      advanced: true
-    }
-  ]
+  ],
 })
 export class Image extends React.Component<ImageProps> {
   render() {
@@ -116,12 +117,12 @@ export class Image extends React.Component<ImageProps> {
           width={this.props.width}
           role={!this.props.altText ? 'presentation' : undefined}
           style={{
-            width: '100%'
+            width: '100%',
           }}
           className="builder-image"
           src={this.props.image}
         />
       </Block>
-    )
+    );
   }
 }

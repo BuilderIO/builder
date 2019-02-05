@@ -56,7 +56,8 @@ a img {
 
 /* Yahoo paragraph fix Bring inline: Yes. */
 p {
-    margin: 1em 0;
+    /* margin: 1em 0;*/
+    margin: 0;
 }
 
 /* Hotmail header color reset Bring inline: Yes. */

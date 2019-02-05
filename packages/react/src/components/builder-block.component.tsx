@@ -22,12 +22,15 @@ type ElementType = any
 interface StringMap {
   [key: string]: string | undefined | null
 }
-function mapToCss(map: StringMap, spaces = 2) {
+function mapToCss(map: StringMap, spaces = 2, important = false) {
   return reduce(
     map,
     (memo, value, key) => {
       return (
-        memo + (value && value.trim() ? `\n${' '.repeat(spaces)}${kebabCase(key)}: ${value};` : '')
+        memo +
+        (value && value.trim()
+          ? `\n${' '.repeat(spaces)}${kebabCase(key)}: ${value + (important ? ' !important' : '')};`
+          : '')
       )
     },
     ''
@@ -159,20 +162,26 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
       ...(self.responsiveStyles && self.responsiveStyles.large)
     }
 
-    let css = `.builder-block.${self.id} {${mapToCss(baseStyles as StringMap)}}`
+    let css = this.props.emailMode
+      ? ''
+      : `.builder-block.${self.id} {${mapToCss(baseStyles as StringMap)}}`
 
     const reversedNames = sizeNames.slice().reverse()
     if (self.responsiveStyles) {
       for (const size of reversedNames) {
+        if (this.props.emailMode && size === 'large') {
+          continue
+        }
         if (
           size !== 'large' &&
           size !== 'xsmall' &&
           self.responsiveStyles[size] &&
           Object.keys(self.responsiveStyles[size]).length
         ) {
-          css += `\n@media (max-width: ${sizes[size].max}px) { \n.builder-block.${
-            self.id
-          } {${mapToCss(self.responsiveStyles[size], 4)} } }`
+          css += `\n@media (max-width: ${sizes[size].max}px) { \n.${self.id} {${mapToCss(
+            self.responsiveStyles[size],
+            4
+          )} } }`
         }
       }
     }
@@ -235,7 +244,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
 
     let options = {
       // Attributes?
-      ...block.properties,
+      ...block.properties
       // style: {} // this.styles
     }
 
@@ -295,7 +304,8 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
 
     const isVoid = voidElements.indexOf(TagName) !== -1
 
-    const noWrap = componentInfo && (componentInfo as any).fragment || (componentInfo as any).noWrap
+    const noWrap =
+      componentInfo && ((componentInfo as any).fragment || (componentInfo as any).noWrap)
 
     const finalOptions = {
       ...omit(options, 'class', 'component'),
@@ -316,6 +326,8 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
     ) {
       TagName = 'a'
     }
+
+    const css = this.css
 
     // TODO: test it out
     return (
@@ -363,7 +375,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
                 </TagName>
               )}
               {/* TODO: email mode style handling */}
-              {!this.props.emailMode && (
+              {css.trim() && (
                 <style className="builder-style">
                   {(InnerComponent && !isBlock
                     ? `.${this.id} > * { height: 100%; width: 100%; }`

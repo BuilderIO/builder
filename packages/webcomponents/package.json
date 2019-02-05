@@ -137,7 +137,8 @@
     "@webcomponents/custom-elements": "^1.2.1"
   },
   "dependencies": {
-    "@builder.io/react": "^0.1.118",
+    "@builder.io/email": "0.0.33-24",
+    "@builder.io/react": "^0.1.119-10",
     "@builder.io/widgets": "0.0.32",
     "es6-promise": "^4.2.5"
   }

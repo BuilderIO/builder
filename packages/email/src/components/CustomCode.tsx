@@ -1,11 +1,11 @@
-import { BuilderBlock, BuilderBlocks } from '@builder.io/react'
-import React from 'react'
-import { Block } from './Block'
+import { BuilderBlock, BuilderBlocks } from '@builder.io/react';
+import React from 'react';
+import { Block } from './Block';
 
 interface CustomCodeProps {
-  code?: string
-  builderBlock?: any
-  attributes?: any
+  code?: string;
+  builderBlock?: any;
+  attributes?: any;
 }
 
 @BuilderBlock({
@@ -15,9 +15,9 @@ interface CustomCodeProps {
       name: 'code',
       type: 'html',
       required: true,
-      defaultValue: 'I am custom html'
-    }
-  ]
+      defaultValue: 'I am custom html',
+    },
+  ],
 })
 export class CustomCode extends React.Component<CustomCodeProps> {
   render() {
@@ -25,6 +25,6 @@ export class CustomCode extends React.Component<CustomCodeProps> {
       <Block attributes={this.props.attributes} builderBlock={this.props.builderBlock}>
         <span dangerouslySetInnerHTML={{ __html: this.props.code! }} />
       </Block>
-    )
+    );
   }
 }

@@ -34,13 +34,15 @@ export class BuilderBlocks extends React.Component<BuilderBlocksProps, BuilderBl
     return !(blocks && (blocks as any).length) // TODO: allow react nodes
   }
   get path() {
-    const pathPrefix = 'component.options'
+    const pathPrefix = 'component.options.'
     let path = this.props.dataPath || ''
     const thisPrefix = 'this.'
-    if (path.startsWith(thisPrefix)) {
-      path = path.replace(thisPrefix, '')
-    } else if (!path.startsWith(pathPrefix)) {
-      path = pathPrefix + path
+    if (path.trim()) {
+      if (path.startsWith(thisPrefix)) {
+        path = path.replace(thisPrefix, '')
+      } else if (!path.startsWith(pathPrefix)) {
+        path = pathPrefix + path
+      }
     }
     return path
   }
