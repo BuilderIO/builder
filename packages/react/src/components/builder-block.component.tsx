@@ -123,6 +123,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
   }
 
   get styles() {
+    // TODO: handle style bindings
     const { block, size } = this.props
     const styles = []
     const startIndex = sizeNames.indexOf(size || 'large')
@@ -151,6 +152,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
   }
 
   get css() {
+    // TODO: handle style bindings
     const self = this.props.block
 
     const baseStyles: Partial<CSSStyleDeclaration> = {
@@ -234,7 +236,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
     let options = {
       // Attributes?
       ...block.properties,
-      style: {} // this.styles
+      // style: {} // this.styles
     }
 
     options = {
@@ -293,10 +295,10 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
 
     const isVoid = voidElements.indexOf(TagName) !== -1
 
-    const noWrap = componentInfo && (componentInfo as any).fragment
+    const noWrap = componentInfo && (componentInfo as any).fragment || (componentInfo as any).noWrap
 
     const finalOptions = {
-      ...omit(options, 'class'),
+      ...omit(options, 'class', 'component'),
       class:
         `builder-block ${this.id}${block.class ? ` ${block.class}` : ''}${
           block.component && !includes(['Image', 'Video', 'Banner'], componentName)
@@ -326,9 +328,15 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
             <React.Fragment>
               {isVoid ? (
                 <TagName {...finalOptions} />
-              ) : InnerComponent && noWrap ? (
+              ) : InnerComponent && (noWrap || this.props.emailMode) ? (
                 // TODO: pass the class to be easier
-                <InnerComponent {...finalOptions} builderBlock={block} />
+                // TODO: acceptsChildren option?
+                <InnerComponent
+                  // Final options maaay be wrong here hm
+                  {...innerComponentProperties}
+                  attributes={finalOptions}
+                  builderBlock={block}
+                />
               ) : (
                 <TagName {...finalOptions}>
                   <React.Fragment>
@@ -347,6 +355,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
                           size={this.props.size}
                           fieldName={this.props.fieldName}
                           child={this.props.child}
+                          emailMode={this.props.emailMode}
                         />
                       ))
                     ) : null}

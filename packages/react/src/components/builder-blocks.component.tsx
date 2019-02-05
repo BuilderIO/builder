@@ -36,7 +36,10 @@ export class BuilderBlocks extends React.Component<BuilderBlocksProps, BuilderBl
   get path() {
     const pathPrefix = 'component.options'
     let path = this.props.dataPath || ''
-    if (!path.startsWith(pathPrefix)) {
+    const thisPrefix = 'this.'
+    if (path.startsWith(thisPrefix)) {
+      path = path.replace(thisPrefix, '')
+    } else if (!path.startsWith(pathPrefix)) {
       path = pathPrefix + path
     }
     return path
@@ -68,11 +71,13 @@ export class BuilderBlocks extends React.Component<BuilderBlocksProps, BuilderBl
   render() {
     const { blocks } = this.props
 
+    const TagName = this.props.emailMode ? 'span' : 'div'
+
     // TODO: how deep check this automatically for mobx... hmmm optional / peer dependency?
     return (
       // TODO: component <Stack direction="vertical">
       // TODO: react.fragment instead?
-      <div
+      <TagName
         className={
           'builder-blocks' +
           (this.noBlocks ? ' no-blocks' : '') +
@@ -83,9 +88,11 @@ export class BuilderBlocks extends React.Component<BuilderBlocksProps, BuilderBl
         // TODO: only fi in iframe?
         builder-path={Builder.isIframe ? this.path : undefined}
         style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'stretch',
+          ...(!this.props.emailMode && {
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'stretch'
+          }),
           ...this.props.style
         }}
         onClick={() => {
@@ -107,13 +114,14 @@ export class BuilderBlocks extends React.Component<BuilderBlocksProps, BuilderBl
                   index={index}
                   fieldName={this.props.fieldName}
                   child={this.props.child}
+                  emailMode={this.props.emailMode}
                 />
               ) : (
                 block
               )
           )) ||
           blocks}
-      </div>
+      </TagName>
     )
   }
 }

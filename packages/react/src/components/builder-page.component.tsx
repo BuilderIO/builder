@@ -62,6 +62,7 @@ export interface BuilderPageProps {
   location?: Location | Url
   onStateChange?: (newData: any) => void
   noAsync?: boolean
+  emailMode?: boolean
 }
 
 interface BuilderPageState {
@@ -295,7 +296,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
                   {this.getCss(content.data) && (
                     <style dangerouslySetInnerHTML={{ __html: this.getCss(content.data) }} />
                   )}
-                  <BuilderBlocks fieldName="blocks" blocks={content.data.blocks} />
+                  <BuilderBlocks emailMode={this.props.emailMode} fieldName="blocks" blocks={content.data.blocks} />
                 </React.Fragment>
               ) : (
                 <BuilderContent
@@ -316,7 +317,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
                         {this.getCss(data) && (
                           <style dangerouslySetInnerHTML={{ __html: this.getCss(data) }} />
                         )}
-                        {<BuilderBlocks fieldName="blocks" blocks={data.blocks} />}
+                        {<BuilderBlocks emailMode={this.props.emailMode} fieldName="blocks" blocks={data.blocks} />}
                         {/* {data.jsCode && <script dangerouslySetInnerHTML={{ __html: data.jsCode }} />} */}
                       </div>
                     ) : loading ? (

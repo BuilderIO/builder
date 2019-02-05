@@ -5,6 +5,7 @@ import { Block } from './Block'
 interface ColumnsProps {
   columns: { content: any[]; width?: number }[]
   builderBlock?: any
+  attributes?: any
 }
 
 const defaultBlocks: any[] = [] // TODO
@@ -76,14 +77,23 @@ const defaultBlocks: any[] = [] // TODO
 export class Columns extends React.Component<ColumnsProps> {
   render() {
     return (
-      <Block noInnerWrap builderBlock={this.props.builderBlock}>
-        <tr>
-          {this.props.columns.map((col, index) => (
-            <td>
-              <BuilderBlocks blocks={col.content} dataPath={`columns.${index}.content`} emailMode />
-            </td>
-          ))}
-        </tr>
+      <Block attributes={this.props.attributes} builderBlock={this.props.builderBlock}>
+        <table style={{ width: '100%' }} cellPadding="0" cellSpacing="0">
+          <tbody>
+            <tr>
+              {this.props.columns.map((col, index) => (
+                // TODO: width
+                <td>
+                  <BuilderBlocks
+                    blocks={col.content}
+                    dataPath={`columns.${index}.blocks`}
+                    emailMode
+                  />
+                </td>
+              ))}
+            </tr>
+          </tbody>
+        </table>
       </Block>
     )
   }

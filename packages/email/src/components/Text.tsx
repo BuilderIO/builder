@@ -5,6 +5,7 @@ import { Block } from './Block'
 interface TextProps {
   text?: string
   builderBlock?: any
+  attributes?: any
 }
 
 @BuilderBlock({
@@ -26,11 +27,9 @@ interface TextProps {
 export class Text extends React.Component<TextProps> {
   render() {
     return (
-      <Block noInnerWrap builderBlock={this.props.builderBlock}>
-        <tr>
-          {/* TODO: text styling defaults hm */}
-          <td dangerouslySetInnerHTML={{ __html: this.props.text! }} />
-        </tr>
+      <Block attributes={this.props.attributes} builderBlock={this.props.builderBlock}>
+        {/* TODO: text styling defaults hm */}
+        <span dangerouslySetInnerHTML={{ __html: this.props.text! }} />
       </Block>
     )
   }

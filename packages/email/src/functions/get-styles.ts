@@ -1,3 +1,5 @@
 export function getStyles(block: any) {
-  return block && block.responsiveStyles && block.responsiveStyles.large
+  // TODO: responsive
+  const styles = block && block.responsiveStyles && block.responsiveStyles.large
+  return styles
 }

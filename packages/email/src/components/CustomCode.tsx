@@ -5,6 +5,7 @@ import { Block } from './Block'
 interface CustomCodeProps {
   code?: string
   builderBlock?: any
+  attributes?: any
 }
 
 @BuilderBlock({
@@ -21,10 +22,8 @@ interface CustomCodeProps {
 export class CustomCode extends React.Component<CustomCodeProps> {
   render() {
     return (
-      <Block noInnerWrap builderBlock={this.props.builderBlock}>
-        <tr>
-          <td dangerouslySetInnerHTML={{ __html: this.props.code! }} />
-        </tr>
+      <Block attributes={this.props.attributes} builderBlock={this.props.builderBlock}>
+        <span dangerouslySetInnerHTML={{ __html: this.props.code! }} />
       </Block>
     )
   }

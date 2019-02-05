@@ -8,6 +8,7 @@ interface ImageProps {
   height?: number
   width?: number
   builderBlock?: any
+  attributes?: any
 }
 
 const DEFAULT_ASPECT_RATIO = 0.7041
@@ -108,17 +109,15 @@ const DEFAULT_ASPECT_RATIO = 0.7041
 export class Image extends React.Component<ImageProps> {
   render() {
     return (
-      <Block builderBlock={this.props.builderBlock}>
+      <Block attributes={this.props.attributes} builderBlock={this.props.builderBlock}>
         <img
           alt={this.props.altText}
           height={this.props.height}
           width={this.props.width}
           role={!this.props.altText ? 'presentation' : undefined}
-          style={
-            {
-              // TODO
-            }
-          }
+          style={{
+            width: '100%'
+          }}
           className="builder-image"
           src={this.props.image}
         />
