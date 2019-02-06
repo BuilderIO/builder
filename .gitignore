@@ -10,3 +10,4 @@ package-lock.json
 .prettierignore
 .vscode
 .editorconfig
+.rpt2_cache/

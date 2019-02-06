@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "outDir": "dist",
+    "rootDir": "../..",
+    "module": "esnext",
+    "strict": true,
+    "sourceMap": true,
+    "declaration": true,
+    "declarationDir": "dist",
+    "lib": ["dom", "es5", "es2015.promise"],
+    "allowSyntheticDefaultImports": true,
+    "typeRoots": ["./node_modules/@types"]
+  },
+  "include": ["./index.ts", "./src/**/*.ts", "./types.d.ts"]
+}
