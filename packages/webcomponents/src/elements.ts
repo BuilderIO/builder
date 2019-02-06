@@ -286,7 +286,11 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
 
     async loadReact(data?: any) {
       // Hack for now to not load shopstyle on react despite them using the old component format
-      if (typeof location !== 'undefined' && location.hostname.indexOf('shopstyle') > -1) {
+      if (
+        typeof location !== 'undefined' &&
+        !Builder.isIframe &&
+        location.hostname.indexOf('shopstyle') > -1
+      ) {
         return
       }
 
@@ -297,6 +301,11 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
       const getReactPromise = import('@builder.io/react') // TODO: only import what needed based on what comes back
       const getWidgetsPromise = import('@builder.io/widgets')
 
+      let emailPromise: Promise<any> | null = null
+      if (name === 'email') {
+        emailPromise = import('@builder.io/email')
+      }
+
       let unsubscribed = false
 
       if (!this.prerender) {
@@ -305,7 +314,8 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
         // Ensure styles don't load twice
         BuilderComponent.renderInto(this, {
           modelName: name!,
-          emailMode: ((this.options as any) || {}).emailMode || this.getAttribute('email-mode') === 'true',
+          emailMode:
+            ((this.options as any) || {}).emailMode || this.getAttribute('email-mode') === 'true',
           options: {
             ...this.options
             // entry: data ? data.id : undefined,
@@ -333,6 +343,9 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
 
             const { BuilderComponent } = await getReactPromise
             await getWidgetsPromise
+            if (emailPromise) {
+              await emailPromise
+            }
 
             const loadEvent = new CustomEvent('load', { detail: data })
             this.dispatchEvent(loadEvent)
@@ -355,6 +368,9 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
             // console.log('renderInto', this.options, data)
             BuilderComponent.renderInto(this, {
               modelName: name!,
+              emailMode:
+                ((this.options as any) || {}).emailMode ||
+                this.getAttribute('email-mode') === 'true',
               options: {
                 ...this.options,
                 entry: data ? data.id : undefined,

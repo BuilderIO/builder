@@ -145,6 +145,10 @@ export class Columns extends React.Component<ColumnsProps> {
           @media only screen and (max-width:${
             this.props.stackColumnsAt === 'mobile' ? 639 : 999
           }px) {
+            .${this.props.builderBlock.id}-separator-td {
+              display: none !important;
+            }
+
             .${this.props.builderBlock.id}-subject-td {
               display: block !important;
               width: 100% !important;
@@ -161,7 +165,10 @@ export class Columns extends React.Component<ColumnsProps> {
                 // TODO: width
                 <React.Fragment key={index}>
                   {index !== 0 && (
-                    <td style={{ width: this.props.space, minWidth: this.props.space }} />
+                    <td
+                      className={`${this.props.builderBlock.id}-separator-td`}
+                      style={{ width: this.props.space, minWidth: this.props.space }}
+                    />
                   )}
                   <td
                     className={`${this.props.builderBlock.id}-subject-td`}
