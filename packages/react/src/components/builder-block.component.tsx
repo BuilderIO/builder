@@ -65,14 +65,16 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
 
   private privateState: BuilderBlocksState = {
     state: {},
-    update: () => {}
+    update: () => {
+      /* Intentionally empty */
+    }
   }
 
   // TODO: handle adding return if none provided
   stringToFunction(str: string) {
     // FIXME: gross hack
     const useReturn = !(str.includes(';') || str.includes(' return '))
-    let fn: Function = () => {}
+    let fn: Function = () => { /* intentionally empty */ }
     try {
       // tslint:disable-next-line:no-function-constructor-with-string-args
       if (Builder.isBrowser) {
@@ -178,9 +180,12 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
           self.responsiveStyles[size] &&
           Object.keys(self.responsiveStyles[size]).length
         ) {
-          css += `\n@media (max-width: ${sizes[size].max}px) { \n.${self.id} {${mapToCss(
+          // TODO: this will not work as expected for a couple things that are handled specially,
+          // e.g. width
+          css += `\n@media only screen and (max-width: ${sizes[size].max}px) { \n${this.props.emailMode ? '.' : '.builder-block.'}${self.id + (this.props.emailMode ? '-subject' : '')} {${mapToCss(
             self.responsiveStyles[size],
-            4
+            4,
+            this.props.emailMode
           )} } }`
         }
       }

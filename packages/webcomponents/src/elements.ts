@@ -305,6 +305,7 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
         // Ensure styles don't load twice
         BuilderComponent.renderInto(this, {
           modelName: name!,
+          emailMode: ((this.options as any) || {}).emailMode || this.getAttribute('email-mode') === 'true',
           options: {
             ...this.options
             // entry: data ? data.id : undefined,

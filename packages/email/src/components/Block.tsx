@@ -104,7 +104,10 @@ export class Block extends React.Component<BlockProps> {
                   <tbody>
                     {/* TODO: only double wrap if margin */}
                     <tr>
-                      <td className="builder-block-subject" style={innerStyles}>
+                      <td
+                        className={`builder-block-subject ${this.props.builderBlock.id}-subject`}
+                        style={innerStyles}
+                      >
                         {this.props.children}
                       </td>
                     </tr>

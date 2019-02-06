@@ -73,7 +73,7 @@ const DEFAULT_ASPECT_RATIO = 0.7041;
               (!possiblyUpdatedAspectRatio || possiblyUpdatedAspectRatio === DEFAULT_ASPECT_RATIO)
             ) {
               if (img.width && img.height) {
-                options.set('aspectRatio', round(img.height / img.width));
+                // options.set('aspectRatio', round(img.height / img.width));
                 options.set('height', img.height);
                 options.set('width', img.width);
               }
@@ -118,6 +118,7 @@ export class Image extends React.Component<ImageProps> {
           role={!this.props.altText ? 'presentation' : undefined}
           style={{
             width: '100%',
+            height: 'auto',
           }}
           className="builder-image"
           src={this.props.image}

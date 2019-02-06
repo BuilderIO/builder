@@ -142,10 +142,10 @@ export class Columns extends React.Component<ColumnsProps> {
           this.props.stackColumnsAt !== 'never' && (
             <style>
               {`
-          @media (max-width: ${this.props.stackColumnsAt === 'mobile' ? 639 : 999}px) {
-            .${
-              this.props.builderBlock.id
-            } > tbody > tr > td > * > table > tbody > tr > td > table > tbody > tr > td {
+          @media only screen and (max-width:${
+            this.props.stackColumnsAt === 'mobile' ? 639 : 999
+          }px) {
+            .${this.props.builderBlock.id}-subject-td {
               display: block !important;
               width: 100% !important;
             }
@@ -164,6 +164,7 @@ export class Columns extends React.Component<ColumnsProps> {
                     <td style={{ width: this.props.space, minWidth: this.props.space }} />
                   )}
                   <td
+                    className={`${this.props.builderBlock.id}-subject-td`}
                     style={{
                       width: col.width,
                       verticalAlign: this.props.verticalAlignContent || 'top',
