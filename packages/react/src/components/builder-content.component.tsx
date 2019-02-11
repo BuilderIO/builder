@@ -1,7 +1,5 @@
 import React from 'react'
-import { builder } from '@builder.io/sdk'
-import { Subscription } from 'rxjs'
-import { GetContentOptions } from '@builder.io/sdk'
+import { builder, Subscription, GetContentOptions } from '@builder.io/sdk'
 
 export interface BuilderContentProps<ContentType> {
   contentLoaded?: (content: ContentType) => void
