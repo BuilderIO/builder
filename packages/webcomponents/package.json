@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/webcomponents",
-  "version": "0.2.51-alpha.0",
+  "version": "0.2.51-alpha.0+fa75b2f",
   "description": "",
   "keywords": [],
   "main": "./dist/builder-webcomponents.umd.js",
@@ -133,13 +133,14 @@
     "typescript": "^3.2.4"
   },
   "optionalDependencies": {
-    "@builder.io/sdk": "^0.1.60-alpha.0",
+    "@builder.io/sdk": "^0.1.60-alpha.0+fa75b2f",
     "@webcomponents/custom-elements": "^1.2.1"
   },
   "dependencies": {
-    "@builder.io/email": "^0.0.34-0",
-    "@builder.io/react": "^0.1.120-0",
-    "@builder.io/widgets": "^0.0.33-alpha.0",
+    "@builder.io/email": "^0.0.34-alpha.0+fa75b2f",
+    "@builder.io/react": "^0.1.120-alpha.0+fa75b2f",
+    "@builder.io/widgets": "^0.0.33-alpha.0+fa75b2f",
     "es6-promise": "^4.2.5"
-  }
+  },
+  "gitHead": "fa75b2fc25fecf35f1e9fd03b9efa92669219009"
 }
