@@ -53,7 +53,7 @@ function size(object: object) {
   return Object.keys(object).length;
 }
 
-function find<T = any>(target: T[], callback: (item: T) => boolean) {
+function find<T = any>(target: T[], callback: (item: T, index: number, list: T[]) => boolean) {
   const list = target;
   // Makes sures is always has an positive integer as length.
   const length = list.length >>> 0;
@@ -168,12 +168,35 @@ export function BuilderComponent(info: Partial<Component> = {}) {
   return Builder.Component(info);
 }
 
+export interface Action {
+  name: string;
+  inputs?: Input[];
+  returnType?: Input;
+  action: Function | string;
+}
+
 export class Builder {
   static components: Component[] = [];
   static nextTick = nextTick;
   static VERSION = version;
   static useNewApi = true;
   static animator = new Animator();
+
+  static actions: Action[] = [];
+
+  static registerAction(action: Action) {
+    this.actions.push(action);
+  }
+
+  static runAction(action: Action | string) {
+    // TODO
+    const actionObject =
+      typeof action === 'string' ? find(this.actions, item => item.name === action) : action;
+
+    if (!actionObject) {
+      throw new Error(`Action not found: ${action}`);
+    }
+  }
 
   static fields(name: string, fields: Input[]) {
     window.parent.postMessage(

@@ -1,7 +1,8 @@
 {
   "name": "@builder.io/builder",
   "private": true,
-  "dependencies": {},
-  "devDependencies": {},
+  "devDependencies": {
+    "lerna": "^2.9.0"
+  },
   "scripts": {}
 }

@@ -123,7 +123,7 @@ const defaultBlocks = [
       type: 'string',
       defaultValue: 'mobile',
       helperText: 'Convert horizontal columns to vertical at what device size',
-      enum: ['tablet', 'mobile'],
+      enum: ['tablet', 'mobile', 'never'],
       advanced: true
     },
     {
@@ -176,8 +176,9 @@ export class Columns extends React.Component<any> {
             }
           `}
         </style>
-        <style>
-          {`
+        {this.props.stackColumnsAt !== 'never' && (
+          <style>
+            {`
           @media (max-width: ${this.props.stackColumnsAt !== 'tablet' ? 639 : 999}px) {
             .${this.props.builderBlock.id} > .builder-columns {
               flex-direction: ${this.props.reverseColumnsWhenStacked ? 'column-reverse' : 'column'};
@@ -190,7 +191,8 @@ export class Columns extends React.Component<any> {
             }
           }
         `}
-        </style>
+          </style>
+        )}
         <div className="builder-columns" style={{ display: 'flex' }}>
           {columns.map((col, index) => {
             const TagName = col.link ? 'a' : 'div'

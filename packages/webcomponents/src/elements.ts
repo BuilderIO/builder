@@ -176,7 +176,19 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
           }
         })
         this.subscriptions.push(() => subscription.unsubscribe())
-        return
+
+        setTimeout(() => {
+          if (!builder.apiKey) {
+            throw new Error(
+              'Builder API key not found. Please see our docs for how to provide your API key https://builder.io/c/docs'
+            )
+          }
+        }, 10000)
+
+        // TODO: how test if actually editing. have a message to receive and flag that editing his happening
+        if (!Builder.isIframe) {
+          return
+        }
       }
 
       const name = this.getAttribute('name') || this.getAttribute('model')
@@ -186,7 +198,7 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
 
       const entry = this.getAttribute('entry')
 
-      if (!this.prerender) {
+      if (!this.prerender || !builder.apiKey) {
         this.loadReact(entry ? { id: entry } : null)
         return
       }
@@ -250,6 +262,7 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
                 // builder.trackImpression(data.id, data.testVariationId || data.id)
               }
               if (data.data && data.data.html) {
+                // Where is the nested builder component going?
                 this.innerHTML = data.data.html
                 const loadEvent = new CustomEvent('htmlload', { detail: data })
                 this.dispatchEvent(loadEvent)
@@ -308,7 +321,7 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
 
       let unsubscribed = false
 
-      if (!this.prerender) {
+      if (!this.prerender || (Builder.isIframe && !builder.apiKey)) {
         const { BuilderComponent } = await getReactPromise
         await getWidgetsPromise
         // Ensure styles don't load twice
