@@ -5,11 +5,5 @@
   },
   "scripts": {
     "release:patch:dev": "lerna run build && lerna version patch --force-publish --no-git-tag-version --yes && lerna run build && git add . && git commit -m \"Dev version bump\" && lerna publish from-package --dist-tag dev --yes"
-  },
-  "dependencies": {
-    "@builder.io/email": "0.0.43",
-    "@builder.io/react": "^0.1.129",
-    "@builder.io/sdk": "^0.1.69",
-    "@builder.io/widgets": "0.0.42"
   }
 }

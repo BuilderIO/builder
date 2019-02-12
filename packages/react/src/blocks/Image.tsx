@@ -1,5 +1,6 @@
 import React from 'react'
 
+// import { BuilderElement } from '@builder.io/sdk'
 import { BuilderBlock } from '../decorators/builder-block.decorator'
 
 const DEFAULT_ASPECT_RATIO = 0.7041
@@ -127,6 +128,9 @@ const DEFAULT_ASPECT_RATIO = 0.7041
   ]
 })
 export class Image extends React.Component<any> {
+  // TODO
+  // static universal: BuilderElement[] = []
+
   render() {
     const { aspectRatio, builderBlock } = this.props
 

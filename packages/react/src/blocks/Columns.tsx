@@ -1,11 +1,12 @@
 import React from 'react'
 
+// import { BuilderElement } from '@builder.io/sdk'
 import { BuilderBlock } from '../decorators/builder-block.decorator'
 import { BuilderBlocks } from '../components/builder-blocks.component'
 
 const DEFAULT_ASPECT_RATIO = 0.7004048582995948
 
-const defaultBlocks = [
+const defaultBlocks /*: BuilderElement[] */ = [
   {
     '@type': '@builder.io/sdk:Element',
     responsiveStyles: {
