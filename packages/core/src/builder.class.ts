@@ -931,9 +931,9 @@ export class Builder {
       // say requires key/alias. Or if not perhaps make a reliable hash of the options and use that.
       // TODO: store last user state on last request and if user attributes different now
       // give a warning that need to use keys to request new contente
-      (options &&
-        Object.keys(options).filter(key => key !== 'model').length &&
-        JSON.stringify({ model: modelName, ...options, initialContent: undefined })) ||
+      // (options &&
+      //   Object.keys(options).filter(key => key !== 'model').length &&
+      //   JSON.stringify({ model: modelName, ...options, initialContent: undefined })) ||
       modelName;
 
     const isEditingThisModel = this.editingModel === modelName;
