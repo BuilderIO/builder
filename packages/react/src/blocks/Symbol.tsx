@@ -1,5 +1,6 @@
 import React from 'react'
-import { BuilderBlock, BuilderComponent } from '@builder.io/react'
+import { BuilderPage } from '../components/builder-page.component';
+import { BuilderBlock } from '../decorators/builder-block.decorator';
 
 export interface SymbolInfo {
   model?: string
@@ -31,8 +32,7 @@ export class Symbol extends React.Component<SymbolProps> {
     }
     return (
       <div className="builder-symbol">
-        {/* TODO: ab test variant? // TODO: will this bif on multiple of same type? */}
-        <BuilderComponent
+        <BuilderPage
           modelName={symbol.model}
           entry={symbol.entry}
           data={symbol.data}

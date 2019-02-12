@@ -25,6 +25,7 @@ export { Embed } from './blocks/Embed'
 export { CustomCode } from './blocks/CustomCode'
 export { Image } from './blocks/Image'
 export { Video } from './blocks/Video'
+export { Symbol } from './blocks/Symbol'
 
 export { builder, Builder }
 export default builder
