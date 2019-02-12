@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/shopify",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "browser": "./dist/index.umd.min.js",
   "main": "./dist/index.cjs.js",
   "module": "./dist/index.esm.js",
@@ -14,6 +14,7 @@
     "release:prerelease:nightly": "npm run build && npm version prerelease --no-git-tag-version && npm publish --tag nightly"
   },
   "devDependencies": {
+    "@types/dedent": "^0.7.0",
     "@types/lodash-es": "^4.17.1",
     "@types/node": "^9.4.6",
     "rollup": "^0.58.2",
@@ -30,7 +31,8 @@
     "typescript": "^2.6.2"
   },
   "dependencies": {
-    "@builder.io/sdk": "^0.1.69",
+    "@builder.io/sdk": "^0.1.70",
+    "dedent": "^0.7.0",
     "lodash-es": "^4.17.11",
     "node-fetch": "^2.2.0"
   },

@@ -1,51 +1,62 @@
-import { ElementType } from '@builder.io/sdk';
+import { BuilderElement, BuilderContent } from '@builder.io/sdk';
 import reduce from 'lodash-es/reduce';
 import kebabCase from 'lodash-es/kebabCase';
+import dedent from 'dedent'
+
+export function modelToLiquid(content: BuilderContent, modelName: string, options?: Options) {
+  const blocks = content.data && content.data.blocks;
+  return dedent`<div
+    className="builder-content"
+    builder-content-id=${content.id}
+    builder-model=${content.modelName}
+  >
+    ${blocks ? blocks.map((block: BuilderElement) => blockToLiquid).join('') : ''}
+  </div>`;
+}
 
 // TODO: move to core
-export type Size = 'large' | 'medium' | 'small' | 'xsmall'
-export const sizeNames: Size[] = ['xsmall', 'small', 'medium', 'large']
+export type Size = 'large' | 'medium' | 'small' | 'xsmall';
+export const sizeNames: Size[] = ['xsmall', 'small', 'medium', 'large'];
 const sizes = {
   xsmall: {
     min: 0,
     default: 0,
-    max: 0
+    max: 0,
   },
   small: {
     min: 320,
     default: 321,
-    max: 640
+    max: 640,
   },
   medium: {
     min: 641,
     default: 642,
-    max: 991
+    max: 991,
   },
   large: {
     min: 990,
     default: 991,
-    max: 1200
+    max: 1200,
   },
   getWidthForSize(size: Size) {
-    return this[size].default
+    return this[size].default;
   },
   getSizeForWidth(width: number) {
     for (const size of sizeNames) {
-      const value = this[size]
+      const value = this[size];
       if (width <= value.max) {
-        return size
+        return size;
       }
     }
-    return 'large'
-  }
-}
-
+    return 'large';
+  },
+};
 
 interface Options {
-  emailMode?: boolean
+  emailMode?: boolean;
 }
 
-export function blockToLiquid(block: ElementType, options: Options = {}) {}
+export function blockToLiquid(block: BuilderElement, options: Options = {}) {}
 
 interface StringMap {
   [key: string]: string | undefined | null;
@@ -66,7 +77,7 @@ function mapToCss(map: StringMap, spaces = 2, important = false) {
 }
 
 // TODO: make these core functions and share with react, vue, etc
-function blockCss(block: ElementType, options: Options = {}) {
+function blockCss(block: BuilderElement, options: Options = {}) {
   // TODO: handle style bindings
   const self = block;
 

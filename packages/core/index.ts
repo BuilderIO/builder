@@ -15,5 +15,6 @@ export { Builder, BuilderComponent, isBrowser, Input, Component, GetContentOptio
 export { BehaviorSubject, Subscription } from './src/classes/observable.class';
 
 export { BuilderElement } from './src/types/element'
+export { BuilderContent, BuilderContentVariation } from './src/types/content'
 
 export const builder = new Builder();
