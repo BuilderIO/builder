@@ -1,5 +1,4 @@
 {
-  "name": "@builder.io/builder",
   "private": true,
   "devDependencies": {
     "lerna": "^2.9.0"
