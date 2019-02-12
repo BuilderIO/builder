@@ -1,7 +1,9 @@
 {
   "private": true,
   "devDependencies": {
-    "lerna": "^2.9.0"
+    "lerna": "^3.11.1"
   },
-  "scripts": {}
+  "scripts": {
+    "release:patch:dev": "lerna run build && lerna version patch --force-publish --no-git-tag-version && lerna run build && lerna publish from-package --dist-tag dev"
+  }
 }
