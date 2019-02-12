@@ -125,7 +125,7 @@ export interface GetContentOptions {
   preview?: boolean;
   entry?: string;
   alias?: string;
-  key?: string
+  key?: string;
 }
 
 export type Class = {
@@ -922,7 +922,17 @@ export class Builder {
 
   // TODO: entry id in options
   queueGetContent(modelName: string, options: GetContentOptions = {}) {
-    const key = options.key || options.entry || options.alias || modelName;
+    // TODO: if query do modelName + query
+    const key =
+      options.key ||
+      options.alias ||
+      options.entry ||
+      // TODO: this is ugly - instead of multiple of same model with different options are sent
+      // say requires key/alias. Or if not perhaps make a reliable hash of the options and use that.
+      // TODO: store last user state on last request and if user attributes different now
+      // give a warning that need to use keys to request new contente
+      (options && JSON.stringify({ model: modelName, ...options })) ||
+      modelName;
 
     const isEditingThisModel = this.editingModel === modelName;
     // TODO: include params in this key........
@@ -1083,7 +1093,7 @@ export class Builder {
             queryParams.options = queryParams.options || {};
             queryParams.options[options.key!] = queryParams.options[model] || {};
             queryParams.options[options.key!][key] = JSON.stringify(value);
-            queryParams.options[options.key!].model = model
+            queryParams.options[options.key!].model = model;
           }
         }
       }
@@ -1127,7 +1137,7 @@ export class Builder {
             const testModifiedResults = this.processResultsForTests(sorted);
             observer.next(testModifiedResults);
           } else {
-            observer.next([])
+            observer.next([]);
           }
         }
       },
