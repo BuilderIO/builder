@@ -125,6 +125,7 @@ export interface GetContentOptions {
   preview?: boolean;
   entry?: string;
   alias?: string;
+  key?: string
 }
 
 export type Class = {
@@ -921,9 +922,11 @@ export class Builder {
 
   // TODO: entry id in options
   queueGetContent(modelName: string, options: GetContentOptions = {}) {
+    const key = options.key || options.entry || options.alias || modelName;
+
     const isEditingThisModel = this.editingModel === modelName;
     // TODO: include params in this key........
-    const currentObservable = this.observersByModelType[modelName] as BehaviorSubject<
+    const currentObservable = this.observersByModelType[key] as BehaviorSubject<
       ContentModelType
     > | null;
 
@@ -933,7 +936,7 @@ export class Builder {
 
     if (
       this.apiKey === 'DEMO' &&
-      !(this.overrides[modelName] || options.query) &&
+      !(this.overrides[key] || options.query) &&
       !options.initialContent
     ) {
       options.initialContent = [];
@@ -965,7 +968,7 @@ export class Builder {
         });
       }
 
-      this.getContentQueue.push({ ...options, model: modelName });
+      this.getContentQueue.push({ ...options, model: modelName, key });
     }
 
     const observable = new BehaviorSubject<ContentModelType>(null);
@@ -1078,8 +1081,9 @@ export class Builder {
           const value = options[key];
           if (value !== undefined) {
             queryParams.options = queryParams.options || {};
-            queryParams.options[model] = queryParams.options[model] || {};
-            queryParams.options[model][key] = JSON.stringify(value);
+            queryParams.options[options.key!] = queryParams.options[model] || {};
+            queryParams.options[options.key!][key] = JSON.stringify(value);
+            queryParams.options[options.key!].model = model
           }
         }
       }
