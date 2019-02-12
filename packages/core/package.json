@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/sdk",
-  "version": "0.1.68",
+  "version": "0.1.69",
   "browser": "./dist/index.umd.min.js",
   "main": "./dist/index.cjs.js",
   "module": "./dist/index.esm.js",
@@ -43,5 +43,5 @@
   "dependencies": {
     "node-fetch": "^2.2.0"
   },
-  "gitHead": "73c23e8a479f958c9e63abebbcd119123be47c77"
+  "gitHead": "f8539cb74d9a0c07bafe0e426bd5cdc3ff580262"
 }
