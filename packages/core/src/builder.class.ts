@@ -1106,7 +1106,7 @@ export class Builder {
     // TODO: option to force dev or qa api here
     const host = this.useNewContentApi ? 'https://lambda.builder.codes' : this.host;
 
-    const modelNames = queue.map(item => item.model!).join(',');
+    const modelNames = queue.map(item => encodeURIComponent(item.key!)).join(',');
 
     const queryStr = Builder.useNewApi
       ? QueryString.stringifyDeep(queryParams)
@@ -1118,20 +1118,20 @@ export class Builder {
     ).then(
       result => {
         for (const options of queue) {
-          const modelName = options.model!;
-          if (modelName === this.blockContentLoading) {
+          const keyName = options.key!;
+          if (options.model === this.blockContentLoading) {
             continue;
           }
-          const isEditingThisModel = this.editingModel === modelName;
+          const isEditingThisModel = this.editingModel === options.model;
           if (isEditingThisModel) {
             parent.postMessage({ type: 'builder.updateContent' }, '*');
             return;
           }
-          const observer = this.observersByModelType[modelName];
+          const observer = this.observersByModelType[keyName];
           if (!observer) {
             return;
           }
-          const data = result[modelName];
+          const data = result[keyName];
           const sorted = data; // sortBy(data, item => item.priority);
           if (data) {
             const testModifiedResults = this.processResultsForTests(sorted);
