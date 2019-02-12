@@ -714,7 +714,7 @@ export class Builder {
             case 'builder.contentUpdate':
               const model = data.data.modelName;
               const contentData = data.data.data; // hmmm...
-              const observer = this.observersByModelType[model];
+              const observer = this.observersByKey[model];
               if (observer) {
                 observer.next([contentData]);
               }
@@ -828,7 +828,7 @@ export class Builder {
     }
   }
 
-  observersByModelType: { [key: string]: Observer<any> | undefined } = {};
+  observersByKey: { [key: string]: Observer<any> | undefined } = {};
 
   init(apiKey: string, canTrack = true) {
     this.canTrack = canTrack;
@@ -931,12 +931,12 @@ export class Builder {
       // say requires key/alias. Or if not perhaps make a reliable hash of the options and use that.
       // TODO: store last user state on last request and if user attributes different now
       // give a warning that need to use keys to request new contente
-      (options && JSON.stringify({ model: modelName, ...options })) ||
+      (options && JSON.stringify({ model: modelName, ...options, initialContent: undefined })) ||
       modelName;
 
     const isEditingThisModel = this.editingModel === modelName;
     // TODO: include params in this key........
-    const currentObservable = this.observersByModelType[key] as BehaviorSubject<
+    const currentObservable = this.observersByKey[key] as BehaviorSubject<
       ContentModelType
     > | null;
 
@@ -946,7 +946,7 @@ export class Builder {
 
     if (
       this.apiKey === 'DEMO' &&
-      !(this.overrides[key] || options.query) &&
+      !(this.overrides[key]) &&
       !options.initialContent
     ) {
       options.initialContent = [];
@@ -982,7 +982,7 @@ export class Builder {
     }
 
     const observable = new BehaviorSubject<ContentModelType>(null);
-    this.observersByModelType[modelName] = observable;
+    this.observersByKey[key] = observable;
     if (initialContent) {
       nextTick(() => {
         observable.next(initialContent);
@@ -1106,14 +1106,14 @@ export class Builder {
     // TODO: option to force dev or qa api here
     const host = this.useNewContentApi ? 'https://lambda.builder.codes' : this.host;
 
-    const modelNames = queue.map(item => encodeURIComponent(item.key!)).join(',');
+    const keyNames = queue.map(item => encodeURIComponent(item.key!)).join(',');
 
     const queryStr = Builder.useNewApi
       ? QueryString.stringifyDeep(queryParams)
       : QueryString.stringify(queryParams);
 
     const promise = this.requestUrl(
-      `${host}/api/v1/${Builder.useNewApi ? 'query' : 'content'}/${this.apiKey}/${modelNames}` +
+      `${host}/api/v1/${Builder.useNewApi ? 'query' : 'content'}/${this.apiKey}/${keyNames}` +
         (queryParams && hasParams ? `?${queryStr}` : '')
     ).then(
       result => {
@@ -1127,7 +1127,7 @@ export class Builder {
             parent.postMessage({ type: 'builder.updateContent' }, '*');
             return;
           }
-          const observer = this.observersByModelType[keyName];
+          const observer = this.observersByKey[keyName];
           if (!observer) {
             return;
           }
@@ -1143,8 +1143,7 @@ export class Builder {
       },
       err => {
         for (const options of queue) {
-          const modelName = options.model!;
-          const observer = this.observersByModelType[modelName];
+          const observer = this.observersByKey[options.key!];
           if (!observer) {
             return;
           }

@@ -311,7 +311,10 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
                 <BuilderContent
                   // TODO: pass entry in
                   contentLoaded={this.onContentLoaded}
-                  options={this.props.options}
+                  options={{
+                    entry: this.props.entry,
+                    ...this.props.options
+                  }}
                   contentError={this.props.contentError}
                   modelName={this.name || 'page'}
                 >
