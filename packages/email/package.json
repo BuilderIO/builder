@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/email",
-  "version": "0.0.34",
+  "version": "0.0.35",
   "description": "",
   "keywords": [],
   "main": "dist/builder-email.umd.js",
@@ -121,8 +121,8 @@
     "validate-commit-msg": "^2.12.2"
   },
   "dependencies": {
-    "@builder.io/react": "^0.1.120",
-    "@builder.io/sdk": "^0.1.60",
+    "@builder.io/react": "^0.1.121",
+    "@builder.io/sdk": "^0.1.61",
     "core-js": "^2.5.7",
     "immer": "^1.7.2",
     "lodash-es": "^4.17.10",
