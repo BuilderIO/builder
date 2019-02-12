@@ -1119,8 +1119,12 @@ export class Builder {
           }
           const data = result[modelName];
           const sorted = data; // sortBy(data, item => item.priority);
-          const testModifiedResults = this.processResultsForTests(sorted);
-          observer.next(testModifiedResults);
+          if (data) {
+            const testModifiedResults = this.processResultsForTests(sorted);
+            observer.next(testModifiedResults);
+          } else {
+            observer.next([])
+          }
         }
       },
       err => {

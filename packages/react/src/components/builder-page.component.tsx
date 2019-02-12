@@ -264,6 +264,15 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     }
   }
 
+  componentDidUpdate(prevProps: BuilderPageProps) {
+    if (this.props.data && prevProps.data !== this.props.data) {
+      this.state.update((state: any) => {
+        Object.assign(state, this.props.data)
+      })
+    }
+  }
+
+
   render() {
     const { content } = this.props
     return (
