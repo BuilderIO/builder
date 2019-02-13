@@ -101,7 +101,7 @@ export default [
     ],
     // Do not resolve for es module build
     // TODO: should really do a cjs build too (probably for the default build instead of umd...)
-    external: Object.keys(pkg.dependencies || {}),
+    external: Object.keys(pkg.dependencies || {}).filter(name => !name.startsWith('lodash-es')),
     plugins: options.plugins.filter(plugin => plugin !== resolvePlugin).concat([
       resolve({
         only: [/^\.{0,2}\//]
