@@ -129,13 +129,7 @@ export class BuilderSimpleComponent extends React.Component<BuilderSimpleCompone
     const subscription = builder
       .get(name, {
         prerender: true,
-        ...(entry
-          ? {
-              query: {
-                _id: entry
-              }
-            }
-          : {})
+        entry: entry || undefined
       })
       .subscribe(
         (data: any) => {

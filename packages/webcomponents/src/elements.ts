@@ -542,19 +542,10 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
       this.classList.add('builder-loading')
       // TODO: allow options as property or json
       const subscription = builder
-        .get(
-          name,
-          entry
-            ? {
-                query: {
-                  _id: entry
-                },
-                prerender: true
-              }
-            : {
-                prerender: true
-              }
-        )
+        .get(name, {
+          prerender: true,
+          entry: entry || undefined
+        })
         .subscribe(
           (data: any) => {
             this.classList.remove('builder-loading')

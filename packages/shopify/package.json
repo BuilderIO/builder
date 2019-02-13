@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/shopify",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "browser": "./dist/index.umd.min.js",
   "main": "./dist/index.cjs.js",
   "module": "./dist/index.esm.js",
@@ -31,7 +31,7 @@
     "typescript": "^2.6.2"
   },
   "dependencies": {
-    "@builder.io/sdk": "^0.1.72",
+    "@builder.io/sdk": "^0.1.73",
     "dedent": "^0.7.0",
     "lodash-es": "^4.17.11",
     "node-fetch": "^2.2.0"
