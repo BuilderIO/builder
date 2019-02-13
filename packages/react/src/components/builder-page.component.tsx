@@ -279,7 +279,6 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     }
   }
 
-
   render() {
     const { content } = this.props
     return (
@@ -312,7 +311,11 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
                   {this.getCss(content.data) && (
                     <style dangerouslySetInnerHTML={{ __html: this.getCss(content.data) }} />
                   )}
-                  <BuilderBlocks emailMode={this.props.emailMode} fieldName="blocks" blocks={content.data.blocks} />
+                  <BuilderBlocks
+                    emailMode={this.props.emailMode}
+                    fieldName="blocks"
+                    blocks={content.data.blocks}
+                  />
                 </React.Fragment>
               ) : (
                 <BuilderContent
@@ -336,7 +339,13 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
                         {this.getCss(data) && (
                           <style dangerouslySetInnerHTML={{ __html: this.getCss(data) }} />
                         )}
-                        {<BuilderBlocks emailMode={this.props.emailMode} fieldName="blocks" blocks={data.blocks} />}
+                        {
+                          <BuilderBlocks
+                            emailMode={this.props.emailMode}
+                            fieldName="blocks"
+                            blocks={data.blocks}
+                          />
+                        }
                         {/* {data.jsCode && <script dangerouslySetInnerHTML={{ __html: data.jsCode }} />} */}
                       </div>
                     ) : loading ? (
@@ -477,7 +486,11 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
       }
       data.inputs.forEach((input: any) => {
         if (input) {
-          if (input.name && input.defaultValue !== undefined) {
+          if (
+            input.name &&
+            input.defaultValue !== undefined &&
+            data.state[input.name] === undefined
+          ) {
             data.state[input.name] = JSON.stringify(input.defaultValue)
           }
         }

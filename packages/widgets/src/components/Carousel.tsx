@@ -176,10 +176,7 @@ interface CarouselProps {
       defaultValue: false,
       onChange: (options: Map<string, any>) => {
         if (options.get('useChildrenForSlides') === true) {
-          const slides = options.get('slides')
-          if (slides && Array.isArray(slides)) {
-            options.set('slides', [])
-          }
+          options.set('slides', [])
         }
       }
     }
