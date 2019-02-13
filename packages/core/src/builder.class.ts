@@ -1081,7 +1081,8 @@ export class Builder {
           'offset',
           'query',
           'preview',
-          'model'
+          'model',
+          'entry'
         ];
         for (const key of properties) {
           const value = options[key];

@@ -2,13 +2,12 @@ import { BuilderElement, BuilderContent } from '@builder.io/sdk';
 import reduce from 'lodash-es/reduce';
 import kebabCase from 'lodash-es/kebabCase';
 import size from 'lodash-es/size';
-import dedent from 'dedent';
 
 export function modelToLiquid(content: BuilderContent, modelName: string, options: Options = {}) {
   const blocks = content.data && content.data.blocks;
 
   const { html, css } = regexParse(
-    dedent`<div
+    `<div
       class="builder-content"
       builder-content-id=${content.id}
       data-builder-content-id=${content.id}
@@ -81,7 +80,7 @@ export function blockToLiquid(block: BuilderElement, options: Options = {}) {
   });
 
   // Fragment? hm
-  return dedent`
+  return `
     ${css.trim() ? `<style>${css}</style>` : ''}
     <${tag}${attributes ? ' ' + attributes : ''}>
       ${
