@@ -132,7 +132,7 @@ interface CarouselProps {
             name: 'Image',
             options: {
               image:
-                'https://cdn.builder.codes/api/v1/image/assets%2FagZ9n5CUKRfbL9t6CaJOyVSK4Es2%2Fdb2a9827561249aea3817b539aacdcdc'
+                'https://cdn.builder.codes/api/v1/image/assets%2FagZ9n5CUKRfbL9t6CaJOyVSK4Es2%2Fd909a5b91650499c9e0524cc904eeb77'
             }
           }
         }
@@ -149,7 +149,7 @@ interface CarouselProps {
             name: 'Image',
             options: {
               image:
-                'https://cdn.builder.codes/api/v1/image/assets%2FagZ9n5CUKRfbL9t6CaJOyVSK4Es2%2Fd909a5b91650499c9e0524cc904eeb77'
+                'https://cdn.builder.codes/api/v1/image/assets%2FagZ9n5CUKRfbL9t6CaJOyVSK4Es2%2Fdb2a9827561249aea3817b539aacdcdc'
             }
           }
         }
