@@ -121,7 +121,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
           'state',
           'event',
           'block',
-          'api',
+          'builder',
           // TODO: block reference...
           `with (state) {
             ${useReturn ? `return (${str});` : str};
