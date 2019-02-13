@@ -1,43 +1,18 @@
+
 import {
   BuilderBlock,
   BuilderBlocks,
-  BuilderBlockComponent /*BuilderElement */
-} from '@builder.io/react'
-// import { ElementType } from '@builder.io/sdk'
-import React from 'react'
-import Carousel from 'nuka-carousel'
+  BuilderBlockComponent,
+  BuilderElement,
+  BuilderStoreContext,
+} from '@builder.io/react';
+import React from 'react';
+import get from 'lodash-es/get'
+import isArray from 'lodash-es/isArray'
+import last from 'lodash-es/last'
 
-interface BuilderElement {
-  '@type': '@builder.io/sdk:Element'
-  '@version'?: number
-  id?: string
-  tagName?: string
-  layerName?: string
-  class?: string
-  children?: BuilderElement[]
-  responsiveStyles?: {
-    large?: Partial<CSSStyleDeclaration>
-    medium?: Partial<CSSStyleDeclaration>
-    small?: Partial<CSSStyleDeclaration>
-  }
-  component?: {
-    name: string
-    options?: any
-  }
-  bindings?: {
-    [key: string]: string
-  }
-  actions?: {
-    [key: string]: string
-  }
-  properties?: {
-    [key: string]: string
-  }
-  repeat?: {
-    collection: string
-    itemName?: string
-  }
-}
+import Slider from 'react-slick';
+
 
 const defaultElement: BuilderElement = {
   '@type': '@builder.io/sdk:Element',
@@ -45,8 +20,8 @@ const defaultElement: BuilderElement = {
     large: {
       height: '400px',
       display: 'flex',
-      flexDirection: 'column'
-    }
+      flexDirection: 'column',
+    },
   },
   children: [
     {
@@ -56,48 +31,42 @@ const defaultElement: BuilderElement = {
           marginTop: '50px',
           textAlign: 'center',
           display: 'flex',
-          flexDirection: 'column'
-        }
+          flexDirection: 'column',
+        },
       },
       component: {
         name: 'Text',
         options: {
-          text: 'I am a slide'
-        }
-      }
-    }
-  ]
-}
+          text: 'I am a slide',
+        },
+      },
+    },
+  ],
+};
 const defaultButton: BuilderElement = {
   '@type': '@builder.io/sdk:Element',
   responsiveStyles: {
     large: {
       display: 'flex',
-      paddingLeft: '10px',
-      paddingRight: '10px',
-      paddingTop: '10px',
-      paddingBottom: '10px',
-      color: 'white',
-      backgroundColor: 'rgba(0, 0, 0, 0.5)',
-      flexDirection: 'column'
-    }
-  }
-}
+      height: '30px',
+      flexDirection: 'column',
+    },
+  },
+};
 
-type BuilderBlockType = BuilderElement
+type BuilderBlockType = BuilderElement;
 
 interface CarouselProps {
   slides: Array<
     React.ReactNode | { content: BuilderBlockType[] } /* BuilderBlock <- export this type */
-  >
-  builderBlock: BuilderBlockType
-  nextButton?: BuilderBlockType[]
-  prevButton?: BuilderBlockType[]
-  autoplay?: boolean
-  autoplaySpeed?: number
-  hideDots?: boolean
-  initialHeight?: number
-  useChildrenForSlides?: boolean
+  >;
+  builderBlock: BuilderBlockType;
+  nextButton?: BuilderBlockType[];
+  prevButton?: BuilderBlockType[];
+  autoplay?: boolean;
+  autoplaySpeed?: number;
+  hideDots?: boolean;
+  useChildrenForSlides?: boolean;
 }
 
 // TODO: change to slick grid
@@ -114,38 +83,31 @@ interface CarouselProps {
           name: 'content',
           type: 'uiBlocks',
           hideFromUI: true,
-          defaultValue: [defaultElement]
-        }
+          defaultValue: [defaultElement],
+        },
       ],
       defaultValue: [
         {
-          content: [defaultElement]
+          content: [defaultElement],
         },
         {
-          content: [defaultElement]
-        }
+          content: [defaultElement],
+        },
       ],
-      showIf: (options: Map<string, any>) => !options.get('useChildrenForSlides'),
-      onChange: (options: Map<string, any>) => {
-        if (options.get('useChildrenForSlides') === true) {
-          const slides = options.get('slides')
-          if (slides && Array.isArray(slides)) {
-            slides.length = 0
-          }
-        }
-      }
+      // showIf: (options: Map<string, any>) => !options.get('useChildrenForSlides'),
+      showIf: `!options.get('useChildrenForSlides')`,
     },
     {
       name: 'hideDots',
       helperText: 'Show pagination dots',
       type: 'boolean',
-      defaultValue: false
+      defaultValue: false,
     },
     {
       name: 'autoplay',
       helperText: 'Automatically rotate to the next slide every few seconds',
       type: 'boolean',
-      defaultValue: false
+      defaultValue: false,
     },
     {
       name: 'autoplaySpeed',
@@ -154,7 +116,9 @@ interface CarouselProps {
       helperText:
         'If auto play is on, how many seconds to wait before automatically changing each slide',
       // TODO: showIf option
-      showIf: (options: Map<string, any>) => options.get('autoPlay')
+      // showIf: (options: Map<string, any>) => options.get('autoplay'),
+      // TODO: why fn not working?
+      showIf: `options.get('autoplay')`,
       // showIf: (options) => options.get('autoPlay')
     },
     // TODO: on add new duplicate the prior or expect use templates
@@ -167,13 +131,13 @@ interface CarouselProps {
         {
           ...defaultButton,
           component: {
-            name: 'Text',
+            name: 'Image',
             options: {
-              text: '〈'
-            }
-          }
-        }
-      ]
+              image: 'https://cdn.builder.codes/api/v1/image/assets%2FagZ9n5CUKRfbL9t6CaJOyVSK4Es2%2Fdb2a9827561249aea3817b539aacdcdc',
+            },
+          },
+        },
+      ],
     },
     {
       name: 'nextButton',
@@ -183,86 +147,142 @@ interface CarouselProps {
         {
           ...defaultButton,
           component: {
-            name: 'Text',
+            name: 'Image',
             options: {
-              text: '〉'
-            }
-          }
-        }
-      ]
+              image: 'https://cdn.builder.codes/api/v1/image/assets%2FagZ9n5CUKRfbL9t6CaJOyVSK4Es2%2Fd909a5b91650499c9e0524cc904eeb77',
+            },
+          },
+        },
+      ],
     },
-    {
-      name: 'initialHeight',
-      type: 'number',
-      helperText: 'The initial height to give the carousel before the content loads',
-      advanced: true,
-      defaultValue: 400
-    },
+    // {
+    //   name: 'initialHeight',
+    //   type: 'number',
+    //   helperText: 'The initial height to give the carousel before the content loads',
+    //   advanced: true,
+    //   defaultValue: 400,
+    // },
     {
       name: 'useChildrenForSlides',
       type: 'boolean',
       helperText:
         'Use child elements for each slide, instead of the array. Useful for dynamically repeating slides',
       advanced: true,
-      defaultValue: false
-    }
-  ]
+      defaultValue: false,
+      onChange: (options: Map<string, any>) => {
+        if (options.get('useChildrenForSlides') === true) {
+          const slides = options.get('slides');
+          if (slides && Array.isArray(slides)) {
+            options.set('slides', []);
+          }
+        }
+      },
+    },
+  ],
 })
 export class BuilderCarousel extends React.Component<CarouselProps> {
   render() {
     return (
-      <Carousel
-        wrapAround
-        heightMode="max"
-        // Allow user to edit
-        initialSlideHeight={this.props.initialHeight || 400}
-        pauseOnHover
-        autoplay={this.props.autoplay}
-        autoplayInterval={this.props.autoplaySpeed ? this.props.autoplaySpeed * 1000 : undefined}
-        renderBottomCenterControls={this.props.hideDots ? () => null : undefined}
-        renderCenterLeftControls={({ previousSlide }) => (
-          <span style={{ cursor: 'pointer' }} onClick={previousSlide}>
-            <BuilderBlocks
-              parentElementId={this.props.builderBlock.id}
-              dataPath="component.options.prevButton"
-              blocks={this.props.prevButton}
-            />
-          </span>
+      <BuilderStoreContext.Consumer>
+        {state => (
+          <React.Fragment>
+            <style type="text/css">${slickStyles}</style>
+            <Slider
+              autoplay={this.props.autoplay}
+              autoplaySpeed={this.props.autoplaySpeed ? this.props.autoplaySpeed * 1000 : undefined}
+              dots={!this.props.hideDots}
+              // TODO: on change emit event on element?
+              // renderBottomCenterControls={this.props.hideDots ? () => null : undefined}
+              nextArrow={
+                <div>
+                  <BuilderBlocks
+                    parentElementId={this.props.builderBlock.id}
+                    dataPath="component.options.prevButton"
+                    blocks={this.props.prevButton}
+                  />
+                </div>
+              }
+              prevArrow={
+                <div>
+                  <BuilderBlocks
+                    parentElementId={this.props.builderBlock.id}
+                    dataPath="component.options.nextButton"
+                    blocks={this.props.nextButton}
+                  />
+                </div>
+              }
+            >
+              {/* todo: children.forEach hmm insert block inside */}
+              {this.props.useChildrenForSlides
+                ? this.props.builderBlock &&
+                  this.props.builderBlock.children &&
+                  this.props.builderBlock.children.map((block: BuilderElement, index: number) => {
+                    if (block.repeat && block.repeat.collection) {
+                      const collectionPath = block.repeat.collection;
+                      const collectionName = last((collectionPath || '').trim().split('.'));
+                      const itemName =
+                        block.repeat.itemName ||
+                        (collectionName ? collectionName + 'Item' : 'item');
+                      const array = get(state.state, collectionPath);
+                      if (isArray(array)) {
+                        return array.map((data, index) => {
+                          // TODO: Builder state produce the data
+                          const childState = {
+                            ...state.state,
+                            $index: index,
+                            $item: data,
+                            [itemName]: data,
+                          };
+
+                          return (
+                            <BuilderStoreContext.Provider
+                              key={block.id + '-provider'}
+                              value={{ ...state, state: childState } as any}
+                            >
+                              <BuilderBlockComponent
+                                key={block.id}
+                                block={{
+                                  ...block,
+                                  repeat: null,
+                                }}
+                                index={index}
+                                child={true} /* TODO: fieldname? */
+                              />
+                            </BuilderStoreContext.Provider>
+                          );
+                        });
+                      }
+                    }
+                    return (
+                      <BuilderBlockComponent
+                        key={block.id}
+                        block={block}
+                        index={index}
+                        child={true} /* TODO: fieldname? */
+                      />
+                    );
+                  })
+                : this.props.slides &&
+                  this.props.slides.map((slide, index) => (
+                    // TODO: how make react compatible with plain react components
+                    // slides: <Foo><Bar> <- builder blocks if passed react nodes as blocks just forward them
+                    <BuilderBlocks
+                      key={index}
+                      parentElementId={this.props.builderBlock && this.props.builderBlock.id}
+                      dataPath={`component.options.slides.${index}.content`}
+                      child
+                      blocks={(slide as any).content || slide}
+                    />
+                  ))}
+            </Slider>
+          </React.Fragment>
         )}
-        renderCenterRightControls={({ nextSlide }) => (
-          <span style={{ cursor: 'pointer' }} onClick={nextSlide}>
-            <BuilderBlocks
-              parentElementId={this.props.builderBlock.id}
-              dataPath="component.options.nextButton"
-              blocks={this.props.nextButton}
-            />
-          </span>
-        )}
-      >
-        {/* todo: children.forEach hmm insert block inside */}
-        {this.props.useChildrenForSlides
-          ? this.props.builderBlock &&
-            this.props.builderBlock.children &&
-            this.props.builderBlock.children.map((block: any, index: number) => (
-              <BuilderBlockComponent
-                key={block.id}
-                block={block}
-                index={index}
-                child={true} /* TODO: fieldname? */
-              />
-            ))
-          : this.props.slides.map((slide, index) => (
-              // TODO: how make react compatible with plain react components
-              // slides: <Foo><Bar> <- builder blocks if passed react nodes as blocks just forward them
-              <BuilderBlocks
-                key={index}
-                parentElementId={this.props.builderBlock && this.props.builderBlock.id}
-                dataPath={`component.options.slides.${index}.content`}
-                child
-                blocks={(slide as any).content || slide}
-              />
-            ))}
-      </Carousel>
-    )
+      </BuilderStoreContext.Consumer>
+    );
   }
 }
+
+const slickStyles = `
+  .slick-list,.slick-slider,.slick-track{position:relative;display:block}.slick-loading .slick-slide,.slick-loading .slick-track{visibility:hidden}.slick-slider{box-sizing:border-box;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;-webkit-touch-callout:none;-khtml-user-select:none;-ms-touch-action:pan-y;touch-action:pan-y;-webkit-tap-highlight-color:transparent}.slick-list{overflow:hidden;margin:0;padding:0}.slick-list:focus{outline:0}.slick-list.dragging{cursor:pointer;cursor:hand}.slick-slider .slick-list,.slick-slider .slick-track{-webkit-transform:translate3d(0,0,0);-moz-transform:translate3d(0,0,0);-ms-transform:translate3d(0,0,0);-o-transform:translate3d(0,0,0);transform:translate3d(0,0,0)}.slick-track{top:0;left:0}.slick-track:after,.slick-track:before{display:table;content:''}.slick-track:after{clear:both}.slick-slide{display:none;float:left;height:100%;min-height:1px}[dir=rtl] .slick-slide{float:right}.slick-slide img{display:block}.slick-slide.slick-loading img{display:none}.slick-slide.dragging img{pointer-events:none}.slick-initialized .slick-slide{display:block}.slick-vertical .slick-slide{display:block;height:auto;border:1px solid transparent}.slick-arrow.slick-hidden{display:none}
+  .slick-dots,.slick-next,.slick-prev{position:absolute;display:block;padding:0}.slick-dots li button:before,.slick-next:before,.slick-prev:before{font-family:slick;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.slick-loading .slick-list{background:url(ajax-loader.gif) center center no-repeat #fff}@font-face{font-family:slick;font-weight:400;font-style:normal;src:url('https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/fonts/slick.eot');src:url('https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/fonts/slick.eot?#iefix') format('embedded-opentype'),url('https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/fonts/slick.woff') format('woff'),url('https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/fonts/slick.ttf') format('truetype'),url('https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/fonts/slick.svg#slick') format('svg')}.slick-next,.slick-prev{font-size:0;line-height:0;top:50%;width:20px;height:20px;-webkit-transform:translate(0,-50%);-ms-transform:translate(0,-50%);transform:translate(0,-50%);cursor:pointer;color:transparent;border:none;outline:0;background:0 0}.slick-next:focus,.slick-next:hover,.slick-prev:focus,.slick-prev:hover{color:transparent;outline:0;background:0 0}.slick-next:focus:before,.slick-next:hover:before,.slick-prev:focus:before,.slick-prev:hover:before{opacity:1}.slick-next.slick-disabled:before,.slick-prev.slick-disabled:before{opacity:.25}.slick-next:before,.slick-prev:before{font-size:20px;line-height:1;opacity:.75;color:#fff}.slick-prev{left:-25px}[dir=rtl] .slick-prev{right:-25px;left:auto}.slick-prev:before{content:'â†'}.slick-next:before,[dir=rtl] .slick-prev:before{content:'â†’'}.slick-next{right:-25px}[dir=rtl] .slick-next{right:auto;left:-25px}[dir=rtl] .slick-next:before{content:'â†'}.slick-dotted.slick-slider{margin-bottom:30px}.slick-dots{bottom:-25px;width:100%;margin:0;list-style:none;text-align:center}.slick-dots li{position:relative;display:inline-block;width:20px;height:20px;margin:0 5px;padding:0;cursor:pointer}.slick-dots li button{font-size:0;line-height:0;display:block;width:20px;height:20px;padding:5px;cursor:pointer;color:transparent;border:0;outline:0;background:0 0}.slick-dots li button:focus,.slick-dots li button:hover{outline:0}.slick-dots li button:focus:before,.slick-dots li button:hover:before{opacity:1}.slick-dots li button:before{font-size:6px;line-height:20px;position:absolute;top:0;left:0;width:20px;height:20px;content:'â€¢';text-align:center;opacity:.25;color:#000}.slick-dots li.slick-active button:before{opacity:.75;color:#000}
+`;

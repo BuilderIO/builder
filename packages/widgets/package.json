@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/widgets",
-  "version": "0.0.49-alpha.2",
+  "version": "0.0.49-alpha.3",
   "description": "",
   "keywords": [],
   "main": "dist/builder-widgets.umd.js",
@@ -89,6 +89,7 @@
     "@types/node": "^10.0.3",
     "@types/react": "^16.4.1",
     "@types/react-dom": "^16.0.7",
+    "@types/react-slick": "^0.23.3",
     "colors": "^1.1.2",
     "commitizen": "^2.9.6",
     "coveralls": "^3.0.0",
@@ -121,15 +122,15 @@
     "validate-commit-msg": "^2.12.2"
   },
   "dependencies": {
-    "@builder.io/react": "^0.1.136-alpha.3",
-    "@builder.io/sdk": "^0.1.76-alpha.3",
+    "@builder.io/react": "^0.1.136-alpha.5",
+    "@builder.io/sdk": "^0.1.76-alpha.4",
     "core-js": "^2.5.7",
     "immer": "^1.7.2",
     "lodash-es": "^4.17.10",
     "node-fetch": "^2.3.0",
-    "nuka-carousel": "^4.4.7",
     "react": "^16.4.1",
     "react-dom": "^16.4.2",
+    "react-slick": "^0.23.2",
     "vm2": "^3.6.4"
   },
   "gitHead": "f8539cb74d9a0c07bafe0e426bd5cdc3ff580262"

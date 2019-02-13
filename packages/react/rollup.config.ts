@@ -111,8 +111,8 @@ export default [
     //   },
     // ],
     output: [
-      // { file: pkg.module, format: 'es', sourcemap: true },
-      { file: './server.js', format: 'cjs', sourcemap: true }
+      { file: './dist/server.esm.js', format: 'es', sourcemap: true },
+      { file: './dist/server.js', format: 'cjs', sourcemap: true }
     ],
     external: Object.keys(pkg.dependencies || {}).filter(name => !name.startsWith('lodash-es')),
     plugins: options.plugins.filter(plugin => plugin !== resolvePlugin).concat([

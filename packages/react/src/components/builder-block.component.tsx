@@ -138,7 +138,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
           this._logs.push(message)
         }
       }
-      console.warn('Function compile error', error)
+      console.warn('Function compile error', error, 'in', str)
     }
 
     return (...args: any[]) => {
