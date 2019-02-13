@@ -13,6 +13,32 @@ import omit from 'lodash-es/omit'
 import kebabCase from 'lodash-es/kebabCase'
 import { BuilderAsyncRequestsContext, RequestOrPromise } from '../store/builder-async-requests'
 
+// TODO: more API
+// TODO: make shared with other evals
+const api = (state: any) => ({
+  // TODO: trigger animation
+  use: (value: any) => value,
+  useText: (value: any) => value,
+  useSwitch: (value: any) => value,
+  useNumber: (value: any) => value,
+  run: (cb: Function) => cb(),
+  return: (value: any) => value,
+  set: (name: string, value: any) => {
+    // need reference to state to set
+    state[name] = value
+  },
+  get: (name: string, value: any) => {
+    // need reference to state to set
+    return state[name]
+  },
+  get device() {
+    return sizeNames.indexOf(sizes.getSizeForWidth(window.innerWidth))
+  },
+  deviceIs(device: number) {
+    return this.device === device
+  }
+})
+
 // TODO: pull from builer internal utils
 const fastClone = (obj: object) => JSON.parse(JSON.stringify(obj))
 
@@ -73,8 +99,21 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
   // TODO: handle adding return if none provided
   stringToFunction(str: string) {
     // FIXME: gross hack
-    const useReturn = !(str.includes(';') || str.includes(' return '))
-    let fn: Function = () => { /* intentionally empty */ }
+    const useReturn =
+      !(str.includes(';') || str.includes(' return ')) || str.trim().startsWith('builder.run')
+    let fn: Function = () => {
+      /* intentionally empty */
+    }
+
+    str = str
+      .replace(/builder\s*\.\s*use[a-zA-Z]*\(/g, 'return(')
+      .replace(/builder\s*\.\s*set([a-zA-Z]+)To\(/g, (_match, group: string) => {
+        return `builder.set("${group[0].toLowerCase() + group.substring(1)}",`
+      })
+      .replace(/builder\s*\.\s*get([a-zA-Z]+)\s*\(\s*\)/g, (_match, group: string) => {
+        return group[0].toLowerCase() + group.substring(1)
+      })
+
     try {
       // tslint:disable-next-line:no-function-constructor-with-string-args
       if (Builder.isBrowser) {
@@ -82,6 +121,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
           'state',
           'event',
           'block',
+          'api',
           // TODO: block reference...
           `with (state) {
             ${useReturn ? `return (${str});` : str};
@@ -182,7 +222,9 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
         ) {
           // TODO: this will not work as expected for a couple things that are handled specially,
           // e.g. width
-          css += `\n@media only screen and (max-width: ${sizes[size].max}px) { \n${this.props.emailMode ? '.' : '.builder-block.'}${self.id + (this.props.emailMode ? '-subject' : '')} {${mapToCss(
+          css += `\n@media only screen and (max-width: ${sizes[size].max}px) { \n${
+            this.props.emailMode ? '.' : '.builder-block.'
+          }${self.id + (this.props.emailMode ? '-subject' : '')} {${mapToCss(
             self.responsiveStyles[size],
             4,
             this.props.emailMode
@@ -268,7 +310,8 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
     if (block.bindings) {
       for (const key in block.bindings) {
         const value = this.stringToFunction(block.bindings[key])
-        set(options, key, value(state, null, block))
+        // TODO: pass block, etc
+        set(options, key, value(state, null, block, api(state)))
       }
     }
 
@@ -279,7 +322,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
           // TODO: pass in store
           const fn = this.stringToFunction(value)
           this.privateState.update((state: any) => {
-            return fn(state, event)
+            return fn(state, event, undefined, api(state))
           })
         }
       }

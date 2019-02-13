@@ -110,7 +110,9 @@ const regexParse = (html: string) => {
     css: Array.from(cssSet.values())
       .join(' ')
       .replace(/&gt;/g, '>')
+      .replace(/&amp;/g, '&')
       .replace(/&quot;/g, '"')
+      .replace(/&apos;/g, "'")
       .replace(/ \S+:\s+;/g, '')
       .replace(/\s+/g, ' ')
       .trim(),

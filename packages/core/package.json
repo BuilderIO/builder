@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/sdk",
-  "version": "0.1.74",
+  "version": "0.1.75",
   "browser": "./dist/index.umd.min.js",
   "main": "./dist/index.cjs.js",
   "module": "./dist/index.esm.js",

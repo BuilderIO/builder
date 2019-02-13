@@ -180,6 +180,7 @@ export class BuilderCarousel extends React.Component<CarouselProps> {
           </span>
         )}
       >
+      {/* todo: children.forEach hmm insert block inside */}
         {this.props.slides.map((slide, index) => (
           // TODO: how make react compatible with plain react components
           // slides: <Foo><Bar> <- builder blocks if passed react nodes as blocks just forward them

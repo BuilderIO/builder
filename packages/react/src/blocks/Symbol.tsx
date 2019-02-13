@@ -1,6 +1,6 @@
 import React from 'react'
-import { BuilderPage } from '../components/builder-page.component';
-import { BuilderBlock } from '../decorators/builder-block.decorator';
+import { BuilderPage } from '../components/builder-page.component'
+import { BuilderBlock } from '../decorators/builder-block.decorator'
 
 export interface SymbolInfo {
   model?: string
@@ -24,20 +24,29 @@ export interface SymbolProps {
   ]
 })
 export class Symbol extends React.Component<SymbolProps> {
+  get placeholder() {
+    return (
+      <div style={{ padding: 10 }}>
+        Symbols let you reuse dynamic elements across your content. Please choose a model and entry
+        for this symbol.
+      </div>
+    )
+  }
+
   render() {
     const symbol = this.props.symbol
 
     if (!symbol) {
-      return null
+      return this.placeholder
+    }
+
+    const { model, entry, data, content } = symbol
+    if (!model && entry) {
+      return this.placeholder
     }
     return (
       <div className="builder-symbol">
-        <BuilderPage
-          modelName={symbol.model}
-          entry={symbol.entry}
-          data={symbol.data}
-          content={symbol.content}
-        />
+        <BuilderPage modelName={model} entry={entry} data={data} content={content} />
       </div>
     )
   }
