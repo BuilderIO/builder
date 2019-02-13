@@ -146,8 +146,13 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
         if (Builder.isBrowser) {
           return fn(...args)
         } else {
+          // Below is a hack to get certain code to *only* load in the server build, to not screw with
+          // browser bundler's like rollup and webpack. Our rollup plugin strips these comments only
+          // for the server build
           // TODO: cache these for better performancs with new VmScript
+          // tslint:disable:comment-format
           ///SERVERONLY const { VM } = require('vm2')
+          ///SERVERONLY console.info('Running in vm2');
           ///SERVERONLY const [state, event] = args
           ///SERVERONLY return new VM({
           ///SERVERONLY   timeout: 100,
@@ -158,6 +163,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
           ///SERVERONLY     event
           ///SERVERONLY   }
           ///SERVERONLY }).run(str)
+          // tslint:enable:comment-format
         }
       } catch (error) {
         console.warn('Eval error', error)

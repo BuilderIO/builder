@@ -206,7 +206,7 @@ export class BuilderCarousel extends React.Component<CarouselProps> {
       <BuilderStoreContext.Consumer>
         {state => (
           <div ref={ref => (this.divRef = ref)} className="builder-carousel">
-            <style type="text/css">${slickStyles}</style>
+            <style type="text/css">{slickStyles}</style>
             <Slider
               ref={ref => (this.sliderRef = ref)}
               afterChange={slide => {

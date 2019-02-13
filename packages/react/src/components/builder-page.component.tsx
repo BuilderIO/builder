@@ -97,7 +97,11 @@ const tryEval = (str?: string, data: any = {}, errors?: Error[]): any => {
     if (Builder.isBrowser) {
       return fn(data || {})
     } else {
+      // Below is a hack to get certain code to *only* load in the server build, to not screw with
+      // browser bundler's like rollup and webpack
+      // tslint:disable:comment-format
       ///SERVERONLY const { VM } = require('vm2')
+      ///SERVERONLY console.info('Running in vm2');
       ///SERVERONLY return new VM({
       ///SERVERONLY   sandbox: {
       ///SERVERONLY     ...data,
@@ -105,6 +109,7 @@ const tryEval = (str?: string, data: any = {}, errors?: Error[]): any => {
       ///SERVERONLY   }
       ///SERVERONLY   // TODO: convert reutrn to module.exports on server
       ///SERVERONLY }).run(value)
+      // tslint:enable:comment-format
     }
   } catch (error) {
     if (errors) {
