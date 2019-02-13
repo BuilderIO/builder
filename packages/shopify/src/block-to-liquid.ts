@@ -77,6 +77,7 @@ export function blockToLiquid(block: BuilderElement, options: Options = {}) {
     ...block.properties,
     ['builder-id']: block.id,
     class: `builder-block ${block.id}${block.class ? ` ${block.class}` : ''}`,
+    // TODO: style bindings and start animation styles
   });
 
   // Fragment? hm
@@ -153,6 +154,7 @@ function mapToCss(map: StringMap, spaces = 2, important = false) {
 }
 
 // TODO: make these core functions and share with react, vue, etc
+// TODO: apply style bindings and default animation
 function blockCss(block: BuilderElement, options: Options = {}) {
   // TODO: handle style bindings
   const self = block;

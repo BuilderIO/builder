@@ -152,6 +152,7 @@ export interface Input {
   enum?: string[];
   advanced?: boolean;
   onChange?: Function | string;
+  showIf?: string;
 }
 
 export interface Component {

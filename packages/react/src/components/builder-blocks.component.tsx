@@ -111,7 +111,7 @@ export class BuilderBlocks extends React.Component<BuilderBlocksProps, BuilderBl
             (block, index) =>
               block && block['@type'] === '@builder.io/sdk:Element' ? (
                 <BuilderBlock
-                  key={block.id + index}
+                  key={block.id}
                   block={block}
                   index={index}
                   fieldName={this.props.fieldName}

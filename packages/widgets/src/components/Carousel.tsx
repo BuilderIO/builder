@@ -1,4 +1,5 @@
-import { BuilderBlock, BuilderBlocks } from '@builder.io/react'
+import { BuilderBlock, BuilderBlocks, BuilderBlockComponent } from '@builder.io/react'
+// import { ElementType } from '@builder.io/sdk'
 import React from 'react'
 import Carousel from 'nuka-carousel'
 
@@ -59,11 +60,14 @@ interface CarouselProps {
   autoplay?: boolean
   autoplaySpeed?: number
   hideDots?: boolean
-  initialHeight?: number;
+  initialHeight?: number
+  useChildrenForSlides?: boolean
 }
 
+// TODO: change to slick grid
 @BuilderBlock({
   name: 'Builder:Carousel',
+  canHaveChildren: true,
   inputs: [
     {
       name: 'slides',
@@ -83,7 +87,10 @@ interface CarouselProps {
         {
           content: [defaultElement]
         }
-      ]
+      ],
+      ...({
+        showIf: `!options.get('useChildrenForSlides')`
+      } as any)
     },
     {
       name: 'hideDots',
@@ -146,6 +153,14 @@ interface CarouselProps {
       helperText: 'The initial height to give the carousel before the content loads',
       advanced: true,
       defaultValue: 400
+    },
+    {
+      name: 'useChildrenForSlides',
+      type: 'boolean',
+      helperText:
+        'Use child elements for each slide, instead of the array. Useful for dynamically repeating slides',
+      advanced: true,
+      defaultValue: false
     }
   ]
 })
@@ -180,18 +195,27 @@ export class BuilderCarousel extends React.Component<CarouselProps> {
           </span>
         )}
       >
-      {/* todo: children.forEach hmm insert block inside */}
-        {this.props.slides.map((slide, index) => (
-          // TODO: how make react compatible with plain react components
-          // slides: <Foo><Bar> <- builder blocks if passed react nodes as blocks just forward them
-          <BuilderBlocks
-            key={index}
-            parentElementId={this.props.builderBlock && this.props.builderBlock.id}
-            dataPath={`component.options.slides.${index}.content`}
-            child
-            blocks={(slide as any).content || slide}
-          />
-        ))}
+        {/* todo: children.forEach hmm insert block inside */}
+        {this.props.useChildrenForSlides
+          ? this.props.builderBlock.children.map((block: any, index: number) => (
+              <BuilderBlockComponent
+                key={block.id}
+                block={block}
+                index={index}
+                child={true} /* TODO: fieldname? */
+              />
+            ))
+          : this.props.slides.map((slide, index) => (
+              // TODO: how make react compatible with plain react components
+              // slides: <Foo><Bar> <- builder blocks if passed react nodes as blocks just forward them
+              <BuilderBlocks
+                key={index}
+                parentElementId={this.props.builderBlock && this.props.builderBlock.id}
+                dataPath={`component.options.slides.${index}.content`}
+                child
+                blocks={(slide as any).content || slide}
+              />
+            ))}
       </Carousel>
     )
   }

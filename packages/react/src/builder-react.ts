@@ -1,4 +1,5 @@
 import { builder, Builder } from '@builder.io/sdk'
+// export { BuilderElement } from '@builder.io/sdk'
 
 Builder.isReact = true
 
@@ -8,6 +9,7 @@ import './components/custom/Hero'
 import './components/custom/Spacer'
 
 export { BuilderBlocks } from './components/builder-blocks.component'
+export { BuilderBlock as BuilderBlockComponent } from './components/builder-block.component'
 export { BuilderContent } from './components/builder-content.component'
 import { BuilderPage } from './components/builder-page.component'
 export { BuilderSimpleComponent } from './components/builder-simple.component'
