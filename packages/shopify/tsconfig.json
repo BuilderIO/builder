@@ -2,11 +2,11 @@
   "compilerOptions": {
     "target": "es5",
     "outDir": "dist",
-    "rootDir": "../..",
     "module": "esnext",
     "strict": true,
     "sourceMap": true,
     "declaration": true,
+    "skipLibCheck": true,
     "declarationDir": "dist",
     "lib": ["dom", "esnext"],
     "allowSyntheticDefaultImports": true,

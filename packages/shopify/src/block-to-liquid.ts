@@ -1,7 +1,35 @@
-import { BuilderElement, BuilderContent } from '@builder.io/sdk';
+import { BuilderElement, Input /* BuilderContent */ } from '@builder.io/sdk';
 import reduce from 'lodash-es/reduce';
 import kebabCase from 'lodash-es/kebabCase';
 import size from 'lodash-es/size';
+
+export interface BuilderContentVariation {
+  data?: {
+    blocks?: BuilderElement[]
+    inputs?: Input[]
+    [key: string]: any
+  }
+  name?: string
+  testRatio?: number
+}
+
+// TODO: separate full and partial versions
+export interface BuilderContent extends BuilderContentVariation {
+  // TODO: query
+  '@version'?: number
+  id?: string
+  name?: string
+  published?: 'published' | 'draft' | 'archived'
+  modelId: string
+  priority?: number
+  lastUpdated?: number
+  startDate?: number
+  endDate?: number
+  variations?: {
+    [id: string]: BuilderContentVariation | undefined
+  }
+}
+
 
 export function modelToLiquid(content: BuilderContent, modelName: string, options: Options = {}) {
   const blocks = content.data && content.data.blocks;
@@ -11,8 +39,8 @@ export function modelToLiquid(content: BuilderContent, modelName: string, option
       class="builder-content"
       builder-content-id=${content.id}
       data-builder-content-id=${content.id}
-      data-builder-component=${content.modelName}
-      builder-model=${content.modelName}
+      data-builder-component=${modelName}
+      builder-model=${modelName}
     >
       ${blocks ? blocks.map((block: BuilderElement) => blockToLiquid).join('') : ''}
     </div>`.replace(/\s+/, ' ')
@@ -63,12 +91,12 @@ const sizes = {
   },
 };
 
-interface Options {
+export interface Options {
   emailMode?: boolean;
   extractCss?: boolean;
 }
 
-export function blockToLiquid(block: BuilderElement, options: Options = {}) {
+export function blockToLiquid(block: BuilderElement, options: Options = {}): string {
   const css = blockCss(block, options);
   const tag = block.tagName || 'div';
 
@@ -177,14 +205,14 @@ function blockCss(block: BuilderElement, options: Options = {}) {
         size !== 'large' &&
         size !== 'xsmall' &&
         self.responsiveStyles[size] &&
-        Object.keys(self.responsiveStyles[size]).length
+        Object.keys(self.responsiveStyles[size] as any).length
       ) {
         // TODO: this will not work as expected for a couple things that are handled specially,
         // e.g. width
         css += `\n@media only screen and (max-width: ${sizes[size].max}px) { \n${
           options.emailMode ? '.' : '.builder-block.'
         }${self.id + (options.emailMode ? '-subject' : '')} {${mapToCss(
-          self.responsiveStyles[size],
+          self.responsiveStyles[size] as any,
           4,
           options.emailMode
         )} } }`;

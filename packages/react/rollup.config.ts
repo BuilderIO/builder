@@ -4,6 +4,8 @@ import sourceMaps from 'rollup-plugin-sourcemaps'
 import typescript from 'rollup-plugin-typescript2'
 import replace from 'rollup-plugin-replace'
 import json from 'rollup-plugin-json'
+import regexReplace from 'rollup-plugin-re'
+
 
 const pkg = require('./package.json')
 
@@ -91,6 +93,45 @@ export default [
       resolve({
         only: [/^\.{0,2}\//, /lodash\-es/]
       })
+    ])
+  },
+  {
+    ...options,
+    // TODO:
+    // output: [
+    //   {
+    //     format: 'cjs',
+    //     file: pkg.main,
+    //     sourcemap: true,
+    //   },
+    //   {
+    //     format: 'es',
+    //     file: pkg.module,
+    //     sourcemap: true,
+    //   },
+    // ],
+    output: [
+      // { file: pkg.module, format: 'es', sourcemap: true },
+      { file: './server.js', format: 'cjs', sourcemap: true }
+    ],
+    external: Object.keys(pkg.dependencies || {}).filter(name => !name.startsWith('lodash-es')),
+    plugins: options.plugins.filter(plugin => plugin !== resolvePlugin).concat([
+      resolve({
+        only: [/^\.{0,2}\//, /lodash\-es/]
+      }),
+      regexReplace({
+        // ... do replace before commonjs
+        patterns: [
+          {
+            // regexp match with resolved path
+            // match: /formidable(\/|\\)lib/,
+            // string or regexp
+            test: /\/\/\/SERVERONLY/g,
+            replace: '',
+          }
+        ]
+      }),
+
     ])
   },
   {

@@ -147,16 +147,17 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
           return fn(...args)
         } else {
           // TODO: cache these for better performancs with new VmScript
-          // const { VM } = require('vm2')
-          // const [state, event] = args
-          // return new VM({
-          //   timeout: 100,
-          //   sandbox: {
-          //     ...state,
-          //     ...{ state },
-          //     event
-          //   }
-          // }).run(str)
+          ///SERVERONLY const { VM } = require('vm2')
+          ///SERVERONLY const [state, event] = args
+          ///SERVERONLY return new VM({
+          ///SERVERONLY   timeout: 100,
+          ///SERVERONLY   sandbox: {
+          ///SERVERONLY     ...state,
+          ///SERVERONLY     ...{ state },
+          ///SERVERONLY     ...{ builder: api },
+          ///SERVERONLY     event
+          ///SERVERONLY   }
+          ///SERVERONLY }).run(str)
         }
       } catch (error) {
         console.warn('Eval error', error)

@@ -1,13 +1,14 @@
 {
   "name": "@builder.io/sdk",
-  "version": "0.1.76-alpha.0",
+  "version": "0.1.76-alpha.2",
   "browser": "./dist/index.umd.min.js",
   "main": "./dist/index.cjs.js",
   "module": "./dist/index.esm.js",
-  "types": "./dist/clients/js/index.d.ts",
+  "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "rollup -c",
+    "build": "npm run tsc && rollup -c",
     "watch": "rollup -w",
+    "tsc": "tsc --module commonjs",
     "release": "npm run build && npm publish",
     "release:patch": "npm run build && npm version patch && npm publish",
     "release:patch:nightly": "npm run build && npm version patch && npm publish",

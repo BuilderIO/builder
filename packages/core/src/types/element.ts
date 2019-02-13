@@ -1,8 +1,8 @@
 // TODO: typedoc this
 export interface BuilderElement {
   '@type': '@builder.io/sdk:Element'
-  '@version': number
-  id: string
+  '@version'?: number
+  id?: string
   tagName?: string
   layerName?: string
   class?: string

@@ -1,12 +1,12 @@
 {
   "name": "@builder.io/shopify",
-  "version": "1.0.9-alpha.0",
+  "version": "1.0.9-alpha.1",
   "browser": "./dist/index.umd.min.js",
   "main": "./dist/index.cjs.js",
   "module": "./dist/index.esm.js",
-  "types": "./dist/clients/js/index.d.ts",
+  "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "rollup -c",
+    "build": "tsc --module commonjs && rollup -c",
     "watch": "rollup -w",
     "release": "npm run build && npm publish",
     "release:patch": "npm run build && npm version patch && npm publish",
@@ -31,7 +31,7 @@
     "typescript": "^2.6.2"
   },
   "dependencies": {
-    "@builder.io/sdk": "^0.1.76-alpha.0",
+    "@builder.io/sdk": "^0.1.76-alpha.2",
     "dedent": "^0.7.0",
     "lodash-es": "^4.17.11",
     "node-fetch": "^2.2.0"

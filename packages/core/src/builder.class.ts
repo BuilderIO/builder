@@ -152,7 +152,7 @@ export interface Input {
   enum?: string[];
   advanced?: boolean;
   onChange?: Function | string;
-  showIf?: string;
+  showIf?: Function | string;
 }
 
 export interface Component {
@@ -236,14 +236,19 @@ export class Builder {
     return {
       ...spec,
       ...(spec.inputs && {
-        inputs: spec.inputs.map(input => {
-          // TODO: do for nexted too
-          if (input.onChange && typeof input.onChange === 'function') {
-            const fn = input.onChange;
-            return {
-              ...input,
-              onChange: `return (${fn.toString()}).apply(this, arguments)`,
-            };
+        inputs: spec.inputs.map((input: any) => {
+          // TODO: do for nexted fields too
+          // TODO: probably just convert all functions, not just
+          const keysToConvertFnToString = ['onChange', 'showIf'];
+
+          for (const key of keysToConvertFnToString) {
+            if (input[key] && typeof input[key] === 'function') {
+              const fn = input[key];
+              input = {
+                ...input,
+                [key]: `return (${fn.toString()}).apply(this, arguments)`,
+              };
+            }
           }
           return input;
         }),
@@ -1074,7 +1079,6 @@ export class Builder {
 
     if (Builder.useNewApi) {
       for (const options of queue) {
-
         const properties: (keyof GetContentOptions)[] = [
           'prerender',
           'extractCss',
@@ -1083,7 +1087,7 @@ export class Builder {
           'query',
           'preview',
           'model',
-          'entry'
+          'entry',
         ];
         for (const key of properties) {
           const value = options[key];

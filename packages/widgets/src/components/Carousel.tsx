@@ -1,9 +1,45 @@
-import { BuilderBlock, BuilderBlocks, BuilderBlockComponent } from '@builder.io/react'
+import {
+  BuilderBlock,
+  BuilderBlocks,
+  BuilderBlockComponent /*BuilderElement */
+} from '@builder.io/react'
 // import { ElementType } from '@builder.io/sdk'
 import React from 'react'
 import Carousel from 'nuka-carousel'
 
-const defaultElement = {
+interface BuilderElement {
+  '@type': '@builder.io/sdk:Element'
+  '@version'?: number
+  id?: string
+  tagName?: string
+  layerName?: string
+  class?: string
+  children?: BuilderElement[]
+  responsiveStyles?: {
+    large?: Partial<CSSStyleDeclaration>
+    medium?: Partial<CSSStyleDeclaration>
+    small?: Partial<CSSStyleDeclaration>
+  }
+  component?: {
+    name: string
+    options?: any
+  }
+  bindings?: {
+    [key: string]: string
+  }
+  actions?: {
+    [key: string]: string
+  }
+  properties?: {
+    [key: string]: string
+  }
+  repeat?: {
+    collection: string
+    itemName?: string
+  }
+}
+
+const defaultElement: BuilderElement = {
   '@type': '@builder.io/sdk:Element',
   responsiveStyles: {
     large: {
@@ -32,7 +68,7 @@ const defaultElement = {
     }
   ]
 }
-const defaultButton = {
+const defaultButton: BuilderElement = {
   '@type': '@builder.io/sdk:Element',
   responsiveStyles: {
     large: {
@@ -48,7 +84,7 @@ const defaultButton = {
   }
 }
 
-type BuilderBlockType = any
+type BuilderBlockType = BuilderElement
 
 interface CarouselProps {
   slides: Array<
@@ -67,6 +103,7 @@ interface CarouselProps {
 // TODO: change to slick grid
 @BuilderBlock({
   name: 'Builder:Carousel',
+  // TODO: default children
   canHaveChildren: true,
   inputs: [
     {
@@ -88,9 +125,7 @@ interface CarouselProps {
           content: [defaultElement]
         }
       ],
-      ...({
-        showIf: `!options.get('useChildrenForSlides')`
-      } as any)
+      showIf: `!options.get('useChildrenForSlides')`
     },
     {
       name: 'hideDots',
@@ -179,7 +214,7 @@ export class BuilderCarousel extends React.Component<CarouselProps> {
         renderCenterLeftControls={({ previousSlide }) => (
           <span style={{ cursor: 'pointer' }} onClick={previousSlide}>
             <BuilderBlocks
-              parentElementId={this.props.builderBlock}
+              parentElementId={this.props.builderBlock.id}
               dataPath="component.options.prevButton"
               blocks={this.props.prevButton}
             />
@@ -188,7 +223,7 @@ export class BuilderCarousel extends React.Component<CarouselProps> {
         renderCenterRightControls={({ nextSlide }) => (
           <span style={{ cursor: 'pointer' }} onClick={nextSlide}>
             <BuilderBlocks
-              parentElementId={this.props.builderBlock}
+              parentElementId={this.props.builderBlock.id}
               dataPath="component.options.nextButton"
               blocks={this.props.nextButton}
             />
@@ -197,7 +232,9 @@ export class BuilderCarousel extends React.Component<CarouselProps> {
       >
         {/* todo: children.forEach hmm insert block inside */}
         {this.props.useChildrenForSlides
-          ? this.props.builderBlock.children.map((block: any, index: number) => (
+          ? this.props.builderBlock &&
+            this.props.builderBlock.children &&
+            this.props.builderBlock.children.map((block: any, index: number) => (
               <BuilderBlockComponent
                 key={block.id}
                 block={block}

@@ -72,7 +72,7 @@ interface BuilderPageState {
 
 const tryEval = (str?: string, data: any = {}, errors?: Error[]): any => {
   const value = str
-  if (!(value && value.trim())) {
+  if (!(typeof value === 'string' && value.trim())) {
     return
   }
   const useReturn = !(value.includes(';') || value.includes(' return '))
@@ -97,14 +97,14 @@ const tryEval = (str?: string, data: any = {}, errors?: Error[]): any => {
     if (Builder.isBrowser) {
       return fn(data || {})
     } else {
-      // const { VM } = require('vm2')
-      // return new VM({
-      //   sandbox: {
-      //     ...data,
-      //     ...{ state: data }
-      //   }
-      //   // TODO: convert reutrn to module.exports on server
-      // }).run(value)
+      ///SERVERONLY const { VM } = require('vm2')
+      ///SERVERONLY return new VM({
+      ///SERVERONLY   sandbox: {
+      ///SERVERONLY     ...data,
+      ///SERVERONLY     ...{ state: data }
+      ///SERVERONLY   }
+      ///SERVERONLY   // TODO: convert reutrn to module.exports on server
+      ///SERVERONLY }).run(value)
     }
   } catch (error) {
     if (errors) {
