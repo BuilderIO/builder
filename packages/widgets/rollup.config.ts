@@ -104,7 +104,7 @@ export default [
     external: Object.keys(pkg.dependencies || {}).filter(name => !name.startsWith('lodash-es')),
     plugins: options.plugins.filter(plugin => plugin !== resolvePlugin).concat([
       resolve({
-        only: [/^\.{0,2}\//]
+        only: [/^\.{0,2}\//, /lodash\-es/]
       })
     ])
   },
