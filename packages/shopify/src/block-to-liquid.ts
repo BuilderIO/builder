@@ -82,13 +82,22 @@ export function blockToLiquid(block: BuilderElement, options: Options = {}) {
   // Fragment? hm
   return `
     ${css.trim() ? `<style>${css}</style>` : ''}
+    ${
+      block.repeat
+        ? `{% for ${block.repeat.collection || block.repeat.collection + 'Item'} in ${
+            block.repeat.collection
+          } %}`
+        : ''
+    }
     <${tag}${attributes ? ' ' + attributes : ''}>
       ${
         block.children
           ? block.children.map((child: BuilderElement) => blockToLiquid(child, options)).join('')
           : ''
       }
-    </${tag}>`;
+    </${tag}>
+    ${block.repeat ? '{% endfor %}' : ''}
+    `;
 }
 
 const regexParse = (html: string) => {

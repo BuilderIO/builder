@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/react",
-  "version": "0.1.133",
+  "version": "0.1.134",
   "description": "",
   "keywords": [],
   "main": "dist/builder-react.cjs.js",
@@ -122,7 +122,7 @@
     "validate-commit-msg": "^2.12.2"
   },
   "dependencies": {
-    "@builder.io/sdk": "^0.1.73",
+    "@builder.io/sdk": "^0.1.74",
     "core-js": "^2.5.7",
     "immer": "^1.7.2",
     "lodash-es": "^4.17.10",

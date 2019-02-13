@@ -471,7 +471,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
       data.inputs.forEach((input: any) => {
         if (input) {
           if (input.name && input.defaultValue !== undefined) {
-            data.state[input.name] = input.defaultValue
+            data.state[input.name] = JSON.stringify(input.defaultValue)
           }
         }
       })
