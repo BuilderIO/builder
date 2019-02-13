@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/react",
-  "version": "0.1.136-alpha.10",
+  "version": "0.1.136-alpha.11",
   "description": "",
   "keywords": [],
   "main": "dist/builder-react.cjs.js",
@@ -122,7 +122,7 @@
     "validate-commit-msg": "^2.12.2"
   },
   "dependencies": {
-    "@builder.io/sdk": "^0.1.76-alpha.9",
+    "@builder.io/sdk": "^0.1.76-alpha.10",
     "core-js": "^2.5.7",
     "immer": "^1.7.2",
     "lodash-es": "^4.17.10",
@@ -131,5 +131,5 @@
     "react-dom": "^16.4.2",
     "vm2": "^3.6.4"
   },
-  "gitHead": "73c23e8a479f958c9e63abebbcd119123be47c77"
+  "gitHead": "acc5785f9d91c6015f862abe5f6d2d35428e5b48"
 }

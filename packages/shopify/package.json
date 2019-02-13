@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/shopify",
-  "version": "1.0.9-alpha.8",
+  "version": "1.0.9-alpha.9",
   "browser": "./dist/index.umd.min.js",
   "main": "./dist/index.cjs.js",
   "module": "./dist/index.esm.js",
@@ -31,10 +31,10 @@
     "typescript": "^2.6.2"
   },
   "dependencies": {
-    "@builder.io/sdk": "^0.1.76-alpha.9",
+    "@builder.io/sdk": "^0.1.76-alpha.10",
     "dedent": "^0.7.0",
     "lodash-es": "^4.17.11",
     "node-fetch": "^2.2.0"
   },
-  "gitHead": "73c23e8a479f958c9e63abebbcd119123be47c77"
+  "gitHead": "acc5785f9d91c6015f862abe5f6d2d35428e5b48"
 }

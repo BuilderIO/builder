@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/widgets",
-  "version": "0.0.49-alpha.8",
+  "version": "0.0.49-alpha.9",
   "description": "",
   "keywords": [],
   "main": "dist/builder-widgets.cjs.js",
@@ -122,8 +122,8 @@
     "validate-commit-msg": "^2.12.2"
   },
   "dependencies": {
-    "@builder.io/react": "^0.1.136-alpha.10",
-    "@builder.io/sdk": "^0.1.76-alpha.9",
+    "@builder.io/react": "^0.1.136-alpha.11",
+    "@builder.io/sdk": "^0.1.76-alpha.10",
     "core-js": "^2.5.7",
     "immer": "^1.7.2",
     "lodash-es": "^4.17.10",
@@ -133,5 +133,5 @@
     "react-slick": "^0.23.2",
     "vm2": "^3.6.4"
   },
-  "gitHead": "f8539cb74d9a0c07bafe0e426bd5cdc3ff580262"
+  "gitHead": "acc5785f9d91c6015f862abe5f6d2d35428e5b48"
 }

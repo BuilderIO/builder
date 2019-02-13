@@ -72,6 +72,11 @@ interface CarouselProps {
   name: 'Builder:Carousel',
   // TODO: default children
   canHaveChildren: true,
+  defaultStyles: {
+    marginLeft: '30px',
+    marginRight: '30px',
+    paddingBottom: '30px',
+  },
   inputs: [
     {
       name: 'slides',
