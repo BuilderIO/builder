@@ -125,7 +125,15 @@ interface CarouselProps {
           content: [defaultElement]
         }
       ],
-      showIf: `!options.get('useChildrenForSlides')`
+      showIf: (options: Map<string, any>) => !options.get('useChildrenForSlides'),
+      onChange: (options: Map<string, any>) => {
+        if (options.get('useChildrenForSlides') === true) {
+          const slides = options.get('slides')
+          if (slides && Array.isArray(slides)) {
+            slides.length = 0
+          }
+        }
+      }
     },
     {
       name: 'hideDots',
@@ -144,8 +152,9 @@ interface CarouselProps {
       type: 'number',
       defaultValue: 5,
       helperText:
-        'If auto play is on, how many seconds to wait before automatically changing each slide'
+        'If auto play is on, how many seconds to wait before automatically changing each slide',
       // TODO: showIf option
+      showIf: (options: Map<string, any>) => options.get('autoPlay')
       // showIf: (options) => options.get('autoPlay')
     },
     // TODO: on add new duplicate the prior or expect use templates

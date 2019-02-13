@@ -1,35 +1,7 @@
-import { BuilderElement, Input /* BuilderContent */ } from '@builder.io/sdk';
+import { BuilderElement, BuilderContent } from '@builder.io/sdk';
 import reduce from 'lodash-es/reduce';
 import kebabCase from 'lodash-es/kebabCase';
 import size from 'lodash-es/size';
-
-export interface BuilderContentVariation {
-  data?: {
-    blocks?: BuilderElement[]
-    inputs?: Input[]
-    [key: string]: any
-  }
-  name?: string
-  testRatio?: number
-}
-
-// TODO: separate full and partial versions
-export interface BuilderContent extends BuilderContentVariation {
-  // TODO: query
-  '@version'?: number
-  id?: string
-  name?: string
-  published?: 'published' | 'draft' | 'archived'
-  modelId: string
-  priority?: number
-  lastUpdated?: number
-  startDate?: number
-  endDate?: number
-  variations?: {
-    [id: string]: BuilderContentVariation | undefined
-  }
-}
-
 
 export function modelToLiquid(content: BuilderContent, modelName: string, options: Options = {}) {
   const blocks = content.data && content.data.blocks;
@@ -98,7 +70,6 @@ export interface Options {
 
 export function blockToLiquid(block: BuilderElement, options: Options = {}): string {
   const css = blockCss(block, options);
-  const tag = block.tagName || 'div';
 
   // TODO: utilities for all of this
   const attributes = mapToAttributes({
@@ -107,6 +78,8 @@ export function blockToLiquid(block: BuilderElement, options: Options = {}): str
     class: `builder-block ${block.id}${block.class ? ` ${block.class}` : ''}`,
     // TODO: style bindings and start animation styles
   });
+
+  const tag = block.tagName || ((attributes as any).href ? 'a' : 'div');
 
   // Fragment? hm
   return `

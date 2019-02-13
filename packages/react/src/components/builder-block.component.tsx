@@ -407,7 +407,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
                     {block.text || options.text ? (
                       // TODO: remove me! No longer in use (maybe with rich text will be back tho)
                       <TextTag dangerouslySetInnerHTML={{ __html: options.text || block.text }} />
-                    ) : block.children && block.children.length ? (
+                    ) : !InnerComponent && block.children && block.children.length ? (
                       block.children.map((block: ElementType, index: number) => (
                         <BuilderBlock
                           key={((this.id as string) || '') + index}
