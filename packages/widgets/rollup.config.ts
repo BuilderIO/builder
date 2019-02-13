@@ -85,7 +85,7 @@ export default [
     ...options,
     output: {
       format: 'umd',
-      file: pkg.main,
+      file: 'dist/builder-widgets.umd.js',
       name: 'BuilderWidgets',
       sourcemap: true,
       amd: {
@@ -95,11 +95,10 @@ export default [
   },
   {
     ...options,
-    output: {
-      format: 'es',
-      file: pkg.module,
-      sourcemap: true
-    },
+    output: [
+      { file: pkg.module, format: 'es', sourcemap: true },
+      { file: pkg.main, format: 'cjs', sourcemap: true }
+    ],
     // Do not resolve for es module build
     // TODO: should really do a cjs build too (probably for the default build instead of umd...)
     external: Object.keys(pkg.dependencies || {}),

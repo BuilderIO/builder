@@ -98,7 +98,8 @@ const tryEval = (str?: string, data: any = {}, errors?: Error[]): any => {
       return fn(data || {})
     } else {
       // Below is a hack to get certain code to *only* load in the server build, to not screw with
-      // browser bundler's like rollup and webpack
+      // browser bundler's like rollup and webpack. Our rollup plugin strips these comments only
+      // for the server build
       // tslint:disable:comment-format
       ///SERVERONLY const { VM } = require('vm2')
       ///SERVERONLY console.info('Running in vm2');

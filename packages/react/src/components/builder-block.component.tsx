@@ -146,6 +146,9 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
         if (Builder.isBrowser) {
           return fn(...args)
         } else {
+          // TODO: use something like this instead https://www.npmjs.com/package/rollup-plugin-strip-blocks
+          // There must be something more widely used?
+          // TODO: regex for between comments instead so can still type check the code... e.g. //SERVER-START ... code ... //SERVER-END
           // Below is a hack to get certain code to *only* load in the server build, to not screw with
           // browser bundler's like rollup and webpack. Our rollup plugin strips these comments only
           // for the server build

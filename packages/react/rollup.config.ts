@@ -48,7 +48,8 @@ export default [
     ...options,
     output: {
       // TODO: pkg.browser
-      file: pkg.browser,
+      // file: pkg.browser,
+      file: 'dist/builder-react.browser.js',
       // file: pkg.main,
       name: 'BuilderReact',
       format: 'umd',
