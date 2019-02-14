@@ -547,6 +547,8 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
       // TODO: allow options as property or json
       const subscription = builder
         .get(name, {
+          // TODO: if Builder.isEditing all keys become models, OR when editing models
+          // post up all of they keys and then post info with a key for the first editing model...
           key: (!Builder.isEditing && (this.getAttribute('entry') || name!)) || undefined,
           entry: entry || undefined,
           ...this.options,
