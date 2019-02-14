@@ -315,7 +315,7 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
 
       let unsubscribed = false
 
-      if (!this.prerender || (Builder.isIframe && !builder.apiKey)) {
+      if (!this.prerender || (Builder.isIframe && (!builder.apiKey || builder.apiKey === 'DEMO'))) {
         const { BuilderComponent } = await getReactPromise
         await getWidgetsPromise
         // Ensure styles don't load twice
@@ -335,8 +335,9 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
 
       const subscription = builder
         .get(name!, {
+          key: this.getAttribute('entry') || name!,
           ...this.options,
-          entry: data ? data.id : undefined,
+          entry: data ? data.id : this.options.entry || undefined,
           prerender: false
         })
         .subscribe(
