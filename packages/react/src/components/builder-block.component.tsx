@@ -377,6 +377,16 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
       'builder-id': this.id
     }
 
+    if (Builder.isIframe) {
+      (finalOptions as any)['builder-inline-styles'] = !options.style
+        ? ''
+        : reduce(
+            options.style,
+            (memo, value, key) => (memo ? `${memo};` : '') + `${kebabCase(key)}:${value};`,
+            ''
+          )
+    }
+
     if (
       (((finalOptions as any).properties && (finalOptions as any).properties.href) ||
         (finalOptions as any).href) &&

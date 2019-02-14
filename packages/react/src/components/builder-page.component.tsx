@@ -205,6 +205,15 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     if (Builder.isIframe) {
       parent.postMessage({ type: 'builder.sdkInjected', data: { modelName: this.name } }, '*')
     }
+    if (Builder.isBrowser) {
+      window.dispatchEvent(
+        new CustomEvent('builder:component:load', {
+          detail: {
+            ref: this
+          }
+        })
+      )
+    }
   }
 
   updateState = (fn: (state: any) => void) => {
@@ -219,11 +228,20 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     if (this.props.onStateChange) {
       this.props.onStateChange(nextState)
     }
+
+    window.dispatchEvent(
+      new CustomEvent('builder:component:stateChange', {
+        detail: {
+          state: nextState,
+          ref: this
+        }
+      })
+    )
     this.onStateChange.next(nextState)
   }
 
-  processStateFromApi(state: { [key: string]: string }) {
-    return mapValues(state, value => tryEval(value, this.data, this._errors))
+  processStateFromApi(state: { [key: string]: any }) {
+    return state //  mapValues(state, value => tryEval(value, this.data, this._errors))
   }
 
   get location() {
@@ -491,20 +509,20 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
             input.defaultValue !== undefined &&
             data.state[input.name] === undefined
           ) {
-            data.state[input.name] = JSON.stringify(input.defaultValue)
+            data.state[input.name] = input.defaultValue
           }
         }
       })
     }
 
     if (data && data.state) {
-      const processed = this.processStateFromApi(data.state)
       this.setState({
         ...this.state,
         state: {
+          ...this.state.state,
           location: this.locationState,
           deviceSize: this.deviceSizeState,
-          ...processed,
+          ...data.state,
           ...this.props.data
         }
       })

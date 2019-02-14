@@ -718,9 +718,9 @@ export class Builder {
               break;
             }
             case 'builder.contentUpdate':
-              const model = data.data.modelName;
+              const key = data.data.key || data.data.alias || data.data.entry || data.data.modelName;
               const contentData = data.data.data; // hmmm...
-              const observer = this.observersByKey[model];
+              const observer = this.observersByKey[key];
               if (observer) {
                 observer.next([contentData]);
               }
