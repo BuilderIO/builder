@@ -13,6 +13,20 @@ import omit from 'lodash-es/omit'
 import kebabCase from 'lodash-es/kebabCase'
 import { BuilderAsyncRequestsContext, RequestOrPromise } from '../store/builder-async-requests'
 
+const cssCase = (property: string) => {
+  if (!property) {
+    return property
+  }
+
+  let str = kebabCase(property)
+
+  if (str[0] === str[0].toUpperCase()) {
+    str = '--' + str
+  }
+
+  return str;
+}
+
 // TODO: more API
 // TODO: make shared with other evals
 const api = (state: any) => ({
@@ -55,7 +69,7 @@ function mapToCss(map: StringMap, spaces = 2, important = false) {
       return (
         memo +
         (value && value.trim()
-          ? `\n${' '.repeat(spaces)}${kebabCase(key)}: ${value + (important ? ' !important' : '')};`
+          ? `\n${' '.repeat(spaces)}${cssCase(key)}: ${value + (important ? ' !important' : '')};`
           : '')
       )
     },
@@ -381,7 +395,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
         ? ''
         : reduce(
             options.style,
-            (memo, value, key) => (memo ? `${memo};` : '') + `${kebabCase(key)}:${value};`,
+            (memo, value, key) => (memo ? `${memo};` : '') + `${cssCase(key)}:${value};`,
             ''
           )
     }
