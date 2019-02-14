@@ -343,7 +343,8 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
                   contentLoaded={this.onContentLoaded}
                   options={{
                     entry: this.props.entry,
-                    ...this.props.options
+                    key: Builder.isEditing ? undefined : this.props.entry,
+                    ...this.props.options,
                   }}
                   contentError={this.props.contentError}
                   modelName={this.name || 'page'}

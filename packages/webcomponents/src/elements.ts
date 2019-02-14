@@ -229,10 +229,11 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
       // TODO: allow options as property or json
       const subscription = builder
         .get(name, {
-          prerender: true,
-          entry: entry || undefined
+          key: (!Builder.isEditing && (this.getAttribute('entry') || name!)) || undefined,
+          entry: entry || undefined,
           // TODO
-          // ...this.options
+          ...this.options,
+          prerender: true
         })
         .subscribe(
           (data: any) => {
@@ -546,8 +547,10 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
       // TODO: allow options as property or json
       const subscription = builder
         .get(name, {
-          prerender: true,
-          entry: entry || undefined
+          key: (!Builder.isEditing && (this.getAttribute('entry') || name!)) || undefined,
+          entry: entry || undefined,
+          ...this.options,
+          prerender: true
         })
         .subscribe(
           (data: any) => {
