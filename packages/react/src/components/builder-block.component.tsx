@@ -99,7 +99,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
   // TODO: handle adding return if none provided
   stringToFunction(str: string, expression = true) {
     // FIXME: gross hack
-    const useReturn = !expression &&
+    const useReturn = expression &&
       !(str.includes(';') || str.includes(' return ')) || str.trim().startsWith('builder.run')
     let fn: Function = () => {
       /* intentionally empty */
