@@ -162,8 +162,9 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
 
   get locationState() {
     return {
+      // TODO: handle this correctly on the server. Pass in with CONTEXT
       ...pick(this.location, 'pathname', 'hostname', 'search', 'host'),
-      path: this.location.pathname.split('/').slice(1),
+      path: this.location.pathname && this.location.pathname.split('/').slice(1) || '',
       query: searchToObject(this.location)
     }
   }
