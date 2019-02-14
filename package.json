@@ -4,7 +4,8 @@
     "lerna": "^3.11.1"
   },
   "scripts": {
-    "release:patch:dev": "lerna run build && lerna version patch --force-publish --no-git-tag-version --yes && lerna run build && git add . && git commit -m \"Dev version bump\" && lerna publish from-package --dist-tag dev --yes",
-    "release:prerelease:dev": "lerna run build && lerna version prerelease --force-publish --no-git-tag-version --yes && lerna run build && git add . && git commit -m \"Dev version bump\" && lerna publish from-package --dist-tag dev --yes"
+    "release:patch": "lerna run build && lerna version patch --yes && lerna run build && git add . && git commit -m \"Dev version bump\" && lerna publish from-package --yes",
+    "release:patch:dev": "lerna run build && lerna version patch --no-git-tag-version --yes && lerna run build && lerna publish from-package --dist-tag dev --yes",
+    "release:prerelease:dev": "lerna run build && lerna version prerelease --no-git-tag-version --yes && lerna run build && lerna publish from-package --dist-tag dev --yes"
   }
 }
