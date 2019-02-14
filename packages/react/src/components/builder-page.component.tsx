@@ -206,13 +206,15 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
       parent.postMessage({ type: 'builder.sdkInjected', data: { modelName: this.name } }, '*')
     }
     if (Builder.isBrowser) {
-      window.dispatchEvent(
-        new CustomEvent('builder:component:load', {
-          detail: {
-            ref: this
-          }
-        })
-      )
+      setTimeout(() => {
+        window.dispatchEvent(
+          new CustomEvent('builder:component:load', {
+            detail: {
+              ref: this
+            }
+          })
+        )
+      })
     }
   }
 
@@ -532,7 +534,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     if (data && data.jsCode && !Builder.isIframe) {
       // TODO: real editing method
       try {
-        new Function(data.jsCode)(data)
+        new Function('data', 'ref', data.jsCode)(data, this)
       } catch (error) {
         console.warn('Eval error', error)
       }

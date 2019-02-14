@@ -237,6 +237,8 @@ export class BuilderCarousel extends React.Component<CarouselProps> {
               dots={!this.props.hideDots}
               // TODO: on change emit event on element?
               // renderBottomCenterControls={this.props.hideDots ? () => null : undefined}
+
+              // OOF!!
               nextArrow={
                 <div>
                   <BuilderBlocks
@@ -246,6 +248,8 @@ export class BuilderCarousel extends React.Component<CarouselProps> {
                   />
                 </div>
               }
+
+              // OOF!!
               prevArrow={
                 <div>
                   <BuilderBlocks
