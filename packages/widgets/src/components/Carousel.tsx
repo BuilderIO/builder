@@ -16,9 +16,12 @@ const defaultElement: BuilderElement = {
   '@type': '@builder.io/sdk:Element',
   responsiveStyles: {
     large: {
-      height: '400px',
+      // TODO: always apply these if not given
+      position: 'relative',
       display: 'flex',
-      flexDirection: 'column'
+      alignItems: 'stretch',
+      flexDirection: 'column',
+      height: '400px',
     }
   },
   children: [
@@ -45,9 +48,11 @@ const defaultButton: BuilderElement = {
   '@type': '@builder.io/sdk:Element',
   responsiveStyles: {
     large: {
+      position: 'relative',
       display: 'flex',
+      alignItems: 'stretch',
+      flexDirection: 'column',
       height: '30px',
-      flexDirection: 'column'
     }
   }
 }
