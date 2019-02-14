@@ -102,7 +102,6 @@ const tryEval = (str?: string, data: any = {}, errors?: Error[]): any => {
       // for the server build
       // tslint:disable:comment-format
       ///SERVERONLY const { VM } = require('vm2')
-      ///SERVERONLY console.info('Running in vm2');
       ///SERVERONLY return new VM({
       ///SERVERONLY   sandbox: {
       ///SERVERONLY     ...data,

@@ -215,6 +215,11 @@ export class Builder {
   static isIframe = isIframe;
   static isBrowser = isBrowser;
 
+  // TODO: this is quick and dirty, do better implementation later. Also can be unreliable
+  // if page 301s etc. Use a query param instead? also could have issues with redirects. Injecting var could
+  // work but is async...
+  static isEditing = Boolean(isIframe && document.referrer.match(/builder\.io|localhost:1234/))
+
   // useCdnApi = false;
 
   static get editingPage() {
@@ -932,7 +937,9 @@ export class Builder {
     const key =
       options.key ||
       options.alias ||
-      options.entry ||
+      // TODO: SDKs only pass entry key when given to them, and never when editing...
+      // options.entry ||
+
       // TODO: this is ugly - instead of multiple of same model with different options are sent
       // say requires key/alias. Or if not perhaps make a reliable hash of the options and use that.
       // TODO: store last user state on last request and if user attributes different now

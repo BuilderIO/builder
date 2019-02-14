@@ -155,7 +155,6 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
           // TODO: cache these for better performancs with new VmScript
           // tslint:disable:comment-format
           ///SERVERONLY const { VM } = require('vm2')
-          ///SERVERONLY console.info('Running in vm2');
           ///SERVERONLY const [state, event] = args
           ///SERVERONLY return new VM({
           ///SERVERONLY   timeout: 100,
@@ -301,8 +300,8 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
 
     let options = {
       // Attributes?
-      ...block.properties
-      // style: {} // this.styles
+      ...block.properties,
+      style: {} // this.styles
     }
 
     options = {

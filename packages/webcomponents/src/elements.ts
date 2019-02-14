@@ -231,6 +231,8 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
         .get(name, {
           prerender: true,
           entry: entry || undefined
+          // TODO
+          // ...this.options
         })
         .subscribe(
           (data: any) => {
@@ -335,7 +337,7 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
 
       const subscription = builder
         .get(name!, {
-          key: this.getAttribute('entry') || name!,
+          key: (!Builder.isEditing && (this.getAttribute('entry') || name!)) || undefined,
           ...this.options,
           entry: data ? data.id : this.options.entry || undefined,
           prerender: false
