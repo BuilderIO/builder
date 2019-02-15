@@ -231,14 +231,16 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
       this.props.onStateChange(nextState)
     }
 
-    window.dispatchEvent(
-      new CustomEvent('builder:component:stateChange', {
-        detail: {
-          state: nextState,
-          ref: this
-        }
-      })
-    )
+    if (Builder.isBrowser) {
+      window.dispatchEvent(
+        new CustomEvent('builder:component:stateChange', {
+          detail: {
+            state: nextState,
+            ref: this
+          }
+        })
+      )
+    }
     this.onStateChange.next(nextState)
   }
 

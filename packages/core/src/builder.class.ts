@@ -6,6 +6,7 @@ import { fetch } from './functions/fetch.function';
 import { assign } from './functions/assign.function';
 import { throttle } from './functions/throttle.function';
 import { Animator } from './classes/animator.class';
+import { BuilderElement } from './types/element';
 // import finder from './functions/finder.function';
 export type Url = any;
 
@@ -161,9 +162,12 @@ export interface Component {
   image?: string;
   inputs?: Input[];
   class?: Class;
-  type?: 'angular' | 'webcomponent' | 'react';
+  type?: 'angular' | 'webcomponent' | 'react' | 'vue';
   defaultStyles?: { [key: string]: string };
   canHaveChildren?: boolean;
+  fragment?: boolean;
+  noWrap?: boolean;
+  defaultChildren?: BuilderElement[]
 }
 
 export function BuilderComponent(info: Partial<Component> = {}) {
