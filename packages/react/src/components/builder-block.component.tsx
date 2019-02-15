@@ -46,7 +46,9 @@ const api = (state: any) => ({
     return state[name]
   },
   get device() {
-    return Builder.isBrowser ? ['desktop', 'tablet', 'mobile'].indexOf(sizes.getSizeForWidth(window.innerWidth)) : 0 // TODO: by useragent?
+    return Builder.isBrowser
+      ? ['large', 'medium', 'small'].indexOf(sizes.getSizeForWidth(window.innerWidth))
+      : 0 // TODO: by useragent?
   },
   deviceIs(device: number) {
     return this.device === device
@@ -130,7 +132,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
         return `builder.set("${group[0].toLowerCase() + group.substring(1)}",`
       })
       .replace(/builder\s*\.\s*get([a-zA-Z]+)\s*\(\s*\)/g, (_match, group: string) => {
-        return group[0].toLowerCase() + group.substring(1)
+        return `state.${group[0].toLowerCase() + group.substring(1)}`
       })
 
     try {
