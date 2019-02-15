@@ -24,7 +24,7 @@ const cssCase = (property: string) => {
     str = '--' + str
   }
 
-  return str;
+  return str
 }
 
 // TODO: more API
@@ -46,7 +46,9 @@ const api = (state: any) => ({
     return state[name]
   },
   get device() {
-    return sizeNames.indexOf(sizes.getSizeForWidth(window.innerWidth))
+    return Builder.isBrowser
+      ? sizeNames.indexOf(sizes.getSizeForWidth(window.innerWidth))
+      : 'desktop' // TODO: by useragent?
   },
   deviceIs(device: number) {
     return this.device === device
@@ -111,10 +113,15 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
   }
 
   // TODO: handle adding return if none provided
+  // TODO: cache/memoize this (globally with LRU?)
   stringToFunction(str: string, expression = true) {
+    if (!str || !str.trim()) {
+      return () => undefined
+    }
     // FIXME: gross hack
-    const useReturn = expression &&
-      !(str.includes(';') || str.includes(' return ')) || str.trim().startsWith('builder.run')
+    const useReturn =
+      (expression && !(str.includes(';') || str.includes(' return '))) ||
+      str.trim().startsWith('builder.run')
     let fn: Function = () => {
       /* intentionally empty */
     }
@@ -136,6 +143,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
           'event',
           'block',
           'builder',
+          'Device',
           // TODO: block reference...
           `with (state) {
             ${useReturn ? `return (${str});` : str};
@@ -330,11 +338,14 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
     // Binding should be properties to href or href?
     // Manual style editor show bindings
     // Show if things bound in overlays hmm
+    const Device = Builder.isBrowser
+      ? sizeNames.indexOf(sizes.getSizeForWidth(window.innerWidth))
+      : 0 // TODO: by useragent?
     if (block.bindings) {
       for (const key in block.bindings) {
         const value = this.stringToFunction(block.bindings[key])
         // TODO: pass block, etc
-        set(options, key, value(state, null, block, api(state)))
+        set(options, key, value(state, null, block, api(state), Device))
       }
     }
 
@@ -345,7 +356,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
           // TODO: pass in store
           const fn = this.stringToFunction(value, false)
           this.privateState.update((state: any) => {
-            return fn(state, event, undefined, api(state))
+            return fn(state, event, undefined, api(state), Device)
           })
         }
       }
@@ -391,7 +402,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
     }
 
     if (Builder.isIframe) {
-      (finalOptions as any)['builder-inline-styles'] = !options.style
+      ;(finalOptions as any)['builder-inline-styles'] = !options.style
         ? ''
         : reduce(
             options.style,
