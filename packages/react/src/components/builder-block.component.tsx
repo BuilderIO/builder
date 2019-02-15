@@ -46,9 +46,7 @@ const api = (state: any) => ({
     return state[name]
   },
   get device() {
-    return Builder.isBrowser
-      ? sizeNames.indexOf(sizes.getSizeForWidth(window.innerWidth))
-      : 'desktop' // TODO: by useragent?
+    return Builder.isBrowser ? sizeNames.indexOf(sizes.getSizeForWidth(window.innerWidth)) : 0 // TODO: by useragent?
   },
   deviceIs(device: number) {
     return this.device === device
@@ -338,9 +336,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
     // Binding should be properties to href or href?
     // Manual style editor show bindings
     // Show if things bound in overlays hmm
-    const Device = Builder.isBrowser
-      ? sizeNames.indexOf(sizes.getSizeForWidth(window.innerWidth))
-      : 0 // TODO: by useragent?
+    const Device = { desktop: 0, tablet: 1, mobile: 2 }
     if (block.bindings) {
       for (const key in block.bindings) {
         const value = this.stringToFunction(block.bindings[key])
