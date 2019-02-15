@@ -12,19 +12,24 @@ async function main() {
     sjs,
     // TODO: get the version of this and load - how does the others do
     /*systemMain*/ `
-    function getQueryParam(url, variable) {
-      var query = url.split('?')[1] || '';
-      var vars = query.split('&');
-      for (let i = 0; i < vars.length; i++) {
-        var pair = vars[i].split('=');
-        if (decodeURIComponent(pair[0]) === variable) {
-          return decodeURIComponent(pair[1]);
-        }
+    if (typeof window === 'undefined' || !window.builderWebcomponentsLoaded) {
+      if (typeof window !== 'undefined') {
+        window.builderWebcomponentsLoaded=true;
       }
-      return null;
+      function getQueryParam(url, variable) {
+        var query = url.split('?')[1] || '';
+        var vars = query.split('&');
+        for (let i = 0; i < vars.length; i++) {
+          var pair = vars[i].split('=');
+          if (decodeURIComponent(pair[0]) === variable) {
+            return decodeURIComponent(pair[1]);
+          }
+        }
+        return null;
+      }
+      var version = typeof location !== 'undefined' && location.href && getQueryParam(location.href, 'builder.wcVersion') ||  "${pkg.version}";
+      System.import('https://builder.io/js/webcomponents@' + version + '/dist/system/builder-webcomponents.js')
     }
-    var version = typeof location !== 'undefined' && location.href && getQueryParam(location.href, 'builder.wcVersion') ||  "${pkg.version}";
-    System.import('https://builder.io/js/webcomponents@' + version + '/dist/system/builder-webcomponents.js')
     `.replace(/\s+/g, ' ')
     // `setTimeout(function () { if (typeof location !== 'undefined' && location.hostname === 'shop.galmeetsglam.com') {
     //   var elements = document.getElementsByTagName('builder-component');
