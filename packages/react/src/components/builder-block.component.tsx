@@ -46,7 +46,7 @@ const api = (state: any) => ({
     return state[name]
   },
   get device() {
-    return Builder.isBrowser ? sizeNames.indexOf(sizes.getSizeForWidth(window.innerWidth)) : 0 // TODO: by useragent?
+    return Builder.isBrowser ? ['desktop', 'tablet', 'mobile'].indexOf(sizes.getSizeForWidth(window.innerWidth)) : 0 // TODO: by useragent?
   },
   deviceIs(device: number) {
     return this.device === device
