@@ -367,9 +367,9 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
               if (typeof Proxy !== 'undefined') {
                 localState = new Proxy(globalState, {
                   // to prevent variable doesn't exist errors with `with (state)`
-                  // has() {
-                  //   return true;
-                  // },
+                  has() {
+                    return Reflect.has(latestState, name);
+                  },
                   get(object, name) {
                     if (
                       name &&
