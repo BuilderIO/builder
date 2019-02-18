@@ -377,7 +377,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
                   ) {
                     // TODO: use $index to return a reference to the proxied version of item
                     // so can be set as well
-                    return Reflect.get(globalState, name)
+                    return Reflect.get(state, name)
                   }
 
                   return Reflect.get(globalState, name)
