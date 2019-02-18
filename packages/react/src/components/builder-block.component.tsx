@@ -348,7 +348,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
     }
 
     if (options.hide) {
-      return null;
+      return null
     }
 
     if (block.actions) {
@@ -358,9 +358,31 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
           // TODO: pass in store
           const fn = this.stringToFunction(value, false)
           this.privateState.update((globalState: any) => {
-            const localState = {
-              ...state,
-              ...globalState,
+            // TODO: proxy hm
+            // const localState = {
+            //   ...state,
+            //   ...globalState,
+            // }
+
+            let localState = globalState
+
+            if (typeof Proxy !== 'undefined') {
+              localState = new Proxy(globalState, {
+                get(name: string) {
+                  if (
+                    name &&
+                    typeof name === 'string' &&
+                    name.endsWith('Item') &&
+                    !Reflect.has(globalState, name)
+                  ) {
+                    // TODO: use $index to return a reference to the proxied version of item
+                    // so can be set as well
+                    return Reflect.get(globalState, name)
+                  }
+
+                  return Reflect.get(globalState, name)
+                }
+              })
             }
             return fn(localState, event, undefined, api(localState), Device)
           })
