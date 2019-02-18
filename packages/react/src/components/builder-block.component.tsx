@@ -366,13 +366,20 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
 
               if (typeof Proxy !== 'undefined') {
                 localState = new Proxy(globalState, {
+                  getOwnPropertyDescriptor(target, property) {
+                    try {
+                      return Reflect.getOwnPropertyDescriptor(latestState, property)
+                    } catch (error) {
+                      return undefined
+                    }
+                  },
                   // to prevent variable doesn't exist errors with `with (state)`
                   has(target, property) {
                     try {
                       // TODO: if dead trigger an immer update
-                      return Reflect.has(latestState, property);
+                      return Reflect.has(latestState, property)
                     } catch (error) {
-                      return false;
+                      return false
                     }
                   },
                   get(object, property) {
@@ -549,7 +556,10 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
           }
 
           return (
-            <BuilderStoreContext.Provider key={index} value={{ ...state, state: childState } as any}>
+            <BuilderStoreContext.Provider
+              key={index}
+              value={{ ...state, state: childState } as any}
+            >
               {this.getElement(index, childState)}
             </BuilderStoreContext.Provider>
           )
