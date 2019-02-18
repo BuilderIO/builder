@@ -347,6 +347,10 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
       }
     }
 
+    if (options.hide) {
+      return null;
+    }
+
     if (block.actions) {
       for (const key in block.actions) {
         const value = block.actions[key]
