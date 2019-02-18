@@ -353,6 +353,8 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
       return null
     }
 
+    let latestState = state
+
     if (block.actions) {
       for (const key in block.actions) {
         const value = block.actions[key]
@@ -363,7 +365,14 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
 
               if (typeof Proxy !== 'undefined') {
                 localState = new Proxy(globalState, {
+                  // to prevent variable doesn't exist errors with `with (state)`
+                  // has() {
+                  //   return true;
+                  // },
                   get(object, name) {
+                    if (name === 'state') {
+                      return latestState
+                    }
                     if (
                       name &&
                       typeof name === 'string' &&
@@ -378,6 +387,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
                     return Reflect.get(object, name)
                   }
                 })
+                latestState = localState
               }
               return cb(localState, event, undefined, api(localState), Device, update)
             })
