@@ -10,6 +10,7 @@ import set from 'lodash-es/set'
 import includes from 'lodash-es/includes'
 import reduce from 'lodash-es/reduce'
 import omit from 'lodash-es/omit'
+import memoize from 'lodash-es/memoize'
 import kebabCase from 'lodash-es/kebabCase'
 import { BuilderAsyncRequestsContext, RequestOrPromise } from '../store/builder-async-requests'
 
@@ -144,6 +145,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
           'block',
           'builder',
           'Device',
+          'update',
           // TODO: block reference...
           `with (state) {
             ${useReturn ? `return (${str});` : str};
@@ -355,37 +357,33 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
       for (const key in block.actions) {
         const value = block.actions[key]
         options['on' + capitalize(key)] = (event: any) => {
-          // TODO: pass in store
-          const fn = this.stringToFunction(value, false)
-          this.privateState.update((globalState: any) => {
-            // TODO: proxy hm
-            // const localState = {
-            //   ...state,
-            //   ...globalState,
-            // }
+          const update = (cb: Function) => {
+            this.privateState.update((globalState: any) => {
+              let localState = globalState
 
-            let localState = globalState
+              if (typeof Proxy !== 'undefined') {
+                localState = new Proxy(globalState, {
+                  get(object, name) {
+                    if (
+                      name &&
+                      typeof name === 'string' &&
+                      name.endsWith('Item') &&
+                      !Reflect.has(object, name)
+                    ) {
+                      // TODO: use $index to return a reference to the proxied version of item
+                      // so can be set as well
+                      return Reflect.get(state, name)
+                    }
 
-            if (typeof Proxy !== 'undefined') {
-              localState = new Proxy(globalState, {
-                get(object, name) {
-                  if (
-                    name &&
-                    typeof name === 'string' &&
-                    name.endsWith('Item') &&
-                    !Reflect.has(object, name)
-                  ) {
-                    // TODO: use $index to return a reference to the proxied version of item
-                    // so can be set as well
-                    return Reflect.get(state, name)
+                    return Reflect.get(object, name)
                   }
-
-                  return Reflect.get(object, name)
-                }
-              })
-            }
-            return fn(localState, event, undefined, api(localState), Device)
-          })
+                })
+              }
+              return cb(localState, event, undefined, api(localState), Device, update)
+            })
+          }
+          const fn = this.stringToFunction(value, false)
+          update(fn)
         }
       }
     }
@@ -539,7 +537,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
           }
 
           return (
-            <BuilderStoreContext.Provider value={{ ...state, state: childState } as any}>
+            <BuilderStoreContext.Provider key={index} value={{ ...state, state: childState } as any}>
               {this.getElement(index, childState)}
             </BuilderStoreContext.Provider>
           )
