@@ -368,19 +368,19 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
 
             if (typeof Proxy !== 'undefined') {
               localState = new Proxy(globalState, {
-                get(name: string) {
+                get(object, name) {
                   if (
                     name &&
                     typeof name === 'string' &&
                     name.endsWith('Item') &&
-                    !Reflect.has(globalState, name)
+                    !Reflect.has(object, name)
                   ) {
                     // TODO: use $index to return a reference to the proxied version of item
                     // so can be set as well
                     return Reflect.get(state, name)
                   }
 
-                  return Reflect.get(globalState, name)
+                  return Reflect.get(object, name)
                 }
               })
             }
