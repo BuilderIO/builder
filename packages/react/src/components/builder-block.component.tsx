@@ -357,8 +357,12 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
         options['on' + capitalize(key)] = (event: any) => {
           // TODO: pass in store
           const fn = this.stringToFunction(value, false)
-          this.privateState.update((state: any) => {
-            return fn(state, event, undefined, api(state), Device)
+          this.privateState.update((globalState: any) => {
+            const localState = {
+              ...state,
+              ...globalState,
+            }
+            return fn(localState, event, undefined, api(localState), Device)
           })
         }
       }
