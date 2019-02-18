@@ -367,22 +367,27 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
               if (typeof Proxy !== 'undefined') {
                 localState = new Proxy(globalState, {
                   // to prevent variable doesn't exist errors with `with (state)`
-                  has() {
-                    return Reflect.has(latestState, name);
+                  has(target, property) {
+                    try {
+                      // TODO: if dead trigger an immer update
+                      return Reflect.has(latestState, property);
+                    } catch (error) {
+                      return false;
+                    }
                   },
-                  get(object, name) {
+                  get(object, property) {
                     if (
-                      name &&
-                      typeof name === 'string' &&
-                      name.endsWith('Item') &&
-                      !Reflect.has(latestState, name)
+                      property &&
+                      typeof property === 'string' &&
+                      property.endsWith('Item') &&
+                      !Reflect.has(latestState, property)
                     ) {
                       // TODO: use $index to return a reference to the proxied version of item
                       // so can be set as well
-                      return Reflect.get(state, name)
+                      return Reflect.get(state, property)
                     }
 
-                    return Reflect.get(latestState, name)
+                    return Reflect.get(latestState, property)
                   }
                 })
               }
