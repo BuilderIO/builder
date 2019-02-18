@@ -361,6 +361,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
         options['on' + capitalize(key)] = (event: any) => {
           const update = (cb: Function) => {
             this.privateState.update((globalState: any) => {
+              latestState = globalState
               let localState = globalState
 
               if (typeof Proxy !== 'undefined') {
@@ -370,24 +371,20 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
                   //   return true;
                   // },
                   get(object, name) {
-                    if (name === 'state') {
-                      return latestState
-                    }
                     if (
                       name &&
                       typeof name === 'string' &&
                       name.endsWith('Item') &&
-                      !Reflect.has(object, name)
+                      !Reflect.has(latestState, name)
                     ) {
                       // TODO: use $index to return a reference to the proxied version of item
                       // so can be set as well
                       return Reflect.get(state, name)
                     }
 
-                    return Reflect.get(object, name)
+                    return Reflect.get(latestState, name)
                   }
                 })
-                latestState = localState
               }
               return cb(localState, event, undefined, api(localState), Device, update)
             })
