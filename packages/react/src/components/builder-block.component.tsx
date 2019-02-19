@@ -284,6 +284,9 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
   componentDidMount() {
     const { block } = this.props
     const animations = block && block.animations
+
+    ///REACT15ONLY this.refs.root.setAttribute('builder-id', block.id);
+
     if (animations) {
       const options = {
         animations: fastClone(animations)
@@ -326,7 +329,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
       }
     }
 
-    const TextTag: string = 'span'
+    const TextTag: any = 'span'
 
     const isBlock = !includes(
       ['absolute', 'fixed'],
@@ -453,7 +456,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
     const noWrap =
       componentInfo && ((componentInfo as any).fragment || (componentInfo as any).noWrap)
 
-    const finalOptions = {
+    const finalOptions: { [key: string]: string } = {
       ...omit(options, 'class', 'component'),
       class:
         `builder-block ${this.id}${block.class ? ` ${block.class}` : ''}${
@@ -464,6 +467,8 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
       key: this.id + index,
       'builder-id': this.id
     }
+
+    ///REACT15ONLY finalOptions.className = finalOptions.class
 
     if (Builder.isIframe) {
       ;(finalOptions as any)['builder-inline-styles'] = !options.style
@@ -485,6 +490,8 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
 
     const css = this.css
 
+    const InnerTag = React.Fragment as any
+
     // TODO: test it out
     return (
       <BuilderAsyncRequestsContext.Consumer>
@@ -493,7 +500,9 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
           this._errors = value && value.errors
           this._logs = value && value.logs
           return (
-            <React.Fragment>
+            <InnerTag
+              ref="root"
+            >
               {isVoid ? (
                 <TagName {...finalOptions} />
               ) : InnerComponent && (noWrap || this.props.emailMode) ? (
@@ -538,7 +547,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
                     : '') + this.css}
                 </style>
               )}
-            </React.Fragment>
+            </InnerTag>
           )
         }}
       </BuilderAsyncRequestsContext.Consumer>
@@ -569,7 +578,13 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
           .split('.')
       )
       const itemName = block.repeat.itemName || (collectionName ? collectionName + 'Item' : 'item')
-      const array = this.stringToFunction(collectionPath)(state.state, null, block, api(state), Device)
+      const array = this.stringToFunction(collectionPath)(
+        state.state,
+        null,
+        block,
+        api(state),
+        Device
+      )
       if (isArray(array)) {
         return array.map((data, index) => {
           // TODO: Builder state produce the data

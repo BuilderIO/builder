@@ -130,6 +130,19 @@ export default [
       replace({
         'React.Fragment': '"span"',
         'React.createContext': `require('create-react-context')`
+      }),
+      regexReplace({
+        // ... do replace before commonjs
+        patterns: [
+          {
+            test: /\/\/\/REACT15ONLY/g,
+            replace: ''
+          },
+          {
+            test: /\/\*\*\*REACT15ONLY([^\*]+)\*\//g,
+            replace: '$1'
+          }
+        ]
       })
     ])
   },
