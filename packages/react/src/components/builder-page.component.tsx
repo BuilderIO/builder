@@ -513,7 +513,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
           if (!descriptionTag) {
             descriptionTag = document.createElement('meta')
             descriptionTag.setAttribute('name', 'description')
-            document.head.append(descriptionTag)
+            document.head.appendChild(descriptionTag)
           }
 
           descriptionTag!.setAttribute('content', description)
