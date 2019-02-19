@@ -492,6 +492,13 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
 
     const css = this.css
 
+    const styleTag = css.trim() && (
+      <style className="builder-style">
+        {(InnerComponent && !isBlock ? `.${this.id} > * { height: 100%; width: 100%; }` : '') +
+          this.css}
+      </style>
+    )
+
     // TODO: test it out
     return (
       <BuilderAsyncRequestsContext.Consumer>
@@ -499,53 +506,46 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
           this._asyncRequests = value && value.requests
           this._errors = value && value.errors
           this._logs = value && value.logs
-          return (
+          return isVoid ? (
             <React.Fragment>
-              {isVoid ? (
-                <TagName {...finalOptions} />
-              ) : InnerComponent && (noWrap || this.props.emailMode) ? (
-                // TODO: pass the class to be easier
-                // TODO: acceptsChildren option?
-                <InnerComponent
-                  // Final options maaay be wrong here hm
-                  {...innerComponentProperties}
-                  attributes={finalOptions}
-                  builderBlock={block}
-                />
-              ) : (
-                <TagName {...finalOptions}>
-                  <React.Fragment>
-                    {InnerComponent && (
-                      <InnerComponent builderBlock={block} {...innerComponentProperties} />
-                    )}
-                    {block.text || options.text ? (
-                      // TODO: remove me! No longer in use (maybe with rich text will be back tho)
-                      <TextTag dangerouslySetInnerHTML={{ __html: options.text || block.text }} />
-                    ) : !InnerComponent && block.children && block.children.length ? (
-                      block.children.map((block: ElementType, index: number) => (
-                        <BuilderBlock
-                          key={((this.id as string) || '') + index}
-                          block={block}
-                          index={index}
-                          size={this.props.size}
-                          fieldName={this.props.fieldName}
-                          child={this.props.child}
-                          emailMode={this.props.emailMode}
-                        />
-                      ))
-                    ) : null}
-                  </React.Fragment>
-                </TagName>
-              )}
-              {/* TODO: email mode style handling */}
-              {css.trim() && (
-                <style className="builder-style">
-                  {(InnerComponent && !isBlock
-                    ? `.${this.id} > * { height: 100%; width: 100%; }`
-                    : '') + this.css}
-                </style>
-              )}
+              {styleTag}
+              <TagName {...finalOptions} />
             </React.Fragment>
+          ) : InnerComponent && (noWrap || this.props.emailMode) ? (
+            // TODO: pass the class to be easier
+            // TODO: acceptsChildren option?
+            <React.Fragment>
+              {styleTag}
+              <InnerComponent
+                // Final options maaay be wrong here hm
+                {...innerComponentProperties}
+                attributes={finalOptions}
+                builderBlock={block}
+              />
+            </React.Fragment>
+          ) : (
+            <TagName {...finalOptions}>
+              {styleTag}
+              {InnerComponent && (
+                <InnerComponent builderBlock={block} {...innerComponentProperties} />
+              )}
+              {block.text || options.text ? (
+                // TODO: remove me! No longer in use (maybe with rich text will be back tho)
+                <TextTag dangerouslySetInnerHTML={{ __html: options.text || block.text }} />
+              ) : !InnerComponent && block.children && block.children.length ? (
+                block.children.map((block: ElementType, index: number) => (
+                  <BuilderBlock
+                    key={((this.id as string) || '') + index}
+                    block={block}
+                    index={index}
+                    size={this.props.size}
+                    fieldName={this.props.fieldName}
+                    child={this.props.child}
+                    emailMode={this.props.emailMode}
+                  />
+                ))
+              ) : null}
+            </TagName>
           )
         }}
       </BuilderAsyncRequestsContext.Consumer>
