@@ -28,7 +28,6 @@ export class Text extends React.Component<{ text: string }> {
         <style
         >{`.builder-text p:first-child, .builder-paragraph:first-child { margin: 0 } .builder-text > p, .builder-paragraph { color: inherit; line-height: inherit; letter-spacing: inherit; font-weight: inherit; font-size: inherit; text-align: inherit; font-family: inherit; }`}</style>
         <div
-          builder-text="true"
           className="builder-text"
           dangerouslySetInnerHTML={{ __html: this.props.text || (this.props as any).content || '' }}
         />

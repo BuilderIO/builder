@@ -9,7 +9,9 @@
   "typings": "dist/types/builder-react.d.ts",
   "files": [
     "dist",
-    "index.js"
+    "index.js",
+    "15.js",
+    "server.js"
   ],
   "author": "Steve Sewell <steve@builder.io>",
   "repository": {

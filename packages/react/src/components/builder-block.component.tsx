@@ -106,6 +106,7 @@ interface BuilderBlocksState {
 }
 
 export class BuilderBlock extends React.Component<BuilderBlockProps> {
+  private ref: any
   private _asyncRequests?: RequestOrPromise[]
   private _errors?: Error[]
   private _logs?: string[]
@@ -285,7 +286,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
     const { block } = this.props
     const animations = block && block.animations
 
-    ///REACT15ONLY this.refs.root.setAttribute('builder-id', block.id);
+    ///REACT15ONLY if (this.ref) { this.ref.setAttribute('builder-id', block.id); }
 
     if (animations) {
       const options = {
@@ -465,7 +466,8 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
             : ''
         }` + (options.class ? ' ' + options.class : ''),
       key: this.id + index,
-      'builder-id': this.id
+      'builder-id': this.id,
+      ref: ((ref: any) => (this.ref = ref)) as any
     }
 
     ///REACT15ONLY finalOptions.className = finalOptions.class
@@ -490,8 +492,6 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
 
     const css = this.css
 
-    const InnerTag = React.Fragment as any
-
     // TODO: test it out
     return (
       <BuilderAsyncRequestsContext.Consumer>
@@ -500,9 +500,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
           this._errors = value && value.errors
           this._logs = value && value.logs
           return (
-            <InnerTag
-              ref="root"
-            >
+            <React.Fragment>
               {isVoid ? (
                 <TagName {...finalOptions} />
               ) : InnerComponent && (noWrap || this.props.emailMode) ? (
@@ -547,7 +545,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
                     : '') + this.css}
                 </style>
               )}
-            </InnerTag>
+            </React.Fragment>
           )
         }}
       </BuilderAsyncRequestsContext.Consumer>
