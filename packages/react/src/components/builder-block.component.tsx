@@ -286,6 +286,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
     const { block } = this.props
     const animations = block && block.animations
 
+    // tslint:disable-next-line:comment-format
     ///REACT15ONLY if (this.ref) { this.ref.setAttribute('builder-id', block.id); }
 
     if (animations) {
@@ -470,6 +471,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
       ref: ((ref: any) => (this.ref = ref)) as any
     }
 
+    // tslint:disable-next-line:comment-format
     ///REACT15ONLY finalOptions.className = finalOptions.class
 
     if (Builder.isIframe) {

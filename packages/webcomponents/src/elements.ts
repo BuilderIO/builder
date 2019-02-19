@@ -283,12 +283,14 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
             }
           },
           (error: any) => {
-            console.warn('Builder webcomponent error:', error)
-            this.classList.add('builder-errored')
-            this.classList.add('builder-loaded')
-            this.classList.remove('builder-loading')
-            const errorEvent = new CustomEvent('error', { detail: error })
-            this.dispatchEvent(errorEvent)
+            // Server render failed, not the end of the world, load react anyway
+            this.loadReact()
+            // console.warn('Builder webcomponent error:', error)
+            // this.classList.add('builder-errored')
+            // this.classList.add('builder-loaded')
+            // this.classList.remove('builder-loading')
+            // const errorEvent = new CustomEvent('error', { detail: error })
+            // this.dispatchEvent(errorEvent)
           }
         )
       this.subscriptions.push(() => subscription.unsubscribe())

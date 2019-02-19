@@ -163,7 +163,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     return {
       // TODO: handle this correctly on the server. Pass in with CONTEXT
       ...pick(this.location, 'pathname', 'hostname', 'search', 'host'),
-      path: this.location.pathname && this.location.pathname.split('/').slice(1) || '',
+      path: (this.location.pathname && this.location.pathname.split('/').slice(1)) || '',
       query: searchToObject(this.location)
     }
   }
@@ -346,7 +346,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
                   options={{
                     entry: this.props.entry,
                     key: Builder.isEditing ? undefined : this.props.entry,
-                    ...this.props.options,
+                    ...this.props.options
                   }}
                   contentError={this.props.contentError}
                   modelName={this.name || 'page'}
@@ -498,6 +498,29 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
   }
 
   onContentLoaded = (data: any) => {
+    // TODO: if model is page... hmm
+    if (this.name === 'page' && Builder.isBrowser) {
+      if (data) {
+        const { title, description } = data
+
+        if (title) {
+          document.title = title
+        }
+
+        if (description) {
+          let descriptionTag = document.querySelector('meta[name="description"]')
+
+          if (!descriptionTag) {
+            descriptionTag = document.createElement('meta')
+            descriptionTag.setAttribute('name', 'description')
+            document.head.append(descriptionTag)
+          }
+
+          descriptionTag!.setAttribute('content', description)
+        }
+      }
+    }
+
     // Unsubscribe all?
     if (this.props.contentLoaded) {
       this.props.contentLoaded(data)
