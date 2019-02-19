@@ -14,6 +14,8 @@ import memoize from 'lodash-es/memoize'
 import kebabCase from 'lodash-es/kebabCase'
 import { BuilderAsyncRequestsContext, RequestOrPromise } from '../store/builder-async-requests'
 
+const Device = { desktop: 0, tablet: 1, mobile: 2 }
+
 const fnCache: { [key: string]: Function } = {}
 
 const cssCase = (property: string) => {
@@ -351,7 +353,6 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
     // Binding should be properties to href or href?
     // Manual style editor show bindings
     // Show if things bound in overlays hmm
-    const Device = { desktop: 0, tablet: 1, mobile: 2 }
     if (block.bindings) {
       for (const key in block.bindings) {
         const value = this.stringToFunction(block.bindings[key])
@@ -560,9 +561,15 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
 
     if (block.repeat && block.repeat.collection) {
       const collectionPath = block.repeat.collection
-      const collectionName = last((collectionPath || '').trim().split('.'))
+      const collectionName = last(
+        (collectionPath || '')
+          .trim()
+          .split('(')[0]
+          .trim()
+          .split('.')
+      )
       const itemName = block.repeat.itemName || (collectionName ? collectionName + 'Item' : 'item')
-      const array = get(state.state, collectionPath)
+      const array = this.stringToFunction(collectionPath)(state.state, null, block, api(state), Device)
       if (isArray(array)) {
         return array.map((data, index) => {
           // TODO: Builder state produce the data
