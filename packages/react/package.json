@@ -89,6 +89,10 @@
     "@types/node": "^10.0.3",
     "@types/react": "^16.4.1",
     "@types/react-dom": "^16.0.7",
+    "@types/rollup-plugin-commonjs": "^9.2.0",
+    "@types/rollup-plugin-json": "^3.0.1",
+    "@types/rollup-plugin-node-resolve": "^4.0.0",
+    "@types/rollup-plugin-sourcemaps": "^0.4.0",
     "colors": "^1.1.2",
     "commitizen": "^2.9.6",
     "coveralls": "^3.0.0",
@@ -119,17 +123,22 @@
     "tslint-config-standard": "^7.0.0",
     "typedoc": "^0.11.0",
     "typescript": "^2.6.2",
-    "validate-commit-msg": "^2.12.2"
+    "validate-commit-msg": "^2.12.2",
+    "lodash-es": "^4.17.10"
+  },
+  "peerDependencies": {
+    "react": "^0.14.0 || ^15.0.0 || ^16.0.0",
+    "react-dom": "^0.14.0 || ^15.0.0 || ^16.0.0"
+  },
+  "optionalDependencies": {
+    "node-fetch": "^2.3.0",
+    "vm2": "^3.6.4",
+    "create-react-context": "^0.2.3",
+    "prop-types": "^15.7.2"
   },
   "dependencies": {
     "@builder.io/sdk": "^1.0.4-alpha.0",
-    "core-js": "^2.5.7",
-    "immer": "^1.7.2",
-    "lodash-es": "^4.17.10",
-    "node-fetch": "^2.3.0",
-    "react": "^16.4.1",
-    "react-dom": "^16.4.2",
-    "vm2": "^3.6.4"
+    "immer": "^1.7.2"
   },
   "gitHead": "3d55a987a69736618d729c43baf7c9ce41c27464"
 }

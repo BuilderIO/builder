@@ -9,6 +9,7 @@
     "sourceMap": true,
     "declaration": true,
     "skipLibCheck": true,
+    "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
@@ -19,6 +20,8 @@
     ]
   },
   "include": [
-    "src"
+    "src",
+    "rollup.config.ts",
+    "internal-types.d.ts"
   ]
 }

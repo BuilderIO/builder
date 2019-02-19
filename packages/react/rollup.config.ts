@@ -3,15 +3,20 @@ import commonjs from 'rollup-plugin-commonjs'
 import sourceMaps from 'rollup-plugin-sourcemaps'
 import typescript from 'rollup-plugin-typescript2'
 import replace from 'rollup-plugin-replace'
-import json from 'rollup-plugin-json'
 import regexReplace from 'rollup-plugin-re'
+import json from 'rollup-plugin-json'
 
-
-const pkg = require('./package.json')
+import pkg from './package.json'
 
 const libraryName = 'builder-react'
 
 const resolvePlugin = resolve()
+
+const externalDependencies = Object
+  .keys(pkg.dependencies)
+  .concat(Object.keys(pkg.optionalDependencies || {}))
+  .concat(Object.keys(pkg.peerDependencies || {}))
+  .filter(name => !name.startsWith('lodash-es'));
 
 const options = {
   input: `src/${libraryName}.ts`,
@@ -59,7 +64,8 @@ export default [
       }
     }
   },
-  // TODO: system
+  // TODO: system for sharing across dynamically loaded
+  // react components
   // {
   //   ...options,
   //   output: { file: './dist/system.js', format: 'system', name: '@builder.io/react', sourcemap: true },
@@ -72,50 +78,25 @@ export default [
   // },
   {
     ...options,
-    // TODO:
-    // output: [
-    //   {
-    //     format: 'cjs',
-    //     file: pkg.main,
-    //     sourcemap: true,
-    //   },
-    //   {
-    //     format: 'es',
-    //     file: pkg.module,
-    //     sourcemap: true,
-    //   },
-    // ],
     output: [
       { file: pkg.module, format: 'es', sourcemap: true },
       { file: pkg.main, format: 'cjs', sourcemap: true }
     ],
-    external: Object.keys(pkg.dependencies || {}).filter(name => !name.startsWith('lodash-es')),
+    external: externalDependencies,
     plugins: options.plugins.filter(plugin => plugin !== resolvePlugin).concat([
       resolve({
         only: [/^\.{0,2}\//, /lodash\-es/]
       })
     ])
   },
+  // Server
   {
     ...options,
-    // TODO:
-    // output: [
-    //   {
-    //     format: 'cjs',
-    //     file: pkg.main,
-    //     sourcemap: true,
-    //   },
-    //   {
-    //     format: 'es',
-    //     file: pkg.module,
-    //     sourcemap: true,
-    //   },
-    // ],
     output: [
       { file: './dist/server.esm.js', format: 'es', sourcemap: true },
       { file: './dist/server.js', format: 'cjs', sourcemap: true }
     ],
-    external: Object.keys(pkg.dependencies || {}).filter(name => !name.startsWith('lodash-es')),
+    external: externalDependencies.filter(name => !name.startsWith('lodash-es')),
     plugins: options.plugins.filter(plugin => plugin !== resolvePlugin).concat([
       resolve({
         only: [/^\.{0,2}\//, /lodash\-es/]
@@ -128,11 +109,28 @@ export default [
             // match: /formidable(\/|\\)lib/,
             // string or regexp
             test: /\/\/\/SERVERONLY/g,
-            replace: '',
+            replace: ''
           }
         ]
+      })
+    ])
+  },
+  // React 15
+  {
+    ...options,
+    output: [
+      { file: './dist/15.esm.js', format: 'es', sourcemap: true },
+      { file: './dist/15.js', format: 'cjs', sourcemap: true }
+    ],
+    external: externalDependencies.filter(name => !name.startsWith('lodash-es')),
+    plugins: options.plugins.filter(plugin => plugin !== resolvePlugin).concat([
+      resolve({
+        only: [/^\.{0,2}\//, /lodash\-es/]
       }),
-
+      replace({
+        'React.Fragment': '"span"',
+        'React.createContext': `require('create-react-context')`
+      })
     ])
   },
   {
