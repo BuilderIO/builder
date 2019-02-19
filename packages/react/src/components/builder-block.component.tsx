@@ -14,6 +14,8 @@ import memoize from 'lodash-es/memoize'
 import kebabCase from 'lodash-es/kebabCase'
 import { BuilderAsyncRequestsContext, RequestOrPromise } from '../store/builder-async-requests'
 
+const fnCache: { [key: string]: Function } = {}
+
 const cssCase = (property: string) => {
   if (!property) {
     return property
@@ -119,6 +121,12 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
     if (!str || !str.trim()) {
       return () => undefined
     }
+
+    const cacheKey = str + ':' + expression
+    if (fnCache[cacheKey]) {
+      return fnCache[cacheKey]
+    }
+
     // FIXME: gross hack
     const useReturn =
       (expression && !(str.includes(';') || str.includes(' return '))) ||
@@ -165,11 +173,12 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
       console.warn(`Function compile error in ${str}`, error)
     }
 
-    return (...args: any[]) => {
+    const final = (fnCache[cacheKey] = (...args: any[]) => {
       try {
         if (Builder.isBrowser) {
           return fn(...args)
         } else {
+          // TODO: memoize on server
           // TODO: use something like this instead https://www.npmjs.com/package/rollup-plugin-strip-blocks
           // There must be something more widely used?
           // TODO: regex for between comments instead so can still type check the code... e.g. //SERVER-START ... code ... //SERVER-END
@@ -197,7 +206,9 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
           this._errors.push(error)
         }
       }
-    }
+    })
+
+    return final
   }
 
   get styles() {
@@ -365,38 +376,45 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
               let localState = globalState
 
               if (typeof Proxy !== 'undefined') {
-                localState = new Proxy(globalState, {
-                  getOwnPropertyDescriptor(target, property) {
-                    try {
-                      return Reflect.getOwnPropertyDescriptor(latestState, property)
-                    } catch (error) {
-                      return undefined
-                    }
-                  },
-                  // to prevent variable doesn't exist errors with `with (state)`
-                  has(target, property) {
-                    try {
-                      // TODO: if dead trigger an immer update
-                      return Reflect.has(latestState, property)
-                    } catch (error) {
-                      return false
-                    }
-                  },
-                  get(object, property) {
-                    if (
-                      property &&
-                      typeof property === 'string' &&
-                      property.endsWith('Item') &&
-                      !Reflect.has(latestState, property)
-                    ) {
-                      // TODO: use $index to return a reference to the proxied version of item
-                      // so can be set as well
-                      return Reflect.get(state, property)
-                    }
+                localState = new Proxy(
+                  { ...globalState },
+                  {
+                    getOwnPropertyDescriptor(target, property) {
+                      try {
+                        return Reflect.getOwnPropertyDescriptor(latestState, property)
+                      } catch (error) {
+                        return undefined
+                      }
+                    },
+                    // TODO: wrap other proxy properties
+                    set: function(target, key, value) {
+                      return Reflect.set(latestState, key, value)
+                    },
+                    // to prevent variable doesn't exist errors with `with (state)`
+                    has(target, property) {
+                      try {
+                        // TODO: if dead trigger an immer update
+                        return Reflect.has(latestState, property)
+                      } catch (error) {
+                        return false
+                      }
+                    },
+                    get(object, property) {
+                      if (
+                        property &&
+                        typeof property === 'string' &&
+                        property.endsWith('Item') &&
+                        !Reflect.has(latestState, property)
+                      ) {
+                        // TODO: use $index to return a reference to the proxied version of item
+                        // so can be set as well
+                        return Reflect.get(state, property)
+                      }
 
-                    return Reflect.get(latestState, property)
+                      return Reflect.get(latestState, property)
+                    }
                   }
-                })
+                )
               }
               return cb(localState, event, undefined, api(localState), Device, update)
             })
