@@ -1,22 +1,33 @@
 import React from 'react'
 import { BuilderBlock } from '../../decorators/builder-block.decorator'
+import { BuilderBlock as BuilderBlockComponent } from '../../components/builder-block.component'
+import { BuilderElement } from '@builder.io/sdk'
 
 export interface FormProps {
   attributes?: any
   name?: string
   action?: string
   method?: string
+  builderBlock?: BuilderElement
 }
 
 @BuilderBlock({
   name: 'Form:Form',
+  defaults: {
+    responsiveStyles: {
+      large: {
+        marginTop: '15px',
+        paddingBottom: '15px'
+      }
+    }
+  },
   image:
     'https://cdn.builder.codes/api/v1/image/assets%2FIsxPKMo2gPRRKeakUztj1D6uqed2%2Fef36d2a846134910b64b88e6d18c5ca5',
   inputs: [
     {
       name: 'name',
       type: 'string',
-      advanced: true,
+      advanced: true
     },
     // Custom editor:
     // Send data to:
@@ -68,7 +79,7 @@ export interface FormProps {
         name: 'Form:Input',
         options: {
           name: 'name',
-          placeholder: 'Jane Doe',
+          placeholder: 'Jane Doe'
         }
       }
     },
@@ -97,7 +108,7 @@ export interface FormProps {
         name: 'Form:Input',
         options: {
           name: 'name',
-          placeholder: 'jane@doe.com',
+          placeholder: 'jane@doe.com'
         }
       }
     },
@@ -111,7 +122,7 @@ export interface FormProps {
       component: {
         name: 'Form:SubmitButton',
         options: {
-          text: 'Submit',
+          text: 'Submit'
         }
       }
     }
@@ -126,7 +137,14 @@ export class Form extends React.Component<FormProps> {
         method={this.props.method}
         name={this.props.name}
         {...this.props.attributes}
-      />
+      >
+        {/* TODO: maybe BuilderBlocks */}
+        {this.props.builderBlock &&
+          this.props.builderBlock.children &&
+          this.props.builderBlock.children.map((block, index) => (
+            <BuilderBlockComponent key={block.id} block={block} />
+          ))}
+      </form>
     )
   }
 }
