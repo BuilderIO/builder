@@ -15,7 +15,8 @@ export interface FormProps {
   inputs: [
     {
       name: 'name',
-      type: 'string'
+      type: 'string',
+      advanced: true,
     },
     // Custom editor:
     // Send data to:

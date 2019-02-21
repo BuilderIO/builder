@@ -456,7 +456,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
     const isVoid = voidElements.indexOf(TagName) !== -1
 
     const noWrap =
-      componentInfo && ((componentInfo as any).fragment || (componentInfo as any).noWrap)
+      componentInfo && ((componentInfo).fragment || (componentInfo).noWrap)
 
     const finalOptions: { [key: string]: string } = {
       ...omit(options, 'class', 'component'),

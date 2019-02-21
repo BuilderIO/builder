@@ -14,14 +14,19 @@ export interface ButtonProps {
     'https://cdn.builder.codes/api/v1/image/assets%2FIsxPKMo2gPRRKeakUztj1D6uqed2%2Fdf2820ffed1f4349a94c40b3221f5b98',
   defaultStyles: {
     appearance: 'none',
-    padding: '10px 5px',
+    paddingTop: '5px',
+    paddingBottom: '5px',
+    paddingLeft: '15px',
+    paddingRight: '15px',
     backgroundColor: '#3898EC',
-    color: 'white'
+    color: 'white',
+    borderRadius: '4px'
   },
   inputs: [
     {
       name: 'text',
-      type: 'text'
+      type: 'text',
+      defaultValue: 'Click me'
     }
   ],
   noWrap: true

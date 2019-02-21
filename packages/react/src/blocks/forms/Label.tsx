@@ -14,11 +14,13 @@ export interface LabelProps {
   inputs: [
     {
       name: 'text',
-      type: 'text'
+      type: 'text',
+      defaultValue: 'Label'
     },
     {
       name: 'for',
       type: 'text',
+      helperText: 'The name of the input this label is for',
       advanced: true
     }
   ],

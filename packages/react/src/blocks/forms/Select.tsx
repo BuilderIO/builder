@@ -15,7 +15,6 @@ export interface FormSelectProps {
   defaultStyles: {
     alignSelf: 'flex-start'
   },
-  // Ah fuck I had this the whole time............
   inputs: [
     {
       name: 'options',
@@ -47,7 +46,8 @@ export interface FormSelectProps {
     },
     {
       name: 'name',
-      type: 'string'
+      type: 'string',
+      advanced: true,
     }
   ],
   noWrap: true

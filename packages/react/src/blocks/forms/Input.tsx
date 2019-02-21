@@ -46,11 +46,13 @@ export interface FormInputProps {
     },
     {
       name: 'placeholder',
-      type: 'string'
+      type: 'string',
+      defaultValue: 'Hello there'
     },
     {
       name: 'name',
-      type: 'string'
+      type: 'string',
+      advanced: true
     }
   ],
   noWrap: true

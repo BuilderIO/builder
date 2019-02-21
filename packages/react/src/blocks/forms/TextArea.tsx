@@ -20,10 +20,12 @@ export interface FormTextAreaProps {
     {
       name: 'placeholder',
       type: 'string',
+      defaultValue: 'Hello there'
     },
     {
       name: 'name',
       type: 'string',
+      advanced: true,
     },
   ],
   ...({
