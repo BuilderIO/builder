@@ -167,7 +167,8 @@ export interface Component {
   canHaveChildren?: boolean;
   fragment?: boolean;
   noWrap?: boolean;
-  defaultChildren?: BuilderElement[]
+  defaultChildren?: BuilderElement[];
+  defaults?: Partial<BuilderElement>
 }
 
 export function BuilderComponent(info: Partial<Component> = {}) {
@@ -222,7 +223,7 @@ export class Builder {
   // TODO: this is quick and dirty, do better implementation later. Also can be unreliable
   // if page 301s etc. Use a query param instead? also could have issues with redirects. Injecting var could
   // work but is async...
-  static isEditing = Boolean(isIframe && document.referrer.match(/builder\.io|localhost:1234/))
+  static isEditing = Boolean(isIframe && document.referrer.match(/builder\.io|localhost:1234/));
 
   // useCdnApi = false;
 
@@ -479,7 +480,10 @@ export class Builder {
     this.throttledClearEventsQueue();
   }
 
-  autoTrack = !this.isDevelopmentEnv;
+  autoTrack =
+    !this.isDevelopmentEnv &&
+    !(Builder.isBrowser && location.search.indexOf('builder.preview=true') !== -1);
+
   useNewContentApi = false;
 
   // TODO: set this for QA
@@ -727,7 +731,8 @@ export class Builder {
               break;
             }
             case 'builder.contentUpdate':
-              const key = data.data.key || data.data.alias || data.data.entry || data.data.modelName;
+              const key =
+                data.data.key || data.data.alias || data.data.entry || data.data.modelName;
               const contentData = data.data.data; // hmmm...
               const observer = this.observersByKey[key];
               if (observer) {

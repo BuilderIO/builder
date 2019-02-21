@@ -14,7 +14,7 @@ async function main() {
     /*systemMain*/ `
     if (typeof window === 'undefined' || !window.builderWebcomponentsLoaded) {
       if (typeof window !== 'undefined') {
-        window.builderWebcomponentsLoaded=true;
+        window.builderWebcomponentsLoaded = true;
       }
       function getQueryParam(url, variable) {
         var query = url.split('?')[1] || '';

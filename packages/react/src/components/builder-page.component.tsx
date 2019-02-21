@@ -557,7 +557,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     }
     // TODO: diff it against prior code
     // TODO: throttle execution (or --> don't run in preview <--)
-    if (data && data.jsCode && !Builder.isIframe) {
+    if (data && data.jsCode && !Builder.isIframe && Builder.isBrowser) {
       // TODO: real editing method
       try {
         new Function('data', 'ref', data.jsCode)(data, this)
