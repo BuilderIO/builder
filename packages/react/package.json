@@ -6,7 +6,7 @@
   "main": "dist/builder-react.cjs.js",
   "unpkg": "dist/builder-react.unpkg.js",
   "module": "dist/builder-react.es5.js",
-  "typings": "dist/types/builder-react.d.ts",
+  "typings": "dist/types/src/builder-react.d.ts",
   "files": [
     "dist",
     "index.js",
