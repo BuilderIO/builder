@@ -1,16 +1,16 @@
-import React from 'react';
-import { BuilderBlock } from '../../decorators/builder-block.decorator';
+import React from 'react'
+import { BuilderBlock } from '../../decorators/builder-block.decorator'
 
 // TODO: how do onchange...
 // TODO: actions all custom events and custom js gets
 // passed an element reference and listens for events....
 // Needs to unsubscribe, so must manage
 export interface FormInputProps {
-  type?: string;
-  attributes?: any;
-  name?: string;
-  value?: string;
-  placeholder?: string;
+  type?: string
+  attributes?: any
+  name?: string
+  value?: string
+  placeholder?: string
 }
 
 @BuilderBlock({
@@ -36,28 +36,26 @@ export interface FormInputProps {
         'time',
         'month',
         'week',
-        'color',
+        'color'
       ],
-      defaultValue: 'text',
+      defaultValue: 'text'
     },
     {
       name: 'value',
-      type: 'string',
+      type: 'string'
     },
     {
       name: 'placeholder',
-      type: 'string',
+      type: 'string'
     },
     {
       name: 'name',
-      type: 'string',
-    },
+      type: 'string'
+    }
   ],
-  ...({
-    noWrap: true,
-  } as any),
+  noWrap: true
 })
-export class FormInputProps extends React.Component<FormInputProps> {
+export class FormInput extends React.Component<FormInputProps> {
   render() {
     return (
       <input
@@ -67,6 +65,6 @@ export class FormInputProps extends React.Component<FormInputProps> {
         value={this.props.value}
         {...this.props.attributes}
       />
-    );
+    )
   }
 }

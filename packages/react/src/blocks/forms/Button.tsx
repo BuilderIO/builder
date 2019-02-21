@@ -1,9 +1,9 @@
-import React from 'react';
-import { BuilderBlock } from '../../decorators/builder-block.decorator';
+import React from 'react'
+import { BuilderBlock } from '../../decorators/builder-block.decorator'
 
 export interface ButtonProps {
-  attributes?: any;
-  text?: string;
+  attributes?: any
+  text?: string
 }
 
 // TODO: spec all of these as generic builder elements
@@ -16,28 +16,26 @@ export interface ButtonProps {
     appearance: 'none',
     padding: '10px 5px',
     backgroundColor: '#3898EC',
-    color: 'white',
+    color: 'white'
   },
   inputs: [
     {
       name: 'text',
-      type: 'text',
-    },
+      type: 'text'
+    }
   ],
-  ...({
-    noWrap: true,
-  } as any),
+  noWrap: true
   // TODO: optional children? maybe as optional form input
   // that only shows if advanced setting is flipped
   // TODO: defaultChildren
   // canHaveChildren: true,
 })
-export class ButtonProps extends React.Component<ButtonProps> {
+export class FormSubmitButton extends React.Component<ButtonProps> {
   render() {
     return (
       <button type="submit" {...this.props.attributes}>
         {this.props.text}
       </button>
-    );
+    )
   }
 }

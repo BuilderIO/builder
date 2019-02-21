@@ -30,7 +30,7 @@ export interface FormTextAreaProps {
     noWrap: true,
   } as any),
 })
-export class FormTextArea extends React.Component<FormTextAreaProps> {
+export class TextArea extends React.Component<FormTextAreaProps> {
   render() {
     return (
       <textarea

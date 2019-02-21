@@ -28,6 +28,16 @@ export { CustomCode } from './blocks/CustomCode'
 export { Image } from './blocks/Image'
 export { Video } from './blocks/Video'
 export { Symbol } from './blocks/Symbol'
+export { Button } from './blocks/Button'
+export { Section } from './blocks/Section'
+
+export { FormSubmitButton } from './blocks/forms/Button'
+export { FormInput } from './blocks/forms/Input'
+export { Label } from './blocks/forms/Label'
+export { FormSelectProps } from './blocks/forms/Select'
+export { FormProps } from './blocks/forms/Form'
+export { TextArea } from './blocks/forms/TextArea'
+
 
 export { builder, Builder }
 export default builder
