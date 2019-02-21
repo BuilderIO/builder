@@ -23,13 +23,21 @@ export interface FormSelectProps {
       required: true,
       subFields: [
         {
-          name: 'name',
-          type: 'text'
-        },
-        {
           name: 'value',
           type: 'text',
           required: true
+        },
+        {
+          name: 'name',
+          type: 'text'
+        },
+      ],
+      defaultValue: [
+        {
+          value: 'option 1'
+        },
+        {
+          value: 'option 2'
         }
       ]
     },

@@ -31,11 +31,11 @@ export { Symbol } from './blocks/Symbol'
 export { Button } from './blocks/Button'
 export { Section } from './blocks/Section'
 
-export { FormSubmitButton } from './blocks/forms/Button'
+export { Form } from './blocks/forms/Form'
 export { FormInput } from './blocks/forms/Input'
-export { Label } from './blocks/forms/Label'
-export { FormSelect } from './blocks/forms/Select'
-export { FormProps } from './blocks/forms/Form'
+export { FormSubmitButton } from './blocks/forms/Button'
+export { Label } from './blocks/forms/Label' // advanced?
+export { FormSelect } from './blocks/forms/Select' // advanced?
 export { TextArea } from './blocks/forms/TextArea'
 
 

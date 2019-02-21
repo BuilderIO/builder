@@ -1,11 +1,11 @@
-import React from 'react';
-import { BuilderBlock } from '../../decorators/builder-block.decorator';
+import React from 'react'
+import { BuilderBlock } from '../../decorators/builder-block.decorator'
 
 export interface FormProps {
-  attributes?: any;
-  name?: string;
-  action?: string;
-  method?: string;
+  attributes?: any
+  name?: string
+  action?: string
+  method?: string
 }
 
 @BuilderBlock({
@@ -15,7 +15,7 @@ export interface FormProps {
   inputs: [
     {
       name: 'name',
-      type: 'string',
+      type: 'string'
     },
     // Custom editor:
     // Send data to:
@@ -26,24 +26,97 @@ export interface FormProps {
     {
       name: 'action',
       type: 'string',
-      advanced: true,
+      advanced: true
     },
     {
       name: 'method',
       type: 'string',
-      advanced: true,
-    },
+      advanced: true
+    }
     // TODO: json vs serialized (i.e. send on client or not)
     // TODO: success/fail stuff
   ],
   ...({
-    noWrap: true,
+    noWrap: true
   } as any),
   // TODO: defaultChildren with two inputs and submit button
   canHaveChildren: true,
-  defaultChildren: [],
+  defaultChildren: [
+    {
+      '@type': '@builder.io/sdk:Element',
+      responsiveStyles: {
+        large: {
+          marginTop: '10px'
+        }
+      },
+      component: {
+        name: 'Text',
+        options: {
+          text: '<span>Enter your name</span>'
+        }
+      }
+    },
+    {
+      '@type': '@builder.io/sdk:Element',
+      responsiveStyles: {
+        large: {
+          marginTop: '10px'
+        }
+      },
+      component: {
+        name: 'Form:Input',
+        options: {
+          name: 'name',
+          placeholder: 'Jane Doe',
+        }
+      }
+    },
+    {
+      '@type': '@builder.io/sdk:Element',
+      responsiveStyles: {
+        large: {
+          marginTop: '10px'
+        }
+      },
+      component: {
+        name: 'Text',
+        options: {
+          text: '<span>Enter your email</span>'
+        }
+      }
+    },
+    {
+      '@type': '@builder.io/sdk:Element',
+      responsiveStyles: {
+        large: {
+          marginTop: '10px'
+        }
+      },
+      component: {
+        name: 'Form:Input',
+        options: {
+          name: 'name',
+          placeholder: 'jane@doe.com',
+        }
+      }
+    },
+    {
+      '@type': '@builder.io/sdk:Element',
+      responsiveStyles: {
+        large: {
+          marginTop: '10px'
+        }
+      },
+      component: {
+        name: 'Form:SubmitButton',
+        options: {
+          text: 'Submit',
+        }
+      }
+    }
+  ]
 })
-export class FormProps extends React.Component<FormProps> {
+export class Form extends React.Component<FormProps> {
   render() {
     return (
       // TODO: JS data bindings
@@ -53,6 +126,6 @@ export class FormProps extends React.Component<FormProps> {
         name={this.props.name}
         {...this.props.attributes}
       />
-    );
+    )
   }
 }
