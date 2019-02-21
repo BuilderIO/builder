@@ -1,5 +1,5 @@
 import React from 'react';
-import { BuilderBlock } from '../../decorators/bui';
+import { BuilderBlock } from '../../decorators/builder-block.decorator';
 
 export interface FormTextAreaProps {
   attributes?: any;
