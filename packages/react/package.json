@@ -23,7 +23,7 @@
     "node": ">=6.0.0"
   },
   "scripts": {
-    "_install": "npm install",
+    "_unlink": "npm unlink *",
     "lint": "tslint -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
     "prebuild": "rimraf dist",
     "build": "tsc --module commonjs && rollup -c rollup.config.ts",

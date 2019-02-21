@@ -5,7 +5,7 @@
   },
   "scripts": {
     "verify-git-not-dirty": "git diff --quiet || exit 1",
-    "unlink": "lerna run _install --parallel",
+    "_unlink": "lerna run _unlink --parallel",
     "release:patch": "npm run verify-git-not-dirty && lerna run build --stream && lerna version patch --yes && lerna run build:unpkg:dist && lerna publish from-package --yes",
     "release:prerelease:dev": "npm run verify-git-not-dirty && lerna run build --stream && lerna version prerelease --yes && lerna run build:unpkg:dist && lerna publish from-package --dist-tag dev --yes"
   }
