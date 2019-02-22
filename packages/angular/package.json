@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/angular",
-  "version": "0.1.15",
+  "version": "0.1.16-alpha.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --port 4205",
@@ -26,7 +26,7 @@
     "@angular/core": "^7.0.4",
     "@angular/http": "^7.0.4",
     "@angular/router": "^7.0.4",
-    "@builder.io/sdk": "^1.0.6",
+    "@builder.io/sdk": "^1.0.7-alpha.0",
     "core-js": "^2.4.1",
     "lodash-es": "^4.17.11",
     "rxjs": "^6.3.3",
