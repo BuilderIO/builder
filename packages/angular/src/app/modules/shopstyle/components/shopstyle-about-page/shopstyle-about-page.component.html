@@ -1,0 +1,9 @@
+<div class="about-page-container">
+  <div class="about-page-content">
+    <builder-content *builderModel="'about-page'; let page">
+      <!-- TODO: component for this -->
+      <builder-render builder-render-property="body" [attr.builder-render-index]="index" [component]="component?.component?.component"
+        [options]="component?.component?.options" *ngFor="let component of page?.body; let index = index"></builder-render>
+    </builder-content>
+  </div>
+</div>

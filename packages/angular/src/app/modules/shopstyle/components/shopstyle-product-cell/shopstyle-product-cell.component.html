@@ -1,0 +1,49 @@
+<div class="product-cell-host">
+  <meta [attr.product-id]="product.id">
+  <div class="product-cell-container" [class.cell-hovered]="!alertHovered">
+
+    <p class="deal-text serif">
+      {{product.promotionalDeal?.title}}
+    </p>
+    <a exit="ProductCell-Image" class="product-image-container">
+      <img [src]="product?.image?.sizes.Large.url" itemprop="image" class="product-image">
+    </a>
+
+    <!-- on desktop, the prowned condition comes before the brand name -->
+    <div class="preowned-label">
+      {{ product.preOwned ? 'Pre-owned' : '' }}
+      <link *ngIf="product.preOwned" itemprop="itemCondition" href="http://schema.org/UsedCondition">
+    </div>
+
+    <!-- on desktop, product name clicks to retailer -->
+    <a class="product-name desktop-retailer-link product-label">
+      {{product.brandedName}}
+    </a>
+
+    <meta *ngIf="product.brand" itemprop="brand" content="{{product.brand?.name}}">
+    <meta itemprop="name" content="{{product.unbrandedName || product.brandedName}}">
+    <link *ngIf="!product.preOwned && !product.rental" itemprop="itemCondition" href="http://schema.org/NewCondition">
+
+    <a class="detail-link cell-icon">
+      <!-- <img role="button" aria-label="View Product Details" class="zoom-icon" alt="&#128269;" src="/assets/icons/zoom.png"> -->
+    </a>
+
+
+    <div class="bottom-row">
+      <div class="price-link" itemprop="offers" itemscope>
+        <!-- not allowed to show original price in Japan (WEB-7858) -->
+        <span *ngIf="!product.salePriceRangeLabel" class="product-price body-paragraph" [class.struckout]="product.salePriceLabel">{{product.priceRangeLabel}}</span>
+        <span *ngIf="product.salePriceLabel" class="product-price deal">
+          {{product.salePriceRangeLabel || product.salePriceLabel}}
+        </span>
+
+        <meta content="{{product.currency}}" itemprop="priceCurrency">
+        <meta *ngIf="!priceRange" itemprop="price" content="{{product.salePrice || product.price}}">
+        <meta *ngIf="priceRange" itemprop="lowPrice" content="{{product.salePrice || product.price}}">
+        <meta *ngIf="priceRange" itemprop="highPrice" content="{{product.maxSalePrice || product.maxPrice}}">
+        <link *ngIf="product.inStock" itemprop="availability" href="http://schema.org/InStock">
+        <link *ngIf="!product.inStock" itemprop="availability" href="http://schema.org/OutOfStock">
+      </div>
+    </div>
+  </div>
+</div>

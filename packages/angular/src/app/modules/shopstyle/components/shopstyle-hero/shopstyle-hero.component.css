@@ -1,0 +1,21 @@
+:host {
+  display: flex;
+  height: 500px;
+  background-color: #eee;
+  display: flex;
+}
+
+@media (max-width: 600px) {
+  :host {
+    height: 300px;
+  }
+}
+
+.image {
+  /* display: flex; */
+  width: 100%;
+  height: 100%;
+  background-position: center center;
+  background-repeat: no-repeat;
+  display: block;
+}

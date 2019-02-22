@@ -1,0 +1,18 @@
+<builder-content *builderModel="'ribbon'; let ribbon">
+  <a class="ribbon" [href]="'/about'">
+    {{ribbon?.text}}
+  </a>
+</builder-content>
+
+<div class="logo-wrapper">
+  <a href="/">
+    <img class="logo" [src]="logo">
+  </a>
+</div>
+
+<!-- TODO: array of links -->
+<!-- <builder-content class="links" *builderModel="'header-link'; let links = results">
+  <a class="link" *ngFor="let link of links" [href]="'/'">
+    {{link.text}}
+  </a>
+</builder-content> -->

@@ -1,0 +1,5 @@
+<builder-content (click)="onClick($event)" (contentLoad)="load.next($event)"
+  (contentError)="error.next($event)" *builderModel="model; let content; let loading = loading">
+  <builder-blocks *ngIf="content" field="blocks" [blocks]="content.blocks || content"></builder-blocks>
+  <ng-content *ngIf="loading"></ng-content>
+</builder-content>

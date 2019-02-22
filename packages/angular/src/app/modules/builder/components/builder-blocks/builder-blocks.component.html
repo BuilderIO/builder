@@ -1,0 +1,10 @@
+<div *ngIf="arrayBlocks" class="builder-blocks builder-blocks-angular">
+  <builder-render *ngFor="let block of blocks; trackBy: trackByFn; let index = index"
+    [attr.builder-render-property]="field" [attr.builder-render-index]="index"
+    [block]="block" [component]="block?.component?.name || block?.component?.component"
+    [options]="block?.component?.options">
+  </builder-render>
+</div>
+<div *ngIf="!arrayBlocks" class="builder-blocks builder-blocks-html">
+  <div [innerHTML]="innerHtml"></div>
+</div>
