@@ -87,12 +87,13 @@ export interface FormProps {
           type: 'string'
         }
       } as any),
-      advanced: true
+      advanced: true,
+      showIf: 'options.get("sendSubmissionsTo") === "custom" && options.get("sendWithJs") === true'
     },
     {
       name: 'successUrl',
       type: 'url',
-      helperText: 'URL to redirect the user to on form submission success',
+      helperText: 'Optional URL to redirect the user to on form submission success',
       showIf: 'options.get("sendSubmissionsTo") === "custom" && options.get("sendWithJs") === true'
     },
     // TODO: maybe
