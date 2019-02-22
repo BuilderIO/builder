@@ -6,6 +6,8 @@
   "module": "./dist/index.esm.js",
   "types": "./dist/index.d.ts",
   "scripts": {
+    "_unlink": "npm unlink *",
+    "_install": "npm install",
     "build": "npm run tsc && rollup -c",
     "watch": "rollup -cw",
     "start": "npm run watch",

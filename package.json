@@ -13,8 +13,5 @@
     "develop": "npm run start",
     "release:patch": "npm run verify-git-not-dirty && lerna run build --stream && lerna version patch --yes && lerna run build:unpkg:dist && lerna publish from-package --yes",
     "release:prerelease:dev": "npm run verify-git-not-dirty && lerna run build --stream && lerna version prerelease --yes && lerna run build:unpkg:dist && lerna publish from-package --dist-tag dev --yes"
-  },
-  "dependencies": {
-    "ses": "^0.4.0"
   }
 }

@@ -354,7 +354,7 @@ export class Builder {
   private preview = false;
 
   get browserTrackingDisabled() {
-    return Builder.isBrowser && navigator.doNotTrack === '1';
+    return Builder.isBrowser && (navigator as any).doNotTrack === '1';
   }
 
   get canTrack() {

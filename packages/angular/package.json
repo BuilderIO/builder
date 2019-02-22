@@ -2,6 +2,8 @@
   "name": "@builder.io/angular",
   "version": "0.1.16",
   "scripts": {
+    "_unlink": "npm unlink *",
+    "_install": "npm install",
     "ng": "ng",
     "start": "npm run develop:package",
     "_build": "ng build --prod",

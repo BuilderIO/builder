@@ -219,7 +219,7 @@ export class Animator {
       });
 
       // TODO: one listener for everything
-      document.addEventListener('scroll', onScroll, { capture: true, passive: true });
+      document.addEventListener('scroll', onScroll, { capture: true, passive: true } as any);
 
       // Do an initial check
       onScroll();

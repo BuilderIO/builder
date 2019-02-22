@@ -239,7 +239,7 @@ function index(input: Element): number | null {
       break;
     }
 
-    child = child.nextSibling;
+    child = child.nextSibling as any;
   }
 
   return i;
