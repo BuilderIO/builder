@@ -250,6 +250,7 @@ export class Builder {
         inputs: spec.inputs.map((input: any) => {
           // TODO: do for nexted fields too
           // TODO: probably just convert all functions, not just
+          // TODO: put this in input hooks: { onChange: ..., showIf: ... }
           const keysToConvertFnToString = ['onChange', 'showIf'];
 
           for (const key of keysToConvertFnToString) {
