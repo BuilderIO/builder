@@ -25,7 +25,7 @@ export interface FormTextAreaProps {
     {
       name: 'name',
       type: 'string',
-      advanced: true,
+      // advanced: true,
     },
   ],
   ...({

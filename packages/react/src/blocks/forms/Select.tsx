@@ -47,7 +47,7 @@ export interface FormSelectProps {
     {
       name: 'name',
       type: 'string',
-      advanced: true,
+      // advanced: true,
     }
   ],
   noWrap: true

@@ -9,6 +9,9 @@ export interface FormProps {
   action?: string
   method?: string
   builderBlock?: BuilderElement
+  sendSubmissionsTo?: string
+  sendWithJs?: boolean
+  contentType?: string
 }
 
 @BuilderBlock({
@@ -25,32 +28,53 @@ export interface FormProps {
     'https://cdn.builder.codes/api/v1/image/assets%2FIsxPKMo2gPRRKeakUztj1D6uqed2%2Fef36d2a846134910b64b88e6d18c5ca5',
   inputs: [
     {
+      name: 'sendSubmissionsTo',
+      type: 'string',
+      // TODO: more info
+      enum: ['zapier', 'custom'],
+      defaultValue: 'zapier'
+    },
+    {
+      name: 'sendWithJs',
+      type: 'boolean',
+      helperText: 'Set to false to use basic html form action',
+      defaultValue: true,
+      showIf: 'options.get("sendSubmissionsTo") === "custom"'
+    },
+    {
       name: 'name',
       type: 'string',
       advanced: true
     },
-    // Custom editor:
-    // Send data to:
-    //    URL endpoint
-    //    Email
-    //    Zapier
-    //    JSS
     {
       name: 'action',
       type: 'string',
-      advanced: true
+      helperText: 'URL to send the form data to',
+      showIf: 'options.get("sendSubmissionsTo") === "custom"'
+    },
+    {
+      name: 'contentType',
+      type: 'string',
+      defaultValue: 'json',
+      enum: ['json', 'formdata'],
+      showIf: 'options.get("sendSubmissionsTo") === "custom" && options.get("sendWithJs") === true'
+    },
+    {
+      name: 'action',
+      type: 'string',
+      helperText: 'URL to send the form data to',
+      showIf: 'options.get("sendSubmissionsTo") === "custom"'
     },
     {
       name: 'method',
       type: 'string',
       advanced: true
     }
+    // TODO: custom headers or any fetch options
     // TODO: json vs serialized (i.e. send on client or not)
     // TODO: success/fail stuff
   ],
-  ...({
-    noWrap: true
-  } as any),
+  noWrap: true,
   // TODO: defaultChildren with two inputs and submit button
   canHaveChildren: true,
   defaultChildren: [
@@ -136,6 +160,14 @@ export class Form extends React.Component<FormProps> {
         action={this.props.action}
         method={this.props.method}
         name={this.props.name}
+        onSubmit={evenb => {
+          if (this.props.sendSubmissionsTo === 'zapier') {
+            // event.preventDefault();
+            // TODO: send submission to zapier
+          } else if (this.props.sendWithJs) {
+            // TODO: handle the JS with the options above
+          }
+        }}
         {...this.props.attributes}
       >
         {/* TODO: maybe BuilderBlocks */}

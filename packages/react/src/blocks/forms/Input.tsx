@@ -52,7 +52,7 @@ export interface FormInputProps {
     {
       name: 'name',
       type: 'string',
-      advanced: true
+      // advanced: true
     }
   ],
   noWrap: true
