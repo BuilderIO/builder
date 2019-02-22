@@ -17,6 +17,8 @@ import {
 } from '../store/builder-async-requests'
 import { Url } from 'url'
 
+console.log('builder page loaded');
+
 // TODO: get fetch from core JS....
 const fetch = Builder.isBrowser ? window.fetch : require('node-fetch')
 
@@ -223,6 +225,8 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     if (Builder.isIframe) {
       parent.postMessage({ type: 'builder.sdkInjected', data: { modelName: this.name } }, '*')
     }
+
+    console.log('component did mount');
 
     if (Builder.isBrowser) {
       console.log('added resize listener')
