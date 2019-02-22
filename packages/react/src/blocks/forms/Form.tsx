@@ -38,7 +38,8 @@ export interface FormProps {
     {
       name: 'sendSubmissionsTo',
       type: 'string',
-      // TODO: more info
+      // TODO: builder, email
+      // Later - more integrations like mailchimp
       enum: ['zapier', 'custom'],
       defaultValue: 'zapier'
     },
@@ -254,10 +255,10 @@ export class Form extends React.Component<FormProps> {
         name={this.props.name}
         onSubmit={event => {
           if (this.props.sendSubmissionsTo === 'zapier') {
-            event.preventDefault();
+            event.preventDefault()
             // TODO: send submission to zapier
           } else if (this.props.sendWithJs) {
-            event.preventDefault();
+            event.preventDefault()
             // TODO: error and success state
             const el = event.currentTarget
             const headers = this.props.customHeaders || {}
@@ -266,10 +267,39 @@ export class Form extends React.Component<FormProps> {
 
             const formData = new FormData(el)
 
+            // TODO: maybe support null
+            const formPairs: { [key: string]: File | boolean | number | string }[] = (Array.from(
+              document.querySelectorAll('input,select,textarea')
+            ) as HTMLElement[])
+              .filter(el => !!(el as HTMLInputElement).name)
+              .map(el => {
+                let value: any
+                const key = (el as HTMLImageElement).name
+                if (el instanceof HTMLInputElement) {
+                  if (el.type === 'checkbox') {
+                    value = el.checked
+                  } else if (el.type === 'number' || el.type === 'range') {
+                    const num = el.valueAsNumber
+                    if (!isNaN(num)) {
+                      value = num
+                    }
+                  } else if (el.type === 'file') {
+                    // TODO: one vs multiple files
+                    value = el.files
+                  } else {
+                    value = el.value
+                  }
+                } else {
+                  value = (el as HTMLInputElement).value
+                }
+
+                return { key, value }
+              })
+
             let contentType = this.props.contentType
 
-            formData.forEach(value => {
-              if (value instanceof File) {
+            formPairs.forEach(({ value }) => {
+              if (value instanceof File || (Array.isArray(value) && value[0] instanceof File)) {
                 contentType = 'multipart/formdata'
               }
             })
@@ -278,14 +308,14 @@ export class Form extends React.Component<FormProps> {
               body = formData
             } else if (contentType === 'multipart/formdata') {
               body = new URLSearchParams()
-              formData.forEach((value, key) => {
+              formPairs.forEach(({ value, key }) => {
                 body.append(key, value)
               })
             } else {
               // Json
               body = {}
 
-              formData.forEach((value, key) => {
+              formPairs.forEach(({ value, key }) => {
                 set(body, key, value)
               })
             }
@@ -351,7 +381,10 @@ export class Form extends React.Component<FormProps> {
         {this.submissionState === 'error' &&
           this.state.respnoseData && (
             // TODO: tag to edit
-            <pre className="builder-form-error-text" style={{ padding: 10, color: 'red', textAlign: 'center' }}>
+            <pre
+              className="builder-form-error-text"
+              style={{ padding: 10, color: 'red', textAlign: 'center' }}
+            >
               {JSON.stringify(this.state.respnoseData, null, 2)}
             </pre>
           )}
