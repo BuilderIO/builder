@@ -5,6 +5,7 @@ import typescript from 'rollup-plugin-typescript2'
 import replace from 'rollup-plugin-replace'
 import regexReplace from 'rollup-plugin-re'
 import json from 'rollup-plugin-json'
+import alias from 'rollup-plugin-alias'
 
 import pkg from './package.json'
 
@@ -144,6 +145,44 @@ export default [
             replace: '$1'
           }
         ]
+      })
+    ])
+  },
+  // Preact
+  // TODO: may have to do react 15 modifications for support (no fragment/context?)
+  {
+    ...options,
+    output: [
+      { file: './dist/preact.esm.js', format: 'es', sourcemap: true },
+      { file: './dist/preact.js', format: 'cjs', sourcemap: true }
+    ],
+    external: externalDependencies.filter(name => !name.startsWith('lodash-es')),
+    plugins: options.plugins.filter(plugin => plugin !== resolvePlugin).concat([
+      resolve({
+        only: [/^\.{0,2}\//, /lodash\-es/]
+      }),
+      alias({
+        'react': 'preact-compat',
+        'react-dom': 'preact-compat'
+      })
+    ])
+  },
+  // Inferno
+  // TODO: may have to do react 15 modifications for support (no fragment/context?)
+  {
+    ...options,
+    output: [
+      { file: './dist/inferno.esm.js', format: 'es', sourcemap: true },
+      { file: './dist/inferno.js', format: 'cjs', sourcemap: true }
+    ],
+    external: externalDependencies.filter(name => !name.startsWith('lodash-es')),
+    plugins: options.plugins.filter(plugin => plugin !== resolvePlugin).concat([
+      resolve({
+        only: [/^\.{0,2}\//, /lodash\-es/]
+      }),
+      alias({
+        'react': 'inferno-compat',
+        'react-dom': 'inferno-compat'
       })
     ])
   },

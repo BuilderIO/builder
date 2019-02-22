@@ -111,7 +111,7 @@
     "replace-in-file": "^3.0.0-beta.2",
     "rimraf": "^2.6.1",
     "rollup": "^0.58.0",
-    "rollup-plugin-alias": "^1.4.0",
+    "rollup-plugin-alias": "^1.5.1",
     "rollup-plugin-commonjs": "^9.0.0",
     "rollup-plugin-json": "^3.0.0",
     "rollup-plugin-node-resolve": "^3.0.0",
@@ -132,7 +132,11 @@
   "//": "TODO: get react back as peerdependencies - find where rollup is putting those external in iife and stop it",
   "optionalDependencies": {
     "create-react-context": "^0.2.3",
+    "inferno": "^7.1.9",
+    "inferno-compat": "^7.1.9",
     "node-fetch": "^2.3.0",
+    "preact": "^8.4.2",
+    "preact-compat": "^3.18.4",
     "prop-types": "^15.7.2",
     "vm2": "^3.6.4"
   },
