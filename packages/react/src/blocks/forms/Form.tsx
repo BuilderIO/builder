@@ -54,7 +54,7 @@ export interface FormProps {
     {
       name: 'name',
       type: 'string',
-      showIf: 'options.get("sendSubmissionsTo") === "zapier"',
+      showIf: 'options.get("sendSubmissionsTo") === "zapier"'
       // advanced: true
     },
     {
@@ -150,7 +150,7 @@ export interface FormProps {
       } as any),
       advanced: true,
       showIf: 'options.get("sendSubmissionsTo") === "custom" && options.get("sendWithJs") === true'
-    },
+    }
     // TODO: custom headers or any fetch options
     // TODO: json vs serialized (i.e. send on client or not)
     // TODO: success/fail stuff
@@ -386,16 +386,15 @@ export class Form extends React.Component<FormProps> {
         )}
 
         {/* TODO: option to turn this off */}
-        {this.submissionState === 'error' &&
-          this.state.respnoseData && (
-            // TODO: tag to edit
-            <pre
-              className="builder-form-error-text"
-              style={{ padding: 10, color: 'red', textAlign: 'center' }}
-            >
-              {JSON.stringify(this.state.respnoseData, null, 2)}
-            </pre>
-          )}
+        {this.submissionState === 'error' && this.state.respnoseData && (
+          // TODO: tag to edit
+          <pre
+            className="builder-form-error-text"
+            style={{ padding: 10, color: 'red', textAlign: 'center' }}
+          >
+            {JSON.stringify(this.state.respnoseData, null, 2)}
+          </pre>
+        )}
 
         {this.submissionState === 'success' && (
           <BuilderBlocks dataPath="successMessage" blocks={this.props.successMessage!} />
