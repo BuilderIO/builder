@@ -176,6 +176,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
 
   resizeListener = debounce(
     () => {
+      debugger;
       const deviceSize = this.deviceSizeState
       if (deviceSize !== this.state.state.deviceSize) {
         this.setState({
@@ -224,6 +225,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     }
 
     if (Builder.isBrowser) {
+      console.log('added resize listener')
       window.addEventListener('resize', this.resizeListener)
 
       setTimeout(() => {
