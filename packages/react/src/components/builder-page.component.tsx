@@ -174,7 +174,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     return Builder.isBrowser ? sizes.getSizeForWidth(window.innerWidth) : 'large'
   }
 
-  resizeListener = throttle(
+  resizeListener = debounce(
     () => {
       const deviceSize = this.deviceSizeState
       if (deviceSize !== this.state.state.deviceSize) {
