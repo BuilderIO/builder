@@ -7,7 +7,8 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "build": "npm run tsc && rollup -c",
-    "watch": "rollup -w",
+    "watch": "rollup -cw",
+    "start": "npm run watch",
     "tsc": "tsc --module commonjs",
     "release": "npm run build && npm publish",
     "release:patch": "npm run build && npm version patch && npm publish",

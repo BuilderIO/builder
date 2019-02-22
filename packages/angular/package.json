@@ -3,7 +3,7 @@
   "version": "0.1.16",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --port 4205",
+    "start": "npm run develop:package",
     "_build": "ng build --prod",
     "build": "npm run package",
     "test": "ng test",
@@ -63,6 +63,6 @@
     "ts-loader": "^5.3.0",
     "ts-node": "^7.0.1",
     "tslint": "^5.11.0",
-    "typescript": "^3.1.6"
+    "typescript": "3.1.6"
   }
 }

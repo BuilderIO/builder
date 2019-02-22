@@ -41,10 +41,12 @@ export class TinyPromise<T = any> {
             (result: any) => {
               if (!called) this._resolve(result);
               called = true;
+              return undefined as any;
             },
             (error: any) => {
               if (!called) this._reject(error);
               called = true;
+              return undefined as any;
             }
           );
         } else {

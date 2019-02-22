@@ -8,7 +8,13 @@
     "_unlink": "lerna run _unlink --parallel",
     "bootstrap": "lerna bootstrap --force-local --hoist",
     "reset": "npm run bootstrap && npm run _unlink",
+    "start": "lerna run start --parallel",
+    "watch": "npm run start",
+    "develop": "npm run start",
     "release:patch": "npm run verify-git-not-dirty && lerna run build --stream && lerna version patch --yes && lerna run build:unpkg:dist && lerna publish from-package --yes",
     "release:prerelease:dev": "npm run verify-git-not-dirty && lerna run build --stream && lerna version prerelease --yes && lerna run build:unpkg:dist && lerna publish from-package --dist-tag dev --yes"
+  },
+  "dependencies": {
+    "ses": "^0.4.0"
   }
 }
