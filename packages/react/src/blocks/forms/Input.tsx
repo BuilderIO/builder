@@ -60,6 +60,15 @@ export interface FormInputProps {
       defaultValue: false
     }
   ],
+  // TODO
+  // TODO: call editorHooks?
+  // ...({
+  //   hooks: {
+  //     'ElementLayout:shiftBottomSide': (element: Element, amount: number, snap: boolean) => {
+  //       // TODO: either update line height or split the padding padding on bottom sides hmm
+  //     }
+  //   } as any,
+  // }),
   noWrap: true
 })
 export class FormInput extends React.Component<FormInputProps> {

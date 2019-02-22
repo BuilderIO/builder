@@ -129,10 +129,7 @@
     "typescript": "^2.6.2",
     "validate-commit-msg": "^2.12.2"
   },
-  "peerDependencies": {
-    "react": "^0.14.0 || ^15.0.0 || ^16.0.0",
-    "react-dom": "^0.14.0 || ^15.0.0 || ^16.0.0"
-  },
+  "//": "TODO: get react back as peerdependencies - find where rollup is putting those external in iife and stop it",
   "optionalDependencies": {
     "create-react-context": "^0.2.3",
     "node-fetch": "^2.3.0",
@@ -141,7 +138,9 @@
   },
   "dependencies": {
     "@builder.io/sdk": "^1.0.5-alpha.5",
-    "immer": "^1.7.2"
+    "immer": "^1.7.2",
+    "react": "^0.14.0 || ^15.0.0 || ^16.0.0",
+    "react-dom": "^0.14.0 || ^15.0.0 || ^16.0.0"
   },
   "gitHead": "3d55a987a69736618d729c43baf7c9ce41c27464"
 }

@@ -168,7 +168,8 @@ export interface Component {
   fragment?: boolean;
   noWrap?: boolean;
   defaultChildren?: BuilderElement[];
-  defaults?: Partial<BuilderElement>
+  defaults?: Partial<BuilderElement>;
+  hooks?: { [key: string]: string | Function };
 }
 
 export function BuilderComponent(info: Partial<Component> = {}) {
@@ -260,9 +261,22 @@ export class Builder {
               };
             }
           }
+
           return input;
         }),
       }),
+      hooks: Object.keys(spec.hooks || {}).reduce((memo, key) => {
+        const value = spec.hooks && spec.hooks[key]
+        if (!value) {
+          return memo
+        }
+        if (typeof value === 'string') {
+          memo[key] = value
+        } else {
+          memo[key] = `return (${value.toString()}).apply(this, arguments)`
+        }
+        return memo;
+      }, {} as {[key: string]: string}),
       class: undefined,
     };
   }

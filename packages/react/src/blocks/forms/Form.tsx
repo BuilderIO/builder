@@ -54,8 +54,8 @@ export interface FormProps {
     {
       name: 'name',
       type: 'string',
-      showIf: 'options.get("sendSubmissionsTo") === "custom"',
-      advanced: true
+      showIf: 'options.get("sendSubmissionsTo") === "zapier"',
+      // advanced: true
     },
     {
       name: 'action',
