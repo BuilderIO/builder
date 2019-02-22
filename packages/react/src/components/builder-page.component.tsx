@@ -181,8 +181,8 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
         this.setState({
           ...this.state,
           state: {
-            deviceSize,
-            ...this.state.state
+            ...this.state.state,
+            deviceSize
           }
         })
       }
