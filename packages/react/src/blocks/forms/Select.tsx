@@ -48,6 +48,11 @@ export interface FormSelectProps {
       name: 'name',
       type: 'string',
       // advanced: true,
+    },
+    {
+      name: 'required',
+      type: 'boolean',
+      defaultValue: false
     }
   ],
   noWrap: true

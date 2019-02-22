@@ -9,6 +9,7 @@ export interface FormProps {
   attributes?: any
   name?: string
   action?: string
+  validate?: boolean
   method?: string
   builderBlock?: BuilderElement
   sendSubmissionsTo?: string
@@ -131,6 +132,12 @@ export interface FormProps {
       ]
     },
     {
+      name: 'validate',
+      type: 'boolean',
+      defaultValue: true,
+      advanced: true,
+    },
+    {
       name: 'errorMessage',
       type: 'uiBlocks',
       hideFromUI: true,
@@ -249,6 +256,7 @@ export class Form extends React.Component<FormProps> {
     return (
       // TODO: JS data bindings
       <form
+      validate={this.props.validate}
         ref={ref => (this.ref = ref)}
         action={this.props.action}
         method={this.props.method}

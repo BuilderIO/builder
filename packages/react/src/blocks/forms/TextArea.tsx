@@ -1,11 +1,11 @@
-import React from 'react';
-import { BuilderBlock } from '../../decorators/builder-block.decorator';
+import React from 'react'
+import { BuilderBlock } from '../../decorators/builder-block.decorator'
 
 export interface FormTextAreaProps {
-  attributes?: any;
-  name?: string;
-  value?: string;
-  placeholder?: string;
+  attributes?: any
+  name?: string
+  value?: string
+  placeholder?: string
 }
 
 @BuilderBlock({
@@ -15,7 +15,7 @@ export interface FormTextAreaProps {
   inputs: [
     {
       name: 'value',
-      type: 'string',
+      type: 'string'
     },
     {
       name: 'placeholder',
@@ -24,13 +24,16 @@ export interface FormTextAreaProps {
     },
     {
       name: 'name',
-      type: 'string',
+      type: 'string'
       // advanced: true,
     },
+    {
+      name: 'required',
+      type: 'boolean',
+      defaultValue: false
+    }
   ],
-  ...({
-    noWrap: true,
-  } as any),
+  noWrap: true
 })
 export class TextArea extends React.Component<FormTextAreaProps> {
   render() {
@@ -41,6 +44,6 @@ export class TextArea extends React.Component<FormTextAreaProps> {
         value={this.props.value}
         {...this.props.attributes}
       />
-    );
+    )
   }
 }
