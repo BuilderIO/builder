@@ -79,18 +79,6 @@ export interface FormProps {
       advanced: true
     },
     {
-      name: 'customHeaders',
-      type: 'map',
-      // TODO: add typings for this property
-      ...({
-        valueType: {
-          type: 'string'
-        }
-      } as any),
-      advanced: true,
-      showIf: 'options.get("sendSubmissionsTo") === "custom" && options.get("sendWithJs") === true'
-    },
-    {
       name: 'successUrl',
       type: 'url',
       helperText: 'Optional URL to redirect the user to on form submission success',
@@ -150,7 +138,19 @@ export interface FormProps {
           }
         }
       ]
-    }
+    },
+    {
+      name: 'customHeaders',
+      type: 'map',
+      // TODO: add typings for this property
+      ...({
+        valueType: {
+          type: 'string'
+        }
+      } as any),
+      advanced: true,
+      showIf: 'options.get("sendSubmissionsTo") === "custom" && options.get("sendWithJs") === true'
+    },
     // TODO: custom headers or any fetch options
     // TODO: json vs serialized (i.e. send on client or not)
     // TODO: success/fail stuff
