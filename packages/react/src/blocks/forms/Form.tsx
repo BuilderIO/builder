@@ -83,11 +83,12 @@ export interface FormProps {
     {
       name: 'customHeaders',
       type: 'map',
-      ...{
+      // TODO: add typings for this property
+      ...({
         valueType: {
           type: 'string'
         }
-      },
+      } as any),
       advanced: true
     },
     {
