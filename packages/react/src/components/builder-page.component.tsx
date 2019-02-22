@@ -5,9 +5,9 @@ import { BuilderBlocks } from './builder-blocks.component'
 import { Builder, GetContentOptions, builder, Subscription, BehaviorSubject } from '@builder.io/sdk'
 import { BuilderStoreContext } from '../store/builder-store'
 import produce from 'immer'
-import mapValues from 'lodash-es/mapValues'
 import pick from 'lodash-es/pick'
 import throttle from 'lodash-es/throttle'
+import debounce from 'lodash-es/debounce'
 import { sizes } from '../constants/device-sizes.constant'
 import {
   BuilderAsyncRequestsContext,
@@ -174,6 +174,23 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     return Builder.isBrowser ? sizes.getSizeForWidth(window.innerWidth) : 'large'
   }
 
+  resizeListener = throttle(
+    () => {
+      const deviceSize = this.deviceSizeState
+      if (deviceSize !== this.state.state.deviceSize) {
+        this.setState({
+          ...this.state,
+          state: {
+            deviceSize,
+            ...this.state.state
+          }
+        })
+      }
+    },
+    500,
+    { leading: false, trailing: true }
+  )
+
   // TODO: different options per device size...........................
 
   static renderInto(elementOrSelector: string | HTMLElement, props: BuilderPageProps = {}) {
@@ -205,7 +222,10 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     if (Builder.isIframe) {
       parent.postMessage({ type: 'builder.sdkInjected', data: { modelName: this.name } }, '*')
     }
+
     if (Builder.isBrowser) {
+      window.addEventListener('resize', this.resizeListener)
+
       setTimeout(() => {
         window.dispatchEvent(
           new CustomEvent('builder:component:load', {
@@ -271,6 +291,9 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
 
   componentWillUnmount() {
     this.unsubscribe()
+    if (Builder.isBrowser) {
+      window.removeEventListener('resize', this.resizeListener)
+    }
   }
 
   getFontCss(data: any) {
