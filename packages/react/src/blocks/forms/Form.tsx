@@ -1,7 +1,9 @@
 import React from 'react'
 import { BuilderBlock } from '../../decorators/builder-block.decorator'
 import { BuilderBlock as BuilderBlockComponent } from '../../components/builder-block.component'
-import { BuilderElement } from '@builder.io/sdk'
+import { BuilderElement, Builder } from '@builder.io/sdk'
+import set from 'lodash-es/set'
+import { BuilderBlocks } from '../../components/builder-blocks.component'
 
 export interface FormProps {
   attributes?: any
@@ -12,10 +14,16 @@ export interface FormProps {
   sendSubmissionsTo?: string
   sendWithJs?: boolean
   contentType?: string
+  customHeaders?: { [key: string]: string }
+  successUrl?: string
+  previewState?: string
+  successMessage?: BuilderElement[]
+  errorMessage?: BuilderElement[]
 }
 
 @BuilderBlock({
   name: 'Form:Form',
+  // editableTags: ['builder-form-error']
   defaults: {
     responsiveStyles: {
       large: {
@@ -55,8 +63,10 @@ export interface FormProps {
     {
       name: 'contentType',
       type: 'string',
-      defaultValue: 'json',
-      enum: ['json', 'formdata'],
+      defaultValue: 'application/json',
+      advanced: true,
+      // TODO: do automatically if file input
+      enum: ['application/json', 'multipart/formdata', 'application/x-www-form-urlencoded'],
       showIf: 'options.get("sendSubmissionsTo") === "custom" && options.get("sendWithJs") === true'
     },
     {
@@ -69,6 +79,71 @@ export interface FormProps {
       name: 'method',
       type: 'string',
       advanced: true
+    },
+    {
+      name: 'customHeaders',
+      type: 'map',
+      ...{
+        valueType: {
+          type: 'string'
+        }
+      },
+      advanced: true
+    },
+    {
+      name: 'successUrl',
+      type: 'url',
+      helperText: 'URL to redirect the user to on form submission success',
+      showIf: 'options.get("sendSubmissionsTo") === "custom" && options.get("sendWithJs") === true'
+    },
+    // TODO: maybe
+    // {
+    //   name: 'apiErrorMessageField',
+    //   type: 'text',
+    //   helperText: 'URL to redirect the user to on form submission success',
+    //   showIf: 'options.get("sendSubmissionsTo") === "custom" && options.get("sendWithJs") === true'
+    // },
+    {
+      // editState?
+      name: 'previewState',
+      type: 'string',
+      enum: ['unsubmitted', 'success', 'error'],
+      helperText:
+        'Choose a state to edit, e.g. choose "success" to show what users see on success and edit the message',
+      showIf: 'options.get("sendSubmissionsTo") === "custom" && options.get("sendWithJs") === true'
+    },
+    {
+      name: 'successMessage',
+      type: 'uiBlocks',
+      hideFromUI: true,
+      defaultValue: [
+        {
+          '@type': '@builder.io/sdk:Element',
+          component: {
+            type: 'Text',
+            options: {
+              text: '<span>Thanks!</span>'
+            }
+          }
+        }
+      ]
+    },
+    {
+      name: 'errorMessage',
+      type: 'uiBlocks',
+      hideFromUI: true,
+      defaultValue: [
+        {
+          '@type': '@builder.io/sdk:Element',
+          component: {
+            type: 'Text',
+            options: {
+              // TODO: how pull in API message
+              text: '<span>Form submission error :( Please check your answers and try again</span>'
+            }
+          }
+        }
+      ]
     }
     // TODO: custom headers or any fetch options
     // TODO: json vs serialized (i.e. send on client or not)
@@ -153,19 +228,109 @@ export interface FormProps {
   ]
 })
 export class Form extends React.Component<FormProps> {
+  ref: HTMLFormElement | null = null
+
+  // TODO: link this state to global state and allow togglign the modes in
+  // the style and or data editor. TODO: for now some kind of input for preview state
+  // that only impacts in the editor?
+  state = {
+    state: 'unsubmitted' as 'unsubmitted' | 'success' | 'error',
+    // TODO: separate response and error?
+    respnoseData: null as any
+  }
+
+  get submissionState() {
+    return (Builder.isEditing && this.props.previewState) || this.state.state
+  }
+
   render() {
     return (
       // TODO: JS data bindings
       <form
+        ref={ref => (this.ref = ref)}
         action={this.props.action}
         method={this.props.method}
         name={this.props.name}
-        onSubmit={evenb => {
+        onSubmit={event => {
           if (this.props.sendSubmissionsTo === 'zapier') {
-            // event.preventDefault();
+            event.preventDefault();
             // TODO: send submission to zapier
           } else if (this.props.sendWithJs) {
-            // TODO: handle the JS with the options above
+            event.preventDefault();
+            // TODO: error and success state
+            const el = event.currentTarget
+            const headers = this.props.customHeaders || {}
+
+            let body: any
+
+            const formData = new FormData(el)
+
+            let contentType = this.props.contentType
+
+            formData.forEach(value => {
+              if (value instanceof File) {
+                contentType = 'multipart/formdata'
+              }
+            })
+
+            if (contentType === 'application/x-www-form-urlencoded') {
+              body = formData
+            } else if (contentType === 'multipart/formdata') {
+              body = new URLSearchParams()
+              formData.forEach((value, key) => {
+                body.append(key, value)
+              })
+            } else {
+              // Json
+              body = {}
+
+              formData.forEach((value, key) => {
+                set(body, key, value)
+              })
+            }
+
+            fetch(this.props.action!, {
+              body,
+              headers,
+              method: this.props.method || 'post'
+            }).then(
+              async res => {
+                let body
+                const contentType = res.headers.get('content-type')
+                if (contentType && contentType.indexOf('application/json') !== -1) {
+                  body = await res.json()
+                } else {
+                  body = await res.text()
+                }
+
+                this.setState({
+                  ...this.state,
+                  responseData: body,
+                  state: res.ok ? 'success' : 'error'
+                })
+                // TODO: client side route event first that can be preventDefaulted
+                if (this.props.successUrl) {
+                  if (this.ref) {
+                    const event = new CustomEvent('route', {
+                      detail: {
+                        url: this.props.successUrl
+                      }
+                    })
+                    this.ref.dispatchEvent(event)
+                    if (!event.defaultPrevented) {
+                      location.href = this.props.successUrl
+                    }
+                  }
+                }
+              },
+              err => {
+                this.setState({
+                  ...this.state,
+                  responseData: err,
+                  state: 'error'
+                })
+              }
+            )
           }
         }}
         {...this.props.attributes}
@@ -176,6 +341,23 @@ export class Form extends React.Component<FormProps> {
           this.props.builderBlock.children.map((block, index) => (
             <BuilderBlockComponent key={block.id} block={block} />
           ))}
+
+        {this.submissionState === 'error' && (
+          <BuilderBlocks dataPath="errorMessage" blocks={this.props.errorMessage!} />
+        )}
+
+        {/* TODO: option to turn this off */}
+        {this.submissionState === 'error' &&
+          this.state.respnoseData && (
+            // TODO: tag to edit
+            <pre className="builder-form-error-text" style={{ padding: 10, color: 'red', textAlign: 'center' }}>
+              {JSON.stringify(this.state.respnoseData, null, 2)}
+            </pre>
+          )}
+
+        {this.submissionState === 'success' && (
+          <BuilderBlocks dataPath="successMessage" blocks={this.props.successMessage!} />
+        )}
       </form>
     )
   }

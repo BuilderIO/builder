@@ -22,6 +22,7 @@
     "node": ">=6.0.0"
   },
   "scripts": {
+    "_unlink": "npm unlink *",
     "lint": "tslint  --project tsconfig.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
     "prebuild": "rimraf dist",
     "build": "tsc --module commonjs && rollup -c rollup.config.ts && typedoc --out docs --target es6 --theme minimal --mode file src && npm run build:unpkg:dist",
