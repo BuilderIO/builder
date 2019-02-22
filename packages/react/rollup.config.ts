@@ -15,7 +15,8 @@ const resolvePlugin = resolve()
 const externalDependencies = Object
   .keys(pkg.dependencies)
   .concat(Object.keys(pkg.optionalDependencies || {}))
-  .concat(Object.keys(pkg.peerDependencies || {}))
+  // TODO: go back to using peerDependencies once fix rollup iife issue
+  // .concat(Object.keys(pkg.peerDependencies || {}))
   .filter(name => !name.startsWith('lodash-es'));
 
 const options = {
