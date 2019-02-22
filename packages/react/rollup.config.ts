@@ -13,12 +13,11 @@ const libraryName = 'builder-react'
 
 const resolvePlugin = resolve()
 
-const externalDependencies = Object
-  .keys(pkg.dependencies)
+const externalDependencies = Object.keys(pkg.dependencies)
   .concat(Object.keys(pkg.optionalDependencies || {}))
   // TODO: go back to using peerDependencies once fix rollup iife issue
   // .concat(Object.keys(pkg.peerDependencies || {}))
-  .filter(name => !name.startsWith('lodash-es'));
+  .filter(name => !name.startsWith('lodash-es'))
 
 const options = {
   input: `src/${libraryName}.ts`,
@@ -28,7 +27,15 @@ const options = {
     include: 'src/**'
   },
   plugins: [
-    typescript({ useTsconfigDeclarationDir: true }),
+    typescript({
+      tsconfigOverride: {
+        compilerOptions: {
+          // No need to type check and gen over and over, we do once at beggingn of builder with `tsc`
+          declaration: false,
+          check: false
+        }
+      }
+    }),
     replace({
       'process.env.NODE_ENV': JSON.stringify('production')
     }),
@@ -162,7 +169,7 @@ export default [
         only: [/^\.{0,2}\//, /lodash\-es/]
       }),
       alias({
-        'react': 'preact-compat',
+        react: 'preact-compat',
         'react-dom': 'preact-compat'
       })
     ])
@@ -181,7 +188,7 @@ export default [
         only: [/^\.{0,2}\//, /lodash\-es/]
       }),
       alias({
-        'react': 'inferno-compat',
+        react: 'inferno-compat',
         'react-dom': 'inferno-compat'
       })
     ])
