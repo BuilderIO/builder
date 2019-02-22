@@ -54,6 +54,7 @@ export interface FormProps {
     {
       name: 'name',
       type: 'string',
+      showIf: 'options.get("sendSubmissionsTo") === "custom"',
       advanced: true
     },
     {
@@ -72,14 +73,9 @@ export interface FormProps {
       showIf: 'options.get("sendSubmissionsTo") === "custom" && options.get("sendWithJs") === true'
     },
     {
-      name: 'action',
-      type: 'string',
-      helperText: 'URL to send the form data to',
-      showIf: 'options.get("sendSubmissionsTo") === "custom"'
-    },
-    {
       name: 'method',
       type: 'string',
+      showIf: 'options.get("sendSubmissionsTo") === "custom"',
       advanced: true
     },
     {
@@ -135,7 +131,7 @@ export interface FormProps {
       name: 'validate',
       type: 'boolean',
       defaultValue: true,
-      advanced: true,
+      advanced: true
     },
     {
       name: 'errorMessage',
@@ -256,12 +252,14 @@ export class Form extends React.Component<FormProps> {
     return (
       // TODO: JS data bindings
       <form
-      validate={this.props.validate}
+        validate={this.props.validate}
         ref={ref => (this.ref = ref)}
         action={this.props.action}
         method={this.props.method}
         name={this.props.name}
         onSubmit={event => {
+          // TODO: custom validate event that can preventDefault and use ref or event to set
+          // invalid message
           if (this.props.sendSubmissionsTo === 'zapier') {
             event.preventDefault()
             // TODO: send submission to zapier
