@@ -33,7 +33,7 @@
 | React native | Coming soon | | |
 | Shopify | Coming soon | | | 
 | Wordpress | Coming soon | | |
-| Everyting else - Go, Php, Svelte, Java, Vanilla JA etc | Stable - Use your [HTML API](https://builder.io/c/docs/html-api) and/or [webcomponents](https://builder.io/c/docs/webcomponents-sdk) to include builder pages anywhere | Your webcomponents | Yes |
+| Everyting else - Go, Php, Svelte, Java, Vanilla JS, etc | Stable - Use your [HTML API](https://builder.io/c/docs/html-api) and/or [webcomponents](https://builder.io/c/docs/webcomponents-sdk) to include builder pages anywhere | Your webcomponents | Yes |
 
 Want suppoert for something not listed here or for us to priotize something coming soon? Drop us an issue and let us know! We prioritize based on the community's needs and interestes.
 
