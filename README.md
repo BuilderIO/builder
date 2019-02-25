@@ -19,8 +19,26 @@
 - Marketing teams that never stop asking for changes
 - Developers who are tired of pushing pixels
 
+## Supported Frameworks
 
-## Getting Started
+| Framework        | Status           | Supports using your custom components | SSR supported |
+| ------------- |:-------------:| :-----:| :-----:|
+| React      | stable | Yes | Yes |
+| Email      | stable | Yes | Yes |
+| Webcomponents      | stable      |   Yes | No (webcomponents don't render server side) |
+| Angular | stable      |  You can use your custom angular elements, SSR support for custom elements coming soon | Yes |
+| Preact      | alpha      |   Yes | Yes |
+| Inferno | alpha      |    Yes | Yes |
+| Vue | Vue plugin coming soon - but you can use webcomponents with Vue now   | Coming soon  | Coming soon | Coming soon |
+| React native | Coming soon | | |
+| Shopify | Coming soon | | | 
+| Wordpress | Coming soon | | |
+
+Want suppoert for something not listed here or for us to priotize something coming soon? Drop us an issue and let us know! We prioritize based on the community's needs and interestes.
+
+
+
+## Getting Started with React
 
 ```sh
 npm install --save @builder.io/react
