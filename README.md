@@ -29,10 +29,11 @@
 | Angular | stable      |  You can use your custom angular elements, SSR support for custom elements coming soon | Yes |
 | Preact      | alpha      |   Yes | Yes |
 | Inferno | alpha      |    Yes | Yes |
-| Vue | Vue plugin coming soon - but you can use webcomponents with Vue now   | Coming soon  | Coming soon | Coming soon |
+| Vue | Vue plugin coming soon - but you can use [webcomponents](https://builder.io/c/docs/webcomponents-sdk) with Vue now   | Coming soon  | Coming soon | Coming soon |
 | React native | Coming soon | | |
 | Shopify | Coming soon | | | 
 | Wordpress | Coming soon | | |
+| * | Stable - Use your [HTML API](https://builder.io/c/docs/html-api) and/or [webcomponents](https://builder.io/c/docs/webcomponents-sdk) to include builder pages anywhere you can use html and/or JS | | |
 
 Want suppoert for something not listed here or for us to priotize something coming soon? Drop us an issue and let us know! We prioritize based on the community's needs and interestes.
 
