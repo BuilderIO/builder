@@ -12,6 +12,8 @@ export interface BuilderContentProps<ContentType> {
 export class BuilderContent<ContentType extends object = any> extends React.Component<
   BuilderContentProps<ContentType>
 > {
+  ref: HTMLDivElement | null = null;
+
   state = {
     loading: true,
     data: null as any
@@ -28,6 +30,8 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
     // builder.autoTrack = true;
     // builder.env = 'development';
     this.subscribeToContent()
+
+    ///REACT15ONLY if (this.ref) { this.ref.setAttribute('builder-model', this.props.modelName); }
   }
 
   subscribeToContent() {
@@ -82,8 +86,9 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
   render() {
     const { data, loading } = this.state
     return (
-      // TODO: tag instead?
+      // TODO: use fragment
       <div
+        ref={ref => this.ref = ref}
         className="builder-content"
         onClick={this.onClick}
         builder-content-id={this.state.data && this.state.data.id}
