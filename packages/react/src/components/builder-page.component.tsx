@@ -193,7 +193,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
 
   // TODO: different options per device size...........................
 
-  static renderInto(elementOrSelector: string | HTMLElement, props: BuilderPageProps = {}) {
+  static renderInto(elementOrSelector: string | HTMLElement, props: BuilderPageProps = {}, hydrate = false) {
     const element =
       elementOrSelector instanceof HTMLElement
         ? elementOrSelector
@@ -203,7 +203,10 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
       return
     }
 
-    return ReactDOM.hydrate(<BuilderPage {...props} />, element)
+    if (hydrate) {
+      return ReactDOM.hydrate(<BuilderPage {...props} />, element)
+    }
+    return ReactDOM.render(<BuilderPage {...props} />, element)
   }
 
   componentWillMount() {
