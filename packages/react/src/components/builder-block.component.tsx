@@ -394,7 +394,8 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
                     },
                     // TODO: wrap other proxy properties
                     set: function(target, key, value) {
-                      return Reflect.set(latestState, key, value)
+                      // return Reflect.set(latestState, key, value)
+                      return false;
                     },
                     // to prevent variable doesn't exist errors with `with (state)`
                     has(target, property) {
