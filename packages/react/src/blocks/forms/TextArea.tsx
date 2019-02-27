@@ -11,7 +11,7 @@ export interface FormTextAreaProps {
 @BuilderBlock({
   name: 'Form:TextArea',
   image:
-    'https://cdn.builder.codes/api/v1/image/assets%2FIsxPKMo2gPRRKeakUztj1D6uqed2%2Ff74a2f3de58c4c3e939204e5b6b8f6c3',
+    'https://cdn.builder.io/api/v1/image/assets%2FIsxPKMo2gPRRKeakUztj1D6uqed2%2Ff74a2f3de58c4c3e939204e5b6b8f6c3',
   inputs: [
     {
       name: 'value',

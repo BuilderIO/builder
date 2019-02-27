@@ -11,7 +11,7 @@ export interface ButtonProps {
 @BuilderBlock({
   name: 'Form:SubmitButton',
   image:
-    'https://cdn.builder.codes/api/v1/image/assets%2FIsxPKMo2gPRRKeakUztj1D6uqed2%2Fdf2820ffed1f4349a94c40b3221f5b98',
+    'https://cdn.builder.io/api/v1/image/assets%2FIsxPKMo2gPRRKeakUztj1D6uqed2%2Fdf2820ffed1f4349a94c40b3221f5b98',
   defaultStyles: {
     appearance: 'none',
     paddingTop: '5px',

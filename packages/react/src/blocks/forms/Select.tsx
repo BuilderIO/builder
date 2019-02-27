@@ -11,7 +11,7 @@ export interface FormSelectProps {
 @BuilderBlock({
   name: 'Form:Select',
   image:
-    'https://cdn.builder.codes/api/v1/image/assets%2FIsxPKMo2gPRRKeakUztj1D6uqed2%2F83acca093fb24aaf94dee136e9a4b045',
+    'https://cdn.builder.io/api/v1/image/assets%2FIsxPKMo2gPRRKeakUztj1D6uqed2%2F83acca093fb24aaf94dee136e9a4b045',
   defaultStyles: {
     alignSelf: 'flex-start'
   },

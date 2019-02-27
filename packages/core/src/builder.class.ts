@@ -1039,7 +1039,7 @@ export class Builder {
       case 'dev':
         return 'http://localhost:5000';
       default:
-        return 'https://builder.io';
+        return 'https://cdn.builder.io';
     }
   }
 

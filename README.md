@@ -31,9 +31,9 @@
 | Inferno | alpha      |    Yes | Yes |
 | Vue | Vue plugin coming soon - but you can use [webcomponents](https://builder.io/c/docs/webcomponents-sdk) with Vue now   | Coming soon  | Coming soon | Coming soon |
 | React native | Coming soon | | |
-| Shopify | Coming soon | | | 
+| Shopify | Coming soon | | |
 | Wordpress | Coming soon | | |
-| Everyting else - Go, Php, Svelte, Java, Vanilla JS, etc | Stable - Use your [HTML API](https://builder.io/c/docs/html-api) and/or [webcomponents](https://builder.io/c/docs/webcomponents-sdk) to include builder pages anywhere | Your webcomponents | Yes |
+| Everyting else - Go, Php, Svelte, Java, Vanilla JS, etc | Stable - Use our [HTML API](https://builder.io/c/docs/html-api) and/or [webcomponents](https://builder.io/c/docs/webcomponents-sdk) to include builder pages anywhere | Your webcomponents | Yes |
 
 Want suppoert for something not listed here or for us to priotize something coming soon? Drop us an issue and let us know! We prioritize based on the community's needs and interestes.
 

@@ -10,7 +10,7 @@ export interface LabelProps {
 @BuilderBlock({
   name: 'Form:Label',
   image:
-    'https://cdn.builder.codes/api/v1/image/assets%2FIsxPKMo2gPRRKeakUztj1D6uqed2%2F9322342f04b545fb9a8091cd801dfb5b',
+    'https://cdn.builder.io/api/v1/image/assets%2FIsxPKMo2gPRRKeakUztj1D6uqed2%2F9322342f04b545fb9a8091cd801dfb5b',
   inputs: [
     {
       name: 'text',

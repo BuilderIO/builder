@@ -11,7 +11,7 @@ export interface ButtonProps {
 @BuilderBlock({
   name: 'Core:Button',
   image:
-    'https://cdn.builder.codes/api/v1/image/assets%2FIsxPKMo2gPRRKeakUztj1D6uqed2%2F81a15681c3e74df09677dfc57a615b13',
+    'https://cdn.builder.io/api/v1/image/assets%2FIsxPKMo2gPRRKeakUztj1D6uqed2%2F81a15681c3e74df09677dfc57a615b13',
   defaultStyles: {
     // TODO: make min width more intuitive and set one
     appearance: 'none',
