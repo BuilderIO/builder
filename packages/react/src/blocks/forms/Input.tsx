@@ -36,7 +36,8 @@ export interface FormInputProps {
         'time',
         'month',
         'week',
-        'color'
+        'color',
+        'hidden'
       ],
       defaultValue: 'text'
     },

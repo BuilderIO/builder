@@ -278,7 +278,7 @@ export class Form extends React.Component<FormProps> {
             const formPairs: {
               key: string
               value: File | boolean | number | string
-            }[] = (Array.from(document.querySelectorAll('input,select,textarea')) as HTMLElement[])
+            }[] = (Array.from(event.currentTarget.querySelectorAll('input,select,textarea')) as HTMLElement[])
               .filter(el => !!(el as HTMLInputElement).name)
               .map(el => {
                 let value: any
