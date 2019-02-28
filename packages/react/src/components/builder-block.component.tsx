@@ -150,6 +150,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
     try {
       // tslint:disable-next-line:no-function-constructor-with-string-args
       if (Builder.isBrowser) {
+        // TODO: use strict and eval
         fn = new Function(
           'state',
           'event',
@@ -158,9 +159,20 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
           'Device',
           'update',
           // TODO: block reference...
-          `with (state) {
-            ${useReturn ? `return (${str});` : str};
-          }`
+          // TODO: or just remove with (rootState) in general
+          `
+            var rootState = state;
+            if (typeof Proxy !== 'undefined') {
+              rootState = new Proxy(rootState, {
+                set: function () {
+                  return false;
+                }
+              });
+            }
+            with (rootState) {
+              ${useReturn ? `return (${str});` : str};
+            }
+          `
         )
       }
     } catch (error) {
@@ -395,8 +407,8 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
                     // TODO: wrap other proxy properties
                     set: function(target, key, value) {
                       // TODO: do these for deep sets from references hmm
-                      // return Reflect.set(latestState, key, value)
-                      return false;
+                      return Reflect.set(latestState, key, value)
+                      // return false;
                     },
                     // to prevent variable doesn't exist errors with `with (state)`
                     has(target, property) {
