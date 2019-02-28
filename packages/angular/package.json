@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/angular",
-  "version": "0.1.21-alpha.0",
+  "version": "0.1.21",
   "scripts": {
     "_unlink": "npm unlink *",
     "_install": "npm install",
@@ -28,7 +28,7 @@
     "@angular/core": "^7.0.4",
     "@angular/http": "^7.0.4",
     "@angular/router": "^7.0.4",
-    "@builder.io/sdk": "^1.0.12-alpha.0",
+    "@builder.io/sdk": "^1.0.12",
     "core-js": "^2.4.1",
     "lodash-es": "^4.17.11",
     "rxjs": "^6.3.3",
