@@ -14,10 +14,21 @@ import {
   ChangeDetectionStrategy,
 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import kebabCase from 'lodash-es/kebabCase';
+
 
 import { Builder } from '@builder.io/sdk';
-import omit from 'lodash-es/omit';
+
+function kebabCase(str: string) {
+  if (!str) {
+    return str;
+  }
+  let newString = str;
+  // First letter capitalize
+  if (newString[0].toUpperCase() === newString[0]) {
+    newString = '--' + newString;
+  }
+  return newString.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+}
 
 // TODO: move to @builder/core
 export type Size = 'large' | 'medium' | 'small' | 'xsmall';
@@ -70,7 +81,10 @@ export class BuilderRenderComponent implements OnInit {
           {
             type: 'builder.clickComponent',
             data: {
-              component: omit(component, 'class'),
+              component: {
+                ...component,
+                class: undefined
+              },
             },
           },
           // TODO: change these to builder domain specified
