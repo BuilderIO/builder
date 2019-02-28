@@ -335,6 +335,18 @@ export class Form extends React.Component<FormProps> {
               })
             }
 
+            const presubmitEvent = new CustomEvent('presubmit', {
+              detail: {
+                body
+              }
+            })
+            if (this.ref) {
+              this.ref.dispatchEvent(presubmitEvent)
+              if (presubmitEvent.defaultPrevented) {
+                return
+              }
+            }
+
             fetch(this.props.action!, {
               body,
               headers,
@@ -354,6 +366,21 @@ export class Form extends React.Component<FormProps> {
                   responseData: body,
                   state: res.ok ? 'success' : 'error'
                 })
+                // TODO: send submit success event
+
+                const submitSuccessEvent = new CustomEvent('submit:success', {
+                  detail: {
+                    res,
+                    body
+                  }
+                })
+                if (this.ref) {
+                  this.ref.dispatchEvent(submitSuccessEvent)
+                  if (submitSuccessEvent.defaultPrevented) {
+                    return
+                  }
+                }
+
                 // TODO: client side route event first that can be preventDefaulted
                 if (this.props.successUrl) {
                   if (this.ref) {
@@ -370,6 +397,19 @@ export class Form extends React.Component<FormProps> {
                 }
               },
               err => {
+                const submitErrorEvent = new CustomEvent('submit:error', {
+                  detail: {
+                    error: err
+                  }
+                })
+                if (this.ref) {
+                  this.ref.dispatchEvent(submitErrorEvent)
+                  if (submitErrorEvent.defaultPrevented) {
+                    return
+                  }
+                }
+
+                // TODO: send submit error event
                 this.setState({
                   ...this.state,
                   responseData: err,
