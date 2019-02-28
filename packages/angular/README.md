@@ -2,6 +2,12 @@
 
 ## Usage
 
+Install
+
+```
+npm install --save @builder.io/angular
+```
+
 Add the module
 
 ```ts
