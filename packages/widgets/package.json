@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/widgets",
-  "version": "1.0.13-alpha.7",
+  "version": "1.0.13",
   "description": "",
   "keywords": [],
   "main": "dist/builder-widgets.cjs.js",
@@ -124,8 +124,8 @@
     "validate-commit-msg": "^2.12.2"
   },
   "dependencies": {
-    "@builder.io/react": "^1.0.13-alpha.7",
-    "@builder.io/sdk": "^1.0.9-alpha.4",
+    "@builder.io/react": "^1.0.13",
+    "@builder.io/sdk": "^1.0.9",
     "core-js": "^2.5.7",
     "immer": "^1.7.2",
     "lodash-es": "^4.17.10",
