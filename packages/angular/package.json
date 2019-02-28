@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/angular",
-  "version": "0.1.21",
+  "version": "0.1.22-alpha.0",
   "scripts": {
     "_unlink": "npm unlink *",
     "_install": "npm install",
