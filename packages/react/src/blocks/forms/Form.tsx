@@ -278,13 +278,20 @@ export class Form extends React.Component<FormProps> {
             const formPairs: {
               key: string
               value: File | boolean | number | string
-            }[] = (Array.from(event.currentTarget.querySelectorAll('input,select,textarea')) as HTMLElement[])
+            }[] = (Array.from(
+              event.currentTarget.querySelectorAll('input,select,textarea')
+            ) as HTMLElement[])
               .filter(el => !!(el as HTMLInputElement).name)
               .map(el => {
                 let value: any
                 const key = (el as HTMLImageElement).name
                 if (el instanceof HTMLInputElement) {
-                  if (el.type === 'checkbox') {
+                  if (el.type === 'radio') {
+                    if (el.checked) {
+                      value = el.name
+                      return { key, value }
+                    }
+                  } else if (el.type === 'checkbox') {
                     value = el.checked
                   } else if (el.type === 'number' || el.type === 'range') {
                     const num = el.valueAsNumber
