@@ -28,7 +28,7 @@ async function main() {
         return null;
       }
       var version = typeof location !== 'undefined' && location.href && getQueryParam(location.href, 'builder.wcVersion') ||  "${pkg.version}";
-      System.import('https://builder.io/js/webcomponents@' + version + '/dist/system/builder-webcomponents.js')
+      System.import('https://cdn.builder.io/js/webcomponents@' + version + '/dist/system/builder-webcomponents.js')
     }
     `.replace(/\s+/g, ' ')
     // `setTimeout(function () { if (typeof location !== 'undefined' && location.hostname === 'shop.galmeetsglam.com') {

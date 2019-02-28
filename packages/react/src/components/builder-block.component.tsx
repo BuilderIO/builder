@@ -394,6 +394,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
                     },
                     // TODO: wrap other proxy properties
                     set: function(target, key, value) {
+                      // TODO: do these for deep sets from references hmm
                       // return Reflect.set(latestState, key, value)
                       return false;
                     },

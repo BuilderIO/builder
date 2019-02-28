@@ -117,7 +117,7 @@ BuilderBlock({
 Builder webcomponents support all sites and frameworks!
 
 ```html
-<script src="https://builder.io/js/webcomponents"></script>
+<script src="https://cdn.builder.io/js/webcomponents"></script>
 <builder-component name="page"></builder-component>
 ```
 
