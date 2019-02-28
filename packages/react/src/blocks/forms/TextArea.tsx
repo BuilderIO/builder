@@ -5,6 +5,7 @@ export interface FormTextAreaProps {
   attributes?: any
   name?: string
   value?: string
+  defaultValue?: string
   placeholder?: string
 }
 
@@ -14,7 +15,12 @@ export interface FormTextAreaProps {
     'https://cdn.builder.io/api/v1/image/assets%2FIsxPKMo2gPRRKeakUztj1D6uqed2%2Ff74a2f3de58c4c3e939204e5b6b8f6c3',
   inputs: [
     {
+      advanced: true,
       name: 'value',
+      type: 'string'
+    },
+    {
+      name: 'defaultValue',
       type: 'string'
     },
     {
@@ -42,6 +48,7 @@ export class TextArea extends React.Component<FormTextAreaProps> {
         placeholder={this.props.placeholder}
         name={this.props.name}
         value={this.props.value}
+        defaultValue={this.props.defaultValue}
         {...this.props.attributes}
       />
     )

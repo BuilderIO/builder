@@ -6,6 +6,7 @@ export interface FormSelectProps {
   attributes?: any
   name?: string
   value?: string
+  defaultValue?: string
 }
 
 @BuilderBlock({
@@ -29,7 +30,7 @@ export interface FormSelectProps {
         {
           name: 'name',
           type: 'text'
-        },
+        }
       ],
       defaultValue: [
         {
@@ -41,12 +42,17 @@ export interface FormSelectProps {
       ]
     },
     {
-      name: 'value',
+      name: 'defaultValue',
       type: 'string'
     },
     {
-      name: 'name',
+      name: 'value',
       type: 'string',
+      advanced: true
+    },
+    {
+      name: 'name',
+      type: 'string'
       // advanced: true,
     },
     {
@@ -61,7 +67,12 @@ export class FormSelect extends React.Component<FormSelectProps> {
   render() {
     const { options } = this.props
     return (
-      <select value={this.props.value} name={this.props.name} {...this.props.attributes}>
+      <select
+        value={this.props.value}
+        defaultValue={this.props.defaultValue}
+        name={this.props.name}
+        {...this.props.attributes}
+      >
         {options &&
           options.map(option => (
             <option value={option.value}>{option.name || option.value}</option>

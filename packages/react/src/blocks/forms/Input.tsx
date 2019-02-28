@@ -11,6 +11,7 @@ export interface FormInputProps {
   name?: string
   value?: string
   placeholder?: string
+  defaultValue?: string
 }
 
 @BuilderBlock({
@@ -41,9 +42,15 @@ export interface FormInputProps {
       ],
       defaultValue: 'text'
     },
+    // TODO: handle value vs default value automatically like ng-model
+    {
+      name: 'defaultValue',
+      type: 'string',
+    },
     {
       name: 'value',
-      type: 'string'
+      type: 'string',
+      advanced: true
     },
     {
       name: 'placeholder',
@@ -80,6 +87,7 @@ export class FormInput extends React.Component<FormInputProps> {
         type={this.props.type}
         name={this.props.name}
         value={this.props.value}
+        defaultValue={this.props.defaultValue}
         {...this.props.attributes}
       />
     )
