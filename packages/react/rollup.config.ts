@@ -32,7 +32,8 @@ const options = {
         compilerOptions: {
           // No need to type check and gen over and over, we do once at beggingn of builder with `tsc`
           declaration: false,
-          check: false
+          check: false,
+          allowJs: true
         }
       }
     }),
@@ -210,7 +211,7 @@ export default [
           'react-dom': 'inferno-compat',
           inferno: 'inferno-compat',
           'inferno-dom': 'inferno-compat'
-        }),
+        })
         // replace({
         //   'React.createContext': `require('create-inferno-context')`
         // })
