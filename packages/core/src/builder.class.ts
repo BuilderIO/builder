@@ -426,7 +426,7 @@ export class Builder {
   editingModel$ = new BehaviorSubject<null | string>(null);
 
   setUserAgent(userAgent: string) {
-    this.userAgent = userAgent;
+    this.userAgent = userAgent || '';
   }
   userAgent: string = (typeof navigator === 'object' && navigator.userAgent) || '';
 
@@ -876,7 +876,7 @@ export class Builder {
     return (typeof location === 'object' && parse(location.href)) || ({} as any);
   }
 
-  getUserAttributes(userAgent = this.userAgent) {
+  getUserAttributes(userAgent = this.userAgent || '') {
     this.isUsed = true;
 
     // TODO: detect desktop browser and OS too

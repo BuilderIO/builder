@@ -141,15 +141,15 @@
     "preact": "^8.4.2",
     "preact-compat": "^3.18.4",
     "prop-types": "^15.7.2",
-    "vm2": "^3.6.4"
+    "vm2": "^3.6.4",
+    "create-inferno-context": "^0.2.4",
+    "preact-context": "^1.1.3"
   },
   "dependencies": {
     "@builder.io/sdk": "^1.0.12",
-    "create-inferno-context": "^0.2.4",
     "immer": "^1.7.2",
-    "preact-context": "^1.1.3",
-    "react": "^0.14.0 || ^15.0.0 || ^16.0.0",
-    "react-dom": "^0.14.0 || ^15.0.0 || ^16.0.0"
+    "react": ">=14",
+    "react-dom": "^>=14"
   },
   "gitHead": "3d55a987a69736618d729c43baf7c9ce41c27464"
 }

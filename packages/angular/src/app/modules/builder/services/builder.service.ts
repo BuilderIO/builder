@@ -63,7 +63,7 @@ export class BuilderService extends Builder {
     }
 
     if (this.expressRequest) {
-      this.setUserAgent(this.expressRequest.get('user-agent') as string);
+      this.setUserAgent(this.expressRequest.get('user-agent') as string || '');
       this.cookies = new Cookies(this.expressRequest, this.expressResponse);
     } else if (!Builder.isBrowser) {
       console.warn(
