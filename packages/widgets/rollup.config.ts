@@ -119,7 +119,10 @@ export default [
       }),
       alias({
         react: 'preact-compat',
-        'react-dom': 'preact-compat'
+        'react-dom': 'preact-compat',
+        // For 3rd party libs
+        preact: 'preact-compat',
+        'preact-dom': 'preact-compat'
       }),
       replace({
         'React.Fragment': '"span"',
@@ -143,8 +146,9 @@ export default [
       alias({
         react: 'inferno-compat',
         'react-dom': 'inferno-compat',
+        // For 3rd party libs
         inferno: 'inferno-compat',
-        'inferno-dom': 'inferno-compat',
+        'inferno-dom': 'inferno-compat'
       }),
       replace({
         'React.createContext': `require('create-inferno-context')`
