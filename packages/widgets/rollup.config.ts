@@ -142,7 +142,9 @@ export default [
       }),
       alias({
         react: 'inferno-compat',
-        'react-dom': 'inferno-compat'
+        'react-dom': 'inferno-compat',
+        inferno: 'inferno-compat',
+        'inferno-dom': 'inferno-compat',
       }),
       replace({
         'React.createContext': `require('create-inferno-context')`
