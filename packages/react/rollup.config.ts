@@ -171,7 +171,11 @@ export default [
       alias({
         react: 'preact-compat',
         'react-dom': 'preact-compat'
-      })
+      }),
+      replace({
+        'React.Fragment': '"span"',
+        'React.createContext': `require('preact-context').createContext`
+      }),
     ])
   },
   // Inferno
@@ -190,7 +194,10 @@ export default [
       alias({
         react: 'inferno-compat',
         'react-dom': 'inferno-compat'
-      })
+      }),
+      replace({
+        'React.createContext': `require('create-inferno-context').default`
+      }),
     ])
   },
   {
