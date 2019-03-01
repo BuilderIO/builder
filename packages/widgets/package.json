@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/widgets",
-  "version": "1.0.17-alpha.3",
+  "version": "1.0.17-alpha.4",
   "description": "",
   "keywords": [],
   "main": "dist/builder-widgets.cjs.js",
@@ -125,7 +125,7 @@
     "validate-commit-msg": "^2.12.2"
   },
   "dependencies": {
-    "@builder.io/react": "^1.0.17-alpha.2",
+    "@builder.io/react": "^1.0.17-alpha.3",
     "@builder.io/sdk": "^1.0.12",
     "core-js": "^2.5.7",
     "immer": "^1.7.2",
