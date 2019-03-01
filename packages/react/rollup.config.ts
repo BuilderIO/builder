@@ -196,7 +196,7 @@ export default [
         'react-dom': 'inferno-compat'
       }),
       replace({
-        'React.createContext': `require('create-inferno-context').default`
+        'React.createContext': `require('create-inferno-context')`
       }),
     ])
   },

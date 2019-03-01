@@ -11,7 +11,9 @@
     "dist",
     "index.js",
     "15.js",
-    "server.js"
+    "server.js",
+    "preact.js",
+    "inferno.js"
   ],
   "author": "Steve Sewell <steve@builder.io>",
   "repository": {
