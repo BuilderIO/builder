@@ -1,7 +1,6 @@
 {
   "name": "@builder.io/angular",
-  "version": "0.1.22-alpha.0",
-
+  "version": "0.1.22-alpha.1",
   "main": "dist/bundles/builder.io-angular.umd.js",
   "module": "dist/fesm5/builder.io-angular.js",
   "es2015": "dist/fesm2015/builder.io-angular.js",
@@ -12,7 +11,6 @@
   "typings": "dist/builder.io-angular.d.ts",
   "metadata": "dist/builder.io-angular.metadata.json",
   "sideEffects": false,
-
   "scripts": {
     "_unlink": "npm unlink *",
     "_install": "npm install",
