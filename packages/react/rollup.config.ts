@@ -211,9 +211,9 @@ export default [
           inferno: 'inferno-compat',
           'inferno-dom': 'inferno-compat'
         }),
-        replace({
-          'React.createContext': `require('create-inferno-context')`
-        })
+        // replace({
+        //   'React.createContext': `require('create-inferno-context')`
+        // })
       ])
   },
   {
