@@ -197,7 +197,7 @@ export default [
       { file: './dist/inferno.js', format: 'cjs', sourcemap: true }
     ],
     external: externalDependencies.filter(
-      name => !name.startsWith('lodash-es') && !name.startsWith('create-inferno-context')
+      name => !name.startsWith('lodash-es') && !name.startsWith('create-inferno-context') // create-info-context needs bundling as it causes errors otherwise
     ),
     plugins: options.plugins
       .filter(plugin => plugin !== resolvePlugin)
