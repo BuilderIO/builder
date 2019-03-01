@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/react",
-  "version": "1.0.17-alpha.5",
+  "version": "1.0.17-alpha.6",
   "description": "",
   "keywords": [],
   "main": "dist/builder-react.cjs.js",
@@ -134,19 +134,19 @@
   },
   "//": "TODO: get react back as peerdependencies - find where rollup is putting those external in iife and stop it",
   "optionalDependencies": {
+    "create-inferno-context": "^0.2.4",
     "create-react-context": "^0.2.3",
     "inferno": "^7.1.9",
     "inferno-compat": "^7.1.9",
     "node-fetch": "^2.3.0",
     "preact": "^8.4.2",
     "preact-compat": "^3.18.4",
+    "preact-context": "^1.1.3",
     "prop-types": "^15.7.2",
-    "vm2": "^3.6.4",
-    "create-inferno-context": "^0.2.4",
-    "preact-context": "^1.1.3"
+    "vm2": "^3.6.4"
   },
   "dependencies": {
-    "@builder.io/sdk": "^1.0.12",
+    "@builder.io/sdk": "^1.0.13-alpha.0",
     "immer": "^1.7.2",
     "react": ">=14",
     "react-dom": ">=14"
