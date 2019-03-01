@@ -92,11 +92,13 @@ export default [
       { file: pkg.main, format: 'cjs', sourcemap: true }
     ],
     external: externalDependencies,
-    plugins: options.plugins.filter(plugin => plugin !== resolvePlugin).concat([
-      resolve({
-        only: [/^\.{0,2}\//, /lodash\-es/]
-      })
-    ])
+    plugins: options.plugins
+      .filter(plugin => plugin !== resolvePlugin)
+      .concat([
+        resolve({
+          only: [/^\.{0,2}\//, /lodash\-es/]
+        })
+      ])
   },
   // Server
   {
@@ -106,23 +108,25 @@ export default [
       { file: './dist/server.js', format: 'cjs', sourcemap: true }
     ],
     external: externalDependencies.filter(name => !name.startsWith('lodash-es')),
-    plugins: options.plugins.filter(plugin => plugin !== resolvePlugin).concat([
-      resolve({
-        only: [/^\.{0,2}\//, /lodash\-es/]
-      }),
-      regexReplace({
-        // ... do replace before commonjs
-        patterns: [
-          {
-            // regexp match with resolved path
-            // match: /formidable(\/|\\)lib/,
-            // string or regexp
-            test: /\/\/\/SERVERONLY/g,
-            replace: ''
-          }
-        ]
-      })
-    ])
+    plugins: options.plugins
+      .filter(plugin => plugin !== resolvePlugin)
+      .concat([
+        resolve({
+          only: [/^\.{0,2}\//, /lodash\-es/]
+        }),
+        regexReplace({
+          // ... do replace before commonjs
+          patterns: [
+            {
+              // regexp match with resolved path
+              // match: /formidable(\/|\\)lib/,
+              // string or regexp
+              test: /\/\/\/SERVERONLY/g,
+              replace: ''
+            }
+          ]
+        })
+      ])
   },
   // React 15
   {
@@ -132,28 +136,30 @@ export default [
       { file: './dist/15.js', format: 'cjs', sourcemap: true }
     ],
     external: externalDependencies.filter(name => !name.startsWith('lodash-es')),
-    plugins: options.plugins.filter(plugin => plugin !== resolvePlugin).concat([
-      resolve({
-        only: [/^\.{0,2}\//, /lodash\-es/]
-      }),
-      replace({
-        'React.Fragment': '"span"',
-        'React.createContext': `require('create-react-context')`
-      }),
-      regexReplace({
-        // ... do replace before commonjs
-        patterns: [
-          {
-            test: /\/\/\/REACT15ONLY/g,
-            replace: ''
-          },
-          {
-            test: /\/\*\*\*REACT15ONLY([^\*]+)\*\//g,
-            replace: '$1'
-          }
-        ]
-      })
-    ])
+    plugins: options.plugins
+      .filter(plugin => plugin !== resolvePlugin)
+      .concat([
+        resolve({
+          only: [/^\.{0,2}\//, /lodash\-es/]
+        }),
+        replace({
+          'React.Fragment': '"span"',
+          'React.createContext': `require('create-react-context')`
+        }),
+        regexReplace({
+          // ... do replace before commonjs
+          patterns: [
+            {
+              test: /\/\/\/REACT15ONLY/g,
+              replace: ''
+            },
+            {
+              test: /\/\*\*\*REACT15ONLY([^\*]+)\*\//g,
+              replace: '$1'
+            }
+          ]
+        })
+      ])
   },
   // Preact
   // TODO: may have to do react 15 modifications for support (no fragment/context?)
@@ -164,21 +170,23 @@ export default [
       { file: './dist/preact.js', format: 'cjs', sourcemap: true }
     ],
     external: externalDependencies.filter(name => !name.startsWith('lodash-es')),
-    plugins: options.plugins.filter(plugin => plugin !== resolvePlugin).concat([
-      resolve({
-        only: [/^\.{0,2}\//, /lodash\-es/]
-      }),
-      alias({
-        react: 'preact-compat',
-        'react-dom': 'preact-compat',
-        preact: 'preact-compat',
-        'preact-dom': 'preact-compat'
-      }),
-      replace({
-        'React.Fragment': '"span"',
-        'React.createContext': `require('preact-context').createContext`
-      }),
-    ])
+    plugins: options.plugins
+      .filter(plugin => plugin !== resolvePlugin)
+      .concat([
+        resolve({
+          only: [/^\.{0,2}\//, /lodash\-es/]
+        }),
+        alias({
+          react: 'preact-compat',
+          'react-dom': 'preact-compat',
+          preact: 'preact-compat',
+          'preact-dom': 'preact-compat'
+        }),
+        replace({
+          'React.Fragment': '"span"',
+          'React.createContext': `require('preact-context').createContext`
+        })
+      ])
   },
   // Inferno
   // TODO: may have to do react 15 modifications for support (no fragment/context?)
@@ -188,21 +196,25 @@ export default [
       { file: './dist/inferno.esm.js', format: 'es', sourcemap: true },
       { file: './dist/inferno.js', format: 'cjs', sourcemap: true }
     ],
-    external: externalDependencies.filter(name => !name.startsWith('lodash-es') && !name.startsWith('create-inferno-context')),
-    plugins: options.plugins.filter(plugin => plugin !== resolvePlugin).concat([
-      resolve({
-        only: [/^\.{0,2}\//, /lodash\-es/]
-      }),
-      alias({
-        react: 'inferno-compat',
-        'react-dom': 'inferno-compat',
-        inferno: 'inferno-compat',
-        'inferno-dom': 'inferno-compat'
-      }),
-      replace({
-        'React.createContext': `require('create-inferno-context')`
-      }),
-    ])
+    external: externalDependencies.filter(
+      name => !name.startsWith('lodash-es') && !name.startsWith('create-inferno-context')
+    ),
+    plugins: options.plugins
+      .filter(plugin => plugin !== resolvePlugin)
+      .concat([
+        resolve({
+          only: [/^\.{0,2}\//, /lodash\-es/]
+        }),
+        alias({
+          react: 'inferno-compat',
+          'react-dom': 'inferno-compat',
+          inferno: 'inferno-compat',
+          'inferno-dom': 'inferno-compat'
+        }),
+        replace({
+          'React.createContext': `require('create-inferno-context')`
+        })
+      ])
   },
   {
     ...options,
