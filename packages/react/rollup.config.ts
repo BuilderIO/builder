@@ -188,7 +188,7 @@ export default [
       { file: './dist/inferno.esm.js', format: 'es', sourcemap: true },
       { file: './dist/inferno.js', format: 'cjs', sourcemap: true }
     ],
-    external: externalDependencies.filter(name => !name.startsWith('lodash-es')),
+    external: externalDependencies.filter(name => !name.startsWith('lodash-es') && !name.startsWith('create-inferno-context')),
     plugins: options.plugins.filter(plugin => plugin !== resolvePlugin).concat([
       resolve({
         only: [/^\.{0,2}\//, /lodash\-es/]
