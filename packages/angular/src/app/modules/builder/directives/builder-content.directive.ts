@@ -157,7 +157,7 @@ export class BuilderContentDirective {
         if (this.component) {
           this.component.contentLoad.next(match);
         } else {
-          console.warn('No component!');
+          // console.warn('No component!');
         }
         if (match) {
           const rootNode = this._viewRef!.rootNodes[0];
