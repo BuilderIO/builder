@@ -14,6 +14,7 @@ import { BuilderDividerComponent } from './components/builder-divider/builder-di
 import { BuilderCanvasComponent } from './components/builder-canvas/builder-canvas.component';
 import { BuilderElementComponent } from './components/builder-element/builder-element.component';
 import { BuilderComponentComponent } from './components/builder-component/builder-component.component';
+import { BuilderComponentService } from './components/builder-component/builder-component.service';
 
 const directives = [BuilderContentDirective];
 
@@ -33,7 +34,7 @@ const components = [
 
 @NgModule({
   imports: [CommonModule],
-  providers: [BuilderService, BuilderContentService],
+  providers: [BuilderService, BuilderContentService, BuilderComponentService],
   declarations: [components, directives],
   exports: [components, directives],
   entryComponents: [components],

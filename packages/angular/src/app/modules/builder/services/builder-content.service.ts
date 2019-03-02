@@ -4,6 +4,6 @@ import { BuilderContentDirective } from '../directives/builder-content.directive
 
 @Injectable()
 export class BuilderContentService {
-  componentInstance: BuilderContentComponent;
+  componentInstance: BuilderContentComponent | null = null;;
   directiveInstance: BuilderContentDirective;
 }

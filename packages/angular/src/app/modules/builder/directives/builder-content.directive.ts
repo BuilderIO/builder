@@ -22,7 +22,8 @@ declare let Zone: any;
 })
 export class BuilderContentDirective {
   private get component() {
-    return BuilderService.componentInstances[this._context.model as string];
+    // return BuilderService.componentInstances[this._context.model as string];
+    return this.builderContentService.componentInstance;
   }
 
   private _context: BuilderContentContext = new BuilderContentContext();
@@ -39,7 +40,7 @@ export class BuilderContentDirective {
     private _viewContainer: ViewContainerRef,
     private renderer: Renderer,
     private builder: BuilderService,
-    builderContentService: BuilderContentService,
+    private builderContentService: BuilderContentService,
     @Optional() private transferState: TransferState,
     templateRef: TemplateRef<BuilderContentContext>
   ) {
