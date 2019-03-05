@@ -1,6 +1,7 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, Optional } from '@angular/core';
 import { Router } from '@angular/router';
 import { parse } from 'url';
+import { BuilderComponentService } from './builder-component.service';
 
 function delay<T = any>(duration: number, resolveValue?: T) {
   return new Promise<T>(resolve => setTimeout(() => resolve(resolveValue), duration));
@@ -32,10 +33,15 @@ export interface RouteEvent {
   selector: 'builder-component',
   templateUrl: './builder-component.component.html',
   styleUrls: ['./builder-component.component.css'],
+  providers: [BuilderComponentService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BuilderComponentComponent {
   @Input() model: string | undefined /* THIS IS ACTUALLY REQUIRED */;
+
+  @Input() set name(name: string | undefined) {
+    this.model = name;
+  }
 
   @Input() handleRouting = true;
 
@@ -43,7 +49,7 @@ export class BuilderComponentComponent {
   @Output() route = new EventEmitter<RouteEvent>();
   @Output() error = new EventEmitter<any>();
 
-  constructor(private router: Router) {}
+  constructor(@Optional() private router?: Router) {}
 
   // TODO: this should be in BuilderBlocks
   async onClick(event: MouseEvent) {
@@ -99,6 +105,10 @@ export class BuilderComponentComponent {
       } else {
         return;
       }
+    }
+
+    if (this.router) {
+      return;
     }
 
     // Otherwise if this url is relative, navigate on the client

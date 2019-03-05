@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/angular",
-  "version": "0.1.22-alpha.6",
+  "version": "1.0.1",
   "main": "dist/bundles/builder.io-angular.umd.js",
   "module": "dist/fesm5/builder.io-angular.js",
   "es2015": "dist/fesm2015/builder.io-angular.js",
@@ -43,7 +43,9 @@
     "lodash-es": "^4.17.11",
     "rxjs": "^6.3.3",
     "tsickle": "^0.33.1",
-    "zone.js": "^0.8.19"
+    "zone.js": "^0.8.19",
+    "@nguniversal/express-engine": "*",
+    "@nguniversal/module-map-ngfactory-loader": "*"
   },
   "devDependencies": {
     "@angular/cli": ">= 2",
@@ -53,8 +55,6 @@
     "@angular/platform-browser": ">= 2",
     "@angular/platform-browser-dynamic": ">= 2",
     "@angular/platform-server": ">= 2",
-    "@nguniversal/express-engine": "^7.0.2",
-    "@nguniversal/module-map-ngfactory-loader": "^7.0.2",
     "@types/express": "^4.11.1",
     "@types/jasmine": "^2.8.11",
     "@types/jasminewd2": "^2.0.6",
@@ -76,5 +76,6 @@
     "ts-node": "^7.0.1",
     "tslint": "^5.11.0",
     "typescript": "3.1.6"
-  }
+  },
+  "gitHead": "dfe7877c4c94aeb4aac709b59a97e5580ab9b4ed"
 }

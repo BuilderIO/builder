@@ -153,7 +153,7 @@ export interface Input {
   enum?: string[];
   advanced?: boolean;
   onChange?: Function | string;
-  showIf?: Function | string;
+  showIf?: ((options: Map<string, any>) => boolean) | string;
 }
 
 export interface Component {
@@ -266,18 +266,21 @@ export class Builder {
           return input;
         }),
       }),
-      hooks: Object.keys(spec.hooks || {}).reduce((memo, key) => {
-        const value = spec.hooks && spec.hooks[key]
-        if (!value) {
-          return memo
-        }
-        if (typeof value === 'string') {
-          memo[key] = value
-        } else {
-          memo[key] = `return (${value.toString()}).apply(this, arguments)`
-        }
-        return memo;
-      }, {} as {[key: string]: string}),
+      hooks: Object.keys(spec.hooks || {}).reduce(
+        (memo, key) => {
+          const value = spec.hooks && spec.hooks[key];
+          if (!value) {
+            return memo;
+          }
+          if (typeof value === 'string') {
+            memo[key] = value;
+          } else {
+            memo[key] = `return (${value.toString()}).apply(this, arguments)`;
+          }
+          return memo;
+        },
+        {} as { [key: string]: string }
+      ),
       class: undefined,
     };
   }

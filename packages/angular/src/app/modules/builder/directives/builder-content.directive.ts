@@ -12,6 +12,7 @@ import { BuilderContentService } from '../services/builder-content.service';
 // FIXME: tsconfig paths? install module? use lerna...
 import { BuilderService } from '../services/builder.service';
 import { Builder } from '@builder.io/sdk';
+import { BuilderComponentService } from '../components/builder-component/builder-component.service';
 
 declare let Zone: any;
 
@@ -23,7 +24,7 @@ declare let Zone: any;
 export class BuilderContentDirective {
   private get component() {
     // return BuilderService.componentInstances[this._context.model as string];
-    return this.builderContentService.componentInstance;
+    return this.builderComponentService.contentComponentInstance;
   }
 
   private _context: BuilderContentContext = new BuilderContentContext();
@@ -40,11 +41,11 @@ export class BuilderContentDirective {
     private _viewContainer: ViewContainerRef,
     private renderer: Renderer,
     private builder: BuilderService,
-    private builderContentService: BuilderContentService,
+    private builderComponentService: BuilderComponentService,
     @Optional() private transferState: TransferState,
     templateRef: TemplateRef<BuilderContentContext>
   ) {
-    builderContentService.directiveInstance = this;
+    builderComponentService.contentDirectiveInstance = this;
     this._templateRef = templateRef;
   }
 
@@ -194,7 +195,7 @@ export class BuilderContentDirective {
         if (this.component) {
           this.component.contentError.next(error);
         } else {
-          console.warn('no component!');
+          console.warn('No component!');
         }
         if (!receivedFirstResponse) {
           // TODO: how to zone error
