@@ -30,6 +30,7 @@ export { Video } from './blocks/Video'
 export { Symbol } from './blocks/Symbol'
 export { Button } from './blocks/Button'
 export { Section } from './blocks/Section'
+export { StateProvider } from './blocks/StateProvider'
 
 export { Form } from './blocks/forms/Form'
 export { FormInput } from './blocks/forms/Input'

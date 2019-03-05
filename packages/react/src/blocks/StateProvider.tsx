@@ -4,7 +4,7 @@ import { BuilderBlock as BuilderBlockComponent } from '../components/builder-blo
 import { BuilderBlock } from '../decorators/builder-block.decorator'
 import { BuilderStoreContext } from '../store/builder-store'
 
-interface StateProps {
+interface StateProviderProps {
   builderBlock: BuilderElement
   state: any
 }
@@ -12,13 +12,13 @@ interface StateProps {
 // TODO: change to slick grid
 @BuilderBlock({
   // Builder:StateProvider?
-  name: 'Builder:State',
+  name: 'Builder:StateProvider',
   // TODO: default children
   canHaveChildren: true,
   hideFromInsertMenu: true
   // TODO: list inputs?
 })
-export class BuilderState extends React.Component<StateProps> {
+export class StateProvider extends React.Component<StateProviderProps> {
   render() {
     return (
       <BuilderStoreContext.Consumer>
