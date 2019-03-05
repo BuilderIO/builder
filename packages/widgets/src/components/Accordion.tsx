@@ -236,7 +236,7 @@ export class BuilderAccordion extends React.Component<AccordionProps> {
         }}
       >
         {this.props.items.map((item, index) => {
-          const open = this.state.open.includes(index);
+          const open = this.state.open.indexOf(index) !== -1;
           return (
             // This will not work as expected with react 15
             // Did preact get the span replacmenet too?
