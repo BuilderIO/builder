@@ -170,6 +170,7 @@ export interface Component {
   defaultChildren?: BuilderElement[];
   defaults?: Partial<BuilderElement>;
   hooks?: { [key: string]: string | Function };
+  hideFromInsertMenu?: boolean;
 }
 
 export function BuilderComponent(info: Partial<Component> = {}) {
