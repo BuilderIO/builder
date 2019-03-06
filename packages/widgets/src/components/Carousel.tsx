@@ -219,6 +219,7 @@ export class BuilderCarousel extends React.Component<CarouselProps> {
         {value => {
           this._errors = value && value.errors
           this._logs = value && value.logs
+
           return (
             <BuilderStoreContext.Consumer>
               {state => (
