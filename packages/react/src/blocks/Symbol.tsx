@@ -45,7 +45,7 @@ export class Symbol extends React.Component<SymbolProps> {
       return this.placeholder
     }
     return (
-      <div className="builder-symbol">
+      <div className="builder-symbol" data-model={model}>
         <BuilderPage
           modelName={model}
           entry={entry}
