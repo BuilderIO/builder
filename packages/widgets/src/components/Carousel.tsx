@@ -281,7 +281,7 @@ export class BuilderCarousel extends React.Component<CarouselProps> {
                               const collectionPath = block.repeat.collection
                               const collectionName = last(
                                 (collectionPath || '')
-                                  .split(/\.\w\(/)[0]
+                                  .split(/\.\w+\(/)[0]
                                   .trim()
                                   .split('.')
                               )
