@@ -13,6 +13,7 @@ import omit from 'lodash-es/omit'
 import memoize from 'lodash-es/memoize'
 import kebabCase from 'lodash-es/kebabCase'
 import { BuilderAsyncRequestsContext, RequestOrPromise } from '../store/builder-async-requests'
+import { stringToFunction } from '../functions/string-to-function'
 
 const Device = { desktop: 0, tablet: 1, mobile: 2 }
 
@@ -121,109 +122,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
   // TODO: handle adding return if none provided
   // TODO: cache/memoize this (globally with LRU?)
   stringToFunction(str: string, expression = true) {
-    if (!str || !str.trim()) {
-      return () => undefined
-    }
-
-    const cacheKey = str + ':' + expression
-    if (fnCache[cacheKey]) {
-      return fnCache[cacheKey]
-    }
-
-    // FIXME: gross hack
-    const useReturn =
-      (expression && !(str.includes(';') || str.includes(' return '))) ||
-      str.trim().startsWith('builder.run')
-    let fn: Function = () => {
-      /* intentionally empty */
-    }
-
-    str = str
-      .replace(/builder\s*\.\s*use[a-zA-Z]*\(/g, 'return(')
-      .replace(/builder\s*\.\s*set([a-zA-Z]+)To\(/g, (_match, group: string) => {
-        return `builder.set("${group[0].toLowerCase() + group.substring(1)}",`
-      })
-      .replace(/builder\s*\.\s*get([a-zA-Z]+)\s*\(\s*\)/g, (_match, group: string) => {
-        return `state.${group[0].toLowerCase() + group.substring(1)}`
-      })
-
-    try {
-      // tslint:disable-next-line:no-function-constructor-with-string-args
-      if (Builder.isBrowser) {
-        // TODO: use strict and eval
-        fn = new Function(
-          'state',
-          'event',
-          'block',
-          'builder',
-          'Device',
-          'update',
-          // TODO: block reference...
-          // TODO: or just remove with (rootState) in general
-          `
-            var rootState = state;
-            if (typeof Proxy !== 'undefined') {
-              rootState = new Proxy(rootState, {
-                set: function () {
-                  return false;
-                }
-              });
-            }
-            with (rootState) {
-              ${useReturn ? `return (${str});` : str};
-            }
-          `
-        )
-      }
-    } catch (error) {
-      if (this._errors) {
-        this._errors.push(error)
-      }
-      const message = error && error.message
-      if (message && typeof message === 'string') {
-        if (this._logs && this._logs.indexOf(message) === -1) {
-          this._logs.push(message)
-        }
-      }
-      console.warn(`Function compile error in ${str}`, error)
-    }
-
-    const final = (fnCache[cacheKey] = (...args: any[]) => {
-      try {
-        if (Builder.isBrowser) {
-          return fn(...args)
-        } else {
-          // TODO: memoize on server
-          // TODO: use something like this instead https://www.npmjs.com/package/rollup-plugin-strip-blocks
-          // There must be something more widely used?
-          // TODO: regex for between comments instead so can still type check the code... e.g. //SERVER-START ... code ... //SERVER-END
-          // Below is a hack to get certain code to *only* load in the server build, to not screw with
-          // browser bundler's like rollup and webpack. Our rollup plugin strips these comments only
-          // for the server build
-          // TODO: cache these for better performancs with new VmScript
-          // tslint:disable:comment-format
-          ///SERVERONLY const { VM } = require('vm2')
-          ///SERVERONLY const [state, event] = args
-          ///SERVERONLY return new VM({
-          ///SERVERONLY   timeout: 100,
-          ///SERVERONLY   sandbox: {
-          ///SERVERONLY     ...state,
-          ///SERVERONLY     ...{ state },
-          ///SERVERONLY     ...{ builder: api },
-          ///SERVERONLY     event
-          ///SERVERONLY   }
-          ///SERVERONLY }).run(str)
-          // tslint:enable:comment-format
-        }
-      } catch (error) {
-        console.warn('Eval error', error)
-        if (this._errors) {
-          this._errors.push(error)
-        }
-      }
-    })
-
-    return final
+    return stringToFunction(str, expression, this._errors, this._logs)
   }
 
   get styles() {
@@ -469,8 +368,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
 
     const isVoid = voidElements.indexOf(TagName) !== -1
 
-    const noWrap =
-      componentInfo && ((componentInfo).fragment || (componentInfo).noWrap)
+    const noWrap = componentInfo && (componentInfo.fragment || componentInfo.noWrap)
 
     const finalOptions: { [key: string]: string } = {
       ...omit(options, 'class', 'component'),

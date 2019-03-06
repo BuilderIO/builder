@@ -3,7 +3,9 @@ import {
   BuilderBlocks,
   BuilderBlockComponent,
   BuilderElement,
-  BuilderStoreContext
+  BuilderStoreContext,
+  stringToFunction,
+  BuilderAsyncRequestsContext
 } from '@builder.io/react'
 import React from 'react'
 import get from 'lodash-es/get'
@@ -191,6 +193,9 @@ export class BuilderCarousel extends React.Component<CarouselProps> {
   divRef: HTMLElement | null = null
   sliderRef: Slider | null = null
 
+  private _errors?: Error[]
+  private _logs?: string[]
+
   componentDidMount() {
     setTimeout(() => {
       if (this.divRef) {
@@ -210,119 +215,144 @@ export class BuilderCarousel extends React.Component<CarouselProps> {
 
   render() {
     return (
-      <BuilderStoreContext.Consumer>
-        {state => (
-          <div ref={ref => (this.divRef = ref)} className="builder-carousel">
-            <style type="text/css">{slickStyles}</style>
-            <Slider
-              ref={ref => (this.sliderRef = ref)}
-              afterChange={slide => {
-                // TODO; callbacks
-                if (this.divRef) {
-                  this.divRef.dispatchEvent(
-                    new CustomEvent('builder:carousel:change', {
-                      bubbles: true,
-                      cancelable: false,
-                      detail: {
-                        slide,
-                        block: this.props.builderBlock,
-                        carousel: this.sliderRef
+      <BuilderAsyncRequestsContext.Consumer>
+        {value => {
+          this._errors = value && value.errors
+          this._logs = value && value.logs
+          return (
+            <BuilderStoreContext.Consumer>
+              {state => (
+                <div ref={ref => (this.divRef = ref)} className="builder-carousel">
+                  <style type="text/css">{slickStyles}</style>
+                  <Slider
+                    ref={ref => (this.sliderRef = ref)}
+                    afterChange={slide => {
+                      // TODO; callbacks
+                      if (this.divRef) {
+                        this.divRef.dispatchEvent(
+                          new CustomEvent('builder:carousel:change', {
+                            bubbles: true,
+                            cancelable: false,
+                            detail: {
+                              slide,
+                              block: this.props.builderBlock,
+                              carousel: this.sliderRef
+                            }
+                          })
+                        )
                       }
-                    })
-                  )
-                }
-              }}
-              autoplay={this.props.autoplay}
-              autoplaySpeed={this.props.autoplaySpeed ? this.props.autoplaySpeed * 1000 : undefined}
-              dots={!this.props.hideDots}
-              // TODO: on change emit event on element?
-              // renderBottomCenterControls={this.props.hideDots ? () => null : undefined}
+                    }}
+                    autoplay={this.props.autoplay}
+                    autoplaySpeed={
+                      this.props.autoplaySpeed ? this.props.autoplaySpeed * 1000 : undefined
+                    }
+                    dots={!this.props.hideDots}
+                    // TODO: on change emit event on element?
+                    // renderBottomCenterControls={this.props.hideDots ? () => null : undefined}
 
-              // OOF!!
-              nextArrow={
-                <div>
-                  <BuilderBlocks
-                    parentElementId={this.props.builderBlock.id}
-                    dataPath="component.options.prevButton"
-                    blocks={this.props.prevButton}
-                  />
-                </div>
-              }
-              // OOF!!
-              prevArrow={
-                <div>
-                  <BuilderBlocks
-                    parentElementId={this.props.builderBlock.id}
-                    dataPath="component.options.nextButton"
-                    blocks={this.props.nextButton}
-                  />
-                </div>
-              }
-            >
-              {/* todo: children.forEach hmm insert block inside */}
-              {this.props.useChildrenForSlides
-                ? this.props.builderBlock &&
-                  this.props.builderBlock.children &&
-                  this.props.builderBlock.children.map((block: BuilderElement, index: number) => {
-                    if (block.repeat && block.repeat.collection) {
-                      const collectionPath = block.repeat.collection
-                      const collectionName = last((collectionPath || '').trim().split('.'))
-                      const itemName =
-                        block.repeat.itemName || (collectionName ? collectionName + 'Item' : 'item')
-                      const array = get(state.state, collectionPath)
-                      if (isArray(array)) {
-                        return array.map((data, index) => {
-                          // TODO: Builder state produce the data
-                          const childState = {
-                            ...state.state,
-                            $index: index,
-                            $item: data,
-                            [itemName]: data
-                          }
+                    // OOF!!
+                    nextArrow={
+                      <div>
+                        <BuilderBlocks
+                          parentElementId={this.props.builderBlock.id}
+                          dataPath="component.options.prevButton"
+                          blocks={this.props.prevButton}
+                        />
+                      </div>
+                    }
+                    // OOF!!
+                    prevArrow={
+                      <div>
+                        <BuilderBlocks
+                          parentElementId={this.props.builderBlock.id}
+                          dataPath="component.options.nextButton"
+                          blocks={this.props.nextButton}
+                        />
+                      </div>
+                    }
+                  >
+                    {/* todo: children.forEach hmm insert block inside */}
+                    {this.props.useChildrenForSlides
+                      ? this.props.builderBlock &&
+                        this.props.builderBlock.children &&
+                        this.props.builderBlock.children.map(
+                          (block: BuilderElement, index: number) => {
+                            if (block.repeat && block.repeat.collection) {
+                              const collectionPath = block.repeat.collection
+                              const collectionName = last(
+                                (collectionPath || '')
+                                  .split(/\.\w\(/)[0]
+                                  .trim()
+                                  .split('.')
+                              )
+                              const itemName =
+                                block.repeat.itemName ||
+                                (collectionName ? collectionName + 'Item' : 'item')
 
-                          return (
-                            <BuilderStoreContext.Provider
-                              key={block.id}
-                              value={{ ...state, state: childState } as any}
-                            >
+                              const array = stringToFunction(
+                                collectionPath,
+                                true,
+                                this._errors,
+                                this._logs
+                              )(state.state)
+
+                              if (isArray(array)) {
+                                return array.map((data, index) => {
+                                  // TODO: Builder state produce the data
+                                  const childState = {
+                                    ...state.state,
+                                    $index: index,
+                                    $item: data,
+                                    [itemName]: data
+                                  }
+
+                                  return (
+                                    <BuilderStoreContext.Provider
+                                      key={block.id}
+                                      value={{ ...state, state: childState } as any}
+                                    >
+                                      <BuilderBlockComponent
+                                        block={{
+                                          ...block,
+                                          repeat: null
+                                        }}
+                                        index={index}
+                                        child={true} /* TODO: fieldname? */
+                                      />
+                                    </BuilderStoreContext.Provider>
+                                  )
+                                })
+                              }
+                            }
+                            return (
                               <BuilderBlockComponent
-                                block={{
-                                  ...block,
-                                  repeat: null
-                                }}
+                                key={block.id}
+                                block={block}
                                 index={index}
                                 child={true} /* TODO: fieldname? */
                               />
-                            </BuilderStoreContext.Provider>
-                          )
-                        })
-                      }
-                    }
-                    return (
-                      <BuilderBlockComponent
-                        key={block.id}
-                        block={block}
-                        index={index}
-                        child={true} /* TODO: fieldname? */
-                      />
-                    )
-                  })
-                : this.props.slides &&
-                  this.props.slides.map((slide, index) => (
-                    // TODO: how make react compatible with plain react components
-                    // slides: <Foo><Bar> <- builder blocks if passed react nodes as blocks just forward them
-                    <BuilderBlocks
-                      key={index}
-                      parentElementId={this.props.builderBlock && this.props.builderBlock.id}
-                      dataPath={`component.options.slides.${index}.content`}
-                      child
-                      blocks={(slide as any).content || slide}
-                    />
-                  ))}
-            </Slider>
-          </div>
-        )}
-      </BuilderStoreContext.Consumer>
+                            )
+                          }
+                        )
+                      : this.props.slides &&
+                        this.props.slides.map((slide, index) => (
+                          // TODO: how make react compatible with plain react components
+                          // slides: <Foo><Bar> <- builder blocks if passed react nodes as blocks just forward them
+                          <BuilderBlocks
+                            key={index}
+                            parentElementId={this.props.builderBlock && this.props.builderBlock.id}
+                            dataPath={`component.options.slides.${index}.content`}
+                            child
+                            blocks={(slide as any).content || slide}
+                          />
+                        ))}
+                  </Slider>
+                </div>
+              )}
+            </BuilderStoreContext.Consumer>
+          )
+        }}
+      </BuilderAsyncRequestsContext.Consumer>
     )
   }
 }
