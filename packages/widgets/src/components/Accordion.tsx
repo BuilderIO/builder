@@ -1,5 +1,5 @@
-import { BuilderBlock, BuilderElement, BuilderBlocks } from '@builder.io/react';
-import React from 'react';
+import { BuilderBlock, BuilderElement, BuilderBlocks } from '@builder.io/react'
+import React from 'react'
 
 const defaultTitle: BuilderElement = {
   '@type': '@builder.io/sdk:Element',
@@ -11,8 +11,8 @@ const defaultTitle: BuilderElement = {
       display: 'flex',
       alignItems: 'stretch',
       flexDirection: 'column',
-      paddingBottom: '10px',
-    },
+      paddingBottom: '10px'
+    }
   },
   children: [
     {
@@ -21,18 +21,18 @@ const defaultTitle: BuilderElement = {
         large: {
           textAlign: 'left',
           display: 'flex',
-          flexDirection: 'column',
-        },
+          flexDirection: 'column'
+        }
       },
       component: {
         name: 'Text',
         options: {
-          text: 'I am an accordion title. Click me!',
-        },
-      },
-    },
-  ],
-};
+          text: 'I am an accordion title. Click me!'
+        }
+      }
+    }
+  ]
+}
 
 const defaultDetail: BuilderElement = {
   '@type': '@builder.io/sdk:Element',
@@ -44,8 +44,8 @@ const defaultDetail: BuilderElement = {
       alignItems: 'stretch',
       flexDirection: 'column',
       marginTop: '10px',
-      paddingBottom: '10px',
-    },
+      paddingBottom: '10px'
+    }
   },
   children: [
     {
@@ -56,31 +56,31 @@ const defaultDetail: BuilderElement = {
           textAlign: 'left',
           display: 'flex',
           flexDirection: 'column',
-          paddingBottom: '50px',
-        },
+          paddingBottom: '50px'
+        }
       },
       component: {
         name: 'Text',
         options: {
-          text: 'I am an accordion detail, hello!',
-        },
-      },
-    },
-  ],
-};
+          text: 'I am an accordion detail, hello!'
+        }
+      }
+    }
+  ]
+}
 
 interface AccordionProps {
   items: {
-    title: BuilderElement[];
-    detail: BuilderElement[];
-  }[];
+    title: BuilderElement[]
+    detail: BuilderElement[]
+  }[]
 
-  oneAtATime?: boolean;
-  grid?: boolean;
-  defaultOpen?: number;
-  animate?: boolean;
+  oneAtATime?: boolean
+  grid?: boolean
+  defaultOpen?: number
+  animate?: boolean
   // TODO: gridRowWidth
-  gridRowWidth?: number;
+  gridRowWidth?: number
 }
 
 // TODO: change to slick grid
@@ -91,7 +91,7 @@ interface AccordionProps {
   defaultStyles: {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'stretch',
+    alignItems: 'stretch'
   },
   inputs: [
     {
@@ -102,64 +102,64 @@ interface AccordionProps {
           name: 'title',
           type: 'uiBlocks',
           hideFromUI: true,
-          defaultValue: [defaultTitle],
+          defaultValue: [defaultTitle]
         },
         {
           name: 'detail',
           type: 'uiBlocks',
           hideFromUI: true,
-          defaultValue: [defaultDetail],
-        },
+          defaultValue: [defaultDetail]
+        }
       ],
       defaultValue: [
         {
           title: [defaultTitle],
-          detail: [defaultDetail],
+          detail: [defaultDetail]
         },
         {
           title: [defaultTitle],
-          detail: [defaultDetail],
-        },
-      ],
+          detail: [defaultDetail]
+        }
+      ]
     },
     {
       name: 'oneAtATime',
       helperText: 'Only allow opening one at a time (collapse all others when new item openned)',
       type: 'boolean',
-      defaultValue: false,
+      defaultValue: false
     },
     {
       name: 'animate',
       helperText: 'Animate openning and closing',
       type: 'boolean',
-      defaultValue: true,
+      defaultValue: true
     },
     {
       name: 'grid',
       helperText: 'Display as a grid',
       type: 'boolean',
-      defaultValue: false,
+      defaultValue: false
     },
     {
       name: 'gridRowWidth',
       helperText: 'Display as a grid',
       type: 'string',
-      showIf: (options: Map<string, any>) => options.get('grid'),
-      defaultValue: '25%',
-    },
+      showIf: options => options.get('grid'),
+      defaultValue: '25%'
+    }
     // TODO: best way to do this? how multiple, comma? All with "*"? Have as a per item option?
     // {
     //   name: 'defaultOpen',
     //   helperText: 'Number of the accordion item to have open default (e.g. choose 1 for the first)',
     // }
-  ],
+  ]
 })
 export class BuilderAccordion extends React.Component<AccordionProps> {
-  divRef: HTMLElement | null = null;
+  divRef: HTMLElement | null = null
 
   state = {
-    open: [] as number[],
-  };
+    open: [] as number[]
+  }
 
   componentDidMount() {
     setTimeout(() => {
@@ -169,47 +169,47 @@ export class BuilderAccordion extends React.Component<AccordionProps> {
             bubbles: true,
             cancelable: false,
             detail: {
-              ref: this,
-            },
+              ref: this
+            }
           })
-        );
+        )
       }
-    });
+    })
   }
 
   render() {
-    const { grid, oneAtATime } = this.props;
+    const { grid, oneAtATime } = this.props
 
-    const onlyOneAtATime = grid || oneAtATime;
+    const onlyOneAtATime = grid || oneAtATime
 
-    const getOpenGridItemPosition = grid && this.state.open.length;
-    let openGridItemOrder: number | null = null;
+    const getOpenGridItemPosition = grid && this.state.open.length
+    let openGridItemOrder: number | null = null
     if (getOpenGridItemPosition && this.divRef) {
-      const openItemIndex = this.state.open[0];
+      const openItemIndex = this.state.open[0]
       const openItem = this.divRef.querySelector(
         `.builder-accordion-title[data-index="${openItemIndex}"]`
-      );
+      )
 
-      let subjectItem = openItem;
-      openGridItemOrder = openItemIndex;
+      let subjectItem = openItem
+      openGridItemOrder = openItemIndex
 
       if (subjectItem) {
-        let prevItemRect = subjectItem.getBoundingClientRect();
+        let prevItemRect = subjectItem.getBoundingClientRect()
 
         while ((subjectItem = subjectItem && subjectItem.nextElementSibling)) {
           if (subjectItem) {
             if (subjectItem.classList.contains('builder-accordion-detail')) {
-              continue;
+              continue
             }
-            const subjectItemRect = subjectItem.getBoundingClientRect();
+            const subjectItemRect = subjectItem.getBoundingClientRect()
             if (subjectItemRect.left > prevItemRect.left) {
-              const index = parseInt(subjectItem.getAttribute('data-index') || '', 10);
+              const index = parseInt(subjectItem.getAttribute('data-index') || '', 10)
               if (!isNaN(index)) {
-                prevItemRect = subjectItemRect;
-                openGridItemOrder = index;
+                prevItemRect = subjectItemRect
+                openGridItemOrder = index
               }
             } else {
-              break;
+              break
             }
           }
         }
@@ -217,7 +217,7 @@ export class BuilderAccordion extends React.Component<AccordionProps> {
     }
 
     if (typeof openGridItemOrder === 'number') {
-      openGridItemOrder = openGridItemOrder + 1;
+      openGridItemOrder = openGridItemOrder + 1
     }
 
     return (
@@ -231,12 +231,12 @@ export class BuilderAccordion extends React.Component<AccordionProps> {
           ...(grid && {
             flexDirection: 'row',
             alignItems: 'flex-start',
-            flexWrap: 'wrap',
-          }),
+            flexWrap: 'wrap'
+          })
         }}
       >
-        {this.props.items.map((item, index) => {
-          const open = this.state.open.indexOf(index) !== -1;
+        {this.props.items && this.props.items.map((item, index) => {
+          const open = this.state.open.indexOf(index) !== -1
           return (
             // This will not work as expected with react 15
             // Did preact get the span replacmenet too?
@@ -252,22 +252,22 @@ export class BuilderAccordion extends React.Component<AccordionProps> {
                   ...(grid && {
                     width: this.props.gridRowWidth,
                     ...(typeof openGridItemOrder === 'number' && {
-                      order: index < openGridItemOrder ? index : index + 1,
-                    }),
-                  }),
+                      order: index < openGridItemOrder ? index : index + 1
+                    })
+                  })
                 }}
                 data-index={index}
                 onClick={() => {
                   if (open) {
                     this.setState({
                       ...this.state,
-                      open: onlyOneAtATime ? [] : this.state.open.filter(item => item !== index),
-                    });
+                      open: onlyOneAtATime ? [] : this.state.open.filter(item => item !== index)
+                    })
                   } else {
                     this.setState({
                       ...this.state,
-                      open: onlyOneAtATime ? [index] : this.state.open.concat(index),
-                    });
+                      open: onlyOneAtATime ? [index] : this.state.open.concat(index)
+                    })
                   }
                 }}
               >
@@ -283,8 +283,8 @@ export class BuilderAccordion extends React.Component<AccordionProps> {
                     maxHeight: this.props.animate ? (open ? '100vh' : 0) : undefined,
                     transition: this.props.animate ? 'max-height 0.5s' : undefined,
                     ...(grid && {
-                      width: '100%',
-                    }),
+                      width: '100%'
+                    })
                   }}
                 >
                   {open && (
@@ -293,9 +293,9 @@ export class BuilderAccordion extends React.Component<AccordionProps> {
                 </div>
               )}
             </React.Fragment>
-          );
+          )
         })}
       </div>
-    );
+    )
   }
 }
