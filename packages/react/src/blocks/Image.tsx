@@ -77,7 +77,13 @@ const DEFAULT_ASPECT_RATIO = 0.7041
       name: 'backgroundSize',
       type: 'text',
       defaultValue: 'cover',
-      enum: ['contain', 'cover', 'fill', 'auto']
+      enum: [
+        { label: 'contain', value: 'contain', helperText: 'The image should never get cropped' },
+        { label: 'cover', value: 'cover', helperText: `The image should fill it's box, cropping when needed` },
+        // TODO: add these options back
+        // { label: 'auto', value: 'auto', helperText: '' },
+        // { label: 'fill', value: 'fill', helperText: 'The image should fill the box, being stretched or squished if necessary' },
+      ] as any
     },
     {
       name: 'backgroundPosition',

@@ -150,7 +150,7 @@ export interface Input {
   mediaWidth?: number;
   hideFromUI?: boolean;
   modelId?: string;
-  enum?: string[];
+  enum?: string[] | { label: string; value: any; helperText?: string }[];
   advanced?: boolean;
   onChange?: Function | string;
   showIf?: ((options: Map<string, any>) => boolean) | string;
