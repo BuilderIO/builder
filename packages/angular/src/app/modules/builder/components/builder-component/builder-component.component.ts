@@ -1,4 +1,11 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, Optional } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  ChangeDetectionStrategy,
+  Optional,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { parse } from 'url';
 import { BuilderComponentService } from './builder-component.service';
@@ -44,12 +51,18 @@ export class BuilderComponentComponent {
   }
 
   @Input() handleRouting = true;
+  @Input() reloadOnRoute = true;
 
   @Output() load = new EventEmitter<any>();
   @Output() route = new EventEmitter<RouteEvent>();
   @Output() error = new EventEmitter<any>();
 
-  constructor(@Optional() private router?: Router) {}
+  constructor(@Optional() private router?: Router) {
+    if (this.router && this.reloadOnRoute) {
+      // TODO: should the inner function return reloadOnRoute?
+      this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    }
+  }
 
   // TODO: this should be in BuilderBlocks
   async onClick(event: MouseEvent) {
