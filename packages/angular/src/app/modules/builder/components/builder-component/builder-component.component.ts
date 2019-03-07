@@ -107,7 +107,7 @@ export class BuilderComponentComponent {
       }
     }
 
-    if (this.router) {
+    if (!this.router) {
       return;
     }
 
