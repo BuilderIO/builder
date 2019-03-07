@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/react",
-  "version": "1.0.19-alpha.0",
+  "version": "1.0.19-alpha.1",
   "description": "",
   "keywords": [],
   "main": "dist/builder-react.cjs.js",
@@ -146,7 +146,7 @@
     "vm2": "^3.6.4"
   },
   "dependencies": {
-    "@builder.io/sdk": "^1.0.13",
+    "@builder.io/sdk": "^1.0.14-alpha.0",
     "immer": "^1.7.2",
     "react": ">=14",
     "react-dom": ">=14"
