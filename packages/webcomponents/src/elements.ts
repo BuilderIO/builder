@@ -343,7 +343,7 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
 
       const subscription = builder
         .get(name!, {
-          key: (!Builder.isEditing && (this.getAttribute('entry') || name!)) || undefined,
+          key: Builder.isEditing ? name! : this.getAttribute('entry') || name!,
           ...this.options,
           entry: data ? data.id : this.options.entry || undefined,
           prerender: false
