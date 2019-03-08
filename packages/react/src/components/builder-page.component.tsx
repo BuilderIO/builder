@@ -20,7 +20,6 @@ import { Url } from 'url'
 // TODO: get fetch from core JS....
 const fetch = Builder.isBrowser ? window.fetch : require('node-fetch')
 
-
 function decorator(fn: Function) {
   return function argReceiver(...fnArgs: any[]) {
     // Check if the decorator is being called without arguments (ex `@foo methodName() {}`)
@@ -194,7 +193,11 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
 
   // TODO: different options per device size...........................
 
-  static renderInto(elementOrSelector: string | HTMLElement, props: BuilderPageProps = {}, hydrate = false) {
+  static renderInto(
+    elementOrSelector: string | HTMLElement,
+    props: BuilderPageProps = {},
+    hydrate = false
+  ) {
     const element =
       elementOrSelector instanceof HTMLElement
         ? elementOrSelector
@@ -355,7 +358,8 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
                 </style>
               )} */}
 
-              {content ? (
+              {/* TODO: never use this? */}
+              {content && !Builder.isEditing ? (
                 <React.Fragment>
                   {this.getCss(content.data) && (
                     <style dangerouslySetInnerHTML={{ __html: this.getCss(content.data) }} />
@@ -373,6 +377,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
                   options={{
                     entry: this.props.entry,
                     key: Builder.isEditing ? this.name : this.props.entry,
+                    ...(content && { initialContent: [content] }),
                     ...this.props.options
                   }}
                   contentError={this.props.contentError}
@@ -587,7 +592,12 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     if (data && data.jsCode && !Builder.isIframe && Builder.isBrowser) {
       // TODO: real editing method
       try {
-        new Function('data', 'ref', 'state', 'update', data.jsCode)(data, this, this.state.state, this.state.update)
+        new Function('data', 'ref', 'state', 'update', data.jsCode)(
+          data,
+          this,
+          this.state.state,
+          this.state.update
+        )
       } catch (error) {
         console.warn('Eval error', error)
       }

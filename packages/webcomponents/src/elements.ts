@@ -341,8 +341,6 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
         return
       }
 
-      console.log('isEditing', Builder.isEditing)
-
       const subscription = builder
         .get(name!, {
           key: Builder.isEditing ? name! : this.getAttribute('entry') || name!,
@@ -413,13 +411,34 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
               }, 100)
             }
           },
-          (error: any) => {
-            console.warn('Builder webcomponent error:', error)
-            this.classList.add('builder-errored')
-            this.classList.add('builder-loaded')
-            this.classList.remove('builder-loading')
-            const errorEvent = new CustomEvent('error', { detail: error })
-            this.dispatchEvent(errorEvent)
+          async (error: any) => {
+            if (Builder.isEditing) {
+              const { BuilderComponent } = await getReactPromise
+              await getWidgetsPromise
+              if (emailPromise) {
+                await emailPromise
+              }
+              BuilderComponent.renderInto(this, {
+                modelName: name!,
+                emailMode:
+                  ((this.options as any) || {}).emailMode ||
+                  this.getAttribute('email-mode') === 'true',
+                options: {
+                  ...this.options,
+                  entry: data ? data.id : undefined,
+                  initialContent: data ? [data] : undefined,
+                  key: Builder.isEditing ? name! : undefined
+                  // TODO: specify variation?
+                }
+              })
+            } else {
+              console.warn('Builder webcomponent error:', error)
+              this.classList.add('builder-errored')
+              this.classList.add('builder-loaded')
+              this.classList.remove('builder-loading')
+              const errorEvent = new CustomEvent('error', { detail: error })
+              this.dispatchEvent(errorEvent)
+            }
           }
         )
 
