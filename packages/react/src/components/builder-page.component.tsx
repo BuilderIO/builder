@@ -586,7 +586,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     if (data && data.jsCode && !Builder.isIframe && Builder.isBrowser) {
       // TODO: real editing method
       try {
-        new Function('data', 'ref', data.jsCode)(data, this)
+        new Function('data', 'ref', 'state', 'update', data.jsCode)(data, this, this.state.state, this.state.update)
       } catch (error) {
         console.warn('Eval error', error)
       }
