@@ -17,8 +17,6 @@ import { stringToFunction, api } from '../functions/string-to-function'
 
 const Device = { desktop: 0, tablet: 1, mobile: 2 }
 
-const fnCache: { [key: string]: Function } = {}
-
 const cssCase = (property: string) => {
   if (!property) {
     return property
