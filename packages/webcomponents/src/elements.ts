@@ -392,7 +392,8 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
               options: {
                 ...this.options,
                 entry: data ? data.id : undefined,
-                initialContent: data ? [data] : undefined
+                initialContent: data ? [data] : undefined,
+                key: Builder.isEditing ? name! : undefined
                 // TODO: specify variation?
               }
             })
