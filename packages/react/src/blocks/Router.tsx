@@ -4,9 +4,12 @@ import { BuilderElement } from '@builder.io/sdk'
 import { Symbol } from './Symbol'
 import { BuilderStoreContext } from '../store/builder-store'
 import { parse } from 'url'
+import { BuilderPage } from '../components/builder-page.component'
 
 export interface RouterProps {
   model?: string
+  data?: string
+  content?: string
   handleRouting?: boolean
   builderBlock?: BuilderElement
   onRoute?: (routeEvent: RouteEvent) => void
@@ -170,12 +173,15 @@ export class Router extends React.Component<RouterProps> {
                   border-left: 1px solid #808284;
                 }
               `}</style>
-              <Symbol
-                // TODO: include query?
-                key={state.state && state.state.location && (state.state.location.pathname + state.state.location.search)}
-                symbol={{
-                  model
-                }}
+              <BuilderPage
+                key={
+                  state.state &&
+                  state.state.location &&
+                  state.state.location.pathname + state.state.location.search
+                }
+                data={this.props.data}
+                content={this.props.content}
+                modelName={model}
               >
                 {/* TODO: builder blocks option for loading stuff */}
                 {/* TODO: input for builder blocks for this */}
@@ -184,7 +190,7 @@ export class Router extends React.Component<RouterProps> {
                     <div style={{ margin: '40vh auto' }} className="builder-loading" />
                   </div>
                 )}
-              </Symbol>
+              </BuilderPage>
             </div>
           )
         }}
@@ -216,7 +222,7 @@ export class Router extends React.Component<RouterProps> {
   }
 
   private privateState: {
-    state: any,
+    state: any
     update: (mutator: (state: any) => any) => void
   } | null = null
 
