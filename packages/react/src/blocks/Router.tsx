@@ -172,7 +172,7 @@ export class Router extends React.Component<RouterProps> {
               `}</style>
               <Symbol
                 // TODO: include query?
-                key={state && state.location && (state.location.pathname + state.location.search)}
+                key={state.state && state.state.location && (state.state.location.pathname + state.state.location.search)}
                 symbol={{
                   model
                 }}
