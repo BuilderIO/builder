@@ -1,9 +1,7 @@
 import React from 'react'
 import { BuilderBlock } from '../decorators/builder-block.decorator'
 import { BuilderElement } from '@builder.io/sdk'
-import { Symbol } from './Symbol'
 import { BuilderStoreContext } from '../store/builder-store'
-import { parse } from 'url'
 import { BuilderPage } from '../components/builder-page.component'
 
 export interface RouterProps {
@@ -63,6 +61,19 @@ export interface RouteEvent {
   ]
 })
 export class Router extends React.Component<RouterProps> {
+  public route(url: string) {
+    // TODO: check if relative?
+    if (window.history && window.history.pushState) {
+      history.pushState(null, '', url)
+      if (this.privateState) {
+        // Reload path info
+        this.privateState.update(obj => obj)
+      }
+    } else {
+      location.href = url
+    }
+  }
+
   private get model() {
     return this.props.model || 'page'
   }
@@ -128,15 +139,7 @@ export class Router extends React.Component<RouterProps> {
     // Otherwise if this url is relative, navigate on the client
     event.preventDefault()
 
-    if (window.history && window.history.pushState) {
-      history.pushState(null, '', href)
-      if (this.privateState) {
-        // Reload path info
-        this.privateState.update(obj => obj)
-      }
-    } else {
-      location.href = href
-    }
+    this.route(href)
   }
 
   render() {
@@ -226,9 +229,15 @@ export class Router extends React.Component<RouterProps> {
     update: (mutator: (state: any) => any) => void
   } | null = null
 
+  private parseUrl(url: string) {
+    const a = document.createElement('a')
+    a.href = url
+    return a
+  }
+
   private convertToRelative(href: string) {
-    const currentUrl = parse(location.href)
-    const hrefUrl = parse(href)
+    const currentUrl = this.parseUrl(location.href)
+    const hrefUrl = this.parseUrl(href)
 
     if (currentUrl.host === hrefUrl.host) {
       const relativeUrl = hrefUrl.pathname + (hrefUrl.search ? hrefUrl.search : '')
