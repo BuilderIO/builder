@@ -13,7 +13,7 @@ import omit from 'lodash-es/omit'
 import memoize from 'lodash-es/memoize'
 import kebabCase from 'lodash-es/kebabCase'
 import { BuilderAsyncRequestsContext, RequestOrPromise } from '../store/builder-async-requests'
-import { stringToFunction } from '../functions/string-to-function'
+import { stringToFunction, api } from '../functions/string-to-function'
 
 const Device = { desktop: 0, tablet: 1, mobile: 2 }
 
@@ -33,33 +33,7 @@ const cssCase = (property: string) => {
   return str
 }
 
-// TODO: more API
-// TODO: make shared with other evals
-const api = (state: any) => ({
-  // TODO: trigger animation
-  use: (value: any) => value,
-  useText: (value: any) => value,
-  useSwitch: (value: any) => value,
-  useNumber: (value: any) => value,
-  run: (cb: Function) => cb(),
-  return: (value: any) => value,
-  set: (name: string, value: any) => {
-    // need reference to state to set
-    state[name] = value
-  },
-  get: (name: string, value: any) => {
-    // need reference to state to set
-    return state[name]
-  },
-  get device() {
-    return Builder.isBrowser
-      ? ['large', 'medium', 'small'].indexOf(sizes.getSizeForWidth(window.innerWidth))
-      : 0 // TODO: by useragent?
-  },
-  deviceIs(device: number) {
-    return this.device === device
-  }
-})
+
 
 // TODO: pull from builer internal utils
 const fastClone = (obj: object) => JSON.parse(JSON.stringify(obj))

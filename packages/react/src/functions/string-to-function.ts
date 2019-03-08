@@ -2,6 +2,32 @@ import { Builder } from "@builder.io/sdk";
 
 const fnCache: { [key: string]: Function } = {}
 
+export const api = (state: any) => ({
+  // TODO: trigger animation
+  use: (value: any) => value,
+  useText: (value: any) => value,
+  useSwitch: (value: any) => value,
+  useNumber: (value: any) => value,
+  run: (cb: Function) => cb(),
+  return: (value: any) => value,
+  set: (name: string, value: any) => {
+    // need reference to state to set
+    state[name] = value
+  },
+  get: (name: string, value: any) => {
+    // need reference to state to set
+    return state[name]
+  },
+  get device() {
+    return Builder.isBrowser
+      ? ['large', 'medium', 'small'].indexOf(sizes.getSizeForWidth(window.innerWidth))
+      : 0 // TODO: by useragent?
+  },
+  deviceIs(device: number) {
+    return this.device === device
+  }
+})
+
 export function stringToFunction(str: string, expression = true, errors?: Error[], logs?: string[]) {
 if (!str || !str.trim()) {
     return () => undefined
