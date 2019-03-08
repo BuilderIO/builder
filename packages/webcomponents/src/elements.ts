@@ -279,12 +279,15 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
               //   }
               // }
               this.loadReact(data)
+              subscription.unsubscribe()
               unsubscribed = true
             }
           },
           (error: any) => {
             // Server render failed, not the end of the world, load react anyway
             this.loadReact()
+            subscription.unsubscribe()
+            unsubscribed = true
             // console.warn('Builder webcomponent error:', error)
             // this.classList.add('builder-errored')
             // this.classList.add('builder-loaded')
@@ -351,8 +354,8 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
               console.log('unsubscribe didnt work!')
               return
             }
-            unsubscribed = true
-            subscription.unsubscribe()
+            // unsubscribed = true
+            // subscription.unsubscribe()
 
             const { BuilderComponent } = await getReactPromise
             await getWidgetsPromise
@@ -413,6 +416,8 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
             this.dispatchEvent(errorEvent)
           }
         )
+
+      this.subscriptions.push(() => subscription.unsubscribe())
 
       // import('./lazy-test').then(result => {
       //   console.log('lazy test loaded', result.foo)
