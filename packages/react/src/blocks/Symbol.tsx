@@ -52,7 +52,10 @@ export class Symbol extends React.Component<SymbolProps> {
           data={data}
           content={content}
           options={{ key: entry }}
-        />
+        >
+        {/* TODO: builder blocks option for loading stuff */}
+          {this.props.children}
+        </BuilderPage>
       </div>
     )
   }

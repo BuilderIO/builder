@@ -1,6 +1,6 @@
 import React from 'react'
 
 export const BuilderStoreContext = React.createContext({
-  state: {},
-  update: (mutator: (state: any) => void) => {}
+  state: {} as any,
+  update: (mutator: (state: any) => any) => null as any
 })
