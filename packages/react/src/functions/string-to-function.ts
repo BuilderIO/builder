@@ -1,4 +1,5 @@
 import { Builder } from "@builder.io/sdk";
+import { sizes } from "../constants/device-sizes.constant";
 
 const fnCache: { [key: string]: Function } = {}
 
