@@ -341,6 +341,8 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
         return
       }
 
+      console.log('isEditing', Builder.isEditing)
+
       const subscription = builder
         .get(name!, {
           key: Builder.isEditing ? name! : this.getAttribute('entry') || name!,
