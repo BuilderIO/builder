@@ -162,7 +162,7 @@ export class Router extends React.Component<RouterProps> {
                   }
                 }
                 /* TODO: overridable tag */
-                .builder-loading {
+                .builder-page-loading {
                   -webkit-animation: builderLoadingSpinner 1s infinite linear;
                   animation: builderLoadingSpinner 1s infinite linear;
                   -webkit-transform: translateZ(0);
@@ -190,7 +190,7 @@ export class Router extends React.Component<RouterProps> {
                 {/* TODO: input for builder blocks for this */}
                 {this.props.children || (
                   <div style={{ display: 'flex' }}>
-                    <div style={{ margin: '40vh auto' }} className="builder-loading" />
+                    <div style={{ margin: '40vh auto' }} className="builder-page-loading" />
                   </div>
                 )}
               </BuilderPage>
