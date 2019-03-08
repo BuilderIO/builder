@@ -397,6 +397,9 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
               }
             })
 
+            subscription.unsubscribe()
+            unsubscribed = true
+
             if (Builder.isIframe) {
               setTimeout(() => {
                 parent.postMessage({ type: 'builder.updateContent' }, '*')
