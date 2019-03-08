@@ -20,6 +20,7 @@ import { Url } from 'url'
 // TODO: get fetch from core JS....
 const fetch = Builder.isBrowser ? window.fetch : require('node-fetch')
 
+
 function decorator(fn: Function) {
   return function argReceiver(...fnArgs: any[]) {
     // Check if the decorator is being called without arguments (ex `@foo methodName() {}`)
