@@ -229,6 +229,7 @@ export class Router extends React.Component<RouterProps> {
     update: (mutator: (state: any) => any) => void
   } | null = null
 
+  // This method can only be called client side only. It is only invoked on click events
   private parseUrl(url: string) {
     const a = document.createElement('a')
     a.href = url
