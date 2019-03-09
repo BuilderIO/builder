@@ -49,8 +49,8 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
     private builder: BuilderService,
     private builderComponentService: BuilderComponentService,
     @Optional() private transferState: TransferState,
-    @Optional() private router: Router,
-    templateRef: TemplateRef<BuilderContentContext>
+    templateRef: TemplateRef<BuilderContentContext>,
+    @Optional() private router?: Router
   ) {
     builderComponentService.contentDirectiveInstance = this;
     this._templateRef = templateRef;
@@ -69,7 +69,7 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
     if (this.router) {
       this.subscriptions.add(
         this.router.events.subscribe(event => {
-          // TODO: use NavigationEnd?
+          // TODO: this doesn't trigger
           if (event instanceof NavigationEnd) {
             if (this.reloadOnRoute) {
               const viewRef = this._viewRef;
@@ -152,7 +152,7 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
     }
     this._context.model = model;
     this._updateView();
-    this.stateKey = makeStateKey('builder:' + model);
+    this.stateKey = makeStateKey('builder:' + model + ':' + (this.reloadOnRoute ? this.router && this.router.url : ''));
     // this.request();
     const rootNode = this._viewRef!.rootNodes[0];
     this.renderer.setElementAttribute(rootNode, 'builder-model', model);
@@ -178,87 +178,99 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
     // TODO: if not multipe
 
     if (this.contentSubscription) {
+      // TODO: cancel a request if one is pending... or set some kind of flag
       this.contentSubscription.unsubscribe();
     }
-    this.contentSubscription = this.builder.queueGetContent(model, { initialContent }).subscribe(
-      result => {
-        if (this.transferState) {
-          this.transferState.set(this.stateKey!, result);
-        }
-        // tslint:disable-next-line:no-non-null-assertion
-        const viewRef = this._viewRef!;
-
-        if (viewRef.destroyed) {
-          this.subscriptions.unsubscribe();
-          if (this.contentSubscription) {
-            this.contentSubscription.unsubscribe();
+    const subscription = (this.contentSubscription = this.builder
+      .queueGetContent(model, {
+        initialContent,
+        key: Builder.isEditing || !this.reloadOnRoute ? model : `${model}:${this.router && this.router.url}`,
+      })
+      .subscribe(
+        result => {
+          // Cancel handling request if new one created or they have been canceled, to avoid race conditions
+          // if multiple routes or other events happen
+          if (this.contentSubscription !== subscription) {
+            return;
           }
-          return;
-        }
 
-        if (Builder.isBrowser) {
-          const rootNode = viewRef.rootNodes[0];
-          if (rootNode) {
-            if (rootNode && rootNode.classList.contains('builder-editor-injected')) {
-              viewRef.detach();
-              return;
+          if (this.transferState) {
+            this.transferState.set(this.stateKey!, result);
+          }
+          // tslint:disable-next-line:no-non-null-assertion
+          const viewRef = this._viewRef!;
+
+          if (viewRef.destroyed) {
+            this.subscriptions.unsubscribe();
+            if (this.contentSubscription) {
+              this.contentSubscription.unsubscribe();
+            }
+            return;
+          }
+
+          if (Builder.isBrowser) {
+            const rootNode = viewRef.rootNodes[0];
+            if (rootNode) {
+              if (rootNode && rootNode.classList.contains('builder-editor-injected')) {
+                viewRef.detach();
+                return;
+              }
             }
           }
-        }
 
-        // FIXME: nasty hack to detect secondary updates vs original. Build proper support into JS SDK
-        // if (this._context.loading || result.length > viewRef.context.results.length) {
-        this._context.loading = false;
-        // TODO: how handle singleton vs multiple
-        const match = result[0];
-        if (this.component) {
-          this.component.contentLoad.next(match);
-        } else {
-          console.warn('No component!');
-        }
-        if (match) {
-          const rootNode = this._viewRef!.rootNodes[0];
-          this.matchId = match.id;
-          this.renderer.setElementAttribute(rootNode, 'builder-content-entry-id', match.id);
-          this.match = match;
-          viewRef.context.$implicit = match.data;
-          // console.log('result', match, result);
-          // viewRef.context.results = result.map(item => ({ ...item.data, $id: item.id }));
-          if (this.builder.autoTrack) {
-            this.builder.trackImpression(match.id, match.variationId);
+          // FIXME: nasty hack to detect secondary updates vs original. Build proper support into JS SDK
+          // if (this._context.loading || result.length > viewRef.context.results.length) {
+          this._context.loading = false;
+          // TODO: how handle singleton vs multiple
+          const match = result[0];
+          if (this.component) {
+            this.component.contentLoad.next(match);
+          } else {
+            console.warn('No component!');
           }
-        }
-        if (!viewRef.destroyed) {
-          viewRef.detectChanges();
+          if (match) {
+            const rootNode = this._viewRef!.rootNodes[0];
+            this.matchId = match.id;
+            this.renderer.setElementAttribute(rootNode, 'builder-content-entry-id', match.id);
+            this.match = match;
+            viewRef.context.$implicit = match.data;
+            // console.log('result', match, result);
+            // viewRef.context.results = result.map(item => ({ ...item.data, $id: item.id }));
+            if (this.builder.autoTrack) {
+              this.builder.trackImpression(match.id, match.variationId);
+            }
+          }
+          if (!viewRef.destroyed) {
+            viewRef.detectChanges();
 
-          // TODO: it's possible we don't want anything below to run if this has been destroyed
-          if (match && match.data && match.data.animations && Builder.isBrowser) {
-            Builder.nextTick(() => {
-              Builder.animator.bindAnimations(match.data.animations);
+            // TODO: it's possible we don't want anything below to run if this has been destroyed
+            if (match && match.data && match.data.animations && Builder.isBrowser) {
+              Builder.nextTick(() => {
+                Builder.animator.bindAnimations(match.data.animations);
+              });
+            }
+          }
+
+          if (!receivedFirstResponse) {
+            setTimeout(() => {
+              task.invoke();
             });
+            receivedFirstResponse = true;
+          }
+        },
+        error => {
+          if (this.component) {
+            this.component.contentError.next(error);
+          } else {
+            console.warn('No component!');
+          }
+          if (!receivedFirstResponse) {
+            // TODO: how to zone error
+            task.invoke();
+            receivedFirstResponse = true;
           }
         }
-
-        if (!receivedFirstResponse) {
-          setTimeout(() => {
-            task.invoke();
-          });
-          receivedFirstResponse = true;
-        }
-      },
-      error => {
-        if (this.component) {
-          this.component.contentError.next(error);
-        } else {
-          console.warn('No component!');
-        }
-        if (!receivedFirstResponse) {
-          // TODO: how to zone error
-          task.invoke();
-          receivedFirstResponse = true;
-        }
-      }
-    );
+      ));
   }
 
   private _updateView() {
