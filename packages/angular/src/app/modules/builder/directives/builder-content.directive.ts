@@ -6,6 +6,8 @@ import {
   Renderer,
   TemplateRef,
   ViewContainerRef,
+  OnInit,
+  OnDestroy,
 } from '@angular/core';
 import { makeStateKey, StateKey, TransferState } from '@angular/platform-browser';
 import { BuilderContentService } from '../services/builder-content.service';
@@ -13,6 +15,8 @@ import { BuilderContentService } from '../services/builder-content.service';
 import { BuilderService } from '../services/builder.service';
 import { Builder } from '@builder.io/sdk';
 import { BuilderComponentService } from '../components/builder-component/builder-component.service';
+import { Router, NavigationStart } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 declare let Zone: any;
 
@@ -21,11 +25,13 @@ declare let Zone: any;
   selector: '[builderModel]',
   providers: [BuilderContentService],
 })
-export class BuilderContentDirective {
+export class BuilderContentDirective implements OnInit, OnDestroy {
   private get component() {
     // return BuilderService.componentInstances[this._context.model as string];
     return this.builderComponentService.contentComponentInstance;
   }
+
+  private subscriptions = new Subscription();
 
   private _context: BuilderContentContext = new BuilderContentContext();
   private _templateRef: TemplateRef<BuilderContentContext> | null = null;
@@ -43,16 +49,37 @@ export class BuilderContentDirective {
     private builder: BuilderService,
     private builderComponentService: BuilderComponentService,
     @Optional() private transferState: TransferState,
+    @Optional() private router: Router,
     templateRef: TemplateRef<BuilderContentContext>
   ) {
     builderComponentService.contentDirectiveInstance = this;
     this._templateRef = templateRef;
   }
 
+  // TODO: pass this option down from builder-component
+  @Input() reloadOnRoute = true;
+
   stateKey: StateKey<any> | undefined;
 
   ngOnInit() {
     this.request();
+
+    if (this.router) {
+      this.subscriptions.add(
+        this.router.events.subscribe(event => {
+          if (event instanceof NavigationStart) {
+            if (this.reloadOnRoute) {
+              this.subscriptions.unsubscribe();
+              this.request();
+            }
+          }
+        })
+      );
+    }
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 
   // TODO: have another option for this or get from metadata
@@ -133,76 +160,78 @@ export class BuilderContentDirective {
       this.transferState && this.transferState.get(this.stateKey!, null as any);
 
     // TODO: if not multipe
-    this.builder.queueGetContent(model, { initialContent }).subscribe(
-      result => {
-        if (this.transferState) {
-          this.transferState.set(this.stateKey!, result);
-        }
-        // tslint:disable-next-line:no-non-null-assertion
-        const viewRef = this._viewRef!;
+    this.subscriptions.add(
+      this.builder.queueGetContent(model, { initialContent }).subscribe(
+        result => {
+          if (this.transferState) {
+            this.transferState.set(this.stateKey!, result);
+          }
+          // tslint:disable-next-line:no-non-null-assertion
+          const viewRef = this._viewRef!;
 
-        if (Builder.isBrowser) {
-          const rootNode = viewRef.rootNodes[0];
-          if (rootNode) {
-            if (rootNode && rootNode.classList.contains('builder-editor-injected')) {
-              viewRef.detach();
-              return;
+          if (Builder.isBrowser) {
+            const rootNode = viewRef.rootNodes[0];
+            if (rootNode) {
+              if (rootNode && rootNode.classList.contains('builder-editor-injected')) {
+                viewRef.detach();
+                return;
+              }
             }
           }
-        }
 
-        // FIXME: nasty hack to detect secondary updates vs original. Build proper support into JS SDK
-        // if (this._context.loading || result.length > viewRef.context.results.length) {
-        this._context.loading = false;
-        // TODO: how handle singleton vs multiple
-        const match = result[0];
-        if (this.component) {
-          this.component.contentLoad.next(match);
-        } else {
-          console.warn('No component!');
-        }
-        if (match) {
-          const rootNode = this._viewRef!.rootNodes[0];
-          this.matchId = match.id;
-          this.renderer.setElementAttribute(rootNode, 'builder-content-entry-id', match.id);
-          this.match = match;
-          viewRef.context.$implicit = match.data;
-          // console.log('result', match, result);
-          // viewRef.context.results = result.map(item => ({ ...item.data, $id: item.id }));
-          if (this.builder.autoTrack) {
-            this.builder.trackImpression(match.id, match.variationId);
+          // FIXME: nasty hack to detect secondary updates vs original. Build proper support into JS SDK
+          // if (this._context.loading || result.length > viewRef.context.results.length) {
+          this._context.loading = false;
+          // TODO: how handle singleton vs multiple
+          const match = result[0];
+          if (this.component) {
+            this.component.contentLoad.next(match);
+          } else {
+            console.warn('No component!');
           }
-        }
-        if (!viewRef.destroyed) {
-          viewRef.detectChanges();
+          if (match) {
+            const rootNode = this._viewRef!.rootNodes[0];
+            this.matchId = match.id;
+            this.renderer.setElementAttribute(rootNode, 'builder-content-entry-id', match.id);
+            this.match = match;
+            viewRef.context.$implicit = match.data;
+            // console.log('result', match, result);
+            // viewRef.context.results = result.map(item => ({ ...item.data, $id: item.id }));
+            if (this.builder.autoTrack) {
+              this.builder.trackImpression(match.id, match.variationId);
+            }
+          }
+          if (!viewRef.destroyed) {
+            viewRef.detectChanges();
 
-          // TODO: it's possible we don't want anything below to run if this has been destroyed
-          if (match && match.data && match.data.animations && Builder.isBrowser) {
-            Builder.nextTick(() => {
-              Builder.animator.bindAnimations(match.data.animations);
+            // TODO: it's possible we don't want anything below to run if this has been destroyed
+            if (match && match.data && match.data.animations && Builder.isBrowser) {
+              Builder.nextTick(() => {
+                Builder.animator.bindAnimations(match.data.animations);
+              });
+            }
+          }
+
+          if (!receivedFirstResponse) {
+            setTimeout(() => {
+              task.invoke();
             });
+            receivedFirstResponse = true;
+          }
+        },
+        error => {
+          if (this.component) {
+            this.component.contentError.next(error);
+          } else {
+            console.warn('No component!');
+          }
+          if (!receivedFirstResponse) {
+            // TODO: how to zone error
+            task.invoke();
+            receivedFirstResponse = true;
           }
         }
-
-        if (!receivedFirstResponse) {
-          setTimeout(() => {
-            task.invoke();
-          });
-          receivedFirstResponse = true;
-        }
-      },
-      error => {
-        if (this.component) {
-          this.component.contentError.next(error);
-        } else {
-          console.warn('No component!');
-        }
-        if (!receivedFirstResponse) {
-          // TODO: how to zone error
-          task.invoke();
-          receivedFirstResponse = true;
-        }
-      }
+      )
     );
   }
 
