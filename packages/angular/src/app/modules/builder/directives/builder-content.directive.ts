@@ -13,7 +13,7 @@ import { makeStateKey, StateKey, TransferState } from '@angular/platform-browser
 import { BuilderContentService } from '../services/builder-content.service';
 // FIXME: tsconfig paths? install module? use lerna...
 import { BuilderService } from '../services/builder.service';
-import { Builder } from '@builder.io/sdk';
+import { Builder, Subscription as BuilderSubscription } from '@builder.io/sdk';
 import { BuilderComponentService } from '../components/builder-component/builder-component.service';
 import { Router, NavigationStart } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -59,6 +59,8 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
   // TODO: pass this option down from builder-component
   @Input() reloadOnRoute = true;
 
+  contentSubscription: BuilderSubscription | null = null;
+
   stateKey: StateKey<any> | undefined;
 
   ngOnInit() {
@@ -69,7 +71,6 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
         this.router.events.subscribe(event => {
           if (event instanceof NavigationStart) {
             if (this.reloadOnRoute) {
-              this.subscriptions.unsubscribe();
               this.clickTracked = false;
               this.request();
             }
@@ -81,6 +82,9 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
+    if (this.contentSubscription) {
+      this.contentSubscription.unsubscribe();
+    }
   }
 
   // TODO: have another option for this or get from metadata
@@ -161,78 +165,80 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
       this.transferState && this.transferState.get(this.stateKey!, null as any);
 
     // TODO: if not multipe
-    this.subscriptions.add(
-      this.builder.queueGetContent(model, { initialContent }).subscribe(
-        result => {
-          if (this.transferState) {
-            this.transferState.set(this.stateKey!, result);
-          }
-          // tslint:disable-next-line:no-non-null-assertion
-          const viewRef = this._viewRef!;
 
-          if (Builder.isBrowser) {
-            const rootNode = viewRef.rootNodes[0];
-            if (rootNode) {
-              if (rootNode && rootNode.classList.contains('builder-editor-injected')) {
-                viewRef.detach();
-                return;
-              }
+    if (this.contentSubscription) {
+      this.contentSubscription.unsubscribe();
+    }
+    this.contentSubscription = this.builder.queueGetContent(model, { initialContent }).subscribe(
+      result => {
+        if (this.transferState) {
+          this.transferState.set(this.stateKey!, result);
+        }
+        // tslint:disable-next-line:no-non-null-assertion
+        const viewRef = this._viewRef!;
+
+        if (Builder.isBrowser) {
+          const rootNode = viewRef.rootNodes[0];
+          if (rootNode) {
+            if (rootNode && rootNode.classList.contains('builder-editor-injected')) {
+              viewRef.detach();
+              return;
             }
-          }
-
-          // FIXME: nasty hack to detect secondary updates vs original. Build proper support into JS SDK
-          // if (this._context.loading || result.length > viewRef.context.results.length) {
-          this._context.loading = false;
-          // TODO: how handle singleton vs multiple
-          const match = result[0];
-          if (this.component) {
-            this.component.contentLoad.next(match);
-          } else {
-            console.warn('No component!');
-          }
-          if (match) {
-            const rootNode = this._viewRef!.rootNodes[0];
-            this.matchId = match.id;
-            this.renderer.setElementAttribute(rootNode, 'builder-content-entry-id', match.id);
-            this.match = match;
-            viewRef.context.$implicit = match.data;
-            // console.log('result', match, result);
-            // viewRef.context.results = result.map(item => ({ ...item.data, $id: item.id }));
-            if (this.builder.autoTrack) {
-              this.builder.trackImpression(match.id, match.variationId);
-            }
-          }
-          if (!viewRef.destroyed) {
-            viewRef.detectChanges();
-
-            // TODO: it's possible we don't want anything below to run if this has been destroyed
-            if (match && match.data && match.data.animations && Builder.isBrowser) {
-              Builder.nextTick(() => {
-                Builder.animator.bindAnimations(match.data.animations);
-              });
-            }
-          }
-
-          if (!receivedFirstResponse) {
-            setTimeout(() => {
-              task.invoke();
-            });
-            receivedFirstResponse = true;
-          }
-        },
-        error => {
-          if (this.component) {
-            this.component.contentError.next(error);
-          } else {
-            console.warn('No component!');
-          }
-          if (!receivedFirstResponse) {
-            // TODO: how to zone error
-            task.invoke();
-            receivedFirstResponse = true;
           }
         }
-      )
+
+        // FIXME: nasty hack to detect secondary updates vs original. Build proper support into JS SDK
+        // if (this._context.loading || result.length > viewRef.context.results.length) {
+        this._context.loading = false;
+        // TODO: how handle singleton vs multiple
+        const match = result[0];
+        if (this.component) {
+          this.component.contentLoad.next(match);
+        } else {
+          console.warn('No component!');
+        }
+        if (match) {
+          const rootNode = this._viewRef!.rootNodes[0];
+          this.matchId = match.id;
+          this.renderer.setElementAttribute(rootNode, 'builder-content-entry-id', match.id);
+          this.match = match;
+          viewRef.context.$implicit = match.data;
+          // console.log('result', match, result);
+          // viewRef.context.results = result.map(item => ({ ...item.data, $id: item.id }));
+          if (this.builder.autoTrack) {
+            this.builder.trackImpression(match.id, match.variationId);
+          }
+        }
+        if (!viewRef.destroyed) {
+          viewRef.detectChanges();
+
+          // TODO: it's possible we don't want anything below to run if this has been destroyed
+          if (match && match.data && match.data.animations && Builder.isBrowser) {
+            Builder.nextTick(() => {
+              Builder.animator.bindAnimations(match.data.animations);
+            });
+          }
+        }
+
+        if (!receivedFirstResponse) {
+          setTimeout(() => {
+            task.invoke();
+          });
+          receivedFirstResponse = true;
+        }
+      },
+      error => {
+        if (this.component) {
+          this.component.contentError.next(error);
+        } else {
+          console.warn('No component!');
+        }
+        if (!receivedFirstResponse) {
+          // TODO: how to zone error
+          task.invoke();
+          receivedFirstResponse = true;
+        }
+      }
     );
   }
 
