@@ -70,6 +70,7 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
           if (event instanceof NavigationStart) {
             if (this.reloadOnRoute) {
               this.subscriptions.unsubscribe();
+              this.clickTracked = false;
               this.request();
             }
           }
