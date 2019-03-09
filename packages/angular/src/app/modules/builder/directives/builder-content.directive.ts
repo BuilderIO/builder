@@ -177,6 +177,14 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
         // tslint:disable-next-line:no-non-null-assertion
         const viewRef = this._viewRef!;
 
+        if (viewRef.destroyed) {
+          this.subscriptions.unsubscribe()
+          if (this.contentSubscription) {
+            this.contentSubscription.unsubscribe()
+          }
+          return;
+        }
+
         if (Builder.isBrowser) {
           const rootNode = viewRef.rootNodes[0];
           if (rootNode) {
