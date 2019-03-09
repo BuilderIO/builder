@@ -38,6 +38,7 @@ export interface RouteEvent {
 @BuilderBlock({
   // Builder:Router?
   name: 'Core:Router',
+  hideFromInsertMenu: true,
   inputs: [
     {
       // TODO: search picker
