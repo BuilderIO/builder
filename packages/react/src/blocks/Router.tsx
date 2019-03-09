@@ -39,6 +39,7 @@ export interface RouteEvent {
   // Builder:Router?
   name: 'Core:Router',
   hideFromInsertMenu: true,
+  // TODO: advanced: true
   inputs: [
     {
       // TODO: search picker
