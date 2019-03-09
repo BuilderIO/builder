@@ -15,7 +15,7 @@ import { BuilderContentService } from '../services/builder-content.service';
 import { BuilderService } from '../services/builder.service';
 import { Builder, Subscription as BuilderSubscription } from '@builder.io/sdk';
 import { BuilderComponentService } from '../components/builder-component/builder-component.service';
-import { Router, NavigationStart } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 declare let Zone: any;
@@ -69,9 +69,15 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
     if (this.router) {
       this.subscriptions.add(
         this.router.events.subscribe(event => {
-          if (event instanceof NavigationStart) {
+          // TODO: use NavigationEnd?
+          if (event instanceof NavigationEnd) {
             if (this.reloadOnRoute) {
+              const viewRef = this._viewRef;
+              if (viewRef && viewRef.destroyed) {
+                return;
+              }
               this.clickTracked = false;
+              // Verify the route didn't result in this component being destroyed
               this.request();
             }
           }
@@ -156,6 +162,11 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
 
   // TODO: service for this
   request() {
+    const viewRef = this._viewRef;
+    if (viewRef && viewRef.destroyed) {
+      return;
+    }
+
     const noop = () => null;
     const task = Zone.current.scheduleMacroTask('getBuilderContent', noop, {}, noop, noop);
     let receivedFirstResponse = false;
@@ -178,9 +189,9 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
         const viewRef = this._viewRef!;
 
         if (viewRef.destroyed) {
-          this.subscriptions.unsubscribe()
+          this.subscriptions.unsubscribe();
           if (this.contentSubscription) {
-            this.contentSubscription.unsubscribe()
+            this.contentSubscription.unsubscribe();
           }
           return;
         }
