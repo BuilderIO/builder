@@ -14,6 +14,20 @@ export interface RouterProps {
   onRoute?: (routeEvent: RouteEvent) => void
 }
 
+// TODO: share this
+function searchToObject(location: HTMLAnchorElement) {
+  const pairs = (location.search || '').substring(1).split('&')
+  const obj: { [key: string]: string } = {}
+
+  for (const i in pairs) {
+    if (pairs[i] === '') continue
+    const pair = pairs[i].split('=')
+    obj[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1])
+  }
+
+  return obj
+}
+
 export interface RouteEvent {
   /**
    * Url being routed to
@@ -73,12 +87,22 @@ export class Router extends React.Component<RouterProps> {
   private preloadQueue = 0
 
   public route(url: string) {
+    const parsed = this.parseUrl(url)
     // TODO: check if relative?
     if (window.history && window.history.pushState) {
       history.pushState(null, '', url)
       if (this.privateState) {
         // Reload path info
-        this.privateState.update(obj => obj)
+        this.privateState.update(obj => ({
+          ...obj,
+          location: {
+            ...obj.location,
+            pathname: parsed.pathname,
+            search: parsed.search,
+            path: parsed.pathname.split('/').slice(1),
+            query: searchToObject(parsed)
+          }
+        }))
       }
     } else {
       location.href = url
