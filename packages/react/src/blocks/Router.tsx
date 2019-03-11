@@ -88,11 +88,15 @@ export interface RouteEvent {
 export class Router extends React.Component<RouterProps> {
   builder = builder
 
+  routed = false
+
   private preloadQueue = 0
 
   // TODO: handle route to same url as current (do nothing)
   // TODO: replaceState option
   public route(url: string) {
+    this.routed = true
+
     // TODO: check if relative?
     if (window.history && window.history.pushState) {
       history.pushState(null, '', url)
@@ -313,7 +317,7 @@ export class Router extends React.Component<RouterProps> {
               <BuilderPage
                 key={url}
                 data={this.props.data}
-                content={this.props.content}
+                content={this.routed ? undefined : this.props.content}
                 modelName={model}
                 options={{
                   key: Builder.isEditing ? undefined : this.model + ':' + url // TODO: other custom targets specify if should refetch components on change
