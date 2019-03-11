@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/angular",
-  "version": "1.0.4-alpha.10",
+  "version": "1.0.4-alpha.11",
   "main": "dist/bundles/builder.io-angular.umd.js",
   "module": "dist/fesm5/builder.io-angular.js",
   "es2015": "dist/fesm2015/builder.io-angular.js",
@@ -49,7 +49,6 @@
     "@builder.io/sdk": "^1.0.15-alpha.1"
   },
   "devDependencies": {
-    "tsickle": "^0.33.1",
     "@angular/cli": ">= 2",
     "@angular/compiler": ">= 2",
     "@angular/compiler-cli": ">= 2",
@@ -76,6 +75,7 @@
     "protractor": "^5.4.1",
     "ts-loader": "^5.3.0",
     "ts-node": "^7.0.1",
+    "tsickle": "^0.33.1",
     "tslint": "^5.11.0",
     "typescript": "3.1.6"
   },
