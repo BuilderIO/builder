@@ -328,11 +328,13 @@ export class Form extends React.Component<FormProps> {
               })
             } else {
               // Json
-              body = {}
+              const json = {}
 
               formPairs.forEach(({ value, key }) => {
-                set(body, key, value)
+                set(json, key, value)
               })
+
+              body = JSON.stringify(json)
             }
 
             const presubmitEvent = new CustomEvent('presubmit', {
