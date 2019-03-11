@@ -15,7 +15,7 @@ import { BuilderContentService } from '../services/builder-content.service';
 import { BuilderService } from '../services/builder.service';
 import { Builder, Subscription as BuilderSubscription } from '@builder.io/sdk';
 import { BuilderComponentService } from '../components/builder-component/builder-component.service';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd, NavigationStart } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 declare let Zone: any;
@@ -70,14 +70,14 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
       this.subscriptions.add(
         this.router.events.subscribe(event => {
           // TODO: this doesn't trigger
-          if (event instanceof NavigationEnd) {
+          if (event instanceof NavigationStart) {
             if (this.reloadOnRoute) {
               const viewRef = this._viewRef;
               if (viewRef && viewRef.destroyed) {
                 return;
               }
 
-              console.log('navigation end?')
+              console.log('navigation start?')
               this.clickTracked = false;
               // Verify the route didn't result in this component being destroyed
               this.request();
