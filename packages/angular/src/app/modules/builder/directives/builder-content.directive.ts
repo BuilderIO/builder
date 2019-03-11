@@ -76,6 +76,8 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
               if (viewRef && viewRef.destroyed) {
                 return;
               }
+
+              console.log('navigation end?')
               this.clickTracked = false;
               // Verify the route didn't result in this component being destroyed
               this.request();
@@ -192,7 +194,7 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
           // if multiple routes or other events happen
           if (this.contentSubscription !== subscription) {
             // TODO: why is this different sometimes?
-            // return;
+            return;
           }
 
           if (this.transferState) {
