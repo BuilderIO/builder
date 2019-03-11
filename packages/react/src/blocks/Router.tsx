@@ -184,7 +184,8 @@ export class Router extends React.Component<RouterProps> {
     // Should be queue?
     const subscription = builder
       .get(this.model, {
-        userAttributes: attributes
+        userAttributes: attributes,
+        key: this.model + ':' + parsedUrl.pathname + parsedUrl.search
       })
       .subscribe(() => {
         this.preloadQueue--
