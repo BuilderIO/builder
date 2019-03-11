@@ -1,6 +1,6 @@
 import React from 'react'
 import { BuilderBlock } from '../decorators/builder-block.decorator'
-import { BuilderElement } from '@builder.io/sdk'
+import { BuilderElement, builder } from '@builder.io/sdk'
 import { BuilderStoreContext } from '../store/builder-store'
 import { BuilderPage } from '../components/builder-page.component'
 
@@ -10,6 +10,7 @@ export interface RouterProps {
   content?: string
   handleRouting?: boolean
   builderBlock?: BuilderElement
+  preloadOnHover?: boolean
   onRoute?: (routeEvent: RouteEvent) => void
 }
 
@@ -55,6 +56,12 @@ export interface RouteEvent {
       advanced: true
     },
     {
+      name: 'preloadOnHover',
+      type: 'boolean',
+      defaultValue: true,
+      advanced: true
+    },
+    {
       name: 'onRoute',
       type: 'function',
       advanced: true
@@ -63,6 +70,8 @@ export interface RouteEvent {
   ]
 })
 export class Router extends React.Component<RouterProps> {
+  private preloadQueue = 0
+
   public route(url: string) {
     // TODO: check if relative?
     if (window.history && window.history.pushState) {
@@ -80,12 +89,82 @@ export class Router extends React.Component<RouterProps> {
     return this.props.model || 'page'
   }
 
-  private onClick = async (event: React.MouseEvent) => {
+  componentDidMount() {
+    if (typeof document !== 'undefined') {
+      document.addEventListener('click', this.onClick)
+      document.addEventListener('mouseover', this.onMouseOverOrTouchStart)
+      document.addEventListener('touchstart', this.onMouseOverOrTouchStart)
+    }
+  }
+
+  componentWillUnmount() {
+    if (typeof document !== 'undefined') {
+      document.removeEventListener('click', this.onClick)
+      document.removeEventListener('mouseover', this.onMouseOverOrTouchStart)
+      document.removeEventListener('touchstart', this.onMouseOverOrTouchStart)
+    }
+  }
+
+  private onMouseOverOrTouchStart = (event: MouseEvent | TouchEvent) => {
+    if (this.preloadQueue > 4) {
+      return
+    }
+
+    if (this.props.preloadOnHover === false) {
+      return
+    }
+
+    const hrefTarget = this.findHrefTarget(event)
+    if (!hrefTarget) {
+      return
+    }
+
+    let href = hrefTarget.getAttribute('href')
+    if (!href) {
+      return
+    }
+
+    // TODO: onPreload hook and preload dom event
+    // Also allow that to be defaultPrevented to cancel this behavior
+    if (!this.isRelative(href)) {
+      const converted = this.convertToRelative(href)
+      if (converted) {
+        href = converted
+      } else {
+        return
+      }
+    }
+
+    if (href.startsWith('#')) {
+      return
+    }
+
+    const parsedUrl = this.parseUrl(href)
+
+    // TODO: override location!
+    this.preloadQueue++
+
+    const attributes = builder.getUserAttributes()
+    attributes.urlPath = parsedUrl.pathname
+    attributes.queryString = parsedUrl.search
+
+    // Should be queue?
+    const subscription = builder
+      .get(this.model, {
+        userAttributes: attributes
+      })
+      .subscribe(() => {
+        this.preloadQueue--
+        subscription.unsubscribe()
+      })
+  }
+
+  private onClick = async (event: MouseEvent) => {
     if (this.props.handleRouting === false) {
       return
     }
 
-    if (event.button !== 0 || event.ctrlKey || event.defaultPrevented) {
+    if (event.button !== 0 || event.ctrlKey || event.defaultPrevented || event.metaKey) {
       // If this is a non-left click, or the user is holding ctr/cmd, or the url is absolute,
       // or if the link has a target attribute, don't route on the client and let the default
       // href property handle the navigation
@@ -98,7 +177,7 @@ export class Router extends React.Component<RouterProps> {
     }
 
     // target="_blank" or target="_self" etc
-    if (hrefTarget.target) {
+    if (hrefTarget.target && hrefTarget.target !== '_client') {
       return
     }
 
@@ -120,13 +199,10 @@ export class Router extends React.Component<RouterProps> {
       this.props.onRoute(routeEvent)
 
       if (routeEvent.defaultPrevented) {
-        event.preventDefault()
+        // Wait should this be here? they may want browser to handle this by deault preventing ours...
+        // event.preventDefault()
         return
       }
-    }
-
-    if (event.metaKey) {
-      return
     }
 
     if (!this.isRelative(href)) {
@@ -136,6 +212,10 @@ export class Router extends React.Component<RouterProps> {
       } else {
         return
       }
+    }
+
+    if (href.startsWith('#')) {
+      return
     }
 
     // Otherwise if this url is relative, navigate on the client
@@ -151,7 +231,7 @@ export class Router extends React.Component<RouterProps> {
         {state => {
           this.privateState = state
           return (
-            <div onClick={this.onClick} className="builder-router" data-model={model}>
+            <div className="builder-router" data-model={model}>
               {/* TODO: loading icon on route */}
               {/* TODO: default site styles */}
               <style>{`
@@ -203,7 +283,7 @@ export class Router extends React.Component<RouterProps> {
     )
   }
 
-  private findHrefTarget(event: React.MouseEvent): HTMLAnchorElement | null {
+  private findHrefTarget(event: MouseEvent | TouchEvent): HTMLAnchorElement | null {
     // TODO: move to core
     let element = event.target as HTMLElement | null
 
@@ -238,13 +318,19 @@ export class Router extends React.Component<RouterProps> {
     return a
   }
 
-  private convertToRelative(href: string) {
+  private convertToRelative(href: string): string | null {
     const currentUrl = this.parseUrl(location.href)
     const hrefUrl = this.parseUrl(href)
 
     if (currentUrl.host === hrefUrl.host) {
       const relativeUrl = hrefUrl.pathname + (hrefUrl.search ? hrefUrl.search : '')
-      return relativeUrl
+
+      if (relativeUrl.startsWith('#')) {
+        return null
+      }
+      return relativeUrl || '/'
     }
+
+    return null
   }
 }

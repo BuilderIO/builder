@@ -1056,6 +1056,8 @@ export class Builder {
       return;
     }
 
+    const queue = useQueue || (usePastQueue ? this.priorContentQueue : this.getContentQueue) || [];
+
     // TODO: do this on every request send?
     this.getOverridesFromQueryString();
 
@@ -1065,11 +1067,15 @@ export class Builder {
         ? QueryString.parseDeep(location.search.substr(1))
         : undefined || {};
 
-    const userAttributes = this.targetContent
-      ? this.getUserAttributes()
-      : {
-          urlPath: this.getLocation().pathname,
-        };
+    const userAttributes =
+      // FIXME: HACK: only checks first in queue for user attributes overrides, should check all
+      queue && queue[0].userAttributes
+        ? queue[0].userAttributes
+        : this.targetContent
+        ? this.getUserAttributes()
+        : {
+            urlPath: this.getLocation().pathname,
+          };
 
     // TODO: merge in the attribute from query string ones
     // TODO: make this an option per component/request
@@ -1077,7 +1083,6 @@ export class Builder {
       ? userAttributes
       : JSON.stringify(userAttributes);
 
-    const queue = useQueue || (usePastQueue ? this.priorContentQueue : this.getContentQueue) || [];
     if (!usePastQueue && !useQueue) {
       this.priorContentQueue = queue;
       this.getContentQueue = null;
