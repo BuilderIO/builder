@@ -17,7 +17,7 @@ export interface RouterProps {
 const prefetched = new Set()
 
 // TODO: share this
-function searchToObject(location: HTMLAnchorElement) {
+function searchToObject(location: Location) {
   const pairs = (location.search || '').substring(1).split('&')
   const obj: { [key: string]: string } = {}
 
@@ -90,26 +90,33 @@ export class Router extends React.Component<RouterProps> {
 
   private preloadQueue = 0
 
+  // TODO: handle route to same url as current (do nothing)
+  // TODO: replaceState option
   public route(url: string) {
-    const parsed = this.parseUrl(url)
     // TODO: check if relative?
     if (window.history && window.history.pushState) {
       history.pushState(null, '', url)
-      if (this.privateState) {
-        // Reload path info
-        this.privateState.update(obj => {
-          // TODO: force always override the location path info... hmm
-          obj.location = {
-            ...obj.location,
-            pathname: parsed.pathname,
-            search: parsed.search,
-            path: parsed.pathname.split('/').slice(1),
-            query: searchToObject(parsed)
-          }
-        })
-      }
+      this.updateLocationState()
+      return true
     } else {
       location.href = url
+      return false
+    }
+  }
+
+  private updateLocationState() {
+    if (this.privateState) {
+      // Reload path info
+      this.privateState.update(obj => {
+        // TODO: force always override the location path info... hmm
+        obj.location = {
+          ...obj.location,
+          pathname: location.pathname,
+          search: location.search,
+          path: location.pathname.split('/').slice(1),
+          query: searchToObject(location)
+        }
+      })
     }
   }
 
@@ -120,6 +127,7 @@ export class Router extends React.Component<RouterProps> {
   componentDidMount() {
     if (typeof document !== 'undefined') {
       document.addEventListener('click', this.onClick)
+      document.addEventListener('popstate', this.onPopState)
       document.addEventListener('mouseover', this.onMouseOverOrTouchStart)
       document.addEventListener('touchstart', this.onMouseOverOrTouchStart)
     }
@@ -129,8 +137,13 @@ export class Router extends React.Component<RouterProps> {
     if (typeof document !== 'undefined') {
       document.removeEventListener('click', this.onClick)
       document.removeEventListener('mouseover', this.onMouseOverOrTouchStart)
+      document.removeEventListener('popstate', this.onPopState)
       document.removeEventListener('touchstart', this.onMouseOverOrTouchStart)
     }
+  }
+
+  private onPopState = (event: Event) => {
+    this.updateLocationState()
   }
 
   private onMouseOverOrTouchStart = (event: MouseEvent | TouchEvent) => {
