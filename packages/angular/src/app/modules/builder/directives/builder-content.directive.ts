@@ -31,6 +31,9 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
     return this.builderComponentService.contentComponentInstance;
   }
 
+  lastContentId: string | null = null;
+  lastUrl: string | null = null;
+
   private subscriptions = new Subscription();
 
   private _context: BuilderContentContext = new BuilderContentContext();
@@ -70,17 +73,21 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
       this.subscriptions.add(
         this.router.events.subscribe(event => {
           // TODO: this doesn't trigger
-          if (event instanceof NavigationStart) {
+          if (event instanceof NavigationEnd) {
             if (this.reloadOnRoute) {
               const viewRef = this._viewRef;
               if (viewRef && viewRef.destroyed) {
                 return;
               }
 
-              console.log('navigation start?')
-              this.clickTracked = false;
-              // Verify the route didn't result in this component being destroyed
-              this.request();
+              if (this.url !== this.lastUrl) {
+                // TODO: listen to any target change? This just updates target?
+
+                // TODO: track last fetched ID and don't replace dom if on new url the content is the same...
+                this.clickTracked = false;
+                // Verify the route didn't result in this component being destroyed
+                this.request();
+              }
             }
           }
         })
@@ -154,7 +161,9 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
     }
     this._context.model = model;
     this._updateView();
-    this.stateKey = makeStateKey('builder:' + model + ':' + (this.reloadOnRoute ? this.router && this.router.url : ''));
+    this.stateKey = makeStateKey(
+      'builder:' + model + ':' + (this.reloadOnRoute ? this.router && this.router.url : '')
+    );
     // this.request();
     const rootNode = this._viewRef!.rootNodes[0];
     this.renderer.setElementAttribute(rootNode, 'builder-model', model);
@@ -162,8 +171,18 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
     this.renderer.listen(rootNode, 'click', (event: MouseEvent) => this.onClick(event));
   }
 
+  private get url() {
+    if (this.router) {
+      return this.router.url;
+    }
+    const location = this.builder.getLocation();
+    return (location.pathname || '') + (location.search || '');
+  }
+
   // TODO: service for this
   request() {
+    this.lastUrl = this.url;
+
     const viewRef = this._viewRef;
     if (viewRef && viewRef.destroyed) {
       return;
@@ -186,16 +205,29 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
     const subscription = (this.contentSubscription = this.builder
       .queueGetContent(model, {
         initialContent,
-        key: Builder.isEditing || !this.reloadOnRoute ? model : `${model}:${this.router && this.router.url}`,
+        key:
+          Builder.isEditing || !this.reloadOnRoute
+            ? model
+            : `${model}:${this.router && this.router.url}`,
       })
       .subscribe(
         result => {
           // Cancel handling request if new one created or they have been canceled, to avoid race conditions
           // if multiple routes or other events happen
           if (this.contentSubscription !== subscription) {
-            // TODO: why is this different sometimes?
-            // return;
+            if (!receivedFirstResponse) {
+              setTimeout(() => {
+                task.invoke();
+              });
+            }
+            return;
           }
+
+          if (result.id === this.lastContentId) {
+            return;
+          }
+
+          this.lastContentId = result.id;
 
           if (this.transferState) {
             this.transferState.set(this.stateKey!, result);
