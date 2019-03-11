@@ -14,6 +14,8 @@ export interface RouterProps {
   onRoute?: (routeEvent: RouteEvent) => void
 }
 
+const prefetched = new Set()
+
 // TODO: share this
 function searchToObject(location: HTMLAnchorElement) {
   const pairs = (location.search || '').substring(1).split('&')
@@ -162,6 +164,11 @@ export class Router extends React.Component<RouterProps> {
     if (href.startsWith('#')) {
       return
     }
+
+    if (prefetched.has(href)) {
+      return
+    }
+    prefetched.add(href)
 
     const parsedUrl = this.parseUrl(href)
 
