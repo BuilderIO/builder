@@ -94,6 +94,7 @@ export class Router extends React.Component<RouterProps> {
       if (this.privateState) {
         // Reload path info
         this.privateState.update(obj => {
+          // TODO: force always override the location path info... hmm
           obj.location = {
             ...obj.location,
             pathname: parsed.pathname,
