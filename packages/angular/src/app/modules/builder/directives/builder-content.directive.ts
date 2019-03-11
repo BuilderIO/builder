@@ -194,7 +194,7 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
           // if multiple routes or other events happen
           if (this.contentSubscription !== subscription) {
             // TODO: why is this different sometimes?
-            return;
+            // return;
           }
 
           if (this.transferState) {
