@@ -359,60 +359,47 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
               )} */}
 
               {/* TODO: never use this? */}
-              {content && !Builder.isEditing ? (
-                <React.Fragment>
-                  {this.getCss(content.data) && (
-                    <style dangerouslySetInnerHTML={{ __html: this.getCss(content.data) }} />
-                  )}
-                  <BuilderBlocks
-                    emailMode={this.props.emailMode}
-                    fieldName="blocks"
-                    blocks={content.data.blocks}
-                  />
-                </React.Fragment>
-              ) : (
-                <BuilderContent
-                  // TODO: pass entry in
-                  contentLoaded={this.onContentLoaded}
-                  options={{
-                    entry: this.props.entry,
-                    key: Builder.isEditing ? this.name : this.props.entry,
-                    ...(content && { initialContent: [content] }),
-                    ...this.props.options
-                  }}
-                  contentError={this.props.contentError}
-                  modelName={this.name || 'page'}
-                >
-                  {(data, loading, fullData) => {
-                    // TODO: loading option - maybe that is what the children is or component prop
-                    return data ? (
-                      <div
-                        data-builder-component={this.name}
-                        data-builder-content-id={fullData.id}
-                        data-builder-variation-id={fullData.variationId}
-                      >
-                        {this.getCss(data) && (
-                          <style dangerouslySetInnerHTML={{ __html: this.getCss(data) }} />
-                        )}
-                        {
-                          <BuilderBlocks
-                            emailMode={this.props.emailMode}
-                            fieldName="blocks"
-                            blocks={data.blocks}
-                          />
-                        }
-                        {/* {data.jsCode && <script dangerouslySetInnerHTML={{ __html: data.jsCode }} />} */}
-                      </div>
-                    ) : loading ? (
-                      <div data-builder-component={this.name} className="builder-loading">
-                        {this.props.children}
-                      </div>
-                    ) : (
-                      <div data-builder-component={this.name} className="builder-no-content" />
-                    )
-                  }}
-                </BuilderContent>
-              )}
+              <BuilderContent
+                // TODO: pass entry in
+                contentLoaded={this.onContentLoaded}
+                options={{
+                  entry: this.props.entry,
+                  key: Builder.isEditing ? this.name : this.props.entry,
+                  ...(content && { initialContent: [content] }),
+                  ...this.props.options
+                }}
+                contentError={this.props.contentError}
+                modelName={this.name || 'page'}
+              >
+                {(data, loading, fullData) => {
+                  // TODO: loading option - maybe that is what the children is or component prop
+                  return data ? (
+                    <div
+                      data-builder-component={this.name}
+                      data-builder-content-id={fullData.id}
+                      data-builder-variation-id={fullData.variationId}
+                    >
+                      {this.getCss(data) && (
+                        <style dangerouslySetInnerHTML={{ __html: this.getCss(data) }} />
+                      )}
+                      {
+                        <BuilderBlocks
+                          emailMode={this.props.emailMode}
+                          fieldName="blocks"
+                          blocks={data.blocks}
+                        />
+                      }
+                      {/* {data.jsCode && <script dangerouslySetInnerHTML={{ __html: data.jsCode }} />} */}
+                    </div>
+                  ) : loading ? (
+                    <div data-builder-component={this.name} className="builder-loading">
+                      {this.props.children}
+                    </div>
+                  ) : (
+                    <div data-builder-component={this.name} className="builder-no-content" />
+                  )
+                }}
+              </BuilderContent>
             </BuilderStoreContext.Provider>
           )
         }}
