@@ -43,7 +43,7 @@
   },
   "optionalDependencies": {
     "@nguniversal/express-engine": "*",
-    "@nguniversal/module-map-ngfactory-loader": "*",
+    "@nguniversal/module-map-ngfactory-loader": "*"
   },
   "dependencies": {
     "@builder.io/sdk": "^1.0.15-alpha.1"
