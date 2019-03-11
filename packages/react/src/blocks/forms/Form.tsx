@@ -20,6 +20,7 @@ export interface FormProps {
   previewState?: string
   successMessage?: BuilderElement[]
   errorMessage?: BuilderElement[]
+  sendingMessage?: BuilderElement[]
 }
 
 @BuilderBlock({
@@ -95,7 +96,7 @@ export interface FormProps {
       // editState?
       name: 'previewState',
       type: 'string',
-      enum: ['unsubmitted', 'success', 'error'],
+      enum: ['unsubmitted', 'sending', 'success', 'error'],
       helperText:
         'Choose a state to edit, e.g. choose "success" to show what users see on success and edit the message',
       showIf: 'options.get("sendSubmissionsTo") === "custom" && options.get("sendWithJs") === true'
@@ -108,7 +109,7 @@ export interface FormProps {
         {
           '@type': '@builder.io/sdk:Element',
           component: {
-            type: 'Text',
+            name: 'Text',
             options: {
               text: '<span>Thanks!</span>'
             }
@@ -130,10 +131,27 @@ export interface FormProps {
         {
           '@type': '@builder.io/sdk:Element',
           component: {
-            type: 'Text',
+            name: 'Text',
             options: {
               // TODO: how pull in API message
               text: '<span>Form submission error :( Please check your answers and try again</span>'
+            }
+          }
+        }
+      ]
+    },
+    {
+      name: 'sendingMessage',
+      type: 'uiBlocks',
+      hideFromUI: true,
+      defaultValue: [
+        {
+          '@type': '@builder.io/sdk:Element',
+          component: {
+            name: 'Text',
+            options: {
+              // TODO: how pull in API message
+              text: '<span>Sending...</span>'
             }
           }
         }
@@ -240,7 +258,7 @@ export class Form extends React.Component<FormProps> {
   // the style and or data editor. TODO: for now some kind of input for preview state
   // that only impacts in the editor?
   state = {
-    state: 'unsubmitted' as 'unsubmitted' | 'success' | 'error',
+    state: 'unsubmitted' as 'unsubmitted' | 'sending' | 'success' | 'error',
     // TODO: separate response and error?
     respnoseData: null as any
   }
@@ -432,6 +450,10 @@ export class Form extends React.Component<FormProps> {
 
         {this.submissionState === 'error' && (
           <BuilderBlocks dataPath="errorMessage" blocks={this.props.errorMessage!} />
+        )}
+
+        {this.submissionState === 'sending' && (
+          <BuilderBlocks dataPath="sendingMessage" blocks={this.props.sendingMessage!} />
         )}
 
         {/* TODO: option to turn this off */}
