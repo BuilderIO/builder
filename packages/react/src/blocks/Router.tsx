@@ -86,6 +86,8 @@ export interface RouteEvent {
   ]
 })
 export class Router extends React.Component<RouterProps> {
+  builder = builder
+
   private preloadQueue = 0
 
   public route(url: string) {
