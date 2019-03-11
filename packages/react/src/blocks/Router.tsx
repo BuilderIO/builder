@@ -93,16 +93,15 @@ export class Router extends React.Component<RouterProps> {
       history.pushState(null, '', url)
       if (this.privateState) {
         // Reload path info
-        this.privateState.update(obj => ({
-          ...obj,
-          location: {
+        this.privateState.update(obj => {
+          obj.location = {
             ...obj.location,
             pathname: parsed.pathname,
             search: parsed.search,
             path: parsed.pathname.split('/').slice(1),
             query: searchToObject(parsed)
           }
-        }))
+        })
       }
     } else {
       location.href = url
