@@ -191,7 +191,8 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
           // Cancel handling request if new one created or they have been canceled, to avoid race conditions
           // if multiple routes or other events happen
           if (this.contentSubscription !== subscription) {
-            return;
+            console.log('subscription not the same?')
+            // return;
           }
 
           if (this.transferState) {
