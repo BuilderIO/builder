@@ -1,6 +1,6 @@
 import React from 'react'
 import { BuilderBlock } from '../decorators/builder-block.decorator'
-import { BuilderElement, builder } from '@builder.io/sdk'
+import { BuilderElement, builder, Builder } from '@builder.io/sdk'
 import { BuilderStoreContext } from '../store/builder-store'
 import { BuilderPage } from '../components/builder-page.component'
 
@@ -261,6 +261,11 @@ export class Router extends React.Component<RouterProps> {
       <BuilderStoreContext.Consumer>
         {state => {
           this.privateState = state
+          const url =
+            state.state &&
+            state.state.location &&
+            state.state.location.pathname + state.state.location.search
+
           return (
             <div className="builder-router" data-model={model}>
               {/* TODO: loading icon on route */}
@@ -290,14 +295,13 @@ export class Router extends React.Component<RouterProps> {
                 }
               `}</style>
               <BuilderPage
-                key={
-                  state.state &&
-                  state.state.location &&
-                  state.state.location.pathname + state.state.location.search
-                }
+                key={url}
                 data={this.props.data}
                 content={this.props.content}
                 modelName={model}
+                options={{
+                  key: Builder.isEditing ? undefined : this.model + ':' + url // TODO: other custom targets specify if should refetch components on change
+                }}
               >
                 {/* TODO: builder blocks option for loading stuff */}
                 {/* TODO: input for builder blocks for this */}
