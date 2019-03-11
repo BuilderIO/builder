@@ -375,6 +375,11 @@ export class Form extends React.Component<FormProps> {
               }
             }
 
+            this.setState({
+              ...this.state,
+              state: 'sending'
+            })
+
             fetch(this.props.action!, {
               body,
               headers,
