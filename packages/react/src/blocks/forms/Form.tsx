@@ -21,6 +21,7 @@ export interface FormProps {
   successMessage?: BuilderElement[]
   errorMessage?: BuilderElement[]
   sendingMessage?: BuilderElement[]
+  resetFormOnSubmit?: boolean
 }
 
 @BuilderBlock({
@@ -84,6 +85,13 @@ export interface FormProps {
       type: 'url',
       helperText: 'Optional URL to redirect the user to on form submission success',
       showIf: 'options.get("sendSubmissionsTo") === "custom" && options.get("sendWithJs") === true'
+    },
+    {
+      name: 'resetFormOnSubmit',
+      type: 'boolean',
+      showIf: options =>
+        options.get('sendSubmissionsTo') === 'custom' && options.get('sendWithJs') === true,
+      advanced: true
     },
     // TODO: maybe
     // {
@@ -398,6 +406,10 @@ export class Form extends React.Component<FormProps> {
                   this.ref.dispatchEvent(submitSuccessEvent)
                   if (submitSuccessEvent.defaultPrevented) {
                     return
+                  }
+                  // TODO: option to turn this on/off?
+                  if (this.props.resetFormOnSubmit !== false) {
+                    event.currentTarget.reset()
                   }
                 }
 
