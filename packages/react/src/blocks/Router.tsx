@@ -131,7 +131,7 @@ export class Router extends React.Component<RouterProps> {
   componentDidMount() {
     if (typeof document !== 'undefined') {
       document.addEventListener('click', this.onClick)
-      document.addEventListener('popstate', this.onPopState)
+      window.addEventListener('popstate', this.onPopState)
       document.addEventListener('mouseover', this.onMouseOverOrTouchStart)
       document.addEventListener('touchstart', this.onMouseOverOrTouchStart)
     }
@@ -141,7 +141,7 @@ export class Router extends React.Component<RouterProps> {
     if (typeof document !== 'undefined') {
       document.removeEventListener('click', this.onClick)
       document.removeEventListener('mouseover', this.onMouseOverOrTouchStart)
-      document.removeEventListener('popstate', this.onPopState)
+      window.removeEventListener('popstate', this.onPopState)
       document.removeEventListener('touchstart', this.onMouseOverOrTouchStart)
     }
   }
