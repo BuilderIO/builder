@@ -41,7 +41,7 @@ export class Symbol extends React.Component<SymbolProps> {
     }
 
     const { model, entry, data, content } = symbol
-    if (!(model && entry)) {
+    if (!model) {
       return this.placeholder
     }
     return (
@@ -53,7 +53,7 @@ export class Symbol extends React.Component<SymbolProps> {
           content={content}
           options={{ key: entry }}
         >
-        {/* TODO: builder blocks option for loading stuff */}
+          {/* TODO: builder blocks option for loading stuff */}
           {this.props.children}
         </BuilderPage>
       </div>
