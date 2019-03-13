@@ -5,7 +5,8 @@ import {
   BuilderElement,
   BuilderStoreContext,
   stringToFunction,
-  BuilderAsyncRequestsContext
+  BuilderAsyncRequestsContext,
+  Builder
 } from '@builder.io/react'
 import React from 'react'
 import get from 'lodash-es/get'
@@ -214,6 +215,12 @@ export class BuilderCarousel extends React.Component<CarouselProps> {
   }
 
   render() {
+    let slides = this.props.slides
+
+    if (slides && !Builder.isBrowser) {
+      slides = slides.slice(0, 1);
+    }
+
     return (
       <BuilderAsyncRequestsContext.Consumer>
         {value => {
@@ -290,7 +297,7 @@ export class BuilderCarousel extends React.Component<CarouselProps> {
                                 block.repeat.itemName ||
                                 (collectionName ? collectionName + 'Item' : 'item')
 
-                              const array = stringToFunction(
+                              let array: any[] | void = stringToFunction(
                                 collectionPath,
                                 true,
                                 this._errors,
@@ -298,6 +305,10 @@ export class BuilderCarousel extends React.Component<CarouselProps> {
                               )(state.state)
 
                               if (isArray(array)) {
+                                if (!Builder.isBrowser) {
+                                  array = array.slice(0, 1)
+                                }
+
                                 return array.map((data, index) => {
                                   // TODO: Builder state produce the data
                                   const childState = {
