@@ -577,6 +577,53 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     // TODO: diff it against prior code
     // TODO: throttle execution (or --> don't run in preview <--)
     if (data && data.jsCode && !Builder.isIframe && Builder.isBrowser) {
+
+      let state = this.state.state;
+      const getState = () => this.state.state
+      if (typeof Proxy !== 'undefined') {
+        state = new Proxy(
+          { ...state },
+          {
+            getOwnPropertyDescriptor(target, property) {
+              try {
+                return Reflect.getOwnPropertyDescriptor(getState(), property)
+              } catch (error) {
+                return undefined
+              }
+            },
+            // TODO: wrap other proxy properties
+            set: function(target, key, value) {
+              // TODO: do these for deep sets from references hmm
+              return Reflect.set(getState(), key, value)
+              // return false;
+            },
+            // to prevent variable doesn't exist errors with `with (state)`
+            has(target, property) {
+              try {
+                // TODO: if dead trigger an immer update
+                return Reflect.has(getState(), property)
+              } catch (error) {
+                return false
+              }
+            },
+            get(object, property) {
+              if (
+                property &&
+                typeof property === 'string' &&
+                property.endsWith('Item') &&
+                !Reflect.has(getState(), property)
+              ) {
+                // TODO: use $index to return a reference to the proxied version of item
+                // so can be set as well
+                return Reflect.get(state, property)
+              }
+
+              return Reflect.get(getState(), property)
+            }
+          }
+        )
+      }
+
       // TODO: real editing method
       try {
         new Function('data', 'ref', 'state', 'update', data.jsCode)(

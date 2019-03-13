@@ -25,7 +25,7 @@ const cssCase = (property: string) => {
   let str = kebabCase(property)
 
   if (property[0] === property[0].toUpperCase()) {
-    str = '--' + str
+    str = '-' + str
   }
 
   return str
