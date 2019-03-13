@@ -580,6 +580,9 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
 
       let state = this.state.state;
       const getState = () => this.state.state
+
+      // TODO: move to helper and deep wrap like immer in case people make references
+      // TODO: on set auto run in update if not already
       if (typeof Proxy !== 'undefined') {
         state = new Proxy(
           { ...state },
@@ -626,12 +629,14 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
 
       // TODO: real editing method
       try {
-        new Function('data', 'ref', 'state', 'update', data.jsCode)(
+        const result = new Function('data', 'ref', 'state', 'update', data.jsCode)(
           data,
           this,
-          this.state.state,
+          state,
           this.state.update
         )
+        // TODO: allow exports = { } syntax?
+        // TODO: do something with reuslt like view - methods, computed, actions, properties, template, etc etc
       } catch (error) {
         console.warn('Eval error', error)
       }
