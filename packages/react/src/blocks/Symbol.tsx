@@ -1,6 +1,7 @@
 import React from 'react'
 import { BuilderPage } from '../components/builder-page.component'
 import { BuilderBlock } from '../decorators/builder-block.decorator'
+import { Builder } from '@builder.io/sdk';
 
 export interface SymbolInfo {
   model?: string
@@ -51,7 +52,7 @@ export class Symbol extends React.Component<SymbolProps> {
           entry={entry}
           data={data}
           content={content}
-          options={{ key: entry }}
+          options={{ key: Builder.isEditing ? undefined : entry }}
         >
           {/* TODO: builder blocks option for loading stuff */}
           {this.props.children}
