@@ -1,5 +1,5 @@
 import React from 'react'
-import { builder, Subscription, GetContentOptions } from '@builder.io/sdk'
+import { builder, Subscription, GetContentOptions, Builder } from '@builder.io/sdk'
 
 export interface BuilderContentProps<ContentType> {
   contentLoaded?: (content: ContentType) => void
@@ -85,16 +85,19 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
 
   render() {
     const { data, loading } = this.state
+
+    const useData = !Builder.isBrowser && this.props.options && this.props.options.initialContent || data;
+
     return (
       // TODO: use fragment
       <div
         ref={ref => this.ref = ref}
         className="builder-content"
         onClick={this.onClick}
-        builder-content-id={this.state.data && this.state.data.id}
+        builder-content-id={useData && useData.id}
         builder-model={this.props.modelName}
       >
-        {this.props.children(data && data.data, loading, data)}
+        {this.props.children(useData && useData.data, loading, useData)}
       </div>
     )
   }
