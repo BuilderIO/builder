@@ -918,7 +918,8 @@ export class Builder {
     // const device = ua.getDevice();
     // TODO: get these from exension as well
     return {
-      queryString: url.search,
+      // Removing because blowing out cache keys
+      // queryString: url.search,
       urlPath: url.pathname,
       // Removinf for now because of cache keys
       // referrer: document.referrer,
