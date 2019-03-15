@@ -12,7 +12,7 @@ export interface BuilderContentProps<ContentType> {
 export class BuilderContent<ContentType extends object = any> extends React.Component<
   BuilderContentProps<ContentType>
 > {
-  ref: HTMLDivElement | null = null;
+  ref: HTMLDivElement | null = null
 
   state = {
     loading: true,
@@ -87,12 +87,17 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
     const { data, loading } = this.state
 
     // TODO: maybe use this always
-    const useData = !Builder.isBrowser && this.props.options && this.props.options.initialContent || data;
+    const useData =
+      (!Builder.isBrowser &&
+        this.props.options &&
+        this.props.options.initialContent &&
+        this.props.options.initialContent[0]) ||
+      data
 
     return (
       // TODO: use fragment
       <div
-        ref={ref => this.ref = ref}
+        ref={ref => (this.ref = ref)}
         className="builder-content"
         onClick={this.onClick}
         builder-content-id={useData && useData.id}
