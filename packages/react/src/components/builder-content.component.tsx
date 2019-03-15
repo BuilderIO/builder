@@ -86,6 +86,7 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
   render() {
     const { data, loading } = this.state
 
+    // TODO: maybe use this always
     const useData = !Builder.isBrowser && this.props.options && this.props.options.initialContent || data;
 
     return (
