@@ -6,7 +6,7 @@ if (Builder.isIframe) {
   import('@builder.io/react')
   // Register all the widgets
   import('@builder.io/widgets')
-  import('@builder.io/email')
+  import('@builder.io/email')(window as any).builder = builder
   // Ensure loading systemjs builds...
   // importModule('@builder.io/react/dist/system')
   // TODO: make these only load as used hm
@@ -238,8 +238,8 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
         .subscribe(
           (data: any) => {
             if (unsubscribed) {
-              // console.warn('Unsubscribe didnt work!')
-              // return
+              console.warn('Unsubscribe didnt work!')
+              return
             }
             this.classList.remove('builder-loading')
             this.loaded()
@@ -351,8 +351,8 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
         .subscribe(
           async data => {
             if (unsubscribed) {
-              // console.log('unsubscribe didnt work!')
-              // return
+              console.log('unsubscribe didnt work!')
+              return
             }
             // unsubscribed = true
             // subscription.unsubscribe()
