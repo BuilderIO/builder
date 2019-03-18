@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/widgets",
-  "version": "1.0.22-alpha.19",
+  "version": "1.0.22-alpha.20",
   "description": "",
   "keywords": [],
   "main": "dist/builder-widgets.cjs.js",
@@ -136,7 +136,7 @@
     "prop-types": "^15.7.2"
   },
   "dependencies": {
-    "@builder.io/react": "^1.0.22-alpha.19",
+    "@builder.io/react": "^1.0.22-alpha.20",
     "react-slick": "^0.23.2"
   },
   "gitHead": "3d55a987a69736618d729c43baf7c9ce41c27464"
