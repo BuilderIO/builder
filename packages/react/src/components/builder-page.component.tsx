@@ -7,6 +7,7 @@ import { BuilderStoreContext } from '../store/builder-store'
 import produce from 'immer'
 import pick from 'lodash-es/pick'
 import throttle from 'lodash-es/throttle'
+import size from 'lodash-es/size'
 import debounce from 'lodash-es/debounce'
 import { sizes } from '../constants/device-sizes.constant'
 import {
@@ -365,7 +366,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
                 options={{
                   entry: this.props.entry,
                   key: Builder.isEditing ? this.name : this.props.entry,
-                  ...(content && { initialContent: [content] }),
+                  ...(content && size(content) && { initialContent: [content] }),
                   ...this.props.options
                 }}
                 contentError={this.props.contentError}
