@@ -978,6 +978,8 @@ export class Builder {
       //   JSON.stringify({ model: modelName, ...options, initialContent: undefined })) ||
       modelName;
 
+    options.key = key;
+
     const isEditingThisModel = this.editingModel === modelName;
     // TODO: include params in this key........
     const currentObservable = this.observersByKey[key] as BehaviorSubject<ContentModelType> | null;
