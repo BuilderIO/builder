@@ -42,19 +42,17 @@ const defaultTile: BuilderElement = {
   }
 }
 
-const getRandomAspectTile = () => {
-  const defaultAlternateTile: BuilderElement = {
-    ...defaultTile,
-    component: {
-      ...defaultTile.component!,
-      options: {
-        ...defaultTile.component!.options,
-        // range from 0.5 to 2, rounded to 2 decimal points
-        aspectRatio: Math.round((Math.random() * 1.5 + 0.5) * 100) / 100
-      }
+const getRandomAspectTile = (): BuilderElement => ({
+  ...defaultTile,
+  component: {
+    ...defaultTile.component!,
+    options: {
+      ...defaultTile.component!.options,
+      // range from 0.5 to 2, rounded to 2 decimal points
+      aspectRatio: Math.round((Math.random() * 1.5 + 0.5) * 100) / 100
     }
   }
-}
+})
 
 type BuilderBlockType = BuilderElement
 
@@ -89,7 +87,7 @@ interface MasonryProps {
     getRandomAspectTile(),
     getRandomAspectTile(),
     getRandomAspectTile(),
-    getRandomAspectTile(),
+    getRandomAspectTile()
   ],
   inputs: [
     {
