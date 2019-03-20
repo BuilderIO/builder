@@ -136,6 +136,10 @@ export class BuilderMasonry extends React.Component<MasonryProps> {
   private _errors?: Error[]
   private _logs?: string[]
 
+  state = {
+    layoutComplete: false
+  }
+
   componentDidMount() {
     setTimeout(() => {
       if (this.divRef) {
@@ -173,7 +177,7 @@ export class BuilderMasonry extends React.Component<MasonryProps> {
     }
 
     return (
-      <div style={{ opacity: Builder.isBrowser ? 1 : 0, transition: 'opacity 0.2s' }}>
+      <div style={{ opacity: this.state.layoutComplete ? 1 : 0, transition: 'opacity 0.2s' }}>
         <BuilderAsyncRequestsContext.Consumer>
           {value => {
             this._errors = value && value.errors
@@ -184,6 +188,14 @@ export class BuilderMasonry extends React.Component<MasonryProps> {
                 {state => (
                   <div ref={ref => (this.divRef = ref)} className="builder-masonry">
                     <Masonry
+                      onLayoutComplete={() => {
+                        if (!this.state.layoutComplete) {
+                          this.setState({
+                            ...this.state,
+                            layoutComplete: true
+                          })
+                        }
+                      }}
                       options={{
                         gutter: this.props.gutterSize,
                         percentPosition:
