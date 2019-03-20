@@ -95,10 +95,9 @@ interface MasonryProps {
   inputs: [
     {
       name: 'gutterSize',
-      // TODO: type: 'styleNumber'
-      type: 'string',
-      helperText: 'Horizontal space between tiles, as a css value. E.g. "20px" or "10%',
-      defaultValue: '20px',
+      type: 'number',
+      helperText: 'Horizontal space between tiles in pixels',
+      defaultValue: 20,
     },
     {
       name: 'tiles',
