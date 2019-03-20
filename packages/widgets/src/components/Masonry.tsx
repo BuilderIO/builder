@@ -165,7 +165,7 @@ export class BuilderMasonry extends React.Component<MasonryProps> {
     //   slides = slides.slice(0, 1)
     // }
 
-    const itemStyle: React.CSSProperties = {
+    const itemStyle: any = {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'stretch',
