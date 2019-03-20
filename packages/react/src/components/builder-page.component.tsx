@@ -636,13 +636,16 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
 
       // TODO: real editing method
       try {
-        const result = new Function('data', 'ref', 'state', 'update', 'element', data.jsCode)(
-          data,
-          this,
-          state,
-          this.state.update,
-          this.ref
-        )
+        const result = new Function(
+          'data',
+          'ref',
+          'state',
+          'update',
+          'element',
+          'Builder',
+          'builder',
+          data.jsCode
+        )(data, this, state, this.state.update, this.ref, Builder, builder)
         // TODO: allow exports = { } syntax?
         // TODO: do something with reuslt like view - methods, computed, actions, properties, template, etc etc
       } catch (error) {
