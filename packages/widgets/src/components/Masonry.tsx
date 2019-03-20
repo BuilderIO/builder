@@ -184,7 +184,10 @@ export class BuilderMasonry extends React.Component<MasonryProps> {
                 <div ref={ref => (this.divRef = ref)} className="builder-masonry">
                   <Masonry
                     options={{
-                      gutter: this.props.gutterSize
+                      gutter: this.props.gutterSize,
+                      percentPosition:
+                        // TODO: option to override this too
+                        (this.props.columnWidth && this.props.columnWidth.endsWith('%')) || false
                     }}
                     ref={ref => (this.masonryRef = ref)}
                   >
