@@ -17,33 +17,54 @@ const defaultTile: BuilderElement = {
   '@type': '@builder.io/sdk:Element',
   responsiveStyles: {
     large: {
-      marginTop: '50px',
-      textAlign: 'center',
       display: 'flex',
-      flexDirection: 'column'
+      flexDirection: 'column',
+      alignItems: 'stretch',
+      position: 'relative',
+      flexShrink: '0',
+      boxSizing: 'border-box',
+      marginTop: '20px',
+      minHeight: '20px',
+      minWidth: '20px',
+      overflow: 'hidden'
     }
   },
   component: {
-    name: 'Text',
+    name: 'Image',
     options: {
-      text: 'I am a tile'
+      image:
+        'https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?width=2000&height=1200',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      aspectRatio: 0.7041
     }
   }
 }
+
 const defaultBigTile: BuilderElement = {
   '@type': '@builder.io/sdk:Element',
   responsiveStyles: {
     large: {
-      marginTop: '50px',
-      textAlign: 'center',
       display: 'flex',
-      flexDirection: 'column'
+      flexDirection: 'column',
+      alignItems: 'stretch',
+      position: 'relative',
+      flexShrink: '0',
+      boxSizing: 'border-box',
+      marginTop: '20px',
+      minHeight: '20px',
+      minWidth: '20px',
+      overflow: 'hidden'
     }
   },
   component: {
-    name: 'Text',
+    name: 'Image',
     options: {
-      text: 'I am a bigger tile! '
+      image:
+        'https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?width=2000&height=1200',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      aspectRatio: 0.2
     }
   }
 }
@@ -62,12 +83,24 @@ interface MasonryProps {
 @BuilderBlock({
   name: 'Builder:Masonry',
   // TODO: default children
+  image:
+    'https://cdn.builder.io/api/v1/image/assets%2FBvYIl5jKN9QpChUB3PVzsTe2ZSI2%2F7ed6bd8129d148608ecec09300786d71?width=2000&height=1200',
   canHaveChildren: true,
   defaultStyles: {
     paddingLeft: '30px',
     paddingRight: '30px',
     paddingBottom: '30px'
   },
+  defaultChildren: [
+    defaultBigTile,
+    defaultTile,
+    defaultTile,
+    defaultBigTile,
+    defaultTile,
+    defaultBigTile,
+    defaultBigTile,
+    defaultTile,
+  ],
   inputs: [
     {
       name: 'tiles',
@@ -81,12 +114,12 @@ interface MasonryProps {
         }
       ],
       defaultValue: [
-        {
-          content: [defaultTile]
-        },
-        {
-          content: [defaultBigTile]
-        }
+        // {
+        //   content: [defaultTile]
+        // },
+        // {
+        //   content: [defaultBigTile]
+        // }
       ],
       showIf: (options: Map<string, any>) => !options.get('useChildrenForTiles')
     },
@@ -96,7 +129,7 @@ interface MasonryProps {
       helperText:
         'Use child elements for each slide, instead of the array. Useful for dynamically repeating tiles',
       advanced: true,
-      defaultValue: false,
+      defaultValue: true,
       onChange: (options: Map<string, any>) => {
         if (options.get('useChildrenForTiles') === true) {
           options.set('tiles', [])
@@ -151,9 +184,7 @@ export class BuilderMasonry extends React.Component<MasonryProps> {
             <BuilderStoreContext.Consumer>
               {state => (
                 <div ref={ref => (this.divRef = ref)} className="builder-masonry">
-                  <Masonry
-                    ref={ref => this.masonryRef = ref}
-                  >
+                  <Masonry ref={ref => (this.masonryRef = ref)}>
                     {/* todo: children.forEach hmm insert block inside */}
                     {this.props.useChildrenForTiles
                       ? this.props.builderBlock &&
