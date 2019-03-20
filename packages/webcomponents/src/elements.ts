@@ -614,7 +614,7 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
                   const script = scripts[i]
                   // Innertext?
                   try {
-                    new Function(data.data.jsCode)(data)
+                    new Function(script.innerText)(data)
                   } catch (error) {
                     console.warn('Eval error', error)
                   }

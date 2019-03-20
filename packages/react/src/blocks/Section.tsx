@@ -62,7 +62,16 @@ interface SectionProps {
 export class Section extends React.Component<SectionProps> {
   render() {
     return (
-      <div style={{ margin: 'auto', width: '100%', maxWidth: this.props.maxWidth }}>
+      <div
+        style={{
+          margin: 'auto',
+          width: '100%',
+          maxWidth: this.props.maxWidth,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'stretch'
+        }}
+      >
         {/* TODO: maybe builder <BuilderBlocks? */}
         {this.props.builderBlock &&
           this.props.builderBlock.children &&

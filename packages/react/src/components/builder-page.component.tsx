@@ -139,6 +139,8 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
   subscriptions: Subscription = new Subscription()
   onStateChange = new BehaviorSubject<any>(null)
 
+  ref: HTMLElement | null = null
+
   get name(): string | undefined {
     return this.props.modelName || this.props.name // || this.props.model
   }
@@ -314,6 +316,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
   }
 
   getCss(data: any) {
+    // .replace(/([^\s]|$)&([^\w])/g, '$1' + '.some-selector' + '$2')
     return (data.cssCode || '') + (this.getFontCss(data) || '')
   }
 
@@ -334,22 +337,25 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
 
   render() {
     const { content } = this.props
-    return (
-      <BuilderAsyncRequestsContext.Consumer>
-        {value => {
-          this._asyncRequests = value && value.requests
-          this._errors = value && value.errors
-          this._logs = value && value.logs
 
-          return (
-            <BuilderStoreContext.Provider
-              value={{
-                ...this.state,
-                state: this.data
-              }}
-            >
-              {/* Global styles */}
-              {/* {Builder.isBrowser && (
+    return (
+      // TODO: data attributes for model, id, etc?
+      <div className="builder-component" data-name={this.name} ref={ref => (this.ref = ref)}>
+        <BuilderAsyncRequestsContext.Consumer>
+          {value => {
+            this._asyncRequests = value && value.requests
+            this._errors = value && value.errors
+            this._logs = value && value.logs
+
+            return (
+              <BuilderStoreContext.Provider
+                value={{
+                  ...this.state,
+                  state: this.data
+                }}
+              >
+                {/* Global styles */}
+                {/* {Builder.isBrowser && (
                 <style>
                   {`
                   .builder-block {
@@ -359,52 +365,53 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
                 </style>
               )} */}
 
-              {/* TODO: never use this? */}
-              <BuilderContent
-                // TODO: pass entry in
-                contentLoaded={this.onContentLoaded}
-                options={{
-                  entry: this.props.entry,
-                  key: Builder.isEditing ? this.name : this.props.entry,
-                  ...(content && size(content) && { initialContent: [content] }),
-                  ...this.props.options
-                }}
-                contentError={this.props.contentError}
-                modelName={this.name || 'page'}
-              >
-                {(data, loading, fullData) => {
-                  // TODO: loading option - maybe that is what the children is or component prop
-                  return data ? (
-                    <div
-                      data-builder-component={this.name}
-                      data-builder-content-id={fullData.id}
-                      data-builder-variation-id={fullData.variationId}
-                    >
-                      {this.getCss(data) && (
-                        <style dangerouslySetInnerHTML={{ __html: this.getCss(data) }} />
-                      )}
-                      {
-                        <BuilderBlocks
-                          emailMode={this.props.emailMode}
-                          fieldName="blocks"
-                          blocks={data.blocks}
-                        />
-                      }
-                      {/* {data.jsCode && <script dangerouslySetInnerHTML={{ __html: data.jsCode }} />} */}
-                    </div>
-                  ) : loading ? (
-                    <div data-builder-component={this.name} className="builder-loading">
-                      {this.props.children}
-                    </div>
-                  ) : (
-                    <div data-builder-component={this.name} className="builder-no-content" />
-                  )
-                }}
-              </BuilderContent>
-            </BuilderStoreContext.Provider>
-          )
-        }}
-      </BuilderAsyncRequestsContext.Consumer>
+                {/* TODO: never use this? */}
+                <BuilderContent
+                  // TODO: pass entry in
+                  contentLoaded={this.onContentLoaded}
+                  options={{
+                    entry: this.props.entry,
+                    key: Builder.isEditing ? this.name : this.props.entry,
+                    ...(content && size(content) && { initialContent: [content] }),
+                    ...this.props.options
+                  }}
+                  contentError={this.props.contentError}
+                  modelName={this.name || 'page'}
+                >
+                  {(data, loading, fullData) => {
+                    // TODO: loading option - maybe that is what the children is or component prop
+                    return data ? (
+                      <div
+                        data-builder-component={this.name}
+                        data-builder-content-id={fullData.id}
+                        data-builder-variation-id={fullData.variationId}
+                      >
+                        {this.getCss(data) && (
+                          <style dangerouslySetInnerHTML={{ __html: this.getCss(data) }} />
+                        )}
+                        {
+                          <BuilderBlocks
+                            emailMode={this.props.emailMode}
+                            fieldName="blocks"
+                            blocks={data.blocks}
+                          />
+                        }
+                        {/* {data.jsCode && <script dangerouslySetInnerHTML={{ __html: data.jsCode }} />} */}
+                      </div>
+                    ) : loading ? (
+                      <div data-builder-component={this.name} className="builder-loading">
+                        {this.props.children}
+                      </div>
+                    ) : (
+                      <div data-builder-component={this.name} className="builder-no-content" />
+                    )
+                  }}
+                </BuilderContent>
+              </BuilderStoreContext.Provider>
+            )
+          }}
+        </BuilderAsyncRequestsContext.Consumer>
+      </div>
     )
   }
 
@@ -577,9 +584,8 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     }
     // TODO: diff it against prior code
     // TODO: throttle execution (or --> don't run in preview <--)
-    if (data && data.jsCode && !Builder.isIframe && Builder.isBrowser) {
-
-      let state = this.state.state;
+    if (data && data.jsCode && Builder.isBrowser) {
+      let state = this.state.state
       const getState = () => this.state.state
 
       // TODO: move to helper and deep wrap like immer in case people make references
@@ -630,11 +636,12 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
 
       // TODO: real editing method
       try {
-        const result = new Function('data', 'ref', 'state', 'update', data.jsCode)(
+        const result = new Function('data', 'ref', 'state', 'update', 'element', data.jsCode)(
           data,
           this,
           state,
-          this.state.update
+          this.state.update,
+          this.ref
         )
         // TODO: allow exports = { } syntax?
         // TODO: do something with reuslt like view - methods, computed, actions, properties, template, etc etc
