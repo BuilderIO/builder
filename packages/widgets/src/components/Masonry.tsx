@@ -173,118 +173,120 @@ export class BuilderMasonry extends React.Component<MasonryProps> {
     }
 
     return (
-      <BuilderAsyncRequestsContext.Consumer>
-        {value => {
-          this._errors = value && value.errors
-          this._logs = value && value.logs
+      <div style={{ opacity: Builder.isBrowser ? 1 : 0, transition: 'opacity 0.2s' }}>
+        <BuilderAsyncRequestsContext.Consumer>
+          {value => {
+            this._errors = value && value.errors
+            this._logs = value && value.logs
 
-          return (
-            <BuilderStoreContext.Consumer>
-              {state => (
-                <div ref={ref => (this.divRef = ref)} className="builder-masonry">
-                  <Masonry
-                    options={{
-                      gutter: this.props.gutterSize,
-                      percentPosition:
-                        // TODO: option to override this too
-                        (this.props.columnWidth && this.props.columnWidth.endsWith('%')) || false
-                    }}
-                    ref={ref => (this.masonryRef = ref)}
-                  >
-                    {/* todo: children.forEach hmm insert block inside */}
-                    {this.props.useChildrenForTiles
-                      ? this.props.builderBlock &&
-                        this.props.builderBlock.children &&
-                        this.props.builderBlock.children.map(
-                          (block: BuilderElement, index: number) => {
-                            if (block.repeat && block.repeat.collection) {
-                              const collectionPath = block.repeat.collection
-                              const collectionName = last(
-                                (collectionPath || '')
-                                  .split(/\.\w+\(/)[0]
-                                  .trim()
-                                  .split('.')
-                              )
-                              const itemName =
-                                block.repeat.itemName ||
-                                (collectionName ? collectionName + 'Item' : 'item')
+            return (
+              <BuilderStoreContext.Consumer>
+                {state => (
+                  <div ref={ref => (this.divRef = ref)} className="builder-masonry">
+                    <Masonry
+                      options={{
+                        gutter: this.props.gutterSize,
+                        percentPosition:
+                          // TODO: option to override this too
+                          (this.props.columnWidth && this.props.columnWidth.endsWith('%')) || false
+                      }}
+                      ref={ref => (this.masonryRef = ref)}
+                    >
+                      {/* todo: children.forEach hmm insert block inside */}
+                      {this.props.useChildrenForTiles
+                        ? this.props.builderBlock &&
+                          this.props.builderBlock.children &&
+                          this.props.builderBlock.children.map(
+                            (block: BuilderElement, index: number) => {
+                              if (block.repeat && block.repeat.collection) {
+                                const collectionPath = block.repeat.collection
+                                const collectionName = last(
+                                  (collectionPath || '')
+                                    .split(/\.\w+\(/)[0]
+                                    .trim()
+                                    .split('.')
+                                )
+                                const itemName =
+                                  block.repeat.itemName ||
+                                  (collectionName ? collectionName + 'Item' : 'item')
 
-                              let array: any[] | void = stringToFunction(
-                                collectionPath,
-                                true,
-                                this._errors,
-                                this._logs
-                              )(state.state)
+                                let array: any[] | void = stringToFunction(
+                                  collectionPath,
+                                  true,
+                                  this._errors,
+                                  this._logs
+                                )(state.state)
 
-                              if (isArray(array)) {
-                                if (!Builder.isBrowser) {
-                                  array = array.slice(0, 1)
-                                }
-
-                                return array.map((data, index) => {
-                                  // TODO: Builder state produce the data
-                                  const childState = {
-                                    ...state.state,
-                                    $index: index,
-                                    $item: data,
-                                    [itemName]: data
+                                if (isArray(array)) {
+                                  if (!Builder.isBrowser) {
+                                    array = array.slice(0, 1)
                                   }
 
-                                  return (
-                                    <div className="masonry-item" style={itemStyle}>
-                                      <BuilderStoreContext.Provider
-                                        key={block.id}
-                                        value={{ ...state, state: childState } as any}
-                                      >
-                                        <BuilderBlockComponent
-                                          block={{
-                                            ...block,
-                                            repeat: null
-                                          }}
-                                          index={index}
-                                          child={true} /* TODO: fieldname? */
-                                        />
-                                      </BuilderStoreContext.Provider>
-                                    </div>
-                                  )
-                                })
+                                  return array.map((data, index) => {
+                                    // TODO: Builder state produce the data
+                                    const childState = {
+                                      ...state.state,
+                                      $index: index,
+                                      $item: data,
+                                      [itemName]: data
+                                    }
+
+                                    return (
+                                      <div className="masonry-item" style={itemStyle}>
+                                        <BuilderStoreContext.Provider
+                                          key={block.id}
+                                          value={{ ...state, state: childState } as any}
+                                        >
+                                          <BuilderBlockComponent
+                                            block={{
+                                              ...block,
+                                              repeat: null
+                                            }}
+                                            index={index}
+                                            child={true} /* TODO: fieldname? */
+                                          />
+                                        </BuilderStoreContext.Provider>
+                                      </div>
+                                    )
+                                  })
+                                }
                               }
+                              return (
+                                <div style={itemStyle} className="masonry-item">
+                                  <BuilderBlockComponent
+                                    key={block.id}
+                                    block={block}
+                                    index={index}
+                                    child={true} /* TODO: fieldname? */
+                                  />
+                                </div>
+                              )
                             }
-                            return (
-                              <div style={itemStyle} className="masonry-item">
-                                <BuilderBlockComponent
-                                  key={block.id}
-                                  block={block}
-                                  index={index}
-                                  child={true} /* TODO: fieldname? */
-                                />
-                              </div>
-                            )
-                          }
-                        )
-                      : this.props.tiles &&
-                        this.props.tiles.map((tile, index) => (
-                          // TODO: how make react compatible with plain react components
-                          // tiles: <Foo><Bar> <- builder blocks if passed react nodes as blocks just forward them
-                          <div style={itemStyle} className="masonry-item">
-                            <BuilderBlocks
-                              key={index}
-                              parentElementId={
-                                this.props.builderBlock && this.props.builderBlock.id
-                              }
-                              dataPath={`component.options.tiles.${index}.content`}
-                              child
-                              blocks={(tile as any).content || tile}
-                            />
-                          </div>
-                        ))}
-                  </Masonry>
-                </div>
-              )}
-            </BuilderStoreContext.Consumer>
-          )
-        }}
-      </BuilderAsyncRequestsContext.Consumer>
+                          )
+                        : this.props.tiles &&
+                          this.props.tiles.map((tile, index) => (
+                            // TODO: how make react compatible with plain react components
+                            // tiles: <Foo><Bar> <- builder blocks if passed react nodes as blocks just forward them
+                            <div style={itemStyle} className="masonry-item">
+                              <BuilderBlocks
+                                key={index}
+                                parentElementId={
+                                  this.props.builderBlock && this.props.builderBlock.id
+                                }
+                                dataPath={`component.options.tiles.${index}.content`}
+                                child
+                                blocks={(tile as any).content || tile}
+                              />
+                            </div>
+                          ))}
+                    </Masonry>
+                  </div>
+                )}
+              </BuilderStoreContext.Consumer>
+            )
+          }}
+        </BuilderAsyncRequestsContext.Consumer>
+      </div>
     )
   }
 }
