@@ -27,7 +27,7 @@ const defaultTile: BuilderElement = {
       minHeight: '20px',
       minWidth: '20px',
       overflow: 'hidden',
-      marginLeft: '20px',
+      marginLeft: '20px'
     }
   },
   component: {
@@ -42,13 +42,16 @@ const defaultTile: BuilderElement = {
   }
 }
 
-const defaultAlternateTile: BuilderElement = {
-  ...defaultTile,
-  component: {
-    ...defaultTile.component!,
-    options: {
-      ...defaultTile.component!.options,
-      aspectRatio: 2
+const getRandomAspectTile = () => {
+  const defaultAlternateTile: BuilderElement = {
+    ...defaultTile,
+    component: {
+      ...defaultTile.component!,
+      options: {
+        ...defaultTile.component!.options,
+        // range from 0.5 to 2, rounded to 2 decimal points
+        aspectRatio: Math.round((Math.random() * 1.5 + 0.5) * 100) / 100
+      }
     }
   }
 }
@@ -78,14 +81,15 @@ interface MasonryProps {
     paddingBottom: '20px'
   },
   defaultChildren: [
-    defaultAlternateTile,
-    defaultTile,
-    defaultTile,
-    defaultAlternateTile,
-    defaultTile,
-    defaultAlternateTile,
-    defaultAlternateTile,
-    defaultTile
+    getRandomAspectTile(),
+    getRandomAspectTile(),
+    getRandomAspectTile(),
+    getRandomAspectTile(),
+    getRandomAspectTile(),
+    getRandomAspectTile(),
+    getRandomAspectTile(),
+    getRandomAspectTile(),
+    getRandomAspectTile(),
   ],
   inputs: [
     {
@@ -179,7 +183,12 @@ export class BuilderMasonry extends React.Component<MasonryProps> {
     }
 
     return (
-      <div style={{ opacity: Builder.isBrowser && this.state.layoutComplete ? 1 : 0, transition: 'opacity 0.2s' }}>
+      <div
+        style={{
+          opacity: Builder.isBrowser && this.state.layoutComplete ? 1 : 0,
+          transition: 'opacity 0.2s'
+        }}
+      >
         <BuilderAsyncRequestsContext.Consumer>
           {value => {
             this._errors = value && value.errors
