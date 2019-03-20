@@ -26,7 +26,9 @@ const defaultTile: BuilderElement = {
       marginTop: '20px',
       minHeight: '20px',
       minWidth: '20px',
-      overflow: 'hidden'
+      overflow: 'hidden',
+      paddingLeft: '10px',
+      paddingRight: '20px'
     }
   },
   component: {
@@ -98,7 +100,8 @@ interface MasonryProps {
       name: 'gutterSize',
       type: 'number',
       helperText: 'Horizontal space between tiles in pixels, e.g. "20" for 20 pixels wide',
-      defaultValue: 20
+      defaultValue: 0,
+      advanced: true
     },
     {
       name: 'tiles',
