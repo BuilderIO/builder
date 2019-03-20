@@ -26,7 +26,14 @@ const defaultTile: BuilderElement = {
       marginTop: '20px',
       minHeight: '20px',
       minWidth: '20px',
-      overflow: 'hidden'
+      overflow: 'hidden',
+      width: '25%'
+    },
+    medium: {
+      width: '50%'
+    },
+    small: {
+      width: '100%'
     }
   },
   component: {
@@ -46,7 +53,7 @@ const defaultAlternateTile: BuilderElement = {
   component: {
     ...defaultTile.component,
     options: {
-      ...defaultTile.component.options,
+      ...defaultTile.component!.options,
       aspectRatio: 0.2
     }
   }
@@ -60,9 +67,10 @@ interface MasonryProps {
   >
   builderBlock: BuilderBlockType
   useChildrenForTiles?: boolean
+  gutterSize?: string
 }
 
-// TODO: change to slick grid
+// TODO: column with, gutter, etc options
 @BuilderBlock({
   name: 'Builder:Masonry',
   // TODO: default children
@@ -70,9 +78,9 @@ interface MasonryProps {
     'https://cdn.builder.io/api/v1/image/assets%2FBvYIl5jKN9QpChUB3PVzsTe2ZSI2%2F7ed6bd8129d148608ecec09300786d71?width=2000&height=1200',
   canHaveChildren: true,
   defaultStyles: {
-    paddingLeft: '30px',
-    paddingRight: '30px',
-    paddingBottom: '30px'
+    paddingLeft: '20px',
+    paddingRight: '20px',
+    paddingBottom: '20px'
   },
   defaultChildren: [
     defaultAlternateTile,
@@ -86,6 +94,13 @@ interface MasonryProps {
   ],
   inputs: [
     {
+      name: 'gutterSize',
+      // TODO: type: 'styleNumber'
+      type: 'string',
+      helperText: 'Horizontal space between tiles, as a css value. E.g. "20px" or "10%',
+      defaultValue: '20px',
+    },
+    {
       name: 'tiles',
       type: 'list',
       subFields: [
@@ -97,12 +112,6 @@ interface MasonryProps {
         }
       ],
       defaultValue: [
-        // {
-        //   content: [defaultTile]
-        // },
-        // {
-        //   content: [defaultBigTile]
-        // }
       ],
       showIf: (options: Map<string, any>) => !options.get('useChildrenForTiles')
     },
@@ -167,7 +176,9 @@ export class BuilderMasonry extends React.Component<MasonryProps> {
             <BuilderStoreContext.Consumer>
               {state => (
                 <div ref={ref => (this.divRef = ref)} className="builder-masonry">
-                  <Masonry ref={ref => (this.masonryRef = ref)}>
+                  <Masonry options={{
+                    gutter: this.props.gutterSize
+                  }} ref={ref => (this.masonryRef = ref)}>
                     {/* todo: children.forEach hmm insert block inside */}
                     {this.props.useChildrenForTiles
                       ? this.props.builderBlock &&
