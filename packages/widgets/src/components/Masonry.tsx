@@ -26,14 +26,7 @@ const defaultTile: BuilderElement = {
       marginTop: '20px',
       minHeight: '20px',
       minWidth: '20px',
-      overflow: 'hidden',
-      width: '25%'
-    },
-    medium: {
-      width: '50%'
-    },
-    small: {
-      width: '100%'
+      overflow: 'hidden'
     }
   },
   component: {
@@ -68,6 +61,7 @@ interface MasonryProps {
   builderBlock: BuilderBlockType
   useChildrenForTiles?: boolean
   gutterSize?: string
+  columnWidth?: string
 }
 
 // TODO: column with, gutter, etc options
@@ -94,10 +88,17 @@ interface MasonryProps {
   ],
   inputs: [
     {
+      name: 'columnWidth',
+      // TODO: type: 'styleNumber'
+      type: 'string',
+      helperText: 'Width of each tile, as a CSS value. E.g. "200px" or "50%"',
+      defaultValue: '200px'
+    },
+    {
       name: 'gutterSize',
       type: 'number',
-      helperText: 'Horizontal space between tiles in pixels',
-      defaultValue: 20,
+      helperText: 'Horizontal space between tiles in pixels, e.g. "20" for 20 pixels wide',
+      defaultValue: 20
     },
     {
       name: 'tiles',
@@ -110,8 +111,7 @@ interface MasonryProps {
           defaultValue: [defaultTile]
         }
       ],
-      defaultValue: [
-      ],
+      defaultValue: [],
       showIf: (options: Map<string, any>) => !options.get('useChildrenForTiles')
     },
     {
@@ -161,8 +161,15 @@ export class BuilderMasonry extends React.Component<MasonryProps> {
   render() {
     let slides = this.props.tiles
 
-    if (slides && !Builder.isBrowser) {
-      slides = slides.slice(0, 1)
+    // if (slides && !Builder.isBrowser) {
+    //   slides = slides.slice(0, 1)
+    // }
+
+    const itemStyle: React.CSSProperties = {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'stretch',
+      width: this.props.columnWidth
     }
 
     return (
@@ -175,9 +182,12 @@ export class BuilderMasonry extends React.Component<MasonryProps> {
             <BuilderStoreContext.Consumer>
               {state => (
                 <div ref={ref => (this.divRef = ref)} className="builder-masonry">
-                  <Masonry options={{
-                    gutter: this.props.gutterSize
-                  }} ref={ref => (this.masonryRef = ref)}>
+                  <Masonry
+                    options={{
+                      gutter: this.props.gutterSize
+                    }}
+                    ref={ref => (this.masonryRef = ref)}
+                  >
                     {/* todo: children.forEach hmm insert block inside */}
                     {this.props.useChildrenForTiles
                       ? this.props.builderBlock &&
@@ -218,7 +228,7 @@ export class BuilderMasonry extends React.Component<MasonryProps> {
                                   }
 
                                   return (
-                                    <div className="masonry-item">
+                                    <div className="masonry-item" style={itemStyle}>
                                       <BuilderStoreContext.Provider
                                         key={block.id}
                                         value={{ ...state, state: childState } as any}
@@ -238,7 +248,7 @@ export class BuilderMasonry extends React.Component<MasonryProps> {
                               }
                             }
                             return (
-                              <div className="masonry-item">
+                              <div style={itemStyle} className="masonry-item">
                                 <BuilderBlockComponent
                                   key={block.id}
                                   block={block}
@@ -253,7 +263,7 @@ export class BuilderMasonry extends React.Component<MasonryProps> {
                         this.props.tiles.map((tile, index) => (
                           // TODO: how make react compatible with plain react components
                           // tiles: <Foo><Bar> <- builder blocks if passed react nodes as blocks just forward them
-                          <div className="masonry-item">
+                          <div style={itemStyle} className="masonry-item">
                             <BuilderBlocks
                               key={index}
                               parentElementId={
