@@ -51,7 +51,7 @@ const defaultTile: BuilderElement = {
 const defaultAlternateTile: BuilderElement = {
   ...defaultTile,
   component: {
-    ...defaultTile.component,
+    ...defaultTile.component!,
     options: {
       ...defaultTile.component!.options,
       aspectRatio: 0.2
