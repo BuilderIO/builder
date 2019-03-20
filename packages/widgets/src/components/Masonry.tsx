@@ -99,7 +99,7 @@ interface MasonryProps {
     defaultTile,
     defaultBigTile,
     defaultBigTile,
-    defaultTile,
+    defaultTile
   ],
   inputs: [
     {
@@ -225,19 +225,21 @@ export class BuilderMasonry extends React.Component<MasonryProps> {
                                   }
 
                                   return (
-                                    <BuilderStoreContext.Provider
-                                      key={block.id}
-                                      value={{ ...state, state: childState } as any}
-                                    >
-                                      <BuilderBlockComponent
-                                        block={{
-                                          ...block,
-                                          repeat: null
-                                        }}
-                                        index={index}
-                                        child={true} /* TODO: fieldname? */
-                                      />
-                                    </BuilderStoreContext.Provider>
+                                    <div className="masonry-item">
+                                      <BuilderStoreContext.Provider
+                                        key={block.id}
+                                        value={{ ...state, state: childState } as any}
+                                      >
+                                        <BuilderBlockComponent
+                                          block={{
+                                            ...block,
+                                            repeat: null
+                                          }}
+                                          index={index}
+                                          child={true} /* TODO: fieldname? */
+                                        />
+                                      </BuilderStoreContext.Provider>
+                                    </div>
                                   )
                                 })
                               }
