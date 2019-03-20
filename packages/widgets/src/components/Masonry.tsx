@@ -27,8 +27,7 @@ const defaultTile: BuilderElement = {
       minHeight: '20px',
       minWidth: '20px',
       overflow: 'hidden',
-      paddingLeft: '10px',
-      paddingRight: '20px'
+      marginLeft: '20px',
     }
   },
   component: {
@@ -49,7 +48,7 @@ const defaultAlternateTile: BuilderElement = {
     ...defaultTile.component!,
     options: {
       ...defaultTile.component!.options,
-      aspectRatio: 0.2
+      aspectRatio: 2
     }
   }
 }
@@ -180,7 +179,7 @@ export class BuilderMasonry extends React.Component<MasonryProps> {
     }
 
     return (
-      <div style={{ opacity: this.state.layoutComplete ? 1 : 0, transition: 'opacity 0.2s' }}>
+      <div style={{ opacity: Builder.isBrowser && this.state.layoutComplete ? 1 : 0, transition: 'opacity 0.2s' }}>
         <BuilderAsyncRequestsContext.Consumer>
           {value => {
             this._errors = value && value.errors
