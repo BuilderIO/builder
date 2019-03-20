@@ -41,29 +41,12 @@ const defaultTile: BuilderElement = {
   }
 }
 
-const defaultBigTile: BuilderElement = {
-  '@type': '@builder.io/sdk:Element',
-  responsiveStyles: {
-    large: {
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'stretch',
-      position: 'relative',
-      flexShrink: '0',
-      boxSizing: 'border-box',
-      marginTop: '20px',
-      minHeight: '20px',
-      minWidth: '20px',
-      overflow: 'hidden'
-    }
-  },
+const defaultAlternateTile: BuilderElement = {
+  ...defaultTile,
   component: {
-    name: 'Image',
+    ...defaultTile.component,
     options: {
-      image:
-        'https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?width=2000&height=1200',
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
+      ...defaultTile.component.options,
       aspectRatio: 0.2
     }
   }
@@ -92,13 +75,13 @@ interface MasonryProps {
     paddingBottom: '30px'
   },
   defaultChildren: [
-    defaultBigTile,
+    defaultAlternateTile,
     defaultTile,
     defaultTile,
-    defaultBigTile,
+    defaultAlternateTile,
     defaultTile,
-    defaultBigTile,
-    defaultBigTile,
+    defaultAlternateTile,
+    defaultAlternateTile,
     defaultTile
   ],
   inputs: [
@@ -245,12 +228,14 @@ export class BuilderMasonry extends React.Component<MasonryProps> {
                               }
                             }
                             return (
-                              <BuilderBlockComponent
-                                key={block.id}
-                                block={block}
-                                index={index}
-                                child={true} /* TODO: fieldname? */
-                              />
+                              <div className="masonry-item">
+                                <BuilderBlockComponent
+                                  key={block.id}
+                                  block={block}
+                                  index={index}
+                                  child={true} /* TODO: fieldname? */
+                                />
+                              </div>
                             )
                           }
                         )
@@ -258,13 +243,17 @@ export class BuilderMasonry extends React.Component<MasonryProps> {
                         this.props.tiles.map((tile, index) => (
                           // TODO: how make react compatible with plain react components
                           // tiles: <Foo><Bar> <- builder blocks if passed react nodes as blocks just forward them
-                          <BuilderBlocks
-                            key={index}
-                            parentElementId={this.props.builderBlock && this.props.builderBlock.id}
-                            dataPath={`component.options.tiles.${index}.content`}
-                            child
-                            blocks={(tile as any).content || tile}
-                          />
+                          <div className="masonry-item">
+                            <BuilderBlocks
+                              key={index}
+                              parentElementId={
+                                this.props.builderBlock && this.props.builderBlock.id
+                              }
+                              dataPath={`component.options.tiles.${index}.content`}
+                              child
+                              blocks={(tile as any).content || tile}
+                            />
+                          </div>
                         ))}
                   </Masonry>
                 </div>
