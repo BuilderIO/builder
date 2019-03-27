@@ -257,7 +257,20 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
           // if (this._context.loading || result.length > viewRef.context.results.length) {
           this._context.loading = false;
           // TODO: how handle singleton vs multiple
-          const match = result[0];
+          let match = result[0];
+          if (
+            !match &&
+            this.router &&
+            this.router.url &&
+            this.router.url.includes('builder.preview=' + this.builderModel)
+          ) {
+            match = {
+              id: 'preview',
+              name: 'Preview',
+              data: {},
+            };
+          }
+
           if (this.component) {
             this.component.contentLoad.next(match);
           } else {
