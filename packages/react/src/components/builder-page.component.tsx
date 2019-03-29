@@ -285,7 +285,6 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
   getCssFromFont(font: any) {
     const family = font.family + (font.kind && !font.kind.includes('#') ? ', ' + font.kind : '')
     const name = family.split(',')[0]
-    const formatString = font.isUserFont ? ' format("woff")' : ''
     const url = font.fileUrl ? font.fileUrl : font.files && font.files.regular
     if (url && family && name) {
       return `

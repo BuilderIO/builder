@@ -122,7 +122,7 @@ const defaultBlocks /*: BuilderElement[] */ = [
     {
       name: 'stackColumnsAt',
       type: 'string',
-      defaultValue: 'mobile',
+      defaultValue: 'tablet',
       helperText: 'Convert horizontal columns to vertical at what device size',
       enum: ['tablet', 'mobile', 'never'],
       advanced: true
