@@ -297,7 +297,10 @@ export class Form extends React.Component<FormProps> {
           <BuilderStoreContext.Provider
             value={{
               ...state,
-              formErrorMessage: this.state.formErrorMessage
+              state: {
+                ...state.state,
+                formErrorMessage: this.state.formErrorMessage
+              }
             }}
           >
             <form
@@ -428,6 +431,7 @@ export class Form extends React.Component<FormProps> {
                             message = JSON.stringify(message)
                           }
                           this.setState({
+                            ...this.state,
                             formErrorMessage: message
                           })
                         }
