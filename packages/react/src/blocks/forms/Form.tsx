@@ -420,9 +420,17 @@ export class Form extends React.Component<FormProps> {
                       }
 
                       if (!res.ok && this.props.errorMessagePath) {
-                        this.setState({
-                          formErrorMessage: get(body, this.props.errorMessagePath)
-                        })
+                        // TODO: allow supplying an error formatter function
+                        let message = get(body, this.props.errorMessagePath)
+
+                        if (message) {
+                          if (typeof message !== 'string') {
+                            message = JSON.stringify(message)
+                          }
+                          this.setState({
+                            formErrorMessage: message
+                          })
+                        }
                       }
 
                       this.setState({
