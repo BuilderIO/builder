@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/widgets",
-  "version": "1.0.22-alpha.34",
+  "version": "1.0.22-alpha.35",
   "description": "",
   "keywords": [],
   "main": "dist/builder-widgets.cjs.js",
@@ -136,7 +136,7 @@
     "prop-types": "^15.7.2"
   },
   "dependencies": {
-    "@builder.io/react": "^1.0.22-alpha.25",
+    "@builder.io/react": "^1.0.22-alpha.26",
     "react-masonry-component": "^6.2.1",
     "react-slick": "^0.23.2"
   },
