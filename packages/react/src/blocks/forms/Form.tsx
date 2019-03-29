@@ -428,6 +428,8 @@ export class Form extends React.Component<FormProps> {
 
                         if (message) {
                           if (typeof message !== 'string') {
+                            // TODO: ideally convert json to yaml so it woul dbe like
+                            // error: - email has been taken
                             message = JSON.stringify(message)
                           }
                           this.setState({
