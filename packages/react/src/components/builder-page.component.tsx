@@ -556,6 +556,8 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
       if (!data.state) {
         data.state = {}
       }
+      // TODO: may not want this... or make sure anything overriden
+      // explitily sets to null
       data.inputs.forEach((input: any) => {
         if (input) {
           if (
