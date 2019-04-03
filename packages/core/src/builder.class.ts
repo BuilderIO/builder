@@ -1209,7 +1209,7 @@ export class Builder {
       if (cookieVariation) {
         return { ...item, data: cookieVariation.data, variationId: cookieValue };
       }
-      if (item.variations) {
+      if (item.variations && size(item.variations)) {
         let n = 0;
         const random = Math.random();
         for (const id in item.variations) {
@@ -1227,8 +1227,8 @@ export class Builder {
             };
           }
         }
+        this.setTestCookie(item.id, item.id);
       }
-      this.setTestCookie(item.id, item.id);
       return {
         ...item,
         variationId: item.id,
