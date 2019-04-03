@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/angular",
-  "version": "1.0.4",
+  "version": "1.0.5-alpha.0",
   "main": "dist/bundles/builder.io-angular.umd.js",
   "module": "dist/fesm5/builder.io-angular.js",
   "es2015": "dist/fesm2015/builder.io-angular.js",
@@ -46,7 +46,7 @@
     "@nguniversal/module-map-ngfactory-loader": "*"
   },
   "dependencies": {
-    "@builder.io/sdk": "^1.0.15"
+    "@builder.io/sdk": "^1.0.16-alpha.0"
   },
   "devDependencies": {
     "@angular/cli": ">= 2",
