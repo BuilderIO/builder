@@ -98,4 +98,53 @@ class CatchallPage extends React.Component {
 export default CatchallPage
 ```
 
+See `examples/next-js/pages/_error.js` for a real example you can run.
+
 Alternatively, you can add some custom behavior in your server.js, that behaves similar to previous example - if a URL is not found in your next.js routes, check for a Builder page at that URL, and if found render similar to above
+
+## Using your React components in Builder pages
+
+You can use your React components in the drag and drop editor in Builder. Simply wrap the component as shown below:
+
+```js
+import { BuilderBlock } from '@builder.io/react'
+
+@BuilderBlock({
+  name: 'Simple Text',
+  inputs: [{ name: 'text', type: 'string' }]
+})
+export class SimpleText extends React.Component {
+  render() {
+    return <h1>{this.props.text}</h1>
+  }
+}
+```
+
+And then be sure to import this component wherever you want it to be accessible in the editor
+
+```js
+import './simple-page'
+
+// ...
+<BuilderComponent name="page" />
+```
+And then it will show up in the insert menu (under "show more") in the Builder editor!
+
+For the `@BuilderBlock` decorator support you need to be using typescript or babel with legacy decorators. Alternatively you can use the alternative syntax:
+
+```js
+import { BuilderBlock } from '@builder.io/react'
+
+class SimpleText extends React.Component {
+  render() {
+    return <h1>{this.props.text}</h1>
+  }
+}
+
+BuilderBlock({
+  name: 'Simple Text',
+  inputs: [{ name: 'text', type: 'string' }]
+})(SimpleText)
+```
+
+
