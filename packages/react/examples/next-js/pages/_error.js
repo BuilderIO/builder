@@ -28,13 +28,13 @@ class CatchallPage extends React.Component {
     return (
       <div>
         <Nav />
-        <p>
+        <div>
           {this.props.builderPage ? (
             <BuilderComponent name="page" content={this.props.builderPage} />
           ) : (
             'Error!'
           )}
-        </p>
+        </div>
       </div>
     )
   }
