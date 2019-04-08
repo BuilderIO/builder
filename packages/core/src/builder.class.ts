@@ -1,3 +1,4 @@
+import { ServerRequest, ServerResponse } from 'http';
 import { nextTick } from './functions/next-tick.function';
 import { QueryString } from './classes/query-string.class';
 import { version } from '../package.json';
@@ -7,6 +8,8 @@ import { assign } from './functions/assign.function';
 import { throttle } from './functions/throttle.function';
 import { Animator } from './classes/animator.class';
 import { BuilderElement } from './types/element';
+import Cookies from './classes/cookies.class';
+
 // import finder from './functions/finder.function';
 export type Url = any;
 
@@ -351,6 +354,8 @@ export class Builder {
 
   targetContent = true;
 
+  private cookies: Cookies | null = null;
+
   // TODO: api options object
   private cachebust = false;
   private noCache = false;
@@ -607,7 +612,16 @@ export class Builder {
     this.apiKey$.next(key);
   }
 
-  constructor(apiKey: string | null = null) {
+  constructor(
+    apiKey: string | null = null,
+    private request?: ServerRequest,
+    private response?: ServerResponse
+  ) {
+    if (this.request && this.response) {
+      this.setUserAgent((this.request.headers['user-agent'] as string) || '');
+      this.cookies = new Cookies(this.request, this.response);
+    }
+
     if (apiKey) {
       this.apiKey = apiKey;
     }
@@ -877,6 +891,10 @@ export class Builder {
 
   // TODO: allow adding location object as property and/or in constructor
   getLocation(): Url {
+    if (this.request) {
+      return parse(this.request.url);
+    }
+
     return (typeof location === 'object' && parse(location.href)) || ({} as any);
   }
 
@@ -1030,7 +1048,28 @@ export class Builder {
   }
 
   requestUrl(url: string) {
-    return fetch(url).then(res => res.json());
+    if (Builder.isBrowser) {
+      return fetch(url).then(res => res.json());
+    }
+    return new Promise((resolve, reject) => {
+      require('https')
+        .get(url, (resp: any) => {
+          let data = '';
+
+          // A chunk of data has been recieved.
+          resp.on('data', (chunk: string | Buffer) => {
+            data += chunk;
+          });
+
+          // The whole response has been received. Print out the result.
+          resp.on('end', () => {
+            resolve(JSON.parse(data));
+          });
+        })
+        .on('error', (error: any) => {
+          reject(error);
+        });
+    });
   }
 
   get host() {
@@ -1270,10 +1309,19 @@ export class Builder {
   }
 
   protected getCookie(name: string): any {
+    if (this.cookies) {
+      return this.cookies.get(name);
+    }
     return getCookie(name);
   }
 
   protected setCookie(name: string, value: any, expires?: Date) {
+    if (this.cookies) {
+      return this.cookies.set(name, value, {
+        expires,
+        secure: this.getLocation().protocol === 'https:',
+      });
+    }
     return setCookie(name, value, expires);
   }
 

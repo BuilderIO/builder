@@ -71,6 +71,21 @@ export class BehaviorSubject<T = any, ErrorType = any> {
     }
     return new Subscription(this.listeners, listener);
   }
+
+  toPromise() {
+    return new Promise<T>((resolve, reject) => {
+      const subscription = this.subscribe(
+        value => {
+          resolve(value);
+          subscription.unsubscribe();
+        },
+        err => {
+          reject(err);
+          subscription.unsubscribe();
+        }
+      );
+    });
+  }
 }
 
 // TODO: make different classes
