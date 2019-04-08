@@ -26,8 +26,7 @@ const options = {
       'process.env.NODE_ENV': JSON.stringify('production')
     }),
     // Allow bundling cjs modules (unlike webpack, rollup doesn't understand cjs)
-    commonjs({
-    }),
+    commonjs({}),
     // Allow node_modules resolution, so you can use 'external' to control
     // which external modules to include in the bundle
     // https://github.com/rollup/rollup-plugin-node-resolve#usage

@@ -3,6 +3,8 @@ import { GetContentOptions, Builder, builder } from '@builder.io/sdk'
 
 if (Builder.isIframe) {
   // TODO: systemjs only
+  import('react')
+  import('react-dom')
   import('@builder.io/react')
   // Register all the widgets
   import('@builder.io/widgets')
