@@ -138,7 +138,9 @@
   "dependencies": {
     "@builder.io/react": "^1.0.24-alpha.3",
     "react-masonry-component": "^6.2.1",
-    "react-slick": "^0.23.2"
+    "react-slick": "^0.23.2",
+    "react": ">=14",
+    "react-dom": ">=14"
   },
   "gitHead": "3d55a987a69736618d729c43baf7c9ce41c27464"
 }
