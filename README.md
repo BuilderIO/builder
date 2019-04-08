@@ -24,7 +24,7 @@
 | Framework        | Status           | Supports using your custom components | SSR supported |
 | ------------- |:-------------:| :-----:| :-----:|
 | React      | stable | Yes | Yes |
-| [Next.js](packages/react/example/next-js)      | stable | Yes | Yes |
+| [Next.js](packages/react/examples/next-js)      | stable | Yes | Yes |
 | Email      | stable | Yes | Yes |
 | Webcomponents      | stable      |   Yes | No (webcomponents don't render server side) |
 | Angular | stable      |  You can use your custom angular elements, SSR support for custom elements coming soon | Yes |
