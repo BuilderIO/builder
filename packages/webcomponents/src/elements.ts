@@ -9,10 +9,6 @@ if (Builder.isIframe) {
   // Register all the widgets
   import('@builder.io/widgets')
   import('@builder.io/email')
-  // Ensure loading systemjs builds...
-  // importModule('@builder.io/react/dist/system')
-  // TODO: make these only load as used hm
-  // importModule('@builder.io/widgets/dist/system')
 }
 
 function onReady(cb: Function) {
