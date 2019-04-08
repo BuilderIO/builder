@@ -614,8 +614,8 @@ export class Builder {
 
   constructor(
     apiKey: string | null = null,
-    private request?: ServerRequest,
-    private response?: ServerResponse
+    protected request?: ServerRequest,
+    protected response?: ServerResponse
   ) {
     if (this.request && this.response) {
       this.setUserAgent((this.request.headers['user-agent'] as string) || '');

@@ -5,7 +5,6 @@ import { Builder } from '@builder.io/sdk';
 import { parse, Url } from 'url';
 import { HttpClient } from '@angular/common/http';
 import { Request, Response } from 'express';
-import Cookies from '../classes/cookies';
 import { BuilderContentComponent } from '../components/builder-content/builder-content.component';
 
 export const BUILDER_API_KEY = 'BUILDER_API_KEY'; // new InjectionToken<string>('BUILDER_API_KEY');
@@ -15,8 +14,6 @@ export const EXPRESS_RESPONSE = 'EXPRESS_RESPONSE'; // new InjectionToken<Respon
 @Injectable()
 export class BuilderService extends Builder {
   static componentInstances: { [modelName: string]: BuilderContentComponent | undefined } = {};
-
-  private cookies: Cookies | null = null;
 
   autoTrack = !this.isDevelopment;
 
@@ -54,18 +51,23 @@ export class BuilderService extends Builder {
       this.expressRequest = this.expressEngineRequest;
     }
 
+    if (this.expressRequest) {
+      this.request = this.expressRequest;
+    }
+
     if (this.expressEngineResponse) {
       this.expressResponse = this.expressEngineResponse;
+    }
+
+    if (this.expressResponse) {
+      this.response = this.expressResponse;
     }
 
     if (apiKey) {
       this.init(apiKey);
     }
 
-    if (this.expressRequest) {
-      this.setUserAgent(this.expressRequest.get('user-agent') as string || '');
-      this.cookies = new Cookies(this.expressRequest, this.expressResponse);
-    } else if (!Builder.isBrowser) {
+    if (!Builder.isBrowser) {
       console.warn(
         'No express request set! Builder cannot target appropriately without this, ' +
           'please contact steve@builder.io to learn how to set this as required'
@@ -87,29 +89,6 @@ export class BuilderService extends Builder {
       return this.http.get(url).toPromise();
     } else {
       return super.requestUrl(url);
-    }
-  }
-
-  // (override)
-  protected getCookie(name: string) {
-    if (Builder.isBrowser) {
-      return super.getCookie(name);
-    } else {
-      return this.cookies && this.cookies.get(name);
-    }
-  }
-
-  // (override)
-  protected setCookie(name: string, value: any, options: any) {
-    if (Builder.isBrowser) {
-      return super.setCookie(name, value, options);
-    } else {
-      if (this.cookies) {
-        this.cookies.set(name, value, {
-          secure: this.getLocation().protocol === 'https:',
-          ...(options instanceof Date ? { expires: options } : options),
-        });
-      }
     }
   }
 }
