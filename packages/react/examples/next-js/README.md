@@ -1,4 +1,4 @@
-# Builder example with Next.js
+# Using Builder with Next.js
 
 ## Getting started
 
