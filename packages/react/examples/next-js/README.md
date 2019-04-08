@@ -25,6 +25,11 @@ import { Builder, builder, BuilderComponent } from '@builder.io/react'
 // Allow interactive widgets in the editor (importing registers the react components)
 import '@buidler.io/widgets';
 
+const BUILDER_API_KEY = require('../keys/builder.json').apiKey
+if (Builder.isBrowser) {
+  builder.init(BUILDER_API_KEY)
+}
+
 class About extends React.Component {
   static async getInitialProps({ res, req }) {
     // On the client we can use the same `builder` instance, on the server though
@@ -62,7 +67,7 @@ Also, when done creating pages, be sure to hit "publish" to publish that content
 
 ### Troubleshooting
 
-When creating a page in Builder, if Builder says "Builder code not found", that means Builder can't find the `<BuilderComponent />` in your React. Try using your React devtools to ensure that component is showing up. Even try hardcoding it temporarily to test that Builder can find it and you can use the visual editor on your site.
+When creating a page in Builder, if Builder says "Builder code not found", that means Builder can't find the `<BuilderComponent />` in your React app. Try using your React devtools to ensure that component is in fact showing up. Even try hardcoding it temporarily to test that Builder can find it and you can use the visual editor on your site.
 
 If anything else ever goes wrong for you, chat us anytime form the bottom right corner at [builder.io](https://builder.io) or email steve@builder.io. We are always happy to help!
 
