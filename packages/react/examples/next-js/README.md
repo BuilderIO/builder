@@ -2,6 +2,10 @@
 
 ## Getting started
 
+### Create an account
+
+Frist things first, if you don't yet have one, create an account at [Builder.io](https://builder.io)
+
 
 ### To install
 
@@ -45,6 +49,24 @@ class About extends React.Component {
   }
 }
 ```
+
+### Add the URL to your builder model and get editing
+
+Next, when you have added the Builder page component on your local site, go to the [models](https://buidler.io/models) page in Builder, choose the "page" model, and give it a URL where it can find this React component for the "preview url" field. This may be, for example, `http://localhost:8888/my-page`
+
+Now go to the [content](https://buidler.io/content) page, choose "+ new entry", and create a new page. This will open up that preview URL you previously gave and let you use the visual editor.
+
+Also, once this is all working as expected and deployed, make sure to change the preview URL to one on your production site so anyone you acllow on your team can build and create pages!
+
+Also, when done creating pages, be sure to hit "publish" to publish that content to be live!
+
+### Troubleshooting
+
+When creating a page in Builder, if Builder says "Builder code not found", that means Builder can't find the `<BuilderComponent />` in your React. Try using your React devtools to ensure that component is showing up. Even try hardcoding it temporarily to test that Builder can find it and you can use the visual editor on your site.
+
+If anything else ever goes wrong for you, chat us anytime form the bottom right corner at [builder.io](https://builder.io) or email steve@builder.io. We are always happy to help!
+
+
 
 ## Dynamic landing pages
 
