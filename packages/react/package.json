@@ -145,13 +145,11 @@
     "prop-types": "^15.7.2",
     "vm2": "^3.6.4"
   },
-  "peerDependencies": {
-    "react": ">=14",
-    "react-dom": ">=14"
-  },
   "dependencies": {
     "@builder.io/sdk": "^1.0.17-alpha.0",
-    "immer": "^1.7.2"
+    "immer": "^1.7.2",
+    "react": ">=14",
+    "react-dom": ">=14"
   },
   "gitHead": "dfe7877c4c94aeb4aac709b59a97e5580ab9b4ed"
 }
