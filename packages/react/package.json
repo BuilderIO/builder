@@ -1,13 +1,20 @@
 {
   "name": "@builder.io/react",
-  "version": "1.0.24-alpha.0",
+  "version": "1.0.24-alpha.1",
   "description": "",
   "keywords": [],
   "main": "dist/builder-react.cjs.js",
   "unpkg": "dist/builder-react.unpkg.js",
   "module": "dist/builder-react.es5.js",
   "typings": "dist/types/src/builder-react.d.ts",
-  "files": ["dist", "index.js", "15.js", "server.js", "preact.js", "inferno.js"],
+  "files": [
+    "dist",
+    "index.js",
+    "15.js",
+    "server.js",
+    "preact.js",
+    "inferno.js"
+  ],
   "author": "Steve Sewell <steve@builder.io>",
   "repository": {
     "type": "git",
@@ -40,7 +47,10 @@
     "precommit": "lint-staged"
   },
   "lint-staged": {
-    "{src,test}/**/*.ts": ["prettier --write", "git add"]
+    "{src,test}/**/*.ts": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "config": {
     "commitizen": {
@@ -56,8 +66,15 @@
       ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     },
     "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
-    "moduleFileExtensions": ["ts", "tsx", "js"],
-    "coveragePathIgnorePatterns": ["/node_modules/", "/test/"],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "/test/"
+    ],
     "coverageThreshold": {
       "global": {
         "branches": 90,
@@ -115,7 +132,7 @@
     "typescript": "^3.1.6",
     "validate-commit-msg": "^2.12.2"
   },
-  "//": "TODO: get react back as peerdependencies - find where rollup is putting those external in iife and stop it",
+  "//": "TODO: maybe make @builder.io/sdk peerdependency",
   "optionalDependencies": {
     "create-inferno-context": "^0.2.4",
     "create-react-context": "^0.2.3",
@@ -132,7 +149,6 @@
     "react": ">=14",
     "react-dom": ">=14"
   },
-  "//": "TODO: maybe make @builder.io/sdk peerdependency",
   "dependencies": {
     "@builder.io/sdk": "^1.0.17-alpha.0",
     "immer": "^1.7.2"
