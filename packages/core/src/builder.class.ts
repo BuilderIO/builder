@@ -1198,11 +1198,14 @@ export class Builder {
         (queryParams && hasParams ? `?${queryStr}` : '')
     ).then(
       result => {
+        const location = this.getLocation();
+        const editing = location.search.indexOf;
         for (const options of queue) {
           const keyName = options.key!;
           if (options.model === this.blockContentLoading) {
             continue;
           }
+
           const isEditingThisModel = this.editingModel === options.model;
           if (isEditingThisModel) {
             parent.postMessage({ type: 'builder.updateContent' }, '*');
@@ -1218,6 +1221,15 @@ export class Builder {
             const testModifiedResults = this.processResultsForTests(sorted);
             observer.next(testModifiedResults);
           } else {
+            const search = this.getLocation().search;
+            if (Builder.isEditing && search.includes('builder.preview=' + options.model)) {
+              const previewData = {
+                id: 'preview',
+                name: 'Preview',
+                data: {},
+              };
+              observer.next([previewData]);
+            }
             observer.next([]);
           }
         }

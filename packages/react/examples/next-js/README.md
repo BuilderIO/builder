@@ -100,7 +100,7 @@ export default CatchallPage
 
 See `examples/next-js/pages/_error.js` for a real example you can run.
 
-Alternatively, you can add some custom behavior in your server.js, that behaves similar to previous example - if a URL is not found in your next.js routes, check for a Builder page at that URL, and if found render similar to above
+Alternatively, you can add some custom behavior in your `server.js`, that behaves similar to previous example - if a URL is not found in your next.js routes, check for a Builder page with `await builder.get('page').toPromise()` at that URL, and if found render similar to above
 
 ## Using your React components in Builder pages
 
