@@ -316,7 +316,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
       }
     }
 
-    const innerComponentProperties = options.component && {
+    const innerComponentProperties = (options.component || options.options) && {
       ...options.options,
       ...(options.component.options || options.component.data)
     }

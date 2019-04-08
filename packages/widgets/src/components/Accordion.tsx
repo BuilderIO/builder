@@ -3,7 +3,9 @@ import {
   BuilderElement,
   BuilderBlocks,
   BuilderStoreContext,
-  BuilderBlockComponent
+  BuilderBlockComponent,
+  stringToFunction,
+  BuilderAsyncRequestsContext
 } from '@builder.io/react'
 import React from 'react'
 import get from 'lodash-es/get'
@@ -188,6 +190,9 @@ export class BuilderAccordion extends React.Component<AccordionProps> {
     open: [] as number[]
   }
 
+  private _errors?: Error[]
+  private _logs?: string[]
+
   componentDidMount() {
     setTimeout(() => {
       if (this.divRef) {
@@ -343,83 +348,106 @@ export class BuilderAccordion extends React.Component<AccordionProps> {
     }
 
     return (
-      <BuilderStoreContext.Consumer>
-        {state => (
-          <div
-            ref={ref => (this.divRef = ref)}
-            className="builder-accordion"
-            style={{
-              display: 'flex',
-              alignItems: 'stretch',
-              flexDirection: 'column',
-              ...(grid && {
-                flexDirection: 'row',
-                alignItems: 'flex-start',
-                flexWrap: 'wrap'
-              })
-            }}
-          >
-            {/* TODO: helper static method for builder blocks to do this stuff */}
-            {this.props.useChildrenForItems
-              ? this.props.builderBlock &&
-                this.props.builderBlock.children &&
-                this.props.builderBlock.children.map((block: BuilderElement, index: number) => {
-                  if (block.repeat && block.repeat.collection) {
-                    const collectionPath = block.repeat.collection
-                    const collectionName = last((collectionPath || '').trim().split('.'))
-                    const itemName =
-                      block.repeat.itemName || (collectionName ? collectionName + 'Item' : 'item')
-                    const array = get(state.state, collectionPath)
-                    if (isArray(array)) {
-                      return array.map((data, index) => {
-                        // TODO: Builder state produce the data
-                        const childState = {
-                          ...state.state,
-                          $index: index,
-                          $item: data,
-                          [itemName]: data
-                        }
+      <BuilderAsyncRequestsContext.Consumer>
+        {value => {
+          this._errors = value && value.errors
+          this._logs = value && value.logs
 
-                        return (
-                          <BuilderStoreContext.Provider
-                            key={block.id}
-                            value={{ ...state, state: childState } as any}
-                          >
-                            {this.getAccordionItem(
-                              block.children ? [block.children[0]] : [],
-                              block.children ? [block.children[1]] : [],
-                              index,
-                              openGridItemOrder,
-                              onlyOneAtATime,
-                              true
-                            )}
-                          </BuilderStoreContext.Provider>
+          return (
+            <BuilderStoreContext.Consumer>
+              {state => (
+                <div
+                  ref={ref => (this.divRef = ref)}
+                  className="builder-accordion"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'stretch',
+                    flexDirection: 'column',
+                    ...(grid && {
+                      flexDirection: 'row',
+                      alignItems: 'flex-start',
+                      flexWrap: 'wrap'
+                    })
+                  }}
+                >
+                  {/* TODO: helper static method for builder blocks to do this stuff */}
+                  {this.props.useChildrenForItems
+                    ? this.props.builderBlock &&
+                      this.props.builderBlock.children &&
+                      this.props.builderBlock.children.map(
+                        (block: BuilderElement, index: number) => {
+                          if (block.repeat && block.repeat.collection) {
+                            const collectionPath = block.repeat.collection
+                            const collectionName = last(
+                              (collectionPath || '')
+                                .split(/\.\w+\(/)[0]
+                                .trim()
+                                .split('.')
+                            )
+                            const itemName =
+                              block.repeat.itemName ||
+                              (collectionName ? collectionName + 'Item' : 'item')
+
+                            let array: any[] | void = stringToFunction(
+                              collectionPath,
+                              true,
+                              this._errors,
+                              this._logs
+                            )(state.state)
+                            if (isArray(array)) {
+                              return array.map((data, index) => {
+                                // TODO: Builder state produce the data
+                                const childState = {
+                                  ...state.state,
+                                  $index: index,
+                                  $item: data,
+                                  [itemName]: data
+                                }
+
+                                return (
+                                  <BuilderStoreContext.Provider
+                                    key={block.id}
+                                    value={{ ...state, state: childState } as any}
+                                  >
+                                    {this.getAccordionItem(
+                                      block.children ? [block.children[0]] : [],
+                                      block.children ? [block.children[1]] : [],
+                                      index,
+                                      openGridItemOrder,
+                                      onlyOneAtATime,
+                                      true
+                                    )}
+                                  </BuilderStoreContext.Provider>
+                                )
+                              })
+                            }
+                          }
+                          return this.getAccordionItem(
+                            block.children ? [block.children[0]] : [],
+                            block.children ? [block.children[1]] : [],
+                            index,
+                            openGridItemOrder,
+                            onlyOneAtATime,
+                            true
+                          )
+                        }
+                      )
+                    : this.props.items &&
+                      this.props.items.map((item, index) => {
+                        return this.getAccordionItem(
+                          item.title,
+                          item.detail,
+                          index,
+                          openGridItemOrder,
+                          onlyOneAtATime
                         )
-                      })
-                    }
-                  }
-                  return this.getAccordionItem(
-                    block.children ? [block.children[0]] : [],
-                    block.children ? [block.children[1]] : [],
-                    index,
-                    openGridItemOrder,
-                    onlyOneAtATime,
-                    true
-                  )
-                })
-              : this.props.items &&
-                this.props.items.map((item, index) => {
-                  return this.getAccordionItem(
-                    item.title,
-                    item.detail,
-                    index,
-                    openGridItemOrder,
-                    onlyOneAtATime
-                  )
-                })}
-          </div>
-        )}
-      </BuilderStoreContext.Consumer>
+                      })}
+                </div>
+              )}
+            </BuilderStoreContext.Consumer>
+          )
+        }}
+      </BuilderAsyncRequestsContext.Consumer>
     )
   }
 }

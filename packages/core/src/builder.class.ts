@@ -501,7 +501,7 @@ export class Builder {
 
   autoTrack =
     !this.isDevelopmentEnv &&
-    !(Builder.isBrowser && location.search.indexOf('builder.preview=true') !== -1);
+    !(Builder.isBrowser && location.search.indexOf('builder.preview=') !== -1);
 
   useNewContentApi = false;
 
