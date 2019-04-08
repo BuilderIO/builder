@@ -9,7 +9,6 @@ if (Builder.isIframe) {
   // Register all the widgets
   import('@builder.io/widgets')
   import('@builder.io/email')
-  ;(window as any).builder = builder
   // Ensure loading systemjs builds...
   // importModule('@builder.io/react/dist/system')
   // TODO: make these only load as used hm
