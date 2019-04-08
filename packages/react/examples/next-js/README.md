@@ -59,7 +59,11 @@ class About extends React.Component {
 
 Next, when you have added the Builder page component on your local site, go to the [models](https://buidler.io/models) page in Builder, choose the "page" model, and give it a URL where it can find this React component for the "preview url" field. This may be, for example, `http://localhost:8888/my-page`
 
+<img src="https://i.imgur.com/PRWvNM1.gif">
+
 Now go to the [content](https://buidler.io/content) page, choose "+ new entry", and create a new page. This will open up that preview URL you previously gave and let you use the visual editor.
+
+<img src="https://imgur.com/5BC0lYR.gif">
 
 Also, once this is all working as expected and deployed, make sure to change the preview URL to one on your production site so anyone you acllow on your team can build and create pages!
 
