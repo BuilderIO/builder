@@ -133,6 +133,42 @@ See `examples/next-js/pages/_error.js` for a real example you can run.
 
 Alternatively, you can add some custom behavior in your `server.js`, that behaves similar to previous example - if a URL is not found in your next.js routes, check for a Builder page with `await builder.get('page').toPromise()` at that URL, and if found render similar to above
 
+For instance, if using [next-routes](https://github.com/fridays/next-routes)
+
+```js
+// routes.js
+module.exports = routes()                           // ----   ----      -----
+  .add('**', 'builder')
+```
+
+```js
+// pages/builder.js
+import { Component } from 'react'
+import { Builder, builder, BuilderComponent } from '@builder.io/react'
+// Allow interactive widgets in the editor (importing registers the react components)
+import '@buidler.io/widgets';
+import Error from './_error';
+
+const BUILDER_API_KEY = require('../keys/builder.json').apiKey
+if (Builder.isBrowser) {
+  builder.init(BUILDER_API_KEY)
+}
+
+class Builder extends Component {
+  static async getInitialProps({ res }) {
+    const builderInstance = res ? new Builder(BUILDER_API_KEY, req, res) : builder
+    const page = await builderInstance.get('page').toPromise()
+    if (!page && res) res.statusCode = 404;
+    return { data };
+  }
+  render() {
+    const { page } = this.props;
+    if (!page) return <Error status={404} />;
+    return <BuilderComponent name="page" content={page} />;
+  }
+}
+```
+
 ## Using your React components in Builder pages
 
 You can use your React components in the drag and drop editor in Builder. Simply wrap the component as shown below:
