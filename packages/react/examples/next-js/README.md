@@ -180,10 +180,12 @@ detail on the different input types and options, see our detailed docs [here](ht
 For lots of examples of using React components in Builder, see the source for our built-in Builder blocks [here](https://github.com/BuilderIO/builder/tree/master/packages/react/src/blocks) and widgets [here](https://github.com/BuilderIO/builder/tree/master/packages/widgets/src/components)
 
 ```js
-import './simple-page'
+// As long as this is imported on the same page as your <BuilderComponent> is used,
+// you will have access to this component in the drag and drop editor
+import './your-builder-component'
 
 // ...
-;<BuilderComponent name="page" />
+export default MyPageWithCustomComponents = () => <BuilderComponent name="page" />
 ```
 
 And then it will show up in the insert menu (under "show more") in the Builder editor!
