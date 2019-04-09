@@ -21,20 +21,20 @@
 
 ## Supported Frameworks
 
-| Framework                                               |                                                                                Status                                                                                 |                         Supports using your custom components                         |                SSR supported                |
-| ------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------: | :-----------------------------------------: |
-| React                                                   |                                                                                stable                                                                                 |                                          Yes                                          |                     Yes                     |
-| [Next.js](packages/react/examples/next-js)              |                                                                                stable                                                                                 |                                          Yes                                          |                     Yes                     |
-| Email                                                   |                                                                                stable                                                                                 |                                          Yes                                          |                     Yes                     |
-| Webcomponents                                           |                                                                                stable                                                                                 |                                          Yes                                          | No (webcomponents don't render server side) |
-| Angular                                                 |                                                                                stable                                                                                 | You can use your custom angular elements, SSR support for custom elements coming soon |                     Yes                     |
-| Preact                                                  |                                                                                 alpha                                                                                 |                                          Yes                                          |                     Yes                     |
-| Inferno                                                 |                                                                                 alpha                                                                                 |                                          Yes                                          |                     Yes                     |
-| Vue                                                     |                          Vue plugin coming soon - but you can use [webcomponents](https://builder.io/c/docs/webcomponents-sdk) with Vue now                           |                                      Coming soon                                      |                 Coming soon                 | Coming soon |
-| React native                                            |                                                                              Coming soon                                                                              |                                                                                       |                                             |
-| Shopify                                                 |                                                                              Coming soon                                                                              |                                                                                       |                                             |
-| Wordpress                                               |                                                                              Coming soon                                                                              |                                                                                       |                                             |
-| Everyting else - Go, Php, Svelte, Java, Vanilla JS, etc | Stable - Use our [HTML API](https://builder.io/c/docs/html-api) and/or [webcomponents](https://builder.io/c/docs/webcomponents-sdk) to include builder pages anywhere |                                  Your webcomponents                                   |                     Yes                     |
+| Framework                                                    |                                                                                Status                                                                                 |                         Supports using your custom components                         |                SSR supported                |
+| ------------------------------------------------------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------: | :-----------------------------------------: |
+| [React](#getting-started-with-react)                         |                                                                                stable                                                                                 |                                          Yes                                          |                     Yes                     |
+| [Next.js](packages/react/examples/next-js)                   |                                                                                stable                                                                                 |                                          Yes                                          |                     Yes                     |
+| Email                                                        |                                                                                stable                                                                                 |                                          Yes                                          |                     Yes                     |
+| [Webcomponents](https://builder.io/c/docs/webcomponents-sdk) |                                                                                stable                                                                                 |                                          Yes                                          | No (webcomponents don't render server side) |
+| [Angular](packages/react)                                    |                                                                                stable                                                                                 | You can use your custom angular elements, SSR support for custom elements coming soon |                     Yes                     |
+| Preact                                                       |                                                                                 alpha                                                                                 |                                          Yes                                          |                     Yes                     |
+| Inferno                                                      |                                                                                 alpha                                                                                 |                                          Yes                                          |                     Yes                     |
+| Vue                                                          |                          Vue plugin coming soon - but you can use [webcomponents](https://builder.io/c/docs/webcomponents-sdk) with Vue now                           |                                      Coming soon                                      |                 Coming soon                 | Coming soon |
+| React native                                                 |                                                                              Coming soon                                                                              |                                                                                       |                                             |
+| Shopify                                                      |                                                                              Coming soon                                                                              |                                                                                       |                                             |
+| Wordpress                                                    |                                                                              Coming soon                                                                              |                                                                                       |                                             |
+| Everyting else - Go, Php, Svelte, Java, Vanilla JS, etc      | Stable - Use our [HTML API](https://builder.io/c/docs/html-api) and/or [webcomponents](https://builder.io/c/docs/webcomponents-sdk) to include builder pages anywhere |                                  Your webcomponents                                   |                     Yes                     |
 
 Want suppoert for something not listed here or for us to priotize something coming soon? Drop us an issue and let us know! We prioritize based on the community's needs and interestes.
 
@@ -118,7 +118,7 @@ BuilderBlock({
 
 One of Builder's most powerful features is allowing the creation of new pages for you. See a simple example of how to do this with react-router below:
 
-```jsx
+```tsx
 class CatchAllPage extends Component {
   state = {
     notFound: false,
@@ -145,12 +145,14 @@ class CatchAllPage extends Component {
 }
 
 // Then in your app.js
-<Switch>
-  <Route path="/" component={Home} />
-  {/* Your other routes... */}
-  {/* IMPORTANT: Be sure the patchall is your LAST route so it only loads if nothing else matches! */}
-  <Route component={CatchAllPage} />
-</Switch>
+export default () => (
+  <Switch>
+    <Route path="/" component={Home} />
+    {/* Your other routes... */}
+    {/* IMPORTANT: Be sure the patchall is your LAST route so it only loads if nothing else matches! */}
+    <Route component={CatchAllPage} />
+  </Switch>
+);
 ```
 
 For more advanced usage, like checking for page existence/404 on the server using the Content API, see our detail landing page docs [here](https://builder.io/c/docs/custom-landing-pages) or if using Next.js see our docs for that [here](https://github.com/BuilderIO/builder/tree/master/packages/react/examples/next-js#dynamic-landing-pages)
