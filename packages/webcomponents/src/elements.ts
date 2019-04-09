@@ -110,21 +110,21 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
 
       this.getOptionsFromAttribute()
       this.addEventListener('remove', () => this.unsubscribe())
-      this.addEventListener('click', event => {
-        if (builder.canTrack) {
-          if (this.data) {
-            builder.trackInteraction(
-              this.data.id,
-              this.data.testVariationId || this.data.id,
-              this.trackedClick,
-              event
-            )
-            if (!this.trackedClick) {
-              this.trackedClick = true
-            }
-          }
-        }
-      })
+      // this.addEventListener('click', event => {
+      //   if (builder.canTrack) {
+      //     if (this.data) {
+      //       builder.trackInteraction(
+      //         this.data.id,
+      //         this.data.testVariationId || this.data.id,
+      //         this.trackedClick,
+      //         event
+      //       )
+      //       if (!this.trackedClick) {
+      //         this.trackedClick = true
+      //       }
+      //     }
+      //   }
+      // })
       this.getContent()
     }
 
