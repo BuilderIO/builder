@@ -4,7 +4,7 @@
 
 ### Create an account
 
-Frist things first, if you don't yet have one, create an account at [Builder.io](https://builder.io)
+Frist things first, if you don't yet have one, create a free account at [Builder.io](https://builder.io)
 
 ### To install
 
