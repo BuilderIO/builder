@@ -20,23 +20,15 @@ and use the following for `pages/about.js`
 
 ```js
 import React from 'react'
-import { Builder, builder, BuilderComponent } from '@builder.io/react'
-// Allow interactive widgets in the editor (importing registers the react components)
+import { builder, BuilderComponent } from '@builder.io/react'
 import '@buidler.io/widgets';
 
-const BUILDER_API_KEY = require('../keys/builder.json').apiKey
-if (Builder.isBrowser) {
-  builder.init(BUILDER_API_KEY)
-}
+builder.init(BUILDER_API_KEY)
 
 class About extends React.Component {
   static async getInitialProps({ res, req }) {
-    // On the client we can use the same `builder` instance, on the server though
-    // we need a fresh one per request
-    const builderInstance = res ? new Builder(BUILDER_API_KEY, req, res) : builder
-
     // If there is a Builder page for this URL, this will be an object, otherwise it'll be null
-    const page = await builderInstance.get('page').toPromise()
+    const page = await builder.get('page', { req, res }).promise()
     return { builderPage: page }
   }
 
@@ -95,20 +87,16 @@ module.exports = routes()
 ```js
 // pages/builder.js
 import { Component } from 'react'
-import { Builder, builder, BuilderComponent } from '@builder.io/react'
+import { builder, BuilderComponent } from '@builder.io/react'
 // Allow interactive widgets in the editor (importing registers the react components)
 import '@buidler.io/widgets'
 import Error from './_error'
 
-const BUILDER_API_KEY = require('../keys/builder.json').apiKey
-if (Builder.isBrowser) {
-  builder.init(BUILDER_API_KEY)
-}
+builder.init(YOUR_API_KEY);
 
 class Builder extends Component {
   static async getInitialProps({ req, res }) {
-    const builderInstance = res ? new Builder(BUILDER_API_KEY, req, res) : builder
-    const page = await builderInstance.get('page').toPromise()
+    const page = await builder.get('page', { req, res }).promise()
     if (!page && res) res.statusCode = 404
     return { data }
   }
@@ -126,24 +114,16 @@ A simplistic approach could also be to use \_error.js. Since \_error.js function
 
 ```js
 import React from 'react'
-import { Builder, builder, BuilderComponent } from '@builder.io/react'
-// Allow interactive widgets in the editor (importing registers the react components)
+import { builder, BuilderComponent } from '@builder.io/react'
 import '@buidler.io/widgets'
 import Nav from '../components/nav'
 
-const BUILDER_API_KEY = require('../keys/builder.json').apiKey
-if (Builder.isBrowser) {
-  builder.init(BUILDER_API_KEY)
-}
+builder.init(BUILDER_API_KEY)
 
 class CatchallPage extends React.Component {
   static async getInitialProps({ res, req }) {
-    // On the client we can use the same `builder` instance, on the server though
-    // we need a fresh one per request
-    const builderInstance = res ? new Builder(BUILDER_API_KEY, req, res) : builder
-
     // If there is a Builder page for this URL, this will be an object, otherwise it'll be null
-    const page = await builderInstance.get('page').toPromise()
+    const page = await builder.get('page', { req, res }).toPromise()
 
     if (res && res.statusCode === 404 && page) {
       res.statusCode = 200
@@ -176,7 +156,7 @@ See `examples/next-js/pages/_error.js` for a real example you can run.
 
 Alternatively, you can add some custom behavior in your `server.js` or another routing library of your choice.
 
-Just follow the same behavior as the previous examples - if a URL is not found in your next.js routes, check for a Builder page with `await builder.get('page').toPromise()` at that URL, and if found render `<BuilderComponent name="page" content={page} />` like in the above examples
+Just follow the same behavior as the previous examples - if a URL is not found in your next.js routes, check for a Builder page with `await builder.get('page').promise()` at that URL, and if found render `<BuilderComponent name="page" content={page} />` like in the above examples
 
 ## Using your React components in Builder pages
 
