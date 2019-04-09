@@ -189,6 +189,7 @@ export interface Action {
 
 export class Builder {
   static components: Component[] = [];
+  static singletonInstance: Builder;
   static nextTick = nextTick;
   static VERSION = version;
   static useNewApi = true;
@@ -504,9 +505,10 @@ export class Builder {
     this.throttledClearEventsQueue();
   }
 
-  autoTrack =
-    !this.isDevelopmentEnv &&
-    !(Builder.isBrowser && location.search.indexOf('builder.preview=') !== -1);
+  autoTrack = !Builder.isBrowser
+    ? false
+    : !this.isDevelopmentEnv &&
+      !(Builder.isBrowser && location.search.indexOf('builder.preview=') !== -1);
 
   useNewContentApi = false;
 
@@ -619,8 +621,8 @@ export class Builder {
     forceNewInstance = false
   ) {
     // TODO: if in browser just return singleton builder hmm
-    if (Builder.isBrowser && !forceNewInstance) {
-      return builder;
+    if (Builder.isBrowser && !forceNewInstance && Builder.singletonInstance) {
+      return Builder.singletonInstance;
     }
 
     if (this.request && this.response) {
@@ -970,13 +972,16 @@ export class Builder {
   private getContentQueue: null | GetContentOptions[] = null;
   private priorContentQueue: null | GetContentOptions[] = null;
 
-  get(modelName: string, options: GetContentOptions & { req?: ServerRequest, res?: ServerResponse, apiKey?: string } = {}) {
-    let instance: Builder = this
+  get(
+    modelName: string,
+    options: GetContentOptions & { req?: ServerRequest; res?: ServerResponse; apiKey?: string } = {}
+  ) {
+    let instance: Builder = this;
     if (!Builder.isBrowser && (options.req || options.res)) {
-      instance = new Builder(options.apiKey || this.apiKey, options.req, options.res)
+      instance = new Builder(options.apiKey || this.apiKey, options.req, options.res);
     } else {
       if (options.apiKey && !this.apiKey) {
-        this.apiKey = options.apiKey
+        this.apiKey = options.apiKey;
       }
     }
     return instance.queueGetContent(modelName, options).map(
@@ -1219,7 +1224,6 @@ export class Builder {
     ).then(
       result => {
         const location = this.getLocation();
-        const editing = location.search.indexOf;
         for (const options of queue) {
           const keyName = options.key!;
           if (options.model === this.blockContentLoading) {
@@ -1365,5 +1369,3 @@ export class Builder {
     return this.queueGetContent(modelName);
   }
 }
-
-import { builder } from './constants/builder'

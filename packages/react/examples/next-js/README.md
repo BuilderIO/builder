@@ -92,7 +92,7 @@ import { builder, BuilderComponent } from '@builder.io/react'
 import '@buidler.io/widgets'
 import Error from './_error'
 
-builder.init(YOUR_API_KEY);
+builder.init(YOUR_API_KEY)
 
 class Builder extends Component {
   static async getInitialProps({ req, res }) {
@@ -108,7 +108,7 @@ class Builder extends Component {
 }
 ```
 
-### With pages/_error.js
+### With pages/\_error.js
 
 A simplistic approach could also be to use \_error.js. Since \_error.js functions as catchall page, we can add our own handling:
 
@@ -116,7 +116,6 @@ A simplistic approach could also be to use \_error.js. Since \_error.js function
 import React from 'react'
 import { builder, BuilderComponent } from '@builder.io/react'
 import '@buidler.io/widgets'
-import Nav from '../components/nav'
 
 builder.init(BUILDER_API_KEY)
 
@@ -134,14 +133,11 @@ class CatchallPage extends React.Component {
   render() {
     return (
       <div>
-        <Nav />
-        <p>
-          {this.props.builderPage ? (
-            <BuilderComponent name="page" content={this.props.builderPage} />
-          ) : (
-            'Error!'
-          )}
-        </p>
+        {this.props.builderPage ? (
+          <BuilderComponent name="page" content={this.props.builderPage} />
+        ) : (
+          'Error!'
+        )}
       </div>
     )
   }
@@ -178,11 +174,16 @@ export class SimpleText extends React.Component {
 
 And then be sure to import this component wherever you want it to be accessible in the editor
 
+For more information on using your React components in Builder, including
+detail on the different input types and options, see our detailed docs [here](https://builder.io/c/docs/custom-react-components)
+
+For lots of examples of using React components in Builder, see the source for our built-in Builder blocks [here](https://github.com/BuilderIO/builder/tree/master/packages/react/src/blocks) and widgets [here](https://github.com/BuilderIO/builder/tree/master/packages/widgets/src/components)
+
 ```js
 import './simple-page'
 
 // ...
-<BuilderComponent name="page" />
+;<BuilderComponent name="page" />
 ```
 
 And then it will show up in the insert menu (under "show more") in the Builder editor!

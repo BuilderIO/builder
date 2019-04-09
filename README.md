@@ -93,7 +93,11 @@ import './simple-page'
 
 Open the dashboard and use it!
 
+
+
 See our [docs site](https://builder.io/c/docs/custom-react-components) for additional help and information, or contact us if you run into any issues or questions!
+
+For lots of examples of using React components in Builder, see the source for our built-in Builder blocks [here](https://github.com/BuilderIO/builder/tree/master/packages/react/src/blocks) and widgets [here](https://github.com/BuilderIO/builder/tree/master/packages/widgets/src/components)
 
 For Builder decorator support you need to be using typescript or babel with legacy decorators.
 Alternatively you can use the alternative syntax:
