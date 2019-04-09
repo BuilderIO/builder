@@ -657,20 +657,35 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     if (data && (data.httpRequests || data.builderData) && !this.props.noAsync) {
       // TODO: another structure for this
       for (const key in data.httpRequests) {
-        const url = data.httpRequests[key]
+        const url: string | undefined = data.httpRequests[key]
         if (url && !this.data[key]) {
+          // TODO: if Builder.isEditing and url patches https://builder.io/api/v2/content/{editingModel}
+          // Then use builder.get().subscribe(...)
           if (Builder.isBrowser) {
             let lastUrl = this.evalExpression(url)
-            this.throttledHandleRequest(key, lastUrl)
-            this.subscriptions.add(
-              this.onStateChange.subscribe(() => {
-                const newUrl = this.evalExpression(url)
-                if (newUrl !== lastUrl) {
-                  this.throttledHandleRequest(key, newUrl)
-                  lastUrl = newUrl
-                }
-              })
-            )
+            const builderModelRe = /builder\.io\/api\/v2\/([^\/\?]+)/i
+            const builderModelMatch = url.match(builderModelRe)
+            const model = builderModelMatch && builderModelMatch[1]
+            if (Builder.isEditing && model && builder.editingModel === model) {
+              this.subscriptions.add(
+                builder.get(model).subscribe(data => {
+                  this.state.update((state: any) => {
+                    state[key] = data
+                  })
+                })
+              )
+            } else {
+              this.throttledHandleRequest(key, lastUrl)
+              this.subscriptions.add(
+                this.onStateChange.subscribe(() => {
+                  const newUrl = this.evalExpression(url)
+                  if (newUrl !== lastUrl) {
+                    this.throttledHandleRequest(key, newUrl)
+                    lastUrl = newUrl
+                  }
+                })
+              )
+            }
           } else {
             this.handleRequest(key, this.evalExpression(url))
           }

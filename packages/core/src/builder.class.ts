@@ -705,7 +705,7 @@ export class Builder {
     const params = QueryString.parseDeep(this.modifySearch(location.search || '').substr(1));
     const { builder } = params;
     if (builder) {
-      const { userAttributes, overrides, env, host, api, cachebust, noCache, preview } = builder;
+      const { userAttributes, overrides, env, host, api, cachebust, noCache, preview, editing } = builder;
       if (userAttributes) {
         this.setUserAttributes(userAttributes);
       }
@@ -715,6 +715,11 @@ export class Builder {
       if (env || api) {
         this.env = env || api;
       }
+
+      if (editing) {
+        this.editingModel = editing
+      }
+
       if (host) {
         this.overrideHost = host;
       }

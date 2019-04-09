@@ -148,7 +148,8 @@ class CatchAllPage extends Component {
 <Switch>
   <Route path="/" component={Home} />
   {/* Your other routes... */}
-  <Route component={CatchAllpage} />
+  {/* IMPORTANT: Be sure the patchall is your LAST route so it only loads if nothing else matches! */}
+  <Route component={CatchAllPage} />
 </Switch>
 ```
 
