@@ -19,7 +19,6 @@ function onReady(cb: Function) {
 
 if (Builder.isBrowser && !customElements.get('builder-component')) {
   const inject = () => {
-    // debugger
     const selector = '.builder-component-wrap.builder-to-embed'
     const matches = document.querySelectorAll(selector)
     for (let i = 0; i < matches.length; i++) {
