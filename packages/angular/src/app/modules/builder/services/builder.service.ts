@@ -45,7 +45,7 @@ export class BuilderService extends Builder {
     private router: Router,
     @Optional() private http: HttpClient
   ) {
-    super();
+    super(apiKey, expressEngineRequest || expressRequest, expressEngineResponse || expressResponse);
 
     if (this.expressEngineRequest) {
       this.expressRequest = this.expressEngineRequest;
@@ -67,7 +67,7 @@ export class BuilderService extends Builder {
       this.init(apiKey);
     }
 
-    if (!Builder.isBrowser) {
+    if (!Builder.isBrowser && !this.request) {
       console.warn(
         'No express request set! Builder cannot target appropriately without this, ' +
           'please contact steve@builder.io to learn how to set this as required'
