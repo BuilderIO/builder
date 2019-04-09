@@ -95,14 +95,20 @@ module.exports = routes()
 ```js
 // pages/builder.js
 import { Component } from 'react'
-import { builder, BuilderComponent } from '@builder.io/react'
+import { Builder, builder, BuilderComponent } from '@builder.io/react'
 // Allow interactive widgets in the editor (importing registers the react components)
 import '@buidler.io/widgets'
 import Error from './_error'
 
+const BUILDER_API_KEY = require('../keys/builder.json').apiKey
+if (Builder.isBrowser) {
+  builder.init(BUILDER_API_KEY)
+}
+
 class Builder extends Component {
   static async getInitialProps({ req, res }) {
-    const page = await builder.get('page', { req, res, apiKey: YOUR_KEY }).promise()
+    const builderInstance = res ? new Builder(BUILDER_API_KEY, req, res) : builder
+    const page = await builderInstance.get('page').toPromise()
     if (!page && res) res.statusCode = 404
     return { data }
   }
