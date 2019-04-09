@@ -705,7 +705,17 @@ export class Builder {
     const params = QueryString.parseDeep(this.modifySearch(location.search || '').substr(1));
     const { builder } = params;
     if (builder) {
-      const { userAttributes, overrides, env, host, api, cachebust, noCache, preview, editing } = builder;
+      const {
+        userAttributes,
+        overrides,
+        env,
+        host,
+        api,
+        cachebust,
+        noCache,
+        preview,
+        editing,
+      } = builder;
       if (userAttributes) {
         this.setUserAttributes(userAttributes);
       }
@@ -717,7 +727,7 @@ export class Builder {
       }
 
       if (editing) {
-        this.editingModel = editing
+        this.editingModel = editing;
       }
 
       if (host) {
@@ -1000,7 +1010,7 @@ export class Builder {
           // TODO: add ab test info here and other high level stuff
           data: matchData,
           id: match.id,
-          testVariationId: match.testVariationId,
+          testVariationId: match.testVariationId || match.variationId,
           testVariationName: match.testVariationName,
         };
       }
@@ -1071,6 +1081,7 @@ export class Builder {
     this.observersByKey[key] = observable;
     if (initialContent) {
       nextTick(() => {
+        // TODO: need to testModify this I think...?
         observable.next(initialContent);
       });
     }
@@ -1287,7 +1298,13 @@ export class Builder {
       const cookieValue = this.getTestCookie(item.id);
       const cookieVariation = cookieValue === item.id ? item : item.variations[cookieValue];
       if (cookieVariation) {
-        return { ...item, data: cookieVariation.data, variationId: cookieValue };
+        return {
+          ...item,
+          data: cookieVariation.data,
+          variationId: cookieValue,
+          testVariationId: cookieValue,
+          testVariationName: cookieVariation.name
+        };
       }
       if (item.variations && size(item.variations)) {
         let n = 0;

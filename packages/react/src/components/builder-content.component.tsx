@@ -38,6 +38,7 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
     this.subscriptions.add(
       builder.queueGetContent(this.props.modelName, this.props.options).subscribe(
         matches => {
+          debugger;
           const match = matches && matches[0]
           this.setState({
             data: match
@@ -46,7 +47,7 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
           if (match && this.firstLoad) {
             // TODO: autoTrack
             if (builder.autoTrack) {
-              builder.trackImpression(match.id, match && match.variationId)
+              builder.trackImpression(match.id, match.variationId)
             }
             this.firstLoad = false
           }
