@@ -76,6 +76,8 @@ If anything else ever goes wrong for you, chat us anytime form the bottom right 
 
 ## Dynamic landing pages
 
+One of Builder's most powerful use cases is allowing the creation of dynamic new pages with their own unique URLs.
+
 Since next.js doesn't natively support dynamic pages, we have a couple of options.
 
 First, and perhaps most elegant, is to use [next-routes](https://github.com/fridays/next-routes)
@@ -85,8 +87,9 @@ First, and perhaps most elegant, is to use [next-routes](https://github.com/frid
 ```js
 // routes.js
 module.exports = routes()
-  // ... your other routes
-  .add('**', 'builder')
+  ... your other routes
+  // Be sure this is last so your other routes always match first
+  .add('/*', 'builder')
 ```
 
 ```js
