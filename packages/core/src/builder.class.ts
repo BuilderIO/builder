@@ -1371,7 +1371,7 @@ export class Builder {
     if (this.cookies) {
       return this.cookies.get(name);
     }
-    return getCookie(name);
+    return Builder.isBrowser && getCookie(name);
   }
 
   protected setCookie(name: string, value: any, expires?: Date) {
@@ -1381,7 +1381,7 @@ export class Builder {
         secure: this.getLocation().protocol === 'https:',
       });
     }
-    return setCookie(name, value, expires);
+    return Builder.isBrowser && setCookie(name, value, expires);
   }
 
   getContent(modelName: string, options: GetContentOptions = {}) {

@@ -8,7 +8,7 @@
       "projectType": "application",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "ngx-build-plus:build",
           "options": {
             "outputPath": "dist/browser",
             "index": "src/index.html",
@@ -53,7 +53,7 @@
           }
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "ngx-build-plus:dev-server",
           "options": {
             "browserTarget": "ng-universal-demo:build"
           },
@@ -70,7 +70,7 @@
           }
         },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+          "builder": "ngx-build-plus:karma",
           "options": {
             "main": "src/test.ts",
             "karmaConfig": "./karma.conf.js",
@@ -96,7 +96,7 @@
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
-          "options": {            
+          "options": {
             "tsConfig": [
               "src/tsconfig.app.json"
             ],
@@ -121,30 +121,6 @@
                 }
               ]
             }
-          }
-        }
-      }
-    },
-    "ng-universal-demo-e2e": {
-      "root": "",
-      "projectType": "application",
-      "cli": {},
-      "schematics": {},
-      "architect": {
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
-          "options": {
-            "protractorConfig": "./protractor.conf.js",
-            "devServerTarget": "ng-universal-demo:serve"
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [],
-            "exclude": [
-              "**/node_modules/**"
-            ]
           }
         }
       }
