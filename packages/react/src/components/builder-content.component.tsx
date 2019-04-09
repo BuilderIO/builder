@@ -38,7 +38,6 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
     this.subscriptions.add(
       builder.queueGetContent(this.props.modelName, this.props.options).subscribe(
         matches => {
-          debugger;
           const match = matches && matches[0]
           this.setState({
             data: match

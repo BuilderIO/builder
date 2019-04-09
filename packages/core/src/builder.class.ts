@@ -1010,6 +1010,7 @@ export class Builder {
           // TODO: add ab test info here and other high level stuff
           data: matchData,
           id: match.id,
+          variationId: match.testVariationId || match.variationId,
           testVariationId: match.testVariationId || match.variationId,
           testVariationName: match.testVariationName,
         };
