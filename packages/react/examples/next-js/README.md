@@ -84,7 +84,7 @@ First, and perhaps most elegant, is to use [next-routes](https://github.com/frid
 
 ```js
 // routes.js
-module.exports = routes() // ----   ----      -----
+module.exports = routes()
   .add('**', 'builder')
 ```
 
