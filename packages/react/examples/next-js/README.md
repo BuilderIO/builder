@@ -185,7 +185,7 @@ For lots of examples of using React components in Builder, see the source for ou
 import './your-builder-component'
 
 // ...
-export default MyPageWithCustomComponents = () => <BuilderComponent name="page" />
+export default () => <BuilderComponent name="page" />
 ```
 
 And then it will show up in the insert menu (under "show more") in the Builder editor!
