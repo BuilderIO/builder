@@ -80,7 +80,7 @@ Since next.js doesn't natively support dynamic pages, we have a couple of option
 
 First, and perhaps most elegant, is to use [next-routes](https://github.com/fridays/next-routes)
 
-### With react-routes
+### With next-routes
 
 ```js
 // routes.js
@@ -117,7 +117,7 @@ class Builder extends Component {
 }
 ```
 
-### with pages/_error.js
+### With pages/_error.js
 
 A simplistic approach could also be to use \_error.js. Since \_error.js functions as catchall page, we can add our own handling:
 
@@ -169,7 +169,11 @@ export default CatchallPage
 
 See `examples/next-js/pages/_error.js` for a real example you can run.
 
-Alternatively, you can add some custom behavior in your `server.js`, that behaves similar to previous examples - if a URL is not found in your next.js routes, check for a Builder page with `await builder.get('page').toPromise()` at that URL, and if found render similar to above
+### Custom
+
+Alternatively, you can add some custom behavior in your `server.js` or another routing library of your choice.
+
+Just follow the same behavior as the previous examples - if a URL is not found in your next.js routes, check for a Builder page with `await builder.get('page').toPromise()` at that URL, and if found render `<BuilderComponent name="page" content={page} />` like in the above examples
 
 ## Using your React components in Builder pages
 
@@ -195,7 +199,7 @@ And then be sure to import this component wherever you want it to be accessible 
 import './simple-page'
 
 // ...
-;<BuilderComponent name="page" />
+<BuilderComponent name="page" />
 ```
 
 And then it will show up in the insert menu (under "show more") in the Builder editor!
