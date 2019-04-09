@@ -615,8 +615,14 @@ export class Builder {
   constructor(
     apiKey: string | null = null,
     protected request?: ServerRequest,
-    protected response?: ServerResponse
+    protected response?: ServerResponse,
+    forceNewInstance = false
   ) {
+    // TODO: if in browser just return singleton builder hmm
+    if (Builder.isBrowser && !forceNewInstance) {
+      return builder;
+    }
+
     if (this.request && this.response) {
       this.setUserAgent((this.request.headers['user-agent'] as string) || '');
       this.cookies = new Cookies(this.request, this.response);
@@ -883,7 +889,13 @@ export class Builder {
 
   observersByKey: { [key: string]: Observer<any> | undefined } = {};
 
-  init(apiKey: string, canTrack = true) {
+  init(apiKey: string, canTrack = true, req?: ServerRequest, res?: ServerResponse) {
+    if (req) {
+      this.request = req;
+    }
+    if (res) {
+      this.response = res;
+    }
     this.canTrack = canTrack;
     this.apiKey = apiKey;
     return this;
@@ -958,8 +970,16 @@ export class Builder {
   private getContentQueue: null | GetContentOptions[] = null;
   private priorContentQueue: null | GetContentOptions[] = null;
 
-  get(modelName: string, options: GetContentOptions = {}) {
-    return this.queueGetContent(modelName, options).map(
+  get(modelName: string, options: GetContentOptions & { req?: ServerRequest, res?: ServerResponse, apiKey?: string } = {}) {
+    let instance: Builder = this
+    if (!Builder.isBrowser && (options.req || options.res)) {
+      instance = new Builder(options.apiKey || this.apiKey, options.req, options.res)
+    } else {
+      if (options.apiKey && !this.apiKey) {
+        this.apiKey = options.apiKey
+      }
+    }
+    return instance.queueGetContent(modelName, options).map(
       /* map( */ (matches: any[]) => {
         const match = matches && matches[0];
         const matchData = match && match.data;
@@ -1345,3 +1365,5 @@ export class Builder {
     return this.queueGetContent(modelName);
   }
 }
+
+import { builder } from './constants/builder'

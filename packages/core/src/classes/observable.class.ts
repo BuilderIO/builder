@@ -86,6 +86,10 @@ export class BehaviorSubject<T = any, ErrorType = any> {
       );
     });
   }
+
+  promise() {
+    return this.toPromise();
+  }
 }
 
 // TODO: make different classes
