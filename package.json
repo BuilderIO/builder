@@ -12,7 +12,7 @@
     "start": "lerna run start --parallel",
     "watch": "npm run start",
     "develop": "npm run start",
-    "build": "lerna run build --since master --stream --no-private",
+    "build": "lerna run build --stream --no-private",
     "release:patch": "npm run verify-git-not-dirty && npm run build && lerna version patch --no-private --yes && lerna run --no-private build:unpkg:dist && lerna publish --no-private from-package --yes",
     "release:prerelease:dev": "npm run verify-git-not-dirty && npm run build && lerna version prerelease --no-private --yes && lerna run --no-private build:unpkg:dist && lerna publish --no-private from-package --dist-tag dev --yes"
   }
