@@ -6,10 +6,9 @@
 
 Frist things first, if you don't yet have one, create an account at [Builder.io](https://builder.io)
 
-
 ### To install
 
-```npm install --save @builder.io/react @builder.io/widgets```
+`npm install --save @builder.io/react @builder.io/widgets`
 
 ### Add the components and getInitialProps
 
@@ -75,19 +74,57 @@ When creating a page in Builder, if Builder says "Builder code not found", that 
 
 If anything else ever goes wrong for you, chat us anytime form the bottom right corner at [builder.io](https://builder.io) or email steve@builder.io. We are always happy to help!
 
-
-
 ## Dynamic landing pages
 
 Since next.js doesn't natively support dynamic pages, we have a couple of options.
 
-A basic setup would be to override _error.js to use that as a catchall page, and handle accordingly:
+First, and perhaps most elegant, is to use [next-routes](https://github.com/fridays/next-routes)
+
+### With react-routes
+
+```js
+// routes.js
+module.exports = routes() // ----   ----      -----
+  .add('**', 'builder')
+```
+
+```js
+// pages/builder.js
+import { Component } from 'react'
+import { Builder, builder, BuilderComponent } from '@builder.io/react'
+// Allow interactive widgets in the editor (importing registers the react components)
+import '@buidler.io/widgets'
+import Error from './_error'
+
+const BUILDER_API_KEY = require('../keys/builder.json').apiKey
+if (Builder.isBrowser) {
+  builder.init(BUILDER_API_KEY)
+}
+
+class Builder extends Component {
+  static async getInitialProps({ res }) {
+    const builderInstance = res ? new Builder(BUILDER_API_KEY, req, res) : builder
+    const page = await builderInstance.get('page').toPromise()
+    if (!page && res) res.statusCode = 404
+    return { data }
+  }
+  render() {
+    const { page } = this.props
+    if (!page) return <Error status={404} />
+    return <BuilderComponent name="page" content={page} />
+  }
+}
+```
+
+### with pages/_error.js
+
+A simplistic approach could also be to use \_error.js. Since \_error.js functions as catchall page, we can add our own handling:
 
 ```js
 import React from 'react'
 import { Builder, builder, BuilderComponent } from '@builder.io/react'
 // Allow interactive widgets in the editor (importing registers the react components)
-import '@buidler.io/widgets';
+import '@buidler.io/widgets'
 import Nav from '../components/nav'
 
 const BUILDER_API_KEY = require('../keys/builder.json').apiKey
@@ -131,43 +168,7 @@ export default CatchallPage
 
 See `examples/next-js/pages/_error.js` for a real example you can run.
 
-Alternatively, you can add some custom behavior in your `server.js`, that behaves similar to previous example - if a URL is not found in your next.js routes, check for a Builder page with `await builder.get('page').toPromise()` at that URL, and if found render similar to above
-
-For instance, if using [next-routes](https://github.com/fridays/next-routes)
-
-```js
-// routes.js
-module.exports = routes()                           // ----   ----      -----
-  .add('**', 'builder')
-```
-
-```js
-// pages/builder.js
-import { Component } from 'react'
-import { Builder, builder, BuilderComponent } from '@builder.io/react'
-// Allow interactive widgets in the editor (importing registers the react components)
-import '@buidler.io/widgets';
-import Error from './_error';
-
-const BUILDER_API_KEY = require('../keys/builder.json').apiKey
-if (Builder.isBrowser) {
-  builder.init(BUILDER_API_KEY)
-}
-
-class Builder extends Component {
-  static async getInitialProps({ res }) {
-    const builderInstance = res ? new Builder(BUILDER_API_KEY, req, res) : builder
-    const page = await builderInstance.get('page').toPromise()
-    if (!page && res) res.statusCode = 404;
-    return { data };
-  }
-  render() {
-    const { page } = this.props;
-    if (!page) return <Error status={404} />;
-    return <BuilderComponent name="page" content={page} />;
-  }
-}
-```
+Alternatively, you can add some custom behavior in your `server.js`, that behaves similar to previous examples - if a URL is not found in your next.js routes, check for a Builder page with `await builder.get('page').toPromise()` at that URL, and if found render similar to above
 
 ## Using your React components in Builder pages
 
@@ -193,8 +194,9 @@ And then be sure to import this component wherever you want it to be accessible 
 import './simple-page'
 
 // ...
-<BuilderComponent name="page" />
+;<BuilderComponent name="page" />
 ```
+
 And then it will show up in the insert menu (under "show more") in the Builder editor!
 
 For the `@BuilderBlock` decorator support you need to be using typescript or babel with legacy decorators. Alternatively you can use the alternative syntax:
@@ -213,5 +215,3 @@ BuilderBlock({
   inputs: [{ name: 'text', type: 'string' }]
 })(SimpleText)
 ```
-
-
