@@ -12,7 +12,7 @@
     "start": "lerna run start --parallel",
     "watch": "npm run start",
     "develop": "npm run start",
-    "build": "lerna run build --since master --stream --scope @builder.io/*",
+    "build": "lerna run build --since master --stream --scope @builder.io*",
     "release:patch": "npm run verify-git-not-dirty && npm run build && lerna version patch --yes && lerna run build:unpkg:dist && lerna publish from-package --yes",
     "release:prerelease:dev": "npm run verify-git-not-dirty && npm run build && lerna version prerelease --yes && lerna run build:unpkg:dist && lerna publish from-package --dist-tag dev --yes"
   }
