@@ -1,0 +1,29 @@
+.idea
+.DS_Store
+.vscode
+
+package-lock.json
+
+# Built #
+/__build__/
+/__server_build__/
+/node_modules/
+/typings/
+/tsd_typings/
+/dist/
+/dist-server/
+/compiled/
+
+# Node #
+*.log
+/npm-debug.log.*
+
+# Webpack #
+webpack.records.json
+
+# Angular #
+*.ngfactory.ts
+*.css.shim.ts
+*.ngsummary.json
+*.metadata.json
+*.shim.ngstyle.ts
