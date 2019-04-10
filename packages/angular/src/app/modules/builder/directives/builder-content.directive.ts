@@ -203,13 +203,15 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
     const initialContent =
       this.transferState && this.transferState.get(this.stateKey!, null as any);
 
+    console.log('initial content', initialContent);
+
     // TODO: if not multipe
 
     if (this.contentSubscription) {
       // TODO: cancel a request if one is pending... or set some kind of flag
       this.contentSubscription.unsubscribe();
     }
-    console.log('a');
+    console.log('a', this.reloadOnRoute ,Builder.isEditing || !this.reloadOnRoute ? model : `${model}:${this.url}`);
     const subscription = (this.contentSubscription = this.builder
       .queueGetContent(model, {
         initialContent,

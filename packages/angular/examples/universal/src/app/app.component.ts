@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
       <nav class="nav-links">
         <a routerLink="/">Home</a>
         <a routerLink="/pages/aboutus">About</a>
-        <a routerLink="/pages/size-chart">Size chart</a>
+        <a routerLink="/pages/sizechart">Size chart</a>
       </nav>
       <div class="router-container">
         <router-outlet></router-outlet>

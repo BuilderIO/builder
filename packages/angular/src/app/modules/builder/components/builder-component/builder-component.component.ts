@@ -60,7 +60,7 @@ export class BuilderComponentComponent {
   constructor(@Optional() private router?: Router) {
     if (this.router && this.reloadOnRoute) {
       // TODO: should the inner function return reloadOnRoute?
-      this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+      // this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     }
   }
 
