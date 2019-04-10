@@ -211,7 +211,11 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
       // TODO: cancel a request if one is pending... or set some kind of flag
       this.contentSubscription.unsubscribe();
     }
-    console.log('a', this.reloadOnRoute ,Builder.isEditing || !this.reloadOnRoute ? model : `${model}:${this.url}`);
+    console.log(
+      'a',
+      this.reloadOnRoute,
+      Builder.isEditing || !this.reloadOnRoute ? model : `${model}:${this.url}`
+    );
     const subscription = (this.contentSubscription = this.builder
       .queueGetContent(model, {
         initialContent,
