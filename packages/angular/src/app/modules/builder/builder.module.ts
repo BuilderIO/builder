@@ -40,7 +40,7 @@ const components = [
   entryComponents: [components],
 })
 export class BuilderModule {
-  public static forRoot(apiKey: string): ModuleWithProviders {
+  public static forRoot(apiKey?: string): ModuleWithProviders {
     return {
       ngModule: BuilderModule,
       providers: [
