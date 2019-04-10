@@ -168,9 +168,7 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
     }
     this._context.model = model;
     this._updateView();
-    this.stateKey = makeStateKey(
-      'builder:' + model + ':' + (this.reloadOnRoute ? this.router && this.router.url : '')
-    );
+    this.stateKey = makeStateKey('builder:' + model + ':' + (this.reloadOnRoute ? this.url : ''));
     // this.request();
     const rootNode = this._viewRef!.rootNodes[0];
     this.renderer.setElementAttribute(rootNode, 'builder-model', model);
@@ -179,9 +177,9 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
   }
 
   private get url() {
-    if (this.router) {
-      return this.router.url;
-    }
+    // if (this.router) {
+    //   return this.router.url;
+    // }
     const location = this.builder.getLocation();
     return (location.pathname || '') + (location.search || '');
   }
@@ -190,7 +188,7 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
   request() {
     this.lastUrl = this.url;
 
-    console.log('a0', this.router && this.router.url)
+    console.log('a0', this.url);
 
     const viewRef = this._viewRef;
     if (viewRef && viewRef.destroyed) {
@@ -211,24 +209,21 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
       // TODO: cancel a request if one is pending... or set some kind of flag
       this.contentSubscription.unsubscribe();
     }
-    console.log('a')
+    console.log('a');
     const subscription = (this.contentSubscription = this.builder
       .queueGetContent(model, {
         initialContent,
-        key:
-          Builder.isEditing || !this.reloadOnRoute
-            ? model
-            : `${model}:${this.router && this.router.url}`,
+        key: Builder.isEditing || !this.reloadOnRoute ? model : `${model}:${this.url}`,
       })
       .subscribe(
         result => {
-          console.log('b')
+          console.log('b');
           // Cancel handling request if new one created or they have been canceled, to avoid race conditions
           // if multiple routes or other events happen
           if (this.contentSubscription !== subscription) {
-            console.log('c')
+            console.log('c');
             if (!receivedFirstResponse) {
-              console.log('d')
+              console.log('d');
               setTimeout(() => {
                 task.invoke();
               });
@@ -236,13 +231,13 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
             return;
           }
 
-          console.log('e')
+          console.log('e');
 
           if (result.id === this.lastContentId) {
             return;
           }
 
-          console.log('f')
+          console.log('f');
 
           this.lastContentId = result.id;
 
@@ -253,7 +248,7 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
           const viewRef = this._viewRef!;
 
           if (viewRef.destroyed) {
-            console.log('g')
+            console.log('g');
             this.subscriptions.unsubscribe();
             if (this.contentSubscription) {
               this.contentSubscription.unsubscribe();
@@ -261,33 +256,28 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
             return;
           }
 
-          console.log('h')
+          console.log('h');
 
           if (Builder.isBrowser) {
             const rootNode = viewRef.rootNodes[0];
             if (rootNode) {
               if (rootNode && rootNode.classList.contains('builder-editor-injected')) {
-                console.log('i')
+                console.log('i');
                 viewRef.detach();
                 return;
               }
             }
           }
 
-          console.log('j')
+          console.log('j');
 
           // FIXME: nasty hack to detect secondary updates vs original. Build proper support into JS SDK
           // if (this._context.loading || result.length > viewRef.context.results.length) {
           this._context.loading = false;
           // TODO: how handle singleton vs multiple
           let match = result[0];
-          if (
-            !match &&
-            this.router &&
-            this.router.url &&
-            this.router.url.includes('builder.preview=' + this.builderModel)
-          ) {
-            console.log('k')
+          if (!match && this.url.includes('builder.preview=' + this.builderModel)) {
+            console.log('k');
             match = {
               id: 'preview',
               name: 'Preview',
@@ -296,14 +286,14 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
           }
 
           if (this.component) {
-            console.log('l')
+            console.log('l');
             this.component.contentLoad.next(match);
           } else {
-            console.log('m')
+            console.log('m');
             console.warn('No component!');
           }
           if (match) {
-            console.log('n')
+            console.log('n');
             const rootNode = this._viewRef!.rootNodes[0];
             this.matchId = match.id;
             this.renderer.setElementAttribute(rootNode, 'builder-content-entry-id', match.id);
@@ -316,7 +306,7 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
             }
           }
           if (!viewRef.destroyed) {
-            console.log('o')
+            console.log('o');
             viewRef.detectChanges();
 
             // TODO: it's possible we don't want anything below to run if this has been destroyed
@@ -328,9 +318,9 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
           }
 
           if (!receivedFirstResponse) {
-            console.log('p')
+            console.log('p');
             setTimeout(() => {
-              console.log('q')
+              console.log('q');
               task.invoke();
             });
             receivedFirstResponse = true;
