@@ -186,6 +186,7 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
 
   // TODO: service for this
   request() {
+    const newLoad = !!this.lastUrl;
     this.lastUrl = this.url;
 
     console.log('a0', this.url);
@@ -201,7 +202,7 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
     const model = this._context.model as string;
 
     const initialContent =
-      this.transferState && this.transferState.get(this.stateKey!, null as any);
+      !newLoad && this.transferState && this.transferState.get(this.stateKey!, null as any);
 
     console.log('initial content', initialContent);
 
