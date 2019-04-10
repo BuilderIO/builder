@@ -1,12 +1,10 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { RouterModule, Router, NavigationEnd } from '@angular/router';
-
+import { BrowserModule } from '@angular/platform-browser';
+import { RouterModule } from '@angular/router';
+import { BuilderModule } from '@builder.io/angular';
+import { TransferHttpCacheModule } from '@nguniversal/common';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
-import { TransferHttpCacheModule } from '@nguniversal/common';
-
-import { BuilderModule } from '@builder.io/angular';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent],
@@ -19,12 +17,4 @@ import { BuilderModule } from '@builder.io/angular';
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule {
-  constructor(private router?: Router) {
-    this.router.events.subscribe(event => {
-      if (event instanceof NavigationEnd) {
-        console.log('event', event);
-      }
-    });
-  }
-}
+export class AppModule {}
