@@ -620,7 +620,8 @@ export class Builder {
     protected response?: ServerResponse,
     forceNewInstance = false
   ) {
-    // TODO: if in browser just return singleton builder hmm
+    // TODO: use a window variable for this perhaps, e.g. bc webcomponents may be loading builder twice
+    // with it's and react (use rollup build to fix)
     if (Builder.isBrowser && !forceNewInstance && Builder.singletonInstance) {
       return Builder.singletonInstance;
     }
