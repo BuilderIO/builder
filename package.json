@@ -12,9 +12,8 @@
     "start": "lerna run start --parallel",
     "watch": "npm run start",
     "develop": "npm run start",
-    "build": "lerna run build --stream --no-private --since master",
-    "build:all": "lerna run build --stream --no-private",
-    "release:patch": "npm run verify-git-not-dirty && npm run build:all && lerna version patch --yes && lerna run build:unpkg:dist --no-private && lerna publish from-package --yes",
+    "build": "lerna run build --stream --no-private",
+    "release:patch": "npm run verify-git-not-dirty && lerna version patch --yes && lerna run build:unpkg:dist --no-private && lerna publish from-package --yes",
     "release:prerelease:dev": "npm run verify-git-not-dirty && npm run build && lerna version prerelease --yes && lerna run build:unpkg:dist --no-private && lerna publish from-package --dist-tag dev --yes"
   }
 }
