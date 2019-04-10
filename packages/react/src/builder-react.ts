@@ -45,7 +45,6 @@ export { stringToFunction } from './functions/string-to-function'
 export { builder, Builder }
 export default builder
 
-//
 if (typeof window !== 'undefined') {
   window.parent.postMessage(
     {
