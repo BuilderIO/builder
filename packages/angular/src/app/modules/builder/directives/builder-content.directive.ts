@@ -190,6 +190,8 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
   request() {
     this.lastUrl = this.url;
 
+    console.log('a0')
+
     const viewRef = this._viewRef;
     if (viewRef && viewRef.destroyed) {
       return;
@@ -209,6 +211,7 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
       // TODO: cancel a request if one is pending... or set some kind of flag
       this.contentSubscription.unsubscribe();
     }
+    console.log('a')
     const subscription = (this.contentSubscription = this.builder
       .queueGetContent(model, {
         initialContent,
@@ -219,10 +222,13 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
       })
       .subscribe(
         result => {
+          console.log('b')
           // Cancel handling request if new one created or they have been canceled, to avoid race conditions
           // if multiple routes or other events happen
           if (this.contentSubscription !== subscription) {
+            console.log('c')
             if (!receivedFirstResponse) {
+              console.log('d')
               setTimeout(() => {
                 task.invoke();
               });
@@ -230,9 +236,13 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
             return;
           }
 
+          console.log('e')
+
           if (result.id === this.lastContentId) {
             return;
           }
+
+          console.log('f')
 
           this.lastContentId = result.id;
 
@@ -243,6 +253,7 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
           const viewRef = this._viewRef!;
 
           if (viewRef.destroyed) {
+            console.log('g')
             this.subscriptions.unsubscribe();
             if (this.contentSubscription) {
               this.contentSubscription.unsubscribe();
@@ -250,15 +261,20 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
             return;
           }
 
+          console.log('h')
+
           if (Builder.isBrowser) {
             const rootNode = viewRef.rootNodes[0];
             if (rootNode) {
               if (rootNode && rootNode.classList.contains('builder-editor-injected')) {
+                console.log('i')
                 viewRef.detach();
                 return;
               }
             }
           }
+
+          console.log('j')
 
           // FIXME: nasty hack to detect secondary updates vs original. Build proper support into JS SDK
           // if (this._context.loading || result.length > viewRef.context.results.length) {
@@ -271,6 +287,7 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
             this.router.url &&
             this.router.url.includes('builder.preview=' + this.builderModel)
           ) {
+            console.log('k')
             match = {
               id: 'preview',
               name: 'Preview',
@@ -279,11 +296,14 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
           }
 
           if (this.component) {
+            console.log('l')
             this.component.contentLoad.next(match);
           } else {
+            console.log('m')
             console.warn('No component!');
           }
           if (match) {
+            console.log('n')
             const rootNode = this._viewRef!.rootNodes[0];
             this.matchId = match.id;
             this.renderer.setElementAttribute(rootNode, 'builder-content-entry-id', match.id);
@@ -296,6 +316,7 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
             }
           }
           if (!viewRef.destroyed) {
+            console.log('o')
             viewRef.detectChanges();
 
             // TODO: it's possible we don't want anything below to run if this has been destroyed
@@ -307,7 +328,9 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
           }
 
           if (!receivedFirstResponse) {
+            console.log('p')
             setTimeout(() => {
+              console.log('q')
               task.invoke();
             });
             receivedFirstResponse = true;
