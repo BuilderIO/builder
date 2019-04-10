@@ -69,18 +69,25 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
   ngOnInit() {
     this.request();
 
+    console.log(1);
     if (this.router) {
+      console.log(2);
       this.subscriptions.add(
         this.router.events.subscribe(event => {
           // TODO: this doesn't trigger
+          console.log(3);
           if (event instanceof NavigationEnd) {
+            console.log(4);
             if (this.reloadOnRoute) {
+              console.log(5);
               const viewRef = this._viewRef;
               if (viewRef && viewRef.destroyed) {
                 return;
               }
 
+              console.log(6);
               if (this.url !== this.lastUrl) {
+                console.log(7);
                 // TODO: listen to any target change? This just updates target?
 
                 // TODO: track last fetched ID and don't replace dom if on new url the content is the same...
