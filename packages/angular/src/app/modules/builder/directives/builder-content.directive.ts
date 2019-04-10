@@ -20,7 +20,7 @@ import { Subscription } from 'rxjs';
 
 declare let Zone: any;
 
-let veryFirstLoad = true;
+let firstEverLoad = true;
 
 // TODO: updated output
 @Directive({
@@ -195,7 +195,11 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
     const model = this._context.model as string;
 
     const initialContent =
-      this.transferState && this.transferState.get(this.stateKeyString as any, null as any);
+      Builder.isBrowser && firstEverLoad &&
+      this.transferState &&
+      this.transferState.get(this.stateKeyString as any, null as any);
+
+    firstEverLoad = false;
 
     // TODO: if not multipe
 
