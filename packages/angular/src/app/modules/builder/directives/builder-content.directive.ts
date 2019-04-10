@@ -20,8 +20,6 @@ import { Subscription } from 'rxjs';
 
 declare let Zone: any;
 
-let firstEverLoad = true;
-
 // TODO: updated output
 @Directive({
   selector: '[builderModel]',
@@ -196,11 +194,11 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
 
     const initialContent =
       Builder.isBrowser &&
-      firstEverLoad &&
+      // firstEverLoad &&
       this.transferState &&
       this.transferState.get(this.stateKeyString as any, null as any);
 
-    firstEverLoad = false;
+    // firstEverLoad = false;
 
     // TODO: if not multipe
 
@@ -215,29 +213,24 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
       })
       .subscribe(
         (result: any[]) => {
-          let match = result[0];
-          console.log(1);
+          let match = result[0];s
           // Cancel handling request if new one created or they have been canceled, to avoid race conditions
           // if multiple routes or other events happen
-          if (this.contentSubscription !== subscription) {
-            console.log(2);
-            if (!receivedFirstResponse) {
-              console.log(3);
+          if (this.contentSubscription !== subscription) {s
+            if (!receivedFirstResponse) {s
             }
             setTimeout(() => {
               task.invoke();
             });
             return;
           }
-
-          console.log(4);
+s
           if (match && match.id === this.lastContentId) {
             setTimeout(() => {
               task.invoke();
             });
             return;
-          }
-          console.log(5);
+          }s
 
           this.lastContentId = match && match.id;
 
@@ -251,18 +244,15 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
             this.subscriptions.unsubscribe();
             if (this.contentSubscription) {
               this.contentSubscription.unsubscribe();
-            }
-            console.log(6);
+            }s
             return;
           }
-
-          console.log(7);
+s
           if (Builder.isBrowser) {
             const rootNode = viewRef.rootNodes[0];
             if (rootNode) {
               if (rootNode && rootNode.classList.contains('builder-editor-injected')) {
-                viewRef.detach();
-                console.log(8);
+                viewRef.detach();s
                 setTimeout(() => {
                   task.invoke();
                 });
@@ -270,8 +260,7 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
               }
             }
           }
-
-          console.log(9);
+s
 
           // FIXME: nasty hack to detect secondary updates vs original. Build proper support into JS SDK
           // if (this._context.loading || result.length > viewRef.context.results.length) {
@@ -285,28 +274,23 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
             };
           }
 
-          if (this.component) {
-            console.log(10);
+          if (this.component) {s
             this.component.contentLoad.next(match);
           } else {
             console.warn('No component!');
           }
-          if (match) {
-            console.log(10.5);
+          if (match) {s
             const rootNode = this._viewRef!.rootNodes[0];
             this.matchId = match.id;
             this.renderer.setElementAttribute(rootNode, 'builder-content-entry-id', match.id);
             this.match = match;
-            viewRef.context.$implicit = match.data;
-            // console.log('result', match, result);
+            viewRef.context.$implicit = match.data;s
             // viewRef.context.results = result.map(item => ({ ...item.data, $id: item.id }));
             if (this.builder.autoTrack) {
               this.builder.trackImpression(match.id, match.variationId);
             }
-          }
-          console.log(11);
-          if (!viewRef.destroyed) {
-            console.log(12);
+          }s
+          if (!viewRef.destroyed) {s
             viewRef.detectChanges();
 
             // TODO: it's possible we don't want anything below to run if this has been destroyed
@@ -320,11 +304,9 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
           setTimeout(() => {
             task.invoke();
           });
-          if (!receivedFirstResponse) {
-            console.log(13);
+          if (!receivedFirstResponse) {s
             receivedFirstResponse = true;
-          }
-          console.log(14);
+          }s
         },
         error => {
           if (this.component) {

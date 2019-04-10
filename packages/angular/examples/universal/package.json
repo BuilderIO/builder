@@ -40,7 +40,7 @@
     "@angular/platform-browser-dynamic": "7.1.4",
     "@angular/platform-server": "7.1.4",
     "@angular/router": "7.1.4",
-    "@builder.io/angular": "^1.0.10-alpha.11",
+    "@builder.io/angular": "^1.0.10-alpha.12",
     "@nguniversal/common": "^6.0.0",
     "@nguniversal/express-engine": "^6.0.0",
     "@nguniversal/module-map-ngfactory-loader": "^6.0.0",
