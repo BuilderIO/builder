@@ -154,6 +154,10 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
     }
   }
 
+  get stateKeyString() {
+    return 'builder:' + this._context.model + ':' + (this.reloadOnRoute ? this.url : '');
+  }
+
   // TODO: limit?
   // TODO: context with index, etc
   @Input()
@@ -163,8 +167,7 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
     }
     this._context.model = model;
     this._updateView();
-    this.stateKey = makeStateKey('builder:' + model + ':' + (this.reloadOnRoute ? this.url : ''));
-    console.log('state key', 'builder:' + model + ':' + (this.reloadOnRoute ? this.url : ''));
+    this.stateKey = makeStateKey(this.stateKeyString);
     // this.request();
     const rootNode = this._viewRef!.rootNodes[0];
     this.renderer.setElementAttribute(rootNode, 'builder-model', model);
@@ -173,9 +176,6 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
   }
 
   private get url() {
-    // if (this.router) {
-    //   return this.router.url;
-    // }
     const location = this.builder.getLocation();
     return (location.pathname || '') + (location.search || '');
   }
@@ -183,7 +183,6 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
   // TODO: service for this
   request() {
     this.lastUrl = this.url;
-
 
     const viewRef = this._viewRef;
     if (viewRef && viewRef.destroyed) {
@@ -196,9 +195,7 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
     const model = this._context.model as string;
 
     const initialContent =
-      this.transferState && this.transferState.get(this.stateKey!, null as any);
-
-    console.log('initial content', initialContent, this.stateKey);
+      this.transferState && this.transferState.get(this.stateKeyString as any, null as any);
 
     // TODO: if not multipe
 

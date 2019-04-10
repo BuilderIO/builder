@@ -58,10 +58,10 @@ export class BuilderComponentComponent {
   @Output() error = new EventEmitter<any>();
 
   constructor(@Optional() private router?: Router) {
-    if (this.router && this.reloadOnRoute) {
-      // TODO: should the inner function return reloadOnRoute?
-      // this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    }
+    // if (this.router && this.reloadOnRoute) {
+    //   // TODO: should the inner function return reloadOnRoute?
+    //   this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    // }
   }
 
   // TODO: this should be in BuilderBlocks
