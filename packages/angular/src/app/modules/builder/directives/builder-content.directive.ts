@@ -195,7 +195,8 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
     const model = this._context.model as string;
 
     const initialContent =
-      Builder.isBrowser && firstEverLoad &&
+      Builder.isBrowser &&
+      firstEverLoad &&
       this.transferState &&
       this.transferState.get(this.stateKeyString as any, null as any);
 
@@ -213,28 +214,32 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
         key: Builder.isEditing || !this.reloadOnRoute ? model : `${model}:${this.url}`,
       })
       .subscribe(
-        result => {
-          console.log(1)
+        (result: any[]) => {
+          let match = result[0];
+          console.log(1);
           // Cancel handling request if new one created or they have been canceled, to avoid race conditions
           // if multiple routes or other events happen
           if (this.contentSubscription !== subscription) {
-            console.log(2)
+            console.log(2);
             if (!receivedFirstResponse) {
-              console.log(3)
-              setTimeout(() => {
-                task.invoke();
-              });
+              console.log(3);
             }
+            setTimeout(() => {
+              task.invoke();
+            });
             return;
           }
 
-          console.log(4)
-          if (result.id === this.lastContentId) {
+          console.log(4);
+          if (match && match.id === this.lastContentId) {
+            setTimeout(() => {
+              task.invoke();
+            });
             return;
           }
-          console.log(5)
+          console.log(5);
 
-          this.lastContentId = result.id;
+          this.lastContentId = match && match.id;
 
           if (this.transferState && !Builder.isBrowser) {
             this.transferState.set(this.stateKeyString as any, result);
@@ -247,29 +252,31 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
             if (this.contentSubscription) {
               this.contentSubscription.unsubscribe();
             }
-            console.log(6)
+            console.log(6);
             return;
           }
 
-          console.log(7)
+          console.log(7);
           if (Builder.isBrowser) {
             const rootNode = viewRef.rootNodes[0];
             if (rootNode) {
               if (rootNode && rootNode.classList.contains('builder-editor-injected')) {
                 viewRef.detach();
-                console.log(8)
+                console.log(8);
+                setTimeout(() => {
+                  task.invoke();
+                });
                 return;
               }
             }
           }
 
-          console.log(9)
+          console.log(9);
 
           // FIXME: nasty hack to detect secondary updates vs original. Build proper support into JS SDK
           // if (this._context.loading || result.length > viewRef.context.results.length) {
           this._context.loading = false;
           // TODO: how handle singleton vs multiple
-          let match = result[0];
           if (!match && this.url.includes('builder.preview=' + this.builderModel)) {
             match = {
               id: 'preview',
@@ -279,13 +286,13 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
           }
 
           if (this.component) {
-            console.log(10)
+            console.log(10);
             this.component.contentLoad.next(match);
           } else {
             console.warn('No component!');
           }
           if (match) {
-            console.log(10.5)
+            console.log(10.5);
             const rootNode = this._viewRef!.rootNodes[0];
             this.matchId = match.id;
             this.renderer.setElementAttribute(rootNode, 'builder-content-entry-id', match.id);
@@ -297,9 +304,9 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
               this.builder.trackImpression(match.id, match.variationId);
             }
           }
-          console.log(11)
+          console.log(11);
           if (!viewRef.destroyed) {
-            console.log(12)
+            console.log(12);
             viewRef.detectChanges();
 
             // TODO: it's possible we don't want anything below to run if this has been destroyed
@@ -314,10 +321,10 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
             task.invoke();
           });
           if (!receivedFirstResponse) {
-            console.log(13)
+            console.log(13);
             receivedFirstResponse = true;
           }
-          console.log(14)
+          console.log(14);
         },
         error => {
           if (this.component) {
