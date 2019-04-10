@@ -190,7 +190,7 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
   request() {
     this.lastUrl = this.url;
 
-    console.log('a0')
+    console.log('a0', this.router && this.router.url)
 
     const viewRef = this._viewRef;
     if (viewRef && viewRef.destroyed) {
