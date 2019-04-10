@@ -20,6 +20,8 @@ import { Subscription } from 'rxjs';
 
 declare let Zone: any;
 
+// let firstEverLoad = true;
+
 // TODO: updated output
 @Directive({
   selector: '[builderModel]',
@@ -213,24 +215,24 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
       })
       .subscribe(
         (result: any[]) => {
-          let match = result[0];s
+          let match = result[0];
           // Cancel handling request if new one created or they have been canceled, to avoid race conditions
           // if multiple routes or other events happen
-          if (this.contentSubscription !== subscription) {s
-            if (!receivedFirstResponse) {s
+          if (this.contentSubscription !== subscription) {
+            if (!receivedFirstResponse) {
             }
             setTimeout(() => {
               task.invoke();
             });
             return;
           }
-s
+
           if (match && match.id === this.lastContentId) {
             setTimeout(() => {
               task.invoke();
             });
             return;
-          }s
+          }
 
           this.lastContentId = match && match.id;
 
@@ -244,15 +246,15 @@ s
             this.subscriptions.unsubscribe();
             if (this.contentSubscription) {
               this.contentSubscription.unsubscribe();
-            }s
+            }
             return;
           }
-s
+
           if (Builder.isBrowser) {
             const rootNode = viewRef.rootNodes[0];
             if (rootNode) {
               if (rootNode && rootNode.classList.contains('builder-editor-injected')) {
-                viewRef.detach();s
+                viewRef.detach();
                 setTimeout(() => {
                   task.invoke();
                 });
@@ -260,7 +262,7 @@ s
               }
             }
           }
-s
+
 
           // FIXME: nasty hack to detect secondary updates vs original. Build proper support into JS SDK
           // if (this._context.loading || result.length > viewRef.context.results.length) {
@@ -274,23 +276,23 @@ s
             };
           }
 
-          if (this.component) {s
+          if (this.component) {
             this.component.contentLoad.next(match);
           } else {
             console.warn('No component!');
           }
-          if (match) {s
+          if (match) {
             const rootNode = this._viewRef!.rootNodes[0];
             this.matchId = match.id;
             this.renderer.setElementAttribute(rootNode, 'builder-content-entry-id', match.id);
             this.match = match;
-            viewRef.context.$implicit = match.data;s
+            viewRef.context.$implicit = match.data;
             // viewRef.context.results = result.map(item => ({ ...item.data, $id: item.id }));
             if (this.builder.autoTrack) {
               this.builder.trackImpression(match.id, match.variationId);
             }
-          }s
-          if (!viewRef.destroyed) {s
+          }
+          if (!viewRef.destroyed) {
             viewRef.detectChanges();
 
             // TODO: it's possible we don't want anything below to run if this has been destroyed
@@ -304,9 +306,9 @@ s
           setTimeout(() => {
             task.invoke();
           });
-          if (!receivedFirstResponse) {s
+          if (!receivedFirstResponse) {
             receivedFirstResponse = true;
-          }s
+          }
         },
         error => {
           if (this.component) {
