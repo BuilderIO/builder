@@ -266,8 +266,9 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
           // FIXME: nasty hack to detect secondary updates vs original. Build proper support into JS SDK
           // if (this._context.loading || result.length > viewRef.context.results.length) {
           this._context.loading = false;
+          const search = this.builder.getLocation().search || '';
           // TODO: how handle singleton vs multiple
-          if (!match && this.url.includes('builder.preview=' + this.builderModel)) {
+          if (!match && search.includes('builder.preview=' + this.builderModel)) {
             match = {
               id: 'preview',
               name: 'Preview',
