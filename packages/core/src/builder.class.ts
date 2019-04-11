@@ -1264,7 +1264,7 @@ export class Builder {
             observer.next(testModifiedResults);
           } else {
             const search = this.getLocation().search;
-            if (Builder.isEditing && search.includes('builder.preview=' + options.model)) {
+            if (search.includes('builder.preview=' + options.model)) {
               const previewData = {
                 id: 'preview',
                 name: 'Preview',
