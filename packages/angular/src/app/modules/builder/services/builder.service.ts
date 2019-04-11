@@ -76,14 +76,6 @@ export class BuilderService extends Builder {
   }
 
   // (override)
-  getLocation(): Url {
-    if (Builder.isBrowser && !this.router) {
-      return super.getLocation();
-    }
-    return parse(this.router.url);
-  }
-
-  // (override)
   requestUrl(url: string) {
     if (this.http) {
       return this.http.get(url).toPromise();
