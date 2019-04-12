@@ -7,6 +7,7 @@ export interface BuilderContentProps<ContentType> {
   modelName: string
   options?: GetContentOptions
   children: (content: ContentType, loading?: boolean, fullData?: any) => React.ReactNode
+  inline?: boolean
 }
 
 export class BuilderContent<ContentType extends object = any> extends React.Component<
@@ -88,6 +89,7 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
 
     // TODO: maybe use this always
     const useData =
+      this.props.inline ||
       (!Builder.isBrowser &&
         this.props.options &&
         this.props.options.initialContent &&

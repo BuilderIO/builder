@@ -64,6 +64,7 @@ export interface BuilderPageProps {
   onStateChange?: (newData: any) => void
   noAsync?: boolean
   emailMode?: boolean
+  inlineContent?: boolean
 }
 
 interface BuilderPageState {
@@ -372,6 +373,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
 
                 {/* TODO: never use this? */}
                 <BuilderContent
+                  inline={this.props.inlineContent}
                   // TODO: pass entry in
                   contentLoaded={this.onContentLoaded}
                   options={{

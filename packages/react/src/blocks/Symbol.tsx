@@ -1,13 +1,14 @@
 import React from 'react'
 import { BuilderPage } from '../components/builder-page.component'
 import { BuilderBlock } from '../decorators/builder-block.decorator'
-import { Builder } from '@builder.io/sdk';
+import { Builder } from '@builder.io/sdk'
 
 export interface SymbolInfo {
   model?: string
   entry?: string
   data?: any
   content?: any
+  inline?: boolean
 }
 
 export interface SymbolProps {
@@ -46,11 +47,15 @@ export class Symbol extends React.Component<SymbolProps> {
       return this.placeholder
     }
     return (
-      <div className="builder-symbol" data-model={model}>
+      <div
+        className={'builder-symbol' + (symbol.inline ? ' builder-inline-symbol' : '')}
+        data-model={model}
+      >
         <BuilderPage
           modelName={model}
           entry={entry}
           data={data}
+          inlineContent={symbol.inline}
           content={content}
           options={{ key: Builder.isEditing ? undefined : entry }}
         >
