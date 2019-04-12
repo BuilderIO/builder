@@ -332,6 +332,12 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
         Object.assign(state, this.props.data)
       })
     }
+
+    if (Builder.isEditing) {
+      if (this.props.content && prevProps.content !== this.props.content) {
+        this.onContentLoaded(this.props.content)
+      }
+    }
   }
 
   render() {
