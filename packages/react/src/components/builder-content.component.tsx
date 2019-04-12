@@ -36,32 +36,34 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
   }
 
   subscribeToContent() {
-    this.subscriptions.add(
-      builder.queueGetContent(this.props.modelName, this.props.options).subscribe(
-        matches => {
-          const match = matches && matches[0]
-          this.setState({
-            data: match
-          })
+    if (this.props.modelName !== '_inline') {
+      this.subscriptions.add(
+        builder.queueGetContent(this.props.modelName, this.props.options).subscribe(
+          matches => {
+            const match = matches && matches[0]
+            this.setState({
+              data: match
+            })
 
-          if (match && this.firstLoad) {
-            // TODO: autoTrack
-            if (builder.autoTrack) {
-              builder.trackImpression(match.id, match.variationId)
+            if (match && this.firstLoad) {
+              // TODO: autoTrack
+              if (builder.autoTrack) {
+                builder.trackImpression(match.id, match.variationId)
+              }
+              this.firstLoad = false
             }
-            this.firstLoad = false
+            if (this.props.contentLoaded) {
+              this.props.contentLoaded(match && match.data)
+            }
+          },
+          error => {
+            if (this.props.contentError) {
+              this.props.contentError(error)
+            }
           }
-          if (this.props.contentLoaded) {
-            this.props.contentLoaded(match && match.data)
-          }
-        },
-        error => {
-          if (this.props.contentError) {
-            this.props.contentError(error)
-          }
-        }
+        )
       )
-    )
+    }
   }
 
   componentWillUnmount() {
@@ -87,10 +89,11 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
   render() {
     const { data, loading } = this.state
 
-    // TODO: maybe use this always
+    // TODO: why is this server only? any time there is initial content
+    // use it no?
+    //
     const useData =
-      this.props.inline ||
-      (!Builder.isBrowser &&
+      ((this.props.inline || !Builder.isBrowser) &&
         this.props.options &&
         this.props.options.initialContent &&
         this.props.options.initialContent[0]) ||
