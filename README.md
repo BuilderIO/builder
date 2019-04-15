@@ -1,5 +1,6 @@
 # Builder
-Drag and drop page building for any site. Design with your code, publish with a click.
+Drag and drop page building for any site. 
+<br />
 <br />
 <img src="https://imgur.com/lHDo3Mq.gif" alt="Editor example" />
 
