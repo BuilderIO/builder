@@ -306,7 +306,7 @@ export class Form extends React.Component<FormProps> {
             <form
               validate={this.props.validate}
               ref={ref => (this.ref = ref)}
-              action={this.props.action}
+              action={!this.props.sendWithJs && this.props.action}
               method={this.props.method}
               name={this.props.name}
               onSubmit={event => {
@@ -460,9 +460,9 @@ export class Form extends React.Component<FormProps> {
                             return
                           }
                           // TODO: option to turn this on/off?
-                        }
-                        if (this.props.resetFormOnSubmit !== false) {
-                          event.currentTarget.reset()
+                          if (this.props.resetFormOnSubmit !== false) {
+                            this.ref.reset()
+                          }
                         }
 
                         // TODO: client side route event first that can be preventDefaulted
