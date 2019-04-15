@@ -444,39 +444,42 @@ export class Form extends React.Component<FormProps> {
                         responseData: body,
                         state: res.ok ? 'success' : 'error'
                       })
-                      // TODO: send submit success event
 
-                      const submitSuccessEvent = new CustomEvent('submit:success', {
-                        detail: {
-                          res,
-                          body
-                        }
-                      })
-                      if (this.ref) {
-                        this.ref.dispatchEvent(submitSuccessEvent)
-                        if (submitSuccessEvent.defaultPrevented) {
-                          return
-                        }
-                        // TODO: option to turn this on/off?
-                      }
-                      if (this.props.resetFormOnSubmit !== false) {
-                        event.currentTarget.reset()
-                      }
+                      if (res.ok) {
+                        // TODO: send submit success event
 
-                      // TODO: client side route event first that can be preventDefaulted
-                      if (this.props.successUrl) {
+                        const submitSuccessEvent = new CustomEvent('submit:success', {
+                          detail: {
+                            res,
+                            body
+                          }
+                        })
                         if (this.ref) {
-                          const event = new CustomEvent('route', {
-                            detail: {
-                              url: this.props.successUrl
+                          this.ref.dispatchEvent(submitSuccessEvent)
+                          if (submitSuccessEvent.defaultPrevented) {
+                            return
+                          }
+                          // TODO: option to turn this on/off?
+                        }
+                        if (this.props.resetFormOnSubmit !== false) {
+                          event.currentTarget.reset()
+                        }
+
+                        // TODO: client side route event first that can be preventDefaulted
+                        if (this.props.successUrl) {
+                          if (this.ref) {
+                            const event = new CustomEvent('route', {
+                              detail: {
+                                url: this.props.successUrl
+                              }
+                            })
+                            this.ref.dispatchEvent(event)
+                            if (!event.defaultPrevented) {
+                              location.href = this.props.successUrl
                             }
-                          })
-                          this.ref.dispatchEvent(event)
-                          if (!event.defaultPrevented) {
+                          } else {
                             location.href = this.props.successUrl
                           }
-                        } else {
-                          location.href = this.props.successUrl
                         }
                       }
                     },
