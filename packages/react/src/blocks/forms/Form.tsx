@@ -458,9 +458,9 @@ export class Form extends React.Component<FormProps> {
                           return
                         }
                         // TODO: option to turn this on/off?
-                        if (this.props.resetFormOnSubmit !== false) {
-                          event.currentTarget.reset()
-                        }
+                      }
+                      if (this.props.resetFormOnSubmit !== false) {
+                        event.currentTarget.reset()
                       }
 
                       // TODO: client side route event first that can be preventDefaulted
@@ -475,6 +475,8 @@ export class Form extends React.Component<FormProps> {
                           if (!event.defaultPrevented) {
                             location.href = this.props.successUrl
                           }
+                        } else {
+                          location.href = this.props.successUrl
                         }
                       }
                     },
