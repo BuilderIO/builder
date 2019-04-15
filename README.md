@@ -1,4 +1,4 @@
-<h2>Builder SDKs</h2>
+# Builder SDKs
 <br />
 <img src="https://imgur.com/lHDo3Mq.gif" alt="Editor example" />
 
