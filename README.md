@@ -1,10 +1,9 @@
 <br />
 <p align="center"><img width="502" height="125" src="https://imgur.com/B9CUJxo.gif" alt="Builder logo" /></p>
-<h3 align="center">Drag and drop page building for any website.</h3>
-<p align="center">Design with your React components, publish remotely.</p>
+<h3 align="center" style="font-weight: 100; margin-top: -10px">Drag and drop page building for any website.</h3>
 <br />
 <br />
-<p align="center"><img src="https://imgur.com/lHDo3Mq.gif" alt="Editor example" /></p>
+<p align="center"><img style="border-radius: 4px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); 0 0 20px rgba(0, 0, 0, 0.1)" src="https://imgur.com/lHDo3Mq.gif" alt="Editor example" /></p>
 
 <br /><br /><br />
 
