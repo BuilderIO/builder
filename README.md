@@ -9,7 +9,7 @@ Drag and drop page building for any site.
 - Landing pages
 - Marketing pages (Homepage, etc)
 - Content pages (About, FAQ, etc)
-- Marketing teams that never stop asking for changes
+- Freedom from marketing teams that never stop asking for changes
 - Developers who are tired of pushing pixels
 
 ## Supported Frameworks
