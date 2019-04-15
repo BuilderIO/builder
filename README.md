@@ -1,5 +1,6 @@
-<br />
 <p align="center"><img width="502" height="125" src="https://imgur.com/B9CUJxo.gif" alt="Builder logo" /></p>
+<p align="center">Drag and drop page building for any site</p>
+<br />
 <p align="center"><img src="https://imgur.com/lHDo3Mq.gif" alt="Editor example" /></p>
 
 ## What is it good for?
