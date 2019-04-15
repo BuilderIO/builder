@@ -1,14 +1,12 @@
-<p align="center"><img width="502" height="125" src="https://imgur.com/B9CUJxo.gif" alt="Builder logo" /></p>
-<p align="center"><img src="https://imgur.com/lHDo3Mq.gif" alt="Editor example" /></p>
+<h2>Builder SDKs</h2>
+<br />
+<img src="https://imgur.com/lHDo3Mq.gif" alt="Editor example" />
 
 ## What is it good for?
 
 - Landing pages
-- Documentation
-- Blogging
-- Marketing pages (homepage, etc)
-- Content pages (about, FAQ, etc)
-- Optimization (ab test pages)
+- Marketing pages (Homepage, etc)
+- Content pages (About, FAQ, etc)
 - Marketing teams that never stop asking for changes
 - Developers who are tired of pushing pixels
 
