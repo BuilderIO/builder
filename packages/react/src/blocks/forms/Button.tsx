@@ -14,10 +14,10 @@ export interface ButtonProps {
     'https://cdn.builder.io/api/v1/image/assets%2FIsxPKMo2gPRRKeakUztj1D6uqed2%2Fdf2820ffed1f4349a94c40b3221f5b98',
   defaultStyles: {
     appearance: 'none',
-    paddingTop: '5px',
-    paddingBottom: '5px',
-    paddingLeft: '15px',
-    paddingRight: '15px',
+    paddingTop: '15px',
+    paddingBottom: '15px',
+    paddingLeft: '25px',
+    paddingRight: '25px',
     backgroundColor: '#3898EC',
     color: 'white',
     borderRadius: '4px'

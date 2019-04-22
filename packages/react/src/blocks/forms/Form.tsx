@@ -47,7 +47,8 @@ export interface FormProps {
       // TODO: builder, email
       // Later - more integrations like mailchimp
       enum: ['zapier', 'custom'],
-      defaultValue: 'zapier'
+      hideFromUI: true,
+      defaultValue: 'custom'
     },
     {
       name: 'sendWithJs',
