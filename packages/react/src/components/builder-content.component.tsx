@@ -37,6 +37,7 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
 
   subscribeToContent() {
     if (this.props.modelName !== '_inline') {
+      // TODO:... using targeting...? express.request hmmm
       this.subscriptions.add(
         builder.queueGetContent(this.props.modelName, this.props.options).subscribe(
           matches => {

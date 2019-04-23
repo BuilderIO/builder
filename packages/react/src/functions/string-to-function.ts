@@ -1,7 +1,13 @@
-import { Builder } from "@builder.io/sdk";
-import { sizes } from "../constants/device-sizes.constant";
+import { Builder, builder } from '@builder.io/sdk'
+import { sizes } from '../constants/device-sizes.constant'
 
 const fnCache: { [key: string]: Function } = {}
+
+const sizeMap = {
+  desktop: 'large',
+  tablet: 'medium',
+  mobile: 'small'
+}
 
 export const api = (state: any) => ({
   // TODO: trigger animation
@@ -22,15 +28,21 @@ export const api = (state: any) => ({
   get device() {
     return Builder.isBrowser
       ? ['large', 'medium', 'small'].indexOf(sizes.getSizeForWidth(window.innerWidth))
-      : 0 // TODO: by useragent?
+      : // builder reference no good...? get mixed up across requests...? need to use context...?
+        sizeMap[builder.getUserAttributes().device!] || 'large'
   },
   deviceIs(device: number) {
     return this.device === device
   }
 })
 
-export function stringToFunction(str: string, expression = true, errors?: Error[], logs?: string[]) {
-if (!str || !str.trim()) {
+export function stringToFunction(
+  str: string,
+  expression = true,
+  errors?: Error[],
+  logs?: string[]
+) {
+  if (!str || !str.trim()) {
     return () => undefined
   }
 

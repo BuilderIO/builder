@@ -21,6 +21,12 @@ import { Url } from 'url'
 // TODO: get fetch from core JS....
 const fetch = Builder.isBrowser ? window.fetch : require('node-fetch')
 
+const sizeMap = {
+  desktop: 'large',
+  tablet: 'medium',
+  mobile: 'small'
+}
+
 function decorator(fn: Function) {
   return function argReceiver(...fnArgs: any[]) {
     // Check if the decorator is being called without arguments (ex `@foo methodName() {}`)
@@ -157,10 +163,16 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
       state: {
         location: this.locationState,
         deviceSize: this.deviceSizeState,
+        // TODO: will user attributes be ready here?
+        device: this.device,
         ...this.props.data
       },
       update: this.updateState
     }
+  }
+
+  get device() {
+    return builder.getUserAttributes().device || 'desktop'
   }
 
   get locationState() {
@@ -175,7 +187,9 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
   // TODO: trigger state change on screen size change
   get deviceSizeState() {
     // TODO: use context to pass this down on server
-    return Builder.isBrowser ? sizes.getSizeForWidth(window.innerWidth) : 'large'
+    return Builder.isBrowser
+      ? sizes.getSizeForWidth(window.innerWidth)
+      : sizeMap[this.device] || 'large'
   }
 
   resizeListener = debounce(
@@ -586,6 +600,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
           ...this.state.state,
           location: this.locationState,
           deviceSize: this.deviceSizeState,
+          device: this.device,
           ...data.state,
           ...this.props.data
         }
