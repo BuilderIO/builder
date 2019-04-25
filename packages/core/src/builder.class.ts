@@ -701,6 +701,22 @@ export class Builder {
     }
   }
 
+  resetOverrides() {
+    // Ugly - pass down instances per request instead using react context
+    // or use builder.get('foo', { req, res }) in react...........
+    Builder.overrideUserAttributes = {};
+    this.cachebust = false;
+    this.noCache = false;
+    this.preview = false;
+    this.overrideHost = '';
+    this.editingModel = null;
+    this.overrides = {};
+    this.env = 'production';
+    this.userAgent = ''
+    this.request = undefined;
+    this.response = undefined;
+  }
+
   getOverridesFromQueryString() {
     const location = this.getLocation();
     const params = QueryString.parseDeep(this.modifySearch(location.search || '').substr(1));
@@ -1305,7 +1321,7 @@ export class Builder {
           data: cookieVariation.data,
           variationId: cookieValue,
           testVariationId: cookieValue,
-          testVariationName: cookieVariation.name
+          testVariationName: cookieVariation.name,
         };
       }
       if (item.variations && size(item.variations)) {
