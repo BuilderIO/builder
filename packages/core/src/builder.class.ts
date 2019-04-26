@@ -85,9 +85,9 @@ export interface ParamsMap {
 
 // TODO: share interfaces with API
 interface Event {
-  type: 'click' | 'impression';
+  type: 'click' | 'impression' | 'conversion';
   data: {
-    contentId: string;
+    contentId?: string;
     ownerId: string;
     variationId?: string;
     userAttributes?: any;
@@ -96,6 +96,7 @@ interface Event {
     unique?: boolean;
     metadata?: any | string;
     sessionId?: string;
+    amount?: number;
   };
 }
 
@@ -338,7 +339,7 @@ export class Builder {
     // TODO: centralize this
     const host = this.host;
 
-    fetch(`${host}/api/v1/track?apiKey=${this.apiKey}`, {
+    fetch(`${host}/api/v1/track`, {
       method: 'POST',
       body: JSON.stringify({ events }),
       headers: {
@@ -497,6 +498,25 @@ export class Builder {
       data: {
         contentId,
         variationId: variationId !== contentId ? variationId : undefined,
+        ownerId: this.apiKey as string,
+        userAttributes: this.getUserAttributes(),
+        sessionId: this.sessionId,
+      },
+    });
+    this.throttledClearEventsQueue();
+  }
+
+  trackConversion(amount?: number) {
+    if (isIframe || !isBrowser) {
+      return;
+    }
+    // TODO: use this.track method
+    this.eventsQueue.push({
+      type: 'conversion',
+      data: {
+        // contentId,
+        // variationId: variationId !== contentId ? variationId : undefined,
+        amount,
         ownerId: this.apiKey as string,
         userAttributes: this.getUserAttributes(),
         sessionId: this.sessionId,
