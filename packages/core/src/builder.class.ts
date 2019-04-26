@@ -338,7 +338,7 @@ export class Builder {
     // TODO: centralize this
     const host = this.host;
 
-    fetch(`${host}/api/v1/track`, {
+    fetch(`${host}/api/v1/track?apiKey=${this.apiKey}`, {
       method: 'POST',
       body: JSON.stringify({ events }),
       headers: {
