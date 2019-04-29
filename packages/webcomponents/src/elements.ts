@@ -81,6 +81,13 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
         // TODO: use JSON5
         this._options = JSON.parse(options)
       }
+
+      const slot = this.getAttribute('slot')
+      if (slot) {
+        const options = (this._options = this._options || {})
+        const query = options.query || (options.query = {})
+        query['data.slot'] = slot
+      }
     }
 
     connectedCallback() {
