@@ -237,7 +237,6 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
             (!Builder.isEditing && (this.getAttribute('entry') || name!)) ||
             undefined,
           entry: entry || undefined,
-          // TODO
           ...this.options,
           prerender: true
         })
@@ -329,6 +328,7 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
 
       let unsubscribed = false
 
+      const slot = this.getAttribute('slot')
       if (!this.prerender || (Builder.isIframe && (!builder.apiKey || builder.apiKey === 'DEMO'))) {
         const { BuilderComponent } = await getReactPromise
         await getWidgetsPromise
@@ -338,7 +338,8 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
           emailMode:
             ((this.options as any) || {}).emailMode || this.getAttribute('email-mode') === 'true',
           options: {
-            ...this.options
+            ...this.options,
+            key: (slot ? `slot:${slot}` : null) || Builder.isEditing ? name! : undefined
             // entry: data ? data.id : undefined,
             // initialContent: data ? [data] : undefined
             // TODO: specify variation?
@@ -346,9 +347,6 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
         })
         return
       }
-
-      // TODO: get key() { ... } to simplify this
-      const slot = this.getAttribute('slot')
 
       const subscription = builder
         .get(name!, {
