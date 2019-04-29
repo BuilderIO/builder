@@ -233,8 +233,8 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
       const subscription = builder
         .get(name, {
           key:
-            (!Builder.isEditing &&
-              (this.getAttribute('entry') || (slot ? `slot:${slot}` : null) || name!)) ||
+            (slot ? `slot:${slot}` : null) ||
+            (!Builder.isEditing && (this.getAttribute('entry') || name!)) ||
             undefined,
           entry: entry || undefined,
           // TODO
@@ -352,9 +352,10 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
 
       const subscription = builder
         .get(name!, {
-          key: Builder.isEditing
-            ? name!
-            : this.getAttribute('entry') || (slot ? `slot:${slot}` : null) || name!,
+          key:
+            (slot ? `slot:${slot}` : null) || Builder.isEditing
+              ? name!
+              : this.getAttribute('entry') || name!,
           ...this.options,
           entry: data ? data.id : this.options.entry || undefined,
           prerender: false
@@ -402,7 +403,7 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
                 ...this.options,
                 entry: data ? data.id : undefined,
                 initialContent: data ? [data] : undefined,
-                key: Builder.isEditing ? name! : undefined
+                key: (slot ? `slot:${slot}` : null) || Builder.isEditing ? name! : undefined
                 // TODO: specify variation?
               }
             })
@@ -438,7 +439,7 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
                   ...this.options,
                   entry: data ? data.id : undefined,
                   initialContent: data ? [data] : undefined,
-                  key: Builder.isEditing ? name! : undefined
+                  key: (slot ? `slot:${slot}` : null) || Builder.isEditing ? name! : undefined
                   // TODO: specify variation?
                 }
               })
@@ -595,8 +596,8 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
           // TODO: if Builder.isEditing all keys become models, OR when editing models
           // post up all of they keys and then post info with a key for the first editing model...
           key:
-            (!Builder.isEditing &&
-              (this.getAttribute('entry') || (slot ? `slot:${slot}` : null) || name!)) ||
+            (slot ? `slot:${slot}` : null) ||
+            (!Builder.isEditing && (this.getAttribute('entry') || name!)) ||
             undefined,
           entry: entry || undefined,
           ...this.options,
