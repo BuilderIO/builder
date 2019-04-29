@@ -9,7 +9,8 @@ async function main() {
   // TODO: bootstrap script goes here... hmmm...
   // TODO: export basic builder stuff from here so people can use js, or System.import name it hmm
   const newFileStr = [
-    sjs,
+    // Don't load System.js multiple times...
+    `if (typeof System === 'undefined') {${sjs}}`,
     // TODO: get the version of this and load - how does the others do
     /*systemMain*/ `
     if (typeof window === 'undefined' || !window.builderWebcomponentsLoaded) {
