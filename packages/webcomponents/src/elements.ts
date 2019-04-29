@@ -228,10 +228,14 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
       this.previousName = name
       this.classList.add('builder-loading')
       let unsubscribed = false
+      const slot = this.getAttribute('slot')
       // TODO: allow options as property or json
       const subscription = builder
         .get(name, {
-          key: (!Builder.isEditing && (this.getAttribute('entry') || name!)) || undefined,
+          key:
+            (!Builder.isEditing &&
+              (this.getAttribute('entry') || (slot ? `slot:${slot}` : null) || name!)) ||
+            undefined,
           entry: entry || undefined,
           // TODO
           ...this.options,
@@ -343,9 +347,14 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
         return
       }
 
+      // TODO: get key() { ... } to simplify this
+      const slot = this.getAttribute('slot')
+
       const subscription = builder
         .get(name!, {
-          key: Builder.isEditing ? name! : this.getAttribute('entry') || name!,
+          key: Builder.isEditing
+            ? name!
+            : this.getAttribute('entry') || (slot ? `slot:${slot}` : null) || name!,
           ...this.options,
           entry: data ? data.id : this.options.entry || undefined,
           prerender: false
@@ -578,12 +587,17 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
 
       this.previousName = name
       this.classList.add('builder-loading')
+      const slot = this.getAttribute('slot')
+
       // TODO: allow options as property or json
       const subscription = builder
         .get(name, {
           // TODO: if Builder.isEditing all keys become models, OR when editing models
           // post up all of they keys and then post info with a key for the first editing model...
-          key: (!Builder.isEditing && (this.getAttribute('entry') || name!)) || undefined,
+          key:
+            (!Builder.isEditing &&
+              (this.getAttribute('entry') || (slot ? `slot:${slot}` : null) || name!)) ||
+            undefined,
           entry: entry || undefined,
           ...this.options,
           prerender: true
