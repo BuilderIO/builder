@@ -20,7 +20,8 @@ export interface ButtonProps {
     paddingRight: '25px',
     backgroundColor: '#3898EC',
     color: 'white',
-    borderRadius: '4px'
+    borderRadius: '4px',
+    cursor: 'pointer'
   },
   inputs: [
     {
