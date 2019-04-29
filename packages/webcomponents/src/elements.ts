@@ -339,7 +339,7 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
             ((this.options as any) || {}).emailMode || this.getAttribute('email-mode') === 'true',
           options: {
             ...this.options,
-            key: (slot ? `slot:${slot}` : null) || Builder.isEditing ? name! : undefined
+            key: (slot ? `slot:${slot}` : null) || (Builder.isEditing ? name! : undefined)
             // entry: data ? data.id : undefined,
             // initialContent: data ? [data] : undefined
             // TODO: specify variation?
@@ -351,9 +351,8 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
       const subscription = builder
         .get(name!, {
           key:
-            (slot ? `slot:${slot}` : null) || Builder.isEditing
-              ? name!
-              : this.getAttribute('entry') || name!,
+            (slot ? `slot:${slot}` : null) ||
+            (Builder.isEditing ? name! : this.getAttribute('entry') || name!),
           ...this.options,
           entry: data ? data.id : this.options.entry || undefined,
           prerender: false
@@ -401,7 +400,7 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
                 ...this.options,
                 entry: data ? data.id : undefined,
                 initialContent: data ? [data] : undefined,
-                key: (slot ? `slot:${slot}` : null) || Builder.isEditing ? name! : undefined
+                key: (slot ? `slot:${slot}` : null) || (Builder.isEditing ? name! : undefined)
                 // TODO: specify variation?
               }
             })
@@ -437,7 +436,7 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
                   ...this.options,
                   entry: data ? data.id : undefined,
                   initialContent: data ? [data] : undefined,
-                  key: (slot ? `slot:${slot}` : null) || Builder.isEditing ? name! : undefined
+                  key: (slot ? `slot:${slot}` : null) || (Builder.isEditing ? name! : undefined)
                   // TODO: specify variation?
                 }
               })
@@ -595,8 +594,7 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
           // post up all of they keys and then post info with a key for the first editing model...
           key:
             (slot ? `slot:${slot}` : null) ||
-            (!Builder.isEditing && (this.getAttribute('entry') || name!)) ||
-            undefined,
+            ((!Builder.isEditing && (this.getAttribute('entry') || name!)) || undefined),
           entry: entry || undefined,
           ...this.options,
           prerender: true
