@@ -187,7 +187,7 @@ export class Image extends React.Component<any> {
             }}
           />
         ) : null}
-        {children && children.length &&  (
+        {children && children.length ?  (
           <div
             style={{
               display: 'flex',
@@ -204,7 +204,7 @@ export class Image extends React.Component<any> {
               <BuilderBlockComponent key={block.id} block={block} />
             ))}
           </div>
-        )}
+        ) : null}
       </React.Fragment>
       // <div
       //   style={{
