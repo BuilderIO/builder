@@ -74,7 +74,9 @@ export class Section extends React.Component<SectionProps> {
           maxWidth: this.props.maxWidth,
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'stretch'
+          alignItems: 'stretch',
+          marginLeft: 'auto',
+          marginRight: 'auto'
         }}
       >
         {/* TODO: maybe builder <BuilderBlocks? */}
