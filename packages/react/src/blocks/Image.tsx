@@ -1,7 +1,9 @@
 import React from 'react'
 
 // import { BuilderElement } from '@builder.io/sdk'
+import { BuilderBlock as BuilderBlockComponent } from '../components/builder-block.component'
 import { BuilderBlock } from '../decorators/builder-block.decorator'
+import { BuilderElement } from '@builder.io/sdk'
 
 const DEFAULT_ASPECT_RATIO = 0.7041
 
@@ -79,7 +81,11 @@ const DEFAULT_ASPECT_RATIO = 0.7041
       defaultValue: 'cover',
       enum: [
         { label: 'contain', value: 'contain', helperText: 'The image should never get cropped' },
-        { label: 'cover', value: 'cover', helperText: `The image should fill it's box, cropping when needed` },
+        {
+          label: 'cover',
+          value: 'cover',
+          helperText: `The image should fill it's box, cropping when needed`
+        }
         // TODO: add these options back
         // { label: 'auto', value: 'auto', helperText: '' },
         // { label: 'fill', value: 'fill', helperText: 'The image should fill the box, being stretched or squished if necessary' },
@@ -139,6 +145,7 @@ export class Image extends React.Component<any> {
 
   render() {
     const { aspectRatio, builderBlock } = this.props
+    const children = this.props.builderBlock && this.props.builderBlock.children
 
     // TODO: add height and width params to image
     return (
@@ -159,13 +166,13 @@ export class Image extends React.Component<any> {
             height: '100%',
             width: '100%',
             objectPosition: this.props.backgroundPosition,
-            ...(aspectRatio && {
-              // height: '100%',
-              // width: '100%',
-              position: 'absolute',
-              left: 0,
-              top: 0
-            })
+            // ...(aspectRatio && {
+            // height: '100%',
+            // width: '100%',
+            position: 'absolute',
+            left: 0,
+            top: 0
+            // })
           }}
           className="builder-image"
           src={this.props.image}
@@ -179,6 +186,24 @@ export class Image extends React.Component<any> {
             }}
           />
         ) : null}
+        {children && (
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'stretch',
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%'
+            }}
+          >
+            {children.map((block: BuilderElement, index: number) => (
+              <BuilderBlockComponent key={block.id} block={block} />
+            ))}
+          </div>
+        )}
       </React.Fragment>
       // <div
       //   style={{

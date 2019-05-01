@@ -151,6 +151,7 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
     // When loaded from the server
     get currentContent() {
       const name = this.getAttribute('name') || this.getAttribute('model')
+      // TODO: get this to work with nested blocks
       const existing = this.querySelector(`[data-builder-component="${name}"]`)
       if (existing) {
         const id = existing.getAttribute('data-builder-content-id')
