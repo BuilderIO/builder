@@ -123,7 +123,14 @@ const tryEval = (str?: string, data: any = {}, errors?: Error[]): any => {
     if (errors) {
       errors.push(error)
     }
-    console.warn('Eval error', error)
+    // TODO pipe to builder console only...
+    const printEval =
+      typeof window === 'undefined' ||
+      (window.location.search.includes('builder.log=true') ||
+        document.referrer.includes('builder.io'))
+    if (printEval) {
+      console.warn('Eval error', error)
+    }
   }
 
   return
@@ -673,7 +680,13 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
         // TODO: allow exports = { } syntax?
         // TODO: do something with reuslt like view - methods, computed, actions, properties, template, etc etc
       } catch (error) {
-        console.warn('Eval error', error)
+        const printEval =
+          typeof window === 'undefined' ||
+          (window.location.search.includes('builder.log=true') ||
+            document.referrer.includes('builder.io'))
+        if (printEval) {
+          console.warn('Eval error', error)
+        }
       }
     }
 

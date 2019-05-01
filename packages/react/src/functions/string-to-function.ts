@@ -137,7 +137,13 @@ export function stringToFunction(
         // tslint:enable:comment-format
       }
     } catch (error) {
-      console.warn('Eval error', error)
+      const printEval =
+        typeof window === 'undefined' ||
+        (window.location.search.includes('builder.log=true') ||
+          document.referrer.includes('builder.io'))
+      if (printEval) {
+        console.warn('Eval error', error)
+      }
       if (errors) {
         errors.push(error)
       }
