@@ -64,8 +64,13 @@ export class Section extends React.Component<SectionProps> {
     return (
       <div
         style={{
-          margin: 'auto',
+          // margin: 'auto',
+          // TODO: maybe remove height: '100%'
+          height: '100%',
           width: '100%',
+          alignSelf: 'stretch',
+          flexGrow: 1,
+          boxSizing: 'border-box',
           maxWidth: this.props.maxWidth,
           display: 'flex',
           flexDirection: 'column',
