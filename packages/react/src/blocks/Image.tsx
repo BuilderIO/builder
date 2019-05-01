@@ -16,6 +16,7 @@ const DEFAULT_ASPECT_RATIO = 0.7041
     minWidth: '20px',
     overflow: 'hidden'
   },
+  canHaveChildren: true,
   inputs: [
     {
       name: 'image',
@@ -186,7 +187,7 @@ export class Image extends React.Component<any> {
             }}
           />
         ) : null}
-        {children && (
+        {children && children.length &&  (
           <div
             style={{
               display: 'flex',
