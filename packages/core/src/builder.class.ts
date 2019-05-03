@@ -1008,6 +1008,7 @@ export class Builder {
       // Removinf for now because of cache keys
       // referrer: document.referrer,
       // language: navigator.language.split('-')[0],
+      host: url.host || url.hostname,
       device: isMobile.any() ? 'mobile' : 'desktop',
       // operatingSystem: (ua.getOS().name || '').toLowerCase() || undefined,
       // browser: (ua.getBrowser().name || '').toLowerCase() || undefined,
