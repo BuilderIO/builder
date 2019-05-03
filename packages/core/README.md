@@ -11,3 +11,7 @@ builder.get(YOUR_MODEL_NAME).subscribe(({ data }) => {
   // Do something with the data
 })
 ```
+
+More docs coming soon!
+
+If you have questions or comments don't hesitate to each out by creating an issue or emailing steve@builder.io
