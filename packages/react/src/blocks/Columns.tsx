@@ -228,8 +228,8 @@ export class Columns extends React.Component<any> {
                   {`.${
                     this.props.builderBlock.id
                   } > .builder-columns > .builder-column:nth-child(${index + 1}) {
-              width: ${this.getColumnWidth(index)}px;
-              margin-left: ${index === 0 ? 0 : gutterSize};
+              width: ${this.getColumnWidth(index)};
+              margin-left: ${index === 0 ? 0 : gutterSize}px;
             }`}
                 </style>
                 <TagName
