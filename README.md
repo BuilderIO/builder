@@ -17,13 +17,15 @@ Drag and drop page building for any site.
 
 | Framework                                                    |                                                               Status                                                                |
 | ------------------------------------------------------------ | :---------------------------------------------------------------------------------------------------------------------------------: |
-| [React](#getting-started-with-react)                         |                                                               stable                                                                |
-| [Next.js](packages/react/examples/next-js)                   |                                                               stable                                                                |
-| [Webcomponents](https://builder.io/c/docs/webcomponents-sdk) |                                                               stable                                                                |
-| [Angular](packages/angular)                                  |                                                               stable                                                                |
-| Email                                                        |                                                               stable                                                                |
-| AMP                                                          |                                                             Coming soon                                                             |
-| Preact                                                       |                                                                beta                                                                 |
+| [React](#getting-started-with-react)                         |                                                               Stable                                                                |
+| [Next.js](packages/react/examples/next-js)                   |                                                               Stable                                                                |
+| [Webcomponents](https://builder.io/c/docs/webcomponents-sdk) |                                                               Stable                                                                |
+| [Angular](packages/angular)                                  |                                                               Stable                                                                |
+<!-- TODO: make and link to email guide in docs -->
+| Email                                                        |                                                               Stable                                                                |
+<!-- TODO: make and link to AMP guide in docs -->
+| AMP                                                          |                                                               Stable                                                                |
+| Preact                                                       |                                                               Stable                                                                |
 | Vue                                                          |                                  Use [webcomponents](https://builder.io/c/docs/webcomponents-sdk)                                   |
 | React native                                                 |                                                             Coming soon                                                             |
 | Shopify                                                      |                                                             Coming soon                                                             |
