@@ -199,23 +199,6 @@ export class Columns extends React.Component<any> {
             }
           `}
         </style>
-        {this.props.stackColumnsAt !== 'never' && (
-          <style>
-            {`
-          @media (max-width: ${this.props.stackColumnsAt !== 'tablet' ? 639 : 999}px) {
-            .${this.props.builderBlock.id} > .builder-columns {
-              flex-direction: ${this.props.reverseColumnsWhenStacked ? 'column-reverse' : 'column'};
-              align-items: stretch;
-            }
-
-            .${this.props.builderBlock.id} > .builder-columns > .builder-column {
-              width: 100%;
-              margin-left: 0;
-            }
-          }
-        `}
-          </style>
-        )}
         <div className="builder-columns" style={{ display: 'flex' }}>
           {columns.map((col, index) => {
             const TagName = col.link ? 'a' : 'div'
@@ -256,6 +239,23 @@ export class Columns extends React.Component<any> {
               </>
             )
           })}
+          {this.props.stackColumnsAt !== 'never' && (
+            <style>
+              {`
+          @media (max-width: ${this.props.stackColumnsAt !== 'tablet' ? 639 : 999}px) {
+            .${this.props.builderBlock.id} > .builder-columns {
+              flex-direction: ${this.props.reverseColumnsWhenStacked ? 'column-reverse' : 'column'};
+              align-items: stretch;
+            }
+
+            .${this.props.builderBlock.id} > .builder-columns > .builder-column {
+              width: 100%;
+              margin-left: 0;
+            }
+          }
+        `}
+            </style>
+          )}
         </div>
       </React.Fragment>
     )
