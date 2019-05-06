@@ -131,6 +131,8 @@ export interface GetContentOptions {
   entry?: string;
   alias?: string;
   key?: string;
+  // For prerender (prerenderFormat?)
+  format?: 'amp' | 'email' | 'html';
 }
 
 export type Class = {
@@ -1240,6 +1242,9 @@ export class Builder {
 
     if (Builder.useNewApi) {
       for (const options of queue) {
+        if (options.format) {
+          queryParams.format = options.format;
+        }
         const properties: (keyof GetContentOptions)[] = [
           'prerender',
           'extractCss',

@@ -182,6 +182,14 @@ export class Image extends React.Component<any> {
                 className="builder-image"
                 src={this.props.image}
               />
+              {/* TODO: do this with classes like .builder-fit so can reuse styles and not duplicate */}
+              {/* TODO: maybe need to add height: auto, widht: auto or so so the image doesn't have a max widht etc */}
+              {amp && <style>{`
+                amp-img.${this.props.builderBlock && this.props.builderBlock.id} img {
+                  object-fit: ${this.props.backgroundSize};
+                  object-position: ${this.props.backgroundPosition};
+                }
+              `}</style>}
               {aspectRatio ? (
                 <div
                   className="builder-image-sizer"
