@@ -206,7 +206,7 @@ export class Columns extends React.Component<any> {
             // TODO: pass size down in context
 
             return (
-              <>
+              <React.Fragment key={index}>
                 <style>
                   {`.${
                     this.props.builderBlock.id
@@ -216,7 +216,6 @@ export class Columns extends React.Component<any> {
             }`}
                 </style>
                 <TagName
-                  key={index}
                   className="builder-column"
                   {...(col.link ? { href: col.link } : null)}
                   // TODO: generate width and margin-left as CSS instead so can override with pure CSS for best responsieness
@@ -236,7 +235,7 @@ export class Columns extends React.Component<any> {
                     dataPath={`component.options.columns.${index}.blocks`}
                   />
                 </TagName>
-              </>
+              </React.Fragment>
             )
           })}
           {this.props.stackColumnsAt !== 'never' && (
