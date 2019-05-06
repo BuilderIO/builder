@@ -1,5 +1,5 @@
 import React from 'react'
-import { Builder, Component } from '@builder.io/sdk'
+import { Builder, Component, BuilderElement } from '@builder.io/sdk'
 
 import { sizeNames, Size, sizes } from '../constants/device-sizes.constant'
 import { BuilderStoreContext } from '../store/builder-store'
@@ -60,6 +60,8 @@ function mapToCss(map: StringMap, spaces = 2, important = false) {
 export interface BuilderBlockProps {
   fieldName?: string
   block: any
+  // TODO:
+  // block: BuilderElement
   child?: boolean
   index?: number
   size?: Size

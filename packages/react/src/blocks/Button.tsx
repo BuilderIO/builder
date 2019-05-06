@@ -54,14 +54,15 @@ export interface ButtonProps {
 })
 export class Button extends React.Component<ButtonProps> {
   render() {
+    const Tag = this.props.link ? 'a' : 'span';
     return (
-      <a
+      <Tag
         href={this.props.link}
         target={this.props.openLinkInNewTab ? '_blank' : undefined}
         {...this.props.attributes}
       >
         {this.props.text}
-      </a>
+      </Tag>
     );
   }
 }

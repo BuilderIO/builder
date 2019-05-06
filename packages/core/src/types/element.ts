@@ -11,6 +11,8 @@ export interface BuilderElement {
     large?: Partial<CSSStyleDeclaration>
     medium?: Partial<CSSStyleDeclaration>
     small?: Partial<CSSStyleDeclaration>
+    // DEPRECATED
+    xsmall?: Partial<CSSStyleDeclaration>
   }
   component?: {
     name: string,
@@ -29,4 +31,5 @@ export interface BuilderElement {
     collection: string
     itemName?: string
   }
+  animations?: any[] // TODO: type the animation spec
 }
