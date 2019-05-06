@@ -207,6 +207,11 @@ export class Columns extends React.Component<any> {
               flex-direction: ${this.props.reverseColumnsWhenStacked ? 'column-reverse' : 'column'};
               align-items: stretch;
             }
+
+            .${this.props.builderBlock.id} > .builder-columns > .builder-column {
+              width: 100%;
+              margin-left: 0;
+            }
           }
         `}
           </style>
@@ -218,29 +223,37 @@ export class Columns extends React.Component<any> {
             // TODO: pass size down in context
 
             return (
-              <TagName
-                key={index}
-                className="builder-column"
-                {...(col.link ? { href: col.link } : null)}
-                // TODO: generate width and margin-left as CSS instead so can override with pure CSS for best responsieness
-                // and no use of !important
-                style={{
-                  width: stack ? '100%' : this.getColumnWidth(index),
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'stretch',
-                  marginLeft: stack || index === 0 ? 0 : gutterSize
-                }}
-              >
-                <BuilderBlocks
+              <>
+                <style>
+                  {`.${
+                    this.props.builderBlock.id
+                  } > .builder-columns > .builder-column:nth-child(${index + 1}) {
+              width: ${this.getColumnWidth(index)}px;
+              margin-left: ${index === 0 ? 0 : gutterSize};
+            }`}
+                </style>
+                <TagName
                   key={index}
-                  // TODO: childOf [parentBlocks]?
-                  child
-                  parentElementId={this.props.builderBlock && this.props.builderBlock.id}
-                  blocks={col.blocks}
-                  dataPath={`component.options.columns.${index}.blocks`}
-                />
-              </TagName>
+                  className="builder-column"
+                  {...(col.link ? { href: col.link } : null)}
+                  // TODO: generate width and margin-left as CSS instead so can override with pure CSS for best responsieness
+                  // and no use of !important
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'stretch'
+                  }}
+                >
+                  <BuilderBlocks
+                    key={index}
+                    // TODO: childOf [parentBlocks]?
+                    child
+                    parentElementId={this.props.builderBlock && this.props.builderBlock.id}
+                    blocks={col.blocks}
+                    dataPath={`component.options.columns.${index}.blocks`}
+                  />
+                </TagName>
+              </>
             )
           })}
         </div>
