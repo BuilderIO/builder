@@ -222,6 +222,8 @@ export class Columns extends React.Component<any> {
                 key={index}
                 className="builder-column"
                 {...(col.link ? { href: col.link } : null)}
+                // TODO: generate width and margin-left as CSS instead so can override with pure CSS for best responsieness
+                // and no use of !important
                 style={{
                   width: stack ? '100%' : this.getColumnWidth(index),
                   display: 'flex',
