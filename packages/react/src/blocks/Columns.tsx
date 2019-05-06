@@ -3,6 +3,8 @@ import React from 'react'
 // import { BuilderElement } from '@builder.io/sdk'
 import { BuilderBlock } from '../decorators/builder-block.decorator'
 import { BuilderBlocks } from '../components/builder-blocks.component'
+import { Builder, builder } from '@builder.io/sdk'
+import { sizes, sizeNames } from '../constants/device-sizes.constant'
 
 const DEFAULT_ASPECT_RATIO = 0.7004048582995948
 
@@ -156,8 +158,28 @@ export class Columns extends React.Component<any> {
     return `calc(${this.getWidth(index)}% - ${subtractWidth}px)`
   }
 
+  get deviceSizeState() {
+    const sizeMap = {
+      desktop: 'large',
+      tablet: 'medium',
+      mobile: 'small'
+    }
+
+    // TODO: use context to pass this down on server
+    return Builder.isBrowser
+      ? sizes.getSizeForWidth(window.innerWidth)
+      : sizeMap[this.device] || 'large'
+  }
+
+  get device() {
+    return builder.getUserAttributes().device || 'desktop'
+  }
+
   render() {
     const { columns, gutterSize } = this
+
+    const size = this.deviceSizeState
+    const stack = sizeNames.indexOf(size) <= sizeNames.indexOf(this.props.stackColumnsAt)
 
     return (
       // FIXME: make more elegant
@@ -185,11 +207,6 @@ export class Columns extends React.Component<any> {
               flex-direction: ${this.props.reverseColumnsWhenStacked ? 'column-reverse' : 'column'};
               align-items: stretch;
             }
-
-            .${this.props.builderBlock.id} > .builder-columns > .builder-column {
-              width: 100% !important;
-              margin-left: 0 !important;
-            }
           }
         `}
           </style>
@@ -198,17 +215,19 @@ export class Columns extends React.Component<any> {
           {columns.map((col, index) => {
             const TagName = col.link ? 'a' : 'div'
 
+            // TODO: pass size down in context
+
             return (
               <TagName
                 key={index}
                 className="builder-column"
                 {...(col.link ? { href: col.link } : null)}
                 style={{
-                  width: this.getColumnWidth(index),
+                  width: stack ? '100%' : this.getColumnWidth(index),
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'stretch',
-                  marginLeft: index === 0 ? 0 : gutterSize
+                  marginLeft: stack || index === 0 ? 0 : gutterSize
                 }}
               >
                 <BuilderBlocks

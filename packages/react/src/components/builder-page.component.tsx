@@ -178,6 +178,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     }
   }
 
+  // TODO: pass down with context
   get device() {
     return builder.getUserAttributes().device || 'desktop'
   }

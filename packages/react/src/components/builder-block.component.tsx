@@ -31,8 +31,6 @@ const cssCase = (property: string) => {
   return str
 }
 
-
-
 // TODO: pull from builer internal utils
 const fastClone = (obj: object) => JSON.parse(JSON.stringify(obj))
 
@@ -66,6 +64,8 @@ export interface BuilderBlockProps {
   index?: number
   size?: Size
   emailMode?: boolean
+  // TODO: use context
+  ampMode?: boolean
 }
 
 function capitalize(str: string) {

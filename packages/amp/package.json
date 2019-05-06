@@ -127,6 +127,7 @@
     "@builder.io/sdk": "^1.0.23-alpha.0",
     "lodash-es": "^4.17.10",
     "react": "^16.4.1",
+    "react-amphtml": "^3.0.1",
     "react-dom": "^16.4.2"
   },
   "gitHead": "b2a7d94b3d082baccd07326c7f2f98343921785e"
