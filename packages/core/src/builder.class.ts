@@ -732,7 +732,7 @@ export class Builder {
     this.editingModel = null;
     this.overrides = {};
     this.env = 'production';
-    this.userAgent = ''
+    this.userAgent = '';
     this.request = undefined;
     this.response = undefined;
   }
@@ -1132,7 +1132,8 @@ export class Builder {
       return fetch(url).then(res => res.json());
     }
     return new Promise((resolve, reject) => {
-      require('https')
+      const module = url.indexOf('http:') === 0 ? require('http') : require('https');
+      module
         .get(url, (resp: any) => {
           let data = '';
 
