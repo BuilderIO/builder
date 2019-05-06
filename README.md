@@ -1,5 +1,6 @@
 # Builder
-Drag and drop page building for any site. 
+
+Drag and drop page building for any site.
 <br />
 <br />
 <img src="https://imgur.com/lHDo3Mq.gif" alt="Editor example" />
@@ -14,22 +15,21 @@ Drag and drop page building for any site.
 
 ## Supported Frameworks
 
-| Framework                                                    |                                                               Status                                                                |             Supports using your custom components              |                      SSR supported                      |
-| ------------------------------------------------------------ | :---------------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------: | :-----------------------------------------------------: |
-| [React](#getting-started-with-react)                         |                                                               stable                                                                |                              Yes                               |                           Yes                           |
-| [Next.js](packages/react/examples/next-js)                   |                                                               stable                                                                |                              Yes                               |                           Yes                           |
-| [Webcomponents](https://builder.io/c/docs/webcomponents-sdk) |                                                               stable                                                                |                              Yes                               | Yes with [HTML API](https://builder.io/c/docs/html-api) |
-| [Angular](packages/angular)                                    |                                                               stable                                                                | Yes with [angular elements](https://angular.io/guide/elements) |                           Yes                           |
-| Email                                                        |                                                               stable                                                                |                              Yes                               |                           Yes                           |
-| Preact                                                       |                                                                beta                                                                 |                              Yes                               |                           Yes                           |
-| Vue                                                          |                                  Use [webcomponents](https://builder.io/c/docs/webcomponents-sdk)                                   |                          Coming soon                           |                       Coming soon                       |
-| React native                                                 |                                                             Coming soon                                                             |                          Coming soon                           |                           n/a                           |
-| Shopify                                                      |                                                             Coming soon                                                             |                          Coming soon                           |                       Coming soon                       |
-| Wordpress                                                    |                                                             Coming soon                                                             |                          Coming soon                           |                       Coming soon                       |
-| **Everyting else** - Go, Php, Svelte, Java, Vanilla JS, etc      | Stable - Use our [HTML API](https://builder.io/c/docs/html-api) and/or [webcomponents](https://builder.io/c/docs/webcomponents-sdk) |                    Yes (your webcomponents)                    |                           Yes                           |
+| Framework                                                    |                                                               Status                                                                |
+| ------------------------------------------------------------ | :---------------------------------------------------------------------------------------------------------------------------------: |
+| [React](#getting-started-with-react)                         |                                                               stable                                                                |
+| [Next.js](packages/react/examples/next-js)                   |                                                               stable                                                                |
+| [Webcomponents](https://builder.io/c/docs/webcomponents-sdk) |                                                               stable                                                                |
+| [Angular](packages/angular)                                  |                                                               stable                                                                |
+| Email                                                        |                                                               stable                                                                |
+| Preact                                                       |                                                                beta                                                                 |
+| Vue                                                          |                                  Use [webcomponents](https://builder.io/c/docs/webcomponents-sdk)                                   |
+| React native                                                 |                                                             Coming soon                                                             |
+| Shopify                                                      |                                                             Coming soon                                                             |
+| Wordpress                                                    |                                                             Coming soon                                                             |
+| **Everyting else** - Go, Php, Svelte, Java, Vanilla JS, etc  | Stable - Use our [HTML API](https://builder.io/c/docs/html-api) and/or [webcomponents](https://builder.io/c/docs/webcomponents-sdk) |
 
 Want suppoert for something not listed here or for us to priotize something coming soon? Drop us an issue and let us know! We prioritize based on the community's needs and interests.
-
 
 ## Getting Started with React
 
