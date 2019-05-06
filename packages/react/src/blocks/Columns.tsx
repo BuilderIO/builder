@@ -4,7 +4,7 @@ import React from 'react'
 import { BuilderBlock } from '../decorators/builder-block.decorator'
 import { BuilderBlocks } from '../components/builder-blocks.component'
 import { Builder, builder } from '@builder.io/sdk'
-import { sizes, sizeNames } from '../constants/device-sizes.constant'
+import { sizes, sizeNames, Size } from '../constants/device-sizes.constant'
 
 const DEFAULT_ASPECT_RATIO = 0.7004048582995948
 
@@ -158,8 +158,8 @@ export class Columns extends React.Component<any> {
     return `calc(${this.getWidth(index)}% - ${subtractWidth}px)`
   }
 
-  get deviceSizeState() {
-    const sizeMap = {
+  get deviceSizeState(): Size {
+    const sizeMap: { [key: string]: Size } = {
       desktop: 'large',
       tablet: 'medium',
       mobile: 'small'
