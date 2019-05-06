@@ -155,8 +155,8 @@ export class Image extends React.Component<any> {
       <React.Fragment>
         <img
           alt={this.props.altText}
-          height={this.props.height}
-          width={this.props.width}
+          height={this.props.height || (aspectRatio ? aspectRatio * 1000 : undefined)}
+          width={this.props.width || (aspectRatio ? 1000 / aspectRatio : undefined)}
           role={!this.props.altText ? 'presentation' : undefined}
           style={{
             objectFit: this.props.backgroundSize,
