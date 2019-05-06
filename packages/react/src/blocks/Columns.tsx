@@ -248,7 +248,7 @@ export class Columns extends React.Component<any> {
               align-items: stretch;
             }
 
-            .${this.props.builderBlock.id} > .builder-columns > .builder-column {
+            .${this.props.builderBlock.id} > .builder-columns > .builder-column:nth-child(n) {
               width: 100%;
               margin-left: 0;
             }
