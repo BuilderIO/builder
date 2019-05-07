@@ -28,7 +28,7 @@ Drag and drop page building for any site.
 | React native                                                    |                                                                  Coming soon                                                                  |
 | Shopify                                                         |                                                                  Coming soon                                                                  |
 | Wordpress                                                       |                                                                  Coming soon                                                                  |
-| **Everyting else** <br/> Go, Php, Svelte, Java, Vanilla JS, etc | Stable <br />Use our [HTML API](https://builder.io/c/docs/html-api) and/or <br />[webcomponents](https://builder.io/c/docs/webcomponents-sdk) |
+| **Everyting else** <br/> Go, Php, Svelte, Java, Vanilla JS, etc | Use our [HTML API](https://builder.io/c/docs/html-api) and/or <br />[webcomponents](https://builder.io/c/docs/webcomponents-sdk) |
 
 Want suppoert for something not listed here or for us to priotize something coming soon? Drop us an issue and let us know! We prioritize based on the community's needs and interests.
 
