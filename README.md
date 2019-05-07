@@ -15,22 +15,20 @@ Drag and drop page building for any site.
 
 ## Supported Frameworks
 
-| Framework                                                    |                                                               Status                                                                |
-| ------------------------------------------------------------ | :---------------------------------------------------------------------------------------------------------------------------------: |
-| [React](#getting-started-with-react)                         |                                                               Stable                                                                |
-| [Next.js](packages/react/examples/next-js)                   |                                                               Stable                                                                |
-| [Webcomponents](https://builder.io/c/docs/webcomponents-sdk) |                                                               Stable                                                                |
-| [Angular](packages/angular)                                  |                                                               Stable                                                                |
-<!-- TODO: make and link to email guide in docs -->
-| Email                                                        |                                                               Stable                                                                |
-<!-- TODO: make and link to AMP guide in docs -->
-| AMP                                                          |                                                               Stable                                                                |
-| Preact                                                       |                                                               Stable                                                                |
-| Vue                                                          |                                  Use [webcomponents](https://builder.io/c/docs/webcomponents-sdk)                                   |
-| React native                                                 |                                                             Coming soon                                                             |
-| Shopify                                                      |                                                             Coming soon                                                             |
-| Wordpress                                                    |                                                             Coming soon                                                             |
-| **Everyting else** - Go, Php, Svelte, Java, Vanilla JS, etc  | Stable - Use our [HTML API](https://builder.io/c/docs/html-api) and/or [webcomponents](https://builder.io/c/docs/webcomponents-sdk) |
+| Framework                                                       |                                                                    Status                                                                     |
+| --------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------: |
+| [React](#getting-started-with-react)                            |                                                                    Stable                                                                     |
+| [Next.js](packages/react/examples/next-js)                      |                                                                    Stable                                                                     |
+| [Webcomponents](https://builder.io/c/docs/webcomponents-sdk)    |                                                                    Stable                                                                     |
+| [Angular](packages/angular)                                     |                                                                    Stable                                                                     |
+| Email                                                           |                                                                    Stable                                                                     |
+| AMP                                                             |                                                                    Stable                                                                     |
+| Preact                                                          |                                                                    Stable                                                                     |
+| Vue                                                             |                                       Use [webcomponents](https://builder.io/c/docs/webcomponents-sdk)                                        |
+| React native                                                    |                                                                  Coming soon                                                                  |
+| Shopify                                                         |                                                                  Coming soon                                                                  |
+| Wordpress                                                       |                                                                  Coming soon                                                                  |
+| **Everyting else** <br/> Go, Php, Svelte, Java, Vanilla JS, etc | Stable <br />Use our [HTML API](https://builder.io/c/docs/html-api) and/or <br />[webcomponents](https://builder.io/c/docs/webcomponents-sdk) |
 
 Want suppoert for something not listed here or for us to priotize something coming soon? Drop us an issue and let us know! We prioritize based on the community's needs and interests.
 
