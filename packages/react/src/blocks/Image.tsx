@@ -175,9 +175,12 @@ export class Image extends React.Component<any> {
                   height: '100%',
                   width: '100%',
                   objectPosition: this.props.backgroundPosition,
-                  position: 'absolute',
-                  left: 0,
-                  top: 0
+                  ...(aspectRatio && {
+                    position: 'absolute',
+                    left: 0,
+                    top: 0
+                  })
+
                 }}
                 className="builder-image"
                 src={this.props.image}

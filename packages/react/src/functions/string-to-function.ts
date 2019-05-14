@@ -53,7 +53,7 @@ export function stringToFunction(
 
   // FIXME: gross hack
   const useReturn =
-    (expression && !(str.includes(';') || str.includes(' return '))) ||
+    (expression && !(str.includes(';') || str.includes(' return ') || str.trim().startsWith('return '))) ||
     str.trim().startsWith('builder.run')
   let fn: Function = () => {
     /* intentionally empty */
