@@ -13,6 +13,8 @@ import Cookies from './classes/cookies.class';
 // import finder from './functions/finder.function';
 export type Url = any;
 
+const _require = require;
+
 const urlParser = {
   parse(url: string) {
     const parser = document.createElement('a') as any;
@@ -25,7 +27,7 @@ const urlParser = {
     return out;
   },
 };
-const parse = typeof window === 'object' ? urlParser.parse : require('url').parse;
+const parse = typeof window === 'object' ? urlParser.parse : _require('url').parse;
 
 function setCookie(name: string, value: string, expires?: Date) {
   let expiresString = '';
@@ -1134,7 +1136,7 @@ export class Builder {
       return fetch(url).then(res => res.json());
     }
     return new Promise((resolve, reject) => {
-      const module = url.indexOf('http:') === 0 ? require('http') : require('https');
+      const module = url.indexOf('http:') === 0 ? _require('http') : _require('https');
       module
         .get(url, (resp: any) => {
           let data = '';

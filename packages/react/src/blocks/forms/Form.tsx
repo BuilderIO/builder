@@ -120,6 +120,11 @@ export interface FormProps {
       defaultValue: [
         {
           '@type': '@builder.io/sdk:Element',
+          responsiveStyles: {
+            large: {
+              marginTop: '10px',
+            }
+          },
           component: {
             name: 'Text',
             options: {
@@ -149,6 +154,11 @@ export interface FormProps {
       defaultValue: [
         {
           '@type': '@builder.io/sdk:Element',
+          responsiveStyles: {
+            large: {
+              marginTop: '10px',
+            }
+          },
           bindings: {
             'component.options.text': 'state.formErrorMessage || block.component.options.text'
           },
@@ -169,6 +179,11 @@ export interface FormProps {
       defaultValue: [
         {
           '@type': '@builder.io/sdk:Element',
+          responsiveStyles: {
+            large: {
+              marginTop: '10px',
+            }
+          },
           component: {
             name: 'Text',
             options: {
@@ -252,7 +267,7 @@ export interface FormProps {
       component: {
         name: 'Form:Input',
         options: {
-          name: 'name',
+          name: 'email',
           placeholder: 'jane@doe.com'
         }
       }
