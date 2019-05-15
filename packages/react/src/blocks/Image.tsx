@@ -200,9 +200,10 @@ export class Image extends React.Component<any> {
                   style={{
                     width: '100%',
                     paddingTop: aspectRatio * 100 + '%',
-                    pointerEvents: 'none'
+                    pointerEvents: 'none',
+                    fontSize: 0
                   }}
-                />
+                >{' '}</div>
               ) : null}
               {children && children.length ? (
                 <div
