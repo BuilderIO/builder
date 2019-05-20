@@ -161,14 +161,24 @@ export class Image extends React.Component<any> {
           return (
             <React.Fragment>
               <Tag
-                {...(amp ? { layout: 'responsive' } : null)}
+                {...(amp
+                  ? {
+                      layout: 'responsive',
+                      height:
+                        this.props.height ||
+                        (aspectRatio ? Math.round(aspectRatio * 1000) : undefined),
+                      width:
+                        this.props.width ||
+                        (aspectRatio ? Math.round(1000 / aspectRatio) : undefined)
+                    }
+                  : null)}
                 alt={this.props.altText}
-                height={
-                  this.props.height || (aspectRatio ? Math.round(aspectRatio * 1000) : undefined)
-                }
-                width={
-                  this.props.width || (aspectRatio ? Math.round(1000 / aspectRatio) : undefined)
-                }
+                // height={
+                //   this.props.height || (aspectRatio ? Math.round(aspectRatio * 1000) : undefined)
+                // }
+                // width={
+                //   this.props.width || (aspectRatio ? Math.round(1000 / aspectRatio) : undefined)
+                // }
                 role={!this.props.altText ? 'presentation' : undefined}
                 style={{
                   objectFit: this.props.backgroundSize,
@@ -203,7 +213,9 @@ export class Image extends React.Component<any> {
                     pointerEvents: 'none',
                     fontSize: 0
                   }}
-                >{' '}</div>
+                >
+                  {' '}
+                </div>
               ) : null}
               {children && children.length ? (
                 <div
