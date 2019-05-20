@@ -149,7 +149,6 @@ export class Image extends React.Component<any> {
     const { aspectRatio, builderBlock } = this.props
     const children = this.props.builderBlock && this.props.builderBlock.children
 
-    // TODO: add height and width params to image
     return (
       // TODO: swap-in amp components hm
       // These styles may be bad... may need to remove this wrapper entirely hmm
