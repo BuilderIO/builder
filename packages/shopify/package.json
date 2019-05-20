@@ -1,5 +1,6 @@
 {
   "name": "@builder.io/shopify",
+  "private": true,
   "version": "1.0.32",
   "browser": "./dist/index.umd.min.js",
   "main": "./dist/index.cjs.js",

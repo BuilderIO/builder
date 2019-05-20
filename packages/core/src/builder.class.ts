@@ -13,7 +13,7 @@ import Cookies from './classes/cookies.class';
 // import finder from './functions/finder.function';
 export type Url = any;
 
-const _require = require;
+const _require: typeof require = typeof global !== 'undefined' ? (global as any)['require'] : (() => undefined) as any;
 
 const urlParser = {
   parse(url: string) {

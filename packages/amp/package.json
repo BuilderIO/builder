@@ -1,6 +1,7 @@
 {
   "name": "@builder.io/amp",
   "version": "0.0.4",
+  "private": true,
   "description": "",
   "keywords": [],
   "main": "dist/builder-amp.umd.js",
