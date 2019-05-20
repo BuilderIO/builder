@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/webcomponents",
-  "version": "1.0.46",
+  "version": "1.0.47",
   "description": "",
   "keywords": [],
   "main": "./dist/builder-webcomponents.umd.js",
