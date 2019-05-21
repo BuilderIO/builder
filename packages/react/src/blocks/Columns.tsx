@@ -196,8 +196,14 @@ export class Columns extends React.Component<any> {
 
             .builder-column > .builder-blocks {
               flex-grow: 1;
-            }
-          `}
+            }${columns.map(
+              (col, index) => `
+            .${this.props.builderBlock.id} > .builder-columns > .builder-column:nth-child(${index +
+                1}) {
+              width: ${this.getColumnWidth(index)};
+              margin-left: ${index === 0 ? 0 : gutterSize}px;
+            }`
+            )}`}
         </style>
         <div className="builder-columns" style={{ display: 'flex' }}>
           {columns.map((col, index) => {
@@ -207,14 +213,6 @@ export class Columns extends React.Component<any> {
 
             return (
               <React.Fragment key={index}>
-                <style>
-                  {`.${
-                    this.props.builderBlock.id
-                  } > .builder-columns > .builder-column:nth-child(${index + 1}) {
-              width: ${this.getColumnWidth(index)};
-              margin-left: ${index === 0 ? 0 : gutterSize}px;
-            }`}
-                </style>
                 <TagName
                   className="builder-column"
                   {...(col.link ? { href: col.link } : null)}
