@@ -196,13 +196,15 @@ export class Columns extends React.Component<any> {
 
             .builder-column > .builder-blocks {
               flex-grow: 1;
-            }${columns.map(
+            }
+            ${columns.map(
               (col, index) => `
-            .${this.props.builderBlock.id} > .builder-columns > .builder-column:nth-child(${index}) {
+            .${this.props.builderBlock.id} > .builder-columns > .builder-column:nth-child(${index +
+                1}) {
               width: ${this.getColumnWidth(index)};
               margin-left: ${index === 0 ? 0 : gutterSize}px;
             }`
-            )}`}
+            ).join('\n')}`}
         </style>
         <div className="builder-columns" style={{ display: 'flex' }}>
           {columns.map((col, index) => {
