@@ -27,7 +27,9 @@ const defaultTab = {
       textAlign: 'center',
       // TODO: add to all
       display: 'flex',
-      flexDirection: 'column'
+      flexDirection: 'column',
+      cursor: 'pointer',
+      userSelect: 'none'
     }
   },
   component: {
@@ -183,7 +185,15 @@ export class Tabs extends React.Component<TabsProps, { activeTab: number }> {
     return (
       <React.Fragment>
         {/* TODO: tab overflow wrap option */}
-        <span style={{ display: 'flex', flexDirection: 'row', overflow: 'auto', WebkitOverflowScrolling: 'touch' }} className="builder-tabs-wrap">
+        <span
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            overflow: 'auto',
+            WebkitOverflowScrolling: 'touch'
+          }}
+          className="builder-tabs-wrap"
+        >
           {this.props.tabs &&
             this.props.tabs.map((item, index) => (
               <span
@@ -191,7 +201,9 @@ export class Tabs extends React.Component<TabsProps, { activeTab: number }> {
                 className={
                   'builder-tab-wrap ' + (this.activeTabSpec === item ? 'builder-tab-active' : '')
                 }
-                style={(this.activeTabSpec === item && this.props.activeTabStyle) || undefined}
+                style={{
+                  ...((this.activeTabSpec === item && this.props.activeTabStyle) || undefined)
+                }}
                 onClick={() => {
                   if (index === this.activeTab && this.props.collapsible) {
                     this.activeTab = -1

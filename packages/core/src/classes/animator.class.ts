@@ -169,22 +169,20 @@ export class Animator {
 
       let triggered = false;
 
+      function immediateOnScroll() {
+        if (!triggered && isScrolledIntoView(element)) {
+          triggered = true;
+          assign(element!.style, animation.steps[1].styles);
+          document.removeEventListener('scroll', onScroll);
+          setTimeout(() => {
+            element.style.transition = '';
+            element.style.transitionDelay = '';
+          }, (animation.duration * 1000 + (animation.delay || 0)) * 1000 + 100);
+        }
+      }
+
       // TODO: roll all of these in one for more efficiency of checking all the rects
-      const onScroll = throttle(
-        () => {
-          if (!triggered && isScrolledIntoView(element)) {
-            triggered = true;
-            assign(element!.style, animation.steps[1].styles);
-            document.removeEventListener('scroll', onScroll);
-            setTimeout(() => {
-              element.style.transition = '';
-              element.style.transitionDelay = '';
-            }, (animation.duration * 1000 + (animation.delay || 0)) * 1000 + 100);
-          }
-        },
-        100,
-        { leading: false }
-      );
+      const onScroll = throttle(immediateOnScroll, 200, { leading: false });
 
       // TODO: fully in view or partially
       function isScrolledIntoView(elem: HTMLElement) {
@@ -192,7 +190,7 @@ export class Animator {
 
         const windowHeight = window.innerHeight;
 
-        const thresholdPrecent = 0.2;
+        const thresholdPrecent = 0.05;
         const threshold = thresholdPrecent * windowHeight;
 
         // TODO: partial in view? or what if element is larger than screen itself
@@ -222,7 +220,7 @@ export class Animator {
       document.addEventListener('scroll', onScroll, { capture: true, passive: true } as any);
 
       // Do an initial check
-      onScroll();
+      immediateOnScroll();
     });
   }
 }

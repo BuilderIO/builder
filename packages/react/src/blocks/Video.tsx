@@ -171,6 +171,7 @@ export class Video extends React.Component<{
     return (
       <div style={{ position: 'relative', fontSize: 0 }}>
         <video
+          key={this.props.video || 'no-src'}
           poster={this.props.posterImage}
           // height={this.props.height || '100%'}
           // width={this.props.width || '100%'}
