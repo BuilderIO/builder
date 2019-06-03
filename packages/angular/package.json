@@ -37,7 +37,6 @@
     "@nguniversal/module-map-ngfactory-loader": "*"
   },
   "dependencies": {
-    "@angular/animations": ">= 2",
     "@angular/common": ">= 2",
     "@angular/core": ">= 2",
     "@angular/http": ">= 2",
