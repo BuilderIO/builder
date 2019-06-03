@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/angular",
-  "version": "1.0.16-alpha.1",
+  "version": "1.0.16",
   "main": "dist/bundles/builder.io-angular.umd.js",
   "module": "dist/fesm5/builder.io-angular.js",
   "es2015": "dist/fesm2015/builder.io-angular.js",
@@ -17,7 +17,7 @@
     "ng": "ng",
     "start": "npm run develop:package",
     "_build": "ng build --prod",
-    "build": "npm run package",
+    "build": "npm run package && rm dist/package.json",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
