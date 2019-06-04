@@ -48,6 +48,17 @@ export class Text extends React.Component<TextProps> {
   }
 
   render() {
+    const allowEditingText =
+      Builder.isBrowser &&
+      Builder.isEditing &&
+      !(
+        this.props.builderBlock &&
+        this.props.builderBlock.bindings &&
+        (this.props.builderBlock.bindings['component.options.text'] ||
+          this.props.builderBlock.bindings['options.text'] ||
+          this.props.builderBlock.bindings['text'])
+      )
+
     return (
       <React.Fragment>
         <style>{`.builder-text p:first-child, .builder-paragraph:first-child { margin: 0 } .builder-text > p, .builder-paragraph { color: inherit; line-height: inherit; letter-spacing: inherit; font-weight: inherit; font-size: inherit; text-align: inherit; font-family: inherit; }`}</style>
@@ -56,9 +67,9 @@ export class Text extends React.Component<TextProps> {
           ref={ref => {
             this.textRef = ref
           }}
-          contentEditable={Builder.isEditing}
+          contentEditable={allowEditingText}
           onInput={e => {
-            if (Builder.isEditing) {
+            if (allowEditingText) {
               window.parent.postMessage(
                 {
                   type: 'builder.textEdited',
@@ -72,7 +83,7 @@ export class Text extends React.Component<TextProps> {
             }
           }}
           onFocus={e => {
-            if (Builder.isEditing) {
+            if (allowEditingText) {
               window.parent.postMessage(
                 {
                   type: 'builder.textFocused',
@@ -85,7 +96,7 @@ export class Text extends React.Component<TextProps> {
             }
           }}
           onBlur={e => {
-            if (Builder.isEditing) {
+            if (allowEditingText) {
               window.parent.postMessage(
                 {
                   type: 'builder.textBlurred',
@@ -99,7 +110,7 @@ export class Text extends React.Component<TextProps> {
           }}
           style={{ outline: 'none' }}
           className="builder-text"
-          {...!Builder.isBrowser && {
+          {...!allowEditingText && {
             dangerouslySetInnerHTML: {
               __html: this.props.text || (this.props as any).content || ''
             }
