@@ -15,10 +15,10 @@ export interface ButtonProps {
   defaultStyles: {
     // TODO: make min width more intuitive and set one
     appearance: 'none',
-    paddingTop: '5px',
-    paddingBottom: '5px',
-    paddingLeft: '10px',
-    paddingRight: '10px',
+    paddingTop: '15px',
+    paddingBottom: '15px',
+    paddingLeft: '25px',
+    paddingRight: '25px',
     backgroundColor: '#3898EC',
     color: 'white',
     borderRadius: '4px',
