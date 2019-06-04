@@ -51,6 +51,7 @@ export class Text extends React.Component<TextProps> {
     const allowEditingText =
       Builder.isBrowser &&
       Builder.isEditing &&
+      location.search.includes('builder.allowTextEdit=true') &&
       !(
         this.props.builderBlock &&
         this.props.builderBlock.bindings &&
