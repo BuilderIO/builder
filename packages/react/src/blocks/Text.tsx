@@ -23,12 +23,15 @@ const iconUrl =
   }
 })
 export class Text extends React.Component<{ text: string; builderBlock?: BuilderElement }> {
+  textRef: HTMLSpanElement | null = null
+
   render() {
     return (
       <React.Fragment>
         <style>{`.builder-text p:first-child, .builder-paragraph:first-child { margin: 0 } .builder-text > p, .builder-paragraph { color: inherit; line-height: inherit; letter-spacing: inherit; font-weight: inherit; font-size: inherit; text-align: inherit; font-family: inherit; }`}</style>
         {/* TODO: <BuilderText component that wraps this for other components with text */}
         <span
+          ref={ref => this.textRef = ref}
           contentEditable={Builder.isEditing}
           onInput={e => {
             if (Builder.isEditing) {
@@ -57,8 +60,21 @@ export class Text extends React.Component<{ text: string; builderBlock?: Builder
               )
             }
           }}
-          className="builder-text"
+          onBlur={e => {
+            if (Builder.isEditing) {
+              window.parent.postMessage(
+                {
+                  type: 'builder.textBlurred',
+                  data: {
+                    id: this.props.builderBlock && this.props.builderBlock.id
+                  }
+                },
+                '*'
+              )
+            }
+          }}
           style={{ outline: 'none' }}
+          className="builder-text"
           dangerouslySetInnerHTML={{ __html: this.props.text || (this.props as any).content || '' }}
         />
       </React.Fragment>
