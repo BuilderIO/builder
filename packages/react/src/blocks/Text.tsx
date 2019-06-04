@@ -45,7 +45,7 @@ export class Text extends React.Component<TextProps> {
     return (
       <React.Fragment>
         <style>{`.builder-text p:first-child, .builder-paragraph:first-child { margin: 0 } .builder-text > p, .builder-paragraph { color: inherit; line-height: inherit; letter-spacing: inherit; font-weight: inherit; font-size: inherit; text-align: inherit; font-family: inherit; }`}</style>
-        {/* TODO: <BuilderText component that wraps this for other components with text */}
+        {/* TODO: <BuilderEditableText component that wraps this for other components with text */}
         <span
           ref={ref => {
             this.textRef = ref
@@ -96,7 +96,11 @@ export class Text extends React.Component<TextProps> {
           }}
           style={{ outline: 'none' }}
           className="builder-text"
-          // dangerouslySetInnerHTML={{ __html: this.props.text || (this.props as any).content || '' }}
+          {...!Builder.isBrowser && {
+            dangerouslySetInnerHTML: {
+              __html: this.props.text || (this.props as any).content || ''
+            }
+          }}
         />
       </React.Fragment>
     )
