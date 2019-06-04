@@ -31,6 +31,9 @@ export class Text extends React.Component<TextProps> {
   textRef: HTMLSpanElement | null = null
 
   componentDidUpdate(prevProps: TextProps) {
+    if (!this.allowTextEdit) {
+      return
+    }
     if (
       this.textRef &&
       !(this.textRef.contentEditable === 'true' && this.textRef === document.activeElement)
@@ -47,8 +50,8 @@ export class Text extends React.Component<TextProps> {
     }
   }
 
-  render() {
-    const allowEditingText =
+  get allowTextEdit() {
+    return (
       Builder.isBrowser &&
       Builder.isEditing &&
       location.search.includes('builder.allowTextEdit=true') &&
@@ -59,7 +62,11 @@ export class Text extends React.Component<TextProps> {
           this.props.builderBlock.bindings['options.text'] ||
           this.props.builderBlock.bindings['text'])
       )
+    )
+  }
 
+  render() {
+    const { allowEditingText } = this
     return (
       <React.Fragment>
         <style>{`.builder-text p:first-child, .builder-paragraph:first-child { margin: 0 } .builder-text > p, .builder-paragraph { color: inherit; line-height: inherit; letter-spacing: inherit; font-weight: inherit; font-size: inherit; text-align: inherit; font-family: inherit; }`}</style>
