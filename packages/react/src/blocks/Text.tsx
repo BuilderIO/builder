@@ -90,6 +90,16 @@ export class Text extends React.Component<TextProps> {
               )
             }
           }}
+          onKeyDown={e => {
+            if (
+              allowEditingText &&
+              this.textRef &&
+              e.which === 27 &&
+              document.activeElement === this.textRef
+            ) {
+              this.textRef.blur()
+            }
+          }}
           onFocus={e => {
             if (allowEditingText) {
               window.parent.postMessage(
