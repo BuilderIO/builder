@@ -32,16 +32,33 @@ export class Text extends React.Component<{ text: string; builderBlock?: Builder
           contentEditable={Builder.isEditing}
           onChange={e => {
             if (Builder.isEditing) {
-              window.parent.postMessage({
-                type: 'builder.textEdited',
-                data: {
-                  id: this.props.builderBlock && this.props.builderBlock.id,
-                  value: e.currentTarget.innerHTML
-                }
-              }, '*')
+              window.parent.postMessage(
+                {
+                  type: 'builder.textEdited',
+                  data: {
+                    id: this.props.builderBlock && this.props.builderBlock.id,
+                    value: e.currentTarget.innerHTML
+                  }
+                },
+                '*'
+              )
+            }
+          }}
+          onFocus={e => {
+            if (Builder.isEditing) {
+              window.parent.postMessage(
+                {
+                  type: 'builder.textFocused',
+                  data: {
+                    id: this.props.builderBlock && this.props.builderBlock.id
+                  }
+                },
+                '*'
+              )
             }
           }}
           className="builder-text"
+          style={{ outline: 'none' }}
           dangerouslySetInnerHTML={{ __html: this.props.text || (this.props as any).content || '' }}
         />
       </React.Fragment>
