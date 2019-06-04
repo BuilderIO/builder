@@ -30,7 +30,7 @@ export class Text extends React.Component<{ text: string; builderBlock?: Builder
         {/* TODO: <BuilderText component that wraps this for other components with text */}
         <span
           contentEditable={Builder.isEditing}
-          onChange={e => {
+          onInput={e => {
             if (Builder.isEditing) {
               window.parent.postMessage(
                 {
