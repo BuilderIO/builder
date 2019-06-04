@@ -35,6 +35,7 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
         }
       }
       el.classList.remove('builder-to-embed')
+
       // Transfer children
       for (let i = 0; i < el.children.length; i++) {
         const child = el.children[i]
