@@ -4,6 +4,11 @@ import { Builder, builder, BuilderElement } from '@builder.io/sdk'
 const iconUrl =
   'https://firebasestorage.googleapis.com/v0/b/builder-3b0a2.appspot.com/o/images%2Fbaseline-text_fields-24px%20(1).svg?alt=media&token=12177b73-0ee3-42ca-98c6-0dd003de1929'
 
+export interface TextProps {
+  text: string
+  builderBlock?: BuilderElement
+}
+
 @BuilderBlock({
   name: 'Text',
   image: iconUrl,
@@ -22,8 +27,16 @@ const iconUrl =
     textAlign: 'center'
   }
 })
-export class Text extends React.Component<{ text: string; builderBlock?: BuilderElement }> {
+export class Text extends React.Component<TextProps> {
   textRef: HTMLSpanElement | null = null
+
+  componentWillReceiveProps(nextProps: TextProps) {
+    if (this.textRef) {
+      if (this.props.text !== nextProps.text) {
+        this.textRef.innerHTML = nextProps.text
+      }
+    }
+  }
 
   render() {
     return (
@@ -31,7 +44,7 @@ export class Text extends React.Component<{ text: string; builderBlock?: Builder
         <style>{`.builder-text p:first-child, .builder-paragraph:first-child { margin: 0 } .builder-text > p, .builder-paragraph { color: inherit; line-height: inherit; letter-spacing: inherit; font-weight: inherit; font-size: inherit; text-align: inherit; font-family: inherit; }`}</style>
         {/* TODO: <BuilderText component that wraps this for other components with text */}
         <span
-          ref={ref => this.textRef = ref}
+          ref={ref => (this.textRef = ref)}
           contentEditable={Builder.isEditing}
           onInput={e => {
             if (Builder.isEditing) {
@@ -75,7 +88,7 @@ export class Text extends React.Component<{ text: string; builderBlock?: Builder
           }}
           style={{ outline: 'none' }}
           className="builder-text"
-          dangerouslySetInnerHTML={{ __html: this.props.text || (this.props as any).content || '' }}
+          // dangerouslySetInnerHTML={{ __html: this.props.text || (this.props as any).content || '' }}
         />
       </React.Fragment>
     )
