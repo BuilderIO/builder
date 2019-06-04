@@ -41,6 +41,12 @@ export class Text extends React.Component<TextProps> {
     }
   }
 
+  componentDidMount() {
+    if (this.textRef) {
+      this.textRef.innerHTML = this.props.text
+    }
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -49,9 +55,6 @@ export class Text extends React.Component<TextProps> {
         <span
           ref={ref => {
             this.textRef = ref
-            if (ref) {
-              ref.innerHTML = this.props.text
-            }
           }}
           contentEditable={Builder.isEditing}
           onInput={e => {
