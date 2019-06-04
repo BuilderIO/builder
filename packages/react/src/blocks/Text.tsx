@@ -30,13 +30,13 @@ export interface TextProps {
 export class Text extends React.Component<TextProps> {
   textRef: HTMLSpanElement | null = null
 
-  componentWillReceiveProps(nextProps: TextProps) {
+  componentDidUpdate(preveProps: TextProps) {
     if (
       this.textRef &&
       !(this.textRef.contentEditable === 'true' && this.textRef === document.activeElement)
     ) {
-      if (this.props.text !== nextProps.text) {
-        this.textRef.innerHTML = nextProps.text
+      if (this.props.text !== preveProps.text) {
+        this.textRef.innerHTML = this.props.text
       }
     }
   }
