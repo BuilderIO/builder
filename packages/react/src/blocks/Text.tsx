@@ -30,12 +30,12 @@ export interface TextProps {
 export class Text extends React.Component<TextProps> {
   textRef: HTMLSpanElement | null = null
 
-  componentDidUpdate(preveProps: TextProps) {
+  componentDidUpdate(prevProps: TextProps) {
     if (
       this.textRef &&
       !(this.textRef.contentEditable === 'true' && this.textRef === document.activeElement)
     ) {
-      if (this.props.text !== preveProps.text) {
+      if (this.props.text !== prevProps.text) {
         this.textRef.innerHTML = this.props.text
       }
     }
@@ -47,7 +47,12 @@ export class Text extends React.Component<TextProps> {
         <style>{`.builder-text p:first-child, .builder-paragraph:first-child { margin: 0 } .builder-text > p, .builder-paragraph { color: inherit; line-height: inherit; letter-spacing: inherit; font-weight: inherit; font-size: inherit; text-align: inherit; font-family: inherit; }`}</style>
         {/* TODO: <BuilderText component that wraps this for other components with text */}
         <span
-          ref={ref => (this.textRef = ref)}
+          ref={ref => {
+            this.textRef = ref
+            if (ref) {
+              ref.innerHTML = this.props.text
+            }
+          }}
           contentEditable={Builder.isEditing}
           onInput={e => {
             if (Builder.isEditing) {
