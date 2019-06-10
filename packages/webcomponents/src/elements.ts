@@ -466,10 +466,6 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
         )
 
       this.subscriptions.push(() => subscription.unsubscribe())
-
-      // import('./lazy-test').then(result => {
-      //   console.log('lazy test loaded', result.foo)
-      // })
     }
 
     unsubscribe() {
