@@ -347,7 +347,9 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
             ((this.options as any) || {}).emailMode || this.getAttribute('email-mode') === 'true',
           options: {
             ...this.options,
-            key: (slot ? `slot:${slot}` : null) || (Builder.isEditing ? name! : undefined)
+            key:
+              (slot ? `slot:${slot}` : null) ||
+              (Builder.isEditing ? name! : this.getAttribute('entry') || name! || undefined)
             // entry: data ? data.id : undefined,
             // initialContent: data ? [data] : undefined
             // TODO: specify variation?
@@ -408,7 +410,9 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
                 ...this.options,
                 entry: data ? data.id : undefined,
                 initialContent: data ? [data] : undefined,
-                key: (slot ? `slot:${slot}` : null) || (Builder.isEditing ? name! : undefined)
+                key:
+                  (slot ? `slot:${slot}` : null) ||
+                  (Builder.isEditing ? name! : (data && data.id) || undefined)
                 // TODO: specify variation?
               }
             })
@@ -444,7 +448,9 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
                   ...this.options,
                   entry: data ? data.id : undefined,
                   initialContent: data ? [data] : undefined,
-                  key: (slot ? `slot:${slot}` : null) || (Builder.isEditing ? name! : undefined)
+                  key:
+                    (slot ? `slot:${slot}` : null) ||
+                    (Builder.isEditing ? name! : (data && data.id) || undefined)
                   // TODO: specify variation?
                 }
               })
