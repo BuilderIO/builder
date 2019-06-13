@@ -23,7 +23,15 @@ const urlParser = {
     const props = 'username password host hostname port protocol origin pathname search hash'.split(
       ' '
     );
-    for (let i = props.length; i--; ) out[props[i]] = parser[props[i]];
+    for (let i = props.length; i--; ) {
+      out[props[i]] = parser[props[i]];
+    }
+
+    // IE 11 pathname handling workaround
+    // (IE omits preceeding '/', unlike other browsers)
+    if (out.pathname && typeof out.pathname === 'string' && out.pathname.indexOf('/') !== 0) {
+      out.pathname = '/' + out.pathname;
+    }
     return out;
   },
 };
