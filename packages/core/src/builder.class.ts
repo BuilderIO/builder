@@ -614,6 +614,12 @@ export class Builder {
       targetBuilderElement &&
       (targetBuilderElement.getAttribute('builder-id') || targetBuilderElement.id);
 
+    if (builderId && targetBuilderElement) {
+      metadata.builderElementIndex = ([] as Element[]).slice
+        .call(document.getElementsByName(builderId))
+        .indexOf(targetBuilderElement);
+    }
+
     // TODO: use this.track method
     this.eventsQueue.push({
       type: 'click',

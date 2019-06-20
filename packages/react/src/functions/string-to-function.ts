@@ -33,7 +33,8 @@ export const api = (state: any) => ({
   },
   deviceIs(device: number) {
     return this.device === device
-  }
+  },
+  isBrowser: Builder.isBrowser
 })
 
 export function stringToFunction(
