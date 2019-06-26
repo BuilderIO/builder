@@ -1,56 +1,57 @@
-import { BuilderBlock, BuilderBlocks } from '@builder.io/react';
-import React from 'react';
-import { getStyles } from '../functions/get-styles';
+import { BuilderBlock, BuilderBlocks } from '@builder.io/react'
+import React from 'react'
+import { getStyles } from '../functions/get-styles'
 
 interface BlockProps {
-  builderBlock: any;
-  attributes: any;
-  innerStyleOverrides?: any;
+  builderBlock: any
+  attributes: any
+  innerStyleOverrides?: any
 }
 
 export class Block extends React.Component<BlockProps> {
-  outerTable: HTMLTableElement | null = null;
+  outerTable: HTMLTableElement | null = null
 
   render() {
-    const allStyles = getStyles(this.props.builderBlock) || {};
+    const allStyles = getStyles(this.props.builderBlock) || {}
 
     const align =
       allStyles.marginRight === 'auto' && allStyles.marginLeft === 'auto'
         ? 'center'
         : allStyles.marginLeft === 'auto'
           ? 'right'
-          : 'left';
+          : 'left'
     const vAlign =
       allStyles.marginBottom === 'auto' && allStyles.marginTop === 'auto'
         ? 'middle'
         : allStyles.marginTop === 'auto'
           ? 'bottom'
-          : 'top';
+          : 'top'
     const midStyles = {
       paddingTop: allStyles.marginTop,
       paddingRight: allStyles.marginRight,
       paddingBottom: allStyles.marginBottom,
       paddingLeft: allStyles.marginLeft,
       verticalAlign: vAlign,
-      width: align === 'left' && allStyles.marginRight !== 'auto' && '100%',
-    };
-    const attributes: any = this.props.attributes || {};
+      width: align === 'left' && allStyles.marginRight !== 'auto' && '100%'
+    }
+    const attributes: any = this.props.attributes || {}
 
-    const hasLink = attributes.href;
+    const hasLink = attributes.href
 
-    const marginTop = parseFloat(allStyles.marginTop || 0);
-    const marginBottom = parseFloat(allStyles.marginBottom || 0);
-    const marginLeft = parseFloat(allStyles.marginLeft || 0);
-    const marginRight = parseFloat(allStyles.marginRight || 0);
+    const marginTop = parseFloat(allStyles.marginTop || 0)
+    const marginBottom = parseFloat(allStyles.marginBottom || 0)
+    const marginLeft = parseFloat(allStyles.marginLeft || 0)
+    const marginRight = parseFloat(allStyles.marginRight || 0)
 
-    const hasMargin = Boolean(marginTop || marginBottom || marginLeft || marginRight);
-    const hasAutoMargin = allStyles.marginLeft === 'auto' || allStyles.marginRight === 'auto';
+    const hasMargin = Boolean(marginTop || marginBottom || marginLeft || marginRight)
+    const hasAutoMargin = allStyles.marginLeft === 'auto' || allStyles.marginRight === 'auto'
 
-    const InnerTag = hasLink ? 'a' : 'span';
+    const InnerTag = hasLink ? 'a' : 'span'
 
-    const hasPxWidth = allStyles.width && allStyles.width.trim().endsWith('px');
+    const hasPxWidth = allStyles.width && allStyles.width.trim().endsWith('px')
 
-    const outerWidth = hasPxWidth && hasAutoMargin ? 'auto' : allStyles.width || '100%';
+    const outerWidth = hasPxWidth && hasAutoMargin ? 'auto' : allStyles.width || '100%'
+    const outerDisplay = allStyles.display
 
     const innerStyles = {
       verticalAlign: 'top',
@@ -60,9 +61,10 @@ export class Block extends React.Component<BlockProps> {
       marginLeft: undefined,
       marginRight: undefined,
       width: '100%',
-      ...this.props.innerStyleOverrides,
+      display: undefined,
+      ...this.props.innerStyleOverrides
       // height: '100%',
-    };
+    }
 
     // TODO: only double wrap if hasMargin
     return (
@@ -74,12 +76,8 @@ export class Block extends React.Component<BlockProps> {
         className={attributes.class}
         style={{
           width: outerWidth,
-          // height: allStyles.height || 'auto',
-        }}
-        {...{
-          width: outerWidth,
           border: '0',
-          // height: allStyles.height || 'auto',
+          display: outerDisplay
         }}
       >
         <tbody>
@@ -95,10 +93,10 @@ export class Block extends React.Component<BlockProps> {
                   cellSpacing="0"
                   style={{
                     width: hasPxWidth && hasAutoMargin ? allStyles.width : '100%',
-                    height: '100%',
+                    height: '100%'
                   }}
                   {...{
-                    border: '0',
+                    border: '0'
                   }}
                 >
                   <tbody>
@@ -121,6 +119,6 @@ export class Block extends React.Component<BlockProps> {
           </tr>
         </tbody>
       </table>
-    );
+    )
   }
 }
