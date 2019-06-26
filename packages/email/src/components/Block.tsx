@@ -63,7 +63,7 @@ export class Block extends React.Component<BlockProps> {
       marginRight: undefined,
       width: '100%',
       display: undefined,
-      verticalAlign: undefined,
+      // verticalAlign: undefined,
       ...this.props.innerStyleOverrides
       // height: '100%',
     }
