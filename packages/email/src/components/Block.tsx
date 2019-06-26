@@ -52,6 +52,7 @@ export class Block extends React.Component<BlockProps> {
 
     const outerWidth = hasPxWidth && hasAutoMargin ? 'auto' : allStyles.width || '100%'
     const outerDisplay = allStyles.display
+    const outerVerticalAlign = allStyles.verticalAlign
 
     const innerStyles = {
       verticalAlign: 'top',
@@ -62,6 +63,7 @@ export class Block extends React.Component<BlockProps> {
       marginRight: undefined,
       width: '100%',
       display: undefined,
+      verticalAlign: undefined,
       ...this.props.innerStyleOverrides
       // height: '100%',
     }
@@ -77,7 +79,8 @@ export class Block extends React.Component<BlockProps> {
         style={{
           width: outerWidth,
           border: '0',
-          display: outerDisplay
+          display: outerDisplay,
+          verticalAlign: outerVerticalAlign
         }}
       >
         <tbody>
