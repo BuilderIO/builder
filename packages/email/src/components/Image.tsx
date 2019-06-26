@@ -1,6 +1,7 @@
 import { BuilderBlock, BuilderBlocks } from '@builder.io/react';
 import React from 'react';
 import { Block } from './Block';
+import { getStyles } from '../functions/get-styles';
 
 interface ImageProps {
   altText?: string;
@@ -22,6 +23,7 @@ const DEFAULT_ASPECT_RATIO = 0.7041;
     minWidth: '20px',
     overflow: 'hidden',
     fontSize: '0px',
+    textAlign: 'center'
   },
   inputs: [
     {
@@ -109,6 +111,8 @@ const DEFAULT_ASPECT_RATIO = 0.7041;
 })
 export class Image extends React.Component<ImageProps> {
   render() {
+    const allStyles = getStyles(this.props.builderBlock) || {}
+
     return (
       <Block attributes={this.props.attributes} builderBlock={this.props.builderBlock}>
         <img
@@ -117,8 +121,8 @@ export class Image extends React.Component<ImageProps> {
           width={this.props.width}
           role={!this.props.altText ? 'presentation' : undefined}
           style={{
-            width: '100%',
-            height: 'auto',
+            // width: '100%',
+            height: allStyles.height || 'auto',
           }}
           className="builder-image"
           src={this.props.image}
