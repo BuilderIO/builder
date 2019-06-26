@@ -354,7 +354,12 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
         }` + (options.class ? ' ' + options.class : ''),
       key: this.id + index,
       'builder-id': this.id,
-      ref: ((ref: any) => (this.ref = ref)) as any
+      ref: ((ref: any) => (this.ref = ref)) as any,
+      ...(state && state.$index && typeof state.$index === 'number'
+        ? {
+            'builder-index': state.$index
+          }
+        : null)
     }
 
     // tslint:disable-next-line:comment-format
