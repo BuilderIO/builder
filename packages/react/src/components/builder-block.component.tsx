@@ -154,7 +154,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
         ) {
           const emailOuterSizes = ['display', 'width', 'verticalAlign']
           const map = self.responsiveStyles[size]
-          const inner = pick(map, emailOuterSizes)
+          const outer = this.props.emailMode && pick(map, emailOuterSizes)
           // TODO: this will not work as expected for a couple things that are handled specially,
           // e.g. width
           css += `\n@media only screen and (max-width: ${sizes[size].max}px) { \n${
@@ -165,10 +165,10 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
             this.props.emailMode
           )} } }`
 
-          if (this.props.emailMode && Object.keys(inner).length) {
+          if (this.props.emailMode && outer && Object.keys(outer).length) {
             css += `\n@media only screen and (max-width: ${sizes[size].max}px) { \n.builder-block.${
               self.id
-            } {${mapToCss(inner, 4, true)} } }`
+            } {${mapToCss(outer, 4, true)} } }`
           }
         }
       }

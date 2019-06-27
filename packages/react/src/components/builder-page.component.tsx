@@ -678,6 +678,25 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
           'builder',
           data.jsCode
         )(data, this, state, this.state.update, this.ref, Builder, builder)
+
+        // TODO: what if is promise...
+
+        if (result && typeof result === 'object' && Object.keys(result).length) {
+          this.state.update((state: any) => {
+            Object.assign(result, state)
+          })
+        }
+
+        if (result && typeof result.then === 'function') {
+          result.then((val: any) => {
+            if (val && typeof val === 'object' && Object.keys(val).length) {
+              this.state.update((state: any) => {
+                Object.assign(val, state)
+              })
+            }
+          })
+        }
+
         // TODO: allow exports = { } syntax?
         // TODO: do something with reuslt like view - methods, computed, actions, properties, template, etc etc
       } catch (error) {
