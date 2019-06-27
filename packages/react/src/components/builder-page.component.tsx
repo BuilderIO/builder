@@ -17,6 +17,7 @@ import {
   isRequestInfo
 } from '../store/builder-async-requests'
 import { Url } from 'url'
+import { debounceNextTick } from '../functions/debonce-next-tick';
 
 // TODO: get fetch from core JS....
 const fetch = Builder.isBrowser ? window.fetch : require('node-fetch')
@@ -280,6 +281,14 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
       update: this.updateState,
       state: nextState
     })
+
+
+  }
+
+  @debounceNextTick
+  notifyStateChange() {
+    const nextState = this.state.state
+    // TODO: only run the below once per tick...
     if (this.props.onStateChange) {
       this.props.onStateChange(nextState)
     }
@@ -640,9 +649,10 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
             set: function(target, key, value) {
               // TODO: do these for deep sets from references hmm
               // TODO: throttle these updates
-              return getUpdate()((state: any) => {
-                return Reflect.set(state, key, value)
+              getUpdate()((state: any) => {
+                Reflect.set(state, key, value)
               })
+              return true;
               // return Reflect.set(getState(), key, value)
               // return false;
             },
