@@ -364,7 +364,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
       key: this.id + index,
       'builder-id': this.id,
       ref: ((ref: any) => (this.ref = ref)) as any,
-      ...(state && state.$index && typeof state.$index === 'number'
+      ...(state && state.state && state.state.$index && typeof state.state.$index === 'number'
         ? {
             'builder-index': state.$index
           }
