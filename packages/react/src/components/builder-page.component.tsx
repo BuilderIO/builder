@@ -620,6 +620,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     if (data && data.jsCode && Builder.isBrowser) {
       let state = this.state.state
       const getState = () => this.state.state
+      const getUpdate = () => this.state.update
 
       // TODO: move to helper and deep wrap like immer in case people make references
       // TODO: on set auto run in update if not already
@@ -635,9 +636,14 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
               }
             },
             // TODO: wrap other proxy properties
+            // TODO: ensure batching updates
             set: function(target, key, value) {
               // TODO: do these for deep sets from references hmm
-              return Reflect.set(getState(), key, value)
+              // TODO: throttle these updates
+              return getUpdate()((state: any) => {
+                return Reflect.set(state, key, value)
+              })
+              // return Reflect.set(getState(), key, value)
               // return false;
             },
             // to prevent variable doesn't exist errors with `with (state)`
