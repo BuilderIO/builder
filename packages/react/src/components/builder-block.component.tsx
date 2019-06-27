@@ -369,7 +369,9 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
       // TODO: ONLY include on repeat!
       // TODO: what if dymically repeated by another component like tabs... may not work.
       // need function to provide that right
-      'builder-index': index // String(state.$index)
+      ...(index !== 0 && {
+        'builder-index': index // String(state.$index)
+      })
       //   }
       // : null)
     }
