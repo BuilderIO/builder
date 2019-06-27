@@ -616,7 +616,7 @@ export class Builder {
 
     if (builderId && targetBuilderElement) {
       metadata.builderElementIndex = ([] as Element[]).slice
-        .call(document.getElementsByName(builderId))
+        .call(document.getElementsByClassName(builderId))
         .indexOf(targetBuilderElement);
     }
 
