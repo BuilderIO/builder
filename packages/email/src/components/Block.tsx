@@ -95,8 +95,10 @@ export class Block extends React.Component<BlockProps> {
                   ? {
                       href: attributes.href,
                       target: '_blank',
-                      textDecoration: 'none',
-                      color: 'inherit'
+                      style: {
+                        textDecoration: 'none',
+                        color: 'inherit'
+                      }
                     }
                   : null)}
               >
