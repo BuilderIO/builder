@@ -350,6 +350,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
   }
 
   componentDidUpdate(prevProps: BuilderPageProps) {
+    // TODO: shallow diff
     if (this.props.data && prevProps.data !== this.props.data) {
       this.state.update((state: any) => {
         Object.assign(state, this.props.data)
