@@ -7,6 +7,11 @@ export const resetStyles = `
     padding:0;
 }
 
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
 body {
     width:100% !important;
     -webkit-text-size-adjust:100%;

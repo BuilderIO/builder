@@ -90,7 +90,16 @@ export class Block extends React.Component<BlockProps> {
               <td style={{ width: align === 'center' ? '45%' : '90%' }} />
             )}
             <td {...{ align, vAlign }} style={midStyles as any}>
-              <InnerTag {...(hasLink ? { href: attributes.href } : null)}>
+              <InnerTag
+                {...(hasLink
+                  ? {
+                      href: attributes.href,
+                      target: '_blank',
+                      textDecoration: 'none',
+                      color: 'inherit'
+                    }
+                  : null)}
+              >
                 <table
                   cellPadding="0"
                   cellSpacing="0"
