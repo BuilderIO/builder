@@ -366,6 +366,9 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
       ref: ((ref: any) => (this.ref = ref)) as any,
       // ...(state && state.$index && typeof state.$index === 'number'
       //   ? {
+      // TODO: ONLY include on repeat!
+      // TODO: what if dymically repeated by another component like tabs... may not work.
+      // need function to provide that right
       'builder-index': index // String(state.$index)
       //   }
       // : null)
