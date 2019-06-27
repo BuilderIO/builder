@@ -10,7 +10,7 @@ import set from 'lodash-es/set'
 import includes from 'lodash-es/includes'
 import reduce from 'lodash-es/reduce'
 import omit from 'lodash-es/omit'
-import memoize from 'lodash-es/memoize'
+import pick from 'lodash-es/pick'
 import kebabCase from 'lodash-es/kebabCase'
 import { BuilderAsyncRequestsContext, RequestOrPromise } from '../store/builder-async-requests'
 import { stringToFunction, api } from '../functions/string-to-function'
@@ -152,15 +152,24 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
           self.responsiveStyles[size] &&
           Object.keys(self.responsiveStyles[size]).length
         ) {
+          const emailOuterSizes = ['display', 'width', 'verticalAlign']
+          const map = self.responsiveStyles[size]
+          const inner = pick(map, emailOuterSizes)
           // TODO: this will not work as expected for a couple things that are handled specially,
           // e.g. width
           css += `\n@media only screen and (max-width: ${sizes[size].max}px) { \n${
             this.props.emailMode ? '.' : '.builder-block.'
           }${self.id + (this.props.emailMode ? '-subject' : '')} {${mapToCss(
-            self.responsiveStyles[size],
+            this.props.emailMode ? omit(map, emailOuterSizes) : map,
             4,
             this.props.emailMode
           )} } }`
+
+          if (this.props.emailMode && Object.keys(inner).length) {
+            css += `\n@media only screen and (max-width: ${sizes[size].max}px) { \n.builder-block.${
+              self.id
+            } {${mapToCss(inner, 4, true)} } }`
+          }
         }
       }
     }
