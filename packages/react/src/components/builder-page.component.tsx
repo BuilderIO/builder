@@ -282,7 +282,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
       state: nextState
     })
 
-
+    this.notifyStateChange()
   }
 
   @debounceNextTick
