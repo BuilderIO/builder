@@ -2,7 +2,7 @@ import { GetContentOptions, Builder, builder } from '@builder.io/sdk'
 // import { BuilderPage } from '@builder.io/react'
 
 if (Builder.isIframe) {
-  // TODO: systemjs only
+  // TODO: systemjs
   import('@builder.io/react')
   // Register all the widgets
   import('@builder.io/widgets')
