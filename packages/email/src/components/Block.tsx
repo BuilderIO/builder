@@ -83,7 +83,7 @@ export class Block extends React.Component<BlockProps> {
           verticalAlign: outerVerticalAlign
         }}
       >
-        <tbody>
+        <tbody style={{ width: '100%' }}>
           <tr>
             {/* TODO: how vertical align? height: 100% by default? for fixed height hm */}
             {(align === 'right' || align === 'center') && (
@@ -113,7 +113,7 @@ export class Block extends React.Component<BlockProps> {
                     border: '0'
                   }}
                 >
-                  <tbody>
+                  <tbody style={{ width: '100%' }}>
                     {/* TODO: only double wrap if margin */}
                     <tr>
                       <td
