@@ -4,7 +4,6 @@ import { GetContentOptions, Builder, builder } from '@builder.io/sdk'
 if (Builder.isIframe) {
   // TODO: systemjs
   import('@builder.io/react')
-  // Register all the widgets
   import('@builder.io/widgets')
   import('@builder.io/email')
 }
