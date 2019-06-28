@@ -1,5 +1,6 @@
 import React from 'react'
 import { BuilderBlock } from '../../decorators/builder-block.decorator'
+import { Builder } from '@builder.io/sdk'
 
 // TODO: how do onchange...
 // TODO: actions all custom events and custom js gets
@@ -45,7 +46,7 @@ export interface FormInputProps {
     // TODO: handle value vs default value automatically like ng-model
     {
       name: 'defaultValue',
-      type: 'string',
+      type: 'string'
     },
     {
       name: 'value',
@@ -59,7 +60,7 @@ export interface FormInputProps {
     },
     {
       name: 'name',
-      type: 'string',
+      type: 'string'
       // advanced: true
     },
     {
@@ -83,6 +84,7 @@ export class FormInput extends React.Component<FormInputProps> {
   render() {
     return (
       <input
+        key={Builder.isEditing && this.props.defaultValue ? this.props.defaultValue : 'default-key'}
         placeholder={this.props.placeholder}
         type={this.props.type}
         name={this.props.name}

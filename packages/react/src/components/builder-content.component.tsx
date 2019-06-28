@@ -24,6 +24,9 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
 
   firstLoad = true
   clicked = false
+  trackedImpression = false
+
+  intersectionObserver: IntersectionObserver | bull = null
 
   // TODO: observe model name for changes
   componentDidMount() {
@@ -49,7 +52,34 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
             if (match && this.firstLoad) {
               // TODO: autoTrack
               if (builder.autoTrack) {
-                builder.trackImpression(match.id, match.variationId)
+                let addedObserver = false
+                if (typeof IntersectionObserver === 'function' && this.ref) {
+                  try {
+                    const observer = (this.intersectionObserver = new IntersectionObserver(
+                      (entries, observer) => {
+                        entries.forEach(entry => {
+                          // In view
+                          if (entry.intersectionRatio > 0 && !this.trackedImpression) {
+                            builder.trackImpression(match.id, match.variationId)
+                            this.trackedImpression = true
+                            if (this.ref) {
+                              observer.unobserve(this.ref)
+                            }
+                          }
+                        })
+                      }
+                    ))
+
+                    observer.observe(this.ref!)
+                    addedObserver = true
+                  } catch (err) {
+                    console.warn('Could not bind intersection observer')
+                  }
+                }
+                if (!addedObserver) {
+                  this.trackedImpression = true
+                  builder.trackImpression(match.id, match.variationId)
+                }
               }
               this.firstLoad = false
             }
@@ -69,6 +99,9 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
 
   componentWillUnmount() {
     this.subscriptions.unsubscribe()
+    if (this.intersectionObserver && this.ref) {
+      this.intersectionObserver.unobserve(this.ref)
+    }
   }
 
   onClick = (reactEvent: React.MouseEvent<HTMLElement>) => {

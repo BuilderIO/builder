@@ -1,5 +1,6 @@
 import React from 'react'
 import { BuilderBlock } from '../../decorators/builder-block.decorator'
+import { Builder } from '@builder.io/sdk';
 
 export interface FormSelectProps {
   options?: { name?: string; value: string }[]
@@ -69,6 +70,7 @@ export class FormSelect extends React.Component<FormSelectProps> {
     return (
       <select
         value={this.props.value}
+        key={Builder.isEditing && this.props.defaultValue ? this.props.defaultValue : 'default-key'}
         defaultValue={this.props.defaultValue}
         name={this.props.name}
         {...this.props.attributes}
