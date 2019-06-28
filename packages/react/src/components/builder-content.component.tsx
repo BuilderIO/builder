@@ -26,7 +26,7 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
   clicked = false
   trackedImpression = false
 
-  intersectionObserver: IntersectionObserver | bull = null
+  intersectionObserver: IntersectionObserver | null = null
 
   // TODO: observe model name for changes
   componentDidMount() {
