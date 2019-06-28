@@ -8,6 +8,8 @@ import produce from 'immer'
 import pick from 'lodash-es/pick'
 import throttle from 'lodash-es/throttle'
 import size from 'lodash-es/size'
+import attempt from 'lodash-es/attempt'
+import isError from 'lodash-es/isError'
 import debounce from 'lodash-es/debounce'
 import { sizes } from '../constants/device-sizes.constant'
 import {
@@ -17,7 +19,7 @@ import {
   isRequestInfo
 } from '../store/builder-async-requests'
 import { Url } from 'url'
-import { debounceNextTick } from '../functions/debonce-next-tick';
+import { debounceNextTick } from '../functions/debonce-next-tick'
 
 // TODO: get fetch from core JS....
 const fetch = Builder.isBrowser ? window.fetch : require('node-fetch')
@@ -154,6 +156,9 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
   subscriptions: Subscription = new Subscription()
   onStateChange = new BehaviorSubject<any>(null)
 
+  lastJsCode = ''
+  lastHttpRequests = ''
+
   ref: HTMLElement | null = null
 
   get name(): string | undefined {
@@ -247,6 +252,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     }
 
     if (this.props.content) {
+      // TODO: this should be on didMount right bc of element ref??
       // TODO: possibly observe for change or throw error if changes
       this.onContentLoaded(this.props.content.data /*, this.props.content*/)
     }
@@ -587,7 +593,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
       }
     }
 
-    // Unsubscribe all?
+    // Unsubscribe all? TODO: maybe don't continuous fire when editing.....
     if (this.props.contentLoaded) {
       this.props.contentLoaded(data)
     }
@@ -624,152 +630,177 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
         }
       })
     }
-    // TODO: diff it against prior code
-    // TODO: throttle execution (or --> don't run in preview <--)
+
+    // TODO: also throttle on edits maybe
     if (data && data.jsCode && Builder.isBrowser) {
-      let state = this.state.state
-      const getState = () => this.state.state
-      const getUpdate = () => this.state.update
-
-      // TODO: move to helper and deep wrap like immer in case people make references
-      // TODO: on set auto run in update if not already
-      if (typeof Proxy !== 'undefined') {
-        state = new Proxy(
-          { ...state },
-          {
-            getOwnPropertyDescriptor(target, property) {
-              try {
-                return Reflect.getOwnPropertyDescriptor(getState(), property)
-              } catch (error) {
-                return undefined
-              }
-            },
-            // TODO: wrap other proxy properties
-            // TODO: ensure batching updates
-            set: function(target, key, value) {
-              // TODO: do these for deep sets from references hmm
-              // TODO: throttle these updates
-              getUpdate()((state: any) => {
-                Reflect.set(state, key, value)
-              })
-              return true;
-              // return Reflect.set(getState(), key, value)
-              // return false;
-            },
-            // to prevent variable doesn't exist errors with `with (state)`
-            has(target, property) {
-              try {
-                // TODO: if dead trigger an immer update
-                return Reflect.has(getState(), property)
-              } catch (error) {
-                return false
-              }
-            },
-            get(object, property) {
-              if (
-                property &&
-                typeof property === 'string' &&
-                property.endsWith('Item') &&
-                !Reflect.has(getState(), property)
-              ) {
-                // TODO: use $index to return a reference to the proxied version of item
-                // so can be set as well
-                return Reflect.get(state, property)
-              }
-
-              return Reflect.get(getState(), property)
-            }
-          }
-        )
+      // Don't rerun js code when editing and not changed
+      let skip = false
+      if (Builder.isEditing) {
+        if (this.lastJsCode === data.jsCode) {
+          skip = true
+        } else {
+          this.lastJsCode = data.jsCode
+        }
       }
 
-      // TODO: real editing method
-      try {
-        const result = new Function(
-          'data',
-          'ref',
-          'state',
-          'update',
-          'element',
-          'Builder',
-          'builder',
-          data.jsCode
-        )(data, this, state, this.state.update, this.ref, Builder, builder)
+      if (!skip) {
+        let state = this.state.state
+        const getState = () => this.state.state
+        const getUpdate = () => this.state.update
 
-        // TODO: what if is promise...
+        // TODO: move to helper and deep wrap like immer in case people make references
+        // TODO: on set auto run in update if not already
+        if (typeof Proxy !== 'undefined') {
+          state = new Proxy(
+            { ...state },
+            {
+              getOwnPropertyDescriptor(target, property) {
+                try {
+                  return Reflect.getOwnPropertyDescriptor(getState(), property)
+                } catch (error) {
+                  return undefined
+                }
+              },
+              // TODO: wrap other proxy properties
+              // TODO: ensure batching updates
+              set: function(target, key, value) {
+                // TODO: do these for deep sets from references hmm
+                // TODO: throttle these updates
+                getUpdate()((state: any) => {
+                  Reflect.set(state, key, value)
+                })
+                return true
+                // return Reflect.set(getState(), key, value)
+                // return false;
+              },
+              // to prevent variable doesn't exist errors with `with (state)`
+              has(target, property) {
+                try {
+                  // TODO: if dead trigger an immer update
+                  return Reflect.has(getState(), property)
+                } catch (error) {
+                  return false
+                }
+              },
+              get(object, property) {
+                if (
+                  property &&
+                  typeof property === 'string' &&
+                  property.endsWith('Item') &&
+                  !Reflect.has(getState(), property)
+                ) {
+                  // TODO: use $index to return a reference to the proxied version of item
+                  // so can be set as well
+                  return Reflect.get(state, property)
+                }
 
-        if (result && typeof result === 'object' && Object.keys(result).length) {
-          this.state.update((state: any) => {
-            Object.assign(result, state)
-          })
-        }
-
-        if (result && typeof result.then === 'function') {
-          result.then((val: any) => {
-            if (val && typeof val === 'object' && Object.keys(val).length) {
-              this.state.update((state: any) => {
-                Object.assign(val, state)
-              })
+                return Reflect.get(getState(), property)
+              }
             }
-          })
+          )
         }
+        // TODO: real editing method
+        try {
+          const result = new Function(
+            'data',
+            'ref',
+            'state',
+            'update',
+            'element',
+            'Builder',
+            'builder',
+            data.jsCode
+          )(data, this, state, this.state.update, this.ref, Builder, builder)
 
-        // TODO: allow exports = { } syntax?
-        // TODO: do something with reuslt like view - methods, computed, actions, properties, template, etc etc
-      } catch (error) {
-        const printEval =
-          typeof window === 'undefined' ||
-          (window.location.search.includes('builder.log=true') ||
-            document.referrer.includes('builder.io'))
-        if (printEval) {
-          console.warn('Eval error', error)
+          // TODO: what if is promise...
+
+          if (result && typeof result === 'object' && Object.keys(result).length) {
+            this.state.update((state: any) => {
+              Object.assign(result, state)
+            })
+          }
+
+          if (result && typeof result.then === 'function') {
+            result.then((val: any) => {
+              if (val && typeof val === 'object' && Object.keys(val).length) {
+                this.state.update((state: any) => {
+                  Object.assign(val, state)
+                })
+              }
+            })
+          }
+
+          // TODO: allow exports = { } syntax?
+          // TODO: do something with reuslt like view - methods, computed, actions, properties, template, etc etc
+        } catch (error) {
+          const printEval =
+            typeof window === 'undefined' ||
+            (window.location.search.includes('builder.log=true') ||
+              document.referrer.includes('builder.io'))
+          if (printEval) {
+            console.warn('Eval error', error)
+          }
         }
       }
     }
 
-    if (data && (data.httpRequests || data.builderData) && !this.props.noAsync) {
-      // TODO: another structure for this
-      for (const key in data.httpRequests) {
-        const url: string | undefined = data.httpRequests[key]
-        if (url && !this.data[key]) {
-          // TODO: if Builder.isEditing and url patches https://builder.io/api/v2/content/{editingModel}
-          // Then use builder.get().subscribe(...)
-          if (Builder.isBrowser) {
-            let lastUrl = this.evalExpression(url)
-            const builderModelRe = /builder\.io\/api\/v2\/([^\/\?]+)/i
-            const builderModelMatch = url.match(builderModelRe)
-            const model = builderModelMatch && builderModelMatch[1]
-            if (Builder.isEditing && model && builder.editingModel === model) {
-              this.subscriptions.add(
-                builder.get(model).subscribe(data => {
-                  this.state.update((state: any) => {
-                    state[key] = data
-                  })
-                })
-              )
-            } else {
-              this.throttledHandleRequest(key, lastUrl)
-              this.subscriptions.add(
-                this.onStateChange.subscribe(() => {
-                  const newUrl = this.evalExpression(url)
-                  if (newUrl !== lastUrl) {
-                    this.throttledHandleRequest(key, newUrl)
-                    lastUrl = newUrl
-                  }
-                })
-              )
-            }
-          } else {
-            this.handleRequest(key, this.evalExpression(url))
-          }
+    if (data && data.httpRequests /* || data.builderData @DEPRECATED */ && !this.props.noAsync) {
+      // Don't rerun http requests when editing and not changed
+      let skip = false
+      if (Builder.isEditing) {
+        const httpRequestsString = attempt(() => JSON.stringify(data.httpRequests))
+        if (this.lastHttpRequests === httpRequestsString) {
+          skip = true
+        } else if (!isError(httpRequestsString)) {
+          this.lastHttpRequests = httpRequestsString
         }
       }
 
-      for (const key in data.builderData) {
-        const url = data.builderData[key]
-        if (url && !this.data[key]) {
-          this.handleBuilderRequest(key, this.evalExpression(url))
+      if (!skip) {
+        // TODO: another structure for this
+        for (const key in data.httpRequests) {
+          const url: string | undefined = data.httpRequests[key]
+          if (url && !this.data[key]) {
+            // TODO: if Builder.isEditing and url patches https://builder.io/api/v2/content/{editingModel}
+            // Then use builder.get().subscribe(...)
+            if (Builder.isBrowser) {
+              let lastUrl = this.evalExpression(url)
+              const builderModelRe = /builder\.io\/api\/v2\/([^\/\?]+)/i
+              const builderModelMatch = url.match(builderModelRe)
+              const model = builderModelMatch && builderModelMatch[1]
+              if (Builder.isEditing && model && builder.editingModel === model) {
+                this.subscriptions.add(
+                  builder.get(model).subscribe(data => {
+                    this.state.update((state: any) => {
+                      state[key] = data
+                    })
+                  })
+                )
+              } else {
+                this.throttledHandleRequest(key, lastUrl)
+                this.subscriptions.add(
+                  this.onStateChange.subscribe(() => {
+                    const newUrl = this.evalExpression(url)
+                    if (newUrl !== lastUrl) {
+                      this.throttledHandleRequest(key, newUrl)
+                      lastUrl = newUrl
+                    }
+                  })
+                )
+              }
+            } else {
+              this.handleRequest(key, this.evalExpression(url))
+            }
+          }
         }
+
+        // @DEPRECATED
+        // for (const key in data.builderData) {
+        //   const url = data.builderData[key]
+        //   if (url && !this.data[key]) {
+        //     this.handleBuilderRequest(key, this.evalExpression(url))
+        //   }
+        // }
       }
     }
   }
