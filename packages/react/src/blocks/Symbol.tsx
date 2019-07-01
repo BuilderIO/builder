@@ -42,8 +42,8 @@ export class Symbol extends React.Component<SymbolProps> {
       return this.placeholder
     }
 
-    const { model, entry, data, content } = symbol
-    if (!model) {
+    const { model, entry, data, content, inline } = symbol
+    if (!model && !inline) {
       return this.placeholder
     }
     return (
