@@ -78,7 +78,17 @@ export interface FormInputProps {
   //     }
   //   } as any,
   // }),
-  noWrap: true
+  noWrap: true,
+  defaultStyles: {
+    paddingTop: '10px',
+    paddingBottom: '10px',
+    paddingLeft: '10px',
+    paddingRight: '10px',
+    borderRadius: '3px',
+    borderWidth: '1px',
+    borderStyle: 'solid',
+    borderColor: '#ccc'
+  }
 })
 export class FormInput extends React.Component<FormInputProps> {
   render() {

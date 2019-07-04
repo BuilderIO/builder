@@ -39,6 +39,16 @@ export interface FormTextAreaProps {
       defaultValue: false
     }
   ],
+  defaultStyles: {
+    paddingTop: '10px',
+    paddingBottom: '10px',
+    paddingLeft: '10px',
+    paddingRight: '10px',
+    borderRadius: '3px',
+    borderWidth: '1px',
+    borderStyle: 'solid',
+    borderColor: '#ccc'
+  },
   noWrap: true
 })
 export class TextArea extends React.Component<FormTextAreaProps> {
