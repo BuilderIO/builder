@@ -1,9 +1,13 @@
 import { GetContentOptions, Builder, builder } from '@builder.io/sdk'
 // import { BuilderPage } from '@builder.io/react'
 
+const usePreact = location.href.indexOf('builder.usePreact=true') !== -1
+
+const importReact = () => import('@builder.io/react' + usePreact ? '/dist/preact' : '')
+
 if (Builder.isIframe) {
   // TODO: systemjs
-  import('@builder.io/react')
+  importReact()
   import('@builder.io/widgets')
   import('@builder.io/email')
 }
@@ -325,7 +329,7 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
       const name =
         this.getAttribute('name') || this.getAttribute('model') || this.getAttribute('model-name')
 
-      const getReactPromise = import('@builder.io/react') // TODO: only import what needed based on what comes back
+      const getReactPromise = importReact() // TODO: only import what needed based on what comes back
       const getWidgetsPromise = import('@builder.io/widgets')
 
       let emailPromise: Promise<any> | null = null
