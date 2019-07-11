@@ -3,7 +3,7 @@ import { GetContentOptions, Builder, builder } from '@builder.io/sdk'
 
 const usePreact = location.href.indexOf('builder.usePreact=true') !== -1
 
-const importReact = () => import('@builder.io/react' + usePreact ? '/dist/preact' : '')
+const importReact = () => import('@builder.io/react' + (usePreact ? '/dist/preact' : ''))
 
 if (Builder.isIframe) {
   // TODO: systemjs
