@@ -171,18 +171,34 @@ export default [
       { file: './dist/preact.js', format: 'cjs', sourcemap: true }
     ],
     external: externalDependencies.filter(name => !name.startsWith('lodash-es')),
-    // external: ['@builder.io/sdk'],
     plugins: options.plugins
       .filter(plugin => plugin !== resolvePlugin)
       .concat([
+        regexReplace({
+          // ... do replace before commonjs
+          patterns: [
+            {
+              // regexp match with resolved path
+              // match: /formidable(\/|\\)lib/,
+              // string or regexp
+              test: /require\(['"]react(-dom)?['"]\)/g,
+              replace: 'require("preact/compat")'
+            },
+            {
+              // regexp match with resolved path
+              // match: /formidable(\/|\\)lib/,
+              // string or regexp
+              test: /from ['"]react(-dom)?['"]/g,
+              replace: 'from "preact/compat"'
+            }
+          ]
+        }),
         resolve({
           only: [/^\.{0,2}\//, /lodash\-es/]
         }),
         alias({
-          react: 'preact-compat',
-          'react-dom': 'preact-compat',
-          preact: 'preact-compat',
-          'preact-dom': 'preact-compat'
+          react: 'preact/compat',
+          'react-dom': 'preact/compat'
         })
       ])
   },
@@ -216,6 +232,11 @@ export default [
   // },
   {
     ...options,
-    output: { file: pkg.unpkg, format: 'iife', name: 'BuilderReact', sourcemap: true }
+    output: {
+      file: pkg.unpkg,
+      format: 'iife',
+      name: 'BuilderReact',
+      sourcemap: true
+    }
   }
 ]

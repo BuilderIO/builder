@@ -17,7 +17,7 @@ import { Builder, Subscription as BuilderSubscription } from '@builder.io/sdk';
 import { BuilderComponentService } from '../components/builder-component/builder-component.service';
 import { Router, NavigationEnd, NavigationStart } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { BuilderComponent } from '@builder.io/react';
+import { BuilderComponent } from '@builder.io/react/dist/preact';
 // TODO: below is optional... they can import if needed
 // import '@builder.io/widgets'
 
