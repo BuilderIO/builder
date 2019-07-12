@@ -9,9 +9,6 @@ declare module '*.png' {
   export = value;
 }
 
-declare module '@builder.io/react/dist/preact' {
-  var react = require('@builder.io/react')
-  export = react
-}
+declare module '@builder.io/react/dist/preact';
 
 declare module 'cookies';

@@ -1,10 +1,6 @@
 {
   "extends": "<root>/node_modules/ng-packagr/lib/ts/conf/tsconfig.ngc.json",
   "compilerOptions": {
-    "skipLibCheck": true,
-    "paths": {
-      "react": ["preact/compat"],
-      "react-dom": ["preact/compat"]
-    }
+    "skipLibCheck": true
   }
 }

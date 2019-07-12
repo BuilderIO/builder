@@ -17,7 +17,7 @@ import { Builder, Subscription as BuilderSubscription } from '@builder.io/sdk';
 import { BuilderComponentService } from '../components/builder-component/builder-component.service';
 import { Router, NavigationEnd, NavigationStart } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { BuilderComponent } from '@builder.io/react/dist/preact';
+const { BuilderComponent } = require('@builder.io/react/dist/preact');
 // TODO: below is optional... they can import if needed
 // import '@builder.io/widgets'
 
@@ -268,7 +268,7 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
                 if (rootNode) {
                   // TODO: two builder SDKs are loading...? external in react right?
                   const subscription = this.builder
-                    .get(this.builderModel!, {
+                    .get(model, {
                       key: key,
                       prerender: false,
                     })
@@ -277,9 +277,9 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
                         viewRef.detach();
                         // Maaaybe shouldn't be rootnode
                         BuilderComponent.renderInto(rootNode, {
-                          // Differnt builder SDK instance??
+                          // Differnt builder SDK instance?? Might be debug/link thing
                           apiKey: this.builder.apiKey!,
-                          modelName: name!,
+                          modelName: model,
                           options: {
                             entry: data ? data.id : undefined,
                             initialContent: data ? [data] : undefined,

@@ -1,7 +1,4 @@
 import { GetContentOptions, Builder, builder } from '@builder.io/sdk'
-// import { BuilderPage } from '@builder.io/react'
-
-// const usePreact = location.href.indexOf('builder.usePreact=true') !== -1
 
 const importReact = () => import('@builder.io/react')
 

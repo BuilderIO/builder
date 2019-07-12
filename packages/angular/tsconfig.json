@@ -11,10 +11,6 @@
     "strict": true,
     "target": "es5",
     "typeRoots": ["node_modules/@types"],
-    "lib": ["es6", "dom"],
-    "paths": {
-      "react": ["preact/compat"],
-      "react-dom": ["preact/compat"]
-    }
+    "lib": ["es6", "dom"]
   }
 }

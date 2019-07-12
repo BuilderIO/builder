@@ -114,17 +114,36 @@ export default [
     ],
     external: externalDependencies.filter(name => !name.startsWith('lodash-es')),
     plugins: options.plugins.filter(plugin => plugin !== resolvePlugin).concat([
+      regexReplace({
+        // ... do replace before commonjs
+        patterns: [
+          {
+            // regexp match with resolved path
+            // match: /formidable(\/|\\)lib/,
+            // string or regexp
+            test: /require\(['"]react(-dom)?['"]\)/g,
+            replace: 'require("preact/compat")'
+          },
+          {
+            // regexp match with resolved path
+            // match: /formidable(\/|\\)lib/,
+            // string or regexp
+            test: /from ['"]react(-dom)?['"]/g,
+            replace: 'from "preact/compat"'
+          }
+        ]
+      }),
       resolve({
         only: [/^\.{0,2}\//, /lodash\-es/]
       }) /*as any*/,
-      alias({
-        react: 'preact-compat',
-        'react-dom': 'preact-compat',
-        // For 3rd party libs
-        preact: 'preact-compat',
-        'preact-dom': 'preact-compat',
-        '@builder.io/react': '@builder.io/react/dist/preact'
-      }),
+      // alias({
+      //   react: 'preact/compat',
+      //   'react-dom': 'preact/compat',
+      //   // For 3rd party libs
+      //   preact: 'preact/compat',
+      //   'preact-dom': 'preact/compat',
+      //   '@builder.io/react': '@builder.io/react/dist/preact'
+      // })
     ])
   },
   // Inferno
