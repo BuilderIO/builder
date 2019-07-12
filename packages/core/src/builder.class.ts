@@ -1129,7 +1129,7 @@ export class Builder {
       }
 
       this.getContentQueue.push({ ...options, model: modelName, key });
-      if (this.getContentQueue && this.getContentQueue.length > 6) {
+      if (this.getContentQueue && this.getContentQueue.length >= 5) {
         this.flushGetContentQueue();
       } else {
         nextTick(() => {
