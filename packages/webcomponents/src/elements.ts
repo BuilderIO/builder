@@ -1,13 +1,11 @@
 import { GetContentOptions, Builder, builder } from '@builder.io/sdk'
 // import { BuilderPage } from '@builder.io/react'
 
-const usePreact = location.href.indexOf('builder.usePreact=true') !== -1
+// const usePreact = location.href.indexOf('builder.usePreact=true') !== -1
 
-const importReact = () =>
-  import(/* usePreact ? import('@builder.io/react/preact') : */ '@builder.io/react')
+const importReact = () => import('@builder.io/react')
 
-const importWidgets = () =>
-  import(/* usePreact ? import('@builder.io/widgets/preact') : */ '@builder.io/widgets')
+const importWidgets = () => import('@builder.io/widgets')
 
 if (Builder.isIframe) {
   // TODO: systemjs

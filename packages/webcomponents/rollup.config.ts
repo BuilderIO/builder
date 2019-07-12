@@ -5,6 +5,9 @@ import typescript from 'rollup-plugin-typescript2'
 import json from 'rollup-plugin-json'
 import { uglify } from 'rollup-plugin-uglify'
 import replace from 'rollup-plugin-replace'
+import alias from 'rollup-plugin-alias'
+import * as path from 'path'
+import visualizer from 'rollup-plugin-visualizer'
 
 const pkg = require('./package.json')
 
@@ -13,24 +16,37 @@ const libraryName = 'builder-webcomponents'
 const options = {
   input: `src/${libraryName}.ts`,
   // Indicate here external modules you don't wanna include in your bundle (i.e.: 'lodash')
-  external: ['vm2'],
+  external: ['vm2', 'http', 'https', 'buffer', 'zlib', 'node-fetch'],
   watch: {
     include: 'src/**'
   },
   plugins: [
     // Allow json resolution
+    replace({
+      'process.env.NODE_ENV': JSON.stringify('production'),
+      // 'React.createContext': `require('preact-context').createContext`
+    }),
     json(),
+    alias({
+      react: path.resolve('./node_modules/preact/compat/dist/compat.module.js'),
+      'react-dom': path.resolve('./node_modules/preact/compat/dist/compat.module.js')
+    }),
     // Compile TypeScript files
     typescript({ useTsconfigDeclarationDir: true }),
-    replace({
-      'process.env.NODE_ENV': JSON.stringify('production')
+    resolve({
+      // only: [/^\.{0,2}\//, /lodash\-es/]
+      module: true
     }),
-    // Allow bundling cjs modules (unlike webpack, rollup doesn't understand cjs)
-    // Allow node_modules resolution, so you can use 'external' to control
-    // which external modules to include in the bundle
-    // https://github.com/rollup/rollup-plugin-node-resolve#usage
-    resolve(),
-    commonjs({}),
+    commonjs({
+      ignore: ['http', 'https', 'node-fetch']
+      // namedExports: {
+      //   // left-hand side can be an absolute path, a path
+      //   // relative to the current directory, or the name
+      //   // of a module in node_modules
+      //   // 'preact-compat': ['h', 'Component'],
+      //   // [path.resolve('./node_modules/preact-compat/dist/preact-compat.es.js')]: ['h', 'Component']
+      // }
+    })
   ]
 }
 

@@ -1,5 +1,5 @@
 declare module '*.json'
-declare module '@builder.io/react/preact' {
+declare module '@builder.io/react/dist/preact' {
   var react = require('@builder.io/react')
   export = react
 }

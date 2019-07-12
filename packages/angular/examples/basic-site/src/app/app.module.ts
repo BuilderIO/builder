@@ -10,7 +10,7 @@ import { FooComponent } from "./foo.component";
   declarations: [AppComponent, FooComponent],
   imports: [
     BrowserModule,
-    BuilderModule.forRoot("8ad6fc88243f4ec3ab78ec0540df7954"),
+    BuilderModule.forRoot("YJIGb4i01jvw0SRdL5Bt"),
     RouterModule.forRoot([
       {
         path: "**",

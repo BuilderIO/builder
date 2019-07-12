@@ -171,6 +171,7 @@ export default [
       { file: './dist/preact.js', format: 'cjs', sourcemap: true }
     ],
     external: externalDependencies.filter(name => !name.startsWith('lodash-es')),
+    // external: ['@builder.io/sdk'],
     plugins: options.plugins
       .filter(plugin => plugin !== resolvePlugin)
       .concat([
@@ -182,41 +183,37 @@ export default [
           'react-dom': 'preact-compat',
           preact: 'preact-compat',
           'preact-dom': 'preact-compat'
-        }),
-        replace({
-          'React.Fragment': '"span"',
-          'React.createContext': `require('preact-context').createContext`
         })
       ])
   },
   // Inferno
   // TODO: may have to do react 15 modifications for support (no fragment/context?)
-  {
-    ...options,
-    output: [
-      { file: './dist/inferno.esm.js', format: 'es', sourcemap: true },
-      { file: './dist/inferno.js', format: 'cjs', sourcemap: true }
-    ],
-    external: externalDependencies.filter(
-      name => !name.startsWith('lodash-es') && !name.startsWith('create-inferno-context') // create-info-context needs bundling as it causes errors otherwise
-    ),
-    plugins: options.plugins
-      .filter(plugin => plugin !== resolvePlugin)
-      .concat([
-        resolve({
-          only: [/^\.{0,2}\//, /lodash\-es/]
-        }),
-        alias({
-          react: 'inferno-compat',
-          'react-dom': 'inferno-compat',
-          inferno: 'inferno-compat',
-          'inferno-dom': 'inferno-compat'
-        })
-        // replace({
-        //   'React.createContext': `require('create-inferno-context')`
-        // })
-      ])
-  },
+  // {
+  //   ...options,
+  //   output: [
+  //     { file: './dist/inferno.esm.js', format: 'es', sourcemap: true },
+  //     { file: './dist/inferno.js', format: 'cjs', sourcemap: true }
+  //   ],
+  //   external: externalDependencies.filter(
+  //     name => !name.startsWith('lodash-es') && !name.startsWith('create-inferno-context') // create-info-context needs bundling as it causes errors otherwise
+  //   ),
+  //   plugins: options.plugins
+  //     .filter(plugin => plugin !== resolvePlugin)
+  //     .concat([
+  //       resolve({
+  //         only: [/^\.{0,2}\//, /lodash\-es/]
+  //       }),
+  //       alias({
+  //         react: 'inferno-compat',
+  //         'react-dom': 'inferno-compat',
+  //         inferno: 'inferno-compat',
+  //         'inferno-dom': 'inferno-compat'
+  //       })
+  //       // replace({
+  //       //   'React.createContext': `require('create-inferno-context')`
+  //       // })
+  //     ])
+  // },
   {
     ...options,
     output: { file: pkg.unpkg, format: 'iife', name: 'BuilderReact', sourcemap: true }

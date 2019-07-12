@@ -207,9 +207,17 @@ export class BuilderMasonry extends React.Component<MasonryProps> {
                       }}
                       options={{
                         gutter: this.props.gutterSize,
+                        // Maybe us this
+                        fitWidth:
+                          this.props.columnWidth && this.props.columnWidth.endsWith('%')
+                            ? false
+                            : true,
                         percentPosition:
                           // TODO: option to override this too
-                          (this.props.columnWidth && this.props.columnWidth.endsWith('%')) || false
+                          (this.props.columnWidth &&
+                            (this.props.columnWidth.endsWith('%') ||
+                              this.props.columnWidth.startsWith('.'))) ||
+                          false
                       }}
                       ref={ref => (this.masonryRef = ref)}
                     >

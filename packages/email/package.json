@@ -3,8 +3,8 @@
   "version": "1.0.47-alpha.1",
   "description": "",
   "keywords": [],
-  "main": "dist/builder-email.umd.js",
-  "module": "dist/builder-email.es5.js",
+  "main": "dist/builder-email.cjs.js",
+  "module": "dist/builder-email.esm.js",
   "unpkg": "dist/builder-email.browser.js",
   "typings": "dist/types/builder-email.d.ts",
   "files": [

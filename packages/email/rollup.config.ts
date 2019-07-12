@@ -27,8 +27,7 @@ const options = {
     json(),
     // Compile TypeScript files
     // Allow bundling cjs modules (unlike webpack, rollup doesn't understand cjs)
-    commonjs({
-    }),
+    commonjs({}),
     // Allow node_modules resolution, so you can use 'external' to control
     // which external modules to include in the bundle
     // https://github.com/rollup/rollup-plugin-node-resolve#usage
@@ -40,25 +39,24 @@ const options = {
 }
 
 export default [
+  // {
+  //   ...options,
+  //   output: {
+  //     format: 'umd',
+  //     file: pkg.main,
+  //     name: 'BuilderEmail',
+  //     sourcemap: true,
+  //     amd: {
+  //       id: '@builder.io/email'
+  //     }
+  //   }
+  // },
   {
     ...options,
-    output: {
-      format: 'umd',
-      file: pkg.main,
-      name: 'BuilderEmail',
-      sourcemap: true,
-      amd: {
-        id: '@builder.io/email'
-      }
-    }
-  },
-  {
-    ...options,
-    output: {
-      format: 'es',
-      file: pkg.module,
-      sourcemap: true
-    },
+    output: [
+      { file: pkg.module, format: 'es', sourcemap: true },
+      { file: pkg.main, format: 'cjs', sourcemap: true }
+    ],
     // Do not resolve for es module build
     // TODO: should really do a cjs build too (probably for the default build instead of umd...)
     external: Object.keys(pkg.dependencies || {}),

@@ -17,6 +17,9 @@ import { Builder, Subscription as BuilderSubscription } from '@builder.io/sdk';
 import { BuilderComponentService } from '../components/builder-component/builder-component.service';
 import { Router, NavigationEnd, NavigationStart } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { BuilderComponent } from '@builder.io/react';
+// TODO: below is optional... they can import if needed
+// import '@builder.io/widgets'
 
 declare let Zone: any;
 
@@ -208,10 +211,11 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
       // TODO: cancel a request if one is pending... or set some kind of flag
       this.contentSubscription.unsubscribe();
     }
+    const key = Builder.isEditing || !this.reloadOnRoute ? model : `${model}:${this.url}`;
     const subscription = (this.contentSubscription = this.builder
       .queueGetContent(model, {
         initialContent,
-        key: Builder.isEditing || !this.reloadOnRoute ? model : `${model}:${this.url}`,
+        key,
       })
       .subscribe(
         (result: any[]) => {
@@ -260,6 +264,49 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
                 });
                 return;
               }
+              setTimeout(() => {
+                if (rootNode) {
+                  // TODO: two builder SDKs are loading...? external in react right?
+                  const subscription = this.builder
+                    .get(this.builderModel!, {
+                      key: key,
+                      prerender: false,
+                    })
+                    .subscribe(
+                      async data => {
+                        viewRef.detach();
+                        // Maaaybe shouldn't be rootnode
+                        BuilderComponent.renderInto(rootNode, {
+                          // Differnt builder SDK instance??
+                          apiKey: this.builder.apiKey!,
+                          modelName: name!,
+                          options: {
+                            entry: data ? data.id : undefined,
+                            initialContent: data ? [data] : undefined,
+                            key: key,
+                          },
+                        });
+
+                        subscription.unsubscribe();
+
+                        if (Builder.isEditing) {
+                          setTimeout(() => {
+                            parent.postMessage({ type: 'builder.updateContent' }, '*');
+                            setTimeout(() => {
+                              parent.postMessage(
+                                { type: 'builder.sdkInjected', data: { modelName: name } },
+                                '*'
+                              );
+                            }, 100);
+                          }, 100);
+                        }
+                      },
+                      async (error: any) => {
+                        // TODO
+                      }
+                    );
+                }
+              });
             }
           }
 
