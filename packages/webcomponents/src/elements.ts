@@ -4,12 +4,15 @@ import { GetContentOptions, Builder, builder } from '@builder.io/sdk'
 const usePreact = location.href.indexOf('builder.usePreact=true') !== -1
 
 const importReact = () =>
-  usePreact ? import('@builder.io/react/dist/preact') : import('@builder.io/react')
+  import(/* usePreact ? import('@builder.io/react/preact') : */ '@builder.io/react')
+
+const importWidgets = () =>
+  import(/* usePreact ? import('@builder.io/widgets/preact') : */ '@builder.io/widgets')
 
 if (Builder.isIframe) {
   // TODO: systemjs
   importReact()
-  import('@builder.io/widgets')
+  importWidgets()
   import('@builder.io/email')
 }
 
@@ -331,7 +334,7 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
         this.getAttribute('name') || this.getAttribute('model') || this.getAttribute('model-name')
 
       const getReactPromise = importReact() // TODO: only import what needed based on what comes back
-      const getWidgetsPromise = import('@builder.io/widgets')
+      const getWidgetsPromise = importWidgets()
 
       let emailPromise: Promise<any> | null = null
       if (name === 'email') {

@@ -1126,12 +1126,16 @@ export class Builder {
     if (!initialContent /* || isEditingThisModel */) {
       if (!this.getContentQueue) {
         this.getContentQueue = [];
+      }
+
+      this.getContentQueue.push({ ...options, model: modelName, key });
+      if (this.getContentQueue && this.getContentQueue.length > 6) {
+        this.flushGetContentQueue();
+      } else {
         nextTick(() => {
           this.flushGetContentQueue();
         });
       }
-
-      this.getContentQueue.push({ ...options, model: modelName, key });
     }
 
     const observable = new BehaviorSubject<ContentModelType>(null);
