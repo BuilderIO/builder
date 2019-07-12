@@ -57,6 +57,8 @@ export class BuilderComponentComponent {
   @Output() route = new EventEmitter<RouteEvent>();
   @Output() error = new EventEmitter<any>();
 
+  @Input() data: any = {}
+
   constructor(@Optional() private router?: Router) {
     // if (this.router && this.reloadOnRoute) {
     //   // TODO: should the inner function return reloadOnRoute?

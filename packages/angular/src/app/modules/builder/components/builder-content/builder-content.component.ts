@@ -26,6 +26,7 @@ export class BuilderContentComponent implements OnInit, OnDestroy {
   modelName?: string;
 
   @Input() useHtml = false;
+  @Input() data: any = {}
 
   @Output() contentLoad = new EventEmitter<any>();
   @Output() contentError = new EventEmitter<any>();

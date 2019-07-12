@@ -284,6 +284,7 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
                             entry: data ? data.id : undefined,
                             initialContent: data ? [data] : undefined,
                             key: key,
+                            data: this.component && this.component.data,
                           },
                         });
 
