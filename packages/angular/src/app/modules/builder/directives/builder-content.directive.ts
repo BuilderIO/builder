@@ -51,6 +51,8 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
 
   private clickTracked = false;
 
+  hydrated = false;
+
   constructor(
     private _viewContainer: ViewContainerRef,
     private renderer: Renderer,
@@ -90,6 +92,7 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
 
                 // TODO: track last fetched ID and don't replace dom if on new url the content is the same...
                 this.clickTracked = false;
+                this.hydrated = false;
                 // Verify the route didn't result in this component being destroyed
                 this.request();
               }
@@ -115,7 +118,7 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
 
   // @HostListener('click')
   onClick(event: MouseEvent) {
-    if (this.matchId) {
+    if (this.matchId && !this.hydrated) {
       const match = this.match;
       if (this.builder.autoTrack) {
         this.builder.trackInteraction(
@@ -216,6 +219,7 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
       .queueGetContent(model, {
         initialContent,
         key,
+        prerender: true,
       })
       .subscribe(
         (result: any[]) => {
@@ -254,8 +258,17 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
             return;
           }
 
+          const rootNode = Builder.isBrowser && viewRef.rootNodes[0];
+          const hydrate =
+            Builder.isBrowser &&
+            rootNode &&
+            match &&
+            match.data &&
+            match.data.html &&
+            this.component &&
+            this.component.hydrate;
+
           if (Builder.isBrowser) {
-            const rootNode = viewRef.rootNodes[0];
             if (rootNode) {
               if (rootNode && rootNode.classList.contains('builder-editor-injected')) {
                 viewRef.detach();
@@ -265,7 +278,7 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
                 return;
               }
               setTimeout(() => {
-                if (rootNode) {
+                if (hydrate) {
                   // TODO: two builder SDKs are loading...? external in react right?
                   const subscription = this.builder
                     .get(model, {
@@ -284,9 +297,11 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
                             entry: data ? data.id : undefined,
                             initialContent: data ? [data] : undefined,
                             key: key,
-                            data: this.component && this.component.data,
                           },
+                          data: this.component && this.component.data,
                         });
+
+                        this.hydrated = true;
 
                         subscription.unsubscribe();
 
@@ -336,7 +351,7 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
             this.match = match;
             viewRef.context.$implicit = match.data;
             // viewRef.context.results = result.map(item => ({ ...item.data, $id: item.id }));
-            if (this.builder.autoTrack) {
+            if (!hydrate && this.builder.autoTrack) {
               this.builder.trackImpression(match.id, match.variationId);
             }
           }
@@ -344,7 +359,7 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
             viewRef.detectChanges();
 
             // TODO: it's possible we don't want anything below to run if this has been destroyed
-            if (match && match.data && match.data.animations && Builder.isBrowser) {
+            if (match && match.data && match.data.animations && Builder.isBrowser && !hydrate) {
               Builder.nextTick(() => {
                 Builder.animator.bindAnimations(match.data.animations);
               });

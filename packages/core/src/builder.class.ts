@@ -348,8 +348,7 @@ export class Builder {
     const events = this.eventsQueue;
     this.eventsQueue = [];
 
-    // TODO: centralize this
-    const host = this.host;
+    const host = this.host.replace('cdn.builder.io', 'builder.io');
 
     fetch(`${host}/api/v1/track`, {
       method: 'POST',

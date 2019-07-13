@@ -27,6 +27,7 @@ export class BuilderContentComponent implements OnInit, OnDestroy {
 
   @Input() useHtml = false;
   @Input() data: any = {}
+  @Input() hydrate = true;
 
   @Output() contentLoad = new EventEmitter<any>();
   @Output() contentError = new EventEmitter<any>();

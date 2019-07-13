@@ -58,6 +58,7 @@ export class BuilderComponentComponent {
   @Output() error = new EventEmitter<any>();
 
   @Input() data: any = {}
+  @Input() hydrate = true;
 
   constructor(@Optional() private router?: Router) {
     // if (this.router && this.reloadOnRoute) {
