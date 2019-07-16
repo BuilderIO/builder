@@ -1,5 +1,0 @@
-<span [innerHTML]="text" #container></span>
-
-<builder-render *ngFor="let child of block?.children; trackBy: trackByFn"
-  [block]="child" [component]="child?.component?.name" [options]="child?.component?.options">
-</builder-render>

@@ -1,7 +1,0 @@
-<div class="container" [ngStyle]="{ gridGap: gutterSize + 'px', gridTemplateColumns: gridTemplateColumns }">
-  <div *ngFor="let column of columns" class="column">
-    <!-- TODO: <builder-blocks> -->
-    <builder-render *ngFor="let component of column.content" [component]="component.component?.component"
-      [options]="component.component?.options"></builder-render>
-  </div>
-</div>
