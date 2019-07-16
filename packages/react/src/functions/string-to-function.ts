@@ -54,7 +54,8 @@ export function stringToFunction(
 
   // FIXME: gross hack
   const useReturn =
-    (expression && !(str.includes(';') || str.includes(' return ') || str.trim().startsWith('return '))) ||
+    (expression &&
+      !(str.includes(';') || str.includes(' return ') || str.trim().startsWith('return '))) ||
     str.trim().startsWith('builder.run')
   let fn: Function = () => {
     /* intentionally empty */
@@ -138,12 +139,12 @@ export function stringToFunction(
         // tslint:enable:comment-format
       }
     } catch (error) {
-      const printEval =
-        typeof window === 'undefined' ||
-        (window.location.search.includes('builder.log=true') ||
-          document.referrer.includes('builder.io'))
+      const printEval = true
+      // typeof window === 'undefined' ||
+      // (window.location.search.includes('builder.log=true') ||
+      //   document.referrer.includes('builder.io'))
       if (printEval) {
-        console.warn('Eval error', error)
+        console.warn('Builder custom code error:', error)
       }
       if (errors) {
         errors.push(error)

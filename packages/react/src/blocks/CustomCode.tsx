@@ -24,7 +24,7 @@ export class CustomCode extends React.Component<{ code: string }> {
         try {
           new Function(script.innerText)()
         } catch (error) {
-          console.warn('Eval error', error)
+          console.warn('Builder custom code component error:', error)
         }
       }
     }
