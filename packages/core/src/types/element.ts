@@ -17,6 +17,7 @@ export interface BuilderElement {
   component?: {
     name: string,
     options?: any
+    tag?: string
   }
   bindings?: {
     [key: string]: string

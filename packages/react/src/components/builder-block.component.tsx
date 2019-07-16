@@ -57,7 +57,7 @@ function mapToCss(map: StringMap, spaces = 2, important = false) {
 
 export interface BuilderBlockProps {
   fieldName?: string
-  block: any
+  block: BuilderElement
   // TODO:
   // block: BuilderElement
   child?: boolean
@@ -150,7 +150,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
           size !== 'large' &&
           size !== 'xsmall' &&
           self.responsiveStyles[size] &&
-          Object.keys(self.responsiveStyles[size]).length
+          Object.keys(self.responsiveStyles[size]!).length
         ) {
           const emailOuterSizes = ['display', 'width', 'verticalAlign']
           const map = self.responsiveStyles[size]
@@ -160,7 +160,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
           css += `\n@media only screen and (max-width: ${sizes[size].max}px) { \n${
             this.props.emailMode ? '.' : '.builder-block.'
           }${self.id + (this.props.emailMode ? '-subject' : '')} {${mapToCss(
-            this.props.emailMode ? omit(map, emailOuterSizes) : map,
+            this.props.emailMode ? omit(map, emailOuterSizes) : (map as any),
             4,
             this.props.emailMode
           )} } }`
@@ -168,11 +168,26 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
           if (this.props.emailMode && outer && Object.keys(outer).length) {
             css += `\n@media only screen and (max-width: ${sizes[size].max}px) { \n.builder-block.${
               self.id
-            } {${mapToCss(outer, 4, true)} } }`
+            } {${mapToCss(outer as any, 4, true)} } }`
           }
         }
       }
     }
+
+    const animations = self.animations
+    if (!Builder.isBrowser && animations && animations.length) {
+      const firstAnimation = animations[0]
+      if (firstAnimation) {
+        const firstStep = firstAnimation.steps[0]
+        if (firstStep) {
+          const firstStepStyles = firstStep.styles
+          if (firstStepStyles) {
+            css += `\n.builder-block.${self.id} {${mapToCss(firstStep, 2, true)}}`
+          }
+        }
+      }
+    }
+
     return css
   }
 
@@ -216,9 +231,10 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
     let TagName = (block.tagName || 'div').toLowerCase()
 
     let InnerComponent: any
-    const componentName = block.component && (block.component.name || block.component.component)
+    const componentName =
+      block.component && (block.component.name || (block.component as any).component)
     let componentInfo: Component | null = null
-    if (block.component && !block.component.class) {
+    if (block.component && !(block.component as any).class) {
       componentInfo = Builder.components.find(item => item.name === componentName) || null
       if (componentInfo && componentInfo.class) {
         InnerComponent = componentInfo.class
@@ -238,7 +254,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
         block.responsiveStyles.large.position /*( this.styles.position */
     )
 
-    let options = {
+    let options: any = {
       // Attributes?
       ...block.properties,
       style: {} // this.styles
@@ -435,14 +451,16 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
               />
             </React.Fragment>
           ) : (
-            <TagName {...finalOptions}>
+            <TagName {...finalOptions as any}>
               {styleTag}
               {InnerComponent && (
                 <InnerComponent builderBlock={block} {...innerComponentProperties} />
               )}
-              {block.text || options.text ? (
+              {(block as any).text || options.text ? (
                 // TODO: remove me! No longer in use (maybe with rich text will be back tho)
-                <TextTag dangerouslySetInnerHTML={{ __html: options.text || block.text }} />
+                <TextTag
+                  dangerouslySetInnerHTML={{ __html: options.text || (block as any).text }}
+                />
               ) : !InnerComponent && block.children && block.children.length ? (
                 block.children.map((block: ElementType, index: number) => (
                   <BuilderBlock
@@ -465,10 +483,10 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
 
   get id() {
     const { block } = this.props
-    if (!block.id.startsWith('builder')) {
+    if (!block.id!.startsWith('builder')) {
       return 'builder-' + block.id
     }
-    return block.id
+    return block.id!
   }
 
   contents(state: BuilderBlocksState) {
