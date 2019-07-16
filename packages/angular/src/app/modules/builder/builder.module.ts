@@ -47,7 +47,7 @@ export class BuilderModule {
       if (component.class) {
         const Element = createCustomElement(component.class as any, { injector });
         // Register the custom element with the browser.
-        customElements.define((component as any).tag, Element);
+        customElements.define(component.tag, Element);
       }
     }
   }
