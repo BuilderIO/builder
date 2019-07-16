@@ -222,6 +222,8 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
       componentInfo = Builder.components.find(item => item.name === componentName) || null
       if (componentInfo && componentInfo.class) {
         InnerComponent = componentInfo.class
+      } else if (componentInfo && componentInfo.tag) {
+        InnerComponent = componentInfo.tag
       }
     }
 

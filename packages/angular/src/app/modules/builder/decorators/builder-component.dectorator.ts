@@ -1,4 +1,9 @@
-import { BuilderComponent } from '@builder.io/sdk';
+import { Builder, Component } from '@builder.io/sdk';
 
-export const Block = BuilderComponent;
-export { BuilderComponent };
+interface AngularComponent extends Component {}
+
+export function BuilderBlock(options: AngularComponent) {
+  options.type = 'angular';
+
+  return Builder.Component(options);
+}

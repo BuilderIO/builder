@@ -187,6 +187,8 @@ export interface Component {
   defaults?: Partial<BuilderElement>;
   hooks?: { [key: string]: string | Function };
   hideFromInsertMenu?: boolean;
+  // For webcomponents
+  tag?: string;
 }
 
 export function BuilderComponent(info: Partial<Component> = {}) {

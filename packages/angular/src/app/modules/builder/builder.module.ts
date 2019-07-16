@@ -1,5 +1,7 @@
-import { NgModule, ModuleWithProviders, InjectionToken } from '@angular/core';
+import { Builder } from '@builder.io/sdk';
+import { NgModule, ModuleWithProviders, Injector } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { createCustomElement } from '@angular/elements';
 import { BuilderContentComponent } from './components/builder-content/builder-content.component';
 import { BuilderContentDirective } from './directives/builder-content.directive';
 import { BuilderRenderComponent } from './components/builder-render/builder-render.component';
@@ -40,6 +42,15 @@ const components = [
   entryComponents: [components],
 })
 export class BuilderModule {
+  constructor(injector: Injector) {
+    for (const component of Builder.components) {
+      if (component.class) {
+        const Element = createCustomElement(component.class as any, { injector });
+        // Register the custom element with the browser.
+        customElements.define((component as any).tag, Element);
+      }
+    }
+  }
   public static forRoot(apiKey?: string): ModuleWithProviders {
     return {
       ngModule: BuilderModule,
