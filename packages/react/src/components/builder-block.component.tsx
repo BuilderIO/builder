@@ -178,7 +178,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
     if (!Builder.isBrowser && animations && animations.length) {
       const firstAnimation = animations[0]
       if (firstAnimation) {
-        const firstStep = firstAnimation.steps[0]
+        const firstStep = firstAnimation.steps && firstAnimation.steps[0]
         if (firstStep) {
           const firstStepStyles = firstStep.styles
           if (firstStepStyles) {
