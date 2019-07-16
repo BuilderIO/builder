@@ -235,13 +235,15 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
       block.component && (block.component.name || (block.component as any).component)
     let componentInfo: Component | null = null
     if (block.component && !(block.component as any).class) {
-      componentInfo = Builder.components.find(item => item.name === componentName) || null
-      if (componentInfo && componentInfo.class) {
-        InnerComponent = componentInfo.class
-      } else if (componentInfo && componentInfo.tag) {
-        InnerComponent = componentInfo.tag
-      } else if (block.component && block.component.tag) {
+      if (block.component && block.component.tag) {
         InnerComponent = block.component.tag
+      } else {
+        componentInfo = Builder.components.find(item => item.name === componentName) || null
+        if (componentInfo && componentInfo.class) {
+          InnerComponent = componentInfo.class
+        } else if (componentInfo && componentInfo.tag) {
+          InnerComponent = componentInfo.tag
+        }
       }
     }
 
