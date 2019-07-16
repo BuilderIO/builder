@@ -9,6 +9,7 @@ import {
 import { Router } from '@angular/router';
 import { parse } from 'url';
 import { BuilderComponentService } from './builder-component.service';
+import { GetContentOptions } from '@builder.io/sdk';
 
 function delay<T = any>(duration: number, resolveValue?: T) {
   return new Promise<T>(resolve => setTimeout(() => resolve(resolveValue), duration));
@@ -56,6 +57,8 @@ export class BuilderComponentComponent {
   @Output() load = new EventEmitter<any>();
   @Output() route = new EventEmitter<RouteEvent>();
   @Output() error = new EventEmitter<any>();
+  @Input() content: any = null;
+  @Input() options: GetContentOptions | null = null;
 
   @Input() data: any = {}
   @Input() hydrate = true;

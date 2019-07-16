@@ -8,7 +8,7 @@ import {
   Input,
   ChangeDetectionStrategy,
 } from '@angular/core';
-import { Builder } from '@builder.io/sdk';
+import { Builder, GetContentOptions } from '@builder.io/sdk';
 import { BuilderService } from '../../services/builder.service';
 import { BuilderComponentService } from '../builder-component/builder-component.service';
 
@@ -26,8 +26,10 @@ export class BuilderContentComponent implements OnInit, OnDestroy {
   modelName?: string;
 
   @Input() useHtml = false;
-  @Input() data: any = {}
+  @Input() data: any = {};
   @Input() hydrate = true;
+  @Input() content: any = null;
+  @Input() options: GetContentOptions | null = null;
 
   @Output() contentLoad = new EventEmitter<any>();
   @Output() contentError = new EventEmitter<any>();

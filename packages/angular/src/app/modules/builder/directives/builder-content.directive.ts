@@ -200,11 +200,14 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
     let receivedFirstResponse = false;
     const model = this._context.model as string;
 
+    const options = this.component && this.component.options;
+
     const initialContent =
-      Builder.isBrowser &&
-      // firstEverLoad &&
-      this.transferState &&
-      this.transferState.get(this.stateKeyString as any, null as any);
+      (this.component && this.component.content) ||
+      (Builder.isBrowser &&
+        // firstEverLoad &&
+        this.transferState &&
+        this.transferState.get(this.stateKeyString as any, null as any));
 
     // firstEverLoad = false;
 
@@ -219,6 +222,7 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
       .queueGetContent(model, {
         initialContent,
         key,
+        ...options,
         prerender: true,
       })
       .subscribe(
@@ -283,6 +287,7 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
                   const subscription = this.builder
                     .get(model, {
                       key: key,
+                      ...options,
                       prerender: false,
                     })
                     .subscribe(
