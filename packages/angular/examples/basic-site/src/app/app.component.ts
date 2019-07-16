@@ -1,7 +1,7 @@
-import { BuilderComponent } from '@builder.io/angular';
+import { BuilderBlock } from '@builder.io/angular';
 import { Component, Input } from '@angular/core';
 
-@BuilderComponent({
+@BuilderBlock({
   tag: 'custom-thing',
   name: 'Custom thing',
   inputs: [

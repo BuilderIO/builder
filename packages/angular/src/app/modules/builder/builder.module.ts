@@ -24,10 +24,14 @@ const components = [BuilderContentComponent, BuilderBlocksComponent, BuilderComp
 export class BuilderModule {
   constructor(injector: Injector) {
     for (const component of Builder.components) {
-      if (component.class) {
-        const Element = createCustomElement(component.class as any, { injector });
-        // Register the custom element with the browser.
-        customElements.define(component.tag, Element);
+      if (component.class && component.type === 'angular' && component.tag) {
+        try {
+          const Element = createCustomElement(component.class as any, { injector });
+          // Register the custom element with the browser.
+          customElements.define(component.tag, Element);
+        } catch (err) {
+          console.warn('Could not make angular element:', component.class)
+        }
       }
     }
   }
