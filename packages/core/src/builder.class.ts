@@ -11,6 +11,7 @@ import { BuilderElement } from './types/element';
 import Cookies from './classes/cookies.class';
 
 export type Url = any;
+
 const _require: NodeRequire = typeof require === 'function' ? require : ((() => null) as any);
 
 const urlParser = {
