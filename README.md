@@ -15,19 +15,19 @@ Drag and drop page building for any site.
 
 ## Supported Frameworks
 
-| Framework                                                       |                                                                    Status                                                                     |
-| --------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------: |
-| [React](#getting-started-with-react)                            |                                                                    Stable                                                                     |
-| [Next.js](packages/react/examples/next-js)                      |                                                                    Stable                                                                     |
-| [Webcomponents](https://builder.io/c/docs/webcomponents-sdk)    |                                                                    Stable                                                                     |
-| [Angular](packages/angular)                                     |                                                                    Stable                                                                     |
-| Email                                                           |                                                                    Stable                                                                     |
-| AMP                                                             |                                                                    Stable                                                                     |
-| Preact                                                          |                                                                    Stable                                                                     |
-| Vue                                                             |                                       Use [webcomponents](https://builder.io/c/docs/webcomponents-sdk)                                        |
-| React native                                                    |                                                                  Coming soon                                                                  |
-| Shopify                                                         |                                                                  Coming soon                                                                  |
-| Wordpress                                                       |                                                                  Coming soon                                                                  |
+| Framework                                                       |                                                              Status                                                              |
+| --------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------: |
+| [React](#getting-started-with-react)                            |                                                              Stable                                                              |
+| [Next.js](packages/react/examples/next-js)                      |                                                              Stable                                                              |
+| [Webcomponents](https://builder.io/c/docs/webcomponents-sdk)    |                                                              Stable                                                              |
+| [Angular](packages/angular)                                     |                                                              Stable                                                              |
+| Email                                                           |                                                              Stable                                                              |
+| AMP                                                             |                                                              Stable                                                              |
+| Preact                                                          |                                                              Stable                                                              |
+| Vue                                                             |                                 Use [webcomponents](https://builder.io/c/docs/webcomponents-sdk)                                 |
+| React native                                                    |                                                           Coming soon                                                            |
+| Shopify                                                         |                                                           Coming soon                                                            |
+| Wordpress                                                       |                                                           Coming soon                                                            |
 | **Everyting else** <br/> Go, Php, Svelte, Java, Vanilla JS, etc | Use our [HTML API](https://builder.io/c/docs/html-api) and/or <br />[webcomponents](https://builder.io/c/docs/webcomponents-sdk) |
 
 Want suppoert for something not listed here or for us to priotize something coming soon? Drop us an issue and let us know! We prioritize based on the community's needs and interests.
@@ -52,7 +52,7 @@ Then in your router
 <Route path="/something" render={() => <BuilderComponent model="page" />}>
 ```
 
-Create a new page with url "/somethign" in Builder and change the preview URL (top right corner of editor window) to your-dev-url:port/something and edit!
+Create a new page with url "/somethign" in Builder and change the [preview URL](https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F4670438a077f497d8a486f890201ae85) to localhost:port/something (e.g. localhost:8888/something if your dev server is on port 8888) and edit!
 
 ### Using your components
 
