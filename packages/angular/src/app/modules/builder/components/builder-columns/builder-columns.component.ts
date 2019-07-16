@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { BuilderComponent } from '../../decorators/builder-component.dectorator';
 
 export interface BuilderComponentInfo {
   component: string;
