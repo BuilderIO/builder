@@ -79,7 +79,7 @@ export class CustomThing {
 
 See [here](https://builder.io/c/docs/custom-react-components) for full detail on input types available.
 
-<img src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fcaeae717e29540268f7c83e9793d25b7" alt="Visual of using your Angular component in Builder">
+<img src="https://cdn.builder.io/api/v1/file/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fcaeae717e29540268f7c83e9793d25b7" alt="Visual of using your Angular component in Builder">
 
 ## Use your state or functions in your Builder pages
 
