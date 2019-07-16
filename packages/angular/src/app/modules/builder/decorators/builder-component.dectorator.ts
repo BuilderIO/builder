@@ -1,4 +1,4 @@
-import { Builder, Component } from '@builder.io/sdk';
+import { Builder, Component, Class } from '@builder.io/sdk';
 
 export interface AngularComponent extends Component {
   tag: string;
