@@ -1,3 +1,4 @@
+import '@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js';
 import { Builder } from '@builder.io/sdk';
 import { NgModule, ModuleWithProviders, Injector } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -9,7 +10,6 @@ import { BuilderContentService } from './services/builder-content.service';
 import { BuilderBlocksComponent } from './components/builder-blocks/builder-blocks.component';
 import { BuilderComponentComponent } from './components/builder-component/builder-component.component';
 import { BuilderComponentService } from './components/builder-component/builder-component.service';
-import '@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js';
 
 const directives = [BuilderContentDirective];
 
