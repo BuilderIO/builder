@@ -52,9 +52,7 @@ Then in your router
 <Route path="/something" render={() => <BuilderComponent model="page" />}>
 ```
 
-Create a new page and open your-dev-url:port/something and edit!
-
-See our [docs site](https://builder.io/c/docs/react) for more info or contact us if you run into any issues or questions!
+Create a new page with url "/somethign" in Builder and change the preview URL (top right corner of editor window) to your-dev-url:port/something and edit!
 
 ### Using your components
 
