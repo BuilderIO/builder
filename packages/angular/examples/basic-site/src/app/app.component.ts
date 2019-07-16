@@ -1,4 +1,24 @@
-import { Component } from '@angular/core';
+import { BuilderComponent } from '@builder.io/angular';
+import { Component, Input } from '@angular/core';
+
+@BuilderComponent({
+  tag: 'custom-thing',
+  name: 'Custom thing',
+  inputs: [
+    {
+      name: 'name',
+      type: 'string',
+    },
+  ],
+})
+@Component({
+  selector: 'custom-thing',
+  template: 'Hello: {{name}}',
+})
+export class CustomThing {
+  @Input()
+  name = '';
+}
 
 @Component({
   selector: 'app-root',
