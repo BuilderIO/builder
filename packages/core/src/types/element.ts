@@ -31,6 +31,6 @@ export interface BuilderElement {
   repeat?: {
     collection: string
     itemName?: string
-  }
+  } | null
   animations?: any[] // TODO: type the animation spec
 }
