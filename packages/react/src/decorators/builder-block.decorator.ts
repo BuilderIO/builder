@@ -1,7 +1,7 @@
 import { Builder, Component } from '@builder.io/sdk'
 
 interface ReactComponent extends Component {
-  tag: string;
+
 }
 
 export function BuilderBlock(options: ReactComponent) {
