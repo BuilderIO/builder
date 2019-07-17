@@ -19,7 +19,10 @@ import { BuilderComponentService } from '../builder-component/builder-component.
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BuilderContentComponent implements OnInit, OnDestroy {
-  constructor(private element: ElementRef, builderComponentService: BuilderComponentService) {
+  constructor(
+    private element: ElementRef,
+    private builderComponentService: BuilderComponentService
+  ) {
     builderComponentService.contentComponentInstance = this;
   }
 
@@ -28,7 +31,22 @@ export class BuilderContentComponent implements OnInit, OnDestroy {
   @Input() useHtml = false;
   @Input() data: any = {};
   @Input() hydrate = true;
-  @Input() content: any = null;
+
+  @Input() set content(content) {
+    const currentContent = this._content;
+    this._content = content;
+    const { contentDirectiveInstance } = this.builderComponentService;
+    if (!currentContent && content && contentDirectiveInstance) {
+      if (!contentDirectiveInstance.requesting) {
+        contentDirectiveInstance.reset();
+      }
+    }
+  }
+  get content() {
+    return this._content;
+  }
+  private _content: any;
+
   @Input() options: GetContentOptions | null = null;
 
   @Output() contentLoad = new EventEmitter<any>();

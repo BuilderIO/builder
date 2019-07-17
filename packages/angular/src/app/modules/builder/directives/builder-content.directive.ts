@@ -73,6 +73,18 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
 
   stateKey: StateKey<any> | undefined;
 
+  requesting = true;
+
+  reset() {
+    // TODO: listen to any target change? This just updates target?
+
+    // TODO: track last fetched ID and don't replace dom if on new url the content is the same...
+    this.clickTracked = false;
+    this.hydrated = false;
+    // Verify the route didn't result in this component being destroyed
+    this.request();
+  }
+
   ngOnInit() {
     const noop = () => null;
     const task = Zone.current.scheduleMacroTask('builderFetchNextTick', noop, {}, noop, noop);
@@ -93,13 +105,7 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
               }
 
               if (this.url !== this.lastUrl) {
-                // TODO: listen to any target change? This just updates target?
-
-                // TODO: track last fetched ID and don't replace dom if on new url the content is the same...
-                this.clickTracked = false;
-                this.hydrated = false;
-                // Verify the route didn't result in this component being destroyed
-                this.request();
+                this.reset();
               }
             }
           }
@@ -194,6 +200,7 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
   // TODO: service for this
   request() {
     this.lastUrl = this.url;
+    this.requesting = true;
 
     const viewRef = this._viewRef;
     if (viewRef && viewRef.destroyed) {
