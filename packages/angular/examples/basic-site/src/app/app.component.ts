@@ -20,6 +20,33 @@ export class CustomThing {
   name = '';
 }
 
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css'],
+})
+export class AppComponent {
+  title = 'app';
+
+  content = content
+
+  data = {
+    property: 'hello',
+    fn: (text: string) => alert(text),
+  };
+
+  load(event: any) {
+    console.log('load', event);
+  }
+
+  error(event: any) {
+    console.log('error', event);
+  }
+}
+
+
+
 const content = [
   {
     createdDate: 1524016953314,
@@ -56,33 +83,3 @@ const content = [
     variations: {},
   },
 ];
-
-@Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
-})
-export class AppComponent {
-  title = 'app';
-
-  // content = content;
-  options = {
-    initialContent: content
-  }
-
-  content = content
-
-  data = {
-    property: 'hello',
-    fn: (text: string) => alert(text),
-  };
-
-  load(event: any) {
-    console.log('load', event);
-  }
-
-  error(event: any) {
-    console.log('error', event);
-  }
-}
-
