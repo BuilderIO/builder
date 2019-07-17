@@ -1,4 +1,11 @@
-<a routerLink="/a" >A</a>
-<a routerLink="/b" >B</a>
-<builder-component [data]="data" (load)="load($event)" (error)="error($event)" model="page"></builder-component>
+<a routerLink="/a">A</a>
+<a routerLink="/b">B</a>
+<builder-component
+  [options]="options"
+  [content]="content"
+  [data]="data"
+  (load)="load($event)"
+  (error)="error($event)"
+  model="page"
+></builder-component>
 <router-outlet></router-outlet>

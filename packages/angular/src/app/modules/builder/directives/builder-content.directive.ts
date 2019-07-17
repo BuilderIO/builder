@@ -74,7 +74,12 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
   stateKey: StateKey<any> | undefined;
 
   ngOnInit() {
-    this.request();
+    const noop = () => null;
+    const task = Zone.current.scheduleMacroTask('builderFetchNextTick', noop, {}, noop, noop);
+    Builder.nextTick(() => {
+      this.request();
+      task.invoke();
+    });
 
     if (this.router) {
       this.subscriptions.add(
