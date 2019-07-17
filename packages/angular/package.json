@@ -45,7 +45,6 @@
     "@builder.io/react": "^1.0.54",
     "@builder.io/sdk": "^1.0.33",
     "@builder.io/widgets": "^1.0.52",
-    "@webcomponents/webcomponentsjs": "^2.2.10",
     "rxjs": ">= 2",
     "zone.js": "*"
   },

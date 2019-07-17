@@ -1,4 +1,4 @@
-import '@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js';
+import './polyfills/custom-elements-es5-adapter';
 import { Builder } from '@builder.io/sdk';
 import { NgModule, ModuleWithProviders, Injector } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -31,7 +31,7 @@ export class BuilderModule {
           // Register the custom element with the browser.
           customElements.define(component.tag, Element);
         } catch (err) {
-          console.warn('Could not make angular element:', component.class)
+          console.warn('Could not make angular element:', component.class);
         }
       }
     }

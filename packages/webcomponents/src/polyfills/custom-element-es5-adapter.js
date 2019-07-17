@@ -4,6 +4,9 @@
 ;(function() {
   'use strict'
   ;(function() {
+    if (typeof window === 'undefined') {
+      return;
+    }
     if (
       void 0 === window.Reflect ||
       void 0 === window.customElements ||
