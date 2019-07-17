@@ -2,7 +2,6 @@ import './polyfills/custom-elements-es5-adapter';
 import { Builder } from '@builder.io/sdk';
 import { NgModule, ModuleWithProviders, Injector } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { createCustomElement } from '@angular/elements';
 import { BuilderContentComponent } from './components/builder-content/builder-content.component';
 import { BuilderContentDirective } from './directives/builder-content.directive';
 import { BUILDER_API_KEY, BuilderService } from './services/builder.service';
@@ -25,10 +24,12 @@ const components = [BuilderContentComponent, BuilderBlocksComponent, BuilderComp
 export class BuilderModule {
   constructor(injector: Injector) {
     if (Builder.isBrowser) {
+      // This cannot use a normal import, via https://github.com/angular/angular/issues/24551
+      const { createCustomElement } = require('@angular/elements');
       for (const component of Builder.components) {
         if (component.class && component.type === 'angular' && component.tag) {
           try {
-            const Element = createCustomElement(component.class as any, { injector });
+            const Element = createCustomElement(component.class, { injector });
             // Register the custom element with the browser.
             customElements.define(component.tag, Element);
           } catch (err) {
