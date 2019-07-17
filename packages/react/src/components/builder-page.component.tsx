@@ -102,7 +102,11 @@ const tryEval = (str?: string, data: any = {}, errors?: Error[]): any => {
       )
     }
   } catch (error) {
-    console.warn('Could not compile javascript', error)
+    if (Builder.isBrowser) {
+      console.warn('Could not compile javascript', error)
+    } else {
+      // Add to req.options.errors to return to client
+    }
   }
   try {
     if (Builder.isBrowser) {
@@ -126,13 +130,11 @@ const tryEval = (str?: string, data: any = {}, errors?: Error[]): any => {
     if (errors) {
       errors.push(error)
     }
-    // TODO pipe to builder console only...
-    const printEval = true;
-      // typeof window === 'undefined' ||
-      // (window.location.search.includes('builder.log=true') ||
-      //   document.referrer.includes('builder.io'))
-    if (printEval) {
+
+    if (Builder.isBrowser) {
       console.warn('Builder custom code error:', error)
+    } else {
+      // Add to req.options.errors to return to client
     }
   }
 
@@ -733,12 +735,10 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
           // TODO: allow exports = { } syntax?
           // TODO: do something with reuslt like view - methods, computed, actions, properties, template, etc etc
         } catch (error) {
-          const printEval = true;
-            // typeof window === 'undefined' ||
-            // (window.location.search.includes('builder.log=true') ||
-            //   document.referrer.includes('builder.io'))
-          if (printEval) {
+          if (Builder.isBrowser) {
             console.warn('Builder custom code error:', error)
+          } else {
+            // Add to req.options.errors to return to client
           }
         }
       }

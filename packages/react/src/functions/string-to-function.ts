@@ -108,7 +108,9 @@ export function stringToFunction(
         logs.push(message)
       }
     }
-    console.warn(`Function compile error in ${str}`, error)
+    if (Builder.isBrowser) {
+      console.warn(`Function compile error in ${str}`, error)
+    }
   }
 
   const final = (fnCache[cacheKey] = (...args: any[]) => {
@@ -139,11 +141,7 @@ export function stringToFunction(
         // tslint:enable:comment-format
       }
     } catch (error) {
-      const printEval = true
-      // typeof window === 'undefined' ||
-      // (window.location.search.includes('builder.log=true') ||
-      //   document.referrer.includes('builder.io'))
-      if (printEval) {
+      if (Builder.isBrowser) {
         console.warn('Builder custom code error:', error)
       }
       if (errors) {
