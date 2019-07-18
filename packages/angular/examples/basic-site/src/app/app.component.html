@@ -2,10 +2,8 @@
 <a routerLink="/b">B</a>
 <builder-component
   [hydrate]="false"
-  [content]="content"
+  [options]="options"
   [data]="data"
-  (load)="load($event)"
-  (error)="error($event)"
-  model="page"
+  model="homepage-take-over"
 ></builder-component>
 <router-outlet></router-outlet>

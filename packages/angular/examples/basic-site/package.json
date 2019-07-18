@@ -20,7 +20,7 @@
     "@angular/platform-browser": "^5.2.0",
     "@angular/platform-browser-dynamic": "^5.2.0",
     "@angular/router": "^5.2.0",
-    "@builder.io/angular": "^1.0.28",
+    "@builder.io/angular": "^1.0.29-alpha.0",
     "@nguniversal/express-engine": "^7.1.0",
     "core-js": "^2.4.1",
     "rxjs": "^5.5.6",

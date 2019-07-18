@@ -29,7 +29,9 @@ export class CustomThing {
 export class AppComponent {
   title = 'app';
 
-  content = content
+  options = {
+    initialContent: content
+  }
 
   data = {
     property: 'hello',
