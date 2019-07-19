@@ -22,7 +22,7 @@ function App() {
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/about" exact component={About} />
-=          <Route render={({ location }) => <CatchallPage key={location.key} />} />
+          <Route render={({ location }) => <CatchallPage key={location.key} />} />
         </Switch>
       </div>
     </BrowserRouter>
