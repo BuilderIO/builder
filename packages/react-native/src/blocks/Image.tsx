@@ -5,6 +5,7 @@ import { BuilderBlock as BuilderBlockComponent } from '../components/builder-blo
 import { BuilderBlock } from '../decorators/builder-block.decorator'
 import { BuilderElement } from '@builder.io/sdk'
 import { BuilderMetaContext } from '../store/builder-meta'
+import { View, Image as ReactNativeImage } from 'react-native';
 
 const DEFAULT_ASPECT_RATIO = 0.7041
 
@@ -155,33 +156,20 @@ export class Image extends React.Component<any> {
       // <div style={{ position: 'relative', fontSize: 0 }}>
       <BuilderMetaContext.Consumer>
         {value => {
-          const amp = value.ampMode
-          const Tag = amp ? ('amp-img' as any) : 'img'
           return (
             <React.Fragment>
-              <Tag
-                {...(amp
-                  ? {
-                      layout: 'responsive',
-                      height:
-                        this.props.height ||
-                        (aspectRatio ? Math.round(aspectRatio * 1000) : undefined),
-                      width:
-                        this.props.width ||
-                        (aspectRatio ? Math.round(1000 / aspectRatio) : undefined)
-                    }
-                  : null)}
-                alt={this.props.altText}
+              <ReactNativeImage
+                // alt={this.props.altText}
                 // height={
                 //   this.props.height || (aspectRatio ? Math.round(aspectRatio * 1000) : undefined)
                 // }
                 // width={
                 //   this.props.width || (aspectRatio ? Math.round(1000 / aspectRatio) : undefined)
                 // }
-                role={!this.props.altText ? 'presentation' : undefined}
+                // role={!this.props.altText ? 'presentation' : undefined}
                 style={{
-                  objectFit: this.props.backgroundSize,
-                  objectPosition: this.props.backgroundPosition,
+                  resizeMode: this.props.backgroundSize,
+                  // objectPosition: this.props.backgroundPosition,
                   ...(aspectRatio && {
                     position: 'absolute',
                     height: '100%',
@@ -190,22 +178,14 @@ export class Image extends React.Component<any> {
                     top: 0
                   })
                 }}
-                className="builder-image"
-                src={this.props.image}
+                resizeMode={this.props.backgroundSize}
+                // className="builder-image"
+                source={this.props.image}
               />
-              {/* TODO: do this with classes like .builder-fit so can reuse styles and not duplicate */}
-              {/* TODO: maybe need to add height: auto, widht: auto or so so the image doesn't have a max widht etc */}
-              {amp && (
-                <style>{`
-                amp-img.${this.props.builderBlock && this.props.builderBlock.id} img {
-                  object-fit: ${this.props.backgroundSize};
-                  object-position: ${this.props.backgroundPosition};
-                }
-              `}</style>
-              )}
+
               {aspectRatio ? (
-                <div
-                  className="builder-image-sizer"
+                <View
+                  // className="builder-image-sizer"
                   style={{
                     width: '100%',
                     paddingTop: aspectRatio * 100 + '%',
@@ -214,10 +194,10 @@ export class Image extends React.Component<any> {
                   }}
                 >
                   {' '}
-                </div>
+                </View>
               ) : null}
               {children && children.length ? (
-                <div
+                <View
                   style={{
                     display: 'flex',
                     flexDirection: 'column',
@@ -232,7 +212,7 @@ export class Image extends React.Component<any> {
                   {children.map((block: BuilderElement, index: number) => (
                     <BuilderBlockComponent key={block.id} block={block} />
                   ))}
-                </div>
+                </View>
               ) : null}
             </React.Fragment>
           )

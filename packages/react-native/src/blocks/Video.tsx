@@ -166,6 +166,7 @@ export class Video extends React.Component<{
           muted={this.props.muted}
           controls={this.props.controls}
           repeat={this.props.loop}
+          resizeMode={this.props.fit as any}
           style={{
             width: '100%',
             height: '100%',
