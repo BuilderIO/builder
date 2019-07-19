@@ -11,14 +11,21 @@ function App() {
       <header>
         <div className="logo">MY SITE</div>
         <div className="links">
-          <Link className="link" to="/">Home</Link>
-          <Link className="link" to="/about">About</Link>
-          <Link className="link" to="/page-1">Page 1</Link>
-          <Link className="link" to="/page-2">Page 2</Link>
+          <Link className="link" to="/">
+            Home
+          </Link>
+          <Link className="link" to="/about">
+            About
+          </Link>
+          <Link className="link" to="/page-1">
+            Page 1
+          </Link>
+          <Link className="link" to="/page-2">
+            Page 2
+          </Link>
         </div>
       </header>
       <div className="App">
-
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/about" exact component={About} />
@@ -44,7 +51,9 @@ class CatchallPage extends React.Component {
             this.setState({ notFound: true });
           }
         }}
-      />
+      >
+        Loading...
+      </BuilderComponent>
     );
   }
 }
