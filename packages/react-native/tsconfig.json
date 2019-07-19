@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "moduleResolution": "node",
-    "jsx": "react-native",
+    "jsx": "react",
     "target": "es5",
     "module":"es2015",
     "lib": ["dom", "es2015"],

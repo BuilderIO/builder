@@ -71,7 +71,7 @@ export class Section extends React.Component<SectionProps> {
           width: '100%',
           alignSelf: 'stretch',
           flexGrow: 1,
-          boxSizing: 'border-box',
+          // boxSizing: 'border-box',
           maxWidth: this.props.maxWidth,
           display: 'flex',
           flexDirection: 'column',

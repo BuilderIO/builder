@@ -24,6 +24,10 @@
   "engines": {
     "node": ">=6.0.0"
   },
+  "tags": [
+    "react",
+    "builder.io"
+  ],
   "scripts": {
     "_unlink": "npm unlink *",
     "_install": "npm install",

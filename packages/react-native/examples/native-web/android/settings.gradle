@@ -1,0 +1,3 @@
+rootProject.name = 'creaternwapp'
+
+include ':app'

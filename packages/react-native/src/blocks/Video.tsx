@@ -157,7 +157,7 @@ export class Video extends React.Component<{
   render() {
     const { aspectRatio } = this.props;
     return (
-      <View style={{ position: 'relative', fontSize: 0 }}>
+      <View style={{ position: 'relative' }}>
         <ReactNativeVideo
           paused={!this.props.autoPlay}
           key={this.props.video || 'no-src'}
@@ -181,10 +181,10 @@ export class Video extends React.Component<{
         </ReactNativeVideo>
         {aspectRatio ? (
           <View
+          pointerEvents="none"
             style={{
               width: '100%',
               paddingTop: aspectRatio * 100 + '%',
-              pointerEvents: 'none',
             }}
           />
         ) : null}

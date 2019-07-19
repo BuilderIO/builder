@@ -1,13 +1,13 @@
-import React from 'react'
+import React from 'react';
 
 // import { BuilderElement } from '@builder.io/sdk'
-import { BuilderBlock as BuilderBlockComponent } from '../components/builder-block.component'
-import { BuilderBlock } from '../decorators/builder-block.decorator'
-import { BuilderElement } from '@builder.io/sdk'
-import { BuilderMetaContext } from '../store/builder-meta'
+import { BuilderBlock as BuilderBlockComponent } from '../components/builder-block.component';
+import { BuilderBlock } from '../decorators/builder-block.decorator';
+import { BuilderElement } from '@builder.io/sdk';
+import { BuilderMetaContext } from '../store/builder-meta';
 import { View, Image as ReactNativeImage } from 'react-native';
 
-const DEFAULT_ASPECT_RATIO = 0.7041
+const DEFAULT_ASPECT_RATIO = 0.7041;
 
 @BuilderBlock({
   name: 'Image',
@@ -16,7 +16,7 @@ const DEFAULT_ASPECT_RATIO = 0.7041
   defaultStyles: {
     minHeight: '20px',
     minWidth: '20px',
-    overflow: 'hidden'
+    overflow: 'hidden',
   },
   canHaveChildren: true,
   inputs: [
@@ -30,53 +30,53 @@ const DEFAULT_ASPECT_RATIO = 0.7041
       defaultValue:
         'https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d',
       onChange: (options: Map<string, any>) => {
-        const DEFAULT_ASPECT_RATIO = 0.7041
+        const DEFAULT_ASPECT_RATIO = 0.7041;
         function loadImage(url: string, timeout = 60000): Promise<HTMLImageElement> {
           return new Promise((resolve, reject) => {
-            const img = document.createElement('img')
-            let loaded = false
+            const img = document.createElement('img');
+            let loaded = false;
             img.onload = () => {
-              loaded = true
-              resolve(img)
-            }
+              loaded = true;
+              resolve(img);
+            };
 
             img.addEventListener('error', event => {
-              console.warn('Image load failed', event.error)
-              reject(event.error)
-            })
+              console.warn('Image load failed', event.error);
+              reject(event.error);
+            });
 
-            img.src = url
+            img.src = url;
             setTimeout(() => {
               if (!loaded) {
-                reject(new Error('Image load timed out'))
+                reject(new Error('Image load timed out'));
               }
-            }, timeout)
-          })
+            }, timeout);
+          });
         }
 
         function round(num: number) {
-          return Math.round(num * 1000) / 1000
+          return Math.round(num * 1000) / 1000;
         }
 
         // // TODO
-        const value = options.get('image')
-        const aspectRatio = options.get('aspectRatio')
+        const value = options.get('image');
+        const aspectRatio = options.get('aspectRatio');
         if (value && (!aspectRatio || aspectRatio === DEFAULT_ASPECT_RATIO)) {
           return loadImage(value).then(img => {
-            const possiblyUpdatedAspectRatio = options.get('aspectRatio')
+            const possiblyUpdatedAspectRatio = options.get('aspectRatio');
             if (
               options.get('image') === value &&
               (!possiblyUpdatedAspectRatio || possiblyUpdatedAspectRatio === DEFAULT_ASPECT_RATIO)
             ) {
               if (img.width && img.height) {
-                options.set('aspectRatio', round(img.height / img.width))
-                options.set('height', img.height)
-                options.set('width', img.width)
+                options.set('aspectRatio', round(img.height / img.width));
+                options.set('height', img.height);
+                options.set('width', img.width);
               }
             }
-          })
+          });
         }
-      }
+      },
     },
     {
       name: 'backgroundSize',
@@ -87,12 +87,12 @@ const DEFAULT_ASPECT_RATIO = 0.7041
         {
           label: 'cover',
           value: 'cover',
-          helperText: `The image should fill it's box, cropping when needed`
-        }
+          helperText: `The image should fill it's box, cropping when needed`,
+        },
         // TODO: add these options back
         // { label: 'auto', value: 'auto', helperText: '' },
         // { label: 'fill', value: 'fill', helperText: 'The image should fill the box, being stretched or squished if necessary' },
-      ] as any
+      ] as any,
     },
     {
       name: 'backgroundPosition',
@@ -107,18 +107,18 @@ const DEFAULT_ASPECT_RATIO = 0.7041
         'top left',
         'top right',
         'bottom left',
-        'bottom right'
-      ]
+        'bottom right',
+      ],
     },
     {
       name: 'height',
       type: 'number',
-      hideFromUI: true
+      hideFromUI: true,
     },
     {
       name: 'width',
       type: 'number',
-      hideFromUI: true
+      hideFromUI: true,
     },
     {
       name: 'aspectRatio',
@@ -126,29 +126,29 @@ const DEFAULT_ASPECT_RATIO = 0.7041
       helperText:
         "This is the ratio of height/width, e.g. set to 1.5 for a 300px wide and 200px tall photo. Set to 0 to not force the image to maintain it's aspect ratio",
       advanced: true,
-      defaultValue: DEFAULT_ASPECT_RATIO
+      defaultValue: DEFAULT_ASPECT_RATIO,
     },
     {
       name: 'altText',
       type: 'string',
       hideFromUI: true,
-      advanced: true
-    }
+      advanced: true,
+    },
     // {
     //   name: 'backgroundRepeat',
     //   type: 'text',
     //   defaultValue: 'no-repeat',
     //   enum: ['no-repeat', 'repeat', 'repeat-x', 'repeat-y'],
     // },
-  ]
+  ],
 })
 export class Image extends React.Component<any> {
   // TODO
   // static universal: BuilderElement[] = []
 
   render() {
-    const { aspectRatio, builderBlock } = this.props
-    const children = this.props.builderBlock && this.props.builderBlock.children
+    const { aspectRatio, builderBlock } = this.props;
+    const children = this.props.builderBlock && this.props.builderBlock.children;
 
     return (
       // TODO: swap-in amp components hm
@@ -175,8 +175,8 @@ export class Image extends React.Component<any> {
                     height: '100%',
                     width: '100%',
                     left: 0,
-                    top: 0
-                  })
+                    top: 0,
+                  }),
                 }}
                 resizeMode={this.props.backgroundSize}
                 // className="builder-image"
@@ -185,16 +185,14 @@ export class Image extends React.Component<any> {
 
               {aspectRatio ? (
                 <View
+                  pointerEvents="none"
                   // className="builder-image-sizer"
                   style={{
                     width: '100%',
                     paddingTop: aspectRatio * 100 + '%',
-                    pointerEvents: 'none',
-                    fontSize: 0
+                    // pointerEvents: 'none',
                   }}
-                >
-                  {' '}
-                </View>
+                />
               ) : null}
               {children && children.length ? (
                 <View
@@ -206,7 +204,7 @@ export class Image extends React.Component<any> {
                     top: 0,
                     left: 0,
                     width: '100%',
-                    height: '100%'
+                    height: '100%',
                   }}
                 >
                   {children.map((block: BuilderElement, index: number) => (
@@ -215,7 +213,7 @@ export class Image extends React.Component<any> {
                 </View>
               ) : null}
             </React.Fragment>
-          )
+          );
         }}
       </BuilderMetaContext.Consumer>
       // <div
@@ -232,6 +230,6 @@ export class Image extends React.Component<any> {
       //   }}
       //   className="builder-image"
       // />
-    )
+    );
   }
 }
