@@ -11,18 +11,10 @@ function App() {
       <header>
         <div className="logo">MY SITE</div>
         <div className="links">
-          <Link className="link" to="/">
-            Home
-          </Link>
-          <Link className="link" to="/about">
-            About
-          </Link>
-          <Link className="link" to="/page-1">
-            Page 1
-          </Link>
-          <Link className="link" to="/page-2">
-            Page 2
-          </Link>
+          <Link className="link" to="/">Home</Link>
+          <Link className="link" to="/about">About</Link>
+          <Link className="link" to="/page-1">Page 1</Link>
+          <Link className="link" to="/page-2">Page 2</Link>
         </div>
       </header>
       <div className="App">
@@ -40,9 +32,7 @@ class CatchallPage extends React.Component {
   state = { notFound: false };
 
   render() {
-    return this.state.notFound ? (
-      <NotFound /> // Your 404 content
-    ) : (
+    return !this.state.notFound ? (
       <BuilderComponent
         apiKey="bb209db71e62412dbe0114bdae18fd15"
         name="page"
@@ -54,6 +44,8 @@ class CatchallPage extends React.Component {
       >
         <div className="loading">Loading...</div>
       </BuilderComponent>
+    ) : (
+      <NotFound /> // Your 404 content
     );
   }
 }
