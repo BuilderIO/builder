@@ -44,19 +44,31 @@ npm install --save @builder.io/react
 
 Grab a free account at [builder.io](https://builder.io) and find your [API key](https://builder.io/account/organization)
 
+Next, create a new page in Builder with URL `/something` and publish it.
+
+Then, in your code:
+
 ```ts
 import { builder, BuilderComponent } from '@builder.io/react';
 
 builder.init(YOUR_KEY);
 ```
 
-Then in your router
+And in your router
 
 ```tsx
 <Route path="/something" render={() => <BuilderComponent model="page" />}>
 ```
 
-Create a new page with url "/somethign" in Builder and change the [preview URL](https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F4670438a077f497d8a486f890201ae85) to localhost:port/something (e.g. localhost:8888/something if your dev server is on port 8888) and edit!
+Create a new page with url "/something" in Builder and change the [preview URL](https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F4670438a077f497d8a486f890201ae85) to localhost:port/something (e.g. localhost:8888/something if your dev server is on port 8888) and edit!
+
+### Try it in CodeSandbox
+
+[Open this example in CodeSandbox](https://codesandbox.io/s/github/BuilderIO/builder/tree/master/examples/react)
+
+<a target="_blank" href="https://codesandbox.io/s/github/BuilderIO/builder/tree/master/examples/react">
+  <img width="597" height="375" src="https://i.imgur.com/zue72Q0.jpg">
+</a>
 
 ### Using your components
 
