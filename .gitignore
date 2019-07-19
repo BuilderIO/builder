@@ -11,3 +11,4 @@ package-lock.json
 .vscode
 .editorconfig
 .rpt2_cache/
+.cache

@@ -16,18 +16,14 @@ app.get('/about', (req, res) => {
 // Put this route last, so you will catch anything not matched by your code
 app.get('*', async (req, res) => {
   let page = await axios
-    .get(
-      `https://cdn.builder.io/api/v1/html/page?url=${
-        encodeURIComponent(req.url)
-      }&apiKey=${builderApiKey}`
-    )
+    .get(`https://cdn.builder.io/api/v1/html/page?url=${req.path}&apiKey=${builderApiKey}`)
     .catch(handleError);
 
   if (page && page.data) {
-    res.send(template(page.data.data.html));
+    res.send(template('<h2>This page is from Builder!</h2>' + page.data.data.html));
   } else {
     res.send(
-      template(`<h2>No content found :(</h2><p>Do you have a Builder page for this URL? Is it published?</p>`)
+      template(`<h2>No content found :(</h2><p>Have you published a Builder page for this URL?</p>`)
     );
   }
 });
