@@ -5,9 +5,7 @@ let builderApiKey = 'bb209db71e62412dbe0114bdae18fd15';
 let app = express();
 
 app.get('/', (req, res) => {
-  res.send(
-    template(`<h2>Welcome to the home page!</h2><p>This page comes from our code.</p>`)
-  );
+  res.send(template(`<h2>Welcome to the home page!</h2><p>This page comes from our code.</p>`));
 });
 app.get('/about', (req, res) => {
   res.send(
@@ -19,18 +17,11 @@ app.get('/about', (req, res) => {
 app.get('*', async (req, res) => {
   let page = await axios
     .get(
-      `https://cdn.builder.io/api/v1/html/page?url=${encodeURIComponent(
+      `https://qa.builder.io/api/v1/html/page?url=${encodeURIComponent(
         req.url
       )}&apiKey=${builderApiKey}`
     )
-    .catch(err => {
-      if (err.response.status === 404) {
-        // Catch 404s - no page was found for this URL, that's fine
-      } else {
-        console.warn(err);
-      }
-      return null;
-    });
+    .catch(handleError);
 
   if (page && page.data) {
     res.send(template(page.data.data.html));
@@ -47,6 +38,15 @@ app.get('*', async (req, res) => {
 app.listen(3000, () => {
   console.log('Listening on port 3000...');
 });
+
+function handleError(err) {
+  if (err.response.status === 404) {
+    // Catch 404s - no page was found for this URL, that's fine
+  } else {
+    console.warn(err);
+  }
+  return null;
+}
 
 // Basic function to render content within a standard header and footer
 // You can use any templating system you choose
