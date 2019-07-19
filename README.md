@@ -91,7 +91,7 @@ export class SimpleText extends React.Component {
 Then back at your page
 
 ```tsx
-import './simple-page'
+import './simple-text'
 
 // ...
 
