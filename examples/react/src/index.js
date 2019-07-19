@@ -52,7 +52,7 @@ class CatchallPage extends React.Component {
           }
         }}
       >
-        <span className="loading">Loading...</span>
+        <div className="loading">Loading...</div>
       </BuilderComponent>
     );
   }

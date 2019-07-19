@@ -3,6 +3,9 @@
 ### Quick start
 
 [Open this example in Codesandbox](https://codesandbox.io/s/github/BuilderIO/builder/tree/master/examples/node-express)
+<a href="https://codesandbox.io/s/github/BuilderIO/builder/tree/master/examples/node-express">
+  <img width="597" height="375" src="https://i.imgur.com/zue72Q0.jpg">
+</a>
 
 ### To run the example Locally
 
