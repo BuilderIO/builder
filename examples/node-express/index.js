@@ -17,9 +17,9 @@ app.get('/about', (req, res) => {
 app.get('*', async (req, res) => {
   let page = await axios
     .get(
-      `https://qa.builder.io/api/v1/html/page?url=${encodeURIComponent(
-        req.url
-      )}&apiKey=${builderApiKey}`
+      `https://cdn.builder.io/api/v1/html/page?url=${
+        encodeURIComponent(req.url)
+      }&apiKey=${builderApiKey}`
     )
     .catch(handleError);
 
@@ -27,10 +27,7 @@ app.get('*', async (req, res) => {
     res.send(template(page.data.data.html));
   } else {
     res.send(
-      template(`
-        <h2>No content found :(</h2>
-        <p>Do you have a Builder page for this URL? Is it published?</p>
-      `)
+      template(`<h2>No content found :(</h2><p>Do you have a Builder page for this URL? Is it published?</p>`)
     );
   }
 });
@@ -39,14 +36,14 @@ app.listen(3000, () => {
   console.log('Listening on port 3000...');
 });
 
-function handleError(err) {
+let handleError = err => {
   if (err.response.status === 404) {
     // Catch 404s - no page was found for this URL, that's fine
   } else {
     console.warn(err);
   }
   return null;
-}
+};
 
 // Basic function to render content within a standard header and footer
 // You can use any templating system you choose
