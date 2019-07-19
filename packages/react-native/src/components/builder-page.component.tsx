@@ -28,9 +28,6 @@ import { Url } from 'url';
 import { debounceNextTick } from '../functions/debonce-next-tick';
 import { View } from 'react-native';
 
-// TODO: get fetch from core JS....
-const fetch = Builder.isBrowser ? window.fetch : require('node-fetch');
-
 const sizeMap = {
   desktop: 'large',
   tablet: 'medium',
@@ -288,7 +285,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
   }
 
   updateState = (fn: (state: any) => void) => {
-    const nextState = produce(this.state.state, draftState => {
+    const nextState = produce(this.state.state, (draftState: any) => {
       fn(draftState);
       // TODO: emit dom event - what element? global?
     });

@@ -133,9 +133,7 @@ class CatchAllPage extends Component {
   };
 
   render() {
-    return this.props.notFound ? (
-      'Page not found'
-    ) : (
+    return !this.props.notFound ? (
       <BuilderComponent
         name="page"
         onContentLoad={content => {
@@ -146,6 +144,8 @@ class CatchAllPage extends Component {
       >
         Loading...
       </BuilderComponent>
+    ) : (
+      <NotFound /> // Your 404 component
     );
   }
 }

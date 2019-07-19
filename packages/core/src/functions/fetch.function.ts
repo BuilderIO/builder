@@ -92,8 +92,10 @@ export function tinyFetch(url: string, options: SimplifiedFetchOptions = {}) {
 const _require: NodeRequire = typeof require === 'function' ? require : ((() => null) as any);
 
 export const fetch: typeof tinyFetch /* | typeof window.fetch */ =
-  typeof window === 'undefined'
+  typeof global === 'object' && typeof (global as any).fetch === 'function'
+    ? (global as any).fetch
+    : typeof window === 'undefined'
     ? _require('node-fetch')
     : typeof window.fetch !== 'undefined'
-      ? window.fetch
-      : tinyFetch;
+    ? window.fetch
+    : tinyFetch;

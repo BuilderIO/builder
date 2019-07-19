@@ -88,7 +88,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
     let { block, size } = this.props;
     if (!size) {
       // TODO: use device size API for this
-      size = 'small'
+      size = 'small';
     }
     const styles = [];
     const startIndex = sizeNames.indexOf(size || 'large');
@@ -102,7 +102,21 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
     }
 
     // TODO: animations
-    return Object.assign({}, ...styles.reverse());
+    const finalStyleObject = Object.assign({}, ...styles.reverse());
+    for (const key in finalStyleObject) {
+      const value = finalStyleObject[key];
+      if (typeof value === 'string') {
+        const matched = value.match(/^(\d+)(px)?$/);
+        if (matched) {
+          finalStyleObject[key] = parseFloat(matched[1]);
+        }
+        if (value.includes('calc(')) {
+          // console.warn('calc not supported');
+          delete finalStyleObject[key];
+        }
+      }
+    }
+    return finalStyleObject;
   }
 
   componentDidMount() {
@@ -140,7 +154,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
     let TagName = View; //  (block.tagName || 'div').toLowerCase();
 
     if (block.actions && block.actions.click) {
-      TagName = TouchableWithoutFeedback as any
+      TagName = TouchableWithoutFeedback as any;
     }
 
     let InnerComponent: any;
@@ -205,7 +219,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
       for (let key in block.actions) {
         const value = block.actions[key];
         if (key === 'click') {
-          key = 'press'
+          key = 'press';
         }
         options['on' + capitalize(key)] = (event: any) => {
           const update = (cb: Function) => {
@@ -368,13 +382,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
           .split('.')
       );
       const itemName = block.repeat.itemName || (collectionName ? collectionName + 'Item' : 'item');
-      const array = this.stringToFunction(collectionPath)(
-        state.state,
-        null,
-        block,
-        {},
-        Device
-      );
+      const array = this.stringToFunction(collectionPath)(state.state, null, block, {}, Device);
       if (isArray(array)) {
         return array.map((data, index) => {
           // TODO: Builder state produce the data

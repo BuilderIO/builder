@@ -85,7 +85,8 @@ const sessionStorageKey = 'builderSessionId';
 // TODO: manually type this out
 type ContentModelType = any;
 
-export const isBrowser = typeof window !== 'undefined';
+export const isReactNative = typeof navigator === 'object' && navigator.product === 'ReactNative';
+export const isBrowser = typeof window !== 'undefined' && !isReactNative;
 export const isIframe = isBrowser && window.top !== window.self;
 
 export interface ParamsMap {
@@ -239,6 +240,8 @@ export class Builder {
 
   static isIframe = isIframe;
   static isBrowser = isBrowser;
+  static isReactNative = isReactNative;
+  static isServer = !isBrowser && !isReactNative;
 
   // TODO: this is quick and dirty, do better implementation later. Also can be unreliable
   // if page 301s etc. Use a query param instead? also could have issues with redirects. Injecting var could
@@ -1304,7 +1307,6 @@ export class Builder {
         (queryParams && hasParams ? `?${queryStr}` : '')
     ).then(
       result => {
-        const location = this.getLocation();
         for (const options of queue) {
           const keyName = options.key!;
           if (options.model === this.blockContentLoading) {

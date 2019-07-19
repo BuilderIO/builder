@@ -1,19 +1,1710 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { builder, BuilderComponent } from '@builder.io/react-native';
+builder.init('YJIGb4i01jvw0SRdL5Bt');
+builder.setUserAttributes({
+  urlPath: '/my-great-trend',
+});
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-    </View>
+    <>
+      <Text>Hello</Text>
+      <BuilderComponent content={content} model="page" />
+    </>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+const content = {
+  name: 'Header 2',
+  testRatio: 1,
+  lastUpdated: 1562873985811,
+  id: 'f9f17e958b294c1e898bf6c329717fc8',
+  createdBy: 'agZ9n5CUKRfbL9t6CaJOyVSK4Es2',
+  publishEnd: null,
+  data: {
+    cssCode:
+      'body.customer-logged-in .logged-out-button {\n    display: none;\n}\n\nbody.customer-logged-in .logged-in-button {\n    display: flex;\n}\n\n.builder-text a {\n    text-decoration: underline;\n    font-weight: bold;\n    color: #ff2b3b;\n}',
+    dynamicSymbols: {},
+    inputs: [
+      {
+        permissionsRequiredToEdit: '',
+        simpleTextOnly: false,
+        showIf: '',
+        disallowRemove: false,
+        type: 'boolean',
+        subFields: [],
+        helperText: '',
+        defaultValue: false,
+        mandatory: false,
+        name: 'showCart',
+        copyOnAdd: true,
+        onChange: '',
+        required: false,
+        advanced: false,
+        '@type': '@builder.io/core:Field',
+        hideFromFieldsEditor: false,
+        noPhotoPicker: false,
+        hidden: false,
+        hideFromUI: false,
+      },
+    ],
+    hasLinks: true,
+    symbolsUsed: {},
+    jsCode:
+      "var headerTop = document.querySelector('builder-component[name=header]');\nvar headerContainer = document.getElementById('shopify-section-header');\n\nheaderContainer.style.position = 'sticky';\nheaderContainer.style.zIndex = 10;\nheaderContainer.style.top = (-headerTop.getBoundingClientRect().top) + 'px';\n\nfunction updateBagCount(showCart) {\n    if (showCart !== false) {\n        update(function (state) {\n            state.showCart = true\n        })\n\n        setTimeout(function () {\n            update(function (state) {\n                state.showCart = false\n            })\n        }, 5000)\n    }\n\n    fetch('/cart.js')\n        .then(function (res) { return res.json() })\n        .then(function (data) {\n            var count = data.item_count;\n            document.querySelector('.bag-count .builder-text').innerText = 'BAG (' + (count || 0) + ')';\n        });\n}\n\ndocument.addEventListener('updateBagCount', updateBagCount);\nupdateBagCount(false);\n\nfunction isInCart(el) {\n    do {\n        if (el && el.classList && el.classList.contains('cart-popover')) {\n            return true;\n        }\n\n        if (el && el.classList && el.classList.contains('cart-button')) {\n            return true;\n        }\n    } while (el = el.parentElement)\n}\n\ndocument.addEventListener('click', function (event) {\n    // TODO: this state is not evergreen...\n    if (state.showCart) {\n        if (!isInCart(event.target)) {\n            update(function (state) {\n                state.showCart = false;\n            })\n        }\n    }\n})",
+    customFonts: [],
+    blocks: [
+      {
+        '@type': '@builder.io/sdk:Element',
+        '@version': 2,
+        responsiveStyles: {
+          large: {
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'stretch',
+            position: 'relative',
+            flexShrink: 0,
+            boxSizing: 'border-box',
+            width: '100vw',
+            marginLeft: 'calc(50% - 50vw)',
+          },
+        },
+        layerName: 'Header',
+        children: [
+          {
+            '@type': '@builder.io/sdk:Element',
+            '@version': 2,
+            responsiveStyles: {
+              large: {
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'stretch',
+                position: 'relative',
+                flexShrink: 0,
+                boxSizing: 'border-box',
+                marginTop: 0,
+                height: 'auto',
+                width: '100vw',
+                marginLeft: 'calc(50% - 50vw)',
+                paddingBottom: 8,
+                backgroundColor: 'rgba(0, 0, 0, 1)',
+              },
+            },
+            children: [
+              {
+                '@type': '@builder.io/sdk:Element',
+                '@version': 2,
+                responsiveStyles: {
+                  large: {
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'stretch',
+                    position: 'relative',
+                    flexShrink: 0,
+                    boxSizing: 'border-box',
+                    marginTop: '9.25px',
+                    lineHeight: 'normal',
+                    height: 'auto',
+                    textAlign: 'center',
+                    color: 'rgba(255, 255, 255, 1)',
+                    fontSize: 13,
+                    letterSpacing: 2,
+                    fontWeight: 600,
+                  },
+                },
+                id: 'builder-19e349dbfd8d4beea41fb863dc1e16a4',
+                layerLocked: false,
+                groupLocked: false,
+                component: {
+                  name: 'Text',
+                  options: {
+                    text: '<p>FREE SHIPPING OVER $100</p>',
+                  },
+                },
+              },
+            ],
+            id: 'builder-8aa652eebe8649f1b1120d7a01dfd253',
+            layerLocked: false,
+            groupLocked: false,
+          },
+          {
+            '@type': '@builder.io/sdk:Element',
+            '@version': 2,
+            responsiveStyles: {
+              large: {
+                display: 'flex',
+                flexDirection: 'row',
+                position: 'sticky  ',
+                flexShrink: 0,
+                boxSizing: 'border-box',
+                left: 0,
+                marginTop: 0,
+                backgroundColor: 'rgba(255, 255, 255, 1)',
+                alignSelf: 'stretch',
+                zIndex: 10,
+                right: 0,
+                width: '100vw',
+                marginLeft: 'calc(50% - 50vw)',
+              },
+              small: {
+                paddingLeft: 10,
+                paddingRight: 10,
+              },
+            },
+            children: [
+              {
+                '@type': '@builder.io/sdk:Element',
+                '@version': 2,
+                responsiveStyles: {
+                  large: {
+                    flexShrink: 0,
+                    boxSizing: 'border-box',
+                    marginTop: 0,
+                    backgroundColor: 'rgba(255, 255, 255, 1)',
+                    paddingBottom: 17,
+                    paddingLeft: 20,
+                    paddingRight: 20,
+                    display: 'flex',
+                    flexDirection: 'row',
+                    width: '100%',
+                    alignSelf: 'stretch',
+                    top: 0,
+                    right: 0,
+                    zIndex: 10,
+                    maxWidth: 1500,
+                  },
+                  small: {
+                    paddingLeft: 10,
+                    paddingRight: 10,
+                  },
+                },
+                children: [
+                  {
+                    '@type': '@builder.io/sdk:Element',
+                    '@version': 2,
+                    responsiveStyles: {
+                      large: {
+                        position: 'relative',
+                        flexShrink: 0,
+                        boxSizing: 'border-box',
+                        marginRight: 'auto',
+                        display: 'flex',
+                        flexDirection: 'row',
+                      },
+                    },
+                    children: [
+                      {
+                        '@type': '@builder.io/sdk:Element',
+                        '@version': 2,
+                        responsiveStyles: {
+                          large: {
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'stretch',
+                            position: 'relative',
+                            flexShrink: 0,
+                            boxSizing: 'border-box',
+                            marginTop: 15,
+                            lineHeight: 'normal',
+                            height: 'auto',
+                            textAlign: 'center',
+                            textTransform: 'uppercase',
+                            fontSize: 12,
+                            letterSpacing: 2,
+                            cursor: 'pointer',
+                            pointerEvents: 'auto',
+                            borderStyle: 'none',
+                            borderColor: 'rgba(242, 85, 70, 1)',
+                            fontWeight: 600,
+                          },
+                        },
+                        tagName: 'a',
+                        id: 'builder-ee29d590ef3d405d9da1ffd33479fa78',
+                        properties: {
+                          href: '/collections/collections-all',
+                        },
+                        linkUrl: '/collections/collections-all',
+                        layerLocked: false,
+                        groupLocked: false,
+                        component: {
+                          name: 'Text',
+                          options: {
+                            text: '<p>Shop</p>',
+                          },
+                        },
+                      },
+                      {
+                        '@type': '@builder.io/sdk:Element',
+                        '@version': 2,
+                        responsiveStyles: {
+                          large: {
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'stretch',
+                            position: 'relative',
+                            flexShrink: 0,
+                            boxSizing: 'border-box',
+                            marginTop: 15,
+                            lineHeight: 'normal',
+                            height: 'auto',
+                            textAlign: 'center',
+                            marginLeft: 30,
+                            fontWeight: 900,
+                            textTransform: 'uppercase',
+                            fontSize: 12,
+                            letterSpacing: 2,
+                            cursor: 'pointer',
+                            pointerEvents: 'auto',
+                          },
+                          small: {
+                            display: 'none',
+                          },
+                        },
+                        tagName: 'a',
+                        id: 'builder-43ae4500edce4430965cb0b37d3b741c',
+                        properties: {
+                          href: '/pages/aboutus',
+                        },
+                        linkUrl: '/pages/aboutus',
+                        layerLocked: false,
+                        groupLocked: false,
+                        component: {
+                          name: 'Text',
+                          options: {
+                            text: '<p>About</p>',
+                          },
+                        },
+                      },
+                      {
+                        '@type': '@builder.io/sdk:Element',
+                        '@version': 2,
+                        responsiveStyles: {
+                          large: {
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'stretch',
+                            position: 'relative',
+                            flexShrink: 0,
+                            boxSizing: 'border-box',
+                            marginTop: 15,
+                            lineHeight: 'normal',
+                            height: 'auto',
+                            textAlign: 'center',
+                            marginLeft: 30,
+                            fontWeight: 900,
+                            textTransform: 'uppercase',
+                            fontSize: 12,
+                            letterSpacing: 2,
+                            cursor: 'pointer',
+                            pointerEvents: 'auto',
+                          },
+                          small: {
+                            display: 'none',
+                          },
+                        },
+                        tagName: 'a',
+                        id: 'builder-c3495e91f1d94c1197104dcaa79ca5a3',
+                        properties: {
+                          href: '/blogs/news',
+                        },
+                        linkUrl: '/blogs/news',
+                        layerLocked: false,
+                        groupLocked: false,
+                        component: {
+                          name: 'Text',
+                          options: {
+                            text: '<p>Blog</p>',
+                          },
+                        },
+                      },
+                    ],
+                    id: 'builder-78755ce5c0464377a027f88e61719c52',
+                    layerLocked: false,
+                    groupLocked: false,
+                  },
+                  {
+                    '@type': '@builder.io/sdk:Element',
+                    '@version': 2,
+                    responsiveStyles: {
+                      large: {
+                        position: 'absolute',
+                        flexShrink: 0,
+                        boxSizing: 'border-box',
+                        marginRight: 'auto',
+                        display: 'flex',
+                        flexDirection: 'row',
+                        marginLeft: 'auto',
+                        cursor: 'pointer',
+                        pointerEvents: 'auto',
+                        left: 0,
+                        right: 0,
+                        width: 260,
+                        flexGrow: 0,
+                      },
+                      small: {
+                        width: 166,
+                      },
+                    },
+                    children: [
+                      {
+                        '@type': '@builder.io/sdk:Element',
+                        '@version': 2,
+                        responsiveStyles: {
+                          large: {
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'stretch',
+                            position: 'relative',
+                            flexShrink: 0,
+                            boxSizing: 'border-box',
+                            marginLeft: 'auto',
+                            lineHeight: 'normal',
+                            height: 'auto',
+                            textAlign: 'center',
+                            marginTop: 10,
+                            fontSize: 22,
+                            marginRight: 'auto',
+                            letterSpacing: 3,
+                            fontWeight: 100,
+                          },
+                        },
+                        id: 'builder-921add3cadf7433789dbd34ae50bfee1',
+                        layerLocked: false,
+                        groupLocked: false,
+                        component: {
+                          name: 'Text',
+                          options: {
+                            text: '<p>THE BEST STORE</p>',
+                          },
+                        },
+                      },
+                    ],
+                    tagName: 'a',
+                    id: 'builder-db140a642cae4d4191bd0e83fb0edb41',
+                    properties: {
+                      href: '/',
+                    },
+                    linkUrl: '/',
+                    layerLocked: false,
+                    groupLocked: false,
+                  },
+                  {
+                    '@type': '@builder.io/sdk:Element',
+                    '@version': 2,
+                    responsiveStyles: {
+                      large: {
+                        position: 'relative',
+                        flexShrink: 0,
+                        boxSizing: 'border-box',
+                        display: 'flex',
+                        flexDirection: 'row',
+                        marginLeft: 'auto',
+                        cursor: 'pointer',
+                        pointerEvents: 'auto',
+                        height: '100%',
+                        alignSelf: 'stretch',
+                      },
+                      small: {
+                        display: 'none',
+                      },
+                    },
+                    children: [
+                      {
+                        '@type': '@builder.io/sdk:Element',
+                        '@version': 2,
+                        responsiveStyles: {
+                          large: {
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'stretch',
+                            position: 'relative',
+                            flexShrink: 0,
+                            boxSizing: 'border-box',
+                            marginTop: 15,
+                            lineHeight: 'normal',
+                            height: 'auto',
+                            textAlign: 'center',
+                            marginLeft: 30,
+                            fontWeight: 900,
+                            textTransform: 'uppercase',
+                            fontSize: 12,
+                            letterSpacing: 2,
+                          },
+                        },
+                        id: 'builder-8596052652a341b1aa60bc4bc690e83a',
+                        layerLocked: false,
+                        groupLocked: false,
+                        component: {
+                          name: 'Text',
+                          options: {
+                            text: '<p>Log in</p>',
+                          },
+                        },
+                      },
+                    ],
+                    tagName: 'a',
+                    id: 'builder-3c04212b96fa443ab06451beb5121820',
+                    properties: {
+                      href: '/account/login',
+                    },
+                    linkUrl: '/account/login',
+                    class: 'logged-out-button',
+                    layerLocked: false,
+                    groupLocked: false,
+                  },
+                  {
+                    '@type': '@builder.io/sdk:Element',
+                    '@version': 2,
+                    responsiveStyles: {
+                      large: {
+                        position: 'relative',
+                        flexShrink: 0,
+                        boxSizing: 'border-box',
+                        display: 'none',
+                        flexDirection: 'row',
+                        marginLeft: 'auto',
+                        cursor: 'pointer',
+                        pointerEvents: 'auto',
+                        height: '100%',
+                        alignSelf: 'stretch',
+                      },
+                    },
+                    layerName: 'Account button',
+                    children: [
+                      {
+                        '@type': '@builder.io/sdk:Element',
+                        '@version': 2,
+                        responsiveStyles: {
+                          large: {
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'stretch',
+                            position: 'relative',
+                            flexShrink: 0,
+                            boxSizing: 'border-box',
+                            marginTop: 15,
+                            lineHeight: 'normal',
+                            height: 'auto',
+                            textAlign: 'center',
+                            marginLeft: 30,
+                            fontWeight: 900,
+                            textTransform: 'uppercase',
+                            fontSize: 12,
+                            letterSpacing: 2,
+                          },
+                          small: {
+                            display: 'none',
+                          },
+                        },
+                        id: 'builder-dd73b89b7b824039879ad769627d2f86',
+                        layerLocked: false,
+                        groupLocked: false,
+                        component: {
+                          name: 'Text',
+                          options: {
+                            text: '<p>Account</p>',
+                          },
+                        },
+                      },
+                    ],
+                    tagName: 'a',
+                    id: 'builder-74a02b43fc814b658e31b35171844e3b',
+                    properties: {
+                      href: '/account',
+                    },
+                    linkUrl: '/account',
+                    class: 'logged-in-button',
+                    layerLocked: false,
+                    groupLocked: false,
+                  },
+                  {
+                    '@type': '@builder.io/sdk:Element',
+                    '@version': 2,
+                    responsiveStyles: {
+                      large: {
+                        position: 'relative',
+                        flexShrink: 0,
+                        boxSizing: 'border-box',
+                        display: 'flex',
+                        flexDirection: 'row',
+                        cursor: 'pointer',
+                        pointerEvents: 'auto',
+                        height: '100%',
+                        alignSelf: 'stretch',
+                      },
+                      small: {
+                        display: 'none',
+                      },
+                    },
+                    tagName: 'a',
+                    id: 'builder-e4789f699490438ea6139fd8ca319c37',
+                    properties: {
+                      href: '/account/register',
+                    },
+                    linkUrl: '/account/register',
+                    class: 'logged-out-button',
+                    layerLocked: false,
+                    groupLocked: false,
+                  },
+                  {
+                    '@type': '@builder.io/sdk:Element',
+                    '@version': 2,
+                    responsiveStyles: {
+                      large: {
+                        position: 'relative',
+                        flexShrink: 0,
+                        boxSizing: 'border-box',
+                        display: 'flex',
+                        flexDirection: 'row',
+                        cursor: 'pointer',
+                        pointerEvents: 'auto',
+                        height: '100%',
+                        alignSelf: 'stretch',
+                      },
+                    },
+                    children: [
+                      {
+                        '@type': '@builder.io/sdk:Element',
+                        '@version': 2,
+                        responsiveStyles: {
+                          large: {
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'stretch',
+                            position: 'relative',
+                            flexShrink: 0,
+                            boxSizing: 'border-box',
+                            marginTop: 15,
+                            lineHeight: 'normal',
+                            height: 'auto',
+                            textAlign: 'center',
+                            marginLeft: 30,
+                            fontWeight: 900,
+                            textTransform: 'uppercase',
+                            fontSize: 12,
+                            letterSpacing: 2,
+                          },
+                        },
+                        actions: {
+                          click: 'state.showCart = !state.showCart\nevent.preventDefault()',
+                        },
+                        id: 'builder-514b7f05c7504b6badf0d77531a55ced',
+                        class: 'bag-count',
+                        layerLocked: false,
+                        groupLocked: false,
+                        component: {
+                          name: 'Text',
+                          options: {
+                            text: '<p>Bag</p>',
+                          },
+                        },
+                      },
+                    ],
+                    tagName: 'a',
+                    id: 'builder-3c9eab9a0a46473c8db5f03499fefbad',
+                    properties: {
+                      href: '/checkout',
+                    },
+                    linkUrl: '/cart',
+                    class: 'cart-button',
+                    layerLocked: false,
+                    groupLocked: false,
+                  },
+                ],
+                id: 'builder-c3bc65e8bac84f059641784781780758',
+                layerLocked: false,
+                groupLocked: false,
+              },
+            ],
+            id: 'builder-997870c7c8704b39a7f4dc1b33e1a9a8',
+            layerLocked: false,
+            groupLocked: false,
+            component: {
+              name: 'Core:Section',
+              options: {
+                maxWidth: 1200,
+              },
+            },
+          },
+          {
+            '@type': '@builder.io/sdk:Element',
+            '@version': 2,
+            responsiveStyles: {
+              large: {
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'stretch',
+                position: 'fixed',
+                flexShrink: 0,
+                boxSizing: 'border-box',
+                height: 'auto',
+                paddingBottom: 25,
+                backgroundColor: 'rgba(255, 255, 255, 1)',
+                paddingTop: 20,
+                paddingLeft: 20,
+                paddingRight: 20,
+                right: 0,
+                top: 47,
+                width: 450,
+                zIndex: 500,
+                overflow: 'auto',
+                WebkitOverflowScrolling: 'touch',
+                flexGrow: 0,
+                maxHeight: '90vh',
+                borderStyle: 'solid',
+                borderColor: 'rgba(232, 232, 232, 1)',
+                borderWidth: 1,
+                maxWidth: '100vw',
+              },
+            },
+            bindings: {
+              'style.display': "state.showCart ? 'block' : 'none'",
+            },
+            layerName: 'Cart',
+            children: [
+              {
+                '@type': '@builder.io/sdk:Element',
+                '@version': 2,
+                responsiveStyles: {
+                  large: {
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'stretch',
+                    position: 'relative',
+                    flexShrink: 0,
+                    boxSizing: 'border-box',
+                    marginTop: 14,
+                    lineHeight: 'normal',
+                    height: 'auto',
+                    textAlign: 'left',
+                    marginRight: 'auto',
+                    paddingRight: 3,
+                    marginLeft: 15,
+                    paddingBottom: 13,
+                    opacity: '0.58',
+                  },
+                },
+                id: 'builder-cda1d3ed75c043deb9518993cf3585dc',
+                layerLocked: false,
+                groupLocked: false,
+                component: {
+                  name: 'Text',
+                  options: {
+                    text: '<p>Your Bag</p>',
+                  },
+                },
+              },
+              {
+                '@type': '@builder.io/sdk:Element',
+                '@version': 2,
+                responsiveStyles: {
+                  large: {
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'stretch',
+                    position: 'relative',
+                    flexShrink: 0,
+                    boxSizing: 'border-box',
+                  },
+                },
+                id: 'builder-9dd2751efafc4883a72dafd907cb8bbe',
+                layerLocked: false,
+                groupLocked: false,
+                component: {
+                  name: 'Symbol',
+                  options: {
+                    symbol: {
+                      model: 'symbol',
+                      entry: 'ac58fba032364115a4c5af3a9f43fc77',
+                      data: {},
+                    },
+                  },
+                },
+              },
+            ],
+            id: 'builder-3065c8aaf0b1459bbea9240f086cec4d',
+            class: 'cart-popover',
+            layerLocked: false,
+            groupLocked: false,
+          },
+        ],
+        id: 'builder-ce3183a6fdb248f58910bff45c123c10',
+        properties: {
+          'data-slot': 'header',
+        },
+        layerLocked: false,
+        groupLocked: true,
+      },
+      {
+        '@type': '@builder.io/sdk:Element',
+        '@version': 2,
+        responsiveStyles: {
+          large: {
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'stretch',
+            position: 'relative',
+            flexShrink: 0,
+            boxSizing: 'border-box',
+            marginTop: 0,
+            paddingLeft: 20,
+            paddingRight: 20,
+            paddingTop: 50,
+            paddingBottom: 50,
+            width: '100vw',
+            marginLeft: 'calc(50% - 50vw)',
+          },
+        },
+        children: [
+          {
+            '@type': '@builder.io/sdk:Element',
+            '@version': 2,
+            responsiveStyles: {
+              large: {
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'stretch',
+                position: 'relative',
+                flexShrink: 0,
+                boxSizing: 'border-box',
+                marginTop: '2.34375px',
+                paddingLeft: 0,
+                paddingRight: 0,
+              },
+            },
+            id: 'builder-4a802954039b4863983d7362787ad28b',
+            layerLocked: false,
+            groupLocked: false,
+            component: {
+              name: 'Columns',
+              options: {
+                columns: [
+                  {
+                    blocks: [
+                      {
+                        '@type': '@builder.io/sdk:Element',
+                        '@version': 2,
+                        responsiveStyles: {
+                          large: {
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'stretch',
+                            flexShrink: 0,
+                            position: 'relative',
+                            marginTop: '-2.5px',
+                            textAlign: 'center',
+                            lineHeight: 'normal',
+                            height: 'auto',
+                          },
+                        },
+                        id: 'builder-d854bcd09ac244e2abdb4e9901d4c8a4',
+                        layerLocked: false,
+                        groupLocked: false,
+                        component: {
+                          name: 'Image',
+                          options: {
+                            image:
+                              'https://cdn.builder.io/api/v1/image/assets%2FagZ9n5CUKRfbL9t6CaJOyVSK4Es2%2F58ecf77d848f49c8b25d6cec90487212?width=2000&height=1000',
+                            backgroundPosition: 'center',
+                            backgroundSize: 'cover',
+                            aspectRatio: 0.7004048582995948,
+                          },
+                        },
+                      },
+                      {
+                        '@type': '@builder.io/sdk:Element',
+                        '@version': 2,
+                        responsiveStyles: {
+                          large: {
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'stretch',
+                            position: 'relative',
+                            flexShrink: 0,
+                            boxSizing: 'border-box',
+                            marginTop: 9,
+                            marginBottom: 'auto',
+                            paddingBottom: 17,
+                            paddingTop: 17,
+                          },
+                          medium: {
+                            paddingBottom: 49,
+                          },
+                        },
+                        layerName: 'Centered Box',
+                        children: [
+                          {
+                            '@type': '@builder.io/sdk:Element',
+                            '@version': 2,
+                            responsiveStyles: {
+                              large: {
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'stretch',
+                                flexShrink: 0,
+                                position: 'relative',
+                                marginTop: '-1.65625px',
+                                textAlign: 'center',
+                                lineHeight: 'normal',
+                                height: 'auto',
+                                fontSize: 28,
+                              },
+                              medium: {
+                                marginTop: '1.34375px',
+                                textAlign: 'center',
+                              },
+                              small: {
+                                fontSize: 25,
+                              },
+                            },
+                            layerName: 'Title',
+                            id: 'builder-3b7383b0b8a24253bda793de0cb48cf0',
+                            layerLocked: false,
+                            groupLocked: false,
+                            component: {
+                              name: 'Text',
+                              options: {
+                                text: '<p>Something Great to Say</p>',
+                              },
+                            },
+                          },
+                          {
+                            '@type': '@builder.io/sdk:Element',
+                            '@version': 2,
+                            responsiveStyles: {
+                              large: {
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'stretch',
+                                flexShrink: 0,
+                                position: 'relative',
+                                marginTop: '23.59375px',
+                                textAlign: 'center',
+                                lineHeight: 'normal',
+                                height: 'auto',
+                                fontSize: 18,
+                                color: 'rgba(86, 86, 86, 1)',
+                              },
+                              medium: {
+                                textAlign: 'center',
+                              },
+                              small: {
+                                fontSize: 15,
+                              },
+                            },
+                            layerName: 'Subtitle',
+                            id: 'builder-dbf35ef122d3497e96184155cb8837c3',
+                            layerLocked: false,
+                            groupLocked: false,
+                            component: {
+                              name: 'Text',
+                              options: {
+                                text:
+                                  '<p>Some more great things to elaborate on that wonderful things you have to tell your audience</p>',
+                              },
+                            },
+                          },
+                        ],
+                        id: 'builder-00e5b98b7ac64cb89fe943fadf6c430e',
+                        layerLocked: false,
+                        groupLocked: false,
+                      },
+                    ],
+                  },
+                  {
+                    blocks: [
+                      {
+                        '@type': '@builder.io/sdk:Element',
+                        '@version': 2,
+                        responsiveStyles: {
+                          large: {
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'stretch',
+                            flexShrink: 0,
+                            position: 'relative',
+                            marginTop: '-2.5px',
+                            textAlign: 'center',
+                            lineHeight: 'normal',
+                            height: 'auto',
+                          },
+                        },
+                        id: 'builder-8d7e73c150b7423ea1fd7a6c88cb5e43',
+                        layerLocked: false,
+                        groupLocked: false,
+                        component: {
+                          name: 'Image',
+                          options: {
+                            image:
+                              'https://cdn.builder.io/api/v1/image/assets%2FagZ9n5CUKRfbL9t6CaJOyVSK4Es2%2Fd938526f46db4a38aa96b879f51b2df5?width=2000&height=1000',
+                            backgroundPosition: 'center',
+                            backgroundSize: 'cover',
+                            aspectRatio: 0.7004048582995948,
+                          },
+                        },
+                      },
+                      {
+                        '@type': '@builder.io/sdk:Element',
+                        '@version': 2,
+                        responsiveStyles: {
+                          large: {
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'stretch',
+                            position: 'relative',
+                            flexShrink: 0,
+                            boxSizing: 'border-box',
+                            marginTop: 9,
+                            marginBottom: 'auto',
+                            paddingBottom: 17,
+                            paddingTop: 17,
+                          },
+                          medium: {
+                            paddingBottom: 49,
+                          },
+                        },
+                        layerName: 'Centered Box',
+                        children: [
+                          {
+                            '@type': '@builder.io/sdk:Element',
+                            '@version': 2,
+                            responsiveStyles: {
+                              large: {
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'stretch',
+                                flexShrink: 0,
+                                position: 'relative',
+                                marginTop: '-1.65625px',
+                                textAlign: 'center',
+                                lineHeight: 'normal',
+                                height: 'auto',
+                                fontSize: 28,
+                              },
+                              medium: {
+                                marginTop: '1.34375px',
+                                textAlign: 'center',
+                              },
+                              small: {
+                                fontSize: 25,
+                              },
+                            },
+                            layerName: 'Title',
+                            id: 'builder-6c0d411949ea4a03b7b399eeb1626fec',
+                            layerLocked: false,
+                            groupLocked: false,
+                            component: {
+                              name: 'Text',
+                              options: {
+                                text: '<p>Something Great to Say</p>',
+                              },
+                            },
+                          },
+                          {
+                            '@type': '@builder.io/sdk:Element',
+                            '@version': 2,
+                            responsiveStyles: {
+                              large: {
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'stretch',
+                                flexShrink: 0,
+                                position: 'relative',
+                                marginTop: '23.59375px',
+                                textAlign: 'center',
+                                lineHeight: 'normal',
+                                height: 'auto',
+                                fontSize: 18,
+                                color: 'rgba(86, 86, 86, 1)',
+                              },
+                              medium: {
+                                textAlign: 'center',
+                              },
+                              small: {
+                                fontSize: 15,
+                              },
+                            },
+                            layerName: 'Subtitle',
+                            id: 'builder-80adc5225a0240f696105586a45e8659',
+                            layerLocked: false,
+                            groupLocked: false,
+                            component: {
+                              name: 'Text',
+                              options: {
+                                text:
+                                  '<p>Some more great things to elaborate on that wonderful things you have to tell your audience</p>',
+                              },
+                            },
+                          },
+                        ],
+                        id: 'builder-d9b6e2c8df5a440a9b21299dc87bf723',
+                        layerLocked: false,
+                        groupLocked: false,
+                      },
+                    ],
+                  },
+                ],
+                space: 36,
+                stackColumnsAt: 'tablet',
+                reverseColumnsWhenStacked: false,
+              },
+            },
+          },
+        ],
+        id: 'builder-e94017f787f547b49848acd886bec545',
+        layerLocked: false,
+        groupLocked: false,
+        component: {
+          name: 'Core:Section',
+          options: {
+            maxWidth: 1200,
+          },
+        },
+      },
+    ],
+    url: '/header',
+    state: {
+      deviceSize: 'large',
+      location: {
+        host: 'cdn.builder.codes',
+        pathname: '/api/v1/render-page',
+        path: ['api', 'v1', 'render-page'],
+        query: {},
+      },
+    },
   },
-});
+  createdDate: 1556835633443,
+  query: [
+    {
+      operator: 'is',
+      value: '/header',
+      property: 'urlPath',
+    },
+  ],
+  startDate: 1562787652000,
+  screenshot:
+    'https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F07947f01b9f24d619329cbe2026659ad',
+  publishStart: null,
+  published: 'published',
+  lastUpdatedBy: 'agZ9n5CUKRfbL9t6CaJOyVSK4Es2',
+  variations: {},
+  modelId: '38834b40eced4c24947a3909cb42be3e',
+};
+
+const trendContent = {
+  name: 'My great trend',
+  testRatio: 1,
+  lastUpdated: 1563415265316,
+  id: 'c59821cfe95f46bebf6a3c286608e512',
+  createdBy: 'agZ9n5CUKRfbL9t6CaJOyVSK4Es2',
+  publishEnd: null,
+  data: {
+    hasLinks: false,
+    symbolsUsed: {},
+    cssCode:
+      '.builder-heading-1{font-size:2em;margin:.67em 0}.builder-heading-2{font-size:1.5em;margin:.75em 0}.builder-heading-3{font-size:1.17em;margin:.83em 0}.builder-heading-4,.builder-paragraph{margin:1.12em 0}.builder-heading-5{font-size:.83em;margin:1.5em 0}.builder-heading-6{font-size:.75em;margin:1.67em 0}.builder-heading-1,.builder-heading-2,.builder-heading-3,.builder-heading-4,.builder-heading-5,.builder-heading-6{font-weight:bolder}',
+    dynamicSymbols: {},
+    blocks: [
+      {
+        '@type': '@builder.io/sdk:Element',
+        '@version': 2,
+        responsiveStyles: {
+          large: {
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'stretch',
+            position: 'relative',
+            flexShrink: 0,
+            boxSizing: 'border-box',
+            marginTop: 20,
+          },
+        },
+        id: 'builder-5b4e75a174d14961810ef33136b35901',
+        layerLocked: false,
+        groupLocked: false,
+        component: {
+          name: 'Symbol',
+          options: {
+            symbol: {
+              model: 'symbol',
+              entry: '916d1898ae684cc9ae0689a0058009e9',
+              data: {
+                trendId: 'best-summer-fashion-on-sale',
+              },
+              content: {
+                createdBy: '',
+                createdDate: 1562009380616,
+                data: {
+                  cssCode:
+                    '.builder-heading-1{font-size:2em;margin:.67em 0}.builder-heading-2{font-size:1.5em;margin:.75em 0}.builder-heading-3{font-size:1.17em;margin:.83em 0}.builder-heading-4,.builder-paragraph{margin:1.12em 0}.builder-heading-5{font-size:.83em;margin:1.5em 0}.builder-heading-6{font-size:.75em;margin:1.67em 0}.builder-heading-1,.builder-heading-2,.builder-heading-3,.builder-heading-4,.builder-heading-5,.builder-heading-6{font-weight:bolder}\n\n.builder-text a {\n    color: black;\n    font-weight: bold;\n    text-decoration: underline;\n}',
+                  dynamicSymbols: {},
+                  hasLinks: true,
+                  httpRequests: {
+                    handleByRetailerId: 'https://builder.io/api/v1/get-rakuten-cash-back',
+                    trend:
+                      "https://builder.io/api/v1/proxy-api?url=https%3A%2F%2Fwww.shopstyle.com%2Fapi%2Fv2%2Fsite%2Fexplore%3Fid%3D{{state.trendId || 'work-wardrobe-with-express'}}%26includeDrafts%3Dfalse%26pid%3Dshopstyle%26view%3Dangular",
+                  },
+                  inputs: [
+                    {
+                      '@type': '@builder.io/core:Field',
+                      advanced: false,
+                      copyOnAdd: true,
+                      defaultValue: 'work-wardrobe-with-express',
+                      disallowRemove: false,
+                      helperText: '',
+                      hidden: false,
+                      hideFromFieldsEditor: false,
+                      hideFromUI: false,
+                      mandatory: false,
+                      name: 'trendId',
+                      noPhotoPicker: false,
+                      onChange: '',
+                      permissionsRequiredToEdit: '',
+                      required: false,
+                      showIf: '',
+                      simpleTextOnly: false,
+                      subFields: [],
+                      type: 'text',
+                    },
+                  ],
+                  jsCode: '',
+                  symbolsUsed: {},
+                  blocks: [
+                    {
+                      '@type': '@builder.io/sdk:Element',
+                      '@version': 2,
+                      responsiveStyles: {
+                        large: {
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'stretch',
+                          position: 'relative',
+                          flexShrink: 0,
+                          boxSizing: 'border-box',
+                          marginTop: 0,
+                          paddingLeft: 20,
+                          paddingRight: 20,
+                          paddingTop: 0,
+                          paddingBottom: 0,
+                          width: '100vw',
+                          // marginLeft: 'calc(50% - 50vw)',
+                        },
+                      },
+                      children: [
+                        {
+                          '@type': '@builder.io/sdk:Element',
+                          '@version': 2,
+                          responsiveStyles: {
+                            large: {
+                              display: 'flex',
+                              flexDirection: 'column',
+                              alignItems: 'stretch',
+                              position: 'relative',
+                              flexShrink: 0,
+                              boxSizing: 'border-box',
+                              marginTop: 20,
+                              lineHeight: 'normal',
+                              height: 'auto',
+                              textAlign: 'center',
+                              fontSize: 36,
+                              opacity: 0.73,
+                            },
+                            small: {
+                              fontSize: 26,
+                            },
+                          },
+                          bindings: {
+                            'component.options.text':
+                              "state.trend && state.trend.htmlProperties.title || ''",
+                          },
+                          id: 'builder-69d2d8aea2b146a4ace137abf51fdcc6',
+                          layerLocked: false,
+                          groupLocked: false,
+                          component: {
+                            name: 'Text',
+                            options: {
+                              text: '<p>Enter some text...</p>',
+                            },
+                          },
+                        },
+                      ],
+                      id: 'builder-b57ce51abf2b4d2391eec92836494b37',
+                      layerLocked: false,
+                      groupLocked: false,
+                      component: {
+                        name: 'Core:Section',
+                        options: {
+                          maxWidth: 1200,
+                        },
+                      },
+                    },
+                    {
+                      '@type': '@builder.io/sdk:Element',
+                      '@version': 2,
+                      responsiveStyles: {
+                        large: {
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'stretch',
+                          position: 'relative',
+                          flexShrink: 0,
+                          boxSizing: 'border-box',
+                          marginTop: 0,
+                          paddingLeft: 20,
+                          paddingRight: 20,
+                          paddingTop: 20,
+                          paddingBottom: 20,
+                          width: '100vw',
+                          // marginLeft: 'calc(50% - 50vw)',
+                        },
+                      },
+                      repeat: {
+                        collection: 'state.trend.modules',
+                      },
+                      children: [
+                        {
+                          '@type': '@builder.io/sdk:Element',
+                          '@version': 2,
+                          responsiveStyles: {
+                            large: {
+                              display: 'flex',
+                              flexDirection: 'row',
+                              position: 'relative',
+                              flexShrink: 0,
+                              boxSizing: 'border-box',
+                              flexWrap: 'wrap',
+                              justifyContent: 'center',
+                            },
+                          },
+                          children: [
+                            {
+                              '@type': '@builder.io/sdk:Element',
+                              '@version': 2,
+                              responsiveStyles: {
+                                large: {
+                                  display: 'flex',
+                                  flexDirection: 'column',
+                                  alignItems: 'stretch',
+                                  position: 'relative',
+                                  flexShrink: 0,
+                                  boxSizing: 'border-box',
+                                  marginTop: 20,
+                                  height: 'auto',
+                                  width: 199,
+                                  paddingBottom: 30,
+                                  paddingLeft: 13,
+                                  paddingRight: 13,
+                                },
+                                small: {
+                                  width: '45%',
+                                  paddingLeft: 6,
+                                  paddingRight: 6,
+                                },
+                              },
+                              actions: {
+                                click: ' ',
+                              },
+                              bindings: {
+                                href:
+                                  "var handle = state.handleByRetailerId && state.handleByRetailerId.map[state.productsItem.retailer.id]\nif (handle) {\n    return 'https://rakuten.com/' + handle.url + '?store_url=' + encodeURIComponent(state.productsItem.directUrl)\n} else {\n    return state.productsItem.clickUrl\n}",
+                              },
+                              repeat: {
+                                collection: 'state.modulesItem.products',
+                              },
+                              children: [
+                                {
+                                  '@type': '@builder.io/sdk:Element',
+                                  '@version': 2,
+                                  responsiveStyles: {
+                                    large: {
+                                      display: 'flex',
+                                      flexDirection: 'column',
+                                      alignItems: 'stretch',
+                                      position: 'relative',
+                                      flexShrink: 0,
+                                      boxSizing: 'border-box',
+                                      minHeight: 20,
+                                      minWidth: 20,
+                                      overflow: 'hidden',
+                                    },
+                                  },
+                                  bindings: {
+                                    'component.options.image':
+                                      'state.productsItem.image.sizes.XLarge.url',
+                                  },
+                                  id: 'builder-e8e6481f5b9c488eb269e0a5b38fa4b0',
+                                  layerLocked: false,
+                                  groupLocked: false,
+                                  component: {
+                                    name: 'Image',
+                                    options: {
+                                      image:
+                                        'https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d',
+                                      backgroundSize: 'contain',
+                                      backgroundPosition: 'center',
+                                      aspectRatio: 1.3636,
+                                    },
+                                  },
+                                },
+                                {
+                                  '@type': '@builder.io/sdk:Element',
+                                  '@version': 2,
+                                  responsiveStyles: {
+                                    large: {
+                                      display: 'flex',
+                                      flexDirection: 'column',
+                                      alignItems: 'stretch',
+                                      position: 'relative',
+                                      flexShrink: 0,
+                                      boxSizing: 'border-box',
+                                      marginTop: 20,
+                                      lineHeight: 'normal',
+                                      height: 'auto',
+                                      textAlign: 'center',
+                                      opacity: 0.57,
+                                      fontSize: 13,
+                                    },
+                                  },
+                                  bindings: {
+                                    'component.options.text': 'state.productsItem.brandedName',
+                                  },
+                                  id: 'builder-66af795225934811ab67c5d5b2e81987',
+                                  layerLocked: false,
+                                  groupLocked: false,
+                                  component: {
+                                    name: 'Text',
+                                    options: {
+                                      text: '<p>Enter some text...</p>',
+                                    },
+                                  },
+                                },
+                                {
+                                  '@type': '@builder.io/sdk:Element',
+                                  '@version': 2,
+                                  responsiveStyles: {
+                                    large: {
+                                      display: 'flex',
+                                      flexDirection: 'column',
+                                      alignItems: 'stretch',
+                                      position: 'relative',
+                                      flexShrink: 0,
+                                      boxSizing: 'border-box',
+                                      marginTop: 14,
+                                      lineHeight: 'normal',
+                                      height: 'auto',
+                                      textAlign: 'center',
+                                    },
+                                  },
+                                  bindings: {
+                                    'component.options.text': 'state.productsItem.priceLabel',
+                                  },
+                                  id: 'builder-2d17c91a51db4ca78dc76184f79ed329',
+                                  layerLocked: false,
+                                  groupLocked: false,
+                                  component: {
+                                    name: 'Text',
+                                    options: {
+                                      text: '<p>Enter some text...</p>',
+                                    },
+                                  },
+                                },
+                                {
+                                  '@type': '@builder.io/sdk:Element',
+                                  '@version': 2,
+                                  responsiveStyles: {
+                                    large: {
+                                      display: 'flex',
+                                      flexDirection: 'column',
+                                      alignItems: 'stretch',
+                                      position: 'relative',
+                                      flexShrink: 0,
+                                      boxSizing: 'border-box',
+                                      marginTop: 20,
+                                      lineHeight: 'normal',
+                                      height: 'auto',
+                                      textAlign: 'center',
+                                      color: 'rgba(239, 6, 6, 1)',
+                                    },
+                                    small: {
+                                      fontSize: 14,
+                                    },
+                                  },
+                                  bindings: {
+                                    'component.options.text':
+                                      "return state.handleByRetailerId.map && state.handleByRetailerId.map[state.productsItem.retailer.id] && state.handleByRetailerId.map[state.productsItem.retailer.id].cashBackText.split(' was ')[0] || ''",
+                                  },
+                                  id: 'builder-80cfb4c395b2468e94e3d6534a77bc5b',
+                                  layerLocked: false,
+                                  groupLocked: false,
+                                  component: {
+                                    name: 'Text',
+                                    options: {
+                                      text: '<p>Enter some text...</p>',
+                                    },
+                                  },
+                                },
+                              ],
+                              tagName: 'a',
+                              id: 'builder-f89c86989aa144bc8620873f25eba679',
+                              properties: {
+                                target: '_blank',
+                              },
+                              layerLocked: false,
+                              groupLocked: false,
+                            },
+                          ],
+                          id: 'builder-7e170b4c08bb48e59adc9e2599d87366',
+                          layerLocked: false,
+                          groupLocked: false,
+                        },
+                        {
+                          '@type': '@builder.io/sdk:Element',
+                          '@version': 2,
+                          responsiveStyles: {
+                            large: {
+                              display: 'flex',
+                              flexDirection: 'column',
+                              alignItems: 'stretch',
+                              position: 'relative',
+                              flexShrink: 0,
+                              boxSizing: 'border-box',
+                              marginTop: 20,
+                              height: 2,
+                              backgroundColor: 'rgba(0, 0, 0, 1)',
+                              width: 80,
+                              marginLeft: 'auto',
+                              marginRight: 'auto',
+                            },
+                          },
+                          bindings: {
+                            hide: '!state.modulesItem.title',
+                          },
+                          id: 'builder-02ede753c8be44f68465e000d1a57084',
+                          layerLocked: false,
+                          groupLocked: false,
+                        },
+                        {
+                          '@type': '@builder.io/sdk:Element',
+                          '@version': 2,
+                          responsiveStyles: {
+                            large: {
+                              display: 'flex',
+                              flexDirection: 'column',
+                              alignItems: 'stretch',
+                              position: 'relative',
+                              flexShrink: 0,
+                              boxSizing: 'border-box',
+                              lineHeight: 'normal',
+                              height: 'auto',
+                              textAlign: 'center',
+                              fontSize: 22,
+                              marginTop: 24,
+                              letterSpacing: 3,
+                              fontWeight: 600,
+                            },
+                            small: {
+                              fontSize: 20,
+                            },
+                          },
+                          bindings: {
+                            'component.options.text': 'state.modulesItem.title',
+                            hide: '!state.modulesItem.title',
+                          },
+                          id: 'builder-23ba9dc33cc04bf1a0d5149a8d9985f6',
+                          layerLocked: false,
+                          groupLocked: false,
+                          component: {
+                            name: 'Text',
+                            options: {
+                              text: '<p>Enter some text...</p>',
+                            },
+                          },
+                        },
+                        {
+                          '@type': '@builder.io/sdk:Element',
+                          '@version': 2,
+                          responsiveStyles: {
+                            large: {
+                              display: 'flex',
+                              flexDirection: 'column',
+                              alignItems: 'stretch',
+                              position: 'relative',
+                              flexShrink: 0,
+                              boxSizing: 'border-box',
+                              marginLeft: 'auto',
+                              lineHeight: 'normal',
+                              height: 'auto',
+                              textAlign: 'center',
+                              fontSize: 18,
+                              opacity: 1,
+                              marginRight: 'auto',
+                              maxWidth: 900,
+                              marginTop: 21,
+                              color: 'rgba(0, 0, 0, 0.49)',
+                            },
+                            small: {
+                              fontSize: 14,
+                              marginTop: 5,
+                            },
+                          },
+                          bindings: {
+                            'component.options.text': 'state.modulesItem.text',
+                            hide: '!state.modulesItem.text',
+                          },
+                          id: 'builder-10328f1bca6b41f081b35498eb9faead',
+                          layerLocked: false,
+                          groupLocked: false,
+                          component: {
+                            name: 'Text',
+                            options: {
+                              text: '<p>Enter some text...</p>',
+                            },
+                          },
+                        },
+                        {
+                          '@type': '@builder.io/sdk:Element',
+                          '@version': 2,
+                          responsiveStyles: {
+                            large: {
+                              display: 'flex',
+                              flexDirection: 'column',
+                              alignItems: 'stretch',
+                              position: 'relative',
+                              flexShrink: 0,
+                              boxSizing: 'border-box',
+                              marginTop: 20,
+                              minHeight: 20,
+                              minWidth: 20,
+                              overflow: 'hidden',
+                              width: '100%',
+                              marginLeft: 'auto',
+                              marginRight: 'auto',
+                              maxWidth: 800,
+                            },
+                          },
+                          bindings: {
+                            'component.options.image': 'state.modulesItem.imageUrl',
+                            hide: '!state.modulesItem.imageUrl',
+                          },
+                          id: 'builder-6e63508c01184dc6b2763a89d3f27ce6',
+                          layerLocked: false,
+                          groupLocked: false,
+                          component: {
+                            name: 'Image',
+                            options: {
+                              image:
+                                'https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d',
+                              backgroundSize: 'cover',
+                              backgroundPosition: 'center',
+                              aspectRatio: 0.7041,
+                            },
+                          },
+                        },
+                        {
+                          '@type': '@builder.io/sdk:Element',
+                          '@version': 2,
+                          responsiveStyles: {
+                            large: {
+                              display: 'flex',
+                              flexDirection: 'column',
+                              alignItems: 'stretch',
+                              position: 'relative',
+                              flexShrink: 0,
+                              boxSizing: 'border-box',
+                              marginTop: 20,
+                              minHeight: 20,
+                              minWidth: 20,
+                              overflow: 'hidden',
+                              width: '100%',
+                              marginLeft: 'auto',
+                              marginRight: 'auto',
+                              maxWidth: 600,
+                            },
+                          },
+                          bindings: {
+                            'component.options.image':
+                              'state.modulesItem.looks && state.modulesItem.looks[0].image.sizes.Large.url',
+                            hide:
+                              '!(state.modulesItem.looks && state.modulesItem.looks[0].image.sizes.Large.url)',
+                          },
+                          id: 'builder-9c00448a7ddc4293b4bc9c453c75ed8d',
+                          layerLocked: false,
+                          groupLocked: false,
+                          component: {
+                            name: 'Image',
+                            options: {
+                              image:
+                                'https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d',
+                              backgroundSize: 'cover',
+                              backgroundPosition: 'center',
+                              aspectRatio: 1.0143,
+                            },
+                          },
+                        },
+                      ],
+                      id: 'builder-db304688ccbd49a2b941bdfd73edf993',
+                      layerLocked: false,
+                      groupLocked: false,
+                      component: {
+                        name: 'Core:Section',
+                        options: {
+                          maxWidth: 1200,
+                        },
+                      },
+                    },
+                  ],
+                  state: {
+                    deviceSize: 'large',
+                    location: {
+                      host: 'cdn.builder.codes',
+                      pathname: '/api/v1/render-page',
+                      path: ['api', 'v1', 'render-page'],
+                      query: {},
+                    },
+                  },
+                },
+                id: '916d1898ae684cc9ae0689a0058009e9',
+                lastUpdated: 1563469587777,
+                lastUpdatedBy: 'agZ9n5CUKRfbL9t6CaJOyVSK4Es2',
+                modelId: 'f9962951c48f4a349f6a86310a0053a4',
+                name: 'SS Trend Merchandise Rakuten Links ',
+                publishEnd: null,
+                publishStart: null,
+                published: 'published',
+                query: [],
+                screenshot:
+                  'https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F9df999740eda42da9fbfac6b262c5dda',
+                testRatio: 1,
+                variations: {},
+              },
+            },
+          },
+        },
+      },
+    ],
+    url: '/my-great-trend',
+    state: {
+      deviceSize: 'large',
+      location: {
+        host: 'cdn.builder.codes',
+        pathname: '/api/v1/render-page',
+        path: ['api', 'v1', 'render-page'],
+        query: {},
+      },
+    },
+  },
+  createdDate: 1563406071434,
+  query: [
+    {
+      operator: 'is',
+      value: '/my-great-trend',
+      property: 'urlPath',
+    },
+  ],
+  publishStart: null,
+  published: 'published',
+  lastUpdatedBy: 'agZ9n5CUKRfbL9t6CaJOyVSK4Es2',
+  variations: {},
+  modelId: '38834b40eced4c24947a3909cb42be3e',
+};
