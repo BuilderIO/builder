@@ -32,6 +32,10 @@ Drag and drop page building for any site.
 
 Want suppoert for something not listed here or for us to priotize something coming soon? Drop us an issue and let us know! We prioritize based on the community's needs and interests.
 
+## What's in this repository?
+
+This repo houses all of the various [SDKs](packages) and [usage examples](examples)
+
 ## Getting Started with React
 
 ```sh
