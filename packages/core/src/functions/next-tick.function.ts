@@ -4,8 +4,11 @@ const isSafari =
 
 const isClient = typeof window !== 'undefined';
 
-// TODO: move to shared
 export function nextTick(fn: () => void) {
+  // React native
+  if (typeof setImmediate === 'function' && typeof window === 'undefined') {
+    return setImmediate(fn);
+  }
   // TODO: should this be setImmediate instead? Forgot if that is micro or macro task
   // TODO: detect specifically if is server
   // if (typeof process !== 'undefined' && process.nextTick) {
