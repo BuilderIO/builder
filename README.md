@@ -140,9 +140,7 @@ class CatchAllPage extends Component {
         name="page"
         onContentLoad={content => {
           if (!content) {
-            this.setState({
-              notFound: true,
-            });
+            this.setState({ notFound: true });
           }
         }}
       >
@@ -157,7 +155,6 @@ export default () => (
   <Switch>
     <Route path="/" component={Home} />
     {/* Your other routes... */}
-    {/* IMPORTANT: Be sure the patchall is your LAST route so it only loads if nothing else matches! */}
     <Route component={CatchAllPage} />
   </Switch>
 );
