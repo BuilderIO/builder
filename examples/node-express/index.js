@@ -1,30 +1,23 @@
-const axios = require('axios');
-const express = require('express');
+let axios = require('axios');
+let express = require('express');
 
-const app = express();
-
-const builderApiKey = 'bb209db71e62412dbe0114bdae18fd15';
+let builderApiKey = 'bb209db71e62412dbe0114bdae18fd15';
+let app = express();
 
 app.get('/', (req, res) => {
   res.send(
-    template(`
-      <h2>Welcome to the home page!</h2>
-      <p>This page comes from our code.</p>
-    `)
+    template(`<h2>Welcome to the home page!</h2><p>This page comes from our code.</p>`)
   );
 });
 app.get('/about', (req, res) => {
   res.send(
-    template(`
-      <h2>Welcome to the about page!</h2>
-      <p>This page comes from our code too.</p>
-    `)
+    template(`<h2>Welcome to the about page!</h2><p>This page comes from our code too.</p>`)
   );
 });
 
-// Put this route last, so you will
+// Put this route last, so you will catch anything not matched by your code
 app.get('*', async (req, res) => {
-  const page = await axios
+  let page = await axios
     .get(
       `https://cdn.builder.io/api/v1/html/page?url=${encodeURIComponent(
         req.url
@@ -32,13 +25,12 @@ app.get('*', async (req, res) => {
     )
     .catch(err => {
       if (err.response.status === 404) {
-        // Catch 404s - no page was found, that's fine
+        // Catch 404s - no page was found for this URL, that's fine
       } else {
         console.warn(err);
       }
       return null;
     });
-
 
   if (page && page.data) {
     res.send(template(page.data.data.html));
@@ -58,7 +50,7 @@ app.listen(3000, () => {
 
 // Basic function to render content within a standard header and footer
 // You can use any templating system you choose
-const template = body => `
+let template = body => `
   <!DOCTYPE html>
   <html>
     <head>
