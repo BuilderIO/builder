@@ -18,8 +18,8 @@
 
 | Framework                                                       |                                                                 Status                                                                  |
 | --------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------: |
-| [React](#getting-started-with-react)                            |                                                                 Stable                                                                  |
 | [REST API](https://builder.io/c/docs/getting-started)           |                                                                 Stable                                                                  |
+| [React](#getting-started-with-react)                            |                                                                 Stable                                                                  |
 | [Next.js](packages/react/examples/next-js)                      |                                                                 Stable                                                                  |
 | [Webcomponents](https://builder.io/c/docs/webcomponents-sdk)    |                                                                 Stable                                                                  |
 | [Angular](packages/angular)                                     |                                                                 Stable                                                                  |
