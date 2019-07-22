@@ -1,6 +1,7 @@
 <img alt="BUILDER" src="https://imgur.com/kmKRnra.gif" width="300" />
 
 ### Drag and drop page building for _any_ site.
+
 <br />
 <br />
 <img src="https://imgur.com/lHDo3Mq.gif" alt="Editor example" />
@@ -15,21 +16,19 @@
 
 ## Supported Frameworks
 
-| Framework                                                       |                                                              Status                                                              |
-| --------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------: |
-| [React](#getting-started-with-react)                            |                                                              Stable                                                              |
-| [REST API](https://builder.io/c/docs/getting-started)                            |                                                              Stable                                                              |
-| [Next.js](packages/react/examples/next-js)                      |                                                              Stable                                                              |
-| [Webcomponents](https://builder.io/c/docs/webcomponents-sdk)    |                                                              Stable                                                              |
-| [Angular](packages/angular)                                     |                                                              Stable                                                              |
-| [React native](packages/react-native)                           |                                                              Beta                                                               |
-| Email                                                           |                                                              Stable                                                              |
-| AMP                                                             |                                                              Stable                                                              |
-| Preact                                       C                   |                                                              Stable                                                              |
-| Vue                                                             |                                 Use [webcomponents](https://builder.io/c/docs/webcomponents-sdk)                                 |
-| Shopify                                                         |                                                           Coming soon                                                            |
-| Wordpress                                                       |                                                           Coming soon                                                            |
-| **Everyting else** <br/> Go, Php, Svelte, Java, Vanilla JS, etc | Use our [HTML API](https://builder.io/c/docs/html-api) and/or <br />[webcomponents](https://builder.io/c/docs/webcomponents-sdk) |
+| Framework                                                       |                                                                 Status                                                                  |
+| --------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------: |
+| [React](#getting-started-with-react)                            |                                                                 Stable                                                                  |
+| [REST API](https://builder.io/c/docs/getting-started)           |                                                                 Stable                                                                  |
+| [Next.js](packages/react/examples/next-js)                      |                                                                 Stable                                                                  |
+| [Webcomponents](https://builder.io/c/docs/webcomponents-sdk)    |                                                                 Stable                                                                  |
+| [Angular](packages/angular)                                     |                                                                 Stable                                                                  |
+| [React native](packages/react-native)                           |                                                                  Beta                                                                   |
+| Email                                                           |                                                                 Stable                                                                  |
+| AMP                                                             |                                                                 Stable                                                                  |
+| Preact                                                          |                                                                 Stable                                                                  |
+| Vue                                                             |                                    Use [webcomponents](https://builder.io/c/docs/webcomponents-sdk)                                     |
+| **Everyting else** <br/> Go, Php, Svelte, Java, Vanilla JS, etc | Use our [HTML API](https://builder.io/c/docs/getting-started) and/or <br />[webcomponents](https://builder.io/c/docs/webcomponents-sdk) |
 
 Want suppoert for something not listed here or for us to priotize something coming soon? Drop us an issue and let us know! We prioritize based on the community's needs and interests.
 
