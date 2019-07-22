@@ -97,6 +97,7 @@ export class Animator {
       element.style.transition = 'none';
       element.style.transitionDelay = '0';
       assign(element.style, animation.steps[0].styles);
+      // TODO: queue/batch these timeouts
       setTimeout(() => {
         element.style.transition = `all ${animation.duration}s ${camelCaseToKebabCase(
           animation.easing
@@ -142,6 +143,7 @@ export class Animator {
       attachDefaultState();
       element.addEventListener('mouseenter', attachHoverState);
       element.addEventListener('mouseleave', attachDefaultState);
+      // TODO: queue/batch these timeouts
       setTimeout(() => {
         element.style.transition = `all ${animation.duration}s ${camelCaseToKebabCase(
           animation.easing
@@ -207,6 +209,7 @@ export class Animator {
       }
       attachDefaultState();
 
+      // TODO: queue/batch these timeouts!
       setTimeout(() => {
         element.style.transition = `all ${animation.duration}s ${camelCaseToKebabCase(
           animation.easing
