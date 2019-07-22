@@ -14,6 +14,8 @@ export type Url = any;
 
 const _require: NodeRequire = typeof require === 'function' ? require : ((() => null) as any);
 
+export const isReactNative = typeof navigator === 'object' && navigator.product === 'ReactNative';
+
 const urlParser = {
   parse(url: string) {
     const parser = document.createElement('a') as any;
@@ -34,7 +36,7 @@ const urlParser = {
     return out;
   },
 };
-const parse = typeof window === 'object' ? urlParser.parse : _require('url').parse;
+const parse = isReactNative ? () => ({}) : typeof window === 'object' ? urlParser.parse : _require('url').parse;
 
 function setCookie(name: string, value: string, expires?: Date) {
   let expiresString = '';
@@ -85,7 +87,7 @@ const sessionStorageKey = 'builderSessionId';
 // TODO: manually type this out
 type ContentModelType = any;
 
-export const isReactNative = typeof navigator === 'object' && navigator.product === 'ReactNative';
+
 export const isBrowser = typeof window !== 'undefined' && !isReactNative;
 export const isIframe = isBrowser && window.top !== window.self;
 

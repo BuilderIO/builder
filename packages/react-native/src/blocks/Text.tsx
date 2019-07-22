@@ -34,7 +34,7 @@ export class Text extends React.Component<TextProps> {
       <React.Fragment>
         {/* TODO: handle this */}
         {/* <style>{`.builder-text p:first-child, .builder-paragraph:first-child { margin: 0 } .builder-text > p, .builder-paragraph { color: inherit; line-height: inherit; letter-spacing: inherit; font-weight: inherit; font-size: inherit; text-align: inherit; font-family: inherit; }`}</style> */}
-        <HTML html={this.props.text} />
+        <HTML html={this.props.text || ' '} />
       </React.Fragment>
     );
   }

@@ -68,7 +68,7 @@ export function stringToFunction(
     try {
       return fn(...args);
     } catch (error) {
-      console.warn('Builder custom code error:', error);
+      console.warn('Builder custom code error:', error.message, error.stack);
       if (errors) {
         errors.push(error);
       }

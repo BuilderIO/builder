@@ -91,7 +91,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
       size = 'small';
     }
     const styles = [];
-    const startIndex = sizeNames.indexOf(size || 'large');
+    const startIndex = 0; // sizeNames.indexOf(size || 'large');
     if (block.responsiveStyles) {
       for (let i = startIndex; i < sizeNames.length; i = i + 1) {
         const name = sizeNames[i];
@@ -106,7 +106,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
     for (const key in finalStyleObject) {
       const value = finalStyleObject[key];
       if (typeof value === 'string') {
-        const matched = value.match(/^(\d+)(px)?$/);
+        const matched = value.trim().match(/^([\d\.]+)(px)?$/);
         if (matched) {
           finalStyleObject[key] = parseFloat(matched[1]);
         }
@@ -114,9 +114,13 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
           // console.warn('calc not supported');
           delete finalStyleObject[key];
         }
+        if (value.includes('vw')) {
+          // console.warn('calc not supported');
+          delete finalStyleObject[key];
+        }
       }
     }
-    return finalStyleObject;
+    return omit(finalStyleObject, 'boxSizing');
   }
 
   componentDidMount() {
@@ -154,7 +158,8 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
     let TagName = View; //  (block.tagName || 'div').toLowerCase();
 
     if (block.actions && block.actions.click) {
-      TagName = TouchableWithoutFeedback as any;
+      // TODO: add back
+      // TagName = TouchableWithoutFeedback as any;
     }
 
     let InnerComponent: any;
@@ -173,8 +178,6 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
         }
       }
     }
-
-    const TextTag: any = 'span';
 
     const isBlock = !includes(
       ['absolute', 'fixed'],
@@ -333,12 +336,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
               {InnerComponent && (
                 <InnerComponent builderBlock={block} {...innerComponentProperties} />
               )}
-              {(block as any).text || options.text ? (
-                // TODO: remove me! No longer in use (maybe with rich text will be back tho)
-                <TextTag
-                  dangerouslySetInnerHTML={{ __html: options.text || (block as any).text }}
-                />
-              ) : !InnerComponent && block.children && block.children.length ? (
+              {!InnerComponent && block.children && block.children.length ? (
                 block.children.map((block: ElementType, index: number) => (
                   <BuilderBlock
                     key={((this.id as string) || '') + index}

@@ -1,6 +1,6 @@
 import React from 'react';
 import { builder, Subscription, GetContentOptions, Builder } from '@builder.io/sdk';
-import { TouchableWithoutFeedback, GestureResponderEvent } from 'react-native';
+import { TouchableWithoutFeedback, GestureResponderEvent, View } from 'react-native';
 
 export interface BuilderContentProps<ContentType> {
   contentLoaded?: (content: ContentType) => void;
@@ -104,14 +104,16 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
 
     return (
       // TODO: use fragment
-      <TouchableWithoutFeedback
+      // <TouchableWithoutFeedback
+      <View
         // ref={ref => (this.ref = ref)}
-        onPress={this.onClick}
+        // onPress={this.onClick}
         builder-content-id={useData && useData.id}
         builder-model={this.props.modelName}
       >
         {this.props.children(useData && useData.data, loading, useData)}
-      </TouchableWithoutFeedback>
+      {/* </TouchableWithoutFeedback> */}
+      </View>
     );
   }
 }

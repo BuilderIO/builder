@@ -21,7 +21,7 @@ Drag and drop page building for any site.
 | [Next.js](packages/react/examples/next-js)                      |                                                              Stable                                                              |
 | [Webcomponents](https://builder.io/c/docs/webcomponents-sdk)    |                                                              Stable                                                              |
 | [Angular](packages/angular)                                     |                                                              Stable                                                              |
-| [React native](packages/react-native)                           |                                                              Alpha                                                               |
+| [React native](packages/react-native)                           |                                                              Beta                                                               |
 | Email                                                           |                                                              Stable                                                              |
 | AMP                                                             |                                                              Stable                                                              |
 | Preact                                                          |                                                              Stable                                                              |

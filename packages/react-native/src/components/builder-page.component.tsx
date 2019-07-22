@@ -136,7 +136,7 @@ const tryEval = (str?: string, data: any = {}, errors?: Error[]): any => {
     }
 
     if (Builder.isBrowser) {
-      console.warn('Builder custom code error:', error);
+      console.warn('Builder custom code error:', error.message, error.stack);
     } else {
       // Add to req.options.errors to return to client
     }
@@ -426,18 +426,11 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
                         data-builder-content-id={fullData.id}
                         data-builder-variation-id={fullData.variationId}
                       >
-                        {this.getCss(data) &&
-                          null
-                          // TODO: how...? - way to do with HTML component?
-                          // <style dangerouslySetInnerHTML={{ __html: this.getCss(data) }} />
-                        }
-                        {
-                          <BuilderBlocks
-                            emailMode={this.props.emailMode}
-                            fieldName="blocks"
-                            blocks={data.blocks}
-                          />
-                        }
+                        <BuilderBlocks
+                          emailMode={this.props.emailMode}
+                          fieldName="blocks"
+                          blocks={data.blocks}
+                        />
                       </View>
                     ) : loading ? (
                       <View data-builder-component={this.name}>{this.props.children}</View>
@@ -571,21 +564,21 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
       if (data) {
         const { title, description } = data;
 
-        if (title) {
-          document.title = title;
-        }
+        // if (title) {
+        //   document.title = title;
+        // }
 
-        if (description) {
-          let descriptionTag = document.querySelector('meta[name="description"]');
+        // if (description) {
+        //   let descriptionTag = document.querySelector('meta[name="description"]');
 
-          if (!descriptionTag) {
-            descriptionTag = document.createElement('meta');
-            descriptionTag.setAttribute('name', 'description');
-            document.head.appendChild(descriptionTag);
-          }
+        //   if (!descriptionTag) {
+        //     descriptionTag = document.createElement('meta');
+        //     descriptionTag.setAttribute('name', 'description');
+        //     document.head.appendChild(descriptionTag);
+        //   }
 
-          descriptionTag!.setAttribute('content', description);
-        }
+        //   descriptionTag!.setAttribute('content', description);
+        // }
       }
     }
 
@@ -730,7 +723,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
           // TODO: do something with reuslt like view - methods, computed, actions, properties, template, etc etc
         } catch (error) {
           if (Builder.isBrowser) {
-            console.warn('Builder custom code error:', error);
+            console.warn('Builder custom code error:', error.message, error.stack);
           } else {
             // Add to req.options.errors to return to client
           }

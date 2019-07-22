@@ -42,7 +42,7 @@ export class FormSubmitButton extends React.Component<ButtonProps> {
   render() {
     return (
       <Button type="submit" {...this.props.attributes}>
-        <HTML html={this.props.text} />
+        <HTML html={this.props.text || ' '} />
       </Button>
     );
   }

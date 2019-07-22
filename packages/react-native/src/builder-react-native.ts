@@ -41,18 +41,18 @@ export { builder, Builder };
 export default builder;
 
 if (typeof window !== 'undefined') {
-  if (window.parent && window.parent.postMessage) {
-    window.parent.postMessage(
-      {
-        type: 'builder.isReactSdk',
-        data: {
-          value: true,
-          native: true,
-        },
-      },
-      '*'
-    );
-  }
+  // if (window.parent && window.parent.postMessage) {
+  //   window.parent.postMessage(
+  //     {
+  //       type: 'builder.isReactSdk',
+  //       data: {
+  //         value: true,
+  //         native: true,
+  //       },
+  //     },
+  //     '*'
+  //   );
+  // }
 }
 
 //

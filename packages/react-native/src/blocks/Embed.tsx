@@ -49,6 +49,6 @@ import HTML from 'react-native-render-html'
 })
 export class Embed extends React.Component<any> {
   render() {
-    return <HTML html={this.props.content} />;
+    return <HTML html={this.props.content || ' '} />;
   }
 }

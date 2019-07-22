@@ -20,6 +20,6 @@ export class CustomCode extends React.Component<{ code: string }> {
   }
 
   render() {
-    return <HTML html={this.props.code} />;
+    return <HTML html={this.props.code || ' '} />;
   }
 }

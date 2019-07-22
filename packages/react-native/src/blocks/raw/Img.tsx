@@ -30,7 +30,7 @@ export class Img extends React.Component<ImgProps> {
     const attributes = this.props.attributes || {}
     return (
       <Image
-        source={this.props.image || attributes.src}
+        source={{uri: this.props.image || attributes.src}}
         {...this.props.attributes}
       />
     )

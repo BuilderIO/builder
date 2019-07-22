@@ -180,7 +180,7 @@ export class Image extends React.Component<any> {
                 }}
                 resizeMode={this.props.backgroundSize}
                 // className="builder-image"
-                source={this.props.image}
+                source={{ uri: this.props.image}}
               />
 
               {aspectRatio ? (
