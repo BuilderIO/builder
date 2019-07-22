@@ -1,6 +1,7 @@
-# Builder
+<img alt="BUILDER" src="https://imgur.com/kmKRnra.gif" width="300" />
 
-Drag and drop page building for any site.
+### Drag and drop page building for any site.
+<hr />
 <br />
 <br />
 <img src="https://imgur.com/lHDo3Mq.gif" alt="Editor example" />
