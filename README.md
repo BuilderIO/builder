@@ -24,7 +24,7 @@ Drag and drop page building for any site.
 | [React native](packages/react-native)                           |                                                              Beta                                                               |
 | Email                                                           |                                                              Stable                                                              |
 | AMP                                                             |                                                              Stable                                                              |
-| Preact                                                          |                                                              Stable                                                              |
+| Preact                                       C                   |                                                              Stable                                                              |
 | Vue                                                             |                                 Use [webcomponents](https://builder.io/c/docs/webcomponents-sdk)                                 |
 | Shopify                                                         |                                                           Coming soon                                                            |
 | Wordpress                                                       |                                                           Coming soon                                                            |
@@ -67,7 +67,7 @@ Create a new page with url "/something" in Builder and change the [preview URL](
 [Open this example in CodeSandbox](https://codesandbox.io/s/github/BuilderIO/builder/tree/master/examples/react)
 
 <a target="_blank" href="https://codesandbox.io/s/github/BuilderIO/builder/tree/master/examples/react">
-  <img width="597" height="375" src="https://i.imgur.com/zue72Q0.jpg">
+  <img src="https://i.imgur.com/zue72Q0.jpg">
 </a>
 
 ### Using your components
