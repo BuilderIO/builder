@@ -63,7 +63,6 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
   // }
 
   // let getReactPromise: Promise<any> | null = null
-
   class BuilderComponentElement extends HTMLElement {
     private previousName = ''
     private subscriptions: Function[] = []
