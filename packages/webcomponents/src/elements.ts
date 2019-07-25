@@ -175,6 +175,10 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
     }
 
     getContent() {
+      const token = this.getAttribute('token') || this.getAttribute('auth-token')
+      if (token) {
+        builder.authToken = token
+      }
       const key = this.getAttribute('key') || this.getAttribute('api-key')
       if (key && key !== builder.apiKey) {
         builder.apiKey = key

@@ -36,7 +36,11 @@ const urlParser = {
     return out;
   },
 };
-const parse = isReactNative ? () => ({}) : typeof window === 'object' ? urlParser.parse : _require('url').parse;
+const parse = isReactNative
+  ? () => ({})
+  : typeof window === 'object'
+  ? urlParser.parse
+  : _require('url').parse;
 
 function setCookie(name: string, value: string, expires?: Date) {
   let expiresString = '';
@@ -86,7 +90,6 @@ export type Observer<T = any> = any;
 const sessionStorageKey = 'builderSessionId';
 // TODO: manually type this out
 type ContentModelType = any;
-
 
 export const isBrowser = typeof window !== 'undefined' && !isReactNative;
 export const isIframe = isBrowser && window.top !== window.self;
@@ -211,6 +214,8 @@ export class Builder {
   static VERSION = version;
   static useNewApi = true;
   static animator = new Animator();
+
+  authToken = '';
 
   static actions: Action[] = [];
 
@@ -1156,7 +1161,17 @@ export class Builder {
 
   requestUrl(url: string) {
     if (Builder.isBrowser) {
-      return fetch(url).then(res => res.json());
+      // TODO: send auth header if builder.authToken
+      return fetch(
+        url,
+        this.authToken
+          ? {
+              headers: {
+                Authorization: `Bearer ${this.authToken}`,
+              },
+            }
+          : undefined
+      ).then(res => res.json());
     }
     return new Promise((resolve, reject) => {
       const module = url.indexOf('http:') === 0 ? _require('http') : _require('https');
