@@ -120,7 +120,8 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
         }
       }
     }
-    return omit(finalStyleObject, 'boxSizing');
+    // TODO: convert transform string to array/object form for react native with regex
+    return omit(finalStyleObject, 'boxSizing', 'transform');
   }
 
   componentDidMount() {

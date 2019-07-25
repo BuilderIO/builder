@@ -9,9 +9,9 @@
 ## What is it good for?
 
 - Landing pages
-- Marketing pages (Homepage, etc)
-- Content pages (About, FAQ, etc)
-- Freedom from marketing teams that never stop asking for changes
+- Marketing pages (Homepage, promotions, etc)
+- Content pages (About, FAQ, help, docs, etc)
+- Freedom from marketing teams that never stop asking for new things
 - Developers who are tired of pushing pixels
 
 ## Supported Frameworks
