@@ -1,6 +1,6 @@
 {
   "name": "creaternwapp",
-  "version": "0.1.0",
+  "version": "0.1.1-alpha.0",
   "private": true,
   "scripts": {
     "start": "./node_modules/.bin/react-native start",
@@ -20,8 +20,8 @@
   "dependencies": {
     "react": "^16.6.x",
     "react-app-polyfill": "^0.1.3",
-    "react-dom": "^16.6.x",
     "react-art": "^16.6.x",
+    "react-dom": "^16.6.x",
     "react-native": "0.55.x",
     "react-native-web": "^0.10.x"
   },
