@@ -23,6 +23,7 @@ export interface ButtonProps {
     color: 'white',
     borderRadius: '4px',
     textAlign: 'center',
+    cursor: 'pointer',
   },
   inputs: [
     {
