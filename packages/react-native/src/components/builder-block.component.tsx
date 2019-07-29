@@ -309,6 +309,8 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
       }),
     };
 
+    const children = block.children || finalOptions.children || [];
+
     // TODO: test it out
     return (
       <BuilderAsyncRequestsContext.Consumer>
@@ -337,19 +339,19 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
               {InnerComponent && (
                 <InnerComponent builderBlock={block} {...innerComponentProperties} />
               )}
-              {!InnerComponent && block.children && block.children.length ? (
-                block.children.map((block: ElementType, index: number) => (
-                  <BuilderBlock
-                    key={((this.id as string) || '') + index}
-                    block={block}
-                    index={index}
-                    size={this.props.size}
-                    fieldName={this.props.fieldName}
-                    child={this.props.child}
-                    emailMode={this.props.emailMode}
-                  />
-                ))
-              ) : null}
+              {!InnerComponent && children && children.length
+                ? children.map((block: ElementType, index: number) => (
+                    <BuilderBlock
+                      key={((this.id as string) || '') + index}
+                      block={block}
+                      index={index}
+                      size={this.props.size}
+                      fieldName={this.props.fieldName}
+                      child={this.props.child}
+                      emailMode={this.props.emailMode}
+                    />
+                  ))
+                : null}
             </TagName>
           );
         }}
