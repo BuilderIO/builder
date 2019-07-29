@@ -230,7 +230,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
   static renderInto(
     elementOrSelector: string | HTMLElement,
     props: BuilderPageProps = {},
-    hydrate = false
+    hydrate = true
   ) {
     const element =
       elementOrSelector instanceof HTMLElement
@@ -240,6 +240,8 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     if (!element) {
       return
     }
+
+    element.innerHTML = ''
 
     if (hydrate) {
       return ReactDOM.hydrate(<BuilderPage {...props} />, element)
