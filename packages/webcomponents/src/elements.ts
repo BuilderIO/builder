@@ -4,7 +4,6 @@ const importReact = () => import('@builder.io/react')
 const importWidgets = () => import('@builder.io/widgets')
 
 if (Builder.isIframe) {
-  // TODO: systemjs
   importReact()
   importWidgets()
   import('@builder.io/email')
