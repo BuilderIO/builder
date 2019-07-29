@@ -252,10 +252,8 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     }
 
     if (shouldHydrate && element) {
-      console.debug('Builder: Hydrating')
       return ReactDOM.hydrate(<BuilderPage {...props} />, element)
     }
-    console.debug('Builder: Not hydrating')
     return ReactDOM.render(<BuilderPage {...props} />, element)
   }
 
