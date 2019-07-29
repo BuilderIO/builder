@@ -241,9 +241,9 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
       return
     }
 
-    element.innerHTML = ''
+    const shouldHydrate = hydrate && element.innerHTML.includes('builder-block')
 
-    if (hydrate) {
+    if (shouldHydrate) {
       return ReactDOM.hydrate(<BuilderPage {...props} />, element)
     }
     return ReactDOM.render(<BuilderPage {...props} />, element)
