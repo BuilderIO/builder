@@ -428,6 +428,8 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
       </style>
     )
 
+    const children = block.children || finalOptions.children || []
+
     // TODO: test it out
     return (
       <BuilderAsyncRequestsContext.Consumer>
@@ -463,8 +465,8 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
                 <TextTag
                   dangerouslySetInnerHTML={{ __html: options.text || (block as any).text }}
                 />
-              ) : !InnerComponent && block.children && block.children.length ? (
-                block.children.map((block: ElementType, index: number) => (
+              ) : !InnerComponent && children && Array.isArray(children) && children.length ? (
+                children.map((block: ElementType, index: number) => (
                   <BuilderBlock
                     key={((this.id as string) || '') + index}
                     block={block}
