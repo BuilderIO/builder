@@ -232,7 +232,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     props: BuilderPageProps = {},
     hydrate = true
   ) {
-    const element =
+    let element =
       elementOrSelector instanceof HTMLElement
         ? elementOrSelector
         : document.querySelector(elementOrSelector)
@@ -241,11 +241,21 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
       return
     }
 
-    const shouldHydrate = hydrate && element.innerHTML.includes('builder-block')
+    let shouldHydrate = hydrate && element.innerHTML.includes('builder-block')
+    if (shouldHydrate && !element.classList.contains('builder-component')) {
+      const useElement = element.querySelector('.builder-component')
+      if (useElement) {
+        element = useElement
+      } else {
+        shouldHydrate = false
+      }
+    }
 
-    if (shouldHydrate) {
+    if (shouldHydrate && element) {
+      console.debug('Builder: Hydrating')
       return ReactDOM.hydrate(<BuilderPage {...props} />, element)
     }
+    console.debug('Builder: Not hydrating')
     return ReactDOM.render(<BuilderPage {...props} />, element)
   }
 
