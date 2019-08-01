@@ -1,4 +1,5 @@
-import { builder, Builder, BuilderElement } from '@builder.io/sdk'
+import { builder, Builder } from '@builder.io/sdk'
+export { BuilderElement } from '@builder.io/sdk'
 
 Builder.isReact = true
 
