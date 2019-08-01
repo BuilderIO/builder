@@ -17,7 +17,6 @@ const externalDependencies = Object.keys(pkg.dependencies)
   .concat(Object.keys(pkg.optionalDependencies || {}))
   // TODO: go back to using peerDependencies once fix rollup iife issue
   // .concat(Object.keys(pkg.peerDependencies || {}))
-  .filter(name => !name.startsWith('lodash-es'))
 
 const options = {
   input: `src/${libraryName}.ts`,
@@ -97,7 +96,7 @@ export default [
       .filter(plugin => plugin !== resolvePlugin)
       .concat([
         resolve({
-          only: [/^\.{0,2}\//, /lodash\-es/]
+          only: [/^\.{0,2}\//]
         })
       ])
   },
@@ -108,12 +107,12 @@ export default [
       { file: './dist/server.esm.js', format: 'es', sourcemap: true },
       { file: './dist/server.js', format: 'cjs', sourcemap: true }
     ],
-    external: externalDependencies.filter(name => !name.startsWith('lodash-es')),
+    external: externalDependencies,
     plugins: options.plugins
       .filter(plugin => plugin !== resolvePlugin)
       .concat([
         resolve({
-          only: [/^\.{0,2}\//, /lodash\-es/]
+          only: [/^\.{0,2}\//]
         }),
         regexReplace({
           // ... do replace before commonjs
@@ -136,12 +135,12 @@ export default [
       { file: './dist/15.esm.js', format: 'es', sourcemap: true },
       { file: './dist/15.js', format: 'cjs', sourcemap: true }
     ],
-    external: externalDependencies.filter(name => !name.startsWith('lodash-es')),
+    external: externalDependencies,
     plugins: options.plugins
       .filter(plugin => plugin !== resolvePlugin)
       .concat([
         resolve({
-          only: [/^\.{0,2}\//, /lodash\-es/]
+          only: [/^\.{0,2}\//]
         }),
         replace({
           'React.Fragment': '"span"',
@@ -170,7 +169,7 @@ export default [
       { file: './dist/preact.esm.js', format: 'es', sourcemap: true },
       { file: './dist/preact.js', format: 'cjs', sourcemap: true }
     ],
-    external: externalDependencies.filter(name => !name.startsWith('lodash-es')),
+    external: externalDependencies,
     plugins: options.plugins
       .filter(plugin => plugin !== resolvePlugin)
       .concat([
@@ -194,7 +193,7 @@ export default [
           ]
         }),
         resolve({
-          only: [/^\.{0,2}\//, /lodash\-es/]
+          only: [/^\.{0,2}\//]
         }),
         alias({
           react: 'preact/compat',
@@ -211,13 +210,13 @@ export default [
   //     { file: './dist/inferno.js', format: 'cjs', sourcemap: true }
   //   ],
   //   external: externalDependencies.filter(
-  //     name => !name.startsWith('lodash-es') && !name.startsWith('create-inferno-context') // create-info-context needs bundling as it causes errors otherwise
+  //     name => !name.startsWith('create-inferno-context') // create-info-context needs bundling as it causes errors otherwise
   //   ),
   //   plugins: options.plugins
   //     .filter(plugin => plugin !== resolvePlugin)
   //     .concat([
   //       resolve({
-  //         only: [/^\.{0,2}\//, /lodash\-es/]
+  //         only: [/^\.{0,2}\//]
   //       }),
   //       alias({
   //         react: 'inferno-compat',

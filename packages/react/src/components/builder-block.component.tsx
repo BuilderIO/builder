@@ -3,26 +3,40 @@ import { Builder, Component, BuilderElement } from '@builder.io/sdk'
 
 import { sizeNames, Size, sizes } from '../constants/device-sizes.constant'
 import { BuilderStoreContext } from '../store/builder-store'
-import get from 'lodash-es/get'
-import isArray from 'lodash-es/isArray'
-import last from 'lodash-es/last'
-import set from 'lodash-es/set'
-import includes from 'lodash-es/includes'
-import reduce from 'lodash-es/reduce'
-import omit from 'lodash-es/omit'
-import pick from 'lodash-es/pick'
-import kebabCase from 'lodash-es/kebabCase'
 import { BuilderAsyncRequestsContext, RequestOrPromise } from '../store/builder-async-requests'
 import { stringToFunction, api } from '../functions/string-to-function'
+import { set } from '../functions/set';
+
+const camelCaseToKebabCase = (str?: string) =>
+  str ? str.replace(/([A-Z])/g, g => `-${g[0].toLowerCase()}`) : ''
 
 const Device = { desktop: 0, tablet: 1, mobile: 2 }
+
+function pick(object: any, keys: string[]) {
+  return keys.reduce((obj, key) => {
+    if (object && object.hasOwnProperty(key)) {
+      ;(obj as any)[key] = object[key]
+    }
+    return obj
+  }, {})
+}
+
+const last = <T extends any>(arr: T[]) => arr[arr.length - 1]
+
+function omit(obj: any, values: string[]) {
+  const newObject = Object.assign({}, obj)
+  for (const key of values) {
+    delete (newObject as any)[key]
+  }
+  return newObject
+}
 
 const cssCase = (property: string) => {
   if (!property) {
     return property
   }
 
-  let str = kebabCase(property)
+  let str = camelCaseToKebabCase(property)
 
   if (property[0] === property[0].toUpperCase()) {
     str = '-' + str
@@ -41,18 +55,15 @@ interface StringMap {
   [key: string]: string | undefined | null
 }
 function mapToCss(map: StringMap, spaces = 2, important = false) {
-  return reduce(
-    map,
-    (memo, value, key) => {
-      return (
-        memo +
-        (value && value.trim()
-          ? `\n${' '.repeat(spaces)}${cssCase(key)}: ${value + (important ? ' !important' : '')};`
-          : '')
-      )
-    },
-    ''
-  )
+  return Object.keys(map).reduce((memo, key) => {
+    const value = map[key]
+    return (
+      memo +
+      (value && value.trim()
+        ? `\n${' '.repeat(spaces)}${cssCase(key)}: ${value + (important ? ' !important' : '')};`
+        : '')
+    )
+  }, '')
 }
 
 export interface BuilderBlockProps {
@@ -249,11 +260,10 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
 
     const TextTag: any = 'span'
 
-    const isBlock = !includes(
-      ['absolute', 'fixed'],
+    const isBlock = !['absolute', 'fixed'].includes(
       block.responsiveStyles &&
         block.responsiveStyles.large &&
-        block.responsiveStyles.large.position /*( this.styles.position */
+        (block.responsiveStyles.large.position as any) /*( this.styles.position */
     )
 
     let options: any = {
@@ -376,10 +386,10 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
     const noWrap = componentInfo && (componentInfo.fragment || componentInfo.noWrap)
 
     const finalOptions: { [key: string]: string } = {
-      ...omit(options, 'class', 'component'),
+      ...omit(options, ['class', 'component']),
       class:
         `builder-block ${this.id}${block.class ? ` ${block.class}` : ''}${
-          block.component && !includes(['Image', 'Video', 'Banner'], componentName)
+          block.component && !['Image', 'Video', 'Banner'].includes(componentName)
             ? ` builder-has-component`
             : ''
         }` + (options.class ? ' ' + options.class : ''),
@@ -404,9 +414,8 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
     if (Builder.isIframe) {
       ;(finalOptions as any)['builder-inline-styles'] = !options.style
         ? ''
-        : reduce(
-            options.style,
-            (memo, value, key) => (memo ? `${memo};` : '') + `${cssCase(key)}:${value};`,
+        : Object.keys(options.style).reduce(
+            (memo, key) => (memo ? `${memo};` : '') + `${cssCase(key)}:${options.style[key]};`,
             ''
           )
     }
@@ -516,7 +525,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
         api(state),
         Device
       )
-      if (isArray(array)) {
+      if (Array.isArray(array)) {
         return array.map((data, index) => {
           // TODO: Builder state produce the data
           const childState = {

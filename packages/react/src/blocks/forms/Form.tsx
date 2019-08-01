@@ -2,10 +2,10 @@ import React from 'react'
 import { BuilderBlock } from '../../decorators/builder-block.decorator'
 import { BuilderBlock as BuilderBlockComponent } from '../../components/builder-block.component'
 import { BuilderElement, Builder } from '@builder.io/sdk'
-import set from 'lodash-es/set'
-import get from 'lodash-es/get'
 import { BuilderBlocks } from '../../components/builder-blocks.component'
 import { BuilderStoreContext } from '../../store/builder-store'
+import { set } from '../../functions/set';
+import { get } from '../../functions/get';
 
 export interface FormProps {
   attributes?: any

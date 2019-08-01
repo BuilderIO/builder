@@ -5,12 +5,7 @@ import { BuilderBlocks } from './builder-blocks.component'
 import { Builder, GetContentOptions, builder, Subscription, BehaviorSubject } from '@builder.io/sdk'
 import { BuilderStoreContext } from '../store/builder-store'
 import produce from 'immer'
-import pick from 'lodash-es/pick'
-import throttle from 'lodash-es/throttle'
-import size from 'lodash-es/size'
-import attempt from 'lodash-es/attempt'
-import isError from 'lodash-es/isError'
-import debounce from 'lodash-es/debounce'
+
 import { sizes } from '../constants/device-sizes.constant'
 import {
   BuilderAsyncRequestsContext,
@@ -20,6 +15,62 @@ import {
 } from '../store/builder-async-requests'
 import { Url } from 'url'
 import { debounceNextTick } from '../functions/debonce-next-tick'
+
+const isError = (thing: Error | any): thing is Error => thing instanceof Error
+const size = (thing: object) => Object.keys(thing).length
+
+export function throttle(func: Function, wait: number, options: any = {}) {
+  let context: any
+  let args: any
+  let result: any
+  let timeout = null as any
+  let previous = 0
+  const later = function() {
+    previous = options.leading === false ? 0 : Date.now()
+    timeout = null
+    result = func.apply(context, args)
+    if (!timeout) context = args = null
+  }
+  return function(this: any) {
+    const now = Date.now()
+    if (!previous && options.leading === false) previous = now
+    const remaining = wait - (now - previous)
+    context = this
+    args = arguments
+    if (remaining <= 0 || remaining > wait) {
+      if (timeout) {
+        clearTimeout(timeout)
+        timeout = null
+      }
+      previous = now
+      result = func.apply(context, args)
+      if (!timeout) context = args = null
+    } else if (!timeout && options.trailing !== false) {
+      timeout = setTimeout(later, remaining)
+    }
+    return result
+  }
+}
+
+function attempt<T extends any>(fn: () => T) {
+  try {
+    return fn()
+  } catch (err) {
+    return err
+  }
+}
+
+function pick(object: any, keys: string[]) {
+  return keys.reduce(
+    (obj, key) => {
+      if (object && object.hasOwnProperty(key)) {
+        obj[key] = object[key]
+      }
+      return obj
+    },
+    {} as any
+  )
+}
 
 // TODO: get fetch from core JS....
 const fetch = Builder.isBrowser ? window.fetch : require('node-fetch')
@@ -194,7 +245,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
   get locationState() {
     return {
       // TODO: handle this correctly on the server. Pass in with CONTEXT
-      ...pick(this.location, 'pathname', 'hostname', 'search', 'host'),
+      ...pick(this.location, ['pathname', 'hostname', 'search', 'host']),
       path: (this.location.pathname && this.location.pathname.split('/').slice(1)) || '',
       query: searchToObject(this.location)
     }
@@ -208,7 +259,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
       : sizeMap[this.device] || 'large'
   }
 
-  resizeListener = debounce(
+  resizeListener = throttle(
     () => {
       const deviceSize = this.deviceSizeState
       if (deviceSize !== this.state.state.deviceSize) {

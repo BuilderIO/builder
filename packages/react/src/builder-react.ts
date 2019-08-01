@@ -1,12 +1,6 @@
-import { builder, Builder } from '@builder.io/sdk'
-export { BuilderElement } from '@builder.io/sdk'
+import { builder, Builder, BuilderElement } from '@builder.io/sdk'
 
 Builder.isReact = true
-
-import './components/custom/Canvas'
-import './components/custom/ContentColumns'
-import './components/custom/Hero'
-import './components/custom/Spacer'
 
 export { BuilderBlocks } from './components/builder-blocks.component'
 export { BuilderBlock as BuilderBlockComponent } from './components/builder-block.component'
