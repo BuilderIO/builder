@@ -243,6 +243,17 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
 
     let shouldHydrate = hydrate && element.innerHTML.includes('builder-block')
     if (shouldHydrate && !element.classList.contains('builder-component')) {
+      // TODO: maybe remove any builder-api-styles...
+      const apiStyles =
+        element.querySelector('.builder-api-styles') ||
+        (element.nextElementSibling && element.nextElementSibling.matches('.builder-api-styles')
+          ? element.nextElementSibling
+          : null)
+      if (apiStyles) {
+        setTimeout(() => {
+          apiStyles.remove()
+        })
+      }
       const useElement = element.querySelector('.builder-component')
       if (useElement) {
         element = useElement

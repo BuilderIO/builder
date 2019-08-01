@@ -122,7 +122,7 @@ export interface FormProps {
           '@type': '@builder.io/sdk:Element',
           responsiveStyles: {
             large: {
-              marginTop: '10px',
+              marginTop: '10px'
             }
           },
           component: {
@@ -156,7 +156,7 @@ export interface FormProps {
           '@type': '@builder.io/sdk:Element',
           responsiveStyles: {
             large: {
-              marginTop: '10px',
+              marginTop: '10px'
             }
           },
           bindings: {
@@ -181,7 +181,7 @@ export interface FormProps {
           '@type': '@builder.io/sdk:Element',
           responsiveStyles: {
             large: {
-              marginTop: '10px',
+              marginTop: '10px'
             }
           },
           component: {
@@ -332,6 +332,10 @@ export class Form extends React.Component<FormProps> {
                   event.preventDefault()
                   // TODO: send submission to zapier
                 } else if (this.props.sendWithJs) {
+                  if (!this.props.action) {
+                    event.preventDefault()
+                    return;
+                  }
                   event.preventDefault()
                   // TODO: error and success state
                   const el = event.currentTarget
