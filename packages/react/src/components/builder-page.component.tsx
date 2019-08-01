@@ -302,7 +302,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
   }
 
   updateState = (fn: (state: any) => void) => {
-    const nextState = produce(this.state.state, draftState => {
+    const nextState = produce(this.state.state, (draftState: any) => {
       fn(draftState)
       // TODO: emit dom event - what element? global?
     })
