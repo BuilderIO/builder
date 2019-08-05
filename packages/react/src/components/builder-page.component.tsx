@@ -112,6 +112,7 @@ const fetchCache: { [key: string]: any } = {}
 
 export interface BuilderPageProps {
   modelName?: string
+  model?: string
   name?: string
   data?: any
   entry?: string
@@ -215,7 +216,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
   ref: HTMLElement | null = null
 
   get name(): string | undefined {
-    return this.props.modelName || this.props.name // || this.props.model
+    return this.props.model || this.props.modelName || this.props.name // || this.props.model
   }
 
   private _asyncRequests?: RequestOrPromise[]

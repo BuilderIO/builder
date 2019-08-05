@@ -6,6 +6,12 @@
 <br />
 <img src="https://imgur.com/lHDo3Mq.gif" alt="Editor example" />
 
+## How does it work?
+
+- Integrate the [Builder API or SDK](#supported-frameworks)
+- Create a free account on [builder.io](https://builder.io) and drag and drop to create pages
+- Publish - and it's live on your site, instantly!
+
 ## What is it good for?
 
 - Landing pages
