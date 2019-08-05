@@ -1,5 +1,7 @@
 # Builder React Starter
 
+This starter project will get you up and running fast with a React project with Builder.io visual page building + creation that you can customize and deploy anywhere.
+
 ## Quick start
 
 ### Prerequisites
