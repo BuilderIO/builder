@@ -16,9 +16,9 @@ npm install
 
 ### Make a free Builder.io account
 
-Then, create a free account at [builder.io](https://builder.io) and grab your public API key from [builder.io/account/organization](https://builder.io/account/organization)
+Create a free account at [builder.io](https://builder.io) and grab your public API key from [builder.io/account/organization](https://builder.io/account/organization)
 
-Paste your API key at the top of [src/App.js](src/App.js#5)
+Paste your API key at the top of [src/App.js](src/App.js#5) for the value of the `API_KEY` variable
 
 ### Run the dev server
 
@@ -31,6 +31,8 @@ This will host your site at http://localhost:3000
 ### Create content in Builder
 
 Head back over to [builder.io](https://builder.io), and create a new page with url /page-1 and publish it (green button in top right corner)
+
+<img src="https://i.imgur.com/phgqvQa.jpg" alt="Creating a page">
 
 Now go over to http://localhost:3000 to see your content live!
 
