@@ -16,7 +16,7 @@ app.get('/about', (req, res) => {
 // Put this route last, so you will catch anything not matched by your code
 app.get('*', async (req, res) => {
   let page = await axios
-    .get(`https://cdn.builder.io/api/v1/html/page?url=${req.path}&apiKey=${builderApiKey}`)
+    .get(`https://cdn.builder.io/api/v1/html/page?url=${encodeURI(req.url)}&apiKey=${builderApiKey}`)
     .catch(handleError);
 
   if (page && page.data) {
