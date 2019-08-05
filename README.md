@@ -42,6 +42,10 @@ Want suppoert for something not listed here or for us to priotize something comi
 
 This repo houses all of the various [SDKs](packages) and [usage examples](examples)
 
+## Quick start
+
+To start on a fresh project quickly, take a look at our [react starter](starters/react). To integrate Builder to an existing project take a look at the instructions below
+
 ## Getting Started with React
 
 ```sh
