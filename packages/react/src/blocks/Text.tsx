@@ -75,7 +75,7 @@ export class Text extends React.Component<TextProps> {
           ref={ref => {
             this.textRef = ref
           }}
-          contentEditable={allowEditingText}
+          contentEditable={allowEditingText || undefined}
           onInput={e => {
             if (allowEditingText) {
               window.parent.postMessage(

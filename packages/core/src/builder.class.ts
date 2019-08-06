@@ -148,6 +148,7 @@ export interface GetContentOptions {
   key?: string;
   // For prerender (prerenderFormat?)
   format?: 'amp' | 'email' | 'html';
+  noWrap?: true;
 }
 
 export type Class = {
