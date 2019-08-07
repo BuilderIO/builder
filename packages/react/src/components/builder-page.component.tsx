@@ -329,7 +329,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     if (this.props.content) {
       // TODO: this should be on didMount right bc of element ref??
       // TODO: possibly observe for change or throw error if changes
-      this.onContentLoaded(this.props.content.data /*, this.props.content*/)
+      this.onContentLoaded(this.props.content.content || this.props.content.data /*, this.props.content*/)
     }
   }
 
@@ -455,7 +455,14 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
   }
 
   render() {
-    const { content } = this.props
+    let { content } = this.props
+    if (content.content) {
+      // GraphQL workaround
+      content = {
+        ...content,
+        data: content.content
+      }
+    }
 
     return (
       // TODO: data attributes for model, id, etc?
