@@ -1,6 +1,7 @@
 import { GetContentOptions, Builder, builder } from '@builder.io/sdk'
 
 const importReact = () => import('@builder.io/react')
+
 const importWidgets = () => import('@builder.io/widgets')
 
 if (Builder.isIframe) {
