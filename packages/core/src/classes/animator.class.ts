@@ -171,7 +171,6 @@ export class Animator {
       this.augmentAnimation(animation, element);
 
       let triggered = false;
-
       function immediateOnScroll() {
         if (!triggered && isScrolledIntoView(element)) {
           triggered = true;
