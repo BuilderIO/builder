@@ -98,7 +98,7 @@ export class Animator {
       element.style.transitionDelay = '0';
       assign(element.style, animation.steps[0].styles);
       // TODO: queue/batch these timeouts
-      // setTimeout(() => {
+      setTimeout(() => {
         element.style.transition = `all ${animation.duration}s ${camelCaseToKebabCase(
           animation.easing
         )}`;
@@ -114,7 +114,7 @@ export class Animator {
           element.style.transition = '';
           element.style.transitionDelay = '';
         }, (animation.delay || 0) * 1000 + animation.duration * 1000 + 100);
-      // });
+      });
     });
   }
 
@@ -145,14 +145,14 @@ export class Animator {
       element.addEventListener('mouseenter', attachHoverState);
       element.addEventListener('mouseleave', attachDefaultState);
       // TODO: queue/batch these timeouts
-      // setTimeout(() => {
+      setTimeout(() => {
         element.style.transition = `all ${animation.duration}s ${camelCaseToKebabCase(
           animation.easing
         )}`;
         if (animation.delay) {
           element.style.transitionDelay = animation.delay + 's';
         }
-      // });
+      });
     });
   }
 
@@ -175,14 +175,14 @@ export class Animator {
       function immediateOnScroll() {
         if (!triggered && isScrolledIntoView(element)) {
           triggered = true;
-          // setTimeout(() => {
+          setTimeout(() => {
             assign(element!.style, animation.steps[1].styles);
             document.removeEventListener('scroll', onScroll);
             setTimeout(() => {
               element.style.transition = '';
               element.style.transitionDelay = '';
             }, (animation.duration * 1000 + (animation.delay || 0)) * 1000 + 100);
-          // });
+          });
         }
       }
 
@@ -213,14 +213,14 @@ export class Animator {
       attachDefaultState();
 
       // TODO: queue/batch these timeouts!
-      // setTimeout(() => {
+      setTimeout(() => {
         element.style.transition = `all ${animation.duration}s ${camelCaseToKebabCase(
           animation.easing
         )}`;
         if (animation.delay) {
           element.style.transitionDelay = animation.delay + 's';
         }
-      // });
+      });
 
       // TODO: one listener for everything
       document.addEventListener('scroll', onScroll, { capture: true, passive: true } as any);
