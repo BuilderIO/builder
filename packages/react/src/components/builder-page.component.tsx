@@ -456,7 +456,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
 
   render() {
     let { content } = this.props
-    if (content.content) {
+    if (content && content.content) {
       // GraphQL workaround
       content = {
         ...content,

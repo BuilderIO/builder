@@ -80,8 +80,8 @@ export class Embed extends React.Component<any> {
           if (this.scriptsRun.has(script.innerText)) {
             continue
           }
+          this.scriptsRun.add(script.innerText)
           try {
-            this.scriptsRun.add(script.innerText)
             new Function(script.innerText)()
           } catch (error) {
             console.warn('Builder custom code component error:', error)
