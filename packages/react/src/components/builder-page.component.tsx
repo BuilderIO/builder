@@ -675,6 +675,10 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
       }
     }
 
+    if (Builder.isEditing) {
+      this.notifyStateChange()
+    }
+
     // Unsubscribe all? TODO: maybe don't continuous fire when editing.....
     if (this.props.contentLoaded) {
       this.props.contentLoaded(data)

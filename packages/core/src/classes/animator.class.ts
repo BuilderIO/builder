@@ -93,7 +93,7 @@ export class Animator {
       // TODO: if there is an entrance and hover animation, the transition duration will get effed
       // element.setAttribute('style', '');
 
-      const styledUsed = this.getAllStylesUsed(animation);
+      // const styledUsed = this.getAllStylesUsed(animation);
       element.style.transition = 'none';
       element.style.transitionDelay = '0';
       assign(element.style, animation.steps[0].styles);
