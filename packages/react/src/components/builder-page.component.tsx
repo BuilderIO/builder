@@ -232,7 +232,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
         deviceSize: this.deviceSizeState,
         // TODO: will user attributes be ready here?
         device: this.device,
-        ...this.props.data
+        ...props.data
       },
       update: this.updateState
     }
@@ -329,7 +329,9 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     if (this.props.content) {
       // TODO: this should be on didMount right bc of element ref??
       // TODO: possibly observe for change or throw error if changes
-      this.onContentLoaded(this.props.content.content || this.props.content.data /*, this.props.content*/)
+      this.onContentLoaded(
+        this.props.content.content || this.props.content.data /*, this.props.content*/
+      )
     }
   }
 

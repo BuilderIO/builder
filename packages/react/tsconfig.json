@@ -21,6 +21,7 @@
   },
   "include": [
     "src",
+    "test",
     "rollup.config.ts",
     "internal-types.d.ts"
   ]

@@ -34,7 +34,7 @@ export interface LabelProps {
 export class Label extends React.Component<LabelProps> {
   render() {
     return (
-      <label for={this.props.for} {...this.props.attributes}>
+      <label htmlFor={this.props.for} {...this.props.attributes}>
         {this.props.text}
       </label>
     )
