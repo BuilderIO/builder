@@ -127,9 +127,10 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
     // use it no?
     //
     const useData =
-      (this.props.options &&
-        this.props.options.initialContent &&
-        this.props.options.initialContent[0]) ||
+      ((this.props.inline || !Builder.isBrowser) &&
+        (this.props.options &&
+          this.props.options.initialContent &&
+          this.props.options.initialContent[0])) ||
       data
 
     return (
