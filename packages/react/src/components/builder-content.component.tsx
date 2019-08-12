@@ -134,7 +134,6 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
       data
 
     return (
-      // TODO: use fragment
       <div
         ref={ref => (this.ref = ref)}
         className="builder-content"
