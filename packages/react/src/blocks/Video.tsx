@@ -119,17 +119,17 @@ const DEFAULT_ASPECT_RATIO = 0.7004048582995948
     {
       name: 'height',
       type: 'number',
-      hideFromUI: true
+      advanced: true,
     },
     {
       name: 'width',
       type: 'number',
-      hideFromUI: true
+      advanced: true,
     },
     {
       name: 'aspectRatio',
       type: 'number',
-      hideFromUI: true,
+      advanced: true,
       defaultValue: DEFAULT_ASPECT_RATIO
     }
   ]

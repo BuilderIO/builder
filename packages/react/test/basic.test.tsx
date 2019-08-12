@@ -88,7 +88,6 @@ describe('Data rendering', () => {
 
   const getBindingExampleElement = () => (
     <BuilderPage
-      inlineContent
       model="page"
       data={{ foo: TEXT_STRING }}
       content={{
