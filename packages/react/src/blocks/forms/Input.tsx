@@ -38,6 +38,7 @@ export interface FormInputProps {
         'time',
         'month',
         'week',
+        'password',
         'color',
         'hidden'
       ],
