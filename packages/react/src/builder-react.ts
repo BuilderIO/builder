@@ -16,7 +16,6 @@ export { BuilderBlock } from './decorators/builder-block.decorator'
 export { BuilderPage }
 export { BuilderPage as BuilderComponent }
 
-// export { Button } from './blocks/Button'
 export { Text } from './blocks/Text'
 export { Columns } from './blocks/Columns'
 export { Embed } from './blocks/Embed'
