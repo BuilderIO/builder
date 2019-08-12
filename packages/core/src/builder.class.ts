@@ -1152,10 +1152,10 @@ export class Builder {
     const observable = new BehaviorSubject<ContentModelType>(null);
     this.observersByKey[key] = observable;
     if (initialContent) {
-      // nextTick(() => {
+      nextTick(() => {
         // TODO: need to testModify this I think...?
         observable.next(initialContent);
-      // });
+      });
     }
     return observable;
   }

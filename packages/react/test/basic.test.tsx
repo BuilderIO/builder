@@ -1,11 +1,10 @@
-import React from 'react'
+import * as React from 'react'
 import { renderToString } from 'react-dom/server'
 import { render } from '@testing-library/react'
-import { BuilderPage } from '../src/components/builder-page.component'
 import { BuilderElement } from '@builder.io/sdk'
-import '../src/builder-react'
+import { BuilderPage, BuilderSimpleComponent } from '../src/builder-react'
+
 import '@testing-library/jest-dom/extend-expect'
-import { BuilderSimpleComponent } from '../src/builder-react'
 
 describe('Dummy test', () => {
   it('tests run correctly', () => {
@@ -89,6 +88,7 @@ describe('Data rendering', () => {
 
   const getBindingExampleElement = () => (
     <BuilderPage
+      inlineContent
       model="page"
       data={{ foo: TEXT_STRING }}
       content={{

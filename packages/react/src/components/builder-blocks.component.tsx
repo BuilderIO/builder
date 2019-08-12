@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import { Builder } from '@builder.io/sdk'
 import { BuilderBlock } from './builder-block.component'
 // TODO: fetch these for user and send them with same response like graphql

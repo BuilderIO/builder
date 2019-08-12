@@ -19,7 +19,7 @@ For instance, if you know you want /about to be a Builder page, create a Builder
 and use the following for `pages/about.js`
 
 ```js
-import React from 'react'
+import * as React from 'react'
 import { builder, BuilderComponent } from '@builder.io/react'
 import '@buidler.io/widgets';
 
@@ -113,7 +113,7 @@ class Builder extends Component {
 A simplistic approach could also be to use \_error.js. Since \_error.js functions as catchall page, we can add our own handling:
 
 ```js
-import React from 'react'
+import * as React from 'react'
 import { builder, BuilderComponent } from '@builder.io/react'
 import '@buidler.io/widgets'
 
