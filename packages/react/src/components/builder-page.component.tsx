@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React from 'react'
 import ReactDOM from 'react-dom'
 import { BuilderContent } from './builder-content.component'
 import { BuilderBlocks } from './builder-blocks.component'

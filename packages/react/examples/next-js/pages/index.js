@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React from 'react'
 import Link from 'next/link'
 import Head from '../components/head'
 import Nav from '../components/nav'

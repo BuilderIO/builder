@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React from 'react'
 import NextHead from 'next/head'
 import { string } from 'prop-types'
 

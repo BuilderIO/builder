@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React from 'react'
 import { BuilderPage } from '../components/builder-page.component'
 import { BuilderBlock } from '../decorators/builder-block.decorator'
 import { Builder } from '@builder.io/sdk'

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { BuilderBlock } from '../decorators/builder-block.decorator';
 
 export interface ButtonProps {

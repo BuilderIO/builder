@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React from 'react'
 import { Builder, Component, BuilderElement } from '@builder.io/sdk'
 
 import { sizeNames, Size, sizes } from '../constants/device-sizes.constant'

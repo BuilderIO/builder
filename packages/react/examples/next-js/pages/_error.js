@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React from 'react'
 import { builder, BuilderComponent } from '@builder.io/react'
 // Allow interactive widgets in the editor (importing registers the react components)
 import '@builder.io/widgets';

@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React from 'react'
 import { builder, Subscription, GetContentOptions, Builder } from '@builder.io/sdk'
 
 export interface BuilderContentProps<ContentType> {
