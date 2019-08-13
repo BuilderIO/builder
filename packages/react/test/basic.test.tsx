@@ -1,7 +1,7 @@
-import React from 'react'
+import * as React from 'react'
 import { renderToString } from 'react-dom/server'
 import { render } from '@testing-library/react'
-import { BuilderElement } from '@builder.io/sdk'
+import { BuilderElement, Builder } from '@builder.io/sdk'
 import { BuilderPage, BuilderSimpleComponent } from '../src/builder-react'
 
 import '@testing-library/jest-dom/extend-expect'
@@ -21,6 +21,15 @@ const el = (options?: Partial<BuilderElement>): BuilderElement => ({
       .split('.')[1],
   ...options
 })
+
+const server = (cb: () => void) => {
+  Builder.isServer = true;
+  try {
+    cb()
+  } finally {
+    Builder.isServer = false;
+  }
+}
 
 describe('Renders tons of components', () => {
   const block = (name: string, options?: any, elOptions?: Partial<BuilderElement>) =>
@@ -102,8 +111,10 @@ describe('Data rendering', () => {
     expect(testApi.getByText(TEXT_STRING)).toBeInTheDocument()
   })
   it('works with SSR', () => {
-    const string = renderToString(getBindingExampleElement())
-    expect(string).toContain(TEXT_STRING)
+    server(() => {
+      const string = renderToString(getBindingExampleElement())
+      expect(string).toContain(TEXT_STRING)
+    })
   })
 })
 
@@ -116,7 +127,9 @@ describe('Simple component', () => {
     expect(testApi.getByText(html)).toBeInTheDocument()
   })
   it('works with SSR', () => {
-    const string = renderToString(getBindingExampleElement())
-    expect(string).toContain(html)
+    server(() => {
+      const string = renderToString(getBindingExampleElement())
+      expect(string).toContain(html)
+    })
   })
 })

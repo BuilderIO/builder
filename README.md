@@ -33,8 +33,8 @@
 | Email                                                           |                                                                 Stable                                                                  |
 | AMP                                                             |                                                                 Stable                                                                  |
 | Preact                                                          |                                                                 Stable                                                                  |
-| Vue                                                             |                                    Use [webcomponents](https://builder.io/c/docs/webcomponents-sdk)                                     |
-| **Everyting else** <br/> Go, Php, Svelte, Java, Vanilla JS, etc | Use our [HTML API](https://builder.io/c/docs/getting-started) and/or <br />[webcomponents](https://builder.io/c/docs/webcomponents-sdk) |
+| Vue                                                             |                                    Coming soon   |
+| **Everyting else** <br/> Go, Php, Svelte, Java, Vanilla JS, etc | Use our [HTML API](https://builder.io/c/docs/getting-started) |
 
 Want suppoert for something not listed here or for us to priotize something coming soon? Drop us an issue and let us know! We prioritize based on the community's needs and interests.
 
@@ -77,7 +77,7 @@ Create a new page with url "/something" in Builder and change the [preview URL](
 [Open this example in CodeSandbox](https://codesandbox.io/s/github/BuilderIO/builder/tree/master/examples/react)
 
 <a target="_blank" href="https://codesandbox.io/s/github/BuilderIO/builder/tree/master/examples/react">
-  <img src="https://i.imgur.com/zue72Q0.jpg">
+  <img src="https://i.imgur.com/zue72Q0.jpg" style="max-width: 500px">
 </a>
 
 ### Using your components
@@ -174,16 +174,16 @@ For more advanced usage, like checking for page existence/404 on the server usin
 
 ## Don't use React?
 
-Builder webcomponents support all sites and frameworks!
-
-```html
-<script src="https://cdn.builder.io/js/webcomponents"></script>
-<builder-component name="page"></builder-component>
+Our HTML API [HTML API](https://builder.io/c/docs/getting-started) works for any site
+```javascript
+let page = await request(
+  `https://cdn.builder.io/api/v1/html/page?url=${PAGE_URL}&apiKey=${YOUR_KEY}`
+)
+if (page) {
+  let html = page.data.html;
+  // Put the html in your page template between your header and footer and you are done!
+}
 ```
-
-See our official docs on Builder Webcomponents [here](https://builder.io/c/docs/webcomponents-sdk)
-
-Additionally see our [HTML API](https://builder.io/c/docs/html-api) for server side rendering
 
 ## Troubleshooting and feedback
 
