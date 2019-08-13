@@ -76,7 +76,7 @@ Create a new page with url "/something" in Builder and change the [preview URL](
 [Open this example in CodeSandbox](https://codesandbox.io/s/github/BuilderIO/builder/tree/master/examples/react)
 
 <a target="_blank" href="https://codesandbox.io/s/github/BuilderIO/builder/tree/master/examples/react">
-  <img src="https://i.imgur.com/zue72Q0.jpg" style="width: 300px">
+  <img src="https://i.imgur.com/zue72Q0.jpg" width="300">
 </a>
 
 ### Using your components
