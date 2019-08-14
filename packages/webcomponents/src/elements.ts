@@ -490,7 +490,10 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
     private _options: GetContentOptions = {}
 
     get options() {
-      return this._options
+      return {
+        rev: this.getAttribute('rev') || undefined,
+        ...this._options
+      }
     }
 
     set options(options) {

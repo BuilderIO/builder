@@ -149,6 +149,7 @@ export interface GetContentOptions {
   // For prerender (prerenderFormat?)
   format?: 'amp' | 'email' | 'html';
   noWrap?: true;
+  rev?: string;
 }
 
 export type Class = {
@@ -1295,6 +1296,7 @@ export class Builder {
           'preview',
           'model',
           'entry',
+          'rev'
         ];
         for (const key of properties) {
           const value = options[key];

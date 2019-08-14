@@ -138,6 +138,7 @@ const tryEval = (str?: string, data: any = {}, errors?: Error[]): any => {
     if (Builder.isBrowser) {
       console.warn('Builder custom code error:', error.message, error.stack);
     } else {
+      console.debug('Builder custom code error:', error.message, error.stack);
       // Add to req.options.errors to return to client
     }
   }
@@ -725,6 +726,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
           if (Builder.isBrowser) {
             console.warn('Builder custom code error:', error.message, error.stack);
           } else {
+            console.debug('Builder custom code error:', error.message, error.stack);
             // Add to req.options.errors to return to client
           }
         }

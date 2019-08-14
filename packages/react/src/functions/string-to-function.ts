@@ -143,6 +143,8 @@ export function stringToFunction(
     } catch (error) {
       if (Builder.isBrowser) {
         console.warn('Builder custom code error:', error)
+      } else {
+        console.debug('Builder custom code error:', error)
       }
       if (errors) {
         errors.push(error)

@@ -186,6 +186,7 @@ const tryEval = (str?: string, data: any = {}, errors?: Error[]): any => {
     if (Builder.isBrowser) {
       console.warn('Builder custom code error:', error)
     } else {
+      console.debug('Builder custom code error:', error)
       // Add to req.options.errors to return to client
     }
   }
@@ -654,6 +655,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
   }
 
   onContentLoaded = (data: any) => {
+    console.debug('Builder content load', data && data.id)
     // TODO: if model is page... hmm
     if (this.name === 'page' && Builder.isBrowser) {
       if (data) {
@@ -824,6 +826,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
           if (Builder.isBrowser) {
             console.warn('Builder custom code error:', error)
           } else {
+            console.debug('Builder custom code error:', error)
             // Add to req.options.errors to return to client
           }
         }
