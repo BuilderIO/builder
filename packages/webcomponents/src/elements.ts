@@ -51,18 +51,6 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
 
   onReady(inject)
 
-  // TODO: test this out and add if/when needed
-  // if (typeof MutationObserver !== 'undefined') {
-  //   const observer = new MutationObserver(mutations => {
-  //     inject()
-  //   })
-  //   observer.observe(document.body, {
-  //     childList: true,
-  //     subtree: true
-  //   })
-  // }
-
-  // let getReactPromise: Promise<any> | null = null
   class BuilderComponentElement extends HTMLElement {
     private previousName = ''
     private subscriptions: Function[] = []
