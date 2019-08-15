@@ -835,6 +835,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
 
     if (data && data.httpRequests /* || data.builderData @DEPRECATED */ && !this.props.noAsync) {
       // Don't rerun http requests when editing and not changed
+      // No longer needed?
       let skip = false
 
       if (!skip) {
