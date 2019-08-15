@@ -842,7 +842,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
         // TODO: another structure for this
         for (const key in data.httpRequests) {
           const url: string | undefined = data.httpRequests[key]
-          if (url && !this.data[key]) {
+          if (url && (!this.data[key] || Builder.isEditing)) {
             // TODO: if Builder.isEditing and url patches https://builder.io/api/v2/content/{editingModel}
             // Then use builder.get().subscribe(...)
             if (Builder.isBrowser) {
