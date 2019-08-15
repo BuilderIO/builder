@@ -855,24 +855,27 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
               const builderModelMatch = url.match(builderModelRe)
               const model = builderModelMatch && builderModelMatch[1]
               if (Builder.isEditing && model && builder.editingModel === model) {
-                this.subscriptions.add(
-                  builder.get(model).subscribe(data => {
-                    this.state.update((state: any) => {
-                      state[key] = data
-                    })
-                  })
-                )
+                this.throttledHandleRequest(key, finalUrl)
+                // TODO: fix this
+                // this.subscriptions.add(
+                //   builder.get(model).subscribe(data => {
+                //     this.state.update((state: any) => {
+                //       state[key] = data
+                //     })
+                //   })
+                // )
               } else {
                 this.throttledHandleRequest(key, finalUrl)
-                this.subscriptions.add(
-                  this.onStateChange.subscribe(() => {
-                    const newUrl = this.evalExpression(url)
-                    if (newUrl !== finalUrl) {
-                      this.throttledHandleRequest(key, newUrl)
-                      this.lastHttpRequests[key] = newUrl
-                    }
-                  })
-                )
+                // TODO: fix this
+                // this.subscriptions.add(
+                //   this.onStateChange.subscribe(() => {
+                //     const newUrl = this.evalExpression(url)
+                //     if (newUrl !== finalUrl) {
+                //       this.throttledHandleRequest(key, newUrl)
+                //       this.lastHttpRequests[key] = newUrl
+                //     }
+                //   })
+                // )
               }
             } else {
               this.handleRequest(key, this.evalExpression(url))
