@@ -212,7 +212,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
   onStateChange = new BehaviorSubject<any>(null)
 
   lastJsCode = ''
-  lastHttpRequests = ''
+  lastHttpRequests: { [key: string]: string } = {}
 
   ref: HTMLElement | null = null
 
@@ -836,14 +836,6 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     if (data && data.httpRequests /* || data.builderData @DEPRECATED */ && !this.props.noAsync) {
       // Don't rerun http requests when editing and not changed
       let skip = false
-      if (Builder.isEditing) {
-        const httpRequestsString = attempt(() => JSON.stringify(data.httpRequests))
-        if (this.lastHttpRequests === httpRequestsString) {
-          skip = true
-        } else if (!isError(httpRequestsString)) {
-          this.lastHttpRequests = httpRequestsString
-        }
-      }
 
       if (!skip) {
         // TODO: another structure for this
@@ -853,7 +845,11 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
             // TODO: if Builder.isEditing and url patches https://builder.io/api/v2/content/{editingModel}
             // Then use builder.get().subscribe(...)
             if (Builder.isBrowser) {
-              let lastUrl = this.evalExpression(url)
+              const finalUrl = this.evalExpression(url)
+              if (Builder.isEditing && this.lastHttpRequests[key] === finalUrl) {
+                continue
+              }
+              this.lastHttpRequests[key] = finalUrl
               const builderModelRe = /builder\.io\/api\/v2\/([^\/\?]+)/i
               const builderModelMatch = url.match(builderModelRe)
               const model = builderModelMatch && builderModelMatch[1]
@@ -866,13 +862,13 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
                   })
                 )
               } else {
-                this.throttledHandleRequest(key, lastUrl)
+                this.throttledHandleRequest(key, finalUrl)
                 this.subscriptions.add(
                   this.onStateChange.subscribe(() => {
                     const newUrl = this.evalExpression(url)
-                    if (newUrl !== lastUrl) {
+                    if (newUrl !== finalUrl) {
                       this.throttledHandleRequest(key, newUrl)
-                      lastUrl = newUrl
+                      this.lastHttpRequests[key] = newUrl
                     }
                   })
                 )
