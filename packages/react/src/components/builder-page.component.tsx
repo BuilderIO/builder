@@ -320,10 +320,13 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     if (location.search.includes('builder.debug=true')) {
       console.debug('hydrate', shouldHydrate, element)
     }
+    const div = document.createElement('div');
+    element.insertAdjacentElement('beforebegin', div);
+    div.appendChild(element)
     if (shouldHydrate && element) {
-      return ReactDOM.hydrate(<BuilderPage {...props} />, element)
+      return ReactDOM.hydrate(<BuilderPage {...props} />, div)
     }
-    return ReactDOM.render(<BuilderPage {...props} />, element)
+    return ReactDOM.render(<BuilderPage {...props} />, div)
   }
 
   componentWillMount() {
