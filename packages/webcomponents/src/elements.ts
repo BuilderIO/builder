@@ -417,7 +417,7 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
                   // TODO: specify variation?
                 }
               },
-              this.getAttribute('hydrate') !== 'false'
+              this.getAttribute('hydrate') !== 'false' // TODO: query param override builder.hydrate
             )
 
             subscription.unsubscribe()
