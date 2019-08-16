@@ -13,7 +13,7 @@ import get from 'lodash-es/get'
 import isArray from 'lodash-es/isArray'
 import last from 'lodash-es/last'
 
-import Slider, { Settings } from 'react-slick'
+import Slider, { Settings, ResponsiveObject } from 'react-slick'
 
 const defaultElement: BuilderElement = {
   '@type': '@builder.io/sdk:Element',
@@ -74,6 +74,7 @@ interface CarouselProps {
   hideDots?: boolean
   useChildrenForSlides?: boolean
   slickProps?: Settings
+  responsive?: ResponsiveObject[]
 }
 
 // TODO: change to slick grid
@@ -188,6 +189,48 @@ interface CarouselProps {
           options.set('slides', [])
         }
       }
+    },
+    {
+      name: 'responsive',
+      type: 'array',
+      helperText: 'Responsive settings - e.g. see https://kenwheeler.github.io/slick/',
+      advanced: true,
+      defaultValue: [],
+      subFields: [
+        {
+          name: 'breakpoint',
+          type: 'number',
+          defaultValue: 400,
+          required: true
+        },
+        {
+          name: 'settings',
+          type: 'object',
+          defaultValue: {},
+          subFields: [
+            {
+              name: 'slidesToShow',
+              type: 'number',
+              defaultValue: 2
+            },
+            {
+              name: 'slidesToScroll',
+              type: 'number',
+              defaultValue: 2
+            },
+            {
+              name: 'infinite',
+              type: 'boolean',
+              defaultValue: true
+            },
+            {
+              name: 'dots',
+              type: 'boolean',
+              defaultValue: true
+            }
+          ]
+        }
+      ]
     }
   ]
 })
