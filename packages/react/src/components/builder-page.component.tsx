@@ -286,9 +286,6 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     props: BuilderPageProps = {},
     hydrate = true
   ) {
-    if (location.search.includes('builder.debug=true')) {
-      debugger;
-    }
     let element =
       elementOrSelector instanceof HTMLElement
         ? elementOrSelector
@@ -303,8 +300,9 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
       // TODO: maybe remove any builder-api-styles...
       const apiStyles =
         element.querySelector('.builder-api-styles') ||
-        (element.nextElementSibling && element.nextElementSibling.matches('.builder-api-styles')
-          ? element.nextElementSibling
+        (element.previousElementSibling &&
+        element.previousElementSibling.matches('.builder-api-styles')
+          ? element.previousElementSibling
           : null)
       if (apiStyles) {
         setTimeout(() => {
@@ -319,6 +317,9 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
       }
     }
 
+    if (location.search.includes('builder.debug=true')) {
+      console.debug('hydrate', shouldHydrate, element)
+    }
     if (shouldHydrate && element) {
       return ReactDOM.hydrate(<BuilderPage {...props} />, element)
     }
@@ -471,7 +472,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
       }
     }
 
-    const dataString = this.props.data && size(this.props.data) && JSON.stringify(this.props.data);
+    const dataString = this.props.data && size(this.props.data) && JSON.stringify(this.props.data)
     let key = Builder.isEditing ? this.name : this.props.entry
     if (dataString && dataString.length < 300) {
       key += ':' + dataString
