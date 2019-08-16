@@ -170,13 +170,6 @@ interface CarouselProps {
         }
       ]
     },
-    // {
-    //   name: 'initialHeight',
-    //   type: 'number',
-    //   helperText: 'The initial height to give the carousel before the content loads',
-    //   advanced: true,
-    //   defaultValue: 400,
-    // },
     {
       name: 'useChildrenForSlides',
       type: 'boolean',
