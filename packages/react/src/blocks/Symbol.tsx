@@ -3,6 +3,8 @@ import { BuilderPage } from '../components/builder-page.component'
 import { BuilderBlock } from '../decorators/builder-block.decorator'
 import { Builder } from '@builder.io/sdk'
 
+const size = (thing: object) => Object.keys(thing).length
+
 export interface SymbolInfo {
   model?: string
   entry?: string
@@ -45,6 +47,12 @@ export class Symbol extends React.Component<SymbolProps> {
     const { model, entry, data, content, inline } = symbol
     if (!model && !inline) {
       return this.placeholder
+    }
+
+    let key = Builder.isEditing ? undefined : entry
+    const dataString = data && size(data) && JSON.stringify(data);
+    if (dataString && dataString.length < 300) {
+      key += ':' + dataString
     }
     return (
       <div
