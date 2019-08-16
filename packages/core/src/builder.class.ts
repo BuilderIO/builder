@@ -216,6 +216,7 @@ export class Builder {
   static VERSION = version;
   static useNewApi = true;
   static animator = new Animator();
+  static throttle = throttle;
 
   authToken = '';
 
