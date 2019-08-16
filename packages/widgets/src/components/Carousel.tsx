@@ -13,7 +13,7 @@ import get from 'lodash-es/get'
 import isArray from 'lodash-es/isArray'
 import last from 'lodash-es/last'
 
-import Slider from 'react-slick'
+import Slider, { Settings } from 'react-slick'
 
 const defaultElement: BuilderElement = {
   '@type': '@builder.io/sdk:Element',
@@ -73,6 +73,7 @@ interface CarouselProps {
   autoplaySpeed?: number
   hideDots?: boolean
   useChildrenForSlides?: boolean
+  slickProps?: Settings
 }
 
 // TODO: change to slick grid
@@ -218,7 +219,7 @@ export class BuilderCarousel extends React.Component<CarouselProps> {
     let slides = this.props.slides
 
     if (slides && !Builder.isBrowser) {
-      slides = slides.slice(0, 1);
+      slides = slides.slice(0, 1)
     }
 
     return (
@@ -278,6 +279,7 @@ export class BuilderCarousel extends React.Component<CarouselProps> {
                         />
                       </div>
                     }
+                    {...this.props.slickProps}
                   >
                     {/* todo: children.forEach hmm insert block inside */}
                     {this.props.useChildrenForSlides
