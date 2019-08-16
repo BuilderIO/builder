@@ -65,7 +65,7 @@ export class Symbol extends React.Component<SymbolProps> {
           data={data}
           inlineContent={symbol.inline}
           content={content}
-          options={{ key: Builder.isEditing ? undefined : entry }}
+          options={{ key }}
         >
           {/* TODO: builder blocks option for loading stuff */}
           {this.props.children}
