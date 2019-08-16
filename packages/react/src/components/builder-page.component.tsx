@@ -468,6 +468,12 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
       }
     }
 
+    const dataString = this.props.data && JSON.stringify(this.props.data);
+    let key = Builder.isEditing ? this.name : this.props.entry
+    if (dataString && dataString.length < 300) {
+      key += ':' + dataString
+    }
+
     return (
       // TODO: data attributes for model, id, etc?
       <div className="builder-component" data-name={this.name} ref={ref => (this.ref = ref)}>
@@ -501,8 +507,8 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
                   // TODO: pass entry in
                   contentLoaded={this.onContentLoaded}
                   options={{
+                    key,
                     entry: this.props.entry,
-                    key: Builder.isEditing ? this.name : this.props.entry,
                     ...(content && size(content) && { initialContent: [content] }),
                     ...this.props.options
                   }}
