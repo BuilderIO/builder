@@ -336,20 +336,24 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
         const { BuilderComponent } = await getReactPromise
         await getWidgetsPromise
         // Ensure styles don't load twice
-        BuilderComponent.renderInto(this, {
-          modelName: name!,
-          emailMode:
-            ((this.options as any) || {}).emailMode || this.getAttribute('email-mode') === 'true',
-          options: {
-            ...this.options,
-            key:
-              (slot ? `slot:${slot}` : null) ||
-              (Builder.isEditing ? name! : this.getAttribute('entry') || name! || undefined)
-            // entry: data ? data.id : undefined,
-            // initialContent: data ? [data] : undefined
-            // TODO: specify variation?
-          }
-        })
+        BuilderComponent.renderInto(
+          this,
+          {
+            modelName: name!,
+            emailMode:
+              ((this.options as any) || {}).emailMode || this.getAttribute('email-mode') === 'true',
+            options: {
+              ...this.options,
+              key:
+                (slot ? `slot:${slot}` : null) ||
+                (Builder.isEditing ? name! : this.getAttribute('entry') || name! || undefined)
+              // entry: data ? data.id : undefined,
+              // initialContent: data ? [data] : undefined
+              // TODO: specify variation?
+            }
+          },
+          this.getAttribute('hydrate') !== 'false'
+        )
         return
       }
 
@@ -396,21 +400,25 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
 
             // TODO: prerender: false option
             // console.log('renderInto', this.options, data)
-            BuilderComponent.renderInto(this, {
-              modelName: name!,
-              emailMode:
-                ((this.options as any) || {}).emailMode ||
-                this.getAttribute('email-mode') === 'true',
-              options: {
-                ...this.options,
-                entry: data ? data.id : undefined,
-                initialContent: data ? [data] : undefined,
-                key:
-                  (slot ? `slot:${slot}` : null) ||
-                  (Builder.isEditing ? name! : (data && data.id) || undefined)
-                // TODO: specify variation?
-              }
-            })
+            BuilderComponent.renderInto(
+              this,
+              {
+                modelName: name!,
+                emailMode:
+                  ((this.options as any) || {}).emailMode ||
+                  this.getAttribute('email-mode') === 'true',
+                options: {
+                  ...this.options,
+                  entry: data ? data.id : undefined,
+                  initialContent: data ? [data] : undefined,
+                  key:
+                    (slot ? `slot:${slot}` : null) ||
+                    (Builder.isEditing ? name! : (data && data.id) || undefined)
+                  // TODO: specify variation?
+                }
+              },
+              this.getAttribute('hydrate') !== 'false'
+            )
 
             subscription.unsubscribe()
             unsubscribed = true
@@ -434,21 +442,25 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
               if (emailPromise) {
                 await emailPromise
               }
-              BuilderComponent.renderInto(this, {
-                modelName: name!,
-                emailMode:
-                  ((this.options as any) || {}).emailMode ||
-                  this.getAttribute('email-mode') === 'true',
-                options: {
-                  ...this.options,
-                  entry: data ? data.id : undefined,
-                  initialContent: data ? [data] : undefined,
-                  key:
-                    (slot ? `slot:${slot}` : null) ||
-                    (Builder.isEditing ? name! : (data && data.id) || undefined)
-                  // TODO: specify variation?
-                }
-              })
+              BuilderComponent.renderInto(
+                this,
+                {
+                  modelName: name!,
+                  emailMode:
+                    ((this.options as any) || {}).emailMode ||
+                    this.getAttribute('email-mode') === 'true',
+                  options: {
+                    ...this.options,
+                    entry: data ? data.id : undefined,
+                    initialContent: data ? [data] : undefined,
+                    key:
+                      (slot ? `slot:${slot}` : null) ||
+                      (Builder.isEditing ? name! : (data && data.id) || undefined)
+                    // TODO: specify variation?
+                  }
+                },
+                this.getAttribute('hydrate') !== 'false'
+              )
             } else {
               console.warn('Builder webcomponent error:', error)
               this.classList.add('builder-errored')
