@@ -51,7 +51,7 @@ export class Symbol extends React.Component<SymbolProps> {
 
     let key = Builder.isEditing ? undefined : entry
     const dataString = data && size(data) && JSON.stringify(data);
-    if (dataString && dataString.length < 300) {
+    if (key && dataString && dataString.length < 300) {
       key += ':' + dataString
     }
     return (
