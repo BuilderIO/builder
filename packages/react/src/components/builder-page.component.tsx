@@ -286,6 +286,9 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     props: BuilderPageProps = {},
     hydrate = true
   ) {
+    if (location.search.includes('builder.debug=true')) {
+      debugger;
+    }
     let element =
       elementOrSelector instanceof HTMLElement
         ? elementOrSelector
