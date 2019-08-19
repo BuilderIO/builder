@@ -1,5 +1,6 @@
 import React from 'react'
 import { BuilderBlock } from '../decorators/builder-block.decorator'
+import { Builder } from '@builder.io/sdk'
 
 @BuilderBlock({
   name: 'Embed',
@@ -91,12 +92,20 @@ export class Embed extends React.Component<any> {
     }
   }
 
+  get content() {
+    // Remove scripts on server - if they manipulate dom there can be issues on hydration
+    if (Builder.isServer) {
+      return (this.props.content || '').replace(/<script[\s\S]*?<\/script>/g, '')
+    }
+    return this.props.content
+  }
+
   render() {
     return (
       <div
         ref={ref => (this.elementRef = ref)}
         className="builder-embed"
-        dangerouslySetInnerHTML={{ __html: this.props.content }}
+        dangerouslySetInnerHTML={{ __html: this.content }}
       />
     )
   }
