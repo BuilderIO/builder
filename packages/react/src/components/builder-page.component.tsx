@@ -669,7 +669,9 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
   }
 
   onContentLoaded = (data: any) => {
-    console.debug('Builder content load', data)
+    // if (Builder.isBrowser) {
+    //   console.debug('Builder content load', data)
+    // }
     // TODO: if model is page... hmm
     if ((this.name === 'page' || this.name === 'docs-content') && Builder.isBrowser) {
       if (data) {

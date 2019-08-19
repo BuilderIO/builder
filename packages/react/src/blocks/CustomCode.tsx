@@ -62,6 +62,8 @@ export class CustomCode extends React.Component<Props> {
   }
 
   render() {
+    // TODO: remove <script> tags for server render (unless has some param to say it's only goingn to be run on server)
+    // like embed
     return (
       <div
         ref={ref => (this.elementRef = ref)}

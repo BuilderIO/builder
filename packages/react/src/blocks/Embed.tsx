@@ -94,6 +94,8 @@ export class Embed extends React.Component<any> {
 
   get content() {
     // Remove scripts on server - if they manipulate dom there can be issues on hydration
+    // TODO: allow this to by bypassed by context or prop that says if this is going to be HTML
+    // loaded without client JS/hydration (static)
     if (Builder.isServer) {
       return (this.props.content || '').replace(/<script[\s\S]*?<\/script>/g, '')
     }
