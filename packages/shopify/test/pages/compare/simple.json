@@ -1,0 +1,171 @@
+{
+  "ownerId": "undefined",
+  "lastUpdateBy": null,
+  "createdDate": 1565800142621,
+  "id": "14f4f06c6e7b4725abb3907ccc458ebf",
+  "@version": 3,
+  "name": "",
+  "modelId": "e8c5f6de360e44f789b69b58747f9627",
+  "published": "draft",
+  "priority": 0,
+  "query": [],
+  "data": {
+    "blocks": [
+      {
+        "@type": "@builder.io/sdk:Element",
+        "@version": 2,
+        "responsiveStyles": {
+          "large": {
+            "display": "flex",
+            "flexDirection": "column",
+            "alignItems": "stretch",
+            "position": "relative",
+            "flexShrink": "0",
+            "boxSizing": "border-box",
+            "marginTop": "20px"
+          }
+        },
+        "id": "builder-9c660eec3a084703acfd457a5f46bec0",
+        "layerLocked": false,
+        "groupLocked": false,
+        "component": {
+          "name": "Columns",
+          "options": {
+            "columns": [
+              {
+                "blocks": [
+                  {
+                    "@type": "@builder.io/sdk:Element",
+                    "@version": 2,
+                    "responsiveStyles": {
+                      "large": {
+                        "display": "flex",
+                        "flexDirection": "column",
+                        "alignItems": "stretch",
+                        "flexShrink": "0",
+                        "position": "relative",
+                        "marginTop": "30px",
+                        "textAlign": "center",
+                        "lineHeight": "normal",
+                        "height": "auto"
+                      }
+                    },
+                    "id": "builder-b6a0a9174cd94d48b555e03f28ebb536",
+                    "layerLocked": false,
+                    "groupLocked": false,
+                    "component": {
+                      "name": "Image",
+                      "options": {
+                        "image": "https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d",
+                        "backgroundPosition": "center",
+                        "backgroundSize": "cover",
+                        "aspectRatio": 0.7004048582995948
+                      }
+                    }
+                  },
+                  {
+                    "@type": "@builder.io/sdk:Element",
+                    "@version": 2,
+                    "responsiveStyles": {
+                      "large": {
+                        "display": "flex",
+                        "flexDirection": "column",
+                        "alignItems": "stretch",
+                        "flexShrink": "0",
+                        "position": "relative",
+                        "marginTop": "30px",
+                        "textAlign": "center",
+                        "lineHeight": "normal",
+                        "height": "auto"
+                      }
+                    },
+                    "id": "builder-6dc1308248be46e18b58ad4c623916d8",
+                    "layerLocked": false,
+                    "groupLocked": false,
+                    "component": {
+                      "name": "Text",
+                      "options": { "text": "<p>Enter some text...</p>" }
+                    }
+                  }
+                ]
+              },
+              {
+                "blocks": [
+                  {
+                    "@type": "@builder.io/sdk:Element",
+                    "@version": 2,
+                    "responsiveStyles": {
+                      "large": {
+                        "display": "flex",
+                        "flexDirection": "column",
+                        "alignItems": "stretch",
+                        "flexShrink": "0",
+                        "position": "relative",
+                        "marginTop": "30px",
+                        "textAlign": "center",
+                        "lineHeight": "normal",
+                        "height": "auto"
+                      }
+                    },
+                    "id": "builder-a8fe67f4bed845a38528c106f08d9b45",
+                    "layerLocked": false,
+                    "groupLocked": false,
+                    "component": {
+                      "name": "Image",
+                      "options": {
+                        "image": "https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d",
+                        "backgroundPosition": "center",
+                        "backgroundSize": "cover",
+                        "aspectRatio": 0.7004048582995948
+                      }
+                    }
+                  },
+                  {
+                    "@type": "@builder.io/sdk:Element",
+                    "@version": 2,
+                    "responsiveStyles": {
+                      "large": {
+                        "display": "flex",
+                        "flexDirection": "column",
+                        "alignItems": "stretch",
+                        "flexShrink": "0",
+                        "position": "relative",
+                        "marginTop": "30px",
+                        "textAlign": "center",
+                        "lineHeight": "normal",
+                        "height": "auto"
+                      }
+                    },
+                    "id": "builder-25ba5db0c872489898ea10f2816c08b6",
+                    "layerLocked": false,
+                    "groupLocked": false,
+                    "bindings": {
+                      "style.display": "foo.bar",
+                      "component.options.text": "foobar",
+                      "href": "bazbaz"
+                    },
+                    "repeat": { "collection": "thing.list.yo" },
+                    "component": {
+                      "name": "Text",
+                      "options": { "text": "<p>Enter some text...</p>" }
+                    }
+                  }
+                ]
+              }
+            ],
+            "space": 20,
+            "stackColumnsAt": "tablet"
+          }
+        }
+      }
+    ]
+  },
+  "metrics": { "clicks": 0, "impressions": 0 },
+  "variations": {},
+  "stateFields": [],
+  "testRatio": 1,
+  "publishStart": null,
+  "publishEnd": null,
+  "createdBy": "",
+  "lastUpdatedBy": ""
+}

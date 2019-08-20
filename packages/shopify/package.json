@@ -1,6 +1,5 @@
 {
   "name": "@builder.io/shopify",
-  "private": true,
   "version": "1.0.45",
   "browser": "./dist/index.umd.min.js",
   "main": "./dist/index.cjs.js",
@@ -16,6 +15,7 @@
     "test": "jest"
   },
   "devDependencies": {
+    "@builder.io/react": "^1.0.69",
     "@types/dedent": "^0.7.0",
     "@types/jest": "^24.0.18",
     "@types/lodash": "^4.14.137",

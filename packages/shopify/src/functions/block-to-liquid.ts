@@ -8,12 +8,16 @@ import { Image } from '../components/image';
 import { StringMap } from '../interfaces/string-map';
 import { mapToCss } from './map-to-css';
 import { fastClone } from './fast-clone';
+import { Section } from '../components/section';
 
 const components: { [key: string]: (block: BuilderElement, options: Options) => string } = {
   Text,
   Columns,
   Image,
+  Section,
 };
+
+const escaleHtml = (str: string) => str.replace(/'/g, '&apos;').replace(/"/g, '&quot;');
 
 export function blockToLiquid(json: BuilderElement, options: Options = {}): string {
   const block = fastClone(json);
@@ -28,13 +32,24 @@ export function blockToLiquid(json: BuilderElement, options: Options = {}): stri
       }
 
       if (options.convertBindingsToSnakeCase !== false) {
-        value = value
-          .split('.')
-          .map(snakeCase)
-          .join('.');
+        // Hack
+        if (value.startsWith('product.product.')) {
+          value = value.replace('product.', '');
+
+          value = value
+            .split('.')
+            .map(snakeCase)
+            .join('.');
+        }
       }
 
-      const valueString = `{{ ${value} }}`;
+      if (value.includes(';')) {
+        console.debug('Skipping binding', value.replace(/\s{2,}/g, ' '));
+        continue;
+      }
+
+      const htmlEscapedValue = escaleHtml(value);
+      const valueString = `{{ ${htmlEscapedValue} }}`;
       if (key.startsWith('properties.') || !key.includes('.')) {
         if (!block.properties) {
           block.properties = {};
@@ -99,7 +114,7 @@ export function blockToLiquid(json: BuilderElement, options: Options = {}): stri
   // Fragment? hm
   return `
     ${css.trim() ? `<style>${css}</style>` : ''}
-    ${block.repeat ? `{% for ${collectionName} in ${block.repeat.collection} %}` : ''}
+    ${block.repeat ? `{% for ${collectionName} in ${escaleHtml(block.repeat.collection)} %}` : ''}
     <${tag}${attributes ? ' ' + attributes : ''}>
       ${(Component && Component(block, options)) || ''}
       ${
@@ -119,8 +134,6 @@ function mapToAttributes(map: StringMap, bindings: StringMap = {}) {
   return reduce(
     map,
     (memo, value, key) => {
-      const bindingValue = bindings[key] || bindings['properties.key'];
-
       return memo + ` ${key}="${value}"`;
     },
     ''

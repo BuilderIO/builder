@@ -2,11 +2,19 @@ import { BuilderElement, BuilderContent } from '@builder.io/sdk';
 import { format, Options as PrettierOptions } from 'prettier';
 import { blockToLiquid } from './block-to-liquid';
 import { Options } from '../interfaces/options';
+import { fastClone } from './fast-clone';
 
-const liquidToHandlebars = (liquid: string) => liquid.replace(/{%/g, '{{').replace(/%}/g, '}}');
+const liquidToHandlebars = (liquid: string) =>
+  liquid.replace(
+    /{[%{]\s*([^}]+?)\s*[%}]}/g,
+    (match, group) => `{{ liquid '${group}' }}`
+  );
 
 const handlebarsToLiquid = (handlebars: string) =>
-  handlebars.replace(/{{/g, '{% ').replace(/}}/g, ' %}');
+  handlebars.replace(
+    /{{\s*liquid\s*['"]([\s\S]+?)['"]\s*}}/g,
+    (match, group) => `{% ${group} %}`
+  );
 
 const regexParse = (html: string) => {
   const cssSet = new Set();
@@ -33,7 +41,13 @@ const prettify = (str: string, options?: PrettierOptions) =>
     ...options,
   });
 
-export function contentToLiquid(content: BuilderContent, modelName: string, options: Options = {}) {
+export function contentToLiquid(json: BuilderContent, modelName: string, options: Options = {}) {
+  const content = fastClone(json);
+
+  if (content.data && content.data.blocksString) {
+    content.data.blocks = JSON.parse(content.data.blocksString);
+    delete content.data.blocksString;
+  }
   const blocks = content.data && content.data.blocks;
 
   let { html, css } = regexParse(
@@ -44,7 +58,11 @@ export function contentToLiquid(content: BuilderContent, modelName: string, opti
       data-builder-component="${modelName}"
       builder-model="${modelName}"
     >
-      ${blocks ? blocks.map((block: BuilderElement) => blockToLiquid(block, options)).join('\n') : ''}
+      ${
+        blocks
+          ? blocks.map((block: BuilderElement) => blockToLiquid(block, options)).join('\n')
+          : ''
+      }
     </div>`.replace(/\s+/, ' ')
   );
 
