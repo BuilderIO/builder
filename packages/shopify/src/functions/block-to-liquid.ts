@@ -1,10 +1,13 @@
 import { BuilderElement } from '@builder.io/sdk';
-import { size, reduce, kebabCase } from 'lodash';
+import { size, reduce, set, last } from 'lodash';
 import { sizes, sizeNames } from '../constants/sizes';
 import { Options } from '../interfaces/options';
 import { Text } from '../components/text';
 import { Columns } from '../components/columns';
 import { Image } from '../components/image';
+import { StringMap } from '../interfaces/string-map';
+import { mapToCss } from './map-to-css';
+import { fastClone } from './fast-clone';
 
 const components: { [key: string]: (block: BuilderElement) => string } = {
   Text,
@@ -12,7 +15,42 @@ const components: { [key: string]: (block: BuilderElement) => string } = {
   Image,
 };
 
-export function blockToLiquid(block: BuilderElement, options: Options = {}): string {
+export function blockToLiquid(json: BuilderElement, options: Options = {}): string {
+  const block = fastClone(json);
+
+  const styles: StringMap = {};
+
+  if (block.bindings) {
+    for (const key in block.bindings) {
+      const value = block.bindings[key];
+      if (!key || !value) {
+        continue;
+      }
+
+      const valueString = `{{ ${value} }}`;
+      if (key.startsWith('properties.') || !key.includes('.')) {
+        if (!block.properties) {
+          block.properties = {};
+        }
+        const name = key.startsWith('properties.') ? key.replace(/^\s*properties\s*\./, '') : key;
+        set(block.properties, name, valueString);
+      } else if (key.startsWith('component.options.') || key.startsWith('options.')) {
+        const name = key.replace(/^.*?options\./, '');
+        if (!block.component) {
+          continue;
+        }
+        if (!block.component.options) {
+          block.component.options = {};
+        }
+        set(block.component.options, name, valueString);
+      } else if (key.startsWith('style.')) {
+        const name = key.replace('style.', '');
+        set(styles, name, valueString);
+      }
+    }
+  }
+
+  // TODO: bindings with {{}} as values
   const css = blockCss(block, options);
 
   // TODO: utilities for all of this
@@ -20,6 +58,9 @@ export function blockToLiquid(block: BuilderElement, options: Options = {}): str
     ...block.properties,
     ['builder-id']: block.id,
     class: `builder-block ${block.id}${block.class ? ` ${block.class}` : ''}`,
+    ...(size(styles) && {
+      style: mapToCss(styles, 0),
+    }),
     // TODO: style bindings and start animation styles
   });
 
@@ -31,12 +72,21 @@ export function blockToLiquid(block: BuilderElement, options: Options = {}): str
     console.warn(`Could not find component: ${block.component.name}`);
   }
 
+  const collectionName = block.repeat && last(
+    (block.repeat.collection || '')
+      .trim()
+      .split('(')[0]
+      .trim()
+      .split('.')
+  )
+
+
   // Fragment? hm
   return `
     ${css.trim() ? `<style>${css}</style>` : ''}
     ${
       block.repeat
-        ? `{% for ${block.repeat.collection || block.repeat.collection + 'Item'} in ${
+        ? `{% for ${collectionName} in ${
             block.repeat.collection
           } %}`
         : ''
@@ -53,33 +103,16 @@ export function blockToLiquid(block: BuilderElement, options: Options = {}): str
     `;
 }
 
-interface StringMap {
-  [key: string]: string | undefined | null;
-}
-
-function mapToAttributes(map: StringMap) {
+function mapToAttributes(map: StringMap, bindings: StringMap = {}) {
   if (!size(map)) {
     return '';
   }
   return reduce(
     map,
     (memo, value, key) => {
-      return memo + ` ${key}="${value}"`;
-    },
-    ''
-  );
-}
+      const bindingValue = bindings[key] || bindings['properties.key'];
 
-function mapToCss(map: StringMap, spaces = 2, important = false) {
-  return reduce(
-    map,
-    (memo, value, key) => {
-      return (
-        memo +
-        (value && value.trim()
-          ? `\n${' '.repeat(spaces)}${kebabCase(key)}: ${value + (important ? ' !important' : '')};`
-          : '')
-      );
+      return memo + ` ${key}="${value}"`;
     },
     ''
   );

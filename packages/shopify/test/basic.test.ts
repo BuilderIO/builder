@@ -154,6 +154,14 @@ const exampleContent: any = {
                     id: 'builder-25ba5db0c872489898ea10f2816c08b6',
                     layerLocked: false,
                     groupLocked: false,
+                    bindings: {
+                      'style.display': 'foo.bar',
+                      'component.options.foo': 'foobar',
+                      href: 'bazbaz'
+                    },
+                    repeat: {
+                      collection: 'thing.list.yo'
+                    },
                     component: {
                       name: 'Text',
                       options: { text: '<p>Enter some text...</p>' },

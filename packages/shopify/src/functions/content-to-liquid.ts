@@ -1,8 +1,12 @@
 import { BuilderElement, BuilderContent } from '@builder.io/sdk';
 import { format, Options as PrettierOptions } from 'prettier';
-import { reduce, kebabCase, size } from 'lodash';
 import { blockToLiquid } from './block-to-liquid';
 import { Options } from '../interfaces/options';
+
+const liquidToHandlebars = (liquid: string) => liquid.replace(/{%/g, '{{').replace(/%}/g, '}}');
+
+const handlebarsToLiquid = (handlebars: string) =>
+  handlebars.replace(/{{/g, '{%').replace(/}}/g, '%}');
 
 const regexParse = (html: string) => {
   const cssSet = new Set();
@@ -35,27 +39,33 @@ export function contentToLiquid(content: BuilderContent, modelName: string, opti
   let { html, css } = regexParse(
     `<div
       class="builder-content"
-      builder-content-id=${content.id}
-      data-builder-content-id=${content.id}
-      data-builder-component=${modelName}
-      builder-model=${modelName}
+      builder-content-id="${content.id}"
+      data-builder-content-id="${content.id}"
+      data-builder-component="${modelName}"
+      builder-model="${modelName}"
     >
       ${blocks ? blocks.map((block: BuilderElement) => blockToLiquid(block)).join('\n') : ''}
     </div>`.replace(/\s+/, ' ')
   );
 
-  if (!options.extractCss) {
-    html = `<style type="text/css" class="builder-styles">${css}</style>` + html;
-    css = '';
-  }
-  html = prettify(html, {
-    ...options.prettierOptions,
-    parser: 'html',
-  });
   css = prettify(css, {
     ...options.prettierOptions,
     parser: 'css',
   });
+
+  if (!options.extractCss) {
+    html = `<style type="text/css" class="builder-styles">${css}</style>` + html;
+    css = '';
+  }
+
+  // Convert to handlebars and back because it is similar to liquid and has a prettier
+  // formatter for it
+  html = handlebarsToLiquid(
+    prettify(liquidToHandlebars(html), {
+      ...options.prettierOptions,
+      parser: 'glimmer' as any,
+    })
+  );
 
   return { html, css: css || undefined };
 }

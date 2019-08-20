@@ -1,5 +1,6 @@
 import { BuilderElement } from '@builder.io/sdk';
 import { blockToLiquid } from '../functions/block-to-liquid';
+import { style } from '../functions/style';
 
 export const Columns = (block: BuilderElement) => {
   const { options } = block.component!;
@@ -40,8 +41,13 @@ export const Columns = (block: BuilderElement) => {
             const TagName = col.link ? 'a' : 'div';
             return `<${TagName}
             class="builder-column"
-            style="line-height: normal;display: flex;flex-direction: column;align-items: stretch;"
-            ${col.link ? `href="${col.link}" ` : ''}>
+            style="${style({
+              lineHeight: 'normal',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'stretch',
+            })}"
+            ${col.link ? `href="${col.link}"` : ''}>
             <div
               class="builder-blocks"
               builder-type="blocks">
