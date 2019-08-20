@@ -15,6 +15,8 @@
     "test": "jest"
   },
   "devDependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/helper-plugin-utils": "^7.0.0",
     "@builder.io/react": "^1.0.69",
     "@types/dedent": "^0.7.0",
     "@types/fs-extra-promise": "^1.0.8",
@@ -36,7 +38,7 @@
     "rollup-plugin-typescript2": "^0.13.0",
     "rollup-plugin-uglify": "^3.0.0",
     "ts-jest": "^24.0.2",
-    "typescript": "^3.1.6"
+    "typescript": "^3.5.3"
   },
   "dependencies": {
     "@builder.io/sdk": "^1.0.39",

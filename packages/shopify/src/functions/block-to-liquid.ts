@@ -137,7 +137,7 @@ export function blockToLiquid(json: BuilderElement, options: Options = {}): stri
     ${
       block.repeat && block.repeat.collection
         ? `{% for ${block.repeat.itemName || collectionName + '_item'} in ${escaleHtml(
-            convertBinding(block.repeat.collection, options)
+            convertBinding(block.repeat.collection, options).split('(')[0]
           )} %}`
         : ''
     }

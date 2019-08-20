@@ -4,7 +4,7 @@ import * as productPage from './pages/bindings/product.json';
 import * as collectionPage from './pages/bindings/collection.json';
 import * as fs from 'fs-extra-promise';
 
-const LOG_BY_DEFAULT = true;
+const LOG_BY_DEFAULT = false;
 const LOG = process.env.LOG ? process.env.LOG === 'true' : LOG_BY_DEFAULT;
 
 const OUTPUT_FILE_BY_DEFAULT = true;
@@ -14,14 +14,14 @@ const OUTPUT_FILE = process.env.OUTPUT_FILE
 
 const outputRoot = './test/dist';
 
-it('Simple page', async () => {
+test('Simple page', async () => {
   const output = contentToLiquid(simplePage as any, 'page');
 
   // TODO: test against react render to string
   expect(output.html).toContain('<div');
 });
 
-it('Product page', async () => {
+test('Product page', async () => {
   const output = contentToLiquid(productPage as any, 'page');
   if (LOG) {
     console.log('liquid\n', output.html);
@@ -32,7 +32,7 @@ it('Product page', async () => {
   }
 });
 
-it('Collection page', async () => {
+test('Collection page', async () => {
   const output = contentToLiquid(collectionPage as any, 'page');
   if (LOG) {
     console.log('liquid\n', output.html);

@@ -3,11 +3,27 @@ import { format, Options as PrettierOptions } from 'prettier';
 import { blockToLiquid } from './block-to-liquid';
 import { Options } from '../interfaces/options';
 import { fastClone } from './fast-clone';
+import { convertTsToLiquid } from '../transformers/convert';
 
 const unescapeHtml = (html: string) => html.replace(/&apos;/g, "'").replace(/&quot;/g, '"');
 
+export const convertTemplateLiteralsToTags = (liquid: string) =>
+  // Oh lawdy...
+  liquid
+    .replace(/{{\s*`{%/g, ' {% ')
+    .replace(/}%\s*}\s*{{\s*\${/g, ' %} {{ ')
+    .replace(/}\s*}}\s*{%/g, ' }} {%')
+    .replace(/%}\s*}}`/g, ' %}')
+    .replace(/{{\${/g, ' {{ ')
+    .replace(/%}`\s*}}/g, '%}')
+    .replace(/{%\s*if\${/g, '{% if ')
+    .replace(/{% endif %}` }}`/g, ' %}');
+
 const liquidExpression = (expression: string) =>
-  unescapeHtml(expression).replace(/([\s\S]+?)\s+\+\s+([\s\S]+?)/g, '$1 | append: $2');
+  convertTsToLiquid(unescapeHtml(expression))
+    // TODO: move to transformer. Will break if ' + ' is in a string, though
+    // right now this seems very unusual and unlikely to occur
+    .replace(/([\s\S]+?)\s+\+\s+([\s\S]+?)/g, '$1 | append: $2');
 
 const liquidToHandlebars = (liquid: string) =>
   liquid
@@ -15,15 +31,17 @@ const liquidToHandlebars = (liquid: string) =>
     .replace(/{%\s*([^}]+?)\s*%}/g, "{{ liquid-block '$1' }}");
 
 const handlebarsToLiquid = (handlebars: string) =>
-  handlebars
-    .replace(
-      /{{\s*liquid\s*['"]([\s\S]+?)['"]\s*}}/g,
-      (match, group) => `{{ ${liquidExpression(group)} }}`
-    )
-    .replace(
-      /{{\s*liquid-block\s*['"]([\s\S]+?)['"]\s*}}/g,
-      (match, group) => `{% ${liquidExpression(group)} %}`
-    );
+  convertTemplateLiteralsToTags(
+    handlebars
+      .replace(
+        /{{\s*liquid\s*['"]([\s\S]+?)['"]\s*}}/g,
+        (match, group) => `{{ ${liquidExpression(group)} }}`
+      )
+      .replace(
+        /{{\s*liquid-block\s*['"]([\s\S]+?)['"]\s*}}/g,
+        (match, group) => `{% ${liquidExpression(group)} %}`
+      )
+  );
 
 const regexParse = (html: string) => {
   const cssSet = new Set();
