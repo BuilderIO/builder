@@ -1,8 +1,9 @@
 import { BuilderElement } from '@builder.io/sdk';
 import { blockToLiquid } from '../functions/block-to-liquid';
 import { style } from '../functions/style';
+import { Options } from '../interfaces/options';
 
-export const Columns = (block: BuilderElement) => {
+export const Columns = (block: BuilderElement, renderOptions: Options) => {
   const { options } = block.component!;
   const columns: any[] = options.columns || [];
   const gutterSize: number = options.space || 20;
@@ -51,7 +52,7 @@ export const Columns = (block: BuilderElement) => {
             <div
               class="builder-blocks"
               builder-type="blocks">
-              ${col.blocks.map((block: any) => blockToLiquid(block)).join('\n')}
+              ${col.blocks.map((block: any) => blockToLiquid(block, renderOptions)).join('\n')}
             </div>
           </${TagName}>`;
           })

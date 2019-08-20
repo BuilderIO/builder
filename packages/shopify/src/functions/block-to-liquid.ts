@@ -1,5 +1,5 @@
 import { BuilderElement } from '@builder.io/sdk';
-import { size, reduce, set, last } from 'lodash';
+import { size, reduce, set, last, snakeCase } from 'lodash';
 import { sizes, sizeNames } from '../constants/sizes';
 import { Options } from '../interfaces/options';
 import { Text } from '../components/text';
@@ -9,7 +9,7 @@ import { StringMap } from '../interfaces/string-map';
 import { mapToCss } from './map-to-css';
 import { fastClone } from './fast-clone';
 
-const components: { [key: string]: (block: BuilderElement) => string } = {
+const components: { [key: string]: (block: BuilderElement, options: Options) => string } = {
   Text,
   Columns,
   Image,
@@ -22,9 +22,16 @@ export function blockToLiquid(json: BuilderElement, options: Options = {}): stri
 
   if (block.bindings) {
     for (const key in block.bindings) {
-      const value = block.bindings[key];
+      let value = block.bindings[key];
       if (!key || !value) {
         continue;
+      }
+
+      if (options.convertBindingsToSnakeCase !== false) {
+        value = value
+          .split('.')
+          .map(snakeCase)
+          .join('.');
       }
 
       const valueString = `{{ ${value} }}`;
@@ -72,27 +79,29 @@ export function blockToLiquid(json: BuilderElement, options: Options = {}): stri
     console.warn(`Could not find component: ${block.component.name}`);
   }
 
-  const collectionName = block.repeat && last(
-    (block.repeat.collection || '')
-      .trim()
-      .split('(')[0]
-      .trim()
-      .split('.')
-  )
+  let collectionName =
+    block.repeat &&
+    last(
+      (block.repeat.collection || '')
+        .trim()
+        .split('(')[0]
+        .trim()
+        .split('.')
+    );
 
+  if (collectionName && options.convertBindingsToSnakeCase !== false) {
+    collectionName = collectionName
+      .split('.')
+      .map(snakeCase)
+      .join('.');
+  }
 
   // Fragment? hm
   return `
     ${css.trim() ? `<style>${css}</style>` : ''}
-    ${
-      block.repeat
-        ? `{% for ${collectionName} in ${
-            block.repeat.collection
-          } %}`
-        : ''
-    }
+    ${block.repeat ? `{% for ${collectionName} in ${block.repeat.collection} %}` : ''}
     <${tag}${attributes ? ' ' + attributes : ''}>
-      ${(Component && Component(block)) || ''}
+      ${(Component && Component(block, options)) || ''}
       ${
         block.children
           ? block.children.map((child: BuilderElement) => blockToLiquid(child, options)).join('\n')

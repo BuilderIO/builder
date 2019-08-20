@@ -6,7 +6,7 @@ import { Options } from '../interfaces/options';
 const liquidToHandlebars = (liquid: string) => liquid.replace(/{%/g, '{{').replace(/%}/g, '}}');
 
 const handlebarsToLiquid = (handlebars: string) =>
-  handlebars.replace(/{{/g, '{%').replace(/}}/g, '%}');
+  handlebars.replace(/{{/g, '{% ').replace(/}}/g, ' %}');
 
 const regexParse = (html: string) => {
   const cssSet = new Set();
@@ -44,7 +44,7 @@ export function contentToLiquid(content: BuilderContent, modelName: string, opti
       data-builder-component="${modelName}"
       builder-model="${modelName}"
     >
-      ${blocks ? blocks.map((block: BuilderElement) => blockToLiquid(block)).join('\n') : ''}
+      ${blocks ? blocks.map((block: BuilderElement) => blockToLiquid(block, options)).join('\n') : ''}
     </div>`.replace(/\s+/, ' ')
   );
 

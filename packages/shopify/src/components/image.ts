@@ -1,8 +1,9 @@
 import { BuilderElement } from '@builder.io/sdk';
 import { blockToLiquid } from '../functions/block-to-liquid';
 import { style } from '../functions/style';
+import { Options } from '../interfaces/options';
 
-export const Image = (block: BuilderElement) => {
+export const Image = (block: BuilderElement, renderOptions: Options) => {
   const { options } = block.component!;
   const { aspectRatio, backgroundSize, backgroundPosition } = options;
 
@@ -48,7 +49,7 @@ export const Image = (block: BuilderElement) => {
             })}"
           >
             ${block.children
-              .map((block: BuilderElement, index: number) => blockToLiquid(block))
+              .map((block: BuilderElement, index: number) => blockToLiquid(block, renderOptions))
               .join('\n')}
           </div>`
             : ''

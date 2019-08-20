@@ -4,5 +4,6 @@ export interface Options {
   emailMode?: boolean;
   extractCss?: boolean;
   minify?: boolean;
+  convertBindingsToSnakeCase?: boolean;
   prettierOptions?: PrettierOptions;
 }

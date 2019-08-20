@@ -156,7 +156,7 @@ const exampleContent: any = {
                     groupLocked: false,
                     bindings: {
                       'style.display': 'foo.bar',
-                      'component.options.foo': 'foobar',
+                      'component.options.text': 'foobar',
                       href: 'bazbaz'
                     },
                     repeat: {
