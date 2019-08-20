@@ -17,7 +17,40 @@ const components: { [key: string]: (block: BuilderElement, options: Options) => 
   Section,
 };
 
+const camelCaseToSnakeCase = (str?: string) =>
+  str ? str.replace(/([A-Z])/g, g => `_${g[0].toLowerCase()}`) : '';
+
 const escaleHtml = (str: string) => str.replace(/'/g, '&apos;').replace(/"/g, '&quot;');
+
+const convertBinding = (binding: string, options: Options) => {
+  let value = binding;
+
+  if (options.convertShopifyBindings !== false) {
+    if (value.match(/images\[\d+\]\.src/)) {
+      value = value.replace(/(images\[\d+\]).src/g, "$1 | img_url: 'large'");
+    }
+    // Hack
+    if (value.includes('state.product.product.')) {
+      value = value.replace(/state\.product\.product\./g, 'product.');
+      value = camelCaseToSnakeCase(value);
+    }
+    if (value.includes('state.products.products')) {
+      value = value.replace(/state\.products\.products/g, 'collection.products');
+      value = camelCaseToSnakeCase(value);
+    }
+    if (value.includes('state.productsItem.')) {
+      value = value.replace(/state\.productsItem\./g, 'productsItem.');
+      value = camelCaseToSnakeCase(value);
+    }
+
+    // TODO: replace all, e.g. in ternary
+    if (value.includes('state.')) {
+      value.replace(/state\./g, '');
+    }
+  }
+
+  return value;
+};
 
 export function blockToLiquid(json: BuilderElement, options: Options = {}): string {
   const block = fastClone(json);
@@ -31,17 +64,7 @@ export function blockToLiquid(json: BuilderElement, options: Options = {}): stri
         continue;
       }
 
-      if (options.convertBindingsToSnakeCase !== false) {
-        // Hack
-        if (value.startsWith('product.product.')) {
-          value = value.replace('product.', '');
-
-          value = value
-            .split('.')
-            .map(snakeCase)
-            .join('.');
-        }
-      }
+      value = convertBinding(value, options);
 
       if (value.includes(';')) {
         console.debug('Skipping binding', value.replace(/\s{2,}/g, ' '));
@@ -86,7 +109,7 @@ export function blockToLiquid(json: BuilderElement, options: Options = {}): stri
     // TODO: style bindings and start animation styles
   });
 
-  const tag = block.tagName || ((attributes as any).href ? 'a' : 'div');
+  const tag = block.tagName || (block.properties && block.properties.href ? 'a' : 'div');
 
   const Component = block.component && components[block.component.name];
 
@@ -104,17 +127,20 @@ export function blockToLiquid(json: BuilderElement, options: Options = {}): stri
         .split('.')
     );
 
-  if (collectionName && options.convertBindingsToSnakeCase !== false) {
-    collectionName = collectionName
-      .split('.')
-      .map(snakeCase)
-      .join('.');
+  if (collectionName) {
+    collectionName = convertBinding(collectionName, options);
   }
 
   // Fragment? hm
   return `
     ${css.trim() ? `<style>${css}</style>` : ''}
-    ${block.repeat ? `{% for ${collectionName} in ${escaleHtml(block.repeat.collection)} %}` : ''}
+    ${
+      block.repeat && block.repeat.collection
+        ? `{% for ${block.repeat.itemName || collectionName + '_item'} in ${escaleHtml(
+            convertBinding(block.repeat.collection, options)
+          )} %}`
+        : ''
+    }
     <${tag}${attributes ? ' ' + attributes : ''}>
       ${(Component && Component(block, options)) || ''}
       ${

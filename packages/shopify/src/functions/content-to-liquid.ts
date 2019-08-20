@@ -4,17 +4,26 @@ import { blockToLiquid } from './block-to-liquid';
 import { Options } from '../interfaces/options';
 import { fastClone } from './fast-clone';
 
+const unescapeHtml = (html: string) => html.replace(/&apos;/g, "'").replace(/&quot;/g, '"');
+
+const liquidExpression = (expression: string) =>
+  unescapeHtml(expression).replace(/([\s\S]+?)\s+\+\s+([\s\S]+?)/g, '$1 | append: $2');
+
 const liquidToHandlebars = (liquid: string) =>
-  liquid.replace(
-    /{[%{]\s*([^}]+?)\s*[%}]}/g,
-    (match, group) => `{{ liquid '${group}' }}`
-  );
+  liquid
+    .replace(/{{\s*([^}]+?)\s*}}/g, "{{ liquid '$1' }}")
+    .replace(/{%\s*([^}]+?)\s*%}/g, "{{ liquid-block '$1' }}");
 
 const handlebarsToLiquid = (handlebars: string) =>
-  handlebars.replace(
-    /{{\s*liquid\s*['"]([\s\S]+?)['"]\s*}}/g,
-    (match, group) => `{% ${group} %}`
-  );
+  handlebars
+    .replace(
+      /{{\s*liquid\s*['"]([\s\S]+?)['"]\s*}}/g,
+      (match, group) => `{{ ${liquidExpression(group)} }}`
+    )
+    .replace(
+      /{{\s*liquid-block\s*['"]([\s\S]+?)['"]\s*}}/g,
+      (match, group) => `{% ${liquidExpression(group)} %}`
+    );
 
 const regexParse = (html: string) => {
   const cssSet = new Set();

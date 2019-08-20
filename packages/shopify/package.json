@@ -17,10 +17,12 @@
   "devDependencies": {
     "@builder.io/react": "^1.0.69",
     "@types/dedent": "^0.7.0",
+    "@types/fs-extra-promise": "^1.0.8",
     "@types/jest": "^24.0.18",
     "@types/lodash": "^4.14.137",
     "@types/node": "^9.4.6",
     "@types/prettier": "^1.18.2",
+    "fs-extra-promise": "^1.0.1",
     "jest": "^24.9.0",
     "rollup": "^0.58.2",
     "rollup-plugin-alias": "^1.4.0",

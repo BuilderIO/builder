@@ -1,0 +1,32 @@
+{
+  "ownerId": "2bdcbde0dfc34ac4bd6385f29b564fcc",
+  "lastUpdateBy": null,
+  "createdDate": 1550698948249,
+  "id": "d3d9a373d3a3479d921c2bcc0fe23aa5",
+  "@version": 2,
+  "name": "Collection",
+  "modelId": "ec76c80a12464d7d8dd550afe16bd835",
+  "published": "published",
+  "priority": -10,
+  "query": [{ "property": "urlPath", "operator": "startsWith", "value": "/collections/" }],
+  "data": {
+    "dynamicSymbols": {},
+    "hasLinks": false,
+    "httpRequests": {
+      "products": "https://heybloomwell.com/collections/{{state.location.path[1] || 'collections-all'}}/products.json"
+    },
+    "inputs": [],
+    "symbolsUsed": {},
+    "blocksString": "[{\"@type\":\"@builder.io/sdk:Element\",\"@version\":2,\"responsiveStyles\":{\"large\":{\"display\":\"flex\",\"flexDirection\":\"column\",\"alignItems\":\"stretch\",\"position\":\"relative\",\"flexShrink\":\"0\",\"boxSizing\":\"border-box\",\"marginTop\":\"2px\",\"height\":\"auto\",\"paddingBottom\":\"30px\"}},\"children\":[{\"@type\":\"@builder.io/sdk:Element\",\"@version\":2,\"responsiveStyles\":{\"large\":{\"position\":\"relative\",\"flexShrink\":\"0\",\"boxSizing\":\"border-box\",\"marginTop\":\"4px\",\"width\":\"100%\",\"marginLeft\":\"auto\",\"marginRight\":\"auto\",\"maxWidth\":\"1200px\",\"paddingBottom\":\"30px\",\"display\":\"flex\",\"flexDirection\":\"row\",\"flexWrap\":\"wrap\",\"paddingLeft\":\"11px\",\"paddingRight\":\"11px\",\"justifyContent\":\"flex-start\"}},\"children\":[{\"@type\":\"@builder.io/sdk:Element\",\"@version\":2,\"responsiveStyles\":{\"large\":{\"display\":\"flex\",\"flexDirection\":\"column\",\"alignItems\":\"stretch\",\"position\":\"relative\",\"flexShrink\":\"0\",\"boxSizing\":\"border-box\",\"marginTop\":\"3px\",\"height\":\"auto\",\"paddingBottom\":\"14px\",\"width\":\"33%\",\"paddingLeft\":\"6px\",\"paddingRight\":\"6px\"},\"medium\":{\"width\":\"50%\"}},\"bindings\":{\"href\":\"'/products/' + state.productsItem.handle\"},\"repeat\":{\"collection\":\"state.products.products\"},\"children\":[{\"@type\":\"@builder.io/sdk:Element\",\"@version\":2,\"responsiveStyles\":{\"large\":{\"display\":\"flex\",\"flexDirection\":\"column\",\"alignItems\":\"stretch\",\"position\":\"relative\",\"flexShrink\":\"0\",\"boxSizing\":\"border-box\",\"marginTop\":\"7px\",\"minHeight\":\"20px\",\"minWidth\":\"20px\",\"overflow\":\"hidden\"}},\"bindings\":{\"component.options.image\":\"state.productsItem.images[0].src + '&width=500'\"},\"id\":\"builder-02134ab1e7cb4e098306573d87b8e98d\",\"layerLocked\":false,\"groupLocked\":false,\"component\":{\"name\":\"Image\",\"options\":{\"image\":\"https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?width=2000&height=1200\",\"backgroundSize\":\"cover\",\"backgroundPosition\":\"top\",\"aspectRatio\":1.3639}}},{\"@type\":\"@builder.io/sdk:Element\",\"@version\":2,\"responsiveStyles\":{\"large\":{\"display\":\"flex\",\"flexDirection\":\"column\",\"alignItems\":\"stretch\",\"position\":\"relative\",\"flexShrink\":\"0\",\"boxSizing\":\"border-box\",\"marginTop\":\"15px\",\"lineHeight\":\"normal\",\"height\":\"auto\",\"textAlign\":\"center\",\"fontWeight\":\"600\"}},\"bindings\":{\"component.options.text\":\"state.productsItem.title\"},\"id\":\"builder-f1fd9fb4acfe4059af2cfdec515f1394\",\"animations\":[{\"trigger\":\"hover\",\"animation\":\"custom\",\"steps\":[{\"id\":\"bdb7780d24b241c6856400e2987e70f3\",\"isStartState\":false,\"styles\":{},\"delay\":0},{\"id\":\"5fa277755cbc41529fd798fa8e263eac\",\"isStartState\":false,\"styles\":{\"color\":\"rgba(14, 123, 179, 1)\"},\"delay\":0}],\"delay\":0,\"duration\":0.5,\"easing\":\"cubic-bezier(.37,.01,0,.98)\",\"repeat\":false}],\"layerLocked\":false,\"groupLocked\":false,\"component\":{\"name\":\"Text\",\"options\":{\"text\":\"<p>Enter some text...</p>\"}}},{\"@type\":\"@builder.io/sdk:Element\",\"@version\":2,\"responsiveStyles\":{\"large\":{\"display\":\"flex\",\"flexDirection\":\"column\",\"alignItems\":\"stretch\",\"position\":\"relative\",\"flexShrink\":\"0\",\"boxSizing\":\"border-box\",\"marginTop\":\"7px\",\"lineHeight\":\"normal\",\"height\":\"auto\",\"textAlign\":\"center\"}},\"bindings\":{\"component.options.text\":\"'$' + state.productsItem.variants[0].price\"},\"id\":\"builder-aa2b79ad57a144eab0cdcd4d6fbc46bd\",\"layerLocked\":false,\"groupLocked\":false,\"component\":{\"name\":\"Text\",\"options\":{\"text\":\"Enter some text...\"}}}],\"id\":\"builder-3bb58607609c430393200aef7e0be037\",\"layerLocked\":false,\"groupLocked\":false}],\"id\":\"builder-afd46a51c5de4368b7af24b9e82ed9d0\",\"layerLocked\":false,\"groupLocked\":false}],\"id\":\"builder-4154f60bc56447f4acaae2ebe072d2be\",\"layerLocked\":false,\"groupLocked\":false}]"
+  },
+  "metrics": { "clicks": 696, "impressions": 3063 },
+  "variations": {},
+  "lastUpdated": 1565282965948,
+  "stateFields": [],
+  "testRatio": 1,
+  "publishStart": null,
+  "publishEnd": null,
+  "screenshot": "https://cdn.builder.io/api/v1/image/assets%2F2bdcbde0dfc34ac4bd6385f29b564fcc%2F85476c75670f40be8fe16eab0c284906",
+  "createdBy": "upEEqFf2qxNbQTAHDg7YlkjzlfI2",
+  "lastUpdatedBy": "IsxPKMo2gPRRKeakUztj1D6uqed2"
+}
