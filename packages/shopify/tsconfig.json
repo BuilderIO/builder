@@ -3,6 +3,7 @@
     "target": "es5",
     "outDir": "dist",
     "module": "esnext",
+    "moduleResolution": "node",
     "strict": true,
     "sourceMap": true,
     "declaration": true,
@@ -12,5 +13,5 @@
     "allowSyntheticDefaultImports": true,
     "typeRoots": ["./node_modules/@types"]
   },
-  "include": ["./index.ts", "./src/**/*.ts", "./types.d.ts"]
+  "include": ["./index.ts", "./src/**/*.ts", "./types.d.ts", "./test/**/*.ts"]
 }

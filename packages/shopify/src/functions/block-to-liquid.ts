@@ -1,72 +1,16 @@
-import { BuilderElement, BuilderContent } from '@builder.io/sdk';
-import reduce from 'lodash-es/reduce';
-import kebabCase from 'lodash-es/kebabCase';
-import size from 'lodash-es/size';
+import { BuilderElement } from '@builder.io/sdk';
+import { size, reduce, kebabCase } from 'lodash';
+import { sizes, sizeNames } from '../constants/sizes';
+import { Options } from '../interfaces/options';
+import { Text } from '../components/text';
+import { Columns } from '../components/columns';
+import { Image } from '../components/image';
 
-export function modelToLiquid(content: BuilderContent, modelName: string, options: Options = {}) {
-  const blocks = content.data && content.data.blocks;
-
-  const { html, css } = regexParse(
-    `<div
-      class="builder-content"
-      builder-content-id=${content.id}
-      data-builder-content-id=${content.id}
-      data-builder-component=${modelName}
-      builder-model=${modelName}
-    >
-      ${blocks ? blocks.map((block: BuilderElement) => blockToLiquid).join('') : ''}
-    </div>`.replace(/\s+/, ' ')
-  );
-
-  if (options.extractCss) {
-    return { html, css };
-  }
-
-  return { html: `<style type="text/css" class="builder-styles">${css}</style>` + html };
-}
-
-// TODO: move to core
-export type Size = 'large' | 'medium' | 'small' | 'xsmall';
-export const sizeNames: Size[] = ['xsmall', 'small', 'medium', 'large'];
-const sizes = {
-  xsmall: {
-    min: 0,
-    default: 0,
-    max: 0,
-  },
-  small: {
-    min: 320,
-    default: 321,
-    max: 640,
-  },
-  medium: {
-    min: 641,
-    default: 642,
-    max: 991,
-  },
-  large: {
-    min: 990,
-    default: 991,
-    max: 1200,
-  },
-  getWidthForSize(size: Size) {
-    return this[size].default;
-  },
-  getSizeForWidth(width: number) {
-    for (const size of sizeNames) {
-      const value = this[size];
-      if (width <= value.max) {
-        return size;
-      }
-    }
-    return 'large';
-  },
+const components: { [key: string]: (block: BuilderElement) => string } = {
+  Text,
+  Columns,
+  Image,
 };
-
-export interface Options {
-  emailMode?: boolean;
-  extractCss?: boolean;
-}
 
 export function blockToLiquid(block: BuilderElement, options: Options = {}): string {
   const css = blockCss(block, options);
@@ -81,6 +25,12 @@ export function blockToLiquid(block: BuilderElement, options: Options = {}): str
 
   const tag = block.tagName || ((attributes as any).href ? 'a' : 'div');
 
+  const Component = block.component && components[block.component.name];
+
+  if (block.component && !Component) {
+    console.warn(`Could not find component: ${block.component.name}`);
+  }
+
   // Fragment? hm
   return `
     ${css.trim() ? `<style>${css}</style>` : ''}
@@ -92,35 +42,16 @@ export function blockToLiquid(block: BuilderElement, options: Options = {}): str
         : ''
     }
     <${tag}${attributes ? ' ' + attributes : ''}>
+      ${(Component && Component(block)) || ''}
       ${
         block.children
-          ? block.children.map((child: BuilderElement) => blockToLiquid(child, options)).join('')
+          ? block.children.map((child: BuilderElement) => blockToLiquid(child, options)).join('\n')
           : ''
       }
     </${tag}>
     ${block.repeat ? '{% endfor %}' : ''}
     `;
 }
-
-const regexParse = (html: string) => {
-  const cssSet = new Set();
-  const newHtml = html.replace(/<style.*?>([\s\S]*?)<\/style>/g, (match, cssString) => {
-    cssSet.add(cssString);
-    return '';
-  });
-  return {
-    css: Array.from(cssSet.values())
-      .join(' ')
-      .replace(/&gt;/g, '>')
-      .replace(/&amp;/g, '&')
-      .replace(/&quot;/g, '"')
-      .replace(/&apos;/g, "'")
-      .replace(/ \S+:\s+;/g, '')
-      .replace(/\s+/g, ' ')
-      .trim(),
-    html: newHtml,
-  };
-};
 
 interface StringMap {
   [key: string]: string | undefined | null;
