@@ -2,20 +2,21 @@ import { BuilderElement } from '@builder.io/sdk';
 import { size, reduce, set, last, snakeCase } from 'lodash';
 import { sizes, sizeNames } from '../constants/sizes';
 import { Options } from '../interfaces/options';
-import { Text } from '../components/text';
-import { Columns } from '../components/columns';
-import { Image } from '../components/image';
 import { StringMap } from '../interfaces/string-map';
 import { mapToCss } from './map-to-css';
 import { fastClone } from './fast-clone';
-import { Section } from '../components/section';
+import { getComponentInfo } from '../constants/components';
 
-const components: { [key: string]: (block: BuilderElement, options: Options) => string } = {
-  Text,
-  Columns,
-  Image,
-  Section,
-};
+import '../components/text';
+import '../components/columns';
+import '../components/image';
+import '../components/section';
+import '../components/custom-code';
+import '../components/forms/form';
+import '../components/forms/input';
+import '../components/forms/submit-button';
+import '../components/widgets/accordion';
+import '../components/widgets/carousel';
 
 const camelCaseToSnakeCase = (str?: string) =>
   str ? str.replace(/([A-Z])/g, g => `_${g[0].toLowerCase()}`) : '';
@@ -44,8 +45,17 @@ const convertBinding = (binding: string, options: Options) => {
     }
 
     // TODO: replace all, e.g. in ternary
+    if (value.includes('state.product.')) {
+      value = value.replace(/state\.product\./g, 'product.');
+    }
+
+    if (value.match(/state\.(\w+)Item/)) {
+      value = value.replace(/state\.(\w+)Item/, '$1_item');
+    }
+
+    // TODO: replace all, e.g. in ternary
     if (value.includes('state.')) {
-      value.replace(/state\./g, '');
+      value = value.replace(/state\./g, '');
     }
   }
 
@@ -111,9 +121,9 @@ export function blockToLiquid(json: BuilderElement, options: Options = {}): stri
 
   const tag = block.tagName || (block.properties && block.properties.href ? 'a' : 'div');
 
-  const Component = block.component && components[block.component.name];
+  const componentInfo = block.component && getComponentInfo(block.component.name);
 
-  if (block.component && !Component) {
+  if (block.component && !componentInfo) {
     console.warn(`Could not find component: ${block.component.name}`);
   }
 
@@ -141,14 +151,17 @@ export function blockToLiquid(json: BuilderElement, options: Options = {}): stri
           )} %}`
         : ''
     }
+    ${componentInfo && componentInfo.noWrap ?
+      componentInfo.component(block, options, attributes)
+    : `
     <${tag}${attributes ? ' ' + attributes : ''}>
-      ${(Component && Component(block, options)) || ''}
+      ${(componentInfo && componentInfo.component(block, options)) || ''}
       ${
         block.children
           ? block.children.map((child: BuilderElement) => blockToLiquid(child, options)).join('\n')
           : ''
       }
-    </${tag}>
+    </${tag}>`}
     ${block.repeat ? '{% endfor %}' : ''}
     `;
 }

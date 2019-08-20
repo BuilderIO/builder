@@ -2,12 +2,15 @@ import { BuilderElement } from '@builder.io/sdk';
 import { blockToLiquid } from '../functions/block-to-liquid';
 import { style } from '../functions/style';
 import { Options } from '../interfaces/options';
+import { component } from '../constants/components';
 
-export const Image = (block: BuilderElement, renderOptions: Options) => {
-  const { options } = block.component!;
-  const { aspectRatio, backgroundSize, backgroundPosition } = options;
+export const Image = component({
+  name: 'Image',
+  component: (block: BuilderElement, renderOptions: Options) => {
+    const { options } = block.component!;
+    const { aspectRatio, backgroundSize, backgroundPosition } = options;
 
-  return `
+    return `
     <img
       src="${options.image || ''}"
       style="${style({
@@ -55,4 +58,5 @@ export const Image = (block: BuilderElement, renderOptions: Options) => {
             : ''
         }
   `;
-};
+  },
+});

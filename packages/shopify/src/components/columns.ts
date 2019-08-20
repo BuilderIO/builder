@@ -2,22 +2,25 @@ import { BuilderElement } from '@builder.io/sdk';
 import { blockToLiquid } from '../functions/block-to-liquid';
 import { style } from '../functions/style';
 import { Options } from '../interfaces/options';
+import { component } from '../constants/components';
 
-export const Columns = (block: BuilderElement, renderOptions: Options) => {
-  const { options } = block.component!;
-  const columns: any[] = options.columns || [];
-  const gutterSize: number = options.space || 20;
+export const Columns = component({
+  name: 'Columns',
+  component: (block: BuilderElement, renderOptions: Options) => {
+    const { options } = block.component!;
+    const columns: any[] = options.columns || [];
+    const gutterSize: number = options.space || 20;
 
-  function getWidth(index: number) {
-    return (columns[index] && columns[index].width) || 100 / columns.length;
-  }
+    function getWidth(index: number) {
+      return (columns[index] && columns[index].width) || 100 / columns.length;
+    }
 
-  function getColumnWidth(index: number) {
-    const subtractWidth = (gutterSize * (columns.length - 1)) / columns.length;
-    return `calc(${getWidth(index)}% - ${subtractWidth}px)`;
-  }
+    function getColumnWidth(index: number) {
+      const subtractWidth = (gutterSize * (columns.length - 1)) / columns.length;
+      return `calc(${getWidth(index)}% - ${subtractWidth}px)`;
+    }
 
-  return `
+    return `
     <style>
       .builder-columns {
         display: flex;
@@ -78,4 +81,5 @@ export const Columns = (block: BuilderElement, renderOptions: Options) => {
         }
       </div>
   `;
-};
+  },
+});

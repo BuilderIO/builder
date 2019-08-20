@@ -7,23 +7,40 @@ import { convertTsToLiquid } from '../transformers/convert';
 
 const unescapeHtml = (html: string) => html.replace(/&apos;/g, "'").replace(/&quot;/g, '"');
 
-export const convertTemplateLiteralsToTags = (liquid: string) =>
-  // Oh lawdy...
-  liquid
-    .replace(/{{\s*`{%/g, ' {% ')
-    .replace(/}%\s*}\s*{{\s*\${/g, ' %} {{ ')
-    .replace(/}\s*}}\s*{%/g, ' }} {%')
-    .replace(/%}\s*}}`/g, ' %}')
-    .replace(/{{\${/g, ' {{ ')
-    .replace(/%}`\s*}}/g, '%}')
-    .replace(/{%\s*if\${/g, '{% if ')
-    .replace(/{% endif %}` }}`/g, ' %}');
+export const convertTemplateLiteralsToTags = (liquid: string) => {
+  let current = liquid;
+  let latest = liquid;
+  let updated = true;
+  while (updated) {
+    updated = false;
+    latest = current
+      // Oh lawdy...
+      // Remove binding open with template literal with liquid directly inside - '{{ `{%' or '{{ `{{'
+      .replace(/{{\s*`{([%{])/g, ' {$1 ')
+      // Remove binding close with template literal with liquid directly inside - '%}` }}' or '}}` }}'
+      .replace(/([%}])}`\s*}}/g, ' $1} ')
+      // Literal explressions ${...} -> ...
+      .replace(/\${([^}]+?)}/g, '$1')
+      // Remove the string tags now
+      .replace(/`/g, '')
+      .replace(/\| img_url;/g, '| img_url:')
+      // TODO: put in TS transforms
+      .replace(/src="{{ images_item }}"/g, 'src="{{ images_item | img_url: "large" }}"')
+      // FIXME: why this happening? aka TS is putting parans around for (thing in things) but liquid requires none
+      .replace(/{%\s*for\s*\((.*?\s*in\s*.*?)\)\s*%}/g, '{% for $1 %}');
 
-const liquidExpression = (expression: string) =>
-  convertTsToLiquid(unescapeHtml(expression))
-    // TODO: move to transformer. Will break if ' + ' is in a string, though
-    // right now this seems very unusual and unlikely to occur
-    .replace(/([\s\S]+?)\s+\+\s+([\s\S]+?)/g, '$1 | append: $2');
+    if (latest !== current) {
+      current = latest;
+      updated = true;
+    }
+  }
+  return latest;
+};
+
+const liquidExpression = (expression: string) => convertTsToLiquid(unescapeHtml(expression));
+// TODO: move to transformer. Will break if ' + ' is in a string, though
+// right now this seems very unusual and unlikely to occur
+// .replace(/([\s\S]+?)\s+\+\s+([\s\S]+?)/g, '$1 | append: $2');
 
 const liquidToHandlebars = (liquid: string) =>
   liquid
