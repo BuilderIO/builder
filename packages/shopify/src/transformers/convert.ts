@@ -21,7 +21,7 @@ const code = (parts: TemplateStringsArray, ...nodes: ts.Expression[]) => {
   );
 };
 
-const replace = (oldNode: ts.Node, newNode: ts.Node): ts.Node => ts.setTextRange(newNode, oldNode)
+const replace = (newNode: ts.Node, oldNode: ts.Node): ts.Node => ts.setTextRange(newNode, oldNode);
 
 function transform(context: ts.TransformationContext) {
   const previousOnSubstituteNode = context.onSubstituteNode;

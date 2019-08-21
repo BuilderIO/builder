@@ -40,8 +40,8 @@ const convertBinding = (binding: string, options: Options) => {
       value = value.replace(/state\.products\.products/g, 'collection.products');
       value = camelCaseToSnakeCase(value);
     }
-    if (value.includes('state.productsItem.')) {
-      value = value.replace(/state\.productsItem\./g, 'productsItem.');
+    if (value.includes('state.productsItem')) {
+      value = value.replace(/state\.productsItem\./g, 'productsItem');
       value = camelCaseToSnakeCase(value);
     }
 

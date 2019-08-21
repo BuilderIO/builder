@@ -32,6 +32,9 @@ export const convertTemplateLiteralsToTags = (liquid: string) => {
       .replace(/{{\s*{%/g, '{%')
       .replace(/%}\s*}}/g, '%}')
 
+      // Fix this in the compiler
+      .replace(/\| img_url;\s*/g, '| img_url: ')
+
       // TODO: put into transforms
       .replace(/src="{{ images_item }}"/g, 'src="{{ images_item | img_url: "large" }}"')
 
@@ -126,7 +129,17 @@ export function contentToLiquid(json: BuilderContent, modelName: string, options
   });
 
   if (!options.extractCss) {
-    html = `<style type="text/css" class="builder-styles">${css}</style>` + html;
+    html =
+      `<style type="text/css" class="builder-styles">${
+        css
+          // Add a newlinw space between each CSS block
+          .replace(/\n}/g, '\n}\n')
+          // Add two spaces before each line that has content (indent into the <style> tag)
+          .split('\n')
+          .map(item => (item.length ? '  ' + item : item))
+          .join('\n')
+        // Close style tag and add html
+      }</style>` + html;
     css = '';
   }
 
