@@ -13,6 +13,11 @@ test('Tripe to double equals', async () => {
   expect(result.trim()).toEqual('foo == bar');
 });
 
+test('Undefined to ""', async () => {
+  const result = convertTsToLiquid('undefined');
+  expect(result.trim()).toEqual('""');
+});
+
 test('Ternary to {% if %}', async () => {
   const result = convertTemplateLiteralsToTags(convertTsToLiquid('foo === bar ? bar : baz'));
   expect(stripWhitespace(result)).toEqual(

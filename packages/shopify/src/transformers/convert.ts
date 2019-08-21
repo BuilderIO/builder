@@ -25,10 +25,17 @@ function transform(context: ts.TransformationContext) {
   const previousOnSubstituteNode = context.onSubstituteNode;
   context.enableSubstitution(ts.SyntaxKind.ConditionalExpression);
   context.enableSubstitution(ts.SyntaxKind.BinaryExpression);
+  context.enableSubstitution(ts.SyntaxKind.Identifier);
   context.onSubstituteNode = (hint, node) => {
     node = previousOnSubstituteNode(hint, node);
+
+    // Convert `undefined` to `''`
+    if (ts.isIdentifier(node) && node.text === 'undefined') {
+      node = ts.setTextRange(ts.createStringLiteral(''), node);
+    }
+
     // Convert === to == for proper ruby
-    if (
+    else if (
       ts.isBinaryExpression(node) &&
       node.operatorToken.kind === ts.SyntaxKind.EqualsEqualsEqualsToken
     ) {
@@ -39,17 +46,17 @@ function transform(context: ts.TransformationContext) {
     }
 
     // Convert x / y into division
-    if (ts.isBinaryExpression(node) && node.operatorToken.kind === ts.SyntaxKind.SlashToken) {
+    else if (ts.isBinaryExpression(node) && node.operatorToken.kind === ts.SyntaxKind.SlashToken) {
       node = ts.setTextRange(code`${node.left} | divided_by: ${node.right}`, node);
     }
 
     // Convert x + y into string concat
-    if (ts.isBinaryExpression(node) && node.operatorToken.kind === ts.SyntaxKind.PlusToken) {
+    else if (ts.isBinaryExpression(node) && node.operatorToken.kind === ts.SyntaxKind.PlusToken) {
       node = ts.setTextRange(code`${node.left} | append: ${node.right}`, node);
     }
 
     // Convert ternary to liquid control flow
-    if (ts.isConditionalExpression(node)) {
+    else if (ts.isConditionalExpression(node)) {
       node = ts.setTextRange(
         code`{% if ${node.condition} %} {{ ${node.whenTrue} }} {% else %} {{ ${node.whenFalse} }} {% endif %}`,
         node
