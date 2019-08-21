@@ -21,11 +21,15 @@ const code = (parts: TemplateStringsArray, ...nodes: ts.Expression[]) => {
   );
 };
 
+const replace = (oldNode: ts.Node, newNode: ts.Node): ts.Node => ts.setTextRange(newNode, oldNode)
+
 function transform(context: ts.TransformationContext) {
   const previousOnSubstituteNode = context.onSubstituteNode;
+
   context.enableSubstitution(ts.SyntaxKind.ConditionalExpression);
   context.enableSubstitution(ts.SyntaxKind.BinaryExpression);
   context.enableSubstitution(ts.SyntaxKind.Identifier);
+
   context.onSubstituteNode = (hint, node) => {
     node = previousOnSubstituteNode(hint, node);
 
@@ -47,17 +51,17 @@ function transform(context: ts.TransformationContext) {
 
     // Convert x / y into division
     else if (ts.isBinaryExpression(node) && node.operatorToken.kind === ts.SyntaxKind.SlashToken) {
-      node = ts.setTextRange(code`${node.left} | divided_by: ${node.right}`, node);
+      node = replace(code`${node.left} | divided_by: ${node.right}`, node);
     }
 
     // Convert x + y into string concat
     else if (ts.isBinaryExpression(node) && node.operatorToken.kind === ts.SyntaxKind.PlusToken) {
-      node = ts.setTextRange(code`${node.left} | append: ${node.right}`, node);
+      node = replace(code`${node.left} | append: ${node.right}`, node);
     }
 
     // Convert ternary to liquid control flow
     else if (ts.isConditionalExpression(node)) {
-      node = ts.setTextRange(
+      node = replace(
         code`{% if ${node.condition} %} {{ ${node.whenTrue} }} {% else %} {{ ${node.whenFalse} }} {% endif %}`,
         node
       );
