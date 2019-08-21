@@ -23,6 +23,7 @@ const camelCaseToSnakeCase = (str?: string) =>
 
 const escaleHtml = (str: string) => str.replace(/'/g, '&apos;').replace(/"/g, '&quot;');
 
+// TODO: move most or all of this to transformers
 const convertBinding = (binding: string, options: Options) => {
   let value = binding;
 

@@ -14,33 +14,19 @@ test('Tripe to double equals', async () => {
 });
 
 test('Ternary to {% if %}', async () => {
-  const result = convertTsToLiquid('foo == bar ? baz : bat');
-  expect(result.trim()).toEqual('`{% if${foo == bar}%}{{${baz}}}{% else %}{{${bat}}}{% endif %}`');
-});
-
-test('Unwrap template strings', async () => {
-  const result = convertTemplateLiteralsToTags(
-    '{{ `{% if${state.activeSlide == state.$index}%}{{${1}}}{% else %}{{${0.3}}}{% endif %}` }}'
-  );
+  const result = convertTemplateLiteralsToTags(convertTsToLiquid('foo === bar ? bar : baz'));
   expect(stripWhitespace(result)).toEqual(
     stripWhitespace(
-      '{% if state.activeSlide == state.$index %} {{ 1 }} {% else %} {{ 0.3 }} {% endif %}'
+      '{% if foo == bar %} {{bar}} {% else %} {{baz}} {% endif %}'
     )
   );
 });
 
-test('Unwrap template filter strings', async () => {
-  const result = convertTemplateLiteralsToTags(
-    "{{ `{{${'$'}| append: ${`${product.price}| divided_by: ${100}`}}}` }}"
-  );
+test('Expressions to filters', async () => {
+  const result = convertTemplateLiteralsToTags(convertTsToLiquid('"$" + price / 100'));
   expect(stripWhitespace(result)).toEqual(
     stripWhitespace(
-      "{{ '$' | append: product.price | divided_by: 100 }}"
+      '"$" | append: price | divided_by: 100'
     )
   );
 });
-
-"{{'$'}|append:`product.price}|divided_by:100}`}}}"
-
-// {{ `{% if${foo == bar}%}{{${baz}}}{% else %}{{${bat}}}{% endif %} }}`
-// {% if foo == bar %} {{ baz }} {% else %} {{ bat }} {% endif %}

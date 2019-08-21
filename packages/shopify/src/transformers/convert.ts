@@ -1,5 +1,26 @@
 import * as ts from 'typescript';
 
+export const TEMPLATE_START_TOKEN = '%%TEMPLATE_START%%';
+export const PART_START_TOKEN = '%%TEMPLATE_PART_START%%';
+export const PART_END_TOKEN = '%%TEMPLATE_PART_END%%';
+export const TEMPLATE_END_TOKEN = '%%TEMPLATE_END%%';
+
+const code = (parts: TemplateStringsArray, ...nodes: ts.Expression[]) => {
+  return ts.createTemplateExpression(
+    ts.createTemplateHead(TEMPLATE_START_TOKEN + parts[0] + PART_START_TOKEN),
+    parts
+      .slice(1)
+      .map((part, index) =>
+        ts.createTemplateSpan(
+          nodes[index],
+          index === parts.length - 2
+            ? ts.createTemplateTail(PART_END_TOKEN + part + TEMPLATE_END_TOKEN)
+            : ts.createTemplateMiddle(PART_END_TOKEN + part + PART_START_TOKEN)
+        )
+      )
+  );
+};
+
 function transform(context: ts.TransformationContext) {
   const previousOnSubstituteNode = context.onSubstituteNode;
   context.enableSubstitution(ts.SyntaxKind.ConditionalExpression);
@@ -17,34 +38,20 @@ function transform(context: ts.TransformationContext) {
       );
     }
 
+    // Convert x / y into division
     if (ts.isBinaryExpression(node) && node.operatorToken.kind === ts.SyntaxKind.SlashToken) {
-      node = ts.setTextRange(
-        ts.createTemplateExpression(ts.createTemplateHead('{{'), [
-          ts.createTemplateSpan(node.left, ts.createTemplateMiddle('| divided_by: ')),
-          ts.createTemplateSpan(node.right, ts.createTemplateTail('}}')),
-        ]),
-        node
-      );
+      node = ts.setTextRange(code`${node.left} | divided_by: ${node.right}`, node);
     }
 
+    // Convert x + y into string concat
     if (ts.isBinaryExpression(node) && node.operatorToken.kind === ts.SyntaxKind.PlusToken) {
-      node = ts.setTextRange(
-        ts.createTemplateExpression(ts.createTemplateHead('{{'), [
-          ts.createTemplateSpan(node.left, ts.createTemplateMiddle('| append: ')),
-          ts.createTemplateSpan(node.right, ts.createTemplateTail('}}')),
-        ]),
-        node
-      );
+      node = ts.setTextRange(code`${node.left} | append: ${node.right}`, node);
     }
 
     // Convert ternary to liquid control flow
     if (ts.isConditionalExpression(node)) {
       node = ts.setTextRange(
-        ts.createTemplateExpression(ts.createTemplateHead('{% if'), [
-          ts.createTemplateSpan(node.condition, ts.createTemplateMiddle('%}{{')),
-          ts.createTemplateSpan(node.whenTrue, ts.createTemplateMiddle('}}{% else %}{{')),
-          ts.createTemplateSpan(node.whenFalse, ts.createTemplateTail('}}{% endif %}')),
-        ]),
+        code`{% if ${node.condition} %} {{ ${node.whenTrue} }} {% else %} {{ ${node.whenFalse} }} {% endif %}`,
         node
       );
     }
@@ -58,9 +65,6 @@ export function convertTsToLiquid(tsString: string) {
     .transpileModule(tsString, {
       transformers: {
         after: [transform],
-      },
-      compilerOptions: {
-        //
       },
     })
     .outputText.trim()

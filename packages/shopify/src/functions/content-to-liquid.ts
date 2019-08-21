@@ -3,7 +3,13 @@ import { format, Options as PrettierOptions } from 'prettier';
 import { blockToLiquid } from './block-to-liquid';
 import { Options } from '../interfaces/options';
 import { fastClone } from './fast-clone';
-import { convertTsToLiquid } from '../transformers/convert';
+import {
+  convertTsToLiquid,
+  TEMPLATE_START_TOKEN,
+  PART_START_TOKEN,
+  PART_END_TOKEN,
+  TEMPLATE_END_TOKEN,
+} from '../transformers/convert';
 
 const unescapeHtml = (html: string) => html.replace(/&apos;/g, "'").replace(/&quot;/g, '"');
 
@@ -14,19 +20,23 @@ export const convertTemplateLiteralsToTags = (liquid: string) => {
   while (updated) {
     updated = false;
     latest = current
-      // Oh lawdy...
-      // Remove binding open with template literal with liquid directly inside - '{{ `{%' or '{{ `{{'
-      .replace(/{{\s*`{([%{])/g, ' {$1 ')
-      // Remove binding close with template literal with liquid directly inside - '%}` }}' or '}}` }}'
-      .replace(/([%}])}`\s*}}/g, ' $1} ')
-      // Literal explressions ${...} -> ...
-      .replace(/\${([^}]+?)}/g, '$1')
-      // Remove the string tags now
-      .replace(/`/g, '')
-      .replace(/\| img_url;/g, '| img_url:')
-      // TODO: put in TS transforms
+      // Template interpolate tokens
+      .replace(new RegExp('`' + TEMPLATE_START_TOKEN, 'g'), '')
+      .replace(new RegExp(PART_START_TOKEN + '\\${', 'g'), '')
+      .replace(new RegExp('}' + PART_END_TOKEN, 'g'), '')
+      .replace(new RegExp(TEMPLATE_END_TOKEN + '`', 'g'), '')
+
+      // Sometimes we have to replace {{ .. }} bindings with {% ... %}
+      // For ease, swap directly inside, but we need to remove the surrounding tags
+      // when we see {{ {% ... %} }}
+      .replace(/{{\s*{%/g, '{%')
+      .replace(/%}\s*}}/g, '%}')
+
+      // TODO: put into transforms
       .replace(/src="{{ images_item }}"/g, 'src="{{ images_item | img_url: "large" }}"')
-      // FIXME: why this happening? aka TS is putting parans around for (thing in things) but liquid requires none
+
+      // TS is putting parans around for (thing in things) but liquid requires none
+      // FIXME: why this happening?
       .replace(/{%\s*for\s*\((.*?\s*in\s*.*?)\)\s*%}/g, '{% for $1 %}');
 
     if (latest !== current) {
