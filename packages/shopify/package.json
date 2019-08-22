@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/shopify",
-  "version": "1.0.1-alpha.1",
+  "version": "1.0.1-alpha.2",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
@@ -39,7 +39,7 @@
     "typescript": "^3.5.3"
   },
   "dependencies": {
-    "@builder.io/sdk": "^1.0.40-alpha.0",
+    "@builder.io/sdk": "^1.0.40-alpha.1",
     "dedent": "^0.7.0",
     "lodash": "^4.17.15",
     "node-fetch": "^2.6.0",
