@@ -32,6 +32,10 @@ export const convertTemplateLiteralsToTags = (liquid: string) => {
       .replace(/{{\s*{%/g, '{%')
       .replace(/%}\s*}}/g, '%}')
 
+      // .replace(/{{[^}]?+([!=]=)[^}+]?}}/g, (match, group) => {
+      //   return match;
+      // })
+
       // Fix this in the compiler
       .replace(/\| img_url;\s*/g, '| img_url: ')
 
@@ -130,7 +134,7 @@ export function contentToLiquid(json: BuilderContent, modelName: string, options
 
   if (!options.extractCss) {
     html =
-      `<style type="text/css" class="builder-styles">${
+      `<style type="text/css" class="builder-styles builder-api-styles">${
         css
           // Add a newlinw space between each CSS block
           .replace(/\n}/g, '\n}\n')

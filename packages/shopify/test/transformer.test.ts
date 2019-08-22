@@ -3,35 +3,41 @@ import { convertTemplateLiteralsToTags } from '../src/functions/content-to-liqui
 
 const stripWhitespace = (str: string) => str.replace(/\s/g, '');
 
+const tsToLiquid = (str: string) => convertTemplateLiteralsToTags(convertTsToLiquid(str));
+
 test('Simple expression', async () => {
-  const result = convertTsToLiquid('foo.bar');
+  const result = tsToLiquid('foo.bar');
   expect(result.trim()).toEqual('foo.bar');
 });
 
 test('Tripe to double equals', async () => {
-  const result = convertTsToLiquid('foo === bar');
+  const result = tsToLiquid('foo === bar');
   expect(result.trim()).toEqual('foo == bar');
 });
 
+test('&& to ternary', async () => {
+  const result = tsToLiquid('foo && bar');
+  expect(result.trim()).toEqual('{% if foo %} {{ bar }} {% else %} {{ "" }} {% endif %}');
+});
+
+test('|| to or', async () => {
+  const result = tsToLiquid('foo || bar');
+  expect(result.trim()).toEqual('foo or bar');
+});
+
 test('Undefined to ""', async () => {
-  const result = convertTsToLiquid('undefined');
+  const result = tsToLiquid('undefined');
   expect(result.trim()).toEqual('""');
 });
 
 test('Ternary to {% if %}', async () => {
-  const result = convertTemplateLiteralsToTags(convertTsToLiquid('foo === bar ? bar : baz'));
+  const result = tsToLiquid('foo && bar ? bar : baz');
   expect(stripWhitespace(result)).toEqual(
-    stripWhitespace(
-      '{% if foo == bar %} {{bar}} {% else %} {{baz}} {% endif %}'
-    )
+    stripWhitespace('{% if foo and bar %} {{bar}} {% else %} {{baz}} {% endif %}')
   );
 });
 
 test('Expressions to filters', async () => {
-  const result = convertTemplateLiteralsToTags(convertTsToLiquid('"$" + price / 100'));
-  expect(stripWhitespace(result)).toEqual(
-    stripWhitespace(
-      '"$" | append: price | divided_by: 100'
-    )
-  );
+  const result = tsToLiquid('"$" + price / 100');
+  expect(stripWhitespace(result)).toEqual(stripWhitespace('"$" | append: price | divided_by: 100'));
 });

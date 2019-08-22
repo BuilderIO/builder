@@ -29,7 +29,7 @@ const convertBinding = (binding: string, options: Options) => {
 
   if (options.convertShopifyBindings !== false) {
     if (value.match(/images\[\d+\]\.src/)) {
-      value = value.replace(/(images\[\d+\]).src/g, "$1 | img_url: 'large'");
+      value = value.replace(/(images\[\d+\])\.src/g, "$1 | img_url: 'large'");
     }
     // Hack
     if (value.includes('state.product.product.')) {
@@ -51,12 +51,17 @@ const convertBinding = (binding: string, options: Options) => {
     }
 
     if (value.match(/state\.(\w+)Item/)) {
-      value = value.replace(/state\.(\w+)Item/, '$1_item');
+      value = value.replace(/state\.(\w+)Item/g, '$1_item');
     }
 
     // TODO: replace all, e.g. in ternary
     if (value.includes('state.')) {
       value = value.replace(/state\./g, '');
+    }
+
+    const itemBugRe = /_item([^\.[$\s])/g
+    if (value.match(itemBugRe)) {
+      value = value.replace(itemBugRe, '_item.$1');
     }
   }
 
@@ -78,8 +83,9 @@ export function blockToLiquid(json: BuilderElement, options: Options = {}): stri
       value = convertBinding(value, options);
 
       if (value.includes(';')) {
-        console.debug('Skipping binding', value.replace(/\s{2,}/g, ' '));
-        continue;
+        console.debug('Skipping binding', value.replace(/\s+/g, ' '));
+        value = "''";
+        // continue;
       }
 
       const htmlEscapedValue = escaleHtml(value);
@@ -152,17 +158,19 @@ export function blockToLiquid(json: BuilderElement, options: Options = {}): stri
           )} %}`
         : ''
     }
-    ${componentInfo && componentInfo.noWrap ?
-      componentInfo.component(block, options, attributes)
-    : `
+    ${
+      componentInfo && componentInfo.noWrap
+        ? componentInfo.component(block, options, attributes)
+        : `
     <${tag}${attributes ? ' ' + attributes : ''}>
-      ${(componentInfo && componentInfo.component(block, options)) || ''}
-      ${
-        block.children
-          ? block.children.map((child: BuilderElement) => blockToLiquid(child, options)).join('\n')
-          : ''
-      }
-    </${tag}>`}
+      ${(componentInfo && componentInfo.component(block, options)) ||
+        (block.children &&
+          block.children
+            .map((child: BuilderElement) => blockToLiquid(child, options))
+            .join('\n')) ||
+        ''}
+    </${tag}>`
+    }
     ${block.repeat ? '{% endfor %}' : ''}
     `;
 }
