@@ -1335,7 +1335,7 @@ export class Builder {
           }
 
           const isEditingThisModel = this.editingModel === options.model;
-          if (isEditingThisModel) {
+          if (isEditingThisModel && Builder.isEditing) {
             parent.postMessage({ type: 'builder.updateContent' }, '*');
             return;
           }
