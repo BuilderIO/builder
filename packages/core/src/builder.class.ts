@@ -256,7 +256,7 @@ export class Builder {
   // TODO: this is quick and dirty, do better implementation later. Also can be unreliable
   // if page 301s etc. Use a query param instead? also could have issues with redirects. Injecting var could
   // work but is async...
-  static isEditing = Boolean(isIframe && document.referrer.match(/builder\.io|localhost:1234/));
+  static isEditing = Boolean(isIframe && (document.referrer.match(/builder\.io|localhost:1234/) || location.search.indexOf('builder.editing=') !== -1));
 
   // useCdnApi = false;
 
