@@ -241,17 +241,19 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
       update: this.updateState
     }
 
-    const key = this.props.apiKey
-    if (key && key !== builder.apiKey) {
-      builder.apiKey = key
-    }
+    if (Builder.isBrowser) {
+      const key = this.props.apiKey
+      if (key && key !== builder.apiKey) {
+        builder.apiKey = key
+      }
 
-    if (this.props.content) {
-      // TODO: this should be on didMount right bc of element ref??
-      // TODO: possibly observe for change or throw error if changes
-      this.onContentLoaded(
-        this.props.content.content || this.props.content.data /*, this.props.content*/
-      )
+      if (this.props.content) {
+        // TODO: this should be on didMount right bc of element ref??
+        // TODO: possibly observe for change or throw error if changes
+        this.onContentLoaded(
+          this.props.content.content || this.props.content.data /*, this.props.content*/
+        )
+      }
     }
   }
 
