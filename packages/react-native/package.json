@@ -58,5 +58,6 @@
     "rollup-plugin-typescript2": "^0.22.0",
     "semantic-release": "^15.13.18",
     "typescript": "^3.5.3"
-  }
+  },
+  "gitHead": "f233cba190317de3644fff198e765660205cd7f1"
 }
