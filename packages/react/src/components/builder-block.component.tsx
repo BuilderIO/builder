@@ -57,6 +57,9 @@ interface StringMap {
 function mapToCss(map: StringMap, spaces = 2, important = false) {
   return Object.keys(map).reduce((memo, key) => {
     const value = map[key]
+    if (typeof value !== 'string') {
+      return  memo;
+    }
     return (
       memo +
       (value && value.trim()
