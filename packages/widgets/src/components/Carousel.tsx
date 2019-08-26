@@ -188,7 +188,18 @@ interface CarouselProps {
       type: 'array',
       helperText: 'Responsive settings - e.g. see https://kenwheeler.github.io/slick/',
       advanced: true,
-      defaultValue: [],
+      defaultValue: [
+        {
+          width: 3000,
+          slidesToShow: 2,
+          slidesToScroll: 2
+        },
+        {
+          width: 400,
+          slidesToShow: 1,
+          slidesToScroll: 1
+        }
+      ],
       subFields: [
         {
           name: 'breakpoint',
@@ -199,7 +210,10 @@ interface CarouselProps {
         {
           name: 'settings',
           type: 'object',
-          defaultValue: {},
+          defaultValue: {
+            slidesToShow: 2,
+            slidesToScroll: 2
+          },
           subFields: [
             {
               name: 'slidesToShow',
