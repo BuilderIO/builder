@@ -270,6 +270,7 @@ export class BuilderCarousel extends React.Component<CarouselProps> {
                 <div ref={ref => (this.divRef = ref)} className="builder-carousel">
                   <style type="text/css">{slickStyles}</style>
                   <Slider
+                    responsive={this.props.responsive}
                     ref={ref => (this.sliderRef = ref)}
                     afterChange={slide => {
                       // TODO; callbacks
