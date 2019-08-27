@@ -60,7 +60,6 @@ function decorator(fn: Function) {
 }
 
 const Throttle = decorator(throttle);
-
 const fetchCache: { [key: string]: any } = {};
 
 export interface BuilderPageProps {
