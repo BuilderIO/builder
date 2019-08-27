@@ -16,7 +16,6 @@ import {
 import { Url } from 'url'
 import { debounceNextTick } from '../functions/debonce-next-tick'
 
-const isError = (thing: Error | any): thing is Error => thing instanceof Error
 const size = (thing: object) => Object.keys(thing).length
 
 export function throttle(func: Function, wait: number, options: any = {}) {
