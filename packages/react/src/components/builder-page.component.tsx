@@ -16,8 +16,6 @@ import {
 import { Url } from 'url'
 import { debounceNextTick } from '../functions/debonce-next-tick'
 
-console.debug('Hello')
-
 const isError = (thing: Error | any): thing is Error => thing instanceof Error
 const size = (thing: object) => Object.keys(thing).length
 
