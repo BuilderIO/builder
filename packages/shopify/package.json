@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/shopify",
-  "version": "1.0.3-alpha.0",
+  "version": "1.0.3-alpha.1",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
@@ -15,7 +15,7 @@
   "devDependencies": {
     "@babel/core": "^7.5.5",
     "@babel/helper-plugin-utils": "^7.0.0",
-    "@builder.io/react": "^1.0.72-alpha.0",
+    "@builder.io/react": "^1.0.72-alpha.1",
     "@types/dedent": "^0.7.0",
     "@types/fs-extra-promise": "^1.0.8",
     "@types/jest": "^24.0.18",
@@ -39,7 +39,7 @@
     "typescript": "^3.5.3"
   },
   "dependencies": {
-    "@builder.io/sdk": "^1.0.41-alpha.0",
+    "@builder.io/sdk": "^1.0.41-alpha.1",
     "dedent": "^0.7.0",
     "lodash": "^4.17.15",
     "node-fetch": "^2.6.0",
