@@ -136,7 +136,7 @@ interface AccordionProps {
           detail: [defaultDetail]
         }
       ],
-      showIf: (options: Map<string, any>) => !options.get('useChildrenForItems')
+      showIf: options => !options.get('useChildrenForItems')
     },
     {
       name: 'oneAtATime',
@@ -160,7 +160,7 @@ interface AccordionProps {
       name: 'gridRowWidth',
       helperText: 'Display as a grid',
       type: 'string',
-      showIf: (options: Map<string, any>) => options.get('grid'),
+      showIf: options => options.get('grid'),
       defaultValue: '25%'
     },
     {

@@ -106,8 +106,8 @@ interface CarouselProps {
           content: [defaultElement]
         }
       ],
-      // showIf: (options: Map<string, any>) => !options.get('useChildrenForSlides'),
-      showIf: (options: Map<string, any>) => !options.get('useChildrenForSlides')
+      // showIf: options => !options.get('useChildrenForSlides'),
+      showIf: options => !options.get('useChildrenForSlides')
     },
     {
       name: 'hideDots',
@@ -128,9 +128,9 @@ interface CarouselProps {
       helperText:
         'If auto play is on, how many seconds to wait before automatically changing each slide',
       // TODO: showIf option
-      // showIf: (options: Map<string, any>) => options.get('autoplay'),
+      // showIf: options => options.get('autoplay'),
       // TODO: why fn not working?
-      showIf: (options: Map<string, any>) => options.get('autoplay')
+      showIf: options => options.get('autoplay')
       // showIf: (options) => options.get('autoPlay')
     },
     // TODO: on add new duplicate the prior or expect use templates

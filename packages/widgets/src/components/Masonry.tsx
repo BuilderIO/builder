@@ -116,7 +116,7 @@ interface MasonryProps {
         }
       ],
       defaultValue: [],
-      showIf: (options: Map<string, any>) => !options.get('useChildrenForTiles')
+      showIf: options => !options.get('useChildrenForTiles')
     },
     {
       name: 'useChildrenForTiles',
