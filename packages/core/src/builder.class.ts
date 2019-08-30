@@ -157,6 +157,21 @@ export type Class = {
   new (...args: any[]): any;
 };
 
+interface Map<K, V> {
+  clear(): void;
+  delete(key: K): boolean;
+  entries(): IterableIterator<[K, V]>;
+  forEach(callbackfn: (value: V, index: K, map: Map<K, V>) => void, thisArg?: any): void;
+  get(key: K): V;
+  has(key: K): boolean;
+  keys(): IterableIterator<K>;
+  set(key: K, value?: V): Map<K, V>;
+  size: number;
+  values(): IterableIterator<V>;
+  [Symbol.iterator](): IterableIterator<[K, V]>;
+  // [Symbol.toStringTag]: string
+}
+
 export interface Input {
   name: string;
   friendlyName?: string;
@@ -256,7 +271,11 @@ export class Builder {
   // TODO: this is quick and dirty, do better implementation later. Also can be unreliable
   // if page 301s etc. Use a query param instead? also could have issues with redirects. Injecting var could
   // work but is async...
-  static isEditing = Boolean(isIframe && (document.referrer.match(/builder\.io|localhost:1234/) || location.search.indexOf('builder.frameEditing=') !== -1));
+  static isEditing = Boolean(
+    isIframe &&
+      (document.referrer.match(/builder\.io|localhost:1234/) ||
+        location.search.indexOf('builder.frameEditing=') !== -1)
+  );
 
   // useCdnApi = false;
 
@@ -1297,7 +1316,7 @@ export class Builder {
           'preview',
           'model',
           'entry',
-          'rev'
+          'rev',
         ];
         for (const key of properties) {
           const value = options[key];
