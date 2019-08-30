@@ -59,7 +59,6 @@
     "@types/express": "^4.11.1",
     "@types/jasmine": "^2.8.11",
     "@types/jasminewd2": "^2.0.6",
-    "@types/lodash-es": "^4.17.1",
     "@types/node": "^10.12.8",
     "chokidar-cli": "^1.2.1",
     "codelyzer": "^4.5.0",
