@@ -121,7 +121,6 @@ export class Image extends React.Component<ImageProps> {
           width={this.props.width}
           role={!this.props.altText ? 'presentation' : undefined}
           style={{
-            // width: '100%',
             height: allStyles.height || 'auto',
             maxWidth: '100%',
           }}
