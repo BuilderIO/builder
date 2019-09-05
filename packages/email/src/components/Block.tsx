@@ -75,7 +75,7 @@ export class Block extends React.Component<BlockProps> {
         cellPadding="0"
         cellSpacing="0"
         builder-id={attributes['builder-id']}
-        className={attributes.class}
+        className={attributes.className}
         style={{
           width: outerWidth,
           border: '0',
