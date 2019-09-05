@@ -390,7 +390,9 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
 
     const finalOptions: { [key: string]: string } = {
       ...omit(options, ['class', 'component']),
-      className:
+      // className:
+      // [this.props.emailMode ? 'class' : 'className']:
+      class:
         `builder-block ${this.id}${block.class ? ` ${block.class}` : ''}${
           block.component && !['Image', 'Video', 'Banner'].includes(componentName)
             ? ` builder-has-component`

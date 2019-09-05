@@ -27,7 +27,7 @@ const DEFAULT_ASPECT_RATIO = 0.7041
       required: true,
       // TODO: something better
       defaultValue:
-        'https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d',
+        'https://cdn.builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d',
       onChange: (options: Map<string, any>) => {
         const DEFAULT_ASPECT_RATIO = 0.7041
         function loadImage(url: string, timeout = 60000): Promise<HTMLImageElement> {
