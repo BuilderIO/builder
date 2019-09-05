@@ -123,7 +123,7 @@ export class Image extends React.Component<ImageProps> {
           style={{
             // width: '100%',
             height: allStyles.height || 'auto',
-            width: '100%',
+            maxWidth: '100%',
           }}
           className="builder-image"
           src={this.props.image}
