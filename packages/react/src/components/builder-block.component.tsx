@@ -1,6 +1,5 @@
 import React from 'react'
 import { Builder, Component, BuilderElement } from '@builder.io/sdk'
-
 import { sizeNames, Size, sizes } from '../constants/device-sizes.constant'
 import { BuilderStoreContext } from '../store/builder-store'
 import { BuilderAsyncRequestsContext, RequestOrPromise } from '../store/builder-async-requests'
