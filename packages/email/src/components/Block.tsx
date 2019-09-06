@@ -307,6 +307,10 @@ export class Block extends React.Component<BlockProps> {
                         <td
                           className={`builder-block-subject ${this.props.builderBlock.id}-subject`}
                           style={innerStyles}
+
+                          {...(innerStyles.backgroundImage && {
+                            background: innerStyles.backgroundImage.replace(/.*?url\(['"]?(.*?)['"]?\).*?/, '$1')
+                          })}
                         >
                           {this.props.children}
                         </td>
