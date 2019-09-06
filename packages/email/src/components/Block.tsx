@@ -115,11 +115,7 @@ export class Block extends React.Component<BlockProps> {
   getOuterStyles(size: Size) {
     const block = this.props.builderBlock
     const sizeStyles = block.responsiveStyles![size] || {}
-    const hasAutoMargin = sizeStyles.marginLeft === 'auto' || sizeStyles.marginRight === 'auto'
 
-    const hasPxWidth = sizeStyles.width && sizeStyles.width.trim().endsWith('px')
-
-    const outerWidth = hasPxWidth && hasAutoMargin ? 'auto' : sizeStyles.width || '100%'
     const outerDisplay = sizeStyles.display
     const outerVerticalAlign = sizeStyles.verticalAlign
 
@@ -248,11 +244,8 @@ export class Block extends React.Component<BlockProps> {
   }
 
   get bgImageUrl() {
-    const innerStyles = this.getInnerStyles('large')
-    return (
-      innerStyles.backgroundImage &&
-      innerStyles.backgroundImage.replace(/.*?url\(['"]?(.*?)['"]?\).*?/, '$1')
-    )
+    const { backgroundImage } = this.props.builderBlock.responsiveStyles!.large!
+    return backgroundImage && backgroundImage.replace(/.*?url\(['"]?(.*?)['"]?\).*?/, '$1')
   }
 
   render() {
@@ -268,7 +261,9 @@ export class Block extends React.Component<BlockProps> {
     const InnerTag = hasLink ? 'a' : 'span'
 
     const innerStyles = this.getInnerStyles('large')
-    const { bgImageUrl } = this;
+    const { bgImageUrl } = this
+
+    console.debug(bgImageUrl, BG_START_TAG, BG_END_TAG)
 
     // TODO: only double wrap if hasMargin
     return (
@@ -326,11 +321,17 @@ export class Block extends React.Component<BlockProps> {
                             bgcolor: innerStyles.backgroundColor
                           }}
                         >
-                          {bgImageUrl && <BG_START_TAG url={this.bgImageUrl} color={innerStyles.backgroundColor} height={innerStyles.height} />}
+                          {bgImageUrl && (
+                            <BG_START_TAG
+                              url={this.bgImageUrl}
+                              color={innerStyles.backgroundColor}
+                              height={innerStyles.height}
+                            />
+                          )}
 
                           {this.props.children}
 
-                          {bgImageUrl && <BG_END_TAG /> }
+                          {bgImageUrl && <BG_END_TAG />}
                         </td>
                       </tr>
                     </tbody>
