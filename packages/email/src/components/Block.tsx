@@ -273,6 +273,7 @@ export class Block extends React.Component<BlockProps> {
         >
           <tbody style={{ width: '100%' }}>
             <tr>
+              <td />
               {/* <td  className={`${block.id}-left-td`} style={this.getLeftTdStyle('large')} /> */}
               <td {...{ align, vAlign }} style={midStyles as any} className={`${block.id}-middle`}>
                 <InnerTag
@@ -314,6 +315,7 @@ export class Block extends React.Component<BlockProps> {
                   </table>
                 </InnerTag>
               </td>
+              <td />
               {/* <td className={`${block.id}-right-td`} style={this.getRightTdStyle('large')} /> */}
             </tr>
           </tbody>

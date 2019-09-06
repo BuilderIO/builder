@@ -84,15 +84,16 @@ export class Section extends React.Component<SectionProps> {
         >
           <tbody>
             <tr>
-              <td {...{ align: 'center' }}>
-                <table
+              <td />
+              <td {...{ align: 'center', width: this.props.maxWidth }} style={{ maxWidth: '100%' }}>
+                {/* <table
                   cellPadding="0"
                   cellSpacing="0"
                   style={{
-                    width: this.props.maxWidth,
-                    maxWidth: '100%',
-                    // width: '100%',
-                    // maxWidth: this.props.maxWidth || undefined
+                    // width: this.props.maxWidth,
+                    // maxWidth: '100%',
+                    width: '100%',
+                    maxWidth: this.props.maxWidth || undefined
                   }}
                   {...{
                     width: '100%',
@@ -101,13 +102,14 @@ export class Section extends React.Component<SectionProps> {
                 >
                   <tbody>
                     <tr>
-                      <td>
-                        <BuilderBlocks blocks={this.props.children} dataPath="children" emailMode />
-                      </td>
+                      <td> */}
+                <BuilderBlocks blocks={this.props.children} dataPath="children" emailMode />
+                {/* </td>
                     </tr>
                   </tbody>
-                </table>
+                </table> */}
               </td>
+              <td />
             </tr>
           </tbody>
         </table>
