@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/email",
-  "version": "1.0.74-alpha.12",
+  "version": "1.0.74-alpha.13",
   "description": "",
   "keywords": [],
   "main": "dist/builder-email.cjs.js",
