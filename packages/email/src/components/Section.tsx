@@ -89,9 +89,10 @@ export class Section extends React.Component<SectionProps> {
                   cellPadding="0"
                   cellSpacing="0"
                   style={{
-                    width: this.props.maxWidth,
-                    maxWidth: '100%',
-                    // maxWidth: this.props.maxWidth || undefined
+                    // width: this.props.maxWidth,
+                    // maxWidth: '100%',
+                    width: '100%',
+                    maxWidth: this.props.maxWidth || undefined
                   }}
                   {...{
                     width: '100%',

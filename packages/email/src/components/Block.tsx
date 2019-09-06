@@ -170,8 +170,12 @@ export class Block extends React.Component<BlockProps> {
     const sizeStyles = block.responsiveStyles![size] || {}
     const hasAutoMargin = sizeStyles.marginLeft === 'auto' || sizeStyles.marginRight === 'auto'
     const hasPxWidth = sizeStyles.width && sizeStyles.width.trim().endsWith('px')
+    const align = this.getAlign(size)
     return {
-      width: hasPxWidth && hasAutoMargin ? sizeStyles.width : '100%'
+      width:
+        hasPxWidth && hasAutoMargin
+          ? sizeStyles.width
+          : (align === 'left' && sizeStyles.marginRight !== 'auto' && '100%') || undefined
     }
   }
 
