@@ -178,7 +178,7 @@ export class Block extends React.Component<BlockProps> {
   getLeftTdStyle(size: Size) {
     const align = this.getAlign(size)
     return {
-      width: align === 'center' ? '45%' : '90%',
+      // width: align === 'center' ? '45%' : '90%',
       display: align === 'right' || align === 'center' ? undefined : 'none'
     }
   }
@@ -188,7 +188,7 @@ export class Block extends React.Component<BlockProps> {
     const vAlign = this.getVAlign(size)
 
     return {
-      width: align === 'center' ? '45%' : '90%',
+      // width: align === 'center' ? '45%' : '90%',
       display: align === 'left' || align === 'center' ? undefined : 'none'
     }
   }
