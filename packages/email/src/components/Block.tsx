@@ -48,23 +48,6 @@ const sizeNames: Size[] = ['xsmall', 'small', 'medium', 'large']
 const camelCaseToKebabCase = (str?: string) =>
   str ? str.replace(/([A-Z])/g, g => `-${g[0].toLowerCase()}`) : ''
 
-function pick(object: any, keys: string[]) {
-  return keys.reduce((obj, key) => {
-    if (object && object.hasOwnProperty(key)) {
-      ;(obj as any)[key] = object[key]
-    }
-    return obj
-  }, {})
-}
-
-function omit(obj: any, values: string[]) {
-  const newObject = Object.assign({}, obj)
-  for (const key of values) {
-    delete (newObject as any)[key]
-  }
-  return newObject
-}
-
 const cssCase = (property: string) => {
   if (!property) {
     return property
