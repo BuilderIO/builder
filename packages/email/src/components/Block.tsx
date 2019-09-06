@@ -168,10 +168,10 @@ export class Block extends React.Component<BlockProps> {
   getInnerTableStyles(size: Size) {
     const block = this.props.builderBlock
     const sizeStyles = block.responsiveStyles![size] || {}
-    const hasAutoMargin = sizeStyles.marginLeft === 'auto' || sizeStyles.marginRight === 'auto'
     const hasPxWidth = sizeStyles.width && sizeStyles.width.trim().endsWith('px')
     const align = this.getAlign(size)
     return {
+      // TODO: hasPercent use that also
       width: hasPxWidth
         ? sizeStyles.width
         : (align === 'left' && sizeStyles.marginRight !== 'auto' && '100%') || undefined
@@ -263,6 +263,7 @@ export class Block extends React.Component<BlockProps> {
       <>
         <style className="builder-style">{this.css}</style>
         <table
+          role="presentation"
           ref={ref => (this.outerTable = ref)}
           cellPadding="0"
           cellSpacing="0"
@@ -287,6 +288,7 @@ export class Block extends React.Component<BlockProps> {
                     : null)}
                 >
                   <table
+                    role="presentation"
                     cellPadding="0"
                     cellSpacing="0"
                     className={`${block.id}-inner`}
