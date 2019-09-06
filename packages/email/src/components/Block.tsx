@@ -7,6 +7,9 @@ interface BlockProps {
   innerStyleOverrides?: any
 }
 
+const BG_START_TAG: any = 'bg-image-start'
+const BG_END_TAG: any = 'bg-image-end'
+
 const sizes = {
   xsmall: {
     min: 0,
@@ -244,6 +247,14 @@ export class Block extends React.Component<BlockProps> {
     return css
   }
 
+  get bgImageUrl() {
+    const innerStyles = this.getInnerStyles('large')
+    return (
+      innerStyles.backgroundImage &&
+      innerStyles.backgroundImage.replace(/.*?url\(['"]?(.*?)['"]?\).*?/, '$1')
+    )
+  }
+
   render() {
     const block = this.props.builderBlock
 
@@ -257,6 +268,7 @@ export class Block extends React.Component<BlockProps> {
     const InnerTag = hasLink ? 'a' : 'span'
 
     const innerStyles = this.getInnerStyles('large')
+    const { bgImageUrl } = this;
 
     // TODO: only double wrap if hasMargin
     return (
@@ -307,12 +319,16 @@ export class Block extends React.Component<BlockProps> {
                         <td
                           className={`builder-block-subject ${this.props.builderBlock.id}-subject`}
                           style={innerStyles}
-
-                          {...(innerStyles.backgroundImage && {
-                            background: innerStyles.backgroundImage.replace(/.*?url\(['"]?(.*?)['"]?\).*?/, '$1')
-                          })}
+                          {...bgImageUrl && {
+                            background: bgImageUrl
+                          }}
+                          {...innerStyles.backgroundColor && {
+                            bgcolor: innerStyles.backgroundColor
+                          }}
                         >
+                          {bgImageUrl && <BG_START_TAG url={this.bgImageUrl} color={innerStyles.backgroundColor} height={innerStyles.height} />}
                           {this.props.children}
+                          {bgImageUrl && <BG_END_TAG /> }
                         </td>
                       </tr>
                     </tbody>
