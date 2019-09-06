@@ -172,10 +172,9 @@ export class Block extends React.Component<BlockProps> {
     const hasPxWidth = sizeStyles.width && sizeStyles.width.trim().endsWith('px')
     const align = this.getAlign(size)
     return {
-      width:
-        hasPxWidth && hasAutoMargin
-          ? sizeStyles.width
-          : (align === 'left' && sizeStyles.marginRight !== 'auto' && '100%') || undefined
+      width: hasPxWidth
+        ? sizeStyles.width
+        : (align === 'left' && sizeStyles.marginRight !== 'auto' && '100%') || undefined
     }
   }
 
