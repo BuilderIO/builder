@@ -255,8 +255,6 @@ export class Block extends React.Component<BlockProps> {
 
     const innerStyles = this.getInnerStyles('large')
 
-    console.debug('Block')
-
     // TODO: only double wrap if hasMargin
     return (
       <>
