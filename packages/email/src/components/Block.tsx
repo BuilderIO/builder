@@ -32,18 +32,12 @@ export class Block extends React.Component<BlockProps> {
       paddingBottom: allStyles.marginBottom,
       paddingLeft: allStyles.marginLeft,
       verticalAlign: vAlign,
-      width: align === 'left' && allStyles.marginRight !== 'auto' && '100%'
+      width: align === 'left' && allStyles.marginRight !== 'auto' && '100%' || undefined
     }
     const attributes: any = this.props.attributes || {}
 
     const hasLink = attributes.href
 
-    const marginTop = parseFloat(allStyles.marginTop || 0)
-    const marginBottom = parseFloat(allStyles.marginBottom || 0)
-    const marginLeft = parseFloat(allStyles.marginLeft || 0)
-    const marginRight = parseFloat(allStyles.marginRight || 0)
-
-    const hasMargin = Boolean(marginTop || marginBottom || marginLeft || marginRight)
     const hasAutoMargin = allStyles.marginLeft === 'auto' || allStyles.marginRight === 'auto'
 
     const InnerTag = hasLink ? 'a' : 'span'
@@ -61,7 +55,7 @@ export class Block extends React.Component<BlockProps> {
       marginBottom: undefined,
       marginLeft: undefined,
       marginRight: undefined,
-      width: '100%',
+      width:  align === 'left' && allStyles.marginRight !== 'auto' && '100%' || undefined,
       display: undefined,
       // verticalAlign: undefined,
       ...this.props.innerStyleOverrides
