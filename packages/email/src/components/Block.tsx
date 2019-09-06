@@ -1,6 +1,5 @@
 import { BuilderElement } from '@builder.io/react'
 import React from 'react'
-import { getStyles } from '../functions/get-styles'
 
 interface BlockProps {
   builderBlock: BuilderElement
