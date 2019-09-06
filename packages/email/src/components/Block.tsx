@@ -121,7 +121,7 @@ export class Block extends React.Component<BlockProps> {
     const outerVerticalAlign = sizeStyles.verticalAlign
 
     const outerStyles = {
-      width: outerWidth,
+      // width: outerWidth,
       border: '0',
       display: outerDisplay,
       verticalAlign: outerVerticalAlign
