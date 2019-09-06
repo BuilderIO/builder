@@ -255,6 +255,8 @@ export class Block extends React.Component<BlockProps> {
 
     const innerStyles = this.getInnerStyles('large')
 
+    console.debug('Block')
+
     // TODO: only double wrap if hasMargin
     return (
       <>
@@ -269,7 +271,6 @@ export class Block extends React.Component<BlockProps> {
         >
           <tbody style={{ width: '100%' }}>
             <tr>
-              {/* TODO: how vertical align? height: 100% by default? for fixed height hm */}
               {/* <td  className={`${block.id}-left-td`} style={this.getLeftTdStyle('large')} /> */}
               <td {...{ align, vAlign }} style={midStyles as any} className={`${block.id}-middle`}>
                 <InnerTag
