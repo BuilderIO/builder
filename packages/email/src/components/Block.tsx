@@ -121,7 +121,7 @@ export class Block extends React.Component<BlockProps> {
     const outerVerticalAlign = sizeStyles.verticalAlign
 
     const outerStyles = {
-      // width: outerWidth,
+      width: '100%',
       border: '0',
       display: outerDisplay,
       verticalAlign: outerVerticalAlign
@@ -227,13 +227,13 @@ export class Block extends React.Component<BlockProps> {
             block.id
           }-middle {${mapToCss(this.getMidStyles(size), 4, true)} } }`
 
-          css += `\n@media only screen and (max-width: ${sizes[size].max}px) { \n.${
-            block.id
-          }-right-td {${mapToCss(this.getRightTdStyle(size), 4, true)} } }`
+          // css += `\n@media only screen and (max-width: ${sizes[size].max}px) { \n.${
+          //   block.id
+          // }-right-td {${mapToCss(this.getRightTdStyle(size), 4, true)} } }`
 
-          css += `\n@media only screen and (max-width: ${sizes[size].max}px) { \n.${
-            block.id
-          }-left-td {${mapToCss(this.getLeftTdStyle(size), 4, true)} } }`
+          // css += `\n@media only screen and (max-width: ${sizes[size].max}px) { \n.${
+          //   block.id
+          // }-left-td {${mapToCss(this.getLeftTdStyle(size), 4, true)} } }`
         }
       }
     }
@@ -270,7 +270,7 @@ export class Block extends React.Component<BlockProps> {
           <tbody style={{ width: '100%' }}>
             <tr>
               {/* TODO: how vertical align? height: 100% by default? for fixed height hm */}
-              <td  className={`${block.id}-left-td`} style={this.getLeftTdStyle('large')} />
+              {/* <td  className={`${block.id}-left-td`} style={this.getLeftTdStyle('large')} /> */}
               <td {...{ align, vAlign }} style={midStyles as any} className={`${block.id}-middle`}>
                 <InnerTag
                   {...(hasLink
@@ -310,7 +310,7 @@ export class Block extends React.Component<BlockProps> {
                   </table>
                 </InnerTag>
               </td>
-              <td className={`${block.id}-right-td`} style={this.getRightTdStyle('large')} />
+              {/* <td className={`${block.id}-right-td`} style={this.getRightTdStyle('large')} /> */}
             </tr>
           </tbody>
         </table>
