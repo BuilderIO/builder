@@ -122,7 +122,8 @@ export class Image extends React.Component<ImageProps> {
           role={!this.props.altText ? 'presentation' : undefined}
           style={{
             height: allStyles.height || 'auto',
-            maxWidth: '100%',
+            // maxWidth: '100%',
+            width: '100%'
           }}
           className="builder-image"
           src={this.props.image}
