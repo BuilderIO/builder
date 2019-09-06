@@ -327,7 +327,9 @@ export class Block extends React.Component<BlockProps> {
                           }}
                         >
                           {bgImageUrl && <BG_START_TAG url={this.bgImageUrl} color={innerStyles.backgroundColor} height={innerStyles.height} />}
+
                           {this.props.children}
+
                           {bgImageUrl && <BG_END_TAG /> }
                         </td>
                       </tr>
