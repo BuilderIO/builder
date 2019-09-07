@@ -291,6 +291,7 @@ export class Block extends React.Component<BlockProps> {
                         target: '_blank',
                         style: {
                           textDecoration: 'none',
+                          // TODO: outlook this not always working
                           color: 'inherit'
                         }
                       }

@@ -104,8 +104,9 @@ export class Section extends React.Component<SectionProps> {
                     <tr>
                       <td> */}
                 {/* Wrapper for Safari */}
+                {/* Or should be inline-block with width: 100%? */}
                 <div
-                  style={{ display: 'inline-block', margin: 'auto', maxWidth: this.props.maxWidth }}
+                  style={{ margin: 'auto', maxWidth: this.props.maxWidth }}
                 >
                   <BuilderBlocks blocks={this.props.children} dataPath="children" emailMode />
                 </div>
