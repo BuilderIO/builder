@@ -263,7 +263,8 @@ export class Block extends React.Component<BlockProps> {
     const innerStyles = this.getInnerStyles('large')
     const { bgImageUrl } = this
 
-    console.debug(bgImageUrl, BG_START_TAG, BG_END_TAG)
+    const pxHeight =
+      innerStyles.height && innerStyles.height.includes('px') && parseFloat(innerStyles.height)
 
     // TODO: only double wrap if hasMargin
     return (
@@ -314,12 +315,16 @@ export class Block extends React.Component<BlockProps> {
                         <td
                           className={`builder-block-subject ${this.props.builderBlock.id}-subject`}
                           style={innerStyles}
-                          {...bgImageUrl && {
-                            background: bgImageUrl
-                          }}
-                          {...innerStyles.backgroundColor && {
-                            bgcolor: innerStyles.backgroundColor
-                          }}
+                          // {...bgImageUrl && {
+                          //   background: bgImageUrl
+                          // }}
+                          // {...innerStyles.backgroundColor && {
+                          //   bgcolor: innerStyles.backgroundColor
+                          // }}
+                          {...typeof pxHeight === 'number' &&
+                            !isNaN(pxHeight) && {
+                              height: pxHeight
+                            }}
                         >
                           {bgImageUrl && (
                             <BG_START_TAG

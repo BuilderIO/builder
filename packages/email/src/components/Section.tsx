@@ -103,7 +103,12 @@ export class Section extends React.Component<SectionProps> {
                   <tbody>
                     <tr>
                       <td> */}
-                <BuilderBlocks blocks={this.props.children} dataPath="children" emailMode />
+                {/* Wrapper for Safari */}
+                <div
+                  style={{ display: 'inline-block', margin: 'auto', maxWidth: this.props.maxWidth }}
+                >
+                  <BuilderBlocks blocks={this.props.children} dataPath="children" emailMode />
+                </div>
                 {/* </td>
                     </tr>
                   </tbody>
