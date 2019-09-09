@@ -187,7 +187,6 @@ export class Block extends React.Component<BlockProps> {
 
   getRightTdStyle(size: Size) {
     const align = this.getAlign(size)
-    const vAlign = this.getVAlign(size)
 
     return {
       // width: align === 'center' ? '45%' : '90%',
