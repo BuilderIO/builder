@@ -111,6 +111,7 @@ export function contentToLiquid(json: BuilderContent, modelName: string, options
   }
   const blocks = content.data && content.data.blocks;
 
+  // TODO: optimize CSS to remove redundancy
   let { html, css } = regexParse(
     `<div
       class="builder-content"
