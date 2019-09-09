@@ -610,6 +610,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
       this.setState({
         ...this.state,
         state: {
+          isBrowser: Builder.isBrowser,
           ...this.state.state,
           location: this.locationState,
           deviceSize: this.deviceSizeState,
