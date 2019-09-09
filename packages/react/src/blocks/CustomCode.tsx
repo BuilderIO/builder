@@ -54,6 +54,7 @@ export class CustomCode extends React.Component<Props> {
   }
 
   componentDidMount() {
+    this.firstLoad = false;
     this.findAndRunScripts()
     if (this.replaceNodes && this.originalRef && this.elementRef) {
       console.debug('Replace 2')
