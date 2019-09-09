@@ -135,9 +135,9 @@ const tryEval = (str?: string, data: any = {}, errors?: Error[]): any => {
     }
 
     if (Builder.isBrowser) {
-      console.warn('Builder custom code error:', error.message, error.stack);
+      console.warn('Builder custom code error:', error.message, 'in', str, error.stack);
     } else {
-      console.debug('Builder custom code error:', error.message, error.stack);
+      console.debug('Builder custom code error:', error.message, 'in', str, error.stack);
       // Add to req.options.errors to return to client
     }
   }
