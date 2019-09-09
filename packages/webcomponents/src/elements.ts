@@ -154,10 +154,10 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
       if (existing) {
         const id = existing.getAttribute('data-builder-content-id')
         const variationId = existing.getAttribute('data-builder-variation-id')
-        if (id && variationId) {
+        if (id) {
           return {
             id,
-            testVariationId: variationId
+            testVariationId: variationId || id
           }
         }
       }
