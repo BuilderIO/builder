@@ -276,7 +276,7 @@ export class Block extends React.Component<BlockProps> {
           cellPadding="0"
           cellSpacing="0"
           builder-id={attributes['builder-id']}
-          className={attributes.className}
+          className={attributes.class || attributes.className}
           style={this.getOuterStyles('large') as any}
         >
           <tbody style={{ width: '100%' }}>

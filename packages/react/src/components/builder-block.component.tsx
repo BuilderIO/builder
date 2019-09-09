@@ -4,12 +4,30 @@ import { sizeNames, Size, sizes } from '../constants/device-sizes.constant'
 import { BuilderStoreContext } from '../store/builder-store'
 import { BuilderAsyncRequestsContext, RequestOrPromise } from '../store/builder-async-requests'
 import { stringToFunction, api } from '../functions/string-to-function'
-import { set } from '../functions/set';
+import { set } from '../functions/set'
 
 const camelCaseToKebabCase = (str?: string) =>
   str ? str.replace(/([A-Z])/g, g => `-${g[0].toLowerCase()}`) : ''
 
 const Device = { desktop: 0, tablet: 1, mobile: 2 }
+
+const commonTags = new Set(['div', 'a', 'span'])
+const voidElements = new Set([
+  'area',
+  'base',
+  'br',
+  'col',
+  'embed',
+  'hr',
+  'img',
+  'input',
+  'link',
+  'meta',
+  'param',
+  'source',
+  'track',
+  'wbr'
+])
 
 function pick(object: any, keys: string[]) {
   return keys.reduce((obj, key) => {
@@ -57,7 +75,7 @@ function mapToCss(map: StringMap, spaces = 2, important = false) {
   return Object.keys(map).reduce((memo, key) => {
     const value = map[key]
     if (typeof value !== 'string') {
-      return  memo;
+      return memo
     }
     return (
       memo +
@@ -366,30 +384,13 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
       ...(options.component.options || options.component.data)
     }
 
-    const voidElements = [
-      'area',
-      'base',
-      'br',
-      'col',
-      'embed',
-      'hr',
-      'img',
-      'input',
-      'link',
-      'meta',
-      'param',
-      'source',
-      'track',
-      'wbr'
-    ]
-
-    const isVoid = voidElements.indexOf(TagName) !== -1
+    const isVoid = voidElements.has(TagName)
 
     const noWrap = componentInfo && (componentInfo.fragment || componentInfo.noWrap)
 
     const finalOptions: { [key: string]: string } = {
       ...omit(options, ['class', 'component']),
-      class:
+      [commonTags.has(TagName) ? 'className' : 'class']:
         `builder-block ${this.id}${block.class ? ` ${block.class}` : ''}${
           block.component && !['Image', 'Video', 'Banner'].includes(componentName)
             ? ` builder-has-component`
