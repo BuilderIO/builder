@@ -12,9 +12,10 @@ interface Props {
   inputs: [
     {
       name: 'code',
-      type: 'longText',
+      type: 'html',
       required: true,
-      defaultValue: '<p>Hello there, I am custom HTML code!</p>'
+      defaultValue: '<p>Hello there, I am custom HTML code!</p>',
+      code: true
     }
   ]
 })
@@ -32,11 +33,15 @@ export class CustomCode extends React.Component<Props> {
   constructor(props: Props) {
     super(props)
     if (this.replaceNodes && Builder.isBrowser && this.firstLoad && this.props.builderBlock) {
+      console.debug('Replace 1')
       // How do if multiple...
-      const existing = document.querySelectorAll(`.${this.props.builderBlock.id} .builder-custom-code`)
+      const existing = document.querySelectorAll(
+        `.${this.props.builderBlock.id} .builder-custom-code`
+      )
       if (existing.length === 1) {
         const node = existing[0]
         this.originalRef = node as HTMLElement
+        this.originalRef.remove()
       }
     }
   }
@@ -50,6 +55,7 @@ export class CustomCode extends React.Component<Props> {
   componentDidMount() {
     this.findAndRunScripts()
     if (this.replaceNodes && this.originalRef && this.elementRef) {
+      console.debug('Replace 2')
       this.elementRef.insertAdjacentElement('beforebegin', this.originalRef)
       this.elementRef.remove()
       this.elementRef = this.originalRef

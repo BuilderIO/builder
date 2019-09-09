@@ -191,6 +191,8 @@ export interface Input {
   enum?: string[] | { label: string; value: any; helperText?: string }[];
   advanced?: boolean;
   onChange?: Function | string;
+  code?: boolean;
+  richText?: boolean;
   showIf?: ((options: Map<string, any>) => boolean) | string;
 }
 
