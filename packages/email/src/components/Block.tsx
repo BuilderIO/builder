@@ -213,29 +213,13 @@ export class Block extends React.Component<BlockProps> {
           block.responsiveStyles![size] &&
           Object.keys(block.responsiveStyles![size]!).length
         ) {
-          css += `\n@media only screen and (max-width: ${sizes[size].max}px) { \n.${
-            block.id
-          } {${mapToCss(this.getOuterStyles(size), 4, true)} } }`
-
-          css += `\n@media only screen and (max-width: ${sizes[size].max}px) { \n.${
-            block.id
-          }-inner {${mapToCss(this.getInnerTableStyles(size), 4, true)} } }`
-
-          css += `\n@media only screen and (max-width: ${sizes[size].max}px) { \n.${
-            block.id
-          }-subject {${mapToCss(this.getInnerStyles(size), 4, true)} } }`
-
-          css += `\n@media only screen and (max-width: ${sizes[size].max}px) { \n.${
-            block.id
-          }-middle {${mapToCss(this.getMidStyles(size), 4, true)} } }`
-
-          // css += `\n@media only screen and (max-width: ${sizes[size].max}px) { \n.${
-          //   block.id
-          // }-right-td {${mapToCss(this.getRightTdStyle(size), 4, true)} } }`
-
-          // css += `\n@media only screen and (max-width: ${sizes[size].max}px) { \n.${
-          //   block.id
-          // }-left-td {${mapToCss(this.getLeftTdStyle(size), 4, true)} } }`
+          css += `
+@media only screen and (max-width: ${sizes[size].max}px) {
+  .${block.id} { ${mapToCss(this.getOuterStyles(size), 4, true)} }
+  .${block.id}-inner { ${mapToCss(this.getInnerTableStyles(size), 4, true)} }
+  .${block.id}-subject { ${mapToCss(this.getInnerStyles(size), 4, true)} }
+  .${block.id}-middle { ${mapToCss(this.getMidStyles(size), 4, true)} }
+}`
         }
       }
     }
