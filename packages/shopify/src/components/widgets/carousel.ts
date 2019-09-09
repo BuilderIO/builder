@@ -9,7 +9,7 @@ export const Carousel = component({
     <div class="builder-carousel">
       ${
         block.children
-          ? block.children.map(child => blockToLiquid(child, renderOptions)).join('\n')
+          ? block.children.slice(0, 1).map(child => blockToLiquid(child, renderOptions)).join('\n')
           : ''
       }
     </div>
