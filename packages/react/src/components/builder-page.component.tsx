@@ -229,6 +229,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
 
     this.state = {
       state: {
+        isBrowser: true,
         location: this.locationState,
         deviceSize: this.deviceSizeState,
         // TODO: will user attributes be ready here?
