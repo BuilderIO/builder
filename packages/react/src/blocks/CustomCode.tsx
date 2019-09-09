@@ -27,7 +27,6 @@ export class CustomCode extends React.Component<Props> {
   scriptsRun = new Set()
 
   firstLoad = true
-
   replaceNodes = Builder.isBrowser && location.href.includes('builder.customCodeRefs=true')
 
   constructor(props: Props) {
