@@ -59,7 +59,7 @@ const convertBinding = (binding: string, options: Options) => {
       value = value.replace(/state\./g, '');
     }
 
-    const itemBugRe = /_item([^\.[$\s])/g
+    const itemBugRe = /_item([^\.[$\s])/g;
     if (value.match(itemBugRe)) {
       value = value.replace(itemBugRe, '_item.$1');
     }
@@ -159,6 +159,11 @@ export function blockToLiquid(json: BuilderElement, options: Options = {}): stri
         : ''
     }
     ${
+      block.bindings && block.bindings.hide
+        ? `{% unless  ${escaleHtml(convertBinding(block.bindings.hide, options))} %}`
+        : ''
+    }
+    ${
       componentInfo && componentInfo.noWrap
         ? componentInfo.component(block, options, attributes)
         : `
@@ -171,6 +176,7 @@ export function blockToLiquid(json: BuilderElement, options: Options = {}): stri
         ''}
     </${tag}>`
     }
+    ${block.bindings && block.bindings.hide ? '{% endunless %}' : ''}
     ${block.repeat ? '{% endfor %}' : ''}
     `;
 }
