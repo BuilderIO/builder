@@ -6,9 +6,7 @@ export const CustomCode = component({
     const { options } = block.component!;
 
     return `
-      <div class="builder-custom-code">
-        ${options.code || ''}
-      </div>
+      <div class="builder-custom-code">\n${options.code || ''}\n</div>
     `;
   },
 });

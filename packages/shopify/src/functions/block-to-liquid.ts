@@ -29,7 +29,7 @@ const convertBinding = (binding: string, options: Options) => {
 
   if (options.convertShopifyBindings !== false) {
     if (value.match(/images\[\d+\]\.src/)) {
-      value = value.replace(/(images\[\d+\])\.src/g, "$1 | img_url: 'large'");
+      value = value.replace(/(images\[\d+\])\.src/g, "$1 | asset_url");
     }
     // Hack
     if (value.includes('state.product.product.')) {
@@ -160,7 +160,11 @@ export function blockToLiquid(json: BuilderElement, options: Options = {}): stri
     }
     ${
       block.bindings && block.bindings.hide
-        ? `{% unless  ${escaleHtml(convertBinding(block.bindings.hide, options))} %}`
+        ? `{% unless  ${
+            block.bindings.hide.includes(';')
+              ? 'false'
+              : escaleHtml(convertBinding(block.bindings.hide, options))
+          } %}`
         : ''
     }
     ${
