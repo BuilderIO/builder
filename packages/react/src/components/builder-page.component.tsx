@@ -5,6 +5,7 @@ import { BuilderBlocks } from './builder-blocks.component'
 import { Builder, GetContentOptions, builder, Subscription, BehaviorSubject } from '@builder.io/sdk'
 import { BuilderStoreContext } from '../store/builder-store'
 import produce from 'immer'
+import hash from 'object-hash'
 
 import { sizes } from '../constants/device-sizes.constant'
 import {
@@ -479,7 +480,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
       }
     }
 
-    const dataString = this.props.data && size(this.props.data) && JSON.stringify(this.props.data)
+    const dataString = this.props.data && size(this.props.data) && hash(this.props.data)
     let key = Builder.isEditing ? this.name : this.props.entry
     if (!Builder.isEditing && dataString && dataString.length < 300) {
       key += ':' + dataString
