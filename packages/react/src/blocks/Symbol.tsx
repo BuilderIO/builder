@@ -2,6 +2,7 @@ import React from 'react'
 import { BuilderPage } from '../components/builder-page.component'
 import { BuilderBlock } from '../decorators/builder-block.decorator'
 import { Builder } from '@builder.io/sdk'
+import hash from 'object-hash'
 
 const size = (thing: object) => Object.keys(thing).length
 
@@ -50,7 +51,7 @@ export class Symbol extends React.Component<SymbolProps> {
     }
 
     let key = Builder.isEditing ? undefined : entry
-    const dataString = data && size(data) && JSON.stringify(data);
+    const dataString = data && size(data) && hash(data);
     if (key && dataString && dataString.length < 300) {
       key += ':' + dataString
     }
