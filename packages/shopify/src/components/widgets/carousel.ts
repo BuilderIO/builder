@@ -5,10 +5,6 @@ import { component } from '../../constants/components';
 export const Carousel = component({
   name: 'Builder:Carousel',
   component: (block, renderOptions) => {
-    const firstChild = block.children && block.children[0];
-    if (firstChild && firstChild.repeat) {
-      firstChild.repeat.collection = firstChild.repeat.collection + ' limit:1'
-    }
     return `
     <div class="builder-carousel">
       ${

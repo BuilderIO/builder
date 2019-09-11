@@ -406,6 +406,7 @@ export class Builder {
 
   // TODO: api options object
   private cachebust = false;
+  private overrideParams = '';
   private noCache = false;
   private overrideHost = '';
   private preview = false;
@@ -804,6 +805,7 @@ export class Builder {
         noCache,
         preview,
         editing,
+        params
       } = builder;
       if (userAttributes) {
         this.setUserAttributes(userAttributes);
@@ -831,6 +833,10 @@ export class Builder {
 
       if (preview) {
         this.preview = true;
+      }
+
+      if (params) {
+        this.overrideParams = params
       }
     }
   }
@@ -1339,6 +1345,11 @@ export class Builder {
     const host = this.useNewContentApi ? 'https://lambda.builder.codes' : this.host;
 
     const keyNames = queue.map(item => encodeURIComponent(item.key!)).join(',');
+
+    if (this.overrideParams) {
+      const params = QueryString.parse(this.overrideParams)
+      assign(queryParams, params)
+    }
 
     const queryStr = Builder.useNewApi
       ? QueryString.stringifyDeep(queryParams)

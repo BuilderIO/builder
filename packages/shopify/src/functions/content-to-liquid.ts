@@ -39,10 +39,12 @@ export const convertTemplateLiteralsToTags = (liquid: string) => {
       // })
 
       // Fix this in the compiler
-      .replace(/\| asset_url;\s*/g, '| asset_url: ')
+      .replace(/\| img_url;\s*/g, `| img_url: `)
 
       // TODO: put into transforms
-      .replace(/src="{{ images_item }}"/g, 'src="{{ images_item | asset_url }}"')
+      .replace(/src="{{ images_item }}"/g, `src="{{ images_item | img_url: 'master' }}"`)
+
+      .replace(/(state\.)?\$index/g, 'forloop.index')
 
       // Why...
       .replace(/{%\s*unless\s*;\s*/g, '{% unless ')

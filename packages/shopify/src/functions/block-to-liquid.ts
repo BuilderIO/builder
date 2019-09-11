@@ -11,6 +11,7 @@ import '../components/text';
 import '../components/columns';
 import '../components/image';
 import '../components/section';
+import '../components/button';
 import '../components/custom-code';
 import '../components/forms/form';
 import '../components/forms/input';
@@ -29,8 +30,11 @@ const convertBinding = (binding: string, options: Options) => {
 
   if (options.convertShopifyBindings !== false) {
     if (value.match(/images\[\d+\]\.src/)) {
-      value = value.replace(/(images\[\d+\])\.src/g, "$1 | asset_url");
+      value = value.replace(/(images\[\d+\])\.src/g, "$1 | img_url: 'master'");
     }
+    // if (value.match(/product\.price\s*\/\s*/)) {
+    //   value = value.replace(/'\$'\s*\+\s*(state\.)?product\.price\s*\/\s*100/g, "' '");
+    // }
     // Hack
     if (value.includes('state.product.product.')) {
       value = value.replace(/state\.product\.product\./g, 'product.');
@@ -76,7 +80,7 @@ export function blockToLiquid(json: BuilderElement, options: Options = {}): stri
   if (block.bindings) {
     for (const key in block.bindings) {
       let value = block.bindings[key];
-      if (!key || !value) {
+      if (!key || !value || key === 'hide') {
         continue;
       }
 
