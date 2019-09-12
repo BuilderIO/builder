@@ -156,7 +156,7 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
         if (id) {
           return {
             id,
-            testVariationId: variationId || id
+            testVariationId: variationId || undefined
           }
         }
       }
