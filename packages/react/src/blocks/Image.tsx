@@ -110,6 +110,11 @@ const DEFAULT_ASPECT_RATIO = 0.7041
       ]
     },
     {
+      name: 'altText',
+      type: 'string',
+      helperText: 'Text to display when the user has images off'
+    },
+    {
       name: 'height',
       type: 'number',
       hideFromUI: true
@@ -127,12 +132,6 @@ const DEFAULT_ASPECT_RATIO = 0.7041
       advanced: true,
       defaultValue: DEFAULT_ASPECT_RATIO
     },
-    {
-      name: 'altText',
-      type: 'string',
-      hideFromUI: true,
-      advanced: true
-    }
     // {
     //   name: 'backgroundRepeat',
     //   type: 'text',
