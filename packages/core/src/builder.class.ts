@@ -806,7 +806,7 @@ export class Builder {
         preview,
         editing,
         frameEditing,
-        params
+        params,
       } = builder;
       if (userAttributes) {
         this.setUserAttributes(userAttributes);
@@ -820,7 +820,9 @@ export class Builder {
 
       if (Builder.isEditing) {
         const editingModel = frameEditing || editing || preview;
-        this.editingModel = editingModel;
+        if (editingModel && editingModel !== 'true') {
+          this.editingModel = editingModel;
+        }
       }
 
       if (host) {
@@ -838,7 +840,7 @@ export class Builder {
       }
 
       if (params) {
-        this.overrideParams = params
+        this.overrideParams = params;
       }
     }
   }
@@ -1349,8 +1351,8 @@ export class Builder {
     const keyNames = queue.map(item => encodeURIComponent(item.key!)).join(',');
 
     if (this.overrideParams) {
-      const params = QueryString.parse(this.overrideParams)
-      assign(queryParams, params)
+      const params = QueryString.parse(this.overrideParams);
+      assign(queryParams, params);
     }
 
     const queryStr = Builder.useNewApi
