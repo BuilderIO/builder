@@ -144,7 +144,9 @@ export function stringToFunction(
       if (Builder.isBrowser) {
         console.warn('Builder custom code error:', error)
       } else {
-        console.debug('Builder custom code error:', error)
+        if (process.env.DEBUG) {
+          console.debug('Builder custom code error:', error)
+        }
       }
       if (errors) {
         errors.push(error)
