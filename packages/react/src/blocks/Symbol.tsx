@@ -4,7 +4,6 @@ import { BuilderBlock } from '../decorators/builder-block.decorator'
 import { Builder, builder } from '@builder.io/sdk'
 import hash from 'hash-sum'
 
-
 const size = (thing: object) => Object.keys(thing).length
 
 export interface SymbolInfo {
@@ -52,7 +51,7 @@ export class Symbol extends React.Component<SymbolProps> {
     }
 
     let key = Builder.isEditing && builder.editingModel === model ? undefined : entry
-    const dataString = data && size(data) && hash(data);
+    const dataString = data && size(data) && hash(data)
     if (key && dataString && dataString.length < 300) {
       key += ':' + dataString
     }
@@ -62,6 +61,7 @@ export class Symbol extends React.Component<SymbolProps> {
         data-model={model}
       >
         <BuilderPage
+          key={(model || 'no model') + ':' + (entry || 'no entry')}
           modelName={model}
           entry={entry}
           data={data}
