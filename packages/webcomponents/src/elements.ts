@@ -404,4 +404,27 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
     }
   }
   customElements.define('builder-component', BuilderComponentElement)
+
+  class BuilderInit extends HTMLElement {
+    init() {
+      const key = this.getAttribute('apiKey') || this.getAttribute('key')
+      const canTrack = this.getAttribute('canTrack') !== 'false'
+      if (key && builder.apiKey !== key) {
+        builder.apiKey = key
+      }
+      if (builder.canTrack !== canTrack) {
+        builder.canTrack = canTrack
+      }
+    }
+
+    connectedCallback() {
+      this.init()
+    }
+
+    attributeChangedCallback() {
+      this.init()
+    }
+  }
+
+  customElements.define('builder-init', BuilderInit)
 }
