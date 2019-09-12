@@ -2,7 +2,7 @@ import React from 'react'
 import { BuilderPage } from '../components/builder-page.component'
 import { BuilderBlock } from '../decorators/builder-block.decorator'
 import { Builder } from '@builder.io/sdk'
-import hash from 'object-hash'
+import hash from 'hash-sum'
 
 const size = (thing: object) => Object.keys(thing).length
 

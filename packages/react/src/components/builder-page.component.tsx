@@ -5,7 +5,7 @@ import { BuilderBlocks } from './builder-blocks.component'
 import { Builder, GetContentOptions, builder, Subscription, BehaviorSubject } from '@builder.io/sdk'
 import { BuilderStoreContext } from '../store/builder-store'
 import produce from 'immer'
-import hash from 'object-hash'
+import hash from 'hash-sum'
 
 import { sizes } from '../constants/device-sizes.constant'
 import {
