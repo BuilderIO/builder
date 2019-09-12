@@ -232,6 +232,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
 
     this.state = {
       state: {
+        ...(this.props.content && this.props.content.data && this.props.content.data.state),
         isBrowser: true,
         location: this.locationState,
         deviceSize: this.deviceSizeState,
@@ -452,6 +453,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
 
   get data() {
     return {
+      ...(this.props.content && this.props.content.data.state),
       ...this.props.data,
       ...this.state.state
     }
