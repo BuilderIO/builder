@@ -4,6 +4,7 @@ import { BuilderBlock } from '../decorators/builder-block.decorator'
 import { Builder, builder } from '@builder.io/sdk'
 import hash from 'hash-sum'
 
+
 const size = (thing: object) => Object.keys(thing).length
 
 export interface SymbolInfo {
