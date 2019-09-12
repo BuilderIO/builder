@@ -805,6 +805,7 @@ export class Builder {
         noCache,
         preview,
         editing,
+        frameEditing,
         params
       } = builder;
       if (userAttributes) {
@@ -817,8 +818,9 @@ export class Builder {
         this.env = env || api;
       }
 
-      if (editing) {
-        this.editingModel = editing;
+      if (Builder.isEditing) {
+        const editingModel = frameEditing || editing || preview;
+        this.editingModel = editingModel;
       }
 
       if (host) {

@@ -1,7 +1,7 @@
 import React from 'react'
 import { BuilderPage } from '../components/builder-page.component'
 import { BuilderBlock } from '../decorators/builder-block.decorator'
-import { Builder } from '@builder.io/sdk'
+import { Builder, builder } from '@builder.io/sdk'
 import hash from 'hash-sum'
 
 const size = (thing: object) => Object.keys(thing).length
@@ -50,7 +50,7 @@ export class Symbol extends React.Component<SymbolProps> {
       return this.placeholder
     }
 
-    let key = Builder.isEditing ? undefined : entry
+    let key = Builder.isEditing && builder.editingModel === model ? undefined : entry
     const dataString = data && size(data) && hash(data);
     if (key && dataString && dataString.length < 300) {
       key += ':' + dataString
