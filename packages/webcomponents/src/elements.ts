@@ -103,32 +103,8 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
         '*'
       )
 
-      // Start the import
-      // TODO: conditional widget loading / installing
-      // getReactPromise = Promise.all([import('@builder.io/react'), import('@builder.io/widgets')])
-
-      // TODO: import react, import (needed) widgets, fetch json,
-      // then hydrate
-      // Needs option for prerender=false if you use custom components
-      // (in future builder will server render custom and monitor and charge)
-
       this.getOptionsFromAttribute()
       this.addEventListener('remove', () => this.unsubscribe())
-      // this.addEventListener('click', event => {
-      //   if (builder.canTrack) {
-      //     if (this.data) {
-      //       builder.trackInteraction(
-      //         this.data.id,
-      //         this.data.testVariationId || this.data.id,
-      //         this.trackedClick,
-      //         event
-      //       )
-      //       if (!this.trackedClick) {
-      //         this.trackedClick = true
-      //       }
-      //     }
-      //   }
-      // })
       this.getContent()
     }
 
@@ -216,13 +192,6 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
       if (currentContent && !Builder.isEditing) {
         this.data = currentContent
         this.loaded()
-        // Loaded from server
-        // TODO: print the sdk version from server that rendered, fetch that and data, rerender and hydrate using
-        // forced content and variation IDs
-        // builder.trackImpression(
-        //   currentContent.id,
-        //   currentContent.testVariationId || currentContent.id
-        // )
         this.loadReact(this.data)
         return
       }
@@ -231,7 +200,7 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
       this.classList.add('builder-loading')
       let unsubscribed = false
       const slot = this.getAttribute('slot')
-      // TODO: allow options as property or json
+
       const subscription = builder
         .get(name, {
           key:
@@ -260,31 +229,12 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
               this.unsubscribe()
             } else {
               this.data = data
-              if (builder.canTrack) {
-                // TODO: track unique vs not as well
-                // TODO: don't double track when react loads!
-                // builder.trackImpression(data.id, data.testVariationId || data.id)
-              }
               if (data.data && data.data.html) {
-                // Where is the nested builder component going?
                 this.innerHTML = data.data.html
                 const loadEvent = new CustomEvent('htmlload', { detail: data })
                 this.dispatchEvent(loadEvent)
-                // if (data.data.animations && data.data.animations.length) {
-                //   Builder.nextTick(() => {
-                //     Builder.animator.bindAnimations(data.data.animations)
-                //   })
-                // }
               }
 
-              // TODO: throttle this if in iframe instead of doing none
-              // if (data.data && data.data.jsCode && !Builder.isIframe) {
-              //   try {
-              //     new Function(data.data.jsCode)(data)
-              //   } catch (error) {
-              //     console.warn('Eval error', error)
-              //   }
-              // }
               this.loadReact(data)
               subscription.unsubscribe()
               unsubscribed = true
@@ -295,12 +245,6 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
             this.loadReact()
             subscription.unsubscribe()
             unsubscribed = true
-            // console.warn('Builder webcomponent error:', error)
-            // this.classList.add('builder-errored')
-            // this.classList.add('builder-loaded')
-            // this.classList.remove('builder-loading')
-            // const errorEvent = new CustomEvent('error', { detail: error })
-            // this.dispatchEvent(errorEvent)
           }
         )
       this.subscriptions.push(() => subscription.unsubscribe())
@@ -346,9 +290,6 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
               key:
                 (slot ? `slot:${slot}` : null) ||
                 (Builder.isEditing ? name! : this.getAttribute('entry') || name! || undefined)
-              // entry: data ? data.id : undefined,
-              // initialContent: data ? [data] : undefined
-              // TODO: specify variation?
             }
           },
           this.getAttribute('hydrate') !== 'false'
@@ -371,8 +312,6 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
               console.log('unsubscribe didnt work!')
               return
             }
-            // unsubscribed = true
-            // subscription.unsubscribe()
 
             const { BuilderComponent } = await getReactPromise
             await getWidgetsPromise
@@ -383,22 +322,6 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
             const loadEvent = new CustomEvent('load', { detail: data })
             this.dispatchEvent(loadEvent)
 
-            // await getReactPromise
-
-            // TODO Promise.all(['@builder.io/react', '@builder.io/widgets']);
-            // Install widgets on server
-
-            // const { BuilderComponent, builder: reactBuilder } = await import('@builder.io/react')
-
-            // if (reactBuilder !== builder) {
-            //   console.warn('builder loaded twice!')
-            //   reactBuilder.apiKey = builder.apiKey
-            // }
-
-            // TODO: await getting all dynamic js from returned data
-
-            // TODO: prerender: false option
-            // console.log('renderInto', this.options, data)
             BuilderComponent.renderInto(
               this,
               {
@@ -413,7 +336,6 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
                   key:
                     (slot ? `slot:${slot}` : null) ||
                     (Builder.isEditing ? name! : (data && data.id) || undefined)
-                  // TODO: specify variation?
                 }
               },
               this.getAttribute('hydrate') !== 'false' // TODO: query param override builder.hydrate
