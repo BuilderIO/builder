@@ -281,6 +281,18 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
       : sizeMap[this.device] || 'large'
   }
 
+  messageListener = (event: MessageEvent) => {
+    const info = event.data;
+    switch (info.type) {
+      case 'builder.resetState': {
+        const { state, model } = info.data.state
+        if (model == this.name) {
+          this.setState(state)
+        }
+      }
+    }
+  }
+
   resizeListener = throttle(
     () => {
       const deviceSize = this.deviceSizeState
@@ -354,7 +366,11 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     }
 
     if (Builder.isBrowser) {
+      // TODO: remove event on unload
       window.addEventListener('resize', this.resizeListener)
+      if (Builder.isEditing) {
+        window.addEventListener('message', this.messageListener)
+      }
 
       setTimeout(() => {
         window.dispatchEvent(
