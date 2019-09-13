@@ -289,6 +289,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
         if (model == this.name) {
           this.setState(state)
         }
+        break;
       }
     }
   }
