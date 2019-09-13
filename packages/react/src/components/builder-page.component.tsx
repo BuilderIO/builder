@@ -446,6 +446,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     this.unsubscribe()
     if (Builder.isBrowser) {
       window.removeEventListener('resize', this.resizeListener)
+      window.removeEventListener('message', this.messageListener)
     }
   }
 
