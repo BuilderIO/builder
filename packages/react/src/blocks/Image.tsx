@@ -165,7 +165,7 @@ export class Image extends React.Component<any> {
       return url
     }
 
-    const sizes = [100, 200, 400, 800, 1200, 1600, 2000]
+    const sizes = [100, 200, 400, 800, 1200, 1600]
 
     return sizes.map(size => `${updateQueryParam(url, 'width', String(size))} ${size}w`).join(', ')
   }
