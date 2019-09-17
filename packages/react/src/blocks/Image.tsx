@@ -135,7 +135,7 @@ export function updateQueryParam(uri = '', key: string, value: string) {
       hideFromUI: true
     },
     {
-      name: 'srcset',
+      name: 'sizes',
       type: 'string',
       hideFromUI: true
     },
@@ -216,6 +216,7 @@ export class Image extends React.Component<any> {
                 src={this.props.image}
                 // TODO: memoize on image on client
                 srcset={this.getSrcSet()}
+                sizes={this.props.sizes}
               />
               {/* TODO: do this with classes like .builder-fit so can reuse styles and not duplicate */}
               {/* TODO: maybe need to add height: auto, widht: auto or so so the image doesn't have a max widht etc */}
