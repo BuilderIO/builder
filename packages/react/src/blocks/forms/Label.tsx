@@ -1,10 +1,13 @@
 import React from 'react'
 import { BuilderBlock } from '../../decorators/builder-block.decorator'
+import { BuilderElement } from '@builder.io/sdk'
+import { BuilderBlockComponent } from '../../builder-react'
 
 export interface LabelProps {
   attributes?: any
   text?: string
   for?: string
+  builderBlock?: BuilderElement
 }
 
 @BuilderBlock({
@@ -24,7 +27,8 @@ export interface LabelProps {
       advanced: true
     }
   ],
-  noWrap: true
+  noWrap: true,
+  canHaveChildren: true
   // TODO: take inner html or blocsk
   // TODO: optional children? maybe as optional form input
   // that only shows if advanced setting is flipped
@@ -36,6 +40,11 @@ export class Label extends React.Component<LabelProps> {
     return (
       <label htmlFor={this.props.for} {...this.props.attributes}>
         {this.props.text}
+        {this.props.builderBlock &&
+          this.props.builderBlock.children &&
+          this.props.builderBlock.children.map(item => (
+            <BuilderBlockComponent key={item.id} block={item} />
+          ))}
       </label>
     )
   }

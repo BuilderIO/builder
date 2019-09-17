@@ -125,6 +125,11 @@ const DEFAULT_ASPECT_RATIO = 0.7041
       hideFromUI: true
     },
     {
+      name: 'srcset',
+      type: 'string',
+      hideFromUI: true
+    },
+    {
       name: 'aspectRatio',
       type: 'number',
       helperText:
@@ -191,6 +196,7 @@ export class Image extends React.Component<any> {
                 }}
                 className="builder-image"
                 src={this.props.image}
+                srcset={this.props.srcset}
               />
               {/* TODO: do this with classes like .builder-fit so can reuse styles and not duplicate */}
               {/* TODO: maybe need to add height: auto, widht: auto or so so the image doesn't have a max widht etc */}
