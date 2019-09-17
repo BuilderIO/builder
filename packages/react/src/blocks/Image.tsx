@@ -156,9 +156,6 @@ export function updateQueryParam(uri = '', key: string, value: string) {
   ]
 })
 export class Image extends React.Component<any> {
-  // TODO
-  // static universal: BuilderElement[] = []
-
   getSrcSet() {
     const url = this.props.image
     if (!url) {
