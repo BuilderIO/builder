@@ -8,6 +8,16 @@ import { BuilderMetaContext } from '../store/builder-meta'
 
 const DEFAULT_ASPECT_RATIO = 0.7041
 
+export function updateQueryParam(uri = '', key: string, value: string) {
+  const re = new RegExp('([?&])' + key + '=.*?(&|$)', 'i')
+  const separator = uri.indexOf('?') !== -1 ? '&' : '?'
+  if (uri.match(re)) {
+    return uri.replace(re, '$1' + key + '=' + encodeURIComponent(value) + '$2')
+  }
+
+  return uri + separator + key + '=' + encodeURIComponent(value)
+}
+
 @BuilderBlock({
   name: 'Image',
   image:
@@ -136,7 +146,7 @@ const DEFAULT_ASPECT_RATIO = 0.7041
         "This is the ratio of height/width, e.g. set to 1.5 for a 300px wide and 200px tall photo. Set to 0 to not force the image to maintain it's aspect ratio",
       advanced: true,
       defaultValue: DEFAULT_ASPECT_RATIO
-    },
+    }
     // {
     //   name: 'backgroundRepeat',
     //   type: 'text',
@@ -148,6 +158,17 @@ const DEFAULT_ASPECT_RATIO = 0.7041
 export class Image extends React.Component<any> {
   // TODO
   // static universal: BuilderElement[] = []
+
+  getSrcSet() {
+    const url = this.props.image
+    if (!url) {
+      return url
+    }
+
+    const sizes = [100, 200, 400, 800, 1200, 1600, 2000]
+
+    return sizes.map(size => `${updateQueryParam(url, 'width', String(size))} ${size}w`).join(', ')
+  }
 
   render() {
     const { aspectRatio, builderBlock } = this.props
@@ -196,7 +217,8 @@ export class Image extends React.Component<any> {
                 }}
                 className="builder-image"
                 src={this.props.image}
-                srcset={this.props.srcset}
+                // TODO: memoize on image on client
+                srcset={this.getSrcSet()}
               />
               {/* TODO: do this with classes like .builder-fit so can reuse styles and not duplicate */}
               {/* TODO: maybe need to add height: auto, widht: auto or so so the image doesn't have a max widht etc */}
