@@ -140,6 +140,11 @@ export function updateQueryParam(uri = '', key: string, value: string) {
       hideFromUI: true
     },
     {
+      name: 'srcset',
+      type: 'string',
+      hideFromUI: true
+    },
+    {
       name: 'aspectRatio',
       type: 'number',
       helperText:
@@ -215,7 +220,7 @@ export class Image extends React.Component<any> {
                 className="builder-image"
                 src={this.props.image}
                 // TODO: memoize on image on client
-                srcset={this.getSrcSet()}
+                srcset={this.props.srcset || this.getSrcSet()}
                 sizes={this.props.sizes}
               />
               {/* TODO: do this with classes like .builder-fit so can reuse styles and not duplicate */}
