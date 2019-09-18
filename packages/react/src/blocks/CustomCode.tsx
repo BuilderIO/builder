@@ -31,7 +31,6 @@ export class CustomCode extends React.Component<Props> {
 
   constructor(props: Props) {
     super(props)
-    console.debug('Custom code 0', this)
     if (this.replaceNodes && Builder.isBrowser && this.firstLoad && this.props.builderBlock) {
       console.debug('Replace 1')
       // How do if multiple...
