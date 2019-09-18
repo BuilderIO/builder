@@ -395,7 +395,7 @@ export class Builder {
     });
   }
 
-  env: 'production' | 'qa' | 'development' | 'dev' = 'production';
+  env: 'production' | 'qa' | 'development' | 'dev' | 'cdn-qa' = 'production';
 
   protected isUsed = false;
   sessionId = this.getSessionId();
@@ -1236,6 +1236,8 @@ export class Builder {
     switch (this.env) {
       case 'qa':
         return 'https://qa.builder.io';
+      case 'cdn-qa':
+        return 'https://cdn-qa.builder.io';
       case 'development':
       case 'dev':
         return 'http://localhost:5000';
