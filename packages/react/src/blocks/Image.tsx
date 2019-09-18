@@ -177,6 +177,18 @@ export class Image extends React.Component<any> {
     const { aspectRatio, builderBlock } = this.props
     const children = this.props.builderBlock && this.props.builderBlock.children
 
+    let srcset = this.props.srcset
+    const image = this.props.image
+
+    if (srcset && image && image.includes('/api/v1/image')) {
+      if (!srcset.includes(image.split('?')[0])) {
+        console.debug('Removed given srcset')
+        srcset = this.getSrcSet()
+      }
+    } else if (image) {
+      srcset = this.getSrcSet()
+    }
+
     return (
       // TODO: swap-in amp components hm
       // These styles may be bad... may need to remove this wrapper entirely hmm
@@ -221,7 +233,7 @@ export class Image extends React.Component<any> {
                 className="builder-image"
                 src={this.props.image}
                 // TODO: memoize on image on client
-                srcset={this.props.srcset || this.getSrcSet()}
+                srcset={srcset}
                 sizes={this.props.sizes}
               />
               {/* TODO: do this with classes like .builder-fit so can reuse styles and not duplicate */}
