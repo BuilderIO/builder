@@ -15,6 +15,8 @@ const resolvePlugin = resolve()
 
 const externalDependencies = Object.keys(pkg.dependencies)
   .concat(Object.keys(pkg.optionalDependencies || {}))
+  // Need to compile this from es6 to es5
+  .filter(item => item !== 'on-change')
   // TODO: go back to using peerDependencies once fix rollup iife issue
   // .concat(Object.keys(pkg.peerDependencies || {}))
 
