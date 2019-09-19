@@ -307,7 +307,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
           this.setState({
             ...this.state,
             state: this.rootState,
-            updates: this.state.updates + 1,
+            updates: (this.state && this.state.updates || 0) + 1,
           })
         }
         break
@@ -321,7 +321,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
       if (deviceSize !== this.state.state.deviceSize) {
         this.setState({
           ...this.state,
-          updates: this.state.updates + 1,
+          updates: (this.state && this.state.updates || 0) + 1,
           state: Object.assign(this.rootState, {
             ...this.state.state,
             deviceSize
@@ -415,7 +415,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     this.setState({
       update: this.updateState,
       state,
-      updates: this.state.updates + 1
+      updates: (this.state && this.state.updates || 0) + 1
     })
 
     this.notifyStateChange()
@@ -778,7 +778,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     if (data && data.state) {
       this.setState({
         ...this.state,
-        updates: this.state.updates + 1,
+        updates: (this.state && this.state.updates || 0) + 1,
         state: Object.assign(this.rootState, {
           ...this.state.state,
           location: this.locationState,
