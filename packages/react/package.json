@@ -151,7 +151,6 @@
   "dependencies": {
     "@builder.io/sdk": "^1.0.46-alpha.1",
     "hash-sum": "^2.0.0",
-    "on-change": "^1.6.2",
     "preact": "^10.0.0-rc.0",
     "react": ">=14",
     "react-dom": ">=14"

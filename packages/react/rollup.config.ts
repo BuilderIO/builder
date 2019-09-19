@@ -15,10 +15,8 @@ const resolvePlugin = resolve()
 
 const externalDependencies = Object.keys(pkg.dependencies)
   .concat(Object.keys(pkg.optionalDependencies || {}))
-  // Need to compile this from es6 to es5
-  .filter(item => item !== 'on-change')
-// TODO: go back to using peerDependencies once fix rollup iife issue
-// .concat(Object.keys(pkg.peerDependencies || {}))
+  // TODO: go back to using peerDependencies once fix rollup iife issue
+  // .concat(Object.keys(pkg.peerDependencies || {}))
 
 const options = {
   input: `src/${libraryName}.ts`,
@@ -29,7 +27,6 @@ const options = {
   },
   plugins: [
     typescript({
-      include: ['*.ts+(|x)', '*.js+(|x)', '**/*.ts+(|x)'],
       tsconfigOverride: {
         compilerOptions: {
           // No need to type check and gen over and over, we do once at beggingn of builder with `tsc`
@@ -99,7 +96,7 @@ export default [
       .filter(plugin => plugin !== resolvePlugin)
       .concat([
         resolve({
-          only: [/^\.{0,2}\//, /on-change/]
+          only: [/^\.{0,2}\//]
         })
       ])
   },
@@ -115,7 +112,7 @@ export default [
       .filter(plugin => plugin !== resolvePlugin)
       .concat([
         resolve({
-          only: [/^\.{0,2}\//, /on-change/]
+          only: [/^\.{0,2}\//]
         }),
         regexReplace({
           // ... do replace before commonjs
@@ -143,7 +140,7 @@ export default [
       .filter(plugin => plugin !== resolvePlugin)
       .concat([
         resolve({
-          only: [/^\.{0,2}\//, /on-change/]
+          only: [/^\.{0,2}\//]
         }),
         replace({
           'React.Fragment': '"span"',
@@ -196,7 +193,7 @@ export default [
           ]
         }),
         resolve({
-          only: [/^\.{0,2}\//, /on-change/]
+          only: [/^\.{0,2}\//]
         }),
         alias({
           react: 'preact/compat',
