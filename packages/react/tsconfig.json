@@ -9,6 +9,8 @@
     "sourceMap": true,
     "declaration": true,
     "skipLibCheck": true,
+    "allowJs": true,
+    "checkJs": false,
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,

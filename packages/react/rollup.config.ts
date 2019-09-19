@@ -34,6 +34,7 @@ const options = {
           // No need to type check and gen over and over, we do once at beggingn of builder with `tsc`
           declaration: false,
           check: false,
+          checkJs: false,
           allowJs: true
         }
       }
