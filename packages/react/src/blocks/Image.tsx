@@ -3,7 +3,7 @@ import React from 'react'
 // import { BuilderElement } from '@builder.io/sdk'
 import { BuilderBlock as BuilderBlockComponent } from '../components/builder-block.component'
 import { BuilderBlock } from '../decorators/builder-block.decorator'
-import { BuilderElement } from '@builder.io/sdk'
+import { BuilderElement, Builder } from '@builder.io/sdk'
 import { BuilderMetaContext } from '../store/builder-meta'
 
 const DEFAULT_ASPECT_RATIO = 0.7041
@@ -215,7 +215,7 @@ export class Image extends React.Component<any> {
                     }
                   : null)}
                 alt={this.props.altText}
-                key={this.props.image}
+                key={Builder.isEditing ? this.props.image : undefined}
                 // height={
                 //   this.props.height || (aspectRatio ? Math.round(aspectRatio * 1000) : undefined)
                 // }
