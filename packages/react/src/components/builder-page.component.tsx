@@ -546,6 +546,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
               <BuilderStoreContext.Provider
                 value={{
                   ...this.state,
+                  rootState: this.rootState,
                   state: this.data
                 }}
               >

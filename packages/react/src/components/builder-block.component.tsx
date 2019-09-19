@@ -109,6 +109,7 @@ function capitalize(str: string) {
 
 interface BuilderBlocksState {
   state: any
+  rootState: any
   update: Function
 }
 
@@ -120,6 +121,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
 
   private privateState: BuilderBlocksState = {
     state: {},
+    rootState: {},
     update: () => {
       /* Intentionally empty */
     }
@@ -325,7 +327,10 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
       for (const key in block.actions) {
         const value = block.actions[key]
         options['on' + capitalize(key)] = (event: any) => {
-          const state = this.privateState.state
+          const state = onChange(this.privateState.state, (path: string[], value: any) => {
+            set(this.privateState.rootState, path.join('.'), value)
+            this.privateState.update()
+          })
           const fn = this.stringToFunction(value, false)
           // TODO: only one root instance of this, don't rewrap every time...
           return fn(state, event, undefined, api(state), Device, this.privateState.update)

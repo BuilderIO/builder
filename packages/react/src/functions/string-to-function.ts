@@ -82,6 +82,7 @@ export function stringToFunction(
         'Device',
         'update',
         // TODO: remove the with () {} - make a page v3 that doesn't use this
+        // Or only do if can't find state\s*\. anywhere hm
         `
           var rootState = state;
           if (typeof Proxy !== 'undefined') {
