@@ -81,21 +81,7 @@ export function stringToFunction(
         'builder',
         'Device',
         'update',
-        // TODO: block reference...
-        // TODO: or just remove with (rootState) in general
-        `
-          var rootState = state;
-          if (typeof Proxy !== 'undefined') {
-            rootState = new Proxy(rootState, {
-              set: function () {
-                return false;
-              }
-            });
-          }
-          with (rootState) {
-            ${useReturn ? `return (${str});` : str};
-          }
-        `
+        useReturn ? `return (${str});` : str
       )
     }
   } catch (error) {

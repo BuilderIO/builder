@@ -115,6 +115,7 @@
     "husky": "^0.14.0",
     "jest": "^22.0.2",
     "lint-staged": "^7.0.0",
+    "on-change": "^1.6.2",
     "prettier": "^1.4.4",
     "prompt": "^1.0.0",
     "replace-in-file": "^3.0.0-beta.2",
@@ -151,7 +152,6 @@
   "dependencies": {
     "@builder.io/sdk": "^1.0.46-alpha.1",
     "hash-sum": "^2.0.0",
-    "immer": "^3.1.3",
     "preact": "^10.0.0-rc.0",
     "react": ">=14",
     "react-dom": ">=14"

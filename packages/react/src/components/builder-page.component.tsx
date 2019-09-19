@@ -5,6 +5,7 @@ import { BuilderBlocks } from './builder-blocks.component'
 import { Builder, GetContentOptions, builder, Subscription, BehaviorSubject } from '@builder.io/sdk'
 import { BuilderStoreContext } from '../store/builder-store'
 import hash from 'hash-sum'
+import onChange from 'on-change'
 
 import { sizes } from '../constants/device-sizes.constant'
 import {
@@ -384,9 +385,11 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     }
   }
 
-  updateState = (fn: (state: any) => void) => {
+  updateState = (fn?: (state: any) => void) => {
     const state = { ...this.state.state }
-    fn(state)
+    if (fn) {
+      fn(state)
+    }
     this.setState({
       update: this.updateState,
       state
@@ -775,60 +778,8 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
 
       if (!skip) {
         let state = this.state.state
-        const getState = () => this.state.state
-        const getUpdate = () => this.state.update
+        state = onChange(state, () => this.updateState())
 
-        // TODO: move to helper and deep wrap like immer in case people make references
-        // TODO: on set auto run in update if not already
-        if (typeof Proxy !== 'undefined') {
-          state = new Proxy(
-            { ...state },
-            {
-              getOwnPropertyDescriptor(target, property) {
-                try {
-                  return Reflect.getOwnPropertyDescriptor(getState(), property)
-                } catch (error) {
-                  return undefined
-                }
-              },
-              // TODO: wrap other proxy properties
-              // TODO: ensure batching updates
-              set: function(target, key, value) {
-                // TODO: do these for deep sets from references hmm
-                // TODO: throttle these updates
-                getUpdate()((state: any) => {
-                  Reflect.set(state, key, value)
-                })
-                return true
-                // return Reflect.set(getState(), key, value)
-                // return false;
-              },
-              // to prevent variable doesn't exist errors with `with (state)`
-              has(target, property) {
-                try {
-                  // TODO: if dead trigger an immer update
-                  return Reflect.has(getState(), property)
-                } catch (error) {
-                  return false
-                }
-              },
-              get(object, property) {
-                if (
-                  property &&
-                  typeof property === 'string' &&
-                  property.endsWith('Item') &&
-                  !Reflect.has(getState(), property)
-                ) {
-                  // TODO: use $index to return a reference to the proxied version of item
-                  // so can be set as well
-                  return Reflect.get(state, property)
-                }
-
-                return Reflect.get(getState(), property)
-              }
-            }
-          )
-        }
         // TODO: real editing method
         try {
           const result = new Function(

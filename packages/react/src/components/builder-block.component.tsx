@@ -5,6 +5,7 @@ import { BuilderStoreContext } from '../store/builder-store'
 import { BuilderAsyncRequestsContext, RequestOrPromise } from '../store/builder-async-requests'
 import { stringToFunction, api } from '../functions/string-to-function'
 import { set } from '../functions/set'
+import onChange from 'on-change'
 
 const camelCaseToKebabCase = (str?: string) =>
   str ? str.replace(/([A-Z])/g, g => `-${g[0].toLowerCase()}`) : ''
@@ -316,65 +317,14 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
       return null
     }
 
-    let latestState = state
-
     if (block.actions) {
       for (const key in block.actions) {
         const value = block.actions[key]
         options['on' + capitalize(key)] = (event: any) => {
-          const update = (cb: Function) => {
-            this.privateState.update((globalState: any) => {
-              latestState = globalState
-              let localState = globalState
-
-              if (typeof Proxy !== 'undefined') {
-                localState = new Proxy(
-                  { ...globalState },
-                  {
-                    getOwnPropertyDescriptor(target, property) {
-                      try {
-                        return Reflect.getOwnPropertyDescriptor(latestState, property)
-                      } catch (error) {
-                        return undefined
-                      }
-                    },
-                    // TODO: wrap other proxy properties
-                    set: function(target, key, value) {
-                      // TODO: do these for deep sets from references hmm
-                      return Reflect.set(latestState, key, value)
-                      // return false;
-                    },
-                    // to prevent variable doesn't exist errors with `with (state)`
-                    has(target, property) {
-                      try {
-                        // TODO: if dead trigger an immer update
-                        return Reflect.has(latestState, property)
-                      } catch (error) {
-                        return false
-                      }
-                    },
-                    get(object, property) {
-                      if (
-                        property &&
-                        typeof property === 'string' &&
-                        property.endsWith('Item') &&
-                        !Reflect.has(latestState, property)
-                      ) {
-                        // TODO: use $index to return a reference to the proxied version of item
-                        // so can be set as well
-                        return Reflect.get(state, property)
-                      }
-
-                      return Reflect.get(latestState, property)
-                    }
-                  }
-                )
-              }
-              return cb(localState, event, undefined, api(localState), Device, update)
-            })
-          }
+          const update = (cb?: any) => this.privateState.update(cb)
           const fn = this.stringToFunction(value, false)
-          update(fn)
+          let localState = onChange(this.privateState.state, update)
+          return fn(localState, event, undefined, api(localState), Device, update)
         }
       }
     }
