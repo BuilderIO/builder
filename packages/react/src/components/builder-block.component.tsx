@@ -327,8 +327,10 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
       for (const key in block.actions) {
         const value = block.actions[key]
         options['on' + capitalize(key)] = (event: any) => {
-          const state = onChange(this.privateState.state, (path: string[], value: any) => {
-            set(this.privateState.rootState, path.join('.'), value)
+          const state = onChange(this.privateState.state, (path: string, value: any) => {
+            // TODO: handle referencing back state.somethingItem in array
+            // back to the original....
+            set(this.privateState.rootState, path, value)
             this.privateState.update()
           })
           const fn = this.stringToFunction(value, false)
