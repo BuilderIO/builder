@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "moduleResolution": "node",
+    "baseUrl": ".",
     "jsx": "react",
     "target": "es5",
     "module":"es2015",
@@ -9,7 +10,6 @@
     "sourceMap": true,
     "declaration": true,
     "skipLibCheck": true,
-    "allowJs": true,
     "checkJs": false,
     "resolveJsonModule": true,
     "esModuleInterop": true,
@@ -19,7 +19,10 @@
     "outDir": "dist/lib",
     "typeRoots": [
       "node_modules/@types"
-    ]
+    ],
+    "paths": {
+      "lib": ["./lib"]
+    }
   },
   "include": [
     "src",

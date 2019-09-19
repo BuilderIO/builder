@@ -5,7 +5,7 @@ import { BuilderBlocks } from './builder-blocks.component'
 import { Builder, GetContentOptions, builder, Subscription, BehaviorSubject } from '@builder.io/sdk'
 import { BuilderStoreContext } from '../store/builder-store'
 import hash from 'hash-sum'
-import onChange from '../functions/on-change'
+import onChange from 'lib/on-change.js'
 
 import { sizes } from '../constants/device-sizes.constant'
 import {
