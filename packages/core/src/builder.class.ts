@@ -1295,7 +1295,12 @@ export class Builder {
 
     if (cachebust || this.env !== 'production') {
       queryParams.cachebust = true;
-      queryParams.cachebuster = Date.now();
+      // TODO: remove!
+      // queryParams.cachebuster = Date.now();
+    }
+
+    if (Builder.isEditing) {
+      queryParams.isEditing = true
     }
 
     if (this.noCache || this.env !== 'production') {

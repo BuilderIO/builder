@@ -215,6 +215,7 @@ export class Image extends React.Component<any> {
                     }
                   : null)}
                 alt={this.props.altText}
+                key={this.props.image}
                 // height={
                 //   this.props.height || (aspectRatio ? Math.round(aspectRatio * 1000) : undefined)
                 // }
