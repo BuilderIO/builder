@@ -142,10 +142,10 @@ export function stringToFunction(
       }
     } catch (error) {
       if (Builder.isBrowser) {
-        console.warn('Builder custom code error:', error)
+        console.warn('Builder custom code error:', error.message || error, 'in', str, error.stack || error)
       } else {
         if (process.env.DEBUG) {
-          console.debug('Builder custom code error:', error)
+          console.debug('Builder custom code error:', error.message || error, 'in', str, error.stack || error)
         }
       }
       if (errors) {

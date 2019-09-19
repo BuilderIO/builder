@@ -184,10 +184,10 @@ const tryEval = (str?: string, data: any = {}, errors?: Error[]): any => {
     }
 
     if (Builder.isBrowser) {
-      console.warn('Builder custom code error:', error)
+      console.warn('Builder custom code error:', error.message, 'in', str, error.stack);
     } else {
       if (process.env.DEBUG) {
-        console.debug('Builder custom code error:', error)
+        console.debug('Builder custom code error:', error.message, 'in', str, error.stack);
       }
       // Add to req.options.errors to return to client
     }
@@ -867,10 +867,10 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
           // TODO: do something with reuslt like view - methods, computed, actions, properties, template, etc etc
         } catch (error) {
           if (Builder.isBrowser) {
-            console.warn('Builder custom code error:', error)
+            console.warn('Builder custom code error:', error.message, 'in', data.jsCode, error.stack);
           } else {
             if (process.env.DEBUG) {
-              console.debug('Builder custom code error:', error)
+              console.debug('Builder custom code error:', error.message, 'in', data.jsCode, error.stack);
             }
             // Add to req.options.errors to return to client
           }
