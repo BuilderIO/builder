@@ -316,6 +316,10 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
     if (options.hide) {
       return null
     }
+    // TODO: UI for this
+    if (('show' in options || (block.bindings && block.bindings.show)) && !options.show) {
+      return null
+    }
 
     if (block.actions) {
       for (const key in block.actions) {
