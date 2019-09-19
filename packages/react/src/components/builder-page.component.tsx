@@ -776,9 +776,16 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
         }
       }
 
+      const fastClone = (obj: object) => {
+        if (!obj) {
+          return obj
+        }
+        return JSON.parse(JSON.stringify(obj))
+      }
+
       if (!skip) {
         let state = this.state.state
-        const getState = () => this.state.state
+        const getState = () => fastClone(this.state.state)
         const getUpdate = () => this.state.update
 
         // TODO: move to helper and deep wrap like immer in case people make references
