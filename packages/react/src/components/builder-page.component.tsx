@@ -778,6 +778,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
 
       if (!skip) {
         let state = this.state.state
+        // TODO: only one root instance of this, don't rewrap every time
         state = onChange(state, () => this.updateState())
 
         // TODO: real editing method

@@ -327,6 +327,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
         options['on' + capitalize(key)] = (event: any) => {
           const update = (cb?: any) => this.privateState.update(cb)
           const fn = this.stringToFunction(value, false)
+          // TODO: only one root instance of this, don't rewrap every time...
           let localState = onChange(this.privateState.state, update)
           return fn(localState, event, undefined, api(localState), Device, update)
         }
