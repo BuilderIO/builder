@@ -98,7 +98,7 @@ export default [
       .filter(plugin => plugin !== resolvePlugin)
       .concat([
         resolve({
-          only: [/^\.{0,2}\//]
+          only: [/^\.{0,2}\//, /on-change/]
         })
       ])
   },
@@ -114,7 +114,7 @@ export default [
       .filter(plugin => plugin !== resolvePlugin)
       .concat([
         resolve({
-          only: [/^\.{0,2}\//]
+          only: [/^\.{0,2}\//, /on-change/]
         }),
         regexReplace({
           // ... do replace before commonjs
@@ -142,7 +142,7 @@ export default [
       .filter(plugin => plugin !== resolvePlugin)
       .concat([
         resolve({
-          only: [/^\.{0,2}\//]
+          only: [/^\.{0,2}\//, /on-change/]
         }),
         replace({
           'React.Fragment': '"span"',
@@ -195,7 +195,7 @@ export default [
           ]
         }),
         resolve({
-          only: [/^\.{0,2}\//]
+          only: [/^\.{0,2}\//, /on-change/]
         }),
         alias({
           react: 'preact/compat',
