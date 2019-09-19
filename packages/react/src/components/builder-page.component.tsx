@@ -4,7 +4,6 @@ import { BuilderContent } from './builder-content.component'
 import { BuilderBlocks } from './builder-blocks.component'
 import { Builder, GetContentOptions, builder, Subscription, BehaviorSubject } from '@builder.io/sdk'
 import { BuilderStoreContext } from '../store/builder-store'
-import produce from 'immer'
 import hash from 'hash-sum'
 
 import { sizes } from '../constants/device-sizes.constant'
@@ -184,10 +183,10 @@ const tryEval = (str?: string, data: any = {}, errors?: Error[]): any => {
     }
 
     if (Builder.isBrowser) {
-      console.warn('Builder custom code error:', error.message, 'in', str, error.stack);
+      console.warn('Builder custom code error:', error.message, 'in', str, error.stack)
     } else {
       if (process.env.DEBUG) {
-        console.debug('Builder custom code error:', error.message, 'in', str, error.stack);
+        console.debug('Builder custom code error:', error.message, 'in', str, error.stack)
       }
       // Add to req.options.errors to return to client
     }
@@ -282,14 +281,14 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
   }
 
   messageListener = (event: MessageEvent) => {
-    const info = event.data;
+    const info = event.data
     switch (info.type) {
       case 'builder.resetState': {
         const { state, model } = info.data.state
         if (model == this.name) {
           this.setState(state)
         }
-        break;
+        break
       }
     }
   }
@@ -386,13 +385,11 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
   }
 
   updateState = (fn: (state: any) => void) => {
-    const nextState = produce(this.state.state, (draftState: any) => {
-      fn(draftState)
-      // TODO: emit dom event - what element? global?
-    })
+    const state = { ...this.state.state }
+    fn(state)
     this.setState({
       update: this.updateState,
-      state: nextState
+      state
     })
 
     this.notifyStateChange()
@@ -776,16 +773,9 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
         }
       }
 
-      const fastClone = (obj: object) => {
-        if (!obj) {
-          return obj
-        }
-        return JSON.parse(JSON.stringify(obj))
-      }
-
       if (!skip) {
         let state = this.state.state
-        const getState = () => fastClone(this.state.state)
+        const getState = () => this.state.state
         const getUpdate = () => this.state.update
 
         // TODO: move to helper and deep wrap like immer in case people make references
@@ -874,10 +864,22 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
           // TODO: do something with reuslt like view - methods, computed, actions, properties, template, etc etc
         } catch (error) {
           if (Builder.isBrowser) {
-            console.warn('Builder custom code error:', error.message, 'in', data.jsCode, error.stack);
+            console.warn(
+              'Builder custom code error:',
+              error.message,
+              'in',
+              data.jsCode,
+              error.stack
+            )
           } else {
             if (process.env.DEBUG) {
-              console.debug('Builder custom code error:', error.message, 'in', data.jsCode, error.stack);
+              console.debug(
+                'Builder custom code error:',
+                error.message,
+                'in',
+                data.jsCode,
+                error.stack
+              )
             }
             // Add to req.options.errors to return to client
           }
