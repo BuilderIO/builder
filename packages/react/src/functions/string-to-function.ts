@@ -81,6 +81,7 @@ export function stringToFunction(
         'builder',
         'Device',
         'update',
+        // TODO: remove the with () {} - make a page v3 that doesn't use this
         `
           var rootState = state;
           if (typeof Proxy !== 'undefined') {

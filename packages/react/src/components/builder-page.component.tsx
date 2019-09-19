@@ -148,6 +148,7 @@ const tryEval = (str?: string, data: any = {}, errors?: Error[]): any => {
       // TODO: VM in node......
       fn = new Function(
         'state',
+        // TODO: remove the with () {} - make a page v3 that doesn't use this
         `var rootState = state;
         if (typeof Proxy !== 'undefined') {
           rootState = new Proxy(rootState, {
