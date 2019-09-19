@@ -131,6 +131,7 @@ export interface BuilderPageProps {
 interface BuilderPageState {
   state: any
   update: (state: any) => any
+  updates: number
 }
 
 const tryEval = (str?: string, data: any = {}, errors?: Error[]): any => {
@@ -222,6 +223,8 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
   subscriptions: Subscription = new Subscription()
   onStateChange = new BehaviorSubject<any>(null)
 
+  rootState = onChange({}, () => this.updateState())
+
   lastJsCode = ''
   lastHttpRequests: { [key: string]: string | undefined } = {}
   httpSubscriptionPerKey: { [key: string]: Subscription | undefined } = {}
@@ -240,7 +243,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     super(props)
 
     this.state = {
-      state: {
+      state: Object.assign(this.rootState, {
         ...(this.props.content && this.props.content.data && this.props.content.data.state),
         isBrowser: true,
         location: this.locationState,
@@ -248,7 +251,8 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
         // TODO: will user attributes be ready here?
         device: this.device,
         ...props.data
-      },
+      }),
+      updates: 0,
       update: this.updateState
     }
 
@@ -296,7 +300,15 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
       case 'builder.resetState': {
         const { state, model } = info.data.state
         if (model == this.name) {
-          this.setState(state)
+          for (const key in this.rootState) {
+            delete this.rootState[key]
+          }
+          Object.assign(this.rootState, state)
+          this.setState({
+            ...this.state,
+            state: this.rootState,
+            updates: this.state.updates + 1,
+          })
         }
         break
       }
@@ -309,10 +321,11 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
       if (deviceSize !== this.state.state.deviceSize) {
         this.setState({
           ...this.state,
-          state: {
+          updates: this.state.updates + 1,
+          state: Object.assign(this.rootState, {
             ...this.state.state,
             deviceSize
-          }
+          })
         })
       }
     },
@@ -395,13 +408,14 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
   }
 
   updateState = (fn?: (state: any) => void) => {
-    const state = { ...this.state.state }
+    const state = this.rootState
     if (fn) {
       fn(state)
     }
     this.setState({
       update: this.updateState,
-      state
+      state,
+      updates: this.state.updates + 1
     })
 
     this.notifyStateChange()
@@ -479,11 +493,13 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
   }
 
   get data() {
-    return {
+    const data = {
       ...(this.props.content && this.props.content.data.state),
       ...this.props.data,
       ...this.state.state
     }
+    Object.assign(this.rootState, data)
+    return data
   }
 
   componentDidUpdate(prevProps: BuilderPageProps) {
@@ -762,14 +778,15 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     if (data && data.state) {
       this.setState({
         ...this.state,
-        state: {
+        updates: this.state.updates + 1,
+        state: Object.assign(this.rootState, {
           ...this.state.state,
           location: this.locationState,
           deviceSize: this.deviceSizeState,
           device: this.device,
           ...data.state,
           ...this.props.data
-        }
+        })
       })
     }
 
@@ -786,9 +803,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
       }
 
       if (!skip) {
-        let state = this.state.state
-        // TODO: only one root instance of this, don't rewrap every time
-        state = onChange(state, () => this.updateState())
+        const state = this.state.state
 
         // TODO: real editing method
         try {
@@ -802,24 +817,6 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
             'builder',
             data.jsCode
           )(data, this, state, this.state.update, this.ref, Builder, builder)
-
-          // TODO: what if is promise...
-
-          if (result && typeof result === 'object' && Object.keys(result).length) {
-            this.state.update((state: any) => {
-              Object.assign(result, state)
-            })
-          }
-
-          if (result && typeof result.then === 'function') {
-            result.then((val: any) => {
-              if (val && typeof val === 'object' && Object.keys(val).length) {
-                this.state.update((state: any) => {
-                  Object.assign(val, state)
-                })
-              }
-            })
-          }
 
           // TODO: allow exports = { } syntax?
           // TODO: do something with reuslt like view - methods, computed, actions, properties, template, etc etc
