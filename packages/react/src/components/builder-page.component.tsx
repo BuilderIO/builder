@@ -148,9 +148,17 @@ const tryEval = (str?: string, data: any = {}, errors?: Error[]): any => {
       // TODO: VM in node......
       fn = new Function(
         'state',
-        `with (state) {
-          ${useReturn ? `return (${value});` : value};
-         }`
+        `var rootState = state;
+        if (typeof Proxy !== 'undefined') {
+          rootState = new Proxy(rootState, {
+            set: function () {
+              return false;
+            }
+          });
+        }
+        with (rootState) {
+          ${useReturn ? `return (${str});` : str};
+        }`
       )
     }
   } catch (error) {

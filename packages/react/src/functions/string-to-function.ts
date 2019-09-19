@@ -81,7 +81,19 @@ export function stringToFunction(
         'builder',
         'Device',
         'update',
-        useReturn ? `return (${str});` : str
+        `
+          var rootState = state;
+          if (typeof Proxy !== 'undefined') {
+            rootState = new Proxy(rootState, {
+              set: function () {
+                return false;
+              }
+            });
+          }
+          with (rootState) {
+            ${useReturn ? `return (${str});` : str};
+          }
+        `
       )
     }
   } catch (error) {
@@ -128,10 +140,22 @@ export function stringToFunction(
       }
     } catch (error) {
       if (Builder.isBrowser) {
-        console.warn('Builder custom code error:', error.message || error, 'in', str, error.stack || error)
+        console.warn(
+          'Builder custom code error:',
+          error.message || error,
+          'in',
+          str,
+          error.stack || error
+        )
       } else {
         if (process.env.DEBUG) {
-          console.debug('Builder custom code error:', error.message || error, 'in', str, error.stack || error)
+          console.debug(
+            'Builder custom code error:',
+            error.message || error,
+            'in',
+            str,
+            error.stack || error
+          )
         }
       }
       if (errors) {
