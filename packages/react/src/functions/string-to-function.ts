@@ -84,11 +84,25 @@ export function stringToFunction(
         // TODO: remove the with () {} - make a page v3 that doesn't use this
         // Or only do if can't find state\s*\. anywhere hm
         `
+          var names = [
+            'state',
+            'event',
+            'block',
+            'builder',
+            'Device',
+            'update',
+          ];
           var rootState = state;
           if (typeof Proxy !== 'undefined') {
             rootState = new Proxy(rootState, {
               set: function () {
                 return false;
+              },
+              get: function (target, key) {
+                if (names.includes(key)) {
+                  return undefined;
+                }
+                return target[key];
               }
             });
           }

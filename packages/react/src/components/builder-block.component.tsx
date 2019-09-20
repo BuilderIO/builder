@@ -5,7 +5,6 @@ import { BuilderStoreContext } from '../store/builder-store'
 import { BuilderAsyncRequestsContext, RequestOrPromise } from '../store/builder-async-requests'
 import { stringToFunction, api } from '../functions/string-to-function'
 import { set } from '../functions/set'
-import onChange from 'lib/on-change.js'
 
 const camelCaseToKebabCase = (str?: string) =>
   str ? str.replace(/([A-Z])/g, g => `-${g[0].toLowerCase()}`) : ''
@@ -327,12 +326,16 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
       for (const key in block.actions) {
         const value = block.actions[key]
         options['on' + capitalize(key)] = (event: any) => {
-          const state = onChange(this.privateState.state, (path: string, value: any) => {
-            // TODO: handle referencing back state.somethingItem in array
-            // back to the original....
-            set(this.privateState.rootState, path, value)
-            this.privateState.update()
-          })
+          let state = this.privateState.state;
+          if (typeof Proxy !== 'undefined') {
+            state = new Proxy(state, {
+              set: (obj, prop, value) => {
+                obj[prop] = value
+                this.privateState.rootState[prop] = value
+                return true;
+              }
+            })
+          }
           const fn = this.stringToFunction(value, false)
           // TODO: only one root instance of this, don't rewrap every time...
           return fn(state, event, undefined, api(state), Device, this.privateState.update)

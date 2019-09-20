@@ -155,6 +155,12 @@ const tryEval = (str?: string, data: any = {}, errors?: Error[]): any => {
           rootState = new Proxy(rootState, {
             set: function () {
               return false;
+            },
+            get: function (target, key) {
+              if (key === 'state') {
+                return state;
+              }
+              return target[key]
             }
           });
         }
