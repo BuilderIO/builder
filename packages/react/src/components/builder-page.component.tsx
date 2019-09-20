@@ -516,7 +516,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     if (data.customFonts && Array.isArray(data.customFonts)) {
       for (const font of data.customFonts) {
         const url = font.fileUrl ? font.fileUrl : font.files && font.files.regular
-        if (!document.querySelector(`style.builder-custom-font[data-builer-custom-font="${url}"]`)) {
+        if (!document.querySelector(`.builder-custom-font[data-builder-custom-font="${url}"]`)) {
           const style = document.createElement('style');
           style.className = 'builder-custom-font'
           style.setAttribute('data-builder-custom-font', url)
