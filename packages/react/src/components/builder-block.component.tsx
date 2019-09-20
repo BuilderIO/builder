@@ -242,6 +242,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
       if (block.bindings) {
         for (const key in block.bindings) {
           if (key.startsWith('animations.')) {
+            // TODO: this needs to run in getElement bc of local state per element for repeats
             const value = this.stringToFunction(block.bindings[key])
             if (value !== undefined) {
               set(options, key, value(this.privateState.state, null, block, builder, null, null, Builder))
