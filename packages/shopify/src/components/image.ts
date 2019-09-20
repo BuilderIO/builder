@@ -4,15 +4,36 @@ import { style } from '../functions/style';
 import { Options } from '../interfaces/options';
 import { component } from '../constants/components';
 
+function updateQueryParam(uri = '', key: string, value: string) {
+  const re = new RegExp('([?&])' + key + '=.*?(&|$)', 'i');
+  const separator = uri.indexOf('?') !== -1 ? '&' : '?';
+  if (uri.match(re)) {
+    return uri.replace(re, '$1' + key + '=' + encodeURIComponent(value) + '$2');
+  }
+
+  return uri + separator + key + '=' + encodeURIComponent(value);
+}
+
 export const Image = component({
   name: 'Image',
   component: (block: BuilderElement, renderOptions: Options) => {
     const { options } = block.component!;
-    const { aspectRatio, backgroundSize, backgroundPosition } = options;
+    const { aspectRatio, backgroundSize, backgroundPosition, srcset, sizes, image } = options;
+    const widths = [100, 200, 400, 800, 1200, 1600, 2000];
 
+    const srcSet =
+      srcset ||
+      widths
+        .map(size => `${updateQueryParam(image, 'width', String(size))} ${size}w`)
+        .concat([image])
+        .join(', ');
+
+    // TODO: attribute({}) helper to trim out undefined etc
     return `
     <img
       src="${options.image || ''}"
+      srcset="${srcSet}
+      ${sizes ? `sizes="${sizes}"` : ''}
       style="${style({
         objectFit: backgroundSize || 'cover',
         objectPosition: backgroundPosition || 'center',

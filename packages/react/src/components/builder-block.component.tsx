@@ -499,7 +499,8 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
             ...state.state,
             $index: index,
             $item: data,
-            [itemName]: data
+            [itemName]: data,
+            [`$${itemName}Index`]: index,
           }
 
           return (
