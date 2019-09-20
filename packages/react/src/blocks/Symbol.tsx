@@ -1,7 +1,7 @@
 import React from 'react'
 import { BuilderPage } from '../components/builder-page.component'
 import { BuilderBlock } from '../decorators/builder-block.decorator'
-import { Builder, builder } from '@builder.io/sdk'
+import { Builder, builder, BuilderElement } from '@builder.io/sdk'
 import hash from 'hash-sum'
 
 const size = (thing: object) => Object.keys(thing).length
@@ -16,6 +16,7 @@ export interface SymbolInfo {
 
 export interface SymbolProps {
   symbol?: SymbolInfo
+  builderBlock?: BuilderElement
 }
 
 @BuilderBlock({
@@ -68,6 +69,7 @@ export class Symbol extends React.Component<SymbolProps> {
           inlineContent={symbol.inline}
           content={content}
           options={{ key }}
+          builderBlock={this.props.builderBlock}
         >
           {/* TODO: builder blocks option for loading stuff */}
           {this.props.children}
