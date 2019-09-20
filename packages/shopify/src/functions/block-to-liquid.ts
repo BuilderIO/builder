@@ -12,6 +12,7 @@ import '../components/columns';
 import '../components/image';
 import '../components/section';
 import '../components/button';
+import '../components/symbol';
 import '../components/custom-code';
 import '../components/forms/form';
 import '../components/forms/input';
@@ -24,7 +25,7 @@ const camelCaseToSnakeCase = (str?: string) =>
 
 const escaleHtml = (str: string) => str.replace(/'/g, '&apos;').replace(/"/g, '&quot;');
 
-// TODO: move most or all of this to transformers
+// TODO: move most or all of this to transformers and functions
 const convertBinding = (binding: string, options: Options) => {
   let value = binding;
 
