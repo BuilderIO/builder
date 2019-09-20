@@ -1,5 +1,5 @@
 import React from 'react'
-import { Builder, Component, BuilderElement } from '@builder.io/sdk'
+import { Builder, Component, BuilderElement, builder } from '@builder.io/sdk'
 import { sizeNames, Size, sizes } from '../constants/device-sizes.constant'
 import { BuilderStoreContext } from '../store/builder-store'
 import { BuilderAsyncRequestsContext, RequestOrPromise } from '../store/builder-async-requests'
@@ -244,7 +244,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
           if (key.startsWith('animations.')) {
             const value = this.stringToFunction(block.bindings[key])
             if (value !== undefined) {
-              set(options, key, value(this.privateState.state))
+              set(options, key, value(this.privateState.state, null, block, builder, null, null, Builder))
             }
           }
         }
@@ -310,7 +310,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
       for (const key in block.bindings) {
         const value = this.stringToFunction(block.bindings[key])
         // TODO: pass block, etc
-        set(options, key, value(state, null, block, api(state), Device))
+        set(options, key, value(state, null, block, api(state), Device, null, Builder))
       }
     }
 
@@ -326,19 +326,19 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
       for (const key in block.actions) {
         const value = block.actions[key]
         options['on' + capitalize(key)] = (event: any) => {
-          let state = this.privateState.state;
+          let state = this.privateState.state
           if (typeof Proxy !== 'undefined') {
             state = new Proxy(state, {
               set: (obj, prop, value) => {
                 obj[prop] = value
                 this.privateState.rootState[prop] = value
-                return true;
+                return true
               }
             })
           }
           const fn = this.stringToFunction(value, false)
           // TODO: only one root instance of this, don't rewrap every time...
-          return fn(state, event, undefined, api(state), Device, this.privateState.update)
+          return fn(state, event, undefined, api(state), Device, this.privateState.update, Builder)
         }
       }
     }
@@ -500,7 +500,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
             $index: index,
             $item: data,
             [itemName]: data,
-            [`$${itemName}Index`]: index,
+            [`$${itemName}Index`]: index
           }
 
           return (

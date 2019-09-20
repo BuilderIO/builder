@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { BuilderContent } from './builder-content.component'
 import { BuilderBlocks } from './builder-blocks.component'
-import { Builder, GetContentOptions, builder, Subscription, BehaviorSubject } from '@builder.io/sdk'
+import { Builder, GetContentOptions, builder, Subscription, BehaviorSubject, BuilderElement } from '@builder.io/sdk'
 import { BuilderStoreContext } from '../store/builder-store'
 import hash from 'hash-sum'
 import onChange from 'lib/on-change.js'
@@ -126,6 +126,7 @@ export interface BuilderPageProps {
   noAsync?: boolean
   emailMode?: boolean
   inlineContent?: boolean
+  builderBlock?: BuilderElement
 }
 
 interface BuilderPageState {

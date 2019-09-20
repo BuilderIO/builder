@@ -81,6 +81,7 @@ export function stringToFunction(
         'builder',
         'Device',
         'update',
+        'Builder',
         // TODO: remove the with () {} - make a page v3 that doesn't use this
         // Or only do if can't find state\s*\. anywhere hm
         `
@@ -91,6 +92,7 @@ export function stringToFunction(
             'builder',
             'Device',
             'update',
+            'Builder'
           ];
           var rootState = state;
           if (typeof Proxy !== 'undefined') {
