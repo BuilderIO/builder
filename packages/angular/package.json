@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/angular",
-  "version": "1.0.65-alpha.0",
+  "version": "1.0.65-alpha.1",
   "main": "dist/bundles/builder.io-angular.umd.js",
   "module": "dist/fesm5/builder.io-angular.js",
   "es2015": "dist/fesm2015/builder.io-angular.js",
@@ -42,9 +42,9 @@
     "@angular/elements": "^8.1.1",
     "@angular/http": ">= 2",
     "@angular/router": ">= 2",
-    "@builder.io/react": "^1.0.90-alpha.0",
+    "@builder.io/react": "^1.0.90-alpha.1",
     "@builder.io/sdk": "^1.0.46",
-    "@builder.io/widgets": "^1.0.89-alpha.0",
+    "@builder.io/widgets": "^1.0.89-alpha.1",
     "rxjs": ">= 2",
     "zone.js": "*"
   },
