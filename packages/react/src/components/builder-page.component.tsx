@@ -26,6 +26,8 @@ import { debounceNextTick } from '../functions/debonce-next-tick'
 
 const size = (thing: object) => Object.keys(thing).length
 
+const fontsLoaded = new Set()
+
 export function throttle(func: Function, wait: number, options: any = {}) {
   let context: any
   let args: any
@@ -516,12 +518,13 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     if (data.customFonts && Array.isArray(data.customFonts)) {
       for (const font of data.customFonts) {
         const url = font.fileUrl ? font.fileUrl : font.files && font.files.regular
-        if (!document.querySelector(`.builder-custom-font[data-builder-custom-font="${url}"]`)) {
+        if (!fontsLoaded.has(url)) {
           const style = document.createElement('style');
           style.className = 'builder-custom-font'
           style.setAttribute('data-builder-custom-font', url)
           style.innerHTML = this.getCssFromFont(font)
           document.head.appendChild(style)
+          fontsLoaded.add(url)
         }
       }
     }
