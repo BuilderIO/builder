@@ -319,6 +319,21 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
         }
         break
       }
+      case 'builder.resetSymbolState': {
+        const { state, model, id } = info.data.state
+        if (this.props.builderBlock && this.props.builderBlock === id) {
+          for (const key in this.rootState) {
+            delete this.rootState[key]
+          }
+          Object.assign(this.rootState, state)
+          this.setState({
+            ...this.state,
+            state: this.rootState,
+            updates: (this.state && this.state.updates || 0) + 1,
+          })
+        }
+        break
+      }
     }
   }
 
