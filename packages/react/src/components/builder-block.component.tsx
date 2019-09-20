@@ -326,9 +326,9 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
       for (const key in block.actions) {
         const value = block.actions[key]
         options['on' + capitalize(key)] = (event: any) => {
-          let state = this.privateState.state
+          let useState = state
           if (typeof Proxy !== 'undefined') {
-            state = new Proxy(state, {
+            useState = new Proxy(state, {
               set: (obj, prop, value) => {
                 obj[prop] = value
                 this.privateState.rootState[prop] = value
@@ -338,7 +338,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
           }
           const fn = this.stringToFunction(value, false)
           // TODO: only one root instance of this, don't rewrap every time...
-          return fn(state, event, undefined, api(state), Device, this.privateState.update, Builder)
+          return fn(useState, event, undefined, api(useState), Device, this.privateState.update, Builder)
         }
       }
     }
