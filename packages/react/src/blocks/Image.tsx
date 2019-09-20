@@ -193,9 +193,6 @@ export class Image extends React.Component<any> {
     }
 
     return (
-      // TODO: swap-in amp components hm
-      // These styles may be bad... may need to remove this wrapper entirely hmm
-      // <div style={{ position: 'relative', fontSize: 0 }}>
       <BuilderMetaContext.Consumer>
         {value => {
           const amp = value.ampMode
