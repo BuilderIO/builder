@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/widgets",
-  "version": "1.0.88-alpha.0",
+  "version": "1.0.88-alpha.1",
   "description": "",
   "keywords": [],
   "main": "dist/builder-widgets.cjs.js",
@@ -136,7 +136,7 @@
     "prop-types": "^15.7.2"
   },
   "dependencies": {
-    "@builder.io/react": "^1.0.89-alpha.0",
+    "@builder.io/react": "^1.0.89-alpha.1",
     "react": ">=14",
     "react-dom": ">=14",
     "react-masonry-component": "^6.2.1",
