@@ -62,6 +62,15 @@ function transform(context: ts.TransformationContext) {
         break;
       }
 
+      if (ts.isCallExpression(node)) {
+        const normalizeExpressionText = (text: string) => text.replace(/\(\)\s/g, '')
+        // Match it by name
+        if (normalizeExpressionText(node.expression.getText()) === 'price') {
+          // Replace with price access expression
+          // TODO: namespace shopify.getProductPrice() etc
+        }
+      }
+
       // Convert `undefined` to `''`
       if (ts.isIdentifier(node) && node.text === 'undefined') {
         node = ts.setTextRange(ts.createStringLiteral(''), node);

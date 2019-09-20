@@ -30,6 +30,7 @@ const convertBinding = (binding: string, options: Options) => {
   let value = binding;
 
   if (options.convertShopifyBindings !== false) {
+    // TODO: causing issue sdoing this here,need to do in TS transforms or after ts transform
     if (value.match(/images\[\d+\]\.src/)) {
       value = value.replace(/(images\[\d+\])\.src/g, "$1 | img_url: 'master'");
     }
