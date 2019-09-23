@@ -4,6 +4,7 @@ import { Builder } from '@builder.io/sdk'
 
 @BuilderBlock({
   name: 'Embed',
+  static: true,
   inputs: [
     {
       name: 'url',

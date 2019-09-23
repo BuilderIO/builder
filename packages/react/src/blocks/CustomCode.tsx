@@ -9,6 +9,7 @@ interface Props {
 
 @BuilderBlock({
   name: 'Custom Code',
+  static: true,
   inputs: [
     {
       name: 'code',

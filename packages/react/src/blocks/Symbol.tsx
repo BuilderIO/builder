@@ -26,6 +26,7 @@ export interface SymbolProps {
   // Builder:Symbol
   name: 'Symbol',
   noWrap: true,
+  static: true,
   // TODO: allow getter for icon so different icon if data symbol hm,
   // Maybe "this" context is the block element in editor, and it's the
   // builderBlock json otherwise. In BuilderBlock decorator find any getters

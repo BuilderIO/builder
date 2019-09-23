@@ -80,6 +80,7 @@ export interface FormInputProps {
   //   } as any,
   // }),
   noWrap: true,
+  static: true,
   defaultStyles: {
     paddingTop: '10px',
     paddingBottom: '10px',

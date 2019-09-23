@@ -49,6 +49,7 @@ export interface FormTextAreaProps {
     borderStyle: 'solid',
     borderColor: '#ccc'
   },
+  static: true,
   noWrap: true
 })
 export class TextArea extends React.Component<FormTextAreaProps> {

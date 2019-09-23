@@ -62,6 +62,7 @@ export interface FormSelectProps {
       defaultValue: false
     }
   ],
+  static: true,
   noWrap: true
 })
 export class FormSelect extends React.Component<FormSelectProps> {

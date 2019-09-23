@@ -30,6 +30,7 @@ export interface ButtonProps {
       defaultValue: 'Click me'
     }
   ],
+  static: true,
   noWrap: true
   // TODO: optional children? maybe as optional form input
   // that only shows if advanced setting is flipped

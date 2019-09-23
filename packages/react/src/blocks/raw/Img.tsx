@@ -22,7 +22,8 @@ export interface ImgProps {
       required: true
     }
   ],
-  noWrap: true
+  noWrap: true,
+  static: true
 })
 export class Img extends React.Component<ImgProps> {
   render() {

@@ -28,6 +28,7 @@ export interface LabelProps {
     }
   ],
   noWrap: true,
+  static: true,
   canHaveChildren: true
   // TODO: take inner html or blocsk
   // TODO: optional children? maybe as optional form input

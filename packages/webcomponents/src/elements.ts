@@ -18,6 +18,11 @@ function onReady(cb: Function) {
 }
 
 if (Builder.isBrowser && !customElements.get('builder-component')) {
+  ;(window as any).BuilderWC = {
+    Builder,
+    builder
+  }
+
   const inject = () => {
     const selector = '.builder-component-wrap.builder-to-embed'
     const matches = document.querySelectorAll(selector)

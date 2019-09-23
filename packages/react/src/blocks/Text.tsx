@@ -11,6 +11,7 @@ export interface TextProps {
 
 @BuilderBlock({
   name: 'Text',
+  static: true,
   image: iconUrl,
   inputs: [
     {

@@ -61,6 +61,7 @@ const defaultBlocks /*: BuilderElement[] */ = [
 
 @BuilderBlock({
   name: 'Columns',
+  static: true,
   inputs: [
     {
       name: 'columns',

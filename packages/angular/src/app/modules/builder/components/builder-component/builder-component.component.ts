@@ -5,11 +5,15 @@ import {
   EventEmitter,
   ChangeDetectionStrategy,
   Optional,
+  OnDestroy,
+  ViewContainerRef,
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { parse } from 'url';
 import { BuilderComponentService } from './builder-component.service';
-import { GetContentOptions } from '@builder.io/sdk';
+import { GetContentOptions, Builder } from '@builder.io/sdk';
+import { Subscription } from 'rxjs';
+import { BuilderService } from '../../services/builder.service';
 
 function delay<T = any>(duration: number, resolveValue?: T) {
   return new Promise<T>(resolve => setTimeout(() => resolve(resolveValue), duration));
@@ -44,7 +48,7 @@ export interface RouteEvent {
   providers: [BuilderComponentService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BuilderComponentComponent {
+export class BuilderComponentComponent implements OnDestroy {
   @Input() model: string | undefined /* THIS IS ACTUALLY REQUIRED */;
 
   @Input() set name(name: string | undefined) {
@@ -60,14 +64,62 @@ export class BuilderComponentComponent {
   @Input() content: any = null;
   @Input() options: GetContentOptions | null = null;
 
-  @Input() data: any = {}
+  @Input() data: any = {};
   @Input() hydrate = true;
 
-  constructor(@Optional() private router?: Router) {
+  subscriptions = new Subscription();
+
+  constructor(
+    private viewContainer: ViewContainerRef,
+    private builderService: BuilderService,
+    @Optional() private router?: Router,
+  ) {
     // if (this.router && this.reloadOnRoute) {
     //   // TODO: should the inner function return reloadOnRoute?
     //   this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     // }
+
+    if (Builder.isBrowser) {
+      this.subscriptions.add(
+        this.load.subscribe(async (value: any) => {
+          if (value && value.data && value.data.needsHydration && this.hydrate !== false) {
+            this.viewContainer.detach();
+            // TODO: load webcompoennts JS if not already
+            // Forward user attributes and API key to WC Builder
+            // (and listen on changes to attributes to edit)
+            await this.ensureWCScriptLoaded()
+            const { BuilderWC } = window as any;
+            if (BuilderWC) {
+              BuilderWC.builder.apiKey = this.builderService.apiKey;
+              BuilderWC.builder.setUserAttributes(this.builderService.getUserAttributes());
+            }
+          }
+        })
+      );
+    }
+  }
+
+  async ensureWCScriptLoaded() {
+    if (!Builder.isBrowser) {
+      return;
+    }
+    const SCRIPT_ID = 'builder-wc-script';
+    if (document.getElementById(SCRIPT_ID)) {
+      return;
+    }
+    const script = document.createElement('script');
+    script.id = SCRIPT_ID;
+    script.src = 'https://cdn.builder.io/js/webcomponents';
+    script.async = true;
+    return new Promise((resolve, reject) => {
+      script.addEventListener('load', resolve)
+      script.addEventListener('error', e => reject(e.error))
+      document.head.appendChild(script)
+    })
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 
   // TODO: this should be in BuilderBlocks

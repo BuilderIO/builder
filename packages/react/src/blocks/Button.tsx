@@ -1,11 +1,11 @@
-import React from 'react';
-import { BuilderBlock } from '../decorators/builder-block.decorator';
+import React from 'react'
+import { BuilderBlock } from '../decorators/builder-block.decorator'
 
 export interface ButtonProps {
-  attributes?: any;
-  text?: string;
-  link?: string;
-  openLinkInNewTab?: boolean;
+  attributes?: any
+  text?: string
+  link?: string
+  openLinkInNewTab?: boolean
 }
 
 @BuilderBlock({
@@ -23,19 +23,19 @@ export interface ButtonProps {
     color: 'white',
     borderRadius: '4px',
     textAlign: 'center',
-    cursor: 'pointer',
+    cursor: 'pointer'
   },
   inputs: [
     {
       name: 'text',
       type: 'text',
-      defaultValue: 'Click me!',
+      defaultValue: 'Click me!'
     },
     {
       // TODO: custom link form editor to link to other pages, scroll to
       // etc
       name: 'link',
-      type: 'url',
+      type: 'url'
     },
     {
       // TODO: custom link form editor to link to other pages, scroll to
@@ -43,19 +43,17 @@ export interface ButtonProps {
       name: 'openLinkInNewTab',
       type: 'boolean',
       defaultValue: false,
-      friendlyName: 'Open link in new tab',
-    },
+      friendlyName: 'Open link in new tab'
+    }
   ],
-  ...({
-    noWrap: true,
-    // defaultChildren: [] as BuilderElement[],
-  } as any),
+  static: true,
+  noWrap: true
   // TODO: defaultChildren
   // canHaveChildren: true,
 })
 export class Button extends React.Component<ButtonProps> {
   render() {
-    const Tag = this.props.link ? 'a' : 'span';
+    const Tag = this.props.link ? 'a' : 'span'
     return (
       <Tag
         href={this.props.link}
@@ -64,6 +62,6 @@ export class Button extends React.Component<ButtonProps> {
       >
         {this.props.text}
       </Tag>
-    );
+    )
   }
 }

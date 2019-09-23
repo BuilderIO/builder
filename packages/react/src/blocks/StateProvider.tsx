@@ -15,6 +15,7 @@ interface StateProviderProps {
   name: 'Builder:StateProvider',
   // TODO: default children
   canHaveChildren: true,
+  static: true,
   hideFromInsertMenu: true
   // TODO: list inputs?
 })

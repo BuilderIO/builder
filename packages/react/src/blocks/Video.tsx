@@ -6,6 +6,7 @@ const DEFAULT_ASPECT_RATIO = 0.7004048582995948
 
 @BuilderBlock({
   name: 'Video',
+  static: true,
   image:
     'https://firebasestorage.googleapis.com/v0/b/builder-3b0a2.appspot.com/o/images%2Fbaseline-videocam-24px%20(1).svg?alt=media&token=49a84e4a-b20e-4977-a650-047f986874bb',
   inputs: [

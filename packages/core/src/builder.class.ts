@@ -213,6 +213,7 @@ export interface Component {
   hideFromInsertMenu?: boolean;
   // For webcomponents
   tag?: string;
+  static?: boolean
 }
 
 export function BuilderComponent(info: Partial<Component> = {}) {
