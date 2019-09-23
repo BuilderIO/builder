@@ -45,7 +45,7 @@ async function main() {
           }
         };
       }
-      System.import('https://cdn.builder.io/js/webcomponents/dist/system/builder-webcomponents-async' + (useLite ? '.lite.js' : '.js') + @' + version + '/dist/system/builder-webcomponents.js')
+      System.import('https://cdn.builder.io/js/webcomponents/dist/system/' + (useLite ? 'lite/' : '') + 'builder-webcomponents-async.js@' + version + '/dist/system/builder-webcomponents.js')
     `.replace(/\s+/g, ' ')
     ].join(';') +
     `}`

@@ -88,6 +88,6 @@ export default [
   {
     ...options,
     input: `src/${libraryName}-lite.ts`,
-    output: [{ file: pkg.module.replace(/\.js$/, '.lite.js'), format: 'es', sourcemap: true }],
+    output: [{ dir: './dist/system/lite', format: 'system', sourcemap: true }],
   }
 ]
