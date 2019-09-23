@@ -1,5 +1,6 @@
 import React from 'react'
 import { builder, Subscription, GetContentOptions, Builder } from '@builder.io/sdk'
+import { NoWrap } from './no-wrap'
 
 export interface BuilderContentProps<ContentType> {
   contentLoaded?: (content: ContentType) => void
@@ -8,6 +9,7 @@ export interface BuilderContentProps<ContentType> {
   options?: GetContentOptions
   children: (content: ContentType, loading?: boolean, fullData?: any) => React.ReactNode
   inline?: boolean
+  dataOnly?: boolean
 }
 
 export class BuilderContent<ContentType extends object = any> extends React.Component<
@@ -121,6 +123,9 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
   }
 
   render() {
+    if (this.props.dataOnly) {
+      return null
+    }
     const { data, loading } = this.state
 
     // TODO: why is this server only? any time there is initial content
@@ -133,16 +138,20 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
           this.props.options.initialContent[0])) ||
       data
 
+    const TagName = this.props.dataOnly ? NoWrap : 'div'
+
     return (
-      <div
-        ref={ref => (this.ref = ref)}
+      <TagName
+        {...!this.props.dataOnly && {
+          ref: ref => (this.ref = ref)
+        }}
         className="builder-content"
         onClick={this.onClick}
         builder-content-id={useData && useData.id}
         builder-model={this.props.modelName}
       >
         {this.props.children(useData && useData.data, loading, useData)}
-      </div>
+      </TagName>
     )
   }
 }

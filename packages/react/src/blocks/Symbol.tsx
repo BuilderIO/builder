@@ -3,6 +3,7 @@ import { BuilderPage } from '../components/builder-page.component'
 import { BuilderBlock } from '../decorators/builder-block.decorator'
 import { Builder, builder, BuilderElement } from '@builder.io/sdk'
 import hash from 'hash-sum'
+import { NoWrap } from 'src/components/no-wrap'
 
 const size = (thing: object) => Object.keys(thing).length
 
@@ -16,16 +17,30 @@ export interface SymbolInfo {
 
 export interface SymbolProps {
   symbol?: SymbolInfo
+  dataOnly?: boolean
   builderBlock?: BuilderElement
+  attributes?: any
 }
 
 @BuilderBlock({
   // Builder:Symbol
   name: 'Symbol',
+  noWrap: true,
+  // TODO: allow getter for icon so different icon if data symbol hm,
+  // Maybe "this" context is the block element in editor, and it's the
+  // builderBlock json otherwise. In BuilderBlock decorator find any getters
+  // and convert to strings when passing and convert back to getters after
+  // with `this` bound
   inputs: [
     {
       name: 'symbol',
       type: 'uiSymbol'
+    },
+    {
+      name: 'dataOnly',
+      helperText: `Make this a data symbol that doesn't display any UI`,
+      type: 'boolean',
+      defaultValue: false
     }
   ]
 })
@@ -46,6 +61,10 @@ export class Symbol extends React.Component<SymbolProps> {
       return this.placeholder
     }
 
+    const TagName = this.props.dataOnly
+      ? NoWrap
+      : (this.props.builderBlock && this.props.builderBlock.tagName) || 'div'
+
     const { model, entry, data, content, inline } = symbol
     if (!model && !inline) {
       return this.placeholder
@@ -56,10 +75,17 @@ export class Symbol extends React.Component<SymbolProps> {
     if (key && dataString && dataString.length < 300) {
       key += ':' + dataString
     }
+
+    const attributes = this.props.attributes || {}
     return (
-      <div
-        className={'builder-symbol' + (symbol.inline ? ' builder-inline-symbol' : '')}
+      <TagName
         data-model={model}
+        {...attributes}
+        className={
+          (attributes.class || attributes.className || '') +
+          ' builder-symbol' +
+          (symbol.inline ? ' builder-inline-symbol' : '')
+        }
       >
         <BuilderPage
           key={(model || 'no model') + ':' + (entry || 'no entry')}
@@ -70,11 +96,12 @@ export class Symbol extends React.Component<SymbolProps> {
           content={content}
           options={{ key }}
           builderBlock={this.props.builderBlock}
+          dataOnly={this.props.dataOnly}
         >
           {/* TODO: builder blocks option for loading stuff */}
           {this.props.children}
         </BuilderPage>
-      </div>
+      </TagName>
     )
   }
 }

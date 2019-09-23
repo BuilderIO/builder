@@ -135,7 +135,8 @@ export interface BuilderPageProps {
   noAsync?: boolean
   emailMode?: boolean
   inlineContent?: boolean
-  builderBlock?: BuilderElement
+  builderBlock?: BuilderElement,
+  dataOnly?: boolean
 }
 
 interface BuilderPageState {
@@ -587,9 +588,11 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
       key += ':' + dataString
     }
 
+    const WrapComponent = this.props.dataOnly ? React.Fragment : 'div'
+
     return (
       // TODO: data attributes for model, id, etc?
-      <div className="builder-component" data-name={this.name} ref={ref => (this.ref = ref)}>
+      <WrapComponent className="builder-component" data-name={this.name} ref={ref => (this.ref = ref)}>
         <BuilderAsyncRequestsContext.Consumer>
           {value => {
             this._asyncRequests = value && value.requests
@@ -604,17 +607,6 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
                   state: this.data
                 }}
               >
-                {/* Global styles */}
-                {/* {Builder.isBrowser && (
-                <style>
-                  {`
-                  .builder-block {
-                    transition: all 0.2s ease-in-out;
-                  }
-                `}
-                </style>
-              )} */}
-
                 {/* TODO: never use this? */}
                 <BuilderContent
                   inline={this.props.inlineContent}
@@ -630,6 +622,9 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
                   modelName={this.name || 'page'}
                 >
                   {(data, loading, fullData) => {
+                    if (this.props.dataOnly) {
+                      return null;
+                    }
                     // TODO: loading option - maybe that is what the children is or component prop
                     return data ? (
                       <div
@@ -662,7 +657,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
             )
           }}
         </BuilderAsyncRequestsContext.Consumer>
-      </div>
+      </WrapComponent>
     )
   }
 

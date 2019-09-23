@@ -1,4 +1,4 @@
-import { BuilderBlock, BuilderBlocks } from '@builder.io/react'
+import { BuilderBlock, BuilderBlocks, Builder } from '@builder.io/react'
 import React from 'react'
 import { Block } from './Block'
 import { getStyles } from '../functions/get-styles'
@@ -153,6 +153,12 @@ export class Image extends React.Component<ImageProps> {
     return (
       <Block attributes={this.props.attributes} builderBlock={this.props.builderBlock}>
         <img
+          key={
+            Builder.isEditing
+              ? (typeof this.props.image === 'string' && this.props.image.split('?')[0]) ||
+                undefined
+              : undefined
+          }
           alt={this.props.altText}
           height={this.props.height}
           width={this.props.width}

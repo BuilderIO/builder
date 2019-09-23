@@ -427,6 +427,8 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
               <InnerComponent
                 // Final options maaay be wrong here hm
                 {...innerComponentProperties}
+                // should really call this builderAttributes bc people can name a
+                // componet input "attributes"
                 attributes={finalOptions}
                 builderBlock={block}
               />

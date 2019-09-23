@@ -212,7 +212,12 @@ export class Image extends React.Component<any> {
                     }
                   : null)}
                 alt={this.props.altText}
-                key={Builder.isEditing ? this.props.image : undefined}
+                key={
+                  Builder.isEditing
+                    ? (typeof this.props.image === 'string' && this.props.image.split('?')[0]) ||
+                      undefined
+                    : undefined
+                }
                 // height={
                 //   this.props.height || (aspectRatio ? Math.round(aspectRatio * 1000) : undefined)
                 // }
