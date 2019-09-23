@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/angular",
-  "version": "1.0.65-alpha.6",
+  "version": "1.0.65-alpha.7",
   "main": "dist/bundles/builder.io-angular.umd.js",
   "module": "dist/fesm5/builder.io-angular.js",
   "es2015": "dist/fesm2015/builder.io-angular.js",
@@ -26,7 +26,7 @@
     "release": "npm run package && cd dist && npm publish",
     "release:patch": "npm run package && npm version patch && cd dist && npm version patch && npm publish",
     "release:minor": "npm run package && npm version minor && cd dist && npm version minor && npm publish",
-    "release:prerelease:nightly": "npm run package && npm version prerelease && cd dist && npm version prerelease && npm publish --tag nightly",
+    "release:dev": "npm run package && npm version prerelease && cd dist && npm version prerelease && npm publish --tag dev",
     "build:ssr": "npm run build:client-and-server-bundles && npm run webpack:server",
     "serve:ssr": "node dist/server.js",
     "build:client-and-server-bundles": "ng build --prod && ng build --prod --app 1 --output-hashing=false",
@@ -42,9 +42,7 @@
     "@angular/elements": "^8.1.1",
     "@angular/http": ">= 2",
     "@angular/router": ">= 2",
-    "@builder.io/react": "^1.0.90-alpha.6",
     "@builder.io/sdk": "^1.0.47-alpha.0",
-    "@builder.io/widgets": "^1.0.89-alpha.6",
     "rxjs": ">= 2",
     "zone.js": "*"
   },

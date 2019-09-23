@@ -72,7 +72,7 @@ export class BuilderComponentComponent implements OnDestroy {
   constructor(
     private viewContainer: ViewContainerRef,
     private builderService: BuilderService,
-    @Optional() private router?: Router,
+    @Optional() private router?: Router
   ) {
     // if (this.router && this.reloadOnRoute) {
     //   // TODO: should the inner function return reloadOnRoute?
@@ -82,16 +82,28 @@ export class BuilderComponentComponent implements OnDestroy {
     if (Builder.isBrowser) {
       this.subscriptions.add(
         this.load.subscribe(async (value: any) => {
+          console.debug('load', value);
+          // Maybe move into builder contnet directive
           if (value && value.data && value.data.needsHydration && this.hydrate !== false) {
             this.viewContainer.detach();
             // TODO: load webcompoennts JS if not already
             // Forward user attributes and API key to WC Builder
             // (and listen on changes to attributes to edit)
-            await this.ensureWCScriptLoaded()
-            const { BuilderWC } = window as any;
+            await this.ensureWCScriptLoaded();
+            let { BuilderWC } = window as any;
             if (BuilderWC) {
               BuilderWC.builder.apiKey = this.builderService.apiKey;
+              // TODO: subcribe to user attributes change and upate
               BuilderWC.builder.setUserAttributes(this.builderService.getUserAttributes());
+            } else {
+              const { onBuilderWcLoad } = window as any;
+              if (onBuilderWcLoad) {
+                onBuilderWcLoad((BuilderWC: any) => {
+                  BuilderWC.builder.apiKey = this.builderService.apiKey;
+                  // TODO: subcribe to user attributes change and upate
+                  BuilderWC.builder.setUserAttributes(this.builderService.getUserAttributes());
+                })
+              }
             }
           }
         })
@@ -112,10 +124,10 @@ export class BuilderComponentComponent implements OnDestroy {
     script.src = 'https://cdn.builder.io/js/webcomponents';
     script.async = true;
     return new Promise((resolve, reject) => {
-      script.addEventListener('load', resolve)
-      script.addEventListener('error', e => reject(e.error))
-      document.head.appendChild(script)
-    })
+      script.addEventListener('load', resolve);
+      script.addEventListener('error', e => reject(e.error));
+      document.head.appendChild(script);
+    });
   }
 
   ngOnDestroy() {

@@ -20,10 +20,12 @@ const options = {
   watch: {
     include: 'src/**'
   },
+  experimentalCodeSplitting: true,
+  experimentalDynamicImport: true,
   plugins: [
     // Allow json resolution
     replace({
-      'process.env.NODE_ENV': JSON.stringify('production'),
+      'process.env.NODE_ENV': JSON.stringify('production')
       // 'React.createContext': `require('preact-context').createContext`
     }),
     json(),
@@ -46,7 +48,9 @@ const options = {
       //   // 'preact-compat': ['h', 'Component'],
       //   // [path.resolve('./node_modules/preact-compat/dist/preact-compat.es.js')]: ['h', 'Component']
       // }
-    })
+    }),
+    uglify(),
+    sourceMaps()
   ]
 }
 
@@ -63,11 +67,8 @@ export default [
   // },
   {
     ...options,
-    output: [{ dir: './dist/system', format: 'system', sourcemap: true }],
-    experimentalCodeSplitting: true,
-    experimentalDynamicImport: true,
-    plugins: options.plugins.concat([uglify(), sourceMaps()])
-  }
+    output: [{ dir: './dist/system', format: 'system', sourcemap: true }]
+  },
   // {
   //   ...options,
   //   output: [
@@ -83,27 +84,10 @@ export default [
   //   ],
   //   plugins: options.plugins.concat([uglify(), sourceMaps()])
   // },
-  // // Lite - no polyfills
-  // {
-  //   ...options,
-  //   input: `src/${libraryName}-lite.ts`,
-  //   output: [{ file: pkg.module.replace(/\.js$/, '.lite.js'), format: 'es', sourcemap: true }],
-  //   plugins: options.plugins.concat([sourceMaps()])
-  // },
-  // {
-  //   ...options,
-  //   input: `src/${libraryName}-lite.ts`,
-  //   output: [
-  //     {
-  //       file: pkg.main.replace(/\.js$/, '.lite.js'),
-  //       name: 'BuilderWC',
-  //       format: 'umd',
-  //       sourcemap: true,
-  //       amd: {
-  //         id: '@builder.io/webcomponents'
-  //       }
-  //     }
-  //   ],
-  //   plugins: options.plugins.concat([uglify(), sourceMaps()])
-  // }
+  // Lite - no polyfills
+  {
+    ...options,
+    input: `src/${libraryName}-lite.ts`,
+    output: [{ file: pkg.module.replace(/\.js$/, '.lite.js'), format: 'es', sourcemap: true }],
+  }
 ]

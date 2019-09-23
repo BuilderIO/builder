@@ -18,9 +18,33 @@ function onReady(cb: Function) {
 }
 
 if (Builder.isBrowser && !customElements.get('builder-component')) {
-  ;(window as any).BuilderWC = {
+  const BuilderWC = {
     Builder,
     builder
+  }
+  ;(window as any).BuilderWC = BuilderWC
+
+  const { builderWcLoadCallbacks } = window as any
+  if (builderWcLoadCallbacks) {
+    if (typeof builderWcLoadCallbacks === 'function') {
+      try {
+        builderWcLoadCallbacks(BuilderWC)
+      } catch (err) {
+        console.error(err)
+      }
+    } else {
+      try {
+        builderWcLoadCallbacks.forEach((cb: any) => {
+          try {
+            cb(BuilderWC)
+          } catch (err) {
+            console.error(err)
+          }
+        })
+      } catch (err) {
+        console.error(err)
+      }
+    }
   }
 
   const inject = () => {

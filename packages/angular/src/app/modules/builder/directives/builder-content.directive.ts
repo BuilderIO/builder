@@ -17,7 +17,6 @@ import { Builder, Subscription as BuilderSubscription } from '@builder.io/sdk';
 import { BuilderComponentService } from '../components/builder-component/builder-component.service';
 import { Router, NavigationEnd, NavigationStart } from '@angular/router';
 import { Subscription } from 'rxjs';
-const { BuilderComponent } = require('@builder.io/react/dist/preact');
 // TODO: below is optional... they can import if needed
 // import '@builder.io/widgets'
 
@@ -295,49 +294,51 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
               }
               setTimeout(() => {
                 if (hydrate) {
-                  // TODO: two builder SDKs are loading...? external in react right?
-                  const subscription = this.builder
-                    .get(model, {
-                      key: key,
-                      ...options,
-                      prerender: false,
-                    })
-                    .subscribe(
-                      async data => {
-                        viewRef.detach();
-                        // Maaaybe shouldn't be rootnode
-                        BuilderComponent.renderInto(rootNode, {
-                          // Differnt builder SDK instance?? Might be debug/link thing
-                          apiKey: this.builder.apiKey!,
-                          modelName: model,
-                          options: {
-                            entry: data ? data.id : undefined,
-                            initialContent: data ? [data] : undefined,
-                            key: key,
-                          },
-                          data: this.component && this.component.data,
-                        });
+                  // TODO: hydrate with webcomponents... here instead of builder component wrapper?
 
-                        this.hydrated = true;
+                  // // TODO: two builder SDKs are loading...? external in react right?
+                  // const subscription = this.builder
+                  //   .get(model, {
+                  //     key: key,
+                  //     ...options,
+                  //     prerender: false,
+                  //   })
+                  //   .subscribe(
+                  //     async data => {
+                  //       viewRef.detach();
+                  //       // Maaaybe shouldn't be rootnode
+                  //       BuilderComponent.renderInto(rootNode, {
+                  //         // Differnt builder SDK instance?? Might be debug/link thing
+                  //         apiKey: this.builder.apiKey!,
+                  //         modelName: model,
+                  //         options: {
+                  //           entry: data ? data.id : undefined,
+                  //           initialContent: data ? [data] : undefined,
+                  //           key: key,
+                  //         },
+                  //         data: this.component && this.component.data,
+                  //       });
 
-                        subscription.unsubscribe();
+                  //       this.hydrated = true;
 
-                        if (Builder.isEditing) {
-                          setTimeout(() => {
-                            parent.postMessage({ type: 'builder.updateContent' }, '*');
-                            setTimeout(() => {
-                              parent.postMessage(
-                                { type: 'builder.sdkInjected', data: { modelName: name } },
-                                '*'
-                              );
-                            }, 100);
-                          }, 100);
-                        }
-                      },
-                      async (error: any) => {
-                        // TODO
-                      }
-                    );
+                  //       subscription.unsubscribe();
+
+                  //       if (Builder.isEditing) {
+                  //         setTimeout(() => {
+                  //           parent.postMessage({ type: 'builder.updateContent' }, '*');
+                  //           setTimeout(() => {
+                  //             parent.postMessage(
+                  //               { type: 'builder.sdkInjected', data: { modelName: name } },
+                  //               '*'
+                  //             );
+                  //           }, 100);
+                  //         }, 100);
+                  //       }
+                  //     },
+                  //     async (error: any) => {
+                  //       // TODO
+                  //     }
+                  //   );
                 }
               });
             }

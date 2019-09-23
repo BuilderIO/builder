@@ -30,10 +30,25 @@ async function main() {
       var version = typeof location !== 'undefined' && location.href && getQueryParam(location.href, 'builder.wcVersion') ||  "${
         pkg.version
       }";
-      System.import('https://cdn.builder.io/js/webcomponents@' + version + '/dist/system/builder-webcomponents.js')
+      // TODO: make rollup es6 build and use WC es6 if browser supports
+      var useLite = 'CustomElements' in window;
+      if (!window.builderWcLoadCallbacks) {
+        window.builderWcLoadCallbacks = [];
+      }
+      // TODO: maybe use promise
+      if (!window.onBuilderWcLoad) {
+        window.onBuilderWcLoad = function (cb) {
+          if (window.BuilderWC) {
+            cb(BuilderWC)
+          } else {
+            builderWcLoadCallbacks.push(cb)
+          }
+        };
+      }
+      System.import('https://cdn.builder.io/js/webcomponents/dist/system/builder-webcomponents-async' + (useLite ? '.lite.js' : '.js') + @' + version + '/dist/system/builder-webcomponents.js')
     `.replace(/\s+/g, ' ')
     ].join(';') +
-    '}'
+    `}`
 
   // May need to import to initialize: + ';System.import("...")'
   await outputFileAsync('./dist/system/builder-webcomponents-async.js', newFileStr)
