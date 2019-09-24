@@ -18,7 +18,7 @@ import last from 'lodash-es/last'
 const defaultTitle: BuilderElement = {
   '@type': '@builder.io/sdk:Element',
   layerName: 'Accordion item title',
-  responsivecsss: {
+  responsiveStyles: {
     large: {
       marginTop: '10px',
       position: 'relative',
@@ -31,7 +31,7 @@ const defaultTitle: BuilderElement = {
   children: [
     {
       '@type': '@builder.io/sdk:Element',
-      responsivecsss: {
+      responsiveStyles: {
         large: {
           textAlign: 'left',
           display: 'flex',
@@ -51,7 +51,7 @@ const defaultTitle: BuilderElement = {
 const defaultDetail: BuilderElement = {
   '@type': '@builder.io/sdk:Element',
   layerName: 'Accordion item detail',
-  responsivecsss: {
+  responsiveStyles: {
     large: {
       position: 'relative',
       display: 'flex',
@@ -64,7 +64,7 @@ const defaultDetail: BuilderElement = {
   children: [
     {
       '@type': '@builder.io/sdk:Element',
-      responsivecsss: {
+      responsiveStyles: {
         large: {
           paddingTop: '50px',
           textAlign: 'left',
