@@ -234,6 +234,7 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
       const subscription = builder
         .get(name, {
           key:
+            this.getAttribute('key') ||
             (slot ? `slot:${slot}` : null) ||
             (!Builder.isEditing && (this.getAttribute('entry') || name!)) ||
             undefined,
@@ -331,6 +332,7 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
       const subscription = builder
         .get(name!, {
           key:
+            this.getAttribute('key') ||
             (slot ? `slot:${slot}` : null) ||
             (Builder.isEditing ? name! : this.getAttribute('entry') || name!),
           ...this.options,
@@ -366,7 +368,9 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
                   ...this.options,
                   entry: data ? data.id : undefined,
                   initialContent: data ? [data] : undefined,
+                  // TODO: make this a settable property too
                   key:
+                    this.getAttribute('key') ||
                     (slot ? `slot:${slot}` : null) ||
                     (Builder.isEditing ? name! : (data && data.id) || undefined)
                 }
@@ -408,6 +412,7 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
                     entry: data ? data.id : undefined,
                     initialContent: data ? [data] : undefined,
                     key:
+                      this.getAttribute('key') ||
                       (slot ? `slot:${slot}` : null) ||
                       (Builder.isEditing ? name! : (data && data.id) || undefined)
                     // TODO: specify variation?
