@@ -26,7 +26,11 @@ const options = {
   },
   external: ['vm2'],
   plugins: [
-    typescript({ useTsconfigDeclarationDir: true }),
+    typescript({
+      useTsconfigDeclarationDir: true,
+      // TODO: remove me!
+      abortOnError: false
+    }),
     replace({
       'process.env.NODE_ENV': JSON.stringify('production')
     }),
