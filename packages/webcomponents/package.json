@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/webcomponents",
-  "version": "1.0.106-alpha.3",
+  "version": "1.0.106-alpha.4",
   "description": "",
   "keywords": [],
   "main": "./dist/builder-webcomponents.umd.js",
@@ -139,7 +139,7 @@
   },
   "optionalDependencies": {
     "@builder.io/email": "^1.0.91-alpha.2",
-    "@builder.io/widgets": "^1.0.90-alpha.2",
+    "@builder.io/widgets": "^1.0.90-alpha.3",
     "@webcomponents/custom-elements": "^1.2.1",
     "es6-promise": "^4.2.5"
   },
