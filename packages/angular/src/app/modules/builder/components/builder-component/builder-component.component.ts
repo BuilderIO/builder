@@ -15,6 +15,14 @@ import { GetContentOptions, Builder } from '@builder.io/sdk';
 import { Subscription } from 'rxjs';
 import { BuilderService } from '../../services/builder.service';
 
+function omit<T extends object>(obj: T, ...values: (keyof T)[]): Partial<T> {
+  const newObject = Object.assign({}, obj);
+  for (const key of values) {
+    delete (newObject as any)[key];
+  }
+  return newObject;
+}
+
 let wcScriptInserted = false;
 
 function delay<T = any>(duration: number, resolveValue?: T) {
@@ -86,17 +94,19 @@ export class BuilderComponentComponent implements OnDestroy {
         this.load.subscribe(async (value: any) => {
           // Maybe move into builder contnet directive
           if (value && value.data && value.data.needsHydration && this.hydrate !== false) {
-            this.viewContainer.detach();
             // TODO: load webcompoennts JS if not already
             // Forward user attributes and API key to WC Builder
             // (and listen on changes to attributes to edit)
             await this.ensureWCScriptLoaded();
             const { onBuilderWcLoad } = window as any;
             if (onBuilderWcLoad) {
+
               onBuilderWcLoad((BuilderWC: any) => {
                 BuilderWC.builder.apiKey = this.builderService.apiKey;
                 // TODO: subcribe to user attributes change and upate
-                BuilderWC.builder.setUserAttributes(this.builderService.getUserAttributes());
+                BuilderWC.builder.setUserAttributes(
+                  omit(this.builderService.getUserAttributes(), 'urlPath')
+                );
               });
             }
           }

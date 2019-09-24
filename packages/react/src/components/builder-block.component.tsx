@@ -1,3 +1,6 @@
+/** @jsx jsx */
+import { css, jsx, ClassNames } from '@emotion/core'
+
 import React from 'react'
 import { Builder, Component, BuilderElement, builder } from '@builder.io/sdk'
 import { sizeNames, Size, sizes } from '../constants/device-sizes.constant'
@@ -5,6 +8,7 @@ import { BuilderStoreContext } from '../store/builder-store'
 import { BuilderAsyncRequestsContext, RequestOrPromise } from '../store/builder-async-requests'
 import { stringToFunction, api } from '../functions/string-to-function'
 import { set } from '../functions/set'
+import { CSSPropertiesWithMultiValues } from '@emotion/serialize'
 
 const camelCaseToKebabCase = (str?: string) =>
   str ? str.replace(/([A-Z])/g, g => `-${g[0].toLowerCase()}`) : ''
@@ -161,6 +165,27 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
     return Object.assign({}, ...styles.reverse(), initialAnimationStepStyles)
   }
 
+  get emotionCss() {
+    const reversedNames = sizeNames.slice().reverse()
+    const self = this.props.block
+    const styles: any = {}
+    if (self.responsiveStyles) {
+      for (const size of reversedNames) {
+        if (size === 'large') {
+          if (!this.props.emailMode) {
+            styles[`&.builder-block`] = self.responsiveStyles[size]
+          }
+        } else {
+          styles[`@media only screen and (max-width: ${sizes[size].max}px)`] = {
+            [`&.builder-block`]: self.responsiveStyles[size]
+          }
+        }
+      }
+    }
+
+    return styles
+  }
+
   get css() {
     // TODO: handle style bindings
     const self = this.props.block
@@ -245,7 +270,11 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
             // TODO: this needs to run in getElement bc of local state per element for repeats
             const value = this.stringToFunction(block.bindings[key])
             if (value !== undefined) {
-              set(options, key, value(this.privateState.state, null, block, builder, null, null, Builder))
+              set(
+                options,
+                key,
+                value(this.privateState.state, null, block, builder, null, null, Builder)
+              )
             }
           }
         }
@@ -339,7 +368,15 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
           }
           const fn = this.stringToFunction(value, false)
           // TODO: only one root instance of this, don't rewrap every time...
-          return fn(useState, event, undefined, api(useState), Device, this.privateState.update, Builder)
+          return fn(
+            useState,
+            event,
+            undefined,
+            api(useState),
+            Device,
+            this.privateState.update,
+            Builder
+          )
         }
       }
     }
@@ -396,71 +433,81 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
       TagName = 'a'
     }
 
-    const css = this.css
+    // const css = this.css
 
-    const styleTag = css.trim() && (
-      <style className="builder-style">
-        {(InnerComponent && !isBlock ? `.${this.id} > * { height: 100%; width: 100%; }` : '') +
-          this.css}
-      </style>
-    )
+    // const styleTag = css.trim() && (
+    //   <style className="builder-style">
+    //     {(InnerComponent && !isBlock ? `.${this.id} > * { height: 100%; width: 100%; }` : '') +
+    //       this.css}
+    //   </style>
+    // )
 
     const children = block.children || finalOptions.children || []
 
     // TODO: test it out
     return (
-      <BuilderAsyncRequestsContext.Consumer>
-        {value => {
-          this._asyncRequests = value && value.requests
-          this._errors = value && value.errors
-          this._logs = value && value.logs
-          return isVoid ? (
-            <React.Fragment>
-              {styleTag}
-              <TagName {...finalOptions} />
-            </React.Fragment>
-          ) : InnerComponent && (noWrap || this.props.emailMode) ? (
-            // TODO: pass the class to be easier
-            // TODO: acceptsChildren option?
-            <React.Fragment>
-              {styleTag}
-              <InnerComponent
-                // Final options maaay be wrong here hm
-                {...innerComponentProperties}
-                // should really call this builderAttributes bc people can name a
-                // componet input "attributes"
-                attributes={finalOptions}
-                builderBlock={block}
-              />
-            </React.Fragment>
-          ) : (
-            <TagName {...finalOptions as any}>
-              {styleTag}
-              {InnerComponent && (
-                <InnerComponent builderBlock={block} {...innerComponentProperties} />
-              )}
-              {(block as any).text || options.text ? (
-                // TODO: remove me! No longer in use (maybe with rich text will be back tho)
-                <TextTag
-                  dangerouslySetInnerHTML={{ __html: options.text || (block as any).text }}
-                />
-              ) : !InnerComponent && children && Array.isArray(children) && children.length ? (
-                children.map((block: ElementType, index: number) => (
-                  <BuilderBlock
-                    key={((this.id as string) || '') + index}
-                    block={block}
-                    index={index}
-                    size={this.props.size}
-                    fieldName={this.props.fieldName}
-                    child={this.props.child}
-                    emailMode={this.props.emailMode}
+      <ClassNames>
+        {({ css, cx }) => {
+          const addClass = ' ' + css(this.emotionCss)
+          if (finalOptions.class) {
+            finalOptions.class += addClass
+          }
+          if (finalOptions.className) {
+            finalOptions.className += addClass
+          }
+
+          return (
+            <BuilderAsyncRequestsContext.Consumer>
+              {value => {
+                this._asyncRequests = value && value.requests
+                this._errors = value && value.errors
+                this._logs = value && value.logs
+                return isVoid ? (
+                  <TagName {...finalOptions} />
+                ) : InnerComponent && (noWrap || this.props.emailMode) ? (
+                  // TODO: pass the class to be easier
+                  // TODO: acceptsChildren option?
+                  <InnerComponent
+                    // Final options maaay be wrong here hm
+                    {...innerComponentProperties}
+                    // should really call this builderAttributes bc people can name a
+                    // componet input "attributes"
+                    attributes={finalOptions}
+                    builderBlock={block}
                   />
-                ))
-              ) : null}
-            </TagName>
+                ) : (
+                  <TagName {...finalOptions as any}>
+                    {InnerComponent && (
+                      <InnerComponent builderBlock={block} {...innerComponentProperties} />
+                    )}
+                    {(block as any).text || options.text ? (
+                      // TODO: remove me! No longer in use (maybe with rich text will be back tho)
+                      <TextTag
+                        dangerouslySetInnerHTML={{ __html: options.text || (block as any).text }}
+                      />
+                    ) : !InnerComponent &&
+                      children &&
+                      Array.isArray(children) &&
+                      children.length ? (
+                      children.map((block: ElementType, index: number) => (
+                        <BuilderBlock
+                          key={((this.id as string) || '') + index}
+                          block={block}
+                          index={index}
+                          size={this.props.size}
+                          fieldName={this.props.fieldName}
+                          child={this.props.child}
+                          emailMode={this.props.emailMode}
+                        />
+                      ))
+                    ) : null}
+                  </TagName>
+                )
+              }}
+            </BuilderAsyncRequestsContext.Consumer>
           )
         }}
-      </BuilderAsyncRequestsContext.Consumer>
+      </ClassNames>
     )
   }
 
