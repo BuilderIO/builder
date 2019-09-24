@@ -1,3 +1,5 @@
+/** @jsx jsx */
+import { jsx } from '@emotion/core'
 import {
   BuilderBlock,
   BuilderElement,
@@ -16,7 +18,7 @@ import last from 'lodash-es/last'
 const defaultTitle: BuilderElement = {
   '@type': '@builder.io/sdk:Element',
   layerName: 'Accordion item title',
-  responsiveStyles: {
+  responsivecsss: {
     large: {
       marginTop: '10px',
       position: 'relative',
@@ -29,7 +31,7 @@ const defaultTitle: BuilderElement = {
   children: [
     {
       '@type': '@builder.io/sdk:Element',
-      responsiveStyles: {
+      responsivecsss: {
         large: {
           textAlign: 'left',
           display: 'flex',
@@ -49,7 +51,7 @@ const defaultTitle: BuilderElement = {
 const defaultDetail: BuilderElement = {
   '@type': '@builder.io/sdk:Element',
   layerName: 'Accordion item detail',
-  responsiveStyles: {
+  responsivecsss: {
     large: {
       position: 'relative',
       display: 'flex',
@@ -62,7 +64,7 @@ const defaultDetail: BuilderElement = {
   children: [
     {
       '@type': '@builder.io/sdk:Element',
-      responsiveStyles: {
+      responsivecsss: {
         large: {
           paddingTop: '50px',
           textAlign: 'left',
@@ -103,7 +105,7 @@ interface AccordionProps {
   canHaveChildren: true,
   image:
     'https://cdn.builder.io/api/v1/image/assets%2FagZ9n5CUKRfbL9t6CaJOyVSK4Es2%2Ffab6c1fd3fe542408cbdec078bca7f35',
-  defaultStyles: {
+  defaultcsss: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'stretch'
@@ -226,7 +228,7 @@ export class BuilderAccordion extends React.Component<AccordionProps> {
       <React.Fragment key={index}>
         <div
           className={`builder-accordion-title builder-accordion-title-${open ? 'open' : 'closed'}`}
-          style={{
+          css={{
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'stretch',
@@ -273,7 +275,7 @@ export class BuilderAccordion extends React.Component<AccordionProps> {
             className={`builder-accordion-detail builder-accordion-detail-${
               open ? 'open' : 'closed'
             }`}
-            style={{
+            css={{
               order: typeof openGridItemOrder === 'number' ? openGridItemOrder : undefined,
               maxHeight: this.props.animate ? (open ? '100vh' : 0) : undefined,
               transition: this.props.animate ? 'max-height 0.5s' : undefined,
@@ -359,7 +361,7 @@ export class BuilderAccordion extends React.Component<AccordionProps> {
                 <div
                   ref={ref => (this.divRef = ref)}
                   className="builder-accordion"
-                  style={{
+                  css={{
                     display: 'flex',
                     alignItems: 'stretch',
                     flexDirection: 'column',

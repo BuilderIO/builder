@@ -1,3 +1,5 @@
+/** @jsx jsx */
+import { jsx } from '@emotion/core'
 import React from 'react'
 import { BuilderBlocks, BuilderBlock } from '@builder.io/react'
 
@@ -186,7 +188,7 @@ export class Tabs extends React.Component<TabsProps, { activeTab: number }> {
       <React.Fragment>
         {/* TODO: tab overflow wrap option */}
         <span
-          style={{
+          css={{
             display: 'flex',
             flexDirection: 'row',
             overflow: 'auto',
@@ -201,7 +203,7 @@ export class Tabs extends React.Component<TabsProps, { activeTab: number }> {
                 className={
                   'builder-tab-wrap ' + (this.activeTabSpec === item ? 'builder-tab-active' : '')
                 }
-                style={{
+                css={{
                   ...((this.activeTabSpec === item && this.props.activeTabStyle) || undefined)
                 }}
                 onClick={() => {

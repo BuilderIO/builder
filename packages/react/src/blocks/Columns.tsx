@@ -1,3 +1,5 @@
+/** @jsx jsx */
+import { jsx } from '@emotion/core'
 import React from 'react'
 
 // import { BuilderElement } from '@builder.io/sdk'
@@ -185,29 +187,19 @@ export class Columns extends React.Component<any> {
     return (
       // FIXME: make more elegant
       <React.Fragment>
-        <style>
-          {`
-            .builder-columns {
-              display: flex;
-            }
+        <div
+          className="builder-columns"
+          css={{
+            display: 'flex',
 
-            .builder-column {
-              line-height: normal;
-            }
-
-            .builder-column > .builder-blocks {
-              flex-grow: 1;
-            }
-            ${columns.map(
-              (col, index) => `
-            .${this.props.builderBlock.id} > .builder-columns > .builder-column:nth-child(${index +
-                1}) {
-              width: ${this.getColumnWidth(index)};
-              margin-left: ${index === 0 ? 0 : gutterSize}px;
-            }`
-            ).join('\n')}`}
-        </style>
-        <div className="builder-columns" style={{ display: 'flex' }}>
+            ...(this.props.stackColumnsAt !== 'never' && {
+              [`@media (max-width: ${this.props.stackColumnsAt !== 'tablet' ? 639 : 999}px)`]: {
+                flexDirection: this.props.reverseColumnsWhenStacked ? 'column-reverse' : 'column',
+                alignItems: 'stretch'
+              }
+            })
+          }}
+        >
           {columns.map((col, index) => {
             const TagName = col.link ? 'a' : 'div'
 
@@ -220,10 +212,20 @@ export class Columns extends React.Component<any> {
                   {...(col.link ? { href: col.link } : null)}
                   // TODO: generate width and margin-left as CSS instead so can override with pure CSS for best responsieness
                   // and no use of !important
-                  style={{
+                  css={{
                     display: 'flex',
                     flexDirection: 'column',
-                    alignItems: 'stretch'
+                    alignItems: 'stretch',
+                    lineHeight: 'normal',
+                    ['& > .builder-blocks']: {
+                      flexGrow: 1
+                    },
+                    width: this.getColumnWidth(index),
+                    marginLeft: index === 0 ? 0 : gutterSize,
+                    ...(this.props.stackColumnsAt === 'never' && {
+                      width: '100%',
+                      marginLeft: 0
+                    })
                   }}
                 >
                   <BuilderBlocks
@@ -238,23 +240,6 @@ export class Columns extends React.Component<any> {
               </React.Fragment>
             )
           })}
-          {this.props.stackColumnsAt !== 'never' && (
-            <style>
-              {`
-          @media (max-width: ${this.props.stackColumnsAt !== 'tablet' ? 639 : 999}px) {
-            .${this.props.builderBlock.id} > .builder-columns {
-              flex-direction: ${this.props.reverseColumnsWhenStacked ? 'column-reverse' : 'column'};
-              align-items: stretch;
-            }
-
-            .${this.props.builderBlock.id} > .builder-columns > .builder-column:nth-child(n) {
-              width: 100%;
-              margin-left: 0;
-            }
-          }
-        `}
-            </style>
-          )}
         </div>
       </React.Fragment>
     )

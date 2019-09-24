@@ -1,3 +1,5 @@
+/** @jsx jsx */
+import { jsx } from '@emotion/core'
 import React from 'react'
 
 import { BuilderBlock } from '../decorators/builder-block.decorator'
@@ -170,7 +172,7 @@ export class Video extends React.Component<{
   render() {
     const { aspectRatio } = this.props
     return (
-      <div style={{ position: 'relative', fontSize: 0 }}>
+      <div css={{ position: 'relative', fontSize: 0 }}>
         <video
           key={this.props.video || 'no-src'}
           poster={this.props.posterImage}
@@ -184,7 +186,7 @@ export class Video extends React.Component<{
           loop={this.props.loop}
           className="builder-video"
           // type="video/mp4"
-          style={{
+          css={{
             width: '100%',
             height: '100%',
             objectFit: this.props.fit,
@@ -203,7 +205,7 @@ export class Video extends React.Component<{
         </video>
         {aspectRatio ? (
           <div
-            style={{
+            css={{
               width: '100%',
               paddingTop: aspectRatio * 100 + '%',
               pointerEvents: 'none'

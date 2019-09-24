@@ -1,3 +1,5 @@
+/** @jsx jsx */
+import { jsx } from '@emotion/core'
 import React from 'react'
 import { BuilderElement } from '@builder.io/sdk'
 import { BuilderBlock } from '../decorators/builder-block.decorator'
@@ -64,7 +66,7 @@ export class Section extends React.Component<SectionProps> {
   render() {
     return (
       <div
-        style={{
+        css={{
           // margin: 'auto',
           // TODO: maybe remove height: '100%'
           height: '100%',

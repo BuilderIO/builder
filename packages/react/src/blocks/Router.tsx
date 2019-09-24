@@ -1,3 +1,5 @@
+/** @jsx jsx */
+import { jsx } from '@emotion/core'
 import React from 'react'
 import { BuilderBlock } from '../decorators/builder-block.decorator'
 import { BuilderElement, builder, Builder } from '@builder.io/sdk'
@@ -326,8 +328,8 @@ export class Router extends React.Component<RouterProps> {
                 {/* TODO: builder blocks option for loading stuff */}
                 {/* TODO: input for builder blocks for this */}
                 {this.props.children || (
-                  <div style={{ display: 'flex' }}>
-                    <div style={{ margin: '40vh auto' }} className="builder-page-loading" />
+                  <div css={{ display: 'flex' }}>
+                    <div css={{ margin: '40vh auto' }} className="builder-page-loading" />
                   </div>
                 )}
               </BuilderPage>

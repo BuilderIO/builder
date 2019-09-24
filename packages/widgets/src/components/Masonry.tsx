@@ -1,3 +1,5 @@
+/** @jsx jsx */
+import { jsx } from '@emotion/core'
 import {
   BuilderBlock,
   BuilderBlocks,
@@ -182,7 +184,7 @@ export class BuilderMasonry extends React.Component<MasonryProps> {
 
     return (
       <div
-        style={{
+        css={{
           opacity: Builder.isBrowser && this.state.layoutComplete ? 1 : 0,
           transition: 'opacity 0.2s'
         }}

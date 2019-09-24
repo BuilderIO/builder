@@ -34,7 +34,21 @@ const options = {
     json(),
     // Compile TypeScript files
     // Allow bundling cjs modules (unlike webpack, rollup doesn't understand cjs)
-    commonjs(),
+    commonjs({
+      exclude: ['node_modules/vm2/**'],
+      namedExports: {
+        'node_modules/react/index.js': [
+          'cloneElement',
+          'createContext',
+          'Component',
+          'createElement',
+          'forwardRef',
+          'Fragment'
+        ],
+        'node_modules/react-dom/index.js': ['render', 'hydrate'],
+        'node_modules/react-is/index.js': ['isElement', 'isValidElementType', 'ForwardRef']
+      }
+    }),
     // Allow node_modules resolution, so you can use 'external' to control
     // which external modules to include in the bundle
     // https://github.com/rollup/rollup-plugin-node-resolve#usage
@@ -135,7 +149,7 @@ export default [
       }),
       resolve({
         only: [/^\.{0,2}\//, /lodash\-es/]
-      }) /*as any*/,
+      }) /*as any*/
       // alias({
       //   react: 'preact/compat',
       //   'react-dom': 'preact/compat',

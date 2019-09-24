@@ -1,3 +1,5 @@
+/** @jsx jsx */
+import { jsx } from '@emotion/core'
 import React from 'react'
 import { BuilderBlock } from '../../decorators/builder-block.decorator'
 import { BuilderBlock as BuilderBlockComponent } from '../../components/builder-block.component'
@@ -548,7 +550,7 @@ export class Form extends React.Component<FormProps> {
                 // TODO: tag to edit
                 <pre
                   className="builder-form-error-text"
-                  style={{ padding: 10, color: 'red', textAlign: 'center' }}
+                  css={{ padding: 10, color: 'red', textAlign: 'center' }}
                 >
                   {JSON.stringify(this.state.respnoseData, null, 2)}
                 </pre>

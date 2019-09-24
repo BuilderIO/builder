@@ -137,6 +137,7 @@
   },
   "dependencies": {
     "@builder.io/react": "^1.0.90",
+    "@emotion/core": "^10.0.17",
     "react": ">=14",
     "react-dom": ">=14",
     "react-masonry-component": "^6.2.1",

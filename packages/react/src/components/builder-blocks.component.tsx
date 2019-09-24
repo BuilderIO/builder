@@ -1,3 +1,5 @@
+/** @jsx jsx */
+import { jsx } from '@emotion/core'
 import React from 'react'
 import { Builder } from '@builder.io/sdk'
 import { BuilderBlock } from './builder-block.component'
@@ -89,7 +91,7 @@ export class BuilderBlocks extends React.Component<BuilderBlocksProps, BuilderBl
         builder-type="blocks"
         // TODO: only fi in iframe?
         builder-path={Builder.isIframe ? this.path : undefined}
-        style={{
+        css={{
           ...(!this.props.emailMode && {
             display: 'flex',
             flexDirection: 'column',

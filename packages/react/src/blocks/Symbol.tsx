@@ -1,3 +1,5 @@
+/** @jsx jsx */
+import { jsx } from '@emotion/core'
 import React from 'react'
 import { BuilderPage } from '../components/builder-page.component'
 import { BuilderBlock } from '../decorators/builder-block.decorator'
@@ -48,7 +50,7 @@ export interface SymbolProps {
 export class Symbol extends React.Component<SymbolProps> {
   get placeholder() {
     return (
-      <div style={{ padding: 10 }}>
+      <div css={{ padding: 10 }}>
         Symbols let you reuse dynamic elements across your content. Please choose a model and entry
         for this symbol.
       </div>

@@ -1,3 +1,5 @@
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core'
 import React from 'react'
 
 // import { BuilderElement } from '@builder.io/sdk'
@@ -23,7 +25,7 @@ export function updateQueryParam(uri = '', key: string, value: string) {
   static: true,
   image:
     'https://firebasestorage.googleapis.com/v0/b/builder-3b0a2.appspot.com/o/images%2Fbaseline-insert_photo-24px.svg?alt=media&token=4e5d0ef4-f5e8-4e57-b3a9-38d63a9b9dc4',
-  defaultStyles: {
+  defaultcsss: {
     minHeight: '20px',
     minWidth: '20px',
     overflow: 'hidden'
@@ -226,7 +228,7 @@ export class Image extends React.Component<any> {
                 //   this.props.width || (aspectRatio ? Math.round(1000 / aspectRatio) : undefined)
                 // }
                 role={!this.props.altText ? 'presentation' : undefined}
-                style={{
+                css={{
                   objectFit: this.props.backgroundSize,
                   objectPosition: this.props.backgroundPosition,
                   ...(aspectRatio && {
@@ -243,20 +245,20 @@ export class Image extends React.Component<any> {
                 srcset={srcset}
                 sizes={this.props.sizes}
               />
-              {/* TODO: do this with classes like .builder-fit so can reuse styles and not duplicate */}
+              {/* TODO: do this with classes like .builder-fit so can reuse csss and not duplicate */}
               {/* TODO: maybe need to add height: auto, widht: auto or so so the image doesn't have a max widht etc */}
               {amp && (
-                <style>{`
+                <css>{`
                 amp-img.${this.props.builderBlock && this.props.builderBlock.id} img {
                   object-fit: ${this.props.backgroundSize};
                   object-position: ${this.props.backgroundPosition};
                 }
-              `}</style>
+              `}</css>
               )}
               {aspectRatio ? (
                 <div
                   className="builder-image-sizer"
-                  style={{
+                  css={{
                     width: '100%',
                     paddingTop: aspectRatio * 100 + '%',
                     pointerEvents: 'none',
@@ -268,7 +270,7 @@ export class Image extends React.Component<any> {
               ) : null}
               {children && children.length ? (
                 <div
-                  style={{
+                  css={{
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'stretch',
@@ -289,7 +291,7 @@ export class Image extends React.Component<any> {
         }}
       </BuilderMetaContext.Consumer>
       // <div
-      //   style={{
+      //   css={{
       //     position: 'absolute',
       //     top: 0,
       //     left: 0,
