@@ -290,8 +290,7 @@ export class Router extends React.Component<RouterProps> {
 
           return (
             <div className="builder-router" data-model={model}>
-              {/* TODO: loading icon on route */}
-              {/* TODO: default site styles */}
+              {/* TODO: move to emotion */}
               <style>{`
                 @keyframes builderLoadingSpinner {
                   0% {

@@ -105,7 +105,7 @@ interface AccordionProps {
   canHaveChildren: true,
   image:
     'https://cdn.builder.io/api/v1/image/assets%2FagZ9n5CUKRfbL9t6CaJOyVSK4Es2%2Ffab6c1fd3fe542408cbdec078bca7f35',
-  defaultcsss: {
+  defaultStyles: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'stretch'

@@ -263,7 +263,7 @@ export class BuilderMasonry extends React.Component<MasonryProps> {
                                     }
 
                                     return (
-                                      <div className="masonry-item" style={itemStyle}>
+                                      <div className="masonry-item" css={itemStyle}>
                                         <BuilderStoreContext.Provider
                                           key={block.id}
                                           value={{ ...state, state: childState } as any}
@@ -283,7 +283,7 @@ export class BuilderMasonry extends React.Component<MasonryProps> {
                                 }
                               }
                               return (
-                                <div style={itemStyle} className="masonry-item">
+                                <div css={itemStyle} className="masonry-item">
                                   <BuilderBlockComponent
                                     key={block.id}
                                     block={block}
@@ -298,7 +298,7 @@ export class BuilderMasonry extends React.Component<MasonryProps> {
                           this.props.tiles.map((tile, index) => (
                             // TODO: how make react compatible with plain react components
                             // tiles: <Foo><Bar> <- builder blocks if passed react nodes as blocks just forward them
-                            <div style={itemStyle} className="masonry-item">
+                            <div css={itemStyle} className="masonry-item">
                               <BuilderBlocks
                                 key={index}
                                 parentElementId={
