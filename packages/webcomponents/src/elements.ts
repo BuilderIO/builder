@@ -352,9 +352,17 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
             const loadEvent = new CustomEvent('load', { detail: data })
             this.dispatchEvent(loadEvent)
 
+            let styleIds = data && data.data.styleIds
+            const { currentContent } = this
+            if (!styleIds && currentContent) {
+              // TOTO: parse styles IDS from current content attribute
+              hydate(styleIds)
+            }
+
             BuilderComponent.renderInto(
               this,
               {
+                styleIds: (data && data.data && data.data.styleIds) || [],
                 modelName: name!,
                 emailMode:
                   ((this.options as any) || {}).emailMode ||
