@@ -40,7 +40,30 @@ const options = {
       module: true
     }),
     commonjs({
-      ignore: ['http', 'https', 'node-fetch']
+      ignore: ['http', 'https', 'node-fetch'],
+      exclude: ['node_modules/vm2/**'],
+      namedExports: {
+        'node_modules/react/index.js': [
+          'cloneElement',
+          'createContext',
+          'Component',
+          'createElement',
+          'forwardRef',
+          'Fragment'
+        ],
+        'node_modules/react-dom/index.js': ['render', 'hydrate'],
+        'node_modules/react-is/index.js': ['isElement', 'isValidElementType', 'ForwardRef'],
+        '../react/node_modules/react/index.js': [
+          'cloneElement',
+          'createContext',
+          'Component',
+          'createElement',
+          'forwardRef',
+          'Fragment'
+        ],
+        '../react/node_modules/react-dom/index.js': ['render', 'hydrate'],
+        '../react/node_modules/react-is/index.js': ['isElement', 'isValidElementType', 'ForwardRef']
+      }
       // namedExports: {
       //   // left-hand side can be an absolute path, a path
       //   // relative to the current directory, or the name
@@ -88,6 +111,6 @@ export default [
   {
     ...options,
     input: `src/${libraryName}-lite.ts`,
-    output: [{ dir: './dist/system/lite', format: 'system', sourcemap: true }],
+    output: [{ dir: './dist/system/lite', format: 'system', sourcemap: true }]
   }
 ]
