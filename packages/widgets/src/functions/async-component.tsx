@@ -11,48 +11,49 @@ const Loading = () => (
   </div>
 )
 
-export const asyncComponent = <T extends object = any>(
-  fn: () => Promise<React.ComponentType<T>>,
-  showLoading = true
-) =>
-  Loadable({
-    loader: async () => {
-      try {
-        return fn()
-      } catch (error) {
-        console.error('Could not load chunk, probably because of deploy, reloading', error)
-        setTimeout(reload)
-        return Loading
-      }
-    },
-    loading: props => {
-      if (props.error) {
-        console.error(props.error)
+// TODO
+// export const asyncComponent = <T extends object = any>(
+//   fn: () => Promise<React.ComponentType<T>>,
+//   showLoading = true
+// ) =>
+//   Loadable({
+//     loader: async () => {
+//       try {
+//         return fn()
+//       } catch (error) {
+//         console.error('Could not load chunk, probably because of deploy, reloading', error)
+//         setTimeout(reload)
+//         return Loading
+//       }
+//     },
+//     loading: props => {
+//       if (props.error) {
+//         console.error(props.error)
 
-        return (
-          <div style={{ textAlign: 'center', padding: 10 }}>
-            Oops! We had a problem loading this content, try{' '}
-            <a
-              css={{
-                cursor: 'pointer',
-                color: 'steelblue'
-              }}
-              onClick={reload}
-            >
-              reloading
-            </a>{' '}
-            this page
-          </div>
-        )
-      }
+//         return (
+//           <div style={{ textAlign: 'center', padding: 10 }}>
+//             Oops! We had a problem loading this content, try{' '}
+//             <a
+//               css={{
+//                 cursor: 'pointer',
+//                 color: 'steelblue'
+//               }}
+//               onClick={reload}
+//             >
+//               reloading
+//             </a>{' '}
+//             this page
+//           </div>
+//         )
+//       }
 
-      if (showLoading) {
-        return <Loading />
-      }
+//       if (showLoading) {
+//         return <Loading />
+//       }
 
-      return null
-    }
-  })
+//       return null
+//     }
+//   })
 
 function reload(): any {
   location.reload(true)
