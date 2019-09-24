@@ -50,7 +50,17 @@ const options = {
           'Fragment'
         ],
         'node_modules/react-dom/index.js': ['render', 'hydrate'],
-        'node_modules/react-is/index.js': ['isElement', 'isValidElementType', 'ForwardRef']
+        'node_modules/react-is/index.js': ['isElement', 'isValidElementType', 'ForwardRef'],
+        '../react/node_modules/react/index.js': [
+          'cloneElement',
+          'createContext',
+          'Component',
+          'createElement',
+          'forwardRef',
+          'Fragment'
+        ],
+        '../react/node_modules/react-dom/index.js': ['render', 'hydrate'],
+        '../react/node_modules/react-is/index.js': ['isElement', 'isValidElementType', 'ForwardRef']
       }
     }),
     // Allow node_modules resolution, so you can use 'external' to control
