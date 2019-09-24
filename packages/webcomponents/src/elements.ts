@@ -201,7 +201,9 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
       }
 
       const name = this.getAttribute('name') || this.getAttribute('model')
-      if (name === this.previousName) {
+      // TODO: only judge this on key, or remove this line entirely as the
+      // SDK handles this anyway
+      if (name === this.previousName && !key) {
         return false
       }
 
