@@ -91,6 +91,7 @@
     "@types/node": "^10.0.3",
     "@types/react": "^16.4.1",
     "@types/react-dom": "^16.0.7",
+    "@types/react-loadable": "^5.5.1",
     "@types/react-slick": "^0.23.3",
     "colors": "^1.1.2",
     "commitizen": "^2.9.6",
@@ -141,6 +142,7 @@
     "@emotion/styled": "^10.0.17",
     "react": ">=14",
     "react-dom": ">=14",
+    "react-loadable": "^5.5.0",
     "react-masonry-component": "^6.2.1",
     "react-slick": "^0.23.2"
   },
