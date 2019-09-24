@@ -402,6 +402,8 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
           if (el) {
             el.innerHTML = content
           }
+
+          return match
         })
         setTimeout(() => {
           apiStyles.remove()
