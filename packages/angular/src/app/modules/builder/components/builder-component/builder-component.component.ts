@@ -7,8 +7,9 @@ import {
   Optional,
   OnDestroy,
   ViewContainerRef,
+  ElementRef,
 } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { parse } from 'url';
 import { BuilderComponentService } from './builder-component.service';
 import { GetContentOptions, Builder } from '@builder.io/sdk';
@@ -81,6 +82,7 @@ export class BuilderComponentComponent implements OnDestroy {
 
   constructor(
     private viewContainer: ViewContainerRef,
+    private elementRef: ElementRef,
     private builderService: BuilderService,
     @Optional() private router?: Router
   ) {
@@ -90,10 +92,32 @@ export class BuilderComponentComponent implements OnDestroy {
     // }
 
     if (Builder.isBrowser) {
+      if (this.router) {
+        this.subscriptions.add(
+          this.router.events.subscribe(event => {
+            // TODO: this doesn't trigger
+            if (event instanceof NavigationEnd) {
+              const { BuilderWC } = window as any
+              if (BuilderWC && this.reloadOnRoute && wcScriptInserted && this.hydrate) {
+                if (this.elementRef && this.elementRef.nativeElement && this.elementRef.nativeElement.getContent) {
+                  BuilderWC.builder.setUserAttributes(
+                    omit(this.builderService.getUserAttributes(), 'urlPath')
+                  );
+                  // TODO: set other options based on inputs to this - options and and data
+                  this.elementRef.nativeElement.setAttribute('name', this.model)
+                  this.elementRef.nativeElement.getContent(true)
+                }
+              }
+            }
+          })
+        );
+      }
       this.subscriptions.add(
         this.load.subscribe(async (value: any) => {
           // Maybe move into builder contnet directive
           if (value && value.data && value.data.needsHydration && this.hydrate !== false) {
+            this.viewContainer.detach()
+
             // TODO: load webcompoennts JS if not already
             // Forward user attributes and API key to WC Builder
             // (and listen on changes to attributes to edit)

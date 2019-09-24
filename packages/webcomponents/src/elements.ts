@@ -168,7 +168,7 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
       return null
     }
 
-    getContent() {
+    getContent(fresh = false) {
       const token = this.getAttribute('token') || this.getAttribute('auth-token')
       if (token) {
         builder.authToken = token
@@ -217,7 +217,8 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
         return false
       }
 
-      const { currentContent } = this
+      // const { currentContent } = this
+      const currentContent = fresh ? null : this.currentContent
       if (currentContent && !Builder.isEditing) {
         this.data = currentContent
         this.loaded()
