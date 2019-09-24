@@ -30,22 +30,22 @@ async function main() {
       var version = typeof location !== 'undefined' && location.href && getQueryParam(location.href, 'builder.wcVersion') ||  "${
         pkg.version
       }";
-      // TODO: make rollup es6 build and use WC es6 if browser supports
-      var useLite = 'CustomElements' in window;
+      /* TODO: make rollup es6 build and use WC es6 if browser supports */
+      var useLiteQuery = getQueryParam(location.href, 'builder.useWcLite');
+      var useLite = useLiteQuery ? JSON.parse(useLiteQuery) : 'customElements' in window;
       if (!window.builderWcLoadCallbacks) {
         window.builderWcLoadCallbacks = [];
       }
-      // TODO: maybe use promise
       if (!window.onBuilderWcLoad) {
         window.onBuilderWcLoad = function (cb) {
           if (window.BuilderWC) {
-            cb(BuilderWC)
+            cb(BuilderWC);
           } else {
-            builderWcLoadCallbacks.push(cb)
+            builderWcLoadCallbacks.push(cb);
           }
         };
       }
-      System.import('https://cdn.builder.io/js/webcomponents/dist/system/' + (useLite ? 'lite/' : '') + 'builder-webcomponents-async.js@' + version + '/dist/system/builder-webcomponents.js')
+      System.import('https://cdn.builder.io/js/webcomponents@' + version + '/dist/system/' + (useLite ? 'lite/' : '') + 'builder-webcomponents' + (useLite ? '-lite' : '') + '.js')
     `.replace(/\s+/g, ' ')
     ].join(';') +
     `}`

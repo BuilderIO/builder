@@ -15,6 +15,8 @@ import { GetContentOptions, Builder } from '@builder.io/sdk';
 import { Subscription } from 'rxjs';
 import { BuilderService } from '../../services/builder.service';
 
+let wcScriptInserted = false;
+
 function delay<T = any>(duration: number, resolveValue?: T) {
   return new Promise<T>(resolve => setTimeout(() => resolve(resolveValue), duration));
 }
@@ -82,7 +84,6 @@ export class BuilderComponentComponent implements OnDestroy {
     if (Builder.isBrowser) {
       this.subscriptions.add(
         this.load.subscribe(async (value: any) => {
-          console.debug('load', value);
           // Maybe move into builder contnet directive
           if (value && value.data && value.data.needsHydration && this.hydrate !== false) {
             this.viewContainer.detach();
@@ -90,20 +91,13 @@ export class BuilderComponentComponent implements OnDestroy {
             // Forward user attributes and API key to WC Builder
             // (and listen on changes to attributes to edit)
             await this.ensureWCScriptLoaded();
-            let { BuilderWC } = window as any;
-            if (BuilderWC) {
-              BuilderWC.builder.apiKey = this.builderService.apiKey;
-              // TODO: subcribe to user attributes change and upate
-              BuilderWC.builder.setUserAttributes(this.builderService.getUserAttributes());
-            } else {
-              const { onBuilderWcLoad } = window as any;
-              if (onBuilderWcLoad) {
-                onBuilderWcLoad((BuilderWC: any) => {
-                  BuilderWC.builder.apiKey = this.builderService.apiKey;
-                  // TODO: subcribe to user attributes change and upate
-                  BuilderWC.builder.setUserAttributes(this.builderService.getUserAttributes());
-                })
-              }
+            const { onBuilderWcLoad } = window as any;
+            if (onBuilderWcLoad) {
+              onBuilderWcLoad((BuilderWC: any) => {
+                BuilderWC.builder.apiKey = this.builderService.apiKey;
+                // TODO: subcribe to user attributes change and upate
+                BuilderWC.builder.setUserAttributes(this.builderService.getUserAttributes());
+              });
             }
           }
         })
@@ -112,17 +106,26 @@ export class BuilderComponentComponent implements OnDestroy {
   }
 
   async ensureWCScriptLoaded() {
-    if (!Builder.isBrowser) {
+    const SCRIPT_ID = 'builder-wc-script';
+    if (!Builder.isBrowser || wcScriptInserted || document.getElementById(SCRIPT_ID)) {
       return;
     }
-    const SCRIPT_ID = 'builder-wc-script';
-    if (document.getElementById(SCRIPT_ID)) {
-      return;
+    function getQueryParam(url: string, variable: string) {
+      var query = url.split('?')[1] || '';
+      var vars = query.split('&');
+      for (let i = 0; i < vars.length; i++) {
+        var pair = vars[i].split('=');
+        if (decodeURIComponent(pair[0]) === variable) {
+          return decodeURIComponent(pair[1]);
+        }
+      }
+      return null;
     }
     const script = document.createElement('script');
     script.id = SCRIPT_ID;
     script.src = 'https://cdn.builder.io/js/webcomponents';
     script.async = true;
+    wcScriptInserted = true;
     return new Promise((resolve, reject) => {
       script.addEventListener('load', resolve);
       script.addEventListener('error', e => reject(e.error));

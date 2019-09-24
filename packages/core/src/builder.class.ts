@@ -169,7 +169,6 @@ interface Map<K, V> {
   size: number;
   values(): IterableIterator<V>;
   [Symbol.iterator](): IterableIterator<[K, V]>;
-  // [Symbol.toStringTag]: string
 }
 
 export interface Input {

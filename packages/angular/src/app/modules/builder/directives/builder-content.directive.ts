@@ -281,7 +281,8 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
             match.data &&
             match.data.html &&
             this.component &&
-            this.component.hydrate;
+            this.component.hydrate &&
+            match.data.needsHydration;
 
           if (Builder.isBrowser) {
             if (rootNode) {
@@ -295,7 +296,6 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
               setTimeout(() => {
                 if (hydrate) {
                   // TODO: hydrate with webcomponents... here instead of builder component wrapper?
-
                   // // TODO: two builder SDKs are loading...? external in react right?
                   // const subscription = this.builder
                   //   .get(model, {
@@ -318,11 +318,8 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
                   //         },
                   //         data: this.component && this.component.data,
                   //       });
-
                   //       this.hydrated = true;
-
                   //       subscription.unsubscribe();
-
                   //       if (Builder.isEditing) {
                   //         setTimeout(() => {
                   //           parent.postMessage({ type: 'builder.updateContent' }, '*');
