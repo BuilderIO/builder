@@ -1,3 +1,5 @@
+/** @jsx jsx */
+import { css, jsx, ClassNames } from '@emotion/core'
 import React from 'react'
 import { BuilderBlock } from '../decorators/builder-block.decorator'
 import { Builder, builder, BuilderElement } from '@builder.io/sdk'
@@ -70,7 +72,6 @@ export class Text extends React.Component<TextProps> {
     const allowEditingText = this.allowTextEdit
     return (
       <React.Fragment>
-        <style>{`.builder-text p:first-child, .builder-paragraph:first-child { margin: 0 } .builder-text > p, .builder-paragraph { color: inherit; line-height: inherit; letter-spacing: inherit; font-weight: inherit; font-size: inherit; text-align: inherit; font-family: inherit; }`}</style>
         {/* TODO: <BuilderEditableText component that wraps this for other components with text */}
         <span
           ref={ref => {
@@ -127,7 +128,21 @@ export class Text extends React.Component<TextProps> {
               )
             }
           }}
-          style={{ outline: 'none' }}
+          css={{
+            outline: 'none',
+            [`& p:first-child, & .builder-paragraph:first-child`]: {
+              margin: 0
+            },
+            [`& > p, & .builder-paragraph`]: {
+              color: 'inherit',
+              lineHeight: 'inherit',
+              letterSpacing: 'inherit',
+              fontWeight: 'inherit',
+              fontSize: 'inherit',
+              textAlign: 'inherit',
+              fontFamily: 'inherit'
+            }
+          }}
           className="builder-text"
           {...!allowEditingText && {
             dangerouslySetInnerHTML: {
