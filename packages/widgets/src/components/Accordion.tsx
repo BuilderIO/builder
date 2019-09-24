@@ -228,7 +228,7 @@ export class BuilderAccordion extends React.Component<AccordionProps> {
       <React.Fragment key={index}>
         <div
           className={`builder-accordion-title builder-accordion-title-${open ? 'open' : 'closed'}`}
-          css={{
+          style={{
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'stretch',
@@ -275,7 +275,7 @@ export class BuilderAccordion extends React.Component<AccordionProps> {
             className={`builder-accordion-detail builder-accordion-detail-${
               open ? 'open' : 'closed'
             }`}
-            css={{
+            style={{
               order: typeof openGridItemOrder === 'number' ? openGridItemOrder : undefined,
               maxHeight: this.props.animate ? (open ? '100vh' : 0) : undefined,
               transition: this.props.animate ? 'max-height 0.5s' : undefined,
@@ -361,7 +361,7 @@ export class BuilderAccordion extends React.Component<AccordionProps> {
                 <div
                   ref={ref => (this.divRef = ref)}
                   className="builder-accordion"
-                  css={{
+                  style={{
                     display: 'flex',
                     alignItems: 'stretch',
                     flexDirection: 'column',

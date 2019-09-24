@@ -188,7 +188,7 @@ export class Tabs extends React.Component<TabsProps, { activeTab: number }> {
       <React.Fragment>
         {/* TODO: tab overflow wrap option */}
         <span
-          css={{
+          style={{
             display: 'flex',
             flexDirection: 'row',
             overflow: 'auto',
@@ -203,7 +203,7 @@ export class Tabs extends React.Component<TabsProps, { activeTab: number }> {
                 className={
                   'builder-tab-wrap ' + (this.activeTabSpec === item ? 'builder-tab-active' : '')
                 }
-                css={{
+                style={{
                   ...((this.activeTabSpec === item && this.props.activeTabStyle) || undefined)
                 }}
                 onClick={() => {

@@ -29,7 +29,7 @@ const options = {
     typescript({
       useTsconfigDeclarationDir: true,
       // TODO: remove me!
-      abortOnError: false
+      check: false
     }),
     replace({
       'process.env.NODE_ENV': JSON.stringify('production')
