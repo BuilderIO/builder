@@ -199,12 +199,12 @@ export class Image extends React.Component<any> {
       <BuilderMetaContext.Consumer>
         {value => {
           const amp = value.ampMode
-          const Tag = amp ? ('amp-img' as any) : 'img'
+          const Tag: 'img' = amp ? ('amp-img' as any) : 'img'
           return (
             <React.Fragment>
               <Tag
                 {...(amp
-                  ? {
+                  ? ({
                       layout: 'responsive',
                       height:
                         this.props.height ||
@@ -212,7 +212,7 @@ export class Image extends React.Component<any> {
                       width:
                         this.props.width ||
                         (aspectRatio ? Math.round(1000 / aspectRatio) : undefined)
-                    }
+                    } as any)
                   : null)}
                 alt={this.props.altText}
                 key={
@@ -237,6 +237,12 @@ export class Image extends React.Component<any> {
                     width: '100%',
                     left: 0,
                     top: 0
+                  }),
+                  ...(amp && {
+                    ['& img']: {
+                      objectFit: this.props.backgroundSize,
+                      OObjectPosition: this.props.backgroundPosition
+                    }
                   })
                 }}
                 className="builder-image"
@@ -247,14 +253,6 @@ export class Image extends React.Component<any> {
               />
               {/* TODO: do this with classes like .builder-fit so can reuse csss and not duplicate */}
               {/* TODO: maybe need to add height: auto, widht: auto or so so the image doesn't have a max widht etc */}
-              {amp && (
-                <css>{`
-                amp-img.${this.props.builderBlock && this.props.builderBlock.id} img {
-                  object-fit: ${this.props.backgroundSize};
-                  object-position: ${this.props.backgroundPosition};
-                }
-              `}</css>
-              )}
               {aspectRatio ? (
                 <div
                   className="builder-image-sizer"
