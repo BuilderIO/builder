@@ -1,6 +1,5 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { hydrate } from 'emotion'
 import { BuilderContent } from './builder-content.component'
 import { BuilderBlocks } from './builder-blocks.component'
 import {
@@ -393,6 +392,18 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
           ? element.previousElementSibling
           : null)
       if (apiStyles) {
+        const html = apiStyles.innerHTML;
+        html.replace(/\/\*start:([^\*]+?)\*\/([\s\S]*?)\/\*end:([^\*]+?)\*\//g, (match, id, content) => {
+          let el: HTMLElement | null = null;
+          try {
+            el = document.querySelector(`[data-emotion-css="${id}"]`)
+          } catch (err) {
+            console.warn(err)
+          }
+          if (el) {
+            el.innerHTML = content
+          }
+        })
         setTimeout(() => {
           apiStyles.remove()
         })
@@ -403,9 +414,6 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
       } else {
         shouldHydrate = false
       }
-    }
-    if (shouldHydate && props.styleIds) {
-      hydrate(styleIds)
     }
 
     if (location.search.includes('builder.debug=true')) {

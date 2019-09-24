@@ -248,7 +248,7 @@ export class Image extends React.Component<any> {
                 className="builder-image"
                 src={this.props.image}
                 // TODO: memoize on image on client
-                srcset={srcset}
+                srcSet={srcset}
                 sizes={this.props.sizes}
               />
               {/* TODO: do this with classes like .builder-fit so can reuse csss and not duplicate */}
