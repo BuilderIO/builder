@@ -390,23 +390,30 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
         element.previousElementSibling.matches('.builder-api-styles')
           ? element.previousElementSibling
           : null)
+      let keepStyles = ''
       if (apiStyles) {
-        const html = apiStyles.innerHTML;
-        html.replace(/\/\*start:([^\*]+?)\*\/([\s\S]*?)\/\*end:([^\*]+?)\*\//g, (match, id, content) => {
-          let el: HTMLElement | null = null;
-          try {
-            el = document.querySelector(`[data-emotion-css="${id}"]`)
-          } catch (err) {
-            console.warn(err)
-          }
-          if (el) {
-            el.innerHTML = content
-          }
+        const html = apiStyles.innerHTML
+        html.replace(
+          /\/\*start:([^\*]+?)\*\/([\s\S]*?)\/\*end:([^\*]+?)\*\//g,
+          (match, id, content) => {
+            let el: HTMLElement | null = null
+            try {
+              el = document.querySelector(`[data-emotion-css="${id}"]`)
+            } catch (err) {
+              console.warn(err)
+            }
+            if (el) {
+              el.innerHTML = content
+            } else if (!Builder.isEditing) {
+              keepStyles += match;
+            }
 
-          return match
-        })
+            return match
+          }
+        )
+        // NextTick? or longer timeout?
         setTimeout(() => {
-          apiStyles.remove()
+          apiStyles.innerHTML = keepStyles
         })
       }
       const useElement = element.querySelector('.builder-component')

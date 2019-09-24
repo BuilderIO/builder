@@ -97,15 +97,23 @@ export class BuilderComponentComponent implements OnDestroy {
           this.router.events.subscribe(event => {
             // TODO: this doesn't trigger
             if (event instanceof NavigationEnd) {
-              const { BuilderWC } = window as any
+              const { BuilderWC } = window as any;
               if (BuilderWC && this.reloadOnRoute && wcScriptInserted && this.hydrate) {
-                if (this.elementRef && this.elementRef.nativeElement && this.elementRef.nativeElement.getContent) {
+                if (
+                  this.elementRef &&
+                  this.elementRef.nativeElement &&
+                  this.elementRef.nativeElement.getContent
+                ) {
                   BuilderWC.builder.setUserAttributes(
                     omit(this.builderService.getUserAttributes(), 'urlPath')
                   );
                   // TODO: set other options based on inputs to this - options and and data
-                  this.elementRef.nativeElement.setAttribute('name', this.model)
-                  this.elementRef.nativeElement.getContent(true)
+                  this.elementRef.nativeElement.setAttribute('name', this.model);
+                  this.elementRef.nativeElement.setAttribute(
+                    'key',
+                    this.model + ':' + builderService.getUserAttributes().urlPath
+                  );
+                  this.elementRef.nativeElement.getContent(true);
                 }
               }
             }
@@ -116,7 +124,7 @@ export class BuilderComponentComponent implements OnDestroy {
         this.load.subscribe(async (value: any) => {
           // Maybe move into builder contnet directive
           if (value && value.data && value.data.needsHydration && this.hydrate !== false) {
-            this.viewContainer.detach()
+            this.viewContainer.detach();
 
             // TODO: load webcompoennts JS if not already
             // Forward user attributes and API key to WC Builder
@@ -124,7 +132,6 @@ export class BuilderComponentComponent implements OnDestroy {
             await this.ensureWCScriptLoaded();
             const { onBuilderWcLoad } = window as any;
             if (onBuilderWcLoad) {
-
               onBuilderWcLoad((BuilderWC: any) => {
                 BuilderWC.builder.apiKey = this.builderService.apiKey;
                 // TODO: subcribe to user attributes change and upate

@@ -173,7 +173,7 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
       if (token) {
         builder.authToken = token
       }
-      const key = this.getAttribute('key') || this.getAttribute('api-key')
+      const key = this.getAttribute('api-key')
       if (key && key !== builder.apiKey) {
         builder.apiKey = key
       }
@@ -207,7 +207,7 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
 
       const entry = this.getAttribute('entry')
 
-      if (!this.prerender || !builder.apiKey) {
+      if (!this.prerender || !builder.apiKey || fresh) {
         this.loadReact(entry ? { id: entry } : null)
         return
       }
@@ -318,8 +318,9 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
             options: {
               ...this.options,
               key:
-                (slot ? `slot:${slot}` : null) ||
-                (Builder.isEditing ? name! : this.getAttribute('entry') || name! || undefined)
+                this.getAttribute('key') ||
+                ((slot ? `slot:${slot}` : null) ||
+                  (Builder.isEditing ? name! : this.getAttribute('entry') || name! || undefined))
             }
           },
           this.getAttribute('hydrate') !== 'false'
@@ -439,7 +440,7 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
 
   class BuilderInit extends HTMLElement {
     init() {
-      const key = this.getAttribute('apiKey') || this.getAttribute('key')
+      const key = this.getAttribute('apiKey')
       const canTrack = this.getAttribute('canTrack') !== 'false'
       if (key && builder.apiKey !== key) {
         builder.apiKey = key
