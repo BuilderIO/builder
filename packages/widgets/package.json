@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/widgets",
-  "version": "1.0.90-alpha.0",
+  "version": "1.0.90-alpha.1",
   "description": "",
   "keywords": [],
   "main": "dist/builder-widgets.cjs.js",
@@ -136,7 +136,7 @@
     "prop-types": "^15.7.2"
   },
   "dependencies": {
-    "@builder.io/react": "^1.0.91-alpha.0",
+    "@builder.io/react": "^1.0.91-alpha.1",
     "@emotion/core": "^10.0.17",
     "@emotion/styled": "^10.0.17",
     "react": ">=14",
