@@ -1,5 +1,3 @@
-/** @jsx jsx */
-import { css, jsx } from '@emotion/core'
 import React from 'react'
 import { BuilderBlocks, BuilderBlock } from '@builder.io/react'
 

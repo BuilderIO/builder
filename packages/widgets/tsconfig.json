@@ -4,7 +4,6 @@
     "jsx": "react",
     "target": "es5",
     "module":"es2015",
-    "types": ["@emotion/core"],
     "lib": ["dom", "es2015"],
     "strict": true,
     "sourceMap": true,
