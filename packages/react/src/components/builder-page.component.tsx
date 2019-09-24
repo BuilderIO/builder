@@ -137,7 +137,6 @@ export interface BuilderPageProps {
   inlineContent?: boolean
   builderBlock?: BuilderElement
   dataOnly?: boolean
-  styleIds?: string[]
 }
 
 interface BuilderPageState {
