@@ -212,6 +212,7 @@ export class Block extends React.Component<BlockProps> {
           block.responsiveStyles![size] &&
           Object.keys(block.responsiveStyles![size]!).length
         ) {
+          // TODO: use emotion
           css += `
 @media only screen and (max-width: ${sizes[size].max}px) {
   .${block.id} { ${mapToCss(this.getOuterStyles(size), 4, true)} }

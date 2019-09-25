@@ -12,7 +12,7 @@ const Loading = () => (
 )
 
 // TODO
-// export const asyncComponent = <T extends object = any>(
+// export const asyncComponent = tb<T extends object = any>(
 //   fn: () => Promise<React.ComponentType<T>>,
 //   showLoading = true
 // ) =>

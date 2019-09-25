@@ -17,7 +17,8 @@ export interface LabelProps {
   inputs: [
     {
       name: 'text',
-      type: 'text',
+      type: 'html',
+      richText: true,
       defaultValue: 'Label'
     },
     {
@@ -40,7 +41,14 @@ export class Label extends React.Component<LabelProps> {
   render() {
     return (
       <label htmlFor={this.props.for} {...this.props.attributes}>
-        {this.props.text}
+        {this.props.text && (
+          <span
+            className="builder-label-text"
+            dangerouslySetInnerHTML={{
+              __html: this.props.text
+            }}
+          />
+        )}
         {this.props.builderBlock &&
           this.props.builderBlock.children &&
           this.props.builderBlock.children.map(item => (

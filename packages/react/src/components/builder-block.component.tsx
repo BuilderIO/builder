@@ -8,7 +8,6 @@ import { BuilderStoreContext } from '../store/builder-store'
 import { BuilderAsyncRequestsContext, RequestOrPromise } from '../store/builder-async-requests'
 import { stringToFunction, api } from '../functions/string-to-function'
 import { set } from '../functions/set'
-import { CSSPropertiesWithMultiValues } from '@emotion/serialize'
 
 const camelCaseToKebabCase = (str?: string) =>
   str ? str.replace(/([A-Z])/g, g => `-${g[0].toLowerCase()}`) : ''
@@ -448,12 +447,14 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
     return (
       <ClassNames>
         {({ css, cx }) => {
-          const addClass = ' ' + css(this.emotionCss)
-          if (finalOptions.class) {
-            finalOptions.class += addClass
-          }
-          if (finalOptions.className) {
-            finalOptions.className += addClass
+          if (!this.props.emailMode) {
+            const addClass = ' ' + css(this.emotionCss)
+            if (finalOptions.class) {
+              finalOptions.class += addClass
+            }
+            if (finalOptions.className) {
+              finalOptions.className += addClass
+            }
           }
 
           return (

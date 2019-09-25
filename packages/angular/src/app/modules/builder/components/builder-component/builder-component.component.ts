@@ -125,6 +125,12 @@ export class BuilderComponentComponent implements OnDestroy {
           // Maybe move into builder contnet directive
           if (value && value.data && value.data.needsHydration && this.hydrate !== false) {
             this.viewContainer.detach();
+            if (this.reloadOnRoute) {
+              this.elementRef.nativeElement.setAttribute(
+                'key',
+                this.model + ':' + builderService.getUserAttributes().urlPath
+              );
+            }
 
             // TODO: load webcompoennts JS if not already
             // Forward user attributes and API key to WC Builder
