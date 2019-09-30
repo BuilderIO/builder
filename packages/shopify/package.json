@@ -1,8 +1,7 @@
 {
   "name": "@builder.io/shopify",
-  "version": "1.1.20-alpha.7",
+  "version": "1.1.21-0",
   "main": "./dist/index.js",
-  "unpkg": "./js/shopify.ts",
   "types": "./dist/index.d.ts",
   "scripts": {
     "build": "tsc --module commonjs",
@@ -42,9 +41,12 @@
   },
   "dependencies": {
     "@builder.io/sdk": "^1.0.47",
+    "@glimmer/syntax": "^0.42.1",
     "clean-css": "^4.2.1",
     "csso": "^3.5.1",
     "dedent": "^0.7.0",
+    "handlebars": "^4.3.3",
+    "liquidjs": "^9.0.0",
     "lodash": "^4.17.15",
     "node-fetch": "^2.6.0",
     "prettier": "^1.18.2"

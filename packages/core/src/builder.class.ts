@@ -212,7 +212,7 @@ export interface Component {
   hideFromInsertMenu?: boolean;
   // For webcomponents
   tag?: string;
-  static?: boolean
+  static?: boolean;
 }
 
 export function BuilderComponent(info: Partial<Component> = {}) {
@@ -514,11 +514,17 @@ export class Builder {
   }
 
   getSessionId() {
-    // TODO: don't set this until gdpr allowed....
-    let sessionId =
+    let sessionId: string | null = null;
+    try {
+      // TODO: don't set this until gdpr allowed....
+
       (Builder.isBrowser &&
         (typeof sessionStorage !== 'undefined' && sessionStorage.getItem(sessionStorageKey))) ||
-      '';
+        '';
+    } catch (err) {
+      console.debug('Session storage error', err);
+      // It's ok
+    }
 
     if (!sessionId) {
       sessionId = (Date.now() + Math.random()).toString(36);
@@ -527,8 +533,12 @@ export class Builder {
     // Give the app a second to start up and set canTrack to false if needed
     if (Builder.isBrowser) {
       setTimeout(() => {
-        if (this.canTrack && typeof sessionStorage !== 'undefined') {
-          sessionStorage.setItem(sessionStorageKey, sessionId);
+        if (this.canTrack && typeof sessionStorage !== 'undefined' && sessionId) {
+          try {
+            sessionStorage.setItem(sessionStorageKey, sessionId);
+          } catch (err) {
+            console.debug('Session storage error', err);
+          }
         }
       });
     }
@@ -730,8 +740,12 @@ export class Builder {
     this.canTrack$.subscribe((value: any) => {
       if (value) {
         if (typeof sessionStorage !== 'undefined') {
-          if (!sessionStorage.getItem(sessionStorageKey)) {
-            sessionStorage.setItem(sessionStorageKey, this.sessionId);
+          try {
+            if (!sessionStorage.getItem(sessionStorageKey)) {
+              sessionStorage.setItem(sessionStorageKey, this.sessionId);
+            }
+          } catch (err) {
+            console.debug('Session storage error', err)
           }
         }
         if (this.eventsQueue.length) {
@@ -1298,7 +1312,7 @@ export class Builder {
     }
 
     if (Builder.isEditing) {
-      queryParams.isEditing = true
+      queryParams.isEditing = true;
     }
 
     if (this.noCache || this.env !== 'production') {
