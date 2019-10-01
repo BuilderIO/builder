@@ -43,7 +43,8 @@ export interface SymbolProps {
       name: 'dataOnly',
       helperText: `Make this a data symbol that doesn't display any UI`,
       type: 'boolean',
-      defaultValue: false
+      defaultValue: false,
+      advanced: true
     }
   ]
 })
