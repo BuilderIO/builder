@@ -75,6 +75,7 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
       el.appendChild(newEl)
     }
   }
+
   inject()
   onReady(inject)
 
