@@ -76,7 +76,6 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
     }
   }
   inject()
-
   onReady(inject)
 
   class BuilderComponentElement extends HTMLElement {
