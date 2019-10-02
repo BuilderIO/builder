@@ -1,6 +1,8 @@
-import { Liquid, ITemplate } from 'liquidjs';
+import { Liquid, ITemplate, ParseStream, TagToken, Token, Context, Hash, Emitter } from 'liquidjs';
 import { BuilderElement } from '@builder.io/sdk';
-import compiler from 'vue-template-compiler';
+import * as compiler from 'vue-template-compiler';
+import { omit } from 'lodash';
+import { component } from '../constants/components';
 
 interface IfTemplate extends ITemplate {
   impl: {
@@ -42,8 +44,8 @@ const isOutputTemplate = (template: ITemplate): template is OutputTemplate =>
 const isElement = (node: compiler.ASTNode): node is compiler.ASTElement => node.type === 1;
 const isTextNode = (node: compiler.ASTNode): node is compiler.ASTText => node.type === 3;
 
-const htmlEncode = (html: string) => html.replace(/'/g, '&apos;').replace(/"/g, '&quot;');
-const htmlDecode = (html: string) => html.replace(/&apos;/g, "'").replace(/&quot;/g, '"');
+const htmlEncode = (html: string) => html.replace(/'/g, '_APOS_').replace(/"/g, '_QUOT_');
+const htmlDecode = (html: string) => html.replace(/_APOS_/g, "'").replace(/_QUOT_/g, '"');
 
 export const parsedLiquidToHtml = (template: ITemplate[]) => {
   let html = '';
@@ -104,13 +106,57 @@ const el = (options?: Partial<BuilderElement>): BuilderElement => ({
   ...options,
 });
 
+const tagRe = /\[([^\]]+)\]='([^']+)'/i;
+interface ParsedTag {
+  name: string;
+  value: string;
+}
+const parseTag = (tag: string): ParsedTag | null => {
+  const matched = tag.match(tagRe);
+  if (matched) {
+    console.log('matched', matched);
+  }
+  return (
+    matched && {
+      name: htmlDecode(matched[1]),
+      value: htmlDecode(matched[2]),
+    }
+  );
+};
+
+interface StringMap {
+  [key: string]: string;
+}
+
+const hasTag = (html: string) => !!parseTag(html);
+
 export const htmlNodeToBuilder = (node: compiler.ASTNode): BuilderElement => {
+  // TODO: if and for and form and section and assign
   if (isElement(node)) {
     // TODO: classname, etc
+    const properties: StringMap = {};
+    const bindings: StringMap = {};
+
+    for (const key in node.attrsMap) {
+      const value = node.attrsMap[key];
+      if (hasTag(value)) {
+        const parsed = parseTag(value);
+        if (parsed && parsed.name === 'output') {
+          bindings[key] = JSON.parse(parsed.value).initial.replace(/'/g, '');
+        }
+      } else if (key !== 'class') {
+        properties[key] = value;
+      }
+    }
+
     return el({
       tagName: node.tag,
-      // TODO: parse for [data] for bindings
-      properties: node.attrsMap,
+      responsiveStyles: {
+        large: {},
+      },
+      class: node.attrsMap.class, // TODO: handle class bindings
+      properties: omit(properties, 'class'),
+      bindings,
       children: node.children
         .filter(node => isTextNode(node) || isElement(node))
         .map(child => htmlNodeToBuilder(child)),
@@ -119,6 +165,14 @@ export const htmlNodeToBuilder = (node: compiler.ASTNode): BuilderElement => {
 
   // TODO: parse for [data] for bindings
   if (isTextNode(node)) {
+    let text = node.text;
+    let parsed: ParsedTag | null = null;
+    if (hasTag(text)) {
+      parsed = parseTag(text)!;
+      text = '';
+    }
+
+    const parsedOutput = parsed && parsed.name === 'output' && JSON.parse(parsed.value);
     // TODO: classname, etc
     return el({
       tagName: 'span',
@@ -127,11 +181,14 @@ export const htmlNodeToBuilder = (node: compiler.ASTNode): BuilderElement => {
           display: 'inline',
         },
       },
+      bindings: {
+        ...(parsedOutput && {
+          ['component.options.text']: parsedOutput.initial.replace(/'/g, ''), // TODO: process filters like | t,
+        }),
+      } as { [key: string]: string },
       component: {
         name: 'Text',
-        options: {
-          text: node.text,
-        },
+        options: { text },
       },
     });
   }
@@ -145,6 +202,31 @@ export const htmlNodeToBuilder = (node: compiler.ASTNode): BuilderElement => {
 
 export const liquidToAst = (str: string) => {
   const engine = new Liquid();
+  engine.registerTag('form', {
+    parse: function(tagToken: TagToken, remainTokens: Token[]) {
+      this.templates = [];
+
+      const stream: ParseStream = this.liquid.parser
+        .parseStream(remainTokens)
+        .on('tag:endform', () => stream.stop())
+        .on('template', (tpl: ITemplate) => this.templates.push(tpl))
+        .on('end', () => {
+          throw new Error(`tag ${tagToken.raw} not closed`);
+        });
+
+      stream.start();
+    },
+
+    render: async function(ctx: Context, hash: Hash, emitter: Emitter) {
+      // TODO: add <form> wrapper...
+      await this.liquid.renderer.renderTemplates(this.templates, ctx, emitter);
+    },
+
+    renderSync: function(ctx: Context, hash: Hash, emitter: Emitter) {
+      this.liquid.renderer.renderTemplatesSync(this.templates, ctx, emitter);
+    },
+  });
+
   const parsedTemplateItems = engine.parse(str);
   return parsedTemplateItems;
 };
