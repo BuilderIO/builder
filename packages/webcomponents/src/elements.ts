@@ -447,7 +447,7 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
 
   class BuilderInit extends HTMLElement {
     init() {
-      const key = this.getAttribute('apiKey')
+      const key = this.getAttribute('api-key') || this.getAttribute('key')
       const canTrack = this.getAttribute('canTrack') !== 'false'
       if (key && builder.apiKey !== key) {
         builder.apiKey = key
