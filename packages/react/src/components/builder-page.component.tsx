@@ -372,6 +372,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     props: BuilderPageProps = {},
     hydrate = true
   ) {
+    console.debug('BuilderPage.renderInto', elementOrSelector, props, hydrate, this)
     let element =
       elementOrSelector instanceof HTMLElement
         ? elementOrSelector
@@ -405,7 +406,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
             if (el) {
               el.innerHTML = content
             } else if (!Builder.isEditing) {
-              keepStyles += match;
+              keepStyles += match
             }
 
             return match
