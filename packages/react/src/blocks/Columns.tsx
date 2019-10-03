@@ -222,8 +222,10 @@ export class Columns extends React.Component<any> {
                     width: this.getColumnWidth(index),
                     marginLeft: index === 0 ? 0 : gutterSize,
                     ...(this.props.stackColumnsAt !== 'never' && {
-                      width: '100%',
-                      marginLeft: 0
+                      [`@media (max-width: ${this.props.stackColumnsAt !== 'tablet' ? 639 : 999}px)`]: {
+                        width: '100%',
+                        marginLeft: 0
+                      }
                     })
                   }}
                 >
