@@ -191,7 +191,6 @@ export class Columns extends React.Component<any> {
           className="builder-columns"
           css={{
             display: 'flex',
-
             ...(this.props.stackColumnsAt !== 'never' && {
               [`@media (max-width: ${this.props.stackColumnsAt !== 'tablet' ? 639 : 999}px)`]: {
                 flexDirection: this.props.reverseColumnsWhenStacked ? 'column-reverse' : 'column',
@@ -222,7 +221,7 @@ export class Columns extends React.Component<any> {
                     },
                     width: this.getColumnWidth(index),
                     marginLeft: index === 0 ? 0 : gutterSize,
-                    ...(this.props.stackColumnsAt === 'never' && {
+                    ...(this.props.stackColumnsAt !== 'never' && {
                       width: '100%',
                       marginLeft: 0
                     })

@@ -1,8 +1,7 @@
 import { Liquid, ITemplate, ParseStream, TagToken, Token, Context, Hash, Emitter } from 'liquidjs';
 import { BuilderElement } from '@builder.io/sdk';
 import * as compiler from 'vue-template-compiler';
-import { omit } from 'lodash';
-import { component } from '../constants/components';
+import { omit, compact } from 'lodash';
 
 interface IfTemplate extends ITemplate {
   impl: {
@@ -59,6 +58,7 @@ export const parsedLiquidToHtml = (template: ITemplate[]) => {
       html += template.str;
     } else if (isIfTemplate(template)) {
       template.impl.branches.forEach((item, index) => {
+        // TODO: unless
         if (index === 0) {
           // TODO: need another string replace, maybe tilda and put back
           html += `[if]='${htmlEncode(item.cond)}'`;
@@ -130,7 +130,13 @@ interface StringMap {
 
 const hasTag = (html: string) => !!parseTag(html);
 
-export const htmlNodeToBuilder = (node: compiler.ASTNode): BuilderElement => {
+let queuedBinding: null | ParsedTag = null;
+
+export const htmlNodeToBuilder = (
+  node: compiler.ASTNode,
+  index: number,
+  parentArray: compiler.ASTNode[]
+): BuilderElement | null => {
   // TODO: if and for and form and section and assign
   if (isElement(node)) {
     // TODO: classname, etc
@@ -157,9 +163,7 @@ export const htmlNodeToBuilder = (node: compiler.ASTNode): BuilderElement => {
       class: node.attrsMap.class, // TODO: handle class bindings
       properties: omit(properties, 'class'),
       bindings,
-      children: node.children
-        .filter(node => isTextNode(node) || isElement(node))
-        .map(child => htmlNodeToBuilder(child)),
+      children: htmlAstToBuilder(node.children.filter(node => isTextNode(node) || isElement(node))),
     });
   }
 
@@ -173,8 +177,22 @@ export const htmlNodeToBuilder = (node: compiler.ASTNode): BuilderElement => {
     }
 
     const parsedOutput = parsed && parsed.name === 'output' && JSON.parse(parsed.value);
+
+    if (parsed && ['if', 'for', 'unless'].includes(parsed.name)) {
+      queuedBinding = parsed;
+      return null;
+    }
+
+    let thisQueuedBinding: ParsedTag | null = null
+
+    // TODO: handle multiple elements in the if
+    if (queuedBinding) {
+      thisQueuedBinding = queuedBinding
+      queuedBinding = null
+    }
+
     // TODO: classname, etc
-    return el({
+    const block = el({
       tagName: 'span',
       responsiveStyles: {
         large: {
@@ -185,15 +203,31 @@ export const htmlNodeToBuilder = (node: compiler.ASTNode): BuilderElement => {
         ...(parsedOutput && {
           ['component.options.text']: parsedOutput.initial.replace(/'/g, ''), // TODO: process filters like | t,
         }),
+        ...(thisQueuedBinding && thisQueuedBinding.name === 'if' && {
+          show: thisQueuedBinding.value
+        }),
+        ...(thisQueuedBinding && thisQueuedBinding.name === 'unless' && {
+          show: thisQueuedBinding.value
+        })
       } as { [key: string]: string },
+      ...(thisQueuedBinding && thisQueuedBinding.name === 'for' && parsedOutput && {
+        repeat: {
+          itemName: parsedOutput.variable,
+          collection: parsedOutput.collection
+        }
+      }),
       component: {
         name: 'Text',
         options: { text },
       },
     });
+
+    return block;
   }
 
   // TODO: handle comment, etc
+  console.warn('node not matched', node);
+
   return null as any;
 
   // TODO: add back
@@ -237,7 +271,7 @@ export const htmlToAst = (html: string) => {
 
 export const htmlAstToBuilder = (nodes: compiler.ASTNode[]): BuilderElement[] => {
   // TODO: need to pass through index and array so can see if before/after is for, etc
-  return nodes.map(node => htmlNodeToBuilder(node));
+  return compact(nodes.map((node, index, nodes) => htmlNodeToBuilder(node, index, nodes)));
 };
 
 export const liquidToBuilder = async (str: string) => {
