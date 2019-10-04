@@ -3,7 +3,7 @@
   "devDependencies": {
     "@types/npm": "^2.0.30",
     "@types/rollup-plugin-commonjs": "^9.3.1",
-    "lerna": "^3.11.1"
+    "lerna": "^2.9.0"
   },
   "scripts": {
     "verify-git-not-dirty": "git diff --quiet || exit 1",

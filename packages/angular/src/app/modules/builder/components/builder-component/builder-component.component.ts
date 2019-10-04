@@ -140,6 +140,7 @@ export class BuilderComponentComponent implements OnDestroy {
             if (onBuilderWcLoad) {
               onBuilderWcLoad((BuilderWC: any) => {
                 BuilderWC.builder.apiKey = this.builderService.apiKey;
+                BuilderWC.builder.canTrack = this.builderService.canTrack;
                 // TODO: subcribe to user attributes change and upate
                 BuilderWC.builder.setUserAttributes(
                   omit(this.builderService.getUserAttributes(), 'urlPath')

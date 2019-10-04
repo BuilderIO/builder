@@ -135,7 +135,7 @@
     "tslint-config-prettier": "^1.17.0",
     "tslint-config-standard": "^8.0.1",
     "typedoc": "^0.14.2",
-    "typescript": "^3.2.4"
+    "typescript": "3.7.0-beta"
   },
   "optionalDependencies": {
     "@builder.io/email": "^1.0.93",
