@@ -39,7 +39,7 @@
     "rollup-plugin-typescript2": "^0.22.1",
     "rollup-plugin-uglify": "^6.0.2",
     "ts-jest": "^24.0.2",
-    "typescript": "^3.5.3"
+    "typescript": "3.7.0-beta"
   },
   "dependencies": {
     "@builder.io/sdk": "^1.0.48",

@@ -183,12 +183,12 @@ export const htmlNodeToBuilder = (
       return null;
     }
 
-    let thisQueuedBinding: ParsedTag | null = null
+    let thisQueuedBinding: ParsedTag | null = null;
 
     // TODO: handle multiple elements in the if
     if (queuedBinding) {
-      thisQueuedBinding = queuedBinding
-      queuedBinding = null
+      thisQueuedBinding = queuedBinding;
+      queuedBinding = null;
     }
 
     // TODO: classname, etc
@@ -203,19 +203,23 @@ export const htmlNodeToBuilder = (
         ...(parsedOutput && {
           ['component.options.text']: parsedOutput.initial.replace(/'/g, ''), // TODO: process filters like | t,
         }),
-        ...(thisQueuedBinding && thisQueuedBinding.name === 'if' && {
-          show: thisQueuedBinding.value
-        }),
-        ...(thisQueuedBinding && thisQueuedBinding.name === 'unless' && {
-          show: thisQueuedBinding.value
-        })
+        ...(thisQueuedBinding &&
+          thisQueuedBinding.name === 'if' && {
+            show: thisQueuedBinding.value,
+          }),
+        ...(thisQueuedBinding &&
+          thisQueuedBinding.name === 'unless' && {
+            show: thisQueuedBinding.value,
+          }),
       } as { [key: string]: string },
-      ...(thisQueuedBinding && thisQueuedBinding.name === 'for' && parsedOutput && {
-        repeat: {
-          itemName: parsedOutput.variable,
-          collection: parsedOutput.collection
-        }
-      }),
+      ...(thisQueuedBinding &&
+        thisQueuedBinding.name === 'for' &&
+        parsedOutput && {
+          repeat: {
+            itemName: parsedOutput.variable,
+            collection: parsedOutput.collection,
+          },
+        }),
       component: {
         name: 'Text',
         options: { text },

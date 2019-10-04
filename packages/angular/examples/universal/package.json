@@ -62,6 +62,6 @@
     "pre-commit": "^1.2.2",
     "ts-loader": "^4.2.0",
     "tslint": "^5.7.0",
-    "typescript": "3.1.6"
+    "typescript": "3.7.0-beta"
   }
 }

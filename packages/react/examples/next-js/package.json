@@ -12,5 +12,8 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6"
   },
-  "private": true
+  "private": true,
+  "devDependencies": {
+    "typescript": "3.7.0-beta"
+  }
 }
