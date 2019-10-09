@@ -397,7 +397,9 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
           block.component && !['Image', 'Video', 'Banner'].includes(componentName)
             ? ` builder-has-component`
             : ''
-        }` + (options.class ? ' ' + options.class : ''),
+        }`
+        + (options.class ? ' ' + options.class : '')
+        + (Builder.isEditing && this.privateState.state._spacer?.parent === block.id ? ' builder-spacer-parent' : ''),
       key: this.id + index,
       'builder-id': this.id,
       ref: ((ref: any) => (this.ref = ref)) as any,

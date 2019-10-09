@@ -335,7 +335,11 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
   messageListener = (event: MessageEvent) => {
     const info = event.data
     switch (info.type) {
-      case 'builder.insertSpacer': {
+      case 'builder.updateSpacer': {
+        const data = info.data;
+        this.updateState(state => {
+          state._spacer = data
+        })
         break
       }
       case 'builder.resetState': {
