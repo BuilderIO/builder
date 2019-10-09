@@ -336,6 +336,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     const info = event.data
     switch (info.type) {
       case 'builder.updateSpacer': {
+        console.log('updateSpacer', info)
         const data = info.data;
         this.updateState(state => {
           state._spacer = data
