@@ -13,7 +13,8 @@ interface SpacerState {
 
 export class InsertSpacer extends React.Component<SpacerProps, SpacerState> {
   state = {
-    grow: false
+    grow: false,
+    show: false
   }
 
   componentDidMount() {
@@ -27,25 +28,28 @@ export class InsertSpacer extends React.Component<SpacerProps, SpacerState> {
       return null
     }
 
+    const { show } = this.state
+
     return (
       <BuilderStoreContext.Consumer>
         {({ state }) => {
           const spacer = state._spacer
-          if (!(spacer && spacer.id === this.props.id)) {
+          if (!(spacer && spacer.subject === this.props.id)) {
             return null
           }
 
           return (
             <div
               css={{
-                width: 0,
+                // width: 0,
+                width: '100%',
                 height: 0,
                 backgroundColor: 'lightsteelblue',
                 borderRadius: 4,
                 border: '1px solid steelblue',
                 ...(this.state.grow && {
-                  width: 50,
-                  height: 50
+                  width: '100%',
+                  height: 30
                 })
               }}
             />
