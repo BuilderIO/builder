@@ -9,7 +9,8 @@
   },
   "dependencies": {
     "react": "16.8.6",
-    "react-native": "0.60.4"
+    "react-native": "0.60.4",
+    "tslib": "^1.10.0"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",

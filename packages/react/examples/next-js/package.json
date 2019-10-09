@@ -10,7 +10,8 @@
     "@builder.io/widgets": "^1.0.24",
     "next": "^8.0.4",
     "react": "^16.8.6",
-    "react-dom": "^16.8.6"
+    "react-dom": "^16.8.6",
+    "tslib": "^1.10.0"
   },
   "private": true,
   "devDependencies": {

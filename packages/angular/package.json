@@ -44,6 +44,7 @@
     "@angular/router": ">= 2",
     "@builder.io/sdk": "^1.0.48",
     "rxjs": ">= 2",
+    "tslib": "^1.10.0",
     "zone.js": "*"
   },
   "devDependencies": {

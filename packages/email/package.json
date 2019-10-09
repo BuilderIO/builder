@@ -127,7 +127,8 @@
     "@builder.io/sdk": "^1.0.48",
     "lodash-es": "^4.17.10",
     "react": "^16.4.1",
-    "react-dom": "^16.4.2"
+    "react-dom": "^16.4.2",
+    "tslib": "^1.10.0"
   },
   "gitHead": "ee6e0fae6c9dfffd4b34839de0c21f32af193ff6"
 }

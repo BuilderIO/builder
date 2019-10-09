@@ -43,7 +43,8 @@
     "typescript": "3.7.0-beta"
   },
   "dependencies": {
-    "node-fetch": "^2.2.0"
+    "node-fetch": "^2.2.0",
+    "tslib": "^1.10.0"
   },
   "gitHead": "f233cba190317de3644fff198e765660205cd7f1"
 }
