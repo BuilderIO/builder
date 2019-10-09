@@ -144,7 +144,8 @@
     "react-dom": ">=14",
     "react-loadable": "^5.5.0",
     "react-masonry-component": "^6.2.1",
-    "react-slick": "^0.23.2"
+    "react-slick": "^0.23.2",
+    "tslib": "^1.10.0"
   },
   "gitHead": "f233cba190317de3644fff198e765660205cd7f1"
 }

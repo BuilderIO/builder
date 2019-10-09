@@ -129,7 +129,8 @@
     "lodash-es": "^4.17.10",
     "react": "^16.4.1",
     "react-amphtml": "^3.0.1",
-    "react-dom": "^16.4.2"
+    "react-dom": "^16.4.2",
+    "tslib": "^1.10.0"
   },
   "gitHead": "cf5b05182d0d8de851999b1328eb43ed653d51b6"
 }

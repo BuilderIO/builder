@@ -24,6 +24,7 @@
     "@nguniversal/express-engine": "^7.1.0",
     "core-js": "^2.4.1",
     "rxjs": "^5.5.6",
+    "tslib": "^1.10.0",
     "zone.js": "^0.8.19"
   },
   "devDependencies": {

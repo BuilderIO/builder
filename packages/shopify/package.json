@@ -53,6 +53,7 @@
     "lodash": "^4.17.15",
     "node-fetch": "^2.6.0",
     "prettier": "^1.18.2",
+    "tslib": "^1.10.0",
     "vue-template-compiler": "^2.6.10"
   },
   "gitHead": "f233cba190317de3644fff198e765660205cd7f1"

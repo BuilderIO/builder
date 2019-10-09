@@ -154,7 +154,8 @@
     "hash-sum": "^2.0.0",
     "preact": "^10.0.0-rc.0",
     "react": ">=14",
-    "react-dom": ">=14"
+    "react-dom": ">=14",
+    "tslib": "^1.10.0"
   },
   "gitHead": "f233cba190317de3644fff198e765660205cd7f1"
 }
