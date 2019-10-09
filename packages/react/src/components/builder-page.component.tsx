@@ -137,7 +137,7 @@ export interface BuilderPageProps {
   inlineContent?: boolean
   builderBlock?: BuilderElement
   dataOnly?: boolean
-  hydrate?: boolean;
+  hydrate?: boolean
 }
 
 interface BuilderPageState {
@@ -240,7 +240,7 @@ function searchToObject(location: Location | Url) {
 export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageState> {
   subscriptions: Subscription = new Subscription()
   onStateChange = new BehaviorSubject<any>(null)
-  asServer = false;
+  asServer = false
 
   rootState = onChange({}, () => this.updateState())
 
@@ -274,6 +274,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
         deviceSize: this.deviceSizeState,
         // TODO: will user attributes be ready here?
         device: this.device,
+        ...this.getHtmlData(),
         ...props.data
       }),
       updates: 0,
@@ -294,6 +295,19 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
         )
       }
     }
+  }
+
+  getHtmlData() {
+    const id = (this.props.content && this.props.content.id) || this.props.entry
+    const script =
+      id &&
+      Builder.isBrowser &&
+      (document.querySelector(`script[data-builder-json="${id}"],script[data-builder-state="${id}"]`) as HTMLElement | null)
+    if (script) {
+      const json = JSON.parse(script.innerText)
+      return json
+    }
+    return {}
   }
 
   // TODO: pass down with context
@@ -321,6 +335,9 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
   messageListener = (event: MessageEvent) => {
     const info = event.data
     switch (info.type) {
+      case 'builder.insertSpacer': {
+        break
+      }
       case 'builder.resetState': {
         const { state, model } = info.data.state
         if (model == this.name) {
@@ -446,7 +463,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
 
   componentDidMount() {
     if (this.asServer) {
-      this.asServer = false;
+      this.asServer = false
       this.updateState(state => {
         state.isBrowser = true
         state.isServer = false
