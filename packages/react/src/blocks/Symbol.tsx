@@ -6,6 +6,7 @@ import { BuilderBlock } from '../decorators/builder-block.decorator'
 import { Builder, builder, BuilderElement } from '@builder.io/sdk'
 import hash from 'hash-sum'
 import { NoWrap } from 'src/components/no-wrap'
+import { BuilderStoreContext } from 'src/store/builder-store'
 
 const size = (thing: object) => Object.keys(thing).length
 
@@ -82,30 +83,35 @@ export class Symbol extends React.Component<SymbolProps> {
 
     const attributes = this.props.attributes || {}
     return (
-      <TagName
-        data-model={model}
-        {...attributes}
-        className={
-          (attributes.class || attributes.className || '') +
-          ' builder-symbol' +
-          (symbol.inline ? ' builder-inline-symbol' : '')
-        }
-      >
-        <BuilderPage
-          key={(model || 'no model') + ':' + (entry || 'no entry')}
-          modelName={model}
-          entry={entry}
-          data={data}
-          inlineContent={symbol.inline}
-          content={content}
-          options={{ key }}
-          builderBlock={this.props.builderBlock}
-          dataOnly={this.props.dataOnly}
-        >
-          {/* TODO: builder blocks option for loading stuff */}
-          {this.props.children}
-        </BuilderPage>
-      </TagName>
+      <BuilderStoreContext.Consumer>
+        {state => (
+          <TagName
+            data-model={model}
+            {...attributes}
+            className={
+              (attributes.class || attributes.className || '') +
+              ' builder-symbol' +
+              (symbol.inline ? ' builder-inline-symbol' : '')
+            }
+          >
+            <BuilderPage
+              key={(model || 'no model') + ':' + (entry || 'no entry')}
+              modelName={model}
+              entry={entry}
+              data={data}
+              inlineContent={symbol.inline}
+              content={content}
+              options={{ key }}
+              hydrate={state.state?._hydrate}
+              builderBlock={this.props.builderBlock}
+              dataOnly={this.props.dataOnly}
+            >
+              {/* TODO: builder blocks option for loading stuff */}
+              {this.props.children}
+            </BuilderPage>
+          </TagName>
+        )}
+      </BuilderStoreContext.Consumer>
     )
   }
 }

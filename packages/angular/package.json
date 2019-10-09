@@ -74,7 +74,7 @@
     "ts-node": "^7.0.1",
     "tsickle": "^0.33.1",
     "tslint": "^5.11.0",
-    "typescript": "3.7.0-beta"
+    "typescript": "^3.1.6"
   },
   "gitHead": "f233cba190317de3644fff198e765660205cd7f1"
 }

@@ -132,11 +132,12 @@ const hasTag = (html: string) => !!parseTag(html);
 
 let queuedBinding: null | ParsedTag = null;
 
-export const htmlNodeToBuilder = (
+export const htmlNodeToBuilder = async (
   node: compiler.ASTNode,
   index: number,
-  parentArray: compiler.ASTNode[]
-): BuilderElement | null => {
+  parentArray: compiler.ASTNode[],
+  options?: LiquidToBuilderOptions
+): Promise<BuilderElement | null> => {
   // TODO: if and for and form and section and assign
   if (isElement(node)) {
     // TODO: classname, etc
@@ -163,7 +164,9 @@ export const htmlNodeToBuilder = (
       class: node.attrsMap.class, // TODO: handle class bindings
       properties: omit(properties, 'class'),
       bindings,
-      children: htmlAstToBuilder(node.children.filter(node => isTextNode(node) || isElement(node))),
+      children: await htmlAstToBuilder(
+        node.children.filter(node => isTextNode(node) || isElement(node))
+      ),
     });
   }
 
@@ -273,15 +276,29 @@ export const htmlToAst = (html: string) => {
   return compiler.compile(`<template>${html}</template>`).ast!.children;
 };
 
-export const htmlAstToBuilder = (nodes: compiler.ASTNode[]): BuilderElement[] => {
+export const htmlAstToBuilder = async (
+  nodes: compiler.ASTNode[],
+  options?: LiquidToBuilderOptions
+): Promise<BuilderElement[]> => {
   // TODO: need to pass through index and array so can see if before/after is for, etc
-  return compact(nodes.map((node, index, nodes) => htmlNodeToBuilder(node, index, nodes)));
+  return compact(
+    await Promise.all(
+      nodes.map((node, index, nodes) => htmlNodeToBuilder(node, index, nodes, options))
+    )
+  );
 };
 
-export const liquidToBuilder = async (str: string) => {
+export interface LiquidToBuilderOptions {
+  auth?: {
+    token?: string;
+    publicKey?: string;
+  };
+}
+
+export const liquidToBuilder = async (str: string, options?: LiquidToBuilderOptions) => {
   const parsedTemplateItems = liquidToAst(str);
   const html = parsedLiquidToHtml(parsedTemplateItems);
   const htmlNodes = htmlToAst(html);
-  const blocks = htmlAstToBuilder(htmlNodes);
+  const blocks = await htmlAstToBuilder(htmlNodes, options);
   return blocks;
 };

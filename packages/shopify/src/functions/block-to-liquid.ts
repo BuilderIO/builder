@@ -15,6 +15,7 @@ import '../components/button';
 import '../components/symbol';
 import '../components/custom-code';
 import '../components/forms/form';
+import '../components/forms/label';
 import '../components/forms/input';
 import '../components/forms/submit-button';
 import '../components/widgets/accordion';
