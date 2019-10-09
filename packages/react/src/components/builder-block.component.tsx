@@ -8,6 +8,7 @@ import { BuilderStoreContext } from '../store/builder-store'
 import { BuilderAsyncRequestsContext, RequestOrPromise } from '../store/builder-async-requests'
 import { stringToFunction, api } from '../functions/string-to-function'
 import { set } from '../functions/set'
+import { InsertSpacer } from './insert-spacer.component'
 
 const camelCaseToKebabCase = (str?: string) =>
   str ? str.replace(/([A-Z])/g, g => `-${g[0].toLowerCase()}`) : ''
@@ -445,70 +446,74 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
 
     // TODO: test it out
     return (
-      <ClassNames>
-        {({ css, cx }) => {
-          if (!this.props.emailMode) {
-            const addClass = ' ' + css(this.emotionCss)
-            if (finalOptions.class) {
-              finalOptions.class += addClass
+      <React.Fragment>
+        <InsertSpacer id={block.id!} position="before" />
+        <ClassNames>
+          {({ css, cx }) => {
+            if (!this.props.emailMode) {
+              const addClass = ' ' + css(this.emotionCss)
+              if (finalOptions.class) {
+                finalOptions.class += addClass
+              }
+              if (finalOptions.className) {
+                finalOptions.className += addClass
+              }
             }
-            if (finalOptions.className) {
-              finalOptions.className += addClass
-            }
-          }
 
-          return (
-            <BuilderAsyncRequestsContext.Consumer>
-              {value => {
-                this._asyncRequests = value && value.requests
-                this._errors = value && value.errors
-                this._logs = value && value.logs
-                return isVoid ? (
-                  <TagName {...finalOptions} />
-                ) : InnerComponent && (noWrap || this.props.emailMode) ? (
-                  // TODO: pass the class to be easier
-                  // TODO: acceptsChildren option?
-                  <InnerComponent
-                    // Final options maaay be wrong here hm
-                    {...innerComponentProperties}
-                    // should really call this builderAttributes bc people can name a
-                    // componet input "attributes"
-                    attributes={finalOptions}
-                    builderBlock={block}
-                  />
-                ) : (
-                  <TagName {...finalOptions as any}>
-                    {InnerComponent && (
-                      <InnerComponent builderBlock={block} {...innerComponentProperties} />
-                    )}
-                    {(block as any).text || options.text ? (
-                      // TODO: remove me! No longer in use (maybe with rich text will be back tho)
-                      <TextTag
-                        dangerouslySetInnerHTML={{ __html: options.text || (block as any).text }}
-                      />
-                    ) : !InnerComponent &&
-                      children &&
-                      Array.isArray(children) &&
-                      children.length ? (
-                      children.map((block: ElementType, index: number) => (
-                        <BuilderBlock
-                          key={((this.id as string) || '') + index}
-                          block={block}
-                          index={index}
-                          size={this.props.size}
-                          fieldName={this.props.fieldName}
-                          child={this.props.child}
-                          emailMode={this.props.emailMode}
+            return (
+              <BuilderAsyncRequestsContext.Consumer>
+                {value => {
+                  this._asyncRequests = value && value.requests
+                  this._errors = value && value.errors
+                  this._logs = value && value.logs
+                  return isVoid ? (
+                    <TagName {...finalOptions} />
+                  ) : InnerComponent && (noWrap || this.props.emailMode) ? (
+                    // TODO: pass the class to be easier
+                    // TODO: acceptsChildren option?
+                    <InnerComponent
+                      // Final options maaay be wrong here hm
+                      {...innerComponentProperties}
+                      // should really call this builderAttributes bc people can name a
+                      // componet input "attributes"
+                      attributes={finalOptions}
+                      builderBlock={block}
+                    />
+                  ) : (
+                    <TagName {...finalOptions as any}>
+                      {InnerComponent && (
+                        <InnerComponent builderBlock={block} {...innerComponentProperties} />
+                      )}
+                      {(block as any).text || options.text ? (
+                        // TODO: remove me! No longer in use (maybe with rich text will be back tho)
+                        <TextTag
+                          dangerouslySetInnerHTML={{ __html: options.text || (block as any).text }}
                         />
-                      ))
-                    ) : null}
-                  </TagName>
-                )
-              }}
-            </BuilderAsyncRequestsContext.Consumer>
-          )
-        }}
-      </ClassNames>
+                      ) : !InnerComponent &&
+                        children &&
+                        Array.isArray(children) &&
+                        children.length ? (
+                        children.map((block: ElementType, index: number) => (
+                          <BuilderBlock
+                            key={((this.id as string) || '') + index}
+                            block={block}
+                            index={index}
+                            size={this.props.size}
+                            fieldName={this.props.fieldName}
+                            child={this.props.child}
+                            emailMode={this.props.emailMode}
+                          />
+                        ))
+                      ) : null}
+                    </TagName>
+                  )
+                }}
+              </BuilderAsyncRequestsContext.Consumer>
+            )
+          }}
+        </ClassNames>
+        <InsertSpacer id={block.id!} position="after" />
+      </React.Fragment>
     )
   }
 
