@@ -161,28 +161,12 @@ export class Columns extends React.Component<any> {
     return `calc(${this.getWidth(index)}% - ${subtractWidth}px)`
   }
 
-  get deviceSizeState(): Size {
-    const sizeMap: { [key: string]: Size } = {
-      desktop: 'large',
-      tablet: 'medium',
-      mobile: 'small'
-    }
-
-    // TODO: use context to pass this down on server
-    return Builder.isBrowser
-      ? sizes.getSizeForWidth(window.innerWidth)
-      : sizeMap[this.device] || 'large'
-  }
-
   get device() {
     return builder.getUserAttributes().device || 'desktop'
   }
 
   render() {
     const { columns, gutterSize } = this
-
-    const size = this.deviceSizeState
-    const stack = sizeNames.indexOf(size) <= sizeNames.indexOf(this.props.stackColumnsAt)
 
     return (
       // FIXME: make more elegant

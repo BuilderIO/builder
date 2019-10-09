@@ -151,7 +151,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
 
     // On the server apply the initial animation state (TODO: maybe not for load time hm)
     // TODO: maybe /s/ server renders content pages hmm
-    const isServer = !Builder.isBrowser
+    const isServer = !!this.privateState.state.isServer
     let initialAnimationStepStyles: any
     if (isServer) {
       const animation = block.animations && block.animations[0]
@@ -232,7 +232,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
     }
 
     const animations = self.animations
-    if (!Builder.isBrowser && animations && animations.length) {
+    if (!this.privateState.state.isBrowser && animations && animations.length) {
       const firstAnimation = animations[0]
       if (firstAnimation) {
         const firstStep = firstAnimation.steps && firstAnimation.steps[0]

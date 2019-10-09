@@ -32,7 +32,7 @@ export const Image = component({
     return `
     <img
       src="${options.image || ''}"
-      srcset="${srcSet}
+      srcset="${srcSet}"
       ${sizes ? `sizes="${sizes}"` : ''}
       style="${style({
         objectFit: backgroundSize || 'cover',

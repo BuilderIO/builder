@@ -137,6 +137,7 @@ export interface BuilderPageProps {
   inlineContent?: boolean
   builderBlock?: BuilderElement
   dataOnly?: boolean
+  hydrate?: boolean;
 }
 
 interface BuilderPageState {
@@ -239,6 +240,7 @@ function searchToObject(location: Location | Url) {
 export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageState> {
   subscriptions: Subscription = new Subscription()
   onStateChange = new BehaviorSubject<any>(null)
+  asServer = false;
 
   rootState = onChange({}, () => this.updateState())
 
@@ -259,10 +261,15 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
   constructor(props: BuilderPageProps) {
     super(props)
 
+    // TODO: pass this all the way down - symbols, etc
+    this.asServer = Boolean(props.hydrate && Builder.isBrowser)
+
     this.state = {
       state: Object.assign(this.rootState, {
         ...(this.props.content && this.props.content.data && this.props.content.data.state),
-        isBrowser: true,
+        isBrowser: !this.asServer,
+        isServer: !this.asServer,
+        _hydrate: props.hydrate,
         location: this.locationState,
         deviceSize: this.deviceSizeState,
         // TODO: will user attributes be ready here?
@@ -438,6 +445,14 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
   }
 
   componentDidMount() {
+    if (this.asServer) {
+      this.asServer = false;
+      this.updateState(state => {
+        state.isBrowser = true
+        state.isServer = false
+      })
+    }
+
     if (Builder.isIframe) {
       parent.postMessage({ type: 'builder.sdkInjected', data: { modelName: this.name } }, '*')
     }
