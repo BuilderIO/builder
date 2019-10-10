@@ -8,6 +8,7 @@ export interface ImgProps {
   builderBlock?: BuilderElement
 }
 
+// TODO: srcset, alt text input, object size/position input, etc
 @BuilderBlock({
   // friendlyName?
   name: 'Raw:Img',
@@ -30,9 +31,10 @@ export class Img extends React.Component<ImgProps> {
     const attributes = this.props.attributes || {}
     return (
       <img
-        src={this.props.image || attributes.src}
-        srcSet={this.props.image || attributes.srcSet || attributes.srcset}
         {...this.props.attributes}
+        src={this.props.image || attributes.src}
+        // TODO: generate this
+        // srcSet={this.props.image || attributes.srcSet || attributes.srcset}
       />
     )
   }
