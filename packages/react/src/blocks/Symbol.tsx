@@ -62,17 +62,19 @@ export class Symbol extends React.Component<SymbolProps> {
   render() {
     const symbol = this.props.symbol
 
+    let showPlaceholder = false;
+
     if (!symbol) {
-      return this.placeholder
+      showPlaceholder = true
     }
 
     const TagName = this.props.dataOnly
       ? NoWrap
       : (this.props.builderBlock && this.props.builderBlock.tagName) || 'div'
 
-    const { model, entry, data, content, inline } = symbol
+    const { model, entry, data, content, inline } = symbol || {}
     if (!model && !inline) {
-      return this.placeholder
+      showPlaceholder = true
     }
 
     let key = Builder.isEditing && builder.editingModel === model ? undefined : entry
@@ -91,15 +93,16 @@ export class Symbol extends React.Component<SymbolProps> {
             className={
               (attributes.class || attributes.className || '') +
               ' builder-symbol' +
-              (symbol.inline ? ' builder-inline-symbol' : '')
+              (symbol?.inline ? ' builder-inline-symbol' : '')
             }
           >
+            {showPlaceholder ? this.placeholder :
             <BuilderPage
               key={(model || 'no model') + ':' + (entry || 'no entry')}
               modelName={model}
               entry={entry}
               data={data}
-              inlineContent={symbol.inline}
+              inlineContent={symbol?.inline}
               content={content}
               options={{ key }}
               hydrate={state.state?._hydrate}
@@ -108,7 +111,7 @@ export class Symbol extends React.Component<SymbolProps> {
             >
               {/* TODO: builder blocks option for loading stuff */}
               {this.props.children}
-            </BuilderPage>
+            </BuilderPage>}
           </TagName>
         )}
       </BuilderStoreContext.Consumer>

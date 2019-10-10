@@ -36,7 +36,8 @@ class Growser extends React.Component<{ className?: string }> {
           (this.props.className || '') + ' ' + (this.state.grow ? 'builder__spacer__grow' : '')
         }
         css={{
-          height: this.state.grow ? 30 : 0
+          height: this.state.grow ? 30 : 0,
+          opacity: this.state.grow ? 1 : 0
         }}
       />
     )

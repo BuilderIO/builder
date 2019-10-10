@@ -168,7 +168,11 @@ export class Image extends React.Component<any> {
   getSrcSet() {
     const url = this.props.image
     if (!url) {
-      return url
+      return undefined
+    }
+
+    if (url.match(!/cdn\.shopify|builder\.io/)) {
+      return undefined;
     }
 
     const sizes = [100, 200, 400, 800, 1200, 1600, 2000]
