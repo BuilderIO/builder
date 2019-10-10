@@ -49,7 +49,7 @@ export class InsertSpacer extends React.Component<SpacerProps, SpacerState> {
             return null
           }
 
-          console.log('render?', spacer, this.props)
+          const isHorizontal = ['left', 'right'].includes(spacer.direction)
 
           return (
             <div
@@ -58,9 +58,16 @@ export class InsertSpacer extends React.Component<SpacerProps, SpacerState> {
                 // width: 0,
                 width: '100%',
                 height: 30,
-                backgroundColor: 'lightsteelblue',
+                alignSelf: 'stretch',
+                backgroundColor: 'rgba(28, 151, 204, 0.2)',
+                pointerEvents: 'none',
                 borderRadius: 4,
-                border: '1px solid steelblue'
+                transition: 'all 0.2s ease-in-out !important',
+                border: '1px solid 1px solid rgba(28, 151, 204, 0.4)',
+                ...(isHorizontal && {
+                  height: '100%',
+                  width: 30
+                })
                 // ...(this.state.grow && {
                 //   width: '100%',
                 //   height: 30
