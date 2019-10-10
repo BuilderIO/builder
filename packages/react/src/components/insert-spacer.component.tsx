@@ -1,3 +1,6 @@
+/** @jsx jsx */
+import { jsx } from '@emotion/core'
+
 import React from 'react'
 import { Builder } from '@builder.io/sdk'
 import { BuilderStoreContext } from 'src/store/builder-store'
@@ -11,12 +14,14 @@ interface SpacerState {
   grow: boolean
 }
 
-export class InsertSpacer extends React.Component<SpacerProps, SpacerState> {
+class Growser extends React.Component {
   state = {
     grow: false,
     show: false
   }
+}
 
+export class InsertSpacer extends React.Component<SpacerProps, SpacerState> {
   componentDidMount() {
     // TODO: only after grow
     // this.setState({
@@ -29,13 +34,18 @@ export class InsertSpacer extends React.Component<SpacerProps, SpacerState> {
       return null
     }
 
-    const { show } = this.state
-
     return (
       <BuilderStoreContext.Consumer>
         {({ state }) => {
           const spacer = state._spacer
           if (!(spacer && spacer.subject === this.props.id)) {
+            return null
+          }
+
+          if (['top', 'left'].includes(spacer.direction) && this.props.position === 'after') {
+            return null
+          }
+          if (['bottom', 'right'].includes(spacer.direction) && this.props.position === 'before') {
             return null
           }
 
