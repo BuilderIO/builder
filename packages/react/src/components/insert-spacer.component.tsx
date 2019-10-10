@@ -32,10 +32,12 @@ class Growser extends React.Component<{ className?: string }> {
   render() {
     return (
       <div
+        className={
+          (this.props.className || '') + ' ' + (this.state.grow ? 'builder__spacer__grow' : '')
+        }
         css={{
           height: this.state.grow ? 30 : 0
         }}
-        className={this.props.className}
       />
     )
   }
@@ -80,7 +82,6 @@ export class InsertSpacer extends React.Component<SpacerProps, SpacerState> {
               css={{
                 // width: 0,
                 width: '100%',
-                height: 30,
                 alignSelf: 'stretch',
                 backgroundColor: 'rgba(28, 151, 204, 0.2)',
                 pointerEvents: 'none',
