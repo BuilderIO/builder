@@ -6,10 +6,13 @@ import json from 'rollup-plugin-json'
 import { uglify } from 'rollup-plugin-uglify'
 import replace from 'rollup-plugin-replace'
 import alias from 'rollup-plugin-alias'
+import serve from 'rollup-plugin-serve'
 import * as path from 'path'
 import visualizer from 'rollup-plugin-visualizer'
 
 const pkg = require('./package.json')
+
+const SERVE = process.env.SERVE === 'true';
 
 const libraryName = 'builder-webcomponents'
 
@@ -73,7 +76,10 @@ const options = {
       // }
     }),
     uglify(),
-    sourceMaps()
+    sourceMaps(),
+    ...(SERVE ? [
+      serve({ contentBase: '.', port: 1267 })
+    ] : [])
   ]
 }
 

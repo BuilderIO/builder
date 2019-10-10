@@ -19,9 +19,9 @@ export class InsertSpacer extends React.Component<SpacerProps, SpacerState> {
 
   componentDidMount() {
     // TODO: only after grow
-    this.setState({
-      grow: true
-    })
+    // this.setState({
+    //   grow: true
+    // })
   }
 
   render() {
@@ -35,20 +35,22 @@ export class InsertSpacer extends React.Component<SpacerProps, SpacerState> {
       <BuilderStoreContext.Consumer>
         {({ state }) => {
           const spacer = state._spacer
-          console.log('spacer', spacer, this.props.id)
           if (!(spacer && spacer.subject === this.props.id)) {
             return null
           }
 
+          console.log('render?', spacer, this.props)
+
           return (
             <div
+              className="builder__spacer"
               css={{
                 // width: 0,
                 width: '100%',
                 height: 30,
                 backgroundColor: 'lightsteelblue',
                 borderRadius: 4,
-                border: '1px solid steelblue',
+                border: '1px solid steelblue'
                 // ...(this.state.grow && {
                 //   width: '100%',
                 //   height: 30
