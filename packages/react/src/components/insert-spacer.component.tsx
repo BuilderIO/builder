@@ -14,10 +14,30 @@ interface SpacerState {
   grow: boolean
 }
 
-class Growser extends React.Component {
+class Growser extends React.Component<{ className?: string }> {
   state = {
     grow: false,
     show: false
+  }
+
+  componentDidMount() {
+    // setTimeout needed?
+    setTimeout(() => {
+      this.setState({
+        grow: true
+      })
+    })
+  }
+
+  render() {
+    return (
+      <div
+        css={{
+          height: this.state.grow ? 30 : 0
+        }}
+        className={this.props.className}
+      />
+    )
   }
 }
 
@@ -50,9 +70,12 @@ export class InsertSpacer extends React.Component<SpacerProps, SpacerState> {
           }
 
           const isHorizontal = ['left', 'right'].includes(spacer.direction)
+          if (isHorizontal) {
+            return null
+          }
 
           return (
-            <div
+            <Growser
               className="builder__spacer"
               css={{
                 // width: 0,
@@ -63,11 +86,7 @@ export class InsertSpacer extends React.Component<SpacerProps, SpacerState> {
                 pointerEvents: 'none',
                 borderRadius: 4,
                 transition: 'all 0.2s ease-in-out !important',
-                border: '1px solid rgba(28, 151, 204, 0.4)',
-                ...(isHorizontal && {
-                  height: '100%',
-                  width: 30
-                })
+                border: '1px solid rgba(28, 151, 204, 0.4)'
                 // ...(this.state.grow && {
                 //   width: '100%',
                 //   height: 30
