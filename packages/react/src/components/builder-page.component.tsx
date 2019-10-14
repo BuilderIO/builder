@@ -836,13 +836,13 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     // TODO: if model is page... hmm
     if ((this.name === 'page' || this.name === 'docs-content') && Builder.isBrowser) {
       if (data) {
-        const { title, description } = data
+        const { title, pageTitle, description, pageDescription } = data
 
-        if (title) {
-          document.title = title
+        if (title || pageTitle) {
+          document.title = title || pageTitle
         }
 
-        if (description) {
+        if (description || pageDescription) {
           let descriptionTag = document.querySelector('meta[name="description"]')
 
           if (!descriptionTag) {
@@ -851,7 +851,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
             document.head.appendChild(descriptionTag)
           }
 
-          descriptionTag!.setAttribute('content', description)
+          descriptionTag!.setAttribute('content', description || pageDescription)
         }
       }
     }
