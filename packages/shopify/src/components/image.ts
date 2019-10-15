@@ -29,11 +29,12 @@ export const Image = component({
         .join(', ');
 
     // TODO: attribute({}) helper to trim out undefined etc
+    // TODO: add srcset and sizes back
+    // srcset="${srcSet}"
+    // ${sizes ? `sizes="${sizes}"` : ''}
     return `
     <img
       src="${options.image || ''}"
-      srcset="${srcSet}"
-      ${sizes ? `sizes="${sizes}"` : ''}
       style="${style({
         objectFit: backgroundSize || 'cover',
         objectPosition: backgroundPosition || 'center',
