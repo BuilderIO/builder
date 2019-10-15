@@ -5,6 +5,7 @@ import { BuilderElement, Builder } from '@builder.io/sdk'
 interface Props {
   code: string
   builderBlock?: BuilderElement
+  replaceNodes?: boolean
 }
 
 @BuilderBlock({
@@ -28,10 +29,15 @@ export class CustomCode extends React.Component<Props> {
   scriptsRun = new Set()
 
   firstLoad = true
-  replaceNodes = Builder.isBrowser && location.href.includes('builder.customCodeRefs=true')
+  replaceNodes: boolean
 
   constructor(props: Props) {
     super(props)
+
+    this.replaceNodes =
+      props.replaceNodes ||
+      (Builder.isBrowser && location.href.includes('builder.customCodeRefs=true'))
+
     if (this.replaceNodes && Builder.isBrowser && this.firstLoad && this.props.builderBlock) {
       console.debug('Replace 1')
       // How do if multiple...
@@ -53,14 +59,11 @@ export class CustomCode extends React.Component<Props> {
   }
 
   componentDidMount() {
-    this.firstLoad = false;
+    this.firstLoad = false
     this.findAndRunScripts()
     if (this.replaceNodes && this.originalRef && this.elementRef) {
       console.debug('Replace 2')
-      this.elementRef.insertAdjacentElement('beforebegin', this.originalRef)
-      this.elementRef.remove()
-      this.elementRef = this.originalRef
-      this.originalRef = null
+      this.elementRef.appendChild(this.originalRef)
     }
   }
 
@@ -100,7 +103,9 @@ export class CustomCode extends React.Component<Props> {
       <div
         ref={ref => (this.elementRef = ref)}
         className="builder-custom-code"
-        dangerouslySetInnerHTML={{ __html: this.props.code }}
+        {...!this.replaceNodes && {
+          dangerouslySetInnerHTML: { __html: this.props.code }
+        }}
       />
     )
   }
