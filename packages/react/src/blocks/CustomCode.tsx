@@ -8,6 +8,27 @@ interface Props {
   replaceNodes?: boolean
 }
 
+const globalReplaceNodes =
+  (Builder.isBrowser &&
+    location.href.includes('builder.customCodeRefs=true') &&
+    ({} as { [key: string]: Element })) ||
+  null
+
+if (globalReplaceNodes) {
+  try {
+    document.querySelectorAll('.builder-custom-code').forEach(el => {
+      const parent = el.parentElement
+      const id = parent && parent.getAttribute('builder-id')
+      if (id) {
+        globalReplaceNodes[id] = el
+        el.remove()
+      }
+    })
+  } catch (err) {
+    console.error('Builder replace nodes error:', err)
+  }
+}
+
 @BuilderBlock({
   name: 'Custom Code',
   static: true,
@@ -22,8 +43,8 @@ interface Props {
   ]
 })
 export class CustomCode extends React.Component<Props> {
-  elementRef: HTMLElement | null = null
-  originalRef: HTMLElement | null = null
+  elementRef: Element | null = null
+  originalRef: Element | null = null
 
   scriptsInserted = new Set()
   scriptsRun = new Set()
@@ -39,15 +60,22 @@ export class CustomCode extends React.Component<Props> {
       (Builder.isBrowser && location.href.includes('builder.customCodeRefs=true'))
 
     if (this.replaceNodes && Builder.isBrowser && this.firstLoad && this.props.builderBlock) {
-      console.debug('Replace 1')
-      // How do if multiple...
-      const existing = document.querySelectorAll(
-        `.${this.props.builderBlock.id} .builder-custom-code`
-      )
-      if (existing.length === 1) {
-        const node = existing[0]
-        this.originalRef = node as HTMLElement
-        this.originalRef.remove()
+      const id = this.props.builderBlock.id
+      console.debug('Replace 1.1')
+      if (id && globalReplaceNodes?.[id]) {
+        const el = globalReplaceNodes[id]
+        this.originalRef = el;
+        delete globalReplaceNodes[id];
+      } else {
+        // How do if multiple...
+        const existing = document.querySelectorAll(
+          `.${this.props.builderBlock.id} .builder-custom-code`
+        )
+        if (existing.length === 1) {
+          const node = existing[0]
+          this.originalRef = node as HTMLElement
+          this.originalRef.remove()
+        }
       }
     }
   }
