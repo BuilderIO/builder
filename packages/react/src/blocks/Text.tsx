@@ -130,10 +130,10 @@ export class Text extends React.Component<TextProps> {
           }}
           css={{
             outline: 'none',
-            [`& p:first-child, & .builder-paragraph:first-child`]: {
+            '& p:first-of-type, & .builder-paragraph:first-of-type': {
               margin: 0
             },
-            [`& > p, & .builder-paragraph`]: {
+            '& > p, & .builder-paragraph': {
               color: 'inherit',
               lineHeight: 'inherit',
               letterSpacing: 'inherit',

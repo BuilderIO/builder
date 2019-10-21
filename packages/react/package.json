@@ -12,8 +12,7 @@
     "index.js",
     "15.js",
     "server.js",
-    "preact.js",
-    "inferno.js"
+    "preact.js"
   ],
   "author": "Steve Sewell <steve@builder.io>",
   "repository": {
@@ -140,10 +139,7 @@
   },
   "//": "TODO: maybe make @builder.io/sdk peerdependency",
   "optionalDependencies": {
-    "create-inferno-context": "^0.2.4",
     "create-react-context": "^0.2.3",
-    "inferno": "^7.1.9",
-    "inferno-compat": "^7.1.9",
     "node-fetch": "^2.3.0",
     "prop-types": "^15.7.2",
     "vm2": "^3.6.4"

@@ -177,7 +177,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
           }
         } else {
           styles[`@media only screen and (max-width: ${sizes[size].max}px)`] = {
-            [`&.builder-block`]: self.responsiveStyles[size]
+            '&.builder-block': self.responsiveStyles[size]
           }
         }
       }
