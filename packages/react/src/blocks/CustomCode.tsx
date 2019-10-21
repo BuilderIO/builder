@@ -10,7 +10,7 @@ interface Props {
 
 const globalReplaceNodes =
   (Builder.isBrowser &&
-    location.href.includes('builder.customCodeRefs=true') &&
+    (location.href.includes('builder.customCodeRefs=true') || location.host === 'heybloomwell.com') &&
     ({} as { [key: string]: Element })) ||
   null
 
