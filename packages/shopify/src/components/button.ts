@@ -1,7 +1,7 @@
 import { component } from '../constants/components';
 
 export const Button = component({
-  name: 'Button',
+  name: 'Core:Button',
   noWrap: true,
   component: (block, renderOptions, attributes) => {
     const { options } = block.component!;
