@@ -877,7 +877,7 @@ export class Builder {
     if (isBrowser) {
       addEventListener('message', event => {
         const url = parse(event.origin);
-        const allowedHosts = ['builder.io', 'localhost', 'local.builder.io', 'qa.builder.io'];
+        const allowedHosts = ['builder.io', 'localhost', 'local.builder.io', 'qa.builder.io', 'beta.builder.io'];
         if (allowedHosts.indexOf(url.hostname as string) === -1) {
           return;
         }
