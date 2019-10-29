@@ -54,4 +54,3 @@ if (typeof window !== 'undefined') {
   )
 }
 
-//
