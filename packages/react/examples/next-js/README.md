@@ -13,7 +13,8 @@ Frist things first, if you don't yet have one, create a free account at [Builder
 
 ### Update your next.config.js
 
-For server side rendering we need to do one update - use the server side build for @builder.io/react
+For server side rendering we need to do one update to use the server side build for @builder.io/react
+in webpack when running server side
 
 ```js
 module.exports = {

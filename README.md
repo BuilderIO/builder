@@ -33,7 +33,7 @@
 | Email                                                        |                            Stable                             |
 | AMP                                                          |                            Stable                             |
 | Preact                                                       |                            Stable                             |
-| **Everyting else** <br/> Go, Php, Java, Vue, Vanilla JS, etc | Use our [HTML API](https://builder.io/c/docs/getting-started) |
+| **Everyting else** <br/> Go, Php, Java, Vue, Ruby, Vanilla JS, etc | Use our [HTML API](https://builder.io/c/docs/getting-started) |
 
 Want suppoert for something not listed here or for us to priotize something coming soon? Drop us an issue and let us know! We prioritize based on the community's needs and interests.
 
