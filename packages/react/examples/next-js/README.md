@@ -10,6 +10,23 @@ Frist things first, if you don't yet have one, create a free account at [Builder
 
 `npm install --save @builder.io/react @builder.io/widgets`
 
+
+### Update your next.config.js
+
+For server side rendering we need to do one update - use the server side build for @builder.io/react
+
+```js
+module.exports = {
+  webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
+    if (isServer) {
+      config.alias['@builder.io/react'] = '@builder.io/react/server'
+    }
+    return config
+  }
+}
+```
+
+
 ### Add the components and getInitialProps
 
 To any page in next.js, you can fetch for a Builder page, and handle wether builder found a
