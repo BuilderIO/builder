@@ -449,7 +449,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
     // TODO: test it out
     return (
       <React.Fragment>
-        <InsertSpacer id={block.id!} position="before" />
+        {/* <InsertSpacer id={block.id!} position="before" /> */}
         <ClassNames>
           {({ css, cx }) => {
             if (!this.props.emailMode) {
@@ -514,7 +514,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
             )
           }}
         </ClassNames>
-        <InsertSpacer id={block.id!} position="after" />
+        {/* <InsertSpacer id={block.id!} position="after" /> */}
       </React.Fragment>
     )
   }
