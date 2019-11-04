@@ -94,7 +94,12 @@ export default [
   // },
   {
     ...options,
-    output: [{ dir: './dist/system', format: 'system', sourcemap: true }]
+    output: [{ dir: './dist/system', format: 'system', sourcemap: true }],
+    plugins: options.plugins.concat([
+      replace({
+        'process.env.ANGULAR': 'false'
+      })
+    ])
   },
   {
     ...options,
@@ -124,7 +129,12 @@ export default [
   {
     ...options,
     input: `src/${libraryName}-lite.ts`,
-    output: [{ dir: './dist/system/lite', format: 'system', sourcemap: true }]
+    output: [{ dir: './dist/system/lite', format: 'system', sourcemap: true }],
+    plugins: options.plugins.concat([
+      replace({
+        'process.env.ANGULAR': 'false'
+      })
+    ])
   },
   {
     ...options,
