@@ -6,7 +6,8 @@ import {
   BuilderStoreContext,
   stringToFunction,
   BuilderAsyncRequestsContext,
-  Builder
+  Builder,
+  withBuilder
 } from '@builder.io/react'
 import React from 'react'
 import Masonry from 'react-masonry-component'
@@ -67,73 +68,7 @@ interface MasonryProps {
 }
 
 // TODO: column with, gutter, etc options
-@BuilderBlock({
-  name: 'Builder:Masonry',
-  // TODO: default children
-  image:
-    'https://cdn.builder.io/api/v1/image/assets%2FBvYIl5jKN9QpChUB3PVzsTe2ZSI2%2F7ed6bd8129d148608ecec09300786d71?width=2000&height=1200',
-  canHaveChildren: true,
-  defaultStyles: {
-    paddingLeft: '20px',
-    paddingRight: '20px',
-    paddingBottom: '20px'
-  },
-  defaultChildren: [
-    getRandomAspectTile(),
-    getRandomAspectTile(),
-    getRandomAspectTile(),
-    getRandomAspectTile(),
-    getRandomAspectTile(),
-    getRandomAspectTile(),
-    getRandomAspectTile(),
-    getRandomAspectTile(),
-    getRandomAspectTile()
-  ],
-  inputs: [
-    {
-      name: 'columnWidth',
-      // TODO: type: 'styleNumber'
-      type: 'string',
-      helperText: 'Width of each tile, as a CSS value. E.g. "200px" or "50%"',
-      defaultValue: '200px'
-    },
-    {
-      name: 'gutterSize',
-      type: 'number',
-      helperText: 'Horizontal space between tiles in pixels, e.g. "20" for 20 pixels wide',
-      defaultValue: 0,
-      advanced: true
-    },
-    {
-      name: 'tiles',
-      type: 'list',
-      subFields: [
-        {
-          name: 'content',
-          type: 'uiBlocks',
-          hideFromUI: true,
-          defaultValue: [defaultTile]
-        }
-      ],
-      defaultValue: [],
-      showIf: options => !options.get('useChildrenForTiles')
-    },
-    {
-      name: 'useChildrenForTiles',
-      type: 'boolean',
-      helperText:
-        'Use child elements for each slide, instead of the array. Useful for dynamically repeating tiles',
-      advanced: true,
-      defaultValue: true,
-      onChange: (options: Map<string, any>) => {
-        if (options.get('useChildrenForTiles') === true) {
-          options.set('tiles', [])
-        }
-      }
-    }
-  ]
-})
-export class BuilderMasonry extends React.Component<MasonryProps> {
+export class BuilderMasonryComponent extends React.Component<MasonryProps> {
   divRef: HTMLElement | null = null
   masonryRef: React.Component<Masonry.MasonryPropTypes> | null = null
 
@@ -319,3 +254,70 @@ export class BuilderMasonry extends React.Component<MasonryProps> {
     )
   }
 }
+
+export const BuilderMasonry = withBuilder(BuilderMasonryComponent, {
+  name: 'Builder:Masonry',
+  // TODO: default children
+  image:
+    'https://cdn.builder.io/api/v1/image/assets%2FBvYIl5jKN9QpChUB3PVzsTe2ZSI2%2F7ed6bd8129d148608ecec09300786d71?width=2000&height=1200',
+  canHaveChildren: true,
+  defaultStyles: {
+    paddingLeft: '20px',
+    paddingRight: '20px',
+    paddingBottom: '20px'
+  },
+  defaultChildren: [
+    getRandomAspectTile(),
+    getRandomAspectTile(),
+    getRandomAspectTile(),
+    getRandomAspectTile(),
+    getRandomAspectTile(),
+    getRandomAspectTile(),
+    getRandomAspectTile(),
+    getRandomAspectTile(),
+    getRandomAspectTile()
+  ],
+  inputs: [
+    {
+      name: 'columnWidth',
+      // TODO: type: 'styleNumber'
+      type: 'string',
+      helperText: 'Width of each tile, as a CSS value. E.g. "200px" or "50%"',
+      defaultValue: '200px'
+    },
+    {
+      name: 'gutterSize',
+      type: 'number',
+      helperText: 'Horizontal space between tiles in pixels, e.g. "20" for 20 pixels wide',
+      defaultValue: 0,
+      advanced: true
+    },
+    {
+      name: 'tiles',
+      type: 'list',
+      subFields: [
+        {
+          name: 'content',
+          type: 'uiBlocks',
+          hideFromUI: true,
+          defaultValue: [defaultTile]
+        }
+      ],
+      defaultValue: [],
+      showIf: options => !options.get('useChildrenForTiles')
+    },
+    {
+      name: 'useChildrenForTiles',
+      type: 'boolean',
+      helperText:
+        'Use child elements for each slide, instead of the array. Useful for dynamically repeating tiles',
+      advanced: true,
+      defaultValue: true,
+      onChange: (options: Map<string, any>) => {
+        if (options.get('useChildrenForTiles') === true) {
+          options.set('tiles', [])
+        }
+      }
+    }
+  ]
+})

@@ -18,7 +18,7 @@ export const Image = component({
   name: 'Image',
   component: (block: BuilderElement, renderOptions: Options) => {
     const { options } = block.component!;
-    const { aspectRatio, backgroundSize, backgroundPosition, srcset, sizes, image } = options;
+    const { aspectRatio, backgroundSize, backgroundPosition, srcset, sizes, image, lazy } = options;
     const widths = [100, 200, 400, 800, 1200, 1600, 2000];
 
     const srcSet =
@@ -35,7 +35,7 @@ export const Image = component({
     // srcset="${srcSet}"
     // ${sizes ? `sizes="${sizes}"` : ''}
     return `
-      <picture>
+      ${lazy ? '' : `<picture>
         ${
           srcSet && srcSet.match(/builder\.io/)
             ? `<source srcset="${srcSet.replace(/\?/g, '?format=webp&')}" type="image/webp" />`
@@ -44,6 +44,7 @@ export const Image = component({
         <img
           src="${options.image || ''}"
           srcset="${srcSet || options.image || ''}"
+          sizes="${sizes || '100vw'}"
           style="${style({
             objectFit: backgroundSize || 'cover',
             objectPosition: backgroundPosition || 'center',
@@ -55,7 +56,7 @@ export const Image = component({
               left: '0',
             }),
           })}" />
-      </picture>
+      </picture>`}
       ${
         aspectRatio
           ? `<div
