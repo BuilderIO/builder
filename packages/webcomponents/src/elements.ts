@@ -3,6 +3,8 @@ import { GetContentOptions, Builder, builder } from '@builder.io/sdk'
 const importReact = () => import('@builder.io/react')
 const importWidgets = () => import('@builder.io/widgets')
 
+const componentName = process.env.ANGULAR ? 'builder-component-element' : 'builder-component'
+
 if (Builder.isIframe) {
   importReact()
   importWidgets()
@@ -17,7 +19,7 @@ function onReady(cb: Function) {
   }
 }
 
-if (Builder.isBrowser && !customElements.get('builder-component')) {
+if (Builder.isBrowser && !customElements.get(componentName)) {
   const BuilderWC = {
     Builder,
     builder
@@ -53,7 +55,7 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
     for (let i = 0; i < matches.length; i++) {
       const el = matches[i]
       const attrs = el.attributes
-      const newEl = document.createElement('builder-component')
+      const newEl = document.createElement(componentName)
       for (let i = attrs.length - 1; i >= 0; i--) {
         const attr = attrs[i]
         if (attr.name.indexOf('data-') === 0) {
@@ -116,7 +118,13 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
       }
     }
 
+    connected = false
+
     connectedCallback() {
+      if (this.connected) {
+        return
+      }
+      this.connected = true
       const prerenderAttr = this.getAttribute('prerender')
       if (prerenderAttr) {
         this.prerender = prerenderAttr === 'false' ? false : this.prerender
@@ -344,7 +352,7 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
         .subscribe(
           async data => {
             if (unsubscribed) {
-              console.log('unsubscribe didnt work!')
+              console.debug('Unsubscribe didnt work!')
               return
             }
 
@@ -443,7 +451,8 @@ if (Builder.isBrowser && !customElements.get('builder-component')) {
       }
     }
   }
-  customElements.define('builder-component', BuilderComponentElement)
+
+  customElements.define(componentName, BuilderComponentElement)
 
   class BuilderInit extends HTMLElement {
     init() {

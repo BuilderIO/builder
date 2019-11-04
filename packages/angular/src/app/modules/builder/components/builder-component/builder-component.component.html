@@ -11,6 +11,7 @@
   <builder-blocks
     *ngIf="content"
     field="blocks"
+    [model]="model"
     [blocks]="content.blocks || content"
   ></builder-blocks>
   <ng-content *ngIf="loading"></ng-content>

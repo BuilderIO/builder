@@ -12,7 +12,7 @@ import visualizer from 'rollup-plugin-visualizer'
 
 const pkg = require('./package.json')
 
-const SERVE = process.env.SERVE === 'true';
+const SERVE = process.env.SERVE === 'true'
 
 const libraryName = 'builder-webcomponents'
 
@@ -77,9 +77,7 @@ const options = {
     }),
     uglify(),
     sourceMaps(),
-    ...(SERVE ? [
-      serve({ contentBase: '.', port: 1267 })
-    ] : [])
+    ...(SERVE ? [serve({ contentBase: '.', port: 1267 })] : [])
   ]
 }
 
@@ -97,6 +95,15 @@ export default [
   {
     ...options,
     output: [{ dir: './dist/system', format: 'system', sourcemap: true }]
+  },
+  {
+    ...options,
+    output: [{ dir: './dist/system/angular', format: 'system', sourcemap: true }],
+    plugins: options.plugins.concat([
+      replace({
+        'process.env.ANGULAR': true
+      })
+    ])
   },
   // {
   //   ...options,
@@ -118,5 +125,15 @@ export default [
     ...options,
     input: `src/${libraryName}-lite.ts`,
     output: [{ dir: './dist/system/lite', format: 'system', sourcemap: true }]
+  },
+  {
+    ...options,
+    input: `src/${libraryName}-lite.ts`,
+    output: [{ dir: './dist/system/angular/lite', format: 'system', sourcemap: true }],
+    plugins: options.plugins.concat([
+      replace({
+        'process.env.ANGULAR': true
+      })
+    ])
   }
 ]
