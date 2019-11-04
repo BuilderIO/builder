@@ -7,6 +7,7 @@ import { Builder, builder, BuilderElement } from '@builder.io/sdk'
 import hash from 'hash-sum'
 import { NoWrap } from 'src/components/no-wrap'
 import { BuilderStoreContext } from 'src/store/builder-store'
+import { withBuilder } from 'src/functions/with-builder'
 
 const size = (thing: object) => Object.keys(thing).length
 
@@ -25,31 +26,7 @@ export interface SymbolProps {
   attributes?: any
 }
 
-@BuilderBlock({
-  // Builder:Symbol
-  name: 'Symbol',
-  noWrap: true,
-  static: true,
-  // TODO: allow getter for icon so different icon if data symbol hm,
-  // Maybe "this" context is the block element in editor, and it's the
-  // builderBlock json otherwise. In BuilderBlock decorator find any getters
-  // and convert to strings when passing and convert back to getters after
-  // with `this` bound
-  inputs: [
-    {
-      name: 'symbol',
-      type: 'uiSymbol'
-    },
-    {
-      name: 'dataOnly',
-      helperText: `Make this a data symbol that doesn't display any UI`,
-      type: 'boolean',
-      defaultValue: false,
-      advanced: true
-    }
-  ]
-})
-export class Symbol extends React.Component<SymbolProps> {
+class SymbolComponent extends React.Component<SymbolProps> {
   get placeholder() {
     return (
       <div css={{ padding: 10 }}>
@@ -118,3 +95,28 @@ export class Symbol extends React.Component<SymbolProps> {
     )
   }
 }
+
+export const Symbol = withBuilder(SymbolComponent, {
+  // Builder:Symbol
+  name: 'Symbol',
+  noWrap: true,
+  static: true,
+  // TODO: allow getter for icon so different icon if data symbol hm,
+  // Maybe "this" context is the block element in editor, and it's the
+  // builderBlock json otherwise. In BuilderBlock decorator find any getters
+  // and convert to strings when passing and convert back to getters after
+  // with `this` bound
+  inputs: [
+    {
+      name: 'symbol',
+      type: 'uiSymbol'
+    },
+    {
+      name: 'dataOnly',
+      helperText: `Make this a data symbol that doesn't display any UI`,
+      type: 'boolean',
+      defaultValue: false,
+      advanced: true
+    }
+  ]
+})

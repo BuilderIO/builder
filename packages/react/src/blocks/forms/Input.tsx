@@ -1,6 +1,6 @@
 import React from 'react'
-import { BuilderBlock } from '../../decorators/builder-block.decorator'
 import { Builder } from '@builder.io/sdk'
+import { withBuilder } from 'src/functions/with-builder'
 
 // TODO: how do onchange...
 // TODO: actions all custom events and custom js gets
@@ -15,7 +15,23 @@ export interface FormInputProps {
   defaultValue?: string
 }
 
-@BuilderBlock({
+class FormInputComponent extends React.Component<FormInputProps> {
+  render() {
+    return (
+      <input
+        key={Builder.isEditing && this.props.defaultValue ? this.props.defaultValue : 'default-key'}
+        placeholder={this.props.placeholder}
+        type={this.props.type}
+        name={this.props.name}
+        value={this.props.value}
+        defaultValue={this.props.defaultValue}
+        {...this.props.attributes}
+      />
+    )
+  }
+}
+
+export const FormInput = withBuilder(FormInputComponent, {
   name: 'Form:Input',
   image:
     'https://cdn.builder.io/api/v1/image/assets%2FIsxPKMo2gPRRKeakUztj1D6uqed2%2Fad6f37889d9e40bbbbc72cdb5875d6ca',
@@ -92,18 +108,3 @@ export interface FormInputProps {
     borderColor: '#ccc'
   }
 })
-export class FormInput extends React.Component<FormInputProps> {
-  render() {
-    return (
-      <input
-        key={Builder.isEditing && this.props.defaultValue ? this.props.defaultValue : 'default-key'}
-        placeholder={this.props.placeholder}
-        type={this.props.type}
-        name={this.props.name}
-        value={this.props.value}
-        defaultValue={this.props.defaultValue}
-        {...this.props.attributes}
-      />
-    )
-  }
-}

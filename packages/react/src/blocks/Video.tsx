@@ -2,11 +2,91 @@
 import { jsx } from '@emotion/core'
 import React from 'react'
 
-import { BuilderBlock } from '../decorators/builder-block.decorator'
+import { withBuilder } from 'src/functions/with-builder'
 
 const DEFAULT_ASPECT_RATIO = 0.7004048582995948
 
-@BuilderBlock({
+class VideoComponent extends React.Component<{
+  video: string
+  autoPlay?: boolean
+  controls?: boolean
+  muted?: boolean
+  loop?: boolean
+  playsInline?: boolean
+  aspectRatio?: number
+  width?: number
+  height?: number
+  fit?: 'contain' | 'cover' | 'fill'
+  position?: string
+  posterImage?: string
+}> {
+  video: HTMLVideoElement | null = null
+
+  updateVideo() {
+    if (this.video) {
+      this.video.setAttribute('muted', String(this.props.muted))
+      this.video.setAttribute('playsinline', String(this.props.playsInline))
+      this.video.setAttribute('autoplay', String(this.props.autoPlay))
+    }
+  }
+
+  componentDidUpdate() {
+    this.updateVideo()
+  }
+
+  componentDidMount() {
+    this.updateVideo()
+  }
+
+  render() {
+    const { aspectRatio } = this.props
+    return (
+      <div css={{ position: 'relative', fontSize: 0 }}>
+        <video
+          key={this.props.video || 'no-src'}
+          poster={this.props.posterImage}
+          // height={this.props.height || '100%'}
+          // width={this.props.width || '100%'}
+          ref={ref => (this.video = ref)}
+          autoPlay={this.props.autoPlay}
+          // src={this.props.video}
+          muted={this.props.muted}
+          controls={this.props.controls}
+          loop={this.props.loop}
+          className="builder-video"
+          // type="video/mp4"
+          css={{
+            width: '100%',
+            height: '100%',
+            objectFit: this.props.fit,
+            objectPosition: this.props.position,
+            // Hack to get object fit to work as expected and not have the video
+            // overflow
+            borderRadius: 1,
+            ...(aspectRatio
+              ? {
+                  position: 'absolute'
+                }
+              : null)
+          }}
+        >
+          <source type="video/mp4" src={this.props.video} />
+        </video>
+        {aspectRatio ? (
+          <div
+            css={{
+              width: '100%',
+              paddingTop: aspectRatio * 100 + '%',
+              pointerEvents: 'none'
+            }}
+          />
+        ) : null}
+      </div>
+    )
+  }
+}
+
+export const Video = withBuilder(VideoComponent, {
   name: 'Video',
   static: true,
   image:
@@ -122,12 +202,12 @@ const DEFAULT_ASPECT_RATIO = 0.7004048582995948
     {
       name: 'height',
       type: 'number',
-      advanced: true,
+      advanced: true
     },
     {
       name: 'width',
       type: 'number',
-      advanced: true,
+      advanced: true
     },
     {
       name: 'aspectRatio',
@@ -137,82 +217,3 @@ const DEFAULT_ASPECT_RATIO = 0.7004048582995948
     }
   ]
 })
-export class Video extends React.Component<{
-  video: string
-  autoPlay?: boolean
-  controls?: boolean
-  muted?: boolean
-  loop?: boolean
-  playsInline?: boolean
-  aspectRatio?: number
-  width?: number
-  height?: number
-  fit?: 'contain' | 'cover' | 'fill'
-  position?: string
-  posterImage?: string
-}> {
-  video: HTMLVideoElement | null = null
-
-  updateVideo() {
-    if (this.video) {
-      this.video.setAttribute('muted', String(this.props.muted))
-      this.video.setAttribute('playsinline', String(this.props.playsInline))
-      this.video.setAttribute('autoplay', String(this.props.autoPlay))
-    }
-  }
-
-  componentDidUpdate() {
-    this.updateVideo()
-  }
-
-  componentDidMount() {
-    this.updateVideo()
-  }
-
-  render() {
-    const { aspectRatio } = this.props
-    return (
-      <div css={{ position: 'relative', fontSize: 0 }}>
-        <video
-          key={this.props.video || 'no-src'}
-          poster={this.props.posterImage}
-          // height={this.props.height || '100%'}
-          // width={this.props.width || '100%'}
-          ref={ref => (this.video = ref)}
-          autoPlay={this.props.autoPlay}
-          // src={this.props.video}
-          muted={this.props.muted}
-          controls={this.props.controls}
-          loop={this.props.loop}
-          className="builder-video"
-          // type="video/mp4"
-          css={{
-            width: '100%',
-            height: '100%',
-            objectFit: this.props.fit,
-            objectPosition: this.props.position,
-            // Hack to get object fit to work as expected and not have the video
-            // overflow
-            borderRadius: 1,
-            ...(aspectRatio
-              ? {
-                  position: 'absolute'
-                }
-              : null)
-          }}
-        >
-          <source type="video/mp4" src={this.props.video} />
-        </video>
-        {aspectRatio ? (
-          <div
-            css={{
-              width: '100%',
-              paddingTop: aspectRatio * 100 + '%',
-              pointerEvents: 'none'
-            }}
-          />
-        ) : null}
-      </div>
-    )
-  }
-}

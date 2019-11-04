@@ -1,5 +1,5 @@
 import React from 'react'
-import { BuilderBlock } from '../decorators/builder-block.decorator'
+import { withBuilder } from '../functions/with-builder'
 
 export interface ButtonProps {
   attributes?: any
@@ -8,7 +8,22 @@ export interface ButtonProps {
   openLinkInNewTab?: boolean
 }
 
-@BuilderBlock({
+class ButtonComponent extends React.Component<ButtonProps> {
+  render() {
+    const Tag = this.props.link ? 'a' : 'span'
+    return (
+      <Tag
+        href={this.props.link}
+        target={this.props.openLinkInNewTab ? '_blank' : undefined}
+        {...this.props.attributes}
+      >
+        {this.props.text}
+      </Tag>
+    )
+  }
+}
+
+export const Button = withBuilder(ButtonComponent, {
   name: 'Core:Button',
   image:
     'https://cdn.builder.io/api/v1/image/assets%2FIsxPKMo2gPRRKeakUztj1D6uqed2%2F81a15681c3e74df09677dfc57a615b13',
@@ -32,14 +47,10 @@ export interface ButtonProps {
       defaultValue: 'Click me!'
     },
     {
-      // TODO: custom link form editor to link to other pages, scroll to
-      // etc
       name: 'link',
       type: 'url'
     },
     {
-      // TODO: custom link form editor to link to other pages, scroll to
-      // etc
       name: 'openLinkInNewTab',
       type: 'boolean',
       defaultValue: false,
@@ -48,20 +59,4 @@ export interface ButtonProps {
   ],
   static: true,
   noWrap: true
-  // TODO: defaultChildren
-  // canHaveChildren: true,
 })
-export class Button extends React.Component<ButtonProps> {
-  render() {
-    const Tag = this.props.link ? 'a' : 'span'
-    return (
-      <Tag
-        href={this.props.link}
-        target={this.props.openLinkInNewTab ? '_blank' : undefined}
-        {...this.props.attributes}
-      >
-        {this.props.text}
-      </Tag>
-    )
-  }
-}

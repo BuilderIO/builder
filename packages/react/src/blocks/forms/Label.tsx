@@ -1,7 +1,7 @@
 import React from 'react'
-import { BuilderBlock } from '../../decorators/builder-block.decorator'
 import { BuilderElement } from '@builder.io/sdk'
 import { BuilderBlockComponent } from '../../builder-react'
+import { withBuilder } from 'src/functions/with-builder'
 
 export interface LabelProps {
   attributes?: any
@@ -10,7 +10,29 @@ export interface LabelProps {
   builderBlock?: BuilderElement
 }
 
-@BuilderBlock({
+class LabelComponent extends React.Component<LabelProps> {
+  render() {
+    return (
+      <label htmlFor={this.props.for} {...this.props.attributes}>
+        {this.props.text && (
+          <span
+            className="builder-label-text"
+            dangerouslySetInnerHTML={{
+              __html: this.props.text
+            }}
+          />
+        )}
+        {this.props.builderBlock &&
+          this.props.builderBlock.children &&
+          this.props.builderBlock.children.map(item => (
+            <BuilderBlockComponent key={item.id} block={item} />
+          ))}
+      </label>
+    )
+  }
+}
+
+export const Label = withBuilder(LabelComponent, {
   name: 'Form:Label',
   image:
     'https://cdn.builder.io/api/v1/image/assets%2FIsxPKMo2gPRRKeakUztj1D6uqed2%2F9322342f04b545fb9a8091cd801dfb5b',
@@ -37,24 +59,3 @@ export interface LabelProps {
   // TODO: defaultChildren
   // canHaveChildren: true,
 })
-export class Label extends React.Component<LabelProps> {
-  render() {
-    return (
-      <label htmlFor={this.props.for} {...this.props.attributes}>
-        {this.props.text && (
-          <span
-            className="builder-label-text"
-            dangerouslySetInnerHTML={{
-              __html: this.props.text
-            }}
-          />
-        )}
-        {this.props.builderBlock &&
-          this.props.builderBlock.children &&
-          this.props.builderBlock.children.map(item => (
-            <BuilderBlockComponent key={item.id} block={item} />
-          ))}
-      </label>
-    )
-  }
-}

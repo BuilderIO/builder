@@ -5,6 +5,7 @@ import { BuilderBlock } from '../decorators/builder-block.decorator'
 import { BuilderElement, builder, Builder } from '@builder.io/sdk'
 import { BuilderStoreContext } from '../store/builder-store'
 import { BuilderPage } from '../components/builder-page.component'
+import { withBuilder } from 'src/functions/with-builder'
 
 export interface RouterProps {
   model?: string
@@ -54,40 +55,7 @@ export interface RouteEvent {
   preventDefault(): void
 }
 
-@BuilderBlock({
-  // Builder:Router?
-  name: 'Core:Router',
-  hideFromInsertMenu: true,
-  // TODO: advanced: true
-  inputs: [
-    {
-      // TODO: search picker
-      name: 'model',
-      type: 'string',
-      defaultValue: 'page',
-      advanced: true
-    },
-    {
-      name: 'handleRouting',
-      type: 'boolean',
-      defaultValue: true,
-      advanced: true
-    },
-    {
-      name: 'preloadOnHover',
-      type: 'boolean',
-      defaultValue: true,
-      advanced: true
-    },
-    {
-      name: 'onRoute',
-      type: 'function',
-      advanced: true
-      // Subfields are function arguments - object with properties
-    }
-  ]
-})
-export class Router extends React.Component<RouterProps> {
+class RouterComponent extends React.Component<RouterProps> {
   builder = builder
 
   routed = false
@@ -390,3 +358,36 @@ export class Router extends React.Component<RouterProps> {
     return null
   }
 }
+
+export const Router = withBuilder(RouterComponent, {
+  name: 'Core:Router',
+  hideFromInsertMenu: true,
+  // TODO: advanced: true
+  inputs: [
+    {
+      // TODO: search picker
+      name: 'model',
+      type: 'string',
+      defaultValue: 'page',
+      advanced: true
+    },
+    {
+      name: 'handleRouting',
+      type: 'boolean',
+      defaultValue: true,
+      advanced: true
+    },
+    {
+      name: 'preloadOnHover',
+      type: 'boolean',
+      defaultValue: true,
+      advanced: true
+    },
+    {
+      name: 'onRoute',
+      type: 'function',
+      advanced: true
+      // Subfields are function arguments - object with properties
+    }
+  ]
+})

@@ -10,7 +10,6 @@ Frist things first, if you don't yet have one, create a free account at [Builder
 
 `npm install --save @builder.io/react @builder.io/widgets`
 
-
 ### Update your next.config.js
 
 For server side rendering we need to do one update to use the server side build for @builder.io/react
@@ -26,7 +25,6 @@ module.exports = {
   }
 }
 ```
-
 
 ### Add the components and getInitialProps
 
@@ -177,17 +175,16 @@ Just follow the same behavior as the previous examples - if a URL is not found i
 You can use your React components in the drag and drop editor in Builder. Simply wrap the component as shown below:
 
 ```js
-import { BuilderBlock } from '@builder.io/react'
+import { withBuilder } from '@builder.io/react'
 
-@BuilderBlock({
+const SimpleText = ({ text }) => (
+  <h1>{text}</h1>
+)
+
+export default withBuilder(SimpleText, {
   name: 'Simple Text',
   inputs: [{ name: 'text', type: 'string' }]
 })
-export class SimpleText extends React.Component {
-  render() {
-    return <h1>{this.props.text}</h1>
-  }
-}
 ```
 
 And then be sure to import this component wherever you want it to be accessible in the editor
@@ -207,20 +204,3 @@ export default () => <BuilderComponent name="page" />
 ```
 
 And then it will show up in the insert menu (under "show more") in the Builder editor!
-
-For the `@BuilderBlock` decorator support you need to be using typescript or babel with legacy decorators. Alternatively you can use the alternative syntax:
-
-```js
-import { BuilderBlock } from '@builder.io/react'
-
-class SimpleText extends React.Component {
-  render() {
-    return <h1>{this.props.text}</h1>
-  }
-}
-
-BuilderBlock({
-  name: 'Simple Text',
-  inputs: [{ name: 'text', type: 'string' }]
-})(SimpleText)
-```

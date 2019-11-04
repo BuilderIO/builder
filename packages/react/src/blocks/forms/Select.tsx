@@ -1,6 +1,6 @@
 import React from 'react'
-import { BuilderBlock } from '../../decorators/builder-block.decorator'
-import { Builder } from '@builder.io/sdk';
+import { Builder } from '@builder.io/sdk'
+import { withBuilder } from 'src/functions/with-builder'
 
 export interface FormSelectProps {
   options?: { name?: string; value: string }[]
@@ -10,7 +10,27 @@ export interface FormSelectProps {
   defaultValue?: string
 }
 
-@BuilderBlock({
+class FormSelectComponent extends React.Component<FormSelectProps> {
+  render() {
+    const { options } = this.props
+    return (
+      <select
+        value={this.props.value}
+        key={Builder.isEditing && this.props.defaultValue ? this.props.defaultValue : 'default-key'}
+        defaultValue={this.props.defaultValue}
+        name={this.props.name}
+        {...this.props.attributes}
+      >
+        {options &&
+          options.map(option => (
+            <option value={option.value}>{option.name || option.value}</option>
+          ))}
+      </select>
+    )
+  }
+}
+
+export const FormSelect = withBuilder(FormSelectComponent, {
   name: 'Form:Select',
   image:
     'https://cdn.builder.io/api/v1/image/assets%2FIsxPKMo2gPRRKeakUztj1D6uqed2%2F83acca093fb24aaf94dee136e9a4b045',
@@ -54,7 +74,6 @@ export interface FormSelectProps {
     {
       name: 'name',
       type: 'string'
-      // advanced: true,
     },
     {
       name: 'required',
@@ -65,22 +84,3 @@ export interface FormSelectProps {
   static: true,
   noWrap: true
 })
-export class FormSelect extends React.Component<FormSelectProps> {
-  render() {
-    const { options } = this.props
-    return (
-      <select
-        value={this.props.value}
-        key={Builder.isEditing && this.props.defaultValue ? this.props.defaultValue : 'default-key'}
-        defaultValue={this.props.defaultValue}
-        name={this.props.name}
-        {...this.props.attributes}
-      >
-        {options &&
-          options.map(option => (
-            <option value={option.value}>{option.name || option.value}</option>
-          ))}
-      </select>
-    )
-  }
-}

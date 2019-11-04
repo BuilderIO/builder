@@ -1,25 +1,15 @@
 import React from 'react'
 import { BuilderElement } from '@builder.io/sdk'
 import { BuilderBlock as BuilderBlockComponent } from '../components/builder-block.component'
-import { BuilderBlock } from '../decorators/builder-block.decorator'
 import { BuilderStoreContext } from '../store/builder-store'
+import { withBuilder } from 'src/functions/with-builder'
 
 interface StateProviderProps {
   builderBlock: BuilderElement
   state: any
 }
 
-// TODO: change to slick grid
-@BuilderBlock({
-  // Builder:StateProvider?
-  name: 'Builder:StateProvider',
-  // TODO: default children
-  canHaveChildren: true,
-  static: true,
-  hideFromInsertMenu: true
-  // TODO: list inputs?
-})
-export class StateProvider extends React.Component<StateProviderProps> {
+class StateProviderComponent extends React.Component<StateProviderProps> {
   render() {
     return (
       <BuilderStoreContext.Consumer>
@@ -49,3 +39,11 @@ export class StateProvider extends React.Component<StateProviderProps> {
     )
   }
 }
+
+export const StateProvider = withBuilder(StateProviderComponent, {
+  name: 'Builder:StateProvider',
+  // TODO: default children
+  canHaveChildren: true,
+  static: true,
+  hideFromInsertMenu: true
+})

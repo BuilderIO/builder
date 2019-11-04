@@ -1,6 +1,6 @@
 import React from 'react'
-import { BuilderBlock } from '../../decorators/builder-block.decorator'
 import { BuilderElement } from '@builder.io/sdk'
+import { withBuilder } from 'src/functions/with-builder'
 
 export interface ImgProps {
   attributes?: any
@@ -9,7 +9,22 @@ export interface ImgProps {
 }
 
 // TODO: srcset, alt text input, object size/position input, etc
-@BuilderBlock({
+
+class ImgComponent extends React.Component<ImgProps> {
+  render() {
+    const attributes = this.props.attributes || {}
+    return (
+      <img
+        {...this.props.attributes}
+        src={this.props.image || attributes.src}
+        // TODO: generate this
+        // srcSet={this.props.image || attributes.srcSet || attributes.srcset}
+      />
+    )
+  }
+}
+
+export const Img = withBuilder(ImgComponent, {
   // friendlyName?
   name: 'Raw:Img',
   hideFromInsertMenu: true,
@@ -26,16 +41,3 @@ export interface ImgProps {
   noWrap: true,
   static: true
 })
-export class Img extends React.Component<ImgProps> {
-  render() {
-    const attributes = this.props.attributes || {}
-    return (
-      <img
-        {...this.props.attributes}
-        src={this.props.image || attributes.src}
-        // TODO: generate this
-        // srcSet={this.props.image || attributes.srcSet || attributes.srcset}
-      />
-    )
-  }
-}

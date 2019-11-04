@@ -1,5 +1,5 @@
 import React from 'react'
-import { BuilderBlock } from '../../decorators/builder-block.decorator'
+import { withBuilder } from 'src/functions/with-builder'
 
 export interface FormTextAreaProps {
   attributes?: any
@@ -9,7 +9,21 @@ export interface FormTextAreaProps {
   placeholder?: string
 }
 
-@BuilderBlock({
+class TextAreaComponent extends React.Component<FormTextAreaProps> {
+  render() {
+    return (
+      <textarea
+        placeholder={this.props.placeholder}
+        name={this.props.name}
+        value={this.props.value}
+        defaultValue={this.props.defaultValue}
+        {...this.props.attributes}
+      />
+    )
+  }
+}
+
+export const TextArea = withBuilder(TextAreaComponent, {
   name: 'Form:TextArea',
   image:
     'https://cdn.builder.io/api/v1/image/assets%2FIsxPKMo2gPRRKeakUztj1D6uqed2%2Ff74a2f3de58c4c3e939204e5b6b8f6c3',
@@ -52,16 +66,3 @@ export interface FormTextAreaProps {
   static: true,
   noWrap: true
 })
-export class TextArea extends React.Component<FormTextAreaProps> {
-  render() {
-    return (
-      <textarea
-        placeholder={this.props.placeholder}
-        name={this.props.name}
-        value={this.props.value}
-        defaultValue={this.props.defaultValue}
-        {...this.props.attributes}
-      />
-    )
-  }
-}
