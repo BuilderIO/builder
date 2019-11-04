@@ -56,4 +56,3 @@ if (typeof window !== 'undefined') {
   )
 }
 
-//
