@@ -19,7 +19,7 @@ in webpack when running server side
 module.exports = {
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
     if (isServer) {
-      config.alias['@builder.io/react'] = '@builder.io/react/server'
+      config.resolve.alias['@builder.io/react'] = '@builder.io/react/server'
     }
     return config
   }
