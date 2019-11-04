@@ -63,7 +63,7 @@ class ImageComponent extends React.Component<any> {
           return (
             <React.Fragment>
               <picture>
-                {srcset && <source srcSet={srcset.replace(/?/g, '?format=webp&')} type="image/webp" />}
+                {srcset && <source srcSet={srcset.replace(/\?/g, '?format=webp&')} type="image/webp" />}
                 <Tag
                   {...(amp
                     ? ({
@@ -172,7 +172,7 @@ export const Image = withBuilder(ImageComponent, {
       // and sets an object and that is read here
       name: 'image',
       type: 'file',
-      // TODO: auto convert png to jpg when there is no transparency
+      // TODO: auto coHnvert png to jpg when there is no transparency
       allowedFileTypes: ['jpeg', 'jpg', 'png', 'svg'],
       required: true,
       // TODO: something better
