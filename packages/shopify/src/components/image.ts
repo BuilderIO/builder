@@ -35,13 +35,16 @@ export const Image = component({
     // srcset="${srcSet}"
     // ${sizes ? `sizes="${sizes}"` : ''}
     return `
-      ${lazy ? '' : `<picture>
+      <picture>
         ${
           srcSet && srcSet.match(/builder\.io/)
             ? `<source srcset="${srcSet.replace(/\?/g, '?format=webp&')}" type="image/webp" />`
             : ''
         }
-        <img
+        ${
+          lazy
+            ? ''
+            : `<img
           src="${options.image || ''}"
           srcset="${srcSet || options.image || ''}"
           sizes="${sizes || '100vw'}"
@@ -55,8 +58,9 @@ export const Image = component({
               top: '0',
               left: '0',
             }),
-          })}" />
-      </picture>`}
+          })}" />`
+        }
+      </picture>
       ${
         aspectRatio
           ? `<div
