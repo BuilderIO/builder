@@ -379,7 +379,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
       return
     }
 
-    if (element.classList.has('builder-hydrated')) {
+    if (element.classList.contains('builder-hydrated')) {
       console.debug('Tried to hydrate multiple times')
       return;
     }
