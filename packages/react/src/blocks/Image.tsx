@@ -329,6 +329,7 @@ export const Image = withBuilder(ImageComponent, {
       type: 'string',
       hideFromUI: true
     },
+    // TODO: force lazy load option (maybe via binding for now hm component.options.lazy: true)
     {
       name: 'lazy',
       type: 'boolean',
