@@ -20,6 +20,7 @@ export class BuilderBlocksComponent implements OnInit {
   @Input() blocks: any;
 
   @Input() child = false;
+  @Input() model = '';
 
   // @deprecated
   @Input() field = '';
@@ -83,7 +84,9 @@ export class BuilderBlocksComponent implements OnInit {
       html = `<style class="builder-styles">${css}</style>` + html;
     }
 
-    return html as string;
+    return `<builder-component-element ${!this.model ? '' : `name="${this.model}"`} ${
+      this.blocks.id ? `entry="${this.blocks.id}"` : ''
+    }>${html as string}</builder-component-element>`;
   }
 
   trackByFn(index: number, value: any) {
