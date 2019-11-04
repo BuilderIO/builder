@@ -23,29 +23,39 @@ export const Image = component({
 
     const srcSet =
       srcset ||
-      widths
-        .map(size => `${updateQueryParam(image, 'width', String(size))} ${size}w`)
-        .concat([image])
-        .join(', ');
+      ((options.image || '').match(/cdn\.shopify|builder\.io/)
+        ? widths
+            .map(size => `${updateQueryParam(image, 'width', String(size))} ${size}w`)
+            .concat([image])
+            .join(', ')
+        : '');
 
     // TODO: attribute({}) helper to trim out undefined etc
     // TODO: add srcset and sizes back
     // srcset="${srcSet}"
     // ${sizes ? `sizes="${sizes}"` : ''}
     return `
-    <img
-      src="${options.image || ''}"
-      style="${style({
-        objectFit: backgroundSize || 'cover',
-        objectPosition: backgroundPosition || 'center',
-        ...(aspectRatio && {
-          position: 'absolute',
-          height: '100%',
-          width: '100%',
-          top: '0',
-          left: '0',
-        }),
-      })}" />
+      <picture>
+        ${
+          srcSet
+            ? `<source srcset="${srcSet.replace(/\?/g, '?format=webp&')}" type="image/webp" />`
+            : ''
+        }
+        <img
+          src="${options.image || ''}"
+          srcset="${srcSet || options.image || ''}"
+          style="${style({
+            objectFit: backgroundSize || 'cover',
+            objectPosition: backgroundPosition || 'center',
+            ...(aspectRatio && {
+              position: 'absolute',
+              height: '100%',
+              width: '100%',
+              top: '0',
+              left: '0',
+            }),
+          })}" />
+      </picture>
       ${
         aspectRatio
           ? `<div
