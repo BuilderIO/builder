@@ -62,55 +62,58 @@ class ImageComponent extends React.Component<any> {
           const Tag: 'img' = amp ? ('amp-img' as any) : 'img'
           return (
             <React.Fragment>
-              <Tag
-                {...(amp
-                  ? ({
-                      layout: 'responsive',
-                      height:
-                        this.props.height ||
-                        (aspectRatio ? Math.round(aspectRatio * 1000) : undefined),
-                      width:
-                        this.props.width ||
-                        (aspectRatio ? Math.round(1000 / aspectRatio) : undefined)
-                    } as any)
-                  : null)}
-                alt={this.props.altText}
-                key={
-                  Builder.isEditing
-                    ? (typeof this.props.image === 'string' && this.props.image.split('?')[0]) ||
-                      undefined
-                    : undefined
-                }
-                // height={
-                //   this.props.height || (aspectRatio ? Math.round(aspectRatio * 1000) : undefined)
-                // }
-                // width={
-                //   this.props.width || (aspectRatio ? Math.round(1000 / aspectRatio) : undefined)
-                // }
-                role={!this.props.altText ? 'presentation' : undefined}
-                css={{
-                  objectFit: this.props.backgroundSize,
-                  objectPosition: this.props.backgroundPosition,
-                  ...(aspectRatio && {
-                    position: 'absolute',
-                    height: '100%',
-                    width: '100%',
-                    left: 0,
-                    top: 0
-                  }),
-                  ...(amp && {
-                    ['& img']: {
-                      objectFit: this.props.backgroundSize,
-                      OObjectPosition: this.props.backgroundPosition
-                    }
-                  })
-                }}
-                className="builder-image"
-                src={this.props.image}
-                // TODO: memoize on image on client
-                srcSet={srcset}
-                sizes={this.props.sizes}
-              />
+              <picture>
+                {srcset && <source srcSet={srcset.replace(/?/g, '?format=webp&')} type="image/webp" />}
+                <Tag
+                  {...(amp
+                    ? ({
+                        layout: 'responsive',
+                        height:
+                          this.props.height ||
+                          (aspectRatio ? Math.round(aspectRatio * 1000) : undefined),
+                        width:
+                          this.props.width ||
+                          (aspectRatio ? Math.round(1000 / aspectRatio) : undefined)
+                      } as any)
+                    : null)}
+                  alt={this.props.altText}
+                  key={
+                    Builder.isEditing
+                      ? (typeof this.props.image === 'string' && this.props.image.split('?')[0]) ||
+                        undefined
+                      : undefined
+                  }
+                  // height={
+                  //   this.props.height || (aspectRatio ? Math.round(aspectRatio * 1000) : undefined)
+                  // }
+                  // width={
+                  //   this.props.width || (aspectRatio ? Math.round(1000 / aspectRatio) : undefined)
+                  // }
+                  role={!this.props.altText ? 'presentation' : undefined}
+                  css={{
+                    objectFit: this.props.backgroundSize,
+                    objectPosition: this.props.backgroundPosition,
+                    ...(aspectRatio && {
+                      position: 'absolute',
+                      height: '100%',
+                      width: '100%',
+                      left: 0,
+                      top: 0
+                    }),
+                    ...(amp && {
+                      ['& img']: {
+                        objectFit: this.props.backgroundSize,
+                        OObjectPosition: this.props.backgroundPosition
+                      }
+                    })
+                  }}
+                  className="builder-image"
+                  src={this.props.image}
+                  // TODO: memoize on image on client
+                  srcSet={srcset}
+                  sizes={this.props.sizes}
+                />
+              </picture>
               {/* TODO: do this with classes like .builder-fit so can reuse csss and not duplicate */}
               {/* TODO: maybe need to add height: auto, widht: auto or so so the image doesn't have a max widht etc */}
               {aspectRatio ? (
@@ -165,6 +168,8 @@ export const Image = withBuilder(ImageComponent, {
   canHaveChildren: true,
   inputs: [
     {
+      // TODO: new editor type 'responsiveImage' that can do different crops per breakpoint
+      // and sets an object and that is read here
       name: 'image',
       type: 'file',
       // TODO: auto convert png to jpg when there is no transparency
