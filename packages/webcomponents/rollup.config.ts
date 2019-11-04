@@ -101,7 +101,7 @@ export default [
     output: [{ dir: './dist/system/angular', format: 'system', sourcemap: true }],
     plugins: options.plugins.concat([
       replace({
-        'process.env.ANGULAR': true
+        'process.env.ANGULAR': 'true'
       })
     ])
   },
@@ -132,7 +132,7 @@ export default [
     output: [{ dir: './dist/system/angular/lite', format: 'system', sourcemap: true }],
     plugins: options.plugins.concat([
       replace({
-        'process.env.ANGULAR': true
+        'process.env.ANGULAR': 'true'
       })
     ])
   }

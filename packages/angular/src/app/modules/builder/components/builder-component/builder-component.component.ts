@@ -171,7 +171,9 @@ export class BuilderComponentComponent implements OnDestroy {
     }
     const script = document.createElement('script');
     script.id = SCRIPT_ID;
-    script.src = 'https://cdn.builder.io/js/webcomponents';
+    // TODO: detect builder.wcVersion and if customEleemnts exists and do
+    // dynamic versions and lite here
+    script.src = 'https://cdn.builder.io/js/webcomponents/dist/system/angular/builder-webcomponents.js';
     script.async = true;
     wcScriptInserted = true;
     return new Promise((resolve, reject) => {
