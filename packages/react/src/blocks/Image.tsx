@@ -27,7 +27,7 @@ class ImageComponent extends React.Component<any> {
       return undefined
     }
 
-    if (!url.match(!/cdn\.shopify|builder\.io/)) {
+    if (!url.match(/cdn\.shopify|builder\.io/)) {
       return undefined
     }
 
