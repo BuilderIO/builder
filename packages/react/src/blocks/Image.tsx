@@ -6,6 +6,7 @@ import { BuilderBlock as BuilderBlockComponent } from '../components/builder-blo
 import { BuilderElement, Builder } from '@builder.io/sdk'
 import { BuilderMetaContext } from '../store/builder-meta'
 import { withBuilder } from 'src/functions/with-builder'
+import { throttle } from 'src/functions/throttle'
 
 const DEFAULT_ASPECT_RATIO = 0.7041
 
@@ -21,6 +22,26 @@ export function updateQueryParam(uri = '', key: string, value: string) {
 
 // TODO: use picture tag to support more formats
 class ImageComponent extends React.Component<any> {
+  state = {
+    load: !this.props.lazy
+  }
+
+  pictureRef: HTMLPictureElement | null = null;
+
+  componentDidMount() {
+    if (this.props.lazy) {
+      // throttled scroll capture listener
+      const listener = throttle((event: Event) => {
+
+      }, 400)
+
+      window.addEventListener('scroll', listener, {
+        capture: true,
+        passive: true
+      })
+    }
+  }
+
   getSrcSet() {
     const url = this.props.image
     if (!url) {
@@ -40,7 +61,7 @@ class ImageComponent extends React.Component<any> {
   }
 
   render() {
-    const { aspectRatio, builderBlock } = this.props
+    const { aspectRatio, lazy } = this.props
     const children = this.props.builderBlock && this.props.builderBlock.children
 
     let srcset = this.props.srcset
@@ -283,6 +304,11 @@ export const Image = withBuilder(ImageComponent, {
     {
       name: 'srcset',
       type: 'string',
+      hideFromUI: true
+    },
+    {
+      name: 'lazy',
+      type: 'boolean',
       hideFromUI: true
     },
     {
