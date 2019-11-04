@@ -379,6 +379,12 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
       return
     }
 
+    if (element.classList.has('builder-hydrated')) {
+      console.debug('Tried to hydrate multiple times')
+      return;
+    }
+    element.classList.add('builder-hydrated')
+
     let shouldHydrate = hydrate && element.innerHTML.includes('builder-block')
     if (shouldHydrate && !element.classList.contains('builder-component')) {
       // TODO: maybe remove any builder-api-styles...
