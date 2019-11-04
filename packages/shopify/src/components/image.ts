@@ -37,7 +37,7 @@ export const Image = component({
     return `
       <picture>
         ${
-          srcSet
+          srcSet && srcSet.match(/builder\.io/)
             ? `<source srcset="${srcSet.replace(/\?/g, '?format=webp&')}" type="image/webp" />`
             : ''
         }

@@ -63,7 +63,7 @@ class ImageComponent extends React.Component<any> {
           return (
             <React.Fragment>
               <picture>
-                {srcset && <source srcSet={srcset.replace(/\?/g, '?format=webp&')} type="image/webp" />}
+                {srcset && srcset.match(/builder\.io/) && <source srcSet={srcset.replace(/\?/g, '?format=webp&')} type="image/webp" />}
                 <Tag
                   {...(amp
                     ? ({
