@@ -84,17 +84,19 @@ Create a new page with url "/something" in Builder and change the [preview URL](
 Wrap a component
 
 ```tsx
-import { BuilderBlock } from '@builder.io/react';
+import { withBuilder } from '@builder.io/react';
 
-@BuilderBlock({
-  name: 'Simple Text',
-  inputs: [{ name: 'text', type: 'string' }],
-})
-export class SimpleText extends React.Component {
+class SimpleText extends React.Component {
   render() {
     return <h1>{this.props.text}</h1>;
   }
 }
+
+export default withBuilder(SimpleText, {
+  name: 'Simple Text',
+  inputs: [{ name: 'text', type: 'string' }],
+})
+
 ```
 
 Then back at your page
@@ -113,23 +115,7 @@ See our [docs site](https://builder.io/c/docs/custom-react-components) for addit
 
 For lots of examples of using React components in Builder, see the source for our built-in Builder blocks [here](https://github.com/BuilderIO/builder/tree/master/packages/react/src/blocks) and widgets [here](https://github.com/BuilderIO/builder/tree/master/packages/widgets/src/components)
 
-For Builder decorator support you need to be using typescript or babel with legacy decorators.
-Alternatively you can use the alternative syntax:
 
-```tsx
-import { BuilderBlock } from '@builder.io/react';
-
-class SimpleText extends React.Component {
-  render() {
-    return <h1>{this.props.text}</h1>;
-  }
-}
-
-BuilderBlock({
-  name: 'Simple Text',
-  inputs: [{ name: 'text', type: 'string' }],
-})(SimpleText);
-```
 
 ### Dynamic landing pages
 

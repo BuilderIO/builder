@@ -1,13 +1,13 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
 import React from 'react'
-import { BuilderBlock } from '../../decorators/builder-block.decorator'
 import { BuilderBlock as BuilderBlockComponent } from '../../components/builder-block.component'
 import { BuilderElement, Builder } from '@builder.io/sdk'
 import { BuilderBlocks } from '../../components/builder-blocks.component'
 import { BuilderStoreContext } from '../../store/builder-store'
-import { set } from '../../functions/set';
-import { get } from '../../functions/get';
+import { set } from '../../functions/set'
+import { get } from '../../functions/get'
+import { withBuilder } from 'src/functions/with-builder'
 
 export interface FormProps {
   attributes?: any
@@ -29,7 +29,284 @@ export interface FormProps {
   errorMessagePath?: string
 }
 
-@BuilderBlock({
+class FormComponent extends React.Component<FormProps> {
+  ref: HTMLFormElement | null = null
+
+  // TODO: link this state to global state and allow togglign the modes in
+  // the style and or data editor. TODO: for now some kind of input for preview state
+  // that only impacts in the editor?
+  state = {
+    state: 'unsubmitted' as 'unsubmitted' | 'sending' | 'success' | 'error',
+    // TODO: separate response and error?
+    respnoseData: null as any,
+    formErrorMessage: ''
+  }
+
+  get submissionState() {
+    return (Builder.isEditing && this.props.previewState) || this.state.state
+  }
+
+  render() {
+    return (
+      // TODO: JS data bindings
+      <BuilderStoreContext.Consumer>
+        {state => (
+          <BuilderStoreContext.Provider
+            value={{
+              ...state,
+              state: {
+                ...state.state,
+                formErrorMessage: this.state.formErrorMessage
+              }
+            }}
+          >
+            <form
+              validate={this.props.validate}
+              ref={ref => (this.ref = ref)}
+              action={!this.props.sendWithJs && this.props.action}
+              method={this.props.method}
+              name={this.props.name}
+              onSubmit={event => {
+                // TODO: custom validate event that can preventDefault and use ref or event to set
+                // invalid message
+                if (this.props.sendSubmissionsTo === 'zapier') {
+                  event.preventDefault()
+                  // TODO: send submission to zapier
+                } else if (this.props.sendWithJs) {
+                  if (!this.props.action) {
+                    event.preventDefault()
+                    return
+                  }
+                  event.preventDefault()
+                  // TODO: error and success state
+                  const el = event.currentTarget
+                  const headers = this.props.customHeaders || {}
+
+                  let body: any
+
+                  const formData = new FormData(el)
+
+                  // TODO: maybe support null
+                  const formPairs: {
+                    key: string
+                    value: File | boolean | number | string
+                  }[] = (Array.from(
+                    event.currentTarget.querySelectorAll('input,select,textarea')
+                  ) as HTMLElement[])
+                    .filter(el => !!(el as HTMLInputElement).name)
+                    .map(el => {
+                      let value: any
+                      const key = (el as HTMLImageElement).name
+                      if (el instanceof HTMLInputElement) {
+                        if (el.type === 'radio') {
+                          if (el.checked) {
+                            value = el.name
+                            return { key, value }
+                          }
+                        } else if (el.type === 'checkbox') {
+                          value = el.checked
+                        } else if (el.type === 'number' || el.type === 'range') {
+                          const num = el.valueAsNumber
+                          if (!isNaN(num)) {
+                            value = num
+                          }
+                        } else if (el.type === 'file') {
+                          // TODO: one vs multiple files
+                          value = el.files
+                        } else {
+                          value = el.value
+                        }
+                      } else {
+                        value = (el as HTMLInputElement).value
+                      }
+
+                      return { key, value }
+                    })
+
+                  let contentType = this.props.contentType
+
+                  formPairs.forEach(({ value }) => {
+                    if (
+                      value instanceof File ||
+                      (Array.isArray(value) && value[0] instanceof File)
+                    ) {
+                      contentType = 'multipart/formdata'
+                    }
+                  })
+
+                  if (contentType === 'application/x-www-form-urlencoded') {
+                    body = formData
+                  } else if (contentType === 'multipart/formdata') {
+                    body = new URLSearchParams()
+                    formPairs.forEach(({ value, key }) => {
+                      body.append(key, value)
+                    })
+                  } else {
+                    // Json
+                    const json = {}
+
+                    formPairs.forEach(({ value, key }) => {
+                      set(json, key, value)
+                    })
+
+                    body = JSON.stringify(json)
+                  }
+
+                  const presubmitEvent = new CustomEvent('presubmit', {
+                    detail: {
+                      body
+                    }
+                  })
+                  if (this.ref) {
+                    this.ref.dispatchEvent(presubmitEvent)
+                    if (presubmitEvent.defaultPrevented) {
+                      return
+                    }
+                  }
+
+                  this.setState({
+                    ...this.state,
+                    state: 'sending'
+                  })
+
+                  fetch(this.props.action!, {
+                    body,
+                    headers,
+                    method: this.props.method || 'post'
+                  }).then(
+                    async res => {
+                      let body
+                      const contentType = res.headers.get('content-type')
+                      if (contentType && contentType.indexOf('application/json') !== -1) {
+                        body = await res.json()
+                      } else {
+                        body = await res.text()
+                      }
+
+                      if (!res.ok && this.props.errorMessagePath) {
+                        // TODO: allow supplying an error formatter function
+                        let message = get(body, this.props.errorMessagePath)
+
+                        if (message) {
+                          if (typeof message !== 'string') {
+                            // TODO: ideally convert json to yaml so it woul dbe like
+                            // error: - email has been taken
+                            message = JSON.stringify(message)
+                          }
+                          this.setState({
+                            ...this.state,
+                            formErrorMessage: message
+                          })
+                        }
+                      }
+
+                      this.setState({
+                        ...this.state,
+                        responseData: body,
+                        state: res.ok ? 'success' : 'error'
+                      })
+
+                      if (res.ok) {
+                        // TODO: send submit success event
+
+                        const submitSuccessEvent = new CustomEvent('submit:success', {
+                          detail: {
+                            res,
+                            body
+                          }
+                        })
+                        if (this.ref) {
+                          this.ref.dispatchEvent(submitSuccessEvent)
+                          if (submitSuccessEvent.defaultPrevented) {
+                            return
+                          }
+                          // TODO: option to turn this on/off?
+                          if (this.props.resetFormOnSubmit !== false) {
+                            this.ref.reset()
+                          }
+                        }
+
+                        // TODO: client side route event first that can be preventDefaulted
+                        if (this.props.successUrl) {
+                          if (this.ref) {
+                            const event = new CustomEvent('route', {
+                              detail: {
+                                url: this.props.successUrl
+                              }
+                            })
+                            this.ref.dispatchEvent(event)
+                            if (!event.defaultPrevented) {
+                              location.href = this.props.successUrl
+                            }
+                          } else {
+                            location.href = this.props.successUrl
+                          }
+                        }
+                      }
+                    },
+                    err => {
+                      const submitErrorEvent = new CustomEvent('submit:error', {
+                        detail: {
+                          error: err
+                        }
+                      })
+                      if (this.ref) {
+                        this.ref.dispatchEvent(submitErrorEvent)
+                        if (submitErrorEvent.defaultPrevented) {
+                          return
+                        }
+                      }
+
+                      // TODO: send submit error event
+                      this.setState({
+                        ...this.state,
+                        responseData: err,
+                        state: 'error'
+                      })
+                    }
+                  )
+                }
+              }}
+              {...this.props.attributes}
+            >
+              {/* TODO: maybe BuilderBlocks */}
+              {this.props.builderBlock &&
+                this.props.builderBlock.children &&
+                this.props.builderBlock.children.map((block, index) => (
+                  <BuilderBlockComponent key={block.id} block={block} />
+                ))}
+
+              {this.submissionState === 'error' && (
+                <BuilderBlocks dataPath="errorMessage" blocks={this.props.errorMessage!} />
+              )}
+
+              {this.submissionState === 'sending' && (
+                <BuilderBlocks dataPath="sendingMessage" blocks={this.props.sendingMessage!} />
+              )}
+
+              {/* TODO: option to turn this off */}
+              {this.submissionState === 'error' && this.state.respnoseData && (
+                // TODO: tag to edit
+                <pre
+                  className="builder-form-error-text"
+                  css={{ padding: 10, color: 'red', textAlign: 'center' }}
+                >
+                  {JSON.stringify(this.state.respnoseData, null, 2)}
+                </pre>
+              )}
+
+              {this.submissionState === 'success' && (
+                <BuilderBlocks dataPath="successMessage" blocks={this.props.successMessage!} />
+              )}
+            </form>
+          </BuilderStoreContext.Provider>
+        )}
+      </BuilderStoreContext.Consumer>
+    )
+  }
+}
+
+export const Form = withBuilder(FormComponent, {
   name: 'Form:Form',
   // editableTags: ['builder-form-error']
   defaults: {
@@ -290,279 +567,3 @@ export interface FormProps {
     }
   ]
 })
-export class Form extends React.Component<FormProps> {
-  ref: HTMLFormElement | null = null
-
-  // TODO: link this state to global state and allow togglign the modes in
-  // the style and or data editor. TODO: for now some kind of input for preview state
-  // that only impacts in the editor?
-  state = {
-    state: 'unsubmitted' as 'unsubmitted' | 'sending' | 'success' | 'error',
-    // TODO: separate response and error?
-    respnoseData: null as any,
-    formErrorMessage: ''
-  }
-
-  get submissionState() {
-    return (Builder.isEditing && this.props.previewState) || this.state.state
-  }
-
-  render() {
-    return (
-      // TODO: JS data bindings
-      <BuilderStoreContext.Consumer>
-        {state => (
-          <BuilderStoreContext.Provider
-            value={{
-              ...state,
-              state: {
-                ...state.state,
-                formErrorMessage: this.state.formErrorMessage
-              }
-            }}
-          >
-            <form
-              validate={this.props.validate}
-              ref={ref => (this.ref = ref)}
-              action={!this.props.sendWithJs && this.props.action}
-              method={this.props.method}
-              name={this.props.name}
-              onSubmit={event => {
-                // TODO: custom validate event that can preventDefault and use ref or event to set
-                // invalid message
-                if (this.props.sendSubmissionsTo === 'zapier') {
-                  event.preventDefault()
-                  // TODO: send submission to zapier
-                } else if (this.props.sendWithJs) {
-                  if (!this.props.action) {
-                    event.preventDefault()
-                    return;
-                  }
-                  event.preventDefault()
-                  // TODO: error and success state
-                  const el = event.currentTarget
-                  const headers = this.props.customHeaders || {}
-
-                  let body: any
-
-                  const formData = new FormData(el)
-
-                  // TODO: maybe support null
-                  const formPairs: {
-                    key: string
-                    value: File | boolean | number | string
-                  }[] = (Array.from(
-                    event.currentTarget.querySelectorAll('input,select,textarea')
-                  ) as HTMLElement[])
-                    .filter(el => !!(el as HTMLInputElement).name)
-                    .map(el => {
-                      let value: any
-                      const key = (el as HTMLImageElement).name
-                      if (el instanceof HTMLInputElement) {
-                        if (el.type === 'radio') {
-                          if (el.checked) {
-                            value = el.name
-                            return { key, value }
-                          }
-                        } else if (el.type === 'checkbox') {
-                          value = el.checked
-                        } else if (el.type === 'number' || el.type === 'range') {
-                          const num = el.valueAsNumber
-                          if (!isNaN(num)) {
-                            value = num
-                          }
-                        } else if (el.type === 'file') {
-                          // TODO: one vs multiple files
-                          value = el.files
-                        } else {
-                          value = el.value
-                        }
-                      } else {
-                        value = (el as HTMLInputElement).value
-                      }
-
-                      return { key, value }
-                    })
-
-                  let contentType = this.props.contentType
-
-                  formPairs.forEach(({ value }) => {
-                    if (
-                      value instanceof File ||
-                      (Array.isArray(value) && value[0] instanceof File)
-                    ) {
-                      contentType = 'multipart/formdata'
-                    }
-                  })
-
-                  if (contentType === 'application/x-www-form-urlencoded') {
-                    body = formData
-                  } else if (contentType === 'multipart/formdata') {
-                    body = new URLSearchParams()
-                    formPairs.forEach(({ value, key }) => {
-                      body.append(key, value)
-                    })
-                  } else {
-                    // Json
-                    const json = {}
-
-                    formPairs.forEach(({ value, key }) => {
-                      set(json, key, value)
-                    })
-
-                    body = JSON.stringify(json)
-                  }
-
-                  const presubmitEvent = new CustomEvent('presubmit', {
-                    detail: {
-                      body
-                    }
-                  })
-                  if (this.ref) {
-                    this.ref.dispatchEvent(presubmitEvent)
-                    if (presubmitEvent.defaultPrevented) {
-                      return
-                    }
-                  }
-
-                  this.setState({
-                    ...this.state,
-                    state: 'sending'
-                  })
-
-                  fetch(this.props.action!, {
-                    body,
-                    headers,
-                    method: this.props.method || 'post'
-                  }).then(
-                    async res => {
-                      let body
-                      const contentType = res.headers.get('content-type')
-                      if (contentType && contentType.indexOf('application/json') !== -1) {
-                        body = await res.json()
-                      } else {
-                        body = await res.text()
-                      }
-
-                      if (!res.ok && this.props.errorMessagePath) {
-                        // TODO: allow supplying an error formatter function
-                        let message = get(body, this.props.errorMessagePath)
-
-                        if (message) {
-                          if (typeof message !== 'string') {
-                            // TODO: ideally convert json to yaml so it woul dbe like
-                            // error: - email has been taken
-                            message = JSON.stringify(message)
-                          }
-                          this.setState({
-                            ...this.state,
-                            formErrorMessage: message
-                          })
-                        }
-                      }
-
-                      this.setState({
-                        ...this.state,
-                        responseData: body,
-                        state: res.ok ? 'success' : 'error'
-                      })
-
-                      if (res.ok) {
-                        // TODO: send submit success event
-
-                        const submitSuccessEvent = new CustomEvent('submit:success', {
-                          detail: {
-                            res,
-                            body
-                          }
-                        })
-                        if (this.ref) {
-                          this.ref.dispatchEvent(submitSuccessEvent)
-                          if (submitSuccessEvent.defaultPrevented) {
-                            return
-                          }
-                          // TODO: option to turn this on/off?
-                          if (this.props.resetFormOnSubmit !== false) {
-                            this.ref.reset()
-                          }
-                        }
-
-                        // TODO: client side route event first that can be preventDefaulted
-                        if (this.props.successUrl) {
-                          if (this.ref) {
-                            const event = new CustomEvent('route', {
-                              detail: {
-                                url: this.props.successUrl
-                              }
-                            })
-                            this.ref.dispatchEvent(event)
-                            if (!event.defaultPrevented) {
-                              location.href = this.props.successUrl
-                            }
-                          } else {
-                            location.href = this.props.successUrl
-                          }
-                        }
-                      }
-                    },
-                    err => {
-                      const submitErrorEvent = new CustomEvent('submit:error', {
-                        detail: {
-                          error: err
-                        }
-                      })
-                      if (this.ref) {
-                        this.ref.dispatchEvent(submitErrorEvent)
-                        if (submitErrorEvent.defaultPrevented) {
-                          return
-                        }
-                      }
-
-                      // TODO: send submit error event
-                      this.setState({
-                        ...this.state,
-                        responseData: err,
-                        state: 'error'
-                      })
-                    }
-                  )
-                }
-              }}
-              {...this.props.attributes}
-            >
-              {/* TODO: maybe BuilderBlocks */}
-              {this.props.builderBlock &&
-                this.props.builderBlock.children &&
-                this.props.builderBlock.children.map((block, index) => (
-                  <BuilderBlockComponent key={block.id} block={block} />
-                ))}
-
-              {this.submissionState === 'error' && (
-                <BuilderBlocks dataPath="errorMessage" blocks={this.props.errorMessage!} />
-              )}
-
-              {this.submissionState === 'sending' && (
-                <BuilderBlocks dataPath="sendingMessage" blocks={this.props.sendingMessage!} />
-              )}
-
-              {/* TODO: option to turn this off */}
-              {this.submissionState === 'error' && this.state.respnoseData && (
-                // TODO: tag to edit
-                <pre
-                  className="builder-form-error-text"
-                  css={{ padding: 10, color: 'red', textAlign: 'center' }}
-                >
-                  {JSON.stringify(this.state.respnoseData, null, 2)}
-                </pre>
-              )}
-
-              {this.submissionState === 'success' && (
-                <BuilderBlocks dataPath="successMessage" blocks={this.props.successMessage!} />
-              )}
-            </form>
-          </BuilderStoreContext.Provider>
-        )}
-      </BuilderStoreContext.Consumer>
-    )
-  }
-}

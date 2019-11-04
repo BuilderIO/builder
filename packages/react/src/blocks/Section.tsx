@@ -2,8 +2,8 @@
 import { jsx } from '@emotion/core'
 import React from 'react'
 import { BuilderElement } from '@builder.io/sdk'
-import { BuilderBlock } from '../decorators/builder-block.decorator'
 import { BuilderBlock as BuilderBlockComponent } from '../components/builder-block.component'
+import { withBuilder } from 'src/functions/with-builder'
 
 interface SectionProps {
   builderBlock?: BuilderElement
@@ -11,8 +11,39 @@ interface SectionProps {
   maxWidth?: number
 }
 
-// TODO: acceptsChildren option?
-@BuilderBlock({
+class SectionComponent extends React.Component<SectionProps> {
+  render() {
+    return (
+      <div
+        css={{
+          // margin: 'auto',
+          // TODO: maybe remove height: '100%'
+          height: '100%',
+          width: '100%',
+          alignSelf: 'stretch',
+          flexGrow: 1,
+          boxSizing: 'border-box',
+          maxWidth: this.props.maxWidth,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'stretch',
+          marginLeft: 'auto',
+          marginRight: 'auto'
+        }}
+      >
+        {/* TODO: maybe builder <BuilderBlocks? */}
+        {this.props.builderBlock &&
+          this.props.builderBlock.children &&
+          this.props.builderBlock.children.map((block, index) => (
+            <BuilderBlockComponent key={block.id} block={block} />
+          ))}
+        {/* <BuilderBlocks blocks={this.builderBlock.children} dataPath="children" emailMode /> */}
+      </div>
+    )
+  }
+}
+
+export const Section = withBuilder(SectionComponent, {
   name: 'Core:Section',
   static: true,
   image:
@@ -62,34 +93,3 @@ interface SectionProps {
   //   '@builder.io/app:Style.foo': () => { /* ... */ } // maybe optionally async
   // }
 })
-export class Section extends React.Component<SectionProps> {
-  render() {
-    return (
-      <div
-        css={{
-          // margin: 'auto',
-          // TODO: maybe remove height: '100%'
-          height: '100%',
-          width: '100%',
-          alignSelf: 'stretch',
-          flexGrow: 1,
-          boxSizing: 'border-box',
-          maxWidth: this.props.maxWidth,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'stretch',
-          marginLeft: 'auto',
-          marginRight: 'auto'
-        }}
-      >
-        {/* TODO: maybe builder <BuilderBlocks? */}
-        {this.props.builderBlock &&
-          this.props.builderBlock.children &&
-          this.props.builderBlock.children.map((block, index) => (
-            <BuilderBlockComponent key={block.id} block={block} />
-          ))}
-        {/* <BuilderBlocks blocks={this.builderBlock.children} dataPath="children" emailMode /> */}
-      </div>
-    )
-  }
-}

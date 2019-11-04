@@ -13,6 +13,8 @@ export { BuilderMetaContext } from './store/builder-meta'
 export { BuilderAsyncRequestsContext } from './store/builder-async-requests'
 export { BuilderBlock } from './decorators/builder-block.decorator'
 
+export { withBuilder } from './functions/with-builder'
+
 export { BuilderPage }
 export { BuilderPage as BuilderComponent }
 

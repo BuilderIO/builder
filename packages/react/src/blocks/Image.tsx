@@ -2,11 +2,10 @@
 import { css, jsx } from '@emotion/core'
 import React from 'react'
 
-// import { BuilderElement } from '@builder.io/sdk'
 import { BuilderBlock as BuilderBlockComponent } from '../components/builder-block.component'
-import { BuilderBlock } from '../decorators/builder-block.decorator'
 import { BuilderElement, Builder } from '@builder.io/sdk'
 import { BuilderMetaContext } from '../store/builder-meta'
+import { withBuilder } from 'src/functions/with-builder'
 
 const DEFAULT_ASPECT_RATIO = 0.7041
 
@@ -20,7 +19,140 @@ export function updateQueryParam(uri = '', key: string, value: string) {
   return uri + separator + key + '=' + encodeURIComponent(value)
 }
 
-@BuilderBlock({
+// TODO: use picture tag to support more formats
+class ImageComponent extends React.Component<any> {
+  getSrcSet() {
+    const url = this.props.image
+    if (!url) {
+      return undefined
+    }
+
+    if (!url.match(!/cdn\.shopify|builder\.io/)) {
+      return undefined
+    }
+
+    const sizes = [100, 200, 400, 800, 1200, 1600, 2000]
+
+    return sizes
+      .map(size => `${updateQueryParam(url, 'width', String(size))} ${size}w`)
+      .concat([this.props.image])
+      .join(', ')
+  }
+
+  render() {
+    const { aspectRatio, builderBlock } = this.props
+    const children = this.props.builderBlock && this.props.builderBlock.children
+
+    let srcset = this.props.srcset
+    const image = this.props.image
+
+    if (srcset && image && image.includes('/api/v1/image')) {
+      if (!srcset.includes(image.split('?')[0])) {
+        console.debug('Removed given srcset')
+        srcset = this.getSrcSet()
+      }
+    } else if (image) {
+      srcset = this.getSrcSet()
+    }
+
+    return (
+      <BuilderMetaContext.Consumer>
+        {value => {
+          const amp = value.ampMode
+          const Tag: 'img' = amp ? ('amp-img' as any) : 'img'
+          return (
+            <React.Fragment>
+              <Tag
+                {...(amp
+                  ? ({
+                      layout: 'responsive',
+                      height:
+                        this.props.height ||
+                        (aspectRatio ? Math.round(aspectRatio * 1000) : undefined),
+                      width:
+                        this.props.width ||
+                        (aspectRatio ? Math.round(1000 / aspectRatio) : undefined)
+                    } as any)
+                  : null)}
+                alt={this.props.altText}
+                key={
+                  Builder.isEditing
+                    ? (typeof this.props.image === 'string' && this.props.image.split('?')[0]) ||
+                      undefined
+                    : undefined
+                }
+                // height={
+                //   this.props.height || (aspectRatio ? Math.round(aspectRatio * 1000) : undefined)
+                // }
+                // width={
+                //   this.props.width || (aspectRatio ? Math.round(1000 / aspectRatio) : undefined)
+                // }
+                role={!this.props.altText ? 'presentation' : undefined}
+                css={{
+                  objectFit: this.props.backgroundSize,
+                  objectPosition: this.props.backgroundPosition,
+                  ...(aspectRatio && {
+                    position: 'absolute',
+                    height: '100%',
+                    width: '100%',
+                    left: 0,
+                    top: 0
+                  }),
+                  ...(amp && {
+                    ['& img']: {
+                      objectFit: this.props.backgroundSize,
+                      OObjectPosition: this.props.backgroundPosition
+                    }
+                  })
+                }}
+                className="builder-image"
+                src={this.props.image}
+                // TODO: memoize on image on client
+                srcSet={srcset}
+                sizes={this.props.sizes}
+              />
+              {/* TODO: do this with classes like .builder-fit so can reuse csss and not duplicate */}
+              {/* TODO: maybe need to add height: auto, widht: auto or so so the image doesn't have a max widht etc */}
+              {aspectRatio ? (
+                <div
+                  className="builder-image-sizer"
+                  css={{
+                    width: '100%',
+                    paddingTop: aspectRatio * 100 + '%',
+                    pointerEvents: 'none',
+                    fontSize: 0
+                  }}
+                >
+                  {' '}
+                </div>
+              ) : null}
+              {children && children.length ? (
+                <div
+                  css={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'stretch',
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%'
+                  }}
+                >
+                  {children.map((block: BuilderElement, index: number) => (
+                    <BuilderBlockComponent key={block.id} block={block} />
+                  ))}
+                </div>
+              ) : null}
+            </React.Fragment>
+          )
+        }}
+      </BuilderMetaContext.Consumer>
+    )
+  }
+}
+
+export const Image = withBuilder(ImageComponent, {
   name: 'Image',
   static: true,
   image:
@@ -164,148 +296,3 @@ export function updateQueryParam(uri = '', key: string, value: string) {
     // },
   ]
 })
-export class Image extends React.Component<any> {
-  getSrcSet() {
-    const url = this.props.image
-    if (!url) {
-      return undefined
-    }
-
-    if (!url.match(!/cdn\.shopify|builder\.io/)) {
-      return undefined;
-    }
-
-    const sizes = [100, 200, 400, 800, 1200, 1600, 2000]
-
-    return sizes
-      .map(size => `${updateQueryParam(url, 'width', String(size))} ${size}w`)
-      .concat([this.props.image])
-      .join(', ')
-  }
-
-  render() {
-    const { aspectRatio, builderBlock } = this.props
-    const children = this.props.builderBlock && this.props.builderBlock.children
-
-    let srcset = this.props.srcset
-    const image = this.props.image
-
-    if (srcset && image && image.includes('/api/v1/image')) {
-      if (!srcset.includes(image.split('?')[0])) {
-        console.debug('Removed given srcset')
-        srcset = this.getSrcSet()
-      }
-    } else if (image) {
-      srcset = this.getSrcSet()
-    }
-
-    return (
-      <BuilderMetaContext.Consumer>
-        {value => {
-          const amp = value.ampMode
-          const Tag: 'img' = amp ? ('amp-img' as any) : 'img'
-          return (
-            <React.Fragment>
-              <Tag
-                {...(amp
-                  ? ({
-                      layout: 'responsive',
-                      height:
-                        this.props.height ||
-                        (aspectRatio ? Math.round(aspectRatio * 1000) : undefined),
-                      width:
-                        this.props.width ||
-                        (aspectRatio ? Math.round(1000 / aspectRatio) : undefined)
-                    } as any)
-                  : null)}
-                alt={this.props.altText}
-                key={
-                  Builder.isEditing
-                    ? (typeof this.props.image === 'string' && this.props.image.split('?')[0]) ||
-                      undefined
-                    : undefined
-                }
-                // height={
-                //   this.props.height || (aspectRatio ? Math.round(aspectRatio * 1000) : undefined)
-                // }
-                // width={
-                //   this.props.width || (aspectRatio ? Math.round(1000 / aspectRatio) : undefined)
-                // }
-                role={!this.props.altText ? 'presentation' : undefined}
-                css={{
-                  objectFit: this.props.backgroundSize,
-                  objectPosition: this.props.backgroundPosition,
-                  ...(aspectRatio && {
-                    position: 'absolute',
-                    height: '100%',
-                    width: '100%',
-                    left: 0,
-                    top: 0
-                  }),
-                  ...(amp && {
-                    ['& img']: {
-                      objectFit: this.props.backgroundSize,
-                      OObjectPosition: this.props.backgroundPosition
-                    }
-                  })
-                }}
-                className="builder-image"
-                src={this.props.image}
-                // TODO: memoize on image on client
-                srcSet={srcset}
-                sizes={this.props.sizes}
-              />
-              {/* TODO: do this with classes like .builder-fit so can reuse csss and not duplicate */}
-              {/* TODO: maybe need to add height: auto, widht: auto or so so the image doesn't have a max widht etc */}
-              {aspectRatio ? (
-                <div
-                  className="builder-image-sizer"
-                  css={{
-                    width: '100%',
-                    paddingTop: aspectRatio * 100 + '%',
-                    pointerEvents: 'none',
-                    fontSize: 0
-                  }}
-                >
-                  {' '}
-                </div>
-              ) : null}
-              {children && children.length ? (
-                <div
-                  css={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'stretch',
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%'
-                  }}
-                >
-                  {children.map((block: BuilderElement, index: number) => (
-                    <BuilderBlockComponent key={block.id} block={block} />
-                  ))}
-                </div>
-              ) : null}
-            </React.Fragment>
-          )
-        }}
-      </BuilderMetaContext.Consumer>
-      // <div
-      //   css={{
-      //     position: 'absolute',
-      //     top: 0,
-      //     left: 0,
-      //     right: 0,
-      //     bottom: 0,
-      //     backgroundImage: `url("${this.props.image}")`,
-      //     backgroundSize: this.props.backgroundSize,
-      //     backgroundRepeat: this.props.backgroundRepeat,
-      //     backgroundPosition: this.props.backgroundPosition,
-      //   }}
-      //   className="builder-image"
-      // />
-    )
-  }
-}

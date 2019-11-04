@@ -1,6 +1,7 @@
 import React from 'react'
 import { BuilderBlock } from '../decorators/builder-block.decorator'
 import { BuilderElement, Builder } from '@builder.io/sdk'
+import { withBuilder } from 'src/functions/with-builder'
 
 interface Props {
   code: string
@@ -29,20 +30,7 @@ if (globalReplaceNodes) {
   }
 }
 
-@BuilderBlock({
-  name: 'Custom Code',
-  static: true,
-  inputs: [
-    {
-      name: 'code',
-      type: 'html',
-      required: true,
-      defaultValue: '<p>Hello there, I am custom HTML code!</p>',
-      code: true
-    }
-  ]
-})
-export class CustomCode extends React.Component<Props> {
+class CustomCodeComponent extends React.Component<Props> {
   elementRef: Element | null = null
   originalRef: Element | null = null
 
@@ -138,3 +126,17 @@ export class CustomCode extends React.Component<Props> {
     )
   }
 }
+
+export const CustomCode = withBuilder(CustomCodeComponent, {
+  name: 'Custom Code',
+  static: true,
+  inputs: [
+    {
+      name: 'code',
+      type: 'html',
+      required: true,
+      defaultValue: '<p>Hello there, I am custom HTML code!</p>',
+      code: true
+    }
+  ]
+})

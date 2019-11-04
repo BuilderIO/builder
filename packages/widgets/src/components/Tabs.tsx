@@ -155,7 +155,7 @@ const defaultElement = {
     }
   ]
 })
-export class Tabs extends React.Component<TabsProps, { activeTab: number }> {
+class TabsComponent extends React.Component<TabsProps, { activeTab: number }> {
   state = {
     activeTab: 0
   }
