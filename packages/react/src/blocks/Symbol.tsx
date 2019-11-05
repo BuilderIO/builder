@@ -106,8 +106,10 @@ class SymbolComponent extends React.Component<SymbolProps> {
             if (isNestedSymbol) {
               key = entry || 'no-entry'
             }
+            if (isNestedSymbol && !entry) {
+              return this.placeholder
+            }
           }
-
 
           return <TagName
             data-model={model}
