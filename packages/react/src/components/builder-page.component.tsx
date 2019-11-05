@@ -442,7 +442,10 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     return ReactDOM.render(<BuilderPage {...props} />, div)
   }
 
+  mounted = false
+
   componentDidMount() {
+    this.mounted = true
     if (this.asServer) {
       this.asServer = false
       this.updateState(state => {
@@ -519,9 +522,9 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
 
   getCssFromFont(font: any, data?: any) {
     // TODO: compute what font sizes are used and only load those.......
-    const family = font.family + (font.kind && !font.kind.includes('#') ? ', ' + font.kind : '');
-    const name = family.split(',')[0];
-    const url = font.fileUrl ? font.fileUrl : font.files && font.files.regular;
+    const family = font.family + (font.kind && !font.kind.includes('#') ? ', ' + font.kind : '')
+    const name = family.split(',')[0]
+    const url = font.fileUrl ? font.fileUrl : font.files && font.files.regular
     let str = ''
     if (url && family && name) {
       str += `
@@ -531,14 +534,14 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
   font-display: swap;
   font-weight: 400;
 }
-        `.trim();
+        `.trim()
     }
 
     if (font.files) {
       for (const weight in font.files) {
         const isNumber = String(Number(weight)) === weight
         if (!isNumber) {
-          continue;
+          continue
         }
         // TODO: maybe limit number loaded
         const weightUrl = font.files[weight]
@@ -551,11 +554,10 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
   font-weight: ${weight};
 }
           `.trim()
-
         }
       }
     }
-    return str;
+    return str
   }
 
   componentWillUnmount() {
@@ -883,7 +885,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     }
 
     if (data && data.state) {
-      this.setState({
+      const newState = {
         ...this.state,
         updates: ((this.state && this.state.updates) || 0) + 1,
         state: Object.assign(this.rootState, {
@@ -894,7 +896,12 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
           ...data.state,
           ...this.props.data
         })
-      })
+      }
+      if (this.mounted) {
+        this.setState(newState)
+      } else {
+        this.state = newState
+      }
     }
 
     // TODO: also throttle on edits maybe

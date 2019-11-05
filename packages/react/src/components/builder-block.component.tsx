@@ -15,7 +15,7 @@ const camelCaseToKebabCase = (str?: string) =>
 
 const Device = { desktop: 0, tablet: 1, mobile: 2 }
 
-const commonTags = new Set(['div', 'a', 'span'])
+const commonTags = new Set(['div', 'a', 'span', 'img'])
 const voidElements = new Set([
   'area',
   'base',
