@@ -270,7 +270,9 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     const script =
       id &&
       Builder.isBrowser &&
-      (document.querySelector(`script[data-builder-json="${id}"],script[data-builder-state="${id}"]`) as HTMLElement | null)
+      (document.querySelector(
+        `script[data-builder-json="${id}"],script[data-builder-state="${id}"]`
+      ) as HTMLElement | null)
     if (script) {
       const json = JSON.parse(script.innerText)
       return json
@@ -304,7 +306,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     const info = event.data
     switch (info.type) {
       case 'builder.updateSpacer': {
-        const data = info.data;
+        const data = info.data
         const currentSpacer = this.rootState._spacer
         this.updateState(state => {
           state._spacer = data
@@ -381,7 +383,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
 
     if (element.classList.contains('builder-hydrated')) {
       console.debug('Tried to hydrate multiple times')
-      return;
+      return
     }
     element.classList.add('builder-hydrated')
 
@@ -633,60 +635,58 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
             this._logs = value && value.logs
 
             return (
-              <BuilderStoreContext.Provider
-                value={{
-                  ...this.state,
-                  rootState: this.rootState,
-                  state: this.data
+              <BuilderContent
+                inline={this.props.inlineContent}
+                // TODO: pass entry in
+                contentLoaded={this.onContentLoaded}
+                options={{
+                  key,
+                  entry: this.props.entry,
+                  ...(content && size(content) && { initialContent: [content] }),
+                  ...this.props.options
                 }}
+                contentError={this.props.contentError}
+                modelName={this.name || 'page'}
               >
-                {/* TODO: never use this? */}
-                <BuilderContent
-                  inline={this.props.inlineContent}
-                  // TODO: pass entry in
-                  contentLoaded={this.onContentLoaded}
-                  options={{
-                    key,
-                    entry: this.props.entry,
-                    ...(content && size(content) && { initialContent: [content] }),
-                    ...this.props.options
-                  }}
-                  contentError={this.props.contentError}
-                  modelName={this.name || 'page'}
-                >
-                  {(data, loading, fullData) => {
-                    if (this.props.dataOnly) {
-                      return null
-                    }
-                    // TODO: loading option - maybe that is what the children is or component prop
-                    return data ? (
-                      <div
-                        data-builder-component={this.name}
-                        data-builder-content-id={fullData.id}
-                        data-builder-variation-id={fullData.variationId}
+                {(data, loading, fullData) => {
+                  if (this.props.dataOnly) {
+                    return null
+                  }
+                  // TODO: loading option - maybe that is what the children is or component prop
+                  return data ? (
+                    <div
+                      data-builder-component={this.name}
+                      data-builder-content-id={fullData.id}
+                      data-builder-variation-id={fullData.variationId}
+                    >
+                      {this.getCss(data) && (
+                        <style dangerouslySetInnerHTML={{ __html: this.getCss(data) }} />
+                      )}
+                      <BuilderStoreContext.Provider
+                        value={{
+                          ...this.state,
+                          rootState: this.rootState,
+                          state: this.data,
+                          content: fullData
+                        }}
                       >
-                        {this.getCss(data) && (
-                          <style dangerouslySetInnerHTML={{ __html: this.getCss(data) }} />
-                        )}
-                        {
-                          <BuilderBlocks
-                            emailMode={this.props.emailMode}
-                            fieldName="blocks"
-                            blocks={data.blocks}
-                          />
+                        <BuilderBlocks
+                          emailMode={this.props.emailMode}
+                          fieldName="blocks"
+                          blocks={data.blocks}
+                        />
                         }
-                        {/* {data.jsCode && <script dangerouslySetInnerHTML={{ __html: data.jsCode }} />} */}
-                      </div>
-                    ) : loading ? (
-                      <div data-builder-component={this.name} className="builder-loading">
-                        {this.props.children}
-                      </div>
-                    ) : (
-                      <div data-builder-component={this.name} className="builder-no-content" />
-                    )
-                  }}
-                </BuilderContent>
-              </BuilderStoreContext.Provider>
+                      </BuilderStoreContext.Provider>
+                    </div>
+                  ) : loading ? (
+                    <div data-builder-component={this.name} className="builder-loading">
+                      {this.props.children}
+                    </div>
+                  ) : (
+                    <div data-builder-component={this.name} className="builder-no-content" />
+                  )
+                }}
+              </BuilderContent>
             )
           }}
         </BuilderAsyncRequestsContext.Consumer>

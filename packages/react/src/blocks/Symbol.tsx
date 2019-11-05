@@ -26,6 +26,29 @@ export interface SymbolProps {
   attributes?: any
 }
 
+function traverse(obj: any, cb: (obj: any, key?: string) => void, key?: string) {
+  cb(obj, key)
+  if (obj && typeof obj === 'object') {
+    Object.keys(obj).forEach(key => {
+      const value = obj[key]
+      traverse(value, cb)
+    })
+  }
+}
+
+const getAllObjects = (blocks: any[]) => {
+  const list: any[] = [];
+  blocks.forEach(block => {
+    traverse(block, child => {
+      if (child && typeof child === 'object') {
+        list.push(child)
+      }
+    })
+  })
+  return list
+}
+
+
 class SymbolComponent extends React.Component<SymbolProps> {
   get placeholder() {
     return (
@@ -57,18 +80,6 @@ class SymbolComponent extends React.Component<SymbolProps> {
     let key = Builder.isEditing && builder.editingModel === model ? undefined : entry
     const dataString = data && size(data) && hash(data)
 
-    let isNestedSymbol = false;
-    if (key === undefined && Builder.isEditing) {
-      let instance = (this as any)
-      while (instance = instance?._reactInternalInstance?._currentElement?._owner?._instance) {
-        if (instance && instance.constructor === this.constructor) {
-          isNestedSymbol = true;
-        }
-      }
-    }
-    if (isNestedSymbol) {
-      key = entry || 'no-entry-yet'
-    }
     if (key && dataString && dataString.length < 300) {
       key += ':' + dataString
     }
@@ -76,8 +87,29 @@ class SymbolComponent extends React.Component<SymbolProps> {
     const attributes = this.props.attributes || {}
     return (
       <BuilderStoreContext.Consumer>
-        {state => (
-          <TagName
+        {state => {
+          const { content } = state;
+          if (!key && Builder.isEditing) {
+            let isNestedSymbol = false;
+            // TODO: traverse elements from builder store context and find symbol parents
+            const allObjects = getAllObjects(content.blocks)
+            const getParent = (obj: any) => allObjects.find(item => Object.values(item).includes(obj))
+            const obj = allObjects.find(item => item.id === this.props.builderBlock?.id)
+            if (obj) {
+              let parent = obj
+              while (parent = getParent(parent)) {
+                if (parent?.component?.name === 'Symbol') {
+                  isNestedSymbol = true;
+                }
+              }
+            }
+            if (isNestedSymbol) {
+              key = entry || 'no-entry'
+            }
+          }
+
+
+          return <TagName
             data-model={model}
             {...attributes}
             className={
@@ -103,7 +135,7 @@ class SymbolComponent extends React.Component<SymbolProps> {
               {this.props.children}
             </BuilderPage>}
           </TagName>
-        )}
+        }}
       </BuilderStoreContext.Consumer>
     )
   }
