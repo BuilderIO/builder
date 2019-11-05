@@ -86,7 +86,7 @@ class SymbolComponent extends React.Component<SymbolProps> {
 
     const attributes = this.props.attributes || {}
     return (
-      <BuilderStoreContext.Consumer>
+      <BuilderStoreContext.Consumer key={(model || 'no model') + ':' + (entry || 'no entry')}>
         {state => {
           const { content } = state;
           if (!key && Builder.isEditing && Array.isArray(content?.data?.blocks)) {
@@ -99,7 +99,9 @@ class SymbolComponent extends React.Component<SymbolProps> {
               let parent = obj
               while (parent = getParent(parent)) {
                 if (parent?.component?.name === 'Symbol') {
+                  console.debug('Nested symbol')
                   isNestedSymbol = true;
+                  break;
                 }
               }
             }
@@ -122,7 +124,6 @@ class SymbolComponent extends React.Component<SymbolProps> {
           >
             {showPlaceholder ? this.placeholder :
             <BuilderPage
-              key={(model || 'no model') + ':' + (entry || 'no entry')}
               modelName={model}
               entry={entry}
               data={data}

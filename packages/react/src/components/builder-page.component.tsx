@@ -517,7 +517,8 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     return this.props.location || (Builder.isBrowser ? location : ({} as any))
   }
 
-  getCssFromFont(font: any) {
+  getCssFromFont(font: any, allData?: any) {
+    // TODO: compute fonts used in allData
     const family = font.family + (font.kind && !font.kind.includes('#') ? ', ' + font.kind : '')
     const name = family.split(',')[0]
     const url = font.fileUrl ? font.fileUrl : font.files && font.files.regular
@@ -546,7 +547,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     return (
       data.customFonts &&
       data.customFonts.length &&
-      data.customFonts.map((font: any) => this.getCssFromFont(font)).join(' ')
+      data.customFonts.map((font: any) => this.getCssFromFont(font, data)).join(' ')
     )
   }
 
