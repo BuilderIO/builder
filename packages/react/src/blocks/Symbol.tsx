@@ -59,6 +59,15 @@ class SymbolComponent extends React.Component<SymbolProps> {
     )
   }
 
+  shouldComponentUpdate(nextProps: any) {
+    if (Builder.isEditing) {
+      if (hash(nextProps) === hash(this.props)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   render() {
     const symbol = this.props.symbol
 
