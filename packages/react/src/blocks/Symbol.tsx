@@ -88,11 +88,11 @@ class SymbolComponent extends React.Component<SymbolProps> {
     return (
       <BuilderStoreContext.Consumer key={(model || 'no model') + ':' + (entry || 'no entry')}>
         {state => {
-          const { content } = state;
-          if (!key && Builder.isEditing && Array.isArray(content?.data?.blocks)) {
+          const fullContent = state.content;
+          if (!key && Builder.isEditing && Array.isArray(fullContent?.data?.blocks)) {
             let isNestedSymbol = false;
             // TODO: traverse elements from builder store context and find symbol parents
-            const allObjects = getAllObjects(content.data.blocks)
+            const allObjects = getAllObjects(fullContent.data.blocks)
             const getParent = (obj: any) => allObjects.find(item => Object.values(item).includes(obj))
             const obj = allObjects.find(item => item.id === this.props.builderBlock?.id)
             if (obj) {
