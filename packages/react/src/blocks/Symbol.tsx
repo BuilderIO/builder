@@ -56,6 +56,19 @@ class SymbolComponent extends React.Component<SymbolProps> {
 
     let key = Builder.isEditing && builder.editingModel === model ? undefined : entry
     const dataString = data && size(data) && hash(data)
+
+    let isNestedSymbol = false;
+    if (key === undefined && Builder.isEditing) {
+      let instance = (this as any)
+      while (instance = instance?._reactInternalInstance?._currentElement?._owner?._instance) {
+        if (instance && instance.constructor === this.constructor) {
+          isNestedSymbol = true;
+        }
+      }
+    }
+    if (isNestedSymbol) {
+      key = entry || 'no-entry-yet'
+    }
     if (key && dataString && dataString.length < 300) {
       key += ':' + dataString
     }
