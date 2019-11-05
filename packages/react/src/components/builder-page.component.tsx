@@ -580,7 +580,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
       for (const font of data.customFonts) {
         const url = font.fileUrl ? font.fileUrl : font.files && font.files.regular
         if (!fontsLoaded.has(url)) {
-          const html = this.getCssFromFont(font)
+          const html = this.getCssFromFont(font, data)
           fontsLoaded.add(url)
           if (!html) {
             continue
