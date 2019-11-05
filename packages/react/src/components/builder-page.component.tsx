@@ -517,21 +517,45 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     return this.props.location || (Builder.isBrowser ? location : ({} as any))
   }
 
-  getCssFromFont(font: any, allData?: any) {
-    // TODO: compute fonts used in allData
-    const family = font.family + (font.kind && !font.kind.includes('#') ? ', ' + font.kind : '')
-    const name = family.split(',')[0]
-    const url = font.fileUrl ? font.fileUrl : font.files && font.files.regular
+  getCssFromFont(font: any) {
+    // TODO: compute what font sizes are used and only load those.......
+    const family = font.family + (font.kind && !font.kind.includes('#') ? ', ' + font.kind : '');
+    const name = family.split(',')[0];
+    const url = font.fileUrl ? font.fileUrl : font.files && font.files.regular;
+    let str = ''
     if (url && family && name) {
-      return `
-        @font-face {
-          font-family: ${family};
-          src: local("${name}"), url('${url}');
-          font-display: fallback;
-        }
-        `
+      str += `
+@font-face {
+  font-family: ${family};
+  src: local("${name}"), url('${url}') format('woff2');
+  font-display: swap;
+  font-weight: 400;
+}
+        `.trim();
     }
-    return ''
+
+    if (font.files) {
+      for (const weight in font.files) {
+        const isNumber = String(Number(weight)) === weight
+        if (!isNumber) {
+          continue;
+        }
+        // TODO: maybe limit number loaded
+        const weightUrl = font.files[weight]
+        if (weightUrl && weightUrl !== url) {
+          str += `
+@font-face {
+  font-family: ${family};
+  src: url('${weightUrl}') format('woff2');
+  font-display: swap;
+  font-weight: ${weight};
+}
+          `.trim()
+
+        }
+      }
+    }
+    return str;
   }
 
   componentWillUnmount() {
