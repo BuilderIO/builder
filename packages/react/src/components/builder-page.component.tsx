@@ -675,7 +675,6 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
                           fieldName="blocks"
                           blocks={data.blocks}
                         />
-                        }
                       </BuilderStoreContext.Provider>
                     </div>
                   ) : loading ? (
