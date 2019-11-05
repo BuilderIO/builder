@@ -517,7 +517,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     return this.props.location || (Builder.isBrowser ? location : ({} as any))
   }
 
-  getCssFromFont(font: any) {
+  getCssFromFont(font: any, data?: any) {
     // TODO: compute what font sizes are used and only load those.......
     const family = font.family + (font.kind && !font.kind.includes('#') ? ', ' + font.kind : '');
     const name = family.split(',')[0];
