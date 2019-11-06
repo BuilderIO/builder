@@ -171,7 +171,7 @@ const tryEval = (str?: string, data: any = {}, errors?: Error[]): any => {
       ///SERVERONLY     ...{ state: data }
       ///SERVERONLY   }
       ///SERVERONLY   // TODO: convert reutrn to module.exports on server
-      ///SERVERONLY }).run(value.replace(/(^|;)return /, ''))
+      ///SERVERONLY }).run(value.replace(/(^|;)return /, '$1'))
       // tslint:enable:comment-format
     }
   } catch (error) {

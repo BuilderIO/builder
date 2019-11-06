@@ -153,7 +153,7 @@ export function stringToFunction(
         ///SERVERONLY     ...{ builder: api },
         ///SERVERONLY     event
         ///SERVERONLY   }
-        ///SERVERONLY }).run(value.replace(/(^|;)return /, ''))
+        ///SERVERONLY }).run(value.replace(/(^|;)return /, '$1'))
         // tslint:enable:comment-format
       }
     } catch (error) {
