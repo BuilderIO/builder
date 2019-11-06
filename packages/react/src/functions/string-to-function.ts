@@ -155,7 +155,7 @@ export function stringToFunction(
             ...{ builder: api },
             event
           }
-        }).run(value.replace(/(^|;)return /, '$1'))
+        }).run(str.replace(/(^|;)return /, '$1'))
         // tslint:enable:comment-format
       }
     } catch (error) {
