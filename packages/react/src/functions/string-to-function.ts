@@ -1,6 +1,8 @@
 import { Builder, builder } from '@builder.io/sdk'
 import { sizes } from '../constants/device-sizes.constant'
 
+const noCompileRequire: any = (new Function('return require'))()
+
 const fnCache: { [key: string]: Function } = {}
 
 const sizeMap = {
@@ -143,17 +145,17 @@ export function stringToFunction(
         // for the server build
         // TODO: cache these for better performancs with new VmScript
         // tslint:disable:comment-format
-        ///SERVERONLY const { VM } = require('vm2')
-        ///SERVERONLY const [state, event] = args
-        ///SERVERONLY return new VM({
-        ///SERVERONLY   timeout: 100,
-        ///SERVERONLY   sandbox: {
-        ///SERVERONLY     ...state,
-        ///SERVERONLY     ...{ state },
-        ///SERVERONLY     ...{ builder: api },
-        ///SERVERONLY     event
-        ///SERVERONLY   }
-        ///SERVERONLY }).run(value.replace(/(^|;)return /, '$1'))
+        const { VM } = noCompileRequire('vm2')
+        const [state, event] = args
+        return new VM({
+          timeout: 100,
+          sandbox: {
+            ...state,
+            ...{ state },
+            ...{ builder: api },
+            event
+          }
+        }).run(value.replace(/(^|;)return /, '$1'))
         // tslint:enable:comment-format
       }
     } catch (error) {

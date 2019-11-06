@@ -26,6 +26,8 @@ import { debounceNextTick } from '../functions/debonce-next-tick'
 import { throttle } from 'src/functions/throttle'
 
 const size = (thing: object) => Object.keys(thing).length
+const noCompileRequire: typeof require = (Builder.isServer &&
+  new Function('return require')()) as any
 
 const fontsLoaded = new Set()
 
@@ -164,14 +166,14 @@ const tryEval = (str?: string, data: any = {}, errors?: Error[]): any => {
       // browser bundler's like rollup and webpack. Our rollup plugin strips these comments only
       // for the server build
       // tslint:disable:comment-format
-      ///SERVERONLY const { VM } = require('vm2')
-      ///SERVERONLY return new VM({
-      ///SERVERONLY   sandbox: {
-      ///SERVERONLY     ...data,
-      ///SERVERONLY     ...{ state: data }
-      ///SERVERONLY   }
-      ///SERVERONLY   // TODO: convert reutrn to module.exports on server
-      ///SERVERONLY }).run(value.replace(/(^|;)return /, '$1'))
+      const { VM } = noCompileRequire('vm2')
+      return new VM({
+        sandbox: {
+          ...data,
+          ...{ state: data }
+        }
+        // TODO: convert reutrn to module.exports on server
+      }).run(value.replace(/(^|;)return /, '$1'))
       // tslint:enable:comment-format
     }
   } catch (error) {

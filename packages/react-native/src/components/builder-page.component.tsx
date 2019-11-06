@@ -34,6 +34,8 @@ const sizeMap = {
   mobile: 'small',
 };
 
+const noCompileRequire: any = (new Function('return require'))()
+
 function decorator(fn: Function) {
   return function argReceiver(...fnArgs: any[]) {
     // Check if the decorator is being called without arguments (ex `@foo methodName() {}`)
@@ -119,14 +121,14 @@ const tryEval = (str?: string, data: any = {}, errors?: Error[]): any => {
       // browser bundler's like rollup and webpack. Our rollup plugin strips these comments only
       // for the server build
       // tslint:disable:comment-format
-      ///SERVERONLY const { VM } = require('vm2')
-      ///SERVERONLY return new VM({
-      ///SERVERONLY   sandbox: {
-      ///SERVERONLY     ...data,
-      ///SERVERONLY     ...{ state: data }
-      ///SERVERONLY   }
-      ///SERVERONLY   // TODO: convert reutrn to module.exports on server
-      ///SERVERONLY }).run(value.replace(/^return /, ''))
+      const { VM } = noCompileRequire('vm2')
+      return new VM({
+        sandbox: {
+          ...data,
+          ...{ state: data }
+        }
+        // TODO: convert reutrn to module.exports on server
+      }).run(value.replace(/^return /, ''))
       // tslint:enable:comment-format
     }
   } catch (error) {
