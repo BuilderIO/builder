@@ -8,23 +8,8 @@ Frist things first, if you don't yet have one, create a free account at [Builder
 
 ### To install
 
-`npm install --save @builder.io/react @builder.io/widgets`
+`npm install --save @builder.io/react`
 
-### Update your next.config.js
-
-For server side rendering we need to do one update to use the server side build for @builder.io/react
-in webpack when running server side
-
-```js
-module.exports = {
-  webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
-    if (isServer) {
-      config.resolve.alias['@builder.io/react'] = '@builder.io/react/server'
-    }
-    return config
-  }
-}
-```
 
 ### Add the components and getInitialProps
 
@@ -37,7 +22,6 @@ and use the following for `pages/about.js`
 ```js
 import React from 'react'
 import { builder, BuilderComponent } from '@builder.io/react'
-import '@buidler.io/widgets';
 
 builder.init(BUILDER_API_KEY)
 
@@ -105,7 +89,6 @@ module.exports = routes()
 import { Component } from 'react'
 import { builder, BuilderComponent } from '@builder.io/react'
 // Allow interactive widgets in the editor (importing registers the react components)
-import '@buidler.io/widgets'
 import Error from './_error'
 
 builder.init(YOUR_API_KEY)
@@ -131,7 +114,6 @@ A simplistic approach could also be to use \_error.js. Since \_error.js function
 ```js
 import React from 'react'
 import { builder, BuilderComponent } from '@builder.io/react'
-import '@buidler.io/widgets'
 
 builder.init(BUILDER_API_KEY)
 

@@ -19,6 +19,7 @@ export interface BuilderBlocksProps {
   dataPath?: string
   className?: string
   emailMode?: boolean
+  ampMode?: boolean
 }
 
 interface BuilderBlocksState {
@@ -119,6 +120,7 @@ export class BuilderBlocks extends React.Component<BuilderBlocksProps, BuilderBl
                   fieldName={this.props.fieldName}
                   child={this.props.child}
                   emailMode={this.props.emailMode}
+                  ampMode={this.props.ampMode}
                 />
               ) : (
                 block
