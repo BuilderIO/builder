@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/react",
-  "version": "1.0.98-alpha.5",
+  "version": "1.0.98-alpha.6",
   "description": "",
   "keywords": [],
   "main": "dist/builder-react.cjs.js",
@@ -144,14 +144,14 @@
     "prop-types": "^15.7.2"
   },
   "dependencies": {
-    "vm2": "^3.6.4",
     "@builder.io/sdk": "^1.0.50",
     "@emotion/core": "^10.0.17",
     "hash-sum": "^2.0.0",
     "preact": "^10.0.0-rc.0",
     "react": ">=14",
     "react-dom": ">=14",
-    "tslib": "^1.10.0"
+    "tslib": "^1.10.0",
+    "vm2": "^3.6.4"
   },
   "gitHead": "f233cba190317de3644fff198e765660205cd7f1"
 }
