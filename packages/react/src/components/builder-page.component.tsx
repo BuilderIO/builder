@@ -24,10 +24,11 @@ import {
 import { Url } from 'url'
 import { debounceNextTick } from '../functions/debonce-next-tick'
 import { throttle } from 'src/functions/throttle'
+import { safeDynamicRequire } from 'src/functions/safe-dynamic-require'
 
 const size = (thing: object) => Object.keys(thing).length
-const noCompileRequire: typeof require = (Builder.isServer &&
-  new Function('return require')()) as any
+const noCompileRequire: typeof require =
+  Builder.isServer && (new Function('return this.require')() as any)
 
 const fontsLoaded = new Set()
 
@@ -104,6 +105,7 @@ export interface BuilderPageProps {
   onStateChange?: (newData: any) => void
   noAsync?: boolean
   emailMode?: boolean
+  ampMode?: boolean
   inlineContent?: boolean
   builderBlock?: BuilderElement
   dataOnly?: boolean
@@ -166,7 +168,7 @@ const tryEval = (str?: string, data: any = {}, errors?: Error[]): any => {
       // browser bundler's like rollup and webpack. Our rollup plugin strips these comments only
       // for the server build
       // tslint:disable:comment-format
-      const { VM } = noCompileRequire('vm2')
+      const { VM } = safeDynamicRequire('vm2')
       return new VM({
         sandbox: {
           ...data,
@@ -701,6 +703,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
                       >
                         <BuilderBlocks
                           emailMode={this.props.emailMode}
+                          ampMode={this.props.ampMode}
                           fieldName="blocks"
                           blocks={data.blocks}
                         />

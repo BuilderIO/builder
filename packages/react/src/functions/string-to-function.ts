@@ -1,7 +1,6 @@
 import { Builder, builder } from '@builder.io/sdk'
 import { sizes } from '../constants/device-sizes.constant'
-
-const noCompileRequire: any = (new Function('return require'))()
+import { safeDynamicRequire } from './safe-dynamic-require'
 
 const fnCache: { [key: string]: Function } = {}
 
@@ -145,7 +144,7 @@ export function stringToFunction(
         // for the server build
         // TODO: cache these for better performancs with new VmScript
         // tslint:disable:comment-format
-        const { VM } = noCompileRequire('vm2')
+        const { VM } = safeDynamicRequire('vm2')
         const [state, event] = args
         return new VM({
           timeout: 100,

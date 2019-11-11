@@ -302,6 +302,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
             : ''
         }` + (options.class ? ' ' + options.class : ''),
       key: this.id + index,
+      // Remove for amp mode
       'builder-id': this.id,
       // ref: ((ref: any) => (this.ref = ref)) as any,
       ...(index !== 0 && {
