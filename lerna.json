@@ -2,7 +2,8 @@
   "lerna": "2.9.0",
   "packages": [
     "packages/*",
-    "packages/*/examples/*"
+    "packages/*/examples/*",
+    "plugins/*"
   ],
   "version": "independent"
 }
