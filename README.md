@@ -39,7 +39,7 @@ Want suppoert for something not listed here or for us to priotize something comi
 
 ## What's in this repository?
 
-This repo houses all of the various [SDKs](packages), [usage examples](examples), and [starter projects](starters)
+This repo houses all of the various [SDKs](packages), [usage examples](examples), [starter projects](starters), and [plugins](plugins)
 
 ## Quick start
 
