@@ -237,7 +237,18 @@ export class Builder {
 
   authToken = '';
 
+  static editors: any[] = []
+  static plugins: any[] = []
+
   static actions: Action[] = [];
+
+  static registerEditor(info: any) {
+    this.editors.push(info)
+  }
+
+  static registerPlugin(info: any) {
+    this.plugins.push(info)
+  }
 
   static registerAction(action: Action) {
     this.actions.push(action);

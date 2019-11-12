@@ -38,10 +38,10 @@
     "rollup-plugin-typescript": "^1.0.1",
     "rollup-plugin-typescript2": "^0.22.1",
     "rollup-plugin-uglify": "^6.0.2",
-    "ts-jest": "^24.0.2",
-    "typescript": "3.7.0-beta"
+    "ts-jest": "^24.0.2"
   },
   "dependencies": {
+    "typescript": "3.7.0-beta",
     "@builder.io/sdk": "^1.0.50",
     "@glimmer/syntax": "^0.42.1",
     "clean-css": "^4.2.1",
