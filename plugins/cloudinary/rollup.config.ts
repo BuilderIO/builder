@@ -10,13 +10,15 @@ const pkg = require('./package.json')
 const libraryName = 'builder-plugin-cloudinary'
 
 export default {
-  input: `src/${libraryName}.ts`,
+  input: `src/${libraryName}.tsx`,
+  // Important! We need to have shared references to 'react' and '@builder.io/sdk'
+  // for builder plugins to run properly
+  external: ['react', '@builder.io/sdk'],
   output: [
     { file: pkg.main, name: camelCase(libraryName), format: 'umd', sourcemap: true },
     { file: pkg.module, format: 'es', sourcemap: true },
+    { file: pkg.unpkg, format: 'system', sourcemap: true },
   ],
-  // Indicate here external modules you don't wanna include in your bundle (i.e.: 'lodash')
-  external: [],
   watch: {
     include: 'src/**',
   },
