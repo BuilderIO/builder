@@ -5,7 +5,6 @@ import React from 'react'
 import { Builder } from '@builder.io/sdk'
 import { Dialog, Button } from '@material-ui/core'
 
-// Move custom editor props
 interface Props {
   value?: string
   onChange(newValue: string): void
