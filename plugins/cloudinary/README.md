@@ -26,9 +26,11 @@ npm start
 From [Builder.io](https://builder.io) open the javascript console in your browser's dev tools and run.
 
 ```js
+// Adds the plugin
 builder.plugins.replace([
   'http://localhost:1268/builder-plugin-cloudinary.system.js'
 ]);
+// Saves for all in your organization and reloads the browser
 builder.savePlugins.then(() => location.reload());
 ```
 
@@ -41,7 +43,10 @@ Now as you develop you can restart Builder to see the latest version of your plu
 To uninstall your plugin run
 
 ```js
-builder.plugins.replace([])
+// Removes all plugins
+builder.plugins.replace([]);
+// Saves for all in your organization and reloads the browser
+builder.savePlugins.then(() => location.reload());
 ```
 
 ### Frameworks
