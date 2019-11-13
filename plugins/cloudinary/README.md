@@ -26,18 +26,22 @@ npm start
 From [Builder.io](https://builder.io) open the javascript console in your browser's dev tools and run.
 
 ```js
-appState.user.organization.value.loadPlugins.replace([
+builder.plugins.replace([
   'http://localhost:1268/builder-plugin-cloudinary.system.js'
 ]);
-appState.user.organization.save().then(() => location.reload())
+builder.savePlugins.then(() => location.reload());
 ```
+
+**NOTE:** Loading http:// content on an https:// website will give you a warning. Be sure to click the shield in the top right of your browser and choose "load unsafe scripts" to allow the http content on your https site when devloping locally
+
+<img alt="Load unsafe script example" src="https://i.stack.imgur.com/uSaLL.png">
 
 Now as you develop you can restart Builder to see the latest version of your plugin.
 
 To uninstall your plugin run
 
 ```js
-appState.user.organization.value.loadPlugins.replace([])
+builder.plugins.replace([])
 ```
 
 ### Frameworks
@@ -56,7 +60,7 @@ You can also publish to your own NPM or a hosting service.
 To load a plugin from NPM
 
 ```js
-appState.user.organization.value.loadPlugins.replace([
+builder.plugins.replace([
   '@builder.io/plugin-cloudinary'
 ])
 ```
@@ -66,7 +70,7 @@ appState.user.organization.value.loadPlugins.replace([
 You can load a plugin from a specific version
 
 ```js
-appState.user.organization.value.loadPlugins.replace([
+builder.plugins.replace([
   '@builder.io/plugin-cloudinary@1.0.0'
 ])
 ```
@@ -74,7 +78,7 @@ appState.user.organization.value.loadPlugins.replace([
 Or from a URL
 
 ```js
-appState.user.organization.value.loadPlugins.replace([
+builder.plugins.replace([
   'https://something.com/foo'
 ])
 ```
