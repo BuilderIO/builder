@@ -1,5 +1,7 @@
 # Cloudinary support for Builder.io
 
+See [here](src/builder-plugin-cloudinary.tsx) for the React component that powers this plugin
+
 ## Status
 
 Builder plugins are in alpha. If you run into any issues or have questions please
@@ -34,7 +36,7 @@ builder.plugins.replace([
 builder.savePlugins.then(() => location.reload());
 ```
 
-**NOTE:** Loading http:// content on an https:// website will give you a warning. Be sure to click the shield in the top right of your browser and choose "load unsafe scripts" to allow the http content on your https site when devloping locally
+**NOTE:** Loading http:// content on an https:// website will give you a warning. Be sure to click the shield in the top right of your browser and choose "load unsafe scripts" to allow the http content on Builder's https site when devloping locally
 
 <img alt="Load unsafe script example" src="https://i.stack.imgur.com/uSaLL.png">
 
