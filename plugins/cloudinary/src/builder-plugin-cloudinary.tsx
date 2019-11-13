@@ -17,6 +17,8 @@ class CloudinaryImageEditor extends React.Component<Props> {
     showDialog: false
   }
 
+  // TODO: if key is not set, prompt the user for their cloudinary key and set it via the
+  // setter below
   get organization() {
     return this.props.context.user.organization
   }
@@ -106,7 +108,7 @@ class CloudinaryImageEditor extends React.Component<Props> {
             })
           }}
         >
-          Pick Image
+          Choose Image
         </Button>
       </div>
     )
