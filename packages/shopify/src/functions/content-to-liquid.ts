@@ -19,6 +19,58 @@ import * as csso from 'csso';
 
 const unescapeHtml = (html: string) => html.replace(/&apos;/g, "'").replace(/&quot;/g, '"');
 
+function getCssFromFont(font: any) {
+  // TODO: compute what font sizes are used and only load those.......
+  const family = font.family + (font.kind && !font.kind.includes('#') ? ', ' + font.kind : '');
+  const name = family.split(',')[0];
+  const url = font.fileUrl ? font.fileUrl : font.files && font.files.regular;
+  let str = ''
+  if (url && family && name) {
+    str += `
+@font-face {
+font-family: ${family};
+src: local("${name}"), url('${url}') format('woff2');
+font-display: swap;
+font-weight: 400;
+}
+      `.trim();
+  }
+
+  if (font.files) {
+    for (const weight in font.files) {
+      // TODO: maybe limit number loaded
+      const weightUrl = font.files[weight]
+      if (weightUrl && weightUrl !== url) {
+        str += `
+@font-face {
+font-family: ${family};
+src: url('${weightUrl}') format('woff2');
+font-display: swap;
+font-weight: ${weight};
+}
+        `.trim()
+
+      }
+    }
+  }
+  return str;
+}
+
+
+function getFontCss(data: any) {
+  // TODO: separate internal data from external
+  return (
+    data.customFonts &&
+    data.customFonts.length &&
+    data.customFonts.map((font: any) => getCssFromFont(font)).join(' ')
+  );
+}
+
+function getCss(data: any) {
+  // .replace(/([^\s]|$)&([^\w])/g, '$1' + '.some-selector' + '$2')
+  return (data.cssCode || '') + (getFontCss(data) || '');
+}
+
 export const convertTemplateLiteralsToTags = (liquid: string) => {
   let current = liquid;
   let latest = liquid;
@@ -153,14 +205,19 @@ export function contentToLiquid(json: BuilderContent, modelName: string, options
     `.replace(/\s+/, ' ')
   );
 
+  css = getCss(json.data) + css;
+
   // Optimize CSS (todo: option to not do)
   const minResult = new CleanCSS({
     level: 1,
   }).minify(css);
+
   css = minResult.styles;
+
   const cssOutput = csso.minify(css, {
     restructure: true,
   });
+
   css = cssOutput.css;
 
   css = prettify(css, {
