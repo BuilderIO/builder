@@ -51,6 +51,12 @@ builder.plugins.replace([]);
 builder.savePlugins.then(() => location.reload());
 ```
 
+### Seeing your plugin in action
+
+In this plugin we replace the default "file" type editor with our Cloudinary file picker. So, to preview in Builder, just add a component with a file input (e.g. the built-in Image component), and open it's options to see your custom editor!
+
+<img src="https://i.imgur.com/uVOLn7A.gif" alt="Seeing your plugin in the editor example gif">
+
 ### Frameworks
 
 Builder.io uses [React](https://github.com/facebook/react) and [Material UI](https://github.com/mui-org/material-ui) for the UI, and [Emotion](https://github.com/emotion-js/emotion) for styling.
