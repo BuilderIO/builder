@@ -6,6 +6,10 @@
 <br />
 <img src="https://imgur.com/lHDo3Mq.gif" alt="Editor example" />
 
+## We're hiring!
+
+Want to work on the future of content creation? Shoot your info to steve@builder.io and let's talk
+
 ## How does it work?
 
 - Integrate the [Builder API or SDK](#supported-frameworks) to your site or app
