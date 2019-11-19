@@ -71,8 +71,9 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
       for (let i = 0; i < el.children.length; i++) {
         const child = el.children[i]
         child.remove()
-        newEl.appendChild(child)
+        // newEl.appendChild(child)
       }
+      el.innerHTML = '';
 
       el.appendChild(newEl)
     }
