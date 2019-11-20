@@ -119,14 +119,14 @@ const tryEval = (str?: string, data: any = {}, errors?: Error[]): any => {
       // browser bundler's like rollup and webpack. Our rollup plugin strips these comments only
       // for the server build
       // tslint:disable:comment-format
-      const { VM } = require('vm2')
+      const { VM } = require('vm2');
       return new VM({
         sandbox: {
           ...data,
-          ...{ state: data }
-        }
+          ...{ state: data },
+        },
         // TODO: convert reutrn to module.exports on server
-      }).run(value.replace(/^return /, ''))
+      }).run(value.replace(/^return /, ''));
       // tslint:enable:comment-format
     }
   } catch (error) {
@@ -331,7 +331,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     const family = font.family + (font.kind && !font.kind.includes('#') ? ', ' + font.kind : '');
     const name = family.split(',')[0];
     const url = font.fileUrl ? font.fileUrl : font.files && font.files.regular;
-    let str = ''
+    let str = '';
     if (url && family && name) {
       str += `
 @font-face {
@@ -346,7 +346,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     if (font.files) {
       for (const weight in font.files) {
         // TODO: maybe limit number loaded
-        const weightUrl = font.files[weight]
+        const weightUrl = font.files[weight];
         if (weightUrl && weightUrl !== url) {
           str += `
 @font-face {
@@ -355,8 +355,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
   font-display: swap;
   font-weight: ${weight};
 }
-          `.trim()
-
+          `.trim();
         }
       }
     }
@@ -605,7 +604,11 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
 
     // Unsubscribe all? TODO: maybe don't continuous fire when editing.....
     if (this.props.contentLoaded) {
-      this.props.contentLoaded(data);
+      Builder.nextTick(() => {
+        if (this.props.contentLoaded) {
+          this.props.contentLoaded(data);
+        }
+      });
     }
 
     if (data && data.inputs && Array.isArray(data.inputs) && data.inputs.length) {
