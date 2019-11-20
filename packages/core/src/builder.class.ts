@@ -237,17 +237,17 @@ export class Builder {
 
   authToken = '';
 
-  static editors: any[] = []
-  static plugins: any[] = []
+  static editors: any[] = [];
+  static plugins: any[] = [];
 
   static actions: Action[] = [];
 
   static registerEditor(info: any) {
-    this.editors.push(info)
+    this.editors.push(info);
   }
 
   static registerPlugin(info: any) {
-    this.plugins.push(info)
+    this.plugins.push(info);
   }
 
   static registerAction(action: Action) {
@@ -330,23 +330,29 @@ export class Builder {
           return input;
         }),
       }),
-      hooks: Object.keys(spec.hooks || {}).reduce(
-        (memo, key) => {
-          const value = spec.hooks && spec.hooks[key];
-          if (!value) {
-            return memo;
-          }
-          if (typeof value === 'string') {
-            memo[key] = value;
-          } else {
-            memo[key] = `return (${value.toString()}).apply(this, arguments)`;
-          }
+      hooks: Object.keys(spec.hooks || {}).reduce((memo, key) => {
+        const value = spec.hooks && spec.hooks[key];
+        if (!value) {
           return memo;
-        },
-        {} as { [key: string]: string }
-      ),
+        }
+        if (typeof value === 'string') {
+          memo[key] = value;
+        } else {
+          memo[key] = `return (${value.toString()}).apply(this, arguments)`;
+        }
+        return memo;
+      }, {} as { [key: string]: string }),
       class: undefined,
     };
+  }
+
+  private static addComponent(component: Component) {
+    const current = find(this.components, item => item.name === component.name);
+    if (current) {
+      this.components.splice(this.components.indexOf(current), 1, component);
+    } else {
+      this.components.push(component);
+    }
   }
 
   // TODO: style guide, etc off this system as well?
@@ -356,20 +362,18 @@ export class Builder {
       if (!spec.name) {
         spec.name = component.name;
       }
-      if (!find(this.components, item => item.name === spec.name)) {
-        this.components.push(spec as Component);
+      this.addComponent(spec as Component);
 
-        const sendSpec = this.prepareComponentSpecToSend(spec as Component);
-        // TODO: serialize component name and inputs
-        if (isBrowser) {
-          window.parent.postMessage(
-            {
-              type: 'builder.registerComponent',
-              data: sendSpec,
-            },
-            '*'
-          );
-        }
+      const sendSpec = this.prepareComponentSpecToSend(spec as Component);
+      // TODO: serialize component name and inputs
+      if (isBrowser) {
+        window.parent.postMessage(
+          {
+            type: 'builder.registerComponent',
+            data: sendSpec,
+          },
+          '*'
+        );
       }
       return component;
     };
@@ -529,9 +533,9 @@ export class Builder {
     try {
       // TODO: don't set this until gdpr allowed....
 
-      (Builder.isBrowser &&
-        (typeof sessionStorage !== 'undefined' && sessionStorage.getItem(sessionStorageKey))) ||
-        '';
+      if (Builder.isBrowser && typeof sessionStorage !== 'undefined') {
+        sessionStorage.getItem(sessionStorageKey);
+      }
     } catch (err) {
       console.debug('Session storage error', err);
       // It's ok
@@ -756,7 +760,7 @@ export class Builder {
               sessionStorage.setItem(sessionStorageKey, this.sessionId);
             }
           } catch (err) {
-            console.debug('Session storage error', err)
+            console.debug('Session storage error', err);
           }
         }
         if (this.eventsQueue.length) {
@@ -888,7 +892,13 @@ export class Builder {
     if (isBrowser) {
       addEventListener('message', event => {
         const url = parse(event.origin);
-        const allowedHosts = ['builder.io', 'localhost', 'local.builder.io', 'qa.builder.io', 'beta.builder.io'];
+        const allowedHosts = [
+          'builder.io',
+          'localhost',
+          'local.builder.io',
+          'qa.builder.io',
+          'beta.builder.io',
+        ];
         if (allowedHosts.indexOf(url.hostname as string) === -1) {
           return;
         }
@@ -936,7 +946,7 @@ export class Builder {
 
             case 'builder.registerComponent':
               const componentData = data.data;
-              Builder.components.push(componentData);
+              Builder.addComponent(componentData)
               break;
 
             case 'builder.blockContentLoading':
