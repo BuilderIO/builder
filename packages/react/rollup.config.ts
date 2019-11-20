@@ -115,6 +115,22 @@ export default [
         })
       ])
   },
+  {
+    ...options,
+    input: `src/${libraryName}-lite.ts`,
+    output: [
+      { file: `dist/${libraryName}-lite.esm.js`, format: 'es', sourcemap: true },
+      { file: `dist/${libraryName}-lite.cjs.js`, format: 'cjs', sourcemap: true }
+    ],
+    external: externalDependencies,
+    plugins: options.plugins
+      .filter(plugin => plugin !== resolvePlugin)
+      .concat([
+        resolve({
+          only: [/^\.{0,2}\//]
+        })
+      ])
+  },
   // Server
   {
     ...options,
@@ -138,39 +154,6 @@ export default [
               // string or regexp
               test: /\/\/\/SERVERONLY/g,
               replace: ''
-            }
-          ]
-        })
-      ])
-  },
-  // React 15
-  {
-    ...options,
-    output: [
-      { file: './dist/15.esm.js', format: 'es', sourcemap: true },
-      { file: './dist/15.js', format: 'cjs', sourcemap: true }
-    ],
-    external: externalDependencies,
-    plugins: options.plugins
-      .filter(plugin => plugin !== resolvePlugin)
-      .concat([
-        resolve({
-          only: [/^\.{0,2}\//]
-        }),
-        replace({
-          'React.Fragment': '"span"',
-          'React.createContext': `require('create-react-context')`
-        }),
-        regexReplace({
-          // ... do replace before commonjs
-          patterns: [
-            {
-              test: /\/\/\/REACT15ONLY/g,
-              replace: ''
-            },
-            {
-              test: /\/\*\*\*REACT15ONLY([^\*]+)\*\//g,
-              replace: '$1'
             }
           ]
         })
@@ -216,34 +199,6 @@ export default [
         })
       ])
   },
-  // Inferno
-  // TODO: may have to do react 15 modifications for support (no fragment/context?)
-  // {
-  //   ...options,
-  //   output: [
-  //     { file: './dist/inferno.esm.js', format: 'es', sourcemap: true },
-  //     { file: './dist/inferno.js', format: 'cjs', sourcemap: true }
-  //   ],
-  //   external: externalDependencies.filter(
-  //     name => !name.startsWith('create-inferno-context') // create-info-context needs bundling as it causes errors otherwise
-  //   ),
-  //   plugins: options.plugins
-  //     .filter(plugin => plugin !== resolvePlugin)
-  //     .concat([
-  //       resolve({
-  //         only: [/^\.{0,2}\//]
-  //       }),
-  //       alias({
-  //         react: 'inferno-compat',
-  //         'react-dom': 'inferno-compat',
-  //         inferno: 'inferno-compat',
-  //         'inferno-dom': 'inferno-compat'
-  //       })
-  //       // replace({
-  //       //   'React.createContext': `require('create-inferno-context')`
-  //       // })
-  //     ])
-  // },
   {
     ...options,
     output: {
