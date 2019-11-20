@@ -135,7 +135,7 @@ class CatchAllPage extends Component {
     return !this.props.notFound ? (
       <BuilderComponent
         name="page"
-        onContentLoad={content => {
+        contentLoaded={content => {
           if (!content) {
             this.setState({ notFound: true });
           }

@@ -486,11 +486,19 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     if (fn) {
       fn(state)
     }
-    this.setState({
-      update: this.updateState,
-      state,
-      updates: ((this.state && this.state.updates) || 0) + 1
-    })
+    if (this.mounted) {
+      this.setState({
+        update: this.updateState,
+        state,
+        updates: ((this.state && this.state.updates) || 0) + 1
+      })
+    } else {
+      this.state = {
+        update: this.updateState,
+        state,
+        updates: ((this.state && this.state.updates) || 0) + 1
+      }
+    }
 
     this.notifyStateChange()
   }
