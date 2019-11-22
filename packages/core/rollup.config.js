@@ -49,7 +49,7 @@ const umdMinOptions = {
     {
       format: 'umd',
       name: 'BuilderIO',
-      file: pkg.browser,
+      file: pkg.unpkg,
       sourcemap: true,
       amd: {
         id: '@builder.io/sdk',
