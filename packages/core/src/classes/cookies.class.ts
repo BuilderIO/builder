@@ -119,9 +119,12 @@ class Cookie {
     if (this.domain) {
       header += `; domain=${this.domain}`;
     }
+
+    // TODO: samesite=none by default (?)
     if (this.sameSite) {
       header += `; samesite=${this.sameSite === true ? 'strict' : this.sameSite.toLowerCase()}`;
     }
+    // TODO: On by default
     if (this.secure) {
       header += '; secure';
     }
