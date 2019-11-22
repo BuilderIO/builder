@@ -349,6 +349,11 @@ export class Builder {
   private static addComponent(component: Component) {
     const current = find(this.components, item => item.name === component.name);
     if (current) {
+      // FIXME: why does sometimes we get an extra post without class - probably
+      // from postMessage handler wrong in some place
+      if (current.class && !component.class) {
+        return;
+      }
       this.components.splice(this.components.indexOf(current), 1, component);
     } else {
       this.components.push(component);
