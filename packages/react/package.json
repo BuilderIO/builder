@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/react",
-  "version": "1.0.98-alpha.9",
+  "version": "1.0.98-alpha.10",
   "description": "",
   "keywords": [],
   "main": "dist/builder-react.cjs.js",
@@ -144,7 +144,7 @@
     "prop-types": "^15.7.2"
   },
   "dependencies": {
-    "@builder.io/sdk": "^1.0.51-alpha.1",
+    "@builder.io/sdk": "^1.0.51-alpha.2",
     "@emotion/core": "^10.0.17",
     "hash-sum": "^2.0.0",
     "preact": "^10.0.0-rc.0",
