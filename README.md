@@ -12,7 +12,7 @@ Want to work on the future of content creation? Shoot your info to steve@builder
 
 ## John the community!
 
-Questions? Requests? Feedback? Chat with us in our [Spectrum Community!](https://spectrum.chat/builder/general)
+Questions? Requests? Feedback? Chat with us in our [Spectrum Community!](https://spectrum.chat/builder)
 
 ## How does it work?
 
