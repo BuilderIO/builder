@@ -10,6 +10,10 @@
 
 Want to work on the future of content creation? Shoot your info to steve@builder.io and let's talk
 
+## John the community!
+
+Questions? Requests? Feedback? Chat with us in our [Spectrum Community!](https://spectrum.chat/builder/general)
+
 ## How does it work?
 
 - Integrate the [Builder API or SDK](#supported-frameworks) to your site or app
