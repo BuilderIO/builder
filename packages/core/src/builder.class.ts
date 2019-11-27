@@ -243,6 +243,14 @@ export class Builder {
   static actions: Action[] = [];
 
   static registerEditor(info: any) {
+    if (Builder.isBrowser) {
+      const { host } = location;
+      if (!(host === 'localhost:1234' || host.indexOf('builder.io') !== -1)) {
+        console.error(
+          'Builder.registerEditor() called in the wrong environment! You cannot load custom editors from your app, they must be loaded through the Builder.io app itself. Follow the readme here for more details: https://github.com/builderio/builder/tree/master/plugins/cloudinary or contact chat us in our Spectrum community for help: https://spectrum.chat/builder'
+        );
+      }
+    }
     this.editors.push(info);
   }
 
@@ -951,7 +959,7 @@ export class Builder {
 
             case 'builder.registerComponent':
               const componentData = data.data;
-              Builder.addComponent(componentData)
+              Builder.addComponent(componentData);
               break;
 
             case 'builder.blockContentLoading':
