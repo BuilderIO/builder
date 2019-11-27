@@ -4,11 +4,9 @@ import React from 'react'
 import { mount } from 'enzyme'
 import CloudinayCredentialsDialog from '../src/CloudinaryCredentialsDialog'
 import { Button, TextField } from '@material-ui/core'
+import TestConstants from './TestConstants'
 
 describe('Cloudinary Credential dialog', () => {
-  const CLOUDINARY_API_KEY: string = '1234567890'
-  const CLOUDINARY_CLOUDNAME: string = 'yourcloudname'
-
   describe('when dialog is rendered', () => {
     it('should ask for cloudinary api key and cloud name', () => {
       const cloudinaryCredentialsDialog = mount(
@@ -45,18 +43,18 @@ describe('Cloudinary Credential dialog', () => {
       const cloudNameField = cloudinaryCredentialsDialog.find(TextField).last()
 
       apiKeyField.find('input').simulate('change', {
-        target: { name: '', value: CLOUDINARY_API_KEY }
+        target: { name: '', value: TestConstants.CLOUDINARY_API_KEY }
       })
 
       cloudNameField.find('input').simulate('change', {
-        target: { name: '', value: CLOUDINARY_CLOUDNAME }
+        target: { name: '', value: TestConstants.CLOUDINARY_CLOUDNAME }
       })
 
       expect(cloudinaryCredentialsDialog.state('apiKey')).toBe(
-        CLOUDINARY_API_KEY
+        TestConstants.CLOUDINARY_API_KEY
       )
       expect(cloudinaryCredentialsDialog.state('cloudName')).toBe(
-        CLOUDINARY_CLOUDNAME
+        TestConstants.CLOUDINARY_CLOUDNAME
       )
     })
 
