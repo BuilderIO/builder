@@ -10,7 +10,7 @@ const SERVE = process.env.SERVE === 'true'
 
 const pkg = require('./package.json')
 
-const libraryName = 'builder-plugin-cloudinary'
+const libraryName = 'CloudinaryImageEditor'
 
 export default {
   input: `src/${libraryName}.tsx`,
