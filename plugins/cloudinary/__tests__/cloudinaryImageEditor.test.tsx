@@ -35,22 +35,16 @@ describe('Builder cloudinary plugin', () => {
   }
 
   describe('when plugin is rendered with no cloudinary settings', () => {
-    it('should ask for cloudinary credentials', () => {
+    it('should render choose image button disabled', () => {
       const cloudinaryImageEditor = mount(
         <CloudinaryImageEditor
           context={buildContextWithCloudinarySettings(undefined, undefined)}
           onChange={(image: CloudinaryImage) => {}}
         />
       )
-      const pickUpImageButton = cloudinaryImageEditor.find(Button).first()
+      const chooseImageButton = cloudinaryImageEditor.find(Button).first()
 
-      pickUpImageButton.simulate('click')
-
-      const cloudinaryCredentialsDialog = cloudinaryImageEditor.find(
-        CloudinayCredentialsDialog
-      )
-      expect(cloudinaryCredentialsDialog).toBeDefined()
-      expect(cloudinaryCredentialsDialog.exists()).toBe(true)
+      expect(chooseImageButton.prop('disabled')).toEqual(true)
     })
 
     it('should set the credentials back from the CloudinayCredentialsDialog', () => {
@@ -87,8 +81,8 @@ describe('Builder cloudinary plugin', () => {
         />
       )
 
-      const pickUpImageButton = cloudinaryImageEditor.find(Button).first()
-      pickUpImageButton.simulate('click')
+      const setCredentialsButton = cloudinaryImageEditor.find(Button).last()
+      setCredentialsButton.simulate('click')
       const credentialsDialog = cloudinaryImageEditor.find(
         CloudinayCredentialsDialog
       )

@@ -17,6 +17,8 @@ describe('Cloudinary Credential dialog', () => {
             apiKey: string,
             cloudName: string
           ) => {}}
+          apiKey={undefined}
+          cloudName={undefined}
         />
       )
 
@@ -27,7 +29,7 @@ describe('Cloudinary Credential dialog', () => {
       expect(cloudNameField.exists()).toBe(true)
     })
 
-    it('should set the state with the credentials provided', () => {
+    it('should set state credentials to empty string when undefined credentials are passed', () => {
       const cloudinaryCredentialsDialog = mount(
         <CloudinayCredentialsDialog
           openDialog={true}
@@ -36,6 +38,26 @@ describe('Cloudinary Credential dialog', () => {
             apiKey: string,
             cloudName: string
           ) => {}}
+          apiKey={undefined}
+          cloudName={undefined}
+        />
+      )
+
+      expect(cloudinaryCredentialsDialog.state('apiKey')).toBe('')
+      expect(cloudinaryCredentialsDialog.state('cloudName')).toBe('')
+    })
+
+    it('should set the state with the provided credentials', () => {
+      const cloudinaryCredentialsDialog = mount(
+        <CloudinayCredentialsDialog
+          openDialog={true}
+          closeDialog={() => {}}
+          updateCloudinaryCredentials={(
+            apiKey: string,
+            cloudName: string
+          ) => {}}
+          apiKey={undefined}
+          cloudName={undefined}
         />
       )
 
@@ -67,6 +89,8 @@ describe('Cloudinary Credential dialog', () => {
           updateCloudinaryCredentials={(apiKey: string, cloudName: string) => {
             callbackWasCalled = true
           }}
+          apiKey={undefined}
+          cloudName={undefined}
         />
       )
 
@@ -91,6 +115,8 @@ describe('Cloudinary Credential dialog', () => {
             apiKey: string,
             cloudName: string
           ) => {}}
+          apiKey={undefined}
+          cloudName={undefined}
         />
       )
 

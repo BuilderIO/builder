@@ -12,6 +12,8 @@ import {
 
 interface CloudinaryCredentialsDialogProps {
   openDialog: boolean
+  apiKey: string | undefined
+  cloudName: string | undefined
   closeDialog(): void
   updateCloudinaryCredentials(apiKey: string, cloudName: string): void
 }
@@ -25,9 +27,12 @@ export default class CloudinaryCredentialsDialog extends React.Component<
   CloudinaryCredentialsDialogProps,
   CloudinaryCredentialsDialogState
 > {
-  state = {
-    apiKey: '',
-    cloudName: ''
+  constructor(props: CloudinaryCredentialsDialogProps) {
+    super(props)
+    this.state = {
+      apiKey: this.props.apiKey ? this.props.apiKey : '',
+      cloudName: this.props.cloudName ? this.props.cloudName : ''
+    }
   }
 
   render() {
