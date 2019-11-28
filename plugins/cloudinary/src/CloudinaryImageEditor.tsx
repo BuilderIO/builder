@@ -23,6 +23,8 @@ interface CloudinaryImageEditorState {
   requestCredentials: boolean
 }
 
+type ButtonVariant = 'text' | 'contained'
+
 export default class CloudinaryImageEditor extends React.Component<
   Props,
   CloudinaryImageEditorState
@@ -73,11 +75,18 @@ export default class CloudinaryImageEditor extends React.Component<
     document.head.appendChild(script)
   }
 
+  private areCloudinaryCredentialsNotSet(): boolean {
+    return (
+      this.state.apiKey === '' ||
+      this.state.cloudName === '' ||
+      this.state.apiKey === undefined ||
+      this.state.cloudName === undefined
+    )
+  }
+
   private shouldRequestCloudinaryCredentials() {
     return (
-      this.state.requestCredentials ||
-      this.state.apiKey === '' ||
-      this.state.cloudName === ''
+      this.state.requestCredentials || this.areCloudinaryCredentialsNotSet()
     )
   }
 
@@ -90,6 +99,10 @@ export default class CloudinaryImageEditor extends React.Component<
     })
   }
 
+  private calculateChooseImageButtonVariant(): ButtonVariant {
+    return this.areCloudinaryCredentialsNotSet() ? 'contained' : 'text'
+  }
+
   private selectImage(image: CloudinaryImage) {
     this.props.onChange(image)
   }
@@ -100,6 +113,7 @@ export default class CloudinaryImageEditor extends React.Component<
 
   render() {
     const shouldRequestCloudinarySettings = this.shouldRequestCloudinaryCredentials()
+    const setCredentialsButtonVariant = this.calculateChooseImageButtonVariant()
     const buttonStyle = { width: '45%', margin: '5px' }
     return (
       <div css={{ padding: '15px 0' }}>
@@ -111,6 +125,8 @@ export default class CloudinaryImageEditor extends React.Component<
             updateCloudinaryCredentials={this.updateCloudinaryCredentials.bind(
               this
             )}
+            apiKey={this.state.apiKey}
+            cloudName={this.state.cloudName}
           />
         )}
         {!shouldRequestCloudinarySettings && (
@@ -125,6 +141,7 @@ export default class CloudinaryImageEditor extends React.Component<
 
         <div>
           <Button
+            disabled={this.areCloudinaryCredentialsNotSet()}
             css={buttonStyle}
             color="primary"
             variant="contained"
@@ -138,7 +155,7 @@ export default class CloudinaryImageEditor extends React.Component<
           </Button>
 
           <Button
-            variant="contained"
+            variant={setCredentialsButtonVariant}
             color="primary"
             css={buttonStyle}
             onClick={() => {
