@@ -2,9 +2,11 @@
 
 See [here](src/CloudinaryImageEditor.tsx) for the React component that powers this plugin
 
+<img src="https://imgur.com/vpNzMud.gif" alt="Plugin example">
+
 ## Status
 
-Builder plugins are in alpha. If you run into any issues or have questions please
+Builder plugins are in beta. If you run into any issues or have questions please
 contact steve@builder.io for help
 
 ## Developing this plugin
@@ -103,3 +105,7 @@ Or from a URL
 ```js
 builder.plugins.replace(['https://something.com/foo'])
 ```
+
+### Contributors
+
+Created by @JacoboGallardo
