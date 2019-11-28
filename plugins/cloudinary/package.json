@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/plugin-cloudinary",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "",
   "keywords": [],
   "main": "dist/builder-plugin-cloudinary.umd.js",
