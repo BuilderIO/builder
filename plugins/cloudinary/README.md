@@ -106,6 +106,6 @@ Or from a URL
 builder.plugins.replace(['https://something.com/foo'])
 ```
 
-### Contributors
+## Contributors
 
 Created by @JacoboGallardo
