@@ -108,4 +108,4 @@ builder.plugins.replace(['https://something.com/foo'])
 
 ## Contributors
 
-Created by @JacoboGallardo
+Created by [@JacoboGallardo](https://github.com/jacobogallardo)!
