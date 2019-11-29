@@ -10,6 +10,10 @@
   "files": [
     "dist"
   ],
+  "author": {
+    "name": "Jacobo Gallardo",
+    "url": "https://github.com/jacobogallardo"
+  },
   "repository": {
     "type": "git",
     "url": ""
