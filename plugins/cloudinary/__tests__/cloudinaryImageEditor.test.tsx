@@ -8,7 +8,7 @@ import {
   CloudinaryMediaLibraryDialog,
   CloudinaryImage
 } from '../src/CloudinaryMediaLibraryDialog'
-import { Button } from '@material-ui/core'
+import { Button, Typography } from '@material-ui/core'
 
 import TestConstants from './TestConstants'
 
@@ -33,6 +33,56 @@ describe('Builder cloudinary plugin', () => {
       }
     }
   }
+
+  describe('when plugin is rendered with no selected image', () => {
+    it('should render `choose image` text in the select image button', () => {
+      const cloudinaryImageEditor = mount(
+        <CloudinaryImageEditor
+          context={buildContextWithCloudinarySettings(undefined, undefined)}
+          onChange={(image: CloudinaryImage) => {}}
+        />
+      )
+      const chooseImageButton = cloudinaryImageEditor.find(Button).first()
+
+      expect(chooseImageButton.text()).toEqual('CHOOSE IMAGE')
+    })
+  })
+
+  describe('when plugin is rendered with a selected image', () => {
+    it('should render `update image` text in the select image button', () => {
+      const value = new Map([
+        ['public_id', [TestConstants.CLOUDINARY_PUBLIC_ID]]
+      ])
+      const cloudinaryImageEditor = mount(
+        <CloudinaryImageEditor
+          context={buildContextWithCloudinarySettings(undefined, undefined)}
+          onChange={(image: CloudinaryImage) => {}}
+          value={value}
+        />
+      )
+      const chooseImageButton = cloudinaryImageEditor.find(Button).first()
+      expect(chooseImageButton.text()).toEqual('UPDATE IMAGE')
+    })
+
+    describe('when image has a public id', () => {
+      it('should render the public id in the plugin UI', () => {
+        const value = new Map([
+          ['public_id', [TestConstants.CLOUDINARY_PUBLIC_ID]]
+        ])
+        const cloudinaryImageEditor = mount(
+          <CloudinaryImageEditor
+            context={buildContextWithCloudinarySettings(undefined, undefined)}
+            onChange={(image: CloudinaryImage) => {}}
+            value={value}
+          />
+        )
+        const publicIdText = cloudinaryImageEditor.find(Typography).last()
+        expect(publicIdText.text()).toEqual(
+          `Public id: ${TestConstants.CLOUDINARY_PUBLIC_ID}`
+        )
+      })
+    })
+  })
 
   describe('when plugin is rendered with no cloudinary settings', () => {
     it('should render choose image button disabled', () => {
@@ -136,30 +186,32 @@ describe('Builder cloudinary plugin', () => {
     })
   })
 
-  it('should pass the image to onChange when user selects from the cloudinary media widget', () => {
-    let selectedImage = {}
-    const cloudinaryImageEditor = mount(
-      <CloudinaryImageEditor
-        context={buildContextWithCloudinarySettings(
-          TestConstants.CLOUDINARY_API_KEY,
-          TestConstants.CLOUDINARY_CLOUDNAME
-        )}
-        onChange={(image: CloudinaryImage) => {
-          selectedImage = image
-        }}
-      />
-    )
+  describe('when user selects an image from the cloudinary media widget', () => {
+    it('should pass the image to onChange', () => {
+      let selectedImage = {}
+      const cloudinaryImageEditor = mount(
+        <CloudinaryImageEditor
+          context={buildContextWithCloudinarySettings(
+            TestConstants.CLOUDINARY_API_KEY,
+            TestConstants.CLOUDINARY_CLOUDNAME
+          )}
+          onChange={(image: CloudinaryImage) => {
+            selectedImage = image
+          }}
+        />
+      )
 
-    const pickUpImageButton = cloudinaryImageEditor.find(Button).first()
-    pickUpImageButton.simulate('click')
-    const mediaLibraryDialog = cloudinaryImageEditor.find(
-      CloudinaryMediaLibraryDialog
-    )
+      const pickUpImageButton = cloudinaryImageEditor.find(Button).first()
+      pickUpImageButton.simulate('click')
+      const mediaLibraryDialog = cloudinaryImageEditor.find(
+        CloudinaryMediaLibraryDialog
+      )
 
-    mediaLibraryDialog
-      .props()
-      .selectImage(TestConstants.CLOUDINARY_DATA.assets[0])
+      mediaLibraryDialog
+        .props()
+        .selectImage(TestConstants.CLOUDINARY_DATA.assets[0])
 
-    expect(selectedImage).toBe(TestConstants.CLOUDINARY_DATA.assets[0])
+      expect(selectedImage).toBe(TestConstants.CLOUDINARY_DATA.assets[0])
+    })
   })
 })
