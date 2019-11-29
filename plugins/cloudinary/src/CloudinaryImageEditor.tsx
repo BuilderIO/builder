@@ -194,7 +194,9 @@ export default class CloudinaryImageEditor extends React.Component<
           </Button>
         </div>
         <div>
-          <Typography variant="caption">{selectedPublicIdMessage}</Typography>
+          <Typography css={{ margin: '5px' }} variant="caption">
+            {selectedPublicIdMessage}
+          </Typography>
         </div>
       </div>
     )
