@@ -10,7 +10,7 @@ import {
 import CloudinayCredentialsDialog from './CloudinaryCredentialsDialog'
 
 interface Props {
-  value?: string
+  value?: any
   onChange(newValue: CloudinaryImage): void
   context: any
 }
@@ -21,6 +21,7 @@ interface CloudinaryImageEditorState {
   apiKey: string | undefined
   cloudName: string | undefined
   requestCredentials: boolean
+  selectedImagePublicId: string | undefined
 }
 
 type ButtonVariant = 'text' | 'contained'
@@ -53,11 +54,16 @@ export default class CloudinaryImageEditor extends React.Component<
 
   constructor(props: any) {
     super(props)
+
     this.state = {
       requestCredentials: false,
       showDialog: false,
       apiKey: this.cloudinaryKey ? this.cloudinaryKey : '',
-      cloudName: this.cloudinaryCloud ? this.cloudinaryCloud : ''
+      cloudName: this.cloudinaryCloud ? this.cloudinaryCloud : '',
+      selectedImagePublicId:
+        props.value && props.value.get && props.value.get('public_id')
+          ? props.value.get('public_id')
+          : ''
     }
   }
 
@@ -105,6 +111,23 @@ export default class CloudinaryImageEditor extends React.Component<
 
   private selectImage(image: CloudinaryImage) {
     this.props.onChange(image)
+    this.setState({ selectedImagePublicId: image.public_id })
+  }
+
+  buildSelectedIdMessage(): string {
+    if (this.state.selectedImagePublicId) {
+      return `Public id: ${this.state.selectedImagePublicId}`
+    }
+
+    return 'Please choose an image'
+  }
+
+  buildChooseImageText(): string {
+    if (this.state.selectedImagePublicId) {
+      return `UPDATE IMAGE`
+    }
+
+    return 'CHOOSE IMAGE'
   }
 
   componentDidMount() {
@@ -114,6 +137,8 @@ export default class CloudinaryImageEditor extends React.Component<
   render() {
     const shouldRequestCloudinarySettings = this.shouldRequestCloudinaryCredentials()
     const setCredentialsButtonVariant = this.calculateChooseImageButtonVariant()
+    const selectedPublicIdMessage = this.buildSelectedIdMessage()
+    const chooseImageButtonText = this.buildChooseImageText()
     const buttonStyle = { width: '45%', margin: '5px' }
     return (
       <div css={{ padding: '15px 0' }}>
@@ -151,7 +176,7 @@ export default class CloudinaryImageEditor extends React.Component<
               })
             }}
           >
-            Choose Image
+            {chooseImageButtonText}
           </Button>
 
           <Button
@@ -167,6 +192,11 @@ export default class CloudinaryImageEditor extends React.Component<
           >
             Set credentials
           </Button>
+        </div>
+        <div>
+          <Typography css={{ margin: '5px' }} variant="caption">
+            {selectedPublicIdMessage}
+          </Typography>
         </div>
       </div>
     )

@@ -1,9 +1,11 @@
 import { CloudinaryImage } from '../src/CloudinaryMediaLibraryDialog'
 
 export default class TestsConstants {
-  public static readonly URL_PATH_US = 'us/full/path/to/image'
+  public static readonly CLOUDINARY_PUBLIC_ID: string = 'cloudinary public id'
 
-  public static readonly DERIVED_URL_PATH_US =
+  public static readonly URL_PATH_US: string = 'us/full/path/to/image'
+
+  public static readonly DERIVED_URL_PATH_US: string =
     'us/full/path/to/transformed/image'
 
   public static readonly CLOUDINARY_API_KEY: string = '1234567890'
@@ -23,14 +25,6 @@ export default class TestsConstants {
     derived: [{ secure_url: TestsConstants.DERIVED_URL_PATH_US }],
     tags: ['some_us_tag'],
     url: TestsConstants.URL_PATH_US
-  }
-
-  public static readonly EMPTY_CLOUDINARY_IMAGE: CloudinaryImage = {
-    context: {},
-    public_id: '',
-    derived: [],
-    tags: [''],
-    url: ''
   }
 
   public static readonly CLOUDINARY_DATA: any = {
