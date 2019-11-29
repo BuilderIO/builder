@@ -12,7 +12,7 @@
     "index.js",
     "package.json"
   ],
-  "author": "Steve Sewell <sewell.steve@gmail.com>",
+  "author": "Steve Sewell <steve@builder.io",
   "repository": {
     "type": "git",
     "url": "https://github.com/BuilderIO/builder"
