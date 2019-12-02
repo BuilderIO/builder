@@ -8,7 +8,7 @@
 
 ## We're hiring!
 
-Want to work on the future of visual software development? Shoot your info to steve@builder.io and let's talk
+Want to work on the future of visual software development? Send your resume to steve@builder.io and let's talk
 
 ## John the community!
 
