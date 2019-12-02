@@ -89,7 +89,7 @@ export function tinyFetch(url: string, options: SimplifiedFetchOptions = {}) {
   });
 }
 
-const _require: NodeRequire = typeof require === 'function' ? require : ((() => null) as any);
+const _require: NodeRequire = typeof require === 'function' ? eval('require') : ((() => null) as any);
 
 export const fetch: typeof tinyFetch /* | typeof window.fetch */ =
   typeof global === 'object' && typeof (global as any).fetch === 'function'
