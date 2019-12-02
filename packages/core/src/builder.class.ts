@@ -12,7 +12,7 @@ import Cookies from './classes/cookies.class';
 
 export type Url = any;
 
-const _require: NodeRequire = typeof require === 'function' ? require : ((() => null) as any);
+const _require: NodeRequire = typeof require === 'function' ? eval('require') : ((() => null) as any);
 
 export const isReactNative = typeof navigator === 'object' && navigator.product === 'ReactNative';
 
