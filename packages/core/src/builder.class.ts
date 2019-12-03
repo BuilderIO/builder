@@ -9,10 +9,13 @@ import { throttle } from './functions/throttle.function';
 import { Animator } from './classes/animator.class';
 import { BuilderElement } from './types/element';
 import Cookies from './classes/cookies.class';
+import { omit } from './functions/omit.function';
+import '@ampproject/worker-dom'
 
 export type Url = any;
 
-const _require: NodeRequire = typeof require === 'function' ? eval('require') : ((() => null) as any);
+const _require: NodeRequire =
+  typeof require === 'function' ? eval('require') : ((() => null) as any);
 
 export const isReactNative = typeof navigator === 'object' && navigator.product === 'ReactNative';
 
@@ -244,6 +247,13 @@ export class Builder {
 
   static registerEditor(info: any) {
     if (Builder.isBrowser) {
+      window.postMessage(
+        {
+          type: 'builder.registerEditor',
+          data: omit(info, 'component'),
+        },
+        '*'
+      );
       const { host } = location;
       if (!(host === 'localhost:1234' || host.indexOf('builder.io') !== -1)) {
         console.error(
@@ -353,6 +363,8 @@ export class Builder {
       class: undefined,
     };
   }
+
+  // static registerComponent(...) { .. }
 
   private static addComponent(component: Component) {
     const current = find(this.components, item => item.name === component.name);
@@ -927,6 +939,29 @@ export class Builder {
                 },
                 '*'
               );
+              break;
+            }
+            case 'builder.registerEditor': {
+              // TODO: possibly do this for all...
+              if (event.source === window) {
+                break;
+              }
+              const info = data.data;
+              if (!info) {
+                break;
+              }
+              const hasComponent = !!info.component;
+              Builder.editors.every((thisInfo, index) => {
+                if (info.name === thisInfo.name) {
+                  if (thisInfo.component && !hasComponent) {
+                    return false;
+                  } else {
+                    Builder.editors[index] = thisInfo;
+                  }
+                  return false;
+                }
+                return true;
+              });
               break;
             }
             case 'builder.triggerAnimation': {

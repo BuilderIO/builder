@@ -263,9 +263,9 @@ export const liquidToAst = (str: string) => {
       await this.liquid.renderer.renderTemplates(this.templates, ctx, emitter);
     },
 
-    renderSync: function(ctx: Context, hash: Hash, emitter: Emitter) {
-      this.liquid.renderer.renderTemplatesSync(this.templates, ctx, emitter);
-    },
+    // renderSync: function(ctx: Context, hash: Hash, emitter: Emitter) {
+    //   this.liquid.renderer.renderTemplatesSync(this.templates, ctx, emitter);
+    // },
   });
 
   const parsedTemplateItems = engine.parse(str);
