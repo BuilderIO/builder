@@ -10,7 +10,6 @@ import { Animator } from './classes/animator.class';
 import { BuilderElement } from './types/element';
 import Cookies from './classes/cookies.class';
 import { omit } from './functions/omit.function';
-import '@ampproject/worker-dom'
 
 export type Url = any;
 
