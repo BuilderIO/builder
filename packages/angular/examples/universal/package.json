@@ -1,5 +1,6 @@
 {
   "name": "builder-angular-universal-example",
+  "private": true,
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -28,7 +29,6 @@
     "serve:ssr": "node dist/server"
   },
   "pre-commit": [],
-  "private": true,
   "dependencies": {
     "@angular/animations": "7.1.4",
     "@angular/common": "7.1.4",
@@ -63,6 +63,6 @@
     "pre-commit": "^1.2.2",
     "ts-loader": "^4.2.0",
     "tslint": "^5.7.0",
-    "typescript": "3.7.0-beta"
+    "typescript": "3.1.1"
   }
 }
