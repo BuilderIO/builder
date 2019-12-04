@@ -104,7 +104,7 @@
     "@types/react-dom": "^16.0.7",
     "@types/rollup-plugin-commonjs": "^9.2.0",
     "@types/rollup-plugin-json": "^3.0.1",
-    "@types/rollup-plugin-node-resolve": "^4.0.0",
+    "@types/rollup-plugin-node-resolve": "^4.1.0",
     "@types/rollup-plugin-sourcemaps": "^0.4.0",
     "colors": "^1.1.2",
     "commitizen": "^2.9.6",
