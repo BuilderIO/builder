@@ -1,8 +1,6 @@
 {
   "private": true,
   "devDependencies": {
-    "@types/npm": "^2.0.30",
-    "@types/rollup-plugin-commonjs": "^9.3.1",
     "lerna": "^2.9.0"
   },
   "scripts": {
@@ -18,9 +16,5 @@
     "release:patch": "npm run verify-git-not-dirty && npm run build && lerna version patch --yes && lerna run build:unpkg:dist --no-private && lerna publish from-package --yes",
     "release:prerelease:dev": "npm run verify-git-not-dirty && npm run build && lerna version prerelease --yes && lerna run build:unpkg:dist --no-private && lerna publish from-package --dist-tag dev --yes",
     "release:dev": "npm run release:prerelease:dev"
-  },
-  "dependencies": {
-    "npm": "^6.11.3",
-    "rollup-plugin-commonjs": "^10.1.0"
   }
 }
