@@ -1,4 +1,5 @@
 import Promise from '../classes/promise.class';
+import serverOnlyRequire from './server-only-require.function';
 
 export interface SimplifiedFetchOptions {
   body?: string;
@@ -89,13 +90,11 @@ export function tinyFetch(url: string, options: SimplifiedFetchOptions = {}) {
   });
 }
 
-const _require: NodeRequire = typeof require === 'function' ? eval('require') : ((() => null) as any);
-
 export const fetch: typeof tinyFetch /* | typeof window.fetch */ =
   typeof global === 'object' && typeof (global as any).fetch === 'function'
     ? (global as any).fetch
     : typeof window === 'undefined'
-    ? _require('node-fetch')
+    ? serverOnlyRequire('node-fetch')
     : typeof window.fetch !== 'undefined'
     ? window.fetch
     : tinyFetch;

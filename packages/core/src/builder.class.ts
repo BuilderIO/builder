@@ -10,17 +10,9 @@ import { Animator } from './classes/animator.class';
 import { BuilderElement } from './types/element';
 import Cookies from './classes/cookies.class';
 import { omit } from './functions/omit.function';
+import serverOnlyRequire from './functions/server-only-require.function';
 
 export type Url = any;
-
-let _require: NodeRequire;
-try {
-  // tslint:disable-next-line:no-eval // damn webpack...
-  _require = eval('require');
-} catch (err) {
-  // all good
-  _require = (() => null) as any;
-}
 
 export const isReactNative = typeof navigator === 'object' && navigator.product === 'ReactNative';
 
@@ -48,7 +40,7 @@ const parse = isReactNative
   ? () => ({})
   : typeof window === 'object'
   ? urlParser.parse
-  : _require('url').parse;
+  : serverOnlyRequire('url').parse;
 
 function setCookie(name: string, value: string, expires?: Date) {
   let expiresString = '';
@@ -1297,7 +1289,7 @@ export class Builder {
       ).then(res => res.json());
     }
     return new Promise((resolve, reject) => {
-      const module = url.indexOf('http:') === 0 ? _require('http') : _require('https');
+      const module = url.indexOf('http:') === 0 ? serverOnlyRequire('http') : serverOnlyRequire('https');
       module
         .get(url, (resp: any) => {
           let data = '';
