@@ -4,6 +4,11 @@
   "description": "",
   "main": "dist/builder-react-native.cjs.js",
   "module": "dist/builder-react-native.esm.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BuilderIO/builder"
+  },
+  "license": "MIT",
   "scripts": {
     "_unlink": "npm unlink *",
     "_install": "npm install",

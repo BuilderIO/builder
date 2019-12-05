@@ -134,6 +134,7 @@ export interface UserAttributes {
 
 export interface GetContentOptions {
   userAttributes?: UserAttributes;
+  cacheSeconds?: number;
   limit?: number;
   query?: any;
   cachebust?: boolean;
@@ -1406,6 +1407,11 @@ export class Builder {
         if (options.format) {
           queryParams.format = options.format;
         }
+        
+        if (typeof options.cacheSeconds === 'number') {
+          queryParams.cacheSeconds = options.cacheSeconds;
+        }
+
         const properties: (keyof GetContentOptions)[] = [
           'prerender',
           'extractCss',

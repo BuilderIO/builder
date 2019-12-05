@@ -10,6 +10,11 @@
   "fesm2015": "dist/fesm2015/builder.io-angular.js",
   "typings": "dist/builder.io-angular.d.ts",
   "metadata": "dist/builder.io-angular.metadata.json",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BuilderIO/builder"
+  },
+  "license": "MIT",
   "sideEffects": false,
   "scripts": {
     "_unlink": "npm unlink *",
