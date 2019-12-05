@@ -13,9 +13,14 @@ import { omit } from './functions/omit.function';
 
 export type Url = any;
 
-const _require: NodeRequire =
+let _require: NodeRequire;
+try {
   // tslint:disable-next-line:no-eval // damn webpack...
-  typeof require === 'function' ? eval('require') : ((() => null) as any);
+  _require = eval('require');
+} catch (err) {
+  // all good
+  require = (() => null) as any;
+}
 
 export const isReactNative = typeof navigator === 'object' && navigator.product === 'ReactNative';
 
