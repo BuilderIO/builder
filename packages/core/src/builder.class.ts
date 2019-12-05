@@ -14,6 +14,7 @@ import { omit } from './functions/omit.function';
 export type Url = any;
 
 const _require: NodeRequire =
+  // tslint:disable-next-line:no-eval // damn webpack...
   typeof require === 'function' ? eval('require') : ((() => null) as any);
 
 export const isReactNative = typeof navigator === 'object' && navigator.product === 'ReactNative';
@@ -860,7 +861,7 @@ export class Builder {
         preview,
         editing,
         frameEditing,
-        params,
+        params: overrideParams,
       } = builder;
       if (userAttributes) {
         this.setUserAttributes(userAttributes);
@@ -894,7 +895,7 @@ export class Builder {
       }
 
       if (params) {
-        this.overrideParams = params;
+        this.overrideParams = overrideParams;
       }
     }
   }
@@ -1407,7 +1408,7 @@ export class Builder {
         if (options.format) {
           queryParams.format = options.format;
         }
-        
+
         if (typeof options.cacheSeconds === 'number') {
           queryParams.cacheSeconds = options.cacheSeconds;
         }
