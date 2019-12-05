@@ -19,7 +19,7 @@ try {
   _require = eval('require');
 } catch (err) {
   // all good
-  require = (() => null) as any;
+  _require = (() => null) as any;
 }
 
 export const isReactNative = typeof navigator === 'object' && navigator.product === 'ReactNative';
