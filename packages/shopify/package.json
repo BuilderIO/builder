@@ -3,6 +3,11 @@
   "version": "1.1.28-alpha.8",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BuilderIO/builder"
+  },
+  "license": "MIT",
   "scripts": {
     "build": "tsc --module commonjs",
     "watch": "tsc -w --module commonjs",

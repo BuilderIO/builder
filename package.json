@@ -3,6 +3,11 @@
   "devDependencies": {
     "lerna": "^3.19.0"
   },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BuilderIO/builder"
+  },
   "scripts": {
     "verify-git-not-dirty": "git diff --quiet || exit 1",
     "_unlink": "lerna run _unlink --parallel",
