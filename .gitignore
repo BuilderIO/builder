@@ -1,6 +1,5 @@
 node_modules
 *.log
-lib
 dist
 test-lib/**/*.js
 coverage
