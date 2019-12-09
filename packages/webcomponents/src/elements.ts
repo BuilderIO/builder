@@ -147,6 +147,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
     }
 
     attributeChangedCallback() {
+      // TODO: listen to properties too
       this.getOptionsFromAttribute()
       this.getContent()
     }
