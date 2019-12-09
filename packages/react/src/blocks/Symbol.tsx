@@ -17,6 +17,7 @@ export interface SymbolInfo {
   data?: any
   content?: any
   inline?: boolean
+  dynamic?: boolean;
 }
 
 export interface SymbolProps {
@@ -81,8 +82,8 @@ class SymbolComponent extends React.Component<SymbolProps> {
       ? NoWrap
       : (this.props.builderBlock && this.props.builderBlock.tagName) || 'div'
 
-    const { model, entry, data, content, inline } = symbol || {}
-    if (!model && !inline) {
+    const { model, entry, data, content, inline, dynamic } = symbol || {}
+    if (!(model && (entry || dynamic)) && !inline) {
       showPlaceholder = true
     }
 

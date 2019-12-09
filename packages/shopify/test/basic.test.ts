@@ -1,4 +1,4 @@
-import { contentToLiquid } from '../src';
+import { contentToLiquid } from '../src/functions/content-to-liquid';
 import * as simplePage from './pages/compare/simple.json';
 import * as productPage from './pages/bindings/product.json';
 import * as collectionPage from './pages/bindings/collection.json';
