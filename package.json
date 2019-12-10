@@ -19,7 +19,7 @@
     "develop": "npm run start",
     "build": "lerna run build --stream --no-private",
     "release:patch": "npm run verify-git-not-dirty && npm run build && lerna version patch --yes && lerna run build:unpkg:dist --no-private && lerna publish from-package --yes",
-    "release:prerelease:dev": "npm run build && lerna version prerelease --yes --no-git-tag-version && lerna run build:unpkg:dist --no-private && lerna publish from-package --dist-tag dev --yes",
+    "release:prerelease:dev": "npm run build && lerna version prerelease --yes && lerna run build:unpkg:dist --no-private && lerna publish from-package --dist-tag dev --yes",
     "release:dev": "npm run release:prerelease:dev"
   }
 }
