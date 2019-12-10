@@ -147,7 +147,7 @@
     "@builder.io/sdk": "^1.0.51-alpha.6",
     "@emotion/core": "^10.0.17",
     "hash-sum": "^2.0.0",
-    "preact": "^10.0.0-rc.0",
+    "preact": "^10.1.0",
     "react": ">=14",
     "react-dom": ">=14",
     "tslib": "^1.10.0",

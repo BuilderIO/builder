@@ -9,6 +9,7 @@ import { BuilderAsyncRequestsContext, RequestOrPromise } from '../store/builder-
 import { stringToFunction, api } from '../functions/string-to-function'
 import { set } from '../functions/set'
 import { InsertSpacer } from './insert-spacer.component'
+import { updateQueryParam } from 'src/blocks/Image'
 
 const camelCaseToKebabCase = (str?: string) =>
   str ? str.replace(/([A-Z])/g, g => `-${g[0].toLowerCase()}`) : ''

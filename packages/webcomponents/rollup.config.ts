@@ -34,7 +34,9 @@ const options = {
     json(),
     alias({
       react: path.resolve('./node_modules/preact/compat/dist/compat.module.js'),
-      'react-dom': path.resolve('./node_modules/preact/compat/dist/compat.module.js')
+      'react-dom': path.resolve(
+        './node_modules/preact/compat/dist/compat.module.js'
+      )
     }),
     // Compile TypeScript files
     typescript({ useTsconfigDeclarationDir: true }),
@@ -55,7 +57,11 @@ const options = {
           'Fragment'
         ],
         'node_modules/react-dom/index.js': ['render', 'hydrate'],
-        'node_modules/react-is/index.js': ['isElement', 'isValidElementType', 'ForwardRef'],
+        'node_modules/react-is/index.js': [
+          'isElement',
+          'isValidElementType',
+          'ForwardRef'
+        ],
         '../react/node_modules/react/index.js': [
           'cloneElement',
           'createContext',
@@ -65,7 +71,11 @@ const options = {
           'Fragment'
         ],
         '../react/node_modules/react-dom/index.js': ['render', 'hydrate'],
-        '../react/node_modules/react-is/index.js': ['isElement', 'isValidElementType', 'ForwardRef']
+        '../react/node_modules/react-is/index.js': [
+          'isElement',
+          'isValidElementType',
+          'ForwardRef'
+        ]
       }
       // namedExports: {
       //   // left-hand side can be an absolute path, a path
@@ -77,7 +87,17 @@ const options = {
     }),
     uglify(),
     sourceMaps(),
-    ...(SERVE ? [serve({ contentBase: '.', port: 1267 })] : [])
+    ...(SERVE
+      ? [
+          serve({
+            contentBase: '.',
+            port: process.env.PORT || 1267,
+            headers: {
+              'Access-Control-Allow-Origin': '*'
+            }
+          })
+        ]
+      : [])
   ]
 }
 
@@ -103,7 +123,9 @@ export default [
   },
   {
     ...options,
-    output: [{ dir: './dist/system/angular', format: 'system', sourcemap: true }],
+    output: [
+      { dir: './dist/system/angular', format: 'system', sourcemap: true }
+    ],
     plugins: options.plugins.concat([
       replace({
         'process.env.ANGULAR': 'true'
@@ -139,7 +161,9 @@ export default [
   {
     ...options,
     input: `src/${libraryName}-lite.ts`,
-    output: [{ dir: './dist/system/angular/lite', format: 'system', sourcemap: true }],
+    output: [
+      { dir: './dist/system/angular/lite', format: 'system', sourcemap: true }
+    ],
     plugins: options.plugins.concat([
       replace({
         'process.env.ANGULAR': 'true'
