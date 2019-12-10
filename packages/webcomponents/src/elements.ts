@@ -3,7 +3,9 @@ import { GetContentOptions, Builder, builder } from '@builder.io/sdk'
 const importReact = () => import('@builder.io/react')
 const importWidgets = () => import('@builder.io/widgets')
 
-const componentName = process.env.ANGULAR ? 'builder-component-element' : 'builder-component'
+const componentName = process.env.ANGULAR
+  ? 'builder-component-element'
+  : 'builder-component'
 
 if (Builder.isIframe) {
   importReact()
@@ -59,7 +61,8 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
       for (let i = attrs.length - 1; i >= 0; i--) {
         const attr = attrs[i]
         if (attr.name.indexOf('data-') === 0) {
-          const name = attr.name.indexOf('data-') === 0 ? attr.name.slice(5) : attr.name
+          const name =
+            attr.name.indexOf('data-') === 0 ? attr.name.slice(5) : attr.name
           const value = attr.value
           // TODO: allow properties too
           newEl.setAttribute(name, value)
@@ -73,7 +76,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
         child.remove()
         // newEl.appendChild(child)
       }
-      el.innerHTML = '';
+      el.innerHTML = ''
 
       el.appendChild(newEl)
     }
@@ -82,7 +85,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
   inject()
   onReady(inject)
 
-  class BuilderComponentElement extends HTMLElement {
+  class BuilderPageElement extends HTMLElement {
     private previousName = ''
     private subscriptions: Function[] = []
     // TODO: do this in core SDK
@@ -179,7 +182,8 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
     }
 
     getContent(fresh = false) {
-      const token = this.getAttribute('token') || this.getAttribute('auth-token')
+      const token =
+        this.getAttribute('token') || this.getAttribute('auth-token')
       if (token) {
         builder.authToken = token
       }
@@ -305,7 +309,9 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
 
       this.unsubscribe()
       const name =
-        this.getAttribute('name') || this.getAttribute('model') || this.getAttribute('model-name')
+        this.getAttribute('name') ||
+        this.getAttribute('model') ||
+        this.getAttribute('model-name')
 
       const getReactPromise = importReact() // TODO: only import what needed based on what comes back
       const getWidgetsPromise = importWidgets()
@@ -318,22 +324,28 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
       let unsubscribed = false
 
       const slot = this.getAttribute('slot')
-      if (!this.prerender || (Builder.isIframe && (!builder.apiKey || builder.apiKey === 'DEMO'))) {
-        const { BuilderComponent } = await getReactPromise
+      if (
+        !this.prerender ||
+        (Builder.isIframe && (!builder.apiKey || builder.apiKey === 'DEMO'))
+      ) {
+        const { BuilderPage } = await getReactPromise
         await getWidgetsPromise
         // Ensure styles don't load twice
-        BuilderComponent.renderInto(
+        BuilderPage.renderInto(
           this,
           {
             modelName: name!,
             emailMode:
-              ((this.options as any) || {}).emailMode || this.getAttribute('email-mode') === 'true',
+              ((this.options as any) || {}).emailMode ||
+              this.getAttribute('email-mode') === 'true',
             options: {
               ...this.options,
               key:
                 this.getAttribute('key') ||
-                ((slot ? `slot:${slot}` : null) ||
-                  (Builder.isEditing ? name! : this.getAttribute('entry') || name! || undefined))
+                (slot ? `slot:${slot}` : null) ||
+                  (Builder.isEditing
+                    ? name!
+                    : this.getAttribute('entry') || name! || undefined)
             }
           },
           this.getAttribute('hydrate') !== 'false'
@@ -358,7 +370,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
               return
             }
 
-            const { BuilderComponent } = await getReactPromise
+            const { BuilderPage } = await getReactPromise
             await getWidgetsPromise
             if (emailPromise) {
               await emailPromise
@@ -369,7 +381,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
 
             const { currentContent } = this
 
-            BuilderComponent.renderInto(
+            BuilderPage.renderInto(
               this,
               {
                 modelName: name!,
@@ -407,12 +419,12 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
           },
           async (error: any) => {
             if (Builder.isEditing) {
-              const { BuilderComponent } = await getReactPromise
+              const { BuilderPage } = await getReactPromise
               await getWidgetsPromise
               if (emailPromise) {
                 await emailPromise
               }
-              BuilderComponent.renderInto(
+              BuilderPage.renderInto(
                 this,
                 {
                   modelName: name!,
@@ -426,7 +438,9 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
                     key:
                       this.getAttribute('key') ||
                       (slot ? `slot:${slot}` : null) ||
-                      (Builder.isEditing ? name! : (data && data.id) || undefined)
+                      (Builder.isEditing
+                        ? name!
+                        : (data && data.id) || undefined)
                     // TODO: specify variation?
                   }
                 },
@@ -454,7 +468,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
     }
   }
 
-  customElements.define(componentName, BuilderComponentElement)
+  customElements.define(componentName, BuilderPageElement)
 
   class BuilderInit extends HTMLElement {
     init() {

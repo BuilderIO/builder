@@ -61,9 +61,19 @@ interface HtmlTemplate extends ITemplate {
   str: string;
 }
 
+interface BlockTemplate extends ITemplate {
+  impl: {
+    name: string;
+    templates: ITemplate[];
+    args: string;
+  }
+}
+
 const isIfTemplate = (template: ITemplate): template is IfTemplate =>
   template.token.type === 'tag' && (template.token as any).name === 'if';
 const isForTemplate = (template: ITemplate): template is ForTemplate =>
+  template.token.type === 'tag' && (template.token as any).name === 'for';
+const isBlockTemplate = (template: ITemplate): template is ForTemplate =>
   template.token.type === 'tag' && (template.token as any).name === 'for';
 const isHtmlTemplate = (template: ITemplate): template is HtmlTemplate =>
   template.token.type === 'html';
@@ -76,14 +86,14 @@ const isTextNode = (node: compiler.ASTNode): node is compiler.ASTText => node.ty
 const htmlEncode = (html: string) => html.replace(/'/g, '_APOS_').replace(/"/g, '_QUOT_');
 const htmlDecode = (html: string) => html.replace(/_APOS_/g, "'").replace(/_QUOT_/g, '"');
 
-export const parsedLiquidToHtml = (template: ITemplate[]) => {
+export const parsedLiquidToHtml = async (templates: ITemplate[]) => {
   let html = '';
 
-  for (const item of template) {
-    processTemplate(item);
+  for (const item of templates) {
+    await processTemplate(item);
   }
 
-  function processTemplate(template: ITemplate) {
+  async function processTemplate(template: ITemplate) {
     if (isHtmlTemplate(template)) {
       html += template.str;
     } else if (isIfTemplate(template)) {
@@ -120,6 +130,13 @@ export const parsedLiquidToHtml = (template: ITemplate[]) => {
       html += '[end-for]';
     } else if (isOutputTemplate(template)) {
       html += `[output]='${htmlEncode(JSON.stringify(template.value))}'`;
+    } else {
+      // TODO: preprocess liquid to expand forms, sections, etc OR do at html phase
+
+      // It's a block
+      html += `<liquid name="${(template as any).name}" args="${(template as any).token.args}">${
+        await parsedLiquidToHtml((template as any).impl.templates || [])
+      }</liquid>`
     }
   }
 
@@ -134,7 +151,7 @@ const el = (options?: Partial<BuilderElement>): BuilderElement => ({
       .toString()
       .split('.')[1],
   meta: {
-    importedFrom: 'liquid'
+    importedFrom: 'liquid',
   },
   // TODO: merge(...)
   ...options,
@@ -175,7 +192,7 @@ export const htmlNodeToBuilder = async (
       return el({
         responsiveStyles: {
           large: {
-            boxSizing: 'border-box'
+            boxSizing: 'border-box',
           },
         },
         children: await htmlAstToBuilder(
@@ -188,7 +205,7 @@ export const htmlNodeToBuilder = async (
       tagName: node.tag,
       responsiveStyles: {
         large: {
-          boxSizing: 'border-box'
+          boxSizing: 'border-box',
         },
       },
       class: node.attrsMap.class, // TODO: handle class bindings
@@ -346,29 +363,40 @@ const getTranslation = async (parsedValue: any, options: LiquidToBuilderOptions 
 
 export const liquidToAst = (str: string, options: LiquidToBuilderOptions = {}) => {
   const engine = new Liquid();
-  const quoted = /^'[^']*'|"[^"]*"$/;
 
-  engine.registerTag('section', {
-    parse: function(token) {
-      // this.namestr = token.args;
-    },
-    render: () => null,
-  });
-  engine.registerTag('form', {
-    parse: function(tagToken: TagToken, remainTokens: Token[]) {
-      this.templates = [];
+  const tags = [
+    'section',
+    'form',
+    'echo',
+    'layout',
+    'liquid',
+    'paginate',
+    'render',
+    'style',
+    'include',
+    'raw',
+  ];
+  tags.forEach(tag => {
+    engine.registerTag(tag, {
+      parse: function(token, remainTokens) {
+        this.remainTokens = remainTokens;
+        this.templates = [];
+        this.type = 'block'
+        this.name = tag
+        this.args = token.args;
 
-      const stream: ParseStream = this.liquid.parser
-        .parseStream(remainTokens)
-        .on('tag:endform', () => stream.stop())
-        .on('template', (tpl: ITemplate) => this.templates.push(tpl))
-        .on('end', () => {
-          throw new Error(`tag ${tagToken.raw} not closed`);
-        });
+        const stream: ParseStream = this.liquid.parser
+          .parseStream(remainTokens)
+          .on('tag:end' + tag, () => stream.stop())
+          .on('template', (tpl: ITemplate) => this.templates.push(tpl))
+          .on('end', () => {
+            stream.stop();
+          });
 
-      stream.start();
-    },
-    render: () => null,
+        stream.start();
+      },
+      render: () => null,
+    });
   });
 
   const parsedTemplateItems = engine.parse(str);
@@ -408,7 +436,7 @@ export const liquidToBuilder = async (liquid: string, options: LiquidToBuilderOp
   if (options.log) {
     console.log('liquidToBuilder: parsed liquid', parsedTemplateItems);
   }
-  const html = parsedLiquidToHtml(parsedTemplateItems);
+  const html = await parsedLiquidToHtml(parsedTemplateItems);
   if (options.log) {
     console.log('liquidToBuilder: html', { html });
   }

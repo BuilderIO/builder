@@ -11,7 +11,7 @@ import * as stringify from 'json-stringify-safe';
 
 test('Product page', async () => {
   const parsedTemplateItems = liquidToAst(productPage);
-  const html = parsedLiquidToHtml(parsedTemplateItems);
+  const html = await parsedLiquidToHtml(parsedTemplateItems);
   const htmlNodes = htmlToAst(html);
   const blocks = htmlAstToBuilder(htmlNodes);
 
@@ -21,6 +21,10 @@ test('Product page', async () => {
   await debugFile(
     'everything.json',
     stringify(everything, (key, value) => (ignoreKeys.has(key) ? undefined : value), 2)
+  );
+  await debugFile(
+    'html.html',
+    html
   );
   expect(blocks).toBeTruthy();
 });

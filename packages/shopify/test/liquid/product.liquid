@@ -55,6 +55,12 @@
 
         <link itemprop="availability" href="http://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}">
 
+        {% section 'header' %}
+
+        {% form 'test' %}
+          Hello there
+        {% endform %}
+
         {% comment %}
           ID addToCartForm is a selector for the ajax cart plugin
         {% endcomment %}

@@ -489,7 +489,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
                       {(block as any).text || options.text ? (
                         // TODO: remove me! No longer in use (maybe with rich text will be back tho)
                         <TextTag
-                          dangerouslySetInnerHTML={{ __html: options.text || (block as any).text }}
+                          dangerouslySetInnerHTML={{ __html: options.text || (block as any).text || '' }}
                         />
                       ) : !InnerComponent &&
                         children &&
