@@ -179,23 +179,25 @@ export default [
               // match: /formidable(\/|\\)lib/,
               // string or regexp
               test: /require\(['"]react(-dom)?['"]\)/g,
-              replace: 'require("preact/compat")'
+              replace: 'require("preact/compat/dist/compat.module.js")'
             },
             {
               // regexp match with resolved path
               // match: /formidable(\/|\\)lib/,
               // string or regexp
               test: /from ['"]react(-dom)?['"]/g,
-              replace: 'from "preact/compat"'
+              replace: 'from "preact/compat/dist/compat.module.js"'
             }
           ]
         }),
         resolve({
-          only: [/^\.{0,2}\//]
+          // only: [/^\.{0,2}\//]
         }),
         alias({
-          react: 'preact/compat',
-          'react-dom': 'preact/compat'
+          react: 'preact/compat/dist/compat.module.js',
+          'react-dom': 'preact/compat/dist/compat.module.js',
+          'preact/hooks': 'preact/hooks/dist/hooks.module.js',
+          'preact/debug': 'preact/debug/dist/debug.module.js',
         })
       ])
   },

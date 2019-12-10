@@ -17,7 +17,7 @@ export interface SymbolInfo {
   data?: any
   content?: any
   inline?: boolean
-  dynamic?: boolean;
+  dynamic?: boolean
 }
 
 export interface SymbolProps {
@@ -27,18 +27,24 @@ export interface SymbolProps {
   attributes?: any
 }
 
-function traverse(obj: any, cb: (obj: any, key?: string) => void, key?: string) {
+console.debug('Version 6')
+
+function traverse(
+  obj: any,
+  cb: (obj: any, key?: string) => void,
+  key?: string
+) {
   cb(obj, key)
   if (obj && typeof obj === 'object') {
     Object.keys(obj).forEach(key => {
       const value = obj[key]
-      traverse(value, cb)
+      traverse(value, cb, key)
     })
   }
 }
 
 const getAllObjects = (blocks: any[]) => {
-  const list: any[] = [];
+  const list: any[] = []
   blocks.forEach(block => {
     traverse(block, child => {
       if (child && typeof child === 'object') {
@@ -49,13 +55,12 @@ const getAllObjects = (blocks: any[]) => {
   return list
 }
 
-
 class SymbolComponent extends React.Component<SymbolProps> {
   get placeholder() {
     return (
       <div css={{ padding: 10 }}>
-        Symbols let you reuse dynamic elements across your content. Please choose a model and entry
-        for this symbol.
+        Symbols let you reuse dynamic elements across your content. Please
+        choose a model and entry for this symbol.
       </div>
     )
   }
@@ -63,16 +68,16 @@ class SymbolComponent extends React.Component<SymbolProps> {
   shouldComponentUpdate(nextProps: any) {
     if (Builder.isEditing) {
       if (hash(nextProps) === hash(this.props)) {
-        return false;
+        return false
       }
     }
-    return true;
+    return true
   }
 
   render() {
     const symbol = this.props.symbol
 
-    let showPlaceholder = false;
+    let showPlaceholder = false
 
     if (!symbol) {
       showPlaceholder = true
@@ -87,7 +92,7 @@ class SymbolComponent extends React.Component<SymbolProps> {
       showPlaceholder = true
     }
 
-    let key = Builder.isEditing && builder.editingModel === model ? undefined : entry
+    let key = dynamic ? undefined : [model, entry].join(':')
     const dataString = data && size(data) && hash(data)
 
     if (key && dataString && dataString.length < 300) {
@@ -96,58 +101,40 @@ class SymbolComponent extends React.Component<SymbolProps> {
 
     const attributes = this.props.attributes || {}
     return (
-      <BuilderStoreContext.Consumer key={(model || 'no model') + ':' + (entry || 'no entry')}>
+      <BuilderStoreContext.Consumer
+        key={(model || 'no model') + ':' + (entry || 'no entry')}
+      >
         {state => {
-          const fullContent = state.content;
-          if (!key && Builder.isEditing && Array.isArray(fullContent?.data?.blocks)) {
-            let isNestedSymbol = false;
-            // TODO: traverse elements from builder store context and find symbol parents
-            const allObjects = getAllObjects(fullContent.data.blocks)
-            const getParent = (obj: any) => allObjects.find(item => Object.values(item).includes(obj))
-            const obj = allObjects.find(item => item.id === this.props.builderBlock?.id)
-            if (obj) {
-              let parent = obj
-              while (parent = getParent(parent)) {
-                if (parent?.component?.name === 'Symbol') {
-                  console.debug('Nested symbol')
-                  isNestedSymbol = true;
-                  break;
-                }
+          return (
+            <TagName
+              data-model={model}
+              {...attributes}
+              className={
+                (attributes.class || attributes.className || '') +
+                ' builder-symbol' +
+                (symbol?.inline ? ' builder-inline-symbol' : '')
               }
-            }
-            if (isNestedSymbol) {
-              key = entry || 'no-entry'
-            }
-            if (isNestedSymbol && !entry) {
-              return this.placeholder
-            }
-          }
-
-          return <TagName
-            data-model={model}
-            {...attributes}
-            className={
-              (attributes.class || attributes.className || '') +
-              ' builder-symbol' +
-              (symbol?.inline ? ' builder-inline-symbol' : '')
-            }
-          >
-            {showPlaceholder ? this.placeholder :
-            <BuilderPage
-              modelName={model}
-              entry={entry}
-              data={data}
-              inlineContent={symbol?.inline}
-              content={content}
-              options={{ key }}
-              hydrate={state.state?._hydrate}
-              builderBlock={this.props.builderBlock}
-              dataOnly={this.props.dataOnly}
             >
-              {/* TODO: builder blocks option for loading stuff */}
-              {this.props.children}
-            </BuilderPage>}
-          </TagName>
+              {showPlaceholder ? (
+                this.placeholder
+              ) : (
+                <BuilderPage
+                  modelName={model}
+                  entry={entry}
+                  data={data}
+                  inlineContent={symbol?.inline}
+                  content={content}
+                  options={{ key }}
+                  hydrate={state.state?._hydrate}
+                  builderBlock={this.props.builderBlock}
+                  dataOnly={this.props.dataOnly}
+                >
+                  {/* TODO: builder blocks option for loading stuff */}
+                  {this.props.children}
+                </BuilderPage>
+              )}
+            </TagName>
+          )
         }}
       </BuilderStoreContext.Consumer>
     )
