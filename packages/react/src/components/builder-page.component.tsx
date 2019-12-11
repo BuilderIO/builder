@@ -699,7 +699,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
                       data-builder-variation-id={fullData.variationId}
                     >
                       {this.getCss(data) && (
-                        <style dangerouslySetInnerHTML={{ __html: this.getCss(data) }} />
+                        <style key={String(Builder.isBrowser)} className="builder-custom-styles" dangerouslySetInnerHTML={{ __html: this.getCss(data) }} />
                       )}
                       <BuilderStoreContext.Provider
                         value={{

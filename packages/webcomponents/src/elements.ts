@@ -3,8 +3,6 @@ import { GetContentOptions, Builder, builder } from '@builder.io/sdk'
 const importReact = () => import('@builder.io/react')
 const importWidgets = () => import('@builder.io/widgets')
 
-console.debug('Elements version 6')
-
 const componentName = process.env.ANGULAR
   ? 'builder-component-element'
   : 'builder-component'
