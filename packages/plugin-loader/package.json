@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/plugin-loader",
-  "version": "0.0.2-28",
+  "version": "0.0.2-29",
   "description": "",
   "keywords": [],
   "main": "dist/plugin-loader.umd.js",
@@ -126,7 +126,7 @@
   "dependencies": {
     "@builder.io/mobx-state-tree": "^3.14.2",
     "@builder.io/plugin-cloudinary": "^1.0.3-alpha.3",
-    "@builder.io/react": "^1.0.98-alpha.22",
+    "@builder.io/react": "^1.0.98-alpha.23",
     "@builder.io/sdk": "^1.0.51-alpha.7",
     "@emotion/core": "^10.0.22",
     "@emotion/styled": "^10.0.23",
