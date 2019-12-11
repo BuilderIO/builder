@@ -41,15 +41,12 @@ function attempt<T extends any>(fn: () => T) {
 }
 
 function pick(object: any, keys: string[]) {
-  return keys.reduce(
-    (obj, key) => {
-      if (object && object.hasOwnProperty(key)) {
-        obj[key] = object[key]
-      }
-      return obj
-    },
-    {} as any
-  )
+  return keys.reduce((obj, key) => {
+    if (object && object.hasOwnProperty(key)) {
+      obj[key] = object[key]
+    }
+    return obj
+  }, {} as any)
 }
 
 // TODO: get fetch from core JS....
@@ -184,10 +181,22 @@ const tryEval = (str?: string, data: any = {}, errors?: Error[]): any => {
     }
 
     if (Builder.isBrowser) {
-      console.warn('Builder custom code error:', error.message, 'in', str, error.stack)
+      console.warn(
+        'Builder custom code error:',
+        error.message,
+        'in',
+        str,
+        error.stack
+      )
     } else {
       if (process.env.DEBUG) {
-        console.debug('Builder custom code error:', error.message, 'in', str, error.stack)
+        console.debug(
+          'Builder custom code error:',
+          error.message,
+          'in',
+          str,
+          error.stack
+        )
       }
       // Add to req.options.errors to return to client
     }
@@ -209,7 +218,10 @@ function searchToObject(location: Location | Url) {
   return obj
 }
 
-export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageState> {
+export class BuilderPage extends React.Component<
+  BuilderPageProps,
+  BuilderPageState
+> {
   subscriptions: Subscription = new Subscription()
   onStateChange = new BehaviorSubject<any>(null)
   asServer = false
@@ -238,7 +250,9 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
 
     this.state = {
       state: Object.assign(this.rootState, {
-        ...(this.props.content && this.props.content.data && this.props.content.data.state),
+        ...(this.props.content &&
+          this.props.content.data &&
+          this.props.content.data.state),
         isBrowser: !this.asServer,
         isServer: !this.asServer,
         _hydrate: props.hydrate,
@@ -263,7 +277,8 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
         // TODO: this should be on didMount right bc of element ref??
         // TODO: possibly observe for change or throw error if changes
         this.onContentLoaded(
-          this.props.content.content || this.props.content.data /*, this.props.content*/
+          this.props.content.content ||
+            this.props.content.data /*, this.props.content*/
         )
       }
     }
@@ -293,7 +308,10 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     return {
       // TODO: handle this correctly on the server. Pass in with CONTEXT
       ...pick(this.location, ['pathname', 'hostname', 'search', 'host']),
-      path: (this.location.pathname && this.location.pathname.split('/').slice(1)) || '',
+      path:
+        (this.location.pathname &&
+          this.location.pathname.split('/').slice(1)) ||
+        '',
       query: searchToObject(this.location)
     }
   }
@@ -375,7 +393,13 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     props: BuilderPageProps = {},
     hydrate = true
   ) {
-    console.debug('BuilderPage.renderInto', elementOrSelector, props, hydrate, this)
+    console.debug(
+      'BuilderPage.renderInto',
+      elementOrSelector,
+      props,
+      hydrate,
+      this
+    )
     let element =
       elementOrSelector instanceof HTMLElement
         ? elementOrSelector
@@ -459,7 +483,10 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     }
 
     if (Builder.isIframe) {
-      parent.postMessage({ type: 'builder.sdkInjected', data: { modelName: this.name } }, '*')
+      parent.postMessage(
+        { type: 'builder.sdkInjected', data: { modelName: this.name } },
+        '*'
+      )
     }
 
     if (Builder.isBrowser) {
@@ -534,7 +561,9 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
 
   getCssFromFont(font: any, data?: any) {
     // TODO: compute what font sizes are used and only load those.......
-    const family = font.family + (font.kind && !font.kind.includes('#') ? ', ' + font.kind : '')
+    const family =
+      font.family +
+      (font.kind && !font.kind.includes('#') ? ', ' + font.kind : '')
     const name = family.split(',')[0]
     const url = font.fileUrl ? font.fileUrl : font.files && font.files.regular
     let str = ''
@@ -585,14 +614,18 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     return (
       data.customFonts &&
       data.customFonts.length &&
-      data.customFonts.map((font: any) => this.getCssFromFont(font, data)).join(' ')
+      data.customFonts
+        .map((font: any) => this.getCssFromFont(font, data))
+        .join(' ')
     )
   }
 
   ensureFontsLoaded(data: any) {
     if (data.customFonts && Array.isArray(data.customFonts)) {
       for (const font of data.customFonts) {
-        const url = font.fileUrl ? font.fileUrl : font.files && font.files.regular
+        const url = font.fileUrl
+          ? font.fileUrl
+          : font.files && font.files.regular
         if (!fontsLoaded.has(url)) {
           const html = this.getCssFromFont(font, data)
           fontsLoaded.add(url)
@@ -614,7 +647,10 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
       this.ensureFontsLoaded(data)
     }
     // .replace(/([^\s]|$)&([^\w])/g, '$1' + '.some-selector' + '$2')
-    return (data.cssCode || '') + ((!Builder.isBrowser && this.getFontCss(data)) || '')
+    return (
+      (data.cssCode || '') +
+      (!Builder.isBrowser ? this.getFontCss(data) || '/* */' : '')
+    )
   }
 
   get data() {
@@ -652,7 +688,8 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
       }
     }
 
-    const dataString = this.props.data && size(this.props.data) && hash(this.props.data)
+    const dataString =
+      this.props.data && size(this.props.data) && hash(this.props.data)
     let key = Builder.isEditing ? this.name : this.props.entry
     if (!Builder.isEditing && dataString && dataString.length < 300) {
       key += ':' + dataString
@@ -681,7 +718,8 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
                 options={{
                   key,
                   entry: this.props.entry,
-                  ...(content && size(content) && { initialContent: [content] }),
+                  ...(content &&
+                    size(content) && { initialContent: [content] }),
                   ...this.props.options
                 }}
                 contentError={this.props.contentError}
@@ -699,7 +737,13 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
                       data-builder-variation-id={fullData.variationId}
                     >
                       {this.getCss(data) && (
-                        <style key={String(Builder.isBrowser)} className="builder-custom-styles" dangerouslySetInnerHTML={{ __html: this.getCss(data) }} />
+                        <style
+                          key={String(Builder.isBrowser)}
+                          className="builder-custom-styles"
+                          dangerouslySetInnerHTML={{
+                            __html: this.getCss(data)
+                          }}
+                        />
                       )}
                       <BuilderStoreContext.Provider
                         value={{
@@ -718,11 +762,17 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
                       </BuilderStoreContext.Provider>
                     </div>
                   ) : loading ? (
-                    <div data-builder-component={this.name} className="builder-loading">
+                    <div
+                      data-builder-component={this.name}
+                      className="builder-loading"
+                    >
                       {this.props.children}
                     </div>
                   ) : (
-                    <div data-builder-component={this.name} className="builder-no-content" />
+                    <div
+                      data-builder-component={this.name}
+                      className="builder-no-content"
+                    />
                   )
                 }}
               </BuilderContent>
@@ -735,7 +785,9 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
 
   evalExpression(expression: string) {
     const { data } = this
-    return expression.replace(/{{([^}]+)}}/g, (match, group) => tryEval(group, data, this._errors))
+    return expression.replace(/{{([^}]+)}}/g, (match, group) =>
+      tryEval(group, data, this._errors)
+    )
   }
 
   // TODO: customizable hm
@@ -766,7 +818,9 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
           this._errors.push(err)
         }
         if (this._logs) {
-          this._logs.push(`Fetch to ${url} errored in ${Date.now() - requestStart}ms`)
+          this._logs.push(
+            `Fetch to ${url} errored in ${Date.now() - requestStart}ms`
+          )
         }
         return
       } finally {
@@ -792,7 +846,9 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     }
     const existing =
       this._asyncRequests &&
-      (this._asyncRequests.find(req => isRequestInfo(req) && req.url === url) as RequestInfo | null)
+      (this._asyncRequests.find(
+        req => isRequestInfo(req) && req.url === url
+      ) as RequestInfo | null)
     if (existing) {
       const promise = existing.promise
       promise.then(json => {
@@ -847,7 +903,10 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     //   console.debug('Builder content load', data)
     // }
     // TODO: if model is page... hmm
-    if ((this.name === 'page' || this.name === 'docs-content') && Builder.isBrowser) {
+    if (
+      (this.name === 'page' || this.name === 'docs-content') &&
+      Builder.isBrowser
+    ) {
       if (data) {
         const { title, pageTitle, description, pageDescription } = data
 
@@ -856,7 +915,9 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
         }
 
         if (description || pageDescription) {
-          let descriptionTag = document.querySelector('meta[name="description"]')
+          let descriptionTag = document.querySelector(
+            'meta[name="description"]'
+          )
 
           if (!descriptionTag) {
             descriptionTag = document.createElement('meta')
@@ -864,7 +925,10 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
             document.head.appendChild(descriptionTag)
           }
 
-          descriptionTag!.setAttribute('content', description || pageDescription)
+          descriptionTag!.setAttribute(
+            'content',
+            description || pageDescription
+          )
         }
       }
     }
@@ -878,7 +942,12 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
       this.props.contentLoaded(data)
     }
 
-    if (data && data.inputs && Array.isArray(data.inputs) && data.inputs.length) {
+    if (
+      data &&
+      data.inputs &&
+      Array.isArray(data.inputs) &&
+      data.inputs.length
+    ) {
       if (!data.state) {
         data.state = {}
       }
@@ -972,7 +1041,11 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
       }
     }
 
-    if (data && data.httpRequests /* || data.builderData @DEPRECATED */ && !this.props.noAsync) {
+    if (
+      data &&
+      data.httpRequests /* || data.builderData @DEPRECATED */ &&
+      !this.props.noAsync
+    ) {
       // Don't rerun http requests when editing and not changed
       // No longer needed?
       let skip = false
@@ -986,14 +1059,22 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
             // Then use builder.get().subscribe(...)
             if (Builder.isBrowser) {
               const finalUrl = this.evalExpression(url)
-              if (Builder.isEditing && this.lastHttpRequests[key] === finalUrl) {
+              if (
+                Builder.isEditing &&
+                this.lastHttpRequests[key] === finalUrl
+              ) {
                 continue
               }
               this.lastHttpRequests[key] = finalUrl
               const builderModelRe = /builder\.io\/api\/v2\/([^\/\?]+)/i
               const builderModelMatch = url.match(builderModelRe)
               const model = builderModelMatch && builderModelMatch[1]
-              if (false && Builder.isEditing && model && builder.editingModel === model) {
+              if (
+                false &&
+                Builder.isEditing &&
+                model &&
+                builder.editingModel === model
+              ) {
                 this.throttledHandleRequest(key, finalUrl)
                 // TODO: fix this
                 // this.subscriptions.add(
