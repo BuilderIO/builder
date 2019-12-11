@@ -284,6 +284,9 @@ class RouterComponent extends React.Component<RouterProps> {
                 }
               `}</style>
               <BuilderPage
+                // TODO: this key strategy is inidial bc it gives loading for full page when fetching content
+                // Also sometimes content flashes to loading even when it's already precached in memory and should immediately display 
+                // - why
                 key={url}
                 data={this.props.data}
                 content={this.routed ? undefined : this.props.content}

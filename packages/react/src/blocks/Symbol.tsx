@@ -27,8 +27,6 @@ export interface SymbolProps {
   attributes?: any
 }
 
-console.debug('Version 6')
-
 function traverse(
   obj: any,
   cb: (obj: any, key?: string) => void,
