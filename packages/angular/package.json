@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/angular",
-  "version": "1.0.70-alpha.7",
+  "version": "1.0.70-alpha.8",
   "main": "dist/bundles/builder.io-angular.umd.js",
   "module": "dist/fesm5/builder.io-angular.js",
   "es2015": "dist/fesm2015/builder.io-angular.js",
@@ -47,7 +47,7 @@
     "@angular/elements": "^8.1.1",
     "@angular/http": ">= 2",
     "@angular/router": ">= 2",
-    "@builder.io/sdk": "^1.0.51-alpha.6",
+    "@builder.io/sdk": "^1.0.51-alpha.7",
     "rxjs": ">= 2",
     "tslib": "^1.10.0",
     "zone.js": "*"
