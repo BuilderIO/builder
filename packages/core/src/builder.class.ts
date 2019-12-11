@@ -1464,7 +1464,7 @@ export class Builder {
           const isEditingThisModel = this.editingModel === options.model;
           if (isEditingThisModel && Builder.isEditing) {
             parent.postMessage({ type: 'builder.updateContent' }, '*');
-            return;
+            // return;
           }
           const observer = this.observersByKey[keyName];
           if (!observer) {
