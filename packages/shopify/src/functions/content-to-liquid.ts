@@ -189,7 +189,9 @@ export function contentToLiquid(json: BuilderContent, modelName: string, options
 
   // TODO: optimize CSS to remove redundancy
   let { html, css } = regexParse(
-    `<div
+    `
+  <div class="builder-component" data-name="${modelName}">
+    <div
       class="builder-content"
       builder-content-id="${content.id}"
       data-builder-content-id="${content.id}"
@@ -202,6 +204,7 @@ export function contentToLiquid(json: BuilderContent, modelName: string, options
           : ''
       }
     </div>
+  </div>
     `.replace(/\s+/, ' ')
   );
 
