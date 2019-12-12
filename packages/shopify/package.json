@@ -10,6 +10,7 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc --module commonjs",
+    "start": "npm run watch",
     "watch": "tsc -w --module commonjs",
     "release": "npm run build && npm publish",
     "release:patch": "npm run build && npm version patch && npm publish",

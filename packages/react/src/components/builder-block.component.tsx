@@ -101,7 +101,6 @@ export interface BuilderBlockProps {
   size?: Size
   emailMode?: boolean
   // TODO: use context
-  ampMode?: boolean
 }
 
 function capitalize(str: string) {

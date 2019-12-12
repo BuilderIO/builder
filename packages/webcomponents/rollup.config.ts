@@ -38,7 +38,6 @@ const options = {
     // Allow json resolution
     replace({
       'process.env.NODE_ENV': JSON.stringify('production')
-      // 'React.createContext': `require('preact-context').createContext`
     }),
     json(),
     alias({
@@ -86,13 +85,6 @@ const options = {
           'ForwardRef'
         ]
       }
-      // namedExports: {
-      //   // left-hand side can be an absolute path, a path
-      //   // relative to the current directory, or the name
-      //   // of a module in node_modules
-      //   // 'preact-compat': ['h', 'Component'],
-      //   // [path.resolve('./node_modules/preact-compat/dist/preact-compat.es.js')]: ['h', 'Component']
-      // }
     }),
     // Don't uglify when serving
     ...(SERVE ? [] : [uglify()]),
