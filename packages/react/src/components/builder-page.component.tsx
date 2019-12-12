@@ -31,8 +31,6 @@ const size = (thing: object) => Object.keys(thing).length
 
 const fontsLoaded = new Set()
 
-console.debug('Version 7')
-
 function pick(object: any, keys: string[]) {
   return keys.reduce((obj, key) => {
     if (object && object.hasOwnProperty(key)) {
