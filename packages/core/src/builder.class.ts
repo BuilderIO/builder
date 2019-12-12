@@ -151,6 +151,7 @@ export interface GetContentOptions {
   format?: 'amp' | 'email' | 'html';
   noWrap?: true;
   rev?: string;
+  static?: boolean;
 }
 
 export type Class = {
@@ -1420,6 +1421,7 @@ export class Builder {
           'model',
           'entry',
           'rev',
+          'static',
         ];
         for (const key of properties) {
           const value = options[key];

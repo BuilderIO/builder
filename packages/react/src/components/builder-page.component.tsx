@@ -25,6 +25,7 @@ import { Url } from 'url'
 import { debounceNextTick } from '../functions/debonce-next-tick'
 import { throttle } from 'src/functions/throttle'
 import { safeDynamicRequire } from 'src/functions/safe-dynamic-require'
+import { BuilderMetaContext } from 'src/store/builder-meta'
 
 const size = (thing: object) => Object.keys(thing).length
 
@@ -331,7 +332,7 @@ export class BuilderPage extends React.Component<
       }
       case 'builder.resetState': {
         const { state, model } = info.data.state
-        if (model == this.name) {
+        if (model === this.name) {
           for (const key in this.rootState) {
             delete this.rootState[key]
           }
@@ -709,86 +710,100 @@ export class BuilderPage extends React.Component<
         data-name={this.name}
         ref={ref => (this.ref = ref)}
       >
-        <BuilderAsyncRequestsContext.Consumer>
-          {value => {
-            this._asyncRequests = value && value.requests
-            this._errors = value && value.errors
-            this._logs = value && value.logs
+        <BuilderMetaContext.Consumer>
+          {value => (
+            <BuilderMetaContext.Provider
+              value={
+                typeof this.props.ampMode === 'boolean'
+                  ? {
+                      ...value,
+                      ampMode: this.props.ampMode
+                    }
+                  : value
+              }
+            >
+              <BuilderAsyncRequestsContext.Consumer>
+                {value => {
+                  this._asyncRequests = value && value.requests
+                  this._errors = value && value.errors
+                  this._logs = value && value.logs
 
-            return (
-              <BuilderContent
-                inline={this.props.inlineContent}
-                // TODO: pass entry in
-                contentLoaded={this.onContentLoaded}
-                options={{
-                  key,
-                  entry: this.props.entry,
-                  ...(content &&
-                    size(content) && { initialContent: [content] }),
-                  ...this.props.options
-                }}
-                contentError={this.props.contentError}
-                modelName={this.name || 'page'}
-              >
-                {(data, loading, fullData) => {
-                  if (this.props.dataOnly) {
-                    return null
-                  }
-                  if (Builder.isBrowser) {
-                    Builder.nextTick(() => {
-                      this.checkStyles(data)
-                    })
-                  }
-                  // TODO: loading option - maybe that is what the children is or component prop
-                  return data ? (
-                    <div
-                      data-builder-component={this.name}
-                      data-builder-content-id={fullData.id}
-                      data-builder-variation-id={fullData.variationId}
+                  return (
+                    <BuilderContent
+                      inline={this.props.inlineContent}
+                      // TODO: pass entry in
+                      contentLoaded={this.onContentLoaded}
+                      options={{
+                        key,
+                        entry: this.props.entry,
+                        ...(content &&
+                          size(content) && { initialContent: [content] }),
+                        ...this.props.options
+                      }}
+                      contentError={this.props.contentError}
+                      modelName={this.name || 'page'}
                     >
-                      {this.getCss(data) && (
-                        <style
-                          ref={ref => (this.styleRef = ref)}
-                          className="builder-custom-styles"
-                          dangerouslySetInnerHTML={{
-                            __html: this.getCss(data)
-                          }}
-                        />
-                      )}
-                      <BuilderStoreContext.Provider
-                        value={{
-                          ...this.state,
-                          rootState: this.rootState,
-                          state: this.data,
-                          content: fullData
-                        }}
-                      >
-                        <BuilderBlocks
-                          emailMode={this.props.emailMode}
-                          ampMode={this.props.ampMode}
-                          fieldName="blocks"
-                          blocks={data.blocks}
-                        />
-                      </BuilderStoreContext.Provider>
-                    </div>
-                  ) : loading ? (
-                    <div
-                      data-builder-component={this.name}
-                      className="builder-loading"
-                    >
-                      {this.props.children}
-                    </div>
-                  ) : (
-                    <div
-                      data-builder-component={this.name}
-                      className="builder-no-content"
-                    />
+                      {(data, loading, fullData) => {
+                        if (this.props.dataOnly) {
+                          return null
+                        }
+                        if (Builder.isBrowser) {
+                          Builder.nextTick(() => {
+                            this.checkStyles(data)
+                          })
+                        }
+                        // TODO: loading option - maybe that is what the children is or component prop
+                        return data ? (
+                          <div
+                            data-builder-component={this.name}
+                            data-builder-content-id={fullData.id}
+                            data-builder-variation-id={fullData.variationId}
+                          >
+                            {this.getCss(data) && (
+                              <style
+                                ref={ref => (this.styleRef = ref)}
+                                className="builder-custom-styles"
+                                dangerouslySetInnerHTML={{
+                                  __html: this.getCss(data)
+                                }}
+                              />
+                            )}
+                            <BuilderStoreContext.Provider
+                              value={{
+                                ...this.state,
+                                rootState: this.rootState,
+                                state: this.data,
+                                content: fullData
+                              }}
+                            >
+                              <BuilderBlocks
+                                emailMode={this.props.emailMode}
+                                fieldName="blocks"
+                                blocks={data.blocks}
+                              />
+                            </BuilderStoreContext.Provider>
+                          </div>
+                        ) : loading ? (
+                          <div
+                            data-builder-component={this.name}
+                            className="builder-loading"
+                          >
+                            {this.props.children}
+                          </div>
+                        ) : (
+                          <div
+                            data-builder-component={this.name}
+                            className="builder-no-content"
+                          />
+                        )
+                      }}
+                    </BuilderContent>
                   )
                 }}
-              </BuilderContent>
-            )
-          }}
-        </BuilderAsyncRequestsContext.Consumer>
+              </BuilderAsyncRequestsContext.Consumer>
+            </BuilderMetaContext.Provider>
+          )}
+        </BuilderMetaContext.Consumer>
       </WrapComponent>
     )
   }
