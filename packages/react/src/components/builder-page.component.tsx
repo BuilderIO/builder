@@ -27,20 +27,10 @@ import { throttle } from 'src/functions/throttle'
 import { safeDynamicRequire } from 'src/functions/safe-dynamic-require'
 
 const size = (thing: object) => Object.keys(thing).length
-const noCompileRequire: typeof require =
-  Builder.isServer && (new Function('return this.require')() as any)
 
 const fontsLoaded = new Set()
 
 console.debug('Version 7')
-
-function attempt<T extends any>(fn: () => T) {
-  try {
-    return fn()
-  } catch (err) {
-    return err
-  }
-}
 
 function pick(object: any, keys: string[]) {
   return keys.reduce((obj, key) => {
@@ -450,7 +440,7 @@ export class BuilderPage extends React.Component<
           }
         )
         // NextTick? or longer timeout?
-        setTimeout(() => {
+        Builder.nextTick(() => {
           apiStyles.innerHTML = keepStyles
         })
       }

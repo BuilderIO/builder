@@ -14,6 +14,15 @@ const pkg = require('./package.json')
 
 const SERVE = process.env.SERVE === 'true'
 
+const port = process.env.PORT || 1267
+if (SERVE) {
+  // Rollup clear console shortly after load and wipes this message,
+  // so delay a sec so we can see it
+  setTimeout(() => {
+    console.log(`\n\nDev server listening on port ${port}...\n\n`)
+  }, 10)
+}
+
 const libraryName = 'builder-webcomponents'
 
 const options = {
@@ -85,13 +94,14 @@ const options = {
       //   // [path.resolve('./node_modules/preact-compat/dist/preact-compat.es.js')]: ['h', 'Component']
       // }
     }),
-    uglify(),
+    // Don't uglify when serving
+    ...(SERVE ? [] : [uglify()]),
     sourceMaps(),
     ...(SERVE
       ? [
           serve({
+            port,
             contentBase: '.',
-            port: process.env.PORT || 1267,
             headers: {
               'Access-Control-Allow-Origin': '*'
             }

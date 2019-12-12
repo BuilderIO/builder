@@ -65,6 +65,8 @@ class SymbolComponent extends React.Component<SymbolProps> {
 
   shouldComponentUpdate(nextProps: any) {
     if (Builder.isEditing) {
+      // TODO: maybe don't do this for editor perf of symbols with lots of 
+      // data
       if (hash(nextProps) === hash(this.props)) {
         return false
       }
@@ -91,7 +93,7 @@ class SymbolComponent extends React.Component<SymbolProps> {
     }
 
     let key = dynamic ? undefined : [model, entry].join(':')
-    const dataString = data && size(data) && hash(data)
+    const dataString = Builder.isEditing ? null :  data && size(data) && hash(data)
 
     if (key && dataString && dataString.length < 300) {
       key += ':' + dataString
