@@ -50,7 +50,7 @@ function setCookie(name: string, value: string, expires?: Date) {
   }
   const secure = isBrowser ? location.protocol === 'https:' : true;
   document.cookie =
-    name + '=' + (value || '') + expiresString + '; path=/' + (secure ? ';secure' : '');
+    name + '=' + (value || '') + expiresString + '; path=/' + (secure ? ';secure' : '') + '; SameSite=None';
 }
 
 function getCookie(name: string) {
