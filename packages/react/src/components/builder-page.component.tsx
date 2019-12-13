@@ -410,14 +410,7 @@ export class BuilderPage extends React.Component<
 
     let shouldHydrate = hydrate && element.innerHTML.includes('builder-block')
 
-    if (
-      Builder.isEditing ||
-      (Builder.isBrowser && location.search.includes('builder.preview='))
-    ) {
-      shouldHydrate = false
-    }
-
-    if (shouldHydrate && !element.classList.contains('builder-component')) {
+    if (!element.classList.contains('builder-component')) {
       // TODO: maybe remove any builder-api-styles...
       const apiStyles =
         element.querySelector('.builder-api-styles') ||
@@ -465,6 +458,13 @@ export class BuilderPage extends React.Component<
     const div = document.createElement('div')
     element.insertAdjacentElement('beforebegin', div)
     div.appendChild(element)
+
+    if (
+      Builder.isEditing ||
+      (Builder.isBrowser && location.search.includes('builder.preview='))
+    ) {
+      shouldHydrate = false
+    }
     if (shouldHydrate && element) {
       return ReactDOM.hydrate(<BuilderPage {...props} />, div)
     }
