@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/plugin-cloudinary",
-  "version": "1.0.4-alpha.0",
+  "version": "1.0.4",
   "description": "",
   "keywords": [],
   "main": "dist/builder-plugin-cloudinary.umd.js",
@@ -106,7 +106,7 @@
     "typescript": "^3.0.3"
   },
   "dependencies": {
-    "@builder.io/sdk": "^1.0.52-alpha.0",
+    "@builder.io/sdk": "^1.0.52",
     "@emotion/core": "^10.0.22",
     "@emotion/styled": "^10.0.23",
     "@material-ui/core": "^3.9.2",
