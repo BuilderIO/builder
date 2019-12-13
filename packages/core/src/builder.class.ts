@@ -119,7 +119,7 @@ export interface UserAttributes {
   urlPath?: string;
   queryString?: string | ParamsMap;
   device?: 'mobile' | 'tablet' | 'desktop';
-  location?: any; // TODO: what format? IP address? Geo coords?
+  location?: any; 
   userAgent?: string;
   referrer?: string;
   entryMedium?: string;
