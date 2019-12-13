@@ -64,7 +64,8 @@ type BuilderBlockType = BuilderElement
 
 interface CarouselProps {
   slides: Array<
-    React.ReactNode | { content: BuilderBlockType[] } /* BuilderBlock <- export this type */
+    | React.ReactNode
+    | { content: BuilderBlockType[] } /* BuilderBlock <- export this type */
   >
   builderBlock: BuilderBlockType
   nextButton?: BuilderBlockType[]
@@ -118,8 +119,14 @@ class BuilderCarouselComponent extends React.Component<CarouselProps> {
           return (
             <BuilderStoreContext.Consumer>
               {state => (
-                <div ref={ref => (this.divRef = ref)} className="builder-carousel">
-                  <style type="text/css">{slickStyles}</style>
+                <div
+                  ref={ref => (this.divRef = ref)}
+                  className="builder-carousel"
+                >
+                  <style
+                    type="text/css"
+                    dangerouslySetInnerHTML={{ __html: slickStyles }}
+                  />
                   <Slider
                     responsive={this.props.responsive}
                     ref={ref => (this.sliderRef = ref)}
@@ -141,7 +148,9 @@ class BuilderCarouselComponent extends React.Component<CarouselProps> {
                     }}
                     autoplay={this.props.autoplay}
                     autoplaySpeed={
-                      this.props.autoplaySpeed ? this.props.autoplaySpeed * 1000 : undefined
+                      this.props.autoplaySpeed
+                        ? this.props.autoplaySpeed * 1000
+                        : undefined
                     }
                     dots={!this.props.hideDots}
                     // TODO: on change emit event on element?
@@ -185,7 +194,9 @@ class BuilderCarouselComponent extends React.Component<CarouselProps> {
                               )
                               const itemName =
                                 block.repeat.itemName ||
-                                (collectionName ? collectionName + 'Item' : 'item')
+                                (collectionName
+                                  ? collectionName + 'Item'
+                                  : 'item')
 
                               let array: any[] | void = stringToFunction(
                                 collectionPath,
@@ -211,7 +222,9 @@ class BuilderCarouselComponent extends React.Component<CarouselProps> {
                                   return (
                                     <BuilderStoreContext.Provider
                                       key={block.id}
-                                      value={{ ...state, state: childState } as any}
+                                      value={
+                                        { ...state, state: childState } as any
+                                      }
                                     >
                                       <BuilderBlockComponent
                                         block={{
@@ -242,7 +255,10 @@ class BuilderCarouselComponent extends React.Component<CarouselProps> {
                           // slides: <Foo><Bar> <- builder blocks if passed react nodes as blocks just forward them
                           <BuilderBlocks
                             key={index}
-                            parentElementId={this.props.builderBlock && this.props.builderBlock.id}
+                            parentElementId={
+                              this.props.builderBlock &&
+                              this.props.builderBlock.id
+                            }
                             dataPath={`component.options.slides.${index}.content`}
                             child
                             blocks={(slide as any).content || slide}
@@ -372,7 +388,8 @@ export const BuilderCarousel = withBuilder(BuilderCarouselComponent, {
     {
       name: 'responsive',
       type: 'array',
-      helperText: 'Responsive settings - e.g. see https://kenwheeler.github.io/slick/',
+      helperText:
+        'Responsive settings - e.g. see https://kenwheeler.github.io/slick/',
       advanced: true,
       defaultValue: [
         {
