@@ -409,6 +409,14 @@ export class BuilderPage extends React.Component<
     element.classList.add('builder-hydrated')
 
     let shouldHydrate = hydrate && element.innerHTML.includes('builder-block')
+
+    if (
+      Builder.isEditing ||
+      (Builder.isBrowser && location.search.includes('builder.preview='))
+    ) {
+      shouldHydrate = false
+    }
+
     if (shouldHydrate && !element.classList.contains('builder-component')) {
       // TODO: maybe remove any builder-api-styles...
       const apiStyles =
