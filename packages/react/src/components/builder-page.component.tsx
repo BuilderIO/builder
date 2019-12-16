@@ -235,6 +235,10 @@ export class BuilderPage extends React.Component<
   private _errors?: Error[]
   private _logs?: string[]
 
+  get element() {
+    return this.ref;
+  }
+
   constructor(props: BuilderPageProps) {
     super(props)
 

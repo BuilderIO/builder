@@ -11,9 +11,9 @@ import * as stringify from 'json-stringify-safe';
 
 test('Product page', async () => {
   const parsedTemplateItems = liquidToAst(productPage);
-  const html = await parsedLiquidToHtml(parsedTemplateItems);
+  const html = await parsedLiquidToHtml(parsedTemplateItems, {});
   const htmlNodes = htmlToAst(html);
-  const blocks = htmlAstToBuilder(htmlNodes);
+  const blocks = htmlAstToBuilder(htmlNodes, {});
 
   const everything = { parsedTemplateItems, html, htmlNodes, blocks };
   debugLog('everything', everything);
