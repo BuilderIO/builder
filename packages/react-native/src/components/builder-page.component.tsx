@@ -282,6 +282,14 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
         );
       });
     }
+
+    if (typeof this.state.state.componentDidMount === 'function') {
+      try {
+        this.state.state.componentDidMount();
+      } catch (err) {
+        console.error(err);
+      }
+    }
   }
 
   updateState = (fn: (state: any) => void) => {

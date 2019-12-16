@@ -123,7 +123,10 @@ class BuilderCarouselComponent extends React.Component<CarouselProps> {
                   ref={ref => (this.divRef = ref)}
                   className="builder-carousel"
                 >
-                  <style type="text/css">{slickStyles}</style>
+                  <style
+                    type="text/css"
+                    dangerouslySetInnerHTML={{ __html: slickStyles }}
+                  ></style>
                   <Slider
                     responsive={this.props.responsive}
                     ref={ref => (this.sliderRef = ref)}
