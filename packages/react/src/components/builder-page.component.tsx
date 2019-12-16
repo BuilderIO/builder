@@ -470,7 +470,7 @@ export class BuilderPage extends React.Component<
       shouldHydrate = false
     }
     if (shouldHydrate && element) {
-      return ReactDOM.hydrate(<BuilderPage {...props} />, div)
+      return ReactDOM.render(<BuilderPage {...props} />, div)
     }
     return ReactDOM.render(<BuilderPage {...props} />, div)
   }
