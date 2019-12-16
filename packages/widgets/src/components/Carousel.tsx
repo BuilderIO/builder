@@ -123,10 +123,15 @@ class BuilderCarouselComponent extends React.Component<CarouselProps> {
                   ref={ref => (this.divRef = ref)}
                   className="builder-carousel"
                 >
-                  <style
-                    type="text/css"
-                    dangerouslySetInnerHTML={{ __html: slickStyles }}
-                  ></style>
+                  {/* Strange encoding issue workaround... */}
+                  {Builder.isServer ? (
+                    <style
+                      type="text/css"
+                      dangerouslySetInnerHTML={{ __html: slickStyles }}
+                    ></style>
+                  ) : (
+                    <style type="text/css">{slickStyles}</style>
+                  )}
                   <Slider
                     responsive={this.props.responsive}
                     ref={ref => (this.sliderRef = ref)}
