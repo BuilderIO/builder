@@ -50,7 +50,13 @@ function setCookie(name: string, value: string, expires?: Date) {
   }
   const secure = isBrowser ? location.protocol === 'https:' : true;
   document.cookie =
-    name + '=' + (value || '') + expiresString + '; path=/' + (secure ? ';secure' : '') + '; SameSite=None';
+    name +
+    '=' +
+    (value || '') +
+    expiresString +
+    '; path=/' +
+    (secure ? ';secure' : '') +
+    '; SameSite=None';
 }
 
 function getCookie(name: string) {
@@ -119,7 +125,7 @@ export interface UserAttributes {
   urlPath?: string;
   queryString?: string | ParamsMap;
   device?: 'mobile' | 'tablet' | 'desktop';
-  location?: any; 
+  location?: any;
   userAgent?: string;
   referrer?: string;
   entryMedium?: string;
@@ -297,6 +303,21 @@ export class Builder {
   static isBrowser = isBrowser;
   static isReactNative = isReactNative;
   static isServer = !isBrowser && !isReactNative;
+
+  static import(packageName: string) {
+    if (!Builder.isBrowser) {
+      // TODO: server side support *maybe*
+      console.warn('Builder.import used on the server - this should only be used in the browser');
+      return;
+    }
+    const { System } = window as any;
+
+    if (!System) {
+      console.warn('System.js not available. Please include System.js when using Builder.import');
+      return;
+    }
+    return System.import(`https://cdn.builder.io/systemjs/${packageName}`);
+  }
 
   // TODO: this is quick and dirty, do better implementation later. Also can be unreliable
   // if page 301s etc. Use a query param instead? also could have issues with redirects. Injecting var could
@@ -1290,7 +1311,8 @@ export class Builder {
       ).then(res => res.json());
     }
     return new Promise((resolve, reject) => {
-      const module = url.indexOf('http:') === 0 ? serverOnlyRequire('http') : serverOnlyRequire('https');
+      const module =
+        url.indexOf('http:') === 0 ? serverOnlyRequire('http') : serverOnlyRequire('https');
       module
         .get(url, (resp: any) => {
           let data = '';
