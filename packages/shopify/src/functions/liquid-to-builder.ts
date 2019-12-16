@@ -66,7 +66,7 @@ interface BlockTemplate extends ITemplate {
     name: string;
     templates: ITemplate[];
     args: string;
-  }
+  };
 }
 
 const isIfTemplate = (template: ITemplate): template is IfTemplate =>
@@ -86,7 +86,10 @@ const isTextNode = (node: compiler.ASTNode): node is compiler.ASTText => node.ty
 const htmlEncode = (html: string) => html.replace(/'/g, '_APOS_').replace(/"/g, '_QUOT_');
 const htmlDecode = (html: string) => html.replace(/_APOS_/g, "'").replace(/_QUOT_/g, '"');
 
-export const parsedLiquidToHtml = async (templates: ITemplate[]) => {
+export const parsedLiquidToHtml = async (
+  templates: ITemplate[],
+  options: LiquidToBuilderOptions
+) => {
   let html = '';
 
   for (const item of templates) {
@@ -133,10 +136,83 @@ export const parsedLiquidToHtml = async (templates: ITemplate[]) => {
     } else {
       // TODO: preprocess liquid to expand forms, sections, etc OR do at html phase
 
+      const name = (template as any).name || '';
+      const args = (template as any).token.args || '';
+      if (name === 'section') {
+        // Handle me...
+        const matched = args.match(/['"]([^'"]+)['"]/);
+        const path = matched && matched[1];
+
+        const { auth, themeId } = options;
+        if (auth && path && themeId) {
+          const { publicKey, token } = auth;
+          if (publicKey && token) {
+            const shopifyRoot = 'https://builder.io/api/v1/shopify/api/2019-04';
+            const headers = {
+              Authorization: `Bearer ${token}`,
+            };
+
+            const currentAsset = await fetch(
+              `${shopifyRoot}/themes/${themeId}/assets.json?asset[key]=sections/${path}.liquid&apiKey=${publicKey}`,
+              { headers }
+            )
+              .then(res => res.json())
+              .then(res => res.asset)
+              .catch(err => {
+                console.warn('Could not get section', err, template);
+                return null;
+              });
+
+            if (currentAsset && currentAsset.value) {
+              html += await parsedLiquidToHtml(
+                await liquidToAst(currentAsset.value, options),
+                options
+              );
+            }
+          }
+        }
+      }
+      // TODO: add assign too
+      if (name === 'include') {
+        // Handle me...
+        const matched = args.match(/['"]([^'"]+)['"]/);
+        const path = matched && matched[1];
+
+        const { auth, themeId } = options;
+        if (auth && path && themeId) {
+          const { publicKey, token } = auth;
+          if (publicKey && token) {
+            const shopifyRoot = 'https://builder.io/api/v1/shopify/api/2019-04';
+            const headers = {
+              Authorization: `Bearer ${token}`,
+            };
+
+            const currentAsset = await fetch(
+              `${shopifyRoot}/themes/${themeId}/assets.json?asset[key]=snippets/${path}.liquid&apiKey=${publicKey}`,
+              { headers }
+            )
+              .then(res => res.json())
+              .then(res => res.asset)
+              .catch(err => {
+                console.warn('Could not get section', err, template);
+                return null;
+              });
+
+            if (currentAsset && currentAsset.value) {
+              html += await parsedLiquidToHtml(
+                await liquidToAst(currentAsset.value, options),
+                options
+              );
+            }
+          }
+        }
+      }
+
       // It's a block
-      html += `<liquid name="${(template as any).name}" args="${(template as any).token.args}">${
-        await parsedLiquidToHtml((template as any).impl.templates || [])
-      }</liquid>`
+      html += `<liquid name="${name}" args="${args}">${await parsedLiquidToHtml(
+        (template as any).impl.templates || [],
+        options
+      )}</liquid>`;
     }
   }
 
@@ -184,7 +260,7 @@ export const htmlNodeToBuilder = async (
   node: compiler.ASTNode,
   index: number,
   parentArray: compiler.ASTNode[],
-  options?: LiquidToBuilderOptions
+  options: LiquidToBuilderOptions
 ): Promise<BuilderElement | null> => {
   // TODO: if and for and form and section and assign
   if (isElement(node)) {
@@ -277,6 +353,9 @@ export const htmlNodeToBuilder = async (
       queuedBinding = null;
     }
 
+    const parsedThisQueuedBinding: any =
+      thisQueuedBinding && attempt(JSON.parse(thisQueuedBinding.value));
+
     // TODO: classname, etc
     const block = el({
       tagName: 'span',
@@ -301,10 +380,10 @@ export const htmlNodeToBuilder = async (
       } as { [key: string]: string },
       ...(thisQueuedBinding &&
         thisQueuedBinding.name === 'for' &&
-        parsedOutput && {
+        !isError(parsedThisQueuedBinding) && {
           repeat: {
-            itemName: parsedOutput.variable,
-            collection: parsedOutput.collection,
+            itemName: parsedThisQueuedBinding.variable,
+            collection: parsedThisQueuedBinding.collection,
           },
         }),
       component: {
@@ -364,25 +443,58 @@ const getTranslation = async (parsedValue: any, options: LiquidToBuilderOptions 
 export const liquidToAst = (str: string, options: LiquidToBuilderOptions = {}) => {
   const engine = new Liquid();
 
-  const tags = [
-    'section',
-    'form',
-    'echo',
-    'layout',
-    'liquid',
-    'paginate',
-    'render',
-    'style',
-    'include',
-    'raw',
-  ];
-  tags.forEach(tag => {
+  // TODO: handle other tags
+  const selfCloseTags = ['section', 'render', 'include', 'echo', 'liquid', 'layout'];
+
+  selfCloseTags.forEach(tag => {
     engine.registerTag(tag, {
       parse: function(token, remainTokens) {
         this.remainTokens = remainTokens;
         this.templates = [];
-        this.type = 'block'
-        this.name = tag
+        this.type = 'block';
+        this.blockType = 'selfClose';
+        this.name = tag;
+        this.args = token.args;
+      },
+      render: () => null,
+    });
+  });
+
+  const nonLiquidBlockTags = ['style', 'stylesheet', 'javascript', 'schema'];
+  nonLiquidBlockTags.forEach(tag => {
+    engine.registerTag(tag, {
+      parse: function(token, remainTokens) {
+        this.remainTokens = remainTokens;
+        this.tokens = [];
+        this.type = 'block';
+        this.blockType = 'nonLiquidBlock';
+        this.name = tag;
+        this.args = token.args;
+
+        this.tokens = [];
+        const stream = this.liquid.parser.parseStream(remainTokens);
+        stream
+          .on('token', token => {
+            if ((token as any).name === 'end' + tag) stream.stop();
+            else this.tokens.push(token);
+          })
+          .on('end', () => {
+            throw new Error(`tag ${token.raw} not closed`);
+          });
+        stream.start();
+      },
+      render: () => null,
+    });
+  });
+
+  const blockTags = ['form', 'paginate', 'style', 'schema'];
+  blockTags.forEach(tag => {
+    engine.registerTag(tag, {
+      parse: function(token, remainTokens) {
+        this.remainTokens = remainTokens;
+        this.templates = [];
+        this.type = 'block';
+        this.name = tag;
         this.args = token.args;
 
         const stream: ParseStream = this.liquid.parser
@@ -390,7 +502,7 @@ export const liquidToAst = (str: string, options: LiquidToBuilderOptions = {}) =
           .on('tag:end' + tag, () => stream.stop())
           .on('template', (tpl: ITemplate) => this.templates.push(tpl))
           .on('end', () => {
-            stream.stop();
+            throw new Error(`tag ${token.raw} not closed`);
           });
 
         stream.start();
@@ -409,7 +521,7 @@ export const htmlToAst = (html: string) => {
 
 export const htmlAstToBuilder = async (
   nodes: compiler.ASTNode[],
-  options?: LiquidToBuilderOptions
+  options: LiquidToBuilderOptions
 ): Promise<BuilderElement[]> => {
   // TODO: need to pass through index and array so can see if before/after is for, etc
   return compact(
@@ -436,7 +548,7 @@ export const liquidToBuilder = async (liquid: string, options: LiquidToBuilderOp
   if (options.log) {
     console.log('liquidToBuilder: parsed liquid', parsedTemplateItems);
   }
-  const html = await parsedLiquidToHtml(parsedTemplateItems);
+  const html = await parsedLiquidToHtml(parsedTemplateItems, options);
   if (options.log) {
     console.log('liquidToBuilder: html', { html });
   }
