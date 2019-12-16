@@ -22,8 +22,5 @@
     "release:prerelease:dev": "npm run build && lerna version prerelease --yes && lerna run build:unpkg:dist --no-private && lerna publish from-package --dist-tag dev --yes",
     "release:dev": "npm run release:prerelease:dev"
   },
-  "dependencies": {
-    "@types/react-cropper": "^0.10.7",
-    "react-cropper": "^1.3.0"
-  }
+  "dependencies": {}
 }
