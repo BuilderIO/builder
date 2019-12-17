@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/webcomponents",
-  "version": "1.0.123-alpha.7",
+  "version": "1.0.123",
   "description": "",
   "keywords": [],
   "main": "./dist/builder-webcomponents.umd.js",
@@ -96,6 +96,7 @@
   "devDependencies": {
     "@commitlint/cli": "^8.2.0",
     "@commitlint/config-conventional": "^8.2.0",
+    "@rollup/plugin-alias": "^2.2.0",
     "@types/fs-extra-promise": "^1.0.7",
     "@types/jest": "^24.0.23",
     "@types/node": "^12.12.17",
@@ -128,6 +129,7 @@
     "rollup-plugin-sourcemaps": "^0.4.2",
     "rollup-plugin-typescript2": "^0.25.3",
     "rollup-plugin-uglify": "^6.0.1",
+    "rollup-plugin-visualizer": "^3.3.0",
     "semantic-release": "^15.13.3",
     "systemjs": "^6.1.7",
     "ts-jest": "^24.2.0",
@@ -136,21 +138,19 @@
     "tslint-config-prettier": "^1.18.0",
     "tslint-config-standard": "^9.0.0",
     "typedoc": "^0.15.4",
-    "typescript": "^3.7.3",
-    "@rollup/plugin-alias": "^2.2.0",
-    "rollup-plugin-visualizer": "^3.3.0"
+    "typescript": "^3.7.3"
   },
   "optionalDependencies": {
-    "@builder.io/email": "^1.0.105-alpha.0",
+    "@builder.io/email": "^1.0.105",
     "@webcomponents/custom-elements": "^1.2.1",
     "es6-promise": "^4.2.5"
   },
   "//": "TODO: make all of these optional dependencies, simple mode doesn't require",
   "dependencies": {
-    "@builder.io/react": "^1.0.105-alpha.0",
-    "@builder.io/sdk": "^1.0.55-alpha.0",
-    "@builder.io/shopify": "^1.1.36-alpha.0",
-    "@builder.io/widgets": "^1.0.100-alpha.0",
+    "@builder.io/react": "^1.0.105",
+    "@builder.io/sdk": "^1.0.55",
+    "@builder.io/shopify": "^1.1.36",
+    "@builder.io/widgets": "^1.0.100",
     "@emotion/core": "^10.0.22",
     "preact": "^10.1.0",
     "preact-compat": "^3.19.0",
