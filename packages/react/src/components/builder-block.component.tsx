@@ -118,17 +118,20 @@ interface BuilderBlockState {
   state: any
   rootState: any
   update: Function
-  hasError?: boolean
 }
 
 export class BuilderBlock extends React.Component<
   BuilderBlockProps,
-  BuilderBlockState
+  { hasError: boolean }
 > {
   private ref: any
   private _asyncRequests?: RequestOrPromise[]
   private _errors?: Error[]
   private _logs?: string[]
+
+  state = {
+    hasError: false
+  }
 
   private privateState: BuilderBlockState = {
     state: {},
