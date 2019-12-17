@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "moduleResolution": "node",
+    "jsx": "react",
     "target": "es5",
     "module": "esnext",
     "lib": ["es5", "dom", "es2015.promise"],
