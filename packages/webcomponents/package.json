@@ -140,7 +140,6 @@
   },
   "optionalDependencies": {
     "@builder.io/email": "^1.0.105-alpha.0",
-    "@builder.io/widgets": "^1.0.99",
     "@webcomponents/custom-elements": "^1.2.1",
     "es6-promise": "^4.2.5"
   },
@@ -149,6 +148,9 @@
     "@builder.io/react": "^1.0.105-alpha.0",
     "@builder.io/sdk": "^1.0.55-alpha.0",
     "@builder.io/shopify": "^1.1.36-alpha.0",
+    "@builder.io/widgets": "^1.0.99",
+    "@emotion/core": "^10.0.22",
+    "@rollup/plugin-alias": "^2.2.0",
     "preact": "^10.1.0",
     "preact-compat": "^3.19.0",
     "preact-context": "^1.1.3",

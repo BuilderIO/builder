@@ -5,7 +5,8 @@ import typescript from 'rollup-plugin-typescript2'
 import json from 'rollup-plugin-json'
 import { uglify } from 'rollup-plugin-uglify'
 import replace from 'rollup-plugin-replace'
-import alias from 'rollup-plugin-alias'
+// import alias from 'rollup-plugin-alias'
+import alias from '@rollup/plugin-alias'
 import serve from 'rollup-plugin-serve'
 import * as path from 'path'
 import visualizer from 'rollup-plugin-visualizer'
@@ -41,10 +42,17 @@ const options = {
     }),
     json(),
     alias({
-      react: path.resolve('./node_modules/preact/compat/dist/compat.module.js'),
-      'react-dom': path.resolve(
-        './node_modules/preact/compat/dist/compat.module.js'
-      )
+      entries: {
+        react: path.resolve(
+          './node_modules/preact/compat/dist/compat.module.js'
+        ),
+        'react-dom': path.resolve(
+          './node_modules/preact/compat/dist/compat.module.js'
+        ),
+        '@emotion/core': path.resolve(
+          './node_modules/@emotion/core/dist/core.browser.esm.js'
+        )
+      }
     }),
     // Compile TypeScript files
     typescript({ useTsconfigDeclarationDir: true }),
