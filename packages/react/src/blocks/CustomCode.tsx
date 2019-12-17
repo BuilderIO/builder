@@ -9,13 +9,14 @@ interface Props {
   replaceNodes?: boolean
 }
 
-// TODO: settings context to pass this down
+// TODO: settings context to pass this down. do in shopify-specific generated code
 const globalReplaceNodes =
   (Builder.isBrowser &&
-    location.host !== 'thenewpaper.co' &&
+    location.host === 'heybloomwell.com' &&
     ({} as { [key: string]: Element })) ||
   null
 
+// TODO: take index into account...
 if (globalReplaceNodes) {
   console.debug('Replace nodes')
   try {
