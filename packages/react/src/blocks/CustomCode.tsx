@@ -11,7 +11,10 @@ interface Props {
 
 // TODO: settings context to pass this down
 const globalReplaceNodes =
-  (Builder.isBrowser && ({} as { [key: string]: Element })) || null
+  (Builder.isBrowser &&
+    location.host !== 'thenewpaper.co' &&
+    ({} as { [key: string]: Element })) ||
+  null
 
 if (globalReplaceNodes) {
   console.debug('Replace nodes')
