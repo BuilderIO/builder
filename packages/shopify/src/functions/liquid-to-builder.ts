@@ -289,7 +289,7 @@ export const htmlNodeToBuilder = async (
       try {
         return el(JSON.parse(htmlDecode(node.attrsMap.block)));
       } catch (err) {
-        console.error('Builder serialized block error', err);
+        console.error('Builder serialized block error', err, '\n\nin:', node.attrsMap.block);
         return el({
           component: {
             name: 'Text',
