@@ -42,10 +42,7 @@ class CustomCodeComponent extends React.Component<Props> {
   constructor(props: Props) {
     super(props)
 
-    this.replaceNodes =
-      props.replaceNodes ||
-      (Builder.isBrowser &&
-        location.href.includes('builder.customCodeRefs=true'))
+    this.replaceNodes = props.replaceNodes || !!globalReplaceNodes
 
     if (
       this.replaceNodes &&
