@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "jsx": "react",
     "target": "es5",
     "outDir": "dist",
     "module": "esnext",
@@ -14,5 +15,5 @@
     "allowSyntheticDefaultImports": true,
     "typeRoots": ["./node_modules/@types"]
   },
-  "include": ["./index.ts", "./src/**/*.ts", "./types.d.ts", "./test/**/*.ts"]
+  "include": ["./index.ts", "./src/**/*.ts", "./types.d.ts", "./test/**/*.ts", "./js/**/*.ts", "./react/**/*.ts"]
 }

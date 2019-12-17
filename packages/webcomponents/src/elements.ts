@@ -1,6 +1,7 @@
 import { GetContentOptions, Builder, builder } from '@builder.io/sdk'
 
 const importReact = () => import('@builder.io/react')
+const importShopify = () => import('@builder.io/shopify/react')
 const importWidgets = () => import('@builder.io/widgets')
 
 const componentName = process.env.ANGULAR
@@ -10,6 +11,7 @@ const componentName = process.env.ANGULAR
 if (Builder.isIframe) {
   importReact()
   importWidgets()
+  importShopify()
   import('@builder.io/email')
 }
 
@@ -315,6 +317,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
 
       const getReactPromise = importReact() // TODO: only import what needed based on what comes back
       const getWidgetsPromise = importWidgets()
+      const getShopifyPromise = importShopify()
 
       let emailPromise: Promise<any> | null = null
       if (name === 'email') {
@@ -329,7 +332,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
         (Builder.isIframe && (!builder.apiKey || builder.apiKey === 'DEMO'))
       ) {
         const { BuilderPage } = await getReactPromise
-        await getWidgetsPromise
+        await Promise.all([getWidgetsPromise, getShopifyPromise as any])
         // Ensure styles don't load twice
         BuilderPage.renderInto(
           this,
@@ -371,7 +374,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
             }
 
             const { BuilderPage } = await getReactPromise
-            await getWidgetsPromise
+            await Promise.all([getWidgetsPromise, getShopifyPromise as any])
             if (emailPromise) {
               await emailPromise
             }
@@ -420,7 +423,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
           async (error: any) => {
             if (Builder.isEditing) {
               const { BuilderPage } = await getReactPromise
-              await getWidgetsPromise
+              await Promise.all([getWidgetsPromise, getShopifyPromise as any])
               if (emailPromise) {
                 await emailPromise
               }

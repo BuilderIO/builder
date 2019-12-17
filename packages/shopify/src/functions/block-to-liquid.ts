@@ -30,6 +30,15 @@ const escaleHtml = (str: string) => str.replace(/'/g, '&apos;').replace(/"/g, '&
 const convertBinding = (binding: string, options: Options) => {
   let value = binding;
 
+  if (value.replace(/\s/g, '').includes('shopify.liquid')) {
+    // TODO: handle escaped \" don't cutoff the string hm or encode it... __QUOT__ or so
+    // state.shopify.liquid.get('...') -> ...
+    value = value.replace(
+      /state\s*\.\s*shopify\s*\.\s*liquid\s*\.\s*get\s*\(\s*"([^"]+)"\s*\)/g,
+      '$1'
+    );
+  }
+
   if (options.convertShopifyBindings !== false) {
     // TODO: causing issue sdoing this here,need to do in TS transforms or after ts transform
     if (value.match(/images\[\d+\]\.src/)) {

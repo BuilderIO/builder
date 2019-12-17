@@ -8,7 +8,7 @@ export { BuilderBlock as BuilderBlockComponent } from './components/builder-bloc
 export { BuilderContent } from './components/builder-content.component'
 import { BuilderPage } from './components/builder-page.component'
 export { BuilderSimpleComponent } from './components/builder-simple.component'
-export { BuilderStoreContext } from './store/builder-store'
+export { BuilderStoreContext, BuilderStore } from './store/builder-store'
 export { BuilderMetaContext } from './store/builder-meta'
 export { BuilderAsyncRequestsContext } from './store/builder-async-requests'
 export { BuilderBlock } from './decorators/builder-block.decorator'
