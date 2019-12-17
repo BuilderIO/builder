@@ -147,7 +147,6 @@ export interface GetContentOptions {
   offset?: number;
   initialContent?: any;
   model?: string;
-  // TODO: more caching options like max age etc
   cache?: boolean;
   preview?: boolean;
   entry?: string;
