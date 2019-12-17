@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/shopify",
-  "version": "1.1.32",
+  "version": "1.1.33",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "repository": {
