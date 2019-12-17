@@ -174,7 +174,7 @@ export class BuilderComponentComponent implements OnDestroy {
     }
     const script = document.createElement('script');
 
-    const wcVersion = getQueryParam('builder.wcVersion');
+    const wcVersion = getQueryParam(location.href, 'builder.wcVersion');
     script.id = SCRIPT_ID;
     // TODO: detect builder.wcVersion and if customEleemnts exists and do
     // dynamic versions and lite here
