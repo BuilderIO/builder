@@ -13,7 +13,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { parse } from 'url';
 import { BuilderComponentService } from './builder-component.service';
 import { GetContentOptions, Builder } from '@builder.io/sdk';
-import { Subscription } from 'rxjs';
+import { Subscription, BehaviorSubject } from 'rxjs';
 import { BuilderService } from '../../services/builder.service';
 
 function omit<T extends object>(obj: T, ...values: (keyof T)[]): Partial<T> {
@@ -80,16 +80,18 @@ export class BuilderComponentComponent implements OnDestroy {
 
   subscriptions = new Subscription();
 
+  visible = new BehaviorSubject(true);
+
   constructor(
     private viewContainer: ViewContainerRef,
     private elementRef: ElementRef,
     private builderService: BuilderService,
     @Optional() private router?: Router
   ) {
-    // if (this.router && this.reloadOnRoute) {
-    //   // TODO: should the inner function return reloadOnRoute?
-    //   this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    // }
+    if (this.router && this.reloadOnRoute) {
+      // TODO: should the inner function return reloadOnRoute?
+      this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    }
 
     if (Builder.isBrowser) {
       if (this.router) {
@@ -99,21 +101,22 @@ export class BuilderComponentComponent implements OnDestroy {
               const { BuilderWC } = window as any;
               if (this.reloadOnRoute) {
                 if (BuilderWC && wcScriptInserted && this.hydrate) {
-                  if (
-                    this.elementRef &&
-                    this.elementRef.nativeElement &&
-                    this.elementRef.nativeElement.getContent
-                  ) {
+                  let useEl = this.elementRef && this.elementRef.nativeElement;
+                  if (useEl && useEl.querySelector('builder-component-element')) {
+                    useEl = useEl.querySelector('builder-component-element');
+                  }
+
+                  if (useEl && useEl.getContent) {
                     BuilderWC.builder.setUserAttributes(
                       omit(this.builderService.getUserAttributes(), 'urlPath')
                     );
                     // TODO: set other options based on inputs to this - options and and data
-                    this.elementRef.nativeElement.setAttribute('name', this.model);
-                    this.elementRef.nativeElement.setAttribute(
+                    useEl.setAttribute('name', this.model);
+                    useEl.setAttribute(
                       'key',
                       this.model + ':' + builderService.getUserAttributes().urlPath
                     );
-                    this.elementRef.nativeElement.getContent(true);
+                    useEl.getContent(true);
                   }
                 } else {
                   // TODO: reload this component or force BuilderContentComponent to refresh data

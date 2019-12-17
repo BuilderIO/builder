@@ -51,6 +51,12 @@ const options = {
         ),
         '@emotion/core': path.resolve(
           './node_modules/@emotion/core/dist/core.browser.esm.js'
+        ),
+        '@builder.io/react': path.resolve(
+          './node_modules/@builder.io/react/dist/builder-react.es5.js'
+        ),
+        '@builder.io/sdk': path.resolve(
+          './node_modules/@builder.io/sdk/dist/index.esm.js'
         )
       }
     }),

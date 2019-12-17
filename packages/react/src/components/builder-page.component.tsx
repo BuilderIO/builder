@@ -104,6 +104,7 @@ interface BuilderPageState {
   state: any
   update: (state: any) => any
   updates: number
+  key: number
 }
 
 const tryEval = (str?: string, data: any = {}, errors?: Error[]): any => {
@@ -236,7 +237,7 @@ export class BuilderPage extends React.Component<
   private _logs?: string[]
 
   get element() {
-    return this.ref;
+    return this.ref
   }
 
   constructor(props: BuilderPageProps) {
@@ -261,6 +262,7 @@ export class BuilderPage extends React.Component<
         ...props.data
       }),
       updates: 0,
+      key: 0,
       update: this.updateState
     }
 
@@ -388,7 +390,8 @@ export class BuilderPage extends React.Component<
   static renderInto(
     elementOrSelector: string | HTMLElement,
     props: BuilderPageProps = {},
-    hydrate = true
+    hydrate = true,
+    fresh = false
   ) {
     console.debug(
       'BuilderPage.renderInto',
@@ -406,7 +409,8 @@ export class BuilderPage extends React.Component<
       return
     }
 
-    if (element.classList.contains('builder-hydrated')) {
+    const exists = element.classList.contains('builder-hydrated')
+    if (exists && !fresh) {
       console.debug('Tried to hydrate multiple times')
       return
     }
@@ -459,9 +463,14 @@ export class BuilderPage extends React.Component<
     if (location.search.includes('builder.debug=true')) {
       console.debug('hydrate', shouldHydrate, element)
     }
-    const div = document.createElement('div')
-    element.insertAdjacentElement('beforebegin', div)
-    div.appendChild(element)
+
+    let useEl = element
+    if (!exists) {
+      const div = document.createElement('div')
+      element.insertAdjacentElement('beforebegin', div)
+      div.appendChild(element)
+      useEl = div
+    }
 
     if (
       Builder.isEditing ||
@@ -470,9 +479,22 @@ export class BuilderPage extends React.Component<
       shouldHydrate = false
     }
     if (shouldHydrate && element) {
-      return ReactDOM.render(<BuilderPage {...props} />, div)
+      // TODO: maybe hydrate again. Maybe...
+      const val = ReactDOM.render(
+        <BuilderPage {...props} />,
+        useEl,
+        (useEl as any).builderRootRef
+      )
+      ;(useEl as any).builderRootRef = val
+      return val
     }
-    return ReactDOM.render(<BuilderPage {...props} />, div)
+    const val = ReactDOM.render(
+      <BuilderPage {...props} />,
+      useEl,
+      (useEl as any).builderRootRef
+    )
+    ;(useEl as any).builderRootRef = val
+    return val
   }
 
   mounted = false
@@ -526,6 +548,7 @@ export class BuilderPage extends React.Component<
       })
     } else {
       this.state = {
+        ...this.state,
         update: this.updateState,
         state,
         updates: ((this.state && this.state.updates) || 0) + 1
@@ -694,6 +717,12 @@ export class BuilderPage extends React.Component<
     }
   }
 
+  reload() {
+    this.setState({
+      key: this.state.key + 1
+    })
+  }
+
   render() {
     let { content } = this.props
     if (content && content.content) {
@@ -718,6 +747,7 @@ export class BuilderPage extends React.Component<
       <WrapComponent
         className="builder-component"
         data-name={this.name}
+        key={this.state.key}
         ref={ref => (this.ref = ref)}
       >
         <BuilderMetaContext.Consumer>
