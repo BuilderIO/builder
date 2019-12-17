@@ -354,7 +354,7 @@ export const htmlNodeToBuilder = async (
     }
 
     const parsedThisQueuedBinding: any =
-      thisQueuedBinding && attempt(JSON.parse(thisQueuedBinding.value));
+      thisQueuedBinding && attempt(() => JSON.parse(thisQueuedBinding!.value));
 
     // TODO: classname, etc
     const block = el({
