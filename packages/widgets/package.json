@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/widgets",
-  "version": "1.0.99",
+  "version": "1.0.100-alpha.0",
   "description": "",
   "keywords": [],
   "main": "dist/builder-widgets.cjs.js",
