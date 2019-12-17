@@ -9,12 +9,9 @@ interface Props {
   replaceNodes?: boolean
 }
 
+// TODO: settings context to pass this down
 const globalReplaceNodes =
-  (Builder.isBrowser &&
-    (location.href.includes('builder.customCodeRefs=true') ||
-      location.host.includes('bloomwell')) &&
-    ({} as { [key: string]: Element })) ||
-  null
+  (Builder.isBrowser && ({} as { [key: string]: Element })) || null
 
 if (globalReplaceNodes) {
   try {
