@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/webcomponents",
-  "version": "1.0.122",
+  "version": "1.0.123-alpha.0",
   "description": "",
   "keywords": [],
   "main": "./dist/builder-webcomponents.umd.js",
@@ -139,16 +139,16 @@
     "typescript": "^3.7.3"
   },
   "optionalDependencies": {
-    "@builder.io/email": "^1.0.104",
+    "@builder.io/email": "^1.0.105-alpha.0",
     "@builder.io/widgets": "^1.0.99",
     "@webcomponents/custom-elements": "^1.2.1",
     "es6-promise": "^4.2.5"
   },
   "//": "TODO: make all of these optional dependencies, simple mode doesn't require",
   "dependencies": {
-    "@builder.io/react": "^1.0.104",
-    "@builder.io/sdk": "^1.0.54",
-    "@builder.io/shopify": "^1.1.34",
+    "@builder.io/react": "^1.0.105-alpha.0",
+    "@builder.io/sdk": "^1.0.55-alpha.0",
+    "@builder.io/shopify": "^1.1.36-alpha.0",
     "preact": "^10.1.0",
     "preact-compat": "^3.19.0",
     "preact-context": "^1.1.3",
