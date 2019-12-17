@@ -15,5 +15,5 @@
     "allowSyntheticDefaultImports": true,
     "typeRoots": ["./node_modules/@types"]
   },
-  "include": ["./index.ts", "./src/**/*.ts", "./types.d.ts", "./test/**/*.ts", "./js/**/*.ts", "./react/**/*.ts"]
+  "include": ["./index.ts", "./src/**/*.ts", "./types.d.ts", "./test/**/*.ts", "./js/**/*.ts", "./react/**/*.ts", "./react/**/*.tsx"]
 }
