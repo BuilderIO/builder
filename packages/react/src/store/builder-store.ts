@@ -1,8 +1,15 @@
 import React from 'react'
 
-export const BuilderStoreContext = React.createContext({
-  state: {} as any,
-  rootState: {} as any,
-  content: {} as any,
-  update: (mutator: (state: any) => any) => null as any
+export const BuilderStoreContext = React.createContext<BuilderStore>({
+  state: {},
+  rootState: {},
+  content: {},
+  update: (mutator: (state: any) => any) => null
 })
+
+export interface BuilderStore {
+  state: any
+  rootState: any
+  content: any
+  update: (mutator: (state: any) => any) => any
+}

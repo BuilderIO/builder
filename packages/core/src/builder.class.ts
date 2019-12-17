@@ -385,6 +385,12 @@ export class Builder {
   }
 
   // static registerComponent(...) { .. }
+  static registerComponent(component: any, options: Component) {
+    this.addComponent({ 
+      class: component,
+      ...options
+    })
+  }
 
   private static addComponent(component: Component) {
     const current = find(this.components, item => item.name === component.name);

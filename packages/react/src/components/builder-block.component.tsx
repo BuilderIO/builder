@@ -480,11 +480,12 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
                       // componet input "attributes"
                       attributes={finalOptions}
                       builderBlock={block}
+                      builderState={this.state}
                     />
                   ) : (
                     <TagName {...finalOptions as any}>
                       {InnerComponent && (
-                        <InnerComponent builderBlock={block} {...innerComponentProperties} />
+                        <InnerComponent builderState={this.state} builderBlock={block} {...innerComponentProperties} />
                       )}
                       {(block as any).text || options.text ? (
                         // TODO: remove me! No longer in use (maybe with rich text will be back tho)

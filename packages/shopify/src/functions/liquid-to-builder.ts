@@ -69,6 +69,9 @@ interface BlockTemplate extends ITemplate {
   };
 }
 
+const liquidBindingTemplate = (str: string) =>
+  `state.shopify.liquid.get("${str.replace(/"/g, '\\"')})")`;
+
 const isIfTemplate = (template: ITemplate): template is IfTemplate =>
   template.token.type === 'tag' && (template.token as any).name === 'if';
 const isForTemplate = (template: ITemplate): template is ForTemplate =>
@@ -138,7 +141,15 @@ export const parsedLiquidToHtml = async (
 
       const name = (template as any).name || '';
       const args = (template as any).token.args || '';
-      if (name === 'section') {
+      // TODO: JS, style
+      if (name === 'schema') {
+        // TODO: generic liquid component to add back liquid content
+        // TODO: serialize this to component can read from dom to { component: 'shopify:schema', optoins: { json: ... }}
+      } else if (name === 'javascript') {
+        // TODO: custom code block or special Shopify component
+      } else if (name === 'stylesheet') {
+        // TODO: custom code block or special Shopify component
+      } else if (name === 'section') {
         // Handle me...
         const matched = args.match(/['"]([^'"]+)['"]/);
         const path = matched && matched[1];
@@ -171,9 +182,7 @@ export const parsedLiquidToHtml = async (
             }
           }
         }
-      }
-      // TODO: add assign too
-      if (name === 'include') {
+      } else if (name === 'include') {
         // Handle me...
         const matched = args.match(/['"]([^'"]+)['"]/);
         const path = matched && matched[1];
@@ -206,13 +215,13 @@ export const parsedLiquidToHtml = async (
             }
           }
         }
+      } else {
+        // It's a block
+        html += `<liquid name="${name}" args="${args}">${await parsedLiquidToHtml(
+          (template as any).impl.templates || [],
+          options
+        )}</liquid>`;
       }
-
-      // It's a block
-      html += `<liquid name="${name}" args="${args}">${await parsedLiquidToHtml(
-        (template as any).impl.templates || [],
-        options
-      )}</liquid>`;
     }
   }
 
@@ -487,7 +496,7 @@ export const liquidToAst = (str: string, options: LiquidToBuilderOptions = {}) =
     });
   });
 
-  const blockTags = ['form', 'paginate', 'style', 'schema'];
+  const blockTags = ['form', 'paginate', 'schema'];
   blockTags.forEach(tag => {
     engine.registerTag(tag, {
       parse: function(token, remainTokens) {

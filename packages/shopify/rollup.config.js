@@ -12,6 +12,8 @@ const basicOptions = {
 
   context: 'window',
 
+  external: ['react', '@builder.io/react', '@builder.io/sdk'],
+
   plugins: [
     typescript({
       tsconfigOverride: {
@@ -27,47 +29,30 @@ const basicOptions = {
   ],
 };
 
-const umdOptions = {
+const clientOptions = {
   ...basicOptions,
+  input: './js/index.ts',
   output: [
     {
-      format: 'umd',
-      name: 'BuilderShopify',
-      file: 'dist/index.umd.js',
-      sourcemap: true,
-      amd: {
-        id: '@builder.io/shopify',
-      },
+      format: 'es',
+      file: 'js/index.js',
+      sourcemap: true
     },
   ],
   plugins: basicOptions.plugins.concat([resolve()]),
 };
 
-const umdMinOptions = {
-  ...umdOptions,
-  plugins: basicOptions.plugins.concat([resolve(), uglify()]),
-};
-
-const externalModuleOptions = {
+const reactOptions = {
   ...basicOptions,
+  input: './react/index.ts',
   output: [
     {
-      format: 'cjs',
-      file: pkg.main,
-      sourcemap: true,
-    },
-    {
       format: 'es',
-      file: pkg.module,
-      sourcemap: true,
+      file: 'react/index.js',
+      sourcemap: true
     },
   ],
-  external: Object.keys(pkg.dependencies || {}),
-  plugins: basicOptions.plugins.concat([
-    resolve({
-      only: [/^\.{0,2}\//],
-    }),
-  ]),
+  plugins: basicOptions.plugins.concat([resolve()]),
 };
 
-export default [umdOptions, umdMinOptions, externalModuleOptions];
+export default [clientOptions, reactOptions];
