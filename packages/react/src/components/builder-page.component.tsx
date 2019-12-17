@@ -243,15 +243,15 @@ export class BuilderPage extends React.Component<
     super(props)
 
     // TODO: pass this all the way down - symbols, etc
-    this.asServer = Boolean(props.hydrate && Builder.isBrowser)
+    // this.asServer = Boolean(props.hydrate && Builder.isBrowser)
 
     this.state = {
       state: Object.assign(this.rootState, {
         ...(this.props.content &&
           this.props.content.data &&
           this.props.content.data.state),
-        isBrowser: !this.asServer,
-        isServer: !this.asServer,
+        isBrowser: Builder.isBrowser, // !this.asServer,
+        isServer: !Builder.isBrowser, // this.asServer,
         _hydrate: props.hydrate,
         location: this.locationState,
         deviceSize: this.deviceSizeState,
