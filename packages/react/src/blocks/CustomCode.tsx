@@ -14,6 +14,7 @@ const globalReplaceNodes =
   (Builder.isBrowser && ({} as { [key: string]: Element })) || null
 
 if (globalReplaceNodes) {
+  console.debug('Replace nodes')
   try {
     document.querySelectorAll('.builder-custom-code').forEach(el => {
       const parent = el.parentElement
