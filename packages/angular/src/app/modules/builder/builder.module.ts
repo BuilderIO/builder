@@ -39,7 +39,7 @@ export class BuilderModule {
       }
     }
   }
-  public static forRoot(apiKey?: string): ModuleWithProviders {
+  public static forRoot(apiKey?: string): any {
     return {
       ngModule: BuilderModule,
       providers: [
