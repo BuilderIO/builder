@@ -70,7 +70,7 @@ interface BlockTemplate extends ITemplate {
 }
 
 const liquidBindingTemplate = (str: string) =>
-  `state.shopify.liquid.get("${str.replace(/"/g, '\\"')})")`;
+  `state.shopify.liquid.get("${str.replace(/"/g, '\\"')}")`;
 
 const isIfTemplate = (template: ITemplate): template is IfTemplate =>
   template.token.type === 'tag' && (template.token as any).name === 'if';
@@ -141,8 +141,20 @@ export const parsedLiquidToHtml = async (
 
       const name = (template as any).name || '';
       const args = (template as any).token.args || '';
-      // TODO: JS, style
-      if (name === 'schema') {
+
+      if (name === 'assign') {
+        const block = {
+          component: {
+            name: 'Shopify:Assign',
+            options: {
+              expression: args,
+            },
+          },
+        };
+        html += `<builder-serialized-block block='${htmlEncode(
+          JSON.stringify(block)
+        )}'></builder-serialized-block>`;
+      } else if (name === 'schema') {
         // TODO: generic liquid component to add back liquid content
         // TODO: serialize this to component can read from dom to { component: 'shopify:schema', optoins: { json: ... }}
       } else if (name === 'javascript') {
@@ -273,6 +285,22 @@ export const htmlNodeToBuilder = async (
 ): Promise<BuilderElement | null> => {
   // TODO: if and for and form and section and assign
   if (isElement(node)) {
+    if (node.tag === 'builder-serialized-block') {
+      try {
+        return el(JSON.parse(htmlDecode(node.attrsMap.block)));
+      } catch (err) {
+        console.error('Builder serialized block error', err);
+        return el({
+          component: {
+            name: 'Text',
+            options: {
+              text: `Builder serialized block error: ${String(err)}`,
+            },
+          },
+        });
+      }
+    }
+
     if (node.tag === 'builder-component') {
       return el({
         responsiveStyles: {
@@ -310,12 +338,13 @@ export const htmlNodeToBuilder = async (
         const parsed = parseTag(value);
         if (parsed && parsed.name === 'output') {
           const parsedValue = JSON.parse(parsed.value);
+          // TODO: proper parsing
           const translation = await getTranslation(parsedValue, options);
           const { initial } = parsedValue;
           if (translation != null) {
             properties[key] = translation;
           } else {
-            bindings[key] = initial.replace(/'/g, '');
+            bindings[key] = liquidBindingTemplate(initial);
           }
         } else {
           console.log('no match', parsed);
@@ -376,15 +405,15 @@ export const htmlNodeToBuilder = async (
       bindings: {
         ...(parsedOutput &&
           translation == null && {
-            ['component.options.text']: `${parsedOutput.initial.replace(/'/g, '')} || ''`, // TODO: process filters like | t,
+            ['component.options.text']: liquidBindingTemplate(parsedOutput.initial),
           }),
         ...(thisQueuedBinding &&
           thisQueuedBinding.name === 'if' && {
-            show: thisQueuedBinding.value,
+            show: liquidBindingTemplate(thisQueuedBinding.value),
           }),
         ...(thisQueuedBinding &&
           thisQueuedBinding.name === 'unless' && {
-            show: thisQueuedBinding.value,
+            show: liquidBindingTemplate(thisQueuedBinding.value),
           }),
       } as { [key: string]: string },
       ...(thisQueuedBinding &&
@@ -392,7 +421,7 @@ export const htmlNodeToBuilder = async (
         !isError(parsedThisQueuedBinding) && {
           repeat: {
             itemName: parsedThisQueuedBinding.variable,
-            collection: parsedThisQueuedBinding.collection,
+            collection: liquidBindingTemplate(parsedThisQueuedBinding.collection),
           },
         }),
       component: {

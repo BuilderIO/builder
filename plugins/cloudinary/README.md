@@ -7,7 +7,7 @@ See [here](src/CloudinaryImageEditor.tsx) for the React component that powers th
 ## Status
 
 Builder plugins are in beta. If you run into any issues or have questions please
-contact steve@builder.io for help
+contact help@builder.io for help
 
 ## Developing this plugin
 

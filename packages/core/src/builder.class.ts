@@ -1434,6 +1434,10 @@ export class Builder {
         if (options.format) {
           queryParams.format = options.format;
         }
+        // TODO: remove me and make permodel
+        if (options.static) {
+          queryParams.static = options.static;
+        }
 
         if (typeof options.cacheSeconds === 'number') {
           queryParams.cacheSeconds = options.cacheSeconds;

@@ -3,6 +3,7 @@ import typescript from 'rollup-plugin-typescript2';
 import commonjs from 'rollup-plugin-commonjs';
 import resolve from 'rollup-plugin-node-resolve';
 import json from 'rollup-plugin-json';
+import alias from 'rollup-plugin-alias';
 
 const basicOptions = {
   input: './index.ts',
@@ -17,13 +18,16 @@ const basicOptions = {
         compilerOptions: {
           // No need to type check and gen over and over, we do once at beggingn of builder with `tsc`
           declaration: false,
-          jsx: 'react'
+          jsx: 'react',
         },
       },
       tsconfig: join(__dirname, 'tsconfig.json'),
     }),
     json(),
     commonjs({}),
+    alias({
+      liquidjs: join(__dirname, './node_modules/liquidjs/dist/liquid.esm.js'),
+    }),
   ],
 };
 
