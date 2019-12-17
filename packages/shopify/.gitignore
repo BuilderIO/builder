@@ -3,3 +3,5 @@ node_modules
 *.log
 js/*.js
 js/*.js.map
+react/*.js
+react/*.js.map
