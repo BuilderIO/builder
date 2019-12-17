@@ -137,7 +137,7 @@
     "prop-types": "^15.7.2"
   },
   "peerDependencies": {
-    "@builder.io/react": "^1.0.98-alpha.17",
+    "@builder.io/react": "^1.0.104",
     "@emotion/core": "^10.0.17",
     "@emotion/styled": "^10.0.17",
     "react": ">=14",
