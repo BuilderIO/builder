@@ -69,7 +69,7 @@ function getCss(data: any) {
   return (data.cssCode || '') + (getFontCss(data) || '');
 }
 
-export const convertTemplateLiteralsToTags = (liquid: string, options: Options) => {
+export const convertTemplateLiteralsToTags = (liquid: string, options: Options = {}) => {
   let current = liquid;
   let latest = liquid;
   let updated = true;
@@ -118,7 +118,7 @@ export const convertTemplateLiteralsToTags = (liquid: string, options: Options) 
   return latest;
 };
 
-const liquidExpression = (expression: string, options: Options) => {
+const liquidExpression = (expression: string, options: Options = {}) => {
   if (options.convertShopifyBindings === false) {
     return unescapeHtml(expression);
   }
@@ -133,7 +133,7 @@ const liquidToHandlebars = (liquid: string) =>
     .replace(/{{\s*([^}]+?)\s*}}/g, "{{ liquid '$1' }}")
     .replace(/{%\s*([^}]+?)\s*%}/g, "{{ liquid-block '$1' }}");
 
-const handlebarsToLiquid = (handlebars: string, options: Options) =>
+const handlebarsToLiquid = (handlebars: string, options: Options = {}) =>
   convertTemplateLiteralsToTags(
     handlebars
       .replace(
