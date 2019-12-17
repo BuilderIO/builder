@@ -42,11 +42,11 @@ const clientOptions = {
 
 const reactOptions = {
   ...basicOptions,
-  input: './react/index.ts',
+  input: './react/react.ts',
   output: [
     {
       format: 'es',
-      file: 'react/index.js',
+      file: 'dist/react/bundle.esm.js',
       sourcemap: true,
     },
   ],
