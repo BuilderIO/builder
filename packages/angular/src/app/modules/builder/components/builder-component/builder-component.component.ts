@@ -95,7 +95,6 @@ export class BuilderComponentComponent implements OnDestroy {
       if (this.router) {
         this.subscriptions.add(
           this.router.events.subscribe(event => {
-            // TODO: this doesn't trigger
             if (event instanceof NavigationEnd) {
               const { BuilderWC } = window as any;
               if (this.reloadOnRoute) {
