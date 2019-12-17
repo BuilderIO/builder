@@ -251,6 +251,8 @@ class RouterComponent extends React.Component<RouterProps> {
       <BuilderStoreContext.Consumer>
         {state => {
           this.privateState = state
+          // TODO: useEffect based on this that fetches new data and
+          // populates as content={} param for fast updates
           const url =
             state.state &&
             state.state.location &&
