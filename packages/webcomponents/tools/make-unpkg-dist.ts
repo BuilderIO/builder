@@ -8,7 +8,7 @@ async function main() {
   ])
   // TODO: bootstrap script goes here... hmmm...
   // TODO: export basic builder stuff from here so people can use js, or System.import name it hmm
-  const newFileStr =
+  const newFileStr = (useAngular = false) =>
     `if (typeof window !== 'undefined' && !window.builderWebcomponentsLoaded) {\n` +
     [
       'window.builderWebcomponentsLoaded = true;',
@@ -46,13 +46,22 @@ async function main() {
           }
         };
       }
-      System.import(root + (root.indexOf('://localhost:') === -1 ? '@' + version : '') + '/dist/system/' + (useLite ? 'lite/' : '') + 'builder-webcomponents' + (useLite ? '-lite' : '') + '.js')
+      System.import(root + (root.indexOf('://localhost:') === -1 ? '@' + version : '') + '/dist/system/${
+        useAngular ? 'angular/' : ''
+      }' + (useLite ? 'lite/' : '') + 'builder-webcomponents' + (useLite ? '-lite' : '') + '.js')
     `.replace(/\s+/g, ' ')
     ].join(';') +
     `}`
 
   // May need to import to initialize: + ';System.import("...")'
-  await outputFileAsync('./dist/system/builder-webcomponents-async.js', newFileStr)
+  await outputFileAsync(
+    './dist/system/builder-webcomponents-async.js',
+    newFileStr()
+  )
+  await outputFileAsync(
+    './dist/system/angular/builder-webcomponents-async.js',
+    newFileStr(true)
+  )
 }
 
 main().catch(err => {

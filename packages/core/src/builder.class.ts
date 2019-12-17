@@ -1439,6 +1439,10 @@ export class Builder {
           queryParams.static = options.static;
         }
 
+        if (options.cachebust) {
+          queryParams.cachebust = options.cachebust;
+        }
+
         if (typeof options.cacheSeconds === 'number') {
           queryParams.cacheSeconds = options.cacheSeconds;
         }
