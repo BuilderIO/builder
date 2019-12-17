@@ -123,7 +123,7 @@ export class BuilderComponentComponent implements OnDestroy {
       this.subscriptions.add(
         this.load.subscribe(async (value: any) => {
           // Maybe move into builder contnet directive
-          if (value && value.data && value.data.needsHydration && this.hydrate !== false) {
+          if (value && value.data && this.hydrate !== false) {
             this.viewContainer.detach();
             if (this.reloadOnRoute) {
               this.elementRef.nativeElement.setAttribute(

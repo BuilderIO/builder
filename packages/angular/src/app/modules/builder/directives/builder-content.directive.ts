@@ -228,6 +228,9 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
       // TODO: cancel a request if one is pending... or set some kind of flag
       this.contentSubscription.unsubscribe();
     }
+
+    const hydrate = Builder.isBrowser && this.component && this.component.hydrate;
+
     const key = Builder.isEditing || !this.reloadOnRoute ? model : `${model}:${this.url}`;
     const subscription = (this.contentSubscription = this.builder
       .queueGetContent(model, {
@@ -235,6 +238,7 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
         key,
         ...options,
         prerender: true,
+        static: !hydrate,
       })
       .subscribe(
         (result: any[]) => {
@@ -274,15 +278,6 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
           }
 
           const rootNode = Builder.isBrowser && viewRef.rootNodes[0];
-          const hydrate =
-            Builder.isBrowser &&
-            rootNode &&
-            match &&
-            match.data &&
-            match.data.html &&
-            this.component &&
-            this.component.hydrate &&
-            match.data.needsHydration;
 
           if (Builder.isBrowser) {
             if (rootNode) {
@@ -294,7 +289,7 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
                 return;
               }
               setTimeout(() => {
-                if (hydrate) {
+                if (hydrate && rootNode && match && match.data && match.data.html) {
                   // TODO: hydrate with webcomponents... here instead of builder component wrapper?
                   // // TODO: two builder SDKs are loading...? external in react right?
                   // const subscription = this.builder

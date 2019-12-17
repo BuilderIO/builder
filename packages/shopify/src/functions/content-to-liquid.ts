@@ -144,7 +144,7 @@ const regexParse = (html: string) => {
   const cssSet = new Set();
   const newHtml = html.replace(/<style.*?>([\s\S]*?)<\/style>/g, (match, cssString) => {
     cssSet.add(cssString);
-    return '<style></style>';
+    return '';
   });
   return {
     css: Array.from(cssSet.values())
