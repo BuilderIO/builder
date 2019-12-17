@@ -98,22 +98,26 @@ export class BuilderComponentComponent implements OnDestroy {
             // TODO: this doesn't trigger
             if (event instanceof NavigationEnd) {
               const { BuilderWC } = window as any;
-              if (BuilderWC && this.reloadOnRoute && wcScriptInserted && this.hydrate) {
-                if (
-                  this.elementRef &&
-                  this.elementRef.nativeElement &&
-                  this.elementRef.nativeElement.getContent
-                ) {
-                  BuilderWC.builder.setUserAttributes(
-                    omit(this.builderService.getUserAttributes(), 'urlPath')
-                  );
-                  // TODO: set other options based on inputs to this - options and and data
-                  this.elementRef.nativeElement.setAttribute('name', this.model);
-                  this.elementRef.nativeElement.setAttribute(
-                    'key',
-                    this.model + ':' + builderService.getUserAttributes().urlPath
-                  );
-                  this.elementRef.nativeElement.getContent(true);
+              if (this.reloadOnRoute) {
+                if (BuilderWC && wcScriptInserted && this.hydrate) {
+                  if (
+                    this.elementRef &&
+                    this.elementRef.nativeElement &&
+                    this.elementRef.nativeElement.getContent
+                  ) {
+                    BuilderWC.builder.setUserAttributes(
+                      omit(this.builderService.getUserAttributes(), 'urlPath')
+                    );
+                    // TODO: set other options based on inputs to this - options and and data
+                    this.elementRef.nativeElement.setAttribute('name', this.model);
+                    this.elementRef.nativeElement.setAttribute(
+                      'key',
+                      this.model + ':' + builderService.getUserAttributes().urlPath
+                    );
+                    this.elementRef.nativeElement.getContent(true);
+                  }
+                } else {
+                  // TODO: reload this component or force BuilderContentComponent to refresh data
                 }
               }
             }
@@ -173,7 +177,8 @@ export class BuilderComponentComponent implements OnDestroy {
     script.id = SCRIPT_ID;
     // TODO: detect builder.wcVersion and if customEleemnts exists and do
     // dynamic versions and lite here
-    script.src = 'https://cdn.builder.io/js/webcomponents/dist/system/angular/builder-webcomponents.js';
+    script.src =
+      'https://cdn.builder.io/js/webcomponents/dist/system/angular/builder-webcomponents-async.js';
     script.async = true;
     wcScriptInserted = true;
     return new Promise((resolve, reject) => {
