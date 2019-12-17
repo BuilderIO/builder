@@ -1,7 +1,7 @@
 import { GetContentOptions, Builder, builder } from '@builder.io/sdk'
 
 const importReact = () => import('@builder.io/react')
-const importShopify = () => import('@builder.io/shopify/react')
+const importShopify = () => import('@builder.io/shopify/react/index.js')
 const importWidgets = () => import('@builder.io/widgets')
 
 const componentName = process.env.ANGULAR
