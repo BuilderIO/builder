@@ -11,7 +11,8 @@ interface Props {
 
 const globalReplaceNodes =
   (Builder.isBrowser &&
-    (location.href.includes('builder.customCodeRefs=true') || location.host === 'heybloomwell.com') &&
+    (location.href.includes('builder.customCodeRefs=true') ||
+      location.host.includes('bloomwell')) &&
     ({} as { [key: string]: Element })) ||
   null
 
@@ -45,15 +46,21 @@ class CustomCodeComponent extends React.Component<Props> {
 
     this.replaceNodes =
       props.replaceNodes ||
-      (Builder.isBrowser && location.href.includes('builder.customCodeRefs=true'))
+      (Builder.isBrowser &&
+        location.href.includes('builder.customCodeRefs=true'))
 
-    if (this.replaceNodes && Builder.isBrowser && this.firstLoad && this.props.builderBlock) {
+    if (
+      this.replaceNodes &&
+      Builder.isBrowser &&
+      this.firstLoad &&
+      this.props.builderBlock
+    ) {
       const id = this.props.builderBlock.id
       console.debug('Replace 1.1')
       if (id && globalReplaceNodes?.[id]) {
         const el = globalReplaceNodes[id]
-        this.originalRef = el;
-        delete globalReplaceNodes[id];
+        this.originalRef = el
+        delete globalReplaceNodes[id]
       } else {
         // How do if multiple...
         const existing = document.querySelectorAll(
@@ -119,9 +126,9 @@ class CustomCodeComponent extends React.Component<Props> {
       <div
         ref={ref => (this.elementRef = ref)}
         className="builder-custom-code"
-        {...!this.replaceNodes && {
+        {...(!this.replaceNodes && {
           dangerouslySetInnerHTML: { __html: this.props.code }
-        }}
+        })}
       />
     )
   }
