@@ -1,18 +1,22 @@
-<builder-content
-  [data]="data"
-  [hydrate]="hydrate"
-  [content]="content"
-  [options]="options"
-  (click)="onClick($event)"
-  (contentLoad)="load.next($event)"
-  (contentError)="error.next($event)"
-  *builderModel="model; let content; let loading = loading"
->
-  <builder-blocks
-    *ngIf="content"
-    field="blocks"
-    [model]="model"
-    [blocks]="content.blocks || content"
-  ></builder-blocks>
-  <ng-content *ngIf="loading"></ng-content>
-</builder-content>
+<span 
+  *ngIf="visible | async"
+  class="builder-component-wrap">
+  <builder-content
+    [data]="data"
+    [hydrate]="hydrate"
+    [content]="content"
+    [options]="options"
+    (click)="onClick($event)"
+    (contentLoad)="load.next($event)"
+    (contentError)="error.next($event)"
+    *builderModel="model; let content; let loading = loading"
+  >
+    <builder-blocks
+      *ngIf="content"
+      field="blocks"
+      [model]="model"
+      [blocks]="content.blocks || content"
+    ></builder-blocks>
+    <ng-content *ngIf="loading"></ng-content>
+  </builder-content>
+</span>

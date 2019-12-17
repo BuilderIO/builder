@@ -98,29 +98,12 @@ export class BuilderComponentComponent implements OnDestroy {
         this.subscriptions.add(
           this.router.events.subscribe(event => {
             if (event instanceof NavigationEnd) {
-              const { BuilderWC } = window as any;
               if (this.reloadOnRoute) {
-                if (BuilderWC && wcScriptInserted && this.hydrate) {
-                  let useEl = this.elementRef && this.elementRef.nativeElement;
-                  if (useEl && useEl.querySelector('builder-component-element')) {
-                    useEl = useEl.querySelector('builder-component-element');
-                  }
-
-                  if (useEl && useEl.getContent) {
-                    BuilderWC.builder.setUserAttributes(
-                      omit(this.builderService.getUserAttributes(), 'urlPath')
-                    );
-                    // TODO: set other options based on inputs to this - options and and data
-                    useEl.setAttribute('name', this.model);
-                    useEl.setAttribute(
-                      'key',
-                      this.model + ':' + builderService.getUserAttributes().urlPath
-                    );
-                    useEl.getContent(true);
-                  }
-                } else {
-                  // TODO: reload this component or force BuilderContentComponent to refresh data
-                }
+                // Force reload component
+                this.visible.next(false);
+                Builder.nextTick(() => {
+                  this.visible.next(true);
+                });
               }
             }
           })
@@ -131,13 +114,6 @@ export class BuilderComponentComponent implements OnDestroy {
           // Maybe move into builder contnet directive
           if (value && value.data && this.hydrate !== false) {
             this.viewContainer.detach();
-            if (this.reloadOnRoute) {
-              this.elementRef.nativeElement.setAttribute(
-                'key',
-                this.model + ':' + builderService.getUserAttributes().urlPath
-              );
-            }
-
             // TODO: load webcompoennts JS if not already
             // Forward user attributes and API key to WC Builder
             // (and listen on changes to attributes to edit)
