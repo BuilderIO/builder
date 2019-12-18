@@ -35,7 +35,9 @@
     "core-decorators": "^0.20.0",
     "fs-extra-promise": "^1.0.1",
     "jest": "^24.9.0",
+    "jest-cli": "^24.9.0",
     "jest-raw-loader": "^1.0.1",
+    "prettier": "^1.19.1",
     "react": "^16.12.0",
     "rollup": "^1.20.0",
     "rollup-plugin-alias": "^1.5.2",
@@ -48,7 +50,8 @@
     "rollup-plugin-typescript": "^1.0.1",
     "rollup-plugin-typescript2": "^0.22.1",
     "rollup-plugin-uglify": "^6.0.2",
-    "ts-jest": "^24.0.2"
+    "ts-jest": "^24.2.0",
+    "typescript": "^3.7.0-beta"
   },
   "dependencies": {
     "@builder.io/sdk": "^1.0.55",
@@ -63,9 +66,7 @@
     "liquidjs": "^9.6.0",
     "lodash": "^4.17.15",
     "node-fetch": "^2.6.0",
-    "prettier": "^1.18.2",
     "tslib": "^1.10.0",
-    "typescript": "3.7.0-beta",
     "vue-template-compiler": "^2.6.10"
   },
   "gitHead": "f233cba190317de3644fff198e765660205cd7f1"
