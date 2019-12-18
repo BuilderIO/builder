@@ -24,7 +24,6 @@ test('Playground', async () => {
   const ignoreKeys = new Set(['liquid', 'input']);
   await debugFile(
     'playground.json',
-  
     stringify(everything, (key, value) => (ignoreKeys.has(key) ? undefined : value), 2)
   );
   expect(blocks).toBeTruthy();

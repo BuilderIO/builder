@@ -103,10 +103,8 @@ export const parsedLiquidToHtml = async (
     if (isHtmlTemplate(template)) {
       html += template.str;
     } else if (isIfTemplate(template)) {
-      console.log('hi');
       await Promise.all(
         template.impl.branches.map(async (item, index) => {
-          console.log('eh');
           // TODO: unless
           if (index === 0) {
             // TODO: need another string replace, maybe tilda and put back
@@ -380,7 +378,6 @@ export const htmlNodeToBuilder = async (
     }
 
     const parsedOutput = parsed && parsed.name === 'output' && JSON.parse(parsed.value);
-    const parsedFor = parsed && parsed.name === 'for' && JSON.parse(parsed.value);
     const parsedValue = parsedOutput;
     const translation = await getTranslation(parsedValue, options);
     if (translation != null) {
@@ -400,21 +397,21 @@ export const htmlNodeToBuilder = async (
           translation == null && {
             ['component.options.text']: liquidBindingTemplate(parsedOutput.raw),
           }),
-        ...(parsed &&
-          parsed.name === 'if' && {
-            show: liquidBindingTemplate(parsed.value),
+        ...(parsedOutput &&
+          parsedOutput.name === 'if' && {
+            show: liquidBindingTemplate(parsedOutput.value),
           }),
-        ...(parsed &&
-          parsed.name === 'unless' && {
-            hide: liquidBindingTemplate(parsed.value),
+        ...(parsedOutput &&
+          parsedOutput.name === 'unless' && {
+            show: liquidBindingTemplate(parsedOutput.value),
           }),
       } as { [key: string]: string },
-      ...(parsed &&
-        parsed.name === 'for' &&
-        !isError(parsedFor) && {
+      ...(parsedOutput &&
+        parsedOutput.name === 'for' &&
+        !isError(parsedOutput) && {
           repeat: {
-            itemName: parsedFor.variable,
-            collection: liquidBindingTemplate(parsedFor.collection),
+            itemName: parsedOutput.variable,
+            collection: liquidBindingTemplate(parsedOutput.collection),
           },
         }),
       component: {

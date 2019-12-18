@@ -112,8 +112,8 @@ export class BuilderComponentComponent implements OnDestroy {
       this.subscriptions.add(
         this.load.subscribe(async (value: any) => {
           // Maybe move into builder contnet directive
-          if (value && value.data && this.hydrate !== false) {
-            this.viewContainer.detach();
+          this.viewContainer.detach();
+          if (Builder.isEditing || (value && value.data && this.hydrate !== false)) {
             // TODO: load webcompoennts JS if not already
             // Forward user attributes and API key to WC Builder
             // (and listen on changes to attributes to edit)
