@@ -2,8 +2,9 @@ module.exports = {
   roots: ['<rootDir>/src', '<rootDir>/test'],
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
-    "\\.liquid$": "jest-raw-loader",
+    '\\.liquid$': 'jest-raw-loader',
   },
+  watchPathIgnorePatterns: ['json'],
   testEnvironment: 'node',
   coverageThreshold: {
     global: {

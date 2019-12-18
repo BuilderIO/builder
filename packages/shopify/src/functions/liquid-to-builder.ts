@@ -283,6 +283,7 @@ export const htmlNodeToBuilder = async (
   parentArray: compiler.ASTNode[],
   options: LiquidToBuilderOptions
 ): Promise<BuilderElement | null> => {
+  
   // TODO: if and for and form and section and assign
   if (isElement(node)) {
     if (node.tag === 'builder-serialized-block') {
