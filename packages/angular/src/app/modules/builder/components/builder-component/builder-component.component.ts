@@ -111,12 +111,10 @@ export class BuilderComponentComponent implements OnDestroy {
       }
       this.subscriptions.add(
         this.load.subscribe(async (value: any) => {
-          // Maybe move into builder contnet directive
+          // TODO: this may run constantly when editing - check on this, not
+          // end of world but not ideal for perf
           this.viewContainer.detach();
           if (Builder.isEditing || (value && value.data && this.hydrate !== false)) {
-            // TODO: load webcompoennts JS if not already
-            // Forward user attributes and API key to WC Builder
-            // (and listen on changes to attributes to edit)
             await this.ensureWCScriptLoaded();
             const { onBuilderWcLoad } = window as any;
             if (onBuilderWcLoad) {
