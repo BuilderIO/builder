@@ -36,22 +36,22 @@ export class BuilderBlocksComponent implements OnInit {
     }
   }
 
-  @HostBinding('class.no-children')
+  // @HostBinding('class.no-children')
   get hasNoChildren() {
     return !(this.blocks && (this.blocks.length || this.blocks.html));
   }
 
-  @HostListener('click')
-  onClick() {
-    if (Builder.isIframe && this.hasNoChildren) {
-      window.parent.postMessage(
-        {
-          type: 'builder.clickEmptyBlocks',
-        },
-        '*'
-      );
-    }
-  }
+  // @HostListener('click')
+  // onClick() {
+  //   if (Builder.isIframe && this.hasNoChildren) {
+  //     window.parent.postMessage(
+  //       {
+  //         type: 'builder.clickEmptyBlocks',
+  //       },
+  //       '*'
+  //     );
+  //   }
+  // }
 
   get arrayBlocks() {
     return Array.isArray(this.blocks);
