@@ -287,7 +287,7 @@ export const htmlNodeToBuilder = async (
   if (isElement(node)) {
     if (node.tag === 'builder-serialized-block') {
       try {
-        return el(JSON.parse(htmlDecode(node.attrsMap.block)));
+        return el(JSON.parse(htmlDecode(node.attrsMap.block.replace(/"/g, '\\"'))));
       } catch (err) {
         console.error('Builder serialized block error', err, '\n\nin:', node.attrsMap.block);
         return el({

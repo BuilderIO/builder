@@ -14,12 +14,15 @@ import visualizer from 'rollup-plugin-visualizer'
 const pkg = require('./package.json')
 
 const SERVE = process.env.SERVE === 'true'
+const REACT = process.env.REACT === 'true'
+
 
 const port = process.env.PORT || 1267
 if (SERVE) {
   // Rollup clear console shortly after load and wipes this message,
   // so delay a sec so we can see it
   setTimeout(() => {
+    console.log('REACT?', REACT)
     console.log(`\n\nDev server listening on port ${port}...\n\n`)
   }, 10)
 }
@@ -38,7 +41,9 @@ const options = {
   plugins: [
     // Allow json resolution
     replace({
-      'process.env.NODE_ENV': JSON.stringify('production')
+      'process.env.NODE_ENV': JSON.stringify(
+        SERVE ? 'development' : 'production'
+      )
     }),
     json(),
     alias({
@@ -57,7 +62,17 @@ const options = {
         ),
         '@builder.io/sdk': path.resolve(
           './node_modules/@builder.io/sdk/dist/index.esm.js'
-        )
+        ),
+        ...(REACT
+          ? {
+              react: path.resolve(
+                './node_modules/react/cjs/react.development.js'
+              ),
+              'react-dom': path.resolve(
+                './node_modules/react-dom/cjs/react-dom.development.js'
+              )
+            }
+          : null)
       }
     }),
     // Compile TypeScript files
@@ -70,7 +85,7 @@ const options = {
       ignore: ['http', 'https', 'node-fetch'],
       exclude: ['node_modules/vm2/**'],
       namedExports: {
-        'node_modules/react/index.js': [
+        './node_modules/react/cjs/react.development.js': [
           'cloneElement',
           'createContext',
           'Component',
@@ -78,7 +93,10 @@ const options = {
           'forwardRef',
           'Fragment'
         ],
-        'node_modules/react-dom/index.js': ['render', 'hydrate'],
+        './node_modules/react-dom/cjs/react-dom.development.js': [
+          'render',
+          'hydrate'
+        ],
         'node_modules/react-is/index.js': [
           'isElement',
           'isValidElementType',
@@ -92,7 +110,6 @@ const options = {
           'forwardRef',
           'Fragment'
         ],
-        '../react/node_modules/react-dom/index.js': ['render', 'hydrate'],
         '../react/node_modules/react-is/index.js': [
           'isElement',
           'isValidElementType',
@@ -109,7 +126,8 @@ const options = {
             port,
             contentBase: '.',
             headers: {
-              'Access-Control-Allow-Origin': '*'
+              'Access-Control-Allow-Origin': '*',
+              'Cache-Control': 'no-cache'
             }
           })
         ]

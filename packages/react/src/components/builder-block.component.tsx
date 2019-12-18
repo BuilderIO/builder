@@ -1,18 +1,15 @@
 /** @jsx jsx */
-import { css, jsx, ClassNames } from '@emotion/core'
-
+import { Builder, builder, BuilderElement, Component } from '@builder.io/sdk'
+import { ClassNames, jsx } from '@emotion/core'
 import React from 'react'
-import { Builder, Component, BuilderElement, builder } from '@builder.io/sdk'
-import { sizeNames, Size, sizes } from '../constants/device-sizes.constant'
-import { BuilderStoreContext } from '../store/builder-store'
+import { Size, sizeNames, sizes } from '../constants/device-sizes.constant'
+import { set } from '../functions/set'
+import { api, stringToFunction } from '../functions/string-to-function'
 import {
   BuilderAsyncRequestsContext,
   RequestOrPromise
 } from '../store/builder-async-requests'
-import { stringToFunction, api } from '../functions/string-to-function'
-import { set } from '../functions/set'
-import { InsertSpacer } from './insert-spacer.component'
-import { updateQueryParam } from 'src/blocks/Image'
+import { BuilderStoreContext } from '../store/builder-store'
 
 const camelCaseToKebabCase = (str?: string) =>
   str ? str.replace(/([A-Z])/g, g => `-${g[0].toLowerCase()}`) : ''
@@ -534,13 +531,13 @@ export class BuilderBlock extends React.Component<
                       // componet input "attributes"
                       attributes={finalOptions}
                       builderBlock={block}
-                      builderState={this.state}
+                      builderState={this.privateState}
                     />
                   ) : (
                     <TagName {...(finalOptions as any)}>
                       {InnerComponent && (
                         <InnerComponent
-                          builderState={this.state}
+                          builderState={this.privateState}
                           builderBlock={block}
                           {...innerComponentProperties}
                         />
