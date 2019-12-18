@@ -100,10 +100,11 @@ export interface BuilderPageProps {
   hydrate?: boolean
 }
 
-interface BuilderPageState {
+export interface BuilderPageState {
   state: any
   update: (state: any) => any
   updates: number
+  context: any
   key: number
 }
 
@@ -247,6 +248,7 @@ export class BuilderPage extends React.Component<
     // this.asServer = Boolean(props.hydrate && Builder.isBrowser)
 
     this.state = {
+      context: {},
       state: Object.assign(this.rootState, {
         ...(this.props.content &&
           this.props.content.data &&
@@ -813,7 +815,7 @@ export class BuilderPage extends React.Component<
                                 ...this.state,
                                 rootState: this.rootState,
                                 state: this.data,
-                                content: fullData
+                                content: fullData,
                               }}
                             >
                               <BuilderBlocks
@@ -1076,8 +1078,9 @@ export class BuilderPage extends React.Component<
             'element',
             'Builder',
             'builder',
+            'context',
             data.jsCode
-          )(data, this, state, this.state.update, this.ref, Builder, builder)
+          )(data, this, state, this.state.update, this.ref, Builder, builder, this.state.context)
 
           // TODO: allow exports = { } syntax?
           // TODO: do something with reuslt like view - methods, computed, actions, properties, template, etc etc

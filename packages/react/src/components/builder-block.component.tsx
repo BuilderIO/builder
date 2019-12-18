@@ -114,6 +114,7 @@ function capitalize(str: string) {
 interface BuilderBlockState {
   state: any
   rootState: any
+  context: any
   update: Function
 }
 
@@ -133,6 +134,7 @@ export class BuilderBlock extends React.Component<
   private privateState: BuilderBlockState = {
     state: {},
     rootState: {},
+    context: {},
     update: () => {
       /* Intentionally empty */
     }
@@ -305,7 +307,8 @@ export class BuilderBlock extends React.Component<
                   builder,
                   null,
                   null,
-                  Builder
+                  Builder,
+                  this.privateState.context
                 )
               )
             }
@@ -379,7 +382,7 @@ export class BuilderBlock extends React.Component<
         set(
           options,
           key,
-          value(state, null, block, api(state), Device, null, Builder)
+          value(state, null, block, api(state), Device, null, Builder, this.privateState.context)
         )
       }
     }
@@ -418,7 +421,8 @@ export class BuilderBlock extends React.Component<
             api(useState),
             Device,
             this.privateState.update,
-            Builder
+            Builder,
+            this.privateState.context
           )
         }
       }
@@ -608,7 +612,10 @@ export class BuilderBlock extends React.Component<
         null,
         block,
         api(state),
-        Device
+        Device,
+        null,
+        Builder,
+        this.privateState.context
       )
       if (Array.isArray(array)) {
         return array.map((data, index) => {

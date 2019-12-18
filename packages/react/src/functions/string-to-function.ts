@@ -2,7 +2,7 @@ import { Builder, builder } from '@builder.io/sdk'
 import { sizes } from '../constants/device-sizes.constant'
 import { safeDynamicRequire } from './safe-dynamic-require'
 
-const fnCache: { [key: string]: Function } = {}
+const fnCache: { [key: string]: BuilderEvanFunction | undefined } = {}
 
 const sizeMap = {
   desktop: 'large',
@@ -10,53 +10,43 @@ const sizeMap = {
   mobile: 'small'
 }
 
-export const api = (state: any) => ({
-  // TODO: trigger animation
-  use: (value: any) => value,
-  useText: (value: any) => value,
-  useSwitch: (value: any) => value,
-  useNumber: (value: any) => value,
-  run: (cb: Function) => cb(),
-  return: (value: any) => value,
-  set: (name: string, value: any) => {
-    // need reference to state to set
-    state[name] = value
-  },
-  get: (name: string, value: any) => {
-    // need reference to state to set
-    return state[name]
-  },
-  get device() {
-    return Builder.isBrowser
-      ? ['large', 'medium', 'small'].indexOf(sizes.getSizeForWidth(window.innerWidth))
-      : // builder reference no good...? get mixed up across requests...? need to use context...?
-        sizeMap[builder.getUserAttributes().device!] || 'large'
-  },
-  deviceIs(device: number) {
-    return this.device === device
-  },
-  isBrowser: Builder.isBrowser
-})
+type BuilderEvanFunction = (
+  state: object,
+  event: Event | undefined | null,
+  block: any,
+  builder: Builder,
+  Device: any,
+  update: Function | null,
+  _Builder: typeof Builder,
+  context: object
+) => any
+
+export const api = (state: any) => builder
 
 export function stringToFunction(
   str: string,
   expression = true,
   errors?: Error[],
   logs?: string[]
-) {
+): BuilderEvanFunction {
+  /* TODO: objedct */
   if (!str || !str.trim()) {
     return () => undefined
   }
 
   const cacheKey = str + ':' + expression
   if (fnCache[cacheKey]) {
-    return fnCache[cacheKey]
+    return fnCache[cacheKey]!
   }
 
   // FIXME: gross hack
   const useReturn =
     (expression &&
-      !(str.includes(';') || str.includes(' return ') || str.trim().startsWith('return '))) ||
+      !(
+        str.includes(';') ||
+        str.includes(' return ') ||
+        str.trim().startsWith('return ')
+      )) ||
     str.trim().startsWith('builder.run')
   let fn: Function = () => {
     /* intentionally empty */
@@ -67,9 +57,12 @@ export function stringToFunction(
     .replace(/builder\s*\.\s*set([a-zA-Z]+)To\(/g, (_match, group: string) => {
       return `builder.set("${group[0].toLowerCase() + group.substring(1)}",`
     })
-    .replace(/builder\s*\.\s*get([a-zA-Z]+)\s*\(\s*\)/g, (_match, group: string) => {
-      return `state.${group[0].toLowerCase() + group.substring(1)}`
-    })
+    .replace(
+      /builder\s*\.\s*get([a-zA-Z]+)\s*\(\s*\)/g,
+      (_match, group: string) => {
+        return `state.${group[0].toLowerCase() + group.substring(1)}`
+      }
+    )
 
   try {
     // tslint:disable-next-line:no-function-constructor-with-string-args
@@ -83,6 +76,7 @@ export function stringToFunction(
         'Device',
         'update',
         'Builder',
+        'context',
         // TODO: remove the with () {} - make a page v3 that doesn't use this
         // Or only do if can't find state\s*\. anywhere hm
         `
@@ -109,6 +103,8 @@ export function stringToFunction(
               }
             });
           }
+          /* Alias */
+          var ctx = context;
           with (rootState) {
             ${useReturn ? `return (${str});` : str};
           }
