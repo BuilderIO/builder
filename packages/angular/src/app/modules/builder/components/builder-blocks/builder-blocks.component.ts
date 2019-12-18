@@ -70,12 +70,16 @@ export class BuilderBlocksComponent implements OnInit {
   }
 
   get _innerHtml() {
+    const elStr = !Builder.isEditing ? '' : `<builder-component-element ${
+      !this.model ? '' : `name="${this.model}"`
+    }></builder-component-element>`;
+
     if (this.arrayBlocks || !this.blocks) {
-      return '';
+      return elStr;
     }
 
     if (!this.blocks.html) {
-      return '';
+      return elStr;
     }
 
     const css = this.blocks.css;
@@ -84,8 +88,8 @@ export class BuilderBlocksComponent implements OnInit {
       html = `<style class="builder-styles">${css}</style>` + html;
     }
 
-    return `<builder-component-element ${!this.model ? '' : `name="${this.model}"`} ${
-      this.blocks.id ? `entry="${this.blocks.id}"` : ''
+    return `<builder-component-element ${
+      !this.model ? '' : `name="${this.model}"`
     }>${html as string}</builder-component-element>`;
   }
 
