@@ -118,7 +118,7 @@
     "prompt": "^1.0.0",
     "replace-in-file": "^3.0.0-beta.2",
     "rimraf": "^2.6.1",
-    "rollup": "^0.58.0",
+    "rollup": "^0.58.2",
     "rollup-plugin-alias": "^1.5.1",
     "rollup-plugin-commonjs": "^9.0.0",
     "rollup-plugin-json": "^3.0.0",
@@ -134,7 +134,7 @@
     "tslint-config-prettier": "^1.1.0",
     "tslint-config-standard": "^7.0.0",
     "typedoc": "^0.11.0",
-    "typescript": "3.7.0-beta",
+    "typescript": "^3.7.3",
     "validate-commit-msg": "^2.12.2"
   },
   "//": "TODO: maybe make @builder.io/sdk peerdependency",
