@@ -103,20 +103,23 @@ export const parsedLiquidToHtml = async (
     if (isHtmlTemplate(template)) {
       html += template.str;
     } else if (isIfTemplate(template)) {
-      template.impl.branches.forEach((item, index) => {
-        // TODO: unless
-        if (index === 0) {
-          // TODO: need another string replace, maybe tilda and put back
-          html += `[if]='${htmlEncode(item.cond)}'`;
-        } else {
-          html += `[else-if]='${htmlEncode(item.cond)}'`;
-
-          item.templates.forEach(tpl => processTemplate(tpl));
-        }
-      });
-      if (template.impl.elseTemplates) {
+      console.log('hi');
+      await Promise.all(
+        template.impl.branches.map(async (item, index) => {
+          console.log('eh');
+          // TODO: unless
+          if (index === 0) {
+            // TODO: need another string replace, maybe tilda and put back
+            html += `[if]='${htmlEncode(item.cond)}'`;
+          } else {
+            html += `[else-if]='${htmlEncode(item.cond)}'`;
+          }
+          await Promise.all(item.templates.map(tpl => processTemplate(tpl)));
+        })
+      );
+      if (template.impl.elseTemplates && template.impl.elseTemplates.length) {
         html += '[else]';
-        template.impl.elseTemplates.forEach(tpl => processTemplate(tpl));
+        await Promise.all(template.impl.elseTemplates.map(tpl => processTemplate(tpl)));
       }
       html += '[end-if]';
     } else if (isForTemplate(template)) {
@@ -128,14 +131,16 @@ export const parsedLiquidToHtml = async (
           liquid: undefined,
         })
       )}'`;
-      template.impl.templates.forEach(tpl => processTemplate(tpl));
+      await Promise.all(template.impl.templates.map(tpl => processTemplate(tpl)));
       if (template.impl.elseTemplates) {
         html += '[else]';
-        template.impl.elseTemplates.forEach(tpl => processTemplate(tpl));
+        await Promise.all(template.impl.elseTemplates.map(tpl => processTemplate(tpl)));
       }
       html += '[end-for]';
     } else if (isOutputTemplate(template)) {
-      html += `[output]='${htmlEncode(JSON.stringify(template.value))}'`;
+      html += `[output]='${htmlEncode(
+        JSON.stringify({ ...template.value, raw: template.token.value })
+      )}'`;
     } else {
       // TODO: preprocess liquid to expand forms, sections, etc OR do at html phase
 
@@ -283,7 +288,6 @@ export const htmlNodeToBuilder = async (
   parentArray: compiler.ASTNode[],
   options: LiquidToBuilderOptions
 ): Promise<BuilderElement | null> => {
-  
   // TODO: if and for and form and section and assign
   if (isElement(node)) {
     if (node.tag === 'builder-serialized-block') {
@@ -366,6 +370,9 @@ export const htmlNodeToBuilder = async (
   // TODO: parse for [data] for bindings
   if (isTextNode(node)) {
     let text = node.text;
+    if (!text.trim()) {
+      return null;
+    }
     let parsed: ParsedTag | null = null;
     if (hasTag(text)) {
       parsed = parseTag(text)!;
@@ -373,27 +380,12 @@ export const htmlNodeToBuilder = async (
     }
 
     const parsedOutput = parsed && parsed.name === 'output' && JSON.parse(parsed.value);
+    const parsedFor = parsed && parsed.name === 'for' && JSON.parse(parsed.value);
     const parsedValue = parsedOutput;
     const translation = await getTranslation(parsedValue, options);
     if (translation != null) {
       text = translation;
     }
-
-    if (parsed && ['if', 'for', 'unless'].includes(parsed.name)) {
-      queuedBinding = parsed;
-      return null;
-    }
-
-    let thisQueuedBinding: ParsedTag | null = null;
-
-    // TODO: handle multiple elements in the if
-    if (queuedBinding) {
-      thisQueuedBinding = queuedBinding;
-      queuedBinding = null;
-    }
-
-    const parsedThisQueuedBinding: any =
-      thisQueuedBinding && attempt(() => JSON.parse(thisQueuedBinding!.value));
 
     // TODO: classname, etc
     const block = el({
@@ -406,23 +398,23 @@ export const htmlNodeToBuilder = async (
       bindings: {
         ...(parsedOutput &&
           translation == null && {
-            ['component.options.text']: liquidBindingTemplate(parsedOutput.initial),
+            ['component.options.text']: liquidBindingTemplate(parsedOutput.raw),
           }),
-        ...(thisQueuedBinding &&
-          thisQueuedBinding.name === 'if' && {
-            show: liquidBindingTemplate(thisQueuedBinding.value),
+        ...(parsed &&
+          parsed.name === 'if' && {
+            show: liquidBindingTemplate(parsed.value),
           }),
-        ...(thisQueuedBinding &&
-          thisQueuedBinding.name === 'unless' && {
-            show: liquidBindingTemplate(thisQueuedBinding.value),
+        ...(parsed &&
+          parsed.name === 'unless' && {
+            hide: liquidBindingTemplate(parsed.value),
           }),
       } as { [key: string]: string },
-      ...(thisQueuedBinding &&
-        thisQueuedBinding.name === 'for' &&
-        !isError(parsedThisQueuedBinding) && {
+      ...(parsed &&
+        parsed.name === 'for' &&
+        !isError(parsedFor) && {
           repeat: {
-            itemName: parsedThisQueuedBinding.variable,
-            collection: liquidBindingTemplate(parsedThisQueuedBinding.collection),
+            itemName: parsedFor.variable,
+            collection: liquidBindingTemplate(parsedFor.collection),
           },
         }),
       component: {
