@@ -7,14 +7,37 @@ interface AssignBlockProps {
 }
 
 export class AssignBlock extends React.Component<AssignBlockProps> {
+  ran = false;
   constructor(props: AssignBlockProps) {
     super(props);
 
-    const { expression, builderState } = props;
+    if (!this.run()) {
+      // TODO: queueNextTick
+      // TODO: fix the state updates
+      setTimeout(() => this.run())
+    }
+  }
+
+  run() {
+    if (this.ran) {
+      return true;
+    }
+    const { expression, builderState } = this.props;
 
     if (expression && builderState) {
-      builderState.state.shopify?.liquid?.assign(expression);
+      if (builderState.state.shopify) {
+        builderState.state.shopify.liquid.assign(expression);
+        this.ran = true;
+        console.log('ran')
+        return true;
+      }
     }
+    console.log('not ran')
+    return false;
+  }
+
+  render() {
+    return null;
   }
 }
 

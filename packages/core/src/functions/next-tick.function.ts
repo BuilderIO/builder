@@ -4,6 +4,7 @@ const isSafari =
 
 const isClient = typeof window !== 'undefined';
 
+// TODO: queue all of these in a debounceNextTick
 export function nextTick(fn: () => void) {
   // React native
   if (typeof setImmediate === 'function' && typeof window === 'undefined') {
