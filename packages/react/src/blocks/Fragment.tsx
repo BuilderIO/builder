@@ -1,7 +1,7 @@
 import React from 'react'
+import { BuilderElement } from '@builder.io/sdk'
 import { withBuilder } from '../functions/with-builder'
 import { BuilderBlock as BuilderBlockComponent } from '../components/builder-block.component'
-import { BuilderElement } from '@builder.io/sdk'
 
 export interface FragmentProps {
   builderBlock?: BuilderElement
