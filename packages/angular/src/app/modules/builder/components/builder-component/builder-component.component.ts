@@ -82,6 +82,16 @@ export class BuilderComponentComponent implements OnDestroy {
 
   visible = new BehaviorSubject(true);
 
+  private get url() {
+    const location = this.builderService.getLocation();
+    return location.pathname || ''; 
+  }
+
+  get key() {
+    const key = Builder.isEditing || !this.reloadOnRoute ? this.model : `${this.model}:${this.url}`;
+    return key;
+  }
+
   constructor(
     private viewContainer: ViewContainerRef,
     private elementRef: ElementRef,

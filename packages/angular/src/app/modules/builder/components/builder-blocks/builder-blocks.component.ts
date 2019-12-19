@@ -21,6 +21,7 @@ export class BuilderBlocksComponent implements OnInit {
 
   @Input() child = false;
   @Input() model = '';
+  @Input() key = '';
 
   // @deprecated
   @Input() field = '';
@@ -70,9 +71,11 @@ export class BuilderBlocksComponent implements OnInit {
   }
 
   get _innerHtml() {
-    const elStr = !Builder.isEditing ? '' : `<builder-component-element ${
-      !this.model ? '' : `name="${this.model}"`
-    }></builder-component-element>`;
+    const elStr = !Builder.isEditing
+      ? ''
+      : `<builder-component-element prerender="false" ${
+          !this.model ? '' : `name="${this.model}"`
+        }></builder-component-element>`;
 
     if (this.arrayBlocks || !this.blocks) {
       return elStr;
@@ -88,7 +91,7 @@ export class BuilderBlocksComponent implements OnInit {
       html = `<style class="builder-styles">${css}</style>` + html;
     }
 
-    return `<builder-component-element ${
+    return `<builder-component-element key="${this.key || this.model}" prerender="false" ${
       !this.model ? '' : `name="${this.model}"`
     }>${html as string}</builder-component-element>`;
   }

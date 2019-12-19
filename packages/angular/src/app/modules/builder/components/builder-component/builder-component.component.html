@@ -14,6 +14,7 @@
     <builder-blocks
       *ngIf="content"
       field="blocks"
+      [key]="key"
       [model]="model"
       [blocks]="content.blocks || content"
     ></builder-blocks>
