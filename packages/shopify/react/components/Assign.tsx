@@ -25,14 +25,14 @@ export class AssignBlock extends React.Component<AssignBlockProps> {
     const { expression, builderState } = this.props;
 
     if (expression && builderState) {
-      if (builderState.state.shopify) {
-        builderState.state.shopify.liquid.assign(expression);
+      if (builderState.context.shopify) {
+        builderState.context.shopify.liquid.assign(expression);
         this.ran = true;
-        console.log('ran')
+        console.debug('ran')
         return true;
       }
     }
-    console.log('not ran')
+    console.debug('not ran')
     return false;
   }
 
