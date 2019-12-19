@@ -26,7 +26,7 @@ export class Box extends React.Component<BoxProps> {
       <div {...this.props.attributes}>
         {this.props.builderBlock &&
           this.props.builderBlock.children &&
-          this.props.builderBlock.children.map(item => <BuilderBlockComponent block={item} />)}
+          this.props.builderBlock.children.map(item => <BuilderBlockComponent key={item.id} block={item} />)}
       </div>
     )
   }

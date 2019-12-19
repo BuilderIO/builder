@@ -39,7 +39,7 @@ export class StateProvider extends React.Component<StateProviderProps> {
                 <BuilderBlockComponent
                   block={block}
                   index={index}
-                  child={true} /* TODO: fieldname? */
+                  key={block.id}
                 />
               ))}
           </BuilderStoreContext.Provider>

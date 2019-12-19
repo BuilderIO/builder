@@ -29,6 +29,7 @@ class StateProviderComponent extends React.Component<StateProviderProps> {
               this.props.builderBlock.children.map((block, index) => (
                 <BuilderBlockComponent
                   block={block}
+                  key={block.id}
                   index={index}
                   child={true} /* TODO: fieldname? */
                 />
