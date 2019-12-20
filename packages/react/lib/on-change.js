@@ -1,3 +1,6 @@
+// Via https://github.com/sindresorhus/on-change but
+// compiled for ES5
+
 'use strict'
 Object.defineProperty(exports, '__esModule', { value: true })
 ;('use strict')
