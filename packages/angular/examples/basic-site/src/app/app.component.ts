@@ -29,7 +29,9 @@ export class CustomThing {
 })
 export class AppComponent {
   title = 'app';
-  options: GetContentOptions;
+  options: GetContentOptions = {
+    cacheSeconds: 1
+  };
 
   data = {
     property: 'hello',

@@ -6,7 +6,7 @@ import {
   OnInit,
   ChangeDetectionStrategy,
 } from '@angular/core';
-import { Builder } from '@builder.io/sdk';
+import { Builder, GetContentOptions } from '@builder.io/sdk';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { BuilderService } from '../../services/builder.service';
 
@@ -22,6 +22,8 @@ export class BuilderBlocksComponent implements OnInit {
   @Input() child = false;
   @Input() model = '';
   @Input() key = '';
+
+  @Input() options: GetContentOptions | null = null;
 
   // @deprecated
   @Input() field = '';
@@ -91,7 +93,9 @@ export class BuilderBlocksComponent implements OnInit {
       html = `<style class="builder-styles">${css}</style>` + html;
     }
 
-    return `<builder-component-element key="${this.key || this.model}" prerender="false" ${
+    return `<builder-component-element key="${this.key || this.model}" options='${JSON.stringify(
+      this.options || null // TODO: HTML encode
+    )}' prerender="false" rev="${this.blocks.rev || ''}" ${
       !this.model ? '' : `name="${this.model}"`
     }>${html as string}</builder-component-element>`;
   }
