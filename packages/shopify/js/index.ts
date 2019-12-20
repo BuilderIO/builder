@@ -8,6 +8,11 @@ liquid.registerFilter('money', value => {
   return '$' + str.slice(0, -2) + '.' + str.slice(-2);
 });
 
+const tempNoopFilters = ['img_url'];
+for (const tempNoopFilter of tempNoopFilters) {
+  liquid.registerFilter(tempNoopFilter, value => value);
+}
+
 interface State {
   [key: string]: any;
 }
@@ -35,19 +40,21 @@ export class Liquid {
     this.state = state;
   }
 
-  get(str: string) {
+  get(str: string, state = this.state) {
     // TODO: better solution e.g. with proxies
     let useStr = str.replace(/selected_or_first_available_variant/g, 'variants[0]');
-    return liquid.evalValueSync(useStr, new Context(this.state, undefined, true));
+    return liquid.evalValueSync(useStr, new Context(state, undefined, true));
   }
 
   // TODO: handle `t` filter at compile time in assign
-  assign(str: string) {
+  assign(str: string, state = this.state) {
     const re = /^\s*([^=\s]+)\s*=(.*)/;
     let useStr = str.replace(/selected_or_first_available_variant/g, 'variants[0]');
     const match = useStr.match(re)!;
     const key = match[1].trim();
     const value = match[2];
-    this.state[key] = liquid.evalValueSync(value, new Context(this.state, undefined, true));
+    const result = liquid.evalValueSync(value, new Context(state, undefined, true));
+    console.debug('Liquid setting', key, 'to', result, 'via', str, state)
+    state[key] = result;
   }
 }
