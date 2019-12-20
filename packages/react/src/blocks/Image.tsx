@@ -100,7 +100,7 @@ class ImageComponent extends React.Component<any> {
           const amp = value.ampMode
           const Tag: 'img' = amp ? ('amp-img' as any) : 'img'
 
-          const ImageContents = (!lazy || this.state.load) && (
+          const imageContents = (!lazy || this.state.load) && (
             <Tag
               {...(amp
                 ? ({
@@ -121,12 +121,6 @@ class ImageComponent extends React.Component<any> {
                     undefined
                   : undefined
               }
-              // height={
-              //   this.props.height || (aspectRatio ? Math.round(aspectRatio * 1000) : undefined)
-              // }
-              // width={
-              //   this.props.width || (aspectRatio ? Math.round(1000 / aspectRatio) : undefined)
-              // }
               role={!this.props.altText ? 'presentation' : undefined}
               css={{
                 objectFit: this.props.backgroundSize,
@@ -141,7 +135,7 @@ class ImageComponent extends React.Component<any> {
                 ...(amp && {
                   ['& img']: {
                     objectFit: this.props.backgroundSize,
-                    OObjectPosition: this.props.backgroundPosition
+                    ObjectPosition: this.props.backgroundPosition
                   }
                 })
               }}
@@ -155,14 +149,13 @@ class ImageComponent extends React.Component<any> {
 
           return (
             <React.Fragment>
-              { amp ? 
+              { amp ? imageContents : 
                 <picture ref={ref => (this.pictureRef = ref)}>
                   {srcset && srcset.match(/builder\.io/) && (
                     <source srcSet={srcset.replace(/\?/g, '?format=webp&')} type="image/webp" />
                   )}
-                  {ImageContents}
+                  {imageContents}
                 </picture>
-                : {ImageContents}
               }
               {/* TODO: do this with classes like .builder-fit so can reuse csss and not duplicate */}
               {/* TODO: maybe need to add height: auto, widht: auto or so so the image doesn't have a max widht etc */}
