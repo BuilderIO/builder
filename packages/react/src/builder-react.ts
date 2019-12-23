@@ -6,7 +6,7 @@ Builder.isReact = true
 export { BuilderBlocks } from './components/builder-blocks.component'
 export { BuilderBlock as BuilderBlockComponent } from './components/builder-block.component'
 export { BuilderContent } from './components/builder-content.component'
-import { BuilderPage } from './components/builder-page.component'
+import { BuilderPage, onChange } from './components/builder-page.component'
 export { BuilderSimpleComponent } from './components/builder-simple.component'
 export { BuilderStoreContext, BuilderStore } from './store/builder-store'
 export { BuilderMetaContext } from './store/builder-meta'
@@ -15,7 +15,7 @@ export { BuilderBlock } from './decorators/builder-block.decorator'
 
 export { withBuilder } from './functions/with-builder'
 
-export { BuilderPage }
+export { BuilderPage, onChange }
 export { BuilderPage as BuilderComponent }
 
 export { Text } from './blocks/Text'

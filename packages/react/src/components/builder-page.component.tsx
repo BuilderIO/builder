@@ -14,6 +14,8 @@ import { BuilderStoreContext } from '../store/builder-store'
 import hash from 'hash-sum'
 import onChange from 'lib/on-change.js'
 
+export { onChange }
+
 import { sizes } from '../constants/device-sizes.constant'
 import {
   BuilderAsyncRequestsContext,

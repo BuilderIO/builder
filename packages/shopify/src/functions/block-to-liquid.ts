@@ -10,6 +10,7 @@ import { getComponentInfo } from '../constants/components';
 import '../components/text';
 import '../components/columns';
 import '../components/image';
+import '../components/assign';
 import '../components/section';
 import '../components/button';
 import '../components/symbol';

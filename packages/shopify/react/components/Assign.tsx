@@ -1,5 +1,5 @@
 import React from 'react';
-import { Builder, BuilderStore } from '@builder.io/react';
+import { Builder, BuilderStore, onChange, withBuilder } from '@builder.io/react';
 
 interface AssignBlockProps {
   expression?: string;
@@ -10,12 +10,6 @@ export class AssignBlock extends React.Component<AssignBlockProps> {
   ran = false;
   constructor(props: AssignBlockProps) {
     super(props);
-
-    if (!this.run()) {
-      // TODO: queueNextTick
-      // TODO: fix the state updates
-      setTimeout(() => this.run())
-    }
   }
 
   run() {
@@ -23,24 +17,30 @@ export class AssignBlock extends React.Component<AssignBlockProps> {
 
     if (expression && builderState) {
       if (builderState.context.shopify) {
-        builderState.context.shopify.liquid.assign(expression, builderState.state);
+        builderState.context.shopify.liquid.assign(
+          expression,
+          onChange.target(builderState.state)
+          // builderState.state
+        );
         this.ran = true;
-        console.debug('ran v2')
+        console.debug('ran v4');
         return true;
       }
     }
-    console.debug('not ran v2')
+    console.debug('not ran v4');
     return false;
   }
 
   render() {
+    this.run();
     return null;
   }
 }
 
-Builder.registerComponent(AssignBlock, {
+withBuilder(AssignBlock, {
   name: 'Shopify:Assign',
   hideFromInsertMenu: true,
+  noWrap: true,
   inputs: [
     {
       name: 'expression',

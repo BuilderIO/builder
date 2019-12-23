@@ -80,7 +80,11 @@ export const convertTemplateLiteralsToTags = (liquid: string, options: Options =
       .replace(new RegExp('`' + TEMPLATE_START_TOKEN, 'g'), '')
       .replace(new RegExp(PART_START_TOKEN + '\\${', 'g'), '')
       .replace(new RegExp('}' + PART_END_TOKEN, 'g'), '')
-      .replace(new RegExp(TEMPLATE_END_TOKEN + '`', 'g'), '');
+      .replace(new RegExp(TEMPLATE_END_TOKEN + '`', 'g'), '')
+      // HACK: get this into the appropriate place
+      .replace(/context\.shopify\.liquid\.get\(\s*"(.*?)"\s*state\)/g, '$1')
+      // TODO: can have double quotes in value
+      .replace(/{{\s*context\.shopify\.liquid\.render\(("|&quot;)(.*?)("|&quot;),\s*state\)\s*}}/g, '$2');
 
     if (options.convertShopifyBindings !== false) {
       latest = latest

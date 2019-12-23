@@ -8,7 +8,7 @@ liquid.registerFilter('money', value => {
   return '$' + str.slice(0, -2) + '.' + str.slice(-2);
 });
 
-const tempNoopFilters = ['img_url'];
+const tempNoopFilters = ['img_url', 't'];
 for (const tempNoopFilter of tempNoopFilters) {
   liquid.registerFilter(tempNoopFilter, value => value);
 }
@@ -40,10 +40,18 @@ export class Liquid {
     this.state = state;
   }
 
+  // TODO: preparse and split out for better perf
+  render(str: string, state = this.state) {
+    // TODO: what if has partials or other aysnc things? may be rare...
+    // TODO: separate parse and render to memoise the parsing
+    return liquid.parseAndRenderSync(str, state);
+  }
+
   get(str: string, state = this.state) {
     // TODO: better solution e.g. with proxies
     let useStr = str.replace(/selected_or_first_available_variant/g, 'variants[0]');
-    return liquid.evalValueSync(useStr, new Context(state, undefined, true));
+    // TODO: warn for errors
+    return liquid.evalValueSync(useStr, new Context(state, undefined, true)) || '';
   }
 
   // TODO: handle `t` filter at compile time in assign
@@ -54,7 +62,7 @@ export class Liquid {
     const key = match[1].trim();
     const value = match[2];
     const result = liquid.evalValueSync(value, new Context(state, undefined, true));
-    console.debug('Liquid setting', key, 'to', result, 'via', str, state)
+    console.debug('Liquid setting', key, 'to', result, 'via', str, state);
     state[key] = result;
   }
 }
