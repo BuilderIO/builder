@@ -13,6 +13,7 @@ export interface BuilderElement {
   id?: string;
   tagName?: string;
   layerName?: string;
+  // TODO: make alias for properties.class
   class?: string;
   children?: BuilderElement[];
   responsiveStyles?: {

@@ -1,5 +1,5 @@
-import React from 'react';
-import { Builder, BuilderStore, onChange, withBuilder } from '@builder.io/react';
+import { BuilderStore, onChange, withBuilder } from '@builder.io/react';
+import * as React from 'react';
 
 interface AssignBlockProps {
   expression?: string;

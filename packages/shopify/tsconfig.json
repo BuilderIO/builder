@@ -3,7 +3,10 @@
     "jsx": "react",
     "target": "es5",
     "outDir": "dist",
+    "types": ["jest"],
     "module": "esnext",
+    "allowJs": true,
+    "checkJs": false,
     "moduleResolution": "node",
     "strict": true,
     "sourceMap": true,
@@ -21,6 +24,7 @@
     "./src/**/*.ts",
     "./types.d.ts",
     "./test/**/*.ts",
+    "./test/**/*.tsx",
     "./js/**/*.ts",
     "./react/react.ts",
     "./react/**/*.tsx"

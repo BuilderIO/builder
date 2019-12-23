@@ -1,5 +1,8 @@
 import * as fs from 'fs-extra-promise';
 import { join } from 'path';
+import { merge } from 'lodash';
+import { BuilderElement } from '@builder.io/sdk';
+import Shopify from '../../js/index';
 
 // TODO: helpers for this
 export const LOG_BY_DEFAULT = false;
@@ -22,4 +25,44 @@ export const debugFile = async (path: string, contents: string) => {
   if (OUTPUT_FILE) {
     fs.outputFileAsync(join(outputRoot, path), contents);
   }
+};
+
+export const el = (options?: Partial<BuilderElement>): BuilderElement => ({
+  '@type': '@builder.io/sdk:Element',
+  id:
+    'builder-' +
+    Math.random()
+      .toString()
+      .split('.')[1],
+  ...options,
+});
+
+export const text = (text: string, options?: Partial<BuilderElement>) =>
+  el(
+    merge(
+      {
+        component: {
+          name: 'Text',
+          options: {
+            text,
+          },
+        },
+      },
+      options
+    )
+  );
+
+export const mockState = (state: any = {}, context: any = {}, content = {}) => ({
+  state,
+  context,
+  content,
+  rootState: state,
+  update: (fn: Function) => fn(state),
+});
+
+export const mockStateWithShopify = (state: any = {}, context: any = {}, content: any = {}) => {
+  if (!context.shopify) {
+    context.shopify = new Shopify(state);
+  }
+  return mockState(state, context, content);
 };

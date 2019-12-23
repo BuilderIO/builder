@@ -185,6 +185,15 @@ export function blockToLiquid(json: BuilderElement, options: Options = {}): stri
         : ''
     }
     ${
+      block.bindings && block.bindings.show
+        ? `{% if  ${
+            block.bindings.show.includes(';')
+              ? 'false'
+              : escaleHtml(convertBinding(block.bindings.show, options))
+          } %}`
+        : ''
+    }
+    ${
       componentInfo && componentInfo.noWrap
         ? componentInfo.component(block, options, attributes)
         : `
@@ -198,6 +207,7 @@ export function blockToLiquid(json: BuilderElement, options: Options = {}): stri
     </${tag}>`
     }
     ${block.bindings && block.bindings.hide ? '{% endunless %}' : ''}
+    ${block.bindings && block.bindings.show ? '{% endif %}' : ''}
     ${block.repeat ? '{% endfor %}' : ''}
     `;
 }
