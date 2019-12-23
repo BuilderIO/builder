@@ -1,13 +1,5 @@
+import builder, { Builder, BuilderBlockComponent, BuilderElement, BuilderStore, stringToFunction, withBuilder } from '@builder.io/react';
 import * as React from 'react';
-import builder, {
-  Builder,
-  BuilderStore,
-  onChange,
-  withBuilder,
-  BuilderElement,
-  stringToFunction,
-  BuilderBlocks,
-} from '@builder.io/react';
 
 interface UnlessBlockProps {
   builderState?: BuilderStore;
@@ -38,21 +30,12 @@ export class UnlessBlock extends React.Component<UnlessBlockProps> {
   }
 
   render() {
-    const { unlessBlocks } = this.props;
     const blocks = this.getMatchingBlocks();
     if (!blocks) {
       return null;
     }
-    const isUnless = blocks === unlessBlocks;
 
-    return (
-      <BuilderBlocks
-        child
-        parentElementId={this.props.builderBlock && this.props.builderBlock.id}
-        blocks={blocks}
-        dataPath={`component.options.${isUnless ? 'unlessBlocks' : 'elseBlocks'}`}
-      />
-    );
+    return blocks.map(block => <BuilderBlockComponent key={block.id} block={block} />);
   }
 }
 

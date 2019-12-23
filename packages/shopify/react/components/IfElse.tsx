@@ -1,13 +1,5 @@
+import builder, { Builder, BuilderBlockComponent, BuilderElement, BuilderStore, stringToFunction, withBuilder } from '@builder.io/react';
 import * as React from 'react';
-import builder, {
-  Builder,
-  BuilderStore,
-  onChange,
-  withBuilder,
-  BuilderElement,
-  stringToFunction,
-  BuilderBlocks,
-} from '@builder.io/react';
 
 interface Branch {
   expression?: string;
@@ -56,14 +48,7 @@ export class IfElseBlock extends React.Component<IfElseBlockProps> {
       return null;
     }
 
-    return (
-      <BuilderBlocks
-        child
-        parentElementId={this.props.builderBlock && this.props.builderBlock.id}
-        blocks={result.blocks}
-        dataPath={`component.options.branches.${result.index}.blocks`}
-      />
-    );
+    return result.blocks.map(block => <BuilderBlockComponent key={block.id} block={block} />);
   }
 }
 
