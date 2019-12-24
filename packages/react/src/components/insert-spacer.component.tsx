@@ -87,7 +87,7 @@ export class InsertSpacer extends React.Component<SpacerProps, SpacerState> {
                 backgroundColor: 'rgba(28, 151, 204, 0.2)',
                 pointerEvents: 'none',
                 borderRadius: 4,
-                transition: 'all 0.2s ease-in-out !important',
+                transition: 'all 0.2s cubic-bezier(.37,.01,0,.98) !important',
                 border: '1px solid rgba(28, 151, 204, 0.4)'
                 // ...(this.state.grow && {
                 //   width: '100%',
