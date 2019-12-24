@@ -148,9 +148,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
       window.parent.postMessage(
         {
           type: 'builder.isReactSdk',
-          data: {
-            value: true
-          }
+          data: { value: true }
         },
         '*'
       )
