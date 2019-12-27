@@ -288,7 +288,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
         .subscribe(
           (data: any) => {
             if (unsubscribed) {
-              console.warn('Unsubscribe didnt work!')
+              console.warn("Unsubscribe didn't work!")
               return
             }
             this.classList.remove('builder-loading')
@@ -397,7 +397,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
         .subscribe(
           async data => {
             if (unsubscribed) {
-              console.debug('Unsubscribe didnt work!')
+              console.debug("Unsubscribe didn't work!")
               return
             }
 

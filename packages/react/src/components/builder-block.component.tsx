@@ -126,6 +126,7 @@ export class BuilderBlock extends React.Component<
   private _asyncRequests?: RequestOrPromise[]
   private _errors?: Error[]
   private _logs?: string[]
+  innerComponentRef: any
 
   state = {
     hasError: false
@@ -276,9 +277,61 @@ export class BuilderBlock extends React.Component<
     return css
   }
 
+  eval(str: string) {
+    const fn = this.stringToFunction(str)
+    // TODO: only one root instance of this, don't rewrap every time...
+    return fn(
+      this.privateState.state,
+      undefined,
+      this.props.block,
+      builder,
+      Device,
+      this.privateState.update,
+      Builder,
+      this.privateState.context
+    )
+  }
+
+  componentWillUnmount() {
+    if (Builder.isEditing) {
+      removeEventListener('message', this.onWindowMessage)
+    }
+  }
+
+  onWindowMessage = (event: MessageEvent) => {
+    const message = event.data
+    if (!message) {
+      return
+    }
+    switch (message.type) {
+      case 'builder.selectionChange': {
+        const { data } = message
+        if (!data) {
+          break
+        }
+        const { selection } = data
+        const id = this.props.block && this.props.block.id
+        if (id && Array.isArray(selection) && selection.includes(id)) {
+          setTimeout(() => {
+            ;(window as any).$block = this
+            if (!(window as any).$blocks) {
+              ;(window as any).$blocks = []
+            }
+            ;(window as any).$blocks.push(this)
+          })
+        }
+        break
+      }
+    }
+  }
+
   componentDidMount() {
     const { block } = this.props
     const animations = block && block.animations
+
+    if (Builder.isEditing) {
+      addEventListener('message', this.onWindowMessage)
+    }
 
     // tslint:disable-next-line:comment-format
     ///REACT15ONLY if (this.ref) { this.ref.setAttribute('builder-id', block.id); }
@@ -382,7 +435,16 @@ export class BuilderBlock extends React.Component<
         set(
           options,
           key,
-          value(state, null, block, api(state), Device, null, Builder, this.privateState.context)
+          value(
+            state,
+            null,
+            block,
+            api(state),
+            Device,
+            null,
+            Builder,
+            this.privateState.context
+          )
         )
       }
     }
@@ -536,11 +598,13 @@ export class BuilderBlock extends React.Component<
                       attributes={finalOptions}
                       builderBlock={block}
                       builderState={this.privateState}
+                      ref={(ref: any) => (this.innerComponentRef = ref)}
                     />
                   ) : (
                     <TagName {...(finalOptions as any)}>
                       {InnerComponent && (
                         <InnerComponent
+                          ref={(ref: any) => (this.innerComponentRef = ref)}
                           builderState={this.privateState}
                           builderBlock={block}
                           {...innerComponentProperties}

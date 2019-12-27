@@ -23,11 +23,9 @@ export class AssignBlock extends React.Component<AssignBlockProps> {
           // builderState.state
         );
         this.ran = true;
-        console.debug('ran v4');
         return true;
       }
     }
-    console.debug('not ran v4');
     return false;
   }
 
