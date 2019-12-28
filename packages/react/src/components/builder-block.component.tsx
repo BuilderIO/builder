@@ -325,6 +325,22 @@ export class BuilderBlock extends React.Component<
     }
   }
 
+  updateAttrs(attrs: { [key: string]: string }) {
+    const ref = this.ref
+    if (ref && ref instanceof Element) {
+      for (const attr in attrs) {
+        const value = attrs[attr]
+        if (typeof value === 'string') {
+          if (ref.getAttribute(attr) !== value) {
+            ref.setAttribute(attr, value)
+          }
+        } else if (ref.hasAttribute(attr)) {
+          ref.removeAttribute(attr)
+        } 
+      }
+    }
+  }
+
   componentDidMount() {
     const { block } = this.props
     const animations = block && block.animations
@@ -501,7 +517,7 @@ export class BuilderBlock extends React.Component<
       componentInfo && (componentInfo.fragment || componentInfo.noWrap)
 
     const finalOptions: { [key: string]: string } = {
-      ...omit(options, ['class', 'component']),
+      ...omit(options, ['class', 'component', 'attr']),
       [commonTags.has(TagName) ? 'className' : 'class']:
         `builder-block ${this.id}${block.class ? ` ${block.class}` : ''}${
           block.component &&
@@ -533,7 +549,8 @@ export class BuilderBlock extends React.Component<
     ///REACT15ONLY finalOptions.className = finalOptions.class
 
     if (Builder.isIframe) {
-      ;(finalOptions as any)['builder-inline-styles'] = !options.style
+      // TODO: removed bc JS can add styles inline too?
+      ;(finalOptions as any)['builder-inline-styles'] = !(options.attr && options.attr.style)
         ? ''
         : Object.keys(options.style).reduce(
             (memo, key) =>
@@ -562,6 +579,10 @@ export class BuilderBlock extends React.Component<
     // )
 
     const children = block.children || finalOptions.children || []
+
+    if (options.attr && typeof options.attr === 'object') {
+      Builder.nextTick(() => this.updateAttrs(options.attr))
+    }
 
     // TODO: test it out
     return (
@@ -611,12 +632,7 @@ export class BuilderBlock extends React.Component<
                         />
                       )}
                       {(block as any).text || options.text ? (
-                        // TODO: remove me! No longer in use (maybe with rich text will be back tho)
-                        <TextTag
-                          dangerouslySetInnerHTML={{
-                            __html: options.text || (block as any).text || ''
-                          }}
-                        />
+                        options.text
                       ) : !InnerComponent &&
                         children &&
                         Array.isArray(children) &&

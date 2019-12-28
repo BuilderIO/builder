@@ -19,6 +19,7 @@ export { BuilderPage, onChange }
 export { BuilderPage as BuilderComponent }
 
 export { Text } from './blocks/Text'
+export { Fragment } from './blocks/Fragment'
 export { Columns } from './blocks/Columns'
 export { Embed } from './blocks/Embed'
 export { CustomCode } from './blocks/CustomCode'

@@ -76,7 +76,7 @@ const defaultBlock = {
 };
 
 withBuilder(IfElseBlock, {
-  name: 'Shopify:IfElse',
+  name: 'Shopify:Condition',
   hideFromInsertMenu: true,
   noWrap: true,
   inputs: [

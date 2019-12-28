@@ -288,7 +288,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
         .subscribe(
           (data: any) => {
             if (unsubscribed) {
-              console.warn("Unsubscribe didn't work!")
+              console.warn('Unsubscribe did not work!')
               return
             }
             this.classList.remove('builder-loading')
