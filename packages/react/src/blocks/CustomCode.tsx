@@ -1,5 +1,4 @@
 import React from 'react'
-import { BuilderBlock } from '../decorators/builder-block.decorator'
 import { BuilderElement, Builder } from '@builder.io/sdk'
 import { withBuilder } from 'src/functions/with-builder'
 

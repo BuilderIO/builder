@@ -1,5 +1,4 @@
 import { Builder, builder } from '@builder.io/sdk'
-import { sizes } from '../constants/device-sizes.constant'
 import { safeDynamicRequire } from './safe-dynamic-require'
 
 const fnCache: { [key: string]: BuilderEvanFunction | undefined } = {}

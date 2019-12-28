@@ -92,7 +92,7 @@ class FormComponent extends React.Component<FormProps> {
                     value: File | boolean | number | string
                   }[] = (Array.from(
                     event.currentTarget.querySelectorAll('input,select,textarea')
-                  ) as HTMLElement[])
+                  ))
                     .filter(el => !!(el as HTMLInputElement).name)
                     .map(el => {
                       let value: any
@@ -169,7 +169,7 @@ class FormComponent extends React.Component<FormProps> {
                     state: 'sending'
                   })
 
-                  fetch(this.props.action!, {
+                  fetch(this.props.action, {
                     body,
                     headers,
                     method: this.props.method || 'post'

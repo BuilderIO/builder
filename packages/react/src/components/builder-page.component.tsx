@@ -294,7 +294,7 @@ export class BuilderPage extends React.Component<
       Builder.isBrowser &&
       (document.querySelector(
         `script[data-builder-json="${id}"],script[data-builder-state="${id}"]`
-      ) as HTMLElement | null)
+      ))
     if (script) {
       const json = JSON.parse(script.innerText)
       return json
@@ -994,7 +994,7 @@ export class BuilderPage extends React.Component<
             document.head.appendChild(descriptionTag)
           }
 
-          descriptionTag!.setAttribute(
+          descriptionTag.setAttribute(
             'content',
             description || pageDescription
           )

@@ -46,7 +46,7 @@ export class BuilderContent<
     // builder.env = 'development';
     this.subscribeToContent()
 
-    ///REACT15ONLY if (this.ref) { this.ref.setAttribute('builder-model', this.props.modelName); }
+    /// REACT15ONLY if (this.ref) { this.ref.setAttribute('builder-model', this.props.modelName); }
   }
 
   subscribeToContent() {
@@ -89,7 +89,7 @@ export class BuilderContent<
                         }
                       ))
 
-                      observer.observe(this.ref!)
+                      observer.observe(this.ref)
                       addedObserver = true
                     } catch (err) {
                       console.warn('Could not bind intersection observer')

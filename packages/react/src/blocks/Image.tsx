@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { css, jsx } from '@emotion/core'
+import { jsx } from '@emotion/core'
 import React from 'react'
 
 import { BuilderBlock as BuilderBlockComponent } from '../components/builder-block.component'

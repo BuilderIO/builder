@@ -4,7 +4,7 @@ import React from 'react'
 import { Builder } from '@builder.io/sdk'
 import { BuilderBlock } from './builder-block.component'
 // TODO: fetch these for user and send them with same response like graphql
-import { sizes, Size } from '../constants/device-sizes.constant'
+import { Size } from '../constants/device-sizes.constant'
 
 export interface BuilderBlocksProps {
   fieldName?: string

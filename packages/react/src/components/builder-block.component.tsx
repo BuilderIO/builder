@@ -48,7 +48,7 @@ const last = <T extends any>(arr: T[]) => arr[arr.length - 1]
 function omit(obj: any, values: string[]) {
   const newObject = Object.assign({}, obj)
   for (const key of values) {
-    delete (newObject as any)[key]
+    delete (newObject)[key]
   }
   return newObject
 }
@@ -325,7 +325,10 @@ export class BuilderBlock extends React.Component<
     }
   }
 
+  lastAttrs: any;
+
   updateAttrs(attrs: { [key: string]: string }) {
+    // TODO: comb over lastAttrs and remove any that were there but are not now
     const ref = this.ref
     if (ref && ref instanceof Element) {
       for (const attr in attrs) {
