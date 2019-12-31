@@ -13,7 +13,7 @@ Frist things first, if you don't yet have one, create a free account at [Builder
 
 ### Add the components and getInitialProps
 
-To any page in next.js, you can fetch for a Builder page, and handle wether builder found a
+To any page in next.js, you can fetch for a Builder page, and handle whether Builder found a
 match (or possibly not).
 
 For instance, if you know you want /about to be a Builder page, create a Builder page with url /about
