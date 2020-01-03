@@ -23,7 +23,10 @@ export function updateQueryParam(uri = '', key: string, value: string) {
 // TODO: use picture tag to support more formats
 class ImageComponent extends React.Component<any> {
   state = {
-    load: !this.props.lazy
+    load:
+      !this.props.lazy ||
+      (Builder.isBrowser &&
+        location.href.includes('builder.lazyLoadImages=false'))
   }
 
   pictureRef: HTMLPictureElement | null = null
@@ -36,7 +39,7 @@ class ImageComponent extends React.Component<any> {
           if (this.pictureRef) {
             const rect = this.pictureRef.getBoundingClientRect()
             const buffer = window.innerHeight / 2
-            if (rect.top < (window.innerHeight + buffer)) {
+            if (rect.top < window.innerHeight + buffer) {
               this.setState({
                 ...this.state,
                 load: true
@@ -107,7 +110,9 @@ class ImageComponent extends React.Component<any> {
                     layout: 'responsive',
                     height:
                       this.props.height ||
-                      (aspectRatio ? Math.round(aspectRatio * 1000) : undefined),
+                      (aspectRatio
+                        ? Math.round(aspectRatio * 1000)
+                        : undefined),
                     width:
                       this.props.width ||
                       (aspectRatio ? Math.round(1000 / aspectRatio) : undefined)
@@ -149,14 +154,19 @@ class ImageComponent extends React.Component<any> {
 
           return (
             <React.Fragment>
-              { amp ? imageContents : 
+              {amp ? (
+                imageContents
+              ) : (
                 <picture ref={ref => (this.pictureRef = ref)}>
                   {srcset && srcset.match(/builder\.io/) && (
-                    <source srcSet={srcset.replace(/\?/g, '?format=webp&')} type="image/webp" />
+                    <source
+                      srcSet={srcset.replace(/\?/g, '?format=webp&')}
+                      type="image/webp"
+                    />
                   )}
                   {imageContents}
                 </picture>
-              }
+              )}
               {/* TODO: do this with classes like .builder-fit so can reuse csss and not duplicate */}
               {/* TODO: maybe need to add height: auto, widht: auto or so so the image doesn't have a max widht etc */}
               {aspectRatio ? (
@@ -224,7 +234,10 @@ export const Image = withBuilder(ImageComponent, {
       onChange: (options: Map<string, any>) => {
         const DEFAULT_ASPECT_RATIO = 0.7041
         options.delete('srcset')
-        function loadImage(url: string, timeout = 60000): Promise<HTMLImageElement> {
+        function loadImage(
+          url: string,
+          timeout = 60000
+        ): Promise<HTMLImageElement> {
           return new Promise((resolve, reject) => {
             const img = document.createElement('img')
             let loaded = false
@@ -259,7 +272,8 @@ export const Image = withBuilder(ImageComponent, {
             const possiblyUpdatedAspectRatio = options.get('aspectRatio')
             if (
               options.get('image') === value &&
-              (!possiblyUpdatedAspectRatio || possiblyUpdatedAspectRatio === DEFAULT_ASPECT_RATIO)
+              (!possiblyUpdatedAspectRatio ||
+                possiblyUpdatedAspectRatio === DEFAULT_ASPECT_RATIO)
             ) {
               if (img.width && img.height) {
                 options.set('aspectRatio', round(img.height / img.width))
@@ -276,7 +290,11 @@ export const Image = withBuilder(ImageComponent, {
       type: 'text',
       defaultValue: 'cover',
       enum: [
-        { label: 'contain', value: 'contain', helperText: 'The image should never get cropped' },
+        {
+          label: 'contain',
+          value: 'contain',
+          helperText: 'The image should never get cropped'
+        },
         {
           label: 'cover',
           value: 'cover',
