@@ -31,6 +31,20 @@ import { BuilderMetaContext } from 'src/store/builder-meta'
 
 const size = (thing: object) => Object.keys(thing).length
 
+function debounce(func: Function, wait: number, immediate = false) {
+  let timeout: any
+  return function(this: any) {
+    const context = this
+    const args = arguments
+    clearTimeout(timeout)
+    timeout = setTimeout(function() {
+      timeout = null
+      if (!immediate) func.apply(context, args)
+    }, wait)
+    if (immediate && !timeout) func.apply(context, args)
+  }
+}
+
 const fontsLoaded = new Set()
 
 function pick(object: any, keys: string[]) {
@@ -292,9 +306,9 @@ export class BuilderPage extends React.Component<
     const script =
       id &&
       Builder.isBrowser &&
-      (document.querySelector(
+      document.querySelector(
         `script[data-builder-json="${id}"],script[data-builder-state="${id}"]`
-      ))
+      )
     if (script) {
       const json = JSON.parse((script as HTMLElement).innerText)
       return json
@@ -371,25 +385,23 @@ export class BuilderPage extends React.Component<
     }
   }
 
-  resizeListener = throttle(
-    () => {
-      const deviceSize = this.deviceSizeState
-      if (deviceSize !== this.state.state.deviceSize) {
-        this.setState({
-          ...this.state,
-          updates: ((this.state && this.state.updates) || 0) + 1,
-          state: Object.assign(this.rootState, {
-            ...this.state.state,
-            deviceSize
-          })
+  resizeFn = () => {
+    const deviceSize = this.deviceSizeState
+    if (deviceSize !== this.state.state.deviceSize) {
+      this.setState({
+        ...this.state,
+        updates: ((this.state && this.state.updates) || 0) + 1,
+        state: Object.assign(this.rootState, {
+          ...this.state.state,
+          deviceSize
         })
-      }
-    },
-    200,
-    { leading: false, trailing: true }
-  )
+      })
+    }
+  }
 
-  // TODO: different options per device size...........................
+  resizeListener = Builder.isEditing
+    ? throttle(this.resizeFn, 200)
+    : debounce(this.resizeFn, 400)
 
   static renderInto(
     elementOrSelector: string | HTMLElement,
@@ -817,7 +829,7 @@ export class BuilderPage extends React.Component<
                                 ...this.state,
                                 rootState: this.rootState,
                                 state: this.data,
-                                content: fullData,
+                                content: fullData
                               }}
                             >
                               <BuilderBlocks
@@ -994,10 +1006,7 @@ export class BuilderPage extends React.Component<
             document.head.appendChild(descriptionTag)
           }
 
-          descriptionTag.setAttribute(
-            'content',
-            description || pageDescription
-          )
+          descriptionTag.setAttribute('content', description || pageDescription)
         }
       }
     }
@@ -1082,7 +1091,16 @@ export class BuilderPage extends React.Component<
             'builder',
             'context',
             data.jsCode
-          )(data, this, state, this.state.update, this.ref, Builder, builder, this.state.context)
+          )(
+            data,
+            this,
+            state,
+            this.state.update,
+            this.ref,
+            Builder,
+            builder,
+            this.state.context
+          )
 
           // TODO: allow exports = { } syntax?
           // TODO: do something with reuslt like view - methods, computed, actions, properties, template, etc etc
