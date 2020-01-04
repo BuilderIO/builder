@@ -22,11 +22,20 @@ export function updateQueryParam(uri = '', key: string, value: string) {
 
 // TODO: use picture tag to support more formats
 class ImageComponent extends React.Component<any> {
+  get useLazyLoading() {
+    // Use builder.getLocation()
+    return Builder.isBrowser &&
+      location.search.includes('builder.lazyLoadImages=false')
+      ? false
+      : Builder.isBrowser &&
+        location.href.includes('builder.lazyLoadImages=true')
+      ? true
+      : this.props.lazy
+  }
+
   state = {
-    load:
-      !this.props.lazy ||
-      (Builder.isBrowser &&
-        location.href.includes('builder.lazyLoadImages=false'))
+    imageLoaded: !this.useLazyLoading,
+    load: !this.useLazyLoading
   }
 
   pictureRef: HTMLPictureElement | null = null
@@ -128,6 +137,12 @@ class ImageComponent extends React.Component<any> {
               }
               role={!this.props.altText ? 'presentation' : undefined}
               css={{
+                opacity: amp
+                  ? 1
+                  : this.useLazyLoading && !this.state.imageLoaded
+                  ? 0
+                  : 1,
+                transition: 'opacity 0.2s ease-in-out',
                 objectFit: this.props.backgroundSize,
                 objectPosition: this.props.backgroundPosition,
                 ...(aspectRatio && {
@@ -146,6 +161,9 @@ class ImageComponent extends React.Component<any> {
               }}
               className="builder-image"
               src={this.props.image}
+              {...(!amp && {
+                onLoad: () => this.setState({ imageLoaded: true })
+              })}
               // TODO: memoize on image on client
               srcSet={srcset}
               sizes={this.props.sizes}
