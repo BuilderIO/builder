@@ -296,7 +296,7 @@ export class BuilderPage extends React.Component<
         `script[data-builder-json="${id}"],script[data-builder-state="${id}"]`
       ))
     if (script) {
-      const json = JSON.parse(script.innerText)
+      const json = JSON.parse((script as HTMLElement).innerText)
       return json
     }
     return {}
