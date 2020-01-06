@@ -33,6 +33,7 @@ class ImageComponent extends React.Component<any> {
       : this.props.lazy
   }
 
+  // TODO: setting to always fade in the images (?)
   state = {
     imageLoaded: !this.useLazyLoading,
     load: !this.useLazyLoading
@@ -162,6 +163,7 @@ class ImageComponent extends React.Component<any> {
               className="builder-image"
               src={this.props.image}
               {...(!amp && {
+                // TODO: queue these so react renders all loads at once
                 onLoad: () => this.setState({ imageLoaded: true })
               })}
               // TODO: memoize on image on client
