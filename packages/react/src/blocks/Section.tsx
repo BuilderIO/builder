@@ -16,9 +16,6 @@ class SectionComponent extends React.Component<SectionProps> {
     return (
       <div
         css={{
-          // margin: 'auto',
-          // TODO: maybe remove height: '100%'
-          height: '100%',
           width: '100%',
           alignSelf: 'stretch',
           flexGrow: 1,
