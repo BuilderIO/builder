@@ -9,7 +9,7 @@ import { BuilderService } from './modules/builder/services/builder.service';
 @NgModule({
   declarations: [AppComponent],
   imports: [
-    BrowserModule.withServerTransition({ appId: 'my-app' }),
+    BrowserModule.withServerTransition({ appId: 'serverApp' }),
     BuilderModule.forRoot('VQ7kLiTnpLQvaokXJSed'),
     AppRoutingModule,
     BrowserTransferStateModule,
