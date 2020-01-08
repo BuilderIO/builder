@@ -143,6 +143,7 @@ class BuilderAccordionComponent extends React.Component<AccordionProps> {
         <div
           className={`builder-accordion-title builder-accordion-title-${open ? 'open' : 'closed'}`}
           style={{
+            cursor: 'pointer',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'stretch',
