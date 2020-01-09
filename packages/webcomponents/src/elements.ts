@@ -345,7 +345,15 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
       const getShopifyPromise = importShopify()
 
       let emailPromise: Promise<any> | null = null
-      if (name === 'email') {
+
+      const email = Boolean(
+        name === 'email' ||
+          this.getAttribute('email-mode') ||
+          this.getAttribute('format') === 'email' ||
+          (this.options && this.options.format === 'email')
+      )
+
+      if (email) {
         emailPromise = import('@builder.io/email')
       }
 
