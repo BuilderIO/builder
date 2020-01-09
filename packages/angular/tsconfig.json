@@ -1,6 +1,8 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "downlevelIteration": true,
+    "importHelpers": true,
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
@@ -9,8 +11,15 @@
     "experimentalDecorators": true,
     "skipLibCheck": true,
     "strict": true,
-    "target": "es5",
-    "typeRoots": ["node_modules/@types"],
-    "lib": ["es6", "dom"]
+    "target": "es2015",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "lib": [
+      "es6",
+      "dom"
+    ],
+    "module": "esnext",
+    "baseUrl": "./"
   }
 }
