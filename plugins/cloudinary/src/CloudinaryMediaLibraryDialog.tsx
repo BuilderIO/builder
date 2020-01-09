@@ -4,9 +4,10 @@ import { jsx } from '@emotion/core'
 import { Dialog, Button, DialogActions } from '@material-ui/core'
 
 interface CloudinaryMediaLibraryDialogProps {
+  editorKey: string
   openDialog: boolean
   closeDialog(): void
-  selectImage(image: CloudinaryImage): void
+  selectImage(image: CloudinaryImage, editorKey: string): void
   apiKey: string | undefined
   cloudName: string | undefined
 }
@@ -22,6 +23,12 @@ export interface CloudinaryImage {
 export class CloudinaryMediaLibraryDialog extends React.Component<
   CloudinaryMediaLibraryDialogProps
 > {
+  static dialogKey: any = undefined
+  constructor(props: CloudinaryMediaLibraryDialogProps) {
+    super(props)
+    CloudinaryMediaLibraryDialog.dialogKey = this.props.editorKey
+  }
+
   private generateNewMediaLibrary(): any {
     let mediaLibrary: any
     const newWindow = window as any
@@ -64,7 +71,10 @@ export class CloudinaryMediaLibraryDialog extends React.Component<
   }
 
   private selectImage(cloudinaryData: any): void {
-    this.props.selectImage(cloudinaryData)
+    this.props.selectImage(
+      cloudinaryData,
+      CloudinaryMediaLibraryDialog.dialogKey
+    )
     this.props.closeDialog()
   }
 
