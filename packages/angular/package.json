@@ -53,7 +53,7 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.803.22",
-    "@angular/cli": ">= 2",
+    "@angular/cli": "8.3.22",
     "@angular/compiler": ">= 2",
     "@angular/compiler-cli": ">= 2",
     "@angular/forms": ">= 2",
