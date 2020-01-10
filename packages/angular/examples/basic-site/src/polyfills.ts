@@ -1,6 +1,6 @@
 
 
-import 'classlist.js';  // Run `npm install --save classlist.js`.
+// import 'classlist.js';  // Run `npm install --save classlist.js`.
 
 /**
  * Required to support Web Animations `@angular/platform-browser/animations`.
