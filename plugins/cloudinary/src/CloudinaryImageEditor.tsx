@@ -1,6 +1,6 @@
 /** @jsx jsx */
-import { jsx } from '@emotion/core'
 import React from 'react'
+import { jsx } from '@emotion/core'
 import { Builder } from '@builder.io/sdk'
 import { Typography, Button } from '@material-ui/core'
 import {
@@ -75,10 +75,14 @@ export default class CloudinaryImageEditor extends React.Component<
   }
 
   private appendMediaLibraryScriptToPlugin() {
-    const script = document.createElement('script')
-    script.async = true
-    script.src = 'https://media-library.cloudinary.com/global/all.js'
-    document.head.appendChild(script)
+    const previousScript = document.getElementById('cloudinaryScript')
+    if (!previousScript) {
+      const script = document.createElement('script')
+      script.async = true
+      script.src = `https://media-library.cloudinary.com/global/all.js`
+      script.id = 'cloudinaryScript'
+      document.head.appendChild(script)
+    }
   }
 
   private areCloudinaryCredentialsNotSet(): boolean {

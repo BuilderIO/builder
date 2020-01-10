@@ -187,7 +187,7 @@ describe('Builder cloudinary plugin', () => {
   })
 
   describe('when user selects an image from the cloudinary media widget', () => {
-    it('should pass the image to onChange', () => {
+    it('should pass the image to onChange ', () => {
       let selectedImage = {}
       const cloudinaryImageEditor = mount(
         <CloudinaryImageEditor
