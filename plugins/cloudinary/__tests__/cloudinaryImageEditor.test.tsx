@@ -187,66 +187,31 @@ describe('Builder cloudinary plugin', () => {
   })
 
   describe('when user selects an image from the cloudinary media widget', () => {
-    describe('when media library dialog selects an image with the plugin dialog key', () => {
-      it('should pass the image to onChange ', () => {
-        let selectedImage = {}
-        const cloudinaryImageEditor = mount(
-          <CloudinaryImageEditor
-            context={buildContextWithCloudinarySettings(
-              TestConstants.CLOUDINARY_API_KEY,
-              TestConstants.CLOUDINARY_CLOUDNAME
-            )}
-            onChange={(image: CloudinaryImage) => {
-              selectedImage = image
-            }}
-          />
-        )
+    it('should pass the image to onChange ', () => {
+      let selectedImage = {}
+      const cloudinaryImageEditor = mount(
+        <CloudinaryImageEditor
+          context={buildContextWithCloudinarySettings(
+            TestConstants.CLOUDINARY_API_KEY,
+            TestConstants.CLOUDINARY_CLOUDNAME
+          )}
+          onChange={(image: CloudinaryImage) => {
+            selectedImage = image
+          }}
+        />
+      )
 
-        const pickUpImageButton = cloudinaryImageEditor.find(Button).first()
-        pickUpImageButton.simulate('click')
-        const mediaLibraryDialog = cloudinaryImageEditor.find(
-          CloudinaryMediaLibraryDialog
-        )
+      const pickUpImageButton = cloudinaryImageEditor.find(Button).first()
+      pickUpImageButton.simulate('click')
+      const mediaLibraryDialog = cloudinaryImageEditor.find(
+        CloudinaryMediaLibraryDialog
+      )
 
-        mediaLibraryDialog
-          .props()
-          .selectImage(
-            TestConstants.CLOUDINARY_DATA.assets[0],
-            cloudinaryImageEditor.state('editorKey')
-          )
+      mediaLibraryDialog
+        .props()
+        .selectImage(TestConstants.CLOUDINARY_DATA.assets[0])
 
-        expect(selectedImage).toBe(TestConstants.CLOUDINARY_DATA.assets[0])
-      })
-    })
-
-    describe('when media library dialog selects an image with a different plugin dialog key', () => {
-      it('should NOT pass the image to onChange ', () => {
-        let selectedImage = {}
-        const RANDOM_KEY = 'abc'
-        const cloudinaryImageEditor = mount(
-          <CloudinaryImageEditor
-            context={buildContextWithCloudinarySettings(
-              TestConstants.CLOUDINARY_API_KEY,
-              TestConstants.CLOUDINARY_CLOUDNAME
-            )}
-            onChange={(image: CloudinaryImage) => {
-              selectedImage = image
-            }}
-          />
-        )
-
-        const pickUpImageButton = cloudinaryImageEditor.find(Button).first()
-        pickUpImageButton.simulate('click')
-        const mediaLibraryDialog = cloudinaryImageEditor.find(
-          CloudinaryMediaLibraryDialog
-        )
-
-        mediaLibraryDialog
-          .props()
-          .selectImage(TestConstants.CLOUDINARY_DATA.assets[0], RANDOM_KEY)
-
-        expect(selectedImage).toStrictEqual({})
-      })
+      expect(selectedImage).toBe(TestConstants.CLOUDINARY_DATA.assets[0])
     })
   })
 })

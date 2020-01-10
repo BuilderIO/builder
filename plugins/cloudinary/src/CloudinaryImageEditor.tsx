@@ -17,7 +17,6 @@ interface Props {
 
 // No need to use username for cloudinary login if SSO is enabled
 interface CloudinaryImageEditorState {
-  editorKey: string
   showDialog: boolean
   apiKey: string | undefined
   cloudName: string | undefined
@@ -56,17 +55,7 @@ export default class CloudinaryImageEditor extends React.Component<
   constructor(props: any) {
     super(props)
 
-    /*
-     * The 'editorKey' state property has been added to avoid image overriding,
-     * when the page includes multiple images.
-     * It's injected in the media library dialog, which stores it as a reference
-     * to the last active editor.
-     *
-     * */
-    const editorKey = `imageEditor_${Math.random() * 1000}`
-
     this.state = {
-      editorKey,
       requestCredentials: false,
       showDialog: false,
       apiKey: this.cloudinaryKey ? this.cloudinaryKey : '',
@@ -124,11 +113,9 @@ export default class CloudinaryImageEditor extends React.Component<
     return this.areCloudinaryCredentialsNotSet() ? 'contained' : 'text'
   }
 
-  private selectImage(image: CloudinaryImage, dialogKey: string) {
-    if (this.state.editorKey === dialogKey) {
-      this.props.onChange(image)
-      this.setState({ selectedImagePublicId: image.public_id })
-    }
+  private selectImage(image: CloudinaryImage) {
+    this.props.onChange(image)
+    this.setState({ selectedImagePublicId: image.public_id })
   }
 
   buildSelectedIdMessage(): string {
@@ -178,7 +165,6 @@ export default class CloudinaryImageEditor extends React.Component<
             selectImage={this.selectImage.bind(this)}
             apiKey={this.state.apiKey}
             cloudName={this.state.cloudName}
-            editorKey={this.state.editorKey}
           />
         )}
 
