@@ -12,7 +12,9 @@ interface BuilderSimpleComponentProps {
 }
 
 // TODO: docs
-export class BuilderSimpleComponent extends React.Component<BuilderSimpleComponentProps> {
+export class BuilderSimpleComponent extends React.Component<
+  BuilderSimpleComponentProps
+> {
   state = {
     data: null as any,
     classes: [] as string[],
@@ -95,11 +97,13 @@ export class BuilderSimpleComponent extends React.Component<BuilderSimpleCompone
     }
 
     if (!builder.apiKey) {
-      const subscription = builder['apiKey$'].subscribe((key?: string) => {
-        if (key) {
-          this.getContent()
+      const subscription = builder['apiKey$'].subscribe(
+        (key?: string | null) => {
+          if (key) {
+            this.getContent()
+          }
         }
-      })
+      )
       this.subscriptions.push(() => subscription.unsubscribe())
     }
 
@@ -144,7 +148,10 @@ export class BuilderSimpleComponent extends React.Component<BuilderSimpleCompone
             }
             return
           }
-          if (this.ref && this.ref.classList.contains('builder-editor-injected')) {
+          if (
+            this.ref &&
+            this.ref.classList.contains('builder-editor-injected')
+          ) {
             this.unsubscribe()
           } else {
             this.setState({
@@ -195,7 +202,10 @@ export class BuilderSimpleComponent extends React.Component<BuilderSimpleCompone
   render() {
     const html =
       this.props.html ||
-      (this.state && this.state.data && this.state.data.data && this.state.data.data.html)
+      (this.state &&
+        this.state.data &&
+        this.state.data.data &&
+        this.state.data.data.html)
     return (
       <div
         builder-model={this.props.name}
