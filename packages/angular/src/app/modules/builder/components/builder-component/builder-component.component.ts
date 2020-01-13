@@ -168,7 +168,7 @@ export class BuilderComponentComponent implements OnDestroy, OnInit {
   }
 
   async ensureWcLoadedAndUpdate() {
-    this.ensureWCScriptLoaded();
+    await this.ensureWCScriptLoaded();
     const { onBuilderWcLoad } = window as any;
     if (onBuilderWcLoad) {
       onBuilderWcLoad((BuilderWC: any) => {
