@@ -86,7 +86,7 @@ export class BuilderComponentComponent implements OnDestroy, OnInit {
 
   private get url() {
     const location = this.builderService.getLocation();
-    return location.pathname || ''; 
+    return location.pathname || '';
   }
 
   get key() {
@@ -127,18 +127,7 @@ export class BuilderComponentComponent implements OnDestroy, OnInit {
           // end of world but not ideal for perf
           this.viewContainer.detach();
           if (Builder.isEditing || (value && value.data && this.hydrate !== false)) {
-            await this.ensureWCScriptLoaded();
-            const { onBuilderWcLoad } = window as any;
-            if (onBuilderWcLoad) {
-              onBuilderWcLoad((BuilderWC: any) => {
-                BuilderWC.builder.apiKey = this.builderService.apiKey;
-                BuilderWC.builder.canTrack = this.builderService.canTrack;
-                // TODO: subcribe to user attributes change and upate
-                BuilderWC.builder.setUserAttributes(
-                  omit(this.builderService.getUserAttributes(), 'urlPath')
-                );
-              });
-            }
+            await this.ensureWcLoadedAndUpdate();
           }
         })
       );
@@ -178,9 +167,24 @@ export class BuilderComponentComponent implements OnDestroy, OnInit {
     });
   }
 
+  async ensureWcLoadedAndUpdate() {
+    this.ensureWCScriptLoaded();
+    const { onBuilderWcLoad } = window as any;
+    if (onBuilderWcLoad) {
+      onBuilderWcLoad((BuilderWC: any) => {
+        BuilderWC.builder.apiKey = this.builderService.apiKey;
+        BuilderWC.builder.canTrack = this.builderService.canTrack;
+        // TODO: subcribe to user attributes change and upate
+        BuilderWC.builder.setUserAttributes(
+          omit(this.builderService.getUserAttributes(), 'urlPath')
+        );
+      });
+    }
+  }
+
   ngOnInit() {
     if (!this.prerender) {
-      this.ensureWCScriptLoaded();
+      this.ensureWcLoadedAndUpdate();
     }
   }
 
