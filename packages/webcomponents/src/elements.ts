@@ -253,6 +253,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
         //     })
         //   return
         // }
+        console.log('currentContent?', this.currentContent)
         this.loadReact(
           currentContent ? currentContent : entry ? { id: entry } : null,
           fresh
@@ -365,7 +366,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
 
       const slot = this.getAttribute('slot')
       if (
-        !this.prerender ||
+        (!this.prerender && !this.currentContent) ||
         (Builder.isIframe && (!builder.apiKey || builder.apiKey === 'DEMO'))
       ) {
         const { BuilderPage } = await getReactPromise
