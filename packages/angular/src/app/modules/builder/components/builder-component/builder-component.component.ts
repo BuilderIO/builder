@@ -59,7 +59,7 @@ export interface RouteEvent {
   providers: [BuilderComponentService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BuilderComponentComponent implements OnDestroy {
+export class BuilderComponentComponent implements OnDestroy, OnInit {
   @Input() model: string | undefined /* THIS IS ACTUALLY REQUIRED */;
 
   @Input() set name(name: string | undefined) {
@@ -102,10 +102,6 @@ export class BuilderComponentComponent implements OnDestroy {
     if (this.router && this.reloadOnRoute) {
       // TODO: should the inner function return reloadOnRoute?
       this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    }
-
-    if (!this.prerender) {
-      this.ensureWCScriptLoaded();
     }
 
     if (Builder.isBrowser) {
@@ -179,6 +175,12 @@ export class BuilderComponentComponent implements OnDestroy {
       script.addEventListener('error', e => reject(e.error));
       document.head.appendChild(script);
     });
+  }
+
+  ngOnInit() {
+    if (!this.prerender) {
+      this.ensureWCScriptLoaded();
+    }
   }
 
   ngOnDestroy() {
