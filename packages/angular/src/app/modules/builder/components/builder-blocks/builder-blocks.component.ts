@@ -20,6 +20,7 @@ export class BuilderBlocksComponent implements OnInit {
   @Input() blocks: any;
 
   @Input() child = false;
+  @Input() prerender = true;
   @Input() model = '';
   @Input() key = '';
 
@@ -73,6 +74,12 @@ export class BuilderBlocksComponent implements OnInit {
   }
 
   get _innerHtml() {
+    if (!this.prerender) {
+      return `<builder-component-element prerender="false" ${
+        !this.model ? '' : `name="${this.model}"`
+      }></builder-component-element>`;
+    }
+
     const elStr = !Builder.isEditing
       ? ''
       : `<builder-component-element prerender="false" ${

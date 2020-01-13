@@ -201,6 +201,10 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
     this.lastUrl = this.url;
     this.requesting = true;
 
+    if (this.component && !this.component.prerender) {
+      return;
+    }
+
     const viewRef = this._viewRef;
     if (viewRef && viewRef.destroyed) {
       return;

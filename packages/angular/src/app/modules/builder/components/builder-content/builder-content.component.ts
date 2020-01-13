@@ -31,6 +31,7 @@ export class BuilderContentComponent implements OnInit, OnDestroy {
   @Input() useHtml = false;
   @Input() data: any = {};
   @Input() hydrate = true;
+  @Input() prerender = true;
 
   @Input() set content(content) {
     const currentContent = this._content;

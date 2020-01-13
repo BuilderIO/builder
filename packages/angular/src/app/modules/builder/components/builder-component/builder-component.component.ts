@@ -77,6 +77,7 @@ export class BuilderComponentComponent implements OnDestroy {
 
   @Input() data: any = {};
   @Input() hydrate = true;
+  @Input() prerender = true;
 
   subscriptions = new Subscription();
 
@@ -101,6 +102,10 @@ export class BuilderComponentComponent implements OnDestroy {
     if (this.router && this.reloadOnRoute) {
       // TODO: should the inner function return reloadOnRoute?
       this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    }
+
+    if (!this.prerender) {
+      this.ensureWCScriptLoaded();
     }
 
     if (Builder.isBrowser) {

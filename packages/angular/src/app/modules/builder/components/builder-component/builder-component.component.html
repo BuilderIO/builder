@@ -4,6 +4,7 @@
   <builder-content
     [data]="data"
     [hydrate]="hydrate"
+    [prerender]="prerender"
     [content]="content"
     [options]="options"
     (click)="onClick($event)"
@@ -16,6 +17,7 @@
       field="blocks"
       [key]="key"
       [model]="model"
+      [prerender]="prerender"
       [options]="options"
       [blocks]="content.blocks || content"
     ></builder-blocks>
