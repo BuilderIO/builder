@@ -11,29 +11,29 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/common": "8.2.14",
-    "@angular/compiler": "8.2.14",
-    "@angular/core": "8.2.14",
-    "@angular/forms": "8.2.14",
-    "@angular/platform-browser": "8.2.14",
-    "@angular/platform-browser-dynamic": "8.2.14",
-    "@angular/router": "8.2.14",
+    "@angular/common": "9.0.0-rc.8",
+    "@angular/compiler": "9.0.0-rc.8",
+    "@angular/core": "9.0.0-rc.8",
+    "@angular/forms": "9.0.0-rc.8",
+    "@angular/platform-browser": "9.0.0-rc.8",
+    "@angular/platform-browser-dynamic": "9.0.0-rc.8",
+    "@angular/router": "9.0.0-rc.8",
     "@builder.io/angular": "^1.0.78-alpha.4",
     "@nguniversal/express-engine": "^7.1.0",
     "core-js": "^2.4.1",
     "rxjs": "^6.4.0",
     "tslib": "^1.10.0",
-    "zone.js": "~0.9.1"
+    "zone.js": "~0.10.2"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.803.22",
-    "@angular/cli": "^8.3.22",
-    "@angular/compiler-cli": "^8.2.14",
-    "@angular/language-service": "^8.2.14",
+    "@angular-devkit/build-angular": "~0.900.0-rc.8",
+    "@angular/cli": "^9.0.0-rc.8",
+    "@angular/compiler-cli": "^9.0.0-rc.8",
+    "@angular/language-service": "^9.0.0-rc.8",
     "@types/jasmine": "~2.8.3",
     "@types/jasminewd2": "~2.0.2",
-    "@types/node": "~6.0.60",
-    "codelyzer": "^5.0.1",
+    "@types/node": "^12.11.1",
+    "codelyzer": "^5.1.2",
     "jasmine-core": "~2.8.0",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~2.0.0",
@@ -44,6 +44,6 @@
     "protractor": "~5.1.2",
     "ts-node": "~4.1.0",
     "tslint": "~5.9.1",
-    "typescript": "3.5.3"
+    "typescript": "3.6.4"
   }
 }

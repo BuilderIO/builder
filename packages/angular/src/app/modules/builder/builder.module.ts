@@ -1,6 +1,6 @@
 import './polyfills/custom-elements-es5-adapter';
 import { Builder } from '@builder.io/sdk';
-import { NgModule, ModuleWithProviders, Injector } from '@angular/core';
+import { NgModule, Injector } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BuilderContentComponent } from './components/builder-content/builder-content.component';
 import { BuilderContentDirective } from './directives/builder-content.directive';
