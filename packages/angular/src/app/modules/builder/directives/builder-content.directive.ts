@@ -3,11 +3,11 @@ import {
   EmbeddedViewRef,
   Input,
   Optional,
-  Renderer,
   TemplateRef,
   ViewContainerRef,
   OnInit,
   OnDestroy,
+  Renderer2
 } from '@angular/core';
 import { makeStateKey, StateKey, TransferState } from '@angular/platform-browser';
 import { BuilderContentService } from '../services/builder-content.service';
@@ -54,7 +54,7 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
 
   constructor(
     private _viewContainer: ViewContainerRef,
-    private renderer: Renderer,
+    private renderer: Renderer2,
     private builder: BuilderService,
     private builderComponentService: BuilderComponentService,
     @Optional() private transferState: TransferState,
@@ -186,8 +186,8 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
     this.stateKey = makeStateKey(this.stateKeyString);
     // this.request();
     const rootNode = this._viewRef!.rootNodes[0];
-    this.renderer.setElementAttribute(rootNode, 'builder-model', model);
-    this.renderer.setElementAttribute(rootNode, 'builder-model-name', model.replace(/-/g, ' '));
+    this.renderer.setAttribute(rootNode, 'builder-model', model);
+    this.renderer.setAttribute(rootNode, 'builder-model-name', model.replace(/-/g, ' '));
     this.renderer.listen(rootNode, 'click', (event: MouseEvent) => this.onClick(event));
   }
 
@@ -357,7 +357,7 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
           if (match) {
             const rootNode = this._viewRef!.rootNodes[0];
             this.matchId = match.id;
-            this.renderer.setElementAttribute(rootNode, 'builder-content-entry-id', match.id);
+            this.renderer.setAttribute(rootNode, 'builder-content-entry-id', match.id);
             this.match = match;
             viewRef.context.$implicit = match.data;
             // viewRef.context.results = result.map(item => ({ ...item.data, $id: item.id }));
