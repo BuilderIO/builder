@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/webcomponents",
-  "version": "1.0.125",
+  "version": "1.0.126-0",
   "description": "",
   "keywords": [],
   "main": "./dist/system/builder-webcomponents-async.js",

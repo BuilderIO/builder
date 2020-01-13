@@ -234,6 +234,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
       const slot = this.getAttribute('slot')
 
       if (!this.prerender || !builder.apiKey || fresh) {
+        const currentContent = fresh ? null : this.currentContent
         // if (this.builderPageRef) {
         //   builder
         //     .get(name!, {
@@ -252,7 +253,10 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
         //     })
         //   return
         // }
-        this.loadReact(entry ? { id: entry } : null, fresh)
+        this.loadReact(
+          currentContent ? currentContent : entry ? { id: entry } : null,
+          fresh
+        )
         return
       }
 
