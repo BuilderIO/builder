@@ -253,7 +253,6 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
         //     })
         //   return
         // }
-        console.log('currentContent?', this.currentContent)
         this.loadReact(
           currentContent ? currentContent : entry ? { id: entry } : null,
           fresh
