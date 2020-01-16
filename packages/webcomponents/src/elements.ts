@@ -372,7 +372,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
       ) {
         const { BuilderPage } = await getReactPromise
         await Promise.all([getWidgetsPromise, getShopifyPromise as any])
-        const { default: Shopify } = await getShopifyJsPromise
+        const { Shopify } = await getShopifyJsPromise
 
         // Ensure styles don't load twice
         BuilderPage.renderInto(
@@ -427,7 +427,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
 
             const loadEvent = new CustomEvent('load', { detail: data })
             this.dispatchEvent(loadEvent)
-            const { default: Shopify } = await getShopifyJsPromise
+            const { Shopify } = await getShopifyJsPromise
 
             BuilderPage.renderInto(
               this,
@@ -477,7 +477,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
               if (emailPromise) {
                 await emailPromise
               }
-              const { default: Shopify } = await getShopifyJsPromise
+              const { Shopify } = await getShopifyJsPromise
               BuilderPage.renderInto(
                 this,
                 {

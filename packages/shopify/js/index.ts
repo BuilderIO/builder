@@ -20,7 +20,7 @@ interface State {
 
 // Ugly temporary workaround
 
-export default class Shopify {
+export class Shopify {
   state: State;
   liquid: Liquid;
 
@@ -86,3 +86,5 @@ export class Liquid {
     state[key] = result;
   }
 }
+
+export default Shopify;
