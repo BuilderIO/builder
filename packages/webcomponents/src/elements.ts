@@ -2,6 +2,7 @@ import { GetContentOptions, Builder, builder } from '@builder.io/sdk'
 
 const importReact = () => import('@builder.io/react')
 const importShopify = () => import('@builder.io/shopify/react')
+const importShopifyJs = () => import('@builder.io/shopify/js')
 const importWidgets = () => import('@builder.io/widgets')
 
 const componentName = process.env.ANGULAR
@@ -265,7 +266,6 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
         return false
       }
 
-      // const { currentContent } = this
       const currentContent = fresh ? null : this.currentContent
       if (currentContent && !Builder.isEditing) {
         this.data = currentContent
@@ -347,6 +347,8 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
       const getReactPromise = importReact() // TODO: only import what needed based on what comes back
       const getWidgetsPromise = importWidgets()
       const getShopifyPromise = importShopify()
+      const getShopifyJsPromise = importShopifyJs()
+      // TODO: only load shopify if needed
 
       let emailPromise: Promise<any> | null = null
 
@@ -370,6 +372,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
       ) {
         const { BuilderPage } = await getReactPromise
         await Promise.all([getWidgetsPromise, getShopifyPromise as any])
+        const { default: Shopify } = await getShopifyJsPromise
 
         // Ensure styles don't load twice
         BuilderPage.renderInto(
@@ -377,6 +380,9 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
           {
             ...({ ref: (ref: any) => (this.builderPageRef = ref) } as any),
             modelName: name!,
+            context: {
+              shopify: new Shopify({})
+            },
             emailMode:
               ((this.options as any) || {}).emailMode ||
               this.getAttribute('email-mode') === 'true',
@@ -421,14 +427,16 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
 
             const loadEvent = new CustomEvent('load', { detail: data })
             this.dispatchEvent(loadEvent)
-
-            const { currentContent } = this
+            const { default: Shopify } = await getShopifyJsPromise
 
             BuilderPage.renderInto(
               this,
               {
                 ...({ ref: (ref: any) => (this.builderPageRef = ref) } as any),
                 modelName: name!,
+                context: {
+                  shopify: new Shopify({})
+                },
                 emailMode:
                   ((this.options as any) || {}).emailMode ||
                   this.getAttribute('email-mode') === 'true',
@@ -469,12 +477,16 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
               if (emailPromise) {
                 await emailPromise
               }
+              const { default: Shopify } = await getShopifyJsPromise
               BuilderPage.renderInto(
                 this,
                 {
                   ...({
                     ref: (ref: any) => (this.builderPageRef = ref)
                   } as any),
+                  context: {
+                    shopify: new Shopify({})
+                  },
                   modelName: name!,
                   emailMode:
                     ((this.options as any) || {}).emailMode ||

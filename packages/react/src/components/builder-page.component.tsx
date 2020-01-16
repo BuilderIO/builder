@@ -114,6 +114,7 @@ export interface BuilderPageProps {
   builderBlock?: BuilderElement
   dataOnly?: boolean
   hydrate?: boolean
+  context?: any;
 }
 
 export interface BuilderPageState {
@@ -264,7 +265,7 @@ export class BuilderPage extends React.Component<
     // this.asServer = Boolean(props.hydrate && Builder.isBrowser)
 
     this.state = {
-      context: {},
+      context: props.context || {},
       state: Object.assign(this.rootState, {
         ...(this.props.content &&
           this.props.content.data &&

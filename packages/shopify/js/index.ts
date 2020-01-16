@@ -32,6 +32,14 @@ export default class Shopify {
   toJSON() {
     return null;
   }
+
+  get(str: string, state = this.state) {
+    return this.liquid.get(str, state);
+  }
+  
+  render(str: string, state = this.state) {
+    return this.liquid.render(str, state);
+  }
 }
 
 export class Liquid {
