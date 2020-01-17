@@ -17,6 +17,8 @@ class SectionComponent extends React.Component<SectionProps> {
       <div
         css={{
           width: '100%',
+          // height: '100%' was is here so the inner contents can align center, but that is causing 
+          // issues in Safari. Need another workaround.
           alignSelf: 'stretch',
           flexGrow: 1,
           boxSizing: 'border-box',
