@@ -160,7 +160,8 @@ export const Symbol = withBuilder(SymbolComponent, {
       helperText: `Make this a data symbol that doesn't display any UI`,
       type: 'boolean',
       defaultValue: false,
-      advanced: true
+      advanced: true,
+      hideFromUI: true
     }
   ]
 })
