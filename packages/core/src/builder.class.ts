@@ -220,6 +220,30 @@ export interface Component {
   // For webcomponents
   tag?: string;
   static?: boolean;
+
+  /** not yet implemented */
+  friendlyName?: string;
+}
+
+type RecursivePartial<T> = {
+  [P in keyof T]?: T[P] extends (infer U)[]
+    ? RecursivePartial<U>[]
+    : T[P] extends object
+    ? RecursivePartial<T[P]>
+    : T[P];
+};
+
+export interface InsertMenuItem {
+  name: string;
+  icon?: string;
+  item: RecursivePartial<BuilderElement>;
+}
+
+export interface InsertMenuConfig {
+  name: string;
+  priority?: number;
+  advanced?: boolean;
+  items: InsertMenuItem[];
 }
 
 export function BuilderComponent(info: Partial<Component> = {}) {
@@ -248,6 +272,30 @@ export class Builder {
   static plugins: any[] = [];
 
   static actions: Action[] = [];
+  static registry: { [key: string]: any[] };
+
+  static register(type: 'insertMenu', info: InsertMenuConfig): void;
+  static register(type: string, info: any) {
+    // TODO: all must have name and can't conflict?
+    let typeList = this.registry[type];
+    if (!typeList) {
+      typeList = this.registry[type] = [];
+    }
+    typeList.push(info);
+    if (Builder.isBrowser) {
+      const message = {
+        type: 'builder.register',
+        data: {
+          type,
+          info,
+        },
+      };
+      parent.postMessage(message, '*');
+      if (parent !== window) {
+        window.postMessage(message, '*');
+      }
+    }
+  }
 
   static registerEditor(info: any) {
     if (Builder.isBrowser) {
@@ -385,10 +433,10 @@ export class Builder {
 
   // static registerComponent(...) { .. }
   static registerComponent(component: any, options: Component) {
-    this.addComponent({ 
+    this.addComponent({
       class: component,
-      ...options
-    })
+      ...options,
+    });
   }
 
   private static addComponent(component: Component) {

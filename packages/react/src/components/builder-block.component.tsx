@@ -187,7 +187,7 @@ export class BuilderBlock extends React.Component<
   get emotionCss() {
     let initialAnimationStepStyles: any
     const { block } = this.props
-    if (this.privateState.state.isServer) {
+    if (Builder.isServer) {
       const animation = block.animations && block.animations[0]
       const firstStep = animation && animation.steps && animation.steps[0]
       const stepStyles = firstStep && firstStep.styles
@@ -203,7 +203,11 @@ export class BuilderBlock extends React.Component<
       for (const size of reversedNames) {
         if (size === 'large') {
           if (!this.props.emailMode) {
-            styles[`&.builder-block`] = self.responsiveStyles[size]
+            styles[`&.builder-block`] = Object.assign(
+              {},
+              self.responsiveStyles[size],
+              initialAnimationStepStyles
+            )
           }
         } else {
           styles[`@media only screen and (max-width: ${sizes[size].max}px)`] = {
@@ -213,7 +217,7 @@ export class BuilderBlock extends React.Component<
       }
     }
 
-    return Object.assign(styles, initialAnimationStepStyles)
+    return styles
   }
 
   get css() {
