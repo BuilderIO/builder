@@ -2,8 +2,8 @@
 import { jsx, css, keyframes } from '@emotion/core';
 
 import React, { useEffect, useState } from 'react';
-import { Builder, BuilderElement } from '@builder.io/sdk';
-import { BuilderStore, BuilderStoreContext, BuilderBlocks } from '@builder.io/react';
+import { BuilderElement } from '@builder.io/sdk';
+import { Builder, BuilderStore, BuilderStoreContext, BuilderBlocks } from '@builder.io/react';
 import { modifyProduct } from '../functions/modify-product';
 
 interface ProductBoxProps {
