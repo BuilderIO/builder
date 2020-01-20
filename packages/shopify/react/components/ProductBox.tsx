@@ -46,6 +46,7 @@ function LoadingSpinner() {
 }
 
 export function ProductBox(props: ProductBoxProps) {
+  let productId = props.product || '';
   const [productInfo, setProductInfo] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -54,11 +55,10 @@ export function ProductBox(props: ProductBoxProps) {
   }, [props.product]);
 
   function updateProduct() {
-    setLoading(true);
     const { context } = props.builderState!;
-    let productId = props.product || '';
 
     if (productId) {
+      setLoading(true);
       fetch(`https://builder.io/api/v1/shopify/products/${productId}.json?apiKey=${context.apiKey}`)
         .then(res => res.json())
         .then(data => {
@@ -76,7 +76,18 @@ export function ProductBox(props: ProductBoxProps) {
     }
   }
 
-  return loading && !productInfo ? (
+  return Builder.isEditing && !productId ? (
+    // TODO: <Info> component
+    <div
+      css={{
+        padding: 20,
+        opacity: 0.7,
+        textAlign: 'center',
+      }}
+    >
+      Click to choose a product
+    </div>
+  ) : loading && !productInfo ? (
     <LoadingSpinner />
   ) : (
     <BuilderStoreContext.Consumer>
