@@ -381,7 +381,8 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
             ...({ ref: (ref: any) => (this.builderPageRef = ref) } as any),
             modelName: name!,
             context: {
-              shopify: new Shopify({})
+              shopify: new Shopify({}),
+              apiKey: builder.apiKey
             },
             emailMode:
               ((this.options as any) || {}).emailMode ||
@@ -435,7 +436,8 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
                 ...({ ref: (ref: any) => (this.builderPageRef = ref) } as any),
                 modelName: name!,
                 context: {
-                  shopify: new Shopify({})
+                  shopify: new Shopify({}),
+                  apiKey: builder.apiKey
                 },
                 emailMode:
                   ((this.options as any) || {}).emailMode ||
@@ -485,7 +487,8 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
                     ref: (ref: any) => (this.builderPageRef = ref)
                   } as any),
                   context: {
-                    shopify: new Shopify({})
+                    shopify: new Shopify({}),
+                    apiKey: builder.apiKey
                   },
                   modelName: name!,
                   emailMode:

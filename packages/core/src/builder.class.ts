@@ -440,10 +440,21 @@ export class Builder {
 
   // static registerComponent(...) { .. }
   static registerComponent(component: any, options: Component) {
-    this.addComponent({
+    const spec = {
       class: component,
       ...options,
-    });
+    };
+    this.addComponent(spec);
+    if (isBrowser) {
+      const sendSpec = this.prepareComponentSpecToSend(spec);
+      window.parent.postMessage(
+        {
+          type: 'builder.registerComponent',
+          data: sendSpec,
+        },
+        '*'
+      );
+    }
   }
 
   private static addComponent(component: Component) {
