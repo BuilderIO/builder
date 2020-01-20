@@ -36,9 +36,14 @@ export class Shopify {
   get(str: string, state = this.state) {
     return this.liquid.get(str, state);
   }
-  
+
   render(str: string, state = this.state) {
     return this.liquid.render(str, state);
+  }
+
+  // Variation - instaed or as well
+  addToCart(productId: string | number) {
+    // TODO
   }
 }
 

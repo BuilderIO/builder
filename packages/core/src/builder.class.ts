@@ -272,7 +272,7 @@ export class Builder {
   static plugins: any[] = [];
 
   static actions: Action[] = [];
-  static registry: { [key: string]: any[] };
+  static registry: { [key: string]: any[] } = {};
 
   static register(type: 'insertMenu', info: InsertMenuConfig): void;
   static register(type: string, info: any) {
