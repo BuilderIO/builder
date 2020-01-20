@@ -33,6 +33,7 @@ export function ProductBox(props: ProductBoxProps) {
   }
 
   return (
+    // TODO: if loading or SSR show loading spinner
     <BuilderStoreContext.Consumer>
       {store => (
         <BuilderStoreContext.Provider
