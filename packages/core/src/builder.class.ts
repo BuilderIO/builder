@@ -274,6 +274,10 @@ export class Builder {
   static actions: Action[] = [];
   static registry: { [key: string]: any[] } = {};
 
+  /**
+   * @todo `key` property on any info where if a key matches a current
+   * key it gets removed
+   */
   static register(type: 'insertMenu', info: InsertMenuConfig): void;
   static register(type: string, info: any) {
     // TODO: all must have name and can't conflict?
@@ -295,7 +299,10 @@ export class Builder {
         window.postMessage(message, '*');
       }
     }
+    this.registryChange.next(this.registry);
   }
+
+  static registryChange = new BehaviorSubject({} as typeof Builder.registry);
 
   static registerEditor(info: any) {
     if (Builder.isBrowser) {
