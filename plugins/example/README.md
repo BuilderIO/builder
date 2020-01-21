@@ -15,6 +15,7 @@ contact steve@builder.io for help
 git clone https://github.com/BuilderIO/builder.git
 cp -r plugins/example plugins/your-plugin-name
 cd plugins/your-plugin-name
+npm install
 ```
 
 ### Develop
