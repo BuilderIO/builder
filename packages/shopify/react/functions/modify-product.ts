@@ -17,7 +17,7 @@ export function modifyProduct(product: any) {
   product.description = product.body_html;
   product.options_with_values = product.options;
 
-  const minPriceVariation = product.variations.reduce((current: any, item: any) => {
+  const minPriceVariation = product.variants.reduce((current: any, item: any) => {
     if (current === item) {
       return current;
     }
@@ -25,7 +25,7 @@ export function modifyProduct(product: any) {
     const newMin = parseFloat(item.price);
 
     return currentMin <= newMin ? current : item;
-  }, product.variations[0]);
+  }, product.variants[0]);
 
   // TODO: other currencies
   product.price = '$' + minPriceVariation.price;

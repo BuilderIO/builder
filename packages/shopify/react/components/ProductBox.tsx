@@ -4,7 +4,12 @@ import styled from '@emotion/styled';
 
 import React, { useEffect, useState } from 'react';
 import { BuilderElement } from '@builder.io/sdk';
-import { Builder, BuilderStore, BuilderStoreContext, BuilderBlockComponent } from '@builder.io/react';
+import {
+  Builder,
+  BuilderStore,
+  BuilderStoreContext,
+  BuilderBlockComponent,
+} from '@builder.io/react';
 import { modifyProduct } from '../functions/modify-product';
 
 interface ProductBoxProps {
@@ -82,7 +87,7 @@ export function ProductBox(props: ProductBoxProps) {
         textAlign: 'center',
       }}
     >
-      Click to choose a product
+      Double click to choose a product
     </div>
   ) : loading && !productInfo ? (
     <LoadingSpinner />
@@ -110,6 +115,8 @@ export function ProductBox(props: ProductBoxProps) {
 
 Builder.registerComponent(ProductBox, {
   name: 'Shopify:ProductBox',
+  image:
+    'https://cdn.builder.io/api/v1/image/assets%2Fd4fb2d0e6f954b31b60f6f0573e91b0c%2Fff2fd04bad384f30837b40bda8a062dc',
   canHaveChildren: true,
   hideFromInsertMenu: true,
   inputs: [

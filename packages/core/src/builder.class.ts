@@ -225,18 +225,19 @@ export interface Component {
   friendlyName?: string;
 }
 
-type RecursivePartial<T> = {
-  [P in keyof T]?: T[P] extends (infer U)[]
-    ? RecursivePartial<U>[]
-    : T[P] extends object
-    ? RecursivePartial<T[P]>
-    : T[P];
+type DeepPartial<T> = {
+  [P in keyof T]?: T[P] extends Array<infer U>
+    ? Array<DeepPartial<U>>
+    : T[P] extends ReadonlyArray<infer U>
+      ? ReadonlyArray<DeepPartial<U>>
+      : DeepPartial<T[P]>
 };
+
 
 export interface InsertMenuItem {
   name: string;
   icon?: string;
-  item: RecursivePartial<BuilderElement>;
+  item: DeepPartial<BuilderElement>;
 }
 
 export interface InsertMenuConfig {
