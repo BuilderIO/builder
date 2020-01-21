@@ -66,9 +66,9 @@ Using these frameworks in Builder plugins ensures best possible experience and p
 
 ### Publishing
 
-Publishing can be done through any hosting service. We recommend using NPM + Unpkg.
-To publish this specific plugin send a pull request to this repo and then we will publish a new version.
-You can also publish to your own NPM or a hosting service.
+We recommend sending us a pull request with your plugin so we can publish it on your behalf. 
+
+If required, you can also publish to your own NPM or a hosting service.
 
 To load a plugin from NPM
 
