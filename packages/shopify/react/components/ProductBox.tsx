@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx, css, keyframes } from '@emotion/core';
 import styled from '@emotion/styled';
-
+import { ShopifyProduct } from '../interfaces/shopify-product';
 import React, { useEffect, useState } from 'react';
 import { BuilderElement } from '@builder.io/sdk';
 import {
@@ -29,6 +29,12 @@ const spin = keyframes`
   }
 `;
 
+const Box = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'stretch',
+});
+
 const LoadingSpinner = styled.div`
   width: 4em;
   height: 4em;
@@ -47,7 +53,7 @@ const LoadingSpinner = styled.div`
 
 export function ProductBox(props: ProductBoxProps) {
   let productId = props.product || '';
-  const [productInfo, setProductInfo] = useState(null);
+  const [productInfo, setProductInfo] = useState<ShopifyProduct | null>(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -78,6 +84,33 @@ export function ProductBox(props: ProductBoxProps) {
     }
   }
 
+  function onClick(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+    if (!props.builderBlock?.component?.options?.linkToProductPageOnClick) {
+      return;
+    }
+    if (!productInfo) {
+      return;
+    }
+    const url = `/products/${productInfo.handle}`;
+    function goToProductPage() {
+      location.href = url;
+    }
+    const { target, currentTarget } = e;
+    if (target === currentTarget) {
+      goToProductPage();
+    }
+    let current = target as HTMLElement | null;
+    while (current && (current = current.parentElement)) {
+      if (!current) {
+        break;
+      } else if (current === currentTarget) {
+        goToProductPage();
+      } else if (['SELECT', 'INPUT', 'FORM', 'BUTTON', 'A'].includes(current.tagName)) {
+        break;
+      }
+    }
+  }
+
   return Builder.isEditing && !productId ? (
     // TODO: <Info> component
     <div
@@ -104,9 +137,11 @@ export function ProductBox(props: ProductBoxProps) {
             },
           }}
         >
-          {props.builderBlock?.children?.map(item => (
-            <BuilderBlockComponent block={item} key={item.id} />
-          ))}
+          <Box onClick={onClick}>
+            {props.builderBlock?.children?.map(item => (
+              <BuilderBlockComponent block={item} key={item.id} />
+            ))}
+          </Box>
         </BuilderStoreContext.Provider>
       )}
     </BuilderStoreContext.Consumer>
@@ -123,6 +158,11 @@ Builder.registerComponent(ProductBox, {
     {
       name: 'product',
       type: 'ShopifyProduct',
+    },
+    {
+      name: 'linkToProductPageOnClick',
+      type: 'boolean',
+      defaultValue: true,
     },
   ],
 });
