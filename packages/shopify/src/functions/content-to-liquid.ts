@@ -1,7 +1,6 @@
 import { BuilderElement, BuilderContent } from '@builder.io/sdk';
 import { format } from 'prettier/standalone';
 import * as parserCss from 'prettier/parser-postcss';
-import * as parserGlimmer from 'prettier/parser-glimmer';
 import * as parserHtml from 'prettier/parser-html';
 import { Options as PrettierOptions } from 'prettier';
 import { blockToLiquid } from './block-to-liquid';
@@ -84,7 +83,10 @@ export const convertTemplateLiteralsToTags = (liquid: string, options: Options =
       // HACK: get this into the appropriate place
       .replace(/context\.shopify\.liquid\.get\(\s*"(.*?)"\s*state\)/g, '$1')
       // TODO: can have double quotes in value
-      .replace(/{{\s*context\.shopify\.liquid\.render\(("|&quot;)(.*?)("|&quot;),\s*state\)\s*}}/g, '$2');
+      .replace(
+        /{{\s*context\.shopify\.liquid\.render\(("|&quot;)(.*?)("|&quot;),\s*state\)\s*}}/g,
+        '$2'
+      );
 
     if (options.convertShopifyBindings !== false) {
       latest = latest
@@ -175,7 +177,7 @@ const prettify = (str: string, options?: PrettierOptions) => {
   try {
     return format(str, {
       ...options,
-      plugins: [parserGlimmer, parserHtml, parserCss].concat(options?.plugins || []), // TODO: how replace too
+      plugins: [parserHtml, parserCss].concat((options?.plugins || []) as any[]), // TODO: how replace too
     });
   } catch (err) {
     console.warn('Could not format code', err, { code: str });

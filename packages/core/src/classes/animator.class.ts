@@ -167,6 +167,7 @@ export class Animator {
       return;
     }
 
+    // TODO: if server side rendered and scrolled into view don't animate...
     Array.from(elements).forEach(element => {
       this.augmentAnimation(animation, element);
 

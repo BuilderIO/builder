@@ -36,7 +36,7 @@ export class BuilderBlocks extends React.Component<BuilderBlocksProps, BuilderBl
   }
   get path() {
     const pathPrefix = 'component.options.'
-    let path = this.props.dataPath || ''
+    let path = this.props.dataPath || 'children'
     const thisPrefix = 'this.'
     if (path.trim()) {
       if (path.startsWith(thisPrefix)) {

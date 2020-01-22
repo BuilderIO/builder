@@ -24,9 +24,13 @@ const basicOptions = {
       tsconfig: join(__dirname, 'tsconfig.json'),
     }),
     json(),
-    commonjs({}),
+    commonjs({
+      namedExports: {
+        'node_modules/liquidjs/dist/liquid.js': ['Liquid', 'Context', 'Expression']
+      }
+    }),
     alias({
-      liquidjs: join(__dirname, './node_modules/liquidjs/dist/liquid.esm.js'),
+      liquidjs: join(__dirname, './node_modules/liquidjs/dist/liquid.js'),
     }),
   ],
 };

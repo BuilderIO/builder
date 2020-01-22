@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/sdk",
-  "version": "1.0.56",
+  "version": "1.0.57",
   "unpkg": "./dist/index.browser.js",
   "main": "./dist/index.cjs.js",
   "module": "./dist/index.esm.js",
@@ -20,7 +20,7 @@
     "release": "npm run build && npm publish",
     "release:patch": "npm run build && npm version patch && npm publish",
     "release:patch:nightly": "npm run build && npm version patch && npm publish",
-    "release:prerelease:dev": "npm run build && npm version prerelease --no-git-tag-version && npm publish --tag dev"
+    "release:dev": "npm run build && npm version prerelease --no-git-tag-version && npm publish --tag dev"
   },
   "devDependencies": {
     "@medv/finder": "^1.1.1",

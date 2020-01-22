@@ -20,7 +20,7 @@ interface State {
 
 // Ugly temporary workaround
 
-export default class Shopify {
+export class Shopify {
   state: State;
   liquid: Liquid;
 
@@ -31,6 +31,19 @@ export default class Shopify {
 
   toJSON() {
     return null;
+  }
+
+  get(str: string, state = this.state) {
+    return this.liquid.get(str, state);
+  }
+
+  render(str: string, state = this.state) {
+    return this.liquid.render(str, state);
+  }
+
+  // Variation - instaed or as well
+  addToCart(productId: string | number) {
+    // TODO
   }
 }
 
@@ -78,3 +91,5 @@ export class Liquid {
     state[key] = result;
   }
 }
+
+export default Shopify;

@@ -48,7 +48,7 @@ const last = <T extends any>(arr: T[]) => arr[arr.length - 1]
 function omit(obj: any, values: string[]) {
   const newObject = Object.assign({}, obj)
   for (const key of values) {
-    delete (newObject)[key]
+    delete newObject[key]
   }
   return newObject
 }
@@ -185,6 +185,17 @@ export class BuilderBlock extends React.Component<
   }
 
   get emotionCss() {
+    let initialAnimationStepStyles: any
+    const { block } = this.props
+    if (Builder.isServer) {
+      const animation = block.animations && block.animations[0]
+      const firstStep = animation && animation.steps && animation.steps[0]
+      const stepStyles = firstStep && firstStep.styles
+      if (stepStyles) {
+        initialAnimationStepStyles = stepStyles
+      }
+    }
+
     const reversedNames = sizeNames.slice().reverse()
     const self = this.props.block
     const styles: any = {}
@@ -192,7 +203,11 @@ export class BuilderBlock extends React.Component<
       for (const size of reversedNames) {
         if (size === 'large') {
           if (!this.props.emailMode) {
-            styles[`&.builder-block`] = self.responsiveStyles[size]
+            styles[`&.builder-block`] = Object.assign(
+              {},
+              self.responsiveStyles[size],
+              initialAnimationStepStyles
+            )
           }
         } else {
           styles[`@media only screen and (max-width: ${sizes[size].max}px)`] = {
@@ -325,7 +340,7 @@ export class BuilderBlock extends React.Component<
     }
   }
 
-  lastAttrs: any;
+  lastAttrs: any
 
   updateAttrs(attrs: { [key: string]: string }) {
     // TODO: comb over lastAttrs and remove any that were there but are not now
@@ -339,7 +354,7 @@ export class BuilderBlock extends React.Component<
           }
         } else if (ref.hasAttribute(attr)) {
           ref.removeAttribute(attr)
-        } 
+        }
       }
     }
   }
@@ -553,7 +568,9 @@ export class BuilderBlock extends React.Component<
 
     if (Builder.isIframe) {
       // TODO: removed bc JS can add styles inline too?
-      ;(finalOptions as any)['builder-inline-styles'] = !(options.attr && options.attr.style)
+      ;(finalOptions as any)['builder-inline-styles'] = !(
+        options.attr && options.attr.style
+      )
         ? ''
         : Object.keys(options.style).reduce(
             (memo, key) =>
@@ -634,24 +651,24 @@ export class BuilderBlock extends React.Component<
                           {...innerComponentProperties}
                         />
                       )}
-                      {(block as any).text || options.text ? (
-                        options.text
-                      ) : !InnerComponent &&
-                        children &&
-                        Array.isArray(children) &&
-                        children.length ? (
-                        children.map((block: ElementType, index: number) => (
-                          <BuilderBlock
-                            key={((this.id as string) || '') + index}
-                            block={block}
-                            index={index}
-                            size={this.props.size}
-                            fieldName={this.props.fieldName}
-                            child={this.props.child}
-                            emailMode={this.props.emailMode}
-                          />
-                        ))
-                      ) : null}
+                      {(block as any).text || options.text
+                        ? options.text
+                        : !InnerComponent &&
+                          children &&
+                          Array.isArray(children) &&
+                          children.length
+                        ? children.map((block: ElementType, index: number) => (
+                            <BuilderBlock
+                              key={((this.id as string) || '') + index}
+                              block={block}
+                              index={index}
+                              size={this.props.size}
+                              fieldName={this.props.fieldName}
+                              child={this.props.child}
+                              emailMode={this.props.emailMode}
+                            />
+                          ))
+                        : null}
                     </TagName>
                   )
                 }}

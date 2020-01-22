@@ -220,6 +220,10 @@ export class BuilderComponentComponent implements OnDestroy, OnInit {
       return;
     }
 
+    if (href.startsWith('javascript:')) {
+      return;
+    }
+
     const routeEvent: RouteEvent = {
       url: href,
       anchorNode: hrefTarget,
