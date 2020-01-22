@@ -90,9 +90,11 @@ class FormComponent extends React.Component<FormProps> {
                   const formPairs: {
                     key: string
                     value: File | boolean | number | string
-                  }[] = (Array.from(
-                    event.currentTarget.querySelectorAll('input,select,textarea')
-                  ))
+                  }[] = Array.from(
+                    event.currentTarget.querySelectorAll(
+                      'input,select,textarea'
+                    )
+                  )
                     .filter(el => !!(el as HTMLInputElement).name)
                     .map(el => {
                       let value: any
@@ -105,7 +107,10 @@ class FormComponent extends React.Component<FormProps> {
                           }
                         } else if (el.type === 'checkbox') {
                           value = el.checked
-                        } else if (el.type === 'number' || el.type === 'range') {
+                        } else if (
+                          el.type === 'number' ||
+                          el.type === 'range'
+                        ) {
                           const num = el.valueAsNumber
                           if (!isNaN(num)) {
                             value = num
@@ -125,7 +130,7 @@ class FormComponent extends React.Component<FormProps> {
 
                   let contentType = this.props.contentType
 
-                  formPairs.forEach(({ value }) => {
+                  Array.from(formPairs).forEach(({ value }) => {
                     if (
                       value instanceof File ||
                       (Array.isArray(value) && value[0] instanceof File)
@@ -138,14 +143,14 @@ class FormComponent extends React.Component<FormProps> {
                     body = formData
                   } else if (contentType === 'multipart/formdata') {
                     body = new URLSearchParams()
-                    formPairs.forEach(({ value, key }) => {
+                    Array.from(formPairs).forEach(({ value, key }) => {
                       body.append(key, value)
                     })
                   } else {
                     // Json
                     const json = {}
 
-                    formPairs.forEach(({ value, key }) => {
+                    Array.from(formPairs).forEach(({ value, key }) => {
                       set(json, key, value)
                     })
 
@@ -177,7 +182,10 @@ class FormComponent extends React.Component<FormProps> {
                     async res => {
                       let body
                       const contentType = res.headers.get('content-type')
-                      if (contentType && contentType.indexOf('application/json') !== -1) {
+                      if (
+                        contentType &&
+                        contentType.indexOf('application/json') !== -1
+                      ) {
                         body = await res.json()
                       } else {
                         body = await res.text()
@@ -209,12 +217,15 @@ class FormComponent extends React.Component<FormProps> {
                       if (res.ok) {
                         // TODO: send submit success event
 
-                        const submitSuccessEvent = new CustomEvent('submit:success', {
-                          detail: {
-                            res,
-                            body
+                        const submitSuccessEvent = new CustomEvent(
+                          'submit:success',
+                          {
+                            detail: {
+                              res,
+                              body
+                            }
                           }
-                        })
+                        )
                         if (this.ref) {
                           this.ref.dispatchEvent(submitSuccessEvent)
                           if (submitSuccessEvent.defaultPrevented) {
@@ -277,11 +288,17 @@ class FormComponent extends React.Component<FormProps> {
                 ))}
 
               {this.submissionState === 'error' && (
-                <BuilderBlocks dataPath="errorMessage" blocks={this.props.errorMessage!} />
+                <BuilderBlocks
+                  dataPath="errorMessage"
+                  blocks={this.props.errorMessage!}
+                />
               )}
 
               {this.submissionState === 'sending' && (
-                <BuilderBlocks dataPath="sendingMessage" blocks={this.props.sendingMessage!} />
+                <BuilderBlocks
+                  dataPath="sendingMessage"
+                  blocks={this.props.sendingMessage!}
+                />
               )}
 
               {/* TODO: option to turn this off */}
@@ -296,7 +313,10 @@ class FormComponent extends React.Component<FormProps> {
               )}
 
               {this.submissionState === 'success' && (
-                <BuilderBlocks dataPath="successMessage" blocks={this.props.successMessage!} />
+                <BuilderBlocks
+                  dataPath="successMessage"
+                  blocks={this.props.successMessage!}
+                />
               )}
             </form>
           </BuilderStoreContext.Provider>
@@ -354,8 +374,13 @@ export const Form = withBuilder(FormComponent, {
       defaultValue: 'application/json',
       advanced: true,
       // TODO: do automatically if file input
-      enum: ['application/json', 'multipart/formdata', 'application/x-www-form-urlencoded'],
-      showIf: 'options.get("sendSubmissionsTo") === "custom" && options.get("sendWithJs") === true'
+      enum: [
+        'application/json',
+        'multipart/formdata',
+        'application/x-www-form-urlencoded'
+      ],
+      showIf:
+        'options.get("sendSubmissionsTo") === "custom" && options.get("sendWithJs") === true'
     },
     {
       name: 'method',
@@ -366,14 +391,17 @@ export const Form = withBuilder(FormComponent, {
     {
       name: 'successUrl',
       type: 'url',
-      helperText: 'Optional URL to redirect the user to on form submission success',
-      showIf: 'options.get("sendSubmissionsTo") === "custom" && options.get("sendWithJs") === true'
+      helperText:
+        'Optional URL to redirect the user to on form submission success',
+      showIf:
+        'options.get("sendSubmissionsTo") === "custom" && options.get("sendWithJs") === true'
     },
     {
       name: 'resetFormOnSubmit',
       type: 'boolean',
       showIf: options =>
-        options.get('sendSubmissionsTo') === 'custom' && options.get('sendWithJs') === true,
+        options.get('sendSubmissionsTo') === 'custom' &&
+        options.get('sendWithJs') === true,
       advanced: true
     },
     // TODO: maybe
@@ -390,7 +418,8 @@ export const Form = withBuilder(FormComponent, {
       enum: ['unsubmitted', 'sending', 'success', 'error'],
       helperText:
         'Choose a state to edit, e.g. choose "success" to show what users see on success and edit the message',
-      showIf: 'options.get("sendSubmissionsTo") === "custom" && options.get("sendWithJs") === true'
+      showIf:
+        'options.get("sendSubmissionsTo") === "custom" && options.get("sendWithJs") === true'
     },
     {
       name: 'successMessage',
@@ -439,13 +468,15 @@ export const Form = withBuilder(FormComponent, {
             }
           },
           bindings: {
-            'component.options.text': 'state.formErrorMessage || block.component.options.text'
+            'component.options.text':
+              'state.formErrorMessage || block.component.options.text'
           },
           component: {
             name: 'Text',
             options: {
               // TODO: how pull in API message
-              text: '<span>Form submission error :( Please check your answers and try again</span>'
+              text:
+                '<span>Form submission error :( Please check your answers and try again</span>'
             }
           }
         }
@@ -483,7 +514,8 @@ export const Form = withBuilder(FormComponent, {
         }
       } as any),
       advanced: true,
-      showIf: 'options.get("sendSubmissionsTo") === "custom" && options.get("sendWithJs") === true'
+      showIf:
+        'options.get("sendSubmissionsTo") === "custom" && options.get("sendWithJs") === true'
     }
     // TODO: custom headers or any fetch options
     // TODO: json vs serialized (i.e. send on client or not)

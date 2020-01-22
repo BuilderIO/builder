@@ -16,21 +16,21 @@ const globalReplaceNodes = ({} as { [key: string]: Element }) || null
 if (Builder.isBrowser && globalReplaceNodes) {
   try {
     // TODO: keep track of indexes for if this is repeated have globalReplaceNodes[key][index]
-    document
-      .querySelectorAll(
+    Array.from(
+      document.querySelectorAll(
         location.host === 'heybloomwell.com'
           ? '.builder-custom-code'
           : '.builder-custom-code.replace-nodes'
       )
-      .forEach(el => {
-        const parent = el.parentElement
-        const id = parent && parent.getAttribute('builder-id')
-        if (id) {
-          // TODO: keep array of these for lists
-          globalReplaceNodes[id] = el
-          el.remove()
-        }
-      })
+    ).forEach(el => {
+      const parent = el.parentElement
+      const id = parent && parent.getAttribute('builder-id')
+      if (id) {
+        // TODO: keep array of these for lists
+        globalReplaceNodes[id] = el
+        el.remove()
+      }
+    })
   } catch (err) {
     console.error('Builder replace nodes error:', err)
   }
