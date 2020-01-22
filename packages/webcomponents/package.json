@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/webcomponents",
-  "version": "1.0.130",
+  "version": "1.0.131",
   "description": "",
   "keywords": [],
   "main": "./dist/system/builder-webcomponents-async.js",
@@ -150,7 +150,7 @@
   "dependencies": {
     "@builder.io/react": "^1.0.108",
     "@builder.io/sdk": "^1.0.57",
-    "@builder.io/shopify": "^1.1.41",
+    "@builder.io/shopify": "^1.1.42",
     "@builder.io/widgets": "^1.0.100",
     "@emotion/core": "^10.0.22",
     "preact": "^10.1.0",
