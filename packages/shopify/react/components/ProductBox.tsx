@@ -91,6 +91,9 @@ export function ProductBox(props: ProductBoxProps) {
     if (!productInfo) {
       return;
     }
+    if (e.defaultPrevented || Builder.isEditing) {
+      return;
+    }
     const url = `/products/${productInfo.handle}`;
     function goToProductPage() {
       location.href = url;
