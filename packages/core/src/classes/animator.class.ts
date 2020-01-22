@@ -85,7 +85,7 @@ export class Animator {
       return;
     }
 
-    elements.forEach(element => {
+    Array.from(elements).forEach(element => {
       this.augmentAnimation(animation, element);
       // TODO: do this properly, may have other animations of different properties
 
@@ -130,7 +130,7 @@ export class Animator {
       return;
     }
 
-    elements.forEach(element => {
+    Array.from(elements).forEach(element => {
       this.augmentAnimation(animation, element);
 
       const defaultState = animation.steps[0].styles;
@@ -167,7 +167,7 @@ export class Animator {
       return;
     }
 
-    elements.forEach(element => {
+    Array.from(elements).forEach(element => {
       this.augmentAnimation(animation, element);
 
       let triggered = false;

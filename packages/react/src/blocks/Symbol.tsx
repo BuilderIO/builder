@@ -26,32 +26,6 @@ export interface SymbolProps {
   attributes?: any
 }
 
-function traverse(
-  obj: any,
-  cb: (obj: any, key?: string) => void,
-  key?: string
-) {
-  cb(obj, key)
-  if (obj && typeof obj === 'object') {
-    Object.keys(obj).forEach(key => {
-      const value = obj[key]
-      traverse(value, cb, key)
-    })
-  }
-}
-
-const getAllObjects = (blocks: any[]) => {
-  const list: any[] = []
-  blocks.forEach(block => {
-    traverse(block, child => {
-      if (child && typeof child === 'object') {
-        list.push(child)
-      }
-    })
-  })
-  return list
-}
-
 class SymbolComponent extends React.Component<SymbolProps> {
   get placeholder() {
     return (
@@ -64,7 +38,7 @@ class SymbolComponent extends React.Component<SymbolProps> {
 
   shouldComponentUpdate(nextProps: any) {
     if (Builder.isEditing) {
-      // TODO: maybe don't do this for editor perf of symbols with lots of 
+      // TODO: maybe don't do this for editor perf of symbols with lots of
       // data
       if (hash(nextProps) === hash(this.props)) {
         return false
@@ -92,7 +66,9 @@ class SymbolComponent extends React.Component<SymbolProps> {
     }
 
     let key = dynamic ? undefined : [model, entry].join(':')
-    const dataString = Builder.isEditing ? null :  data && size(data) && hash(data)
+    const dataString = Builder.isEditing
+      ? null
+      : data && size(data) && hash(data)
 
     if (key && dataString && dataString.length < 300) {
       key += ':' + dataString
