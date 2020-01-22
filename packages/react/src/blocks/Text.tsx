@@ -1,5 +1,6 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
+import { CSSPropertiesWithMultiValues } from '@emotion/serialize'
 import React from 'react'
 import { Builder, BuilderElement } from '@builder.io/sdk'
 import { withBuilder } from 'src/functions/with-builder'
@@ -55,7 +56,8 @@ class TextComponent extends React.Component<TextProps> {
 
   render() {
     const allowEditingText = this.allowTextEdit
-    const textCSS: any = {
+
+    const textCSS: CSSPropertiesWithMultiValues = {
       outline: 'none',
       '& p:first-of-type, & .builder-paragraph:first-of-type': {
         margin: 0
@@ -69,7 +71,7 @@ class TextComponent extends React.Component<TextProps> {
         textAlign: 'inherit',
         fontFamily: 'inherit'
       }
-    }
+    } as any // any is needed due to the child selectors (& p)
 
     return (
       <BuilderStoreContext.Consumer>
