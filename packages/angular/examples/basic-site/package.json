@@ -20,6 +20,8 @@
     "@angular/router": "8.2.14",
     "@builder.io/angular": "^1.0.78-alpha.4",
     "@nguniversal/express-engine": "^7.1.0",
+    "@webcomponents/custom-elements": "^1.3.2",
+    "@webcomponents/webcomponentsjs": "^2.4.1",
     "core-js": "^2.4.1",
     "rxjs": "^6.4.0",
     "tslib": "^1.10.0",
