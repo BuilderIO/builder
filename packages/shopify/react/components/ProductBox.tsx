@@ -14,6 +14,7 @@ import { modifyProduct } from '../functions/modify-product';
 
 interface ProductBoxProps {
   product?: string | number;
+  linkToProductPageOnClick?: boolean;
   /** @todo implement this */
   variant?: string | number;
   builderState?: BuilderStore;
@@ -141,7 +142,10 @@ export function ProductBox(props: ProductBoxProps) {
             },
           }}
         >
-          <Box onClick={onClick}>
+          <Box
+            css={props.linkToProductPageOnClick ? { cursor: 'pointer' } : undefined}
+            onClick={onClick}
+          >
             {props.builderBlock?.children?.map(item => (
               <BuilderBlockComponent block={item} key={item.id} />
             ))}
