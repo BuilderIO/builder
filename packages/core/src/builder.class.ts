@@ -207,7 +207,7 @@ export interface Component {
   description?: string;
   image?: string;
   inputs?: Input[];
-  class?: Class;
+  class?: any;
   type?: 'angular' | 'webcomponent' | 'react' | 'vue';
   defaultStyles?: { [key: string]: string };
   canHaveChildren?: boolean;

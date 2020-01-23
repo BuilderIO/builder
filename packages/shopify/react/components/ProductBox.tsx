@@ -51,6 +51,7 @@ const LoadingSpinner = styled.div`
   animation: 1.1s linear infinite ${spin};
 `;
 
+// TODO: make inline symbol ... ???
 export function ProductBox(props: ProductBoxProps) {
   let productId = props.product || '';
   const [productInfo, setProductInfo] = useState<ShopifyProduct | null>(null);
@@ -103,7 +104,7 @@ export function ProductBox(props: ProductBoxProps) {
       goToProductPage();
     }
     let current = target as HTMLElement | null;
-    while (current && (current = current.parentElement)) {
+    do {
       if (!current) {
         break;
       } else if (current === currentTarget) {
@@ -111,7 +112,7 @@ export function ProductBox(props: ProductBoxProps) {
       } else if (['SELECT', 'INPUT', 'FORM', 'BUTTON', 'A'].includes(current.tagName)) {
         break;
       }
-    }
+    } while (current && (current = current.parentElement));
   }
 
   return Builder.isEditing && !productId ? (

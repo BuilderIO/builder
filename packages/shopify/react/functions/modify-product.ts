@@ -28,7 +28,7 @@ export function modifyProduct(product: any) {
   }, product.variants[0]);
 
   // TODO: other currencies
-  product.price = '$' + minPriceVariation.price;
+  product.price = minPriceVariation.price;
 
   // TODO: price_min, price_max, price_varies, other properties
   // here https://help.shopify.com/en/themes/liquid/objects/product#product-price
