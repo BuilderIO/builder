@@ -12,6 +12,7 @@ export { BuilderStoreContext, BuilderStore } from './store/builder-store'
 export { BuilderMetaContext } from './store/builder-meta'
 export { BuilderAsyncRequestsContext } from './store/builder-async-requests'
 export { BuilderBlock } from './decorators/builder-block.decorator'
+export * from './functions/update-metadata'
 
 export { withBuilder } from './functions/with-builder'
 
