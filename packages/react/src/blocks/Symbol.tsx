@@ -94,6 +94,7 @@ class SymbolComponent extends React.Component<SymbolProps> {
                 this.placeholder
               ) : (
                 <BuilderPage
+                  context={{ ...state.context }}
                   modelName={model}
                   entry={entry}
                   data={data}
