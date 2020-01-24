@@ -13,18 +13,24 @@ export interface FormInputProps {
   value?: string
   placeholder?: string
   defaultValue?: string
+  required?: boolean
 }
 
 class FormInputComponent extends React.Component<FormInputProps> {
   render() {
     return (
       <input
-        key={Builder.isEditing && this.props.defaultValue ? this.props.defaultValue : 'default-key'}
+        key={
+          Builder.isEditing && this.props.defaultValue
+            ? this.props.defaultValue
+            : 'default-key'
+        }
         placeholder={this.props.placeholder}
         type={this.props.type}
         name={this.props.name}
         value={this.props.value}
         defaultValue={this.props.defaultValue}
+        required={this.props.required}
         {...this.props.attributes}
       />
     )
