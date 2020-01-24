@@ -14,6 +14,7 @@ export interface BuilderElement {
   tagName?: string;
   layerName?: string;
   groupLocked?: boolean;
+  layerLocked?: boolean;
   /** @todo make alias for properties.class */
   class?: string;
   children?: BuilderElement[];
