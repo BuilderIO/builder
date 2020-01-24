@@ -37,6 +37,9 @@ export class BuilderContent<
   clicked = false
   trackedImpression = false
 
+  // Expose as property for debugging
+  builder = builder
+
   intersectionObserver: IntersectionObserver | null = null
 
   // TODO: observe model name for changes
@@ -156,8 +159,8 @@ export class BuilderContent<
     const useData =
       ((this.props.inline || !Builder.isBrowser || this.firstLoad) &&
         this.props.options &&
-          this.props.options.initialContent &&
-          this.props.options.initialContent[0]) ||
+        this.props.options.initialContent &&
+        this.props.options.initialContent[0]) ||
       data
 
     const TagName = this.props.dataOnly ? NoWrap : 'div'

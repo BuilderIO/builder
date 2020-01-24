@@ -236,6 +236,8 @@ export class BuilderPage extends React.Component<
   onStateChange = new BehaviorSubject<any>(null)
   asServer = false
 
+  contentRef: BuilderContent | null = null
+
   styleRef: HTMLStyleElement | null = null
 
   rootState = onChange({}, () => this.updateState())
@@ -787,6 +789,7 @@ export class BuilderPage extends React.Component<
 
                   return (
                     <BuilderContent
+                      ref={ref => (this.contentRef = ref)}
                       inline={this.props.inlineContent}
                       // TODO: pass entry in
                       contentLoaded={this.onContentLoaded}
