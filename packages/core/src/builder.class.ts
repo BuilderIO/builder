@@ -527,7 +527,7 @@ export class Builder {
     });
   }
 
-  env: 'production' | 'qa' | 'development' | 'dev' | 'cdn-qa' = 'production';
+  env: 'production' | 'qa' | 'development' | 'dev' | 'cdn-qa' | string = 'production';
 
   protected isUsed = false;
   sessionId = this.getSessionId();
@@ -1409,9 +1409,19 @@ export class Builder {
     if (this.overrideHost) {
       return this.overrideHost;
     }
+
+    if (this.env.includes('.')) {
+      return 'http://' + this.env
+    }
     switch (this.env) {
       case 'qa':
         return 'https://qa.builder.io';
+      case 'fast':
+        return 'https://fast.builder.io';
+      case 'cloud':
+        return 'https://cloud.builder.io';
+      case 'cdn2':
+        return 'https://cdn2.builder.io';
       case 'cdn-qa':
         return 'https://cdn-qa.builder.io';
       case 'development':
