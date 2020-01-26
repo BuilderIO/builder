@@ -1410,6 +1410,10 @@ export class Builder {
       return this.overrideHost;
     }
 
+    if (this.env.includes('//')) {
+      return this.env
+    }
+
     if (this.env.includes('.')) {
       return 'http://' + this.env
     }
