@@ -229,10 +229,9 @@ type DeepPartial<T> = {
   [P in keyof T]?: T[P] extends Array<infer U>
     ? Array<DeepPartial<U>>
     : T[P] extends ReadonlyArray<infer U>
-      ? ReadonlyArray<DeepPartial<U>>
-      : DeepPartial<T[P]>
+    ? ReadonlyArray<DeepPartial<U>>
+    : DeepPartial<T[P]>;
 };
-
 
 export interface InsertMenuItem {
   name: string;
@@ -1411,11 +1410,11 @@ export class Builder {
     }
 
     if (this.env.includes('//')) {
-      return this.env
+      return this.env;
     }
 
     if (this.env.includes('.')) {
-      return 'http://' + this.env
+      return 'http://' + this.env;
     }
     switch (this.env) {
       case 'qa':
