@@ -1007,18 +1007,13 @@ export class Builder {
     if (isBrowser) {
       addEventListener('message', event => {
         const url = parse(event.origin);
-        const allowedHosts = [
-          // TODO anything.builder.io
-          'builder.io',
-          'localhost',
-          'local.builder.io',
-          'qa.builder.io',
-          'beta.builder.io',
-          'cdn.builder.io',
-          'app.builder.io',
-          'www.builder.io',
-        ];
-        if (allowedHosts.indexOf(url.hostname as string) === -1) {
+        if (
+          !(
+            url.hostname === 'builder.io' ||
+            url.hostname.endsWith('.builder.io') ||
+            url.hostname === 'localhost'
+          )
+        ) {
           return;
         }
 
