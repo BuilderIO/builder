@@ -690,14 +690,11 @@ export class BuilderPage extends React.Component<
   }
 
   getCss(data: any) {
-    if (Builder.isBrowser) {
-      this.ensureFontsLoaded(data)
-    }
+    // if (Builder.isBrowser) {
+    //   this.ensureFontsLoaded(data)
+    // }
     // .replace(/([^\s]|$)&([^\w])/g, '$1' + '.some-selector' + '$2')
-    return (
-      (data.cssCode || '') +
-      ((!Builder.isBrowser && this.getFontCss(data)) || '')
-    )
+    return (data.cssCode || '') + this.getFontCss(data)
   }
 
   get data() {
