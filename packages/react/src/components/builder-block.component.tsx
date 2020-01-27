@@ -126,6 +126,9 @@ export class BuilderBlock extends React.Component<
   private _asyncRequests?: RequestOrPromise[]
   private _errors?: Error[]
   private _logs?: string[]
+
+  // TODO: only do with flag, e.g. maybe url param, since is useful for debugging
+  // but causes console warnings when functional compoennts used
   innerComponentRef: any
 
   state = {
@@ -639,13 +642,13 @@ export class BuilderBlock extends React.Component<
                       attributes={finalOptions}
                       builderBlock={block}
                       builderState={this.privateState}
-                      ref={(ref: any) => (this.innerComponentRef = ref)}
+                      // ref={(ref: any) => (this.innerComponentRef = ref)}
                     />
                   ) : (
                     <TagName {...(finalOptions as any)}>
                       {InnerComponent && (
                         <InnerComponent
-                          ref={(ref: any) => (this.innerComponentRef = ref)}
+                          // ref={(ref: any) => (this.innerComponentRef = ref)}
                           builderState={this.privateState}
                           builderBlock={block}
                           {...innerComponentProperties}
