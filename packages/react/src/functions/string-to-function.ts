@@ -87,7 +87,7 @@ export function stringToFunction(
             'Device',
             'update',
             'Builder',
-            'context
+            'context'
           ];
           var rootState = state;
           if (typeof Proxy !== 'undefined') {
