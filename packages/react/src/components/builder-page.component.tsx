@@ -765,6 +765,9 @@ export class BuilderPage extends React.Component<
       <WrapComponent
         className="builder-component"
         data-name={this.name}
+        data-render-time={Date.now()}
+        date-source={`Rendered by Builder.io on ${new Date().toUTCString()}`}
+        data-render-date={new Date().toUTCString()}
         key={this.state.key}
         ref={ref => (this.ref = ref)}
       >
@@ -812,6 +815,7 @@ export class BuilderPage extends React.Component<
                           })
                         }
                         // TODO: loading option - maybe that is what the children is or component prop
+                        // TODO: get rid of all these wrapper divs
                         return data ? (
                           <div
                             data-builder-component={this.name}
@@ -983,7 +987,7 @@ export class BuilderPage extends React.Component<
   }
 
   onContentLoaded = (data: any) => {
-    this.state.context.builderContent = data;
+    this.state.context.builderContent = data
     // if (Builder.isBrowser) {
     //   console.debug('Builder content load', data)
     // }
