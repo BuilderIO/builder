@@ -99,6 +99,7 @@ export interface BuilderPageProps {
   model?: string
   name?: string
   data?: any
+  builder?: Builder
   entry?: string
   apiKey?: string
   options?: GetContentOptions
@@ -291,8 +292,8 @@ export class BuilderPage extends React.Component<
 
     if (Builder.isBrowser) {
       const key = this.props.apiKey
-      if (key && key !== builder.apiKey) {
-        builder.apiKey = key
+      if (key && key !== this.builder.apiKey) {
+        this.builder.apiKey = key
       }
 
       if (this.props.content) {
@@ -304,6 +305,10 @@ export class BuilderPage extends React.Component<
         )
       }
     }
+  }
+
+  get builder() {
+    return this.props.builder || builder
   }
 
   getHtmlData() {
@@ -323,7 +328,7 @@ export class BuilderPage extends React.Component<
 
   // TODO: pass down with context
   get device() {
-    return builder.getUserAttributes().device || 'desktop'
+    return this.builder.getUserAttributes().device || 'desktop'
   }
 
   get locationState() {
@@ -791,6 +796,7 @@ export class BuilderPage extends React.Component<
 
                   return (
                     <BuilderContent
+                      builder={this.builder}
                       ref={ref => (this.contentRef = ref)}
                       inline={this.props.inlineContent}
                       // TODO: pass entry in
@@ -885,7 +891,7 @@ export class BuilderPage extends React.Component<
   }
 
   async handleRequest(propertyName: string, url: string) {
-    // TODO: Builder.isEditing = just checks if iframe and parent page is builder.io or localhost:1234
+    // TODO: Builder.isEditing = just checks if iframe and parent page is this.builder.io or localhost:1234
     if (Builder.isIframe && fetchCache[url]) {
       this.updateState(ctx => {
         ctx[propertyName] = fetchCache[url]
@@ -975,13 +981,15 @@ export class BuilderPage extends React.Component<
     if (options) {
       // TODO: unsubscribe on destroy
       this.subscriptions.add(
-        builder.queueGetContent(options.model, options).subscribe(matches => {
-          if (matches) {
-            this.updateState(ctx => {
-              ctx[propertyName] = matches
-            })
-          }
-        })
+        this.builder
+          .queueGetContent(options.model, options)
+          .subscribe(matches => {
+            if (matches) {
+              this.updateState(ctx => {
+                ctx[propertyName] = matches
+              })
+            }
+          })
       )
     }
   }
@@ -1157,7 +1165,7 @@ export class BuilderPage extends React.Component<
           const url: string | undefined = data.httpRequests[key]
           if (url && (!this.data[key] || Builder.isEditing)) {
             // TODO: if Builder.isEditing and url patches https://builder.io/api/v2/content/{editingModel}
-            // Then use builder.get().subscribe(...)
+            // Then use this.builder.get().subscribe(...)
             if (Builder.isBrowser) {
               const finalUrl = this.evalExpression(url)
               if (
@@ -1174,12 +1182,12 @@ export class BuilderPage extends React.Component<
                 false &&
                 Builder.isEditing &&
                 model &&
-                builder.editingModel === model
+                this.builder.editingModel === model
               ) {
                 this.throttledHandleRequest(key, finalUrl)
                 // TODO: fix this
                 // this.subscriptions.add(
-                //   builder.get(model).subscribe(data => {
+                //   this.builder.get(model).subscribe(data => {
                 //     this.state.update((state: any) => {
                 //       state[key] = data
                 //     })

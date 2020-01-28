@@ -80,10 +80,6 @@ class ColumnsComponent extends React.Component<any> {
     return `calc(${this.getWidth(index)}% - ${subtractWidth}px)`
   }
 
-  get device() {
-    return builder.getUserAttributes().device || 'desktop'
-  }
-
   render() {
     const { columns, gutterSize } = this
 
