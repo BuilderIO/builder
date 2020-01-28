@@ -27,7 +27,7 @@ npm start
 
 ### Add the plugin in Builder.io
 
-From your [organizatiopn settings page](https://builder.io/account/organization) click the edit (pencil) button next to plugins and enter the development URL for this plugin `http://localhost:1268/builder-plugin-cloudinary.system.js` and hit save
+From your [organization settings page](https://builder.io/account/organization) click the edit (pencil) button next to plugins and enter the development URL for this plugin `http://localhost:1268/builder-plugin-cloudinary.system.js` and hit save
 
 **NOTE:** Loading http:// content on an https:// website will give you a warning. Be sure to click the shield in the top right of your browser and choose "load unsafe scripts" to allow the http content on Builder's https site when devloping locally
 
@@ -35,7 +35,7 @@ From your [organizatiopn settings page](https://builder.io/account/organization)
 
 Now as you develop you can restart Builder to see the latest version of your plugin.
 
-To uninstall your plugin run just go back to your [organizatiopn settings page](https://builder.io/account/organization) and click the edit (pencil) button next to plugins and
+To uninstall your plugin run just go back to your [organization settings page](https://builder.io/account/organization) and click the edit (pencil) button next to plugins and
 delete your development URL form the list and save
 
 ### Seeing your plugin in action
