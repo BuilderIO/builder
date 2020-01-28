@@ -233,6 +233,7 @@ export class BuilderPage extends React.Component<
   BuilderPageState
 > {
   subscriptions: Subscription = new Subscription()
+  // TODO: don't trigger initial one?
   onStateChange = new BehaviorSubject<any>(null)
   asServer = false
 
@@ -267,6 +268,7 @@ export class BuilderPage extends React.Component<
     // this.asServer = Boolean(props.hydrate && Builder.isBrowser)
 
     this.state = {
+      // TODO: should change if this prop changes
       context: props.context || {},
       state: Object.assign(this.rootState, {
         ...(this.props.content &&
@@ -981,6 +983,7 @@ export class BuilderPage extends React.Component<
   }
 
   onContentLoaded = (data: any) => {
+    this.state.context.builderContent = data;
     // if (Builder.isBrowser) {
     //   console.debug('Builder content load', data)
     // }

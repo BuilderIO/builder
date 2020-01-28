@@ -195,24 +195,121 @@ export function contentToLiquid(json: BuilderContent, modelName: string, options
   }
   const blocks = content.data && content.data.blocks;
 
+  const hasTests = Object.keys(content.variations || {}).length;
+
+  const variationsJson =
+    hasTests &&
+    Object.keys(content.variations || {}).map(item => ({
+      id: item,
+      testRatio: content.variations![item]!.testRatio,
+    }));
+  debugger
+
   // TODO: optimize CSS to remove redundancy
   let { html, css } = regexParse(
     `
   <div class="builder-component" data-name="${modelName}">
     <div
       class="builder-content"
-      builder-content-id="${content.id}"
       data-builder-content-id="${content.id}"
       data-builder-component="${modelName}"
-      builder-model="${modelName}"
+      data-builder-variation-id="${content.id}"
     >
-      ${
-        blocks
-          ? blocks.map((block: BuilderElement) => blockToLiquid(block, options)).join('\n')
-          : ''
-      }
+      <div 
+        builder-content-id="${content.id}"
+        builder-model="${modelName}">
+        ${
+          blocks
+            ? blocks.map((block: BuilderElement) => blockToLiquid(block, options)).join('\n')
+            : ''
+        }
+      </div>
     </div>
-  </div>
+
+    ${Object.keys(content.variations || {})
+      .map(key => {
+        const value = content.variations![key]!;
+        const blocks  = value.data!.blocks;
+
+        return `<div
+        class="builder-content"
+        data-builder-content-id="${content.id}"
+        data-builder-variaion-id="${value.id}"
+        data-builder-component="${modelName}"
+      >
+        <div 
+          builder-content-id="${content.id}"
+          builder-model="${modelName}">
+          ${
+            blocks
+              ? blocks.map((block: BuilderElement) => blockToLiquid(block, options)).join('\n')
+              : ''
+          }
+        </div>
+      </div>`;
+      })
+      .join('\n')}
+    </div>
+    ${hasTests &&
+      `
+      <script>
+      (function() {
+        var variations = ${JSON.stringify(variationsJson)};
+        function getCookie(cname) {
+          var name = cname + "=";
+          var decodedCookie = decodeURIComponent(document.cookie);
+          var ca = decodedCookie.split(';');
+          for(var i = 0; i <ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+              c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+              return c.substring(name.length, c.length);
+            }
+          }
+          return "";
+        }
+        function setCookie(cname, cvalue, exdays) {
+          if (!exdays) { exdays = 30; }
+          var d = new Date();
+          d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+          var expires = "expires="+d.toUTCString();
+          document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/;SameSite=None";
+        }
+        debugger;
+        var cookieName = 'builder.tests.${content.id}';
+        var variationId = getCookie(cookieName);
+        if (!variationId) {
+          var n = 0;
+          var set = false;
+          var random = Math.random();
+          for (var i = 0; i < variations.length; i++) {
+            var variation = variations[i];
+            var testRatio = variation.testRatio;
+            n += testRatio;
+            if (random < n) {
+              setCookie(cookieName, variation.id);
+              variationId = variation.id;
+            }
+          }
+          if (!variationId) {
+            variationId = "${content.id}";
+            setCookie(cookieName, "${content.id}");
+          }
+        }
+        if (variationId) {
+          Array
+            .from(document.querySelectorAll('[data-builder-content-id="${
+              content.id
+            }"]:not([data-builder-variation-id="' + variationId + '"]'))
+            .forEach(function (el) {
+              el.remove();
+            });
+        }
+      })()
+    </script>
+    `}
     `.replace(/\s+/, ' ')
   );
 
