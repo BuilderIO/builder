@@ -310,7 +310,7 @@ export function contentToLiquid(json: BuilderContent, modelName: string, options
       })()
     </script>
     `}
-    `.replace(/\s+/, ' ')
+    `.replace(/\s+/g, ' ')
   );
 
   css = getCss(json.data) + css;
