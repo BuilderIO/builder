@@ -234,7 +234,7 @@ export function contentToLiquid(json: BuilderContent, modelName: string, options
         return `<div
         class="builder-content"
         data-builder-content-id="${content.id}"
-        data-builder-variaion-id="${value.id}"
+        data-builder-variaion-id="${key}"
         data-builder-component="${modelName}"
       >
         <div 
