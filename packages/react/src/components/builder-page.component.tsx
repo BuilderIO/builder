@@ -770,9 +770,8 @@ export class BuilderPage extends React.Component<
       <WrapComponent
         className="builder-component"
         data-name={this.name}
-        data-render-time={Date.now()}
+        data-timestamp={Date.now()}
         date-source={`Rendered by Builder.io on ${new Date().toUTCString()}`}
-        data-render-date={new Date().toUTCString()}
         key={this.state.key}
         ref={ref => (this.ref = ref)}
       >
