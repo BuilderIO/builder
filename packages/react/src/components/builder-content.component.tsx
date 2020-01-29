@@ -42,9 +42,6 @@ export class BuilderContent<
   clicked = false
   trackedImpression = false
 
-  // Expose as property for debugging
-  builder = builder
-
   intersectionObserver: IntersectionObserver | null = null
 
   // TODO: observe model name for changes
