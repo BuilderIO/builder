@@ -1,11 +1,11 @@
 {
   "name": "@builder.io/plugin-loader",
-  "version": "0.0.15-alpha.2",
+  "version": "0.0.16",
   "description": "",
   "keywords": [],
-  "main": "dist/plugin-loader.umd.js",
-  "module": "dist/plugin-loader.es5.js",
-  "typings": "dist/types/plugin-loader.d.ts",
+  "main": "dist/content-loader.umd.js",
+  "module": "dist/content-loader.es5.js",
+  "typings": "dist/types/content-loader.d.ts",
   "files": [
     "dist"
   ],

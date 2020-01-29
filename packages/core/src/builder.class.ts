@@ -377,7 +377,7 @@ export class Builder {
   // work but is async...
   static isEditing = Boolean(
     isIframe &&
-      (document.referrer && document.referrer.match(/builder\.io|localhost:1234/) ||
+      ((document.referrer && document.referrer.match(/builder\.io|localhost:1234/)) ||
         location.search.indexOf('builder.frameEditing=') !== -1)
   );
 
@@ -1009,9 +1009,10 @@ export class Builder {
         const url = parse(event.origin);
         if (
           !(
-            url.hostname === 'builder.io' ||
-            url.hostname.endsWith('.builder.io') ||
-            url.hostname === 'localhost'
+            url.hostname &&
+            (url.hostname === 'builder.io' ||
+              url.hostname.endsWith('.builder.io') ||
+              url.hostname === 'localhost')
           )
         ) {
           return;
