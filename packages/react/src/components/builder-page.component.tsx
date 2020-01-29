@@ -363,7 +363,7 @@ export class BuilderPage extends React.Component<
         break
       }
       case 'builder.resetState': {
-        const { state, model } = info.data.state
+        const { state, model } = info.data
         if (model === this.name) {
           for (const key in this.rootState) {
             delete this.rootState[key]

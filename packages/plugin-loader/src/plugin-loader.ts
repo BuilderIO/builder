@@ -12,10 +12,6 @@ import * as mui from '@material-ui/core'
 import * as muiIcons from '@material-ui/icons'
 import * as builder from '@builder.io/sdk'
 
-// import { CloudinaryImageEditor } from '@builder.io/plugin-cloudinary/dist/lib'
-
-// reactDom.render(CloudinaryImageEditor, document.body)
-
 const context = {
   user: {
     organization: {
@@ -65,8 +61,6 @@ Object.keys(exposePackages).forEach(packageName => {
   })
 })
 
-console.log('hi from worker')
-
 if (typeof self !== 'undefined') {
   console.log(1)
   self.addEventListener('message', event => {
@@ -112,7 +106,10 @@ setTimeout(() => {
         if (editor && editor.component) {
           console.log('a')
           // TODO: bind value, onchange, context
-          reactDom.render(React.createElement(editor.component, { context, style: { background: 'red' } }), document.body)
+          reactDom.render(
+            React.createElement(editor.component, { context, style: { background: 'red' } }),
+            document.body
+          )
         } else if (output.default) {
           console.log('b')
           reactDom.render(React.createElement(output.default, { context }), document.body)

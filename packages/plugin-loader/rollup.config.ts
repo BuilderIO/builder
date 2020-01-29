@@ -19,7 +19,7 @@ const pkg = require('./package.json')
 
 const libraryName = 'plugin-loader'
 
-export default {
+const defaultConfig = {
   input: `src/${libraryName}.ts`,
   output: [
     { file: pkg.main, name: camelCase(libraryName), format: 'umd', sourcemap: true },
@@ -43,7 +43,7 @@ export default {
         tslib: Object.keys(tslib),
         'react-dom': Object.keys(reactDom),
         '@material-ui/utils': Object.keys(muiUtils),
-        'react-is': Object.keys(reactIs),
+        'react-is': Object.keys(reactIs)
       }
     }),
 
@@ -65,10 +65,27 @@ export default {
             contentBase: 'dist',
             port: 1269,
             headers: {
-              'Access-Control-Allow-Origin': '*',
+              'Access-Control-Allow-Origin': '*'
             }
           })
         ]
       : [])
   ]
 }
+
+export default [
+  defaultConfig,
+  {
+    ...defaultConfig,
+    src: 'src/content-loader.ts',
+    output: [
+      {
+        file: 'dist/content-loader.umd.js"',
+        name: camelCase(libraryName),
+        format: 'umd',
+        sourcemap: true
+      },
+      { file: 'dist/content-loader.esm.js', format: 'es', sourcemap: true }
+    ]
+  }
+]
