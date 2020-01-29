@@ -377,7 +377,7 @@ export class Builder {
   // work but is async...
   static isEditing = Boolean(
     isIframe &&
-      (document.referrer.match(/builder\.io|localhost:1234/) ||
+      (document.referrer && document.referrer.match(/builder\.io|localhost:1234/) ||
         location.search.indexOf('builder.frameEditing=') !== -1)
   );
 

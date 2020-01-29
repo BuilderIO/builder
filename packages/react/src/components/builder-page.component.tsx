@@ -825,7 +825,7 @@ export class BuilderPage extends React.Component<
                           <div
                             data-builder-component={this.name}
                             data-builder-content-id={fullData.id}
-                            data-builder-variation-id={fullData.variationId}
+                            data-builder-variation-id={fullData.testVariationId || fullData.variationId || fullData.id}
                           >
                             {this.getCss(data) && (
                               <style

@@ -13,9 +13,9 @@ const libraryName = 'builder-react'
 
 const resolvePlugin = resolve()
 
-const externalDependencies = Object.keys(pkg.dependencies).concat(
-  Object.keys(pkg.optionalDependencies || {})
-)
+const externalDependencies = Object.keys(pkg.dependencies)
+  .concat(Object.keys(pkg.optionalDependencies || {}))
+  .filter(item => item !== 'tslib')
 // TODO: go back to using peerDependencies once fix rollup iife issue
 // .concat(Object.keys(pkg.peerDependencies || {}))
 
@@ -55,10 +55,14 @@ const options = {
           'Component',
           'createElement',
           'forwardRef',
-          'Fragment',
+          'Fragment'
         ],
         'node_modules/react-dom/index.js': ['render', 'hydrate'],
-        'node_modules/react-is/index.js': ['isElement', 'isValidElementType', 'ForwardRef']
+        'node_modules/react-is/index.js': [
+          'isElement',
+          'isValidElementType',
+          'ForwardRef'
+        ]
       }
     }),
     // Allow node_modules resolution, so you can use 'external' to control
@@ -119,8 +123,16 @@ export default [
     ...options,
     input: `src/${libraryName}-lite.ts`,
     output: [
-      { file: `dist/${libraryName}-lite.esm.js`, format: 'es', sourcemap: true },
-      { file: `dist/${libraryName}-lite.cjs.js`, format: 'cjs', sourcemap: true }
+      {
+        file: `dist/${libraryName}-lite.esm.js`,
+        format: 'es',
+        sourcemap: true
+      },
+      {
+        file: `dist/${libraryName}-lite.cjs.js`,
+        format: 'cjs',
+        sourcemap: true
+      }
     ],
     external: externalDependencies,
     plugins: options.plugins
@@ -197,7 +209,7 @@ export default [
           react: 'preact/compat/dist/compat.module.js',
           'react-dom': 'preact/compat/dist/compat.module.js',
           'preact/hooks': 'preact/hooks/dist/hooks.module.js',
-          'preact/debug': 'preact/debug/dist/debug.module.js',
+          'preact/debug': 'preact/debug/dist/debug.module.js'
         })
       ])
   },
