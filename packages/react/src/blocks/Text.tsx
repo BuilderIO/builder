@@ -89,7 +89,7 @@ class TextComponent extends React.Component<TextProps> {
                 contentEditable={allowEditingText || undefined}
                 onInput={e => {
                   if (allowEditingText) {
-                    window.parent.postMessage(
+                    window.parent?.postMessage(
                       {
                         type: 'builder.textEdited',
                         data: {
@@ -115,7 +115,7 @@ class TextComponent extends React.Component<TextProps> {
                 }}
                 onFocus={e => {
                   if (allowEditingText) {
-                    window.parent.postMessage(
+                    window.parent?.postMessage(
                       {
                         type: 'builder.textFocused',
                         data: {
@@ -130,7 +130,7 @@ class TextComponent extends React.Component<TextProps> {
                 }}
                 onBlur={e => {
                   if (allowEditingText) {
-                    window.parent.postMessage(
+                    window.parent?.postMessage(
                       {
                         type: 'builder.textBlurred',
                         data: {

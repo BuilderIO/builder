@@ -341,7 +341,7 @@ export class Builder {
   }
 
   static fields(name: string, fields: Input[]) {
-    window.parent.postMessage(
+    window.parent?.postMessage(
       {
         type: 'builder.fields',
         data: { name, fields },
@@ -446,7 +446,7 @@ export class Builder {
     this.addComponent(spec);
     if (isBrowser) {
       const sendSpec = this.prepareComponentSpecToSend(spec);
-      window.parent.postMessage(
+      window.parent?.postMessage(
         {
           type: 'builder.registerComponent',
           data: sendSpec,
@@ -482,7 +482,7 @@ export class Builder {
       const sendSpec = this.prepareComponentSpecToSend(spec as Component);
       // TODO: serialize component name and inputs
       if (isBrowser) {
-        window.parent.postMessage(
+        window.parent?.postMessage(
           {
             type: 'builder.registerComponent',
             data: sendSpec,
@@ -990,7 +990,7 @@ export class Builder {
   }
 
   private messageFrameLoaded() {
-    window.parent.postMessage(
+    window.parent?.postMessage(
       {
         type: 'builder.loaded',
         data: {
@@ -1022,7 +1022,7 @@ export class Builder {
         if (data) {
           switch (data.type) {
             case 'builder.ping': {
-              window.parent.postMessage(
+              window.parent?.postMessage(
                 {
                   type: 'builder.pong',
                   data: {},
@@ -1069,7 +1069,7 @@ export class Builder {
               break;
 
             case 'builder.getComponents':
-              window.parent.postMessage(
+              window.parent?.postMessage(
                 {
                   type: 'builder.components',
                   data: Builder.components.map(item => Builder.prepareComponentSpecToSend(item)),
@@ -1138,7 +1138,7 @@ export class Builder {
               }
 
               if (error) {
-                window.parent.postMessage(
+                window.parent?.postMessage(
                   {
                     type: 'builder.evaluateError',
                     data: { id, error: error.message },
@@ -1149,7 +1149,7 @@ export class Builder {
                 if (result && typeof result.then === 'function') {
                   (result as Promise<any>)
                     .then(finalResult => {
-                      window.parent.postMessage(
+                      window.parent?.postMessage(
                         {
                           type: 'builder.evaluateResult',
                           data: { id, result: finalResult },
@@ -1159,7 +1159,7 @@ export class Builder {
                     })
                     .catch(console.error);
                 } else {
-                  window.parent.postMessage(
+                  window.parent?.postMessage(
                     {
                       type: 'builder.evaluateResult',
                       data: { result, id },
@@ -1669,7 +1669,7 @@ export class Builder {
     });
 
     if (isIframe) {
-      window.parent.postMessage(
+      window.parent?.postMessage(
         { type: 'builder.contentResults', data: { results: mappedResults } },
         '*'
       );

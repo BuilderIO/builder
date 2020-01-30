@@ -148,7 +148,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
         this.prerender = prerenderAttr === 'false' ? false : this.prerender
       }
 
-      window.parent.postMessage(
+      window.parent?.postMessage(
         {
           type: 'builder.isReactSdk',
           data: { value: true }

@@ -58,7 +58,7 @@ export class BuilderBlocks extends React.Component<BuilderBlocksProps, BuilderBl
 
   onClickEmptyBlocks = () => {
     if (Builder.isIframe && this.noBlocks) {
-      window.parent.postMessage(
+      window.parent?.postMessage(
         {
           type: 'builder.clickEmptyBlocks',
           data: {

@@ -536,7 +536,7 @@ export class BuilderPage extends React.Component<
     }
 
     if (Builder.isIframe) {
-      parent.postMessage(
+      window.parent?.postMessage(
         { type: 'builder.sdkInjected', data: { modelName: this.name } },
         '*'
       )
@@ -586,6 +586,9 @@ export class BuilderPage extends React.Component<
 
   @debounceNextTick
   notifyStateChange() {
+    if (!(this && this.state)) {
+      return;
+    }
     const nextState = this.state.state
     // TODO: only run the below once per tick...
     if (this.props.onStateChange) {

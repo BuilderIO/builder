@@ -46,7 +46,7 @@ export { builder, Builder }
 export default builder
 
 if (typeof window !== 'undefined') {
-  window.parent.postMessage(
+  window.parent?.postMessage(
     {
       type: 'builder.isReactSdk',
       data: {

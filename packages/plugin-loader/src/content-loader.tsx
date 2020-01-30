@@ -2,7 +2,7 @@ import * as reactDom from 'react-dom'
 import * as React from 'react'
 import { BuilderComponent } from '@builder.io/react'
 
-function ComponentLoader(props: { content: any }) {
+function ComponentLoader(props: { content?: any }) {
   const [value, setValue] = React.useState(null)
   const [content, setContent] = React.useState(props.content)
 
@@ -23,7 +23,30 @@ function ComponentLoader(props: { content: any }) {
 
   return (
     <BuilderComponent
-      content={content}
+      content={{
+        data: {
+          blocks: [
+            {
+              '@type': '@builder.io/sdk:Element',
+              responsiveStyles: {
+                large: {
+                  height: '50px',
+                  width: '50px',
+                  backgroundColor: 'red'
+                }
+              },
+              component: {
+                name: 'Text',
+                options: {
+                  text: 'Hello!'
+                }
+              }
+            }
+          ]
+        }
+      }}
+      model="page"
+      apiKey="YJIGb4i01jvw0SRdL5Bt"
       data={{
         value
       }}
@@ -37,16 +60,26 @@ function ComponentLoader(props: { content: any }) {
               value: state.value
             }
           },
-          '*'
+          undefined as any
         )
         // TODO: message up
       }}
     />
   )
 }
+
+reactDom.render(
+  React.createElement(ComponentLoader, {
+    // content: data.data.content
+    // Send value down and up
+  }),
+  document.body
+)
+
 let loaded = false
 if (typeof self !== 'undefined') {
   self.addEventListener('message', event => {
+    console.log('message?', event.data, event)
     const data = event.data
     // TODO: message for values and value change
     if (data && data.type === 'builder.loadContent' && !loaded) {
@@ -67,6 +100,6 @@ if (typeof self !== 'undefined') {
         type: 'content'
       }
     },
-    '*'
+    undefined as any
   )
 }
