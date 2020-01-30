@@ -157,6 +157,10 @@ class FormComponent extends React.Component<FormProps> {
                     body = JSON.stringify(json)
                   }
 
+                  if (contentType) {
+                    headers['content-type'] = contentType
+                  }
+
                   const presubmitEvent = new CustomEvent('presubmit', {
                     detail: {
                       body
