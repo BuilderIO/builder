@@ -203,7 +203,6 @@ export function contentToLiquid(json: BuilderContent, modelName: string, options
       id: item,
       testRatio: content.variations![item]!.testRatio,
     }));
-  debugger
 
   // TODO: optimize CSS to remove redundancy
   let { html, css } = regexParse(
@@ -229,7 +228,7 @@ export function contentToLiquid(json: BuilderContent, modelName: string, options
     ${Object.keys(content.variations || {})
       .map(key => {
         const value = content.variations![key]!;
-        const blocks  = value.data!.blocks;
+        const blocks = value.data!.blocks;
 
         return `<div
         class="builder-content"
@@ -250,8 +249,10 @@ export function contentToLiquid(json: BuilderContent, modelName: string, options
       })
       .join('\n')}
     </div>
-    ${hasTests &&
-      `
+    ${
+      !hasTests
+        ? ''
+        : `
       <script>
       (function() {
         var variations = ${JSON.stringify(variationsJson)};
@@ -277,7 +278,6 @@ export function contentToLiquid(json: BuilderContent, modelName: string, options
           var expires = "expires="+d.toUTCString();
           document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/;SameSite=None;Secure";
         }
-        debugger;
         var cookieName = 'builder.tests.${content.id}';
         var variationId = getCookie(cookieName);
         if (!variationId) {
@@ -309,7 +309,8 @@ export function contentToLiquid(json: BuilderContent, modelName: string, options
         }
       })()
     </script>
-    `}
+    `
+    }
     `.replace(/\s+/g, ' ')
   );
 
