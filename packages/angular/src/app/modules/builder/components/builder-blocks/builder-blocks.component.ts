@@ -80,11 +80,9 @@ export class BuilderBlocksComponent implements OnInit {
       }></builder-component-element>`;
     }
 
-    const elStr = !Builder.isEditing
-      ? ''
-      : `<builder-component-element prerender="false" ${
-          !this.model ? '' : `name="${this.model}"`
-        }></builder-component-element>`;
+    const elStr = `<builder-component-element prerender="false" ${
+      !this.model ? '' : `name="${this.model}"`
+    }></builder-component-element>`;
 
     if (this.arrayBlocks || !this.blocks) {
       return elStr;

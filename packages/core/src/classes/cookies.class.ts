@@ -37,6 +37,7 @@ class Cookies {
     const res = this.response;
     const req = this.request;
     let headers = res.getHeader('Set-Cookie') || [];
+    // TODO: just make this always true
     const secure =
       this.secure !== undefined
         ? !!this.secure
@@ -121,7 +122,7 @@ class Cookie {
     }
 
     // TODO: samesite=none by default (?)
-    header += `; samesite=${this.sameSite === true ? 'strict' : 'None'}`;
+    header += `; SameSite=${this.sameSite === true ? 'strict' : 'None'}`;
     
     // TODO: On by default
     if (this.secure) {
