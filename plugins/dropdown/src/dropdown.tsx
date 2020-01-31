@@ -1,22 +1,27 @@
 import { Builder } from '@builder.io/sdk'
 import React, { useEffect, useState } from 'react'
 import { InputLabel, MenuItem, FormControl, Select } from '@material-ui/core'
-// @ts-ignore
-import * as SES from 'ses'
 
-/**
- * Evaluate foreign code safely using SES https://github.com/Agoric/SES
- */
-export function safeEvaluate(code: string, context: any = {}) {
-  const realm = SES.makeSESRootRealm({
-    consoleMode: 'allow'
-  })
-  const result = realm.evaluate(code, context)
-  return result
+const extractFieldOption = (object: any, field: any) => {
+  try {
+    return { field: object[field] }
+  } catch {
+    throw new Error(`${field} not found`)
+  }
+}
+
+const compare = (a: any, b: any) => {
+  if (a.name < b.name) return -1
+  if (a.name > b.name) return 1
+  return 0
 }
 
 export const Dropdown = (props: any) => {
-  const { url, mapper } = props.field.options
+  const [url, mapper] = [
+    extractFieldOption(props.field, 'url'),
+    extractFieldOption(props.field, 'mapper')
+  ]
+
   const [tenant, locale] = [
     props.context.designerState.editingContentModel.data.get('tenant'),
     props.context.designerState.editingContentModel.data.get('locale')
@@ -24,32 +29,27 @@ export const Dropdown = (props: any) => {
 
   const [selected, setSelected] = useState(props.value || '')
   const [selections, setSelections] = useState([])
-
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setSelected(event.target.value)
     props.onChange(event.target.value)
   }
 
-  const compare = (a: any, b: any) => {
-    if (a.name < b.name) return -1
-    if (a.name > b.name) return 1
-    return 0
-  }
-
-  const getSelections = async () => {
-    if (tenant && locale) {
+  const getSelections = async (url: any) => {
+    if (tenant && locale && url) {
       const response = await fetch(url)
 
       const data = await response.json()
-      const mappedSelections = safeEvaluate(mapper, { responseData: data })
-
+      const mappedSelections = data.map((item: any) => ({
+        name: item.name,
+        key: item.mpvId
+      }))
       mappedSelections.sort(compare)
       setSelections(mappedSelections)
     }
   }
 
   useEffect(() => {
-    getSelections()
+    getSelections(url.replace('${tenant}', tenant).replace('${locale}', locale))
   }, [tenant, locale])
 
   return (
@@ -82,7 +82,7 @@ Builder.registerEditor({
    *      name: 'whateverYouWant',
    *      type: 'dropdown',
    *      options: {
-   *        url: 'https://merchandising-product-service.cdn.vpsvc.com/api/v3/MerchandisingProductViewAll/vistaprint/en-IE?requestor=asier',
+   *        url: '',
    *        mapper: 'responseData.someArray.map(item => ({ name: item.title, value: item.valueProperty }))'
    *      }
    *    }
