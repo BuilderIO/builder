@@ -1,15 +1,12 @@
 import 'jest'
-import CloudinaryImageEditor from '../src/builder-plugin-cloudinary'
+import { safeEvaluate } from '../src/dropdown'
 
 /**
- * Dummy test
+ * Safe evaluate
  */
-describe('Dummy test', () => {
-  it('works if true is truthy', () => {
-    expect(true).toBeTruthy()
-  })
-
-  it('DummyClass is instantiable', () => {
-    expect(new CloudinaryImageEditor({} as any)).toBeInstanceOf(CloudinaryImageEditor)
+describe('Safe evaluate', () => {
+  it('Works', () => {
+    expect(safeEvaluate('true')).toBe(true)
+    expect(safeEvaluate('foo.bar', { foo: { bar: 'hi' } })).toBe('hi')
   })
 })

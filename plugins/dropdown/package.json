@@ -85,6 +85,7 @@
   "devDependencies": {
     "@commitlint/cli": "^7.1.2",
     "@commitlint/config-conventional": "^7.1.2",
+    "@testing-library/react": "^9.4.0",
     "@types/jest": "^23.3.2",
     "@types/node": "^10.17.5",
     "@types/react": "^16.9.19",
@@ -131,6 +132,7 @@
     "@types/react-select": "^3.0.10",
     "classnames": "^2.2.6",
     "react": "^16.12.0",
-    "react-dom": "^16.12.0"
+    "react-dom": "^16.12.0",
+    "ses": "^0.6.4"
   }
 }
