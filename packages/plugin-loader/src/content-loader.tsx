@@ -69,7 +69,7 @@ function ComponentLoader(props: { content?: any }) {
 }
 
 reactDom.render(
-  React.createElement(ComponentLoader, {
+  React.createElement(ComponentLoader as any, {
     // content: data.data.content
     // Send value down and up
   }),
