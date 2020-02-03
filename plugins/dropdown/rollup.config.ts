@@ -5,6 +5,8 @@ import camelCase from 'lodash.camelcase'
 import typescript from 'rollup-plugin-typescript2'
 import json from 'rollup-plugin-json'
 import serve from 'rollup-plugin-serve'
+import builtins from 'rollup-plugin-node-builtins'
+import globals from 'rollup-plugin-node-globals'
 
 const SERVE = process.env.SERVE === 'true'
 
@@ -21,9 +23,7 @@ export default {
     '@builder.io/sdk',
     '@material-ui/core',
     '@emotion/core',
-    '@emotion/styled',
-    'mustache',
-    'axios'
+    '@emotion/styled'
   ],
   output: [
     {
@@ -49,6 +49,9 @@ export default {
     // which external modules to include in the bundle
     // https://github.com/rollup/rollup-plugin-node-resolve#usage
     resolve(),
+
+    builtins(),
+    globals(),
 
     // Resolve source maps to the original source
     sourceMaps(),
