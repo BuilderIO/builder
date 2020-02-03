@@ -22,6 +22,7 @@ export default {
     '@material-ui/core',
     '@emotion/core',
     '@emotion/styled',
+    'mustache',
     'axios'
   ],
   output: [
@@ -43,14 +44,7 @@ export default {
     // Compile TypeScript files
     typescript({ useTsconfigDeclarationDir: true }),
     // Allow bundling cjs modules (unlike webpack, rollup doesn't understand cjs)
-    commonjs({
-      include: 'node_modules/**',
-      namedExports: {
-        'node_modules/react-is/index.js': ['isFragment', 'ForwardRef'],
-        'node_modules/react-dom/index.js': ['createPortal', 'findDOMNode'],
-        'node_modules/@material-ui/utils/index.js': ['deepMerge']
-      }
-    }),
+    commonjs(),
     // Allow node_modules resolution, so you can use 'external' to control
     // which external modules to include in the bundle
     // https://github.com/rollup/rollup-plugin-node-resolve#usage

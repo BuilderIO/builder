@@ -1,10 +1,9 @@
 {
   "compilerOptions": {
     "moduleResolution": "node",
-    "target": "es5",
-    "module": "es6",
+    "target": "es2015",
+    "module": "es2015",
     "jsx": "react",
-    "allowJs": true,
     "skipLibCheck": true,
     "lib": ["es2015", "es2016", "es2017", "dom"],
     "strict": true,
@@ -15,7 +14,8 @@
     "emitDecoratorMetadata": true,
     "declarationDir": "dist/types",
     "outDir": "dist/lib",
-    "typeRoots": ["node_modules/@types"]
+    "typeRoots": ["node_modules/@types"],
+    "esModuleInterop": true
   },
-  "include": ["src", "test/dropdown.test.tsx"]
+  "include": ["src"]
 }

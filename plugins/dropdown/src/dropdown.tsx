@@ -1,14 +1,8 @@
 import { Builder } from '@builder.io/sdk'
 import React, { useEffect, useState } from 'react'
 import { InputLabel, MenuItem, FormControl, Select } from '@material-ui/core'
-
-const extractFieldOption = (object: any, field: any) => {
-  try {
-    return { field: object[field] }
-  } catch {
-    throw new Error(`${field} not found`)
-  }
-}
+import { getMassagedProps } from './dropdownPropsExtractor'
+import axios from 'axios'
 
 const compare = (a: any, b: any) => {
   if (a.name < b.name) return -1
@@ -16,50 +10,54 @@ const compare = (a: any, b: any) => {
   return 0
 }
 
+export const D = () => {
+  return <div>aws</div>
+}
+
 export const Dropdown = (props: any) => {
-  const [url, mapper] = [
-    extractFieldOption(props.field, 'url'),
-    extractFieldOption(props.field, 'mapper')
-  ]
-
-  const [tenant, locale] = [
-    props.context.designerState.editingContentModel.data.get('tenant'),
-    props.context.designerState.editingContentModel.data.get('locale')
-  ]
-
   const [selected, setSelected] = useState(props.value || '')
   const [selections, setSelections] = useState([])
-  const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setSelected(event.target.value)
-    props.onChange(event.target.value)
+
+  const onSelectChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    const selectedValue = event.target.value
+    setSelected(selectedValue)
+    props.onChange(selectedValue)
   }
 
-  const getSelections = async (url: any) => {
-    if (tenant && locale && url) {
+  const getSelections = async (url: any, mapper: Function) => {
+    try {
       const response = await fetch(url)
-
       const data = await response.json()
-      const mappedSelections = data.map((item: any) => ({
-        name: item.name,
-        key: item.mpvId
-      }))
+
+      // const response = await axios.get(url)
+      // const data = response.data
+      const mappedSelections = mapper(data)
       mappedSelections.sort(compare)
+
       setSelections(mappedSelections)
+    } catch (e) {
+      console.error('Error', e)
     }
   }
 
   useEffect(() => {
-    getSelections(url.replace('${tenant}', tenant).replace('${locale}', locale))
-  }, [tenant, locale])
+    console.log('USE EFFECT')
+    const { url, mapper } = getMassagedProps(props)
+    console.log('TCL: url, mapper', url, mapper)
+    getSelections(url, mapper)
+
+    // const myMapper = (data: any) =>
+    //   data.map((item: any) => ({
+    //     name: item.name,
+    //     key: item.mpvId
+    //   }))
+    // getSelections(url, myMapper)
+  }, [props.context.designerState.editingContentModel.data])
 
   return (
     <FormControl variant="outlined">
-      <InputLabel id="demo-simple-select-outlined-label">Mpv Id</InputLabel>
-      <Select
-        id="demo-simple-select-outlined"
-        value={selected}
-        onChange={handleChange}
-      >
+      <InputLabel id="select-outlined-label">Mpv Id</InputLabel>
+      <Select id="select-outlined" value={selected} onChange={onSelectChange}>
         <MenuItem value="">
           <em>None</em>
         </MenuItem>
@@ -73,22 +71,6 @@ export const Dropdown = (props: any) => {
 }
 
 Builder.registerEditor({
-  /**
-   * @usage
-   *
-   * withBuilder(YourComponent, {
-   *  inputs: [
-   *     {
-   *      name: 'whateverYouWant',
-   *      type: 'dropdown',
-   *      options: {
-   *        url: '',
-   *        mapper: 'responseData.someArray.map(item => ({ name: item.title, value: item.valueProperty }))'
-   *      }
-   *    }
-   *  ]
-   * })
-   */
   name: 'dropdown',
   component: Dropdown
 })

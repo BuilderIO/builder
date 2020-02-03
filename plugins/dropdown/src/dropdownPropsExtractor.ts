@@ -1,35 +1,30 @@
+import { render } from 'mustache'
+
 const getMassagedProps = (props: any): any => {
-  const givenUrl = props.field.url.givenUrl
-  if (givenUrl == null)
-    throw new Error('Missing { url: { givenUrl: "" } } required option')
+  const { url, mapper } = props.field.options
 
-  const mapper = props.field.mapper
-  if (mapper == null) throw new Error('Missing { mapper: "" } required option')
+  if (isNullOrEmpty(url)) throw new Error('Missing { url: "" } required option')
+  if (isNullOrEmpty(mapper))
+    throw new Error('Missing { mapper: "" } required option')
 
-  const requiredProps = { givenUrl, mapper }
+  // const renderedUrl = render(
+  //   url,
+  //   props.context.designerState.editingContentModel.data.toJSON()
+  // )
+  const renderedUrl =
+    'https://merchandising-product-service.cdn.vpsvc.com/api/v3/MerchandisingProductViewAll/vistaprint/en-IE?requestor=asier'
 
-  const editingContentModelData =
-    props.context.designerState.editingContentModel.data
-
-  const propsPluginContext = props.field.pluginContext
-  let pluginContext: Array<any> = []
-  if (typeof propsPluginContext === 'object') {
-    propsPluginContext.forEach((contextKey: string) => {
-      const value = editingContentModelData.get(contextKey)
-      if (value) pluginContext.push({ [contextKey]: value })
-    })
-  }
-
-  const massagedProps = {
-    pluginContext,
-    ...requiredProps
-  }
-
-  if (pluginContext === []) {
-    delete massagedProps.pluginContext
-  }
+  const massagedProps = { url: renderedUrl, mapper }
 
   return massagedProps
+}
+
+const isNullOrEmpty = (input: String) => {
+  if (input == null) return true
+
+  if (typeof input === 'string') return input.trim().length === 0
+
+  return true
 }
 
 export { getMassagedProps }
