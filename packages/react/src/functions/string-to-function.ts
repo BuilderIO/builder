@@ -11,13 +11,13 @@ const sizeMap = {
 
 type BuilderEvanFunction = (
   state: object,
-  event: Event | undefined | null,
-  block: any,
-  builder: Builder,
-  Device: any,
-  update: Function | null,
-  _Builder: typeof Builder,
-  context: object
+  event?: Event | undefined | null,
+  block?: any,
+  builder?: Builder,
+  Device?: any,
+  update?: Function | null,
+  _Builder?: typeof Builder,
+  context?: object
 ) => any
 
 export const api = (state: any) => builder
