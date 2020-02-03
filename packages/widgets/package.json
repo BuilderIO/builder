@@ -22,7 +22,7 @@
   },
   "scripts": {
     "_unlink": "npm unlink *",
-    "_install": "npm install && install-peerdeps",
+    "_install": "npm install && npm-install-peers",
     "lint": "tslint -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
     "prebuild": "rimraf dist",
     "build": "tsc --module commonjs && rollup -c rollup.config.ts",
@@ -103,6 +103,7 @@
     "lint-staged": "^7.0.0",
     "lodash-es": "^4.17.10",
     "lodash.camelcase": "^4.3.0",
+    "npm-install-peers": "^1.2.1",
     "prettier": "^1.4.4",
     "prompt": "^1.0.0",
     "replace-in-file": "^3.0.0-beta.2",

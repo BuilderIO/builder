@@ -15,7 +15,7 @@
     "install:packages": "npm run _install",
     "bootstrap": "lerna bootstrap --force-local",
     "reset": "npm run _install && npm run bootstrap && npm run _unlink",
-    "start": "lerna run start --parallel",
+    "start": "lerna run start --parallel --scope @builder.io/webcomponents --scope @builder.io/react",
     "watch": "npm run start",
     "develop": "npm run start",
     "build": "lerna run build --stream --no-private",
