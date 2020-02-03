@@ -1,4 +1,4 @@
-import { render } from 'mustache'
+import Mustache from 'mustache'
 
 const getMassagedProps = (props: any): any => {
   const { url, mapper } = props.field.options
@@ -7,12 +7,10 @@ const getMassagedProps = (props: any): any => {
   if (isNullOrEmpty(mapper))
     throw new Error('Missing { mapper: "" } required option')
 
-  // const renderedUrl = render(
-  //   url,
-  //   props.context.designerState.editingContentModel.data.toJSON()
-  // )
-  const renderedUrl =
-    'https://merchandising-product-service.cdn.vpsvc.com/api/v3/MerchandisingProductViewAll/vistaprint/en-IE?requestor=asier'
+  const renderedUrl = Mustache.render(
+    url,
+    props.context.designerState.editingContentModel.data.toJSON()
+  )
 
   const massagedProps = { url: renderedUrl, mapper }
 

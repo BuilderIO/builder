@@ -25,6 +25,7 @@ export const Dropdown = (props: any) => {
   }
 
   const getSelections = async (url: any, mapper: Function) => {
+    console.log('TCL: getSelections -> url', url)
     try {
       const response = await fetch(url)
       const data = await response.json()
@@ -41,17 +42,15 @@ export const Dropdown = (props: any) => {
   }
 
   useEffect(() => {
-    console.log('USE EFFECT')
     const { url, mapper } = getMassagedProps(props)
-    console.log('TCL: url, mapper', url, mapper)
-    getSelections(url, mapper)
+    // getSelections(url, mapper)
 
-    // const myMapper = (data: any) =>
-    //   data.map((item: any) => ({
-    //     name: item.name,
-    //     key: item.mpvId
-    //   }))
-    // getSelections(url, myMapper)
+    const myMapper = (data: any) =>
+      data.map((item: any) => ({
+        name: item.name,
+        key: item.mpvId
+      }))
+    getSelections(url, myMapper)
   }, [props.context.designerState.editingContentModel.data])
 
   return (
