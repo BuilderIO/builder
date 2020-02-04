@@ -105,7 +105,7 @@ export interface ParamsMap {
 
 // TODO: share interfaces with API
 interface Event {
-  type: 'click' | 'impression' | 'conversion';
+  type: string;
   data: {
     contentId?: string;
     ownerId: string;
@@ -625,7 +625,7 @@ export class Builder {
     }
     // batch events
     this.eventsQueue.push({
-      type: 'impression',
+      type: eventName,
       data: {
         metadata: {
           sdkVersion: Builder.VERSION,
@@ -693,7 +693,8 @@ export class Builder {
     this.throttledClearEventsQueue();
   }
 
-  trackConversion(amount?: number) {
+  // Multiple content IDs?
+  trackConversion(amount?: number, contentId?: string) {
     if (isIframe || !isBrowser) {
       return;
     }
@@ -1697,14 +1698,14 @@ export class Builder {
     return this.setCookie(`${this.testCookiePrefix}.${contentId}`, variationId, future);
   }
 
-  protected getCookie(name: string): any {
+  getCookie(name: string): any {
     if (this.cookies) {
       return this.cookies.get(name);
     }
     return Builder.isBrowser && getCookie(name);
   }
 
-  protected setCookie(name: string, value: any, expires?: Date) {
+  setCookie(name: string, value: any, expires?: Date) {
     if (this.cookies) {
       return this.cookies.set(name, value, {
         expires,

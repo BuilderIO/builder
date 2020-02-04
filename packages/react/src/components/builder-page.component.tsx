@@ -587,7 +587,7 @@ export class BuilderPage extends React.Component<
   @debounceNextTick
   notifyStateChange() {
     if (!(this && this.state)) {
-      return;
+      return
     }
     const nextState = this.state.state
     // TODO: only run the below once per tick...
@@ -828,7 +828,11 @@ export class BuilderPage extends React.Component<
                           <div
                             data-builder-component={this.name}
                             data-builder-content-id={fullData.id}
-                            data-builder-variation-id={fullData.testVariationId || fullData.variationId || fullData.id}
+                            data-builder-variation-id={
+                              fullData.testVariationId ||
+                              fullData.variationId ||
+                              fullData.id
+                            }
                           >
                             {this.getCss(data) && (
                               <style
@@ -998,6 +1002,18 @@ export class BuilderPage extends React.Component<
 
   onContentLoaded = (data: any) => {
     this.state.context.builderContent = data
+    if (data.meta && data.meta.kind === 'page') {
+      const future = new Date()
+      future.setDate(future.getDate() + 30)
+      this.builder.setCookie(
+        'builder.lastPageViewed',
+        [data.id, data.variationId || data.testVariationId || data.id].join(
+          ','
+        ),
+        future
+      )
+    }
+
     // if (Builder.isBrowser) {
     //   console.debug('Builder content load', data)
     // }
