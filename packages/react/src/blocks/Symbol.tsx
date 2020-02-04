@@ -89,7 +89,8 @@ class SymbolComponent extends React.Component<SymbolProps> {
               className={
                 (attributes.class || attributes.className || '') +
                 ' builder-symbol' +
-                (symbol?.inline ? ' builder-inline-symbol' : '')
+                (symbol?.inline ? ' builder-inline-symbol' : '') +
+                (symbol?.dynamic ? ' builder-dynamic-symbol' : '')
               }
             >
               {showPlaceholder ? (
