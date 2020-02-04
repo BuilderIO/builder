@@ -1,3 +1,4 @@
+// @ts-ignore
 import React from 'react'
 import * as dropdownPropsExtractor from '../src/dropdownPropsExtractor'
 import { render, waitForDomChange } from '@testing-library/react'
@@ -12,7 +13,6 @@ describe('Dropdown plugin', () => {
         mapper: () => {}
       }))
 
-    fetch.mockResponse(() => ({}))
     const dropdownProps = {
       context: { designerState: { editingContentModel: { data: {} } } }
     }

@@ -1,8 +1,8 @@
-import { safeEvaluate } from '../src/mapperEvaluator'
+import { extractSelections } from '../src/mapperEvaluator'
 
 describe('Safe evaluate', () => {
   it('Works', () => {
-    expect(safeEvaluate('true')).toBe(true)
-    expect(safeEvaluate('foo.bar', { foo: { bar: 'hi' } })).toBe('hi')
+    expect(extractSelections('true')).toBe(true)
+    expect(extractSelections('foo.bar', { foo: { bar: 'hi' } })).toBe('hi')
   })
 })

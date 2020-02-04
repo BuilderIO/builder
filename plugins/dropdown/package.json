@@ -113,7 +113,6 @@
     "@material-ui/icons": "^1.1.1",
     "@types/mustache": "^4.0.0",
     "@types/react-helmet": "^5.0.14",
-    "axios": "^0.19.2",
     "cross-env": "^6.0.3",
     "mustache": "^4.0.0",
     "react": "^16.11.0",
