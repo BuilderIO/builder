@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/shopify",
-  "version": "1.1.45-alpha.5",
+  "version": "1.1.46",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "repository": {
@@ -50,6 +50,7 @@
     "rollup-plugin-node-globals": "^1.4.0",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-sourcemaps": "^0.4.2",
+    "rollup-plugin-terser": "^5.2.0",
     "rollup-plugin-typescript": "^1.0.1",
     "rollup-plugin-typescript2": "^0.22.1",
     "rollup-plugin-uglify": "^6.0.2",

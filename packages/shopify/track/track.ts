@@ -1,7 +1,9 @@
 import { builder } from '@builder.io/sdk';
 import { Checkout } from './interfaces/checkout';
 
-export function getQueryParam(url: string, variable: string): string | null {
+const TRACKED_KEY = 'builder.tracked';
+
+function getQueryParam(url: string, variable: string): string | null {
   const query = url.split('?')[1] || '';
   const vars = query.split('&');
   for (let i = 0; i < vars.length; i++) {
@@ -13,39 +15,44 @@ export function getQueryParam(url: string, variable: string): string | null {
   return null;
 }
 
-const apiKey =
-  getQueryParam((document.currentScript as HTMLScriptElement).src || '', 'apiKey') ||
-  builder.apiKey;
+const _window = window as any;
 
-if (apiKey && !builder.apiKey) {
-  builder.apiKey = apiKey;
-}
+if (!_window[TRACKED_KEY]) {
+  const apiKey =
+    getQueryParam((document.currentScript as HTMLScriptElement).src || '', 'apiKey') ||
+    builder.apiKey;
 
-const { Shopify } = window as any;
+  if (apiKey && !builder.apiKey) {
+    builder.apiKey = apiKey;
+  }
 
-if (!apiKey) {
-  console.debug('No apiKey for Builder JS', document.currentScript);
-} else if (!Shopify) {
-  console.debug('No Shopify object');
-} else {
-  const checkout: Checkout | null = Shopify.checkout;
-  if (checkout) {
-    builder.track('checkout', {
-      meta: checkout,
-      amount: parseFloat(checkout.payment_due),
-    });
-    for (const item of checkout.line_items) {
-      const id = item.variant_id;
-      const cookieValue = builder.getCookie('builder.addToCart.' + id);
-      if (cookieValue) {
-        builder.setCookie('builder.addToCart.' + id, '', new Date(0));
-        const [contentId, variationId] = cookieValue.split(',');
-        builder.track('conversion', {
-          contentId,
-          variationId,
-          meta: item,
-          amount: parseFloat(item.price), // x item.quantity?
-        });
+  const { Shopify } = _window;
+
+  if (!apiKey) {
+    console.debug('No apiKey for Builder JS', document.currentScript);
+  } else if (!Shopify) {
+    console.debug('No Shopify object');
+  } else {
+    _window[TRACKED_KEY] = true;
+    const checkout: Checkout | null = Shopify.checkout;
+    if (checkout) {
+      builder.track('checkout', {
+        meta: checkout,
+        amount: parseFloat(checkout.payment_due),
+      });
+      for (const item of checkout.line_items) {
+        const id = item.variant_id;
+        const cookieValue = builder.getCookie('builder.addToCart.' + id);
+        if (cookieValue) {
+          builder.setCookie('builder.addToCart.' + id, '', new Date(0));
+          const [contentId, variationId] = cookieValue.split(',');
+          builder.track('conversion', {
+            contentId,
+            variationId,
+            meta: item,
+            amount: parseFloat(item.price), // x item.quantity?
+          });
+        }
       }
     }
   }
