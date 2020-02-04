@@ -29,9 +29,14 @@ const urlParser = {
 
     // IE 11 pathname handling workaround
     // (IE omits preceeding '/', unlike other browsers)
-    if (out.pathname && typeof out.pathname === 'string' && out.pathname.indexOf('/') !== 0) {
+    if (
+      (out.pathname || out.pathname === '') &&
+      typeof out.pathname === 'string' &&
+      out.pathname.indexOf('/') !== 0
+    ) {
       out.pathname = '/' + out.pathname;
     }
+
     return out;
   },
 };
@@ -1198,11 +1203,25 @@ export class Builder {
 
   // TODO: allow adding location object as property and/or in constructor
   getLocation(): Url {
+    let parsedLocation: any = {};
+
+    // in ssr mode
     if (this.request) {
-      return parse(this.request.url);
+      parsedLocation = parse(this.request.url);
     }
 
-    return (typeof location === 'object' && parse(location.href)) || ({} as any);
+    // in the browser
+    if (typeof location === 'object') {
+      parsedLocation = parse(location.href);
+    }
+
+    // IE11 bug with parsed path being empty string
+    // causes issues with our user targeting
+    if (parsedLocation.pathname === '') {
+      parsedLocation.pathname = '/';
+    }
+
+    return parsedLocation;
   }
 
   getUserAttributes(userAgent = this.userAgent || '') {
