@@ -32,7 +32,7 @@ if (!apiKey) {
   if (checkout) {
     builder.track('checkout', {
       meta: checkout,
-      value: parseFloat(checkout.payment_due),
+      amount: parseFloat(checkout.payment_due),
     });
     for (const item of checkout.line_items) {
       const id = item.variant_id;
