@@ -48,6 +48,19 @@ const clientOptions = {
   plugins: basicOptions.plugins.concat([resolve()]),
 };
 
+const trackOptions = {
+  ...basicOptions,
+  input: './track/track.ts',
+  output: [
+    {
+      format: 'es',
+      file: 'js/track.js',
+      sourcemap: true,
+    },
+  ],
+  plugins: basicOptions.plugins.concat([resolve()]),
+};
+
 const reactOptions = {
   ...basicOptions,
   input: './react/react.ts',
@@ -61,4 +74,4 @@ const reactOptions = {
   plugins: basicOptions.plugins.concat([resolve()]),
 };
 
-export default [clientOptions, reactOptions];
+export default [clientOptions, reactOptions, trackOptions];

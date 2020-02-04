@@ -103,21 +103,23 @@ export interface ParamsMap {
   [key: string]: any;
 }
 
+interface EventData {
+  contentId?: string;
+  ownerId: string;
+  variationId?: string;
+  userAttributes?: any;
+  targetSelector?: string;
+  targetBuilderElement?: string;
+  unique?: boolean;
+  metadata?: any | string;
+  meta?: any | string;
+  sessionId?: string;
+  amount?: number;
+}
 // TODO: share interfaces with API
 interface Event {
   type: string;
-  data: {
-    contentId?: string;
-    ownerId: string;
-    variationId?: string;
-    userAttributes?: any;
-    targetSelector?: string;
-    targetBuilderElement?: string;
-    unique?: boolean;
-    metadata?: any | string;
-    sessionId?: string;
-    amount?: number;
-  };
+  data: EventData;
 }
 
 export interface UserAttributes {
@@ -618,7 +620,7 @@ export class Builder {
   }
   userAgent: string = (typeof navigator === 'object' && navigator.userAgent) || '';
 
-  track(eventName: string, properties: any = {}) {
+  track(eventName: string, properties: Partial<EventData> = {}) {
     // TODO: queue up track requests and fire them off when canTrack set to true - otherwise may get lots of clicks with no impressions
     if (isIframe || !isBrowser) {
       return;
@@ -627,11 +629,14 @@ export class Builder {
     this.eventsQueue.push({
       type: eventName,
       data: {
+        ...omit(properties, 'meta'),
         metadata: {
           sdkVersion: Builder.VERSION,
           url: location.href,
+          ...properties.meta,
+          ...properties.metadata,
         },
-        ...properties,
+        ownerId: this.apiKey!,
         userAttributes: this.getUserAttributes(),
         sessionId: this.sessionId,
         // TODO: user properties like visitor id, location path, device, etc
