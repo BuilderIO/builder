@@ -1,4 +1,3 @@
-// @ts-ignore
 import React from 'react'
 import * as dropdownPropsExtractor from '../src/dropdownPropsExtractor'
 import { render, waitForDomChange } from '@testing-library/react'

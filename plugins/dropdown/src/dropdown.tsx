@@ -2,16 +2,12 @@ import { Builder } from '@builder.io/sdk'
 import React, { useEffect, useState } from 'react'
 import { InputLabel, MenuItem, FormControl, Select } from '@material-ui/core'
 import { getMassagedProps } from './dropdownPropsExtractor'
-import axios from 'axios'
+import { safeEvaluate } from './mapperEvaluator'
 
 const compare = (a: any, b: any) => {
   if (a.name < b.name) return -1
   if (a.name > b.name) return 1
   return 0
-}
-
-export const D = () => {
-  return <div>aws</div>
 }
 
 export const Dropdown = (props: any) => {
@@ -24,15 +20,13 @@ export const Dropdown = (props: any) => {
     props.onChange(selectedValue)
   }
 
-  const getSelections = async (url: any, mapper: Function) => {
-    console.log('TCL: getSelections -> url', url)
+  const getSelections = async (url: any, mapper: String) => {
     try {
       const response = await fetch(url)
       const data = await response.json()
 
-      // const response = await axios.get(url)
-      // const data = response.data
-      const mappedSelections = mapper(data)
+      const mappedSelections = safeEvaluate(mapper, { data })
+
       mappedSelections.sort(compare)
 
       setSelections(mappedSelections)
@@ -43,14 +37,8 @@ export const Dropdown = (props: any) => {
 
   useEffect(() => {
     const { url, mapper } = getMassagedProps(props)
-    // getSelections(url, mapper)
 
-    const myMapper = (data: any) =>
-      data.map((item: any) => ({
-        name: item.name,
-        key: item.mpvId
-      }))
-    getSelections(url, myMapper)
+    getSelections(url, mapper)
   }, [props.context.designerState.editingContentModel.data])
 
   return (
