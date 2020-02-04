@@ -41,7 +41,7 @@ if (!_window[TRACKED_KEY]) {
         amount: parseFloat(checkout.payment_due),
       });
       for (const item of checkout.line_items) {
-        const id = item.variant_id;
+        const id = item.id;
         const cookieValue = builder.getCookie('builder.addToCart.' + id);
         if (cookieValue) {
           builder.setCookie('builder.addToCart.' + id, '', new Date(0));
