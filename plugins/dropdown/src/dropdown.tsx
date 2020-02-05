@@ -2,8 +2,14 @@ import { Builder } from '@builder.io/sdk'
 import React, { useEffect, useState } from 'react'
 import { InputLabel, MenuItem, FormControl, Select } from '@material-ui/core'
 import { getMassagedProps } from './dropdownPropsExtractor'
-import { extractSelections } from './mapperEvaluator'
+import { safeEvaluate } from './mapperEvaluator'
 import { executeGet } from './selectionsClient'
+
+const comparer = (a: any, b: any) => {
+  if (a.name < b.name) return -1
+  if (a.name > b.name) return 1
+  return 0
+}
 
 export const Dropdown = (props: any) => {
   const [selected, setSelected] = useState(props.value || '')
@@ -18,7 +24,8 @@ export const Dropdown = (props: any) => {
   const getSelections = async (url: any, mapper: String) => {
     try {
       const data = await executeGet(url)
-      const mappedSelections = extractSelections(mapper, { data })
+      const mappedSelections = safeEvaluate(mapper, { data })
+      if (mappedSelections.sort) mappedSelections.sort(comparer)
 
       setSelections(mappedSelections)
     } catch (e) {
