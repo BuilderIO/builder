@@ -33,7 +33,9 @@ class Growser extends React.Component<{ className?: string }> {
     return (
       <div
         className={
-          (this.props.className || '') + ' ' + (this.state.grow ? 'builder__spacer__grow' : '')
+          (this.props.className || '') +
+          ' ' +
+          (this.state.grow ? 'builder__spacer__grow' : '')
         }
         css={{
           height: this.state.grow ? 30 : 0,
@@ -65,14 +67,20 @@ export class InsertSpacer extends React.Component<SpacerProps, SpacerState> {
             return null
           }
 
-          if (['top', 'left'].includes(spacer.direction) && this.props.position === 'after') {
+          if (
+            ['top', 'left'].indexOf(spacer.direction) > -1 &&
+            this.props.position === 'after'
+          ) {
             return null
           }
-          if (['bottom', 'right'].includes(spacer.direction) && this.props.position === 'before') {
+          if (
+            ['bottom', 'right'].indexOf(spacer.direction) > -1 &&
+            this.props.position === 'before'
+          ) {
             return null
           }
 
-          const isHorizontal = ['left', 'right'].includes(spacer.direction)
+          const isHorizontal = ['left', 'right'].indexOf(spacer.direction) > -1
           if (isHorizontal) {
             return null
           }
