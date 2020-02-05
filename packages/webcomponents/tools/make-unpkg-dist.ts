@@ -32,12 +32,7 @@ async function main() {
       }";
 
       var wcRootParam = typeof location !== 'undefined' && location.href && getQueryParam(location.href, 'builder.wcRoot');
-
-      if (wcRootParam === "dev") {
-        wcRootOverride = "http://localhost:1267"
-      }
-
-      var root = wcRootOverride || "https://cdn.builder.io/js/webcomponents";
+      var root = wcRootParam === "dev" ? "http://localhost:1267" : "https://cdn.builder.io/js/webcomponents";
       /* TODO: make rollup es6 build and use WC es6 if browser supports */
       var useLiteQuery = getQueryParam(location.href, 'builder.useWcLite');
       var useLite = useLiteQuery ? JSON.parse(useLiteQuery) : 'customElements' in window;
