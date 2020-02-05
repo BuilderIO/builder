@@ -30,13 +30,11 @@ async function main() {
       var version = typeof location !== 'undefined' && location.href && getQueryParam(location.href, 'builder.wcVersion') ||  "${
         pkg.version
       }";
-      var wcRootParam = typeof location !== 'undefined' && location.href && getQueryParam(location.href, 'builder.wcRoot');
-      var wcRootAllowed = ['dev', 'production'];
-      var wcRootOverride;
-      
 
-      if (wcRootParam && wcRootAllowed.indexOf(wcRootParam) > -1) {
-        wcRootOverride = wcRootParam;
+      var wcRootParam = typeof location !== 'undefined' && location.href && getQueryParam(location.href, 'builder.wcRoot');
+
+      if (wcRootParam === "dev") {
+        wcRootOverride = "http://localhost:1267"
       }
 
       var root = wcRootOverride || "https://cdn.builder.io/js/webcomponents";
