@@ -30,7 +30,16 @@ async function main() {
       var version = typeof location !== 'undefined' && location.href && getQueryParam(location.href, 'builder.wcVersion') ||  "${
         pkg.version
       }";
-      var root = typeof location !== 'undefined' && location.href && getQueryParam(location.href, 'builder.wcRoot') ||  "https://cdn.builder.io/js/webcomponents";
+      var wcRootParam = typeof location !== 'undefined' && location.href && getQueryParam(location.href, 'builder.wcRoot');
+      var wcRootAllowed = ['dev', 'production'];
+      var wcRootOverride;
+      
+
+      if (wcRootParam && wcRootAllowed.indexOf(wcRootParam) > -1) {
+        wcRootOverride = wcRootParam;
+      }
+
+      var root = wcRootOverride || "https://cdn.builder.io/js/webcomponents";
       /* TODO: make rollup es6 build and use WC es6 if browser supports */
       var useLiteQuery = getQueryParam(location.href, 'builder.useWcLite');
       var useLite = useLiteQuery ? JSON.parse(useLiteQuery) : 'customElements' in window;
