@@ -1002,7 +1002,7 @@ export class BuilderPage extends React.Component<
 
   onContentLoaded = (data: any) => {
     this.state.context.builderContent = data
-    if (data.meta && data.meta.kind === 'page') {
+    if (data && data.meta && data.meta.kind === 'page') {
       const future = new Date()
       future.setDate(future.getDate() + 30)
       this.builder.setCookie(
