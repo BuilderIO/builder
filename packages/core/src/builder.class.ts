@@ -12,8 +12,11 @@ import Cookies from './classes/cookies.class';
 import { omit } from './functions/omit.function';
 import serverOnlyRequire from './functions/server-only-require.function';
 
+type BuilderEnv = 'production' | 'qa' | 'development' | 'dev' | 'cdn-qa';
+
 export type Url = any;
 export const isReactNative = typeof navigator === 'object' && navigator.product === 'ReactNative';
+export const validEnvList: BuilderEnv[] = ['production', 'qa', 'development', 'dev', 'cdn-qa'];
 
 const urlParser = {
   parse(url: string) {
@@ -532,7 +535,7 @@ export class Builder {
     });
   }
 
-  env: 'production' | 'qa' | 'development' | 'dev' | 'cdn-qa' | string = 'production';
+  env: BuilderEnv = 'production';
 
   protected isUsed = false;
   sessionId = this.getSessionId();
@@ -963,13 +966,16 @@ export class Builder {
         frameEditing,
         params: overrideParams,
       } = builder;
+
       if (userAttributes) {
         this.setUserAttributes(userAttributes);
       }
+
       if (overrides) {
         this.overrides = overrides;
       }
-      if (env || api) {
+
+      if (validEnvList.indexOf(env || api) > -1) {
         this.env = env || api;
       }
 
@@ -983,9 +989,11 @@ export class Builder {
       if (host) {
         this.overrideHost = host;
       }
+
       if (cachebust) {
         this.cachebust = true;
       }
+
       if (noCache) {
         this.noCache = true;
       }
