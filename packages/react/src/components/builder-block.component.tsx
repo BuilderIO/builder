@@ -329,7 +329,7 @@ export class BuilderBlock extends React.Component<
         }
         const { selection } = data
         const id = this.props.block && this.props.block.id
-        if (id && Array.isArray(selection) && selection.includes(id)) {
+        if (id && Array.isArray(selection) && selection.indexOf(id) > -1) {
           setTimeout(() => {
             ;(window as any).$block = this
             if (!(window as any).$blocks) {
