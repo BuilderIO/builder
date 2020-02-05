@@ -12,11 +12,9 @@ import Cookies from './classes/cookies.class';
 import { omit } from './functions/omit.function';
 import serverOnlyRequire from './functions/server-only-require.function';
 
-type BuilderEnv = 'production' | 'qa' | 'development' | 'dev' | 'cdn-qa';
-
 export type Url = any;
 export const isReactNative = typeof navigator === 'object' && navigator.product === 'ReactNative';
-export const validEnvList: BuilderEnv[] = ['production', 'qa', 'development', 'dev', 'cdn-qa'];
+export const validEnvList = ['production', 'qa', 'development', 'dev', 'cdn-qa'];
 
 const urlParser = {
   parse(url: string) {
@@ -535,7 +533,7 @@ export class Builder {
     });
   }
 
-  env: BuilderEnv = 'production';
+  env: string = 'production';
 
   protected isUsed = false;
   sessionId = this.getSessionId();
