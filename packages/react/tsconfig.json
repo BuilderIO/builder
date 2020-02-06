@@ -4,8 +4,8 @@
     "baseUrl": ".",
     "jsx": "react",
     "target": "es5",
-    "module":"es2015",
-    "lib": ["dom", "es2015"],
+    "module": "es2015",
+    "lib": ["dom", "es5", "es2015.promise"],
     "strict": true,
     "sourceMap": true,
     "declaration": true,
@@ -17,17 +17,10 @@
     "emitDecoratorMetadata": true,
     "declarationDir": "dist/types",
     "outDir": "dist/lib",
-    "typeRoots": [
-      "node_modules/@types"
-    ],
+    "typeRoots": ["node_modules/@types"],
     "paths": {
       "lib": ["./lib"]
     }
   },
-  "include": [
-    "src",
-    "test",
-    "rollup.config.ts",
-    "internal-types.d.ts"
-  ]
+  "include": ["src", "test", "rollup.config.ts", "internal-types.d.ts"]
 }

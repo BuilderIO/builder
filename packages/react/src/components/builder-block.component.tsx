@@ -329,7 +329,7 @@ export class BuilderBlock extends React.Component<
         }
         const { selection } = data
         const id = this.props.block && this.props.block.id
-        if (id && Array.isArray(selection) && selection.includes(id)) {
+        if (id && Array.isArray(selection) && selection.indexOf(id) > -1) {
           setTimeout(() => {
             ;(window as any).$block = this
             if (!(window as any).$blocks) {
@@ -440,13 +440,6 @@ export class BuilderBlock extends React.Component<
 
     const TextTag: any = 'span'
 
-    const isBlock = !['absolute', 'fixed'].includes(
-      block.responsiveStyles &&
-        block.responsiveStyles.large &&
-        (block.responsiveStyles.large
-          .position as any) /*( this.styles.position */
-    )
-
     let options: any = {
       // Attributes?
       ...block.properties,
@@ -542,7 +535,7 @@ export class BuilderBlock extends React.Component<
       [commonTags.has(TagName) ? 'className' : 'class']:
         `builder-block ${this.id}${block.class ? ` ${block.class}` : ''}${
           block.component &&
-          !['Image', 'Video', 'Banner'].includes(componentName)
+          !(['Image', 'Video', 'Banner'].indexOf(componentName) > -1)
             ? ` builder-has-component`
             : ''
         }` +
