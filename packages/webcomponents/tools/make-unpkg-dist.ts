@@ -30,7 +30,9 @@ async function main() {
       var version = typeof location !== 'undefined' && location.href && getQueryParam(location.href, 'builder.wcVersion') ||  "${
         pkg.version
       }";
-      var root = typeof location !== 'undefined' && location.href && getQueryParam(location.href, 'builder.wcRoot') ||  "https://cdn.builder.io/js/webcomponents";
+
+      var wcRootParam = typeof location !== 'undefined' && location.href && getQueryParam(location.href, 'builder.wcRoot');
+      var root = wcRootParam === "dev" ? "http://localhost:1267" : "https://cdn.builder.io/js/webcomponents";
       /* TODO: make rollup es6 build and use WC es6 if browser supports */
       var useLiteQuery = getQueryParam(location.href, 'builder.useWcLite');
       var useLite = useLiteQuery ? JSON.parse(useLiteQuery) : 'customElements' in window;

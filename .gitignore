@@ -11,3 +11,6 @@ coverage
 .rpt2_cache/
 .cache
 .DS_Store
+
+.firebase*
+firebase.json
