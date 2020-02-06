@@ -1,3 +1,5 @@
+/** @jsx jsx */
+import { jsx } from '@emotion/core'
 import { Builder } from '@builder.io/sdk'
 import React, { useEffect, useState } from 'react'
 import { InputLabel, MenuItem, FormControl, Select } from '@material-ui/core'
@@ -12,12 +14,11 @@ const comparer = (a: any, b: any) => {
 }
 
 export const Dropdown = (props: any) => {
-  const [selected, setSelected] = useState(props.value || '')
   const [selections, setSelections] = useState([])
 
   const onSelectChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    const selectedValue = event.target.value
-    setSelected(selectedValue)
+    // The selected value must be a valid JSON type (so must not be `undefined`)
+    const selectedValue = event.target.value ?? null
     props.onChange(selectedValue)
   }
 
@@ -37,18 +38,23 @@ export const Dropdown = (props: any) => {
     const { url, mapper } = getMassagedProps(props)
 
     getSelections(url, mapper)
-  }, [props.context.designerState.editingContentModel.data])
+  }, [props.context.designerState.editingContentModel?.data])
 
   return (
-    <FormControl variant="outlined">
+    <FormControl css={{ marginTop: 15 }} fullWidth variant="outlined">
       <InputLabel id="select-outlined-label">Mpv Id</InputLabel>
-      <Select id="select-outlined" value={selected} onChange={onSelectChange}>
+      <Select
+        fullWidth
+        id="select-outlined"
+        value={props.value ?? ''}
+        onChange={onSelectChange}
+      >
         <MenuItem value="">
           <em>None</em>
         </MenuItem>
         {selections &&
-          selections.map((selection: any) => (
-            <MenuItem value={selection.key}>{selection.name}</MenuItem>
+          selections.map((selection: any, index: any) => (
+            <MenuItem key={index} value={selection.key}>{selection.name}</MenuItem>
           ))}
       </Select>
     </FormControl>

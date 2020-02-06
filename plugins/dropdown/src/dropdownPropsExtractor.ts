@@ -2,6 +2,8 @@ import Mustache from 'mustache'
 
 const getMassagedProps = (props: any): any => {
   const { url, mapper } = props.field.options
+    ? props.field.options.toJSON()
+    : ({} as any)
 
   if (isNullOrEmpty(url)) throw new Error('Missing { url: "" } required option')
   if (isNullOrEmpty(mapper))
