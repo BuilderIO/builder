@@ -481,6 +481,8 @@ export class BuilderBlock extends React.Component<
 
     if (options.hide) {
       return null
+    } else {
+      delete options.hide;
     }
     // TODO: UI for this
     if (
@@ -488,6 +490,8 @@ export class BuilderBlock extends React.Component<
       !options.show
     ) {
       return null
+    } else {
+      delete options.show;
     }
 
     if (block.actions) {

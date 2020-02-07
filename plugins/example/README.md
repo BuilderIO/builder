@@ -34,7 +34,7 @@ builder.plugins.replace([
   'http://localhost:1268/plugin.system.js'
 ]);
 // Saves for all in your organization and reloads the browser
-builder.savePlugins.then(() => location.reload());
+builder.savePlugins().then(() => location.reload());
 ```
 
 **NOTE:** Loading http:// content on an https:// website will give you a warning. Be sure to click the shield in the top right of your browser and choose "load unsafe scripts" to allow the http content on Builder's https site when devloping locally
@@ -49,7 +49,7 @@ To uninstall your plugin run
 // Removes all plugins
 builder.plugins.replace([]);
 // Saves for all in your organization and reloads the browser
-builder.savePlugins.then(() => location.reload());
+builder.savePlugins().then(() => location.reload());
 ```
 
 ### Seeing your plugin in action
