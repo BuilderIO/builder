@@ -50,7 +50,10 @@ if (typeof window !== 'undefined') {
     {
       type: 'builder.isReactSdk',
       data: {
-        value: true
+        value: true,
+        supportsPatchUpdates: true
+        // TODO: version
+        // version: pkg.version
       }
     },
     '*'
