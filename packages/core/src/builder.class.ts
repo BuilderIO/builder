@@ -14,7 +14,16 @@ import serverOnlyRequire from './functions/server-only-require.function';
 
 export type Url = any;
 export const isReactNative = typeof navigator === 'object' && navigator.product === 'ReactNative';
-export const validEnvList = ['production', 'qa', 'development', 'dev', 'cdn-qa', 'cloud', 'fast', 'cdn2'];
+export const validEnvList = [
+  'production',
+  'qa',
+  'development',
+  'dev',
+  'cdn-qa',
+  'cloud',
+  'fast',
+  'cdn2',
+];
 
 const urlParser = {
   parse(url: string) {
@@ -389,6 +398,13 @@ export class Builder {
         location.search.indexOf('builder.frameEditing=') !== -1)
   );
 
+  static isPreviewing = Boolean(
+    isIframe &&
+      ((document.referrer && document.referrer.match(/builder\.io|localhost:1234/)) ||
+        location.search.indexOf('builder.preview=') !== -1 ||
+        location.search.indexOf('builder.frameEditing=') !== -1)
+  );
+
   // useCdnApi = false;
 
   static get editingPage() {
@@ -628,7 +644,7 @@ export class Builder {
 
   track(eventName: string, properties: Partial<EventData> = {}) {
     // TODO: queue up track requests and fire them off when canTrack set to true - otherwise may get lots of clicks with no impressions
-    if (isIframe || !isBrowser) {
+    if (isIframe || !isBrowser || Builder.isPreviewing) {
       return;
     }
     // batch events
@@ -687,7 +703,7 @@ export class Builder {
   }
 
   trackImpression(contentId: string, variationId?: string) {
-    if (isIframe || !isBrowser) {
+    if (isIframe || !isBrowser || Builder.isPreviewing) {
       return;
     }
     // TODO: use this.track method
@@ -705,8 +721,8 @@ export class Builder {
   }
 
   // Multiple content IDs?
-  trackConversion(amount?: number, contentId?: string) {
-    if (isIframe || !isBrowser) {
+  trackConversion(amount?: number, contentId?: string, variationId?: string) {
+    if (isIframe || !isBrowser || Builder.isPreviewing) {
       return;
     }
     // TODO: use this.track method
@@ -716,6 +732,8 @@ export class Builder {
         // contentId,
         // variationId: variationId !== contentId ? variationId : undefined,
         amount,
+        contentId,
+        variationId,
         ownerId: this.apiKey as string,
         userAttributes: this.getUserAttributes(),
         sessionId: this.sessionId,
@@ -747,7 +765,7 @@ export class Builder {
     alreadyTrackedOne = false,
     event?: MouseEvent
   ) {
-    if (isIframe || !isBrowser) {
+    if (isIframe || !isBrowser || Builder.isPreviewing) {
       return;
     }
     const target = event && (event.target as HTMLElement);
