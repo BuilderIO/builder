@@ -16,7 +16,7 @@ if (Builder.isIframe) {
   import('@builder.io/email')
 }
 
-// 
+//
 
 if ((process.env.NODE_ENV as string) === 'development') {
   // Must use require here as import statements are only allowed

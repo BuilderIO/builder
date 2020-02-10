@@ -12,6 +12,7 @@ export interface TabsProps {
   builderBlock: any
   defaultActiveTab?: number
   collapsible?: boolean
+  tabsLayout?: string
   activeTabStyle?: any
 }
 
@@ -86,6 +87,7 @@ class TabsComponent extends React.Component<TabsProps, { activeTab: number }> {
   }
 
   render() {
+    console.log('rendering tabs...', this.props)
     return (
       <React.Fragment>
         {/* TODO: tab overflow wrap option */}
@@ -93,6 +95,7 @@ class TabsComponent extends React.Component<TabsProps, { activeTab: number }> {
           style={{
             display: 'flex',
             flexDirection: 'row',
+            justifyContent: this.props.tabsLayout || 'center',
             overflow: 'auto',
             WebkitOverflowScrolling: 'touch'
           }}
@@ -103,10 +106,13 @@ class TabsComponent extends React.Component<TabsProps, { activeTab: number }> {
               <span
                 key={index}
                 className={
-                  'builder-tab-wrap ' + (this.activeTabSpec === item ? 'builder-tab-active' : '')
+                  'builder-tab-wrap ' +
+                  (this.activeTabSpec === item ? 'builder-tab-active' : '')
                 }
                 style={{
-                  ...((this.activeTabSpec === item && this.props.activeTabStyle) || undefined)
+                  ...((this.activeTabSpec === item &&
+                    this.props.activeTabStyle) ||
+                    undefined)
                 }}
                 onClick={() => {
                   if (index === this.activeTab && this.props.collapsible) {
@@ -233,6 +239,12 @@ export const Tabs = withBuilder(TabsComponent, {
       helperText: 'If on, clicking an open tab closes it so no tabs are active',
       defaultValue: false,
       advanced: true
+    },
+    {
+      name: 'tabsLayout',
+      type: 'enum',
+      helperText: 'layout tabs',
+      enum: ['center', 'space-between', 'space-around', 'left', 'right']
     }
   ]
 })
