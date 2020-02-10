@@ -6,6 +6,7 @@ import {
   Builder
 } from '@builder.io/sdk'
 import { NoWrap } from './no-wrap'
+import { applyPatchWithMinimalMutationChain } from 'src/functions/apply-patch-with-mutation'
 
 export interface BuilderContentProps<ContentType> {
   contentLoaded?: (content: ContentType) => void
@@ -33,7 +34,37 @@ export class BuilderContent<
 
   state = {
     loading: true,
-    data: null as any
+    data: null as any,
+    updates: 1
+  }
+
+  onWindowMessage = (event: MessageEvent) => {
+    const message = event.data
+    if (!message) {
+      return
+    }
+    switch (message.type) {
+      case 'builder.patchUpdates': {
+        const { data } = message
+        if (!(data && data.data)) {
+          break
+        }
+        const patches = data.data[this.state.data?.id]
+        if (!(patches && patches.length)) {
+          return
+        }
+
+        for (const patch of patches) {
+          applyPatchWithMinimalMutationChain(this.state.data, patch)
+        }
+        this.setState({ updates: this.state.updates + 1 })
+        if (this.props.contentLoaded) {
+          this.props.contentLoaded(this.state.data)
+        }
+
+        break
+      }
+    }
   }
 
   subscriptions = new Subscription()
@@ -50,6 +81,10 @@ export class BuilderContent<
     // this.builder.autoTrack = true;
     // this.builder.env = 'development';
     this.subscribeToContent()
+
+    if (Builder.isEditing) {
+      addEventListener('message', this.onWindowMessage)
+    }
 
     /// REACT15ONLY if (this.ref) { this.ref.setAttribute('builder-model', this.props.modelName); }
   }
@@ -122,6 +157,10 @@ export class BuilderContent<
   }
 
   componentWillUnmount() {
+    if (Builder.isEditing) {
+      removeEventListener('message', this.onWindowMessage)
+    }
+
     this.subscriptions.unsubscribe()
     if (this.intersectionObserver && this.ref) {
       this.intersectionObserver.unobserve(this.ref)

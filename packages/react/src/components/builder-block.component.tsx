@@ -1,4 +1,5 @@
 /** @jsx jsx */
+
 import { Builder, builder, BuilderElement, Component } from '@builder.io/sdk'
 import { ClassNames, jsx } from '@emotion/core'
 import React from 'react'
@@ -10,63 +11,12 @@ import {
   RequestOrPromise
 } from '../store/builder-async-requests'
 import { BuilderStoreContext } from '../store/builder-store'
+import { applyPatchWithMinimalMutationChain } from 'src/functions/apply-patch-with-mutation'
 
 const camelCaseToKebabCase = (str?: string) =>
   str ? str.replace(/([A-Z])/g, g => `-${g[0].toLowerCase()}`) : ''
 
 const Device = { desktop: 0, tablet: 1, mobile: 2 }
-
-export const applyPatchWithMinimalMutationChain = (
-  obj: any,
-  patch: { path: string; op: 'add' | 'remove' | 'replace'; value: any },
-  preserveRoot = true
-) => {
-  if (Object(obj) !== obj) {
-    return obj
-  }
-  const { path, op, value } = patch
-  const pathArr: string[] = path.split(/\//)
-
-  const newObj = preserveRoot ? obj : { ...obj }
-  let objPart = newObj
-  for (let i = 0; i < pathArr.length; i++) {
-    const isLast = i === pathArr.length - 1
-    const property = pathArr[i]
-    if (isLast) {
-      if (op === 'replace') {
-        objPart[property] = value
-      } else if (op === 'add') {
-        const index = Number(property)
-        if (Array.isArray(objPart)) {
-          if (property === '-') {
-            objPart.push(value)
-          } else {
-            objPart.splice(index - 1, 0, value)
-          }
-        } else {
-          objPart[property] = value
-        }
-      } else if (op === 'remove') {
-        const index = Number(property)
-        if (Array.isArray(objPart)) {
-          objPart.splice(index, 1, value)
-        } else {
-          delete objPart[property]
-        }
-      }
-    } else {
-      objPart = objPart[property] = {
-        ...(Object(objPart[property]) === objPart[property]
-          ? objPart[property]
-          : String(Number(property)) === property
-          ? []
-          : {})
-      }
-    }
-  }
-
-  return newObj
-}
 
 const commonTags = new Set(['div', 'a', 'span', 'img'])
 const voidElements = new Set([
@@ -245,10 +195,12 @@ export class BuilderBlock extends React.Component<
     const { block } = this.props
     if (Builder.isServer) {
       const animation = block.animations && block.animations[0]
-      const firstStep = animation && animation.steps && animation.steps[0]
-      const stepStyles = firstStep && firstStep.styles
-      if (stepStyles) {
-        initialAnimationStepStyles = stepStyles
+      if (animation && animation.trigger !== 'hover') {
+        const firstStep = animation && animation.steps && animation.steps[0]
+        const stepStyles = firstStep && firstStep.styles
+        if (stepStyles) {
+          initialAnimationStepStyles = stepStyles
+        }
       }
     }
 
@@ -270,6 +222,22 @@ export class BuilderBlock extends React.Component<
             '&.builder-block': self.responsiveStyles[size]
           }
         }
+      }
+    }
+
+    const hoverAnimation =
+      block.animations &&
+      block.animations.find(item => item.trigger === 'hover')
+    if (hoverAnimation) {
+      styles[':hover'] = hoverAnimation.steps?.[0]?.styles || {}
+      // TODO: if manually has set transition property deal with that
+      // TODO: only include properties explicitly set in the animation
+      // using Object.keys(styles)
+      styles.transition = `all ${
+        hoverAnimation.duration
+      }s ${camelCaseToKebabCase(hoverAnimation.easing)}`
+      if (hoverAnimation.delay) {
+        styles.transitionDelay = hoverAnimation.delay + 's'
       }
     }
 
@@ -404,12 +372,8 @@ export class BuilderBlock extends React.Component<
           return
         }
 
-        eval('debugger')
         for (const patch of patches) {
-          console.log('patch', patch)
-          console.log('before', this.props.block)
           applyPatchWithMinimalMutationChain(this.props.block, patch)
-          console.log('after', this.props.block)
         }
         this.setState({ updates: this.state.updates + 1 })
 
@@ -481,10 +445,12 @@ export class BuilderBlock extends React.Component<
         }
       }
       Builder.animator.bindAnimations(
-        options.animations.map((animation: any) => ({
-          ...animation,
-          elementId: this.props.block.id
-        }))
+        options.animations
+          .filter((item: any) => item.trigger !== 'hover')
+          .map((animation: any) => ({
+            ...animation,
+            elementId: this.props.block.id
+          }))
       )
     }
   }
@@ -557,7 +523,7 @@ export class BuilderBlock extends React.Component<
     if (options.hide) {
       return null
     } else {
-      delete options.hide;
+      delete options.hide
     }
     // TODO: UI for this
     if (
@@ -566,7 +532,7 @@ export class BuilderBlock extends React.Component<
     ) {
       return null
     } else {
-      delete options.show;
+      delete options.show
     }
 
     if (block.actions) {

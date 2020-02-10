@@ -98,6 +98,8 @@ export class Animator {
       element.style.transitionDelay = '0';
       assign(element.style, animation.steps[0].styles);
       // TODO: queue/batch these timeouts
+      // TODO: only include properties explicitly set in the animation
+      // using Object.keys(styles)
       setTimeout(() => {
         element.style.transition = `all ${animation.duration}s ${camelCaseToKebabCase(
           animation.easing
