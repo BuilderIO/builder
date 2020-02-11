@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/email",
-  "version": "1.0.111-alpha.7",
+  "version": "1.0.111-alpha.9",
   "description": "",
   "keywords": [],
   "main": "dist/builder-email.cjs.js",
@@ -123,12 +123,12 @@
     "validate-commit-msg": "^2.12.2"
   },
   "dependencies": {
-    "@builder.io/react": "^1.0.111-alpha.9",
-    "@builder.io/sdk": "^1.0.60-alpha.6",
+    "@builder.io/react": "^1.0.111-alpha.11",
+    "@builder.io/sdk": "^1.0.60-alpha.8",
     "lodash-es": "^4.17.10",
     "react": "^16.4.1",
     "react-dom": "^16.4.2",
     "tslib": "^1.10.0"
   },
-  "gitHead": "ee6e0fae6c9dfffd4b34839de0c21f32af193ff6"
+  "gitHead": "529aaded8f0ef82df27385a0e54320daf8261b7d"
 }

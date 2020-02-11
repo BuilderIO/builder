@@ -229,7 +229,7 @@ export class BuilderBlock extends React.Component<
       block.animations &&
       block.animations.find(item => item.trigger === 'hover')
     if (hoverAnimation) {
-      styles[':hover'] = hoverAnimation.steps?.[0]?.styles || {}
+      styles[':hover'] = hoverAnimation.steps?.[1]?.styles || {}
       // TODO: if manually has set transition property deal with that
       // TODO: only include properties explicitly set in the animation
       // using Object.keys(styles)
@@ -372,7 +372,14 @@ export class BuilderBlock extends React.Component<
           return
         }
 
+        if (location.href.includes('builder.debug=true')) {
+          this.eval('debugger')
+        }
         for (const patch of patches) {
+          // TODO: soehow mark this.props.block as a new object,
+          // e.g. access it's parent hm. maybe do the listning mutations
+          // on hte parent element not the child (or rather
+          // send the message to the parent)
           applyPatchWithMinimalMutationChain(this.props.block, patch)
         }
         this.setState({ updates: this.state.updates + 1 })

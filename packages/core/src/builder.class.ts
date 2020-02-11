@@ -50,6 +50,7 @@ const urlParser = {
     return out;
   },
 };
+
 const parse = isReactNative
   ? () => ({})
   : typeof window === 'object'
@@ -1695,12 +1696,14 @@ export class Builder {
           n += testRatio;
           if (random < n) {
             this.setTestCookie(item.id, variation.id);
+            const variationName = variation.name || (variation.id === item.id ? 'Default variation' : '')
             return {
               ...item,
               data: variation.data,
               variationId: variation.id,
               testVariationId: variation.id,
-              testVariationName: variation.name,
+              variationName: variationName,
+              testVariationName: variationName,
             };
           }
         }
@@ -1712,7 +1715,7 @@ export class Builder {
         ...(item.variations &&
           size(item.variations) && {
             testVariationId: item.id,
-            testVariationName: 'default',
+            testVariationName: 'Default variation',
           }),
       };
     });

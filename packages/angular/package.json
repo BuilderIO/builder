@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/angular",
-  "version": "1.0.83-alpha.6",
+  "version": "1.0.83-alpha.11",
   "main": "dist/bundles/builder.io-angular.umd.js",
   "module": "dist/fesm5/builder.io-angular.js",
   "es2015": "dist/fesm2015/builder.io-angular.js",
@@ -46,7 +46,7 @@
     "@angular/core": ">= 2",
     "@angular/elements": "^8.1.1",
     "@angular/router": ">= 2",
-    "@builder.io/sdk": "^1.0.60-alpha.6",
+    "@builder.io/sdk": "^1.0.60-alpha.8",
     "rxjs": ">= 2",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1"
@@ -82,5 +82,5 @@
     "tslint": "^5.11.0",
     "typescript": "3.5.x"
   },
-  "gitHead": "f233cba190317de3644fff198e765660205cd7f1"
+  "gitHead": "529aaded8f0ef82df27385a0e54320daf8261b7d"
 }

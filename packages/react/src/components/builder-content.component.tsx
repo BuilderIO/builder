@@ -54,10 +54,16 @@ export class BuilderContent<
           return
         }
 
+        if (location.href.includes('builder.debug=true')) {
+          eval('debugger')
+        }
         for (const patch of patches) {
           applyPatchWithMinimalMutationChain(this.state.data, patch)
         }
-        this.setState({ updates: this.state.updates + 1 })
+        this.setState({
+          updates: this.state.updates + 1,
+          data: this.state.data ? { ...this.state.data } : this.state.data
+        })
         if (this.props.contentLoaded) {
           this.props.contentLoaded(this.state.data)
         }
