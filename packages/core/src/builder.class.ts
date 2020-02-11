@@ -50,6 +50,7 @@ const urlParser = {
     return out;
   },
 };
+
 const parse = isReactNative
   ? () => ({})
   : typeof window === 'object'
