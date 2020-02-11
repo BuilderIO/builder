@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom';
 import { BuilderComponent } from '@builder.io/react';
 import './index.css'
 import './components/ProductsList/ProductsList.builder'
-console.log('oiwejfiowejoi')
+import './components/Hero/Hero.builder'
+
 class App extends React.Component {
   state = { notFound: false };
 

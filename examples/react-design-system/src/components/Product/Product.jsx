@@ -17,7 +17,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    height: '100%'
+    height: '100%',
   },
   media: {
     height: 0,
@@ -38,8 +38,16 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export const Product = (props)  => {
-  const { brandedName, priceLabel, description, clickUrl, image, promotionalDeal, sizeName } = props
+export const Product = props => {
+  const {
+    brandedName,
+    priceLabel,
+    description,
+    clickUrl,
+    image,
+    promotionalDeal,
+    sizeName,
+  } = props;
   const classes = useStyles();
   const [expanded, setExpanded] = useState(true);
 
@@ -48,7 +56,7 @@ export const Product = (props)  => {
   };
 
   return (
-    <Card className={classes.root} style={{maxWidth: image.sizes[sizeName].width}}>
+    <Card className={classes.root} style={{ maxWidth: image.sizes[sizeName].width }}>
       <CardHeader
         action={
           <IconButton aria-label="settings">
@@ -66,14 +74,14 @@ export const Product = (props)  => {
       />
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
-            {promotionalDeal?.title}
+          {promotionalDeal?.title}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
         <IconButton aria-label="add to favorites">
           <FavoriteIcon />
         </IconButton>
-        <IconButton target='_blank' href={clickUrl} aria-label="share">
+        <IconButton target="_blank" href={clickUrl} aria-label="share">
           <ShareIcon />
         </IconButton>
         <IconButton
@@ -89,11 +97,9 @@ export const Product = (props)  => {
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Typography paragraph>
-              {description}
-          </Typography>
+          <Typography paragraph>{description}</Typography>
         </CardContent>
       </Collapse>
     </Card>
   );
-}
+};
