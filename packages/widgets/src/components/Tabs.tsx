@@ -12,7 +12,7 @@ export interface TabsProps {
   builderBlock: any
   defaultActiveTab?: number
   collapsible?: boolean
-  tabsLayout?: string
+  tabHeaderLayout?: string
   activeTabStyle?: any
 }
 
@@ -87,7 +87,6 @@ class TabsComponent extends React.Component<TabsProps, { activeTab: number }> {
   }
 
   render() {
-    console.log('rendering tabs...', this.props)
     return (
       <React.Fragment>
         {/* TODO: tab overflow wrap option */}
@@ -95,7 +94,7 @@ class TabsComponent extends React.Component<TabsProps, { activeTab: number }> {
           style={{
             display: 'flex',
             flexDirection: 'row',
-            justifyContent: this.props.tabsLayout || 'center',
+            justifyContent: this.props.tabHeaderLayout,
             overflow: 'auto',
             WebkitOverflowScrolling: 'touch'
           }}
@@ -241,10 +240,17 @@ export const Tabs = withBuilder(TabsComponent, {
       advanced: true
     },
     {
-      name: 'tabsLayout',
+      name: 'tabHeaderLayout',
       type: 'enum',
-      helperText: 'layout tabs',
-      enum: ['center', 'space-between', 'space-around', 'left', 'right']
+      helperText: 'Change the layout of the tab headers (uses justify-content)',
+      defaultValue: 'flex-start',
+      enum: [
+        'center',
+        'space-between',
+        'space-around',
+        'flex-start',
+        'flex-end'
+      ]
     }
   ]
 })
