@@ -243,7 +243,7 @@ export const Tabs = withBuilder(TabsComponent, {
       name: 'tabHeaderLayout',
       type: 'enum',
       helperText: 'Change the layout of the tab headers (uses justify-content)',
-      defaultValue: { label: 'left', value: 'flex-start' },
+      defaultValue: 'flex-start',
       enum: [
         { label: 'Center', value: 'center' },
         { label: 'Space between', value: 'space-between' },
