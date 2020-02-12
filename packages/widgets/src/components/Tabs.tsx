@@ -12,6 +12,7 @@ export interface TabsProps {
   builderBlock: any
   defaultActiveTab?: number
   collapsible?: boolean
+  tabHeaderLayout?: string
   activeTabStyle?: any
 }
 
@@ -93,6 +94,7 @@ class TabsComponent extends React.Component<TabsProps, { activeTab: number }> {
           style={{
             display: 'flex',
             flexDirection: 'row',
+            justifyContent: this.props.tabHeaderLayout,
             overflow: 'auto',
             WebkitOverflowScrolling: 'touch'
           }}
@@ -103,10 +105,13 @@ class TabsComponent extends React.Component<TabsProps, { activeTab: number }> {
               <span
                 key={index}
                 className={
-                  'builder-tab-wrap ' + (this.activeTabSpec === item ? 'builder-tab-active' : '')
+                  'builder-tab-wrap ' +
+                  (this.activeTabSpec === item ? 'builder-tab-active' : '')
                 }
                 style={{
-                  ...((this.activeTabSpec === item && this.props.activeTabStyle) || undefined)
+                  ...((this.activeTabSpec === item &&
+                    this.props.activeTabStyle) ||
+                    undefined)
                 }}
                 onClick={() => {
                   if (index === this.activeTab && this.props.collapsible) {
@@ -233,6 +238,19 @@ export const Tabs = withBuilder(TabsComponent, {
       helperText: 'If on, clicking an open tab closes it so no tabs are active',
       defaultValue: false,
       advanced: true
+    },
+    {
+      name: 'tabHeaderLayout',
+      type: 'enum',
+      helperText: 'Change the layout of the tab headers (uses justify-content)',
+      defaultValue: 'flex-start',
+      enum: [
+        { label: 'Center', value: 'center' },
+        { label: 'Space between', value: 'space-between' },
+        { label: 'Space around', value: 'space-around' },
+        { label: 'Left', value: 'flex-start' },
+        { label: 'Right', value: 'flex-end' }
+      ]
     }
   ]
 })
