@@ -6,6 +6,7 @@ import './components/ProductsList/ProductsList.builder';
 import './components/Hero/Hero.builder';
 import './components/TripleColumns/TripleColumns.builder';
 import './components/DoubleColumns/DoubleColumns.builder';
+import './components/Review/Review.builder';
 
 class App extends React.Component {
   state = { notFound: false };
