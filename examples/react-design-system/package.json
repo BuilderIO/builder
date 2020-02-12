@@ -24,9 +24,10 @@
     "@material-ui/icons": "^4.9.1",
     "clsx": "^1.1.0",
     "query-string": "^6.10.1",
-    "react": "16.8.6",
-    "react-dom": "16.8.6",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
     "react-json-view": "^1.19.1",
+    "react-parallax": "^3.0.3",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1"
   },
