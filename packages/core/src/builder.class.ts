@@ -202,6 +202,7 @@ export interface Input {
   defaultValue?: any;
   type: string;
   required?: boolean;
+  autofocus?: boolean;
   subFields?: Input[];
   helperText?: string;
   allowedFileTypes?: string[];

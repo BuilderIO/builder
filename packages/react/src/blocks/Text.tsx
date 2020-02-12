@@ -168,6 +168,7 @@ export const Text = withBuilder(TextComponent, {
       name: 'text',
       type: 'html',
       required: true,
+      autofocus: true,
       defaultValue: 'Enter some text...'
     }
   ],
