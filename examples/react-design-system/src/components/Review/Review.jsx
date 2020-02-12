@@ -28,7 +28,6 @@ export const Review = props => {
   return (
     <div className={classes.root} style={{ backgroundColor }}>
       <div>
-        {' '}
         <Rating value={5} readOnly />
       </div>
       <Typography variant="h3" component="p">
@@ -36,8 +35,7 @@ export const Review = props => {
       </Typography>
       <Typography variant="body2"> - {reviewAuthor}</Typography>
       <Avatar src={image} className={classes.avatar}>
-        {' '}
-        {reviewAuthor}{' '}
+        {reviewAuthor}
       </Avatar>
     </div>
   );
