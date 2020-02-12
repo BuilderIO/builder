@@ -6,6 +6,11 @@ Builder.registerComponent(Hero, {
     canHaveChildren: true,
     inputs: [
         {
+            name: 'darkMode',
+            type: 'boolean',
+            defaultValue: false
+        },
+        {
             name: 'buttonLink',
             type: 'string',
             defaultValue: 'https://example.com'

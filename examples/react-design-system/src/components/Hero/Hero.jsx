@@ -4,18 +4,9 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 
+  
 export const Hero = props => {
-  const { children, image, title, strength, buttonLink, buttonText, height } = props;
-  const child = children || (
-    <Box textAlign="center" paddingTop={`calc(${height}/3)`}>
-      <Typography color="textSecondary" variant="h2">
-        {title}
-      </Typography>
-      <Button variant="contained" href={buttonLink} color="primary">
-        {buttonText}
-      </Button>
-    </Box>
-  );
+  const { image, title, strength, buttonLink, buttonText, height, darkMode } = props;
 
   return (
     <Parallax
@@ -25,7 +16,14 @@ export const Hero = props => {
       bgImageAlt={title}
       strength={strength}
     >
-      {child}
+        <Box style={{color: darkMode ? 'gray' : 'white'}}  textAlign="center" paddingTop={`calc(${height}/3)`}>
+            <Typography variant="h2">
+                {title}
+            </Typography>
+            <Button style={{color: darkMode ? 'gray' : 'white'}}  variant="outlined" href={buttonLink}>
+                {buttonText}
+            </Button>
+        </Box>
     </Parallax>
   );
 };
