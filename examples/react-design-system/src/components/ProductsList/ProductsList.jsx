@@ -8,6 +8,11 @@ const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
   },
+  container: {
+    display: 'flex',
+    justifyContent: 'center',
+    flexWrap: 'wrap',
+  },
 }));
 
 const defaultParams = {
@@ -21,31 +26,29 @@ const defaultParams = {
 };
 
 export const ProductsList = props => {
-  const { url, limit, category, spacing, columns, image } = props;
+  const { url, amount, category, size } = props;
   const [data, setData] = useState({ products: [] });
   const classes = useStyles();
   useEffect(() => {
     async function fetchProducts() {
       const qs = queryString.stringify({
         ...defaultParams,
-        limit,
+        limit: amount,
         cat: category,
       });
       const result = await fetch(`${url}?${qs}`).then(res => res.json());
       setData(result);
     }
     fetchProducts();
-  }, [limit, category, url]);
+  }, [amount, category, url]);
 
   return (
     <div className={classes.root}>
-      <Grid container spacing={spacing}>
+      <div className={classes.container}>
         {data.products.map(product => (
-          <Grid key={product.id} item md={12 / columns} sm={12 / (columns / 2)}>
-            <Product sizeName={image} {...product} />
-          </Grid>
+          <Product key={product.id} sizeName={size} {...product} />
         ))}
-      </Grid>
+      </div>
     </div>
   );
 };

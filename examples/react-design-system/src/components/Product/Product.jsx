@@ -17,11 +17,10 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    height: '100%',
-  },
-  media: {
-    height: 0,
-    paddingTop: '56.25%', // 16:9
+    maxWidth: '100%',
+    margin: 10,
+    display: 'flex',
+    flexDirection: 'column',
   },
   expand: {
     transform: 'rotate(0deg)',
@@ -36,53 +35,56 @@ const useStyles = makeStyles(theme => ({
   avatar: {
     backgroundColor: red[500],
   },
+  media: {
+    backgroundSize: 'contain',
+    backgroundPosition: 'center',
+    flexGrow: 1,
+  },
+  title: {
+    overflow: 'hidden',
+    textOverflow: 'hidden',
+  },
 }));
 
+const widthMap = {
+  Small: 200,
+  Medium: 260,
+  Large: 400,
+};
+
 export const Product = props => {
-  const {
-    brandedName,
-    priceLabel,
-    description,
-    clickUrl,
-    image,
-    promotionalDeal,
-    sizeName,
-  } = props;
+  const { brandedName, priceLabel, description, image } = props;
   const classes = useStyles();
-  const [expanded, setExpanded] = useState(true);
+  const [expanded, setExpanded] = useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
   return (
-    <Card className={classes.root} style={{ maxWidth: image.sizes[sizeName].width }}>
+    <Card className={classes.root} style={{ width: widthMap[props.sizeName] }}>
       <CardHeader
         action={
           <IconButton aria-label="settings">
             <MoreVertIcon />
           </IconButton>
         }
-        title={brandedName}
+        title={
+          <Typography style={{ fontSize: widthMap[props.sizeName] / 15 }} className={classes.title}>
+            {brandedName}
+          </Typography>
+        }
         subheader={priceLabel}
       />
       <CardMedia
-        height={image.sizes[sizeName].height}
+        style={{ height: widthMap[props.sizeName] * 1.2 }}
         className={classes.media}
-        image={image.sizes[sizeName].url}
+        image={image.sizes.Best.url}
         title={brandedName}
       />
-      <CardContent>
-        <Typography variant="body2" color="textSecondary" component="p">
-          {promotionalDeal?.title}
-        </Typography>
-      </CardContent>
       <CardActions disableSpacing>
         <IconButton aria-label="add to favorites">
           <FavoriteIcon />
-        </IconButton>
-        <IconButton target="_blank" href={clickUrl} aria-label="share">
-          <ShareIcon />
         </IconButton>
         <IconButton
           className={clsx(classes.expand, {
