@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BuilderComponent } from '@builder.io/react';
-import './index.css'
-import './components/ProductsList/ProductsList.builder'
-import './components/Hero/Hero.builder'
+import './index.css';
+import './components/ProductsList/ProductsList.builder';
+import './components/Hero/Hero.builder';
+import './components/TripleColumns/TripleColumns.builder';
 
 class App extends React.Component {
   state = { notFound: false };

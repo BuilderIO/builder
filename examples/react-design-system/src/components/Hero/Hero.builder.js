@@ -1,52 +1,52 @@
-import { Builder } from '@builder.io/react'
-import { Hero } from './Hero'
+import { Builder } from '@builder.io/react';
+import { Hero } from './Hero';
 
 Builder.registerComponent(Hero, {
-    name: 'MyHero',
-    canHaveChildren: true,
-    inputs: [
-        {
-            name: 'darkMode',
-            type: 'boolean',
-            defaultValue: false
-        },
-        {
-            name: 'buttonLink',
-            type: 'string',
-            defaultValue: 'https://example.com'
-        },
-        {
-            name: 'buttonText',
-            type: 'string',
-            defaultValue: 'Click'
-        },
+  name: 'MyHero',
+  canHaveChildren: true,
+  inputs: [
+    {
+      name: 'darkMode',
+      type: 'boolean',
+      defaultValue: false,
+    },
+    {
+      name: 'buttonLink',
+      type: 'string',
+      defaultValue: 'https://example.com',
+    },
+    {
+      name: 'buttonText',
+      type: 'string',
+      defaultValue: 'Click',
+    },
 
-        {
-            name: 'title',
-            type: 'string',
-            defaultValue: 'Your Title Here'
-        },
+    {
+      name: 'title',
+      type: 'string',
+      defaultValue: 'Your Title Here',
+    },
 
-        {
-            name: 'height',
-            type: 'string',
-            defaultValue: '400px'
-        },
+    {
+      name: 'height',
+      type: 'string',
+      defaultValue: '400px',
+    },
 
-        {
-            name: 'strength',
-            type: 'number',
-            defaultValue: 400
-        },
-      {
-        name: 'image',
-        type: 'file',
-        // TODO: auto coHnvert png to jpg when there is no transparency
-        allowedFileTypes: ['jpeg', 'jpg', 'png', 'svg'],
-        required: true,
-        // TODO: something better
-        defaultValue:
-          'https://cdn.builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d',
-        },
-    ]
-})
+    {
+      name: 'strength',
+      type: 'number',
+      defaultValue: 400,
+    },
+    {
+      name: 'image',
+      type: 'file',
+      // TODO: auto coHnvert png to jpg when there is no transparency
+      allowedFileTypes: ['jpeg', 'jpg', 'png', 'svg'],
+      required: true,
+      // TODO: something better
+      defaultValue:
+        'https://cdn.builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d',
+    },
+  ],
+});
