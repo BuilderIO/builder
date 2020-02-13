@@ -852,7 +852,7 @@ export class BuilderPage extends React.Component<
                               }}
                             >
                               <BuilderBlocks
-                                key={String(!!data.blocks.length)}
+                                key={String(!!data?.blocks?.length)}
                                 emailMode={this.props.emailMode}
                                 fieldName="blocks"
                                 blocks={data.blocks}
