@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/react-native",
-  "version": "0.0.36-alpha.10",
+  "version": "0.0.36-alpha.11",
   "description": "",
   "main": "dist/builder-react-native.cjs.js",
   "module": "dist/builder-react-native.esm.js",
