@@ -1118,6 +1118,19 @@ export class Builder {
               Builder.registryChange.next(Builder.registry);
               break;
             }
+            case 'builder.settingsChange': {
+              // TODO: possibly do this for all...
+              if (event.source === window) {
+                break;
+              }
+              const settings = data.data;
+              if (!settings) {
+                break;
+              }
+              Object.assign(Builder.settings, settings);
+              Builder.settingsChange.next(Builder.settings);
+              break;
+            }
             case 'builder.registerEditor': {
               // TODO: possibly do this for all...
               if (event.source === window) {
