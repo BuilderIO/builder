@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/plugin-loader",
-  "version": "0.0.17-alpha.6",
+  "version": "0.0.17-alpha.7",
   "description": "",
   "keywords": [],
   "main": "dist/content-loader.umd.js",
@@ -125,9 +125,9 @@
   },
   "dependencies": {
     "@builder.io/mobx-state-tree": "^3.14.2",
-    "@builder.io/plugin-cloudinary": "^1.0.13-alpha.8",
-    "@builder.io/react": "^1.0.111-alpha.11",
-    "@builder.io/sdk": "^1.0.60-alpha.8",
+    "@builder.io/plugin-cloudinary": "^1.0.13-alpha.9",
+    "@builder.io/react": "^1.0.111-alpha.12",
+    "@builder.io/sdk": "^1.0.60-alpha.9",
     "@emotion/core": "^10.0.22",
     "@emotion/styled": "^10.0.23",
     "@material-ui/core": "^4.7.1",
