@@ -330,7 +330,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
       this.subscriptions.push(() => subscription.unsubscribe())
     }
 
-    async loadReact(data?: any, fresh = false) {
+    loadReact = async (data?: any, fresh = false) => {
       // Hack for now to not load shopstyle on react despite them using the old component format
       if (
         typeof location !== 'undefined' &&
