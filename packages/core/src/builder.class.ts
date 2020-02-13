@@ -1099,6 +1099,25 @@ export class Builder {
               );
               break;
             }
+            case 'builder.register': {
+              // TODO: possibly do this for all...
+              if (event.source === window) {
+                break;
+              }
+              const options = data.data;
+              if (!options) {
+                break;
+              }
+              const { type, info } = options;
+              // TODO: all must have name and can't conflict?
+              let typeList = Builder.registry[type];
+              if (!typeList) {
+                typeList = Builder.registry[type] = [];
+              }
+              typeList.push(info);
+              Builder.registryChange.next(Builder.registry);
+              break;
+            }
             case 'builder.registerEditor': {
               // TODO: possibly do this for all...
               if (event.source === window) {
