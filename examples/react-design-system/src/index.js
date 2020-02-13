@@ -8,6 +8,7 @@ import './components/Hero/Hero.builder';
 import './components/TripleColumns/TripleColumns.builder';
 import './components/DoubleColumns/DoubleColumns.builder';
 import './components/Review/Review.builder';
+import './components/ReviewsSlider/ReviewsSlider.builder';
 
 const useStyles = makeStyles(theme => ({
   header: {
@@ -21,7 +22,7 @@ const useStyles = makeStyles(theme => ({
   logo: {
     margin: '0 auto',
     letterSpacing: 2,
-    fontWeight: 600
+    fontWeight: 600,
   },
 }));
 
