@@ -267,6 +267,9 @@ export function BuilderComponent(info: Partial<Component> = {}) {
   return Builder.Component(info);
 }
 
+// TODO
+type Settings = any;
+
 export interface Action {
   name: string;
   inputs?: Input[];
@@ -374,6 +377,22 @@ export class Builder {
   static isBrowser = isBrowser;
   static isReactNative = isReactNative;
   static isServer = !isBrowser && !isReactNative;
+
+  static settings: Settings = {};
+  static settingsChange = new BehaviorSubject<Settings>({});
+
+  static set(settings: Settings) {
+    if (Builder.isBrowser) {
+      // TODO: merge
+      Object.assign(this.settings, settings);
+      const message = {
+        type: 'builder.settingsChange',
+        data: this.settings,
+      };
+      parent.postMessage(message, '*');
+    }
+    this.settingsChange.next(this.settings);
+  }
 
   static import(packageName: string) {
     if (!Builder.isBrowser) {
@@ -1696,7 +1715,8 @@ export class Builder {
           n += testRatio;
           if (random < n) {
             this.setTestCookie(item.id, variation.id);
-            const variationName = variation.name || (variation.id === item.id ? 'Default variation' : '')
+            const variationName =
+              variation.name || (variation.id === item.id ? 'Default variation' : '');
             return {
               ...item,
               data: variation.data,
