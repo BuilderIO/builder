@@ -15,9 +15,18 @@ Builder.registerComponent(ProductsList, {
       type: 'string',
       defaultValue: 'mens',
       enum: [
-        'mens',
-        'womens',
-        'kids',
+        {
+          label: 'Women',
+          value: 'womens-fashion',
+        },
+        {
+          label: 'Mens',
+          value: 'mens-clothes',
+        },
+        {
+          label: 'Kids',
+          value: 'kids-and-baby',
+        },
         {
           label: 'home',
           value: 'living',

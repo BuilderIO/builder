@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import queryString from 'query-string';
 import { Product } from '../Product/Product';
-import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
@@ -18,10 +17,10 @@ const useStyles = makeStyles(theme => ({
 const defaultParams = {
   abbreviatedCategoryHistogram: true,
   limit: 20,
-  cat: 'mens',
+  cat: 'womens-clothes',
   view: 'web',
   useElasticsearch: true,
-  sorts: 'PriceHiLo',
+  sorts: 'Popular',
   pid: 'shopstyle',
 };
 

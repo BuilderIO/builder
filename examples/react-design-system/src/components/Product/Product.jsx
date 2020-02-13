@@ -63,11 +63,6 @@ export const Product = props => {
   return (
     <Card className={classes.root} style={{ width: widthMap[props.sizeName] }}>
       <CardHeader
-        action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
-        }
         title={
           <Typography style={{ fontSize: widthMap[props.sizeName] / 15 }} className={classes.title}>
             {brandedName}
