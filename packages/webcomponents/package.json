@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/webcomponents",
-  "version": "1.0.134-alpha.17",
+  "version": "1.0.134-alpha.18",
   "description": "",
   "keywords": [],
   "main": "./dist/system/builder-webcomponents-async.js",
@@ -142,15 +142,15 @@
     "typescript": "^3.7.3"
   },
   "optionalDependencies": {
-    "@builder.io/email": "^1.0.111-alpha.13",
+    "@builder.io/email": "^1.0.111-alpha.14",
     "@webcomponents/custom-elements": "^1.2.1",
     "es6-promise": "^4.2.5"
   },
   "//": "TODO: make all of these optional dependencies, simple mode doesn't require",
   "dependencies": {
-    "@builder.io/react": "^1.0.111-alpha.15",
-    "@builder.io/sdk": "^1.0.60-alpha.10",
-    "@builder.io/shopify": "^1.1.48-alpha.7",
+    "@builder.io/react": "^1.0.111-alpha.16",
+    "@builder.io/sdk": "^1.0.60-alpha.11",
+    "@builder.io/shopify": "^1.1.48-alpha.8",
     "@builder.io/widgets": "^1.0.102-alpha.1",
     "@emotion/core": "^10.0.22",
     "preact": "^10.2.1",
