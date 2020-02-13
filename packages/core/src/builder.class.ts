@@ -25,6 +25,18 @@ export const validEnvList = [
   'cdn2',
 ];
 
+function getQueryParam(url: string, variable: string): string | null {
+  const query = url.split('?')[1] || '';
+  const vars = query.split('&');
+  for (let i = 0; i < vars.length; i++) {
+    const pair = vars[i].split('=');
+    if (decodeURIComponent(pair[0]) === variable) {
+      return decodeURIComponent(pair[1]);
+    }
+  }
+  return null;
+}
+
 const urlParser = {
   parse(url: string) {
     const parser = document.createElement('a') as any;
@@ -377,6 +389,7 @@ export class Builder {
   static isBrowser = isBrowser;
   static isReactNative = isReactNative;
   static isServer = !isBrowser && !isReactNative;
+  static previewingModel = Builder.isBrowser && getQueryParam(location.href, 'builder.preview');
 
   static settings: Settings = {};
   static settingsChange = new BehaviorSubject<Settings>({});
