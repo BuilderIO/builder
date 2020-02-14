@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
 import { Builder } from '@builder.io/sdk'
-import React, { useEffect, useState, useMemo } from 'react'
+import React, { useEffect, useState } from 'react'
 import { InputLabel, MenuItem, FormControl } from '@material-ui/core'
 import Select from '@material-ui/core/Select'
 import { getMassagedProps } from './dropdownPropsExtractor'
@@ -55,6 +55,6 @@ export const Component = (props: any) => {
 }
 
 Builder.registerEditor({
-  name: 'dropdown',
+  name: 'dynamic-dropdown',
   component: Component
 })

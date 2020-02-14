@@ -1,18 +1,18 @@
 {
-  "name": "@builder.io/plugin-dropdown",
+  "name": "@builder.io/plugin-dynamic-dropdown",
   "version": "1.0.0",
   "description": "",
   "keywords": [],
-  "main": "dist/builder-plugin-dropdown.umd.js",
-  "module": "dist/builder-plugin-dropdown.es5.js",
-  "unpkg": "dist/builder-plugin-dropdown.system.js",
-  "typings": "dist/types/builder-plugin-dropdown.d.ts",
+  "main": "dist/builder-plugin-dynamic-dropdown.umd.js",
+  "module": "dist/builder-plugin-dynamic-dropdown.es5.js",
+  "unpkg": "dist/builder-plugin-dynamic-dropdown.system.js",
+  "typings": "dist/types/builder-plugin-dynamic-dropdown.d.ts",
   "files": [
     "dist"
   ],
   "author": {
-    "name": "Jacobo Gallardo",
-    "url": "https://github.com/jacobogallardo"
+    "name": "Asier Aduriz",
+    "url": "https://github.com/fasaas"
   },
   "repository": {
     "type": "git",
@@ -109,13 +109,10 @@
     "@emotion/core": "^10.0.22",
     "@emotion/styled": "^10.0.23",
     "@material-ui/core": "^3.9.2",
-    "@material-ui/icons": "^1.1.1",
     "@types/mustache": "^4.0.0",
-    "@types/react-helmet": "^5.0.14",
     "cross-env": "^6.0.3",
     "mustache": "^4.0.0",
     "react": "^16.11.0",
-    "react-helmet": "^5.2.1",
     "ses": "^0.6.4"
   }
 }

@@ -1,6 +1,6 @@
-# Builder.io example plugin
+# Builder.io dynamic dropdown
 
-See [here](src/plugin.tsx) for the React component that powers this plugin
+See [here](src/dropdown.tsx) for the React component that powers this plugin
 
 ## Status
 
@@ -12,9 +12,7 @@ contact help@builder.io for help
 ### Install
 
 ```bash
-git clone https://github.com/BuilderIO/builder.git
-cp -r plugins/example plugins/your-plugin-name
-cd plugins/your-plugin-name
+cd plugins/dynamic-dropdown
 npm install
 ```
 
@@ -31,10 +29,10 @@ From [Builder.io](https://builder.io) open the javascript console in your browse
 ```js
 // Adds the plugin
 builder.plugins.replace([
-  'http://localhost:1268/plugin.system.js'
-]);
+  'http://localhost:1268/plugin-dynamic-dropdown.system.js'
+])
 // Saves for all in your organization and reloads the browser
-builder.savePlugins.then(() => location.reload());
+builder.savePlugins.then(() => location.reload())
 ```
 
 **NOTE:** Loading http:// content on an https:// website will give you a warning. Be sure to click the shield in the top right of your browser and choose "load unsafe scripts" to allow the http content on Builder's https site when devloping locally
@@ -47,9 +45,9 @@ To uninstall your plugin run
 
 ```js
 // Removes all plugins
-builder.plugins.replace([]);
+builder.plugins.replace([])
 // Saves for all in your organization and reloads the browser
-builder.savePlugins.then(() => location.reload());
+builder.savePlugins.then(() => location.reload())
 ```
 
 ### Seeing your plugin in action
@@ -64,19 +62,16 @@ Builder.io uses [React](https://github.com/facebook/react) and [Material UI](htt
 
 Using these frameworks in Builder plugins ensures best possible experience and performance.
 
-
 ### Publishing
 
-We recommend sending us a pull request with your plugin so we can publish it on your behalf. 
+We recommend sending us a pull request with your plugin so we can publish it on your behalf.
 
 If required, you can also publish to your own NPM or a hosting service.
 
 To load a plugin from NPM
 
 ```js
-builder.plugins.replace([
-  '@builder.io/plugin-example'
-])
+builder.plugins.replace(['@builder.io/plugin-example'])
 ```
 
 #### Advanced
@@ -84,15 +79,11 @@ builder.plugins.replace([
 You can load a plugin from a specific version
 
 ```js
-builder.plugins.replace([
-  '@builder.io/plugin-example@1.0.0'
-])
+builder.plugins.replace(['@builder.io/plugin-example@1.0.0'])
 ```
 
 Or from a URL
 
 ```js
-builder.plugins.replace([
-  'https://something.com/foo'
-])
+builder.plugins.replace(['https://something.com/foo'])
 ```
