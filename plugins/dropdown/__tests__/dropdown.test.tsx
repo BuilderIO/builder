@@ -1,6 +1,6 @@
 // @ts-ignore
 import React from 'react'
-import { Dropdown } from '../src/dropdown'
+import { Component } from '../src/dropdown'
 import * as selectionsClient from '../src/selectionsClient'
 import * as mapperEvaluator from '../src/mapperEvaluator'
 import {
@@ -32,6 +32,7 @@ describe('Dropdown plugin', () => {
   const dropdownProps: any = { context: { designerState: {} }, onChange: spy }
 
   let safeEvaluatorSpy: jest.SpyInstance<any, [String, any?]>
+
   beforeAll(() => {
     jest
       .spyOn(propsExtractor, 'getMassagedProps')
@@ -51,23 +52,25 @@ describe('Dropdown plugin', () => {
 
   afterEach(cleanup)
 
-  it('shows None option', async () => {
-    safeEvaluatorSpy.mockReturnValueOnce([])
-
-    const { getByText } = render(<Dropdown {...dropdownProps} />)
-
-    expect(getByText('None')).toBeInTheDocument()
-  })
-
   it('adds mapped values', async () => {
-    safeEvaluatorSpy.mockReturnValueOnce([{ key: 'key-1', name: 'value-1' }])
+    safeEvaluatorSpy.mockReturnValueOnce([
+      { key: 'any-key', name: 'any-value' }
+    ])
 
-    const { getByText } = render(<Dropdown {...dropdownProps} />)
+    const { getByText } = render(<Component {...dropdownProps} />)
 
     await wait(() => {
       expect(getByText('None')).toBeInTheDocument()
-      expect(getByText('value-1')).toBeInTheDocument()
+      expect(getByText('any-value')).toBeInTheDocument()
     })
+  })
+
+  it('shows None option', async () => {
+    safeEvaluatorSpy.mockReturnValueOnce([])
+
+    const { getByText } = render(<Component {...dropdownProps} />)
+
+    expect(getByText('None')).toBeInTheDocument()
   })
 
   it('updates value on item update', async () => {
@@ -78,8 +81,8 @@ describe('Dropdown plugin', () => {
       { key: 'key-3', name: 'value-3' }
     ])
 
-    await act(async () => {
-      const { container } = render(<Dropdown {...dropdownProps} />)
+    act(async () => {
+      const { container } = render(<Component {...dropdownProps} />)
       await waitForDomChange()
       const element: any = container.querySelector('select')
       const evt: any = { target: { value: 'value-2' } }
@@ -98,7 +101,7 @@ describe('Dropdown plugin', () => {
       throw new Error()
     })
 
-    const { getByText } = render(<Dropdown {...dropdownProps} />)
+    const { getByText } = render(<Component {...dropdownProps} />)
 
     expect(getByText('None')).toBeInTheDocument()
   })

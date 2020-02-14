@@ -8,7 +8,6 @@ module.exports = {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   testEnvironment: 'jsdom',
-  setupFilesAfterEnv: ['<rootDir>/__tests__/setupEnzyme.ts'],
   coverageDirectory: 'coverage/',
   collectCoverage: true,
   coverageThreshold: {
