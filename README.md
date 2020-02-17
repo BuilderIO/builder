@@ -79,10 +79,12 @@ Create a new page with url "/something" in Builder and change the [preview URL](
 
 ### Using your components
 
-Wrap a component
+Register a component
+
+👉**Tip: want to limit page building to only your components? Try [components only mode](https://builder.io/c/docs/guides/components-only-mode)**
 
 ```tsx
-import { withBuilder } from '@builder.io/react';
+import { Builder } from '@builder.io/react';
 
 class SimpleText extends React.Component {
   render() {
@@ -90,7 +92,7 @@ class SimpleText extends React.Component {
   }
 }
 
-export default withBuilder(SimpleText, {
+Builder.registerComponent(SimpleText, {
   name: 'Simple Text',
   inputs: [{ name: 'text', type: 'string' }],
 })
@@ -113,7 +115,6 @@ See our [docs site](https://builder.io/c/docs/custom-react-components) for addit
 
 For lots of examples of using React components in Builder, see the source for our built-in Builder blocks [here](https://github.com/BuilderIO/builder/tree/master/packages/react/src/blocks) and widgets [here](https://github.com/BuilderIO/builder/tree/master/packages/widgets/src/components)
 
-👉**Tip: want to limit page building to only your components? Try [components only mode](https://builder.io/c/docs/guides/components-only-mode)**
 
 
 ### Dynamic landing pages
