@@ -34,7 +34,7 @@ export const applyPatchWithMinimalMutationChain = (
       } else if (op === 'remove') {
         const index = Number(property)
         if (Array.isArray(objPart)) {
-          objPart.splice(index, 1, value)
+          objPart.splice(index, 1)
         } else {
           delete objPart[property]
         }
