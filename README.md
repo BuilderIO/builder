@@ -113,6 +113,7 @@ See our [docs site](https://builder.io/c/docs/custom-react-components) for addit
 
 For lots of examples of using React components in Builder, see the source for our built-in Builder blocks [here](https://github.com/BuilderIO/builder/tree/master/packages/react/src/blocks) and widgets [here](https://github.com/BuilderIO/builder/tree/master/packages/widgets/src/components)
 
+👉**Tip: want to limit page building to only your components? Try [components only mode](https://builder.io/c/guides/components-only-mode)**
 
 
 ### Dynamic landing pages
