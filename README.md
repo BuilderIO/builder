@@ -1,10 +1,8 @@
 <img alt="BUILDER" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F6836fc105ad549a5b4bf144235b1a228" width="300" />
 
-### Drag and drop page building with your code components
+##### Drag and drop page building with your code components
 
-<br />
-<br />
-<img src="https://imgur.com/h3Jmcr3.gif" alt="Editor example" />
+<img src="https://imgur.com/HjBWIbv.gif" alt="Editor example" />
 
 ## How does it work?
 
