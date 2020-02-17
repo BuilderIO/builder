@@ -4,7 +4,7 @@
 
 <br />
 <br />
-<img src="https://imgur.com/lHDo3Mq.gif" alt="Editor example" />
+<img src="https://imgur.com/h3Jmcr3.gif" alt="Editor example" />
 
 ## How does it work?
 
