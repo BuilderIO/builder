@@ -14,8 +14,7 @@ Drag and drop page building with your code components
 ## What is it good for?
 
 - Landing pages
-- Marketing pages (Homepage, promotions, merchan dising, etc)
-- Content pages (About, FAQ, help, docs, etc)
+- Marketing & content pages (Homepage, promotions, merchandising, about, FAQ, help, docs, etc)
 - Freedom from marketing teams that never stop asking for new things
 - Developers who are tired of pushing pixels
 
