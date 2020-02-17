@@ -1,18 +1,10 @@
-<img alt="BUILDER" src="https://imgur.com/kmKRnra.gif" width="300" />
+<img alt="BUILDER" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F6836fc105ad549a5b4bf144235b1a228" width="300" />
 
-### Drag and drop page building for _any_ site.
+### Drag and drop page building with your code components
 
 <br />
 <br />
 <img src="https://imgur.com/lHDo3Mq.gif" alt="Editor example" />
-
-## We're hiring!
-
-Want to work on the future of visual software development? Email me at steve@builder.io and let's talk
-
-## John the community!
-
-Questions? Requests? Feedback? Chat with us in our [Spectrum Community!](https://spectrum.chat/builder)
 
 ## How does it work?
 
@@ -23,7 +15,7 @@ Questions? Requests? Feedback? Chat with us in our [Spectrum Community!](https:/
 ## What is it good for?
 
 - Landing pages
-- Marketing pages (Homepage, promotions, etc)
+- Marketing pages (Homepage, promotions, merchan dising, etc)
 - Content pages (About, FAQ, help, docs, etc)
 - Freedom from marketing teams that never stop asking for new things
 - Developers who are tired of pushing pixels
@@ -178,6 +170,14 @@ if (page) {
   // Put the html in your page template between your header and footer and you are done!
 }
 ```
+
+## We're hiring!
+
+Want to work on the future of visual software development? Email me at steve@builder.io and let's talk
+
+## John the community!
+
+Questions? Requests? Feedback? Chat with us in our [Spectrum Community!](https://spectrum.chat/builder)
 
 ## Troubleshooting and feedback
 
