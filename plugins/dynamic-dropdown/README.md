@@ -2,10 +2,29 @@
 
 See [here](src/dropdown.tsx) for the React component that powers this plugin
 
-## Status
+## Using this plugin in production code
 
-Builder plugins are in beta. If you run into any issues or have questions please
-contact help@builder.io for help
+The idea behind the plugin is to generalize the use of a dropdown so the code provider will tell the plugin how to process the received data.
+When adding the plugin to a custom component input, it will require two input arguments:
+
+```js
+  withBuilder(Component, {
+  name: "Component",
+  inputs: [
+    {
+      name: "dropdown",
+      type: "dynamic-dropdown",
+      options: {
+        url: "https://www.example.com/{{version}}/{{endpoint}}?pathParam={{pathValue}}",
+        mapper: "data.map(each => ({ name: each.id, value: each.value }))"
+    },
+    {...}
+  ]
+});
+```
+
+The `url` argument will be templated with handlebars. The plugin is smart enough to figure out the handlebars values from the application context to replace them.
+The `mapper` argument will be a string method that will be executed on the side of the plugin given the answer from the `url` GET call.
 
 ## Creating a new plugin from this example
 
