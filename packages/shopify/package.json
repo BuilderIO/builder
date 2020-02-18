@@ -69,7 +69,7 @@
     "dedent": "^0.7.0",
     "handlebars": "^4.3.3",
     "json-stringify-safe": "^5.0.1",
-    "liquidjs": "^9.6.0",
+    "liquidjs": "^9.7.0",
     "lodash": "^4.17.15",
     "node-fetch": "^2.6.0",
     "tslib": "^1.10.0",
