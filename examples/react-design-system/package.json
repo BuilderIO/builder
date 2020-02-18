@@ -1,0 +1,52 @@
+{
+  "name": "@builder.io/example-design-system",
+  "private": true,
+  "version": "0.0.1",
+  "description": "Builder.io example design system",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/builderio/builder.git"
+  },
+  "keywords": [
+    "builder.io",
+    "react"
+  ],
+  "author": "Steve Sewell",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/builderio/builder/issues"
+  },
+  "homepage": "https://github.com/builderio/builder#readme",
+  "main": "src/index.js",
+  "dependencies": {
+    "@builder.io/react": "^1.0.98-alpha.10",
+    "@material-ui/core": "^4.9.2",
+    "@material-ui/icons": "^4.9.1",
+    "@material-ui/lab": "^4.0.0-alpha.42",
+    "clsx": "^1.1.0",
+    "query-string": "^6.10.1",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "react-json-view": "^1.19.1",
+    "react-parallax": "^3.0.3",
+    "react-router-dom": "^5.0.1",
+    "react-scripts": "3.0.1",
+    "react-slick": "^0.25.2",
+    "slick-carousel": "^1.8.1"
+  },
+  "devDependencies": {
+    "typescript": "3.3.3"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}
