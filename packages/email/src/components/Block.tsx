@@ -88,7 +88,7 @@ export class Block extends React.Component<BlockProps> {
 
   getAlign(size: Size) {
     const block = this.props.builderBlock
-    const sizeStyles = block.responsiveStyles![size] || {}
+    const sizeStyles = block.responsiveStyles?.[size] || {}
 
     const align =
       sizeStyles.marginRight === 'auto' && sizeStyles.marginLeft === 'auto'
