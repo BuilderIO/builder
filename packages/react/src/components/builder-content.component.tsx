@@ -65,7 +65,7 @@ export class BuilderContent<
           data: this.state.data ? { ...this.state.data } : this.state.data
         })
         if (this.props.contentLoaded) {
-          this.props.contentLoaded(this.state.data)
+          this.props.contentLoaded(this.state.data.data)
         }
 
         break
