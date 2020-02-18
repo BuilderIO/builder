@@ -200,9 +200,6 @@ export class BuilderContent<
     }
     const { data, loading } = this.state
 
-    // TODO: why is this server only? any time there is initial content
-    // use it no?
-    //
     const useData =
       ((this.props.inline || !Builder.isBrowser || this.firstLoad) &&
         this.props.options &&
