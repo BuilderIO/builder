@@ -1,12 +1,16 @@
 import { getMassagedProps } from '../src/dropdownPropsExtractor'
 
+const mockMap = (obj: any) => ({ toJSON: () => obj })
+
 describe('Get Massaged Props', () => {
   describe('should throw', () => {
     it.each([[null], [undefined], [''], [' '], [{}], [73], [[]]])(
       'when url is %o',
       invalidUrl => {
         try {
-          getMassagedProps({ field: { options: { url: invalidUrl } } })
+          getMassagedProps({
+            field: { options: mockMap({ url: invalidUrl }) }
+          })
           fail('Should have thrown')
         } catch (e) {
           expect(e.message).toBe('Missing { url: "" } required option')
@@ -19,7 +23,9 @@ describe('Get Massaged Props', () => {
       invalidMapper => {
         try {
           getMassagedProps({
-            field: { options: { url: 'any-url', mapper: invalidMapper } }
+            field: {
+              options: mockMap({ url: 'any-url', mapper: invalidMapper })
+            }
           })
           fail('Should have thrown')
         } catch (e) {
@@ -47,7 +53,9 @@ describe('Get Massaged Props', () => {
       const expectedUrl = `https://www.domain.net/v2/${locale}/endpoint`
 
       const actual = getMassagedProps({
-        field: { options: { url: templatedUrl, mapper: '() => {}' } },
+        field: {
+          options: mockMap({ url: templatedUrl, mapper: '() => {}' })
+        },
         ...builderPluginContext
       })
 
@@ -58,7 +66,7 @@ describe('Get Massaged Props', () => {
       const expected = '() => {}'
 
       const actual = getMassagedProps({
-        field: { options: { url: 'any-url', mapper: expected } },
+        field: { options: mockMap({ url: 'any-url', mapper: expected }) },
         ...builderPluginContext
       })
 

@@ -8,7 +8,7 @@ The idea behind the plugin is to generalize the use of a dropdown so the code pr
 When adding the plugin to a custom component input, it will require two input arguments:
 
 ```js
-  withBuilder(Component, {
+withBuilder(Component, {
   name: "Component",
   inputs: [
     {
@@ -48,10 +48,10 @@ From [Builder.io](https://builder.io) open the javascript console in your browse
 ```js
 // Adds the plugin
 builder.plugins.replace([
-  'http://localhost:1268/plugin-dynamic-dropdown.system.js'
+  'http://localhost:1268/builder-plugin-dynamic-dropdown.system.js'
 ])
 // Saves for all in your organization and reloads the browser
-builder.savePlugins.then(() => location.reload())
+builder.savePlugins().then(() => location.reload())
 ```
 
 **NOTE:** Loading http:// content on an https:// website will give you a warning. Be sure to click the shield in the top right of your browser and choose "load unsafe scripts" to allow the http content on Builder's https site when devloping locally
