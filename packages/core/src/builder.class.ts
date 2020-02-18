@@ -121,6 +121,7 @@ function find<T = any>(target: T[], callback: (item: T, index: number, list: T[]
 export type Observer<T = any> = any;
 
 const sessionStorageKey = 'builderSessionId';
+
 // TODO: type this out
 type ContentModelType = any;
 
