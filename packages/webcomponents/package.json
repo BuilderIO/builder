@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/webcomponents",
-  "version": "1.0.134",
+  "version": "1.1.0",
   "description": "",
   "keywords": [],
   "main": "./dist/system/builder-webcomponents-async.js",
@@ -142,7 +142,7 @@
     "typescript": "^3.7.3"
   },
   "optionalDependencies": {
-    "@builder.io/email": "^1.0.111",
+    "@builder.io/email": "^1.1.0",
     "@webcomponents/custom-elements": "^1.2.1",
     "es6-promise": "^4.2.5"
   },
