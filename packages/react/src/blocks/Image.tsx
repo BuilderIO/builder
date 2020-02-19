@@ -192,8 +192,6 @@ class ImageComponent extends React.Component<any> {
                   {imageContents}
                 </picture>
               )}
-              {/* TODO: do this with classes like .builder-fit so can reuse csss and not duplicate */}
-              {/* TODO: maybe need to add height: auto, widht: auto or so so the image doesn't have a max widht etc */}
               {aspectRatio ? (
                 <div
                   className="builder-image-sizer"
