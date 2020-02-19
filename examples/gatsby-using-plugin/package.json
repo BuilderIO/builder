@@ -1,0 +1,64 @@
+{
+  "name": "gatsby-starter-builder",
+  "description": "A demo for using builder with Gatsby",
+  "version": "1.0.0",
+  "private": true,
+  "keywords": [
+    "gatsby",
+    "builder.io",
+    "builder-io"
+  ],
+  "license": "MIT",
+  "main": "n/a",
+  "scripts": {
+    "build": "gatsby build",
+    "clean": "rimraf public",
+    "deploy": "gatsby build --prefix-paths && gh-pages -d public",
+    "dev": "gatsby develop",
+    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,md}\"",
+    "lint": "eslint 'src/**/*.{ts,tsx}'",
+    "start": "npm run dev",
+    "test": "npm run type-check && npm run lint",
+    "type-check": "tsc"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "dependencies": {
+    "@builder.io/react": "^1.1.1",
+    "@builder.io/widgets": "^1.2.0",
+    "@emotion/core": "^10.0.10",
+    "@emotion/styled": "^10.0.12",
+    "@material-ui/core": "^4.9.3",
+    "babel-plugin-styled-components": "^1.10.1",
+    "classnames": "^2.2.6",
+    "gatsby": "^2.10.0",
+    "gatsby-image": "^2.2.1",
+    "gatsby-plugin-canonical-urls": "^2.1.0",
+    "gatsby-plugin-react-helmet": "^3.1.22",
+    "gatsby-plugin-typescript": "^2.1.0",
+    "modern-normalize": "^0.5.0",
+    "normalize.css": "^8.0.1",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-helmet": "^5.2.1",
+    "react-syntax-highlighter": "^12.2.1",
+    "typescript": "^3.5.2"
+  },
+  "devDependencies": {
+    "@types/node": "^12.0.10",
+    "@types/react": "^16.8.22",
+    "@types/react-dom": "^16.8.4",
+    "@types/react-helmet": "^5.0.8",
+    "@types/react-syntax-highlighter": "^11.0.4",
+    "@typescript-eslint/eslint-plugin": "^2.6.0",
+    "@typescript-eslint/parser": "^2.6.0",
+    "eslint": "^6.6.0",
+    "eslint-config-blvd": "^1.0.0",
+    "eslint-config-prettier": "^6.5.0",
+    "eslint-plugin-prettier": "^3.1.1",
+    "gh-pages": "^2.0.1",
+    "prettier": "^1.18.2",
+    "rimraf": "^2.6.3"
+  }
+}
