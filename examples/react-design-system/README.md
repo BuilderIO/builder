@@ -2,7 +2,7 @@
 
 In this example we show how to integrate react components with [Builder.io](https://builder.io)
 
-<img src="https://i.imgur.com/0fxTdGm.gif" alt="example" />
+<img src="https://imgur.com/PJW3b4S.gif" alt="example" />
 
 👉**Tip: want to limit page building to only your components? Try [components only mode](https://builder.io/c/docs/guides/components-only-mode)**
 
