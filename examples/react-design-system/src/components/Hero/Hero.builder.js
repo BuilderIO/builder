@@ -2,13 +2,23 @@ import { Builder } from '@builder.io/react';
 import { Hero } from './Hero';
 
 Builder.registerComponent(Hero, {
-  name: 'MyHero',
-  canHaveChildren: true,
+  name: 'Hero',
+  // Optionally give a custom icon (image url - ideally a black on transparent bg svg or png)
+  image:
+    'https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fd6d3bc814ffd47b182ec8345cc5438c0',
   inputs: [
     {
-      name: 'darkMode',
-      type: 'boolean',
-      defaultValue: false,
+      name: 'title',
+      type: 'string',
+      defaultValue: 'Your Title Here',
+    },
+    {
+      name: 'image',
+      type: 'file',
+      allowedFileTypes: ['jpeg', 'jpg', 'png', 'svg'],
+      required: true,
+      defaultValue:
+        'https://cdn.builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d',
     },
     {
       name: 'buttonLink',
@@ -20,31 +30,22 @@ Builder.registerComponent(Hero, {
       type: 'string',
       defaultValue: 'Click',
     },
-
-    {
-      name: 'title',
-      type: 'string',
-      defaultValue: 'Your Title Here',
-    },
-
     {
       name: 'height',
-      type: 'string',
-      defaultValue: '400px',
-    },
-
-    {
-      name: 'strength',
       type: 'number',
       defaultValue: 400,
     },
     {
-      name: 'image',
-      type: 'file',
-      allowedFileTypes: ['jpeg', 'jpg', 'png', 'svg'],
-      required: true,
-      defaultValue:
-        'https://cdn.builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d',
+      name: 'darkMode',
+      type: 'boolean',
+      defaultValue: false,
+    },
+    // `advanced: true` hides this option under the "show advanced" toggle
+    {
+      name: 'parallaxStrength',
+      type: 'number',
+      advanced: true,
+      defaultValue: 400,
     },
   ],
 });

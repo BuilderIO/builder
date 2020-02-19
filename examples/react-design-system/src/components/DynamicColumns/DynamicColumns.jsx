@@ -25,22 +25,18 @@ const useStyles = makeStyles({
   },
 });
 
-export const TripleColumns = props => {
-  const { image1, image2, image3, text1, text2, text3 } = props;
+export const DynamicColumns = props => {
+  const { columns } = props;
   const classes = useStyles();
   return (
     <Box className={classes.root}>
       <Grid container justify="center" spacing={2}>
-        {[
-          { img: image1, text: text1 },
-          { img: image2, text: text2 },
-          { img: image3, text: text3 },
-        ].map((col, index) => (
-          <Grid key={index} className={classes.col} item md={4}>
+        {columns.slice(0, 4).map((col, index) => (
+          <Grid key={index} className={classes.col} item md={12 / columns.length}>
             <Card className={classes.card}>
               {/* Builder optimized image with srcset, picture tags, etc */}
               <div className={classes.imageContainer}>
-                <Image lazy aspectRatio={1} className={classes.media} image={col.img} />
+                <Image lazy aspectRatio={1} className={classes.media} image={col.image} />
               </div>
               <CardContent>
                 <Typography variant="body2" color="textSecondary" component="p">

@@ -146,8 +146,8 @@ class ImageComponent extends React.Component<any> {
                   ? 0
                   : 1,
                 transition: 'opacity 0.2s ease-in-out',
-                objectFit: this.props.backgroundSize,
-                objectPosition: this.props.backgroundPosition,
+                objectFit: this.props.backgroundSize || 'cover',
+                objectPosition: this.props.backgroundPosition || 'center',
                 ...(aspectRatio && {
                   position: 'absolute',
                   height: '100%',
@@ -162,7 +162,10 @@ class ImageComponent extends React.Component<any> {
                   }
                 })
               }}
-              className="builder-image"
+              className={
+                'builder-image' +
+                (this.props.className ? ' ' + this.props.className : '')
+              }
               src={this.props.image}
               {...(!amp && {
                 // TODO: queue these so react renders all loads at once

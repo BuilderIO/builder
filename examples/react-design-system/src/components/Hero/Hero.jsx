@@ -5,7 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 
 export const Hero = props => {
-  const { image, title, strength, buttonLink, buttonText, height, darkMode } = props;
+  const { image, title, parallaxStrength, buttonLink, buttonText, height, darkMode } = props;
 
   return (
     <Parallax
@@ -13,7 +13,7 @@ export const Hero = props => {
       blur={{ min: -20, max: 20 }}
       bgImage={image}
       bgImageAlt={title}
-      strength={strength}
+      strength={parallaxStrength}
     >
       <Box
         style={{ color: darkMode ? 'gray' : 'white' }}

@@ -5,8 +5,8 @@ import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
+import { Image } from '@builder.io/react';
 
 const useStyles = makeStyles({
   card: {
@@ -25,6 +25,9 @@ const useStyles = makeStyles({
     textAlign: 'center',
     padding: '5px',
   },
+  imageContainer: {
+    position: 'relative',
+  },
 });
 
 export const DoubleColumns = props => {
@@ -42,7 +45,10 @@ export const DoubleColumns = props => {
         ].map((col, index) => (
           <Grid key={index} className={classes.col} item md={4}>
             <Card className={classes.card}>
-              <CardMedia className={classes.media} image={col.img} title={col.text} />
+              {/* Builder optimized image with srcset, picture tags, aspect ratio, lazy loading etc */}
+              <div className={classes.imageContainer}>
+                <Image lazy aspectRatio={1} className={classes.media} image={col.img} />
+              </div>
               <CardContent>
                 <Typography variant="h5" color="textSecondary" component="p">
                   {col.text}
