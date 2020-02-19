@@ -1,0 +1,58 @@
+{
+  "name": "@builder-io/gatsby-builder-example",
+  "description": "A demo for integrating Builder.io components with gatsby",
+  "version": "1.0.0",
+  "private": true,
+  "keywords": [
+    "gatsby",
+    "builder"
+  ],
+  "license": "MIT",
+  "main": "n/a",
+  "scripts": {
+    "build": "gatsby build",
+    "clean": "rimraf public",
+    "deploy": "gatsby build --prefix-paths && gh-pages -d public",
+    "dev": "gatsby develop",
+    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,md}\"",
+    "lint": "eslint 'src/**/*.{ts,tsx}'",
+    "start": "npm run dev",
+    "test": "npm run type-check && npm run lint",
+    "type-check": "tsc"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "dependencies": {
+    "@builder.io/react": "^1.1.1",
+    "classnames": "^2.2.6",
+    "gatsby": "^2.10.0",
+    "gatsby-image": "^2.2.1",
+    "gatsby-plugin-react-helmet": "^3.1.0",
+    "gatsby-plugin-typescript": "^2.1.0",
+    "gatsby-source-graphql": "^2.1.33",
+    "polished": "^3.4.1",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-helmet": "^5.2.1",
+    "react-syntax-highlighter": "^12.2.1",
+    "typescript": "^3.5.2"
+  },
+  "devDependencies": {
+    "@types/classnames": "^2.2.8",
+    "@types/node": "^12.0.10",
+    "@types/react": "^16.8.22",
+    "@types/react-dom": "^16.8.4",
+    "@types/react-helmet": "^5.0.8",
+    "@types/react-syntax-highlighter": "^11.0.4",
+    "@typescript-eslint/eslint-plugin": "^2.6.0",
+    "@typescript-eslint/parser": "^2.6.0",
+    "eslint": "^6.6.0",
+    "eslint-config-blvd": "^1.0.0",
+    "eslint-config-prettier": "^6.5.0",
+    "eslint-plugin-prettier": "^3.1.1",
+    "gh-pages": "^2.0.1",
+    "prettier": "^1.18.2",
+    "rimraf": "^2.6.3"
+  }
+}
