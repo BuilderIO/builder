@@ -14,7 +14,7 @@ Drag and drop page building with your code components. Bring your [design system
 ## What is it good for?
 
 - Landing pages
-- [Design systems](/examples/react-design-system) t
+- [Design systems](/examples/react-design-system)
 - Marketing & content pages (Homepage, promotions, merchandising, about, FAQ, help, docs, etc)
 - Freedom from marketing teams that never stop asking for new things
 - Developers who are tired of pushing pixels
@@ -42,7 +42,7 @@ This repo houses all of the various [SDKs](packages), [usage examples](examples)
 
 ## Quick start
 
-To start on a fresh project quickly, take a look at our [react starter](starters/react) or our [design system example](/examples/react-design-system) t. To integrate Builder to an existing project take a look at the instructions below
+To start on a fresh project quickly, take a look at our [react starter](starters/react) or our [design system example](/examples/react-design-system). To integrate Builder to an existing project take a look at the instructions below
 
 ## Getting Started with React
 
@@ -159,6 +159,8 @@ export default () => (
 ```
 
 For more advanced usage, like checking for page existence/404 on the server using the Content API, see our detail landing page docs [here](https://builder.io/c/docs/custom-landing-pages) or if using Next.js see our docs for that [here](https://github.com/BuilderIO/builder/tree/master/packages/react/examples/next-js#dynamic-landing-pages)
+
+Also see a more complext [design system example here](/examples/react-design-system)
 
 ## Don't use React?
 
