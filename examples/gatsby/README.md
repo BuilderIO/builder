@@ -7,7 +7,7 @@
 ## 🚀 Quick start
 
 1.  **Sign up for Builder.io**
-    Then replace the demo API key in builder-config.js with your public API key, which you can find in (Account/Organization)[https://builder.io/account/organization]
+    Then replace the demo API key in builder-config.js with your public API key, which you can find in [builder.io/account/organization](https://builder.io/account/organization)
 
 2.  **Clone this demo.**
 
