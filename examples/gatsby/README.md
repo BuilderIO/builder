@@ -7,11 +7,12 @@
 ## 🚀 Quick start
 
 1.  **Sign up for Builder.io**
-    replace the demo API key in builder-config.js with your public API key, which you can find in (Account/Organization)[https://builder.io/account/organization]
+    Then replace the demo API key in builder-config.js with your public API key, which you can find in (Account/Organization)[https://builder.io/account/organization]
 
 2.  **Create a model.**
-    If you already have entries for your models adjust the templates key to match your model name camel cases (`Docs content` becomes `docsContent`)
-    then change the templates property in builder-config.js to be `templates: {[model name]: path.resolve('src/templates/page.tsx')}` page here can be any component, it'll get passed the model entry content as `pageContext.builder.content`
+    And add some pages to it for demo, If then change the `templates` in `bulider-config.js` to match your model name (camel cased, e.g `Docs content` becomes `docsContent`)
+    and give it a value that resolves to the path of the template component you'd like to render, something like this
+    `templates: {[model name]: path.resolve('src/templates/page.tsx')}` the page component will get passed builder.io content as `pageContext.builder.content`
 
 3.  **Clone this demo.**
 
