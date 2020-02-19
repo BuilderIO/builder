@@ -6,6 +6,9 @@ import { Builder } from '@builder.io/react';
 
 SyntaxHighlighter.registerLanguage('javascript', javascript);
 
+// Example of a custom component you can use in the Builder visual editor
+// See here https://github.com/BuilderIO/builder/tree/master/examples/react-design-system
+// for many more custom component examples
 function CodeBlockComponent({ language, code }: any /* TODO: types */) {
   return (
     <SyntaxHighlighter

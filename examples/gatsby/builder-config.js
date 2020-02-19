@@ -5,8 +5,7 @@ module.exports.config = {
   typeName: 'builder',
   publicAPIKey: 'YJIGb4i01jvw0SRdL5Bt',
   templates: {
-    docsContent: path.resolve('src/templates/page.tsx'),
-    contentPage: path.resolve('src/templates/page.tsx')
+    page: path.resolve('src/templates/page.tsx'),
   }
 };
 
@@ -16,7 +15,7 @@ module.exports.getGQLOptions = (options = module.exports.config) => {
     typeName: options.typeName,
     // Field under which the remote schema will be accessible. You'll use this in your Gatsby query
     fieldName: options.fieldName,
-    // Url to query from 30
+    // Url to query from
     url: `https://cdn.builder.io/api/v1/graphql/${options.publicAPIKey}`
   };
 };
