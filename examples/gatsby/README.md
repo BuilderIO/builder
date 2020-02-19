@@ -9,12 +9,7 @@
 1.  **Sign up for Builder.io**
     Then replace the demo API key in builder-config.js with your public API key, which you can find in (Account/Organization)[https://builder.io/account/organization]
 
-2.  **Create a model.**
-    And add some pages to it for demo, If then change the `templates` in `bulider-config.js` to match your model name (camel cased, e.g `Docs content` becomes `docsContent`)
-    and give it a value that resolves to the path of the template component you'd like to render, something like this
-    `templates: {[model name]: path.resolve('src/templates/page.tsx')}` the page component will get passed builder.io content as `pageContext.builder.content`
-
-3.  **Clone this demo.**
+2.  **Clone this demo.**
 
     ```bash
     git clone git@github.com:BuilderIO/builder.git
@@ -22,3 +17,11 @@
     npm install
     npm run dev
     ```
+    
+3. **Connect Builder.io to your localhost**
+Now that you have the development server running on localhost, point the Builder.io entry to it by assigning the preview URL to be `http://localhost:3000`
+
+<img width="796" alt="Screen Shot 2020-02-18 at 9 48 51 AM" src="https://user-images.githubusercontent.com/5093430/74763082-f5457100-5233-11ea-870b-a1b17c7f99fe.png">
+
+When you deploy this to a live or staging environment, you can change the preview URL for your model globally from [builder.io/models](https://buidlder.io/models)
+
