@@ -1,6 +1,8 @@
-## Builder.io example with building a design system in React
+## Builder.io example using a strict custom design system in React
 
 In this example we show how to integrate react components with [Builder.io](https://builder.io)
+
+See the source code for the custom components used in this demo [here](src/components)
 
 <img src="https://imgur.com/PJW3b4S.gif" alt="example" />
 
