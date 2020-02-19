@@ -3,6 +3,8 @@ import { DynamicColumns } from './DynamicColumns';
 
 Builder.registerComponent(DynamicColumns, {
   name: 'Dynamic Columns',
+  image:
+    'https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fd8ed37ba1bc143c0bb76008caff4b0da',
   inputs: [
     {
       name: 'columns',

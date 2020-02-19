@@ -20,6 +20,22 @@ export function updateQueryParam(uri = '', key: string, value: string) {
   return uri + separator + key + '=' + encodeURIComponent(value)
 }
 
+export const getSrcSet = (url: string) => {
+  if (!url) {
+    return url
+  }
+
+  if (!url.match(/builder\.io/)) {
+    return url
+  }
+
+  const sizes = [100, 200, 400, 800, 1200, 1600, 2000]
+  return sizes
+    .map(size => `${updateQueryParam(url, 'width', String(size))} ${size}w`)
+    .concat([url])
+    .join(', ')
+}
+
 // TODO: use picture tag to support more formats
 class ImageComponent extends React.Component<any> {
   get useLazyLoading() {
@@ -85,12 +101,7 @@ class ImageComponent extends React.Component<any> {
       return undefined
     }
 
-    const sizes = [100, 200, 400, 800, 1200, 1600, 2000]
-
-    return sizes
-      .map(size => `${updateQueryParam(url, 'width', String(size))} ${size}w`)
-      .concat([this.props.image])
-      .join(', ')
+    return getSrcSet(url)
   }
 
   render() {

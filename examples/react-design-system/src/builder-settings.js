@@ -10,8 +10,8 @@ if (OVERRIDE_INSERT_MENU) {
     name: 'Simple components',
     items: [
       { name: 'Hero' },
-      { name: 'Triple Columns' },
       { name: 'Double Columns' },
+      { name: 'Triple Columns' },
       { name: 'Dynamic Columns' },
     ],
   });
@@ -28,6 +28,11 @@ if (OVERRIDE_INSERT_MENU) {
         item: {
           component: {
             name: 'Hero With Children',
+            options: {
+              image:
+                'https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F349738e6805b481ab6c50bda7e24445e',
+              height: 400,
+            },
           },
           children: [
             // Supply alternate children

@@ -1,5 +1,6 @@
 import React from 'react';
-import { Parallax } from 'react-parallax';
+import { Image } from '@builder.io/react';
+import { Parallax, Background } from 'react-parallax';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
@@ -11,7 +12,6 @@ export const Hero = props => {
     <Parallax
       style={{ height }}
       blur={{ min: -20, max: 20 }}
-      bgImage={image}
       bgImageAlt={title}
       strength={parallaxStrength}
     >
@@ -25,6 +25,10 @@ export const Hero = props => {
           {buttonText}
         </Button>
       </Box>
+      <Background className="custom-bg">
+        {/* Builder optimized image with srcset, lazy, etc */}
+        <Image image={image} />
+      </Background>
     </Parallax>
   );
 };

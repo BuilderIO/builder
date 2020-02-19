@@ -18,7 +18,7 @@ Builder.registerComponent(Hero, {
       allowedFileTypes: ['jpeg', 'jpg', 'png', 'svg'],
       required: true,
       defaultValue:
-        'https://cdn.builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d',
+        'https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F52dcecf48f9c48cc8ddd8f81fec63236',
     },
     {
       name: 'buttonLink',
