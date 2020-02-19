@@ -1,6 +1,6 @@
 <img alt="BUILDER" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F6836fc105ad549a5b4bf144235b1a228" width="300" />
 
-Drag and drop page building with your code components
+Drag and drop page building with your code components. Bring your [design systems](/examples/react-design-system) to life!
 
 <br />
 <img src="https://imgur.com/HjBWIbv.gif" alt="Editor example" />
@@ -14,6 +14,7 @@ Drag and drop page building with your code components
 ## What is it good for?
 
 - Landing pages
+- [Design systems](/examples/react-design-system)
 - Marketing & content pages (Homepage, promotions, merchandising, about, FAQ, help, docs, etc)
 - Freedom from marketing teams that never stop asking for new things
 - Developers who are tired of pushing pixels
@@ -25,6 +26,7 @@ Drag and drop page building with your code components
 | [REST API](https://builder.io/c/docs/getting-started)        |                            Stable                             |
 | [React](#getting-started-with-react)                         |                            Stable                             |
 | [Next.js](packages/react/examples/next-js)                   |                            Stable                             |
+| [Gatsby](packages/react/examples/gatsby)                     |                            Stable                             |
 | [Webcomponents](https://builder.io/c/docs/webcomponents-sdk) |                            Stable                             |
 | [Angular](packages/angular)                                  |                            Stable                             |
 | [React native](packages/react-native)                        |                             Beta                              |
@@ -41,7 +43,7 @@ This repo houses all of the various [SDKs](packages), [usage examples](examples)
 
 ## Quick start
 
-To start on a fresh project quickly, take a look at our [react starter](starters/react). To integrate Builder to an existing project take a look at the instructions below
+To start on a fresh project quickly, take a look at our [react starter](starters/react) or our [design system example](/examples/react-design-system). To integrate Builder to an existing project take a look at the instructions below
 
 ## Getting Started with React
 
@@ -79,9 +81,11 @@ Create a new page with url "/something" in Builder and change the [preview URL](
 
 ### Using your components
 
-Register a component
+See this [design systems example](/examples/react-design-system) for lots of examples using your deisgn system + custom components
 
 👉**Tip: want to limit page building to only your components? Try [components only mode](https://builder.io/c/docs/guides/components-only-mode)**
+
+Register a component
 
 ```tsx
 import { Builder } from '@builder.io/react';
@@ -156,6 +160,8 @@ export default () => (
 ```
 
 For more advanced usage, like checking for page existence/404 on the server using the Content API, see our detail landing page docs [here](https://builder.io/c/docs/custom-landing-pages) or if using Next.js see our docs for that [here](https://github.com/BuilderIO/builder/tree/master/packages/react/examples/next-js#dynamic-landing-pages)
+
+Also see a more complext [design system example here](/examples/react-design-system)
 
 ## Don't use React?
 
