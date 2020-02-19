@@ -18,7 +18,7 @@ export const Hero = props => {
       <Box
         style={{ color: darkMode ? 'gray' : 'white' }}
         textAlign="center"
-        paddingTop={`calc(${height}/3)`}
+        paddingTop={`calc(${height}px/3)`}
       >
         <Typography variant="h2">{title}</Typography>
         <Button style={{ color: darkMode ? 'gray' : 'white' }} variant="outlined" href={buttonLink}>
