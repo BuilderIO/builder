@@ -8,10 +8,12 @@ import { BuilderComponent } from '@builder.io/react';
  */
 export default class ExamplePagePage extends React.Component<any> {
   render() {
-    const { header } = this.props.data;
+    const { header, page } = this.props.data;
     return (
       <div>
         <BuilderComponent name="header" content={header[0].everything} />
+        {/* Render other things in your code as you choose */}
+        <BuilderComponent name="page" content={page[0].everything} />
       </div>
     );
   }
@@ -19,7 +21,12 @@ export default class ExamplePagePage extends React.Component<any> {
 
 export const pageQuery = graphql`
   query {
+    # custom "header" component model
     header(limit: 1) {
+      everything
+    }
+    # Manually grab the page content matching "/" (homepage) url
+    page(limit: 1, target: { urlPath: "/" }) {
       everything
     }
   }
