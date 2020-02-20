@@ -11,7 +11,8 @@ export const Component = (props: any) => {
   const [selections, setSelections] = useState([])
 
   const onSelectChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    const selectedValue = event.target.value ?? null
+    const selectedValue = event.target.value || null
+    console.log('eh?', selectedValue, event.target.value)
     props.onChange(selectedValue)
   }
 
@@ -45,7 +46,7 @@ export const Component = (props: any) => {
         </MenuItem>
         {selections &&
           selections.map((selection: any, index: any) => (
-            <MenuItem key={index} value={selection.key}>
+            <MenuItem key={index} value={selection.value}>
               {selection.name}
             </MenuItem>
           ))}
