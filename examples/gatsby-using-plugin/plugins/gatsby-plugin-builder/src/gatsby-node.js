@@ -27,10 +27,7 @@ exports.sourceNodes = async (
     fieldName,
     headers = {},
     fetch = nodeFetch,
-    fetchOptions = {},
-    createLink,
-    createSchema,
-    refetchInterval
+    fetchOptions = {}
   } = config;
 
   invariant(
@@ -46,35 +43,25 @@ exports.sourceNodes = async (
     `gatsby-plugin-builder requires either option \`url\` or \`createLink\` callback`
   );
 
-  let link;
-  if (createLink) {
-    link = await createLink(config);
-  } else {
-    link = createHttpLink({
-      uri: url,
-      fetch,
-      fetchOptions,
-      headers: typeof headers === `function` ? await headers() : headers
-    });
-  }
+  const link = createHttpLink({
+    uri: url,
+    fetch,
+    fetchOptions,
+    headers
+  });
 
+  const cacheKey = `gatsby-plugin-builder-schema-${typeName}-${fieldName}`;
+  let sdl = await cache.get(cacheKey);
   let introspectionSchema;
 
-  if (createSchema) {
-    introspectionSchema = await createSchema(config);
+  if (!sdl) {
+    introspectionSchema = await introspectSchema(link);
+    sdl = printSchema(introspectionSchema);
   } else {
-    const cacheKey = `gatsby-plugin-builder-schema-${typeName}-${fieldName}`;
-    let sdl = await cache.get(cacheKey);
-
-    if (!sdl) {
-      introspectionSchema = await introspectSchema(link);
-      sdl = printSchema(introspectionSchema);
-    } else {
-      introspectionSchema = buildSchema(sdl);
-    }
-
-    await cache.set(cacheKey, sdl);
+    introspectionSchema = buildSchema(sdl);
   }
+
+  await cache.set(cacheKey, sdl);
 
   const nodeId = createNodeId(`gatsby-plugin-builder-${typeName}`);
   const node = createSchemaNode({
@@ -110,38 +97,19 @@ exports.sourceNodes = async (
   );
 
   addThirdPartySchema({ schema });
-
-  if (process.env.NODE_ENV !== `production`) {
-    if (refetchInterval) {
-      const msRefetchInterval = refetchInterval * 1000;
-      const refetcher = () => {
-        createNode(
-          createSchemaNode({
-            id: nodeId,
-            typeName,
-            fieldName,
-            createContentDigest
-          })
-        );
-        setTimeout(refetcher, msRefetchInterval);
-      };
-      setTimeout(refetcher, msRefetchInterval);
-    }
-  }
 };
 
 function createSchemaNode({ id, typeName, fieldName, createContentDigest }) {
-  const nodeContent = uuidv4();
-  const nodeContentDigest = createContentDigest(nodeContent);
+  const contentDigest = createContentDigest(uuidv4());
   return {
     id,
-    typeName: typeName,
-    fieldName: fieldName,
+    typeName,
+    fieldName,
     parent: null,
     children: [],
     internal: {
-      type: `GraphQLSource`,
-      contentDigest: nodeContentDigest,
+      type: `BuilderModel`,
+      contentDigest,
       ignoreType: true
     }
   };
@@ -155,7 +123,7 @@ exports.createPages = async ({ graphql, actions }, options) => {
   const { createPage } = actions;
   const models = Object.keys(config.templates);
   const result = await graphql(`
-    query allBuilders {
+    query {
       ${config.fieldName} {
         ${models
           .map(
@@ -181,12 +149,7 @@ exports.createPages = async ({ graphql, actions }, options) => {
         );
         createPage({
           path: entry.everything.data.url,
-          component,
-          context: {
-            builder: {
-              content: entry.everything
-            }
-          }
+          component
         });
       }
     });

@@ -11,7 +11,6 @@ module.exports = {
         publicAPIKey: 'YJIGb4i01jvw0SRdL5Bt',
         templates: {
           docsContent: path.resolve('src/templates/page.tsx'),
-          contentPage: path.resolve('src/templates/page.tsx')
         }
       }
     }

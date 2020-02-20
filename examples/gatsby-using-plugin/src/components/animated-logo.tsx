@@ -4,8 +4,6 @@ import * as React from 'react';
 import logoWhite from './assets/logo-white.png';
 import logoDark from './assets/logo.png';
 
-console.log('ijhfiowj  ', logoWhite);
-
 export interface AnimatedLogoProps {
   size?: number;
   opacity?: number;
