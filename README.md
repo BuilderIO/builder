@@ -26,7 +26,7 @@ Drag and drop page building with your code components. Bring your [design system
 | [REST API](https://builder.io/c/docs/getting-started)        |                            Stable                             |
 | [React](#getting-started-with-react)                         |                            Stable                             |
 | [Next.js](packages/react/examples/next-js)                   |                            Stable                             |
-| [Gatsby](packages/react/examples/gatsby)                     |                            Stable                             |
+| [Gatsby](examples/gatsby)                     |                            Stable                             |
 | [Webcomponents](https://builder.io/c/docs/webcomponents-sdk) |                            Stable                             |
 | [Angular](packages/angular)                                  |                            Stable                             |
 | [React native](packages/react-native)                        |                             Beta                              |
