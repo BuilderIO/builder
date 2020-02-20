@@ -34,18 +34,19 @@ export const TextArea = withBuilder(TextAreaComponent, {
       type: 'string'
     },
     {
+      name: 'name',
+      type: 'string',
+      helperText:
+        'Every input in a form needs a unique name descriptiong what it gets, e.g. "email"'
+    },
+    {
       name: 'defaultValue',
-      type: 'string'
+      type: 'string',
     },
     {
       name: 'placeholder',
       type: 'string',
       defaultValue: 'Hello there'
-    },
-    {
-      name: 'name',
-      type: 'string'
-      // advanced: true,
     },
     {
       name: 'required',

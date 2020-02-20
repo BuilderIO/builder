@@ -32,6 +32,8 @@ class LabelComponent extends React.Component<LabelProps> {
   }
 }
 
+// TODO: strict ADA mode that enforces with custom error messages that all inputs need
+// labels and names
 export const Label = withBuilder(LabelComponent, {
   name: 'Form:Label',
   image:

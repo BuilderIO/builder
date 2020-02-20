@@ -85,7 +85,6 @@ class FormComponent extends React.Component<FormProps> {
                   }
                   event.preventDefault()
 
-                  eval('debugger')
                   // TODO: error and success state
                   const el = event.currentTarget
                   const headers = this.props.customHeaders || {}
@@ -148,7 +147,10 @@ class FormComponent extends React.Component<FormProps> {
                     }
                   })
 
-                  if (contentType === 'application/x-www-form-urlencoded') {
+                  // TODO: send as urlEncoded or multipart by default
+                  // because of ease of use and reliability in browser API
+                  // for encoding the form?
+                  if (contentType !== 'application/json') {
                     body = formData
                   } else {
                     // Json
@@ -184,7 +186,7 @@ class FormComponent extends React.Component<FormProps> {
 
                   fetch(
                     this.props.action ||
-                      `http://localhost:5000/api/v1/form-submit?apiKey=${
+                      `https://builder.io/api/v1/form-submit?apiKey=${
                         builder.apiKey
                       }&to=${btoa(
                         this.props.sendSubmissionsToEmail || ''
@@ -364,7 +366,20 @@ export const Form = withBuilder(FormComponent, {
       // so you can edit details and high level mode at same time...
       // Later - more integrations like mailchimp
       // /api/v1/form-submit?to=mailchimp
-      enum: ['email', /* 'zapier' TODO */ 'custom'],
+      enum: [
+        {
+          label: 'Send to email',
+          value: 'email',
+          helperText:
+            'Send form submissions to the email address of your choosing'
+        },
+        {
+          label: 'Custom',
+          value: 'custom',
+          helperText:
+            'Handle where the form requests go manually with a little code, e.g. to your own custom backend'
+        }
+      ],
       defaultValue: 'email'
     },
     {

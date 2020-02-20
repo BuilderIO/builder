@@ -16,7 +16,11 @@ class FormSelectComponent extends React.Component<FormSelectProps> {
     return (
       <select
         value={this.props.value}
-        key={Builder.isEditing && this.props.defaultValue ? this.props.defaultValue : 'default-key'}
+        key={
+          Builder.isEditing && this.props.defaultValue
+            ? this.props.defaultValue
+            : 'default-key'
+        }
         defaultValue={this.props.defaultValue}
         name={this.props.name}
         {...this.props.attributes}
@@ -63,6 +67,12 @@ export const FormSelect = withBuilder(FormSelectComponent, {
       ]
     },
     {
+      name: 'name',
+      type: 'string',
+      helperText:
+        'Every select in a form needs a unique name descriptiong what it gets, e.g. "email"'
+    },
+    {
       name: 'defaultValue',
       type: 'string'
     },
@@ -71,10 +81,7 @@ export const FormSelect = withBuilder(FormSelectComponent, {
       type: 'string',
       advanced: true
     },
-    {
-      name: 'name',
-      type: 'string'
-    },
+
     {
       name: 'required',
       type: 'boolean',
