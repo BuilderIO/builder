@@ -3,7 +3,8 @@
 const path = require('path');
 const { config } = require('./builder-config');
 
-// Create dynamic pages created in Builder.io
+// Create dynamic pages created in Builder.io for
+// every "page" model by it's URL
 exports.createPages = async ({ graphql, actions }) => {
   const { createPage } = actions;
   const models = Object.keys(config.templates);
@@ -24,10 +25,7 @@ exports.createPages = async ({ graphql, actions }) => {
 
   models.forEach(modelName => {
     result.data[config.fieldName][modelName].forEach(entry => {
-      if (
-        entry.everything.data.url &&
-        entry.everything.published === 'published'
-      ) {
+      if (entry.everything.data.url) {
         createPage({
           path: entry.everything.data.url,
           component: config.templates[modelName],
