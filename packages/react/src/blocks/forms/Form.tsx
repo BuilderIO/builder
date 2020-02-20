@@ -2,7 +2,7 @@
 import { jsx } from '@emotion/core'
 import React from 'react'
 import { BuilderBlock as BuilderBlockComponent } from '../../components/builder-block.component'
-import { BuilderElement, Builder } from '@builder.io/sdk'
+import { BuilderElement, Builder, builder } from '@builder.io/sdk'
 import { BuilderBlocks } from '../../components/builder-blocks.component'
 import { BuilderStoreContext } from '../../store/builder-store'
 import { set } from '../../functions/set'
@@ -17,6 +17,7 @@ export interface FormProps {
   method?: string
   builderBlock?: BuilderElement
   sendSubmissionsTo?: string
+  sendSubmissionsToEmail?: string
   sendWithJs?: boolean
   contentType?: string
   customHeaders?: { [key: string]: string }
@@ -73,11 +74,18 @@ class FormComponent extends React.Component<FormProps> {
                   event.preventDefault()
                   // TODO: send submission to zapier
                 } else if (this.props.sendWithJs) {
-                  if (!this.props.action) {
+                  if (
+                    !(
+                      this.props.action ||
+                      this.props.sendSubmissionsTo === 'email'
+                    )
+                  ) {
                     event.preventDefault()
                     return
                   }
                   event.preventDefault()
+
+                  eval('debugger')
                   // TODO: error and success state
                   const el = event.currentTarget
                   const headers = this.props.customHeaders || {}
@@ -89,7 +97,7 @@ class FormComponent extends React.Component<FormProps> {
                   // TODO: maybe support null
                   const formPairs: {
                     key: string
-                    value: File | boolean | number | string
+                    value: File | boolean | number | string | FileList
                   }[] = Array.from(
                     event.currentTarget.querySelectorAll(
                       'input,select,textarea'
@@ -133,19 +141,15 @@ class FormComponent extends React.Component<FormProps> {
                   Array.from(formPairs).forEach(({ value }) => {
                     if (
                       value instanceof File ||
-                      (Array.isArray(value) && value[0] instanceof File)
+                      (Array.isArray(value) && value[0] instanceof File) ||
+                      value instanceof FileList
                     ) {
-                      contentType = 'multipart/formdata'
+                      contentType = 'multipart/form-data'
                     }
                   })
 
                   if (contentType === 'application/x-www-form-urlencoded') {
                     body = formData
-                  } else if (contentType === 'multipart/formdata') {
-                    body = new URLSearchParams()
-                    Array.from(formPairs).forEach(({ value, key }) => {
-                      body.append(key, value)
-                    })
                   } else {
                     // Json
                     const json = {}
@@ -157,7 +161,7 @@ class FormComponent extends React.Component<FormProps> {
                     body = JSON.stringify(json)
                   }
 
-                  if (contentType) {
+                  if (contentType && contentType !== 'multipart/form-data') {
                     headers['content-type'] = contentType
                   }
 
@@ -178,11 +182,19 @@ class FormComponent extends React.Component<FormProps> {
                     state: 'sending'
                   })
 
-                  fetch(this.props.action, {
-                    body,
-                    headers,
-                    method: this.props.method || 'post'
-                  }).then(
+                  fetch(
+                    this.props.action ||
+                      `http://localhost:5000/api/v1/form-submit?apiKey=${
+                        builder.apiKey
+                      }&to=${btoa(
+                        this.props.sendSubmissionsToEmail || ''
+                      )}&name=${encodeURIComponent(this.props.name || '')}`,
+                    {
+                      body,
+                      headers,
+                      method: this.props.method || 'post'
+                    }
+                  ).then(
                     async res => {
                       let body
                       const contentType = res.headers.get('content-type')
@@ -347,11 +359,20 @@ export const Form = withBuilder(FormComponent, {
     {
       name: 'sendSubmissionsTo',
       type: 'string',
-      // TODO: builder, email
+      // TODO: save to builder data and user can download as csv
+      // TODO: easy for mode too or computed add/remove fields form mode
+      // so you can edit details and high level mode at same time...
       // Later - more integrations like mailchimp
-      enum: ['zapier', 'custom'],
-      hideFromUI: true,
-      defaultValue: 'custom'
+      // /api/v1/form-submit?to=mailchimp
+      enum: ['email', /* 'zapier' TODO */ 'custom'],
+      defaultValue: 'email'
+    },
+    {
+      name: 'sendSubmissionsToEmail',
+      type: 'string',
+      required: true, // TODO: required: () => options.get("sendSubmissionsTo") === "email"
+      defaultValue: 'your@email.com',
+      showIf: 'options.get("sendSubmissionsTo") === "email"'
     },
     {
       name: 'sendWithJs',
@@ -363,7 +384,7 @@ export const Form = withBuilder(FormComponent, {
     {
       name: 'name',
       type: 'string',
-      showIf: 'options.get("sendSubmissionsTo") === "zapier"'
+      defaultValue: 'My form'
       // advanced: true
     },
     {
@@ -380,7 +401,7 @@ export const Form = withBuilder(FormComponent, {
       // TODO: do automatically if file input
       enum: [
         'application/json',
-        'multipart/formdata',
+        'multipart/form-data',
         'application/x-www-form-urlencoded'
       ],
       showIf:
@@ -393,12 +414,23 @@ export const Form = withBuilder(FormComponent, {
       advanced: true
     },
     {
+      name: 'previewState',
+      type: 'string',
+      // TODO: persist: false flag
+      enum: ['unsubmitted', 'sending', 'success', 'error'],
+      defaultValue: 'unsubmitted',
+      helperText:
+        'Choose a state to edit, e.g. choose "success" to show what users see on success and edit the message',
+      showIf:
+        'options.get("sendSubmissionsTo") !== "zapier" && options.get("sendWithJs") === true'
+    },
+    {
       name: 'successUrl',
       type: 'url',
       helperText:
         'Optional URL to redirect the user to on form submission success',
       showIf:
-        'options.get("sendSubmissionsTo") === "custom" && options.get("sendWithJs") === true'
+        'options.get("sendSubmissionsTo") !== "zapier" && options.get("sendWithJs") === true'
     },
     {
       name: 'resetFormOnSubmit',
@@ -407,23 +439,6 @@ export const Form = withBuilder(FormComponent, {
         options.get('sendSubmissionsTo') === 'custom' &&
         options.get('sendWithJs') === true,
       advanced: true
-    },
-    // TODO: maybe
-    // {
-    //   name: 'apiErrorMessageField',
-    //   type: 'text',
-    //   helperText: 'URL to redirect the user to on form submission success',
-    //   showIf: 'options.get("sendSubmissionsTo") === "custom" && options.get("sendWithJs") === true'
-    // },
-    {
-      // editState?
-      name: 'previewState',
-      type: 'string',
-      enum: ['unsubmitted', 'sending', 'success', 'error'],
-      helperText:
-        'Choose a state to edit, e.g. choose "success" to show what users see on success and edit the message',
-      showIf:
-        'options.get("sendSubmissionsTo") === "custom" && options.get("sendWithJs") === true'
     },
     {
       name: 'successMessage',
