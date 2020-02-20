@@ -4,6 +4,9 @@
 
 > A demo for integrating [Builder.io](https://www.builder.io) with Gatsby using our GraphQL API and the `gatsby-source-graphql` plugin
 
+This demo demonstrates creating dynamic pages in Builder.io on new URLs and generating them with Gatsby, as well
+as rendering specific parts of your site with Builder.io content via GraphQL queries (e.g. for pages, components, etc)
+
 ## 🚀 Quick start
 
 1.  **Sign up for Builder.io**
