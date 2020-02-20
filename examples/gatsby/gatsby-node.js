@@ -3,6 +3,7 @@
 const path = require('path');
 const { config } = require('./builder-config');
 
+// Create dynamic pages created in Builder.io
 exports.createPages = async ({ graphql, actions }) => {
   const { createPage } = actions;
   const models = Object.keys(config.templates);

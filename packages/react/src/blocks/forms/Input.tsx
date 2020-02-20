@@ -58,6 +58,7 @@ export const FormInput = withBuilder(FormInputComponent, {
         'search',
         'tel',
         'time',
+        'file',
         'month',
         'week',
         'password',
