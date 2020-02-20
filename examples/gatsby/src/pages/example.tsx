@@ -11,7 +11,7 @@ export default class ExamplePagePage extends React.Component<any> {
     const { header } = this.props.data;
     return (
       <div>
-        <BuilderComponent name="header" content={header.everything} />
+        <BuilderComponent name="header" content={header[0].everything} />
       </div>
     );
   }
