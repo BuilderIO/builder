@@ -7,6 +7,12 @@
 This demo demonstrates creating dynamic pages in Builder.io on new URLs and generating them with Gatsby, as well
 as rendering specific parts of your site with Builder.io content via GraphQL queries (e.g. for pages, components, etc)
 
+See:
+- [builder-config.js](builder-config.js) to add your Builder.io public API key 
+- [gatsby-node.js](gatsby-node.js) for an example of rendering new pages for each `page` you have in Builder.io
+- [src/components/CodeBlock.tsx](src/components/CodeBlock.tsx) for an example of using a custom react component in the Builder.io visiaul editor. See a more rich example of a whole design system of components [here](https://github.com/BuilderIO/builder/tree/master/examples/react-design-system)
+- [src/pages/example.tsx](src/pages/example.tsx) for usingn GraphQL to query and render Builder.io components and pages manually in parts of your Gatsby site and content
+
 ## 🚀 Quick start
 
 1.  **Sign up for Builder.io**
