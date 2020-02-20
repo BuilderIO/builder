@@ -6,7 +6,7 @@ import { BuilderComponent } from '@builder.io/react';
  * Example of rendering a page with Builder.io content and other content.
  * E.g. a custom component model in Builder called "header"
  */
-export default class ExamplePagePage extends React.Component<any> {
+export default class ExamplePage extends React.Component<any> {
   render() {
     const { header, page } = this.props.data;
     return (
@@ -19,6 +19,8 @@ export default class ExamplePagePage extends React.Component<any> {
   }
 }
 
+// See https://builder.io/c/docs/graphql-api for more info on our
+// GraphQL API and our explorer
 export const pageQuery = graphql`
   query {
     # custom "header" component model
