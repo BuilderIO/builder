@@ -2,7 +2,7 @@ const invariant = require('invariant');
 
 module.exports.defaultOptions = {
   // Arbitrary name for the remote schema Query type
-  fieldName: 'allBuilderPages',
+  fieldName: 'allBuilderModels',
   typeName: 'builder'
 };
 
@@ -13,7 +13,7 @@ module.exports.getGQLOptions = options => {
   };
   invariant(
     config.publicAPIKey && config.publicAPIKey.length > 0,
-    `gatsby-plugin-builder requires a public API Key`
+    'gatsby-plugin-builder requires a public API Key'
   );
   return {
     typeName: config.typeName,

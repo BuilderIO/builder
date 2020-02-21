@@ -1,18 +1,19 @@
-const uuidv4 = require(`uuid/v4`);
-const { buildSchema, printSchema } = require(`gatsby/graphql`);
+const uuidv4 = require('uuid/v4');
+const fs = require('fs');
+const { buildSchema, printSchema } = require('gatsby/graphql');
 const {
   transformSchema,
   introspectSchema,
   RenameTypes
-} = require(`graphql-tools-fork`);
-const { createHttpLink } = require(`apollo-link-http`);
-const nodeFetch = require(`node-fetch`);
-const invariant = require(`invariant`);
+} = require('graphql-tools-fork');
+const { createHttpLink } = require('apollo-link-http');
+const fetch = require('node-fetch');
+const invariant = require('invariant');
 
 const {
   NamespaceUnderFieldTransform,
   StripNonQueryTransform
-} = require(`./transforms`);
+} = require('./transforms');
 const { getGQLOptions, defaultOptions } = require('./builder-config');
 
 exports.sourceNodes = async (
@@ -21,33 +22,11 @@ exports.sourceNodes = async (
 ) => {
   const { addThirdPartySchema, createNode } = actions;
   const config = getGQLOptions(options);
-  const {
-    url,
-    typeName,
-    fieldName,
-    headers = {},
-    fetch = nodeFetch,
-    fetchOptions = {}
-  } = config;
-
-  invariant(
-    typeName && typeName.length > 0,
-    `gatsby-plugin-builder requires option \`typeName\` to be specified`
-  );
-  invariant(
-    fieldName && fieldName.length > 0,
-    `gatsby-plugin-builder requires option \`fieldName\` to be specified`
-  );
-  invariant(
-    (url && url.length > 0) || createLink,
-    `gatsby-plugin-builder requires either option \`url\` or \`createLink\` callback`
-  );
+  const { url, typeName, fieldName } = config;
 
   const link = createHttpLink({
     uri: url,
-    fetch,
-    fetchOptions,
-    headers
+    fetch
   });
 
   const cacheKey = `gatsby-plugin-builder-schema-${typeName}-${fieldName}`;
@@ -72,10 +51,11 @@ exports.sourceNodes = async (
   });
   createNode(node);
 
-  const resolver = (parent, args, context) => {
-    context.nodeModel.createPageDependency({
-      path: context.path,
-      nodeId: nodeId
+  const resolver = (_, __, context) => {
+    const { path, nodeModel } = context;
+    nodeModel.createPageDependency({
+      path,
+      nodeId
     });
     return {};
   };
@@ -108,7 +88,7 @@ function createSchemaNode({ id, typeName, fieldName, createContentDigest }) {
     parent: null,
     children: [],
     internal: {
-      type: `BuilderModel`,
+      type: `BuilderPlugin`,
       contentDigest,
       ignoreType: true
     }
@@ -137,16 +117,16 @@ exports.createPages = async ({ graphql, actions }, options) => {
   `);
 
   models.forEach(modelName => {
+    const component = config.templates[modelName];
+    invariant(
+      fs.existsSync(component),
+      'gatsby-plugin-builder requires a valid template path for each model'
+    );
     result.data[config.fieldName][modelName].forEach(entry => {
       if (
         entry.everything.data.url &&
         entry.everything.published === 'published'
       ) {
-        const component = config.templates[modelName];
-        invariant(
-          component && component.length > 0,
-          `gatsby-plugin-builder requires a template path for each model`
-        );
         createPage({
           path: entry.everything.data.url,
           component
