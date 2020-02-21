@@ -88,7 +88,7 @@ export const convertTemplateLiteralsToTags = (liquid: string, options: Options =
         '$2'
       );
 
-    if (options.convertShopifyBindings !== false) {
+    if (options.convertShopifyBindings) {
       latest = latest
         // Sometimes we have to replace {{ .. }} bindings with {% ... %}
         // For ease, swap directly inside, but we need to remove the surrounding tags
@@ -125,7 +125,8 @@ export const convertTemplateLiteralsToTags = (liquid: string, options: Options =
 };
 
 const liquidExpression = (expression: string, options: Options = {}) => {
-  if (options.convertShopifyBindings === false) {
+  // TODO: make the default
+  if (options.convertShopifyBindings) {
     return unescapeHtml(expression);
   }
   return convertTsToLiquid(unescapeHtml(expression));
@@ -187,6 +188,7 @@ const prettify = (str: string, options?: PrettierOptions) => {
 };
 
 export function contentToLiquid(json: BuilderContent, modelName: string, options: Options = {}) {
+  console.log('ran?');
   const content = fastClone(json);
 
   if (content.data && content.data.blocksString) {

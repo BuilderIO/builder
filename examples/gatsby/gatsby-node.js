@@ -19,7 +19,7 @@ exports.createPages = async ({ graphql, actions }) => {
           .map(
             model =>
               `${model} {
-            everything
+            content
           }`
           )
           .join(' ')}
@@ -29,13 +29,13 @@ exports.createPages = async ({ graphql, actions }) => {
 
   models.forEach(modelName => {
     result.data[config.fieldName][modelName].forEach(entry => {
-      if (entry.everything.data.url) {
+      if (entry.content.data.url) {
         createPage({
-          path: entry.everything.data.url,
+          path: entry.content.data.url,
           component: config.templates[modelName],
           context: {
             builder: {
-              content: entry.everything
+              content: entry.content
             }
           }
         });

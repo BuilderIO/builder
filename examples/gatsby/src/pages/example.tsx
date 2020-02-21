@@ -11,9 +11,9 @@ export default class ExamplePage extends React.Component<any> {
     const { header, page } = this.props.data;
     return (
       <div>
-        <BuilderComponent name="header" content={header[0].everything} />
+        <BuilderComponent name="header" content={header[0].content} />
         {/* Render other things in your code as you choose */}
-        <BuilderComponent name="page" content={page[0].everything} />
+        <BuilderComponent name="page" content={page[0].content} />
       </div>
     );
   }
@@ -25,11 +25,11 @@ export const pageQuery = graphql`
   query {
     # custom "header" component model
     header(limit: 1) {
-      everything
+      content
     }
     # Manually grab the page content matching "/" (homepage) url
     page(limit: 1, target: { urlPath: "/" }) {
-      everything
+      content
     }
   }
 `;
