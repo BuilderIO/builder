@@ -52,7 +52,7 @@ class CustomCodeComponent extends React.Component<Props> {
 
     this.replaceNodes =
       Builder.isBrowser &&
-      (props.replaceNodes || location.host === 'heybloomwell.com')
+      (props.replaceNodes || (location.host === 'heybloomwell.com' || location.host === 'superkin.com'))
 
     if (
       this.replaceNodes &&
