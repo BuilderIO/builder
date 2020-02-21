@@ -18,7 +18,8 @@ if (Builder.isBrowser && globalReplaceNodes) {
     // TODO: keep track of indexes for if this is repeated have globalReplaceNodes[key][index]
     Array.from(
       document.querySelectorAll(
-        location.host === 'heybloomwell.com'
+        // TODO: always use replace nodes by default for shopify context users
+        location.host === 'heybloomwell.com' || location.host === 'superkin.com'
           ? '.builder-custom-code'
           : '.builder-custom-code.replace-nodes'
       )

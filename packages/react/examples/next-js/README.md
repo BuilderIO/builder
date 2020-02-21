@@ -26,8 +26,9 @@ import { builder, BuilderComponent } from '@builder.io/react'
 builder.init(BUILDER_API_KEY)
 
 class About extends React.Component {
-  static async getInitialProps({ res, req }) {
+  static async getInitialProps({ res, req, pathname }) {
     // If there is a Builder page for this URL, this will be an object, otherwise it'll be null
+    builder.setUserAttributes({ urlPath: pathname })
     const page = await builder.get('page', { req, res }).promise()
     return { builderPage: page }
   }
