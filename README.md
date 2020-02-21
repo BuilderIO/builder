@@ -123,6 +123,8 @@ For lots of examples of using React components in Builder, see the source for ou
 
 ### Dynamic landing pages
 
+👉**Tip:** see our guides for **[Next.js](examples/next-js)** and **[Gatsby](examples/gatsby)** for best support for those frameworks
+
 One of Builder's most powerful features is allowing the creation of new pages for you. See a simple example of how to do this with react-router below:
 
 ```tsx
