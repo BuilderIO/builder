@@ -13,6 +13,7 @@
     "_unlink": "lerna run _unlink --parallel",
     "_install": "lerna run _install --parallel",
     "install:packages": "npm run _install",
+    "dev:wc": "lerna run start --scope @builder.io/sdk --scope @builder.io/webcomponents --scope @builder.io/react --stream",
     "bootstrap": "lerna bootstrap --force-local",
     "reset": "npm run _install && npm run bootstrap && npm run _unlink",
     "start": "lerna run start --parallel --scope @builder.io/webcomponents --scope @builder.io/react",
