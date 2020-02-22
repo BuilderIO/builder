@@ -197,7 +197,7 @@ export class Animator {
 
         const windowHeight = window.innerHeight;
 
-        const thresholdPrecent = 0.05;
+        const thresholdPrecent = 0;
         const threshold = thresholdPrecent * windowHeight;
 
         // TODO: partial in view? or what if element is larger than screen itself
