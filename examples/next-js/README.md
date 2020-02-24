@@ -26,9 +26,9 @@ import { builder, BuilderComponent } from '@builder.io/react'
 builder.init(BUILDER_API_KEY)
 
 class About extends React.Component {
-  static async getInitialProps({ res, req, pathname }) {
+  static async getInitialProps({ res, req, asPath }) {
     // If there is a Builder page for this URL, this will be an object, otherwise it'll be null
-    builder.setUserAttributes({ urlPath: pathname })
+    builder.setUserAttributes({ urlPath: asPath })
     const page = await builder.get('page', { req, res }).promise()
     return { builderPage: page }
   }
@@ -95,8 +95,8 @@ import Error from './_error'
 builder.init(YOUR_API_KEY)
 
 class Builder extends Component {
-  static async getInitialProps({ req, res, pathname }) {
-    builder.setUserAttributes({ urlPath: pathname })
+  static async getInitialProps({ req, res, asPath }) {
+    builder.setUserAttributes({ urlPath: asPath })
     const page = await builder.get('page', { req, res }).promise()
     if (!page && res) res.statusCode = 404
     return { data }
@@ -120,9 +120,9 @@ import { builder, BuilderComponent } from '@builder.io/react'
 builder.init(BUILDER_API_KEY)
 
 class CatchallPage extends React.Component {
-  static async getInitialProps({ res, req, pathname }) {
+  static async getInitialProps({ res, req, asPath }) {
     // If there is a Builder page for this URL, this will be an object, otherwise it'll be null
-    builder.setUserAttributes({ urlPath: pathname })
+    builder.setUserAttributes({ urlPath: asPath })
     const page = await builder.get('page', { req, res }).toPromise()
 
     if (res && res.statusCode === 404 && page) {
