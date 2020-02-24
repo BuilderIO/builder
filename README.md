@@ -48,7 +48,7 @@ To start on a fresh project quickly, take a look at our [react starter](starters
 ## Getting Started with React
 
 ```sh
-npm install --save @builder.io/react
+npm install @builder.io/react
 ```
 
 Grab a free account at [builder.io](https://builder.io) and find your [API key](https://builder.io/account/organization)

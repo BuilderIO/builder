@@ -4,11 +4,11 @@
 
 ### Create an account
 
-Frist things first, if you don't yet have one, create a free account at [Builder.io](https://builder.io)
+First things first, if you don't yet have one, create a free account at [Builder.io](https://builder.io)
 
 ### To install
 
-`npm install --save @builder.io/react`
+`npm install @builder.io/react`
 
 ### Add the components and getInitialProps
 
@@ -40,7 +40,7 @@ class About extends React.Component {
         {this.props.builderPage ? (
           <BuilderComponent name="page" content={this.props.builderPage} />
         ) : (
-          /* Show something else */
+          /* Show something else, e.g. 404 */
         )}
       </div>
     )
@@ -70,51 +70,10 @@ If anything else ever goes wrong for you, chat us anytime form the bottom right 
 
 ## Dynamic landing pages
 
-One of Builder's most powerful use cases is allowing the creation of dynamic new pages with their own unique URLs.
+One of Builder's most powerful use cases is allowing the creation of dynamic new pages with their own unique URLs. 
 
-Since next.js doesn't natively support dynamic pages, we have a couple of options.
+To add this ability, create a file `pages/[...slug].js`, with content:
 
-First, and perhaps most elegant, is to use [next-routes](https://github.com/fridays/next-routes)
-
-### With next-routes
-
-```js
-// routes.js
-module.exports = routes()
-  // ... your other routes
-  // Be sure this is last so your other routes always match first
-  .add('/*', 'builder');
-```
-
-```js
-// pages/builder.js
-import { Component } from 'react';
-import { builder, BuilderComponent } from '@builder.io/react';
-// Allow interactive widgets in the editor (importing registers the react components)
-import Error from './_error';
-
-builder.init(YOUR_API_KEY);
-
-class Builder extends Component {
-  static async getInitialProps({ req, res, asPath }) {
-    // Get the upcoming route full location path
-    const path = asPath.split('?')[0];
-    builder.setUserAttributes({ urlPath: path });
-    const page = await builder.get('page', { req, res }).promise();
-    if (!page && res) res.statusCode = 404;
-    return { data };
-  }
-  render() {
-    const { page } = this.props;
-    if (!page) return <Error status={404} />;
-    return <BuilderComponent name="page" content={page} />;
-  }
-}
-```
-
-### With pages/\_error.js
-
-A simplistic approach could also be to use \_error.js. Since \_error.js functions as catchall page, we can add our own handling:
 
 ```js
 import React from 'react';
@@ -122,7 +81,7 @@ import { builder, BuilderComponent } from '@builder.io/react';
 
 builder.init(BUILDER_API_KEY);
 
-class CatchallPage extends React.Component {
+class CatchallBuilderPage extends React.Component {
   static async getInitialProps({ res, req, asPath }) {
     // Get the upcoming route full location path
     const path = asPath.split('?')[0];
@@ -130,8 +89,8 @@ class CatchallPage extends React.Component {
     // If there is a Builder page for this URL, this will be an object, otherwise it'll be null
     const page = await builder.get('page', { req, res }).toPromise();
 
-    if (res && res.statusCode === 404 && page) {
-      res.statusCode = 200;
+    if (res && !page) {
+      res.statusCode = 404;
     }
     return { builderPage: page };
   }
@@ -142,23 +101,23 @@ class CatchallPage extends React.Component {
         {this.props.builderPage ? (
           <BuilderComponent name="page" content={this.props.builderPage} />
         ) : (
-          'Error!'
+          // Render your 404 page (or redirect to it)
+          <NotFound>
         )}
       </div>
     );
   }
 }
 
-export default CatchallPage;
+export default CatchallBuilderPage;
 ```
 
-See `examples/next-js/pages/_error.js` for a real example you can run.
+See `examples/next-js/pages/[...slug].js` for a real example you can run.
 
-### Custom
+You can also choose to limit dynamic pages to certain sub paths, e.g. make your page at `pages/c/[...slug.js]` to only allos new URLs created at your-site.com/c/*
 
-Alternatively, you can add some custom behavior in your `server.js` or another routing library of your choice.
+Additionally, when you integrate this way, you can use `http://localhost:8888/__builder_editing__` or `https://yoursite.com/__builder_editing__` as preview URLs, as Builder.io will always return content for this pages that will allow editing in the visual editor
 
-Just follow the same behavior as the previous examples - if a URL is not found in your next.js routes, check for a Builder page with `await builder.get('page').promise()` at that URL, and if found render `<BuilderComponent name="page" content={page} />` like in the above examples
 
 ## Using your React components in Builder pages
 

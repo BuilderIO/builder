@@ -1,0 +1,20 @@
+{
+  "name": "@builder.io/example-next-js",
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@builder.io/react": "latest",
+    "@builder.io/widgets": "latest",
+    "next": "latest",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "tslib": "^1.10.0"
+  },
+  "private": true,
+  "devDependencies": {
+    "typescript": "3.7.0-beta"
+  }
+}

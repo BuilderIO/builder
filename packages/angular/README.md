@@ -5,7 +5,7 @@
 Install
 
 ```
-npm install --save @builder.io/angular
+npm install @builder.io/angular
 ```
 
 Add the module
