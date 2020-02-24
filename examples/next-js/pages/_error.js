@@ -8,8 +8,10 @@ const BUILDER_API_KEY = require('../keys/builder.json').apiKey;
 builder.init(BUILDER_API_KEY);
 
 class CatchallPage extends React.Component {
-  static async getInitialProps({ res, req }) {
+  static async getInitialProps({ res, req, asPath }) {
     // If there is a Builder page for this URL, this will be an object, otherwise it'll be null
+    const path = asPath.split('?')[0];
+    builder.setUserAttributes({ urlPath: path });
     const page = await builder.get('page', { req, res }).promise();
 
     if (res && res.statusCode === 404 && page) {

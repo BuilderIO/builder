@@ -10,7 +10,6 @@ Frist things first, if you don't yet have one, create a free account at [Builder
 
 `npm install --save @builder.io/react`
 
-
 ### Add the components and getInitialProps
 
 To any page in next.js, you can fetch for a Builder page, and handle whether Builder found a
@@ -27,8 +26,10 @@ builder.init(BUILDER_API_KEY)
 
 class About extends React.Component {
   static async getInitialProps({ res, req, asPath }) {
+    // Get the upcoming route full location path
+    const path = asPath.split('?')[0];
+    builder.setUserAttributes({ urlPath: path });
     // If there is a Builder page for this URL, this will be an object, otherwise it'll be null
-    builder.setUserAttributes({ urlPath: asPath })
     const page = await builder.get('page', { req, res }).promise()
     return { builderPage: page }
   }
@@ -82,29 +83,31 @@ First, and perhaps most elegant, is to use [next-routes](https://github.com/frid
 module.exports = routes()
   // ... your other routes
   // Be sure this is last so your other routes always match first
-  .add('/*', 'builder')
+  .add('/*', 'builder');
 ```
 
 ```js
 // pages/builder.js
-import { Component } from 'react'
-import { builder, BuilderComponent } from '@builder.io/react'
+import { Component } from 'react';
+import { builder, BuilderComponent } from '@builder.io/react';
 // Allow interactive widgets in the editor (importing registers the react components)
-import Error from './_error'
+import Error from './_error';
 
-builder.init(YOUR_API_KEY)
+builder.init(YOUR_API_KEY);
 
 class Builder extends Component {
   static async getInitialProps({ req, res, asPath }) {
-    builder.setUserAttributes({ urlPath: asPath })
-    const page = await builder.get('page', { req, res }).promise()
-    if (!page && res) res.statusCode = 404
-    return { data }
+    // Get the upcoming route full location path
+    const path = asPath.split('?')[0];
+    builder.setUserAttributes({ urlPath: path });
+    const page = await builder.get('page', { req, res }).promise();
+    if (!page && res) res.statusCode = 404;
+    return { data };
   }
   render() {
-    const { page } = this.props
-    if (!page) return <Error status={404} />
-    return <BuilderComponent name="page" content={page} />
+    const { page } = this.props;
+    if (!page) return <Error status={404} />;
+    return <BuilderComponent name="page" content={page} />;
   }
 }
 ```
@@ -114,21 +117,23 @@ class Builder extends Component {
 A simplistic approach could also be to use \_error.js. Since \_error.js functions as catchall page, we can add our own handling:
 
 ```js
-import React from 'react'
-import { builder, BuilderComponent } from '@builder.io/react'
+import React from 'react';
+import { builder, BuilderComponent } from '@builder.io/react';
 
-builder.init(BUILDER_API_KEY)
+builder.init(BUILDER_API_KEY);
 
 class CatchallPage extends React.Component {
   static async getInitialProps({ res, req, asPath }) {
+    // Get the upcoming route full location path
+    const path = asPath.split('?')[0];
+    builder.setUserAttributes({ urlPath: path });
     // If there is a Builder page for this URL, this will be an object, otherwise it'll be null
-    builder.setUserAttributes({ urlPath: asPath })
-    const page = await builder.get('page', { req, res }).toPromise()
+    const page = await builder.get('page', { req, res }).toPromise();
 
     if (res && res.statusCode === 404 && page) {
-      res.statusCode = 200
+      res.statusCode = 200;
     }
-    return { builderPage: page }
+    return { builderPage: page };
   }
 
   render() {
@@ -140,11 +145,11 @@ class CatchallPage extends React.Component {
           'Error!'
         )}
       </div>
-    )
+    );
   }
 }
 
-export default CatchallPage
+export default CatchallPage;
 ```
 
 See `examples/next-js/pages/_error.js` for a real example you can run.
@@ -160,16 +165,14 @@ Just follow the same behavior as the previous examples - if a URL is not found i
 You can use your React components in the drag and drop editor in Builder. Simply wrap the component as shown below:
 
 ```js
-import { withBuilder } from '@builder.io/react'
+import { withBuilder } from '@builder.io/react';
 
-const SimpleText = ({ text }) => (
-  <h1>{text}</h1>
-)
+const SimpleText = ({ text }) => <h1>{text}</h1>;
 
 export default withBuilder(SimpleText, {
   name: 'Simple Text',
-  inputs: [{ name: 'text', type: 'string' }]
-})
+  inputs: [{ name: 'text', type: 'string' }],
+});
 ```
 
 And then be sure to import this component wherever you want it to be accessible in the editor
@@ -182,10 +185,10 @@ For lots of examples of using React components in Builder, see the source for ou
 ```js
 // As long as this is imported on the same page as your <BuilderComponent> is used,
 // you will have access to this component in the drag and drop editor
-import './your-builder-component'
+import './your-builder-component';
 
 // ...
-export default () => <BuilderComponent name="page" />
+export default () => <BuilderComponent name="page" />;
 ```
 
 And then it will show up in the insert menu (under "show more") in the Builder editor!
