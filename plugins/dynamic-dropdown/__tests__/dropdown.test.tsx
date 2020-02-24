@@ -14,7 +14,7 @@ import '@testing-library/jest-dom/extend-expect'
 import * as propsExtractor from '../src/dropdownPropsExtractor'
 import { Simulate } from 'react-dom/test-utils'
 
-jest.mock('@material-ui/core/Select', () => (props: any) => {
+jest.mock('@material-ui/core/TextField', () => (props: any) => {
   const { children, value, onChange } = props
   const handleChange = (event: any) => {
     onChange(event)
@@ -81,7 +81,7 @@ describe('Dropdown plugin', () => {
       { key: 'key-3', name: 'value-3' }
     ])
 
-    act(async () => {
+    await act(async () => {
       const { container } = render(<Component {...dropdownProps} />)
       await waitForDomChange()
       const element: any = container.querySelector('select')

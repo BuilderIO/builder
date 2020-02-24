@@ -2,8 +2,8 @@
 import { jsx } from '@emotion/core'
 import { Builder } from '@builder.io/sdk'
 import React, { useEffect, useState } from 'react'
-import { InputLabel, MenuItem, FormControl } from '@material-ui/core'
-import Select from '@material-ui/core/Select'
+import { MenuItem } from '@material-ui/core'
+import TextField from '@material-ui/core/TextField'
 import { getMassagedProps } from './dropdownPropsExtractor'
 import { orchestrateSelections } from './selectionsOrchestrator'
 
@@ -32,25 +32,24 @@ export const Component = (props: any) => {
   }, [props.context.designerState.editingContentModel?.data])
 
   return (
-    <FormControl css={{ marginTop: 15 }} fullWidth variant="outlined">
-      <InputLabel id="select-outlined-label">Dropdown</InputLabel>
-      <Select
-        fullWidth
-        id="select-outlined"
-        value={props.value ?? ''}
-        onChange={onSelectChange}
-      >
-        <MenuItem key="None" value="None">
-          None
-        </MenuItem>
-        {selections &&
-          selections.map((selection: any, index: any) => (
-            <MenuItem key={index} value={selection.key}>
-              {selection.name}
-            </MenuItem>
-          ))}
-      </Select>
-    </FormControl>
+    <TextField
+      select
+      label="Dropdown"
+      fullWidth
+      id="select-outlined"
+      value={props.value ?? ''}
+      onChange={onSelectChange}
+    >
+      <MenuItem key="None" value="None">
+        None
+      </MenuItem>
+      {selections &&
+        selections.map((selection: any, index: any) => (
+          <MenuItem key={index} value={selection.value}>
+            {selection.name}
+          </MenuItem>
+        ))}
+    </TextField>
   )
 }
 
