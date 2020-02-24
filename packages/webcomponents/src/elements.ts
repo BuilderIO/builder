@@ -236,24 +236,6 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
 
       if (!this.prerender || !builder.apiKey || fresh) {
         const currentContent = fresh ? null : this.currentContent
-        // if (this.builderPageRef) {
-        //   builder
-        //     .get(name!, {
-        //       key:
-        //         this.getAttribute('key') ||
-        //         (slot ? `slot:${slot}` : null) ||
-        //         (!Builder.isEditing && (this.getAttribute('entry') || name!)) ||
-        //         undefined,
-        //       entry: entry || undefined,
-        //       ...this.options
-        //     })
-        //     .toPromise()
-        //     .then((data: any) => {
-        //       this.builderPageRef.props.content = data
-        //       this.builderPageRef.reload()
-        //     })
-        //   return
-        // }
         this.loadReact(
           currentContent ? currentContent : entry ? { id: entry } : null,
           fresh
