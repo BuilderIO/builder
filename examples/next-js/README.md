@@ -67,7 +67,7 @@ Also, when done creating pages, be sure to hit "publish" to publish that content
 
 When creating a page in Builder, if Builder says "Builder code not found", that means Builder can't find the `<BuilderComponent />` in your React app. Try using your React devtools to ensure that component is in fact showing up. Even try hardcoding it temporarily to test that Builder can find it and you can use the visual editor on your site.
 
-👉 Please note that when editing on localhost (an `http`) protocol page, on Builder.io which uses `https` you need to allow this explicitly with chrome settings or you will get "cannot connect" messages. **See how to do this in [this video](https://www.youtube.com/embed/YL5gbEmx9Wo?autoplay=1&loop=1&mute=1&modestbranding=1&color=white)**
+**👉 Please note that when editing on localhost (an `http`) protocol page, on Builder.io which uses `https` you need to allow this explicitly with chrome settings or you will get "cannot connect" messages. See how to do this in [this video](https://www.youtube.com/embed/YL5gbEmx9Wo?autoplay=1&loop=1&mute=1&modestbranding=1&color=white)**
 
 If anything else ever goes wrong for you, chat us anytime form the bottom right corner at [builder.io](https://builder.io) or email steve@builder.io. We are always happy to help!
 
