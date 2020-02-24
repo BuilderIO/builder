@@ -1,5 +1,5 @@
 <h1 align="center">
-  Gatsby builder example
+  Using Builder.io with Gatsby
 </h1>
 
 > A demo for integrating [Builder.io](https://www.builder.io) with Gatsby using our GraphQL API and the `gatsby-source-graphql` plugin
