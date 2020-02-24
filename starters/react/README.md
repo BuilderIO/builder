@@ -60,6 +60,6 @@ For more detailed deployment instructions and options [see here](https://faceboo
 
 ## Additional information
 
-If you run into any issues here, don't hesitate to create a [Github issue](https://github.com/BuilderIO/builder/issues) or even email me directly at steve@builder.io
+If you run into any issues here, don't hesitate to create a [Github issue](https://github.com/BuilderIO/builder/issues) or even email me directly at help@builder.io
 
 This project wasa created by [create-react-app](https://facebook.github.io/create-react-app/docs/getting-started). For more information on commands and usage see their [docs here](https://facebook.github.io/create-react-app/docs/getting-started)

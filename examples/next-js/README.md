@@ -69,7 +69,7 @@ When creating a page in Builder, if Builder says "Builder code not found", that 
 
 **👉 Please note that when editing on localhost (an `http`) protocol page, on Builder.io which uses `https` you need to allow this explicitly with chrome settings or you will get "cannot connect" messages. See how to do this in [this video](https://www.youtube.com/embed/YL5gbEmx9Wo?autoplay=1&loop=1&mute=1&modestbranding=1&color=white)**
 
-If anything else ever goes wrong for you, chat us anytime form the bottom right corner at [builder.io](https://builder.io) or email steve@builder.io. We are always happy to help!
+If anything else ever goes wrong for you, chat us anytime form the bottom right corner at [builder.io](https://builder.io) or email help@builder.io. We are always happy to help!
 
 ## Dynamic landing pages
 
@@ -116,7 +116,7 @@ class CatchallBuilderPage extends React.Component {
 export default CatchallBuilderPage;
 ```
 
-See `examples/next-js/pages/[...slug].js` for a real example you can run.
+See [pages/[...slug].js](pages/[...slug].js) for a real example you can run.
 
 You can also choose to limit dynamic pages to certain sub paths, e.g. make your page at `pages/c/[...slug.js]` to only allos new URLs created at your-site.com/c/*
 
