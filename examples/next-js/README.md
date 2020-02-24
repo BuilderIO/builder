@@ -50,7 +50,7 @@ class About extends React.Component {
 
 ### Add the URL to your builder model and get editing
 
-Next, when you have added the Builder page component on your local site, go to the [models](https://buidler.io/models) page in Builder, choose the "page" model, and give it a URL where it can find this React component for the "preview url" field. This may be, for example, `http://localhost:8888/my-page`
+Next, when you have added the Builder page component on your local site, go to the [models](https://buidler.io/models) page in Builder, choose the "page" model, and give it a URL where it can find this React component for the "preview url" field. This may be, for example, `http://localhost:8888/about`
 
 <img src="https://i.imgur.com/PRWvNM1.gif">
 
@@ -65,6 +65,8 @@ Also, when done creating pages, be sure to hit "publish" to publish that content
 ### Troubleshooting
 
 When creating a page in Builder, if Builder says "Builder code not found", that means Builder can't find the `<BuilderComponent />` in your React app. Try using your React devtools to ensure that component is in fact showing up. Even try hardcoding it temporarily to test that Builder can find it and you can use the visual editor on your site.
+
+👉 Please note that when editing on localhost (an `http`) protocol page, on Builder.io which uses `https` you need to allow this explicitly with chrome settings or you will get "cannot connect" messages. **See how to do this in [this video](https://www.youtube.com/embed/YL5gbEmx9Wo?autoplay=1&loop=1&mute=1&modestbranding=1&color=white)**
 
 If anything else ever goes wrong for you, chat us anytime form the bottom right corner at [builder.io](https://builder.io) or email steve@builder.io. We are always happy to help!
 
