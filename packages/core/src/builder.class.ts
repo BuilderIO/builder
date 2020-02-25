@@ -1280,7 +1280,16 @@ export class Builder {
 
   observersByKey: { [key: string]: Observer<any> | undefined } = {};
 
-  init(apiKey: string, canTrack = true, req?: ServerRequest, res?: ServerResponse) {
+  get defaultCanTrack() {
+    return (
+      Builder.isBrowser &&
+      !navigator.userAgent.match(
+        /bot|crawler|spider|robot|crawling|prerender|google|baidu|bing|msn|duckduckbot|teoma|slurp|yandex/i
+      )
+    );
+  }
+
+  init(apiKey: string, canTrack = this.defaultCanTrack, req?: ServerRequest, res?: ServerResponse) {
     if (req) {
       this.request = req;
     }
