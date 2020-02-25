@@ -1,11 +1,11 @@
 {
   "name": "@builder.io/gatsby-plugin",
   "description": "A plugin for using Builder.io with Gatsby",
-  "homepage": "https://github.com/BuilderIO/builder/tree/master/packages/gatsby-plugin-builder#readme",
+  "homepage": "https://github.com/BuilderIO/builder/tree/master/packages/gatsby#readme",
   "repository": {
     "type": "git",
     "url": "https://github.com/BuilderIO/builder.git",
-    "directory": "packages/gatsby-plugin-builder"
+    "directory": "packages/gatsby"
   },
   "version": "1.0.0",
   "keywords": [
@@ -27,7 +27,9 @@
     "@babel/cli": "^7.7.5",
     "@babel/core": "^7.7.5",
     "babel-preset-gatsby-package": "^0.2.16",
-    "cross-env": "^5.2.1"
+    "cross-env": "^5.2.1",
+    "gatsby": "^2.19.21",
+    "jest": "^25.1.0"
   },
   "license": "MIT",
   "peerDependencies": {
@@ -36,7 +38,8 @@
   "scripts": {
     "build": "babel src --out-dir . --ignore **/__tests__",
     "prepare": "cross-env NODE_ENV=production npm run build",
-    "watch": "babel -w src --out-dir . --ignore **/__tests__"
+    "watch": "babel -w src --out-dir . --ignore **/__tests__",
+    "test": "jest"
   },
   "engines": {
     "node": ">=8.0.0"

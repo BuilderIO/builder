@@ -29,7 +29,7 @@ exports.sourceNodes = async (
     fetch,
   })
 
-  const cacheKey = `gatsby-plugin-builder-schema-${typeName}-${fieldName}`
+  const cacheKey = `@builder.io/gatsby-schema-${typeName}-${fieldName}`
   let sdl = await cache.get(cacheKey)
   let introspectionSchema
 
@@ -42,7 +42,7 @@ exports.sourceNodes = async (
 
   await cache.set(cacheKey, sdl)
 
-  const nodeId = createNodeId(`gatsby-plugin-builder-${typeName}`)
+  const nodeId = createNodeId(`@builder.io/gatsby-${typeName}`)
   const node = createSchemaNode({
     id: nodeId,
     typeName,
@@ -102,12 +102,17 @@ exports.createPages = async ({ graphql, actions }, options) => {
   }
   const { createPage } = actions
   const models = Object.keys(config.templates)
+  const offsets = models.map(() => 0)
+  await createPagesAsync(config, createPage, graphql, models, offsets);
+}
+
+const createPagesAsync = async (config, createPage, graphql, models, offsets) => {
   const result = await graphql(`
     query {
       ${config.fieldName} {
         ${models
           .map(
-            model => `${model} {
+            (model, index) => `${model}(limit: ${config.limit}, offset: ${offsets[index]}) {
             everything
           }`
           )
@@ -115,14 +120,20 @@ exports.createPages = async ({ graphql, actions }, options) => {
       }
     }
   `)
+  let hasMore = false
 
-  models.forEach(modelName => {
+  models.forEach((modelName, index) => {
     const component = config.templates[modelName]
     invariant(
       fs.existsSync(component),
-      `gatsby-plugin-builder requires a valid template path for each model`
+      `@builder.io/gatsby requires a valid template path for each model`
     )
-    result.data[config.fieldName][modelName].forEach(entry => {
+    const entries = result.data[config.fieldName][modelName]
+    offsets[index] = offsets[index] + entries.length
+    if (entries.length === config.limit) {
+      hasMore = true
+    }
+    entries.forEach(entry => {
       if (
         entry.everything.data.url &&
         entry.everything.published === `published`
@@ -134,4 +145,7 @@ exports.createPages = async ({ graphql, actions }, options) => {
       }
     })
   })
+  if (hasMore) {
+    await createPagesAsync(config, createPage, graphql, models, offsets);
+  }
 }

@@ -4,6 +4,7 @@ module.exports.defaultOptions = {
   // Arbitrary name for the remote schema Query type
   fieldName: `allBuilderModels`,
   typeName: `builder`,
+  limit: 30
 }
 
 module.exports.getGQLOptions = options => {
@@ -13,7 +14,7 @@ module.exports.getGQLOptions = options => {
   }
   invariant(
     config.publicAPIKey && config.publicAPIKey.length > 0,
-    `gatsby-plugin-builder requires a public API Key`
+    `@builder.io/gatsby requires a public API Key`
   )
   return {
     typeName: config.typeName,
