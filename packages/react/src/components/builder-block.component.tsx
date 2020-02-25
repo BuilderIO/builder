@@ -103,6 +103,7 @@ export interface BuilderBlockProps {
   index?: number
   size?: Size
   emailMode?: boolean
+  onBlockChange: (newBlock: BuilderElement) => void
   // TODO: use context
 }
 
@@ -120,7 +121,7 @@ interface BuilderBlockState {
   update: Function
 }
 
-export class BuilderBlock extends React.Component<
+export class InnerBuilderBlock extends React.Component<
   BuilderBlockProps,
   { hasError: boolean; updates: number }
 > {
@@ -380,7 +381,8 @@ export class BuilderBlock extends React.Component<
           // e.g. access it's parent hm. maybe do the listning mutations
           // on hte parent element not the child (or rather
           // send the message to the parent)
-          applyPatchWithMinimalMutationChain(this.props.block, patch)
+          const newBlock = applyPatchWithMinimalMutationChain(this.props.block, patch, false)
+          this.props.onBlockChange(newBlock)
         }
         this.setState({ updates: this.state.updates + 1 })
 
@@ -813,5 +815,20 @@ export class BuilderBlock extends React.Component<
         {value => this.contents(value)}
       </BuilderStoreContext.Consumer>
     )
+  }
+}
+
+export class BuilderBlock extends React.Component<Omit<BuilderBlockProps, 'onBlockChange'>, {block: BuilderElement}> {
+  state = {
+    block: this.props.block
+  }
+
+  onBlockChange = (newBlock: BuilderElement) => {
+    this.setState({block: newBlock})
+  }
+
+  render() {
+    const builderProps = {...this.props, ...this.state}
+    return <InnerBuilderBlock {...builderProps} onBlockChange={this.onBlockChange}/>
   }
 }
