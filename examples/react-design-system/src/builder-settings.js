@@ -4,8 +4,12 @@ import { Builder } from '@builder.io/react';
 const OVERRIDE_INSERT_MENU = true;
 
 if (OVERRIDE_INSERT_MENU) {
+  // (optionally) use this to hide all default built-in components and fully manage
+  // the insert menu components and sections yourself
   Builder.set({ customInsertMenu: true });
 
+  // (optionally) set these to add your own sections of components arranged as you choose.
+  // this can be used with or without `customInsertMenu` above
   Builder.register('insertMenu', {
     name: 'Simple components',
     items: [
