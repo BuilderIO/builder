@@ -377,10 +377,6 @@ export class InnerBuilderBlock extends React.Component<
           this.eval('debugger')
         }
         for (const patch of patches) {
-          // TODO: soehow mark this.props.block as a new object,
-          // e.g. access it's parent hm. maybe do the listning mutations
-          // on hte parent element not the child (or rather
-          // send the message to the parent)
           const newBlock = applyPatchWithMinimalMutationChain(this.props.block, patch, false)
           this.props.onBlockChange(newBlock)
         }
