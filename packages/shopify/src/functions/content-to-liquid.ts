@@ -188,7 +188,6 @@ const prettify = (str: string, options?: PrettierOptions) => {
 };
 
 export function contentToLiquid(json: BuilderContent, modelName: string, options: Options = {}) {
-  console.log('ran?');
   const content = fastClone(json);
 
   if (content.data && content.data.blocksString) {
