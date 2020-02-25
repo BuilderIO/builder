@@ -4,6 +4,12 @@ Adds widgets for Builder.io editing, such as carousels, tabs, accordions, etc.
 
 ## How to use it
 
+First, install the package
+
+```bash
+npm install @builder.io/widgets
+```
+
 When using the React SDK, just 
 ```ts
 import '@builder.io/widgets'
