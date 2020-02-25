@@ -561,8 +561,8 @@ export class BuilderBlock extends React.Component<
           return fn(
             useState,
             event,
-            undefined,
-            api(useState),
+            this.props.block,
+            builder,
             Device,
             this.privateState.update,
             Builder,
