@@ -1,3 +1,7 @@
 # Builder.io Shopify plugin
 
-More info coming soon!
+Easily connect your Shopify data to your Builder.io content!
+
+<img alt="Shopify data example" src="https://imgur.com/BhtUeqK.gif" >
+
+More info coming soon, stay tuned
