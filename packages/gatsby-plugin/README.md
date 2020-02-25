@@ -30,7 +30,7 @@ module.exports = {
 
 ## How to Query
 
-For an up-to-date complete examples check out the examples on [BuilderIo/SDK](https://github.com/BuilderIO/builder/tree/master/examples)
+For an up-to-date complete examples check out the examples on [BuilderIO/examples/gatsby](https://github.com/BuilderIO/builder/tree/master/examples/gatsby)
 
 ```graphql
 {

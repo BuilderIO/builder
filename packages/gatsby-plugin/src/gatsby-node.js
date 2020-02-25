@@ -113,7 +113,7 @@ const createPagesAsync = async (config, createPage, graphql, models, offsets) =>
         ${models
           .map(
             (model, index) => `${model}(limit: ${config.limit}, offset: ${offsets[index]}) {
-            everything
+            content
           }`
           )
           .join(` `)}
@@ -135,11 +135,11 @@ const createPagesAsync = async (config, createPage, graphql, models, offsets) =>
     }
     entries.forEach(entry => {
       if (
-        entry.everything.data.url &&
-        entry.everything.published === `published`
+        entry.content.data.url &&
+        entry.content.published === `published`
       ) {
         createPage({
-          path: entry.everything.data.url,
+          path: entry.content.data.url,
           component,
         })
       }

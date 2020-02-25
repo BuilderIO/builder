@@ -1,5 +1,5 @@
 {
-  "name": "@builder.io/gatsby-plugin",
+  "name": "@builder.io/gatsby",
   "description": "A plugin for using Builder.io with Gatsby",
   "homepage": "https://github.com/BuilderIO/builder/tree/master/packages/gatsby#readme",
   "repository": {
