@@ -1,4 +1,5 @@
-// import { ShopifyCollection } from '../interfaces/shopify-collection';
+/** @jsx jsx */
+import { jsx } from '@emotion/core'
 import { Builder } from '@builder.io/react'
 import {
   Avatar,
@@ -271,60 +272,58 @@ export class ShopifyCollectionPicker extends SafeComponent<
 
   render() {
     return (
-      <>
-        <div
-          css={{ display: 'flex', flexDirection: 'column', padding: '10px 0' }}
-        >
-          {this.collectionInfoCacheValue?.loading && (
-            <CircularProgress
-              size={20}
-              disableShrink
-              css={{ margin: '30px auto' }}
+      <div
+        css={{ display: 'flex', flexDirection: 'column', padding: '10px 0' }}
+      >
+        {this.collectionInfoCacheValue?.loading && (
+          <CircularProgress
+            size={20}
+            disableShrink
+            css={{ margin: '30px auto' }}
+          />
+        )}
+        {this.collectionInfo && (
+          <Paper
+            css={{
+              marginBottom: 15,
+              position: 'relative'
+            }}
+            onClick={() => {
+              this.showChooseCollectionModal()
+            }}
+          >
+            <CollectionPreviewCell
+              button
+              css={{ paddingRight: 30 }}
+              collection={this.collectionInfo}
             />
-          )}
-          {this.collectionInfo && (
-            <Paper
+            <IconButton
               css={{
-                marginBottom: 15,
-                position: 'relative'
-              }}
-              onClick={() => {
-                this.showChooseCollectionModal()
-              }}
-            >
-              <CollectionPreviewCell
-                button
-                css={{ paddingRight: 30 }}
-                collection={this.collectionInfo}
-              />
-              <IconButton
-                css={{
-                  position: 'absolute',
-                  right: 2,
-                  top: 0,
-                  bottom: 0,
-                  height: 50,
-                  marginTop: 'auto',
-                  marginBottom: 'auto'
-                }}
-              >
-                <Create css={{ color: '#888' }} />
-              </IconButton>
-            </Paper>
-          )}
-          {!this.collectionInfo && (
-            <Button
-              color="primary"
-              variant="contained"
-              onClick={() => {
-                this.showChooseCollectionModal()
+                position: 'absolute',
+                right: 2,
+                top: 0,
+                bottom: 0,
+                height: 50,
+                marginTop: 'auto',
+                marginBottom: 'auto'
               }}
             >
-              Choose collection
-            </Button>
-          )}
-        </div>
-      </>
+              <Create css={{ color: '#888' }} />
+            </IconButton>
+          </Paper>
+        )}
+        {!this.collectionInfo && (
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={() => {
+              this.showChooseCollectionModal()
+            }}
+          >
+            Choose collection
+          </Button>
+        )}
+      </div>
     )
   }
 }

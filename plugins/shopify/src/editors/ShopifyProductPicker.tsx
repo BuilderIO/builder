@@ -1,3 +1,5 @@
+/** @jsx jsx */
+import { jsx } from '@emotion/core'
 import { Builder } from '@builder.io/react'
 import {
   Avatar,
@@ -20,6 +22,8 @@ import { SafeComponent } from '../components/safe-component'
 import { CustomReactEditorProps } from '../interfaces/custom-react-editor-props'
 import { ShopifyProduct } from '../interfaces/shopify-product'
 import { BuilderRequest } from '../interfaces/builder-request'
+import { fastClone } from '../functions/fast-clone'
+import { SetShopifyKeysMessage } from '../components/set-shopify-keys-message'
 
 const apiRoot = 'https://builder.io'
 
@@ -218,6 +222,14 @@ export class ShopifyProductPicker extends SafeComponent<
     return this.props.value?.options?.product || ''
   }
 
+  get pluginSettings() {
+    return fastClone(
+      this.props.context.user.organization?.value.settings.plugins.get(
+        '@builder.io/shopify'
+      ) || {}
+    )
+  }
+
   getRequestObject(collectionId: string) {
     // setting a Request object as the value, Builder.io will fetch the given URL
     // and populate that as the `data` property on this object in the return repsonse
@@ -265,65 +277,67 @@ export class ShopifyProductPicker extends SafeComponent<
   }
 
   render() {
+    const { apiKey, apiSecret } = this.pluginSettings
+
+    if (!(apiKey && apiSecret)) {
+      return <SetShopifyKeysMessage />
+    }
     return (
-      <>
-        <div
-          css={{ display: 'flex', flexDirection: 'column', padding: '10px 0' }}
-        >
-          {this.productInfoCacheValue?.loading && (
-            <CircularProgress
-              size={20}
-              disableShrink
-              css={{ margin: '30px auto' }}
+      <div
+        css={{ display: 'flex', flexDirection: 'column', padding: '10px 0' }}
+      >
+        {this.productInfoCacheValue?.loading && (
+          <CircularProgress
+            size={20}
+            disableShrink
+            css={{ margin: '30px auto' }}
+          />
+        )}
+        {this.productInfo && (
+          <Paper
+            css={{
+              marginBottom: 15,
+              position: 'relative'
+            }}
+            onClick={() => {
+              this.showChooseProductModal()
+            }}
+          >
+            <ProductPreviewCell
+              button
+              css={{ paddingRight: 30 }}
+              product={this.productInfo}
             />
-          )}
-          {this.productInfo && (
-            <Paper
+            <IconButton
               css={{
-                marginBottom: 15,
-                position: 'relative'
-              }}
-              onClick={() => {
-                this.showChooseProductModal()
-              }}
-            >
-              <ProductPreviewCell
-                button
-                css={{ paddingRight: 30 }}
-                product={this.productInfo}
-              />
-              <IconButton
-                css={{
-                  position: 'absolute',
-                  right: 2,
-                  top: 0,
-                  bottom: 0,
-                  height: 50,
-                  marginTop: 'auto',
-                  marginBottom: 'auto'
-                }}
-              >
-                <Create css={{ color: '#888' }} />
-              </IconButton>
-            </Paper>
-          )}
-          {!this.productInfo && (
-            <Button
-              color="primary"
-              variant="contained"
-              onClick={() => {
-                this.showChooseProductModal()
+                position: 'absolute',
+                right: 2,
+                top: 0,
+                bottom: 0,
+                height: 50,
+                marginTop: 'auto',
+                marginBottom: 'auto'
               }}
             >
-              Choose product
-            </Button>
-          )}
-        </div>
-      </>
+              <Create css={{ color: '#888' }} />
+            </IconButton>
+          </Paper>
+        )}
+        {!this.productInfo && (
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={() => {
+              this.showChooseProductModal()
+            }}
+          >
+            Choose product
+          </Button>
+        )}
+      </div>
     )
   }
 }
-console.log('register ShopifyProduct')
 
 Builder.registerEditor({
   name: 'ShopifyProduct',
