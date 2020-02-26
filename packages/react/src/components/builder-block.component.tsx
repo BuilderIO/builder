@@ -12,6 +12,7 @@ import {
 } from '../store/builder-async-requests'
 import { BuilderStoreContext } from '../store/builder-store'
 import { applyPatchWithMinimalMutationChain } from 'src/functions/apply-patch-with-mutation'
+import { blockToHtmlString } from 'src/functions/block-to-html-string'
 
 const camelCaseToKebabCase = (str?: string) =>
   str ? str.replace(/([A-Z])/g, g => `-${g[0].toLowerCase()}`) : ''
@@ -466,6 +467,23 @@ export class BuilderBlock extends React.Component<
   getElement(index = 0, state = this.privateState.state): React.ReactNode {
     const { block, child, fieldName } = this.props
     let TagName = (block.tagName || 'div').toLowerCase()
+
+    if (TagName === 'template') {
+      const html = block.children
+        ? block.children.map(item => blockToHtmlString(item)).join(' ')
+        : ''
+      console.debug('template html', html)
+      return (
+        // React has an undesired behavior (for us) for template tags, so we must
+        // turn the contents into a string
+        <template
+          {...block.properties}
+          dangerouslySetInnerHTML={{
+            __html: html
+          }}
+        />
+      )
+    }
 
     let InnerComponent: any
     const componentName =
