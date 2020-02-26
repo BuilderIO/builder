@@ -1,7 +1,6 @@
 import { el, mergeEl, _s } from '../modules/blocks';
 import { BuilderElement } from '@builder.io/sdk';
 import { loadingSpinner } from './loading-spinner';
-import { productBox } from './product-box';
 import { productBoxBlock } from './product-info';
 
 export const collectionGrid = el({

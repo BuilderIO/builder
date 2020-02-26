@@ -15,12 +15,9 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const defaultParams = {
-  abbreviatedCategoryHistogram: true,
   limit: 20,
   cat: 'womens-clothes',
   view: 'web',
-  useElasticsearch: true,
-  sorts: 'Popular',
   pid: 'shopstyle',
 };
 

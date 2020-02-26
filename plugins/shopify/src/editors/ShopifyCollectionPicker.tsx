@@ -1,68 +1,42 @@
-import React from 'react';
-import { SafeComponent } from '../../classes/safe-component.class';
-import { observer } from 'mobx-react';
-import { CustomReactEditorProps } from '../../components/FieldsForm';
-import { computed, observable, reaction, runInAction } from 'mobx';
+// import { ShopifyCollection } from '../interfaces/shopify-collection';
+import { Builder } from '@builder.io/react'
 import {
-  Button,
-  TextField,
-  ListItem,
-  ListItemAvatar,
   Avatar,
-  ListItemText,
-  Paper,
+  Button,
   CircularProgress,
   IconButton,
   InputAdornment,
-  Typography,
-} from '@material-ui/core';
-import { appState } from '../../constants/app-state.constant';
-// import { ShopifyCollection } from '../interfaces/shopify-collection';
-import { isDev } from '../../constants/environment.constant';
-import { reportException } from '../../functions/report-exception';
-import { Builder } from '@builder.io/react';
-import { nextTick } from '../../functions/next-tick.function';
-import { Create, Search } from '@material-ui/icons';
-import { theme } from '../../constants/theme.constant';
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  Paper,
+  TextField,
+  Typography
+} from '@material-ui/core'
+import { Create, Search } from '@material-ui/icons'
+import { computed, observable, runInAction } from 'mobx'
+import { observer } from 'mobx-react'
+import React from 'react'
+import { SafeComponent } from '../components/safe-component'
+import { CustomReactEditorProps } from '../interfaces/custom-react-editor-props'
 
-type ShopifyCollection = any; // TODO
+type ShopifyCollection = any /* TODO */
 
-// TODO: implement
-nextTick(() => {
-  reaction(
-    () => appState.user.isShopify,
-    isShopify => {
-      if (isShopify) {
-        Builder.registerEditor({
-          name: 'ShopifyCollection',
-          component: ShopifyCollectionPicker,
-        });
-      } else {
-        const index = Builder.editors.findIndex(item => item.name === 'ShopifyCollection');
-        if (index !== -1) {
-          Builder.editors.splice(index, 1);
-        }
-      }
-    },
-    {
-      fireImmediately: true,
-    }
-  );
-});
-
-const apiRoot = isDev ? 'http://localhost:5000' : 'https://builder.io';
+const apiRoot = 'https://builder.io'
 
 interface ShopifyCollectionPickerProps extends CustomReactEditorProps<string> {}
 
 interface ShopifyCollectionPreviewCellProps {
-  collection: ShopifyCollection;
-  button?: boolean;
-  selected?: boolean;
-  className?: string;
+  collection: ShopifyCollection
+  button?: boolean
+  selected?: boolean
+  className?: string
 }
 
 @observer
-export class CollectionPreviewCell extends SafeComponent<ShopifyCollectionPreviewCellProps> {
+export class CollectionPreviewCell extends SafeComponent<
+  ShopifyCollectionPreviewCellProps
+> {
   render() {
     return (
       <ListItem
@@ -72,68 +46,81 @@ export class CollectionPreviewCell extends SafeComponent<ShopifyCollectionPrevie
       >
         {this.props.collection.image && (
           <ListItemAvatar>
-            <Avatar css={{ borderRadius: 4 }} src={this.props.collection.image.src} />
+            <Avatar
+              css={{ borderRadius: 4 }}
+              src={this.props.collection.image.src}
+            />
           </ListItemAvatar>
         )}
         <ListItemText primary={this.props.collection.handle} />
       </ListItem>
-    );
+    )
   }
 }
 
 @observer
-export class CollectionPicker extends SafeComponent<ShopifyCollectionPickerProps> {
-  @observable searchInputText = '';
-  @observable loading = false;
+export class CollectionPicker extends SafeComponent<
+  ShopifyCollectionPickerProps
+> {
+  @observable searchInputText = ''
+  @observable loading = false
 
-  @observable collections: ShopifyCollection[] = [];
+  @observable collections: ShopifyCollection[] = []
 
   async searchCollections() {
-    this.loading = true;
-    const shopifyCustomCollectionsUrl = apiRoot + '/api/v1/shopify/custom_collections.json';
-    const shopifySmartCollectionsUrl = apiRoot + '/api/v1/shopify/smart_collections.json';
+    this.loading = true
+    const shopifyCustomCollectionsUrl =
+      apiRoot + '/api/v1/shopify/custom_collections.json'
+    const shopifySmartCollectionsUrl =
+      apiRoot + '/api/v1/shopify/smart_collections.json'
 
     const onShopifyError = (err: any) => {
-      console.error('Shopify collection search error:', err);
-      reportException(err);
-      appState.snackBar.show(
-        'Oh no! There was an error syncing your page to Shopify. Please contact us for support'
-      );
-    };
+      console.error('Shopify collection search error:', err)
+    }
 
     // const agent =
     // TODO: cancen pending requests if any
     const customCollectionQuery = fetch(
-      `${shopifyCustomCollectionsUrl}?apiKey=${appState.user.apiKey}&title=${encodeURIComponent(
-        this.searchInputText
-      )}&limit=40`
+      `${shopifyCustomCollectionsUrl}?apiKey=${
+        this.props.context.user.apiKey
+      }&title=${encodeURIComponent(this.searchInputText)}&limit=40`
     )
       .then(res => res.json())
-      .catch(onShopifyError);
+      .catch(onShopifyError)
 
     const smartCollectionQuery = fetch(
-      `${shopifySmartCollectionsUrl}?apiKey=${appState.user.apiKey}&title=${encodeURIComponent(
-        this.searchInputText
-      )}&limit=40`
+      `${shopifySmartCollectionsUrl}?apiKey=${
+        this.props.context.user.apiKey
+      }&title=${encodeURIComponent(this.searchInputText)}&limit=40`
     )
       .then(res => res.json())
-      .catch(onShopifyError);
-    const [smartCollectionResponse, customCollectionResponse] = await Promise.all([
-      smartCollectionQuery,
-      customCollectionQuery,
-    ]);
+      .catch(onShopifyError)
+    const [
+      smartCollectionResponse,
+      customCollectionResponse
+    ] = await Promise.all([smartCollectionQuery, customCollectionQuery])
 
     runInAction(() => {
-      let collections: any[] = [];
-      if (customCollectionResponse && customCollectionResponse.custom_collections) {
-        collections = collections.concat(customCollectionResponse.custom_collections);
+      let collections: any[] = []
+      if (
+        customCollectionResponse &&
+        customCollectionResponse.custom_collections
+      ) {
+        collections = collections.concat(
+          customCollectionResponse.custom_collections
+        )
       }
-      if (smartCollectionResponse && smartCollectionResponse.smart_collections) {
-        collections = collections.concat(smartCollectionResponse.smart_collections);
+      if (
+        smartCollectionResponse &&
+        smartCollectionResponse.smart_collections
+      ) {
+        collections = collections.concat(
+          smartCollectionResponse.smart_collections
+        )
       }
-      this.collections = collections;
-      this.loading = false;
-    });
+      this.collections = collections
+      this.loading = false
+    })
   }
 
   componentDidMount() {
@@ -142,9 +129,9 @@ export class CollectionPicker extends SafeComponent<ShopifyCollectionPickerProps
       () => this.searchCollections(),
       {
         delay: 500,
-        fireImmediately: true,
+        fireImmediately: true
       }
-    );
+    )
   }
 
   render() {
@@ -157,13 +144,17 @@ export class CollectionPicker extends SafeComponent<ShopifyCollectionPickerProps
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
-                <Search css={{ color: '#999', marginRight: -2, fontSize: 20 }} />
+                <Search
+                  css={{ color: '#999', marginRight: -2, fontSize: 20 }}
+                />
               </InputAdornment>
-            ),
+            )
           }}
           onChange={e => (this.searchInputText = e.target.value)}
         />
-        {this.loading && <CircularProgress disableShrink css={{ margin: '50px auto' }} />}
+        {this.loading && (
+          <CircularProgress disableShrink css={{ margin: '50px auto' }} />
+        )}
         <div css={{ maxHeight: '80vh', overflow: 'auto' }}>
           {!this.loading &&
             (this.collections.length ? (
@@ -171,7 +162,7 @@ export class CollectionPicker extends SafeComponent<ShopifyCollectionPickerProps
                 <div
                   key={item.id}
                   onClick={e => {
-                    this.props.onChange(String(item.id));
+                    this.props.onChange(String(item.id))
                   }}
                 >
                   <CollectionPreviewCell
@@ -185,7 +176,11 @@ export class CollectionPicker extends SafeComponent<ShopifyCollectionPickerProps
             ) : (
               <div>
                 <Typography
-                  css={{ margin: '40px 20px', textAlign: 'center', fontSize: 17 }}
+                  css={{
+                    margin: '40px 20px',
+                    textAlign: 'center',
+                    fontSize: 17
+                  }}
                   variant="caption"
                 >
                   No collections found
@@ -194,49 +189,52 @@ export class CollectionPicker extends SafeComponent<ShopifyCollectionPickerProps
             ))}
         </div>
       </div>
-    );
+    )
   }
 }
 
 @observer
-export class ShopifyCollectionPicker extends SafeComponent<ShopifyCollectionPickerProps> {
+export class ShopifyCollectionPicker extends SafeComponent<
+  ShopifyCollectionPickerProps
+> {
   @computed get loading() {
-    return this.collectionInfoCacheValue?.loading;
+    return this.collectionInfoCacheValue?.loading
   }
 
   @computed get collectionInfo() {
-    return this.collectionInfoCacheValue?.value?.collection;
+    return this.collectionInfoCacheValue?.value?.collection
   }
 
   @computed get collectionInfoCacheValue() {
-    if (!(appState.user.apiKey && this.value)) {
-      return null;
+    if (!(this.props.context.user.apiKey && this.value)) {
+      return null
     }
-    return appState.httpCache.get<{ collection: ShopifyCollection }>(
-      `${apiRoot}/api/v1/shopify/collections/${this.value}.json?apiKey=${appState.user.apiKey}`
-    );
+    return this.props.context.httpCache.get(
+      `${apiRoot}/api/v1/shopify/collections/${this.value}.json?apiKey=${this.props.context.user.apiKey}`
+    )
   }
 
   get value() {
-    return this.props.value;
+    return this.props.value
   }
 
   set value(value) {
-    this.props.onChange(value);
+    this.props.onChange(value)
   }
 
   async getCollection(id: string) {
-    return null;
+    return null
   }
 
   async showChooseCollectionModal() {
-    const close = await appState.globalState.openDialog(
+    const close = await this.props.context.globalState.openDialog(
       <CollectionPicker
+        context={this.props.context}
         value={this.value}
         onChange={value => {
-          console.log('onchange', value);
-          this.props.onChange(value);
-          close();
+          console.log('onchange', value)
+          this.props.onChange(value)
+          close()
         }}
       />,
       true,
@@ -245,28 +243,34 @@ export class ShopifyCollectionPicker extends SafeComponent<ShopifyCollectionPick
           // Align modal to top so doesn't jump around centering itself when
           // grows and shrinks to show more/less collections or loading
           style: {
-            alignSelf: 'flex-start',
-          },
-        },
+            alignSelf: 'flex-start'
+          }
+        }
       }
-    );
+    )
   }
 
   render() {
     return (
       <>
-        <div css={{ display: 'flex', flexDirection: 'column', padding: '10px 0' }}>
+        <div
+          css={{ display: 'flex', flexDirection: 'column', padding: '10px 0' }}
+        >
           {this.collectionInfoCacheValue?.loading && (
-            <CircularProgress size={20} disableShrink css={{ margin: '30px auto' }} />
+            <CircularProgress
+              size={20}
+              disableShrink
+              css={{ margin: '30px auto' }}
+            />
           )}
           {this.collectionInfo && (
             <Paper
               css={{
                 marginBottom: 15,
-                position: 'relative',
+                position: 'relative'
               }}
               onClick={() => {
-                this.showChooseCollectionModal();
+                this.showChooseCollectionModal()
               }}
             >
               <CollectionPreviewCell
@@ -282,10 +286,10 @@ export class ShopifyCollectionPicker extends SafeComponent<ShopifyCollectionPick
                   bottom: 0,
                   height: 50,
                   marginTop: 'auto',
-                  marginBottom: 'auto',
+                  marginBottom: 'auto'
                 }}
               >
-                <Create css={{ color: theme.colors.primary }} />
+                <Create css={{ color: '#888' }} />
               </IconButton>
             </Paper>
           )}
@@ -294,7 +298,7 @@ export class ShopifyCollectionPicker extends SafeComponent<ShopifyCollectionPick
               color="primary"
               variant="contained"
               onClick={() => {
-                this.showChooseCollectionModal();
+                this.showChooseCollectionModal()
               }}
             >
               Choose collection
@@ -302,6 +306,11 @@ export class ShopifyCollectionPicker extends SafeComponent<ShopifyCollectionPick
           )}
         </div>
       </>
-    );
+    )
   }
 }
+
+Builder.registerEditor({
+  name: 'ShopifyCollection',
+  component: ShopifyCollectionPicker
+})

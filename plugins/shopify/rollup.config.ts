@@ -16,7 +16,7 @@ export default {
   input: `src/${libraryName}.tsx`,
   // Important! We need to have shared references to 'react' and '@builder.io/sdk'
   // for builder plugins to run properly
-  external: ['react', '@builder.io/sdk', '@material-ui/core', '@emotion/core', '@emotion/styled'],
+  external: ['react', '@builder.io/sdk', '@material-ui/core', '@emotion/core', '@emotion/styled', 'mobx'],
   output: [
     { file: pkg.main, name: camelCase(libraryName), format: 'umd', sourcemap: true },
     { file: pkg.module, format: 'es', sourcemap: true },

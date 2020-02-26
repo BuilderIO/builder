@@ -2,8 +2,8 @@ import { keyframes } from '@emotion/core';
 
 import { el, mergeEl, _s } from '../modules/blocks';
 import { BuilderElement } from '@builder.io/sdk';
-import { merge, set } from 'lodash';
-import { fastClone } from '../../functions/fast-clone.function';
+
+const fastClone = <T extends object>(obj: T) => JSON.parse(JSON.stringify(obj));
 
 const spinKeyframes = keyframes({
   '0%': {

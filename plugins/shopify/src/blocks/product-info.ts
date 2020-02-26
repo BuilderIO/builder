@@ -1,6 +1,5 @@
 import { productBoxWithChildren } from './product-box';
 import { el, _s } from '../modules/blocks';
-import { version } from '../../../package.json';
 import { Builder } from '@builder.io/sdk';
 
 // TODO: unit tests for these with <Buildercomponent content={productTitle} /> etc
