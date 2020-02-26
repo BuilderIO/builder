@@ -19,10 +19,12 @@ import React from 'react'
 import { SafeComponent } from '../components/safe-component'
 import { CustomReactEditorProps } from '../interfaces/custom-react-editor-props'
 import { ShopifyProduct } from '../interfaces/shopify-product'
+import { BuilderRequest } from '../interfaces/builder-request'
 
 const apiRoot = 'https://builder.io'
 
-interface ShopifyProductPickerProps extends CustomReactEditorProps<string> {}
+interface ShopifyProductPickerProps
+  extends CustomReactEditorProps<BuilderRequest> {}
 
 interface ShopifyProductPreviewCellProps {
   product: ShopifyProduct
@@ -70,7 +72,9 @@ export class ProductPreviewCell extends SafeComponent<
 }
 
 @observer
-export class ProductPicker extends SafeComponent<ShopifyProductPickerProps> {
+export class ProductPicker extends SafeComponent<
+  CustomReactEditorProps<string>
+> {
   @observable searchInputText = ''
   @observable loading = false
 
@@ -82,6 +86,9 @@ export class ProductPicker extends SafeComponent<ShopifyProductPickerProps> {
 
     const onShopifyError = (err: any) => {
       console.error('Shopify product search error:', err)
+      this.props.context.snackBar.show(
+        'Oh no! There was an error syncing your page to Shopify. Please contact us for support'
+      )
     }
 
     // const agent =
@@ -185,20 +192,35 @@ export class ShopifyProductPicker extends SafeComponent<
   }
 
   @computed get productInfoCacheValue() {
-    if (!(this.props.context.user.apiKey && this.value)) {
+    if (!(this.props.context.user.apiKey && this.productId)) {
       return null
     }
     return this.props.context.httpCache.get(
-      `${apiRoot}/api/v1/shopify/products/${this.value}.json?apiKey=${this.props.context.user.apiKey}`
+      `${apiRoot}/api/v1/shopify/products/${this.productId}.json?apiKey=${this.props.context.user.apiKey}`
     )
   }
 
-  get value() {
-    return this.props.value
+  get productId() {
+    return this.props.value?.options?.product || ''
   }
 
-  set value(value) {
-    this.props.onChange(value)
+  getRequestObject(collectionId: string) {
+    // setting a Request object as the value, Builder.io will fetch the given URL
+    // and populate that as the `data` property on this object in the return repsonse
+    // from the API
+    return {
+      '@type': '@builder.io/core:Request',
+      request: {
+        url: `${apiRoot}/api/v1/shopify/collections/{{this.options.collection}}.json?apiKey=${this.props.context.user.apiKey}`
+      },
+      options: {
+        collection: collectionId
+      }
+    } as BuilderRequest
+  }
+
+  set productId(value) {
+    this.props.onChange(this.getRequestObject(value))
   }
 
   async getProduct(id: string) {
@@ -209,10 +231,9 @@ export class ShopifyProductPicker extends SafeComponent<
     const close = await this.props.context.globalState.openDialog(
       <ProductPicker
         context={this.props.context}
-        value={this.value}
+        value={this.productId}
         onChange={value => {
-          console.log('onchange', value)
-          this.props.onChange(value)
+          this.productId = value
           close()
         }}
       />,
@@ -291,5 +312,5 @@ export class ShopifyProductPicker extends SafeComponent<
 
 Builder.registerEditor({
   name: 'ShopifyProduct',
-  component: ShopifyProductPicker
+  component: ShopifyProductPicker,
 })

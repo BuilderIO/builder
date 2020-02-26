@@ -125,14 +125,9 @@ export class BuilderBlock extends React.Component<
   BuilderBlockProps,
   { hasError: boolean; updates: number }
 > {
-  private ref: any
   private _asyncRequests?: RequestOrPromise[]
   private _errors?: Error[]
   private _logs?: string[]
-
-  // TODO: only do with flag, e.g. maybe url param, since is useful for debugging
-  // but causes console warnings when functional compoennts used
-  innerComponentRef: any
 
   state = {
     hasError: false,
@@ -390,25 +385,6 @@ export class BuilderBlock extends React.Component<
     }
   }
 
-  lastAttrs: any
-
-  updateAttrs(attrs: { [key: string]: string }) {
-    // TODO: comb over lastAttrs and remove any that were there but are not now
-    const ref = this.ref
-    if (ref && ref instanceof Element) {
-      for (const attr in attrs) {
-        const value = attrs[attr]
-        if (typeof value === 'string') {
-          if (ref.getAttribute(attr) !== value) {
-            ref.setAttribute(attr, value)
-          }
-        } else if (ref.hasAttribute(attr)) {
-          ref.removeAttribute(attr)
-        }
-      }
-    }
-  }
-
   componentDidMount() {
     const { block } = this.props
     const animations = block && block.animations
@@ -616,7 +592,6 @@ export class BuilderBlock extends React.Component<
           : ''),
       key: this.id + index,
       'builder-id': this.id,
-      ref: ((ref: any) => (this.ref = ref)) as any,
       // ...(state && state.$index && typeof state.$index === 'number'
       //   ? {
       // TODO: ONLY include on repeat!
@@ -666,10 +641,6 @@ export class BuilderBlock extends React.Component<
 
     const children = block.children || finalOptions.children || []
 
-    if (options.attr && typeof options.attr === 'object') {
-      Builder.nextTick(() => this.updateAttrs(options.attr))
-    }
-
     // TODO: test it out
     return (
       <React.Fragment>
@@ -705,13 +676,11 @@ export class BuilderBlock extends React.Component<
                       attributes={finalOptions}
                       builderBlock={block}
                       builderState={this.privateState}
-                      // ref={(ref: any) => (this.innerComponentRef = ref)}
                     />
                   ) : (
                     <TagName {...(finalOptions as any)}>
                       {InnerComponent && (
                         <InnerComponent
-                          // ref={(ref: any) => (this.innerComponentRef = ref)}
                           builderState={this.privateState}
                           builderBlock={block}
                           {...innerComponentProperties}

@@ -19,12 +19,14 @@ import { observer } from 'mobx-react'
 import React from 'react'
 import { SafeComponent } from '../components/safe-component'
 import { CustomReactEditorProps } from '../interfaces/custom-react-editor-props'
+import { BuilderRequest } from '../interfaces/builder-request'
 
 type ShopifyCollection = any /* TODO */
 
 const apiRoot = 'https://builder.io'
 
-interface ShopifyCollectionPickerProps extends CustomReactEditorProps<string> {}
+interface ShopifyCollectionPickerProps
+  extends CustomReactEditorProps<BuilderRequest> {}
 
 interface ShopifyCollectionPreviewCellProps {
   collection: ShopifyCollection
@@ -60,7 +62,7 @@ export class CollectionPreviewCell extends SafeComponent<
 
 @observer
 export class CollectionPicker extends SafeComponent<
-  ShopifyCollectionPickerProps
+  CustomReactEditorProps<string>
 > {
   @observable searchInputText = ''
   @observable loading = false
@@ -76,6 +78,9 @@ export class CollectionPicker extends SafeComponent<
 
     const onShopifyError = (err: any) => {
       console.error('Shopify collection search error:', err)
+      this.props.context.snackBar.show(
+        'Oh no! There was an error syncing your page to Shopify. Please contact us for support'
+      )
     }
 
     // const agent =
@@ -206,20 +211,35 @@ export class ShopifyCollectionPicker extends SafeComponent<
   }
 
   @computed get collectionInfoCacheValue() {
-    if (!(this.props.context.user.apiKey && this.value)) {
+    if (!(this.props.context.user.apiKey && this.collectionId)) {
       return null
     }
     return this.props.context.httpCache.get(
-      `${apiRoot}/api/v1/shopify/collections/${this.value}.json?apiKey=${this.props.context.user.apiKey}`
+      `${apiRoot}/api/v1/shopify/collections/${this.collectionId}.json?apiKey=${this.props.context.user.apiKey}`
     )
   }
 
-  get value() {
-    return this.props.value
+  getRequestObject(collectionId: string) {
+    // setting a Request object as the value, Builder.io will fetch the given URL
+    // and populate that as the `data` property on this object in the return repsonse
+    // from the API
+    return {
+      '@type': '@builder.io/core:Request',
+      request: {
+        url: `${apiRoot}/api/v1/shopify/collections/{{this.options.collection}}.json?apiKey=${this.props.context.user.apiKey}`
+      },
+      options: {
+        collection: collectionId
+      }
+    } as BuilderRequest
   }
 
-  set value(value) {
-    this.props.onChange(value)
+  get collectionId() {
+    return this.props.value?.options?.collection || ''
+  }
+
+  set collectionId(value) {
+    this.props.onChange(this.getRequestObject(value))
   }
 
   async getCollection(id: string) {
@@ -230,10 +250,9 @@ export class ShopifyCollectionPicker extends SafeComponent<
     const close = await this.props.context.globalState.openDialog(
       <CollectionPicker
         context={this.props.context}
-        value={this.value}
+        value={this.collectionId}
         onChange={value => {
-          console.log('onchange', value)
-          this.props.onChange(value)
+          this.collectionId = value
           close()
         }}
       />,

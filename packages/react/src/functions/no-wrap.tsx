@@ -30,15 +30,16 @@ import { BuilderBlock } from '../components/builder-block.component'
  * ```
  */
 export const noWrap = <P extends object>(Component: React.ComponentType<P>) => {
-  const HOC = (props: React.PropsWithChildren<P> & { attributes?: any }) => {
-    const finalProps = {
-      ...props,
-      ...props.attributes
+  const HOC = React.forwardRef(
+    (props: React.PropsWithChildren<P> & { attributes?: any }, ref) => {
+      const finalProps = {
+        ...props,
+        ...props.attributes
+      }
+      return <Component {...finalProps} ref={ref} />
     }
-    return <Component {...finalProps} />
-  }
-
-  HOC.builderOptions = {
+  )
+  ;(HOC as any).builderOptions = {
     noWrap: true
   }
 
