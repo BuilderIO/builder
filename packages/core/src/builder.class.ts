@@ -1283,10 +1283,10 @@ export class Builder {
   get defaultCanTrack() {
     return (
       Builder.isBrowser &&
-      (!navigator.userAgent ||
+      navigator.userAgent.trim() &&
         !navigator.userAgent.match(
-          /bot|crawler|spider|robot|crawling|prerender|google|baidu|bing|msn|duckduckbot|teoma|slurp|yandex|PhantomJS|headless|selenium/i
-        ))
+          /bot|crawler|spider|robot|crawling|prerender|google|baidu|bing|msn|duckduckbot|teoma|slurp|yandex|phantom|headless|selenium|puppeteer/i
+        )
     );
   }
 
