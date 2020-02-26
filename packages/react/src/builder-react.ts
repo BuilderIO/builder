@@ -16,6 +16,7 @@ export { BuilderBlock } from './decorators/builder-block.decorator'
 export * from './functions/update-metadata'
 
 export { withBuilder } from './functions/with-builder'
+export { withChildren } from './functions/with-children'
 
 export { BuilderPage, onChange }
 export { BuilderPage as BuilderComponent }
