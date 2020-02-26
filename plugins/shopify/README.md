@@ -10,7 +10,7 @@ Go to [builder.io/account/organization](https://builder.io/account/organization)
 
 You will now see two new field types (for [model](https://builder.io/c/docs/guides/getting-started-with-models) fields, [symbol](https://builder.io/c/docs/guides/symbols) inputs, and [component](https://builder.io/c/docs/custom-react-components) fields) - `Shopify Product` and `Shopify Collection`. When used, the UIs will prompt to search for products and collections. When consumed by APIs, SDKs, or in the Builder.io UIs, the value will the in the form of a Builder.io `Request` object
 
-```json
+```js
 {
   "yourFieldName": {
     "@type": "@builder.io/core:Request",
