@@ -128,6 +128,7 @@
     "@material-ui/icons": "^1.1.1",
     "mobx": "^5.15.4",
     "mobx-react": "^6.1.8",
-    "react": "^16.11.0"
+    "react": "^16.11.0",
+    "rollup-plugin-replace": "^2.2.0"
   }
 }

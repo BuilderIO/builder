@@ -80,6 +80,14 @@ export class ProductPicker extends SafeComponent<
 
   @observable products: ShopifyProduct[] = []
 
+  @computed get pluginSettings() {
+    return (
+      this.props.context.organization?.value.settings.plugins?.[
+        '@builder.io/shopify'
+      ] || {}
+    )
+  }
+
   async searchProducts() {
     this.loading = true
     const shopifyProductsUrl = apiRoot + '/api/v1/shopify/products.json'
@@ -98,7 +106,13 @@ export class ProductPicker extends SafeComponent<
         this.props.context.user.apiKey
       }&title=${encodeURIComponent(this.searchInputText)}&limit=40`
     )
-      .then(res => res.json())
+      .then(async res => {
+        if (!res.ok) {
+          onShopifyError(await res.text())
+        }
+        return res
+      })
+      .then(res => res && res.json())
       .catch(onShopifyError)
 
     runInAction(() => {
@@ -309,8 +323,9 @@ export class ShopifyProductPicker extends SafeComponent<
     )
   }
 }
+console.log('register ShopifyProduct')
 
 Builder.registerEditor({
   name: 'ShopifyProduct',
-  component: ShopifyProductPicker,
+  component: ShopifyProductPicker
 })

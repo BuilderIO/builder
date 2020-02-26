@@ -313,6 +313,7 @@ export class Builder {
    * key it gets removed
    */
   static register(type: 'insertMenu', info: InsertMenuConfig): void;
+  static register(type: string, info: any): void;
   static register(type: string, info: any) {
     // TODO: all must have name and can't conflict?
     let typeList = this.registry[type];
