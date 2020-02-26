@@ -11,6 +11,8 @@ export const htmlEscape = (str: string) =>
 // TODO: how allow components (e.g. react components) in templates?
 export const blockToHtmlString = (block: BuilderElement): string =>
   `<${htmlEscape(block.tagName || 'div')} 
+    class="builder-block ${block.id} ${block.class || ''}"
+    builder-id="${block.id}"
   ${Object.keys(block.properties || {})
     .map(key => `${htmlEscape(key)}="${htmlEscape(block.properties![key])}"`)
     .join(' ')}

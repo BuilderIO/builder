@@ -500,6 +500,7 @@ export class Builder {
   static registerComponent(component: any, options: Component) {
     const spec = {
       class: component,
+      ...component.builderOptions,
       ...options,
     };
     this.addComponent(spec);
@@ -1283,7 +1284,7 @@ export class Builder {
   get defaultCanTrack() {
     return Boolean(
       Builder.isBrowser &&
-      navigator.userAgent.trim() &&
+        navigator.userAgent.trim() &&
         !navigator.userAgent.match(
           /bot|crawler|spider|robot|crawling|prerender|google|baidu|bing|msn|duckduckbot|teoma|slurp|yandex|phantom|headless|selenium|puppeteer/i
         )

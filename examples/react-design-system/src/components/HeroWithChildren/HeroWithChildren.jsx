@@ -17,6 +17,17 @@ const useStyles = makeStyles(() => ({
 
 /**
  * Hero component with dynamic children
+ * 
+ * See ./HeroWithChildren.builder.js for how to use, namely you will need to use
+ * 
+ *    withChildren(HeroWithEditableChildren)
+ * 
+ * to forward the Builder.io children to the component
+ * 
+ * Also, it is generally best to supply default children for eady editnig (aka when
+ * this component is added in the Builder.io editor, have some example children that can be 
+ * added by default). See `canHaveChildren` in ./HeroWithChildren.builder.js for an 
+ * example of this
  */
 export const HeroWithEditableChildren = props => {
   const { image, parallaxStrength, height } = props;
@@ -29,11 +40,10 @@ export const HeroWithEditableChildren = props => {
         <div className={classes.wrapper}>
           {/*
            * Render dynamic children.
-           * Note `canHaveChildren: true` and the defualt children in ./HeroWithChildren.builder.js
+           * Note: you must use `withChildren()` HOC to support children, see
+           * ./HeroWithChildren.builder.js for this
            */}
-          {props.builderBlock?.children?.map(item => (
-            <BuilderBlockComponent block={item} key={item.id} />
-          ))}
+          {props.children}
         </div>
       </div>
       <Background className="custom-bg">

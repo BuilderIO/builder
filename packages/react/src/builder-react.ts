@@ -17,6 +17,7 @@ export * from './functions/update-metadata'
 
 export { withBuilder } from './functions/with-builder'
 export { withChildren } from './functions/with-children'
+export { noWrap } from './functions/no-wrap'
 
 export { BuilderPage, onChange }
 export { BuilderPage as BuilderComponent }
