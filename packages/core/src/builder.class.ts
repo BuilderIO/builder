@@ -1281,7 +1281,7 @@ export class Builder {
   observersByKey: { [key: string]: Observer<any> | undefined } = {};
 
   get defaultCanTrack() {
-    return (
+    return Boolean(
       Builder.isBrowser &&
       navigator.userAgent.trim() &&
         !navigator.userAgent.match(
