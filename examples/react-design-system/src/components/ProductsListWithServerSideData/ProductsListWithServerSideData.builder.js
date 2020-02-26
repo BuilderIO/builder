@@ -2,12 +2,9 @@ import { Builder } from '@builder.io/react';
 import { ProductsListWithServerSideData } from './ProductsListWithServerSideData';
 
 const defaultProductsQueryParams = {
-  abbreviatedCategoryHistogram: 'true',
   limit: '20',
   cat: 'womens-clothes',
   view: 'web',
-  useElasticsearch: 'true',
-  sorts: 'Popular',
   pid: 'shopstyle',
 };
 const productQueryHeaders = { 'content-type': 'application/json' };
@@ -17,6 +14,9 @@ Builder.registerComponent(ProductsListWithServerSideData, {
   inputs: [
     {
       name: 'products',
+      type: 'request',
+      // Hide this from the UIs 
+      hidden: true,
       defaultValue: {
         '@type': '@builder.io/core:Request',
         request: {
