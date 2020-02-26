@@ -17,9 +17,10 @@ import './components/Button/Button.builder';
 import './components/Heading/Heading.builder';
 import './components/HeroWithChildren/HeroWithChildren.builder';
 import './components/DynamicColumns/DynamicColumns.builder';
+import './components/ProductsListWithServerSideData/ProductsListWithServerSideData.builder';
 
 // Add your public apiKey here
-const YOUR_KEY = '_';
+const YOUR_KEY = 'YJIGb4i01jvw0SRdL5Bt';
 
 builder.init(YOUR_KEY);
 
@@ -84,8 +85,11 @@ const NotFound = () => {
       <h3 className={classes.notFoundTitle}>No page found for this URL, did you publish it?</h3>
       {process.env.NODE_ENV === 'development' && (
         <h4 className={classes.notFoundSubTitle}>
-          To edit this page in Builder.io, go to <a target="_blank" href="https://builder.io">builder.io</a>, create
-          a new page, and enter <pre>{window.location.href}</pre> as the editing URL (at
+          To edit this page in Builder.io, go to{' '}
+          <a target="_blank" href="https://builder.io">
+            builder.io
+          </a>
+          , create a new page, and enter <pre>{window.location.href}</pre> as the editing URL (at
           the top right of the preview)
         </h4>
       )}

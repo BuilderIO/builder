@@ -24,16 +24,20 @@ const defaultParams = {
   pid: 'shopstyle',
 };
 
+/**
+ * This component renders remove data serverside. See ./ProductsListWithServerSideData.builder.js
+ * for more info on how
+ */
 export const ProductsListWithServerSideData = props => {
   const { url: urlProp, amount, category, size, products } = props;
-  const url = urlProp || 'https://api.shopstyle.com/api/v2/products'
+  const url = urlProp || 'https://api.shopstyle.com/api/v2/products';
   const [data, setData] = useState({ products: [] });
   const classes = useStyles();
   useEffect(() => {
     // If products were requested for us, use it
     // Otherwise, fetch client side (e.g. for editing, or using this component
     // without Builder.io server side requests)
-    if (products) {
+    if (products?.data?.products) {
       return;
     }
     // Request client side when editing or props change
@@ -53,7 +57,7 @@ export const ProductsListWithServerSideData = props => {
     <div className={classes.root}>
       <div className={classes.container}>
         {/* use products if supplied, otherwise fetch it */}
-        {products ? products.data || data.products.map(product => (
+        {(products?.data?.products || data.products).map(product => (
           <Product key={product.id} sizeName={size} {...product} />
         ))}
       </div>

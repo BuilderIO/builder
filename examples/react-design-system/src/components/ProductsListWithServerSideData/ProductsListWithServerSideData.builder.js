@@ -1,6 +1,17 @@
 import { Builder } from '@builder.io/react';
 import { ProductsListWithServerSideData } from './ProductsListWithServerSideData';
 
+const defaultProductsQueryParams = {
+  abbreviatedCategoryHistogram: 'true',
+  limit: '20',
+  cat: 'womens-clothes',
+  view: 'web',
+  useElasticsearch: 'true',
+  sorts: 'Popular',
+  pid: 'shopstyle',
+};
+const productQueryHeaders = { 'content-type': 'application/json' };
+
 Builder.registerComponent(ProductsListWithServerSideData, {
   name: 'Products List SSR',
   inputs: [
@@ -10,13 +21,15 @@ Builder.registerComponent(ProductsListWithServerSideData, {
         '@type': '@builder.io/core:Request',
         request: {
           url: 'https://api.shopstyle.com/api/v2/products',
+          // Optional
+          query: defaultProductsQueryParams,
+          // Optional
+          headers: productQueryHeaders,
         },
         bindings: {
-          'request.query.limit': 'amount',
-          // We don't really need to call .toLowerCase, just want to demonstrate this
-          // takes arbitrary javascript :)
+          'query.limit': 'amount',
           // any expression is supported - e.g. "category ? 'foo' : 'bar'", etc
-          'request.query.cat': 'category.toLowerCase()',
+          'query.cat': 'category || "womens-fashion"',
         },
       },
     },

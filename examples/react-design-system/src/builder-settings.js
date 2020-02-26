@@ -26,6 +26,7 @@ Builder.register('insertMenu', {
     { name: 'Hero With Children' },
     { name: 'Products List' },
     { name: 'Reviews Slider' },
+    { name: 'Products List SSR' },
 
     // More advanced
     {
