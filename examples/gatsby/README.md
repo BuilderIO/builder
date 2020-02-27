@@ -47,7 +47,7 @@ export default class ExamplePage extends React.Component<any> {
     const { header, page } = this.props.data;
     return (
       <div>
-        {/* next line assumes you have a header model in builder.io, alternatively you can build your own Header componet and use it here */}
+        {/* next line assumes you have a header model in builder.io, alternatively you use your own <Header /> component here */}
         <BuilderComponent name="header" content={header[0].content} />
         {/* Render other things in your code as you choose */}
         <BuilderComponent name="page" content={page[0].content} />
@@ -60,7 +60,7 @@ export default class ExamplePage extends React.Component<any> {
 // GraphQL API and our explorer
 export const pageQuery = graphql`
   query {
-    # custom "header" component model
+    # (optional) custom "header" component model
     header(limit: 1) {
       content
     }
