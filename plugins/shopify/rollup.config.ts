@@ -21,7 +21,6 @@ export default {
   // left out of this list
   external: [
     'react',
-    '@builder.io/sdk',
     '@builder.io/react',
     '@material-ui/core',
     '@emotion/core',

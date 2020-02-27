@@ -21,6 +21,8 @@ import React from 'react'
 import { SafeComponent } from '../components/safe-component'
 import { CustomReactEditorProps } from '../interfaces/custom-react-editor-props'
 import { BuilderRequest } from '../interfaces/builder-request'
+import { SetShopifyKeysMessage } from '../components/set-shopify-keys-message'
+import { fastClone } from '../functions/fast-clone'
 
 type ShopifyCollection = any /* TODO */
 
@@ -236,7 +238,7 @@ export class ShopifyCollectionPicker extends SafeComponent<
   }
 
   get collectionId() {
-    return this.props.value?.options?.collection || ''
+    return this.props.value?.options?.get('collection') || ''
   }
 
   set collectionId(value) {
@@ -270,7 +272,21 @@ export class ShopifyCollectionPicker extends SafeComponent<
     )
   }
 
+  get pluginSettings() {
+    return fastClone(
+      this.props.context.user.organization?.value.settings.plugins.get(
+        '@builder.io/plugin-shopify'
+      ) || {}
+    )
+  }
+
   render() {
+    const { apiKey, apiPassword } = this.pluginSettings
+
+    if (!(apiKey && apiPassword)) {
+      return <SetShopifyKeysMessage />
+    }
+
     return (
       <div
         css={{ display: 'flex', flexDirection: 'column', padding: '10px 0' }}

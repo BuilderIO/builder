@@ -25,7 +25,7 @@ import { BuilderRequest } from '../interfaces/builder-request'
 import { fastClone } from '../functions/fast-clone'
 import { SetShopifyKeysMessage } from '../components/set-shopify-keys-message'
 
-const apiRoot = 'https://builder.io'
+const apiRoot = 'https://qa.builder.io' // 'https://builder.io'
 
 interface ShopifyProductPickerProps
   extends CustomReactEditorProps<BuilderRequest> {}
@@ -83,14 +83,6 @@ export class ProductPicker extends SafeComponent<
   @observable loading = false
 
   @observable products: ShopifyProduct[] = []
-
-  @computed get pluginSettings() {
-    return (
-      this.props.context.organization?.value.settings.plugins?.[
-        '@builder.io/shopify'
-      ] || {}
-    )
-  }
 
   async searchProducts() {
     this.loading = true
@@ -219,28 +211,28 @@ export class ShopifyProductPicker extends SafeComponent<
   }
 
   get productId() {
-    return this.props.value?.options?.product || ''
+    return this.props.value?.options?.get('product') || ''
   }
 
   get pluginSettings() {
     return fastClone(
       this.props.context.user.organization?.value.settings.plugins.get(
-        '@builder.io/shopify'
+        '@builder.io/plugin-shopify'
       ) || {}
     )
   }
 
-  getRequestObject(collectionId: string) {
+  getRequestObject(productId: string) {
     // setting a Request object as the value, Builder.io will fetch the given URL
     // and populate that as the `data` property on this object in the return repsonse
     // from the API
     return {
       '@type': '@builder.io/core:Request',
       request: {
-        url: `${apiRoot}/api/v1/shopify/collections/{{this.options.collection}}.json?apiKey=${this.props.context.user.apiKey}`
+        url: `${apiRoot}/api/v1/shopify/products/{{this.options.product}}.json?apiKey=${this.props.context.user.apiKey}`
       },
       options: {
-        collection: collectionId
+        product: productId
       }
     } as BuilderRequest
   }
@@ -277,9 +269,9 @@ export class ShopifyProductPicker extends SafeComponent<
   }
 
   render() {
-    const { apiKey, apiSecret } = this.pluginSettings
+    const { apiKey, apiPassword } = this.pluginSettings
 
-    if (!(apiKey && apiSecret)) {
+    if (!(apiKey && apiPassword)) {
       return <SetShopifyKeysMessage />
     }
     return (
