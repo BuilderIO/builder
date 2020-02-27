@@ -24,6 +24,7 @@
     "node": ">=8.0.0"
   },
   "dependencies": {
+    "@builder.io/gatsby": "^1.0.1",
     "@builder.io/react": "^1.1.2",
     "classnames": "^2.2.6",
     "gatsby": "^2.10.0",
