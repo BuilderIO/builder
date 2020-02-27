@@ -25,4 +25,4 @@ npm start
 
 <img width="796" alt="Screen Shot 2020-02-18 at 9 48 51 AM" src="https://user-images.githubusercontent.com/5093430/74763082-f5457100-5233-11ea-870b-a1b17c7f99fe.png">
 
-When you deploy this to a live or staging environment, you can change the preview URL for your model globally from [builder.io/models](https://buidlder.io/models)
+When you deploy this to a live or staging environment, you can change the preview URL for your model globally from [builder.io/models](https://builder.io/models)
