@@ -9,10 +9,9 @@ as rendering specific parts of your site with Builder.io content via GraphQL que
 
 See:
 
-- [builder-config.js](builder-config.js) to add your Builder.io public API key
-- [gatsby-node.js](gatsby-node.js) for an example of rendering new pages for each `page` you have in Builder.io
 - [src/components/CodeBlock.tsx](src/components/CodeBlock.tsx) for an example of using a custom react component in the Builder.io visiaul editor. See a more rich example of a whole design system of components [here](https://github.com/BuilderIO/builder/tree/master/examples/react-design-system)
-- [src/pages/example.tsx](src/pages/example.tsx) for usingn GraphQL to query and render Builder.io components and pages manually in parts of your Gatsby site and content
+- [src/pages/example.tsx](src/pages/example.tsx) for using GraphQL to query and render Builder.io components and pages manually in parts of your Gatsby site and content
+- [@builder.io/gatsby](https://github.com/builderio/builder/tree/master/packages/gatsby) the plugin used in this example to generate pages dynamically.
 
 ## 🚀 Quick start
 
