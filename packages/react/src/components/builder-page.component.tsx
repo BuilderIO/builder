@@ -817,6 +817,7 @@ export class BuilderPage extends React.Component<
                         if (this.props.dataOnly) {
                           return null
                         }
+                        this.state.context.builderContent = fullData
                         if (Builder.isBrowser) {
                           Builder.nextTick(() => {
                             this.checkStyles(data)
@@ -1002,7 +1003,6 @@ export class BuilderPage extends React.Component<
   }
 
   onContentLoaded = (data: any) => {
-    this.state.context.builderContent = data
     if (data && data.meta && data.meta.kind === 'page') {
       const future = new Date()
       future.setDate(future.getDate() + 30)
