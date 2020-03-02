@@ -1,7 +1,10 @@
 import * as React from 'react';
 import { graphql } from 'gatsby';
 import { BuilderComponent } from '@builder.io/react';
-import '../components/CodeBlock';
+
+/**
+ * Import your custom components here If you're using your any with builder.io
+ */
 
 interface PageTemplateProps {
   data: { allBuilderModels: { page: { content: any }[] } };
