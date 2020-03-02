@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { graphql } from 'gatsby';
 import { BuilderComponent } from '@builder.io/react';
-
 /**
- * Import your custom components here If you're using your any with builder.io
+ * Import all your custom components here If you're using any with builder.io,
  */
+import '@builder.io/widgets';
+
 
 interface PageTemplateProps {
   data: { allBuilderModels: { page: { content: any }[] } };
