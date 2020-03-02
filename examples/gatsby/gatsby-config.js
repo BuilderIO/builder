@@ -1,5 +1,5 @@
 'use strict';
-const { getGQLOptions } = require('./builder-config');
+const path = require('path');
 
 module.exports = {
   plugins: [

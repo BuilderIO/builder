@@ -34,3 +34,41 @@ See:
 <img width="796" alt="Screen Shot 2020-02-18 at 9 48 51 AM" src="https://user-images.githubusercontent.com/5093430/74763082-f5457100-5233-11ea-870b-a1b17c7f99fe.png">
 
 When you deploy this to a live or staging environment, you can change the preview URL for your model globally from [builder.io/models](https://builder.io/models) (see more about models [here](https://builder.io/c/docs/guides/getting-started-with-models) and preview urls [here](https://builder.io/c/docs/guides/preview-url))
+
+This example create pages dynamically based on the url you add to your entries on [Builder.io](https://www.builder.io), if you want to create a page manually, do not include the model in your `tempaltes` config as above, add a file under the `pages` folder and query all the entries your page needs from Builder.io, for example:
+
+```ts
+import React from 'react';
+import { graphql } from 'gatsby';
+import { BuilderComponent } from '@builder.io/react';
+
+
+export default class ExamplePage extends React.Component<any> {
+  render() {
+    const { header, page } = this.props.data;
+    return (
+      <div>
+        {/* next line assumes you have a header model in builder.io, alternatively you can build your own Header componet and use it here */}
+        <BuilderComponent name="header" content={header[0].content} />
+        {/* Render other things in your code as you choose */}
+        <BuilderComponent name="page" content={page[0].content} />
+      </div>
+    );
+  }
+}
+
+// See https://builder.io/c/docs/graphql-api for more info on our
+// GraphQL API and our explorer
+export const pageQuery = graphql`
+  query {
+    # custom "header" component model
+    header(limit: 1) {
+      content
+    }
+    # Manually grab the example content matching "/"
+    example(limit: 1, target: { urlPath: "/" }) {
+      content
+    }
+  }
+`;
+```
