@@ -54,7 +54,7 @@ if (typeof window !== 'undefined') {
       type: 'builder.isReactSdk',
       data: {
         value: true,
-        supportsPatchUpdates: true, // location.href.includes('patchUpdates=true'),
+        supportsPatchUpdates: 'v2', // location.href.includes('patchUpdates=true'),
         priorVersion: version
       }
     },

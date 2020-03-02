@@ -18,6 +18,7 @@ const camelCaseToKebabCase = (str?: string) =>
   str ? str.replace(/([A-Z])/g, g => `-${g[0].toLowerCase()}`) : ''
 
 const Device = { desktop: 0, tablet: 1, mobile: 2 }
+const blocksMap: Record<string, BuilderElement> = {}
 
 const voidElements = new Set([
   'area',
@@ -156,9 +157,14 @@ export class BuilderBlock extends React.Component<
     return stringToFunction(str, expression, this._errors, this._logs)
   }
 
+  get block() {
+    return blocksMap[this.props.block.id!] || this.props.block
+  }
+
   get styles() {
     // TODO: handle style bindings
-    const { block, size } = this.props
+    const { size } = this.props
+    const block = this.block
     const styles = []
     const startIndex = sizeNames.indexOf(size || 'large')
     if (block.responsiveStyles) {
@@ -187,7 +193,7 @@ export class BuilderBlock extends React.Component<
 
   get emotionCss() {
     let initialAnimationStepStyles: any
-    const { block } = this.props
+    const { block } = this
     if (Builder.isServer) {
       const animation = block.animations && block.animations[0]
       if (animation && animation.trigger !== 'hover') {
@@ -200,7 +206,7 @@ export class BuilderBlock extends React.Component<
     }
 
     const reversedNames = sizeNames.slice().reverse()
-    const self = this.props.block
+    const self = this.block
     const styles: any = {}
     if (self.responsiveStyles) {
       for (const size of reversedNames) {
@@ -241,7 +247,7 @@ export class BuilderBlock extends React.Component<
 
   get css() {
     // TODO: handle style bindings
-    const self = this.props.block
+    const self = this.block
 
     const baseStyles: Partial<CSSStyleDeclaration> = {
       ...(self.responsiveStyles && self.responsiveStyles.large)
@@ -317,7 +323,7 @@ export class BuilderBlock extends React.Component<
     return fn(
       this.privateState.state,
       undefined,
-      this.props.block,
+      this.block,
       builder,
       Device,
       this.privateState.update,
@@ -344,7 +350,7 @@ export class BuilderBlock extends React.Component<
           break
         }
         const { selection } = data
-        const id = this.props.block && this.props.block.id
+        const id = this.block && this.block.id
         if (id && Array.isArray(selection) && selection.indexOf(id) > -1) {
           setTimeout(() => {
             ;(window as any).$block = this
@@ -362,7 +368,7 @@ export class BuilderBlock extends React.Component<
         if (!(data && data.data)) {
           break
         }
-        const patches = data.data[this.props.block.id!]
+        const patches = data.data[this.block.id!]
         if (!patches) {
           return
         }
@@ -370,13 +376,15 @@ export class BuilderBlock extends React.Component<
         if (location.href.includes('builder.debug=true')) {
           this.eval('debugger')
         }
+        let newBlock = { ...this.block }
         for (const patch of patches) {
-          // TODO: soehow mark this.props.block as a new object,
+          // TODO: soehow mark this.block as a new object,
           // e.g. access it's parent hm. maybe do the listning mutations
           // on hte parent element not the child (or rather
           // send the message to the parent)
-          applyPatchWithMinimalMutationChain(this.props.block, patch)
+          applyPatchWithMinimalMutationChain(newBlock, patch)
         }
+        blocksMap[this.props.block.id!] = newBlock
         this.setState({ updates: this.state.updates + 1 })
 
         break
@@ -385,7 +393,7 @@ export class BuilderBlock extends React.Component<
   }
 
   componentDidMount() {
-    const { block } = this.props
+    const block = this.block
     const animations = block && block.animations
 
     if (Builder.isEditing) {
@@ -432,7 +440,7 @@ export class BuilderBlock extends React.Component<
           .filter((item: any) => item.trigger !== 'hover')
           .map((animation: any) => ({
             ...animation,
-            elementId: this.props.block.id
+            elementId: this.block.id
           }))
       )
     }
@@ -440,7 +448,8 @@ export class BuilderBlock extends React.Component<
 
   // <!-- Builder Blocks --> in comments hmm
   getElement(index = 0, state = this.privateState.state): React.ReactNode {
-    const { block, child, fieldName } = this.props
+    const { child, fieldName } = this.props
+    const block = this.block
     let TagName = (block.tagName || 'div').toLowerCase()
 
     if (TagName === 'template') {
@@ -554,7 +563,7 @@ export class BuilderBlock extends React.Component<
           return fn(
             useState,
             event,
-            this.props.block,
+            this.block,
             builder,
             Device,
             this.privateState.update,
@@ -718,7 +727,7 @@ export class BuilderBlock extends React.Component<
   }
 
   get id() {
-    const { block } = this.props
+    const { block } = this
     if (!block.id!.startsWith('builder')) {
       return 'builder-' + block.id
     }
@@ -726,7 +735,7 @@ export class BuilderBlock extends React.Component<
   }
 
   contents(state: BuilderBlockState) {
-    const { block } = this.props
+    const block = this.block
 
     // this.setState(state);
     this.privateState = state
