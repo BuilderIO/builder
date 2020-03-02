@@ -1,10 +1,12 @@
 import * as React from 'react';
 import { graphql } from 'gatsby';
 import { BuilderComponent } from '@builder.io/react';
-/**
- * Import all your custom components here If you're using any with builder.io,
- */
 import '@builder.io/widgets';
+/**
+ * CodeBlock is an example of a custom component that you can use in the builder.io editor
+ * https://www.builder.io/c/docs/custom-react-components
+ */
+import '../components/CodeBlock'
 
 
 interface PageTemplateProps {
