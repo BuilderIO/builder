@@ -6,7 +6,7 @@ import '@builder.io/widgets';
  * CodeBlock is an example of a custom component that you can use in the builder.io editor
  * https://www.builder.io/c/docs/custom-react-components
  */
-import '../components/CodeBlock'
+import '../components/Hero/Hero.builder'
 
 
 interface PageTemplateProps {
