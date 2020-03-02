@@ -4,6 +4,7 @@ import commonjs from 'rollup-plugin-commonjs';
 import resolve from 'rollup-plugin-node-resolve';
 import json from 'rollup-plugin-json';
 import alias from 'rollup-plugin-alias';
+import { terser } from 'rollup-plugin-terser';
 
 const basicOptions = {
   input: './index.ts',
@@ -26,8 +27,8 @@ const basicOptions = {
     json(),
     commonjs({
       namedExports: {
-        'node_modules/liquidjs/dist/liquid.js': ['Liquid', 'Context', 'Expression']
-      }
+        'node_modules/liquidjs/dist/liquid.js': ['Liquid', 'Context', 'Expression'],
+      },
     }),
     alias({
       liquidjs: join(__dirname, './node_modules/liquidjs/dist/liquid.js'),
@@ -53,12 +54,13 @@ const trackOptions = {
   input: './track/track.ts',
   output: [
     {
-      format: 'es',
-      file: 'js/track.js',
+      format: 'iife',
+      file: 'track.js',
       sourcemap: true,
     },
   ],
-  plugins: basicOptions.plugins.concat([resolve()]),
+  external: [],
+  plugins: basicOptions.plugins.concat([resolve(), terser()]),
 };
 
 const reactOptions = {
