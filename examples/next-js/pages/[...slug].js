@@ -1,4 +1,5 @@
 import React from 'react';
+import Head from 'next/head';
 import { builder, BuilderComponent } from '@builder.io/react';
 // Allow interactive widgets in the editor (importing registers the react components)
 import '@builder.io/widgets';
@@ -24,17 +25,23 @@ class CatchallPage extends React.Component {
   }
 
   render() {
+    const page = this.props.builderPage;
     return (
-      <div>
+      <>
         <Nav />
         <div>
-          {this.props.builderPage ? (
-            <BuilderComponent name="page" content={this.props.builderPage} />
+          {page ? (
+            <>
+              <Head>
+                <title>{page.data.title}</title>
+              </Head>
+              <BuilderComponent name="page" content={page} />
+            </>
           ) : (
             <div>Page not found!</div>
           )}
         </div>
-      </div>
+      </>
     );
   }
 }
