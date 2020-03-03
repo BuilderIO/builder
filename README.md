@@ -23,7 +23,9 @@ Builder.registerComponent(Hero, {
 &nbsp;&nbsp;inputs: [{ name: 'text', type: 'text' }]
 })
 &nbsp;
-export default () =&gt; &lt;BuilderComponent name="page" /&gt;
+export default () =&gt; (
+  &lt;BuilderComponent name="page" /&gt;
+)
 </pre>
     
 </td>
