@@ -19,7 +19,6 @@ const camelCaseToKebabCase = (str?: string) =>
 
 const Device = { desktop: 0, tablet: 1, mobile: 2 }
 
-const commonTags = new Set(['div', 'a', 'span', 'img'])
 const voidElements = new Set([
   'area',
   'base',
@@ -578,7 +577,9 @@ export class BuilderBlock extends React.Component<
 
     const finalOptions: { [key: string]: string } = {
       ...omit(options, ['class', 'component', 'attr']),
-      [commonTags.has(TagName) ? 'className' : 'class']:
+      [typeof TagName === 'string' && !TagName.includes('-')
+        ? 'className'
+        : 'class']:
         `builder-block ${this.id}${block.class ? ` ${block.class}` : ''}${
           block.component &&
           !(['Image', 'Video', 'Banner'].indexOf(componentName) > -1)
