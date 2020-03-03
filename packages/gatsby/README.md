@@ -11,6 +11,8 @@ Plugin for integrating [Builder.io](https://www.builder.io) to allow drag and dr
 
 ## How to use
 
+Make a free account over at [Builder.io](https://www.builder.io/) and grab your public API key from your [organization page](https://builder.io/account/organization) and:
+
 ```javascript
 // In your gatsby-config.js
 const path = require("path")
@@ -30,20 +32,7 @@ module.exports = {
   ],
 }
 ```
-
-## How to Query
-
-For an up-to-date complete examples check out the examples on [BuilderIO/examples/gatsby](https://github.com/BuilderIO/builder/tree/master/examples/gatsby)
-
-```graphql
-{
-  allBuilderModels {
-    myPageModel {
-      content
-    }
-  }
-}
-```
+Then start building pages in Builder.io, hit publish, and they will be incluced in your Gatsby site on each new build!
 
 ## Using your components in the editor
 
@@ -67,6 +56,20 @@ Builder.registerComponent(SimpleText, {
   inputs: [{ name: 'text', type: 'string' }],
 })
 
+```
+
+## How to Query
+
+For an up-to-date complete examples check out the examples on [BuilderIO/examples/gatsby](https://github.com/BuilderIO/builder/tree/master/examples/gatsby)
+
+```graphql
+{
+  allBuilderModels {
+    myPageModel {
+      content
+    }
+  }
+}
 ```
 
 ## Learn more
