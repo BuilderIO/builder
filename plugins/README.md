@@ -1,6 +1,6 @@
 # Builder.io plugins
 
-Extend the Builder.io editor funcionality! Plugins can provide everything from enhanced UIs, to integrations with otherp platforms and services
+Extend the Builder.io editor funcionality! Plugins can provide everything from enhanced UIs, to integrations with other platforms and services
 
 For an example plugin and docs on how to create and run one see our [Example plugin](example)
 
