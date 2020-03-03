@@ -13,6 +13,7 @@ import { omit } from './functions/omit.function';
 import serverOnlyRequire from './functions/server-only-require.function';
 
 export type Url = any;
+
 export const isReactNative = typeof navigator === 'object' && navigator.product === 'ReactNative';
 export const validEnvList = [
   'production',
