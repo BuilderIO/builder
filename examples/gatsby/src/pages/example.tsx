@@ -23,12 +23,12 @@ export default class ExamplePage extends React.Component<any> {
 // GraphQL API and our explorer
 export const pageQuery = graphql`
   query {
-    # custom "header" component model
+    # example custom "header" component model, if you have one
     header(limit: 1) {
       content
     }
-    # Manually grab the page content matching "/" (homepage) url
-    page(limit: 1, target: { urlPath: "/" }) {
+    # Manually grab the page content matching "/example"
+    page(limit: 1, target: { urlPath: "/example" }) {
       content
     }
   }
