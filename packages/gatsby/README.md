@@ -2,6 +2,9 @@
 
 Plugin for integrating [Builder.io](https://www.builder.io) to allow drag and drop page building with Gatsby. It puts the Builder.io schema under an `allBuilderModels` field of the Gatsby GraphQL query, If a templates map is passed as option, this plugin will create gatsby pages dynamically for each page entry in builder.io on the path specified.
 
+<img src="https://imgur.com/PJW3b4S.gif" alt="example" />
+
+
 ## Install
 
 `npm install @builder.io/gatsby`
@@ -41,3 +44,34 @@ For an up-to-date complete examples check out the examples on [BuilderIO/example
   }
 }
 ```
+
+## Using your components in the editor
+
+See this [design systems example](/examples/react-design-system) for lots of examples using your deisgn system + custom components
+
+👉**Tip: want to limit page building to only your components? Try [components only mode](https://builder.io/c/docs/guides/components-only-mode)**
+
+Register a component
+
+```tsx
+import { Builder } from '@builder.io/react';
+
+class SimpleText extends React.Component {
+  render() {
+    return <h1>{this.props.text}</h1>;
+  }
+}
+
+Builder.registerComponent(SimpleText, {
+  name: 'Simple Text',
+  inputs: [{ name: 'text', type: 'string' }],
+})
+
+```
+
+## Learn more
+
+- [Full gatsby + Builder.io example](examples/gatsby)
+- [Design system example](/examples/react-design-system)
+- [Official docs](https://www.builder.io/c/docs/getting-started)
+
