@@ -7,13 +7,16 @@ Drag and drop page building with your code components. Bring your [design system
 
 <table style="width:100%;">
   <tr>
-    <th>Source code</th>
+    <th width="50%">Source code</th>
     <th>Rendered code</th>
-  </tr>
+  </tr width="50%">
   <tr>
     <td width="50%">
 <pre lang="tsx">
-import { Builder, BuilderComponent } from '@builder.io/react'
+import { 
+  Builder, BuilderComponent 
+} from '@builder.io/react'
+
 import Hero from './hero'
 &nbsp;
 Builder.registerComponent(Hero, { 
