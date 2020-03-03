@@ -5,6 +5,39 @@ Drag and drop page building with your code components. Bring your [design system
 <br />
 <img src="https://imgur.com/HjBWIbv.gif" alt="Editor example" />
 
+<table style="width:100%;">
+  <tr>
+    <th>Source code</th>
+    <th>Rendered code</th>
+  </tr>
+  <tr>
+    <td width="50%">
+<pre lang="tsx">
+import { Builder, BuilderComponent } from '@builder.io/react'
+import Hero from './hero'
+&nbsp;
+Builder.registerComponent(Hero, { 
+&nbsp;&nbsp;inputs: [{ name: 'text', type: 'text' }]
+})
+&nbsp;
+export default () =&gt; &lt;BuilderComponent name="page" /&gt;
+</pre>
+    
+</td>
+    <td width="50%">
+<pre lang="html">
+&lt;BuilderComponent name="page"&gt;
+ &lt;Hero text="Summer trend report" /&gt;
+ &lt;Products category="mens" /&gt;
+&lt;/BuilderComponent&gt;
+</pre>
+    </td>
+  </tr>
+</table>
+
+
+
+
 ## How does it work?
 
 - Integrate the [Builder API or SDK](#supported-frameworks) to your site or app
