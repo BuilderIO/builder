@@ -7,8 +7,8 @@ Drag and drop page building with your code components. Bring your [design system
 
 <table style="width:100%;">
   <tr>
-    <th width="50%">Source code</th>
-    <th>Rendered code</th>
+    <td width="50%">Source code</td>
+    <td>Rendered code</td>
   </tr width="50%">
   <tr>
     <td width="50%">
@@ -30,8 +30,8 @@ export default () =&gt; &lt;BuilderComponent name="page" /&gt;
     <td width="50%">
 <pre lang="html">
 &lt;BuilderComponent name="page"&gt;
- &lt;Hero text="Summer trend report" /&gt;
- &lt;Products category="mens" /&gt;
+  &lt;Hero text="Summer trend report" /&gt;
+  &lt;Products category="mens" /&gt;
 &lt;/BuilderComponent&gt;
 </pre>
     </td>
