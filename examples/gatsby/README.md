@@ -16,7 +16,7 @@ See:
 ## 🚀 Quick start
 
 1.  **Sign up for Builder.io**
-    Then replace the demo API key in builder-config.js with your public API key, which you can find in [builder.io/account/organization](https://builder.io/account/organization)
+    Then replace the demo API key in gatsby-config.js with your public API key, which you can find in [builder.io/account/organization](https://builder.io/account/organization)
 
 2.  **Clone this demo.**
 
@@ -44,7 +44,7 @@ import { BuilderComponent } from '@builder.io/react';
 
 export default class ExamplePage extends React.Component<any> {
   render() {
-    const { header, page } = this.props.data;
+    const { header, page } = this.props.data.allBuilderModels;
     return (
       <div>
         {/* next line assumes you have a header model in builder.io, alternatively you use your own <Header /> component here */}
@@ -60,13 +60,15 @@ export default class ExamplePage extends React.Component<any> {
 // GraphQL API and our explorer
 export const pageQuery = graphql`
   query {
-    # (optional) custom "header" component model
-    header(limit: 1) {
-      content
-    }
-    # Manually grab the example content matching "/"
-    example(limit: 1, target: { urlPath: "/" }) {
-      content
+    allBuilderModels {
+      # (optional) custom "header" component model
+      header(limit: 1) {
+        content
+      }
+      # Manually grab the example content matching "/"
+      example(limit: 1, target: { urlPath: "/" }) {
+        content
+      }
     }
   }
 `;

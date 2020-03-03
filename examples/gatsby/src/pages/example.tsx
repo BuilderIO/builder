@@ -1,6 +1,9 @@
 import React from 'react';
 import { graphql } from 'gatsby';
-import { BuilderComponent } from '@builder.io/react';
+import { BuilderComponent, builder } from '@builder.io/react';
+
+// TODO: enter your public API key
+builder.init('jdGaMusrVpYgdcAnAtgn')
 
 /**
  * Example of rendering a page with Builder.io content and other content.
@@ -8,28 +11,33 @@ import { BuilderComponent } from '@builder.io/react';
  */
 export default class ExamplePage extends React.Component<any> {
   render() {
-    const { header, page } = this.props.data;
-    return (
+    const { header, page } = this.props.data.allBuilderModels;
+    return page[0] ? (
       <div>
-        <BuilderComponent name="header" content={header[0].content} />
+        {/* Optionally render a header from Builder.io, or render your <Header /> instead */}
+        <BuilderComponent name="header" content={header[0]?.content} />
         {/* Render other things in your code as you choose */}
-        <BuilderComponent name="page" content={page[0].content} />
+        <BuilderComponent name="page" content={page[0]?.content} />
       </div>
+    ) : (
+      'Page not found for this URL'
     );
   }
 }
 
 // See https://builder.io/c/docs/graphql-api for more info on our
 // GraphQL API and our explorer
-export const pageQuery = graphql`
+export const query = graphql`
   query {
-    # example custom "header" component model, if you have one
-    header(limit: 1) {
-      content
-    }
-    # Manually grab the page content matching "/example"
-    page(limit: 1, target: { urlPath: "/example" }) {
-      content
+    allBuilderModels {
+      # (optional) example custom "header" component model, if you have one
+      header(limit: 1) {
+        content
+      }
+      # Manually grab the page content matching "/example"
+      page(limit: 1, target: { urlPath: "/example" }) {
+        content
+      }
     }
   }
 `;
