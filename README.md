@@ -16,7 +16,7 @@ Drag and drop page building with your code components. Bring your [design system
 import { 
   Builder, BuilderComponent 
 } from '@builder.io/react'
-
+&nbsp;
 import Hero from './hero'
 &nbsp;
 Builder.registerComponent(Hero, { 
