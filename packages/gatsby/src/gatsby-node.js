@@ -112,7 +112,7 @@ const createPagesAsync = async (config, createPage, graphql, models, offsets) =>
       ${config.fieldName} {
         ${models
           .map(
-            (model, index) => `${model}(limit: ${config.limit}, offset: ${offsets[index]}, options: { cacheBust: true }) {
+            (model, index) => `${model}(limit: ${config.limit}, offset: ${offsets[index]}, options: { cachebust: true }) {
             content
           }`
           )

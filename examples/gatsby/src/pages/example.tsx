@@ -31,12 +31,12 @@ export const query = graphql`
   query {
     allBuilderModels {
       # (optional) example custom "header" component model, if you have one
-      header(limit: 1, options: { cacheBust: true }) {
+      header(limit: 1, options: { cachebust: true }) {
         content
       }
       # Manually grab the page content matching "/example"
       # For Gatsby content, we want to make sure to always get fresh (cachebusted) content
-      page(limit: 1, target: { urlPath: "/example" }, options: { cacheBust: true }) {
+      page(limit: 1, target: { urlPath: "/example" }, options: { cachebust: true }) {
         content
       }
     }

@@ -63,12 +63,12 @@ export const pageQuery = graphql`
   query {
     allBuilderModels {
       # (optional) custom "header" component model
-      header(limit: 1, options: { cacheBust: ture }) {
+      header(limit: 1, options: { cachebust: ture }) {
         content
       }
       # Manually grab the example content matching "/"
       # For Gatsby content, we always want to make sure we are getting fresh content
-      example(limit: 1, target: { urlPath: "/" }, options: { cacheBust: true }) {
+      example(limit: 1, target: { urlPath: "/" }, options: { cachebust: true }) {
         content
       }
     }
