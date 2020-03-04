@@ -669,11 +669,12 @@ export class BuilderPage extends React.Component<
   getFontCss(data: any) {
     // TODO: separate internal data from external
     return (
-      data.customFonts &&
-      data.customFonts.length &&
-      data.customFonts
-        .map((font: any) => this.getCssFromFont(font, data))
-        .join(' ')
+      (data.customFonts &&
+        data.customFonts.length &&
+        data.customFonts
+          .map((font: any) => this.getCssFromFont(font, data))
+          .join(' ')) ||
+      ''
     )
   }
 
