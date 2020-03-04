@@ -1577,7 +1577,9 @@ export class Builder {
     // TODO: do this on every request send?
     this.getOverridesFromQueryString();
 
-    const queryParams: ParamsMap = {};
+    const queryParams: ParamsMap = {
+      omit: 'meta.componentsUsed',
+    };
     const pageQueryParams: ParamsMap =
       typeof location !== 'undefined'
         ? QueryString.parseDeep(location.search.substr(1))
