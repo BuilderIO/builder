@@ -4,7 +4,8 @@ module.exports.defaultOptions = {
   // Arbitrary name for the remote schema Query type
   fieldName: `allBuilderModels`,
   typeName: `builder`,
-  limit: 30
+  limit: 30,
+  baseURL: `https://cdn.builder.io/api/v1/graphql`
 }
 
 module.exports.getGQLOptions = options => {
@@ -21,6 +22,6 @@ module.exports.getGQLOptions = options => {
     // Field under which the remote schema will be accessible. You'll use this in your Gatsby query
     fieldName: config.fieldName,
     // Url to query from 30
-    url: `https://cdn.builder.io/api/v1/graphql/${config.publicAPIKey}?cachebust=true`,
+    url: `${config.baseURL}/${config.publicAPIKey}?cachebust=true`,
   }
 }
