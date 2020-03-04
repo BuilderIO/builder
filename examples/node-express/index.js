@@ -5,25 +5,33 @@ let builderApiKey = 'bb209db71e62412dbe0114bdae18fd15';
 let app = express();
 
 app.get('/', (req, res) => {
-  res.send(template({ body: `<h2>Welcome to the home page!</h2><p>This page comes from our code.</p>` }));
+  res.send(
+    template({ body: `<h2>Welcome to the home page!</h2><p>This page comes from our code.</p>` })
+  );
 });
 app.get('/about', (req, res) => {
   res.send(
-    template({ body: `<h2>Welcome to the about page!</h2><p>This page comes from our code too.</p }>`)
+    template({
+      body: `<h2>Welcome to the about page!</h2><p>This page comes from our code too.</p }>`,
+    })
   );
 });
 
 // Put this route last, so you will catch anything not matched by your code
 app.get('*', async (req, res) => {
   let page = await axios
-    .get(`https://cdn.builder.io/api/v1/html/page?url=${encodeURI(req.url)}&apiKey=${builderApiKey}`)
+    .get(
+      `https://cdn.builder.io/api/v1/html/page?url=${encodeURI(req.url)}&apiKey=${builderApiKey}`
+    )
     .catch(handleError);
 
   if (page && page.data) {
     res.send(template({ body: '<h2>This page is from Builder!</h2>' + page.data.data.html }));
   } else {
     res.send(
-      template({ body: `<h2>No content found :(</h2><p>Have you published a Builder page for this URL?</p }>`)
+      template({
+        body: `<h2>No content found :(</h2><p>Have you published a Builder page for this URL?</p }>`,
+      })
     );
   }
 });
