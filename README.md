@@ -43,7 +43,7 @@ export default () =&gt; (
 
 ## Who uses Builder.io?
 
-<img src="https://i.imgur.com/3Cn8MDN.jpg" />
+<img src="https://i.imgur.com/HXKroZm.jpg" />
 
 
 ## How does it work?
