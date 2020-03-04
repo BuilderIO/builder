@@ -33,7 +33,7 @@ export default PageTemplate;
 export const pageQuery = graphql`
   query($path: String!) {
     allBuilderModels {
-      page(target: { urlPath: $path }, limit: 1) {
+      page(target: { urlPath: $path }, limit: 1, options: { cacheBust: true }) {
         content
       }
     }

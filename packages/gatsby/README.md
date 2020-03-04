@@ -65,7 +65,7 @@ For an up-to-date complete examples check out the examples on [BuilderIO/example
 ```graphql
 {
   allBuilderModels {
-    myPageModel {
+    myPageModel(options: { cacheBust: true }) {
       content
     }
   }
