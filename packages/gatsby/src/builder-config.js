@@ -21,6 +21,6 @@ module.exports.getGQLOptions = options => {
     // Field under which the remote schema will be accessible. You'll use this in your Gatsby query
     fieldName: config.fieldName,
     // Url to query from 30
-    url: `https://cdn.builder.io/api/v1/graphql/${config.publicAPIKey}`,
+    url: `https://cdn.builder.io/api/v1/graphql/${config.publicAPIKey}?cachebust=true`,
   }
 }
