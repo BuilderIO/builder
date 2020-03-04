@@ -42,7 +42,7 @@ export default () =&gt; (
 
 
 ## Who uses Builder.io?
-
+&nbsp;
 <img src="https://i.imgur.com/HXKroZm.jpg" />
 
 
