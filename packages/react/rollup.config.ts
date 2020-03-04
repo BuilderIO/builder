@@ -3,9 +3,8 @@ import commonjs from 'rollup-plugin-commonjs'
 import sourceMaps from 'rollup-plugin-sourcemaps'
 import typescript from 'rollup-plugin-typescript2'
 import replace from 'rollup-plugin-replace'
-import regexReplace from 'rollup-plugin-re'
 import json from 'rollup-plugin-json'
-import alias from 'rollup-plugin-alias'
+import { terser } from 'rollup-plugin-terser'
 
 import pkg from './package.json'
 
@@ -19,7 +18,7 @@ const externalDependencies = Object.keys(pkg.dependencies)
 // TODO: go back to using peerDependencies once fix rollup iife issue
 // .concat(Object.keys(pkg.peerDependencies || {}))
 
-const options = {
+const options = () => ({
   input: `src/${libraryName}.ts`,
   // Indicate here external modules you don't wanna include in your bundle (i.e.: 'lodash')
   external: ['vm2'],
@@ -71,19 +70,23 @@ const options = {
     // resolve({}),
     resolvePlugin,
 
+    terser({
+      mangle: true,
+      sourcemap: true,
+      compress: true,
+      include: /./
+    }),
     // Resolve source maps to the original source
     sourceMaps()
   ]
-}
+})
 
 export default [
+  // UMD browser build
   {
-    ...options,
+    ...options(),
     output: {
-      // TODO: pkg.browser
-      // file: pkg.browser,
       file: 'dist/builder-react.browser.js',
-      // file: pkg.main,
       name: 'BuilderReact',
       format: 'umd',
       sourcemap: true,
@@ -92,35 +95,25 @@ export default [
       }
     }
   },
-  // TODO: system for sharing across dynamically loaded
-  // react components
-  // {
-  //   ...options,
-  //   output: { file: './dist/system.js', format: 'system', name: '@builder.io/react', sourcemap: true },
-  //   external: ['react', '@builder.io/sdk'],
-  //   plugins: options.plugins.filter(plugin => plugin !== resolvePlugin).concat([
-  //     resolve({
-  //       // only: [/^\.{0,2}\//]
-  //     })
-  //   ])
-  // },
+  // Main ES and CJS builds
   {
-    ...options,
+    ...options(),
     output: [
       { file: pkg.module, format: 'es', sourcemap: true },
       { file: pkg.main, format: 'cjs', sourcemap: true }
     ],
     external: externalDependencies,
-    plugins: options.plugins
-      .filter(plugin => plugin !== resolvePlugin)
+    plugins: options()
+      .plugins.filter(plugin => plugin !== resolvePlugin)
       .concat([
         resolve({
           only: [/^\.{0,2}\//]
         })
       ])
   },
+  // Lite builds
   {
-    ...options,
+    ...options(),
     input: `src/${libraryName}-lite.ts`,
     output: [
       {
@@ -135,86 +128,17 @@ export default [
       }
     ],
     external: externalDependencies,
-    plugins: options.plugins
-      .filter(plugin => plugin !== resolvePlugin)
-      .concat([
-        resolve({
-          only: [/^\.{0,2}\//]
-        })
-      ])
+    plugins: options().plugins.map(plugin =>
+      plugin !== resolvePlugin
+        ? plugin
+        : resolve({
+            only: [/^\.{0,2}\//]
+          })
+    )
   },
-  // Server
+  // iife build
   {
-    ...options,
-    output: [
-      { file: './dist/server.esm.js', format: 'es', sourcemap: true },
-      { file: './dist/server.js', format: 'cjs', sourcemap: true }
-    ],
-    external: externalDependencies,
-    plugins: options.plugins
-      .filter(plugin => plugin !== resolvePlugin)
-      .concat([
-        resolve({
-          only: [/^\.{0,2}\//]
-        }),
-        regexReplace({
-          // ... do replace before commonjs
-          patterns: [
-            {
-              // regexp match with resolved path
-              // match: /formidable(\/|\\)lib/,
-              // string or regexp
-              test: /\/\/\/SERVERONLY/g,
-              replace: ''
-            }
-          ]
-        })
-      ])
-  },
-  // Preact
-  // TODO: may have to do react 15 modifications for support (no fragment/context?)
-  {
-    ...options,
-    output: [
-      { file: './dist/preact.esm.js', format: 'es', sourcemap: true },
-      { file: './dist/preact.js', format: 'cjs', sourcemap: true }
-    ],
-    external: externalDependencies,
-    plugins: options.plugins
-      .filter(plugin => plugin !== resolvePlugin)
-      .concat([
-        regexReplace({
-          // ... do replace before commonjs
-          patterns: [
-            {
-              // regexp match with resolved path
-              // match: /formidable(\/|\\)lib/,
-              // string or regexp
-              test: /require\(['"]react(-dom)?['"]\)/g,
-              replace: 'require("preact/compat/dist/compat.module.js")'
-            },
-            {
-              // regexp match with resolved path
-              // match: /formidable(\/|\\)lib/,
-              // string or regexp
-              test: /from ['"]react(-dom)?['"]/g,
-              replace: 'from "preact/compat/dist/compat.module.js"'
-            }
-          ]
-        }),
-        resolve({
-          // only: [/^\.{0,2}\//]
-        }),
-        alias({
-          react: 'preact/compat/dist/compat.module.js',
-          'react-dom': 'preact/compat/dist/compat.module.js',
-          'preact/hooks': 'preact/hooks/dist/hooks.module.js',
-          'preact/debug': 'preact/debug/dist/debug.module.js'
-        })
-      ])
-  },
-  {
-    ...options,
+    ...options(),
     output: {
       file: pkg.unpkg,
       format: 'iife',
