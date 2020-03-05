@@ -6,8 +6,31 @@ const HeroWithBuilderChildren = withChildren(HeroWithEditableChildren);
 
 Builder.registerComponent(HeroWithBuilderChildren, {
   name: 'Hero With Children',
-  // It's generally best to supply some default children 
-  // for easy and intuitive usage in the Builder.io UIs by 
+
+  inputs: [
+    {
+      name: 'image',
+      type: 'file',
+      allowedFileTypes: ['jpeg', 'jpg', 'png', 'svg'],
+      required: true,
+      defaultValue:
+        'https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F349738e6805b481ab6c50bda7e24445e',
+    },
+    {
+      name: 'height',
+      type: 'number',
+      defaultValue: 400,
+      required: true,
+    },
+    {
+      name: 'parallaxStrength',
+      type: 'number',
+      defaultValue: 400,
+    },
+  ],
+  
+  // It's generally best to supply some default children
+  // for easy and intuitive usage in the Builder.io UIs by
   // non-devs
   defaultChildren: [
     {
@@ -48,27 +71,6 @@ Builder.registerComponent(HeroWithBuilderChildren, {
           marginTop: '20px',
         },
       },
-    },
-  ],
-  inputs: [
-    {
-      name: 'image',
-      type: 'file',
-      allowedFileTypes: ['jpeg', 'jpg', 'png', 'svg'],
-      required: true,
-      defaultValue:
-        'https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F349738e6805b481ab6c50bda7e24445e',
-    },
-    {
-      name: 'height',
-      type: 'number',
-      defaultValue: 400,
-      required: true,
-    },
-    {
-      name: 'parallaxStrength',
-      type: 'number',
-      defaultValue: 400,
     },
   ],
 });
