@@ -18,7 +18,7 @@ const externalDependencies = Object.keys(pkg.dependencies)
 // TODO: go back to using peerDependencies once fix rollup iife issue
 // .concat(Object.keys(pkg.peerDependencies || {}))
 
-const options = () => ({
+const options = {
   input: `src/${libraryName}.ts`,
   // Indicate here external modules you don't wanna include in your bundle (i.e.: 'lodash')
   external: ['vm2'],
@@ -70,21 +70,17 @@ const options = () => ({
     // resolve({}),
     resolvePlugin,
 
-    terser({
-      mangle: true,
-      sourcemap: true,
-      compress: true,
-      include: /./
-    }),
     // Resolve source maps to the original source
-    sourceMaps()
+    sourceMaps(),
+
+    terser()
   ]
-})
+}
 
 export default [
   // UMD browser build
   {
-    ...options(),
+    ...options,
     output: {
       file: 'dist/builder-react.browser.js',
       name: 'BuilderReact',
@@ -97,14 +93,14 @@ export default [
   },
   // Main ES and CJS builds
   {
-    ...options(),
+    ...options,
     output: [
       { file: pkg.module, format: 'es', sourcemap: true },
       { file: pkg.main, format: 'cjs', sourcemap: true }
     ],
     external: externalDependencies,
-    plugins: options()
-      .plugins.filter(plugin => plugin !== resolvePlugin)
+    plugins: options.plugins
+      .filter(plugin => plugin !== resolvePlugin)
       .concat([
         resolve({
           only: [/^\.{0,2}\//]
@@ -113,7 +109,7 @@ export default [
   },
   // Lite builds
   {
-    ...options(),
+    ...options,
     input: `src/${libraryName}-lite.ts`,
     output: [
       {
@@ -128,7 +124,7 @@ export default [
       }
     ],
     external: externalDependencies,
-    plugins: options().plugins.map(plugin =>
+    plugins: options.plugins.map(plugin =>
       plugin !== resolvePlugin
         ? plugin
         : resolve({
@@ -138,7 +134,7 @@ export default [
   },
   // iife build
   {
-    ...options(),
+    ...options,
     output: {
       file: pkg.unpkg,
       format: 'iife',
