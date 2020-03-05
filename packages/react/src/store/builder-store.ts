@@ -14,4 +14,5 @@ export interface BuilderStore {
   content: any
   context: any
   update: (mutator: (state: any) => any) => any
+  renderLink?: (props: React.AnchorHTMLAttributes<any>) => React.ReactNode
 }
