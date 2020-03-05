@@ -29,7 +29,7 @@ Builder.registerComponent(HeroWithBuilderChildren, {
     },
   ],
 
-  // Optionally specify requirements that the direct children can only be certain types
+  // (Optionally) specify requirements that the direct children can only be certain types
   childRequirements: {
     message: 'You can only put Buttons, Text, or Headings in a Hero',
     query: {
