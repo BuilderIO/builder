@@ -33,7 +33,7 @@ Builder.registerComponent(HeroWithBuilderChildren, {
   childRequirements: {
     message: 'You can only put Buttons, Text, or Headings in a Hero',
     query: {
-      'component.name': { $or: ['Button', 'Text', 'Heading'] },
+      'component.name': { $in: ['Button', 'Text', 'Heading'] },
     },
   },
 

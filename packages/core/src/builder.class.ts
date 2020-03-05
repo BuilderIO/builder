@@ -276,7 +276,7 @@ export interface Component {
      * @example
      *  query: {
      *    // Child of this element must be a 'Button' or 'Text' component
-     *    'component.name': { $or: ['Button', 'Text'] }
+     *    'component.name': { $in: ['Button', 'Text'] }
      *  }
      */
     query?: any;
@@ -297,7 +297,7 @@ export interface Component {
      * @example
      *  query: {
      *    // Thils element must be somewhere inside either a 'Product box' or 'Collection' component
-     *    'component.name': { $or: ['Product Box', 'Collection'] }
+     *    'component.name': { $in: ['Product Box', 'Collection'] }
      *  }
      */
     query?: any;
