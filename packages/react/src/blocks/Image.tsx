@@ -5,8 +5,8 @@ import React from 'react'
 import { BuilderBlock as BuilderBlockComponent } from '../components/builder-block.component'
 import { BuilderElement, Builder } from '@builder.io/sdk'
 import { BuilderMetaContext } from '../store/builder-meta'
-import { withBuilder } from 'src/functions/with-builder'
-import { throttle } from 'src/functions/throttle'
+import { withBuilder } from '../functions/with-builder'
+import { throttle } from '../functions/throttle'
 
 const DEFAULT_ASPECT_RATIO = 0.7041
 

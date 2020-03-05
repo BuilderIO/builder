@@ -1,19 +1,12 @@
 {
   "name": "@builder.io/react",
-  "version": "1.1.9",
+  "version": "1.1.11-1",
   "description": "",
   "keywords": [],
   "main": "dist/builder-react.cjs.js",
   "unpkg": "dist/builder-react.unpkg.js",
   "module": "dist/builder-react.es5.js",
   "typings": "dist/types/src/builder-react.d.ts",
-  "files": [
-    "dist",
-    "index.js",
-    "15.js",
-    "server.js",
-    "preact.js"
-  ],
   "author": "Steve Sewell <steve@builder.io>",
   "repository": {
     "type": "git",
@@ -30,7 +23,7 @@
   "scripts": {
     "_unlink": "npm unlink *",
     "_install": "npm install",
-    "lint": "tslint -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
+    "lint": "tslint -t codeFrame '../**/*.ts' 'test/**/*.ts'",
     "prebuild": "rimraf dist",
     "build": "NODE_ENV=production tsc --module commonjs && rollup -c rollup.config.ts",
     "build:docs": "typedoc --out docs --target es6 --theme minimal --mode file src",

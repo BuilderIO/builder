@@ -1,1 +1,1 @@
-export * from './dist/types/src/builder-react'
+export * from './dist/types/src/builder-react-lite'

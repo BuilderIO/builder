@@ -25,9 +25,9 @@ import {
 } from '../store/builder-async-requests'
 import { Url } from 'url'
 import { debounceNextTick } from '../functions/debonce-next-tick'
-import { throttle } from 'src/functions/throttle'
-import { safeDynamicRequire } from 'src/functions/safe-dynamic-require'
-import { BuilderMetaContext } from 'src/store/builder-meta'
+import { throttle } from '../functions/throttle'
+import { safeDynamicRequire } from '../functions/safe-dynamic-require'
+import { BuilderMetaContext } from '../store/builder-meta'
 
 const size = (thing: object) => Object.keys(thing).length
 

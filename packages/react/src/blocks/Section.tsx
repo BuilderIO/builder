@@ -3,7 +3,7 @@ import { jsx } from '@emotion/core'
 import React from 'react'
 import { BuilderElement } from '@builder.io/sdk'
 import { BuilderBlock as BuilderBlockComponent } from '../components/builder-block.component'
-import { withBuilder } from 'src/functions/with-builder'
+import { withBuilder } from '../functions/with-builder'
 
 interface SectionProps {
   builderBlock?: BuilderElement

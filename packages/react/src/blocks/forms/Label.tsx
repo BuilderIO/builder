@@ -1,7 +1,7 @@
 import React from 'react'
 import { BuilderElement } from '@builder.io/sdk'
 import { BuilderBlockComponent } from '../../builder-react'
-import { withBuilder } from 'src/functions/with-builder'
+import { withBuilder } from '../../functions/with-builder'
 
 export interface LabelProps {
   attributes?: any

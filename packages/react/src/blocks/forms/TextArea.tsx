@@ -1,5 +1,5 @@
 import React from 'react'
-import { withBuilder } from 'src/functions/with-builder'
+import { withBuilder } from '../../functions/with-builder'
 
 export interface FormTextAreaProps {
   attributes?: any

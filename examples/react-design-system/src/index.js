@@ -1,23 +1,29 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import { BuilderComponent, builder, Builder } from '@builder.io/react';
+// import { BuilderComponent, builder, Builder } from '@builder.io/react/lite';
 import { makeStyles } from '@material-ui/core/styles';
 import './index.css';
-import './builder-settings';
+// import './builder-settings';
+
+
+  import { BuilderComponent, builder, Builder } from '@builder.io/react/lite';
+  import '@builder.io/react/dist/lib/src/blocks/Button';
+  import '@builder.io/react/dist/lib/src/blocks/Columns';
+
 
 // Be sure to import all of your components where you use <BuilderComponent /> so they are
 // bundled and accessable
-import './components/ProductsList/ProductsList.builder';
-import './components/Hero/Hero.builder';
-import './components/TripleColumns/TripleColumns.builder';
-import './components/DoubleColumns/DoubleColumns.builder';
-import './components/Review/Review.builder';
-import './components/ReviewsSlider/ReviewsSlider.builder';
-import './components/Button/Button.builder';
-import './components/Heading/Heading.builder';
-import './components/HeroWithChildren/HeroWithChildren.builder';
-import './components/DynamicColumns/DynamicColumns.builder';
-import './components/ProductsListWithServerSideData/ProductsListWithServerSideData.builder';
+// import './components/ProductsList/ProductsList.builder';
+// import './components/Hero/Hero.builder';
+// import './components/TripleColumns/TripleColumns.builder';
+// import './components/DoubleColumns/DoubleColumns.builder';
+// import './components/Review/Review.builder';
+// import './components/ReviewsSlider/ReviewsSlider.builder';
+// import './components/Button/Button.builder';
+// import './components/Heading/Heading.builder';
+// import './components/HeroWithChildren/HeroWithChildren.builder';
+// import './components/DynamicColumns/DynamicColumns.builder';
+// import './components/ProductsListWithServerSideData/ProductsListWithServerSideData.builder';
 
 // Add your public apiKey here
 const YOUR_KEY = 'YJIGb4i01jvw0SRdL5Bt';

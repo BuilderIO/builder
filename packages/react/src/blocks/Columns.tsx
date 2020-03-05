@@ -5,7 +5,7 @@ import React from 'react'
 import { BuilderElement } from '@builder.io/sdk'
 import { BuilderBlocks } from '../components/builder-blocks.component'
 import { builder } from '@builder.io/sdk'
-import { withBuilder } from 'src/functions/with-builder'
+import { withBuilder } from '../functions/with-builder'
 import { Link } from '../components/Link'
 
 const DEFAULT_ASPECT_RATIO = 0.7004048582995948

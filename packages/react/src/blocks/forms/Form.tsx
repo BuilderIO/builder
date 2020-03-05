@@ -7,7 +7,7 @@ import { BuilderBlocks } from '../../components/builder-blocks.component'
 import { BuilderStoreContext } from '../../store/builder-store'
 import { set } from '../../functions/set'
 import { get } from '../../functions/get'
-import { withBuilder } from 'src/functions/with-builder'
+import { withBuilder } from '../../functions/with-builder'
 
 export interface FormProps {
   attributes?: any

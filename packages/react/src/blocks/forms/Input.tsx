@@ -1,6 +1,6 @@
 import React from 'react'
 import { Builder } from '@builder.io/sdk'
-import { withBuilder } from 'src/functions/with-builder'
+import { withBuilder } from '../../functions/with-builder'
 
 // TODO: how do onchange...
 // TODO: actions all custom events and custom js gets

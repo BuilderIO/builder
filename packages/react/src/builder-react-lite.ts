@@ -10,6 +10,7 @@ import { BuilderPage } from './components/builder-page.component'
 export { BuilderStoreContext } from './store/builder-store'
 export { BuilderMetaContext } from './store/builder-meta'
 export { BuilderAsyncRequestsContext } from './store/builder-async-requests'
+export { withChildren } from './functions/with-children'
 
 export { BuilderPage }
 export { BuilderPage as BuilderComponent }

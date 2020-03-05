@@ -11,8 +11,8 @@ import {
   RequestOrPromise
 } from '../store/builder-async-requests'
 import { BuilderStoreContext } from '../store/builder-store'
-import { applyPatchWithMinimalMutationChain } from 'src/functions/apply-patch-with-mutation'
-import { blockToHtmlString } from 'src/functions/block-to-html-string'
+import { applyPatchWithMinimalMutationChain } from '../functions/apply-patch-with-mutation'
+import { blockToHtmlString } from '../functions/block-to-html-string'
 import { Link } from './Link'
 
 const camelCaseToKebabCase = (str?: string) =>

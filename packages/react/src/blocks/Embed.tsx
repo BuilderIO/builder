@@ -1,6 +1,6 @@
 import React from 'react'
 import { Builder } from '@builder.io/sdk'
-import { withBuilder } from 'src/functions/with-builder'
+import { withBuilder } from '../functions/with-builder'
 
 class EmbedComponent extends React.Component<any> {
   elementRef: HTMLElement | null = null

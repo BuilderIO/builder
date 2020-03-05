@@ -1,6 +1,6 @@
 import React from 'react'
 import { BuilderElement, Builder } from '@builder.io/sdk'
-import { withBuilder } from 'src/functions/with-builder'
+import { withBuilder } from '../functions/with-builder'
 
 interface Props {
   code: string

@@ -4,9 +4,9 @@ import React from 'react'
 import { BuilderPage } from '../components/builder-page.component'
 import { Builder, BuilderElement } from '@builder.io/sdk'
 import hash from 'hash-sum'
-import { NoWrap } from 'src/components/no-wrap'
-import { BuilderStoreContext } from 'src/store/builder-store'
-import { withBuilder } from 'src/functions/with-builder'
+import { NoWrap } from '../components/no-wrap'
+import { BuilderStoreContext } from '../store/builder-store'
+import { withBuilder } from '../functions/with-builder'
 
 const size = (thing: object) => Object.keys(thing).length
 

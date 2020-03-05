@@ -2,7 +2,7 @@
 import { jsx } from '@emotion/core'
 import React from 'react'
 
-import { withBuilder } from 'src/functions/with-builder'
+import { withBuilder } from '../functions/with-builder'
 
 const DEFAULT_ASPECT_RATIO = 0.7004048582995948
 

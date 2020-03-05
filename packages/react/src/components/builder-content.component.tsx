@@ -6,7 +6,7 @@ import {
   Builder
 } from '@builder.io/sdk'
 import { NoWrap } from './no-wrap'
-import { applyPatchWithMinimalMutationChain } from 'src/functions/apply-patch-with-mutation'
+import { applyPatchWithMinimalMutationChain } from '../functions/apply-patch-with-mutation'
 
 export interface BuilderContentProps<ContentType> {
   contentLoaded?: (content: ContentType) => void

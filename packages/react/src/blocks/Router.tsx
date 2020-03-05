@@ -4,7 +4,7 @@ import React from 'react'
 import { BuilderElement, builder, Builder } from '@builder.io/sdk'
 import { BuilderStoreContext } from '../store/builder-store'
 import { BuilderPage } from '../components/builder-page.component'
-import { withBuilder } from 'src/functions/with-builder'
+import { withBuilder } from '../functions/with-builder'
 
 export interface RouterProps {
   model?: string

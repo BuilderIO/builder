@@ -23,7 +23,7 @@ const options = {
   // Indicate here external modules you don't wanna include in your bundle (i.e.: 'lodash')
   external: ['vm2'],
   watch: {
-    include: 'src/**'
+    include: '../**'
   },
   plugins: [
     typescript({
