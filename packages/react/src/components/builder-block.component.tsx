@@ -451,7 +451,7 @@ export class BuilderBlock extends React.Component<
   getElement(index = 0, state = this.privateState.state): React.ReactNode {
     const { child, fieldName } = this.props
     const block = this.block
-    let TagName: string | typeof Link  = (block.tagName || 'div').toLowerCase()
+    let TagName: string | typeof Link = (block.tagName || 'div').toLowerCase()
 
     if (TagName === 'template') {
       const html = block.children
