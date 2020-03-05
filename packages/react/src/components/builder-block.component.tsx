@@ -13,6 +13,7 @@ import {
 import { BuilderStoreContext } from '../store/builder-store'
 import { applyPatchWithMinimalMutationChain } from 'src/functions/apply-patch-with-mutation'
 import { blockToHtmlString } from 'src/functions/block-to-html-string'
+import { Link } from './Link'
 
 const camelCaseToKebabCase = (str?: string) =>
   str ? str.replace(/([A-Z])/g, g => `-${g[0].toLowerCase()}`) : ''
@@ -450,7 +451,7 @@ export class BuilderBlock extends React.Component<
   getElement(index = 0, state = this.privateState.state): React.ReactNode {
     const { child, fieldName } = this.props
     const block = this.block
-    let TagName = (block.tagName || 'div').toLowerCase()
+    let TagName: string | typeof Link = (block.tagName || 'div').toLowerCase()
 
     if (TagName === 'template') {
       const html = block.children
@@ -640,6 +641,9 @@ export class BuilderBlock extends React.Component<
       TagName = 'a'
     }
 
+    if (TagName === 'a') {
+      TagName = Link
+    }
     // const css = this.css
 
     // const styleTag = css.trim() && (

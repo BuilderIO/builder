@@ -6,6 +6,7 @@ import { BuilderElement } from '@builder.io/sdk'
 import { BuilderBlocks } from '../components/builder-blocks.component'
 import { builder } from '@builder.io/sdk'
 import { withBuilder } from 'src/functions/with-builder'
+import { Link } from '../components/Link'
 
 const DEFAULT_ASPECT_RATIO = 0.7004048582995948
 
@@ -99,7 +100,7 @@ class ColumnsComponent extends React.Component<any> {
           }}
         >
           {columns.map((col, index) => {
-            const TagName = col.link ? 'a' : 'div'
+            const TagName = col.link ? Link : 'div'
 
             // TODO: pass size down in context
 

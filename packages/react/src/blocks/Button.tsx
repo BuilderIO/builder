@@ -1,5 +1,6 @@
 import React from 'react'
 import { withBuilder } from '../functions/with-builder'
+import { Link } from '../components/Link'
 
 export interface ButtonProps {
   attributes?: any
@@ -10,7 +11,7 @@ export interface ButtonProps {
 
 class ButtonComponent extends React.Component<ButtonProps> {
   render() {
-    const Tag = this.props.link ? 'a' : 'span'
+    const Tag = this.props.link ? Link : 'span'
     return (
       <Tag
         href={this.props.link}

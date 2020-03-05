@@ -104,6 +104,7 @@ export interface BuilderPageProps {
   apiKey?: string
   options?: GetContentOptions
   contentLoaded?: (data: any) => void
+  renderLink?: (props: React.AnchorHTMLAttributes<any>) => React.ReactNode
   contentError?: (error: any) => void
   content?: any
   location?: Location | Url
@@ -853,7 +854,8 @@ export class BuilderPage extends React.Component<
                                 ...this.state,
                                 rootState: this.rootState,
                                 state: this.data,
-                                content: fullData
+                                content: fullData,
+                                renderLink: this.props.renderLink
                               }}
                             >
                               <BuilderBlocks
