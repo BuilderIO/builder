@@ -250,9 +250,21 @@ export interface Component {
   class?: any;
   type?: 'angular' | 'webcomponent' | 'react' | 'vue';
   defaultStyles?: { [key: string]: string };
+  /**
+   * Turn on if your component can accept children. Be sure to use in combination with
+   * withChildren(YourComponent) like here 
+   * github.com/BuilderIO/builder/blob/master/examples/react-design-system/src/components/HeroWithChildren/HeroWithChildren.builder.js#L5
+   */
   canHaveChildren?: boolean;
   fragment?: boolean;
+  /**
+   * Do not wrap a component in a dom element. Be sure to use {...props.attributes} with this option
+   * like here github.com/BuilderIO/builder/blob/master/packages/react/src/blocks/forms/Input.tsx#L34
+   */
   noWrap?: boolean;
+  /**
+   * Default children
+   */
   defaultChildren?: BuilderElement[];
   defaults?: Partial<BuilderElement>;
   hooks?: { [key: string]: string | Function };
