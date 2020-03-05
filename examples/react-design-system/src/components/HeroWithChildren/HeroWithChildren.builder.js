@@ -28,7 +28,15 @@ Builder.registerComponent(HeroWithBuilderChildren, {
       defaultValue: 400,
     },
   ],
-  
+
+  // Optionally specify requirements that the direct children can only be certain types
+  childRequirements: {
+    message: 'You can only put Buttons, Text, or Headings in a Hero',
+    query: {
+      'component.name': { $or: ['Button', 'Text', 'Heading'] },
+    },
+  },
+
   // It's generally best to supply some default children
   // for easy and intuitive usage in the Builder.io UIs by
   // non-devs
