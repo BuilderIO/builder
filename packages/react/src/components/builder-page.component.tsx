@@ -1007,7 +1007,6 @@ export class BuilderPage extends React.Component<
   }
 
   onContentLoaded = (data: any) => {
-    console.log('content load', data)
     if (data && data.meta && data.meta.kind === 'page') {
       const future = new Date()
       future.setDate(future.getDate() + 30)
