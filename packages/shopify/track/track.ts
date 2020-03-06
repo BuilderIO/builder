@@ -44,7 +44,9 @@ if (!_window[TRACKED_KEY]) {
         const id = item.id;
         const cookieValue = builder.getCookie('builder.addToCart.' + id);
         if (cookieValue) {
+          // Remove the cookie by setting a cooke to a date in the past
           builder.setCookie('builder.addToCart.' + id, '', new Date(0));
+
           const [contentId, variationId] = cookieValue.split(',');
           builder.track('conversion', {
             contentId,
