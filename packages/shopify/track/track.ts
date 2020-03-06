@@ -49,7 +49,7 @@ if (!_window[TRACKED_KEY]) {
 
           const [contentId, variationId] = cookieValue.split(',');
 
-          // Send a cconversion event to Builder.io upon purchasing a product that was added to cart by a Builder.io page.
+          // Send a conversion event to Builder.io upon purchasing a product that was added to cart by a Builder.io page.
           // On the add to cart we set a cookie, and read it here to attribute conversions to specific content entries
           // and test variations. We include a couple more custom attributes for order value (`amount`) and some
           // metadata (the full shopify checkout object for this line item)
