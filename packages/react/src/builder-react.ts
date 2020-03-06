@@ -1,4 +1,5 @@
-import { version } from '../package.json'
+import './scripts/init-editing'
+
 import { builder, Builder } from '@builder.io/sdk'
 export { BuilderElement } from '@builder.io/sdk'
 
@@ -48,17 +49,3 @@ export { stringToFunction } from './functions/string-to-function'
 
 export { builder, Builder }
 export default builder
-
-if (typeof window !== 'undefined') {
-  window.parent?.postMessage(
-    {
-      type: 'builder.isReactSdk',
-      data: {
-        value: true,
-        supportsPatchUpdates: 'v2',
-        priorVersion: version
-      }
-    },
-    '*'
-  )
-}
