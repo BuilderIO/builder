@@ -86,7 +86,6 @@ export const collectionGrid = el({
 
                   // TODO: price_min, price_max, price_varies, other properties
                   // here https://help.shopify.com/en/themes/liquid/objects/product#product-price
-
                   return product;
                 }
 

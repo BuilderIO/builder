@@ -252,7 +252,7 @@ export interface Component {
   defaultStyles?: { [key: string]: string };
   /**
    * Turn on if your component can accept children. Be sure to use in combination with
-   * withChildren(YourComponent) like here 
+   * withChildren(YourComponent) like here
    * github.com/BuilderIO/builder/blob/master/examples/react-design-system/src/components/HeroWithChildren/HeroWithChildren.builder.js#L5
    */
   canHaveChildren?: boolean;
@@ -670,7 +670,7 @@ export class Builder {
   }
 
   get canTrack() {
-    return this.canTrack$.value && !this.browserTrackingDisabled;
+    return this.canTrack$.value;
   }
 
   set canTrack(canTrack) {
@@ -1351,7 +1351,8 @@ export class Builder {
         navigator.userAgent.trim() &&
         !navigator.userAgent.match(
           /bot|crawler|spider|robot|crawling|prerender|google|baidu|bing|msn|duckduckbot|teoma|slurp|yandex|phantom|headless|selenium|puppeteer/i
-        )
+        ) &&
+        !this.browserTrackingDisabled
     );
   }
 

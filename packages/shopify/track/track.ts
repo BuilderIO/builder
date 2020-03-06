@@ -41,7 +41,7 @@ if (!_window[TRACKED_KEY]) {
         amount: parseFloat(checkout.payment_due),
       });
       for (const item of checkout.line_items) {
-        const id = item.id;
+        const id = item.product_id;
         const cookieValue = builder.getCookie('builder.addToCart.' + id);
         if (cookieValue) {
           // Remove the cookie by setting a cooke to a date in the past
