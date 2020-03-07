@@ -1,7 +1,6 @@
 import { Builder } from '@builder.io/react';
 import { Review } from './Review';
-
-Builder.registerComponent(Review, {
+export const ReviewBuilderConfig = {
   name: 'Review',
   inputs: [
     {
@@ -29,4 +28,6 @@ Builder.registerComponent(Review, {
         'https://cdn.builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d',
     },
   ],
-});
+};
+
+Builder.registerComponent(Review, ReviewBuilderConfig);

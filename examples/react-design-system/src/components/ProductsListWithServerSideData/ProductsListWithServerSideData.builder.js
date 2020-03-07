@@ -15,7 +15,7 @@ Builder.registerComponent(ProductsListWithServerSideData, {
     {
       name: 'products',
       type: 'request',
-      // Hide this from the UIs 
+      // Hide this from the UIs
       hidden: true,
       defaultValue: {
         '@type': '@builder.io/core:Request',

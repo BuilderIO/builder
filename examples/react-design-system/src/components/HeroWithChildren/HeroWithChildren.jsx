@@ -17,16 +17,16 @@ const useStyles = makeStyles(() => ({
 
 /**
  * Hero component with dynamic children
- * 
+ *
  * See ./HeroWithChildren.builder.js for how to use, namely you will need to use
- * 
+ *
  *    withChildren(HeroWithEditableChildren)
- * 
+ *
  * to forward the Builder.io children to the component
- * 
+ *
  * Also, it is generally best to supply default children for eady editnig (aka when
- * this component is added in the Builder.io editor, have some example children that can be 
- * added by default). See `canHaveChildren` in ./HeroWithChildren.builder.js for an 
+ * this component is added in the Builder.io editor, have some example children that can be
+ * added by default). See `canHaveChildren` in ./HeroWithChildren.builder.js for an
  * example of this
  */
 export const HeroWithEditableChildren = props => {

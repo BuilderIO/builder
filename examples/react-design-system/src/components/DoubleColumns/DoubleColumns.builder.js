@@ -3,7 +3,8 @@ import { DoubleColumns } from './DoubleColumns';
 
 Builder.registerComponent(DoubleColumns, {
   name: 'Double Columns',
-  image: 'https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fd3fad4746b794e59a7bc6ba502ec4f44',
+  image:
+    'https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fd3fad4746b794e59a7bc6ba502ec4f44',
   inputs: [
     {
       name: 'sectionTitle',
