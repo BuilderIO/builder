@@ -19,7 +19,7 @@ const YOUR_KEY = 'YJIGb4i01jvw0SRdL5Bt';
 builder.init(YOUR_KEY);
 
 // Remove this to allow all built-in components to be used too
-const OVERRIDE_INSERT_MENU = true;
+const OVERRIDE_INSERT_MENU = false;
 
 if (OVERRIDE_INSERT_MENU) {
   // (optionally) use this to hide all default built-in components and fully manage

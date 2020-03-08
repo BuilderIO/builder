@@ -1,6 +1,6 @@
 import React from 'react';
 import { RenderOptions } from '@storybook/addons';
-import { useStorybookState } from '@storybook/api';
+import { useStorybookState, useStorybookApi } from '@storybook/api';
 import { config } from './config';
 import { AddonPanel } from '@storybook/components';
 
@@ -12,6 +12,8 @@ const style = {
 
 export const Tab = (props: RenderOptions) => {
   const state = useStorybookState();
+  const api = useStorybookApi()
+  requestAnimationFrame(() => api.toggleFullscreen(props.active))
   const storyId = state.storyId;
   React.useEffect(() => {
     const script = document.getElementById(config.addonId);
@@ -30,7 +32,7 @@ export const Tab = (props: RenderOptions) => {
         <builder-editor
           style={style}
           options={`{
-        "floatingLeftSidebar": true,
+        "floatingLeftSidebar": false,
         "rtlMode": false,
         "previewUrl":"${location.href.split('?')[0]}iframe.html?id=${storyId}"
         }`}
