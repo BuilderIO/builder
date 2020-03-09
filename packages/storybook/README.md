@@ -37,30 +37,19 @@ Builder.registerComponent(SimpleText, {
 
 ```
 
-Add a story for your component and make sure to include the `builderDecorator`
+in `.storybook/preview.js`
+Add `builderDecorator` as a global decorator for your storybook and pass `BuilderComponent` as a parameter 
 ```tsx
-// SimpleText.stories
-import React from 'react';
-import { SimpleText } from './SimpleText';
-import { builderDecorator } from '@builder.io/storybook';
-
-
-export default {
-  title: 'Simple Text',
-  component: SimpleText,
-  decorators: [builderDecorator],
-};
-
-export const DefaultSimpleText = () => <SimpleText text='this is a default text'/>;
-```
-
-Pass `BuilderComponent` as a parameter in `.storybook/preview.js`
-```tsx
-import { addParameters } from '@storybook/react';
+import { addParameters, addDecorator } from '@storybook/react';
 import { BuilderComponent } from '@builder.io/react';
+import { builderDecorator } from '@builder.io/storybook'
 // builder-settings is where you configure your builder instance: init with api key, add custom menus ..
 import '../src/builder-settings';
 
+// add global decorator
+addDecorator(builderDecorator)
+
+// pass preview component
 addParameters({
   builder: {
     component: BuilderComponent
