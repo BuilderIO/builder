@@ -6,7 +6,7 @@ import { AddonPanel } from '@storybook/components';
 
 const style = {
   display: 'block',
-  height: '90vh',
+  height: 'calc(100vh - 39px)',
   width: '100%',
 };
 
@@ -32,11 +32,10 @@ export const Tab = (props: RenderOptions) => {
         <builder-editor
           style={style}
           options={`{
-        "floatingLeftSidebar": false,
-        "rtlMode": false,
+            "storybookMode": true,
         "previewUrl":"${location.href.split('?')[0]}iframe.html?id=${storyId}"
         }`}
-        ></builder-editor>
+        />
       ) : (
         <span>No Builder is configured for this story</span>
       )}

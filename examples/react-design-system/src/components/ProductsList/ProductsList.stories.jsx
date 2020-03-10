@@ -1,9 +1,9 @@
 import React from 'react';
 import { ProductsList } from './ProductsList';
 import { ProductsListBuilderConfig } from './ProductsList.builder';
-import { transformConfigToProps } from '@builder.io/storybook';
+import { getDefaultProps } from '@builder.io/storybook';
 
-const props = transformConfigToProps(ProductsListBuilderConfig);
+const props = getDefaultProps(ProductsListBuilderConfig);
 
 export default {
   title: 'Products List',
