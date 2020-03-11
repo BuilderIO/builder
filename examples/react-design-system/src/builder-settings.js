@@ -36,7 +36,7 @@ Builder.register('insertMenu', {
     { name: 'Triple Columns' },
     { name: 'Dynamic Columns' },
   ],
-})
+});
 
 Builder.register('insertMenu', {
   name: 'Dynamic components',
@@ -74,7 +74,7 @@ Builder.register('insertMenu', {
       },
     },
   ],
-})
+});
 
 Builder.register('insertMenu', {
   name: 'Blocks',
@@ -112,4 +112,4 @@ Builder.register('insertMenu', {
       },
     },
   ],
-})
+});

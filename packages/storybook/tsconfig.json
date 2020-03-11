@@ -1,10 +1,10 @@
 {
   "compilerOptions": {
     "declaration": true,
+    "target": "es5",
     "lib": ["es2017", "dom"],
     "jsx": "react",
     "moduleResolution": "node",
-    // "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "downlevelIteration": true,
     "noUnusedLocals": true,

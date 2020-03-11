@@ -8,6 +8,11 @@ const props = getDefaultProps(ProductsListBuilderConfig);
 export default {
   title: 'Products List',
   component: ProductsList,
+  parameters: {
+    builder: {
+      config: ProductsListBuilderConfig,
+    },
+  },
 };
 
 export const DefaultProductsList = () => <ProductsList {...props}></ProductsList>;

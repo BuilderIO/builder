@@ -15,3 +15,35 @@ const getPropValue = (entry: any) => {
   // TODO: handle children
   return entry.defaultValue;
 };
+
+const responsiveStyles = {
+  large: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    position: 'relative',
+    flexShrink: '0',
+    boxSizing: 'border-box',
+    marginTop: '0px',
+  },
+};
+
+export const builderBlockFromConfig = (storyConfig: any) => {
+  const options = getDefaultProps(storyConfig);
+  return {
+    data: {
+      blocks: [
+        {
+          id: 'builder-id',
+          '@type': '@builder.io/sdk:Element',
+          '@version': 2,
+          component: {
+            ...storyConfig,
+            options,
+          },
+          responsiveStyles,
+        },
+      ],
+    },
+  };
+};

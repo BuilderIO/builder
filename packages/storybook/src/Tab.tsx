@@ -1,8 +1,6 @@
 import React from 'react';
-import { RenderOptions } from '@storybook/addons';
-import { useStorybookState, useStorybookApi } from '@storybook/api';
-import { config } from './config';
-import { AddonPanel } from '@storybook/components';
+import { useStorybookState } from '@storybook/api';
+import { builderBlockFromConfig } from './util';
 
 const style = {
   display: 'block',
@@ -10,35 +8,53 @@ const style = {
   width: '100%',
 };
 
-export const Tab = (props: RenderOptions) => {
-  const state = useStorybookState();
-  const api = useStorybookApi()
-  requestAnimationFrame(() => api.toggleFullscreen(props.active))
-  const storyId = state.storyId;
-  React.useEffect(() => {
-    const script = document.getElementById(config.addonId);
-    if (script) {
-      return;
-    }
-    const builderScript = document.createElement('script');
-    builderScript.src = 'https://cdn-qa.builder.io/js/editor';
-    builderScript.id = config.addonId;
-    document.body.appendChild(builderScript);
-  });
+interface TabEditorOptions {
+  api: any;
+  storybookState: any;
+}
 
-  return (
-    <AddonPanel {...props}>
-      {storyId ? (
-        <builder-editor
-          style={style}
-          options={`{
-            "storybookMode": true,
-        "previewUrl":"${location.href.split('?')[0]}iframe.html?id=${storyId}"
-        }`}
-        />
-      ) : (
-        <span>No Builder is configured for this story</span>
-      )}
-    </AddonPanel>
-  );
+class TabEditor extends React.Component<TabEditorOptions> {
+  editor: any;
+  blocks: any;
+
+  get storyId() {
+    return this.props.storybookState.storyId;
+  }
+
+  get currentParameter() {
+    return this.props.storybookState.storiesHash[this.storyId]?.parameters?.builder?.config;
+  }
+
+  componentDidMount() {
+    this.updateEditor();
+  }
+
+  componentDidUpdate() {
+    this.updateEditor();
+  }
+
+  updateEditor() {
+    this.editor = document.querySelector('builder-editor');
+    if (this.editor && this.currentParameter) {
+      this.editor.data = builderBlockFromConfig(this.currentParameter);
+    }
+  }
+
+  render() {
+    const option = JSON.stringify({
+      storybookMode: true,
+      previewUrl: `${location.href.split('?')[0]}iframe.html?id=${this.storyId}`,
+    });
+
+    return <builder-editor style={style} options={option} />;
+  }
+}
+
+const withState = (Component: typeof TabEditor) => {
+  return function WrappedComponent(props: Omit<TabEditorOptions, 'storybookState'>) {
+    const storybookState = useStorybookState();
+    return <Component {...props} storybookState={storybookState} />;
+  };
 };
+
+export default withState(TabEditor);
