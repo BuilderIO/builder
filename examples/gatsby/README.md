@@ -63,7 +63,7 @@ export const pageQuery = graphql`
   query {
     allBuilderModels {
       # (optional) custom "header" component model
-      header(limit: 1, options: { cachebust: ture }) {
+      header(limit: 1, options: { cachebust: true }) {
         content
       }
       # Manually grab the example content matching "/"
