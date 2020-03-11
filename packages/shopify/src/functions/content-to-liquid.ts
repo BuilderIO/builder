@@ -88,19 +88,16 @@ export const convertTemplateLiteralsToTags = (liquid: string, options: Options =
         '$2'
       );
 
+    latest = latest
+      // Sometimes we have to replace {{ .. }} bindings with {% ... %}
+      // For ease, swap directly inside, but we need to remove the surrounding tags
+      // when we see {{ {% ... %} }}
+      .replace(/{{\s*{%/g, '{%')
+      .replace(/%}\s*}}/g, '%}');
+
     if (options.convertShopifyBindings) {
+      // Fix this in the compiler
       latest = latest
-        // Sometimes we have to replace {{ .. }} bindings with {% ... %}
-        // For ease, swap directly inside, but we need to remove the surrounding tags
-        // when we see {{ {% ... %} }}
-        .replace(/{{\s*{%/g, '{%')
-        .replace(/%}\s*}}/g, '%}')
-
-        // .replace(/{{[^}]?+([!=]=)[^}+]?}}/g, (match, group) => {
-        //   return match;
-        // })
-
-        // Fix this in the compiler
         .replace(/\| img_url;\s*/g, `| img_url: `)
 
         // TODO: put into transforms
