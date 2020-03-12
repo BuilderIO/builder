@@ -137,6 +137,10 @@ class FormComponent extends React.Component<FormProps> {
 
                   let contentType = this.props.contentType
 
+                  if (this.props.sendSubmissionsTo === 'email') {
+                    contentType = 'multipart/form-data'
+                  }
+
                   Array.from(formPairs).forEach(({ value }) => {
                     if (
                       value instanceof File ||
@@ -184,13 +188,18 @@ class FormComponent extends React.Component<FormProps> {
                     state: 'sending'
                   })
 
+                  const formUrl = `${
+                    builder.env === 'dev'
+                      ? 'http://localhost:5000'
+                      : 'https://builder.io'
+                  }/api/v1/form-submit?apiKey=${builder.apiKey}&to=${btoa(
+                    this.props.sendSubmissionsToEmail || ''
+                  )}&name=${encodeURIComponent(this.props.name || '')}`
+
                   fetch(
-                    this.props.action ||
-                      `https://builder.io/api/v1/form-submit?apiKey=${
-                        builder.apiKey
-                      }&to=${btoa(
-                        this.props.sendSubmissionsToEmail || ''
-                      )}&name=${encodeURIComponent(this.props.name || '')}`,
+                    this.props.sendSubmissionsTo === 'email'
+                      ? formUrl
+                      : this.props.action!, // TODO: throw error if no action URL
                     {
                       body,
                       headers,
