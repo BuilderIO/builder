@@ -28,13 +28,20 @@ const responsiveStyles = {
   },
 };
 
+function uuidv4() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}
+
 export const builderBlockFromConfig = (storyConfig: any) => {
   const options = getDefaultProps(storyConfig);
   return {
     data: {
       blocks: [
         {
-          id: 'builder-id',
+          id: `builder-${uuidv4()}`,
           '@type': '@builder.io/sdk:Element',
           '@version': 2,
           component: {

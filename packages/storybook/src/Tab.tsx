@@ -25,6 +25,10 @@ class TabEditor extends React.Component<TabEditorOptions> {
     return this.props.storybookState.storiesHash[this.storyId]?.parameters?.builder?.config;
   }
 
+  get isDev() {
+    return this.props.storybookState.storiesHash[this.storyId]?.parameters?.builder?.isDev;
+  }
+
   componentDidMount() {
     this.updateEditor();
   }
@@ -41,12 +45,19 @@ class TabEditor extends React.Component<TabEditorOptions> {
   }
 
   render() {
-    const option = JSON.stringify({
+    const options = JSON.stringify({
       storybookMode: true,
+      knobsMode: Boolean(this.currentParameter),
       previewUrl: `${location.href.split('?')[0]}iframe.html?id=${this.storyId}`,
     });
 
-    return <builder-editor style={style} options={option} />;
+    const props = {
+      style,
+      options,
+      env: this.isDev ? 'dev' : '',
+    };
+
+    return <builder-editor {...props} />;
   }
 }
 

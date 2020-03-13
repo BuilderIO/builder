@@ -7,6 +7,19 @@ export const builderDecorator = makeDecorator({
   parameterName: config.addonId,
   wrapper: (storyFn, context, { parameters }) => {
     const isPreview = window.location.search.includes(`builder`);
-    return <>{isPreview ? <parameters.component /> : storyFn(context)}</>;
+    let isPreviewInStorybook = true;
+    let props = {};
+
+    try {
+      isPreviewInStorybook = Boolean(window.parent.parent.origin);
+    } catch {
+      isPreviewInStorybook = false;
+    }
+
+    if (!isPreviewInStorybook) {
+      props = { name: 'storybook' };
+    }
+
+    return <>{isPreview ? <parameters.component {...props} /> : storyFn(context)}</>;
   },
 });

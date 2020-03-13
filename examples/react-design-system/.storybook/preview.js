@@ -8,5 +8,7 @@ addDecorator(builderDecorator)
 addParameters({
   builder: {
     component: BuilderComponent,
+    // for local development
+    // isDev: true,
   },
 });
