@@ -1,4 +1,21 @@
-import { Builder } from '@builder.io/react';
+import { Builder, builder } from '@builder.io/react';
+// Be sure to import all of your components where you use <BuilderComponent /> so they are
+// bundled and accessible
+import './components/ProductsList/ProductsList.builder';
+import './components/Hero/Hero.builder';
+import './components/TripleColumns/TripleColumns.builder';
+import './components/DoubleColumns/DoubleColumns.builder';
+import './components/Review/Review.builder';
+import './components/ReviewsSlider/ReviewsSlider.builder';
+import './components/Button/Button.builder';
+import './components/Heading/Heading.builder';
+import './components/HeroWithChildren/HeroWithChildren.builder';
+import './components/DynamicColumns/DynamicColumns.builder';
+import './components/ProductsListWithServerSideData/ProductsListWithServerSideData.builder';
+
+// Add your public apiKey here
+const YOUR_KEY = 'YJIGb4i01jvw0SRdL5Bt';
+builder.init(YOUR_KEY);
 
 // Remove this to allow all built-in components to be used too
 const OVERRIDE_INSERT_MENU = false;
@@ -20,6 +37,7 @@ Builder.register('insertMenu', {
     { name: 'Dynamic Columns' },
   ],
 });
+
 Builder.register('insertMenu', {
   name: 'Dynamic components',
   items: [
@@ -57,6 +75,7 @@ Builder.register('insertMenu', {
     },
   ],
 });
+
 Builder.register('insertMenu', {
   name: 'Blocks',
   items: [

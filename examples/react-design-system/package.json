@@ -20,6 +20,7 @@
   "main": "src/index.js",
   "dependencies": {
     "@builder.io/react": "^1.1.11-1",
+    "@builder.io/storybook": "file:../../packages/storybook",
     "@material-ui/core": "^4.9.2",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.42",
@@ -35,13 +36,20 @@
     "slick-carousel": "^1.8.1"
   },
   "devDependencies": {
+    "@storybook/addon-actions": "^5.3.14",
+    "@storybook/addon-links": "^5.3.14",
+    "@storybook/addons": "^5.3.14",
+    "@storybook/preset-create-react-app": "^1.5.2",
+    "@storybook/react": "^5.3.14",
     "typescript": "3.3.3"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "storybook": "start-storybook -p 9009 -s public",
+    "build-storybook": "build-storybook -s public"
   },
   "browserslist": [
     ">0.2%",

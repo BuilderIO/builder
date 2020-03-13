@@ -1,7 +1,7 @@
-import { Builder } from '@builder.io/react';
 import { Hero } from './Hero';
+import { Builder } from '@builder.io/react';
 
-Builder.registerComponent(Hero, {
+export const HeroBuilderConfig = {
   name: 'Hero',
   // Optionally give a custom icon (image url - ideally a black on transparent bg svg or png)
   image:
@@ -48,4 +48,6 @@ Builder.registerComponent(Hero, {
       defaultValue: 400,
     },
   ],
-});
+};
+
+Builder.registerComponent(Hero, HeroBuilderConfig);

@@ -1,30 +1,11 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import { BuilderComponent, builder, Builder } from '@builder.io/react/lite';
+import { BuilderComponent, Builder } from '@builder.io/react/lite';
 import { makeStyles } from '@material-ui/core/styles';
 import './index.css';
 import './builder-settings';
 
-// Be sure to import all of your components where you use <BuilderComponent /> so they are
-// bundled and accessable
-import './components/ProductsList/ProductsList.builder';
-import './components/Hero/Hero.builder';
-import './components/TripleColumns/TripleColumns.builder';
-import './components/DoubleColumns/DoubleColumns.builder';
-import './components/Review/Review.builder';
-import './components/ReviewsSlider/ReviewsSlider.builder';
-import './components/Button/Button.builder';
-import './components/Heading/Heading.builder';
-import './components/HeroWithChildren/HeroWithChildren.builder';
-import './components/DynamicColumns/DynamicColumns.builder';
-import './components/ProductsListWithServerSideData/ProductsListWithServerSideData.builder';
-
-// Add your public apiKey here
-const YOUR_KEY = 'YJIGb4i01jvw0SRdL5Bt';
-
-builder.init(YOUR_KEY);
-
-const App = props => {
+const App = () => {
   const [notFound, setNotFound] = useState(false);
   const classes = useStyles();
 

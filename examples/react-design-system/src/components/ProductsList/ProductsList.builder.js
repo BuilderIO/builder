@@ -1,7 +1,6 @@
 import { Builder } from '@builder.io/react';
 import { ProductsList } from './ProductsList';
-
-Builder.registerComponent(ProductsList, {
+export const ProductsListBuilderConfig = {
   name: 'Products List',
   inputs: [
     {
@@ -45,4 +44,6 @@ Builder.registerComponent(ProductsList, {
       enum: ['Small', 'Medium', 'Large'],
     },
   ],
-});
+};
+
+Builder.registerComponent(ProductsList, ProductsListBuilderConfig);
