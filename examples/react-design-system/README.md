@@ -1,12 +1,19 @@
-## Builder.io example using a strict custom design system in React
+## Builder.io custom design system example with React and storybook
 
-In this example we show how to integrate react components with [Builder.io](https://builder.io). This is useful when you want to add the ability for your team to utilize custom components on the pages you build using the Builder editor, or even want to make it so people on your team can only build and edit your site's pages using your custom components. 
+In this example we show how to integrate react components with [Builder.io](https://builder.io). This is useful when you want to add the ability for your team to utilize custom components on the pages you build using the Builder editor, or even want to make it so people on your team can only build and edit your site's pages using your custom components.
 
 The way it works is by utilizing Builder's [preview url feature](https://builder.io/c/docs/guides/preview-url). When you set the preview URL in the Builder editor to point to your site, Builder reads the custom components and settings you specify in your source code via the Builder React SDK and incorporates them into the Builder editor. 
 
 The source code for the custom components used in this demo are [here](src/components), and you can see how they are registered with Builder by looking at the files that end in `*.builder.js` ([this is an example](https://github.com/BuilderIO/builder/blob/master/examples/react-design-system/src/components/ProductsList/ProductsList.builder.js)). The logic for adding components to the Builder editor menu can be found [here](https://github.com/BuilderIO/builder/blob/master/examples/react-design-system/src/builder-settings.js)
 
 <img src="https://imgur.com/PJW3b4S.gif" alt="example" />
+
+We also show how to intergrate Builder.io using [@builder.io/storybook](https://github.com/builderio/builder/tree/master/packages/storybook) within your storybook to give your users a playground where they can drag and drop your custom components and prototype something quick.
+
+[Storybook Demo](https://builder-storybook.firebaseapp.com/)
+
+<img src="https://user-images.githubusercontent.com/5093430/76154244-ebbe6480-608d-11ea-9dc9-08a59eda220e.gif" alt="storybook example" />
+
 
 👉**Tip: want to limit page building to only your components? Try [components only mode](https://builder.io/c/docs/guides/components-only-mode)**
 
@@ -20,7 +27,15 @@ The source code for the custom components used in this demo are [here](src/compo
 git clone https://github.com/BuilderIO/builder.git
 cd examples/react-design-system
 npm install
-npm start
+```
+To Run storybook
+```
+npm run storybook
+```
+
+To run the app
+```
+npm run start
 ```
 
 - Now that you have the development server running on localhost, update the preview URL of the Builder.io entry you created to : `http://localhost:3000/home`

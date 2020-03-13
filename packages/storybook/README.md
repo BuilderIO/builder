@@ -58,11 +58,10 @@ addParameters({
 
 ```
 
-### Mixed Content errors
-Our embedded editor is on https and it'll try to load your current setup from your localhost, which will be blocked by the browser when serving from http, you can fix this by serving storybook on https (ie. `start-storybook -p 9009 -s public --https --ssl-cert [path-to.crt] -ssl-key [path-to.key]`)
+### Mixed Content errors when hosting on insecure http
+Our embedded editor is on https and it'll try to load your current setup from your localhost, which when served on `http` will be blocked by the browser, you can fix this by serving storybook on https (ie. `start-storybook -p 9009 -s public --https --ssl-cert [path-to.crt] -ssl-key [path-to.key]`)
 
 Or As a workaround, on Chrome you can allow insecure content on localhost, by toggling the `insecure content` option here [chrome://settings/content/siteDetails?site=http%3A%2F%2Flocalhost%3A9009](chrome://settings/content/siteDetails?site=http%3A%2F%2Flocalhost%3A9009)
-
 
 
 ## Learn more

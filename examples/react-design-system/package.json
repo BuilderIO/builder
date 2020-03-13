@@ -20,7 +20,6 @@
   "main": "src/index.js",
   "dependencies": {
     "@builder.io/react": "^1.1.11-1",
-    "@builder.io/storybook": "0.0.1",
     "@material-ui/core": "^4.9.2",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.42",
@@ -36,6 +35,7 @@
     "slick-carousel": "^1.8.1"
   },
   "devDependencies": {
+    "@builder.io/storybook": "0.0.1",
     "@storybook/addon-actions": "^5.3.14",
     "@storybook/addon-links": "^5.3.14",
     "@storybook/addons": "^5.3.14",
