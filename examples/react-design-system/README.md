@@ -1,4 +1,4 @@
-## Builder.io example using a strict custom design system in React and integrating builder.io with storybook
+## Builder.io custom design system example with React and storybook
 
 In this example we show how to integrate react components with [Builder.io](https://builder.io). This is useful when you want to add the ability for your team to utilize custom components on the pages you build using the Builder editor, or even want to make it so people on your team can only build and edit your site's pages using your custom components.
 
@@ -8,7 +8,7 @@ The source code for the custom components used in this demo are [here](src/compo
 
 <img src="https://imgur.com/PJW3b4S.gif" alt="example" />
 
-We also show how intergrate Builder.io using [@builder.io/storybook](https://github.com/builderio/builder/tree/master/packages/storybook) within your storybook to give your users a playground where they can drag and drop your custom components and prototype something quick.
+We also show how to intergrate Builder.io using [@builder.io/storybook](https://github.com/builderio/builder/tree/master/packages/storybook) within your storybook to give your users a playground where they can drag and drop your custom components and prototype something quick.
 
 [Storybook Demo](https://builder-storybook.firebaseapp.com/)
 

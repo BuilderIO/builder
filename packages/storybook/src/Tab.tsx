@@ -25,8 +25,8 @@ class TabEditor extends React.Component<TabEditorOptions> {
     return this.props.storybookState.storiesHash[this.storyId]?.parameters?.builder?.config;
   }
 
-  get isDev() {
-    return this.props.storybookState.storiesHash[this.storyId]?.parameters?.builder?.isDev;
+  get env() {
+    return this.props.storybookState.storiesHash[this.storyId]?.parameters?.builder?.env;
   }
 
   componentDidMount() {
@@ -54,7 +54,7 @@ class TabEditor extends React.Component<TabEditorOptions> {
     const props = {
       style,
       options,
-      env: this.isDev ? 'dev' : '',
+      ...(this.env && {env: this.env})
     };
 
     return <builder-editor {...props} />;
