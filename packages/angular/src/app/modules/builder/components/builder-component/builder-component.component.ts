@@ -99,40 +99,7 @@ export class BuilderComponentComponent implements OnDestroy, OnInit {
     private elementRef: ElementRef,
     private builderService: BuilderService,
     @Optional() private router?: Router
-  ) {
-    if (this.router && this.reloadOnRoute) {
-      // TODO: should the inner function return reloadOnRoute?
-      this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    }
-
-    if (Builder.isBrowser) {
-      if (this.router) {
-        this.subscriptions.add(
-          this.router.events.subscribe(event => {
-            if (event instanceof NavigationEnd) {
-              if (this.reloadOnRoute) {
-                // Force reload component
-                this.visible.next(false);
-                Builder.nextTick(() => {
-                  this.visible.next(true);
-                });
-              }
-            }
-          })
-        );
-      }
-      this.subscriptions.add(
-        this.load.subscribe(async (value: any) => {
-          // TODO: this may run constantly when editing - check on this, not
-          // end of world but not ideal for perf
-          this.viewContainer.detach();
-          if (Builder.isEditing || (value && value.data && this.hydrate !== false)) {
-            await this.ensureWcLoadedAndUpdate();
-          }
-        })
-      );
-    }
-  }
+  ) {}
 
   async ensureWCScriptLoaded() {
     const SCRIPT_ID = 'builder-wc-script';
@@ -183,6 +150,39 @@ export class BuilderComponentComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit() {
+    if (this.router && this.reloadOnRoute) {
+      // TODO: should the inner function return reloadOnRoute?
+      this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    }
+
+    if (Builder.isBrowser) {
+      if (this.router) {
+        this.subscriptions.add(
+          this.router.events.subscribe(event => {
+            if (event instanceof NavigationEnd) {
+              if (this.reloadOnRoute) {
+                // Force reload component
+                this.visible.next(false);
+                Builder.nextTick(() => {
+                  this.visible.next(true);
+                });
+              }
+            }
+          })
+        );
+      }
+      this.subscriptions.add(
+        this.load.subscribe(async (value: any) => {
+          // TODO: this may run constantly when editing - check on this, not
+          // end of world but not ideal for perf
+          this.viewContainer.detach();
+          if (Builder.isEditing || (value && value.data && this.hydrate !== false)) {
+            await this.ensureWcLoadedAndUpdate();
+          }
+        })
+      );
+    }
+
     if (!this.prerender) {
       this.ensureWcLoadedAndUpdate();
     }
