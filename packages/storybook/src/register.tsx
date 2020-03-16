@@ -1,6 +1,5 @@
 import React from 'react';
 import { addons, types } from '@storybook/addons';
-import { AddonPanel } from '@storybook/components';
 import { config } from './config';
 import Tab from './Tab';
 
@@ -18,10 +17,10 @@ addons.register(config.addonId, api => {
     title: config.title,
     route: route => `/builder/${route.storyId}`,
     match: match => match.viewMode === config.addonId,
-    render: props => (
-      <AddonPanel {...props}>
+    render: ({ active, key }) => (
+      <div hidden={!active} style={{ transform: 'translateX(0px)' }} key={key}>
         <Tab api={api} />
-      </AddonPanel>
+      </div>
     ),
     paramKey: config.addonId,
   });
