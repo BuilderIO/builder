@@ -1,12 +1,16 @@
 import React from 'react';
-import { makeDecorator } from '@storybook/addons';
+import { makeDecorator, addons } from '@storybook/addons';
 import { config } from './config';
+import { NAVIGATE_URL } from '@storybook/core-events';
+
+export const navigate = (url: string) => addons.getChannel().emit(NAVIGATE_URL, url);
 
 export const builderDecorator = makeDecorator({
   name: 'builderDecortator',
   parameterName: config.addonId,
   wrapper: (storyFn, context, { parameters }) => {
     const isPreview = window.location.search.includes(`builder`);
+
     let isPreviewInStorybook = true;
     let props = {};
 
@@ -20,6 +24,10 @@ export const builderDecorator = makeDecorator({
       props = { name: 'storybook' };
     }
 
-    return <>{isPreview ? <parameters.component {...props} /> : storyFn(context)}</>;
+    return (
+      <div onDoubleClick={() => !isPreview && navigate(`?path=/${config.addonId}/${context.id}`)}>
+        {isPreview ? <parameters.component {...props} /> : storyFn(context)}
+      </div>
+    );
   },
 });

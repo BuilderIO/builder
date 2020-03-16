@@ -9,11 +9,13 @@ export const getDefaultProps = (config: { inputs: any[] }) => {
 };
 
 const getPropValue = (entry: any) => {
-  if (entry.type === 'list') {
+  if (entry.type === 'list' && !entry.defaultValue) {
     return entry.subFields.map((config: any) => getDefaultProps({ inputs: [config] }));
+  } else if (entry.type === 'list') {
+    return entry.defaultValue.map((val: any, index: number) => ({...val, key: val.key || index}));
   }
+  return entry.defaultValue
   // TODO: handle children
-  return entry.defaultValue;
 };
 
 const responsiveStyles = {

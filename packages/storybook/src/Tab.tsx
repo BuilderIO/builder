@@ -1,5 +1,5 @@
 import React from 'react';
-import { useStorybookState } from '@storybook/api';
+import { useStorybookState, API } from '@storybook/api';
 import { builderBlockFromConfig } from './util';
 
 const style = {
@@ -9,7 +9,7 @@ const style = {
 };
 
 interface TabEditorOptions {
-  api: any;
+  api: API;
   storybookState: any;
 }
 
@@ -45,16 +45,22 @@ class TabEditor extends React.Component<TabEditorOptions> {
   }
 
   render() {
+
+    if (!this.props.storybookState.storiesConfigured) {
+      // configurations are yet to populate
+      return <div>...loading</div>
+    }
+
     const options = JSON.stringify({
       storybookMode: true,
-      knobsMode: Boolean(this.currentParameter),
+      knobsMode: true,
       previewUrl: `${location.href.split('?')[0]}iframe.html?id=${this.storyId}`,
     });
 
     const props = {
       style,
       options,
-      ...(this.env && {env: this.env})
+      ...(this.env && { env: this.env }),
     };
 
     return <builder-editor {...props} />;
