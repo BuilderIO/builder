@@ -7,34 +7,37 @@ Drag and drop page building with your code components. Bring your [design system
 
 <table style="width:100%;">
   <tr>
-    <td width="50%">Source code</td>
-    <td>Rendered code</td>
+    <td width="50%">Register components</td>
+    <td>Rendered your visually created pages</td>
   </tr width="50%">
   <tr>
     <td width="50%">
 <pre lang="tsx">
-import { 
-  Builder, BuilderComponent 
-} from '@builder.io/react'
+import { Builder } from '@builder.io/react'
 &nbsp;
-import Hero from './hero'
-&nbsp;
-Builder.registerComponent(Hero, { 
-&nbsp;&nbsp;inputs: [{ name: 'text', type: 'text' }]
-})
-&nbsp;
-export default () =&gt; (
-  &lt;BuilderComponent name="page" /&gt;
+// Register our heading component for use in 
+// the visual editor
+const Heading = props => (
+  &lt;h1 className={style}&gt;{props.title}&lt;/h1&gt;
 )
+&nbsp;
+Builder.registerComponent(Heading, { 
+&nbsp;&nbsp;name: 'Heading',
+&nbsp;&nbsp;inputs: [{ name: 'title', type: 'text' }]
+})
 </pre>
     
 </td>
     <td width="50%">
-<pre lang="html">
-&lt;BuilderComponent name="page"&gt;
-  &lt;Hero text="Summer trend report" /&gt;
-  &lt;Products category="mens" /&gt;
-&lt;/BuilderComponent&gt;
+<pre lang="tsx">
+import { BuilderComponent } from '@builder.io/react'
+&nbsp;
+// Include this in your app, and Builder.io will render  
+// the matching page by the current document's URL. Scroll 
+// down for more advanced options and examples
+export default let BuilderPage = () => (
+&nbsp;&nbsp;&lt;BuilderComponent name="page" /&gt;
+)
 </pre>
     </td>
   </tr>
