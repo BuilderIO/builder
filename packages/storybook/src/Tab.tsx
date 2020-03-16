@@ -45,6 +45,12 @@ class TabEditor extends React.Component<TabEditorOptions> {
   }
 
   render() {
+
+    if (!this.props.storybookState.storiesConfigured) {
+      // configurations are yet to populate
+      return <div>...loading</div>
+    }
+
     const options = JSON.stringify({
       storybookMode: true,
       knobsMode: true,
