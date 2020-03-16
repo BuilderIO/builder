@@ -25,7 +25,13 @@ export const builderDecorator = makeDecorator({
     }
 
     return (
-      <div onDoubleClick={() => !isPreview && navigate(`?path=/${config.addonId}/${context.id}`)}>
+      <div
+        onDoubleClick={() =>
+          !isPreview &&
+          parameters.navigateOnDblClick &&
+          navigate(`?path=/${config.addonId}/${context.id}`)
+        }
+      >
         {isPreview ? <parameters.component {...props} /> : storyFn(context)}
       </div>
     );
