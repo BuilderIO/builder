@@ -228,7 +228,7 @@ export interface Input {
   hideFromUI?: boolean;
   modelId?: string;
   enum?: string[] | { label: string; value: any; helperText?: string }[];
-  /** Regex field validation for all string types (text, longText, html, etc) */
+  /** Regex field validation for all string types (text, longText, html, url, etc) */
   regex?: {
     /** pattern to test, like "^\/[a-z]$" */
     pattern: string;
