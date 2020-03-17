@@ -1,4 +1,5 @@
 import { Builder, builder } from '@builder.io/react';
+import '@builder.io/widgets';
 // Be sure to import all of your components where you use <BuilderComponent /> so they are
 // bundled and accessible
 import './components/ProductsList/ProductsList.builder';
@@ -12,7 +13,6 @@ import './components/Heading/Heading.builder';
 import './components/HeroWithChildren/HeroWithChildren.builder';
 import './components/DynamicColumns/DynamicColumns.builder';
 import './components/ProductsListWithServerSideData/ProductsListWithServerSideData.builder';
-
 // Add your public apiKey here
 const YOUR_KEY = 'YJIGb4i01jvw0SRdL5Bt';
 builder.init(YOUR_KEY);
