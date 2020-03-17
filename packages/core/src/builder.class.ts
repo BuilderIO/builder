@@ -965,6 +965,7 @@ export class Builder {
   ) {
     // TODO: use a window variable for this perhaps, e.g. bc webcomponents may be loading builder twice
     // with it's and react (use rollup build to fix)
+    console.log('instantiated core', forceNewInstance)
     if (Builder.isBrowser && !forceNewInstance && Builder.singletonInstance) {
       return Builder.singletonInstance;
     }
@@ -1139,19 +1140,25 @@ export class Builder {
   private blockContentLoading = '';
 
   private bindMessageListeners() {
+    console.log('core bindMessageListeners v2 ', isBrowser)
     if (isBrowser) {
       addEventListener('message', event => {
+        console.log('core bindMessageListeners url', event.origin, event.data)
         const url = parse(event.origin);
+        const isRestricted = ['builder.register', 'builder.registerComponent'].indexOf(event.data?.type) === -1
         if (
+          isRestricted &&
           !(
             url.hostname &&
             (url.hostname === 'builder.io' ||
               url.hostname.endsWith('.builder.io') ||
               url.hostname === 'localhost')
-          )
+          ) 
         ) {
+          console.log('rejecting because ', url, event.origin, event.data)
           return;
         }
+        console.log('core bindMessageListeners after if', url, event.data)
 
         const { data } = event;
         if (data) {
