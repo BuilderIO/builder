@@ -367,7 +367,10 @@ export class BuilderPage extends React.Component<
         const { state, model } = info.data
         if (model === this.name) {
           for (const key in this.rootState) {
-            delete this.rootState[key]
+            // TODO: support nested functions (somehow)
+            if (typeof this.rootState[key] !== 'function') {
+              delete this.rootState[key]
+            }
           }
           Object.assign(this.rootState, state)
           this.setState({
