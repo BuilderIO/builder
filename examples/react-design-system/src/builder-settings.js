@@ -1,5 +1,5 @@
 import { Builder, builder } from '@builder.io/react';
-import '@builder.io/widgets';
+
 // Be sure to import all of your components where you use <BuilderComponent /> so they are
 // bundled and accessible
 import './components/ProductsList/ProductsList.builder';
@@ -28,6 +28,7 @@ if (OVERRIDE_INSERT_MENU) {
 
 // (optionally) set these to add your own sections of components arranged as you choose.
 // this can be used with or without `customInsertMenu` above
+
 Builder.register('insertMenu', {
   name: 'Simple components',
   items: [

@@ -45,7 +45,7 @@ class TabEditor extends React.Component<TabEditorOptions> {
   }
 
   render() {
-    if (!this.props.storybookState.storiesConfigured) {
+    if (!this.props.storybookState.storiesConfigured && !this.storyId) {
       // configurations are yet to populate
       return <div>...loading</div>;
     }
