@@ -1,4 +1,5 @@
 import { Builder, builder } from '@builder.io/react';
+
 // Be sure to import all of your components where you use <BuilderComponent /> so they are
 // bundled and accessible
 import './components/ProductsList/ProductsList.builder';
@@ -12,7 +13,6 @@ import './components/Heading/Heading.builder';
 import './components/HeroWithChildren/HeroWithChildren.builder';
 import './components/DynamicColumns/DynamicColumns.builder';
 import './components/ProductsListWithServerSideData/ProductsListWithServerSideData.builder';
-
 // Add your public apiKey here
 const YOUR_KEY = 'YJIGb4i01jvw0SRdL5Bt';
 builder.init(YOUR_KEY);
@@ -28,6 +28,7 @@ if (OVERRIDE_INSERT_MENU) {
 
 // (optionally) set these to add your own sections of components arranged as you choose.
 // this can be used with or without `customInsertMenu` above
+
 Builder.register('insertMenu', {
   name: 'Simple components',
   items: [

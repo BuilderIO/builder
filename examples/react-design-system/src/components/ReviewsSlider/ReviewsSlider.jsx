@@ -11,6 +11,7 @@ export const ReviewsSlider = props => {
     infinite,
     speed: 400,
     slidesToShow: 1,
+    autoplay: true,
   };
 
   return (

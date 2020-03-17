@@ -8,5 +8,6 @@ addDecorator(builderDecorator)
 addParameters({
   builder: {
     component: BuilderComponent,
+    navigateOnDblClick: true,
   },
 });
