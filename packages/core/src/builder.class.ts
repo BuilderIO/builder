@@ -1142,13 +1142,15 @@ export class Builder {
     if (isBrowser) {
       addEventListener('message', event => {
         const url = parse(event.origin);
+        const isRestricted = ['builder.register', 'builder.registerComponent'].indexOf(event.data?.type) === -1
         if (
+          isRestricted &&
           !(
             url.hostname &&
             (url.hostname === 'builder.io' ||
               url.hostname.endsWith('.builder.io') ||
               url.hostname === 'localhost')
-          )
+          ) 
         ) {
           return;
         }
