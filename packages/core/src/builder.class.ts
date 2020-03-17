@@ -228,6 +228,18 @@ export interface Input {
   hideFromUI?: boolean;
   modelId?: string;
   enum?: string[] | { label: string; value: any; helperText?: string }[];
+  /** Regex field validation for all string types (text, longText, html, etc) */
+  regex?: {
+    /** pattern to test, like "^\/[a-z]$" */
+    pattern: string;
+    /** flags for the RegExp constructor, e.g. "gi"  */
+    options?: string;
+    /**
+     * Friendly message to display to end-users if the regex fails, e.g.
+     * "You must use a relative url starting with '/...' "
+     */
+    message: string;
+  };
   advanced?: boolean;
   onChange?: Function | string;
   code?: boolean;
@@ -1142,7 +1154,8 @@ export class Builder {
     if (isBrowser) {
       addEventListener('message', event => {
         const url = parse(event.origin);
-        const isRestricted = ['builder.register', 'builder.registerComponent'].indexOf(event.data?.type) === -1
+        const isRestricted =
+          ['builder.register', 'builder.registerComponent'].indexOf(event.data?.type) === -1;
         if (
           isRestricted &&
           !(
@@ -1150,7 +1163,7 @@ export class Builder {
             (url.hostname === 'builder.io' ||
               url.hostname.endsWith('.builder.io') ||
               url.hostname === 'localhost')
-          ) 
+          )
         ) {
           return;
         }
