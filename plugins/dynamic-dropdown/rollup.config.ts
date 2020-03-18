@@ -23,7 +23,8 @@ export default {
     '@builder.io/sdk',
     '@material-ui/core',
     '@emotion/core',
-    '@emotion/styled'
+    '@emotion/styled',
+    'ses',
   ],
   output: [
     {
