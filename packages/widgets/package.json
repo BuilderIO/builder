@@ -141,6 +141,7 @@
     "@builder.io/react": "^1.1.0"
   },
   "dependencies": {
+    "@builder.io/react": "^1.1.0",
     "@emotion/core": ">=10",
     "@emotion/styled": ">=10",
     "react": ">=14",
