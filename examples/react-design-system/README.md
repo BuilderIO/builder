@@ -1,5 +1,8 @@
 ## Builder.io custom design system example with React and storybook
 
+> 👉**Tip: want to limit page building to only your components? Try [components only mode](https://builder.io/c/docs/guides/components-only-mode)**
+
+
 In this example we show how to integrate react components with [Builder.io](https://builder.io). This is useful when you want to add the ability for your team to utilize custom components on the pages you build using the Builder editor, or even want to make it so people on your team can only build and edit your site's pages using your custom components.
 
 The way it works is by utilizing Builder's [preview url feature](https://builder.io/c/docs/guides/preview-url). When you set the preview URL in the Builder editor to point to your site, Builder reads the custom components and settings you specify in your source code via the Builder React SDK and incorporates them into the Builder editor. 
@@ -14,8 +17,6 @@ We also show how to intergrate Builder.io using [@builder.io/storybook](https://
 
 <img src="https://user-images.githubusercontent.com/5093430/76154244-ebbe6480-608d-11ea-9dc9-08a59eda220e.gif" alt="storybook example" />
 
-
-👉**Tip: want to limit page building to only your components? Try [components only mode](https://builder.io/c/docs/guides/components-only-mode)**
 
 ### To run the example Locally
 
