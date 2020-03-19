@@ -10,23 +10,19 @@ const style = {
 
 interface TabEditorOptions {
   api: API;
-  storybookState: any;
+  currentStory: any;
 }
 
 class TabEditor extends React.Component<TabEditorOptions> {
   editor: any;
   blocks: any;
 
-  get storyId() {
-    return this.props.storybookState.storyId;
-  }
-
   get currentParameter() {
-    return this.props.storybookState.storiesHash[this.storyId]?.parameters?.builder?.config;
+    return this.props.currentStory.parameters?.builder?.config;
   }
 
   get env() {
-    return this.props.storybookState.storiesHash[this.storyId]?.parameters?.builder?.env;
+    return this.props.currentStory.parameters?.builder?.env;
   }
 
   componentDidMount() {
@@ -45,15 +41,10 @@ class TabEditor extends React.Component<TabEditorOptions> {
   }
 
   render() {
-    if (!this.props.storybookState.storiesConfigured && !this.storyId) {
-      // configurations are yet to populate
-      return <div>...loading</div>;
-    }
-
     const options = JSON.stringify({
       storybookMode: true,
       knobsMode: true,
-      previewUrl: `${location.href.split('?')[0]}iframe.html?id=${this.storyId}`,
+      previewUrl: `${location.href.split('?')[0]}iframe.html?id=${this.props.currentStory.id}`,
     });
 
     const props = {
@@ -67,9 +58,11 @@ class TabEditor extends React.Component<TabEditorOptions> {
 }
 
 const withState = (Component: typeof TabEditor) => {
-  return function WrappedComponent(props: Omit<TabEditorOptions, 'storybookState'>) {
+  return function WrappedComponent(props: Omit<TabEditorOptions, 'currentStory'>) {
     const storybookState = useStorybookState();
-    return <Component {...props} storybookState={storybookState} />;
+    const currentStory = storybookState.storiesHash[storybookState.storyId];
+    const renderTab = storybookState.storiesConfigured && currentStory;
+    return renderTab ? <Component {...props} currentStory={currentStory} /> : <></>;
   };
 };
 
