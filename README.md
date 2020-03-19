@@ -127,7 +127,7 @@ Create a new page with url "/something" in Builder and change the [preview URL](
 
 See this [design systems example](/examples/react-design-system) for lots of examples using your deisgn system + custom components
 
-👉**Tip: want to limit page building to only your components? Try [components only mode](https://builder.io/c/docs/guides/components-only-mode)**
+> 👉**Tip: want to limit page building to only your components? Try [components only mode](https://builder.io/c/docs/guides/components-only-mode)**
 
 Register a component
 
