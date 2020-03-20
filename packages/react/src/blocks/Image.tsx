@@ -169,7 +169,7 @@ class ImageComponent extends React.Component<any> {
                 ...(amp && {
                   ['& img']: {
                     objectFit: this.props.backgroundSize,
-                    ObjectPosition: this.props.backgroundPosition
+                    objectPosition: this.props.backgroundPosition
                   }
                 })
               }}
