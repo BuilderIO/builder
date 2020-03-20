@@ -24,6 +24,7 @@
     "_unlink": "npm unlink *",
     "_install": "npm install",
     "lint": "tslint -t codeFrame '../**/*.ts' 'test/**/*.ts'",
+    "prebuild": "rimraf dist",
     "build": "NODE_ENV=production tsc --module commonjs && rollup -c rollup.config.ts",
     "build:docs": "typedoc --out docs --target es6 --theme minimal --mode file src",
     "start": "rollup -c rollup.config.ts -w",
