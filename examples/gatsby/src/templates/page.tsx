@@ -17,11 +17,11 @@ interface PageTemplateProps {
 }
 
 const PageTemplate: React.SFC<PageTemplateProps> = ({ data }) => {
-  const content = data.allBuilderModels.page[0].content;
+  const content = data.allBuilderModels.page[0]?.content;
   return (
     <>
       <Helmet>
-        <title>{content.data.title}</title>
+        <title>{content?.data.title}</title>
       </Helmet>
 
       <BuilderComponent content={content} />
