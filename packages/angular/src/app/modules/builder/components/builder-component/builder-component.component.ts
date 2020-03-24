@@ -26,6 +26,7 @@ function omit<T extends object>(obj: T, ...values: (keyof T)[]): Partial<T> {
 }
 
 let wcScriptInserted = false;
+const NAVIGATION_TIMEOUT_DEFAULT = 1000;
 
 function delay<T = any>(duration: number, resolveValue?: T) {
   return new Promise<T>(resolve => setTimeout(() => resolve(resolveValue), duration));
@@ -79,6 +80,10 @@ export class BuilderComponentComponent implements OnDestroy, OnInit {
   @Input() data: any = {};
   @Input() hydrate = true;
   @Input() prerender = true;
+
+  // Sometimes user will have slow connection and when we are using Resolver on target route
+  // then, application will be fully reloaded. In that case set it to false to avoid full-reload navigation.
+  @Input() navigationTimeout: number | boolean = NAVIGATION_TIMEOUT_DEFAULT;
 
   subscriptions = new Subscription();
 
@@ -262,10 +267,13 @@ export class BuilderComponentComponent implements OnDestroy, OnInit {
     // Attempt to route on the client
     let success: boolean | null = null;
     const routePromise = this.router.navigateByUrl(href);
-    const timeoutPromise = delay(1000, false);
+
+    const useNavigationTimeout = !(typeof this.navigationTimeout === 'boolean' && !this.navigationTimeout);
+    const timeoutPromise = delay(typeof this.navigationTimeout === 'number' ? this.navigationTimeout : NAVIGATION_TIMEOUT_DEFAULT, false);
 
     try {
-      success = await Promise.race([timeoutPromise, routePromise]);
+      const promiseRace = useNavigationTimeout ? [timeoutPromise, routePromise] : [routePromise];
+      success =  await Promise.race(promiseRace);
     } finally {
       // This is in a click handler so it will only run on the client
       if (success) {
