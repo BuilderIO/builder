@@ -705,10 +705,15 @@ export class BuilderPage extends React.Component<
   }
 
   getCss(data: any) {
-    // if (Builder.isBrowser) {
-    //   this.ensureFontsLoaded(data)
-    // }
-    // .replace(/([^\s]|$)&([^\w])/g, '$1' + '.some-selector' + '$2')
+    const contentId = this.useContent?.id
+    let cssCode = data.cssCode || ''
+    if (contentId) {
+      // Allow using `&` in custom CSS code like @emotion
+      // E.g. `& .foobar { ... }` to scope CSS
+      // TODO: handle if '&' is within a string like `content: "&"`
+      cssCode = cssCode.replace(/&/g, `.builder-component-${contentId}`)
+    }
+
     return (data.cssCode || '') + this.getFontCss(data)
   }
 
@@ -754,7 +759,7 @@ export class BuilderPage extends React.Component<
     })
   }
 
-  render() {
+  get content() {
     let { content } = this.props
     if (content && content.content) {
       // GraphQL workaround
@@ -763,6 +768,15 @@ export class BuilderPage extends React.Component<
         data: content.content
       }
     }
+    return content
+  }
+
+  get useContent() {
+    return this.content || this.state.context.builderContent
+  }
+
+  render() {
+    const content = this.content
 
     const dataString =
       this.props.data && size(this.props.data) && hash(this.props.data)
@@ -773,10 +787,14 @@ export class BuilderPage extends React.Component<
 
     const WrapComponent = this.props.dataOnly ? React.Fragment : 'div'
 
+    const contentId = this.useContent?.id
+
     return (
       // TODO: data attributes for model, id, etc?
       <WrapComponent
-        className="builder-component"
+        className={`builder-component ${
+          contentId ? `builder-component-${contentId}` : ''
+        }`}
         data-name={this.name}
         data-timestamp={Date.now()}
         date-source={`Rendered by Builder.io on ${new Date().toUTCString()}`}
