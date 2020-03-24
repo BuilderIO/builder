@@ -1767,7 +1767,7 @@ export class Builder {
     const keyNames = queue.map(item => encodeURIComponent(item.key!)).join(',');
 
     if (this.overrideParams) {
-      const params = QueryString.parse(this.overrideParams);
+      const params = omit(QueryString.parse(this.overrideParams), 'apiKey');
       assign(queryParams, params);
     }
 
