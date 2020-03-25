@@ -3,6 +3,7 @@ import { jsx } from '@emotion/core'
 import React from 'react'
 
 import { withBuilder } from '../functions/with-builder'
+import { withChildren } from '../functions/with-children'
 
 const DEFAULT_ASPECT_RATIO = 0.7004048582995948
 
@@ -39,7 +40,7 @@ class VideoComponent extends React.Component<{
   }
 
   render() {
-    const { aspectRatio } = this.props
+    const { aspectRatio, children } = this.props
     return (
       <div css={{ position: 'relative', fontSize: 0 }}>
         <video
@@ -81,14 +82,31 @@ class VideoComponent extends React.Component<{
             }}
           />
         ) : null}
+        {children && (
+          <div
+            css={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'stretch',
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%'
+            }}
+          >
+            {children}
+          </div>
+        )}
       </div>
     )
   }
 }
 
-export const Video = withBuilder(VideoComponent, {
+export const Video = withBuilder(withChildren(VideoComponent), {
   name: 'Video',
   static: true,
+  canHaveChildren: true,
   image:
     'https://firebasestorage.googleapis.com/v0/b/builder-3b0a2.appspot.com/o/images%2Fbaseline-videocam-24px%20(1).svg?alt=media&token=49a84e4a-b20e-4977-a650-047f986874bb',
   inputs: [
@@ -101,7 +119,10 @@ export const Video = withBuilder(VideoComponent, {
       required: true,
       onChange: (options: Map<string, any>) => {
         const DEFAULT_ASPECT_RATIO = 0.7004048582995948
-        function loadImage(url: string, timeout = 60000): Promise<HTMLImageElement> {
+        function loadImage(
+          url: string,
+          timeout = 60000
+        ): Promise<HTMLImageElement> {
           return new Promise((resolve, reject) => {
             const img = document.createElement('img')
             let loaded = false
@@ -136,7 +157,8 @@ export const Video = withBuilder(VideoComponent, {
             const possiblyUpdatedAspectRatio = options.get('aspectRatio')
             if (
               options.get('image') === value &&
-              (!possiblyUpdatedAspectRatio || possiblyUpdatedAspectRatio === DEFAULT_ASPECT_RATIO)
+              (!possiblyUpdatedAspectRatio ||
+                possiblyUpdatedAspectRatio === DEFAULT_ASPECT_RATIO)
             ) {
               if (img.width && img.height) {
                 options.set('aspectRatio', round(img.height / img.width))
