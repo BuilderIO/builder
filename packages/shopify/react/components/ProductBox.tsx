@@ -67,7 +67,7 @@ export function ProductBox(props: ProductBoxProps) {
 
     if (productId) {
       setLoading(true);
-      fetch(`https://builder.io/api/v1/shopify/products/${productId}.json?apiKey=${context.apiKey}`)
+      fetch(`https://cdn.builder.io/api/v1/shopify/products/${productId}.json?apiKey=${context.apiKey}`)
         .then(res => res.json())
         .then(data => {
           const { product } = data;

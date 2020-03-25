@@ -97,7 +97,7 @@ export const collectionGrid = el({
                   if (collection) {
                     state.loading = true;
                     fetch(
-                      `https://builder.io/api/v1/shopify/products.json?apiKey=${context.apiKey}&collection_id=${collection}`
+                      `https://cdn.builder.io/api/v1/shopify/products.json?apiKey=${context.apiKey}&collection_id=${collection}`
                     )
                       .then(res => res.json())
                       .then(data => {

@@ -195,7 +195,7 @@ export const productBox = el({
                   if (product) {
                     state.loading = true;
                     fetch(
-                      `https://builder.io/api/v1/shopify/products/${product}.json?apiKey=${context.apiKey}`
+                      `https://cdn.builder.io/api/v1/shopify/products/${product}.json?apiKey=${context.apiKey}`
                     )
                       .then(res => res.json())
                       .then(data => {

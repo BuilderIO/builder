@@ -217,6 +217,8 @@ class ImageComponent extends React.Component<any> {
                 </div>
               ) : null}
               {children && children.length ? (
+                // TODO: if no aspect ratio and has children, don't make this absolute but instead
+                // make the image absolute and fit the children (or with a special option)
                 <div
                   css={{
                     display: 'flex',
