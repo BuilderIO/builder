@@ -42,7 +42,7 @@ class VideoComponent extends React.Component<{
   render() {
     const { aspectRatio, children } = this.props
     return (
-      <div css={{ position: 'relative', fontSize: 0 }}>
+      <div css={{ position: 'relative' }}>
         <video
           key={this.props.video || 'no-src'}
           poster={this.props.posterImage}
@@ -78,7 +78,8 @@ class VideoComponent extends React.Component<{
             css={{
               width: '100%',
               paddingTop: aspectRatio * 100 + '%',
-              pointerEvents: 'none'
+              pointerEvents: 'none',
+              fontSize: 0
             }}
           />
         ) : null}
