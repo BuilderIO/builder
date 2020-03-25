@@ -229,8 +229,8 @@ Want to work on the future of visual software development? Email me at steve@bui
 
 ## John the community!
 
-Questions? Requests? Feedback? Chat with us in our [Spectrum Community!](https://spectrum.chat/builder)
+Questions? Requests? Feedback? Chat with us in our [official forum](https://forum.builder.io)!
 
 ## Troubleshooting and feedback
 
-Problems? Requests? Open an issue. We always want to hear feedback and interesting new use cases and are happy to help.
+Problems? Requests? Open an [issue](https://github.com/BuilderIO/builder/issues). We always want to hear feedback and interesting new use cases and are happy to help.
