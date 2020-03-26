@@ -1,17 +1,13 @@
 import React from 'react'
 import { Builder } from '@builder.io/sdk'
-import { Button, Icon } from '@material-ui/core'
+import Button from '@material-ui/core/Button'
 import TranslateIcon from '@material-ui/icons/Translate'
 
-class LocalizationConnector extends React.Component<any> {
-  render() {
-    return (
-      <Button color="primary" endIcon={<TranslateIcon />}>
-        Localize
-      </Button>
-    )
-  }
-}
+const LocalizationConnector = () => (
+  <Button variant="contained" color="primary" startIcon={<TranslateIcon />}>
+    Localize
+  </Button>
+)
 
 Builder.registerEditor({
   name: 'localization-connector',
