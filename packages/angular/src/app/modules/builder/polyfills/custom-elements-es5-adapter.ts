@@ -7,13 +7,18 @@ if (typeof window !== 'undefined') {
     !(
       undefined === anyWindow.Reflect ||
       undefined === anyWindow.customElements ||
-      anyWindow.customElements.hasOwnProperty('polyfillWrapFlushCallback')
+      anyWindow.customElements.polyfillWrapFlushCallback
     )
   ) {
     const ModifiedHTMLElement = HTMLElement;
-    anyWindow.HTMLElement = function() {
-      return Reflect.construct(ModifiedHTMLElement, [], this.constructor);
+    // https://github.com/webcomponents/custom-elements/blame/c078ea4201c82551462ccace1ae91e22b576beb8/src/native-shim.js#L37
+    const wrapperForTheName = {
+      'HTMLElement': function HTMLElement() {
+        return Reflect.construct(
+          ModifiedHTMLElement, [], (this.constructor));
+      }
     };
+    anyWindow.HTMLElement = wrapperForTheName['HTMLElement'];
     HTMLElement.prototype = ModifiedHTMLElement.prototype;
     HTMLElement.prototype.constructor = HTMLElement;
     Object.setPrototypeOf(HTMLElement, ModifiedHTMLElement);
