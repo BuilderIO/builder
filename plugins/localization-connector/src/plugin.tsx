@@ -1,13 +1,33 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Builder } from '@builder.io/sdk'
-import Button from '@material-ui/core/Button'
 import TranslateIcon from '@material-ui/icons/Translate'
+import { Button } from '@material-ui/core'
+import { LocalePicker } from './components/localePicker'
+import ClientSide from './components/clientSide'
 
-const LocalizationConnector = () => (
-  <Button variant="contained" color="primary" startIcon={<TranslateIcon />}>
-    Localize
-  </Button>
-)
+const LocalizationConnector = (props: any) => {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <>
+      <Button
+        variant="contained"
+        color="primary"
+        startIcon={<TranslateIcon />}
+        onClick={() => setOpen(true)}
+      >
+        Localize
+      </Button>
+      <ClientSide>
+        <LocalePicker
+          open={open}
+          setOpen={setOpen}
+          builderContext={props.context}
+        />
+      </ClientSide>
+    </>
+  )
+}
 
 Builder.registerEditor({
   name: 'localization-connector',
