@@ -123,15 +123,6 @@ Create a new page with url "/something" in Builder and change the [preview URL](
 <img src="https://user-images.githubusercontent.com/5093430/76154244-ebbe6480-608d-11ea-9dc9-08a59eda220e.gif" alt="example" />
 </a>
 
-### Try it in CodeSandbox
-
-[Open this example in CodeSandbox](https://codesandbox.io/s/github/BuilderIO/builder/tree/master/examples/react)
-
-<a target="_blank" href="https://codesandbox.io/s/github/BuilderIO/builder/tree/master/examples/react">
-  <img src="https://i.imgur.com/zue72Q0.jpg" width="400">
-</a>
-
-
 ### Using your components
 
 See this [design systems example](/examples/react-design-system) for lots of examples using your deisgn system + custom components + storybook
