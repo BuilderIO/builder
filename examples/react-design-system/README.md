@@ -12,6 +12,8 @@ The source code for the custom components used in this demo are [here](src/compo
 
 <img src="https://imgur.com/PJW3b4S.gif" alt="example" />
 
+### Live Demo with Storybook
+
 We also show how to intergrate Builder.io using [@builder.io/storybook](https://github.com/builderio/builder/tree/master/packages/storybook) within your storybook to give your users a playground where they can drag and drop your custom components and prototype something quick.
 
 [Storybook Demo](https://builder-storybook.firebaseapp.com/)

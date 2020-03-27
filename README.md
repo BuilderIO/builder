@@ -115,6 +115,14 @@ And in your router
 
 Create a new page with url "/something" in Builder and change the [preview URL](https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F4670438a077f497d8a486f890201ae85) to localhost:port/something (e.g. localhost:8888/something if your dev server is on port 8888) and edit!
 
+### Try it in Storybook
+
+[Play around with our Storybook embedded editor example](https://builder-storybook.firebaseapp.com/) or use our [Storybook addon](packages/storybook) with your own components, refer to our [design systems example](/examples/react-design-system) for lots of examples using your deisgn system + custom components + storybook.
+
+<a target="_blank" href="https://builder-storybook.firebaseapp.com/">
+<img src="https://user-images.githubusercontent.com/5093430/76154244-ebbe6480-608d-11ea-9dc9-08a59eda220e.gif" alt="example" />
+</a>
+
 ### Try it in CodeSandbox
 
 [Open this example in CodeSandbox](https://codesandbox.io/s/github/BuilderIO/builder/tree/master/examples/react)
@@ -123,9 +131,10 @@ Create a new page with url "/something" in Builder and change the [preview URL](
   <img src="https://i.imgur.com/zue72Q0.jpg" width="400">
 </a>
 
+
 ### Using your components
 
-See this [design systems example](/examples/react-design-system) for lots of examples using your deisgn system + custom components
+See this [design systems example](/examples/react-design-system) for lots of examples using your deisgn system + custom components + storybook
 
 > 👉**Tip: want to limit page building to only your components? Try [components only mode](https://builder.io/c/docs/guides/components-only-mode)**
 
