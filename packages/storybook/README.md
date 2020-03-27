@@ -1,9 +1,13 @@
 # @builder.io/storybook
-
-[Demo](https://builder-storybook.firebaseapp.com/)
 Addon for integrating [Builder.io](https://www.builder.io) to allow drag and drop page building inside storybook. 
 
+## Try it live
+
+[Play around with our Storybook embedded editor example](https://builder-storybook.firebaseapp.com/) refer to our [design systems example](/examples/react-design-system) for lots of examples using your deisgn system + custom components + storybook.
+
+<a target="_blank" href="https://builder-storybook.firebaseapp.com/">
 <img src="https://user-images.githubusercontent.com/5093430/76154244-ebbe6480-608d-11ea-9dc9-08a59eda220e.gif" alt="example" />
+</a>
 
 
 ## Install
