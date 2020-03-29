@@ -114,14 +114,12 @@ const createPagesAsync = async (config, createPage, graphql, models, offsets) =>
     }
   `);
   let hasMore = false;
-
   models.forEach((modelName, index) => {
     const component = config.templates[modelName];
     invariant(
       fs.existsSync(component),
       `@builder.io/gatsby requires a valid template path for each model`
     );
-    lastEditingComponent = component;
     const entries = result.data[config.fieldName][modelName];
     offsets[index] = offsets[index] + entries.length;
     if (entries.length === config.limit) {
