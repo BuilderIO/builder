@@ -1,44 +1,34 @@
-# Builder.io dynamic dropdown
+# Builder.io Memsource connector plugin
 
-See [here](src/dropdown.tsx) for the React component that powers this plugin
+See [here](src/plugin.tsx) for the React component that powers this plugin
 
 ## Using this plugin in production code
 
-The idea behind the plugin is to generalize the use of a dropdown so the code provider will tell the plugin how to process the received data.
-When adding the plugin to a custom component input, it will require two input arguments:
+The idea behind the plugin is to generalize the use of a translation workflow directly connected to memsource.  
+The requirements to use the plugin is quite simple:
 
-```js
-  withBuilder(Component, {
-  name: "Component",
-  inputs: [
-    {
-      name: "dropdown",
-      type: "dynamic-dropdown",
-      options: {
-        url: "https://www.example.com/{{version}}/{{endpoint}}?pathParam={{pathValue}}",
-        mapper: "data.map(each => ({ name: each.id, value: each.value }))"
-    },
-    {...}
-  ]
-});
-```
+- Your page model should have a field named `locale` and it should be an `enum`.
+- Your page model should have a field named `memsourceToken` (which can be hidden) and it should be a text.
 
-The `url` argument will be templated with handlebars. The plugin is smart enough to figure out the handlebars values from the application context to replace them.
-The `mapper` argument will be a string method that will be executed on the side of the plugin given the answer from the `url` GET call.
+To add it to a page model simply create a new model field, with whichever name, and the type should be `Localization Connector`. This will make the translations plugin available in each page created using that model.  
+Simply hit the `Translate` button, and it should bring up a Dialog divided by two sections:
+
+- Source locale should only include a display of the page with the current locale
+- Target locales should be a list of selectable locales, which is the product of eliminating the current locale from the enum aforementioned in the `locale` field.
 
 ## Creating a new plugin from this example
 
 ### Install
 
 ```bash
-cd plugins/dynamic-dropdown
-npm install
+cd plugins/localization-connector
+yarn
 ```
 
 ### Develop
 
 ```bash
-npm start
+yarn start:dev
 ```
 
 ### Add the plugin in Builder.io
@@ -48,7 +38,7 @@ From [Builder.io](https://builder.io) open the javascript console in your browse
 ```js
 // Adds the plugin
 builder.plugins.replace([
-  'http://localhost:1268/builder-plugin-dynamic-dropdown.system.js'
+  'http://localhost:1268/builder-plugin-localization-connector.system.js'
 ])
 // Saves for all in your organization and reloads the browser
 builder.savePlugins().then(() => location.reload())
