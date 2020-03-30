@@ -13,6 +13,7 @@ export default (props: any) => {
       <FormGroup>
         <SourceLocale sourceLocale={sourceLocale} />
         <TargetLocales
+          sourceLocale={sourceLocale}
           targetLocales={targetLocales}
           builderContext={builderContext}
         />

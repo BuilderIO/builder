@@ -18,7 +18,7 @@ const selectedLocalesReducer = (state: State, action: Action): State => {
 export const TargetLocales = (props: any) => {
   const initialSelectedLocales: State = { selectedLocales: new Set() }
 
-  const { targetLocales, builderContext } = props
+  const { sourceLocale, targetLocales, builderContext } = props
   if (!targetLocales) return <></>
 
   const [{ selectedLocales }, dispatch] = useReducer(
@@ -27,19 +27,16 @@ export const TargetLocales = (props: any) => {
   )
 
   const handleSubmit = () => {
-    const accepted = confirm('Are you sure?')
-    if (accepted) {
-      const memsourceToken = extractMemsourceToken(builderContext)
-      const svc = new MemsourceService(memsourceToken)
-      // svc.sendTranslationJob(_, sourceLocale, [...selectedLocales], {})
-    }
+    const memsourceToken = extractMemsourceToken(builderContext)
+    const svc = new MemsourceService(memsourceToken)
+    svc.sendTranslationJob('job', sourceLocale, [...selectedLocales], {})
   }
 
   return (
     <>
       <FormLabel component="legend">Target locales</FormLabel>
-      {targetLocales.map((each: string) => (
-        <LocaleOption label={each} dispatch={dispatch} />
+      {targetLocales.map((each: string, key: number) => (
+        <LocaleOption key={key} label={each} dispatch={dispatch} />
       ))}
 
       <Button
