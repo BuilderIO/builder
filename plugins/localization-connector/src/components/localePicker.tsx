@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react'
+import React from 'react'
 import { FormGroup, FormControl } from '@material-ui/core'
 import { SourceLocale } from './sourceLocale'
 import { TargetLocales } from './targetLocales'
@@ -12,7 +12,10 @@ export default (props: any) => {
     <FormControl component="fieldset">
       <FormGroup>
         <SourceLocale sourceLocale={sourceLocale} />
-        <TargetLocales targetLocales={targetLocales} />
+        <TargetLocales
+          targetLocales={targetLocales}
+          builderContext={builderContext}
+        />
       </FormGroup>
     </FormControl>
   )

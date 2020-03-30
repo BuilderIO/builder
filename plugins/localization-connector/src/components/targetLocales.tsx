@@ -5,8 +5,6 @@ import { extractMemsourceToken } from '../services/propsExtractor'
 import { State, Action } from '../types/Localization'
 import { LocaleOption } from './localeOption'
 
-const initialSelectedLocales: State = { selectedLocales: new Set() }
-
 const selectedLocalesReducer = (state: State, action: Action): State => {
   const { locale, checked } = action
   if (checked) {
@@ -18,6 +16,8 @@ const selectedLocalesReducer = (state: State, action: Action): State => {
 }
 
 export const TargetLocales = (props: any) => {
+  const initialSelectedLocales: State = { selectedLocales: new Set() }
+
   const { targetLocales, builderContext } = props
   if (!targetLocales) return <></>
 
@@ -27,9 +27,12 @@ export const TargetLocales = (props: any) => {
   )
 
   const handleSubmit = () => {
-    const memsourceToken = extractMemsourceToken(builderContext)
-    const svc = new MemsourceService(memsourceToken)
-    // svc.sendTranslationJob(_, sourceLocale, [...selectedLocales], {})
+    const accepted = confirm('Are you sure?')
+    if (accepted) {
+      const memsourceToken = extractMemsourceToken(builderContext)
+      const svc = new MemsourceService(memsourceToken)
+      // svc.sendTranslationJob(_, sourceLocale, [...selectedLocales], {})
+    }
   }
 
   return (

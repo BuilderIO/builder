@@ -1,15 +1,13 @@
 module.exports = {
-  testEnvironment: 'node',
+  roots: ['<rootDir>'],
+  testRegex: '.*\\.(test|spec).(ts|tsx|js)$',
+  coverageDirectory: 'coverage/',
   transform: {
     '^.+\\.tsx?$': 'ts-jest'
   },
-  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
-  testRegex: '((\\.|/)(test|spec))\\.(ts|js)x?$',
-  coverageDirectory: 'coverage',
-  collectCoverageFrom: ['src/**/*.{ts,tsx,js,jsx}', '!src/**/*.d.ts'],
-  globals: {
-    'ts-jest': {
-      diagnostics: false
-    }
-  }
-};
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node', '.map'],
+  testEnvironment: 'jsdom',
+  setupFilesAfterEnv: ['<rootDir>/src/setupEnzyme.ts'],
+  coverageDirectory: 'coverage/',
+  collectCoverageFrom: ['src/**']
+}
