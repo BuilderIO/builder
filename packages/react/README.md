@@ -8,13 +8,17 @@ Also see our docs for [next.js](/examples/next-js) and [gatsby](/examples/gatsby
 
 ## React API
 
+### BuilderComponent
+
+### Builder
+
 ### builder
 
 The React SDK exports the core SDK's [builder object](../core), which can be used for settings like 
 your API key and user attributes
 
 ```javascript
-import { builder } from '@builder.io/sdk'
+import { builder } from '@builder.io/react'
 
 builder.init(YOUR_KEY)
 
@@ -22,14 +26,5 @@ builder.init(YOUR_KEY)
 builder.setUserAttributes({
   userIsLoggedIn: true,
   whateverKey: 'whatever value'
-})
-
-builder.get(YOUR_MODEL_NAME, {
-  // Optional custom query
-  query: {
-    'data.customField.$gt': 100
-  }
-}).promise().then(({ data }) => {
-  // Do something with the data
 })
 ```
