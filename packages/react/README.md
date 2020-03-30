@@ -10,7 +10,94 @@ Also see our docs for [next.js](/examples/next-js) and [gatsby](/examples/gatsby
 
 ### BuilderComponent
 
+#### Simple example
+
+```ts
+// Render a matching Builder page for the given URl
+<BuilderComponent model="page">
+```
+
+See our guides for [Gatsby](https://github.com/BuilderIO/builder/tree/master/examples/gatsby) and [Next.js](https://github.com/BuilderIO/builder/tree/master/examples/next-js) for guides on using with those frameworks
+
+#### Passing content manually
+
+This is useful for doing server side rendering, e.g. with [Gatsby](https://github.com/BuilderIO/builder/tree/master/examples/gatsby) and [Next.js](https://github.com/BuilderIO/builder/tree/master/examples/next-js) or via
+loading data from other sources than our default APIs, such as data in your own database saved via [webhooks](https://www.builder.io/c/docs/webhooks)
+
+```ts
+const content = await builder.get('page', { ...options });
+<BuilderComponent model="page" content={content} >
+```
+
+#### Passing data and functions down
+
+You can also pass [data](https://www.builder.io/c/docs/guides/connecting-api-data) and [functions](https://www.builder.io/c/docs/react/custom-actions) down to the Builder component to use in the UIs (e.g. bind 
+data values to UIs e.g. for text values or iterating over lists, and actions to trigger for instance on click of a button)
+
+```ts
+<BuilderComponent model="page" data={{
+  products: productsList,
+  myFunction: () => alert('Triggered!'),
+  foo: 'bar'
+}} >
+```
+
+#### Advanced querying
+
+When using custom [models](https://www.builder.io/c/docs/guides/getting-started-with-models) and [fields](https://www.builder.io/c/docs/custom-fields) you can do more advanced filtering of your content with [queries]((https://www.builder.io/c/docs/custom-fields))
+and [targeting](https://www.builder.io/c/docs/guides/targeting-and-scheduling)
+
+```
+import { BuilderComponent, builder } from '@builder.io/react';
+
+builder.setUserAttributes({ isLoggedIn: false })
+
+export default () => <div>
+  <BuilderComponent 
+     model="section" 
+     options={{ query: { 'data.something.$in': ['value a', 'value b'] } }} />
+  <!-- some other content -->
+</div>
+
+```
+
 ### Builder
+
+The global `Builder` singleton has a number of uses. Most important is registing custom components.
+
+```ts
+import * as React from 'react';
+import SyntaxHighlighter from 'react-syntax-highlighter';
+import { Builder } from '@builder.io/react';
+
+class CodeBlockComponent extends React.Component {
+  render() {
+    return (
+      <SyntaxHighlighter language={this.props.language}>
+        {this.props.code}
+      </SyntaxHighlighter>
+    );
+  }
+}
+
+Builder.registerComponent(CodeBlockComponent, {
+  name: 'Code Block',
+  inputs: [
+    {
+      name: 'code',
+      type: 'string',
+      defaultValue: 'const incr = num => num + 1',
+    },
+    {
+      name: 'language',
+      type: 'string',
+      defaultValue: 'javascript',
+    },
+  ],
+})
+```
+
+See our full guide on [registering custom components here](https://www.builder.io/c/docs/custom-react-components)
 
 ### builder
 
