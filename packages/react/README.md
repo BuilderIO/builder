@@ -12,7 +12,7 @@ Also see our docs for [next.js](/examples/next-js) and [gatsby](/examples/gatsby
 
 #### Simple example
 
-```ts
+```tsx
 // Render a matching Builder page for the given URl
 <BuilderComponent model="page">
 ```
@@ -34,7 +34,7 @@ const content = await builder.get('page', { ...options });
 You can also pass [data](https://www.builder.io/c/docs/guides/connecting-api-data) and [functions](https://www.builder.io/c/docs/react/custom-actions) down to the Builder component to use in the UIs (e.g. bind 
 data values to UIs e.g. for text values or iterating over lists, and actions to trigger for instance on click of a button)
 
-```ts
+```tsx
 <BuilderComponent model="page" data={{
   products: productsList,
   myFunction: () => alert('Triggered!'),
@@ -47,7 +47,7 @@ data values to UIs e.g. for text values or iterating over lists, and actions to 
 When using custom [models](https://www.builder.io/c/docs/guides/getting-started-with-models) and [fields](https://www.builder.io/c/docs/custom-fields) you can do more advanced filtering of your content with [queries]((https://www.builder.io/c/docs/custom-fields))
 and [targeting](https://www.builder.io/c/docs/guides/targeting-and-scheduling)
 
-```
+```tsx
 import { BuilderComponent, builder } from '@builder.io/react';
 
 builder.setUserAttributes({ isLoggedIn: false })
@@ -65,7 +65,7 @@ export default () => <div>
 
 The global `Builder` singleton has a number of uses. Most important is registing custom components.
 
-```ts
+```tsx
 import * as React from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { Builder } from '@builder.io/react';
@@ -104,7 +104,7 @@ See our full guide on [registering custom components here](https://www.builder.i
 The React SDK exports the core SDK's [builder object](../core), which can be used for settings like 
 your API key and user attributes
 
-```javascript
+```tsx
 import { builder } from '@builder.io/react'
 
 builder.init(YOUR_KEY)
