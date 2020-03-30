@@ -28,10 +28,9 @@ class About extends React.Component {
   static async getInitialProps({ res, req, asPath }) {
     // Get the upcoming route full location path and set that for Builder.io page targeting
     const path = asPath.split('?')[0];
-    builder.setUserAttributes({ urlPath: path });
 
     // If there is a Builder page for this URL, this will be an object, otherwise it'll be null
-    const page = await builder.get('page', { req, res }).promise()
+    const page = await builder.get('page', { req, res, userAttributes: { urlPath: path }  }).promise()
     return { builderPage: page }
   }
 
@@ -73,10 +72,9 @@ If anything else ever goes wrong for you, chat us anytime form the bottom right 
 
 ## Dynamic landing pages
 
-One of Builder's most powerful use cases is allowing the creation of dynamic new pages with their own unique URLs. 
+One of Builder's most powerful use cases is allowing the creation of dynamic new pages with their own unique URLs.
 
 To add this ability, create a file `pages/[...slug].js`, with content:
-
 
 ```js
 import React from 'react';
@@ -88,10 +86,9 @@ class CatchallBuilderPage extends React.Component {
   static async getInitialProps({ res, req, asPath }) {
     // Get the upcoming route full location path and set that for Builder.io page targeting
     const path = asPath.split('?')[0];
-    builder.setUserAttributes({ urlPath: path });
 
     // If there is a Builder page for this URL, this will be an object, otherwise it'll be null
-    const page = await builder.get('page', { req, res }).toPromise();
+    const page = await builder.get('page', { req, res, userAttributes: { urlPath: path } }).toPromise();
 
     if (res && !page) {
       res.statusCode = 404;
@@ -118,10 +115,9 @@ export default CatchallBuilderPage;
 
 See [pages/[...slug].js](pages/[...slug].js) for a real example you can run.
 
-You can also choose to limit dynamic pages to certain sub paths, e.g. make your page at `pages/c/[...slug.js]` to only allos new URLs created at your-site.com/c/*
+You can also choose to limit dynamic pages to certain sub paths, e.g. make your page at `pages/c/[...slug.js]` to only allos new URLs created at your-site.com/c/\*
 
 Additionally, when you integrate this way, you can use `http://localhost:8888/__builder_editing__` or `https://yoursite.com/__builder_editing__` as preview URLs, as Builder.io will always return content for this pages that will allow editing in the visual editor
-
 
 ## Using your React components in Builder pages
 

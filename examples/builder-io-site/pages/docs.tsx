@@ -160,12 +160,12 @@ Docs.getInitialProps = async ({ req, res, asPath, ...props }: any /* TODO: types
 };
 
 const getContent = async (req: any, res: any, asPath: string) => {
-  builder.setUserAttributes({ urlPath: asPath.split('?')[0] });
+  const userAttributes = { urlPath: asPath.split('?')[0] }
 
   const [nav, content, docsHeader] = await Promise.all([
-    builder.get('docs-nav', { req, res }).promise(),
-    builder.get('docs-content', { req, res }).promise(),
-    builder.get('docs-header', { req, res }).promise(),
+    builder.get('docs-nav', { req, res, userAttributes }).promise(),
+    builder.get('docs-content', { req, res, userAttributes }).promise(),
+    builder.get('docs-header', { req, res, userAttributes }).promise(),
   ]);
 
   if (!content) {

@@ -1653,6 +1653,7 @@ export class Builder {
 
     const userAttributes =
       // FIXME: HACK: only checks first in queue for user attributes overrides, should check all
+      // TODO: merge user attributes provided here with defaults and current user attiributes (?)
       queue && queue[0].userAttributes
         ? queue[0].userAttributes
         : this.targetContent

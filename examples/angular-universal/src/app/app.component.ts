@@ -43,4 +43,5 @@ import { Component } from '@angular/core';
     `,
   ],
 })
+// TODO: show updating meta info based on returned content
 export class AppComponent {}

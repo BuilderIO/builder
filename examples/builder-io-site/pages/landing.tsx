@@ -32,8 +32,10 @@ function Landing({ builderPage }: any /* TODO: types */) {
 
 Landing.getInitialProps = async ({ res, req, asPath }: any /* TODO: types */) => {
   const path = asPath.split('?')[0];
-  builder.setUserAttributes({ urlPath: path });
-  const page = await builder.get('content-page', { req, res }).promise();
+
+  const page = await builder
+    .get('content-page', { req, res, userAttributes: { urlPath: path } })
+    .promise();
   if (!page) {
     res.status = 404;
   }
