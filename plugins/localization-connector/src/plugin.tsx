@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Builder } from '@builder.io/sdk'
 import TranslateIcon from '@material-ui/icons/Translate'
 import { Button } from '@material-ui/core'
-import { LocalePicker } from './components/localePicker'
+import { LocaleDialog } from './components/localeDialog'
 import ClientSide from './components/clientSide'
 
 const LocalizationConnector = (props: any) => {
@@ -19,11 +19,13 @@ const LocalizationConnector = (props: any) => {
         Localize
       </Button>
       <ClientSide>
-        <LocalePicker
-          open={open}
-          setOpen={setOpen}
-          builderContext={props.context}
-        />
+        {open && (
+          <LocaleDialog
+            open={open}
+            setOpen={setOpen}
+            builderContext={props.context}
+          />
+        )}
       </ClientSide>
     </>
   )
