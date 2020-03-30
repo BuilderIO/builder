@@ -132,6 +132,18 @@ contentLoaded(data) {
 }
 ```
 
+## Builder components within existing pages
+
+With component models you can also use Builder.io components in/around existing pages (aka it doesn't have to control the whole page). See info on making custom models for this [here](https://www.builder.io/c/docs/guides/getting-started-with-models)
+
+```html
+<!-- The first part of your page -->
+<builder-component model="my-section">Loading..</builder-component>
+<!-- the rest of your page -->
+```
+You can then use [queries](https://www.builder.io/c/docs/custom-fields) and [targeting](https://www.builder.io/c/docs/guides/targeting-and-scheduling) to customize what content loads where
+
+
 ## Example projects
 
 To see a full example integration see [here](/examples/angular) for a simple Angular + Builder.io example project,
