@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useReducer } from 'react'
 import CloseIcon from '@material-ui/icons/Close'
 import {
   Dialog,
@@ -8,11 +8,30 @@ import {
   FormControlLabel,
   Checkbox,
   List,
-  ListItem
+  ListItem,
+  Button
 } from '@material-ui/core'
 
-const LocalePicker = (props: any) => {
-  const { open, setOpen, builderContext } = props
+type State = {
+  selectedLocales: Set<string>
+}
+
+type Action = {
+  checked: boolean
+  locale: string
+}
+
+const initialState: State = { selectedLocales: new Set() }
+const reducer = (state: State, { locale, checked }: Action): State => {
+  if (checked) {
+    return { selectedLocales: state.selectedLocales.add(locale) }
+  } else {
+    state.selectedLocales.delete(locale)
+    return { selectedLocales: state.selectedLocales }
+  }
+}
+
+const extractLocales = (open: boolean, builderContext: any) => {
   let sourceLocale = undefined
   let targetLocales = undefined
   if (open) {
@@ -26,6 +45,15 @@ const LocalePicker = (props: any) => {
       targetLocales.splice(targetLocales.indexOf(sourceLocale), 1)
     } catch {}
   }
+  return [sourceLocale, targetLocales]
+}
+
+const LocalePicker = (props: any) => {
+  const { open, setOpen, builderContext } = props
+  const [sourceLocale, targetLocales] = extractLocales(open, builderContext)
+
+  const [state, dispatch] = useReducer(reducer, initialState)
+
   return (
     <Dialog
       aria-labelledby="simple-dialog-title"
@@ -52,12 +80,26 @@ const LocalePicker = (props: any) => {
               <ListItem>
                 <FormControlLabel
                   control={
-                    <Checkbox name={`target-locale-${index}`} color="primary" />
+                    <Checkbox
+                      name={`target-locale-${index}`}
+                      color="primary"
+                      onChange={event => {
+                        dispatch({
+                          locale: event.target.name,
+                          checked: event.target.checked
+                        })
+                      }}
+                    />
                   }
                   label={each}
                 />
               </ListItem>
             ))}
+            {state.selectedLocales.size > 0 && (
+              <Button color="primary" variant="contained">
+                Send for translations
+              </Button>
+            )}
           </List>
         ) : (
           <></>
