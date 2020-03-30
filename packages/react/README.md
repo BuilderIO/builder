@@ -26,7 +26,11 @@ loading data from other sources than our default APIs, such as data in your own 
 
 ```ts
 const content = await builder.get('page', { ...options });
-<BuilderComponent model="page" content={content} >
+if (content) {
+  document.title = content.data.title; // You can use custom fields from the response
+  return <BuilderComponent model="page" content={content} >
+}
+
 ```
 
 #### Passing data and functions down
@@ -58,7 +62,19 @@ export default () => <div>
      options={{ query: { 'data.something.$in': ['value a', 'value b'] } }} />
   <!-- some other content -->
 </div>
+```
 
+#### contentLoaded
+
+The contentLoaded hook can be useful for when you add [custom fields](https://www.builder.io/c/docs/custom-fields)
+
+```tsx
+<BuilderComponent 
+  model="page" 
+  contentLoaded={data => {
+    document.title = data.title // E.g. if your custom field is called `title`
+  }}
+/>
 ```
 
 ### Builder
