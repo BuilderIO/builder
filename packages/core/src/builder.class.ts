@@ -663,7 +663,6 @@ export class Builder {
 
   env: string = 'production';
 
-  protected isUsed = false;
   sessionId = this.getSessionId();
 
   targetContent = true;
@@ -1407,10 +1406,6 @@ export class Builder {
   }
 
   getUserAttributes(userAgent = this.userAgent || '') {
-    this.isUsed = true;
-
-    // TODO: detect desktop browser and OS too
-    // TODO: add user agent lib back
     const isMobile = {
       Android() {
         return userAgent.match(/Android/i);
@@ -1419,7 +1414,7 @@ export class Builder {
         return userAgent.match(/BlackBerry/i);
       },
       iOS() {
-        return userAgent.match(/iPhone|iPad|iPod/i);
+        return userAgent.match(/iPhone|iPod/i);
       },
       Opera() {
         return userAgent.match(/Opera Mini/i);
@@ -1438,22 +1433,15 @@ export class Builder {
       },
     };
 
-    // FIXME
+    const isTablet = userAgent.match(/Tablet|iPad/i);
+
     const url = this.getLocation();
 
-    // const device = ua.getDevice();
-    // TODO: get these from exension as well
     return {
-      // Removing because blowing out cache keys
-      // queryString: url.search,
       urlPath: url.pathname,
-      // Removinf for now because of cache keys
-      // referrer: document.referrer,
-      // language: navigator.language.split('-')[0],
       host: url.host || url.hostname,
-      device: isMobile.any() ? 'mobile' : 'desktop',
-      // operatingSystem: (ua.getOS().name || '').toLowerCase() || undefined,
-      // browser: (ua.getBrowser().name || '').toLowerCase() || undefined,
+      // TODO: maybe an option to choose to target off of mobile/tablet/desktop or just mobile/desktop
+      device: isTablet ? 'tablet' : isMobile.any() ? 'mobile' : 'desktop',
       ...Builder.overrideUserAttributes,
     } as UserAttributes;
   }
