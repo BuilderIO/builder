@@ -54,7 +54,7 @@ function Docs({ docsContent, docsNav, docsHeader }: any /* TODO: types */) {
         />
       </Head>
 
-      <BuilderComponent name="docs-header" content={docsHeader} />
+      <BuilderComponent model="docs-header" content={docsHeader} />
 
       <div
         css={{
@@ -102,7 +102,7 @@ function Docs({ docsContent, docsNav, docsHeader }: any /* TODO: types */) {
             }}
           >
             <ClientRouteWrapper contentRef={pageContent}>
-              <BuilderComponent name="docs-nav" content={docsNav} />
+              <BuilderComponent model="docs-nav" content={docsNav} />
             </ClientRouteWrapper>
           </div>
           <div

@@ -36,7 +36,7 @@ class CatchallPage extends React.Component {
     return !this.state.notFound ? (
       <BuilderComponent
         apiKey="bb209db71e62412dbe0114bdae18fd15"
-        name="page"
+        model="page"
         contentLoaded={content => {
           if (!content) {
             this.setState({ notFound: true });

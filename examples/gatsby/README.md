@@ -49,9 +49,9 @@ export default class ExamplePage extends React.Component<any> {
     return (
       <div>
         {/* next line assumes you have a header model in builder.io, alternatively you use your own <Header /> component here */}
-        <BuilderComponent name="header" content={header[0].content} />
+        <BuilderComponent model="header" content={header[0].content} />
         {/* Render other things in your code as you choose */}
-        <BuilderComponent name="page" content={page[0].content} />
+        <BuilderComponent model="page" content={page[0].content} />
       </div>
     );
   }

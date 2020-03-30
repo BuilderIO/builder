@@ -39,7 +39,7 @@ class About extends React.Component {
     return (
       <div>
         {this.props.builderPage ? (
-          <BuilderComponent name="page" content={this.props.builderPage} />
+          <BuilderComponent model="page" content={this.props.builderPage} />
         ) : (
           /* Show something else, e.g. 404 */
         )}
@@ -51,7 +51,7 @@ class About extends React.Component {
 
 ### Add the URL to your builder model and get editing
 
-Next, when you have added the Builder page component on your local site, go to the [models](https://buidler.io/models) page in Builder, choose the "page" model, and give it a URL where it can find this React component for the "preview url" field. This may be, for example, `http://localhost:8888/about`
+Nextmodel when you have added the Builder page component on your local site, go to the [models](https://buidler.io/models) page in Builder, choose the "page" model, and give it a URL where it can find this React component for the "preview url" field. This may be, for example, `http://localhost:8888/about`
 
 <img src="https://i.imgur.com/PRWvNM1.gif">
 
@@ -103,7 +103,7 @@ class CatchallBuilderPage extends React.Component {
     return (
       <div>
         {this.props.builderPage ? (
-          <BuilderComponent name="page" content={this.props.builderPage} />
+          <BuilderComponent model="page" content={this.props.builderPage} />
         ) : (
           // Render your 404 page (or redirect to it)
           <NotFound>
@@ -151,7 +151,7 @@ For lots of examples of using React components in Builder, see the source for ou
 import './your-builder-component';
 
 // ...
-export default () => <BuilderComponent name="page" />;
+export model () => <BuilderComponent model="page" />;
 ```
 
 And then it will show up in the insert menu (under "show more") in the Builder editor!

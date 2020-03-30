@@ -15,9 +15,9 @@ export default class ExamplePage extends React.Component<any> {
     return page[0] ? (
       <div>
         {/* Optionally render a header from Builder.io, or render your <Header /> instead */}
-        <BuilderComponent name="header" content={header[0]?.content} />
+        <BuilderComponent model="header" content={header[0]?.content} />
         {/* Render other things in your code as you choose */}
-        <BuilderComponent name="page" content={page[0]?.content} />
+        <BuilderComponent model="page" content={page[0]?.content} />
       </div>
     ) : (
       'Page not found for this URL'

@@ -25,7 +25,7 @@ function Landing({ builderPage }: any /* TODO: types */) {
         />
       </Head>
 
-      {builderPage ? <BuilderComponent name="content-page" content={builderPage} /> : <Error />}
+      {builderPage ? <BuilderComponent model="content-page" content={builderPage} /> : <Error />}
     </div>
   );
 }

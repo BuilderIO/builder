@@ -35,7 +35,7 @@ class CatchallPage extends React.Component {
               <Head>
                 <title>{page.data.title}</title>
               </Head>
-              <BuilderComponent name="page" content={page} />
+              <BuilderComponent model="page" content={page} />
             </>
           ) : (
             <div>Page not found!</div>

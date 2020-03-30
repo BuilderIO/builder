@@ -36,7 +36,7 @@ import { BuilderComponent } from '@builder.io/react'
 // the matching page by the current document's URL. Scroll 
 // down for more advanced options and examples
 export default let BuilderPage = () => (
-&nbsp;&nbsp;&lt;BuilderComponent name="page" /&gt;
+&nbsp;&nbsp;&lt;BuilderComponent model="page" /&gt;
 )
 </pre>
     </td>
@@ -180,7 +180,7 @@ class CatchAllPage extends Component {
   render() {
     return !this.props.notFound ? (
       <BuilderComponent
-        name="page"
+        model="page"
         contentLoaded={content => {
           if (!content) {
             this.setState({ notFound: true });

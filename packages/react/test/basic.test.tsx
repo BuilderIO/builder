@@ -121,7 +121,7 @@ describe('Data rendering', () => {
 describe('Simple component', () => {
   const html = 'hello'
 
-  const getBindingExampleElement = () => <BuilderSimpleComponent name="page" html={html} />
+  const getBindingExampleElement = () => <BuilderSimpleComponent model="page" html={html} />
   it('works with dom', () => {
     const testApi = render(getBindingExampleElement())
     expect(testApi.getByText(html)).toBeInTheDocument()

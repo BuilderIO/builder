@@ -16,7 +16,7 @@ const App = () => {
         {!notFound ? (
           // For server side rendering see here: https://github.com/BuilderIO/builder/tree/master/packages/react/examples/next-js
           <BuilderComponent
-            name="page"
+            model="page"
             contentLoaded={content => {
               if (!content && !Builder.isEditing) {
                 setNotFound(true);

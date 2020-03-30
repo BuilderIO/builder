@@ -96,7 +96,7 @@ the editor UI in Builder.
 ```ts
 @Component({
   selector: 'my-page',
-  template: '<builder-component name="page" [data]="data"></builder-component>',
+  template: '<builder-component model="page" [data]="data"></builder-component>',
 })
 export class MyPage {
   data = {

@@ -43,7 +43,7 @@ function Landing({ builderPage, docsHeader }: any /* TODO: types */) {
           },
         }}
       >
-        <BuilderComponent name="docs-header" content={docsHeader} />
+        <BuilderComponent model="docs-header" content={docsHeader} />
         <div
           css={{
             display: 'flex',
