@@ -85,9 +85,14 @@ Want suppoert for something not listed here or for us to priotize something comi
 
 This repo houses all of the various [SDKs](packages), [usage examples](examples), [starter projects](starters), and [plugins](plugins)
 
-## Quick start
+### Try it in Storybook
 
-To start on a fresh project quickly, take a look at our [react starter](starters/react) or our [design system example](/examples/react-design-system). To integrate Builder to an existing project take a look at the instructions below
+[Try out a live demo of our Storybook example](https://builder-storybook.firebaseapp.com/) or use our [Storybook addon](packages/storybook) with your own components, refer to our [design systems example](/examples/react-design-system) for lots of examples using your deisgn system + custom components + storybook.
+
+<a target="_blank" href="https://builder-storybook.firebaseapp.com/">
+<img src="https://user-images.githubusercontent.com/5093430/76154244-ebbe6480-608d-11ea-9dc9-08a59eda220e.gif" alt="example" />
+</a>
+
 
 ## Getting Started with React
 
@@ -115,13 +120,10 @@ And in your router
 
 Create a new page with url "/something" in Builder and change the [preview URL](https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F4670438a077f497d8a486f890201ae85) to localhost:port/something (e.g. localhost:8888/something if your dev server is on port 8888) and edit!
 
-### Try it in Storybook
+See more info on setting up your [preview urls](https://www.builder.io/c/docs/guides/preview-url) here.
 
-[Play around with our Storybook embedded editor example](https://builder-storybook.firebaseapp.com/) or use our [Storybook addon](packages/storybook) with your own components, refer to our [design systems example](/examples/react-design-system) for lots of examples using your deisgn system + custom components + storybook.
+Also, see the full [React API here](https://github.com/BuilderIO/builder/blob/master/packages/react/README.md)
 
-<a target="_blank" href="https://builder-storybook.firebaseapp.com/">
-<img src="https://user-images.githubusercontent.com/5093430/76154244-ebbe6480-608d-11ea-9dc9-08a59eda220e.gif" alt="example" />
-</a>
 
 ### Using your components
 
