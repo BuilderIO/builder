@@ -1,46 +1,31 @@
-# Angular Universal Starter
+# Builder.io Angular Universal example
 
-![Angular Universal](https://angular.io/generated/images/marketing/concept-icons/universal.png)
+This is an example of using Builder.io for dynamic page building with Angular and Angular Universal for server side rendering. 
 
-A minimal Angular starter for Universal JavaScript using the [Angular CLI](https://github.com/angular/angular-cli)
-If you're looking for the Angular Universal repo go to [**angular/universal**](https://github.com/angular/universal)  
+See the full Angular SDK source code and docs over [here](/packages/angular)
 
-## Getting Started
+## Running locally
 
-This demo is built following the [Angular CLI Wiki guide](https://github.com/angular/angular-cli/wiki/stories-universal-rendering)
+### Development server
 
-We're utilizing packages from the [Angular Universal @nguniversal](https://github.com/angular/universal) repo, such as [ng-module-map-ngfactory-loader](https://github.com/angular/universal/modules/module-map-ngfactory-loader) to enable Lazy Loading.
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
----
+### Code scaffolding
 
-### Build Time Pre-rendering vs. Server-side Rendering (SSR)
-This repo demonstrates the use of 2 different forms of Server-side Rendering.
+Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-**Pre-render** 
-* Happens at build time
-* Renders your application and replaces the dist index.html with a version rendered at the route `/`.
+### Build
 
-**Server-side Rendering (SSR)**
-* Happens at runtime
-* Uses `ngExpressEngine` to render your application on the fly at the requested url.
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
 
----
+### Running unit tests
 
-### Installation
-* `npm install` or `yarn`
+Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-### Development (Client-side only rendering)
-* run `npm run start` which will start `ng serve`
+### Running end-to-end tests
 
-### Production (also for testing SSR/Pre-rendering locally)
-**`npm run build:ssr && npm run serve:ssr`** - Compiles your application and spins up a Node Express to serve your Universal application on `http://localhost:4000`.
+Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
 
-**`npm run build:prerender && npm run serve:prerender`** - Compiles your application and prerenders your applications files, spinning up a demo http-server so you can view it on `http://localhost:8080`
-**Note**: To deploy your static site to a static hosting platform you will have to deploy the `dist/browser` folder, rather than the usual `dist`
+### Further help
 
-
-## Universal "Gotchas"
-Moved to [/angular/universal/blob/master/docs/gotchas.md](https://github.com/angular/universal/blob/master/docs/gotchas.md)
-
-# License
-[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](/LICENSE)
+Questions, feedback? Let us know over in our [forum](https://forum.builder.io)!
