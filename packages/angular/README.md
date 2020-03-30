@@ -21,7 +21,7 @@ import { BuilderModule } from '@builder.io/angular';
 export class MyAppModule { }
 ```
 
-And then add the component wherever you like, and you are done!
+And then add the component wherever you like
 
 ```html
 <!-- The model input can be any model of yours -->
@@ -30,6 +30,11 @@ And then add the component wherever you like, and you are done!
   <div class="spinner"></div>
 </builder-component>
 ```
+
+Then, update your model's preview URL to enable on-site editing like in [this guide](https://www.builder.io/c/docs/guides/preview-url), and you are done!
+
+Next, see the below info for more advanced usage, as well as [this guide](https://www.builder.io/c/docs/guides/getting-started-with-models) for creating custom models,
+and [this guide](https://www.builder.io/c/docs/seo) for SEO optimizing your content (for angular use the data from the `load` output to get the custom field data)
 
 ## Custom landing pages in your code
 
@@ -103,6 +108,27 @@ export class MyPage {
   constructor(public myService: MyService) {
 
   }
+}
+```
+
+## Using custom fields
+
+[Custom fields](https://www.builder.io/c/docs/custom-fields) are a powerful feature when using [custom models](https://www.builder.io/c/docs/guides/getting-started-with-models), for all sorts of customization, such as [SEO optimization](https://www.builder.io/c/docs/seo) of your content
+
+```html
+<builder-component
+  model="page"
+  (load)="contentLoaded($event)"
+>
+  <!-- Default content inside the tag shows while the builder content is fetching -->
+  <div class="spinner"></div>
+</builder-component>
+```
+```ts
+contentLoaded(data) {
+  // Data object (via the output $event) includes your custom fields, e.g. if you have a custom field named
+  // "title"
+  document.title = data.data.title
 }
 ```
 
