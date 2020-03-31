@@ -6,6 +6,8 @@ import { LocaleDialog } from './components/localeDialog'
 import ClientSide from './components/clientSide'
 
 const LocalizationConnector = (props: any) => {
+  console.log(props.context.toJSON())
+  console.log(props)
   const [open, setOpen] = useState(false)
 
   return (
@@ -33,5 +35,5 @@ const LocalizationConnector = (props: any) => {
 
 Builder.registerEditor({
   name: 'localization-connector',
-  component: LocalizationConnector,
+  component: LocalizationConnector
 })

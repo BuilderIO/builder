@@ -16,7 +16,13 @@ const LocaleDialog = (props: any) => {
     >
       <DialogTitle id="simple-dialog-title">
         Locale picker
-        <IconButton aria-label="close" onClick={() => setOpen(false)}>
+        <IconButton
+          aria-label="close"
+          onClick={() => {
+            console.log('Icon button on click')
+            setOpen(false)
+          }}
+        >
           <CloseIcon />
         </IconButton>
       </DialogTitle>
