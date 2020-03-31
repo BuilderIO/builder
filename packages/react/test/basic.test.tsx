@@ -2,7 +2,7 @@ import * as React from 'react'
 import { renderToString } from 'react-dom/server'
 import { render } from '@testing-library/react'
 import { BuilderElement, Builder } from '@builder.io/sdk'
-import { BuilderPage, BuilderSimpleComponent } from '../src/builder-react'
+import { BuilderPage } from '../src/builder-react'
 
 import '@testing-library/jest-dom/extend-expect'
 
@@ -114,22 +114,6 @@ describe('Data rendering', () => {
     server(() => {
       const string = renderToString(getBindingExampleElement())
       expect(string).toContain(TEXT_STRING)
-    })
-  })
-})
-
-describe('Simple component', () => {
-  const html = 'hello'
-
-  const getBindingExampleElement = () => <BuilderSimpleComponent model="page" html={html} />
-  it('works with dom', () => {
-    const testApi = render(getBindingExampleElement())
-    expect(testApi.getByText(html)).toBeInTheDocument()
-  })
-  it('works with SSR', () => {
-    server(() => {
-      const string = renderToString(getBindingExampleElement())
-      expect(string).toContain(html)
     })
   })
 })
