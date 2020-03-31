@@ -1,7 +1,10 @@
 import React, { useReducer } from 'react'
 import { FormLabel, Button } from '@material-ui/core'
 import { MemsourceService } from '../services/memsourceService'
-import { extractMemsourceToken } from '../services/propsExtractor'
+import {
+  extractMemsourceToken,
+  extractProjectName
+} from '../services/propsExtractor'
 import { State, Action } from '../types/Localization'
 import { LocaleOption } from './localeOption'
 
@@ -28,8 +31,9 @@ export const TargetLocales = (props: any) => {
 
   const handleSubmit = () => {
     const memsourceToken = extractMemsourceToken(builderContext)
+    const projectName = extractProjectName(builderContext)
     const svc = new MemsourceService(memsourceToken)
-    svc.sendTranslationJob('job', sourceLocale, [...selectedLocales], {})
+    svc.sendTranslationJob(projectName, sourceLocale, [...selectedLocales], {})
   }
 
   return (

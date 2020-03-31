@@ -1,6 +1,7 @@
 import {
   extractLocales,
-  extractMemsourceToken
+  extractMemsourceToken,
+  extractProjectName
 } from '../src/services/propsExtractor'
 
 describe('Extract Locales', () => {
@@ -51,17 +52,47 @@ describe('Extract Locales', () => {
 
       expect(targetLocales).toEqual(['locale-1', 'locale-2'])
     })
+
+    describe('given both data locale and enum locales are defined in builder context', () => {
+      const ctx = {
+        designerState: {
+          editingContentModel: {
+            model: {
+              fields: [
+                {
+                  name: 'locale',
+                  enum: { toJSON: () => ['locale-1', 'locale-2'] }
+                }
+              ]
+            }
+          }
+        }
+      }
+      it('should return source locale and target locales excluding source locale', () => {})
+    })
   })
 
   describe('Given locale enum is not in builder model fields', () => {
     const ctx = {
-      designerState: { editingContentModel: { model: { fields: [] } } }
+      designerState: {
+        editingContentModel: {
+          data: { toJSON: () => ({ locale: 'locale-1' }) },
+          model: {
+            fields: [
+              {
+                name: 'locale',
+                enum: { toJSON: () => ['locale-1', 'locale-2'] }
+              }
+            ]
+          }
+        }
+      }
     }
-
     it('should return undefined', () => {
-      const [_, targetLocales] = extractLocales(ctx)
+      const [sourceLocale, targetLocales] = extractLocales(ctx)
 
-      expect(targetLocales).toBeUndefined()
+      expect(sourceLocale).toBe('locale-1')
+      expect(targetLocales).toStrictEqual(['locale-2'])
     })
   })
 })
@@ -75,6 +106,7 @@ describe('Extract Memsource Token', () => {
             fields: [
               {
                 name: 'memsourceToken',
+                hidden: true,
                 toJSON: () => ({ defaultValue: '1234' })
               }
             ]
@@ -103,6 +135,43 @@ describe('Extract Memsource Token', () => {
       const token = extractMemsourceToken(ctx)
 
       expect(token).toEqual('')
+    })
+  })
+})
+
+describe('Extract Project Name', () => {
+  describe('Given all model name, page name and source locale is in builder context', () => {
+    const ctx = {
+      designerState: {
+        editingContentModel: {
+          data: { toJSON: () => ({ locale: 'locale1', title: 'title1' }) },
+          model: {
+            name: 'model-name'
+          }
+        }
+      }
+    }
+    it('should return a project name', () => {
+      const projectName = extractProjectName(ctx)
+
+      expect(projectName).toEqual('model-name__title1__locale1')
+    })
+  })
+
+  describe('Given one field at least is not in builder context', () => {
+    const ctx = {
+      designerState: {
+        editingContentModel: {
+          model: {
+            fields: []
+          }
+        }
+      }
+    }
+    it('should return empty string', () => {
+      const projectName = extractProjectName(ctx)
+
+      expect(projectName).toEqual('')
     })
   })
 })

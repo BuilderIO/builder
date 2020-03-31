@@ -28,3 +28,15 @@ export const extractMemsourceToken = (builderContext: any) => {
     return ''
   }
 }
+
+export const extractProjectName = (builderContext: any) => {
+  try {
+    const { editingContentModel } = builderContext.designerState
+    const modelName = editingContentModel.model.name
+    const pageName = editingContentModel.data.toJSON().title
+    const sourceLocale = editingContentModel.data.toJSON().locale
+    return `${modelName}__${pageName}__${sourceLocale}`
+  } catch {
+    return ''
+  }
+}
