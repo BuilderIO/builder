@@ -8,6 +8,7 @@ This demo demonstrates creating dynamic pages in Builder.io on new URLs and gene
 as rendering specific parts of your site with Builder.io content via GraphQL queries (e.g. for pages, components, etc)
 
 See:
+- For a more advanced example and a starter check out [gatsby-starter-builder](https://github.com/BuilderIO/gatsby-starter-builder)
 
 - [src/components/hero.builder.ts](src/components/hero.builder.ts) for an example of using a custom react component in the Builder.io visiaul editor. See a more rich example of a whole design system of components [here](https://github.com/BuilderIO/builder/tree/master/examples/react-design-system)
 - [src/pages/example.tsx](src/pages/example.tsx) for using GraphQL to query and render Builder.io components and pages manually in parts of your Gatsby site and content
