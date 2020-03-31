@@ -62,7 +62,7 @@ Builder.registerComponent(SimpleText, {
 
 ## How to Query
 
-For an up-to-date complete examples check out the examples on [BuilderIO/examples/gatsby](https://github.com/BuilderIO/builder/tree/master/examples/gatsby)
+For an up-to-date complete examples check out the [Gatsby + Builder.io starter](https://github.com/BuilderIO/gatsby-starter-builder)
 
 ```graphql
 {
@@ -76,7 +76,7 @@ For an up-to-date complete examples check out the examples on [BuilderIO/example
 
 ## Learn more
 
-- [Full gatsby + Builder.io example](examples/gatsby)
-- [Design system example](/examples/react-design-system)
+- [Gatsby + Builder.io starter](https://github.com/BuilderIO/gatsby-starter-builder)
+- [Design system example](https://github.com/BuilderIO/builder/tree/master/examples/react-design-system)
 - [Official docs](https://www.builder.io/c/docs/getting-started)
 
