@@ -28,11 +28,16 @@ export const getSrcSet = (url: string) => {
   if (!url.match(/builder\.io/)) {
     return url
   }
-
+  let srcUrl = url
+  const widthInSrc = Number(url.split('?width=')[0])
+  if (!isNaN(widthInSrc)) {
+    srcUrl = `${srcUrl} ${widthInSrc}w`
+  }
   const sizes = [100, 200, 400, 800, 1200, 1600, 2000]
   return sizes
+    .filter(size => size !== widthInSrc)
     .map(size => `${updateQueryParam(url, 'width', String(size))} ${size}w`)
-    .concat([url])
+    .concat([srcUrl])
     .join(', ')
 }
 
