@@ -1,4 +1,4 @@
-import { ServerRequest, ServerResponse } from 'http';
+import { IncomingMessage, ServerResponse } from 'http';
 import { nextTick } from './functions/next-tick.function';
 import { QueryString } from './classes/query-string.class';
 import { version } from '../package.json';
@@ -970,7 +970,7 @@ export class Builder {
 
   constructor(
     apiKey: string | null = null,
-    protected request?: ServerRequest,
+    protected request?: IncomingMessage,
     protected response?: ServerResponse,
     forceNewInstance = false
   ) {
@@ -1370,7 +1370,12 @@ export class Builder {
     );
   }
 
-  init(apiKey: string, canTrack = this.defaultCanTrack, req?: ServerRequest, res?: ServerResponse) {
+  init(
+    apiKey: string,
+    canTrack = this.defaultCanTrack,
+    req?: IncomingMessage,
+    res?: ServerResponse
+  ) {
     if (req) {
       this.request = req;
     }
@@ -1457,7 +1462,11 @@ export class Builder {
 
   get(
     modelName: string,
-    options: GetContentOptions & { req?: ServerRequest; res?: ServerResponse; apiKey?: string } = {}
+    options: GetContentOptions & {
+      req?: IncomingMessage;
+      res?: ServerResponse;
+      apiKey?: string;
+    } = {}
   ) {
     let instance: Builder = this;
     if (!Builder.isBrowser && (options.req || options.res)) {
