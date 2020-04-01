@@ -29,7 +29,7 @@ export const getSrcSet = (url: string) => {
     return url
   }
   let srcUrl = url
-  const widthInSrc = Number(url.split('?width=')[0])
+  const widthInSrc = Number(url.split('?width=')[1])
   if (!isNaN(widthInSrc)) {
     srcUrl = `${srcUrl} ${widthInSrc}w`
   }
