@@ -1,3 +1,5 @@
+import { generatePayload } from './blocksExtractor'
+
 export const extractLocales = (builderContext: any) => {
   let sourceLocale = undefined
   try {
@@ -39,4 +41,8 @@ export const extractProjectName = (builderContext: any) => {
   } catch {
     return ''
   }
+}
+
+export const extractPayload = (builderContext: any) => {
+  generatePayload(builderContext)
 }

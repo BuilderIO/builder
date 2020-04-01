@@ -3,7 +3,8 @@ import { FormLabel, Button } from '@material-ui/core'
 import { MemsourceService } from '../services/memsourceService'
 import {
   extractMemsourceToken,
-  extractProjectName
+  extractProjectName,
+  extractPayload
 } from '../services/propsExtractor'
 import { State, Action } from '../types/Localization'
 import { LocaleOption } from './localeOption'
@@ -31,8 +32,9 @@ export const TargetLocales = (props: any) => {
 
   const handleSubmit = () => {
     const memsourceToken = extractMemsourceToken(builderContext)
-    const projectName = extractProjectName(builderContext)
     const svc = new MemsourceService(memsourceToken)
+    const projectName = extractProjectName(builderContext)
+    const payload = extractPayload(builderContext)
     svc.sendTranslationJob(projectName, sourceLocale, [...selectedLocales], {})
   }
 
