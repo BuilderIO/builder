@@ -1,5 +1,3 @@
-import { generatePayload } from './blocksExtractor'
-
 export const extractLocales = (builderContext: any) => {
   let sourceLocale = undefined
   try {
@@ -8,6 +6,7 @@ export const extractLocales = (builderContext: any) => {
   } catch {}
 
   let targetLocales = undefined
+
   try {
     targetLocales = builderContext.designerState.editingContentModel.model.fields
       .find((field: any) => field.name === 'locale')
@@ -41,8 +40,4 @@ export const extractProjectName = (builderContext: any) => {
   } catch {
     return ''
   }
-}
-
-export const extractPayload = (builderContext: any) => {
-  generatePayload(builderContext)
 }

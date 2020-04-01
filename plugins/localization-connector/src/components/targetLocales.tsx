@@ -3,9 +3,9 @@ import { FormLabel, Button } from '@material-ui/core'
 import { MemsourceService } from '../services/memsourceService'
 import {
   extractMemsourceToken,
-  extractProjectName,
-  extractPayload
+  extractProjectName
 } from '../services/propsExtractor'
+import { generatePayload } from '../services/payloadBuilder'
 import { State, Action } from '../types/Localization'
 import { LocaleOption } from './localeOption'
 
@@ -34,8 +34,13 @@ export const TargetLocales = (props: any) => {
     const memsourceToken = extractMemsourceToken(builderContext)
     const svc = new MemsourceService(memsourceToken)
     const projectName = extractProjectName(builderContext)
-    const payload = extractPayload(builderContext)
-    svc.sendTranslationJob(projectName, sourceLocale, [...selectedLocales], {})
+    const payload = generatePayload(builderContext)
+    svc.sendTranslationJob(
+      projectName,
+      sourceLocale,
+      [...selectedLocales],
+      payload
+    )
   }
 
   return (
