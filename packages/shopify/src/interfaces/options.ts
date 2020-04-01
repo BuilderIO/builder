@@ -5,6 +5,5 @@ export interface Options {
   extractCss?: boolean;
   minify?: boolean;
   includeJson?: boolean;
-  convertShopifyBindings?: boolean;
   prettierOptions?: PrettierOptions;
 }

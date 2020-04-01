@@ -40,48 +40,6 @@ const convertBinding = (binding: string, options: Options) => {
     );
   }
 
-  if (options.convertShopifyBindings) {
-    // TODO: causing issue sdoing this here,need to do in TS transforms or after ts transform
-    if (value.match(/images\[\d+\]\.src/)) {
-      value = value.replace(/(images\[\d+\])\.src/g, "$1 | img_url: 'master'");
-    }
-    // if (value.match(/product\.price\s*\/\s*/)) {
-    //   value = value.replace(/'\$'\s*\+\s*(state\.)?product\.price\s*\/\s*100/g, "' '");
-    // }
-    // Hack
-    if (value.includes('state.product.product.')) {
-      value = value.replace(/state\.product\.product\./g, 'product.');
-      value = camelCaseToSnakeCase(value);
-    }
-    if (value.includes('state.products.products')) {
-      value = value.replace(/state\.products\.products/g, 'collection.products');
-      value = camelCaseToSnakeCase(value);
-    }
-    if (value.includes('state.productsItem')) {
-      value = value.replace(/state\.productsItem\./g, 'productsItem');
-      value = camelCaseToSnakeCase(value);
-    }
-
-    // TODO: replace all, e.g. in ternary
-    if (value.includes('state.product.')) {
-      value = value.replace(/state\.product\./g, 'product.');
-    }
-
-    if (value.match(/state\.(\w+)Item/)) {
-      value = value.replace(/state\.(\w+)Item/g, '$1_item');
-    }
-
-    // TODO: replace all, e.g. in ternary
-    if (value.includes('state.')) {
-      value = value.replace(/state\./g, '');
-    }
-
-    const itemBugRe = /_item([^\.[$\s])/g;
-    if (value.match(itemBugRe)) {
-      value = value.replace(itemBugRe, '_item.$1');
-    }
-  }
-
   return value;
 };
 
@@ -164,6 +122,8 @@ export function blockToLiquid(json: BuilderElement, options: Options = {}): stri
   if (collectionName) {
     collectionName = convertBinding(collectionName, options);
   }
+
+  console.log('latest?')
 
   // Fragment? hm
   return `

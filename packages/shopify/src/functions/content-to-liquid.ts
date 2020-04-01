@@ -6,13 +6,6 @@ import { Options as PrettierOptions } from 'prettier';
 import { blockToLiquid } from './block-to-liquid';
 import { Options } from '../interfaces/options';
 import { fastClone } from './fast-clone';
-import {
-  convertTsToLiquid,
-  TEMPLATE_START_TOKEN,
-  PART_START_TOKEN,
-  PART_END_TOKEN,
-  TEMPLATE_END_TOKEN,
-} from '../transformers/convert';
 import * as CleanCSS from 'clean-css';
 import * as csso from 'csso';
 
@@ -27,12 +20,12 @@ function getCssFromFont(font: any) {
   if (url && family && name) {
     str += `
 @font-face {
-font-family: ${family};
-src: local("${name}"), url('${url}') format('woff2');
-font-display: swap;
-font-weight: 400;
+  font-family: ${family};
+  src: local("${name}"), url('${url}') format('woff2');
+  font-display: swap;
+  font-weight: 400;
 }
-      `.trim();
+`.trim();
   }
 
   if (font.files) {
@@ -69,64 +62,21 @@ function getCss(data: any) {
 }
 
 export const convertTemplateLiteralsToTags = (liquid: string, options: Options = {}) => {
-  let current = liquid;
-  let latest = liquid;
-  let updated = true;
-  while (updated) {
-    updated = false;
-    latest = current
+  return (
+    liquid
       // Template interpolate tokens
-      .replace(new RegExp('`' + TEMPLATE_START_TOKEN, 'g'), '')
-      .replace(new RegExp(PART_START_TOKEN + '\\${', 'g'), '')
-      .replace(new RegExp('}' + PART_END_TOKEN, 'g'), '')
-      .replace(new RegExp(TEMPLATE_END_TOKEN + '`', 'g'), '')
       // HACK: get this into the appropriate place
       .replace(/context\.shopify\.liquid\.get\(\s*"(.*?)"\s*state\)/g, '$1')
       // TODO: can have double quotes in value
       .replace(
         /{{\s*context\.shopify\.liquid\.render\(("|&quot;)(.*?)("|&quot;),\s*state\)\s*}}/g,
         '$2'
-      );
-
-    latest = latest
-      // Sometimes we have to replace {{ .. }} bindings with {% ... %}
-      // For ease, swap directly inside, but we need to remove the surrounding tags
-      // when we see {{ {% ... %} }}
-      .replace(/{{\s*{%/g, '{%')
-      .replace(/%}\s*}}/g, '%}');
-
-    if (options.convertShopifyBindings) {
-      // Fix this in the compiler
-      latest = latest
-        .replace(/\| img_url;\s*/g, `| img_url: `)
-
-        // TODO: put into transforms
-        .replace(/src="{{ images_item }}"/g, `src="{{ images_item | img_url: 'master' }}"`)
-
-        .replace(/(state\.)?\$index/g, 'forloop.index')
-
-        // Why...
-        .replace(/{%\s*unless\s*;\s*/g, '{% unless ')
-
-        // TS is putting parans around for (thing in things) but liquid requires none
-        // FIXME: why this happening?
-        .replace(/{%\s*for\s*\((.*?\s*in\s*.*?)\)\s*%}/g, '{% for $1 %}');
-    }
-
-    if (latest !== current) {
-      current = latest;
-      updated = true;
-    }
-  }
-  return latest;
+      )
+  );
 };
 
 const liquidExpression = (expression: string, options: Options = {}) => {
-  // TODO: make the default
-  if (options.convertShopifyBindings) {
-    return unescapeHtml(expression);
-  }
-  return convertTsToLiquid(unescapeHtml(expression));
+  return unescapeHtml(expression);
 };
 // TODO: move to transformer. Will break if ' + ' is in a string, though
 // right now this seems very unusual and unlikely to occur
