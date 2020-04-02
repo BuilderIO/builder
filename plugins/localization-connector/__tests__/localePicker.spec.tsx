@@ -7,36 +7,28 @@ import { TargetLocales } from '../src/components/targetLocales'
 
 describe('Locale picker', () => {
   it('should pass extracted source locale to source locale display', () => {
-    jest
-      .spyOn(propsExtractor, 'extractLocales')
-      .mockImplementationOnce(() => ['source-locale', []])
-    const wrapper = mount(<LocalePicker />)
+    const wrapper = mount(<LocalePicker sourceLocale="source-locale" />)
 
     expect(wrapper.find(SourceLocale).prop('sourceLocale')).toBe(
       'source-locale'
     )
   })
 
-  it('should pass extracted source locale to target locale display', () => {
-    jest
-      .spyOn(propsExtractor, 'extractLocales')
-      .mockImplementationOnce(() => ['source-locale', []])
-    const wrapper = mount(<LocalePicker />)
-
-    expect(wrapper.find(TargetLocales).prop('sourceLocale')).toBe(
-      'source-locale'
-    )
-  })
-
   it('should pass extracted target locales to target locale display', () => {
-    jest
-      .spyOn(propsExtractor, 'extractLocales')
-      .mockImplementationOnce(() => ['', ['target-1', 'target-2']])
-    const wrapper = mount(<LocalePicker />)
+    const wrapper = mount(
+      <LocalePicker targetLocales={['target-1', 'target-2']} />
+    )
 
     expect(wrapper.find(TargetLocales).prop('targetLocales')).toStrictEqual([
       'target-1',
       'target-2'
     ])
+  })
+
+  it('should pass dispatch callback to target locales', () => {
+    const mock = jest.fn()
+    const wrapper = mount(<LocalePicker dispatch={mock} />)
+
+    expect(wrapper.find(TargetLocales).prop('dispatch')).toEqual(mock)
   })
 })

@@ -11,7 +11,7 @@ const MuiDialogTitle = withStyles(({ spacing, palette }) => ({
     color: palette.grey[500]
   }
 }))((props: any) => {
-  const { children, classes, onClose, ...other } = props
+  const { children, classes, onClose, other } = props
   return (
     <DialogTitle disableTypography {...other}>
       <Typography variant="h6">{children}</Typography>

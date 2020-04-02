@@ -9,12 +9,12 @@ export const LocaleOption = (props: any) => {
         <Checkbox
           name={label}
           color="primary"
-          onChange={event => {
+          onChange={event =>
             dispatch({
               locale: event.target.name,
               checked: event.target.checked
             })
-          }}
+          }
         />
       }
       label={label}

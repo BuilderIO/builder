@@ -4,9 +4,15 @@ import TranslateIcon from '@material-ui/icons/Translate'
 import { Button } from '@material-ui/core'
 import { LocaleDialog } from './components/localeDialog'
 import ClientSide from './components/clientSide'
+import { generatePayload } from './services/payloadBuilder'
 
 const LocalizationConnector = (props: any) => {
   const [open, setOpen] = useState(false)
+
+  const possiblePayload = generatePayload(props.context)
+  if (possiblePayload == null) {
+    return <div>No translatable content</div>
+  }
 
   return (
     <>

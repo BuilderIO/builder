@@ -1,8 +1,7 @@
 import React from 'react'
 import { TargetLocales } from '../src/components/targetLocales'
 import { mount } from 'enzyme'
-import { Button, Checkbox } from '@material-ui/core'
-import { MemsourceService } from '../src/services/memsourceService'
+import { Checkbox } from '@material-ui/core'
 jest.mock('../src/services/memsourceService')
 const spy = jest.fn()
 
@@ -13,90 +12,41 @@ describe('Target Locales', () => {
 
   describe('given there are no target locales', () => {
     it('should not show any checkboxes', () => {
-      const wrapper = mount(<TargetLocales sourceLocale="source" />)
+      const wrapper = mount(<TargetLocales />)
 
       expect(wrapper.find(Checkbox)).toHaveLength(0)
     })
   })
 
-  describe('Given no locales have been selected', () => {
-    it('Submit button should be disabled', () => {
+  describe('given there actually are target locales', () => {
+    it('should show as many options as target locales', () => {
       const wrapper = mount(
-        <TargetLocales
-          sourceLocale="source"
-          targetLocales={['target-1', 'target-2']}
-        />
+        <TargetLocales targetLocales={['target-1', 'target-2']} />
       )
 
-      expect(wrapper.find(Button).prop('disabled')).toBeTruthy()
+      expect(wrapper.find(Checkbox)).toHaveLength(2)
     })
-  })
 
-  describe('when submitting job to memsource', () => {
-    it('should send to memsource selected locales', () => {
-      MemsourceService.prototype.sendTranslationJob = spy
-      const wrapper = mount(
-        <TargetLocales
-          sourceLocale="source"
-          targetLocales={['target-1', 'target-2']}
-        />
-      )
+    describe('when selecting a target locale', () => {
+      it('fires off the dispatch', () => {
+        const spy = jest.fn()
 
-      wrapper
-        .find('input')
-        .find({ name: 'target-1' })
-        .simulate('change', {
+        const wrapper = mount(
+          <TargetLocales
+            targetLocales={['target-1', 'target-2']}
+            dispatch={spy}
+          />
+        )
+
+        wrapper
+          .find(Checkbox)
+          .first()
+          .prop('onChange')({
           target: { name: 'target-1', checked: true }
         })
 
-      wrapper.find(Button).simulate('click')
-
-      expect(spy).toHaveBeenCalledWith(
-        expect.anything(),
-        'source',
-        ['target-1'],
-        expect.anything()
-      )
-    })
-
-    it('should not send unchecked locales', () => {
-      MemsourceService.prototype.sendTranslationJob = spy
-      const wrapper = mount(
-        <TargetLocales
-          sourceLocale="source"
-          targetLocales={['target-1', 'target-2']}
-        />
-      )
-
-      wrapper
-        .find('input')
-        .find({ name: 'target-1' })
-        .simulate('change', {
-          target: { name: 'target-1', checked: true }
-        })
-
-      wrapper
-        .find('input')
-        .find({ name: 'target-2' })
-        .simulate('change', {
-          target: { name: 'target-2', checked: true }
-        })
-
-      wrapper
-        .find('input')
-        .find({ name: 'target-1' })
-        .simulate('change', {
-          target: { name: 'target-1', checked: false }
-        })
-
-      wrapper.find(Button).simulate('click')
-
-      expect(spy).toHaveBeenCalledWith(
-        expect.anything(),
-        'source',
-        ['target-2'],
-        expect.anything()
-      )
+        expect(spy).toHaveBeenCalledWith({ locale: 'target-1', checked: true })
+      })
     })
   })
 })
