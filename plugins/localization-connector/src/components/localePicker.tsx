@@ -1,23 +1,19 @@
 import React from 'react'
-import { FormGroup, FormControl } from '@material-ui/core'
+import { DialogContent, FormGroup, FormControl } from '@material-ui/core'
 import { SourceLocale } from './sourceLocale'
 import { TargetLocales } from './targetLocales'
-import { extractLocales } from '../services/propsExtractor'
 
 export default (props: any) => {
-  const { builderContext } = props
-  const [sourceLocale, targetLocales] = extractLocales(builderContext)
+  const { dispatch, sourceLocale, targetLocales } = props
 
   return (
-    <FormControl component="fieldset">
-      <FormGroup>
-        <SourceLocale sourceLocale={sourceLocale} />
-        <TargetLocales
-          sourceLocale={sourceLocale}
-          targetLocales={targetLocales}
-          builderContext={builderContext}
-        />
-      </FormGroup>
-    </FormControl>
+    <DialogContent>
+      <SourceLocale sourceLocale={sourceLocale} />
+      <FormControl component="fieldset">
+        <FormGroup>
+          <TargetLocales targetLocales={targetLocales} dispatch={dispatch} />
+        </FormGroup>
+      </FormControl>
+    </DialogContent>
   )
 }

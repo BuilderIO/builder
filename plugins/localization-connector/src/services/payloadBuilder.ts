@@ -1,4 +1,5 @@
 export const generatePayload = (builderContext: any) => {
+  console.log('generate payload')
   const usedComponentsSchema = _getComponentsUsedSchema(builderContext)
   const translatableComponentNames = _getTranslatableComponentNames(
     builderContext
@@ -16,8 +17,8 @@ export const generatePayload = (builderContext: any) => {
     .map((each: any) => {
       if (pageData[each.name]) {
         return {
-          id: `page-${each.name}`,
-          optionKey: each.name,
+          __id: `page-${each.name}`,
+          __optionKey: each.name,
           toTranslate: pageData[each.name]
         }
       }
@@ -69,8 +70,8 @@ const _mapComponentToPayload = (component: any, schema: any) => {
     .map((each: any) => {
       if (options[each]) {
         return {
-          id,
-          optionKey: each,
+          __id: id,
+          __optionKey: each,
           toTranslate: options[each]
         }
       }

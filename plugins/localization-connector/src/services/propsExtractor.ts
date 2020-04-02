@@ -3,7 +3,9 @@ export const extractLocales = (builderContext: any) => {
   try {
     sourceLocale = builderContext.designerState.editingContentModel.data.toJSON()
       .locale
-  } catch {}
+  } catch (e) {
+    console.log('s error', e)
+  }
 
   let targetLocales = undefined
 
@@ -15,7 +17,9 @@ export const extractLocales = (builderContext: any) => {
     if (targetLocales.includes(sourceLocale)) {
       targetLocales.splice(targetLocales.indexOf(sourceLocale), 1)
     }
-  } catch {}
+  } catch (e) {
+    console.log('error', e)
+  }
 
   return [sourceLocale, targetLocales]
 }
