@@ -706,7 +706,7 @@ export class BuilderPage extends React.Component<
 
   getCss(data: any) {
     const contentId = this.useContent?.id
-    let cssCode = data.cssCode || ''
+    let cssCode = data?.cssCode || ''
     if (contentId) {
       // Allow using `&` in custom CSS code like @emotion
       // E.g. `& .foobar { ... }` to scope CSS
@@ -714,7 +714,7 @@ export class BuilderPage extends React.Component<
       cssCode = cssCode.replace(/&/g, `.builder-component-${contentId}`)
     }
 
-    return (data.cssCode || '') + this.getFontCss(data)
+    return cssCode + this.getFontCss(data)
   }
 
   get data() {
@@ -796,7 +796,6 @@ export class BuilderPage extends React.Component<
           contentId ? `builder-component-${contentId}` : ''
         }`}
         data-name={this.name}
-        data-timestamp={Date.now()}
         date-source={`Rendered by Builder.io on ${new Date().toUTCString()}`}
         key={this.state.key}
         ref={ref => (this.ref = ref)}
