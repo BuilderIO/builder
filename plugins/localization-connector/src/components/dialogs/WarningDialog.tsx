@@ -1,6 +1,7 @@
 import React from 'react'
 import { Dialog } from '@material-ui/core'
 import { Alert } from '@material-ui/lab'
+import MuiDialogTitle from '../dialogTitle'
 
 const alertMessageSwitch = {
   'no-blocks': 'Page has no blocks',
@@ -17,6 +18,12 @@ export default ({
 }) => {
   return (
     <Dialog open={true} onClose={() => setOpen(false)}>
+      <MuiDialogTitle
+        id="customized-dialog-title"
+        onClose={() => setOpen(false)}
+      >
+        Locale picker warning
+      </MuiDialogTitle>
       <Alert severity="warning">{alertMessageSwitch[condition]}</Alert>
     </Dialog>
   )

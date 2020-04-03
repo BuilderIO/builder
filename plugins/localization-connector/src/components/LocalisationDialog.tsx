@@ -50,6 +50,9 @@ const LocalisationDialog = (props: LocalisationDialogProps) => {
         memsourceArgs.payload,
         memsourceArgs.memsourceInputSetting
       )
+
+      alert('Job(s) sent!')
+      setOpen(false)
     }
   }
   return (
