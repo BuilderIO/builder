@@ -348,6 +348,7 @@ export interface InsertMenuItem {
 export interface InsertMenuConfig {
   name: string;
   priority?: number;
+  persist?: boolean;
   advanced?: boolean;
   items: InsertMenuItem[];
 }
