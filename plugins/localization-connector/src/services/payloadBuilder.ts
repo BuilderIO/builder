@@ -1,12 +1,25 @@
 export const generatePayload = (builderContext: any) => {
-  console.log('generate payload')
-  const usedComponentsSchema = _getComponentsUsedSchema(builderContext)
-  const translatableComponentNames = _getTranslatableComponentNames(
-    builderContext
-  )
+  try {
+    const payloadMetadata = getPageOptions(builderContext)
+    const translatablePageData = getTranslatablePageOptions(builderContext)
 
+    const translatableComponents = getTranslatableComponents(builderContext)
+    return {
+      __context: payloadMetadata,
+      content: translatableComponents.concat(translatablePageData)
+    }
+  } catch {}
+}
+
+const getPageOptions = (builderContext: any) => {
+  const data = builderContext.designerState.editingContentModel.data.toJSON()
+  delete data.blocks
+  return data
+}
+
+const getTranslatablePageOptions = (builderContext: any) => {
   const pageData = builderContext.designerState.editingContentModel.data.toJSON()
-  const translatablePageData = builderContext.designerState.editingContentModel.model.fields
+  const translatablePageOptions = builderContext.designerState.editingContentModel.model.fields
     .map((each: any) => each.toJSON())
     .filter(
       (each: any) =>
@@ -25,6 +38,14 @@ export const generatePayload = (builderContext: any) => {
     })
     .filter((each: any) => each)
 
+  return translatablePageOptions
+}
+
+const getTranslatableComponents = (builderContext: any) => {
+  const usedComponentsSchema = _getComponentsUsedSchema(builderContext)
+  const translatableComponentNames = _getTranslatableComponentNames(
+    builderContext
+  )
   const translatableComponents = builderContext.designerState.editingContentModel.data
     .get('blocks')
     .toJSON()
@@ -35,13 +56,14 @@ export const generatePayload = (builderContext: any) => {
     .flat()
     .filter((each: any) => each)
 
-  return translatableComponents.concat(translatablePageData)
+  return translatableComponents
 }
 
-const _getComponentsUsedSchema = (builderContext: any) =>
-  builderContext.designerState.editingContentModel.meta
+const _getComponentsUsedSchema = (builderContext: any) => {
+  return builderContext.designerState.editingContentModel.meta
     .get('componentsUsed')
     .toJSON()
+}
 
 const _getTranslatableComponentNames = (builderContext: any) => {
   const schema = _getComponentsUsedSchema(builderContext)

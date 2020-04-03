@@ -2,7 +2,6 @@ const path = require('path')
 const pkg = require("./package.json")
 module.exports = {
   entry: `./src/${pkg.entry}.tsx`,
-  mode: 'production',
   externals: {
     react: 'react',
     '@builder.io/sdk': '@builder.io/sdk',

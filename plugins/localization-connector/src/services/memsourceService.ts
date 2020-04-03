@@ -10,7 +10,8 @@ export class MemsourceService {
     projectName: string,
     sourceLocale: string,
     targetLocales: string[],
-    payload: object
+    payload: object,
+    inputSettings: string | undefined
   ): Promise<string> => {
     const projectUUID = await this.memsourceClient.createProject(
       projectName,
@@ -21,7 +22,8 @@ export class MemsourceService {
     return await this.memsourceClient.createJob(
       projectUUID,
       targetLocales,
-      payload
+      payload,
+      inputSettings
     )
   }
 }

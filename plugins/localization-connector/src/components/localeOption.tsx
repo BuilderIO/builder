@@ -1,8 +1,12 @@
 import React from 'react'
 import { FormControlLabel, Checkbox } from '@material-ui/core'
 
-export const LocaleOption = (props: any) => {
-  const { label, dispatch } = props
+type LocaleOptionProps = {
+  label: string
+  dispatch: Function
+}
+
+export const LocaleOption = ({ label, dispatch }: LocaleOptionProps) => {
   return (
     <FormControlLabel
       control={

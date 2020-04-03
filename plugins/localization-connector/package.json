@@ -1,11 +1,11 @@
 {
-  "name": "@builder.io/localization-connector",
+  "name": "@builder.io/memsource-connector",
   "version": "1.0.0",
   "description": "",
   "keywords": [],
   "entry": "plugin",
-  "output": "plugin-localization-connector.system.js",
-  "typings": "dist/types/localization-connector-plugin.d.ts",
+  "output": "plugin-memsource-connector.system.js",
+  "typings": "dist/types/memsource-connector-plugin.d.ts",
   "files": [
     "dist"
   ],
@@ -19,8 +19,8 @@
     "node": ">=6.0.0"
   },
   "scripts": {
-    "build": "webpack",
-    "start:dev": "webpack-dev-server",
+    "build": "webpack --mode production",
+    "start:dev": "webpack-dev-server --mode development",
     "lint": "tslint  --project tsconfig.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
     "prebuild": "rimraf dist",
     "release:dev": "npm run build && npm version prerelease --no-git-tag-version && npm publish --tag dev",
@@ -111,6 +111,7 @@
     "@emotion/styled": "^10.0.23",
     "@material-ui/core": "^4.9.5",
     "@material-ui/icons": "^4.9.1",
+    "@material-ui/lab": "^4.0.0-alpha.47",
     "axios": "^0.19.2",
     "cross-env": "^6.0.3",
     "react": "^16.13.1"

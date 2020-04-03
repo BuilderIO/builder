@@ -47,13 +47,14 @@ export class MemsourceClient {
   public createJob = async (
     projectUUID: string,
     targetLocales: string[],
-    jsonToTranslate: object
+    jsonToTranslate: object,
+    inputSettings: string | undefined
   ): Promise<string> => {
     try {
       const result = await axios.post(
         `https://cloud.memsource.com/web/api2/v1/projects/${projectUUID}/jobs`,
         jsonToTranslate,
-        this.getCreateJobConfig(targetLocales)
+        this.getCreateJobConfig(targetLocales, inputSettings)
       )
 
       return result.data.uid
@@ -64,18 +65,26 @@ export class MemsourceClient {
   }
 
   private getCreateJobConfig = (
-    targetLocales: string[]
+    targetLocales: string[],
+    inputSettings: string | undefined
   ): AxiosRequestConfig => {
-    return {
+    const Memsource: any = {
+      targetLangs: targetLocales.map(this.convertToMemsourceLocale)
+    }
+
+    if (inputSettings !== undefined) {
+      Memsource['uid'] = inputSettings
+    }
+
+    const jobConfig = {
       headers: {
         Authorization: `Bearer ${this.authorizationToken}`,
         'Content-Type': 'application/octet-stream',
         'Content-Disposition': 'filename=file.json',
-        Memsource: JSON.stringify({
-          targetLangs: targetLocales.map(this.convertToMemsourceLocale)
-        })
+        Memsource: JSON.stringify(Memsource)
       }
     }
+    return jobConfig
   }
 
   private getCreateProjectParameters = (

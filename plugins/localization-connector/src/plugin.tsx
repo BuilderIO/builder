@@ -1,43 +1,20 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Builder } from '@builder.io/sdk'
-import TranslateIcon from '@material-ui/icons/Translate'
-import { Button } from '@material-ui/core'
-import { LocaleDialog } from './components/localeDialog'
+import { BuilderProvider } from './components/contexts/builderContext'
+import MemsourceDialog from './components'
 import ClientSide from './components/clientSide'
-import { generatePayload } from './services/payloadBuilder'
 
-const LocalizationConnector = (props: any) => {
-  const [open, setOpen] = useState(false)
-
-  const possiblePayload = generatePayload(props.context)
-  if (possiblePayload == null) {
-    return <div>No translatable content</div>
-  }
-
+const MemsourceConnector = (props: any) => {
   return (
-    <>
-      <Button
-        variant="contained"
-        color="primary"
-        startIcon={<TranslateIcon />}
-        onClick={() => setOpen(true)}
-      >
-        Localize
-      </Button>
-      <ClientSide>
-        {open && (
-          <LocaleDialog
-            open={open}
-            setOpen={setOpen}
-            builderContext={props.context}
-          />
-        )}
-      </ClientSide>
-    </>
+    <ClientSide>
+      <BuilderProvider {...props}>
+        <MemsourceDialog />
+      </BuilderProvider>
+    </ClientSide>
   )
 }
 
 Builder.registerEditor({
-  name: 'localization-connector',
-  component: LocalizationConnector
+  name: 'memsource-connector',
+  component: MemsourceConnector
 })
