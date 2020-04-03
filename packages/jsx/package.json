@@ -21,6 +21,7 @@
   "homepage": "https://github.com/kimamula/builder#readme",
   "devDependencies": {
     "@types/jest": "^25.1.5",
+    "@types/prettier": "^2.0.0",
     "jest": "^25.2.7",
     "jest-cli": "^25.2.7",
     "jest-raw-loader": "^1.0.1",
@@ -31,6 +32,7 @@
     "typescript": ">=2.4.1"
   },
   "dependencies": {
-    "@builder.io/sdk": "^1.1.4"
+    "@builder.io/sdk": "^1.1.4",
+    "prettier": "^2.0.2"
   }
 }
