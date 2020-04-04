@@ -1,4 +1,4 @@
-# Builder.io JSX support
+# Builder.io JSX support (alpha)
 
 A TypeScript custom transformer which enables you to use JSX with Builder.io
 
