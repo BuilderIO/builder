@@ -37,7 +37,7 @@ const json = jsxToBuilder(`<>
  </>`)
 
 // Generate HTML with dynamic data
-const html = renderToString(<BuilderComponent content={json} data={{ name: 'Steve' }}>)
+const html = renderToString(<BuilderComponent content={json} data={{ name: 'Steve' }} />)
 
 // Generate liquid code for Shopify themes
 const shopifyLiquidCode = contentToLiquid(json);
