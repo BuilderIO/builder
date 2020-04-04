@@ -1,4 +1,6 @@
 export const useState = () => null as any;
 
-export const builderJsx = (state: {[key: string]: any }) => JSX.Element;
+type JSXElement = any; // JSX.Element - TODO: why is JSX namespace not available?
+
+export const builderJsx = (state: {[key: string]: any }) => null as JSXElement;
 

@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "description": "A TypeScript custom transformer for JSX to Builder.io",
   "scripts": {
-    "prepare": "tsc"
+    "prepare": "tsc",
+    "dev": "tsc --watch"
   },
   "repository": {
     "type": "git",
