@@ -16,7 +16,7 @@ A TypeScript custom transformer which enables you to use JSX with Builder.io
   <div css={{ display: 'flex', flexDirection: 'column' }}>
     <h1>{state.title}</h1>
     <p>Hello there!</p>
-    <Button onClick={event => state.title = 'Clicked!}>Click me!</Button>
+    <Button onClick={event => state.title = 'Clicked!'}>Click me!</Button>
   </div>
 </>
 ```
