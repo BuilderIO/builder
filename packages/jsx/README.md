@@ -53,7 +53,7 @@ const jsx = builderToJsx(json);
 axios.post('https://builder.io/api/v1/write/page', { name: 'My new page', data: { blocks: json }})
 
 // Get a current Builder.io page or entry as jsx
-const jsxForBuilderPage = builderToJsx(await axios.get('https://cdn.builder.io/api/v2/content/page/123')
+const jsxForBuilderPage = builderToJsx(await axios.get('https://cdn.builder.io/api/v2/content/page/123'))
 
 // Generate React source code. More language and framework (Vue, React Native, etc) support coming soon
 // See https://github.com/BuilderIO/builder/tree/master/packages for up to date list of supported frameworks
