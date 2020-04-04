@@ -45,9 +45,17 @@ const html = renderToString(<BuilderComponent content={json} data={{ name: 'Stev
 const shopifyLiquidCode = contentToLiquid(json);
 
 // Generate Builder.io JSX from Builder.io JSON
-const jsx = jsxToBuilder(json);
+const jsx = builderToJsx(json);
+
+// Create an entry in Builder.io CMS with this data
+axios.post('https://builder.io/api/v1/write/page', { name: 'My new page', data: { blocks: json }})
+
+// Get a current Builder.io page or entry as jsx
+const jsxForBuilderPage = builderToJsx(await axios.get('https://cdn.builder.io/api/v2/content/page/123')
 
 // Generate React source code. More language and framework (Vue, React Native, etc) support coming soon
+// See https://github.com/BuilderIO/builder/tree/master/packages for up to date list of supported frameworks
+// Docs coming soon on how to make a package to support your language or framework of choice too
 const reactCode = codeGen(json)
 
 // Render react dynamically with interactivity (state, actions, etc)
