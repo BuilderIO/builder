@@ -60,3 +60,4 @@ You can also use Builder.io's [Rest APIs](https://www.builder.io/c/docs/query-ap
 
 - CLI for syncing JSX content to/from Builder.io's CMS
 - Downloadable version of Builder.io's visual editor for visually editing Builder.io JSX locally
+- Plugin API for custom syntaxes and extensions
