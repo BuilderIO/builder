@@ -31,10 +31,12 @@ import { BuilderComponent, codeGen } from '@builder.io/react';
 import { contentToLiquid } from '@builder.io/shopify';
 
 // Get Builder.io JSON from JSX 
-const json = jsxToBuilder(`<>
-  <div>Hello {stae.name}!</div>
-  <input value={state.name} onChange={e => state.name = e.target.value} />
- </>`)
+const json = jsxToBuilder(`
+  <>
+    <div>Hello {state.name}!</div>
+    <input value={state.name} onChange={e => state.name = e.target.value} />
+  </>
+`)
 
 // Generate HTML with dynamic data
 const html = renderToString(<BuilderComponent content={json} data={{ name: 'Steve' }} />)
@@ -48,7 +50,7 @@ const jsx = jsxToBuilder(json);
 // Generate React source code. More language and framework (Vue, React Native, etc) support coming soon
 const reactCode = codeGen(json)
 
-// Render the JSX to the dom with interactivity (state, actions, etc)
+// Render react dynamically with interactivity (state, actions, etc)
 React.render(document.body, <BuilderComponent content={json} data={{ name: 'Steve' }} />)
 ```
 
