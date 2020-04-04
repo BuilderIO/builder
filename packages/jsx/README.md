@@ -25,6 +25,8 @@ Can be previewed and edited in the Builder.io visual editor, as well as run and 
 
 ## Usage examples
 
+Kitchen sync showing several things you can do with this combined with other Builder.io packages and/or APIs
+
 ```tsx
 import { buidlerToJsx, jsxToBuilder } from '@builder.io/jsx';
 import { BuilderComponent, codeGen } from '@builder.io/react';
