@@ -1,6 +1,6 @@
 import { BuilderContent, BuilderElement } from '@builder.io/sdk';
-import prettier from 'prettier/standalone';
-import tsParser from 'prettier/parser-typescript';
+import * as prettier from 'prettier/standalone';
+import * as tsParser from 'prettier/parser-typescript';
 import { last, escapeRegExp, capitalize } from 'lodash';
 
 interface BuilderToJsxOptions {}
