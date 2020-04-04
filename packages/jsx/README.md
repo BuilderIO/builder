@@ -2,6 +2,8 @@
 
 A TypeScript custom transformer which enables you to use JSX with Builder.io
 
+<img src="https://i.imgur.com/KTpBDvH.gif" >
+
 ## Why
 
 1. Write JSX code _one time_ that can **compile and render to any language or framework** using [Builder.io's various SDKs](../packages) or custom targets
