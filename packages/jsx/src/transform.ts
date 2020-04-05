@@ -1,6 +1,6 @@
 import * as ts from 'typescript';
 import { BuilderElement } from '@builder.io/sdk';
-import json5 from 'json5';
+import * as json5 from 'json5';
 
 type Json = string | boolean | null | JsonObject | JsonArray;
 
