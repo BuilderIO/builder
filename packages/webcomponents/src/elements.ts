@@ -320,6 +320,8 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
         return
       }
 
+      const entry = data?.id || this.getAttribute('entry')
+
       this.unsubscribe()
       const name =
         this.getAttribute('name') ||
@@ -366,6 +368,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
               shopify: new Shopify({}),
               apiKey: builder.apiKey
             },
+            entry,
             emailMode:
               ((this.options as any) || {}).emailMode ||
               this.getAttribute('email-mode') === 'true',
@@ -424,9 +427,10 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
                 emailMode:
                   ((this.options as any) || {}).emailMode ||
                   this.getAttribute('email-mode') === 'true',
+                entry: data ? data.id : entry,
                 options: {
                   ...this.options,
-                  entry: data ? data.id : undefined,
+                  entry: data ? data.id : entry,
                   initialContent: data ? [data] : undefined,
                   // TODO: make this a settable property too
                   key:
@@ -473,12 +477,13 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
                     apiKey: builder.apiKey
                   },
                   modelName: name!,
+                  entry: data ? data.id : entry,
                   emailMode:
                     ((this.options as any) || {}).emailMode ||
                     this.getAttribute('email-mode') === 'true',
                   options: {
                     ...this.options,
-                    entry: data ? data.id : undefined,
+                    entry: data ? data.id : entry,
                     initialContent: data ? [data] : undefined,
                     key:
                       this.getAttribute('key') ||
