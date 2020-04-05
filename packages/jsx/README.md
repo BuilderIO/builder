@@ -37,7 +37,7 @@ Kitchen sink showing several things you can do with this combined with other Bui
 
 ```tsx
 import { buidlerToJsx, jsxToBuilder } from '@builder.io/jsx';
-import { BuilderComponent, codeGen } from '@builder.io/react';
+import { BuilderComponent, toReactCodeString } from '@builder.io/react';
 import { contentToLiquid } from '@builder.io/shopify';
 
 // Get Builder.io JSON from JSX 
@@ -49,6 +49,7 @@ const json = jsxToBuilder(`
 `)
 
 // Generate HTML with dynamic data
+import { renderToString } from 'react-dom/server';
 const html = renderToString(<BuilderComponent content={json} data={{ name: 'Steve' }} />)
 
 // Generate liquid code for Shopify themes
@@ -58,14 +59,14 @@ const shopifyLiquidCode = contentToLiquid(json);
 const jsx = builderToJsx(json);
 
 // Create an entry in Builder.io CMS with this data
-axios.post('https://builder.io/api/v1/write/page', { name: 'My new page', data: { blocks: json }})
+axios.post('https://builder.io/api/v1/write/page', { name: 'My new page', data: { blocks: json }}, { headers: { Authorization: `Bearer ${YOUR_PRIVATE_KEY}` }})
 
 // Get a current Builder.io page or entry as jsx
-const jsxForBuilderPage = builderToJsx(await axios.get('https://cdn.builder.io/api/v2/content/page/123'))
+const jsxForBuilderPage = builderToJsx(await axios.get('https://cdn.builder.io/api/v2/content/page/123?apiKey=YOUR_PUBLIC_KEY'))
 
 // See https://github.com/BuilderIO/builder/tree/master/packages for up to date list of supported frameworks
 // Docs coming soon on how to make a package to support your language or framework of choice too
-const reactCode = codeGen(json)
+const reactCode = toReactCodeString(json)
 
 // Render react dynamically with interactivity (state, actions, etc)
 React.render(document.body, <BuilderComponent content={json} data={{ name: 'Steve' }} />)
