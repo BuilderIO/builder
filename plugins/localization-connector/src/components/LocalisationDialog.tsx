@@ -17,42 +17,81 @@ import {
   getMemsourceArguments
 } from './contexts/builderContext'
 import { MemsourceService } from '../services/memsourceService'
-import WarningDialog from './dialogs/WarningDialog'
-import { useSelectedLocalesReducer } from './reducers/selectedLocalesReducer'
+import AlertDialog from './AlertDialog'
+import { useSelectedLocalesReducer } from './reducers'
 
 type LocalisationDialogProps = {
   setOpen: Function
+  onResult: Function
 }
 
 const LocalisationDialog = (props: LocalisationDialogProps) => {
   if (pageHasNoBlocks()) {
-    return <WarningDialog setOpen={props.setOpen} condition="no-blocks" />
+    return (
+      <AlertDialog
+        severity="warning"
+        setOpen={props.setOpen}
+        message="Page has no blocks"
+      />
+    )
   }
 
   if (isLocaleNotEligibleToLocaliseFrom()) {
-    return <WarningDialog setOpen={props.setOpen} condition="disallowed" />
+    return (
+      <AlertDialog
+        severity="warning"
+        setOpen={props.setOpen}
+        message="Current locale not allowed to be localised from"
+      />
+    )
   }
 
   if (modelHasOnlyOneLocale()) {
-    return <WarningDialog setOpen={props.setOpen} condition="one-locale" />
+    return (
+      <AlertDialog
+        severity="warning"
+        setOpen={props.setOpen}
+        message="Model has only one locale"
+      />
+    )
   }
 
   const { setOpen } = props
   const { selectedLocales, dispatch } = useSelectedLocalesReducer()
 
-  const memsourceArgs = getMemsourceArguments()
-  const sendForLocalisation = () => {
-    if (memsourceArgs) {
-      new MemsourceService(memsourceArgs.memsourceToken).sendTranslationJob(
-        memsourceArgs.projectName,
-        memsourceArgs.sourceLocale,
-        [...selectedLocales],
-        memsourceArgs.payload,
-        memsourceArgs.memsourceInputSetting
-      )
+  let memsourceArgs: any = undefined
+  try {
+    memsourceArgs = getMemsourceArguments()
+  } catch (error) {
+    return (
+      <AlertDialog
+        severity="warning"
+        setOpen={props.setOpen}
+        message={error.message}
+      />
+    )
+  }
 
-      alert('Job(s) sent!')
-      setOpen(false)
+  const sendForLocalisation = async () => {
+    if (memsourceArgs) {
+      try {
+        const jobUid = await new MemsourceService(
+          memsourceArgs.memsourceToken
+        ).sendTranslationJob(
+          memsourceArgs.projectName,
+          memsourceArgs.sourceLocale,
+          [...selectedLocales],
+          memsourceArgs.payload,
+          memsourceArgs.memsourceInputSetting
+        )
+
+        props.onResult(
+          'success',
+          `Localisation request accepted with UID ${jobUid}`
+        )
+      } catch (error) {
+        props.onResult('failure', error.message)
+      }
     }
   }
   return (

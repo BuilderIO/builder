@@ -114,28 +114,24 @@ type MemsourceArgs = {
 export const getMemsourceArguments = (): MemsourceArgs | undefined => {
   const memsourceToken = getMemsourceToken()
   if (memsourceToken === undefined) {
-    alert('Cannot find memsourceToken')
-    return undefined
+    throw new Error('Cannot find memsourceToken')
   }
 
   const memsourceInputSetting = getMemsourceInputSettings()
 
   const sourceLocale = getSourceLocale()
   if (sourceLocale === undefined) {
-    alert('Unable to retrieve page locale')
-    return undefined
+    throw new Error('Unable to retrieve page locale')
   }
 
   const projectName = getProjectName()
   if (projectName === undefined) {
-    alert('Unable to get either modelName, pageName and/or locale')
-    return undefined
+    throw new Error('Unable to get either modelName, pageName and/or locale')
   }
 
   const payload = generatePayload(getContext())
   if (payload === undefined) {
-    alert('Error generating memsource payload')
-    return undefined
+    throw new Error('Error generating memsource payload')
   }
 
   return {

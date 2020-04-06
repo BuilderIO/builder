@@ -39,7 +39,6 @@ export class MemsourceClient {
 
       return result.data.uid
     } catch (error) {
-      console.error(error)
       throw error
     }
   }
@@ -59,7 +58,6 @@ export class MemsourceClient {
 
       return result.data.uid
     } catch (error) {
-      console.error(error)
       throw error
     }
   }
