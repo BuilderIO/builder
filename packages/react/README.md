@@ -39,12 +39,18 @@ You can also pass [data](https://www.builder.io/c/docs/guides/connecting-api-dat
 data values to UIs e.g. for text values or iterating over lists, and actions to trigger for instance on click of a button)
 
 ```tsx
-<BuilderComponent model="page" data={{
-  products: productsList,
-  myFunction: () => alert('Triggered!'),
-  foo: 'bar'
-}} >
+<BuilderComponent 
+  model="page" 
+  data={{
+    products: productsList,
+    myFunction: () => alert('Triggered!'),
+    foo: 'bar'
+  }} >
 ```
+
+Everything passed down is available on the `state` object in data and actions - e.g. `state.products[0].name` or `state.myFunction()`
+
+See more about using data passed down [here](https://www.builder.io/c/docs/react/custom-actions)
 
 #### Advanced querying
 
