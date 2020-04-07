@@ -14,12 +14,13 @@ import {
   pageHasNoBlocks,
   isLocaleNotEligibleToLocaliseFrom,
   modelHasOnlyOneLocale,
-  getMemsourceArguments
+  getMemsourceArguments,
+  modelHasNoProxyService
 } from './contexts/builderContext'
-import { MemsourceService } from '../services/memsourceService'
 import AlertDialog from './AlertDialog'
 import { useSelectedLocalesReducer } from './reducers'
 import Axios from 'axios'
+import { MemsourceArgs } from '../types'
 
 type LocalisationDialogProps = {
   setOpen: Function
@@ -57,10 +58,20 @@ const LocalisationDialog = (props: LocalisationDialogProps) => {
     )
   }
 
+  if (modelHasNoProxyService()) {
+    return (
+      <AlertDialog
+        severity="error"
+        setOpen={props.setOpen}
+        message="Model has no memsourceProxyUrl set"
+      />
+    )
+  }
+
   const { setOpen } = props
   const { selectedLocales, dispatch } = useSelectedLocalesReducer()
 
-  let memsourceArgs: any = undefined
+  let memsourceArgs: MemsourceArgs | undefined = undefined
   try {
     memsourceArgs = getMemsourceArguments()
   } catch (error) {
@@ -76,23 +87,15 @@ const LocalisationDialog = (props: LocalisationDialogProps) => {
   const sendForLocalisation = async () => {
     if (memsourceArgs) {
       try {
-        const response = await Axios.post(
-          'http://localhost:3000/dev/v1/proxy',
-          {
-            proxy: {
-              projectName: memsourceArgs.projectName,
-              sourceLocale: memsourceArgs.sourceLocale,
-              targetLocales: [...selectedLocales],
-              payload: memsourceArgs.payload
-            }
+        const response = await Axios.post(memsourceArgs.memsourceProxyUrl, {
+          proxy: {
+            projectName: memsourceArgs.projectName,
+            sourceLocale: memsourceArgs.sourceLocale,
+            targetLocales: [...selectedLocales],
+            payload: memsourceArgs.payload
           }
-        )
-        console.log('sendForLocalisation -> response', response)
-
-        props.onResult(
-          'success',
-          `Localisation request accepted with UID ${'7'}`
-        )
+        })
+        props.onResult('success', response.data)
       } catch (error) {
         props.onResult('failure', error.message)
       }

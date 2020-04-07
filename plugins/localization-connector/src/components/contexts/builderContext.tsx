@@ -1,6 +1,7 @@
 import React, { createContext, useContext } from 'react'
 import { generatePayload } from '../../services/payloadBuilder'
-
+import isUrl from 'is-url'
+import { MemsourceArgs } from '../../types'
 const BuilderContext = createContext({})
 
 export const BuilderProvider = (props: any) => {
@@ -54,6 +55,17 @@ export const pageHasNoBlocks = (): boolean => {
   return pageBlocks.length === 0
 }
 
+export const modelHasNoProxyService = (): boolean => {
+  const withoutProxyUrl = true
+  const withProxyUrl = false
+  const proxyServiceUrl = getMemsourceProxyServiceUrl()
+  console.log('proxyServiceUrl', proxyServiceUrl)
+  if (proxyServiceUrl === undefined) return withoutProxyUrl
+
+  const isValidUrl = isUrl(proxyServiceUrl)
+  return isValidUrl ? withProxyUrl : withoutProxyUrl
+}
+
 const getPageBlocks = (): any | undefined => {
   try {
     const ctx = getContext()
@@ -73,6 +85,18 @@ const getTranslatableSourceLocales = (): Array<string> | undefined => {
       .find((field: any) => field.name === 'allowedLocales')
       .enum.toJSON()
   } catch {
+    return undefined
+  }
+}
+
+const getMemsourceProxyServiceUrl = (): string | undefined => {
+  try {
+    const ctx = getContext()
+    return ctx.designerState.editingContentModel.model.fields
+      .find((field: any) => field.name === 'memsourceProxyUrl')
+      .toJSON().defaultValue
+  } catch (e) {
+    console.log(e)
     return undefined
   }
 }
@@ -103,17 +127,10 @@ export const getTargetLocales = (): Array<string> | undefined => {
   }
 }
 
-type MemsourceArgs = {
-  memsourceToken: string
-  sourceLocale: string
-  projectName: string
-  payload: any
-}
-
 export const getMemsourceArguments = (): MemsourceArgs | undefined => {
-  const memsourceToken = getMemsourceToken()
-  if (memsourceToken === undefined) {
-    throw new Error('Cannot find memsourceToken')
+  const memsourceProxyUrl = getMemsourceProxyServiceUrl()
+  if (memsourceProxyUrl === undefined) {
+    throw new Error('Unable to retrieve memsourceProxyUrl from model')
   }
 
   const sourceLocale = getSourceLocale()
@@ -132,32 +149,10 @@ export const getMemsourceArguments = (): MemsourceArgs | undefined => {
   }
 
   return {
-    memsourceToken,
+    memsourceProxyUrl,
     sourceLocale,
     projectName,
     payload
-  }
-}
-
-const getMemsourceToken = (): string | undefined => {
-  try {
-    const ctx = getContext()
-    return ctx.designerState.editingContentModel.model.fields
-      .find((field: any) => field.name === 'memsourceToken')
-      .toJSON().defaultValue
-  } catch {
-    return undefined
-  }
-}
-
-const getMemsourceInputSettings = (): string | undefined => {
-  try {
-    const ctx = getContext()
-    return ctx.designerState.editingContentModel.model.fields
-      .find((field: any) => field.name === 'memsourceInputSettingsId')
-      .toJSON().defaultValue
-  } catch {
-    return undefined
   }
 }
 

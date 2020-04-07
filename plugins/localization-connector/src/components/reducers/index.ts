@@ -1,4 +1,4 @@
-import { State, Action } from '../../types/Localization'
+import { State, Action } from '../../types'
 import { useReducer } from 'react'
 
 const initialSelectedLocales: State = { selectedLocales: new Set() }
