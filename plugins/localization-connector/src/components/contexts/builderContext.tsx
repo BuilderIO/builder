@@ -108,7 +108,6 @@ type MemsourceArgs = {
   sourceLocale: string
   projectName: string
   payload: any
-  memsourceInputSetting: string | undefined
 }
 
 export const getMemsourceArguments = (): MemsourceArgs | undefined => {
@@ -116,8 +115,6 @@ export const getMemsourceArguments = (): MemsourceArgs | undefined => {
   if (memsourceToken === undefined) {
     throw new Error('Cannot find memsourceToken')
   }
-
-  const memsourceInputSetting = getMemsourceInputSettings()
 
   const sourceLocale = getSourceLocale()
   if (sourceLocale === undefined) {
@@ -138,8 +135,7 @@ export const getMemsourceArguments = (): MemsourceArgs | undefined => {
     memsourceToken,
     sourceLocale,
     projectName,
-    payload,
-    memsourceInputSetting
+    payload
   }
 }
 

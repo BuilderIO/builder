@@ -19,6 +19,7 @@ import {
 import { MemsourceService } from '../services/memsourceService'
 import AlertDialog from './AlertDialog'
 import { useSelectedLocalesReducer } from './reducers'
+import Axios from 'axios'
 
 type LocalisationDialogProps = {
   setOpen: Function
@@ -75,19 +76,22 @@ const LocalisationDialog = (props: LocalisationDialogProps) => {
   const sendForLocalisation = async () => {
     if (memsourceArgs) {
       try {
-        const jobUid = await new MemsourceService(
-          memsourceArgs.memsourceToken
-        ).sendTranslationJob(
-          memsourceArgs.projectName,
-          memsourceArgs.sourceLocale,
-          [...selectedLocales],
-          memsourceArgs.payload,
-          memsourceArgs.memsourceInputSetting
+        const response = await Axios.post(
+          'http://localhost:3000/dev/v1/proxy',
+          {
+            proxy: {
+              projectName: memsourceArgs.projectName,
+              sourceLocale: memsourceArgs.sourceLocale,
+              targetLocales: [...selectedLocales],
+              payload: memsourceArgs.payload
+            }
+          }
         )
+        console.log('sendForLocalisation -> response', response)
 
         props.onResult(
           'success',
-          `Localisation request accepted with UID ${jobUid}`
+          `Localisation request accepted with UID ${'7'}`
         )
       } catch (error) {
         props.onResult('failure', error.message)
