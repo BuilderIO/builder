@@ -8,18 +8,44 @@ The idea behind the plugin is to generalize the use of a translation workflow di
 The requirements to use the plugin are quite simple:
 
 - Your page model should have a field named `locale` and it should be an `enum`.
-- Your page model should have a field named `memsourceToken` (which should be hidden) and it should be a text.
+- Your page model should have a field named `memsourceProxyUrl` (which should be hidden) and it should be a text, or rather a stringified URL to your proxy for memsource.
 
 To add it to a page model simply create a new model field, with whichever name, and the type should be `Memsource Connector`. This will make the translations plugin available in each page created using that model.
 There are a couple of optional fields:
 
 - If you have a restriction for not supporting localisation from certain locales, create another `enum` in your model (also hidden) named `allowedLocales`. The plugin will read this value and stop anyone from translating from locales not within the `allowedLocales`.
-- If you created a memsource input setting, that setting will have a ID field. If you want it to be used, just add a hidden model field `memsourceInputSettingsId` and the plugin will add it to the memsource job call.
 
 Simply hit the `Localize` button, and it should bring up a Dialog divided by two sections:
 
 - Source locale should only include a display of the page with the current locale
 - Target locales should be a list of selectable locales, which is the product of eliminating the current locale from the enum aforementioned in the `locale` field.
+
+### When requesting localisation jobs
+
+Given memsource disabled CORS, the request will be proxied to a service the user of the plugin will own. The plugin will fire a POST request to the `memsourceProxyUrl` host, and in the POST body, the following structure is used:
+
+```json
+{
+    "proxy": {
+        "projectName": "string",
+        "sourceLocale": "string",
+        "targetLocales": ["string-1", ..., "string-n"],
+        "payload": {
+            "__context": {
+                // Key value pair equal to the page options, i.e. title, description and your custom fields
+            },
+            "content": [
+                {
+                    "__id": "string-builder-block-id",
+                    "__optionKey": "string-builder-block-translatable-key",
+                    "toTranslate": "string to be translated"
+                },
+                ...
+            ]
+        }
+    }
+}
+```
 
 ## Creating a new plugin from this example
 
