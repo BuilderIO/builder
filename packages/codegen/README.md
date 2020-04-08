@@ -1,4 +1,4 @@
-# Builder.io Codegen
+# @builder.io/codegen (beta)
 
 Turn Builder.io content into React, Vue, Angular, Shopify/Liquid, Email, Amp, etc code
 
