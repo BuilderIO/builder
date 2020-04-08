@@ -71,7 +71,7 @@ export default let BuilderPage = () => (
 | [React](#getting-started-with-react)                         |                            Stable                             |
 | [Next.js](examples/next-js)                   |                            Stable                             |
 | [Gatsby](examples/gatsby)                     |                            Stable                             |
-| [Webcomponents](https://builder.io/c/docs/webcomponents-sdk) |                            Stable                             |
+| [Shopify / Liquid](packages/shopify)                        |                             Beta                              |
 | [Angular](packages/angular)                                  |                            Stable                             |
 | [React native](packages/react-native)                        |                             Beta                              |
 | Email                                                        |                            Stable                             |
