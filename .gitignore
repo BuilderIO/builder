@@ -7,7 +7,6 @@ coverage
 .idea
 .prettierignore
 .vscode
-.editorconfig
 .rpt2_cache/
 .cache
 .DS_Store
