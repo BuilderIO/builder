@@ -59,7 +59,6 @@ export const modelHasNoProxyService = (): boolean => {
   const withoutProxyUrl = true
   const withProxyUrl = false
   const proxyServiceUrl = getMemsourceProxyServiceUrl()
-  console.log('proxyServiceUrl', proxyServiceUrl)
   if (proxyServiceUrl === undefined) return withoutProxyUrl
 
   const isValidUrl = isUrl(proxyServiceUrl)

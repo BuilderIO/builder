@@ -17,7 +17,9 @@ export default ({
   return (
     <Dialog open={true} onClose={() => setOpen(false)}>
       <MuiDialogTitle onClose={() => setOpen(false)}>{severity}</MuiDialogTitle>
-      <Alert severity={severity}>{msg}</Alert>
+      <Alert severity={severity}>
+        <div data-testid="alert-dialog-message">{msg}</div>
+      </Alert>
     </Dialog>
   )
 }

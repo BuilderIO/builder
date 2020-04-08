@@ -4,7 +4,7 @@ import { BuilderProvider } from './components/contexts/builderContext'
 import MemsourceDialog from './components'
 import ClientSide from './components/clientSide'
 
-const MemsourceConnector = (props: any) => {
+export const MemsourceConnector = (props: any) => {
   return (
     <ClientSide>
       <BuilderProvider {...props}>

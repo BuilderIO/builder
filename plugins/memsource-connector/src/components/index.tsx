@@ -12,10 +12,14 @@ export default () => {
     setOpen(false)
     dispatch({ nextStage, message: msg })
   }
-
   return (
     <>
-      <Button variant="contained" color="primary" onClick={() => setOpen(true)}>
+      <Button
+        data-testid="button-localise"
+        variant="contained"
+        color="primary"
+        onClick={() => setOpen(true)}
+      >
         Localize
       </Button>
       {localeDialogStage.onDisplay && open && (
