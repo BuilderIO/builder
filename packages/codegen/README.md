@@ -1,7 +1,10 @@
 # Builder.io Codegen
 
-Turn Builder.io content into React, Vue, Angular, Shopify, Email, Amp, etc code
+Turn Builder.io content into React, Vue, Angular, Shopify/Liquid, Email, Amp, etc code
 
-<!-- TODO: gif of fiddle -->
+![Builder.io visual codegen demo](https://imgur.com/FwLMdAY.gif)
 
 More info coming soon...
+
+
+Try it at [beta.builder.io/fiddle]( beta.builder.io/fiddle)
