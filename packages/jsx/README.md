@@ -37,7 +37,8 @@ Kitchen sink showing several things you can do with this combined with other Bui
 
 ```tsx
 import { buidlerToJsx, jsxToBuilder } from '@builder.io/jsx';
-import { BuilderComponent, toReactCodeString } from '@builder.io/react';
+import { BuilderComponent } from '@builder.io/react';
+import { toReactCode } from '@builder.io/codegen';
 import { contentToLiquid } from '@builder.io/shopify';
 
 // Get Builder.io JSON from JSX 
@@ -66,7 +67,7 @@ const jsxForBuilderPage = builderToJsx(await axios.get('https://cdn.builder.io/a
 
 // See https://github.com/BuilderIO/builder/tree/master/packages for up to date list of supported frameworks
 // Docs coming soon on how to make a package to support your language or framework of choice too
-const reactCode = toReactCodeString(json)
+const reactCode = toReactCode(json)
 
 // Render react dynamically with interactivity (state, actions, etc)
 React.render(document.body, <BuilderComponent content={json} data={{ name: 'Steve' }} />)
