@@ -9,6 +9,12 @@ firebase-debug.log*
 # Firebase cache
 .firebase/
 
+# Uncomment to share firebase settingts
+firebase.json
+.firebaserc
+
+build
+
 # storybook static
 storybook-static
 
