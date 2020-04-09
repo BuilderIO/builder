@@ -7,4 +7,4 @@ Turn Builder.io content into React, Vue, Angular, Shopify/Liquid, Email, Amp, et
 More info coming soon...
 
 
-Try it at [beta.builder.io/fiddle](https://beta.builder.io/fiddle)
+Try it at [builder.io/fiddle](https://builder.io/fiddle)
