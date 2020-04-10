@@ -802,12 +802,12 @@ export class Builder {
     // Give the app a second to start up and set canTrack to false if needed
     if (Builder.isBrowser) {
       setTimeout(() => {
-        if (this.canTrack && typeof sessionStorage !== 'undefined' && sessionId) {
-          try {
+        try {
+          if (this.canTrack && typeof sessionStorage !== 'undefined' && sessionId) {
             sessionStorage.setItem(sessionStorageKey, sessionId);
-          } catch (err) {
-            console.debug('Session storage error', err);
           }
+        } catch (err) {
+          console.debug('Session storage error', err);
         }
       });
     }

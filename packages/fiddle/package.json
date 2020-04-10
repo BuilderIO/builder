@@ -1,0 +1,133 @@
+{
+  "name": "@builder.io/fiddle",
+  "version": "0.0.1",
+  "description": "",
+  "keywords": [],
+  "main": "dist/builder-fiddle.umd.js",
+  "module": "dist/builder-fiddle.es5.js",
+  "typings": "dist/types/builder-fiddle.d.ts",
+  "files": [
+    "dist"
+  ],
+  "author": "Steve Sewell <steve@builder.io>",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=6.0.0"
+  },
+  "scripts": {
+    "lint": "tslint  --project tsconfig.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
+    "prebuild": "rimraf dist",
+    "build": "tsc --module commonjs && rollup -c rollup.config.ts && typedoc --out docs --target es6 --theme minimal --mode file src",
+    "start": "rollup -c rollup.config.ts -w",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:prod": "npm run lint && npm run test -- --coverage --no-cache",
+    "deploy-docs": "ts-node tools/gh-pages-publish",
+    "report-coverage": "cat ./coverage/lcov.info | coveralls",
+    "commit": "git-cz",
+    "semantic-release": "semantic-release",
+    "semantic-release-prepare": "ts-node tools/semantic-release-prepare",
+    "precommit": "lint-staged",
+    "serve": "http-server -p 8989",
+    "develop": "concurrently \"npm run start\" \"npm run serve\"",
+    "release:patch": "npm run build && npm version patch && npm publish",
+    "release:dev": "npm run build && npm version prerelease && npm publish --tag dev"
+  },
+  "lint-staged": {
+    "{src,test}/**/*.ts": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-conventional-changelog"
+    }
+  },
+  "jest": {
+    "transform": {
+      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testEnvironment": "node",
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "/test/"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 90,
+        "functions": 95,
+        "lines": 95,
+        "statements": 95
+      }
+    },
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "src/*.{js,ts}"
+    ]
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^8.3.5",
+    "@commitlint/config-conventional": "^8.3.4",
+    "@types/jest": "^25.2.1",
+    "@types/node": "^13.11.1",
+    "@types/react": "^16.9.34",
+    "colors": "^1.4.0",
+    "commitizen": "^4.0.4",
+    "concurrently": "^5.1.0",
+    "coveralls": "^3.0.11",
+    "cross-env": "^7.0.2",
+    "cz-conventional-changelog": "^3.1.0",
+    "http-server": "^0.12.1",
+    "husky": "^4.2.5",
+    "jest": "^25.3.0",
+    "jest-config": "^25.3.0",
+    "lint-staged": "^10.1.3",
+    "lodash.camelcase": "^4.3.0",
+    "prettier": "^2.0.4",
+    "prompt": "^1.0.0",
+    "replace-in-file": "^5.0.2",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.4.0",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-json": "^4.0.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-sourcemaps": "^0.5.0",
+    "rollup-plugin-typescript2": "^0.27.0",
+    "rollup-plugin-uglify": "^6.0.4",
+    "semantic-release": "^17.0.4",
+    "ts-jest": "^25.3.1",
+    "ts-node": "^8.8.2",
+    "tslint": "^6.1.1",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-config-standard": "^9.0.0",
+    "typedoc": "^0.17.4",
+    "typescript": "^3.8.3"
+  },
+  "optionalDependencies": {
+    "@builder.io/sdk": "^0.1.45",
+    "@webcomponents/custom-elements": "^1.2.1"
+  },
+  "dependencies": {
+    "react": "^16.13.1"
+  }
+}
