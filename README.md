@@ -57,11 +57,18 @@ export default let BuilderPage = () => (
 
 ## What is it good for?
 
-- Landing pages
-- [Design systems](/examples/react-design-system)
+- Landing pages on custom code stacks
+- [Design systems](/examples/react-design-system) and visually editing your custom components
 - Marketing & content pages (Homepage, promotions, merchandising, about, FAQ, help, docs, etc)
 - Freedom from marketing teams that never stop asking for new things
 - Developers who are tired of pushing pixels
+
+## Try it out!
+
+- [builder.io/fiddle](https://builder.io/fiddle)
+- Storybook [live example](https://builder-storybook.firebaseapp.com) and [source](https://github.com/BuilderIO/builder/tree/master/packages/storybook)
+- Design system [live example](https://builder.io/fiddle/4b2e0a2e4b1a44a88a5e6f8c46cdfe7c) and [source](https://github.com/BuilderIO/builder/tree/master/examples/react-design-system)
+
 
 ## Supported Frameworks
 
@@ -85,13 +92,6 @@ Want suppoert for something not listed here or for us to priotize something comi
 
 This repo houses all of the various [SDKs](packages), [usage examples](examples), [starter projects](starters), and [plugins](plugins)
 
-### Try it in Storybook
-
-[Try out a live demo of our Storybook example](https://builder-storybook.firebaseapp.com/) or use our [Storybook addon](packages/storybook) with your own components, refer to our [design systems example](/examples/react-design-system) for lots of examples using your deisgn system + custom components + storybook.
-
-<a target="_blank" href="https://builder-storybook.firebaseapp.com/">
-<img src="https://user-images.githubusercontent.com/5093430/76154244-ebbe6480-608d-11ea-9dc9-08a59eda220e.gif" alt="example" />
-</a>
 
 
 ## Getting Started with React
