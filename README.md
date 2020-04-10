@@ -52,7 +52,7 @@ export default let BuilderPage = () => (
 ## How does it work?
 
 - Integrate the [Builder API or SDK](#supported-frameworks) to your site or app
-- Create a free account on [builder.io](https://builder.io) and drag and drop to create and publish pages
+- Create a free account on [builder.io](https://builder.io) and drag and drop to create and publish pages and content
 - Profit
 
 ## What is it good for?
