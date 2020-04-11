@@ -59,6 +59,8 @@ if (isBrowser && !globalVar[globalLoadedVar]) {
       const beta = this.getAttribute('env') === 'beta'
       const qa = this.getAttribute('env') === 'qa'
 
+      const view = ['', 'true'].includes(this.getAttribute('view')!)
+
       if (entry) {
         this.entry = entry
       }
@@ -73,14 +75,8 @@ if (isBrowser && !globalVar[globalLoadedVar]) {
         ? 'https://beta.builder.io'
         : 'https://builder.io'
 
-      let url = host + '/fiddle' + (entry ? '/' + entry : '') + '?'
 
-      if (cachebust) {
-        const now = Date.now()
-        url = url.replace('/studio?', '/studio/embedded/' + now + '?')
-        url += '&cachebuster=' + now
-        iframe.name = 'builder-' + now
-      }
+      const url = host + '/fiddle' + (entry ? '/' + entry : '') + (view ? '/view' : '')
 
       iframe.src = url
       this.appendChild(iframe)

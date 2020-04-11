@@ -429,14 +429,14 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
                   this.getAttribute('email-mode') === 'true',
                 entry: data ? data.id : entry,
                 options: {
-                  ...this.options,
                   entry: data ? data.id : entry,
                   initialContent: data ? [data] : undefined,
                   // TODO: make this a settable property too
                   key:
-                    this.getAttribute('key') ||
-                    (slot ? `slot:${slot}` : null) ||
-                    (Builder.isEditing ? name! : (data && data.id) || undefined)
+                  this.getAttribute('key') ||
+                  (slot ? `slot:${slot}` : null) ||
+                  (Builder.isEditing ? name! : (data && data.id) || undefined),
+                  ...this.options,
                 }
               },
               this.getAttribute('hydrate') !== 'false', // TODO: query param override builder.hydrate
@@ -482,16 +482,16 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
                     ((this.options as any) || {}).emailMode ||
                     this.getAttribute('email-mode') === 'true',
                   options: {
-                    ...this.options,
                     entry: data ? data.id : entry,
                     initialContent: data ? [data] : undefined,
                     key:
-                      this.getAttribute('key') ||
-                      (slot ? `slot:${slot}` : null) ||
-                      (Builder.isEditing
-                        ? name!
-                        : (data && data.id) || undefined)
-                    // TODO: specify variation?
+                    this.getAttribute('key') ||
+                    (slot ? `slot:${slot}` : null) ||
+                    (Builder.isEditing
+                      ? name!
+                      : (data && data.id) || undefined),
+                      ...this.options,
+                      // TODO: specify variation?
                   },
                   fresh
                 },

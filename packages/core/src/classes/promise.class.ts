@@ -34,7 +34,7 @@ export class TinyPromise<T = any> {
     } else if (isObject(x) || isFunction(x)) {
       let called = false;
       try {
-        const thenable = (x as PromiseLike<any>).then;
+        const thenable = (x as Promise<any>).then;
         if (isFunction(thenable)) {
           thenable.call(
             x,

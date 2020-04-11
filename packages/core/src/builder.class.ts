@@ -659,6 +659,8 @@ export class Builder {
         'content-type': 'application/json',
       },
       mode: 'cors',
+    }).catch(() => {
+      // Not the end of the world
     });
   }
 

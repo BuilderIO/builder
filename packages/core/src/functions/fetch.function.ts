@@ -15,9 +15,9 @@ export interface SimpleFetchResponse {
   statusText: string;
   url: string;
   clone: () => any;
-  text: () => PromiseLike<string>;
-  json: () => PromiseLike<any>;
-  blob: () => PromiseLike<Blob>;
+  text: () => Promise<string>;
+  json: () => Promise<any>;
+  blob: () => Promise<Blob>;
   headers: {
     keys: () => string[];
     entries: () => [string, string][];
