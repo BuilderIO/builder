@@ -8,7 +8,7 @@ Drag and drop page building with your code components. Bring your [design system
 <table style="width:100%;">
   <tr>
     <td width="50%">Register components</td>
-    <td>Rendered your visually created pages</td>
+    <td>Rendered your visually created content</td>
   </tr width="50%">
   <tr>
     <td width="50%">
@@ -33,8 +33,8 @@ Builder.registerComponent(Heading, {
 import { BuilderComponent } from '@builder.io/react'
 &nbsp;
 // Include this in your app, and Builder.io will render  
-// the matching page by the current document's URL. Scroll 
-// down for more advanced options and examples
+// the matching content by model name and the current document's URL.  
+// Scroll down for more advanced options and examples
 export default let BuilderPage = () => (
 &nbsp;&nbsp;&lt;BuilderComponent model="page" /&gt;
 )
