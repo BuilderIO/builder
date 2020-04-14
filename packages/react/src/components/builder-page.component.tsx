@@ -781,7 +781,7 @@ export class BuilderPage extends React.Component<
     const dataString =
       this.props.data && size(this.props.data) && hash(this.props.data)
     let key = Builder.isEditing ? this.name : this.props.entry
-    if (!Builder.isEditing && dataString && dataString.length < 300) {
+    if (key && !Builder.isEditing && dataString && dataString.length < 300) {
       key += ':' + dataString
     }
 
