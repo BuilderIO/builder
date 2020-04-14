@@ -94,8 +94,7 @@ const getMemsourceProxyServiceUrl = (): string | undefined => {
     return ctx.designerState.editingContentModel.model.fields
       .find((field: any) => field.name === 'memsourceProxyUrl')
       .toJSON().defaultValue
-  } catch (e) {
-    console.log(e)
+  } catch {
     return undefined
   }
 }

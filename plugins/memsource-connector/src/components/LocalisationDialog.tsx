@@ -106,6 +106,7 @@ const LocalisationDialog = (props: LocalisationDialogProps) => {
       aria-labelledby="simple-dialog-title"
       open={true}
       onClose={() => setOpen(false)}
+      data-testid="localisation-dialog"
     >
       <DialogTitle id="customized-dialog-title" onClose={() => setOpen(false)}>
         Locale picker
@@ -127,6 +128,7 @@ const LocalisationDialog = (props: LocalisationDialogProps) => {
             sendForLocalisation()
           }}
           disabled={selectedLocales.size === 0}
+          data-testid="dialog-form-submit-button"
         >
           Send job for translations
         </Button>

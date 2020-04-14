@@ -12,10 +12,15 @@ export const generatePayload = (builderContext: any) => {
 }
 
 const getPageOptions = (builderContext: any) => {
-  const { modelName, id } = builderContext.designerState.editingContentModel
+  const { email } = builderContext.user.data
+  const {
+    modelName,
+    id,
+    name
+  } = builderContext.designerState.editingContentModel
   const data = builderContext.designerState.editingContentModel.data.toJSON()
   delete data.blocks
-  return { ...data, modelName, pageName: id }
+  return { ...data, modelName, pageId: id, requestor: email, pageName: name }
 }
 
 const getTranslatablePageOptions = (builderContext: any) => {
