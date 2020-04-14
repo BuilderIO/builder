@@ -168,7 +168,15 @@ class FormComponent extends React.Component<FormProps> {
                   }
 
                   if (contentType && contentType !== 'multipart/form-data') {
-                    headers['content-type'] = contentType
+                    if (
+                      // Zapier doesn't allow content-type header to be sent from browsers
+                      !(
+                        this.props.sendWithJs &&
+                        this.props.action?.includes('zapier.com')
+                      )
+                    ) {
+                      headers['content-type'] = contentType
+                    }
                   }
 
                   const presubmitEvent = new CustomEvent('presubmit', {
