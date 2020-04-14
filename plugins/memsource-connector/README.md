@@ -33,6 +33,13 @@ Given memsource disabled CORS, the request will be proxied to a service the user
         "payload": {
             "__context": {
                 // Key value pair equal to the page options, i.e. title, description and your custom fields
+                // Also, a couple of values which add context to the request such as
+                "locale": "requested source locale",
+                "modelName": "model name",
+                "pageId": "page id",
+                "pageName": "page name",
+                "title": "page title",
+                "requestor": "email of the logged user who submitted the localisation job"
             },
             "content": [
                 {
@@ -46,6 +53,8 @@ Given memsource disabled CORS, the request will be proxied to a service the user
     }
 }
 ```
+
+Notice there are many fields with the double underscore `__` prefix, that is to symbolically represent a hidden field for memsource
 
 ## Creating a new plugin from this example
 
