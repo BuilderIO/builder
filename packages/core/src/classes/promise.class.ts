@@ -171,4 +171,4 @@ export class TinyPromise<T = any> {
   }
 }
 
-export default (typeof Promise !== 'undefined' ? Promise : TinyPromise) as PromiseConstructorLike;
+export default (typeof Promise !== 'undefined' ? Promise : TinyPromise) as PromiseConstructor;
