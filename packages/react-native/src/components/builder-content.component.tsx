@@ -3,7 +3,7 @@ import { builder, Subscription, GetContentOptions, Builder } from '@builder.io/s
 import { TouchableWithoutFeedback, GestureResponderEvent, View } from 'react-native';
 
 export interface BuilderContentProps<ContentType> {
-  contentLoaded?: (content: ContentType) => void;
+  contentLoaded?: (content: any) => void;
   contentError?: (error: any) => void;
   modelName: string;
   options?: GetContentOptions;
@@ -50,12 +50,12 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
               // TODO: autoTrack
               if (builder.autoTrack) {
                 this.trackedImpression = true;
-                builder.trackImpression(match.id, match.variationId);
+                builder.trackImpression(match.id!, (match as any).variationId);
               }
               this.firstLoad = false;
             }
             if (this.props.contentLoaded) {
-              this.props.contentLoaded(match && match.data);
+              this.props.contentLoaded(match && match.data || null);
             }
           },
           error => {

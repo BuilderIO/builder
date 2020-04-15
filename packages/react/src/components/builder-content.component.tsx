@@ -9,7 +9,7 @@ import { NoWrap } from './no-wrap'
 import { applyPatchWithMinimalMutationChain } from '../functions/apply-patch-with-mutation'
 
 export interface BuilderContentProps<ContentType> {
-  contentLoaded?: (content: ContentType) => void
+  contentLoaded?: (content: any) => void
   contentError?: (error: any) => void
   modelName: string
   options?: GetContentOptions
@@ -143,7 +143,7 @@ export class BuilderContent<
                   }
                   if (!addedObserver) {
                     this.trackedImpression = true
-                    this.builder.trackImpression(match.id, match.variationId)
+                    this.builder.trackImpression(match.id!, (match as any).variationId)
                   }
                 }
                 this.firstLoad = false
