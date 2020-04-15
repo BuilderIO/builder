@@ -161,7 +161,7 @@ const getProjectName = (): string | undefined => {
     const modelName = editingContentModel.model.name
     const pageName = editingContentModel.data.toJSON().title
     const sourceLocale = editingContentModel.data.toJSON().locale
-    return `builderio__${modelName}__${pageName}__${sourceLocale}`
+    return `Builderio__${modelName}__${pageName}__${sourceLocale}`
   } catch {
     return undefined
   }
