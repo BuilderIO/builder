@@ -321,8 +321,16 @@ export class BuilderPage extends React.Component<
         `script[data-builder-json="${id}"],script[data-builder-state="${id}"]`
       )
     if (script) {
-      const json = JSON.parse((script as HTMLElement).innerText)
-      return json
+      try {
+        const json = JSON.parse((script as HTMLElement).innerText)
+        return json
+      } catch (err) {
+        console.warn(
+          'Could not parse Builder.io HTML data transfer',
+          err,
+          (script as HTMLElement).innerText
+        )
+      }
     }
     return {}
   }
