@@ -1356,7 +1356,7 @@ export class Builder {
     }
   }
 
-  observersByKey: { [key: string]: Observer<any> | undefined } = {};
+  observersByKey: { [key: string]: BehaviorSubject<BuilderContent[] | null> | undefined } = {};
 
   get defaultCanTrack() {
     return Boolean(
@@ -1476,7 +1476,7 @@ export class Builder {
       }
     }
     return instance.queueGetContent(modelName, options).map(
-      /* map( */ (matches: any[]) => {
+      /* map( */ (matches: any[] | null) => {
         const match = matches && matches[0];
         const matchData = match && match.data;
         if (!matchData) {
@@ -1515,7 +1515,7 @@ export class Builder {
 
     const isEditingThisModel = this.editingModel === modelName;
     // TODO: include params in this key........
-    const currentObservable = this.observersByKey[key] as BehaviorSubject<BuilderContent> | null;
+    const currentObservable = this.observersByKey[key] as BehaviorSubject<BuilderContent[] | null> | null;
 
     // if (options.query && options.query._id) {
     //   this.flushGetContentQueue([options])
@@ -1558,7 +1558,7 @@ export class Builder {
       }
     }
 
-    const observable = new BehaviorSubject<BuilderContent>(null);
+    const observable = new BehaviorSubject<BuilderContent[] | null>(null);
     this.observersByKey[key] = observable;
     if (initialContent) {
       nextTick(() => {
@@ -1832,7 +1832,7 @@ export class Builder {
       if (!item.variations) {
         return item;
       }
-      const cookieValue = this.getTestCookie(item.id);
+      const cookieValue = this.getTestCookie(item.id!);
       const cookieVariation = cookieValue === item.id ? item : item.variations[cookieValue];
       if (cookieVariation) {
         return {
@@ -1847,11 +1847,11 @@ export class Builder {
         let n = 0;
         const random = Math.random();
         for (const id in item.variations) {
-          const variation = item.variations[id];
+          const variation = item.variations[id]!;
           const testRatio = variation.testRatio;
-          n += testRatio;
+          n += testRatio!;
           if (random < n) {
-            this.setTestCookie(item.id, variation.id);
+            this.setTestCookie(item.id!, variation.id!);
             const variationName =
               variation.name || (variation.id === item.id ? 'Default variation' : '');
             return {
@@ -1864,7 +1864,7 @@ export class Builder {
             };
           }
         }
-        this.setTestCookie(item.id, item.id);
+        this.setTestCookie(item.id!, item.id!);
       }
       return {
         ...item,
