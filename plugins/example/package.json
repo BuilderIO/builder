@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/plugin-example",
-  "version": "0.1.3-alpha.4",
+  "version": "0.1.3",
   "description": "",
   "keywords": [],
   "main": "dist/plugin.umd.js",

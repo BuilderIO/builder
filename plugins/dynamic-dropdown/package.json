@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/plugin-dynamic-dropdown",
-  "version": "1.0.5-alpha.3",
+  "version": "1.0.5",
   "description": "",
   "keywords": [],
   "main": "dist/builder-plugin-dynamic-dropdown.umd.js",

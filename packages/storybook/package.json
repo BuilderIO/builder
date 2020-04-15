@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/storybook",
-  "version": "0.0.2-alpha.2",
+  "version": "0.0.2",
   "description": "embed builder.io in storybook",
   "homepage": "https://github.com/BuilderIO/builder/tree/master/packages/storybook#readme",
   "repository": {
