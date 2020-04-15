@@ -123,8 +123,8 @@ export class BuilderContent<
                               !this.trackedImpression
                             ) {
                               this.builder.trackImpression(
-                                match.id,
-                                match.variationId
+                                match.id!,
+                                (match as any).variationId
                               )
                               this.trackedImpression = true
                               if (this.ref) {
