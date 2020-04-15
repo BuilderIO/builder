@@ -1451,13 +1451,13 @@ export class Builder {
   }
 
   protected overrides: { [key: string]: string } = {};
+  private getContentQueue: null | GetContentOptions[] = null;
+  private priorContentQueue: null | GetContentOptions[] = null;
 
   setUserAttributes(options: object) {
     assign(Builder.overrideUserAttributes, options);
   }
 
-  private getContentQueue: null | GetContentOptions[] = null;
-  private priorContentQueue: null | GetContentOptions[] = null;
 
   get(
     modelName: string,
