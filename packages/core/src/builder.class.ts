@@ -11,6 +11,7 @@ import { BuilderElement } from './types/element';
 import Cookies from './classes/cookies.class';
 import { omit } from './functions/omit.function';
 import serverOnlyRequire from './functions/server-only-require.function';
+import { BuilderContent } from './types/content';
 
 export type Url = any;
 
@@ -120,12 +121,7 @@ function find<T = any>(target: T[], callback: (item: T, index: number, list: T[]
   }
 }
 
-export type Observer<T = any> = any;
-
 const sessionStorageKey = 'builderSessionId';
-
-// TODO: type this out
-type ContentModelType = any;
 
 export const isBrowser = typeof window !== 'undefined' && !isReactNative;
 export const isIframe = isBrowser && window.top !== window.self;
@@ -1519,7 +1515,7 @@ export class Builder {
 
     const isEditingThisModel = this.editingModel === modelName;
     // TODO: include params in this key........
-    const currentObservable = this.observersByKey[key] as BehaviorSubject<ContentModelType> | null;
+    const currentObservable = this.observersByKey[key] as BehaviorSubject<BuilderContent> | null;
 
     // if (options.query && options.query._id) {
     //   this.flushGetContentQueue([options])
@@ -1562,7 +1558,7 @@ export class Builder {
       }
     }
 
-    const observable = new BehaviorSubject<ContentModelType>(null);
+    const observable = new BehaviorSubject<BuilderContent>(null);
     this.observersByKey[key] = observable;
     if (initialContent) {
       nextTick(() => {
@@ -1831,7 +1827,7 @@ export class Builder {
 
   private testCookiePrefix = 'builder.tests';
 
-  private processResultsForTests(results: ContentModelType[]) {
+  private processResultsForTests(results: BuilderContent[]) {
     const mappedResults = results.map(item => {
       if (!item.variations) {
         return item;

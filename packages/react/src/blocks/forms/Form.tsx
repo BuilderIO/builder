@@ -68,12 +68,13 @@ class FormComponent extends React.Component<FormProps> {
               method={this.props.method}
               name={this.props.name}
               onSubmit={event => {
+                const sendWithJs = this.props.sendWithJs || this.props.sendSubmissionsTo === 'email'
                 // TODO: custom validate event that can preventDefault and use ref or event to set
                 // invalid message
                 if (this.props.sendSubmissionsTo === 'zapier') {
                   event.preventDefault()
                   // TODO: send submission to zapier
-                } else if (this.props.sendWithJs) {
+                } else if (sendWithJs) {
                   if (
                     !(
                       this.props.action ||
@@ -171,7 +172,7 @@ class FormComponent extends React.Component<FormProps> {
                     if (
                       // Zapier doesn't allow content-type header to be sent from browsers
                       !(
-                        this.props.sendWithJs &&
+                        sendWithJs &&
                         this.props.action?.includes('zapier.com')
                       )
                     ) {
