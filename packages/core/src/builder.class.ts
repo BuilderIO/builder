@@ -1356,7 +1356,7 @@ export class Builder {
     }
   }
 
-  observersByKey: { [key: string]: BehaviorSubject<BuilderContent[] | null> | undefined } = {};
+  observersByKey: { [key: string]: BehaviorSubject<BuilderContent[]> | undefined } = {};
 
   get defaultCanTrack() {
     return Boolean(
@@ -1515,7 +1515,7 @@ export class Builder {
 
     const isEditingThisModel = this.editingModel === modelName;
     // TODO: include params in this key........
-    const currentObservable = this.observersByKey[key] as BehaviorSubject<BuilderContent[] | null> | null;
+    const currentObservable = this.observersByKey[key] as BehaviorSubject<BuilderContent[]> | null;
 
     // if (options.query && options.query._id) {
     //   this.flushGetContentQueue([options])
@@ -1558,7 +1558,7 @@ export class Builder {
       }
     }
 
-    const observable = new BehaviorSubject<BuilderContent[] | null>(null);
+    const observable = new BehaviorSubject<BuilderContent[]>(null as any);
     this.observersByKey[key] = observable;
     if (initialContent) {
       nextTick(() => {
