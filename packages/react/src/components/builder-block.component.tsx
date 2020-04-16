@@ -144,6 +144,10 @@ export class BuilderBlock extends React.Component<
     }
   }
 
+  get store() {
+    return this.privateState
+  }
+
   static getDerivedStateFromError(error: any) {
     return { hasError: true }
   }

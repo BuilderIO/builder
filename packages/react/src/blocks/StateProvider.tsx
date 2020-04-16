@@ -5,8 +5,9 @@ import { BuilderStoreContext } from '../store/builder-store'
 import { withBuilder } from '../functions/with-builder'
 
 interface StateProviderProps {
-  builderBlock: BuilderElement
+  builderBlock?: BuilderElement
   state: any
+  context?: any
 }
 
 class StateProviderComponent extends React.Component<StateProviderProps> {
@@ -20,10 +21,13 @@ class StateProviderComponent extends React.Component<StateProviderProps> {
               state: {
                 ...state.state,
                 ...this.props.state
+              },
+              context: {
+                ...state.context,
+                ...this.props.context
               }
             }}
           >
-            {/* Builer blocks or iterate blocks?? */}
             {this.props.builderBlock &&
               this.props.builderBlock.children &&
               this.props.builderBlock.children.map((block, index) => (
@@ -31,9 +35,10 @@ class StateProviderComponent extends React.Component<StateProviderProps> {
                   block={block}
                   key={block.id}
                   index={index}
-                  child={true} /* TODO: fieldname? */
+                  child={true} 
                 />
               ))}
+            {this.props.children}
           </BuilderStoreContext.Provider>
         )}
       </BuilderStoreContext.Consumer>
