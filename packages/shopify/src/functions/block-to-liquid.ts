@@ -123,7 +123,10 @@ export function blockToLiquid(json: BuilderElement, options: Options = {}): stri
     collectionName = convertBinding(collectionName, options);
   }
 
-  console.log('latest?')
+  const bindings = {
+    ...block.bindings,
+    ...block.code?.bindings
+  }
 
   // Fragment? hm
   return `
@@ -136,9 +139,9 @@ export function blockToLiquid(json: BuilderElement, options: Options = {}): stri
         : ''
     }
     ${
-      block.bindings && block.bindings.hide
+      bindings.hide
         ? `{% unless  ${
-            block.bindings.hide.includes(';')
+            !isValidLiquidBinding(bindings.hide)
               ? 'false'
               : escaleHtml(convertBinding(block.bindings.hide, options))
           } %}`
