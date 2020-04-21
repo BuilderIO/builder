@@ -22,7 +22,7 @@ function getCssFromFont(font: any) {
 @font-face {
   font-family: ${family};
   src: local("${name}"), url('${url}') format('woff2');
-  font-display: swap;
+  font-display: fallback;
   font-weight: 400;
 }
 `.trim();
@@ -37,7 +37,7 @@ function getCssFromFont(font: any) {
 @font-face {
 font-family: ${family};
 src: url('${weightUrl}') format('woff2');
-font-display: swap;
+font-display: fallback;
 font-weight: ${weight};
 }
         `.trim();
