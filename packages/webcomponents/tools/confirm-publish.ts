@@ -1,8 +1,6 @@
 const inquirer = require('inquirer')
 
 const promptUser = async () => {
-  console.log(process.argv0)
-
   const response = await inquirer.prompt([
     {
       name: 'prompt',
