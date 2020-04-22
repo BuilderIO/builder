@@ -39,7 +39,8 @@
     "release:patch": "npm run build && npm version patch && npm run build:unpkg:dist && npm publish",
     "release:nightly": "npm run build && npm version prerelease && npm run build:unpkg:dist && npm publish --tag nightly",
     "release:dev": "npm run build && npm version prerelease && npm run build:unpkg:dist && npm publish --tag dev",
-    "release:beta": "npm run build && npm version prerelease && npm run build:unpkg:dist && npm publish --tag beta"
+    "release:beta": "npm run build && npm version prerelease && npm run build:unpkg:dist && npm publish --tag beta",
+    "prepublishOnly": "ts-node ./tools/confirm-publish.ts"
   },
   "lint-staged": {
     "{src,test}/**/*.ts": [
@@ -107,6 +108,7 @@
     "fs-extra-promise": "^1.0.1",
     "http-server": "^0.12.0",
     "husky": "^3.1.0",
+    "inquirer": "^7.1.0",
     "jest": "^24.9.0",
     "jest-config": "^24.9.0",
     "lint-staged": "^9.5.0",
