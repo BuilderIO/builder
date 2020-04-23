@@ -41,6 +41,29 @@ export const getSrcSet = (url: string) => {
     .join(', ')
 }
 
+export const getSizes = (sizes: string) => {
+  if (!sizes) {
+    return ''
+  }
+
+  const splitSizes = sizes.split(',')
+  const sizesLength = splitSizes.length
+  return splitSizes
+    .map((size: string, index) => {
+      if (sizesLength === index + 1) {
+        // If it is the last size in the array, then we want to strip out
+        // any media query information. According to the img spec, the last
+        // value for sizes cannot have a media query. If there is a media
+        // query at the end it breaks AMP mode rendering
+        // https://github.com/ampproject/amphtml/blob/b6313e372fdd1298928e2417dcc616b03288e051/src/size-list.js#L169
+        return size.replace(/\([\s\S]*?\)/g, '').trim()
+      } else {
+        return size
+      }
+    })
+    .join(', ')
+}
+
 // TODO: use picture tag to support more formats
 class ImageComponent extends React.Component<any> {
   get useLazyLoading() {
@@ -114,6 +137,7 @@ class ImageComponent extends React.Component<any> {
     const children = this.props.builderBlock && this.props.builderBlock.children
 
     let srcset = this.props.srcset
+    const sizes = getSizes(this.props.sizes)
     const image = this.props.image
 
     if (srcset && image && image.includes('builder.io/api/v1/image')) {
@@ -131,7 +155,7 @@ class ImageComponent extends React.Component<any> {
           const amp = value.ampMode
           const Tag: 'img' = amp ? ('amp-img' as any) : 'img'
 
-          const imageContents = (!lazy || this.state.load) && (
+          const imageContents = (!lazy || this.state.load || amp) && (
             <Tag
               {...(amp
                 ? ({
@@ -189,7 +213,7 @@ class ImageComponent extends React.Component<any> {
               })}
               // TODO: memoize on image on client
               srcSet={srcset}
-              sizes={this.props.sizes}
+              sizes={sizes}
             />
           )
 

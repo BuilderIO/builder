@@ -433,10 +433,12 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
                   initialContent: data ? [data] : undefined,
                   // TODO: make this a settable property too
                   key:
-                  this.getAttribute('key') ||
-                  (slot ? `slot:${slot}` : null) ||
-                  (Builder.isEditing ? name! : (data && data.id) || undefined),
-                  ...this.options,
+                    this.getAttribute('key') ||
+                    (slot ? `slot:${slot}` : null) ||
+                    (Builder.isEditing
+                      ? name!
+                      : (data && data.id) || undefined),
+                  ...this.options
                 }
               },
               this.getAttribute('hydrate') !== 'false', // TODO: query param override builder.hydrate
@@ -485,13 +487,13 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
                     entry: data ? data.id : entry,
                     initialContent: data ? [data] : undefined,
                     key:
-                    this.getAttribute('key') ||
-                    (slot ? `slot:${slot}` : null) ||
-                    (Builder.isEditing
-                      ? name!
-                      : (data && data.id) || undefined),
-                      ...this.options,
-                      // TODO: specify variation?
+                      this.getAttribute('key') ||
+                      (slot ? `slot:${slot}` : null) ||
+                      (Builder.isEditing
+                        ? name!
+                        : (data && data.id) || undefined),
+                    ...this.options
+                    // TODO: specify variation?
                   },
                   fresh
                 },

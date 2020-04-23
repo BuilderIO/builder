@@ -804,7 +804,7 @@ export class BuilderPage extends React.Component<
           contentId ? `builder-component-${contentId}` : ''
         }`}
         data-name={this.name}
-        date-source={`Rendered by Builder.io on ${new Date().toUTCString()}`}
+        data-source={`Rendered by Builder.io on ${new Date().toUTCString()}`}
         key={this.state.key}
         ref={ref => (this.ref = ref)}
       >
