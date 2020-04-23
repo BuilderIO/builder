@@ -34,8 +34,9 @@
     "precommit": "lint-staged",
     "serve": "http-server -p 8989",
     "develop": "concurrently \"npm run start\" \"npm run serve\"",
-    "release:patch": "npm run build && npm version patch && npm publish",
-    "release:dev": "npm run build && npm version prerelease && npm publish --tag dev"
+    "release:patch": "npm run build && npm version patch && ALLOW_PUBLISH=true npm publish",
+    "release:dev": "npm run build && npm version prerelease && ALLOW_PUBLISH=true npm publish --tag dev",
+    "prepublishOnly": "block-publish"
   },
   "lint-staged": {
     "{src,test}/**/*.ts": [
@@ -91,6 +92,7 @@
     "@types/jest": "^25.2.1",
     "@types/node": "^13.11.1",
     "@types/react": "^16.9.34",
+    "@builder.io/block-publish": "^1.1.2",
     "colors": "^1.4.0",
     "commitizen": "^4.0.4",
     "concurrently": "^5.1.0",

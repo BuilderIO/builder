@@ -36,10 +36,11 @@
     "precommit": "lint-staged",
     "serve": "http-server -p 8989",
     "develop": "concurrently \"npm run start\" \"npm run serve\"",
-    "release:patch": "npm run build && npm version patch && npm run build:unpkg:dist && npm publish",
-    "release:nightly": "npm run build && npm version prerelease && npm run build:unpkg:dist && npm publish --tag nightly",
-    "release:dev": "npm run build && npm version prerelease && npm run build:unpkg:dist && npm publish --tag dev",
-    "release:beta": "npm run build && npm version prerelease && npm run build:unpkg:dist && npm publish --tag beta"
+    "release:patch": "npm run build && npm version patch && npm run build:unpkg:dist && ALLOW_PUBLISH=true npm publish",
+    "release:nightly": "npm run build && npm version prerelease && npm run build:unpkg:dist && ALLOW_PUBLISH=true npm publish --tag nightly",
+    "release:dev": "npm run build && npm version prerelease && npm run build:unpkg:dist && ALLOW_PUBLISH=true npm publish --tag dev",
+    "release:beta": "npm run build && npm version prerelease && npm run build:unpkg:dist && ALLOW_PUBLISH=true npm publish --tag beta",
+    "prepublishOnly": "block-publish"
   },
   "lint-staged": {
     "{src,test}/**/*.ts": [
@@ -98,6 +99,7 @@
     "@types/node": "^12.12.24",
     "@types/react": "^16.9.16",
     "@types/react-dom": "^16.8.3",
+    "@builder.io/block-publish": "^1.1.2",
     "colors": "^1.3.3",
     "commitizen": "^4.0.3",
     "concurrently": "^5.0.1",

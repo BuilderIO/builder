@@ -35,13 +35,14 @@
     "deploy-docs": "ts-node tools/gh-pages-publish",
     "report-coverage": "cat ./coverage/lcov.info | coveralls",
     "commit": "git-cz",
-    "release": "npm run build && npm publish",
-    "release:patch": "npm run build && npm version patch && npm publish",
-    "release:nightly": "npm run build && npm version prerelease --no-git-tag-version && npm publish --tag nightly",
-    "release:dev": "npm run build && npm version prerelease --no-git-tag-version && npm publish --tag dev",
+    "release": "npm run build && ALLOW_PUBLISH=true npm publish",
+    "release:patch": "npm run build && npm version patch && ALLOW_PUBLISH=true npm publish",
+    "release:nightly": "npm run build && npm version prerelease --no-git-tag-version && ALLOW_PUBLISH=true npm publish --tag nightly",
+    "release:dev": "npm run build && npm version prerelease --no-git-tag-version && ALLOW_PUBLISH=true npm publish --tag dev",
     "semantic-release": "semantic-release",
     "semantic-release-prepare": "ts-node tools/semantic-release-prepare",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "prepublishOnly": "block-publish"
   },
   "lint-staged": {
     "{src,test}/**/*.ts": [
@@ -92,6 +93,7 @@
     "@types/node": "^10.0.3",
     "@types/react": "^16.4.1",
     "@types/react-dom": "^16.0.7",
+    "@builder.io/block-publish": "^1.1.2",
     "colors": "^1.1.2",
     "commitizen": "^2.9.6",
     "coveralls": "^3.0.0",

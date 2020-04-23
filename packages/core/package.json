@@ -17,10 +17,11 @@
     "watch": "rollup -cw",
     "start": "npm run watch",
     "tsc": "tsc --module commonjs",
-    "release": "npm run build && npm publish",
-    "release:patch": "npm run build && npm version patch && npm publish",
-    "release:patch:nightly": "npm run build && npm version patch && npm publish",
-    "release:dev": "npm run build && npm version prerelease --no-git-tag-version && npm publish --tag dev"
+    "release": "npm run build && ALLOW_PUBLISH=true npm publish",
+    "release:patch": "npm run build && npm version patch && ALLOW_PUBLISH=true npm publish",
+    "release:patch:nightly": "npm run build && npm version patch && ALLOW_PUBLISH=true npm publish",
+    "release:dev": "npm run build && npm version prerelease --no-git-tag-version && ALLOW_PUBLISH=true npm publish --tag dev",
+    "prepublishOnly": "block-publish"
   },
   "devDependencies": {
     "@medv/finder": "^1.1.1",
@@ -34,6 +35,7 @@
     "@types/query-string": "^5.0.1",
     "@types/ua-parser-js": "^0.7.32",
     "@types/virtual-dom": "^2.0.27",
+    "@builder.io/block-publish": "^1.1.2",
     "rollup": "^0.58.2",
     "rollup-plugin-alias": "^1.4.0",
     "rollup-plugin-commonjs": "^9.1.3",

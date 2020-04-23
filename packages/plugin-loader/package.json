@@ -29,11 +29,12 @@
     "deploy-docs": "ts-node tools/gh-pages-publish",
     "report-coverage": "cat ./coverage/lcov.info | coveralls",
     "commit": "git-cz",
-    "release:dev": "npm run build && npm version prerelease && npm publish --access public --tag dev",
+    "release:dev": "npm run build && npm version prerelease && ALLOW_PUBLISH=true npm publish --access public --tag dev",
     "semantic-release": "semantic-release",
     "semantic-release-prepare": "ts-node tools/semantic-release-prepare",
     "precommit": "lint-staged",
-    "travis-deploy-once": "travis-deploy-once"
+    "travis-deploy-once": "travis-deploy-once",
+    "prepublishOnly": "block-publish"
   },
   "lint-staged": {
     "{src,test}/**/*.ts": [
@@ -89,6 +90,7 @@
     "@types/node": "^10.11.0",
     "@types/react-dom": "^16.9.4",
     "@types/systemjs": "^6.1.0",
+    "@builder.io/block-publish": "^1.1.2",
     "colors": "^1.3.2",
     "commitizen": "^3.0.0",
     "coveralls": "^3.0.2",
