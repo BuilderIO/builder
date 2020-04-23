@@ -1,18 +1,6 @@
-const inquirer = require('inquirer')
-
-const promptUser = async () => {
-  const response = await inquirer.prompt([
-    {
-      name: 'prompt',
-      message:
-        '!!!WARNING!!! Do not run npm publish directly.\n Did you run a publish script like `npm run release:dev`?'
-    }
-  ])
-
-  if (response.prompt !== 'yes') {
-    console.log('You must run a publish script! Exiting now.')
-    process.exit(1)
-  }
+if (!process.env.BYPASS) {
+  console.log(
+    `ERROR!!!\nDirect access to npm publish is blocked.\nPlease run a publish script like npm release:dev.`
+  )
+  process.exit(1)
 }
-
-promptUser()
