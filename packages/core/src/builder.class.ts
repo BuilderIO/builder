@@ -508,10 +508,9 @@ export class Builder {
   );
 
   static isPreviewing = Boolean(
-    isIframe &&
-      ((document.referrer && document.referrer.match(/builder\.io|localhost:1234/)) ||
-        location.search.indexOf('builder.preview=') !== -1 ||
-        location.search.indexOf('builder.frameEditing=') !== -1)
+    (document.referrer && document.referrer.match(/builder\.io|localhost:1234/)) ||
+      location.search.indexOf('builder.preview=') !== -1 ||
+      location.search.indexOf('builder.frameEditing=') !== -1
   );
 
   // useCdnApi = false;
@@ -1458,7 +1457,6 @@ export class Builder {
   setUserAttributes(options: object) {
     assign(Builder.overrideUserAttributes, options);
   }
-
 
   get(
     modelName: string,
