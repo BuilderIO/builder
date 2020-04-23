@@ -35,7 +35,7 @@
     "@types/query-string": "^5.0.1",
     "@types/ua-parser-js": "^0.7.32",
     "@types/virtual-dom": "^2.0.27",
-    "block-publish": "^1.1.1",
+    "@builder.io/block-publish": "^1.1.2",
     "rollup": "^0.58.2",
     "rollup-plugin-alias": "^1.4.0",
     "rollup-plugin-commonjs": "^9.1.3",

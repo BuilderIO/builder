@@ -1,7 +1,7 @@
 {
   "private": true,
   "devDependencies": {
-    "block-publish": "^1.1.1",
+    "@builder.io/block-publish": "^1.1.2",
     "lerna": "^3.20.2"
   },
   "license": "MIT",
@@ -20,7 +20,7 @@
     "start": "lerna run start --parallel --scope @builder.io/webcomponents --scope @builder.io/react",
     "watch": "npm run start",
     "develop": "npm run start",
-    "build": "lerna run build --stream --no-private --ignore @builder.io/plugin-loader --ignore @builder.io/widgets --ignore @builder.io/plugin-shopify",
+    "build": "lerna run build --stream --no-private --ignore @builder.io/plugin-loader --ignore @builder.io/widgets --ignore @builder.io/plugin-shopify --ignore @builder.io/memsource-connector",
     "release:patch": "npm run verify-git-not-dirty && npm run build && lerna version patch --yes && lerna run build:unpkg:dist --no-private && ALLOW_PUBLISH=true lerna publish from-package --yes",
     "release:minor": "npm run verify-git-not-dirty && npm run build && lerna version minor --yes && lerna run build:unpkg:dist --no-private && ALLOW_PUBLISH=true lerna publish from-package --yes",
     "release:prerelease:dev": "npm run build && lerna version prerelease --yes && lerna run build:unpkg:dist --no-private && ALLOW_PUBLISH=true lerna publish from-package --dist-tag dev --yes",

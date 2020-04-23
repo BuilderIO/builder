@@ -94,7 +94,7 @@
     "@types/react-dom": "^16.0.7",
     "@types/react-loadable": "^5.5.1",
     "@types/react-slick": "^0.23.3",
-    "block-publish": "^1.1.1",
+    "@builder.io/block-publish": "^1.1.2",
     "colors": "^1.1.2",
     "commitizen": "^2.9.6",
     "coveralls": "^3.0.0",

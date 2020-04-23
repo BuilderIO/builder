@@ -65,7 +65,7 @@
     "@types/jasmine": "^2.8.11",
     "@types/jasminewd2": "^2.0.6",
     "@types/node": "^10.12.8",
-    "block-publish": "^1.1.1",
+    "@builder.io/block-publish": "^1.1.2",
     "chokidar-cli": "^1.2.1",
     "codelyzer": "^5.0.1",
     "express": "^4.16.4",

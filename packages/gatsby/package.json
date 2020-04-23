@@ -27,7 +27,7 @@
     "@babel/cli": "^7.7.5",
     "@babel/core": "^7.7.5",
     "babel-preset-gatsby-package": "^0.2.16",
-    "block-publish": "^1.1.1",
+    "@builder.io/block-publish": "^1.1.2",
     "cross-env": "^5.2.1",
     "gatsby": "^2.19.21",
     "jest": "^25.1.0"

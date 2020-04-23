@@ -99,7 +99,7 @@
     "@types/node": "^12.12.24",
     "@types/react": "^16.9.16",
     "@types/react-dom": "^16.8.3",
-    "block-publish": "^1.1.1",
+    "@builder.io/block-publish": "^1.1.2",
     "colors": "^1.3.3",
     "commitizen": "^4.0.3",
     "concurrently": "^5.0.1",
