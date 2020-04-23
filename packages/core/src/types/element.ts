@@ -34,13 +34,21 @@ export interface BuilderElement {
     [key: string]: string;
   };
   meta?: {
-    [key: string]: JSONValue; 
+    [key: string]: JSONValue;
   };
   actions?: {
     [key: string]: string;
   };
   properties?: {
     [key: string]: string;
+  };
+  code?: {
+    bindings?: {
+      [key: string]: string;
+    };
+    actions?: {
+      [key: string]: string;
+    };
   };
   repeat?: {
     collection: string;

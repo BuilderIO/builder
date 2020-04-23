@@ -639,7 +639,7 @@ export class BuilderPage extends React.Component<
     if (url && family && name) {
       str += `
 @font-face {
-  font-family: ${family};
+  font-family: "${family}";
   src: local("${name}"), url('${url}') format('woff2');
   font-display: fallback;
   font-weight: 400;
@@ -658,8 +658,8 @@ export class BuilderPage extends React.Component<
         if (weightUrl && weightUrl !== url) {
           str += `
 @font-face {
-  font-family: ${family};
-  src: url('${weightUrl}') format('woff2');
+  font-family: "${family}";
+  src: local("${family}"), url('${weightUrl}') format('woff2');
   font-display: fallback;
   font-weight: ${weight};
 }
@@ -804,7 +804,7 @@ export class BuilderPage extends React.Component<
           contentId ? `builder-component-${contentId}` : ''
         }`}
         data-name={this.name}
-        date-source={`Rendered by Builder.io on ${new Date().toUTCString()}`}
+        data-source={`Rendered by Builder.io on ${new Date().toUTCString()}`}
         key={this.state.key}
         ref={ref => (this.ref = ref)}
       >

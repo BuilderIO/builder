@@ -347,7 +347,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
       str += `
 @font-face {
   font-family: ${family};
-  src: local("${name}"), url('${url}') format('woff2');
+  src: local("${family}"), url('${url}') format('woff2');
   font-display: fallback;
   font-weight: 400;
 }
@@ -362,7 +362,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
           str += `
 @font-face {
   font-family: ${family};
-  src: url('${weightUrl}') format('woff2');
+  src: local("${family}"), url('${weightUrl}') format('woff2');
   font-display: fallback;
   font-weight: ${weight};
 }
