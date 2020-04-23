@@ -48,7 +48,6 @@
     "typescript": "^3.7.5"
   },
   "dependencies": {
-    "custom-event-polyfill": "^1.0.7",
     "node-fetch": "^2.2.0",
     "tslib": "^1.10.0"
   },
