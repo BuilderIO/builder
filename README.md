@@ -181,28 +181,26 @@ For lots of examples of using React components in Builder, see the source for ou
 One of Builder's most powerful features is allowing the creation of new pages for you. See a simple example of how to do this with react-router below:
 
 ```tsx
-class CatchAllPage extends Component {
-  state = {
-    notFound: false,
-  };
+import { BuilderComponent, builder } from '@builder.io/react'
 
-  render() {
-    return !this.props.notFound ? (
-      <BuilderComponent
-        model="page"
-        contentLoaded={content => {
-          if (!content) {
-            this.setState({ notFound: true });
-          }
-        }}
-      >
-        Loading...
-      </BuilderComponent>
-    ) : (
-      <NotFound /> // Your 404 component
-    );
-  }
+builder.init('YOUR_KEY')
+
+export default let HomePage = () => {
+  const [pageJson, setPage] = useState()
+
+  useEffect(() => { 
+    builder.get('page', { url: location.pathname })
+       // The value will be `null` if no page was found
+      .promise().then(setPage)
+  , [])
+
+  return pageJson === undefined 
+    ? <Loading /> 
+    : pageJson 
+    ? <BuilderComponent model="page" content={pageJson} /> 
+    : <NotFound />
 }
+
 
 // Then in your app.js
 export default () => (
@@ -214,9 +212,6 @@ export default () => (
 );
 ```
 
-For more advanced usage, like checking for page existence/404 on the server using the Content API, see our detail landing page docs [here](https://builder.io/c/docs/custom-landing-pages) or if using Next.js see our docs for that [here](https://github.com/BuilderIO/builder/tree/master/packages/react/examples/next-js#dynamic-landing-pages)
-
-Also see a more complext [design system example here](/examples/react-design-system)
 
 ## Don't use React?
 
@@ -231,6 +226,9 @@ if (page) {
   // Put the html in your page template between your header and footer and you are done!
 }
 ```
+
+✨**Tip:** You can make reusable components for your Builder.io pages using [symbols](https://builder.io/c/docs/guides/symbols)
+
 
 ## We're hiring!
 
