@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/plugin-loader",
-  "version": "0.1.10",
+  "version": "0.1.11-alpha.0",
   "description": "",
   "keywords": [],
   "main": "dist/content-loader.umd.js",
@@ -84,13 +84,13 @@
     ]
   },
   "devDependencies": {
+    "@builder.io/block-publish": "^1.1.2",
     "@commitlint/cli": "^7.1.2",
     "@commitlint/config-conventional": "^7.1.2",
     "@types/jest": "^23.3.2",
     "@types/node": "^10.11.0",
     "@types/react-dom": "^16.9.4",
     "@types/systemjs": "^6.1.0",
-    "@builder.io/block-publish": "^1.1.2",
     "colors": "^1.3.2",
     "commitizen": "^3.0.0",
     "coveralls": "^3.0.2",
@@ -128,8 +128,8 @@
   "dependencies": {
     "@builder.io/mobx-state-tree": "^3.14.2",
     "@builder.io/plugin-cloudinary": "^1.1.3",
-    "@builder.io/react": "^1.1.9",
-    "@builder.io/sdk": "^1.1.3-alpha.4",
+    "@builder.io/react": "^1.1.16-alpha.0",
+    "@builder.io/sdk": "^1.1.5-alpha.0",
     "@emotion/core": "^10.0.22",
     "@emotion/styled": "^10.0.23",
     "@material-ui/core": "^4.7.1",

@@ -7,7 +7,7 @@
     "url": "https://github.com/BuilderIO/builder.git",
     "directory": "packages/gatsby"
   },
-  "version": "1.0.5",
+  "version": "1.0.6-alpha.0",
   "keywords": [
     "gatsby",
     "gatsby-plugin",
@@ -26,8 +26,8 @@
   "devDependencies": {
     "@babel/cli": "^7.7.5",
     "@babel/core": "^7.7.5",
-    "babel-preset-gatsby-package": "^0.2.16",
     "@builder.io/block-publish": "^1.1.2",
+    "babel-preset-gatsby-package": "^0.2.16",
     "cross-env": "^5.2.1",
     "gatsby": "^2.19.21",
     "jest": "^25.1.0"

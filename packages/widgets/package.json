@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/widgets",
-  "version": "1.2.2",
+  "version": "1.2.3-alpha.0",
   "description": "",
   "keywords": [],
   "main": "dist/builder-widgets.cjs.js",
@@ -87,6 +87,7 @@
     "singleQuote": true
   },
   "devDependencies": {
+    "@builder.io/block-publish": "^1.1.2",
     "@types/jest": "^22.0.0",
     "@types/lodash-es": "^4.17.1",
     "@types/node": "^10.0.3",
@@ -94,7 +95,6 @@
     "@types/react-dom": "^16.0.7",
     "@types/react-loadable": "^5.5.1",
     "@types/react-slick": "^0.23.3",
-    "@builder.io/block-publish": "^1.1.2",
     "colors": "^1.1.2",
     "commitizen": "^2.9.6",
     "coveralls": "^3.0.0",
@@ -143,7 +143,7 @@
     "@builder.io/react": "^1.1.0"
   },
   "dependencies": {
-    "@builder.io/react": "^1.1.0",
+    "@builder.io/react": "^1.1.16-alpha.0",
     "@emotion/core": ">=10",
     "@emotion/styled": ">=10",
     "react": ">=14",

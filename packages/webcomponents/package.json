@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/webcomponents",
-  "version": "1.3.11",
+  "version": "1.3.12-alpha.0",
   "description": "",
   "keywords": [],
   "main": "dist/system/builder-webcomponents-async.js",
@@ -91,6 +91,7 @@
     ]
   },
   "devDependencies": {
+    "@builder.io/block-publish": "^1.1.2",
     "@commitlint/cli": "^8.2.0",
     "@commitlint/config-conventional": "^8.2.0",
     "@rollup/plugin-alias": "^2.2.0",
@@ -99,7 +100,6 @@
     "@types/node": "^12.12.24",
     "@types/react": "^16.9.16",
     "@types/react-dom": "^16.8.3",
-    "@builder.io/block-publish": "^1.1.2",
     "colors": "^1.3.3",
     "commitizen": "^4.0.3",
     "concurrently": "^5.0.1",
@@ -139,15 +139,15 @@
     "typescript": "^3.7.3"
   },
   "optionalDependencies": {
-    "@builder.io/email": "^1.2.10",
+    "@builder.io/email": "^1.2.11-alpha.0",
     "@webcomponents/custom-elements": "^1.2.1",
     "es6-promise": "^4.2.5"
   },
   "//": "TODO: make all of these optional dependencies, simple mode doesn't require",
   "dependencies": {
-    "@builder.io/react": "^1.1.9",
-    "@builder.io/sdk": "^1.1.3-alpha.4",
-    "@builder.io/widgets": "^1.2.2",
+    "@builder.io/react": "^1.1.16-alpha.0",
+    "@builder.io/sdk": "^1.1.5-alpha.0",
+    "@builder.io/widgets": "^1.2.3-alpha.0",
     "@emotion/core": "^10.0.22",
     "@types/css-font-loading-module": "0.0.4",
     "preact": "^10.2.1",
