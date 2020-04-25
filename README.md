@@ -31,13 +31,18 @@ Builder.registerComponent(Heading, {
     <td width="50%">
 <pre lang="tsx">
 import { BuilderComponent } from '@builder.io/react'
+&nbsp; 
+export default let BuilderPage = () => {
+&nbsp;&nbsp;const [page, setPage] = useState(null)
 &nbsp;
-// Include this in your app, and Builder.io will render  
-// the matching content by model name and the current document's URL.  
-// Scroll down for more advanced options and examples
-export default let BuilderPage = () => (
-&nbsp;&nbsp;&lt;BuilderComponent model="page" /&gt;
-)
+&nbsp;&nbsp;useEffect(() => { 
+&nbsp;&nbsp;&nbsp;&nbsp;builder.get('page', { url: '/' })
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.promise().then(setPage)
+&nbsp;&nbsp;, [])
+&nbsp;
+&nbsp;&nbsp;return &lt;BuilderComponent model="page" content={page} />
+}
+
 </pre>
     </td>
   </tr>
