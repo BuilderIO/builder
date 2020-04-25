@@ -118,6 +118,9 @@ builder.init(YOUR_KEY);
 And in your router
 
 ```tsx
+// You can use the url="..." prop to automaticaly fetch the content for that URL,
+// or omit this prop and Builder.io will fetch the corresponding page for the current
+// location.pathname, if available
 <Route path="/something" render={() => <BuilderComponent model="page" url="/something" />}>
 ```
 
@@ -138,7 +141,7 @@ Register a component
 ```tsx
 import { Builder } from '@builder.io/react';
 
-const SimpleText = props => <h1>{props.text}</h1>;
+const SimpleText = (props) => <h1>{props.text}</h1>;
 
 Builder.registerComponent(SimpleText, {
   name: 'Simple Text',
