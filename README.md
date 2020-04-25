@@ -35,14 +35,14 @@ import { BuilderComponent, builder } from '@builder.io/react'
 builder.init('YOUR_KEY')
 &nbsp; 
 export default let BuilderPage = () => {
-&nbsp;&nbsp;const [page, setPage] = useState(null)
+&nbsp;&nbsp;const [pageJson, setPage] = useState(null)
 &nbsp;
 &nbsp;&nbsp;useEffect(() => { 
 &nbsp;&nbsp;&nbsp;&nbsp;builder.get('page', { url: '/' })
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.promise().then(setPage)
 &nbsp;&nbsp;, [])
 &nbsp;
-&nbsp;&nbsp;return &lt;BuilderComponent model="page" content={page} />
+&nbsp;&nbsp;return &lt;BuilderComponent model="page" content={pageJson} />
 }
 
 </pre>
