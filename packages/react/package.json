@@ -113,7 +113,7 @@
     "prompt": "^1.0.0",
     "replace-in-file": "^3.0.0-beta.2",
     "rimraf": "^2.6.1",
-    "rollup": "^1.32.0",
+    "rollup": "^1.32.1",
     "rollup-plugin-alias": "^1.5.1",
     "rollup-plugin-babel-minify": "^9.1.1",
     "rollup-plugin-commonjs": "^9.0.0",

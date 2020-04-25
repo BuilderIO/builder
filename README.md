@@ -203,6 +203,32 @@ export default () => (
 );
 ```
 
+### Data, components, SEO, and more
+
+Builder.io gives you a ton more power and control than just page building. Check our guides on 
+
+- [Custom models](https://builder.io/c/docs/guides/getting-started-with-models)
+- [Custom design systems in Builder.io](https://github.com/BuilderIO/builder/tree/master/examples/react-design-system)
+- [SEO optimizing Builder.io content](https://builder.io/c/docs/seo)
+- [Custom React components in the visual editor](https://www.builder.io/c/docs/custom-react-components)
+- [Components only mode](https://www.builder.io/c/docs/guides/components-only-mode)
+
+Additional framework support:
+- [Gatsby](https://github.com/BuilderIO/builder/tree/master/examples/gatsby)
+- [Next.js](https://github.com/BuilderIO/builder/tree/master/examples/next-js)
+- [Angular](https://github.com/BuilderIO/builder/tree/master/packages/angular)
+- [HTML API (for any framework)](https://builder.io/c/docs/html-api)
+
+As well as some handy power features like:
+- [Symbols](https://builder.io/c/docs/guides/symbols)
+- [Dynamic data fetching and binding](https://builder.io/c/docs/guides/advanced-data)
+- [State handling](https://builder.io/c/docs/guides/state-and-actions)
+- [Content API](https://builder.io/c/docs/query-api)
+- [GraphQL API](https://builder.io/c/docs/graphql-api)
+- [Webhooks](https://builder.io/c/docs/webhooks)
+- [Targeting and scheduling content](https://builder.io/c/docs/guides/targeting-and-scheduling)
+- [Extending Builder.io with plugins](https://github.com/BuilderIO/builder/tree/master/plugins)
+
 ## Don't use React?
 
 Our [HTML API](https://builder.io/c/docs/getting-started) works for any site
