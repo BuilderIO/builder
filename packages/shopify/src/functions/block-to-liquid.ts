@@ -11,6 +11,8 @@ import '../components/text';
 import '../components/columns';
 import '../components/image';
 import '../components/assign';
+import '../components/fragment';
+import '../components/capture';
 import '../components/section';
 import '../components/button';
 import '../components/symbol';
@@ -21,11 +23,12 @@ import '../components/forms/input';
 import '../components/forms/submit-button';
 import '../components/widgets/accordion';
 import '../components/widgets/carousel';
+import { isValidLiquidBinding } from './is-valid-liquid-binding';
 
 const camelCaseToSnakeCase = (str?: string) =>
   str ? str.replace(/([A-Z])/g, g => `_${g[0].toLowerCase()}`) : '';
 
-const escaleHtml = (str: string) => str.replace(/'/g, '&apos;').replace(/"/g, '&quot;');
+const escapeHtml = (str: string) => str.replace(/'/g, '&apos;').replace(/"/g, '&quot;');
 
 // TODO: move most or all of this to transformers and functions
 const convertBinding = (binding: string, options: Options) => {
@@ -40,6 +43,16 @@ const convertBinding = (binding: string, options: Options) => {
     );
   }
 
+  if (!isValidLiquidBinding(binding)) {
+    return '';
+  }
+
+  // We use state, Shopify uses global vars, so convert
+  // state.product.title to {{ product.title}}, etc
+  if (value.includes('state.')) {
+    value = value.replace(/state\./g, '');
+  }
+
   return value;
 };
 
@@ -48,9 +61,15 @@ export function blockToLiquid(json: BuilderElement, options: Options = {}): stri
 
   const styles: StringMap = {};
 
-  if (block.bindings) {
-    for (const key in block.bindings) {
-      let value = block.bindings[key];
+  
+  const bindings = {
+    ...block.bindings,
+    ...(block as any).code?.bindings,
+  };
+
+  if (bindings) {
+    for (const key in bindings) {
+      let value = bindings[key];
       if (!key || !value || key === 'hide') {
         continue;
       }
@@ -63,7 +82,7 @@ export function blockToLiquid(json: BuilderElement, options: Options = {}): stri
         // continue;
       }
 
-      const htmlEscapedValue = escaleHtml(value);
+      const htmlEscapedValue = escapeHtml(value);
       const valueString = `{{ ${htmlEscapedValue} }}`;
       if (key.startsWith('properties.') || !key.includes('.')) {
         if (!block.properties) {
@@ -123,17 +142,12 @@ export function blockToLiquid(json: BuilderElement, options: Options = {}): stri
     collectionName = convertBinding(collectionName, options);
   }
 
-  const bindings = {
-    ...block.bindings,
-    ...block.code?.bindings
-  }
-
   // Fragment? hm
   return `
     ${css.trim() ? `<style>${css}</style>` : ''}
     ${
       block.repeat && block.repeat.collection
-        ? `{% for ${block.repeat.itemName || collectionName + '_item'} in ${escaleHtml(
+        ? `{% for ${block.repeat.itemName || collectionName + '_item'} in ${escapeHtml(
             convertBinding(block.repeat.collection, options).split('(')[0]
           )} %}`
         : ''
@@ -143,16 +157,16 @@ export function blockToLiquid(json: BuilderElement, options: Options = {}): stri
         ? `{% unless  ${
             !isValidLiquidBinding(bindings.hide)
               ? 'false'
-              : escaleHtml(convertBinding(block.bindings.hide, options))
+              : escapeHtml(convertBinding(bindings.hide, options))
           } %}`
         : ''
     }
     ${
-      block.bindings && block.bindings.show
+      bindings.show
         ? `{% if  ${
-            block.bindings.show.includes(';')
+          !isValidLiquidBinding(bindings.show)
               ? 'false'
-              : escaleHtml(convertBinding(block.bindings.show, options))
+              : escapeHtml(convertBinding(bindings.show, options))
           } %}`
         : ''
     }
@@ -169,8 +183,8 @@ export function blockToLiquid(json: BuilderElement, options: Options = {}): stri
         ''}
     </${tag}>`
     }
-    ${block.bindings && block.bindings.hide ? '{% endunless %}' : ''}
-    ${block.bindings && block.bindings.show ? '{% endif %}' : ''}
+    ${bindings.hide ? '{% endunless %}' : ''}
+    ${bindings.show ? '{% endif %}' : ''}
     ${block.repeat ? '{% endfor %}' : ''}
     `;
 }
