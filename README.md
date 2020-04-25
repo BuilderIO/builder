@@ -30,7 +30,9 @@ Builder.registerComponent(Heading, {
 </td>
     <td width="50%">
 <pre lang="tsx">
-import { BuilderComponent } from '@builder.io/react'
+import { BuilderComponent, builder } from '@builder.io/react'
+&nbsp; 
+builder.init('YOUR_KEY')
 &nbsp; 
 export default let BuilderPage = () => {
 &nbsp;&nbsp;const [page, setPage] = useState(null)
