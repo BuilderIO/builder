@@ -167,6 +167,8 @@ export interface UserAttributes {
 
 export interface GetContentOptions {
   userAttributes?: UserAttributes;
+  // Alias for userAttributes.urlPath
+  url?: string;
   cacheSeconds?: number;
   limit?: number;
   query?: any;
@@ -1669,6 +1671,10 @@ export class Builder {
             urlPath: this.getLocation().pathname,
           };
 
+    const urlQueueItem = useQueue?.find(item => item.url);
+    if (urlQueueItem) {
+      userAttributes.urlPath = urlQueueItem.url;
+    }
     // TODO: merge in the attribute from query string ones
     // TODO: make this an option per component/request
     queryParams.userAttributes = Builder.useNewApi
