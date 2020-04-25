@@ -50,11 +50,10 @@ export default let BuilderPage = () => {
   </tr>
 </table>
 
-
 ## Who uses Builder.io?
+
 &nbsp;
 <img src="https://i.imgur.com/HXKroZm.jpg" />
-
 
 ## How does it work?
 
@@ -76,21 +75,20 @@ export default let BuilderPage = () => {
 - Storybook [live example](https://builder-storybook.firebaseapp.com) and [source](https://github.com/BuilderIO/builder/tree/master/packages/storybook)
 - Design system [live example](https://builder.io/fiddle/4b2e0a2e4b1a44a88a5e6f8c46cdfe7c) and [source](https://github.com/BuilderIO/builder/tree/master/examples/react-design-system)
 
-
 ## Supported Frameworks
 
-| Framework                                                    |                            Status                             |
-| ------------------------------------------------------------ | :-----------------------------------------------------------: |
-| [REST API](https://builder.io/c/docs/getting-started)        |                            Stable                             |
-| [React](#getting-started-with-react)                         |                            Stable                             |
-| [Next.js](examples/next-js)                   |                            Stable                             |
-| [Gatsby](examples/gatsby)                     |                            Stable                             |
-| [Shopify / Liquid](packages/shopify)                        |                             Beta                              |
-| [Angular](packages/angular)                                  |                            Stable                             |
-| [React native](packages/react-native)                        |                             Beta                              |
-| Email                                                        |                            Stable                             |
-| AMP                                                          |                            Stable                             |
-| Preact                                                       |                            Stable                             |
+| Framework                                                                |                            Status                             |
+| ------------------------------------------------------------------------ | :-----------------------------------------------------------: |
+| [REST API](https://builder.io/c/docs/getting-started)                    |                            Stable                             |
+| [React](#getting-started-with-react)                                     |                            Stable                             |
+| [Next.js](examples/next-js)                                              |                            Stable                             |
+| [Gatsby](examples/gatsby)                                                |                            Stable                             |
+| [Shopify / Liquid](packages/shopify)                                     |                             Beta                              |
+| [Angular](packages/angular)                                              |                            Stable                             |
+| [React native](packages/react-native)                                    |                             Beta                              |
+| Email                                                                    |                            Stable                             |
+| AMP                                                                      |                            Stable                             |
+| Preact                                                                   |                            Stable                             |
 | **Everyting else** <br/> Go, Php, Java, Vue, Ruby/Rails, Vanilla JS, etc | Use our [HTML API](https://builder.io/c/docs/getting-started) |
 
 Want suppoert for something not listed here or for us to priotize something coming soon? Drop us an issue and let us know! We prioritize based on the community's needs and interests.
@@ -98,8 +96,6 @@ Want suppoert for something not listed here or for us to priotize something comi
 ## What's in this repository?
 
 This repo houses all of the various [SDKs](packages), [usage examples](examples), [starter projects](starters), and [plugins](plugins)
-
-
 
 ## Getting Started with React
 
@@ -122,7 +118,7 @@ builder.init(YOUR_KEY);
 And in your router
 
 ```tsx
-<Route path="/something" render={() => <BuilderComponent model="page" />}>
+<Route path="/something" render={() => <BuilderComponent model="page" url="/something" />}>
 ```
 
 Create a new page with url "/something" in Builder and change the [preview URL](https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F4670438a077f497d8a486f890201ae85) to localhost:port/something (e.g. localhost:8888/something if your dev server is on port 8888) and edit!
@@ -130,7 +126,6 @@ Create a new page with url "/something" in Builder and change the [preview URL](
 See more info on setting up your [preview urls](https://www.builder.io/c/docs/guides/preview-url) here.
 
 Also, see the full [React API here](https://github.com/BuilderIO/builder/blob/master/packages/react/README.md)
-
 
 ### Using your components
 
@@ -143,17 +138,12 @@ Register a component
 ```tsx
 import { Builder } from '@builder.io/react';
 
-class SimpleText extends React.Component {
-  render() {
-    return <h1>{this.props.text}</h1>;
-  }
-}
+const SimpleText = props => <h1>{props.text}</h1>;
 
 Builder.registerComponent(SimpleText, {
   name: 'Simple Text',
-  inputs: [{ name: 'text', type: 'string' }],
-})
-
+  inputs: [{ name: 'text', type: 'text' }],
+});
 ```
 
 Then back at your page
@@ -163,7 +153,7 @@ import './simple-text'
 
 // ...
 
-<Route path="/something" render={() => <BuilderComponent model="page">}>
+<Route path="/something" render={() => <BuilderComponent model="page" url="/something">}>
 ```
 
 Open the dashboard and use it!
@@ -171,8 +161,6 @@ Open the dashboard and use it!
 See our [docs site](https://builder.io/c/docs/custom-react-components) for additional help and information, or contact us if you run into any issues or questions!
 
 For lots of examples of using React components in Builder, see the source for our built-in Builder blocks [here](https://github.com/BuilderIO/builder/tree/master/packages/react/src/blocks) and widgets [here](https://github.com/BuilderIO/builder/tree/master/packages/widgets/src/components)
-
-
 
 ### Dynamic landing pages
 
@@ -185,19 +173,19 @@ import { BuilderComponent, builder } from '@builder.io/react'
 
 builder.init('YOUR_KEY')
 
-export default let HomePage = () => {
+export default let CatchAllPage = () => {
   const [pageJson, setPage] = useState()
 
-  useEffect(() => { 
+  useEffect(() => {
     builder.get('page', { url: location.pathname })
        // The value will be `null` if no page was found
       .promise().then(setPage)
   , [])
 
-  return pageJson === undefined 
-    ? <Loading /> 
-    : pageJson 
-    ? <BuilderComponent model="page" content={pageJson} /> 
+  return pageJson === undefined
+    ? <Loading />
+    : pageJson
+    ? <BuilderComponent model="page" content={pageJson} />
     : <NotFound />
 }
 
@@ -211,7 +199,6 @@ export default () => (
   </Switch>
 );
 ```
-
 
 ## Don't use React?
 
@@ -228,7 +215,6 @@ if (page) {
 ```
 
 ✨**Tip:** You can make reusable components for your Builder.io pages using [symbols](https://builder.io/c/docs/guides/symbols)
-
 
 ## We're hiring!
 
