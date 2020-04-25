@@ -1672,8 +1672,8 @@ export class Builder {
           };
 
     const urlQueueItem = useQueue?.find(item => item.url);
-    if (urlQueueItem) {
-      userAttributes.urlPath = urlQueueItem.url;
+    if (urlQueueItem?.url) {
+      userAttributes.urlPath = urlQueueItem.url.split('?')[0];
     }
     // TODO: merge in the attribute from query string ones
     // TODO: make this an option per component/request
