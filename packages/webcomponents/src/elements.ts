@@ -60,7 +60,49 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
     }
   }
 
+  /**
+   * Iterate over API styles and add a new FontFace for each. This works around
+   * a browser issue that can cause fonts to flash from server rendered HTML
+   */
+  const forceLoadFonts = () => {
+    const apiStyles = Array.from(
+      document.querySelectorAll('.builder-api-styles')
+    )
+
+    if (!apiStyles.length || !document.fonts) {
+      return
+    }
+
+    apiStyles.forEach(element => {
+      const styles = element.innerHTML
+      styles.replace(
+        /(@font-face\s*{\s*font-family:\s*(.*?);[\s\S]+?url\((\S+)\)[\s\S]+?})/g,
+        (fullMatch, fontMatch, fontName, fontUrl) => {
+          const trimmedFontUrl = fontUrl
+            .replace('"', '')
+            .replace(/'/g, '')
+            .trim()
+
+          const trimmedFontName = fontName
+            .replace('"', '')
+            .replace(/'/g, '')
+            .trim()
+
+          const font = new FontFace(trimmedFontName, `url(${trimmedFontUrl})`)
+
+          if (!document.fonts.has(font)) {
+            document.fonts.add(font)
+          }
+
+          return ''
+        }
+      )
+    })
+  }
+
   const inject = () => {
+    forceLoadFonts()
+
     const selector = '.builder-component-wrap.builder-to-embed'
     const matches = document.querySelectorAll(selector)
     for (let i = 0; i < matches.length; i++) {
