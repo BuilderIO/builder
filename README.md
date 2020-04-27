@@ -203,7 +203,7 @@ export default () => (
 );
 ```
 
-### Data, components, SEO, and more
+### Data models, components, SEO, and more
 
 Builder.io gives you a ton more power and control than just page building. Check our guides on 
 
