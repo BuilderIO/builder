@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/widgets",
-  "version": "1.2.2",
+  "version": "1.2.3-alpha.1",
   "description": "",
   "keywords": [],
   "main": "dist/builder-widgets.cjs.js",
@@ -34,13 +34,14 @@
     "deploy-docs": "ts-node tools/gh-pages-publish",
     "report-coverage": "cat ./coverage/lcov.info | coveralls",
     "commit": "git-cz",
-    "release": "npm run build && npm publish",
-    "release:patch": "npm run build && npm version patch && npm publish",
-    "release:nightly": "npm run build && npm version prerelease --no-git-tag-version && npm publish --tag nightly",
-    "release:dev": "npm run build && npm version prerelease --no-git-tag-version && npm publish --tag dev",
+    "release": "npm run build && ALLOW_PUBLISH=true npm publish",
+    "release:patch": "npm run build && npm version patch && ALLOW_PUBLISH=true npm publish",
+    "release:nightly": "npm run build && npm version prerelease --no-git-tag-version && ALLOW_PUBLISH=true npm publish --tag nightly",
+    "release:dev": "npm run build && npm version prerelease --no-git-tag-version && ALLOW_PUBLISH=true npm publish --tag dev",
     "semantic-release": "semantic-release",
     "semantic-release-prepare": "ts-node tools/semantic-release-prepare",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "prepublishOnly": "block-publish"
   },
   "lint-staged": {
     "{src,test}/**/*.ts": [
@@ -86,6 +87,7 @@
     "singleQuote": true
   },
   "devDependencies": {
+    "@builder.io/block-publish": "^1.1.2",
     "@types/jest": "^22.0.0",
     "@types/lodash-es": "^4.17.1",
     "@types/node": "^10.0.3",
@@ -141,7 +143,7 @@
     "@builder.io/react": "^1.1.0"
   },
   "dependencies": {
-    "@builder.io/react": "^1.1.0",
+    "@builder.io/react": "^1.1.16-alpha.1",
     "@emotion/core": ">=10",
     "@emotion/styled": ">=10",
     "react": ">=14",
@@ -151,5 +153,5 @@
     "react-slick": "^0.23.2",
     "tslib": "^1.10.0"
   },
-  "gitHead": "f233cba190317de3644fff198e765660205cd7f1"
+  "gitHead": "4d96fbc32864698afbb355ab991c6d90be991951"
 }

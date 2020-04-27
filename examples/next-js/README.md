@@ -26,11 +26,8 @@ builder.init(BUILDER_API_KEY)
 
 class About extends React.Component {
   static async getInitialProps({ res, req, asPath }) {
-    // Get the upcoming route full location path and set that for Builder.io page targeting
-    const path = asPath.split('?')[0];
-
     // If there is a Builder page for this URL, this will be an object, otherwise it'll be null
-    const page = await builder.get('page', { req, res, userAttributes: { urlPath: path }  }).promise()
+    const page = await builder.get('page', { req, res, url: asPath  }).promise()
     return { builderPage: page }
   }
 

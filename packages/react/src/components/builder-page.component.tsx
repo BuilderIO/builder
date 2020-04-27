@@ -117,6 +117,7 @@ export interface BuilderPageProps {
   dataOnly?: boolean
   hydrate?: boolean
   context?: any
+  url?: string
 }
 
 export interface BuilderPageState {
@@ -838,6 +839,7 @@ export class BuilderPage extends React.Component<
                         entry: this.props.entry,
                         ...(content &&
                           size(content) && { initialContent: [content] }),
+                        ...(this.props.url && { url: this.props.url }),
                         ...this.props.options
                       }}
                       contentError={this.props.contentError}

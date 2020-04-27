@@ -30,24 +30,30 @@ Builder.registerComponent(Heading, {
 </td>
     <td width="50%">
 <pre lang="tsx">
-import { BuilderComponent } from '@builder.io/react'
+import { BuilderComponent, builder } from '@builder.io/react'
+&nbsp; 
+builder.init('YOUR_KEY')
+&nbsp; 
+export default let BuilderPage = () => {
+&nbsp;&nbsp;const [pageJson, setPage] = useState(null)
 &nbsp;
-// Include this in your app, and Builder.io will render  
-// the matching content by model name and the current document's URL.  
-// Scroll down for more advanced options and examples
-export default let BuilderPage = () => (
-&nbsp;&nbsp;&lt;BuilderComponent model="page" /&gt;
-)
+&nbsp;&nbsp;useEffect(() => { 
+&nbsp;&nbsp;&nbsp;&nbsp;builder.get('page', { url: '/' })
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.promise().then(setPage)
+&nbsp;&nbsp;, [])
+&nbsp;
+&nbsp;&nbsp;return &lt;BuilderComponent model="page" content={pageJson} />
+}
+
 </pre>
     </td>
   </tr>
 </table>
 
-
 ## Who uses Builder.io?
+
 &nbsp;
 <img src="https://i.imgur.com/HXKroZm.jpg" />
-
 
 ## How does it work?
 
@@ -69,21 +75,20 @@ export default let BuilderPage = () => (
 - Storybook [live example](https://builder-storybook.firebaseapp.com) and [source](https://github.com/BuilderIO/builder/tree/master/packages/storybook)
 - Design system [live example](https://builder.io/fiddle/4b2e0a2e4b1a44a88a5e6f8c46cdfe7c) and [source](https://github.com/BuilderIO/builder/tree/master/examples/react-design-system)
 
-
 ## Supported Frameworks
 
-| Framework                                                    |                            Status                             |
-| ------------------------------------------------------------ | :-----------------------------------------------------------: |
-| [REST API](https://builder.io/c/docs/getting-started)        |                            Stable                             |
-| [React](#getting-started-with-react)                         |                            Stable                             |
-| [Next.js](examples/next-js)                   |                            Stable                             |
-| [Gatsby](examples/gatsby)                     |                            Stable                             |
-| [Shopify / Liquid](packages/shopify)                        |                             Beta                              |
-| [Angular](packages/angular)                                  |                            Stable                             |
-| [React native](packages/react-native)                        |                             Beta                              |
-| Email                                                        |                            Stable                             |
-| AMP                                                          |                            Stable                             |
-| Preact                                                       |                            Stable                             |
+| Framework                                                                |                            Status                             |
+| ------------------------------------------------------------------------ | :-----------------------------------------------------------: |
+| [REST API](https://builder.io/c/docs/getting-started)                    |                            Stable                             |
+| [React](#getting-started-with-react)                                     |                            Stable                             |
+| [Next.js](examples/next-js)                                              |                            Stable                             |
+| [Gatsby](examples/gatsby)                                                |                            Stable                             |
+| [Shopify / Liquid](packages/shopify)                                     |                             Beta                              |
+| [Angular](packages/angular)                                              |                            Stable                             |
+| [React native](packages/react-native)                                    |                             Beta                              |
+| Email                                                                    |                            Stable                             |
+| AMP                                                                      |                            Stable                             |
+| Preact                                                                   |                            Stable                             |
 | **Everyting else** <br/> Go, Php, Java, Vue, Ruby/Rails, Vanilla JS, etc | Use our [HTML API](https://builder.io/c/docs/getting-started) |
 
 Want suppoert for something not listed here or for us to priotize something coming soon? Drop us an issue and let us know! We prioritize based on the community's needs and interests.
@@ -91,8 +96,6 @@ Want suppoert for something not listed here or for us to priotize something comi
 ## What's in this repository?
 
 This repo houses all of the various [SDKs](packages), [usage examples](examples), [starter projects](starters), and [plugins](plugins)
-
-
 
 ## Getting Started with React
 
@@ -115,7 +118,10 @@ builder.init(YOUR_KEY);
 And in your router
 
 ```tsx
-<Route path="/something" render={() => <BuilderComponent model="page" />}>
+// You can use the url="..." prop to automaticaly fetch the content for that URL,
+// or omit this prop and Builder.io will fetch the corresponding page for the current
+// location.pathname, if available
+<Route path="/something" render={() => <BuilderComponent model="page" url="/something" />}>
 ```
 
 Create a new page with url "/something" in Builder and change the [preview URL](https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F4670438a077f497d8a486f890201ae85) to localhost:port/something (e.g. localhost:8888/something if your dev server is on port 8888) and edit!
@@ -123,7 +129,6 @@ Create a new page with url "/something" in Builder and change the [preview URL](
 See more info on setting up your [preview urls](https://www.builder.io/c/docs/guides/preview-url) here.
 
 Also, see the full [React API here](https://github.com/BuilderIO/builder/blob/master/packages/react/README.md)
-
 
 ### Using your components
 
@@ -136,17 +141,12 @@ Register a component
 ```tsx
 import { Builder } from '@builder.io/react';
 
-class SimpleText extends React.Component {
-  render() {
-    return <h1>{this.props.text}</h1>;
-  }
-}
+const SimpleText = (props) => <h1>{props.text}</h1>;
 
 Builder.registerComponent(SimpleText, {
   name: 'Simple Text',
-  inputs: [{ name: 'text', type: 'string' }],
-})
-
+  inputs: [{ name: 'text', type: 'text' }],
+});
 ```
 
 Then back at your page
@@ -156,7 +156,7 @@ import './simple-text'
 
 // ...
 
-<Route path="/something" render={() => <BuilderComponent model="page">}>
+<Route path="/something" render={() => <BuilderComponent model="page" url="/something">}>
 ```
 
 Open the dashboard and use it!
@@ -165,8 +165,6 @@ See our [docs site](https://builder.io/c/docs/custom-react-components) for addit
 
 For lots of examples of using React components in Builder, see the source for our built-in Builder blocks [here](https://github.com/BuilderIO/builder/tree/master/packages/react/src/blocks) and widgets [here](https://github.com/BuilderIO/builder/tree/master/packages/widgets/src/components)
 
-
-
 ### Dynamic landing pages
 
 👉**Tip:** see our guides for **[Next.js](examples/next-js)** and **[Gatsby](examples/gatsby)** for best support for those frameworks
@@ -174,28 +172,26 @@ For lots of examples of using React components in Builder, see the source for ou
 One of Builder's most powerful features is allowing the creation of new pages for you. See a simple example of how to do this with react-router below:
 
 ```tsx
-class CatchAllPage extends Component {
-  state = {
-    notFound: false,
-  };
+import { BuilderComponent, builder } from '@builder.io/react'
 
-  render() {
-    return !this.props.notFound ? (
-      <BuilderComponent
-        model="page"
-        contentLoaded={content => {
-          if (!content) {
-            this.setState({ notFound: true });
-          }
-        }}
-      >
-        Loading...
-      </BuilderComponent>
-    ) : (
-      <NotFound /> // Your 404 component
-    );
-  }
+builder.init('YOUR_KEY')
+
+export default let CatchAllPage = () => {
+  const [pageJson, setPage] = useState()
+
+  useEffect(() => {
+    builder.get('page', { url: location.pathname })
+       // The value will be `null` if no page was found
+      .promise().then(setPage)
+  , [])
+
+  return pageJson === undefined
+    ? <Loading />
+    : pageJson
+    ? <BuilderComponent model="page" content={pageJson} />
+    : <NotFound />
 }
+
 
 // Then in your app.js
 export default () => (
@@ -207,9 +203,31 @@ export default () => (
 );
 ```
 
-For more advanced usage, like checking for page existence/404 on the server using the Content API, see our detail landing page docs [here](https://builder.io/c/docs/custom-landing-pages) or if using Next.js see our docs for that [here](https://github.com/BuilderIO/builder/tree/master/packages/react/examples/next-js#dynamic-landing-pages)
+### Data, components, SEO, and more
 
-Also see a more complext [design system example here](/examples/react-design-system)
+Builder.io gives you a ton more power and control than just page building. Check our guides on 
+
+- [Custom models](https://builder.io/c/docs/guides/getting-started-with-models)
+- [Custom design systems in Builder.io](https://github.com/BuilderIO/builder/tree/master/examples/react-design-system)
+- [SEO optimizing Builder.io content](https://builder.io/c/docs/seo)
+- [Custom React components in the visual editor](https://www.builder.io/c/docs/custom-react-components)
+- [Components only mode](https://www.builder.io/c/docs/guides/components-only-mode)
+
+Additional framework support:
+- [Gatsby](https://github.com/BuilderIO/builder/tree/master/examples/gatsby)
+- [Next.js](https://github.com/BuilderIO/builder/tree/master/examples/next-js)
+- [Angular](https://github.com/BuilderIO/builder/tree/master/packages/angular)
+- [HTML API (for any framework)](https://builder.io/c/docs/html-api)
+
+As well as some handy power features like:
+- [Symbols](https://builder.io/c/docs/guides/symbols)
+- [Dynamic data fetching and binding](https://builder.io/c/docs/guides/advanced-data)
+- [State handling](https://builder.io/c/docs/guides/state-and-actions)
+- [Content API](https://builder.io/c/docs/query-api)
+- [GraphQL API](https://builder.io/c/docs/graphql-api)
+- [Webhooks](https://builder.io/c/docs/webhooks)
+- [Targeting and scheduling content](https://builder.io/c/docs/guides/targeting-and-scheduling)
+- [Extending Builder.io with plugins](https://github.com/BuilderIO/builder/tree/master/plugins)
 
 ## Don't use React?
 
@@ -224,6 +242,8 @@ if (page) {
   // Put the html in your page template between your header and footer and you are done!
 }
 ```
+
+✨**Tip:** You can make reusable components for your Builder.io pages using [symbols](https://builder.io/c/docs/guides/symbols)
 
 ## We're hiring!
 
