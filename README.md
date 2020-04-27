@@ -245,6 +245,11 @@ if (page) {
 
 ✨**Tip:** You can make reusable components for your Builder.io pages using [symbols](https://builder.io/c/docs/guides/symbols)
 
+
+## How it works
+
+![How it works](https://i.imgur.com/r3pLqtk.png)
+
 ## We're hiring!
 
 Want to work on the future of visual software development? Email me at steve@builder.io and let's talk
