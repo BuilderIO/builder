@@ -248,7 +248,7 @@ if (page) {
 
 ## How it works
 
-![How it works](https://i.imgur.com/r3pLqtk.png)
+![How it works](https://i.imgur.com/tAnTKeN.png)
 
 ## We're hiring!
 
