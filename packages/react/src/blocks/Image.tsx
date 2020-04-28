@@ -232,7 +232,7 @@ class ImageComponent extends React.Component<any> {
                   {imageContents}
                 </picture>
               )}
-              {aspectRatio ? (
+              {aspectRatio && !amp ? (
                 <div
                   className="builder-image-sizer"
                   css={{
