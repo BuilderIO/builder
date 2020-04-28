@@ -47,7 +47,7 @@
     "rollup-plugin-typescript": "^0.8.1",
     "rollup-plugin-typescript2": "^0.13.0",
     "rollup-plugin-uglify": "^3.0.0",
-    "typescript": "^3.7.5"
+    "typescript": "^3.8.3"
   },
   "dependencies": {
     "node-fetch": "^2.2.0",
