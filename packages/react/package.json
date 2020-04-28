@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/react",
-  "version": "1.1.16-alpha.2",
+  "version": "1.1.16-alpha.5",
   "description": "",
   "keywords": [],
   "main": "dist/builder-react.cjs.js",
@@ -40,8 +40,7 @@
     "release:dev": "npm run build && npm version prerelease --no-git-tag-version && ALLOW_PUBLISH=true npm publish --tag dev",
     "semantic-release": "semantic-release",
     "semantic-release-prepare": "ts-node tools/semantic-release-prepare",
-    "precommit": "lint-staged",
-    "prepublishOnly": "block-publish"
+    "precommit": "lint-staged"
   },
   "lint-staged": {
     "{src,test}/**/*.ts": [
@@ -132,7 +131,7 @@
     "tslint-config-prettier": "^1.1.0",
     "tslint-config-standard": "^7.0.0",
     "typedoc": "^0.11.0",
-    "typescript": "^3.7.5",
+    "typescript": "^3.8.3",
     "validate-commit-msg": "^2.12.2"
   },
   "//": "TODO: maybe make @builder.io/sdk peerdependency",

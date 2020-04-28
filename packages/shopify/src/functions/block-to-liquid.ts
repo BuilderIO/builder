@@ -16,6 +16,7 @@ import '../components/capture';
 import '../components/section';
 import '../components/button';
 import '../components/symbol';
+import '../components/state-provider';
 import '../components/custom-code';
 import '../components/forms/form';
 import '../components/forms/label';

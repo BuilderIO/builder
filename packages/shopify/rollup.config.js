@@ -72,6 +72,11 @@ const reactOptions = {
       file: 'dist/react/bundle.esm.js',
       sourcemap: true,
     },
+    {
+      format: 'cjs',
+      file: 'dist/react/bundle.cjs.js',
+      sourcemap: true,
+    },
   ],
   plugins: basicOptions.plugins.concat([resolve()]),
 };

@@ -787,7 +787,7 @@ export class BuilderPage extends React.Component<
   render() {
     const content = this.content
 
-    const dataString =
+    const dataString = Builder.isBrowser && 
       this.props.data && size(this.props.data) && hash(this.props.data)
     let key = Builder.isEditing ? this.name : this.props.entry
     if (key && !Builder.isEditing && dataString && dataString.length < 300) {
