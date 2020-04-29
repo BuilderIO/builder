@@ -188,13 +188,14 @@ class ImageComponent extends React.Component<any> {
                 transition: 'opacity 0.2s ease-in-out',
                 objectFit: this.props.backgroundSize || 'cover',
                 objectPosition: this.props.backgroundPosition || 'center',
-                ...(aspectRatio && {
-                  position: 'absolute',
-                  height: '100%',
-                  width: '100%',
-                  left: 0,
-                  top: 0
-                }),
+                ...(aspectRatio &&
+                  !amp && {
+                    position: 'absolute',
+                    height: '100%',
+                    width: '100%',
+                    left: 0,
+                    top: 0
+                  }),
                 ...(amp && {
                   ['& img']: {
                     objectFit: this.props.backgroundSize,
@@ -213,7 +214,7 @@ class ImageComponent extends React.Component<any> {
               })}
               // TODO: memoize on image on client
               srcSet={srcset}
-              sizes={sizes}
+              sizes={!amp && sizes ? sizes : undefined}
             />
           )
 
