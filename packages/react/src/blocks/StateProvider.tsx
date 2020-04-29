@@ -51,5 +51,6 @@ export const StateProvider = withBuilder(StateProviderComponent, {
   // TODO: default children
   canHaveChildren: true,
   static: true,
+  noWrap: true,
   hideFromInsertMenu: true
 })

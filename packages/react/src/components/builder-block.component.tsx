@@ -18,6 +18,9 @@ import { Link } from './Link'
 const camelCaseToKebabCase = (str?: string) =>
   str ? str.replace(/([A-Z])/g, g => `-${g[0].toLowerCase()}`) : ''
 
+const kebabCaseToCamelCase = (str = '') =>
+  str.replace(/-([a-z])/g, match => match[1].toUpperCase())
+
 const Device = { desktop: 0, tablet: 1, mobile: 2 }
 const blocksMap: Record<string, BuilderElement> = {}
 
@@ -588,6 +591,23 @@ export class BuilderBlock extends React.Component<
 
     const noWrap =
       componentInfo && (componentInfo.fragment || componentInfo.noWrap)
+
+    const styleStr =
+      options.attr?.style ||
+      (typeof options.style === 'string' ? options.style : '') ||
+      ''
+      
+    if (typeof styleStr === 'string') {
+      if (typeof options.style !== 'object') {
+        options.style = {}
+      }
+
+      const styleSplit = styleStr.split(';')
+      for (const pair of styleSplit) {
+        const [key, value] = pair.split(':')
+        options.style[kebabCaseToCamelCase(key)] = value
+      }
+    }
 
     const finalOptions: { [key: string]: string } = {
       ...omit(options, ['class', 'component', 'attr']),
