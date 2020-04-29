@@ -35,7 +35,6 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
     Builder,
     builder
   }
-  
   ;(window as any).BuilderWC = BuilderWC
 
   const { builderWcLoadCallbacks } = window as any
