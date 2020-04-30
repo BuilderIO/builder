@@ -86,7 +86,9 @@ export class BuilderContent<
     // Temporary to test metrics diving in with bigquery and heatmaps
     // this.builder.autoTrack = true;
     // this.builder.env = 'development';
-    this.subscribeToContent()
+    if (!this.props.inline && !Builder.isEditing) {
+      this.subscribeToContent()
+    }
 
     if (Builder.isEditing) {
       addEventListener('message', this.onWindowMessage)
@@ -143,7 +145,10 @@ export class BuilderContent<
                   }
                   if (!addedObserver) {
                     this.trackedImpression = true
-                    this.builder.trackImpression(match.id!, (match as any).variationId)
+                    this.builder.trackImpression(
+                      match.id!,
+                      (match as any).variationId
+                    )
                   }
                 }
                 this.firstLoad = false
@@ -209,6 +214,8 @@ export class BuilderContent<
 
     const TagName = this.props.dataOnly ? NoWrap : 'div'
 
+    console.log({ inline: this.props.inline, useData })
+
     return (
       <TagName
         {...(!this.props.dataOnly && {
@@ -219,7 +226,11 @@ export class BuilderContent<
         builder-content-id={useData && useData.id}
         builder-model={this.props.modelName}
       >
-        {this.props.children(useData && useData.data, loading, useData)}
+        {this.props.children(
+          useData && useData.data,
+          this.props.inline ? false : loading,
+          useData
+        )}
       </TagName>
     )
   }

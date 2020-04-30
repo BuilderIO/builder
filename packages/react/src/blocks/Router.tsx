@@ -9,7 +9,7 @@ import { withBuilder } from '../functions/with-builder'
 export interface RouterProps {
   model?: string
   data?: string
-  content?: string
+  content?: any
   handleRouting?: boolean
   builderBlock?: BuilderElement
   preloadOnHover?: boolean

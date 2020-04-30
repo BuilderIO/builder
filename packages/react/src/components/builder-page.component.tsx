@@ -303,7 +303,7 @@ export class BuilderPage extends React.Component<
         // TODO: this should be on didMount right bc of element ref??
         // TODO: possibly observe for change or throw error if changes
         this.onContentLoaded(
-          this.props.content.content ||
+          (this.props.content as any).content ||
             this.props.content.data /*, this.props.content*/
         )
       }
@@ -729,7 +729,7 @@ export class BuilderPage extends React.Component<
 
   get data() {
     const data = {
-      ...(this.props.content && this.props.content.data.state),
+      ...(this.props.content && this.props.content.data?.state),
       ...this.props.data,
       ...this.state.state
     }
@@ -771,11 +771,11 @@ export class BuilderPage extends React.Component<
 
   get content() {
     let { content } = this.props
-    if (content && content.content) {
+    if (content && (content as any).content) {
       // GraphQL workaround
       content = {
         ...content,
-        data: content.content
+        data: (content as any).content
       }
     }
     return content
@@ -801,6 +801,8 @@ export class BuilderPage extends React.Component<
     const WrapComponent = this.props.dataOnly ? React.Fragment : 'div'
 
     const contentId = this.useContent?.id
+
+    console.log('BuilderComponent render', this.props)
 
     return (
       // TODO: data attributes for model, id, etc?
@@ -833,20 +835,28 @@ export class BuilderPage extends React.Component<
 
                   return (
                     <BuilderContent
-                      key={this.props.content?.id || 'no-content-id'}
+                      key={
+                        this.props.content?.id ||
+                        ('content' in this.props
+                          ? 'null-content-prop'
+                          : 'no-content-prop')
+                      }
                       builder={this.builder}
                       ref={ref => (this.contentRef = ref)}
-                      inline={this.props.inlineContent}
                       // TODO: pass entry in
                       contentLoaded={this.onContentLoaded}
                       options={{
                         key,
                         entry: this.props.entry,
-                        ...(content &&
-                          size(content) && { initialContent: [content] }),
+                        ...(content && { initialContent: [content] }),
+                        ...(!content &&
+                          'content' in this.props && { initialContent: [] }),
                         ...(this.props.url && { url: this.props.url }),
                         ...this.props.options
                       }}
+                      inline={
+                        this.props.inlineContent || 'content' in this.props
+                      }
                       contentError={this.props.contentError}
                       modelName={this.name || 'page'}
                     >

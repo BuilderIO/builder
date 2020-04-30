@@ -1,8 +1,10 @@
 import * as React from 'react'
 import { renderToString } from 'react-dom/server'
 import { render } from '@testing-library/react'
-import { BuilderElement, Builder } from '@builder.io/sdk'
+import { BuilderElement, Builder, builder } from '@builder.io/sdk'
 import { BuilderPage } from '../src/builder-react'
+
+builder.init('null')
 
 import '@testing-library/jest-dom/extend-expect'
 
@@ -145,6 +147,44 @@ describe('Content changes when new content provided', () => {
     )
 
     expect(testApi.getByText(textA)).toBeInTheDocument()
+
+    testApi.rerender(
+      <BuilderPage
+        model="page"
+        content={{
+          id: idB,
+          data: {
+            blocks: [block('Text', { text: textB })]
+          }
+        }}
+      />
+    )
+    expect(testApi.getByText(textB)).toBeInTheDocument()
+  })
+
+  it('Should be in controlled mode for null or underined content', () => {
+    const testApi = render(<BuilderPage model="page" content={undefined} />)
+
+    expect(testApi.queryByText(textB)).toBeNull()
+
+    testApi.rerender(
+      <BuilderPage
+        model="page"
+        content={{
+          id: idB,
+          data: {
+            blocks: [block('Text', { text: textB })]
+          }
+        }}
+      />
+    )
+    expect(testApi.getByText(textB)).toBeInTheDocument()
+  })
+
+  it('Should be in controlled mode for null or underined content', () => {
+    const testApi = render(<BuilderPage model="page" />)
+
+    expect(testApi.queryByText(textB)).toBeNull()
 
     testApi.rerender(
       <BuilderPage
