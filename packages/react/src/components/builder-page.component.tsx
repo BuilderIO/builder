@@ -787,8 +787,11 @@ export class BuilderPage extends React.Component<
   render() {
     const content = this.content
 
-    const dataString = Builder.isBrowser && 
-      this.props.data && size(this.props.data) && hash(this.props.data)
+    const dataString =
+      Builder.isBrowser &&
+      this.props.data &&
+      size(this.props.data) &&
+      hash(this.props.data)
     let key = Builder.isEditing ? this.name : this.props.entry
     if (key && !Builder.isEditing && dataString && dataString.length < 300) {
       key += ':' + dataString
@@ -829,6 +832,7 @@ export class BuilderPage extends React.Component<
 
                   return (
                     <BuilderContent
+                      key={this.props.content?.id || 'no-content-id'}
                       builder={this.builder}
                       ref={ref => (this.contentRef = ref)}
                       inline={this.props.inlineContent}
