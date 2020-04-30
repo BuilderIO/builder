@@ -695,6 +695,8 @@ export class Builder {
   private canTrack$ = new BehaviorSubject(!this.browserTrackingDisabled);
   private apiKey$ = new BehaviorSubject<string | null>(null);
 
+  userAttributesChanged = new BehaviorSubject<any>(null)
+
   get editingMode() {
     return this.editingMode$.value;
   }
@@ -1459,6 +1461,7 @@ export class Builder {
 
   setUserAttributes(options: object) {
     assign(Builder.overrideUserAttributes, options);
+    this.userAttributesChanged.next(options)
   }
 
   get(
