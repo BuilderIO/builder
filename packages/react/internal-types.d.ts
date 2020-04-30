@@ -5,3 +5,4 @@ declare module 'rollup-plugin-alias';
 declare module 'rollup-plugin-babel-minify';
 
 declare module 'lib/on-change.js'
+declare module '../../lib/on-change'

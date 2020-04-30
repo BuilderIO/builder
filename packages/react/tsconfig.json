@@ -11,6 +11,7 @@
     "declaration": true,
     "skipLibCheck": true,
     "checkJs": false,
+    "allowJs": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,

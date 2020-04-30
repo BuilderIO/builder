@@ -22,24 +22,29 @@ const el = (options?: Partial<BuilderElement>): BuilderElement => ({
   ...options
 })
 
+const block = (
+  name: string,
+  options?: any,
+  elOptions?: Partial<BuilderElement>
+) =>
+  el({
+    ...elOptions,
+    component: {
+      name,
+      options
+    }
+  })
+
 const server = (cb: () => void) => {
-  Builder.isServer = true;
+  Builder.isServer = true
   try {
     cb()
   } finally {
-    Builder.isServer = false;
+    Builder.isServer = false
   }
 }
 
 describe('Renders tons of components', () => {
-  const block = (name: string, options?: any, elOptions?: Partial<BuilderElement>) =>
-    el({
-      ...elOptions,
-      component: {
-        name,
-        options
-      }
-    })
   const blocks = [
     block('Columns', {
       columns: [{ blocks: [el()] }, { blocks: [el()] }]
@@ -106,14 +111,52 @@ describe('Data rendering', () => {
       }}
     />
   )
+
   it('works with dom', () => {
     const testApi = render(getBindingExampleElement())
     expect(testApi.getByText(TEXT_STRING)).toBeInTheDocument()
   })
+
   it('works with SSR', () => {
     server(() => {
       const string = renderToString(getBindingExampleElement())
       expect(string).toContain(TEXT_STRING)
     })
+  })
+})
+
+describe('Content changes when new content provided', () => {
+  const textA = 'textA'
+  const textB = 'textB'
+  const idA = 'id-a'
+  const idB = 'id-b'
+
+  it('Handles content passed and changed correctly', () => {
+    const testApi = render(
+      <BuilderPage
+        model="page"
+        content={{
+          id: idA,
+          data: {
+            blocks: [block('Text', { text: textA })]
+          }
+        }}
+      />
+    )
+
+    expect(testApi.getByText(textA)).toBeInTheDocument()
+
+    testApi.rerender(
+      <BuilderPage
+        model="page"
+        content={{
+          id: idB,
+          data: {
+            blocks: [block('Text', { text: textB })]
+          }
+        }}
+      />
+    )
+    expect(testApi.getByText(textB)).toBeInTheDocument()
   })
 })

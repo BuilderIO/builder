@@ -8,11 +8,12 @@ import {
   builder,
   Subscription,
   BehaviorSubject,
-  BuilderElement
+  BuilderElement,
+  BuilderContent as Content
 } from '@builder.io/sdk'
 import { BuilderStoreContext } from '../store/builder-store'
 import hash from 'hash-sum'
-import onChange from 'lib/on-change.js'
+import onChange from '../../lib/on-change'
 
 export { onChange }
 
@@ -106,7 +107,7 @@ export interface BuilderPageProps {
   contentLoaded?: (data: any) => void
   renderLink?: (props: React.AnchorHTMLAttributes<any>) => React.ReactNode
   contentError?: (error: any) => void
-  content?: any
+  content?: Content
   location?: Location | Url
   onStateChange?: (newData: any) => void
   noAsync?: boolean
