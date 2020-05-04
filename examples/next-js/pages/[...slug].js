@@ -24,10 +24,9 @@ const getServerSideProps = async ({req, res}) => {
 
   return {
     props: {
-      builderPage: page ? {
-        ...page,
-        testVariationName: page.testVariationName || null
-      } : null
+      builderPage: page ?
+        { ...page, testVariationName: page.testVariationName || null } :
+        null
     }
   };
 };
