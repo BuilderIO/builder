@@ -86,7 +86,7 @@ export class BuilderContent<
     // Temporary to test metrics diving in with bigquery and heatmaps
     // this.builder.autoTrack = true;
     // this.builder.env = 'development';
-    if (!this.props.inline && !Builder.isEditing) {
+    if (!this.props.inline || Builder.isEditing) {
       this.subscribeToContent()
     }
 
