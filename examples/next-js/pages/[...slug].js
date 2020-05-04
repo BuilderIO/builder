@@ -18,16 +18,16 @@ const getServerSideProps = async ({req, res}) => {
     .get('page', { req, res, userAttributes: { urlPath: path } })
     .promise();
 
-  if (res && !page) {
+  if (!page) {
     res.statusCode = 404;
   }
 
   return {
     props: {
-      builderPage: {
+      builderPage: page ? {
         ...page,
-        testVariationName: page?.testVariationName || null
-      }
+        testVariationName: page.testVariationName || null
+      } : null
     }
   };
 };
