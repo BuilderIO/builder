@@ -214,8 +214,6 @@ export class BuilderContent<
 
     const TagName = this.props.dataOnly ? NoWrap : 'div'
 
-    console.log({ inline: this.props.inline, useData })
-
     return (
       <TagName
         {...(!this.props.dataOnly && {

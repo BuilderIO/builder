@@ -802,8 +802,6 @@ export class BuilderPage extends React.Component<
 
     const contentId = this.useContent?.id
 
-    console.log('BuilderComponent render', this.props)
-
     return (
       // TODO: data attributes for model, id, etc?
       <WrapComponent
