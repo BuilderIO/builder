@@ -5,6 +5,10 @@ export class Subscription<FunctionType = Function> {
 
   unsubscribed = false;
 
+  get closed() {
+    return this.unsubscribed;
+  }
+
   private readonly otherSubscriptions: Subscription[] = [];
 
   add(subscription: Subscription) {
@@ -21,7 +25,7 @@ export class Subscription<FunctionType = Function> {
         this.listeners.splice(index, 1);
       }
     }
-    this.otherSubscriptions.forEach(sub => sub.unsubscribe());
+    this.otherSubscriptions.forEach((sub) => sub.unsubscribe());
     this.unsubscribed = true;
   }
 }
@@ -44,10 +48,10 @@ export class BehaviorSubject<T = any, ErrorType = any> {
   map<NewType = any>(fn: (item: T) => NewType) {
     const newSubject = new BehaviorSubject<NewType>(fn(this.value));
     // TODO: on destroy delete these
-    this.subscribe(val => {
+    this.subscribe((val) => {
       newSubject.next(fn(val));
     });
-    this.catch(err => {
+    this.catch((err) => {
       newSubject.error(err);
     });
     return newSubject;
@@ -75,11 +79,11 @@ export class BehaviorSubject<T = any, ErrorType = any> {
   toPromise() {
     return new Promise<T>((resolve, reject) => {
       const subscription = this.subscribe(
-        value => {
+        (value) => {
           resolve(value);
           subscription.unsubscribe();
         },
-        err => {
+        (err) => {
           reject(err);
           subscription.unsubscribe();
         }
