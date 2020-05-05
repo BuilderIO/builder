@@ -1,7 +1,7 @@
 const uuidv4 = require(`uuid/v4`);
 const fs = require(`fs`);
 const { buildSchema, printSchema } = require(`gatsby/graphql`);
-const { transformSchema, introspectSchema, RenameTypes } = require(`graphql-tools-fork`);
+const { transformSchema, introspectSchema, RenameTypes } = require(`graphql-tools`);
 const { createHttpLink } = require(`apollo-link-http`);
 const fetch = require(`node-fetch`);
 const invariant = require(`invariant`);
