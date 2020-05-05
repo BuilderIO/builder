@@ -88,7 +88,11 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
             .replace(/'/g, '')
             .trim()
 
-          const font = new FontFace(trimmedFontName, `url(${trimmedFontUrl})`)
+          const weight = fullMatch.match(/font-weight:\s*(\d+)/)?.[1]
+
+          const font = new FontFace(trimmedFontName, `url(${trimmedFontUrl})`, {
+            weight: weight || '400'
+          })
 
           if (!document.fonts.has(font)) {
             document.fonts.add(font)
