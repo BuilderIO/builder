@@ -70,6 +70,7 @@ export const FormInput = withBuilder(FormInputComponent, {
     {
       name: 'name',
       type: 'string',
+      required: true,
       helperText:
         'Every input in a form needs a unique name describing what it takes, e.g. "email"'
     },

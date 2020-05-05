@@ -69,8 +69,9 @@ export const FormSelect = withBuilder(FormSelectComponent, {
     {
       name: 'name',
       type: 'string',
+      required: true,
       helperText:
-        'Every select in a form needs a unique name descriptiong what it gets, e.g. "email"'
+        'Every select in a form needs a unique name describing what it gets, e.g. "email"'
     },
     {
       name: 'defaultValue',
