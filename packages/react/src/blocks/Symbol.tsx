@@ -103,7 +103,7 @@ class SymbolComponent extends React.Component<SymbolProps> {
                   entry={entry}
                   data={data}
                   inlineContent={symbol?.inline}
-                  content={content}
+                  {...(content && { content })}
                   options={{ key }}
                   hydrate={state.state?._hydrate}
                   builderBlock={this.props.builderBlock}
