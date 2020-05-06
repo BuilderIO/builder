@@ -21,7 +21,7 @@ export class Subscription<FunctionType = Function> {
     }
     if (this.listener && this.listeners) {
       const index = this.listeners.indexOf(this.listener);
-      if (index) {
+      if (index > -1) {
         this.listeners.splice(index, 1);
       }
     }
