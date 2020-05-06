@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/amp",
-  "version": "0.1.12",
+  "version": "0.1.13-alpha.0",
   "private": true,
   "description": "",
   "keywords": [],
@@ -126,8 +126,8 @@
     "validate-commit-msg": "^2.12.2"
   },
   "dependencies": {
-    "@builder.io/react": "^1.1.17",
-    "@builder.io/sdk": "^1.1.6",
+    "@builder.io/react": "^1.1.18-alpha.0",
+    "@builder.io/sdk": "^1.1.7-alpha.0",
     "lodash-es": "^4.17.10",
     "react": "^16.4.1",
     "react-amphtml": "^3.0.1",
