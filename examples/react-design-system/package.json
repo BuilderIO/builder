@@ -35,7 +35,7 @@
     "slick-carousel": "^1.8.1"
   },
   "devDependencies": {
-    "@builder.io/storybook": "0.0.1",
+    "@builder.io/storybook": "0.0.2",
     "@storybook/addon-actions": "^5.3.14",
     "@storybook/addon-links": "^5.3.14",
     "@storybook/addons": "^5.3.14",
