@@ -853,7 +853,8 @@ export class BuilderPage extends React.Component<
                         ...this.props.options
                       }}
                       inline={
-                        this.props.inlineContent || 'content' in this.props
+                        !Builder.isEditing &&
+                        (this.props.inlineContent || 'content' in this.props)
                       }
                       contentError={this.props.contentError}
                       modelName={this.name || 'page'}
