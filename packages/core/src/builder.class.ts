@@ -75,10 +75,12 @@ const parse = isReactNative
 
 function setCookie(name: string, value: string, expires?: Date) {
   let expiresString = '';
+  
   // TODO: need to know if secure server side
   if (expires) {
     expiresString = '; expires=' + expires.toUTCString();
   }
+
   const secure = isBrowser ? location.protocol === 'https:' : true;
   document.cookie =
     name +
@@ -313,7 +315,7 @@ export interface Component {
     message: string;
     /** Simple way to say a parent must be a specific component name, e.g. 'Product box' */
     component?: string;
-    
+
     /**
      * More advanced - specify a MongoDB-style query (using sift.js github.com/crcn/sift.js)
      * of what at least one parent in the parents hierarchy should match, e.g.
