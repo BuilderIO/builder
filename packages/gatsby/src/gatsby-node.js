@@ -91,9 +91,11 @@ exports.createPages = async ({ graphql, actions }, options) => {
     ...options,
   };
   const { createPage } = actions;
-  const models = Object.keys(config.templates);
-  const offsets = models.map(() => 0);
-  await createPagesAsync(config, createPage, graphql, models, offsets);
+  if (typeof config.templates === 'object') {
+    const models = Object.keys(config.templates);
+    const offsets = models.map(() => 0);
+    await createPagesAsync(config, createPage, graphql, models, offsets);
+  }
 };
 
 const createPagesAsync = async (config, createPage, graphql, models, offsets) => {
@@ -145,14 +147,30 @@ exports.onCreatePage = ({ page, actions }, options) => {
     ...defaultOptions,
     ...options,
   };
-  const modelName = Object.keys(config.templates || {})[0];
-  // override gatsby's custom 404 dev to allow development on Builder.io
-  // with new pages without having to regenerate (restart gatsby develop)
-  if (modelName && config.overrideDev404 && page.path === '/dev-404-page/') {
-    deletePage(page);
-    createPage({
-      ...page,
-      component: config.templates[modelName],
-    });
+
+  if (page.path === '/dev-404-page/' && config.overrideDev404) {
+    const modelName = Object.keys(config.templates || {})[0];
+    const context = {
+      noStaticContent: true,
+      ...page.context,
+    };
+
+    // override gatsby's custom 404 dev to allow development on Builder.io
+    // with new pages without having to regenerate (restart gatsby develop)
+    if (typeof config.custom404Dev === 'string') {
+      deletePage(page);
+      createPage({
+        ...page,
+        component: config.custom404Dev,
+        context
+      });
+    } else if (modelName) {
+      deletePage(page);
+      createPage({
+        ...page,
+        component: config.templates[modelName],
+        context,
+      });
+    }
   }
 };

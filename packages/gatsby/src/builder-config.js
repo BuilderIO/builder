@@ -7,6 +7,7 @@ module.exports.defaultOptions = {
   limit: 30,
   baseURL: `https://cdn.builder.io/api/v1/graphql`,
   overrideDev404: true,
+  // custom404Dev: 'path to custom 404'
 };
 
 module.exports.getGQLOptions = options => {
