@@ -43,6 +43,7 @@ export { Label } from './blocks/forms/Label' // advanced?
 export { FormSelect } from './blocks/forms/Select' // advanced?
 export { TextArea } from './blocks/forms/TextArea'
 export { Img } from './blocks/raw/Img'
+export { RawText } from './blocks/raw/RawText'
 
 export { stringToFunction } from './functions/string-to-function'
 
