@@ -75,7 +75,7 @@ const parse = isReactNative
 
 function setCookie(name: string, value: string, expires?: Date) {
   let expiresString = '';
-  
+
   // TODO: need to know if secure server side
   if (expires) {
     expiresString = '; expires=' + expires.toUTCString();
@@ -1661,6 +1661,7 @@ export class Builder {
 
     const queryParams: ParamsMap = {
       omit: 'meta.componentsUsed',
+      apiKey: this.apiKey,
     };
     const pageQueryParams: ParamsMap =
       typeof location !== 'undefined'
