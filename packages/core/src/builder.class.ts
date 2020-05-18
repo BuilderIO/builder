@@ -13,8 +13,13 @@ import Cookies from './classes/cookies.class';
 import { omit } from './functions/omit.function';
 import serverOnlyRequire from './functions/server-only-require.function';
 import { BuilderContent } from './types/content';
+import { uuid } from './functions/uuid';
 
 export type Url = any;
+
+function datePlusMinutes(minutes = 30) {
+  return new Date(Date.now() + minutes * 60000);
+}
 
 export const isReactNative = typeof navigator === 'object' && navigator.product === 'ReactNative';
 
@@ -74,37 +79,45 @@ const parse = isReactNative
   : serverOnlyRequire('url').parse;
 
 function setCookie(name: string, value: string, expires?: Date) {
-  let expiresString = '';
+  try {
+    let expiresString = '';
 
-  // TODO: need to know if secure server side
-  if (expires) {
-    expiresString = '; expires=' + expires.toUTCString();
+    // TODO: need to know if secure server side
+    if (expires) {
+      expiresString = '; expires=' + expires.toUTCString();
+    }
+
+    const secure = isBrowser ? location.protocol === 'https:' : true;
+    document.cookie =
+      name +
+      '=' +
+      (value || '') +
+      expiresString +
+      '; path=/' +
+      (secure ? ';secure' : '') +
+      '; SameSite=None';
+  } catch (err) {
+    console.warn('Could not set cookie', err);
   }
-
-  const secure = isBrowser ? location.protocol === 'https:' : true;
-  document.cookie =
-    name +
-    '=' +
-    (value || '') +
-    expiresString +
-    '; path=/' +
-    (secure ? ';secure' : '') +
-    '; SameSite=None';
 }
 
 function getCookie(name: string) {
-  return (
-    decodeURIComponent(
-      document.cookie.replace(
-        new RegExp(
-          '(?:(?:^|.*;)\\s*' +
-            encodeURIComponent(name).replace(/[\-\.\+\*]/g, '\\$&') +
-            '\\s*\\=\\s*([^;]*).*$)|^.*$'
-        ),
-        '$1'
-      )
-    ) || null
-  );
+  try {
+    return (
+      decodeURIComponent(
+        document.cookie.replace(
+          new RegExp(
+            '(?:(?:^|.*;)\\s*' +
+              encodeURIComponent(name).replace(/[\-\.\+\*]/g, '\\$&') +
+              '\\s*\\=\\s*([^;]*).*$)|^.*$'
+          ),
+          '$1'
+        )
+      ) || null
+    );
+  } catch (err) {
+    console.warn('Could not get cookie', err);
+  }
 }
 
 function size(object: object) {
@@ -125,6 +138,7 @@ function find<T = any>(target: T[], callback: (item: T, index: number, list: T[]
 }
 
 const sessionStorageKey = 'builderSessionId';
+const localStorageKey = 'builderVisitorId';
 
 export const isBrowser = typeof window !== 'undefined' && !isReactNative;
 export const isIframe = isBrowser && window.top !== window.self;
@@ -144,6 +158,7 @@ interface EventData {
   metadata?: any | string;
   meta?: any | string;
   sessionId?: string;
+  visitorId?: string;
   amount?: number;
 }
 // TODO: share interfaces with API
@@ -643,6 +658,8 @@ export class Builder {
 
   private throttledClearEventsQueue = throttle(() => {
     this.processEventsQueue();
+    // Extend the session cookie
+    this.setCookie(sessionStorageKey, this.sessionId, datePlusMinutes(30));
   }, 100);
 
   private processEventsQueue() {
@@ -779,7 +796,7 @@ export class Builder {
         ownerId: this.apiKey!,
         userAttributes: this.getUserAttributes(),
         sessionId: this.sessionId,
-        // TODO: user properties like visitor id, location path, device, etc
+        visitorId: this.visitorId,
       },
     });
 
@@ -791,10 +808,8 @@ export class Builder {
   getSessionId() {
     let sessionId: string | null = null;
     try {
-      // TODO: don't set this until gdpr allowed....
-
       if (Builder.isBrowser && typeof sessionStorage !== 'undefined') {
-        sessionStorage.getItem(sessionStorageKey);
+        sessionId = this.getCookie(sessionStorageKey);
       }
     } catch (err) {
       console.debug('Session storage error', err);
@@ -802,22 +817,53 @@ export class Builder {
     }
 
     if (!sessionId) {
-      sessionId = (Date.now() + Math.random()).toString(36);
+      sessionId = uuid();
+    }
+
+    // Give the app a second to start up and set canTrack to false if needed
+    if (Builder.isBrowser) {
+      this.setCookie(sessionStorageKey, sessionId, datePlusMinutes(30));
+    }
+    return sessionId;
+  }
+
+  // Set this to control the userId
+  // TODO: allow changing it mid session and updating existing data to be associated
+  // e.g. for when a user navigates and then logs in
+  visitorId?: string;
+
+  getVisitorId() {
+    if (this.visitorId) {
+      return this.visitorId;
+    }
+    let visitorId: string | null = null;
+    try {
+      if (Builder.isBrowser && typeof localStorage !== 'undefined') {
+        // TODO: cookie instead?
+        visitorId = localStorage.getItem(localStorageKey);
+      }
+    } catch (err) {
+      console.debug('Local storage error', err);
+      // It's ok
+    }
+
+    if (!visitorId) {
+      visitorId = uuid();
     }
 
     // Give the app a second to start up and set canTrack to false if needed
     if (Builder.isBrowser) {
       setTimeout(() => {
         try {
-          if (this.canTrack && typeof sessionStorage !== 'undefined' && sessionId) {
-            sessionStorage.setItem(sessionStorageKey, sessionId);
+          if (this.canTrack && typeof localStorage !== 'undefined' && visitorId) {
+            localStorage.setItem(localStorageKey, visitorId);
           }
         } catch (err) {
           console.debug('Session storage error', err);
         }
       });
     }
-    return sessionId;
+    return visitorId;
   }
 
   trackImpression(contentId: string, variationId?: string) {
@@ -833,12 +879,12 @@ export class Builder {
         ownerId: this.apiKey as string,
         userAttributes: this.getUserAttributes(),
         sessionId: this.sessionId,
+        visitorId: this.visitorId,
       },
     });
     this.throttledClearEventsQueue();
   }
 
-  // Multiple content IDs?
   trackConversion(amount?: number, contentId?: string, variationId?: string) {
     if (isIframe || !isBrowser || Builder.isPreviewing) {
       return;
@@ -847,14 +893,13 @@ export class Builder {
     this.eventsQueue.push({
       type: 'conversion',
       data: {
-        // contentId,
-        // variationId: variationId !== contentId ? variationId : undefined,
         amount,
         contentId,
         variationId,
         ownerId: this.apiKey as string,
         userAttributes: this.getUserAttributes(),
         sessionId: this.sessionId,
+        visitorId: this.visitorId,
       },
     });
     this.throttledClearEventsQueue();
@@ -956,6 +1001,7 @@ export class Builder {
         targetBuilderElement: builderId || undefined,
         userAttributes: this.getUserAttributes(),
         sessionId: this.sessionId,
+        visitorId: this.visitorId,
       },
     });
     this.throttledClearEventsQueue();
