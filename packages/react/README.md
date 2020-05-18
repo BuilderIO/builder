@@ -2,7 +2,7 @@
 
 See our [main readme](/README.md) for info on getting starte with the React SDK
 
-Also see our examples of using reacth with a [design system](/examples/react-design-system) or a [simple example](/examples/react) and how to use your [react components](https://github.com/BuilderIO/builder#using-your-components) in the visual editor!
+Also see our examples of using react with a [design system](/examples/react-design-system) or a [simple example](/examples/react) and how to use your [react components](https://github.com/BuilderIO/builder#using-your-components) in the visual editor!
 
 Also see our docs for [next.js](/examples/next-js) and [gatsby](/examples/gatsby)
 
@@ -85,7 +85,7 @@ The contentLoaded hook can be useful for when you add [custom fields](https://ww
 
 ### Builder
 
-The global `Builder` singleton has a number of uses. Most important is registing custom components.
+The global `Builder` singleton has a number of uses. Most important is registering custom components.
 
 ```tsx
 import * as React from 'react';
