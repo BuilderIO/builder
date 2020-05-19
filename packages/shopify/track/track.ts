@@ -37,6 +37,7 @@ if (!_window[TRACKED_KEY]) {
     const checkout: Checkout | null = {
       ...Shopify.checkout,
       email: undefined,
+      shipping_address: undefined
     };
     if (checkout) {
       builder.track('conversion', {
