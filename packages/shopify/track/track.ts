@@ -27,6 +27,7 @@ if (!_window[TRACKED_KEY]) {
   }
 
   builder.track('pageview');
+  _window[TRACKED_KEY] = true;
 
   const { Shopify } = _window;
 
@@ -34,8 +35,7 @@ if (!_window[TRACKED_KEY]) {
     console.debug('No apiKey for Builder JS', document.currentScript);
   } else if (!Shopify) {
     console.debug('No Shopify object');
-  } else {
-    _window[TRACKED_KEY] = true;
+  } else if (Shopify.checkout) {
     const checkout: Checkout | null = {
       ...Shopify.checkout,
       email: undefined,
