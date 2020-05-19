@@ -10,7 +10,7 @@ module.exports = {
     '@emotion/styled': '@emotion/styled'
   },
   output: {
-    filename: `builder-${pkg.output}`,
+    filename: pkg.output,
     path: path.resolve(__dirname, 'dist'),
     libraryTarget: 'system'
   },
@@ -19,6 +19,14 @@ module.exports = {
   },
   module: {
     rules: [
+      {
+        rules: [
+          {
+            test: /\.css$/i,
+            use: ['style-loader', 'css-loader']
+          }
+        ]
+      },
       {
         test: /\.(ts|tsx)$/,
         exclude: /node_modules/,
