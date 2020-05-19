@@ -387,10 +387,11 @@ export interface Action {
 export class Builder {
   static components: Component[] = [];
   static singletonInstance: Builder;
-  static nextTick = nextTick;
   static VERSION = version;
   static useNewApi = true;
   static animator = new Animator();
+  
+  static nextTick = nextTick;
   static throttle = throttle;
 
   authToken = '';
