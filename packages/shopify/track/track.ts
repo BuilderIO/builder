@@ -26,9 +26,9 @@ if (!_window[TRACKED_KEY]) {
     builder.apiKey = apiKey;
   }
 
-  const { Shopify } = _window;
-
   builder.track('pageview');
+
+  const { Shopify } = _window;
 
   if (!apiKey) {
     console.debug('No apiKey for Builder JS', document.currentScript);
