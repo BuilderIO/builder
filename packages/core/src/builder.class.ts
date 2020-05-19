@@ -390,7 +390,7 @@ export class Builder {
   static VERSION = version;
   static useNewApi = true;
   static animator = new Animator();
-  
+
   static nextTick = nextTick;
   static throttle = throttle;
 
@@ -886,17 +886,27 @@ export class Builder {
     this.throttledClearEventsQueue();
   }
 
-  trackConversion(amount?: number, contentId?: string, variationId?: string) {
+  trackConversion(amount?: number, customProperties?: any): void;
+  trackConversion(
+    amount?: number,
+    contentId?: string | any,
+    variationId?: string,
+    customProperties?: any
+  ) {
     if (isIframe || !isBrowser || Builder.isPreviewing) {
       return;
     }
+    const meta = typeof contentId === 'object' ? contentId : customProperties;
+    const useContentId = typeof contentId === 'string' ? contentId : undefined;
+
     // TODO: use this.track method
     this.eventsQueue.push({
       type: 'conversion',
       data: {
         amount,
-        contentId,
         variationId,
+        meta,
+        contentId: useContentId,
         ownerId: this.apiKey as string,
         userAttributes: this.getUserAttributes(),
         sessionId: this.sessionId,

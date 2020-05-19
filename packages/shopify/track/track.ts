@@ -28,6 +28,8 @@ if (!_window[TRACKED_KEY]) {
 
   const { Shopify } = _window;
 
+  builder.track('pageview');
+
   if (!apiKey) {
     console.debug('No apiKey for Builder JS', document.currentScript);
   } else if (!Shopify) {
@@ -37,7 +39,7 @@ if (!_window[TRACKED_KEY]) {
     const checkout: Checkout | null = {
       ...Shopify.checkout,
       email: undefined,
-      shipping_address: undefined
+      shipping_address: undefined,
     };
     if (checkout) {
       builder.track('conversion', {
