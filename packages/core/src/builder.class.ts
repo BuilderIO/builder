@@ -831,7 +831,7 @@ export class Builder {
   // Set this to control the userId
   // TODO: allow changing it mid session and updating existing data to be associated
   // e.g. for when a user navigates and then logs in
-  visitorId?: string;
+  visitorId: string = this.getVisitorId();
 
   getVisitorId() {
     if (this.visitorId) {
@@ -851,6 +851,8 @@ export class Builder {
     if (!visitorId) {
       visitorId = uuid();
     }
+
+    this.visitorId = visitorId;
 
     // Give the app a second to start up and set canTrack to false if needed
     if (Builder.isBrowser) {
