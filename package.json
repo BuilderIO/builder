@@ -18,10 +18,10 @@
     "reset": "npm run _install && npm run bootstrap && npm run _unlink",
     "watch": "npm run start",
     "develop": "npm run start",
-    "build": "lerna run build --stream --no-private --ignore @builder.io/plugin-loader --ignore @builder.io/plugin-shopify --ignore @builder.io/memsource-connector --ignore @builder.io/shopify",
-    "release:patch": "npm run verify-git-not-dirty && npm run build && lerna version patch --yes && lerna run build:unpkg:dist --no-private && ALLOW_PUBLISH=true lerna publish from-package --yes --ignore @builder.io/shopify",
-    "release:minor": "npm run verify-git-not-dirty && npm run build && lerna version minor --yes && lerna run build:unpkg:dist --no-private && ALLOW_PUBLISH=true lerna publish from-package --yes --ignore @builder.io/shopify",
-    "release:prerelease:dev": "npm run build && lerna version prerelease --yes --ignore @builder.io/shopify && lerna run build:unpkg:dist --no-private && ALLOW_PUBLISH=true lerna publish from-package --dist-tag dev --yes --ignore @builder.io/shopify",
+    "build": "lerna run build --stream --no-private --ignore @builder.io/plugin-loader --ignore @builder.io/plugin-shopify --ignore @builder.io/memsource-connector",
+    "release:patch": "npm run verify-git-not-dirty && npm run build && lerna version patch --yes && lerna run build:unpkg:dist --no-private && ALLOW_PUBLISH=true lerna publish from-package --yes",
+    "release:minor": "npm run verify-git-not-dirty && npm run build && lerna version minor --yes && lerna run build:unpkg:dist --no-private && ALLOW_PUBLISH=true lerna publish from-package --yes",
+    "release:prerelease:dev": "npm run build && lerna version prerelease --yes && lerna run build:unpkg:dist --no-private && ALLOW_PUBLISH=true lerna publish from-package --dist-tag dev --yes",
     "release:dev": "npm run release:prerelease:dev",
     "prepublishOnly": "block-publish"
   }
