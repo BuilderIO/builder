@@ -34,9 +34,12 @@ if (!_window[TRACKED_KEY]) {
     console.debug('No Shopify object');
   } else {
     _window[TRACKED_KEY] = true;
-    const checkout: Checkout | null = Shopify.checkout;
+    const checkout: Checkout | null = {
+      ...Shopify.checkout,
+      email: undefined,
+    };
     if (checkout) {
-      builder.track('checkout', {
+      builder.track('conversion', {
         meta: checkout,
         amount: parseFloat(checkout.payment_due),
       });
