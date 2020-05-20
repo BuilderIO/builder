@@ -40,7 +40,7 @@ if (!_window[TRACKED_KEY]) {
   } else if (!Shopify) {
     console.debug('No Shopify object');
   } else if (Shopify.checkout?.order_id) {
-    const ordderCreatedDate = new Date(Shopify.checkout.created_date);
+    const ordderCreatedDate = new Date(Shopify.checkout.created_at);
 
     const orderCreatedMinutesAgo = (Date.now() - ordderCreatedDate.getTime()) / 1000 / 60;
 
