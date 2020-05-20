@@ -17,6 +17,10 @@ function getQueryParam(url: string, variable: string): string | null {
 
 const _window = window as any;
 
+function datePlusMinutes(minutes = 30) {
+  return new Date(Date.now() + minutes * 60000);
+}
+
 if (!_window[TRACKED_KEY]) {
   const apiKey =
     getQueryParam((document.currentScript as HTMLScriptElement).src || '', 'apiKey') ||
@@ -36,35 +40,50 @@ if (!_window[TRACKED_KEY]) {
   } else if (!Shopify) {
     console.debug('No Shopify object');
   } else if (Shopify.checkout) {
-    const checkout: Checkout | null = {
-      ...Shopify.checkout,
-      email: undefined,
-      shipping_address: undefined,
-    };
-    if (checkout) {
-      builder.track('conversion', {
-        meta: checkout,
-        amount: parseFloat(checkout.payment_due),
-      });
-      for (const item of checkout.line_items) {
-        const id = item.product_id;
-        const cookieValue = builder.getCookie('builder.addToCart.' + id);
-        if (cookieValue) {
-          // Remove the cookie by setting a cooke to a date in the past
-          builder.setCookie('builder.addToCart.' + id, '', new Date(0));
+    const ordderCreatedDate = new Date(Shopify.checkout.created_date);
 
-          const [contentId, variationId] = cookieValue.split(',');
+    const orderCreatedMinutesAgo = (Date.now() - ordderCreatedDate.getTime()) / 1000 / 60;
 
-          // Send a conversion event to Builder.io upon purchasing a product that was added to cart by a Builder.io page.
-          // On the add to cart we set a cookie, and read it here to attribute conversions to specific content entries
-          // and test variations. We include a couple more custom attributes for order value (`amount`) and some
-          // metadata (the full shopify checkout object for this line item)
-          builder.track('conversion', {
-            contentId,
-            variationId,
-            meta: item,
-            amount: parseFloat(item.price), // x item.quantity?
-          });
+    // Order is not old
+    if (orderCreatedMinutesAgo < 3) {
+      const trackedOrdersCookieKey = `builder.trackedOrders.${Shopify.checkout.order_id}`;
+      const orderWasTracked = builder.getCookie(trackedOrdersCookieKey);
+
+      if (!orderWasTracked) {
+        const checkout: Checkout | null = {
+          ...Shopify.checkout,
+          email: undefined,
+          shipping_address: undefined,
+          billing_address: undefined,
+          credit_card: undefined,
+        };
+
+        builder.setCookie(trackedOrdersCookieKey, datePlusMinutes(60));
+
+        builder.track('conversion', {
+          meta: checkout,
+          amount: parseFloat(checkout.payment_due),
+        });
+        for (const item of checkout.line_items) {
+          const id = item.product_id;
+          const cookieValue = builder.getCookie('builder.addToCart.' + id);
+          if (cookieValue) {
+            // Remove the cookie by setting a cooke to a date in the past
+            builder.setCookie('builder.addToCart.' + id, '', new Date(0));
+
+            const [contentId, variationId] = cookieValue.split(',');
+
+            // Send a conversion event to Builder.io upon purchasing a product that was added to cart by a Builder.io page.
+            // On the add to cart we set a cookie, and read it here to attribute conversions to specific content entries
+            // and test variations. We include a couple more custom attributes for order value (`amount`) and some
+            // metadata (the full shopify checkout object for this line item)
+            builder.track('conversion', {
+              contentId,
+              variationId,
+              meta: item,
+              amount: parseFloat(item.price), // x item.quantity?
+            });
+          }
         }
       }
     }
