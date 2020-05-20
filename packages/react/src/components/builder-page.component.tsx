@@ -573,6 +573,11 @@ export class BuilderPage extends React.Component<
         )
       })
     }
+
+    console.log({
+      propsContent: this.props.content,
+      content: this.content
+    })
   }
 
   updateState = (fn?: (state: any) => void) => {
@@ -853,8 +858,8 @@ export class BuilderPage extends React.Component<
                         ...this.props.options
                       }}
                       inline={
-                        !Builder.isEditing &&
-                        (this.props.inlineContent || 'content' in this.props)
+                        this.props.inlineContent ||
+                        (!Builder.isEditing && 'content' in this.props)
                       }
                       contentError={this.props.contentError}
                       modelName={this.name || 'page'}
