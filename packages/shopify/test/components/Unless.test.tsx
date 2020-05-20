@@ -1,7 +1,8 @@
 import { render } from '@testing-library/react';
 import * as React from 'react';
 import { UnlessBlock } from '../../react/components/Unless';
-import { mockState, text } from '../modules/helpers';
+import { mockState, text, builderComponentIdRegex } from '../modules/helpers';
+import * as reactTestRenderer from 'react-test-renderer';
 
 describe('IfElse', () => {
   test('Basic Unless True', () => {
@@ -53,5 +54,22 @@ describe('IfElse', () => {
 
     expect(ref.queryByText('A')).toBeTruthy();
     expect(ref.queryByText('B')).toBeNull();
+  });
+
+  it('renders snapshot correctly', () => {
+    const tree = JSON.stringify(
+      reactTestRenderer
+        .create(
+          <UnlessBlock
+            expression="foo === 'bar'"
+            unlessBlocks={[text('A')]}
+            elseBlocks={[text('B')]}
+            builderState={mockState({ foo: 'bar' })}
+          />
+        )
+        .toJSON()
+    ).replace(builderComponentIdRegex, '');
+
+    expect(tree).toMatchSnapshot();
   });
 });

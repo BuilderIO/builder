@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Submit button code generator no values for attributes 1`] = `
+"
+      <button type=\\"submit\\" ></button>
+    "
+`;
+
+exports[`Submit button code generator values for all attributes 1`] = `
+"
+      <button type=\\"submit\\" >Submit</button>
+    "
+`;

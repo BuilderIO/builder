@@ -1,0 +1,100 @@
+{
+  "@type": "@builder.io/sdk:Element",
+  "@version": 2,
+  "bindings": {
+    "data-default-collection": "context.shopify.liquid.render(\"{% if collection.handle == 'all' %} /collections/all {% else %}{{collection.url}}{% endif %}\", state)"
+  },
+  "tagName": "select",
+  "id": "builder-fgyfi20qi84",
+  "properties": {
+    "name": "tag_filter",
+    "id": "tag_filter",
+    "class": "tag_filter"
+  },
+  "meta": { "importedFrom": "liquid" },
+  "children": [
+    {
+      "@type": "@builder.io/sdk:Element",
+      "@version": 2,
+      "repeat": {
+        "collection": "context.shopify.liquid.get(\"collection.all_tags\", state)",
+        "itemName": "tag"
+      },
+      "id": "builder-prvgde6tkhl",
+      "meta": { "importedFrom": "liquid" },
+      "component": { "name": "Core:Fragment", "options": {} },
+      "children": [
+        {
+          "@type": "@builder.io/sdk:Element",
+          "@version": 2,
+          "id": "builder-phovceulmn",
+          "meta": { "importedFrom": "liquid" },
+          "component": {
+            "name": "Shopify:Unless",
+            "options": {
+              "expression": "context.shopify.liquid.condition(\"tag contains 'meta-'\", state)",
+              "unlessBlocks": [
+                {
+                  "@type": "@builder.io/sdk:Element",
+                  "@version": 2,
+                  "bindings": {
+                    "selected": "context.shopify.liquid.condition(\"current_tags contains tag\", state) ? 'selected' : (undefined)",
+                    "value": "context.shopify.liquid.render(\"/collections/{% if collection.handle != blank %}{{collection.handle}}{% else %}all{% endif %}/{{tag | handleize}}\", state)"
+                  },
+                  "tagName": "option",
+                  "id": "builder-51xxmnv9mj6",
+                  "meta": { "importedFrom": "liquid" },
+                  "children": [
+                    {
+                      "@type": "@builder.io/sdk:Element",
+                      "@version": 2,
+                      "bindings": {
+                        "component.options.text": "context.shopify.liquid.get(\"tag\", state)"
+                      },
+                      "tagName": "span",
+                      "id": "builder-qj4kte3xlb",
+                      "meta": { "importedFrom": "liquid" },
+                      "component": {
+                        "name": "Text",
+                        "options": { "text": "" }
+                      },
+                      "responsiveStyles": {
+                        "large": { "display": "inline" }
+                      }
+                    }
+                  ]
+                }
+              ],
+              "elseBlocks": [
+                {
+                  "@type": "@builder.io/sdk:Element",
+                  "@version": 2,
+                  "tagName": "span",
+                  "id": "builder-6f0s06v6h0j",
+                  "meta": { "importedFrom": "liquid" },
+                  "component": {
+                    "name": "Text",
+                    "options": { "text": " \n you are  " }
+                  },
+                  "responsiveStyles": { "large": { "display": "inline" } }
+                },
+                {
+                  "@type": "@builder.io/sdk:Element",
+                  "@version": 2,
+                  "bindings": {
+                    "component.options.text": "context.shopify.liquid.get(\"cool\", state)"
+                  },
+                  "tagName": "span",
+                  "id": "builder-qqtgpdhbkg",
+                  "meta": { "importedFrom": "liquid" },
+                  "component": { "name": "Text", "options": { "text": "" } },
+                  "responsiveStyles": { "large": { "display": "inline" } }
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

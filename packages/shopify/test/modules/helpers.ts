@@ -66,3 +66,5 @@ export const mockStateWithShopify = (state: any = {}, context: any = {}, content
   }
   return mockState(state, context, content);
 };
+
+export const builderComponentIdRegex = /builder-\d{8,20}/g;

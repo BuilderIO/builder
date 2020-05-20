@@ -11,7 +11,7 @@ export const Symbol = component({
 
     return `
     <div class="builder-symbol${inline ? ' builder-inline-symbol' : ''}">
-      ${content ? contentToLiquid(content, 'symbol', renderOptions) : ''}
+      ${content ? contentToLiquid(content, 'symbol', renderOptions).html : ''}
     </div>
     `;
   },

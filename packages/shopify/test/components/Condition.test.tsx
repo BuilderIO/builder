@@ -1,13 +1,13 @@
 import { render } from '@testing-library/react';
 import * as React from 'react';
-import { IfElseBlock } from '../../react/components/IfElse';
-import { mockState, text } from '../modules/helpers';
+import { ConditionBlock } from '../../react/components/Condition';
+import { mockState, text, builderComponentIdRegex } from '../modules/helpers';
+import * as reactTestRenderer from 'react-test-renderer';
 
-
-describe('IfElse', () => {
+describe('Condition', () => {
   test('Basic True', () => {
     const ref = render(
-      <IfElseBlock
+      <ConditionBlock
         branches={[
           {
             expression: 'foo === "bar"',
@@ -22,7 +22,7 @@ describe('IfElse', () => {
   });
   test('Basic False', () => {
     const ref = render(
-      <IfElseBlock
+      <ConditionBlock
         branches={[
           {
             expression: 'foo === "hi"',
@@ -38,7 +38,7 @@ describe('IfElse', () => {
 
   test('Basic Else True', () => {
     const ref = render(
-      <IfElseBlock
+      <ConditionBlock
         branches={[
           {
             expression: 'foo === "bar"',
@@ -58,7 +58,7 @@ describe('IfElse', () => {
 
   test('Basic Else False', () => {
     const ref = render(
-      <IfElseBlock
+      <ConditionBlock
         branches={[
           {
             expression: 'foo === "yo"',
@@ -78,7 +78,7 @@ describe('IfElse', () => {
 
   test('Basic ElseIf', () => {
     const ref = render(
-      <IfElseBlock
+      <ConditionBlock
         branches={[
           {
             expression: 'foo === "yo"',
@@ -103,7 +103,7 @@ describe('IfElse', () => {
 
   test('Multi ElseIf', () => {
     const ref = render(
-      <IfElseBlock
+      <ConditionBlock
         branches={[
           {
             expression: 'foo === "yo"',
@@ -125,5 +125,33 @@ describe('IfElse', () => {
     expect(ref.queryByText('A')).toBeNull();
     expect(ref.queryByText('B')).toBeNull();
     expect(ref.queryByText('C')).toBeTruthy();
+  });
+
+  it('renders snapshot correctly', () => {
+    const tree = JSON.stringify(
+      reactTestRenderer
+        .create(
+          <ConditionBlock
+            branches={[
+              {
+                expression: 'foo === "yo"',
+                blocks: [text('A')],
+              },
+              {
+                expression: 'foo === "no"',
+                blocks: [text('B')],
+              },
+              {
+                expression: 'foo === "bar"',
+                blocks: [text('C')],
+              },
+            ]}
+            builderState={mockState({ foo: 'bar' })}
+          />
+        )
+        .toJSON()
+    ).replace(builderComponentIdRegex, '');
+
+    expect(tree).toMatchSnapshot();
   });
 });

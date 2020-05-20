@@ -1,0 +1,38 @@
+{
+  "@type": "@builder.io/sdk:Element",
+  "@version": 2,
+  "repeat": {
+    "collection": "context.shopify.liquid.get(\"linklists[link.handle].links\", state)",
+    "itemName": "link"
+  },
+  "id": "builder-85yaddnm61v",
+  "meta": {
+    "importedFrom": "liquid"
+  },
+  "component": {
+    "name": "Core:Fragment",
+    "options": {}
+  },
+  "children": [
+    {
+      "@type": "@builder.io/sdk:Element",
+      "@version": 2,
+      "bindings": {
+        "component.options.text": "link"
+      },
+      "id": "builder-66af795225934811ab67c5d5b2e81987",
+      "component": {
+        "name": "Text",
+        "options": {
+          "text": "<p><strong>Enter some text...</strong></p>"
+        }
+      },
+      "responsiveStyles": {
+        "large": {
+          "display": "flex",
+          "flexDirection": "column"
+        }
+      }
+    }
+  ]
+}

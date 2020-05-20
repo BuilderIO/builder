@@ -23,7 +23,11 @@ export const Section = component({
       marginLeft: 'auto',
       marginRight: 'auto',
     })}">
-      ${block.children ? block.children.map(child => blockToLiquid(child, renderOptions)).join('\n') : ''}
+      ${
+        block.children
+          ? block.children.map(child => blockToLiquid(child, renderOptions)).join('\n')
+          : ''
+      }
     </div>
   `;
   },

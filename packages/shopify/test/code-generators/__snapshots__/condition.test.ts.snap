@@ -1,0 +1,97 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Condition code generator 2 branches 1`] = `
+"{% if products | first %}
+    <style>.builder-block.blockA {}</style>
+    
+    
+    
+    
+      <div  builder-id=\\"blockA\\" class=\\"builder-block blockA\\">
+        
+      </div>
+    
+    
+    
+  {% elsif products | second %}
+    <style>.builder-block.blockB {}</style>
+    
+    
+    
+    
+      <div  builder-id=\\"blockB\\" class=\\"builder-block blockB\\">
+        
+      </div>
+    
+    
+    
+  {% endif %}"
+`;
+
+exports[`Condition code generator 4 branches 1`] = `
+"{% if products | first %}
+    <style>.builder-block.blockA {}</style>
+    
+    
+    
+    
+      <div  builder-id=\\"blockA\\" class=\\"builder-block blockA\\">
+        
+      </div>
+    
+    
+    
+  {% elsif products | second %}
+    <style>.builder-block.blockB {}</style>
+    
+    
+    
+    
+      <div  builder-id=\\"blockB\\" class=\\"builder-block blockB\\">
+        
+      </div>
+    
+    
+    
+  {% elsif products | third %}
+    <style>.builder-block.blockC {}</style>
+    
+    
+    
+    
+      <div  builder-id=\\"blockC\\" class=\\"builder-block blockC\\">
+        
+      </div>
+    
+    
+    
+  {% else %}
+    <style>.builder-block.blockD {}</style>
+    
+    
+    
+    
+      <div  builder-id=\\"blockD\\" class=\\"builder-block blockD\\">
+        
+      </div>
+    
+    
+    
+  {% endif %}"
+`;
+
+exports[`Condition code generator Simple test 1`] = `
+"{% if products | first %}
+    <style>.builder-block.blockA {}</style>
+    
+    
+    
+    
+      <div  builder-id=\\"blockA\\" class=\\"builder-block blockA\\">
+        
+      </div>
+    
+    
+    
+  {% endif %}"
+`;

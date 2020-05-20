@@ -1,13 +1,10 @@
 import { BuilderStore, onChange, withBuilder } from '@builder.io/react';
 import * as React from 'react';
-
-interface AssignBlockProps {
-  expression?: string;
-  builderState?: BuilderStore;
-}
+import { AssignBlockProps } from '../interfaces/component-props';
 
 export class AssignBlock extends React.Component<AssignBlockProps> {
   ran = false;
+
   constructor(props: AssignBlockProps) {
     super(props);
   }
@@ -17,11 +14,7 @@ export class AssignBlock extends React.Component<AssignBlockProps> {
 
     if (expression && builderState) {
       if (builderState.context.shopify) {
-        builderState.context.shopify.liquid.assign(
-          expression,
-          onChange.target(builderState.state)
-          // builderState.state
-        );
+        builderState.context.shopify.liquid.assign(expression, onChange.target(builderState.state));
         this.ran = true;
         return true;
       }

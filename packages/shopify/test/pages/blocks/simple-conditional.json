@@ -1,0 +1,94 @@
+{
+  "@type": "@builder.io/sdk:Element",
+  "@version": 2,
+  "id": "builder-rcpqlcqsh3f",
+  "meta": { "importedFrom": "liquid" },
+  "component": {
+    "name": "Shopify:Condition",
+    "options": {
+      "branches": [
+        {
+          "expression": "context.shopify.liquid.condition(\"collection.description != blank\", state)",
+          "blocks": [
+            {
+              "@type": "@builder.io/sdk:Element",
+              "@version": 2,
+              "tagName": "div",
+              "id": "builder-4o01ryi0ztu",
+              "properties": { "class": "section clearfix collection_description" },
+              "meta": { "importedFrom": "liquid" },
+              "children": [
+                {
+                  "@type": "@builder.io/sdk:Element",
+                  "@version": 2,
+                  "bindings": {
+                    "component.options.text": "context.shopify.liquid.get(\"collection.description\", state)"
+                  },
+                  "tagName": "span",
+                  "id": "builder-7jz57t7fk8a",
+                  "meta": { "importedFrom": "liquid" },
+                  "component": { "name": "Text", "options": { "text": "" } },
+                  "responsiveStyles": { "large": { "display": "inline" } }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "expression": "context.shopify.liquid.condition(\"collection.title != blank\", state)",
+          "blocks": [
+            {
+              "@type": "@builder.io/sdk:Element",
+              "@version": 2,
+              "tagName": "div",
+              "id": "builder-4o01ryi0ztu",
+              "properties": { "class": "section clearfix collection_title" },
+              "meta": { "importedFrom": "liquid" },
+              "children": [
+                {
+                  "@type": "@builder.io/sdk:Element",
+                  "@version": 2,
+                  "bindings": {
+                    "component.options.text": "context.shopify.liquid.get(\"collection.title\", state)"
+                  },
+                  "tagName": "span",
+                  "id": "builder-7jz57t7fk8a",
+                  "meta": { "importedFrom": "liquid" },
+                  "component": { "name": "Text", "options": { "text": "" } },
+                  "responsiveStyles": { "large": { "display": "inline" } }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "expression": "",
+          "blocks": [
+            {
+              "@type": "@builder.io/sdk:Element",
+              "@version": 2,
+              "tagName": "div",
+              "id": "builder-4o01ryi0ztu",
+              "properties": { "class": "section clearfix collection_title" },
+              "meta": { "importedFrom": "liquid" },
+              "children": [
+                {
+                  "@type": "@builder.io/sdk:Element",
+                  "@version": 2,
+                  "bindings": {
+                    "component.options.text": "context.shopify.liquid.get(\"collection.name\", state)"
+                  },
+                  "tagName": "span",
+                  "id": "builder-7jz57t7fk8a",
+                  "meta": { "importedFrom": "liquid" },
+                  "component": { "name": "Text", "options": { "text": "" } },
+                  "responsiveStyles": { "large": { "display": "inline" } }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

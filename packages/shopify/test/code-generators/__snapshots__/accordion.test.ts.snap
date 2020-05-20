@@ -1,0 +1,70 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Accordion code generator no attributes, with items 1`] = `
+"
+    <div class=\\"builder-accordion\\" style=\\"display: flex;align-items: flex-start;flex-direction: row;flex-wrap: wrap;\\">
+      
+                  <div
+                    class=\\"builder-accordion-title builder-accordion-title-closed\\"
+                    style=\\"display: flex;flex-direction: column;align-items: stretch;\\">
+                    
+    <style>.builder-block.undefined {
+  margin-top: 10px;
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  flex-direction: column;
+  padding-bottom: 10px;}</style>
+    
+    
+    
+    
+      <div  builder-id=\\"undefined\\" class=\\"builder-block\\">
+        
+    <style>.builder-block.undefined {
+  text-align: left;
+  display: flex;
+  flex-direction: column;}</style>
+    
+    
+    
+    
+      <div  builder-id=\\"undefined\\" class=\\"builder-block\\">
+        
+      <style>
+        .builder-text p:first-of-type, .builder-paragraph:first-of-type { margin: 0 } .builder-text > p, .builder-paragraph { color: inherit; line-height: inherit; letter-spacing: inherit; font-weight: inherit; font-size: inherit; text-align: inherit; font-family: inherit; }
+      </style>
+      <span class=\\"builder-text\\">
+        I am an accordion title. Click me!
+      </span>
+    
+      </div>
+    
+    
+    
+  
+      </div>
+    
+    
+    
+  
+                  </div>
+    </div>
+  "
+`;
+
+exports[`Accordion code generator no values for attributes 1`] = `
+"
+    <div class=\\"builder-accordion\\" style=\\"display: flex;align-items: stretch;flex-direction: column;\\">
+      
+    </div>
+  "
+`;
+
+exports[`Accordion code generator values for all attributes 1`] = `
+"
+    <div class=\\"builder-accordion\\" style=\\"display: flex;align-items: flex-start;flex-direction: row;flex-wrap: wrap;\\">
+      
+    </div>
+  "
+`;

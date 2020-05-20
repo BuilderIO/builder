@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Condition renders snapshot correctly 1`] = `"{\\"type\\":\\"div\\",\\"props\\":{\\"style\\":{},\\"className\\":\\"builder-block  builder-has-component css-0\\",\\"builder-id\\":\\"\\"},\\"children\\":[{\\"type\\":\\"span\\",\\"props\\":{\\"className\\":\\"builder-text css-1qggkls\\",\\"dangerouslySetInnerHTML\\":{\\"__html\\":\\"C\\"}},\\"children\\":null}]}"`;

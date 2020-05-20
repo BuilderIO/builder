@@ -1,0 +1,227 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Section code generator no attributes, with children 1`] = `
+"
+    <div style=\\"height: 100%;width: 100%;align-self: stretch;flex-grow: 1;box-sizing: border-box;max-width: 300px;display: flex;flex-direction: column;align-items: stretch;margin-left: auto;margin-right: auto;\\">
+      
+    <style>.builder-block.builder-9c660eec3a084703acfd457a5f46bec0 {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  position: relative;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  margin-top: 20px;}</style>
+    
+    
+    
+    
+      <div  builder-id=\\"builder-9c660eec3a084703acfd457a5f46bec0\\" class=\\"builder-block builder-9c660eec3a084703acfd457a5f46bec0\\">
+        
+    <style>
+      .builder-columns {
+        display: flex;
+      }
+
+      .builder-column > .builder-blocks {
+        flex-grow: 1;
+      }
+      
+      .builder-9c660eec3a084703acfd457a5f46bec0 > .builder-columns > .builder-column:nth-child(1) {
+        width: calc(50% - 10px);
+        margin-left: 0px;
+      }
+
+      .builder-9c660eec3a084703acfd457a5f46bec0 > .builder-columns > .builder-column:nth-child(2) {
+        width: calc(50% - 10px);
+        margin-left: 20px;
+      }
+      </style>
+      <div class=\\"builder-columns\\">
+        <div
+            class=\\"builder-column\\"
+            style=\\"line-height: normal;display: flex;flex-direction: column;align-items: stretch;\\"
+            >
+            <div
+              class=\\"builder-blocks\\"
+              builder-type=\\"blocks\\">
+              
+    <style>.builder-block.builder-b6a0a9174cd94d48b555e03f28ebb536 {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  flex-shrink: 0;
+  position: relative;
+  margin-top: 30px;
+  text-align: center;
+  line-height: normal;
+  height: auto;}</style>
+    
+    
+    
+    
+      <div  builder-id=\\"builder-b6a0a9174cd94d48b555e03f28ebb536\\" class=\\"builder-block builder-b6a0a9174cd94d48b555e03f28ebb536\\">
+        
+      <picture>
+        <source srcset=\\"https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?format=webp&width=100 100w, https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?format=webp&width=200 200w, https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?format=webp&width=400 400w, https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?format=webp&width=800 800w, https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?format=webp&width=1200 1200w, https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?format=webp&width=1600 1600w, https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?format=webp&width=2000 2000w, https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d\\" type=\\"image/webp\\" />
+        <img
+          src=\\"https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d\\"
+          srcset=\\"https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?width=100 100w, https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?width=200 200w, https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?width=400 400w, https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?width=800 800w, https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?width=1200 1200w, https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?width=1600 1600w, https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?width=2000 2000w, https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d\\"
+          sizes=\\"100vw\\"
+          style=\\"object-fit: cover;object-position: center;position: absolute;height: 100%;width: 100%;top: 0;left: 0;\\" />
+      </picture>
+      <div
+          class=\\"builder-image-sizer\\"
+          style=\\"width: 100%;padding-top: 70.04048582995948%;pointer-events: none;font-size: 0;\\"></div>
+        
+  
+      </div>
+    
+    
+    
+  
+
+    <style>.builder-block.builder-6dc1308248be46e18b58ad4c623916d8 {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  flex-shrink: 0;
+  position: relative;
+  margin-top: 30px;
+  text-align: center;
+  line-height: normal;
+  height: auto;}</style>
+    
+    
+    
+    
+      <div  builder-id=\\"builder-6dc1308248be46e18b58ad4c623916d8\\" class=\\"builder-block builder-6dc1308248be46e18b58ad4c623916d8\\">
+        
+      <style>
+        .builder-text p:first-of-type, .builder-paragraph:first-of-type { margin: 0 } .builder-text > p, .builder-paragraph { color: inherit; line-height: inherit; letter-spacing: inherit; font-weight: inherit; font-size: inherit; text-align: inherit; font-family: inherit; }
+      </style>
+      <span class=\\"builder-text\\">
+        <p>Enter some text...</p>
+      </span>
+    
+      </div>
+    
+    
+    
+  
+            </div>
+          </div>
+<div
+            class=\\"builder-column\\"
+            style=\\"line-height: normal;display: flex;flex-direction: column;align-items: stretch;\\"
+            >
+            <div
+              class=\\"builder-blocks\\"
+              builder-type=\\"blocks\\">
+              
+    <style>.builder-block.builder-a8fe67f4bed845a38528c106f08d9b45 {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  flex-shrink: 0;
+  position: relative;
+  margin-top: 30px;
+  text-align: center;
+  line-height: normal;
+  height: auto;}</style>
+    
+    
+    
+    
+      <div  builder-id=\\"builder-a8fe67f4bed845a38528c106f08d9b45\\" class=\\"builder-block builder-a8fe67f4bed845a38528c106f08d9b45\\">
+        
+      <picture>
+        <source srcset=\\"https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?format=webp&width=100 100w, https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?format=webp&width=200 200w, https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?format=webp&width=400 400w, https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?format=webp&width=800 800w, https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?format=webp&width=1200 1200w, https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?format=webp&width=1600 1600w, https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?format=webp&width=2000 2000w, https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d\\" type=\\"image/webp\\" />
+        <img
+          src=\\"https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d\\"
+          srcset=\\"https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?width=100 100w, https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?width=200 200w, https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?width=400 400w, https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?width=800 800w, https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?width=1200 1200w, https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?width=1600 1600w, https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?width=2000 2000w, https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d\\"
+          sizes=\\"100vw\\"
+          style=\\"object-fit: cover;object-position: center;position: absolute;height: 100%;width: 100%;top: 0;left: 0;\\" />
+      </picture>
+      <div
+          class=\\"builder-image-sizer\\"
+          style=\\"width: 100%;padding-top: 70.04048582995948%;pointer-events: none;font-size: 0;\\"></div>
+        
+  
+      </div>
+    
+    
+    
+  
+
+    <style>.builder-block.builder-25ba5db0c872489898ea10f2816c08b6 {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  flex-shrink: 0;
+  position: relative;
+  margin-top: 30px;
+  text-align: center;
+  line-height: normal;
+  height: auto;}</style>
+    {% for yo_item in thing.list.yo %}
+    
+    
+    
+      <a  href=\\"{{ bazbaz }}\\" builder-id=\\"builder-25ba5db0c872489898ea10f2816c08b6\\" class=\\"builder-block builder-25ba5db0c872489898ea10f2816c08b6\\" style=\\"display: {{ foo.bar }};\\">
+        
+      <style>
+        .builder-text p:first-of-type, .builder-paragraph:first-of-type { margin: 0 } .builder-text > p, .builder-paragraph { color: inherit; line-height: inherit; letter-spacing: inherit; font-weight: inherit; font-size: inherit; text-align: inherit; font-family: inherit; }
+      </style>
+      <span class=\\"builder-text\\">
+        {{ foobar }}
+      </span>
+    
+      </a>
+    
+    
+    {% endfor %}
+  
+            </div>
+          </div>
+        
+          <style>
+        @media (max-width: 999px) {
+          .builder-9c660eec3a084703acfd457a5f46bec0 > .builder-columns {
+            flex-direction: column;
+            align-items: stretch;
+          }
+
+          .builder-9c660eec3a084703acfd457a5f46bec0 > .builder-columns > .builder-column:nth-child(n) {
+            width: 100%;
+            margin-left: 0;
+          }
+        }
+          </style>
+        
+      </div>
+  
+      </div>
+    
+    
+    
+  
+    </div>
+  "
+`;
+
+exports[`Section code generator no values for attributes 1`] = `
+"
+    <div style=\\"height: 100%;width: 100%;align-self: stretch;flex-grow: 1;box-sizing: border-box;max-width: 1200px;display: flex;flex-direction: column;align-items: stretch;margin-left: auto;margin-right: auto;\\">
+      
+    </div>
+  "
+`;
+
+exports[`Section code generator values for all attributes 1`] = `
+"
+    <div style=\\"height: 100%;width: 100%;align-self: stretch;flex-grow: 1;box-sizing: border-box;max-width: 300px;display: flex;flex-direction: column;align-items: stretch;margin-left: auto;margin-right: auto;\\">
+      
+    </div>
+  "
+`;

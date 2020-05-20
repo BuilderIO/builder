@@ -1,13 +1,13 @@
-import builder, { Builder, BuilderBlockComponent, BuilderElement, BuilderStore, stringToFunction, withBuilder } from '@builder.io/react';
+import builder, {
+  Builder,
+  BuilderBlockComponent,
+  BuilderElement,
+  BuilderStore,
+  stringToFunction,
+  withBuilder,
+} from '@builder.io/react';
 import * as React from 'react';
-
-interface UnlessBlockProps {
-  builderState?: BuilderStore;
-  builderBlock?: BuilderElement;
-  unlessBlocks?: BuilderElement[];
-  elseBlocks?: BuilderElement[];
-  expression?: string;
-}
+import { UnlessBlockProps } from '../interfaces/component-props';
 
 export class UnlessBlock extends React.Component<UnlessBlockProps> {
   private getMatchingBlocks() {

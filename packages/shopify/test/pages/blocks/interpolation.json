@@ -1,0 +1,18 @@
+{
+  "@type": "@builder.io/sdk:Element",
+  "@version": 2,
+  "bindings": {
+    "href": "context.shopify.liquid.render(\"{{settings.youtube_link}}\", state)",
+    "title": "context.shopify.liquid.render(\"{{shop.name}} on YouTube\", state)"
+  },
+  "tagName": "a",
+  "id": "builder-oxvj38205q",
+  "properties": {
+    "rel": "me",
+    "target": "_blank",
+    "class": "icon-youtube"
+  },
+  "meta": {
+    "importedFrom": "liquid"
+  }
+}

@@ -1,0 +1,344 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Conditional Attributes 1`] = `
+"<style>
+  .builder-block.builder-oxvj38205q {
+  }
+</style>
+
+<div
+  data-test=\\"{% if collection.image %} {{collection.image | img_url: sizes.first}}{% else  %} {% if section.settings.image %} {{section.settings.image | img_url: sizes.first}}{% else  %} {{collection.products.first.featured_image | product_img_url: sizes.first}}{% endif %}{% endif %}\\"
+  alt=\\"{% if positive %} alt-positive{% endif %}\\"
+  class=\\"builder-block builder-oxvj38205q {% if a %} a{% else  %} {% if b %} b{% else  %} willBeLost{% endif %}{% endif %}\\"
+  builder-id=\\"builder-oxvj38205q\\"
+></div>
+"
+`;
+
+exports[`Handles input with boolean attribute checked 1`] = `
+"<style>
+  .builder-block.builder-oxvj38205q {
+  }
+</style>
+
+<input
+  type=\\"radio\\"
+  name=\\"option-{{option_index}}\\"
+  value=\\"{{value | escape}}\\"
+  {%
+  if
+  forloop.first
+  %}
+  checked{%
+  endif
+  %}
+  builder-id=\\"builder-oxvj38205q\\"
+  class=\\"builder-block builder-oxvj38205q\\"
+/>
+"
+`;
+
+exports[`Handles loop with unless statement 1`] = `
+"
+    <style>.builder-block.builder-fgyfi20qi84 {}</style>
+    
+    
+    
+    
+      <select  name=\\"tag_filter\\" id=\\"tag_filter\\" class=\\"builder-block builder-fgyfi20qi84 tag_filter\\" data-default-collection=\\"{% if collection.handle == 'all' %} /collections/all {% else %}{{collection.url}}{% endif %}\\" builder-id=\\"builder-fgyfi20qi84\\">
+        
+    <style>.builder-block.builder-prvgde6tkhl {}</style>
+    {% for tag in collection.all_tags %}
+    
+    
+    
+    <style>.builder-block.builder-phovceulmn {}</style>
+    
+    
+    
+    {% unless tag contains 'meta-' %}
+    <style>.builder-block.builder-51xxmnv9mj6 {}</style>
+    
+    
+    
+    
+      <option  {% if current_tags contains tag %} selected{% endif %} value=\\"/collections/{% if collection.handle != blank %}{{collection.handle}}{% else %}all{% endif %}/{{tag | handleize}}\\" builder-id=\\"builder-51xxmnv9mj6\\" class=\\"builder-block builder-51xxmnv9mj6\\">
+        
+    <style>.builder-block.builder-qj4kte3xlb {
+  display: inline;}</style>
+    
+    
+    
+    
+      <span  builder-id=\\"builder-qj4kte3xlb\\" class=\\"builder-block builder-qj4kte3xlb\\">
+        
+      <style>
+        .builder-text p:first-of-type, .builder-paragraph:first-of-type { margin: 0 } .builder-text > p, .builder-paragraph { color: inherit; line-height: inherit; letter-spacing: inherit; font-weight: inherit; font-size: inherit; text-align: inherit; font-family: inherit; }
+      </style>
+      <span class=\\"builder-text\\">
+        {{ tag }}
+      </span>
+    
+      </span>
+    
+    
+    
+  
+      </option>
+    
+    
+    
+  {% else %}
+    <style>.builder-block.builder-6f0s06v6h0j {
+  display: inline;}</style>
+    
+    
+    
+    
+      <span  builder-id=\\"builder-6f0s06v6h0j\\" class=\\"builder-block builder-6f0s06v6h0j\\">
+        
+      <style>
+        .builder-text p:first-of-type, .builder-paragraph:first-of-type { margin: 0 } .builder-text > p, .builder-paragraph { color: inherit; line-height: inherit; letter-spacing: inherit; font-weight: inherit; font-size: inherit; text-align: inherit; font-family: inherit; }
+      </style>
+      <span class=\\"builder-text\\">
+         
+ you are  
+      </span>
+    
+      </span>
+    
+    
+    
+  
+
+    <style>.builder-block.builder-qqtgpdhbkg {
+  display: inline;}</style>
+    
+    
+    
+    
+      <span  builder-id=\\"builder-qqtgpdhbkg\\" class=\\"builder-block builder-qqtgpdhbkg\\">
+        
+      <style>
+        .builder-text p:first-of-type, .builder-paragraph:first-of-type { margin: 0 } .builder-text > p, .builder-paragraph { color: inherit; line-height: inherit; letter-spacing: inherit; font-weight: inherit; font-size: inherit; text-align: inherit; font-family: inherit; }
+      </style>
+      <span class=\\"builder-text\\">
+        {{ cool }}
+      </span>
+    
+      </span>
+    
+    
+    
+  {% endunless %}
+    
+    
+    
+  
+    
+    
+    {% endfor %}
+  
+      </select>
+    
+    
+    
+  "
+`;
+
+exports[`Handles simple conditional 1`] = `
+"<style>
+  .builder-block.builder-rcpqlcqsh3f {
+  }
+</style>
+
+{% if collection.description != blank %}
+<style>
+  .builder-block.builder-4o01ryi0ztu {
+  }
+</style>
+
+<div
+  class=\\"builder-block builder-4o01ryi0ztu section clearfix collection_description\\"
+  builder-id=\\"builder-4o01ryi0ztu\\"
+>
+  <style>
+    .builder-block.builder-7jz57t7fk8a {
+      display: inline;
+    }
+  </style>
+
+  <span
+    builder-id=\\"builder-7jz57t7fk8a\\"
+    class=\\"builder-block builder-7jz57t7fk8a\\"
+  >
+    <style>
+      .builder-text p:first-of-type,
+      .builder-paragraph:first-of-type {
+        margin: 0;
+      }
+      .builder-text > p,
+      .builder-paragraph {
+        color: inherit;
+        line-height: inherit;
+        letter-spacing: inherit;
+        font-weight: inherit;
+        font-size: inherit;
+        text-align: inherit;
+        font-family: inherit;
+      }
+    </style>
+    <span class=\\"builder-text\\">
+      {{ collection.description }}
+    </span>
+  </span>
+</div>
+
+{% elsif collection.title != blank %}
+<style>
+  .builder-block.builder-4o01ryi0ztu {
+  }
+</style>
+
+<div
+  class=\\"builder-block builder-4o01ryi0ztu section clearfix collection_title\\"
+  builder-id=\\"builder-4o01ryi0ztu\\"
+>
+  <style>
+    .builder-block.builder-7jz57t7fk8a {
+      display: inline;
+    }
+  </style>
+
+  <span
+    builder-id=\\"builder-7jz57t7fk8a\\"
+    class=\\"builder-block builder-7jz57t7fk8a\\"
+  >
+    <style>
+      .builder-text p:first-of-type,
+      .builder-paragraph:first-of-type {
+        margin: 0;
+      }
+      .builder-text > p,
+      .builder-paragraph {
+        color: inherit;
+        line-height: inherit;
+        letter-spacing: inherit;
+        font-weight: inherit;
+        font-size: inherit;
+        text-align: inherit;
+        font-family: inherit;
+      }
+    </style>
+    <span class=\\"builder-text\\">
+      {{ collection.title }}
+    </span>
+  </span>
+</div>
+
+{% else %}
+<style>
+  .builder-block.builder-4o01ryi0ztu {
+  }
+</style>
+
+<div
+  class=\\"builder-block builder-4o01ryi0ztu section clearfix collection_title\\"
+  builder-id=\\"builder-4o01ryi0ztu\\"
+>
+  <style>
+    .builder-block.builder-7jz57t7fk8a {
+      display: inline;
+    }
+  </style>
+
+  <span
+    builder-id=\\"builder-7jz57t7fk8a\\"
+    class=\\"builder-block builder-7jz57t7fk8a\\"
+  >
+    <style>
+      .builder-text p:first-of-type,
+      .builder-paragraph:first-of-type {
+        margin: 0;
+      }
+      .builder-text > p,
+      .builder-paragraph {
+        color: inherit;
+        line-height: inherit;
+        letter-spacing: inherit;
+        font-weight: inherit;
+        font-size: inherit;
+        text-align: inherit;
+        font-family: inherit;
+      }
+    </style>
+    <span class=\\"builder-text\\">
+      {{ collection.name }}
+    </span>
+  </span>
+</div>
+
+{% endif %}
+"
+`;
+
+exports[`Simple repeat 1`] = `
+"<style>
+  .builder-block.builder-85yaddnm61v {
+  }
+</style>
+{% for link in linklists[link.handle].links %}
+
+<style>
+  .builder-block.builder-66af795225934811ab67c5d5b2e81987 {
+    display: flex;
+    flex-direction: column;
+  }
+</style>
+
+<div
+  builder-id=\\"builder-66af795225934811ab67c5d5b2e81987\\"
+  class=\\"builder-block builder-66af795225934811ab67c5d5b2e81987\\"
+>
+  <style>
+    .builder-text p:first-of-type,
+    .builder-paragraph:first-of-type {
+      margin: 0;
+    }
+    .builder-text > p,
+    .builder-paragraph {
+      color: inherit;
+      line-height: inherit;
+      letter-spacing: inherit;
+      font-weight: inherit;
+      font-size: inherit;
+      text-align: inherit;
+      font-family: inherit;
+    }
+  </style>
+  <span class=\\"builder-text\\">
+    {{ link }}
+  </span>
+</div>
+
+{% endfor %}
+"
+`;
+
+exports[`Variable interpolation 1`] = `
+"<style>
+  .builder-block.builder-oxvj38205q {
+  }
+</style>
+
+<a
+  rel=\\"me\\"
+  target=\\"_blank\\"
+  class=\\"builder-block builder-oxvj38205q icon-youtube\\"
+  href=\\"{{settings.youtube_link}}\\"
+  title=\\"{{shop.name}} on YouTube\\"
+  builder-id=\\"builder-oxvj38205q\\"
+>
+</a>
+"
+`;

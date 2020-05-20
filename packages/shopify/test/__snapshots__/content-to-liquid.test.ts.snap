@@ -1,0 +1,1372 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Collection page 1`] = `
+"<style type=\\"text/css\\" class=\\"builder-styles builder-api-styles\\">
+  .builder-block.builder-4154f60bc56447f4acaae2ebe072d2be {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    position: relative;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    margin-top: 2px;
+    height: auto;
+    padding-bottom: 30px;
+  }
+
+  .builder-block.builder-afd46a51c5de4368b7af24b9e82ed9d0 {
+    position: relative;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    margin-top: 4px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1200px;
+    padding-bottom: 30px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding-left: 11px;
+    padding-right: 11px;
+    justify-content: flex-start;
+  }
+
+  .builder-block.builder-3bb58607609c430393200aef7e0be037 {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    position: relative;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    margin-top: 3px;
+    height: auto;
+    padding-bottom: 14px;
+    width: 33%;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+
+  @media only screen and (max-width: 991px) {
+    .builder-block.builder-3bb58607609c430393200aef7e0be037 {
+      width: 50%;
+    }
+  }
+
+  .builder-block.builder-02134ab1e7cb4e098306573d87b8e98d {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    position: relative;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    margin-top: 7px;
+    min-height: 20px;
+    min-width: 20px;
+    overflow: hidden;
+  }
+
+  .builder-block.builder-f1fd9fb4acfe4059af2cfdec515f1394 {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    position: relative;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    margin-top: 15px;
+    line-height: normal;
+    height: auto;
+    text-align: center;
+    font-weight: 600;
+  }
+
+  .builder-paragraph:first-of-type,
+  .builder-text p:first-of-type {
+    margin: 0;
+  }
+
+  .builder-paragraph,
+  .builder-text > p {
+    color: inherit;
+    line-height: inherit;
+    letter-spacing: inherit;
+    font-weight: inherit;
+    font-size: inherit;
+    text-align: inherit;
+    font-family: inherit;
+  }
+
+  .builder-block.builder-aa2b79ad57a144eab0cdcd4d6fbc46bd {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    position: relative;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    margin-top: 7px;
+    line-height: normal;
+    height: auto;
+    text-align: center;
+  }
+</style>
+<div class=\\"builder-component\\" data-name=\\"page\\">
+  <div
+    class=\\"builder-content\\"
+    data-builder-content-id=\\"d3d9a373d3a3479d921c2bcc0fe23aa5\\"
+    data-builder-component=\\"page\\"
+    data-builder-variation-id=\\"d3d9a373d3a3479d921c2bcc0fe23aa5\\"
+  >
+    <div
+      builder-content-id=\\"d3d9a373d3a3479d921c2bcc0fe23aa5\\"
+      builder-model=\\"page\\"
+    >
+      <div
+        builder-id=\\"builder-4154f60bc56447f4acaae2ebe072d2be\\"
+        class=\\"builder-block builder-4154f60bc56447f4acaae2ebe072d2be\\"
+      >
+        <div
+          builder-id=\\"builder-afd46a51c5de4368b7af24b9e82ed9d0\\"
+          class=\\"builder-block builder-afd46a51c5de4368b7af24b9e82ed9d0\\"
+        >
+          {% for products_item in products.products %}
+          <a
+            href=\\"{{ }}\\"
+            builder-id=\\"builder-3bb58607609c430393200aef7e0be037\\"
+            class=\\"builder-block builder-3bb58607609c430393200aef7e0be037\\"
+          >
+            <div
+              builder-id=\\"builder-02134ab1e7cb4e098306573d87b8e98d\\"
+              class=\\"builder-block builder-02134ab1e7cb4e098306573d87b8e98d\\"
+            >
+              <picture>
+                <img
+                  src=\\"{{ }}\\"
+                  srcset=\\"{{ }}\\"
+                  sizes=\\"100vw\\"
+                  style=\\"object-fit: cover;object-position: top;position: absolute;height: 100%;width: 100%;top: 0;left: 0;\\"
+                />
+              </picture>
+              <div
+                class=\\"builder-image-sizer\\"
+                style=\\"width: 100%;padding-top: 136.39%;pointer-events: none;font-size: 0;\\"
+              ></div>
+            </div>
+            <div
+              builder-id=\\"builder-f1fd9fb4acfe4059af2cfdec515f1394\\"
+              class=\\"builder-block builder-f1fd9fb4acfe4059af2cfdec515f1394\\"
+            >
+              <span class=\\"builder-text\\"> {{ productsItem.title }} </span>
+            </div>
+            <div
+              builder-id=\\"builder-aa2b79ad57a144eab0cdcd4d6fbc46bd\\"
+              class=\\"builder-block builder-aa2b79ad57a144eab0cdcd4d6fbc46bd\\"
+            >
+              <span class=\\"builder-text\\"> {{ }} </span>
+            </div>
+          </a>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+"
+`;
+
+exports[`Product page 1`] = `
+"<style type=\\"text/css\\" class=\\"builder-styles builder-api-styles\\">
+  .builder-block.builder-11e828a002fe4f93b8484a9fde326d8a,
+  .builder-block.builder-fabc233000cf4e048ebde1d1feca37b9 {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    position: relative;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    margin-top: 0;
+  }
+
+  .builder-block.builder-11e828a002fe4f93b8484a9fde326d8a {
+    padding: 12px 20px;
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+  }
+
+  .builder-block.builder-fabc233000cf4e048ebde1d1feca37b9 {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .builder-columns {
+    display: flex;
+  }
+
+  .builder-column > .builder-blocks {
+    flex-grow: 1;
+  }
+
+  .builder-fabc233000cf4e048ebde1d1feca37b9
+    > .builder-columns
+    > .builder-column:nth-child(1) {
+    width: calc(58.333% - 10px);
+    margin-left: 0;
+  }
+
+  .builder-fabc233000cf4e048ebde1d1feca37b9
+    > .builder-columns
+    > .builder-column:nth-child(2) {
+    width: calc(41.667% - 10px);
+    margin-left: 20px;
+  }
+
+  .builder-block.builder-d356770eca704841ace6e4f53df92be7 {
+    position: relative;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    height: auto;
+    flex-grow: 1;
+  }
+
+  @media only screen and (max-width: 640px) {
+    .builder-block.builder-d356770eca704841ace6e4f53df92be7 {
+      width: 100%;
+    }
+  }
+
+  .builder-block.builder-29b52b1d0576429a82027f3149095681 {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    position: relative;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    margin-left: 0;
+    height: auto;
+    width: 85px;
+    align-self: stretch;
+    padding-right: 14px;
+  }
+
+  @media only screen and (max-width: 991px) {
+    .builder-block.builder-29b52b1d0576429a82027f3149095681 {
+      display: flex;
+      position: relative;
+    }
+  }
+
+  @media only screen and (max-width: 640px) {
+    .builder-block.builder-29b52b1d0576429a82027f3149095681 {
+      display: none;
+    }
+  }
+
+  .builder-block.builder-70126e1bb1884711a9d7978526a9a12c {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    position: relative;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 20px;
+    min-width: 20px;
+    overflow: hidden;
+    margin-bottom: 10px;
+    opacity: 0.26;
+    cursor: pointer;
+  }
+
+  .builder-block.builder-24d999e4cf6a49f0b2291565c58bd78d {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    position: relative;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    width: calc(100% - 100px);
+    flex-grow: 1;
+    height: auto;
+    align-self: stretch;
+  }
+
+  @media only screen and (max-width: 640px) {
+    .builder-block.builder-24d999e4cf6a49f0b2291565c58bd78d {
+      width: 100%;
+    }
+  }
+
+  .builder-block.builder-4ac73957b1714e4890ecef623509d9ca {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    position: relative;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    width: auto;
+    align-self: stretch;
+    height: auto;
+    flex-grow: 0;
+  }
+
+  .builder-block.builder-746c2870987d4db1bdabb1f40328eb85 {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    position: absolute;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    height: calc(100% - 30px);
+    width: 50%;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    cursor: url(data:image/svg+xml;base64,Cgo8c3ZnIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiCgkgd2lkdGg9IjE0cHgiIGhlaWdodD0iMjlweCIgdmlld0JveD0iMCAwIDE0IDI5IiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCAxNCAyOTsiIHhtbDpzcGFjZT0icHJlc2VydmUiPgo8cG9seWdvbiBzdHlsZT0iZmlsbDojRkZGRkZGOyIgcG9pbnRzPSIxMy4xLDI4LjUgMTMuOCwyNy44IDEuNCwxNC42IDE0LDEuMiAxMy4zLDAuNSAwLDE0LjYgIi8+Cjxwb2x5Z29uIHN0eWxlPSJmaWxsOiMwMDM0NEE7IiBwb2ludHM9IjEzLjEsMjggMTMuOCwyNy4zIDEuNCwxNC4xIDE0LDAuNyAxMy4zLDAgMCwxNC4xICIvPgo8L3N2Zz4K),
+      w-resize;
+  }
+
+  @media only screen and (max-width: 991px) {
+    .builder-block.builder-746c2870987d4db1bdabb1f40328eb85 {
+      display: none;
+    }
+  }
+
+  .builder-block.builder-612dcd48f6064c73adc4c16d107e6874 {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    position: absolute;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    height: calc(100% - 30px);
+    width: 50%;
+    z-index: 2;
+    top: 0;
+    right: 0;
+    cursor: url(data:image/svg+xml;base64,Cgo8c3ZnIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiCgkgd2lkdGg9IjE0cHgiIGhlaWdodD0iMjlweCIgdmlld0JveD0iMCAwIDE0IDI5IiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCAxNCAyOTsiIHhtbDpzcGFjZT0icHJlc2VydmUiPgo8cG9seWdvbiBzdHlsZT0iZmlsbDojRkZGRkZGOyIgcG9pbnRzPSIwLjksMjguNSAwLjIsMjcuOCAxMi42LDE0LjYgMCwxLjIgMC43LDAuNSAxNCwxNC42ICIvPgo8cG9seWdvbiBzdHlsZT0iZmlsbDojMDAzNDRBOyIgcG9pbnRzPSIwLjksMjggMC4yLDI3LjMgMTIuNiwxNC4xIDAsMC43IDAuNywwIDE0LDE0LjEgIi8+Cjwvc3ZnPgo=),
+      e-resize;
+  }
+
+  @media only screen and (max-width: 991px) {
+    .builder-block.builder-612dcd48f6064c73adc4c16d107e6874 {
+      display: none;
+    }
+  }
+
+  .builder-block.builder-d27f6f394c4a4286994fc13ea9ceb1f0 {
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 30px;
+  }
+
+  .builder-block.builder-092158b8a9524d1592db840a8b6b5898,
+  .builder-block.builder-3e80f386544c4d0cb746dfdde4754d09,
+  .builder-block.builder-d27f6f394c4a4286994fc13ea9ceb1f0 {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    position: relative;
+    flex-shrink: 0;
+    box-sizing: border-box;
+  }
+
+  .builder-block.builder-3e80f386544c4d0cb746dfdde4754d09 {
+    min-height: 20px;
+    min-width: 20px;
+    overflow: hidden;
+  }
+
+  .builder-block.builder-d52be8fc2d5c4a2fbb7fa0d0d539cda7 {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    position: relative;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    line-height: normal;
+    height: auto;
+    text-align: left;
+    margin-top: 0;
+    color: #6a6a6a;
+    font-size: 13px;
+    cursor: pointer;
+    pointer-events: auto;
+  }
+
+  @media only screen and (max-width: 640px) {
+    .builder-block.builder-d52be8fc2d5c4a2fbb7fa0d0d539cda7 {
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+
+  .builder-paragraph:first-of-type,
+  .builder-text p:first-of-type {
+    margin: 0;
+  }
+
+  .builder-paragraph,
+  .builder-text > p {
+    color: inherit;
+    line-height: inherit;
+    letter-spacing: inherit;
+    font-weight: inherit;
+    font-size: inherit;
+    text-align: inherit;
+    font-family: inherit;
+  }
+
+  .builder-block.builder-9d3241dd46064bcb8b42d6692f64a87f {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    position: sticky;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    top: 50px;
+  }
+
+  @media only screen and (max-width: 640px) {
+    .builder-block.builder-9d3241dd46064bcb8b42d6692f64a87f {
+      padding-left: 18px;
+      padding-right: 18px;
+    }
+  }
+
+  .builder-block.builder-6e9b489950934748a9d92ca5062971f8 {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    position: relative;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    line-height: normal;
+    height: auto;
+    text-align: left;
+    font-size: 26px;
+    margin-top: 5.3125px;
+  }
+
+  .builder-block.builder-480c30351e164d7c8412bf66732d0565 {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    position: relative;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    margin-top: 8px;
+    opacity: 1;
+    font-size: 16px;
+  }
+
+  .builder-block.builder-2225b0a9ab43436bb4e67c0a2bf5bddc {
+    margin-top: 20px;
+  }
+
+  .builder-block.builder-2225b0a9ab43436bb4e67c0a2bf5bddc,
+  .builder-block.builder-48c599ac95f54345a597eb2e393f0412 {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    position: relative;
+    flex-shrink: 0;
+    box-sizing: border-box;
+  }
+
+  .builder-block.builder-1314da68a4aa4991aa4c91bd7e1048ee,
+  .builder-block.builder-67a3e7e9908c4e4b932e7c9e83f323b3 {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    position: relative;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    line-height: normal;
+    height: auto;
+    text-align: left;
+  }
+
+  .builder-block.builder-67a3e7e9908c4e4b932e7c9e83f323b3 {
+    opacity: 0.73;
+    font-size: 26px;
+    margin-top: 12.3125px;
+  }
+
+  .builder-block.builder-1314da68a4aa4991aa4c91bd7e1048ee {
+    margin-top: 19px;
+    color: #6a6a6a;
+    font-size: 13px;
+    cursor: pointer;
+    pointer-events: auto;
+  }
+
+  @media only screen and (max-width: 640px) {
+    .builder-block.builder-1314da68a4aa4991aa4c91bd7e1048ee {
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+
+  .builder-block.builder-1b2a2cf1d19b4dbdba732f0ccb406244 {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    position: relative;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    margin-top: 8px;
+    height: auto;
+    padding-bottom: 30px;
+  }
+
+  .builder-block.builder-6bb2987695ca476bbfaf8f3021940f4e {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    position: relative;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    text-align: left;
+    width: auto;
+    align-self: stretch;
+  }
+
+  @media only screen and (max-width: 640px) {
+    .builder-block.builder-6bb2987695ca476bbfaf8f3021940f4e {
+      width: 100%;
+      align-self: stretch;
+    }
+  }
+
+  .builder-block.builder-02600e35c0654e19b17f88627f62dff5,
+  .builder-block.builder-e24b6c374d0f40c1b26c192e8c4a3f2f {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    position: relative;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    margin-top: 5px;
+    height: auto;
+  }
+
+  .builder-block.builder-02600e35c0654e19b17f88627f62dff5 {
+    padding-bottom: 0;
+  }
+
+  .builder-block.builder-e24b6c374d0f40c1b26c192e8c4a3f2f {
+    line-height: normal;
+    text-align: left;
+  }
+
+  .builder-block.builder-4b478e36517941cc8671d0418dbb961a {
+    position: relative;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    margin-top: 0.40625px;
+    padding-bottom: 30px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .builder-block.builder-aaa0e6121a724ac181d57d6d8a4fd67b,
+  .builder-block.builder-cb86174da48f472c91535965c93920c3 {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    position: relative;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    height: auto;
+  }
+
+  .builder-block.builder-cb86174da48f472c91535965c93920c3 {
+    padding-bottom: 11px;
+    border-style: none;
+    border-width: 1px;
+    background-color: rgba(242, 242, 242, 0.67);
+    margin-right: 8px;
+    cursor: pointer;
+    padding-left: 13px;
+    padding-right: 13px;
+    min-width: 100px;
+    margin-top: 8.34375px;
+  }
+
+  .builder-block.builder-aaa0e6121a724ac181d57d6d8a4fd67b {
+    margin-top: 11.5234375px;
+    line-height: normal;
+    text-align: center;
+  }
+
+  .builder-block.builder-4a08fa4db27b4ad8b0c8033d4d460639 {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    position: absolute;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    webkit-appearance: none;
+    appearance: none;
+    webkit-apperance: none;
+    border-radius: 0;
+    background-color: transparent;
+  }
+
+  .builder-block.builder-aaa44eefbef84de286e96f821a160148 {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    position: relative;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    margin-top: 9px;
+    appearance: none;
+    padding: 10px 73px;
+    background-color: #6c6c6c;
+    color: #fff;
+    border-radius: 2px;
+    text-align: center;
+    font-weight: 600;
+    letter-spacing: 1px;
+    width: auto;
+    border-style: none;
+    align-self: stretch;
+  }
+
+  .builder-block.builder-8f68f4223ab74c319a4951d362e71b1e {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    position: relative;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    line-height: normal;
+    height: auto;
+    text-align: left;
+    margin-top: 22.5625px;
+    color: #6a6a6a;
+  }
+
+  .builder-block.builder-a3b2adb95cfd43f8802c2be2fa5c33ca {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    position: relative;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    margin-top: 20px;
+  }
+
+  @media (max-width: 999px) {
+    .builder-fabc233000cf4e048ebde1d1feca37b9 > .builder-columns {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .builder-fabc233000cf4e048ebde1d1feca37b9
+      > .builder-columns
+      > .builder-column:nth-child(n) {
+      width: 100%;
+      margin-left: 0;
+    }
+  }
+
+  .builder-block.builder-da350ef6a4fc4acb85e71436cafc8cc8 {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    position: relative;
+    flex-shrink: 0;
+    box-sizing: border-box;
+  }
+
+  .builder-block.builder-beeaca8063be410fb0f06ae79ba5def2,
+  .builder-block.builder-e3f4cf8f2cae48d7bd667fbf6206a988 {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    position: relative;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    margin-top: 20px;
+  }
+
+  .builder-block.builder-e3f4cf8f2cae48d7bd667fbf6206a988 {
+    margin-top: 48px;
+    line-height: normal;
+    height: auto;
+    text-align: center;
+    margin-right: auto;
+    font-size: 17px;
+    margin-left: auto;
+  }
+
+  .builder-block.builder-55555995005b4af8a2960d16900ac23c {
+    position: relative;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    margin-top: 10px;
+    padding-bottom: 30px;
+    display: flex;
+    flex-direction: row;
+    overflow: auto;
+  }
+
+  .builder-block.builder-8d14596658ca4e8ca96c794ec62441b8 {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    position: relative;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    width: 240px;
+    padding-left: 7px;
+    padding-right: 7px;
+  }
+
+  .builder-block.builder-e5992bc2dfa44e99adae70c7d431cd20 {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    position: relative;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    margin-top: 7px;
+    min-height: 20px;
+    min-width: 20px;
+    overflow: hidden;
+  }
+
+  .builder-block.builder-157452755e3c4cfab798c262b23fe250 {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    position: relative;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    margin-top: 20px;
+    line-height: normal;
+    height: auto;
+    text-align: center;
+  }
+
+  .builder-block.builder-4c41d3d12987459b926108f46923be7b {
+    margin-top: 9px;
+    line-height: normal;
+    height: auto;
+    text-align: center;
+    opacity: 0.66;
+  }
+
+  .builder-block.builder-4c41d3d12987459b926108f46923be7b,
+  .builder-block.builder-abee21da77b4446bb99509a984ecb7d7,
+  .builder-block.builder-e30594409b81457fa176045005c2f9ca {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    position: relative;
+    flex-shrink: 0;
+    box-sizing: border-box;
+  }
+
+  .builder-radio {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    position: absolute;
+    display: flex;
+    top: 0;
+    z-index: 3;
+    outline: 0 !important;
+    cursor: pointer;
+  }
+
+  .builder-radio:checked {
+    border: 1px solid #666;
+  }
+
+  .builder-radio:disabled {
+    background-color: rgba(255, 255, 255, 0.7) !important;
+  }
+
+  input:matches([type=\\"checkbox\\"], [type=\\"radio\\"]) {
+    border: 0;
+  }
+
+  input:matches([type=\\"checkbox\\"], [type=\\"radio\\"]):checked {
+    background-color: tansparent;
+  }
+</style>
+<div class=\\"builder-component\\" data-name=\\"page\\">
+  <div
+    class=\\"builder-content\\"
+    data-builder-content-id=\\"87827679246f4096a434554b5c382f91\\"
+    data-builder-component=\\"page\\"
+    data-builder-variation-id=\\"87827679246f4096a434554b5c382f91\\"
+  >
+    <div
+      builder-content-id=\\"87827679246f4096a434554b5c382f91\\"
+      builder-model=\\"page\\"
+    >
+      <div
+        builder-id=\\"builder-11e828a002fe4f93b8484a9fde326d8a\\"
+        class=\\"builder-block builder-11e828a002fe4f93b8484a9fde326d8a\\"
+      >
+        <div
+          style=\\"height: 100%;width: 100%;align-self: stretch;flex-grow: 1;box-sizing: border-box;max-width: 1200px;display: flex;flex-direction: column;align-items: stretch;margin-left: auto;margin-right: auto;\\"
+        >
+          <div
+            builder-id=\\"builder-fabc233000cf4e048ebde1d1feca37b9\\"
+            class=\\"builder-block builder-fabc233000cf4e048ebde1d1feca37b9\\"
+          >
+            <div class=\\"builder-columns\\">
+              <div
+                class=\\"builder-column\\"
+                style=\\"line-height: normal;display: flex;flex-direction: column;align-items: stretch;\\"
+              >
+                <div class=\\"builder-blocks\\" builder-type=\\"blocks\\">
+                  <div
+                    builder-id=\\"builder-d356770eca704841ace6e4f53df92be7\\"
+                    class=\\"builder-block builder-d356770eca704841ace6e4f53df92be7\\"
+                  >
+                    <div
+                      builder-id=\\"builder-29b52b1d0576429a82027f3149095681\\"
+                      class=\\"builder-block builder-29b52b1d0576429a82027f3149095681\\"
+                    >
+                      {% for images_item in product.images %}
+                      <div
+                        builder-id=\\"builder-70126e1bb1884711a9d7978526a9a12c\\"
+                        class=\\"builder-block builder-70126e1bb1884711a9d7978526a9a12c\\"
+                        style=\\"opacity: {{ }};\\"
+                      >
+                        <picture>
+                          <img
+                            src=\\"{{ imagesItem }}\\"
+                            srcset=\\"{{ imagesItem }}\\"
+                            sizes=\\"100vw\\"
+                            style=\\"object-fit: cover;object-position: center;position: absolute;height: 100%;width: 100%;top: 0;left: 0;\\"
+                          />
+                        </picture>
+                        <div
+                          class=\\"builder-image-sizer\\"
+                          style=\\"width: 100%;padding-top: 147.4%;pointer-events: none;font-size: 0;\\"
+                        ></div>
+                      </div>
+                      {% endfor %}
+                    </div>
+                    <div
+                      builder-id=\\"builder-24d999e4cf6a49f0b2291565c58bd78d\\"
+                      class=\\"builder-block builder-24d999e4cf6a49f0b2291565c58bd78d\\"
+                    >
+                      <div
+                        builder-id=\\"builder-4ac73957b1714e4890ecef623509d9ca\\"
+                        class=\\"builder-block builder-4ac73957b1714e4890ecef623509d9ca\\"
+                      >
+                        <div
+                          builder-id=\\"builder-746c2870987d4db1bdabb1f40328eb85\\"
+                          class=\\"builder-block builder-746c2870987d4db1bdabb1f40328eb85\\"
+                        ></div>
+                        <div
+                          builder-id=\\"builder-612dcd48f6064c73adc4c16d107e6874\\"
+                          class=\\"builder-block builder-612dcd48f6064c73adc4c16d107e6874\\"
+                        ></div>
+                        <div
+                          builder-id=\\"builder-d27f6f394c4a4286994fc13ea9ceb1f0\\"
+                          class=\\"builder-block builder-d27f6f394c4a4286994fc13ea9ceb1f0\\"
+                        >
+                          <div class=\\"builder-carousel\\">
+                            {% for images_item in product.images %}
+                            <div
+                              builder-id=\\"builder-092158b8a9524d1592db840a8b6b5898\\"
+                              class=\\"builder-block builder-092158b8a9524d1592db840a8b6b5898\\"
+                            >
+                              <div
+                                builder-id=\\"builder-3e80f386544c4d0cb746dfdde4754d09\\"
+                                class=\\"builder-block builder-3e80f386544c4d0cb746dfdde4754d09\\"
+                              >
+                                <picture>
+                                  <img
+                                    src=\\"{{ imagesItem }}\\"
+                                    srcset=\\"{{ imagesItem }}\\"
+                                    sizes=\\"100vw\\"
+                                    style=\\"object-fit: contain;object-position: center;position: absolute;height: 100%;width: 100%;top: 0;left: 0;\\"
+                                  />
+                                </picture>
+                                <div
+                                  class=\\"builder-image-sizer\\"
+                                  style=\\"width: 100%;padding-top: 130%;pointer-events: none;font-size: 0;\\"
+                                ></div>
+                              </div>
+                            </div>
+                            {% endfor %}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class=\\"builder-column\\"
+                style=\\"line-height: normal;display: flex;flex-direction: column;align-items: stretch;\\"
+              >
+                <div class=\\"builder-blocks\\" builder-type=\\"blocks\\">
+                  <a
+                    href=\\"/collections/all\\"
+                    builder-id=\\"builder-d52be8fc2d5c4a2fbb7fa0d0d539cda7\\"
+                    class=\\"builder-block builder-d52be8fc2d5c4a2fbb7fa0d0d539cda7\\"
+                  >
+                    <span class=\\"builder-text\\">
+                      <p>Back to all products</p>
+                    </span>
+                  </a>
+                  <div
+                    builder-id=\\"builder-9d3241dd46064bcb8b42d6692f64a87f\\"
+                    class=\\"builder-block builder-9d3241dd46064bcb8b42d6692f64a87f\\"
+                  >
+                    <div
+                      builder-id=\\"builder-6e9b489950934748a9d92ca5062971f8\\"
+                      class=\\"builder-block builder-6e9b489950934748a9d92ca5062971f8\\"
+                    >
+                      <span class=\\"builder-text\\"> {{ product.title }} </span>
+                    </div>
+                    <div
+                      builder-id=\\"builder-480c30351e164d7c8412bf66732d0565\\"
+                      class=\\"builder-block builder-480c30351e164d7c8412bf66732d0565\\"
+                    >
+                      <div
+                        builder-id=\\"builder-2225b0a9ab43436bb4e67c0a2bf5bddc\\"
+                        class=\\"builder-block builder-2225b0a9ab43436bb4e67c0a2bf5bddc\\"
+                      >
+                        <div class=\\"builder-custom-code\\">
+                          <script type=\\"text/javascript\\">
+                            (function e(){var e=document.createElement(\\"script\\");e.type=\\"text/javascript\\",e.async=true,e.src=\\"//staticw2.yotpo.com/uAtMxsleqJZEyozcckD8J07M4zDUDA9xDtZaaZ9b/widget.js\\";var t=document.getElementsByTagName(\\"script\\")[0];t.parentNode.insertBefore(e,t)})();
+                          </script>
+                        </div>
+                      </div>
+                      <div
+                        data-name=\\"{{ product.title }}\\"
+                        data-product-id=\\"{{ product.id }}\\"
+                        data-image-url=\\"{{ }}\\"
+                        data-appkey=\\"{{ }}\\"
+                        builder-id=\\"builder-48c599ac95f54345a597eb2e393f0412\\"
+                        class=\\"builder-block builder-48c599ac95f54345a597eb2e393f0412 yotpo bottomLine\\"
+                      ></div>
+                    </div>
+                    <div
+                      builder-id=\\"builder-67a3e7e9908c4e4b932e7c9e83f323b3\\"
+                      class=\\"builder-block builder-67a3e7e9908c4e4b932e7c9e83f323b3\\"
+                    >
+                      <span class=\\"builder-text\\"> {{ }} </span>
+                    </div>
+                    <a
+                      href=\\"/pages/sizechart\\"
+                      target=\\"_blank\\"
+                      builder-id=\\"builder-1314da68a4aa4991aa4c91bd7e1048ee\\"
+                      class=\\"builder-block builder-1314da68a4aa4991aa4c91bd7e1048ee\\"
+                    >
+                      <span class=\\"builder-text\\"> <p>Size Chart</p> </span>
+                    </a>
+                    <form
+                      validate=\\"true\\"
+                      action=\\"\\"
+                      method=\\"\\"
+                      name=\\"undefined\\"
+                      builder-id=\\"builder-1b2a2cf1d19b4dbdba732f0ccb406244\\"
+                      class=\\"builder-block builder-1b2a2cf1d19b4dbdba732f0ccb406244 product-form\\"
+                    >
+                      <div
+                        builder-id=\\"builder-6bb2987695ca476bbfaf8f3021940f4e\\"
+                        class=\\"builder-block builder-6bb2987695ca476bbfaf8f3021940f4e\\"
+                      >
+                        {% for options_item in product.options %}
+                        <div
+                          builder-id=\\"builder-02600e35c0654e19b17f88627f62dff5\\"
+                          class=\\"builder-block builder-02600e35c0654e19b17f88627f62dff5\\"
+                        >
+                          <div
+                            builder-id=\\"builder-e24b6c374d0f40c1b26c192e8c4a3f2f\\"
+                            class=\\"builder-block builder-e24b6c374d0f40c1b26c192e8c4a3f2f\\"
+                          >
+                            <span class=\\"builder-text\\">
+                              {{ optionsItem.name }}
+                            </span>
+                          </div>
+                          <div
+                            builder-id=\\"builder-4b478e36517941cc8671d0418dbb961a\\"
+                            class=\\"builder-block builder-4b478e36517941cc8671d0418dbb961a\\"
+                          >
+                            {% for values_item in optionsItem.values %}
+                            <div
+                              title=\\"{{ valuesItem }}\\"
+                              builder-id=\\"builder-cb86174da48f472c91535965c93920c3\\"
+                              class=\\"builder-block builder-cb86174da48f472c91535965c93920c3\\"
+                              style=\\"background-color: {{ }};min-width: {{ }};border-radius: {{ }};height: {{ }};box-shadow: {{ }};\\"
+                            >
+                              <div
+                                builder-id=\\"builder-aaa0e6121a724ac181d57d6d8a4fd67b\\"
+                                class=\\"builder-block builder-aaa0e6121a724ac181d57d6d8a4fd67b\\"
+                              >
+                                <span class=\\"builder-text\\"> {{ }} </span>
+                              </div>
+                              <input
+                                placeholder=\\"Hello there\\"
+                                name=\\"{{ optionsItem.name }}\\"
+                                type=\\"radio\\"
+                                value=\\"{{ valuesItem }}\\"
+                                defaultChecked=\\"{{ }}\\"
+                                {{
+                                }}
+                                builder-id=\\"builder-4a08fa4db27b4ad8b0c8033d4d460639\\"
+                                class=\\"builder-block builder-4a08fa4db27b4ad8b0c8033d4d460639 builder-radio\\"
+                                style=\\"border-radius: {{ }};\\"
+                              />
+                            </div>
+                            {% endfor %}
+                          </div>
+                        </div>
+                        {% endfor %}
+                        <button
+                          type=\\"submit\\"
+                          builder-id=\\"builder-aaa44eefbef84de286e96f821a160148\\"
+                          class=\\"builder-block builder-aaa44eefbef84de286e96f821a160148\\"
+                        >
+                          ADD TO BAG
+                        </button>
+                      </div>
+                    </form>
+                    <div
+                      builder-id=\\"builder-8f68f4223ab74c319a4951d362e71b1e\\"
+                      class=\\"builder-block builder-8f68f4223ab74c319a4951d362e71b1e\\"
+                    >
+                      <span class=\\"builder-text\\">
+                        {{ product.description }}
+                      </span>
+                    </div>
+                    <div
+                      builder-id=\\"builder-a3b2adb95cfd43f8802c2be2fa5c33ca\\"
+                      class=\\"builder-block builder-a3b2adb95cfd43f8802c2be2fa5c33ca\\"
+                    >
+                      <div
+                        class=\\"builder-accordion\\"
+                        style=\\"display: flex;align-items: stretch;flex-direction: column;\\"
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            builder-id=\\"builder-da350ef6a4fc4acb85e71436cafc8cc8\\"
+            class=\\"builder-block builder-da350ef6a4fc4acb85e71436cafc8cc8\\"
+          >
+            <div
+              data-name=\\"{{ product.title }}\\"
+              data-product-id=\\"{{ product.id }}\\"
+              data-image-url=\\"{{ }}\\"
+              builder-id=\\"builder-beeaca8063be410fb0f06ae79ba5def2\\"
+              class=\\"builder-block builder-beeaca8063be410fb0f06ae79ba5def2 yotpo yotpo-main-widget\\"
+            ></div>
+            <div
+              builder-id=\\"builder-e3f4cf8f2cae48d7bd667fbf6206a988\\"
+              class=\\"builder-block builder-e3f4cf8f2cae48d7bd667fbf6206a988\\"
+            >
+              <span class=\\"builder-text\\"> <p>People also love</p> </span>
+            </div>
+            <div
+              builder-id=\\"builder-55555995005b4af8a2960d16900ac23c\\"
+              class=\\"builder-block builder-55555995005b4af8a2960d16900ac23c\\"
+            >
+              {% for products_item in relatedProducts.products %}
+              <a
+                href=\\"{{ }}\\"
+                builder-id=\\"builder-8d14596658ca4e8ca96c794ec62441b8\\"
+                class=\\"builder-block builder-8d14596658ca4e8ca96c794ec62441b8\\"
+              >
+                <div
+                  builder-id=\\"builder-e5992bc2dfa44e99adae70c7d431cd20\\"
+                  class=\\"builder-block builder-e5992bc2dfa44e99adae70c7d431cd20\\"
+                >
+                  <picture>
+                    <img
+                      src=\\"{{ }}\\"
+                      srcset=\\"{{ }}\\"
+                      sizes=\\"100vw\\"
+                      style=\\"object-fit: cover;object-position: center;position: absolute;height: 100%;width: 100%;top: 0;left: 0;\\"
+                    />
+                  </picture>
+                  <div
+                    class=\\"builder-image-sizer\\"
+                    style=\\"width: 100%;padding-top: 111.81%;pointer-events: none;font-size: 0;\\"
+                  ></div>
+                </div>
+                <div
+                  builder-id=\\"builder-157452755e3c4cfab798c262b23fe250\\"
+                  class=\\"builder-block builder-157452755e3c4cfab798c262b23fe250\\"
+                >
+                  <span class=\\"builder-text\\"> {{ productsItem.title }} </span>
+                </div>
+                <div
+                  builder-id=\\"builder-4c41d3d12987459b926108f46923be7b\\"
+                  class=\\"builder-block builder-4c41d3d12987459b926108f46923be7b\\"
+                >
+                  <span class=\\"builder-text\\"> {{ }} </span>
+                </div>
+              </a>
+              {% endfor %}
+            </div>
+            <div
+              builder-id=\\"builder-abee21da77b4446bb99509a984ecb7d7\\"
+              class=\\"builder-block builder-abee21da77b4446bb99509a984ecb7d7\\"
+            >
+              <div
+                builder-id=\\"builder-e30594409b81457fa176045005c2f9ca\\"
+                class=\\"builder-block builder-e30594409b81457fa176045005c2f9ca\\"
+              >
+                <div class=\\"builder-custom-code\\">
+                  <script type=\\"text/javascript\\">
+                    (function e(){var e=document.createElement(\\"script\\");e.type=\\"text/javascript\\",e.async=true,e.src=\\"//staticw2.yotpo.com/uAtMxsleqJZEyozcckD8J07M4zDUDA9xDtZaaZ9b/widget.js\\";var t=document.getElementsByTagName(\\"script\\")[0];t.parentNode.insertBefore(e,t)})();
+                  </script>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+"
+`;
+
+exports[`Simple page 1`] = `
+"<style type=\\"text/css\\" class=\\"builder-styles builder-api-styles\\">
+  .builder-block.builder-9c660eec3a084703acfd457a5f46bec0 {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    position: relative;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    margin-top: 20px;
+  }
+
+  .builder-columns {
+    display: flex;
+  }
+
+  .builder-column > .builder-blocks {
+    flex-grow: 1;
+  }
+
+  .builder-9c660eec3a084703acfd457a5f46bec0
+    > .builder-columns
+    > .builder-column:nth-child(1) {
+    width: calc(50% - 10px);
+    margin-left: 0;
+  }
+
+  .builder-9c660eec3a084703acfd457a5f46bec0
+    > .builder-columns
+    > .builder-column:nth-child(2) {
+    width: calc(50% - 10px);
+    margin-left: 20px;
+  }
+
+  .builder-block.builder-6dc1308248be46e18b58ad4c623916d8,
+  .builder-block.builder-b6a0a9174cd94d48b555e03f28ebb536 {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    flex-shrink: 0;
+    position: relative;
+    margin-top: 30px;
+    text-align: center;
+    line-height: normal;
+    height: auto;
+  }
+
+  .builder-paragraph:first-of-type,
+  .builder-text p:first-of-type {
+    margin: 0;
+  }
+
+  .builder-paragraph,
+  .builder-text > p {
+    color: inherit;
+    line-height: inherit;
+    letter-spacing: inherit;
+    font-weight: inherit;
+    font-size: inherit;
+    text-align: inherit;
+    font-family: inherit;
+  }
+
+  .builder-block.builder-25ba5db0c872489898ea10f2816c08b6,
+  .builder-block.builder-a8fe67f4bed845a38528c106f08d9b45 {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    flex-shrink: 0;
+    position: relative;
+    margin-top: 30px;
+    text-align: center;
+    line-height: normal;
+    height: auto;
+  }
+
+  @media (max-width: 999px) {
+    .builder-9c660eec3a084703acfd457a5f46bec0 > .builder-columns {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .builder-9c660eec3a084703acfd457a5f46bec0
+      > .builder-columns
+      > .builder-column:nth-child(n) {
+      width: 100%;
+      margin-left: 0;
+    }
+  }
+</style>
+<div class=\\"builder-component\\" data-name=\\"page\\">
+  <div
+    class=\\"builder-content\\"
+    data-builder-content-id=\\"14f4f06c6e7b4725abb3907ccc458ebf\\"
+    data-builder-component=\\"page\\"
+    data-builder-variation-id=\\"14f4f06c6e7b4725abb3907ccc458ebf\\"
+  >
+    <div
+      builder-content-id=\\"14f4f06c6e7b4725abb3907ccc458ebf\\"
+      builder-model=\\"page\\"
+    >
+      <div
+        builder-id=\\"builder-9c660eec3a084703acfd457a5f46bec0\\"
+        class=\\"builder-block builder-9c660eec3a084703acfd457a5f46bec0\\"
+      >
+        <div class=\\"builder-columns\\">
+          <div
+            class=\\"builder-column\\"
+            style=\\"line-height: normal;display: flex;flex-direction: column;align-items: stretch;\\"
+          >
+            <div class=\\"builder-blocks\\" builder-type=\\"blocks\\">
+              <div
+                builder-id=\\"builder-b6a0a9174cd94d48b555e03f28ebb536\\"
+                class=\\"builder-block builder-b6a0a9174cd94d48b555e03f28ebb536\\"
+              >
+                <picture>
+                  <source
+                    srcset=\\"
+                      https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?format=webp&width=100   100w,
+                      https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?format=webp&width=200   200w,
+                      https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?format=webp&width=400   400w,
+                      https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?format=webp&width=800   800w,
+                      https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?format=webp&width=1200 1200w,
+                      https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?format=webp&width=1600 1600w,
+                      https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?format=webp&width=2000 2000w,
+                      https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d
+                    \\"
+                    type=\\"image/webp\\"
+                  />
+                  <img
+                    src=\\"https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d\\"
+                    srcset=\\"
+                      https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?width=100   100w,
+                      https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?width=200   200w,
+                      https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?width=400   400w,
+                      https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?width=800   800w,
+                      https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?width=1200 1200w,
+                      https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?width=1600 1600w,
+                      https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?width=2000 2000w,
+                      https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d
+                    \\"
+                    sizes=\\"100vw\\"
+                    style=\\"object-fit: cover;object-position: center;position: absolute;height: 100%;width: 100%;top: 0;left: 0;\\"
+                  />
+                </picture>
+                <div
+                  class=\\"builder-image-sizer\\"
+                  style=\\"width: 100%;padding-top: 70.04048582995948%;pointer-events: none;font-size: 0;\\"
+                ></div>
+              </div>
+              <div
+                builder-id=\\"builder-6dc1308248be46e18b58ad4c623916d8\\"
+                class=\\"builder-block builder-6dc1308248be46e18b58ad4c623916d8\\"
+              >
+                <span class=\\"builder-text\\"> <p>Enter some text...</p> </span>
+              </div>
+            </div>
+          </div>
+          <div
+            class=\\"builder-column\\"
+            style=\\"line-height: normal;display: flex;flex-direction: column;align-items: stretch;\\"
+          >
+            <div class=\\"builder-blocks\\" builder-type=\\"blocks\\">
+              <div
+                builder-id=\\"builder-a8fe67f4bed845a38528c106f08d9b45\\"
+                class=\\"builder-block builder-a8fe67f4bed845a38528c106f08d9b45\\"
+              >
+                <picture>
+                  <source
+                    srcset=\\"
+                      https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?format=webp&width=100   100w,
+                      https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?format=webp&width=200   200w,
+                      https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?format=webp&width=400   400w,
+                      https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?format=webp&width=800   800w,
+                      https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?format=webp&width=1200 1200w,
+                      https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?format=webp&width=1600 1600w,
+                      https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?format=webp&width=2000 2000w,
+                      https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d
+                    \\"
+                    type=\\"image/webp\\"
+                  />
+                  <img
+                    src=\\"https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d\\"
+                    srcset=\\"
+                      https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?width=100   100w,
+                      https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?width=200   200w,
+                      https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?width=400   400w,
+                      https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?width=800   800w,
+                      https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?width=1200 1200w,
+                      https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?width=1600 1600w,
+                      https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?width=2000 2000w,
+                      https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d
+                    \\"
+                    sizes=\\"100vw\\"
+                    style=\\"object-fit: cover;object-position: center;position: absolute;height: 100%;width: 100%;top: 0;left: 0;\\"
+                  />
+                </picture>
+                <div
+                  class=\\"builder-image-sizer\\"
+                  style=\\"width: 100%;padding-top: 70.04048582995948%;pointer-events: none;font-size: 0;\\"
+                ></div>
+              </div>
+              {% for yo_item in thing.list.yo %}
+              <a
+                href=\\"{{ bazbaz }}\\"
+                builder-id=\\"builder-25ba5db0c872489898ea10f2816c08b6\\"
+                class=\\"builder-block builder-25ba5db0c872489898ea10f2816c08b6\\"
+                style=\\"display: {{ foo.bar }};\\"
+              >
+                <span class=\\"builder-text\\"> {{ foobar }} </span>
+              </a>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+"
+`;

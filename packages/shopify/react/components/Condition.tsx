@@ -1,18 +1,15 @@
-import builder, { Builder, BuilderBlockComponent, BuilderElement, BuilderStore, stringToFunction, withBuilder } from '@builder.io/react';
+import builder, {
+  Builder,
+  BuilderBlockComponent,
+  BuilderElement,
+  BuilderStore,
+  stringToFunction,
+  withBuilder,
+} from '@builder.io/react';
 import * as React from 'react';
+import { ConditionBlockProps } from '../interfaces/component-props';
 
-interface Branch {
-  expression?: string;
-  blocks: BuilderElement[];
-}
-
-interface IfElseBlockProps {
-  builderState?: BuilderStore;
-  builderBlock?: BuilderElement;
-  branches: Branch[];
-}
-
-export class IfElseBlock extends React.Component<IfElseBlockProps> {
+export class ConditionBlock extends React.Component<ConditionBlockProps> {
   private getMatchingBranch(branches = this.props.branches) {
     if (!(branches && branches.length)) {
       return null;
@@ -75,7 +72,7 @@ const defaultBlock = {
   },
 };
 
-withBuilder(IfElseBlock, {
+withBuilder(ConditionBlock, {
   name: 'Shopify:Condition',
   hideFromInsertMenu: true,
   noWrap: true,

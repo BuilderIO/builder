@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Components component function works as expected 1`] = `
+"function (block) {
+                var options = block.component.options;
+                var content = options.expression;
+                return \\"{% assign \\" + content + \\" %}\\";
+            }"
+`;

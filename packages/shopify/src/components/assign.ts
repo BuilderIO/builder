@@ -4,9 +4,10 @@ import { component } from '../constants/components';
 
 export const Assign = component({
   name: 'Shopify:Assign',
+  noWrap: true,
   component: (block: BuilderElement, renderOptions: Options) => {
     const { options } = block.component!;
-    const content = options.expression
+    const content = options.expression;
 
     return `{% assign ${content} %}`;
   },

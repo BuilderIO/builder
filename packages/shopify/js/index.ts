@@ -64,8 +64,14 @@ export class Liquid {
     return liquid.parseAndRenderSync(str, state);
   }
 
-  condition(str: string, state = this.state) {
-    let useStr = str.replace(/selected_or_first_available_variant/g, 'variants[0]');
+  condition(str: string | boolean, state = this.state) {
+    let string: string;
+    if (typeof str !== 'string') {
+      string = `${str}`;
+    } else {
+      string = str;
+    }
+    const useStr = string.replace(/selected_or_first_available_variant/g, 'variants[0]');
     const result = toValue(new Expression(useStr).value(new Context(state, undefined, true)));
     return result;
   }

@@ -1,5 +1,5 @@
 import { BuilderElement } from '@builder.io/sdk';
-import { size, reduce, set, last, snakeCase } from 'lodash';
+import { size, set, last, uniq, identity } from 'lodash';
 import { sizes, sizeNames } from '../constants/sizes';
 import { Options } from '../interfaces/options';
 import { StringMap } from '../interfaces/string-map';
@@ -16,42 +16,130 @@ import '../components/capture';
 import '../components/section';
 import '../components/button';
 import '../components/symbol';
-import '../components/state-provider';
+import '../components/condition';
+import '../components/unless';
+import '../components/paginate';
+import '../components/for';
 import '../components/custom-code';
+import '../components/state-provider';
 import '../components/forms/form';
 import '../components/forms/label';
 import '../components/forms/input';
 import '../components/forms/submit-button';
 import '../components/widgets/accordion';
 import '../components/widgets/carousel';
+import '../components/shopify-section';
+import '../components/theme-provider';
+import '../components/raw-img';
+
 import { isValidLiquidBinding } from './is-valid-liquid-binding';
+import { mapToAttributes } from './map-to-attributes';
 
-const camelCaseToSnakeCase = (str?: string) =>
-  str ? str.replace(/([A-Z])/g, g => `_${g[0].toLowerCase()}`) : '';
+const voidElements = new Set([
+  'area',
+  'base',
+  'br',
+  'col',
+  'embed',
+  'hr',
+  'img',
+  'input',
+  'link',
+  'meta',
+  'param',
+  'source',
+  'track',
+  'wbr',
+]);
 
-const escapeHtml = (str: string) => str.replace(/'/g, '&apos;').replace(/"/g, '&quot;');
+const isLiquidRender = (binding: string) => {
+  return binding.replace(/\s/g, '').includes('shopify.liquid.render');
+};
+
+const isLiquidConditional = (binding: string) => {
+  return binding.replace(/\s/g, '').includes('shopify.liquid.condition');
+};
+
+const getConditionalAttr = (value: string, noEnd = false): string => {
+  const closingTag = noEnd ? '' : '{% endif %}';
+  return (
+    value
+      .split('/*start*/')
+      .reverse()
+      .filter(st => st.includes('shopify'))
+      .map(statement => statement.replace(/`/g, '"'))
+      .map(statement => {
+        const expression = statement.startsWith('!')
+          ? 'else'
+          : !statement.includes('!')
+          ? 'if'
+          : '';
+        const condition =
+          expression === 'if'
+            ? statement.match(/context\.shopify\.liquid\.condition\("([^"]*)"/)?.[1]
+            : '';
+        const index = statement.indexOf('&&');
+        const branchValue =
+          index > -1 ? getConditionalAttr(statement.substr(index + 2), true) : getValue(statement);
+
+        if (expression) {
+          return `{% ${expression} ${condition} %} ${branchValue}`;
+        }
+        return branchValue + '{% endif %}';
+      })
+      .join('') + closingTag
+  );
+};
+
+const removeShopifyContext = (str: string) => {
+  return str.replace(
+    /(context|state)\s*\.\s*shopify\s*\.\s*liquid\s*\.\s*(get|render)\s*\(\s*(\\"|")([^"]+)(\\"|")\s*.*\)/g,
+    '$4'
+  );
+};
+
+const getValue = (condition: string) => {
+  const value = condition.match(/\? (.*) :/)?.[1];
+  if (value) {
+    return removeShopifyContext(value.replace(/{{'(.*?)'}}/g, '$1').replace(/'/g, ''));
+  }
+};
+
+/**
+ * Extract a liquid expression from our JS structure - i.e. transform
+ * "context.shopify.liquid.condition('some | liquid')" to "some | liquid"
+ */
+export const getLiquidConditionExpresion = (expression: string) => {
+  const matched = expression.match(
+    /context\s*\.\s*shopify\s*\.\s*liquid\s*\.\s*condition\s*\(\s*['"]([\s\S]*?)['"]\s*,\s*state\s*\)\s*/i
+  )?.[1];
+
+  return matched || 'null';
+};
 
 // TODO: move most or all of this to transformers and functions
 const convertBinding = (binding: string, options: Options) => {
   let value = binding;
-
-  if (value.replace(/\s/g, '').includes('shopify.liquid')) {
-    // TODO: handle escaped \" don't cutoff the string hm or encode it... __QUOT__ or so
-    // state.shopify.liquid.get('...') -> ...
-    value = value.replace(
-      /state\s*\.\s*shopify\s*\.\s*liquid\s*\.\s*get\s*\(\s*"([^"]+)"\s*\)/g,
-      '$1'
-    );
-  }
+  const isShopifyContext = value.replace(/\s/g, '').includes('shopify.liquid');
 
   if (!isValidLiquidBinding(binding)) {
     return '';
+  }
+
+  if (isLiquidConditional(value)) {
+    value = getConditionalAttr(value);
+  } else if (isShopifyContext) {
+    value = removeShopifyContext(value);
   }
 
   // We use state, Shopify uses global vars, so convert
   // state.product.title to {{ product.title}}, etc
   if (value.includes('state.')) {
     value = value.replace(/state\./g, '');
+  }
+
+  if (value.includes('context.')) {
+    value = value.replace(/context\./g, '');
   }
 
   return value;
@@ -62,7 +150,6 @@ export function blockToLiquid(json: BuilderElement, options: Options = {}): stri
 
   const styles: StringMap = {};
 
-  
   const bindings = {
     ...block.bindings,
     ...(block as any).code?.bindings,
@@ -70,21 +157,20 @@ export function blockToLiquid(json: BuilderElement, options: Options = {}): stri
 
   if (bindings) {
     for (const key in bindings) {
-      let value = bindings[key];
-      if (!key || !value || key === 'hide') {
+      const binding = bindings[key];
+      if (!key || !binding || key === 'hide') {
         continue;
       }
 
-      value = convertBinding(value, options);
+      const value = convertBinding(binding, options);
 
-      if (value.includes(';')) {
-        console.debug('Skipping binding', value.replace(/\s+/g, ' '));
-        value = "''";
-        // continue;
+      let valueString;
+      if (isLiquidRender(binding) || isLiquidConditional(binding)) {
+        valueString = value;
+      } else {
+        valueString = `{{ ${value} }}`;
       }
 
-      const htmlEscapedValue = escapeHtml(value);
-      const valueString = `{{ ${htmlEscapedValue} }}`;
       if (key.startsWith('properties.') || !key.includes('.')) {
         if (!block.properties) {
           block.properties = {};
@@ -103,6 +189,11 @@ export function blockToLiquid(json: BuilderElement, options: Options = {}): stri
       } else if (key.startsWith('style.')) {
         const name = key.replace('style.', '');
         set(styles, name, valueString);
+      } else if (key === 'attr.style') {
+        if (!block.properties) {
+          block.properties = {};
+        }
+        set(block.properties, 'style', valueString);
       }
     }
   }
@@ -110,13 +201,29 @@ export function blockToLiquid(json: BuilderElement, options: Options = {}): stri
   // TODO: bindings with {{}} as values
   const css = blockCss(block, options);
 
+  const stylesList: string[] = [];
+  if (size(styles)) {
+    stylesList.push(mapToCss(styles, 0));
+  }
+  if (block.properties?.style) {
+    stylesList.push(block.properties.style);
+  }
+
+  const bindingClass = block.bindings?.class && convertBinding(block.bindings.class, options);
+  const classes = uniq([
+    'builder-block',
+    block.id,
+    block.class,
+    bindingClass,
+    block.properties?.class,
+  ]).filter(identity);
   // TODO: utilities for all of this
   const attributes = mapToAttributes({
     ...block.properties,
     ['builder-id']: block.id,
-    class: `builder-block ${block.id}${block.class ? ` ${block.class}` : ''}`,
-    ...(size(styles) && {
-      style: mapToCss(styles, 0),
+    class: classes.join(' '),
+    ...(size(stylesList) && {
+      style: stylesList.join(';'),
     }),
     // TODO: style bindings and start animation styles
   });
@@ -143,64 +250,52 @@ export function blockToLiquid(json: BuilderElement, options: Options = {}): stri
     collectionName = convertBinding(collectionName, options);
   }
 
-  // Fragment? hm
+  const componentStr =
+    componentInfo && componentInfo.noWrap
+      ? componentInfo.component(block, options, attributes)
+      : `
+      <${tag}${attributes ? ' ' + attributes : ''}>
+        ${(componentInfo && componentInfo.component(block, options)) ||
+          (block.children &&
+            block.children
+              .map((child: BuilderElement) => blockToLiquid(child, options))
+              .join('\n')) ||
+          ''}
+      ${!voidElements.has(tag) ? `</${tag}>` : ''}`;
+
+  if (options.componentOnly) {
+    return componentStr;
+  }
+
   return `
     ${css.trim() ? `<style>${css}</style>` : ''}
     ${
       block.repeat && block.repeat.collection
-        ? `{% for ${block.repeat.itemName || collectionName + '_item'} in ${escapeHtml(
-            convertBinding(block.repeat.collection, options).split('(')[0]
+        ? `{% for ${block.repeat.itemName || collectionName + '_item'} in ${convertBinding(
+            block.repeat.collection,
+            options
           )} %}`
         : ''
     }
     ${
       bindings.hide
         ? `{% unless  ${
-            !isValidLiquidBinding(bindings.hide)
-              ? 'false'
-              : escapeHtml(convertBinding(bindings.hide, options))
+            !isValidLiquidBinding(bindings.hide) ? 'false' : convertBinding(bindings.hide, options)
           } %}`
         : ''
     }
     ${
       bindings.show
         ? `{% if  ${
-          !isValidLiquidBinding(bindings.show)
-              ? 'false'
-              : escapeHtml(convertBinding(bindings.show, options))
+            !isValidLiquidBinding(bindings.show) ? 'false' : convertBinding(bindings.show, options)
           } %}`
         : ''
     }
-    ${
-      componentInfo && componentInfo.noWrap
-        ? componentInfo.component(block, options, attributes)
-        : `
-    <${tag}${attributes ? ' ' + attributes : ''}>
-      ${(componentInfo && componentInfo.component(block, options)) ||
-        (block.children &&
-          block.children
-            .map((child: BuilderElement) => blockToLiquid(child, options))
-            .join('\n')) ||
-        ''}
-    </${tag}>`
-    }
+    ${componentStr}
     ${bindings.hide ? '{% endunless %}' : ''}
     ${bindings.show ? '{% endif %}' : ''}
-    ${block.repeat ? '{% endfor %}' : ''}
-    `;
-}
-
-function mapToAttributes(map: StringMap, bindings: StringMap = {}) {
-  if (!size(map)) {
-    return '';
-  }
-  return reduce(
-    map,
-    (memo, value, key) => {
-      return memo + ` ${key}="${value}"`;
-    },
-    ''
-  );
+    ${block.repeat && block.repeat.collection ? '{% endfor %}' : ''}
+  `;
 }
 
 // TODO: make these core functions and share with react, vue, etc

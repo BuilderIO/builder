@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Custom Code - code generator has code 1`] = `
+"
+      <div class=\\"builder-custom-code\\">
+<script>myGLobalVariable = \\"something\\"</script>
+</div>
+    "
+`;
+
+exports[`Custom Code - code generator no code 1`] = `
+"
+      <div class=\\"builder-custom-code\\">
+
+</div>
+    "
+`;

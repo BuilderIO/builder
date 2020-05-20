@@ -1,3 +1,8 @@
+/**
+ * IMPORTANT: THIS FILE IS DEPRECATED
+ * use product-box.ts instead
+ */
+
 /** @jsx jsx */
 import { jsx, css, keyframes } from '@emotion/core';
 import styled from '@emotion/styled';
@@ -52,7 +57,9 @@ const LoadingSpinner = styled.div`
   animation: 1.1s linear infinite ${spin};
 `;
 
-// TODO: make inline symbol ... ???
+/**
+ * @deprecated, use product-box.ts symbol instead
+ */
 export function ProductBox(props: ProductBoxProps) {
   let productId = props.product || '';
   const [productInfo, setProductInfo] = useState<ShopifyProduct | null>(null);
@@ -67,7 +74,9 @@ export function ProductBox(props: ProductBoxProps) {
 
     if (productId) {
       setLoading(true);
-      fetch(`https://cdn.builder.io/api/v1/shopify/products/${productId}.json?apiKey=${context.apiKey}`)
+      fetch(
+        `https://cdn.builder.io/api/v1/shopify/products/${productId}.json?apiKey=${context.apiKey}`
+      )
         .then(res => res.json())
         .then(data => {
           const { product } = data;
@@ -119,7 +128,7 @@ export function ProductBox(props: ProductBoxProps) {
   return Builder.isEditing && !productId ? (
     // TODO: <Info> component
     <div
-      css={{
+      style={{
         padding: 20,
         opacity: 0.7,
         textAlign: 'center',

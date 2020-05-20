@@ -1424,7 +1424,11 @@
         "component": {
           "name": "Core:Section",
           "options": {
-            "maxWidth": 1200
+            "maxWidth": 1200,
+            "schema": {
+              "name": "Collection",
+              "class": "collection-template-section"
+            }
           }
         }
       }

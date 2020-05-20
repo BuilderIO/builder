@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Constants getWidthForSize 1`] = `"small"`;
+
+exports[`Constants sizes are consistent 1`] = `
+Object {
+  "default": 0,
+  "max": 0,
+  "min": 0,
+}
+`;
+
+exports[`Constants sizes are consistent 2`] = `
+Object {
+  "default": 321,
+  "max": 640,
+  "min": 320,
+}
+`;
+
+exports[`Constants sizes are consistent 3`] = `
+Object {
+  "default": 642,
+  "max": 991,
+  "min": 641,
+}
+`;
+
+exports[`Constants sizes are consistent 4`] = `
+Object {
+  "default": 991,
+  "max": 1200,
+  "min": 990,
+}
+`;

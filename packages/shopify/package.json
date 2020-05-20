@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/shopify",
-  "version": "1.3.23-alpha.0",
+  "version": "1.3.14-alpha.13",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "repository": {
@@ -12,18 +12,17 @@
     "build": "tsc --module commonjs && rollup -c rollup.config.js",
     "start": "npm run watch",
     "watch": "concurrently 'tsc -w --module commonjs' 'rollup -c rollup.config.js -w'",
-    "release": "npm run build && ALLOW_PUBLISH=true npm publish",
-    "release:patch": "npm run build && npm version patch && ALLOW_PUBLISH=true npm publish",
-    "release:dev": "npm run build && npm version prerelease --no-git-tag-version && ALLOW_PUBLISH=true npm publish --tag dev",
+    "release": "npm run build && npm publish",
+    "release:patch": "npm run build && npm version patch && npm publish",
+    "release:dev": "npm run build && npm version prerelease --no-git-tag-version && npm publish --tag dev",
     "test": "jest",
-    "prepublishOnly": "block-publish"
+    "test:ci": "jest --maxWorkers=2"
   },
   "devDependencies": {
     "@babel/core": "^7.7.7",
     "@babel/helper-plugin-utils": "^7.0.0",
     "@babel/preset-env": "^7.7.7",
-    "@builder.io/block-publish": "^1.1.3",
-    "@builder.io/react": "^1.1.20-alpha.0",
+    "@builder.io/react": "^1.1.16-alpha.6",
     "@testing-library/react": "^9.4.0",
     "@types/clean-css": "^4.2.1",
     "@types/csso": "^3.5.1",
@@ -35,6 +34,7 @@
     "@types/node": "^12.7.2",
     "@types/prettier": "^1.18.2",
     "@types/react": "^16.9.16",
+    "@types/react-test-renderer": "^16.9.2",
     "babel-jest": "^24.9.0",
     "concurrently": "^5.1.0",
     "core-decorators": "^0.20.0",
@@ -44,7 +44,8 @@
     "jest-raw-loader": "^1.0.1",
     "prettier": "^1.19.1",
     "react": "^16.12.0",
-    "rollup": "^1.32.1",
+    "react-test-renderer": "^16.13.1",
+    "rollup": "^1.31.1",
     "rollup-plugin-alias": "^1.5.2",
     "rollup-plugin-commonjs": "^10.0.2",
     "rollup-plugin-json": "^4.0.0",
@@ -57,10 +58,10 @@
     "rollup-plugin-typescript2": "^0.22.1",
     "rollup-plugin-uglify": "^6.0.2",
     "ts-jest": "^24.2.0",
-    "typescript": "^3.7.5"
+    "typescript": "^3.8.3"
   },
   "dependencies": {
-    "@builder.io/sdk": "^1.1.9-alpha.0",
+    "@builder.io/sdk": "^1.1.5-alpha.3",
     "@emotion/core": "^10.0.27",
     "@emotion/styled": "^10.0.27",
     "@glimmer/syntax": "^0.42.1",
@@ -77,5 +78,5 @@
     "tslib": "^1.10.0",
     "vue-template-compiler": "^2.6.10"
   },
-  "gitHead": "4d96fbc32864698afbb355ab991c6d90be991951"
+  "gitHead": "f233cba190317de3644fff198e765660205cd7f1"
 }

@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Text code generator no values for attributes 1`] = `
+"
+      <style>
+        .builder-text p:first-of-type, .builder-paragraph:first-of-type { margin: 0 } .builder-text > p, .builder-paragraph { color: inherit; line-height: inherit; letter-spacing: inherit; font-weight: inherit; font-size: inherit; text-align: inherit; font-family: inherit; }
+      </style>
+      <span class=\\"builder-text\\">
+        
+      </span>
+    "
+`;
+
+exports[`Text code generator values for all attributes 1`] = `
+"
+      <style>
+        .builder-text p:first-of-type, .builder-paragraph:first-of-type { margin: 0 } .builder-text > p, .builder-paragraph { color: inherit; line-height: inherit; letter-spacing: inherit; font-weight: inherit; font-size: inherit; text-align: inherit; font-family: inherit; }
+      </style>
+      <span class=\\"builder-text\\">
+        Look at this great text
+      </span>
+    "
+`;
