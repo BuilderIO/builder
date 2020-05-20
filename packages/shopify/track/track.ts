@@ -39,7 +39,7 @@ if (!_window[TRACKED_KEY]) {
     console.debug('No apiKey for Builder JS', document.currentScript);
   } else if (!Shopify) {
     console.debug('No Shopify object');
-  } else if (Shopify.checkout) {
+  } else if (Shopify.checkout?.order_id) {
     const ordderCreatedDate = new Date(Shopify.checkout.created_date);
 
     const orderCreatedMinutesAgo = (Date.now() - ordderCreatedDate.getTime()) / 1000 / 60;
@@ -50,7 +50,7 @@ if (!_window[TRACKED_KEY]) {
       const orderWasTracked = builder.getCookie(trackedOrdersCookieKey);
 
       if (!orderWasTracked) {
-        const checkout: Checkout | null = {
+        const checkout: Partial<Checkout> = {
           ...Shopify.checkout,
           email: undefined,
           shipping_address: undefined,
@@ -62,7 +62,7 @@ if (!_window[TRACKED_KEY]) {
 
         builder.track('conversion', {
           meta: checkout,
-          amount: parseFloat(checkout.payment_due), // TODO: track or normalize currency
+          amount: parseFloat(checkout.subtotal_price!), // TODO: normalize currency
         });
       }
     }
