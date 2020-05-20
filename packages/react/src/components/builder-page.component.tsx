@@ -573,11 +573,6 @@ export class BuilderPage extends React.Component<
         )
       })
     }
-
-    console.log({
-      propsContent: this.props.content,
-      content: this.content
-    })
   }
 
   updateState = (fn?: (state: any) => void) => {
