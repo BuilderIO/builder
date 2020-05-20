@@ -385,9 +385,10 @@ export interface Action {
 }
 
 export class Builder {
+  static VERSION = version;
+  
   static components: Component[] = [];
   static singletonInstance: Builder;
-  static VERSION = version;
   static useNewApi = true;
   static animator = new Animator();
 
