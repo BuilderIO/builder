@@ -6,7 +6,7 @@ See [here](src/dropdown.tsx) for the React component that powers this plugin
 
 The idea behind the plugin is to generalize the use of a dropdown so the code provider will tell the plugin how to process the received data.
 
-First add this plugin to your organization, by visiting https://builder.io/account/organization, choosing plugins and adding `@builder.io/plugin-dynamic-dropdown`
+First add this plugin to your organization, by visiting your [organization page](https://builder.io/account/organization), choosing plugins and adding `@builder.io/plugin-dynamic-dropdown`
 
 
 <img width="1027" alt="Screen Shot 2020-05-26 at 3 16 53 PM" src="https://user-images.githubusercontent.com/5093430/82955598-0c4adc00-9f64-11ea-98d2-5f67628eff63.png">
@@ -32,8 +32,6 @@ When adding the plugin to a custom component input, it will require two input ar
 The `url` argument will be templated with handlebars. The plugin is smart enough to figure out the handlebars values from the application context to replace them.
 The `mapper` argument will be a string method that will be executed on the side of the plugin given the answer from the `url` GET call.
 
-
-
 ## Developing on top of this plugin ?
 
 ### Install
@@ -50,8 +48,7 @@ npm start
 ```
 
 ### Point to the development builder from the editor
-You can do that by adding `http://localhost:1268/builder-plugin-dynamic-dropdown.system.js` to the list of plugins on builder.io/account/organization 
-(don't forget to update this to the production link once you're done )
+You can do that by adding `http://localhost:1268/builder-plugin-dynamic-dropdown.system.js` to the list of plugins on your [organization page](https://builder.io/account/organization) - don't forget to update this to the production link once you're done.
 
 
 **NOTE:** Loading http:// content on an https:// website will give you a warning. Be sure to click the shield in the top right of your browser and choose "load unsafe scripts" to allow the http content on Builder's https site when devloping locally
