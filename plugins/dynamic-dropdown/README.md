@@ -5,6 +5,12 @@ See [here](src/dropdown.tsx) for the React component that powers this plugin
 ## Using this plugin in production code
 
 The idea behind the plugin is to generalize the use of a dropdown so the code provider will tell the plugin how to process the received data.
+
+First add this plugin to your organization, by visiting https://builder.io/account/organization, choosing plugins and adding `@builder.io/plugin-dynamic-dropdown`
+
+
+<img width="1027" alt="Screen Shot 2020-05-26 at 3 16 53 PM" src="https://user-images.githubusercontent.com/5093430/82955598-0c4adc00-9f64-11ea-98d2-5f67628eff63.png">
+
 When adding the plugin to a custom component input, it will require two input arguments:
 
 ```js
@@ -25,6 +31,8 @@ When adding the plugin to a custom component input, it will require two input ar
 
 The `url` argument will be templated with handlebars. The plugin is smart enough to figure out the handlebars values from the application context to replace them.
 The `mapper` argument will be a string method that will be executed on the side of the plugin given the answer from the `url` GET call.
+
+
 
 ## Creating a new plugin from this example
 
