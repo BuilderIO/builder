@@ -596,7 +596,7 @@ export class BuilderBlock extends React.Component<
       options.attr?.style ||
       (typeof options.style === 'string' ? options.style : '') ||
       ''
-      
+
     if (typeof styleStr === 'string') {
       if (typeof options.style !== 'object') {
         options.style = {}
@@ -604,7 +604,17 @@ export class BuilderBlock extends React.Component<
 
       const styleSplit = styleStr.split(';')
       for (const pair of styleSplit) {
-        const [key, value] = pair.split(':')
+        const stylePieces = pair.split(':')
+        if (!stylePieces.length) {
+          return
+        }
+
+        let [key, value] = stylePieces
+
+        if (stylePieces.length > 2) {
+          value = stylePieces.slice(1).join(':')
+        }
+
         options.style[kebabCaseToCamelCase(key)] = value
       }
     }
