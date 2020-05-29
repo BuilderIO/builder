@@ -386,7 +386,7 @@ export interface Action {
 
 export class Builder {
   static VERSION = version;
-  
+
   static components: Component[] = [];
   static singletonInstance: Builder;
   static useNewApi = true;
@@ -531,8 +531,7 @@ export class Builder {
 
   static isPreviewing = Boolean(
     isBrowser &&
-      ((document.referrer && document.referrer.match(/builder\.io|localhost:1234/)) ||
-        location.search.indexOf('builder.preview=') !== -1 ||
+      (location.search.indexOf('builder.preview=') !== -1 ||
         location.search.indexOf('builder.frameEditing=') !== -1)
   );
 
