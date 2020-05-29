@@ -88,6 +88,12 @@ export class BuilderContent<
     // this.builder.env = 'development';
     if (!this.props.inline || Builder.isEditing) {
       this.subscribeToContent()
+    } else if (
+      this.props.inline &&
+      this.props.options?.initialContent?.length
+    ) {
+      const contentData = this.props.options.initialContent[0]
+      this.builder.trackImpression(contentData.id, contentData.variationId)
     }
 
     if (Builder.isEditing) {
