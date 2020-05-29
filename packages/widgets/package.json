@@ -127,7 +127,8 @@
     "tslint-config-standard": "^7.0.0",
     "typedoc": "^0.11.0",
     "typescript": "3.7.0-beta",
-    "validate-commit-msg": "^2.12.2"
+    "validate-commit-msg": "^2.12.2",
+    "@builder.io/react": "^1.1.21-alpha.1"
   },
   "optionalDependencies": {
     "create-inferno-context": "^0.2.4",
@@ -143,7 +144,6 @@
     "@builder.io/react": "^1.1.0"
   },
   "dependencies": {
-    "@builder.io/react": "^1.1.21-alpha.1",
     "@emotion/core": ">=10",
     "@emotion/styled": ">=10",
     "react": ">=14",
