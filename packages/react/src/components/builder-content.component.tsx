@@ -32,6 +32,18 @@ export class BuilderContent<
     return this.props.builder || builder
   }
 
+  get data() {
+    const { data } = this.state
+
+    return (
+      ((this.props.inline || !Builder.isBrowser || this.firstLoad) &&
+        this.props.options &&
+        this.props.options.initialContent &&
+        this.props.options.initialContent[0]) ||
+      data
+    )
+  }
+
   state = {
     loading: true,
     data: null as any,
@@ -188,7 +200,7 @@ export class BuilderContent<
     // TODO: viewport scrolling tracking for impression events
     const event = reactEvent.nativeEvent
 
-    const content = this.state.data
+    const content = this.data
     if (!content) {
       return
     }
@@ -209,15 +221,9 @@ export class BuilderContent<
     if (this.props.dataOnly) {
       return null
     }
-    const { data, loading } = this.state
+    const { loading } = this.state
 
-    const useData =
-      ((this.props.inline || !Builder.isBrowser || this.firstLoad) &&
-        this.props.options &&
-        this.props.options.initialContent &&
-        this.props.options.initialContent[0]) ||
-      data
-
+    const useData = this.data
     const TagName = this.props.dataOnly ? NoWrap : 'div'
 
     return (
