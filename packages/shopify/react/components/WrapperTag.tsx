@@ -7,7 +7,7 @@ import {
 } from '@builder.io/react';
 
 interface ConditionalTag extends Omit<BuilderElement, 'children'> {
-  renderIf?: string;
+  meta: { renderIf: string; }
 }
 
 interface WrapperTagProps {
@@ -28,7 +28,7 @@ export const WrapperTag: React.FC<WrapperTagProps> = ({
   if (builderState.context?.shopify) {
     const liquid = builderState.context.shopify.liquid;
     const validTags = conditionalTags.filter(
-      tag => liquid.render(tag.meta?.renderIf, builderState.state) === 'true'
+      tag => liquid.render(tag.meta.renderIf, builderState.state) === 'true'
     );
     const tags = fastClone(validTags) as BuilderElement[];
 
@@ -44,8 +44,7 @@ export const WrapperTag: React.FC<WrapperTagProps> = ({
       if (tags[i]) {
         node.children = [tags[i]];
       }
-      node.tagName = node.component?.options.tag;
-      // opencondtag, perhaps remove it after second traverse on import
+      // A temporary tag, only needed for debugging reasons, doesn't play a role in rendering
       delete node.component;
       node = tags[i];
     }
