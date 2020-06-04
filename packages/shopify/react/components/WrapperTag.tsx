@@ -50,7 +50,6 @@ export const WrapperTag: React.FC<WrapperTagProps> = ({
       node = tags[i];
     }
     tags[tags.length - 1].children = builderBlock.children;
-    console.log('heade ', head);
 
     return <BuilderBlockComponent block={head} />;
   }
