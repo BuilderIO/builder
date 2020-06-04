@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import {
   withBuilder,
   BuilderStore,
@@ -7,7 +7,7 @@ import {
 } from '@builder.io/react';
 
 interface ConditionalTag extends Omit<BuilderElement, 'children'> {
-  renderIf?: 'true' | '';
+  renderIf?: string;
 }
 
 interface WrapperTagProps {
@@ -20,7 +20,7 @@ function fastClone<T>(obj: T): T {
   return JSON.parse(JSON.stringify(obj));
 }
 
-const WrapperTagComponent: React.FC<WrapperTagProps> = ({
+export const WrapperTag: React.FC<WrapperTagProps> = ({
   conditionalTags,
   builderBlock,
   builderState,
@@ -50,13 +50,14 @@ const WrapperTagComponent: React.FC<WrapperTagProps> = ({
       node = tags[i];
     }
     tags[tags.length - 1].children = builderBlock.children;
+    console.log('heade ', head);
 
     return <BuilderBlockComponent block={head} />;
   }
   return <></>;
 };
 
-export const WrapperTag = withBuilder(WrapperTagComponent, {
+withBuilder(WrapperTag, {
   name: 'Shopify:WrapperTag',
   canHaveChildren: true,
   noWrap: true,

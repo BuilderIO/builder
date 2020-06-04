@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Condition renders snapshot correctly 1`] = `
+Object {
+  "falsy": "{\\"type\\":\\"span\\",\\"props\\":{\\"style\\":{},\\"className\\":\\"builder-block builder-random2 inelese css-0\\",\\"builder-id\\":\\"builder-random2\\"},\\"children\\":[{\\"type\\":\\"div\\",\\"props\\":{\\"style\\":{},\\"className\\":\\"builder-block  builder-has-component css-0\\",\\"builder-id\\":\\"\\"},\\"children\\":[{\\"type\\":\\"span\\",\\"props\\":{\\"className\\":\\"builder-text css-1qggkls\\",\\"dangerouslySetInnerHTML\\":{\\"__html\\":\\"Should be under a  span\\"}},\\"children\\":null}]}]}",
+  "truthy": "{\\"type\\":\\"a\\",\\"props\\":{\\"style\\":{},\\"className\\":\\"builder-block builder-random1 css-0\\",\\"builder-id\\":\\"builder-random1\\"},\\"children\\":[{\\"type\\":\\"div\\",\\"props\\":{\\"style\\":{},\\"className\\":\\"builder-block  builder-has-component css-0\\",\\"builder-id\\":\\"\\"},\\"children\\":[{\\"type\\":\\"span\\",\\"props\\":{\\"className\\":\\"builder-text css-1qggkls\\",\\"dangerouslySetInnerHTML\\":{\\"__html\\":\\"Should be a under a link\\"}},\\"children\\":null}]}]}",
+}
+`;
