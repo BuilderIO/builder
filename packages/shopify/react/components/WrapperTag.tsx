@@ -31,6 +31,11 @@ const WrapperTagComponent: React.FC<WrapperTagProps> = ({
       tag => liquid.render(tag.meta?.renderIf, builderState.state) === 'true'
     );
     const tags = fastClone(validTags) as BuilderElement[];
+
+    if (tags.length === 0) {
+      return <BuilderBlockComponent block={builderBlock} />;
+    }
+
     const head = tags[0];
     let node = head;
     let i = 0;
