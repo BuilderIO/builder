@@ -271,6 +271,10 @@ export interface Component {
    */
   name: string;
   description?: string;
+  /**
+   * Link to a documentation page for this component
+   */
+  docsLink: string;
   image?: string;
   /**
    * Input schema for your component for users to fill in the options
