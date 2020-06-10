@@ -1,0 +1,127 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Form handles form object from window correctly 1`] = `
+<form
+  acceptCharset="UTF-8"
+  action="/cart/update"
+  className="shopify-currency-form"
+  data-testid="form-block-currency"
+  encType="multipart/form-data"
+  id="currency_form"
+  method="post"
+>
+  <input
+    name="form_type"
+    type="hidden"
+    value="currency"
+  />
+  <input
+    name="utf8"
+    type="hidden"
+    value="✓"
+  />
+  <input
+    name="return_to"
+    type="hidden"
+  />
+  <span>
+    form
+    other-error
+  </span>
+</form>
+`;
+
+exports[`Form renders contact form snapshot correctly 1`] = `
+<form
+  acceptCharset="UTF-8"
+  action="/contact#contact_form"
+  className="contact-form product-test-class-1"
+  data-testid="form-block-1"
+  id="contact_form"
+  method="post"
+>
+  <input
+    name="form_type"
+    type="hidden"
+    value="contact"
+  />
+  <input
+    name="utf8"
+    type="hidden"
+    value="✓"
+  />
+</form>
+`;
+
+exports[`Form renders currency form snapshot correctly 1`] = `
+<form
+  acceptCharset="UTF-8"
+  action="/cart/update"
+  className="shopify-currency-form currency-class"
+  data-testid="form-block-currency"
+  encType="multipart/form-data"
+  id="currency_form"
+  method="post"
+>
+  <input
+    name="form_type"
+    type="hidden"
+    value="currency"
+  />
+  <input
+    name="utf8"
+    type="hidden"
+    value="✓"
+  />
+  <input
+    name="return_to"
+    type="hidden"
+    value="/some-path"
+  />
+</form>
+`;
+
+exports[`Form renders product form snapshot correctly 1`] = `
+<form
+  acceptCharset="UTF-8"
+  action="/cart/add"
+  className="shopify-product-form product-test-class-1"
+  data-testid="form-block-2"
+  encType="multipart/form-data"
+  id="product_form_123"
+  method="post"
+>
+  <input
+    name="form_type"
+    type="hidden"
+    value="product"
+  />
+  <input
+    name="utf8"
+    type="hidden"
+    value="✓"
+  />
+</form>
+`;
+
+exports[`Form renders storefront password form snapshot correctly 1`] = `
+<form
+  acceptCharset="UTF-8"
+  action="/password"
+  className="storefront-password-form password-class"
+  data-testid="form-block-password"
+  id="login_form"
+  method="post"
+>
+  <input
+    name="form_type"
+    type="hidden"
+    value="storefront_password"
+  />
+  <input
+    name="utf8"
+    type="hidden"
+    value="✓"
+  />
+</form>
+`;

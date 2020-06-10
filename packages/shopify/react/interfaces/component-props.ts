@@ -35,3 +35,12 @@ export interface StateProviderProps {
   state: any;
   context?: any;
 }
+
+export interface FormBlockProps {
+  customAttributes?: string[];
+  type: string;
+  parameter?: string;
+  builderState?: BuilderStore;
+  builderBlock?: BuilderElement;
+  showErrors?: boolean;
+}
