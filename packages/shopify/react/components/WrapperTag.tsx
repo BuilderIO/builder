@@ -20,6 +20,9 @@ function fastClone<T>(obj: T): T {
   return JSON.parse(JSON.stringify(obj));
 }
 
+/**
+ * WrapperTag represent a set of tags that wrap its children conditionally
+ */
 export const WrapperTag: React.FC<WrapperTagProps> = ({
   conditionalTags,
   builderBlock,
