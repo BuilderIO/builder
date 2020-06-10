@@ -8,3 +8,4 @@ export { PaginateBlock } from './components/Paginate';
 export { ForBlock } from './components/For';
 export { ThemeProvider } from './components/ThemeProvider';
 export { FormBlock } from './components/Form';
+export { WrapperTag } from './components/WrapperTag';

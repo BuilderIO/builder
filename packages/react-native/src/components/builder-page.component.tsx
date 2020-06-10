@@ -362,7 +362,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
           str += `
 @font-face {
   font-family: ${family};
-  src: local("${family}"), url('${weightUrl}') format('woff2');
+  src: url('${weightUrl}') format('woff2');
   font-display: fallback;
   font-weight: ${weight};
 }
