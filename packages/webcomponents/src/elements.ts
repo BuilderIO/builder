@@ -1,4 +1,4 @@
-import { GetContentOptions, Builder, builder } from '@builder.io/sdk'
+import { Builder, builder } from '@builder.io/react'
 
 const importReact = () => import('@builder.io/react')
 const importShopify = () => import('@builder.io/shopify/react')
@@ -152,7 +152,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
 
     prerender = true
 
-    private _options: GetContentOptions = {}
+    private _options: any = {}
 
     get options() {
       return {
