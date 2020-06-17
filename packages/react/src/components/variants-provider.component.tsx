@@ -84,7 +84,7 @@ const variantsScript = (variantsString: string, contentId: string) => `
 
 interface VariantsProviderProps {
   initialContent: BuilderContent
-  isStatic: boolean;
+  isStatic?: boolean;
   children: (variants: BuilderContent[]) => JSX.Element
 }
 

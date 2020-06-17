@@ -230,17 +230,17 @@ export class BuilderContent<
 
     return (
       <VariantsProvider isStatic={this.props.isStatic} initialContent={useData}>
-        {variations => {
+        {variants => {
           return (
             <React.Fragment>
-              {variations.map((content, index) => {
+              {variants.map((content, index) => {
                 // default Variation is at index 0, wrap the rest with template
                 // TODO: IE11 don't support templates
                 const Tag = index === 0 ? React.Fragment : 'template'
                 return (
                   <Tag
                     key={String(content?.id! + index)}
-                    data-template-variation-id={content?.id}
+                    data-template-variant-id={content?.id}
                   >
                     <TagName
                       {...(index === 0 &&
