@@ -22,8 +22,16 @@ function getData(content: BuilderContentVariation) {
 
 const variantsScript = (variantsString: string, contentId: string) => `
 (function() {
+  var variants = ${variantsString};
+  function removeVariants() {
+    variants.forEach((template) => {
+      document.querySelector('template[data-template-variant-id="' + template.id + '"]').remove();
+    })
+  }
+
   if (typeof document.createElement("template").content === 'undefined') {
     // IE 11
+    removeVariants()
     return ;
   }
 
@@ -47,8 +55,6 @@ const variantsScript = (variantsString: string, contentId: string) => `
     }
     return null;
   }
-
-  var variants = ${variantsString};
   var cookieName = 'builder.tests.${contentId}';
   var variantId = getCookie(cookieName);
   if (!variantId) {
@@ -77,9 +83,10 @@ const variantsScript = (variantsString: string, contentId: string) => `
       newParent.appendChild(winningTemplate.content.firstChild)
       parentNode.parentNode.replaceChild(newParent, parentNode);
     }
+  } else if (variants.length > 0) {
+    removeVariants()
   }
-})()
-`
+})()`.replace(/\s+/, ' ')
 
 interface VariantsProviderProps {
   initialContent: BuilderContent
