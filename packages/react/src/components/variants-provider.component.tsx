@@ -84,11 +84,13 @@ const variantsScript = (variantsString: string, contentId: string) => `
 
 interface VariantsProviderProps {
   initialContent: BuilderContent
+  isStatic: boolean;
   children: (variants: BuilderContent[]) => JSX.Element
 }
 
 export const VariantsProvider: React.SFC<VariantsProviderProps> = ({
   initialContent,
+  isStatic,
   children
 }) => {
   const hasTests = Boolean(Object.keys(initialContent?.variations || {}).length)
@@ -104,7 +106,7 @@ export const VariantsProvider: React.SFC<VariantsProviderProps> = ({
   }))
 
   const allVariants = [initialContent, ...variants]
-  if (Builder.isServer) {
+  if (Builder.isServer && isStatic) {
     const variantsJson = JSON.stringify(
       Object.keys(initialContent.variations || {}).map(item => ({
         id: item,

@@ -22,6 +22,7 @@ export interface BuilderContentProps<ContentType> {
   inline?: boolean
   dataOnly?: boolean
   builder?: Builder
+  isStatic?: boolean
 }
 
 export class BuilderContent<
@@ -228,7 +229,7 @@ export class BuilderContent<
     const TagName = this.props.dataOnly ? NoWrap : 'div'
 
     return (
-      <VariantsProvider initialContent={useData}>
+      <VariantsProvider isStatic={this.props.isStatic} initialContent={useData}>
         {variations => {
           return (
             <React.Fragment>
