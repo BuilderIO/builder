@@ -73,10 +73,9 @@ const variantsScript = (variantsString: string, contentId: string) => `
     var winningTemplate = document.querySelector('template[data-template-variant-id="' + variantId + '"]')
     if (winningTemplate) {
       var parentNode = winningTemplate.parentNode;
-      while (parentNode.firstChild) {
-        parentNode.firstChild.remove();
-      }
-      parentNode.appendChild(winningTemplate.content.firstChild);
+      var newParent = parentNode.cloneNode(false);
+      newParent.appendChild(winningTemplate.content.firstChild)
+      parentNode.parentNode.replaceChild(newParent, parentNode);
     }
   }
 })()
