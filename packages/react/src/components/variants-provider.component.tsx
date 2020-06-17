@@ -84,8 +84,11 @@ const variantsScript = (variantsString: string, contentId: string) => `
 
 interface VariantsProviderProps {
   initialContent: BuilderContent
-  isStatic?: boolean;
-  children: (variants: BuilderContent[]) => JSX.Element
+  isStatic?: boolean
+  children: (
+    variants: BuilderContent[],
+    renderScript?: () => JSX.Element
+  ) => JSX.Element
 }
 
 export const VariantsProvider: React.SFC<VariantsProviderProps> = ({
@@ -105,7 +108,7 @@ export const VariantsProvider: React.SFC<VariantsProviderProps> = ({
     data: getData(initialContent.variations![id]!)
   }))
 
-  const allVariants = [initialContent, ...variants]
+  const allVariants = [...variants, initialContent]
   if (Builder.isServer && isStatic) {
     const variantsJson = JSON.stringify(
       Object.keys(initialContent.variations || {}).map(item => ({
@@ -113,25 +116,44 @@ export const VariantsProvider: React.SFC<VariantsProviderProps> = ({
         testRatio: initialContent.variations![item]!.testRatio
       }))
     )
+    const renderScript = () => (
+      <script
+        dangerouslySetInnerHTML={{
+          __html: variantsScript(variantsJson, initialContent.id!)
+        }}
+      ></script>
+    )
 
     // render all variants on the server side
     return (
-      <React.Fragment>
-        {children(allVariants)}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: variantsScript(variantsJson, initialContent.id!)
-          }}
-        ></script>
-      </React.Fragment>
+      <React.Fragment>{children(allVariants, renderScript)}</React.Fragment>
     )
   }
 
   const cookieName = `builder.tests.${initialContent.id}`
 
-  const variantId = builder.getCookie(cookieName) || initialContent?.id
+  let variantId = builder.getCookie(cookieName)
 
-  // Q: Calculate variants and set cookie on client side?
+  if (!variantId && Builder.isBrowser) {
+    let n = 0
+    let set = false
+    const random = Math.random()
+    for (let i = 0; i < variants.length; i++) {
+      const variant = variants[i]
+      const testRatio = variant.testRatio
+      n += testRatio!
+      if (random < n) {
+        builder.setCookie(cookieName, variant.id)
+        variantId = variant.id
+      }
+    }
+  }
+
+  if (!variantId) {
+    // render initial content when no winning variation or on the server
+    variantId = initialContent.id
+    builder.setCookie(cookieName, variantId)
+  }
 
   return children([allVariants.find(item => item.id === variantId)!])
 }

@@ -230,36 +230,40 @@ export class BuilderContent<
 
     return (
       <VariantsProvider isStatic={this.props.isStatic} initialContent={useData}>
-        {variants => {
+        {(variants, renderScript) => {
           return (
             <React.Fragment>
               {variants.map((content, index) => {
-                // default Variation is at index 0, wrap the rest with template
+                // default Variation is at the end, wrap the rest with template
                 // TODO: IE11 don't support templates
-                const Tag = index === 0 ? React.Fragment : 'template'
+                const Tag =
+                  index === variants.length - 1 ? React.Fragment : 'template'
                 return (
-                  <Tag
-                    key={String(content?.id! + index)}
-                    data-template-variant-id={content?.id}
-                  >
-                    <TagName
-                      {...(index === 0 &&
-                        !this.props.dataOnly && {
-                          ref: (ref: any) => (this.ref = ref)
-                        })}
-                      className="builder-content"
-                      onClick={this.onClick}
-                      builder-content-id={content?.id}
-                      builder-model={this.props.modelName}
+                  <>
+                    {Tag !== 'template' && renderScript?.()}
+                    <Tag
+                      key={String(content?.id! + index)}
+                      data-template-variant-id={content?.id}
                     >
-                      {this.props.children(
-                        // whhat's going on
-                        content?.data! as any,
-                        this.props.inline ? false : loading,
-                        useData
-                      )}
-                    </TagName>
-                  </Tag>
+                      <TagName
+                        {...(index === 0 &&
+                          !this.props.dataOnly && {
+                            ref: (ref: any) => (this.ref = ref)
+                          })}
+                        className="builder-content"
+                        onClick={this.onClick}
+                        builder-content-id={content?.id}
+                        builder-model={this.props.modelName}
+                      >
+                        {this.props.children(
+                          // whhat's going on
+                          content?.data! as any,
+                          this.props.inline ? false : loading,
+                          useData
+                        )}
+                      </TagName>
+                    </Tag>
+                  </>
                 )
               })}
             </React.Fragment>
