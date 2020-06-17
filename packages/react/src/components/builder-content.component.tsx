@@ -7,6 +7,7 @@ import {
 } from '@builder.io/sdk'
 import { NoWrap } from './no-wrap'
 import { applyPatchWithMinimalMutationChain } from '../functions/apply-patch-with-mutation'
+import { VariantsProvider } from './variants-provider.component'
 
 export interface BuilderContentProps<ContentType> {
   contentLoaded?: (content: any) => void
@@ -227,21 +228,43 @@ export class BuilderContent<
     const TagName = this.props.dataOnly ? NoWrap : 'div'
 
     return (
-      <TagName
-        {...(!this.props.dataOnly && {
-          ref: ref => (this.ref = ref)
-        })}
-        className="builder-content"
-        onClick={this.onClick}
-        builder-content-id={useData && useData.id}
-        builder-model={this.props.modelName}
-      >
-        {this.props.children(
-          useData && useData.data,
-          this.props.inline ? false : loading,
-          useData
-        )}
-      </TagName>
+      <VariantsProvider initialContent={useData}>
+        {variations => {
+          return (
+            <React.Fragment>
+              {variations.map((content, index) => {
+                // default Variation is at index 0, wrap the rest with template
+                // TODO: IE11 don't support templates
+                const Tag = index === 0 ? React.Fragment : 'template'
+                return (
+                  <Tag
+                    key={String(content?.id! + index)}
+                    data-template-variation-id={content?.id}
+                  >
+                    <TagName
+                      {...(index === 0 &&
+                        !this.props.dataOnly && {
+                          ref: (ref: any) => (this.ref = ref)
+                        })}
+                      className="builder-content"
+                      onClick={this.onClick}
+                      builder-content-id={content?.id}
+                      builder-model={this.props.modelName}
+                    >
+                      {this.props.children(
+                        // whhat's going on
+                        content?.data! as any,
+                        this.props.inline ? false : loading,
+                        useData
+                      )}
+                    </TagName>
+                  </Tag>
+                )
+              })}
+            </React.Fragment>
+          )
+        }}
+      </VariantsProvider>
     )
   }
 }
