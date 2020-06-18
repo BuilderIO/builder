@@ -27,11 +27,11 @@ const variantsScript = (variantsString: string, contentId: string) =>
   function removeVariants() {
     variants.forEach((template) => {
       document.querySelector('template[data-template-variant-id="' + template.id + '"]').remove();
-    })
+    });
   }
 
   if (typeof document.createElement("template").content === 'undefined') {
-    removeVariants()
+    removeVariants();
     return ;
   }
 
@@ -76,11 +76,11 @@ const variantsScript = (variantsString: string, contentId: string) =>
     }
   }
   if (variantId && variantId !== "${contentId}") {
-    var winningTemplate = document.querySelector('template[data-template-variant-id="' + variantId + '"]')
+    var winningTemplate = document.querySelector('template[data-template-variant-id="' + variantId + '"]');
     if (winningTemplate) {
       var parentNode = winningTemplate.parentNode;
       var newParent = parentNode.cloneNode(false);
-      newParent.appendChild(winningTemplate.content.firstChild)
+      newParent.appendChild(winningTemplate.content.firstChild);
       parentNode.parentNode.replaceChild(newParent, parentNode);
     }
   } else if (variants.length > 0) {
