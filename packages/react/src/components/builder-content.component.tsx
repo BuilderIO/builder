@@ -34,6 +34,10 @@ export class BuilderContent<
     return this.props.builder || builder
   }
 
+  get renderedVairantId() {
+    return this.builder.getCookie(`builder.tests.${this.data?.id}`)
+  }
+
   get data() {
     const { data } = this.state
 
@@ -107,7 +111,7 @@ export class BuilderContent<
       this.props.options?.initialContent?.length
     ) {
       const contentData = this.props.options.initialContent[0]
-      this.builder.trackImpression(contentData.id, contentData.variationId)
+      this.builder.trackImpression(contentData.id, this.renderedVairantId)
     }
 
     if (Builder.isEditing) {
@@ -146,7 +150,7 @@ export class BuilderContent<
                             ) {
                               this.builder.trackImpression(
                                 match.id!,
-                                (match as any).variationId
+                                this.renderedVairantId
                               )
                               this.trackedImpression = true
                               if (this.ref) {
@@ -167,7 +171,7 @@ export class BuilderContent<
                     this.trackedImpression = true
                     this.builder.trackImpression(
                       match.id!,
-                      (match as any).variationId
+                      this.renderedVairantId
                     )
                   }
                 }
@@ -209,7 +213,7 @@ export class BuilderContent<
     if (builder.autoTrack) {
       this.builder.trackInteraction(
         content.id,
-        content.variationId,
+        this.renderedVairantId,
         this.clicked,
         event
       )
@@ -243,7 +247,9 @@ export class BuilderContent<
                     {Tag !== 'template' && renderScript?.()}
                     <Tag
                       key={String(content?.id! + index)}
-                      data-template-variant-id={content?.id}
+                      {...(Tag === 'template' && {
+                        'data-template-variant-id': content?.id
+                      })}
                     >
                       <TagName
                         {...(index === 0 &&

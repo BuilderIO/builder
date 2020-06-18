@@ -20,7 +20,8 @@ function getData(content: BuilderContentVariation) {
   return newData
 }
 
-const variantsScript = (variantsString: string, contentId: string) => `
+const variantsScript = (variantsString: string, contentId: string) =>
+  `
 (function() {
   var variants = ${variantsString};
   function removeVariants() {
@@ -86,7 +87,7 @@ const variantsScript = (variantsString: string, contentId: string) => `
   } else if (variants.length > 0) {
     removeVariants()
   }
-})()`.replace(/\s+/, ' ')
+})()`.replace(/\s+/g, ' ')
 
 interface VariantsProviderProps {
   initialContent: BuilderContent
