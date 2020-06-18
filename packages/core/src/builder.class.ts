@@ -1566,6 +1566,11 @@ export class Builder {
           return null;
         }
 
+        if (typeof matchData.blocksString !== 'undefined') {
+          matchData.blocks = JSON.parse(matchData.blocksString);
+          delete matchData.blocksString;
+        }
+
         return {
           // TODO: add ab test info here and other high level stuff
           data: matchData,

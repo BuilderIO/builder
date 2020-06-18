@@ -35,7 +35,12 @@ export class BuilderContent<
   }
 
   get renderedVairantId() {
-    return this.builder.getCookie(`builder.tests.${this.data?.id}`)
+    const id = this.props.isStatic
+      ? this.builder.getCookie(`builder.tests.${this.data?.id}`)
+      : this.data?.variationId
+    if (id !== null) {
+      return id
+    }
   }
 
   get data() {
@@ -232,8 +237,28 @@ export class BuilderContent<
     const useData = this.data
     const TagName = this.props.dataOnly ? NoWrap : 'div'
 
+    if (!this.props.isStatic) {
+      return (
+        <TagName
+          {...(!this.props.dataOnly && {
+            ref: (ref: any) => (this.ref = ref)
+          })}
+          className="builder-content"
+          onClick={this.onClick}
+          builder-content-id={useData?.id}
+          builder-model={this.props.modelName}
+        >
+          {this.props.children(
+            useData?.data,
+            this.props.inline ? false : loading,
+            useData
+          )}
+        </TagName>
+      )
+    }
+
     return (
-      <VariantsProvider isStatic={this.props.isStatic} initialContent={useData}>
+      <VariantsProvider initialContent={useData}>
         {(variants, renderScript) => {
           return (
             <React.Fragment>
@@ -262,7 +287,6 @@ export class BuilderContent<
                         builder-model={this.props.modelName}
                       >
                         {this.props.children(
-                          // whhat's going on
                           content?.data! as any,
                           this.props.inline ? false : loading,
                           useData

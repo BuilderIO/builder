@@ -90,7 +90,6 @@ const variantsScript = (variantsString: string, contentId: string) =>
 
 interface VariantsProviderProps {
   initialContent: BuilderContent
-  isStatic?: boolean
   children: (
     variants: BuilderContent[],
     renderScript?: () => JSX.Element
@@ -99,13 +98,12 @@ interface VariantsProviderProps {
 
 export const VariantsProvider: React.SFC<VariantsProviderProps> = ({
   initialContent,
-  isStatic,
   children
 }) => {
   const hasTests = Boolean(Object.keys(initialContent?.variations || {}).length)
 
   // when it's not isStatic variants are already elected by the sdk
-  if (!hasTests || !Builder.isStatic) return children([initialContent])
+  if (!hasTests) return children([initialContent])
 
   const variants: BuilderContent[] = Object.keys(
     initialContent.variations!
@@ -116,7 +114,7 @@ export const VariantsProvider: React.SFC<VariantsProviderProps> = ({
   }))
 
   const allVariants = [...variants, initialContent]
-  if (Builder.isServer && isStatic) {
+  if (Builder.isServer) {
     const variantsJson = JSON.stringify(
       Object.keys(initialContent.variations || {}).map(item => ({
         id: item,
