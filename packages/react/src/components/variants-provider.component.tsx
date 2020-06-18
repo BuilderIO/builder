@@ -84,7 +84,7 @@ const variantsScript = (variantsString: string, contentId: string) =>
       parentNode.parentNode.replaceChild(newParent, parentNode);
     }
   } else if (variants.length > 0) {
-    removeVariants()
+    removeVariants();
   }
 })()`.replace(/\s+/g, ' ')
 
