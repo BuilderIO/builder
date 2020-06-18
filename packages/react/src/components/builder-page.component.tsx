@@ -835,7 +835,7 @@ export class BuilderPage extends React.Component<
 
                   return (
                     <BuilderContent
-                      isStatic={this.props.isStatic}
+                      isStatic={this.props.isStatic || Builder.isStatic}
                       key={
                         this.props.content?.id ||
                         ('content' in this.props

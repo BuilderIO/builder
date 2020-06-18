@@ -104,7 +104,8 @@ export const VariantsProvider: React.SFC<VariantsProviderProps> = ({
 }) => {
   const hasTests = Boolean(Object.keys(initialContent?.variations || {}).length)
 
-  if (!hasTests) return children([initialContent])
+  // when it's not isStatic variants are already elected by the sdk
+  if (!hasTests || !Builder.isStatic) return children([initialContent])
 
   const variants: BuilderContent[] = Object.keys(
     initialContent.variations!
