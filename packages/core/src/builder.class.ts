@@ -395,6 +395,9 @@ export class Builder {
   static components: Component[] = [];
   static singletonInstance: Builder;
   static useNewApi = true;
+  // isStatic delegates all variants rendering and election to the variants provider
+  // which in turn will always render default variation on server and winning variation on client
+  static isStatic = false;
   static animator = new Animator();
 
   static nextTick = nextTick;
@@ -1554,10 +1557,20 @@ export class Builder {
     return instance.queueGetContent(modelName, options).map(
       /* map( */ (matches: any[] | null) => {
         const match = matches && matches[0];
+        if (Builder.isStatic) {
+          return match
+        }
+
         const matchData = match && match.data;
         if (!matchData) {
           return null;
         }
+
+        if (typeof matchData.blocksString !== 'undefined') {
+          matchData.blocks = JSON.parse(matchData.blocksString);
+          delete matchData.blocksString;
+        }
+
         return {
           // TODO: add ab test info here and other high level stuff
           data: matchData,
@@ -1876,7 +1889,7 @@ export class Builder {
           const data = result[keyName];
           const sorted = data; // sortBy(data, item => item.priority);
           if (data) {
-            const testModifiedResults = this.processResultsForTests(sorted);
+            const testModifiedResults = Builder.isStatic ? sorted : this.processResultsForTests(sorted);
             observer.next(testModifiedResults);
           } else {
             const search = this.getLocation().search;

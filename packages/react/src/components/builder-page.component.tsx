@@ -117,6 +117,8 @@ export interface BuilderPageProps {
   builderBlock?: BuilderElement
   dataOnly?: boolean
   hydrate?: boolean
+  // TODO: support default values in init 
+  isStatic?: boolean
   context?: any
   url?: string
 }
@@ -833,6 +835,7 @@ export class BuilderPage extends React.Component<
 
                   return (
                     <BuilderContent
+                      isStatic={this.props.isStatic || Builder.isStatic}
                       key={
                         this.props.content?.id ||
                         ('content' in this.props

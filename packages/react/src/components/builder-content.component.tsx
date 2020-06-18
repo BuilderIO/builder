@@ -7,6 +7,7 @@ import {
 } from '@builder.io/sdk'
 import { NoWrap } from './no-wrap'
 import { applyPatchWithMinimalMutationChain } from '../functions/apply-patch-with-mutation'
+import { VariantsProvider } from './variants-provider.component'
 
 export interface BuilderContentProps<ContentType> {
   contentLoaded?: (content: any) => void
@@ -21,6 +22,7 @@ export interface BuilderContentProps<ContentType> {
   inline?: boolean
   dataOnly?: boolean
   builder?: Builder
+  isStatic?: boolean
 }
 
 export class BuilderContent<
@@ -30,6 +32,15 @@ export class BuilderContent<
 
   get builder() {
     return this.props.builder || builder
+  }
+
+  get renderedVairantId() {
+    const id = this.props.isStatic
+      ? this.builder.getCookie(`builder.tests.${this.data?.id}`)
+      : this.data?.variationId
+    if (id !== null) {
+      return id
+    }
   }
 
   get data() {
@@ -105,7 +116,7 @@ export class BuilderContent<
       this.props.options?.initialContent?.length
     ) {
       const contentData = this.props.options.initialContent[0]
-      this.builder.trackImpression(contentData.id, contentData.variationId)
+      this.builder.trackImpression(contentData.id, this.renderedVairantId)
     }
 
     if (Builder.isEditing) {
@@ -144,7 +155,7 @@ export class BuilderContent<
                             ) {
                               this.builder.trackImpression(
                                 match.id!,
-                                (match as any).variationId
+                                this.renderedVairantId
                               )
                               this.trackedImpression = true
                               if (this.ref) {
@@ -165,7 +176,7 @@ export class BuilderContent<
                     this.trackedImpression = true
                     this.builder.trackImpression(
                       match.id!,
-                      (match as any).variationId
+                      this.renderedVairantId
                     )
                   }
                 }
@@ -207,7 +218,7 @@ export class BuilderContent<
     if (builder.autoTrack) {
       this.builder.trackInteraction(
         content.id,
-        content.variationId,
+        this.renderedVairantId,
         this.clicked,
         event
       )
@@ -226,22 +237,69 @@ export class BuilderContent<
     const useData = this.data
     const TagName = this.props.dataOnly ? NoWrap : 'div'
 
+    if (!this.props.isStatic) {
+      return (
+        <TagName
+          {...(!this.props.dataOnly && {
+            ref: (ref: any) => (this.ref = ref)
+          })}
+          className="builder-content"
+          onClick={this.onClick}
+          builder-content-id={useData?.id}
+          builder-model={this.props.modelName}
+        >
+          {this.props.children(
+            useData?.data,
+            this.props.inline ? false : loading,
+            useData
+          )}
+        </TagName>
+      )
+    }
+
     return (
-      <TagName
-        {...(!this.props.dataOnly && {
-          ref: ref => (this.ref = ref)
-        })}
-        className="builder-content"
-        onClick={this.onClick}
-        builder-content-id={useData && useData.id}
-        builder-model={this.props.modelName}
-      >
-        {this.props.children(
-          useData && useData.data,
-          this.props.inline ? false : loading,
-          useData
-        )}
-      </TagName>
+      <VariantsProvider initialContent={useData}>
+        {(variants, renderScript) => {
+          return (
+            <React.Fragment>
+              {variants.map((content, index) => {
+                // default Variation is at the end, wrap the rest with template
+                // TODO: IE11 don't support templates
+                const Tag =
+                  index === variants.length - 1 ? React.Fragment : 'template'
+                return (
+                  <>
+                    {Tag !== 'template' && renderScript?.()}
+                    <Tag
+                      key={String(content?.id! + index)}
+                      {...(Tag === 'template' && {
+                        'data-template-variant-id': content?.id
+                      })}
+                    >
+                      <TagName
+                        {...(index === 0 &&
+                          !this.props.dataOnly && {
+                            ref: (ref: any) => (this.ref = ref)
+                          })}
+                        className="builder-content"
+                        onClick={this.onClick}
+                        builder-content-id={content?.id}
+                        builder-model={this.props.modelName}
+                      >
+                        {this.props.children(
+                          content?.data! as any,
+                          this.props.inline ? false : loading,
+                          useData
+                        )}
+                      </TagName>
+                    </Tag>
+                  </>
+                )
+              })}
+            </React.Fragment>
+          )
+        }}
+      </VariantsProvider>
     )
   }
 }
