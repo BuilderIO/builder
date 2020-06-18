@@ -31,7 +31,6 @@ const variantsScript = (variantsString: string, contentId: string) =>
   }
 
   if (typeof document.createElement("template").content === 'undefined') {
-    // IE 11
     removeVariants()
     return ;
   }
