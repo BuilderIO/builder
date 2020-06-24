@@ -9,6 +9,20 @@ liquid.registerFilter('money', value => {
   return ('$' + str.slice(0, -2) + '.' + str.slice(-2)).replace('..', '.');
 });
 
+liquid.registerFilter('handle', item =>
+  item
+    .toLowerCase()
+    .replace(/[&!%]/g, '')
+    .replace(/\s+/g, '-')
+);
+
+liquid.registerFilter('strip_html', (item = '') => item.replace(/<[^>]+>/g, ''));
+
+liquid.registerFilter('truncatewords', (item, numWords) => {
+  const words = item.split(/\s+/g);
+  return `${words.slice(0, numWords).join(' ')}...`;
+});
+
 const tempNoopFilters = ['img_url', 't'];
 for (const tempNoopFilter of tempNoopFilters) {
   liquid.registerFilter(tempNoopFilter, value => value);
