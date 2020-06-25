@@ -39,7 +39,7 @@ class FormComponent extends React.Component<FormProps> {
   state = {
     state: 'unsubmitted' as 'unsubmitted' | 'sending' | 'success' | 'error',
     // TODO: separate response and error?
-    respnoseData: null as any,
+    responseData: null as any,
     formErrorMessage: ''
   }
 
@@ -338,13 +338,13 @@ class FormComponent extends React.Component<FormProps> {
               )}
 
               {/* TODO: option to turn this off */}
-              {this.submissionState === 'error' && this.state.respnoseData && (
+              {this.submissionState === 'error' && this.state.responseData && (
                 // TODO: tag to edit
                 <pre
                   className="builder-form-error-text"
                   css={{ padding: 10, color: 'red', textAlign: 'center' }}
                 >
-                  {JSON.stringify(this.state.respnoseData, null, 2)}
+                  {JSON.stringify(this.state.responseData, null, 2)}
                 </pre>
               )}
 
