@@ -9,3 +9,4 @@ export { ForBlock } from './components/For';
 export { ThemeProvider } from './components/ThemeProvider';
 export { FormBlock } from './components/Form';
 export { WrapperTag } from './components/WrapperTag';
+export { SectionRef } from './components/SectionRef';

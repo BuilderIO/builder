@@ -708,7 +708,6 @@ export class Builder {
   private cachebust = false;
   private overrideParams = '';
   private noCache = false;
-  private overrideHost = '';
   private preview = false;
 
   get browserTrackingDisabled() {
@@ -1144,7 +1143,6 @@ export class Builder {
     this.cachebust = false;
     this.noCache = false;
     this.preview = false;
-    this.overrideHost = '';
     this.editingModel = null;
     this.overrides = {};
     this.env = 'production';
@@ -1189,10 +1187,6 @@ export class Builder {
         if (editingModel && editingModel !== 'true') {
           this.editingModel = editingModel;
         }
-      }
-
-      if (host) {
-        this.overrideHost = host;
       }
 
       if (cachebust) {
@@ -1558,7 +1552,7 @@ export class Builder {
       /* map( */ (matches: any[] | null) => {
         const match = matches && matches[0];
         if (Builder.isStatic) {
-          return match
+          return match;
         }
 
         const matchData = match && match.data;
@@ -1696,10 +1690,6 @@ export class Builder {
   }
 
   get host() {
-    if (this.overrideHost) {
-      return this.overrideHost;
-    }
-
     if (this.env.includes('//')) {
       return this.env;
     }
@@ -1889,7 +1879,9 @@ export class Builder {
           const data = result[keyName];
           const sorted = data; // sortBy(data, item => item.priority);
           if (data) {
-            const testModifiedResults = Builder.isStatic ? sorted : this.processResultsForTests(sorted);
+            const testModifiedResults = Builder.isStatic
+              ? sorted
+              : this.processResultsForTests(sorted);
             observer.next(testModifiedResults);
           } else {
             const search = this.getLocation().search;
