@@ -1,3 +1,8 @@
-<div class="builder-blocks builder-blocks-html">
-  <div [innerHTML]="innerHtml"></div>
-</div>
+<builder-component-element
+  [key]="key || model"
+  [prerender]="prerender"
+  [name]="model"
+  [options]="options"
+  [rev]="blocks.rev || ''"
+  [innerHTML]="innerHtml"
+></builder-component-element>

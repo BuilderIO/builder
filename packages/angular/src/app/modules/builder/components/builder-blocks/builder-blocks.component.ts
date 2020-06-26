@@ -74,22 +74,8 @@ export class BuilderBlocksComponent implements OnInit {
   }
 
   get _innerHtml() {
-    if (!this.prerender) {
-      return `<builder-component-element prerender="false" ${
-        !this.model ? '' : `name="${this.model}"`
-      }></builder-component-element>`;
-    }
-
-    const elStr = `<builder-component-element prerender="false" ${
-      !this.model ? '' : `name="${this.model}"`
-    }></builder-component-element>`;
-
-    if (this.arrayBlocks || !this.blocks) {
-      return elStr;
-    }
-
-    if (!this.blocks.html) {
-      return elStr;
+    if (!this.prerender || this.arrayBlocks || !this.blocks || !this.blocks.html) {
+      return '';
     }
 
     const css = this.blocks.css;
@@ -98,11 +84,7 @@ export class BuilderBlocksComponent implements OnInit {
       html = `<style class="builder-styles">${css}</style>` + html;
     }
 
-    return `<builder-component-element key="${this.key || this.model}" options='${JSON.stringify(
-      this.options || null // TODO: HTML encode
-    )}' prerender="false" rev="${this.blocks.rev || ''}" ${
-      !this.model ? '' : `name="${this.model}"`
-    }>${html as string}</builder-component-element>`;
+    return html;
   }
 
   trackByFn(index: number, value: any) {

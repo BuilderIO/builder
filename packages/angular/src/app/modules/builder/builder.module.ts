@@ -1,6 +1,6 @@
 import './polyfills/custom-elements-es5-adapter';
 import { Builder } from '@builder.io/sdk';
-import { NgModule, ModuleWithProviders, Injector } from '@angular/core';
+import { NgModule, ModuleWithProviders, Injector, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BuilderContentComponent } from './components/builder-content/builder-content.component';
 import { BuilderContentDirective } from './directives/builder-content.directive';
@@ -20,6 +20,7 @@ const components = [BuilderContentComponent, BuilderBlocksComponent, BuilderComp
   declarations: [components, directives],
   exports: [components, directives],
   entryComponents: [components],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class BuilderModule {
   constructor(injector: Injector) {
