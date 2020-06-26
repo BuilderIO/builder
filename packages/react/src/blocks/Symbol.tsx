@@ -101,7 +101,7 @@ class SymbolComponent extends React.Component<SymbolProps> {
                   context={{ ...state.context }}
                   modelName={model}
                   entry={entry}
-                  data={data}
+                  data={{...data, ...state.state }}
                   inlineContent={symbol?.inline}
                   {...(content && { content })}
                   options={{ key }}
