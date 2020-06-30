@@ -187,6 +187,7 @@ export interface GetContentOptions {
   userAttributes?: UserAttributes;
   // Alias for userAttributes.urlPath
   url?: string;
+  includeUrl?: boolean;
   cacheSeconds?: number;
   limit?: number;
   query?: any;
@@ -1749,6 +1750,14 @@ export class Builder {
         : {
             urlPath: this.getLocation().pathname,
           };
+
+    const fullUrlQueueItem = queue.find((item) => !!item.includeUrl);
+    if (fullUrlQueueItem) {
+      const location = this.getLocation();
+      if (location.origin) {
+        queryParams.url = `${location.origin}${location.pathname}${location.search}`;
+      }
+    }
 
     const urlQueueItem = useQueue?.find((item) => item.url);
     if (urlQueueItem?.url) {
