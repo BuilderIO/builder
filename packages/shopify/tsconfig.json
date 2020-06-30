@@ -26,6 +26,7 @@
     "./test/**/*.ts",
     "./test/**/*.tsx",
     "./js/**/*.ts",
+    "./track/**/*.ts",
     "./react/react.ts",
     "./react/**/*.tsx"
   ]

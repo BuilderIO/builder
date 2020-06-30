@@ -10,3 +10,4 @@ export { ThemeProvider } from './components/ThemeProvider';
 export { FormBlock } from './components/Form';
 export { WrapperTag } from './components/WrapperTag';
 export { SectionRef } from './components/SectionRef';
+export { LiquidBlock } from './components/LiquidBlock';

@@ -9,7 +9,7 @@ const cache: { [key: string]: string } = {};
 
 export const SectionRef = (props: SectionRefProps) => {
   const [html, setHtml] = useState<string | null>(null);
-  const sectionName = props.section?.split('/')[1].split('.')[0]!;
+  const sectionName = props.section?.split('/')[1].replace(/\.liquid$/, '')!;
 
   useEffect(() => {
     if (cache[sectionName]) {
