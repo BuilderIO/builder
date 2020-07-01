@@ -26,9 +26,7 @@ export function PaginateBlock(props: AssignBlockProps) {
   ) {
     const totalProducts = builderState.state.collection.products_count;
     const itemLimit =
-      builderState.context.shopify.liquid.get(limit, builderState.state) ||
-      builderState.state.section?.settings?.pagination_limit ||
-      defaultPaginationLimit;
+      builderState.context.shopify.liquid.get(limit, builderState.state) || defaultPaginationLimit;
 
     let currentPage = 1;
     if (builderState.state.location.query.page) {
@@ -46,7 +44,7 @@ export function PaginateBlock(props: AssignBlockProps) {
       parts: [],
       next: {},
       previous: {},
-      page_size: builderState.state.section?.settings?.pagination_limit || defaultPaginationLimit,
+      page_size: itemLimit,
       pages: Math.ceil(totalProducts / itemLimit),
       expression: builderState.context.shopify.liquid.render(expression, builderState.state),
     };
