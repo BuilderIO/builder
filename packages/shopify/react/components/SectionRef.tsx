@@ -22,7 +22,9 @@ export const SectionRef = (props: SectionRefProps) => {
   const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if (Builder.isEditing) {
+    const blockId = props.builderBlock?.id;
+    const node = blockId && refs && refs[blockId];
+    if (!node) {
       if (cache[sectionName]) {
         return;
       }
@@ -48,8 +50,6 @@ export const SectionRef = (props: SectionRefProps) => {
           setHtml(text);
         });
     } else {
-      const blockId = props.builderBlock?.id;
-      const node = blockId && refs && refs[blockId];
       if (node && ref.current) {
         ref.current.replaceWith(node);
       }

@@ -21,7 +21,9 @@ export const LiquidBlock = (props: LiquidBlockProps) => {
   const blockName = props.templatePath?.split('/')[1].replace(/\.liquid$/, '')!;
 
   useEffect(() => {
-    if (Builder.isEditing) {
+    const blockId = props.builderBlock?.id;
+    const node = blockId && refs && refs[blockId];
+    if (!node) {
       if (cache[blockName]) {
         return;
       }
@@ -47,8 +49,6 @@ export const LiquidBlock = (props: LiquidBlockProps) => {
           setHtml(text);
         });
     } else {
-      const blockId = props.builderBlock?.id;
-      const node = blockId && refs && refs[blockId];
       if (node && ref.current) {
         ref.current.replaceWith(node);
       }
@@ -68,4 +68,15 @@ export const LiquidBlock = (props: LiquidBlockProps) => {
 Builder.registerComponent(LiquidBlock, {
   name: 'Shopify:LiquidBlock',
   hideFromInsertMenu: true,
+  inputs: [
+    {
+      name: 'templatePath',
+      type: 'string',
+      advanced: true,
+    },
+    {
+      name: 'options',
+      type: 'LiquidBlockOptions',
+    },
+  ],
 });
