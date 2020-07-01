@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Builder, BuilderElement } from '@builder.io/react';
+import { findAndRunScripts } from '../functions/find-and-run-scripts';
 
 interface SectionRefProps {
   class?: string;
@@ -48,6 +49,11 @@ export const SectionRef = (props: SectionRefProps) => {
         .then(text => {
           cache[sectionName] = text;
           setHtml(text);
+          setTimeout(() => {
+            if (ref.current) {
+              findAndRunScripts(ref.current);
+            }
+          }, 10);
         });
     } else {
       if (node && ref.current) {

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Builder, BuilderElement, BuilderStore, builder } from '@builder.io/react';
+import { findAndRunScripts } from '../functions/find-and-run-scripts';
 
 interface LiquidBlockProps {
   templatePath?: string;
@@ -47,6 +48,11 @@ export const LiquidBlock = (props: LiquidBlockProps) => {
           const text = json.liquidSnippet;
           cache[blockName] = text;
           setHtml(text);
+          setTimeout(() => {
+            if (ref.current) {
+              findAndRunScripts(ref.current);
+            }
+          }, 10);
         });
     } else {
       if (node && ref.current) {
