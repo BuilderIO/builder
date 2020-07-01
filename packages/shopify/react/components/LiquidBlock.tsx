@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Builder, BuilderElement, BuilderStore } from '@builder.io/react';
+import { Builder, BuilderElement, BuilderStore, builder } from '@builder.io/react';
 
 interface LiquidBlockProps {
   templatePath?: string;
@@ -38,8 +38,7 @@ export const LiquidBlock = (props: LiquidBlockProps) => {
       const args = '';
 
       fetch(
-        `http://localhost:5000/api/v1/shopify/data/render-liquid-snippet?snippet=${blockName}&apiKey=${props.builderState?.context.apiKey}&args=${args}`
-        // `https://cdn.builder.io/api/v1/shopify/data/render-liquid-snippet?snippet=${blockName}&apiKey=${props.builderState?.content.id}&args=${args}`
+        `${builder.host}/api/v1/shopify/data/render-liquid-snippet?snippet=${blockName}&apiKey=${props.builderState?.context.apiKey}&args=${args}`
       )
         .then(res => res.json())
         .then(json => {

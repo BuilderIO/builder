@@ -1,41 +1,66 @@
-import React, { useState, useEffect } from 'react';
-import { Builder } from '@builder.io/react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Builder, BuilderElement } from '@builder.io/react';
 
 interface SectionRefProps {
   class?: string;
   section?: string;
+  builderBlock?: BuilderElement;
 }
 const cache: { [key: string]: string } = {};
+
+const refs =
+  Builder.isBrowser &&
+  Array.from(document.querySelectorAll('[builder-shopify-section]')).reduce((memo, item) => {
+    memo[item.getAttribute('builder-shopify-section')!] = item;
+    return memo;
+  }, {} as { [key: string]: Element });
 
 export const SectionRef = (props: SectionRefProps) => {
   const [html, setHtml] = useState<string | null>(null);
   const sectionName = props.section?.split('/')[1].replace(/\.liquid$/, '')!;
 
+  const ref = useRef<HTMLDivElement | null>(null);
+
   useEffect(() => {
-    if (cache[sectionName]) {
-      return;
+    if (Builder.isEditing) {
+      if (cache[sectionName]) {
+        return;
+      }
+      // Convert `sections/foo.liquid` -> `foo`
+      if (!sectionName) {
+        return;
+      }
+      if (cache[sectionName]) {
+        setHtml(cache[sectionName]);
+        return;
+      }
+      // This may look strange, but it is how Shopify's section rendering API
+      // works https://shopify.dev/docs/themes/sections/section-rendering-api
+      fetch(
+        `https://cdn.builder.io/api/v1/proxy-api?url=${encodeURIComponent(
+          `https://${location.host +
+            location.pathname}?section_id=${sectionName}&${location.search.replace('?', '')}`
+        )}`
+      )
+        .then(res => res.text())
+        .then(text => {
+          cache[sectionName] = text;
+          setHtml(text);
+        });
+    } else {
+      const blockId = props.builderBlock?.id;
+      const node = blockId && refs && refs[blockId];
+      if (node && ref.current) {
+        ref.current.replaceWith(node);
+      }
     }
-    // Convert `sections/foo.liquid` -> `foo`
-    if (!sectionName) {
-      return;
-    }
-    if (cache[sectionName]) {
-      setHtml(cache[sectionName]);
-      return;
-    }
-    // This may look strange, but it is how Shopify's section rendering API
-    // works https://shopify.dev/docs/themes/sections/section-rendering-api
-    fetch(`${location.search ? '&' : '?'}section_id=${sectionName}`)
-      .then(res => res.text())
-      .then(text => {
-        cache[sectionName] = text;
-        setHtml(text);
-      });
   }, [sectionName]);
 
   return (
     <div
-      className={`shopify-section ${props.class}`}
+      ref={ref}
+      builder-shopify-section={props.builderBlock?.id}
+      className="builder-shopify-section"
       dangerouslySetInnerHTML={{ __html: html || cache[sectionName] || '' }}
     />
   );
