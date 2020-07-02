@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { BuilderElement, Builder } from '@builder.io/sdk';
-import { BuilderBlocks, withBuilder } from '@builder.io/react';
+import { BuilderBlockComponent, withBuilder } from '@builder.io/react';
 
 const refs: Record<string, Element> = {};
 
@@ -38,22 +38,23 @@ const StaticContentComponent: React.SFC<StaticContentProps> = props => {
   return (
     <div className="builder-static-content" data-builder-static-id={props.builderBlock?.id} ref={ref}>
       {(Builder.isEditing || Builder.isPreviewing ||  Builder.isServer) &&
-        props.builderBlock &&
-        <BuilderBlocks child parent={props.builderBlock} blocks={props.builderBlock.children} />}
+        props.builderBlock?.children &&
+        props.builderBlock.children.map((block, index) => (
+          <BuilderBlockComponent key={index + block.id!} block={block} />
+        ))}
     </div>
   );
 };
 
 export const StaticContent = withBuilder(StaticContentComponent, {
   name: 'Shopify:StaticContent',
-  static: true,
-  image:
-    'https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fc312e4bf11b64af0b43958aab099b927',
   canHaveChildren: true,
+  hideFromInsertMenu: true,
   defaultStyles: {
     // height: '200px',
     // how to disable styling
-    marginTop: '0px'
+    marginTop: '0px',
+    paddingBottom: '20px',
   },
   defaultChildren: [
     {
