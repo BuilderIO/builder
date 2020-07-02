@@ -2022,7 +2022,6 @@ export class Builder {
     if (!this.apiKey) {
       throw new Error('Builder needs to be initialized with an API key!');
     }
-
     return this.queueGetContent(modelName);
   }
 }
