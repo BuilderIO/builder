@@ -150,7 +150,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
     builderPageRef: any
     builderRootRef: any
 
-    prerender = true
+    prerender = !Builder.isEditing
 
     private _options: any = {}
 
