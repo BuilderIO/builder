@@ -62,7 +62,7 @@ export const SectionRef = (props: SectionRefProps) => {
         });
     } else {
       if (node && ref.current) {
-        ref.current.replaceWith(node);
+        ref.current.parentNode?.replaceChild(node, ref.current);
       }
     }
   }, [sectionName]);

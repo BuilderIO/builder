@@ -56,7 +56,7 @@ export const LiquidBlock = (props: LiquidBlockProps) => {
         });
     } else {
       if (node && ref.current) {
-        ref.current.replaceWith(node);
+        ref.current.parentNode?.replaceChild(node, ref.current);
       }
     }
   }, [blockName]);
