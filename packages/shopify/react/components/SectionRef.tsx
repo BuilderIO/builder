@@ -51,7 +51,7 @@ export const SectionRef = (props: SectionRefProps) => {
       const blockId = props.builderBlock?.id;
       const node = blockId && refs && refs[blockId];
       if (node && ref.current) {
-        ref.current.replaceWith(node);
+        ref.current.parentNode?.replaceChild(node, ref.current);
       }
     }
   }, [sectionName]);
