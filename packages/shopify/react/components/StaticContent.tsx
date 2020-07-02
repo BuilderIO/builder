@@ -49,7 +49,7 @@ const StaticContentComponent: React.SFC<StaticContentProps> = props => {
 export const StaticContent = withBuilder(StaticContentComponent, {
   name: 'Shopify:StaticContent',
   canHaveChildren: true,
-  hideFromInsertMenu: true,
+  description: 'Advanced component that preserves server rendered nodes, use with caution',
   defaultStyles: {
     // height: '200px',
     // how to disable styling
