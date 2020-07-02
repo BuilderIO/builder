@@ -4,6 +4,7 @@ import {
   BuilderStoreContext,
   BuilderBlockComponent,
   BuilderElement,
+  Builder,
 } from '@builder.io/react';
 import React, { useState } from 'react';
 
@@ -17,7 +18,7 @@ interface ForBlockProps {
 }
 
 export function ForBlock(props: ForBlockProps) {
-  const [arrayItems, setArrayItems] = useState<any[]>([]);
+  let arrayItems: any[] = [];
   const { repeat, builderState } = props;
 
   const collectionPath = repeat.collection;
@@ -30,7 +31,7 @@ export function ForBlock(props: ForBlockProps) {
 
   const itemName = repeat.itemName || (collectionName ? collectionName + 'Item' : 'item');
 
-  if (itemName && collectionName && builderState) {
+  if (itemName && collectionName && builderState && Builder.isBrowser) {
     if (builderState.context.shopify) {
       const renderedItems = builderState.context.shopify.liquid.get(
         collectionPath,
@@ -38,7 +39,7 @@ export function ForBlock(props: ForBlockProps) {
       );
 
       if (Array.isArray(renderedItems)) {
-        setArrayItems(renderedItems);
+        arrayItems = renderedItems;
       }
     }
   }
