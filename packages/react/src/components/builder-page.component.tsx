@@ -117,7 +117,7 @@ export interface BuilderPageProps {
   builderBlock?: BuilderElement
   dataOnly?: boolean
   hydrate?: boolean
-  // TODO: support default values in init 
+  // TODO: support default values in init
   isStatic?: boolean
   context?: any
   url?: string
@@ -241,13 +241,13 @@ export class BuilderPage extends React.Component<
   subscriptions: Subscription = new Subscription()
   // TODO: don't trigger initial one?
   onStateChange = new BehaviorSubject<any>(null)
-  asServer = false
+  asServer = Builder.isServer
 
   contentRef: BuilderContent | null = null
 
   styleRef: HTMLStyleElement | null = null
 
-  rootState = onChange({}, () => this.updateState())
+  rootState = Builder.isServer ? {} : onChange({}, () => this.updateState())
 
   lastJsCode = ''
   lastHttpRequests: { [key: string]: string | undefined } = {}
@@ -602,6 +602,9 @@ export class BuilderPage extends React.Component<
 
   @debounceNextTick
   notifyStateChange() {
+    if (Builder.isServer) {
+      return;
+    }
     if (!(this && this.state)) {
       return
     }
