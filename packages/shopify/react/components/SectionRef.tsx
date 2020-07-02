@@ -39,10 +39,15 @@ export const SectionRef = (props: SectionRefProps) => {
       }
       // This may look strange, but it is how Shopify's section rendering API
       // works https://shopify.dev/docs/themes/sections/section-rendering-api
+      // TODO: also send ?preview_theme_id and save that as a cookie or wrap this API
+      // specifically with /shopify/v1/data etc
       fetch(
         `https://cdn.builder.io/api/v1/proxy-api?url=${encodeURIComponent(
           `https://${location.host +
-            location.pathname}?section_id=${sectionName}&${location.search.replace('?', '')}`
+            location.pathname.replace(
+              '/apps/builder/preview',
+              ''
+            )}?section_id=${sectionName}&${location.search.replace('?', '')}`
         )}`
       )
         .then(res => res.text())
