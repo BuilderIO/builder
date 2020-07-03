@@ -404,6 +404,8 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
         await Promise.all([getWidgetsPromise, getShopifyPromise as any])
         const { Shopify } = await getShopifyJsPromise
 
+        const shopify = new Shopify({})
+
         // Ensure styles don't load twice
         BuilderPage.renderInto(
           this,
@@ -411,7 +413,8 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
             ...({ ref: (ref: any) => (this.builderPageRef = ref) } as any),
             modelName: name!,
             context: {
-              shopify: new Shopify({}),
+              shopify,
+              liquid: shopify.liquid,
               apiKey: builder.apiKey
             },
             entry,
@@ -461,13 +464,16 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
             this.dispatchEvent(loadEvent)
             const { Shopify } = await getShopifyJsPromise
 
+            const shopify = new Shopify({})
+
             BuilderPage.renderInto(
               this,
               {
                 ...({ ref: (ref: any) => (this.builderPageRef = ref) } as any),
                 modelName: name!,
                 context: {
-                  shopify: new Shopify({}),
+                  shopify,
+                  liquid: shopify.liquid,
                   apiKey: builder.apiKey
                 },
                 emailMode:
@@ -514,6 +520,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
                 await emailPromise
               }
               const { Shopify } = await getShopifyJsPromise
+              const shopify = new Shopify({})
               BuilderPage.renderInto(
                 this,
                 {
@@ -521,7 +528,8 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
                     ref: (ref: any) => (this.builderPageRef = ref)
                   } as any),
                   context: {
-                    shopify: new Shopify({}),
+                    shopify,
+                    liquid: shopify.liquid,
                     apiKey: builder.apiKey
                   },
                   modelName: name!,

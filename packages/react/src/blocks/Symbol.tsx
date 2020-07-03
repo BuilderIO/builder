@@ -24,8 +24,10 @@ export interface SymbolInfo {
 export interface SymbolProps {
   symbol?: SymbolInfo
   dataOnly?: boolean
+  dynamic?: boolean
   builderBlock?: BuilderElement
   attributes?: any
+  inheritState?: boolean
 }
 
 class SymbolComponent extends React.Component<SymbolProps> {
@@ -64,7 +66,8 @@ class SymbolComponent extends React.Component<SymbolProps> {
       ? NoWrap
       : (this.props.builderBlock && this.props.builderBlock.tagName) || 'div'
 
-    const { model, entry, data, content, inline, dynamic } = symbol || {}
+    const { model, entry, data, content, inline } = symbol || {}
+    const dynamic = symbol?.dynamic || this.props.dynamic
     if (!(model && (entry || dynamic)) && !inline) {
       showPlaceholder = true
     }
@@ -92,7 +95,7 @@ class SymbolComponent extends React.Component<SymbolProps> {
                 (attributes.class || attributes.className || '') +
                 ' builder-symbol' +
                 (symbol?.inline ? ' builder-inline-symbol' : '') +
-                (symbol?.dynamic ? ' builder-dynamic-symbol' : '')
+                ((symbol?.dynamic || this.props.dynamic) ? ' builder-dynamic-symbol' : '')
               }
             >
               {showPlaceholder ? (
@@ -103,7 +106,9 @@ class SymbolComponent extends React.Component<SymbolProps> {
                   context={{ ...state.context }}
                   modelName={model}
                   entry={entry}
-                  data={data}
+                  data={
+                    this.props.inheritState ? { ...data, ...state.state } : data
+                  }
                   inlineContent={symbol?.inline}
                   {...(content && { content })}
                   options={{ key }}
@@ -148,10 +153,18 @@ export const Symbol = withBuilder(SymbolComponent, {
     },
     {
       name: 'dynamic',
-      helperText: `Dynamically fetch this symbosl content from it's model and custom targeting`,
+      helperText: `Dynamically fetch this symbosl content from it's model and targeting`,
       type: 'boolean',
       defaultValue: false,
       advanced: true
+    },
+    {
+      name: 'inheritState',
+      helperText: `Inherit the parent component state and data`,
+      type: 'boolean',
+      defaultValue: isShopify,
+      advanced: true,
+      hideFromUI: true
     },
     {
       name: 'renderToLiquid',
@@ -159,7 +172,8 @@ export const Symbol = withBuilder(SymbolComponent, {
         'Render this symbols contents to liquid. Turn off to fetch with javascript and use custom targeting',
       type: 'boolean',
       defaultValue: isShopify,
-      hideFromUI: !isShopify
+      advanced: true,
+      hideFromUI: true
     }
   ]
 })
