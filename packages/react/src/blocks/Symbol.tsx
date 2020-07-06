@@ -12,6 +12,23 @@ const size = (thing: object) => Object.keys(thing).length
 
 const isShopify = Builder.isBrowser && 'Shopify' in window
 
+const refs: Record<string, Element> = {}
+
+if (Builder.isBrowser) {
+  try {
+    Array.from(document.querySelectorAll('[builder-static-symbol]')).forEach(
+      el => {
+        const id = (el as HTMLDivElement).getAttribute('builder-static-symbol')
+        if (id) {
+          refs[id] = el
+        }
+      }
+    )
+  } catch (err) {
+    console.error('Builder replace nodes error:', err)
+  }
+}
+
 export interface SymbolInfo {
   model?: string
   entry?: string
@@ -32,6 +49,7 @@ export interface SymbolProps {
 
 class SymbolComponent extends React.Component<SymbolProps> {
   ref: BuilderPage | null = null
+  staticRef: HTMLDivElement | null = null
 
   get placeholder() {
     return (
@@ -40,6 +58,19 @@ class SymbolComponent extends React.Component<SymbolProps> {
         choose a model and entry for this symbol.
       </div>
     )
+  }
+
+  componentDidMount() {
+    if (
+      this.useStatic &&
+      this.staticRef &&
+      refs[this.props.builderBlock?.id!]
+    ) {
+      this.staticRef.parentNode?.replaceChild(
+        refs[this.props.builderBlock?.id!],
+        this.staticRef
+      )
+    }
   }
 
   shouldComponentUpdate(nextProps: any) {
@@ -53,7 +84,19 @@ class SymbolComponent extends React.Component<SymbolProps> {
     return true
   }
 
+  get useStatic() {
+    return Boolean(
+      Builder.isBrowser &&
+        refs[this.props.builderBlock?.id!] &&
+        !(Builder.isEditing || Builder.isPreviewing)
+    )
+  }
+
   render() {
+    if (this.useStatic) {
+      return <div ref={el => (this.staticRef = el)} />
+    }
+
     const symbol = this.props.symbol
 
     let showPlaceholder = false
@@ -95,7 +138,9 @@ class SymbolComponent extends React.Component<SymbolProps> {
                 (attributes.class || attributes.className || '') +
                 ' builder-symbol' +
                 (symbol?.inline ? ' builder-inline-symbol' : '') +
-                ((symbol?.dynamic || this.props.dynamic) ? ' builder-dynamic-symbol' : '')
+                (symbol?.dynamic || this.props.dynamic
+                  ? ' builder-dynamic-symbol'
+                  : '')
               }
             >
               {showPlaceholder ? (

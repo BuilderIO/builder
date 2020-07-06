@@ -54,6 +54,6 @@ Builder.registerEditor({
   /**
    * Here we override the built-in richtext editor.
    */
-  name: 'richtext',
+  name: 'richText',
   component: RichTextEditor
 })

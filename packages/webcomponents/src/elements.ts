@@ -187,6 +187,15 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
         return
       }
       this.connected = true
+
+      if (
+        this.hasAttribute('editing-only') &&
+        this.getAttribute('editing-only') !== 'false' &&
+        !(Builder.isEditing || Builder.isPreviewing)
+      ) {
+        return
+      }
+
       const prerenderAttr = this.getAttribute('prerender')
       if (prerenderAttr) {
         this.prerender = prerenderAttr === 'false' ? false : this.prerender
