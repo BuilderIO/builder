@@ -29,7 +29,7 @@ function RichTextEditor(props) {
       theme="snow"
       value={props.value}
       onChange={props.onChange}
-      modules={/* your custom optoins */}
+      modules={/* your custom options */}
     />
   )
 }
