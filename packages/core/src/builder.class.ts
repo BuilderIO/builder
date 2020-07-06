@@ -187,6 +187,7 @@ export interface GetContentOptions {
   userAttributes?: UserAttributes;
   // Alias for userAttributes.urlPath
   url?: string;
+  includeUrl?: boolean;
   cacheSeconds?: number;
   limit?: number;
   query?: any;
@@ -395,6 +396,9 @@ export class Builder {
   static components: Component[] = [];
   static singletonInstance: Builder;
   static useNewApi = true;
+  // isStatic delegates all variants rendering and election to the variants provider
+  // which in turn will always render default variation on server and winning variation on client
+  static isStatic = false;
   static animator = new Animator();
 
   static nextTick = nextTick;
@@ -705,7 +709,6 @@ export class Builder {
   private cachebust = false;
   private overrideParams = '';
   private noCache = false;
-  private overrideHost = '';
   private preview = false;
 
   get browserTrackingDisabled() {
@@ -1141,7 +1144,6 @@ export class Builder {
     this.cachebust = false;
     this.noCache = false;
     this.preview = false;
-    this.overrideHost = '';
     this.editingModel = null;
     this.overrides = {};
     this.env = 'production';
@@ -1186,10 +1188,6 @@ export class Builder {
         if (editingModel && editingModel !== 'true') {
           this.editingModel = editingModel;
         }
-      }
-
-      if (host) {
-        this.overrideHost = host;
       }
 
       if (cachebust) {
@@ -1554,10 +1552,20 @@ export class Builder {
     return instance.queueGetContent(modelName, options).map(
       /* map( */ (matches: any[] | null) => {
         const match = matches && matches[0];
+        if (Builder.isStatic) {
+          return match;
+        }
+
         const matchData = match && match.data;
         if (!matchData) {
           return null;
         }
+
+        if (typeof matchData.blocksString !== 'undefined') {
+          matchData.blocks = JSON.parse(matchData.blocksString);
+          delete matchData.blocksString;
+        }
+
         return {
           // TODO: add ab test info here and other high level stuff
           data: matchData,
@@ -1683,10 +1691,6 @@ export class Builder {
   }
 
   get host() {
-    if (this.overrideHost) {
-      return this.overrideHost;
-    }
-
     if (this.env.includes('//')) {
       return this.env;
     }
@@ -1746,6 +1750,14 @@ export class Builder {
         : {
             urlPath: this.getLocation().pathname,
           };
+
+    const fullUrlQueueItem = queue.find((item) => !!item.includeUrl);
+    if (fullUrlQueueItem) {
+      const location = this.getLocation();
+      if (location.origin) {
+        queryParams.url = `${location.origin}${location.pathname}${location.search}`;
+      }
+    }
 
     const urlQueueItem = useQueue?.find((item) => item.url);
     if (urlQueueItem?.url) {
@@ -1876,7 +1888,9 @@ export class Builder {
           const data = result[keyName];
           const sorted = data; // sortBy(data, item => item.priority);
           if (data) {
-            const testModifiedResults = this.processResultsForTests(sorted);
+            const testModifiedResults = Builder.isStatic
+              ? sorted
+              : this.processResultsForTests(sorted);
             observer.next(testModifiedResults);
           } else {
             const search = this.getLocation().search;
@@ -2008,7 +2022,6 @@ export class Builder {
     if (!this.apiKey) {
       throw new Error('Builder needs to be initialized with an API key!');
     }
-
     return this.queueGetContent(modelName);
   }
 }

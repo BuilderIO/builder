@@ -141,7 +141,7 @@ function Docs({ docsContent, docsNav, docsHeader }: any /* TODO: types */) {
                     css={{
                       color: 'steelblue',
                     }}
-                    href="/c/docs/intro?v=2"
+                    href="/c/docs/intro"
                   >
                     go to our docs homepage
                   </a>

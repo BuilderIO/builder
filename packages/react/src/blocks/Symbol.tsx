@@ -10,6 +10,8 @@ import { withBuilder } from '../functions/with-builder'
 
 const size = (thing: object) => Object.keys(thing).length
 
+const isShopify = Builder.isBrowser && 'Shopify' in window
+
 export interface SymbolInfo {
   model?: string
   entry?: string
@@ -143,6 +145,21 @@ export const Symbol = withBuilder(SymbolComponent, {
       defaultValue: false,
       advanced: true,
       hideFromUI: true
+    },
+    {
+      name: 'dynamic',
+      helperText: `Dynamically fetch this symbosl content from it's model and custom targeting`,
+      type: 'boolean',
+      defaultValue: false,
+      advanced: true
+    },
+    {
+      name: 'renderToLiquid',
+      helperText:
+        'Render this symbols contents to liquid. Turn off to fetch with javascript and use custom targeting',
+      type: 'boolean',
+      defaultValue: isShopify,
+      hideFromUI: !isShopify
     }
   ]
 })

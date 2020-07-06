@@ -12,14 +12,15 @@ interface Props {
 // TODO: settings context to pass this down. do in shopify-specific generated code
 const globalReplaceNodes = ({} as { [key: string]: Element }) || null
 
-// TODO: take index into account...
+const isShopify = Builder.isBrowser && 'Shopify' in window
+
 if (Builder.isBrowser && globalReplaceNodes) {
   try {
     // TODO: keep track of indexes for if this is repeated have globalReplaceNodes[key][index]
     Array.from(
       document.querySelectorAll(
-        // TODO: always use replace nodes by default for shopify context users
-        location.host === 'heybloomwell.com' || location.host === 'superkin.com'
+        // Always use replace nodes by default for shopify for liquid compatibility
+        isShopify
           ? '.builder-custom-code'
           : '.builder-custom-code.replace-nodes'
       )
@@ -50,9 +51,7 @@ class CustomCodeComponent extends React.Component<Props> {
   constructor(props: Props) {
     super(props)
 
-    this.replaceNodes =
-      Builder.isBrowser &&
-      (props.replaceNodes || (location.host === 'heybloomwell.com' || location.host === 'superkin.com'))
+    this.replaceNodes = Builder.isBrowser && (props.replaceNodes || isShopify)
 
     if (
       this.replaceNodes &&
@@ -171,8 +170,10 @@ export const CustomCode = withBuilder(CustomCodeComponent, {
       name: 'replaceNodes',
       type: 'boolean',
       helperText: 'Preserve server rendered dom nodes',
-      defaultValue: false,
-      advanced: true
+      advanced: true,
+      ...(isShopify && {
+        defaultValue: true
+      })
     },
     {
       name: 'scriptsClientOnly',

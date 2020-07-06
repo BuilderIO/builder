@@ -6,6 +6,7 @@ import { BuilderBlock } from './builder-block.component'
 // TODO: fetch these for user and send them with same response like graphql
 import { Size } from '../constants/device-sizes.constant'
 
+
 export interface BuilderBlocksProps {
   fieldName?: string
   // TODO: block type (ElementType[])
