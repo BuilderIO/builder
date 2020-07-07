@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Builder, BuilderElement, BuilderStore, builder } from '@builder.io/react';
 import { findAndRunScripts } from '../functions/find-and-run-scripts';
+import { serializeLiquidArgs } from '../functions/serialize-liquid-args';
 
 interface LiquidBlockProps {
-  options: string;
+  options?: Record<string, number | boolean | string>;
   templatePath?: string;
   builderBlock?: BuilderElement;
   builderState?: BuilderStore;
@@ -29,7 +30,7 @@ export const LiquidBlock = ({
   useEffect(() => {
     const blockId = builderBlock?.id;
     const node = blockId && refs && refs[blockId];
-    const args = options || '';
+    const args = serializeLiquidArgs(options);
     const cacheKey = blockName + args;
 
     if (!node || Builder.isEditing || Builder.isPreviewing) {
@@ -73,7 +74,9 @@ export const LiquidBlock = ({
       ref={ref}
       builder-liquid-block={builderBlock?.id}
       className="builder-liquid-block"
-      dangerouslySetInnerHTML={{ __html: html || cache[blockName + (options || '')] || '' }}
+      dangerouslySetInnerHTML={{
+        __html: html || cache[blockName + serializeLiquidArgs(options)] || '',
+      }}
     />
   );
 };
