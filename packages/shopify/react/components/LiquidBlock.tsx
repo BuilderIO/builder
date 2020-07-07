@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Builder, BuilderElement, BuilderStore, builder } from '@builder.io/react';
 import { findAndRunScripts } from '../functions/find-and-run-scripts';
+import { serializeLiquidArgs } from '../functions/serialize-liquid-args';
 
 interface LiquidBlockProps {
+  options?: Record<string, number | boolean | string>;
   templatePath?: string;
   builderBlock?: BuilderElement;
   builderState?: BuilderStore;
@@ -16,37 +18,43 @@ const refs =
     return memo;
   }, {} as { [key: string]: Element });
 
-export const LiquidBlock = (props: LiquidBlockProps) => {
+export const LiquidBlock = ({
+  options,
+  builderBlock,
+  templatePath,
+  builderState,
+}: LiquidBlockProps) => {
   const [html, setHtml] = useState<string | null>(null);
   const ref = useRef<HTMLDivElement | null>(null);
-  const blockName = props.templatePath?.split('/')[1].replace(/\.liquid$/, '')!;
-
+  const blockName = templatePath?.split('/')[1].replace(/\.liquid$/, '')!;
   useEffect(() => {
-    const blockId = props.builderBlock?.id;
+    const blockId = builderBlock?.id;
     const node = blockId && refs && refs[blockId];
-    if (!node) {
-      if (cache[blockName]) {
+    const args = serializeLiquidArgs(options);
+    const cacheKey = blockName + args;
+
+    if (!node || Builder.isEditing || Builder.isPreviewing) {
+      if (cache[cacheKey]) {
         return;
       }
       // Convert `sections/foo.liquid` -> `foo`
       if (!blockName) {
         return;
       }
-      if (cache[blockName]) {
-        setHtml(cache[blockName]);
+      if (cache[cacheKey]) {
+        setHtml(cache[cacheKey]);
         return;
       }
 
-      // TODO
-      const args = '';
-
       fetch(
-        `${builder.host}/api/v1/shopify/data/render-liquid-snippet?snippet=${blockName}&apiKey=${props.builderState?.context.apiKey}&args=${args}`
+        `${builder.host}/api/v1/shopify/data/render-liquid-snippet?snippet=${blockName}&apiKey=${
+          builderState?.context.apiKey
+        }&args=${encodeURIComponent(args)}`
       )
         .then(res => res.json())
         .then(json => {
           const text = json.liquidSnippet;
-          cache[blockName] = text;
+          cache[cacheKey] = text;
           setHtml(text);
           setTimeout(() => {
             if (ref.current) {
@@ -59,14 +67,16 @@ export const LiquidBlock = (props: LiquidBlockProps) => {
         ref.current.parentNode?.replaceChild(node, ref.current);
       }
     }
-  }, [blockName]);
+  }, [options, blockName]);
 
   return (
     <div
       ref={ref}
-      builder-liquid-block={props.builderBlock?.id}
+      builder-liquid-block={builderBlock?.id}
       className="builder-liquid-block"
-      dangerouslySetInnerHTML={{ __html: html || cache[blockName] || '' }}
+      dangerouslySetInnerHTML={{
+        __html: html || cache[blockName + serializeLiquidArgs(options)] || '',
+      }}
     />
   );
 };
