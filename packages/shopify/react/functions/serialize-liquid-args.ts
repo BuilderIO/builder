@@ -7,7 +7,10 @@ export function serializeLiquidArgs(data?: Record<string, any>) {
       if (/^[a-z_0-9]+$/i.test(key)) {
         // For now just support boolean, number, string
         if (['boolean', 'number', 'string'].includes(typeof value)) {
-          argStrings.push(`${key}: ${JSON.stringify(value)}`);
+          const json = JSON.stringify(
+            typeof value === 'string' ? value.replace(/"/g, '&quot;') : value
+          );
+          argStrings.push(`${key}: ${json}`);
         }
       }
     }
