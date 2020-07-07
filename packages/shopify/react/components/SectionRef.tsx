@@ -18,7 +18,7 @@ const refs =
 
 export const SectionRef = (props: SectionRefProps) => {
   const [html, setHtml] = useState<string | null>(null);
-  const sectionName = props.section?.split('/')[1].replace(/\.liquid$/, '')!;
+  const sectionName = props.section?.split('/')[1]?.replace(/\.liquid$/, '')!;
 
   const ref = useRef<HTMLDivElement | null>(null);
 
@@ -67,7 +67,11 @@ export const SectionRef = (props: SectionRefProps) => {
     }
   }, [sectionName]);
 
-  return (
+  return !sectionName ? (
+    <div style={{ padding: 50, textAlign: 'center' }}>
+      Please choose a valid name for your section
+    </div>
+  ) : (
     <div
       ref={ref}
       builder-shopify-section={props.builderBlock?.id}
@@ -79,5 +83,12 @@ export const SectionRef = (props: SectionRefProps) => {
 
 Builder.registerComponent(SectionRef, {
   name: 'Shopify:SectionRef',
-  hideFromInsertMenu: true,
+  friendlyName: 'Shopify Section',
+  inputs: [
+    {
+      name: 'section',
+      helperText: 'Full path to the section, e.g. sections/product.liquid',
+      type: 'string',
+    },
+  ],
 });
