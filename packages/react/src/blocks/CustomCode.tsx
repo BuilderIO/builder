@@ -51,7 +51,13 @@ class CustomCodeComponent extends React.Component<Props> {
   constructor(props: Props) {
     super(props)
 
-    this.replaceNodes = Builder.isBrowser && (props.replaceNodes || isShopify)
+    const id = this.props.builderBlock?.id
+    this.replaceNodes = Boolean(
+      Builder.isBrowser &&
+        (props.replaceNodes || isShopify) &&
+        id &&
+        globalReplaceNodes?.[id]
+    )
 
     if (
       this.replaceNodes &&
@@ -59,7 +65,6 @@ class CustomCodeComponent extends React.Component<Props> {
       this.firstLoad &&
       this.props.builderBlock
     ) {
-      const id = this.props.builderBlock.id
       if (id && globalReplaceNodes?.[id]) {
         const el = globalReplaceNodes[id]
         this.originalRef = el
