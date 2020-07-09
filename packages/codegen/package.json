@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/codegen",
-  "version": "0.0.9",
+  "version": "0.0.10-alpha.0",
   "description": "Generate code from Builder.io content",
   "scripts": {
     "prepare": "tsc",
@@ -33,7 +33,7 @@
     "typescript": ">=2.4.1"
   },
   "dependencies": {
-    "@builder.io/sdk": "^1.1.11",
+    "@builder.io/sdk": "^1.1.12-alpha.0",
     "@types/json5": "0.0.30",
     "@types/lodash": "^4.14.149",
     "json5": "^2.1.2",
