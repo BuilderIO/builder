@@ -21,6 +21,9 @@ builder.get(YOUR_MODEL_NAME, {
 }).promise().then(({ data }) => {
   // Do something with the data
 })
+
+// Turn of cookies/tracking
+builder.canTrack = false;
 ```
 
 More docs coming soon!
