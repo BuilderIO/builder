@@ -685,10 +685,10 @@ export class BuilderPage extends React.Component<
     }
   }
 
-  getFontCss(data: any) {
+  getFontCss(data?: any) {
     // TODO: separate internal data from external
     return (
-      (data.customFonts &&
+      (data?.customFonts &&
         data.customFonts.length &&
         data.customFonts
           .map((font: any) => this.getCssFromFont(font, data))
@@ -697,8 +697,8 @@ export class BuilderPage extends React.Component<
     )
   }
 
-  ensureFontsLoaded(data: any) {
-    if (data.customFonts && Array.isArray(data.customFonts)) {
+  ensureFontsLoaded(data?: any) {
+    if (data?.customFonts && Array.isArray(data.customFonts)) {
       for (const font of data.customFonts) {
         const url = font.fileUrl
           ? font.fileUrl
@@ -719,7 +719,7 @@ export class BuilderPage extends React.Component<
     }
   }
 
-  getCss(data: any) {
+  getCss(data?: any) {
     const contentId = this.useContent?.id
     let cssCode = data?.cssCode || ''
     if (contentId) {
