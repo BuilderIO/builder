@@ -1,4 +1,5 @@
 import { Liquid } from 'liquidjs';
+import { getShopifyImageUrl } from './get-shopify-img-url';
 
 const filters = [
   {
@@ -25,31 +26,8 @@ const filters = [
   },
   {
     name: 'img_url',
-    action(src: any, size: any) {
-      // Taken from the shopify theme script repo
-      // https://github.com/Shopify/theme-scripts/blob/bcfb471f2a57d439e2f964a1bb65b67708cc90c3/packages/theme-images/images.js#L59
-      function removeProtocol(path: string) {
-        return path.replace(/http(s)?:/, '');
-      }
-
-      if (size === null) {
-        return src;
-      }
-
-      if (size === 'master') {
-        return removeProtocol(src);
-      }
-
-      const match = src.match(/\.(jpg|jpeg|gif|png|bmp|bitmap|tiff|tif)(\?v=\d+)?$/i);
-
-      if (match) {
-        const prefix = src.split(match[0]);
-        const suffix = match[0];
-
-        return removeProtocol(`${prefix[0]}_${size}${suffix}`);
-      } else {
-        return null;
-      }
+    action(src: string, size: string) {
+      return getShopifyImageUrl(src, size);
     },
   },
   {

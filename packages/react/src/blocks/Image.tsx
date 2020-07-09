@@ -8,6 +8,36 @@ import { BuilderMetaContext } from '../store/builder-meta'
 import { withBuilder } from '../functions/with-builder'
 import { throttle } from '../functions/throttle'
 
+const getShopifyImageUrl = (src: string, size: string) => {
+  if (!src || !src?.match(/cdn\.shopify\.com/) || !size) {
+    return src
+  }
+
+  // Taken from (and modified) the shopify theme script repo
+  // https://github.com/Shopify/theme-scripts/blob/bcfb471f2a57d439e2f964a1bb65b67708cc90c3/packages/theme-images/images.js#L59
+  function removeProtocol(path: string) {
+    return path.replace(/http(s)?:/, '')
+  }
+
+  if (size === 'master') {
+    return removeProtocol(src)
+  }
+
+  const match = src.match(
+    /(_\d+x(\d+)?)?(\.(jpg|jpeg|gif|png|bmp|bitmap|tiff|tif)(\?v=\d+)?)$/i
+  )
+
+  if (match) {
+    const prefix = src.split(match[0])
+    const suffix = match[3]
+    const useSize = size.match('x') ? size : `${size}x`
+
+    return removeProtocol(`${prefix[0]}_${useSize}${suffix}`)
+  }
+
+  return null
+}
+
 const DEFAULT_ASPECT_RATIO = 0.7041
 
 export function updateQueryParam(uri = '', key: string, value: string) {
@@ -25,43 +55,91 @@ export const getSrcSet = (url: string) => {
     return url
   }
 
-  if (!url.match(/builder\.io/)) {
+  const sizes = [100, 200, 400, 800, 1200, 1600, 2000]
+
+  if (url.match(/builder\.io/)) {
+    let srcUrl = url
+    const widthInSrc = Number(url.split('?width=')[1])
+    if (!isNaN(widthInSrc)) {
+      srcUrl = `${srcUrl} ${widthInSrc}w`
+    }
+
+    return sizes
+      .filter(size => size !== widthInSrc)
+      .map(size => `${updateQueryParam(url, 'width', String(size))} ${size}w`)
+      .concat([srcUrl])
+      .join(', ')
+  } else if (url.match(/cdn\.shopify\.com/)) {
+    return sizes
+      .map(size => {
+        const sizeUrl = getShopifyImageUrl(url, `${size}x${size}`)
+        return `${sizeUrl} ${size}w`
+      })
+      .concat([url])
+      .join(', ')
+  } else {
     return url
   }
-  let srcUrl = url
-  const widthInSrc = Number(url.split('?width=')[1])
-  if (!isNaN(widthInSrc)) {
-    srcUrl = `${srcUrl} ${widthInSrc}w`
-  }
-  const sizes = [100, 200, 400, 800, 1200, 1600, 2000]
-  return sizes
-    .filter(size => size !== widthInSrc)
-    .map(size => `${updateQueryParam(url, 'width', String(size))} ${size}w`)
-    .concat([srcUrl])
-    .join(', ')
 }
 
-export const getSizes = (sizes: string) => {
-  if (!sizes) {
-    return ''
+export const getSizes = (sizes: string, block: BuilderElement) => {
+  let useSizes = ''
+
+  if (sizes) {
+    const splitSizes = sizes.split(',')
+    const sizesLength = splitSizes.length
+    useSizes = splitSizes
+      .map((size: string, index) => {
+        if (sizesLength === index + 1) {
+          // If it is the last size in the array, then we want to strip out
+          // any media query information. According to the img spec, the last
+          // value for sizes cannot have a media query. If there is a media
+          // query at the end it breaks AMP mode rendering
+          // https://github.com/ampproject/amphtml/blob/b6313e372fdd1298928e2417dcc616b03288e051/src/size-list.js#L169
+          return size.replace(/\([\s\S]*?\)/g, '').trim()
+        } else {
+          return size
+        }
+      })
+      .join(', ')
+  } else if (block && block.responsiveStyles) {
+    const generatedSizes = []
+    let hasSmallOrMediumSize = false
+    const unitRegex = /^\d+/
+
+    if (block.responsiveStyles?.small?.width?.match(unitRegex)) {
+      hasSmallOrMediumSize = true
+      const mediaQuery = '(max-width: 639px)'
+      const widthAndQuery = `${mediaQuery} ${block.responsiveStyles.small.width.replace(
+        '%',
+        'vw'
+      )}`
+      generatedSizes.push(widthAndQuery)
+    }
+
+    if (block.responsiveStyles?.medium?.width?.match(unitRegex)) {
+      hasSmallOrMediumSize = true
+      const mediaQuery = '(max-width: 999px)'
+      const widthAndQuery = `${mediaQuery} ${block.responsiveStyles.medium.width.replace(
+        '%',
+        'vw'
+      )}`
+      generatedSizes.push(widthAndQuery)
+    }
+
+    if (block.responsiveStyles?.large?.width) {
+      const width = block.responsiveStyles.large.width.replace('%', 'vw')
+      generatedSizes.push(width)
+    } else if (hasSmallOrMediumSize) {
+      generatedSizes.push('100vw')
+    }
+
+    if (generatedSizes.length) {
+      useSizes = generatedSizes.join(', ')
+    }
   }
 
-  const splitSizes = sizes.split(',')
-  const sizesLength = splitSizes.length
-  return splitSizes
-    .map((size: string, index) => {
-      if (sizesLength === index + 1) {
-        // If it is the last size in the array, then we want to strip out
-        // any media query information. According to the img spec, the last
-        // value for sizes cannot have a media query. If there is a media
-        // query at the end it breaks AMP mode rendering
-        // https://github.com/ampproject/amphtml/blob/b6313e372fdd1298928e2417dcc616b03288e051/src/size-list.js#L169
-        return size.replace(/\([\s\S]*?\)/g, '').trim()
-      } else {
-        return size
-      }
-    })
-    .join(', ')
+  return useSizes
 }
 
 // TODO: use picture tag to support more formats
@@ -123,9 +201,9 @@ class ImageComponent extends React.Component<any> {
       return undefined
     }
 
-    // We can auto add srcset for cdn.builder.io images, otherwise you can supply
-    // this prop manually
-    if (!url.match(/builder\.io/)) {
+    // We can auto add srcset for cdn.builder.io and shopify
+    // images, otherwise you can supply this prop manually
+    if (!(url.match(/builder\.io/) || url.match(/cdn\.shopify\.com/))) {
       return undefined
     }
 
@@ -137,7 +215,7 @@ class ImageComponent extends React.Component<any> {
     const children = this.props.builderBlock && this.props.builderBlock.children
 
     let srcset = this.props.srcset
-    const sizes = getSizes(this.props.sizes)
+    const sizes = getSizes(this.props.sizes, this.props.builderBlock)
     const image = this.props.image
 
     if (srcset && image && image.includes('builder.io/api/v1/image')) {

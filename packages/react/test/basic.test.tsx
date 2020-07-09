@@ -1,8 +1,9 @@
 import * as React from 'react'
 import { renderToString } from 'react-dom/server'
 import { render } from '@testing-library/react'
-import { BuilderElement, Builder, builder } from '@builder.io/sdk'
+import { Builder, builder } from '@builder.io/sdk'
 import { BuilderPage } from '../src/builder-react'
+import { el, block } from './functions/render-block'
 
 builder.init('null')
 
@@ -13,29 +14,6 @@ describe('Dummy test', () => {
     expect(true).toBeTruthy()
   })
 })
-
-const el = (options?: Partial<BuilderElement>): BuilderElement => ({
-  '@type': '@builder.io/sdk:Element',
-  id:
-    'builder-' +
-    Math.random()
-      .toString()
-      .split('.')[1],
-  ...options
-})
-
-const block = (
-  name: string,
-  options?: any,
-  elOptions?: Partial<BuilderElement>
-) =>
-  el({
-    ...elOptions,
-    component: {
-      name,
-      options
-    }
-  })
 
 const server = (cb: () => void) => {
   Builder.isServer = true
@@ -87,7 +65,7 @@ describe('Renders tons of components', () => {
     const testApi = render(getRenderExampleElement())
   })
   it('works with SSR', () => {
-    const string = renderToString(getRenderExampleElement())
+    renderToString(getRenderExampleElement())
   })
 })
 
@@ -121,8 +99,8 @@ describe('Data rendering', () => {
 
   it('works with SSR', () => {
     server(() => {
-      const string = renderToString(getBindingExampleElement())
-      expect(string).toContain(TEXT_STRING)
+      const renderedString = renderToString(getBindingExampleElement())
+      expect(renderedString).toContain(TEXT_STRING)
     })
   })
 })
