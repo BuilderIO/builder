@@ -3,6 +3,11 @@
 <builder-component
   [options]="options"
   [data]="data"
-  model="page"
+  [model]="'page'"
+  [reloadOnRoute]="true"
+  [handleRouting]="true"
+  [prerender]="false"
+  [navigationTimeout]="false"
+  (load)="load($event)"
 ></builder-component>
 <router-outlet></router-outlet>
