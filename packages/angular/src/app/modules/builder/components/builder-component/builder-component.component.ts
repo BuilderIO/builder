@@ -29,7 +29,7 @@ let wcScriptInserted = false;
 const NAVIGATION_TIMEOUT_DEFAULT = 1000;
 
 function delay<T = any>(duration: number, resolveValue?: T) {
-  return new Promise<T>(resolve => setTimeout(() => resolve(resolveValue), duration));
+  return new Promise<T>((resolve) => setTimeout(() => resolve(resolveValue), duration));
 }
 
 export interface RouteEvent {
@@ -128,13 +128,14 @@ export class BuilderComponentComponent implements OnDestroy, OnInit {
     script.id = SCRIPT_ID;
     // TODO: detect builder.wcVersion and if customEleemnts exists and do
     // dynamic versions and lite here
-    script.src = `https://cdn.builder.io/js/webcomponents@${wcVersion ||
-      'latest'}/dist/system/angular/builder-webcomponents-async.js`;
+    script.src = `https://cdn.builder.io/js/webcomponents@${
+      wcVersion || 'latest'
+    }/dist/system/angular/builder-webcomponents-async.js`;
     script.async = true;
     wcScriptInserted = true;
     return new Promise((resolve, reject) => {
       script.addEventListener('load', resolve);
-      script.addEventListener('error', e => reject(e.error));
+      script.addEventListener('error', (e) => reject(e.error));
       document.head.appendChild(script);
     });
   }
@@ -163,7 +164,7 @@ export class BuilderComponentComponent implements OnDestroy, OnInit {
     if (Builder.isBrowser) {
       if (this.router) {
         this.subscriptions.add(
-          this.router.events.subscribe(event => {
+          this.router.events.subscribe((event) => {
             if (event instanceof NavigationEnd) {
               if (this.reloadOnRoute) {
                 // Force reload component
@@ -268,12 +269,19 @@ export class BuilderComponentComponent implements OnDestroy, OnInit {
     let success: boolean | null = null;
     const routePromise = this.router.navigateByUrl(href);
 
-    const useNavigationTimeout = !(typeof this.navigationTimeout === 'boolean' && !this.navigationTimeout);
-    const timeoutPromise = delay(typeof this.navigationTimeout === 'number' ? this.navigationTimeout : NAVIGATION_TIMEOUT_DEFAULT, false);
+    const useNavigationTimeout = !(
+      typeof this.navigationTimeout === 'boolean' && !this.navigationTimeout
+    );
+    const timeoutPromise = delay(
+      typeof this.navigationTimeout === 'number'
+        ? this.navigationTimeout
+        : NAVIGATION_TIMEOUT_DEFAULT,
+      false
+    );
 
     try {
       const promiseRace = useNavigationTimeout ? [timeoutPromise, routePromise] : [routePromise];
-      success =  await Promise.race(promiseRace);
+      success = await Promise.race(promiseRace);
     } finally {
       // This is in a click handler so it will only run on the client
       if (success) {

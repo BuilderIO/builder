@@ -23,6 +23,7 @@ export interface BuilderContentProps<ContentType> {
   dataOnly?: boolean
   builder?: Builder
   isStatic?: boolean
+  content?: BuilderContent
 }
 
 export class BuilderContent<
@@ -43,14 +44,24 @@ export class BuilderContent<
     }
   }
 
+  get options() {
+    let options = {
+      ...(this.props.options || ({} as GetContentOptions))
+    }
+    if (this.props.content && !options.initialContent?.length) {
+      options.initialContent = [this.props.content]
+    }
+
+    return options
+  }
+
   get data() {
     const { data } = this.state
 
     return (
       ((this.props.inline || !Builder.isBrowser || this.firstLoad) &&
-        this.props.options &&
-        this.props.options.initialContent &&
-        this.props.options.initialContent[0]) ||
+        this.options.initialContent &&
+        this.options.initialContent[0]) ||
       data
     )
   }
@@ -111,11 +122,8 @@ export class BuilderContent<
     // this.builder.env = 'development';
     if (!this.props.inline || Builder.isEditing) {
       this.subscribeToContent()
-    } else if (
-      this.props.inline &&
-      this.props.options?.initialContent?.length
-    ) {
-      const contentData = this.props.options.initialContent[0]
+    } else if (this.props.inline && this.options?.initialContent?.length) {
+      const contentData = this.options.initialContent[0]
       this.builder.trackImpression(contentData.id, this.renderedVairantId)
     }
 
@@ -130,68 +138,66 @@ export class BuilderContent<
     if (this.props.modelName !== '_inline') {
       // TODO:... using targeting...? express.request hmmm
       this.subscriptions.add(
-        builder
-          .queueGetContent(this.props.modelName, this.props.options)
-          .subscribe(
-            matches => {
-              const match = matches && matches[0]
-              this.setState({
-                data: match
-              })
+        builder.queueGetContent(this.props.modelName, this.options).subscribe(
+          matches => {
+            const match = matches && matches[0]
+            this.setState({
+              data: match
+            })
 
-              if (match && this.firstLoad) {
-                // TODO: autoTrack
-                if (builder.autoTrack) {
-                  let addedObserver = false
-                  if (typeof IntersectionObserver === 'function' && this.ref) {
-                    try {
-                      const observer = (this.intersectionObserver = new IntersectionObserver(
-                        (entries, observer) => {
-                          entries.forEach(entry => {
-                            // In view
-                            if (
-                              entry.intersectionRatio > 0 &&
-                              !this.trackedImpression
-                            ) {
-                              this.builder.trackImpression(
-                                match.id!,
-                                this.renderedVairantId
-                              )
-                              this.trackedImpression = true
-                              if (this.ref) {
-                                observer.unobserve(this.ref)
-                              }
+            if (match && this.firstLoad) {
+              // TODO: autoTrack
+              if (builder.autoTrack) {
+                let addedObserver = false
+                if (typeof IntersectionObserver === 'function' && this.ref) {
+                  try {
+                    const observer = (this.intersectionObserver = new IntersectionObserver(
+                      (entries, observer) => {
+                        entries.forEach(entry => {
+                          // In view
+                          if (
+                            entry.intersectionRatio > 0 &&
+                            !this.trackedImpression
+                          ) {
+                            this.builder.trackImpression(
+                              match.id!,
+                              this.renderedVairantId
+                            )
+                            this.trackedImpression = true
+                            if (this.ref) {
+                              observer.unobserve(this.ref)
                             }
-                          })
-                        }
-                      ))
+                          }
+                        })
+                      }
+                    ))
 
-                      observer.observe(this.ref)
-                      addedObserver = true
-                    } catch (err) {
-                      console.warn('Could not bind intersection observer')
-                    }
-                  }
-                  if (!addedObserver) {
-                    this.trackedImpression = true
-                    this.builder.trackImpression(
-                      match.id!,
-                      this.renderedVairantId
-                    )
+                    observer.observe(this.ref)
+                    addedObserver = true
+                  } catch (err) {
+                    console.warn('Could not bind intersection observer')
                   }
                 }
-                this.firstLoad = false
+                if (!addedObserver) {
+                  this.trackedImpression = true
+                  this.builder.trackImpression(
+                    match.id!,
+                    this.renderedVairantId
+                  )
+                }
               }
-              if (this.props.contentLoaded) {
-                this.props.contentLoaded(match && match.data)
-              }
-            },
-            error => {
-              if (this.props.contentError) {
-                this.props.contentError(error)
-              }
+              this.firstLoad = false
             }
-          )
+            if (this.props.contentLoaded) {
+              this.props.contentLoaded(match && match.data)
+            }
+          },
+          error => {
+            if (this.props.contentError) {
+              this.props.contentError(error)
+            }
+          }
+        )
       )
     }
   }

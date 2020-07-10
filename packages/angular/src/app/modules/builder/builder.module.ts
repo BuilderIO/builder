@@ -10,6 +10,8 @@ import { BuilderBlocksComponent } from './components/builder-blocks/builder-bloc
 import { BuilderComponentComponent } from './components/builder-component/builder-component.component';
 import { BuilderComponentService } from './components/builder-component/builder-component.service';
 
+Builder.isStatic = true;
+
 const directives = [BuilderContentDirective];
 
 const components = [BuilderContentComponent, BuilderBlocksComponent, BuilderComponentComponent];

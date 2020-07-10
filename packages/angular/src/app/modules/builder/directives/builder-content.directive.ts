@@ -7,24 +7,18 @@ import {
   ViewContainerRef,
   OnInit,
   OnDestroy,
-  Renderer2
+  Renderer2,
 } from '@angular/core';
 import { makeStateKey, StateKey, TransferState } from '@angular/platform-browser';
 import { BuilderContentService } from '../services/builder-content.service';
-// FIXME: tsconfig paths? install module? use lerna...
 import { BuilderService } from '../services/builder.service';
 import { Builder, Subscription as BuilderSubscription } from '@builder.io/sdk';
 import { BuilderComponentService } from '../components/builder-component/builder-component.service';
 import { Router, NavigationEnd, NavigationStart } from '@angular/router';
 import { Subscription } from 'rxjs';
-// TODO: below is optional... they can import if needed
-// import '@builder.io/widgets'
 
 declare let Zone: any;
 
-// let firstEverLoad = true;
-
-// TODO: updated output
 @Directive({
   selector: '[builderModel]',
   providers: [BuilderContentService],
@@ -94,7 +88,7 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
 
     if (this.router) {
       this.subscriptions.add(
-        this.router.events.subscribe(event => {
+        this.router.events.subscribe((event) => {
           // TODO: this doesn't trigger
           if (event instanceof NavigationEnd) {
             if (this.reloadOnRoute) {
@@ -292,51 +286,6 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
                 });
                 return;
               }
-              setTimeout(() => {
-                if (hydrate && rootNode && match && match.data && match.data.html) {
-                  // TODO: hydrate with webcomponents... here instead of builder component wrapper?
-                  // // TODO: two builder SDKs are loading...? external in react right?
-                  // const subscription = this.builder
-                  //   .get(model, {
-                  //     key: key,
-                  //     ...options,
-                  //     prerender: false,
-                  //   })
-                  //   .subscribe(
-                  //     async data => {
-                  //       viewRef.detach();
-                  //       // Maaaybe shouldn't be rootnode
-                  //       BuilderComponent.renderInto(rootNode, {
-                  //         // Differnt builder SDK instance?? Might be debug/link thing
-                  //         apiKey: this.builder.apiKey!,
-                  //         modelName: model,
-                  //         options: {
-                  //           entry: data ? data.id : undefined,
-                  //           initialContent: data ? [data] : undefined,
-                  //           key: key,
-                  //         },
-                  //         data: this.component && this.component.data,
-                  //       });
-                  //       this.hydrated = true;
-                  //       subscription.unsubscribe();
-                  //       if (Builder.isEditing) {
-                  //         setTimeout(() => {
-                  //           parent.postMessage({ type: 'builder.updateContent' }, '*');
-                  //           setTimeout(() => {
-                  //             parent.postMessage(
-                  //               { type: 'builder.sdkInjected', data: { modelName: name } },
-                  //               '*'
-                  //             );
-                  //           }, 100);
-                  //         }, 100);
-                  //       }
-                  //     },
-                  //     async (error: any) => {
-                  //       // TODO
-                  //     }
-                  //   );
-                }
-              });
             }
           }
 
@@ -372,6 +321,16 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
           if (!viewRef.destroyed) {
             viewRef.detectChanges();
 
+            if (
+              this.builderComponentService.contentComponentInstance?.prerender &&
+              Builder.isBrowser &&
+              Builder.isStatic
+            ) {
+              Builder.nextTick(() => {
+                this.builderComponentService.contentComponentInstance?.findAndRunScripts();
+              });
+            }
+
             // TODO: it's possible we don't want anything below to run if this has been destroyed
             if (match && match.data && match.data.animations && Builder.isBrowser && !hydrate) {
               Builder.nextTick(() => {
@@ -387,7 +346,7 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
             receivedFirstResponse = true;
           }
         },
-        error => {
+        (error) => {
           if (this.component) {
             this.component.contentError.next(error);
           } else {

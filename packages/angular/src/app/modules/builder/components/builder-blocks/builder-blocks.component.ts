@@ -1,13 +1,6 @@
-import {
-  Component,
-  HostBinding,
-  HostListener,
-  Input,
-  OnInit,
-  ChangeDetectionStrategy,
-} from '@angular/core';
-import { Builder, GetContentOptions } from '@builder.io/sdk';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { GetContentOptions } from '@builder.io/sdk';
 import { BuilderService } from '../../services/builder.service';
 
 @Component({
@@ -16,7 +9,7 @@ import { BuilderService } from '../../services/builder.service';
   styleUrls: ['./builder-blocks.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BuilderBlocksComponent implements OnInit {
+export class BuilderBlocksComponent {
   @Input() blocks: any;
 
   @Input() child = false;
@@ -34,28 +27,9 @@ export class BuilderBlocksComponent implements OnInit {
   private lastInnerHtml = '';
   private lastInnerHtmlSanitized: SafeHtml | null = null;
 
-  ngOnInit() {
-    if (this.builder.editingModel) {
-      // TODO: allow replacing
-    }
-  }
-
-  // @HostBinding('class.no-children')
   get hasNoChildren() {
     return !(this.blocks && (this.blocks.length || this.blocks.html));
   }
-
-  // @HostListener('click')
-  // onClick() {
-  //   if (Builder.isIframe && this.hasNoChildren) {
-  //     window.parent.postMessage(
-  //       {
-  //         type: 'builder.clickEmptyBlocks',
-  //       },
-  //       '*'
-  //     );
-  //   }
-  // }
 
   get arrayBlocks() {
     return Array.isArray(this.blocks);

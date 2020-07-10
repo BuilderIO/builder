@@ -5,6 +5,8 @@ const importShopify = () => import('@builder.io/shopify/react')
 const importShopifyJs = () => import('@builder.io/shopify/js')
 const importWidgets = () => import('@builder.io/widgets')
 
+Builder.isStatic = true
+
 const componentName = process.env.ANGULAR
   ? 'builder-component-element'
   : 'builder-component'
@@ -346,6 +348,8 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
               this.data = data
               if (data.data && data.data.html) {
                 this.innerHTML = data.data.html
+                this.findAndRunScripts()
+
                 const loadEvent = new CustomEvent('htmlload', { detail: data })
                 this.dispatchEvent(loadEvent)
               }
@@ -363,6 +367,25 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
           }
         )
       this.subscriptions.push(() => subscription.unsubscribe())
+    }
+
+    findAndRunScripts() {
+      const scripts = this.getElementsByTagName('script')
+      for (let i = 0; i < scripts.length; i++) {
+        const script = scripts[i]
+        if (script.src) {
+          const newScript = document.createElement('script')
+          newScript.async = true
+          newScript.src = script.src
+          document.head.appendChild(newScript)
+        } else {
+          try {
+            new Function(script.innerText)()
+          } catch (error) {
+            console.warn('Builder custom code component error:', error)
+          }
+        }
+      }
     }
 
     loadReact = async (data?: any, fresh = false) => {
