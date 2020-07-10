@@ -23,6 +23,10 @@ function getData(content: BuilderContentVariation) {
 const variantsScript = (variantsString: string, contentId: string) =>
   `
 (function() {
+  if (window.builderNoTrack) {
+    return;
+  }
+
   var variants = ${variantsString};
   function removeVariants() {
     variants.forEach((template) => {

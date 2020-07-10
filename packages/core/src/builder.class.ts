@@ -712,7 +712,9 @@ export class Builder {
   private preview = false;
 
   get browserTrackingDisabled() {
-    return Builder.isBrowser && (navigator as any).doNotTrack === '1';
+    return Boolean(
+      Builder.isBrowser && ((navigator as any).doNotTrack === '1' || (window as any).builderNoTrack)
+    );
   }
 
   get canTrack() {
