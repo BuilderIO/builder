@@ -30,7 +30,6 @@ if (Builder.isBrowser && globalReplaceNodes) {
       if (id) {
         // TODO: keep array of these for lists
         globalReplaceNodes[id] = el
-        el.remove()
       }
     })
   } catch (err) {
