@@ -82,6 +82,11 @@ class CustomCodeComponent extends React.Component<Props> {
     }
   }
 
+  get noReactRender() {
+    // Don't render liquid client side
+    return Boolean(isShopify && this.props.code?.match(/{[{%]/g))
+  }
+
   componentDidUpdate(prevProps: Props) {
     if (this.props.code !== prevProps.code) {
       this.findAndRunScripts()
@@ -151,9 +156,10 @@ class CustomCodeComponent extends React.Component<Props> {
           'builder-custom-code' +
           (this.props.replaceNodes ? ' replace-nodes' : '')
         }
-        {...(!this.replaceNodes && {
-          dangerouslySetInnerHTML: { __html: this.code }
-        })}
+        {...(!this.replaceNodes &&
+          !this.noReactRender && {
+            dangerouslySetInnerHTML: { __html: this.code }
+          })}
       />
     )
   }
