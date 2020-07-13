@@ -1,5 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Capture code generator no state 1`] = `"{% capture about_me %}I am 30 and my favorite food is pizza{% endcapture %}"`;
-
-exports[`Capture code generator with interpolation 1`] = `"{% capture about_me %}I am {{age}} and my favorite food is {{favorite_food}}{% endcapture %}"`;

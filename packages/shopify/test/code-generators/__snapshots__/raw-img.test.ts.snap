@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Text code generator values for all attributes 1`] = `" <img src=\\"/test/img.jpg\\"   />"`;
