@@ -8,15 +8,15 @@ import { BuilderMetaContext } from '../store/builder-meta'
 import { withBuilder } from '../functions/with-builder'
 import { throttle } from '../functions/throttle'
 
-const getShopifyImageUrl = (src: string, size: string) => {
+// Taken from (and modified) the shopify theme script repo
+// https://github.com/Shopify/theme-scripts/blob/bcfb471f2a57d439e2f964a1bb65b67708cc90c3/packages/theme-images/images.js#L59
+function removeProtocol(path: string) {
+  return path.replace(/http(s)?:/, '')
+}
+
+function getShopifyImageUrl(src: string, size: string): string | null {
   if (!src || !src?.match(/cdn\.shopify\.com/) || !size) {
     return src
-  }
-
-  // Taken from (and modified) the shopify theme script repo
-  // https://github.com/Shopify/theme-scripts/blob/bcfb471f2a57d439e2f964a1bb65b67708cc90c3/packages/theme-images/images.js#L59
-  function removeProtocol(path: string) {
-    return path.replace(/http(s)?:/, '')
   }
 
   if (size === 'master') {
@@ -40,7 +40,7 @@ const getShopifyImageUrl = (src: string, size: string) => {
 
 const DEFAULT_ASPECT_RATIO = 0.7041
 
-export function updateQueryParam(uri = '', key: string, value: string) {
+export function updateQueryParam(uri = '', key: string, value: string | number | boolean): string {
   const re = new RegExp('([?&])' + key + '=.*?(&|$)', 'i')
   const separator = uri.indexOf('?') !== -1 ? '&' : '?'
   if (uri.match(re)) {
@@ -50,7 +50,7 @@ export function updateQueryParam(uri = '', key: string, value: string) {
   return uri + separator + key + '=' + encodeURIComponent(value)
 }
 
-export const getSrcSet = (url: string) => {
+export function getSrcSet(url: string): string {
   if (!url) {
     return url
   }
@@ -66,20 +66,21 @@ export const getSrcSet = (url: string) => {
 
     return sizes
       .filter(size => size !== widthInSrc)
-      .map(size => `${updateQueryParam(url, 'width', String(size))} ${size}w`)
+      .map(size => `${updateQueryParam(url, 'width', size)} ${size}w`)
       .concat([srcUrl])
       .join(', ')
-  } else if (url.match(/cdn\.shopify\.com/)) {
+  }
+
+  if (url.match(/cdn\.shopify\.com/)) {
     return sizes
-      .map(size => {
-        const sizeUrl = getShopifyImageUrl(url, `${size}x${size}`)
-        return `${sizeUrl} ${size}w`
-      })
+      .map(size => [getShopifyImageUrl(url, `${size}x${size}`), size])
+      .filter(([sizeUrl]) => !!sizeUrl)
+      .map(([sizeUrl, size]) => `${sizeUrl} ${size}w`)
       .concat([url])
       .join(', ')
-  } else {
-    return url
   }
+
+  return url
 }
 
 export const getSizes = (sizes: string, block: BuilderElement) => {
@@ -195,16 +196,16 @@ class ImageComponent extends React.Component<any> {
     }
   }
 
-  getSrcSet() {
+  getSrcSet(): string | undefined {
     const url = this.props.image
     if (!url) {
-      return undefined
+      return
     }
 
     // We can auto add srcset for cdn.builder.io and shopify
     // images, otherwise you can supply this prop manually
     if (!(url.match(/builder\.io/) || url.match(/cdn\.shopify\.com/))) {
-      return undefined
+      return
     }
 
     return getSrcSet(url)
