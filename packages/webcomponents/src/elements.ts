@@ -82,12 +82,12 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
           /(@font-face\s*{\s*font-family:\s*(.*?);[\s\S]+?url\((\S+)\)[\s\S]+?})/g,
           (fullMatch, fontMatch, fontName, fontUrl) => {
             const trimmedFontUrl = fontUrl
-              .replace('"', '')
+              .replace(/"/g, '')
               .replace(/'/g, '')
               .trim()
 
             const trimmedFontName = fontName
-              .replace('"', '')
+              .replace(/"/g, '')
               .replace(/'/g, '')
               .trim()
 
