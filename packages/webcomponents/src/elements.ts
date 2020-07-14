@@ -67,43 +67,51 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
    * a browser issue that can cause fonts to flash from server rendered HTML
    */
   const forceLoadFonts = () => {
-    const apiStyles = Array.from(
-      document.querySelectorAll('.builder-api-styles')
-    )
-
-    if (!apiStyles.length || !document.fonts) {
-      return
-    }
-
-    apiStyles.forEach(element => {
-      const styles = element.innerHTML
-      styles.replace(
-        /(@font-face\s*{\s*font-family:\s*(.*?);[\s\S]+?url\((\S+)\)[\s\S]+?})/g,
-        (fullMatch, fontMatch, fontName, fontUrl) => {
-          const trimmedFontUrl = fontUrl
-            .replace('"', '')
-            .replace(/'/g, '')
-            .trim()
-
-          const trimmedFontName = fontName
-            .replace('"', '')
-            .replace(/'/g, '')
-            .trim()
-
-          const weight = fullMatch.match(/font-weight:\s*(\d+)/)?.[1]
-
-          const font = new FontFace(trimmedFontName, `url(${trimmedFontUrl})`, {
-            weight: weight || '400'
-          })
-
-          if (!document.fonts.has(font)) {
-            document.fonts.add(font)
-          }
-
-          return ''
-        }
+    try {
+      const apiStyles = Array.from(
+        document.querySelectorAll('.builder-api-styles')
       )
-    })
+
+      if (!apiStyles.length || !document.fonts) {
+        return
+      }
+
+      apiStyles.forEach(element => {
+        const styles = element.innerHTML
+        styles.replace(
+          /(@font-face\s*{\s*font-family:\s*(.*?);[\s\S]+?url\((\S+)\)[\s\S]+?})/g,
+          (fullMatch, fontMatch, fontName, fontUrl) => {
+            const trimmedFontUrl = fontUrl
+              .replace('"', '')
+              .replace(/'/g, '')
+              .trim()
+
+            const trimmedFontName = fontName
+              .replace('"', '')
+              .replace(/'/g, '')
+              .trim()
+
+            const weight = fullMatch.match(/font-weight:\s*(\d+)/)?.[1]
+
+            const font = new FontFace(
+              trimmedFontName,
+              `url("${trimmedFontUrl}")`,
+              {
+                weight: weight || '400'
+              }
+            )
+
+            if (!document.fonts.has(font)) {
+              document.fonts.add(font)
+            }
+
+            return ''
+          }
+        )
+      })
+    } catch (err) {
+      console.warn('Could not load Builder fonts', err)
+    }
   }
 
   const inject = () => {
