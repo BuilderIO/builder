@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/widgets",
-  "version": "1.2.10-alpha.2",
+  "version": "1.2.10-alpha.3",
   "description": "",
   "keywords": [],
   "main": "dist/builder-widgets.cjs.js",
@@ -88,7 +88,7 @@
   },
   "devDependencies": {
     "@builder.io/block-publish": "^1.1.2",
-    "@builder.io/react": "^1.1.23-alpha.2",
+    "@builder.io/react": "^1.1.23-alpha.3",
     "@types/jest": "^22.0.0",
     "@types/lodash-es": "^4.17.1",
     "@types/node": "^10.0.3",
