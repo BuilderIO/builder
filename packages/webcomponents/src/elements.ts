@@ -1,5 +1,4 @@
 import { Builder, builder } from '@builder.io/react'
-
 const importReact = () => import('@builder.io/react')
 const importShopify = () => import('@builder.io/shopify/react')
 const importShopifyJs = () => import('@builder.io/shopify/js')
