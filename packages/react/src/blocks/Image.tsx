@@ -24,7 +24,7 @@ function getShopifyImageUrl(src: string, size: string): string | null {
   }
 
   const match = src.match(
-    /(_\d+x(\d+)?)?(\.(jpg|jpeg|gif|png|bmp|bitmap|tiff|tif)(\?v=\d+)?)$/i
+    /(_\d+x(\d+)?)?(\.(jpg|jpeg|gif|png|bmp|bitmap|tiff|tif)(\?v=\d+)?)/i
   )
 
   if (match) {

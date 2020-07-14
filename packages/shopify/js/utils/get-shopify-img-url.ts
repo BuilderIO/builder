@@ -17,7 +17,7 @@ export const getShopifyImageUrl = (src: string, size: string) => {
     return removeProtocol(src);
   }
 
-  const match = src.match(/(_\d+x(\d+)?)?(\.(jpg|jpeg|gif|png|bmp|bitmap|tiff|tif)(\?v=\d+)?)$/i);
+  const match = src.match(/(_\d+x(\d+)?)?(\.(jpg|jpeg|gif|png|bmp|bitmap|tiff|tif)(\?v=\d+)?)/i);
 
   if (match) {
     const prefix = src.split(match[0]);

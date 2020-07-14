@@ -322,12 +322,13 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
             viewRef.detectChanges();
 
             if (
-              this.builderComponentService.contentComponentInstance?.prerender &&
+              this.builderComponentService.contentComponentInstance &&
+              this.builderComponentService.contentComponentInstance.prerender &&
               Builder.isBrowser &&
               Builder.isStatic
             ) {
               Builder.nextTick(() => {
-                this.builderComponentService.contentComponentInstance?.findAndRunScripts();
+                this.builderComponentService.contentComponentInstance.findAndRunScripts();
               });
             }
 
