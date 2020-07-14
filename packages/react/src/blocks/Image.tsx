@@ -24,7 +24,7 @@ function getShopifyImageUrl(src: string, size: string): string | null {
   }
 
   const match = src.match(
-    /(_\d+x(\d+)?)?(\.(jpg|jpeg|gif|png|bmp|bitmap|tiff|tif)(\?v=\d+)?)$/i
+    /(_\d+x(\d+)?)?(\.(jpg|jpeg|gif|png|bmp|bitmap|tiff|tif)(\?v=\d+)?)/i
   )
 
   if (match) {
@@ -40,7 +40,11 @@ function getShopifyImageUrl(src: string, size: string): string | null {
 
 const DEFAULT_ASPECT_RATIO = 0.7041
 
-export function updateQueryParam(uri = '', key: string, value: string | number | boolean): string {
+export function updateQueryParam(
+  uri = '',
+  key: string,
+  value: string | number | boolean
+): string {
   const re = new RegExp('([?&])' + key + '=.*?(&|$)', 'i')
   const separator = uri.indexOf('?') !== -1 ? '&' : '?'
   if (uri.match(re)) {
