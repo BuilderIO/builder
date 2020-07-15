@@ -197,13 +197,6 @@ export const Symbol = withBuilder(SymbolComponent, {
       hideFromUI: true
     },
     {
-      name: 'dynamic',
-      helperText: `Dynamically fetch this symbosl content from it's model and targeting`,
-      type: 'boolean',
-      defaultValue: false,
-      advanced: true
-    },
-    {
       name: 'inheritState',
       helperText: `Inherit the parent component state and data`,
       type: 'boolean',
