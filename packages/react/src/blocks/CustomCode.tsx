@@ -24,7 +24,7 @@ if (Builder.isBrowser && globalReplaceNodes) {
           ? '.builder-custom-code'
           : '.builder-custom-code.replace-nodes'
       )
-    ).forEach((el, index) => {
+    ).forEach(el => {
       const parent = el.parentElement
       const id = parent && parent.getAttribute('builder-id')
       if (id) {
@@ -74,7 +74,6 @@ class CustomCodeComponent extends React.Component<Props> {
         const existing = document.querySelectorAll(
           `.${this.props.builderBlock.id} .builder-custom-code`
         )
-
         if (existing.length === 1) {
           const node = existing[0]
           this.originalRef = node as HTMLElement
