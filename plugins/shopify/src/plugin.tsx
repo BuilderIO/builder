@@ -1,7 +1,7 @@
-import { Builder } from '@builder.io/react'
+import { Builder } from '@builder.io/react';
 
-export * from './editors/ShopifyCollectionPicker'
-export * from './editors/ShopifyProductPicker'
+export * from './editors/ShopifyCollectionPicker';
+export * from './editors/ShopifyProductPicker';
 
 Builder.register(
   'plugin' as any,
@@ -31,4 +31,4 @@ Builder.register(
       },
     ],
   } as any
-)
+);

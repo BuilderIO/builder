@@ -1,14 +1,14 @@
-import { BuilderBlock, BuilderBlocks } from '@builder.io/react'
-import React from 'react'
-import { Block } from './Block'
+import { BuilderBlock, BuilderBlocks } from '@builder.io/react';
+import React from 'react';
+import { Block } from './Block';
 
 interface ColumnsProps {
-  columns: { blocks: any[]; width?: number }[]
-  builderBlock?: any
-  attributes?: any
-  space?: number
-  stackColumnsAt?: string
-  verticalAlignContent?: string
+  columns: { blocks: any[]; width?: number }[];
+  builderBlock?: any;
+  attributes?: any;
+  space?: number;
+  stackColumnsAt?: string;
+  verticalAlignContent?: string;
 }
 
 const defaultBlocks = [
@@ -45,7 +45,7 @@ const defaultBlocks = [
       },
     },
   },
-]
+];
 
 @BuilderBlock({
   name: 'Email:Columns',
@@ -80,41 +80,37 @@ const defaultBlocks = [
         { blocks: defaultBlocks, width: '50%' },
       ],
       onChange: (options: Map<string, any>) => {
-        const columns = options.get('columns') as Map<String, any>[]
-        const colsWithoutPx = columns.filter((col) => {
-          const width = col.get('width') || ''
-          return !width.includes('px')
-        })
+        const columns = options.get('columns') as Map<String, any>[];
+        const colsWithoutPx = columns.filter(col => {
+          const width = col.get('width') || '';
+          return !width.includes('px');
+        });
 
         function round(num: number) {
-          return Math.round(num * 1000) / 1000
+          return Math.round(num * 1000) / 1000;
         }
 
         function clearWidths() {
-          colsWithoutPx.forEach((col) => {
+          colsWithoutPx.forEach(col => {
             // TODO: round
-            col.set('width', round(100 / colsWithoutPx.length) + '%')
-          })
+            col.set('width', round(100 / colsWithoutPx.length) + '%');
+          });
         }
 
         if (Array.isArray(columns)) {
-          const containsColumnWithWidth = !!colsWithoutPx.find((col) =>
-            col.get('width')
-          )
+          const containsColumnWithWidth = !!colsWithoutPx.find(col => col.get('width'));
 
           if (containsColumnWithWidth) {
-            const containsColumnWithoutWidth = !!colsWithoutPx.find(
-              (col) => !col.get('width')
-            )
+            const containsColumnWithoutWidth = !!colsWithoutPx.find(col => !col.get('width'));
             if (containsColumnWithoutWidth) {
-              clearWidths()
+              clearWidths();
             } else {
               const sumWidths = colsWithoutPx.reduce((memo, col) => {
-                return memo + col.get('width')
-              }, 0)
-              const widthsDontAddUp = sumWidths !== 100
+                return memo + col.get('width');
+              }, 0);
+              const widthsDontAddUp = sumWidths !== 100;
               if (widthsDontAddUp) {
-                clearWidths()
+                clearWidths();
               }
             }
           }
@@ -141,10 +137,7 @@ const defaultBlocks = [
 export class Columns extends React.Component<ColumnsProps> {
   render() {
     return (
-      <Block
-        attributes={this.props.attributes}
-        builderBlock={this.props.builderBlock}
-      >
+      <Block attributes={this.props.attributes} builderBlock={this.props.builderBlock}>
         {this.props.stackColumnsAt && this.props.stackColumnsAt !== 'never' && (
           <style>
             {`
@@ -198,6 +191,6 @@ export class Columns extends React.Component<ColumnsProps> {
           </tbody>
         </table>
       </Block>
-    )
+    );
   }
 }

@@ -1,20 +1,20 @@
-import resolve from 'rollup-plugin-node-resolve'
-import commonjs from 'rollup-plugin-commonjs'
-import sourceMaps from 'rollup-plugin-sourcemaps'
-import typescript from 'rollup-plugin-typescript2'
-import replace from 'rollup-plugin-replace'
-import json from 'rollup-plugin-json'
-import { terser } from 'rollup-plugin-terser'
+import resolve from 'rollup-plugin-node-resolve';
+import commonjs from 'rollup-plugin-commonjs';
+import sourceMaps from 'rollup-plugin-sourcemaps';
+import typescript from 'rollup-plugin-typescript2';
+import replace from 'rollup-plugin-replace';
+import json from 'rollup-plugin-json';
+import { terser } from 'rollup-plugin-terser';
 
-import pkg from './package.json'
+import pkg from './package.json';
 
-const libraryName = 'builder-react'
+const libraryName = 'builder-react';
 
-const resolvePlugin = resolve()
+const resolvePlugin = resolve();
 
 const externalDependencies = Object.keys(pkg.dependencies)
   .concat(Object.keys(pkg.optionalDependencies || {}))
-  .filter((item) => item !== 'tslib')
+  .filter(item => item !== 'tslib');
 // TODO: go back to using peerDependencies once fix rollup iife issue
 // .concat(Object.keys(pkg.peerDependencies || {}))
 
@@ -57,11 +57,7 @@ const options = {
           'Fragment',
         ],
         'node_modules/react-dom/index.js': ['render', 'hydrate'],
-        'node_modules/react-is/index.js': [
-          'isElement',
-          'isValidElementType',
-          'ForwardRef',
-        ],
+        'node_modules/react-is/index.js': ['isElement', 'isValidElementType', 'ForwardRef'],
       },
     }),
     // Allow node_modules resolution, so you can use 'external' to control
@@ -75,7 +71,7 @@ const options = {
 
     terser(),
   ],
-}
+};
 
 export default [
   // UMD browser build
@@ -100,7 +96,7 @@ export default [
     ],
     external: externalDependencies,
     plugins: options.plugins
-      .filter((plugin) => plugin !== resolvePlugin)
+      .filter(plugin => plugin !== resolvePlugin)
       .concat([
         resolve({
           only: [/^\.{0,2}\//],
@@ -124,7 +120,7 @@ export default [
       },
     ],
     external: externalDependencies,
-    plugins: options.plugins.map((plugin) =>
+    plugins: options.plugins.map(plugin =>
       plugin !== resolvePlugin
         ? plugin
         : resolve({
@@ -142,4 +138,4 @@ export default [
       sourcemap: true,
     },
   },
-]
+];

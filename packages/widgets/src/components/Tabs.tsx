@@ -1,19 +1,19 @@
-import React from 'react'
-import { BuilderBlocks, BuilderBlock, withBuilder } from '@builder.io/react'
+import React from 'react';
+import { BuilderBlocks, BuilderBlock, withBuilder } from '@builder.io/react';
 
 // TODO: manual typings and documentation for this with typedoc and in builder guides pages
-type ElementType = any
+type ElementType = any;
 
 export interface TabsProps {
   tabs: {
-    label: ElementType[]
-    content: ElementType[]
-  }[]
-  builderBlock: any
-  defaultActiveTab?: number
-  collapsible?: boolean
-  tabHeaderLayout?: string
-  activeTabStyle?: any
+    label: ElementType[];
+    content: ElementType[];
+  }[];
+  builderBlock: any;
+  defaultActiveTab?: number;
+  collapsible?: boolean;
+  tabHeaderLayout?: string;
+  activeTabStyle?: any;
 }
 
 const defaultTab = {
@@ -40,7 +40,7 @@ const defaultTab = {
       text: 'New tab',
     },
   },
-}
+};
 
 const defaultElement = {
   '@type': '@builder.io/sdk:Element',
@@ -58,32 +58,32 @@ const defaultElement = {
       text: 'New tab content ',
     },
   },
-}
+};
 
 class TabsComponent extends React.Component<TabsProps, { activeTab: number }> {
   state = {
     activeTab: 0,
-  }
+  };
 
   get activeTabSpec() {
-    return this.props.tabs && this.props.tabs[this.state.activeTab]
+    return this.props.tabs && this.props.tabs[this.state.activeTab];
   }
 
   componentWillMount() {
     if (this.props.defaultActiveTab) {
-      this.activeTab = this.props.defaultActiveTab - 1
+      this.activeTab = this.props.defaultActiveTab - 1;
     }
   }
 
   get activeTab() {
-    return this.state.activeTab
+    return this.state.activeTab;
   }
 
   set activeTab(tab) {
     this.setState({
       ...this.state,
       activeTab: tab,
-    })
+    });
   }
 
   render() {
@@ -105,19 +105,16 @@ class TabsComponent extends React.Component<TabsProps, { activeTab: number }> {
               <span
                 key={index}
                 className={
-                  'builder-tab-wrap ' +
-                  (this.activeTabSpec === item ? 'builder-tab-active' : '')
+                  'builder-tab-wrap ' + (this.activeTabSpec === item ? 'builder-tab-active' : '')
                 }
                 style={{
-                  ...((this.activeTabSpec === item &&
-                    this.props.activeTabStyle) ||
-                    undefined),
+                  ...((this.activeTabSpec === item && this.props.activeTabStyle) || undefined),
                 }}
                 onClick={() => {
                   if (index === this.activeTab && this.props.collapsible) {
-                    this.activeTab = -1
+                    this.activeTab = -1;
                   } else {
-                    this.activeTab = index
+                    this.activeTab = index;
                   }
                 }}
               >
@@ -141,7 +138,7 @@ class TabsComponent extends React.Component<TabsProps, { activeTab: number }> {
           />
         )}
       </React.Fragment>
-    )
+    );
   }
 }
 
@@ -253,4 +250,4 @@ export const Tabs = withBuilder(TabsComponent, {
       ],
     },
   ],
-})
+});

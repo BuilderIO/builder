@@ -1,13 +1,13 @@
-import { BuilderBlock, BuilderBlocks } from '@builder.io/react'
-import React from 'react'
-import { Block } from './Block'
+import { BuilderBlock, BuilderBlocks } from '@builder.io/react';
+import React from 'react';
+import { Block } from './Block';
 
 interface SectionProps {
-  builderBlock?: any
-  attributes?: any
-  children?: any[] // Ideally accept react nodes too
-  verticalAlignContent?: string
-  maxWidth?: number
+  builderBlock?: any;
+  attributes?: any;
+  children?: any[]; // Ideally accept react nodes too
+  verticalAlignContent?: string;
+  maxWidth?: number;
 }
 
 // TODO: acceptsChildren option?
@@ -85,10 +85,7 @@ export class Section extends React.Component<SectionProps> {
           <tbody>
             <tr>
               <td />
-              <td
-                {...{ align: 'center', width: this.props.maxWidth }}
-                style={{ maxWidth: '100%' }}
-              >
+              <td {...{ align: 'center', width: this.props.maxWidth }} style={{ maxWidth: '100%' }}>
                 {/* <table
                   cellPadding="0"
                   cellSpacing="0"
@@ -109,11 +106,7 @@ export class Section extends React.Component<SectionProps> {
                 {/* Wrapper for Safari */}
                 {/* Or should be inline-block with width: 100%? */}
                 <div style={{ margin: 'auto', maxWidth: this.props.maxWidth }}>
-                  <BuilderBlocks
-                    blocks={this.props.children}
-                    dataPath="children"
-                    emailMode
-                  />
+                  <BuilderBlocks blocks={this.props.children} dataPath="children" emailMode />
                 </div>
                 {/* </td>
                     </tr>
@@ -125,6 +118,6 @@ export class Section extends React.Component<SectionProps> {
           </tbody>
         </table>
       </Block>
-    )
+    );
   }
 }

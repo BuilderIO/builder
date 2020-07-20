@@ -73,7 +73,6 @@
       "src/*.{js,ts}"
     ]
   },
-
   "commitlint": {
     "extends": [
       "@commitlint/config-conventional"

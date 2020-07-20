@@ -1,14 +1,14 @@
 /** @jsx jsx */
-import { jsx } from '@emotion/core'
-import React from 'react'
-import { BuilderElement } from '@builder.io/sdk'
-import { BuilderBlock as BuilderBlockComponent } from '../components/builder-block.component'
-import { withBuilder } from '../functions/with-builder'
+import { jsx } from '@emotion/core';
+import React from 'react';
+import { BuilderElement } from '@builder.io/sdk';
+import { BuilderBlock as BuilderBlockComponent } from '../components/builder-block.component';
+import { withBuilder } from '../functions/with-builder';
 
 interface SectionProps {
-  builderBlock?: BuilderElement
-  verticalAlignContent?: string
-  maxWidth?: number
+  builderBlock?: BuilderElement;
+  verticalAlignContent?: string;
+  maxWidth?: number;
 }
 
 class SectionComponent extends React.Component<SectionProps> {
@@ -38,7 +38,7 @@ class SectionComponent extends React.Component<SectionProps> {
           ))}
         {/* <BuilderBlocks blocks={this.builderBlock.children} dataPath="children" emailMode /> */}
       </div>
-    )
+    );
   }
 }
 
@@ -91,4 +91,4 @@ export const Section = withBuilder(SectionComponent, {
   //   'BlocksOverlay::debounceNextTickUpdateStyles#updateStyles': () => convert margin selectors to paddings of table
   //   '@builder.io/app:Style.foo': () => { /* ... */ } // maybe optionally async
   // }
-})
+});

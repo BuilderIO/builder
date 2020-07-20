@@ -1,7 +1,7 @@
-import { el, mergeEl, _s } from '../modules/blocks'
-import { BuilderElement } from '@builder.io/sdk'
-import { loadingSpinner } from './loading-spinner'
-import { productBoxBlock } from './product-info'
+import { el, mergeEl, _s } from '../modules/blocks';
+import { BuilderElement } from '@builder.io/sdk';
+import { loadingSpinner } from './loading-spinner';
+import { productBoxBlock } from './product-info';
 
 export const collectionGrid = el({
   layerName: 'Collection grid',
@@ -37,94 +37,88 @@ export const collectionGrid = el({
                 builder: any,
                 context: any
               ) => {
-                let lastCollectionId = state.collection
+                let lastCollectionId = state.collection;
 
                 if (Builder.isEditing) {
                   // TODO: ref.useEffect(() => ... , [])
                   ref.onStateChange.subscribe(() => {
                     if (lastCollectionId !== state.collection) {
-                      updateCollection()
-                      lastCollectionId = state.collection
+                      updateCollection();
+                      lastCollectionId = state.collection;
                     }
-                  })
+                  });
                 }
 
                 const wrapImage = (img: any) => ({
                   ...img,
                   toString() {
-                    return img.src
+                    return img.src;
                   },
                   valueOf: () => img.src,
                   aspect_ratio: img.width / img.height,
-                })
+                });
 
                 /**
                  * Modify product JSON from Shopify APIs to behave more like liquid product objects
                  */
                 // TODO: how code share this and stringify. Rolup .. ??
                 function modifyProduct(product: any) {
-                  product.images = product.images.map((item: any) =>
-                    wrapImage(item)
-                  )
-                  product.featured_image = product.images[0]
+                  product.images = product.images.map((item: any) => wrapImage(item));
+                  product.featured_image = product.images[0];
                   product.variants.forEach(
-                    (item: any) =>
-                      (item.featured_image = product.featured_image)
-                  )
-                  product.description = product.body_html
-                  product.options_with_values = product.options
+                    (item: any) => (item.featured_image = product.featured_image)
+                  );
+                  product.description = product.body_html;
+                  product.options_with_values = product.options;
 
-                  const minPriceVariation = product.variants.reduce(
-                    (current: any, item: any) => {
-                      if (current === item) {
-                        return current
-                      }
-                      const currentMin = parseFloat(current.price)
-                      const newMin = parseFloat(item.price)
+                  const minPriceVariation = product.variants.reduce((current: any, item: any) => {
+                    if (current === item) {
+                      return current;
+                    }
+                    const currentMin = parseFloat(current.price);
+                    const newMin = parseFloat(item.price);
 
-                      return currentMin <= newMin ? current : item
-                    },
-                    product.variants[0]
-                  )
+                    return currentMin <= newMin ? current : item;
+                  }, product.variants[0]);
 
                   // TODO: other currencies
-                  product.price = minPriceVariation.price
+                  product.price = minPriceVariation.price;
 
                   // TODO: price_min, price_max, price_varies, other properties
                   // here https://help.shopify.com/en/themes/liquid/objects/product#product-price
-                  return product
+                  return product;
                 }
 
                 function updateCollection() {
                   if (state.collectionInfo && !state.collection) {
-                    return
+                    return;
                   }
-                  const { collection } = state
+                  const { collection } = state;
                   if (collection) {
-                    state.loading = true
+                    state.loading = true;
                     fetch(
                       `https://cdn.builder.io/api/v1/shopify/products.json?apiKey=${context.apiKey}&collection_id=${collection}`
                     )
-                      .then((res) => res.json())
-                      .then((data) => {
-                        const collection = data
+                      .then(res => res.json())
+                      .then(data => {
+                        const collection = data;
                         if (collection && collection.products) {
-                          collection.products = collection.products.map(
-                            (product: any) => modifyProduct(product)
-                          )
+                          collection.products = collection.products.map((product: any) =>
+                            modifyProduct(product)
+                          );
                         }
-                        state.collectionInfo = collection
-                        state.loading = false
+                        state.collectionInfo = collection;
+                        state.loading = false;
                       })
-                      .catch((err) => {
-                        console.error('Error fetching Shopify product', err)
-                        state.loading = false
-                      })
+                      .catch(err => {
+                        console.error('Error fetching Shopify product', err);
+                        state.loading = false;
+                      });
                   } else {
-                    state.collectionInfo = null
+                    state.collectionInfo = null;
                   }
                 }
-                updateCollection()
+                updateCollection();
               }
             ),
             inputs: [
@@ -147,9 +141,7 @@ export const collectionGrid = el({
               el({
                 layerLocked: true,
                 bindings: {
-                  show: _s(
-                    (state: any) => !(state.collection || state.collectionInfo)
-                  ),
+                  show: _s((state: any) => !(state.collection || state.collectionInfo)),
                 },
                 responsiveStyles: {
                   large: {
@@ -209,8 +201,8 @@ export const collectionGrid = el({
                 },
                 bindings: {
                   'style.flexWrap': _s((state: any) => {
-                    const type = state.type
-                    return type === 'row' ? 'none' : 'wrap'
+                    const type = state.type;
+                    return type === 'row' ? 'none' : 'wrap';
                   }),
                 },
                 children: [
@@ -238,4 +230,4 @@ export const collectionGrid = el({
       },
     },
   },
-})
+});

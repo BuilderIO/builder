@@ -1,22 +1,22 @@
-import resolve from 'rollup-plugin-node-resolve'
-import commonjs from 'rollup-plugin-commonjs'
-import sourceMaps from 'rollup-plugin-sourcemaps'
-import camelCase from 'lodash.camelcase'
-import typescript from 'rollup-plugin-typescript2'
-import replace from 'rollup-plugin-replace'
-import json from 'rollup-plugin-json'
-import serve from 'rollup-plugin-serve'
+import resolve from 'rollup-plugin-node-resolve';
+import commonjs from 'rollup-plugin-commonjs';
+import sourceMaps from 'rollup-plugin-sourcemaps';
+import camelCase from 'lodash.camelcase';
+import typescript from 'rollup-plugin-typescript2';
+import replace from 'rollup-plugin-replace';
+import json from 'rollup-plugin-json';
+import serve from 'rollup-plugin-serve';
 
-import react from 'react'
-import reactDom from 'react-dom'
-import * as muiUtils from '@material-ui/utils'
-import * as reactIs from 'react-is'
+import react from 'react';
+import reactDom from 'react-dom';
+import * as muiUtils from '@material-ui/utils';
+import * as reactIs from 'react-is';
 
-const SERVE = process.env.SERVE === 'true'
+const SERVE = process.env.SERVE === 'true';
 
-const pkg = require('./package.json')
+const pkg = require('./package.json');
 
-const libraryName = 'plugin-loader'
+const libraryName = 'plugin-loader';
 
 const defaultConfig = {
   input: `src/${libraryName}.ts`,
@@ -58,7 +58,7 @@ const defaultConfig = {
     // Resolve source maps to the original source
     sourceMaps(),
   ],
-}
+};
 
 export default [
   // defaultConfig,
@@ -87,4 +87,4 @@ export default [
         : []
     ),
   }),
-]
+];

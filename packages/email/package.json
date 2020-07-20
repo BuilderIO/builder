@@ -82,7 +82,6 @@
     },
     "collectCoverage": true
   },
-
   "devDependencies": {
     "@builder.io/block-publish": "^1.1.2",
     "@types/jest": "^22.0.0",

@@ -1,17 +1,17 @@
-import React, { useState } from 'react'
-import { Button } from '@material-ui/core'
-import { LocalisationDialog } from './LocalisationDialog'
-import AlertDialog from './AlertDialog'
-import { useLocaleDialogStageReducer } from './reducers'
+import React, { useState } from 'react';
+import { Button } from '@material-ui/core';
+import { LocalisationDialog } from './LocalisationDialog';
+import AlertDialog from './AlertDialog';
+import { useLocaleDialogStageReducer } from './reducers';
 
 export default () => {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
 
-  const { localeDialogStage, dispatch } = useLocaleDialogStageReducer()
+  const { localeDialogStage, dispatch } = useLocaleDialogStageReducer();
   const onResultCallback = (nextStage: 'failure' | 'success', msg: string) => {
-    setOpen(false)
-    dispatch({ nextStage, message: msg })
-  }
+    setOpen(false);
+    dispatch({ nextStage, message: msg });
+  };
   return (
     <>
       <Button
@@ -33,5 +33,5 @@ export default () => {
         />
       )}
     </>
-  )
-}
+  );
+};

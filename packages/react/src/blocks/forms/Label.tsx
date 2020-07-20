@@ -1,13 +1,13 @@
-import React from 'react'
-import { BuilderElement } from '@builder.io/sdk'
-import { BuilderBlockComponent } from '../../builder-react'
-import { withBuilder } from '../../functions/with-builder'
+import React from 'react';
+import { BuilderElement } from '@builder.io/sdk';
+import { BuilderBlockComponent } from '../../builder-react';
+import { withBuilder } from '../../functions/with-builder';
 
 export interface LabelProps {
-  attributes?: any
-  text?: string
-  for?: string
-  builderBlock?: BuilderElement
+  attributes?: any;
+  text?: string;
+  for?: string;
+  builderBlock?: BuilderElement;
 }
 
 class LabelComponent extends React.Component<LabelProps> {
@@ -24,11 +24,11 @@ class LabelComponent extends React.Component<LabelProps> {
         )}
         {this.props.builderBlock &&
           this.props.builderBlock.children &&
-          this.props.builderBlock.children.map((item) => (
+          this.props.builderBlock.children.map(item => (
             <BuilderBlockComponent key={item.id} block={item} />
           ))}
       </label>
-    )
+    );
   }
 }
 
@@ -60,4 +60,4 @@ export const Label = withBuilder(LabelComponent, {
   // that only shows if advanced setting is flipped
   // TODO: defaultChildren
   // canHaveChildren: true,
-})
+});

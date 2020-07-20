@@ -3,7 +3,7 @@ module.exports = {
   testRegex: '.*\\.(test|spec).(ts|tsx|js)$',
   coverageDirectory: 'coverage/',
   transform: {
-    '^.+\\.tsx?$': 'ts-jest',
+    '^.+\\.tsx?$': 'ts-jest'
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node', '.map'],
   testEnvironment: 'jsdom',
@@ -12,7 +12,7 @@ module.exports = {
   collectCoverageFrom: ['src/**/{!(plugin),}.tsx'],
   globals: {
     'ts-jest': {
-      diagnostics: false,
-    },
-  },
-}
+      diagnostics: false
+    }
+  }
+};

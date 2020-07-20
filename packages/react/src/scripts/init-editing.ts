@@ -1,4 +1,4 @@
-import { version } from '../../package.json'
+import { version } from '../../package.json';
 
 if (typeof window !== 'undefined') {
   window.parent?.postMessage(
@@ -11,5 +11,5 @@ if (typeof window !== 'undefined') {
       },
     },
     '*'
-  )
+  );
 }

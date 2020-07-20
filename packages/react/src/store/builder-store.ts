@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 export const BuilderStoreContext = React.createContext<BuilderStore>({
   state: {},
@@ -6,13 +6,13 @@ export const BuilderStoreContext = React.createContext<BuilderStore>({
   content: {},
   context: {},
   update: (mutator: (state: any) => any) => null,
-})
+});
 
 export interface BuilderStore {
-  state: any
-  rootState: any
-  content: any
-  context: any
-  update: (mutator: (state: any) => any) => any
-  renderLink?: (props: React.AnchorHTMLAttributes<any>) => React.ReactNode
+  state: any;
+  rootState: any;
+  content: any;
+  context: any;
+  update: (mutator: (state: any) => any) => any;
+  renderLink?: (props: React.AnchorHTMLAttributes<any>) => React.ReactNode;
 }

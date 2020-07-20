@@ -1,17 +1,17 @@
-import React from 'react'
-import { withStyles } from '@material-ui/core/styles'
-import CloseIcon from '@material-ui/icons/Close'
-import { DialogTitle, IconButton, Typography } from '@material-ui/core'
+import React from 'react';
+import { withStyles } from '@material-ui/core/styles';
+import CloseIcon from '@material-ui/icons/Close';
+import { DialogTitle, IconButton, Typography } from '@material-ui/core';
 
 const MuiDialogTitle = withStyles(({ spacing, palette }) => ({
   closeButton: {
     position: 'absolute',
     right: spacing(1),
     top: spacing(1),
-    color: palette.grey[500],
-  },
+    color: palette.grey[500]
+  }
 }))((props: any) => {
-  const { children, classes, onClose, other } = props
+  const { children, classes, onClose, other } = props;
   return (
     <DialogTitle disableTypography {...other}>
       <Typography variant="h6">{children}</Typography>
@@ -23,7 +23,7 @@ const MuiDialogTitle = withStyles(({ spacing, palette }) => ({
         <CloseIcon />
       </IconButton>
     </DialogTitle>
-  )
-})
+  );
+});
 
-export default MuiDialogTitle
+export default MuiDialogTitle;

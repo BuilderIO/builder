@@ -1,9 +1,9 @@
-import { BuilderBlock, BuilderBlocks, BuilderElement } from '@builder.io/react'
-import React from 'react'
+import { BuilderBlock, BuilderBlocks, BuilderElement } from '@builder.io/react';
+import React from 'react';
 
 interface TextProps {
-  text?: string
-  builderBlock?: BuilderElement
+  text?: string;
+  builderBlock?: BuilderElement;
 }
 
 @BuilderBlock({
@@ -24,6 +24,6 @@ interface TextProps {
 })
 export class Text extends React.Component<TextProps> {
   render() {
-    return <span dangerouslySetInnerHTML={{ __html: this.props.text! }} />
+    return <span dangerouslySetInnerHTML={{ __html: this.props.text! }} />;
   }
 }

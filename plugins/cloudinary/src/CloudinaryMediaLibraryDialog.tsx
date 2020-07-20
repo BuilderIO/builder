@@ -1,39 +1,39 @@
 /** @jsx jsx */
-import React, { Fragment } from 'react'
-import { jsx } from '@emotion/core'
-import { Dialog, Button, DialogActions } from '@material-ui/core'
+import React, { Fragment } from 'react';
+import { jsx } from '@emotion/core';
+import { Dialog, Button, DialogActions } from '@material-ui/core';
 
 interface CloudinaryMediaLibraryDialogProps {
-  openDialog: boolean
-  closeDialog(): void
-  selectImage(image: CloudinaryImage): void
-  apiKey: string | undefined
-  cloudName: string | undefined
+  openDialog: boolean;
+  closeDialog(): void;
+  selectImage(image: CloudinaryImage): void;
+  apiKey: string | undefined;
+  cloudName: string | undefined;
 }
 
 export interface CloudinaryImage {
-  context: any
-  public_id: string
-  url: string
-  tags: any[]
-  derived: any[]
+  context: any;
+  public_id: string;
+  url: string;
+  tags: any[];
+  derived: any[];
 }
 
 export class CloudinaryMediaLibraryDialog extends React.Component<
   CloudinaryMediaLibraryDialogProps
 > {
   private generateNewMediaLibrary(): any {
-    let mediaLibrary: any
-    const newWindow = window as any
+    let mediaLibrary: any;
+    const newWindow = window as any;
     if (newWindow.cloudinary) {
-      mediaLibrary = this.createMediaLibrary(mediaLibrary, newWindow)
+      mediaLibrary = this.createMediaLibrary(mediaLibrary, newWindow);
     }
-    return mediaLibrary
+    return mediaLibrary;
   }
 
   private openCloudinaryMediaLibrary() {
-    const mediaLibrary = this.generateNewMediaLibrary()
-    this.showMediaLibrary(mediaLibrary)
+    const mediaLibrary = this.generateNewMediaLibrary();
+    this.showMediaLibrary(mediaLibrary);
   }
 
   private showMediaLibrary(mediaLibrary: any) {
@@ -41,7 +41,7 @@ export class CloudinaryMediaLibraryDialog extends React.Component<
       mediaLibrary.show({
         multiple: false,
         max_files: 1,
-      })
+      });
     }
   }
 
@@ -56,16 +56,16 @@ export class CloudinaryMediaLibraryDialog extends React.Component<
         insertHandler: (data: any) => {
           this.selectImage({
             ...data.assets[0],
-          })
+          });
         },
       }
-    )
-    return mediaLibrary
+    );
+    return mediaLibrary;
   }
 
   private selectImage(cloudinaryData: any): void {
-    this.props.selectImage(cloudinaryData)
-    this.props.closeDialog()
+    this.props.selectImage(cloudinaryData);
+    this.props.closeDialog();
   }
 
   render() {
@@ -77,7 +77,7 @@ export class CloudinaryMediaLibraryDialog extends React.Component<
           fullWidth={true}
           maxWidth="lg"
           onRendered={() => {
-            this.openCloudinaryMediaLibrary()
+            this.openCloudinaryMediaLibrary();
           }}
         >
           <div className="container" css={{ height: '90vh' }} />
@@ -88,6 +88,6 @@ export class CloudinaryMediaLibraryDialog extends React.Component<
           </DialogActions>
         </Dialog>
       </Fragment>
-    )
+    );
   }
 }

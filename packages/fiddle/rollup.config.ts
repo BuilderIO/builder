@@ -1,13 +1,13 @@
-import resolve from 'rollup-plugin-node-resolve'
-import commonjs from 'rollup-plugin-commonjs'
-import sourceMaps from 'rollup-plugin-sourcemaps'
-import typescript from 'rollup-plugin-typescript2'
-import json from 'rollup-plugin-json'
-import { uglify } from 'rollup-plugin-uglify'
+import resolve from 'rollup-plugin-node-resolve';
+import commonjs from 'rollup-plugin-commonjs';
+import sourceMaps from 'rollup-plugin-sourcemaps';
+import typescript from 'rollup-plugin-typescript2';
+import json from 'rollup-plugin-json';
+import { uglify } from 'rollup-plugin-uglify';
 
-const pkg = require('./package.json')
+const pkg = require('./package.json');
 
-const libraryName = 'builder-fiddle'
+const libraryName = 'builder-fiddle';
 
 const options = {
   input: `src/${libraryName}.ts`,
@@ -28,7 +28,7 @@ const options = {
     // https://github.com/rollup/rollup-plugin-node-resolve#usage
     resolve(),
   ],
-}
+};
 
 export default [
   // React CJS
@@ -58,4 +58,4 @@ export default [
     ],
     plugins: options.plugins.concat([uglify(), sourceMaps()]),
   },
-]
+];

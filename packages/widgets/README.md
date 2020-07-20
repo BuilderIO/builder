@@ -13,7 +13,7 @@ npm install @builder.io/widgets
 When using the React SDK, just
 
 ```ts
-import '@builder.io/widgets'
+import '@builder.io/widgets';
 ```
 
 Anywhere that you render a `<BuilderComponent ... />`, and now the widgets will register and be available in the editor and when rendering (including server side)

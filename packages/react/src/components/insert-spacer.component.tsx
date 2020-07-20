@@ -1,48 +1,46 @@
 /** @jsx jsx */
-import { jsx } from '@emotion/core'
+import { jsx } from '@emotion/core';
 
-import React from 'react'
-import { Builder } from '@builder.io/sdk'
-import { BuilderStoreContext } from '../store/builder-store'
+import React from 'react';
+import { Builder } from '@builder.io/sdk';
+import { BuilderStoreContext } from '../store/builder-store';
 
 export interface SpacerProps {
-  id: string
-  position: 'before' | 'after'
+  id: string;
+  position: 'before' | 'after';
 }
 
 interface SpacerState {
-  grow: boolean
+  grow: boolean;
 }
 
 class Growser extends React.Component<{ className?: string }> {
   state = {
     grow: false,
     show: false,
-  }
+  };
 
   componentDidMount() {
     // setTimeout needed?
     setTimeout(() => {
       this.setState({
         grow: true,
-      })
-    })
+      });
+    });
   }
 
   render() {
     return (
       <div
         className={
-          (this.props.className || '') +
-          ' ' +
-          (this.state.grow ? 'builder__spacer__grow' : '')
+          (this.props.className || '') + ' ' + (this.state.grow ? 'builder__spacer__grow' : '')
         }
         css={{
           height: this.state.grow ? 30 : 0,
           opacity: this.state.grow ? 1 : 0,
         }}
       />
-    )
+    );
   }
 }
 
@@ -56,33 +54,30 @@ export class InsertSpacer extends React.Component<SpacerProps, SpacerState> {
 
   render() {
     if (!Builder.isEditing) {
-      return null
+      return null;
     }
 
     return (
       <BuilderStoreContext.Consumer>
         {({ state }) => {
-          const spacer = state._spacer
+          const spacer = state._spacer;
           if (!(spacer && spacer.subject === this.props.id)) {
-            return null
+            return null;
           }
 
-          if (
-            ['top', 'left'].indexOf(spacer.direction) > -1 &&
-            this.props.position === 'after'
-          ) {
-            return null
+          if (['top', 'left'].indexOf(spacer.direction) > -1 && this.props.position === 'after') {
+            return null;
           }
           if (
             ['bottom', 'right'].indexOf(spacer.direction) > -1 &&
             this.props.position === 'before'
           ) {
-            return null
+            return null;
           }
 
-          const isHorizontal = ['left', 'right'].indexOf(spacer.direction) > -1
+          const isHorizontal = ['left', 'right'].indexOf(spacer.direction) > -1;
           if (isHorizontal) {
-            return null
+            return null;
           }
 
           return (
@@ -103,9 +98,9 @@ export class InsertSpacer extends React.Component<SpacerProps, SpacerState> {
                 // })
               }}
             />
-          )
+          );
         }}
       </BuilderStoreContext.Consumer>
-    )
+    );
   }
 }

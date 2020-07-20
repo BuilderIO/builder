@@ -77,8 +77,8 @@ The contentLoaded hook can be useful for when you add [custom fields](https://ww
 ```tsx
 <BuilderComponent
   model="page"
-  contentLoaded={(data) => {
-    document.title = data.title // E.g. if your custom field is called `title`
+  contentLoaded={data => {
+    document.title = data.title; // E.g. if your custom field is called `title`
   }}
 />
 ```
@@ -88,17 +88,13 @@ The contentLoaded hook can be useful for when you add [custom fields](https://ww
 The global `Builder` singleton has a number of uses. Most important is registering custom components.
 
 ```tsx
-import * as React from 'react'
-import SyntaxHighlighter from 'react-syntax-highlighter'
-import { Builder } from '@builder.io/react'
+import * as React from 'react';
+import SyntaxHighlighter from 'react-syntax-highlighter';
+import { Builder } from '@builder.io/react';
 
 class CodeBlockComponent extends React.Component {
   render() {
-    return (
-      <SyntaxHighlighter language={this.props.language}>
-        {this.props.code}
-      </SyntaxHighlighter>
-    )
+    return <SyntaxHighlighter language={this.props.language}>{this.props.code}</SyntaxHighlighter>;
   }
 }
 
@@ -116,7 +112,7 @@ Builder.registerComponent(CodeBlockComponent, {
       defaultValue: 'javascript',
     },
   ],
-})
+});
 ```
 
 See our full guide on [registering custom components here](https://www.builder.io/c/docs/custom-react-components)
@@ -127,13 +123,13 @@ The React SDK exports the core SDK's [builder object](../core), which can be use
 your API key and user attributes
 
 ```tsx
-import { builder } from '@builder.io/react'
+import { builder } from '@builder.io/react';
 
-builder.init(YOUR_KEY)
+builder.init(YOUR_KEY);
 
 // Optional custom targeting
 builder.setUserAttributes({
   userIsLoggedIn: true,
   whateverKey: 'whatever value',
-})
+});
 ```

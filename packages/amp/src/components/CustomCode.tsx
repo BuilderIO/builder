@@ -1,9 +1,9 @@
-import { BuilderBlock, BuilderElement } from '@builder.io/react'
-import React from 'react'
+import { BuilderBlock, BuilderElement } from '@builder.io/react';
+import React from 'react';
 
 interface CustomCodeProps {
-  code?: string
-  builderBlock?: BuilderElement
+  code?: string;
+  builderBlock?: BuilderElement;
 }
 
 // TODO: normal will suffice? tags: ['amp']?
@@ -20,6 +20,6 @@ interface CustomCodeProps {
 })
 export class CustomCode extends React.Component<CustomCodeProps> {
   render() {
-    return <span dangerouslySetInnerHTML={{ __html: this.props.code! }} />
+    return <span dangerouslySetInnerHTML={{ __html: this.props.code! }} />;
   }
 }

@@ -46,7 +46,7 @@ Set your component to use the CloudinaryImageEditor plugin type (see below)
 export const Image = withBuilder(CloudinaryImageComponent, {
   name: 'Image',
   inputs: [{ name: 'image', type: 'cloudinaryImageEditor' }],
-})
+});
 ```
 
 then you can leverage this plugin to access your cloudinary image content using the official Cloudinary Media Library widget.

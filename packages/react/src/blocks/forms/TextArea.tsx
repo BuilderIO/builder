@@ -1,12 +1,12 @@
-import React from 'react'
-import { withBuilder } from '../../functions/with-builder'
+import React from 'react';
+import { withBuilder } from '../../functions/with-builder';
 
 export interface FormTextAreaProps {
-  attributes?: any
-  name?: string
-  value?: string
-  defaultValue?: string
-  placeholder?: string
+  attributes?: any;
+  name?: string;
+  value?: string;
+  defaultValue?: string;
+  placeholder?: string;
 }
 
 class TextAreaComponent extends React.Component<FormTextAreaProps> {
@@ -19,7 +19,7 @@ class TextAreaComponent extends React.Component<FormTextAreaProps> {
         defaultValue={this.props.defaultValue}
         {...this.props.attributes}
       />
-    )
+    );
   }
 }
 
@@ -37,8 +37,7 @@ export const TextArea = withBuilder(TextAreaComponent, {
       name: 'name',
       type: 'string',
       required: true,
-      helperText:
-        'Every input in a form needs a unique name describing what it gets, e.g. "email"',
+      helperText: 'Every input in a form needs a unique name describing what it gets, e.g. "email"',
     },
     {
       name: 'defaultValue',
@@ -67,4 +66,4 @@ export const TextArea = withBuilder(TextAreaComponent, {
   },
   static: true,
   noWrap: true,
-})
+});

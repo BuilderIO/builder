@@ -1,8 +1,8 @@
-import { keyframes } from '@emotion/core'
+import { keyframes } from '@emotion/core';
 
-import { el, mergeEl, _s } from '../modules/blocks'
-import { BuilderElement } from '@builder.io/sdk'
-import { fastClone } from '../functions/fast-clone'
+import { el, mergeEl, _s } from '../modules/blocks';
+import { BuilderElement } from '@builder.io/sdk';
+import { fastClone } from '../functions/fast-clone';
 
 const spinKeyframes = keyframes({
   '0%': {
@@ -11,7 +11,7 @@ const spinKeyframes = keyframes({
   '100%': {
     transform: 'rotate(360deg)',
   },
-})
+});
 
 const loadingSpinner = el({
   layerName: 'Loading spinner',
@@ -36,16 +36,16 @@ const loadingSpinner = el({
       animationName: spinKeyframes.toString(),
     },
   },
-})
+});
 
 export const productBoxWithChildren = (children: Partial<BuilderElement>[]) => {
-  const cloned = fastClone(productBox)
+  const cloned = fastClone(productBox);
   cloned.component.options.symbol.content.data.blocks = [
     ...cloned.component.options.symbol.content.data.blocks,
     ...children,
-  ]
-  return cloned
-}
+  ];
+  return cloned;
+};
 
 export const productBox = el({
   layerName: 'Product Box',
@@ -54,9 +54,7 @@ export const productBox = el({
   },
   bindings: {
     'style.cursor': _s((state, block) =>
-      block?.component?.options?.linkToProductPageOnClick !== false
-        ? 'pointer'
-        : undefined
+      block?.component?.options?.linkToProductPageOnClick !== false ? 'pointer' : undefined
     ),
     'component.options.symbol.data.linkToProductPageOnClick': _s(
       (state, block) => block?.component?.options?.linkToProductPageOnClick
@@ -104,140 +102,128 @@ export const productBox = el({
                 builder: any,
                 context: any
               ) => {
-                let lastPorductId = state.product
+                let lastPorductId = state.product;
 
                 if (Builder.isEditing) {
                   // TODO: ref.useEffect(() => ... , [])
                   ref.onStateChange.subscribe(() => {
                     if (lastPorductId !== state.product) {
-                      updateProduct()
-                      lastPorductId = state.product
+                      updateProduct();
+                      lastPorductId = state.product;
                     }
-                  })
+                  });
                 }
 
                 ref.element.addEventListener('click', (event: MouseEvent) => {
                   if (state.linkToProductPageOnClick === false) {
-                    return
+                    return;
                   }
                   if (event.defaultPrevented || Builder.isEditing) {
-                    return
+                    return;
                   }
 
-                  const productInfo = state.productInfo
+                  const productInfo = state.productInfo;
                   if (!productInfo) {
-                    return
+                    return;
                   }
-                  const url = `/products/${productInfo.handle}`
+                  const url = `/products/${productInfo.handle}`;
                   function goToProductPage() {
-                    window.location.href = url
+                    window.location.href = url;
                   }
-                  const { target, currentTarget } = event
+                  const { target, currentTarget } = event;
                   if (target === currentTarget) {
-                    goToProductPage()
+                    goToProductPage();
                   }
-                  let current = target as HTMLElement | null
+                  let current = target as HTMLElement | null;
                   do {
                     if (!current) {
-                      break
+                      break;
                     } else if (current === currentTarget) {
-                      goToProductPage()
-                      break
-                    } else if (
-                      ['SELECT', 'INPUT', 'BUTTON', 'A'].includes(
-                        current.tagName
-                      )
-                    ) {
-                      break
+                      goToProductPage();
+                      break;
+                    } else if (['SELECT', 'INPUT', 'BUTTON', 'A'].includes(current.tagName)) {
+                      break;
                     }
-                  } while (current && (current = current.parentElement))
-                })
+                  } while (current && (current = current.parentElement));
+                });
 
                 function wrapImage(img: any) {
                   return {
                     ...img,
                     toString() {
-                      return img.src
+                      return img.src;
                     },
                     valueOf: () => img.src,
                     aspect_ratio: img.width / img.height,
-                  }
+                  };
                 }
 
                 /**
                  * Modify product JSON from Shopify APIs to behave more like liquid product objects
                  */
                 function modifyProduct(product: any) {
-                  product.images = product.images.map((item: any) =>
-                    wrapImage(item)
-                  )
-                  product.featured_image = product.images[0]
+                  product.images = product.images.map((item: any) => wrapImage(item));
+                  product.featured_image = product.images[0];
                   product.variants.forEach(
-                    (item: any) =>
-                      (item.featured_image = product.featured_image)
-                  )
-                  product.description = product.body_html
-                  product.options_with_values = product.options
+                    (item: any) => (item.featured_image = product.featured_image)
+                  );
+                  product.description = product.body_html;
+                  product.options_with_values = product.options;
 
-                  const minPriceVariation = product.variants.reduce(
-                    (current: any, item: any) => {
-                      if (current === item) {
-                        return current
-                      }
-                      const currentMin = parseFloat(current.price)
-                      const newMin = parseFloat(item.price)
+                  const minPriceVariation = product.variants.reduce((current: any, item: any) => {
+                    if (current === item) {
+                      return current;
+                    }
+                    const currentMin = parseFloat(current.price);
+                    const newMin = parseFloat(item.price);
 
-                      return currentMin <= newMin ? current : item
-                    },
-                    product.variants[0]
-                  )
+                    return currentMin <= newMin ? current : item;
+                  }, product.variants[0]);
 
                   // TODO: other currencies
-                  product.price = minPriceVariation.price
+                  product.price = minPriceVariation.price;
 
                   // TODO: price_min, price_max, price_varies, other properties
                   // here https://help.shopify.com/en/themes/liquid/objects/product#product-price
 
-                  return product
+                  return product;
                 }
 
                 function updateProduct() {
                   if (state.productInfo && !state.product) {
-                    return
+                    return;
                   }
-                  const { product } = state
+                  const { product } = state;
                   if (product) {
-                    state.loading = true
+                    state.loading = true;
                     fetch(
                       `https://cdn.builder.io/api/v1/shopify/products/${product}.json?apiKey=${context.apiKey}`
                     )
-                      .then((res) => res.json())
-                      .then((data) => {
-                        const { product } = data
+                      .then(res => res.json())
+                      .then(data => {
+                        const { product } = data;
                         if (product) {
-                          const modifiedProduct = modifyProduct(product)
-                          state.productInfo = modifiedProduct
+                          const modifiedProduct = modifyProduct(product);
+                          state.productInfo = modifiedProduct;
                         }
-                        state.loading = false
+                        state.loading = false;
                       })
-                      .catch((err) => {
-                        console.error('Error fetching Shopify product', err)
-                        state.loading = false
-                      })
+                      .catch(err => {
+                        console.error('Error fetching Shopify product', err);
+                        state.loading = false;
+                      });
                   } else {
-                    state.productInfo = null
+                    state.productInfo = null;
                   }
                 }
-                updateProduct()
+                updateProduct();
               }
             ),
             blocks: [
               el({
                 layerLocked: true,
                 bindings: {
-                  show: _s(
-                    (state: any) => !(state.product || state.productInfo)
-                  ),
+                  show: _s((state: any) => !(state.product || state.productInfo)),
                 },
                 responsiveStyles: {
                   large: {
@@ -264,4 +250,4 @@ export const productBox = el({
       },
     },
   },
-})
+});

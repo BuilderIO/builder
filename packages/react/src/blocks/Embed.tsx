@@ -1,46 +1,46 @@
-import React from 'react'
-import { Builder } from '@builder.io/sdk'
-import { withBuilder } from '../functions/with-builder'
+import React from 'react';
+import { Builder } from '@builder.io/sdk';
+import { withBuilder } from '../functions/with-builder';
 
 class EmbedComponent extends React.Component<any> {
-  elementRef: HTMLElement | null = null
+  elementRef: HTMLElement | null = null;
 
-  scriptsInserted = new Set()
-  scriptsRun = new Set()
+  scriptsInserted = new Set();
+  scriptsRun = new Set();
 
   componentDidUpdate(prevProps: any) {
     if (this.props.content !== prevProps.content) {
-      this.findAndRunScripts()
+      this.findAndRunScripts();
     }
   }
 
   componentDidMount() {
-    this.findAndRunScripts()
+    this.findAndRunScripts();
   }
 
   findAndRunScripts() {
     if (this.elementRef && typeof window !== 'undefined') {
-      const scripts = this.elementRef.getElementsByTagName('script')
+      const scripts = this.elementRef.getElementsByTagName('script');
       for (let i = 0; i < scripts.length; i++) {
-        const script = scripts[i]
+        const script = scripts[i];
         if (script.src) {
           if (this.scriptsInserted.has(script.src)) {
-            continue
+            continue;
           }
-          this.scriptsInserted.add(script.src)
-          const newScript = document.createElement('script')
-          newScript.async = true
-          newScript.src = script.src
-          document.head.appendChild(newScript)
+          this.scriptsInserted.add(script.src);
+          const newScript = document.createElement('script');
+          newScript.async = true;
+          newScript.src = script.src;
+          document.head.appendChild(newScript);
         } else {
           if (this.scriptsRun.has(script.innerText)) {
-            continue
+            continue;
           }
-          this.scriptsRun.add(script.innerText)
+          this.scriptsRun.add(script.innerText);
           try {
-            new Function(script.innerText)()
+            new Function(script.innerText)();
           } catch (error) {
-            console.warn('Builder custom code component error:', error)
+            console.warn('Builder custom code component error:', error);
           }
         }
       }
@@ -52,22 +52,19 @@ class EmbedComponent extends React.Component<any> {
     // TODO: allow this to by bypassed by context or prop that says if this is going to be HTML
     // loaded without client JS/hydration (static)
     if (Builder.isServer) {
-      return (this.props.content || '').replace(
-        /<script[\s\S]*?<\/script>/g,
-        ''
-      )
+      return (this.props.content || '').replace(/<script[\s\S]*?<\/script>/g, '');
     }
-    return this.props.content
+    return this.props.content;
   }
 
   render() {
     return (
       <div
-        ref={(ref) => (this.elementRef = ref)}
+        ref={ref => (this.elementRef = ref)}
         className="builder-embed"
         dangerouslySetInnerHTML={{ __html: this.content }}
       />
-    )
+    );
   }
 }
 
@@ -82,32 +79,30 @@ export const Embed = withBuilder(EmbedComponent, {
       defaultValue: '',
       helperText: 'e.g. enter a youtube url, google map, etc',
       onChange(options: Map<string, any>) {
-        const url = options.get('url')
+        const url = options.get('url');
         if (url) {
-          options.set('content', 'Loading...')
+          options.set('content', 'Loading...');
           // TODO: get this out of here!
-          const apiKey = 'ae0e60e78201a3f2b0de4b'
-          return fetch(
-            `https://iframe.ly/api/iframely?url=${url}&api_key=${apiKey}`
-          )
-            .then((res) => res.json())
-            .then((data) => {
+          const apiKey = 'ae0e60e78201a3f2b0de4b';
+          return fetch(`https://iframe.ly/api/iframely?url=${url}&api_key=${apiKey}`)
+            .then(res => res.json())
+            .then(data => {
               if (options.get('url') === url) {
                 if (data.html) {
-                  options.set('content', data.html)
+                  options.set('content', data.html);
                 } else {
-                  options.set('content', 'Invalid url, please try another')
+                  options.set('content', 'Invalid url, please try another');
                 }
               }
             })
-            .catch((err) => {
+            .catch(err => {
               options.set(
                 'content',
                 'There was an error embedding this URL, please try again or another URL'
-              )
-            })
+              );
+            });
         } else {
-          options.delete('content')
+          options.delete('content');
         }
       },
     },
@@ -118,4 +113,4 @@ export const Embed = withBuilder(EmbedComponent, {
       hideFromUI: true,
     },
   ],
-})
+});

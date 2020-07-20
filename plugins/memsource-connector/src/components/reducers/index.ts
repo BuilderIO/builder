@@ -1,49 +1,49 @@
-import { State, Action } from '../../types'
-import { useReducer } from 'react'
+import { State, Action } from '../../types';
+import { useReducer } from 'react';
 
-const initialSelectedLocales: State = { selectedLocales: new Set() }
+const initialSelectedLocales: State = { selectedLocales: new Set() };
 
 const selectedLocalesReducer = (state: State, action: Action): State => {
-  const { locale, checked } = action
+  const { locale, checked } = action;
   if (checked) {
-    return { selectedLocales: new Set(state.selectedLocales).add(locale) }
+    return { selectedLocales: new Set(state.selectedLocales).add(locale) };
   } else {
-    const selectedLocales = new Set(state.selectedLocales)
-    selectedLocales.delete(locale)
-    return { selectedLocales }
+    const selectedLocales = new Set(state.selectedLocales);
+    selectedLocales.delete(locale);
+    return { selectedLocales };
   }
-}
+};
 
 export const useSelectedLocalesReducer = (): {
-  selectedLocales: Set<string>
-  dispatch: React.Dispatch<Action>
+  selectedLocales: Set<string>;
+  dispatch: React.Dispatch<Action>;
 } => {
   const [{ selectedLocales }, dispatch] = useReducer(
     selectedLocalesReducer,
     initialSelectedLocales
-  )
+  );
 
-  return { selectedLocales, dispatch }
-}
+  return { selectedLocales, dispatch };
+};
 
 type LocaleDialogStageState = {
-  onDisplay: boolean
-  onResult: boolean
-  message: string
-  severity: 'warning' | 'success' | 'error' | 'info'
-}
+  onDisplay: boolean;
+  onResult: boolean;
+  message: string;
+  severity: 'warning' | 'success' | 'error' | 'info';
+};
 
 type LocaleDialogStageAction = {
-  nextStage: 'display' | 'success' | 'failure'
-  message: string
-}
+  nextStage: 'display' | 'success' | 'failure';
+  message: string;
+};
 
 const initialLocaleDialogStage: LocaleDialogStageState = {
   onDisplay: true,
   onResult: false,
   severity: 'info',
-  message: '',
-}
+  message: ''
+};
 
 const localeDialogStageReducer = (
   _: LocaleDialogStageState,
@@ -54,9 +54,9 @@ const localeDialogStageReducer = (
       onDisplay: true,
       onResult: false,
       severity: 'info',
-      message: '',
-    }
-    return onDisplayNext
+      message: ''
+    };
+    return onDisplayNext;
   }
 
   if (action.nextStage === 'success') {
@@ -64,10 +64,10 @@ const localeDialogStageReducer = (
       onDisplay: false,
       onResult: true,
       severity: 'success',
-      message: action.message,
-    }
+      message: action.message
+    };
 
-    return onSuccessNext
+    return onSuccessNext;
   }
 
   if ((action.nextStage = 'failure')) {
@@ -75,23 +75,23 @@ const localeDialogStageReducer = (
       onDisplay: false,
       onResult: true,
       severity: 'error',
-      message: action.message,
-    }
+      message: action.message
+    };
 
-    return onFailureNext
+    return onFailureNext;
   }
 
-  return initialLocaleDialogStage
-}
+  return initialLocaleDialogStage;
+};
 
 export const useLocaleDialogStageReducer = (): {
-  localeDialogStage: LocaleDialogStageState
-  dispatch: React.Dispatch<LocaleDialogStageAction>
+  localeDialogStage: LocaleDialogStageState;
+  dispatch: React.Dispatch<LocaleDialogStageAction>;
 } => {
   const [localeDialogStage, dispatch] = useReducer(
     localeDialogStageReducer,
     initialLocaleDialogStage
-  )
+  );
 
-  return { localeDialogStage, dispatch }
-}
+  return { localeDialogStage, dispatch };
+};

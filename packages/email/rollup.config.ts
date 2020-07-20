@@ -1,15 +1,15 @@
-import resolve from 'rollup-plugin-node-resolve'
-import commonjs from 'rollup-plugin-commonjs'
-import sourceMaps from 'rollup-plugin-sourcemaps'
-import typescript from 'rollup-plugin-typescript2'
-import replace from 'rollup-plugin-replace'
-import json from 'rollup-plugin-json'
+import resolve from 'rollup-plugin-node-resolve';
+import commonjs from 'rollup-plugin-commonjs';
+import sourceMaps from 'rollup-plugin-sourcemaps';
+import typescript from 'rollup-plugin-typescript2';
+import replace from 'rollup-plugin-replace';
+import json from 'rollup-plugin-json';
 
-const pkg = require('./package.json')
+const pkg = require('./package.json');
 
-const libraryName = 'builder-email'
+const libraryName = 'builder-email';
 
-const resolvePlugin = resolve()
+const resolvePlugin = resolve();
 
 const options = {
   input: `src/${libraryName}.ts`,
@@ -39,11 +39,7 @@ const options = {
           'Fragment',
         ],
         'node_modules/react-dom/index.js': ['render', 'hydrate'],
-        'node_modules/react-is/index.js': [
-          'isElement',
-          'isValidElementType',
-          'ForwardRef',
-        ],
+        'node_modules/react-is/index.js': ['isElement', 'isValidElementType', 'ForwardRef'],
         '../react/node_modules/react/index.js': [
           'cloneElement',
           'createContext',
@@ -68,7 +64,7 @@ const options = {
     // Resolve source maps to the original source
     sourceMaps(),
   ],
-}
+};
 
 export default [
   // {
@@ -93,7 +89,7 @@ export default [
     // TODO: should really do a cjs build too (probably for the default build instead of umd...)
     external: Object.keys(pkg.dependencies || {}),
     plugins: options.plugins
-      .filter((plugin) => plugin !== resolvePlugin)
+      .filter(plugin => plugin !== resolvePlugin)
       .concat([
         resolve({
           only: [/^\.{0,2}\//],
@@ -117,4 +113,4 @@ export default [
   //     sourcemap: true
   //   }
   // }
-]
+];

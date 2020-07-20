@@ -1,5 +1,5 @@
-import { Builder } from '@builder.io/sdk'
-import { collectionGrid } from '../blocks/product-collection'
+import { Builder } from '@builder.io/sdk';
+import { collectionGrid } from '../blocks/product-collection';
 import {
   addToCart,
   productBoxBlock,
@@ -7,10 +7,10 @@ import {
   productPrice,
   productVariants,
   productTitle,
-} from '../blocks/product-info'
-import { el } from '../modules/blocks'
+} from '../blocks/product-info';
+import { el } from '../modules/blocks';
 
-const SHOPIFY_SECTION_NAME = 'Shopify'
+const SHOPIFY_SECTION_NAME = 'Shopify';
 
 Builder.register('insertMenu', {
   name: SHOPIFY_SECTION_NAME,
@@ -69,4 +69,4 @@ Builder.register('insertMenu', {
       item: addToCart,
     },
   ],
-})
+});

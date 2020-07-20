@@ -1,9 +1,9 @@
-import React from 'react'
-import { withBuilder } from '../../functions/with-builder'
+import React from 'react';
+import { withBuilder } from '../../functions/with-builder';
 
 export interface ButtonProps {
-  attributes?: any
-  text?: string
+  attributes?: any;
+  text?: string;
 }
 
 class FormSubmitButtonComponent extends React.Component<ButtonProps> {
@@ -12,7 +12,7 @@ class FormSubmitButtonComponent extends React.Component<ButtonProps> {
       <button type="submit" {...this.props.attributes}>
         {this.props.text}
       </button>
-    )
+    );
   }
 }
 
@@ -44,4 +44,4 @@ export const FormSubmitButton = withBuilder(FormSubmitButtonComponent, {
   // that only shows if advanced setting is flipped
   // TODO: defaultChildren
   // canHaveChildren: true,
-})
+});

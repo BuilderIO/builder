@@ -1,28 +1,22 @@
-import resolve from 'rollup-plugin-node-resolve'
-import commonjs from 'rollup-plugin-commonjs'
-import sourceMaps from 'rollup-plugin-sourcemaps'
-import camelCase from 'lodash.camelcase'
-import typescript from 'rollup-plugin-typescript2'
-import json from 'rollup-plugin-json'
-import serve from 'rollup-plugin-serve'
+import resolve from 'rollup-plugin-node-resolve';
+import commonjs from 'rollup-plugin-commonjs';
+import sourceMaps from 'rollup-plugin-sourcemaps';
+import camelCase from 'lodash.camelcase';
+import typescript from 'rollup-plugin-typescript2';
+import json from 'rollup-plugin-json';
+import serve from 'rollup-plugin-serve';
 
-const SERVE = process.env.SERVE === 'true'
+const SERVE = process.env.SERVE === 'true';
 
-const pkg = require('./package.json')
+const pkg = require('./package.json');
 
-const libraryName = 'CloudinaryImageEditor'
+const libraryName = 'CloudinaryImageEditor';
 
 export default {
   input: `src/${libraryName}.tsx`,
   // Important! We need to have shared references to 'react' and '@builder.io/sdk'
   // for builder plugins to run properly
-  external: [
-    'react',
-    '@builder.io/sdk',
-    '@material-ui/core',
-    '@emotion/core',
-    '@emotion/styled',
-  ],
+  external: ['react', '@builder.io/sdk', '@material-ui/core', '@emotion/core', '@emotion/styled'],
   output: [
     {
       file: pkg.main,
@@ -62,4 +56,4 @@ export default {
         ]
       : []),
   ],
-}
+};

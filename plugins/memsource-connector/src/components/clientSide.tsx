@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 
 export default ({ children }: any) => {
-  const [clientSide, setClientSide] = useState(false)
+  const [clientSide, setClientSide] = useState(false);
 
-  useEffect(() => setClientSide(true), [])
+  useEffect(() => setClientSide(true), []);
 
-  return clientSide ? children : <></>
-}
+  return clientSide ? children : <></>;
+};

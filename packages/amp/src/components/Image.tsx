@@ -1,16 +1,16 @@
-import { BuilderBlock, BuilderBlocks } from '@builder.io/react'
-import React from 'react'
+import { BuilderBlock, BuilderBlocks } from '@builder.io/react';
+import React from 'react';
 
 interface ImageProps {
-  altText?: string
-  image?: string
-  height?: number
-  width?: number
-  builderBlock?: any
-  attributes?: any
+  altText?: string;
+  image?: string;
+  height?: number;
+  width?: number;
+  builderBlock?: any;
+  attributes?: any;
 }
 
-const DEFAULT_ASPECT_RATIO = 0.7041
+const DEFAULT_ASPECT_RATIO = 0.7041;
 
 @BuilderBlock({
   name: 'Amp:Image',
@@ -33,55 +33,51 @@ const DEFAULT_ASPECT_RATIO = 0.7041
       defaultValue:
         'https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d',
       onChange: (options: Map<string, any>) => {
-        const DEFAULT_ASPECT_RATIO = 0.7041
-        function loadImage(
-          url: string,
-          timeout = 60000
-        ): Promise<HTMLImageElement> {
+        const DEFAULT_ASPECT_RATIO = 0.7041;
+        function loadImage(url: string, timeout = 60000): Promise<HTMLImageElement> {
           return new Promise((resolve, reject) => {
-            const img = document.createElement('img')
-            let loaded = false
+            const img = document.createElement('img');
+            let loaded = false;
             img.onload = () => {
-              loaded = true
-              resolve(img)
-            }
+              loaded = true;
+              resolve(img);
+            };
 
-            img.addEventListener('error', (event) => {
-              console.warn('Image load failed', event.error)
-              reject(event.error)
-            })
+            img.addEventListener('error', event => {
+              console.warn('Image load failed', event.error);
+              reject(event.error);
+            });
 
-            img.src = url
+            img.src = url;
             setTimeout(() => {
               if (!loaded) {
-                reject(new Error('Image load timed out'))
+                reject(new Error('Image load timed out'));
               }
-            }, timeout)
-          })
+            }, timeout);
+          });
         }
 
         function round(num: number) {
-          return Math.round(num * 1000) / 1000
+          return Math.round(num * 1000) / 1000;
         }
 
         // // TODO
-        const value = options.get('image')
-        const aspectRatio = options.get('aspectRatio')
+        const value = options.get('image');
+        const aspectRatio = options.get('aspectRatio');
         if (value && (!aspectRatio || aspectRatio === DEFAULT_ASPECT_RATIO)) {
-          return loadImage(value).then((img) => {
-            const possiblyUpdatedAspectRatio = options.get('aspectRatio')
+          return loadImage(value).then(img => {
+            const possiblyUpdatedAspectRatio = options.get('aspectRatio');
             if (
               options.get('image') === value &&
-              (!possiblyUpdatedAspectRatio ||
-                possiblyUpdatedAspectRatio === DEFAULT_ASPECT_RATIO)
+              (!possiblyUpdatedAspectRatio || possiblyUpdatedAspectRatio === DEFAULT_ASPECT_RATIO)
             ) {
               if (img.width && img.height) {
                 // options.set('aspectRatio', round(img.height / img.width));
-                options.set('height', img.height)
-                options.set('width', img.width)
+                options.set('height', img.height);
+                options.set('width', img.width);
               }
             }
-          })
+          });
         }
       },
     },
@@ -125,6 +121,6 @@ export class Image extends React.Component<ImageProps> {
         className="builder-image"
         src={this.props.image}
       />
-    )
+    );
   }
 }

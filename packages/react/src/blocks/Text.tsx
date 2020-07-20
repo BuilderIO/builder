@@ -1,40 +1,37 @@
 /** @jsx jsx */
-import { jsx, InterpolationWithTheme } from '@emotion/core'
-import React from 'react'
-import { Builder, BuilderElement } from '@builder.io/sdk'
-import { withBuilder } from '../functions/with-builder'
-import { BuilderStoreContext } from '../store/builder-store'
+import { jsx, InterpolationWithTheme } from '@emotion/core';
+import React from 'react';
+import { Builder, BuilderElement } from '@builder.io/sdk';
+import { withBuilder } from '../functions/with-builder';
+import { BuilderStoreContext } from '../store/builder-store';
 const iconUrl =
-  'https://firebasestorage.googleapis.com/v0/b/builder-3b0a2.appspot.com/o/images%2Fbaseline-text_fields-24px%20(1).svg?alt=media&token=12177b73-0ee3-42ca-98c6-0dd003de1929'
+  'https://firebasestorage.googleapis.com/v0/b/builder-3b0a2.appspot.com/o/images%2Fbaseline-text_fields-24px%20(1).svg?alt=media&token=12177b73-0ee3-42ca-98c6-0dd003de1929';
 
 export interface TextProps {
-  text: string
-  builderBlock?: BuilderElement
+  text: string;
+  builderBlock?: BuilderElement;
 }
 
 class TextComponent extends React.Component<TextProps> {
-  textRef: HTMLSpanElement | null = null
+  textRef: HTMLSpanElement | null = null;
 
   componentDidUpdate(prevProps: TextProps) {
     if (!this.allowTextEdit) {
-      return
+      return;
     }
     if (
       this.textRef &&
-      !(
-        this.textRef.contentEditable === 'true' &&
-        this.textRef === document.activeElement
-      )
+      !(this.textRef.contentEditable === 'true' && this.textRef === document.activeElement)
     ) {
       if (this.props.text !== prevProps.text) {
-        this.textRef.innerHTML = this.props.text
+        this.textRef.innerHTML = this.props.text;
       }
     }
   }
 
   componentDidMount() {
     if (this.textRef) {
-      this.textRef.innerHTML = this.props.text
+      this.textRef.innerHTML = this.props.text;
     }
   }
 
@@ -50,11 +47,11 @@ class TextComponent extends React.Component<TextProps> {
           this.props.builderBlock.bindings['options.text'] ||
           this.props.builderBlock.bindings['text'])
       )
-    )
+    );
   }
 
   render() {
-    const allowEditingText = this.allowTextEdit
+    const allowEditingText = this.allowTextEdit;
 
     const textCSS: InterpolationWithTheme<any> = {
       outline: 'none',
@@ -70,93 +67,86 @@ class TextComponent extends React.Component<TextProps> {
         textAlign: 'inherit',
         fontFamily: 'inherit',
       },
-    }
+    };
 
     return (
       <BuilderStoreContext.Consumer>
-        {(state) => {
+        {state => {
           if (state.content.meta?.rtlMode) {
-            textCSS.direction = 'rtl'
+            textCSS.direction = 'rtl';
           }
 
           return (
             <React.Fragment>
               {/* TODO: <BuilderEditableText component that wraps this for other components with text */}
               <span
-                ref={(ref) => {
-                  this.textRef = ref
+                ref={ref => {
+                  this.textRef = ref;
                 }}
                 contentEditable={allowEditingText || undefined}
-                onInput={(e) => {
+                onInput={e => {
                   if (allowEditingText) {
                     window.parent?.postMessage(
                       {
                         type: 'builder.textEdited',
                         data: {
-                          id:
-                            this.props.builderBlock &&
-                            this.props.builderBlock.id,
+                          id: this.props.builderBlock && this.props.builderBlock.id,
                           value: e.currentTarget.innerHTML,
                         },
                       },
                       '*'
-                    )
+                    );
                   }
                 }}
-                onKeyDown={(e) => {
+                onKeyDown={e => {
                   if (
                     allowEditingText &&
                     this.textRef &&
                     e.which === 27 &&
                     document.activeElement === this.textRef
                   ) {
-                    this.textRef.blur()
+                    this.textRef.blur();
                   }
                 }}
-                onFocus={(e) => {
+                onFocus={e => {
                   if (allowEditingText) {
                     window.parent?.postMessage(
                       {
                         type: 'builder.textFocused',
                         data: {
-                          id:
-                            this.props.builderBlock &&
-                            this.props.builderBlock.id,
+                          id: this.props.builderBlock && this.props.builderBlock.id,
                         },
                       },
                       '*'
-                    )
+                    );
                   }
                 }}
-                onBlur={(e) => {
+                onBlur={e => {
                   if (allowEditingText) {
                     window.parent?.postMessage(
                       {
                         type: 'builder.textBlurred',
                         data: {
-                          id:
-                            this.props.builderBlock &&
-                            this.props.builderBlock.id,
+                          id: this.props.builderBlock && this.props.builderBlock.id,
                         },
                       },
                       '*'
-                    )
+                    );
                   }
                 }}
                 css={textCSS}
                 className="builder-text"
                 {...(!allowEditingText && {
                   dangerouslySetInnerHTML: {
-                    __html:
-                      this.props.text || (this.props as any).content || '',
+                    __html: this.props.text || (this.props as any).content || '',
                   },
                 })}
               />
             </React.Fragment>
-          )
+          );
         }}
       </BuilderStoreContext.Consumer>
-    )
+    );
   }
 }
 
@@ -179,4 +169,4 @@ export const Text = withBuilder(TextComponent, {
     height: 'auto',
     textAlign: 'center',
   },
-})
+});

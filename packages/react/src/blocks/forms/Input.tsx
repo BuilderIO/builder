@@ -1,30 +1,26 @@
-import React from 'react'
-import { Builder } from '@builder.io/sdk'
-import { withBuilder } from '../../functions/with-builder'
+import React from 'react';
+import { Builder } from '@builder.io/sdk';
+import { withBuilder } from '../../functions/with-builder';
 
 // TODO: how do onchange...
 // TODO: actions all custom events and custom js gets
 // passed an element reference and listens for events....
 // Needs to unsubscribe, so must manage
 export interface FormInputProps {
-  type?: string
-  attributes?: any
-  name?: string
-  value?: string
-  placeholder?: string
-  defaultValue?: string
-  required?: boolean
+  type?: string;
+  attributes?: any;
+  name?: string;
+  value?: string;
+  placeholder?: string;
+  defaultValue?: string;
+  required?: boolean;
 }
 
 class FormInputComponent extends React.Component<FormInputProps> {
   render() {
     return (
       <input
-        key={
-          Builder.isEditing && this.props.defaultValue
-            ? this.props.defaultValue
-            : 'default-key'
-        }
+        key={Builder.isEditing && this.props.defaultValue ? this.props.defaultValue : 'default-key'}
         placeholder={this.props.placeholder}
         type={this.props.type}
         name={this.props.name}
@@ -33,7 +29,7 @@ class FormInputComponent extends React.Component<FormInputProps> {
         required={this.props.required}
         {...this.props.attributes}
       />
-    )
+    );
   }
 }
 
@@ -119,4 +115,4 @@ export const FormInput = withBuilder(FormInputComponent, {
     borderStyle: 'solid',
     borderColor: '#ccc',
   },
-})
+});

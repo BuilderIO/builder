@@ -17,4 +17,4 @@
  * E.g. github.com/BuilderIO/builder/blob/master/examples/react-design-system/src/builder-settings.js#L9:L9
  *
  */
-module.exports = require('./dist/builder-react-lite.cjs.js')
+module.exports = require('./dist/builder-react-lite.cjs.js');

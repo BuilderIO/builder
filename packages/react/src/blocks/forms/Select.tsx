@@ -1,36 +1,32 @@
-import React from 'react'
-import { Builder } from '@builder.io/sdk'
-import { withBuilder } from '../../functions/with-builder'
+import React from 'react';
+import { Builder } from '@builder.io/sdk';
+import { withBuilder } from '../../functions/with-builder';
 
 export interface FormSelectProps {
-  options?: { name?: string; value: string }[]
-  attributes?: any
-  name?: string
-  value?: string
-  defaultValue?: string
+  options?: { name?: string; value: string }[];
+  attributes?: any;
+  name?: string;
+  value?: string;
+  defaultValue?: string;
 }
 
 class FormSelectComponent extends React.Component<FormSelectProps> {
   render() {
-    const { options } = this.props
+    const { options } = this.props;
     return (
       <select
         value={this.props.value}
-        key={
-          Builder.isEditing && this.props.defaultValue
-            ? this.props.defaultValue
-            : 'default-key'
-        }
+        key={Builder.isEditing && this.props.defaultValue ? this.props.defaultValue : 'default-key'}
         defaultValue={this.props.defaultValue}
         name={this.props.name}
         {...this.props.attributes}
       >
         {options &&
-          options.map((option) => (
+          options.map(option => (
             <option value={option.value}>{option.name || option.value}</option>
           ))}
       </select>
-    )
+    );
   }
 }
 
@@ -91,4 +87,4 @@ export const FormSelect = withBuilder(FormSelectComponent, {
   ],
   static: true,
   noWrap: true,
-})
+});

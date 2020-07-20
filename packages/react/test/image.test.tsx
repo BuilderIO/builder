@@ -1,11 +1,11 @@
-import * as React from 'react'
-import { Image } from '../src/blocks/Image'
-import * as reactTestRenderer from 'react-test-renderer'
-import { block } from './functions/render-block'
-import { BuilderPage } from '../src/builder-react'
-import { renderToStaticMarkup } from 'react-dom/server'
+import * as React from 'react';
+import { Image } from '../src/blocks/Image';
+import * as reactTestRenderer from 'react-test-renderer';
+import { block } from './functions/render-block';
+import { BuilderPage } from '../src/builder-react';
+import { renderToStaticMarkup } from 'react-dom/server';
 
-const removeRenderIdRegex = /data-source="[\s\S]*?"/g
+const removeRenderIdRegex = /data-source="[\s\S]*?"/g;
 
 describe('Image', () => {
   it('Builder image url', () => {
@@ -13,27 +13,27 @@ describe('Image', () => {
       .create(
         <Image image="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F755c131471fb49ab91dc0bdc45bc85b5?width=1003" />
       )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
-  })
+      .toJSON();
+    expect(tree).toMatchSnapshot();
+  });
 
   it('Builder image url with width', () => {
     const tree = reactTestRenderer
       .create(
         <Image image="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F755c131471fb49ab91dc0bdc45bc85b5?width=1003" />
       )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
-  })
+      .toJSON();
+    expect(tree).toMatchSnapshot();
+  });
 
   it('Shopify image url', () => {
     const tree = reactTestRenderer
       .create(
         <Image image="https://cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash.jpg?v=1592506853" />
       )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
-  })
+      .toJSON();
+    expect(tree).toMatchSnapshot();
+  });
 
   it('Amp image', () => {
     const imageBlock = block(
@@ -53,7 +53,7 @@ describe('Image', () => {
         },
       },
       1234
-    )
+    );
 
     const renderedBlock = renderToStaticMarkup(
       <BuilderPage
@@ -65,10 +65,10 @@ describe('Image', () => {
           },
         }}
       />
-    ).replace(removeRenderIdRegex, '')
+    ).replace(removeRenderIdRegex, '');
 
-    expect(renderedBlock).toMatchSnapshot()
-  })
+    expect(renderedBlock).toMatchSnapshot();
+  });
 
   it('Lazy load', () => {
     const tree = reactTestRenderer
@@ -78,9 +78,9 @@ describe('Image', () => {
           lazy
         />
       )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
-  })
+      .toJSON();
+    expect(tree).toMatchSnapshot();
+  });
 
   it('with sizes, srcset, and alt', () => {
     const tree = reactTestRenderer
@@ -93,9 +93,9 @@ describe('Image', () => {
           amp="true"
         />
       )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
-  })
+      .toJSON();
+    expect(tree).toMatchSnapshot();
+  });
 
   it('with responsive styles', () => {
     const imageBlock = block(
@@ -115,7 +115,7 @@ describe('Image', () => {
         },
       },
       1234
-    )
+    );
 
     const renderedBlock = renderToStaticMarkup(
       <BuilderPage
@@ -126,8 +126,8 @@ describe('Image', () => {
           },
         }}
       />
-    ).replace(removeRenderIdRegex, '')
+    ).replace(removeRenderIdRegex, '');
 
-    expect(renderedBlock).toMatchSnapshot()
-  })
-})
+    expect(renderedBlock).toMatchSnapshot();
+  });
+});

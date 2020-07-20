@@ -1,5 +1,5 @@
-import { keyframes } from '@emotion/core'
-import { el } from '../modules/blocks'
+import { keyframes } from '@emotion/core';
+import { el } from '../modules/blocks';
 
 const spinKeyframes = keyframes({
   '0%': {
@@ -8,7 +8,7 @@ const spinKeyframes = keyframes({
   '100%': {
     transform: 'rotate(360deg)',
   },
-})
+});
 
 export const loadingSpinner = el({
   layerName: 'Loading spinner',
@@ -33,4 +33,4 @@ export const loadingSpinner = el({
       animationName: spinKeyframes.toString(),
     },
   },
-})
+});

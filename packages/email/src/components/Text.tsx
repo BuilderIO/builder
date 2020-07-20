@@ -1,11 +1,11 @@
-import { BuilderBlock, BuilderBlocks } from '@builder.io/react'
-import React from 'react'
-import { Block } from './Block'
+import { BuilderBlock, BuilderBlocks } from '@builder.io/react';
+import React from 'react';
+import { Block } from './Block';
 
 interface TextProps {
-  text?: string
-  builderBlock?: any
-  attributes?: any
+  text?: string;
+  builderBlock?: any;
+  attributes?: any;
 }
 
 @BuilderBlock({
@@ -27,13 +27,10 @@ interface TextProps {
 export class Text extends React.Component<TextProps> {
   render() {
     return (
-      <Block
-        attributes={this.props.attributes}
-        builderBlock={this.props.builderBlock}
-      >
+      <Block attributes={this.props.attributes} builderBlock={this.props.builderBlock}>
         {/* TODO: text styling defaults hm */}
         <span dangerouslySetInnerHTML={{ __html: this.props.text! }} />
       </Block>
-    )
+    );
   }
 }

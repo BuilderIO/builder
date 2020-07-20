@@ -1,5 +1,5 @@
-export type Size = 'large' | 'medium' | 'small' | 'xsmall'
-export const sizeNames: Size[] = ['xsmall', 'small', 'medium', 'large']
+export type Size = 'large' | 'medium' | 'small' | 'xsmall';
+export const sizeNames: Size[] = ['xsmall', 'small', 'medium', 'large'];
 
 // TODO: put in @builder.io/core
 export const sizes = {
@@ -24,15 +24,15 @@ export const sizes = {
     max: 1200,
   },
   getWidthForSize(size: Size) {
-    return this[size].default
+    return this[size].default;
   },
   getSizeForWidth(width: number) {
     for (const size of sizeNames) {
-      const value = this[size]
+      const value = this[size];
       if (width <= value.max) {
-        return size
+        return size;
       }
     }
-    return 'large'
+    return 'large';
   },
-}
+};

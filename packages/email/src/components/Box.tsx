@@ -1,12 +1,12 @@
-import { BuilderBlock, BuilderBlocks } from '@builder.io/react'
-import React from 'react'
-import { Block } from './Block'
+import { BuilderBlock, BuilderBlocks } from '@builder.io/react';
+import React from 'react';
+import { Block } from './Block';
 
 interface BoxProps {
-  builderBlock?: any
-  attributes?: any
-  children?: any[] // Ideally accept react nodes too
-  verticalAlignContent?: string
+  builderBlock?: any;
+  attributes?: any;
+  children?: any[]; // Ideally accept react nodes too
+  verticalAlignContent?: string;
 }
 
 // TODO: acceptsChildren option?
@@ -46,12 +46,8 @@ export class Box extends React.Component<BoxProps> {
         innerStyleOverrides={{ verticalAlign: this.props.verticalAlignContent }}
       >
         {/* Better way to do this? */}
-        <BuilderBlocks
-          blocks={this.props.children}
-          dataPath="children"
-          emailMode
-        />
+        <BuilderBlocks blocks={this.props.children} dataPath="children" emailMode />
       </Block>
-    )
+    );
   }
 }
