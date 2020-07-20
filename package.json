@@ -12,7 +12,9 @@
   "scripts": {
     "verify-git-not-dirty": "git diff --quiet || exit 1",
     "_unlink": "lerna run _unlink --parallel",
-    "_install": "lerna run _install --parallel",
+    "_install": "lerna run _install --stream",
+    "test": "lerna run test --stream",
+    "lerna": "lerna",
     "install:packages": "npm run _install",
     "bootstrap": "lerna bootstrap --force-local",
     "reset": "npm run _install && npm run bootstrap && npm run _unlink",
