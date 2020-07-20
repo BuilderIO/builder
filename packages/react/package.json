@@ -72,6 +72,9 @@
       "/node_modules/",
       "/test/"
     ],
+    "moduleDirectories": [
+      "<rootDir>/node_modules"
+    ],
     "coverageThreshold": {
       "global": {
         "branches": 25,

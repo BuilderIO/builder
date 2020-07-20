@@ -9,11 +9,9 @@ exports[`Image Builder image url 1`] = `
     type="image/webp"
   />
   <img
-    alt={undefined}
     className="builder-image css-2qdlcf"
     onLoad={[Function]}
     role="presentation"
-    sizes={undefined}
     src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F755c131471fb49ab91dc0bdc45bc85b5?width=1003"
     srcSet="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F755c131471fb49ab91dc0bdc45bc85b5?width=100 100w, https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F755c131471fb49ab91dc0bdc45bc85b5?width=200 200w, https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F755c131471fb49ab91dc0bdc45bc85b5?width=400 400w, https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F755c131471fb49ab91dc0bdc45bc85b5?width=800 800w, https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F755c131471fb49ab91dc0bdc45bc85b5?width=1200 1200w, https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F755c131471fb49ab91dc0bdc45bc85b5?width=1600 1600w, https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F755c131471fb49ab91dc0bdc45bc85b5?width=2000 2000w, https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F755c131471fb49ab91dc0bdc45bc85b5?width=1003 1003w"
   />
@@ -27,11 +25,9 @@ exports[`Image Builder image url with width 1`] = `
     type="image/webp"
   />
   <img
-    alt={undefined}
     className="builder-image css-2qdlcf"
     onLoad={[Function]}
     role="presentation"
-    sizes={undefined}
     src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F755c131471fb49ab91dc0bdc45bc85b5?width=1003"
     srcSet="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F755c131471fb49ab91dc0bdc45bc85b5?width=100 100w, https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F755c131471fb49ab91dc0bdc45bc85b5?width=200 200w, https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F755c131471fb49ab91dc0bdc45bc85b5?width=400 400w, https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F755c131471fb49ab91dc0bdc45bc85b5?width=800 800w, https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F755c131471fb49ab91dc0bdc45bc85b5?width=1200 1200w, https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F755c131471fb49ab91dc0bdc45bc85b5?width=1600 1600w, https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F755c131471fb49ab91dc0bdc45bc85b5?width=2000 2000w, https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F755c131471fb49ab91dc0bdc45bc85b5?width=1003 1003w"
   />
@@ -50,11 +46,9 @@ exports[`Image Lazy load 1`] = `
 exports[`Image Shopify image url 1`] = `
 <picture>
   <img
-    alt={undefined}
     className="builder-image css-2qdlcf"
     onLoad={[Function]}
     role="presentation"
-    sizes={undefined}
     src="https://cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash.jpg?v=1592506853"
     srcSet="//cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash_100x100.jpg?v=1592506853 100w, //cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash_200x200.jpg?v=1592506853 200w, //cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash_400x400.jpg?v=1592506853 400w, //cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash_800x800.jpg?v=1592506853 800w, //cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash_1200x1200.jpg?v=1592506853 1200w, //cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash_1600x1600.jpg?v=1592506853 1600w, //cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash_2000x2000.jpg?v=1592506853 2000w, https://cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash.jpg?v=1592506853"
   />
@@ -73,7 +67,6 @@ exports[`Image with sizes, srcset, and alt 1`] = `
     alt="this great image"
     className="builder-image css-2qdlcf"
     onLoad={[Function]}
-    role={undefined}
     sizes="(max-width: 600px) 67vw, 92vw"
     src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F755c131471fb49ab91dc0bdc45bc85b5?width=1003"
     srcSet="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F755c131471fb49ab91dc0bdc45bc85b5?width=100 100w, https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F755c131471fb49ab91dc0bdc45bc85b5?width=200 200w, https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F755c131471fb49ab91dc0bdc45bc85b5?width=400 400w, https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F755c131471fb49ab91dc0bdc45bc85b5?width=800 800w, https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F755c131471fb49ab91dc0bdc45bc85b5?width=1200 1200w, https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F755c131471fb49ab91dc0bdc45bc85b5?width=1600 1600w, https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F755c131471fb49ab91dc0bdc45bc85b5?width=2000 2000w, https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F755c131471fb49ab91dc0bdc45bc85b5?width=1003 1003w"
