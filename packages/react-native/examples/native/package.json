@@ -1,10 +1,9 @@
 {
-  "name": "native",
+  "name": "@buidler.io/react-native-example",
   "version": "0.0.6",
   "private": true,
   "scripts": {
     "start": "react-native start",
-    "test": "jest",
     "lint": "eslint ."
   },
   "dependencies": {
