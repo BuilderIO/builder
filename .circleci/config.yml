@@ -11,6 +11,7 @@ jobs:
           steps:
             - run: npm install
             - run: npm run _install
+            - run: npm run bootstrap
             - run: npm test
             - run: npm run build
 workflows:
