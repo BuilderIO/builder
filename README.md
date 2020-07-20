@@ -1,5 +1,9 @@
 <img alt="BUILDER" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F6836fc105ad549a5b4bf144235b1a228" width="300" />
 
+[![CircleCI](https://circleci.com/gh/BuilderIO/builder.svg?style=shield)](https://circleci.com/gh/BuilderIO/builder)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
+![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
+
 Drag and drop page building with your code components. Bring your [design systems](/examples/react-design-system) to life!
 
 <br />
