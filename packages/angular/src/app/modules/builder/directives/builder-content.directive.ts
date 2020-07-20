@@ -328,7 +328,9 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
               Builder.isStatic
             ) {
               Builder.nextTick(() => {
-                this.builderComponentService.contentComponentInstance.findAndRunScripts();
+                if (this.builderComponentService.contentComponentInstance) {
+                  this.builderComponentService.contentComponentInstance.findAndRunScripts();
+                }
               });
             }
 
