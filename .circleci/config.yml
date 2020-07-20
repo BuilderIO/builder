@@ -5,6 +5,7 @@ jobs:
   build-and-test:
     executor:
       name: node/default
+      tag: '10'
     steps:
       - checkout
       - node/with-cache:
