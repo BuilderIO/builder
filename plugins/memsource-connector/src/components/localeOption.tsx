@@ -1,10 +1,10 @@
-import React from 'react'
-import { FormControlLabel } from '@material-ui/core'
-import Checkbox from '@material-ui/core/Checkbox'
+import React from 'react';
+import { FormControlLabel } from '@material-ui/core';
+import Checkbox from '@material-ui/core/Checkbox';
 type LocaleOptionProps = {
-  label: string
-  dispatch: Function
-}
+  label: string;
+  dispatch: Function;
+};
 
 export const LocaleOption = ({ label, dispatch }: LocaleOptionProps) => {
   return (
@@ -14,7 +14,7 @@ export const LocaleOption = ({ label, dispatch }: LocaleOptionProps) => {
           name={label}
           color="primary"
           data-testid={`${label}-checkbox`}
-          onChange={event =>
+          onChange={(event) =>
             dispatch({
               locale: event.target.name,
               checked: event.target.checked
@@ -24,5 +24,5 @@ export const LocaleOption = ({ label, dispatch }: LocaleOptionProps) => {
       }
       label={label}
     />
-  )
-}
+  );
+};

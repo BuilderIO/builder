@@ -1,8 +1,8 @@
-import React from 'react'
-import { MemsourceConnector } from '../src/plugin'
-import { render, fireEvent } from '@testing-library/react'
-import '@testing-library/jest-dom/'
-import axios from 'axios'
+import React from 'react';
+import { MemsourceConnector } from '../src/plugin';
+import { render, fireEvent } from '@testing-library/react';
+import '@testing-library/jest-dom/';
+import axios from 'axios';
 
 jest.mock('@material-ui/core/Checkbox', () => (props: any) => {
   return (
@@ -13,29 +13,29 @@ jest.mock('@material-ui/core/Checkbox', () => (props: any) => {
       data-testid={props['data-testid']}
       value={props.name}
     />
-  )
-})
+  );
+});
 
 describe('Memsource connector', () => {
   describe('When rendering', () => {
     it('react displays LOCALIZE button', () => {
-      const { getByTestId } = render(<MemsourceConnector />)
+      const { getByTestId } = render(<MemsourceConnector />);
 
-      expect(getByTestId('button-localise')).toBeVisible()
-    })
-  })
+      expect(getByTestId('button-localise')).toBeVisible();
+    });
+  });
 
   describe('Having clicked on LOCALIZE button', () => {
     describe('Given builder context has not enough configuration for the dialog to show', () => {
       it('Then a warning alert should display when page has no blocks', () => {
-        const { getByTestId } = render(<MemsourceConnector />)
+        const { getByTestId } = render(<MemsourceConnector />);
 
-        fireEvent.click(getByTestId('button-localise'))
+        fireEvent.click(getByTestId('button-localise'));
 
         expect(getByTestId('alert-dialog-message').innerHTML).toBe(
           'Page has no blocks'
-        )
-      })
+        );
+      });
 
       it('Then a warning alert should display when page locale is not eligible to be localised from', () => {
         const ctx = {
@@ -55,15 +55,15 @@ describe('Memsource connector', () => {
               }
             }
           }
-        }
-        const { getByTestId } = render(<MemsourceConnector context={ctx} />)
+        };
+        const { getByTestId } = render(<MemsourceConnector context={ctx} />);
 
-        fireEvent.click(getByTestId('button-localise'))
+        fireEvent.click(getByTestId('button-localise'));
 
         expect(getByTestId('alert-dialog-message').innerHTML).toBe(
           'Current locale not allowed to be localised from'
-        )
-      })
+        );
+      });
 
       it('Then a warning alert should display when model has only one locale', () => {
         const ctx = {
@@ -74,15 +74,15 @@ describe('Memsource connector', () => {
               }
             }
           }
-        }
-        const { getByTestId } = render(<MemsourceConnector context={ctx} />)
+        };
+        const { getByTestId } = render(<MemsourceConnector context={ctx} />);
 
-        fireEvent.click(getByTestId('button-localise'))
+        fireEvent.click(getByTestId('button-localise'));
 
         expect(getByTestId('alert-dialog-message').innerHTML).toBe(
           'Model has only one locale'
-        )
-      })
+        );
+      });
 
       it('Then a warning alert should display when model has no memsource proxy url', () => {
         const ctx = {
@@ -102,16 +102,16 @@ describe('Memsource connector', () => {
               }
             }
           }
-        }
-        const { getByTestId } = render(<MemsourceConnector context={ctx} />)
+        };
+        const { getByTestId } = render(<MemsourceConnector context={ctx} />);
 
-        fireEvent.click(getByTestId('button-localise'))
+        fireEvent.click(getByTestId('button-localise'));
 
         expect(getByTestId('alert-dialog-message').innerHTML).toBe(
           'Model has no memsourceProxyUrl set'
-        )
-      })
-    })
+        );
+      });
+    });
 
     describe('Given payload can be built', () => {
       const ctx = {
@@ -161,45 +161,45 @@ describe('Memsource connector', () => {
             }
           }
         }
-      }
+      };
       it('Then localisation dialog is displayed', () => {
         const { getByTestId, getByText } = render(
           <MemsourceConnector context={ctx} />
-        )
+        );
 
-        fireEvent.click(getByTestId('button-localise'))
+        fireEvent.click(getByTestId('button-localise'));
 
-        expect(getByTestId('localisation-dialog')).toBeVisible()
-        expect(getByText(/Source locale:/)).toBeVisible()
-        expect(getByText(/locale-1/)).toBeVisible()
-        expect(getByText(/Target locales:/)).toBeVisible()
-        expect(getByText(/locale-2/)).toBeVisible()
-        expect(getByTestId('dialog-form-submit-button')).toBeDisabled()
-      })
+        expect(getByTestId('localisation-dialog')).toBeVisible();
+        expect(getByText(/Source locale:/)).toBeVisible();
+        expect(getByText(/locale-1/)).toBeVisible();
+        expect(getByText(/Target locales:/)).toBeVisible();
+        expect(getByText(/locale-2/)).toBeVisible();
+        expect(getByTestId('dialog-form-submit-button')).toBeDisabled();
+      });
 
       describe('When clicking on a target locale', () => {
         it('Then submit button is enabled', () => {
-          const { getByTestId } = render(<MemsourceConnector context={ctx} />)
+          const { getByTestId } = render(<MemsourceConnector context={ctx} />);
 
-          fireEvent.click(getByTestId('button-localise'))
-          fireEvent.click(getByTestId('locale-2-checkbox'))
+          fireEvent.click(getByTestId('button-localise'));
+          fireEvent.click(getByTestId('locale-2-checkbox'));
 
-          expect(getByTestId('dialog-form-submit-button')).toBeEnabled()
-        })
-      })
+          expect(getByTestId('dialog-form-submit-button')).toBeEnabled();
+        });
+      });
 
       describe('When clicking on the submit button', () => {
         it('Then a POST request is fired', () => {
-          const spy = jest.fn()
+          const spy = jest.fn();
           jest
             .spyOn(axios, 'post')
-            .mockImplementationOnce((...args) => spy(...args))
+            .mockImplementationOnce((...args) => spy(...args));
 
-          const { getByTestId } = render(<MemsourceConnector context={ctx} />)
+          const { getByTestId } = render(<MemsourceConnector context={ctx} />);
 
-          fireEvent.click(getByTestId('button-localise'))
-          fireEvent.click(getByTestId('locale-2-checkbox'))
-          fireEvent.click(getByTestId('dialog-form-submit-button'))
+          fireEvent.click(getByTestId('button-localise'));
+          fireEvent.click(getByTestId('locale-2-checkbox'));
+          fireEvent.click(getByTestId('dialog-form-submit-button'));
 
           expect(spy).toHaveBeenCalledWith('http://example.com', {
             proxy: {
@@ -218,9 +218,9 @@ describe('Memsource connector', () => {
                 content: expect.anything()
               }
             }
-          })
-        })
-      })
-    })
-  })
-})
+          });
+        });
+      });
+    });
+  });
+});

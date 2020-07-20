@@ -1,6 +1,6 @@
 import React from 'react';
 import { BuilderBlock } from '../decorators/builder-block.decorator';
-import HTML from 'react-native-render-html'
+import HTML from 'react-native-render-html';
 
 @BuilderBlock({
   name: 'Embed',

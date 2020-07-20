@@ -1,19 +1,10 @@
-import { BuilderElement } from '@builder.io/sdk'
+import { BuilderElement } from '@builder.io/sdk';
 
-export const el = (
-  options?: Partial<BuilderElement>,
-  useId?: number
-): BuilderElement => ({
+export const el = (options?: Partial<BuilderElement>, useId?: number): BuilderElement => ({
   '@type': '@builder.io/sdk:Element',
-  id: `builder-${
-    useId
-      ? useId
-      : Math.random()
-          .toString()
-          .split('.')[1]
-  }`,
-  ...options
-})
+  id: `builder-${useId ? useId : Math.random().toString().split('.')[1]}`,
+  ...options,
+});
 
 export const block = (
   name: string,
@@ -26,8 +17,8 @@ export const block = (
       ...elOptions,
       component: {
         name,
-        options
-      }
+        options,
+      },
     },
     useId
-  )
+  );

@@ -1,28 +1,25 @@
 /** @jsx jsx */
 
-import { Builder, builder, BuilderElement, Component } from '@builder.io/sdk'
-import { ClassNames, jsx } from '@emotion/core'
-import React from 'react'
-import { Size, sizeNames, sizes } from '../constants/device-sizes.constant'
-import { set } from '../functions/set'
-import { api, stringToFunction } from '../functions/string-to-function'
-import {
-  BuilderAsyncRequestsContext,
-  RequestOrPromise
-} from '../store/builder-async-requests'
-import { BuilderStoreContext } from '../store/builder-store'
-import { applyPatchWithMinimalMutationChain } from '../functions/apply-patch-with-mutation'
-import { blockToHtmlString } from '../functions/block-to-html-string'
-import { Link } from './Link'
+import { Builder, builder, BuilderElement, Component } from '@builder.io/sdk';
+import { ClassNames, jsx } from '@emotion/core';
+import React from 'react';
+import { Size, sizeNames, sizes } from '../constants/device-sizes.constant';
+import { set } from '../functions/set';
+import { api, stringToFunction } from '../functions/string-to-function';
+import { BuilderAsyncRequestsContext, RequestOrPromise } from '../store/builder-async-requests';
+import { BuilderStoreContext } from '../store/builder-store';
+import { applyPatchWithMinimalMutationChain } from '../functions/apply-patch-with-mutation';
+import { blockToHtmlString } from '../functions/block-to-html-string';
+import { Link } from './Link';
 
 const camelCaseToKebabCase = (str?: string) =>
-  str ? str.replace(/([A-Z])/g, g => `-${g[0].toLowerCase()}`) : ''
+  str ? str.replace(/([A-Z])/g, g => `-${g[0].toLowerCase()}`) : '';
 
 const kebabCaseToCamelCase = (str = '') =>
-  str.replace(/-([a-z])/g, match => match[1].toUpperCase())
+  str.replace(/-([a-z])/g, match => match[1].toUpperCase());
 
-const Device = { desktop: 0, tablet: 1, mobile: 2 }
-const blocksMap: Record<string, BuilderElement> = {}
+const Device = { desktop: 0, tablet: 1, mobile: 2 };
+const blocksMap: Record<string, BuilderElement> = {};
 
 const voidElements = new Set([
   'area',
@@ -38,105 +35,104 @@ const voidElements = new Set([
   'param',
   'source',
   'track',
-  'wbr'
-])
+  'wbr',
+]);
 
 function pick(object: any, keys: string[]) {
   return keys.reduce((obj, key) => {
     if (object && object.hasOwnProperty(key)) {
-      ;(obj as any)[key] = object[key]
+      (obj as any)[key] = object[key];
     }
-    return obj
-  }, {})
+    return obj;
+  }, {});
 }
 
-const last = <T extends any>(arr: T[]) => arr[arr.length - 1]
+const last = <T extends any>(arr: T[]) => arr[arr.length - 1];
 
 function omit(obj: any, values: string[]) {
-  const newObject = Object.assign({}, obj)
+  const newObject = Object.assign({}, obj);
   for (const key of values) {
-    delete newObject[key]
+    delete newObject[key];
   }
-  return newObject
+  return newObject;
 }
 
 const cssCase = (property: string) => {
   if (!property) {
-    return property
+    return property;
   }
 
-  let str = camelCaseToKebabCase(property)
+  let str = camelCaseToKebabCase(property);
 
   if (property[0] === property[0].toUpperCase()) {
-    str = '-' + str
+    str = '-' + str;
   }
 
-  return str
-}
+  return str;
+};
 
 // TODO: pull from builer internal utils
-const fastClone = (obj: object) => JSON.parse(JSON.stringify(obj))
+const fastClone = (obj: object) => JSON.parse(JSON.stringify(obj));
 
 // TODO: share these types in shared
-type ElementType = any
+type ElementType = any;
 
 interface StringMap {
-  [key: string]: string | undefined | null
+  [key: string]: string | undefined | null;
 }
 function mapToCss(map: StringMap, spaces = 2, important = false) {
   return Object.keys(map).reduce((memo, key) => {
-    const value = map[key]
+    const value = map[key];
     if (typeof value !== 'string') {
-      return memo
+      return memo;
     }
     return (
       memo +
       (value && value.trim()
-        ? `\n${' '.repeat(spaces)}${cssCase(key)}: ${value +
-            (important ? ' !important' : '')};`
+        ? `\n${' '.repeat(spaces)}${cssCase(key)}: ${value + (important ? ' !important' : '')};`
         : '')
-    )
-  }, '')
+    );
+  }, '');
 }
 
 export interface BuilderBlockProps {
-  fieldName?: string
-  block: BuilderElement
+  fieldName?: string;
+  block: BuilderElement;
   // TODO:
   // block: BuilderElement
-  child?: boolean
-  index?: number
-  size?: Size
-  emailMode?: boolean
+  child?: boolean;
+  index?: number;
+  size?: Size;
+  emailMode?: boolean;
   // TODO: use context
 }
 
 function capitalize(str: string) {
   if (!str) {
-    return
+    return;
   }
-  return str[0].toUpperCase() + str.slice(1)
+  return str[0].toUpperCase() + str.slice(1);
 }
 
 interface BuilderBlockState {
-  state: any
-  rootState: any
-  context: any
-  update: Function
+  state: any;
+  rootState: any;
+  context: any;
+  update: Function;
 }
 
 export class BuilderBlock extends React.Component<
   BuilderBlockProps,
   { hasError: boolean; updates: number }
 > {
-  private _asyncRequests?: RequestOrPromise[]
-  private _errors?: Error[]
-  private _logs?: string[]
+  private _asyncRequests?: RequestOrPromise[];
+  private _errors?: Error[];
+  private _logs?: string[];
 
   state = {
     hasError: false,
-    updates: 0
-  }
+    updates: 0,
+  };
 
   private privateState: BuilderBlockState = {
     state: {},
@@ -144,78 +140,78 @@ export class BuilderBlock extends React.Component<
     context: {},
     update: () => {
       /* Intentionally empty */
-    }
-  }
+    },
+  };
 
   get store() {
-    return this.privateState
+    return this.privateState;
   }
 
   static getDerivedStateFromError(error: any) {
-    return { hasError: true }
+    return { hasError: true };
   }
 
   componentDidCatch(error: any, errorInfo: any) {
-    console.error('Builder block error:', error, errorInfo)
+    console.error('Builder block error:', error, errorInfo);
   }
 
   // TODO: handle adding return if none provided
   // TODO: cache/memoize this (globally with LRU?)
   stringToFunction(str: string, expression = true) {
-    return stringToFunction(str, expression, this._errors, this._logs)
+    return stringToFunction(str, expression, this._errors, this._logs);
   }
 
   get block() {
-    return blocksMap[this.props.block.id!] || this.props.block
+    return blocksMap[this.props.block.id!] || this.props.block;
   }
 
   get styles() {
     // TODO: handle style bindings
-    const { size } = this.props
-    const block = this.block
-    const styles = []
-    const startIndex = sizeNames.indexOf(size || 'large')
+    const { size } = this.props;
+    const block = this.block;
+    const styles = [];
+    const startIndex = sizeNames.indexOf(size || 'large');
     if (block.responsiveStyles) {
       for (let i = startIndex; i < sizeNames.length; i = i + 1) {
-        const name = sizeNames[i]
+        const name = sizeNames[i];
         if (block.responsiveStyles[name]) {
-          styles.push(block.responsiveStyles[name])
+          styles.push(block.responsiveStyles[name]);
         }
       }
     }
 
     // On the server apply the initial animation state (TODO: maybe not for load time hm)
     // TODO: maybe /s/ server renders content pages hmm
-    const isServer = !!this.privateState.state.isServer
-    let initialAnimationStepStyles: any
+    const isServer = !!this.privateState.state.isServer;
+    let initialAnimationStepStyles: any;
     if (isServer) {
-      const animation = block.animations && block.animations[0]
-      const firstStep = animation && animation.steps && animation.steps[0]
-      const stepStyles = firstStep && firstStep.styles
+      const animation = block.animations && block.animations[0];
+      const firstStep = animation && animation.steps && animation.steps[0];
+      const stepStyles = firstStep && firstStep.styles;
       if (stepStyles) {
-        initialAnimationStepStyles = stepStyles
+        initialAnimationStepStyles = stepStyles;
       }
     }
-    return Object.assign({}, ...styles.reverse(), initialAnimationStepStyles)
+    return Object.assign({}, ...styles.reverse(), initialAnimationStepStyles);
   }
 
   get emotionCss() {
-    let initialAnimationStepStyles: any
-    const { block } = this
+    let initialAnimationStepStyles: any;
+    const { block } = this;
     if (Builder.isServer) {
-      const animation = block.animations && block.animations[0]
+      const animation = block.animations && block.animations[0];
       if (animation && animation.trigger !== 'hover') {
-        const firstStep = animation && animation.steps && animation.steps[0]
-        const stepStyles = firstStep && firstStep.styles
+        const firstStep = animation && animation.steps && animation.steps[0];
+        const stepStyles = firstStep && firstStep.styles;
         if (stepStyles) {
-          initialAnimationStepStyles = stepStyles
+          initialAnimationStepStyles = stepStyles;
         }
       }
     }
 
-    const reversedNames = sizeNames.slice().reverse()
-    const self = this.block
-    const styles: any = {}
+    const reversedNames = sizeNames.slice().reverse();
+    const self = this.block;
+    const styles: any = {};
     if (self.responsiveStyles) {
       for (const size of reversedNames) {
         if (size === 'large') {
@@ -224,52 +220,51 @@ export class BuilderBlock extends React.Component<
               {},
               self.responsiveStyles[size],
               initialAnimationStepStyles
-            )
+            );
           }
         } else {
           styles[`@media only screen and (max-width: ${sizes[size].max}px)`] = {
-            '&.builder-block': self.responsiveStyles[size]
-          }
+            '&.builder-block': self.responsiveStyles[size],
+          };
         }
       }
     }
 
     const hoverAnimation =
-      block.animations &&
-      block.animations.find(item => item.trigger === 'hover')
+      block.animations && block.animations.find(item => item.trigger === 'hover');
     if (hoverAnimation) {
-      styles[':hover'] = hoverAnimation.steps?.[1]?.styles || {}
+      styles[':hover'] = hoverAnimation.steps?.[1]?.styles || {};
       // TODO: if manually has set transition property deal with that
       // TODO: only include properties explicitly set in the animation
       // using Object.keys(styles)
-      styles.transition = `all ${
-        hoverAnimation.duration
-      }s ${camelCaseToKebabCase(hoverAnimation.easing)}`
+      styles.transition = `all ${hoverAnimation.duration}s ${camelCaseToKebabCase(
+        hoverAnimation.easing
+      )}`;
       if (hoverAnimation.delay) {
-        styles.transitionDelay = hoverAnimation.delay + 's'
+        styles.transitionDelay = hoverAnimation.delay + 's';
       }
     }
 
-    return styles
+    return styles;
   }
 
   get css() {
     // TODO: handle style bindings
-    const self = this.block
+    const self = this.block;
 
     const baseStyles: Partial<CSSStyleDeclaration> = {
-      ...(self.responsiveStyles && self.responsiveStyles.large)
-    }
+      ...(self.responsiveStyles && self.responsiveStyles.large),
+    };
 
     let css = this.props.emailMode
       ? ''
-      : `.builder-block.${self.id} {${mapToCss(baseStyles as StringMap)}}`
+      : `.builder-block.${self.id} {${mapToCss(baseStyles as StringMap)}}`;
 
-    const reversedNames = sizeNames.slice().reverse()
+    const reversedNames = sizeNames.slice().reverse();
     if (self.responsiveStyles) {
       for (const size of reversedNames) {
         if (this.props.emailMode && size === 'large') {
-          continue
+          continue;
         }
         if (
           size !== 'large' &&
@@ -277,56 +272,47 @@ export class BuilderBlock extends React.Component<
           self.responsiveStyles[size] &&
           Object.keys(self.responsiveStyles[size]!).length
         ) {
-          const emailOuterSizes = ['display', 'width', 'verticalAlign']
-          const map = self.responsiveStyles[size]
-          const outer = this.props.emailMode && pick(map, emailOuterSizes)
+          const emailOuterSizes = ['display', 'width', 'verticalAlign'];
+          const map = self.responsiveStyles[size];
+          const outer = this.props.emailMode && pick(map, emailOuterSizes);
           // TODO: this will not work as expected for a couple things that are handled specially,
           // e.g. width
-          css += `\n@media only screen and (max-width: ${
-            sizes[size].max
-          }px) { \n${this.props.emailMode ? '.' : '.builder-block.'}${self.id +
-            (this.props.emailMode ? '-subject' : '')} {${mapToCss(
+          css += `\n@media only screen and (max-width: ${sizes[size].max}px) { \n${
+            this.props.emailMode ? '.' : '.builder-block.'
+          }${self.id + (this.props.emailMode ? '-subject' : '')} {${mapToCss(
             this.props.emailMode ? omit(map, emailOuterSizes) : (map as any),
             4,
             this.props.emailMode
-          )} } }`
+          )} } }`;
 
           if (this.props.emailMode && outer && Object.keys(outer).length) {
-            css += `\n@media only screen and (max-width: ${
-              sizes[size].max
-            }px) { \n.builder-block.${self.id} {${mapToCss(
-              outer as any,
-              4,
-              true
-            )} } }`
+            css += `\n@media only screen and (max-width: ${sizes[size].max}px) { \n.builder-block.${
+              self.id
+            } {${mapToCss(outer as any, 4, true)} } }`;
           }
         }
       }
     }
 
-    const animations = self.animations
+    const animations = self.animations;
     if (!this.privateState.state.isBrowser && animations && animations.length) {
-      const firstAnimation = animations[0]
+      const firstAnimation = animations[0];
       if (firstAnimation) {
-        const firstStep = firstAnimation.steps && firstAnimation.steps[0]
+        const firstStep = firstAnimation.steps && firstAnimation.steps[0];
         if (firstStep) {
-          const firstStepStyles = firstStep.styles
+          const firstStepStyles = firstStep.styles;
           if (firstStepStyles) {
-            css += `\n.builder-block.${self.id} {${mapToCss(
-              firstStep,
-              2,
-              true
-            )}}`
+            css += `\n.builder-block.${self.id} {${mapToCss(firstStep, 2, true)}}`;
           }
         }
       }
     }
 
-    return css
+    return css;
   }
 
   eval(str: string) {
-    const fn = this.stringToFunction(str)
+    const fn = this.stringToFunction(str);
     // TODO: only one root instance of this, don't rewrap every time...
     return fn(
       this.privateState.state,
@@ -337,75 +323,75 @@ export class BuilderBlock extends React.Component<
       this.privateState.update,
       Builder,
       this.privateState.context
-    )
+    );
   }
 
   componentWillUnmount() {
     if (Builder.isEditing) {
-      removeEventListener('message', this.onWindowMessage)
+      removeEventListener('message', this.onWindowMessage);
     }
   }
 
   onWindowMessage = (event: MessageEvent) => {
-    const message = event.data
+    const message = event.data;
     if (!message) {
-      return
+      return;
     }
     switch (message.type) {
       case 'builder.selectionChange': {
-        const { data } = message
+        const { data } = message;
         if (!data) {
-          break
+          break;
         }
-        const { selection } = data
-        const id = this.block && this.block.id
+        const { selection } = data;
+        const id = this.block && this.block.id;
         if (id && Array.isArray(selection) && selection.indexOf(id) > -1) {
           setTimeout(() => {
-            ;(window as any).$block = this
+            (window as any).$block = this;
             if (!(window as any).$blocks) {
-              ;(window as any).$blocks = []
+              (window as any).$blocks = [];
             }
-            ;(window as any).$blocks.push(this)
-          })
+            (window as any).$blocks.push(this);
+          });
         }
-        break
+        break;
       }
 
       case 'builder.patchUpdates': {
-        const { data } = message
+        const { data } = message;
         if (!(data && data.data)) {
-          break
+          break;
         }
-        const patches = data.data[this.block.id!]
+        const patches = data.data[this.block.id!];
         if (!patches) {
-          return
+          return;
         }
 
         if (location.href.includes('builder.debug=true')) {
-          this.eval('debugger')
+          this.eval('debugger');
         }
-        let newBlock = { ...this.block }
+        let newBlock = { ...this.block };
         for (const patch of patches) {
           // TODO: soehow mark this.block as a new object,
           // e.g. access it's parent hm. maybe do the listning mutations
           // on hte parent element not the child (or rather
           // send the message to the parent)
-          applyPatchWithMinimalMutationChain(newBlock, patch)
+          applyPatchWithMinimalMutationChain(newBlock, patch);
         }
-        blocksMap[this.props.block.id!] = newBlock
-        this.setState({ updates: this.state.updates + 1 })
+        blocksMap[this.props.block.id!] = newBlock;
+        this.setState({ updates: this.state.updates + 1 });
 
-        break
+        break;
       }
     }
-  }
+  };
 
   componentDidMount() {
-    const block = this.block
-    const animations = block && block.animations
+    const block = this.block;
+    const animations = block && block.animations;
 
     if (Builder.isEditing) {
-      addEventListener('message', this.onWindowMessage)
+      addEventListener('message', this.onWindowMessage);
     }
 
     // tslint:disable-next-line:comment-format
@@ -413,8 +399,8 @@ export class BuilderBlock extends React.Component<
 
     if (animations) {
       const options = {
-        animations: fastClone(animations)
-      }
+        animations: fastClone(animations),
+      };
 
       // TODO: listen to Builder.editingMode and bind animations when editing
       // and unbind when not
@@ -423,7 +409,7 @@ export class BuilderBlock extends React.Component<
         for (const key in block.bindings) {
           if (key.startsWith('animations.')) {
             // TODO: this needs to run in getElement bc of local state per element for repeats
-            const value = this.stringToFunction(block.bindings[key])
+            const value = this.stringToFunction(block.bindings[key]);
             if (value !== undefined) {
               set(
                 options,
@@ -438,7 +424,7 @@ export class BuilderBlock extends React.Component<
                   Builder,
                   this.privateState.context
                 )
-              )
+              );
             }
           }
         }
@@ -448,69 +434,67 @@ export class BuilderBlock extends React.Component<
           .filter((item: any) => item.trigger !== 'hover')
           .map((animation: any) => ({
             ...animation,
-            elementId: this.block.id
+            elementId: this.block.id,
           }))
-      )
+      );
     }
   }
 
   // <!-- Builder Blocks --> in comments hmm
   getElement(index = 0, state = this.privateState.state): React.ReactNode {
-    const { child, fieldName } = this.props
-    const block = this.block
-    let TagName: string | typeof Link = (block.tagName || 'div').toLowerCase()
+    const { child, fieldName } = this.props;
+    const block = this.block;
+    let TagName: string | typeof Link = (block.tagName || 'div').toLowerCase();
 
     if (TagName === 'template') {
       const html = block.children
         ? block.children.map(item => blockToHtmlString(item)).join(' ')
-        : ''
-      console.debug('template html', html)
+        : '';
+      console.debug('template html', html);
       return (
         // React has an undesired behavior (for us) for template tags, so we must
         // turn the contents into a string
         <template
           {...block.properties}
           dangerouslySetInnerHTML={{
-            __html: html
+            __html: html,
           }}
         />
-      )
+      );
     }
 
-    let InnerComponent: any
+    let InnerComponent: any;
     const componentName =
-      block.component &&
-      (block.component.name || (block.component as any).component)
-    let componentInfo: Component | null = null
+      block.component && (block.component.name || (block.component as any).component);
+    let componentInfo: Component | null = null;
     if (block.component && !(block.component as any).class) {
       if (block.component && block.component.tag) {
-        InnerComponent = block.component.tag
+        InnerComponent = block.component.tag;
       } else {
-        componentInfo =
-          Builder.components.find(item => item.name === componentName) || null
+        componentInfo = Builder.components.find(item => item.name === componentName) || null;
         if (componentInfo && componentInfo.class) {
-          InnerComponent = componentInfo.class
+          InnerComponent = componentInfo.class;
         } else if (componentInfo && componentInfo.tag) {
-          InnerComponent = componentInfo.tag
+          InnerComponent = componentInfo.tag;
         }
       }
     }
 
-    const TextTag: any = 'span'
+    const TextTag: any = 'span';
 
     let options: any = {
       // Attributes?
       ...block.properties,
-      style: {} // this.styles
-    }
+      style: {}, // this.styles
+    };
 
     options = {
       ...options.properties,
-      ...options
-    }
+      ...options,
+    };
 
     if (block.component) {
-      options.component = fastClone(block.component)
+      options.component = fastClone(block.component);
     }
 
     // Binding should be properties to href or href?
@@ -518,55 +502,43 @@ export class BuilderBlock extends React.Component<
     // Show if things bound in overlays hmm
     if (block.bindings) {
       for (const key in block.bindings) {
-        const value = this.stringToFunction(block.bindings[key])
+        const value = this.stringToFunction(block.bindings[key]);
         // TODO: pass block, etc
         set(
           options,
           key,
-          value(
-            state,
-            null,
-            block,
-            api(state),
-            Device,
-            null,
-            Builder,
-            this.privateState.context
-          )
-        )
+          value(state, null, block, api(state), Device, null, Builder, this.privateState.context)
+        );
       }
     }
 
     if (options.hide) {
-      return null
+      return null;
     } else {
-      delete options.hide
+      delete options.hide;
     }
     // TODO: UI for this
-    if (
-      ('show' in options || (block.bindings && block.bindings.show)) &&
-      !options.show
-    ) {
-      return null
+    if (('show' in options || (block.bindings && block.bindings.show)) && !options.show) {
+      return null;
     } else {
-      delete options.show
+      delete options.show;
     }
 
     if (block.actions) {
       for (const key in block.actions) {
-        const value = block.actions[key]
+        const value = block.actions[key];
         options['on' + capitalize(key)] = (event: any) => {
-          let useState = state
+          let useState = state;
           if (typeof Proxy !== 'undefined') {
             useState = new Proxy(state, {
               set: (obj, prop, value) => {
-                obj[prop] = value
-                this.privateState.rootState[prop] = value
-                return true
-              }
-            })
+                obj[prop] = value;
+                this.privateState.rootState[prop] = value;
+                return true;
+              },
+            });
           }
-          const fn = this.stringToFunction(value, false)
+          const fn = this.stringToFunction(value, false);
           // TODO: only one root instance of this, don't rewrap every time...
           return fn(
             useState,
@@ -577,62 +549,55 @@ export class BuilderBlock extends React.Component<
             this.privateState.update,
             Builder,
             this.privateState.context
-          )
-        }
+          );
+        };
       }
     }
 
     const innerComponentProperties = (options.component || options.options) && {
       ...options.options,
-      ...(options.component.options || options.component.data)
-    }
+      ...(options.component.options || options.component.data),
+    };
 
-    const isVoid = voidElements.has(TagName)
+    const isVoid = voidElements.has(TagName);
 
-    const noWrap =
-      componentInfo && (componentInfo.fragment || componentInfo.noWrap)
+    const noWrap = componentInfo && (componentInfo.fragment || componentInfo.noWrap);
 
     const styleStr =
-      options.attr?.style ||
-      (typeof options.style === 'string' ? options.style : '') ||
-      ''
+      options.attr?.style || (typeof options.style === 'string' ? options.style : '') || '';
 
     if (typeof styleStr === 'string') {
       if (typeof options.style !== 'object') {
-        options.style = {}
+        options.style = {};
       }
 
-      const styleSplit = styleStr.split(';')
+      const styleSplit = styleStr.split(';');
       for (const pair of styleSplit) {
-        const stylePieces = pair.split(':')
+        const stylePieces = pair.split(':');
         if (!stylePieces.length) {
-          return
+          return;
         }
 
-        let [key, value] = stylePieces
+        let [key, value] = stylePieces;
 
         if (stylePieces.length > 2) {
-          value = stylePieces.slice(1).join(':')
+          value = stylePieces.slice(1).join(':');
         }
 
-        options.style[kebabCaseToCamelCase(key)] = value
+        options.style[kebabCaseToCamelCase(key)] = value;
       }
     }
 
     const finalOptions: { [key: string]: string } = {
       ...omit(options, ['class', 'component', 'attr']),
-      [typeof TagName === 'string' && !TagName.includes('-')
-        ? 'className'
-        : 'class']:
+      [typeof TagName === 'string' && !TagName.includes('-') ? 'className' : 'class']:
         `builder-block ${this.id}${block.class ? ` ${block.class}` : ''}${
-          block.component &&
-          !(['Image', 'Video', 'Banner'].indexOf(componentName) > -1)
+          block.component && !(['Image', 'Video', 'Banner'].indexOf(componentName) > -1)
             ? ` builder-has-component`
             : ''
         }` +
         (options.class ? ' ' + options.class : '') +
-        (Builder.isEditing &&
-        this.privateState.state._spacer?.parent === block.id
+        (Builder.isEditing && this.privateState.state._spacer?.parent === block.id
           ? ' builder-spacer-parent'
           : ''),
       key: this.id + index,
@@ -643,40 +608,35 @@ export class BuilderBlock extends React.Component<
       // TODO: what if dymically repeated by another component like tabs... may not work.
       // need function to provide that right
       ...(index !== 0 && {
-        'builder-index': index // String(state.$index)
-      })
+        'builder-index': index, // String(state.$index)
+      }),
       //   }
       // : null)
-    }
+    };
 
     // tslint:disable-next-line:comment-format
     ///REACT15ONLY finalOptions.className = finalOptions.class
 
     if (Builder.isIframe) {
       // TODO: removed bc JS can add styles inline too?
-      ;(finalOptions as any)['builder-inline-styles'] = !(
-        options.attr && options.attr.style
-      )
+      (finalOptions as any)['builder-inline-styles'] = !(options.attr && options.attr.style)
         ? ''
         : Object.keys(options.style).reduce(
-            (memo, key) =>
-              (memo ? `${memo};` : '') +
-              `${cssCase(key)}:${options.style[key]};`,
+            (memo, key) => (memo ? `${memo};` : '') + `${cssCase(key)}:${options.style[key]};`,
             ''
-          )
+          );
     }
 
     if (
-      (((finalOptions as any).properties &&
-        (finalOptions as any).properties.href) ||
+      (((finalOptions as any).properties && (finalOptions as any).properties.href) ||
         (finalOptions as any).href) &&
       TagName === 'div'
     ) {
-      TagName = 'a'
+      TagName = 'a';
     }
 
     if (TagName === 'a') {
-      TagName = Link
+      TagName = Link;
     }
     // const css = this.css
 
@@ -687,7 +647,7 @@ export class BuilderBlock extends React.Component<
     //   </style>
     // )
 
-    const children = block.children || finalOptions.children || []
+    const children = block.children || finalOptions.children || [];
 
     // TODO: test it out
     return (
@@ -696,21 +656,21 @@ export class BuilderBlock extends React.Component<
         <ClassNames>
           {({ css, cx }) => {
             if (!this.props.emailMode) {
-              const addClass = ' ' + css(this.emotionCss)
+              const addClass = ' ' + css(this.emotionCss);
               if (finalOptions.class) {
-                finalOptions.class += addClass
+                finalOptions.class += addClass;
               }
               if (finalOptions.className) {
-                finalOptions.className += addClass
+                finalOptions.className += addClass;
               }
             }
 
             return (
               <BuilderAsyncRequestsContext.Consumer>
                 {value => {
-                  this._asyncRequests = value && value.requests
-                  this._errors = value && value.errors
-                  this._logs = value && value.logs
+                  this._asyncRequests = value && value.requests;
+                  this._errors = value && value.errors;
+                  this._logs = value && value.logs;
                   return isVoid ? (
                     <TagName {...finalOptions} />
                   ) : InnerComponent && (noWrap || this.props.emailMode) ? (
@@ -736,10 +696,7 @@ export class BuilderBlock extends React.Component<
                       )}
                       {(block as any).text || options.text
                         ? options.text
-                        : !InnerComponent &&
-                          children &&
-                          Array.isArray(children) &&
-                          children.length
+                        : !InnerComponent && children && Array.isArray(children) && children.length
                         ? children.map((block: ElementType, index: number) => (
                             <BuilderBlock
                               key={((this.id as string) || '') + index}
@@ -753,43 +710,35 @@ export class BuilderBlock extends React.Component<
                           ))
                         : null}
                     </TagName>
-                  )
+                  );
                 }}
               </BuilderAsyncRequestsContext.Consumer>
-            )
+            );
           }}
         </ClassNames>
         {/* <InsertSpacer id={block.id!} position="after" /> */}
       </React.Fragment>
-    )
+    );
   }
 
   get id() {
-    const { block } = this
+    const { block } = this;
     if (!block.id!.startsWith('builder')) {
-      return 'builder-' + block.id
+      return 'builder-' + block.id;
     }
-    return block.id!
+    return block.id!;
   }
 
   contents(state: BuilderBlockState) {
-    const block = this.block
+    const block = this.block;
 
     // this.setState(state);
-    this.privateState = state
+    this.privateState = state;
 
     if (block.repeat && block.repeat.collection) {
-      const collectionPath = block.repeat.collection
-      const collectionName = last(
-        (collectionPath || '')
-          .trim()
-          .split('(')[0]
-          .trim()
-          .split('.')
-      )
-      const itemName =
-        block.repeat.itemName ||
-        (collectionName ? collectionName + 'Item' : 'item')
+      const collectionPath = block.repeat.collection;
+      const collectionName = last((collectionPath || '').trim().split('(')[0].trim().split('.'));
+      const itemName = block.repeat.itemName || (collectionName ? collectionName + 'Item' : 'item');
       const array = this.stringToFunction(collectionPath)(
         state.state,
         null,
@@ -799,7 +748,7 @@ export class BuilderBlock extends React.Component<
         null,
         Builder,
         this.privateState.context
-      )
+      );
       if (Array.isArray(array)) {
         return array.map((data, index) => {
           // TODO: Builder state produce the data
@@ -808,8 +757,8 @@ export class BuilderBlock extends React.Component<
             $index: index,
             $item: data,
             [itemName]: data,
-            [`$${itemName}Index`]: index
-          }
+            [`$${itemName}Index`]: index,
+          };
 
           return (
             <BuilderStoreContext.Provider
@@ -818,13 +767,13 @@ export class BuilderBlock extends React.Component<
             >
               {this.getElement(index, childState)}
             </BuilderStoreContext.Provider>
-          )
-        })
+          );
+        });
       }
-      return null
+      return null;
     }
 
-    return this.getElement()
+    return this.getElement();
   }
 
   render() {
@@ -836,17 +785,15 @@ export class BuilderBlock extends React.Component<
             padding: 5,
             color: '#999',
             fontSize: 11,
-            fontStyle: 'italic'
+            fontStyle: 'italic',
           }}
         >
           Builder block error :( Check console for details
         </span>
-      )
+      );
     }
     return (
-      <BuilderStoreContext.Consumer>
-        {value => this.contents(value)}
-      </BuilderStoreContext.Consumer>
-    )
+      <BuilderStoreContext.Consumer>{value => this.contents(value)}</BuilderStoreContext.Consumer>
+    );
   }
 }

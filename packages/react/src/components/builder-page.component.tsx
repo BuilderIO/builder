@@ -1,7 +1,7 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
-import { BuilderContent } from './builder-content.component'
-import { BuilderBlocks } from './builder-blocks.component'
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { BuilderContent } from './builder-content.component';
+import { BuilderBlocks } from './builder-blocks.component';
 import {
   Builder,
   GetContentOptions,
@@ -9,137 +9,137 @@ import {
   Subscription,
   BehaviorSubject,
   BuilderElement,
-  BuilderContent as Content
-} from '@builder.io/sdk'
-import { BuilderStoreContext } from '../store/builder-store'
-import hash from 'hash-sum'
-import onChange from '../../lib/on-change'
+  BuilderContent as Content,
+} from '@builder.io/sdk';
+import { BuilderStoreContext } from '../store/builder-store';
+import hash from 'hash-sum';
+import onChange from '../../lib/on-change';
 
-export { onChange }
+export { onChange };
 
-import { sizes } from '../constants/device-sizes.constant'
+import { sizes } from '../constants/device-sizes.constant';
 import {
   BuilderAsyncRequestsContext,
   RequestOrPromise,
   RequestInfo,
-  isRequestInfo
-} from '../store/builder-async-requests'
-import { Url } from 'url'
-import { debounceNextTick } from '../functions/debonce-next-tick'
-import { throttle } from '../functions/throttle'
-import { safeDynamicRequire } from '../functions/safe-dynamic-require'
-import { BuilderMetaContext } from '../store/builder-meta'
+  isRequestInfo,
+} from '../store/builder-async-requests';
+import { Url } from 'url';
+import { debounceNextTick } from '../functions/debonce-next-tick';
+import { throttle } from '../functions/throttle';
+import { safeDynamicRequire } from '../functions/safe-dynamic-require';
+import { BuilderMetaContext } from '../store/builder-meta';
 
-const size = (thing: object) => Object.keys(thing).length
+const size = (thing: object) => Object.keys(thing).length;
 
 function debounce(func: Function, wait: number, immediate = false) {
-  let timeout: any
-  return function(this: any) {
-    const context = this
-    const args = arguments
-    clearTimeout(timeout)
-    timeout = setTimeout(function() {
-      timeout = null
-      if (!immediate) func.apply(context, args)
-    }, wait)
-    if (immediate && !timeout) func.apply(context, args)
-  }
+  let timeout: any;
+  return function (this: any) {
+    const context = this;
+    const args = arguments;
+    clearTimeout(timeout);
+    timeout = setTimeout(function () {
+      timeout = null;
+      if (!immediate) func.apply(context, args);
+    }, wait);
+    if (immediate && !timeout) func.apply(context, args);
+  };
 }
 
-const fontsLoaded = new Set()
+const fontsLoaded = new Set();
 
 function pick(object: any, keys: string[]) {
   return keys.reduce((obj, key) => {
     if (object && object.hasOwnProperty(key)) {
-      obj[key] = object[key]
+      obj[key] = object[key];
     }
-    return obj
-  }, {} as any)
+    return obj;
+  }, {} as any);
 }
 
 // TODO: get fetch from core JS....
-const fetch = Builder.isBrowser ? window.fetch : require('node-fetch')
+const fetch = Builder.isBrowser ? window.fetch : require('node-fetch');
 
 const sizeMap = {
   desktop: 'large',
   tablet: 'medium',
-  mobile: 'small'
-}
+  mobile: 'small',
+};
 
 function decorator(fn: Function) {
   return function argReceiver(...fnArgs: any[]) {
     // Check if the decorator is being called without arguments (ex `@foo methodName() {}`)
     if (fnArgs.length === 3) {
-      const [target, key, descriptor] = fnArgs
+      const [target, key, descriptor] = fnArgs;
       if (descriptor && (descriptor.value || descriptor.get)) {
-        fnArgs = []
-        return descriptorChecker(target, key, descriptor)
+        fnArgs = [];
+        return descriptorChecker(target, key, descriptor);
       }
     }
 
-    return descriptorChecker
+    return descriptorChecker;
 
     // descriptorChecker determines whether a method or getter is being decorated
     // and replaces the appropriate key with the decorated function.
     function descriptorChecker(target: any, key: any, descriptor: any) {
-      const descriptorKey = descriptor.value ? 'value' : 'get'
+      const descriptorKey = descriptor.value ? 'value' : 'get';
       return {
         ...descriptor,
-        [descriptorKey]: fn(descriptor[descriptorKey], ...fnArgs)
-      }
+        [descriptorKey]: fn(descriptor[descriptorKey], ...fnArgs),
+      };
     }
-  }
+  };
 }
 
-const Throttle = decorator(throttle)
+const Throttle = decorator(throttle);
 
-const fetchCache: { [key: string]: any } = {}
+const fetchCache: { [key: string]: any } = {};
 
 export interface BuilderPageProps {
-  modelName?: string
-  model?: string
-  name?: string
-  data?: any
-  builder?: Builder
-  entry?: string
-  apiKey?: string
-  options?: GetContentOptions
-  contentLoaded?: (data: any) => void
-  renderLink?: (props: React.AnchorHTMLAttributes<any>) => React.ReactNode
-  contentError?: (error: any) => void
-  content?: Content
-  location?: Location | Url
-  onStateChange?: (newData: any) => void
-  noAsync?: boolean
-  emailMode?: boolean
-  ampMode?: boolean
-  inlineContent?: boolean
-  builderBlock?: BuilderElement
-  dataOnly?: boolean
-  hydrate?: boolean
+  modelName?: string;
+  model?: string;
+  name?: string;
+  data?: any;
+  builder?: Builder;
+  entry?: string;
+  apiKey?: string;
+  options?: GetContentOptions;
+  contentLoaded?: (data: any) => void;
+  renderLink?: (props: React.AnchorHTMLAttributes<any>) => React.ReactNode;
+  contentError?: (error: any) => void;
+  content?: Content;
+  location?: Location | Url;
+  onStateChange?: (newData: any) => void;
+  noAsync?: boolean;
+  emailMode?: boolean;
+  ampMode?: boolean;
+  inlineContent?: boolean;
+  builderBlock?: BuilderElement;
+  dataOnly?: boolean;
+  hydrate?: boolean;
   // TODO: support default values in init
-  isStatic?: boolean
-  context?: any
-  url?: string
+  isStatic?: boolean;
+  context?: any;
+  url?: string;
 }
 
 export interface BuilderPageState {
-  state: any
-  update: (state: any) => any
-  updates: number
-  context: any
-  key: number
+  state: any;
+  update: (state: any) => any;
+  updates: number;
+  context: any;
+  key: number;
 }
 
 const tryEval = (str?: string, data: any = {}, errors?: Error[]): any => {
-  const value = str
+  const value = str;
   if (!(typeof value === 'string' && value.trim())) {
-    return
+    return;
   }
-  const useReturn = !(value.includes(';') || value.includes(' return '))
+  const useReturn = !(value.includes(';') || value.includes(' return '));
   let fn: Function = () => {
     /* Intentionally empty */
-  }
+  };
   try {
     if (Builder.isBrowser) {
       // tslint:disable-next-line:no-function-constructor-with-string-args
@@ -164,111 +164,96 @@ const tryEval = (str?: string, data: any = {}, errors?: Error[]): any => {
         with (rootState) {
           ${useReturn ? `return (${str});` : str};
         }`
-      )
+      );
     }
   } catch (error) {
     if (Builder.isBrowser) {
-      console.warn('Could not compile javascript', error)
+      console.warn('Could not compile javascript', error);
     } else {
       // Add to req.options.errors to return to client
     }
   }
   try {
     if (Builder.isBrowser) {
-      return fn(data || {})
+      return fn(data || {});
     } else {
       // Below is a hack to get certain code to *only* load in the server build, to not screw with
       // browser bundler's like rollup and webpack. Our rollup plugin strips these comments only
       // for the server build
       // tslint:disable:comment-format
-      const { VM } = safeDynamicRequire('vm2')
+      const { VM } = safeDynamicRequire('vm2');
       return new VM({
         sandbox: {
           ...data,
-          ...{ state: data }
-        }
+          ...{ state: data },
+        },
         // TODO: convert reutrn to module.exports on server
-      }).run(value.replace(/(^|;)return /, '$1'))
+      }).run(value.replace(/(^|;)return /, '$1'));
       // tslint:enable:comment-format
     }
   } catch (error) {
     if (errors) {
-      errors.push(error)
+      errors.push(error);
     }
 
     if (Builder.isBrowser) {
-      console.warn(
-        'Builder custom code error:',
-        error.message,
-        'in',
-        str,
-        error.stack
-      )
+      console.warn('Builder custom code error:', error.message, 'in', str, error.stack);
     } else {
       if (process.env.DEBUG) {
-        console.debug(
-          'Builder custom code error:',
-          error.message,
-          'in',
-          str,
-          error.stack
-        )
+        console.debug('Builder custom code error:', error.message, 'in', str, error.stack);
       }
       // Add to req.options.errors to return to client
     }
   }
 
-  return
-}
+  return;
+};
 
 function searchToObject(location: Location | Url) {
-  const pairs = (location.search || '').substring(1).split('&')
-  const obj: { [key: string]: string } = {}
+  const pairs = (location.search || '').substring(1).split('&');
+  const obj: { [key: string]: string } = {};
 
   for (const i in pairs) {
-    if (pairs[i] === '') continue
-    const pair = pairs[i].split('=')
-    obj[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1])
+    if (pairs[i] === '') continue;
+    const pair = pairs[i].split('=');
+    obj[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
   }
 
-  return obj
+  return obj;
 }
 
-export class BuilderPage extends React.Component<
-  BuilderPageProps,
-  BuilderPageState
-> {
-  subscriptions: Subscription = new Subscription()
+export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageState> {
+  subscriptions: Subscription = new Subscription();
   // TODO: don't trigger initial one?
-  onStateChange = new BehaviorSubject<any>(null)
-  asServer = Builder.isServer
+  onStateChange = new BehaviorSubject<any>(null);
+  asServer = Builder.isServer;
 
-  contentRef: BuilderContent | null = null
+  contentRef: BuilderContent | null = null;
 
-  styleRef: HTMLStyleElement | null = null
+  styleRef: HTMLStyleElement | null = null;
 
-  rootState = Builder.isServer ? {} : onChange({}, () => this.updateState())
+  rootState = Builder.isServer ? {} : onChange({}, () => this.updateState());
 
-  lastJsCode = ''
-  lastHttpRequests: { [key: string]: string | undefined } = {}
-  httpSubscriptionPerKey: { [key: string]: Subscription | undefined } = {}
+  lastJsCode = '';
+  lastHttpRequests: { [key: string]: string | undefined } = {};
+  httpSubscriptionPerKey: { [key: string]: Subscription | undefined } = {};
 
-  ref: HTMLElement | null = null
+  ref: HTMLElement | null = null;
 
   get name(): string | undefined {
-    return this.props.model || this.props.modelName || this.props.name // || this.props.model
+    return this.props.model || this.props.modelName || this.props.name; // || this.props.model
   }
 
-  private _asyncRequests?: RequestOrPromise[]
-  private _errors?: Error[]
-  private _logs?: string[]
+  private _asyncRequests?: RequestOrPromise[];
+  private _errors?: Error[];
+  private _logs?: string[];
 
   get element() {
-    return this.ref
+    return this.ref;
   }
 
   constructor(props: BuilderPageProps) {
-    super(props)
+    super(props);
 
     // TODO: pass this all the way down - symbols, etc
     // this.asServer = Boolean(props.hydrate && Builder.isBrowser)
@@ -277,9 +262,7 @@ export class BuilderPage extends React.Component<
       // TODO: should change if this prop changes
       context: props.context || {},
       state: Object.assign(this.rootState, {
-        ...(this.props.content &&
-          this.props.content.data &&
-          this.props.content.data.state),
+        ...(this.props.content && this.props.content.data && this.props.content.data.state),
         isBrowser: Builder.isBrowser, // !this.asServer,
         isServer: !Builder.isBrowser, // this.asServer,
         _hydrate: props.hydrate,
@@ -288,72 +271,68 @@ export class BuilderPage extends React.Component<
         // TODO: will user attributes be ready here?
         device: this.device,
         ...this.getHtmlData(),
-        ...props.data
+        ...props.data,
       }),
       updates: 0,
       key: 0,
-      update: this.updateState
-    }
+      update: this.updateState,
+    };
 
     if (Builder.isBrowser) {
-      const key = this.props.apiKey
+      const key = this.props.apiKey;
       if (key && key !== this.builder.apiKey) {
-        this.builder.apiKey = key
+        this.builder.apiKey = key;
       }
 
       if (this.props.content) {
         // TODO: this should be on didMount right bc of element ref??
         // TODO: possibly observe for change or throw error if changes
         this.onContentLoaded(
-          (this.props.content as any).content ||
-            this.props.content.data /*, this.props.content*/
-        )
+          (this.props.content as any).content || this.props.content.data /*, this.props.content*/
+        );
       }
     }
   }
 
   get builder() {
-    return this.props.builder || builder
+    return this.props.builder || builder;
   }
 
   getHtmlData() {
-    const id = (this.props.content && this.props.content.id) || this.props.entry
+    const id = (this.props.content && this.props.content.id) || this.props.entry;
     const script =
       id &&
       Builder.isBrowser &&
       document.querySelector(
         `script[data-builder-json="${id}"],script[data-builder-state="${id}"]`
-      )
+      );
     if (script) {
       try {
-        const json = JSON.parse((script as HTMLElement).innerText)
-        return json
+        const json = JSON.parse((script as HTMLElement).innerText);
+        return json;
       } catch (err) {
         console.warn(
           'Could not parse Builder.io HTML data transfer',
           err,
           (script as HTMLElement).innerText
-        )
+        );
       }
     }
-    return {}
+    return {};
   }
 
   // TODO: pass down with context
   get device() {
-    return this.builder.getUserAttributes().device || 'desktop'
+    return this.builder.getUserAttributes().device || 'desktop';
   }
 
   get locationState() {
     return {
       // TODO: handle this correctly on the server. Pass in with CONTEXT
       ...pick(this.location, ['pathname', 'hostname', 'search', 'host']),
-      path:
-        (this.location.pathname &&
-          this.location.pathname.split('/').slice(1)) ||
-        '',
-      query: searchToObject(this.location)
-    }
+      path: (this.location.pathname && this.location.pathname.split('/').slice(1)) || '',
+      query: searchToObject(this.location),
+    };
   }
 
   // TODO: trigger state change on screen size change
@@ -361,73 +340,71 @@ export class BuilderPage extends React.Component<
     // TODO: use context to pass this down on server
     return Builder.isBrowser
       ? sizes.getSizeForWidth(window.innerWidth)
-      : sizeMap[this.device] || 'large'
+      : sizeMap[this.device] || 'large';
   }
 
   messageListener = (event: MessageEvent) => {
-    const info = event.data
+    const info = event.data;
     switch (info.type) {
       case 'builder.updateSpacer': {
-        const data = info.data
-        const currentSpacer = this.rootState._spacer
+        const data = info.data;
+        const currentSpacer = this.rootState._spacer;
         this.updateState(state => {
-          state._spacer = data
-        })
-        break
+          state._spacer = data;
+        });
+        break;
       }
       case 'builder.resetState': {
-        const { state, model } = info.data
+        const { state, model } = info.data;
         if (model === this.name) {
           for (const key in this.rootState) {
             // TODO: support nested functions (somehow)
             if (typeof this.rootState[key] !== 'function') {
-              delete this.rootState[key]
+              delete this.rootState[key];
             }
           }
-          Object.assign(this.rootState, state)
+          Object.assign(this.rootState, state);
           this.setState({
             ...this.state,
             state: this.rootState,
-            updates: ((this.state && this.state.updates) || 0) + 1
-          })
+            updates: ((this.state && this.state.updates) || 0) + 1,
+          });
         }
-        break
+        break;
       }
       case 'builder.resetSymbolState': {
-        const { state, model, id } = info.data.state
+        const { state, model, id } = info.data.state;
         if (this.props.builderBlock && this.props.builderBlock === id) {
           for (const key in this.rootState) {
-            delete this.rootState[key]
+            delete this.rootState[key];
           }
-          Object.assign(this.rootState, state)
+          Object.assign(this.rootState, state);
           this.setState({
             ...this.state,
             state: this.rootState,
-            updates: ((this.state && this.state.updates) || 0) + 1
-          })
+            updates: ((this.state && this.state.updates) || 0) + 1,
+          });
         }
-        break
+        break;
       }
     }
-  }
+  };
 
   resizeFn = () => {
-    const deviceSize = this.deviceSizeState
+    const deviceSize = this.deviceSizeState;
     if (deviceSize !== this.state.state.deviceSize) {
       this.setState({
         ...this.state,
         updates: ((this.state && this.state.updates) || 0) + 1,
         state: Object.assign(this.rootState, {
           ...this.state.state,
-          deviceSize
-        })
-      })
+          deviceSize,
+        }),
+      });
     }
-  }
+  };
 
-  resizeListener = Builder.isEditing
-    ? throttle(this.resizeFn, 200)
-    : debounce(this.resizeFn, 400)
+  resizeListener = Builder.isEditing ? throttle(this.resizeFn, 200) : debounce(this.resizeFn, 400);
 
   static renderInto(
     elementOrSelector: string | HTMLElement,
@@ -435,30 +412,24 @@ export class BuilderPage extends React.Component<
     hydrate = true,
     fresh = false
   ) {
-    console.debug(
-      'BuilderPage.renderInto',
-      elementOrSelector,
-      props,
-      hydrate,
-      this
-    )
+    console.debug('BuilderPage.renderInto', elementOrSelector, props, hydrate, this);
     let element =
       elementOrSelector instanceof HTMLElement
         ? elementOrSelector
-        : document.querySelector(elementOrSelector)
+        : document.querySelector(elementOrSelector);
 
     if (!element) {
-      return
+      return;
     }
 
-    const exists = element.classList.contains('builder-hydrated')
+    const exists = element.classList.contains('builder-hydrated');
     if (exists && !fresh) {
-      console.debug('Tried to hydrate multiple times')
-      return
+      console.debug('Tried to hydrate multiple times');
+      return;
     }
-    element.classList.add('builder-hydrated')
+    element.classList.add('builder-hydrated');
 
-    let shouldHydrate = hydrate && element.innerHTML.includes('builder-block')
+    let shouldHydrate = hydrate && element.innerHTML.includes('builder-block');
 
     if (!element.classList.contains('builder-component')) {
       // TODO: maybe remove any builder-api-styles...
@@ -467,138 +438,127 @@ export class BuilderPage extends React.Component<
         (element.previousElementSibling &&
         element.previousElementSibling.matches('.builder-api-styles')
           ? element.previousElementSibling
-          : null)
-      let keepStyles = ''
+          : null);
+      let keepStyles = '';
       if (apiStyles) {
-        const html = apiStyles.innerHTML
+        const html = apiStyles.innerHTML;
         html.replace(
           /\/\*start:([^\*]+?)\*\/([\s\S]*?)\/\*end:([^\*]+?)\*\//g,
           (match, id, content) => {
-            let el: HTMLElement | null = null
+            let el: HTMLElement | null = null;
             try {
-              el = document.querySelector(`[data-emotion-css="${id}"]`)
+              el = document.querySelector(`[data-emotion-css="${id}"]`);
             } catch (err) {
-              console.warn(err)
+              console.warn(err);
             }
             if (el) {
-              el.innerHTML = content
+              el.innerHTML = content;
             } else if (!Builder.isEditing) {
-              keepStyles += match
+              keepStyles += match;
             }
 
-            return match
+            return match;
           }
-        )
+        );
         // NextTick? or longer timeout?
         Builder.nextTick(() => {
-          apiStyles.innerHTML = keepStyles
-        })
+          apiStyles.innerHTML = keepStyles;
+        });
       }
-      const useElement = element.querySelector('.builder-component')
+      const useElement = element.querySelector('.builder-component');
       if (useElement) {
-        element = useElement
+        element = useElement;
       } else {
-        shouldHydrate = false
+        shouldHydrate = false;
       }
     }
 
     if (location.search.includes('builder.debug=true')) {
-      console.debug('hydrate', shouldHydrate, element)
+      console.debug('hydrate', shouldHydrate, element);
     }
 
-    let useEl = element
+    let useEl = element;
     if (!exists) {
-      const div = document.createElement('div')
-      element.insertAdjacentElement('beforebegin', div)
-      div.appendChild(element)
-      useEl = div
+      const div = document.createElement('div');
+      element.insertAdjacentElement('beforebegin', div);
+      div.appendChild(element);
+      useEl = div;
     }
 
-    if (
-      Builder.isEditing ||
-      (Builder.isBrowser && location.search.includes('builder.preview='))
-    ) {
-      shouldHydrate = false
+    if (Builder.isEditing || (Builder.isBrowser && location.search.includes('builder.preview='))) {
+      shouldHydrate = false;
     }
     if (shouldHydrate && element) {
       // TODO: maybe hydrate again. Maybe...
-      const val = ReactDOM.render(
-        <BuilderPage {...props} />,
-        useEl,
-        (useEl as any).builderRootRef
-      )
-      ;(useEl as any).builderRootRef = val
-      return val
+      const val = ReactDOM.render(<BuilderPage {...props} />, useEl, (useEl as any).builderRootRef);
+      (useEl as any).builderRootRef = val;
+      return val;
     }
-    const val = ReactDOM.render(
-      <BuilderPage {...props} />,
-      useEl,
-      (useEl as any).builderRootRef
-    )
-    ;(useEl as any).builderRootRef = val
-    return val
+    const val = ReactDOM.render(<BuilderPage {...props} />, useEl, (useEl as any).builderRootRef);
+    (useEl as any).builderRootRef = val;
+    return val;
   }
 
-  mounted = false
+  mounted = false;
 
   componentDidMount() {
-    this.mounted = true
+    this.mounted = true;
     if (this.asServer) {
-      this.asServer = false
+      this.asServer = false;
       this.updateState(state => {
-        state.isBrowser = true
-        state.isServer = false
-      })
+        state.isBrowser = true;
+        state.isServer = false;
+      });
     }
 
     if (Builder.isIframe) {
       window.parent?.postMessage(
         { type: 'builder.sdkInjected', data: { modelName: this.name } },
         '*'
-      )
+      );
     }
 
     if (Builder.isBrowser) {
       // TODO: remove event on unload
-      window.addEventListener('resize', this.resizeListener)
+      window.addEventListener('resize', this.resizeListener);
       if (Builder.isEditing) {
-        window.addEventListener('message', this.messageListener)
+        window.addEventListener('message', this.messageListener);
       }
 
       setTimeout(() => {
         window.dispatchEvent(
           new CustomEvent('builder:component:load', {
             detail: {
-              ref: this
-            }
+              ref: this,
+            },
           })
-        )
-      })
+        );
+      });
     }
   }
 
   updateState = (fn?: (state: any) => void) => {
-    const state = this.rootState
+    const state = this.rootState;
     if (fn) {
-      fn(state)
+      fn(state);
     }
     if (this.mounted) {
       this.setState({
         update: this.updateState,
         state,
-        updates: ((this.state && this.state.updates) || 0) + 1
-      })
+        updates: ((this.state && this.state.updates) || 0) + 1,
+      });
     } else {
       this.state = {
         ...this.state,
         update: this.updateState,
         state,
-        updates: ((this.state && this.state.updates) || 0) + 1
-      }
+        updates: ((this.state && this.state.updates) || 0) + 1,
+      };
     }
 
-    this.notifyStateChange()
-  }
+    this.notifyStateChange();
+  };
 
   @debounceNextTick
   notifyStateChange() {
@@ -606,12 +566,12 @@ export class BuilderPage extends React.Component<
       return;
     }
     if (!(this && this.state)) {
-      return
+      return;
     }
-    const nextState = this.state.state
+    const nextState = this.state.state;
     // TODO: only run the below once per tick...
     if (this.props.onStateChange) {
-      this.props.onStateChange(nextState)
+      this.props.onStateChange(nextState);
     }
 
     if (Builder.isBrowser) {
@@ -619,30 +579,28 @@ export class BuilderPage extends React.Component<
         new CustomEvent('builder:component:stateChange', {
           detail: {
             state: nextState,
-            ref: this
-          }
+            ref: this,
+          },
         })
-      )
+      );
     }
-    this.onStateChange.next(nextState)
+    this.onStateChange.next(nextState);
   }
 
   processStateFromApi(state: { [key: string]: any }) {
-    return state //  mapValues(state, value => tryEval(value, this.data, this._errors))
+    return state; //  mapValues(state, value => tryEval(value, this.data, this._errors))
   }
 
   get location() {
-    return this.props.location || (Builder.isBrowser ? location : ({} as any))
+    return this.props.location || (Builder.isBrowser ? location : ({} as any));
   }
 
   getCssFromFont(font: any, data?: any) {
     // TODO: compute what font sizes are used and only load those.......
-    const family =
-      font.family +
-      (font.kind && !font.kind.includes('#') ? ', ' + font.kind : '')
-    const name = family.split(',')[0]
-    const url = font.fileUrl ? font.fileUrl : font.files && font.files.regular
-    let str = ''
+    const family = font.family + (font.kind && !font.kind.includes('#') ? ', ' + font.kind : '');
+    const name = family.split(',')[0];
+    const url = font.fileUrl ? font.fileUrl : font.files && font.files.regular;
+    let str = '';
     if (url && family && name) {
       str += `
 @font-face {
@@ -651,17 +609,17 @@ export class BuilderPage extends React.Component<
   font-display: fallback;
   font-weight: 400;
 }
-        `.trim()
+        `.trim();
     }
 
     if (font.files) {
       for (const weight in font.files) {
-        const isNumber = String(Number(weight)) === weight
+        const isNumber = String(Number(weight)) === weight;
         if (!isNumber) {
-          continue
+          continue;
         }
         // TODO: maybe limit number loaded
-        const weightUrl = font.files[weight]
+        const weightUrl = font.files[weight];
         if (weightUrl && weightUrl !== url) {
           str += `
 @font-face {
@@ -670,18 +628,18 @@ export class BuilderPage extends React.Component<
   font-display: fallback;
   font-weight: ${weight};
 }
-          `.trim()
+          `.trim();
         }
       }
     }
-    return str
+    return str;
   }
 
   componentWillUnmount() {
-    this.unsubscribe()
+    this.unsubscribe();
     if (Builder.isBrowser) {
-      window.removeEventListener('resize', this.resizeListener)
-      window.removeEventListener('message', this.messageListener)
+      window.removeEventListener('resize', this.resizeListener);
+      window.removeEventListener('message', this.messageListener);
     }
   }
 
@@ -690,69 +648,65 @@ export class BuilderPage extends React.Component<
     return (
       (data?.customFonts &&
         data.customFonts.length &&
-        data.customFonts
-          .map((font: any) => this.getCssFromFont(font, data))
-          .join(' ')) ||
+        data.customFonts.map((font: any) => this.getCssFromFont(font, data)).join(' ')) ||
       ''
-    )
+    );
   }
 
   ensureFontsLoaded(data?: any) {
     if (data?.customFonts && Array.isArray(data.customFonts)) {
       for (const font of data.customFonts) {
-        const url = font.fileUrl
-          ? font.fileUrl
-          : font.files && font.files.regular
+        const url = font.fileUrl ? font.fileUrl : font.files && font.files.regular;
         if (!fontsLoaded.has(url)) {
-          const html = this.getCssFromFont(font, data)
-          fontsLoaded.add(url)
+          const html = this.getCssFromFont(font, data);
+          fontsLoaded.add(url);
           if (!html) {
-            continue
+            continue;
           }
-          const style = document.createElement('style')
-          style.className = 'builder-custom-font'
-          style.setAttribute('data-builder-custom-font', url)
-          style.innerHTML = html
-          document.head.appendChild(style)
+          const style = document.createElement('style');
+          style.className = 'builder-custom-font';
+          style.setAttribute('data-builder-custom-font', url);
+          style.innerHTML = html;
+          document.head.appendChild(style);
         }
       }
     }
   }
 
   getCss(data?: any) {
-    const contentId = this.useContent?.id
-    let cssCode = data?.cssCode || ''
+    const contentId = this.useContent?.id;
+    let cssCode = data?.cssCode || '';
     if (contentId) {
       // Allow using `&` in custom CSS code like @emotion
       // E.g. `& .foobar { ... }` to scope CSS
       // TODO: handle if '&' is within a string like `content: "&"`
-      cssCode = cssCode.replace(/&/g, `.builder-component-${contentId}`)
+      cssCode = cssCode.replace(/&/g, `.builder-component-${contentId}`);
     }
 
-    return cssCode + this.getFontCss(data)
+    return cssCode + this.getFontCss(data);
   }
 
   get data() {
     const data = {
       ...(this.props.content && this.props.content.data?.state),
       ...this.props.data,
-      ...this.state.state
-    }
-    Object.assign(this.rootState, data)
-    return data
+      ...this.state.state,
+    };
+    Object.assign(this.rootState, data);
+    return data;
   }
 
   componentDidUpdate(prevProps: BuilderPageProps) {
     // TODO: shallow diff
     if (this.props.data && prevProps.data !== this.props.data) {
       this.state.update((state: any) => {
-        Object.assign(state, this.props.data)
-      })
+        Object.assign(state, this.props.data);
+      });
     }
 
     if (Builder.isEditing) {
       if (this.props.content && prevProps.content !== this.props.content) {
-        this.onContentLoaded(this.props.content)
+        this.onContentLoaded(this.props.content);
       }
     }
   }
@@ -761,58 +715,53 @@ export class BuilderPage extends React.Component<
   // (might be preact only)
   checkStyles(data: any) {
     if (this.styleRef) {
-      const css = this.getCss(data)
+      const css = this.getCss(data);
       if (this.styleRef.innerHTML !== css) {
-        this.styleRef.innerHTML = css
+        this.styleRef.innerHTML = css;
       }
     }
   }
 
   reload() {
     this.setState({
-      key: this.state.key + 1
-    })
+      key: this.state.key + 1,
+    });
   }
 
   get content() {
-    let { content } = this.props
+    let { content } = this.props;
     if (content && (content as any).content) {
       // GraphQL workaround
       content = {
         ...content,
-        data: (content as any).content
-      }
+        data: (content as any).content,
+      };
     }
-    return content
+    return content;
   }
 
   get useContent() {
-    return this.content || this.state.context.builderContent
+    return this.content || this.state.context.builderContent;
   }
 
   render() {
-    const content = this.content
+    const content = this.content;
 
     const dataString =
-      Builder.isBrowser &&
-      this.props.data &&
-      size(this.props.data) &&
-      hash(this.props.data)
-    let key = Builder.isEditing ? this.name : this.props.entry
+      Builder.isBrowser && this.props.data && size(this.props.data) && hash(this.props.data);
+    let key = Builder.isEditing ? this.name : this.props.entry;
     if (key && !Builder.isEditing && dataString && dataString.length < 300) {
-      key += ':' + dataString
+      key += ':' + dataString;
     }
 
-    const WrapComponent = this.props.dataOnly ? React.Fragment : 'div'
+    const WrapComponent = this.props.dataOnly ? React.Fragment : 'div';
 
-    const contentId = this.useContent?.id
+    const contentId = this.useContent?.id;
 
     return (
       // TODO: data attributes for model, id, etc?
       <WrapComponent
-        className={`builder-component ${
-          contentId ? `builder-component-${contentId}` : ''
-        }`}
+        className={`builder-component ${contentId ? `builder-component-${contentId}` : ''}`}
         data-name={this.name}
         data-source={`Rendered by Builder.io on ${new Date().toUTCString()}`}
         key={this.state.key}
@@ -825,25 +774,23 @@ export class BuilderPage extends React.Component<
                 typeof this.props.ampMode === 'boolean'
                   ? {
                       ...value,
-                      ampMode: this.props.ampMode
+                      ampMode: this.props.ampMode,
                     }
                   : value
               }
             >
               <BuilderAsyncRequestsContext.Consumer>
                 {value => {
-                  this._asyncRequests = value && value.requests
-                  this._errors = value && value.errors
-                  this._logs = value && value.logs
+                  this._asyncRequests = value && value.requests;
+                  this._errors = value && value.errors;
+                  this._logs = value && value.logs;
 
                   return (
                     <BuilderContent
                       isStatic={this.props.isStatic || Builder.isStatic}
                       key={
                         this.props.content?.id ||
-                        ('content' in this.props
-                          ? 'null-content-prop'
-                          : 'no-content-prop')
+                        ('content' in this.props ? 'null-content-prop' : 'no-content-prop')
                       }
                       builder={this.builder}
                       ref={ref => (this.contentRef = ref)}
@@ -853,30 +800,28 @@ export class BuilderPage extends React.Component<
                         key,
                         entry: this.props.entry,
                         ...(content && { initialContent: [content] }),
-                        ...(!content &&
-                          'content' in this.props && { initialContent: [] }),
+                        ...(!content && 'content' in this.props && { initialContent: [] }),
                         ...(this.props.url && { url: this.props.url }),
-                        ...this.props.options
+                        ...this.props.options,
                       }}
                       inline={
-                        this.props.inlineContent ||
-                        (!Builder.isEditing && 'content' in this.props)
+                        this.props.inlineContent || (!Builder.isEditing && 'content' in this.props)
                       }
                       contentError={this.props.contentError}
                       modelName={this.name || 'page'}
                     >
                       {(data, loading, fullData) => {
                         if (this.props.dataOnly) {
-                          return null
+                          return null;
                         }
 
                         if (fullData && fullData.id) {
-                          this.state.context.builderContent = fullData
+                          this.state.context.builderContent = fullData;
                         }
                         if (Builder.isBrowser) {
                           Builder.nextTick(() => {
-                            this.checkStyles(data)
-                          })
+                            this.checkStyles(data);
+                          });
                         }
                         // TODO: loading option - maybe that is what the children is or component prop
                         // TODO: get rid of all these wrapper divs
@@ -885,9 +830,7 @@ export class BuilderPage extends React.Component<
                             data-builder-component={this.name}
                             data-builder-content-id={fullData.id}
                             data-builder-variation-id={
-                              fullData.testVariationId ||
-                              fullData.variationId ||
-                              fullData.id
+                              fullData.testVariationId || fullData.variationId || fullData.id
                             }
                           >
                             {this.getCss(data) && (
@@ -895,7 +838,7 @@ export class BuilderPage extends React.Component<
                                 ref={ref => (this.styleRef = ref)}
                                 className="builder-custom-styles"
                                 dangerouslySetInnerHTML={{
-                                  __html: this.getCss(data)
+                                  __html: this.getCss(data),
                                 }}
                               />
                             )}
@@ -905,7 +848,7 @@ export class BuilderPage extends React.Component<
                                 rootState: this.rootState,
                                 state: this.data,
                                 content: fullData,
-                                renderLink: this.props.renderLink
+                                renderLink: this.props.renderLink,
                               }}
                             >
                               <BuilderBlocks
@@ -917,208 +860,184 @@ export class BuilderPage extends React.Component<
                             </BuilderStoreContext.Provider>
                           </div>
                         ) : loading ? (
-                          <div
-                            data-builder-component={this.name}
-                            className="builder-loading"
-                          >
+                          <div data-builder-component={this.name} className="builder-loading">
                             {this.props.children}
                           </div>
                         ) : (
-                          <div
-                            data-builder-component={this.name}
-                            className="builder-no-content"
-                          />
-                        )
+                          <div data-builder-component={this.name} className="builder-no-content" />
+                        );
                       }}
                     </BuilderContent>
-                  )
+                  );
                 }}
               </BuilderAsyncRequestsContext.Consumer>
             </BuilderMetaContext.Provider>
           )}
         </BuilderMetaContext.Consumer>
       </WrapComponent>
-    )
+    );
   }
 
   evalExpression(expression: string) {
-    const { data } = this
-    return expression.replace(/{{([^}]+)}}/g, (match, group) =>
-      tryEval(group, data, this._errors)
-    )
+    const { data } = this;
+    return expression.replace(/{{([^}]+)}}/g, (match, group) => tryEval(group, data, this._errors));
   }
 
   // TODO: customizable hm
   @Throttle(100, { leading: true, trailing: true })
   throttledHandleRequest(propertyName: string, url: string) {
-    return this.handleRequest(propertyName, url)
+    return this.handleRequest(propertyName, url);
   }
 
   async handleRequest(propertyName: string, url: string) {
     // TODO: Builder.isEditing = just checks if iframe and parent page is this.builder.io or localhost:1234
     if (Builder.isIframe && fetchCache[url]) {
       this.updateState(ctx => {
-        ctx[propertyName] = fetchCache[url]
-      })
-      return fetchCache[url]
+        ctx[propertyName] = fetchCache[url];
+      });
+      return fetchCache[url];
     }
     const request = async () => {
-      const requestStart = Date.now()
+      const requestStart = Date.now();
       if (!Builder.isBrowser) {
-        console.time('Fetch ' + url)
+        console.time('Fetch ' + url);
       }
-      let json: any
+      let json: any;
       try {
-        const result = await fetch(url)
-        json = await result.json()
+        const result = await fetch(url);
+        json = await result.json();
       } catch (err) {
         if (this._errors) {
-          this._errors.push(err)
+          this._errors.push(err);
         }
         if (this._logs) {
-          this._logs.push(
-            `Fetch to ${url} errored in ${Date.now() - requestStart}ms`
-          )
+          this._logs.push(`Fetch to ${url} errored in ${Date.now() - requestStart}ms`);
         }
-        return
+        return;
       } finally {
         if (!Builder.isBrowser) {
-          console.timeEnd('Fetch ' + url)
+          console.timeEnd('Fetch ' + url);
           if (this._logs) {
-            this._logs.push(`Fetched ${url} in ${Date.now() - requestStart}ms`)
+            this._logs.push(`Fetched ${url} in ${Date.now() - requestStart}ms`);
           }
         }
       }
 
       if (json) {
         if (Builder.isIframe) {
-          fetchCache[url] = json
+          fetchCache[url] = json;
         }
         // TODO: debounce next tick all of these when there are a bunch
         this.updateState(ctx => {
-          ctx[propertyName] = json
-        })
+          ctx[propertyName] = json;
+        });
       }
 
-      return json
-    }
+      return json;
+    };
     const existing =
       this._asyncRequests &&
       (this._asyncRequests.find(
         req => isRequestInfo(req) && req.url === url
-      ) as RequestInfo | null)
+      ) as RequestInfo | null);
     if (existing) {
-      const promise = existing.promise
+      const promise = existing.promise;
       promise.then(json => {
         if (json) {
           this.updateState(ctx => {
-            ctx[propertyName] = json
-          })
+            ctx[propertyName] = json;
+          });
         }
-      })
-      return promise
+      });
+      return promise;
     }
-    const promise = request()
+    const promise = request();
     Builder.nextTick(() => {
       if (this._asyncRequests) {
-        this._asyncRequests.push(promise)
+        this._asyncRequests.push(promise);
       }
-    })
-    return promise
+    });
+    return promise;
   }
 
   unsubscribe() {
     if (this.subscriptions) {
-      this.subscriptions.unsubscribe()
-      this.subscriptions = new Subscription()
+      this.subscriptions.unsubscribe();
+      this.subscriptions = new Subscription();
     }
   }
 
   handleBuilderRequest(propertyName: string, optionsString: string) {
-    const options = tryEval(optionsString, this.data, this._errors)
+    const options = tryEval(optionsString, this.data, this._errors);
     // TODO: this will screw up for multiple bits of data
     if (this.subscriptions) {
-      this.unsubscribe()
+      this.unsubscribe();
     }
     // TODO: don't unsubscribe and resubscribe every time data changes, will make a TON of requests if that's the case when editing...
     // I guess will be cached then
     if (options) {
       // TODO: unsubscribe on destroy
       this.subscriptions.add(
-        this.builder
-          .queueGetContent(options.model, options)
-          .subscribe(matches => {
-            if (matches) {
-              this.updateState(ctx => {
-                ctx[propertyName] = matches
-              })
-            }
-          })
-      )
+        this.builder.queueGetContent(options.model, options).subscribe(matches => {
+          if (matches) {
+            this.updateState(ctx => {
+              ctx[propertyName] = matches;
+            });
+          }
+        })
+      );
     }
   }
 
   onContentLoaded = (data: any) => {
     if (data && data.meta && data.meta.kind === 'page') {
-      const future = new Date()
-      future.setDate(future.getDate() + 30)
+      const future = new Date();
+      future.setDate(future.getDate() + 30);
       this.builder.setCookie(
         'builder.lastPageViewed',
-        [data.id, data.variationId || data.testVariationId || data.id].join(
-          ','
-        ),
+        [data.id, data.variationId || data.testVariationId || data.id].join(','),
         future
-      )
+      );
     }
 
     // if (Builder.isBrowser) {
     //   console.debug('Builder content load', data)
     // }
     // TODO: if model is page... hmm
-    if (
-      (this.name === 'page' || this.name === 'docs-content') &&
-      Builder.isBrowser
-    ) {
+    if ((this.name === 'page' || this.name === 'docs-content') && Builder.isBrowser) {
       if (data) {
-        const { title, pageTitle, description, pageDescription } = data
+        const { title, pageTitle, description, pageDescription } = data;
 
         if (title || pageTitle) {
-          document.title = title || pageTitle
+          document.title = title || pageTitle;
         }
 
         if (description || pageDescription) {
-          let descriptionTag = document.querySelector(
-            'meta[name="description"]'
-          )
+          let descriptionTag = document.querySelector('meta[name="description"]');
 
           if (!descriptionTag) {
-            descriptionTag = document.createElement('meta')
-            descriptionTag.setAttribute('name', 'description')
-            document.head.appendChild(descriptionTag)
+            descriptionTag = document.createElement('meta');
+            descriptionTag.setAttribute('name', 'description');
+            document.head.appendChild(descriptionTag);
           }
 
-          descriptionTag.setAttribute('content', description || pageDescription)
+          descriptionTag.setAttribute('content', description || pageDescription);
         }
       }
     }
 
     if (Builder.isEditing) {
-      this.notifyStateChange()
+      this.notifyStateChange();
     }
 
     // Unsubscribe all? TODO: maybe don't continuous fire when editing.....
     if (this.props.contentLoaded) {
-      this.props.contentLoaded(data)
+      this.props.contentLoaded(data);
     }
 
-    if (
-      data &&
-      data.inputs &&
-      Array.isArray(data.inputs) &&
-      data.inputs.length
-    ) {
+    if (data && data.inputs && Array.isArray(data.inputs) && data.inputs.length) {
       if (!data.state) {
-        data.state = {}
+        data.state = {};
       }
 
       // Maybe...
@@ -1134,10 +1053,10 @@ export class BuilderPage extends React.Component<
             input.defaultValue !== undefined &&
             data.state[input.name] === undefined
           ) {
-            data.state[input.name] = input.defaultValue
+            data.state[input.name] = input.defaultValue;
           }
         }
-      })
+      });
     }
 
     if (data && data.state) {
@@ -1150,30 +1069,30 @@ export class BuilderPage extends React.Component<
           deviceSize: this.deviceSizeState,
           device: this.device,
           ...data.state,
-          ...this.props.data
-        })
-      }
+          ...this.props.data,
+        }),
+      };
       if (this.mounted) {
-        this.setState(newState)
+        this.setState(newState);
       } else {
-        this.state = newState
+        this.state = newState;
       }
     }
 
     // TODO: also throttle on edits maybe
     if (data && data.jsCode && Builder.isBrowser) {
       // Don't rerun js code when editing and not changed
-      let skip = false
+      let skip = false;
       if (Builder.isEditing) {
         if (this.lastJsCode === data.jsCode) {
-          skip = true
+          skip = true;
         } else {
-          this.lastJsCode = data.jsCode
+          this.lastJsCode = data.jsCode;
         }
       }
 
       if (!skip) {
-        const state = this.state.state
+        const state = this.state.state;
 
         // TODO: real editing method
         try {
@@ -1187,16 +1106,7 @@ export class BuilderPage extends React.Component<
             'builder',
             'context',
             data.jsCode
-          )(
-            data,
-            this,
-            state,
-            this.state.update,
-            this.ref,
-            Builder,
-            builder,
-            this.state.context
-          )
+          )(data, this, state, this.state.update, this.ref, Builder, builder, this.state.context);
 
           // TODO: allow exports = { } syntax?
           // TODO: do something with reuslt like view - methods, computed, actions, properties, template, etc etc
@@ -1208,7 +1118,7 @@ export class BuilderPage extends React.Component<
               'in',
               data.jsCode,
               error.stack
-            )
+            );
           } else {
             if (process.env.DEBUG) {
               console.debug(
@@ -1217,7 +1127,7 @@ export class BuilderPage extends React.Component<
                 'in',
                 data.jsCode,
                 error.stack
-              )
+              );
             }
             // Add to req.options.errors to return to client
           }
@@ -1225,41 +1135,29 @@ export class BuilderPage extends React.Component<
       }
     }
 
-    if (
-      data &&
-      data.httpRequests /* || data.builderData @DEPRECATED */ &&
-      !this.props.noAsync
-    ) {
+    if (data && data.httpRequests /* || data.builderData @DEPRECATED */ && !this.props.noAsync) {
       // Don't rerun http requests when editing and not changed
       // No longer needed?
-      let skip = false
+      let skip = false;
 
       if (!skip) {
         // TODO: another structure for this
         for (const key in data.httpRequests) {
-          const url: string | undefined = data.httpRequests[key]
+          const url: string | undefined = data.httpRequests[key];
           if (url && (!this.data[key] || Builder.isEditing)) {
             // TODO: if Builder.isEditing and url patches https://builder.io/api/v2/content/{editingModel}
             // Then use this.builder.get().subscribe(...)
             if (Builder.isBrowser) {
-              const finalUrl = this.evalExpression(url)
-              if (
-                Builder.isEditing &&
-                this.lastHttpRequests[key] === finalUrl
-              ) {
-                continue
+              const finalUrl = this.evalExpression(url);
+              if (Builder.isEditing && this.lastHttpRequests[key] === finalUrl) {
+                continue;
               }
-              this.lastHttpRequests[key] = finalUrl
-              const builderModelRe = /builder\.io\/api\/v2\/([^\/\?]+)/i
-              const builderModelMatch = url.match(builderModelRe)
-              const model = builderModelMatch && builderModelMatch[1]
-              if (
-                false &&
-                Builder.isEditing &&
-                model &&
-                this.builder.editingModel === model
-              ) {
-                this.throttledHandleRequest(key, finalUrl)
+              this.lastHttpRequests[key] = finalUrl;
+              const builderModelRe = /builder\.io\/api\/v2\/([^\/\?]+)/i;
+              const builderModelMatch = url.match(builderModelRe);
+              const model = builderModelMatch && builderModelMatch[1];
+              if (false && Builder.isEditing && model && this.builder.editingModel === model) {
+                this.throttledHandleRequest(key, finalUrl);
                 // TODO: fix this
                 // this.subscriptions.add(
                 //   this.builder.get(model).subscribe(data => {
@@ -1269,26 +1167,26 @@ export class BuilderPage extends React.Component<
                 //   })
                 // )
               } else {
-                this.throttledHandleRequest(key, finalUrl)
-                const currentSubscription = this.httpSubscriptionPerKey[key]
+                this.throttledHandleRequest(key, finalUrl);
+                const currentSubscription = this.httpSubscriptionPerKey[key];
                 if (currentSubscription) {
-                  currentSubscription.unsubscribe()
+                  currentSubscription.unsubscribe();
                 }
 
                 // TODO: fix this
                 const newSubscription = (this.httpSubscriptionPerKey[
                   key
                 ] = this.onStateChange.subscribe(() => {
-                  const newUrl = this.evalExpression(url)
+                  const newUrl = this.evalExpression(url);
                   if (newUrl !== finalUrl) {
-                    this.throttledHandleRequest(key, newUrl)
-                    this.lastHttpRequests[key] = newUrl
+                    this.throttledHandleRequest(key, newUrl);
+                    this.lastHttpRequests[key] = newUrl;
                   }
-                }))
-                this.subscriptions.add(newSubscription)
+                }));
+                this.subscriptions.add(newSubscription);
               }
             } else {
-              this.handleRequest(key, this.evalExpression(url))
+              this.handleRequest(key, this.evalExpression(url));
             }
           }
         }
@@ -1302,5 +1200,5 @@ export class BuilderPage extends React.Component<
         // }
       }
     }
-  }
+  };
 }

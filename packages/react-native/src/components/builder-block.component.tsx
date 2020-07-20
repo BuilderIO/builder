@@ -243,7 +243,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
                       }
                     },
                     // TODO: wrap other proxy properties
-                    set: function(target, key, value) {
+                    set: function (target, key, value) {
                       // TODO: do these for deep sets from references hmm
                       return Reflect.set(latestState, key, value);
                       // return false;
@@ -335,7 +335,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
               />
             </React.Fragment>
           ) : (
-            <TagName {...finalOptions as any}>
+            <TagName {...(finalOptions as any)}>
               {/* {styleTag} */}
               {InnerComponent && (
                 <InnerComponent builderBlock={block} {...innerComponentProperties} />
@@ -376,13 +376,7 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
 
     if (block.repeat && block.repeat.collection) {
       const collectionPath = block.repeat.collection;
-      const collectionName = last(
-        (collectionPath || '')
-          .trim()
-          .split('(')[0]
-          .trim()
-          .split('.')
-      );
+      const collectionName = last((collectionPath || '').trim().split('(')[0].trim().split('.'));
       const itemName = block.repeat.itemName || (collectionName ? collectionName + 'Item' : 'item');
       const array = this.stringToFunction(collectionPath)(state.state, null, block, {}, Device);
       if (isArray(array)) {

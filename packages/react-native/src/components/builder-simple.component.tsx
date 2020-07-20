@@ -159,6 +159,6 @@ export class BuilderSimpleComponent extends React.Component<BuilderSimpleCompone
     const html =
       this.props.html ||
       (this.state && this.state.data && this.state.data.data && this.state.data.data.html);
-    return <HTML html={html || ' '}  />;
+    return <HTML html={html || ' '} />;
   }
 }

@@ -21,7 +21,6 @@ export class CustomThing {
   name = '';
 }
 
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -30,7 +29,7 @@ export class CustomThing {
 export class AppComponent {
   title = 'app';
   options: GetContentOptions = {
-    cacheSeconds: 1
+    cacheSeconds: 1,
   };
 
   data = {
@@ -46,6 +45,3 @@ export class AppComponent {
     console.log('error', event);
   }
 }
-
-
-

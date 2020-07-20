@@ -30,9 +30,7 @@ From [Builder.io](https://builder.io) open the javascript console in your browse
 
 ```js
 // Adds the plugin
-builder.plugins.replace([
-  'http://localhost:1268/plugin.system.js'
-]);
+builder.plugins.replace(['http://localhost:1268/plugin.system.js']);
 // Saves for all in your organization and reloads the browser
 builder.savePlugins().then(() => location.reload());
 ```
@@ -64,19 +62,16 @@ Builder.io uses [React](https://github.com/facebook/react) and [Material UI](htt
 
 Using these frameworks in Builder plugins ensures best possible experience and performance.
 
-
 ### Publishing
 
-We recommend sending us a pull request with your plugin so we can publish it on your behalf. 
+We recommend sending us a pull request with your plugin so we can publish it on your behalf.
 
 If required, you can also publish to your own NPM or a hosting service.
 
 To load a plugin from NPM
 
 ```js
-builder.plugins.replace([
-  '@builder.io/plugin-example'
-])
+builder.plugins.replace(['@builder.io/plugin-example']);
 ```
 
 #### Advanced
@@ -84,15 +79,11 @@ builder.plugins.replace([
 You can load a plugin from a specific version
 
 ```js
-builder.plugins.replace([
-  '@builder.io/plugin-example@1.0.0'
-])
+builder.plugins.replace(['@builder.io/plugin-example@1.0.0']);
 ```
 
 Or from a URL
 
 ```js
-builder.plugins.replace([
-  'https://something.com/foo'
-])
+builder.plugins.replace(['https://something.com/foo']);
 ```

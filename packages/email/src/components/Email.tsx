@@ -1,9 +1,9 @@
-import { BuilderBlock, BuilderBlocks } from '@builder.io/react'
-import React from 'react'
-import { resetStyles } from '../constants/reset-styles'
+import { BuilderBlock, BuilderBlocks } from '@builder.io/react';
+import React from 'react';
+import { resetStyles } from '../constants/reset-styles';
 
 interface EmailProps {
-  title?: string
+  title?: string;
 }
 
 @BuilderBlock({
@@ -13,9 +13,9 @@ interface EmailProps {
       name: 'title',
       type: 'text',
       required: true,
-      defaultValue: 'Email title'
-    }
-  ]
+      defaultValue: 'Email title',
+    },
+  ],
 })
 export class Email extends React.Component<EmailProps> {
   render() {
@@ -32,6 +32,6 @@ export class Email extends React.Component<EmailProps> {
           <body>{this.props.children}</body>
         </html>
       </React.Fragment>
-    )
+    );
   }
 }

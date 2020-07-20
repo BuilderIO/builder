@@ -1,78 +1,72 @@
 /** @jsx jsx */
-import { jsx } from '@emotion/core'
-import React from 'react'
+import { jsx } from '@emotion/core';
+import React from 'react';
 
-import { BuilderBlock as BuilderBlockComponent } from '../components/builder-block.component'
-import { BuilderElement, Builder } from '@builder.io/sdk'
-import { BuilderMetaContext } from '../store/builder-meta'
-import { withBuilder } from '../functions/with-builder'
-import { throttle } from '../functions/throttle'
+import { BuilderBlock as BuilderBlockComponent } from '../components/builder-block.component';
+import { BuilderElement, Builder } from '@builder.io/sdk';
+import { BuilderMetaContext } from '../store/builder-meta';
+import { withBuilder } from '../functions/with-builder';
+import { throttle } from '../functions/throttle';
 
 // Taken from (and modified) the shopify theme script repo
 // https://github.com/Shopify/theme-scripts/blob/bcfb471f2a57d439e2f964a1bb65b67708cc90c3/packages/theme-images/images.js#L59
 function removeProtocol(path: string) {
-  return path.replace(/http(s)?:/, '')
+  return path.replace(/http(s)?:/, '');
 }
 
 function getShopifyImageUrl(src: string, size: string): string | null {
   if (!src || !src?.match(/cdn\.shopify\.com/) || !size) {
-    return src
+    return src;
   }
 
   if (size === 'master') {
-    return removeProtocol(src)
+    return removeProtocol(src);
   }
 
-  const match = src.match(
-    /(_\d+x(\d+)?)?(\.(jpg|jpeg|gif|png|bmp|bitmap|tiff|tif)(\?v=\d+)?)/i
-  )
+  const match = src.match(/(_\d+x(\d+)?)?(\.(jpg|jpeg|gif|png|bmp|bitmap|tiff|tif)(\?v=\d+)?)/i);
 
   if (match) {
-    const prefix = src.split(match[0])
-    const suffix = match[3]
-    const useSize = size.match('x') ? size : `${size}x`
+    const prefix = src.split(match[0]);
+    const suffix = match[3];
+    const useSize = size.match('x') ? size : `${size}x`;
 
-    return removeProtocol(`${prefix[0]}_${useSize}${suffix}`)
+    return removeProtocol(`${prefix[0]}_${useSize}${suffix}`);
   }
 
-  return null
+  return null;
 }
 
-const DEFAULT_ASPECT_RATIO = 0.7041
+const DEFAULT_ASPECT_RATIO = 0.7041;
 
-export function updateQueryParam(
-  uri = '',
-  key: string,
-  value: string | number | boolean
-): string {
-  const re = new RegExp('([?&])' + key + '=.*?(&|$)', 'i')
-  const separator = uri.indexOf('?') !== -1 ? '&' : '?'
+export function updateQueryParam(uri = '', key: string, value: string | number | boolean): string {
+  const re = new RegExp('([?&])' + key + '=.*?(&|$)', 'i');
+  const separator = uri.indexOf('?') !== -1 ? '&' : '?';
   if (uri.match(re)) {
-    return uri.replace(re, '$1' + key + '=' + encodeURIComponent(value) + '$2')
+    return uri.replace(re, '$1' + key + '=' + encodeURIComponent(value) + '$2');
   }
 
-  return uri + separator + key + '=' + encodeURIComponent(value)
+  return uri + separator + key + '=' + encodeURIComponent(value);
 }
 
 export function getSrcSet(url: string): string {
   if (!url) {
-    return url
+    return url;
   }
 
-  const sizes = [100, 200, 400, 800, 1200, 1600, 2000]
+  const sizes = [100, 200, 400, 800, 1200, 1600, 2000];
 
   if (url.match(/builder\.io/)) {
-    let srcUrl = url
-    const widthInSrc = Number(url.split('?width=')[1])
+    let srcUrl = url;
+    const widthInSrc = Number(url.split('?width=')[1]);
     if (!isNaN(widthInSrc)) {
-      srcUrl = `${srcUrl} ${widthInSrc}w`
+      srcUrl = `${srcUrl} ${widthInSrc}w`;
     }
 
     return sizes
       .filter(size => size !== widthInSrc)
       .map(size => `${updateQueryParam(url, 'width', size)} ${size}w`)
       .concat([srcUrl])
-      .join(', ')
+      .join(', ');
   }
 
   if (url.match(/cdn\.shopify\.com/)) {
@@ -81,18 +75,18 @@ export function getSrcSet(url: string): string {
       .filter(([sizeUrl]) => !!sizeUrl)
       .map(([sizeUrl, size]) => `${sizeUrl} ${size}w`)
       .concat([url])
-      .join(', ')
+      .join(', ');
   }
 
-  return url
+  return url;
 }
 
 export const getSizes = (sizes: string, block: BuilderElement) => {
-  let useSizes = ''
+  let useSizes = '';
 
   if (sizes) {
-    const splitSizes = sizes.split(',')
-    const sizesLength = splitSizes.length
+    const splitSizes = sizes.split(',');
+    const sizesLength = splitSizes.length;
     useSizes = splitSizes
       .map((size: string, index) => {
         if (sizesLength === index + 1) {
@@ -101,72 +95,70 @@ export const getSizes = (sizes: string, block: BuilderElement) => {
           // value for sizes cannot have a media query. If there is a media
           // query at the end it breaks AMP mode rendering
           // https://github.com/ampproject/amphtml/blob/b6313e372fdd1298928e2417dcc616b03288e051/src/size-list.js#L169
-          return size.replace(/\([\s\S]*?\)/g, '').trim()
+          return size.replace(/\([\s\S]*?\)/g, '').trim();
         } else {
-          return size
+          return size;
         }
       })
-      .join(', ')
+      .join(', ');
   } else if (block && block.responsiveStyles) {
-    const generatedSizes = []
-    let hasSmallOrMediumSize = false
-    const unitRegex = /^\d+/
+    const generatedSizes = [];
+    let hasSmallOrMediumSize = false;
+    const unitRegex = /^\d+/;
 
     if (block.responsiveStyles?.small?.width?.match(unitRegex)) {
-      hasSmallOrMediumSize = true
-      const mediaQuery = '(max-width: 639px)'
+      hasSmallOrMediumSize = true;
+      const mediaQuery = '(max-width: 639px)';
       const widthAndQuery = `${mediaQuery} ${block.responsiveStyles.small.width.replace(
         '%',
         'vw'
-      )}`
-      generatedSizes.push(widthAndQuery)
+      )}`;
+      generatedSizes.push(widthAndQuery);
     }
 
     if (block.responsiveStyles?.medium?.width?.match(unitRegex)) {
-      hasSmallOrMediumSize = true
-      const mediaQuery = '(max-width: 999px)'
+      hasSmallOrMediumSize = true;
+      const mediaQuery = '(max-width: 999px)';
       const widthAndQuery = `${mediaQuery} ${block.responsiveStyles.medium.width.replace(
         '%',
         'vw'
-      )}`
-      generatedSizes.push(widthAndQuery)
+      )}`;
+      generatedSizes.push(widthAndQuery);
     }
 
     if (block.responsiveStyles?.large?.width) {
-      const width = block.responsiveStyles.large.width.replace('%', 'vw')
-      generatedSizes.push(width)
+      const width = block.responsiveStyles.large.width.replace('%', 'vw');
+      generatedSizes.push(width);
     } else if (hasSmallOrMediumSize) {
-      generatedSizes.push('100vw')
+      generatedSizes.push('100vw');
     }
 
     if (generatedSizes.length) {
-      useSizes = generatedSizes.join(', ')
+      useSizes = generatedSizes.join(', ');
     }
   }
 
-  return useSizes
-}
+  return useSizes;
+};
 
 // TODO: use picture tag to support more formats
 class ImageComponent extends React.Component<any> {
   get useLazyLoading() {
     // Use builder.getLocation()
-    return Builder.isBrowser &&
-      location.search.includes('builder.lazyLoadImages=false')
+    return Builder.isBrowser && location.search.includes('builder.lazyLoadImages=false')
       ? false
-      : Builder.isBrowser &&
-        location.href.includes('builder.lazyLoadImages=true')
+      : Builder.isBrowser && location.href.includes('builder.lazyLoadImages=true')
       ? true
-      : this.props.lazy
+      : this.props.lazy;
   }
 
   // TODO: setting to always fade in the images (?)
   state = {
     imageLoaded: !this.useLazyLoading,
-    load: !this.useLazyLoading
-  }
+    load: !this.useLazyLoading,
+  };
 
-  pictureRef: HTMLPictureElement | null = null
+  pictureRef: HTMLPictureElement | null = null;
 
   componentDidMount() {
     if (this.props.lazy && Builder.isBrowser) {
@@ -174,69 +166,69 @@ class ImageComponent extends React.Component<any> {
       const listener = throttle(
         (event: Event) => {
           if (this.pictureRef) {
-            const rect = this.pictureRef.getBoundingClientRect()
-            const buffer = window.innerHeight / 2
+            const rect = this.pictureRef.getBoundingClientRect();
+            const buffer = window.innerHeight / 2;
             if (rect.top < window.innerHeight + buffer) {
               this.setState({
                 ...this.state,
-                load: true
-              })
-              window.removeEventListener('scroll', listener)
+                load: true,
+              });
+              window.removeEventListener('scroll', listener);
             }
           }
         },
         400,
         {
           leading: false,
-          trailing: true
+          trailing: true,
         }
-      )
+      );
 
       window.addEventListener('scroll', listener, {
         capture: true,
-        passive: true
-      })
-      listener()
+        passive: true,
+      });
+      listener();
     }
   }
 
   getSrcSet(): string | undefined {
-    const url = this.props.image
+    const url = this.props.image;
     if (!url) {
-      return
+      return;
     }
 
     // We can auto add srcset for cdn.builder.io and shopify
     // images, otherwise you can supply this prop manually
     if (!(url.match(/builder\.io/) || url.match(/cdn\.shopify\.com/))) {
-      return
+      return;
     }
 
-    return getSrcSet(url)
+    return getSrcSet(url);
   }
 
   render() {
-    const { aspectRatio, lazy } = this.props
-    const children = this.props.builderBlock && this.props.builderBlock.children
+    const { aspectRatio, lazy } = this.props;
+    const children = this.props.builderBlock && this.props.builderBlock.children;
 
-    let srcset = this.props.srcset
-    const sizes = getSizes(this.props.sizes, this.props.builderBlock)
-    const image = this.props.image
+    let srcset = this.props.srcset;
+    const sizes = getSizes(this.props.sizes, this.props.builderBlock);
+    const image = this.props.image;
 
     if (srcset && image && image.includes('builder.io/api/v1/image')) {
       if (!srcset.includes(image.split('?')[0])) {
-        console.debug('Removed given srcset')
-        srcset = this.getSrcSet()
+        console.debug('Removed given srcset');
+        srcset = this.getSrcSet();
       }
     } else if (image && !srcset) {
-      srcset = this.getSrcSet()
+      srcset = this.getSrcSet();
     }
 
     return (
       <BuilderMetaContext.Consumer>
         {value => {
-          const amp = value.ampMode
-          const Tag: 'img' = amp ? ('amp-img' as any) : 'img'
+          const amp = value.ampMode;
+          const Tag: 'img' = amp ? ('amp-img' as any) : 'img';
 
           const imageContents = (!lazy || this.state.load || amp) && (
             <Tag
@@ -245,29 +237,22 @@ class ImageComponent extends React.Component<any> {
                     layout: 'responsive',
                     height:
                       this.props.height ||
-                      (aspectRatio
-                        ? Math.round(aspectRatio * 1000)
-                        : undefined),
+                      (aspectRatio ? Math.round(aspectRatio * 1000) : undefined),
                     width:
                       this.props.width ||
-                      (aspectRatio ? Math.round(1000 / aspectRatio) : undefined)
+                      (aspectRatio ? Math.round(1000 / aspectRatio) : undefined),
                   } as any)
                 : null)}
               alt={this.props.altText}
               key={
                 Builder.isEditing
-                  ? (typeof this.props.image === 'string' &&
-                      this.props.image.split('?')[0]) ||
+                  ? (typeof this.props.image === 'string' && this.props.image.split('?')[0]) ||
                     undefined
                   : undefined
               }
               role={!this.props.altText ? 'presentation' : undefined}
               css={{
-                opacity: amp
-                  ? 1
-                  : this.useLazyLoading && !this.state.imageLoaded
-                  ? 0
-                  : 1,
+                opacity: amp ? 1 : this.useLazyLoading && !this.state.imageLoaded ? 0 : 1,
                 transition: 'opacity 0.2s ease-in-out',
                 objectFit: this.props.backgroundSize || 'cover',
                 objectPosition: this.props.backgroundPosition || 'center',
@@ -277,29 +262,26 @@ class ImageComponent extends React.Component<any> {
                     height: '100%',
                     width: '100%',
                     left: 0,
-                    top: 0
+                    top: 0,
                   }),
                 ...(amp && {
                   ['& img']: {
                     objectFit: this.props.backgroundSize,
-                    objectPosition: this.props.backgroundPosition
-                  }
-                })
+                    objectPosition: this.props.backgroundPosition,
+                  },
+                }),
               }}
-              className={
-                'builder-image' +
-                (this.props.className ? ' ' + this.props.className : '')
-              }
+              className={'builder-image' + (this.props.className ? ' ' + this.props.className : '')}
               src={this.props.image}
               {...(!amp && {
                 // TODO: queue these so react renders all loads at once
-                onLoad: () => this.setState({ imageLoaded: true })
+                onLoad: () => this.setState({ imageLoaded: true }),
               })}
               // TODO: memoize on image on client
               srcSet={srcset}
               sizes={!amp && sizes ? sizes : undefined}
             />
-          )
+          );
 
           return (
             <React.Fragment>
@@ -308,10 +290,7 @@ class ImageComponent extends React.Component<any> {
               ) : (
                 <picture ref={ref => (this.pictureRef = ref)}>
                   {srcset && srcset.match(/builder\.io/) && (
-                    <source
-                      srcSet={srcset.replace(/\?/g, '?format=webp&')}
-                      type="image/webp"
-                    />
+                    <source srcSet={srcset.replace(/\?/g, '?format=webp&')} type="image/webp" />
                   )}
                   {imageContents}
                 </picture>
@@ -323,7 +302,7 @@ class ImageComponent extends React.Component<any> {
                     width: '100%',
                     paddingTop: aspectRatio * 100 + '%',
                     pointerEvents: 'none',
-                    fontSize: 0
+                    fontSize: 0,
                   }}
                 >
                   {' '}
@@ -341,7 +320,7 @@ class ImageComponent extends React.Component<any> {
                     top: 0,
                     left: 0,
                     width: '100%',
-                    height: '100%'
+                    height: '100%',
                   }}
                 >
                   {children.map((block: BuilderElement, index: number) => (
@@ -350,10 +329,10 @@ class ImageComponent extends React.Component<any> {
                 </div>
               ) : null}
             </React.Fragment>
-          )
+          );
         }}
       </BuilderMetaContext.Consumer>
-    )
+    );
   }
 }
 
@@ -365,7 +344,7 @@ export const Image = withBuilder(ImageComponent, {
   defaultStyles: {
     minHeight: '20px',
     minWidth: '20px',
-    overflow: 'hidden'
+    overflow: 'hidden',
   },
   canHaveChildren: true,
   inputs: [
@@ -379,58 +358,54 @@ export const Image = withBuilder(ImageComponent, {
       defaultValue:
         'https://cdn.builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d',
       onChange: (options: Map<string, any>) => {
-        const DEFAULT_ASPECT_RATIO = 0.7041
-        options.delete('srcset')
-        function loadImage(
-          url: string,
-          timeout = 60000
-        ): Promise<HTMLImageElement> {
+        const DEFAULT_ASPECT_RATIO = 0.7041;
+        options.delete('srcset');
+        function loadImage(url: string, timeout = 60000): Promise<HTMLImageElement> {
           return new Promise((resolve, reject) => {
-            const img = document.createElement('img')
-            let loaded = false
+            const img = document.createElement('img');
+            let loaded = false;
             img.onload = () => {
-              loaded = true
-              resolve(img)
-            }
+              loaded = true;
+              resolve(img);
+            };
 
             img.addEventListener('error', event => {
-              console.warn('Image load failed', event.error)
-              reject(event.error)
-            })
+              console.warn('Image load failed', event.error);
+              reject(event.error);
+            });
 
-            img.src = url
+            img.src = url;
             setTimeout(() => {
               if (!loaded) {
-                reject(new Error('Image load timed out'))
+                reject(new Error('Image load timed out'));
               }
-            }, timeout)
-          })
+            }, timeout);
+          });
         }
 
         function round(num: number) {
-          return Math.round(num * 1000) / 1000
+          return Math.round(num * 1000) / 1000;
         }
 
         // // TODO
-        const value = options.get('image')
-        const aspectRatio = options.get('aspectRatio')
+        const value = options.get('image');
+        const aspectRatio = options.get('aspectRatio');
         if (value && (!aspectRatio || aspectRatio === DEFAULT_ASPECT_RATIO)) {
           return loadImage(value).then(img => {
-            const possiblyUpdatedAspectRatio = options.get('aspectRatio')
+            const possiblyUpdatedAspectRatio = options.get('aspectRatio');
             if (
               options.get('image') === value &&
-              (!possiblyUpdatedAspectRatio ||
-                possiblyUpdatedAspectRatio === DEFAULT_ASPECT_RATIO)
+              (!possiblyUpdatedAspectRatio || possiblyUpdatedAspectRatio === DEFAULT_ASPECT_RATIO)
             ) {
               if (img.width && img.height) {
-                options.set('aspectRatio', round(img.height / img.width))
-                options.set('height', img.height)
-                options.set('width', img.width)
+                options.set('aspectRatio', round(img.height / img.width));
+                options.set('height', img.height);
+                options.set('width', img.width);
               }
             }
-          })
+          });
         }
-      }
+      },
     },
     {
       name: 'backgroundSize',
@@ -440,17 +415,17 @@ export const Image = withBuilder(ImageComponent, {
         {
           label: 'contain',
           value: 'contain',
-          helperText: 'The image should never get cropped'
+          helperText: 'The image should never get cropped',
         },
         {
           label: 'cover',
           value: 'cover',
-          helperText: `The image should fill it's box, cropping when needed`
-        }
+          helperText: `The image should fill it's box, cropping when needed`,
+        },
         // TODO: add these options back
         // { label: 'auto', value: 'auto', helperText: '' },
         // { label: 'fill', value: 'fill', helperText: 'The image should fill the box, being stretched or squished if necessary' },
-      ] as any
+      ] as any,
     },
     {
       name: 'backgroundPosition',
@@ -465,40 +440,40 @@ export const Image = withBuilder(ImageComponent, {
         'top left',
         'top right',
         'bottom left',
-        'bottom right'
-      ]
+        'bottom right',
+      ],
     },
     {
       name: 'altText',
       type: 'string',
-      helperText: 'Text to display when the user has images off'
+      helperText: 'Text to display when the user has images off',
     },
     {
       name: 'height',
       type: 'number',
-      hideFromUI: true
+      hideFromUI: true,
     },
     {
       name: 'width',
       type: 'number',
-      hideFromUI: true
+      hideFromUI: true,
     },
     {
       name: 'sizes',
       type: 'string',
-      hideFromUI: true
+      hideFromUI: true,
     },
     {
       name: 'srcset',
       type: 'string',
-      hideFromUI: true
+      hideFromUI: true,
     },
     // TODO: force lazy load option (maybe via binding for now hm component.options.lazy: true)
     {
       name: 'lazy',
       type: 'boolean',
       defaultValue: true,
-      hideFromUI: true
+      hideFromUI: true,
     },
     {
       name: 'aspectRatio',
@@ -506,13 +481,13 @@ export const Image = withBuilder(ImageComponent, {
       helperText:
         "This is the ratio of height/width, e.g. set to 1.5 for a 300px wide and 200px tall photo. Set to 0 to not force the image to maintain it's aspect ratio",
       advanced: true,
-      defaultValue: DEFAULT_ASPECT_RATIO
-    }
+      defaultValue: DEFAULT_ASPECT_RATIO,
+    },
     // {
     //   name: 'backgroundRepeat',
     //   type: 'text',
     //   defaultValue: 'no-repeat',
     //   enum: ['no-repeat', 'repeat', 'repeat-x', 'repeat-y'],
     // },
-  ]
-})
+  ],
+});

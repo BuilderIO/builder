@@ -25,7 +25,6 @@
     "build": "tsc --module commonjs && rollup -c rollup.config.ts && typedoc --out docs --target es6 --theme minimal --mode file src && npm run build:unpkg:dist",
     "build:unpkg:dist": "ts-node -O '{\"module\": \"commonjs\"}' tools/make-unpkg-dist.ts",
     "start": "SERVE=true rollup -c rollup.config.ts -w",
-    "test": "jest",
     "test:watch": "jest --watch",
     "test:prod": "npm run lint && npm run test -- --coverage --no-cache",
     "deploy-docs": "ts-node tools/gh-pages-publish",
@@ -80,10 +79,6 @@
     "collectCoverageFrom": [
       "src/*.{js,ts}"
     ]
-  },
-  "prettier": {
-    "semi": false,
-    "singleQuote": true
   },
   "commitlint": {
     "extends": [

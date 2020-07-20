@@ -4,39 +4,39 @@ export const applyPatchWithMinimalMutationChain = (
   preserveRoot = true
 ) => {
   if (Object(obj) !== obj) {
-    return obj
+    return obj;
   }
-  const { path, op, value } = patch
-  const pathArr: string[] = path.split(/\//)
+  const { path, op, value } = patch;
+  const pathArr: string[] = path.split(/\//);
   if (pathArr[0] === '') {
-    pathArr.shift()
+    pathArr.shift();
   }
 
-  const newObj = preserveRoot ? obj : { ...obj }
-  let objPart = newObj
+  const newObj = preserveRoot ? obj : { ...obj };
+  let objPart = newObj;
   for (let i = 0; i < pathArr.length; i++) {
-    const isLast = i === pathArr.length - 1
-    const property = pathArr[i]
+    const isLast = i === pathArr.length - 1;
+    const property = pathArr[i];
     if (isLast) {
       if (op === 'replace') {
-        objPart[property] = value
+        objPart[property] = value;
       } else if (op === 'add') {
-        const index = Number(property)
+        const index = Number(property);
         if (Array.isArray(objPart)) {
           if (property === '-') {
-            objPart.push(value)
+            objPart.push(value);
           } else {
-            objPart.splice(index, 0, value)
+            objPart.splice(index, 0, value);
           }
         } else {
-          objPart[property] = value
+          objPart[property] = value;
         }
       } else if (op === 'remove') {
-        const index = Number(property)
+        const index = Number(property);
         if (Array.isArray(objPart)) {
-          objPart.splice(index, 1)
+          objPart.splice(index, 1);
         } else {
-          delete objPart[property]
+          delete objPart[property];
         }
       }
     } else {
@@ -46,12 +46,10 @@ export const applyPatchWithMinimalMutationChain = (
           ? objPart[property]
           : String(Number(nextProperty)) === nextProperty
           ? []
-          : {}
-      objPart = objPart[property] = Array.isArray(newPart)
-        ? [...newPart]
-        : { ...newPart }
+          : {};
+      objPart = objPart[property] = Array.isArray(newPart) ? [...newPart] : { ...newPart };
     }
   }
 
-  return newObj
-}
+  return newObj;
+};

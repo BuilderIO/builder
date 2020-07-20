@@ -23,7 +23,6 @@
     "start": "npm run develop:package",
     "_build": "ng build --prod",
     "build": "npm run package && rm dist/package.json",
-    "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "package": "ng-packagr -p ng-package.json",

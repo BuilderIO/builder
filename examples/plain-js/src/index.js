@@ -11,7 +11,9 @@ function updatePage() {
     setHtml('<h2>Welcome to the about page!</h2><p>This page comes from our code too.</p>');
   } else {
     fetch(
-      `https://cdn.builder.io/api/v1/html/page?url=${encodeURI(location.href)}&apiKey=${builderApiKey}`
+      `https://cdn.builder.io/api/v1/html/page?url=${encodeURI(
+        location.href
+      )}&apiKey=${builderApiKey}`
     )
       .then(res => res.json())
       .then(data => {
@@ -36,4 +38,3 @@ for (let link of document.querySelectorAll('.link')) {
     updatePage();
   });
 }
-

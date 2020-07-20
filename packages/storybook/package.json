@@ -15,10 +15,7 @@
     "build": "babel src --out-dir dist --ignore spec.js,test.js --extensions .ts --extensions .js --extensions .tsx && npm run build:types",
     "build:dev": "babel -w src --out-dir dist --ignore spec.js,test.js --extensions .ts --extensions .js --extensions .tsx",
     "build:types": "tsc -p tsconfig.json",
-    "prepare": "npm run build",
-    "test": "test:all",
-    "test:all": "jest src",
-    "test:dev": "jest src --watch"
+    "prepare": "npm run build"
   },
   "lint-staged": {
     "*.{js,json,css,md}": [
@@ -34,7 +31,7 @@
   "devDependencies": {
     "@babel/cli": "^7.1.2",
     "@babel/core": "^7.1.6",
-    "@babel/preset-env": "^7.1.0",
+    "@babel/preset-env": "^7.10.4",
     "@babel/preset-react": "^7.0.0",
     "@babel/preset-typescript": "^7.3.3",
     "@storybook/addons": "^5.0.3",

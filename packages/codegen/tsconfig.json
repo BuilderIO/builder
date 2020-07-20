@@ -6,9 +6,8 @@
     "jsx": "preserve",
     "lib": ["es7", "dom"],
     "skipLibCheck": true,
+    "resolveJsonModule": true,
     "noFallthroughCasesInSwitch": true
   },
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }

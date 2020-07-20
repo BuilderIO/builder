@@ -1,6 +1,6 @@
 /** @jsx jsx */
-import { jsx } from '@emotion/core'
-import { Builder } from '@builder.io/react'
+import { jsx } from '@emotion/core';
+import { Builder } from '@builder.io/react';
 import {
   Avatar,
   Button,
@@ -12,35 +12,32 @@ import {
   ListItemText,
   Paper,
   TextField,
-  Typography
-} from '@material-ui/core'
-import { Create, Search } from '@material-ui/icons'
-import { computed, observable, runInAction } from 'mobx'
-import { observer } from 'mobx-react'
-import React from 'react'
-import { SafeComponent } from '../components/safe-component'
-import { CustomReactEditorProps } from '../interfaces/custom-react-editor-props'
-import { ShopifyProduct } from '../interfaces/shopify-product'
-import { BuilderRequest } from '../interfaces/builder-request'
-import { fastClone } from '../functions/fast-clone'
-import { SetShopifyKeysMessage } from '../components/set-shopify-keys-message'
+  Typography,
+} from '@material-ui/core';
+import { Create, Search } from '@material-ui/icons';
+import { computed, observable, runInAction } from 'mobx';
+import { observer } from 'mobx-react';
+import React from 'react';
+import { SafeComponent } from '../components/safe-component';
+import { CustomReactEditorProps } from '../interfaces/custom-react-editor-props';
+import { ShopifyProduct } from '../interfaces/shopify-product';
+import { BuilderRequest } from '../interfaces/builder-request';
+import { fastClone } from '../functions/fast-clone';
+import { SetShopifyKeysMessage } from '../components/set-shopify-keys-message';
 
-const apiRoot = 'https://qa.builder.io' // 'https://builder.io'
+const apiRoot = 'https://qa.builder.io'; // 'https://builder.io'
 
-interface ShopifyProductPickerProps
-  extends CustomReactEditorProps<BuilderRequest> {}
+interface ShopifyProductPickerProps extends CustomReactEditorProps<BuilderRequest> {}
 
 interface ShopifyProductPreviewCellProps {
-  product: ShopifyProduct
-  button?: boolean
-  selected?: boolean
-  className?: string
+  product: ShopifyProduct;
+  button?: boolean;
+  selected?: boolean;
+  className?: string;
 }
 
 @observer
-export class ProductPreviewCell extends SafeComponent<
-  ShopifyProductPreviewCellProps
-> {
+export class ProductPreviewCell extends SafeComponent<ShopifyProductPreviewCellProps> {
   render() {
     return (
       <ListItem
@@ -50,10 +47,7 @@ export class ProductPreviewCell extends SafeComponent<
       >
         {this.props.product.image && (
           <ListItemAvatar>
-            <Avatar
-              css={{ borderRadius: 4 }}
-              src={this.props.product.image.src}
-            />
+            <Avatar css={{ borderRadius: 4 }} src={this.props.product.image.src} />
           </ListItemAvatar>
         )}
         <ListItemText
@@ -63,7 +57,7 @@ export class ProductPreviewCell extends SafeComponent<
                 maxWidth: 400,
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap'
+                whiteSpace: 'nowrap',
               }}
             >
               {this.props.product.title}
@@ -71,52 +65,50 @@ export class ProductPreviewCell extends SafeComponent<
           }
         />
       </ListItem>
-    )
+    );
   }
 }
 
 @observer
-export class ProductPicker extends SafeComponent<
-  CustomReactEditorProps<string>
-> {
-  @observable searchInputText = ''
-  @observable loading = false
+export class ProductPicker extends SafeComponent<CustomReactEditorProps<string>> {
+  @observable searchInputText = '';
+  @observable loading = false;
 
-  @observable products: ShopifyProduct[] = []
+  @observable products: ShopifyProduct[] = [];
 
   async searchProducts() {
-    this.loading = true
-    const shopifyProductsUrl = apiRoot + '/api/v1/shopify/products.json'
+    this.loading = true;
+    const shopifyProductsUrl = apiRoot + '/api/v1/shopify/products.json';
 
     const onShopifyError = (err: any) => {
-      console.error('Shopify product search error:', err)
+      console.error('Shopify product search error:', err);
       this.props.context.snackBar.show(
         'Oh no! There was an error syncing your page to Shopify. Please contact us for support'
-      )
-    }
+      );
+    };
 
     // const agent =
     // TODO: cancen pending requests if any
     const productsResponse = await fetch(
-      `${shopifyProductsUrl}?apiKey=${
-        this.props.context.user.apiKey
-      }&title=${encodeURIComponent(this.searchInputText)}&limit=40`
+      `${shopifyProductsUrl}?apiKey=${this.props.context.user.apiKey}&title=${encodeURIComponent(
+        this.searchInputText
+      )}&limit=40`
     )
       .then(async res => {
         if (!res.ok) {
-          onShopifyError(await res.text())
+          onShopifyError(await res.text());
         }
-        return res
+        return res;
       })
       .then(res => res && res.json())
-      .catch(onShopifyError)
+      .catch(onShopifyError);
 
     runInAction(() => {
       if (productsResponse) {
-        this.products = productsResponse.products
+        this.products = productsResponse.products;
       }
-      this.loading = false
-    })
+      this.loading = false;
+    });
   }
 
   componentDidMount() {
@@ -125,9 +117,9 @@ export class ProductPicker extends SafeComponent<
       () => this.searchProducts(),
       {
         delay: 500,
-        fireImmediately: true
+        fireImmediately: true,
       }
-    )
+    );
   }
 
   render() {
@@ -140,17 +132,13 @@ export class ProductPicker extends SafeComponent<
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
-                <Search
-                  css={{ color: '#999', marginRight: -2, fontSize: 20 }}
-                />
+                <Search css={{ color: '#999', marginRight: -2, fontSize: 20 }} />
               </InputAdornment>
-            )
+            ),
           }}
           onChange={e => (this.searchInputText = e.target.value)}
         />
-        {this.loading && (
-          <CircularProgress disableShrink css={{ margin: '50px auto' }} />
-        )}
+        {this.loading && <CircularProgress disableShrink css={{ margin: '50px auto' }} />}
         <div css={{ maxHeight: '80vh', overflow: 'auto' }}>
           {!this.loading &&
             (this.products.length ? (
@@ -158,7 +146,7 @@ export class ProductPicker extends SafeComponent<
                 <div
                   key={item.id}
                   onClick={e => {
-                    this.props.onChange(String(item.id))
+                    this.props.onChange(String(item.id));
                   }}
                 >
                   <ProductPreviewCell
@@ -175,7 +163,7 @@ export class ProductPicker extends SafeComponent<
                   css={{
                     margin: '40px 20px',
                     textAlign: 'center',
-                    fontSize: 17
+                    fontSize: 17,
                   }}
                   variant="caption"
                 >
@@ -185,33 +173,31 @@ export class ProductPicker extends SafeComponent<
             ))}
         </div>
       </div>
-    )
+    );
   }
 }
 
 @observer
-export class ShopifyProductPicker extends SafeComponent<
-  ShopifyProductPickerProps
-> {
+export class ShopifyProductPicker extends SafeComponent<ShopifyProductPickerProps> {
   @computed get loading() {
-    return this.productInfoCacheValue?.loading
+    return this.productInfoCacheValue?.loading;
   }
 
   @computed get productInfo() {
-    return this.productInfoCacheValue?.value?.product
+    return this.productInfoCacheValue?.value?.product;
   }
 
   @computed get productInfoCacheValue() {
     if (!(this.props.context.user.apiKey && this.productId)) {
-      return null
+      return null;
     }
     return this.props.context.httpCache.get(
       `${apiRoot}/api/v1/shopify/products/${this.productId}.json?apiKey=${this.props.context.user.apiKey}`
-    )
+    );
   }
 
   get productId() {
-    return this.props.value?.options?.get('product') || ''
+    return this.props.value?.options?.get('product') || '';
   }
 
   get pluginSettings() {
@@ -219,7 +205,7 @@ export class ShopifyProductPicker extends SafeComponent<
       this.props.context.user.organization?.value.settings.plugins.get(
         '@builder.io/plugin-shopify'
       ) || {}
-    )
+    );
   }
 
   getRequestObject(productId: string) {
@@ -229,20 +215,20 @@ export class ShopifyProductPicker extends SafeComponent<
     return {
       '@type': '@builder.io/core:Request',
       request: {
-        url: `${apiRoot}/api/v1/shopify/products/{{this.options.product}}.json?apiKey=${this.props.context.user.apiKey}`
+        url: `${apiRoot}/api/v1/shopify/products/{{this.options.product}}.json?apiKey=${this.props.context.user.apiKey}`,
       },
       options: {
-        product: productId
-      }
-    } as BuilderRequest
+        product: productId,
+      },
+    } as BuilderRequest;
   }
 
   set productId(value) {
-    this.props.onChange(this.getRequestObject(value))
+    this.props.onChange(this.getRequestObject(value));
   }
 
   async getProduct(id: string) {
-    return null
+    return null;
   }
 
   async showChooseProductModal() {
@@ -251,8 +237,8 @@ export class ShopifyProductPicker extends SafeComponent<
         context={this.props.context}
         value={this.productId}
         onChange={value => {
-          this.productId = value
-          close()
+          this.productId = value;
+          close();
         }}
       />,
       true,
@@ -261,45 +247,35 @@ export class ShopifyProductPicker extends SafeComponent<
           // Align modal to top so doesn't jump around centering itself when
           // grows and shrinks to show more/less products or loading
           style: {
-            alignSelf: 'flex-start'
-          }
-        }
+            alignSelf: 'flex-start',
+          },
+        },
       }
-    )
+    );
   }
 
   render() {
-    const { apiKey, apiPassword } = this.pluginSettings
+    const { apiKey, apiPassword } = this.pluginSettings;
 
     if (!(apiKey && apiPassword)) {
-      return <SetShopifyKeysMessage />
+      return <SetShopifyKeysMessage />;
     }
     return (
-      <div
-        css={{ display: 'flex', flexDirection: 'column', padding: '10px 0' }}
-      >
+      <div css={{ display: 'flex', flexDirection: 'column', padding: '10px 0' }}>
         {this.productInfoCacheValue?.loading && (
-          <CircularProgress
-            size={20}
-            disableShrink
-            css={{ margin: '30px auto' }}
-          />
+          <CircularProgress size={20} disableShrink css={{ margin: '30px auto' }} />
         )}
         {this.productInfo && (
           <Paper
             css={{
               marginBottom: 15,
-              position: 'relative'
+              position: 'relative',
             }}
             onClick={() => {
-              this.showChooseProductModal()
+              this.showChooseProductModal();
             }}
           >
-            <ProductPreviewCell
-              button
-              css={{ paddingRight: 30 }}
-              product={this.productInfo}
-            />
+            <ProductPreviewCell button css={{ paddingRight: 30 }} product={this.productInfo} />
             <IconButton
               css={{
                 position: 'absolute',
@@ -308,7 +284,7 @@ export class ShopifyProductPicker extends SafeComponent<
                 bottom: 0,
                 height: 50,
                 marginTop: 'auto',
-                marginBottom: 'auto'
+                marginBottom: 'auto',
               }}
             >
               <Create css={{ color: '#888' }} />
@@ -320,18 +296,18 @@ export class ShopifyProductPicker extends SafeComponent<
             color="primary"
             variant="contained"
             onClick={() => {
-              this.showChooseProductModal()
+              this.showChooseProductModal();
             }}
           >
             Choose product
           </Button>
         )}
       </div>
-    )
+    );
   }
 }
 
 Builder.registerEditor({
   name: 'ShopifyProduct',
-  component: ShopifyProductPicker
-})
+  component: ShopifyProductPicker,
+});

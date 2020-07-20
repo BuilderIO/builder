@@ -1,75 +1,66 @@
 /** @jsx jsx */
-import { jsx } from '@emotion/core'
-import React from 'react'
-import { BuilderPage } from '../components/builder-page.component'
-import { Builder, BuilderElement } from '@builder.io/sdk'
-import hash from 'hash-sum'
-import { NoWrap } from '../components/no-wrap'
-import { BuilderStoreContext } from '../store/builder-store'
-import { withBuilder } from '../functions/with-builder'
+import { jsx } from '@emotion/core';
+import React from 'react';
+import { BuilderPage } from '../components/builder-page.component';
+import { Builder, BuilderElement } from '@builder.io/sdk';
+import hash from 'hash-sum';
+import { NoWrap } from '../components/no-wrap';
+import { BuilderStoreContext } from '../store/builder-store';
+import { withBuilder } from '../functions/with-builder';
 
-const size = (thing: object) => Object.keys(thing).length
+const size = (thing: object) => Object.keys(thing).length;
 
-const isShopify = Builder.isBrowser && 'Shopify' in window
+const isShopify = Builder.isBrowser && 'Shopify' in window;
 
-const refs: Record<string, Element> = {}
+const refs: Record<string, Element> = {};
 
 if (Builder.isBrowser) {
   try {
-    Array.from(document.querySelectorAll('[builder-static-symbol]')).forEach(
-      el => {
-        const id = (el as HTMLDivElement).getAttribute('builder-static-symbol')
-        if (id) {
-          refs[id] = el
-        }
+    Array.from(document.querySelectorAll('[builder-static-symbol]')).forEach(el => {
+      const id = (el as HTMLDivElement).getAttribute('builder-static-symbol');
+      if (id) {
+        refs[id] = el;
       }
-    )
+    });
   } catch (err) {
-    console.error('Builder replace nodes error:', err)
+    console.error('Builder replace nodes error:', err);
   }
 }
 
 export interface SymbolInfo {
-  model?: string
-  entry?: string
-  data?: any
-  content?: any
-  inline?: boolean
-  dynamic?: boolean
+  model?: string;
+  entry?: string;
+  data?: any;
+  content?: any;
+  inline?: boolean;
+  dynamic?: boolean;
 }
 
 export interface SymbolProps {
-  symbol?: SymbolInfo
-  dataOnly?: boolean
-  dynamic?: boolean
-  builderBlock?: BuilderElement
-  attributes?: any
-  inheritState?: boolean
+  symbol?: SymbolInfo;
+  dataOnly?: boolean;
+  dynamic?: boolean;
+  builderBlock?: BuilderElement;
+  attributes?: any;
+  inheritState?: boolean;
 }
 
 class SymbolComponent extends React.Component<SymbolProps> {
-  ref: BuilderPage | null = null
-  staticRef: HTMLDivElement | null = null
+  ref: BuilderPage | null = null;
+  staticRef: HTMLDivElement | null = null;
 
   get placeholder() {
     return (
       <div css={{ padding: 10 }}>
-        Symbols let you reuse dynamic elements across your content. Please
-        choose a model and entry for this symbol.
+        Symbols let you reuse dynamic elements across your content. Please choose a model and entry
+        for this symbol.
       </div>
-    )
+    );
   }
 
   componentDidMount() {
-    if (
-      this.useStatic &&
-      this.staticRef &&
-      refs[this.props.builderBlock?.id!]
-    ) {
-      this.staticRef.parentNode?.replaceChild(
-        refs[this.props.builderBlock?.id!],
-        this.staticRef
-      )
+    if (this.useStatic && this.staticRef && refs[this.props.builderBlock?.id!]) {
+      this.staticRef.parentNode?.replaceChild(refs[this.props.builderBlock?.id!], this.staticRef);
     }
   }
 
@@ -78,10 +69,10 @@ class SymbolComponent extends React.Component<SymbolProps> {
       // TODO: maybe don't do this for editor perf of symbols with lots of
       // data
       if (hash(nextProps) === hash(this.props)) {
-        return false
+        return false;
       }
     }
-    return true
+    return true;
   }
 
   get useStatic() {
@@ -89,46 +80,42 @@ class SymbolComponent extends React.Component<SymbolProps> {
       Builder.isBrowser &&
         refs[this.props.builderBlock?.id!] &&
         !(Builder.isEditing || Builder.isPreviewing)
-    )
+    );
   }
 
   render() {
     if (this.useStatic) {
-      return <div ref={el => (this.staticRef = el)} />
+      return <div ref={el => (this.staticRef = el)} />;
     }
 
-    const symbol = this.props.symbol
+    const symbol = this.props.symbol;
 
-    let showPlaceholder = false
+    let showPlaceholder = false;
 
     if (!symbol) {
-      showPlaceholder = true
+      showPlaceholder = true;
     }
 
     const TagName = this.props.dataOnly
       ? NoWrap
-      : (this.props.builderBlock && this.props.builderBlock.tagName) || 'div'
+      : (this.props.builderBlock && this.props.builderBlock.tagName) || 'div';
 
-    const { model, entry, data, content, inline } = symbol || {}
-    const dynamic = symbol?.dynamic || this.props.dynamic
+    const { model, entry, data, content, inline } = symbol || {};
+    const dynamic = symbol?.dynamic || this.props.dynamic;
     if (!(model && (entry || dynamic)) && !inline) {
-      showPlaceholder = true
+      showPlaceholder = true;
     }
 
-    let key = dynamic ? undefined : [model, entry].join(':')
-    const dataString = Builder.isEditing
-      ? null
-      : data && size(data) && hash(data)
+    let key = dynamic ? undefined : [model, entry].join(':');
+    const dataString = Builder.isEditing ? null : data && size(data) && hash(data);
 
     if (key && dataString && dataString.length < 300) {
-      key += ':' + dataString
+      key += ':' + dataString;
     }
 
-    const attributes = this.props.attributes || {}
+    const attributes = this.props.attributes || {};
     return (
-      <BuilderStoreContext.Consumer
-        key={(model || 'no model') + ':' + (entry || 'no entry')}
-      >
+      <BuilderStoreContext.Consumer key={(model || 'no model') + ':' + (entry || 'no entry')}>
         {state => {
           return (
             <TagName
@@ -138,9 +125,7 @@ class SymbolComponent extends React.Component<SymbolProps> {
                 (attributes.class || attributes.className || '') +
                 ' builder-symbol' +
                 (symbol?.inline ? ' builder-inline-symbol' : '') +
-                (symbol?.dynamic || this.props.dynamic
-                  ? ' builder-dynamic-symbol'
-                  : '')
+                (symbol?.dynamic || this.props.dynamic ? ' builder-dynamic-symbol' : '')
               }
             >
               {showPlaceholder ? (
@@ -151,9 +136,7 @@ class SymbolComponent extends React.Component<SymbolProps> {
                   context={{ ...state.context }}
                   modelName={model}
                   entry={entry}
-                  data={
-                    this.props.inheritState ? { ...data, ...state.state } : data
-                  }
+                  data={this.props.inheritState ? { ...data, ...state.state } : data}
                   inlineContent={symbol?.inline}
                   {...(content && { content })}
                   options={{ key }}
@@ -166,10 +149,10 @@ class SymbolComponent extends React.Component<SymbolProps> {
                 </BuilderPage>
               )}
             </TagName>
-          )
+          );
         }}
       </BuilderStoreContext.Consumer>
-    )
+    );
   }
 }
 
@@ -186,7 +169,7 @@ export const Symbol = withBuilder(SymbolComponent, {
   inputs: [
     {
       name: 'symbol',
-      type: 'uiSymbol'
+      type: 'uiSymbol',
     },
     {
       name: 'dataOnly',
@@ -194,7 +177,7 @@ export const Symbol = withBuilder(SymbolComponent, {
       type: 'boolean',
       defaultValue: false,
       advanced: true,
-      hideFromUI: true
+      hideFromUI: true,
     },
     {
       name: 'inheritState',
@@ -202,7 +185,7 @@ export const Symbol = withBuilder(SymbolComponent, {
       type: 'boolean',
       defaultValue: isShopify,
       advanced: true,
-      hideFromUI: true
+      hideFromUI: true,
     },
     {
       name: 'renderToLiquid',
@@ -211,7 +194,7 @@ export const Symbol = withBuilder(SymbolComponent, {
       type: 'boolean',
       defaultValue: isShopify,
       advanced: true,
-      hideFromUI: true
-    }
-  ]
-})
+      hideFromUI: true,
+    },
+  ],
+});

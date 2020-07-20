@@ -1,13 +1,13 @@
-import { Builder, builder } from '@builder.io/sdk'
-import { safeDynamicRequire } from './safe-dynamic-require'
+import { Builder, builder } from '@builder.io/sdk';
+import { safeDynamicRequire } from './safe-dynamic-require';
 
-const fnCache: { [key: string]: BuilderEvanFunction | undefined } = {}
+const fnCache: { [key: string]: BuilderEvanFunction | undefined } = {};
 
 const sizeMap = {
   desktop: 'large',
   tablet: 'medium',
-  mobile: 'small'
-}
+  mobile: 'small',
+};
 
 type BuilderEvanFunction = (
   state: object,
@@ -18,9 +18,9 @@ type BuilderEvanFunction = (
   update?: Function | null,
   _Builder?: typeof Builder,
   context?: object
-) => any
+) => any;
 
-export const api = (state: any) => builder
+export const api = (state: any) => builder;
 
 export function stringToFunction(
   str: string,
@@ -30,38 +30,31 @@ export function stringToFunction(
 ): BuilderEvanFunction {
   /* TODO: objedct */
   if (!str || !str.trim()) {
-    return () => undefined
+    return () => undefined;
   }
 
-  const cacheKey = str + ':' + expression
+  const cacheKey = str + ':' + expression;
   if (fnCache[cacheKey]) {
-    return fnCache[cacheKey]!
+    return fnCache[cacheKey]!;
   }
 
   // FIXME: gross hack
   const useReturn =
     (expression &&
-      !(
-        str.includes(';') ||
-        str.includes(' return ') ||
-        str.trim().startsWith('return ')
-      )) ||
-    str.trim().startsWith('builder.run')
+      !(str.includes(';') || str.includes(' return ') || str.trim().startsWith('return '))) ||
+    str.trim().startsWith('builder.run');
   let fn: Function = () => {
     /* intentionally empty */
-  }
+  };
 
   str = str
     .replace(/builder\s*\.\s*use[a-zA-Z]*\(/g, 'return(')
     .replace(/builder\s*\.\s*set([a-zA-Z]+)To\(/g, (_match, group: string) => {
-      return `builder.set("${group[0].toLowerCase() + group.substring(1)}",`
+      return `builder.set("${group[0].toLowerCase() + group.substring(1)}",`;
     })
-    .replace(
-      /builder\s*\.\s*get([a-zA-Z]+)\s*\(\s*\)/g,
-      (_match, group: string) => {
-        return `state.${group[0].toLowerCase() + group.substring(1)}`
-      }
-    )
+    .replace(/builder\s*\.\s*get([a-zA-Z]+)\s*\(\s*\)/g, (_match, group: string) => {
+      return `state.${group[0].toLowerCase() + group.substring(1)}`;
+    });
 
   try {
     // tslint:disable-next-line:no-function-constructor-with-string-args
@@ -109,27 +102,27 @@ export function stringToFunction(
             ${useReturn ? `return (${str});` : str};
           }
         `
-      )
+      );
     }
   } catch (error) {
     if (errors) {
-      errors.push(error)
+      errors.push(error);
     }
-    const message = error && error.message
+    const message = error && error.message;
     if (message && typeof message === 'string') {
       if (logs && logs.indexOf(message) === -1) {
-        logs.push(message)
+        logs.push(message);
       }
     }
     if (Builder.isBrowser) {
-      console.warn(`Function compile error in ${str}`, error)
+      console.warn(`Function compile error in ${str}`, error);
     }
   }
 
   const final = (fnCache[cacheKey] = (...args: any[]) => {
     try {
       if (Builder.isBrowser) {
-        return fn(...args)
+        return fn(...args);
       } else {
         // TODO: memoize on server
         // TODO: use something like this instead https://www.npmjs.com/package/rollup-plugin-strip-blocks
@@ -140,17 +133,17 @@ export function stringToFunction(
         // for the server build
         // TODO: cache these for better performancs with new VmScript
         // tslint:disable:comment-format
-        const { VM } = safeDynamicRequire('vm2')
-        const [state, event] = args
+        const { VM } = safeDynamicRequire('vm2');
+        const [state, event] = args;
         return new VM({
           timeout: 100,
           sandbox: {
             ...state,
             ...{ state },
             ...{ builder: api },
-            event
-          }
-        }).run(str.replace(/(^|;)return /, '$1'))
+            event,
+          },
+        }).run(str.replace(/(^|;)return /, '$1'));
         // tslint:enable:comment-format
       }
     } catch (error) {
@@ -161,7 +154,7 @@ export function stringToFunction(
           'in',
           str,
           error.stack || error
-        )
+        );
       } else {
         if (process.env.DEBUG) {
           console.debug(
@@ -170,14 +163,14 @@ export function stringToFunction(
             'in',
             str,
             error.stack || error
-          )
+          );
         }
       }
       if (errors) {
-        errors.push(error)
+        errors.push(error);
       }
     }
-  })
+  });
 
-  return final
+  return final;
 }

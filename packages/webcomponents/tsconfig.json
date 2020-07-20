@@ -10,6 +10,7 @@
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+    "resolveJsonModule": true,
     "skipLibCheck": true,
     "declarationDir": "dist/types",
     "outDir": "dist/lib",

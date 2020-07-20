@@ -9,10 +9,10 @@ module.exports = {
   testEnvironment: 'jsdom',
   setupFilesAfterEnv: ['<rootDir>/src/setupEnzyme.ts'],
   coverageDirectory: 'coverage/',
-  collectCoverageFrom: [ "src/**/{!(plugin),}.tsx"],
+  collectCoverageFrom: ['src/**/{!(plugin),}.tsx'],
   globals: {
     'ts-jest': {
       diagnostics: false
     }
   }
-}
+};

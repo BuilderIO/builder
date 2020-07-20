@@ -1,33 +1,33 @@
-import resolve from 'rollup-plugin-node-resolve'
-import commonjs from 'rollup-plugin-commonjs'
-import sourceMaps from 'rollup-plugin-sourcemaps'
-import camelCase from 'lodash.camelcase'
-import typescript from 'rollup-plugin-typescript2'
-import replace from 'rollup-plugin-replace'
-import json from 'rollup-plugin-json'
-import serve from 'rollup-plugin-serve'
+import resolve from 'rollup-plugin-node-resolve';
+import commonjs from 'rollup-plugin-commonjs';
+import sourceMaps from 'rollup-plugin-sourcemaps';
+import camelCase from 'lodash.camelcase';
+import typescript from 'rollup-plugin-typescript2';
+import replace from 'rollup-plugin-replace';
+import json from 'rollup-plugin-json';
+import serve from 'rollup-plugin-serve';
 
-import react from 'react'
-import reactDom from 'react-dom'
-import * as muiUtils from '@material-ui/utils'
-import * as reactIs from 'react-is'
+import react from 'react';
+import reactDom from 'react-dom';
+import * as muiUtils from '@material-ui/utils';
+import * as reactIs from 'react-is';
 
-const SERVE = process.env.SERVE === 'true'
+const SERVE = process.env.SERVE === 'true';
 
-const pkg = require('./package.json')
+const pkg = require('./package.json');
 
-const libraryName = 'plugin-loader'
+const libraryName = 'plugin-loader';
 
 const defaultConfig = {
   input: `src/${libraryName}.ts`,
   output: [
     { file: pkg.main, name: camelCase(libraryName), format: 'umd', sourcemap: true },
-    { file: pkg.module, format: 'es', sourcemap: true }
+    { file: pkg.module, format: 'es', sourcemap: true },
   ],
   // Indicate here external modules you don't wanna include in your bundle (i.e.: 'lodash')
   external: [],
   watch: {
-    include: 'src/**'
+    include: 'src/**',
   },
   plugins: [
     // Allow json resolution
@@ -42,8 +42,8 @@ const defaultConfig = {
         'react-dom': Object.keys(reactDom),
         '@material-ui/utils': Object.keys(muiUtils),
         'react-is': Object.keys(reactIs),
-        '../react/node_modules/react/index.js': Object.keys(react)
-      }
+        '../react/node_modules/react/index.js': Object.keys(react),
+      },
     }),
 
     // Allow node_modules resolution, so you can use 'external' to control
@@ -52,13 +52,13 @@ const defaultConfig = {
     resolve(),
 
     replace({
-      'process.env.NODE_ENV': JSON.stringify('production')
+      'process.env.NODE_ENV': JSON.stringify('production'),
     }),
 
     // Resolve source maps to the original source
-    sourceMaps()
-  ]
-}
+    sourceMaps(),
+  ],
+};
 
 export default [
   // defaultConfig,
@@ -69,9 +69,9 @@ export default [
         file: 'dist/content-loader.umd.js',
         name: camelCase(libraryName),
         format: 'umd',
-        sourcemap: true
+        sourcemap: true,
       },
-      { file: 'dist/content-loader.esm.js', format: 'es', sourcemap: true }
+      { file: 'dist/content-loader.esm.js', format: 'es', sourcemap: true },
     ],
     plugins: defaultConfig.plugins.concat(
       SERVE
@@ -80,11 +80,11 @@ export default [
               contentBase: 'dist',
               port: 1269,
               headers: {
-                'Access-Control-Allow-Origin': '*'
-              }
-            })
+                'Access-Control-Allow-Origin': '*',
+              },
+            }),
           ]
         : []
-    )
-  })
-]
+    ),
+  }),
+];

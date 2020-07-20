@@ -1,31 +1,31 @@
-import React from 'react'
-import { BuilderBlock } from '../../decorators/builder-block.decorator'
-import { BuilderBlock as BuilderBlockComponent } from '../../components/builder-block.component'
-import { BuilderElement, Builder } from '@builder.io/sdk'
-import set from 'lodash-es/set'
-import get from 'lodash-es/get'
-import { BuilderBlocks } from '../../components/builder-blocks.component'
-import { BuilderStoreContext } from '../../store/builder-store'
+import React from 'react';
+import { BuilderBlock } from '../../decorators/builder-block.decorator';
+import { BuilderBlock as BuilderBlockComponent } from '../../components/builder-block.component';
+import { BuilderElement, Builder } from '@builder.io/sdk';
+import set from 'lodash-es/set';
+import get from 'lodash-es/get';
+import { BuilderBlocks } from '../../components/builder-blocks.component';
+import { BuilderStoreContext } from '../../store/builder-store';
 import { View, Text } from 'react-native';
 
 export interface FormProps {
-  attributes?: any
-  name?: string
-  action?: string
-  validate?: boolean
-  method?: string
-  builderBlock?: BuilderElement
-  sendSubmissionsTo?: string
-  sendWithJs?: boolean
-  contentType?: string
-  customHeaders?: { [key: string]: string }
-  successUrl?: string
-  previewState?: string
-  successMessage?: BuilderElement[]
-  errorMessage?: BuilderElement[]
-  sendingMessage?: BuilderElement[]
-  resetFormOnSubmit?: boolean
-  errorMessagePath?: string
+  attributes?: any;
+  name?: string;
+  action?: string;
+  validate?: boolean;
+  method?: string;
+  builderBlock?: BuilderElement;
+  sendSubmissionsTo?: string;
+  sendWithJs?: boolean;
+  contentType?: string;
+  customHeaders?: { [key: string]: string };
+  successUrl?: string;
+  previewState?: string;
+  successMessage?: BuilderElement[];
+  errorMessage?: BuilderElement[];
+  sendingMessage?: BuilderElement[];
+  resetFormOnSubmit?: boolean;
+  errorMessagePath?: string;
 }
 
 @BuilderBlock({
@@ -35,9 +35,9 @@ export interface FormProps {
     responsiveStyles: {
       large: {
         marginTop: '15px',
-        paddingBottom: '15px'
-      }
-    }
+        paddingBottom: '15px',
+      },
+    },
   },
   image:
     'https://cdn.builder.io/api/v1/image/assets%2FIsxPKMo2gPRRKeakUztj1D6uqed2%2Fef36d2a846134910b64b88e6d18c5ca5',
@@ -49,26 +49,26 @@ export interface FormProps {
       // Later - more integrations like mailchimp
       enum: ['zapier', 'custom'],
       hideFromUI: true,
-      defaultValue: 'custom'
+      defaultValue: 'custom',
     },
     {
       name: 'sendWithJs',
       type: 'boolean',
       helperText: 'Set to false to use basic html form action',
       defaultValue: true,
-      showIf: 'options.get("sendSubmissionsTo") === "custom"'
+      showIf: 'options.get("sendSubmissionsTo") === "custom"',
     },
     {
       name: 'name',
       type: 'string',
-      showIf: 'options.get("sendSubmissionsTo") === "zapier"'
+      showIf: 'options.get("sendSubmissionsTo") === "zapier"',
       // advanced: true
     },
     {
       name: 'action',
       type: 'string',
       helperText: 'URL to send the form data to',
-      showIf: 'options.get("sendSubmissionsTo") === "custom"'
+      showIf: 'options.get("sendSubmissionsTo") === "custom"',
     },
     {
       name: 'contentType',
@@ -77,26 +77,26 @@ export interface FormProps {
       advanced: true,
       // TODO: do automatically if file input
       enum: ['application/json', 'multipart/formdata', 'application/x-www-form-urlencoded'],
-      showIf: 'options.get("sendSubmissionsTo") === "custom" && options.get("sendWithJs") === true'
+      showIf: 'options.get("sendSubmissionsTo") === "custom" && options.get("sendWithJs") === true',
     },
     {
       name: 'method',
       type: 'string',
       showIf: 'options.get("sendSubmissionsTo") === "custom"',
-      advanced: true
+      advanced: true,
     },
     {
       name: 'successUrl',
       type: 'url',
       helperText: 'Optional URL to redirect the user to on form submission success',
-      showIf: 'options.get("sendSubmissionsTo") === "custom" && options.get("sendWithJs") === true'
+      showIf: 'options.get("sendSubmissionsTo") === "custom" && options.get("sendWithJs") === true',
     },
     {
       name: 'resetFormOnSubmit',
       type: 'boolean',
       showIf: options =>
         options.get('sendSubmissionsTo') === 'custom' && options.get('sendWithJs') === true,
-      advanced: true
+      advanced: true,
     },
     // TODO: maybe
     // {
@@ -112,7 +112,7 @@ export interface FormProps {
       enum: ['unsubmitted', 'sending', 'success', 'error'],
       helperText:
         'Choose a state to edit, e.g. choose "success" to show what users see on success and edit the message',
-      showIf: 'options.get("sendSubmissionsTo") === "custom" && options.get("sendWithJs") === true'
+      showIf: 'options.get("sendSubmissionsTo") === "custom" && options.get("sendWithJs") === true',
     },
     {
       name: 'successMessage',
@@ -124,29 +124,29 @@ export interface FormProps {
           responsiveStyles: {
             large: {
               marginTop: '10px',
-            }
+            },
           },
           component: {
             name: 'Text',
             options: {
-              text: '<span>Thanks!</span>'
-            }
-          }
-        }
-      ]
+              text: '<span>Thanks!</span>',
+            },
+          },
+        },
+      ],
     },
     {
       name: 'validate',
       type: 'boolean',
       defaultValue: true,
-      advanced: true
+      advanced: true,
     },
     {
       name: 'errorMessagePath',
       type: 'text',
       advanced: true,
       helperText:
-        'Path to where to get the error message from in a JSON response to display to the user, e.g. "error.message" for a response like { "error": { "message": "this username is taken" }}'
+        'Path to where to get the error message from in a JSON response to display to the user, e.g. "error.message" for a response like { "error": { "message": "this username is taken" }}',
     },
     {
       name: 'errorMessage',
@@ -158,20 +158,20 @@ export interface FormProps {
           responsiveStyles: {
             large: {
               marginTop: '10px',
-            }
+            },
           },
           bindings: {
-            'component.options.text': 'state.formErrorMessage || block.component.options.text'
+            'component.options.text': 'state.formErrorMessage || block.component.options.text',
           },
           component: {
             name: 'Text',
             options: {
               // TODO: how pull in API message
-              text: '<span>Form submission error :( Please check your answers and try again</span>'
-            }
-          }
-        }
-      ]
+              text: '<span>Form submission error :( Please check your answers and try again</span>',
+            },
+          },
+        },
+      ],
     },
     {
       name: 'sendingMessage',
@@ -183,17 +183,17 @@ export interface FormProps {
           responsiveStyles: {
             large: {
               marginTop: '10px',
-            }
+            },
           },
           component: {
             name: 'Text',
             options: {
               // TODO: how pull in API message
-              text: '<span>Sending...</span>'
-            }
-          }
-        }
-      ]
+              text: '<span>Sending...</span>',
+            },
+          },
+        },
+      ],
     },
     {
       name: 'customHeaders',
@@ -201,12 +201,12 @@ export interface FormProps {
       // TODO: add typings for this property
       ...({
         valueType: {
-          type: 'string'
-        }
+          type: 'string',
+        },
       } as any),
       advanced: true,
-      showIf: 'options.get("sendSubmissionsTo") === "custom" && options.get("sendWithJs") === true'
-    }
+      showIf: 'options.get("sendSubmissionsTo") === "custom" && options.get("sendWithJs") === true',
+    },
     // TODO: custom headers or any fetch options
     // TODO: json vs serialized (i.e. send on client or not)
     // TODO: success/fail stuff
@@ -219,78 +219,78 @@ export interface FormProps {
       '@type': '@builder.io/sdk:Element',
       responsiveStyles: {
         large: {
-          marginTop: '10px'
-        }
+          marginTop: '10px',
+        },
       },
       component: {
         name: 'Text',
         options: {
-          text: '<span>Enter your name</span>'
-        }
-      }
+          text: '<span>Enter your name</span>',
+        },
+      },
     },
     {
       '@type': '@builder.io/sdk:Element',
       responsiveStyles: {
         large: {
-          marginTop: '10px'
-        }
+          marginTop: '10px',
+        },
       },
       component: {
         name: 'Form:Input',
         options: {
           name: 'name',
-          placeholder: 'Jane Doe'
-        }
-      }
+          placeholder: 'Jane Doe',
+        },
+      },
     },
     {
       '@type': '@builder.io/sdk:Element',
       responsiveStyles: {
         large: {
-          marginTop: '10px'
-        }
+          marginTop: '10px',
+        },
       },
       component: {
         name: 'Text',
         options: {
-          text: '<span>Enter your email</span>'
-        }
-      }
+          text: '<span>Enter your email</span>',
+        },
+      },
     },
     {
       '@type': '@builder.io/sdk:Element',
       responsiveStyles: {
         large: {
-          marginTop: '10px'
-        }
+          marginTop: '10px',
+        },
       },
       component: {
         name: 'Form:Input',
         options: {
           name: 'email',
-          placeholder: 'jane@doe.com'
-        }
-      }
+          placeholder: 'jane@doe.com',
+        },
+      },
     },
     {
       '@type': '@builder.io/sdk:Element',
       responsiveStyles: {
         large: {
-          marginTop: '10px'
-        }
+          marginTop: '10px',
+        },
       },
       component: {
         name: 'Form:SubmitButton',
         options: {
-          text: 'Submit'
-        }
-      }
-    }
-  ]
+          text: 'Submit',
+        },
+      },
+    },
+  ],
 })
 export class Form extends React.Component<FormProps> {
-  ref: HTMLFormElement | null = null
+  ref: HTMLFormElement | null = null;
 
   // TODO: link this state to global state and allow togglign the modes in
   // the style and or data editor. TODO: for now some kind of input for preview state
@@ -299,11 +299,11 @@ export class Form extends React.Component<FormProps> {
     state: 'unsubmitted' as 'unsubmitted' | 'sending' | 'success' | 'error',
     // TODO: separate response and error?
     respnoseData: null as any,
-    formErrorMessage: ''
-  }
+    formErrorMessage: '',
+  };
 
   get submissionState() {
-    return (Builder.isEditing && this.props.previewState) || this.state.state
+    return (Builder.isEditing && this.props.previewState) || this.state.state;
   }
 
   render() {
@@ -316,8 +316,8 @@ export class Form extends React.Component<FormProps> {
               ...state,
               state: {
                 ...state.state,
-                formErrorMessage: this.state.formErrorMessage
-              }
+                formErrorMessage: this.state.formErrorMessage,
+              },
             }}
           >
             <View
@@ -559,6 +559,6 @@ export class Form extends React.Component<FormProps> {
           </BuilderStoreContext.Provider>
         )}
       </BuilderStoreContext.Consumer>
-    )
+    );
   }
 }

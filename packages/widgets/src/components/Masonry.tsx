@@ -7,12 +7,12 @@ import {
   stringToFunction,
   BuilderAsyncRequestsContext,
   Builder,
-  withBuilder
-} from '@builder.io/react'
-import React from 'react'
-import Masonry from 'react-masonry-component'
-import isArray from 'lodash-es/isArray'
-import last from 'lodash-es/last'
+  withBuilder,
+} from '@builder.io/react';
+import React from 'react';
+import Masonry from 'react-masonry-component';
+import isArray from 'lodash-es/isArray';
+import last from 'lodash-es/last';
 
 const defaultTile: BuilderElement = {
   '@type': '@builder.io/sdk:Element',
@@ -28,8 +28,8 @@ const defaultTile: BuilderElement = {
       minHeight: '20px',
       minWidth: '20px',
       overflow: 'hidden',
-      marginLeft: '20px'
-    }
+      marginLeft: '20px',
+    },
   },
   component: {
     name: 'Image',
@@ -38,10 +38,10 @@ const defaultTile: BuilderElement = {
         'https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d?width=2000&height=1200',
       backgroundSize: 'cover',
       backgroundPosition: 'center',
-      aspectRatio: 0.7041
-    }
-  }
-}
+      aspectRatio: 0.7041,
+    },
+  },
+};
 
 const getRandomAspectTile = (): BuilderElement => ({
   ...defaultTile,
@@ -50,34 +50,34 @@ const getRandomAspectTile = (): BuilderElement => ({
     options: {
       ...defaultTile.component!.options,
       // range from 0.5 to 2, rounded to 2 decimal points
-      aspectRatio: Math.round((Math.random() * 1.5 + 0.5) * 100) / 100
-    }
-  }
-})
+      aspectRatio: Math.round((Math.random() * 1.5 + 0.5) * 100) / 100,
+    },
+  },
+});
 
-type BuilderBlockType = BuilderElement
+type BuilderBlockType = BuilderElement;
 
 interface MasonryProps {
   tiles: Array<
     React.ReactNode | { content: BuilderBlockType[] } /* BuilderBlock <- export this type */
-  >
-  builderBlock: BuilderBlockType
-  useChildrenForTiles?: boolean
-  gutterSize?: string
-  columnWidth?: string
+  >;
+  builderBlock: BuilderBlockType;
+  useChildrenForTiles?: boolean;
+  gutterSize?: string;
+  columnWidth?: string;
 }
 
 // TODO: column with, gutter, etc options
 export class BuilderMasonryComponent extends React.Component<MasonryProps> {
-  divRef: HTMLElement | null = null
-  masonryRef: React.Component<Masonry.MasonryPropTypes> | null = null
+  divRef: HTMLElement | null = null;
+  masonryRef: React.Component<Masonry.MasonryPropTypes> | null = null;
 
-  private _errors?: Error[]
-  private _logs?: string[]
+  private _errors?: Error[];
+  private _logs?: string[];
 
   state = {
-    layoutComplete: false
-  }
+    layoutComplete: false,
+  };
 
   componentDidMount() {
     setTimeout(() => {
@@ -89,20 +89,20 @@ export class BuilderMasonryComponent extends React.Component<MasonryProps> {
             detail: {
               block: this.props.builderBlock,
               ref: this.divRef,
-              masonry: this.masonryRef
-            }
+              masonry: this.masonryRef,
+            },
           })
-        )
+        );
       }
 
       if (Builder.isEditing) {
         // mutation observer?
       }
-    })
+    });
   }
 
   render() {
-    let slides = this.props.tiles
+    let slides = this.props.tiles;
 
     // if (slides && !Builder.isBrowser) {
     //   slides = slides.slice(0, 1)
@@ -112,20 +112,20 @@ export class BuilderMasonryComponent extends React.Component<MasonryProps> {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'stretch',
-      width: this.props.columnWidth
-    }
+      width: this.props.columnWidth,
+    };
 
     return (
       <div
         style={{
           opacity: Builder.isBrowser && this.state.layoutComplete ? 1 : 0,
-          transition: 'opacity 0.2s'
+          transition: 'opacity 0.2s',
         }}
       >
         <BuilderAsyncRequestsContext.Consumer>
           {value => {
-            this._errors = value && value.errors
-            this._logs = value && value.logs
+            this._errors = value && value.errors;
+            this._logs = value && value.logs;
 
             return (
               <BuilderStoreContext.Consumer>
@@ -136,8 +136,8 @@ export class BuilderMasonryComponent extends React.Component<MasonryProps> {
                         if (!this.state.layoutComplete) {
                           this.setState({
                             ...this.state,
-                            layoutComplete: true
-                          })
+                            layoutComplete: true,
+                          });
                         }
                       }}
                       options={{
@@ -152,7 +152,7 @@ export class BuilderMasonryComponent extends React.Component<MasonryProps> {
                           (this.props.columnWidth &&
                             (this.props.columnWidth.endsWith('%') ||
                               this.props.columnWidth.startsWith('.'))) ||
-                          false
+                          false,
                       }}
                       ref={ref => (this.masonryRef = ref)}
                     >
@@ -163,27 +163,27 @@ export class BuilderMasonryComponent extends React.Component<MasonryProps> {
                           this.props.builderBlock.children.map(
                             (block: BuilderElement, index: number) => {
                               if (block.repeat && block.repeat.collection) {
-                                const collectionPath = block.repeat.collection
+                                const collectionPath = block.repeat.collection;
                                 const collectionName = last(
                                   (collectionPath || '')
                                     .split(/\.\w+\(/)[0]
                                     .trim()
                                     .split('.')
-                                )
+                                );
                                 const itemName =
                                   block.repeat.itemName ||
-                                  (collectionName ? collectionName + 'Item' : 'item')
+                                  (collectionName ? collectionName + 'Item' : 'item');
 
                                 let array: any[] | void = stringToFunction(
                                   collectionPath,
                                   true,
                                   this._errors,
                                   this._logs
-                                )(state.state)
+                                )(state.state);
 
                                 if (isArray(array)) {
                                   if (!Builder.isBrowser) {
-                                    array = array.slice(0, 1)
+                                    array = array.slice(0, 1);
                                   }
 
                                   return array.map((data, index) => {
@@ -192,27 +192,32 @@ export class BuilderMasonryComponent extends React.Component<MasonryProps> {
                                       ...state.state,
                                       $index: index,
                                       $item: data,
-                                      [itemName]: data
-                                    }
+                                      [itemName]: data,
+                                    };
 
                                     return (
                                       <div className="masonry-item" style={itemStyle}>
                                         <BuilderStoreContext.Provider
                                           key={block.id}
-                                          value={{ ...state, state: childState } as any}
+                                          value={
+                                            {
+                                              ...state,
+                                              state: childState,
+                                            } as any
+                                          }
                                         >
                                           <BuilderBlockComponent
                                             block={{
                                               ...block,
-                                              repeat: null
+                                              repeat: null,
                                             }}
                                             index={index}
                                             child={true} /* TODO: fieldname? */
                                           />
                                         </BuilderStoreContext.Provider>
                                       </div>
-                                    )
-                                  })
+                                    );
+                                  });
                                 }
                               }
                               return (
@@ -224,7 +229,7 @@ export class BuilderMasonryComponent extends React.Component<MasonryProps> {
                                     child={true} /* TODO: fieldname? */
                                   />
                                 </div>
-                              )
+                              );
                             }
                           )
                         : this.props.tiles &&
@@ -247,11 +252,11 @@ export class BuilderMasonryComponent extends React.Component<MasonryProps> {
                   </div>
                 )}
               </BuilderStoreContext.Consumer>
-            )
+            );
           }}
         </BuilderAsyncRequestsContext.Consumer>
       </div>
-    )
+    );
   }
 }
 
@@ -264,7 +269,7 @@ export const BuilderMasonry = withBuilder(BuilderMasonryComponent, {
   defaultStyles: {
     paddingLeft: '20px',
     paddingRight: '20px',
-    paddingBottom: '20px'
+    paddingBottom: '20px',
   },
   defaultChildren: [
     getRandomAspectTile(),
@@ -275,7 +280,7 @@ export const BuilderMasonry = withBuilder(BuilderMasonryComponent, {
     getRandomAspectTile(),
     getRandomAspectTile(),
     getRandomAspectTile(),
-    getRandomAspectTile()
+    getRandomAspectTile(),
   ],
   inputs: [
     {
@@ -283,14 +288,14 @@ export const BuilderMasonry = withBuilder(BuilderMasonryComponent, {
       // TODO: type: 'styleNumber'
       type: 'string',
       helperText: 'Width of each tile, as a CSS value. E.g. "200px" or "50%"',
-      defaultValue: '200px'
+      defaultValue: '200px',
     },
     {
       name: 'gutterSize',
       type: 'number',
       helperText: 'Horizontal space between tiles in pixels, e.g. "20" for 20 pixels wide',
       defaultValue: 0,
-      advanced: true
+      advanced: true,
     },
     {
       name: 'tiles',
@@ -300,11 +305,11 @@ export const BuilderMasonry = withBuilder(BuilderMasonryComponent, {
           name: 'content',
           type: 'uiBlocks',
           hideFromUI: true,
-          defaultValue: [defaultTile]
-        }
+          defaultValue: [defaultTile],
+        },
       ],
       defaultValue: [],
-      showIf: options => !options.get('useChildrenForTiles')
+      showIf: options => !options.get('useChildrenForTiles'),
     },
     {
       name: 'useChildrenForTiles',
@@ -315,9 +320,9 @@ export const BuilderMasonry = withBuilder(BuilderMasonryComponent, {
       defaultValue: true,
       onChange: (options: Map<string, any>) => {
         if (options.get('useChildrenForTiles') === true) {
-          options.set('tiles', [])
+          options.set('tiles', []);
         }
-      }
-    }
-  ]
-})
+      },
+    },
+  ],
+});

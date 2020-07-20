@@ -1,26 +1,26 @@
 /** @jsx jsx */
-import { jsx } from '@emotion/core'
-import React from 'react'
+import { jsx } from '@emotion/core';
+import React from 'react';
 import {
   Dialog,
   Button,
   DialogActions,
   DialogTitle,
   DialogContent,
-  TextField
-} from '@material-ui/core'
+  TextField,
+} from '@material-ui/core';
 
 interface CloudinaryCredentialsDialogProps {
-  openDialog: boolean
-  apiKey: string | undefined
-  cloudName: string | undefined
-  closeDialog(): void
-  updateCloudinaryCredentials(apiKey: string, cloudName: string): void
+  openDialog: boolean;
+  apiKey: string | undefined;
+  cloudName: string | undefined;
+  closeDialog(): void;
+  updateCloudinaryCredentials(apiKey: string, cloudName: string): void;
 }
 
 interface CloudinaryCredentialsDialogState {
-  apiKey: string
-  cloudName: string
+  apiKey: string;
+  cloudName: string;
 }
 
 export default class CloudinaryCredentialsDialog extends React.Component<
@@ -28,11 +28,11 @@ export default class CloudinaryCredentialsDialog extends React.Component<
   CloudinaryCredentialsDialogState
 > {
   constructor(props: CloudinaryCredentialsDialogProps) {
-    super(props)
+    super(props);
     this.state = {
       apiKey: this.props.apiKey ? this.props.apiKey : '',
-      cloudName: this.props.cloudName ? this.props.cloudName : ''
-    }
+      cloudName: this.props.cloudName ? this.props.cloudName : '',
+    };
   }
 
   render() {
@@ -52,9 +52,7 @@ export default class CloudinaryCredentialsDialog extends React.Component<
             />
             <TextField
               value={this.state.cloudName}
-              onChange={(e: any) =>
-                this.setState({ cloudName: e.target.value })
-              }
+              onChange={(e: any) => this.setState({ cloudName: e.target.value })}
               id="cloudName"
               label="Cloud name"
               helperText="You just have to setup the cloud name once and it will be linked to your organization"
@@ -68,11 +66,8 @@ export default class CloudinaryCredentialsDialog extends React.Component<
             </Button>
             <Button
               onClick={() => {
-                this.props.updateCloudinaryCredentials(
-                  this.state.apiKey,
-                  this.state.cloudName
-                )
-                this.props.closeDialog()
+                this.props.updateCloudinaryCredentials(this.state.apiKey, this.state.cloudName);
+                this.props.closeDialog();
               }}
               color="primary"
               variant="contained"
@@ -82,6 +77,6 @@ export default class CloudinaryCredentialsDialog extends React.Component<
           </DialogActions>
         </Dialog>
       </div>
-    )
+    );
   }
 }

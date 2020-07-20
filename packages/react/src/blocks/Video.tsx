@@ -1,46 +1,46 @@
 /** @jsx jsx */
-import { jsx } from '@emotion/core'
-import React from 'react'
+import { jsx } from '@emotion/core';
+import React from 'react';
 
-import { withBuilder } from '../functions/with-builder'
-import { withChildren } from '../functions/with-children'
+import { withBuilder } from '../functions/with-builder';
+import { withChildren } from '../functions/with-children';
 
-const DEFAULT_ASPECT_RATIO = 0.7004048582995948
+const DEFAULT_ASPECT_RATIO = 0.7004048582995948;
 
 class VideoComponent extends React.Component<{
-  video: string
-  autoPlay?: boolean
-  controls?: boolean
-  muted?: boolean
-  loop?: boolean
-  playsInline?: boolean
-  aspectRatio?: number
-  width?: number
-  height?: number
-  fit?: 'contain' | 'cover' | 'fill'
-  position?: string
-  posterImage?: string
+  video: string;
+  autoPlay?: boolean;
+  controls?: boolean;
+  muted?: boolean;
+  loop?: boolean;
+  playsInline?: boolean;
+  aspectRatio?: number;
+  width?: number;
+  height?: number;
+  fit?: 'contain' | 'cover' | 'fill';
+  position?: string;
+  posterImage?: string;
 }> {
-  video: HTMLVideoElement | null = null
+  video: HTMLVideoElement | null = null;
 
   updateVideo() {
     if (this.video) {
-      this.video.setAttribute('muted', String(this.props.muted))
-      this.video.setAttribute('playsinline', String(this.props.playsInline))
-      this.video.setAttribute('autoplay', String(this.props.autoPlay))
+      this.video.setAttribute('muted', String(this.props.muted));
+      this.video.setAttribute('playsinline', String(this.props.playsInline));
+      this.video.setAttribute('autoplay', String(this.props.autoPlay));
     }
   }
 
   componentDidUpdate() {
-    this.updateVideo()
+    this.updateVideo();
   }
 
   componentDidMount() {
-    this.updateVideo()
+    this.updateVideo();
   }
 
   render() {
-    const { aspectRatio, children } = this.props
+    const { aspectRatio, children } = this.props;
     return (
       <div css={{ position: 'relative' }}>
         <video
@@ -66,9 +66,9 @@ class VideoComponent extends React.Component<{
             borderRadius: 1,
             ...(aspectRatio
               ? {
-                  position: 'absolute'
+                  position: 'absolute',
                 }
-              : null)
+              : null),
           }}
         >
           <source type="video/mp4" src={this.props.video} />
@@ -79,7 +79,7 @@ class VideoComponent extends React.Component<{
               width: '100%',
               paddingTop: aspectRatio * 100 + '%',
               pointerEvents: 'none',
-              fontSize: 0
+              fontSize: 0,
             }}
           />
         ) : null}
@@ -93,14 +93,14 @@ class VideoComponent extends React.Component<{
               top: 0,
               left: 0,
               width: '100%',
-              height: '100%'
+              height: '100%',
             }}
           >
             {children}
           </div>
         )}
       </div>
-    )
+    );
   }
 }
 
@@ -119,92 +119,88 @@ export const Video = withBuilder(withChildren(VideoComponent), {
         'https://firebasestorage.googleapis.com/v0/b/builder-3b0a2.appspot.com/o/assets%2FKQlEmWDxA0coC3PK6UvkrjwkIGI2%2F28cb070609f546cdbe5efa20e931aa4b?alt=media&token=912e9551-7a7c-4dfb-86b6-3da1537d1a7f',
       required: true,
       onChange: (options: Map<string, any>) => {
-        const DEFAULT_ASPECT_RATIO = 0.7004048582995948
-        function loadImage(
-          url: string,
-          timeout = 60000
-        ): Promise<HTMLImageElement> {
+        const DEFAULT_ASPECT_RATIO = 0.7004048582995948;
+        function loadImage(url: string, timeout = 60000): Promise<HTMLImageElement> {
           return new Promise((resolve, reject) => {
-            const img = document.createElement('img')
-            let loaded = false
+            const img = document.createElement('img');
+            let loaded = false;
             img.onload = () => {
-              loaded = true
-              resolve(img)
-            }
+              loaded = true;
+              resolve(img);
+            };
 
             img.addEventListener('error', event => {
-              console.warn('Image load failed', event.error)
-              reject(event.error)
-            })
+              console.warn('Image load failed', event.error);
+              reject(event.error);
+            });
 
-            img.src = url
+            img.src = url;
             setTimeout(() => {
               if (!loaded) {
-                reject(new Error('Image load timed out'))
+                reject(new Error('Image load timed out'));
               }
-            }, timeout)
-          })
+            }, timeout);
+          });
         }
 
         function round(num: number) {
-          return Math.round(num * 1000) / 1000
+          return Math.round(num * 1000) / 1000;
         }
 
         // // TODO
-        const value = options.get('image')
-        const aspectRatio = options.get('aspectRatio')
+        const value = options.get('image');
+        const aspectRatio = options.get('aspectRatio');
         if (value && (!aspectRatio || aspectRatio === DEFAULT_ASPECT_RATIO)) {
           return loadImage(value).then(img => {
-            const possiblyUpdatedAspectRatio = options.get('aspectRatio')
+            const possiblyUpdatedAspectRatio = options.get('aspectRatio');
             if (
               options.get('image') === value &&
-              (!possiblyUpdatedAspectRatio ||
-                possiblyUpdatedAspectRatio === DEFAULT_ASPECT_RATIO)
+              (!possiblyUpdatedAspectRatio || possiblyUpdatedAspectRatio === DEFAULT_ASPECT_RATIO)
             ) {
               if (img.width && img.height) {
-                options.set('aspectRatio', round(img.height / img.width))
+                options.set('aspectRatio', round(img.height / img.width));
               }
             }
-          })
+          });
         }
-      }
+      },
     },
     {
       name: 'posterImage',
       type: 'file',
       allowedFileTypes: ['jpeg', 'png'],
-      helperText: 'Image to show before the video plays'
+      helperText: 'Image to show before the video plays',
     },
     {
       name: 'autoPlay',
       type: 'boolean',
-      defaultValue: true
+      defaultValue: true,
     },
     {
       name: 'controls',
       type: 'boolean',
-      defaultValue: false
+      defaultValue: false,
     },
     {
       name: 'muted',
       type: 'boolean',
-      defaultValue: true
+      defaultValue: true,
     },
     {
       name: 'loop',
       type: 'boolean',
-      defaultValue: true
+      defaultValue: true,
     },
     {
       name: 'playsInline',
       type: 'boolean',
-      defaultValue: true
+      defaultValue: true,
     },
     {
       name: 'fit',
       type: 'text',
       defaultValue: 'cover',
-      enum: ['contain', 'cover', 'fill', 'auto']
+      enum: ['contain', 'cover', 'fill', 'auto'],
     },
     {
       name: 'position',
@@ -219,24 +215,24 @@ export const Video = withBuilder(withChildren(VideoComponent), {
         'top left',
         'top right',
         'bottom left',
-        'bottom right'
-      ]
+        'bottom right',
+      ],
     },
     {
       name: 'height',
       type: 'number',
-      advanced: true
+      advanced: true,
     },
     {
       name: 'width',
       type: 'number',
-      advanced: true
+      advanced: true,
     },
     {
       name: 'aspectRatio',
       type: 'number',
       advanced: true,
-      defaultValue: DEFAULT_ASPECT_RATIO
-    }
-  ]
-})
+      defaultValue: DEFAULT_ASPECT_RATIO,
+    },
+  ],
+});

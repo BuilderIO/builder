@@ -10,6 +10,7 @@
     "url": "https://github.com/BuilderIO/builder"
   },
   "scripts": {
+    "prettier": "prettier",
     "verify-git-not-dirty": "git diff --quiet || exit 1",
     "_unlink": "lerna run _unlink --parallel",
     "_install": "lerna run _install --stream",
@@ -26,5 +27,8 @@
     "release:prerelease:dev": "npm run build && lerna version prerelease --yes && lerna run build:unpkg:dist --no-private && ALLOW_PUBLISH=true lerna publish from-package --dist-tag dev --yes",
     "release:dev": "npm run release:prerelease:dev",
     "prepublishOnly": "block-publish"
+  },
+  "dependencies": {
+    "prettier": "^2.0.5"
   }
 }

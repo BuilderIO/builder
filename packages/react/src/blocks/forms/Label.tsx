@@ -1,13 +1,13 @@
-import React from 'react'
-import { BuilderElement } from '@builder.io/sdk'
-import { BuilderBlockComponent } from '../../builder-react'
-import { withBuilder } from '../../functions/with-builder'
+import React from 'react';
+import { BuilderElement } from '@builder.io/sdk';
+import { BuilderBlockComponent } from '../../builder-react';
+import { withBuilder } from '../../functions/with-builder';
 
 export interface LabelProps {
-  attributes?: any
-  text?: string
-  for?: string
-  builderBlock?: BuilderElement
+  attributes?: any;
+  text?: string;
+  for?: string;
+  builderBlock?: BuilderElement;
 }
 
 class LabelComponent extends React.Component<LabelProps> {
@@ -18,7 +18,7 @@ class LabelComponent extends React.Component<LabelProps> {
           <span
             className="builder-label-text"
             dangerouslySetInnerHTML={{
-              __html: this.props.text
+              __html: this.props.text,
             }}
           />
         )}
@@ -28,7 +28,7 @@ class LabelComponent extends React.Component<LabelProps> {
             <BuilderBlockComponent key={item.id} block={item} />
           ))}
       </label>
-    )
+    );
   }
 }
 
@@ -43,21 +43,21 @@ export const Label = withBuilder(LabelComponent, {
       name: 'text',
       type: 'html',
       richText: true,
-      defaultValue: 'Label'
+      defaultValue: 'Label',
     },
     {
       name: 'for',
       type: 'text',
       helperText: 'The name of the input this label is for',
-      advanced: true
-    }
+      advanced: true,
+    },
   ],
   noWrap: true,
   static: true,
-  canHaveChildren: true
+  canHaveChildren: true,
   // TODO: take inner html or blocsk
   // TODO: optional children? maybe as optional form input
   // that only shows if advanced setting is flipped
   // TODO: defaultChildren
   // canHaveChildren: true,
-})
+});

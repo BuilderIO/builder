@@ -1,62 +1,60 @@
-import { Builder, builder } from '@builder.io/react'
-const importReact = () => import('@builder.io/react')
-const importShopify = () => import('@builder.io/shopify/react')
-const importShopifyJs = () => import('@builder.io/shopify/js')
-const importWidgets = () => import('@builder.io/widgets')
+import { Builder, builder } from '@builder.io/react';
+const importReact = () => import('@builder.io/react');
+const importShopify = () => import('@builder.io/shopify/react');
+const importShopifyJs = () => import('@builder.io/shopify/js');
+const importWidgets = () => import('@builder.io/widgets');
 
-Builder.isStatic = true
+Builder.isStatic = true;
 
-const componentName = process.env.ANGULAR
-  ? 'builder-component-element'
-  : 'builder-component'
+const componentName = process.env.ANGULAR ? 'builder-component-element' : 'builder-component';
 
 if (Builder.isIframe) {
-  importReact()
-  importWidgets()
-  importShopify()
-  import('@builder.io/email')
+  importReact();
+  importWidgets();
+  importShopify();
+  import('@builder.io/email');
 }
 
 if ((process.env.NODE_ENV as string) === 'development') {
   // Must use require here as import statements are only allowed
   // to exist at the top of a file.
-  import('preact/debug' as any)
+  import('preact/debug' as any);
 }
 
 function onReady(cb: Function) {
   if (document.readyState !== 'loading') {
-    cb()
+    cb();
   } else {
-    document.addEventListener('DOMContentLoaded', cb as any)
+    document.addEventListener('DOMContentLoaded', cb as any);
   }
 }
 
 if (Builder.isBrowser && !customElements.get(componentName)) {
   const BuilderWC = {
     Builder,
-    builder
-  }
-  ;(window as any).BuilderWC = BuilderWC
+    builder,
+  };
+  (window as any).BuilderWC = BuilderWC;
 
-  const { builderWcLoadCallbacks } = window as any
+  const { builderWcLoadCallbacks } = window as any;
   if (builderWcLoadCallbacks) {
     if (typeof builderWcLoadCallbacks === 'function') {
       try {
-        builderWcLoadCallbacks(BuilderWC)
+        builderWcLoadCallbacks(BuilderWC);
       } catch (err) {
-        console.error(err)
+        console.error(err);
       }
     } else {
       try {
         builderWcLoadCallbacks.forEach((cb: any) => {
           try {
-            cb(BuilderWC)
+            cb(BuilderWC);
           } catch (err) {
-            console.error(err)
+            console.error(err);
           }
-        })
+        });
       } catch (err) {
-        console.error(err)
+        console.error(err);
       }
     }
   }
@@ -67,262 +65,245 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
    */
   const forceLoadFonts = () => {
     try {
-      const apiStyles = Array.from(
-        document.querySelectorAll('.builder-api-styles')
-      )
+      const apiStyles = Array.from(document.querySelectorAll('.builder-api-styles'));
 
       if (!apiStyles.length || !document.fonts) {
-        return
+        return;
       }
 
       apiStyles.forEach(element => {
-        const styles = element.innerHTML
+        const styles = element.innerHTML;
         styles.replace(
           /(@font-face\s*{\s*font-family:\s*(.*?);[\s\S]+?url\((\S+)\)[\s\S]+?})/g,
           (fullMatch, fontMatch, fontName, fontUrl) => {
-            const trimmedFontUrl = fontUrl
-              .replace(/"/g, '')
-              .replace(/'/g, '')
-              .trim()
+            const trimmedFontUrl = fontUrl.replace(/"/g, '').replace(/'/g, '').trim();
 
-            const trimmedFontName = fontName
-              .replace(/"/g, '')
-              .replace(/'/g, '')
-              .trim()
+            const trimmedFontName = fontName.replace(/"/g, '').replace(/'/g, '').trim();
 
-            const weight = fullMatch.match(/font-weight:\s*(\d+)/)?.[1]
+            const weight = fullMatch.match(/font-weight:\s*(\d+)/)?.[1];
 
-            const font = new FontFace(
-              trimmedFontName,
-              `url("${trimmedFontUrl}")`,
-              {
-                weight: weight || '400'
-              }
-            )
+            const font = new FontFace(trimmedFontName, `url("${trimmedFontUrl}")`, {
+              weight: weight || '400',
+            });
 
             if (!document.fonts.has(font)) {
-              document.fonts.add(font)
+              document.fonts.add(font);
             }
 
-            return ''
+            return '';
           }
-        )
-      })
+        );
+      });
     } catch (err) {
-      console.warn('Could not load Builder fonts', err)
+      console.warn('Could not load Builder fonts', err);
     }
-  }
+  };
 
   const inject = () => {
-    forceLoadFonts()
+    forceLoadFonts();
 
-    const selector = '.builder-component-wrap.builder-to-embed'
-    const matches = document.querySelectorAll(selector)
+    const selector = '.builder-component-wrap.builder-to-embed';
+    const matches = document.querySelectorAll(selector);
     for (let i = 0; i < matches.length; i++) {
-      const el = matches[i]
-      const attrs = el.attributes
-      const newEl = document.createElement(componentName)
+      const el = matches[i];
+      const attrs = el.attributes;
+      const newEl = document.createElement(componentName);
       for (let i = attrs.length - 1; i >= 0; i--) {
-        const attr = attrs[i]
+        const attr = attrs[i];
         if (attr.name.indexOf('data-') === 0) {
-          const name =
-            attr.name.indexOf('data-') === 0 ? attr.name.slice(5) : attr.name
-          const value = attr.value
+          const name = attr.name.indexOf('data-') === 0 ? attr.name.slice(5) : attr.name;
+          const value = attr.value;
           // TODO: allow properties too
-          newEl.setAttribute(name, value)
+          newEl.setAttribute(name, value);
         }
       }
-      el.classList.remove('builder-to-embed')
+      el.classList.remove('builder-to-embed');
 
       // Transfer children
       for (let i = 0; i < el.children.length; i++) {
-        const child = el.children[i]
-        child.remove()
+        const child = el.children[i];
+        child.remove();
         // newEl.appendChild(child)
       }
-      el.innerHTML = ''
+      el.innerHTML = '';
 
-      el.appendChild(newEl)
+      el.appendChild(newEl);
     }
-  }
+  };
 
-  inject()
-  onReady(inject)
+  inject();
+  onReady(inject);
 
   class BuilderPageElement extends HTMLElement {
-    private previousName = ''
-    private subscriptions: Function[] = []
+    private previousName = '';
+    private subscriptions: Function[] = [];
     // TODO: do this in core SDK
-    private trackedClick = false
-    data: any
+    private trackedClick = false;
+    data: any;
 
-    builderPageRef: any
-    builderRootRef: any
+    builderPageRef: any;
+    builderRootRef: any;
 
-    prerender = !Builder.isEditing
+    prerender = !Builder.isEditing;
 
-    private _options: any = {}
+    private _options: any = {};
 
     get options() {
       return {
         rev: this.getAttribute('rev') || undefined,
-        ...this._options
-      }
+        ...this._options,
+      };
     }
 
     set options(options) {
-      this._options = options
+      this._options = options;
     }
 
     private getOptionsFromAttribute() {
-      const options = this.getAttribute('options')
+      const options = this.getAttribute('options');
       if (options && typeof options === 'string' && options.trim()[0] === '{') {
         // TODO: use JSON5
-        this._options = JSON.parse(options)
+        this._options = JSON.parse(options);
       }
 
-      const slot = this.getAttribute('slot')
+      const slot = this.getAttribute('slot');
       if (slot) {
-        const options = (this._options = this._options || {})
-        const query = options.query || (options.query = {})
-        query['data.slot'] = slot
+        const options = (this._options = this._options || {});
+        const query = options.query || (options.query = {});
+        query['data.slot'] = slot;
       }
     }
 
-    connected = false
+    connected = false;
 
     connectedCallback() {
       if (this.connected) {
-        return
+        return;
       }
-      this.connected = true
+      this.connected = true;
 
       if (
         this.hasAttribute('editing-only') &&
         this.getAttribute('editing-only') !== 'false' &&
         !(Builder.isEditing || Builder.isPreviewing)
       ) {
-        return
+        return;
       }
 
-      const prerenderAttr = this.getAttribute('prerender')
+      const prerenderAttr = this.getAttribute('prerender');
       if (prerenderAttr) {
-        this.prerender = prerenderAttr === 'false' ? false : this.prerender
+        this.prerender = prerenderAttr === 'false' ? false : this.prerender;
       }
 
       window.parent?.postMessage(
         {
           type: 'builder.isReactSdk',
-          data: { value: true }
+          data: { value: true },
         },
         '*'
-      )
+      );
 
-      this.getOptionsFromAttribute()
-      this.addEventListener('remove', () => this.unsubscribe())
-      this.getContent()
+      this.getOptionsFromAttribute();
+      this.addEventListener('remove', () => this.unsubscribe());
+      this.getContent();
     }
 
     attributeChangedCallback() {
       // TODO: listen to properties too
-      this.getOptionsFromAttribute()
-      this.getContent()
+      this.getOptionsFromAttribute();
+      this.getContent();
     }
 
     disconnectedCallback() {
-      this.unsubscribe()
+      this.unsubscribe();
     }
 
     loaded() {
-      this.classList.add('builder-loaded')
+      this.classList.add('builder-loaded');
     }
 
     // When loaded from the server
     get currentContent() {
-      const name = this.getAttribute('name') || this.getAttribute('model')
+      const name = this.getAttribute('name') || this.getAttribute('model');
       // TODO: get this to work with nested blocks
-      const existing = this.querySelector(`[data-builder-component="${name}"]`)
+      const existing = this.querySelector(`[data-builder-component="${name}"]`);
       if (existing) {
-        const id = existing.getAttribute('data-builder-content-id')
-        const variationId = existing.getAttribute('data-builder-variation-id')
+        const id = existing.getAttribute('data-builder-content-id');
+        const variationId = existing.getAttribute('data-builder-variation-id');
         if (id) {
           return {
             id,
-            testVariationId: variationId || undefined
-          }
+            testVariationId: variationId || undefined,
+          };
         }
       }
-      return null
+      return null;
     }
 
     getContent(fresh = false) {
-      const token =
-        this.getAttribute('token') || this.getAttribute('auth-token')
+      const token = this.getAttribute('token') || this.getAttribute('auth-token');
       if (token) {
-        builder.authToken = token
+        builder.authToken = token;
       }
-      const key = this.getAttribute('api-key')
+      const key = this.getAttribute('api-key');
       if (key && key !== builder.apiKey) {
-        builder.apiKey = key
+        builder.apiKey = key;
       }
 
       if (!builder.apiKey) {
         const subscription = builder['apiKey$'].subscribe((key?: string) => {
           if (key) {
-            this.getContent()
+            this.getContent();
           }
-        })
-        this.subscriptions.push(() => subscription.unsubscribe())
+        });
+        this.subscriptions.push(() => subscription.unsubscribe());
 
         setTimeout(() => {
           if (!builder.apiKey) {
             throw new Error(
               'Builder API key not found. Please see our docs for how to provide your API key https://builder.io/c/docs'
-            )
+            );
           }
-        }, 10000)
+        }, 10000);
 
         // TODO: how test if actually editing. have a message to receive and flag that editing his happening
         if (!Builder.isIframe) {
-          return
+          return;
         }
       }
 
-      const name = this.getAttribute('name') || this.getAttribute('model')
+      const name = this.getAttribute('name') || this.getAttribute('model');
       // TODO: only judge this on key, or remove this line entirely as the
       // SDK handles this anyway
       if (name === this.previousName && !this.getAttribute('key')) {
-        return false
+        return false;
       }
 
-      const entry = this.getAttribute('entry')
-      const slot = this.getAttribute('slot')
+      const entry = this.getAttribute('entry');
+      const slot = this.getAttribute('slot');
 
       if (!this.prerender || !builder.apiKey || fresh) {
-        const currentContent = fresh ? null : this.currentContent
-        this.loadReact(
-          currentContent ? currentContent : entry ? { id: entry } : null,
-          fresh
-        )
-        return
+        const currentContent = fresh ? null : this.currentContent;
+        this.loadReact(currentContent ? currentContent : entry ? { id: entry } : null, fresh);
+        return;
       }
 
-      this.unsubscribe()
+      this.unsubscribe();
       if (!name) {
-        return false
+        return false;
       }
 
-      const currentContent = fresh ? null : this.currentContent
+      const currentContent = fresh ? null : this.currentContent;
       if (currentContent && !Builder.isEditing) {
-        this.data = currentContent
-        this.loaded()
-        this.loadReact(this.data)
-        return
+        this.data = currentContent;
+        this.loaded();
+        this.loadReact(this.data);
+        return;
       }
 
-      this.previousName = name
-      this.classList.add('builder-loading')
-      let unsubscribed = false
+      this.previousName = name;
+      this.classList.add('builder-loading');
+      let unsubscribed = false;
 
       const subscription = builder
         .get(name, {
@@ -333,63 +314,63 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
             undefined,
           entry: entry || undefined,
           ...this.options,
-          prerender: true
+          prerender: true,
         })
         .subscribe(
           (data: any) => {
             if (unsubscribed) {
-              console.warn('Unsubscribe did not work!')
-              return
+              console.warn('Unsubscribe did not work!');
+              return;
             }
-            this.classList.remove('builder-loading')
-            this.loaded()
+            this.classList.remove('builder-loading');
+            this.loaded();
             if (!data) {
-              this.classList.add('builder-no-content-found')
-              const loadEvent = new CustomEvent('load', { detail: data })
-              this.dispatchEvent(loadEvent)
-              return
+              this.classList.add('builder-no-content-found');
+              const loadEvent = new CustomEvent('load', { detail: data });
+              this.dispatchEvent(loadEvent);
+              return;
             }
             if (this.classList.contains('builder-editor-injected')) {
-              this.unsubscribe()
+              this.unsubscribe();
             } else {
-              this.data = data
+              this.data = data;
               if (data.data && data.data.html) {
-                this.innerHTML = data.data.html
-                this.findAndRunScripts()
+                this.innerHTML = data.data.html;
+                this.findAndRunScripts();
 
-                const loadEvent = new CustomEvent('htmlload', { detail: data })
-                this.dispatchEvent(loadEvent)
+                const loadEvent = new CustomEvent('htmlload', { detail: data });
+                this.dispatchEvent(loadEvent);
               }
 
-              this.loadReact(data)
-              subscription.unsubscribe()
-              unsubscribed = true
+              this.loadReact(data);
+              subscription.unsubscribe();
+              unsubscribed = true;
             }
           },
           (error: any) => {
             // Server render failed, not the end of the world, load react anyway
-            this.loadReact()
-            subscription.unsubscribe()
-            unsubscribed = true
+            this.loadReact();
+            subscription.unsubscribe();
+            unsubscribed = true;
           }
-        )
-      this.subscriptions.push(() => subscription.unsubscribe())
+        );
+      this.subscriptions.push(() => subscription.unsubscribe());
     }
 
     findAndRunScripts() {
-      const scripts = this.getElementsByTagName('script')
+      const scripts = this.getElementsByTagName('script');
       for (let i = 0; i < scripts.length; i++) {
-        const script = scripts[i]
+        const script = scripts[i];
         if (script.src) {
-          const newScript = document.createElement('script')
-          newScript.async = true
-          newScript.src = script.src
-          document.head.appendChild(newScript)
+          const newScript = document.createElement('script');
+          newScript.async = true;
+          newScript.src = script.src;
+          document.head.appendChild(newScript);
         } else {
           try {
-            new Function(script.innerText)()
+            new Function(script.innerText)();
           } catch (error) {
-            console.warn('Builder custom code component error:', error)
+            console.warn('Builder custom code component error:', error);
           }
         }
       }
@@ -402,48 +383,46 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
         !Builder.isIframe &&
         location.hostname.indexOf('shopstyle') > -1
       ) {
-        return
+        return;
       }
 
-      const entry = data?.id || this.getAttribute('entry')
+      const entry = data?.id || this.getAttribute('entry');
 
-      this.unsubscribe()
+      this.unsubscribe();
       const name =
-        this.getAttribute('name') ||
-        this.getAttribute('model') ||
-        this.getAttribute('model-name')
+        this.getAttribute('name') || this.getAttribute('model') || this.getAttribute('model-name');
 
-      const getReactPromise = importReact() // TODO: only import what needed based on what comes back
-      const getWidgetsPromise = importWidgets()
-      const getShopifyPromise = importShopify()
-      const getShopifyJsPromise = importShopifyJs()
+      const getReactPromise = importReact(); // TODO: only import what needed based on what comes back
+      const getWidgetsPromise = importWidgets();
+      const getShopifyPromise = importShopify();
+      const getShopifyJsPromise = importShopifyJs();
       // TODO: only load shopify if needed
 
-      let emailPromise: Promise<any> | null = null
+      let emailPromise: Promise<any> | null = null;
 
       const email = Boolean(
         name === 'email' ||
           this.getAttribute('email-mode') ||
           this.getAttribute('format') === 'email' ||
           (this.options && this.options.format === 'email')
-      )
+      );
 
       if (email) {
-        emailPromise = import('@builder.io/email')
+        emailPromise = import('@builder.io/email');
       }
 
-      let unsubscribed = false
+      let unsubscribed = false;
 
-      const slot = this.getAttribute('slot')
+      const slot = this.getAttribute('slot');
       if (
         (!this.prerender && !this.currentContent) ||
         (Builder.isIframe && (!builder.apiKey || builder.apiKey === 'DEMO'))
       ) {
-        const { BuilderPage } = await getReactPromise
-        await Promise.all([getWidgetsPromise, getShopifyPromise as any])
-        const { Shopify } = await getShopifyJsPromise
+        const { BuilderPage } = await getReactPromise;
+        await Promise.all([getWidgetsPromise, getShopifyPromise as any]);
+        const { Shopify } = await getShopifyJsPromise;
 
-        const shopify = new Shopify({})
+        const shopify = new Shopify({});
 
         // Ensure styles don't load twice
         BuilderPage.renderInto(
@@ -454,26 +433,23 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
             context: {
               shopify,
               liquid: shopify.liquid,
-              apiKey: builder.apiKey
+              apiKey: builder.apiKey,
             },
             entry,
             emailMode:
-              ((this.options as any) || {}).emailMode ||
-              this.getAttribute('email-mode') === 'true',
+              ((this.options as any) || {}).emailMode || this.getAttribute('email-mode') === 'true',
             options: {
               ...this.options,
               key:
                 this.getAttribute('key') ||
                 (slot ? `slot:${slot}` : null) ||
-                (Builder.isEditing
-                  ? name!
-                  : this.getAttribute('entry') || name! || undefined)
-            }
+                (Builder.isEditing ? name! : this.getAttribute('entry') || name! || undefined),
+            },
           },
           this.getAttribute('hydrate') !== 'false',
           fresh
-        )
-        return
+        );
+        return;
       }
 
       const subscription = builder
@@ -484,26 +460,26 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
             (Builder.isEditing ? name! : this.getAttribute('entry') || name!),
           ...this.options,
           entry: data ? data.id : this.options.entry || undefined,
-          prerender: false
+          prerender: false,
         })
         .subscribe(
           async data => {
             if (unsubscribed) {
-              console.debug("Unsubscribe didn't work!")
-              return
+              console.debug("Unsubscribe didn't work!");
+              return;
             }
 
-            const { BuilderPage } = await getReactPromise
-            await Promise.all([getWidgetsPromise, getShopifyPromise as any])
+            const { BuilderPage } = await getReactPromise;
+            await Promise.all([getWidgetsPromise, getShopifyPromise as any]);
             if (emailPromise) {
-              await emailPromise
+              await emailPromise;
             }
 
-            const loadEvent = new CustomEvent('load', { detail: data })
-            this.dispatchEvent(loadEvent)
-            const { Shopify } = await getShopifyJsPromise
+            const loadEvent = new CustomEvent('load', { detail: data });
+            this.dispatchEvent(loadEvent);
+            const { Shopify } = await getShopifyJsPromise;
 
-            const shopify = new Shopify({})
+            const shopify = new Shopify({});
 
             BuilderPage.renderInto(
               this,
@@ -513,7 +489,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
                 context: {
                   shopify,
                   liquid: shopify.liquid,
-                  apiKey: builder.apiKey
+                  apiKey: builder.apiKey,
                 },
                 emailMode:
                   ((this.options as any) || {}).emailMode ||
@@ -526,50 +502,48 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
                   key:
                     this.getAttribute('key') ||
                     (slot ? `slot:${slot}` : null) ||
-                    (Builder.isEditing
-                      ? name!
-                      : (data && data.id) || undefined),
-                  ...this.options
-                }
+                    (Builder.isEditing ? name! : (data && data.id) || undefined),
+                  ...this.options,
+                },
               },
               this.getAttribute('hydrate') !== 'false', // TODO: query param override builder.hydrate
               fresh
-            )
+            );
 
-            subscription.unsubscribe()
-            unsubscribed = true
+            subscription.unsubscribe();
+            unsubscribed = true;
 
             if (Builder.isIframe) {
               setTimeout(() => {
-                parent.postMessage({ type: 'builder.updateContent' }, '*')
+                parent.postMessage({ type: 'builder.updateContent' }, '*');
                 setTimeout(() => {
                   parent.postMessage(
                     { type: 'builder.sdkInjected', data: { modelName: name } },
                     '*'
-                  )
-                }, 100)
-              }, 100)
+                  );
+                }, 100);
+              }, 100);
             }
           },
           async (error: any) => {
             if (Builder.isEditing) {
-              const { BuilderPage } = await getReactPromise
-              await Promise.all([getWidgetsPromise, getShopifyPromise as any])
+              const { BuilderPage } = await getReactPromise;
+              await Promise.all([getWidgetsPromise, getShopifyPromise as any]);
               if (emailPromise) {
-                await emailPromise
+                await emailPromise;
               }
-              const { Shopify } = await getShopifyJsPromise
-              const shopify = new Shopify({})
+              const { Shopify } = await getShopifyJsPromise;
+              const shopify = new Shopify({});
               BuilderPage.renderInto(
                 this,
                 {
                   ...({
-                    ref: (ref: any) => (this.builderPageRef = ref)
+                    ref: (ref: any) => (this.builderPageRef = ref),
                   } as any),
                   context: {
                     shopify,
                     liquid: shopify.liquid,
-                    apiKey: builder.apiKey
+                    apiKey: builder.apiKey,
                   },
                   modelName: name!,
                   entry: data ? data.id : entry,
@@ -582,60 +556,58 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
                     key:
                       this.getAttribute('key') ||
                       (slot ? `slot:${slot}` : null) ||
-                      (Builder.isEditing
-                        ? name!
-                        : (data && data.id) || undefined),
-                    ...this.options
+                      (Builder.isEditing ? name! : (data && data.id) || undefined),
+                    ...this.options,
                     // TODO: specify variation?
                   },
-                  fresh
+                  fresh,
                 },
                 this.getAttribute('hydrate') !== 'false'
-              )
+              );
             } else {
-              console.warn('Builder webcomponent error:', error)
-              this.classList.add('builder-errored')
-              this.classList.add('builder-loaded')
-              this.classList.remove('builder-loading')
-              const errorEvent = new CustomEvent('error', { detail: error })
-              this.dispatchEvent(errorEvent)
+              console.warn('Builder webcomponent error:', error);
+              this.classList.add('builder-errored');
+              this.classList.add('builder-loaded');
+              this.classList.remove('builder-loading');
+              const errorEvent = new CustomEvent('error', { detail: error });
+              this.dispatchEvent(errorEvent);
             }
           }
-        )
+        );
 
-      this.subscriptions.push(() => subscription.unsubscribe())
-    }
+      this.subscriptions.push(() => subscription.unsubscribe());
+    };
 
     unsubscribe() {
       if (this.subscriptions) {
-        this.subscriptions.forEach(fn => fn())
-        this.subscriptions = []
+        this.subscriptions.forEach(fn => fn());
+        this.subscriptions = [];
       }
     }
   }
 
-  customElements.define(componentName, BuilderPageElement)
+  customElements.define(componentName, BuilderPageElement);
 
   class BuilderInit extends HTMLElement {
     init() {
-      const key = this.getAttribute('api-key') || this.getAttribute('key')
-      const canTrack = this.getAttribute('canTrack') !== 'false'
+      const key = this.getAttribute('api-key') || this.getAttribute('key');
+      const canTrack = this.getAttribute('canTrack') !== 'false';
       if (key && builder.apiKey !== key) {
-        builder.apiKey = key
+        builder.apiKey = key;
       }
       if (builder.canTrack !== canTrack) {
-        builder.canTrack = canTrack
+        builder.canTrack = canTrack;
       }
     }
 
     connectedCallback() {
-      this.init()
+      this.init();
     }
 
     attributeChangedCallback() {
-      this.init()
+      this.init();
     }
   }
 
-  customElements.define('builder-init', BuilderInit)
+  customElements.define('builder-init', BuilderInit);
 }

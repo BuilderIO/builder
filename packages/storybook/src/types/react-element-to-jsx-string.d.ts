@@ -1,5 +1,5 @@
 declare namespace JSX {
   interface IntrinsicElements {
-    "builder-editor": any;
+    'builder-editor': any;
   }
 }

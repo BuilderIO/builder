@@ -47,7 +47,7 @@ app.engine('html', (_, options, callback) => {
         useValue: options.res,
       },
     ],
-  }).then(html => {
+  }).then((html) => {
     callback(null, html);
   });
 });

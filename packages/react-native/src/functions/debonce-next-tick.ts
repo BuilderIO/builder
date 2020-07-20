@@ -1,6 +1,6 @@
 import { Builder } from '@builder.io/sdk';
 
-const nextTick = Builder.nextTick
+const nextTick = Builder.nextTick;
 
 // Plain function - e.g. const debounced = debounceNextTick(fn);
 export function debounceNextTick(fn: (...args: any[]) => void): () => void;

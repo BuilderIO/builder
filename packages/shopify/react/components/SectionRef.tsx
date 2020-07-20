@@ -43,11 +43,9 @@ export const SectionRef = (props: SectionRefProps) => {
       // specifically with /shopify/v1/data etc
       fetch(
         `https://cdn.builder.io/api/v1/proxy-api?url=${encodeURIComponent(
-          `https://${location.host +
-            location.pathname.replace(
-              '/apps/builder/preview',
-              ''
-            )}?section_id=${sectionName}&${location.search.replace('?', '')}`
+          `https://${
+            location.host + location.pathname.replace('/apps/builder/preview', '')
+          }?section_id=${sectionName}&${location.search.replace('?', '')}`
         )}`
       )
         .then(res => res.text())

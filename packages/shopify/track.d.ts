@@ -1,1 +1,1 @@
-export * from './track/track'
+export * from './track/track';

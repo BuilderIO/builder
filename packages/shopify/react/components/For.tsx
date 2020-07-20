@@ -22,12 +22,7 @@ export function ForBlock(props: ForBlockProps) {
   const { repeat, builderState } = props;
 
   const collectionPath = repeat.collection;
-  const collectionName = (collectionPath || '')
-    .trim()
-    .split('(')[0]
-    .trim()
-    .split('.')
-    .slice(-1)[0];
+  const collectionName = (collectionPath || '').trim().split('(')[0].trim().split('.').slice(-1)[0];
 
   const itemName = repeat.itemName || (collectionName ? collectionName + 'Item' : 'item');
 

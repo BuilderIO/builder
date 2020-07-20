@@ -3,7 +3,7 @@
     "moduleResolution": "node",
     "jsx": "react",
     "target": "es5",
-    "module":"es2015",
+    "module": "es2015",
     "lib": ["dom", "es2015"],
     "strict": true,
     "sourceMap": true,
@@ -15,13 +15,7 @@
     "emitDecoratorMetadata": true,
     "declarationDir": "dist/types",
     "outDir": "dist/lib",
-    "typeRoots": [
-      "node_modules/@types"
-    ]
+    "typeRoots": ["node_modules/@types"]
   },
-  "include": [
-    "src",
-    "rollup.config.ts",
-    "internal-types.d.ts"
-  ]
+  "include": ["src", "rollup.config.ts", "internal-types.d.ts"]
 }

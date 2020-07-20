@@ -1,17 +1,17 @@
-import React from 'react'
-import { withBuilder } from '../functions/with-builder'
-import { Link } from '../components/Link'
+import React from 'react';
+import { withBuilder } from '../functions/with-builder';
+import { Link } from '../components/Link';
 
 export interface ButtonProps {
-  attributes?: any
-  text?: string
-  link?: string
-  openLinkInNewTab?: boolean
+  attributes?: any;
+  text?: string;
+  link?: string;
+  openLinkInNewTab?: boolean;
 }
 
 class ButtonComponent extends React.Component<ButtonProps> {
   render() {
-    const Tag = this.props.link ? Link : 'span'
+    const Tag = this.props.link ? Link : 'span';
     return (
       <Tag
         href={this.props.link}
@@ -20,7 +20,7 @@ class ButtonComponent extends React.Component<ButtonProps> {
       >
         {this.props.text}
       </Tag>
-    )
+    );
   }
 }
 
@@ -39,25 +39,25 @@ export const Button = withBuilder(ButtonComponent, {
     color: 'white',
     borderRadius: '4px',
     textAlign: 'center',
-    cursor: 'pointer'
+    cursor: 'pointer',
   },
   inputs: [
     {
       name: 'text',
       type: 'text',
-      defaultValue: 'Click me!'
+      defaultValue: 'Click me!',
     },
     {
       name: 'link',
-      type: 'url'
+      type: 'url',
     },
     {
       name: 'openLinkInNewTab',
       type: 'boolean',
       defaultValue: false,
-      friendlyName: 'Open link in new tab'
-    }
+      friendlyName: 'Open link in new tab',
+    },
   ],
   static: true,
-  noWrap: true
-})
+  noWrap: true,
+});

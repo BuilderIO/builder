@@ -1,5 +1,5 @@
-import { keyframes } from "@emotion/core";
-import { el } from "../modules/blocks";
+import { keyframes } from '@emotion/core';
+import { el } from '../modules/blocks';
 
 const spinKeyframes = keyframes({
   '0%': {
@@ -34,4 +34,3 @@ export const loadingSpinner = el({
     },
   },
 });
-

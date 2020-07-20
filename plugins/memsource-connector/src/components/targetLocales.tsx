@@ -1,15 +1,15 @@
-import React from 'react'
-import { FormLabel, Grid } from '@material-ui/core'
-import { LocaleOption } from './localeOption'
-import Box from '@material-ui/core/Box'
-import { getTargetLocales } from './contexts/builderContext'
+import React from 'react';
+import { FormLabel, Grid } from '@material-ui/core';
+import { LocaleOption } from './localeOption';
+import Box from '@material-ui/core/Box';
+import { getTargetLocales } from './contexts/builderContext';
 
 type TargetLocalesProps = {
-  dispatch: Function
-}
+  dispatch: Function;
+};
 
 export const TargetLocales = ({ dispatch }: TargetLocalesProps) => {
-  const targetLocales = getTargetLocales()
+  const targetLocales = getTargetLocales();
   return (
     <Box mt={2}>
       <Grid container direction="column">
@@ -25,5 +25,5 @@ export const TargetLocales = ({ dispatch }: TargetLocalesProps) => {
         </Grid>
       </Grid>
     </Box>
-  )
-}
+  );
+};

@@ -11,11 +11,21 @@ function App() {
       <header>
         <div className="logo">MY SITE</div>
         <div className="links">
-          <Link className="link" to="/">Home</Link>
-          <Link className="link" to="/about">About</Link>
-          <Link className="link" to="/page-1">Page 1</Link>
-          <Link className="link" to="/page-2">Page 2</Link>
-          <Link className="link" to="/404">404</Link>
+          <Link className="link" to="/">
+            Home
+          </Link>
+          <Link className="link" to="/about">
+            About
+          </Link>
+          <Link className="link" to="/page-1">
+            Page 1
+          </Link>
+          <Link className="link" to="/page-2">
+            Page 2
+          </Link>
+          <Link className="link" to="/404">
+            404
+          </Link>
         </div>
       </header>
       <div className="App">

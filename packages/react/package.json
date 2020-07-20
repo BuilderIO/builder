@@ -72,6 +72,9 @@
       "/node_modules/",
       "/test/"
     ],
+    "moduleDirectories": [
+      "<rootDir>/node_modules"
+    ],
     "coverageThreshold": {
       "global": {
         "branches": 25,
@@ -81,10 +84,6 @@
       }
     },
     "collectCoverage": true
-  },
-  "prettier": {
-    "semi": false,
-    "singleQuote": true
   },
   "devDependencies": {
     "@builder.io/block-publish": "^1.1.2",

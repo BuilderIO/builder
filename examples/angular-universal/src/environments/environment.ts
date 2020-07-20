@@ -4,5 +4,5 @@
 // The list of which env maps to which file can be found in `.angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
 };

@@ -162,7 +162,7 @@ exports.onCreatePage = ({ page, actions }, options) => {
       createPage({
         ...page,
         component: config.custom404Dev,
-        context
+        context,
       });
     } else if (modelName) {
       deletePage(page);

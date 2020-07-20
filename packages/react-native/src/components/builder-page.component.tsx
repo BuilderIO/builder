@@ -423,7 +423,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
       // TODO: data attributes for model, id, etc?
       <View data-name={this.name}>
         <BuilderAsyncRequestsContext.Consumer>
-          {(value) => {
+          {value => {
             this._asyncRequests = value && value.requests;
             this._errors = value && value.errors;
             this._logs = value && value.logs;
@@ -492,7 +492,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
   async handleRequest(propertyName: string, url: string) {
     // TODO: Builder.isEditing = just checks if iframe and parent page is builder.io or localhost:1234
     if (Builder.isIframe && fetchCache[url]) {
-      this.updateState((ctx) => {
+      this.updateState(ctx => {
         ctx[propertyName] = fetchCache[url];
       });
       return fetchCache[url];
@@ -528,7 +528,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
           fetchCache[url] = json;
         }
         // TODO: debounce next tick all of these when there are a bunch
-        this.updateState((ctx) => {
+        this.updateState(ctx => {
           ctx[propertyName] = json;
         });
       }
@@ -538,13 +538,13 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     const existing =
       this._asyncRequests &&
       (this._asyncRequests.find(
-        (req) => isRequestInfo(req) && req.url === url
+        req => isRequestInfo(req) && req.url === url
       ) as RequestInfo | null);
     if (existing) {
       const promise = existing.promise;
-      promise.then((json) => {
+      promise.then(json => {
         if (json) {
-          this.updateState((ctx) => {
+          this.updateState(ctx => {
             ctx[propertyName] = json;
           });
         }
@@ -578,9 +578,9 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     if (options) {
       // TODO: unsubscribe on destroy
       this.subscriptions.add(
-        builder.queueGetContent(options.model, options).subscribe((matches) => {
+        builder.queueGetContent(options.model, options).subscribe(matches => {
           if (matches) {
-            this.updateState((ctx) => {
+            this.updateState(ctx => {
               ctx[propertyName] = matches;
             });
           }
@@ -794,7 +794,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
               const model = builderModelMatch && builderModelMatch[1];
               if (Builder.isEditing && model && builder.editingModel === model) {
                 this.subscriptions.add(
-                  builder.get(model).subscribe((data) => {
+                  builder.get(model).subscribe(data => {
                     this.state.update((state: any) => {
                       state[key] = data;
                     });

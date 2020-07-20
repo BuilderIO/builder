@@ -177,11 +177,10 @@ export class Video extends React.Component<{
                 }
               : null),
           }}
-        >
-        </ReactNativeVideo>
+        ></ReactNativeVideo>
         {aspectRatio ? (
           <View
-          pointerEvents="none"
+            pointerEvents="none"
             style={{
               width: '100%',
               paddingTop: aspectRatio * 100 + '%',

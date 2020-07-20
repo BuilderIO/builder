@@ -1,12 +1,12 @@
-import React from 'react'
-import { withBuilder } from '../../functions/with-builder'
+import React from 'react';
+import { withBuilder } from '../../functions/with-builder';
 
 export interface FormTextAreaProps {
-  attributes?: any
-  name?: string
-  value?: string
-  defaultValue?: string
-  placeholder?: string
+  attributes?: any;
+  name?: string;
+  value?: string;
+  defaultValue?: string;
+  placeholder?: string;
 }
 
 class TextAreaComponent extends React.Component<FormTextAreaProps> {
@@ -19,7 +19,7 @@ class TextAreaComponent extends React.Component<FormTextAreaProps> {
         defaultValue={this.props.defaultValue}
         {...this.props.attributes}
       />
-    )
+    );
   }
 }
 
@@ -31,14 +31,13 @@ export const TextArea = withBuilder(TextAreaComponent, {
     {
       advanced: true,
       name: 'value',
-      type: 'string'
+      type: 'string',
     },
     {
       name: 'name',
       type: 'string',
       required: true,
-      helperText:
-        'Every input in a form needs a unique name describing what it gets, e.g. "email"'
+      helperText: 'Every input in a form needs a unique name describing what it gets, e.g. "email"',
     },
     {
       name: 'defaultValue',
@@ -47,13 +46,13 @@ export const TextArea = withBuilder(TextAreaComponent, {
     {
       name: 'placeholder',
       type: 'string',
-      defaultValue: 'Hello there'
+      defaultValue: 'Hello there',
     },
     {
       name: 'required',
       type: 'boolean',
-      defaultValue: false
-    }
+      defaultValue: false,
+    },
   ],
   defaultStyles: {
     paddingTop: '10px',
@@ -63,8 +62,8 @@ export const TextArea = withBuilder(TextAreaComponent, {
     borderRadius: '3px',
     borderWidth: '1px',
     borderStyle: 'solid',
-    borderColor: '#ccc'
+    borderColor: '#ccc',
   },
   static: true,
-  noWrap: true
-})
+  noWrap: true,
+});

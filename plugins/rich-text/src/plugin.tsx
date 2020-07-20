@@ -1,23 +1,18 @@
 /** @jsx jsx */
-import { jsx } from '@emotion/core'
-import { Builder } from '@builder.io/sdk'
-import ReactQuill from 'react-quill'
-import 'react-quill/dist/quill.snow.css'
+import { jsx } from '@emotion/core';
+import { Builder } from '@builder.io/sdk';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 const modules = {
   toolbar: [
     [{ header: [1, 2, false] }],
     ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-    [
-      { list: 'ordered' },
-      { list: 'bullet' },
-      { indent: '-1' },
-      { indent: '+1' }
-    ],
+    [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
     ['link', 'image'],
-    ['clean']
-  ]
-}
+    ['clean'],
+  ],
+};
 
 const formats = [
   'header',
@@ -30,12 +25,12 @@ const formats = [
   'bullet',
   'indent',
   'link',
-  'image'
-]
+  'image',
+];
 
 interface TextProps {
-  value: string
-  onChange: () => void
+  value: string;
+  onChange: () => void;
 }
 
 function RichTextEditor(props: TextProps) {
@@ -47,7 +42,7 @@ function RichTextEditor(props: TextProps) {
       modules={modules}
       formats={formats}
     />
-  )
+  );
 }
 
 Builder.registerEditor({
@@ -55,5 +50,5 @@ Builder.registerEditor({
    * Here we override the built-in richtext editor.
    */
   name: 'richText',
-  component: RichTextEditor
-})
+  component: RichTextEditor,
+});

@@ -1,18 +1,18 @@
-import React from 'react'
-import { BuilderElement, Builder } from '@builder.io/sdk'
-import { withBuilder } from '../functions/with-builder'
+import React from 'react';
+import { BuilderElement, Builder } from '@builder.io/sdk';
+import { withBuilder } from '../functions/with-builder';
 
 interface Props {
-  code: string
-  builderBlock?: BuilderElement
-  replaceNodes?: boolean
-  scriptsClientOnly?: boolean
+  code: string;
+  builderBlock?: BuilderElement;
+  replaceNodes?: boolean;
+  scriptsClientOnly?: boolean;
 }
 
 // TODO: settings context to pass this down. do in shopify-specific generated code
-const globalReplaceNodes = ({} as { [key: string]: Element[] }) || null
+const globalReplaceNodes = ({} as { [key: string]: Element[] }) || null;
 
-const isShopify = Builder.isBrowser && 'Shopify' in window
+const isShopify = Builder.isBrowser && 'Shopify' in window;
 
 if (Builder.isBrowser && globalReplaceNodes) {
   try {
@@ -20,64 +20,54 @@ if (Builder.isBrowser && globalReplaceNodes) {
     Array.from(
       document.querySelectorAll(
         // Always use replace nodes by default for shopify for liquid compatibility
-        isShopify
-          ? '.builder-custom-code'
-          : '.builder-custom-code.replace-nodes'
+        isShopify ? '.builder-custom-code' : '.builder-custom-code.replace-nodes'
       )
     ).forEach(el => {
-      const parent = el.parentElement
-      const id = parent && parent.getAttribute('builder-id')
+      const parent = el.parentElement;
+      const id = parent && parent.getAttribute('builder-id');
       if (id) {
-        globalReplaceNodes[id] = globalReplaceNodes[id] || []
-        globalReplaceNodes[id].push(el)
+        globalReplaceNodes[id] = globalReplaceNodes[id] || [];
+        globalReplaceNodes[id].push(el);
       }
-    })
+    });
   } catch (err) {
-    console.error('Builder replace nodes error:', err)
+    console.error('Builder replace nodes error:', err);
   }
 }
 
 class CustomCodeComponent extends React.Component<Props> {
-  elementRef: Element | null = null
-  originalRef: Element | null = null
+  elementRef: Element | null = null;
+  originalRef: Element | null = null;
 
-  scriptsInserted = new Set()
-  scriptsRun = new Set()
+  scriptsInserted = new Set();
+  scriptsRun = new Set();
 
-  firstLoad = true
-  replaceNodes: boolean
+  firstLoad = true;
+  replaceNodes: boolean;
 
   constructor(props: Props) {
-    super(props)
+    super(props);
 
-    const id = this.props.builderBlock?.id
+    const id = this.props.builderBlock?.id;
     this.replaceNodes = Boolean(
-      Builder.isBrowser &&
-        (props.replaceNodes || isShopify) &&
-        id &&
-        globalReplaceNodes?.[id]
-    )
+      Builder.isBrowser && (props.replaceNodes || isShopify) && id && globalReplaceNodes?.[id]
+    );
 
-    if (
-      this.replaceNodes &&
-      Builder.isBrowser &&
-      this.firstLoad &&
-      this.props.builderBlock
-    ) {
+    if (this.replaceNodes && Builder.isBrowser && this.firstLoad && this.props.builderBlock) {
       if (id && globalReplaceNodes?.[id]) {
-        const el = globalReplaceNodes[id].shift() || null
-        this.originalRef = el
+        const el = globalReplaceNodes[id].shift() || null;
+        this.originalRef = el;
         if (globalReplaceNodes[id].length === 0) {
-          delete globalReplaceNodes[id]
+          delete globalReplaceNodes[id];
         }
       } else {
         const existing = document.querySelectorAll(
           `.${this.props.builderBlock.id} .builder-custom-code`
-        )
+        );
         if (existing.length === 1) {
-          const node = existing[0]
-          this.originalRef = node as HTMLElement
-          this.originalRef.remove()
+          const node = existing[0];
+          this.originalRef = node as HTMLElement;
+          this.originalRef.remove();
         }
       }
     }
@@ -85,51 +75,46 @@ class CustomCodeComponent extends React.Component<Props> {
 
   get noReactRender() {
     // Don't render liquid client side
-    return Boolean(isShopify && this.props.code?.match(/{[{%]/g))
+    return Boolean(isShopify && this.props.code?.match(/{[{%]/g));
   }
 
   componentDidUpdate(prevProps: Props) {
     if (this.props.code !== prevProps.code) {
-      this.findAndRunScripts()
+      this.findAndRunScripts();
     }
   }
 
   componentDidMount() {
-    this.firstLoad = false
-    this.findAndRunScripts()
-    if (
-      Builder.isBrowser &&
-      this.replaceNodes &&
-      this.originalRef &&
-      this.elementRef
-    ) {
-      this.elementRef.appendChild(this.originalRef)
+    this.firstLoad = false;
+    this.findAndRunScripts();
+    if (Builder.isBrowser && this.replaceNodes && this.originalRef && this.elementRef) {
+      this.elementRef.appendChild(this.originalRef);
     }
   }
 
   findAndRunScripts() {
     if (this.elementRef && typeof window !== 'undefined') {
-      const scripts = this.elementRef.getElementsByTagName('script')
+      const scripts = this.elementRef.getElementsByTagName('script');
       for (let i = 0; i < scripts.length; i++) {
-        const script = scripts[i]
+        const script = scripts[i];
         if (script.src) {
           if (this.scriptsInserted.has(script.src)) {
-            continue
+            continue;
           }
-          this.scriptsInserted.add(script.src)
-          const newScript = document.createElement('script')
-          newScript.async = true
-          newScript.src = script.src
-          document.head.appendChild(newScript)
+          this.scriptsInserted.add(script.src);
+          const newScript = document.createElement('script');
+          newScript.async = true;
+          newScript.src = script.src;
+          document.head.appendChild(newScript);
         } else {
           if (this.scriptsRun.has(script.innerText)) {
-            continue
+            continue;
           }
           try {
-            this.scriptsRun.add(script.innerText)
-            new Function(script.innerText)()
+            this.scriptsRun.add(script.innerText);
+            new Function(script.innerText)();
           } catch (error) {
-            console.warn('Builder custom code component error:', error)
+            console.warn('Builder custom code component error:', error);
           }
         }
       }
@@ -141,9 +126,9 @@ class CustomCodeComponent extends React.Component<Props> {
       return (this.props.code || '').replace(
         /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi,
         ''
-      )
+      );
     }
-    return this.props.code
+    return this.props.code;
   }
 
   render() {
@@ -153,16 +138,13 @@ class CustomCodeComponent extends React.Component<Props> {
       <div
         ref={ref => (this.elementRef = ref)}
         // TODO: add a class when node replaced in (?)
-        className={
-          'builder-custom-code' +
-          (this.props.replaceNodes ? ' replace-nodes' : '')
-        }
+        className={'builder-custom-code' + (this.props.replaceNodes ? ' replace-nodes' : '')}
         {...(!this.replaceNodes &&
           !this.noReactRender && {
-            dangerouslySetInnerHTML: { __html: this.code }
+            dangerouslySetInnerHTML: { __html: this.code },
           })}
       />
-    )
+    );
   }
 }
 
@@ -175,7 +157,7 @@ export const CustomCode = withBuilder(CustomCodeComponent, {
       type: 'html',
       required: true,
       defaultValue: '<p>Hello there, I am custom HTML code!</p>',
-      code: true
+      code: true,
     },
     {
       name: 'replaceNodes',
@@ -183,8 +165,8 @@ export const CustomCode = withBuilder(CustomCodeComponent, {
       helperText: 'Preserve server rendered dom nodes',
       advanced: true,
       ...(isShopify && {
-        defaultValue: true
-      })
+        defaultValue: true,
+      }),
     },
     {
       name: 'scriptsClientOnly',
@@ -193,7 +175,7 @@ export const CustomCode = withBuilder(CustomCodeComponent, {
       // TODO: default true?
       helperText:
         'Only print and run scripts on the client. Important when scripts influence DOM that could be replaced when client loads',
-      advanced: true
-    }
-  ]
-})
+      advanced: true,
+    },
+  ],
+});

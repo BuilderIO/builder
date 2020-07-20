@@ -116,14 +116,12 @@ export class MyPage {
 [Custom fields](https://www.builder.io/c/docs/custom-fields) are a powerful feature when using [custom models](https://www.builder.io/c/docs/guides/getting-started-with-models), for all sorts of customization, such as [SEO optimization](https://www.builder.io/c/docs/seo) of your content
 
 ```html
-<builder-component
-  model="page"
-  (load)="contentLoaded($event)"
->
+<builder-component model="page" (load)="contentLoaded($event)">
   <!-- Default content inside the tag shows while the builder content is fetching -->
   <div class="spinner"></div>
 </builder-component>
 ```
+
 ```ts
 contentLoaded(data) {
   // Data object (via the output $event) includes your custom fields, e.g. if you have a custom field named
@@ -141,8 +139,8 @@ With component models you can also use Builder.io components in/around existing 
 <builder-component model="my-section">Loading..</builder-component>
 <!-- the rest of your page -->
 ```
-You can then use [queries](https://www.builder.io/c/docs/custom-fields) and [targeting](https://www.builder.io/c/docs/guides/targeting-and-scheduling) to customize what content loads where
 
+You can then use [queries](https://www.builder.io/c/docs/custom-fields) and [targeting](https://www.builder.io/c/docs/guides/targeting-and-scheduling) to customize what content loads where
 
 ## Example projects
 

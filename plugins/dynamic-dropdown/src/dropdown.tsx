@@ -1,35 +1,35 @@
 /** @jsx jsx */
-import { jsx } from '@emotion/core'
-import { Builder } from '@builder.io/sdk'
-import React, { useEffect, useState } from 'react'
-import { MenuItem } from '@material-ui/core'
-import TextField from '@material-ui/core/TextField'
-import { getMassagedProps } from './dropdownPropsExtractor'
-import { orchestrateSelections } from './selectionsOrchestrator'
+import { jsx } from '@emotion/core';
+import { Builder } from '@builder.io/sdk';
+import React, { useEffect, useState } from 'react';
+import { MenuItem } from '@material-ui/core';
+import TextField from '@material-ui/core/TextField';
+import { getMassagedProps } from './dropdownPropsExtractor';
+import { orchestrateSelections } from './selectionsOrchestrator';
 
 export const Component = (props: any) => {
-  const [selections, setSelections] = useState([])
+  const [selections, setSelections] = useState([]);
 
   const onSelectChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    const selectedValue = event.target.value ?? null
-    props.onChange(selectedValue)
-  }
+    const selectedValue = event.target.value ?? null;
+    props.onChange(selectedValue);
+  };
 
   const updateSelections = async (url: any, mapper: String) => {
     try {
-      const mappedSelections = await orchestrateSelections(url, mapper)
+      const mappedSelections = await orchestrateSelections(url, mapper);
 
-      setSelections(mappedSelections)
+      setSelections(mappedSelections);
     } catch (e) {
-      console.error('Error', e)
+      console.error('Error', e);
     }
-  }
+  };
 
   useEffect(() => {
-    const { url, mapper } = getMassagedProps(props)
+    const { url, mapper } = getMassagedProps(props);
 
-    updateSelections(url, mapper)
-  }, [props.context.designerState.editingContentModel?.data])
+    updateSelections(url, mapper);
+  }, [props.context.designerState.editingContentModel?.data]);
 
   return (
     <TextField
@@ -50,10 +50,10 @@ export const Component = (props: any) => {
           </MenuItem>
         ))}
     </TextField>
-  )
-}
+  );
+};
 
 Builder.registerEditor({
   name: 'dynamic-dropdown',
-  component: Component
-})
+  component: Component,
+});

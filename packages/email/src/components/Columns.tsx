@@ -138,10 +138,9 @@ export class Columns extends React.Component<ColumnsProps> {
   render() {
     return (
       <Block attributes={this.props.attributes} builderBlock={this.props.builderBlock}>
-        {this.props.stackColumnsAt &&
-          this.props.stackColumnsAt !== 'never' && (
-            <style>
-              {`
+        {this.props.stackColumnsAt && this.props.stackColumnsAt !== 'never' && (
+          <style>
+            {`
           @media only screen and (max-width:${
             this.props.stackColumnsAt === 'mobile' ? 639 : 999
           }px) {
@@ -155,8 +154,8 @@ export class Columns extends React.Component<ColumnsProps> {
             }
           }
         `}
-            </style>
-          )}
+          </style>
+        )}
 
         <table style={{ width: '100%' }} cellPadding="0" cellSpacing="0">
           <tbody>
@@ -167,7 +166,10 @@ export class Columns extends React.Component<ColumnsProps> {
                   {index !== 0 && (
                     <td
                       className={`${this.props.builderBlock.id}-separator-td`}
-                      style={{ width: this.props.space, minWidth: this.props.space }}
+                      style={{
+                        width: this.props.space,
+                        minWidth: this.props.space,
+                      }}
                     />
                   )}
                   <td

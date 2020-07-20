@@ -1,23 +1,23 @@
-import resolve from 'rollup-plugin-node-resolve'
-import commonjs from 'rollup-plugin-commonjs'
-import sourceMaps from 'rollup-plugin-sourcemaps'
-import camelCase from 'lodash.camelcase'
-import typescript from 'rollup-plugin-typescript2'
-import json from 'rollup-plugin-json'
-import replace from 'rollup-plugin-replace'
-import serve from 'rollup-plugin-serve'
+import resolve from 'rollup-plugin-node-resolve';
+import commonjs from 'rollup-plugin-commonjs';
+import sourceMaps from 'rollup-plugin-sourcemaps';
+import camelCase from 'lodash.camelcase';
+import typescript from 'rollup-plugin-typescript2';
+import json from 'rollup-plugin-json';
+import replace from 'rollup-plugin-replace';
+import serve from 'rollup-plugin-serve';
 
-const SERVE = process.env.SERVE === 'true'
+const SERVE = process.env.SERVE === 'true';
 
-const pkg = require('./package.json')
+const pkg = require('./package.json');
 
-const libraryName = 'plugin'
+const libraryName = 'plugin';
 
 export default {
   input: `src/${libraryName}.tsx`,
   // Important! We need to have shared references to 'react' and '@builder.io/sdk'
   // for builder plugins to run properly
-  // Do not change these! If you install new dependenies, that is ok, they should be 
+  // Do not change these! If you install new dependenies, that is ok, they should be
   // left out of this list
   external: [
     'react',
@@ -27,20 +27,20 @@ export default {
     '@emotion/styled',
     'mobx',
     'react-dom',
-    'mobx-react'
+    'mobx-react',
   ],
   output: [
     {
       file: pkg.main,
       name: camelCase(libraryName),
       format: 'umd',
-      sourcemap: true
+      sourcemap: true,
     },
     { file: pkg.module, format: 'es', sourcemap: true },
-    { file: pkg.unpkg, format: 'system', sourcemap: true }
+    { file: pkg.unpkg, format: 'system', sourcemap: true },
   ],
   watch: {
-    include: 'src/**'
+    include: 'src/**',
   },
   plugins: [
     // Allow json resolution
@@ -55,7 +55,7 @@ export default {
     resolve(),
 
     replace({
-      'process.env.NODE_ENV': JSON.stringify('production')
+      'process.env.NODE_ENV': JSON.stringify('production'),
     }),
 
     // Resolve source maps to the original source
@@ -66,10 +66,10 @@ export default {
             contentBase: 'dist',
             port: 1268,
             headers: {
-              'Access-Control-Allow-Origin': '*'
-            }
-          })
+              'Access-Control-Allow-Origin': '*',
+            },
+          }),
         ]
-      : [])
-  ]
-}
+      : []),
+  ],
+};

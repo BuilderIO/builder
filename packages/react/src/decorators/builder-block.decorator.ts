@@ -1,11 +1,9 @@
-import { Builder, Component } from '@builder.io/sdk'
+import { Builder, Component } from '@builder.io/sdk';
 
-interface ReactComponent extends Component {
-
-}
+interface ReactComponent extends Component {}
 
 export function BuilderBlock(options: ReactComponent) {
-  options.type = 'react'
+  options.type = 'react';
 
-  return Builder.Component(options)
+  return Builder.Component(options);
 }

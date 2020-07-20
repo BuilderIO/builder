@@ -1,13 +1,13 @@
-import { BuilderBlock, BuilderBlocks } from '@builder.io/react'
-import React from 'react'
-import { Block } from './Block'
+import { BuilderBlock, BuilderBlocks } from '@builder.io/react';
+import React from 'react';
+import { Block } from './Block';
 
 interface SectionProps {
-  builderBlock?: any
-  attributes?: any
-  children?: any[] // Ideally accept react nodes too
-  verticalAlignContent?: string
-  maxWidth?: number
+  builderBlock?: any;
+  attributes?: any;
+  children?: any[]; // Ideally accept react nodes too
+  verticalAlignContent?: string;
+  maxWidth?: number;
 }
 
 // TODO: acceptsChildren option?
@@ -23,32 +23,32 @@ interface SectionProps {
           responsiveStyles: {
             large: {
               // marginTop: '20px',
-              textAlign: 'center'
-            }
+              textAlign: 'center',
+            },
           },
           component: {
             name: 'Email:Text',
             options: {
               text:
-                "<span>I am a section! My content keeps from getting too wide, so that it's easy to read even on big screens. Lorem ipsum dolor kismet etc etc :)</span>"
-            }
-          }
-        }
+                "<span>I am a section! My content keeps from getting too wide, so that it's easy to read even on big screens. Lorem ipsum dolor kismet etc etc :)</span>",
+            },
+          },
+        },
       ],
       // showNoBlocks: false
-      hideFromUI: true
+      hideFromUI: true,
     },
     {
       name: 'maxWidth',
       type: 'number',
-      defaultValue: 800
+      defaultValue: 800,
     },
     {
       name: 'verticalAlignContent',
       type: 'string',
       enum: ['top', 'bottom', 'middle'],
-      defaultValue: 'top'
-    }
+      defaultValue: 'top',
+    },
   ],
   defaultStyles: {
     // height: '200px',
@@ -56,8 +56,8 @@ interface SectionProps {
     paddingRight: '20px',
     paddingTop: '50px',
     paddingBottom: '50px',
-    marginTop: '0px'
-  }
+    marginTop: '0px',
+  },
   // acceptChildren: 'children'
   // Share these hooks across the projects
   // hooks: {
@@ -79,7 +79,7 @@ export class Section extends React.Component<SectionProps> {
           cellSpacing="0"
           {...{
             width: '100%',
-            border: '0'
+            border: '0',
           }}
         >
           <tbody>
@@ -105,9 +105,7 @@ export class Section extends React.Component<SectionProps> {
                       <td> */}
                 {/* Wrapper for Safari */}
                 {/* Or should be inline-block with width: 100%? */}
-                <div
-                  style={{ margin: 'auto', maxWidth: this.props.maxWidth }}
-                >
+                <div style={{ margin: 'auto', maxWidth: this.props.maxWidth }}>
                   <BuilderBlocks blocks={this.props.children} dataPath="children" emailMode />
                 </div>
                 {/* </td>
@@ -120,6 +118,6 @@ export class Section extends React.Component<SectionProps> {
           </tbody>
         </table>
       </Block>
-    )
+    );
   }
 }

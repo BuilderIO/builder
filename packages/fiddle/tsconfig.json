@@ -8,6 +8,7 @@
     "sourceMap": true,
     "jsx": "react",
     "declaration": true,
+    "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,

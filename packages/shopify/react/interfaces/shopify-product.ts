@@ -74,4 +74,3 @@ export interface ShopifyProduct {
   images: Image[];
   image: Image2;
 }
-

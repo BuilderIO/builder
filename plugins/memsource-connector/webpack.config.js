@@ -1,5 +1,5 @@
-const path = require('path')
-const pkg = require("./package.json")
+const path = require('path');
+const pkg = require('./package.json');
 module.exports = {
   entry: `./src/${pkg.entry}.tsx`,
   externals: {
@@ -43,4 +43,4 @@ module.exports = {
       'Access-Control-Allow-Origin': '*'
     }
   }
-}
+};

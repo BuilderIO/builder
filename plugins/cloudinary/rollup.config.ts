@@ -1,16 +1,16 @@
-import resolve from 'rollup-plugin-node-resolve'
-import commonjs from 'rollup-plugin-commonjs'
-import sourceMaps from 'rollup-plugin-sourcemaps'
-import camelCase from 'lodash.camelcase'
-import typescript from 'rollup-plugin-typescript2'
-import json from 'rollup-plugin-json'
-import serve from 'rollup-plugin-serve'
+import resolve from 'rollup-plugin-node-resolve';
+import commonjs from 'rollup-plugin-commonjs';
+import sourceMaps from 'rollup-plugin-sourcemaps';
+import camelCase from 'lodash.camelcase';
+import typescript from 'rollup-plugin-typescript2';
+import json from 'rollup-plugin-json';
+import serve from 'rollup-plugin-serve';
 
-const SERVE = process.env.SERVE === 'true'
+const SERVE = process.env.SERVE === 'true';
 
-const pkg = require('./package.json')
+const pkg = require('./package.json');
 
-const libraryName = 'CloudinaryImageEditor'
+const libraryName = 'CloudinaryImageEditor';
 
 export default {
   input: `src/${libraryName}.tsx`,
@@ -18,12 +18,17 @@ export default {
   // for builder plugins to run properly
   external: ['react', '@builder.io/sdk', '@material-ui/core', '@emotion/core', '@emotion/styled'],
   output: [
-    { file: pkg.main, name: camelCase(libraryName), format: 'umd', sourcemap: true },
+    {
+      file: pkg.main,
+      name: camelCase(libraryName),
+      format: 'umd',
+      sourcemap: true,
+    },
     { file: pkg.module, format: 'es', sourcemap: true },
-    { file: pkg.unpkg, format: 'system', sourcemap: true }
+    { file: pkg.unpkg, format: 'system', sourcemap: true },
   ],
   watch: {
-    include: 'src/**'
+    include: 'src/**',
   },
   plugins: [
     // Allow json resolution
@@ -46,9 +51,9 @@ export default {
             port: 1268,
             headers: {
               'Access-Control-Allow-Origin': '*',
-            }
-          })
+            },
+          }),
         ]
-      : [])
-  ]
-}
+      : []),
+  ],
+};

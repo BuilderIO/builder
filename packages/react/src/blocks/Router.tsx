@@ -1,79 +1,79 @@
 /** @jsx jsx */
-import { jsx } from '@emotion/core'
-import React from 'react'
-import { BuilderElement, builder, Builder } from '@builder.io/sdk'
-import { BuilderStoreContext } from '../store/builder-store'
-import { BuilderPage } from '../components/builder-page.component'
-import { withBuilder } from '../functions/with-builder'
+import { jsx } from '@emotion/core';
+import React from 'react';
+import { BuilderElement, builder, Builder } from '@builder.io/sdk';
+import { BuilderStoreContext } from '../store/builder-store';
+import { BuilderPage } from '../components/builder-page.component';
+import { withBuilder } from '../functions/with-builder';
 
 export interface RouterProps {
-  model?: string
-  data?: string
-  content?: any
-  handleRouting?: boolean
-  builderBlock?: BuilderElement
-  preloadOnHover?: boolean
-  onRoute?: (routeEvent: RouteEvent) => void
+  model?: string;
+  data?: string;
+  content?: any;
+  handleRouting?: boolean;
+  builderBlock?: BuilderElement;
+  preloadOnHover?: boolean;
+  onRoute?: (routeEvent: RouteEvent) => void;
 }
 
-const prefetched = new Set()
+const prefetched = new Set();
 
 // TODO: share this
 function searchToObject(location: Location) {
-  const pairs = (location.search || '').substring(1).split('&')
-  const obj: { [key: string]: string } = {}
+  const pairs = (location.search || '').substring(1).split('&');
+  const obj: { [key: string]: string } = {};
 
   for (const i in pairs) {
-    if (pairs[i] === '') continue
-    const pair = pairs[i].split('=')
-    obj[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1])
+    if (pairs[i] === '') continue;
+    const pair = pairs[i].split('=');
+    obj[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
   }
 
-  return obj
+  return obj;
 }
 
 export interface RouteEvent {
   /**
    * Url being routed to
    */
-  url: string
+  url: string;
   /**
    * Html anchor element the href is on that
    * caused the route
    */
-  anchorNode: HTMLAnchorElement
+  anchorNode: HTMLAnchorElement;
   /**
    * Has preventDefault() been called preventing
    * builder from routing to the clicked URL
    */
-  defaultPrevented: boolean
+  defaultPrevented: boolean;
   /**
    * Prevents builder from handling routing for you to handle
    * yourself
    */
-  preventDefault(): void
+  preventDefault(): void;
 }
 
 class RouterComponent extends React.Component<RouterProps> {
-  builder = builder
+  builder = builder;
 
-  routed = false
+  routed = false;
 
-  private preloadQueue = 0
+  private preloadQueue = 0;
 
   // TODO: handle route to same url as current (do nothing)
   // TODO: replaceState option
   public route(url: string) {
-    this.routed = true
+    this.routed = true;
 
     // TODO: check if relative?
     if (window.history && window.history.pushState) {
-      history.pushState(null, '', url)
-      this.updateLocationState()
-      return true
+      history.pushState(null, '', url);
+      this.updateLocationState();
+      return true;
     } else {
-      location.href = url
-      return false
+      location.href = url;
+      return false;
     }
   }
 
@@ -87,124 +87,124 @@ class RouterComponent extends React.Component<RouterProps> {
           pathname: location.pathname,
           search: location.search,
           path: location.pathname.split('/').slice(1),
-          query: searchToObject(location)
-        }
-      })
+          query: searchToObject(location),
+        };
+      });
     }
   }
 
   private get model() {
-    return this.props.model || 'page'
+    return this.props.model || 'page';
   }
 
   componentDidMount() {
     if (typeof document !== 'undefined') {
-      document.addEventListener('click', this.onClick)
-      window.addEventListener('popstate', this.onPopState)
-      document.addEventListener('mouseover', this.onMouseOverOrTouchStart)
-      document.addEventListener('touchstart', this.onMouseOverOrTouchStart)
+      document.addEventListener('click', this.onClick);
+      window.addEventListener('popstate', this.onPopState);
+      document.addEventListener('mouseover', this.onMouseOverOrTouchStart);
+      document.addEventListener('touchstart', this.onMouseOverOrTouchStart);
     }
   }
 
   componentWillUnmount() {
     if (typeof document !== 'undefined') {
-      document.removeEventListener('click', this.onClick)
-      document.removeEventListener('mouseover', this.onMouseOverOrTouchStart)
-      window.removeEventListener('popstate', this.onPopState)
-      document.removeEventListener('touchstart', this.onMouseOverOrTouchStart)
+      document.removeEventListener('click', this.onClick);
+      document.removeEventListener('mouseover', this.onMouseOverOrTouchStart);
+      window.removeEventListener('popstate', this.onPopState);
+      document.removeEventListener('touchstart', this.onMouseOverOrTouchStart);
     }
   }
 
   private onPopState = (event: Event) => {
-    this.updateLocationState()
-  }
+    this.updateLocationState();
+  };
 
   private onMouseOverOrTouchStart = (event: MouseEvent | TouchEvent) => {
     if (this.preloadQueue > 4) {
-      return
+      return;
     }
 
     if (this.props.preloadOnHover === false) {
-      return
+      return;
     }
 
-    const hrefTarget = this.findHrefTarget(event)
+    const hrefTarget = this.findHrefTarget(event);
     if (!hrefTarget) {
-      return
+      return;
     }
 
-    let href = hrefTarget.getAttribute('href')
+    let href = hrefTarget.getAttribute('href');
     if (!href) {
-      return
+      return;
     }
 
     // TODO: onPreload hook and preload dom event
     // Also allow that to be defaultPrevented to cancel this behavior
     if (!this.isRelative(href)) {
-      const converted = this.convertToRelative(href)
+      const converted = this.convertToRelative(href);
       if (converted) {
-        href = converted
+        href = converted;
       } else {
-        return
+        return;
       }
     }
 
     if (href.startsWith('#')) {
-      return
+      return;
     }
 
     if (prefetched.has(href)) {
-      return
+      return;
     }
-    prefetched.add(href)
+    prefetched.add(href);
 
-    const parsedUrl = this.parseUrl(href)
+    const parsedUrl = this.parseUrl(href);
 
     // TODO: override location!
-    this.preloadQueue++
+    this.preloadQueue++;
 
     // TODO: use builder from context
-    const attributes = builder.getUserAttributes()
-    attributes.urlPath = parsedUrl.pathname
-    attributes.queryString = parsedUrl.search
+    const attributes = builder.getUserAttributes();
+    attributes.urlPath = parsedUrl.pathname;
+    attributes.queryString = parsedUrl.search;
 
     // Should be queue?
     const subscription = builder
       .get(this.model, {
         userAttributes: attributes,
-        key: this.model + ':' + parsedUrl.pathname + parsedUrl.search
+        key: this.model + ':' + parsedUrl.pathname + parsedUrl.search,
       })
       .subscribe(() => {
-        this.preloadQueue--
-        subscription.unsubscribe()
-      })
-  }
+        this.preloadQueue--;
+        subscription.unsubscribe();
+      });
+  };
 
   private onClick = async (event: MouseEvent) => {
     if (this.props.handleRouting === false) {
-      return
+      return;
     }
 
     if (event.button !== 0 || event.ctrlKey || event.defaultPrevented || event.metaKey) {
       // If this is a non-left click, or the user is holding ctr/cmd, or the url is absolute,
       // or if the link has a target attribute, don't route on the client and let the default
       // href property handle the navigation
-      return
+      return;
     }
 
-    const hrefTarget = this.findHrefTarget(event)
+    const hrefTarget = this.findHrefTarget(event);
     if (!hrefTarget) {
-      return
+      return;
     }
 
     // target="_blank" or target="_self" etc
     if (hrefTarget.target && hrefTarget.target !== '_client') {
-      return
+      return;
     }
 
-    let href = hrefTarget.getAttribute('href')
+    let href = hrefTarget.getAttribute('href');
     if (!href) {
-      return
+      return;
     }
 
     if (this.props.onRoute) {
@@ -212,51 +212,51 @@ class RouterComponent extends React.Component<RouterProps> {
         url: href,
         anchorNode: hrefTarget,
         preventDefault() {
-          this.defaultPrevented = true
+          this.defaultPrevented = true;
         },
-        defaultPrevented: false
-      }
+        defaultPrevented: false,
+      };
 
-      this.props.onRoute(routeEvent)
+      this.props.onRoute(routeEvent);
 
       if (routeEvent.defaultPrevented) {
         // Wait should this be here? they may want browser to handle this by deault preventing ours...
         // event.preventDefault()
-        return
+        return;
       }
     }
 
     if (!this.isRelative(href)) {
-      const converted = this.convertToRelative(href)
+      const converted = this.convertToRelative(href);
       if (converted) {
-        href = converted
+        href = converted;
       } else {
-        return
+        return;
       }
     }
 
     if (href.startsWith('#')) {
-      return
+      return;
     }
 
     // Otherwise if this url is relative, navigate on the client
-    event.preventDefault()
+    event.preventDefault();
 
-    this.route(href)
-  }
+    this.route(href);
+  };
 
   render() {
-    const { model } = this
+    const { model } = this;
     return (
       <BuilderStoreContext.Consumer>
         {state => {
-          this.privateState = state
+          this.privateState = state;
           // TODO: useEffect based on this that fetches new data and
           // populates as content={} param for fast updates
           const url =
             state.state &&
             state.state.location &&
-            state.state.location.pathname + state.state.location.search
+            state.state.location.pathname + state.state.location.search;
 
           return (
             <div className="builder-router" data-model={model}>
@@ -287,14 +287,14 @@ class RouterComponent extends React.Component<RouterProps> {
               `}</style>
               <BuilderPage
                 // TODO: this key strategy is inidial bc it gives loading for full page when fetching content
-                // Also sometimes content flashes to loading even when it's already precached in memory and should immediately display 
+                // Also sometimes content flashes to loading even when it's already precached in memory and should immediately display
                 // - why
                 key={url}
                 data={this.props.data}
                 content={this.routed ? undefined : this.props.content}
                 modelName={model}
                 options={{
-                  key: Builder.isEditing ? undefined : this.model + ':' + url // TODO: other custom targets specify if should refetch components on change
+                  key: Builder.isEditing ? undefined : this.model + ':' + url, // TODO: other custom targets specify if should refetch components on change
                 }}
               >
                 {/* TODO: builder blocks option for loading stuff */}
@@ -306,61 +306,61 @@ class RouterComponent extends React.Component<RouterProps> {
                 )}
               </BuilderPage>
             </div>
-          )
+          );
         }}
       </BuilderStoreContext.Consumer>
-    )
+    );
   }
 
   private findHrefTarget(event: MouseEvent | TouchEvent): HTMLAnchorElement | null {
     // TODO: move to core
-    let element = event.target as HTMLElement | null
+    let element = event.target as HTMLElement | null;
 
     while (element) {
       if (element instanceof HTMLAnchorElement && element.getAttribute('href')) {
-        return element
+        return element;
       }
 
       if (element === event.currentTarget) {
-        break
+        break;
       }
 
-      element = element.parentElement
+      element = element.parentElement;
     }
 
-    return null
+    return null;
   }
 
   private isRelative(href: string) {
-    return !href.match(/^(\/\/|https?:\/\/)/i)
+    return !href.match(/^(\/\/|https?:\/\/)/i);
   }
 
   private privateState: {
-    state: any
-    update: (mutator: (state: any) => any) => void
-  } | null = null
+    state: any;
+    update: (mutator: (state: any) => any) => void;
+  } | null = null;
 
   // This method can only be called client side only. It is only invoked on click events
   private parseUrl(url: string) {
-    const a = document.createElement('a')
-    a.href = url
-    return a
+    const a = document.createElement('a');
+    a.href = url;
+    return a;
   }
 
   private convertToRelative(href: string): string | null {
-    const currentUrl = this.parseUrl(location.href)
-    const hrefUrl = this.parseUrl(href)
+    const currentUrl = this.parseUrl(location.href);
+    const hrefUrl = this.parseUrl(href);
 
     if (currentUrl.host === hrefUrl.host) {
-      const relativeUrl = hrefUrl.pathname + (hrefUrl.search ? hrefUrl.search : '')
+      const relativeUrl = hrefUrl.pathname + (hrefUrl.search ? hrefUrl.search : '');
 
       if (relativeUrl.startsWith('#')) {
-        return null
+        return null;
       }
-      return relativeUrl || '/'
+      return relativeUrl || '/';
     }
 
-    return null
+    return null;
   }
 }
 
@@ -374,25 +374,25 @@ export const Router = withBuilder(RouterComponent, {
       name: 'model',
       type: 'string',
       defaultValue: 'page',
-      advanced: true
+      advanced: true,
     },
     {
       name: 'handleRouting',
       type: 'boolean',
       defaultValue: true,
-      advanced: true
+      advanced: true,
     },
     {
       name: 'preloadOnHover',
       type: 'boolean',
       defaultValue: true,
-      advanced: true
+      advanced: true,
     },
     {
       name: 'onRoute',
       type: 'function',
-      advanced: true
+      advanced: true,
       // Subfields are function arguments - object with properties
-    }
-  ]
-})
+    },
+  ],
+});

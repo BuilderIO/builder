@@ -1,6 +1,11 @@
 {
   "parser": "@typescript-eslint/parser",
-  "extends": ["eslint-config-blvd/react", "prettier/@typescript-eslint", "prettier/react", "plugin:prettier/recommended"],
+  "extends": [
+    "eslint-config-blvd/react",
+    "prettier/@typescript-eslint",
+    "prettier/react",
+    "plugin:prettier/recommended"
+  ],
   "parserOptions": {
     "ecmaVersion": 2018,
     "sourceType": "module",
@@ -20,7 +25,10 @@
     "react/no-unescaped-entities": [
       "error",
       {
-        "forbid": [{ "char": ">", "alternatives": ["&gt;"] }, { "char": "}", "alternatives": ["&#125;"] }]
+        "forbid": [
+          { "char": ">", "alternatives": ["&gt;"] },
+          { "char": "}", "alternatives": ["&#125;"] }
+        ]
       }
     ]
   }

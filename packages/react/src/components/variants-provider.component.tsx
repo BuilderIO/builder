@@ -1,23 +1,18 @@
-import * as React from 'react'
-import {
-  builder,
-  Builder,
-  BuilderContent,
-  BuilderContentVariation
-} from '@builder.io/sdk'
+import * as React from 'react';
+import { builder, Builder, BuilderContent, BuilderContentVariation } from '@builder.io/sdk';
 
 function getData(content: BuilderContentVariation) {
   if (typeof content?.data === 'undefined') {
-    return undefined
+    return undefined;
   }
 
   const newData: any = {
     ...content.data,
-    blocks: content.data.blocks || JSON.parse(content.data.blocksString)
-  }
+    blocks: content.data.blocks || JSON.parse(content.data.blocksString),
+  };
 
-  delete newData.blocksString
-  return newData
+  delete newData.blocksString;
+  return newData;
 }
 
 const variantsScript = (variantsString: string, contentId: string) =>
@@ -90,79 +85,72 @@ const variantsScript = (variantsString: string, contentId: string) =>
   } else if (variants.length > 0) {
     removeVariants();
   }
-})()`.replace(/\s+/g, ' ')
+})()`.replace(/\s+/g, ' ');
 
 interface VariantsProviderProps {
-  initialContent: BuilderContent
-  children: (
-    variants: BuilderContent[],
-    renderScript?: () => JSX.Element
-  ) => JSX.Element
+  initialContent: BuilderContent;
+  children: (variants: BuilderContent[], renderScript?: () => JSX.Element) => JSX.Element;
 }
 
 export const VariantsProvider: React.SFC<VariantsProviderProps> = ({
   initialContent,
-  children
+  children,
 }) => {
-  const hasTests = Boolean(Object.keys(initialContent?.variations || {}).length)
+  const hasTests = Boolean(Object.keys(initialContent?.variations || {}).length);
 
   // when it's not isStatic variants are already elected by the sdk
-  if (!hasTests) return children([initialContent])
+  if (!hasTests) return children([initialContent]);
 
-  const variants: BuilderContent[] = Object.keys(
-    initialContent.variations!
-  ).map(id => ({
+  const variants: BuilderContent[] = Object.keys(initialContent.variations!).map(id => ({
     id,
     ...initialContent.variations![id],
-    data: getData(initialContent.variations![id]!)
-  }))
+    data: getData(initialContent.variations![id]!),
+  }));
 
-  const allVariants = [...variants, initialContent]
+  const allVariants = [...variants, initialContent];
   if (Builder.isServer) {
     const variantsJson = JSON.stringify(
       Object.keys(initialContent.variations || {}).map(item => ({
         id: item,
-        testRatio: initialContent.variations![item]!.testRatio
+        testRatio: initialContent.variations![item]!.testRatio,
       }))
-    )
+    );
     const renderScript = () => (
       <script
         dangerouslySetInnerHTML={{
-          __html: variantsScript(variantsJson, initialContent.id!)
+          __html: variantsScript(variantsJson, initialContent.id!),
         }}
       ></script>
-    )
+    );
 
     // render all variants on the server side
-    return (
-      <React.Fragment>{children(allVariants, renderScript)}</React.Fragment>
-    )
+    return <React.Fragment>{children(allVariants, renderScript)}</React.Fragment>;
   }
 
-  const cookieName = `builder.tests.${initialContent.id}`
+  const cookieName = `builder.tests.${initialContent.id}`;
 
-  let variantId = builder.getCookie(cookieName)
+  let variantId = builder.getCookie(cookieName);
 
   if (!variantId && Builder.isBrowser) {
-    let n = 0
-    let set = false
-    const random = Math.random()
+    let n = 0;
+    let set = false;
+    const random = Math.random();
     for (let i = 0; i < variants.length; i++) {
-      const variant = variants[i]
-      const testRatio = variant.testRatio
-      n += testRatio!
+      const variant = variants[i];
+      const testRatio = variant.testRatio;
+      n += testRatio!;
       if (random < n) {
-        builder.setCookie(cookieName, variant.id)
-        variantId = variant.id
+        builder.setCookie(cookieName, variant.id);
+        variantId = variant.id;
       }
     }
   }
 
   if (!variantId) {
     // render initial content when no winning variation or on the server
-    variantId = initialContent.id
-    builder.setCookie(cookieName, variantId)
+    variantId = initialContent.id;
+    builder.setCookie(cookieName, variantId);
   }
 
-  return children([allVariants.find(item => item.id === variantId)!])
-}
+  return children([allVariants.find(item => item.id === variantId)!]);
+};

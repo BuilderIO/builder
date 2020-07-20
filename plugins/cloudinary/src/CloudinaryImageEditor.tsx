@@ -1,59 +1,56 @@
 /** @jsx jsx */
-import React from 'react'
-import { jsx } from '@emotion/core'
-import { Builder } from '@builder.io/sdk'
-import { Typography, Button } from '@material-ui/core'
-import {
-  CloudinaryMediaLibraryDialog,
-  CloudinaryImage
-} from './CloudinaryMediaLibraryDialog'
-import CloudinayCredentialsDialog from './CloudinaryCredentialsDialog'
+import React from 'react';
+import { jsx } from '@emotion/core';
+import { Builder } from '@builder.io/sdk';
+import { Typography, Button } from '@material-ui/core';
+import { CloudinaryMediaLibraryDialog, CloudinaryImage } from './CloudinaryMediaLibraryDialog';
+import CloudinayCredentialsDialog from './CloudinaryCredentialsDialog';
 
 interface Props {
-  value?: any
-  onChange(newValue: CloudinaryImage): void
-  context: any
+  value?: any;
+  onChange(newValue: CloudinaryImage): void;
+  context: any;
 }
 
 // No need to use username for cloudinary login if SSO is enabled
 interface CloudinaryImageEditorState {
-  showDialog: boolean
-  apiKey: string | undefined
-  cloudName: string | undefined
-  requestCredentials: boolean
-  selectedImagePublicId: string | undefined
+  showDialog: boolean;
+  apiKey: string | undefined;
+  cloudName: string | undefined;
+  requestCredentials: boolean;
+  selectedImagePublicId: string | undefined;
 }
 
-type ButtonVariant = 'text' | 'contained'
+type ButtonVariant = 'text' | 'contained';
 
 export default class CloudinaryImageEditor extends React.Component<
   Props,
   CloudinaryImageEditorState
 > {
   get organization() {
-    return this.props.context.user.organization
+    return this.props.context.user.organization;
   }
 
   get cloudinaryCloud(): string | undefined {
-    return this.organization.value.settings.plugins.get('cloudinaryCloud')
+    return this.organization.value.settings.plugins.get('cloudinaryCloud');
   }
 
   set cloudinaryCloud(cloud: string | undefined) {
-    this.organization.value.settings.plugins.set('cloudinaryCloud', cloud)
-    this.organization.save()
+    this.organization.value.settings.plugins.set('cloudinaryCloud', cloud);
+    this.organization.save();
   }
 
   get cloudinaryKey(): string | undefined {
-    return this.organization.value.settings.plugins.get('cloudinaryKey')
+    return this.organization.value.settings.plugins.get('cloudinaryKey');
   }
 
   set cloudinaryKey(key: string | undefined) {
-    this.organization.value.settings.plugins.set('cloudinaryKey', key)
-    this.organization.save()
+    this.organization.value.settings.plugins.set('cloudinaryKey', key);
+    this.organization.save();
   }
 
   constructor(props: any) {
-    super(props)
+    super(props);
 
     this.state = {
       requestCredentials: false,
@@ -63,25 +60,25 @@ export default class CloudinaryImageEditor extends React.Component<
       selectedImagePublicId:
         props.value && props.value.get && props.value.get('public_id')
           ? props.value.get('public_id')
-          : ''
-    }
+          : '',
+    };
   }
 
   private closeDialog() {
     this.setState({
       requestCredentials: false,
-      showDialog: false
-    })
+      showDialog: false,
+    });
   }
 
   private appendMediaLibraryScriptToPlugin() {
-    const previousScript = document.getElementById('cloudinaryScript')
+    const previousScript = document.getElementById('cloudinaryScript');
     if (!previousScript) {
-      const script = document.createElement('script')
-      script.async = true
-      script.src = `https://media-library.cloudinary.com/global/all.js`
-      script.id = 'cloudinaryScript'
-      document.head.appendChild(script)
+      const script = document.createElement('script');
+      script.async = true;
+      script.src = `https://media-library.cloudinary.com/global/all.js`;
+      script.id = 'cloudinaryScript';
+      document.head.appendChild(script);
     }
   }
 
@@ -91,59 +88,57 @@ export default class CloudinaryImageEditor extends React.Component<
       this.state.cloudName === '' ||
       this.state.apiKey === undefined ||
       this.state.cloudName === undefined
-    )
+    );
   }
 
   private shouldRequestCloudinaryCredentials() {
-    return (
-      this.state.requestCredentials || this.areCloudinaryCredentialsNotSet()
-    )
+    return this.state.requestCredentials || this.areCloudinaryCredentialsNotSet();
   }
 
   private updateCloudinaryCredentials(apiKey: string, cloudName: string) {
-    this.cloudinaryKey = apiKey
-    this.cloudinaryCloud = cloudName
+    this.cloudinaryKey = apiKey;
+    this.cloudinaryCloud = cloudName;
     this.setState({
       apiKey: this.cloudinaryKey,
-      cloudName: this.cloudinaryCloud
-    })
+      cloudName: this.cloudinaryCloud,
+    });
   }
 
   private calculateChooseImageButtonVariant(): ButtonVariant {
-    return this.areCloudinaryCredentialsNotSet() ? 'contained' : 'text'
+    return this.areCloudinaryCredentialsNotSet() ? 'contained' : 'text';
   }
 
   private selectImage(image: CloudinaryImage) {
-    this.props.onChange(image)
-    this.setState({ selectedImagePublicId: image.public_id })
+    this.props.onChange(image);
+    this.setState({ selectedImagePublicId: image.public_id });
   }
 
   buildSelectedIdMessage(): string {
     if (this.state.selectedImagePublicId) {
-      return `Public id: ${this.state.selectedImagePublicId}`
+      return `Public id: ${this.state.selectedImagePublicId}`;
     }
 
-    return 'Please choose an image'
+    return 'Please choose an image';
   }
 
   buildChooseImageText(): string {
     if (this.state.selectedImagePublicId) {
-      return `UPDATE IMAGE`
+      return `UPDATE IMAGE`;
     }
 
-    return 'CHOOSE IMAGE'
+    return 'CHOOSE IMAGE';
   }
 
   componentDidMount() {
-    this.appendMediaLibraryScriptToPlugin()
+    this.appendMediaLibraryScriptToPlugin();
   }
 
   render() {
-    const shouldRequestCloudinarySettings = this.shouldRequestCloudinaryCredentials()
-    const setCredentialsButtonVariant = this.calculateChooseImageButtonVariant()
-    const selectedPublicIdMessage = this.buildSelectedIdMessage()
-    const chooseImageButtonText = this.buildChooseImageText()
-    const buttonStyle = { width: '45%', margin: '5px' }
+    const shouldRequestCloudinarySettings = this.shouldRequestCloudinaryCredentials();
+    const setCredentialsButtonVariant = this.calculateChooseImageButtonVariant();
+    const selectedPublicIdMessage = this.buildSelectedIdMessage();
+    const chooseImageButtonText = this.buildChooseImageText();
+    const buttonStyle = { width: '45%', margin: '5px' };
     return (
       <div css={{ padding: '15px 0' }}>
         <Typography variant="caption">Cloudinary image picker</Typography>
@@ -151,9 +146,7 @@ export default class CloudinaryImageEditor extends React.Component<
           <CloudinayCredentialsDialog
             openDialog={this.state.showDialog}
             closeDialog={this.closeDialog.bind(this)}
-            updateCloudinaryCredentials={this.updateCloudinaryCredentials.bind(
-              this
-            )}
+            updateCloudinaryCredentials={this.updateCloudinaryCredentials.bind(this)}
             apiKey={this.state.apiKey}
             cloudName={this.state.cloudName}
           />
@@ -176,8 +169,8 @@ export default class CloudinaryImageEditor extends React.Component<
             variant="contained"
             onClick={() => {
               this.setState({
-                showDialog: !this.state.showDialog
-              })
+                showDialog: !this.state.showDialog,
+              });
             }}
           >
             {chooseImageButtonText}
@@ -190,8 +183,8 @@ export default class CloudinaryImageEditor extends React.Component<
             onClick={() => {
               this.setState({
                 requestCredentials: true,
-                showDialog: !this.state.showDialog
-              })
+                showDialog: !this.state.showDialog,
+              });
             }}
           >
             Set credentials
@@ -203,11 +196,11 @@ export default class CloudinaryImageEditor extends React.Component<
           </Typography>
         </div>
       </div>
-    )
+    );
   }
 }
 
 Builder.registerEditor({
   name: 'cloudinaryImageEditor',
-  component: CloudinaryImageEditor
-})
+  component: CloudinaryImageEditor,
+});

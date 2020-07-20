@@ -1,14 +1,14 @@
 /** @jsx jsx */
-import { jsx } from '@emotion/core'
-import React from 'react'
+import { jsx } from '@emotion/core';
+import React from 'react';
 
-import { BuilderElement } from '@builder.io/sdk'
-import { BuilderBlocks } from '../components/builder-blocks.component'
-import { builder } from '@builder.io/sdk'
-import { withBuilder } from '../functions/with-builder'
-import { Link } from '../components/Link'
+import { BuilderElement } from '@builder.io/sdk';
+import { BuilderBlocks } from '../components/builder-blocks.component';
+import { builder } from '@builder.io/sdk';
+import { withBuilder } from '../functions/with-builder';
+import { Link } from '../components/Link';
 
-const DEFAULT_ASPECT_RATIO = 0.7004048582995948
+const DEFAULT_ASPECT_RATIO = 0.7004048582995948;
 
 const defaultBlocks: BuilderElement[] = [
   {
@@ -23,8 +23,8 @@ const defaultBlocks: BuilderElement[] = [
         marginTop: '30px',
         textAlign: 'center',
         lineHeight: 'normal',
-        height: 'auto'
-      }
+        height: 'auto',
+      },
     },
     component: {
       name: 'Image',
@@ -33,9 +33,9 @@ const defaultBlocks: BuilderElement[] = [
           'https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d',
         backgroundPosition: 'center',
         backgroundSize: 'cover',
-        aspectRatio: DEFAULT_ASPECT_RATIO
-      }
-    }
+        aspectRatio: DEFAULT_ASPECT_RATIO,
+      },
+    },
   },
   {
     '@type': '@builder.io/sdk:Element',
@@ -49,40 +49,40 @@ const defaultBlocks: BuilderElement[] = [
         marginTop: '30px',
         textAlign: 'center',
         lineHeight: 'normal',
-        height: 'auto'
-      }
+        height: 'auto',
+      },
     },
     component: {
       name: 'Text',
       options: {
-        text: '<p>Enter some text...</p>'
-      }
-    }
-  }
-]
+        text: '<p>Enter some text...</p>',
+      },
+    },
+  },
+];
 
 class ColumnsComponent extends React.Component<any> {
   // TODO: Column interface
   get columns(): any[] {
-    return this.props.columns || []
+    return this.props.columns || [];
   }
 
   get gutterSize(): number {
-    return typeof this.props.space === 'number' ? this.props.space || 0 : 20
+    return typeof this.props.space === 'number' ? this.props.space || 0 : 20;
   }
 
   getWidth(index: number) {
-    return (this.columns[index] && this.columns[index].width) || 100 / this.columns.length
+    return (this.columns[index] && this.columns[index].width) || 100 / this.columns.length;
   }
 
   getColumnWidth(index: number) {
-    const { columns, gutterSize } = this
-    const subtractWidth = (gutterSize * (columns.length - 1)) / columns.length
-    return `calc(${this.getWidth(index)}% - ${subtractWidth}px)`
+    const { columns, gutterSize } = this;
+    const subtractWidth = (gutterSize * (columns.length - 1)) / columns.length;
+    return `calc(${this.getWidth(index)}% - ${subtractWidth}px)`;
   }
 
   render() {
-    const { columns, gutterSize } = this
+    const { columns, gutterSize } = this;
 
     return (
       // FIXME: make more elegant
@@ -94,13 +94,13 @@ class ColumnsComponent extends React.Component<any> {
             ...(this.props.stackColumnsAt !== 'never' && {
               [`@media (max-width: ${this.props.stackColumnsAt !== 'tablet' ? 639 : 999}px)`]: {
                 flexDirection: this.props.reverseColumnsWhenStacked ? 'column-reverse' : 'column',
-                alignItems: 'stretch'
-              }
-            })
+                alignItems: 'stretch',
+              },
+            }),
           }}
         >
           {columns.map((col, index) => {
-            const TagName = col.link ? Link : 'div'
+            const TagName = col.link ? Link : 'div';
 
             // TODO: pass size down in context
 
@@ -117,7 +117,7 @@ class ColumnsComponent extends React.Component<any> {
                     alignItems: 'stretch',
                     lineHeight: 'normal',
                     ['& > .builder-blocks']: {
-                      flexGrow: 1
+                      flexGrow: 1,
                     },
                     width: this.getColumnWidth(index),
                     marginLeft: index === 0 ? 0 : gutterSize,
@@ -126,9 +126,9 @@ class ColumnsComponent extends React.Component<any> {
                         this.props.stackColumnsAt !== 'tablet' ? 639 : 999
                       }px)`]: {
                         width: '100%',
-                        marginLeft: 0
-                      }
-                    })
+                        marginLeft: 0,
+                      },
+                    }),
                   }}
                 >
                   <BuilderBlocks
@@ -141,11 +141,11 @@ class ColumnsComponent extends React.Component<any> {
                   />
                 </TagName>
               </React.Fragment>
-            )
+            );
           })}
         </div>
       </React.Fragment>
-    )
+    );
   }
 }
 
@@ -161,56 +161,56 @@ export const Columns = withBuilder(ColumnsComponent, {
           name: 'blocks',
           type: 'array',
           hideFromUI: true,
-          defaultValue: defaultBlocks
+          defaultValue: defaultBlocks,
         },
         {
           name: 'width',
           type: 'number',
           hideFromUI: true,
-          helperText: 'Width %, e.g. set to 50 to fill half of the space'
+          helperText: 'Width %, e.g. set to 50 to fill half of the space',
         },
         {
           name: 'link',
           type: 'string',
-          helperText: 'Optionally set a url that clicking this column will link to'
-        }
+          helperText: 'Optionally set a url that clicking this column will link to',
+        },
       ],
       defaultValue: [{ blocks: defaultBlocks }, { blocks: defaultBlocks }],
       onChange: (options: Map<string, any>) => {
         function clearWidths() {
           columns.forEach(col => {
-            col.delete('width')
-          })
+            col.delete('width');
+          });
         }
 
-        const columns = options.get('columns') as Array<Map<String, any>>
+        const columns = options.get('columns') as Array<Map<String, any>>;
 
         if (Array.isArray(columns)) {
-          const containsColumnWithWidth = !!columns.find(col => col.get('width'))
+          const containsColumnWithWidth = !!columns.find(col => col.get('width'));
 
           if (containsColumnWithWidth) {
-            const containsColumnWithoutWidth = !!columns.find(col => !col.get('width'))
+            const containsColumnWithoutWidth = !!columns.find(col => !col.get('width'));
             if (containsColumnWithoutWidth) {
-              clearWidths()
+              clearWidths();
             } else {
               const sumWidths = columns.reduce((memo, col) => {
-                return memo + col.get('width')
-              }, 0)
-              const widthsDontAddUp = sumWidths !== 100
+                return memo + col.get('width');
+              }, 0);
+              const widthsDontAddUp = sumWidths !== 100;
               if (widthsDontAddUp) {
-                clearWidths()
+                clearWidths();
               }
             }
           }
         }
-      }
+      },
     },
     {
       name: 'space',
       type: 'number',
       defaultValue: 20,
       helperText: 'Size of gap between columns',
-      advanced: true
+      advanced: true,
     },
     {
       name: 'stackColumnsAt',
@@ -218,14 +218,14 @@ export const Columns = withBuilder(ColumnsComponent, {
       defaultValue: 'tablet',
       helperText: 'Convert horizontal columns to vertical at what device size',
       enum: ['tablet', 'mobile', 'never'],
-      advanced: true
+      advanced: true,
     },
     {
       name: 'reverseColumnsWhenStacked',
       type: 'boolean',
       defaultValue: false,
       helperText: 'When stacking columns for mobile devices, reverse the ordering',
-      advanced: true
-    }
-  ]
-})
+      advanced: true,
+    },
+  ],
+});

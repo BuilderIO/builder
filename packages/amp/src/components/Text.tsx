@@ -1,9 +1,9 @@
-import { BuilderBlock, BuilderBlocks, BuilderElement } from '@builder.io/react'
-import React from 'react'
+import { BuilderBlock, BuilderBlocks, BuilderElement } from '@builder.io/react';
+import React from 'react';
 
 interface TextProps {
-  text?: string
-  builderBlock?: BuilderElement
+  text?: string;
+  builderBlock?: BuilderElement;
 }
 
 @BuilderBlock({
@@ -13,17 +13,17 @@ interface TextProps {
       name: 'text',
       type: 'html',
       required: true,
-      defaultValue: '<span>Enter some text...</span>'
-    }
+      defaultValue: '<span>Enter some text...</span>',
+    },
   ],
   defaultStyles: {
     lineHeight: 'normal',
     height: 'auto',
-    textAlign: 'center'
-  }
+    textAlign: 'center',
+  },
 })
 export class Text extends React.Component<TextProps> {
   render() {
-    return <span dangerouslySetInnerHTML={{ __html: this.props.text! }} />
+    return <span dangerouslySetInnerHTML={{ __html: this.props.text! }} />;
   }
 }

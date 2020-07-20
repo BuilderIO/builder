@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import {
   Dialog,
   DialogActions,
@@ -6,26 +6,26 @@ import {
   DialogContent,
   FormControl,
   FormGroup
-} from '@material-ui/core'
-import DialogTitle from './dialogTitle'
-import { SourceLocale } from './sourceLocale'
-import { TargetLocales } from './targetLocales'
+} from '@material-ui/core';
+import DialogTitle from './dialogTitle';
+import { SourceLocale } from './sourceLocale';
+import { TargetLocales } from './targetLocales';
 import {
   pageHasNoBlocks,
   isLocaleNotEligibleToLocaliseFrom,
   modelHasOnlyOneLocale,
   getMemsourceArguments,
   modelHasNoProxyService
-} from './contexts/builderContext'
-import AlertDialog from './AlertDialog'
-import { useSelectedLocalesReducer } from './reducers'
-import Axios from 'axios'
-import { MemsourceArgs } from '../types'
+} from './contexts/builderContext';
+import AlertDialog from './AlertDialog';
+import { useSelectedLocalesReducer } from './reducers';
+import Axios from 'axios';
+import { MemsourceArgs } from '../types';
 
 type LocalisationDialogProps = {
-  setOpen: Function
-  onResult: Function
-}
+  setOpen: Function;
+  onResult: Function;
+};
 
 const LocalisationDialog = (props: LocalisationDialogProps) => {
   if (pageHasNoBlocks()) {
@@ -35,7 +35,7 @@ const LocalisationDialog = (props: LocalisationDialogProps) => {
         setOpen={props.setOpen}
         message="Page has no blocks"
       />
-    )
+    );
   }
 
   if (isLocaleNotEligibleToLocaliseFrom()) {
@@ -45,7 +45,7 @@ const LocalisationDialog = (props: LocalisationDialogProps) => {
         setOpen={props.setOpen}
         message="Current locale not allowed to be localised from"
       />
-    )
+    );
   }
 
   if (modelHasOnlyOneLocale()) {
@@ -55,7 +55,7 @@ const LocalisationDialog = (props: LocalisationDialogProps) => {
         setOpen={props.setOpen}
         message="Model has only one locale"
       />
-    )
+    );
   }
 
   if (modelHasNoProxyService()) {
@@ -65,15 +65,15 @@ const LocalisationDialog = (props: LocalisationDialogProps) => {
         setOpen={props.setOpen}
         message="Model has no memsourceProxyUrl set"
       />
-    )
+    );
   }
 
-  const { setOpen } = props
-  const { selectedLocales, dispatch } = useSelectedLocalesReducer()
+  const { setOpen } = props;
+  const { selectedLocales, dispatch } = useSelectedLocalesReducer();
 
-  let memsourceArgs: MemsourceArgs | undefined = undefined
+  let memsourceArgs: MemsourceArgs | undefined = undefined;
   try {
-    memsourceArgs = getMemsourceArguments()
+    memsourceArgs = getMemsourceArguments();
   } catch (error) {
     return (
       <AlertDialog
@@ -81,7 +81,7 @@ const LocalisationDialog = (props: LocalisationDialogProps) => {
         setOpen={props.setOpen}
         message={error.message}
       />
-    )
+    );
   }
 
   const sendForLocalisation = async () => {
@@ -94,13 +94,13 @@ const LocalisationDialog = (props: LocalisationDialogProps) => {
             targetLocales: [...selectedLocales],
             payload: memsourceArgs.payload
           }
-        })
-        props.onResult('success', response.data)
+        });
+        props.onResult('success', response.data);
       } catch (error) {
-        props.onResult('failure', error.message)
+        props.onResult('failure', error.message);
       }
     }
-  }
+  };
   return (
     <Dialog
       aria-labelledby="simple-dialog-title"
@@ -125,7 +125,7 @@ const LocalisationDialog = (props: LocalisationDialogProps) => {
           color="primary"
           variant="contained"
           onClick={() => {
-            sendForLocalisation()
+            sendForLocalisation();
           }}
           disabled={selectedLocales.size === 0}
           data-testid="dialog-form-submit-button"
@@ -134,7 +134,7 @@ const LocalisationDialog = (props: LocalisationDialogProps) => {
         </Button>
       </DialogActions>
     </Dialog>
-  )
-}
+  );
+};
 
-export { LocalisationDialog }
+export { LocalisationDialog };

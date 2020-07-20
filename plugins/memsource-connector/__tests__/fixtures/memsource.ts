@@ -39,7 +39,7 @@ export const JOB_CREATION_RESPONSE = {
     ],
     unsupportedFiles: []
   }
-}
+};
 
 export const PROJECT_CREATION_RESPONSE = {
   data: {
@@ -101,4 +101,4 @@ export const PROJECT_CREATION_RESPONSE = {
     workflowSteps: [],
     mtSettingsPerLanguageList: null
   }
-}
+};

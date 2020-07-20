@@ -1,18 +1,18 @@
-import React from 'react'
-import { BuilderElement } from '@builder.io/sdk'
-import { withBuilder } from '../../functions/with-builder'
+import React from 'react';
+import { BuilderElement } from '@builder.io/sdk';
+import { withBuilder } from '../../functions/with-builder';
 
 export interface ImgProps {
-  attributes?: any
-  image?: string
-  builderBlock?: BuilderElement
+  attributes?: any;
+  image?: string;
+  builderBlock?: BuilderElement;
 }
 
 // TODO: srcset, alt text input, object size/position input, etc
 
 class ImgComponent extends React.Component<ImgProps> {
   render() {
-    const attributes = this.props.attributes || {}
+    const attributes = this.props.attributes || {};
     return (
       <img
         {...this.props.attributes}
@@ -20,7 +20,7 @@ class ImgComponent extends React.Component<ImgProps> {
         // TODO: generate this
         // srcSet={this.props.image || attributes.srcSet || attributes.srcset}
       />
-    )
+    );
   }
 }
 
@@ -35,9 +35,9 @@ export const Img = withBuilder(ImgComponent, {
       name: 'image',
       type: 'file',
       allowedFileTypes: ['jpeg', 'jpg', 'png', 'svg'],
-      required: true
-    }
+      required: true,
+    },
   ],
   noWrap: true,
-  static: true
-})
+  static: true,
+});

@@ -7,7 +7,7 @@ import {
 } from '@builder.io/react';
 
 interface ConditionalTag extends Omit<BuilderElement, 'children'> {
-  meta: { renderIf: string; }
+  meta: { renderIf: string };
 }
 
 interface WrapperTagProps {

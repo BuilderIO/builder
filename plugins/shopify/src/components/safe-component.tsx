@@ -1,7 +1,7 @@
-import * as React from 'react'
-import { reaction, IReactionOptions, action } from 'mobx'
+import * as React from 'react';
+import { reaction, IReactionOptions, action } from 'mobx';
 
-type VoidFunction = () => void
+type VoidFunction = () => void;
 
 export const ErrorMessage = () => (
   <div
@@ -13,7 +13,7 @@ export const ErrorMessage = () => (
       backgroundColor: 'rgba(255, 0, 0, 0.1)',
       padding: 15,
       fontSize: 14,
-      textAlign: 'center'
+      textAlign: 'center',
     }}
   >
     Oh no! We had an error :( Try{' '}
@@ -27,10 +27,7 @@ export const ErrorMessage = () => (
     <a
       css={{ color: 'steelblue', cursor: 'pointer', fontWeight: 'bold' }}
       onClick={() => {
-        ;(window as any).Intercom(
-          'showNewMesage',
-          'I am getting an error - please help'
-        )
+        (window as any).Intercom('showNewMesage', 'I am getting an error - please help');
       }}
     >
       chat us
@@ -45,49 +42,46 @@ export const ErrorMessage = () => (
     </a>{' '}
     if this continues
   </div>
-)
+);
 
 /**
  * Provides error boundaries for safety (one component errors won't crash the whole app)
  * and adds some methods for safe handling of subscriptions and reactions (that
  * unsubscribe when the component is destroyed)
  */
-export class SafeComponent<
-  P extends object = {},
-  S = any
-> extends React.Component<P, S> {
-  private _unMounted = false
+export class SafeComponent<P extends object = {}, S = any> extends React.Component<P, S> {
+  private _unMounted = false;
 
-  protected unmountDestroyers: VoidFunction[] = []
+  protected unmountDestroyers: VoidFunction[] = [];
 
   // TODO: add back
   componentDidCatch(error: any, errorInfo: any) {
-    console.error('Component error:', error, errorInfo)
+    console.error('Component error:', error, errorInfo);
 
-    this.render = () => <ErrorMessage />
+    this.render = () => <ErrorMessage />;
 
-    this.setState({ __hasError: true } as any)
+    this.setState({ __hasError: true } as any);
   }
 
   onDestroy(cb: VoidFunction) {
     if (this._unMounted) {
       // TODO: nextTick? like promise for consistency
-      cb()
+      cb();
     } else {
-      this.unmountDestroyers.push(cb)
+      this.unmountDestroyers.push(cb);
     }
   }
 
   // For use in react components
   componentWillUnmount() {
-    this._unMounted = true
+    this._unMounted = true;
     if (super.componentWillUnmount) {
-      super.componentWillUnmount()
+      super.componentWillUnmount();
     }
     // FIXME: devs will likely not call super on this hook as they won't know they need to
     // and that will cause subscription leaks. Better way to do with decorators perhaps?
     for (const destroyer of this.unmountDestroyers) {
-      destroyer()
+      destroyer();
     }
   }
 
@@ -98,11 +92,11 @@ export class SafeComponent<
     handler: EventListener,
     options?: EventListenerOptions | boolean
   ) {
-    const actionBoundHandler = action(handler)
-    target.addEventListener(event, actionBoundHandler, options)
+    const actionBoundHandler = action(handler);
+    target.addEventListener(event, actionBoundHandler, options);
     this.onDestroy(() => {
-      target.removeEventListener(event, actionBoundHandler)
-    })
+      target.removeEventListener(event, actionBoundHandler);
+    });
   }
 
   // TODO: metadata way of doing this
@@ -111,9 +105,9 @@ export class SafeComponent<
     watchFunction: () => T,
     reactionFunction: (arg: T) => void,
     options: IReactionOptions = {
-      fireImmediately: true
+      fireImmediately: true,
     }
   ) {
-    this.onDestroy(reaction(watchFunction, reactionFunction, options))
+    this.onDestroy(reaction(watchFunction, reactionFunction, options));
   }
 }

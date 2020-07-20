@@ -60,7 +60,9 @@ export const productBox = el({
       (state, block) => block?.component?.options?.linkToProductPageOnClick
     ),
   },
-  responsiveStyles: { large: { minHeight: '200px', marginLeft: '15px', marginRight: '15px' } },
+  responsiveStyles: {
+    large: { minHeight: '200px', marginLeft: '15px', marginRight: '15px' },
+  },
   actions: {
     click: _s((state, event: MouseEvent, block, ref, Builder) => {}),
   },

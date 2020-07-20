@@ -480,7 +480,7 @@ export class Builder {
   static runAction(action: Action | string) {
     // TODO
     const actionObject =
-      typeof action === 'string' ? find(this.actions, (item) => item.name === action) : action;
+      typeof action === 'string' ? find(this.actions, item => item.name === action) : action;
 
     if (!actionObject) {
       throw new Error(`Action not found: ${action}`);
@@ -628,7 +628,7 @@ export class Builder {
   }
 
   private static addComponent(component: Component) {
-    const current = find(this.components, (item) => item.name === component.name);
+    const current = find(this.components, item => item.name === component.name);
     if (current) {
       // FIXME: why does sometimes we get an extra post without class - probably
       // from postMessage handler wrong in some place
@@ -781,7 +781,7 @@ export class Builder {
   }
 
   private findBuilderParent(target: HTMLElement) {
-    return this.findParentElement(target, (el) => {
+    return this.findParentElement(target, el => {
       const id = el.getAttribute('builder-id') || el.id;
       return Boolean(id && id.indexOf('builder-') === 0);
     });
@@ -1106,7 +1106,7 @@ export class Builder {
           this.throttledClearEventsQueue();
         }
         if (this.cookieQueue.length) {
-          this.cookieQueue.forEach((item) => {
+          this.cookieQueue.forEach(item => {
             this.setCookie(item[0], item[1]);
           });
           this.cookieQueue.length = 0;
@@ -1229,7 +1229,7 @@ export class Builder {
 
   private bindMessageListeners() {
     if (isBrowser) {
-      addEventListener('message', (event) => {
+      addEventListener('message', event => {
         const url = parse(event.origin);
         const isRestricted =
           ['builder.register', 'builder.registerComponent'].indexOf(event.data?.type) === -1;
@@ -1331,7 +1331,7 @@ export class Builder {
               window.parent?.postMessage(
                 {
                   type: 'builder.components',
-                  data: Builder.components.map((item) => Builder.prepareComponentSpecToSend(item)),
+                  data: Builder.components.map(item => Builder.prepareComponentSpecToSend(item)),
                 },
                 '*'
               );
@@ -1407,7 +1407,7 @@ export class Builder {
               } else {
                 if (result && typeof result.then === 'function') {
                   (result as Promise<any>)
-                    .then((finalResult) => {
+                    .then(finalResult => {
                       window.parent?.postMessage(
                         {
                           type: 'builder.evaluateResult',
@@ -1670,7 +1670,7 @@ export class Builder {
               },
             }
           : undefined
-      ).then((res) => res.json());
+      ).then(res => res.json());
     }
     return new Promise((resolve, reject) => {
       const module =
@@ -1756,7 +1756,7 @@ export class Builder {
             urlPath: this.getLocation().pathname,
           };
 
-    const fullUrlQueueItem = queue.find((item) => !!item.includeUrl);
+    const fullUrlQueueItem = queue.find(item => !!item.includeUrl);
     if (fullUrlQueueItem) {
       const location = this.getLocation();
       if (location.origin) {
@@ -1764,7 +1764,7 @@ export class Builder {
       }
     }
 
-    const urlQueueItem = useQueue?.find((item) => item.url);
+    const urlQueueItem = useQueue?.find(item => item.url);
     if (urlQueueItem?.url) {
       userAttributes.urlPath = urlQueueItem.url.split('?')[0];
     }
@@ -1863,7 +1863,7 @@ export class Builder {
     // TODO: option to force dev or qa api here
     const host = this.useNewContentApi ? 'https://lambda.builder.codes' : this.host;
 
-    const keyNames = queue.map((item) => encodeURIComponent(item.key!)).join(',');
+    const keyNames = queue.map(item => encodeURIComponent(item.key!)).join(',');
 
     if (this.overrideParams) {
       const params = omit(QueryString.parse(this.overrideParams), 'apiKey');
@@ -1878,7 +1878,7 @@ export class Builder {
       `${host}/api/v1/${Builder.useNewApi ? 'query' : 'content'}/${this.apiKey}/${keyNames}` +
         (queryParams && hasParams ? `?${queryStr}` : '')
     ).then(
-      (result) => {
+      result => {
         for (const options of queue) {
           const keyName = options.key!;
           if (options.model === this.blockContentLoading) {
@@ -1915,7 +1915,7 @@ export class Builder {
           }
         }
       },
-      (err) => {
+      err => {
         for (const options of queue) {
           const observer = this.observersByKey[options.key!];
           if (!observer) {
@@ -1932,7 +1932,7 @@ export class Builder {
   private testCookiePrefix = 'builder.tests';
 
   private processResultsForTests(results: BuilderContent[]) {
-    const mappedResults = results.map((item) => {
+    const mappedResults = results.map(item => {
       if (!item.variations) {
         return item;
       }

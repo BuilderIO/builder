@@ -1,30 +1,26 @@
-import React from 'react'
-import { Builder } from '@builder.io/sdk'
-import { withBuilder } from '../../functions/with-builder'
+import React from 'react';
+import { Builder } from '@builder.io/sdk';
+import { withBuilder } from '../../functions/with-builder';
 
 // TODO: how do onchange...
 // TODO: actions all custom events and custom js gets
 // passed an element reference and listens for events....
 // Needs to unsubscribe, so must manage
 export interface FormInputProps {
-  type?: string
-  attributes?: any
-  name?: string
-  value?: string
-  placeholder?: string
-  defaultValue?: string
-  required?: boolean
+  type?: string;
+  attributes?: any;
+  name?: string;
+  value?: string;
+  placeholder?: string;
+  defaultValue?: string;
+  required?: boolean;
 }
 
 class FormInputComponent extends React.Component<FormInputProps> {
   render() {
     return (
       <input
-        key={
-          Builder.isEditing && this.props.defaultValue
-            ? this.props.defaultValue
-            : 'default-key'
-        }
+        key={Builder.isEditing && this.props.defaultValue ? this.props.defaultValue : 'default-key'}
         placeholder={this.props.placeholder}
         type={this.props.type}
         name={this.props.name}
@@ -33,7 +29,7 @@ class FormInputComponent extends React.Component<FormInputProps> {
         required={this.props.required}
         {...this.props.attributes}
       />
-    )
+    );
   }
 }
 
@@ -63,40 +59,40 @@ export const FormInput = withBuilder(FormInputComponent, {
         'week',
         'password',
         'color',
-        'hidden'
+        'hidden',
       ],
-      defaultValue: 'text'
+      defaultValue: 'text',
     },
     {
       name: 'name',
       type: 'string',
       required: true,
       helperText:
-        'Every input in a form needs a unique name describing what it takes, e.g. "email"'
+        'Every input in a form needs a unique name describing what it takes, e.g. "email"',
     },
     {
       name: 'placeholder',
       type: 'string',
       defaultValue: 'Hello there',
-      helperText: 'Text to display when there is no value'
+      helperText: 'Text to display when there is no value',
     },
     // TODO: handle value vs default value automatically like ng-model
     {
       name: 'defaultValue',
-      type: 'string'
+      type: 'string',
     },
     {
       name: 'value',
       type: 'string',
-      advanced: true
+      advanced: true,
     },
 
     {
       name: 'required',
       type: 'boolean',
       helperText: 'Is this input required to be filled out to submit a form',
-      defaultValue: false
-    }
+      defaultValue: false,
+    },
   ],
   // TODO
   // TODO: call editorHooks?
@@ -117,6 +113,6 @@ export const FormInput = withBuilder(FormInputComponent, {
     borderRadius: '3px',
     borderWidth: '1px',
     borderStyle: 'solid',
-    borderColor: '#ccc'
-  }
-})
+    borderColor: '#ccc',
+  },
+});

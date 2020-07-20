@@ -1,14 +1,14 @@
 /** @jsx jsx */
-import { jsx } from '@emotion/core'
-import React from 'react'
-import { BuilderElement } from '@builder.io/sdk'
-import { BuilderBlock as BuilderBlockComponent } from '../components/builder-block.component'
-import { withBuilder } from '../functions/with-builder'
+import { jsx } from '@emotion/core';
+import React from 'react';
+import { BuilderElement } from '@builder.io/sdk';
+import { BuilderBlock as BuilderBlockComponent } from '../components/builder-block.component';
+import { withBuilder } from '../functions/with-builder';
 
 interface SectionProps {
-  builderBlock?: BuilderElement
-  verticalAlignContent?: string
-  maxWidth?: number
+  builderBlock?: BuilderElement;
+  verticalAlignContent?: string;
+  maxWidth?: number;
 }
 
 class SectionComponent extends React.Component<SectionProps> {
@@ -17,7 +17,7 @@ class SectionComponent extends React.Component<SectionProps> {
       <div
         css={{
           width: '100%',
-          // height: '100%' was is here so the inner contents can align center, but that is causing 
+          // height: '100%' was is here so the inner contents can align center, but that is causing
           // issues in Safari. Need another workaround.
           alignSelf: 'stretch',
           flexGrow: 1,
@@ -27,7 +27,7 @@ class SectionComponent extends React.Component<SectionProps> {
           flexDirection: 'column',
           alignItems: 'stretch',
           marginLeft: 'auto',
-          marginRight: 'auto'
+          marginRight: 'auto',
         }}
       >
         {/* TODO: maybe builder <BuilderBlocks? */}
@@ -38,7 +38,7 @@ class SectionComponent extends React.Component<SectionProps> {
           ))}
         {/* <BuilderBlocks blocks={this.builderBlock.children} dataPath="children" emailMode /> */}
       </div>
-    )
+    );
   }
 }
 
@@ -51,8 +51,8 @@ export const Section = withBuilder(SectionComponent, {
     {
       name: 'maxWidth',
       type: 'number',
-      defaultValue: 1200
-    }
+      defaultValue: 1200,
+    },
   ],
   defaultStyles: {
     paddingLeft: '20px',
@@ -61,7 +61,7 @@ export const Section = withBuilder(SectionComponent, {
     paddingBottom: '50px',
     marginTop: '0px',
     width: '100vw',
-    marginLeft: 'calc(50% - 50vw)'
+    marginLeft: 'calc(50% - 50vw)',
   },
   canHaveChildren: true,
 
@@ -71,18 +71,18 @@ export const Section = withBuilder(SectionComponent, {
       '@type': '@builder.io/sdk:Element',
       responsiveStyles: {
         large: {
-          textAlign: 'center'
-        }
+          textAlign: 'center',
+        },
       },
       component: {
         name: 'Text',
         options: {
           text:
-            "<p><b>I am a section! My content keeps from getting too wide, so that it's easy to read even on big screens.</b></p><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur</p>"
-        }
-      }
-    }
-  ]
+            "<p><b>I am a section! My content keeps from getting too wide, so that it's easy to read even on big screens.</b></p><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur</p>",
+        },
+      },
+    },
+  ],
   // TODO
   // defaultChildren: ..
 
@@ -91,4 +91,4 @@ export const Section = withBuilder(SectionComponent, {
   //   'BlocksOverlay::debounceNextTickUpdateStyles#updateStyles': () => convert margin selectors to paddings of table
   //   '@builder.io/app:Style.foo': () => { /* ... */ } // maybe optionally async
   // }
-})
+});

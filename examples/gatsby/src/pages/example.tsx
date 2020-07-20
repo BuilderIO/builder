@@ -3,7 +3,7 @@ import { graphql } from 'gatsby';
 import { BuilderComponent, builder } from '@builder.io/react';
 
 // TODO: enter your public API key
-builder.init('jdGaMusrVpYgdcAnAtgn')
+builder.init('jdGaMusrVpYgdcAnAtgn');
 
 /**
  * Example of rendering a page with Builder.io content and other content.
@@ -36,7 +36,11 @@ export const query = graphql`
       }
       # Manually grab the page content matching "/example"
       # For Gatsby content, we want to make sure to always get fresh (cachebusted) content
-      page(limit: 1, target: { urlPath: "/example" }, options: { cachebust: true }) {
+      page(
+        limit: 1
+        target: { urlPath: "/example" }
+        options: { cachebust: true }
+      ) {
         content
       }
     }

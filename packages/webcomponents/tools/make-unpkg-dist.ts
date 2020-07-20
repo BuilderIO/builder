@@ -1,11 +1,11 @@
-import { outputFileAsync, readFileAsync } from 'fs-extra-promise'
-const pkg = require('../package.json')
+import { outputFileAsync, readFileAsync } from 'fs-extra-promise';
+const pkg = require('../package.json');
 
 async function main() {
   const [sjs /*systemMain*/] = await Promise.all([
-    readFileAsync('./node_modules/systemjs/dist/s.min.js', 'utf8')
+    readFileAsync('./node_modules/systemjs/dist/s.min.js', 'utf8'),
     // readFileAsync('./dist/system/builder-webcomponents.js', 'utf8')
-  ])
+  ]);
   // TODO: bootstrap script goes here... hmmm...
   // TODO: export basic builder stuff from here so people can use js, or System.import name it hmm
   const newFileStr = (useAngular = false) =>
@@ -51,21 +51,15 @@ async function main() {
       System.import(root + (root.indexOf('://localhost:') === -1 ? '@' + version : '') + '/dist/system/${
         useAngular ? 'angular/' : ''
       }' + (useLite ? 'lite/' : '') + 'builder-webcomponents' + (useLite ? '-lite' : '') + '.js')
-    `.replace(/\s+/g, ' ')
+    `.replace(/\s+/g, ' '),
     ].join(';') +
-    `}`
+    `}`;
 
   // May need to import to initialize: + ';System.import("...")'
-  await outputFileAsync(
-    './dist/system/builder-webcomponents-async.js',
-    newFileStr()
-  )
-  await outputFileAsync(
-    './dist/system/angular/builder-webcomponents-async.js',
-    newFileStr(true)
-  )
+  await outputFileAsync('./dist/system/builder-webcomponents-async.js', newFileStr());
+  await outputFileAsync('./dist/system/angular/builder-webcomponents-async.js', newFileStr(true));
 }
 
 main().catch(err => {
-  throw err
-})
+  throw err;
+});

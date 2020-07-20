@@ -44,7 +44,11 @@ export const productImage = el(
     },
     component: {
       name: 'Image',
-      options: { aspectRatio: 1, backgroundPosition: 'center', backgroundSize: 'cover' },
+      options: {
+        aspectRatio: 1,
+        backgroundPosition: 'center',
+        backgroundSize: 'cover',
+      },
     },
   },
   true

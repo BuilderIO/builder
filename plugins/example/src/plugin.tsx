@@ -1,41 +1,41 @@
 /** @jsx jsx */
-import { jsx } from '@emotion/core'
-import { CSSPropertiesWithMultiValues } from '@emotion/serialize'
-import React from 'react'
-import { Builder } from '@builder.io/sdk'
-import { Dialog, Button } from '@material-ui/core'
+import { jsx } from '@emotion/core';
+import { CSSPropertiesWithMultiValues } from '@emotion/serialize';
+import React from 'react';
+import { Builder } from '@builder.io/sdk';
+import { Dialog, Button } from '@material-ui/core';
 
 interface Props {
-  value?: string
-  onChange(newValue: string): void
-  context: any
+  value?: string;
+  onChange(newValue: string): void;
+  context: any;
 }
 
 class ExampleEditor extends React.Component<Props> {
   state = {
-    showDialog: false
-  }
+    showDialog: false,
+  };
 
   // TODO: if key is not set, prompt the user for their cloudinary key and set it via the
   // setter below
   get organization() {
-    return this.props.context.user.organization
+    return this.props.context.user.organization;
   }
 
   get cloudinaryKey(): string | undefined {
-    return this.organization.value.settings.plugins.get('cloudinaryKey')
+    return this.organization.value.settings.plugins.get('cloudinaryKey');
   }
 
   set cloudinaryKey(key: string | undefined) {
-    this.organization.value.settings.plugins.set('cloudinaryKey', key)
-    this.organization.save()
+    this.organization.value.settings.plugins.set('cloudinaryKey', key);
+    this.organization.save();
   }
 
   closeDialog() {
     this.setState({
       ...this.state,
-      showDialog: false
-    })
+      showDialog: false,
+    });
   }
 
   render() {
@@ -45,15 +45,15 @@ class ExampleEditor extends React.Component<Props> {
       cursor: 'pointer',
       objectFit: 'cover',
       borderRadius: 4,
-      backgroundColor: '#f8f8f8'
-    }
+      backgroundColor: '#f8f8f8',
+    };
 
     return (
       <div css={{ padding: '15px 0' }}>
         <Dialog
           open={this.state.showDialog}
           onClose={() => {
-            this.closeDialog()
+            this.closeDialog();
           }}
         >
           <div
@@ -61,37 +61,37 @@ class ExampleEditor extends React.Component<Props> {
               padding: 50,
               display: 'flex',
               flexWrap: 'wrap',
-              justifyContent: 'center'
+              justifyContent: 'center',
             }}
           >
             <img
               css={imageStyle}
               src="https://images.pexels.com/photos/2974657/pexels-photo-2974657.jpeg"
               onClick={() => {
-                this.closeDialog()
+                this.closeDialog();
                 this.props.onChange(
                   'https://images.pexels.com/photos/2974657/pexels-photo-2974657.jpeg'
-                )
+                );
               }}
             />
             <img
               css={imageStyle}
               src="https://images.pexels.com/photos/2985927/pexels-photo-2985927.jpeg"
               onClick={() => {
-                this.closeDialog()
+                this.closeDialog();
                 this.props.onChange(
                   'https://images.pexels.com/photos/2985927/pexels-photo-2985927.jpeg'
-                )
+                );
               }}
             />
             <img
               css={imageStyle}
               src="https://images.pexels.com/photos/2538412/pexels-photo-2538412.jpeg"
               onClick={() => {
-                this.closeDialog()
+                this.closeDialog();
                 this.props.onChange(
                   'https://images.pexels.com/photos/2538412/pexels-photo-2538412.jpeg'
-                )
+                );
               }}
             />
           </div>
@@ -103,14 +103,14 @@ class ExampleEditor extends React.Component<Props> {
           onClick={() => {
             this.setState({
               ...this.state,
-              showDialog: !this.state.showDialog
-            })
+              showDialog: !this.state.showDialog,
+            });
           }}
         >
           Choose Image
         </Button>
       </div>
-    )
+    );
   }
 }
 
@@ -121,5 +121,5 @@ Builder.registerEditor({
    * in the Builder.io webapp or in custom components
    */
   name: 'file',
-  component: ExampleEditor
-})
+  component: ExampleEditor,
+});

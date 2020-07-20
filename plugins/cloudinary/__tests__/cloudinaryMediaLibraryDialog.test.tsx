@@ -1,36 +1,33 @@
 /* tslint:disable:no-empty */
-import 'jest'
-import React from 'react'
-import { mount } from 'enzyme'
-import {
-  CloudinaryMediaLibraryDialog,
-  CloudinaryImage
-} from '../src/CloudinaryMediaLibraryDialog'
-import { Button } from '@material-ui/core'
+import 'jest';
+import React from 'react';
+import { mount } from 'enzyme';
+import { CloudinaryMediaLibraryDialog, CloudinaryImage } from '../src/CloudinaryMediaLibraryDialog';
+import { Button } from '@material-ui/core';
 
-import TestConstants from './TestConstants'
+import TestConstants from './TestConstants';
 
 describe('Cloudinary Media Library dialog', () => {
-  const window = global as any
-  let cloudinaryWidgetInsertHandlerCallback: any
-  let cloudinarySetCredentials: any
-  let cloudinaryModule: any
+  const window = global as any;
+  let cloudinaryWidgetInsertHandlerCallback: any;
+  let cloudinarySetCredentials: any;
+  let cloudinaryModule: any;
 
   describe('when dialog is rendered', () => {
     beforeEach(() => {
       cloudinaryModule = {
         createMediaLibrary: (settings: any, callbacks: any) => {
-          cloudinarySetCredentials = settings
-          cloudinaryWidgetInsertHandlerCallback = callbacks.insertHandler
-          return { show: (showOptions: any) => {} }
-        }
-      }
+          cloudinarySetCredentials = settings;
+          cloudinaryWidgetInsertHandlerCallback = callbacks.insertHandler;
+          return { show: (showOptions: any) => {} };
+        },
+      };
 
-      window.cloudinary = cloudinaryModule
-    })
+      window.cloudinary = cloudinaryModule;
+    });
 
     it('should pass the first selected asset as the image', () => {
-      let selectedImage = {}
+      let selectedImage = {};
 
       mount(
         <CloudinaryMediaLibraryDialog
@@ -39,17 +36,15 @@ describe('Cloudinary Media Library dialog', () => {
           cloudName={TestConstants.CLOUDINARY_CLOUDNAME}
           closeDialog={() => {}}
           selectImage={(image: CloudinaryImage) => {
-            selectedImage = image
+            selectedImage = image;
           }}
         />
-      )
+      );
 
-      cloudinaryWidgetInsertHandlerCallback(TestConstants.CLOUDINARY_DATA)
+      cloudinaryWidgetInsertHandlerCallback(TestConstants.CLOUDINARY_DATA);
 
-      expect(selectedImage).toStrictEqual(
-        TestConstants.CLOUDINARY_DATA.assets[0]
-      )
-    })
+      expect(selectedImage).toStrictEqual(TestConstants.CLOUDINARY_DATA.assets[0]);
+    });
 
     it('should set credentials to empty string if credentials props are undefined', () => {
       mount(
@@ -60,31 +55,31 @@ describe('Cloudinary Media Library dialog', () => {
           closeDialog={() => {}}
           selectImage={(image: CloudinaryImage) => {}}
         />
-      )
+      );
 
-      expect(cloudinarySetCredentials.api_key).toBe('')
-      expect(cloudinarySetCredentials.cloud_name).toBe('')
-    })
+      expect(cloudinarySetCredentials.api_key).toBe('');
+      expect(cloudinarySetCredentials.cloud_name).toBe('');
+    });
 
     it('should close the dialog when clicking the close button', () => {
-      let callbackWasCalled = false
+      let callbackWasCalled = false;
       const cloudinaryMediaLibraryDialog = mount(
         <CloudinaryMediaLibraryDialog
           openDialog={true}
           apiKey={undefined}
           cloudName={undefined}
           closeDialog={() => {
-            callbackWasCalled = true
+            callbackWasCalled = true;
           }}
           selectImage={(image: CloudinaryImage) => {}}
         />
-      )
+      );
 
-      const closeDialogButton = cloudinaryMediaLibraryDialog.find(Button).last()
+      const closeDialogButton = cloudinaryMediaLibraryDialog.find(Button).last();
 
-      closeDialogButton.simulate('click')
+      closeDialogButton.simulate('click');
 
-      expect(callbackWasCalled).toBe(true)
-    })
-  })
-})
+      expect(callbackWasCalled).toBe(true);
+    });
+  });
+});

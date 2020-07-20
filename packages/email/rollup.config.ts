@@ -1,27 +1,27 @@
-import resolve from 'rollup-plugin-node-resolve'
-import commonjs from 'rollup-plugin-commonjs'
-import sourceMaps from 'rollup-plugin-sourcemaps'
-import typescript from 'rollup-plugin-typescript2'
-import replace from 'rollup-plugin-replace'
-import json from 'rollup-plugin-json'
+import resolve from 'rollup-plugin-node-resolve';
+import commonjs from 'rollup-plugin-commonjs';
+import sourceMaps from 'rollup-plugin-sourcemaps';
+import typescript from 'rollup-plugin-typescript2';
+import replace from 'rollup-plugin-replace';
+import json from 'rollup-plugin-json';
 
-const pkg = require('./package.json')
+const pkg = require('./package.json');
 
-const libraryName = 'builder-email'
+const libraryName = 'builder-email';
 
-const resolvePlugin = resolve()
+const resolvePlugin = resolve();
 
 const options = {
   input: `src/${libraryName}.ts`,
   // Indicate here external modules you don't wanna include in your bundle (i.e.: 'lodash')
   watch: {
-    include: 'src/**'
+    include: 'src/**',
   },
   external: ['vm2'],
   plugins: [
     typescript({ useTsconfigDeclarationDir: true }),
     replace({
-      'process.env.NODE_ENV': JSON.stringify('production')
+      'process.env.NODE_ENV': JSON.stringify('production'),
     }),
     // Allow json resolution
     json(),
@@ -36,7 +36,7 @@ const options = {
           'Component',
           'createElement',
           'forwardRef',
-          'Fragment'
+          'Fragment',
         ],
         'node_modules/react-dom/index.js': ['render', 'hydrate'],
         'node_modules/react-is/index.js': ['isElement', 'isValidElementType', 'ForwardRef'],
@@ -46,11 +46,15 @@ const options = {
           'Component',
           'createElement',
           'forwardRef',
-          'Fragment'
+          'Fragment',
         ],
         '../react/node_modules/react-dom/index.js': ['render', 'hydrate'],
-        '../react/node_modules/react-is/index.js': ['isElement', 'isValidElementType', 'ForwardRef']
-      }
+        '../react/node_modules/react-is/index.js': [
+          'isElement',
+          'isValidElementType',
+          'ForwardRef',
+        ],
+      },
     }),
     // Allow node_modules resolution, so you can use 'external' to control
     // which external modules to include in the bundle
@@ -58,9 +62,9 @@ const options = {
     resolvePlugin,
 
     // Resolve source maps to the original source
-    sourceMaps()
-  ]
-}
+    sourceMaps(),
+  ],
+};
 
 export default [
   // {
@@ -79,16 +83,18 @@ export default [
     ...options,
     output: [
       { file: pkg.module, format: 'es', sourcemap: true },
-      { file: pkg.main, format: 'cjs', sourcemap: true }
+      { file: pkg.main, format: 'cjs', sourcemap: true },
     ],
     // Do not resolve for es module build
     // TODO: should really do a cjs build too (probably for the default build instead of umd...)
     external: Object.keys(pkg.dependencies || {}),
-    plugins: options.plugins.filter(plugin => plugin !== resolvePlugin).concat([
-      resolve({
-        only: [/^\.{0,2}\//]
-      })
-    ])
+    plugins: options.plugins
+      .filter(plugin => plugin !== resolvePlugin)
+      .concat([
+        resolve({
+          only: [/^\.{0,2}\//],
+        }),
+      ]),
   },
   {
     ...options,
@@ -96,9 +102,9 @@ export default [
       format: 'iife',
       file: pkg.unpkg,
       name: 'BuilderWidgets',
-      sourcemap: true
-    }
-  }
+      sourcemap: true,
+    },
+  },
   // {
   //   ...options,
   //   output: {
@@ -107,4 +113,4 @@ export default [
   //     sourcemap: true
   //   }
   // }
-]
+];

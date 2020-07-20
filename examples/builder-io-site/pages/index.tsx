@@ -1,3 +1,3 @@
-import Content from './landing'
+import Content from './landing';
 
 export default Content;

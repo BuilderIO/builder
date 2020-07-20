@@ -217,7 +217,9 @@ export const collectionGrid = el({
                       itemName: 'product',
                     },
                     bindings: {
-                      'component.options.symbol.data.productInfo': _s((state: any) => state.product),
+                      'component.options.symbol.data.productInfo': _s(
+                        (state: any) => state.product
+                      ),
                     },
                   }),
                 ],
