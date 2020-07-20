@@ -21,6 +21,9 @@ function datePlusMinutes(minutes = 30) {
   return new Date(Date.now() + minutes * 60000);
 }
 
+const isPositiveNumber = (thing: unknown) =>
+  typeof thing === 'number' && !isNaN(thing) && thing >= 0;
+
 export const isReactNative = typeof navigator === 'object' && navigator.product === 'ReactNative';
 
 export const validEnvList = [
@@ -188,6 +191,7 @@ export interface GetContentOptions {
   url?: string;
   includeUrl?: boolean;
   cacheSeconds?: number;
+  staleCacheSeconds?: number;
   limit?: number;
   query?: any;
   cachebust?: boolean;
@@ -1821,8 +1825,12 @@ export class Builder {
           queryParams.cachebust = options.cachebust;
         }
 
-        if (typeof options.cacheSeconds === 'number') {
+        if (isPositiveNumber(options.cacheSeconds)) {
           queryParams.cacheSeconds = options.cacheSeconds;
+        }
+
+        if (isPositiveNumber(options.staleCacheSeconds)) {
+          queryParams.staleCacheSeconds = options.staleCacheSeconds;
         }
 
         const properties: (keyof GetContentOptions)[] = [
