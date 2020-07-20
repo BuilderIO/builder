@@ -37,7 +37,7 @@ function getShopifyImageUrl(src: string, size: string): string | null {
 
   return null
 }
-
+console.log('THIS IS A TEST')
 const DEFAULT_ASPECT_RATIO = 0.7041
 
 export function updateQueryParam(
