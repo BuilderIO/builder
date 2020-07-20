@@ -21,7 +21,8 @@ function datePlusMinutes(minutes = 30) {
   return new Date(Date.now() + minutes * 60000);
 }
 
-const isRealNumber = (thing: unknown) => typeof thing === 'number' && !isNaN(thing);
+const isPositiveNumber = (thing: unknown) =>
+  typeof thing === 'number' && !isNaN(thing) && thing >= 0;
 
 export const isReactNative = typeof navigator === 'object' && navigator.product === 'ReactNative';
 
@@ -1824,11 +1825,11 @@ export class Builder {
           queryParams.cachebust = options.cachebust;
         }
 
-        if (isRealNumber(options.cacheSeconds)) {
+        if (isPositiveNumber(options.cacheSeconds)) {
           queryParams.cacheSeconds = options.cacheSeconds;
         }
 
-        if (isRealNumber(options.staleCacheSeconds)) {
+        if (isPositiveNumber(options.staleCacheSeconds)) {
           queryParams.staleCacheSeconds = options.staleCacheSeconds;
         }
 
