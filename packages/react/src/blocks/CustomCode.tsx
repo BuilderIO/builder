@@ -10,7 +10,7 @@ interface Props {
 }
 
 // TODO: settings context to pass this down. do in shopify-specific generated code
-const globalReplaceNodes = ({} as { [key: string]: Element }) || null
+const globalReplaceNodes = ({} as { [key: string]: Element[] }) || null
 
 const isShopify = Builder.isBrowser && 'Shopify' in window
 
@@ -28,8 +28,8 @@ if (Builder.isBrowser && globalReplaceNodes) {
       const parent = el.parentElement
       const id = parent && parent.getAttribute('builder-id')
       if (id) {
-        // TODO: keep array of these for lists
-        globalReplaceNodes[id] = el
+        globalReplaceNodes[id] = globalReplaceNodes[id] || []
+        globalReplaceNodes[id].push(el)
       }
     })
   } catch (err) {
@@ -65,11 +65,12 @@ class CustomCodeComponent extends React.Component<Props> {
       this.props.builderBlock
     ) {
       if (id && globalReplaceNodes?.[id]) {
-        const el = globalReplaceNodes[id]
+        const el = globalReplaceNodes[id].shift() || null
         this.originalRef = el
-        delete globalReplaceNodes[id]
+        if (globalReplaceNodes[id].length === 0) {
+          delete globalReplaceNodes[id]
+        }
       } else {
-        // How do if multiple...
         const existing = document.querySelectorAll(
           `.${this.props.builderBlock.id} .builder-custom-code`
         )
