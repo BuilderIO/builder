@@ -30,16 +30,16 @@ const defaultTab = {
       display: 'flex',
       flexDirection: 'column',
       cursor: 'pointer',
-      userSelect: 'none'
-    }
+      userSelect: 'none',
+    },
   },
   component: {
     // Builder:text
     name: 'Text',
     options: {
-      text: 'New tab'
-    }
-  }
+      text: 'New tab',
+    },
+  },
 }
 
 const defaultElement = {
@@ -49,20 +49,20 @@ const defaultElement = {
       height: '200px',
       display: 'flex',
       marginTop: '20px',
-      flexDirection: 'column'
-    }
+      flexDirection: 'column',
+    },
   },
   component: {
     name: 'Text',
     options: {
-      text: 'New tab content '
-    }
-  }
+      text: 'New tab content ',
+    },
+  },
 }
 
 class TabsComponent extends React.Component<TabsProps, { activeTab: number }> {
   state = {
-    activeTab: 0
+    activeTab: 0,
   }
 
   get activeTabSpec() {
@@ -82,7 +82,7 @@ class TabsComponent extends React.Component<TabsProps, { activeTab: number }> {
   set activeTab(tab) {
     this.setState({
       ...this.state,
-      activeTab: tab
+      activeTab: tab,
     })
   }
 
@@ -96,7 +96,7 @@ class TabsComponent extends React.Component<TabsProps, { activeTab: number }> {
             flexDirection: 'row',
             justifyContent: this.props.tabHeaderLayout,
             overflow: 'auto',
-            WebkitOverflowScrolling: 'touch'
+            WebkitOverflowScrolling: 'touch',
           }}
           className="builder-tabs-wrap"
         >
@@ -111,7 +111,7 @@ class TabsComponent extends React.Component<TabsProps, { activeTab: number }> {
                 style={{
                   ...((this.activeTabSpec === item &&
                     this.props.activeTabStyle) ||
-                    undefined)
+                    undefined),
                 }}
                 onClick={() => {
                   if (index === this.activeTab && this.props.collapsible) {
@@ -156,14 +156,14 @@ export const Tabs = withBuilder(TabsComponent, {
           name: 'label',
           type: 'uiBlocks',
           hideFromUI: true,
-          defaultValue: [defaultTab]
+          defaultValue: [defaultTab],
         },
         {
           name: 'content',
           type: 'uiBlocks',
           hideFromUI: true,
-          defaultValue: [defaultElement]
-        }
+          defaultValue: [defaultElement],
+        },
       ],
       defaultValue: [
         {
@@ -173,10 +173,10 @@ export const Tabs = withBuilder(TabsComponent, {
               component: {
                 name: 'Text',
                 options: {
-                  text: 'Tab 1'
-                }
-              }
-            }
+                  text: 'Tab 1',
+                },
+              },
+            },
           ],
           content: [
             {
@@ -184,11 +184,11 @@ export const Tabs = withBuilder(TabsComponent, {
               component: {
                 name: 'Text',
                 options: {
-                  text: 'Tab 1 content'
-                }
-              }
-            }
-          ]
+                  text: 'Tab 1 content',
+                },
+              },
+            },
+          ],
         },
         {
           label: [
@@ -197,10 +197,10 @@ export const Tabs = withBuilder(TabsComponent, {
               component: {
                 name: 'Text',
                 options: {
-                  text: 'Tab 2'
-                }
-              }
-            }
+                  text: 'Tab 2',
+                },
+              },
+            },
           ],
           content: [
             {
@@ -208,21 +208,21 @@ export const Tabs = withBuilder(TabsComponent, {
               component: {
                 name: 'Text',
                 options: {
-                  text: 'Tab 2 content'
-                }
-              }
-            }
-          ]
-        }
-      ]
+                  text: 'Tab 2 content',
+                },
+              },
+            },
+          ],
+        },
+      ],
     },
     {
       name: 'activeTabStyle',
       type: 'uiStyle',
       helperText: 'CSS styles for the active tab',
       defaultValue: {
-        backgroundColor: 'rgba(0, 0, 0, 0.1)'
-      }
+        backgroundColor: 'rgba(0, 0, 0, 0.1)',
+      },
     },
     {
       name: 'defaultActiveTab',
@@ -230,14 +230,14 @@ export const Tabs = withBuilder(TabsComponent, {
       helperText:
         'Deafult tab to open to. Set to "1" for the first tab, "2" for the second, or choose "0" for none',
       defaultValue: 1,
-      advanced: true
+      advanced: true,
     },
     {
       name: 'collapsible',
       type: 'boolean',
       helperText: 'If on, clicking an open tab closes it so no tabs are active',
       defaultValue: false,
-      advanced: true
+      advanced: true,
     },
     {
       name: 'tabHeaderLayout',
@@ -249,8 +249,8 @@ export const Tabs = withBuilder(TabsComponent, {
         { label: 'Space between', value: 'space-between' },
         { label: 'Space around', value: 'space-around' },
         { label: 'Left', value: 'flex-start' },
-        { label: 'Right', value: 'flex-end' }
-      ]
-    }
-  ]
+        { label: 'Right', value: 'flex-end' },
+      ],
+    },
+  ],
 })

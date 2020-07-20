@@ -7,7 +7,7 @@ import {
   stringToFunction,
   BuilderAsyncRequestsContext,
   Builder,
-  withBuilder
+  withBuilder,
 } from '@builder.io/react'
 import React from 'react'
 import isArray from 'lodash-es/isArray'
@@ -24,8 +24,8 @@ const defaultElement: BuilderElement = {
       display: 'flex',
       alignItems: 'stretch',
       flexDirection: 'column',
-      height: '400px'
-    }
+      height: '400px',
+    },
   },
   children: [
     {
@@ -35,17 +35,17 @@ const defaultElement: BuilderElement = {
           marginTop: '50px',
           textAlign: 'center',
           display: 'flex',
-          flexDirection: 'column'
-        }
+          flexDirection: 'column',
+        },
       },
       component: {
         name: 'Text',
         options: {
-          text: 'I am a slide'
-        }
-      }
-    }
-  ]
+          text: 'I am a slide',
+        },
+      },
+    },
+  ],
 }
 const defaultButton: BuilderElement = {
   '@type': '@builder.io/sdk:Element',
@@ -55,9 +55,9 @@ const defaultButton: BuilderElement = {
       display: 'flex',
       alignItems: 'stretch',
       flexDirection: 'column',
-      height: '30px'
-    }
-  }
+      height: '30px',
+    },
+  },
 }
 
 type BuilderBlockType = BuilderElement
@@ -95,8 +95,8 @@ class BuilderCarouselComponent extends React.Component<CarouselProps> {
             cancelable: false,
             detail: {
               block: this.props.builderBlock,
-              carousel: this.sliderRef
-            }
+              carousel: this.sliderRef,
+            },
           })
         )
       }
@@ -112,15 +112,15 @@ class BuilderCarouselComponent extends React.Component<CarouselProps> {
 
     return (
       <BuilderAsyncRequestsContext.Consumer>
-        {value => {
+        {(value) => {
           this._errors = value && value.errors
           this._logs = value && value.logs
 
           return (
             <BuilderStoreContext.Consumer>
-              {state => (
+              {(state) => (
                 <div
-                  ref={ref => (this.divRef = ref)}
+                  ref={(ref) => (this.divRef = ref)}
                   className="builder-carousel"
                 >
                   {/* Strange encoding issue workaround... */}
@@ -134,8 +134,8 @@ class BuilderCarouselComponent extends React.Component<CarouselProps> {
                   )}
                   <Slider
                     responsive={this.props.responsive}
-                    ref={ref => (this.sliderRef = ref)}
-                    afterChange={slide => {
+                    ref={(ref) => (this.sliderRef = ref)}
+                    afterChange={(slide) => {
                       // TODO; callbacks
                       if (this.divRef) {
                         this.divRef.dispatchEvent(
@@ -145,8 +145,8 @@ class BuilderCarouselComponent extends React.Component<CarouselProps> {
                             detail: {
                               slide,
                               block: this.props.builderBlock,
-                              carousel: this.sliderRef
-                            }
+                              carousel: this.sliderRef,
+                            },
                           })
                         )
                       }
@@ -221,7 +221,7 @@ class BuilderCarouselComponent extends React.Component<CarouselProps> {
                                     ...state.state,
                                     $index: index,
                                     $item: data,
-                                    [itemName]: data
+                                    [itemName]: data,
                                   }
 
                                   return (
@@ -234,7 +234,7 @@ class BuilderCarouselComponent extends React.Component<CarouselProps> {
                                       <BuilderBlockComponent
                                         block={{
                                           ...block,
-                                          repeat: null
+                                          repeat: null,
                                         }}
                                         index={index}
                                         child={true} /* TODO: fieldname? */
@@ -292,7 +292,7 @@ export const BuilderCarousel = withBuilder(BuilderCarouselComponent, {
   defaultStyles: {
     paddingLeft: '30px',
     paddingRight: '30px',
-    paddingBottom: '30px'
+    paddingBottom: '30px',
   },
   inputs: [
     {
@@ -303,31 +303,31 @@ export const BuilderCarousel = withBuilder(BuilderCarouselComponent, {
           name: 'content',
           type: 'uiBlocks',
           hideFromUI: true,
-          defaultValue: [defaultElement]
-        }
+          defaultValue: [defaultElement],
+        },
       ],
       defaultValue: [
         {
-          content: [defaultElement]
+          content: [defaultElement],
         },
         {
-          content: [defaultElement]
-        }
+          content: [defaultElement],
+        },
       ],
       // showIf: options => !options.get('useChildrenForSlides'),
-      showIf: options => !options.get('useChildrenForSlides')
+      showIf: (options) => !options.get('useChildrenForSlides'),
     },
     {
       name: 'hideDots',
       helperText: 'Show pagination dots',
       type: 'boolean',
-      defaultValue: false
+      defaultValue: false,
     },
     {
       name: 'autoplay',
       helperText: 'Automatically rotate to the next slide every few seconds',
       type: 'boolean',
-      defaultValue: false
+      defaultValue: false,
     },
     {
       name: 'autoplaySpeed',
@@ -338,7 +338,7 @@ export const BuilderCarousel = withBuilder(BuilderCarouselComponent, {
       // TODO: showIf option
       // showIf: options => options.get('autoplay'),
       // TODO: why fn not working?
-      showIf: options => options.get('autoplay')
+      showIf: (options) => options.get('autoplay'),
       // showIf: (options) => options.get('autoPlay')
     },
     // TODO: on add new duplicate the prior or expect use templates
@@ -354,11 +354,11 @@ export const BuilderCarousel = withBuilder(BuilderCarouselComponent, {
             name: 'Image',
             options: {
               image:
-                'https://cdn.builder.io/api/v1/image/assets%2FagZ9n5CUKRfbL9t6CaJOyVSK4Es2%2Fd909a5b91650499c9e0524cc904eeb77'
-            }
-          }
-        }
-      ]
+                'https://cdn.builder.io/api/v1/image/assets%2FagZ9n5CUKRfbL9t6CaJOyVSK4Es2%2Fd909a5b91650499c9e0524cc904eeb77',
+            },
+          },
+        },
+      ],
     },
     {
       name: 'nextButton',
@@ -371,11 +371,11 @@ export const BuilderCarousel = withBuilder(BuilderCarouselComponent, {
             name: 'Image',
             options: {
               image:
-                'https://cdn.builder.io/api/v1/image/assets%2FagZ9n5CUKRfbL9t6CaJOyVSK4Es2%2Fdb2a9827561249aea3817b539aacdcdc'
-            }
-          }
-        }
-      ]
+                'https://cdn.builder.io/api/v1/image/assets%2FagZ9n5CUKRfbL9t6CaJOyVSK4Es2%2Fdb2a9827561249aea3817b539aacdcdc',
+            },
+          },
+        },
+      ],
     },
     {
       name: 'useChildrenForSlides',
@@ -388,7 +388,7 @@ export const BuilderCarousel = withBuilder(BuilderCarouselComponent, {
         if (options.get('useChildrenForSlides') === true) {
           options.set('slides', [])
         }
-      }
+      },
     },
     {
       name: 'responsive',
@@ -400,52 +400,52 @@ export const BuilderCarousel = withBuilder(BuilderCarouselComponent, {
         {
           width: 3000,
           slidesToShow: 2,
-          slidesToScroll: 2
+          slidesToScroll: 2,
         },
         {
           width: 400,
           slidesToShow: 1,
-          slidesToScroll: 1
-        }
+          slidesToScroll: 1,
+        },
       ],
       subFields: [
         {
           name: 'breakpoint',
           type: 'number',
           defaultValue: 400,
-          required: true
+          required: true,
         },
         {
           name: 'settings',
           type: 'object',
           defaultValue: {
             slidesToShow: 2,
-            slidesToScroll: 2
+            slidesToScroll: 2,
           },
           subFields: [
             {
               name: 'slidesToShow',
               type: 'number',
-              defaultValue: 2
+              defaultValue: 2,
             },
             {
               name: 'slidesToScroll',
               type: 'number',
-              defaultValue: 2
+              defaultValue: 2,
             },
             {
               name: 'infinite',
               type: 'boolean',
-              defaultValue: true
+              defaultValue: true,
             },
             {
               name: 'dots',
               type: 'boolean',
-              defaultValue: true
-            }
-          ]
-        }
-      ]
-    }
-  ]
+              defaultValue: true,
+            },
+          ],
+        },
+      ],
+    },
+  ],
 })

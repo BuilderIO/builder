@@ -3,7 +3,7 @@ import {
   builder,
   Builder,
   BuilderContent,
-  BuilderContentVariation
+  BuilderContentVariation,
 } from '@builder.io/sdk'
 
 function getData(content: BuilderContentVariation) {
@@ -13,7 +13,7 @@ function getData(content: BuilderContentVariation) {
 
   const newData: any = {
     ...content.data,
-    blocks: content.data.blocks || JSON.parse(content.data.blocksString)
+    blocks: content.data.blocks || JSON.parse(content.data.blocksString),
   }
 
   delete newData.blocksString
@@ -102,7 +102,7 @@ interface VariantsProviderProps {
 
 export const VariantsProvider: React.SFC<VariantsProviderProps> = ({
   initialContent,
-  children
+  children,
 }) => {
   const hasTests = Boolean(Object.keys(initialContent?.variations || {}).length)
 
@@ -111,24 +111,24 @@ export const VariantsProvider: React.SFC<VariantsProviderProps> = ({
 
   const variants: BuilderContent[] = Object.keys(
     initialContent.variations!
-  ).map(id => ({
+  ).map((id) => ({
     id,
     ...initialContent.variations![id],
-    data: getData(initialContent.variations![id]!)
+    data: getData(initialContent.variations![id]!),
   }))
 
   const allVariants = [...variants, initialContent]
   if (Builder.isServer) {
     const variantsJson = JSON.stringify(
-      Object.keys(initialContent.variations || {}).map(item => ({
+      Object.keys(initialContent.variations || {}).map((item) => ({
         id: item,
-        testRatio: initialContent.variations![item]!.testRatio
+        testRatio: initialContent.variations![item]!.testRatio,
       }))
     )
     const renderScript = () => (
       <script
         dangerouslySetInnerHTML={{
-          __html: variantsScript(variantsJson, initialContent.id!)
+          __html: variantsScript(variantsJson, initialContent.id!),
         }}
       ></script>
     )
@@ -164,5 +164,5 @@ export const VariantsProvider: React.SFC<VariantsProviderProps> = ({
     builder.setCookie(cookieName, variantId)
   }
 
-  return children([allVariants.find(item => item.id === variantId)!])
+  return children([allVariants.find((item) => item.id === variantId)!])
 }

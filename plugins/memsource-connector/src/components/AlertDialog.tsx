@@ -6,7 +6,7 @@ import MuiDialogTitle from './dialogTitle'
 export default ({
   setOpen,
   severity,
-  message
+  message,
 }: {
   setOpen: Function
   severity: 'warning' | 'success' | 'error' | 'info'

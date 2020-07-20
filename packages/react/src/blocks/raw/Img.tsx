@@ -35,9 +35,9 @@ export const Img = withBuilder(ImgComponent, {
       name: 'image',
       type: 'file',
       allowedFileTypes: ['jpeg', 'jpg', 'png', 'svg'],
-      required: true
-    }
+      required: true,
+    },
   ],
   noWrap: true,
-  static: true
+  static: true,
 })

@@ -12,7 +12,7 @@ import {
   ListItemText,
   Paper,
   TextField,
-  Typography
+  Typography,
 } from '@material-ui/core'
 import { Create, Search } from '@material-ui/icons'
 import { computed, observable, runInAction } from 'mobx'
@@ -63,7 +63,7 @@ export class ProductPreviewCell extends SafeComponent<
                 maxWidth: 400,
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap'
+                whiteSpace: 'nowrap',
               }}
             >
               {this.props.product.title}
@@ -102,13 +102,13 @@ export class ProductPicker extends SafeComponent<
         this.props.context.user.apiKey
       }&title=${encodeURIComponent(this.searchInputText)}&limit=40`
     )
-      .then(async res => {
+      .then(async (res) => {
         if (!res.ok) {
           onShopifyError(await res.text())
         }
         return res
       })
-      .then(res => res && res.json())
+      .then((res) => res && res.json())
       .catch(onShopifyError)
 
     runInAction(() => {
@@ -125,7 +125,7 @@ export class ProductPicker extends SafeComponent<
       () => this.searchProducts(),
       {
         delay: 500,
-        fireImmediately: true
+        fireImmediately: true,
       }
     )
   }
@@ -144,9 +144,9 @@ export class ProductPicker extends SafeComponent<
                   css={{ color: '#999', marginRight: -2, fontSize: 20 }}
                 />
               </InputAdornment>
-            )
+            ),
           }}
-          onChange={e => (this.searchInputText = e.target.value)}
+          onChange={(e) => (this.searchInputText = e.target.value)}
         />
         {this.loading && (
           <CircularProgress disableShrink css={{ margin: '50px auto' }} />
@@ -154,10 +154,10 @@ export class ProductPicker extends SafeComponent<
         <div css={{ maxHeight: '80vh', overflow: 'auto' }}>
           {!this.loading &&
             (this.products.length ? (
-              this.products.map(item => (
+              this.products.map((item) => (
                 <div
                   key={item.id}
-                  onClick={e => {
+                  onClick={(e) => {
                     this.props.onChange(String(item.id))
                   }}
                 >
@@ -175,7 +175,7 @@ export class ProductPicker extends SafeComponent<
                   css={{
                     margin: '40px 20px',
                     textAlign: 'center',
-                    fontSize: 17
+                    fontSize: 17,
                   }}
                   variant="caption"
                 >
@@ -229,11 +229,11 @@ export class ShopifyProductPicker extends SafeComponent<
     return {
       '@type': '@builder.io/core:Request',
       request: {
-        url: `${apiRoot}/api/v1/shopify/products/{{this.options.product}}.json?apiKey=${this.props.context.user.apiKey}`
+        url: `${apiRoot}/api/v1/shopify/products/{{this.options.product}}.json?apiKey=${this.props.context.user.apiKey}`,
       },
       options: {
-        product: productId
-      }
+        product: productId,
+      },
     } as BuilderRequest
   }
 
@@ -250,7 +250,7 @@ export class ShopifyProductPicker extends SafeComponent<
       <ProductPicker
         context={this.props.context}
         value={this.productId}
-        onChange={value => {
+        onChange={(value) => {
           this.productId = value
           close()
         }}
@@ -261,9 +261,9 @@ export class ShopifyProductPicker extends SafeComponent<
           // Align modal to top so doesn't jump around centering itself when
           // grows and shrinks to show more/less products or loading
           style: {
-            alignSelf: 'flex-start'
-          }
-        }
+            alignSelf: 'flex-start',
+          },
+        },
       }
     )
   }
@@ -289,7 +289,7 @@ export class ShopifyProductPicker extends SafeComponent<
           <Paper
             css={{
               marginBottom: 15,
-              position: 'relative'
+              position: 'relative',
             }}
             onClick={() => {
               this.showChooseProductModal()
@@ -308,7 +308,7 @@ export class ShopifyProductPicker extends SafeComponent<
                 bottom: 0,
                 height: 50,
                 marginTop: 'auto',
-                marginBottom: 'auto'
+                marginBottom: 'auto',
               }}
             >
               <Create css={{ color: '#888' }} />
@@ -333,5 +333,5 @@ export class ShopifyProductPicker extends SafeComponent<
 
 Builder.registerEditor({
   name: 'ShopifyProduct',
-  component: ShopifyProductPicker
+  component: ShopifyProductPicker,
 })

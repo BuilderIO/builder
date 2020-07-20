@@ -1,12 +1,11 @@
-import React from 'react'
-import { BuilderBlock } from '../../decorators/builder-block.decorator'
+import React from 'react';
+import { BuilderBlock } from '../../decorators/builder-block.decorator';
 import HTML from 'react-native-render-html';
 
-
 export interface LabelProps {
-  attributes?: any
-  text?: string
-  for?: string
+  attributes?: any;
+  text?: string;
+  for?: string;
 }
 
 @BuilderBlock({
@@ -17,16 +16,16 @@ export interface LabelProps {
     {
       name: 'text',
       type: 'text',
-      defaultValue: 'Label'
+      defaultValue: 'Label',
     },
     {
       name: 'for',
       type: 'text',
       helperText: 'The name of the input this label is for',
-      advanced: true
-    }
+      advanced: true,
+    },
   ],
-  noWrap: true
+  noWrap: true,
   // TODO: take inner html or blocsk
   // TODO: optional children? maybe as optional form input
   // that only shows if advanced setting is flipped
@@ -35,8 +34,6 @@ export interface LabelProps {
 })
 export class Label extends React.Component<LabelProps> {
   render() {
-    return (
-      <HTML html={this.props.text || ' '} />
-    )
+    return <HTML html={this.props.text || ' '} />;
   }
 }

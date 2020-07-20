@@ -43,18 +43,18 @@ describe('Memsource connector', () => {
             editingContentModel: {
               data: {
                 get: (arg: string) => ({ blocks: { toJSON: () => [{}] } }[arg]),
-                toJSON: () => ({ locale: 'unallowed-locale-1' })
+                toJSON: () => ({ locale: 'unallowed-locale-1' }),
               },
               model: {
                 fields: [
                   {
                     name: 'allowedLocales',
-                    enum: { toJSON: () => ['allowed-1', 'allowed-2'] }
-                  }
-                ]
-              }
-            }
-          }
+                    enum: { toJSON: () => ['allowed-1', 'allowed-2'] },
+                  },
+                ],
+              },
+            },
+          },
         }
         const { getByTestId } = render(<MemsourceConnector context={ctx} />)
 
@@ -70,10 +70,10 @@ describe('Memsource connector', () => {
           designerState: {
             editingContentModel: {
               data: {
-                get: (arg: string) => ({ blocks: { toJSON: () => [{}] } }[arg])
-              }
-            }
-          }
+                get: (arg: string) => ({ blocks: { toJSON: () => [{}] } }[arg]),
+              },
+            },
+          },
         }
         const { getByTestId } = render(<MemsourceConnector context={ctx} />)
 
@@ -90,18 +90,18 @@ describe('Memsource connector', () => {
             editingContentModel: {
               data: {
                 get: (arg: string) => ({ blocks: { toJSON: () => [{}] } }[arg]),
-                toJSON: () => ({ locale: 'locale-1' })
+                toJSON: () => ({ locale: 'locale-1' }),
               },
               model: {
                 fields: [
                   {
                     name: 'locale',
-                    enum: { toJSON: () => ['locale-1', 'locale-2'] }
-                  }
-                ]
-              }
-            }
-          }
+                    enum: { toJSON: () => ['locale-1', 'locale-2'] },
+                  },
+                ],
+              },
+            },
+          },
         }
         const { getByTestId } = render(<MemsourceConnector context={ctx} />)
 
@@ -117,8 +117,8 @@ describe('Memsource connector', () => {
       const ctx = {
         user: {
           data: {
-            email: 'it-was-I-who-requested-translations@org.com'
-          }
+            email: 'it-was-I-who-requested-translations@org.com',
+          },
         },
         designerState: {
           editingContentModel: {
@@ -127,7 +127,7 @@ describe('Memsource connector', () => {
             name: 'page-name',
             meta: {
               get: (arg: string) =>
-                ({ componentsUsed: { toJSON: () => [] } }[arg])
+                ({ componentsUsed: { toJSON: () => [] } }[arg]),
             },
             data: {
               get: (arg: string) =>
@@ -135,12 +135,12 @@ describe('Memsource connector', () => {
                   blocks: {
                     toJSON: () => [
                       {
-                        toJSON: () => ({})
-                      }
-                    ]
-                  }
+                        toJSON: () => ({}),
+                      },
+                    ],
+                  },
                 }[arg]),
-              toJSON: () => ({ locale: 'locale-1', title: 'page-title' })
+              toJSON: () => ({ locale: 'locale-1', title: 'page-title' }),
             },
             model: {
               name: 'model-name',
@@ -149,18 +149,18 @@ describe('Memsource connector', () => {
                   name: 'locale',
                   toJSON: () => ({
                     name: 'locale',
-                    enum: { toJSON: () => ['locale-1', 'locale-2'] }
+                    enum: { toJSON: () => ['locale-1', 'locale-2'] },
                   }),
-                  enum: { toJSON: () => ['locale-1', 'locale-2'] }
+                  enum: { toJSON: () => ['locale-1', 'locale-2'] },
                 },
                 {
                   name: 'memsourceProxyUrl',
-                  toJSON: () => ({ defaultValue: 'http://example.com' })
-                }
-              ]
-            }
-          }
-        }
+                  toJSON: () => ({ defaultValue: 'http://example.com' }),
+                },
+              ],
+            },
+          },
+        },
       }
       it('Then localisation dialog is displayed', () => {
         const { getByTestId, getByText } = render(
@@ -213,11 +213,11 @@ describe('Memsource connector', () => {
                   pageId: 'page-id',
                   pageName: 'page-name',
                   title: 'page-title',
-                  requestor: 'it-was-I-who-requested-translations@org.com'
+                  requestor: 'it-was-I-who-requested-translations@org.com',
                 }),
-                content: expect.anything()
-              }
-            }
+                content: expect.anything(),
+              },
+            },
           })
         })
       })

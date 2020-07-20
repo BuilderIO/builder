@@ -1,11 +1,11 @@
 // Borrowed from @webcomponentsjs but fixed so uglifyjs can run (remove `const` keyword)
 // Original source: https://github.com/webcomponents/custom-elements/blob/master/src/native-shim.js
 // Issue: https://github.com/webcomponents/webcomponentsjs/issues/749
-;(function() {
+;(function () {
   'use strict'
-  ;(function() {
+  ;(function () {
     if (typeof window === 'undefined') {
-      return;
+      return
     }
     if (
       void 0 === window.Reflect ||
@@ -14,7 +14,7 @@
     )
       return
     var a = HTMLElement
-    ;(window.HTMLElement = function() {
+    ;(window.HTMLElement = function () {
       return Reflect.construct(a, [], this.constructor)
     }),
       (HTMLElement.prototype = a.prototype),

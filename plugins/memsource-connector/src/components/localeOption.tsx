@@ -14,10 +14,10 @@ export const LocaleOption = ({ label, dispatch }: LocaleOptionProps) => {
           name={label}
           color="primary"
           data-testid={`${label}-checkbox`}
-          onChange={event =>
+          onChange={(event) =>
             dispatch({
               locale: event.target.name,
-              checked: event.target.checked
+              checked: event.target.checked,
             })
           }
         />

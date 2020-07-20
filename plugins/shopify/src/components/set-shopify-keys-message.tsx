@@ -8,7 +8,7 @@ export function SetShopifyKeysMessage() {
       css={{
         padding: 40,
         color: '#444',
-        textAlign: 'center'
+        textAlign: 'center',
       }}
     >
       <div css={{ color: '#000', paddingBottom: 10 }}>

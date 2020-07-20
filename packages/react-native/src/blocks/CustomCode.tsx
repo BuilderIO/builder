@@ -14,7 +14,6 @@ import HTML from 'react-native-render-html';
   ],
 })
 export class CustomCode extends React.Component<{ code: string }> {
-
   componentDidMount() {
     // TODO: parse and run scripts (?)
   }

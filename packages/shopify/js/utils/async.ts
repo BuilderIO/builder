@@ -8,7 +8,7 @@ interface Thenable {
 function mkResolve(value: any) {
   const ret = {
     then: (resolve: resolver) => resolve(value),
-    catch: () => ret
+    catch: () => ret,
   };
   return ret;
 }
@@ -19,7 +19,7 @@ function mkReject(err: Error) {
       if (reject) return reject(err);
       return ret;
     },
-    catch: (reject: resolver) => reject(err)
+    catch: (reject: resolver) => reject(err),
   };
   return ret;
 }
@@ -29,17 +29,10 @@ function isThenable(val: any): val is Thenable {
 }
 
 function isCustomIterable(val: any): val is IterableIterator<any> {
-  return (
-    val &&
-    isFunction(val.next) &&
-    isFunction(val.throw) &&
-    isFunction(val.return)
-  );
+  return val && isFunction(val.next) && isFunction(val.throw) && isFunction(val.return);
 }
 
-export function toThenable(
-  val: IterableIterator<any> | Thenable | any
-): Thenable {
+export function toThenable(val: IterableIterator<any> | Thenable | any): Thenable {
   if (isThenable(val)) return val;
   if (isCustomIterable(val)) return reduce();
   return mkResolve(val);
@@ -80,5 +73,5 @@ export function toValue(val: IterableIterator<any> | Thenable | any) {
 }
 
 export function isFunction(value: any): value is Function {
-  return typeof value === "function";
+  return typeof value === 'function';
 }

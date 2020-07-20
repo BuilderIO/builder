@@ -12,10 +12,7 @@ const filters = [
   {
     name: 'handle',
     action(item: any) {
-      return item
-        .toLowerCase()
-        .replace(/[&!%]/g, '')
-        .replace(/\s+/g, '-');
+      return item.toLowerCase().replace(/[&!%]/g, '').replace(/\s+/g, '-');
     },
   },
   {

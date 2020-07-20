@@ -6,7 +6,7 @@ const fnCache: { [key: string]: BuilderEvanFunction | undefined } = {}
 const sizeMap = {
   desktop: 'large',
   tablet: 'medium',
-  mobile: 'small'
+  mobile: 'small',
 }
 
 type BuilderEvanFunction = (
@@ -148,8 +148,8 @@ export function stringToFunction(
             ...state,
             ...{ state },
             ...{ builder: api },
-            event
-          }
+            event,
+          },
         }).run(str.replace(/(^|;)return /, '$1'))
         // tslint:enable:comment-format
       }

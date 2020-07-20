@@ -7,8 +7,8 @@ if (typeof window !== 'undefined') {
       data: {
         value: true,
         supportsPatchUpdates: 'v2',
-        priorVersion: version
-      }
+        priorVersion: version,
+      },
     },
     '*'
   )

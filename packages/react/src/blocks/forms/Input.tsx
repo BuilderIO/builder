@@ -63,40 +63,40 @@ export const FormInput = withBuilder(FormInputComponent, {
         'week',
         'password',
         'color',
-        'hidden'
+        'hidden',
       ],
-      defaultValue: 'text'
+      defaultValue: 'text',
     },
     {
       name: 'name',
       type: 'string',
       required: true,
       helperText:
-        'Every input in a form needs a unique name describing what it takes, e.g. "email"'
+        'Every input in a form needs a unique name describing what it takes, e.g. "email"',
     },
     {
       name: 'placeholder',
       type: 'string',
       defaultValue: 'Hello there',
-      helperText: 'Text to display when there is no value'
+      helperText: 'Text to display when there is no value',
     },
     // TODO: handle value vs default value automatically like ng-model
     {
       name: 'defaultValue',
-      type: 'string'
+      type: 'string',
     },
     {
       name: 'value',
       type: 'string',
-      advanced: true
+      advanced: true,
     },
 
     {
       name: 'required',
       type: 'boolean',
       helperText: 'Is this input required to be filled out to submit a form',
-      defaultValue: false
-    }
+      defaultValue: false,
+    },
   ],
   // TODO
   // TODO: call editorHooks?
@@ -117,6 +117,6 @@ export const FormInput = withBuilder(FormInputComponent, {
     borderRadius: '3px',
     borderWidth: '1px',
     borderStyle: 'solid',
-    borderColor: '#ccc'
-  }
+    borderColor: '#ccc',
+  },
 })

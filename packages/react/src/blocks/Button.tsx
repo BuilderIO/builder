@@ -39,25 +39,25 @@ export const Button = withBuilder(ButtonComponent, {
     color: 'white',
     borderRadius: '4px',
     textAlign: 'center',
-    cursor: 'pointer'
+    cursor: 'pointer',
   },
   inputs: [
     {
       name: 'text',
       type: 'text',
-      defaultValue: 'Click me!'
+      defaultValue: 'Click me!',
     },
     {
       name: 'link',
-      type: 'url'
+      type: 'url',
     },
     {
       name: 'openLinkInNewTab',
       type: 'boolean',
       defaultValue: false,
-      friendlyName: 'Open link in new tab'
-    }
+      friendlyName: 'Open link in new tab',
+    },
   ],
   static: true,
-  noWrap: true
+  noWrap: true,
 })

@@ -55,7 +55,7 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
               this.firstLoad = false;
             }
             if (this.props.contentLoaded) {
-              this.props.contentLoaded(match && match.data || null);
+              this.props.contentLoaded((match && match.data) || null);
             }
           },
           error => {
@@ -112,7 +112,7 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
         builder-model={this.props.modelName}
       >
         {this.props.children(useData && useData.data, loading, useData)}
-      {/* </TouchableWithoutFeedback> */}
+        {/* </TouchableWithoutFeedback> */}
       </View>
     );
   }

@@ -17,7 +17,7 @@ const App = () => {
           // For server side rendering see here: https://github.com/BuilderIO/builder/tree/master/packages/react/examples/next-js
           <BuilderComponent
             model="page"
-            contentLoaded={(content) => {
+            contentLoaded={content => {
               if (!content && !Builder.isEditing) {
                 setNotFound(true);
               }
@@ -78,7 +78,7 @@ const NotFound = () => {
   );
 };
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   header: {
     display: 'flex',
     padding: 10,

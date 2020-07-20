@@ -7,8 +7,8 @@ These steps will guide you through contributing to this project:
 - Fork the repo
 - Clone it and install dependencies
 
-		git clone https://github.com/YOUR-USERNAME/typescript-library-starter
-		npm install
+      		git clone https://github.com/YOUR-USERNAME/typescript-library-starter
+      		npm install
 
 Keep in mind that after running `npm install` the git repo is reset. So a good way to cope with this is to have a copy of the folder to push the changes, and the other to try them.
 

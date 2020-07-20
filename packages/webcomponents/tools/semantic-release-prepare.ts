@@ -1,31 +1,31 @@
-const path = require("path")
-const { fork } = require("child_process")
-const colors = require("colors")
+const path = require('path')
+const { fork } = require('child_process')
+const colors = require('colors')
 
-const { readFileSync, writeFileSync } = require("fs")
+const { readFileSync, writeFileSync } = require('fs')
 const pkg = JSON.parse(
-  readFileSync(path.resolve(__dirname, "..", "package.json"))
+  readFileSync(path.resolve(__dirname, '..', 'package.json'))
 )
 
-pkg.scripts.prepush = "npm run test:prod && npm run build"
-pkg.scripts.commitmsg = "commitlint -E GIT_PARAMS"
+pkg.scripts.prepush = 'npm run test:prod && npm run build'
+pkg.scripts.commitmsg = 'commitlint -E GIT_PARAMS'
 
 writeFileSync(
-  path.resolve(__dirname, "..", "package.json"),
+  path.resolve(__dirname, '..', 'package.json'),
   JSON.stringify(pkg, null, 2)
 )
 
 // Call husky to set up the hooks
-fork(path.resolve(__dirname, "..", "node_modules", "husky", "bin", "install"))
+fork(path.resolve(__dirname, '..', 'node_modules', 'husky', 'bin', 'install'))
 
 console.log()
-console.log(colors.green("Done!!"))
+console.log(colors.green('Done!!'))
 console.log()
 
 if (pkg.repository.url.trim()) {
-  console.log(colors.cyan("Now run:"))
-  console.log(colors.cyan("  npm install -g semantic-release-cli"))
-  console.log(colors.cyan("  semantic-release-cli setup"))
+  console.log(colors.cyan('Now run:'))
+  console.log(colors.cyan('  npm install -g semantic-release-cli'))
+  console.log(colors.cyan('  semantic-release-cli setup'))
   console.log()
   console.log(
     colors.cyan('Important! Answer NO to "Generate travis.yml" question')
@@ -42,9 +42,9 @@ if (pkg.repository.url.trim()) {
       'First you need to set the "repository.url" property in package.json'
     )
   )
-  console.log(colors.cyan("Then run:"))
-  console.log(colors.cyan("  npm install -g semantic-release-cli"))
-  console.log(colors.cyan("  semantic-release-cli setup"))
+  console.log(colors.cyan('Then run:'))
+  console.log(colors.cyan('  npm install -g semantic-release-cli'))
+  console.log(colors.cyan('  semantic-release-cli setup'))
   console.log()
   console.log(
     colors.cyan('Important! Answer NO to "Generate travis.yml" question')

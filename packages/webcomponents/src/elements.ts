@@ -34,7 +34,7 @@ function onReady(cb: Function) {
 if (Builder.isBrowser && !customElements.get(componentName)) {
   const BuilderWC = {
     Builder,
-    builder
+    builder,
   }
   ;(window as any).BuilderWC = BuilderWC
 
@@ -75,7 +75,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
         return
       }
 
-      apiStyles.forEach(element => {
+      apiStyles.forEach((element) => {
         const styles = element.innerHTML
         styles.replace(
           /(@font-face\s*{\s*font-family:\s*(.*?);[\s\S]+?url\((\S+)\)[\s\S]+?})/g,
@@ -96,7 +96,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
               trimmedFontName,
               `url("${trimmedFontUrl}")`,
               {
-                weight: weight || '400'
+                weight: weight || '400',
               }
             )
 
@@ -166,7 +166,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
     get options() {
       return {
         rev: this.getAttribute('rev') || undefined,
-        ...this._options
+        ...this._options,
       }
     }
 
@@ -213,7 +213,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
       window.parent?.postMessage(
         {
           type: 'builder.isReactSdk',
-          data: { value: true }
+          data: { value: true },
         },
         '*'
       )
@@ -248,7 +248,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
         if (id) {
           return {
             id,
-            testVariationId: variationId || undefined
+            testVariationId: variationId || undefined,
           }
         }
       }
@@ -333,7 +333,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
             undefined,
           entry: entry || undefined,
           ...this.options,
-          prerender: true
+          prerender: true,
         })
         .subscribe(
           (data: any) => {
@@ -454,7 +454,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
             context: {
               shopify,
               liquid: shopify.liquid,
-              apiKey: builder.apiKey
+              apiKey: builder.apiKey,
             },
             entry,
             emailMode:
@@ -467,8 +467,8 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
                 (slot ? `slot:${slot}` : null) ||
                 (Builder.isEditing
                   ? name!
-                  : this.getAttribute('entry') || name! || undefined)
-            }
+                  : this.getAttribute('entry') || name! || undefined),
+            },
           },
           this.getAttribute('hydrate') !== 'false',
           fresh
@@ -484,10 +484,10 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
             (Builder.isEditing ? name! : this.getAttribute('entry') || name!),
           ...this.options,
           entry: data ? data.id : this.options.entry || undefined,
-          prerender: false
+          prerender: false,
         })
         .subscribe(
-          async data => {
+          async (data) => {
             if (unsubscribed) {
               console.debug("Unsubscribe didn't work!")
               return
@@ -513,7 +513,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
                 context: {
                   shopify,
                   liquid: shopify.liquid,
-                  apiKey: builder.apiKey
+                  apiKey: builder.apiKey,
                 },
                 emailMode:
                   ((this.options as any) || {}).emailMode ||
@@ -529,8 +529,8 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
                     (Builder.isEditing
                       ? name!
                       : (data && data.id) || undefined),
-                  ...this.options
-                }
+                  ...this.options,
+                },
               },
               this.getAttribute('hydrate') !== 'false', // TODO: query param override builder.hydrate
               fresh
@@ -564,12 +564,12 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
                 this,
                 {
                   ...({
-                    ref: (ref: any) => (this.builderPageRef = ref)
+                    ref: (ref: any) => (this.builderPageRef = ref),
                   } as any),
                   context: {
                     shopify,
                     liquid: shopify.liquid,
-                    apiKey: builder.apiKey
+                    apiKey: builder.apiKey,
                   },
                   modelName: name!,
                   entry: data ? data.id : entry,
@@ -585,10 +585,10 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
                       (Builder.isEditing
                         ? name!
                         : (data && data.id) || undefined),
-                    ...this.options
+                    ...this.options,
                     // TODO: specify variation?
                   },
-                  fresh
+                  fresh,
                 },
                 this.getAttribute('hydrate') !== 'false'
               )
@@ -608,7 +608,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
 
     unsubscribe() {
       if (this.subscriptions) {
-        this.subscriptions.forEach(fn => fn())
+        this.subscriptions.forEach((fn) => fn())
         this.subscriptions = []
       }
     }

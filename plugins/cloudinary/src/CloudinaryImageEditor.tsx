@@ -5,7 +5,7 @@ import { Builder } from '@builder.io/sdk'
 import { Typography, Button } from '@material-ui/core'
 import {
   CloudinaryMediaLibraryDialog,
-  CloudinaryImage
+  CloudinaryImage,
 } from './CloudinaryMediaLibraryDialog'
 import CloudinayCredentialsDialog from './CloudinaryCredentialsDialog'
 
@@ -63,14 +63,14 @@ export default class CloudinaryImageEditor extends React.Component<
       selectedImagePublicId:
         props.value && props.value.get && props.value.get('public_id')
           ? props.value.get('public_id')
-          : ''
+          : '',
     }
   }
 
   private closeDialog() {
     this.setState({
       requestCredentials: false,
-      showDialog: false
+      showDialog: false,
     })
   }
 
@@ -105,7 +105,7 @@ export default class CloudinaryImageEditor extends React.Component<
     this.cloudinaryCloud = cloudName
     this.setState({
       apiKey: this.cloudinaryKey,
-      cloudName: this.cloudinaryCloud
+      cloudName: this.cloudinaryCloud,
     })
   }
 
@@ -176,7 +176,7 @@ export default class CloudinaryImageEditor extends React.Component<
             variant="contained"
             onClick={() => {
               this.setState({
-                showDialog: !this.state.showDialog
+                showDialog: !this.state.showDialog,
               })
             }}
           >
@@ -190,7 +190,7 @@ export default class CloudinaryImageEditor extends React.Component<
             onClick={() => {
               this.setState({
                 requestCredentials: true,
-                showDialog: !this.state.showDialog
+                showDialog: !this.state.showDialog,
               })
             }}
           >
@@ -209,5 +209,5 @@ export default class CloudinaryImageEditor extends React.Component<
 
 Builder.registerEditor({
   name: 'cloudinaryImageEditor',
-  component: CloudinaryImageEditor
+  component: CloudinaryImageEditor,
 })

@@ -6,7 +6,6 @@ import { BuilderBlock } from './builder-block.component'
 // TODO: fetch these for user and send them with same response like graphql
 import { Size } from '../constants/device-sizes.constant'
 
-
 export interface BuilderBlocksProps {
   fieldName?: string
   // TODO: block type (ElementType[])
@@ -27,7 +26,10 @@ interface BuilderBlocksState {
 }
 
 // TODO: options to set direciotn
-export class BuilderBlocks extends React.Component<BuilderBlocksProps, BuilderBlocksState> {
+export class BuilderBlocks extends React.Component<
+  BuilderBlocksProps,
+  BuilderBlocksState
+> {
   get isRoot() {
     return !this.props.child
   }
@@ -64,8 +66,8 @@ export class BuilderBlocks extends React.Component<BuilderBlocksProps, BuilderBl
           type: 'builder.clickEmptyBlocks',
           data: {
             parentElementId: this.parentId,
-            dataPath: this.path
-          }
+            dataPath: this.path,
+          },
         },
         '*'
       )
@@ -96,9 +98,9 @@ export class BuilderBlocks extends React.Component<BuilderBlocksProps, BuilderBl
           ...(!this.props.emailMode && {
             display: 'flex',
             flexDirection: 'column',
-            alignItems: 'stretch'
+            alignItems: 'stretch',
           }),
-          ...this.props.style
+          ...this.props.style,
         }}
         onClick={() => {
           if (this.noBlocks) {
@@ -110,20 +112,19 @@ export class BuilderBlocks extends React.Component<BuilderBlocksProps, BuilderBl
         {/* TODO: maybe don't do this to preserve blocks always editable */}
         {(blocks &&
           Array.isArray(blocks) &&
-          (blocks as any[]).map(
-            (block, index) =>
-              block && block['@type'] === '@builder.io/sdk:Element' ? (
-                <BuilderBlock
-                  key={block.id}
-                  block={block}
-                  index={index}
-                  fieldName={this.props.fieldName}
-                  child={this.props.child}
-                  emailMode={this.props.emailMode}
-                />
-              ) : (
-                block
-              )
+          (blocks as any[]).map((block, index) =>
+            block && block['@type'] === '@builder.io/sdk:Element' ? (
+              <BuilderBlock
+                key={block.id}
+                block={block}
+                index={index}
+                fieldName={this.props.fieldName}
+                child={this.props.child}
+                emailMode={this.props.emailMode}
+              />
+            ) : (
+              block
+            )
           )) ||
           blocks}
       </TagName>

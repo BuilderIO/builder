@@ -23,8 +23,8 @@ const defaultBlocks: BuilderElement[] = [
         marginTop: '30px',
         textAlign: 'center',
         lineHeight: 'normal',
-        height: 'auto'
-      }
+        height: 'auto',
+      },
     },
     component: {
       name: 'Image',
@@ -33,9 +33,9 @@ const defaultBlocks: BuilderElement[] = [
           'https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d',
         backgroundPosition: 'center',
         backgroundSize: 'cover',
-        aspectRatio: DEFAULT_ASPECT_RATIO
-      }
-    }
+        aspectRatio: DEFAULT_ASPECT_RATIO,
+      },
+    },
   },
   {
     '@type': '@builder.io/sdk:Element',
@@ -49,16 +49,16 @@ const defaultBlocks: BuilderElement[] = [
         marginTop: '30px',
         textAlign: 'center',
         lineHeight: 'normal',
-        height: 'auto'
-      }
+        height: 'auto',
+      },
     },
     component: {
       name: 'Text',
       options: {
-        text: '<p>Enter some text...</p>'
-      }
-    }
-  }
+        text: '<p>Enter some text...</p>',
+      },
+    },
+  },
 ]
 
 class ColumnsComponent extends React.Component<any> {
@@ -72,7 +72,10 @@ class ColumnsComponent extends React.Component<any> {
   }
 
   getWidth(index: number) {
-    return (this.columns[index] && this.columns[index].width) || 100 / this.columns.length
+    return (
+      (this.columns[index] && this.columns[index].width) ||
+      100 / this.columns.length
+    )
   }
 
   getColumnWidth(index: number) {
@@ -92,11 +95,15 @@ class ColumnsComponent extends React.Component<any> {
           css={{
             display: 'flex',
             ...(this.props.stackColumnsAt !== 'never' && {
-              [`@media (max-width: ${this.props.stackColumnsAt !== 'tablet' ? 639 : 999}px)`]: {
-                flexDirection: this.props.reverseColumnsWhenStacked ? 'column-reverse' : 'column',
-                alignItems: 'stretch'
-              }
-            })
+              [`@media (max-width: ${
+                this.props.stackColumnsAt !== 'tablet' ? 639 : 999
+              }px)`]: {
+                flexDirection: this.props.reverseColumnsWhenStacked
+                  ? 'column-reverse'
+                  : 'column',
+                alignItems: 'stretch',
+              },
+            }),
           }}
         >
           {columns.map((col, index) => {
@@ -117,7 +124,7 @@ class ColumnsComponent extends React.Component<any> {
                     alignItems: 'stretch',
                     lineHeight: 'normal',
                     ['& > .builder-blocks']: {
-                      flexGrow: 1
+                      flexGrow: 1,
                     },
                     width: this.getColumnWidth(index),
                     marginLeft: index === 0 ? 0 : gutterSize,
@@ -126,16 +133,18 @@ class ColumnsComponent extends React.Component<any> {
                         this.props.stackColumnsAt !== 'tablet' ? 639 : 999
                       }px)`]: {
                         width: '100%',
-                        marginLeft: 0
-                      }
-                    })
+                        marginLeft: 0,
+                      },
+                    }),
                   }}
                 >
                   <BuilderBlocks
                     key={index}
                     // TODO: childOf [parentBlocks]?
                     child
-                    parentElementId={this.props.builderBlock && this.props.builderBlock.id}
+                    parentElementId={
+                      this.props.builderBlock && this.props.builderBlock.id
+                    }
                     blocks={col.blocks}
                     dataPath={`component.options.columns.${index}.blocks`}
                   />
@@ -161,24 +170,25 @@ export const Columns = withBuilder(ColumnsComponent, {
           name: 'blocks',
           type: 'array',
           hideFromUI: true,
-          defaultValue: defaultBlocks
+          defaultValue: defaultBlocks,
         },
         {
           name: 'width',
           type: 'number',
           hideFromUI: true,
-          helperText: 'Width %, e.g. set to 50 to fill half of the space'
+          helperText: 'Width %, e.g. set to 50 to fill half of the space',
         },
         {
           name: 'link',
           type: 'string',
-          helperText: 'Optionally set a url that clicking this column will link to'
-        }
+          helperText:
+            'Optionally set a url that clicking this column will link to',
+        },
       ],
       defaultValue: [{ blocks: defaultBlocks }, { blocks: defaultBlocks }],
       onChange: (options: Map<string, any>) => {
         function clearWidths() {
-          columns.forEach(col => {
+          columns.forEach((col) => {
             col.delete('width')
           })
         }
@@ -186,10 +196,14 @@ export const Columns = withBuilder(ColumnsComponent, {
         const columns = options.get('columns') as Array<Map<String, any>>
 
         if (Array.isArray(columns)) {
-          const containsColumnWithWidth = !!columns.find(col => col.get('width'))
+          const containsColumnWithWidth = !!columns.find((col) =>
+            col.get('width')
+          )
 
           if (containsColumnWithWidth) {
-            const containsColumnWithoutWidth = !!columns.find(col => !col.get('width'))
+            const containsColumnWithoutWidth = !!columns.find(
+              (col) => !col.get('width')
+            )
             if (containsColumnWithoutWidth) {
               clearWidths()
             } else {
@@ -203,14 +217,14 @@ export const Columns = withBuilder(ColumnsComponent, {
             }
           }
         }
-      }
+      },
     },
     {
       name: 'space',
       type: 'number',
       defaultValue: 20,
       helperText: 'Size of gap between columns',
-      advanced: true
+      advanced: true,
     },
     {
       name: 'stackColumnsAt',
@@ -218,14 +232,15 @@ export const Columns = withBuilder(ColumnsComponent, {
       defaultValue: 'tablet',
       helperText: 'Convert horizontal columns to vertical at what device size',
       enum: ['tablet', 'mobile', 'never'],
-      advanced: true
+      advanced: true,
     },
     {
       name: 'reverseColumnsWhenStacked',
       type: 'boolean',
       defaultValue: false,
-      helperText: 'When stacking columns for mobile devices, reverse the ordering',
-      advanced: true
-    }
-  ]
+      helperText:
+        'When stacking columns for mobile devices, reverse the ordering',
+      advanced: true,
+    },
+  ],
 })

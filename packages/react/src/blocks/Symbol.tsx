@@ -17,7 +17,7 @@ const refs: Record<string, Element> = {}
 if (Builder.isBrowser) {
   try {
     Array.from(document.querySelectorAll('[builder-static-symbol]')).forEach(
-      el => {
+      (el) => {
         const id = (el as HTMLDivElement).getAttribute('builder-static-symbol')
         if (id) {
           refs[id] = el
@@ -94,7 +94,7 @@ class SymbolComponent extends React.Component<SymbolProps> {
 
   render() {
     if (this.useStatic) {
-      return <div ref={el => (this.staticRef = el)} />
+      return <div ref={(el) => (this.staticRef = el)} />
     }
 
     const symbol = this.props.symbol
@@ -129,7 +129,7 @@ class SymbolComponent extends React.Component<SymbolProps> {
       <BuilderStoreContext.Consumer
         key={(model || 'no model') + ':' + (entry || 'no entry')}
       >
-        {state => {
+        {(state) => {
           return (
             <TagName
               data-model={model}
@@ -147,7 +147,7 @@ class SymbolComponent extends React.Component<SymbolProps> {
                 this.placeholder
               ) : (
                 <BuilderPage
-                  ref={ref => (this.ref = ref)}
+                  ref={(ref) => (this.ref = ref)}
                   context={{ ...state.context }}
                   modelName={model}
                   entry={entry}
@@ -186,7 +186,7 @@ export const Symbol = withBuilder(SymbolComponent, {
   inputs: [
     {
       name: 'symbol',
-      type: 'uiSymbol'
+      type: 'uiSymbol',
     },
     {
       name: 'dataOnly',
@@ -194,7 +194,7 @@ export const Symbol = withBuilder(SymbolComponent, {
       type: 'boolean',
       defaultValue: false,
       advanced: true,
-      hideFromUI: true
+      hideFromUI: true,
     },
     {
       name: 'inheritState',
@@ -202,7 +202,7 @@ export const Symbol = withBuilder(SymbolComponent, {
       type: 'boolean',
       defaultValue: isShopify,
       advanced: true,
-      hideFromUI: true
+      hideFromUI: true,
     },
     {
       name: 'renderToLiquid',
@@ -211,7 +211,7 @@ export const Symbol = withBuilder(SymbolComponent, {
       type: 'boolean',
       defaultValue: isShopify,
       advanced: true,
-      hideFromUI: true
-    }
-  ]
+      hideFromUI: true,
+    },
+  ],
 })

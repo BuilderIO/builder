@@ -3,7 +3,7 @@ const pkg = require('../package.json')
 
 async function main() {
   const [sjs /*systemMain*/] = await Promise.all([
-    readFileAsync('./node_modules/systemjs/dist/s.min.js', 'utf8')
+    readFileAsync('./node_modules/systemjs/dist/s.min.js', 'utf8'),
     // readFileAsync('./dist/system/builder-webcomponents.js', 'utf8')
   ])
   // TODO: bootstrap script goes here... hmmm...
@@ -51,7 +51,7 @@ async function main() {
       System.import(root + (root.indexOf('://localhost:') === -1 ? '@' + version : '') + '/dist/system/${
         useAngular ? 'angular/' : ''
       }' + (useLite ? 'lite/' : '') + 'builder-webcomponents' + (useLite ? '-lite' : '') + '.js')
-    `.replace(/\s+/g, ' ')
+    `.replace(/\s+/g, ' '),
     ].join(';') +
     `}`
 
@@ -66,6 +66,6 @@ async function main() {
   )
 }
 
-main().catch(err => {
+main().catch((err) => {
   throw err
 })

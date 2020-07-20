@@ -24,7 +24,7 @@ if (Builder.isBrowser && globalReplaceNodes) {
           ? '.builder-custom-code'
           : '.builder-custom-code.replace-nodes'
       )
-    ).forEach(el => {
+    ).forEach((el) => {
       const parent = el.parentElement
       const id = parent && parent.getAttribute('builder-id')
       if (id) {
@@ -151,7 +151,7 @@ class CustomCodeComponent extends React.Component<Props> {
     // like embed
     return (
       <div
-        ref={ref => (this.elementRef = ref)}
+        ref={(ref) => (this.elementRef = ref)}
         // TODO: add a class when node replaced in (?)
         className={
           'builder-custom-code' +
@@ -159,7 +159,7 @@ class CustomCodeComponent extends React.Component<Props> {
         }
         {...(!this.replaceNodes &&
           !this.noReactRender && {
-            dangerouslySetInnerHTML: { __html: this.code }
+            dangerouslySetInnerHTML: { __html: this.code },
           })}
       />
     )
@@ -175,7 +175,7 @@ export const CustomCode = withBuilder(CustomCodeComponent, {
       type: 'html',
       required: true,
       defaultValue: '<p>Hello there, I am custom HTML code!</p>',
-      code: true
+      code: true,
     },
     {
       name: 'replaceNodes',
@@ -183,8 +183,8 @@ export const CustomCode = withBuilder(CustomCodeComponent, {
       helperText: 'Preserve server rendered dom nodes',
       advanced: true,
       ...(isShopify && {
-        defaultValue: true
-      })
+        defaultValue: true,
+      }),
     },
     {
       name: 'scriptsClientOnly',
@@ -193,7 +193,7 @@ export const CustomCode = withBuilder(CustomCodeComponent, {
       // TODO: default true?
       helperText:
         'Only print and run scripts on the client. Important when scripts influence DOM that could be replaced when client loads',
-      advanced: true
-    }
-  ]
+      advanced: true,
+    },
+  ],
 })

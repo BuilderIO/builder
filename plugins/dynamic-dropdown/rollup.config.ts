@@ -31,13 +31,13 @@ export default {
       file: pkg.main,
       name: camelCase(libraryName),
       format: 'umd',
-      sourcemap: true
+      sourcemap: true,
     },
     { file: pkg.module, format: 'es', sourcemap: true },
-    { file: pkg.unpkg, format: 'system', sourcemap: true }
+    { file: pkg.unpkg, format: 'system', sourcemap: true },
   ],
   watch: {
-    include: 'src/**'
+    include: 'src/**',
   },
   plugins: [
     // Allow json resolution
@@ -58,10 +58,10 @@ export default {
             contentBase: 'dist',
             port: 1268,
             headers: {
-              'Access-Control-Allow-Origin': '*'
-            }
-          })
+              'Access-Control-Allow-Origin': '*',
+            },
+          }),
         ]
-      : [])
-  ]
+      : []),
+  ],
 }

@@ -40,17 +40,17 @@ describe('Image', () => {
       'Image',
       {
         image:
-          'https://cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash.jpg?v=1592506853'
+          'https://cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash.jpg?v=1592506853',
       },
       {
         responsiveStyles: {
           large: {
-            width: '345px'
+            width: '345px',
           },
           medium: {
-            width: '100%'
-          }
-        }
+            width: '100%',
+          },
+        },
       },
       1234
     )
@@ -61,8 +61,8 @@ describe('Image', () => {
         ampMode
         content={{
           data: {
-            blocks: [imageBlock]
-          }
+            blocks: [imageBlock],
+          },
         }}
       />
     ).replace(removeRenderIdRegex, '')
@@ -102,17 +102,17 @@ describe('Image', () => {
       'Image',
       {
         image:
-          'https://cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash.jpg?v=1592506853'
+          'https://cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash.jpg?v=1592506853',
       },
       {
         responsiveStyles: {
           large: {
-            width: '345px'
+            width: '345px',
           },
           medium: {
-            width: '100%'
-          }
-        }
+            width: '100%',
+          },
+        },
       },
       1234
     )
@@ -122,8 +122,8 @@ describe('Image', () => {
         model="page"
         content={{
           data: {
-            blocks: [imageBlock]
-          }
+            blocks: [imageBlock],
+          },
         }}
       />
     ).replace(removeRenderIdRegex, '')

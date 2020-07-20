@@ -1,5 +1,5 @@
 module.exports = {
   node: {
-    https: 'empty'
-  }
-}
+    https: 'empty',
+  },
+};

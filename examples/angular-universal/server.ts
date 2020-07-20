@@ -22,12 +22,13 @@ const DIST_FOLDER = join(process.cwd(), 'dist');
 const { AppServerModuleNgFactory, LAZY_MODULE_MAP } = require('./server/main');
 
 // Our Universal express-engine (found @ https://github.com/angular/universal/tree/master/modules/express-engine)
-app.engine('html', ngExpressEngine({
-  bootstrap: AppServerModuleNgFactory,
-  providers: [
-    provideModuleMap(LAZY_MODULE_MAP)
-  ]
-}));
+app.engine(
+  'html',
+  ngExpressEngine({
+    bootstrap: AppServerModuleNgFactory,
+    providers: [provideModuleMap(LAZY_MODULE_MAP)],
+  })
+);
 
 app.set('view engine', 'html');
 app.set('views', join(DIST_FOLDER, 'browser'));
@@ -36,9 +37,12 @@ app.set('views', join(DIST_FOLDER, 'browser'));
 // app.get('/api/**', (req, res) => { });
 
 // Server static files from /browser
-app.get('*.*', express.static(join(DIST_FOLDER, 'browser'), {
-  maxAge: '1y'
-}));
+app.get(
+  '*.*',
+  express.static(join(DIST_FOLDER, 'browser'), {
+    maxAge: '1y',
+  })
+);
 
 // All regular routes use the Universal engine
 app.get('*', (req, res) => {

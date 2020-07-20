@@ -69,15 +69,15 @@ export function getSrcSet(url: string): string {
     }
 
     return sizes
-      .filter(size => size !== widthInSrc)
-      .map(size => `${updateQueryParam(url, 'width', size)} ${size}w`)
+      .filter((size) => size !== widthInSrc)
+      .map((size) => `${updateQueryParam(url, 'width', size)} ${size}w`)
       .concat([srcUrl])
       .join(', ')
   }
 
   if (url.match(/cdn\.shopify\.com/)) {
     return sizes
-      .map(size => [getShopifyImageUrl(url, `${size}x${size}`), size])
+      .map((size) => [getShopifyImageUrl(url, `${size}x${size}`), size])
       .filter(([sizeUrl]) => !!sizeUrl)
       .map(([sizeUrl, size]) => `${sizeUrl} ${size}w`)
       .concat([url])
@@ -163,7 +163,7 @@ class ImageComponent extends React.Component<any> {
   // TODO: setting to always fade in the images (?)
   state = {
     imageLoaded: !this.useLazyLoading,
-    load: !this.useLazyLoading
+    load: !this.useLazyLoading,
   }
 
   pictureRef: HTMLPictureElement | null = null
@@ -179,7 +179,7 @@ class ImageComponent extends React.Component<any> {
             if (rect.top < window.innerHeight + buffer) {
               this.setState({
                 ...this.state,
-                load: true
+                load: true,
               })
               window.removeEventListener('scroll', listener)
             }
@@ -188,13 +188,13 @@ class ImageComponent extends React.Component<any> {
         400,
         {
           leading: false,
-          trailing: true
+          trailing: true,
         }
       )
 
       window.addEventListener('scroll', listener, {
         capture: true,
-        passive: true
+        passive: true,
       })
       listener()
     }
@@ -234,7 +234,7 @@ class ImageComponent extends React.Component<any> {
 
     return (
       <BuilderMetaContext.Consumer>
-        {value => {
+        {(value) => {
           const amp = value.ampMode
           const Tag: 'img' = amp ? ('amp-img' as any) : 'img'
 
@@ -250,7 +250,9 @@ class ImageComponent extends React.Component<any> {
                         : undefined),
                     width:
                       this.props.width ||
-                      (aspectRatio ? Math.round(1000 / aspectRatio) : undefined)
+                      (aspectRatio
+                        ? Math.round(1000 / aspectRatio)
+                        : undefined),
                   } as any)
                 : null)}
               alt={this.props.altText}
@@ -277,14 +279,14 @@ class ImageComponent extends React.Component<any> {
                     height: '100%',
                     width: '100%',
                     left: 0,
-                    top: 0
+                    top: 0,
                   }),
                 ...(amp && {
                   ['& img']: {
                     objectFit: this.props.backgroundSize,
-                    objectPosition: this.props.backgroundPosition
-                  }
-                })
+                    objectPosition: this.props.backgroundPosition,
+                  },
+                }),
               }}
               className={
                 'builder-image' +
@@ -293,7 +295,7 @@ class ImageComponent extends React.Component<any> {
               src={this.props.image}
               {...(!amp && {
                 // TODO: queue these so react renders all loads at once
-                onLoad: () => this.setState({ imageLoaded: true })
+                onLoad: () => this.setState({ imageLoaded: true }),
               })}
               // TODO: memoize on image on client
               srcSet={srcset}
@@ -306,7 +308,7 @@ class ImageComponent extends React.Component<any> {
               {amp ? (
                 imageContents
               ) : (
-                <picture ref={ref => (this.pictureRef = ref)}>
+                <picture ref={(ref) => (this.pictureRef = ref)}>
                   {srcset && srcset.match(/builder\.io/) && (
                     <source
                       srcSet={srcset.replace(/\?/g, '?format=webp&')}
@@ -323,7 +325,7 @@ class ImageComponent extends React.Component<any> {
                     width: '100%',
                     paddingTop: aspectRatio * 100 + '%',
                     pointerEvents: 'none',
-                    fontSize: 0
+                    fontSize: 0,
                   }}
                 >
                   {' '}
@@ -341,7 +343,7 @@ class ImageComponent extends React.Component<any> {
                     top: 0,
                     left: 0,
                     width: '100%',
-                    height: '100%'
+                    height: '100%',
                   }}
                 >
                   {children.map((block: BuilderElement, index: number) => (
@@ -365,7 +367,7 @@ export const Image = withBuilder(ImageComponent, {
   defaultStyles: {
     minHeight: '20px',
     minWidth: '20px',
-    overflow: 'hidden'
+    overflow: 'hidden',
   },
   canHaveChildren: true,
   inputs: [
@@ -393,7 +395,7 @@ export const Image = withBuilder(ImageComponent, {
               resolve(img)
             }
 
-            img.addEventListener('error', event => {
+            img.addEventListener('error', (event) => {
               console.warn('Image load failed', event.error)
               reject(event.error)
             })
@@ -415,7 +417,7 @@ export const Image = withBuilder(ImageComponent, {
         const value = options.get('image')
         const aspectRatio = options.get('aspectRatio')
         if (value && (!aspectRatio || aspectRatio === DEFAULT_ASPECT_RATIO)) {
-          return loadImage(value).then(img => {
+          return loadImage(value).then((img) => {
             const possiblyUpdatedAspectRatio = options.get('aspectRatio')
             if (
               options.get('image') === value &&
@@ -430,7 +432,7 @@ export const Image = withBuilder(ImageComponent, {
             }
           })
         }
-      }
+      },
     },
     {
       name: 'backgroundSize',
@@ -440,17 +442,17 @@ export const Image = withBuilder(ImageComponent, {
         {
           label: 'contain',
           value: 'contain',
-          helperText: 'The image should never get cropped'
+          helperText: 'The image should never get cropped',
         },
         {
           label: 'cover',
           value: 'cover',
-          helperText: `The image should fill it's box, cropping when needed`
-        }
+          helperText: `The image should fill it's box, cropping when needed`,
+        },
         // TODO: add these options back
         // { label: 'auto', value: 'auto', helperText: '' },
         // { label: 'fill', value: 'fill', helperText: 'The image should fill the box, being stretched or squished if necessary' },
-      ] as any
+      ] as any,
     },
     {
       name: 'backgroundPosition',
@@ -465,40 +467,40 @@ export const Image = withBuilder(ImageComponent, {
         'top left',
         'top right',
         'bottom left',
-        'bottom right'
-      ]
+        'bottom right',
+      ],
     },
     {
       name: 'altText',
       type: 'string',
-      helperText: 'Text to display when the user has images off'
+      helperText: 'Text to display when the user has images off',
     },
     {
       name: 'height',
       type: 'number',
-      hideFromUI: true
+      hideFromUI: true,
     },
     {
       name: 'width',
       type: 'number',
-      hideFromUI: true
+      hideFromUI: true,
     },
     {
       name: 'sizes',
       type: 'string',
-      hideFromUI: true
+      hideFromUI: true,
     },
     {
       name: 'srcset',
       type: 'string',
-      hideFromUI: true
+      hideFromUI: true,
     },
     // TODO: force lazy load option (maybe via binding for now hm component.options.lazy: true)
     {
       name: 'lazy',
       type: 'boolean',
       defaultValue: true,
-      hideFromUI: true
+      hideFromUI: true,
     },
     {
       name: 'aspectRatio',
@@ -506,13 +508,13 @@ export const Image = withBuilder(ImageComponent, {
       helperText:
         "This is the ratio of height/width, e.g. set to 1.5 for a 300px wide and 200px tall photo. Set to 0 to not force the image to maintain it's aspect ratio",
       advanced: true,
-      defaultValue: DEFAULT_ASPECT_RATIO
-    }
+      defaultValue: DEFAULT_ASPECT_RATIO,
+    },
     // {
     //   name: 'backgroundRepeat',
     //   type: 'text',
     //   defaultValue: 'no-repeat',
     //   enum: ['no-repeat', 'repeat', 'repeat-x', 'repeat-y'],
     // },
-  ]
+  ],
 })

@@ -19,12 +19,12 @@ const context = {
         settings: {
           plugins: {
             get() {},
-            set() {}
-          }
-        }
-      }
-    }
-  }
+            set() {},
+          },
+        },
+      },
+    },
+  },
 }
 
 import 'systemjs/dist/system.js'
@@ -44,26 +44,26 @@ const exposePackages = {
   'mobx-state-tree': mst,
   'mobx-react': mobxReact,
   '@material-ui/core': mui,
-  '@material-ui/icons': muiIcons
+  '@material-ui/icons': muiIcons,
 }
 
-Object.keys(exposePackages).forEach(packageName => {
-  system.register(packageName, [], _export => {
+Object.keys(exposePackages).forEach((packageName) => {
+  system.register(packageName, [], (_export) => {
     return {
       execute: () => {
         const content = (exposePackages as any)[packageName]
         _export({
           ...content,
-          default: content
+          default: content,
         })
-      }
+      },
     }
   })
 })
 
 if (typeof self !== 'undefined') {
   console.log(1)
-  self.addEventListener('message', event => {
+  self.addEventListener('message', (event) => {
     // console.log(2, event)
     const data = event.data
     if (data && data.type === 'builder.loadPlugin') {

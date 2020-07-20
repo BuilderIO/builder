@@ -12,7 +12,7 @@ import {
   ListItemText,
   Paper,
   TextField,
-  Typography
+  Typography,
 } from '@material-ui/core'
 import { Create, Search } from '@material-ui/icons'
 import { computed, observable, runInAction } from 'mobx'
@@ -93,7 +93,7 @@ export class CollectionPicker extends SafeComponent<
         this.props.context.user.apiKey
       }&title=${encodeURIComponent(this.searchInputText)}&limit=40`
     )
-      .then(res => res.json())
+      .then((res) => res.json())
       .catch(onShopifyError)
 
     const smartCollectionQuery = fetch(
@@ -101,11 +101,11 @@ export class CollectionPicker extends SafeComponent<
         this.props.context.user.apiKey
       }&title=${encodeURIComponent(this.searchInputText)}&limit=40`
     )
-      .then(res => res.json())
+      .then((res) => res.json())
       .catch(onShopifyError)
     const [
       smartCollectionResponse,
-      customCollectionResponse
+      customCollectionResponse,
     ] = await Promise.all([smartCollectionQuery, customCollectionQuery])
 
     runInAction(() => {
@@ -137,7 +137,7 @@ export class CollectionPicker extends SafeComponent<
       () => this.searchCollections(),
       {
         delay: 500,
-        fireImmediately: true
+        fireImmediately: true,
       }
     )
   }
@@ -156,9 +156,9 @@ export class CollectionPicker extends SafeComponent<
                   css={{ color: '#999', marginRight: -2, fontSize: 20 }}
                 />
               </InputAdornment>
-            )
+            ),
           }}
-          onChange={e => (this.searchInputText = e.target.value)}
+          onChange={(e) => (this.searchInputText = e.target.value)}
         />
         {this.loading && (
           <CircularProgress disableShrink css={{ margin: '50px auto' }} />
@@ -166,10 +166,10 @@ export class CollectionPicker extends SafeComponent<
         <div css={{ maxHeight: '80vh', overflow: 'auto' }}>
           {!this.loading &&
             (this.collections.length ? (
-              this.collections.map(item => (
+              this.collections.map((item) => (
                 <div
                   key={item.id}
-                  onClick={e => {
+                  onClick={(e) => {
                     this.props.onChange(String(item.id))
                   }}
                 >
@@ -187,7 +187,7 @@ export class CollectionPicker extends SafeComponent<
                   css={{
                     margin: '40px 20px',
                     textAlign: 'center',
-                    fontSize: 17
+                    fontSize: 17,
                   }}
                   variant="caption"
                 >
@@ -229,11 +229,11 @@ export class ShopifyCollectionPicker extends SafeComponent<
     return {
       '@type': '@builder.io/core:Request',
       request: {
-        url: `${apiRoot}/api/v1/shopify/collections/{{this.options.collection}}.json?apiKey=${this.props.context.user.apiKey}`
+        url: `${apiRoot}/api/v1/shopify/collections/{{this.options.collection}}.json?apiKey=${this.props.context.user.apiKey}`,
       },
       options: {
-        collection: collectionId
-      }
+        collection: collectionId,
+      },
     } as BuilderRequest
   }
 
@@ -254,7 +254,7 @@ export class ShopifyCollectionPicker extends SafeComponent<
       <CollectionPicker
         context={this.props.context}
         value={this.collectionId}
-        onChange={value => {
+        onChange={(value) => {
           this.collectionId = value
           close()
         }}
@@ -265,9 +265,9 @@ export class ShopifyCollectionPicker extends SafeComponent<
           // Align modal to top so doesn't jump around centering itself when
           // grows and shrinks to show more/less collections or loading
           style: {
-            alignSelf: 'flex-start'
-          }
-        }
+            alignSelf: 'flex-start',
+          },
+        },
       }
     )
   }
@@ -302,7 +302,7 @@ export class ShopifyCollectionPicker extends SafeComponent<
           <Paper
             css={{
               marginBottom: 15,
-              position: 'relative'
+              position: 'relative',
             }}
             onClick={() => {
               this.showChooseCollectionModal()
@@ -321,7 +321,7 @@ export class ShopifyCollectionPicker extends SafeComponent<
                 bottom: 0,
                 height: 50,
                 marginTop: 'auto',
-                marginBottom: 'auto'
+                marginBottom: 'auto',
               }}
             >
               <Create css={{ color: '#888' }} />
@@ -346,5 +346,5 @@ export class ShopifyCollectionPicker extends SafeComponent<
 
 Builder.registerEditor({
   name: 'ShopifyCollection',
-  component: ShopifyCollectionPicker
+  component: ShopifyCollectionPicker,
 })

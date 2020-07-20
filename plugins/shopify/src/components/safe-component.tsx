@@ -13,7 +13,7 @@ export const ErrorMessage = () => (
       backgroundColor: 'rgba(255, 0, 0, 0.1)',
       padding: 15,
       fontSize: 14,
-      textAlign: 'center'
+      textAlign: 'center',
     }}
   >
     Oh no! We had an error :( Try{' '}
@@ -111,7 +111,7 @@ export class SafeComponent<
     watchFunction: () => T,
     reactionFunction: (arg: T) => void,
     options: IReactionOptions = {
-      fireImmediately: true
+      fireImmediately: true,
     }
   ) {
     this.onDestroy(reaction(watchFunction, reactionFunction, options))

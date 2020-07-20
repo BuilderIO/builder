@@ -4,7 +4,6 @@ Plugin for integrating [Builder.io](https://www.builder.io) to allow drag and dr
 
 <img src="https://imgur.com/PJW3b4S.gif" alt="example" />
 
-
 ## Install
 
 `npm install @builder.io/gatsby`
@@ -15,23 +14,24 @@ Make a free account over at [Builder.io](https://www.builder.io/) and grab your 
 
 ```javascript
 // In your gatsby-config.js
-const path = require("path")
+const path = require('path');
 module.exports = {
   plugins: [
     {
-      resolve: "@builder.io/gatsby",
+      resolve: '@builder.io/gatsby',
       options: {
         // public API Key
-        publicAPIKey: "MY_PUBLIC_API_KEY",
+        publicAPIKey: 'MY_PUBLIC_API_KEY',
         templates: {
           // `page` can be any model of choice, camelCased
-          page: path.resolve("templates/my-page.tsx"),
+          page: path.resolve('templates/my-page.tsx'),
         },
       },
     },
   ],
-}
+};
 ```
+
 Then start building pages in Builder.io, hit publish, and they will be incluced in your Gatsby site on each new build!
 
 For a more advanced example and a starter check out [gatsby-starter-builder](https://github.com/BuilderIO/gatsby-starter-builder)
@@ -56,8 +56,7 @@ class SimpleText extends React.Component {
 Builder.registerComponent(SimpleText, {
   name: 'Simple Text',
   inputs: [{ name: 'text', type: 'string' }],
-})
-
+});
 ```
 
 ## How to Query
@@ -79,4 +78,3 @@ For an up-to-date complete examples check out the [Gatsby + Builder.io starter](
 - [Gatsby + Builder.io starter](https://github.com/BuilderIO/gatsby-starter-builder)
 - [Design system example](https://github.com/BuilderIO/builder/tree/master/examples/react-design-system)
 - [Official docs](https://www.builder.io/c/docs/getting-started)
-

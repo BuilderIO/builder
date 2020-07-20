@@ -18,16 +18,16 @@ export default class TestsConstants {
         Culture: 'en-us',
         caption: 'us_caption',
         alt: 'us_alt',
-        AssetId: 'us_assetId'
-      }
+        AssetId: 'us_assetId',
+      },
     },
     public_id: 'us_publicId',
     derived: [{ secure_url: TestsConstants.DERIVED_URL_PATH_US }],
     tags: ['some_us_tag'],
-    url: TestsConstants.URL_PATH_US
+    url: TestsConstants.URL_PATH_US,
   }
 
   public static readonly CLOUDINARY_DATA: any = {
-    assets: [TestsConstants.TRANSFORMED_CLOUDINARY_IMAGE]
+    assets: [TestsConstants.TRANSFORMED_CLOUDINARY_IMAGE],
   }
 }

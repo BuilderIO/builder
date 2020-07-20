@@ -40,7 +40,7 @@ export const applyPatchWithMinimalMutationChain = (
         }
       }
     } else {
-      const nextProperty = pathArr[i + 1];
+      const nextProperty = pathArr[i + 1]
       const newPart =
         Object(objPart[property]) === objPart[property]
           ? objPart[property]

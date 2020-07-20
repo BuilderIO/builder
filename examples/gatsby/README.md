@@ -8,6 +8,7 @@ This demo demonstrates creating dynamic pages in Builder.io on new URLs and gene
 as rendering specific parts of your site with Builder.io content via GraphQL queries (e.g. for pages, components, etc)
 
 See:
+
 - For a more advanced example and a starter check out [gatsby-starter-builder](https://github.com/BuilderIO/gatsby-starter-builder)
 
 - [src/components/hero.builder.ts](src/components/hero.builder.ts) for an example of using a custom react component in the Builder.io visiaul editor. See a more rich example of a whole design system of components [here](https://github.com/BuilderIO/builder/tree/master/examples/react-design-system)
@@ -43,7 +44,6 @@ import React from 'react';
 import { graphql } from 'gatsby';
 import { BuilderComponent } from '@builder.io/react';
 
-
 export default class ExamplePage extends React.Component<any> {
   render() {
     const { header, page } = this.props.data.allBuilderModels;
@@ -69,7 +69,11 @@ export const pageQuery = graphql`
       }
       # Manually grab the example content matching "/"
       # For Gatsby content, we always want to make sure we are getting fresh content
-      example(limit: 1, target: { urlPath: "/" }, options: { cachebust: true }) {
+      example(
+        limit: 1
+        target: { urlPath: "/" }
+        options: { cachebust: true }
+      ) {
         content
       }
     }

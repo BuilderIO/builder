@@ -14,18 +14,18 @@ class StateProviderComponent extends React.Component<StateProviderProps> {
   render() {
     return (
       <BuilderStoreContext.Consumer>
-        {state => (
+        {(state) => (
           <BuilderStoreContext.Provider
             value={{
               ...state,
               state: {
                 ...state.state,
-                ...this.props.state
+                ...this.props.state,
               },
               context: {
                 ...state.context,
-                ...this.props.context
-              }
+                ...this.props.context,
+              },
             }}
           >
             {this.props.builderBlock &&
@@ -35,7 +35,7 @@ class StateProviderComponent extends React.Component<StateProviderProps> {
                   block={block}
                   key={block.id}
                   index={index}
-                  child={true} 
+                  child={true}
                 />
               ))}
             {this.props.children}
@@ -52,5 +52,5 @@ export const StateProvider = withBuilder(StateProviderComponent, {
   canHaveChildren: true,
   static: true,
   noWrap: true,
-  hideFromInsertMenu: true
+  hideFromInsertMenu: true,
 })

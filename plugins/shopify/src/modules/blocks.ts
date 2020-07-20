@@ -10,7 +10,7 @@ export const defaultStyles = () => ({
   flexShrink: '0',
   boxSizing: 'border-box',
   textAlign: 'center',
-  marginTop: '15px'
+  marginTop: '15px',
 })
 
 function getParamNames(func: Function) {
@@ -51,7 +51,7 @@ export const fnString = (fn: (...args: any[]) => any, jsCodeStyle = false) => {
         'element',
         'Builder',
         'builder',
-        'context'
+        'context',
       ]
     : [
         'state',
@@ -61,7 +61,7 @@ export const fnString = (fn: (...args: any[]) => any, jsCodeStyle = false) => {
         'Device',
         'update',
         'Builder',
-        'context'
+        'context',
       ]
 
   const hasMinifiedParamNames = params && params[0] && params[0] !== list[0]
@@ -100,7 +100,7 @@ type DeepPartial<T> = {
 }
 
 export const mergeEl = (...args: JsElement[]) =>
-  merge({}, ...args.map(item => el(item)))
+  merge({}, ...args.map((item) => el(item)))
 
 export const el = (info: JsElement, withParentMeta = false) =>
   merge(
@@ -113,11 +113,11 @@ export const el = (info: JsElement, withParentMeta = false) =>
           requiresParent: {
             message: 'This block must be inside a "Product box" block',
             query: {
-              'meta.kind': 'ProductBox'
-            }
-          }
-        })
-      }
+              'meta.kind': 'ProductBox',
+            },
+          },
+        }),
+      },
     } as BuilderElement,
     info
   )

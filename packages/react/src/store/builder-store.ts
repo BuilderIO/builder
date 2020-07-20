@@ -5,7 +5,7 @@ export const BuilderStoreContext = React.createContext<BuilderStore>({
   rootState: {},
   content: {},
   context: {},
-  update: (mutator: (state: any) => any) => null
+  update: (mutator: (state: any) => any) => null,
 })
 
 export interface BuilderStore {

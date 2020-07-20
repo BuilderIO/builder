@@ -1,6 +1,6 @@
-import React from 'react'
-import { BuilderBlock } from '../../decorators/builder-block.decorator'
-import { Builder } from '@builder.io/sdk'
+import React from 'react';
+import { BuilderBlock } from '../../decorators/builder-block.decorator';
+import { Builder } from '@builder.io/sdk';
 import { TextInput } from 'react-native';
 
 // TODO: how do onchange...
@@ -8,12 +8,12 @@ import { TextInput } from 'react-native';
 // passed an element reference and listens for events....
 // Needs to unsubscribe, so must manage
 export interface FormInputProps {
-  type?: string
-  attributes?: any
-  name?: string
-  value?: string
-  placeholder?: string
-  defaultValue?: string
+  type?: string;
+  attributes?: any;
+  name?: string;
+  value?: string;
+  placeholder?: string;
+  defaultValue?: string;
 }
 
 @BuilderBlock({
@@ -40,35 +40,35 @@ export interface FormInputProps {
         'month',
         'week',
         'color',
-        'hidden'
+        'hidden',
       ],
-      defaultValue: 'text'
+      defaultValue: 'text',
     },
     // TODO: handle value vs default value automatically like ng-model
     {
       name: 'defaultValue',
-      type: 'string'
+      type: 'string',
     },
     {
       name: 'value',
       type: 'string',
-      advanced: true
+      advanced: true,
     },
     {
       name: 'placeholder',
       type: 'string',
-      defaultValue: 'Hello there'
+      defaultValue: 'Hello there',
     },
     {
       name: 'name',
-      type: 'string'
+      type: 'string',
       // advanced: true
     },
     {
       name: 'required',
       type: 'boolean',
-      defaultValue: false
-    }
+      defaultValue: false,
+    },
   ],
   // TODO
   // TODO: call editorHooks?
@@ -88,8 +88,8 @@ export interface FormInputProps {
     borderRadius: '3px',
     borderWidth: '1px',
     borderStyle: 'solid',
-    borderColor: '#ccc'
-  }
+    borderColor: '#ccc',
+  },
 })
 export class FormInput extends React.Component<FormInputProps> {
   render() {
@@ -103,6 +103,6 @@ export class FormInput extends React.Component<FormInputProps> {
         defaultValue={this.props.defaultValue}
         {...this.props.attributes}
       />
-    )
+    );
   }
 }

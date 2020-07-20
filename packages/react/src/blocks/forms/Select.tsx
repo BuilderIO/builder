@@ -26,7 +26,7 @@ class FormSelectComponent extends React.Component<FormSelectProps> {
         {...this.props.attributes}
       >
         {options &&
-          options.map(option => (
+          options.map((option) => (
             <option value={option.value}>{option.name || option.value}</option>
           ))}
       </select>
@@ -39,7 +39,7 @@ export const FormSelect = withBuilder(FormSelectComponent, {
   image:
     'https://cdn.builder.io/api/v1/image/assets%2FIsxPKMo2gPRRKeakUztj1D6uqed2%2F83acca093fb24aaf94dee136e9a4b045',
   defaultStyles: {
-    alignSelf: 'flex-start'
+    alignSelf: 'flex-start',
   },
   inputs: [
     {
@@ -50,45 +50,45 @@ export const FormSelect = withBuilder(FormSelectComponent, {
         {
           name: 'value',
           type: 'text',
-          required: true
+          required: true,
         },
         {
           name: 'name',
-          type: 'text'
-        }
+          type: 'text',
+        },
       ],
       defaultValue: [
         {
-          value: 'option 1'
+          value: 'option 1',
         },
         {
-          value: 'option 2'
-        }
-      ]
+          value: 'option 2',
+        },
+      ],
     },
     {
       name: 'name',
       type: 'string',
       required: true,
       helperText:
-        'Every select in a form needs a unique name describing what it gets, e.g. "email"'
+        'Every select in a form needs a unique name describing what it gets, e.g. "email"',
     },
     {
       name: 'defaultValue',
-      type: 'string'
+      type: 'string',
     },
     {
       name: 'value',
       type: 'string',
-      advanced: true
+      advanced: true,
     },
 
     {
       name: 'required',
       type: 'boolean',
-      defaultValue: false
-    }
+      defaultValue: false,
+    },
   ],
   static: true,
-  noWrap: true
+  noWrap: true,
 })

@@ -14,7 +14,7 @@ const options = {
   // Indicate here external modules you don't wanna include in your bundle (i.e.: 'lodash')
   external: [],
   watch: {
-    include: 'src/**'
+    include: 'src/**',
   },
   plugins: [
     // Allow json resolution
@@ -26,8 +26,8 @@ const options = {
     // Allow node_modules resolution, so you can use 'external' to control
     // which external modules to include in the bundle
     // https://github.com/rollup/rollup-plugin-node-resolve#usage
-    resolve()
-  ]
+    resolve(),
+  ],
 }
 
 export default [
@@ -35,13 +35,13 @@ export default [
   {
     ...options,
     output: [{ file: 'dist/react.js', format: 'cjs', sourcemap: true }],
-    plugins: options.plugins.concat([sourceMaps()])
+    plugins: options.plugins.concat([sourceMaps()]),
   },
   // ES
   {
     ...options,
     output: [{ file: pkg.module, format: 'es', sourcemap: true }],
-    plugins: options.plugins.concat([sourceMaps()])
+    plugins: options.plugins.concat([sourceMaps()]),
   },
   {
     ...options,
@@ -52,10 +52,10 @@ export default [
         format: 'umd',
         sourcemap: true,
         amd: {
-          id: '@builder.io/fiddle'
-        }
-      }
+          id: '@builder.io/fiddle',
+        },
+      },
     ],
-    plugins: options.plugins.concat([uglify(), sourceMaps()])
-  }
+    plugins: options.plugins.concat([uglify(), sourceMaps()]),
+  },
 ]

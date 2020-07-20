@@ -3,7 +3,7 @@ import { BuilderComponent } from '@builder.io/react';
 import { builderDecorator } from '@builder.io/storybook';
 import '../src/builder-settings';
 
-addDecorator(builderDecorator)
+addDecorator(builderDecorator);
 
 addParameters({
   builder: {

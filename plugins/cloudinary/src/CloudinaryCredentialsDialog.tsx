@@ -7,7 +7,7 @@ import {
   DialogActions,
   DialogTitle,
   DialogContent,
-  TextField
+  TextField,
 } from '@material-ui/core'
 
 interface CloudinaryCredentialsDialogProps {
@@ -31,7 +31,7 @@ export default class CloudinaryCredentialsDialog extends React.Component<
     super(props)
     this.state = {
       apiKey: this.props.apiKey ? this.props.apiKey : '',
-      cloudName: this.props.cloudName ? this.props.cloudName : ''
+      cloudName: this.props.cloudName ? this.props.cloudName : '',
     }
   }
 

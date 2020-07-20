@@ -10,7 +10,7 @@ if (!window.parent) {
 }
 
 const originalPostMessage = window.postMessage
-;(window as any).postMessage = function(payload: any, targetOrigin: string, transfer: any) {
+;(window as any).postMessage = function (payload: any, targetOrigin: string, transfer: any) {
   if (!targetOrigin || typeof targetOrigin === 'string') {
     return originalPostMessage.call(this, payload, transfer)
   } else {

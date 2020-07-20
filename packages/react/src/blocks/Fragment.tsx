@@ -13,11 +13,7 @@ class FragmentComponent extends React.Component<FragmentProps> {
       this.props.builderBlock &&
       this.props.builderBlock.children &&
       this.props.builderBlock.children.map((block, index) => (
-        <BuilderBlockComponent
-          block={block}
-          key={block.id}
-          index={index}
-        />
+        <BuilderBlockComponent block={block} key={block.id} index={index} />
       ))
     )
   }
@@ -28,5 +24,5 @@ export const Fragment = withBuilder(FragmentComponent, {
   canHaveChildren: true,
   noWrap: true,
   static: true,
-  hideFromInsertMenu: true
+  hideFromInsertMenu: true,
 })

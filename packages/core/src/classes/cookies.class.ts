@@ -123,7 +123,7 @@ class Cookie {
 
     // TODO: samesite=none by default (?)
     header += `; SameSite=${this.sameSite === true ? 'strict' : 'None'}`;
-    
+
     // TODO: On by default
     if (this.secure) {
       header += '; secure';

@@ -16,5 +16,5 @@ export const MemsourceConnector = (props: any) => {
 
 Builder.registerEditor({
   name: 'memsource-connector',
-  component: MemsourceConnector
+  component: MemsourceConnector,
 })

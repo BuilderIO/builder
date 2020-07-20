@@ -141,7 +141,7 @@ Register a component
 ```tsx
 import { Builder } from '@builder.io/react';
 
-const SimpleText = (props) => <h1>{props.text}</h1>;
+const SimpleText = props => <h1>{props.text}</h1>;
 
 Builder.registerComponent(SimpleText, {
   name: 'Simple Text',
@@ -205,7 +205,7 @@ export default () => (
 
 ### Data models, components, SEO, and more
 
-Builder.io gives you a ton more power and control than just page building. Check our guides on 
+Builder.io gives you a ton more power and control than just page building. Check our guides on
 
 - [Custom models](https://builder.io/c/docs/guides/getting-started-with-models)
 - [Custom design systems in Builder.io](https://github.com/BuilderIO/builder/tree/master/examples/react-design-system)
@@ -214,12 +214,14 @@ Builder.io gives you a ton more power and control than just page building. Check
 - [Components only mode](https://www.builder.io/c/docs/guides/components-only-mode)
 
 Additional framework support:
+
 - [Gatsby](https://github.com/BuilderIO/builder/tree/master/examples/gatsby)
 - [Next.js](https://github.com/BuilderIO/builder/tree/master/examples/next-js)
 - [Angular](https://github.com/BuilderIO/builder/tree/master/packages/angular)
 - [HTML API (for any framework)](https://builder.io/c/docs/html-api)
 
 As well as some handy power features like:
+
 - [Symbols](https://builder.io/c/docs/guides/symbols)
 - [Dynamic data fetching and binding](https://builder.io/c/docs/guides/advanced-data)
 - [State handling](https://builder.io/c/docs/guides/state-and-actions)
@@ -244,7 +246,6 @@ if (page) {
 ```
 
 ✨**Tip:** You can make reusable components for your Builder.io pages using [symbols](https://builder.io/c/docs/guides/symbols)
-
 
 ## How it works
 

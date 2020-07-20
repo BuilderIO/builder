@@ -18,4 +18,10 @@ const nextConfiguration = {
   catchAllRouting: true,
 };
 
-module.exports = withPlugins([[withCSS, {}], [optimizedImages, {}]], nextConfiguration);
+module.exports = withPlugins(
+  [
+    [withCSS, {}],
+    [optimizedImages, {}],
+  ],
+  nextConfiguration
+);

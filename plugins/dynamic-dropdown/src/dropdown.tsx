@@ -55,5 +55,5 @@ export const Component = (props: any) => {
 
 Builder.registerEditor({
   name: 'dynamic-dropdown',
-  component: Component
+  component: Component,
 })

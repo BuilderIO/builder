@@ -13,9 +13,9 @@ interface EmailProps {
       name: 'title',
       type: 'text',
       required: true,
-      defaultValue: 'Email title'
-    }
-  ]
+      defaultValue: 'Email title',
+    },
+  ],
 })
 export class Email extends React.Component<EmailProps> {
   render() {
@@ -24,8 +24,14 @@ export class Email extends React.Component<EmailProps> {
         {/* <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> */}
         <html>
           <head>
-            <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <meta
+              http-equiv="Content-Type"
+              content="text/html; charset=utf-8"
+            />
+            <meta
+              name="viewport"
+              content="width=device-width, initial-scale=1.0"
+            />
             <title>{this.props.title}</title>
             <style type="text/css">{resetStyles}</style>
           </head>

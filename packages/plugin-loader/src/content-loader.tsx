@@ -32,33 +32,33 @@ function ComponentLoader(props: { content?: any }) {
                 large: {
                   height: '50px',
                   width: '50px',
-                  backgroundColor: 'red'
-                }
+                  backgroundColor: 'red',
+                },
               },
               component: {
                 name: 'Text',
                 options: {
-                  text: 'Hello!'
-                }
-              }
-            }
-          ]
-        }
+                  text: 'Hello!',
+                },
+              },
+            },
+          ],
+        },
       }}
       model="page"
       apiKey="YJIGb4i01jvw0SRdL5Bt"
       data={{
-        value
+        value,
       }}
-      onStateChange={state => {
+      onStateChange={(state) => {
         setValue(state.value)
 
         self.postMessage(
           {
             type: 'builder.workerEditorValueChange',
             data: {
-              value: state.value
-            }
+              value: state.value,
+            },
           },
           undefined as any
         )
@@ -78,7 +78,7 @@ reactDom.render(
 
 let loaded = false
 if (typeof self !== 'undefined') {
-  self.addEventListener('message', event => {
+  self.addEventListener('message', (event) => {
     console.log('message?', event.data, event)
     const data = event.data
     // TODO: message for values and value change
@@ -86,7 +86,7 @@ if (typeof self !== 'undefined') {
       loaded = true
       reactDom.render(
         React.createElement(ComponentLoader, {
-          content: data.data.content
+          content: data.data.content,
           // Send value down and up
         }),
         document.body
@@ -97,8 +97,8 @@ if (typeof self !== 'undefined') {
     {
       type: 'builder.workerLoaded',
       data: {
-        type: 'content'
-      }
+        type: 'content',
+      },
     },
     undefined as any
   )

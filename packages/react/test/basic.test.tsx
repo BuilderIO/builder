@@ -27,13 +27,13 @@ const server = (cb: () => void) => {
 describe('Renders tons of components', () => {
   const blocks = [
     block('Columns', {
-      columns: [{ blocks: [el()] }, { blocks: [el()] }]
+      columns: [{ blocks: [el()] }, { blocks: [el()] }],
     }),
     block('CustomCode', {
-      code: '<!-- hello -->'
+      code: '<!-- hello -->',
     }),
     block('Embed', {
-      content: '<!-- hello -->'
+      content: '<!-- hello -->',
     }),
     block('Symbol'),
     block('Router'),
@@ -47,7 +47,7 @@ describe('Renders tons of components', () => {
     block('Form:Label'),
     block('Form:Select'),
     block('Form:TextArea', { placeholder: 'foobar' }),
-    block('Raw:Img', { image: 'foobar' })
+    block('Raw:Img', { image: 'foobar' }),
   ]
 
   const getRenderExampleElement = () => (
@@ -55,8 +55,8 @@ describe('Renders tons of components', () => {
       model="page"
       content={{
         data: {
-          blocks: blocks
-        }
+          blocks: blocks,
+        },
       }}
     />
   )
@@ -73,11 +73,11 @@ describe('Data rendering', () => {
   const TEXT_STRING = 'Hello 1234'
   const bindingBlock = el({
     bindings: {
-      'component.options.text': 'state.foo'
+      'component.options.text': 'state.foo',
     },
     component: {
-      name: 'Text'
-    }
+      name: 'Text',
+    },
   })
 
   const getBindingExampleElement = () => (
@@ -86,8 +86,8 @@ describe('Data rendering', () => {
       data={{ foo: TEXT_STRING }}
       content={{
         data: {
-          blocks: [bindingBlock]
-        }
+          blocks: [bindingBlock],
+        },
       }}
     />
   )
@@ -118,8 +118,8 @@ describe('Content changes when new content provided', () => {
         content={{
           id: idA,
           data: {
-            blocks: [block('Text', { text: textA })]
-          }
+            blocks: [block('Text', { text: textA })],
+          },
         }}
       />
     )
@@ -132,8 +132,8 @@ describe('Content changes when new content provided', () => {
         content={{
           id: idB,
           data: {
-            blocks: [block('Text', { text: textB })]
-          }
+            blocks: [block('Text', { text: textB })],
+          },
         }}
       />
     )
@@ -151,8 +151,8 @@ describe('Content changes when new content provided', () => {
         content={{
           id: idB,
           data: {
-            blocks: [block('Text', { text: textB })]
-          }
+            blocks: [block('Text', { text: textB })],
+          },
         }}
       />
     )
@@ -170,8 +170,8 @@ describe('Content changes when new content provided', () => {
         content={{
           id: idB,
           data: {
-            blocks: [block('Text', { text: textB })]
-          }
+            blocks: [block('Text', { text: textB })],
+          },
         }}
       />
     )

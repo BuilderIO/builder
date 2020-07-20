@@ -40,7 +40,7 @@ class FormComponent extends React.Component<FormProps> {
     state: 'unsubmitted' as 'unsubmitted' | 'sending' | 'success' | 'error',
     // TODO: separate response and error?
     responseData: null as any,
-    formErrorMessage: ''
+    formErrorMessage: '',
   }
 
   get submissionState() {
@@ -51,24 +51,26 @@ class FormComponent extends React.Component<FormProps> {
     return (
       // TODO: JS data bindings
       <BuilderStoreContext.Consumer>
-        {state => (
+        {(state) => (
           <BuilderStoreContext.Provider
             value={{
               ...state,
               state: {
                 ...state.state,
-                formErrorMessage: this.state.formErrorMessage
-              }
+                formErrorMessage: this.state.formErrorMessage,
+              },
             }}
           >
             <form
               validate={this.props.validate}
-              ref={ref => (this.ref = ref)}
+              ref={(ref) => (this.ref = ref)}
               action={!this.props.sendWithJs && this.props.action}
               method={this.props.method}
               name={this.props.name}
-              onSubmit={event => {
-                const sendWithJs = this.props.sendWithJs || this.props.sendSubmissionsTo === 'email'
+              onSubmit={(event) => {
+                const sendWithJs =
+                  this.props.sendWithJs ||
+                  this.props.sendSubmissionsTo === 'email'
                 // TODO: custom validate event that can preventDefault and use ref or event to set
                 // invalid message
                 if (this.props.sendSubmissionsTo === 'zapier') {
@@ -103,8 +105,8 @@ class FormComponent extends React.Component<FormProps> {
                       'input,select,textarea'
                     )
                   )
-                    .filter(el => !!(el as HTMLInputElement).name)
-                    .map(el => {
+                    .filter((el) => !!(el as HTMLInputElement).name)
+                    .map((el) => {
                       let value: any
                       const key = (el as HTMLImageElement).name
                       if (el instanceof HTMLInputElement) {
@@ -171,10 +173,7 @@ class FormComponent extends React.Component<FormProps> {
                   if (contentType && contentType !== 'multipart/form-data') {
                     if (
                       // Zapier doesn't allow content-type header to be sent from browsers
-                      !(
-                        sendWithJs &&
-                        this.props.action?.includes('zapier.com')
-                      )
+                      !(sendWithJs && this.props.action?.includes('zapier.com'))
                     ) {
                       headers['content-type'] = contentType
                     }
@@ -182,8 +181,8 @@ class FormComponent extends React.Component<FormProps> {
 
                   const presubmitEvent = new CustomEvent('presubmit', {
                     detail: {
-                      body
-                    }
+                      body,
+                    },
                   })
                   if (this.ref) {
                     this.ref.dispatchEvent(presubmitEvent)
@@ -194,7 +193,7 @@ class FormComponent extends React.Component<FormProps> {
 
                   this.setState({
                     ...this.state,
-                    state: 'sending'
+                    state: 'sending',
                   })
 
                   const formUrl = `${
@@ -212,10 +211,10 @@ class FormComponent extends React.Component<FormProps> {
                     {
                       body,
                       headers,
-                      method: this.props.method || 'post'
+                      method: this.props.method || 'post',
                     }
                   ).then(
-                    async res => {
+                    async (res) => {
                       let body
                       const contentType = res.headers.get('content-type')
                       if (
@@ -239,7 +238,7 @@ class FormComponent extends React.Component<FormProps> {
                           }
                           this.setState({
                             ...this.state,
-                            formErrorMessage: message
+                            formErrorMessage: message,
                           })
                         }
                       }
@@ -247,7 +246,7 @@ class FormComponent extends React.Component<FormProps> {
                       this.setState({
                         ...this.state,
                         responseData: body,
-                        state: res.ok ? 'success' : 'error'
+                        state: res.ok ? 'success' : 'error',
                       })
 
                       if (res.ok) {
@@ -258,8 +257,8 @@ class FormComponent extends React.Component<FormProps> {
                           {
                             detail: {
                               res,
-                              body
-                            }
+                              body,
+                            },
                           }
                         )
                         if (this.ref) {
@@ -278,8 +277,8 @@ class FormComponent extends React.Component<FormProps> {
                           if (this.ref) {
                             const event = new CustomEvent('route', {
                               detail: {
-                                url: this.props.successUrl
-                              }
+                                url: this.props.successUrl,
+                              },
                             })
                             this.ref.dispatchEvent(event)
                             if (!event.defaultPrevented) {
@@ -291,11 +290,11 @@ class FormComponent extends React.Component<FormProps> {
                         }
                       }
                     },
-                    err => {
+                    (err) => {
                       const submitErrorEvent = new CustomEvent('submit:error', {
                         detail: {
-                          error: err
-                        }
+                          error: err,
+                        },
                       })
                       if (this.ref) {
                         this.ref.dispatchEvent(submitErrorEvent)
@@ -308,7 +307,7 @@ class FormComponent extends React.Component<FormProps> {
                       this.setState({
                         ...this.state,
                         responseData: err,
-                        state: 'error'
+                        state: 'error',
                       })
                     }
                   )
@@ -369,9 +368,9 @@ export const Form = withBuilder(FormComponent, {
     responsiveStyles: {
       large: {
         marginTop: '15px',
-        paddingBottom: '15px'
-      }
-    }
+        paddingBottom: '15px',
+      },
+    },
   },
   image:
     'https://cdn.builder.io/api/v1/image/assets%2FIsxPKMo2gPRRKeakUztj1D6uqed2%2Fef36d2a846134910b64b88e6d18c5ca5',
@@ -389,42 +388,42 @@ export const Form = withBuilder(FormComponent, {
           label: 'Send to email',
           value: 'email',
           helperText:
-            'Send form submissions to the email address of your choosing'
+            'Send form submissions to the email address of your choosing',
         },
         {
           label: 'Custom',
           value: 'custom',
           helperText:
-            'Handle where the form requests go manually with a little code, e.g. to your own custom backend'
-        }
+            'Handle where the form requests go manually with a little code, e.g. to your own custom backend',
+        },
       ],
-      defaultValue: 'email'
+      defaultValue: 'email',
     },
     {
       name: 'sendSubmissionsToEmail',
       type: 'string',
       required: true, // TODO: required: () => options.get("sendSubmissionsTo") === "email"
       defaultValue: 'your@email.com',
-      showIf: 'options.get("sendSubmissionsTo") === "email"'
+      showIf: 'options.get("sendSubmissionsTo") === "email"',
     },
     {
       name: 'sendWithJs',
       type: 'boolean',
       helperText: 'Set to false to use basic html form action',
       defaultValue: true,
-      showIf: 'options.get("sendSubmissionsTo") === "custom"'
+      showIf: 'options.get("sendSubmissionsTo") === "custom"',
     },
     {
       name: 'name',
       type: 'string',
-      defaultValue: 'My form'
+      defaultValue: 'My form',
       // advanced: true
     },
     {
       name: 'action',
       type: 'string',
       helperText: 'URL to send the form data to',
-      showIf: 'options.get("sendSubmissionsTo") === "custom"'
+      showIf: 'options.get("sendSubmissionsTo") === "custom"',
     },
     {
       name: 'contentType',
@@ -435,16 +434,16 @@ export const Form = withBuilder(FormComponent, {
       enum: [
         'application/json',
         'multipart/form-data',
-        'application/x-www-form-urlencoded'
+        'application/x-www-form-urlencoded',
       ],
       showIf:
-        'options.get("sendSubmissionsTo") === "custom" && options.get("sendWithJs") === true'
+        'options.get("sendSubmissionsTo") === "custom" && options.get("sendWithJs") === true',
     },
     {
       name: 'method',
       type: 'string',
       showIf: 'options.get("sendSubmissionsTo") === "custom"',
-      advanced: true
+      advanced: true,
     },
     {
       name: 'previewState',
@@ -455,7 +454,7 @@ export const Form = withBuilder(FormComponent, {
       helperText:
         'Choose a state to edit, e.g. choose "success" to show what users see on success and edit the message',
       showIf:
-        'options.get("sendSubmissionsTo") !== "zapier" && options.get("sendWithJs") === true'
+        'options.get("sendSubmissionsTo") !== "zapier" && options.get("sendWithJs") === true',
     },
     {
       name: 'successUrl',
@@ -463,15 +462,15 @@ export const Form = withBuilder(FormComponent, {
       helperText:
         'Optional URL to redirect the user to on form submission success',
       showIf:
-        'options.get("sendSubmissionsTo") !== "zapier" && options.get("sendWithJs") === true'
+        'options.get("sendSubmissionsTo") !== "zapier" && options.get("sendWithJs") === true',
     },
     {
       name: 'resetFormOnSubmit',
       type: 'boolean',
-      showIf: options =>
+      showIf: (options) =>
         options.get('sendSubmissionsTo') === 'custom' &&
         options.get('sendWithJs') === true,
-      advanced: true
+      advanced: true,
     },
     {
       name: 'successMessage',
@@ -482,30 +481,30 @@ export const Form = withBuilder(FormComponent, {
           '@type': '@builder.io/sdk:Element',
           responsiveStyles: {
             large: {
-              marginTop: '10px'
-            }
+              marginTop: '10px',
+            },
           },
           component: {
             name: 'Text',
             options: {
-              text: '<span>Thanks!</span>'
-            }
-          }
-        }
-      ]
+              text: '<span>Thanks!</span>',
+            },
+          },
+        },
+      ],
     },
     {
       name: 'validate',
       type: 'boolean',
       defaultValue: true,
-      advanced: true
+      advanced: true,
     },
     {
       name: 'errorMessagePath',
       type: 'text',
       advanced: true,
       helperText:
-        'Path to where to get the error message from in a JSON response to display to the user, e.g. "error.message" for a response like { "error": { "message": "this username is taken" }}'
+        'Path to where to get the error message from in a JSON response to display to the user, e.g. "error.message" for a response like { "error": { "message": "this username is taken" }}',
     },
     {
       name: 'errorMessage',
@@ -516,23 +515,23 @@ export const Form = withBuilder(FormComponent, {
           '@type': '@builder.io/sdk:Element',
           responsiveStyles: {
             large: {
-              marginTop: '10px'
-            }
+              marginTop: '10px',
+            },
           },
           bindings: {
             'component.options.text':
-              'state.formErrorMessage || block.component.options.text'
+              'state.formErrorMessage || block.component.options.text',
           },
           component: {
             name: 'Text',
             options: {
               // TODO: how pull in API message
               text:
-                '<span>Form submission error :( Please check your answers and try again</span>'
-            }
-          }
-        }
-      ]
+                '<span>Form submission error :( Please check your answers and try again</span>',
+            },
+          },
+        },
+      ],
     },
     {
       name: 'sendingMessage',
@@ -543,18 +542,18 @@ export const Form = withBuilder(FormComponent, {
           '@type': '@builder.io/sdk:Element',
           responsiveStyles: {
             large: {
-              marginTop: '10px'
-            }
+              marginTop: '10px',
+            },
           },
           component: {
             name: 'Text',
             options: {
               // TODO: how pull in API message
-              text: '<span>Sending...</span>'
-            }
-          }
-        }
-      ]
+              text: '<span>Sending...</span>',
+            },
+          },
+        },
+      ],
     },
     {
       name: 'customHeaders',
@@ -562,13 +561,13 @@ export const Form = withBuilder(FormComponent, {
       // TODO: add typings for this property
       ...({
         valueType: {
-          type: 'string'
-        }
+          type: 'string',
+        },
       } as any),
       advanced: true,
       showIf:
-        'options.get("sendSubmissionsTo") === "custom" && options.get("sendWithJs") === true'
-    }
+        'options.get("sendSubmissionsTo") === "custom" && options.get("sendWithJs") === true',
+    },
     // TODO: custom headers or any fetch options
     // TODO: json vs serialized (i.e. send on client or not)
     // TODO: success/fail stuff
@@ -581,73 +580,73 @@ export const Form = withBuilder(FormComponent, {
       '@type': '@builder.io/sdk:Element',
       responsiveStyles: {
         large: {
-          marginTop: '10px'
-        }
+          marginTop: '10px',
+        },
       },
       component: {
         name: 'Text',
         options: {
-          text: '<span>Enter your name</span>'
-        }
-      }
+          text: '<span>Enter your name</span>',
+        },
+      },
     },
     {
       '@type': '@builder.io/sdk:Element',
       responsiveStyles: {
         large: {
-          marginTop: '10px'
-        }
+          marginTop: '10px',
+        },
       },
       component: {
         name: 'Form:Input',
         options: {
           name: 'name',
-          placeholder: 'Jane Doe'
-        }
-      }
+          placeholder: 'Jane Doe',
+        },
+      },
     },
     {
       '@type': '@builder.io/sdk:Element',
       responsiveStyles: {
         large: {
-          marginTop: '10px'
-        }
+          marginTop: '10px',
+        },
       },
       component: {
         name: 'Text',
         options: {
-          text: '<span>Enter your email</span>'
-        }
-      }
+          text: '<span>Enter your email</span>',
+        },
+      },
     },
     {
       '@type': '@builder.io/sdk:Element',
       responsiveStyles: {
         large: {
-          marginTop: '10px'
-        }
+          marginTop: '10px',
+        },
       },
       component: {
         name: 'Form:Input',
         options: {
           name: 'email',
-          placeholder: 'jane@doe.com'
-        }
-      }
+          placeholder: 'jane@doe.com',
+        },
+      },
     },
     {
       '@type': '@builder.io/sdk:Element',
       responsiveStyles: {
         large: {
-          marginTop: '10px'
-        }
+          marginTop: '10px',
+        },
       },
       component: {
         name: 'Form:SubmitButton',
         options: {
-          text: 'Submit'
-        }
-      }
-    }
-  ]
+          text: 'Submit',
+        },
+      },
+    },
+  ],
 })

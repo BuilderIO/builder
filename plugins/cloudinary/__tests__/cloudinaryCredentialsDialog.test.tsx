@@ -65,11 +65,11 @@ describe('Cloudinary Credential dialog', () => {
       const cloudNameField = cloudinaryCredentialsDialog.find(TextField).last()
 
       apiKeyField.find('input').simulate('change', {
-        target: { name: '', value: TestConstants.CLOUDINARY_API_KEY }
+        target: { name: '', value: TestConstants.CLOUDINARY_API_KEY },
       })
 
       cloudNameField.find('input').simulate('change', {
-        target: { name: '', value: TestConstants.CLOUDINARY_CLOUDNAME }
+        target: { name: '', value: TestConstants.CLOUDINARY_CLOUDNAME },
       })
 
       expect(cloudinaryCredentialsDialog.state('apiKey')).toBe(

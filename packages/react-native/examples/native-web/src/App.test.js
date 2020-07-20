@@ -5,7 +5,7 @@ import App from './App';
 
 describe('App', () => {
   it('renders without errors', () => {
-    const tree = renderer.create(<App/>);
+    const tree = renderer.create(<App />);
     expect(tree.toJSON()).toBeTruthy();
   });
 });

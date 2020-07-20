@@ -3,7 +3,9 @@ import Loadable from 'react-loadable'
 
 // TODO: wrap in div positoin: relative padding: 50, width: 100%, height: 100% display: flex
 const Loading = () => (
-  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
+  <div
+    style={{ display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}
+  >
     <img
       style={{ margin: '100px auto', width: 30, height: 30 }}
       src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F0ea05b817e7040c39ec81987611542d7"

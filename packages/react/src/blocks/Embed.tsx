@@ -52,7 +52,10 @@ class EmbedComponent extends React.Component<any> {
     // TODO: allow this to by bypassed by context or prop that says if this is going to be HTML
     // loaded without client JS/hydration (static)
     if (Builder.isServer) {
-      return (this.props.content || '').replace(/<script[\s\S]*?<\/script>/g, '')
+      return (this.props.content || '').replace(
+        /<script[\s\S]*?<\/script>/g,
+        ''
+      )
     }
     return this.props.content
   }
@@ -60,7 +63,7 @@ class EmbedComponent extends React.Component<any> {
   render() {
     return (
       <div
-        ref={ref => (this.elementRef = ref)}
+        ref={(ref) => (this.elementRef = ref)}
         className="builder-embed"
         dangerouslySetInnerHTML={{ __html: this.content }}
       />
@@ -84,9 +87,11 @@ export const Embed = withBuilder(EmbedComponent, {
           options.set('content', 'Loading...')
           // TODO: get this out of here!
           const apiKey = 'ae0e60e78201a3f2b0de4b'
-          return fetch(`https://iframe.ly/api/iframely?url=${url}&api_key=${apiKey}`)
-            .then(res => res.json())
-            .then(data => {
+          return fetch(
+            `https://iframe.ly/api/iframely?url=${url}&api_key=${apiKey}`
+          )
+            .then((res) => res.json())
+            .then((data) => {
               if (options.get('url') === url) {
                 if (data.html) {
                   options.set('content', data.html)
@@ -95,7 +100,7 @@ export const Embed = withBuilder(EmbedComponent, {
                 }
               }
             })
-            .catch(err => {
+            .catch((err) => {
               options.set(
                 'content',
                 'There was an error embedding this URL, please try again or another URL'
@@ -104,13 +109,13 @@ export const Embed = withBuilder(EmbedComponent, {
         } else {
           options.delete('content')
         }
-      }
+      },
     },
     {
       name: 'content',
       type: 'html',
       defaultValue: `<div style="padding: 20px; text-align: center">(Choose an embed URL)<div>`,
-      hideFromUI: true
-    }
-  ]
+      hideFromUI: true,
+    },
+  ],
 })

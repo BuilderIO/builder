@@ -16,14 +16,25 @@ export default {
   input: `src/${libraryName}.tsx`,
   // Important! We need to have shared references to 'react' and '@builder.io/sdk'
   // for builder plugins to run properly
-  external: ['react', '@builder.io/sdk', '@material-ui/core', '@emotion/core', '@emotion/styled'],
+  external: [
+    'react',
+    '@builder.io/sdk',
+    '@material-ui/core',
+    '@emotion/core',
+    '@emotion/styled',
+  ],
   output: [
-    { file: pkg.main, name: camelCase(libraryName), format: 'umd', sourcemap: true },
+    {
+      file: pkg.main,
+      name: camelCase(libraryName),
+      format: 'umd',
+      sourcemap: true,
+    },
     { file: pkg.module, format: 'es', sourcemap: true },
-    { file: pkg.unpkg, format: 'system', sourcemap: true }
+    { file: pkg.unpkg, format: 'system', sourcemap: true },
   ],
   watch: {
-    include: 'src/**'
+    include: 'src/**',
   },
   plugins: [
     // Allow json resolution
@@ -46,9 +57,9 @@ export default {
             port: 1268,
             headers: {
               'Access-Control-Allow-Origin': '*',
-            }
-          })
+            },
+          }),
         ]
-      : [])
-  ]
+      : []),
+  ],
 }

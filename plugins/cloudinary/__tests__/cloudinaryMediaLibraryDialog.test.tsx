@@ -4,7 +4,7 @@ import React from 'react'
 import { mount } from 'enzyme'
 import {
   CloudinaryMediaLibraryDialog,
-  CloudinaryImage
+  CloudinaryImage,
 } from '../src/CloudinaryMediaLibraryDialog'
 import { Button } from '@material-ui/core'
 
@@ -23,7 +23,7 @@ describe('Cloudinary Media Library dialog', () => {
           cloudinarySetCredentials = settings
           cloudinaryWidgetInsertHandlerCallback = callbacks.insertHandler
           return { show: (showOptions: any) => {} }
-        }
+        },
       }
 
       window.cloudinary = cloudinaryModule

@@ -34,13 +34,13 @@ export const noWrap = <P extends object>(Component: React.ComponentType<P>) => {
     (props: React.PropsWithChildren<P> & { attributes?: any }, ref) => {
       const finalProps = {
         ...props,
-        ...props.attributes
+        ...props.attributes,
       }
       return <Component {...finalProps} ref={ref} />
     }
   )
   ;(HOC as any).builderOptions = {
-    noWrap: true
+    noWrap: true,
   }
 
   return HOC

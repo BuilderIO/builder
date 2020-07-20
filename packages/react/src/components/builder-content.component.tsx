@@ -3,7 +3,7 @@ import {
   builder,
   Subscription,
   GetContentOptions,
-  Builder
+  Builder,
 } from '@builder.io/sdk'
 import { NoWrap } from './no-wrap'
 import { applyPatchWithMinimalMutationChain } from '../functions/apply-patch-with-mutation'
@@ -46,7 +46,7 @@ export class BuilderContent<
 
   get options() {
     let options = {
-      ...(this.props.options || ({} as GetContentOptions))
+      ...(this.props.options || ({} as GetContentOptions)),
     }
     if (this.props.content && !options.initialContent?.length) {
       options.initialContent = [this.props.content]
@@ -69,7 +69,7 @@ export class BuilderContent<
   state = {
     loading: true,
     data: null as any,
-    updates: 1
+    updates: 1,
   }
 
   onWindowMessage = (event: MessageEvent) => {
@@ -96,7 +96,7 @@ export class BuilderContent<
         }
         this.setState({
           updates: this.state.updates + 1,
-          data: this.state.data ? { ...this.state.data } : this.state.data
+          data: this.state.data ? { ...this.state.data } : this.state.data,
         })
         if (this.props.contentLoaded) {
           this.props.contentLoaded(this.state.data.data)
@@ -139,10 +139,10 @@ export class BuilderContent<
       // TODO:... using targeting...? express.request hmmm
       this.subscriptions.add(
         builder.queueGetContent(this.props.modelName, this.options).subscribe(
-          matches => {
+          (matches) => {
             const match = matches && matches[0]
             this.setState({
-              data: match
+              data: match,
             })
 
             if (match && this.firstLoad) {
@@ -153,7 +153,7 @@ export class BuilderContent<
                   try {
                     const observer = (this.intersectionObserver = new IntersectionObserver(
                       (entries, observer) => {
-                        entries.forEach(entry => {
+                        entries.forEach((entry) => {
                           // In view
                           if (
                             entry.intersectionRatio > 0 &&
@@ -192,7 +192,7 @@ export class BuilderContent<
               this.props.contentLoaded(match && match.data)
             }
           },
-          error => {
+          (error) => {
             if (this.props.contentError) {
               this.props.contentError(error)
             }
@@ -247,7 +247,7 @@ export class BuilderContent<
       return (
         <TagName
           {...(!this.props.dataOnly && {
-            ref: (ref: any) => (this.ref = ref)
+            ref: (ref: any) => (this.ref = ref),
           })}
           className="builder-content"
           onClick={this.onClick}
@@ -279,13 +279,13 @@ export class BuilderContent<
                     <Tag
                       key={String(content?.id! + index)}
                       {...(Tag === 'template' && {
-                        'data-template-variant-id': content?.id
+                        'data-template-variant-id': content?.id,
                       })}
                     >
                       <TagName
                         {...(index === 0 &&
                           !this.props.dataOnly && {
-                            ref: (ref: any) => (this.ref = ref)
+                            ref: (ref: any) => (this.ref = ref),
                           })}
                         className="builder-content"
                         onClick={this.onClick}

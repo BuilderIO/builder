@@ -35,7 +35,7 @@ const DEFAULT_ASPECT_RATIO = 0.7041
     minWidth: '20px',
     overflow: 'hidden',
     fontSize: '0px',
-    textAlign: 'center'
+    textAlign: 'center',
   },
   inputs: [
     {
@@ -49,7 +49,10 @@ const DEFAULT_ASPECT_RATIO = 0.7041
         'https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d',
       onChange: (options: Map<string, any>) => {
         const DEFAULT_ASPECT_RATIO = 0.7041
-        function loadImage(url: string, timeout = 60000): Promise<HTMLImageElement> {
+        function loadImage(
+          url: string,
+          timeout = 60000
+        ): Promise<HTMLImageElement> {
           return new Promise((resolve, reject) => {
             const img = document.createElement('img')
             let loaded = false
@@ -58,7 +61,7 @@ const DEFAULT_ASPECT_RATIO = 0.7041
               resolve(img)
             }
 
-            img.addEventListener('error', event => {
+            img.addEventListener('error', (event) => {
               console.warn('Image load failed', event.error)
               reject(event.error)
             })
@@ -80,11 +83,12 @@ const DEFAULT_ASPECT_RATIO = 0.7041
         const value = options.get('image')
         const aspectRatio = options.get('aspectRatio')
         if (value && (!aspectRatio || aspectRatio === DEFAULT_ASPECT_RATIO)) {
-          return loadImage(value).then(img => {
+          return loadImage(value).then((img) => {
             const possiblyUpdatedAspectRatio = options.get('aspectRatio')
             if (
               options.get('image') === value &&
-              (!possiblyUpdatedAspectRatio || possiblyUpdatedAspectRatio === DEFAULT_ASPECT_RATIO)
+              (!possiblyUpdatedAspectRatio ||
+                possiblyUpdatedAspectRatio === DEFAULT_ASPECT_RATIO)
             ) {
               if (img.width && img.height) {
                 // options.set('aspectRatio', round(img.height / img.width));
@@ -94,22 +98,22 @@ const DEFAULT_ASPECT_RATIO = 0.7041
             }
           })
         }
-      }
+      },
     },
     {
       name: 'altText',
       type: 'string',
-      helperText: 'Text to display when the user has images off'
+      helperText: 'Text to display when the user has images off',
     },
     {
       name: 'height',
       type: 'number',
-      hideFromUI: true
+      hideFromUI: true,
     },
     {
       name: 'width',
       type: 'number',
-      hideFromUI: true
+      hideFromUI: true,
     },
     {
       name: 'aspectRatio',
@@ -117,9 +121,9 @@ const DEFAULT_ASPECT_RATIO = 0.7041
       helperText:
         "This is the ratio of height/width, e.g. set to 1.5 for a 300px wide and 200px tall photo. Set to 0 to not force the image to maintain it's aspect ratio",
       advanced: true,
-      defaultValue: DEFAULT_ASPECT_RATIO
-    }
-  ]
+      defaultValue: DEFAULT_ASPECT_RATIO,
+    },
+  ],
 })
 export class Image extends React.Component<ImageProps> {
   getSrcSet() {
@@ -131,7 +135,7 @@ export class Image extends React.Component<ImageProps> {
     const sizes = [100, 200, 400, 800, 1200, 1600, 2000]
 
     return sizes
-      .map(size => `${updateQueryParam(url, 'width', String(size))} ${size}w`)
+      .map((size) => `${updateQueryParam(url, 'width', String(size))} ${size}w`)
       .concat([url])
       .join(', ')
   }
@@ -151,11 +155,15 @@ export class Image extends React.Component<ImageProps> {
     }
 
     return (
-      <Block attributes={this.props.attributes} builderBlock={this.props.builderBlock}>
+      <Block
+        attributes={this.props.attributes}
+        builderBlock={this.props.builderBlock}
+      >
         <img
           key={
             Builder.isEditing
-              ? (typeof this.props.image === 'string' && this.props.image.split('?')[0]) ||
+              ? (typeof this.props.image === 'string' &&
+                  this.props.image.split('?')[0]) ||
                 undefined
               : undefined
           }
@@ -166,7 +174,7 @@ export class Image extends React.Component<ImageProps> {
           style={{
             height: allStyles.height || 'auto',
             // maxWidth: '100%',
-            width: '100%'
+            width: '100%',
           }}
           className="builder-image"
           src={this.props.image}

@@ -1,13 +1,13 @@
-import React from 'react'
-import { BuilderBlock } from '../../decorators/builder-block.decorator'
+import React from 'react';
+import { BuilderBlock } from '../../decorators/builder-block.decorator';
 import { TextInput } from 'react-native';
 
 export interface FormTextAreaProps {
-  attributes?: any
-  name?: string
-  value?: string
-  defaultValue?: string
-  placeholder?: string
+  attributes?: any;
+  name?: string;
+  value?: string;
+  defaultValue?: string;
+  placeholder?: string;
 }
 
 @BuilderBlock({
@@ -18,27 +18,27 @@ export interface FormTextAreaProps {
     {
       advanced: true,
       name: 'value',
-      type: 'string'
+      type: 'string',
     },
     {
       name: 'defaultValue',
-      type: 'string'
+      type: 'string',
     },
     {
       name: 'placeholder',
       type: 'string',
-      defaultValue: 'Hello there'
+      defaultValue: 'Hello there',
     },
     {
       name: 'name',
-      type: 'string'
+      type: 'string',
       // advanced: true,
     },
     {
       name: 'required',
       type: 'boolean',
-      defaultValue: false
-    }
+      defaultValue: false,
+    },
   ],
   defaultStyles: {
     paddingTop: '10px',
@@ -48,9 +48,9 @@ export interface FormTextAreaProps {
     borderRadius: '3px',
     borderWidth: '1px',
     borderStyle: 'solid',
-    borderColor: '#ccc'
+    borderColor: '#ccc',
   },
-  noWrap: true
+  noWrap: true,
 })
 export class TextArea extends React.Component<FormTextAreaProps> {
   render() {
@@ -62,6 +62,6 @@ export class TextArea extends React.Component<FormTextAreaProps> {
         defaultValue={this.props.defaultValue}
         {...this.props.attributes}
       />
-    )
+    );
   }
 }

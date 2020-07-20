@@ -5,14 +5,9 @@
     "baseUrl": "./",
     // Set the module format to "commonjs":
     "module": "commonjs",
-    "types": [
-      "node"
-    ]
+    "types": ["node"]
   },
-  "exclude": [
-    "test.ts",
-    "**/*.spec.ts"
-  ],
+  "exclude": ["test.ts", "**/*.spec.ts"],
   // Add "angularCompilerOptions" with the AppServerModule you wrote
   // set as the "entryModule".
   "angularCompilerOptions": {

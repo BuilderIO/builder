@@ -1,6 +1,6 @@
 # Builder.io Angular example
 
-This is an example of using Builder.io with Angular for dynamic page building. For an example with server side rendering using 
+This is an example of using Builder.io with Angular for dynamic page building. For an example with server side rendering using
 Angular Universal see [here](/examples/angular-universal)
 
 See the full Angular SDK source code and docs over [here](/packages/angular)

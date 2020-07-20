@@ -20,7 +20,7 @@ export function updateMetadata(
   fn: (currentMetadata: Component | null) => Component | void
 ) {
   const match =
-    Builder.components.find(item => {
+    Builder.components.find((item) => {
       if (typeof component === 'string') {
         return item.name === component
       } else {

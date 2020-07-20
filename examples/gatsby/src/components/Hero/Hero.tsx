@@ -6,7 +6,15 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 
 export const Hero = (props: any) => {
-  const { image, title, parallaxStrength, buttonLink, buttonText, height, darkMode } = props;
+  const {
+    image,
+    title,
+    parallaxStrength,
+    buttonLink,
+    buttonText,
+    height,
+    darkMode
+  } = props;
 
   return (
     <Parallax
@@ -21,7 +29,11 @@ export const Hero = (props: any) => {
         paddingTop={`calc(${height}px/3)`}
       >
         <Typography variant="h2">{title}</Typography>
-        <Button style={{ color: darkMode ? 'gray' : 'white' }} variant="outlined" href={buttonLink}>
+        <Button
+          style={{ color: darkMode ? 'gray' : 'white' }}
+          variant="outlined"
+          href={buttonLink}
+        >
           {buttonText}
         </Button>
       </Box>

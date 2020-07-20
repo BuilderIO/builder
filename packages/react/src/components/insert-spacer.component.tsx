@@ -17,14 +17,14 @@ interface SpacerState {
 class Growser extends React.Component<{ className?: string }> {
   state = {
     grow: false,
-    show: false
+    show: false,
   }
 
   componentDidMount() {
     // setTimeout needed?
     setTimeout(() => {
       this.setState({
-        grow: true
+        grow: true,
       })
     })
   }
@@ -39,7 +39,7 @@ class Growser extends React.Component<{ className?: string }> {
         }
         css={{
           height: this.state.grow ? 30 : 0,
-          opacity: this.state.grow ? 1 : 0
+          opacity: this.state.grow ? 1 : 0,
         }}
       />
     )
@@ -96,7 +96,7 @@ export class InsertSpacer extends React.Component<SpacerProps, SpacerState> {
                 pointerEvents: 'none',
                 borderRadius: 4,
                 transition: 'all 0.2s cubic-bezier(.37,.01,0,.98) !important',
-                border: '1px solid rgba(28, 151, 204, 0.4)'
+                border: '1px solid rgba(28, 151, 204, 0.4)',
                 // ...(this.state.grow && {
                 //   width: '100%',
                 //   height: 30

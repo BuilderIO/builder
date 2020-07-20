@@ -7,11 +7,11 @@ import { BuilderStoreContext } from '../store/builder-store'
  * custom Link component (e.g Next, Gatsby, React Router)
  * <BuilderComponent renderLink=(props) => <myCustomLink {...props} /> />
  */
-export const Link: React.SFC<React.AnchorHTMLAttributes<
-  HTMLAnchorElement
->> = props => (
+export const Link: React.SFC<React.AnchorHTMLAttributes<HTMLAnchorElement>> = (
+  props
+) => (
   <BuilderStoreContext.Consumer>
-    {context => {
+    {(context) => {
       if (context.renderLink) {
         return context.renderLink(props)
       }

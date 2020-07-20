@@ -59,7 +59,7 @@ class TextComponent extends React.Component<TextProps> {
     const textCSS: InterpolationWithTheme<any> = {
       outline: 'none',
       '& p:first-of-type, & .builder-paragraph:first-of-type': {
-        margin: 0
+        margin: 0,
       },
       '& > p, & .builder-paragraph': {
         color: 'inherit',
@@ -68,13 +68,13 @@ class TextComponent extends React.Component<TextProps> {
         fontWeight: 'inherit',
         fontSize: 'inherit',
         textAlign: 'inherit',
-        fontFamily: 'inherit'
-      }
+        fontFamily: 'inherit',
+      },
     }
 
     return (
       <BuilderStoreContext.Consumer>
-        {state => {
+        {(state) => {
           if (state.content.meta?.rtlMode) {
             textCSS.direction = 'rtl'
           }
@@ -83,11 +83,11 @@ class TextComponent extends React.Component<TextProps> {
             <React.Fragment>
               {/* TODO: <BuilderEditableText component that wraps this for other components with text */}
               <span
-                ref={ref => {
+                ref={(ref) => {
                   this.textRef = ref
                 }}
                 contentEditable={allowEditingText || undefined}
-                onInput={e => {
+                onInput={(e) => {
                   if (allowEditingText) {
                     window.parent?.postMessage(
                       {
@@ -96,14 +96,14 @@ class TextComponent extends React.Component<TextProps> {
                           id:
                             this.props.builderBlock &&
                             this.props.builderBlock.id,
-                          value: e.currentTarget.innerHTML
-                        }
+                          value: e.currentTarget.innerHTML,
+                        },
                       },
                       '*'
                     )
                   }
                 }}
-                onKeyDown={e => {
+                onKeyDown={(e) => {
                   if (
                     allowEditingText &&
                     this.textRef &&
@@ -113,7 +113,7 @@ class TextComponent extends React.Component<TextProps> {
                     this.textRef.blur()
                   }
                 }}
-                onFocus={e => {
+                onFocus={(e) => {
                   if (allowEditingText) {
                     window.parent?.postMessage(
                       {
@@ -121,14 +121,14 @@ class TextComponent extends React.Component<TextProps> {
                         data: {
                           id:
                             this.props.builderBlock &&
-                            this.props.builderBlock.id
-                        }
+                            this.props.builderBlock.id,
+                        },
                       },
                       '*'
                     )
                   }
                 }}
-                onBlur={e => {
+                onBlur={(e) => {
                   if (allowEditingText) {
                     window.parent?.postMessage(
                       {
@@ -136,8 +136,8 @@ class TextComponent extends React.Component<TextProps> {
                         data: {
                           id:
                             this.props.builderBlock &&
-                            this.props.builderBlock.id
-                        }
+                            this.props.builderBlock.id,
+                        },
                       },
                       '*'
                     )
@@ -147,8 +147,9 @@ class TextComponent extends React.Component<TextProps> {
                 className="builder-text"
                 {...(!allowEditingText && {
                   dangerouslySetInnerHTML: {
-                    __html: this.props.text || (this.props as any).content || ''
-                  }
+                    __html:
+                      this.props.text || (this.props as any).content || '',
+                  },
                 })}
               />
             </React.Fragment>
@@ -169,13 +170,13 @@ export const Text = withBuilder(TextComponent, {
       type: 'html',
       required: true,
       autoFocus: true,
-      defaultValue: 'Enter some text...'
-    }
+      defaultValue: 'Enter some text...',
+    },
   ],
   // Maybe optionally a function that takes in some params like block vs absolute, etc
   defaultStyles: {
     lineHeight: 'normal',
     height: 'auto',
-    textAlign: 'center'
-  }
+    textAlign: 'center',
+  },
 })

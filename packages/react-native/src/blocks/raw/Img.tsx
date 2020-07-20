@@ -1,12 +1,12 @@
-import React from 'react'
-import { BuilderBlock } from '../../decorators/builder-block.decorator'
-import { BuilderElement } from '@builder.io/sdk'
+import React from 'react';
+import { BuilderBlock } from '../../decorators/builder-block.decorator';
+import { BuilderElement } from '@builder.io/sdk';
 import { Image } from 'react-native';
 
 export interface ImgProps {
-  attributes?: any
-  image?: string
-  builderBlock?: BuilderElement
+  attributes?: any;
+  image?: string;
+  builderBlock?: BuilderElement;
 }
 
 @BuilderBlock({
@@ -20,19 +20,16 @@ export interface ImgProps {
       name: 'image',
       type: 'file',
       allowedFileTypes: ['jpeg', 'jpg', 'png', 'svg'],
-      required: true
-    }
+      required: true,
+    },
   ],
-  noWrap: true
+  noWrap: true,
 })
 export class Img extends React.Component<ImgProps> {
   render() {
-    const attributes = this.props.attributes || {}
+    const attributes = this.props.attributes || {};
     return (
-      <Image
-        source={{uri: this.props.image || attributes.src}}
-        {...this.props.attributes}
-      />
-    )
+      <Image source={{ uri: this.props.image || attributes.src }} {...this.props.attributes} />
+    );
   }
 }

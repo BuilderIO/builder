@@ -8,7 +8,7 @@ import {
   wait,
   waitForDomChange,
   cleanup,
-  act
+  act,
 } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
 import * as propsExtractor from '../src/dropdownPropsExtractor'
@@ -54,7 +54,7 @@ describe('Dropdown plugin', () => {
 
   it('adds mapped values', async () => {
     safeEvaluatorSpy.mockReturnValueOnce([
-      { key: 'any-key', name: 'any-value' }
+      { key: 'any-key', name: 'any-value' },
     ])
 
     const { getByText } = render(<Component {...dropdownProps} />)
@@ -78,7 +78,7 @@ describe('Dropdown plugin', () => {
       { key: 'key-1', name: 'value-1' },
       { key: 'key-3', name: 'value-3' },
       { key: 'key-2', name: 'value-2' },
-      { key: 'key-3', name: 'value-3' }
+      { key: 'key-3', name: 'value-3' },
     ])
 
     await act(async () => {

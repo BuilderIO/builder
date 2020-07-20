@@ -35,7 +35,7 @@ export const withChildren = <P extends object>(
       props.children ||
       (props.builderBlock &&
         props.builderBlock.children &&
-        props.builderBlock.children.map(child => (
+        props.builderBlock.children.map((child) => (
           <BuilderBlock key={child.id} block={child} />
         )))
 
@@ -45,9 +45,9 @@ export const withChildren = <P extends object>(
       </Component>
     )
   })
-  
+
   ;(HOC as any).builderOptions = {
-    canHaveChildren: true
+    canHaveChildren: true,
   }
 
   return HOC

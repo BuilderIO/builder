@@ -48,7 +48,7 @@ class VideoComponent extends React.Component<{
           poster={this.props.posterImage}
           // height={this.props.height || '100%'}
           // width={this.props.width || '100%'}
-          ref={ref => (this.video = ref)}
+          ref={(ref) => (this.video = ref)}
           autoPlay={this.props.autoPlay}
           // src={this.props.video}
           muted={this.props.muted}
@@ -66,9 +66,9 @@ class VideoComponent extends React.Component<{
             borderRadius: 1,
             ...(aspectRatio
               ? {
-                  position: 'absolute'
+                  position: 'absolute',
                 }
-              : null)
+              : null),
           }}
         >
           <source type="video/mp4" src={this.props.video} />
@@ -79,7 +79,7 @@ class VideoComponent extends React.Component<{
               width: '100%',
               paddingTop: aspectRatio * 100 + '%',
               pointerEvents: 'none',
-              fontSize: 0
+              fontSize: 0,
             }}
           />
         ) : null}
@@ -93,7 +93,7 @@ class VideoComponent extends React.Component<{
               top: 0,
               left: 0,
               width: '100%',
-              height: '100%'
+              height: '100%',
             }}
           >
             {children}
@@ -132,7 +132,7 @@ export const Video = withBuilder(withChildren(VideoComponent), {
               resolve(img)
             }
 
-            img.addEventListener('error', event => {
+            img.addEventListener('error', (event) => {
               console.warn('Image load failed', event.error)
               reject(event.error)
             })
@@ -154,7 +154,7 @@ export const Video = withBuilder(withChildren(VideoComponent), {
         const value = options.get('image')
         const aspectRatio = options.get('aspectRatio')
         if (value && (!aspectRatio || aspectRatio === DEFAULT_ASPECT_RATIO)) {
-          return loadImage(value).then(img => {
+          return loadImage(value).then((img) => {
             const possiblyUpdatedAspectRatio = options.get('aspectRatio')
             if (
               options.get('image') === value &&
@@ -167,44 +167,44 @@ export const Video = withBuilder(withChildren(VideoComponent), {
             }
           })
         }
-      }
+      },
     },
     {
       name: 'posterImage',
       type: 'file',
       allowedFileTypes: ['jpeg', 'png'],
-      helperText: 'Image to show before the video plays'
+      helperText: 'Image to show before the video plays',
     },
     {
       name: 'autoPlay',
       type: 'boolean',
-      defaultValue: true
+      defaultValue: true,
     },
     {
       name: 'controls',
       type: 'boolean',
-      defaultValue: false
+      defaultValue: false,
     },
     {
       name: 'muted',
       type: 'boolean',
-      defaultValue: true
+      defaultValue: true,
     },
     {
       name: 'loop',
       type: 'boolean',
-      defaultValue: true
+      defaultValue: true,
     },
     {
       name: 'playsInline',
       type: 'boolean',
-      defaultValue: true
+      defaultValue: true,
     },
     {
       name: 'fit',
       type: 'text',
       defaultValue: 'cover',
-      enum: ['contain', 'cover', 'fill', 'auto']
+      enum: ['contain', 'cover', 'fill', 'auto'],
     },
     {
       name: 'position',
@@ -219,24 +219,24 @@ export const Video = withBuilder(withChildren(VideoComponent), {
         'top left',
         'top right',
         'bottom left',
-        'bottom right'
-      ]
+        'bottom right',
+      ],
     },
     {
       name: 'height',
       type: 'number',
-      advanced: true
+      advanced: true,
     },
     {
       name: 'width',
       type: 'number',
-      advanced: true
+      advanced: true,
     },
     {
       name: 'aspectRatio',
       type: 'number',
       advanced: true,
-      defaultValue: DEFAULT_ASPECT_RATIO
-    }
-  ]
+      defaultValue: DEFAULT_ASPECT_RATIO,
+    },
+  ],
 })

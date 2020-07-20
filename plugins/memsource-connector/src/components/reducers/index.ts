@@ -42,7 +42,7 @@ const initialLocaleDialogStage: LocaleDialogStageState = {
   onDisplay: true,
   onResult: false,
   severity: 'info',
-  message: ''
+  message: '',
 }
 
 const localeDialogStageReducer = (
@@ -54,7 +54,7 @@ const localeDialogStageReducer = (
       onDisplay: true,
       onResult: false,
       severity: 'info',
-      message: ''
+      message: '',
     }
     return onDisplayNext
   }
@@ -64,7 +64,7 @@ const localeDialogStageReducer = (
       onDisplay: false,
       onResult: true,
       severity: 'success',
-      message: action.message
+      message: action.message,
     }
 
     return onSuccessNext
@@ -75,7 +75,7 @@ const localeDialogStageReducer = (
       onDisplay: false,
       onResult: true,
       severity: 'error',
-      message: action.message
+      message: action.message,
     }
 
     return onFailureNext

@@ -10,6 +10,8 @@ describe('Dummy test', () => {
   })
 
   it('DummyClass is instantiable', () => {
-    expect(new CloudinaryImageEditor({} as any)).toBeInstanceOf(CloudinaryImageEditor)
+    expect(new CloudinaryImageEditor({} as any)).toBeInstanceOf(
+      CloudinaryImageEditor
+    )
   })
 })

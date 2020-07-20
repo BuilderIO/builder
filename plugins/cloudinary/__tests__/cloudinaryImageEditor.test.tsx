@@ -6,7 +6,7 @@ import CloudinaryImageEditor from '../src/CloudinaryImageEditor'
 import CloudinayCredentialsDialog from '../src/CloudinaryCredentialsDialog'
 import {
   CloudinaryMediaLibraryDialog,
-  CloudinaryImage
+  CloudinaryImage,
 } from '../src/CloudinaryMediaLibraryDialog'
 import { Button, Typography } from '@material-ui/core'
 
@@ -24,13 +24,13 @@ describe('Builder cloudinary plugin', () => {
             settings: {
               plugins: new Map([
                 ['cloudinaryCloud', cloudName],
-                ['cloudinaryKey', key]
-              ])
-            }
+                ['cloudinaryKey', key],
+              ]),
+            },
           },
-          save: () => {}
-        }
-      }
+          save: () => {},
+        },
+      },
     }
   }
 
@@ -51,7 +51,7 @@ describe('Builder cloudinary plugin', () => {
   describe('when plugin is rendered with a selected image', () => {
     it('should render `update image` text in the select image button', () => {
       const value = new Map([
-        ['public_id', [TestConstants.CLOUDINARY_PUBLIC_ID]]
+        ['public_id', [TestConstants.CLOUDINARY_PUBLIC_ID]],
       ])
       const cloudinaryImageEditor = mount(
         <CloudinaryImageEditor
@@ -67,7 +67,7 @@ describe('Builder cloudinary plugin', () => {
     describe('when image has a public id', () => {
       it('should render the public id in the plugin UI', () => {
         const value = new Map([
-          ['public_id', [TestConstants.CLOUDINARY_PUBLIC_ID]]
+          ['public_id', [TestConstants.CLOUDINARY_PUBLIC_ID]],
         ])
         const cloudinaryImageEditor = mount(
           <CloudinaryImageEditor

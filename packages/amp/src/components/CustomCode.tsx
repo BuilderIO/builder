@@ -1,5 +1,5 @@
-import { BuilderBlock, BuilderElement } from '@builder.io/react';
-import React from 'react';
+import { BuilderBlock, BuilderElement } from '@builder.io/react'
+import React from 'react'
 
 interface CustomCodeProps {
   code?: string
@@ -14,9 +14,9 @@ interface CustomCodeProps {
       name: 'code',
       type: 'html',
       required: true,
-      defaultValue: 'I am custom html'
-    }
-  ]
+      defaultValue: 'I am custom html',
+    },
+  ],
 })
 export class CustomCode extends React.Component<CustomCodeProps> {
   render() {

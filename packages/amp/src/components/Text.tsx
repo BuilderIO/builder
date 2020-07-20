@@ -13,14 +13,14 @@ interface TextProps {
       name: 'text',
       type: 'html',
       required: true,
-      defaultValue: '<span>Enter some text...</span>'
-    }
+      defaultValue: '<span>Enter some text...</span>',
+    },
   ],
   defaultStyles: {
     lineHeight: 'normal',
     height: 'auto',
-    textAlign: 'center'
-  }
+    textAlign: 'center',
+  },
 })
 export class Text extends React.Component<TextProps> {
   render() {

@@ -5,7 +5,7 @@ import {
   Button,
   DialogContent,
   FormControl,
-  FormGroup
+  FormGroup,
 } from '@material-ui/core'
 import DialogTitle from './dialogTitle'
 import { SourceLocale } from './sourceLocale'
@@ -15,7 +15,7 @@ import {
   isLocaleNotEligibleToLocaliseFrom,
   modelHasOnlyOneLocale,
   getMemsourceArguments,
-  modelHasNoProxyService
+  modelHasNoProxyService,
 } from './contexts/builderContext'
 import AlertDialog from './AlertDialog'
 import { useSelectedLocalesReducer } from './reducers'
@@ -92,8 +92,8 @@ const LocalisationDialog = (props: LocalisationDialogProps) => {
             projectName: memsourceArgs.projectName,
             sourceLocale: memsourceArgs.sourceLocale,
             targetLocales: [...selectedLocales],
-            payload: memsourceArgs.payload
-          }
+            payload: memsourceArgs.payload,
+          },
         })
         props.onResult('success', response.data)
       } catch (error) {

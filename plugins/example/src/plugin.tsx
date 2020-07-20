@@ -13,7 +13,7 @@ interface Props {
 
 class ExampleEditor extends React.Component<Props> {
   state = {
-    showDialog: false
+    showDialog: false,
   }
 
   // TODO: if key is not set, prompt the user for their cloudinary key and set it via the
@@ -34,7 +34,7 @@ class ExampleEditor extends React.Component<Props> {
   closeDialog() {
     this.setState({
       ...this.state,
-      showDialog: false
+      showDialog: false,
     })
   }
 
@@ -45,7 +45,7 @@ class ExampleEditor extends React.Component<Props> {
       cursor: 'pointer',
       objectFit: 'cover',
       borderRadius: 4,
-      backgroundColor: '#f8f8f8'
+      backgroundColor: '#f8f8f8',
     }
 
     return (
@@ -61,7 +61,7 @@ class ExampleEditor extends React.Component<Props> {
               padding: 50,
               display: 'flex',
               flexWrap: 'wrap',
-              justifyContent: 'center'
+              justifyContent: 'center',
             }}
           >
             <img
@@ -103,7 +103,7 @@ class ExampleEditor extends React.Component<Props> {
           onClick={() => {
             this.setState({
               ...this.state,
-              showDialog: !this.state.showDialog
+              showDialog: !this.state.showDialog,
             })
           }}
         >
@@ -121,5 +121,5 @@ Builder.registerEditor({
    * in the Builder.io webapp or in custom components
    */
   name: 'file',
-  component: ExampleEditor
+  component: ExampleEditor,
 })

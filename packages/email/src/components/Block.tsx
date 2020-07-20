@@ -14,22 +14,22 @@ const sizes = {
   xsmall: {
     min: 0,
     default: 0,
-    max: 0
+    max: 0,
   },
   small: {
     min: 0,
     default: 321,
-    max: 639
+    max: 639,
   },
   medium: {
     min: 640,
     default: 641,
-    max: 999
+    max: 999,
   },
   large: {
     min: 1000,
     default: 1001,
-    max: 1200
+    max: 1200,
   },
   getWidthForSize(size: Size) {
     return this[size].default
@@ -42,14 +42,14 @@ const sizes = {
       }
     }
     return 'large'
-  }
+  },
 }
 
 type Size = 'large' | 'medium' | 'small' | 'xsmall'
 const sizeNames: Size[] = ['xsmall', 'small', 'medium', 'large']
 
 const camelCaseToKebabCase = (str?: string) =>
-  str ? str.replace(/([A-Z])/g, g => `-${g[0].toLowerCase()}`) : ''
+  str ? str.replace(/([A-Z])/g, (g) => `-${g[0].toLowerCase()}`) : ''
 
 const cssCase = (property: string) => {
   if (!property) {
@@ -77,7 +77,9 @@ function mapToCss(map: StringMap, spaces = 2, important = false) {
     return (
       memo +
       (value && value.trim()
-        ? `\n${' '.repeat(spaces)}${cssCase(key)}: ${value + (important ? ' !important' : '')};`
+        ? `\n${' '.repeat(spaces)}${cssCase(key)}: ${
+            value + (important ? ' !important' : '')
+          };`
         : '')
     )
   }, '')
@@ -94,8 +96,8 @@ export class Block extends React.Component<BlockProps> {
       sizeStyles.marginRight === 'auto' && sizeStyles.marginLeft === 'auto'
         ? 'center'
         : sizeStyles.marginLeft === 'auto'
-          ? 'right'
-          : 'left'
+        ? 'right'
+        : 'left'
 
     return align
   }
@@ -107,8 +109,8 @@ export class Block extends React.Component<BlockProps> {
       sizeStyles.marginBottom === 'auto' && sizeStyles.marginTop === 'auto'
         ? 'middle'
         : sizeStyles.marginTop === 'auto'
-          ? 'bottom'
-          : 'top'
+        ? 'bottom'
+        : 'top'
     return vAlign
   }
 
@@ -123,7 +125,7 @@ export class Block extends React.Component<BlockProps> {
       width: '100%',
       border: '0',
       display: outerDisplay,
-      verticalAlign: outerVerticalAlign
+      verticalAlign: outerVerticalAlign,
     }
     return outerStyles
   }
@@ -141,7 +143,9 @@ export class Block extends React.Component<BlockProps> {
       paddingBottom: sizeStyles.marginBottom,
       paddingLeft: sizeStyles.marginLeft,
       verticalAlign: vAlign,
-      width: (align === 'left' && sizeStyles.marginRight !== 'auto' && '100%') || undefined
+      width:
+        (align === 'left' && sizeStyles.marginRight !== 'auto' && '100%') ||
+        undefined,
     }
     return midStyles
   }
@@ -157,9 +161,11 @@ export class Block extends React.Component<BlockProps> {
       marginBottom: undefined,
       marginLeft: undefined,
       marginRight: undefined,
-      width: (align === 'left' && sizeStyles.marginRight !== 'auto' && '100%') || undefined,
+      width:
+        (align === 'left' && sizeStyles.marginRight !== 'auto' && '100%') ||
+        undefined,
       display: undefined,
-      ...this.props.innerStyleOverrides
+      ...this.props.innerStyleOverrides,
     }
     return innerStyles
   }
@@ -167,13 +173,15 @@ export class Block extends React.Component<BlockProps> {
   getInnerTableStyles(size: Size) {
     const block = this.props.builderBlock
     const sizeStyles = block.responsiveStyles![size] || {}
-    const hasPxWidth = sizeStyles.width && sizeStyles.width.trim().endsWith('px')
+    const hasPxWidth =
+      sizeStyles.width && sizeStyles.width.trim().endsWith('px')
     const align = this.getAlign(size)
     return {
       // TODO: hasPercent use that also
       width: hasPxWidth
         ? sizeStyles.width
-        : (align === 'left' && sizeStyles.marginRight !== 'auto' && '100%') || undefined
+        : (align === 'left' && sizeStyles.marginRight !== 'auto' && '100%') ||
+          undefined,
     }
   }
 
@@ -181,7 +189,7 @@ export class Block extends React.Component<BlockProps> {
     const align = this.getAlign(size)
     return {
       // width: align === 'center' ? '45%' : '90%',
-      display: align === 'right' || align === 'center' ? undefined : 'none'
+      display: align === 'right' || align === 'center' ? undefined : 'none',
     }
   }
 
@@ -190,7 +198,7 @@ export class Block extends React.Component<BlockProps> {
 
     return {
       // width: align === 'center' ? '45%' : '90%',
-      display: align === 'left' || align === 'center' ? undefined : 'none'
+      display: align === 'left' || align === 'center' ? undefined : 'none',
     }
   }
 
@@ -229,7 +237,10 @@ export class Block extends React.Component<BlockProps> {
 
   get bgImageUrl() {
     const { backgroundImage } = this.props.builderBlock.responsiveStyles!.large!
-    return backgroundImage && backgroundImage.replace(/.*?url\(['"]?(.*?)['"]?\).*?/, '$1')
+    return (
+      backgroundImage &&
+      backgroundImage.replace(/.*?url\(['"]?(.*?)['"]?\).*?/, '$1')
+    )
   }
 
   render() {
@@ -248,7 +259,9 @@ export class Block extends React.Component<BlockProps> {
     const { bgImageUrl } = this
 
     const pxHeight =
-      innerStyles.height && innerStyles.height.includes('px') && parseFloat(innerStyles.height)
+      innerStyles.height &&
+      innerStyles.height.includes('px') &&
+      parseFloat(innerStyles.height)
 
     // TODO: only double wrap if hasMargin
     return (
@@ -256,7 +269,7 @@ export class Block extends React.Component<BlockProps> {
         <style className="builder-style">{this.css}</style>
         <table
           role="presentation"
-          ref={ref => (this.outerTable = ref)}
+          ref={(ref) => (this.outerTable = ref)}
           cellPadding="0"
           cellSpacing="0"
           builder-id={attributes['builder-id']}
@@ -267,7 +280,11 @@ export class Block extends React.Component<BlockProps> {
             <tr>
               <td />
               {/* <td  className={`${block.id}-left-td`} style={this.getLeftTdStyle('large')} /> */}
-              <td {...{ align, vAlign }} style={midStyles as any} className={`${block.id}-middle`}>
+              <td
+                {...{ align, vAlign }}
+                style={midStyles as any}
+                className={`${block.id}-middle`}
+              >
                 <InnerTag
                   {...(hasLink
                     ? {
@@ -276,8 +293,8 @@ export class Block extends React.Component<BlockProps> {
                         style: {
                           textDecoration: 'none',
                           // TODO: outlook this not always working
-                          color: 'inherit'
-                        }
+                          color: 'inherit',
+                        },
                       }
                     : null)}
                 >
@@ -288,10 +305,10 @@ export class Block extends React.Component<BlockProps> {
                     className={`${block.id}-inner`}
                     style={{
                       ...(this.getInnerTableStyles('large') as any),
-                      height: '100%'
+                      height: '100%',
                     }}
                     {...{
-                      border: '0'
+                      border: '0',
                     }}
                   >
                     <tbody style={{ width: '100%' }}>
@@ -306,10 +323,10 @@ export class Block extends React.Component<BlockProps> {
                           // {...innerStyles.backgroundColor && {
                           //   bgcolor: innerStyles.backgroundColor
                           // }}
-                          {...typeof pxHeight === 'number' &&
+                          {...(typeof pxHeight === 'number' &&
                             !isNaN(pxHeight) && {
-                              height: pxHeight
-                            }}
+                              height: pxHeight,
+                            })}
                         >
                           {bgImageUrl && (
                             <BG_START_TAG

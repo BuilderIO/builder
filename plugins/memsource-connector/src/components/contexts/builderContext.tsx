@@ -150,7 +150,7 @@ export const getMemsourceArguments = (): MemsourceArgs | undefined => {
     memsourceProxyUrl,
     sourceLocale,
     projectName,
-    payload
+    payload,
   }
 }
 

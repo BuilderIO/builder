@@ -9,7 +9,7 @@ import {
   Subscription,
   BehaviorSubject,
   BuilderElement,
-  BuilderContent as Content
+  BuilderContent as Content,
 } from '@builder.io/sdk'
 import { BuilderStoreContext } from '../store/builder-store'
 import hash from 'hash-sum'
@@ -22,7 +22,7 @@ import {
   BuilderAsyncRequestsContext,
   RequestOrPromise,
   RequestInfo,
-  isRequestInfo
+  isRequestInfo,
 } from '../store/builder-async-requests'
 import { Url } from 'url'
 import { debounceNextTick } from '../functions/debonce-next-tick'
@@ -34,11 +34,11 @@ const size = (thing: object) => Object.keys(thing).length
 
 function debounce(func: Function, wait: number, immediate = false) {
   let timeout: any
-  return function(this: any) {
+  return function (this: any) {
     const context = this
     const args = arguments
     clearTimeout(timeout)
-    timeout = setTimeout(function() {
+    timeout = setTimeout(function () {
       timeout = null
       if (!immediate) func.apply(context, args)
     }, wait)
@@ -63,7 +63,7 @@ const fetch = Builder.isBrowser ? window.fetch : require('node-fetch')
 const sizeMap = {
   desktop: 'large',
   tablet: 'medium',
-  mobile: 'small'
+  mobile: 'small',
 }
 
 function decorator(fn: Function) {
@@ -85,7 +85,7 @@ function decorator(fn: Function) {
       const descriptorKey = descriptor.value ? 'value' : 'get'
       return {
         ...descriptor,
-        [descriptorKey]: fn(descriptor[descriptorKey], ...fnArgs)
+        [descriptorKey]: fn(descriptor[descriptorKey], ...fnArgs),
       }
     }
   }
@@ -185,8 +185,8 @@ const tryEval = (str?: string, data: any = {}, errors?: Error[]): any => {
       return new VM({
         sandbox: {
           ...data,
-          ...{ state: data }
-        }
+          ...{ state: data },
+        },
         // TODO: convert reutrn to module.exports on server
       }).run(value.replace(/(^|;)return /, '$1'))
       // tslint:enable:comment-format
@@ -288,11 +288,11 @@ export class BuilderPage extends React.Component<
         // TODO: will user attributes be ready here?
         device: this.device,
         ...this.getHtmlData(),
-        ...props.data
+        ...props.data,
       }),
       updates: 0,
       key: 0,
-      update: this.updateState
+      update: this.updateState,
     }
 
     if (Builder.isBrowser) {
@@ -352,7 +352,7 @@ export class BuilderPage extends React.Component<
         (this.location.pathname &&
           this.location.pathname.split('/').slice(1)) ||
         '',
-      query: searchToObject(this.location)
+      query: searchToObject(this.location),
     }
   }
 
@@ -370,7 +370,7 @@ export class BuilderPage extends React.Component<
       case 'builder.updateSpacer': {
         const data = info.data
         const currentSpacer = this.rootState._spacer
-        this.updateState(state => {
+        this.updateState((state) => {
           state._spacer = data
         })
         break
@@ -388,7 +388,7 @@ export class BuilderPage extends React.Component<
           this.setState({
             ...this.state,
             state: this.rootState,
-            updates: ((this.state && this.state.updates) || 0) + 1
+            updates: ((this.state && this.state.updates) || 0) + 1,
           })
         }
         break
@@ -403,7 +403,7 @@ export class BuilderPage extends React.Component<
           this.setState({
             ...this.state,
             state: this.rootState,
-            updates: ((this.state && this.state.updates) || 0) + 1
+            updates: ((this.state && this.state.updates) || 0) + 1,
           })
         }
         break
@@ -419,8 +419,8 @@ export class BuilderPage extends React.Component<
         updates: ((this.state && this.state.updates) || 0) + 1,
         state: Object.assign(this.rootState, {
           ...this.state.state,
-          deviceSize
-        })
+          deviceSize,
+        }),
       })
     }
   }
@@ -545,7 +545,7 @@ export class BuilderPage extends React.Component<
     this.mounted = true
     if (this.asServer) {
       this.asServer = false
-      this.updateState(state => {
+      this.updateState((state) => {
         state.isBrowser = true
         state.isServer = false
       })
@@ -569,8 +569,8 @@ export class BuilderPage extends React.Component<
         window.dispatchEvent(
           new CustomEvent('builder:component:load', {
             detail: {
-              ref: this
-            }
+              ref: this,
+            },
           })
         )
       })
@@ -586,14 +586,14 @@ export class BuilderPage extends React.Component<
       this.setState({
         update: this.updateState,
         state,
-        updates: ((this.state && this.state.updates) || 0) + 1
+        updates: ((this.state && this.state.updates) || 0) + 1,
       })
     } else {
       this.state = {
         ...this.state,
         update: this.updateState,
         state,
-        updates: ((this.state && this.state.updates) || 0) + 1
+        updates: ((this.state && this.state.updates) || 0) + 1,
       }
     }
 
@@ -603,7 +603,7 @@ export class BuilderPage extends React.Component<
   @debounceNextTick
   notifyStateChange() {
     if (Builder.isServer) {
-      return;
+      return
     }
     if (!(this && this.state)) {
       return
@@ -619,8 +619,8 @@ export class BuilderPage extends React.Component<
         new CustomEvent('builder:component:stateChange', {
           detail: {
             state: nextState,
-            ref: this
-          }
+            ref: this,
+          },
         })
       )
     }
@@ -736,7 +736,7 @@ export class BuilderPage extends React.Component<
     const data = {
       ...(this.props.content && this.props.content.data?.state),
       ...this.props.data,
-      ...this.state.state
+      ...this.state.state,
     }
     Object.assign(this.rootState, data)
     return data
@@ -770,7 +770,7 @@ export class BuilderPage extends React.Component<
 
   reload() {
     this.setState({
-      key: this.state.key + 1
+      key: this.state.key + 1,
     })
   }
 
@@ -780,7 +780,7 @@ export class BuilderPage extends React.Component<
       // GraphQL workaround
       content = {
         ...content,
-        data: (content as any).content
+        data: (content as any).content,
       }
     }
     return content
@@ -816,22 +816,22 @@ export class BuilderPage extends React.Component<
         data-name={this.name}
         data-source={`Rendered by Builder.io on ${new Date().toUTCString()}`}
         key={this.state.key}
-        ref={ref => (this.ref = ref)}
+        ref={(ref) => (this.ref = ref)}
       >
         <BuilderMetaContext.Consumer>
-          {value => (
+          {(value) => (
             <BuilderMetaContext.Provider
               value={
                 typeof this.props.ampMode === 'boolean'
                   ? {
                       ...value,
-                      ampMode: this.props.ampMode
+                      ampMode: this.props.ampMode,
                     }
                   : value
               }
             >
               <BuilderAsyncRequestsContext.Consumer>
-                {value => {
+                {(value) => {
                   this._asyncRequests = value && value.requests
                   this._errors = value && value.errors
                   this._logs = value && value.logs
@@ -846,7 +846,7 @@ export class BuilderPage extends React.Component<
                           : 'no-content-prop')
                       }
                       builder={this.builder}
-                      ref={ref => (this.contentRef = ref)}
+                      ref={(ref) => (this.contentRef = ref)}
                       // TODO: pass entry in
                       contentLoaded={this.onContentLoaded}
                       options={{
@@ -856,7 +856,7 @@ export class BuilderPage extends React.Component<
                         ...(!content &&
                           'content' in this.props && { initialContent: [] }),
                         ...(this.props.url && { url: this.props.url }),
-                        ...this.props.options
+                        ...this.props.options,
                       }}
                       inline={
                         this.props.inlineContent ||
@@ -892,10 +892,10 @@ export class BuilderPage extends React.Component<
                           >
                             {this.getCss(data) && (
                               <style
-                                ref={ref => (this.styleRef = ref)}
+                                ref={(ref) => (this.styleRef = ref)}
                                 className="builder-custom-styles"
                                 dangerouslySetInnerHTML={{
-                                  __html: this.getCss(data)
+                                  __html: this.getCss(data),
                                 }}
                               />
                             )}
@@ -905,7 +905,7 @@ export class BuilderPage extends React.Component<
                                 rootState: this.rootState,
                                 state: this.data,
                                 content: fullData,
-                                renderLink: this.props.renderLink
+                                renderLink: this.props.renderLink,
                               }}
                             >
                               <BuilderBlocks
@@ -957,7 +957,7 @@ export class BuilderPage extends React.Component<
   async handleRequest(propertyName: string, url: string) {
     // TODO: Builder.isEditing = just checks if iframe and parent page is this.builder.io or localhost:1234
     if (Builder.isIframe && fetchCache[url]) {
-      this.updateState(ctx => {
+      this.updateState((ctx) => {
         ctx[propertyName] = fetchCache[url]
       })
       return fetchCache[url]
@@ -995,7 +995,7 @@ export class BuilderPage extends React.Component<
           fetchCache[url] = json
         }
         // TODO: debounce next tick all of these when there are a bunch
-        this.updateState(ctx => {
+        this.updateState((ctx) => {
           ctx[propertyName] = json
         })
       }
@@ -1005,13 +1005,13 @@ export class BuilderPage extends React.Component<
     const existing =
       this._asyncRequests &&
       (this._asyncRequests.find(
-        req => isRequestInfo(req) && req.url === url
+        (req) => isRequestInfo(req) && req.url === url
       ) as RequestInfo | null)
     if (existing) {
       const promise = existing.promise
-      promise.then(json => {
+      promise.then((json) => {
         if (json) {
-          this.updateState(ctx => {
+          this.updateState((ctx) => {
             ctx[propertyName] = json
           })
         }
@@ -1047,9 +1047,9 @@ export class BuilderPage extends React.Component<
       this.subscriptions.add(
         this.builder
           .queueGetContent(options.model, options)
-          .subscribe(matches => {
+          .subscribe((matches) => {
             if (matches) {
-              this.updateState(ctx => {
+              this.updateState((ctx) => {
                 ctx[propertyName] = matches
               })
             }
@@ -1150,8 +1150,8 @@ export class BuilderPage extends React.Component<
           deviceSize: this.deviceSizeState,
           device: this.device,
           ...data.state,
-          ...this.props.data
-        })
+          ...this.props.data,
+        }),
       }
       if (this.mounted) {
         this.setState(newState)

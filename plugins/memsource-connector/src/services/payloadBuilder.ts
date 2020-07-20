@@ -6,7 +6,7 @@ export const generatePayload = (builderContext: any) => {
     const translatableComponents = getTranslatableComponents(builderContext)
     return {
       __context: payloadMetadata,
-      content: translatableComponents.concat(translatablePageData)
+      content: translatableComponents.concat(translatablePageData),
     }
   } catch {}
 }
@@ -16,7 +16,7 @@ const getPageOptions = (builderContext: any) => {
   const {
     modelName,
     id,
-    name
+    name,
   } = builderContext.designerState.editingContentModel
   const data = builderContext.designerState.editingContentModel.data.toJSON()
   delete data.blocks
@@ -38,7 +38,7 @@ const getTranslatablePageOptions = (builderContext: any) => {
         return {
           __id: `page-${each.name}`,
           __optionKey: each.name,
-          toTranslate: pageData[each.name]
+          toTranslate: pageData[each.name],
         }
       }
     })
@@ -100,7 +100,7 @@ const _mapComponentToPayload = (component: any, schema: any) => {
         return {
           __id: id,
           __optionKey: each,
-          toTranslate: options[each]
+          toTranslate: options[each],
         }
       }
     })

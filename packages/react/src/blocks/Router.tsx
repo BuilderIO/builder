@@ -80,14 +80,14 @@ class RouterComponent extends React.Component<RouterProps> {
   private updateLocationState() {
     if (this.privateState) {
       // Reload path info
-      this.privateState.update(obj => {
+      this.privateState.update((obj) => {
         // TODO: force always override the location path info... hmm
         obj.location = {
           ...obj.location,
           pathname: location.pathname,
           search: location.search,
           path: location.pathname.split('/').slice(1),
-          query: searchToObject(location)
+          query: searchToObject(location),
         }
       })
     }
@@ -172,7 +172,7 @@ class RouterComponent extends React.Component<RouterProps> {
     const subscription = builder
       .get(this.model, {
         userAttributes: attributes,
-        key: this.model + ':' + parsedUrl.pathname + parsedUrl.search
+        key: this.model + ':' + parsedUrl.pathname + parsedUrl.search,
       })
       .subscribe(() => {
         this.preloadQueue--
@@ -185,7 +185,12 @@ class RouterComponent extends React.Component<RouterProps> {
       return
     }
 
-    if (event.button !== 0 || event.ctrlKey || event.defaultPrevented || event.metaKey) {
+    if (
+      event.button !== 0 ||
+      event.ctrlKey ||
+      event.defaultPrevented ||
+      event.metaKey
+    ) {
       // If this is a non-left click, or the user is holding ctr/cmd, or the url is absolute,
       // or if the link has a target attribute, don't route on the client and let the default
       // href property handle the navigation
@@ -214,7 +219,7 @@ class RouterComponent extends React.Component<RouterProps> {
         preventDefault() {
           this.defaultPrevented = true
         },
-        defaultPrevented: false
+        defaultPrevented: false,
       }
 
       this.props.onRoute(routeEvent)
@@ -249,7 +254,7 @@ class RouterComponent extends React.Component<RouterProps> {
     const { model } = this
     return (
       <BuilderStoreContext.Consumer>
-        {state => {
+        {(state) => {
           this.privateState = state
           // TODO: useEffect based on this that fetches new data and
           // populates as content={} param for fast updates
@@ -287,21 +292,24 @@ class RouterComponent extends React.Component<RouterProps> {
               `}</style>
               <BuilderPage
                 // TODO: this key strategy is inidial bc it gives loading for full page when fetching content
-                // Also sometimes content flashes to loading even when it's already precached in memory and should immediately display 
+                // Also sometimes content flashes to loading even when it's already precached in memory and should immediately display
                 // - why
                 key={url}
                 data={this.props.data}
                 content={this.routed ? undefined : this.props.content}
                 modelName={model}
                 options={{
-                  key: Builder.isEditing ? undefined : this.model + ':' + url // TODO: other custom targets specify if should refetch components on change
+                  key: Builder.isEditing ? undefined : this.model + ':' + url, // TODO: other custom targets specify if should refetch components on change
                 }}
               >
                 {/* TODO: builder blocks option for loading stuff */}
                 {/* TODO: input for builder blocks for this */}
                 {this.props.children || (
                   <div css={{ display: 'flex' }}>
-                    <div css={{ margin: '40vh auto' }} className="builder-page-loading" />
+                    <div
+                      css={{ margin: '40vh auto' }}
+                      className="builder-page-loading"
+                    />
                   </div>
                 )}
               </BuilderPage>
@@ -312,12 +320,17 @@ class RouterComponent extends React.Component<RouterProps> {
     )
   }
 
-  private findHrefTarget(event: MouseEvent | TouchEvent): HTMLAnchorElement | null {
+  private findHrefTarget(
+    event: MouseEvent | TouchEvent
+  ): HTMLAnchorElement | null {
     // TODO: move to core
     let element = event.target as HTMLElement | null
 
     while (element) {
-      if (element instanceof HTMLAnchorElement && element.getAttribute('href')) {
+      if (
+        element instanceof HTMLAnchorElement &&
+        element.getAttribute('href')
+      ) {
         return element
       }
 
@@ -352,7 +365,8 @@ class RouterComponent extends React.Component<RouterProps> {
     const hrefUrl = this.parseUrl(href)
 
     if (currentUrl.host === hrefUrl.host) {
-      const relativeUrl = hrefUrl.pathname + (hrefUrl.search ? hrefUrl.search : '')
+      const relativeUrl =
+        hrefUrl.pathname + (hrefUrl.search ? hrefUrl.search : '')
 
       if (relativeUrl.startsWith('#')) {
         return null
@@ -374,25 +388,25 @@ export const Router = withBuilder(RouterComponent, {
       name: 'model',
       type: 'string',
       defaultValue: 'page',
-      advanced: true
+      advanced: true,
     },
     {
       name: 'handleRouting',
       type: 'boolean',
       defaultValue: true,
-      advanced: true
+      advanced: true,
     },
     {
       name: 'preloadOnHover',
       type: 'boolean',
       defaultValue: true,
-      advanced: true
+      advanced: true,
     },
     {
       name: 'onRoute',
       type: 'function',
-      advanced: true
+      advanced: true,
       // Subfields are function arguments - object with properties
-    }
-  ]
+    },
+  ],
 })

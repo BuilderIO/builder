@@ -19,9 +19,9 @@ Plugins execute inside the Builder.io web application, so they need to be develo
 Mini example plugin example, e.g. to have your own custom rich text editor:
 
 ```js
-import { Builder } from '@builder.io/sdk'
-import ReactQuill from 'react-quill'
-import 'react-quill/dist/quill.snow.css'
+import { Builder } from '@builder.io/sdk';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 function RichTextEditor(props) {
   return (
@@ -31,7 +31,7 @@ function RichTextEditor(props) {
       onChange={props.onChange}
       modules={/* your custom options */}
     />
-  )
+  );
 }
 
 Builder.registerEditor({
@@ -41,9 +41,8 @@ Builder.registerEditor({
    * default rich text editor
    */
   name: 'myRichText',
-  component: RichTextEditor
-})
-
+  component: RichTextEditor,
+});
 ```
 
 Now, this new type will show up in the [custom fields](https://www.builder.io/c/docs/custom-fields) dropdown for models, and be accessible as an input type to your [custom components](https://www.builder.io/c/docs/custom-react-components), e.g.
@@ -53,7 +52,7 @@ import React from 'react';
 import { Builder } from '@builder.io/react';
 
 function MyRichText(props) {
-  return <div dangerouslySetInnerHTML={{ __html: props.text }} />
+  return <div dangerouslySetInnerHTML={{ __html: props.text }} />;
 }
 
 Builder.registerComponent(MyRichText, {
@@ -65,6 +64,5 @@ Builder.registerComponent(MyRichText, {
       defaultValue: '<p>Hello!</p>',
     },
   ],
-})
-
+});
 ```

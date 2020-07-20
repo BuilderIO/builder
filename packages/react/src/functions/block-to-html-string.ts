@@ -14,12 +14,12 @@ export const blockToHtmlString = (block: BuilderElement): string =>
     class="builder-block ${block.id} ${block.class || ''}"
     builder-id="${block.id}"
   ${Object.keys(block.properties || {})
-    .map(key => `${htmlEscape(key)}="${htmlEscape(block.properties![key])}"`)
+    .map((key) => `${htmlEscape(key)}="${htmlEscape(block.properties![key])}"`)
     .join(' ')}
   >${
     block?.component?.name === 'Text'
       ? block.component.options.text
       : block.children
-      ? block.children.map(item => blockToHtmlString(item)).join('')
+      ? block.children.map((item) => blockToHtmlString(item)).join('')
       : ''
   }</${block.tagName || 'div'}>`.replace(/\s+/g, ' ')

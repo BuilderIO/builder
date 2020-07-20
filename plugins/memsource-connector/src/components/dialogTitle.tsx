@@ -8,8 +8,8 @@ const MuiDialogTitle = withStyles(({ spacing, palette }) => ({
     position: 'absolute',
     right: spacing(1),
     top: spacing(1),
-    color: palette.grey[500]
-  }
+    color: palette.grey[500],
+  },
 }))((props: any) => {
   const { children, classes, onClose, other } = props
   return (

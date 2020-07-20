@@ -29,11 +29,7 @@ export const debugFile = async (path: string, contents: string) => {
 
 export const el = (options?: Partial<BuilderElement>): BuilderElement => ({
   '@type': '@builder.io/sdk:Element',
-  id:
-    'builder-' +
-    Math.random()
-      .toString()
-      .split('.')[1],
+  id: 'builder-' + Math.random().toString().split('.')[1],
   ...options,
 });
 

@@ -8,15 +8,13 @@ import Nav from '../components/nav';
 const BUILDER_API_KEY = 'YOUR_KEY';
 builder.init(BUILDER_API_KEY);
 
-const getServerSideProps = async ({req, res}) => {
+const getServerSideProps = async ({ req, res }) => {
   // Get the upcoming route full location path and set that for Builder.io page targeting
   const [path] = req.url.split('?');
 
   // 'page' is the model name for your pages. If you made a new model with a different name,
   // such as 'my-page', use `builder.get('my-page', ...)
-  const page = await builder
-    .get('page', { req, res, userAttributes: { urlPath: path } })
-    .promise();
+  const page = await builder.get('page', { req, res, userAttributes: { urlPath: path } }).promise();
 
   if (!page) {
     res.statusCode = 404;
@@ -24,14 +22,12 @@ const getServerSideProps = async ({req, res}) => {
 
   return {
     props: {
-      builderPage: page ?
-        { ...page, testVariationName: page.testVariationName || null } :
-        null
-    }
+      builderPage: page ? { ...page, testVariationName: page.testVariationName || null } : null,
+    },
   };
 };
 
-const CatchallPage = ({builderPage: page}) => (
+const CatchallPage = ({ builderPage: page }) => (
   <>
     <Nav />
     <div>
@@ -50,4 +46,4 @@ const CatchallPage = ({builderPage: page}) => (
 );
 
 export default CatchallPage;
-export {getServerSideProps};
+export { getServerSideProps };

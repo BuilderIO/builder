@@ -8,7 +8,7 @@ import { set } from '../functions/set'
 import { api, stringToFunction } from '../functions/string-to-function'
 import {
   BuilderAsyncRequestsContext,
-  RequestOrPromise
+  RequestOrPromise,
 } from '../store/builder-async-requests'
 import { BuilderStoreContext } from '../store/builder-store'
 import { applyPatchWithMinimalMutationChain } from '../functions/apply-patch-with-mutation'
@@ -16,10 +16,10 @@ import { blockToHtmlString } from '../functions/block-to-html-string'
 import { Link } from './Link'
 
 const camelCaseToKebabCase = (str?: string) =>
-  str ? str.replace(/([A-Z])/g, g => `-${g[0].toLowerCase()}`) : ''
+  str ? str.replace(/([A-Z])/g, (g) => `-${g[0].toLowerCase()}`) : ''
 
 const kebabCaseToCamelCase = (str = '') =>
-  str.replace(/-([a-z])/g, match => match[1].toUpperCase())
+  str.replace(/-([a-z])/g, (match) => match[1].toUpperCase())
 
 const Device = { desktop: 0, tablet: 1, mobile: 2 }
 const blocksMap: Record<string, BuilderElement> = {}
@@ -38,7 +38,7 @@ const voidElements = new Set([
   'param',
   'source',
   'track',
-  'wbr'
+  'wbr',
 ])
 
 function pick(object: any, keys: string[]) {
@@ -92,8 +92,9 @@ function mapToCss(map: StringMap, spaces = 2, important = false) {
     return (
       memo +
       (value && value.trim()
-        ? `\n${' '.repeat(spaces)}${cssCase(key)}: ${value +
-            (important ? ' !important' : '')};`
+        ? `\n${' '.repeat(spaces)}${cssCase(key)}: ${
+            value + (important ? ' !important' : '')
+          };`
         : '')
     )
   }, '')
@@ -135,7 +136,7 @@ export class BuilderBlock extends React.Component<
 
   state = {
     hasError: false,
-    updates: 0
+    updates: 0,
   }
 
   private privateState: BuilderBlockState = {
@@ -144,7 +145,7 @@ export class BuilderBlock extends React.Component<
     context: {},
     update: () => {
       /* Intentionally empty */
-    }
+    },
   }
 
   get store() {
@@ -228,7 +229,7 @@ export class BuilderBlock extends React.Component<
           }
         } else {
           styles[`@media only screen and (max-width: ${sizes[size].max}px)`] = {
-            '&.builder-block': self.responsiveStyles[size]
+            '&.builder-block': self.responsiveStyles[size],
           }
         }
       }
@@ -236,7 +237,7 @@ export class BuilderBlock extends React.Component<
 
     const hoverAnimation =
       block.animations &&
-      block.animations.find(item => item.trigger === 'hover')
+      block.animations.find((item) => item.trigger === 'hover')
     if (hoverAnimation) {
       styles[':hover'] = hoverAnimation.steps?.[1]?.styles || {}
       // TODO: if manually has set transition property deal with that
@@ -258,7 +259,7 @@ export class BuilderBlock extends React.Component<
     const self = this.block
 
     const baseStyles: Partial<CSSStyleDeclaration> = {
-      ...(self.responsiveStyles && self.responsiveStyles.large)
+      ...(self.responsiveStyles && self.responsiveStyles.large),
     }
 
     let css = this.props.emailMode
@@ -284,8 +285,9 @@ export class BuilderBlock extends React.Component<
           // e.g. width
           css += `\n@media only screen and (max-width: ${
             sizes[size].max
-          }px) { \n${this.props.emailMode ? '.' : '.builder-block.'}${self.id +
-            (this.props.emailMode ? '-subject' : '')} {${mapToCss(
+          }px) { \n${this.props.emailMode ? '.' : '.builder-block.'}${
+            self.id + (this.props.emailMode ? '-subject' : '')
+          } {${mapToCss(
             this.props.emailMode ? omit(map, emailOuterSizes) : (map as any),
             4,
             this.props.emailMode
@@ -413,7 +415,7 @@ export class BuilderBlock extends React.Component<
 
     if (animations) {
       const options = {
-        animations: fastClone(animations)
+        animations: fastClone(animations),
       }
 
       // TODO: listen to Builder.editingMode and bind animations when editing
@@ -448,7 +450,7 @@ export class BuilderBlock extends React.Component<
           .filter((item: any) => item.trigger !== 'hover')
           .map((animation: any) => ({
             ...animation,
-            elementId: this.block.id
+            elementId: this.block.id,
           }))
       )
     }
@@ -462,7 +464,7 @@ export class BuilderBlock extends React.Component<
 
     if (TagName === 'template') {
       const html = block.children
-        ? block.children.map(item => blockToHtmlString(item)).join(' ')
+        ? block.children.map((item) => blockToHtmlString(item)).join(' ')
         : ''
       console.debug('template html', html)
       return (
@@ -471,7 +473,7 @@ export class BuilderBlock extends React.Component<
         <template
           {...block.properties}
           dangerouslySetInnerHTML={{
-            __html: html
+            __html: html,
           }}
         />
       )
@@ -487,7 +489,7 @@ export class BuilderBlock extends React.Component<
         InnerComponent = block.component.tag
       } else {
         componentInfo =
-          Builder.components.find(item => item.name === componentName) || null
+          Builder.components.find((item) => item.name === componentName) || null
         if (componentInfo && componentInfo.class) {
           InnerComponent = componentInfo.class
         } else if (componentInfo && componentInfo.tag) {
@@ -501,12 +503,12 @@ export class BuilderBlock extends React.Component<
     let options: any = {
       // Attributes?
       ...block.properties,
-      style: {} // this.styles
+      style: {}, // this.styles
     }
 
     options = {
       ...options.properties,
-      ...options
+      ...options,
     }
 
     if (block.component) {
@@ -563,7 +565,7 @@ export class BuilderBlock extends React.Component<
                 obj[prop] = value
                 this.privateState.rootState[prop] = value
                 return true
-              }
+              },
             })
           }
           const fn = this.stringToFunction(value, false)
@@ -584,7 +586,7 @@ export class BuilderBlock extends React.Component<
 
     const innerComponentProperties = (options.component || options.options) && {
       ...options.options,
-      ...(options.component.options || options.component.data)
+      ...(options.component.options || options.component.data),
     }
 
     const isVoid = voidElements.has(TagName)
@@ -643,8 +645,8 @@ export class BuilderBlock extends React.Component<
       // TODO: what if dymically repeated by another component like tabs... may not work.
       // need function to provide that right
       ...(index !== 0 && {
-        'builder-index': index // String(state.$index)
-      })
+        'builder-index': index, // String(state.$index)
+      }),
       //   }
       // : null)
     }
@@ -707,7 +709,7 @@ export class BuilderBlock extends React.Component<
 
             return (
               <BuilderAsyncRequestsContext.Consumer>
-                {value => {
+                {(value) => {
                   this._asyncRequests = value && value.requests
                   this._errors = value && value.errors
                   this._logs = value && value.logs
@@ -781,11 +783,7 @@ export class BuilderBlock extends React.Component<
     if (block.repeat && block.repeat.collection) {
       const collectionPath = block.repeat.collection
       const collectionName = last(
-        (collectionPath || '')
-          .trim()
-          .split('(')[0]
-          .trim()
-          .split('.')
+        (collectionPath || '').trim().split('(')[0].trim().split('.')
       )
       const itemName =
         block.repeat.itemName ||
@@ -808,7 +806,7 @@ export class BuilderBlock extends React.Component<
             $index: index,
             $item: data,
             [itemName]: data,
-            [`$${itemName}Index`]: index
+            [`$${itemName}Index`]: index,
           }
 
           return (
@@ -836,7 +834,7 @@ export class BuilderBlock extends React.Component<
             padding: 5,
             color: '#999',
             fontSize: 11,
-            fontStyle: 'italic'
+            fontStyle: 'italic',
           }}
         >
           Builder block error :( Check console for details
@@ -845,7 +843,7 @@ export class BuilderBlock extends React.Component<
     }
     return (
       <BuilderStoreContext.Consumer>
-        {value => this.contents(value)}
+        {(value) => this.contents(value)}
       </BuilderStoreContext.Consumer>
     )
   }

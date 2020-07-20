@@ -36,8 +36,12 @@ const StaticContentComponent: React.SFC<StaticContentProps> = props => {
   }, []);
 
   return (
-    <div className="builder-static-content" data-builder-static-id={props.builderBlock?.id} ref={ref}>
-      {(Builder.isEditing || Builder.isPreviewing ||  Builder.isServer) &&
+    <div
+      className="builder-static-content"
+      data-builder-static-id={props.builderBlock?.id}
+      ref={ref}
+    >
+      {(Builder.isEditing || Builder.isPreviewing || Builder.isServer) &&
         props.builderBlock?.children &&
         props.builderBlock.children.map((block, index) => (
           <BuilderBlockComponent key={index + block.id!} block={block} />

@@ -12,11 +12,11 @@ const modules = {
       { list: 'ordered' },
       { list: 'bullet' },
       { indent: '-1' },
-      { indent: '+1' }
+      { indent: '+1' },
     ],
     ['link', 'image'],
-    ['clean']
-  ]
+    ['clean'],
+  ],
 }
 
 const formats = [
@@ -30,7 +30,7 @@ const formats = [
   'bullet',
   'indent',
   'link',
-  'image'
+  'image',
 ]
 
 interface TextProps {
@@ -55,5 +55,5 @@ Builder.registerEditor({
    * Here we override the built-in richtext editor.
    */
   name: 'richText',
-  component: RichTextEditor
+  component: RichTextEditor,
 })

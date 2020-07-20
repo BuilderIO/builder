@@ -4,7 +4,7 @@ describe('Get Massaged Props', () => {
   describe('should throw', () => {
     it.each([[null], [undefined], [''], [' '], [{}], [73], [[]]])(
       'when url is %o',
-      invalidUrl => {
+      (invalidUrl) => {
         try {
           getMassagedProps({ field: { options: { url: invalidUrl } } })
           fail('Should have thrown')
@@ -16,12 +16,12 @@ describe('Get Massaged Props', () => {
 
     it.each([[null], [undefined], [{}], [73], [[]]])(
       'when mapper is %o',
-      invalidMapper => {
+      (invalidMapper) => {
         try {
           getMassagedProps({
             field: {
-              options: { url: 'any-url', mapper: invalidMapper }
-            }
+              options: { url: 'any-url', mapper: invalidMapper },
+            },
           })
           fail('Should have thrown')
         } catch (e) {
@@ -36,8 +36,8 @@ describe('Get Massaged Props', () => {
     const mock = jest.fn()
     const builderPluginContext = {
       context: {
-        designerState: { editingContentModel: { data: { toJSON: mock } } }
-      }
+        designerState: { editingContentModel: { data: { toJSON: mock } } },
+      },
     }
 
     beforeAll(() => {
@@ -50,7 +50,7 @@ describe('Get Massaged Props', () => {
 
       const actual = getMassagedProps({
         field: { options: { url: templatedUrl, mapper: '() => {}' } },
-        ...builderPluginContext
+        ...builderPluginContext,
       })
 
       expect(actual.url).toBe(expectedUrl)
@@ -61,7 +61,7 @@ describe('Get Massaged Props', () => {
 
       const actual = getMassagedProps({
         field: { options: { url: 'any-url', mapper: expected } },
-        ...builderPluginContext
+        ...builderPluginContext,
       })
 
       expect(actual.mapper).toBe(expected)

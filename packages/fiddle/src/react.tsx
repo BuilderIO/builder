@@ -11,4 +11,4 @@ interface BuilderFiddleProps {
 
 const TAG_NAME: string = 'builder-fiddle'
 
-export const BuilderFiddle = (props: BuilderFiddleProps) => <TAG_NAME {...props as any} />
+export const BuilderFiddle = (props: BuilderFiddleProps) => <TAG_NAME {...(props as any)} />

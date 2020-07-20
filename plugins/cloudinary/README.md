@@ -45,7 +45,7 @@ Set your component to use the CloudinaryImageEditor plugin type (see below)
 ```javascript
 export const Image = withBuilder(CloudinaryImageComponent, {
   name: 'Image',
-  inputs: [{ name: 'image', type: 'cloudinaryImageEditor' }]
+  inputs: [{ name: 'image', type: 'cloudinaryImageEditor' }],
 })
 ```
 

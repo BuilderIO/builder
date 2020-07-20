@@ -1,1 +1,1 @@
-export * from '../dist/react/bundle.esm.js'
+export * from '../dist/react/bundle.esm.js';

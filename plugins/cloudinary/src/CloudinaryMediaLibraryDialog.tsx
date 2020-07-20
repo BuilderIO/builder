@@ -40,7 +40,7 @@ export class CloudinaryMediaLibraryDialog extends React.Component<
     if (mediaLibrary) {
       mediaLibrary.show({
         multiple: false,
-        max_files: 1
+        max_files: 1,
       })
     }
   }
@@ -50,14 +50,14 @@ export class CloudinaryMediaLibraryDialog extends React.Component<
       {
         cloud_name: this.props.cloudName ? this.props.cloudName : '',
         api_key: this.props.apiKey ? this.props.apiKey : '',
-        inline_container: '.container'
+        inline_container: '.container',
       },
       {
         insertHandler: (data: any) => {
           this.selectImage({
-            ...data.assets[0]
+            ...data.assets[0],
           })
-        }
+        },
       }
     )
     return mediaLibrary

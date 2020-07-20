@@ -10,7 +10,8 @@ First, install the package
 npm install @builder.io/widgets
 ```
 
-When using the React SDK, just 
+When using the React SDK, just
+
 ```ts
 import '@builder.io/widgets'
 ```
@@ -24,4 +25,3 @@ See here for a real [working example in our next.js example repo](/examples/next
 ## Help and troubleshooting
 
 Questions or feedback - contact us at help@builder.io, we are happy to help!
-

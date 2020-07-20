@@ -33,7 +33,7 @@ const options = {
   // Indicate here external modules you don't wanna include in your bundle (i.e.: 'lodash')
   external: ['vm2', 'http', 'https', 'buffer', 'zlib', 'node-fetch'],
   watch: {
-    include: 'src/**'
+    include: 'src/**',
   },
   experimentalCodeSplitting: true,
   experimentalDynamicImport: true,
@@ -42,7 +42,7 @@ const options = {
     replace({
       'process.env.NODE_ENV': JSON.stringify(
         SERVE ? 'development' : 'production'
-      )
+      ),
     }),
     json(),
     alias({
@@ -69,16 +69,16 @@ const options = {
               ),
               'react-dom': path.resolve(
                 './node_modules/react-dom/cjs/react-dom.development.js'
-              )
+              ),
             }
-          : null)
-      }
+          : null),
+      },
     }),
     // Compile TypeScript files
     typescript({ useTsconfigDeclarationDir: true }),
     resolve({
       // only: [/^\.{0,2}\//, /lodash\-es/]
-      module: true
+      module: true,
     }),
     commonjs({
       ignore: ['http', 'https', 'node-fetch'],
@@ -92,16 +92,16 @@ const options = {
           'forwardRef',
           'Fragment',
           'useState',
-          'useEffect'
+          'useEffect',
         ],
         './node_modules/react-dom/cjs/react-dom.development.js': [
           'render',
-          'hydrate'
+          'hydrate',
         ],
         'node_modules/react-is/index.js': [
           'isElement',
           'isValidElementType',
-          'ForwardRef'
+          'ForwardRef',
         ],
         '../react/node_modules/react/index.js': [
           'cloneElement',
@@ -111,14 +111,14 @@ const options = {
           'forwardRef',
           'Fragment',
           'useState',
-          'useEffect'
+          'useEffect',
         ],
         '../react/node_modules/react-is/index.js': [
           'isElement',
           'isValidElementType',
-          'ForwardRef'
-        ]
-      }
+          'ForwardRef',
+        ],
+      },
     }),
     // Don't uglify when serving
     ...(SERVE ? [] : [uglify()]),
@@ -130,12 +130,12 @@ const options = {
             contentBase: '.',
             headers: {
               'Access-Control-Allow-Origin': '*',
-              'Cache-Control': 'no-cache'
-            }
-          })
+              'Cache-Control': 'no-cache',
+            },
+          }),
         ]
-      : [])
-  ]
+      : []),
+  ],
 }
 
 export default [
@@ -154,20 +154,20 @@ export default [
     output: [{ dir: './dist/system', format: 'system', sourcemap: true }],
     plugins: options.plugins.concat([
       replace({
-        'process.env.ANGULAR': 'false'
-      })
-    ])
+        'process.env.ANGULAR': 'false',
+      }),
+    ]),
   },
   {
     ...options,
     output: [
-      { dir: './dist/system/angular', format: 'system', sourcemap: true }
+      { dir: './dist/system/angular', format: 'system', sourcemap: true },
     ],
     plugins: options.plugins.concat([
       replace({
-        'process.env.ANGULAR': 'true'
-      })
-    ])
+        'process.env.ANGULAR': 'true',
+      }),
+    ]),
   },
   // {
   //   ...options,
@@ -191,20 +191,20 @@ export default [
     output: [{ dir: './dist/system/lite', format: 'system', sourcemap: true }],
     plugins: options.plugins.concat([
       replace({
-        'process.env.ANGULAR': 'false'
-      })
-    ])
+        'process.env.ANGULAR': 'false',
+      }),
+    ]),
   },
   {
     ...options,
     input: `src/${libraryName}-lite.ts`,
     output: [
-      { dir: './dist/system/angular/lite', format: 'system', sourcemap: true }
+      { dir: './dist/system/angular/lite', format: 'system', sourcemap: true },
     ],
     plugins: options.plugins.concat([
       replace({
-        'process.env.ANGULAR': 'true'
-      })
-    ])
-  }
+        'process.env.ANGULAR': 'true',
+      }),
+    ]),
+  },
 ]

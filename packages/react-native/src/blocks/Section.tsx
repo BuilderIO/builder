@@ -1,13 +1,13 @@
-import React from 'react'
-import { BuilderElement } from '@builder.io/sdk'
-import { BuilderBlock } from '../decorators/builder-block.decorator'
-import { BuilderBlock as BuilderBlockComponent } from '../components/builder-block.component'
+import React from 'react';
+import { BuilderElement } from '@builder.io/sdk';
+import { BuilderBlock } from '../decorators/builder-block.decorator';
+import { BuilderBlock as BuilderBlockComponent } from '../components/builder-block.component';
 import { View } from 'react-native';
 
 interface SectionProps {
-  builderBlock?: BuilderElement
-  verticalAlignContent?: string
-  maxWidth?: number
+  builderBlock?: BuilderElement;
+  verticalAlignContent?: string;
+  maxWidth?: number;
 }
 
 // TODO: acceptsChildren option?
@@ -19,8 +19,8 @@ interface SectionProps {
     {
       name: 'maxWidth',
       type: 'number',
-      defaultValue: 1200
-    }
+      defaultValue: 1200,
+    },
   ],
   defaultStyles: {
     paddingLeft: '20px',
@@ -29,7 +29,7 @@ interface SectionProps {
     paddingBottom: '50px',
     marginTop: '0px',
     width: '100vw',
-    marginLeft: 'calc(50% - 50vw)'
+    marginLeft: 'calc(50% - 50vw)',
   },
   canHaveChildren: true,
 
@@ -39,18 +39,18 @@ interface SectionProps {
       '@type': '@builder.io/sdk:Element',
       responsiveStyles: {
         large: {
-          textAlign: 'center'
-        }
+          textAlign: 'center',
+        },
       },
       component: {
         name: 'Text',
         options: {
           text:
-            "<p><b>I am a section! My content keeps from getting too wide, so that it's easy to read even on big screens.</b></p><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur</p>"
-        }
-      }
-    }
-  ]
+            "<p><b>I am a section! My content keeps from getting too wide, so that it's easy to read even on big screens.</b></p><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur</p>",
+        },
+      },
+    },
+  ],
   // TODO
   // defaultChildren: ..
 
@@ -77,7 +77,7 @@ export class Section extends React.Component<SectionProps> {
           flexDirection: 'column',
           alignItems: 'stretch',
           marginLeft: 'auto',
-          marginRight: 'auto'
+          marginRight: 'auto',
         }}
       >
         {/* TODO: maybe builder <BuilderBlocks? */}
@@ -88,6 +88,6 @@ export class Section extends React.Component<SectionProps> {
           ))}
         {/* <BuilderBlocks blocks={this.builderBlock.children} dataPath="children" emailMode /> */}
       </View>
-    )
+    );
   }
 }
