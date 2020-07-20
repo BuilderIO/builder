@@ -10,6 +10,7 @@ jobs:
       - node/with-cache:
           steps:
             - run: npm install
+            - run: npm run prettier -- --check .
             - run: npm run _install
             - run: npm run bootstrap
             - run: npm test
