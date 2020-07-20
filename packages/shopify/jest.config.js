@@ -11,11 +11,13 @@ module.exports = {
     global: {
       branches: 70,
       functions: 85,
-      lines: 85,
+      lines: 80,
       statements: 85,
     },
   },
+  moduleDirectories: ['<rootDir>/node_modules', '<rootDir>/../react/node_modules'],
   collectCoverage: true,
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   collectCoverageFrom: [
     'src/**',
     'react/**',
