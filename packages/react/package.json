@@ -82,10 +82,7 @@
     },
     "collectCoverage": true
   },
-  "prettier": {
-    "semi": false,
-    "singleQuote": true
-  },
+
   "devDependencies": {
     "@builder.io/block-publish": "^1.1.2",
     "@testing-library/jest-dom": "^4.0.0",
