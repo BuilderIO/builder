@@ -16,7 +16,7 @@
     "build:dev": "babel -w src --out-dir dist --ignore spec.js,test.js --extensions .ts --extensions .js --extensions .tsx",
     "build:types": "tsc -p tsconfig.json",
     "prepare": "npm run build",
-    "test": "test:all",
+    "test": "npm run test:all",
     "test:all": "jest src",
     "test:dev": "jest src --watch"
   },
