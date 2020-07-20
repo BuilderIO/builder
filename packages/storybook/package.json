@@ -34,7 +34,7 @@
   "devDependencies": {
     "@babel/cli": "^7.1.2",
     "@babel/core": "^7.1.6",
-    "@babel/preset-env": "^7.1.0",
+    "@babel/preset-env": "^7.10.4",
     "@babel/preset-react": "^7.0.0",
     "@babel/preset-typescript": "^7.3.3",
     "@storybook/addons": "^5.0.3",
