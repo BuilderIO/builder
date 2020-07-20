@@ -188,6 +188,7 @@ export interface GetContentOptions {
   url?: string;
   includeUrl?: boolean;
   cacheSeconds?: number;
+  staleCacheSeconds?: number;
   limit?: number;
   query?: any;
   cachebust?: boolean;
@@ -1823,6 +1824,10 @@ export class Builder {
 
         if (typeof options.cacheSeconds === 'number') {
           queryParams.cacheSeconds = options.cacheSeconds;
+        }
+
+        if (typeof options.staleCacheSeconds === 'number') {
+          queryParams.staleCacheSeconds = options.staleCacheSeconds;
         }
 
         const properties: (keyof GetContentOptions)[] = [
