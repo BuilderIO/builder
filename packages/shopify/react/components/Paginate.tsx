@@ -31,7 +31,7 @@ export function PaginateBlock(props: AssignBlockProps) {
     let currentPage = 1;
     if (builderState.state.location.query.page) {
       // this is undefined, should probably add support to query params on location
-      currentPage = builderState.state.location.query.page;
+      currentPage = parseInt(builderState.state.location.query.page, 10);
     } else if (typeof window !== 'undefined') {
       const urlParams = new URLSearchParams(window.location.search);
       currentPage = parseInt(urlParams.get('page') || '1', 10);
