@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/shopify",
-  "version": "1.3.28",
+  "version": "1.3.29-alpha.0",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "repository": {
@@ -22,7 +22,7 @@
     "@babel/core": "^7.7.7",
     "@babel/helper-plugin-utils": "^7.0.0",
     "@babel/preset-env": "^7.7.7",
-    "@builder.io/react": "^1.1.23",
+    "@builder.io/react": "^1.1.24-alpha.0",
     "@testing-library/react": "^9.4.0",
     "@types/clean-css": "^4.2.1",
     "@types/csso": "^3.5.1",
