@@ -1,6 +1,6 @@
 {
   "name": "@buidler.io/react-native-example",
-  "version": "0.0.7-alpha.0",
+  "version": "0.0.7",
   "private": true,
   "scripts": {
     "start": "react-native start",
