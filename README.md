@@ -2,7 +2,7 @@
 
 [![CircleCI](https://circleci.com/gh/BuilderIO/builder.svg?style=shield)](https://circleci.com/gh/BuilderIO/builder)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
-![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/builderio/builder/pulls)
 
 Drag and drop page building with your code components. Bring your [design systems](/examples/react-design-system) to life!
 
