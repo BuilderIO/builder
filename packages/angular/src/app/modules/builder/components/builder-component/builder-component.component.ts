@@ -145,12 +145,11 @@ export class BuilderComponentComponent implements OnDestroy, OnInit {
     const { onBuilderWcLoad } = window as any;
     if (onBuilderWcLoad) {
       onBuilderWcLoad((BuilderWC: any) => {
-        BuilderWC.builder.apiKey = this.builderService.apiKey;
-        BuilderWC.builder.canTrack = this.builderService.canTrack;
-        // TODO: subcribe to user attributes change and upate
-        BuilderWC.builder.setUserAttributes(
-          omit(this.builderService.getUserAttributes(), 'urlPath')
-        );
+        const builder = BuilderWC.builder as Builder;
+        builder.apiKey = this.builderService.apiKey;
+        builder.canTrack = this.builderService.canTrack;
+        builder.setUserAttributes(omit(this.builderService.getUserAttributes(), 'urlPath'));
+        builder.userAttributesChanged.subscribe((attrs) => builder.setUserAttributes(attrs));
       });
     }
   }
@@ -189,7 +188,7 @@ export class BuilderComponentComponent implements OnDestroy, OnInit {
       );
     }
 
-    if (!this.prerender) {
+    if (this.hydrate !== false) {
       this.ensureWcLoadedAndUpdate();
     }
   }
