@@ -291,7 +291,7 @@ export const Video = Builder.registerComponent(withChildren(VideoComponent), {
       name: 'lazyLoad',
       type: 'boolean',
       helperText:
-        'Load this video "lazily" - as in only when a user scrolls near the video. Recommended per optmized performance and bandwidth consumption',
+        'Load this video "lazily" - as in only when a user scrolls near the video. Recommended for optmized performance and bandwidth consumption',
       defaultValue: true,
       advanced: true,
     },
