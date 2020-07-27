@@ -160,6 +160,15 @@ class ImageComponent extends React.Component<any> {
 
   pictureRef: HTMLPictureElement | null = null;
 
+  scrollListener: null | ((e: Event) => void) = null;
+
+  componentWillUnmount() {
+    if (Builder.isBrowser && this.scrollListener) {
+      window.removeEventListener('scroll', this.scrollListener);
+      this.scrollListener = null;
+    }
+  }
+
   componentDidMount() {
     if (this.props.lazy && Builder.isBrowser) {
       // throttled scroll capture listener
@@ -174,6 +183,7 @@ class ImageComponent extends React.Component<any> {
                 load: true,
               });
               window.removeEventListener('scroll', listener);
+              this.scrollListener = null;
             }
           }
         },
@@ -183,6 +193,7 @@ class ImageComponent extends React.Component<any> {
           trailing: true,
         }
       );
+      this.scrollListener = listener;
 
       window.addEventListener('scroll', listener, {
         capture: true,

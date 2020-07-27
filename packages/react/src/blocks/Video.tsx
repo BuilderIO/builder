@@ -2,8 +2,9 @@
 import { jsx } from '@emotion/core';
 import React from 'react';
 
-import { withBuilder } from '../functions/with-builder';
+import { throttle } from '../functions/throttle';
 import { withChildren } from '../functions/with-children';
+import { Builder } from '@builder.io/sdk';
 
 const DEFAULT_ASPECT_RATIO = 0.7004048582995948;
 
@@ -20,8 +21,22 @@ class VideoComponent extends React.Component<{
   fit?: 'contain' | 'cover' | 'fill';
   position?: string;
   posterImage?: string;
+  lazyLoad?: boolean;
 }> {
   video: HTMLVideoElement | null = null;
+  containerRef: HTMLElement | null = null;
+
+  scrollListener: null | ((e: Event) => void) = null;
+
+  get lazyLoad() {
+    // Default is true, must be explicitly turned off to not have this behavior
+    // as it's highly recommended for performance and bandwidth optimization
+    return this.props.lazyLoad !== false;
+  }
+
+  state = {
+    load: !this.lazyLoad,
+  };
 
   updateVideo() {
     if (this.video) {
@@ -37,25 +52,62 @@ class VideoComponent extends React.Component<{
 
   componentDidMount() {
     this.updateVideo();
+
+    if (this.lazyLoad && Builder.isBrowser) {
+      // TODO: have a way to consolidate all listeners into one timer
+      // to avoid excessive reflows
+      const listener = throttle(
+        (event: Event) => {
+          if (this.containerRef) {
+            const rect = this.containerRef.getBoundingClientRect();
+            const buffer = window.innerHeight / 2;
+            if (rect.top < window.innerHeight + buffer) {
+              this.setState(state => ({
+                ...state,
+                load: true,
+              }));
+              window.removeEventListener('scroll', listener);
+              this.scrollListener = null;
+            }
+          }
+        },
+        400,
+        {
+          leading: false,
+          trailing: true,
+        }
+      );
+      this.scrollListener = listener;
+
+      window.addEventListener('scroll', listener, {
+        capture: true,
+        passive: true,
+      });
+      listener();
+    }
+  }
+
+  componentWillUnmount() {
+    if (Builder.isBrowser && this.scrollListener) {
+      window.removeEventListener('scroll', this.scrollListener);
+      this.scrollListener = null;
+    }
   }
 
   render() {
     const { aspectRatio, children } = this.props;
     return (
-      <div css={{ position: 'relative' }}>
+      <div ref={ref => (this.containerRef = ref)} css={{ position: 'relative' }}>
+        {/* TODO: option to load the whole thing (inc. poster image) or just video */}
         <video
           key={this.props.video || 'no-src'}
           poster={this.props.posterImage}
-          // height={this.props.height || '100%'}
-          // width={this.props.width || '100%'}
           ref={ref => (this.video = ref)}
           autoPlay={this.props.autoPlay}
-          // src={this.props.video}
           muted={this.props.muted}
           controls={this.props.controls}
           loop={this.props.loop}
           className="builder-video"
-          // type="video/mp4"
           css={{
             width: '100%',
             height: '100%',
@@ -71,7 +123,9 @@ class VideoComponent extends React.Component<{
               : null),
           }}
         >
-          <source type="video/mp4" src={this.props.video} />
+          {(!this.lazyLoad || this.state.load) && (
+            <source type="video/mp4" src={this.props.video} />
+          )}
         </video>
         {aspectRatio ? (
           <div
@@ -104,9 +158,8 @@ class VideoComponent extends React.Component<{
   }
 }
 
-export const Video = withBuilder(withChildren(VideoComponent), {
+export const Video = Builder.registerComponent(withChildren(VideoComponent), {
   name: 'Video',
-  static: true,
   canHaveChildren: true,
   image:
     'https://firebasestorage.googleapis.com/v0/b/builder-3b0a2.appspot.com/o/images%2Fbaseline-videocam-24px%20(1).svg?alt=media&token=49a84e4a-b20e-4977-a650-047f986874bb',
@@ -233,6 +286,14 @@ export const Video = withBuilder(withChildren(VideoComponent), {
       type: 'number',
       advanced: true,
       defaultValue: DEFAULT_ASPECT_RATIO,
+    },
+    {
+      name: 'lazyLoad',
+      type: 'boolean',
+      helperText:
+        'Load this video "lazily" - as in only when a user scrolls near the video. Recommended for optmized performance and bandwidth consumption',
+      defaultValue: true,
+      advanced: true,
     },
   ],
 });
