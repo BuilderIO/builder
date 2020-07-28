@@ -246,7 +246,7 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
                 // TODO: IE11 don't support templates
                 const Tag = index === variants.length - 1 ? React.Fragment : 'template';
                 return (
-                  <>
+                  <React.Fragment key={String(content?.id! + index)}>
                     {Tag !== 'template' && renderScript?.()}
                     <Tag
                       key={String(content?.id! + index)}
@@ -271,7 +271,7 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
                         )}
                       </TagName>
                     </Tag>
-                  </>
+                  </React.Fragment>
                 );
               })}
             </React.Fragment>
