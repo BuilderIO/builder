@@ -54,8 +54,10 @@ export const SectionRef = (props: SectionRefProps) => {
       )
         .then(res => res.text())
         .then(text => {
-          cache[sectionName] = text;
-          setHtml(text);
+          // to ensure we don't keep fetching content for empty sections, we need to insert something
+          const safeText = text || '<span></span>';
+          cache[sectionName] = safeText;
+          setHtml(safeText);
           setTimeout(() => {
             if (ref.current) {
               findAndRunScripts(ref.current);
