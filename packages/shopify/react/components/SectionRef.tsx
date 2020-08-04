@@ -93,6 +93,7 @@ Builder.registerComponent(SectionRef, {
       name: 'section',
       helperText: 'Full path to the section, e.g. sections/product.liquid',
       type: 'string',
+      advanced: true,
     },
   ],
 });

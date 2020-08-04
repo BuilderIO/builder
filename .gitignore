@@ -5,7 +5,6 @@ test-lib/**/*.js
 coverage
 .nyc_output
 .idea
-.prettierignore
 .vscode
 .rpt2_cache/
 .cache
