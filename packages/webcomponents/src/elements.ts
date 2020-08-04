@@ -198,12 +198,9 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
       }
       this.connected = true;
 
-      console.log('ran 0');
       if (Builder.isEditing && !location.href.includes('builder.stopPropagation=false')) {
-        console.log('ran 2');
         this.addEventListener('click', e => {
           e.stopPropagation();
-          console.log('ran 3');
         });
       }
 
