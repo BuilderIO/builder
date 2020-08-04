@@ -6,6 +6,16 @@ const importWidgets = () => import('@builder.io/widgets');
 
 Builder.isStatic = true;
 
+function wrapInDiv(el: HTMLElement) {
+  const newDiv = document.createElement('div');
+  const currentChildren = Array.from(el.children);
+  for (const child of currentChildren) {
+    newDiv.appendChild(child);
+  }
+  el.appendChild(newDiv);
+  return newDiv;
+}
+
 const componentName = process.env.ANGULAR ? 'builder-component-element' : 'builder-component';
 
 if (Builder.isIframe) {
@@ -76,9 +86,15 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
         styles.replace(
           /(@font-face\s*{\s*font-family:\s*(.*?);[\s\S]+?url\((\S+)\)[\s\S]+?})/g,
           (fullMatch, fontMatch, fontName, fontUrl) => {
-            const trimmedFontUrl = fontUrl.replace(/"/g, '').replace(/'/g, '').trim();
+            const trimmedFontUrl = fontUrl
+              .replace(/"/g, '')
+              .replace(/'/g, '')
+              .trim();
 
-            const trimmedFontName = fontName.replace(/"/g, '').replace(/'/g, '').trim();
+            const trimmedFontName = fontName
+              .replace(/"/g, '')
+              .replace(/'/g, '')
+              .trim();
 
             const weight = fullMatch.match(/font-weight:\s*(\d+)/)?.[1];
 
@@ -181,6 +197,15 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
         return;
       }
       this.connected = true;
+
+      console.log('ran 0');
+      if (Builder.isEditing && !location.href.includes('builder.stopPropagation=false')) {
+        console.log('ran 2');
+        this.addEventListener('click', e => {
+          e.stopPropagation();
+          console.log('ran 3');
+        });
+      }
 
       if (
         this.hasAttribute('editing-only') &&
@@ -426,7 +451,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
 
         // Ensure styles don't load twice
         BuilderPage.renderInto(
-          this,
+          wrapInDiv(this),
           {
             ...({ ref: (ref: any) => (this.builderPageRef = ref) } as any),
             modelName: name!,
@@ -482,7 +507,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
             const shopify = new Shopify({});
 
             BuilderPage.renderInto(
-              this,
+              wrapInDiv(this),
               {
                 ...({ ref: (ref: any) => (this.builderPageRef = ref) } as any),
                 modelName: name!,
@@ -535,7 +560,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
               const { Shopify } = await getShopifyJsPromise;
               const shopify = new Shopify({});
               BuilderPage.renderInto(
-                this,
+                wrapInDiv(this),
                 {
                   ...({
                     ref: (ref: any) => (this.builderPageRef = ref),
