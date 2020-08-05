@@ -188,7 +188,7 @@ export class BuilderComponentComponent implements OnDestroy, OnInit {
       );
     }
 
-    if (this.hydrate !== false) {
+    if (this.hydrate !== false || Builder.isEditing) {
       this.ensureWcLoadedAndUpdate();
     }
   }
