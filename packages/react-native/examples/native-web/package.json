@@ -1,6 +1,6 @@
 {
   "name": "creaternwapp",
-  "version": "0.1.8",
+  "version": "0.1.9-alpha.0",
   "private": true,
   "scripts": {
     "start": "./node_modules/.bin/react-native start",
