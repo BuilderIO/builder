@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { GetContentOptions } from '@builder.io/sdk';
+import { GetContentOptions, Builder } from '@builder.io/sdk';
 import { BuilderService } from '../../services/builder.service';
 
 @Component({
@@ -48,7 +48,8 @@ export class BuilderBlocksComponent {
   }
 
   get _innerHtml() {
-    if (!this.prerender) {
+    // TODO: pass options too
+    if (!this.prerender || Builder.isEditing) {
       return `<builder-component-element prerender="false" ${
         !this.model ? '' : `name="${this.model}"`
       }></builder-component-element>`;
