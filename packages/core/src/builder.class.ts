@@ -91,12 +91,14 @@ function setCookie(name: string, value: string, expires?: Date) {
     }
 
     const secure = isBrowser ? location.protocol === 'https:' : true;
+    const nakedDomain = location.hostname.split('.').slice(-2).join('.');
     document.cookie =
       name +
       '=' +
       (value || '') +
       expiresString +
       '; path=/' +
+      `; domain=${nakedDomain}` +
       (secure ? ';secure' : '') +
       '; SameSite=None';
   } catch (err) {

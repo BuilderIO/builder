@@ -56,6 +56,7 @@ class Cookies {
     if (opts && 'secure' in opts) {
       cookie.secure = !!opts.secure;
     }
+    cookie.domain = req.headers.host?.split('.').slice(-2).join('.');
 
     pushCookie(headers, cookie);
 
@@ -68,7 +69,7 @@ class Cookies {
 class Cookie {
   path = '/';
   expires?: Date;
-  domain = undefined;
+  domain: string | undefined = undefined;
   httpOnly = true;
   sameSite?: boolean | string = false;
   secure = false;
