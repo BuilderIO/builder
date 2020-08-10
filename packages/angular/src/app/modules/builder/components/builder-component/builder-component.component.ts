@@ -149,7 +149,7 @@ export class BuilderComponentComponent implements OnDestroy, OnInit {
         builder.apiKey = this.builderService.apiKey;
         builder.canTrack = this.builderService.canTrack;
         builder.setUserAttributes(omit(this.builderService.getUserAttributes(), 'urlPath'));
-        builder.userAttributesChanged.subscribe((attrs) => builder.setUserAttributes(attrs));
+        this.builderService.userAttributesChanged.subscribe((attrs) => builder.setUserAttributes(attrs));
       });
     }
   }
