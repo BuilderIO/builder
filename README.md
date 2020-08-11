@@ -75,9 +75,10 @@ export default let BuilderPage = () => {
 
 ## Try it out!
 
+- Design system [live example](https://builder.io/fiddle/4b2e0a2e4b1a44a88a5e6f8c46cdfe7c) and [source](https://github.com/BuilderIO/builder/tree/master/examples/react-design-system)
 - [builder.io/fiddle](https://builder.io/fiddle)
 - Storybook [live example](https://builder-storybook.firebaseapp.com) and [source](https://github.com/BuilderIO/builder/tree/master/packages/storybook)
-- Design system [live example](https://builder.io/fiddle/4b2e0a2e4b1a44a88a5e6f8c46cdfe7c) and [source](https://github.com/BuilderIO/builder/tree/master/examples/react-design-system)
+
 
 ## Supported Frameworks
 
