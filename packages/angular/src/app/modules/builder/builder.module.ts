@@ -29,10 +29,12 @@ export class BuilderModule {
       // This cannot use a normal import, via https://github.com/angular/angular/issues/24551
       const { createCustomElement } = require('@angular/elements');
       for (const component of Builder.components) {
-        if (component.class
-          && component.type === 'angular'
-          && component.tag
-          && typeof customElements.get(component.tag) === 'undefined') {
+        if (
+          component.class &&
+          component.type === 'angular' &&
+          component.tag &&
+          typeof customElements.get(component.tag) === 'undefined'
+        ) {
           try {
             const Element = createCustomElement(component.class, { injector });
             // Register the custom element with the browser.
