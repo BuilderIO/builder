@@ -8,7 +8,7 @@
 const fieldContentRegExp = /^[\u0009\u0020-\u007e\u0080-\u00ff]+$/;
 
 import { IncomingMessage, ServerResponse } from 'http';
-import { getTopLevelDomain } from '../functions/get-top-level-domain'
+import { getTopLevelDomain } from '../functions/get-top-level-domain';
 interface Options {
   secure?: boolean;
   expires?: Date;
@@ -58,7 +58,7 @@ class Cookies {
       cookie.secure = !!opts.secure;
     }
 
-    cookie.domain = req.headers.host && getTopLevelDomain(req.headers.host)
+    cookie.domain = req.headers.host && getTopLevelDomain(req.headers.host);
 
     pushCookie(headers, cookie);
 

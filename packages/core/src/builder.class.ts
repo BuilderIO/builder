@@ -11,7 +11,7 @@ import { Animator } from './classes/animator.class';
 import { BuilderElement } from './types/element';
 import Cookies from './classes/cookies.class';
 import { omit } from './functions/omit.function';
-import { getTopLevelDomain } from './functions/get-top-level-domain'
+import { getTopLevelDomain } from './functions/get-top-level-domain';
 import serverOnlyRequire from './functions/server-only-require.function';
 import { BuilderContent } from './types/content';
 import { uuid } from './functions/uuid';
