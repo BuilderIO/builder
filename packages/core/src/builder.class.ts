@@ -11,6 +11,7 @@ import { Animator } from './classes/animator.class';
 import { BuilderElement } from './types/element';
 import Cookies from './classes/cookies.class';
 import { omit } from './functions/omit.function';
+import { getTopLevelDomain } from './functions/get-top-level-domain';
 import serverOnlyRequire from './functions/server-only-require.function';
 import { BuilderContent } from './types/content';
 import { uuid } from './functions/uuid';
@@ -97,8 +98,8 @@ function setCookie(name: string, value: string, expires?: Date) {
       (value || '') +
       expiresString +
       '; path=/' +
-      (secure ? ';secure' : '') +
-      '; SameSite=None';
+      `; domain=${getTopLevelDomain(location.hostname)}` +
+      (secure ? ';secure ; SameSite=None' : '');
   } catch (err) {
     console.warn('Could not set cookie', err);
   }
