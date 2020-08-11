@@ -79,7 +79,6 @@ export default let BuilderPage = () => {
 - [builder.io/fiddle](https://builder.io/fiddle)
 - Storybook [live example](https://builder-storybook.firebaseapp.com) and [source](https://github.com/BuilderIO/builder/tree/master/packages/storybook)
 
-
 ## Supported Frameworks
 
 | Framework                                                                |                            Status                             |
