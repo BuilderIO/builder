@@ -40,12 +40,13 @@ if (!_window[TRACKED_KEY]) {
   } else if (!Shopify) {
     console.debug('No Shopify object');
   } else if (Shopify.checkout?.order_id) {
+    // rely on updated_at since created_at is not accurate
     const orderUpdatedAt = new Date(Shopify.checkout.updated_at);
 
-    const orderCreatedMinutesAgo = (Date.now() - orderUpdatedAt.getTime()) / 1000 / 60;
+    const orderUpdatedMinutesAgo = (Date.now() - orderUpdatedAt.getTime()) / 1000 / 60;
 
     // Order is not old
-    if (orderCreatedMinutesAgo < 3) {
+    if (orderUpdatedMinutesAgo < 3) {
       const trackedOrdersCookieKey = `builder.trackedOrders.${Shopify.checkout.order_id}`;
       const orderWasTracked = builder.getCookie(trackedOrdersCookieKey);
 
