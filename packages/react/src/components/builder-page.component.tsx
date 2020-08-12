@@ -413,10 +413,20 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     fresh = false
   ) {
     console.debug('BuilderPage.renderInto', elementOrSelector, props, hydrate, this);
-    let element =
-      elementOrSelector instanceof HTMLElement
-        ? elementOrSelector
-        : document.querySelector(elementOrSelector);
+
+    if (!elementOrSelector) {
+      return;
+    }
+
+    let element: Element | null = null;
+
+    if (typeof elementOrSelector === 'string') {
+      element = document.querySelector(elementOrSelector);
+    } else {
+      if (elementOrSelector instanceof Element) {
+        element = elementOrSelector;
+      }
+    }
 
     if (!element) {
       return;
