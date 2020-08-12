@@ -42,10 +42,10 @@ if (!_window[TRACKED_KEY]) {
   } else if (Shopify.checkout?.order_id) {
     const ordderCreatedDate = new Date(Shopify.checkout.created_at);
 
-    const orderCreatedMinutesAgo = (Date.now() - ordderCreatedDate.getTime()) / 1000 / 60;
+    const orderCreatedSecondsAgo = (Date.now() - ordderCreatedDate.getTime()) / 1000 / 60;
 
     // Order is not old
-    if (orderCreatedMinutesAgo < 3) {
+    if (orderCreatedSecondsAgo < 30) {
       const trackedOrdersCookieKey = `builder.trackedOrders.${Shopify.checkout.order_id}`;
       const orderWasTracked = builder.getCookie(trackedOrdersCookieKey);
 
