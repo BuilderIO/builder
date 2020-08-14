@@ -104,7 +104,7 @@ export interface BuilderPageProps {
   entry?: string;
   apiKey?: string;
   options?: GetContentOptions;
-  contentLoaded?: (data: any) => void;
+  contentLoaded?: (data: any, content: any) => void;
   renderLink?: (props: React.AnchorHTMLAttributes<any>) => React.ReactNode;
   contentError?: (error: any) => void;
   content?: Content;
@@ -285,11 +285,9 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
       }
 
       if (this.props.content) {
-        // TODO: this should be on didMount right bc of element ref??
-        // TODO: possibly observe for change or throw error if changes
-        this.onContentLoaded(
-          (this.props.content as any).content || this.props.content.data /*, this.props.content*/
-        );
+        // Sometimes with graphql we get the content as `content.content`
+        const content = (this.props.content as any).content || this.props.content;
+        this.onContentLoaded(content?.data, content);
       }
     }
   }
@@ -716,7 +714,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
 
     if (Builder.isEditing) {
       if (this.props.content && prevProps.content !== this.props.content) {
-        this.onContentLoaded(this.props.content);
+        this.onContentLoaded(this.props.content.data, this.props.content);
       }
     }
   }
@@ -805,7 +803,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
                       builder={this.builder}
                       ref={ref => (this.contentRef = ref)}
                       // TODO: pass entry in
-                      contentLoaded={this.onContentLoaded}
+                      contentLoaded={(data, content) => this.onContentLoaded(data, content)}
                       options={{
                         key,
                         entry: this.props.entry,
@@ -999,22 +997,8 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     }
   }
 
-  onContentLoaded = (data: any) => {
-    if (data && data.meta && data.meta.kind === 'page') {
-      const future = new Date();
-      future.setDate(future.getDate() + 30);
-      this.builder.setCookie(
-        'builder.lastPageViewed',
-        [data.id, data.variationId || data.testVariationId || data.id].join(','),
-        future
-      );
-    }
-
-    // if (Builder.isBrowser) {
-    //   console.debug('Builder content load', data)
-    // }
-    // TODO: if model is page... hmm
-    if ((this.name === 'page' || this.name === 'docs-content') && Builder.isBrowser) {
+  onContentLoaded = (data: any, content: any) => {
+    if (this.name === 'page' && Builder.isBrowser) {
       if (data) {
         const { title, pageTitle, description, pageDescription } = data;
 
@@ -1042,7 +1026,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
 
     // Unsubscribe all? TODO: maybe don't continuous fire when editing.....
     if (this.props.contentLoaded) {
-      this.props.contentLoaded(data);
+      this.props.contentLoaded(data, content);
     }
 
     if (data && data.inputs && Array.isArray(data.inputs) && data.inputs.length) {

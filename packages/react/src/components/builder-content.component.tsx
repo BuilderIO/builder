@@ -5,7 +5,7 @@ import { applyPatchWithMinimalMutationChain } from '../functions/apply-patch-wit
 import { VariantsProvider } from './variants-provider.component';
 
 export interface BuilderContentProps<ContentType> {
-  contentLoaded?: (content: any) => void;
+  contentLoaded?: (data: any, content: any) => void;
   contentError?: (error: any) => void;
   modelName: string;
   options?: GetContentOptions;
@@ -90,7 +90,7 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
           data: this.state.data ? { ...this.state.data } : this.state.data,
         });
         if (this.props.contentLoaded) {
-          this.props.contentLoaded(this.state.data.data);
+          this.props.contentLoaded(this.state.data.data, this.state.data);
         }
 
         break;
@@ -171,7 +171,7 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
               this.firstLoad = false;
             }
             if (this.props.contentLoaded) {
-              this.props.contentLoaded(match && match.data);
+              this.props.contentLoaded(match && match.data, match);
             }
           },
           error => {
