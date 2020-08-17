@@ -171,7 +171,7 @@ export const Columns = withBuilder(ColumnsComponent, {
         },
         {
           name: 'link',
-          type: 'string',
+          type: 'url',
           helperText: 'Optionally set a url that clicking this column will link to',
         },
       ],
