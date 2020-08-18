@@ -138,7 +138,7 @@ class SymbolComponent extends React.Component<SymbolProps> {
                   entry={entry}
                   data={{
                     ...data,
-                    ...(!!this.props.inheritState && state),
+                    ...(!!this.props.inheritState && state.state),
                     ...this.props.builderBlock?.component?.options?.symbol?.content?.data?.state,
                   }}
                   inlineContent={symbol?.inline}
