@@ -24,6 +24,9 @@ const defaultBlocks: BuilderElement[] = [
         textAlign: 'center',
         lineHeight: 'normal',
         height: 'auto',
+        minHeight: '20px',
+        minWidth: '20px',
+        overflow: 'hidden',
       },
     },
     component: {
