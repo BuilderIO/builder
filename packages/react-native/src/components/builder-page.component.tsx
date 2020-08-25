@@ -150,7 +150,9 @@ function searchToObject(location: Location | Url) {
   const obj: { [key: string]: string } = {};
 
   for (const i in pairs) {
-    if (pairs[i] === '') continue;
+    if (!(pairs[i] && typeof pairs[i] === 'string')) {
+      continue;
+    }
     const pair = pairs[i].split('=');
     obj[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
   }

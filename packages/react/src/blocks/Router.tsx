@@ -18,13 +18,14 @@ export interface RouterProps {
 
 const prefetched = new Set();
 
-// TODO: share this
 function searchToObject(location: Location) {
   const pairs = (location.search || '').substring(1).split('&');
   const obj: { [key: string]: string } = {};
 
   for (const i in pairs) {
-    if (pairs[i] === '') continue;
+    if (!(pairs[i] && typeof pairs[i] === 'string')) {
+      continue;
+    }
     const pair = pairs[i].split('=');
     obj[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
   }
