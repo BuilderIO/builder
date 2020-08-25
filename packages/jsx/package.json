@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/jsx",
-  "version": "0.0.13-alpha.0",
+  "version": "0.0.13",
   "description": "A TypeScript custom transformer for JSX to Builder.io",
   "scripts": {
     "prepare": "tsc",
@@ -33,7 +33,7 @@
     "typescript": ">=2.4.1"
   },
   "dependencies": {
-    "@builder.io/sdk": "^1.1.15-alpha.0",
+    "@builder.io/sdk": "^1.1.15",
     "@types/json5": "0.0.30",
     "@types/lodash": "^4.14.149",
     "json5": "^2.1.2",
