@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { BuilderBlocks, BuilderBlock, withBuilder } from '@builder.io/react';
 
 // TODO: manual typings and documentation for this with typedoc and in builder guides pages

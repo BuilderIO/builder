@@ -9,7 +9,7 @@ import {
   Builder,
   withBuilder,
 } from '@builder.io/react';
-import React from 'react';
+import * as React from 'react';
 import Masonry from 'react-masonry-component';
 import isArray from 'lodash-es/isArray';
 import last from 'lodash-es/last';
