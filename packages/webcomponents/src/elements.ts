@@ -86,15 +86,9 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
         styles.replace(
           /(@font-face\s*{\s*font-family:\s*(.*?);[\s\S]+?url\((\S+)\)[\s\S]+?})/g,
           (fullMatch, fontMatch, fontName, fontUrl) => {
-            const trimmedFontUrl = fontUrl
-              .replace(/"/g, '')
-              .replace(/'/g, '')
-              .trim();
+            const trimmedFontUrl = fontUrl.replace(/"/g, '').replace(/'/g, '').trim();
 
-            const trimmedFontName = fontName
-              .replace(/"/g, '')
-              .replace(/'/g, '')
-              .trim();
+            const trimmedFontName = fontName.replace(/"/g, '').replace(/'/g, '').trim();
 
             const weight = fullMatch.match(/font-weight:\s*(\d+)/)?.[1];
 
