@@ -55,7 +55,12 @@ const variantsScript = (variantsString: string, contentId: string) =>
     return null;
   }
   var cookieName = 'builder.tests.${contentId}';
-  var variantId = getCookie(cookieName);
+  var variantInCookie = getCookie(cookieName);
+  var availableIDs = variants.map(function(vr) { return vr.id });
+  var variantId;
+  if (availableIDs.indexOf(variantInCookie) > -1) {
+    variantId = variantInCookie;
+  }
   if (!variantId) {
     var n = 0;
     var set = false;
