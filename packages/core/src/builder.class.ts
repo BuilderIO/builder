@@ -2040,7 +2040,7 @@ export class Builder {
     return this.queueGetContent(modelName, options);
   }
 
-  getAll(modelName: string, options: GetContentOptions = {}) {
+  getAll(modelName: string, options: GetContentOptions = {}): Promise<BuilderContent[]> {
     return this.getContent(modelName, {
       limit: 30,
       ...options,
