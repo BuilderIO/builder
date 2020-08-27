@@ -2037,6 +2037,6 @@ export class Builder {
   }
 
   getAll(modelName: string, options: GetContentOptions = {}) {
-    return this.get(modelName, options);
+    return this.getContent(modelName, options);
   }
 }
