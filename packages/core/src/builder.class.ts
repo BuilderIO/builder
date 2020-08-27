@@ -206,6 +206,8 @@ export interface GetContentOptions {
   preview?: boolean;
   entry?: string;
   alias?: string;
+  fields?: string;
+  omit?: string;
   key?: string;
   // For prerender (prerenderFormat?)
   format?: 'amp' | 'email' | 'html';
@@ -1739,7 +1741,9 @@ export class Builder {
     this.getOverridesFromQueryString();
 
     const queryParams: ParamsMap = {
-      omit: 'meta.componentsUsed',
+      // TODO: way to force a request to be in a separate queue. or just lower queue limit to be 1 by default
+      omit: queue[0].omit || 'meta.componentsUsed',
+      fields: queue[0].fields || undefined,
       apiKey: this.apiKey,
     };
     const pageQueryParams: ParamsMap =
@@ -2037,6 +2041,9 @@ export class Builder {
   }
 
   getAll(modelName: string, options: GetContentOptions = {}) {
-    return this.getContent(modelName, options);
+    return this.getContent(modelName, {
+      limit: 30,
+      ...options,
+    });
   }
 }
