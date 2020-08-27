@@ -300,7 +300,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
 
       if (!this.prerender || !builder.apiKey || fresh) {
         const currentContent = fresh ? null : this.currentContent;
-        this.loadReact(currentContent ? currentContent : entry ? { id: entry } : null, fresh);
+        this.loadPreact(currentContent ? currentContent : entry ? { id: entry } : null, fresh);
         return;
       }
 
@@ -313,7 +313,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
       if (currentContent && !Builder.isEditing) {
         this.data = currentContent;
         this.loaded();
-        this.loadReact(this.data);
+        this.loadPreact(this.data);
         return;
       }
 
@@ -358,14 +358,14 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
                 this.dispatchEvent(loadEvent);
               }
 
-              this.loadReact(data);
+              this.loadPreact(data);
               subscription.unsubscribe();
               unsubscribed = true;
             }
           },
           (error: any) => {
             // Server render failed, not the end of the world, load react anyway
-            this.loadReact();
+            this.loadPreact();
             subscription.unsubscribe();
             unsubscribed = true;
           }
@@ -392,16 +392,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
       }
     }
 
-    loadReact = async (data?: any, fresh = false) => {
-      // Hack for now to not load shopstyle on react despite them using the old component format
-      if (
-        typeof location !== 'undefined' &&
-        !Builder.isIframe &&
-        location.hostname.indexOf('shopstyle') > -1
-      ) {
-        return;
-      }
-
+    loadPreact = async (data?: any, fresh = false) => {
       const entry = data?.id || this.getAttribute('entry');
 
       this.unsubscribe();
