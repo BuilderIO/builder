@@ -2044,6 +2044,6 @@ export class Builder {
     return this.getContent(modelName, {
       limit: 30,
       ...options,
-    });
+    }).promise();
   }
 }
