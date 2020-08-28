@@ -6,7 +6,7 @@ if (typeof window !== 'undefined') {
       type: 'builder.isReactSdk',
       data: {
         value: true,
-        supportsPatchUpdates: 'v2',
+        supportsPatchUpdates: 'v3',
         priorVersion: version,
       },
     },
