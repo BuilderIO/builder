@@ -1745,7 +1745,7 @@ export class Builder {
       apiKey: this.apiKey,
     };
     if (queue[0].fields) {
-      queryParams.fields = queue[0].fields
+      queryParams.fields = queue[0].fields;
     }
 
     const pageQueryParams: ParamsMap =
