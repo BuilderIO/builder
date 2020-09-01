@@ -72,6 +72,7 @@ const variantsScript = (variantsString: string, contentId: string) =>
       if (random < n) {
         setCookie(cookieName, variant.id);
         variantId = variant.id;
+        break;
       }
     }
     if (!variantId) {
@@ -147,6 +148,7 @@ export const VariantsProvider: React.SFC<VariantsProviderProps> = ({
       if (random < n) {
         builder.setCookie(cookieName, variant.id);
         variantId = variant.id;
+        break;
       }
     }
   }
