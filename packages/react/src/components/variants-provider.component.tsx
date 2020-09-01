@@ -148,6 +148,7 @@ export const VariantsProvider: React.SFC<VariantsProviderProps> = ({
       if (random < n) {
         builder.setCookie(cookieName, variant.id);
         variantId = variant.id;
+        break;
       }
     }
   }
