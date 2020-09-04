@@ -689,6 +689,17 @@ export class Builder {
     const events = this.eventsQueue;
     this.eventsQueue = [];
 
+    const fullUserAttributes = {
+      ...Builder.overrideUserAttributes,
+      ...this.trackingUserAttributes,
+    };
+    for (const event of events) {
+      if (!event.data.metadata) {
+        event.data.metadata = {};
+      }
+      event.data.metadata.user = fullUserAttributes;
+    }
+
     const host = this.host;
 
     fetch(`${host}/api/v1/track`, {
@@ -1041,6 +1052,8 @@ export class Builder {
   }
 
   static overrideUserAttributes: Partial<UserAttributes> = {};
+
+  trackingUserAttributes: { [key: string]: any } = {};
 
   component(info: Partial<Component> = {}) {
     return Builder.component(info);
@@ -1539,6 +1552,10 @@ export class Builder {
   setUserAttributes(options: object) {
     assign(Builder.overrideUserAttributes, options);
     this.userAttributesChanged.next(options);
+  }
+
+  setTrackingUserAttributes(attributes: object) {
+    assign(this.trackingUserAttributes, attributes);
   }
 
   get(
