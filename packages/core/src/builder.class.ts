@@ -151,6 +151,11 @@ export interface ParamsMap {
   [key: string]: any;
 }
 
+type TrackingHook = (
+  eventData: Event,
+  context: { content?: BuilderContent; [key: string]: any }
+) => Event | undefined;
+
 interface EventData {
   contentId?: string;
   ownerId: string;
@@ -251,6 +256,7 @@ export interface Input {
   mediaWidth?: number;
   hideFromUI?: boolean;
   modelId?: string;
+  options?: { [key: string]: any };
   enum?: string[] | { label: string; value: any; helperText?: string }[];
   /** Regex field validation for all string types (text, longText, html, url, etc) */
   regex?: {
@@ -697,7 +703,10 @@ export class Builder {
       if (!event.data.metadata) {
         event.data.metadata = {};
       }
-      event.data.metadata.user = fullUserAttributes;
+      if (!event.data.metadata.user) {
+        event.data.metadata.user = {};
+      }
+      Object.assign(event.data.metadata.user, fullUserAttributes, event.data.metadata.user);
     }
 
     const host = this.host;
@@ -809,28 +818,58 @@ export class Builder {
   }
   userAgent: string = (typeof navigator === 'object' && navigator.userAgent) || '';
 
-  track(eventName: string, properties: Partial<EventData> = {}) {
+  trackingHooks: TrackingHook[] = [];
+
+  /**
+   * Set a hook to modify events being tracked from builder, such as impressions and clicks
+   *
+   * For example, to track the model ID of each event associated with content for querying
+   * by mode, you can do
+   *
+   *    builder.setTrackingHook((event, context) => {
+   *      if (context.content) {
+   *        event.data.metadata.modelId = context.content.modelId
+   *      }
+   *    })
+   */
+  setTrackingHook(hook: TrackingHook) {
+    this.trackingHooks.push(hook);
+  }
+
+  track(eventName: string, properties: Partial<EventData> = {}, context?: any) {
     // TODO: queue up track requests and fire them off when canTrack set to true - otherwise may get lots of clicks with no impressions
     if (isIframe || !isBrowser || Builder.isPreviewing) {
       return;
     }
-    // batch events
-    this.eventsQueue.push({
-      type: eventName,
-      data: {
-        ...omit(properties, 'meta'),
-        metadata: {
-          sdkVersion: Builder.VERSION,
-          url: location.href,
-          ...properties.meta,
-          ...properties.metadata,
+
+    let eventData: Event = JSON.parse(
+      JSON.stringify({
+        type: eventName,
+        data: {
+          ...omit(properties, 'meta'),
+          metadata: {
+            sdkVersion: Builder.VERSION,
+            url: location.href,
+            ...properties.meta,
+            ...properties.metadata,
+          },
+          ownerId: this.apiKey!,
+          userAttributes: this.getUserAttributes(),
+          sessionId: this.sessionId,
+          visitorId: this.visitorId,
         },
-        ownerId: this.apiKey!,
-        userAttributes: this.getUserAttributes(),
-        sessionId: this.sessionId,
-        visitorId: this.visitorId,
-      },
-    });
+      })
+    );
+
+    for (const hook of this.trackingHooks) {
+      const returnValue = hook(eventData, context || {});
+      if (returnValue) {
+        eventData = returnValue;
+      }
+    }
+
+    // batch events
+    this.eventsQueue.push(eventData);
 
     if (this.canTrack) {
       this.throttledClearEventsQueue();
@@ -900,23 +939,20 @@ export class Builder {
     return visitorId;
   }
 
-  trackImpression(contentId: string, variationId?: string) {
+  trackImpression(contentId: string, variationId?: string, properties?: any, context?: any) {
     if (isIframe || !isBrowser || Builder.isPreviewing) {
       return;
     }
     // TODO: use this.track method
-    this.eventsQueue.push({
-      type: 'impression',
-      data: {
+    this.track(
+      'impression',
+      {
         contentId,
         variationId: variationId !== contentId ? variationId : undefined,
-        ownerId: this.apiKey as string,
-        userAttributes: this.getUserAttributes(),
-        sessionId: this.sessionId,
-        visitorId: this.visitorId,
+        metadata: properties,
       },
-    });
-    this.throttledClearEventsQueue();
+      context
+    );
   }
 
   trackConversion(amount?: number, customProperties?: any): void;
@@ -924,7 +960,8 @@ export class Builder {
     amount?: number,
     contentId?: string | any,
     variationId?: string,
-    customProperties?: any
+    customProperties?: any,
+    context?: any
   ) {
     if (isIframe || !isBrowser || Builder.isPreviewing) {
       return;
@@ -932,21 +969,7 @@ export class Builder {
     const meta = typeof contentId === 'object' ? contentId : customProperties;
     const useContentId = typeof contentId === 'string' ? contentId : undefined;
 
-    // TODO: use this.track method
-    this.eventsQueue.push({
-      type: 'conversion',
-      data: {
-        amount,
-        variationId,
-        meta,
-        contentId: useContentId,
-        ownerId: this.apiKey as string,
-        userAttributes: this.getUserAttributes(),
-        sessionId: this.sessionId,
-        visitorId: this.visitorId,
-      },
-    });
-    this.throttledClearEventsQueue();
+    this.track('conversion', { amount, variationId, meta, contentId: useContentId }, context);
   }
 
   autoTrack = !Builder.isBrowser
@@ -970,7 +993,8 @@ export class Builder {
     contentId: string,
     variationId?: string,
     alreadyTrackedOne = false,
-    event?: MouseEvent
+    event?: MouseEvent,
+    context?: any
   ) {
     if (isIframe || !isBrowser || Builder.isPreviewing) {
       return;
@@ -1013,15 +1037,6 @@ export class Builder {
       }
     }
 
-    // let selector: string | undefined = undefined;
-    // if (target) {
-    //   try {
-    //     selector = finder(target);
-    //   } catch (err) {
-    //     // nbd
-    //   }
-    // }
-
     const builderId =
       targetBuilderElement &&
       (targetBuilderElement.getAttribute('builder-id') || targetBuilderElement.id);
@@ -1032,23 +1047,17 @@ export class Builder {
         .indexOf(targetBuilderElement);
     }
 
-    // TODO: use this.track method
-    this.eventsQueue.push({
-      type: 'click',
-      data: {
+    this.track(
+      'click',
+      {
         contentId,
         metadata,
         variationId: variationId !== contentId ? variationId : undefined,
-        ownerId: this.apiKey as string,
         unique: !alreadyTrackedOne,
-        // targetSelector: selector,
         targetBuilderElement: builderId || undefined,
-        userAttributes: this.getUserAttributes(),
-        sessionId: this.sessionId,
-        visitorId: this.visitorId,
       },
-    });
-    this.throttledClearEventsQueue();
+      context
+    );
   }
 
   static overrideUserAttributes: Partial<UserAttributes> = {};
@@ -1554,6 +1563,15 @@ export class Builder {
     this.userAttributesChanged.next(options);
   }
 
+  /**
+   * Set user attributes just for tracking purposes.
+   *
+   * Do this so properties exist on event objects for querying insights, but
+   * won't affect targeting
+   *
+   * Use this when you want to track properties but don't need to target off
+   * of them to optimize cache efficiency
+   */
   setTrackingUserAttributes(attributes: object) {
     assign(this.trackingUserAttributes, attributes);
   }

@@ -115,7 +115,10 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
       this.subscribeToContent();
     } else if (this.props.inline && this.options?.initialContent?.length) {
       const contentData = this.options.initialContent[0];
-      this.builder.trackImpression(contentData.id, this.renderedVairantId);
+      // TODO: intersectionobserver like in subscribetocontent - reuse the logic
+      this.builder.trackImpression(contentData.id, this.renderedVairantId, {
+        content: contentData,
+      });
     }
 
     if (Builder.isEditing) {
@@ -147,7 +150,10 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
                         entries.forEach(entry => {
                           // In view
                           if (entry.intersectionRatio > 0 && !this.trackedImpression) {
-                            this.builder.trackImpression(match.id!, this.renderedVairantId);
+                            this.builder.trackImpression(match.id!, this.renderedVairantId, {
+                              content: this.data,
+                            }),
+                              { content: this.data };
                             this.trackedImpression = true;
                             if (this.ref) {
                               observer.unobserve(this.ref);
@@ -165,7 +171,9 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
                 }
                 if (!addedObserver) {
                   this.trackedImpression = true;
-                  this.builder.trackImpression(match.id!, this.renderedVairantId);
+                  this.builder.trackImpression(match.id!, this.renderedVairantId, {
+                    content: match,
+                  });
                 }
               }
               this.firstLoad = false;
@@ -204,7 +212,9 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
       return;
     }
     if (builder.autoTrack) {
-      this.builder.trackInteraction(content.id, this.renderedVairantId, this.clicked, event);
+      this.builder.trackInteraction(content.id, this.renderedVairantId, this.clicked, event, {
+        content,
+      });
     }
     if (!this.clicked) {
       this.clicked = true;

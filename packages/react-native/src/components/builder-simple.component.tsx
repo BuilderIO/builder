@@ -37,7 +37,8 @@ export class BuilderSimpleComponent extends React.Component<BuilderSimpleCompone
           data.id,
           data.testVariationId || data.id,
           this.trackedClick,
-          event.nativeEvent
+          event.nativeEvent,
+          { content: data }
         );
         if (!this.trackedClick) {
           this.trackedClick = true;
@@ -120,7 +121,7 @@ export class BuilderSimpleComponent extends React.Component<BuilderSimpleCompone
           });
           if (builder.canTrack) {
             // TODO: track unique vs not as well
-            builder.trackImpression(data.id, data.testVariationId || data.id);
+            builder.trackImpression(data.id, data.testVariationId || data.id, { content: data });
           }
           if (data.data && data.data.html) {
             if (this.props.onLoad) {
