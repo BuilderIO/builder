@@ -64,17 +64,6 @@ class SymbolComponent extends React.Component<SymbolProps> {
     }
   }
 
-  shouldComponentUpdate(nextProps: any) {
-    if (Builder.isEditing) {
-      // TODO: maybe don't do this for editor perf of symbols with lots of
-      // data
-      if (hash(nextProps) === hash(this.props)) {
-        return false;
-      }
-    }
-    return true;
-  }
-
   get useStatic() {
     return Boolean(
       Builder.isBrowser &&
