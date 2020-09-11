@@ -729,6 +729,8 @@ export class Builder {
 
   targetContent = true;
 
+  contentPerRequest = 1;
+
   private cookies: Cookies | null = null;
 
   // TODO: api options object
@@ -1676,7 +1678,7 @@ export class Builder {
       }
 
       this.getContentQueue.push({ ...options, model: modelName, key });
-      if (this.getContentQueue && this.getContentQueue.length >= 5) {
+      if (this.getContentQueue && this.getContentQueue.length >= this.contentPerRequest) {
         this.flushGetContentQueue();
       } else {
         nextTick(() => {
