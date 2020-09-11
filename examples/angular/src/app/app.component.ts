@@ -2,16 +2,6 @@ import { BuilderBlock } from '@builder.io/angular';
 import { Component, Input } from '@angular/core';
 import { GetContentOptions } from '@builder.io/sdk';
 
-@BuilderBlock({
-  tag: 'custom-thing',
-  name: 'Custom thing',
-  inputs: [
-    {
-      name: 'name',
-      type: 'string',
-    },
-  ],
-})
 @Component({
   selector: 'custom-thing',
   template: 'Hello: {{name}}',
@@ -20,6 +10,17 @@ export class CustomThing {
   @Input()
   name = '';
 }
+
+BuilderBlock({
+  tag: 'custom-thing',
+  name: 'Custom thing',
+  inputs: [
+    {
+      name: 'name',
+      type: 'string',
+    },
+  ],
+})(CustomThing);
 
 @Component({
   selector: 'app-root',
