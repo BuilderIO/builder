@@ -38,6 +38,8 @@ if (content) {
 You can also pass [data](https://www.builder.io/c/docs/guides/connecting-api-data) and [functions](https://www.builder.io/c/docs/react/custom-actions) down to the Builder component to use in the UIs (e.g. bind
 data values to UIs e.g. for text values or iterating over lists, and actions to trigger for instance on click of a button)
 
+All data passed down in available in Builder [actions and bindings](https://www.builder.io/c/docs/guides/custom-code) as `state.*`, for instance in the below example `state.products`, etc will be available
+
 ```tsx
 <BuilderComponent
   model="page"
@@ -47,6 +49,21 @@ data values to UIs e.g. for text values or iterating over lists, and actions to 
     foo: 'bar'
   }} >
 ```
+
+You can also pass down complex data like custom objects and libraries you can use `context`. Similar to React context, context passes all the way down (e.g. through symbols, etc). This data is not observed for changes and mutations
+
+```tsx
+<BuilderComponent
+  model="page"
+  context={{
+    lodash: lodash,
+  }} >
+```
+  
+Context is available in [actions and bindings](https://www.builder.io/c/docs/guides/custom-code) as `context.*`, such as `context.lodash` in the example above
+
+
+#### Passing complex
 
 Everything passed down is available on the `state` object in data and actions - e.g. `state.products[0].name` or `state.myFunction()`
 
