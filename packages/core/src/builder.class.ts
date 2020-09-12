@@ -2094,9 +2094,11 @@ export class Builder {
       }
     }
 
-    return instance.getContent(modelName, {
-      limit: 30,
-      ...options,
-    }).promise();
+    return instance
+      .getContent(modelName, {
+        limit: 30,
+        ...options,
+      })
+      .promise();
   }
 }
