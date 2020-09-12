@@ -2079,10 +2079,28 @@ export class Builder {
     return this.queueGetContent(modelName, options);
   }
 
-  getAll(modelName: string, options: GetContentOptions = {}): Promise<BuilderContent[]> {
-    return this.getContent(modelName, {
-      limit: 30,
-      ...options,
-    }).promise();
+  getAll(
+    modelName: string,
+    options: GetContentOptions & {
+      req?: IncomingMessage;
+      res?: ServerResponse;
+      apiKey?: string;
+    } = {}
+  ): Promise<BuilderContent[]> {
+    let instance: Builder = this;
+    if (!Builder.isBrowser && (options.req || options.res)) {
+      instance = new Builder(options.apiKey || this.apiKey, options.req, options.res);
+    } else {
+      if (options.apiKey && !this.apiKey) {
+        this.apiKey = options.apiKey;
+      }
+    }
+
+    return instance
+      .getContent(modelName, {
+        limit: 30,
+        ...options,
+      })
+      .promise();
   }
 }
