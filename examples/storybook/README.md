@@ -1,6 +1,6 @@
-## Builder.io custom design system example with React
+## Builder.io custom design system example
 
-> ✨ **Try it live [here](https://builder.io/fiddle/4b2e0a2e4b1a44a88a5e6f8c46cdfe7c)**!
+> ✨ **Try it live [here](https://builder-storybook.firebaseapp.com/)**!
 
 In this example we show how to integrate react components with [Builder.io](https://builder.io). This is useful when you want to add the ability for your team to utilize custom components on the pages you build using the Builder editor, or even want to make it so people on your team can only build and edit your site's pages using your custom components.
 
@@ -8,7 +8,7 @@ In this example we show how to integrate react components with [Builder.io](http
 
 The source code for the custom components used in this demo are [here](src/components), and you can see how they are registered with Builder by looking at the files that end in `*.builder.js` ([this is an example](https://github.com/BuilderIO/builder/blob/master/examples/react-design-system/src/components/ProductsList/ProductsList.builder.js)). The logic for adding components to the Builder editor menu can be found [here](https://github.com/BuilderIO/builder/blob/master/examples/react-design-system/src/builder-settings.js)
 
-> 👉**Tip:** want to limit page building to only your components? Try [components only mode](https://builder.io/c/docs/guides/components-only-mode)
+> 👉**Tip: want to limit page building to only your components? Try [components only mode](https://builder.io/c/docs/guides/components-only-mode)**
 
 <img src="https://imgur.com/PJW3b4S.gif" alt="example" />
 
@@ -20,8 +20,14 @@ The source code for the custom components used in this demo are [here](src/compo
 
 ```bash
 git clone https://github.com/BuilderIO/builder.git
-cd examples/react-design-system
+cd examples/storybook
 npm install
+```
+
+To Run storybook
+
+```
+npm run storybook
 ```
 
 To run the app

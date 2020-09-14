@@ -6,11 +6,3 @@ body {
   padding: 50px;
   text-align: center;
 }
-
-a {
-  text-decoration: none;
-}
-
-a:link {
-  color: black;
-}
