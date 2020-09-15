@@ -272,11 +272,11 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
         addHistoryChangeEvent();
         window.addEventListener('popstate', this.updateFromRouteChange);
         window.addEventListener('pushState', this.updateFromRouteChange);
-        window.addEventListener('replaceStateState', this.updateFromRouteChange);
+        window.addEventListener('replaceState', this.updateFromRouteChange);
         this.subscriptions.push(() => {
           window.removeEventListener('popstate', this.updateFromRouteChange);
           window.removeEventListener('pushState', this.updateFromRouteChange);
-          window.removeEventListener('replaceStateState', this.updateFromRouteChange);
+          window.removeEventListener('replaceState', this.updateFromRouteChange);
         });
       }
 
