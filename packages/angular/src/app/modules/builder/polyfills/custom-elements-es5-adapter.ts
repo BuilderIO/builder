@@ -22,6 +22,6 @@ if (typeof window !== 'undefined') {
       HTMLElement.prototype = ModifiedHTMLElement.prototype;
       HTMLElement.prototype.constructor = HTMLElement;
       Object.setPrototypeOf(HTMLElement, ModifiedHTMLElement);
-    } catch (e) { }
+    } catch (e) {}
   }
 }
