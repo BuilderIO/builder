@@ -16,6 +16,36 @@ function wrapInDiv(el: HTMLElement) {
   return newDiv;
 }
 
+// Credit: https://stackoverflow.com/a/25673911
+function wrapHistoryPropertyWithCustomEvent(property: 'pushState' | 'replaceState') {
+  try {
+    const anyHistory = history;
+    const originalFunction = anyHistory[property];
+    anyHistory[property] = function(this: History) {
+      var rv = originalFunction.apply(this, arguments as any);
+      var event = new CustomEvent(property, {
+        detail: {
+          arguments,
+        },
+      });
+      window.dispatchEvent(event);
+      return rv;
+    } as any;
+  } catch (err) {
+    console.error('Error wrapping history method', property, err);
+  }
+}
+
+let addedHistoryChangeEvent = false;
+function addHistoryChangeEvent() {
+  if (addedHistoryChangeEvent) {
+    return;
+  }
+  addedHistoryChangeEvent = true;
+  wrapHistoryPropertyWithCustomEvent('pushState');
+  wrapHistoryPropertyWithCustomEvent('replaceState');
+}
+
 const componentName = process.env.ANGULAR ? 'builder-component-element' : 'builder-component';
 
 if (Builder.isIframe) {
@@ -86,9 +116,15 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
         styles.replace(
           /(@font-face\s*{\s*font-family:\s*(.*?);[\s\S]+?url\((\S+)\)[\s\S]+?})/g,
           (fullMatch, fontMatch, fontName, fontUrl) => {
-            const trimmedFontUrl = fontUrl.replace(/"/g, '').replace(/'/g, '').trim();
+            const trimmedFontUrl = fontUrl
+              .replace(/"/g, '')
+              .replace(/'/g, '')
+              .trim();
 
-            const trimmedFontName = fontName.replace(/"/g, '').replace(/'/g, '').trim();
+            const trimmedFontName = fontName
+              .replace(/"/g, '')
+              .replace(/'/g, '')
+              .trim();
 
             const weight = fullMatch.match(/font-weight:\s*(\d+)/)?.[1];
 
@@ -186,11 +222,45 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
 
     connected = false;
 
+    updateFromRouteChange = () => {
+      const slot = this.getAttribute('slot');
+      builder
+        .get(name, {
+          key:
+            this.getAttribute('key') ||
+            (slot ? `slot:${slot}` : null) ||
+            (!Builder.isEditing && (this.getAttribute('entry') || name!)) ||
+            undefined,
+          ...this.options,
+        })
+        .promise()
+        .then(data => {
+          this.loadPreact(data);
+        });
+    };
+
     connectedCallback() {
       if (this.connected) {
         return;
       }
       this.connected = true;
+
+      if (
+        this.hasAttribute('reload-on-route-change') &&
+        !this.getAttribute('entry') &&
+        this.getAttribute('reload-on-route-change') !== 'false' &&
+        !Builder.isEditing
+      ) {
+        addHistoryChangeEvent();
+        window.addEventListener('popstate', this.updateFromRouteChange);
+        window.addEventListener('pushState', this.updateFromRouteChange);
+        window.addEventListener('replaceStateState', this.updateFromRouteChange);
+        this.subscriptions.push(() => {
+          window.removeEventListener('popstate', this.updateFromRouteChange);
+          window.removeEventListener('pushState', this.updateFromRouteChange);
+          window.removeEventListener('replaceStateState', this.updateFromRouteChange);
+        });
+      }
 
       if (Builder.isEditing && !location.href.includes('builder.stopPropagation=false')) {
         this.addEventListener('click', e => {
@@ -321,7 +391,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
       this.classList.add('builder-loading');
       let unsubscribed = false;
 
-      const subscription = builder
+      builder
         .get(name, {
           key:
             this.getAttribute('key') ||
@@ -332,7 +402,8 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
           ...this.options,
           prerender: true,
         })
-        .subscribe(
+        .promise()
+        .then(
           (data: any) => {
             if (unsubscribed) {
               console.warn('Unsubscribe did not work!');
@@ -359,18 +430,13 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
               }
 
               this.loadPreact(data);
-              subscription.unsubscribe();
-              unsubscribed = true;
             }
           },
           (error: any) => {
             // Server render failed, not the end of the world, load react anyway
             this.loadPreact();
-            subscription.unsubscribe();
-            unsubscribed = true;
           }
         );
-      this.subscriptions.push(() => subscription.unsubscribe());
     }
 
     findAndRunScripts() {
@@ -418,8 +484,6 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
         emailPromise = import('@builder.io/email');
       }
 
-      let unsubscribed = false;
-
       const slot = this.getAttribute('slot');
       if (
         (!this.prerender && !this.currentContent) ||
@@ -459,7 +523,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
         return;
       }
 
-      const subscription = builder
+      builder
         .get(name!, {
           key:
             this.getAttribute('key') ||
@@ -469,13 +533,9 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
           entry: data ? data.id : this.options.entry || undefined,
           prerender: false,
         })
-        .subscribe(
+        .promise()
+        .then(
           async data => {
-            if (unsubscribed) {
-              console.debug("Unsubscribe didn't work!");
-              return;
-            }
-
             const { BuilderPage } = await getReactPromise;
             await Promise.all([getWidgetsPromise, getShopifyPromise as any]);
             if (emailPromise) {
@@ -516,9 +576,6 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
               this.getAttribute('hydrate') !== 'false', // TODO: query param override builder.hydrate
               fresh
             );
-
-            subscription.unsubscribe();
-            unsubscribed = true;
 
             if (Builder.isIframe) {
               setTimeout(() => {
@@ -581,8 +638,6 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
             }
           }
         );
-
-      this.subscriptions.push(() => subscription.unsubscribe());
     };
 
     unsubscribe() {
