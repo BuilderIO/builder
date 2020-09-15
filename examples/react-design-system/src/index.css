@@ -1,5 +1,7 @@
 body {
   font-family: sans-serif;
+  padding: 0;
+  margin: 0;
 }
 
 .loading {
@@ -9,8 +11,6 @@ body {
 
 a {
   text-decoration: none;
-}
-
-a:link {
+  cursor: pointer;
   color: black;
 }

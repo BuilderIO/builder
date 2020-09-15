@@ -4,12 +4,6 @@ export const ProductsListBuilderConfig = {
   name: 'Products List',
   inputs: [
     {
-      name: 'url',
-      type: 'string',
-      advanced: true,
-      defaultValue: 'https://api.shopstyle.com/api/v2/products',
-    },
-    {
       name: 'category',
       type: 'string',
       defaultValue: 'mens',

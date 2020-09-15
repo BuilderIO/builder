@@ -8,7 +8,7 @@ import { Cart } from './Cart';
 const useStyles = makeStyles(theme => ({
   header: {
     display: 'flex',
-    padding: 10,
+    padding: 20,
   },
   link: {
     color: '#555',
@@ -30,15 +30,17 @@ export const Header = () => {
       <BuilderComponent model="announcement-bar" />
       <div className={classes.header}>
         <Link to="/collections">Shop</Link>
-        <div className={classes.logo}>SHOPAHOLIC</div>
-        <div
+        <Link to="/" className={classes.logo}>
+          SHOPAHOLIC
+        </Link>
+        <a
           className={classes.link}
           onClick={() => {
             setShowCart(!showCart);
           }}
         >
           Cart
-        </div>
+        </a>
 
         <Drawer anchor="right" open={showCart} onClose={() => setShowCart(false)}>
           <Cart />

@@ -21,9 +21,7 @@ const App = () => {
           <Route path="/collections">
             <Collection />
           </Route>
-          <Route path="/products">
-            <Product />
-          </Route>
+          <Route path="/products" component={props => <Product {...props} />} />
           <Route path="/">
             <CatchAll />
           </Route>

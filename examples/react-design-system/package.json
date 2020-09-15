@@ -16,7 +16,6 @@
   "bugs": {
     "url": "https://github.com/builderio/builder/issues"
   },
-  "homepage": "https://github.com/builderio/builder#readme",
   "main": "src/index.js",
   "dependencies": {
     "@builder.io/react": "^1.1.11-1",

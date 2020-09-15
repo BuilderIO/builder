@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
 const defaultParams = {
   abbreviatedCategoryHistogram: true,
   limit: 20,
-  cat: 'womens-clothes',
+  cat: 'womens-fashion',
   view: 'web',
   useElasticsearch: true,
   sorts: 'Popular',
@@ -25,15 +25,16 @@ const defaultParams = {
 };
 
 export const ProductsList = props => {
-  const { url, amount, category, size } = props;
+  const { amount, category, size } = props;
+  const url = 'https://api.shopstyle.com/api/v2/products';
   const [data, setData] = useState({ products: [] });
   const classes = useStyles();
   useEffect(() => {
     async function fetchProducts() {
       const qs = queryString.stringify({
         ...defaultParams,
-        limit: amount,
-        cat: category,
+        limit: amount || defaultParams.limit,
+        cat: category || defaultParams.cat,
       });
       const result = await fetch(`${url}?${qs}`).then(res => res.json());
       setData(result);
@@ -45,7 +46,7 @@ export const ProductsList = props => {
     <div className={classes.root}>
       <div className={classes.container}>
         {data.products.map(product => (
-          <Product key={product.id} sizeName={size} {...product} />
+          <Product key={product.id} sizeName={size || 'Medium'} {...product} />
         ))}
       </div>
     </div>
