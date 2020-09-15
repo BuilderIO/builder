@@ -1,0 +1,28 @@
+{
+  "name": "nextjs",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev-inspect": "env NODE_OPTIONS='--inspect' next dev",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@builder.io/react": "^1.1.28",
+    "next": "^9.5.3",
+    "prettier": "^2.0.5",
+    "react": "^16.13.0",
+    "react-dom": "^16.13.0"
+  },
+  "prettier": {
+    "tabWidth": 2,
+    "useTabs": false,
+    "semi": true,
+    "singleQuote": true,
+    "jsxSingleQuote": false,
+    "jsxBracketSameLine": true,
+    "arrowParens": "always",
+    "parser": "typescript"
+  }
+}
