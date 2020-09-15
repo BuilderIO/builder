@@ -47,7 +47,9 @@ export default function BuilderPageWrapper(props) {
 
   return (
     <Fragment>
-      <style jsx global>{css}</style>
+      <style jsx global>
+        {css}
+      </style>
       <div dangerouslySetInnerHTML={{ __html: toAmp(html) }} />
     </Fragment>
   );

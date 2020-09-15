@@ -266,5 +266,5 @@ export async function getServerSideProps({ req, res }) {
     }
   }
 
-  return { props: { builderPage: page }};
-};
+  return { props: { builderPage: page } };
+}
