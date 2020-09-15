@@ -1,4 +1,6 @@
-import Page, { getServerSideProps as getPageServerSideProps } from './[...slug]';
+import Page, {
+  getServerSideProps as getPageServerSideProps,
+} from './[...slug]';
 
 export const getServerSideProps = getPageServerSideProps;
 
