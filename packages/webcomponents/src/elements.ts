@@ -236,7 +236,6 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
     }
 
     updateFromRouteChange = () => {
-      console.log('hi');
       const name = this.modelName!;
       builder
         .get(name, {
@@ -269,15 +268,12 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
         return;
       }
 
-      console.log('yo');
       if (this.updateOnRouteChange) {
-        console.log('adding?');
         addHistoryChangeEvent();
         window.addEventListener('popstate', this.updateFromRouteChange);
         window.addEventListener('pushState', this.updateFromRouteChange);
         window.addEventListener('replaceStateState', this.updateFromRouteChange);
         this.subscriptions.push(() => {
-          console.log('removing?');
           window.removeEventListener('popstate', this.updateFromRouteChange);
           window.removeEventListener('pushState', this.updateFromRouteChange);
           window.removeEventListener('replaceStateState', this.updateFromRouteChange);
