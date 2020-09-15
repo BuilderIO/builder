@@ -1,8 +1,16 @@
 body {
   font-family: sans-serif;
+  padding: 0;
+  margin: 0;
 }
 
 .loading {
   padding: 50px;
   text-align: center;
+}
+
+a {
+  text-decoration: none;
+  cursor: pointer;
+  color: black;
 }

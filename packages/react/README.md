@@ -59,9 +59,8 @@ You can also pass down complex data like custom objects and libraries you can us
     lodash: lodash,
   }} >
 ```
-  
-Context is available in [actions and bindings](https://www.builder.io/c/docs/guides/custom-code) as `context.*`, such as `context.lodash` in the example above
 
+Context is available in [actions and bindings](https://www.builder.io/c/docs/guides/custom-code) as `context.*`, such as `context.lodash` in the example above
 
 #### Passing complex
 

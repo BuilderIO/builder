@@ -25,8 +25,7 @@ const defaultParams = {
 };
 
 export const ProductsList = props => {
-  const { amount, category, size } = props;
-  const url = 'https://api.shopstyle.com/api/v2/products';
+  const { url, amount, category, size } = props;
   const [data, setData] = useState({ products: [] });
   const classes = useStyles();
   useEffect(() => {
@@ -46,7 +45,7 @@ export const ProductsList = props => {
     <div className={classes.root}>
       <div className={classes.container}>
         {data.products.map(product => (
-          <Product key={product.id} sizeName={size || 'Medium'} {...product} />
+          <Product key={product.id} sizeName={size} {...product} />
         ))}
       </div>
     </div>

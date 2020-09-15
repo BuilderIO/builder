@@ -12,7 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import { red } from '@material-ui/core/colors';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { Link } from 'react-router-dom';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -61,46 +61,41 @@ export const Product = props => {
   };
 
   return (
-    <Link to={`/products/${props.id}`}>
-      <Card className={classes.root} style={{ width: widthMap[props.sizeName] }}>
-        <CardHeader
-          title={
-            <Typography
-              style={{ fontSize: widthMap[props.sizeName] / 15 }}
-              className={classes.title}
-            >
-              {brandedName}
-            </Typography>
-          }
-          subheader={priceLabel}
-        />
-        <CardMedia
-          style={{ height: widthMap[props.sizeName] * 1.2 }}
-          className={classes.media}
-          image={image.sizes.Best.url}
-          title={brandedName}
-        />
-        <CardActions disableSpacing>
-          <IconButton aria-label="add to favorites">
-            <FavoriteIcon />
-          </IconButton>
-          <IconButton
-            className={clsx(classes.expand, {
-              [classes.expandOpen]: expanded,
-            })}
-            onClick={handleExpandClick}
-            aria-expanded={expanded}
-            aria-label="show more"
-          >
-            <ExpandMoreIcon />
-          </IconButton>
-        </CardActions>
-        <Collapse in={expanded} timeout="auto" unmountOnExit>
-          <CardContent>
-            <Typography paragraph>{description}</Typography>
-          </CardContent>
-        </Collapse>
-      </Card>
-    </Link>
+    <Card className={classes.root} style={{ width: widthMap[props.sizeName] }}>
+      <CardHeader
+        title={
+          <Typography style={{ fontSize: widthMap[props.sizeName] / 15 }} className={classes.title}>
+            {brandedName}
+          </Typography>
+        }
+        subheader={priceLabel}
+      />
+      <CardMedia
+        style={{ height: widthMap[props.sizeName] * 1.2 }}
+        className={classes.media}
+        image={image.sizes.Best.url}
+        title={brandedName}
+      />
+      <CardActions disableSpacing>
+        <IconButton aria-label="add to favorites">
+          <FavoriteIcon />
+        </IconButton>
+        <IconButton
+          className={clsx(classes.expand, {
+            [classes.expandOpen]: expanded,
+          })}
+          onClick={handleExpandClick}
+          aria-expanded={expanded}
+          aria-label="show more"
+        >
+          <ExpandMoreIcon />
+        </IconButton>
+      </CardActions>
+      <Collapse in={expanded} timeout="auto" unmountOnExit>
+        <CardContent>
+          <Typography paragraph>{description}</Typography>
+        </CardContent>
+      </Collapse>
+    </Card>
   );
 };

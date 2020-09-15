@@ -1,8 +1,8 @@
 {
-  "name": "@builder.io/example-design-system",
+  "name": "@builder.io/example-storybook",
   "private": true,
   "version": "0.0.1",
-  "description": "Builder.io example design system",
+  "description": "Builder.io storybook example",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/builderio/builder.git"
@@ -16,6 +16,7 @@
   "bugs": {
     "url": "https://github.com/builderio/builder/issues"
   },
+  "homepage": "https://github.com/builderio/builder#readme",
   "main": "src/index.js",
   "dependencies": {
     "@builder.io/react": "^1.1.11-1",
@@ -34,13 +35,21 @@
     "slick-carousel": "^1.8.1"
   },
   "devDependencies": {
+    "@builder.io/storybook": "0.0.2",
+    "@storybook/addon-actions": "^5.3.14",
+    "@storybook/addon-links": "^5.3.14",
+    "@storybook/addons": "^5.3.14",
+    "@storybook/preset-create-react-app": "^1.5.2",
+    "@storybook/react": "^5.3.14",
     "typescript": "3.3.3"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "storybook": "start-storybook -p 9009 -s public",
+    "build-storybook": "build-storybook -s public"
   },
   "browserslist": [
     ">0.2%",
