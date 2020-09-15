@@ -205,6 +205,15 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
       this._options = options;
     }
 
+    get updateOnRouteChange() {
+      return Boolean(
+        this.hasAttribute('reload-on-route-change') &&
+          !this.getAttribute('entry') &&
+          this.getAttribute('reload-on-route-change') !== 'false' &&
+          !Builder.isEditing
+      );
+    }
+
     private getOptionsFromAttribute() {
       const options = this.getAttribute('options');
       if (options && typeof options === 'string' && options.trim()[0] === '{') {
@@ -222,15 +231,22 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
 
     connected = false;
 
-    updateFromRouteChange = () => {
+    get key() {
       const slot = this.getAttribute('slot');
+      return (
+        this.getAttribute('key') ||
+        (slot ? `slot:${slot}` : null) ||
+        (!Builder.isEditing && this.getAttribute('entry')) ||
+        (this.updateOnRouteChange ? `${name}:${location.pathname}` : undefined)
+      );
+    }
+
+    updateFromRouteChange = () => {
+      console.log('hi');
+      const name = this.modelName!;
       builder
         .get(name, {
-          key:
-            this.getAttribute('key') ||
-            (slot ? `slot:${slot}` : null) ||
-            (!Builder.isEditing && (this.getAttribute('entry') || name!)) ||
-            undefined,
+          key: this.key,
           ...this.options,
         })
         .promise()
@@ -245,23 +261,6 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
       }
       this.connected = true;
 
-      if (
-        this.hasAttribute('reload-on-route-change') &&
-        !this.getAttribute('entry') &&
-        this.getAttribute('reload-on-route-change') !== 'false' &&
-        !Builder.isEditing
-      ) {
-        addHistoryChangeEvent();
-        window.addEventListener('popstate', this.updateFromRouteChange);
-        window.addEventListener('pushState', this.updateFromRouteChange);
-        window.addEventListener('replaceStateState', this.updateFromRouteChange);
-        this.subscriptions.push(() => {
-          window.removeEventListener('popstate', this.updateFromRouteChange);
-          window.removeEventListener('pushState', this.updateFromRouteChange);
-          window.removeEventListener('replaceStateState', this.updateFromRouteChange);
-        });
-      }
-
       if (Builder.isEditing && !location.href.includes('builder.stopPropagation=false')) {
         this.addEventListener('click', e => {
           e.stopPropagation();
@@ -274,6 +273,21 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
         !(Builder.isEditing || Builder.isPreviewing)
       ) {
         return;
+      }
+
+      console.log('yo');
+      if (this.updateOnRouteChange) {
+        console.log('adding?');
+        addHistoryChangeEvent();
+        window.addEventListener('popstate', this.updateFromRouteChange);
+        window.addEventListener('pushState', this.updateFromRouteChange);
+        window.addEventListener('replaceStateState', this.updateFromRouteChange);
+        this.subscriptions.push(() => {
+          console.log('removing?');
+          window.removeEventListener('popstate', this.updateFromRouteChange);
+          window.removeEventListener('pushState', this.updateFromRouteChange);
+          window.removeEventListener('replaceStateState', this.updateFromRouteChange);
+        });
       }
 
       const prerenderAttr = this.getAttribute('prerender');
@@ -290,7 +304,6 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
       );
 
       this.getOptionsFromAttribute();
-      this.addEventListener('remove', () => this.unsubscribe());
       this.getContent();
     }
 
@@ -308,9 +321,14 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
       this.classList.add('builder-loaded');
     }
 
+    get modelName() {
+      return this.getAttribute('name') || this.getAttribute('model');
+    }
+
     // When loaded from the server
     get currentContent() {
-      const name = this.getAttribute('name') || this.getAttribute('model');
+      const name = this.modelName;
+
       // TODO: get this to work with nested blocks
       const existing = this.querySelector(`[data-builder-component="${name}"]`);
       if (existing) {
@@ -374,7 +392,6 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
         return;
       }
 
-      this.unsubscribe();
       if (!name) {
         return false;
       }
@@ -396,15 +413,15 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
           key:
             this.getAttribute('key') ||
             (slot ? `slot:${slot}` : null) ||
-            (!Builder.isEditing && (this.getAttribute('entry') || name!)) ||
-            undefined,
+            (!Builder.isEditing && this.getAttribute('entry')) ||
+            (this.updateOnRouteChange ? `${name}:${location.pathname}` : undefined),
           entry: entry || undefined,
           ...this.options,
           prerender: true,
         })
         .promise()
         .then(
-          (data: any) => {
+          data => {
             if (unsubscribed) {
               console.warn('Unsubscribe did not work!');
               return;
@@ -417,9 +434,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
               this.dispatchEvent(loadEvent);
               return;
             }
-            if (this.classList.contains('builder-editor-injected')) {
-              this.unsubscribe();
-            } else {
+            if (!this.classList.contains('builder-editor-injected')) {
               this.data = data;
               if (data.data && data.data.html) {
                 this.innerHTML = data.data.html;
@@ -461,7 +476,6 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
     loadPreact = async (data?: any, fresh = false) => {
       const entry = data?.id || this.getAttribute('entry');
 
-      this.unsubscribe();
       const name =
         this.getAttribute('name') || this.getAttribute('model') || this.getAttribute('model-name');
 
@@ -485,9 +499,12 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
       }
 
       const slot = this.getAttribute('slot');
+
+      const hasFullData = Boolean(data?.data?.blocks);
       if (
         (!this.prerender && !this.currentContent) ||
-        (Builder.isIframe && (!builder.apiKey || builder.apiKey === 'DEMO'))
+        (Builder.isIframe && (!builder.apiKey || builder.apiKey === 'DEMO')) ||
+        hasFullData
       ) {
         const { BuilderPage } = await getReactPromise;
         await Promise.all([getWidgetsPromise, getShopifyPromise as any]);
@@ -511,11 +528,11 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
               ((this.options as any) || {}).emailMode || this.getAttribute('email-mode') === 'true',
             options: {
               ...this.options,
-              key:
-                this.getAttribute('key') ||
-                (slot ? `slot:${slot}` : null) ||
-                (Builder.isEditing ? name! : this.getAttribute('entry') || name! || undefined),
+              key: this.key,
             },
+            ...(hasFullData && {
+              content: data,
+            }),
           },
           this.getAttribute('hydrate') !== 'false',
           fresh
@@ -528,7 +545,10 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
           key:
             this.getAttribute('key') ||
             (slot ? `slot:${slot}` : null) ||
-            (Builder.isEditing ? name! : this.getAttribute('entry') || name!),
+            (Builder.isEditing
+              ? name!
+              : this.getAttribute('entry') ||
+                (this.updateOnRouteChange ? `${name}:${location.pathname}` : undefined)),
           ...this.options,
           entry: data ? data.id : this.options.entry || undefined,
           prerender: false,
@@ -569,7 +589,10 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
                   key:
                     this.getAttribute('key') ||
                     (slot ? `slot:${slot}` : null) ||
-                    (Builder.isEditing ? name! : (data && data.id) || undefined),
+                    (Builder.isEditing
+                      ? name!
+                      : (data && data.id) ||
+                        (this.updateOnRouteChange ? `${name}:${location.pathname}` : undefined)),
                   ...this.options,
                 },
               },
@@ -620,7 +643,11 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
                     key:
                       this.getAttribute('key') ||
                       (slot ? `slot:${slot}` : null) ||
-                      (Builder.isEditing ? name! : (data && data.id) || undefined),
+                      (Builder.isEditing
+                        ? name!
+                        : (data && data.id) ||
+                          (this.updateOnRouteChange ? `${name}:${location.pathname}` : undefined)),
+
                     ...this.options,
                     // TODO: specify variation?
                   },
