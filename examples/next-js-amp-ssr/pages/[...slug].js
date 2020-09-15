@@ -8,7 +8,7 @@ import { builder } from '@builder.io/react';
 
 // This is a thin wrapper that does some content post-processing
 // when server-side rendering and AMP content is requested.
-// It's API is the same as Builder.io's `BuilderPage` component.
+// Its API is the same as Builder.io's `BuilderPage` component.
 import BuilderPageWrapper from '../components/BuilderPageWrapper';
 
 // This instructs Next.js to check for the `?amp=1` query string
