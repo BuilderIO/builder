@@ -87,12 +87,12 @@ export default let BuilderPage = () => {
 | [React](#getting-started-with-react)                                     |                            Stable                             |
 | [Next.js](examples/next-js)                                              |                            Stable                             |
 | [Gatsby](examples/gatsby)                                                |                            Stable                             |
-| [Shopify / Liquid](packages/shopify)                                     |                             Beta                              |
+| [Shopify / Liquid](https://apps.shopify.com/builder-2)                   |                            Stable                             |
 | [Angular](packages/angular)                                              |                            Stable                             |
-| [React native](packages/react-native)                                    |                             Beta                              |
-| Email                                                                    |                            Stable                             |
-| AMP                                                                      |                            Stable                             |
+| [Email](packages/email)                                                  |                            Stable                             |
+| [AMP](examples/next-js-amp)                                              |                            Stable                             |
 | Preact                                                                   |                            Stable                             |
+| [React native](packages/react-native)                                    |                            Alpha                              |
 | **Everyting else** <br/> Go, Php, Java, Vue, Ruby/Rails, Vanilla JS, etc | Use our [HTML API](https://builder.io/c/docs/getting-started) |
 
 Want suppoert for something not listed here or for us to priotize something coming soon? Drop us an issue and let us know! We prioritize based on the community's needs and interests.
