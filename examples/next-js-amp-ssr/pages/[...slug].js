@@ -16,8 +16,6 @@ export const config = { amp: 'hybrid' };
 
 // Set this in your environment or in an `.env` file
 builder.init(process.env.REACT_APP_BUILDER_API_KEY);
-builder.env = 'dev';
-console.log(process.env.REACT_APP_BUILDER_API_KEY);
 
 export default function Page({ builderPage }) {
   const isAmp = useAmp();
@@ -247,16 +245,11 @@ export async function getServerSideProps({ req, res }) {
   // `amp-page` models for AMP content gives you real-time validation and more
   // within the Builder.io editor.
   const modelName = ampMode ? 'amp-page' : 'page';
-  // const modelName = 'page';
-
-  // req.url = url.pathname;
-  console.log('ampMode', ampMode, modelName, url.pathname, req.url);
 
   const page = await builder
     .get(modelName, {
       req,
       res,
-      // url: url.pathname,
       format: ampMode ? 'amp' : 'html',
     })
     .promise();
@@ -275,32 +268,3 @@ export async function getServerSideProps({ req, res }) {
 
   return { props: { builderPage: page }};
 };
-
-// Page.getInitialProps = async function getInitialProps({ req, res, asPath }) {
-//   // This simply checks if we should fetch/render content in AMP mode.
-//   // The actual check may vary for different frameworks or URL schemes;
-//   // this is how Next.js does it:
-//   const url = parseUrl(req.url, true);
-//   const ampMode = !!JSON.parse(url.query['amp'] || '0');
-
-//   // Strictly speaking, we don't really need to create `amp-page` content for
-//   // this to work, `page` content models will work just fine; however using
-//   // `amp-page` models for AMP content gives you real-time validation and more
-//   // within the Builder.io editor.
-//   // const modelName = ampMode ? 'amp-page' : 'page';
-//   const modelName = 'page';
-
-//   req.url = url.pathname;
-//   console.log('ampMode', ampMode, modelName, asPath, url.pathname, req.url);
-
-//   const page = await builder
-//     .get(modelName, {
-//       req,
-//       res,
-//       url: url.pathname,
-//       format: ampMode ? 'amp' : 'html',
-//     })
-//     .promise();
-
-//   return { builderPage: page };
-// };
