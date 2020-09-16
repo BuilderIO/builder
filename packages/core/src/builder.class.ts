@@ -218,6 +218,8 @@ export interface GetContentOptions {
   noWrap?: true;
   rev?: string;
   static?: boolean;
+  // Additional query params of the Content API to send
+  options?: { [key: string]: any };
 }
 
 export type Class = {
@@ -1780,6 +1782,7 @@ export class Builder {
       // TODO: way to force a request to be in a separate queue. or just lower queue limit to be 1 by default
       omit: queue[0].omit || 'meta.componentsUsed',
       apiKey: this.apiKey,
+      ...queue[0].options,
     };
     if (queue[0].fields) {
       queryParams.fields = queue[0].fields;
