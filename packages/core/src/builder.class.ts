@@ -219,7 +219,7 @@ export interface GetContentOptions {
   rev?: string;
   static?: boolean;
   // Additional query params of the Content API to send
-  options?: { [key: string]: string };
+  options?: { [key: string]: any };
 }
 
 export type Class = {
