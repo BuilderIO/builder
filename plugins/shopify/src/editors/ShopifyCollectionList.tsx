@@ -18,7 +18,7 @@ import {
 } from '@material-ui/core';
 import { Close } from '@material-ui/icons';
 import { Builder } from '@builder.io/react';
-import * as appState from '@builder.io/app-context';
+import appState from '@builder.io/app-context';
 
 export type PickShopifyCollectionsListProps = {
   value?: string[];
