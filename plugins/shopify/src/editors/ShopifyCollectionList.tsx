@@ -1,3 +1,5 @@
+/** @jsx jsx */
+import { jsx } from '@emotion/core';
 import React from 'react';
 import { useObserver, useLocalStore } from 'mobx-react';
 import {
@@ -15,9 +17,8 @@ import {
   Tooltip,
 } from '@material-ui/core';
 import { Close } from '@material-ui/icons';
-import { Builder } from '@builder.io/sdk';
-
-const appState = require('@builder.io/app-context');
+import { Builder } from '@builder.io/react';
+import * as appState from '@builder.io/app-context';
 
 export type PickShopifyCollectionsListProps = {
   value?: string[];

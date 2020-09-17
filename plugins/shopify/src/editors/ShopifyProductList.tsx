@@ -1,3 +1,5 @@
+/** @jsx jsx */
+import { jsx } from '@emotion/core';
 import React from 'react';
 import { useObserver, useLocalStore } from 'mobx-react';
 import {
@@ -7,8 +9,8 @@ import {
 } from './ShopifyProductPicker';
 import { CircularProgress, Button, Typography, Tooltip, IconButton } from '@material-ui/core';
 import { Close } from '@material-ui/icons';
-import { Builder } from '@builder.io/sdk';
-const appState = require('@builder.io/app-context');
+import { Builder } from '@builder.io/react';
+import appState from '@builder.io/app-context';
 
 export type PickShopifyProductsListProps = {
   value?: string[];
