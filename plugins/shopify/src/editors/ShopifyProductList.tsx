@@ -36,7 +36,7 @@ const ProductPreviewById = (props: { id: string } & Partial<ShopifyProductPrevie
 export function PickShopifyProductsList(props: PickShopifyProductsListProps) {
   return useObserver(() => {
     return (
-      <>
+      <React.Fragment>
         <Typography variant="caption" css={{ paddingBottom: 15, textAlign: 'center' }}>
           Choose products
         </Typography>
@@ -103,7 +103,7 @@ export function PickShopifyProductsList(props: PickShopifyProductsListProps) {
         >
           + Product
         </Button>
-      </>
+      </React.Fragment>
     );
   });
 }
@@ -111,7 +111,7 @@ export function PickShopifyProductsList(props: PickShopifyProductsListProps) {
 export function PickShopifyProductsButton(props: PickShopifyProductsListProps) {
   return useObserver(() => {
     return (
-      <>
+      <React.Fragment>
         <Button
           onClick={() => {
             appState.globalState.openDialog(
@@ -125,7 +125,7 @@ export function PickShopifyProductsButton(props: PickShopifyProductsListProps) {
         >
           {props.value?.length || 0} products
         </Button>
-      </>
+      </React.Fragment>
     );
   });
 }

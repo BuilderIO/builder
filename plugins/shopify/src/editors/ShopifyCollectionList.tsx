@@ -48,7 +48,7 @@ export function PickShopifyCollectionsList(props: PickShopifyCollectionsListProp
 
   return useObserver(() => {
     return (
-      <>
+      <React.Fragment>
         <Typography variant="caption" css={{ paddingBottom: 15, textAlign: 'center' }}>
           Choose collections
         </Typography>
@@ -115,7 +115,7 @@ export function PickShopifyCollectionsList(props: PickShopifyCollectionsListProp
         >
           + Collection
         </Button>
-      </>
+      </React.Fragment>
     );
   });
 }
@@ -123,7 +123,7 @@ export function PickShopifyCollectionsList(props: PickShopifyCollectionsListProp
 export function PickShopifyCollectionsButton(props: PickShopifyCollectionsListProps) {
   return useObserver(() => {
     return (
-      <>
+      <React.Fragment>
         <Button
           onClick={() => {
             appState.globalState.openDialog(
@@ -137,7 +137,7 @@ export function PickShopifyCollectionsButton(props: PickShopifyCollectionsListPr
         >
           {props.value?.length || 0} collections
         </Button>
-      </>
+      </React.Fragment>
     );
   });
 }
