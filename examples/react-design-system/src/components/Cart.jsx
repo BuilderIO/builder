@@ -5,6 +5,7 @@ import { BuilderComponent } from '@builder.io/react';
 const useStyles = makeStyles(theme => ({
   cart: {
     padding: 20,
+    width: 300,
   },
   noItemsMessage: {
     padding: 20,
