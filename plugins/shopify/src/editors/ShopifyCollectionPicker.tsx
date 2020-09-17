@@ -28,9 +28,9 @@ type ShopifyCollection = any; /* TODO */
 
 const apiRoot = 'https://builder.io';
 
-interface ShopifyCollectionPickerProps extends CustomReactEditorProps<BuilderRequest> {}
+interface ShopifyCollectionPickerProps extends CustomReactEditorProps<BuilderRequest | string> {}
 
-interface ShopifyCollectionPreviewCellProps {
+export interface ShopifyCollectionPreviewCellProps {
   collection: ShopifyCollection;
   button?: boolean;
   selected?: boolean;
@@ -200,19 +200,23 @@ export class ShopifyCollectionPicker extends SafeComponent<ShopifyCollectionPick
     // setting a Request object as the value, Builder.io will fetch the given URL
     // and populate that as the `data` property on this object in the return repsonse
     // from the API
-    return {
-      '@type': '@builder.io/core:Request',
-      request: {
-        url: `${apiRoot}/api/v1/shopify/collections/{{this.options.collection}}.json?apiKey=${this.props.context.user.apiKey}`,
-      },
-      options: {
-        collection: collectionId,
-      },
-    } as BuilderRequest;
+    return this.props.field.isTargeting
+      ? collectionId
+      : ({
+          '@type': '@builder.io/core:Request',
+          request: {
+            url: `${apiRoot}/api/v1/shopify/collections/{{this.options.collection}}.json?apiKey=${this.props.context.user.apiKey}`,
+          },
+          options: {
+            collection: collectionId,
+          },
+        } as BuilderRequest);
   }
 
   get collectionId() {
-    return this.props.value?.options?.get('collection') || '';
+    return typeof this.props.value === 'string'
+      ? this.props.value
+      : this.props.value?.options?.get('collection') || '';
   }
 
   set collectionId(value) {

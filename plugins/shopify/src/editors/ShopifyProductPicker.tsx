@@ -27,9 +27,9 @@ import { SetShopifyKeysMessage } from '../components/set-shopify-keys-message';
 
 const apiRoot = 'https://qa.builder.io'; // 'https://builder.io'
 
-interface ShopifyProductPickerProps extends CustomReactEditorProps<BuilderRequest> {}
+interface ShopifyProductPickerProps extends CustomReactEditorProps<BuilderRequest | string> {}
 
-interface ShopifyProductPreviewCellProps {
+export interface ShopifyProductPreviewCellProps {
   product: ShopifyProduct;
   button?: boolean;
   selected?: boolean;
@@ -197,7 +197,9 @@ export class ShopifyProductPicker extends SafeComponent<ShopifyProductPickerProp
   }
 
   get productId() {
-    return this.props.value?.options?.get('product') || '';
+    return typeof this.props.value === 'string'
+      ? this.props.value
+      : this.props.value?.options?.get('product') || '';
   }
 
   get pluginSettings() {
@@ -224,7 +226,11 @@ export class ShopifyProductPicker extends SafeComponent<ShopifyProductPickerProp
   }
 
   set productId(value) {
-    this.props.onChange(this.getRequestObject(value));
+    if (this.props.field.isTargeting) {
+      this.props.onChange(value);
+    } else {
+      this.props.onChange(this.getRequestObject(value));
+    }
   }
 
   async getProduct(id: string) {

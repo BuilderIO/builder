@@ -3,6 +3,7 @@ import './builder-settings';
 import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import '@builder.io/widgets';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
