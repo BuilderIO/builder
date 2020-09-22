@@ -116,7 +116,7 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
     } else if (this.props.inline && this.options?.initialContent?.length) {
       const contentData = this.options.initialContent[0];
       // TODO: intersectionobserver like in subscribetocontent - reuse the logic
-      this.builder.trackImpression(contentData.id, this.renderedVairantId, {
+      this.builder.trackImpression(contentData.id, this.renderedVairantId, undefined, {
         content: contentData,
       });
     }
@@ -150,9 +150,14 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
                         entries.forEach(entry => {
                           // In view
                           if (entry.intersectionRatio > 0 && !this.trackedImpression) {
-                            this.builder.trackImpression(match.id!, this.renderedVairantId, {
-                              content: this.data,
-                            }),
+                            this.builder.trackImpression(
+                              match.id!,
+                              this.renderedVairantId,
+                              undefined,
+                              {
+                                content: this.data,
+                              }
+                            ),
                               { content: this.data };
                             this.trackedImpression = true;
                             if (this.ref) {
@@ -171,7 +176,7 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
                 }
                 if (!addedObserver) {
                   this.trackedImpression = true;
-                  this.builder.trackImpression(match.id!, this.renderedVairantId, {
+                  this.builder.trackImpression(match.id!, this.renderedVairantId, undefined, {
                     content: match,
                   });
                 }

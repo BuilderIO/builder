@@ -50,7 +50,9 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
               // TODO: autoTrack
               if (builder.autoTrack) {
                 this.trackedImpression = true;
-                builder.trackImpression(match.id!, (match as any).variationId, { content: match });
+                builder.trackImpression(match.id!, (match as any).variationId, undefined, {
+                  content: match,
+                });
               }
               this.firstLoad = false;
             }
