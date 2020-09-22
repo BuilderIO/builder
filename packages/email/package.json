@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/email",
-  "version": "1.2.24",
+  "version": "1.2.25-alpha.0",
   "description": "",
   "keywords": [],
   "main": "dist/builder-email.cjs.js",
@@ -120,7 +120,7 @@
     "validate-commit-msg": "^2.12.2"
   },
   "dependencies": {
-    "@builder.io/react": "^1.1.29",
+    "@builder.io/react": "^1.1.30-alpha.0",
     "@builder.io/sdk": "^1.1.18",
     "lodash-es": "^4.17.10",
     "react": "^16.4.1",
