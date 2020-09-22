@@ -107,7 +107,7 @@ const createPagesAsync = async (config, createPage, graphql, models, offsets) =>
             (
               model,
               index
-            ) => `${model}(limit: ${config.limit}, offset: ${offsets[index]}, options: { cachebust: true }) {
+            ) => `${model}(limit: ${config.limit}, offset: ${offsets[index]}, options: { cacheSeconds: 2, staleCacheSeconds: 2 }) {
             content
           }`
           )
