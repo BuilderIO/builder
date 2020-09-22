@@ -121,7 +121,9 @@ export class BuilderSimpleComponent extends React.Component<BuilderSimpleCompone
           });
           if (builder.canTrack) {
             // TODO: track unique vs not as well
-            builder.trackImpression(data.id, data.testVariationId || data.id, { content: data });
+            builder.trackImpression(data.id, data.testVariationId || data.id, undefined, {
+              content: data,
+            });
           }
           if (data.data && data.data.html) {
             if (this.props.onLoad) {

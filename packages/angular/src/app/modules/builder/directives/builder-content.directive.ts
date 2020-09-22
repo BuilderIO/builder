@@ -316,7 +316,9 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
             viewRef.context.$implicit = match.data;
             // viewRef.context.results = result.map(item => ({ ...item.data, $id: item.id }));
             if (!hydrate && this.builder.autoTrack) {
-              this.builder.trackImpression(match.id, match.variationId, { content: match });
+              this.builder.trackImpression(match.id, match.variationId, undefined, {
+                content: match,
+              });
             }
           }
           if (!viewRef.destroyed) {
