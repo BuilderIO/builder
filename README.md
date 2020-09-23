@@ -89,6 +89,7 @@ export default let BuilderPage = () => {
 | [Gatsby](examples/gatsby)                                                |                            Stable                             |
 | [Shopify / Liquid](https://apps.shopify.com/builder-2)                   |                            Stable                             |
 | [Angular](packages/angular)                                              |                            Stable                             |
+| [Webcomponents](packages/webcomponents) (for any framework/stack)        |                            Stable                             |
 | [Email](packages/email)                                                  |                            Stable                             |
 | [AMP](examples/next-js-amp)                                              |                            Stable                             |
 | Preact                                                                   |                            Stable                             |
