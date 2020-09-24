@@ -122,16 +122,22 @@ const createPagesAsync = async (config, createPage, graphql, models, offsets) =>
       fs.existsSync(component),
       `@builder.io/gatsby requires a valid template path for each model`
     );
-    const entries = result.data[config.fieldName][modelName];
+    let entries = result.data[config.fieldName][modelName];
     offsets[index] = offsets[index] + entries.length;
     if (entries.length === config.limit) {
       hasMore = true;
+    }
+    if (config.filter) {
+      entries = entries.filter(config.filter);
     }
     entries.forEach(entry => {
       if (entry.content.data.url && entry.content.published === `published`) {
         createPage({
           path: entry.content.data.url,
           component,
+          ...(config.globalContext && {
+            context: config.globalContext,
+          })
         });
       }
     });
