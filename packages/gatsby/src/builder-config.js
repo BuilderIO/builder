@@ -8,6 +8,8 @@ module.exports.defaultOptions = {
   baseURL: `https://cdn.builder.io/api/v1/graphql`,
   overrideDev404: true,
   // custom404Dev: 'path to custom 404'
+  // globalContext: { store: process.env.STORE_TOKEN } // helpful in multi stores repo
+  // filter: (entry) => entry.content.data.store === process.env.STORE_TOKEN // helpful in multi-store builder organization
 };
 
 module.exports.getGQLOptions = options => {
