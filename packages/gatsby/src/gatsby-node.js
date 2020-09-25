@@ -137,7 +137,7 @@ const createPagesAsync = async (config, createPage, graphql, models, offsets) =>
           component,
           ...(config.globalContext && {
             context: config.globalContext,
-          })
+          }),
         });
       }
     });
