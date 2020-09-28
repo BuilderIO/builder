@@ -23,7 +23,7 @@ function datePlusMinutes(minutes = 30) {
 
 if (!_window[TRACKED_KEY]) {
   const apiKey =
-    getQueryParam((document.currentScript as HTMLScriptElement).src || '', 'apiKey') ||
+    getQueryParam((document.currentScript as HTMLScriptElement)?.src || '', 'apiKey') ||
     builder.apiKey;
 
   if (apiKey && !builder.apiKey) {
@@ -33,7 +33,7 @@ if (!_window[TRACKED_KEY]) {
   // Allow passing a session ID to the tracking script to support cross domain converison tracking
   // AKA: <script src="https://cdn.builder.io/js/shopify/track?apiKey=YOUR_KEY&sessionId={{checkout.attributes._builderSessionId}}">
   const sessionIdParam = getQueryParam(
-    (document.currentScript as HTMLScriptElement).src || '',
+    (document.currentScript as HTMLScriptElement)?.src || '',
     'sessionId'
   );
   if (sessionIdParam) {
