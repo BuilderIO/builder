@@ -688,7 +688,7 @@ export class Builder {
     this.processEventsQueue();
     // Extend the session cookie
     this.setCookie(sessionStorageKey, this.sessionId, datePlusMinutes(30));
-  }, 100);
+  }, 5);
 
   private processEventsQueue() {
     if (!this.eventsQueue.length) {
