@@ -1501,7 +1501,8 @@ export class Builder {
     // in ssr mode
     if (this.request) {
       parsedLocation = parse(this.request.url);
-    } else if (typeof location === 'object') {  // in the browser
+    } else if (typeof location === 'object') {
+      // in the browser
       parsedLocation = parse(location.href);
     }
 
@@ -2063,7 +2064,7 @@ export class Builder {
   }
 
   setCookie(name: string, value: any, expires?: Date) {
-    if (this.cookies) {
+    if (this.cookies && !(Builder.isServer && Builder.isStatic)) {
       return this.cookies.set(name, value, {
         expires,
         secure: this.getLocation().protocol === 'https:',
