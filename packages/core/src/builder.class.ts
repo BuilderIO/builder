@@ -1501,10 +1501,7 @@ export class Builder {
     // in ssr mode
     if (this.request) {
       parsedLocation = parse(this.request.url);
-    }
-
-    // in the browser
-    if (typeof location === 'object') {
+    } else if (typeof location === 'object') {  // in the browser
       parsedLocation = parse(location.href);
     }
 
