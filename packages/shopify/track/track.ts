@@ -30,6 +30,16 @@ if (!_window[TRACKED_KEY]) {
     builder.apiKey = apiKey;
   }
 
+  // Allow passing a session ID to the tracking script to support cross domain converison tracking
+  // AKA: <script src="https://cdn.builder.io/js/shopify/track?apiKey=YOUR_KEY&sessionId={{checkout.attributes._builderSessionId}}">
+  const sessionIdParam = getQueryParam(
+    (document.currentScript as HTMLScriptElement).src || '',
+    'sessionId'
+  );
+  if (sessionIdParam) {
+    builder.sessionId = sessionIdParam;
+  }
+
   builder.track('pageview');
   _window[TRACKED_KEY] = true;
 
