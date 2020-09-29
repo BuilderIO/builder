@@ -2106,7 +2106,7 @@ export class Builder {
           options.key ||
           // Make the key include all options so we don't reuse cache for the same conent fetched
           // with different options
-          (Builder.isBrowser && hash(omit(options, 'initialContent', 'req', 'req'))) ||
+          (Builder.isBrowser && hash(omit(options, 'initialContent', 'req', 'res'))) ||
           undefined,
       })
       .promise();
