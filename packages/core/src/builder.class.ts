@@ -15,6 +15,7 @@ import { getTopLevelDomain } from './functions/get-top-level-domain';
 import serverOnlyRequire from './functions/server-only-require.function';
 import { BuilderContent } from './types/content';
 import { uuid } from './functions/uuid';
+import hash from 'hash-sum';
 
 export type Url = any;
 
@@ -2101,6 +2102,12 @@ export class Builder {
       .getContent(modelName, {
         limit: 30,
         ...options,
+        key:
+          options.key ||
+          // Make the key include all options so we don't reuse cache for the same conent fetched
+          // with different options
+          (Builder.isBrowser && hash(omit(options, 'initialContent', 'req', 'res'))) ||
+          undefined,
       })
       .promise();
   }
