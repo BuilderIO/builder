@@ -15,7 +15,7 @@ import { getTopLevelDomain } from './functions/get-top-level-domain';
 import serverOnlyRequire from './functions/server-only-require.function';
 import { BuilderContent } from './types/content';
 import { uuid } from './functions/uuid';
-const hash = require('hash-sum');
+import hash from 'hash-sum';
 
 export type Url = any;
 
