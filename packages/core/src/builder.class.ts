@@ -1679,13 +1679,9 @@ export class Builder {
       }
 
       this.getContentQueue.push({ ...options, model: modelName, key });
-      if (this.getContentQueue && this.getContentQueue.length >= this.contentPerRequest) {
+      nextTick(() => {
         this.flushGetContentQueue();
-      } else {
-        nextTick(() => {
-          this.flushGetContentQueue();
-        });
-      }
+      });
     }
 
     const observable = new BehaviorSubject<BuilderContent[]>(null as any);
