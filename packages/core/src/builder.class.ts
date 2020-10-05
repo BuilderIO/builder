@@ -473,10 +473,8 @@ export class Builder {
         '*'
       );
       const { host } = location;
-      const isAllowed =
-        this.trustedHosts.findIndex(allowedHost => host.indexOf(allowedHost) > -1) > -1;
 
-      if (!isAllowed) {
+      if (!Builder.isTrusted(host)) {
         console.error(
           'Builder.registerEditor() called in the wrong environment! You cannot load custom editors from your app, they must be loaded through the Builder.io app itself. Follow the readme here for more details: https://github.com/builderio/builder/tree/master/plugins/cloudinary or contact chat us in our Spectrum community for help: https://spectrum.chat/builder'
         );
@@ -495,6 +493,10 @@ export class Builder {
 
   static registerTrustedHost(host: string) {
     this.trustedHosts.push(host);
+  }
+
+  static isTrusted(host: string) {
+    return this.trustedHosts.findIndex(allowedHost => host.indexOf(allowedHost) > -1) > -1;
   }
 
   static runAction(action: Action | string) {
@@ -1271,11 +1273,8 @@ export class Builder {
         const url = parse(event.origin);
         const isRestricted =
           ['builder.register', 'builder.registerComponent'].indexOf(event.data?.type) === -1;
-        const isAllowed =
-          url.hostname &&
-          Builder.trustedHosts.findIndex(allowedHost => url.hostname.indexOf(allowedHost) > -1) >
-            -1;
-        if (isRestricted && !isAllowed) {
+        const isTrusted = url.hostname && Builder.isTrusted(url.hostname);
+        if (isRestricted && !isTrusted) {
           return;
         }
 
