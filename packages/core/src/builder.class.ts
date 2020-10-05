@@ -422,7 +422,7 @@ export class Builder {
   authToken = '';
 
   static editors: any[] = [];
-  static trustedHosts: string[] = ['builder.io', 'localhost:1234'];
+  static trustedHosts: string[] = ['builder.io', 'localhost'];
   static plugins: any[] = [];
 
   static actions: Action[] = [];
