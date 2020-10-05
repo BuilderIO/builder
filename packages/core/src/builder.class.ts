@@ -498,7 +498,7 @@ export class Builder {
   static isTrustedHost(hostname: string) {
     return (
       this.trustedHosts.findIndex(
-        allowedHost => allowedHost === hostname || hostname.endsWith(`.${allowedHost}`)
+        trustedHost => trustedHost === hostname || hostname.endsWith(`.${trustedHost}`)
       ) > -1
     );
   }
