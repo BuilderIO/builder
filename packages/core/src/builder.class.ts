@@ -495,7 +495,7 @@ export class Builder {
     this.trustedHosts.push(host);
   }
 
-  static isTrusted(host: string) {
+  static isTrustedHost(host: string) {
     return this.trustedHosts.findIndex(allowedHost => host.indexOf(allowedHost) > -1) > -1;
   }
 
