@@ -473,7 +473,8 @@ export class Builder {
         '*'
       );
       const { host } = location;
-      const isAllowed = this.trustedHosts.findIndex(allowedHost => host.indexOf(allowedHost) > -1) > -1;
+      const isAllowed =
+        this.trustedHosts.findIndex(allowedHost => host.indexOf(allowedHost) > -1) > -1;
 
       if (!isAllowed) {
         console.error(
@@ -1270,7 +1271,10 @@ export class Builder {
         const url = parse(event.origin);
         const isRestricted =
           ['builder.register', 'builder.registerComponent'].indexOf(event.data?.type) === -1;
-        const isAllowed = url.hostname && (Builder.trustedHosts.findIndex(allowedHost => url.hostname.indexOf(allowedHost) > -1) > -1);
+        const isAllowed =
+          url.hostname &&
+          Builder.trustedHosts.findIndex(allowedHost => url.hostname.indexOf(allowedHost) > -1) >
+            -1;
         if (isRestricted && !isAllowed) {
           return;
         }
