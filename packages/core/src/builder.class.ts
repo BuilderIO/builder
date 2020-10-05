@@ -1679,9 +1679,17 @@ export class Builder {
       }
 
       this.getContentQueue.push({ ...options, model: modelName, key });
-      nextTick(() => {
-        this.flushGetContentQueue();
-      });
+      if (this.getContentQueue && this.getContentQueue.length >= this.contentPerRequest) {
+        const queue = this.getContentQueue.slice();
+        this.getContentQueue = [];
+        nextTick(() => {
+          this.flushGetContentQueue(false, queue);
+        });
+      } else {
+        nextTick(() => {
+          this.flushGetContentQueue();
+        });
+      }
     }
 
     const observable = new BehaviorSubject<BuilderContent[]>(null as any);
