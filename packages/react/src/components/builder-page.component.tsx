@@ -30,8 +30,6 @@ import { throttle } from '../functions/throttle';
 import { safeDynamicRequire } from '../functions/safe-dynamic-require';
 import { BuilderMetaContext } from '../store/builder-meta';
 
-builder.allowCustomFonts = false;
-
 const size = (thing: object) => Object.keys(thing).length;
 
 function debounce(func: Function, wait: number, immediate = false) {
