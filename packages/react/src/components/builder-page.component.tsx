@@ -30,6 +30,8 @@ import { throttle } from '../functions/throttle';
 import { safeDynamicRequire } from '../functions/safe-dynamic-require';
 import { BuilderMetaContext } from '../store/builder-meta';
 
+builder.allowCustomFonts = false;
+
 const size = (thing: object) => Object.keys(thing).length;
 
 function debounce(func: Function, wait: number, immediate = false) {
@@ -664,7 +666,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
   }
 
   ensureFontsLoaded(data?: any) {
-    if (data?.customFonts && Array.isArray(data.customFonts)) {
+    if (this.builder.allowCustomFonts && data?.customFonts && Array.isArray(data.customFonts)) {
       for (const font of data.customFonts) {
         const url = font.fileUrl ? font.fileUrl : font.files && font.files.regular;
         if (!fontsLoaded.has(url)) {

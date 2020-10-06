@@ -748,6 +748,9 @@ export class Builder {
 
   contentPerRequest = 1;
 
+  // TODO: make array or function
+  allowCustomFonts = true;
+
   private cookies: Cookies | null = null;
 
   // TODO: api options object
