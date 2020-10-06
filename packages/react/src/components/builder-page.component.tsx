@@ -654,6 +654,9 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
   }
 
   getFontCss(data?: any) {
+    if (!this.builder.allowCustomFonts) {
+      return '';
+    }
     // TODO: separate internal data from external
     return (
       (data?.customFonts &&
