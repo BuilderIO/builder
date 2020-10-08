@@ -56,7 +56,7 @@ const variantsScript = (variantsString: string, contentId: string) =>
   }
   var cookieName = 'builder.tests.${contentId}';
   var variantInCookie = getCookie(cookieName);
-  var availableIDs = variants.map(function(vr) { return vr.id });
+  var availableIDs = variants.map(function(vr) { return vr.id }).concat('${contentId}');
   var variantId;
   if (availableIDs.indexOf(variantInCookie) > -1) {
     variantId = variantInCookie;
