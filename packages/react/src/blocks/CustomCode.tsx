@@ -86,7 +86,9 @@ class CustomCodeComponent extends React.Component<Props> {
 
   componentDidMount() {
     this.firstLoad = false;
-    this.findAndRunScripts();
+    if (!this.replaceNodes) {
+      this.findAndRunScripts();
+    }
     if (Builder.isBrowser && this.replaceNodes && this.originalRef && this.elementRef) {
       this.elementRef.appendChild(this.originalRef);
     }
@@ -106,7 +108,7 @@ class CustomCodeComponent extends React.Component<Props> {
           newScript.async = true;
           newScript.src = script.src;
           document.head.appendChild(newScript);
-        } else {
+        } else if (['text/javascript', 'application/javascript'].includes(script.type)) {
           if (this.scriptsRun.has(script.innerText)) {
             continue;
           }
