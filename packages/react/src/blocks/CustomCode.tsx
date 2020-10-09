@@ -108,7 +108,7 @@ class CustomCodeComponent extends React.Component<Props> {
           newScript.async = true;
           newScript.src = script.src;
           document.head.appendChild(newScript);
-        } else if (['text/javascript', 'application/javascript'].includes(script.type)) {
+        } else if (!script.type || ['text/javascript', 'application/javascript', 'application/ecmascript'].includes(script.type)) {
           if (this.scriptsRun.has(script.innerText)) {
             continue;
           }
