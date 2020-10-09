@@ -1,4 +1,4 @@
-import { Builder, builder } from '@builder.io/sdk';
+import { builder } from '@builder.io/sdk';
 import { Checkout } from './interfaces/checkout';
 
 const currentScript = document.currentScript as HTMLScriptElement | null;
