@@ -2,22 +2,27 @@ import { builder } from '@builder.io/sdk';
 import { Checkout } from './interfaces/checkout';
 
 const currentScript = document.currentScript as HTMLScriptElement | null;
+function getQueryParam(url: string, variable: string): string | null {
+  const query = url.split('?')[1] || '';
+  const vars = query.split('&');
+  for (let i = 0; i < vars.length; i++) {
+    const pair = vars[i].split('=');
+    if (decodeURIComponent(pair[0]) === variable) {
+      return decodeURIComponent(pair[1]);
+    }
+  }
+  return null;
+}
+
+const overridSessionId = getQueryParam(location.href, 'builder.overrideSessionId');
+const future = new Date();
+future.setMinutes(future.getMinutes() + 30);
+builder.setCookie('builder.overrideSessionId', overridSessionId, future);
 
 // Ensure our code runs *after* the code that sets window.Shopify = { ... }
 setTimeout(() => {
   const TRACKED_KEY = 'builder.tracked';
 
-  function getQueryParam(url: string, variable: string): string | null {
-    const query = url.split('?')[1] || '';
-    const vars = query.split('&');
-    for (let i = 0; i < vars.length; i++) {
-      const pair = vars[i].split('=');
-      if (decodeURIComponent(pair[0]) === variable) {
-        return decodeURIComponent(pair[1]);
-      }
-    }
-    return null;
-  }
 
   const _window = window as any;
 
@@ -35,7 +40,8 @@ setTimeout(() => {
 
     // Allow passing a session ID to the tracking script to support cross domain converison tracking
     // AKA: <script src="https://cdn.builder.io/js/shopify/track?apiKey=YOUR_KEY&sessionId={{checkout.attributes._builderSessionId}}">
-    const sessionIdParam = getQueryParam(
+    // OR: append session ID to your checkout URL
+    const sessionIdParam = builder.getCookie('builder.overrideSessionId') || getQueryParam(
       (currentScript as HTMLScriptElement)?.src || '',
       'sessionId'
     );
