@@ -21,7 +21,7 @@ function wrapHistoryPropertyWithCustomEvent(property: 'pushState' | 'replaceStat
   try {
     const anyHistory = history;
     const originalFunction = anyHistory[property];
-    anyHistory[property] = function (this: History) {
+    anyHistory[property] = function(this: History) {
       var rv = originalFunction.apply(this, arguments as any);
       var event = new CustomEvent(property, {
         detail: {
@@ -116,9 +116,15 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
         styles.replace(
           /(@font-face\s*{\s*font-family:\s*(.*?);[\s\S]+?url\((\S+)\)[\s\S]+?})/g,
           (fullMatch, fontMatch, fontName, fontUrl) => {
-            const trimmedFontUrl = fontUrl.replace(/"/g, '').replace(/'/g, '').trim();
+            const trimmedFontUrl = fontUrl
+              .replace(/"/g, '')
+              .replace(/'/g, '')
+              .trim();
 
-            const trimmedFontName = fontName.replace(/"/g, '').replace(/'/g, '').trim();
+            const trimmedFontName = fontName
+              .replace(/"/g, '')
+              .replace(/'/g, '')
+              .trim();
 
             const weight = fullMatch.match(/font-weight:\s*(\d+)/)?.[1];
 
@@ -253,6 +259,10 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
         return;
       }
       this.connected = true;
+
+      this.dispatchEvent(
+        new CustomEvent('connected', { detail: { builder, Builder }, bubbles: true })
+      );
 
       if (Builder.isEditing && !location.href.includes('builder.stopPropagation=false')) {
         this.addEventListener('click', e => {
@@ -690,3 +700,5 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
 
   customElements.define('builder-init', BuilderInit);
 }
+
+window.dispatchEvent(new CustomEvent('builder:load', { detail: { builder, Builder } }));
