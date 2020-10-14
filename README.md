@@ -96,7 +96,7 @@ export default let BuilderPage = () => {
 | [React native](packages/react-native)                                    |                             Alpha                             |
 | **Everyting else** <br/> Go, Php, Java, Vue, Ruby/Rails, Vanilla JS, etc | Use our [HTML API](https://builder.io/c/docs/getting-started) |
 
-Want suppoert for something not listed here or for us to priotize something coming soon? Drop us an issue and let us know! We prioritize based on the community's needs and interests.
+Want support for something not listed here or for us to priotize something coming soon? Drop us an issue and let us know! We prioritize based on the community's needs and interests.
 
 ## What's in this repository?
 
@@ -123,7 +123,7 @@ builder.init(YOUR_KEY);
 And in your router
 
 ```tsx
-// You can use the url="..." prop to automaticaly fetch the content for that URL,
+// You can use the url="..." prop to automatically fetch the content for that URL,
 // or omit this prop and Builder.io will fetch the corresponding page for the current
 // location.pathname, if available
 <Route path="/something" render={() => <BuilderComponent model="page" url="/something" />}>
@@ -137,7 +137,7 @@ Also, see the full [React API here](https://github.com/BuilderIO/builder/blob/ma
 
 ### Using your components
 
-See this [design systems example](/examples/react-design-system) for lots of examples using your deisgn system + custom components + storybook
+See this [design systems example](/examples/react-design-system) for lots of examples using your design system + custom components + storybook
 
 > 👉**Tip: want to limit page building to only your components? Try [components only mode](https://builder.io/c/docs/guides/components-only-mode)**
 
