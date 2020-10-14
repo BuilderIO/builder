@@ -78,7 +78,7 @@ setTimeout(() => {
             credit_card: undefined,
           };
 
-          builder.setCookie(trackedOrdersCookieKey, datePlusMinutes(60));
+          builder.setCookie(trackedOrdersCookieKey, 'true', datePlusMinutes(60));
 
           builder.track('conversion', {
             meta: checkout,
