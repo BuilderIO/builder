@@ -61,6 +61,8 @@ export default let BuilderPage = () => {
 
 ## How does it work?
 
+<img src="https://imgur.com/HjBWIbv.gif" alt="Editor example" />
+
 - Integrate the [Builder API or SDK](#supported-frameworks) to your site or app
 - Create a free account on [builder.io](https://builder.io) and drag and drop to create and publish pages and content
 - Profit
