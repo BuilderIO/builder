@@ -23,7 +23,6 @@ builder.setCookie('builder.overrideSessionId', overridSessionId, future);
 setTimeout(() => {
   const TRACKED_KEY = 'builder.tracked';
 
-
   const _window = window as any;
 
   function datePlusMinutes(minutes = 30) {
@@ -41,10 +40,9 @@ setTimeout(() => {
     // Allow passing a session ID to the tracking script to support cross domain converison tracking
     // AKA: <script src="https://cdn.builder.io/js/shopify/track?apiKey=YOUR_KEY&sessionId={{checkout.attributes._builderSessionId}}">
     // OR: append session ID to your checkout URL
-    const sessionIdParam = builder.getCookie('builder.overrideSessionId') || getQueryParam(
-      (currentScript as HTMLScriptElement)?.src || '',
-      'sessionId'
-    );
+    const sessionIdParam =
+      builder.getCookie('builder.overrideSessionId') ||
+      getQueryParam((currentScript as HTMLScriptElement)?.src || '', 'sessionId');
     if (sessionIdParam) {
       builder.sessionId = sessionIdParam;
     }
