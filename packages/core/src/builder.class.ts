@@ -1629,6 +1629,7 @@ export class Builder {
           variationId: match.testVariationId || match.variationId,
           testVariationId: match.testVariationId || match.variationId,
           testVariationName: match.testVariationName,
+          lastModified: match.lastModified
         };
       }
     );
