@@ -31,6 +31,7 @@ export const isReactNative = typeof navigator === 'object' && navigator.product 
 export const validEnvList = [
   'production',
   'qa',
+  'test',
   'development',
   'dev',
   'cdn-qa',
@@ -1751,13 +1752,6 @@ export class Builder {
   }
 
   get host() {
-    if (this.env.includes('//')) {
-      return this.env;
-    }
-
-    if (this.env.includes('.')) {
-      return 'http://' + this.env;
-    }
     switch (this.env) {
       case 'qa':
         return 'https://qa.builder.io';
