@@ -7,7 +7,9 @@
 Drag and drop page building with your code components. Bring your [design systems](/examples/react-design-system) to life!
 
 <br />
-<img src="https://user-images.githubusercontent.com/5093430/96180755-c331ff00-0ee7-11eb-8b9f-b5e80ba8052e.gif" alt="Editor example" />
+
+<img src="https://imgur.com/HjBWIbv.gif" alt="Editor example" />
+
 
 <table style="width:100%;">
   <tr>
@@ -61,13 +63,13 @@ export default let BuilderPage = () => {
 
 ## How does it work?
 
-<img src="https://imgur.com/HjBWIbv.gif" alt="Editor example" />
-
 - Integrate the [Builder API or SDK](#supported-frameworks) to your site or app
 - Create a free account on [builder.io](https://builder.io) and drag and drop to create and publish pages and content
 - Profit
 
 ## What is it good for?
+
+<img src="https://user-images.githubusercontent.com/5093430/96180755-c331ff00-0ee7-11eb-8b9f-b5e80ba8052e.gif" alt="Editor example" />
 
 - Landing pages on custom code stacks
 - [Design systems](/examples/react-design-system) and visually editing your custom components
