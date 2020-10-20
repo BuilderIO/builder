@@ -1761,6 +1761,8 @@ export class Builder {
     switch (this.env) {
       case 'qa':
         return 'https://qa.builder.io';
+      case 'test':
+        return 'https://builder-io-test.web.app';
       case 'fast':
         return 'https://fast.builder.io';
       case 'cloud':
