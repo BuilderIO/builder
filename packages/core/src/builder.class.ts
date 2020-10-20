@@ -410,7 +410,6 @@ export class Builder {
 
   static components: Component[] = [];
   static singletonInstance: Builder;
-  static useNewApi = true;
   // isStatic delegates all variants rendering and election to the variants provider
   // which in turn will always render default variation on server and winning variation on client
   static isStatic = false;
@@ -1832,9 +1831,7 @@ export class Builder {
     }
     // TODO: merge in the attribute from query string ones
     // TODO: make this an option per component/request
-    queryParams.userAttributes = Builder.useNewApi
-      ? userAttributes
-      : JSON.stringify(userAttributes);
+    queryParams.userAttributes = userAttributes;
 
     if (!usePastQueue && !useQueue) {
       this.priorContentQueue = queue;
@@ -1867,53 +1864,51 @@ export class Builder {
       }
     }
 
-    if (Builder.useNewApi && !Builder.isReact) {
+    if (!Builder.isReact) {
       // TODO: remove me once v1 page editors converted to v2
       // queryParams.extractCss = true;
       queryParams.prerender = true;
     }
 
-    if (Builder.useNewApi) {
-      for (const options of queue) {
-        if (options.format) {
-          queryParams.format = options.format;
-        }
-        // TODO: remove me and make permodel
-        if (options.static) {
-          queryParams.static = options.static;
-        }
+    for (const options of queue) {
+      if (options.format) {
+        queryParams.format = options.format;
+      }
+      // TODO: remove me and make permodel
+      if (options.static) {
+        queryParams.static = options.static;
+      }
 
-        if (options.cachebust) {
-          queryParams.cachebust = options.cachebust;
-        }
+      if (options.cachebust) {
+        queryParams.cachebust = options.cachebust;
+      }
 
-        if (isPositiveNumber(options.cacheSeconds)) {
-          queryParams.cacheSeconds = options.cacheSeconds;
-        }
+      if (isPositiveNumber(options.cacheSeconds)) {
+        queryParams.cacheSeconds = options.cacheSeconds;
+      }
 
-        if (isPositiveNumber(options.staleCacheSeconds)) {
-          queryParams.staleCacheSeconds = options.staleCacheSeconds;
-        }
+      if (isPositiveNumber(options.staleCacheSeconds)) {
+        queryParams.staleCacheSeconds = options.staleCacheSeconds;
+      }
 
-        const properties: (keyof GetContentOptions)[] = [
-          'prerender',
-          'extractCss',
-          'limit',
-          'offset',
-          'query',
-          'preview',
-          'model',
-          'entry',
-          'rev',
-          'static',
-        ];
-        for (const key of properties) {
-          const value = options[key];
-          if (value !== undefined) {
-            queryParams.options = queryParams.options || {};
-            queryParams.options[options.key!] = queryParams.options[options.key!] || {};
-            queryParams.options[options.key!][key] = JSON.stringify(value);
-          }
+      const properties: (keyof GetContentOptions)[] = [
+        'prerender',
+        'extractCss',
+        'limit',
+        'offset',
+        'query',
+        'preview',
+        'model',
+        'entry',
+        'rev',
+        'static',
+      ];
+      for (const key of properties) {
+        const value = options[key];
+        if (value !== undefined) {
+          queryParams.options = queryParams.options || {};
+          queryParams.options[options.key!] = queryParams.options[options.key!] || {};
+          queryParams.options[options.key!][key] = JSON.stringify(value);
         }
       }
     }
@@ -1923,7 +1918,7 @@ export class Builder {
     const hasParams = Object.keys(queryParams).length > 0;
 
     // TODO: option to force dev or qa api here
-    const host = this.useNewContentApi ? 'https://lambda.builder.codes' : this.host;
+    const host = this.host;
 
     const keyNames = queue.map(item => encodeURIComponent(item.key!)).join(',');
 
@@ -1932,12 +1927,10 @@ export class Builder {
       assign(queryParams, params);
     }
 
-    const queryStr = Builder.useNewApi
-      ? QueryString.stringifyDeep(queryParams)
-      : QueryString.stringify(queryParams);
+    const queryStr = QueryString.stringifyDeep(queryParams);
 
     const promise = this.requestUrl(
-      `${host}/api/v1/${Builder.useNewApi ? 'query' : 'content'}/${this.apiKey}/${keyNames}` +
+      `${host}/api/${this.useNewContentApi ? 'v2' : 'v1'}/query/${this.apiKey}/${keyNames}` +
         (queryParams && hasParams ? `?${queryStr}` : '')
     ).then(
       result => {

@@ -4,6 +4,8 @@ const importShopify = () => import('@builder.io/shopify/react');
 const importShopifyJs = () => import('@builder.io/shopify/js');
 const importWidgets = () => import('@builder.io/widgets');
 
+const useSolid = location.href.includes('builder.format=solid') && !Builder.isEditing;
+
 Builder.isStatic = true;
 
 function wrapInDiv(el: HTMLElement) {
@@ -197,6 +199,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
     get options() {
       return {
         rev: this.getAttribute('rev') || undefined,
+        ...(useSolid ? { format: 'solid' } : {}),
         ...this._options,
       };
     }
@@ -473,16 +476,28 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
       }
     }
 
+    loadSolid = (data?: any, fresh = false) => {
+      // TODO: eval solid JS into this dom element as the entry point
+      if (data.data.blocksJs) {
+        new Function('__BUILDER_TARGET_ELEMENT__', data.data.blocksJs)(this);
+      } else {
+        new Error('blocksJS is not defined on the Builder content - cannot with Solid');
+      }
+    };
+
     loadPreact = async (data?: any, fresh = false) => {
+      if (useSolid && data && data.blocksJs) {
+        return this.loadSolid(data, fresh);
+      }
       const entry = data?.id || this.getAttribute('entry');
 
       const name =
         this.getAttribute('name') || this.getAttribute('model') || this.getAttribute('model-name');
 
-      const getReactPromise = importReact(); // TODO: only import what needed based on what comes back
-      const getWidgetsPromise = importWidgets();
-      const getShopifyPromise = importShopify();
-      const getShopifyJsPromise = importShopifyJs();
+      const getReactPromise = useSolid ? null : importReact();
+      const getWidgetsPromise = useSolid ? null : importWidgets();
+      const getShopifyPromise = useSolid ? null : importShopify();
+      const getShopifyJsPromise = useSolid ? null : importShopifyJs();
       // TODO: only load shopify if needed
 
       let emailPromise: Promise<any> | null = null;
@@ -506,9 +521,9 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
         (Builder.isIframe && (!builder.apiKey || builder.apiKey === 'DEMO')) ||
         hasFullData
       ) {
-        const { BuilderPage } = await getReactPromise;
+        const { BuilderPage } = await getReactPromise!;
         await Promise.all([getWidgetsPromise, getShopifyPromise as any]);
-        const { Shopify } = await getShopifyJsPromise;
+        const { Shopify } = await getShopifyJsPromise!;
 
         const shopify = new Shopify({});
 
@@ -556,7 +571,10 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
         .promise()
         .then(
           async data => {
-            const { BuilderPage } = await getReactPromise;
+            if (useSolid) {
+              return this.loadSolid(data);
+            }
+            const { BuilderPage } = await getReactPromise!;
             await Promise.all([getWidgetsPromise, getShopifyPromise as any]);
             if (emailPromise) {
               await emailPromise;
@@ -564,7 +582,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
 
             const loadEvent = new CustomEvent('load', { detail: data });
             this.dispatchEvent(loadEvent);
-            const { Shopify } = await getShopifyJsPromise;
+            const { Shopify } = await getShopifyJsPromise!;
 
             const shopify = new Shopify({});
 
@@ -614,12 +632,12 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
           },
           async (error: any) => {
             if (Builder.isEditing) {
-              const { BuilderPage } = await getReactPromise;
+              const { BuilderPage } = await getReactPromise!;
               await Promise.all([getWidgetsPromise, getShopifyPromise as any]);
               if (emailPromise) {
                 await emailPromise;
               }
-              const { Shopify } = await getShopifyJsPromise;
+              const { Shopify } = await getShopifyJsPromise!;
               const shopify = new Shopify({});
               BuilderPage.renderInto(
                 wrapInDiv(this),
