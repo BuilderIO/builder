@@ -478,9 +478,27 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
 
     loadSolid = (data?: any, fresh = false) => {
       // TODO: eval solid JS into this dom element as the entry point
-      if (data.data.blocksJs) {
-        new Function('__BUILDER_TARGET_ELEMENT__', data.data.blocksJs)(this);
+      if (data?.data?.blocksJs) {
+        try {
+          const targetEl = this.querySelector('.builder-component') || this;
+          targetEl.innerHTML = '';
+          new Function(
+            '__BUILDER_TARGET_ELEMENT__',
+            'builder',
+            'Builder',
+            'context',
+            data.data.blocksJs
+          )(targetEl, builder, Builder, {
+            // TODO
+            showOpen: () => false,
+          });
+          // this.querySelector('.builder-api-styles')?.remove();
+        } catch (err) {
+          // TODO: fall back to Preact
+          console.error('Builder evaluated code error', err, { code: data.data.blocksJs });
+        }
       } else {
+        // TODO: fall back to Preact
         new Error('blocksJS is not defined on the Builder content - cannot with Solid');
       }
     };

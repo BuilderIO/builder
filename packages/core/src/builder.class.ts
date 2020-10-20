@@ -1800,6 +1800,9 @@ export class Builder {
     if (queue[0].fields) {
       queryParams.fields = queue[0].fields;
     }
+    if (queue[0].format) {
+      queryParams.format = queue[0].format;
+    }
 
     const pageQueryParams: ParamsMap =
       typeof location !== 'undefined'
@@ -1929,9 +1932,12 @@ export class Builder {
 
     const queryStr = QueryString.stringifyDeep(queryParams);
 
+    const format = queryParams.format;
+
     const promise = this.requestUrl(
-      `${host}/api/${this.useNewContentApi ? 'v2' : 'v1'}/query/${this.apiKey}/${keyNames}` +
-        (queryParams && hasParams ? `?${queryStr}` : '')
+      `${host}/api/${this.useNewContentApi ? 'v2' : 'v1'}/${
+        format === 'solid' ? 'codegen' : 'query'
+      }/${this.apiKey}/${keyNames}` + (queryParams && hasParams ? `?${queryStr}` : '')
     ).then(
       result => {
         for (const options of queue) {
