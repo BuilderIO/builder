@@ -1,4 +1,9 @@
-import { withBuilder, BuilderStoreContext, BuilderBlockComponent } from '@builder.io/react';
+import {
+  withBuilder,
+  BuilderStoreContext,
+  BuilderBlockComponent,
+  Builder,
+} from '@builder.io/react';
 import * as React from 'react';
 import { FormBlockProps } from '../interfaces/component-props';
 
@@ -13,7 +18,7 @@ export function FormBlock(props: FormBlockProps) {
   // This looks for a global variable that we have server rendered by Shopify.
   // The goal is to get the Shopify form object and allow anything that needs data from
   // that form object to get it from the Builder state. https://shopify.dev/docs/themes/liquid/reference/objects/form
-  if (window && (window as any).BuilderShopifyData && builderBlock?.id) {
+  if (Builder.isBrowser && (window as any).BuilderShopifyData && builderBlock?.id) {
     const formData = (window as any).BuilderShopifyData[builderBlock.id]?.form;
 
     if (formData) {
