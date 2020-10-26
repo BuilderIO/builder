@@ -68,11 +68,10 @@ export default let BuilderPage = () => {
 
 ## What is it good for?
 
-<img src="https://user-images.githubusercontent.com/5093430/96180755-c331ff00-0ee7-11eb-8b9f-b5e80ba8052e.gif" alt="Editor example" />
-
 - Landing pages on custom code stacks
 - [Design systems](/examples/react-design-system) and visually editing your custom components
 - Marketing & content pages (Homepage, promotions, merchandising, about, FAQ, help, docs, etc)
+- Sever side a/b testing and segmentation without performance cost
 - Freedom from marketing teams that never stop asking for new things
 - Developers who are tired of pushing pixels
 
