@@ -15,9 +15,11 @@ function getQueryParam(url: string, variable: string): string | null {
 }
 
 const overridSessionId = getQueryParam(location.href, 'builder.overrideSessionId');
-const future = new Date();
-future.setMinutes(future.getMinutes() + 30);
-builder.setCookie('builder.overrideSessionId', overridSessionId, future);
+if (overridSessionId) {
+  const future = new Date();
+  future.setMinutes(future.getMinutes() + 30);
+  builder.setCookie('builder.overrideSessionId', overridSessionId, future);
+}
 
 // Ensure our code runs *after* the code that sets window.Shopify = { ... }
 setTimeout(() => {
