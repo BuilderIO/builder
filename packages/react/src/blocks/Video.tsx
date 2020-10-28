@@ -40,9 +40,18 @@ class VideoComponent extends React.Component<{
 
   updateVideo() {
     if (this.video) {
-      this.video.setAttribute('muted', String(this.props.muted));
-      this.video.setAttribute('playsinline', String(this.props.playsInline));
-      this.video.setAttribute('autoplay', String(this.props.autoPlay));
+      const attributes: Array<'muted' | 'playsInline' | 'autoPlay'> = [
+        'muted',
+        'playsInline',
+        'autoPlay',
+      ];
+      attributes.forEach(attr => {
+        if (this.props[attr]) {
+          this.video?.setAttribute(attr.toLowerCase(), 'true');
+        } else {
+          this.video?.removeAttribute(attr.toLowerCase());
+        }
+      });
     }
   }
 
