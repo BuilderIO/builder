@@ -143,7 +143,7 @@ const createPagesAsync = async (config, createPage, graphql, models, offsets) =>
           component,
           context: {
               ...(config.globalContext || {}),
-              ...mappedProps.
+              ...mappedProps
           }
         });
       }
