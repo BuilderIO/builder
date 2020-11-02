@@ -129,19 +129,22 @@ const createPagesAsync = async (config, createPage, graphql, models, offsets) =>
     }
     if (config.filter) {
       entries = entries.filter(config.filter);
-    }    
+    }
     entries.forEach(entry => {
       if (entry.content.data.url && entry.content.published === `published`) {
 
-        let mappedProps = {}
+        let mappedProps = {};
         if (config.mapEntryToGatsbyConfig) {
-          mappedProps = config.mapEntryToGatsbyConfig(entry)
+          mappedProps = config.mapEntryToGatsbyConfig(entry);
         }
 
         createPage({
           path: entry.content.data.url,
           component,
-          context: {...(config.globalContext || {}), ...mappedProps}
+          context: {
+              ...(config.globalContext || {}),
+              ...mappedProps.
+          }
         });
       }
     });

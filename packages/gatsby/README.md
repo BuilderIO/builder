@@ -26,7 +26,7 @@ module.exports = {
           return {
             property: entry.data.property,
             anotherProperty: entry.data.whatever,
-            ...
+            /* ... */
           };
         }
         templates: {
