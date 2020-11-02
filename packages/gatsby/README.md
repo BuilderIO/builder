@@ -22,6 +22,13 @@ module.exports = {
       options: {
         // public API Key
         publicAPIKey: 'MY_PUBLIC_API_KEY',
+        mapEntryToContext: (entry) => {
+          return {
+            property: entry.data.property,
+            anotherProperty: entry.data.whatever,
+            /* ... */
+          };
+        }
         templates: {
           // `page` can be any model of choice, camelCased
           page: path.resolve('templates/my-page.tsx'),
