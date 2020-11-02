@@ -22,7 +22,7 @@ module.exports = {
       options: {
         // public API Key
         publicAPIKey: 'MY_PUBLIC_API_KEY',
-        mapEntryToGatsbyConfig: (entry) => {
+        mapEntryToContext: (entry) => {
           return {
             property: entry.data.property,
             anotherProperty: entry.data.whatever,

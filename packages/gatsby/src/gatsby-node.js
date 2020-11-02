@@ -134,8 +134,8 @@ const createPagesAsync = async (config, createPage, graphql, models, offsets) =>
       if (entry.content.data.url && entry.content.published === `published`) {
 
         let mappedProps = {};
-        if (config.mapEntryToGatsbyConfig) {
-          mappedProps = config.mapEntryToGatsbyConfig(entry);
+        if (config.mapEntryToContext) {
+          mappedProps = config.mapEntryToContext(entry);
         }
 
         createPage({
