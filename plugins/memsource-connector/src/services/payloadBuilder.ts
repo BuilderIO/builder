@@ -8,7 +8,9 @@ export const generatePayload = (builderContext: any) => {
       __context: payloadMetadata,
       content: translatableComponents.concat(translatablePageData)
     };
-  } catch {}
+  } catch {
+    // do nothing
+  }
 };
 
 const getPageOptions = (builderContext: any) => {
@@ -31,7 +33,7 @@ const getTranslatablePageOptions = (builderContext: any) => {
       (each: any) =>
         ['text', 'longText'].includes(each.type) &&
         each.hideFromUI === false &&
-        each.enum == undefined
+        each.enum === undefined
     )
     .map((each: any) => {
       if (pageData[each.name]) {
@@ -66,9 +68,7 @@ const getTranslatableComponents = (builderContext: any) => {
 };
 
 const _getComponentsUsedSchema = (builderContext: any) => {
-  return builderContext.designerState.editingContentModel.meta
-    .get('componentsUsed')
-    .toJSON();
+  return builderContext.designerState.editingContentModel.componentsUsed;
 };
 
 const _getTranslatableComponentNames = (builderContext: any) => {
@@ -120,7 +120,7 @@ const recursiveExtraction = (
 ) => {
   if (!builderBlock) return ocurrencies;
   if (builderBlock instanceof Array) {
-    for (var datum in builderBlock) {
+    for (const datum in builderBlock) {
       ocurrencies = ocurrencies.concat(
         recursiveExtraction(builderBlock[datum], key, [])
       );
@@ -131,8 +131,8 @@ const recursiveExtraction = (
     ocurrencies.push({ ...builderBlock[key], id: builderBlock.id });
   }
 
-  if (typeof builderBlock == 'object' && builderBlock !== null) {
-    var children = Object.keys(builderBlock);
+  if (typeof builderBlock === 'object' && builderBlock !== null) {
+    const children = Object.keys(builderBlock);
     if (children.length > 0) {
       for (let i = 0; i < children.length; i++) {
         ocurrencies = ocurrencies.concat(
