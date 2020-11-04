@@ -21,6 +21,10 @@ module.exports.getGQLOptions = options => {
     config.publicAPIKey && config.publicAPIKey.length > 0,
     `@builder.io/gatsby requires a public API Key`
   );
+  if (config.limit > 100) {
+    console.warning('@builder.io/gatsby maximum pagination limit is 100');
+    config.limit = 100;
+  }
   return {
     typeName: config.typeName,
     // Field under which the remote schema will be accessible. You'll use this in your Gatsby query
