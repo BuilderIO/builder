@@ -132,7 +132,6 @@ const createPagesAsync = async (config, createPage, graphql, models, offsets) =>
     }
     entries.forEach(entry => {
       if (entry.content.data.url && entry.content.published === `published`) {
-
         let mappedProps = {};
         if (config.mapEntryToContext) {
           mappedProps = config.mapEntryToContext(entry);
@@ -142,9 +141,9 @@ const createPagesAsync = async (config, createPage, graphql, models, offsets) =>
           path: entry.content.data.url,
           component,
           context: {
-              ...(config.globalContext || {}),
-              ...mappedProps
-          }
+            ...(config.globalContext || {}),
+            ...mappedProps,
+          },
         });
       }
     });
