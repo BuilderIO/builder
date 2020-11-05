@@ -865,8 +865,9 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
                             'builder',
                             'React',
                             'Image',
+                            'onChange',
                             data.blocksJs
-                          )(emotionJsx, Builder, builder, React, Image);
+                          )(emotionJsx, Builder, builder, React, Image, onChange);
 
                           if (Builder.isBrowser) {
                             console.log({
