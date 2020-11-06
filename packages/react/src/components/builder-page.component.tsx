@@ -229,7 +229,9 @@ function searchToObject(location: Location | Url) {
 }
 
 export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageState> {
-  static defaults: Pick<BuilderPageProps, 'codegen'> = {};
+  static defaults: Pick<BuilderPageProps, 'codegen'> = {
+    codegen: Boolean(Builder.isBrowser && location.href.includes('builder.codegen=true')),
+  };
 
   subscriptions: Subscription = new Subscription();
   // TODO: don't trigger initial one?
@@ -859,15 +861,34 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
                         const { codegen } = this.options;
 
                         if (codegen && !this.Component && data.blocksJs) {
+                          const builderComponentNames: string[] = Array.from(
+                            new Set(Builder.components.map((item: any) => item.name))
+                          );
+                          const reversedcomponents = Builder.components.slice().reverse();
+                          const builderComponents = builderComponentNames.map(
+                            name =>
+                              reversedcomponents.find(
+                                (item: any) => item.class && item.name === name
+                              )?.class
+                          );
                           this.Component = new Function(
                             '___EmotionJSX',
                             'Builder',
                             'builder',
                             'React',
-                            'Image',
                             'onChange',
+                            ...builderComponentNames.map(name =>
+                              (name || '').replace(/[^\w]+/gi, '_')
+                            ),
                             data.blocksJs
-                          )(emotionJsx, Builder, builder, React, Image, onChange);
+                          )(
+                            emotionJsx,
+                            Builder,
+                            builder,
+                            React,
+                            onChange,
+                            ...builderComponents
+                          );
 
                           if (Builder.isBrowser) {
                             console.log({

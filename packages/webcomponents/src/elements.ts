@@ -6,6 +6,8 @@ const importWidgets = () => import('@builder.io/widgets');
 
 Builder.isStatic = true;
 
+const useCodegen = Builder.isBrowser && location.href.includes('builder.codegen=true');
+
 function wrapInDiv(el: HTMLElement) {
   const newDiv = document.createElement('div');
   const currentChildren = Array.from(el.children);
@@ -21,7 +23,7 @@ function wrapHistoryPropertyWithCustomEvent(property: 'pushState' | 'replaceStat
   try {
     const anyHistory = history;
     const originalFunction = anyHistory[property];
-    anyHistory[property] = function (this: History) {
+    anyHistory[property] = function(this: History) {
       var rv = originalFunction.apply(this, arguments as any);
       var event = new CustomEvent(property, {
         detail: {
@@ -116,9 +118,15 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
         styles.replace(
           /(@font-face\s*{\s*font-family:\s*(.*?);[\s\S]+?url\((\S+)\)[\s\S]+?})/g,
           (fullMatch, fontMatch, fontName, fontUrl) => {
-            const trimmedFontUrl = fontUrl.replace(/"/g, '').replace(/'/g, '').trim();
+            const trimmedFontUrl = fontUrl
+              .replace(/"/g, '')
+              .replace(/'/g, '')
+              .trim();
 
-            const trimmedFontName = fontName.replace(/"/g, '').replace(/'/g, '').trim();
+            const trimmedFontName = fontName
+              .replace(/"/g, '')
+              .replace(/'/g, '')
+              .trim();
 
             const weight = fullMatch.match(/font-weight:\s*(\d+)/)?.[1];
 
@@ -191,6 +199,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
     get options() {
       return {
         rev: this.getAttribute('rev') || undefined,
+        format: useCodegen ? 'react' : undefined,
         ...this._options,
       };
     }
@@ -512,6 +521,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
           {
             ...({ ref: (ref: any) => (this.builderPageRef = ref) } as any),
             modelName: name!,
+            codegen: useCodegen,
             context: {
               shopify,
               liquid: shopify.liquid,
@@ -567,6 +577,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
               {
                 ...({ ref: (ref: any) => (this.builderPageRef = ref) } as any),
                 modelName: name!,
+                codegen: useCodegen,
                 context: {
                   shopify,
                   liquid: shopify.liquid,
@@ -627,6 +638,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
                     apiKey: builder.apiKey,
                   },
                   modelName: name!,
+                  codegen: useCodegen,
                   entry: data ? data.id : entry,
                   emailMode:
                     ((this.options as any) || {}).emailMode ||
