@@ -2,6 +2,9 @@
 
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/builderio/builder/pulls)
+[![License](https://img.shields.io/github/license/BuilderIO/builder)](https://github.com/BuilderIO/builder)
+[![Types](https://img.shields.io/npm/types/@builder.io/sdk)](https://www.npmjs.com/package/@builder.io/sdk)
+
 
 Drag and drop page building with your code components. Bring your [design systems](/examples/react-design-system) to life!
 
