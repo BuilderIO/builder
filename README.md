@@ -1,16 +1,22 @@
-<img alt="BUILDER" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F6836fc105ad549a5b4bf144235b1a228" width="300" />
+<p align="center">
+  <img alt="BUILDER" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F6836fc105ad549a5b4bf144235b1a228" width="300" />
+</p>
 
-[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/builderio/builder/pulls)
-[![License](https://img.shields.io/github/license/BuilderIO/builder)](https://github.com/BuilderIO/builder)
-[![Types](https://img.shields.io/npm/types/@builder.io/sdk)](https://www.npmjs.com/package/@builder.io/sdk)
+<p align="center">
+  Drag and drop page building with your code components. Bring your <a href="/examples/react-design-system">design systems</a> to life!
+</p>
+
+<p align="center">
+  <a href="https://github.com/prettier/prettier"><img alt="code style: prettier" src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg" /></a>
+  <a href="https://github.com/builderio/builder/pulls"><img alt="PRs Welcome" src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" /></a>
+  <a href="https://github.com/BuilderIO/builder"><img alt="License" src="https://img.shields.io/github/license/BuilderIO/builder" /></a>
+  <a href="https://www.npmjs.com/package/@builder.io/sdk"><img alt="Types" src="https://img.shields.io/npm/types/@builder.io/sdk" /></a>
+</p>
 
 
-Drag and drop page building with your code components. Bring your [design systems](/examples/react-design-system) to life!
-
-<br />
-
-<img src="https://imgur.com/HjBWIbv.gif" alt="Editor example" />
+<p align="center">
+  <img src="https://imgur.com/HjBWIbv.gif" alt="Editor example" />
+</p>
 
 
 <table style="width:100%;">
