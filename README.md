@@ -89,6 +89,7 @@ export default let BuilderPage = () => {
 
 - Design system [live example](https://builder.io/fiddle/4b2e0a2e4b1a44a88a5e6f8c46cdfe7c) and [source](https://github.com/BuilderIO/builder/tree/master/examples/react-design-system)
 - [builder.io/fiddle](https://builder.io/fiddle)
+- [JSX Lite](https://github.com/BuilderIO/jsx-lite)
 - Storybook [live example](https://builder-storybook.firebaseapp.com) and [source](https://github.com/BuilderIO/builder/tree/master/packages/storybook)
 
 ## Supported Frameworks
@@ -100,6 +101,7 @@ export default let BuilderPage = () => {
 | [Next.js](examples/next-js)                                              |                            Stable                             |
 | [Gatsby](examples/gatsby)                                                |                            Stable                             |
 | [Shopify / Liquid](https://apps.shopify.com/builder-2)                   |                            Stable                             |
+| [JSX Lite](https://github.com/BuilderIO/jsx-lite)                        |                              WIP                              |
 | [Angular](packages/angular)                                              |                            Stable                             |
 | [Webcomponents](packages/webcomponents) (for any framework/stack)        |                            Stable                             |
 | [Email](packages/email)                                                  |                            Stable                             |
@@ -112,7 +114,7 @@ Want support for something not listed here or for us to priotize something comin
 
 ## What's in this repository?
 
-This repo houses all of the various [SDKs](packages), [usage examples](examples), [starter projects](starters), and [plugins](plugins)
+This repo houses all of the various [SDKs](packages), [usage examples](examples), [starter projects](starters), and [plugins](plugins).
 
 ## Getting Started with React
 
