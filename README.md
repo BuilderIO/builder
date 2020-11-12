@@ -6,13 +6,14 @@
   Drag and drop page building with your code components. Bring your <a href="/examples/react-design-system">design systems</a> to life!
 </p>
 
+<br />
 <p align="center">
   <a href="https://github.com/prettier/prettier"><img alt="code style: prettier" src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg" /></a>
   <a href="https://github.com/builderio/builder/pulls"><img alt="PRs Welcome" src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" /></a>
   <a href="https://github.com/BuilderIO/builder"><img alt="License" src="https://img.shields.io/github/license/BuilderIO/builder" /></a>
   <a href="https://www.npmjs.com/package/@builder.io/sdk"><img alt="Types" src="https://img.shields.io/npm/types/@builder.io/sdk" /></a>
 </p>
-
+<br />
 
 <p align="center">
   <img src="https://imgur.com/HjBWIbv.gif" alt="Editor example" />
