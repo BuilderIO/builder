@@ -6,7 +6,7 @@ const importWidgets = () => import('@builder.io/widgets');
 
 Builder.isStatic = true;
 
-const useCodegen = Builder.isBrowser && location.href.includes('builder.codegen=true');
+const useCodegen = Boolean(Builder.isBrowser && location.href.includes('builder.codegen=true'));
 
 function wrapInDiv(el: HTMLElement) {
   const newDiv = document.createElement('div');
