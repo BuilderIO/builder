@@ -1,1 +1,1 @@
-export * from './dist/builder-widgets-async.esm.js';
+export * from './dist/builder-widgets-async/builder-widgets-async.js';

@@ -72,7 +72,7 @@ const options = {
     resolvePlugin,
 
     // Resolve source maps to the original source
-    sourceMaps(),
+    // sourceMaps(),
   ],
 };
 
@@ -109,7 +109,7 @@ export default [
   {
     ...options,
     input: 'src/builder-widgets-async.ts',
-    output: [{ file: 'dist/builder-widgets-async.esm.js', format: 'es', sourcemap: true }],
+    output: [{ dir: 'dist/builder-widgets-async', format: 'es', sourcemap: true }],
     // Do not resolve for es module build
     // TODO: should really do a cjs build too (probably for the default build instead of umd...)
     external: externalDependencies,
