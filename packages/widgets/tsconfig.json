@@ -10,7 +10,7 @@
     "declaration": true,
     "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
-    "experimentalDecorators": true,o
+    "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "declarationDir": "dist/types",
     "outDir": "dist/lib",
