@@ -2,7 +2,7 @@
 import { jsx } from '@emotion/core';
 import React from 'react';
 
-import { BuilderElement } from '@builder.io/sdk';
+import { Builder, BuilderElement } from '@builder.io/sdk';
 import { BuilderBlocks } from '../components/builder-blocks.component';
 import { builder } from '@builder.io/sdk';
 import { withBuilder } from '../functions/with-builder';
@@ -103,7 +103,7 @@ class ColumnsComponent extends React.Component<any> {
           }}
         >
           {/* TODO: map these */}
-          {this.props.children}
+          {this.props.children ? <div css={{ display: 'flex' }}>{this.props.children} </div> : null}
           {columns.map((col, index) => {
             const TagName = col.link ? Link : 'div';
 
@@ -154,8 +154,17 @@ class ColumnsComponent extends React.Component<any> {
   }
 }
 
-withBuilder('div' as any, {
+const Column = (props: any) => (
+  <div
+    {...props.attributes}
+    style={{ width: '50%', ...props.attributes?.style, ...props.style }}
+    {...props}
+  />
+);
+
+Builder.registerComponent(Column, {
   name: 'Column',
+  noWrap: true,
   hideFromInsertMenu: true,
 });
 

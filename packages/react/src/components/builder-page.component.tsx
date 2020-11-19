@@ -32,7 +32,45 @@ import { throttle } from '../functions/throttle';
 import { safeDynamicRequire } from '../functions/safe-dynamic-require';
 import { BuilderMetaContext } from '../store/builder-meta';
 
-console.log('loaded?');
+function pick<T, K extends keyof T>(obj: T, ...keys: K[]): Pick<T, K> {
+  const ret: any = {};
+  keys.forEach(key => {
+    ret[key] = obj[key];
+  });
+  return ret;
+}
+function omit<T, K extends keyof T>(obj: T, ...keys: K[]): Omit<T, K> {
+  const ret: any = { ...obj };
+  keys.forEach(key => {
+    delete ret[key];
+  });
+  return ret;
+}
+
+const wrapComponent = (info: any) => {
+  return (props: any) => {
+    // TODO: convention for all of this, like builderTagProps={{ style: {} foo: 'bar' }}
+    const Tag = props.builderTag || 'div';
+    const inputNames = ['children'].concat(
+      info.inputs?.map((item: any) => item.name as string) || []
+    );
+
+    const baseProps = omit(props, ...inputNames);
+    const inputProps = pick(props, ...inputNames);
+
+    if (info.noWrap) {
+      return <info.class attributes={baseProps} {...inputProps} />;
+    }
+
+    console.log({ baseProps, inputProps, name: info.name });
+
+    return (
+      <Tag {...baseProps}>
+        <info.class {...inputProps} />
+      </Tag>
+    );
+  };
+};
 
 const size = (thing: object) => Object.keys(thing).length;
 
@@ -51,15 +89,6 @@ function debounce(func: Function, wait: number, immediate = false) {
 }
 
 const fontsLoaded = new Set();
-
-function pick(object: any, keys: string[]) {
-  return keys.reduce((obj, key) => {
-    if (object && object.hasOwnProperty(key)) {
-      obj[key] = object[key];
-    }
-    return obj;
-  }, {} as any);
-}
 
 // TODO: get fetch from core JS....
 const fetch = Builder.isBrowser ? window.fetch : require('node-fetch');
@@ -348,7 +377,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
   get locationState() {
     return {
       // TODO: handle this correctly on the server. Pass in with CONTEXT
-      ...pick(this.location, ['pathname', 'hostname', 'search', 'host']),
+      ...pick(this.location, 'pathname', 'hostname', 'search', 'host'),
       path: (this.location.pathname && this.location.pathname.split('/').slice(1)) || '',
       query: searchToObject(this.location),
     };
@@ -866,18 +895,10 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
                             new Set(Builder.components.map((item: any) => item.name))
                           );
                           const reversedcomponents = Builder.components.slice().reverse();
-                          const builderComponents = builderComponentNames.map(
-                            name =>
-                              reversedcomponents.find(
-                                (item: any) => item.class && item.name === name
-                              )?.class
+                          const builderComponents = builderComponentNames.map(name =>
+                            reversedcomponents.find((item: any) => item.class && item.name === name)
                           );
-                          console.log(
-                            'names',
-                            ...builderComponentNames.map(name =>
-                              (name || '').replace(/[^\w]+/gi, '')
-                            )
-                          );
+
                           this.Component = new Function(
                             '___EmotionJSX',
                             'Builder',
@@ -888,7 +909,14 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
                               (name || '').replace(/[^\w]+/gi, '')
                             ),
                             data.blocksJs
-                          )(emotionJsx, Builder, builder, React, onChange, ...builderComponents);
+                          )(
+                            emotionJsx,
+                            Builder,
+                            builder,
+                            React,
+                            onChange,
+                            ...builderComponents.map(info => wrapComponent(info))
+                          );
 
                           if (Builder.isBrowser) {
                             console.log({
