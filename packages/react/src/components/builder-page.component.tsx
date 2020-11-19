@@ -31,7 +31,8 @@ import { debounceNextTick } from '../functions/debonce-next-tick';
 import { throttle } from '../functions/throttle';
 import { safeDynamicRequire } from '../functions/safe-dynamic-require';
 import { BuilderMetaContext } from '../store/builder-meta';
-import { isThisTypeNode } from 'typescript';
+
+console.log('loaded?');
 
 const size = (thing: object) => Object.keys(thing).length;
 
@@ -871,6 +872,12 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
                                 (item: any) => item.class && item.name === name
                               )?.class
                           );
+                          console.log(
+                            'names',
+                            ...builderComponentNames.map(name =>
+                              (name || '').replace(/[^\w]+/gi, '')
+                            )
+                          );
                           this.Component = new Function(
                             '___EmotionJSX',
                             'Builder',
@@ -878,17 +885,10 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
                             'React',
                             'onChange',
                             ...builderComponentNames.map(name =>
-                              (name || '').replace(/[^\w]+/gi, '_')
+                              (name || '').replace(/[^\w]+/gi, '')
                             ),
                             data.blocksJs
-                          )(
-                            emotionJsx,
-                            Builder,
-                            builder,
-                            React,
-                            onChange,
-                            ...builderComponents
-                          );
+                          )(emotionJsx, Builder, builder, React, onChange, ...builderComponents);
 
                           if (Builder.isBrowser) {
                             console.log({

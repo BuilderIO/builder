@@ -102,6 +102,8 @@ class ColumnsComponent extends React.Component<any> {
             }),
           }}
         >
+          {/* TODO: map these */}
+          {this.props.children}
           {columns.map((col, index) => {
             const TagName = col.link ? Link : 'div';
 
@@ -151,6 +153,11 @@ class ColumnsComponent extends React.Component<any> {
     );
   }
 }
+
+withBuilder('div' as any, {
+  name: 'Column',
+  hideFromInsertMenu: true,
+});
 
 export const Columns = withBuilder(ColumnsComponent, {
   name: 'Columns',
