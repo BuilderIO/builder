@@ -108,7 +108,7 @@ export default [
   },
   {
     ...options,
-    input: 'src/builder-widgets-async.ts',
+    input: 'src/builder-widgets-async.tsx',
     output: [{ dir: 'dist/builder-widgets-async', format: 'es', sourcemap: true }],
     // Do not resolve for es module build
     // TODO: should really do a cjs build too (probably for the default build instead of umd...)
