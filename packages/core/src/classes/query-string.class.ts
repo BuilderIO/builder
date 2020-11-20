@@ -12,13 +12,17 @@ export class QueryString {
     return this.stringify(map);
   }
 
-  static parse(queryString: string) {
+  static parse(queryString: string): StringMap {
     const query: StringMap = {};
     const pairs = (queryString[0] === '?' ? queryString.substr(1) : queryString).split('&');
     for (let i = 0; i < pairs.length; i++) {
       const pair = pairs[i].split('=');
       // TODO: node support?
-      query[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1] || '');
+      try {
+        query[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1] || '');
+      } catch (error) {
+        // Ignore malformed URI components
+      }
     }
     return query;
   }
