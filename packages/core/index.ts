@@ -1,7 +1,3 @@
-// import 'promise-polyfill/src/polyfill';
-// import 'promis';
-// import { Promise } from './src/classes/promise.class';
-
 import {
   Builder,
   BuilderComponent,

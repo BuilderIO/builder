@@ -1,11 +1,10 @@
-import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
+import json from 'rollup-plugin-json';
+import resolve from 'rollup-plugin-node-resolve';
+import regexReplace from 'rollup-plugin-re';
+import replace from 'rollup-plugin-replace';
 import sourceMaps from 'rollup-plugin-sourcemaps';
 import typescript from 'rollup-plugin-typescript2';
-import replace from 'rollup-plugin-replace';
-import json from 'rollup-plugin-json';
-import regexReplace from 'rollup-plugin-re';
-import alias from 'rollup-plugin-alias';
 
 const pkg = require('./package.json');
 
@@ -73,7 +72,7 @@ const options = {
     resolvePlugin,
 
     // Resolve source maps to the original source
-    sourceMaps(),
+    // sourceMaps(),
   ],
 };
 
@@ -96,6 +95,21 @@ export default [
       { file: pkg.module, format: 'es', sourcemap: true },
       { file: pkg.main, format: 'cjs', sourcemap: true },
     ],
+    // Do not resolve for es module build
+    // TODO: should really do a cjs build too (probably for the default build instead of umd...)
+    external: externalDependencies,
+    plugins: options.plugins
+      .filter(plugin => plugin !== resolvePlugin)
+      .concat([
+        resolve({
+          only: [/^\.{0,2}\//, /lodash\-es/],
+        }),
+      ]),
+  },
+  {
+    ...options,
+    input: 'src/builder-widgets-async.tsx',
+    output: [{ dir: 'dist/builder-widgets-async', format: 'es', sourcemap: true }],
     // Do not resolve for es module build
     // TODO: should really do a cjs build too (probably for the default build instead of umd...)
     external: externalDependencies,
@@ -173,42 +187,9 @@ export default [
         }),
         resolve({
           only: [/^\.{0,2}\//, /lodash\-es/],
-        }) /*as any*/,
-        // alias({
-        //   react: 'preact/compat',
-        //   'react-dom': 'preact/compat',
-        //   // For 3rd party libs
-        //   preact: 'preact/compat',
-        //   'preact-dom': 'preact/compat',
-        //   '@builder.io/react': '@builder.io/react/dist/preact'
-        // })
+        }),
       ]),
   },
-  // Inferno
-  // TODO: may have to do react 15 modifications for support (no fragment/context?)
-  // {
-  //   ...options,
-  //   output: [
-  //     { file: './dist/inferno.esm.js', format: 'es', sourcemap: true },
-  //     { file: './dist/inferno.js', format: 'cjs', sourcemap: true }
-  //   ],
-  //   external: externalDependencies.filter(name => !name.startsWith('lodash-es')),
-  //   plugins: options.plugins.filter(plugin => plugin !== resolvePlugin).concat([
-  //     resolve({
-  //       only: [/^\.{0,2}\//, /lodash\-es/]
-  //     }),
-  //     alias({
-  //       react: 'inferno-compat',
-  //       'react-dom': 'inferno-compat',
-  //       // For 3rd party libs
-  //       inferno: 'inferno-compat',
-  //       'inferno-dom': 'inferno-compat'
-  //     }),
-  //     replace({
-  //       'React.createContext': `require('create-inferno-context')`
-  //     })
-  //   ])
-  // },
   {
     ...options,
     output: {
@@ -227,12 +208,4 @@ export default [
       sourcemap: true,
     },
   },
-  // {
-  //   ...options,
-  //   output: {
-  //     format: 'system',
-  //     file: TODO,
-  //     sourcemap: true
-  //   }
-  // }
 ];
