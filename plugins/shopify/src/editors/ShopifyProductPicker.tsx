@@ -24,8 +24,7 @@ import { ShopifyProduct } from '../interfaces/shopify-product';
 import { BuilderRequest } from '../interfaces/builder-request';
 import { fastClone } from '../functions/fast-clone';
 import { SetShopifyKeysMessage } from '../components/set-shopify-keys-message';
-
-const apiRoot = 'https://qa.builder.io'; // 'https://builder.io'
+import appState from '@builder.io/app-context';
 
 interface ShopifyProductPickerProps extends CustomReactEditorProps<BuilderRequest | string> {}
 
@@ -78,7 +77,7 @@ export class ProductPicker extends SafeComponent<CustomReactEditorProps<string>>
 
   async searchProducts() {
     this.loading = true;
-    const shopifyProductsUrl = apiRoot + '/api/v1/shopify/products.json';
+    const shopifyProductsUrl = appState.config.apiRoot() + '/api/v1/shopify/products.json';
 
     const onShopifyError = (err: any) => {
       console.error('Shopify product search error:', err);
