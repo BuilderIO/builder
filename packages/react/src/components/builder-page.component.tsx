@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import { jsx as emotionJsx } from '@emotion/core';
 import { BuilderContent } from './builder-content.component';
 import { BuilderBlocks } from './builder-blocks.component';
-import { Image } from '../blocks/Image';
 import {
   Builder,
   GetContentOptions,
@@ -55,14 +54,12 @@ const wrapComponent = (info: any) => {
       info.inputs?.map((item: any) => item.name as string) || []
     );
 
-    const baseProps = omit(props, ...inputNames);
-    const inputProps = pick(props, ...inputNames);
+    const baseProps = omit(props, ...inputNames, 'attributes');
+    const inputProps = props; // pick(props, ...inputNames);
 
     if (info.noWrap) {
       return <info.class attributes={baseProps} {...inputProps} />;
     }
-
-    console.log({ baseProps, inputProps, name: info.name });
 
     return (
       <Tag {...baseProps}>
@@ -819,6 +816,8 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
 
     const contentId = this.useContent?.id;
 
+    console.log('ya?');
+
     return (
       // TODO: data attributes for model, id, etc?
       <WrapComponent
@@ -890,6 +889,8 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
 
                         const { codegen } = this.options;
 
+                        console.log({ codegen });
+
                         if (codegen && !this.Component && data.blocksJs) {
                           const builderComponentNames: string[] = Array.from(
                             new Set(Builder.components.map((item: any) => item.name))
@@ -899,12 +900,24 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
                             reversedcomponents.find((item: any) => item.class && item.name === name)
                           );
 
+                          const useState = (initialState: any) => {
+                            const [_tick, setTick] = React.useState(0);
+                            const [state, _setState] = React.useState(
+                              onChange(initialState, () => {
+                                setTick(tick => tick + 1);
+                              })
+                            );
+
+                            return state;
+                          };
+
                           this.Component = new Function(
                             '___EmotionJSX',
                             'Builder',
                             'builder',
                             'React',
                             'onChange',
+                            'useState',
                             ...builderComponentNames.map(name =>
                               (name || '').replace(/[^\w]+/gi, '')
                             ),
@@ -915,15 +928,11 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
                             builder,
                             React,
                             onChange,
+                            useState,
                             ...builderComponents.map(info => wrapComponent(info))
                           );
 
                           if (Builder.isBrowser) {
-                            console.log({
-                              component: this.Component,
-                              React,
-                              useState: React.useState,
-                            });
                             (window as any).Component = this.Component;
                           }
                         }

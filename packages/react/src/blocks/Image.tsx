@@ -170,6 +170,7 @@ class ImageComponent extends React.Component<any> {
   }
 
   componentDidMount() {
+    console.log('image mounted');
     if (this.props.lazy && Builder.isBrowser) {
       // throttled scroll capture listener
       const listener = throttle(

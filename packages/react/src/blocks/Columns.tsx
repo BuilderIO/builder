@@ -103,7 +103,7 @@ class ColumnsComponent extends React.Component<any> {
           }}
         >
           {/* TODO: map these */}
-          {this.props.children ? <div css={{ display: 'flex' }}>{this.props.children} </div> : null}
+          {this.props.children ? this.props.children : null}
           {columns.map((col, index) => {
             const TagName = col.link ? Link : 'div';
 
@@ -157,7 +157,7 @@ class ColumnsComponent extends React.Component<any> {
 const Column = (props: any) => (
   <div
     {...props.attributes}
-    style={{ width: '50%', ...props.attributes?.style, ...props.style }}
+    style={{ width: `${props.width || 50}%`, ...props.attributes?.style, ...props.style }}
     {...props}
   />
 );
