@@ -137,6 +137,7 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
             const match = matches && matches[0];
             this.setState({
               data: match,
+              loading: false,
             });
 
             if (match && this.firstLoad) {
@@ -190,6 +191,9 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
           error => {
             if (this.props.contentError) {
               this.props.contentError(error);
+              this.setState({
+                loading: false,
+              })
             }
           }
         )
