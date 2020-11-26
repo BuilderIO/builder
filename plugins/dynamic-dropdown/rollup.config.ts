@@ -12,10 +12,8 @@ const SERVE = process.env.SERVE === 'true';
 
 const pkg = require('./package.json');
 
-const libraryName = 'dropdown';
-
 export default {
-  input: `src/${libraryName}.tsx`,
+  input: `src/components/index.tsx`,
   // Important! We need to have shared references to 'react' and '@builder.io/sdk'
   // for builder plugins to run properly
   external: [
@@ -29,7 +27,7 @@ export default {
   output: [
     {
       file: pkg.main,
-      name: camelCase(libraryName),
+      name: camelCase("dropdown"),
       format: 'umd',
       sourcemap: true,
     },
@@ -46,7 +44,11 @@ export default {
     typescript({ useTsconfigDeclarationDir: true }),
     // Allow bundling cjs modules (unlike webpack, rollup doesn't understand cjs)
     resolve(),
-    commonjs(),
+    commonjs({
+      namedExports: {
+        'node_modules/react-dom/index.js': ['unstable_batchedUpdates'],
+      }
+    }),
     builtins(),
     globals(),
 
