@@ -1,13 +1,23 @@
-<img alt="BUILDER" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F6836fc105ad549a5b4bf144235b1a228" width="300" />
+<p align="center">
+  <img alt="BUILDER" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F6836fc105ad549a5b4bf144235b1a228" width="300" />
+</p>
 
-[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/builderio/builder/pulls)
-
-Drag and drop page building with your code components. Bring your [design systems](/examples/react-design-system) to life!
+<p align="center">
+  Drag and drop page building with your code components. Bring your <a href="/examples/react-design-system">design systems</a> to life!
+</p>
 
 <br />
+<p align="center">
+  <a href="https://github.com/prettier/prettier"><img alt="code style: prettier" src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg" /></a>
+  <a href="https://github.com/builderio/builder/pulls"><img alt="PRs Welcome" src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" /></a>
+  <a href="https://github.com/BuilderIO/builder"><img alt="License" src="https://img.shields.io/github/license/BuilderIO/builder" /></a>
+  <a href="https://www.npmjs.com/package/@builder.io/sdk"><img alt="Types" src="https://img.shields.io/npm/types/@builder.io/sdk" /></a>
+</p>
+<br />
 
-<img src="https://imgur.com/HjBWIbv.gif" alt="Editor example" />
+<p align="center">
+  <img src="https://imgur.com/HjBWIbv.gif" alt="Editor example" />
+</p>
 
 
 <table style="width:100%;">
@@ -79,6 +89,7 @@ export default let BuilderPage = () => {
 
 - Design system [live example](https://builder.io/fiddle/4b2e0a2e4b1a44a88a5e6f8c46cdfe7c) and [source](https://github.com/BuilderIO/builder/tree/master/examples/react-design-system)
 - [builder.io/fiddle](https://builder.io/fiddle)
+- [JSX Lite](https://github.com/BuilderIO/jsx-lite)
 - Storybook [live example](https://builder-storybook.firebaseapp.com) and [source](https://github.com/BuilderIO/builder/tree/master/packages/storybook)
 
 ## Supported Frameworks
@@ -90,6 +101,7 @@ export default let BuilderPage = () => {
 | [Next.js](examples/next-js)                                              |                            Stable                             |
 | [Gatsby](examples/gatsby)                                                |                            Stable                             |
 | [Shopify / Liquid](https://apps.shopify.com/builder-2)                   |                            Stable                             |
+| [JSX Lite](https://github.com/BuilderIO/jsx-lite)                        |                              WIP                              |
 | [Angular](packages/angular)                                              |                            Stable                             |
 | [Webcomponents](packages/webcomponents) (for any framework/stack)        |                            Stable                             |
 | [Email](packages/email)                                                  |                            Stable                             |
@@ -102,7 +114,7 @@ Want support for something not listed here or for us to priotize something comin
 
 ## What's in this repository?
 
-This repo houses all of the various [SDKs](packages), [usage examples](examples), [starter projects](starters), and [plugins](plugins)
+This repo houses all of the various [SDKs](packages), [usage examples](examples), [starter projects](starters), and [plugins](plugins).
 
 ## Getting Started with React
 

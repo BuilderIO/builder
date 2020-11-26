@@ -7,7 +7,7 @@
     "url": "https://github.com/BuilderIO/builder.git",
     "directory": "packages/gatsby"
   },
-  "version": "1.0.11",
+  "version": "1.0.12-0",
   "keywords": [
     "gatsby",
     "gatsby-plugin",

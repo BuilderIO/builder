@@ -3,7 +3,7 @@
     "moduleResolution": "node",
     "jsx": "react",
     "target": "es5",
-    "module": "es2015",
+    "module": "esnext",
     "lib": ["dom", "es2015"],
     "strict": true,
     "sourceMap": true,
