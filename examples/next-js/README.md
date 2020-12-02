@@ -100,7 +100,7 @@ class CatchallBuilderPage extends React.Component {
           <BuilderComponent model="page" content={this.props.builderPage} />
         ) : (
           // Render your 404 page (or redirect to it)
-          <NotFound>
+          <NotFound/>
         )}
       </div>
     );
