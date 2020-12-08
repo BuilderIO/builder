@@ -1,5 +1,4 @@
 export const getDependenciesKeyFrom = (props: any) => {
-
   const { dependencyComponentVariables } = props?.field?.options || ({} as any);
   const dynamicDependencies: string[] = [];
   if (dependencyComponentVariables && dependencyComponentVariables.length) {
@@ -9,8 +8,8 @@ export const getDependenciesKeyFrom = (props: any) => {
       }
     });
 
-    return dynamicDependencies.join("-");
+    return dynamicDependencies.join('-');
   }
 
-  return "";
+  return '';
 };
