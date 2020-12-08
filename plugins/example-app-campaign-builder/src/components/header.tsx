@@ -19,14 +19,17 @@ export const Header = () => {
             css={{
               display: 'flex',
               flexDirection: 'column',
-              alignItems: 'stretch'
+              alignItems: 'stretch',
             }}
           >
             <div css={{ maxWidth: 1400, width: '100%', margin: 'auto' }}>
               <div css={{ display: 'flex', alignItems: 'center' }}>
-                <div onClick={() => {
-                  context.location.go('/')
-                }} css={{ fontSize: 20, padding: 20 }}>
+                <div
+                  onClick={() => {
+                    context.location.go('/')
+                  }}
+                  css={{ fontSize: 20, padding: 20 }}
+                >
                   {/* This of course can be dynamic campaign name */}
                   Campaign name
                 </div>

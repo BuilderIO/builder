@@ -17,15 +17,15 @@ module.exports = {
     '@builder.io/app-context': '@builder.io/app-context',
     '@material-ui/core': '@material-ui/core',
     '@material-ui/icons': '@material-ui/icons',
-    ses: 'ses'
+    ses: 'ses',
   },
   output: {
     filename: pkg.output,
     path: path.resolve(__dirname, 'dist'),
-    libraryTarget: 'system'
+    libraryTarget: 'system',
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.jsx']
+    extensions: ['.ts', '.tsx', '.js', '.jsx'],
   },
   module: {
     rules: [
@@ -33,32 +33,32 @@ module.exports = {
         rules: [
           {
             test: /\.css$/i,
-            use: ['style-loader', 'css-loader']
-          }
-        ]
+            use: ['style-loader', 'css-loader'],
+          },
+        ],
       },
       {
         test: /\.(ts|tsx)$/,
         exclude: /node_modules/,
         use: [
           {
-            loader: 'ts-loader'
-          }
-        ]
+            loader: 'ts-loader',
+          },
+        ],
       },
       {
         enforce: 'pre',
         test: /\.js$/,
-        loader: 'source-map-loader'
-      }
-    ]
+        loader: 'source-map-loader',
+      },
+    ],
   },
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
     compress: true,
     port: 1268,
     headers: {
-      'Access-Control-Allow-Origin': '*'
-    }
-  }
+      'Access-Control-Allow-Origin': '*',
+    },
+  },
 }

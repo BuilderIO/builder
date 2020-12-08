@@ -29,8 +29,8 @@ export function CreateCampaign(props: {
       const campaign: BuilderContent = {
         name: state.campaignName,
         data: {
-          additionalPages: []
-        }
+          additionalPages: [],
+        },
       }
 
       // Create the page entries and link them to our data model
@@ -76,7 +76,7 @@ export function CreateCampaign(props: {
     onFormSubmit(e: React.FormEvent) {
       e.preventDefault()
       this.createCampaign()
-    }
+    },
   }))
 
   const spacing = 30
@@ -87,7 +87,7 @@ export function CreateCampaign(props: {
         width: 500,
         padding: spacing,
         maxWidth: '95vh',
-        overflow: 'auto'
+        overflow: 'auto',
       }}
     >
       <Typography css={{ fontSize: 22, textAlign: 'center' }}>
@@ -100,20 +100,20 @@ export function CreateCampaign(props: {
           placeholder="New campaign"
           value={state.campaignName}
           autoFocus
-          onChange={e => (state.campaignName = e.target.value)}
+          onChange={(e) => (state.campaignName = e.target.value)}
           label="Give your campaign a name"
         />
         <TextField
           css={{ marginTop: spacing }}
           fullWidth
           value={state.campaignTypeChoice}
-          onChange={e =>
+          onChange={(e) =>
             (state.campaignTypeChoice = e.target.value as CampaignType)
           }
           select
           label="Choose a campaign type"
         >
-          {campaignTypes.map(campaignType => (
+          {campaignTypes.map((campaignType) => (
             <MenuItem value={campaignType} key={campaignType}>
               {campaignType}
             </MenuItem>

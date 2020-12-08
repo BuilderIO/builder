@@ -4,7 +4,7 @@ const block = (options: Partial<BuilderElement>) =>
   ({
     ...options,
     // All builder blocks need this @type property set
-    '@type': '@builder.io/sdk:Element'
+    '@type': '@builder.io/sdk:Element',
   } as BuilderElement)
 
 const examplePageTemplate = {
@@ -17,32 +17,32 @@ const examplePageTemplate = {
         component: {
           name: 'Text',
           options: {
-            text: 'Hello!'
-          }
-        }
+            text: 'Hello!',
+          },
+        },
       }),
       block({
         responsiveStyles: {
           large: {
-            marginTop: '20px'
-          }
+            marginTop: '20px',
+          },
         },
         component: {
           name: 'Text',
           options: {
-            text: 'Hello!'
-          }
-        }
-      })
-    ]
-  }
+            text: 'Hello!',
+          },
+        },
+      }),
+    ],
+  },
 }
 
 export const pageTemplates = {
   'page type a': {
-    page: examplePageTemplate
+    page: examplePageTemplate,
   },
   'page type b': {
-    page: examplePageTemplate
-  }
+    page: examplePageTemplate,
+  },
 }

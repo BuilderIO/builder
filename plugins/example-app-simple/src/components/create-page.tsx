@@ -32,7 +32,7 @@ export function CreatePage(props: {
     onFormSubmit(e: React.FormEvent) {
       e.preventDefault()
       this.createPage()
-    }
+    },
   }))
 
   const spacing = 30
@@ -43,7 +43,7 @@ export function CreatePage(props: {
         width: 500,
         padding: spacing,
         maxWidth: '95vh',
-        overflow: 'auto'
+        overflow: 'auto',
       }}
     >
       <Typography css={{ fontSize: 22, textAlign: 'center' }}>
@@ -56,18 +56,18 @@ export function CreatePage(props: {
           placeholder="New page"
           value={state.pageName}
           autoFocus
-          onChange={e => (state.pageName = e.target.value)}
+          onChange={(e) => (state.pageName = e.target.value)}
           label="Give your page a name"
         />
         <TextField
           css={{ marginTop: spacing }}
           fullWidth
           value={state.pageTypeChoice}
-          onChange={e => (state.pageTypeChoice = e.target.value as PageType)}
+          onChange={(e) => (state.pageTypeChoice = e.target.value as PageType)}
           select
           label="Choose a page type"
         >
-          {pageTypes.map(pageType => (
+          {pageTypes.map((pageType) => (
             <MenuItem value={pageType} key={pageType}>
               {pageType}
             </MenuItem>

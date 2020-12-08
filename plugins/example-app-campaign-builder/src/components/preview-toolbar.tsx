@@ -13,7 +13,7 @@ import {
   PhoneIphone,
   LaptopMac,
   Redo,
-  Refresh
+  Refresh,
 } from '@material-ui/icons'
 
 const context: ApplicationContext = require('@builder.io/app-context').default
@@ -38,7 +38,7 @@ const ToolButton = observer((props: ToolButtonsProps) => (
           color: props.active ? '#670CB7' : '#999',
           width: 40,
           height: 38,
-          opacity: props.disabled ? 0.5 : 1
+          opacity: props.disabled ? 0.5 : 1,
         }}
       >
         {props.children}
@@ -52,7 +52,7 @@ const resizeButtonStyles: any = {
   width: 38,
   margin: '0 4px',
   position: 'relative',
-  padding: 0
+  padding: 0,
 }
 
 export function PreviewToolbar() {
@@ -64,7 +64,7 @@ export function PreviewToolbar() {
           alignItems: 'center',
           backgroundColor: '#f8f8f8',
           minHeight: 39,
-          position: 'relative'
+          position: 'relative',
         }}
       >
         <ToolButton
@@ -108,7 +108,7 @@ export function PreviewToolbar() {
             left: 0,
             right: 0,
             width: 200,
-            margin: 'auto'
+            margin: 'auto',
           }}
         >
           <IconButton
@@ -141,7 +141,7 @@ export function PreviewToolbar() {
         <div
           css={{
             display: 'flex',
-            marginLeft: 'auto'
+            marginLeft: 'auto',
           }}
         >
           <Tooltip title="Undo">
@@ -154,7 +154,7 @@ export function PreviewToolbar() {
                 <Undo
                   css={{
                     color: '#999',
-                    opacity: context.designerState.canUndo ? 1 : 0.5
+                    opacity: context.designerState.canUndo ? 1 : 0.5,
                   }}
                 />
               </IconButton>
@@ -170,7 +170,7 @@ export function PreviewToolbar() {
                 <Redo
                   css={{
                     color: '#999',
-                    opacity: context.designerState.canRedo ? 1 : 0.5
+                    opacity: context.designerState.canRedo ? 1 : 0.5,
                   }}
                 />
               </IconButton>
@@ -183,7 +183,7 @@ export function PreviewToolbar() {
                 fontSize: 20,
                 height: 40,
                 width: 40,
-                padding: 0
+                padding: 0,
               }}
               onClick={() => {
                 const iframe = context.designerState.editingIframeRef

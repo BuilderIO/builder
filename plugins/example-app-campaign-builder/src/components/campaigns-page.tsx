@@ -8,7 +8,7 @@ import {
   Paper,
   CircularProgress,
   Typography,
-  ListItemSecondaryAction
+  ListItemSecondaryAction,
 } from '@material-ui/core'
 import { useLocalStore, useObserver } from 'mobx-react'
 import { BuilderContent } from '@builder.io/sdk'
@@ -40,13 +40,13 @@ export function CampaignsPage(props: AppTabProps) {
       )
     },
     get teamsThatUserIsAdmin() {
-      return state.teams.filter(item =>
+      return state.teams.filter((item) =>
         (item.data!.admins || []).includes(props.context.user.id)
       )
     },
     get teamsForUser() {
       // Get teams where the current user is either a member or an admin
-      return state.teams.filter(item =>
+      return state.teams.filter((item) =>
         [...(item.data!.members || []), ...(item.data!.admins || [])].includes(
           props.context.user.id
         )
@@ -67,7 +67,7 @@ export function CampaignsPage(props: AppTabProps) {
         (item: any) => item.team.id
       )
 
-      return state.teamsForUser.some(team =>
+      return state.teamsForUser.some((team) =>
         teamIdsForCampaign.includes(team.id)
       )
     },
@@ -78,9 +78,9 @@ export function CampaignsPage(props: AppTabProps) {
         // See https://www.builder.io/c/docs/query-api
         `https://cdn.builder.io/api/v2/content/team?apiKey=${user.apiKey}&query.published.$ne=archived&limit=50&cachebust=true`,
         {
-          headers: user.authHeaders
+          headers: user.authHeaders,
         }
-      ).then(res => res.json())
+      ).then((res) => res.json())
       state.teams = Array.isArray(teams.results) ? teams.results : []
       state.fetchingTeams = false
     },
@@ -91,9 +91,9 @@ export function CampaignsPage(props: AppTabProps) {
         // See https://www.builder.io/c/docs/query-api
         `https://cdn.builder.io/api/v2/content/campaign?apiKey=${user.apiKey}&query.published.$ne=archived&limit=50&cachebust=true`,
         {
-          headers: user.authHeaders
+          headers: user.authHeaders,
         }
-      ).then(res => res.json())
+      ).then((res) => res.json())
       state.campaigns = Array.isArray(campaigns.results)
         ? campaigns.results
         : []
@@ -103,7 +103,7 @@ export function CampaignsPage(props: AppTabProps) {
       const close = await props.context.globalState.openDialog(
         <CreateCampaign context={props.context} onComplete={() => close()} />
       )
-    }
+    },
   }))
 
   useEffect(() => {
@@ -118,13 +118,13 @@ export function CampaignsPage(props: AppTabProps) {
           maxWidth: 1000,
           padding: 20,
           margin: 'auto',
-          width: '100%'
+          width: '100%',
         }}
       >
         <Row
           css={{
             color: '#444',
-            paddingBottom: 20
+            paddingBottom: 20,
           }}
         >
           <Typography css={{ fontSize: 32 }}>Campaigns</Typography>
@@ -150,7 +150,7 @@ export function CampaignsPage(props: AppTabProps) {
         ) : (
           <Paper>
             <List>
-              {state.campaigns?.map(item => (
+              {state.campaigns?.map((item) => (
                 <ListItem
                   disabled={!state.hasAccessToCampaign(item)}
                   key={item.id}

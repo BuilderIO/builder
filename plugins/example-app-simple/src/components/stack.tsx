@@ -4,5 +4,5 @@ import styled from '@emotion/styled'
 export const Stack = styled.div({
   display: 'flex',
   flexDirection: 'column',
-  alignContent: 'stretch'
+  alignContent: 'stretch',
 })

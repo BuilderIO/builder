@@ -24,17 +24,17 @@ export const InsertMenu = () => {
         {[{ name: 'Box' } as Component]
           .concat(context.builderComponents)
           .filter(
-            item =>
+            (item) =>
               !item.hideFromInsertMenu &&
               // Don't show email components
               !item.name.startsWith('Email:') &&
               // Don't show form components
               !item.name.startsWith('Form:')
           )
-          .map(item => {
+          .map((item) => {
             return (
               <div
-                onMouseDown={e => {
+                onMouseDown={(e) => {
                   e.preventDefault()
                   // There is a special handing for the 'Box' type
                   context.designerState.draggingInItem =
@@ -47,7 +47,7 @@ export const InsertMenu = () => {
                   cursor: 'pointer',
                   marginLeft: 10,
                   marginBottom: 10,
-                  textAlign: 'center'
+                  textAlign: 'center',
                 }}
               >
                 <img
@@ -56,7 +56,7 @@ export const InsertMenu = () => {
                     height: 30,
                     width: 50,
                     objectFit: 'contain',
-                    objectPosition: 'center'
+                    objectPosition: 'center',
                   }}
                   src={
                     item.image ||
@@ -67,7 +67,7 @@ export const InsertMenu = () => {
                 />
                 <div
                   css={{
-                    fontSize: 12
+                    fontSize: 12,
                   }}
                 >
                   {last(item.name.split(':'))}

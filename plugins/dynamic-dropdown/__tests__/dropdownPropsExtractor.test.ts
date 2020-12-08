@@ -35,16 +35,24 @@ describe('Get Massaged Props', () => {
 
     it('when templated url with missing component tokens', () => {
       const templatedUrl = 'https://www.domain.net/v2/{{locale}}/endpoint/{{componentVariable}}';
-      const builderComponentVariables: {[key: string]: string} = {"anotherVariable": "X"}
-      const builderPluginObject = {object: {get: (key: string): any => builderComponentVariables[key] }}
+      const builderComponentVariables: { [key: string]: string } = { anotherVariable: 'X' };
+      const builderPluginObject = {
+        object: { get: (key: string): any => builderComponentVariables[key] },
+      };
       mock.mockReturnValue({ locale });
       try {
         getMassagedProps({
-          field: { options: { url: templatedUrl, mapper: '() => {}', dependencyComponentVariables: ["componentVariable"] } },
+          field: {
+            options: {
+              url: templatedUrl,
+              mapper: '() => {}',
+              dependencyComponentVariables: ['componentVariable'],
+            },
+          },
           ...builderPluginContext,
-          ...builderPluginObject
+          ...builderPluginObject,
         });
-        fail("Should have thrown")
+        fail('Should have thrown');
       } catch (e) {
         expect(e.message).toBe('Tokens {{componentVariable}} not replaced');
       }
@@ -52,7 +60,6 @@ describe('Get Massaged Props', () => {
   });
 
   describe('should return', () => {
-    
     beforeAll(() => {
       mock.mockReturnValue({ locale });
     });
@@ -71,18 +78,26 @@ describe('Get Massaged Props', () => {
 
     it('url after replacing templated url with component tokens', () => {
       const templatedUrl = 'https://www.domain.net/v2/{{locale}}/endpoint/{{componentVariable}}';
-      const A_VALUE = "A VARIABLE"
-      const builderComponentVariables: {[key: string]: string} = {"componentVariable": A_VALUE}
-      const builderPluginObject = {object: {get: (key: string): any => builderComponentVariables[key] }}
+      const A_VALUE = 'A VARIABLE';
+      const builderComponentVariables: { [key: string]: string } = { componentVariable: A_VALUE };
+      const builderPluginObject = {
+        object: { get: (key: string): any => builderComponentVariables[key] },
+      };
       const actual = getMassagedProps({
-        field: { options: { url: templatedUrl, mapper: '() => {}', dependencyComponentVariables: ["componentVariable"] } },
+        field: {
+          options: {
+            url: templatedUrl,
+            mapper: '() => {}',
+            dependencyComponentVariables: ['componentVariable'],
+          },
+        },
         ...builderPluginContext,
-        ...builderPluginObject
+        ...builderPluginObject,
       });
-      
+
       const expectedUrl = `https://www.domain.net/v2/${locale}/endpoint/${A_VALUE}`;
       expect(actual.url).toBe(expectedUrl);
-    });    
+    });
 
     it('mapper function as mapper', () => {
       const expected = '() => {}';

@@ -6,15 +6,15 @@ module.exports = {
     '@builder.io/sdk': '@builder.io/sdk',
     '@material-ui/core': '@material-ui/core',
     '@emotion/core': '@emotion/core',
-    '@emotion/styled': '@emotion/styled'
+    '@emotion/styled': '@emotion/styled',
   },
   output: {
-    filename: "builder-plugin-dynamic-dropdown.system.js",
+    filename: 'builder-plugin-dynamic-dropdown.system.js',
     path: path.resolve(__dirname, 'dist'),
-    libraryTarget: 'system'
+    libraryTarget: 'system',
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.jsx']
+    extensions: ['.ts', '.tsx', '.js', '.jsx'],
   },
   module: {
     rules: [
@@ -23,23 +23,23 @@ module.exports = {
         exclude: /node_modules/,
         use: [
           {
-            loader: 'ts-loader'
-          }
-        ]
+            loader: 'ts-loader',
+          },
+        ],
       },
       {
         enforce: 'pre',
         test: /\.js$/,
-        loader: 'source-map-loader'
-      }
-    ]
+        loader: 'source-map-loader',
+      },
+    ],
   },
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
     compress: true,
     port: 1268,
     headers: {
-      'Access-Control-Allow-Origin': '*'
-    }
-  }
+      'Access-Control-Allow-Origin': '*',
+    },
+  },
 };

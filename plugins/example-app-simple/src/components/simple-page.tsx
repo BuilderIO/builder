@@ -8,7 +8,7 @@ import {
   Paper,
   CircularProgress,
   Typography,
-  ListItemSecondaryAction
+  ListItemSecondaryAction,
 } from '@material-ui/core'
 import { useLocalStore, useObserver } from 'mobx-react'
 import { BuilderContent } from '@builder.io/sdk'
@@ -45,9 +45,9 @@ export function SimplePage(props: AppTabProps) {
         // See https://www.builder.io/c/docs/query-api
         `https://cdn.builder.io/api/v2/content/page?apiKey=${user.apiKey}&query.published.$ne=archived&limit=50&cachebust=true`,
         {
-          headers: user.authHeaders
+          headers: user.authHeaders,
         }
-      ).then(res => res.json())
+      ).then((res) => res.json())
       state.pages = Array.isArray(pages.results) ? pages.results : []
       state.fetchingPages = false
     },
@@ -55,7 +55,7 @@ export function SimplePage(props: AppTabProps) {
       const close = await props.context.globalState.openDialog(
         <CreatePage context={props.context} onComplete={() => close()} />
       )
-    }
+    },
   }))
 
   useEffect(() => {
@@ -69,13 +69,13 @@ export function SimplePage(props: AppTabProps) {
           maxWidth: 1000,
           padding: 20,
           margin: 'auto',
-          width: '100%'
+          width: '100%',
         }}
       >
         <Row
           css={{
             color: '#444',
-            paddingBottom: 20
+            paddingBottom: 20,
           }}
         >
           <Typography css={{ fontSize: 32 }}>Pages</Typography>
@@ -101,7 +101,7 @@ export function SimplePage(props: AppTabProps) {
         ) : (
           <Paper>
             <List>
-              {state.pages?.map(item => (
+              {state.pages?.map((item) => (
                 <ListItem
                   key={item.id}
                   button

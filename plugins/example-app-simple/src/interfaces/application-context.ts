@@ -2,7 +2,7 @@ import {
   BuilderContent,
   Input,
   BuilderElement,
-  Component
+  Component,
 } from '@builder.io/sdk'
 
 type Content = BuilderContent | ContentModel

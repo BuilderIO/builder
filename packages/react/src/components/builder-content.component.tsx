@@ -193,7 +193,7 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
               this.props.contentError(error);
               this.setState({
                 loading: false,
-              })
+              });
             }
           }
         )

@@ -36,7 +36,7 @@ export function PageLink(props: CustomEditorProps<string>) {
               // choices
               const newChoice = await props.context.dialogs.prompt({
                 defaultValue: props.value,
-                title: 'Choose a content ID'
+                title: 'Choose a content ID',
               })
               if (newChoice) {
                 props.onChange(newChoice)

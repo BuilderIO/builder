@@ -1,4 +1,4 @@
-import { ApplicationContext } from "./application-context";
+import { ApplicationContext } from './application-context'
 
 export interface CustomEditorProps<ValueType = string> {
   value: ValueType | undefined

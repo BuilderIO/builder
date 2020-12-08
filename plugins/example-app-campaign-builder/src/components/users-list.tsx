@@ -12,14 +12,14 @@ import {
   ListItemText,
   Paper,
   Tooltip,
-  Typography
+  Typography,
 } from '@material-ui/core'
 import { RemoveCircleOutline } from '@material-ui/icons'
 import { useLocalStore, useObserver } from 'mobx-react'
 import React, { useState } from 'react'
 import {
   ApplicationContext,
-  BuilderUser
+  BuilderUser,
 } from '../interfaces/application-context'
 import { CustomEditorProps } from '../interfaces/custom-editor'
 import { Stack } from './stack'
@@ -31,7 +31,7 @@ const getUserHook = (context: ApplicationContext, id: string) => {
   }
 
   // TODO: cancel pending if re-rendering, esp if user ID changed
-  context.user.getUser(id).then(user => {
+  context.user.getUser(id).then((user) => {
     if (!user || id === user.id) {
       setUser(user)
     }
@@ -47,7 +47,7 @@ const listUsersHook = (context: ApplicationContext) => {
   }
 
   // TODO: cancel pending if re-rendering, esp if user ID changed
-  context.user.listUsers().then(users => {
+  context.user.listUsers().then((users) => {
     setUsers(users)
   })
 
@@ -63,7 +63,9 @@ export function UserPicker(props: {
 }) {
   const { context, value, onChoose, omit } = props
   // Don't list already selected users
-  const users = listUsersHook(context)?.filter(item => !omit?.includes(item.id))
+  const users = listUsersHook(context)?.filter(
+    (item) => !omit?.includes(item.id)
+  )
 
   return useObserver(() => {
     return (
@@ -76,7 +78,7 @@ export function UserPicker(props: {
           <React.Fragment>
             {users.length ? (
               <List>
-                {users.map(item => (
+                {users.map((item) => (
                   <ListItem
                     button
                     selected={item.id === value}
@@ -120,9 +122,9 @@ export function UsersList(props: CustomEditorProps<string[]>) {
           context={props.context}
           css={{
             width: 500,
-            padding: 30
+            padding: 30,
           }}
-          onChoose={id => {
+          onChoose={(id) => {
             if (id) {
               props.onChange([...value, id])
             }
@@ -130,32 +132,32 @@ export function UsersList(props: CustomEditorProps<string[]>) {
           }}
         />
       )
-    }
+    },
   }))
 
   return useObserver(() => (
     <Stack
       css={{
-        padding: '10px 0'
+        padding: '10px 0',
       }}
     >
       {Boolean(value.length) && (
         <div
           css={{
             backgroundColor: '#f8f8f8',
-            margin: '0 -30px'
+            margin: '0 -30px',
           }}
         >
           <Divider />
           <Paper css={{ margin: '20px 30px' }} elevation={1}>
             <List dense>
-              {value.map(item => (
+              {value.map((item) => (
                 <UserPreviewCell
                   userId={item}
                   key={item}
                   onRemove={() => {
                     props.onChange(
-                      value.filter(valueItem => valueItem !== item)
+                      value.filter((valueItem) => valueItem !== item)
                     )
                   }}
                   context={props.context}
@@ -171,7 +173,7 @@ export function UsersList(props: CustomEditorProps<string[]>) {
         variant="outlined"
         css={{
           width: 250,
-          margin: '15px 0 5px'
+          margin: '15px 0 5px',
         }}
         onClick={state.addUser}
       >
@@ -195,8 +197,8 @@ function UserPreviewCell(props: {
       <ListItem
         css={{
           '&:hover .remove-button': {
-            opacity: 1
-          }
+            opacity: 1,
+          },
         }}
       >
         {userId && !user && <CircularProgress size={20} disableShrink />}
@@ -210,7 +212,7 @@ function UserPreviewCell(props: {
                   <IconButton
                     className="remove-button"
                     css={{ padding: 5, opacity: 0, transition: 'opacity 0.2s' }}
-                    onClick={e => {
+                    onClick={(e) => {
                       e.stopPropagation()
                       onRemove()
                     }}

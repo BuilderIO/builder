@@ -13,7 +13,7 @@ import {
   ListItemAvatar,
   Avatar,
   Paper,
-  Divider
+  Divider,
 } from '@material-ui/core'
 import { Stack } from './stack'
 import { ApplicationContext } from '../interfaces/application-context'
@@ -41,7 +41,7 @@ export function AdditionalPages(props: CustomEditorProps<string[]>) {
       // over in ./create-campaign.tsx
       // and then save the ID, e.g. props.onChange([...value, theNewId])
       await props.context.dialogs.alert('TODO :)')
-    }
+    },
   }))
 
   // When the value changes (the contnet ID), fetch
@@ -53,20 +53,20 @@ export function AdditionalPages(props: CustomEditorProps<string[]>) {
   return useObserver(() => (
     <Stack
       css={{
-        padding: '10px 0'
+        padding: '10px 0',
       }}
     >
       {Boolean(value.length) && (
         <div
           css={{
             backgroundColor: '#f8f8f8',
-            margin: '0 -30px'
+            margin: '0 -30px',
           }}
         >
           <Divider />
           <Paper css={{ margin: '20px 30px' }} elevation={1}>
             <List dense>
-              {value.map(item => (
+              {value.map((item) => (
                 <ContentPreviewCell
                   contentId={item}
                   key={item}
@@ -83,7 +83,7 @@ export function AdditionalPages(props: CustomEditorProps<string[]>) {
         variant="outlined"
         css={{
           width: 250,
-          margin: '15px 0 5px'
+          margin: '15px 0 5px',
         }}
         onClick={state.addPage}
       >
@@ -123,8 +123,8 @@ function ContentPreviewCell(props: {
                 <Avatar
                   imgProps={{
                     style: {
-                      objectPosition: 'top'
-                    }
+                      objectPosition: 'top',
+                    },
                   }}
                   css={{
                     borderRadius: 4,
@@ -132,7 +132,7 @@ function ContentPreviewCell(props: {
                     height: 36,
                     marginTop: -3,
                     marginBottom: -3,
-                    boxShadow: '0 1px 2px rgba(0, 0, 0, 0.3)'
+                    boxShadow: '0 1px 2px rgba(0, 0, 0, 0.3)',
                   }}
                   src={content.screenshot}
                 />
