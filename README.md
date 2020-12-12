@@ -72,8 +72,8 @@ export default let BuilderPage = () => {
 
 ## Try it out!
 
-- Design system [live example](https://builder.io/fiddle/4b2e0a2e4b1a44a88a5e6f8c46cdfe7c) and [source](https://github.com/BuilderIO/builder/tree/master/examples/react-design-system)
 - [builder.io/fiddle](https://builder.io/fiddle)
+- Design system [live example](https://builder.io/fiddle/4b2e0a2e4b1a44a88a5e6f8c46cdfe7c) and [source](https://github.com/BuilderIO/builder/tree/master/examples/react-design-system)
 - [JSX Lite](https://github.com/BuilderIO/jsx-lite)
 - Storybook [live example](https://builder-storybook.firebaseapp.com) and [source](https://github.com/BuilderIO/builder/tree/master/packages/storybook)
 
@@ -83,7 +83,7 @@ export default let BuilderPage = () => {
 - Create a free account on [builder.io](https://builder.io) and drag and drop to create and publish pages and content
 - Profit
 
-<img src="https://cdn.builder.io/api/v1/image/assets%2F444142b2cae54a19aeb8b5ba245feffe%2Facb2c8e2b6b74e5fa78b7ba156c63f45" />
+<img src="https://cdn.builder.io/api/v1/image/assets%2F444142b2cae54a19aeb8b5ba245feffe%2F0c71d3f2a11b449aa843b27c60f39587" />
 
 
 ## Framework Support
