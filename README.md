@@ -70,21 +70,6 @@ export default let BuilderPage = () => {
 &nbsp;
 <img src="https://i.imgur.com/HXKroZm.jpg" />
 
-## How does it work?
-
-- Integrate the [Builder API or SDK](#supported-frameworks) to your site or app
-- Create a free account on [builder.io](https://builder.io) and drag and drop to create and publish pages and content
-- Profit
-
-## What is it good for?
-
-- Landing pages on custom code stacks
-- [Design systems](/examples/react-design-system) and visually editing your custom components
-- Marketing & content pages (Homepage, promotions, merchandising, about, FAQ, help, docs, etc)
-- Sever side a/b testing and segmentation without performance cost
-- Freedom from marketing teams that never stop asking for new things
-- Developers who are tired of pushing pixels
-
 ## Try it out!
 
 - Design system [live example](https://builder.io/fiddle/4b2e0a2e4b1a44a88a5e6f8c46cdfe7c) and [source](https://github.com/BuilderIO/builder/tree/master/examples/react-design-system)
@@ -92,7 +77,16 @@ export default let BuilderPage = () => {
 - [JSX Lite](https://github.com/BuilderIO/jsx-lite)
 - Storybook [live example](https://builder-storybook.firebaseapp.com) and [source](https://github.com/BuilderIO/builder/tree/master/packages/storybook)
 
-## Supported Frameworks
+## How does it work?
+
+- Integrate the [Builder API or SDK](#supported-frameworks) to your site or app
+- Create a free account on [builder.io](https://builder.io) and drag and drop to create and publish pages and content
+- Profit
+
+<img src="https://cdn.builder.io/api/v1/image/assets%2F444142b2cae54a19aeb8b5ba245feffe%2Facb2c8e2b6b74e5fa78b7ba156c63f45" />
+
+
+## Framework Support
 
 | Framework                                                                |                            Status                             |
 | ------------------------------------------------------------------------ | :-----------------------------------------------------------: |
