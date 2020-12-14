@@ -1,0 +1,210 @@
+"""
+Exposes a URL that specifies the behaviour of this scalar.
+"""
+directive @specifiedBy(
+  """
+  The URL that specifies the behaviour of this scalar.
+  """
+  url: String!
+) on SCALAR
+
+input ContentQuery {
+  """
+  Limit results returned, e.g. `limit: 10, offset: 10`
+  """
+  limit: Float
+
+  """
+  Offset results returned, e.g. `limit: 10, offset: 10`
+  """
+  offset: Float
+
+  """
+  Filter results via mongodb queries. e.g. `query: { id: "abc123", data: { customNumberField: { $lt: 100 } } }
+  """
+  query: JSONObject
+
+  """
+  Pass targeting info, like target: { urlPath: '/foobar', device: 'mobile' }
+  """
+  target: JSONObject
+
+  """
+  Additional API options, e.g. `options: { includeUnpublished: true }`
+  """
+  options: JSONObject
+
+  """
+  Order results, e.g. `sort: { createdDate: -1 }
+  """
+  sort: JSONObject
+}
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
+"""
+The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSONObject
+
+type ModelType {
+  id: ID
+  designerVersion: Int
+  name: String!
+  kind: String!
+  subType: String
+  examplePageUrl: String
+  helperText: String
+  nameField: String
+  pathPrefix: String
+  injectWcAt: String
+  injectWcPosition: String
+  lastUpdateBy: String
+  repeatable: Boolean
+  autoTracked: Boolean
+  singleton: Boolean
+  hideOptions: Boolean
+  hidden: Boolean
+  getSchemaFromPage: Boolean
+  archived: Boolean
+  individualEmbed: Boolean
+  componentsOnlyMode: Boolean
+  bigData: Boolean
+  isPage: Boolean
+  clientSideOnly: Boolean
+  shopifyUseMetafieldsForContent: Boolean
+  shopifyDoNotUsePreviewTemplates: Boolean
+  sendToElasticSearch: Boolean
+  sendToMongoDb: Boolean
+  allowMetrics: Boolean
+  allowTests: Boolean
+  allowHeatmap: Boolean
+  publicWritable: Boolean
+  publicReadable: Boolean
+  strictPrivateRead: Boolean
+  strictPrivateWrite: Boolean
+  showMetrics: Boolean
+  showAbTests: Boolean
+  showTargeting: Boolean
+  showScheduling: Boolean
+  schema: JSONObject
+  hooks: JSONObject
+  webhooks: [JSONObject!]
+  fields: [JSONObject!]
+  defaultQuery: [QueryType!]
+  requiredTargets: [String!]
+  content(contentQuery: ContentQuery): [JSONObject!]!
+  everything: JSONObject!
+}
+
+type ModelWithContent {
+  id: ID
+  designerVersion: Int
+  name: String!
+  kind: String!
+  subType: String
+  examplePageUrl: String
+  helperText: String
+  nameField: String
+  pathPrefix: String
+  injectWcAt: String
+  injectWcPosition: String
+  lastUpdateBy: String
+  repeatable: Boolean
+  autoTracked: Boolean
+  singleton: Boolean
+  hideOptions: Boolean
+  hidden: Boolean
+  getSchemaFromPage: Boolean
+  archived: Boolean
+  individualEmbed: Boolean
+  componentsOnlyMode: Boolean
+  bigData: Boolean
+  isPage: Boolean
+  clientSideOnly: Boolean
+  shopifyUseMetafieldsForContent: Boolean
+  shopifyDoNotUsePreviewTemplates: Boolean
+  sendToElasticSearch: Boolean
+  sendToMongoDb: Boolean
+  allowMetrics: Boolean
+  allowTests: Boolean
+  allowHeatmap: Boolean
+  publicWritable: Boolean
+  publicReadable: Boolean
+  strictPrivateRead: Boolean
+  strictPrivateWrite: Boolean
+  showMetrics: Boolean
+  showAbTests: Boolean
+  showTargeting: Boolean
+  showScheduling: Boolean
+  schema: JSONObject
+  hooks: JSONObject
+  webhooks: [JSONObject!]
+  fields: [JSONObject!]
+  defaultQuery: [QueryType!]
+  requiredTargets: [String!]
+  content: [JSONObject!]!
+  everything: JSONObject!
+}
+
+type Mutation {
+  """
+  Create model
+  """
+  addModel(body: JSONObject!): ModelType
+
+  """
+  Update model
+  """
+  updateModel(body: UpdateModelInput!): ModelType
+
+  """
+  Delete model
+  """
+  deleteModel(id: String!): ModelType
+
+  """
+   Create a space on a parent organization with the provided settings, requires a
+  private key of the root organization in auth headers, returns a private key of
+  the newly created space
+  """
+  createSpace(settings: JSONObject!): JSONObject!
+}
+
+type Query {
+  """
+  Get all the models
+  """
+  models: [ModelType!]
+
+  """
+  Get specific model by id
+  """
+  model(id: String!): ModelType
+  id: String!
+  settings: JSONObject!
+  downloadClone(contentQuery: ContentQuery): SpaceType!
+}
+
+type QueryType {
+  property: String
+  operator: String!
+  value: JSON!
+}
+
+type SpaceType {
+  settings: JSONObject!
+  meta: JSONObject!
+  models: [ModelWithContent!]!
+}
+
+"""
+Update Model data, dotted paths in data
+"""
+input UpdateModelInput {
+  id: String!
+  data: JSONObject!
+}
