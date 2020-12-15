@@ -1,7 +1,7 @@
 {
-  "name": "@builder.io/app-context",
+  "name": "@builder.io/utils",
   "version": "1.0.0",
-  "description": "Builder.io plugin application context",
+  "description": "Utils for working with Builder.io content",
   "main": "index.js",
   "scripts": {
     "build": "tsc",

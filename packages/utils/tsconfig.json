@@ -6,6 +6,7 @@
     "declaration": true,
     "esModuleInterop": true,
     "skipLibCheck": true,   
+    "moduleResolution": "Node",
     "forceConsistentCasingInFileNames": true
   },
   "include": ["src/**/*", "./index"],
