@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "es5",                          
+    "module": "ESNext",
+    "strict": true, 
+    "declaration": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,   
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src/**/*", "./index"],
+  "exclude": ["node_modules", "**/*.spec.ts"]
+}
