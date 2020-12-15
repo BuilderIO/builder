@@ -8,10 +8,10 @@ import Nav from '../components/nav';
 const BUILDER_API_KEY = 'YOUR_KEY';
 builder.init(BUILDER_API_KEY);
 
-const getServerSideProps = async ({ req, res }) => {
+const getServerSideProps = async ({ req, res, params }) => {
   // Get the upcoming route full location path and set that for Builder.io page targeting
-  const [path] = req.url.split('?');
-
+  const path = ['/', params?.slug].join('');
+  
   // 'page' is the model name for your pages. If you made a new model with a different name,
   // such as 'my-page', use `builder.get('my-page', ...)
   const page = await builder.get('page', { req, res, userAttributes: { urlPath: path } }).promise();
