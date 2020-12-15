@@ -48,10 +48,6 @@ export async function getStaticProps(context) {
     }
   })
 
-  return {
-    props: {
-      content
-    }, 
-  }
+  return { props: { content } }
 }
 ```
