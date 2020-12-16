@@ -95,17 +95,17 @@ export const newSpace = async (privateKey: string, directory: string, name?: str
   const models = getDirectories(`${directory}`);
   const spaceModelIdsMap = (Object.values(spaceSettings.cloneInfo.modelIdMap) as string[]).reduce<Record<string, string>>((modelMap, id) => ({
     ...modelMap,
-    [id]: createHash('md5').update(id + organization.id).digest('hex')
+    [id]: createHash('sha256').update(id + organization.id).digest('hex')
   }), {})
 
   const spaceContentIdsMap = (Object.values(spaceSettings.cloneInfo.contentIdMap) as string[]).reduce<Record<string, string>>((contenIdMap, id) => ({
     ...contenIdMap,
-    [id]: createHash('md5').update(id + organization.id).digest('hex')
+    [id]: createHash('sha256').update(id + organization.id).digest('hex')
   }), {})
 
-  const replaceIds = (obj: any, predicate?: (key?: string ) => boolean) => traverse(obj).map(function(field) {
+  const replaceIds = (obj: any) => traverse(obj).map(function(field) {
     // we keep meta props as is for debugging puprposes
-    if (this.key?.includes('@') || predicate?.(this.key)) {
+    if (this.key?.includes('@')) {
       return;
     }
     if (spaceModelIdsMap[field]) {
@@ -118,7 +118,7 @@ export const newSpace = async (privateKey: string, directory: string, name?: str
 
   const modelPromises = models.map(async ({ name: modelName}, index) => {
     const body = replaceField(readAsJson(`./${directory}/${modelName}/schema.model.json`), organization.id, spaceSettings.id);
-    const model = await newSpaceAdminClient.chain.mutation.addModel({body: replaceIds(body, (key) => key === 'id')}).execute({ id: true, name: true });
+    const model = await newSpaceAdminClient.chain.mutation.addModel({body: replaceIds(body)}).execute({ id: true, name: true });
     if (model) {
     const content = getFiles(`./${directory}/${modelName}`).filter(file => file.name !== 'schema.model.json');
     const modelProgress = multibar.create(content.length, 0)
