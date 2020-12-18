@@ -191,7 +191,9 @@ export class ShopifyProductPicker extends SafeComponent<ShopifyProductPickerProp
       return null;
     }
     return this.props.context.httpCache.get(
-      `${apiRoot}/api/v1/shopify/products/${this.productId}.json?apiKey=${this.props.context.user.apiKey}`
+      `${appState.config.apiRoot()}/api/v1/shopify/products/${this.productId}.json?apiKey=${
+        this.props.context.user.apiKey
+      }`
     );
   }
 
@@ -216,7 +218,9 @@ export class ShopifyProductPicker extends SafeComponent<ShopifyProductPickerProp
     return {
       '@type': '@builder.io/core:Request',
       request: {
-        url: `${apiRoot}/api/v1/shopify/products/{{this.options.product}}.json?apiKey=${this.props.context.user.apiKey}`,
+        url: `${appState.config.apiRoot()}/api/v1/shopify/products/{{this.options.product}}.json?apiKey=${
+          this.props.context.user.apiKey
+        }`,
       },
       options: {
         product: productId,
