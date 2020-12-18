@@ -45,7 +45,7 @@ export class Animator {
 
   private augmentAnimation(animation: Animation, element: HTMLElement) {
     const stylesUsed = this.getAllStylesUsed(animation);
-    const computedStyle = getComputedStyle(element);
+    const computedStyle: any = getComputedStyle(element);
     // const computedStyle = getComputedStyle(element);
     // // FIXME: this will break if original load is in one reponsive size then resize to another hmmm
     // Need to use transform instead of left since left can change on screen sizes
