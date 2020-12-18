@@ -18,17 +18,21 @@ import { Create, Search } from '@material-ui/icons';
 import { computed, observable, runInAction } from 'mobx';
 import { observer } from 'mobx-react';
 import React from 'react';
+import template from 'lodash.template';
 import { SafeComponent } from '../components/safe-component';
 import { CustomReactEditorProps } from '../interfaces/custom-react-editor-props';
 import { BuilderRequest } from '../interfaces/builder-request';
+import { ShopifyCollection } from '../interfaces/shopify-collection';
 import { SetShopifyKeysMessage } from '../components/set-shopify-keys-message';
 import { fastClone } from '../functions/fast-clone';
+import { updatePreviewUrl } from '../functions/update-preview-url';
+import appState from '@builder.io/app-context';
+import { api } from '@builder.io/react/dist/types/src/functions/string-to-function';
 
-type ShopifyCollection = any; /* TODO */
-
-const apiRoot = 'https://builder.io';
-
-interface ShopifyCollectionPickerProps extends CustomReactEditorProps<BuilderRequest | string> {}
+interface ShopifyCollectionPickerProps extends CustomReactEditorProps<BuilderRequest | string> {
+  isPreview?: boolean;
+  handleOnly?: boolean;
+}
 
 export interface ShopifyCollectionPreviewCellProps {
   collection: ShopifyCollection;
@@ -58,7 +62,7 @@ export class CollectionPreviewCell extends SafeComponent<ShopifyCollectionPrevie
 }
 
 @observer
-export class CollectionPicker extends SafeComponent<CustomReactEditorProps<string>> {
+export class CollectionPicker extends SafeComponent<CustomReactEditorProps<ShopifyCollection>> {
   @observable searchInputText = '';
   @observable loading = false;
 
@@ -66,8 +70,10 @@ export class CollectionPicker extends SafeComponent<CustomReactEditorProps<strin
 
   async searchCollections() {
     this.loading = true;
-    const shopifyCustomCollectionsUrl = apiRoot + '/api/v1/shopify/custom_collections.json';
-    const shopifySmartCollectionsUrl = apiRoot + '/api/v1/shopify/smart_collections.json';
+    const shopifyCustomCollectionsUrl =
+      appState.config.apiRoot() + '/api/v1/shopify/custom_collections.json';
+    const shopifySmartCollectionsUrl =
+      appState.config.apiRoot() + '/api/v1/shopify/smart_collections.json';
 
     const onShopifyError = (err: any) => {
       console.error('Shopify collection search error:', err);
@@ -146,11 +152,11 @@ export class CollectionPicker extends SafeComponent<CustomReactEditorProps<strin
                 <div
                   key={item.id}
                   onClick={e => {
-                    this.props.onChange(String(item.id));
+                    this.props.onChange(item);
                   }}
                 >
                   <CollectionPreviewCell
-                    selected={String(item.id) === this.props.value}
+                    selected={String(item.id) === String(this.props.value?.id)}
                     button
                     collection={item}
                     key={item.id}
@@ -184,47 +190,75 @@ export class ShopifyCollectionPicker extends SafeComponent<ShopifyCollectionPick
   }
 
   @computed get collectionInfo() {
-    return this.collectionInfoCacheValue?.value?.collection;
+    return this.collectionHandle
+      ? this.collectionInfoCacheValue?.value?.collections?.[0]
+      : this.collectionInfoCacheValue?.value?.collection;
   }
 
   @computed get collectionInfoCacheValue() {
-    if (!(this.props.context.user.apiKey && this.collectionId)) {
+    const id = this.collectionId || this.collectionHandle;
+    const apiKey = this.props.context.user.apiKey;
+    if (!(apiKey && id)) {
       return null;
     }
-    return this.props.context.httpCache.get(
-      `${apiRoot}/api/v1/shopify/collections/${this.collectionId}.json?apiKey=${this.props.context.user.apiKey}`
-    );
+    return this.collectionId
+      ? this.props.context.httpCache.get(
+          `${appState.config.apiRoot()}/api/v1/shopify/collections/${
+            this.collectionId
+          }.json?apiKey=${apiKey}`
+        )
+      : this.props.context.httpCache.get(
+          `${appState.config.apiRoot()}/api/v1/shopify/search/collection?search=${id}&apiKey=${apiKey}`
+        );
   }
 
   getRequestObject(collectionId: string) {
     // setting a Request object as the value, Builder.io will fetch the given URL
     // and populate that as the `data` property on this object in the return repsonse
     // from the API
-    return this.props.field.isTargeting
-      ? collectionId
-      : ({
-          '@type': '@builder.io/core:Request',
-          request: {
-            url: `${apiRoot}/api/v1/shopify/collections/{{this.options.collection}}.json?apiKey=${this.props.context.user.apiKey}`,
-          },
-          options: {
-            collection: collectionId,
-          },
-        } as BuilderRequest);
+    return {
+      '@type': '@builder.io/core:Request',
+      request: {
+        url: `${appState.config.apiRoot()}/api/v1/shopify/collections/{{this.options.collection}}.json?apiKey=${
+          this.props.context.user.apiKey
+        }`,
+      },
+      options: {
+        collection: collectionId,
+      },
+    } as BuilderRequest;
   }
 
   get collectionId() {
+    if (this.props.handleOnly) {
+      return '';
+    }
     return typeof this.props.value === 'string'
       ? this.props.value
       : this.props.value?.options?.get('collection') || '';
   }
 
   set collectionId(value) {
-    this.props.onChange(this.getRequestObject(value));
+    if (this.props.handleOnly) {
+      return;
+    }
+    if (this.props.field?.isTargeting) {
+      this.props.onChange(value);
+    } else {
+      this.props.onChange(this.getRequestObject(value));
+    }
   }
 
-  async getCollection(id: string) {
-    return null;
+  get collectionHandle() {
+    return this.props.handleOnly && typeof this.props.value === 'string'
+      ? this.props.value
+      : undefined;
+  }
+
+  set collectionHandle(value) {
+    if (this.props.handleOnly) {
+      this.props.onChange(value);
+    }
   }
 
   async showChooseCollectionModal() {
@@ -233,7 +267,8 @@ export class ShopifyCollectionPicker extends SafeComponent<ShopifyCollectionPick
         context={this.props.context}
         value={this.collectionId}
         onChange={value => {
-          this.collectionId = value;
+          this.collectionId = value?.id;
+          this.collectionHandle = value?.handle;
           close();
         }}
       />,
@@ -255,6 +290,27 @@ export class ShopifyCollectionPicker extends SafeComponent<ShopifyCollectionPick
       this.props.context.user.organization?.value.settings.plugins.get(
         '@builder.io/plugin-shopify'
       ) || {}
+    );
+  }
+
+  componentDidMount() {
+    this.safeReaction(
+      () => this.collectionInfo,
+      () => {
+        if (this.props.isPreview && this.collectionInfo) {
+          const designerState = this.props.context.designerState;
+          if (designerState.editingContentModel) {
+            const preCompiled = designerState.editingModel.examplePageUrl;
+            const compiled = template(preCompiled);
+            const previewUrl = compiled({
+              previewCollection: this.collectionInfo,
+            });
+            if (preCompiled !== previewUrl) {
+              updatePreviewUrl(previewUrl);
+            }
+          }
+        }
+      }
     );
   }
 
@@ -319,4 +375,18 @@ export class ShopifyCollectionPicker extends SafeComponent<ShopifyCollectionPick
 Builder.registerEditor({
   name: 'ShopifyCollection',
   component: ShopifyCollectionPicker,
+});
+
+Builder.registerEditor({
+  name: 'ShopifyCollectionPreview',
+  component: (props: ShopifyCollectionPickerProps) => (
+    <ShopifyCollectionPicker {...props} isPreview />
+  ),
+});
+
+Builder.registerEditor({
+  name: 'ShopifyCollectionHandle',
+  component: (props: ShopifyCollectionPickerProps) => (
+    <ShopifyCollectionPicker {...props} handleOnly />
+  ),
 });

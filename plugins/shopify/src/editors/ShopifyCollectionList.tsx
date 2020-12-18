@@ -101,10 +101,10 @@ export function PickShopifyCollectionsList(props: PickShopifyCollectionsListProp
               <CollectionPicker
                 context={appState}
                 value={undefined}
-                onChange={collectionId => {
-                  if (collectionId) {
+                onChange={collection => {
+                  if (collection?.id) {
                     const value = props.value || [];
-                    value.push(collectionId);
+                    value.push(String(collection.id));
                     props.onChange(value);
                   }
                   close();
