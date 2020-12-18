@@ -1,14 +1,14 @@
 var __awaiter =
   (this && this.__awaiter) ||
-  function(thisArg, _arguments, P, generator) {
+  function (thisArg, _arguments, P, generator) {
     function adopt(value) {
       return value instanceof P
         ? value
-        : new P(function(resolve) {
+        : new P(function (resolve) {
             resolve(value);
           });
     }
-    return new (P || (P = Promise))(function(resolve, reject) {
+    return new (P || (P = Promise))(function (resolve, reject) {
       function fulfilled(value) {
         try {
           step(generator.next(value));
@@ -31,10 +31,10 @@ var __awaiter =
   };
 var __generator =
   (this && this.__generator) ||
-  function(thisArg, body) {
+  function (thisArg, body) {
     var _ = {
         label: 0,
-        sent: function() {
+        sent: function () {
           if (t[0] & 1) throw t[1];
           return t[1];
         },
@@ -48,13 +48,13 @@ var __generator =
     return (
       (g = { next: verb(0), throw: verb(1), return: verb(2) }),
       typeof Symbol === 'function' &&
-        (g[Symbol.iterator] = function() {
+        (g[Symbol.iterator] = function () {
           return this;
         }),
       g
     );
     function verb(n) {
-      return function(v) {
+      return function (v) {
         return step([n, v]);
       };
     }
@@ -130,10 +130,10 @@ var __generator =
     }
   };
 import { getAsyncProps } from './get-async-props';
-test('Adds async props', function() {
-  return __awaiter(void 0, void 0, void 0, function() {
+test('Adds async props', function () {
+  return __awaiter(void 0, void 0, void 0, function () {
     var content;
-    return __generator(this, function(_a) {
+    return __generator(this, function (_a) {
       switch (_a.label) {
         case 0:
           content = {
@@ -154,9 +154,9 @@ test('Adds async props', function() {
           return [
             4 /*yield*/,
             getAsyncProps(content, {
-              Products: function(props) {
-                return __awaiter(this, void 0, void 0, function() {
-                  return __generator(this, function(_a) {
+              Products: function (props) {
+                return __awaiter(this, void 0, void 0, function () {
+                  return __generator(this, function (_a) {
                     return [
                       2 /*return*/,
                       {
