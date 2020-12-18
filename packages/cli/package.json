@@ -15,7 +15,7 @@
     "!dist/**/*.test.js"
   ],
   "scripts": {
-    "codegen-client": "generate-graphql-client -e http://localhost:5000/api/v2/admin -o src/autogen/client",
+    "codegen-client": "generate-graphql-client -e http://qa.builder.io/api/v2/admin -o src/autogen/client",
     "dev": "nodemon --watch 'src/index.ts' --exec npm run build",
     "clean": "rimraf ./dist/ ./exec/",
     "build": "npm run clean && tsc",

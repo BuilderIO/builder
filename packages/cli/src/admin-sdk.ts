@@ -17,7 +17,7 @@ const multibar = new cliProgress.MultiBar({
 // todo input this -o {directory}
 
 // todo change this to prod
-const root = 'http://localhost:5000'
+const root = 'http://qa.builder.io'
 
 // todo prettier this
 export const importSpace = async (privateKey: string, directory: string) => {
