@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { jsx as emotionJsx } from '@emotion/core';
+import { jsx, css } from '@emotion/core';
 import { BuilderContent } from './builder-content.component';
 import { BuilderBlocks } from './builder-blocks.component';
 import {
@@ -898,17 +898,16 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
 
                           const useBuilderState = (initialState: any) => {
                             const [_tick, setTick] = React.useState(0);
-                            const [state, _setState] = React.useState(
-                              onChange(initialState, () => {
-                                setTick(tick => tick + 1);
-                              })
-                            );
+                            const state = onChange(initialState, () => {
+                              setTick(tick => tick + 1);
+                            });
 
                             return state;
                           };
 
                           this.Component = new Function(
-                            '___EmotionJSX',
+                            'jsx',
+                            '_css',
                             'Builder',
                             'builder',
                             'React',
@@ -919,7 +918,8 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
                             ),
                             data.blocksJs
                           )(
-                            emotionJsx,
+                            jsx,
+                            css,
                             Builder,
                             builder,
                             React,
@@ -927,10 +927,6 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
                             useBuilderState,
                             ...builderComponents.map(info => wrapComponent(info))
                           );
-
-                          if (Builder.isBrowser) {
-                            (window as any).Component = this.Component;
-                          }
                         }
 
                         // TODO: loading option - maybe that is what the children is or component prop
