@@ -16,30 +16,25 @@ console.log(
   )
 );
 
-program.version('0.1.0')
-.description("A Cli for administring builder spaces")
-.option('-i, --import <private key>', 'import a builder space to the local filesystem')
-.option('-n, --new <root-org-private>', 'create a new builder space from the local builder folder on the root org specified')
-.option('-d, --debug', 'print verbose status messages')
-.option('-o, --output <folder-name>', 'output directory to import content to')
-.parse(process.argv);
+program
+  .command('import')
+  .description('Import a builder space to the local file system')
+  .option('-k,--key <key>', 'Private Key')
+  .option('-d,--debug', 'print debugging information')
+  .option('-o,--output <output>', 'Path to folder default to ./builder', './builder')
+  .action((options) => {
+    importSpace(options.key, options.output, options.debug);
+  });
 
-if (!process.argv.slice(2).length) {
-	program.outputHelp();
-}
+program
+  .command('create')
+  .description('create a new space')
+  .option('-k,--key <key>', 'Root organization Private Key')
+  .option('-d,--debug', 'print debugging information')
+  .option('-i,--input <input>', 'Path to folder default to ./builder', './builder')
+  .option('-n,--name <name>', 'The new space name')
+  .action((options) => {
+    newSpace(options.key, options.input, options.name, options.debug)
+  });
 
-if (program.import) {
-  if (program.debug) {
-    console.log(chalk.green(`importing from space with private key ${program.import}`))
-  }
-  importSpace(program.import, program.output || defaultDirectory);
-}
-
-if (program.new) {
-  if (program.debug) {
-    console.log(chalk.green(`importing from space with private key ${program.new}`))
-  }
-
-  newSpace(program.new, program.root || defaultDirectory);
-
-}
+program.parse(process.argv);
