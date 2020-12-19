@@ -9,12 +9,7 @@ const figlet = require('figlet');
 // clear();
 const defaultDirectory = `./builder`;
 
-
-console.log(
-  chalk.blueBright(
-    figlet.textSync('Builder.io cli', { horizontalLayout: 'full' })
-  )
-);
+console.log(chalk.blueBright(figlet.textSync('Builder.io cli', { horizontalLayout: 'full' })));
 
 program
   .command('import')
@@ -22,7 +17,7 @@ program
   .option('-k,--key <key>', 'Private Key')
   .option('-d,--debug', 'print debugging information')
   .option('-o,--output <output>', 'Path to folder default to ./builder', './builder')
-  .action((options) => {
+  .action(options => {
     importSpace(options.key, options.output, options.debug);
   });
 
@@ -33,8 +28,8 @@ program
   .option('-d,--debug', 'print debugging information')
   .option('-i,--input <input>', 'Path to folder default to ./builder', './builder')
   .option('-n,--name <name>', 'The new space name')
-  .action((options) => {
-    newSpace(options.key, options.input, options.name, options.debug)
+  .action(options => {
+    newSpace(options.key, options.input, options.name, options.debug);
   });
 
 program.parse(process.argv);
