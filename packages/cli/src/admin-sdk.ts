@@ -34,13 +34,11 @@ export const importSpace = async (privateKey: string, directory: string, debug =
   spaceProgress.start(1, 0, { name: 'getting space settings' });
 
   try {
-    const space = await graphqlClient.chain.query
-      .downloadClone()
-      .execute({
-        models: { name: true, everything: true, content: true },
-        settings: true,
-        meta: true,
-      });
+    const space = await graphqlClient.chain.query.downloadClone().execute({
+      models: { name: true, everything: true, content: true },
+      settings: true,
+      meta: true,
+    });
     spaceProgress.setTotal(space.models.length);
     let message = '';
     fse.outputFileSync(
