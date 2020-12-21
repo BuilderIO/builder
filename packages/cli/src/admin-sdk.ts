@@ -40,28 +40,35 @@ export const importSpace = async (privateKey: string, directory: string, debug =
       meta: true,
     });
     spaceProgress.setTotal(space.models.length);
-    let message = '';
-    fse.outputFileSync(
-      `./${directory}/settings.json`,
+    await fse.outputFile(
+      `${directory}/settings.json`,
       JSON.stringify({ ...space.settings, cloneInfo: space.meta }, undefined, 2)
     );
-    space.models.forEach((model, index) => {
-      message += `${model.everything.name}${index !== space.models.length - 1 ? ',' : ''}`;
-      spaceProgress.update(index + 1, { name: message });
+    const modelOps = space.models.map(async (model, index) => {
       const { content, everything } = model;
       // todo why conent is in everything
       const { content: _, ...schema } = everything;
       const modelName = kebabCase(model.name);
-      fse.emptyDirSync(`./${directory}/${modelName}`);
-      fse.outputFileSync(
-        `./${directory}/${modelName}/schema.model.json`,
+      await fse.emptyDir(`${directory}/${modelName}`);
+      const modelProgress = multibar.create(content.length, 0, { name: modelName });
+      if (content.length > 0) {
+        modelProgress.start(content.length, 0);
+      }
+      await fse.outputFile(
+        `${directory}/${modelName}/schema.model.json`,
         JSON.stringify(schema, null, 2)
       );
-      content.forEach((entry, contentIndex) => {
-        const filename = `./${directory}/${modelName}/${kebabCase(entry.name)}.json`;
-        fse.outputFileSync(filename, JSON.stringify(entry, undefined, 2));
-      });
+      await Promise.all(
+        content.map(async (entry, index) => {
+          const filename = `${directory}/${modelName}/${kebabCase(entry.name)}.json`;
+          await fse.outputFile(filename, JSON.stringify(entry, undefined, 2));
+          modelProgress.increment(1, { name: ` ${modelName}: ${filename} ` });
+        })
+      );
+      spaceProgress.increment();
+      modelProgress.stop();
     });
+    await Promise.all(modelOps);
     if (debug) {
       console.log(chalk.green('Imported successfully ', space.settings.name));
     }
@@ -98,7 +105,7 @@ export const newSpace = async (
         }),
   });
 
-  const spaceSettings = readAsJson(`./${directory}/settings.json`);
+  const spaceSettings = await readAsJson(`${directory}/settings.json`);
   try {
     const { organization, privateKey: newSpacePrivateKey } = await graphqlClient.chain.mutation
       .createSpace({
@@ -121,7 +128,6 @@ export const newSpace = async (
       },
     });
 
-    const models = getDirectories(`${directory}`);
     const spaceModelIdsMap = (Object.values(spaceSettings.cloneInfo.modelIdMap) as string[]).reduce<
       Record<string, string>
     >(
@@ -133,7 +139,6 @@ export const newSpace = async (
       }),
       {}
     );
-
     const spaceContentIdsMap = (Object.values(
       spaceSettings.cloneInfo.contentIdMap
     ) as string[]).reduce<Record<string, string>>(
@@ -145,7 +150,6 @@ export const newSpace = async (
       }),
       {}
     );
-
     const replaceIds = (obj: any) =>
       traverse(obj).map(function(field) {
         // we keep meta props as is for debugging puprposes
@@ -159,9 +163,10 @@ export const newSpace = async (
         }
       });
 
-    const modelPromises = models.map(async ({ name: modelName }) => {
+    const models = await getDirectories(`${directory}`);
+    const modelsPromises = models.map(async ({ name: modelName }) => {
       const body = replaceField(
-        readAsJson(`./${directory}/${modelName}/schema.model.json`),
+        await readAsJson(`${directory}/${modelName}/schema.model.json`),
         organization.id,
         spaceSettings.id
       );
@@ -169,22 +174,24 @@ export const newSpace = async (
         .addModel({ body: replaceIds(body) })
         .execute({ id: true, name: true });
       if (model) {
-        const content = getFiles(`./${directory}/${modelName}`).filter(
+        const content = (await getFiles(`${directory}/${modelName}`)).filter(
           file => file.name !== 'schema.model.json'
         );
-        const modelProgress = multibar.create(content.length, 0);
-        modelProgress.start(content.length, 0);
+        const modelProgress = multibar.create(content.length, 0, { name: modelName });
+        if (content.length > 0) {
+          modelProgress.start(content.length, 0, { name: modelName });
+        }
         const writeApi = `https://builder.io/api/v1/write/${modelName}`;
         const contentPromises = content.map(async (contentFile, index) => {
           let contentJSON = replaceIds(
             replaceField(
-              readAsJson(`./${directory}/${modelName}/${contentFile.name}`),
+              await readAsJson(`${directory}/${modelName}/${contentFile.name}`),
               organization.id,
               spaceSettings.id
             )
           );
-          modelProgress.update(index + 1, {
-            name: `writing ${contentFile.name} - ${contentJSON.id} on ${modelName}`,
+          modelProgress.increment(1, {
+            name: `${modelName}: writing ${contentFile.name}`,
           });
           // post content to write api using the new space private api key
           await fetch(writeApi, {
@@ -197,9 +204,10 @@ export const newSpace = async (
           });
         });
         await Promise.all(contentPromises);
+        modelProgress.stop();
       }
     });
-    await Promise.all(modelPromises);
+    await Promise.all(modelsPromises);
     if (debug) {
       console.log(
         chalk.green('created and cloned successfully ', organization.id, organization.name)
