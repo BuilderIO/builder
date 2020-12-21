@@ -151,7 +151,7 @@ export const newSpace = async (
       {}
     );
     const replaceIds = (obj: any) =>
-      traverse(obj).map(function(field) {
+      traverse(obj).map(function (field) {
         // we keep meta props as is for debugging puprposes
         if (this.key?.includes('@')) {
           return;

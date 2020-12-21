@@ -13,7 +13,7 @@ export const getFiles = async (source: string) =>
   (await fse.readdir(source, { withFileTypes: true })).filter(dirent => dirent.isFile());
 
 export const replaceField = (json: any, newValue: string, oldValue: string) => {
-  return traverse(json).map(function(field) {
+  return traverse(json).map(function (field) {
     if (this.key?.includes('@')) {
       // exclude meta keys from updates
       return;
