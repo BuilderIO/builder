@@ -898,7 +898,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
 
                           const useBuilderState = (initialState: any) => {
                             const [_tick, setTick] = React.useState(0);
-                            const state = onChange(initialState, () => {
+                            const state = onChange(initialState, function() {
                               setTick(tick => tick + 1);
                             });
 
@@ -1176,7 +1176,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     }
 
     // TODO: also throttle on edits maybe
-    if (data && data.jsCode && Builder.isBrowser) {
+    if (data && data.jsCode && Builder.isBrowser && !this.options.codegen) {
       // Don't rerun js code when editing and not changed
       let skip = false;
       if (Builder.isEditing) {
