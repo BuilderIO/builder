@@ -1,6 +1,7 @@
 # Ignore generated directories
 dist/
 exec/
+src/autogen
 
 # Logs
 logs

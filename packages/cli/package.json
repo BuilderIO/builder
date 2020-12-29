@@ -9,26 +9,44 @@
   ],
   "license": "MIT",
   "main": "./dist/index.js",
-  "bin": "./dist/cli.js",
+  "bin": {
+    "builder": "./dist/index.js"
+  },
   "files": [
     "dist/**/*",
     "!dist/**/*.test.js"
   ],
   "scripts": {
-    "dev": "ts-node ./src/cli.ts",
+    "codegen-client": "generate-graphql-client -e https://qa.builder.io/api/v2/admin -o src/autogen/client",
+    "dev": "nodemon --watch 'src/index.ts' --exec npm run build",
     "clean": "rimraf ./dist/ ./exec/",
-    "build": "npm run clean && tsc",
+    "build": "npm run clean && npm run codegen-client && tsc",
     "test": "npm run build && ava --verbose",
     "bundle": "npm run build && pkg . --out-dir ./exec/"
   },
   "devDependencies": {
+    "@types/cli-progress": "^3.8.0",
+    "@types/fs-extra": "^9.0.5",
+    "@types/node": "12.19.8",
+    "@types/node-fetch": "^2.5.7",
     "ava": "^2.2.0",
-    "pkg": "^4.4.0",
+    "nodemon": "^2.0.6",
+    "pkg": "^4.4.9",
     "rimraf": "^2.6.3",
-    "ts-node": "^8.3.0",
-    "typescript": "^3.5.3"
+    "ts-node": "^8.10.2",
+    "typescript": "^3.9.7"
   },
   "dependencies": {
-    "commander": "^2.20.0"
+    "@types/traverse": "^0.6.32",
+    "chalk": "^4.1.0",
+    "clear": "^0.1.0",
+    "cli-progress": "^3.8.2",
+    "commander": "^2.20.3",
+    "figlet": "^1.5.0",
+    "fs-extra": "^9.0.1",
+    "graphql-typed-client": "^1.7.4",
+    "lodash": "^4.17.20",
+    "node-fetch": "^2.6.1",
+    "traverse": "^0.6.6"
   }
 }
