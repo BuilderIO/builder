@@ -7,7 +7,7 @@ import cliProgress from 'cli-progress';
 import { createHash } from 'crypto';
 import traverse from 'traverse';
 
-const multibar = new cliProgress.MultiBar(
+const MULTIBAR = new cliProgress.MultiBar(
   {
     clearOnComplete: false,
     hideCursor: true,
@@ -33,7 +33,7 @@ const createGraphqlClient = (privateKey: string) =>
 export const importSpace = async (privateKey: string, directory: string, debug = false) => {
   const graphqlClient = createGraphqlClient(privateKey);
 
-  const spaceProgress = multibar.create(1, 0);
+  const spaceProgress = MULTIBAR.create(1, 0);
   spaceProgress.start(1, 0, { name: 'getting space settings' });
 
   try {
@@ -53,7 +53,7 @@ export const importSpace = async (privateKey: string, directory: string, debug =
       const { content: _, ...schema } = everything;
       const modelName = kebabCase(model.name);
       await fse.emptyDir(`${directory}/${modelName}`);
-      const modelProgress = multibar.create(content.length, 0, { name: modelName });
+      const modelProgress = MULTIBAR.create(content.length, 0, { name: modelName });
       if (content.length > 0) {
         modelProgress.start(content.length, 0);
       }
@@ -83,7 +83,7 @@ export const importSpace = async (privateKey: string, directory: string, debug =
   }
 
   spaceProgress.stop();
-  multibar.stop();
+  MULTIBAR.stop();
 };
 
 export const newSpace = async (
@@ -155,7 +155,7 @@ export const newSpace = async (
         const content = (await getFiles(`${directory}/${modelName}`)).filter(
           file => file.name !== 'schema.model.json'
         );
-        const modelProgress = multibar.create(content.length, 0, { name: modelName });
+        const modelProgress = MULTIBAR.create(content.length, 0, { name: modelName });
         if (content.length > 0) {
           modelProgress.start(content.length, 0, { name: modelName });
         }
@@ -198,5 +198,5 @@ export const newSpace = async (
     process.exit();
   }
 
-  multibar.stop();
+  MULTIBAR.stop();
 };
