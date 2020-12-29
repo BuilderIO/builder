@@ -43,7 +43,7 @@ DESCRIPTION
 
 ## `builder new -k [PRIVATE KEY] -i [INPUT DIRECTORY] -n [NEW SPACE NAME]`
 
-Create a new space from the your local builder directory, as a space under the root organization you specify.
+Create a new space from your local builder directory, as a space under the root organization you specify.
 
 ```
 USAGE
