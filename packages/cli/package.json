@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/cli",
-  "version": "1.0.2",
+  "version": "1.0.3-0",
   "description": "Official Builder.io CLI",
   "author": "Steve Sewell <steve@builder.io>",
   "keywords": [
@@ -22,7 +22,8 @@
     "clean": "rimraf ./dist/ ./exec/",
     "build": "npm run clean && npm run codegen-client && tsc",
     "test": "npm run build && ava --verbose",
-    "bundle": "npm run build && pkg . --out-dir ./exec/"
+    "bundle": "npm run build && pkg . --out-dir ./exec/",
+    "release:dev": "npm run build && npm version prerelease --no-git-tag-version && npm publish --tag dev"
   },
   "devDependencies": {
     "@types/cli-progress": "^3.8.0",
