@@ -19,8 +19,8 @@ const multibar = new cliProgress.MultiBar(
 // todo change this to prod
 const root = 'https://qa.builder.io';
 
-export const importSpace = async (privateKey: string, directory: string, debug = false) => {
-  const graphqlClient = createClient({
+const createGraphqlClient = (privateKey: string) =>
+  createClient({
     fetcher: ({ query, variables }, fetch, qs) =>
       fetch(`${root}/api/v2/admin?${qs.stringify({ query, variables })}`, {
         headers: {
@@ -29,6 +29,9 @@ export const importSpace = async (privateKey: string, directory: string, debug =
         },
       }).then(r => r.json()),
   });
+
+export const importSpace = async (privateKey: string, directory: string, debug = false) => {
+  const graphqlClient = createGraphqlClient(privateKey);
 
   const spaceProgress = multibar.create(1, 0);
   spaceProgress.start(1, 0, { name: 'getting space settings' });
@@ -89,21 +92,7 @@ export const newSpace = async (
   name?: string,
   debug = false
 ) => {
-  const graphqlClient = createClient({
-    fetcher: ({ query, variables }, fetch, qs) =>
-      fetch(`${root}/api/v2/admin`, {
-        method: 'POST',
-        body: JSON.stringify({ query, variables }),
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${privateKey}`,
-        },
-      })
-        .then(r => r.json())
-        .catch(err => {
-          throw err;
-        }),
-  });
+  const graphqlClient = createGraphqlClient(privateKey);
 
   const spaceSettings = await readAsJson(`${directory}/settings.json`);
   try {
@@ -115,18 +104,7 @@ export const newSpace = async (
         },
       })
       .execute();
-    const newSpaceAdminClient = createClient({
-      fetcher: ({ query, variables }, fetch, qs) => {
-        return fetch(`${root}/api/v2/admin`, {
-          method: 'POST',
-          body: JSON.stringify({ query, variables }),
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${newSpacePrivateKey.key}`,
-          },
-        }).then(r => r.json());
-      },
-    });
+    const newSpaceAdminClient = createGraphqlClient(newSpacePrivateKey);
 
     const spaceModelIdsMap = (Object.values(spaceSettings.cloneInfo.modelIdMap) as string[]).reduce<
       Record<string, string>
