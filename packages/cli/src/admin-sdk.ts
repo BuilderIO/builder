@@ -22,7 +22,9 @@ const root = 'https://qa.builder.io';
 const createGraphqlClient = (privateKey: string) =>
   createClient({
     fetcher: ({ query, variables }, fetch, qs) =>
-      fetch(`${root}/api/v2/admin?${qs.stringify({ query, variables })}`, {
+      fetch(`${root}/api/v2/admin`, {
+        method: 'POST',
+        body: JSON.stringify({ query, variables }),
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${privateKey}`,
