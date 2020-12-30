@@ -22,7 +22,9 @@ const root = 'https://qa.builder.io';
 const createGraphqlClient = (privateKey: string) =>
   createClient({
     fetcher: ({ query, variables }, fetch, qs) =>
-      fetch(`${root}/api/v2/admin?${qs.stringify({ query, variables })}`, {
+      fetch(`${root}/api/v2/admin`, {
+        method: 'POST',
+        body: JSON.stringify({ query, variables }),
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${privateKey}`,
@@ -104,7 +106,7 @@ export const newSpace = async (
         },
       })
       .execute();
-    const newSpaceAdminClient = createGraphqlClient(newSpacePrivateKey);
+    const newSpaceAdminClient = createGraphqlClient(newSpacePrivateKey.key);
 
     const spaceModelIdsMap = (Object.values(spaceSettings.cloneInfo.modelIdMap) as string[]).reduce<
       Record<string, string>
