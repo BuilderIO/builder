@@ -106,7 +106,7 @@ export const newSpace = async (
         },
       })
       .execute();
-    const newSpaceAdminClient = createGraphqlClient(newSpacePrivateKey);
+    const newSpaceAdminClient = createGraphqlClient(newSpacePrivateKey.key);
 
     const spaceModelIdsMap = (Object.values(spaceSettings.cloneInfo.modelIdMap) as string[]).reduce<
       Record<string, string>
