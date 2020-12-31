@@ -197,6 +197,7 @@ export interface GetContentOptions {
   // Alias for userAttributes.urlPath
   url?: string;
   includeUrl?: boolean;
+  includeRefs?: boolean;
   cacheSeconds?: number;
   staleCacheSeconds?: number;
   limit?: number;
@@ -1681,7 +1682,7 @@ export class Builder {
     }
     if (isEditingThisModel) {
       if (Builder.isBrowser) {
-        parent.postMessage({ type: 'builder.updateContent' }, '*');
+        parent.postMessage({ type: 'builder.updateContent', data: { options } }, '*');
       }
     }
     if (!initialContent /* || isEditingThisModel */) {
@@ -1949,7 +1950,7 @@ export class Builder {
 
           const isEditingThisModel = this.editingModel === options.model;
           if (isEditingThisModel && Builder.isEditing) {
-            parent.postMessage({ type: 'builder.updateContent' }, '*');
+            parent.postMessage({ type: 'builder.updateContent', data: { options } }, '*');
             // return;
           }
           const observer = this.observersByKey[keyName];
