@@ -279,6 +279,7 @@ export interface Input {
   code?: boolean;
   richText?: boolean;
   showIf?: ((options: Map<string, any>) => boolean) | string;
+  copyOnAdd?: boolean;
 }
 
 export interface Component {
