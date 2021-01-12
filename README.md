@@ -83,7 +83,7 @@ export default let BuilderPage = () => {
 - Create a free account on [builder.io](https://builder.io) and drag and drop to create and publish pages and content
 - Profit
 
-<img src="https://cdn.builder.io/api/v1/image/assets%2F444142b2cae54a19aeb8b5ba245feffe%2F8c2699f47fea48b296b43dbb422336e8" />
+<img src="https://imgur.com/8FrEHyl.png" />
 
 
 ## Framework Support
@@ -217,6 +217,8 @@ export default () => (
 ```
 
 ### Data models, components, SEO, and more
+
+<img src="https://cdn.builder.io/api/v1/image/assets%2F444142b2cae54a19aeb8b5ba245feffe%2F8c2699f47fea48b296b43dbb422336e8" />
 
 Builder.io gives you a ton more power and control than just page building. Check our guides on
 
