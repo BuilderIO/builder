@@ -25,7 +25,7 @@ Builder.registerComponent(Products, {
 
 This component will update to fetch product data browser side by category chosen in the Builder editor. But if you want this to render server side you need `props.data` to be passed with the needed data on render.
 
-To accomplish thisk, you can use `getAsyncProps`. 
+To accomplish this, you can use `getAsyncProps`. 
 
 Here is a usage example with Next.js:
 
@@ -54,7 +54,7 @@ export async function getStaticProps(context) {
 
 ## extendAsyncProps
 
-`extendAsyncProps` is similar to `getAsyncProps` except it look up the entry name and map it's props to whater the result is.
+`extendAsyncProps` is similar to `getAsyncProps` except it look up the inputs by name across components and map it's props to the result of the asynchronus mapper function passed.
 
 ### Example
 
@@ -119,10 +119,9 @@ Builder.registerComponent(ProductsSlider, {
 })
 
 ```
-
 This component will update to fetch product data browser side by query chosen in the Builder editor. But if you want this to render server side you need `props.products` to be passed with the needed data on render.
 
-To accomplish thisk, you can use `extendAsyncProps`. 
+To accomplish this, you can use `extendAsyncProps`. 
 
 Here is a usage example with Next.js:
 
