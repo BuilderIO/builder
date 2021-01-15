@@ -54,7 +54,7 @@ export async function getStaticProps(context) {
 
 ## extendAsyncProps
 
-`extendAsyncProps` it extends any component options (props) that matches the mapper asynchrnously.
+`extendAsyncProps` works by extending any component options (props) that matches the mapper asynchrnously.
 
 ### Example
 
