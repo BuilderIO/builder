@@ -136,7 +136,7 @@ export default function MyPage(props) {
 export async function getStaticProps(context) {
   const content = await builder.get('page', { url: context.resolvedUrl }).promise();
   
-  await getAsyncProps(content, {
+  await extendAsyncProps(content, {
     async productsQuery(props) {
       return {
         products: await fetch(`${apiRoot}/products?${qs.stringify(props.productsQuery)}`).then(res => res.json())
