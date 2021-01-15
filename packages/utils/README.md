@@ -58,7 +58,7 @@ export async function getStaticProps(context) {
 
 ### Example
 
-Say you have multiple components that takes a query input and you want to resolve this query asynchronusly before rendering on the server
+Say you have multiple components that take a query input and you want to resolve this query asynchronusly before rendering on the server
 
 ```tsx
 import { Builder } from '@builder.io/react';
