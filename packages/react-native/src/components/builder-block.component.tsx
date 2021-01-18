@@ -1,45 +1,24 @@
-import React from 'react';
-import { Builder, Component, BuilderElement } from '@builder.io/sdk';
-
-import { sizeNames, Size, sizes } from '../constants/device-sizes.constant';
-import { BuilderStoreContext } from '../store/builder-store';
-import isArray from 'lodash-es/isArray';
-import last from 'lodash-es/last';
-import set from 'lodash-es/set';
+import { Builder, BuilderElement, Component } from '@builder.io/sdk';
 import includes from 'lodash-es/includes';
-import reduce from 'lodash-es/reduce';
-import omit from 'lodash-es/omit';
-import pick from 'lodash-es/pick';
+import isArray from 'lodash-es/isArray';
 import kebabCase from 'lodash-es/kebabCase';
-import { BuilderAsyncRequestsContext, RequestOrPromise } from '../store/builder-async-requests';
+import last from 'lodash-es/last';
+import omit from 'lodash-es/omit';
+import set from 'lodash-es/set';
+import React from 'react';
+import { View } from 'react-native';
+import { Size } from '../constants/device-sizes.constant';
 import { stringToFunction } from '../functions/string-to-function';
-import { View, TouchableWithoutFeedback } from 'react-native';
+import { BuilderAsyncRequestsContext } from '../store/builder-async-requests';
+import { BuilderStoreContext } from '../store/builder-store';
 
 const Device = { desktop: 0, tablet: 1, mobile: 2 };
-
-const cssCase = (property: string) => {
-  if (!property) {
-    return property;
-  }
-
-  let str = kebabCase(property);
-
-  if (property[0] === property[0].toUpperCase()) {
-    str = '-' + str;
-  }
-
-  return str;
-};
 
 // TODO: pull from builer internal utils
 const fastClone = (obj: object) => JSON.parse(JSON.stringify(obj));
 
 // TODO: share these types in shared
 type ElementType = any;
-
-interface StringMap {
-  [key: string]: string | undefined | null;
-}
 
 export interface BuilderBlockProps {
   fieldName?: string;
@@ -83,76 +62,6 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
     return stringToFunction(str, expression, this._errors, this._logs);
   }
 
-  get styles() {
-    // TODO: handle style bindings
-    let { block, size } = this.props;
-    if (!size) {
-      // TODO: use device size API for this
-      size = 'small';
-    }
-    const styles = [];
-    const startIndex = 0; // sizeNames.indexOf(size || 'large');
-    if (block.responsiveStyles) {
-      for (let i = startIndex; i < sizeNames.length; i = i + 1) {
-        const name = sizeNames[i];
-        if (block.responsiveStyles[name]) {
-          styles.push(block.responsiveStyles[name]);
-        }
-      }
-    }
-
-    // TODO: animations
-    const finalStyleObject = Object.assign({}, ...styles.reverse());
-    for (const key in finalStyleObject) {
-      const value = finalStyleObject[key];
-      if (typeof value === 'string') {
-        const matched = value.trim().match(/^([\d\.]+)(px)?$/);
-        if (matched) {
-          finalStyleObject[key] = parseFloat(matched[1]);
-        }
-        if (value.includes('calc(')) {
-          // console.warn('calc not supported');
-          delete finalStyleObject[key];
-        }
-        if (value.includes('vw')) {
-          // console.warn('calc not supported');
-          delete finalStyleObject[key];
-        }
-      }
-    }
-    // TODO: convert transform string to array/object form for react native with regex
-    return omit(finalStyleObject, 'boxSizing', 'transform');
-  }
-
-  componentDidMount() {
-    const { block } = this.props;
-    const animations = block && block.animations;
-
-    // tslint:disable-next-line:comment-format
-    ///REACT15ONLY if (this.ref) { this.ref.setAttribute('builder-id', block.id); }
-
-    if (animations) {
-      const options = {
-        animations: fastClone(animations),
-      };
-
-      // TODO: listen to Builder.editingMode and bind animations when editing
-      // and unbind when not
-      // TODO: apply bindings first
-      if (block.bindings) {
-        for (const key in block.bindings) {
-          if (key.startsWith('animations.')) {
-            const value = this.stringToFunction(block.bindings[key]);
-            if (value !== undefined) {
-              set(options, key, value(this.privateState.state));
-            }
-          }
-        }
-      }
-      // TODO: animations
-    }
-  }
-
   // <!-- Builder Blocks --> in comments hmm
   getElement(index = 0, state = this.privateState.state): React.ReactNode {
     const { block, child, fieldName } = this.props;
@@ -179,13 +88,6 @@ export class BuilderBlock extends React.Component<BuilderBlockProps> {
         }
       }
     }
-
-    const isBlock = !includes(
-      ['absolute', 'fixed'],
-      block.responsiveStyles &&
-        block.responsiveStyles.large &&
-        block.responsiveStyles.large.position /*( this.styles.position */
-    );
 
     let options: any = {
       // Attributes?
