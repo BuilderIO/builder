@@ -38,15 +38,6 @@ const voidElements = new Set([
   'wbr',
 ]);
 
-function pick(object: any, keys: string[]) {
-  return keys.reduce((obj, key) => {
-    if (object && object.hasOwnProperty(key)) {
-      (obj as any)[key] = object[key];
-    }
-    return obj;
-  }, {});
-}
-
 const last = <T extends any>(arr: T[]) => arr[arr.length - 1];
 
 function omit(obj: any, values: string[]) {

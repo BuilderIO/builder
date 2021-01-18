@@ -3,12 +3,6 @@ import { safeDynamicRequire } from './safe-dynamic-require';
 
 const fnCache: { [key: string]: BuilderEvanFunction | undefined } = {};
 
-const sizeMap = {
-  desktop: 'large',
-  tablet: 'medium',
-  mobile: 'small',
-};
-
 type BuilderEvanFunction = (
   state: object,
   event?: Event | undefined | null,
