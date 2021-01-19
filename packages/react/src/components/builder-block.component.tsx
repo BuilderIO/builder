@@ -38,15 +38,6 @@ const voidElements = new Set([
   'wbr',
 ]);
 
-function pick(object: any, keys: string[]) {
-  return keys.reduce((obj, key) => {
-    if (object && object.hasOwnProperty(key)) {
-      (obj as any)[key] = object[key];
-    }
-    return obj;
-  }, {});
-}
-
 const last = <T extends any>(arr: T[]) => arr[arr.length - 1];
 
 function omit(obj: any, values: string[]) {
@@ -76,24 +67,6 @@ const fastClone = (obj: object) => JSON.parse(JSON.stringify(obj));
 
 // TODO: share these types in shared
 type ElementType = any;
-
-interface StringMap {
-  [key: string]: string | undefined | null;
-}
-function mapToCss(map: StringMap, spaces = 2, important = false) {
-  return Object.keys(map).reduce((memo, key) => {
-    const value = map[key];
-    if (typeof value !== 'string') {
-      return memo;
-    }
-    return (
-      memo +
-      (value && value.trim()
-        ? `\n${' '.repeat(spaces)}${cssCase(key)}: ${value + (important ? ' !important' : '')};`
-        : '')
-    );
-  }, '');
-}
 
 export interface BuilderBlockProps {
   fieldName?: string;
@@ -165,43 +138,6 @@ export class BuilderBlock extends React.Component<
     return blocksMap[this.props.block.id!] || this.props.block;
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps: BuilderBlockProps) {
-    // Always keep our blocks map fresh
-    if (Builder.isEditing && blocksMap[nextProps.block.id!] !== nextProps.block) {
-      blocksMap[nextProps.block.id!] = nextProps.block;
-    }
-  }
-
-  get styles() {
-    // TODO: handle style bindings
-    const { size } = this.props;
-    const block = this.block;
-    const styles = [];
-    const startIndex = sizeNames.indexOf(size || 'large');
-    if (block.responsiveStyles) {
-      for (let i = startIndex; i < sizeNames.length; i = i + 1) {
-        const name = sizeNames[i];
-        if (block.responsiveStyles[name]) {
-          styles.push(block.responsiveStyles[name]);
-        }
-      }
-    }
-
-    // On the server apply the initial animation state (TODO: maybe not for load time hm)
-    // TODO: maybe /s/ server renders content pages hmm
-    const isServer = !!this.privateState.state.isServer;
-    let initialAnimationStepStyles: any;
-    if (isServer) {
-      const animation = block.animations && block.animations[0];
-      const firstStep = animation && animation.steps && animation.steps[0];
-      const stepStyles = firstStep && firstStep.styles;
-      if (stepStyles) {
-        initialAnimationStepStyles = stepStyles;
-      }
-    }
-    return Object.assign({}, ...styles.reverse(), initialAnimationStepStyles);
-  }
-
   get emotionCss() {
     let initialAnimationStepStyles: any;
     const { block } = this;
@@ -253,69 +189,6 @@ export class BuilderBlock extends React.Component<
     }
 
     return styles;
-  }
-
-  get css() {
-    // TODO: handle style bindings
-    const self = this.block;
-
-    const baseStyles: Partial<CSSStyleDeclaration> = {
-      ...(self.responsiveStyles && self.responsiveStyles.large),
-    };
-
-    let css = this.props.emailMode
-      ? ''
-      : `.builder-block.${self.id} {${mapToCss(baseStyles as StringMap)}}`;
-
-    const reversedNames = sizeNames.slice().reverse();
-    if (self.responsiveStyles) {
-      for (const size of reversedNames) {
-        if (this.props.emailMode && size === 'large') {
-          continue;
-        }
-        if (
-          size !== 'large' &&
-          size !== 'xsmall' &&
-          self.responsiveStyles[size] &&
-          Object.keys(self.responsiveStyles[size]!).length
-        ) {
-          const emailOuterSizes = ['display', 'width', 'verticalAlign'];
-          const map = self.responsiveStyles[size];
-          const outer = this.props.emailMode && pick(map, emailOuterSizes);
-          // TODO: this will not work as expected for a couple things that are handled specially,
-          // e.g. width
-          css += `\n@media only screen and (max-width: ${sizes[size].max}px) { \n${
-            this.props.emailMode ? '.' : '.builder-block.'
-          }${self.id + (this.props.emailMode ? '-subject' : '')} {${mapToCss(
-            this.props.emailMode ? omit(map, emailOuterSizes) : (map as any),
-            4,
-            this.props.emailMode
-          )} } }`;
-
-          if (this.props.emailMode && outer && Object.keys(outer).length) {
-            css += `\n@media only screen and (max-width: ${sizes[size].max}px) { \n.builder-block.${
-              self.id
-            } {${mapToCss(outer as any, 4, true)} } }`;
-          }
-        }
-      }
-    }
-
-    const animations = self.animations;
-    if (!this.privateState.state.isBrowser && animations && animations.length) {
-      const firstAnimation = animations[0];
-      if (firstAnimation) {
-        const firstStep = firstAnimation.steps && firstAnimation.steps[0];
-        if (firstStep) {
-          const firstStepStyles = firstStep.styles;
-          if (firstStepStyles) {
-            css += `\n.builder-block.${self.id} {${mapToCss(firstStep, 2, true)}}`;
-          }
-        }
-      }
-    }
-
-    return css;
   }
 
   eval(str: string) {
@@ -744,7 +617,13 @@ export class BuilderBlock extends React.Component<
 
     if (block.repeat && block.repeat.collection) {
       const collectionPath = block.repeat.collection;
-      const collectionName = last((collectionPath || '').trim().split('(')[0].trim().split('.'));
+      const collectionName = last(
+        (collectionPath || '')
+          .trim()
+          .split('(')[0]
+          .trim()
+          .split('.')
+      );
       const itemName = block.repeat.itemName || (collectionName ? collectionName + 'Item' : 'item');
       const array = this.stringToFunction(collectionPath)(
         state.state,
