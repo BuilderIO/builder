@@ -22,6 +22,7 @@ export { noWrap } from './functions/no-wrap';
 
 export { BuilderPage, onChange };
 export { BuilderPage as BuilderComponent };
+export { BuilderPage as RenderContent };
 
 export { Text } from './blocks/Text';
 export { Fragment } from './blocks/Fragment';
