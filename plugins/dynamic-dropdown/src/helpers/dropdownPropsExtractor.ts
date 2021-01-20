@@ -26,7 +26,7 @@ const isNullOrEmpty = (input: String) => {
 export { getMassagedProps };
 
 function getView(props: any, dependencyComponentVariables?: any[]) {
-  const view = Object.assign({}, props.context.designerState.editingContentModel.data.toJSON());
+  const view = Object.assign({}, props.context.designerState.editingContentModel.data.toJSON(), { targeting: props.targeting });
 
   if (dependencyComponentVariables && dependencyComponentVariables.length) {
     dependencyComponentVariables.forEach((key: string) => {
@@ -52,11 +52,16 @@ function renderTemplate(url: any, view: any) {
   return renderedUrl;
 }
 
+function resolve(path: string, view: any, separator= '.') {
+  const keys = path.split(separator)
+  return keys.reduce((value, key) => value?.[key], view)
+}
+
 function validateTemplateVariables(variablesToReplace: any, view: any) {
   let variablesWithError: string[] = [];
 
   variablesToReplace.forEach((variableToReplace: string) => {
-    if (!Object.keys(view).includes(variableToReplace)) {
+    if (!resolve(variableToReplace, view)) {
       variablesWithError.push(`{{${variableToReplace}}}`);
     }
   });

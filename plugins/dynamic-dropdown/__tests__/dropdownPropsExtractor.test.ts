@@ -99,6 +99,29 @@ describe('Get Massaged Props', () => {
       expect(actual.url).toBe(expectedUrl);
     });
 
+    it('replaces templated url with nested component tokens', () => {
+      const templatedUrl = 'https://www.domain.net/v2/{{targeting.locale.0}}/users';
+
+      const builderComponentVariables = { targeting: { locale: [ locale ] } };
+      const builderPluginObject = {
+        object: { get: (key: string): any => builderComponentVariables[key] },
+      };
+      const actual = getMassagedProps({
+        field: {
+          options: {
+            url: templatedUrl,
+            mapper: '() => {}',
+            dependencyComponentVariables: ['componentVariable'],
+          },
+        },
+        ...builderPluginContext,
+        ...builderPluginObject,
+      });
+
+      const expectedUrl = `https://www.domain.net/v2/${locale}/users`;
+      expect(actual.url).toBe(expectedUrl);
+    });
+
     it('mapper function as mapper', () => {
       const expected = '() => {}';
 
