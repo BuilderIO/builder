@@ -1,15 +1,13 @@
 {
   "compilerOptions": {
-    "target": "es5",                          
-    "module": "commonJS",
-    "strict": true, 
-    "declaration": true,
+    "rootDir": "src",
+    "outDir": "dist",
+    "module": "CommonJS",
+    "target": "es6",
     "esModuleInterop": true,
-    "skipLibCheck": true,   
-    "moduleResolution": "Node",
-    "resolveJsonModule": true,
-    "forceConsistentCasingInFileNames": true
-  },
-  "include": ["src/**/*", "./index"],
-  "exclude": ["node_modules", "**/*.test.ts"]
+    "strict": true,
+    "declaration": true,
+   },
+   "include": ["./src"],
+   "exclude": ["node_modules", "**/*.test.ts"]
 }
