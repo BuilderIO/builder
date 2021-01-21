@@ -9,7 +9,7 @@ module.exports = {
     '@emotion/styled': '@emotion/styled',
   },
   output: {
-    filename: 'builder-plugin-dynamic-dropdown.system.js',
+    filename: 'builder-plugin-async-dropdown.system.js',
     path: path.resolve(__dirname, 'dist'),
     libraryTarget: 'system',
   },

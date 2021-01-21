@@ -1,12 +1,12 @@
 {
-  "name": "@builder.io/plugin-dynamic-dropdown",
+  "name": "@builder.io/plugin-async-dropdown",
   "version": "2.0.0",
   "description": "",
   "keywords": [],
-  "main": "dist/builder-plugin-dynamic-dropdown.umd.js",
-  "module": "dist/builder-plugin-dynamic-dropdown.es5.js",
-  "unpkg": "dist/builder-plugin-dynamic-dropdown.system.js",
-  "typings": "dist/types/builder-plugin-dynamic-dropdown.d.ts",
+  "main": "dist/builder-plugin-async-dropdown.umd.js",
+  "module": "dist/builder-plugin-async-dropdown.es5.js",
+  "unpkg": "dist/builder-plugin-async-dropdown.system.js",
+  "typings": "dist/types/builder-plugin-async-dropdown.d.ts",
   "files": [
     "dist"
   ],
