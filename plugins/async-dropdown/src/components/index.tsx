@@ -33,6 +33,6 @@ const SingleDropdown = React.forwardRef((props, ref) => {
 });
 
 Builder.registerEditor({
-  name: 'dynamic-dropdown',
+  name: 'async-dropdown',
   component: Component,
 });

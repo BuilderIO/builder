@@ -1,4 +1,4 @@
-# Builder.io dynamic dropdown
+# Builder.io async dropdown
 
 See [here](src/dropdown.tsx) for the React component that powers this plugin
 
