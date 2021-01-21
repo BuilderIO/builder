@@ -27,6 +27,7 @@ const voidElements = new Set([
   'br',
   'col',
   'embed',
+  'textarea',
   'hr',
   'img',
   'input',
