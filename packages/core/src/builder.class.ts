@@ -636,7 +636,7 @@ export class Builder {
   }
 
   static registerBlock(component: any, options: Component) {
-    this.registerComponent(component, options)
+    this.registerComponent(component, options);
   }
 
   static registerComponent(component: any, options: Component) {
