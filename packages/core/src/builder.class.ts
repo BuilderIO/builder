@@ -635,7 +635,10 @@ export class Builder {
     };
   }
 
-  // static registerComponent(...) { .. }
+  static registerBlock(component: any, options: Component) {
+    this.registerComponent(component, options);
+  }
+
   static registerComponent(component: any, options: Component) {
     const spec = {
       class: component,
