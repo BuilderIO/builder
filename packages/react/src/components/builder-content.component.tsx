@@ -70,6 +70,9 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
     }
     switch (message.type) {
       case 'builder.patchUpdates': {
+        if (this.props.options?.noEditorUpdates) {
+          return;
+        }
         const { data } = message;
         if (!(data && data.data)) {
           break;
@@ -140,7 +143,7 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
               loading: false,
             });
 
-            if (match && this.firstLoad) {
+            if (match && this.firstLoad && !Builder.isEditing) {
               // TODO: autoTrack
               if (builder.autoTrack) {
                 let addedObserver = false;
