@@ -34,11 +34,11 @@ const size = (thing: object) => Object.keys(thing).length;
 
 function debounce(func: Function, wait: number, immediate = false) {
   let timeout: any;
-  return function (this: any) {
+  return function(this: any) {
     const context = this;
     const args = arguments;
     clearTimeout(timeout);
-    timeout = setTimeout(function () {
+    timeout = setTimeout(function() {
       timeout = null;
       if (!immediate) func.apply(context, args);
     }, wait);
@@ -776,7 +776,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
       <WrapComponent
         className={`builder-component ${contentId ? `builder-component-${contentId}` : ''}`}
         data-name={this.name}
-        data-source={`Rendered by Builder.io on ${new Date().toUTCString()}`}
+        data-source="Rendered by Builder.io"
         key={this.state.key}
         ref={ref => (this.ref = ref)}
       >

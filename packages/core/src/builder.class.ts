@@ -15,7 +15,10 @@ import { getTopLevelDomain } from './functions/get-top-level-domain';
 import serverOnlyRequire from './functions/server-only-require.function';
 import { BuilderContent } from './types/content';
 import { uuid } from './functions/uuid';
-const hash = require('hash-sum');
+
+// Do not change this to a require! It throws runtime errors - rollup
+// will preserve the `require` and throw runtime errors
+import hash from 'hash-sum';
 
 export type Url = any;
 
@@ -222,6 +225,7 @@ export interface GetContentOptions {
   static?: boolean;
   // Additional query params of the Content API to send
   options?: { [key: string]: any };
+  noEditorUpdates?: boolean;
 }
 
 export type Class = {
@@ -1364,7 +1368,7 @@ export class Builder {
                 data.data.key || data.data.alias || data.data.entry || data.data.modelName;
               const contentData = data.data.data; // hmmm...
               const observer = this.observersByKey[key];
-              if (observer) {
+              if (observer && !this.noEditorUpdates[key]) {
                 observer.next([contentData]);
               }
               break;
@@ -1478,6 +1482,7 @@ export class Builder {
   }
 
   observersByKey: { [key: string]: BehaviorSubject<BuilderContent[]> | undefined } = {};
+  noEditorUpdates: { [key: string]: boolean } = {};
 
   get defaultCanTrack() {
     return Boolean(
@@ -1707,6 +1712,9 @@ export class Builder {
 
     const observable = new BehaviorSubject<BuilderContent[]>(null as any);
     this.observersByKey[key] = observable;
+    if (options.noEditorUpdates) {
+      this.noEditorUpdates[key] = true;
+    }
     if (initialContent) {
       nextTick(() => {
         // TODO: need to testModify this I think...?
@@ -1945,7 +1953,7 @@ export class Builder {
       result => {
         for (const options of queue) {
           const keyName = options.key!;
-          if (options.model === this.blockContentLoading) {
+          if (options.model === this.blockContentLoading && !options.noEditorUpdates) {
             continue;
           }
 
