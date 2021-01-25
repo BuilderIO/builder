@@ -1,10 +1,10 @@
 # Builder.io React SDK
 
-See our [main readme](/README.md) for info on getting starte with the React SDK
+See our [main readme](/README.md) for info on getting started with the React SDK
 
-Also see our examples of using react with a [design system](/examples/react-design-system) or a [simple example](/examples/react) and how to use your [react components](https://github.com/BuilderIO/builder#using-your-components) in the visual editor!
+Also see our examples of using React with a [design system](/examples/react-design-system) or a [simple example](/examples/react) and how to use your [React components](https://github.com/BuilderIO/builder#using-your-components) in the visual editor!
 
-Also see our docs for [next.js](/examples/next-js) and [gatsby](/examples/gatsby)
+Also see our docs for [Next.js](/examples/next-js) and [Gatsby](/examples/gatsby)
 
 ## React API
 
@@ -38,7 +38,7 @@ if (content) {
 You can also pass [data](https://www.builder.io/c/docs/guides/connecting-api-data) and [functions](https://www.builder.io/c/docs/react/custom-actions) down to the Builder component to use in the UIs (e.g. bind
 data values to UIs e.g. for text values or iterating over lists, and actions to trigger for instance on click of a button)
 
-All data passed down in available in Builder [actions and bindings](https://www.builder.io/c/docs/guides/custom-code) as `state.*`, for instance in the below example `state.products`, etc will be available
+All data passed down is available in Builder [actions and bindings](https://www.builder.io/c/docs/guides/custom-code) as `state.*`, for instance in the below example `state.products`, etc will be available
 
 ```tsx
 <BuilderComponent
@@ -88,7 +88,7 @@ export default () => <div>
 
 #### contentLoaded
 
-The contentLoaded hook can be useful for when you add [custom fields](https://www.builder.io/c/docs/custom-fields)
+The contentLoaded callback can be useful for when you add [custom fields](https://www.builder.io/c/docs/custom-fields)
 
 ```tsx
 <BuilderComponent
@@ -135,7 +135,7 @@ See our full guide on [registering custom components here](https://www.builder.i
 
 ### builder
 
-The React SDK exports the core SDK's [builder object](../core), which can be used for settings like
+The React SDK exports the core SDK's [builder object](../core), which can be used for setting things like
 your API key and user attributes
 
 ```tsx
