@@ -19,7 +19,7 @@ USAGE
 # Commands
 <!-- commands -->
 * [`builder import`](#builder-import--k-private-key---o-output-directory)
-* [`builder new`](#builder-new)
+* [`builder create`](#builder-create)
 
 ## `builder import -k [PRIVATE KEY] -o [OUTPUT DIRECTORY]`
 
@@ -41,13 +41,13 @@ DESCRIPTION
   This command will download a self-contained clone ( new IDs) from the target space and save it on the filesystem.
 ```
 
-## `builder new -k [PRIVATE KEY] -i [INPUT DIRECTORY] -n [NEW SPACE NAME]`
+## `builder create -k [PRIVATE KEY] -i [INPUT DIRECTORY] -n [NEW SPACE NAME]`
 
 Create a new space from your local builder directory, as a space under the root organization you specify.
 
 ```
 USAGE
-  $ builder new -k [PRIVATE KEY] -i [INPUT DIRECTORY]
+  $ builder create -k [PRIVATE KEY] -i [INPUT DIRECTORY]
 
 
 OPTIONS
