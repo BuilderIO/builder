@@ -91,7 +91,7 @@ In Builder, content is structured in [models](https://www.builder.io/c/docs/guid
 - **Builder data** - fetch structured data from Builder and use it anywhere in your application (e.g. menu items)
 
 
-<img src="https://imgur.com/8FrEHyl.png" />
+<img src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fe809eac6ae7140beab81ce4c3ee75e20" />
 
 
 Read more about how builder works [here](https://www.builder.io/c/docs/how-builder-works)
