@@ -372,6 +372,7 @@ export const Image = withBuilder(ImageComponent, {
       onChange: (options: Map<string, any>) => {
         const DEFAULT_ASPECT_RATIO = 0.7041;
         options.delete('srcset');
+        options.delete('noWebp');
         function loadImage(url: string, timeout = 60000): Promise<HTMLImageElement> {
           return new Promise((resolve, reject) => {
             const img = document.createElement('img');
@@ -399,9 +400,16 @@ export const Image = withBuilder(ImageComponent, {
           return Math.round(num * 1000) / 1000;
         }
 
-        // // TODO
         const value = options.get('image');
         const aspectRatio = options.get('aspectRatio');
+
+        // For SVG images - don't render as webp, keep them as SVG
+        fetch(value).then(res => res.blob()).then(blob => {
+          if (blob.type.includes('svg')) {
+            options.set('noWebp', true)
+          }
+        })
+
         if (value && (!aspectRatio || aspectRatio === DEFAULT_ASPECT_RATIO)) {
           return loadImage(value).then(img => {
             const possiblyUpdatedAspectRatio = options.get('aspectRatio');
