@@ -404,11 +404,13 @@ export const Image = withBuilder(ImageComponent, {
         const aspectRatio = options.get('aspectRatio');
 
         // For SVG images - don't render as webp, keep them as SVG
-        fetch(value).then(res => res.blob()).then(blob => {
-          if (blob.type.includes('svg')) {
-            options.set('noWebp', true)
-          }
-        })
+        fetch(value)
+          .then(res => res.blob())
+          .then(blob => {
+            if (blob.type.includes('svg')) {
+              options.set('noWebp', true);
+            }
+          });
 
         if (value && (!aspectRatio || aspectRatio === DEFAULT_ASPECT_RATIO)) {
           return loadImage(value).then(img => {
