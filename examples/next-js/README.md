@@ -1,5 +1,9 @@
 # Using Builder with Next.js
 
+This is a simple example using Builder.io with Next.js. 
+\
+For a more complete example see [next-js-builder-site](../next-js-builder-site) which is the complete [Builder.io](https://www.builder.io/) site and includes Builder's [blog](https://www.builder.io/blog), [docs](https://www.builder.io/c/docs/intro), and [marketing pages](https://www.builder.io/)
+
 ## Getting started
 
 ### Create an account
