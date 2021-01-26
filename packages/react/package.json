@@ -125,7 +125,7 @@
     "rollup-plugin-terser": "^5.2.0",
     "rollup-plugin-typescript2": "^0.11.1",
     "rollup-plugin-uglify": "^6.0.4",
-    "semantic-release": "^15.0.0",
+    "semantic-release": "^17.2.3",
     "ts-jest": "^22.4.6",
     "ts-node": "^6.0.0",
     "tslint": "^5.8.0",
