@@ -12,8 +12,9 @@ export const Component = observer((props: any) => {
   const newDependenciesKey = getDependenciesKeyFrom(props);
   const dependenciesKeyRef = useRef(newDependenciesKey);
 
-  const targeting = props.context.designerState.editingContentModel.query.toJSON()
-      .reduce((accum: any, q: any) => ({ ...accum, [q.property]: q.value}), {})
+  const targeting = props.context.designerState.editingContentModel.query
+    .toJSON()
+    .reduce((accum: any, q: any) => ({ ...accum, [q.property]: q.value }), {});
 
   const newProps = { ...props, newDependenciesKey, targeting };
 
