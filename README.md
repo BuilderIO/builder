@@ -295,7 +295,7 @@ if (page) {
 
 Want to work on the future of visual software development? Email me at steve@builder.io and let's talk
 
-## John the community!
+## Join the community!
 
 Questions? Requests? Feedback? Chat with us in our [official forum](https://forum.builder.io)!
 
