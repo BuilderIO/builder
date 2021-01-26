@@ -6,6 +6,8 @@ const importWidgets = () => import('@builder.io/widgets');
 
 Builder.isStatic = true;
 
+const useCodegen = Builder.isBrowser && location.href.includes('builder.codegen=true');
+
 function wrapInDiv(el: HTMLElement) {
   const newDiv = document.createElement('div');
   const currentChildren = Array.from(el.children);
@@ -191,6 +193,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
     get options() {
       return {
         rev: this.getAttribute('rev') || undefined,
+        format: useCodegen ? 'react' : undefined,
         ...this._options,
       };
     }
@@ -512,6 +515,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
           {
             ...({ ref: (ref: any) => (this.builderPageRef = ref) } as any),
             modelName: name!,
+            codegen: useCodegen,
             context: {
               shopify,
               liquid: shopify.liquid,
@@ -567,6 +571,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
               {
                 ...({ ref: (ref: any) => (this.builderPageRef = ref) } as any),
                 modelName: name!,
+                codegen: useCodegen,
                 context: {
                   shopify,
                   liquid: shopify.liquid,
@@ -627,6 +632,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
                     apiKey: builder.apiKey,
                   },
                   modelName: name!,
+                  codegen: useCodegen,
                   entry: data ? data.id : entry,
                   emailMode:
                     ((this.options as any) || {}).emailMode ||

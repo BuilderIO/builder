@@ -2,11 +2,11 @@
 import { jsx } from '@emotion/core';
 import React from 'react';
 
-import { BuilderElement } from '@builder.io/sdk';
+import { Builder, BuilderElement } from '@builder.io/sdk';
 import { BuilderBlocks } from '../components/builder-blocks.component';
-import { builder } from '@builder.io/sdk';
 import { withBuilder } from '../functions/with-builder';
 import { Link } from '../components/Link';
+import { number } from 'prop-types';
 
 const DEFAULT_ASPECT_RATIO = 0.7004048582995948;
 
@@ -64,31 +64,77 @@ const defaultBlocks: BuilderElement[] = [
   },
 ];
 
+interface ColumnProps {
+  numColumns: number;
+  stackColumnsAt?: string;
+  link?: string;
+  space?: number;
+  width: number;
+  index?: number | string;
+  builderBlock?: BuilderElement;
+  children?: BuilderBlocks;
+}
+
+const Column = (props: ColumnProps) => {
+  const TagName = props.link ? Link : 'div';
+
+  const getGutterSize = (): number => {
+    return typeof props.space === 'number' ? props.space || 0 : 20;
+  };
+
+  const getWidth = (): number => {
+    return props.width || 100 / props.numColumns;
+  };
+
+  const getColumnWidth = () => {
+    const gutterSize = getGutterSize();
+    const subtractWidth = (gutterSize * (props.numColumns - 1)) / props.numColumns;
+    return `calc(${getWidth()}% - ${subtractWidth}px)`;
+  };
+  return (
+    <React.Fragment key={props.index}>
+      <TagName
+        className="builder-column"
+        {...(props.link ? { href: props.link } : null)}
+        css={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'stretch',
+          lineHeight: 'normal',
+          ['& > .builder-blocks']: {
+            flexGrow: 1,
+          },
+          width: getColumnWidth(),
+          marginLeft: Number(props.index) === 0 ? 0 : getGutterSize(),
+          ...(props.stackColumnsAt !== 'never' && {
+            [`@media (max-width: ${props.stackColumnsAt !== 'tablet' ? 639 : 999}px)`]: {
+              width: '100%',
+              marginLeft: 0,
+            },
+          }),
+        }}
+      >
+        <BuilderBlocks
+          key={props.index}
+          child
+          parentElementId={props.builderBlock && props.builderBlock.id}
+          blocks={props.children}
+          dataPath={`component.options.columns.${props.index}.blocks`}
+        />
+      </TagName>
+    </React.Fragment>
+  );
+};
+
 class ColumnsComponent extends React.Component<any> {
-  // TODO: Column interface
   get columns(): any[] {
     return this.props.columns || [];
   }
 
-  get gutterSize(): number {
-    return typeof this.props.space === 'number' ? this.props.space || 0 : 20;
-  }
-
-  getWidth(index: number) {
-    return (this.columns[index] && this.columns[index].width) || 100 / this.columns.length;
-  }
-
-  getColumnWidth(index: number) {
-    const { columns, gutterSize } = this;
-    const subtractWidth = (gutterSize * (columns.length - 1)) / columns.length;
-    return `calc(${this.getWidth(index)}% - ${subtractWidth}px)`;
-  }
-
   render() {
-    const { columns, gutterSize } = this;
+    const { columns } = this;
 
     return (
-      // FIXME: make more elegant
       <React.Fragment>
         <div
           className="builder-columns"
@@ -102,48 +148,20 @@ class ColumnsComponent extends React.Component<any> {
             }),
           }}
         >
+          {/* TODO: map these */}
+          {this.props.children ? <div css={{ display: 'flex' }}>{this.props.children} </div> : null}
+
           {columns.map((col, index) => {
-            const TagName = col.link ? Link : 'div';
-
-            // TODO: pass size down in context
-
             return (
-              <React.Fragment key={index}>
-                <TagName
-                  className="builder-column"
-                  {...(col.link ? { href: col.link } : null)}
-                  // TODO: generate width and margin-left as CSS instead so can override with pure CSS for best responsieness
-                  // and no use of !important
-                  css={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'stretch',
-                    lineHeight: 'normal',
-                    ['& > .builder-blocks']: {
-                      flexGrow: 1,
-                    },
-                    width: this.getColumnWidth(index),
-                    marginLeft: index === 0 ? 0 : gutterSize,
-                    ...(this.props.stackColumnsAt !== 'never' && {
-                      [`@media (max-width: ${
-                        this.props.stackColumnsAt !== 'tablet' ? 639 : 999
-                      }px)`]: {
-                        width: '100%',
-                        marginLeft: 0,
-                      },
-                    }),
-                  }}
-                >
-                  <BuilderBlocks
-                    key={index}
-                    // TODO: childOf [parentBlocks]?
-                    child
-                    parentElementId={this.props.builderBlock && this.props.builderBlock.id}
-                    blocks={col.blocks}
-                    dataPath={`component.options.columns.${index}.blocks`}
-                  />
-                </TagName>
-              </React.Fragment>
+              <Column
+                numColumns={columns.length}
+                space={this.props.space}
+                width={this.columns[index] && this.columns[index].width}
+                index={index}
+                builderBlock={this.props.builderBlock}
+                children={this.props.blocks}
+                stackColumnsAt={this.props.stackColumnsAt}
+              />
             );
           })}
         </div>
@@ -152,7 +170,13 @@ class ColumnsComponent extends React.Component<any> {
   }
 }
 
-export const Columns = withBuilder(ColumnsComponent, {
+Builder.registerComponent(Column, {
+  name: 'Column',
+  noWrap: true,
+  hideFromInsertMenu: true,
+});
+
+export const Columns = Builder.registerComponent(ColumnsComponent, {
   name: 'Columns',
   static: true,
   inputs: [

@@ -43,6 +43,7 @@ export interface SymbolProps {
   builderBlock?: BuilderElement;
   attributes?: any;
   inheritState?: boolean;
+  useChildren?: boolean;
 }
 
 class SymbolComponent extends React.Component<SymbolProps> {
@@ -77,11 +78,15 @@ class SymbolComponent extends React.Component<SymbolProps> {
       return <div ref={el => (this.staticRef = el)} />;
     }
 
+    if (this.props.useChildren) {
+      return this.props.children;
+    }
+
     const symbol = this.props.symbol;
 
     let showPlaceholder = false;
 
-    if (!symbol) {
+    if (!symbol && !this.props.children) {
       showPlaceholder = true;
     }
 
@@ -91,7 +96,7 @@ class SymbolComponent extends React.Component<SymbolProps> {
 
     const { model, entry, data, content, inline } = symbol || {};
     const dynamic = symbol?.dynamic || this.props.dynamic;
-    if (!(model && (entry || dynamic)) && !inline) {
+    if (!(model && (entry || dynamic)) && !data?.blocksJs && !inline) {
       showPlaceholder = true;
     }
 
@@ -134,6 +139,7 @@ class SymbolComponent extends React.Component<SymbolProps> {
                   inlineContent={symbol?.inline}
                   {...(content && { content })}
                   options={{ key, noEditorUpdates: true }}
+                  codegen={!!data.blocksJs}
                   hydrate={state.state?._hydrate}
                   builderBlock={this.props.builderBlock}
                   dataOnly={this.props.dataOnly}
@@ -189,6 +195,11 @@ export const Symbol = withBuilder(SymbolComponent, {
       defaultValue: isShopify,
       advanced: true,
       hideFromUI: true,
+    },
+    {
+      name: 'useChildren',
+      hideFromUI: true,
+      type: 'boolean',
     },
   ],
 });

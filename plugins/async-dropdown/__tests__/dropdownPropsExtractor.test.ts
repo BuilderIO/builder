@@ -102,7 +102,7 @@ describe('Get Massaged Props', () => {
     it('replaces templated url with nested component tokens', () => {
       const templatedUrl = 'https://www.domain.net/v2/{{targeting.locale.0}}/users';
 
-      const builderComponentVariables = { targeting: { locale: [ locale ] } };
+      const builderComponentVariables = { targeting: { locale: [locale] } };
       const builderPluginObject = {
         object: { get: (key: string): any => builderComponentVariables[key] },
       };
