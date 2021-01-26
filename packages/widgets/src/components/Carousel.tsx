@@ -7,8 +7,6 @@ import {
   BuilderStoreContext,
   stringToFunction,
 } from '@builder.io/react';
-import isArray from 'lodash-es/isArray';
-import last from 'lodash-es/last';
 import * as React from 'react';
 import Slider, { ResponsiveObject, Settings } from 'react-slick';
 
@@ -137,12 +135,11 @@ export class CarouselComponent extends React.Component<CarouselProps> {
                           (block: BuilderElement, index: number) => {
                             if (block.repeat && block.repeat.collection) {
                               const collectionPath = block.repeat.collection;
-                              const collectionName = last(
-                                (collectionPath || '')
-                                  .split(/\.\w+\(/)[0]
-                                  .trim()
-                                  .split('.')
-                              );
+                              const collectionName = (collectionPath || '')
+                                .split(/\.\w+\(/)[0]
+                                .trim()
+                                .split('.')
+                                .pip();
                               const itemName =
                                 block.repeat.itemName ||
                                 (collectionName ? collectionName + 'Item' : 'item');
@@ -154,7 +151,7 @@ export class CarouselComponent extends React.Component<CarouselProps> {
                                 this._logs
                               )(state.state);
 
-                              if (isArray(array)) {
+                              if (Array.isArray(array)) {
                                 if (!Builder.isBrowser) {
                                   array = array.slice(0, 1);
                                 }
