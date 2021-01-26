@@ -12,8 +12,10 @@ export const getBuilderStaticPaths = async (modelName: string) => {
 
   const paths = results
     .filter((item) => !item.data?.url?.startsWith('/c/'))
-    .map((item) => ({ params: { page: [item.data?.url] } }))
-    .concat([{ params: { page: ['/'] } }]);
+    .filter((item) => item.data?.url !== '/')
+    .map((item) => ({
+      params: { page: (item.data?.url?.replace('/', '') || '_').split('/') },
+    }));
 
   return {
     paths,

@@ -139,7 +139,9 @@ export const getStaticPaths = async () => {
   const paths = results
     .filter((item) => Boolean(item.data?.url?.startsWith('/c/')))
     .map((item) => ({
-      params: { content: [item.data?.url.replace('/c/', '')] },
+      params: {
+        content: (item.data?.url?.replace('/c/', '') || '').split('/'),
+      },
     }));
 
   return {
@@ -152,7 +154,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
   // Don't target on url and device for better cache efficiency
   const targeting = { urlPath: '_', device: '_' } as any;
   const path = `/c/${(context.params?.content as string[])?.join('/') || ''}`;
-
 
   const [page, docsHeader] = await Promise.all([
     builder

@@ -251,7 +251,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   return {
     paths: results
-      .map((item) => ({ params: { article: item.data!.handle } }))
+      .map((item) => ({ params: { article: item.data!.handle || '' } }))
       .concat([{ params: { article: '_' /* For previewing and editing */ } }]),
     fallback: true,
   };

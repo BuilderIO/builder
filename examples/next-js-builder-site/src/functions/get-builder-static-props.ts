@@ -16,5 +16,5 @@ export const getBuilderStaticProps = async (
     .promise();
 
   // If there is a Builder page for this URL, this will be an object, otherwise it'll be null
-  return { props: { builderPage: page }, revalidate: true };
+  return { props: { builderPage: page || null }, revalidate: true };
 };

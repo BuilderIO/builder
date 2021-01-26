@@ -211,6 +211,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const results = await builder.getAll('docs-content', {
     key: 'articles:all',
     fields: 'data.url',
+    limit: 200,
     options: {
       noTargeting: true,
     },
@@ -218,7 +219,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   return {
     paths: results.map((item) => ({
-      params: { doc: [item.data?.url.replace('/c/docs', '') || '/'] },
+      params: {
+        doc: (item.data?.url?.replace('/c/docs/', '') || '').split('/'),
+      },
     })),
     fallback: true,
   };
@@ -243,7 +246,7 @@ const getContent = async (context: GetStaticPropsContext) => {
     builder.get('docs-header', { userAttributes }).promise(),
   ]);
 
-  return { docsContent: content, docsNav: nav, docsHeader };
+  return { docsContent: content || null, docsNav: nav, docsHeader };
 };
 
 export default Docs;
