@@ -26,7 +26,6 @@ import { fastClone } from '../functions/fast-clone';
 import { SetShopifyKeysMessage } from '../components/set-shopify-keys-message';
 import appState from '@builder.io/app-context';
 
-const syncFields = ['title', 'images', 'description'];
 interface ShopifyProductPickerProps extends CustomReactEditorProps<BuilderRequest | string> {
   isPreview?: boolean;
   handleOnly?: boolean;
@@ -323,27 +322,6 @@ export class ShopifyProductPicker extends SafeComponent<ShopifyProductPickerProp
             >
               <Create css={{ color: '#888' }} />
             </IconButton>
-            {this.props.field?.isTargeting && (
-              <IconButton
-                onClick={() => {
-                  const content = appState.designerState.editingContentModel;
-                  syncFields.forEach(field => {
-                    content.data.set(field, this.productInfo[field]);
-                  });
-                }}
-                css={{
-                  position: 'absolute',
-                  right: -25,
-                  top: 0,
-                  bottom: 0,
-                  height: 50,
-                  marginTop: 'auto',
-                  marginBottom: 'auto',
-                }}
-              >
-                <Sync css={{ color: '#888' }} />
-              </IconButton>
-            )}
           </Paper>
         )}
         {!this.productInfo && (
