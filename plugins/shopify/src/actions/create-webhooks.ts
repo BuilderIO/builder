@@ -1,4 +1,3 @@
-const builderRoot = 'https://fdfa9a2b677e.ngrok.io'; // todo appState.config.apiRoot()
 import { pluginId } from '../constants';
 import appState from '@builder.io/app-context';
 
@@ -33,7 +32,7 @@ const createWebhookOnTopic = async (
     headers,
     body: JSON.stringify({
       webhook: {
-        address: `${builderRoot}/api/v1/shopify-sync?modelName=${modelName}&resourceName=${resourceName}&apiKey=${appState.user.apiKey}&pluginId=${pluginId}`,
+        address: `${appState.config.apiRoot()}/api/v1/shopify-sync?modelName=${modelName}&resourceName=${resourceName}&apiKey=${appState.user.apiKey}&pluginId=${pluginId}`,
         topic,
         format: 'json',
       },
