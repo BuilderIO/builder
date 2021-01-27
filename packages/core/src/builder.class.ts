@@ -1941,8 +1941,6 @@ export class Builder {
 
     const format = queryParams.format;
 
-    console.log('\n\n', { format, queue, queryParams, env: this.env });
-
     const promise = this.requestUrl(
       `${host}/api/v1/${format === 'solid' || format === 'react' ? 'codegen' : 'query'}/${
         this.apiKey

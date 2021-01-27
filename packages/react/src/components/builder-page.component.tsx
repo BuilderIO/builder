@@ -73,11 +73,11 @@ const size = (thing: object) => Object.keys(thing).length;
 
 function debounce(func: Function, wait: number, immediate = false) {
   let timeout: any;
-  return function (this: any) {
+  return function(this: any) {
     const context = this;
     const args = arguments;
     clearTimeout(timeout);
-    timeout = setTimeout(function () {
+    timeout = setTimeout(function() {
       timeout = null;
       if (!immediate) func.apply(context, args);
     }, wait);
@@ -893,21 +893,29 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
                           );
                           const reversedcomponents = Builder.components.slice().reverse();
 
-                          const builderComponents = builderComponentNames.map(
-                            name =>
-                              reversedcomponents.find(
-                                (item: any) => item.class && item.name === name
-                              )?.class
+                          const builderComponents = builderComponentNames.map(name =>
+                            reversedcomponents.find((item: any) => item.class && item.name === name)
                           );
 
                           const useBuilderState = (initialState: any) => {
-                            const [_tick, setTick] = React.useState(0);
-                            const state = onChange(initialState, function () {
-                              setTick(tick => tick + 1);
-                            });
+                            const [, setTick] = React.useState(0);
+                            const [state] = React.useState(() =>
+                              onChange(initialState, function() {
+                                console.log('change 2', arguments);
+                                setTick(tick => tick + 1);
+                              })
+                            );
 
                             return state;
                           };
+
+                          const mappedComponentNames = builderComponentNames.map(name =>
+                            (name || '').replace(/[^\w]+/gi, '')
+                          );
+
+                          const finalizedComponents = builderComponents.map(info =>
+                            wrapComponent(info)
+                          );
 
                           this.Component = new Function(
                             'jsx',
@@ -915,11 +923,8 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
                             'Builder',
                             'builder',
                             'React',
-                            'onChange',
                             'useBuilderState',
-                            ...builderComponentNames.map(name =>
-                              (name || '').replace(/[^\w]+/gi, '_')
-                            ),
+                            ...mappedComponentNames,
                             data.blocksJs
                           )(
                             jsx,
@@ -927,9 +932,8 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
                             Builder,
                             builder,
                             React,
-                            onChange,
                             useBuilderState,
-                            ...builderComponents.map(info => wrapComponent(info))
+                            ...finalizedComponents
                           );
                         }
 
