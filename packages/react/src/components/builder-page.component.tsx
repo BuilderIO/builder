@@ -901,7 +901,6 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
                             const [, setTick] = React.useState(0);
                             const [state] = React.useState(() =>
                               onChange(initialState, function() {
-                                console.log('change 2', arguments);
                                 setTick(tick => tick + 1);
                               })
                             );
