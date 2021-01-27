@@ -139,7 +139,7 @@ export class CarouselComponent extends React.Component<CarouselProps> {
                                 .split(/\.\w+\(/)[0]
                                 .trim()
                                 .split('.')
-                                .pip();
+                                .pop();
                               const itemName =
                                 block.repeat.itemName ||
                                 (collectionName ? collectionName + 'Item' : 'item');
