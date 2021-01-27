@@ -134,7 +134,7 @@ class SymbolComponent extends React.Component<SymbolProps> {
                   inlineContent={symbol?.inline}
                   {...(content && { content })}
                   options={{ key, noEditorUpdates: true }}
-                  codegen={!!data.blocksJs}
+                  codegen={!!data?.blocksJs}
                   hydrate={state.state?._hydrate}
                   builderBlock={this.props.builderBlock}
                   dataOnly={this.props.dataOnly}

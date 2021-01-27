@@ -887,7 +887,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
 
                         const { codegen } = this.options;
 
-                        if (codegen && !this.Component && data.blocksJs) {
+                        if (codegen && !this.Component && data?.blocksJs) {
                           const builderComponentNames: string[] = Array.from(
                             new Set(Builder.components.map((item: any) => item.name))
                           );
