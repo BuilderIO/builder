@@ -73,11 +73,11 @@ const size = (thing: object) => Object.keys(thing).length;
 
 function debounce(func: Function, wait: number, immediate = false) {
   let timeout: any;
-  return function(this: any) {
+  return function (this: any) {
     const context = this;
     const args = arguments;
     clearTimeout(timeout);
-    timeout = setTimeout(function() {
+    timeout = setTimeout(function () {
       timeout = null;
       if (!immediate) func.apply(context, args);
     }, wait);
@@ -900,7 +900,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
                           const useBuilderState = (initialState: any) => {
                             const [, setTick] = React.useState(0);
                             const [state] = React.useState(() =>
-                              onChange(initialState, function() {
+                              onChange(initialState, function () {
                                 setTick(tick => tick + 1);
                               })
                             );
