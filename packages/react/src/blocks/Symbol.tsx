@@ -91,7 +91,7 @@ class SymbolComponent extends React.Component<SymbolProps> {
 
     const { model, entry, data, content, inline } = symbol || {};
     const dynamic = symbol?.dynamic || this.props.dynamic;
-    if (!(model && (entry || dynamic)) && !inline) {
+    if (!(model && (entry || dynamic)) && !content?.data?.blocksJs && !inline) {
       showPlaceholder = true;
     }
 
@@ -134,6 +134,7 @@ class SymbolComponent extends React.Component<SymbolProps> {
                   inlineContent={symbol?.inline}
                   {...(content && { content })}
                   options={{ key, noEditorUpdates: true }}
+                  codegen={!!content?.data?.blocksJs}
                   hydrate={state.state?._hydrate}
                   builderBlock={this.props.builderBlock}
                   dataOnly={this.props.dataOnly}
@@ -189,6 +190,11 @@ export const Symbol = withBuilder(SymbolComponent, {
       defaultValue: isShopify,
       advanced: true,
       hideFromUI: true,
+    },
+    {
+      name: 'useChildren',
+      hideFromUI: true,
+      type: 'boolean',
     },
   ],
 });

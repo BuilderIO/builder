@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { jsx, css } from '@emotion/core';
 import { BuilderContent } from './builder-content.component';
 import { BuilderBlocks } from './builder-blocks.component';
 import {
@@ -30,6 +31,44 @@ import { throttle } from '../functions/throttle';
 import { safeDynamicRequire } from '../functions/safe-dynamic-require';
 import { BuilderMetaContext } from '../store/builder-meta';
 
+function pick<T, K extends keyof T>(obj: T, ...keys: K[]): Pick<T, K> {
+  const ret: any = {};
+  keys.forEach(key => {
+    ret[key] = obj[key];
+  });
+  return ret;
+}
+function omit<T, K extends keyof T>(obj: T, ...keys: K[]): Omit<T, K> {
+  const ret: any = { ...obj };
+  keys.forEach(key => {
+    delete ret[key];
+  });
+  return ret;
+}
+
+const wrapComponent = (info: any) => {
+  return (props: any) => {
+    // TODO: convention for all of this, like builderTagProps={{ style: {} foo: 'bar' }}
+    const Tag = props.builderTag || 'div';
+    const inputNames = ['children'].concat(
+      info.inputs?.map((item: any) => item.name as string) || []
+    );
+
+    const baseProps = omit(props, ...inputNames, 'attributes');
+    const inputProps = props; // pick(props, ...inputNames);
+
+    if (info.noWrap) {
+      return <info.class attributes={baseProps} {...inputProps} />;
+    }
+
+    return (
+      <Tag {...baseProps}>
+        <info.class {...inputProps} />
+      </Tag>
+    );
+  };
+};
+
 const size = (thing: object) => Object.keys(thing).length;
 
 function debounce(func: Function, wait: number, immediate = false) {
@@ -47,15 +86,6 @@ function debounce(func: Function, wait: number, immediate = false) {
 }
 
 const fontsLoaded = new Set();
-
-function pick(object: any, keys: string[]) {
-  return keys.reduce((obj, key) => {
-    if (object && object.hasOwnProperty(key)) {
-      obj[key] = object[key];
-    }
-    return obj;
-  }, {} as any);
-}
 
 // TODO: get fetch from core JS....
 const fetch = Builder.isBrowser ? window.fetch : require('node-fetch');
@@ -103,6 +133,7 @@ export interface BuilderPageProps {
   builder?: Builder;
   entry?: string;
   apiKey?: string;
+  codegen?: boolean;
   options?: GetContentOptions;
   contentLoaded?: (data: any, content: any) => void;
   renderLink?: (props: React.AnchorHTMLAttributes<any>) => React.ReactNode;
@@ -225,6 +256,10 @@ function searchToObject(location: Location | Url) {
 }
 
 export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageState> {
+  static defaults: Pick<BuilderPageProps, 'codegen'> = {
+    codegen: Boolean(Builder.isBrowser && location.href.includes('builder.codegen=true')),
+  };
+
   subscriptions: Subscription = new Subscription();
   // TODO: don't trigger initial one?
   onStateChange = new BehaviorSubject<any>(null);
@@ -241,6 +276,16 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
   httpSubscriptionPerKey: { [key: string]: Subscription | undefined } = {};
 
   ref: HTMLElement | null = null;
+
+  Component: any;
+
+  get options() {
+    // TODO: for perf cache this
+    return {
+      ...BuilderPage.defaults,
+      ...this.props,
+    };
+  }
 
   get name(): string | undefined {
     return this.props.model || this.props.modelName || this.props.name; // || this.props.model
@@ -329,7 +374,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
   get locationState() {
     return {
       // TODO: handle this correctly on the server. Pass in with CONTEXT
-      ...pick(this.location, ['pathname', 'hostname', 'search', 'host']),
+      ...pick(this.location, 'pathname', 'hostname', 'search', 'host'),
       path: (this.location.pathname && this.location.pathname.split('/').slice(1)) || '',
       query: searchToObject(this.location),
     };
@@ -816,6 +861,9 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
                         ...(!content && 'content' in this.props && { initialContent: [] }),
                         ...(this.props.url && { url: this.props.url }),
                         ...this.props.options,
+                        ...(this.options.codegen && {
+                          format: 'react',
+                        }),
                       }}
                       inline={
                         this.props.inlineContent || (!Builder.isEditing && 'content' in this.props)
@@ -836,6 +884,58 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
                             this.checkStyles(data);
                           });
                         }
+
+                        const { codegen } = this.options;
+
+                        if (codegen && !this.Component && data?.blocksJs) {
+                          const builderComponentNames: string[] = Array.from(
+                            new Set(Builder.components.map((item: any) => item.name))
+                          );
+                          const reversedcomponents = Builder.components.slice().reverse();
+
+                          const builderComponents = builderComponentNames.map(name =>
+                            reversedcomponents.find((item: any) => item.class && item.name === name)
+                          );
+
+                          const useBuilderState = (initialState: any) => {
+                            const [, setTick] = React.useState(0);
+                            const [state] = React.useState(() =>
+                              onChange(initialState, function () {
+                                setTick(tick => tick + 1);
+                              })
+                            );
+
+                            return state;
+                          };
+
+                          const mappedComponentNames = builderComponentNames.map(name =>
+                            (name || '').replace(/[^\w]+/gi, '')
+                          );
+
+                          const finalizedComponents = builderComponents.map(info =>
+                            wrapComponent(info)
+                          );
+
+                          this.Component = new Function(
+                            'jsx',
+                            '_css',
+                            'Builder',
+                            'builder',
+                            'React',
+                            'useBuilderState',
+                            ...mappedComponentNames,
+                            data.blocksJs
+                          )(
+                            jsx,
+                            css,
+                            Builder,
+                            builder,
+                            React,
+                            useBuilderState,
+                            ...finalizedComponents
+                          );
+                        }
+
                         // TODO: loading option - maybe that is what the children is or component prop
                         // TODO: get rid of all these wrapper divs
                         return data ? (
@@ -846,7 +946,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
                               fullData.testVariationId || fullData.variationId || fullData.id
                             }
                           >
-                            {this.getCss(data) && (
+                            {!codegen && this.getCss(data) && (
                               <style
                                 ref={ref => (this.styleRef = ref)}
                                 className="builder-custom-styles"
@@ -864,12 +964,16 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
                                 renderLink: this.props.renderLink,
                               }}
                             >
-                              <BuilderBlocks
-                                key={String(!!data?.blocks?.length)}
-                                emailMode={this.props.emailMode}
-                                fieldName="blocks"
-                                blocks={data.blocks}
-                              />
+                              {codegen && this.Component ? (
+                                <this.Component data={this.data} context={this.state.context} />
+                              ) : (
+                                <BuilderBlocks
+                                  key={String(!!data?.blocks?.length)}
+                                  emailMode={this.props.emailMode}
+                                  fieldName="blocks"
+                                  blocks={data.blocks}
+                                />
+                              )}
                             </BuilderStoreContext.Provider>
                           </div>
                         ) : loading ? (
@@ -1079,7 +1183,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     }
 
     // TODO: also throttle on edits maybe
-    if (data && data.jsCode && Builder.isBrowser) {
+    if (data && data.jsCode && Builder.isBrowser && !this.options.codegen) {
       // Don't rerun js code when editing and not changed
       let skip = false;
       if (Builder.isEditing) {
