@@ -67,7 +67,7 @@ export const importProducts = async (modelName: string) => {
   });
   appState.globalState.showGlobalBlockingLoadingIndicator = true;
   const pageSize = 20;
-  let productsResponse = await client.product.fetchAll(20);
+  let productsResponse = await client.product.fetchAll(pageSize);
   let hasMore = productsResponse.length === pageSize;
   while (hasMore) {
     // ugh types don't match
