@@ -25,9 +25,7 @@ import { BuilderRequest } from '../interfaces/builder-request';
 import { ShopifyCollection } from '../interfaces/shopify-collection';
 import { SetShopifyKeysMessage } from '../components/set-shopify-keys-message';
 import { fastClone } from '../functions/fast-clone';
-import { updatePreviewUrl } from '../functions/update-preview-url';
 import appState from '@builder.io/app-context';
-import { api } from '@builder.io/react/dist/types/src/functions/string-to-function';
 
 interface ShopifyCollectionPickerProps extends CustomReactEditorProps<BuilderRequest | string> {
   isPreview?: boolean;
@@ -290,27 +288,6 @@ export class ShopifyCollectionPicker extends SafeComponent<ShopifyCollectionPick
       this.props.context.user.organization?.value.settings.plugins.get(
         '@builder.io/plugin-shopify'
       ) || {}
-    );
-  }
-
-  componentDidMount() {
-    this.safeReaction(
-      () => this.collectionInfo,
-      () => {
-        if (this.props.isPreview && this.collectionInfo) {
-          const designerState = this.props.context.designerState;
-          if (designerState.editingContentModel) {
-            const preCompiled = designerState.editingModel.examplePageUrl;
-            const compiled = template(preCompiled);
-            const previewUrl = compiled({
-              previewCollection: this.collectionInfo,
-            });
-            if (preCompiled !== previewUrl) {
-              updatePreviewUrl(previewUrl);
-            }
-          }
-        }
-      }
     );
   }
 
