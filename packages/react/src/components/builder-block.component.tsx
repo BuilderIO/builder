@@ -287,7 +287,7 @@ export class BuilderBlock extends React.Component<
       // TODO: apply bindings first
       if (block.bindings) {
         for (const key in block.bindings) {
-          if (!key) {
+          if (!key.trim?.()) {
             continue;
           }
 
@@ -386,7 +386,7 @@ export class BuilderBlock extends React.Component<
     // Show if things bound in overlays hmm
     if (block.bindings) {
       for (const key in block.bindings) {
-        if (!key) {
+        if (!key.trim?.()) {
           continue;
         }
 
@@ -414,7 +414,7 @@ export class BuilderBlock extends React.Component<
 
     if (block.actions) {
       for (const key in block.actions) {
-        if (!key) {
+        if (!key.trim?.()) {
           continue;
         }
 
