@@ -31,6 +31,7 @@ function LandingPage({ builderPage }: any /* TODO: types */) {
         />
       </Head>
 
+      {/* If we're editing or previewing we also need to render the BuilderComponent  */}
       {builderPage || Builder.isEditing || Builder.isPreviewing ? (
         <BuilderComponent
           renderLink={renderLink}
