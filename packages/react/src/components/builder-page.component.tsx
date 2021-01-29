@@ -623,7 +623,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
   };
 
   get isPreviewing() {
-    return builder.editingModel === this.name;
+    return builder.previewingModel === this.name;
   }
 
   @debounceNextTick
@@ -881,7 +881,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
                         }),
                       }}
                       inline={
-                        this.props.inlineContent || (!Builder.isEditing && 'content' in this.props)
+                        this.props.inlineContent || (!this.isPreviewing && 'content' in this.props)
                       }
                       contentError={this.props.contentError}
                       modelName={this.name || 'page'}
