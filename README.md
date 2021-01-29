@@ -235,7 +235,7 @@ There are a lot of ways you can use Builder for your site. Some of the main ques
 
 As a general rule, parts of your site that should be managed by non developers should probably be in Builder. Parts that are complex with a lot of code, should probably be in your codebase. Using [custom components](https://www.builder.io/c/docs/custom-react-components) in your Builder content can help you strike a good balance here as well
 
-Here are some examples we recommend for how to structure various pages on your site:
+Here are some examples we recommend for how to structure various pages on your site, for instance for a headless commerce site:
 
 
 ![examples on how to structure your site](https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fc811a87f916f4e37990b1afc9df25721)
