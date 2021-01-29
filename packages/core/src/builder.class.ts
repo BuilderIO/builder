@@ -1513,6 +1513,12 @@ export class Builder {
     return this;
   }
 
+  get previewingModel() {
+    const search = this.getLocation().search;
+    const params = QueryString.parse((search || '').substr(1));
+    return params['builder.preview'];
+  }
+
   // TODO: allow adding location object as property and/or in constructor
   getLocation(): Url {
     let parsedLocation: any = {};

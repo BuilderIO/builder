@@ -24,8 +24,8 @@
   },
   "dependencies": {
     "@babel/core": "7.12.10",
-    "@builder.io/react": "1.1.34-5",
-    "@builder.io/sdk": "1.1.22-0",
+    "@builder.io/react": "1.1.34-10",
+    "@builder.io/sdk": "1.1.22-2",
     "@builder.io/widgets": "1.2.19",
     "@emotion/babel-preset-css-prop": "11.0.0",
     "@emotion/core": "11.0.0",

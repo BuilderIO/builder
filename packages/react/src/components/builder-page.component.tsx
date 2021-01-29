@@ -300,7 +300,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
   }
 
   get inlinedContent() {
-    if (Builder.isEditing || Builder.isPreviewing) {
+    if (this.isPreviewing) {
       return undefined;
     }
     return this.props.content;
@@ -622,6 +622,13 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     this.notifyStateChange();
   };
 
+  get isPreviewing() {
+    return (
+      (Builder.isServer || (Builder.isBrowser && Builder.isPreviewing)) &&
+      builder.previewingModel === this.name
+    );
+  }
+
   @debounceNextTick
   notifyStateChange() {
     if (Builder.isServer) {
@@ -855,7 +862,9 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
                       isStatic={this.props.isStatic || Builder.isStatic}
                       key={
                         this.inlinedContent?.id ||
-                        ('content' in this.props ? 'null-content-prop' : 'no-content-prop')
+                        ('content' in this.props && !this.isPreviewing
+                          ? 'null-content-prop'
+                          : 'no-content-prop')
                       }
                       builder={this.builder}
                       ref={ref => (this.contentRef = ref)}
@@ -865,7 +874,9 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
                         key,
                         entry: this.props.entry,
                         ...(content && { initialContent: [content] }),
-                        ...(!content && 'content' in this.props && { initialContent: [] }),
+                        ...(!content &&
+                          'content' in this.props &&
+                          !this.isPreviewing && { initialContent: [] }),
                         ...(this.props.url && { url: this.props.url }),
                         ...this.props.options,
                         ...(this.options.codegen && {
@@ -873,7 +884,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
                         }),
                       }}
                       inline={
-                        this.props.inlineContent || (!Builder.isEditing && 'content' in this.props)
+                        this.props.inlineContent || (!this.isPreviewing && 'content' in this.props)
                       }
                       contentError={this.props.contentError}
                       modelName={this.name || 'page'}
