@@ -138,31 +138,6 @@ export default class MyDocument extends Document {
             defer
             src="https://www.googletagmanager.com/gtag/js?id=UA-108006325-1"
           ></script>
-
-          {/* Start ZoomInfo tracking */}
-          <script
-            dangerouslySetInnerHTML={{
-              __html: `
-              (function () {
-                var zi = document.createElement('script');
-                zi.type = 'text/javascript';
-                zi.async = true;
-                zi.src = 'https://ws.zoominfo.com/pixel/YkQV5texcwM26aYtS31R';
-                var s = document.getElementsByTagName('script')[0];
-                s.parentNode.insertBefore(zi, s);
-              })();
-              `,
-            }}
-          />
-          <noscript>
-            <img
-              src="https://ws.zoominfo.com/pixel/YkQV5texcwM26aYtS31R"
-              width="1"
-              height="1"
-              style={{ display: 'none' }}
-            />
-          </noscript>
-          {/* End ZoomInfo tracking */}
         </body>
       </Html>
     );
