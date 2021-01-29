@@ -282,6 +282,7 @@ class ImageComponent extends React.Component<any> {
                   },
                 }),
               }}
+              loading="lazy"
               className={'builder-image' + (this.props.className ? ' ' + this.props.className : '')}
               src={this.props.image}
               {...(!amp && {
