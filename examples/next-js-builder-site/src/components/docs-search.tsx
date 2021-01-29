@@ -310,7 +310,6 @@ function DocsSearchBrowser(props: DocsSearchProps) {
                     item.url.startsWith('/c/docs')
                   ) {
                     Router.push(
-                      '/docs',
                       item.url.startsWith('/c/docs')
                         ? item.url
                         : item.url.split('builder.io')[1],

@@ -1,5 +1,4 @@
-import { builder, BuilderComponent } from '@builder.io/react';
-import '@builder.io/widgets';
+import { Builder, builder, BuilderComponent } from '@builder.io/react';
 import Head from 'next/head';
 import Router, { useRouter } from 'next/router';
 import React, { RefObject, useCallback, useEffect } from 'react';
@@ -170,11 +169,11 @@ function Docs({ docsContent, docsNav, docsHeader }: any /* TODO: types */) {
             }}
             ref={pageContent as any}
           >
-            {docsContent ? (
+            {docsContent || Builder.isEditing || Builder.isPreviewing ? (
               <>
                 <BuilderComponent
                   renderLink={renderLink}
-                  key={docsContent.id}
+                  key={docsContent?.id}
                   name="docs-content"
                   content={docsContent}
                 />
@@ -271,20 +270,11 @@ class ClientRouteWrapper extends React.Component<{
         anchor.pathname.startsWith('/c/docs') &&
         anchor.target !== '_blank'
       ) {
-        const rest = anchor.pathname.split('/').slice(1);
         updateActiveLink(anchor.pathname);
         if (!event.defaultPrevented) {
           event.preventDefault();
           event.stopPropagation();
-          Router.push(
-            {
-              pathname: '/docs',
-              query: {
-                rest,
-              },
-            },
-            anchor.pathname,
-          ).then(() => {
+          Router.push(anchor.pathname).then(() => {
             if (this.props.contentRef && this.props.contentRef.current) {
               this.props.contentRef.current.scrollTop = 0;
             }

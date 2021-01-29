@@ -1,5 +1,4 @@
 import { builder, BuilderComponent, Image } from '@builder.io/react';
-import '@builder.io/widgets';
 import { GetStaticProps, GetStaticPropsContext } from 'next';
 import Head from 'next/head';
 import React from 'react';

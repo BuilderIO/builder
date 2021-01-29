@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/site",
-  "version": "0.1.0",
+  "version": "0.1.3",
   "private": true,
   "scripts": {
     "dev": "next",
@@ -8,7 +8,6 @@
     "build": "next build",
     "start": "next start",
     "type-check": "tsc",
-    "lint": "eslint --ignore-path .gitignore \"src/**/*.+(ts|js|tsx)\"",
     "format": "prettier --ignore-path .gitignore \"src/**/*.+(ts|js|tsx)\" --write"
   },
   "husky": {
@@ -20,15 +19,14 @@
   },
   "lint-staged": {
     "./src/**/*.{ts,js,jsx,tsx}": [
-      "yarn lint --fix",
-      "yarn format"
+      "npm run format"
     ]
   },
   "dependencies": {
     "@babel/core": "7.12.10",
-    "@builder.io/react": "1.1.32-alpha.23",
-    "@builder.io/sdk": "1.1.21-alpha.11",
-    "@builder.io/widgets": "1.2.19-alpha.13",
+    "@builder.io/react": "1.1.34-5",
+    "@builder.io/sdk": "1.1.22-0",
+    "@builder.io/widgets": "1.2.19",
     "@emotion/babel-preset-css-prop": "11.0.0",
     "@emotion/core": "11.0.0",
     "@emotion/react": "11.1.4",
@@ -39,8 +37,13 @@
     "@types/amplitude-js": "7.0.1",
     "@types/react-syntax-highlighter": "13.5.0",
     "amplitude-js": "7.4.1",
+    "axios": "0.21.1",
     "lodash": "4.17.20",
+    "module-alias": "2.2.2",
     "next": "10.0.5",
+    "next-plugin-preact": "3.0.3",
+    "preact": "10.5.12",
+    "preact-render-to-string": "5.1.12",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-syntax-highlighter": "15.4.3",

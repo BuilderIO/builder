@@ -44,16 +44,6 @@ export default class MyDocument extends Document {
             href="https://cdn.builder.io/static/favicon.png?v=3"
           />
           <link
-            rel="preconnect"
-            href="https://fonts.gstatic.com/"
-            crossOrigin="anonymous"
-          />
-          <link
-            rel="preconnect"
-            href="https://www.google-analytics.com"
-            crossOrigin="anonymous"
-          />
-          <link
             rel="chrome-webstore-item"
             href="https://chrome.google.com/webstore/detail/cfldfgibklhmjhnkfighkbafbkbfcmij"
           />
@@ -143,6 +133,36 @@ export default class MyDocument extends Document {
           `,
             }}
           />
+          <script
+            async
+            defer
+            src="https://www.googletagmanager.com/gtag/js?id=UA-108006325-1"
+          ></script>
+
+          {/* Start ZoomInfo tracking */}
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+              (function () {
+                var zi = document.createElement('script');
+                zi.type = 'text/javascript';
+                zi.async = true;
+                zi.src = 'https://ws.zoominfo.com/pixel/YkQV5texcwM26aYtS31R';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(zi, s);
+              })();
+              `,
+            }}
+          />
+          <noscript>
+            <img
+              src="https://ws.zoominfo.com/pixel/YkQV5texcwM26aYtS31R"
+              width="1"
+              height="1"
+              style={{ display: 'none' }}
+            />
+          </noscript>
+          {/* End ZoomInfo tracking */}
         </body>
       </Html>
     );

@@ -5,8 +5,8 @@ const Error = ({ status }: { status: number }) => (
       dangerouslySetInnerHTML={{
         __html: `
         /* Anything other than /, /m/*, /c/*, /blog* should redirect to naked domain */
-        if (!(location.pathname === '/' || location.pathname.match(/^\\/(m\\/|c\\/|blog\\/|blog$)/)) {
-          location.href = location.href.replace('www.', '');
+        if (!(location.pathname === '/' || location.pathname.match(/^\\/(m\\/|c\\/|blog\\/|blog$)/i))) {
+          location.href = 'https://builder.io' + location.pathname + location.search + location.hash
         }
       `,
       }}

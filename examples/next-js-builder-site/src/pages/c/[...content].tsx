@@ -1,5 +1,5 @@
 import React from 'react';
-import { builder, BuilderComponent } from '@builder.io/react';
+import { Builder, builder, BuilderComponent } from '@builder.io/react';
 import Head from 'next/head';
 import { renderLink } from '../../functions/render-link';
 import { defaultTitle, defaultDescription } from '../../constants/seo-tags';
@@ -91,10 +91,10 @@ function Content({ builderPage, docsHeader }: any /* TODO: types */) {
                 },
               }}
             >
-              {builderPage ? (
+              {builderPage || Builder.isEditing || Builder.isPreviewing ? (
                 <BuilderComponent
                   renderLink={renderLink}
-                  key={builderPage.id}
+                  key={builderPage?.id}
                   name="content-page"
                   content={builderPage}
                 />
@@ -137,7 +137,11 @@ export const getStaticPaths = async () => {
   });
 
   const paths = results
-    .filter((item) => Boolean(item.data?.url?.startsWith('/c/')))
+    .filter(
+      (item) =>
+        item.data?.url?.startsWith('/c/') &&
+        !item.data?.url?.startsWith('/c/docs'),
+    )
     .map((item) => ({
       params: {
         content: (item.data?.url?.replace('/c/', '') || '').split('/'),
@@ -161,7 +165,11 @@ export const getStaticProps: GetStaticProps = async (context) => {
         userAttributes: { ...targeting, urlPath: path },
       })
       .promise(),
-    builder.get('docs-header', { userAttributes: targeting }).promise(),
+    builder
+      .get('docs-header', {
+        userAttributes: targeting,
+      })
+      .promise(),
   ]);
 
   // If there is a Builder page for this URL, this will be an object, otherwise it'll be null
