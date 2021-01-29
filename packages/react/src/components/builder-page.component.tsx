@@ -299,6 +299,13 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     return this.ref;
   }
 
+  get inlinedContent() {
+    if (Builder.isEditing || Builder.isPreviewing) {
+      return undefined;
+    }
+    return this.props.content;
+  }
+
   constructor(props: BuilderPageProps) {
     super(props);
 
@@ -309,7 +316,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
       // TODO: should change if this prop changes
       context: props.context || {},
       state: Object.assign(this.rootState, {
-        ...(this.props.content && this.props.content.data && this.props.content.data.state),
+        ...(this.inlinedContent && this.inlinedContent.data && this.inlinedContent.data.state),
         isBrowser: Builder.isBrowser, // !this.asServer,
         isServer: !Builder.isBrowser, // this.asServer,
         _hydrate: props.hydrate,
@@ -331,9 +338,9 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
         this.builder.apiKey = key;
       }
 
-      if (this.props.content) {
+      if (this.inlinedContent) {
         // Sometimes with graphql we get the content as `content.content`
-        const content = (this.props.content as any).content || this.props.content;
+        const content = (this.inlinedContent as any).content || this.inlinedContent;
         this.onContentLoaded(content?.data, content);
       }
     }
@@ -344,7 +351,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
   }
 
   getHtmlData() {
-    const id = (this.props.content && this.props.content.id) || this.props.entry;
+    const id = (this.inlinedContent && this.inlinedContent.id) || this.props.entry;
     const script =
       id &&
       Builder.isBrowser &&
@@ -746,7 +753,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
 
   get data() {
     const data = {
-      ...(this.props.content && this.props.content.data?.state),
+      ...(this.inlinedContent && this.inlinedContent.data?.state),
       ...this.props.data,
       ...this.state.state,
     };
@@ -763,8 +770,8 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     }
 
     if (Builder.isEditing) {
-      if (this.props.content && prevProps.content !== this.props.content) {
-        this.onContentLoaded(this.props.content.data, this.props.content);
+      if (this.inlinedContent && prevProps.content !== this.inlinedContent) {
+        this.onContentLoaded(this.inlinedContent.data, this.inlinedContent);
       }
     }
   }
@@ -847,7 +854,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
                     <BuilderContent
                       isStatic={this.props.isStatic || Builder.isStatic}
                       key={
-                        this.props.content?.id ||
+                        this.inlinedContent?.id ||
                         ('content' in this.props ? 'null-content-prop' : 'no-content-prop')
                       }
                       builder={this.builder}
