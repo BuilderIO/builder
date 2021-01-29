@@ -287,6 +287,10 @@ export class BuilderBlock extends React.Component<
       // TODO: apply bindings first
       if (block.bindings) {
         for (const key in block.bindings) {
+          if (!key.trim?.()) {
+            continue;
+          }
+
           if (key.startsWith('animations.')) {
             // TODO: this needs to run in getElement bc of local state per element for repeats
             const value = this.stringToFunction(block.bindings[key]);
@@ -382,6 +386,10 @@ export class BuilderBlock extends React.Component<
     // Show if things bound in overlays hmm
     if (block.bindings) {
       for (const key in block.bindings) {
+        if (!key.trim?.()) {
+          continue;
+        }
+
         const value = this.stringToFunction(block.bindings[key]);
         // TODO: pass block, etc
         set(
@@ -406,6 +414,10 @@ export class BuilderBlock extends React.Component<
 
     if (block.actions) {
       for (const key in block.actions) {
+        if (!key.trim?.()) {
+          continue;
+        }
+
         const value = block.actions[key];
         options['on' + capitalize(key)] = (event: any) => {
           let useState = state;
@@ -617,7 +629,13 @@ export class BuilderBlock extends React.Component<
 
     if (block.repeat && block.repeat.collection) {
       const collectionPath = block.repeat.collection;
-      const collectionName = last((collectionPath || '').trim().split('(')[0].trim().split('.'));
+      const collectionName = last(
+        (collectionPath || '')
+          .trim()
+          .split('(')[0]
+          .trim()
+          .split('.')
+      );
       const itemName = block.repeat.itemName || (collectionName ? collectionName + 'Item' : 'item');
       const array = this.stringToFunction(collectionPath)(
         state.state,
