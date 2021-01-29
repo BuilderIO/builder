@@ -29,23 +29,9 @@ export function renderLink(props: any) {
   const { children, ...rest } = props;
   const href = relativePath + (parsed.search || '');
 
-  const which =
-    relativePath === '/blog'
-      ? '/blog'
-      : relativePath.startsWith('/blog/')
-      ? '/blog/[...article]'
-      : relativePath.startsWith('/c/docs')
-      ? '/docs'
-      : relativePath.startsWith('/c/')
-      ? '/content'
-      : '/landing';
-
   if (useNextLink) {
     return (
-      <Link
-        href={{ pathname: which, query: querystring.parse(parsed.query || '') }}
-        as={href}
-      >
+      <Link href={href}>
         <a {...rest}>{children}</a>
       </Link>
     );

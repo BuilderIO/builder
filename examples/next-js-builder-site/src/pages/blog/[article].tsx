@@ -1,5 +1,4 @@
 import { builder, BuilderComponent, Image } from '@builder.io/react';
-import '@builder.io/widgets';
 import React from 'react';
 import Head from 'next/head';
 import { renderLink, RenderLink } from '../../functions/render-link';
@@ -14,7 +13,7 @@ import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from 'next';
 builder.init('YJIGb4i01jvw0SRdL5Bt');
 
 function BlogArticle(
-  { article, header, articles, footer }: any /* TODO: types */,
+  { article, header, articles, footer, isEditing }: any /* TODO: types */,
 ) {
   const cellWidth = 350;
   const cellSpace = 20;
@@ -41,7 +40,7 @@ function BlogArticle(
           content={header}
         />
       )}
-      {!article ? (
+      {!article && !isEditing ? (
         <>
           <div
             css={{
@@ -71,19 +70,24 @@ function BlogArticle(
         </>
       ) : (
         <>
-          <Head>
-            <title>{article.data.title}</title>
-            <meta name="description" content={article.data.blurb} />
+          {article && (
+            <Head>
+              <title>{article.data.title}</title>
+              <meta name="description" content={article.data.blurb} />
 
-            <meta property="og:type" content="article" />
-            <meta property="og:title" content={article.data.title} />
-            <meta property="og:description" content={article.data.blurb} />
-            <meta property="og:image" content={article.data.image} />
-            <meta property="twitter:card" content="summary_large_image" />
-            <meta property="twitter:title" content={article.data.title} />
-            <meta property="twitter:description" content={article.data.blurb} />
-            <meta property="twitter:image" content={article.data.image} />
-          </Head>
+              <meta property="og:type" content="article" />
+              <meta property="og:title" content={article.data.title} />
+              <meta property="og:description" content={article.data.blurb} />
+              <meta property="og:image" content={article.data.image} />
+              <meta property="twitter:card" content="summary_large_image" />
+              <meta property="twitter:title" content={article.data.title} />
+              <meta
+                property="twitter:description"
+                content={article.data.blurb}
+              />
+              <meta property="twitter:image" content={article.data.image} />
+            </Head>
+          )}
 
           <ReadProgress containerSelector=".blog-article-container" />
           <div
@@ -100,7 +104,7 @@ function BlogArticle(
               },
             }}
           >
-            {!article.data.fullPage && (
+            {article && !article.data.fullPage && (
               <div>
                 <TextLink
                   css={{
@@ -144,7 +148,7 @@ function BlogArticle(
               css={{
                 backgroundColor: 'white',
                 borderRadius: 4,
-                marginTop: article.data.fullPage ? undefined : 30,
+                marginTop: article?.data.fullPage ? undefined : 30,
               }}
             >
               <div className="blog-article-container">
@@ -264,7 +268,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
 const getContent = async (context: GetStaticPropsContext) => {
   // Don't target on url and device for better cache efficiency
   const targeting = { urlPath: '/blog', device: '_' } as any;
-  const path = context.params!.article as string;
 
   const [article, header, footer, articles] = await Promise.all([
     builder
@@ -272,7 +275,7 @@ const getContent = async (context: GetStaticPropsContext) => {
         userAttributes: targeting,
         query: {
           // Get the specific article by handle
-          'data.handle': path.split('/')[2],
+          'data.handle': context.params!.article,
         },
         ...{
           options: {
@@ -303,9 +306,10 @@ const getContent = async (context: GetStaticPropsContext) => {
   ]);
 
   return {
-    article,
-    header,
-    footer,
+    article: article || null,
+    header: header || null,
+    footer: footer || null,
+    isEditing: context.params!.article === '_',
     articles: articles.filter(
       (item: any) => item.data && item.data?.handle !== article?.data.handle,
     ),

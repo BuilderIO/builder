@@ -114,15 +114,7 @@ function MyApp({ Component, pageProps, router }: AppPropsType) {
     ) {
       event.preventDefault();
       const rest = anchor.pathname.split('/').slice(2);
-      SingletonRouter.push(
-        {
-          pathname: anchor.pathname.startsWith('c') ? '/content' : '/landing',
-          query: {
-            rest,
-          },
-        },
-        anchor.pathname,
-      ).then(() => {
+      SingletonRouter.push(anchor.pathname).then(() => {
         window.scrollTo(0, 0);
       });
     }

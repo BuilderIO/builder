@@ -44,16 +44,6 @@ export default class MyDocument extends Document {
             href="https://cdn.builder.io/static/favicon.png?v=3"
           />
           <link
-            rel="preconnect"
-            href="https://fonts.gstatic.com/"
-            crossOrigin="anonymous"
-          />
-          <link
-            rel="preconnect"
-            href="https://www.google-analytics.com"
-            crossOrigin="anonymous"
-          />
-          <link
             rel="chrome-webstore-item"
             href="https://chrome.google.com/webstore/detail/cfldfgibklhmjhnkfighkbafbkbfcmij"
           />
@@ -143,6 +133,11 @@ export default class MyDocument extends Document {
           `,
             }}
           />
+          <script
+            async
+            defer
+            src="https://www.googletagmanager.com/gtag/js?id=UA-108006325-1"
+          ></script>
         </body>
       </Html>
     );

@@ -1,5 +1,5 @@
 import React from 'react';
-import { builder, BuilderComponent } from '@builder.io/react';
+import { builder, BuilderComponent, Builder } from '@builder.io/react';
 import Head from 'next/head';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import Error from './_error';
@@ -31,7 +31,8 @@ function LandingPage({ builderPage }: any /* TODO: types */) {
         />
       </Head>
 
-      {builderPage ? (
+      {/* If we're editing or previewing we also need to render the BuilderComponent  */}
+      {builderPage || Builder.isEditing || Builder.isPreviewing ? (
         <BuilderComponent
           renderLink={renderLink}
           name="content-page"
