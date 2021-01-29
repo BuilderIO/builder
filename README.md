@@ -288,7 +288,7 @@ As well as some handy power features like:
 - [Targeting and scheduling content](https://builder.io/c/docs/guides/targeting-and-scheduling)
 - [Extending Builder.io with plugins](https://github.com/BuilderIO/builder/tree/master/plugins)
 
-## How it works
+## How the Builder.io platform works
 
 ![How it works](https://i.imgur.com/tAnTKeN.png)
 
