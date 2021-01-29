@@ -229,6 +229,23 @@ export default () => (
 );
 ```
 
+## Don't use React?
+
+Check out our [quick start guide](https://www.builder.io/c/docs/getting-started) for options for many frameworks, including our [HTML API](https://builder.io/c/docs/getting-started) that works for any site
+
+```javascript
+let page = await request(
+  `https://cdn.builder.io/api/v1/html/page?url=${PAGE_URL}&apiKey=${YOUR_KEY}`
+);
+if (page) {
+  let html = page.data.html;
+  // Put the html in your page template between your header and footer and you are done!
+}
+```
+
+✨**Tip:** You can make reusable components for your Builder.io pages using [symbols](https://builder.io/c/docs/guides/symbols)
+
+
 ### Structuring your site
 
 There are a lot of ways you can use Builder for your site. Some of the main questions you'll want to ask yourselves - what on your site should be in your code vs in Builder.
@@ -271,25 +288,20 @@ As well as some handy power features like:
 - [Targeting and scheduling content](https://builder.io/c/docs/guides/targeting-and-scheduling)
 - [Extending Builder.io with plugins](https://github.com/BuilderIO/builder/tree/master/plugins)
 
-## Don't use React?
-
-Our [HTML API](https://builder.io/c/docs/getting-started) works for any site
-
-```javascript
-let page = await request(
-  `https://cdn.builder.io/api/v1/html/page?url=${PAGE_URL}&apiKey=${YOUR_KEY}`
-);
-if (page) {
-  let html = page.data.html;
-  // Put the html in your page template between your header and footer and you are done!
-}
-```
-
-✨**Tip:** You can make reusable components for your Builder.io pages using [symbols](https://builder.io/c/docs/guides/symbols)
-
 ## How it works
 
 ![How it works](https://i.imgur.com/tAnTKeN.png)
+
+## Code generation
+
+Check out [JSX Lite](https://github.com/builderio/jsx-lite) to dep dive into how our codegen works and try it yourself!
+
+<p align="center">
+  <img width="600" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F3c0dc574aa8c4b06adff6f91e01cda3d" />
+</p>
+
+![Codegen GIF](https://imgur.com/H1WTtGe.gif)
+
 
 ## We're hiring!
 
