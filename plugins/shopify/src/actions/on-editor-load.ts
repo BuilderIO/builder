@@ -18,6 +18,10 @@ Builder.register('editor.onLoad', ({ safeReaction, updatePreviewUrl }: ContentEd
   // compile previewProduct if any
   safeReaction(
     () => {
+      const modelUrl = appState.designerState.editingModel?.examplePageUrl;
+      if (!modelUrl) {
+        return ;
+      }
       const previewField = appState.designerState.editingModel?.fields.find(
         (field: { type: string }) => field.type === 'ShopifyProductPreview'
       )?.name;
@@ -62,7 +66,7 @@ Builder.register('editor.onLoad', ({ safeReaction, updatePreviewUrl }: ContentEd
       }
     },
     async productObject => {
-      const modelUrl = appState.designerState.editingModel.examplePageUrl;
+      const modelUrl = appState.designerState.editingModel?.examplePageUrl;
       if (productObject && modelUrl) {
         const compiled = template(modelUrl);
         const previewUrl = compiled({
@@ -78,6 +82,10 @@ Builder.register('editor.onLoad', ({ safeReaction, updatePreviewUrl }: ContentEd
   // compile preview collection
   safeReaction(
     () => {
+      const modelUrl = appState.designerState.editingModel?.examplePageUrl;
+      if (!modelUrl) {
+        return ;
+      }
       const previewField = appState.designerState.editingModel?.fields.find(
         (field: { type: string }) => field.type === 'ShopifyCollectionPreview'
       )?.name;
@@ -122,7 +130,7 @@ Builder.register('editor.onLoad', ({ safeReaction, updatePreviewUrl }: ContentEd
       }
     },
     async collectionObj => {
-      const modelUrl = appState.designerState.editingModel.examplePageUrl;
+      const modelUrl = appState.designerState.editingModel?.examplePageUrl;
       if (collectionObj && modelUrl) {
         const compiled = template(modelUrl);
         const previewUrl = compiled({
