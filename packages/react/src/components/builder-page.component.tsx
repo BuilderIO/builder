@@ -623,7 +623,10 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
   };
 
   get isPreviewing() {
-    return builder.previewingModel === this.name;
+    return (
+      (Builder.isServer || (Builder.isBrowser && Builder.isPreviewing)) &&
+      builder.previewingModel === this.name
+    );
   }
 
   @debounceNextTick
