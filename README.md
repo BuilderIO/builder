@@ -105,7 +105,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
 | ------------------------------------------------------------------------ | :-----------------------------------------------------------: |
 | [REST API](https://builder.io/c/docs/getting-started)                    |                            Stable                             |
 | [React](#getting-started-with-react)                                     |                            Stable                             |
-| [Vue](packges/vue)                                                       |                            Stable                             |
+| [Vue](packages/vue)                                                       |                            Stable                             |
 | [Next.js](examples/next-js)                                              |                            Stable                             |
 | [Gatsby](examples/gatsby)                                                |                            Stable                             |
 | [Shopify / Liquid](https://apps.shopify.com/builder-2)                   |                            Stable                             |
