@@ -105,6 +105,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
 | ------------------------------------------------------------------------ | :-----------------------------------------------------------: |
 | [REST API](https://builder.io/c/docs/getting-started)                    |                            Stable                             |
 | [React](#getting-started-with-react)                                     |                            Stable                             |
+| [Vue](packges/vue)                                                       |                            Stable                             |
 | [Next.js](examples/next-js)                                              |                            Stable                             |
 | [Gatsby](examples/gatsby)                                                |                            Stable                             |
 | [Shopify / Liquid](https://apps.shopify.com/builder-2)                   |                            Stable                             |
@@ -115,7 +116,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
 | [AMP](examples/next-js-amp)                                              |                            Stable                             |
 | Preact                                                                   |                            Stable                             |
 | [React native](packages/react-native)                                    |                             Alpha                             |
-| **Everyting else** <br/> Go, Php, Java, Vue, Ruby/Rails, Vanilla JS, etc | Use our [HTML API](https://builder.io/c/docs/getting-started) |
+| **Everyting else** <br/> Go, Php, Java, Ruby/Rails, Vanilla JS, etc | Use our [HTML API](https://builder.io/c/docs/getting-started) |
 
 Want support for something not listed here or for us to priotize something coming soon? Drop us an issue and let us know! We prioritize based on the community's needs and interests.
 
