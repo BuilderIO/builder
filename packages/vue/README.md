@@ -1,5 +1,7 @@
 # Builder.io Vue SDK
 
+Builder.io drag and drop page and section building for Vue
+
 ## Get started
 
 ```bash

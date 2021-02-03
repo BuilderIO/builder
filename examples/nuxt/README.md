@@ -1,5 +1,7 @@
 # Builder.io example with Nuxt
 
+Example using Builder.io drag and drop page and section building for Nuxt
+
 ## Build Setup
 
 ```bash
