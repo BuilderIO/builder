@@ -1,6 +1,6 @@
 # Example App Plugin - Campaign Builder
 
-👉 See [here](src/plugin.ts) for the main plugin entry and coniguration
+👉 See [here](src/plugin.ts) for the main plugin entry and configuration
 
 ![](https://i.imgur.com/gbiYq5K.gif)
 
@@ -22,7 +22,7 @@ npm start
 
 ### Add the plugin in Builder.io
 
-From [beta.builder.io](https://beta.builder.io) open the javascript console in your browser's dev tools and run.
+From [builder.io](https://builder.io) open the javascript console in your browser's dev tools and run.
 
 ```js
 // Adds the plugin
