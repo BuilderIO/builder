@@ -32,7 +32,9 @@ const createWebhookOnTopic = async (
     headers,
     body: JSON.stringify({
       webhook: {
-        address: `${appState.config.apiRoot()}/api/v1/shopify-sync?modelName=${modelName}&resourceName=${resourceName}&apiKey=${appState.user.apiKey}&pluginId=${pluginId}`,
+        address: `${appState.config.apiRoot()}/api/v1/shopify-sync?modelName=${modelName}&resourceName=${resourceName}&apiKey=${
+          appState.user.apiKey
+        }&pluginId=${pluginId}`,
         topic,
         format: 'json',
       },
