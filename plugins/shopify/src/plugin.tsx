@@ -86,10 +86,18 @@ Builder.register('plugin', {
 
       // import and register webhooks
       appState.globalState.showGlobalBlockingLoadingIndicator = true;
-      await importProducts('shopify-product');
-      await createWebhooks('product', 'shopify-product');
-      await importCollections('shopify-collection');
-      await createWebhooks('collection', 'shopify-collection');
+      try {
+        await importProducts('shopify-product');
+        await createWebhooks('product', 'shopify-product');
+        await importCollections('shopify-collection');
+        await createWebhooks('collection', 'shopify-collection');
+      } catch (e) {
+        console.error(e);
+        appState.dialogs.alert(
+          'If this problem persists, please contact help@builder.io',
+          'Uh oh! An error occured :('
+        );
+      }
       appState.globalState.showGlobalBlockingLoadingIndicator = false;
     }
     // update plugin setting
