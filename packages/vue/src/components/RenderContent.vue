@@ -39,7 +39,7 @@ export default {
       this.isEditing = true;
       this.loadEditScript();
     }
-    if (!this.fetchInitialized) {
+    if (!this.fetchInitialized && !this.content) {
       this.getContent();
     }
   },
