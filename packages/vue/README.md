@@ -19,8 +19,8 @@ npm install @builder.io/vue
 import { builder, RenderContent } from '@builder.io/vue'
 import Vue from 'vue'
 
-// TODO: enter your public API key
-builder.init('jdGaMusrVpYgdcAnAtgn')
+// Enter your Builder.io public API key
+builder.init(YOUR_KEY)
 
 export default Vue.extend({
   components: { RenderContent },
@@ -30,4 +30,4 @@ export default Vue.extend({
 
 ## Example
 
-Take a look at this in practice in an example you can run with our [Nuxt](../examples/nuxt) example
+Take a look at this in practice in an example you can run with our [Nuxt](../../examples/nuxt) example
