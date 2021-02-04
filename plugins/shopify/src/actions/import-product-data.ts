@@ -30,7 +30,6 @@ export const importCollections = async (modelName: string) => {
     storefrontAccessToken: pluginSettings.get('storefrontAccessToken'),
     domain,
   });
-  appState.globalState.showGlobalBlockingLoadingIndicator = true;
   const pageSize = 20;
   let collections = await client.collection.fetchAll(pageSize);
   let hasMore = collections.length === pageSize;
@@ -50,7 +49,6 @@ export const importCollections = async (modelName: string) => {
     })
   );
 
-  appState.globalState.showGlobalBlockingLoadingIndicator = false;
   appState.snackBar.show('Import done!');
 };
 
@@ -65,7 +63,6 @@ export const importProducts = async (modelName: string) => {
       .get('storefrontAccessToken'),
     domain,
   });
-  appState.globalState.showGlobalBlockingLoadingIndicator = true;
   const pageSize = 20;
   let productsResponse = await client.product.fetchAll(pageSize);
   let hasMore = productsResponse.length === pageSize;
@@ -85,7 +82,6 @@ export const importProducts = async (modelName: string) => {
       appState.snackBar.show(`Created ${product.title}`);
     })
   );
-  appState.globalState.showGlobalBlockingLoadingIndicator = false;
   appState.snackBar.show('Import done!');
 };
 
@@ -103,7 +99,9 @@ Builder.register('model.action', {
     ) {
       return;
     }
-    importProducts(model.name);
+    appState.globalState.showGlobalBlockingLoadingIndicator = true;
+    await importProducts(model.name);
+    appState.globalState.showGlobalBlockingLoadingIndicator = false;
   },
 });
 
@@ -121,7 +119,8 @@ Builder.register('model.action', {
     ) {
       return;
     }
-
-    importCollections(model.name);
+    appState.globalState.showGlobalBlockingLoadingIndicator = true;
+    await importCollections(model.name);
+    appState.globalState.showGlobalBlockingLoadingIndicator = false;
   },
 });

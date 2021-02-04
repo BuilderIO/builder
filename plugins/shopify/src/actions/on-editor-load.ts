@@ -20,7 +20,7 @@ Builder.register('editor.onLoad', ({ safeReaction, updatePreviewUrl }: ContentEd
     () => {
       const modelUrl = appState.designerState.editingModel?.examplePageUrl;
       if (!modelUrl) {
-        return ;
+        return;
       }
       const previewField = appState.designerState.editingModel?.fields.find(
         (field: { type: string }) => field.type === 'ShopifyProductPreview'
@@ -69,9 +69,11 @@ Builder.register('editor.onLoad', ({ safeReaction, updatePreviewUrl }: ContentEd
       const modelUrl = appState.designerState.editingModel?.examplePageUrl;
       if (productObject && modelUrl) {
         const compiled = template(modelUrl);
-        const previewUrl = compiled({
-          previewProduct: productObject,
-        });
+        const previewUrl = compiled(
+          withDefaults({
+            previewProduct: productObject,
+          })
+        );
         if (modelUrl !== previewUrl) {
           updatePreviewUrl(previewUrl);
           appState.snackBar.show(`Previewing ${previewUrl}`);
@@ -84,7 +86,7 @@ Builder.register('editor.onLoad', ({ safeReaction, updatePreviewUrl }: ContentEd
     () => {
       const modelUrl = appState.designerState.editingModel?.examplePageUrl;
       if (!modelUrl) {
-        return ;
+        return;
       }
       const previewField = appState.designerState.editingModel?.fields.find(
         (field: { type: string }) => field.type === 'ShopifyCollectionPreview'
@@ -133,9 +135,11 @@ Builder.register('editor.onLoad', ({ safeReaction, updatePreviewUrl }: ContentEd
       const modelUrl = appState.designerState.editingModel?.examplePageUrl;
       if (collectionObj && modelUrl) {
         const compiled = template(modelUrl);
-        const previewUrl = compiled({
-          previewCollection: collectionObj,
-        });
+        const previewUrl = compiled(
+          withDefaults({
+            previewCollection: collectionObj,
+          })
+        );
         if (modelUrl !== previewUrl) {
           updatePreviewUrl(previewUrl);
           appState.snackBar.show(`Previewing ${previewUrl}`);
@@ -143,4 +147,11 @@ Builder.register('editor.onLoad', ({ safeReaction, updatePreviewUrl }: ContentEd
       }
     }
   );
+});
+
+const withDefaults = (obj: any) => ({
+  ...obj,
+  space: {
+    siteUrl: appState.user.organization.value?.siteUrl,
+  },
 });
