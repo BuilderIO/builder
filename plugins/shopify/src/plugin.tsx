@@ -85,10 +85,12 @@ Builder.register('plugin', {
       await Promise.all(promises);
 
       // import and register webhooks
+      appState.globalState.showGlobalBlockingLoadingIndicator = true;
       await importProducts('shopify-product');
       await createWebhooks('product', 'shopify-product');
       await importCollections('shopify-collection');
       await createWebhooks('collection', 'shopify-collection');
+      appState.globalState.showGlobalBlockingLoadingIndicator = false;
     }
     // update plugin setting
     await actions.updateSettings({
