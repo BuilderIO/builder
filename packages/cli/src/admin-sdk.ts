@@ -102,7 +102,7 @@ export const newSpace = async (
       .createSpace({
         settings: {
           ...omit(spaceSettings, 'cloneInfo'),
-          name: name,
+          name: name || spaceSettings.name,
         },
       })
       .execute();
@@ -189,9 +189,11 @@ export const newSpace = async (
     });
     await Promise.all(modelsPromises);
     if (debug) {
+      console.log(`\r\n\r\n`);
       console.log(
-        chalk.green('created and cloned successfully ', organization.id, organization.name)
+        chalk.green(`Your new space "${organization.name}" public API Key: ${organization.id}`)
       );
+      console.log(`\r\n\r\n`);
     }
   } catch (e) {
     console.log(`\r\n\r\n`);
