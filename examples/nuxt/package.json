@@ -10,7 +10,7 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
-    "@builder.io/vue": "^0.1.9-10",
+    "@builder.io/vue": "^0.1.9-17",
     "@nuxt/typescript-runtime": "^2.0.1",
     "@nuxtjs/pwa": "^3.3.5",
     "core-js": "^3.8.3",
