@@ -1,6 +1,7 @@
 <template>
   <div v-if="notFound">
     <!-- Show your 404 content -->
+    Page not found
   </div>
   <div v-else>
     <RenderContent
@@ -30,7 +31,9 @@ export default Vue.extend({
   methods: {
     contentLoaded(content) {
       if (!content) {
-        this.$nuxt.context.ssrContext.res.statusCode = 404
+        if (this.$nuxt.context.ssrContext) {
+          this.$nuxt.context.ssrContext.res.statusCode = 404
+        }
         this.notFound = true
       }
     },
