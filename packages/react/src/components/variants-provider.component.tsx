@@ -20,7 +20,7 @@ function getData(content: BuilderContentVariation) {
 const variantsScript = (variantsString: string, contentId: string) =>
   `
 (function() {
-  if (window.builderNoTrack) {
+  if (window.builderNoTrack || window.navigator.doNotTrack === '1') {
     return;
   }
 
@@ -104,6 +104,8 @@ export const VariantsProvider: React.SFC<VariantsProviderProps> = ({
   initialContent,
   children,
 }) => {
+  if (!builder.canTrack) return children([initialContent]);
+
   const hasTests = Boolean(Object.keys(initialContent?.variations || {}).length);
 
   // when it's not isStatic variants are already elected by the sdk
