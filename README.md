@@ -101,11 +101,18 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
 
 ## Framework Support
 
+<a target="_blank" href="https://www.builder.io/c/docs/getting-started">
+  <img src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fe7a4e2f04c60464dab375f31ead137e9" />
+</a>
+
+<br />
+
 | Framework                                                                |                            Status                             |
 | ------------------------------------------------------------------------ | :-----------------------------------------------------------: |
 | [REST API](https://builder.io/c/docs/getting-started)                    |                            Stable                             |
 | [React](#getting-started-with-react)                                     |                            Stable                             |
-| [Vue](packages/vue)                                                       |                            Stable                             |
+| [Vue](packages/vue)                                                      |                            Stable                             |
+| [Nuxt](examples/nust)                                                    |                            Stable                             |
 | [Next.js](examples/next-js)                                              |                            Stable                             |
 | [Gatsby](examples/gatsby)                                                |                            Stable                             |
 | [Shopify / Liquid](https://apps.shopify.com/builder-2)                   |                            Stable                             |
