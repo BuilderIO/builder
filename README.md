@@ -102,7 +102,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
 ## Framework Support
 
 <a target="_blank" href="https://www.builder.io/c/docs/getting-started">
-  <img src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fe7a4e2f04c60464dab375f31ead137e9" />
+  <img src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ff956ac27f99e47cfa81fbba8213da1e3" />
 </a>
 
 <br />
