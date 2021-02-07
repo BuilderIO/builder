@@ -121,6 +121,7 @@ class SymbolComponent extends React.Component<SymbolProps> {
                 this.placeholder
               ) : (
                 <BuilderPage
+                  isChild
                   ref={ref => (this.ref = ref)}
                   context={{ ...state.context }}
                   modelName={model}
