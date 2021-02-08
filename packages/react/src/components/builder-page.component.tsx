@@ -152,6 +152,12 @@ export interface BuilderPageProps {
   isStatic?: boolean;
   context?: any;
   url?: string;
+  // Set to true if this is not the root content component, for instance for symbols
+  isChild?: boolean;
+  // Set to true to not call event.stopPropagation() in the editor to avoid
+  // issues with client site routing triggering when editing in Builder, causing
+  // navigation to other pages unintended
+  stopClickPropagationWhenEditing?: boolean;
 }
 
 export interface BuilderPageState {
@@ -833,6 +839,18 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     return (
       // TODO: data attributes for model, id, etc?
       <WrapComponent
+        onClick={event => {
+          // Prevent propagation from the root content component when editing to prevent issues
+          // like client side routing triggering when links are clicked, unless this behavior is 
+          // disabled with the stopClickPropagationWhenEditing prop
+          if (
+            Builder.isEditing &&
+            !this.props.isChild &&
+            !this.props.stopClickPropagationWhenEditing
+          ) {
+            event.stopPropagation();
+          }
+        }}
         className={`builder-component ${contentId ? `builder-component-${contentId}` : ''}`}
         data-name={this.name}
         data-source="Rendered by Builder.io"
