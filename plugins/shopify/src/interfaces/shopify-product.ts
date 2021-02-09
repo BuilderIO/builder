@@ -69,6 +69,7 @@ export interface ShopifyProduct {
   published_at: Date;
   template_suffix: string;
   published_scope: string;
+  description: string;
   tags: string;
   variants: Variant[];
   options: Option[];

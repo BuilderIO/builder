@@ -14,7 +14,7 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core';
-import { Create, Search } from '@material-ui/icons';
+import { Create, Search, Sync } from '@material-ui/icons';
 import { computed, observable, runInAction } from 'mobx';
 import { observer } from 'mobx-react';
 import React from 'react';
@@ -26,7 +26,10 @@ import { fastClone } from '../functions/fast-clone';
 import { SetShopifyKeysMessage } from '../components/set-shopify-keys-message';
 import appState from '@builder.io/app-context';
 
-interface ShopifyProductPickerProps extends CustomReactEditorProps<BuilderRequest | string> {}
+interface ShopifyProductPickerProps extends CustomReactEditorProps<BuilderRequest | string> {
+  isPreview?: boolean;
+  handleOnly?: boolean;
+}
 
 export interface ShopifyProductPreviewCellProps {
   product: ShopifyProduct;
@@ -69,7 +72,7 @@ export class ProductPreviewCell extends SafeComponent<ShopifyProductPreviewCellP
 }
 
 @observer
-export class ProductPicker extends SafeComponent<CustomReactEditorProps<string>> {
+export class ProductPicker extends SafeComponent<CustomReactEditorProps<ShopifyProduct>> {
   @observable searchInputText = '';
   @observable loading = false;
 
@@ -145,11 +148,11 @@ export class ProductPicker extends SafeComponent<CustomReactEditorProps<string>>
                 <div
                   key={item.id}
                   onClick={e => {
-                    this.props.onChange(String(item.id));
+                    this.props.onChange(item);
                   }}
                 >
                   <ProductPreviewCell
-                    selected={String(item.id) === this.props.value}
+                    selected={String(item.id) === String(this.props.value?.id)}
                     button
                     product={item}
                     key={item.id}
@@ -183,22 +186,39 @@ export class ShopifyProductPicker extends SafeComponent<ShopifyProductPickerProp
   }
 
   @computed get productInfo() {
-    return this.productInfoCacheValue?.value?.product;
+    return this.productHandle
+      ? this.productInfoCacheValue?.value?.products?.[0]
+      : this.productInfoCacheValue?.value?.product;
   }
 
   @computed get productInfoCacheValue() {
-    if (!(this.props.context.user.apiKey && this.productId)) {
+    const id = this.productId || this.productHandle;
+    const apiKey = this.props.context.user.apiKey;
+    if (!(apiKey && id)) {
       return null;
     }
-    return this.props.context.httpCache.get(
-      `${apiRoot}/api/v1/shopify/products/${this.productId}.json?apiKey=${this.props.context.user.apiKey}`
-    );
+    return this.productId
+      ? this.props.context.httpCache.get(
+          `${appState.config.apiRoot()}/api/v1/shopify/products/${id}.json?apiKey=${apiKey}`
+        )
+      : this.props.context.httpCache.get(
+          `${appState.config.apiRoot()}/api/v1/shopify/products.json?handle=${id}&apiKey=${apiKey}`
+        );
   }
 
   get productId() {
-    return typeof this.props.value === 'string'
+    if (this.props.handleOnly) {
+      return '';
+    }
+    return typeof this.props.value === 'object'
+      ? this.props.value?.options?.get('product')
+      : this.props.value || '';
+  }
+
+  get productHandle() {
+    return this.props.handleOnly && typeof this.props.value === 'string'
       ? this.props.value
-      : this.props.value?.options?.get('product') || '';
+      : undefined;
   }
 
   get pluginSettings() {
@@ -209,6 +229,23 @@ export class ShopifyProductPicker extends SafeComponent<ShopifyProductPickerProp
     );
   }
 
+  set productId(value) {
+    if (this.props.handleOnly) {
+      return;
+    }
+    if (this.props.field?.isTargeting) {
+      this.props.onChange(value);
+    } else {
+      this.props.onChange(this.getRequestObject(value));
+    }
+  }
+
+  set productHandle(value) {
+    if (this.props.handleOnly) {
+      this.props.onChange(value);
+    }
+  }
+
   getRequestObject(productId: string) {
     // setting a Request object as the value, Builder.io will fetch the given URL
     // and populate that as the `data` property on this object in the return repsonse
@@ -216,7 +253,9 @@ export class ShopifyProductPicker extends SafeComponent<ShopifyProductPickerProp
     return {
       '@type': '@builder.io/core:Request',
       request: {
-        url: `${apiRoot}/api/v1/shopify/products/{{this.options.product}}.json?apiKey=${this.props.context.user.apiKey}`,
+        url: `${appState.config.apiRoot()}/api/v1/shopify/products/{{this.options.product}}.json?apiKey=${
+          this.props.context.user.apiKey
+        }`,
       },
       options: {
         product: productId,
@@ -224,25 +263,14 @@ export class ShopifyProductPicker extends SafeComponent<ShopifyProductPickerProp
     } as BuilderRequest;
   }
 
-  set productId(value) {
-    if (this.props.field.isTargeting) {
-      this.props.onChange(value);
-    } else {
-      this.props.onChange(this.getRequestObject(value));
-    }
-  }
-
-  async getProduct(id: string) {
-    return null;
-  }
-
   async showChooseProductModal() {
     const close = await this.props.context.globalState.openDialog(
       <ProductPicker
         context={this.props.context}
-        value={this.productId}
+        value={this.productInfo}
         onChange={value => {
-          this.productId = value;
+          this.productHandle = value?.handle;
+          this.productId = value?.id;
           close();
         }}
       />,
@@ -276,9 +304,6 @@ export class ShopifyProductPicker extends SafeComponent<ShopifyProductPickerProp
               marginBottom: 15,
               position: 'relative',
             }}
-            onClick={() => {
-              this.showChooseProductModal();
-            }}
           >
             <ProductPreviewCell button css={{ paddingRight: 30 }} product={this.productInfo} />
             <IconButton
@@ -290,6 +315,9 @@ export class ShopifyProductPicker extends SafeComponent<ShopifyProductPickerProp
                 height: 50,
                 marginTop: 'auto',
                 marginBottom: 'auto',
+              }}
+              onClick={() => {
+                this.showChooseProductModal();
               }}
             >
               <Create css={{ color: '#888' }} />
@@ -315,4 +343,14 @@ export class ShopifyProductPicker extends SafeComponent<ShopifyProductPickerProp
 Builder.registerEditor({
   name: 'ShopifyProduct',
   component: ShopifyProductPicker,
+});
+
+Builder.registerEditor({
+  name: 'ShopifyProductPreview',
+  component: (props: ShopifyProductPickerProps) => <ShopifyProductPicker {...props} isPreview />,
+});
+
+Builder.registerEditor({
+  name: 'ShopifyProductHandle',
+  component: (props: ShopifyProductPickerProps) => <ShopifyProductPicker {...props} handleOnly />,
 });

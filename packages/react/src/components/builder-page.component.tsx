@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { jsx, css } from '@emotion/core';
 import { BuilderContent } from './builder-content.component';
 import { BuilderBlocks } from './builder-blocks.component';
 import {
@@ -30,15 +31,53 @@ import { throttle } from '../functions/throttle';
 import { safeDynamicRequire } from '../functions/safe-dynamic-require';
 import { BuilderMetaContext } from '../store/builder-meta';
 
+function pick<T, K extends keyof T>(obj: T, ...keys: K[]): Pick<T, K> {
+  const ret: any = {};
+  keys.forEach(key => {
+    ret[key] = obj[key];
+  });
+  return ret;
+}
+function omit<T, K extends keyof T>(obj: T, ...keys: K[]): Omit<T, K> {
+  const ret: any = { ...obj };
+  keys.forEach(key => {
+    delete ret[key];
+  });
+  return ret;
+}
+
+const wrapComponent = (info: any) => {
+  return (props: any) => {
+    // TODO: convention for all of this, like builderTagProps={{ style: {} foo: 'bar' }}
+    const Tag = props.builderTag || 'div';
+    const inputNames = ['children'].concat(
+      info.inputs?.map((item: any) => item.name as string) || []
+    );
+
+    const baseProps = omit(props, ...inputNames, 'attributes');
+    const inputProps = props; // pick(props, ...inputNames);
+
+    if (info.noWrap) {
+      return <info.class attributes={baseProps} {...inputProps} />;
+    }
+
+    return (
+      <Tag {...baseProps}>
+        <info.class {...inputProps} />
+      </Tag>
+    );
+  };
+};
+
 const size = (thing: object) => Object.keys(thing).length;
 
 function debounce(func: Function, wait: number, immediate = false) {
   let timeout: any;
-  return function (this: any) {
+  return function(this: any) {
     const context = this;
     const args = arguments;
     clearTimeout(timeout);
-    timeout = setTimeout(function () {
+    timeout = setTimeout(function() {
       timeout = null;
       if (!immediate) func.apply(context, args);
     }, wait);
@@ -47,15 +86,6 @@ function debounce(func: Function, wait: number, immediate = false) {
 }
 
 const fontsLoaded = new Set();
-
-function pick(object: any, keys: string[]) {
-  return keys.reduce((obj, key) => {
-    if (object && object.hasOwnProperty(key)) {
-      obj[key] = object[key];
-    }
-    return obj;
-  }, {} as any);
-}
 
 // TODO: get fetch from core JS....
 const fetch = Builder.isBrowser ? window.fetch : require('node-fetch');
@@ -103,6 +133,7 @@ export interface BuilderPageProps {
   builder?: Builder;
   entry?: string;
   apiKey?: string;
+  codegen?: boolean;
   options?: GetContentOptions;
   contentLoaded?: (data: any, content: any) => void;
   renderLink?: (props: React.AnchorHTMLAttributes<any>) => React.ReactNode;
@@ -121,6 +152,12 @@ export interface BuilderPageProps {
   isStatic?: boolean;
   context?: any;
   url?: string;
+  // Set to true if this is not the root content component, for instance for symbols
+  isChild?: boolean;
+  // Set to true to not call event.stopPropagation() in the editor to avoid
+  // issues with client site routing triggering when editing in Builder, causing
+  // navigation to other pages unintended
+  stopClickPropagationWhenEditing?: boolean;
 }
 
 export interface BuilderPageState {
@@ -225,6 +262,10 @@ function searchToObject(location: Location | Url) {
 }
 
 export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageState> {
+  static defaults: Pick<BuilderPageProps, 'codegen'> = {
+    codegen: Boolean(Builder.isBrowser && location.href.includes('builder.codegen=true')),
+  };
+
   subscriptions: Subscription = new Subscription();
   // TODO: don't trigger initial one?
   onStateChange = new BehaviorSubject<any>(null);
@@ -242,6 +283,16 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
 
   ref: HTMLElement | null = null;
 
+  Component: any;
+
+  get options() {
+    // TODO: for perf cache this
+    return {
+      ...BuilderPage.defaults,
+      ...this.props,
+    };
+  }
+
   get name(): string | undefined {
     return this.props.model || this.props.modelName || this.props.name; // || this.props.model
   }
@@ -254,6 +305,13 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     return this.ref;
   }
 
+  get inlinedContent() {
+    if (this.isPreviewing && !this.props.inlineContent) {
+      return undefined;
+    }
+    return this.props.content;
+  }
+
   constructor(props: BuilderPageProps) {
     super(props);
 
@@ -264,7 +322,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
       // TODO: should change if this prop changes
       context: props.context || {},
       state: Object.assign(this.rootState, {
-        ...(this.props.content && this.props.content.data && this.props.content.data.state),
+        ...(this.inlinedContent && this.inlinedContent.data && this.inlinedContent.data.state),
         isBrowser: Builder.isBrowser, // !this.asServer,
         isServer: !Builder.isBrowser, // this.asServer,
         _hydrate: props.hydrate,
@@ -286,9 +344,9 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
         this.builder.apiKey = key;
       }
 
-      if (this.props.content) {
+      if (this.inlinedContent) {
         // Sometimes with graphql we get the content as `content.content`
-        const content = (this.props.content as any).content || this.props.content;
+        const content = (this.inlinedContent as any).content || this.inlinedContent;
         this.onContentLoaded(content?.data, content);
       }
     }
@@ -299,7 +357,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
   }
 
   getHtmlData() {
-    const id = (this.props.content && this.props.content.id) || this.props.entry;
+    const id = (this.inlinedContent && this.inlinedContent.id) || this.props.entry;
     const script =
       id &&
       Builder.isBrowser &&
@@ -329,7 +387,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
   get locationState() {
     return {
       // TODO: handle this correctly on the server. Pass in with CONTEXT
-      ...pick(this.location, ['pathname', 'hostname', 'search', 'host']),
+      ...pick(this.location, 'pathname', 'hostname', 'search', 'host'),
       path: (this.location.pathname && this.location.pathname.split('/').slice(1)) || '',
       query: searchToObject(this.location),
     };
@@ -570,6 +628,13 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     this.notifyStateChange();
   };
 
+  get isPreviewing() {
+    return (
+      (Builder.isServer || (Builder.isBrowser && Builder.isPreviewing)) &&
+      builder.previewingModel === this.name
+    );
+  }
+
   @debounceNextTick
   notifyStateChange() {
     if (Builder.isServer) {
@@ -701,7 +766,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
 
   get data() {
     const data = {
-      ...(this.props.content && this.props.content.data?.state),
+      ...(this.inlinedContent && this.inlinedContent.data?.state),
       ...this.props.data,
       ...this.state.state,
     };
@@ -718,8 +783,8 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     }
 
     if (Builder.isEditing) {
-      if (this.props.content && prevProps.content !== this.props.content) {
-        this.onContentLoaded(this.props.content.data, this.props.content);
+      if (this.inlinedContent && prevProps.content !== this.inlinedContent) {
+        this.onContentLoaded(this.inlinedContent.data, this.inlinedContent);
       }
     }
   }
@@ -742,7 +807,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
   }
 
   get content() {
-    let { content } = this.props;
+    let content = this.inlinedContent;
     if (content && (content as any).content) {
       // GraphQL workaround
       content = {
@@ -774,9 +839,21 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     return (
       // TODO: data attributes for model, id, etc?
       <WrapComponent
+        onClick={event => {
+          // Prevent propagation from the root content component when editing to prevent issues
+          // like client side routing triggering when links are clicked, unless this behavior is
+          // disabled with the stopClickPropagationWhenEditing prop
+          if (
+            Builder.isEditing &&
+            !this.props.isChild &&
+            !this.props.stopClickPropagationWhenEditing
+          ) {
+            event.stopPropagation();
+          }
+        }}
         className={`builder-component ${contentId ? `builder-component-${contentId}` : ''}`}
         data-name={this.name}
-        data-source={`Rendered by Builder.io on ${new Date().toUTCString()}`}
+        data-source="Rendered by Builder.io"
         key={this.state.key}
         ref={ref => (this.ref = ref)}
       >
@@ -802,8 +879,10 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
                     <BuilderContent
                       isStatic={this.props.isStatic || Builder.isStatic}
                       key={
-                        this.props.content?.id ||
-                        ('content' in this.props ? 'null-content-prop' : 'no-content-prop')
+                        this.inlinedContent?.id ||
+                        ('content' in this.props && !this.isPreviewing
+                          ? 'null-content-prop'
+                          : 'no-content-prop')
                       }
                       builder={this.builder}
                       ref={ref => (this.contentRef = ref)}
@@ -813,12 +892,17 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
                         key,
                         entry: this.props.entry,
                         ...(content && { initialContent: [content] }),
-                        ...(!content && 'content' in this.props && { initialContent: [] }),
+                        ...(!content &&
+                          'content' in this.props &&
+                          !this.isPreviewing && { initialContent: [] }),
                         ...(this.props.url && { url: this.props.url }),
                         ...this.props.options,
+                        ...(this.options.codegen && {
+                          format: 'react',
+                        }),
                       }}
                       inline={
-                        this.props.inlineContent || (!Builder.isEditing && 'content' in this.props)
+                        this.props.inlineContent || (!this.isPreviewing && 'content' in this.props)
                       }
                       contentError={this.props.contentError}
                       modelName={this.name || 'page'}
@@ -836,6 +920,58 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
                             this.checkStyles(data);
                           });
                         }
+
+                        const { codegen } = this.options;
+
+                        if (codegen && !this.Component && data?.blocksJs) {
+                          const builderComponentNames: string[] = Array.from(
+                            new Set(Builder.components.map((item: any) => item.name))
+                          );
+                          const reversedcomponents = Builder.components.slice().reverse();
+
+                          const builderComponents = builderComponentNames.map(name =>
+                            reversedcomponents.find((item: any) => item.class && item.name === name)
+                          );
+
+                          const useBuilderState = (initialState: any) => {
+                            const [, setTick] = React.useState(0);
+                            const [state] = React.useState(() =>
+                              onChange(initialState, function() {
+                                setTick(tick => tick + 1);
+                              })
+                            );
+
+                            return state;
+                          };
+
+                          const mappedComponentNames = builderComponentNames.map(name =>
+                            (name || '').replace(/[^\w]+/gi, '')
+                          );
+
+                          const finalizedComponents = builderComponents.map(info =>
+                            wrapComponent(info)
+                          );
+
+                          this.Component = new Function(
+                            'jsx',
+                            '_css',
+                            'Builder',
+                            'builder',
+                            'React',
+                            'useBuilderState',
+                            ...mappedComponentNames,
+                            data.blocksJs
+                          )(
+                            jsx,
+                            css,
+                            Builder,
+                            builder,
+                            React,
+                            useBuilderState,
+                            ...finalizedComponents
+                          );
+                        }
+
                         // TODO: loading option - maybe that is what the children is or component prop
                         // TODO: get rid of all these wrapper divs
                         return data ? (
@@ -846,7 +982,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
                               fullData.testVariationId || fullData.variationId || fullData.id
                             }
                           >
-                            {this.getCss(data) && (
+                            {!codegen && this.getCss(data) && (
                               <style
                                 ref={ref => (this.styleRef = ref)}
                                 className="builder-custom-styles"
@@ -864,12 +1000,16 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
                                 renderLink: this.props.renderLink,
                               }}
                             >
-                              <BuilderBlocks
-                                key={String(!!data?.blocks?.length)}
-                                emailMode={this.props.emailMode}
-                                fieldName="blocks"
-                                blocks={data.blocks}
-                              />
+                              {codegen && this.Component ? (
+                                <this.Component data={this.data} context={this.state.context} />
+                              ) : (
+                                <BuilderBlocks
+                                  key={String(!!data?.blocks?.length)}
+                                  emailMode={this.props.emailMode}
+                                  fieldName="blocks"
+                                  blocks={data.blocks}
+                                />
+                              )}
                             </BuilderStoreContext.Provider>
                           </div>
                         ) : loading ? (
@@ -1079,7 +1219,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     }
 
     // TODO: also throttle on edits maybe
-    if (data && data.jsCode && Builder.isBrowser) {
+    if (data && data.jsCode && Builder.isBrowser && !this.options.codegen) {
       // Don't rerun js code when editing and not changed
       let skip = false;
       if (Builder.isEditing) {

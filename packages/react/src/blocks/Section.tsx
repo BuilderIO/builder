@@ -30,6 +30,7 @@ class SectionComponent extends React.Component<SectionProps> {
           marginRight: 'auto',
         }}
       >
+        {this.props.children}
         {/* TODO: maybe builder <BuilderBlocks? */}
         {this.props.builderBlock &&
           this.props.builderBlock.children &&

@@ -89,10 +89,10 @@ export function PickShopifyProductsList(props: PickShopifyProductsListProps) {
               <ProductPicker
                 context={appState}
                 value={undefined}
-                onChange={productId => {
-                  if (productId) {
+                onChange={product => {
+                  if (product) {
                     const value = props.value || [];
-                    value.push(productId);
+                    value.push(String(product.id));
                     props.onChange(value);
                   }
                   close();

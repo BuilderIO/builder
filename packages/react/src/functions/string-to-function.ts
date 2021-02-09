@@ -3,12 +3,6 @@ import { safeDynamicRequire } from './safe-dynamic-require';
 
 const fnCache: { [key: string]: BuilderEvanFunction | undefined } = {};
 
-const sizeMap = {
-  desktop: 'large',
-  tablet: 'medium',
-  mobile: 'small',
-};
-
 type BuilderEvanFunction = (
   state: object,
   event?: Event | undefined | null,
@@ -46,15 +40,6 @@ export function stringToFunction(
   let fn: Function = () => {
     /* intentionally empty */
   };
-
-  str = str
-    .replace(/builder\s*\.\s*use[a-zA-Z]*\(/g, 'return(')
-    .replace(/builder\s*\.\s*set([a-zA-Z]+)To\(/g, (_match, group: string) => {
-      return `builder.set("${group[0].toLowerCase() + group.substring(1)}",`;
-    })
-    .replace(/builder\s*\.\s*get([a-zA-Z]+)\s*\(\s*\)/g, (_match, group: string) => {
-      return `state.${group[0].toLowerCase() + group.substring(1)}`;
-    });
 
   try {
     // tslint:disable-next-line:no-function-constructor-with-string-args

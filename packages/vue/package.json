@@ -1,0 +1,49 @@
+{
+  "name": "@builder.io/vue",
+  "version": "0.1.9",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/builderio/builder"
+  },
+  "homepage": "https://github.com/builderio/builder",
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build --target lib --name builder src/main.js",
+    "lint": "vue-cli-service lint",
+    "release:dev": "npm run build && npm version prerelease --no-git-tag-version && ALLOW_PUBLISH=true npm publish --tag dev",
+    "release:patch": "npm run build && npm version patch && ALLOW_PUBLISH=true npm publish"
+  },
+  "main": "./dist/builder.common.js",
+  "dependencies": {
+    "@builder.io/sdk": "^1.1.21",
+    "vue": "^2.6.11"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~4.5.0",
+    "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-service": "~4.5.0",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^6.7.2",
+    "eslint-plugin-vue": "^6.2.2",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "babel-eslint"
+    },
+    "rules": {}
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}

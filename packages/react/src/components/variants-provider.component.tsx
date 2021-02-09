@@ -6,9 +6,11 @@ function getData(content: BuilderContentVariation) {
     return undefined;
   }
 
+  const { blocks, blocksString } = content.data;
+  const hasBlocks = Array.isArray(blocks) || typeof blocksString === 'string';
   const newData: any = {
     ...content.data,
-    blocks: content.data.blocks || JSON.parse(content.data.blocksString),
+    ...(hasBlocks && { blocks: blocks || JSON.parse(blocksString) }),
   };
 
   delete newData.blocksString;

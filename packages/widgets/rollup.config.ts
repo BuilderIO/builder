@@ -15,7 +15,7 @@ const resolvePlugin = resolve();
 const externalDependencies = Object.keys(pkg.dependencies)
   .concat(Object.keys(pkg.optionalDependencies || {}))
   .concat(Object.keys(pkg.peerDependencies || {}))
-  .filter(name => !name.startsWith('lodash-es'));
+  .filter(name => !name.startsWith('lodash'));
 
 const options = {
   input: `src/${libraryName}.ts`,
@@ -128,7 +128,7 @@ export default [
       { file: './dist/15.esm.js', format: 'es', sourcemap: true },
       { file: './dist/15.js', format: 'cjs', sourcemap: true },
     ],
-    external: externalDependencies.filter(name => !name.startsWith('lodash-es')),
+    external: externalDependencies.filter(name => !name.startsWith('lodash')),
     plugins: options.plugins
       .filter(plugin => plugin !== resolvePlugin)
       .concat([
@@ -162,7 +162,7 @@ export default [
       { file: './dist/preact.esm.js', format: 'es', sourcemap: true },
       { file: './dist/preact.js', format: 'cjs', sourcemap: true },
     ],
-    external: externalDependencies.filter(name => !name.startsWith('lodash-es')),
+    external: externalDependencies.filter(name => !name.startsWith('lodash')),
     plugins: options.plugins
       .filter(plugin => plugin !== resolvePlugin)
       .concat([

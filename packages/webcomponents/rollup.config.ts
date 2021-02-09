@@ -21,7 +21,6 @@ if (SERVE) {
   // Rollup clear console shortly after load and wipes this message,
   // so delay a sec so we can see it
   setTimeout(() => {
-    console.log('REACT?', REACT);
     console.log(`\n\nDev server listening on port ${port}...\n\n`);
   }, 10);
 }

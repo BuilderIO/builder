@@ -15,7 +15,10 @@ import { getTopLevelDomain } from './functions/get-top-level-domain';
 import serverOnlyRequire from './functions/server-only-require.function';
 import { BuilderContent } from './types/content';
 import { uuid } from './functions/uuid';
-const hash = require('hash-sum');
+
+// Do not change this to a require! It throws runtime errors - rollup
+// will preserve the `require` and throw runtime errors
+import hash from 'hash-sum';
 
 export type Url = any;
 
@@ -31,6 +34,7 @@ export const isReactNative = typeof navigator === 'object' && navigator.product 
 export const validEnvList = [
   'production',
   'qa',
+  'test',
   'development',
   'dev',
   'cdn-qa',
@@ -197,6 +201,7 @@ export interface GetContentOptions {
   // Alias for userAttributes.urlPath
   url?: string;
   includeUrl?: boolean;
+  includeRefs?: boolean;
   cacheSeconds?: number;
   staleCacheSeconds?: number;
   limit?: number;
@@ -215,12 +220,13 @@ export interface GetContentOptions {
   omit?: string;
   key?: string;
   // For prerender (prerenderFormat?)
-  format?: 'amp' | 'email' | 'html';
+  format?: 'amp' | 'email' | 'html' | 'react' | 'solid';
   noWrap?: true;
   rev?: string;
   static?: boolean;
   // Additional query params of the Content API to send
   options?: { [key: string]: any };
+  noEditorUpdates?: boolean;
 }
 
 export type Class = {
@@ -278,6 +284,7 @@ export interface Input {
   code?: boolean;
   richText?: boolean;
   showIf?: ((options: Map<string, any>) => boolean) | string;
+  copyOnAdd?: boolean;
 }
 
 export interface Component {
@@ -410,7 +417,6 @@ export class Builder {
 
   static components: Component[] = [];
   static singletonInstance: Builder;
-  static useNewApi = true;
   // isStatic delegates all variants rendering and election to the variants provider
   // which in turn will always render default variation on server and winning variation on client
   static isStatic = false;
@@ -633,7 +639,10 @@ export class Builder {
     };
   }
 
-  // static registerComponent(...) { .. }
+  static registerBlock(component: any, options: Component) {
+    this.registerComponent(component, options);
+  }
+
   static registerComponent(component: any, options: Component) {
     const spec = {
       class: component,
@@ -999,8 +1008,6 @@ export class Builder {
     : !this.isDevelopmentEnv &&
       !(Builder.isBrowser && location.search.indexOf('builder.preview=') !== -1);
 
-  useNewContentApi = false;
-
   // TODO: set this for QA
   private get isDevelopmentEnv() {
     // Automatic determining of development environment
@@ -1362,7 +1369,7 @@ export class Builder {
                 data.data.key || data.data.alias || data.data.entry || data.data.modelName;
               const contentData = data.data.data; // hmmm...
               const observer = this.observersByKey[key];
-              if (observer) {
+              if (observer && !this.noEditorUpdates[key]) {
                 observer.next([contentData]);
               }
               break;
@@ -1476,6 +1483,7 @@ export class Builder {
   }
 
   observersByKey: { [key: string]: BehaviorSubject<BuilderContent[]> | undefined } = {};
+  noEditorUpdates: { [key: string]: boolean } = {};
 
   get defaultCanTrack() {
     return Boolean(
@@ -1503,6 +1511,12 @@ export class Builder {
     this.canTrack = canTrack;
     this.apiKey = apiKey;
     return this;
+  }
+
+  get previewingModel() {
+    const search = this.getLocation().search;
+    const params = QueryString.parse((search || '').substr(1));
+    return params['builder.preview'];
   }
 
   // TODO: allow adding location object as property and/or in constructor
@@ -1626,10 +1640,10 @@ export class Builder {
           // TODO: add ab test info here and other high level stuff
           data: matchData,
           id: match.id,
-          variationId: match.testVariationId || match.variationId,
-          testVariationId: match.testVariationId || match.variationId,
-          testVariationName: match.testVariationName,
-          lastUpdated: match.lastUpdated,
+          variationId: match.testVariationId || match.variationId || null,
+          testVariationId: match.testVariationId || match.variationId || null,
+          testVariationName: match.testVariationName || null,
+          lastUpdated: match.lastUpdated || null,
         };
       }
     );
@@ -1681,7 +1695,7 @@ export class Builder {
     }
     if (isEditingThisModel) {
       if (Builder.isBrowser) {
-        parent.postMessage({ type: 'builder.updateContent' }, '*');
+        parent.postMessage({ type: 'builder.updateContent', data: { options } }, '*');
       }
     }
     if (!initialContent /* || isEditingThisModel */) {
@@ -1705,6 +1719,9 @@ export class Builder {
 
     const observable = new BehaviorSubject<BuilderContent[]>(null as any);
     this.observersByKey[key] = observable;
+    if (options.noEditorUpdates) {
+      this.noEditorUpdates[key] = true;
+    }
     if (initialContent) {
       nextTick(() => {
         // TODO: need to testModify this I think...?
@@ -1752,16 +1769,11 @@ export class Builder {
   }
 
   get host() {
-    if (this.env.includes('//')) {
-      return this.env;
-    }
-
-    if (this.env.includes('.')) {
-      return 'http://' + this.env;
-    }
     switch (this.env) {
       case 'qa':
         return 'https://qa.builder.io';
+      case 'test':
+        return 'https://builder-io-test.web.app';
       case 'fast':
         return 'https://fast.builder.io';
       case 'cloud':
@@ -1801,6 +1813,9 @@ export class Builder {
     if (queue[0].fields) {
       queryParams.fields = queue[0].fields;
     }
+    if (queue[0].format) {
+      queryParams.format = queue[0].format;
+    }
 
     const pageQueryParams: ParamsMap =
       typeof location !== 'undefined'
@@ -1832,9 +1847,7 @@ export class Builder {
     }
     // TODO: merge in the attribute from query string ones
     // TODO: make this an option per component/request
-    queryParams.userAttributes = Builder.useNewApi
-      ? userAttributes
-      : JSON.stringify(userAttributes);
+    queryParams.userAttributes = userAttributes;
 
     if (!usePastQueue && !useQueue) {
       this.priorContentQueue = queue;
@@ -1867,53 +1880,51 @@ export class Builder {
       }
     }
 
-    if (Builder.useNewApi && !Builder.isReact) {
+    if (!Builder.isReact) {
       // TODO: remove me once v1 page editors converted to v2
       // queryParams.extractCss = true;
       queryParams.prerender = true;
     }
 
-    if (Builder.useNewApi) {
-      for (const options of queue) {
-        if (options.format) {
-          queryParams.format = options.format;
-        }
-        // TODO: remove me and make permodel
-        if (options.static) {
-          queryParams.static = options.static;
-        }
+    for (const options of queue) {
+      if (options.format) {
+        queryParams.format = options.format;
+      }
+      // TODO: remove me and make permodel
+      if (options.static) {
+        queryParams.static = options.static;
+      }
 
-        if (options.cachebust) {
-          queryParams.cachebust = options.cachebust;
-        }
+      if (options.cachebust) {
+        queryParams.cachebust = options.cachebust;
+      }
 
-        if (isPositiveNumber(options.cacheSeconds)) {
-          queryParams.cacheSeconds = options.cacheSeconds;
-        }
+      if (isPositiveNumber(options.cacheSeconds)) {
+        queryParams.cacheSeconds = options.cacheSeconds;
+      }
 
-        if (isPositiveNumber(options.staleCacheSeconds)) {
-          queryParams.staleCacheSeconds = options.staleCacheSeconds;
-        }
+      if (isPositiveNumber(options.staleCacheSeconds)) {
+        queryParams.staleCacheSeconds = options.staleCacheSeconds;
+      }
 
-        const properties: (keyof GetContentOptions)[] = [
-          'prerender',
-          'extractCss',
-          'limit',
-          'offset',
-          'query',
-          'preview',
-          'model',
-          'entry',
-          'rev',
-          'static',
-        ];
-        for (const key of properties) {
-          const value = options[key];
-          if (value !== undefined) {
-            queryParams.options = queryParams.options || {};
-            queryParams.options[options.key!] = queryParams.options[options.key!] || {};
-            queryParams.options[options.key!][key] = JSON.stringify(value);
-          }
+      const properties: (keyof GetContentOptions)[] = [
+        'prerender',
+        'extractCss',
+        'limit',
+        'offset',
+        'query',
+        'preview',
+        'model',
+        'entry',
+        'rev',
+        'static',
+      ];
+      for (const key of properties) {
+        const value = options[key];
+        if (value !== undefined) {
+          queryParams.options = queryParams.options || {};
+          queryParams.options[options.key!] = queryParams.options[options.key!] || {};
+          queryParams.options[options.key!][key] = JSON.stringify(value);
         }
       }
     }
@@ -1923,7 +1934,7 @@ export class Builder {
     const hasParams = Object.keys(queryParams).length > 0;
 
     // TODO: option to force dev or qa api here
-    const host = this.useNewContentApi ? 'https://lambda.builder.codes' : this.host;
+    const host = this.host;
 
     const keyNames = queue.map(item => encodeURIComponent(item.key!)).join(',');
 
@@ -1932,24 +1943,25 @@ export class Builder {
       assign(queryParams, params);
     }
 
-    const queryStr = Builder.useNewApi
-      ? QueryString.stringifyDeep(queryParams)
-      : QueryString.stringify(queryParams);
+    const queryStr = QueryString.stringifyDeep(queryParams);
+
+    const format = queryParams.format;
 
     const promise = this.requestUrl(
-      `${host}/api/v1/${Builder.useNewApi ? 'query' : 'content'}/${this.apiKey}/${keyNames}` +
-        (queryParams && hasParams ? `?${queryStr}` : '')
+      `${host}/api/v1/${format === 'solid' || format === 'react' ? 'codegen' : 'query'}/${
+        this.apiKey
+      }/${keyNames}` + (queryParams && hasParams ? `?${queryStr}` : '')
     ).then(
       result => {
         for (const options of queue) {
           const keyName = options.key!;
-          if (options.model === this.blockContentLoading) {
+          if (options.model === this.blockContentLoading && !options.noEditorUpdates) {
             continue;
           }
 
           const isEditingThisModel = this.editingModel === options.model;
           if (isEditingThisModel && Builder.isEditing) {
-            parent.postMessage({ type: 'builder.updateContent' }, '*');
+            parent.postMessage({ type: 'builder.updateContent', data: { options } }, '*');
             // return;
           }
           const observer = this.observersByKey[keyName];

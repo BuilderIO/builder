@@ -1,0 +1,22 @@
+{
+  "name": "@builder.io/utils",
+  "version": "1.0.3",
+  "description": "Utils for working with Builder.io content",
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "prepublish": "npm run build",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@builder.io/sdk": "^1.1.20",
+    "@types/jest": "^26.0.19",
+    "@types/traverse": "^0.6.32",
+    "jest": "^26.6.3",
+    "ts-jest": "^26.4.4",
+    "typescript": "^4.1.3"
+  },
+  "dependencies": {
+    "traverse": "^0.6.6"
+  }
+}

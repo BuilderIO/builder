@@ -1,7 +1,7 @@
 <p align="center">
-  <img alt="BUILDER" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F6836fc105ad549a5b4bf144235b1a228" width="300" />
+  <img alt="BUILDER" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fdcd545fcda9c4be796889bf072cf72e9" width="250" />
 </p>
-
+<br />
 <p align="center">
   Drag and drop page building with your code components. Bring your <a href="/examples/react-design-system">design systems</a> to life!
 </p>
@@ -70,34 +70,49 @@ export default let BuilderPage = () => {
 &nbsp;
 <img src="https://i.imgur.com/HXKroZm.jpg" />
 
+## Try it out!
+
+- [builder.io/fiddle](https://builder.io/fiddle)
+- Design system [live example](https://builder.io/fiddle/4b2e0a2e4b1a44a88a5e6f8c46cdfe7c) and [source](https://github.com/BuilderIO/builder/tree/master/examples/react-design-system)
+- [JSX Lite](https://github.com/BuilderIO/jsx-lite)
+- Storybook [live example](https://builder-storybook.firebaseapp.com) and [source](https://github.com/BuilderIO/builder/tree/master/packages/storybook)
+
 ## How does it work?
 
 - Integrate the [Builder API or SDK](#supported-frameworks) to your site or app
 - Create a free account on [builder.io](https://builder.io) and drag and drop to create and publish pages and content
-- Profit
 
-## What is it good for?
+## How is the content structured?
 
-- Landing pages on custom code stacks
-- [Design systems](/examples/react-design-system) and visually editing your custom components
-- Marketing & content pages (Homepage, promotions, merchandising, about, FAQ, help, docs, etc)
-- Sever side a/b testing and segmentation without performance cost
-- Freedom from marketing teams that never stop asking for new things
-- Developers who are tired of pushing pixels
+In Builder, content is structured in [models](https://www.builder.io/c/docs/guides/getting-started-with-models), and customized with [custom fields](https://www.builder.io/c/docs/custom-fields) and [targeting](https://www.builder.io/c/docs/guides/targeting-and-scheduling)
 
-## Try it out!
+- **Builder pages** - full drag and drop control between your site's header and footer
+- **Builder sections** - make a part of a page visually editable in Builder and use our [targeting and scheduling](https://www.builder.io/c/docs/guides/targeting-and-scheduling) to decide who sees what
+- **Builder data** - fetch structured data from Builder and use it anywhere in your application (e.g. menu items)
 
-- Design system [live example](https://builder.io/fiddle/4b2e0a2e4b1a44a88a5e6f8c46cdfe7c) and [source](https://github.com/BuilderIO/builder/tree/master/examples/react-design-system)
-- [builder.io/fiddle](https://builder.io/fiddle)
-- [JSX Lite](https://github.com/BuilderIO/jsx-lite)
-- Storybook [live example](https://builder-storybook.firebaseapp.com) and [source](https://github.com/BuilderIO/builder/tree/master/packages/storybook)
 
-## Supported Frameworks
+<img src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fe809eac6ae7140beab81ce4c3ee75e20" />
+
+
+Read more about how builder works [here](https://www.builder.io/c/docs/how-builder-works)
+
+See [here](#structuring-your-site) for examples on how to structure a site with Builder
+
+
+## Framework Support
+
+<a target="_blank" href="https://www.builder.io/c/docs/getting-started">
+  <img src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ff956ac27f99e47cfa81fbba8213da1e3" />
+</a>
+
+<br />
 
 | Framework                                                                |                            Status                             |
 | ------------------------------------------------------------------------ | :-----------------------------------------------------------: |
 | [REST API](https://builder.io/c/docs/getting-started)                    |                            Stable                             |
 | [React](#getting-started-with-react)                                     |                            Stable                             |
+| [Vue](packages/vue)                                                      |                            Stable                             |
+| [Nuxt](examples/nust)                                                    |                            Stable                             |
 | [Next.js](examples/next-js)                                              |                            Stable                             |
 | [Gatsby](examples/gatsby)                                                |                            Stable                             |
 | [Shopify / Liquid](https://apps.shopify.com/builder-2)                   |                            Stable                             |
@@ -108,7 +123,7 @@ export default let BuilderPage = () => {
 | [AMP](examples/next-js-amp)                                              |                            Stable                             |
 | Preact                                                                   |                            Stable                             |
 | [React native](packages/react-native)                                    |                             Alpha                             |
-| **Everyting else** <br/> Go, Php, Java, Vue, Ruby/Rails, Vanilla JS, etc | Use our [HTML API](https://builder.io/c/docs/getting-started) |
+| **Everyting else** <br/> Go, Php, Java, Ruby/Rails, Vanilla JS, etc | Use our [HTML API](https://builder.io/c/docs/getting-started) |
 
 Want support for something not listed here or for us to priotize something coming soon? Drop us an issue and let us know! We prioritize based on the community's needs and interests.
 
@@ -222,7 +237,38 @@ export default () => (
 );
 ```
 
+## Don't use React?
+
+Check out our [quick start guide](https://www.builder.io/c/docs/getting-started) for options for many frameworks, including our [HTML API](https://builder.io/c/docs/getting-started) that works for any site
+
+```javascript
+let page = await request(
+  `https://cdn.builder.io/api/v1/html/page?url=${PAGE_URL}&apiKey=${YOUR_KEY}`
+);
+if (page) {
+  let html = page.data.html;
+  // Put the html in your page template between your header and footer and you are done!
+}
+```
+
+✨**Tip:** You can make reusable components for your Builder.io pages using [symbols](https://builder.io/c/docs/guides/symbols)
+
+
+### Structuring your site
+
+There are a lot of ways you can use Builder for your site. Some of the main questions you'll want to ask yourselves - what on your site should be in your code vs in Builder.
+
+As a general rule, parts of your site that should be managed by non developers should probably be in Builder. Parts that are complex with a lot of code, should probably be in your codebase. Using [custom components](https://www.builder.io/c/docs/custom-react-components) in your Builder content can help you strike a good balance here as well
+
+Here are some examples we recommend for how to structure various pages on your site, for instance for a headless commerce site:
+
+
+![examples on how to structure your site](https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fc811a87f916f4e37990b1afc9df25721)
+
+
 ### Data models, components, SEO, and more
+
+<img src="https://cdn.builder.io/api/v1/image/assets%2F444142b2cae54a19aeb8b5ba245feffe%2F8c2699f47fea48b296b43dbb422336e8" />
 
 Builder.io gives you a ton more power and control than just page building. Check our guides on
 
@@ -250,31 +296,26 @@ As well as some handy power features like:
 - [Targeting and scheduling content](https://builder.io/c/docs/guides/targeting-and-scheduling)
 - [Extending Builder.io with plugins](https://github.com/BuilderIO/builder/tree/master/plugins)
 
-## Don't use React?
-
-Our [HTML API](https://builder.io/c/docs/getting-started) works for any site
-
-```javascript
-let page = await request(
-  `https://cdn.builder.io/api/v1/html/page?url=${PAGE_URL}&apiKey=${YOUR_KEY}`
-);
-if (page) {
-  let html = page.data.html;
-  // Put the html in your page template between your header and footer and you are done!
-}
-```
-
-✨**Tip:** You can make reusable components for your Builder.io pages using [symbols](https://builder.io/c/docs/guides/symbols)
-
-## How it works
+## How the Builder.io platform works
 
 ![How it works](https://i.imgur.com/tAnTKeN.png)
+
+## Code generation
+
+Check out [JSX Lite](https://github.com/builderio/jsx-lite) to dep dive into how our codegen works and try it yourself!
+
+<p align="center">
+  <img width="600" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F3c0dc574aa8c4b06adff6f91e01cda3d" />
+</p>
+
+![Codegen GIF](https://imgur.com/H1WTtGe.gif)
+
 
 ## We're hiring!
 
 Want to work on the future of visual software development? Email me at steve@builder.io and let's talk
 
-## John the community!
+## Join the community!
 
 Questions? Requests? Feedback? Chat with us in our [official forum](https://forum.builder.io)!
 

@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/widgets",
-  "version": "1.2.19-alpha.0",
+  "version": "1.2.19",
   "description": "",
   "keywords": [],
   "main": "dist/builder-widgets.cjs.js",
@@ -83,7 +83,7 @@
   },
   "devDependencies": {
     "@builder.io/block-publish": "^1.1.2",
-    "@builder.io/react": "^1.1.32-alpha.0",
+    "@builder.io/react": "^1.1.33",
     "@types/jest": "^22.0.0",
     "@types/lodash-es": "^4.17.1",
     "@types/node": "^10.0.3",
@@ -114,7 +114,7 @@
     "rollup-plugin-replace": "^2.0.0",
     "rollup-plugin-sourcemaps": "^0.6.3",
     "rollup-plugin-typescript2": "^0.29.0",
-    "semantic-release": "^15.0.0",
+    "semantic-release": "^17.2.3",
     "ts-jest": "^22.0.0",
     "ts-node": "^6.0.0",
     "tslint": "^5.8.0",
@@ -141,6 +141,7 @@
     "@emotion/core": ">=10",
     "@emotion/styled": ">=10",
     "lodash-es": "^4.17.10",
+    "next": "^10.0.5",
     "react": ">=14",
     "react-dom": ">=14",
     "react-loadable": "^5.5.0",

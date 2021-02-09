@@ -6,8 +6,6 @@ import {
   BuilderStoreContext,
   stringToFunction,
 } from '@builder.io/react';
-import isArray from 'lodash-es/isArray';
-import last from 'lodash-es/last';
 import * as React from 'react';
 
 interface AccordionProps {
@@ -223,12 +221,12 @@ export class AccordionComponent extends React.Component<AccordionProps> {
                         (block: BuilderElement, index: number) => {
                           if (block.repeat && block.repeat.collection) {
                             const collectionPath = block.repeat.collection;
-                            const collectionName = last(
-                              (collectionPath || '')
-                                .split(/\.\w+\(/)[0]
-                                .trim()
-                                .split('.')
-                            );
+                            const collectionName = (collectionPath || '')
+                              .split(/\.\w+\(/)[0]
+                              .trim()
+                              .split('.')
+                              .pop();
+
                             const itemName =
                               block.repeat.itemName ||
                               (collectionName ? collectionName + 'Item' : 'item');
@@ -239,7 +237,7 @@ export class AccordionComponent extends React.Component<AccordionProps> {
                               this._errors,
                               this._logs
                             )(state.state);
-                            if (isArray(array)) {
+                            if (Array.isArray(array)) {
                               return array.map((data, index) => {
                                 // TODO: Builder state produce the data
                                 const childState = {

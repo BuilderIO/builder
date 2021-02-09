@@ -1,0 +1,9 @@
+{
+  "name": "@builder.io/app-context",
+  "version": "1.0.0",
+  "description": "Builder.io plugin application context",
+  "main": "index.js",
+  "devDependencies": {
+    "@builder.io/sdk": "^1.1.20"
+  }
+}
