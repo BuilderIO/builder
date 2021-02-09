@@ -49,7 +49,9 @@ export const LiquidBlock = ({
         return;
       }
 
-      const previewThemeID = Builder.isBrowser && window.Shopify?.theme?.id || builderState?.state?.location?.query?.preview_theme_id;
+      const previewThemeID =
+        (Builder.isBrowser && (window as any).Shopify?.theme?.id) ||
+        builderState?.state?.location?.query?.preview_theme_id;
       fetch(
         `${builder.host}/api/v1/shopify/data/render-liquid-snippet?snippet=${blockName}&apiKey=${
           builderState?.context.apiKey
