@@ -120,7 +120,10 @@ const createPagesAsync = async (config, createPage, graphql, models, offsets) =>
     const modelName = models[index];
     
     const component = config.templates[modelName];
-    invariant(fs.existsSync(component), `@builder.io/gatsby requires a valid template path for each model`);
+    invariant(
+      fs.existsSync(component),
+      `@builder.io/gatsby requires a valid template path for each model`
+    );
     let entries = result.data[config.fieldName][modelName];
     offsets[index] = offsets[index] + entries.length;
 
@@ -143,7 +146,10 @@ const createPagesAsync = async (config, createPage, graphql, models, offsets) =>
         createPage({
           path: entry.content.data.url,
           component,
-          context: Object.assign({}, config.globalContext || {}, {}, mappedProps)
+          context: {
+            ...(config.globalContext || {}),
+            ...mappedProps,
+          },
         });
       }
     }
