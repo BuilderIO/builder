@@ -27,6 +27,7 @@ export const LiquidBlock = ({
   const [html, setHtml] = useState<string | null>(null);
   const ref = useRef<HTMLDivElement | null>(null);
   const blockName = templatePath?.split('/')[1].replace(/\.liquid$/, '')!;
+
   useEffect(() => {
     const blockId = builderBlock?.id;
     const node = blockId && refs && refs[blockId];
@@ -37,19 +38,24 @@ export const LiquidBlock = ({
       if (cache[cacheKey]) {
         return;
       }
+
       // Convert `sections/foo.liquid` -> `foo`
       if (!blockName) {
         return;
       }
+
       if (cache[cacheKey]) {
         setHtml(cache[cacheKey]);
         return;
       }
 
+      const previewThemeID = Builder.isBrowser && window.Shopify?.theme?.id || builderState?.state?.location?.query?.preview_theme_id;
       fetch(
         `${builder.host}/api/v1/shopify/data/render-liquid-snippet?snippet=${blockName}&apiKey=${
           builderState?.context.apiKey
-        }&args=${encodeURIComponent(args)}`
+        }&args=${encodeURIComponent(args)}${
+          previewThemeID ? `&preview_theme_id=${previewThemeID}` : ''
+        }`
       )
         .then(res => res.json())
         .then(json => {
