@@ -306,7 +306,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
   }
 
   get inlinedContent() {
-    if (this.isPreviewing) {
+    if (this.isPreviewing && !this.props.inlineContent) {
       return undefined;
     }
     return this.props.content;
@@ -841,7 +841,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
       <WrapComponent
         onClick={event => {
           // Prevent propagation from the root content component when editing to prevent issues
-          // like client side routing triggering when links are clicked, unless this behavior is 
+          // like client side routing triggering when links are clicked, unless this behavior is
           // disabled with the stopClickPropagationWhenEditing prop
           if (
             Builder.isEditing &&
