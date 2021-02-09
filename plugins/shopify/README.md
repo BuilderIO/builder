@@ -4,9 +4,12 @@ Easily connect your Shopify data to your Builder.io content!
 
 <img alt="Shopify data example" src="https://imgur.com/BhtUeqK.gif" >
 
-## How to use?
+## Installation
 
 Go to [builder.io/account/organization](https://builder.io/account/organization) and add the plugin from the plugin settings (`@builder.io/plugin-shopify`)
+
+
+![Installation screenshot](https://cdn.builder.io/api/v1/image/assets%2Fc33bcd23c29e45789677ba9aaaa7ce1d%2Fe4df15a3d0ad48318f46bca7208bbfb3)
 
 You will now see six new field types (for [model](https://builder.io/c/docs/guides/getting-started-with-models) fields, [symbol](https://builder.io/c/docs/guides/symbols) inputs, and [component](https://builder.io/c/docs/custom-react-components) fields) and [custom targeting attributes](https://www.builder.io/c/docs/guides/targeting-and-scheduling#custom-targeting) that can be used in three different contexts:
 
