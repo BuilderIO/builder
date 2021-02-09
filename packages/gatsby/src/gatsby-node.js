@@ -118,7 +118,7 @@ const createPagesAsync = async (config, createPage, graphql, models, offsets) =>
   let hasMore = false;
   for (let index = 0; index < models.length; index++) {
     const modelName = models[index];
-    
+
     const component = config.templates[modelName];
     invariant(
       fs.existsSync(component),
@@ -134,13 +134,13 @@ const createPagesAsync = async (config, createPage, graphql, models, offsets) =>
     if (config.filter) {
       entries = entries.filter(config.filter);
     }
-  
+
     for (const entry of entries) {
       if (entry.content.data.url && entry.content.published === `published`) {
         let mappedProps = {};
 
         if (config.mapEntryToContext) {
-          mappedProps = await config.mapEntryToContext({ entry, graphql });
+          mappedProps = await config.mapEntryToContext(entry, graphql);
         }
 
         createPage({
@@ -153,7 +153,7 @@ const createPagesAsync = async (config, createPage, graphql, models, offsets) =>
         });
       }
     }
-  };
+  }
   if (hasMore) {
     await createPagesAsync(config, createPage, graphql, models, offsets);
   }
