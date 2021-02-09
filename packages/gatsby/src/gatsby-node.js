@@ -140,7 +140,7 @@ const createPagesAsync = async (config, createPage, graphql, models, offsets) =>
         let mappedProps = {};
 
         if (config.mapEntryToContext) {
-          mappedProps = await config.mapEntryToContext({ entry, graphql });
+          mappedProps = await config.mapEntryToContext( entry, graphql);
         }
 
         createPage({
