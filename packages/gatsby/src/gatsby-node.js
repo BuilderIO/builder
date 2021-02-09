@@ -116,38 +116,38 @@ const createPagesAsync = async (config, createPage, graphql, models, offsets) =>
     }
   `);
   let hasMore = false;
-  models.forEach((modelName, index) => {
+  for (let index = 0; index < models.length; index++) {
+    const modelName = models[index];
+    
     const component = config.templates[modelName];
-    invariant(
-      fs.existsSync(component),
-      `@builder.io/gatsby requires a valid template path for each model`
-    );
+    invariant(fs.existsSync(component), `@builder.io/gatsby requires a valid template path for each model`);
     let entries = result.data[config.fieldName][modelName];
     offsets[index] = offsets[index] + entries.length;
+
     if (entries.length === config.limit) {
       hasMore = true;
     }
+
     if (config.filter) {
       entries = entries.filter(config.filter);
     }
-    entries.forEach(entry => {
+  
+    for (const entry of entries) {
       if (entry.content.data.url && entry.content.published === `published`) {
         let mappedProps = {};
+
         if (config.mapEntryToContext) {
-          mappedProps = config.mapEntryToContext(entry);
+          mappedProps = await config.mapEntryToContext({ entry, graphql });
         }
 
         createPage({
           path: entry.content.data.url,
           component,
-          context: {
-            ...(config.globalContext || {}),
-            ...mappedProps,
-          },
+          context: Object.assign({}, config.globalContext || {}, {}, mappedProps)
         });
       }
-    });
-  });
+    }
+  };
   if (hasMore) {
     await createPagesAsync(config, createPage, graphql, models, offsets);
   }

@@ -22,10 +22,12 @@ module.exports = {
       options: {
         // public API Key
         publicAPIKey: 'MY_PUBLIC_API_KEY',
-        mapEntryToContext: (entry) => {
+        mapEntryToContext: async ({ entry, graphql }) => {
+          const result = await graphql('....');
           return {
             property: entry.data.property,
             anotherProperty: entry.data.whatever,
+            dataFromQuery: result.data
             /* ... */
           };
         }
