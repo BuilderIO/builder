@@ -18,7 +18,7 @@ export async function getStaticProps({
   const page = await resolveBuilderContent('page', {
     urlPath: '/' + (params?.path?.join('/') || ''),
   })
-  console.log('here ', page);
+
   return {
     props: {
       page,
