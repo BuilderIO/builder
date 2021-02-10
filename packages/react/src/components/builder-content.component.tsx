@@ -7,6 +7,8 @@ import { VariantsProvider } from './variants-provider.component';
 export interface BuilderContentProps<ContentType> {
   contentLoaded?: (data: any, content: any) => void;
   contentError?: (error: any) => void;
+  model: string;
+  /** @alias for model */
   modelName: string;
   options?: GetContentOptions;
   children: (content: ContentType, loading?: boolean, fullData?: any) => React.ReactNode;
@@ -24,6 +26,9 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
 
   get builder() {
     return this.props.builder || builder;
+  }
+  get name() {
+    return this.props.model || this.props.modelName;
   }
 
   get renderedVairantId() {
@@ -128,14 +133,14 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
       addEventListener('message', this.onWindowMessage);
     }
 
-    /// REACT15ONLY if (this.ref) { this.ref.setAttribute('builder-model', this.props.modelName); }
+    /// REACT15ONLY if (this.ref) { this.ref.setAttribute('builder-model', this.name); }
   }
 
   subscribeToContent() {
-    if (this.props.modelName !== '_inline') {
+    if (this.name !== '_inline') {
       // TODO:... using targeting...? express.request hmmm
       this.subscriptions.add(
-        builder.queueGetContent(this.props.modelName, this.options).subscribe(
+        builder.queueGetContent(this.name, this.options).subscribe(
           matches => {
             const match = matches && matches[0];
             this.setState({
@@ -251,7 +256,7 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
           className="builder-content"
           onClick={this.onClick}
           builder-content-id={useData?.id}
-          builder-model={this.props.modelName}
+          builder-model={this.name}
         >
           {this.props.children(useData?.data, this.props.inline ? false : loading, useData)}
         </TagName>
@@ -284,7 +289,7 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
                         className="builder-content"
                         onClick={this.onClick}
                         builder-content-id={content?.id}
-                        builder-model={this.props.modelName}
+                        builder-model={this.name}
                       >
                         {this.props.children(
                           content?.data! as any,
