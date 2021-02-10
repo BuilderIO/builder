@@ -33,6 +33,6 @@ Create a new page entry, assign any URL (can be nested `/sub/path/to/page`), pub
 ### Deploy
 
 You can deploy anywhere you like, but for this project we recommend [Vercel](https://nextjs.org/docs/deployment). 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https%3A%2F%2Fgithub.com%2Fbuilderio%2Fnextjs-shopify)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https%3A%2F%2Fgithub.com%2Fbuilderio%2Fbuilder%2Ftree%2Fmaster%2Fexamples%2Fnext-js%2Flanding-page)
 
 
