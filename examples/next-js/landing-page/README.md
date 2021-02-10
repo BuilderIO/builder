@@ -26,7 +26,7 @@ npm run dev
 ```
 A development server will start on `http://localhost:3000`
 
-Go to your [new space settings](https://builder.io/account/space) and change the site url to your localhost `http://localhost:3000` for site editing.
+Go to your [new space settings](https://builder.io/account/space) and change the site url to your localhost `http://localhost:3000` for site editing. [Learn more about setting up preview URLs](https://www.builder.io/c/docs/guides/preview-url)
 
 Create a new page entry, assign any URL (can be nested `/sub/path/to/page`), publish and preview.
 
@@ -34,5 +34,4 @@ Create a new page entry, assign any URL (can be nested `/sub/path/to/page`), pub
 
 You can deploy anywhere you like, but for this project we recommend [Vercel](https://nextjs.org/docs/deployment). 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https%3A%2F%2Fgithub.com%2Fbuilderio%2Fbuilder%2Ftree%2Fmaster%2Fexamples%2Fnext-js%2Flanding-page)
-
 
