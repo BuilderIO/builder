@@ -1,4 +1,6 @@
-Next.js + Builder.io Landing page starter kit.
+# Next.js + Builder.io Minimal Starter
+
+Learn more about Builder.io + Next.js [here](https://www.builder.io/c/docs/getting-started?codeFramework=next)
 
 ## Get Started
 
