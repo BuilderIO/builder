@@ -2021,7 +2021,7 @@ export class Builder {
           testVariationName: cookieVariation.name,
         };
       }
-      if (item.variations && size(item.variations)) {
+      if (this.canTrack && item.variations && size(item.variations)) {
         let n = 0;
         const random = Math.random();
         for (const id in item.variations) {
