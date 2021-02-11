@@ -18,8 +18,9 @@
   },
   "main": "src/index.js",
   "dependencies": {
-    "@builder.io/react": "^1.1.11-1",
-    "@builder.io/widgets": "^1.2.16",
+    "@builder.io/react": "^1.1.35",
+    "@builder.io/sdk": "^1.1.22",
+    "@builder.io/widgets": "^1.2.19",
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.56",
