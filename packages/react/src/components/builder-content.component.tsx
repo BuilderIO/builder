@@ -4,12 +4,9 @@ import { NoWrap } from './no-wrap';
 import { applyPatchWithMinimalMutationChain } from '../functions/apply-patch-with-mutation';
 import { VariantsProvider } from './variants-provider.component';
 
-export interface BuilderContentProps<ContentType> {
+export type BuilderContentProps<ContentType> = {
   contentLoaded?: (data: any, content: any) => void;
   contentError?: (error: any) => void;
-  model: string;
-  /** @alias for model */
-  modelName: string;
   options?: GetContentOptions;
   children: (content: ContentType, loading?: boolean, fullData?: any) => React.ReactNode;
   inline?: boolean;
@@ -17,7 +14,7 @@ export interface BuilderContentProps<ContentType> {
   builder?: Builder;
   isStatic?: boolean;
   content?: BuilderContent;
-}
+} & ({ model: string } | { modelName: string }); // model and modelName are aliases of the same thing¸
 
 export class BuilderContent<ContentType extends object = any> extends React.Component<
   BuilderContentProps<ContentType>
