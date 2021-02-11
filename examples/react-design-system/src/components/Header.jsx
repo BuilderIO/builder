@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import { Link } from 'react-router-dom';
-import builder, { BuilderComponent } from '@builder.io/react';
+import builder, { BuilderComponent, BuilderContent } from '@builder.io/react';
 import { Cart } from './Cart';
 
 const useStyles = makeStyles(theme => ({
@@ -29,7 +29,18 @@ export const Header = () => {
     <div>
       <BuilderComponent model="announcement-bar" />
       <div className={classes.header}>
-        <Link to="/collections">Shop</Link>
+        <BuilderContent modelName="header-nav-links">
+          {(data, loading) => (
+            <div style={{ display: 'flex' }}>
+              {data?.links?.map((item, index) => (
+                <div key={index} style={{ marginRight: 15 }}>
+                  <Link to={item.link}>{item.text}</Link>
+                </div>
+              ))}
+            </div>
+          )}
+        </BuilderContent>
+
         <Link to="/" className={classes.logo}>
           SHOPAHOLIC
         </Link>
