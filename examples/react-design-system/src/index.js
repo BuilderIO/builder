@@ -10,6 +10,7 @@ import { Footer } from './components/Footer';
 import { Product } from './pages/Product';
 import { Collection } from './pages/Collection';
 import { CatchAll } from './pages/CatchAll';
+import { Blocks } from './pages/Blocks';
 
 const App = () => {
   const classes = useStyles();
@@ -21,6 +22,9 @@ const App = () => {
         <Switch>
           <Route path="/collections">
             <Collection />
+          </Route>
+          <Route path="/blocks">
+            <Blocks />
           </Route>
           <Route path="/products" component={props => <Product {...props} />} />
           <Route path="/">
