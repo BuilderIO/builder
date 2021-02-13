@@ -1,4 +1,4 @@
-import { BuilderContent } from '@builder.io/react';
+import { Builder, BuilderContent } from '@builder.io/react';
 import React from 'react';
 import { DoubleColumns } from '../components/DoubleColumns/DoubleColumns';
 import { Hero } from '../components/Hero/Hero';
@@ -12,6 +12,8 @@ export function Blocks() {
         <div>
           {data?.blocks?.map((item, index) => {
             const { name, options } = item.component;
+
+            // List manually
             if (name === 'Hero') {
               return <Hero key={index} {...options} />;
             }
@@ -23,6 +25,12 @@ export function Blocks() {
             }
             if (name === 'Double Columns') {
               return <DoubleColumns key={index} {...options} />;
+            }
+
+            // Or manually
+            const Component = Builder.components.find(item => item.name === name);
+            if (Component) {
+              return <Component {...options} />;
             }
 
             return null;
