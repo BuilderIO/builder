@@ -1,0 +1,25 @@
+{
+  "createdBy": "agZ9n5CUKRfbL9t6CaJOyVSK4Es2",
+  "createdDate": 1589384749797,
+  "data": {
+    "name": "My awesome product",
+    "price": 100,
+    "vendor": "vistaprint"
+  },
+  "id": "f0490b11eab84a06a6b2dea0312cbd30",
+  "lastUpdatedBy": "agZ9n5CUKRfbL9t6CaJOyVSK4Es2",
+  "meta": {
+    "kind": "data"
+  },
+  "modelId": "1bbed528ac14433f86f40cfd635950ae",
+  "name": "My cool product",
+  "published": "published",
+  "query": [],
+  "testRatio": 1,
+  "variations": {},
+  "lastUpdated": 1589384782259,
+  "rev": "dc51gqawp69",
+  "@originOrg": "7f7bbcf72a1a4d72bac5daa359e7befd",
+  "@originContentId": "2cf190123f574437a4bfcd9c665c8fc4",
+  "@originModelId": "d5056aad640a496387e5a213d218d3fa"
+}

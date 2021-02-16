@@ -1,0 +1,920 @@
+{
+  "createdBy": "agZ9n5CUKRfbL9t6CaJOyVSK4Es2",
+  "createdDate": 1594830528099,
+  "data": {
+    "inputs": [],
+    "jsCode": "var _virtual_index=state.success=!1;return _virtual_index",
+    "title": "About",
+    "blocks": [
+      {
+        "@type": "@builder.io/sdk:Element",
+        "@version": 2,
+        "actions": {
+          "submit": "state.success=!0"
+        },
+        "code": {
+          "actions": {
+            "submit": "\nstate.success = true"
+          }
+        },
+        "id": "builder-5abb485774004200bbd785fb11558e34",
+        "component": {
+          "name": "Form:Form",
+          "options": {
+            "sendSubmissionsTo": "custom",
+            "sendSubmissionsToEmail": "your@email.com",
+            "sendWithJs": true,
+            "name": "My form",
+            "contentType": "application/json",
+            "previewState": "unsubmitted",
+            "successMessage": [
+              {
+                "@type": "@builder.io/sdk:Element",
+                "@version": 2,
+                "id": "builder-f8d66296de344c85a80822bf7dcdb8d7",
+                "component": {
+                  "name": "Text",
+                  "options": {
+                    "text": "<span>Thanks!</span>"
+                  }
+                },
+                "responsiveStyles": {
+                  "large": {
+                    "marginTop": "10px"
+                  }
+                }
+              }
+            ],
+            "validate": true,
+            "errorMessage": [
+              {
+                "@type": "@builder.io/sdk:Element",
+                "@version": 2,
+                "bindings": {
+                  "component.options.text": "state.formErrorMessage || block.component.options.text"
+                },
+                "id": "builder-6526b5018610441a90a44157c83f3198",
+                "component": {
+                  "name": "Text",
+                  "options": {
+                    "text": "<span>Form submission error :( Please check your answers and try again</span>"
+                  }
+                },
+                "responsiveStyles": {
+                  "large": {
+                    "marginTop": "10px"
+                  }
+                }
+              }
+            ],
+            "sendingMessage": [
+              {
+                "@type": "@builder.io/sdk:Element",
+                "@version": 2,
+                "id": "builder-acc5d3bbb3c2464ca817cc547c76708d",
+                "component": {
+                  "name": "Text",
+                  "options": {
+                    "text": "<span>Sending...</span>"
+                  }
+                },
+                "responsiveStyles": {
+                  "large": {
+                    "marginTop": "10px"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "children": [
+          {
+            "@type": "@builder.io/sdk:Element",
+            "@version": 2,
+            "id": "builder-7ccc874ba9bb447585027c3e45f2cdb2",
+            "component": {
+              "name": "Text",
+              "options": {
+                "text": "<span>Enter your email</span>"
+              }
+            },
+            "responsiveStyles": {
+              "large": {
+                "marginTop": "10px"
+              }
+            }
+          },
+          {
+            "@type": "@builder.io/sdk:Element",
+            "@version": 2,
+            "id": "builder-cff7621801614bf68ad83865bdfd1ad1",
+            "component": {
+              "name": "Form:Input",
+              "options": {
+                "name": "email",
+                "placeholder": "jane@doe.com"
+              }
+            },
+            "responsiveStyles": {
+              "large": {
+                "marginTop": "10px"
+              }
+            }
+          },
+          {
+            "@type": "@builder.io/sdk:Element",
+            "@version": 2,
+            "id": "builder-f3a335ca2b9b4dccb454ffc0698dc3bc",
+            "component": {
+              "name": "Form:SubmitButton",
+              "options": {
+                "text": "Submit"
+              }
+            },
+            "responsiveStyles": {
+              "large": {
+                "marginTop": "10px"
+              }
+            }
+          }
+        ],
+        "responsiveStyles": {
+          "large": {
+            "display": "flex",
+            "flexDirection": "column",
+            "alignItems": "stretch",
+            "position": "relative",
+            "flexShrink": "0",
+            "boxSizing": "border-box",
+            "marginTop": "15px",
+            "paddingBottom": "15px"
+          }
+        }
+      },
+      {
+        "@type": "@builder.io/sdk:Element",
+        "@version": 2,
+        "bindings": {
+          "show": "var _virtual_index=state.success;return _virtual_index"
+        },
+        "code": {
+          "bindings": {
+            "show": "state.success"
+          }
+        },
+        "id": "builder-8e35474d35d94bc7a3c0edf72d72dde1",
+        "component": {
+          "name": "Text",
+          "options": {
+            "text": "<p>Great, thanks!</p>"
+          }
+        },
+        "responsiveStyles": {
+          "large": {
+            "display": "flex",
+            "flexDirection": "column",
+            "alignItems": "stretch",
+            "position": "relative",
+            "flexShrink": "0",
+            "boxSizing": "border-box",
+            "marginTop": "20px",
+            "lineHeight": "normal",
+            "height": "auto",
+            "textAlign": "center"
+          }
+        }
+      },
+      {
+        "@type": "@builder.io/sdk:Element",
+        "@version": 2,
+        "id": "builder-5174817398d5475987cfb2746ae53aac",
+        "children": [
+          {
+            "@type": "@builder.io/sdk:Element",
+            "@version": 2,
+            "id": "builder-ce12691ad920450d9779aaf3a6bb4a22",
+            "component": {
+              "name": "Text",
+              "options": {
+                "text": "<p>Hello there</p>"
+              }
+            },
+            "responsiveStyles": {
+              "large": {
+                "display": "flex",
+                "flexDirection": "column",
+                "alignItems": "stretch",
+                "position": "relative",
+                "flexShrink": "0",
+                "boxSizing": "border-box",
+                "marginTop": "60px",
+                "lineHeight": "normal",
+                "height": "auto",
+                "textAlign": "center",
+                "fontSize": "46px",
+                "fontFamily": "sans-serif, sans-serif",
+                "fontWeight": "600"
+              }
+            }
+          },
+          {
+            "@type": "@builder.io/sdk:Element",
+            "@version": 2,
+            "id": "builder-927d9b70c78c468bbd48452acd05a76e",
+            "component": {
+              "name": "Image",
+              "options": {
+                "image": "https://cdn.builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d",
+                "backgroundSize": "cover",
+                "backgroundPosition": "center",
+                "aspectRatio": 0.3375
+              }
+            },
+            "responsiveStyles": {
+              "large": {
+                "display": "flex",
+                "flexDirection": "column",
+                "alignItems": "stretch",
+                "position": "relative",
+                "flexShrink": "0",
+                "boxSizing": "border-box",
+                "marginTop": "20px",
+                "minHeight": "20px",
+                "minWidth": "20px",
+                "overflow": "hidden"
+              }
+            }
+          },
+          {
+            "@type": "@builder.io/sdk:Element",
+            "@version": 2,
+            "id": "builder-90e8b19ccb124a87b3ff6c544413f784",
+            "component": {
+              "name": "Columns",
+              "options": {
+                "columns": [
+                  {
+                    "blocks": [
+                      {
+                        "@type": "@builder.io/sdk:Element",
+                        "@version": 2,
+                        "id": "builder-ced8e0d777d34ea79e6b2e503e38187d",
+                        "component": {
+                          "name": "Image",
+                          "options": {
+                            "image": "https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d",
+                            "backgroundPosition": "center",
+                            "backgroundSize": "cover",
+                            "aspectRatio": 0.7004048582995948
+                          }
+                        },
+                        "responsiveStyles": {
+                          "large": {
+                            "display": "flex",
+                            "flexDirection": "column",
+                            "alignItems": "stretch",
+                            "flexShrink": "0",
+                            "position": "relative",
+                            "marginTop": "30px",
+                            "textAlign": "center",
+                            "lineHeight": "normal",
+                            "height": "auto"
+                          }
+                        }
+                      },
+                      {
+                        "@type": "@builder.io/sdk:Element",
+                        "@version": 2,
+                        "id": "builder-4ad6801888ce40078af6a5bf85057cc1",
+                        "component": {
+                          "name": "Text",
+                          "options": {
+                            "text": "<p>Enter some text...</p>"
+                          }
+                        },
+                        "responsiveStyles": {
+                          "large": {
+                            "display": "flex",
+                            "flexDirection": "column",
+                            "alignItems": "stretch",
+                            "flexShrink": "0",
+                            "position": "relative",
+                            "marginTop": "30px",
+                            "textAlign": "center",
+                            "lineHeight": "normal",
+                            "height": "auto"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "blocks": [
+                      {
+                        "@type": "@builder.io/sdk:Element",
+                        "@version": 2,
+                        "id": "builder-a60e2909fb6540389d80ba26f7ae5b97",
+                        "component": {
+                          "name": "Image",
+                          "options": {
+                            "image": "https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d",
+                            "backgroundPosition": "center",
+                            "backgroundSize": "cover",
+                            "aspectRatio": 0.7004048582995948
+                          }
+                        },
+                        "responsiveStyles": {
+                          "large": {
+                            "display": "flex",
+                            "flexDirection": "column",
+                            "alignItems": "stretch",
+                            "flexShrink": "0",
+                            "position": "relative",
+                            "marginTop": "30px",
+                            "textAlign": "center",
+                            "lineHeight": "normal",
+                            "height": "auto"
+                          }
+                        }
+                      },
+                      {
+                        "@type": "@builder.io/sdk:Element",
+                        "@version": 2,
+                        "id": "builder-cc5977908d614961a68e4d4ff9d16ff4",
+                        "component": {
+                          "name": "Text",
+                          "options": {
+                            "text": "<p>Enter some text...</p>"
+                          }
+                        },
+                        "responsiveStyles": {
+                          "large": {
+                            "display": "flex",
+                            "flexDirection": "column",
+                            "alignItems": "stretch",
+                            "flexShrink": "0",
+                            "position": "relative",
+                            "marginTop": "30px",
+                            "textAlign": "center",
+                            "lineHeight": "normal",
+                            "height": "auto"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "space": 20,
+                "stackColumnsAt": "tablet"
+              }
+            },
+            "responsiveStyles": {
+              "large": {
+                "display": "flex",
+                "flexDirection": "column",
+                "alignItems": "stretch",
+                "position": "relative",
+                "flexShrink": "0",
+                "boxSizing": "border-box",
+                "marginTop": "20px",
+                "marginRight": "51px",
+                "marginLeft": "50px"
+              }
+            }
+          }
+        ],
+        "responsiveStyles": {
+          "large": {
+            "display": "flex",
+            "flexDirection": "column",
+            "alignItems": "stretch",
+            "position": "relative",
+            "flexShrink": "0",
+            "boxSizing": "border-box"
+          }
+        }
+      },
+      {
+        "@type": "@builder.io/sdk:Element",
+        "@version": 2,
+        "id": "builder-b38f311217254a66b150ed149aad37fb",
+        "component": {
+          "name": "Hero With Children",
+          "options": {
+            "image": "https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F349738e6805b481ab6c50bda7e24445e",
+            "height": 400,
+            "parallaxStrength": 400
+          }
+        },
+        "children": [
+          {
+            "@type": "@builder.io/sdk:Element",
+            "@version": 2,
+            "id": "builder-bc12348d9ee14616957efadb69d75370",
+            "component": {
+              "name": "Heading",
+              "options": {
+                "text": "You can edit the contents of this example!",
+                "type": "h4"
+              }
+            }
+          },
+          {
+            "@type": "@builder.io/sdk:Element",
+            "@version": 2,
+            "id": "builder-84766238589349c09bc6fbcde0178041",
+            "component": {
+              "name": "Button",
+              "options": {
+                "text": "Hello",
+                "type": "outlined"
+              }
+            },
+            "responsiveStyles": {
+              "large": {
+                "marginTop": "20px"
+              }
+            }
+          }
+        ],
+        "responsiveStyles": {
+          "large": {
+            "display": "flex",
+            "flexDirection": "column",
+            "alignItems": "stretch",
+            "position": "relative",
+            "flexShrink": "0",
+            "boxSizing": "border-box",
+            "marginTop": "50px"
+          }
+        }
+      },
+      {
+        "@type": "@builder.io/sdk:Element",
+        "@version": 2,
+        "id": "builder-56eb3a6220064ad6825216604a78cac6",
+        "component": {
+          "name": "Products List",
+          "options": {
+            "url": "https://api.shopstyle.com/api/v2/products",
+            "category": "living",
+            "amount": 5,
+            "size": "Medium"
+          }
+        },
+        "responsiveStyles": {
+          "large": {
+            "display": "flex",
+            "flexDirection": "column",
+            "alignItems": "stretch",
+            "position": "relative",
+            "flexShrink": "0",
+            "boxSizing": "border-box",
+            "marginTop": "20px"
+          }
+        }
+      },
+      {
+        "@type": "@builder.io/sdk:Element",
+        "@version": 2,
+        "id": "builder-02ef24e092ef4221806c97752b4ffc4b",
+        "component": {
+          "name": "Triple Columns",
+          "options": {
+            "text1": "Your Title Here asdlfkj asdflkj ",
+            "image1": "https://cdn.builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d",
+            "text2": "Your Title Here",
+            "image2": "https://cdn.builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d",
+            "text3": "Your Title Here",
+            "image3": "https://cdn.builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d"
+          }
+        },
+        "responsiveStyles": {
+          "large": {
+            "display": "flex",
+            "flexDirection": "column",
+            "alignItems": "stretch",
+            "position": "relative",
+            "flexShrink": "0",
+            "boxSizing": "border-box",
+            "marginTop": "20px"
+          }
+        }
+      },
+      {
+        "@type": "@builder.io/sdk:Element",
+        "@version": 2,
+        "id": "builder-1028c8695348418d9cd1e92aebf3cbce",
+        "component": {
+          "name": "Double Columns",
+          "options": {
+            "sectionTitle": "Your Title Here",
+            "text1": "Your Title Here",
+            "image1": "https://cdn.builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d",
+            "text2": "Your Title Here",
+            "image2": "https://cdn.builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d"
+          }
+        },
+        "responsiveStyles": {
+          "large": {
+            "display": "flex",
+            "flexDirection": "column",
+            "alignItems": "stretch",
+            "position": "relative",
+            "flexShrink": "0",
+            "boxSizing": "border-box",
+            "marginTop": "20px"
+          }
+        }
+      },
+      {
+        "id": "builder-pixel-3n93o5ud4i5",
+        "@type": "@builder.io/sdk:Element",
+        "tagName": "img",
+        "properties": {
+          "src": "https://cdn.builder.io/api/v1/pixel?apiKey=7f7bbcf72a1a4d72bac5daa359e7befd",
+          "role": "presentation",
+          "width": "0",
+          "height": "0"
+        },
+        "responsiveStyles": {
+          "large": {
+            "height": "0",
+            "width": "0",
+            "display": "inline-block",
+            "opacity": "0",
+            "overflow": "hidden",
+            "pointerEvents": "none"
+          }
+        }
+      }
+    ],
+    "url": "/about",
+    "state": {
+      "deviceSize": "large",
+      "location": {
+        "path": "",
+        "query": {}
+      }
+    }
+  },
+  "id": "1fcddb13caef4cceb95492990e30f4c9",
+  "lastUpdatedBy": "agZ9n5CUKRfbL9t6CaJOyVSK4Es2",
+  "meta": {
+    "componentsUsed": {
+      "Button": {
+        "inputs": [
+          {
+            "name": "text",
+            "type": "string"
+          },
+          {
+            "name": "link",
+            "type": "url"
+          },
+          {
+            "name": "type",
+            "type": "string"
+          }
+        ],
+        "name": "Button"
+      },
+      "Columns": {
+        "inputs": [
+          {
+            "name": "columns",
+            "subFields": [
+              {
+                "name": "blocks",
+                "type": "array"
+              },
+              {
+                "name": "width",
+                "type": "number"
+              },
+              {
+                "name": "link",
+                "type": "string"
+              }
+            ],
+            "type": "array"
+          },
+          {
+            "name": "space",
+            "type": "number"
+          },
+          {
+            "name": "stackColumnsAt",
+            "type": "string"
+          },
+          {
+            "name": "reverseColumnsWhenStacked",
+            "type": "boolean"
+          }
+        ],
+        "name": "Columns"
+      },
+      "Double Columns": {
+        "inputs": [
+          {
+            "name": "sectionTitle",
+            "type": "string"
+          },
+          {
+            "name": "text1",
+            "type": "string"
+          },
+          {
+            "name": "image1",
+            "type": "file"
+          },
+          {
+            "name": "text2",
+            "type": "string"
+          },
+          {
+            "name": "image2",
+            "type": "file"
+          }
+        ],
+        "name": "Double Columns"
+      },
+      "Form:Form": {
+        "inputs": [
+          {
+            "name": "sendSubmissionsTo",
+            "type": "string"
+          },
+          {
+            "name": "sendSubmissionsToEmail",
+            "type": "string"
+          },
+          {
+            "name": "sendWithJs",
+            "type": "boolean"
+          },
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "action",
+            "type": "string"
+          },
+          {
+            "name": "contentType",
+            "type": "string"
+          },
+          {
+            "name": "method",
+            "type": "string"
+          },
+          {
+            "name": "previewState",
+            "type": "string"
+          },
+          {
+            "name": "successUrl",
+            "type": "url"
+          },
+          {
+            "name": "resetFormOnSubmit",
+            "type": "boolean"
+          },
+          {
+            "name": "successMessage",
+            "type": "uiBlocks"
+          },
+          {
+            "name": "validate",
+            "type": "boolean"
+          },
+          {
+            "name": "errorMessagePath",
+            "type": "text"
+          },
+          {
+            "name": "errorMessage",
+            "type": "uiBlocks"
+          },
+          {
+            "name": "sendingMessage",
+            "type": "uiBlocks"
+          },
+          {
+            "name": "customHeaders",
+            "type": "map"
+          }
+        ],
+        "name": "Form:Form"
+      },
+      "Form:Input": {
+        "inputs": [
+          {
+            "name": "type",
+            "type": "text"
+          },
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "placeholder",
+            "type": "string"
+          },
+          {
+            "name": "defaultValue",
+            "type": "string"
+          },
+          {
+            "name": "value",
+            "type": "string"
+          },
+          {
+            "name": "required",
+            "type": "boolean"
+          }
+        ],
+        "name": "Form:Input"
+      },
+      "Form:SubmitButton": {
+        "inputs": [
+          {
+            "name": "text",
+            "type": "text"
+          }
+        ],
+        "name": "Form:SubmitButton"
+      },
+      "Heading": {
+        "inputs": [
+          {
+            "name": "text",
+            "type": "string"
+          },
+          {
+            "name": "type",
+            "type": "string"
+          }
+        ],
+        "name": "Heading"
+      },
+      "Hero With Children": {
+        "inputs": [
+          {
+            "name": "image",
+            "type": "file"
+          },
+          {
+            "name": "height",
+            "type": "number"
+          },
+          {
+            "name": "parallaxStrength",
+            "type": "number"
+          }
+        ],
+        "name": "Hero With Children"
+      },
+      "Image": {
+        "inputs": [
+          {
+            "name": "image",
+            "type": "file"
+          },
+          {
+            "name": "backgroundSize",
+            "type": "text"
+          },
+          {
+            "name": "backgroundPosition",
+            "type": "text"
+          },
+          {
+            "name": "altText",
+            "type": "string"
+          },
+          {
+            "name": "height",
+            "type": "number"
+          },
+          {
+            "name": "width",
+            "type": "number"
+          },
+          {
+            "name": "sizes",
+            "type": "string"
+          },
+          {
+            "name": "srcset",
+            "type": "string"
+          },
+          {
+            "name": "lazy",
+            "type": "boolean"
+          },
+          {
+            "name": "aspectRatio",
+            "type": "number"
+          }
+        ],
+        "name": "Image"
+      },
+      "Products List": {
+        "inputs": [
+          {
+            "name": "url",
+            "type": "string"
+          },
+          {
+            "name": "category",
+            "type": "string"
+          },
+          {
+            "name": "amount",
+            "type": "number"
+          },
+          {
+            "name": "size",
+            "type": "string"
+          }
+        ],
+        "name": "Products List"
+      },
+      "Text": {
+        "inputs": [
+          {
+            "name": "text",
+            "type": "html"
+          }
+        ],
+        "name": "Text"
+      },
+      "Triple Columns": {
+        "inputs": [
+          {
+            "name": "text1",
+            "type": "string"
+          },
+          {
+            "name": "image1",
+            "type": "file"
+          },
+          {
+            "name": "text2",
+            "type": "string"
+          },
+          {
+            "name": "image2",
+            "type": "file"
+          },
+          {
+            "name": "text3",
+            "type": "string"
+          },
+          {
+            "name": "image3",
+            "type": "file"
+          }
+        ],
+        "name": "Triple Columns"
+      }
+    },
+    "hasLinks": false,
+    "kind": "page",
+    "needsHydration": false
+  },
+  "modelId": "2090ee1bdb7f43818b3614323e9db742",
+  "name": "About",
+  "published": "published",
+  "query": [
+    {
+      "operator": "is",
+      "property": "urlPath",
+      "value": "/about"
+    },
+    {
+      "operator": "is",
+      "property": "device",
+      "value": [
+        "mobile"
+      ]
+    },
+    {
+      "operator": "is",
+      "property": "environment",
+      "value": [
+        "staging"
+      ]
+    }
+  ],
+  "testRatio": 1,
+  "variations": {},
+  "lastUpdated": 1594831350063,
+  "screenshot": "https://cdn.builder.io/api/v1/image/assets%2F7f7bbcf72a1a4d72bac5daa359e7befd%2F6ee12fcdd67042ea92e0b435410e2369",
+  "rev": "s2nvtuq8a7n",
+  "@originOrg": "7f7bbcf72a1a4d72bac5daa359e7befd",
+  "@originContentId": "e9a6121d821d4041baebd7a4cd90c72f",
+  "@originModelId": "3a480531587d424eabf02e0402d42a01"
+}

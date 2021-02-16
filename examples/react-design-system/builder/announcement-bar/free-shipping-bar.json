@@ -1,0 +1,83 @@
+{
+  "createdBy": "agZ9n5CUKRfbL9t6CaJOyVSK4Es2",
+  "createdDate": 1600362830698,
+  "data": {
+    "blocks": [
+      {
+        "@type": "@builder.io/sdk:Element",
+        "@version": 2,
+        "id": "builder-78ba6580f41f4b90be835204dfbdeeb0",
+        "component": {
+          "name": "Text",
+          "options": {
+            "text": "<p>Free shipping on orders over $100!</p>"
+          }
+        },
+        "responsiveStyles": {
+          "large": {
+            "display": "flex",
+            "flexDirection": "column",
+            "alignItems": "stretch",
+            "position": "relative",
+            "flexShrink": "0",
+            "boxSizing": "border-box",
+            "lineHeight": "normal",
+            "height": "auto",
+            "textAlign": "center",
+            "paddingTop": "10px",
+            "paddingBottom": "10px",
+            "backgroundColor": "rgba(0, 0, 0, 1)",
+            "color": "rgba(255, 255, 255, 1)"
+          }
+        }
+      },
+      {
+        "id": "builder-pixel-hgi6r8x1pzb",
+        "@type": "@builder.io/sdk:Element",
+        "tagName": "img",
+        "properties": {
+          "src": "https://cdn.builder.io/api/v1/pixel?apiKey=7f7bbcf72a1a4d72bac5daa359e7befd",
+          "role": "presentation",
+          "width": "0",
+          "height": "0"
+        },
+        "responsiveStyles": {
+          "large": {
+            "height": "0",
+            "width": "0",
+            "display": "inline-block",
+            "opacity": "0",
+            "overflow": "hidden",
+            "pointerEvents": "none"
+          }
+        }
+      }
+    ],
+    "state": {
+      "deviceSize": "large",
+      "location": {
+        "path": "",
+        "query": {}
+      }
+    }
+  },
+  "id": "3f77ded809b24d9cbeeb19fa78ab692c",
+  "lastUpdatedBy": "agZ9n5CUKRfbL9t6CaJOyVSK4Es2",
+  "meta": {
+    "hasLinks": false,
+    "kind": "component",
+    "needsHydration": false
+  },
+  "modelId": "62216fd7e6684d238ea40a6c3118f1f3",
+  "name": "Free shipping bar",
+  "published": "published",
+  "query": [],
+  "testRatio": 1,
+  "variations": {},
+  "lastUpdated": 1600362877906,
+  "screenshot": "https://cdn.builder.io/api/v1/image/assets%2F7f7bbcf72a1a4d72bac5daa359e7befd%2Fe1adc25f339740d6a5d9f9ef387a16a9",
+  "rev": "ajzwbsn9kpk",
+  "@originOrg": "7f7bbcf72a1a4d72bac5daa359e7befd",
+  "@originContentId": "74a4f0f996534ddcb7c2c2948db1b0aa",
+  "@originModelId": "2d931adf37224cc8b25595b33a13e322"
+}

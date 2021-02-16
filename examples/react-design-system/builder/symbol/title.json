@@ -1,0 +1,82 @@
+{
+  "createdBy": "agZ9n5CUKRfbL9t6CaJOyVSK4Es2",
+  "createdDate": 1606940362292,
+  "data": {
+    "blocks": [
+      {
+        "@type": "@builder.io/sdk:Element",
+        "@version": 2,
+        "id": "builder-5f096a13868d4c9484cde71fb4f3622a",
+        "component": {
+          "name": "Text",
+          "options": {
+            "text": "<h1>Enter some text...</h1>"
+          }
+        },
+        "responsiveStyles": {
+          "large": {
+            "display": "flex",
+            "flexDirection": "column",
+            "alignItems": "stretch",
+            "position": "relative",
+            "flexShrink": "0",
+            "boxSizing": "border-box",
+            "marginTop": "20px",
+            "lineHeight": "normal",
+            "height": "auto",
+            "textAlign": "center",
+            "fontFamily": "Roboto, sans-serif",
+            "color": "rgba(239, 166, 166, 1)"
+          }
+        }
+      },
+      {
+        "id": "builder-pixel-j2c8o4tkp5",
+        "@type": "@builder.io/sdk:Element",
+        "tagName": "img",
+        "properties": {
+          "src": "https://cdn.builder.io/api/v1/pixel?apiKey=7f7bbcf72a1a4d72bac5daa359e7befd",
+          "role": "presentation",
+          "width": "0",
+          "height": "0"
+        },
+        "responsiveStyles": {
+          "large": {
+            "height": "0",
+            "width": "0",
+            "display": "inline-block",
+            "opacity": "0",
+            "overflow": "hidden",
+            "pointerEvents": "none"
+          }
+        }
+      }
+    ],
+    "state": {
+      "deviceSize": "large",
+      "location": {
+        "path": "",
+        "query": {}
+      }
+    }
+  },
+  "id": "7cada26c0f29488abfa6836ebaffa00b",
+  "lastUpdatedBy": "agZ9n5CUKRfbL9t6CaJOyVSK4Es2",
+  "meta": {
+    "hasLinks": false,
+    "kind": "component",
+    "needsHydration": false
+  },
+  "modelId": "3340f1d6dfcb47debace485b2971f325",
+  "name": "Title ",
+  "published": "published",
+  "query": [],
+  "screenshot": "https://cdn.builder.io/api/v1/image/assets%2F7f7bbcf72a1a4d72bac5daa359e7befd%2F06a8fa2abc2c4f0d89fd83a848f96b49",
+  "testRatio": 1,
+  "variations": {},
+  "lastUpdated": 1606940428753,
+  "rev": "3atuzb0qpn",
+  "@originOrg": "7f7bbcf72a1a4d72bac5daa359e7befd",
+  "@originContentId": "9321ec303d874e6882d62fe13935c772",
+  "@originModelId": "6ba7a5243b6e49829ba07edf77615d56"
+}
