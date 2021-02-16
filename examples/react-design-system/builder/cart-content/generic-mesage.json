@@ -1,0 +1,110 @@
+{
+  "createdBy": "agZ9n5CUKRfbL9t6CaJOyVSK4Es2",
+  "createdDate": 1600303955178,
+  "data": {
+    "blocks": [
+      {
+        "@type": "@builder.io/sdk:Element",
+        "@version": 2,
+        "id": "builder-9acf15bae5d5485ebf8c2bdc0989ad3b",
+        "component": {
+          "name": "Text",
+          "options": {
+            "text": "<p>Get free shipping on orders over $100!</p>"
+          }
+        },
+        "responsiveStyles": {
+          "large": {
+            "display": "flex",
+            "flexDirection": "column",
+            "alignItems": "stretch",
+            "position": "relative",
+            "flexShrink": "0",
+            "boxSizing": "border-box",
+            "marginTop": "70px",
+            "lineHeight": "normal",
+            "height": "auto",
+            "textAlign": "center"
+          }
+        }
+      },
+      {
+        "@type": "@builder.io/sdk:Element",
+        "@version": 2,
+        "id": "builder-eba35181be5943a3a4910e497a0b95fe",
+        "component": {
+          "name": "Image",
+          "options": {
+            "image": "https://cdn.builder.io/api/v1/image/assets%2F7f7bbcf72a1a4d72bac5daa359e7befd%2F11a63475c34e4828bfeb15f7e8a9a20e",
+            "backgroundSize": "contain",
+            "backgroundPosition": "center",
+            "aspectRatio": 0.5294,
+            "height": 809,
+            "width": 1056
+          }
+        },
+        "responsiveStyles": {
+          "large": {
+            "display": "flex",
+            "flexDirection": "column",
+            "alignItems": "stretch",
+            "position": "relative",
+            "flexShrink": "0",
+            "boxSizing": "border-box",
+            "marginTop": "20px",
+            "minHeight": "20px",
+            "minWidth": "20px",
+            "overflow": "hidden"
+          }
+        }
+      },
+      {
+        "id": "builder-pixel-mpmhllnwyh",
+        "@type": "@builder.io/sdk:Element",
+        "tagName": "img",
+        "properties": {
+          "src": "https://cdn.builder.io/api/v1/pixel?apiKey=7f7bbcf72a1a4d72bac5daa359e7befd",
+          "role": "presentation",
+          "width": "0",
+          "height": "0"
+        },
+        "responsiveStyles": {
+          "large": {
+            "height": "0",
+            "width": "0",
+            "display": "inline-block",
+            "opacity": "0",
+            "overflow": "hidden",
+            "pointerEvents": "none"
+          }
+        }
+      }
+    ],
+    "state": {
+      "deviceSize": "large",
+      "location": {
+        "path": "",
+        "query": {}
+      }
+    }
+  },
+  "id": "8fd1549304d34480afddc97858b2c959",
+  "lastUpdatedBy": "agZ9n5CUKRfbL9t6CaJOyVSK4Es2",
+  "meta": {
+    "hasLinks": false,
+    "kind": "component",
+    "needsHydration": false
+  },
+  "modelId": "291a63c3b4ca4076bb38cc3d510e3975",
+  "name": "Generic mesage",
+  "published": "published",
+  "query": [],
+  "testRatio": 1,
+  "variations": {},
+  "lastUpdated": 1600361342005,
+  "screenshot": "https://cdn.builder.io/api/v1/image/assets%2F7f7bbcf72a1a4d72bac5daa359e7befd%2Fb9728605a1c6486282519d1ae23ad251",
+  "rev": "5e70c5dfl0g",
+  "@originOrg": "7f7bbcf72a1a4d72bac5daa359e7befd",
+  "@originContentId": "ddca35e77f5f44e6870295640cbcbc32",
+  "@originModelId": "ecd94a6d77a94adbb6c15ccae9bf7978"
+}

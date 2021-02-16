@@ -1,0 +1,459 @@
+{
+  "createdBy": "agZ9n5CUKRfbL9t6CaJOyVSK4Es2",
+  "createdDate": 1608055405567,
+  "data": {
+    "inputs": [
+      {
+        "@type": "@builder.io/core:Field",
+        "advanced": false,
+        "autoFocus": false,
+        "copyOnAdd": true,
+        "defaultValue": "Hello world",
+        "disallowRemove": false,
+        "helperText": "",
+        "hidden": false,
+        "hideFromFieldsEditor": false,
+        "hideFromUI": false,
+        "mandatory": false,
+        "model": "",
+        "name": "title",
+        "noPhotoPicker": false,
+        "onChange": "",
+        "permissionsRequiredToEdit": "",
+        "required": false,
+        "showIf": "",
+        "showTemplatePicker": true,
+        "simpleTextOnly": false,
+        "subFields": [],
+        "type": "text"
+      }
+    ],
+    "blocks": [
+      {
+        "@type": "@builder.io/sdk:Element",
+        "@version": 2,
+        "tagName": "a",
+        "id": "builder-ae0bcc06435441a685915ba20a1edbf4",
+        "properties": {
+          "href": "https://www.shopstyle.com/shop/trends/best-early-black-friday-sales?utm_source=homepage_bannerbox_hero&utm_medium=site&utm_campaign=20191125_earlyblackfriday"
+        },
+        "linkUrl": "https://www.shopstyle.com/shop/trends/best-early-black-friday-sales?utm_source=homepage_bannerbox_hero&utm_medium=site&utm_campaign=20191125_earlyblackfriday",
+        "meta": {
+          "originalId": "builder-218ace145f814b108249756dbaa7774e"
+        },
+        "children": [
+          {
+            "@type": "@builder.io/sdk:Element",
+            "@version": 2,
+            "id": "builder-7b3363f51a2142e49134fc0ef92ccf41",
+            "children": [
+              {
+                "@type": "@builder.io/sdk:Element",
+                "@version": 2,
+                "id": "builder-99ea53c257aa4b7c9f446b6cf610e19d",
+                "component": {
+                  "name": "Text",
+                  "options": {
+                    "text": "<span style=\"display: block;\" class=\"builder-paragraph\">WHY WAIT?</span>"
+                  }
+                },
+                "responsiveStyles": {
+                  "large": {
+                    "display": "none",
+                    "flexDirection": "column",
+                    "alignItems": "stretch",
+                    "flexShrink": "0",
+                    "position": "relative",
+                    "textAlign": "center",
+                    "fontSize": "27px",
+                    "fontFamily": "Averta, sans-serif",
+                    "color": "rgba(255, 255, 255, 1)",
+                    "paddingBottom": "0px",
+                    "paddingLeft": "0px",
+                    "paddingRight": "0px",
+                    "marginLeft": "auto",
+                    "marginRight": "auto",
+                    "marginTop": "66px",
+                    "fontWeight": "600",
+                    "letterSpacing": "3px"
+                  },
+                  "medium": {
+                    "marginTop": "46px",
+                    "letterSpacing": "2px",
+                    "fontSize": "22px",
+                    "display": "none"
+                  },
+                  "small": {
+                    "fontSize": "18px",
+                    "marginTop": "30.34375px",
+                    "letterSpacing": "1.2px",
+                    "paddingRight": "0px",
+                    "paddingLeft": "0px",
+                    "paddingBottom": "0px",
+                    "width": "auto",
+                    "alignSelf": "stretch",
+                    "fontWeight": "600",
+                    "display": "flex",
+                    "backgroundColor": "rgba(102, 102, 102, 0)",
+                    "color": "rgba(102, 102, 102, 1)"
+                  }
+                }
+              },
+              {
+                "@type": "@builder.io/sdk:Element",
+                "@version": 2,
+                "bindings": {
+                  "component.options.text": "var _virtual_index=state.title;return _virtual_index"
+                },
+                "code": {
+                  "bindings": {
+                    "component.options.text": "state.title"
+                  }
+                },
+                "id": "builder-3e3373becc6e4f249cdb6696b5bb510c",
+                "component": {
+                  "name": "Text",
+                  "options": {
+                    "text": "<p>{{heading}}</p>"
+                  }
+                },
+                "responsiveStyles": {
+                  "large": {
+                    "display": "flex",
+                    "flexDirection": "column",
+                    "alignItems": "stretch",
+                    "flexShrink": "0",
+                    "position": "relative",
+                    "textAlign": "center",
+                    "fontSize": "23px",
+                    "fontFamily": "sans-serif, sans-serif",
+                    "color": "rgba(102, 102, 102, 1)",
+                    "paddingBottom": "0px",
+                    "paddingLeft": "0px",
+                    "paddingRight": "0px",
+                    "marginLeft": "auto",
+                    "marginRight": "auto",
+                    "marginTop": "75px",
+                    "fontWeight": "600",
+                    "letterSpacing": "3px"
+                  },
+                  "medium": {
+                    "marginTop": "31px",
+                    "letterSpacing": "2px",
+                    "fontSize": "22px",
+                    "width": "auto",
+                    "alignSelf": "stretch"
+                  },
+                  "small": {
+                    "fontSize": "16px",
+                    "marginTop": "7.34375px",
+                    "letterSpacing": "1.2px",
+                    "paddingRight": "0px",
+                    "paddingLeft": "0px",
+                    "paddingBottom": "0px",
+                    "width": "auto",
+                    "alignSelf": "stretch",
+                    "fontWeight": "600",
+                    "display": "none"
+                  }
+                }
+              },
+              {
+                "@type": "@builder.io/sdk:Element",
+                "@version": 2,
+                "id": "builder-a0d9d567f00640b983396f7d5d810f69",
+                "children": [
+                  {
+                    "@type": "@builder.io/sdk:Element",
+                    "@version": 2,
+                    "id": "builder-bc36a91b128b411c8f9c1923b9ad0a36",
+                    "component": {
+                      "name": "Text",
+                      "options": {
+                        "text": "Black. Friday. Is. On.\n"
+                      }
+                    },
+                    "responsiveStyles": {
+                      "large": {
+                        "display": "none",
+                        "flexDirection": "column",
+                        "alignItems": "stretch",
+                        "flexShrink": "0",
+                        "position": "relative",
+                        "textAlign": "center",
+                        "height": "auto",
+                        "fontSize": "112px",
+                        "fontFamily": "Averta, sans-serif",
+                        "color": "rgba(46, 48, 138, 1)",
+                        "fontWeight": "600",
+                        "letterSpacing": "-2px",
+                        "marginLeft": "30px",
+                        "marginTop": "-13px"
+                      },
+                      "medium": {
+                        "fontSize": "62px",
+                        "marginTop": "0px",
+                        "marginLeft": "10px",
+                        "display": "none"
+                      },
+                      "small": {
+                        "width": "auto",
+                        "fontSize": "57px",
+                        "marginTop": "0px",
+                        "paddingBottom": "0px",
+                        "display": "flex",
+                        "flexGrow": "0",
+                        "letterSpacing": "0px",
+                        "fontFamily": "Averta, sans-serif",
+                        "fontWeight": "900",
+                        "color": "rgba(0, 0, 0, 1)",
+                        "paddingLeft": "0px",
+                        "paddingRight": "0px",
+                        "lineHeight": "57px",
+                        "textAlign": "center",
+                        "marginLeft": "auto",
+                        "marginRight": "auto",
+                        "maxWidth": "300px"
+                      }
+                    }
+                  }
+                ],
+                "responsiveStyles": {
+                  "large": {
+                    "position": "relative",
+                    "flexShrink": "0",
+                    "boxSizing": "border-box",
+                    "display": "flex",
+                    "flexDirection": "row",
+                    "marginLeft": "auto",
+                    "marginRight": "auto",
+                    "marginTop": "50px"
+                  },
+                  "medium": {
+                    "marginTop": "30px"
+                  },
+                  "small": {
+                    "marginTop": "20px"
+                  }
+                }
+              }
+            ],
+            "responsiveStyles": {
+              "large": {
+                "display": "flex",
+                "flexDirection": "column",
+                "alignItems": "stretch",
+                "position": "relative",
+                "flexShrink": "0",
+                "boxSizing": "border-box",
+                "marginTop": "10px",
+                "width": "auto",
+                "alignSelf": "stretch"
+              },
+              "small": {
+                "paddingBottom": "1px",
+                "marginLeft": "auto",
+                "marginRight": "auto"
+              }
+            }
+          },
+          {
+            "@type": "@builder.io/sdk:Element",
+            "@version": 2,
+            "id": "builder-f6ef9befd3e04f5e9b849f7f51f906a2",
+            "component": {
+              "name": "Text",
+              "options": {
+                "text": "<span style=\"display: block;\" class=\"builder-paragraph\">15%</span>"
+              }
+            },
+            "responsiveStyles": {
+              "large": {
+                "display": "none",
+                "flexDirection": "column",
+                "alignItems": "stretch",
+                "flexShrink": "0",
+                "position": "relative",
+                "textAlign": "center",
+                "height": "auto",
+                "fontSize": "112px",
+                "fontFamily": "Averta, sans-serif",
+                "color": "rgba(46, 48, 138, 1)",
+                "fontWeight": "600",
+                "letterSpacing": "-2px",
+                "marginLeft": "30px",
+                "marginTop": "-13px"
+              },
+              "medium": {
+                "fontSize": "62px",
+                "marginTop": "0px",
+                "marginLeft": "10px",
+                "display": "none"
+              },
+              "small": {
+                "width": "auto",
+                "fontSize": "32px",
+                "marginLeft": "3px",
+                "marginTop": "-32px",
+                "paddingBottom": "0px"
+              }
+            }
+          },
+          {
+            "@type": "@builder.io/sdk:Element",
+            "@version": 2,
+            "id": "builder-82f5fc58c3c1431688a85d2aff0c5006",
+            "component": {
+              "name": "Text",
+              "options": {
+                "text": "<p>Shop early Black Friday sales now.</p>"
+              }
+            },
+            "responsiveStyles": {
+              "large": {
+                "display": "flex",
+                "flexDirection": "column",
+                "alignItems": "stretch",
+                "flexShrink": "0",
+                "position": "relative",
+                "textAlign": "center",
+                "fontSize": "27px",
+                "fontFamily": "sans-serif, sans-serif",
+                "color": "rgba(90, 90, 90, 1)",
+                "paddingBottom": "0px",
+                "paddingLeft": "0px",
+                "paddingRight": "0px",
+                "width": "887.3671875px",
+                "marginLeft": "auto",
+                "marginRight": "auto",
+                "marginTop": "0px",
+                "letterSpacing": ".5px",
+                "fontWeight": "500",
+                "lineHeight": "37px"
+              },
+              "medium": {
+                "width": "370.8427734375px",
+                "fontSize": "24px",
+                "marginTop": "11px",
+                "letterSpacing": "0px",
+                "paddingLeft": "13px",
+                "paddingRight": "13px",
+                "lineHeight": "34px"
+              },
+              "small": {
+                "fontSize": "18px",
+                "letterSpacing": "0px",
+                "lineHeight": "28px",
+                "alignSelf": "stretch",
+                "paddingRight": "0px",
+                "paddingLeft": "0px",
+                "paddingBottom": "0px",
+                "marginTop": "12px",
+                "width": "260.501953125px"
+              }
+            }
+          }
+        ],
+        "responsiveStyles": {
+          "large": {
+            "alignItems": "stretch",
+            "backgroundPosition": "center",
+            "backgroundRepeat": "no-repeat",
+            "backgroundSize": "cover",
+            "display": "flex",
+            "flexDirection": "column",
+            "flexShrink": "0",
+            "height": "auto",
+            "marginTop": "-3px",
+            "position": "relative",
+            "width": "100vw",
+            "paddingTop": "27px",
+            "alignSelf": "stretch",
+            "marginLeft": "calc(50% - 50vw)",
+            "paddingLeft": "0px",
+            "paddingRight": "0px",
+            "backgroundColor": "rgba(255, 255, 255, 1)",
+            "color": "rgba(186, 202, 255, 1)",
+            "backgroundImage": "url(https://cdn.builder.io/api/v1/image/assets%2FbqNZC3dTGjwbxXySE419%2F0fb37235a9c94992b4400cbfbe884778?width=2000)",
+            "cursor": "pointer",
+            "pointerEvents": "auto",
+            "flexGrow": "0",
+            "paddingBottom": "100px"
+          },
+          "medium": {
+            "marginRight": "-1283.20703125px",
+            "marginTop": "0px",
+            "height": "auto",
+            "marginLeft": "0px",
+            "backgroundSize": "cover",
+            "backgroundPosition": "top",
+            "display": "flex",
+            "paddingBottom": "60px",
+            "backgroundImage": "url(https://cdn.builder.io/api/v1/image/assets%2FbqNZC3dTGjwbxXySE419%2Fc4dd6e27c2be41eea5aec91f1a35b862?width=998)",
+            "flexGrow": "0"
+          },
+          "small": {
+            "height": "auto",
+            "marginRight": "auto",
+            "marginLeft": "auto",
+            "marginTop": "-1px",
+            "backgroundSize": "cover",
+            "backgroundPosition": "center",
+            "paddingTop": "36px",
+            "paddingLeft": "0px",
+            "backgroundImage": "url(https://cdn.builder.io/api/v1/image/assets%2FbqNZC3dTGjwbxXySE419%2F50e11d77c80944949801093f23254ceb?width=638)",
+            "flexGrow": "0",
+            "paddingBottom": "80px"
+          }
+        }
+      },
+      {
+        "id": "builder-pixel-nen0zq56oh",
+        "@type": "@builder.io/sdk:Element",
+        "tagName": "img",
+        "properties": {
+          "src": "https://cdn.builder.io/api/v1/pixel?apiKey=7f7bbcf72a1a4d72bac5daa359e7befd",
+          "role": "presentation",
+          "width": "0",
+          "height": "0"
+        },
+        "responsiveStyles": {
+          "large": {
+            "height": "0",
+            "width": "0",
+            "display": "inline-block",
+            "opacity": "0",
+            "overflow": "hidden",
+            "pointerEvents": "none"
+          }
+        }
+      }
+    ],
+    "state": {
+      "deviceSize": "large",
+      "location": {
+        "path": "",
+        "query": {}
+      }
+    }
+  },
+  "id": "4bad85b7eb8846fca72030d7a2a81a47",
+  "lastUpdatedBy": "agZ9n5CUKRfbL9t6CaJOyVSK4Es2",
+  "meta": {
+    "hasLinks": true,
+    "kind": "component",
+    "needsHydration": false
+  },
+  "modelId": "3340f1d6dfcb47debace485b2971f325",
+  "name": "Hero",
+  "published": "published",
+  "query": [],
+  "screenshot": "https://cdn.builder.io/api/v1/image/assets%2F7f7bbcf72a1a4d72bac5daa359e7befd%2F2548e3b74cee4f518decb3a8e9892163",
+  "testRatio": 1,
+  "variations": {},
+  "lastUpdated": 1608055505679,
+  "rev": "3atuzb0qpn",
+  "@originOrg": "7f7bbcf72a1a4d72bac5daa359e7befd",
+  "@originContentId": "34411a0267034bb7940902402c901046",
+  "@originModelId": "6ba7a5243b6e49829ba07edf77615d56"
+}

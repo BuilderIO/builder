@@ -18,19 +18,43 @@ The source code for the custom components used in this demo are [here](src/compo
 - Create a new page
 - Clone and start the project:
 
+
+
+### Clone and install dependencies
+
+using git
+
 ```bash
 git clone https://github.com/BuilderIO/builder.git
 cd examples/react-design-system
 npm install
 ```
 
-To run the app
+### Generate your Builder.io space
+
+<!-- TODO: link "private key" to a forum post or doc showing how to create that -->
+
+[Signup for Builder.io](builder.io/signup), then go to your [organization settings page](https://builder.io/account/organization?root=true), create a private key and copy it, then create your space and give it a name
+
+From the `examples/react-design-system` folder
+```
+builder create -k [private-key] -n [space-name] -d
+```
+
+This command when done it'll print your new space's public api key, copy it and add as the value for `YOUR_KEY` in [builder-settings](./src/builder-settings.s)
+
+```
+YOUR_KEY=...
+```
+
+### Run the dev server
 
 ```
 npm run start
 ```
 
-- Now that you have the development server running on localhost, update the preview URL of the Builder.io entry you created to : `http://localhost:3000/home`
+It'll start a dev server at `http://localhost:3000`
+
 
 <img width="796" alt="Screen Shot 2020-02-18 at 9 48 51 AM" src="https://user-images.githubusercontent.com/5093430/74763082-f5457100-5233-11ea-870b-a1b17c7f99fe.png">
 

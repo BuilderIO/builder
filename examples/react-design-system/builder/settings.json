@@ -1,0 +1,72 @@
+{
+  "siteUrl": "https://shopaholic-demo.firebaseapp.com/",
+  "type": "space",
+  "name": "Shopaholic Demo space",
+  "hasIntegrated": "remote",
+  "settings": {
+    "componentsOnlyMode": false,
+    "allowMarginEditing": true,
+    "showSitePreviewTab": true,
+    "useDefaultStyles": true,
+    "allowBuiltInComponents": true,
+    "showTemplatesOnPageCreate": false
+  },
+  "customTargetingAttributes": {
+    "environment": {
+      "enum": [
+        "production",
+        "staging",
+        "development"
+      ],
+      "type": "string"
+    },
+    "queryString": {
+      "type": "string"
+    },
+    "gender": {
+      "enum": [
+        "men",
+        "women"
+      ],
+      "type": "string"
+    }
+  },
+  "loadPlugins": [],
+  "cloneInfo": {
+    "contentIdMap": {
+      "32f35f3b03ee4a9e917cdda45803b2e7": "83ae27b8256d4bddabbf083b692af4ee",
+      "74a4f0f996534ddcb7c2c2948db1b0aa": "3f77ded809b24d9cbeeb19fa78ab692c",
+      "d878001f76e34617845fff8ea202e6b5": "3d74b82ce0e54dc390f475e699d4d768",
+      "03b28d4995244991b41de42ce1029857": "112dd0fa66e24f868b6c837ed56e3d2f",
+      "03941f50eb224367b517197b9e29f3ba": "31bc52be96e9459d8641e907d755f81f",
+      "1b1449a5baf44487af26597f094d70fb": "daf289992797466c83eea98f0827b55f",
+      "e9a6121d821d4041baebd7a4cd90c72f": "1fcddb13caef4cceb95492990e30f4c9",
+      "c515bcb6728546c0b1c180c4356ae8c2": "ade1e728354649f79396c7beb069d693",
+      "ee893c7fa39c4117a4c2ec1f23d2d9f6": "45e4d9ad795e42769d7c2c94fb94e9a8",
+      "34411a0267034bb7940902402c901046": "4bad85b7eb8846fca72030d7a2a81a47",
+      "9321ec303d874e6882d62fe13935c772": "7cada26c0f29488abfa6836ebaffa00b",
+      "311bcaaa98b34ae59913a2e15d51a5f3": "02209d56c94d4e26932ba2251eff3de7",
+      "0bbd9bb2f56e4297b9c49416a6ff9cb8": "0604b5bcc5514bf683be29a25c96f84b",
+      "2cf190123f574437a4bfcd9c665c8fc4": "f0490b11eab84a06a6b2dea0312cbd30",
+      "ddca35e77f5f44e6870295640cbcbc32": "8fd1549304d34480afddc97858b2c959"
+    },
+    "modelIdMap": {
+      "0f1f14e573eb4f8a914fb41bc78538a0": "88c95e40ad4f464cb1a664c092a8663d",
+      "2d931adf37224cc8b25595b33a13e322": "62216fd7e6684d238ea40a6c3118f1f3",
+      "34265e4098eb4c36b2b497a4a3ab098b": "49c68ca6172a41b5b08f7596751ab820",
+      "3a480531587d424eabf02e0402d42a01": "2090ee1bdb7f43818b3614323e9db742",
+      "3de288a973d24c058698b6b078d203d5": "bf8e9333307046f094612dadbc3570d0",
+      "54beba4ea007498f9f0cf50504fdcd58": "40417802cc4f4f9196c12bd737498764",
+      "63c0ff3066b141ceac2d3d416321d3d3": "a34cc2a9d0d8460a9c0a888eda98a2b8",
+      "645fd13d20ee4948b3ae5c39ec26eda6": "db127911b5f24638bbbe8879727408f1",
+      "6ba7a5243b6e49829ba07edf77615d56": "3340f1d6dfcb47debace485b2971f325",
+      "936b3e8da9f148cca2e1e21a4a63ff31": "75191c4561c54486ad754dfc6040e649",
+      "b809d65625874c89a880e5ab38babb47": "e23171d3a42f4e24831c9ac838263fff",
+      "c88c8d5a54cc40babca808f1ef17aba3": "fb09b1c2972e4a998f97dae31054c304",
+      "d5056aad640a496387e5a213d218d3fa": "1bbed528ac14433f86f40cfd635950ae",
+      "ecd6390f63c04e51b4004ba75c55d440": "2502a57442564d1595365e99bb4a6aaa",
+      "ecd94a6d77a94adbb6c15ccae9bf7978": "291a63c3b4ca4076bb38cc3d510e3975",
+      "fb623fbee54b48deb190b2251998d666": "e0fcffe23c0442db95b78bff2b4978ca"
+    }
+  }
+}

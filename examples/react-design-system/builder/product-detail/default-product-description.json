@@ -1,0 +1,286 @@
+{
+  "createdBy": "agZ9n5CUKRfbL9t6CaJOyVSK4Es2",
+  "createdDate": 1600361381565,
+  "data": {
+    "blocks": [
+      {
+        "@type": "@builder.io/sdk:Element",
+        "@version": 2,
+        "id": "builder-85db5bc39d5d4fe9bc88d43188540b2e",
+        "component": {
+          "name": "Text",
+          "options": {
+            "text": "<p>Our dresses are made of the best fabrics</p>"
+          }
+        },
+        "responsiveStyles": {
+          "large": {
+            "display": "flex",
+            "flexDirection": "column",
+            "alignItems": "stretch",
+            "position": "relative",
+            "flexShrink": "0",
+            "boxSizing": "border-box",
+            "marginTop": "60px",
+            "lineHeight": "normal",
+            "height": "auto",
+            "textAlign": "center",
+            "paddingBottom": "0px"
+          }
+        }
+      },
+      {
+        "@type": "@builder.io/sdk:Element",
+        "@version": 2,
+        "id": "builder-af5adfab6de248979906cc14c6329572",
+        "component": {
+          "name": "Builder: Tabs",
+          "options": {
+            "tabs": [
+              {
+                "label": [
+                  {
+                    "@type": "@builder.io/sdk:Element",
+                    "@version": 2,
+                    "id": "builder-693798f5d7ce4a35ac97af1fc6becdef",
+                    "component": {
+                      "name": "Text",
+                      "options": {
+                        "text": "<p>Sizing</p>"
+                      }
+                    },
+                    "responsiveStyles": {
+                      "large": {
+                        "paddingLeft": "20px",
+                        "paddingRight": "20px",
+                        "paddingTop": "10px",
+                        "paddingBottom": "10px",
+                        "minWidth": "100px",
+                        "textAlign": "center",
+                        "display": "flex",
+                        "flexDirection": "column",
+                        "cursor": "pointer",
+                        "userSelect": "none"
+                      }
+                    }
+                  }
+                ],
+                "content": [
+                  {
+                    "@type": "@builder.io/sdk:Element",
+                    "@version": 2,
+                    "id": "builder-e4ce215393a442fa905f5b89746dc063",
+                    "component": {
+                      "name": "Text",
+                      "options": {
+                        "text": "<p>View our sizing chart</p>"
+                      }
+                    },
+                    "responsiveStyles": {
+                      "large": {
+                        "display": "flex",
+                        "marginTop": "20px",
+                        "flexDirection": "column"
+                      }
+                    }
+                  },
+                  {
+                    "@type": "@builder.io/sdk:Element",
+                    "@version": 2,
+                    "id": "builder-4428da7ab7034580af3373286238c290",
+                    "component": {
+                      "name": "Image",
+                      "options": {
+                        "image": "https://cdn.builder.io/api/v1/image/assets%2F7f7bbcf72a1a4d72bac5daa359e7befd%2F47a896ba10314b6bae0a7b7970d5bcdf",
+                        "backgroundSize": "contain",
+                        "backgroundPosition": "center",
+                        "aspectRatio": 0.4463
+                      }
+                    },
+                    "responsiveStyles": {
+                      "large": {
+                        "display": "flex",
+                        "flexDirection": "column",
+                        "alignItems": "stretch",
+                        "position": "relative",
+                        "flexShrink": "0",
+                        "boxSizing": "border-box",
+                        "marginTop": "20px",
+                        "minHeight": "20px",
+                        "minWidth": "20px",
+                        "overflow": "hidden"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "label": [
+                  {
+                    "@type": "@builder.io/sdk:Element",
+                    "@version": 2,
+                    "id": "builder-1c087645302e478c80532a178784b352",
+                    "component": {
+                      "name": "Text",
+                      "options": {
+                        "text": "<p>Materials</p>"
+                      }
+                    },
+                    "responsiveStyles": {
+                      "large": {
+                        "paddingLeft": "20px",
+                        "paddingRight": "20px",
+                        "paddingTop": "10px",
+                        "paddingBottom": "10px",
+                        "minWidth": "100px",
+                        "textAlign": "center",
+                        "display": "flex",
+                        "flexDirection": "column",
+                        "cursor": "pointer",
+                        "userSelect": "none"
+                      }
+                    }
+                  }
+                ],
+                "content": [
+                  {
+                    "@type": "@builder.io/sdk:Element",
+                    "@version": 2,
+                    "id": "builder-fb88f240c7f44a59b946e581649610b9",
+                    "component": {
+                      "name": "Text",
+                      "options": {
+                        "text": "Tab 2 content"
+                      }
+                    },
+                    "responsiveStyles": {
+                      "large": {
+                        "height": "200px",
+                        "display": "flex",
+                        "marginTop": "20px",
+                        "flexDirection": "column"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "label": [
+                  {
+                    "@type": "@builder.io/sdk:Element",
+                    "@version": 2,
+                    "id": "builder-c7d6c33999534389a650d8f2454af19a",
+                    "component": {
+                      "name": "Text",
+                      "options": {
+                        "text": "<p>Return policy</p>"
+                      }
+                    },
+                    "responsiveStyles": {
+                      "large": {
+                        "paddingLeft": "20px",
+                        "paddingRight": "20px",
+                        "paddingTop": "10px",
+                        "paddingBottom": "10px",
+                        "minWidth": "100px",
+                        "textAlign": "center",
+                        "display": "flex",
+                        "flexDirection": "column",
+                        "cursor": "pointer",
+                        "userSelect": "none"
+                      }
+                    }
+                  }
+                ],
+                "content": [
+                  {
+                    "@type": "@builder.io/sdk:Element",
+                    "@version": 2,
+                    "id": "builder-f0b3958c2f254f6b934ba15878cc8c1f",
+                    "component": {
+                      "name": "Text",
+                      "options": {
+                        "text": "<p>You can return all the things</p>"
+                      }
+                    },
+                    "responsiveStyles": {
+                      "large": {
+                        "height": "200px",
+                        "display": "flex",
+                        "marginTop": "20px",
+                        "flexDirection": "column"
+                      }
+                    }
+                  }
+                ]
+              }
+            ],
+            "activeTabStyle": {
+              "backgroundColor": "rgba(0, 0, 0, 0.1)"
+            },
+            "defaultActiveTab": 1,
+            "tabHeaderLayout": "flex-start"
+          }
+        },
+        "responsiveStyles": {
+          "large": {
+            "display": "flex",
+            "flexDirection": "column",
+            "alignItems": "stretch",
+            "position": "relative",
+            "flexShrink": "0",
+            "boxSizing": "border-box",
+            "marginTop": "30px"
+          }
+        }
+      },
+      {
+        "id": "builder-pixel-rqa7czc4d2",
+        "@type": "@builder.io/sdk:Element",
+        "tagName": "img",
+        "properties": {
+          "src": "https://cdn.builder.io/api/v1/pixel?apiKey=7f7bbcf72a1a4d72bac5daa359e7befd",
+          "role": "presentation",
+          "width": "0",
+          "height": "0"
+        },
+        "responsiveStyles": {
+          "large": {
+            "height": "0",
+            "width": "0",
+            "display": "inline-block",
+            "opacity": "0",
+            "overflow": "hidden",
+            "pointerEvents": "none"
+          }
+        }
+      }
+    ],
+    "state": {
+      "deviceSize": "large",
+      "location": {
+        "path": "",
+        "query": {}
+      }
+    }
+  },
+  "id": "45e4d9ad795e42769d7c2c94fb94e9a8",
+  "lastUpdatedBy": "agZ9n5CUKRfbL9t6CaJOyVSK4Es2",
+  "meta": {
+    "hasLinks": false,
+    "kind": "component",
+    "needsHydration": false
+  },
+  "modelId": "db127911b5f24638bbbe8879727408f1",
+  "name": "Default product description",
+  "published": "published",
+  "query": [],
+  "testRatio": 1,
+  "variations": {},
+  "lastUpdated": 1600362003055,
+  "screenshot": "https://cdn.builder.io/api/v1/image/assets%2F7f7bbcf72a1a4d72bac5daa359e7befd%2F686d359ed5f140909242f6a2b4b93054",
+  "rev": "mdg6q12qz4",
+  "@originOrg": "7f7bbcf72a1a4d72bac5daa359e7befd",
+  "@originContentId": "ee893c7fa39c4117a4c2ec1f23d2d9f6",
+  "@originModelId": "645fd13d20ee4948b3ae5c39ec26eda6"
+}

@@ -1,0 +1,29 @@
+{
+  "createdBy": "agZ9n5CUKRfbL9t6CaJOyVSK4Es2",
+  "createdDate": 1600366781526,
+  "data": {
+    "links": [
+      {
+        "link": "/collections",
+        "text": "Shop"
+      }
+    ]
+  },
+  "id": "02209d56c94d4e26932ba2251eff3de7",
+  "lastUpdatedBy": "agZ9n5CUKRfbL9t6CaJOyVSK4Es2",
+  "meta": {
+    "kind": "data",
+    "shopifyDomain": "pladra-demo-store.myshopify.com"
+  },
+  "modelId": "e23171d3a42f4e24831c9ac838263fff",
+  "name": "Default links",
+  "published": "published",
+  "query": [],
+  "testRatio": 1,
+  "variations": {},
+  "lastUpdated": 1613008328662,
+  "rev": "11c0gficum",
+  "@originOrg": "7f7bbcf72a1a4d72bac5daa359e7befd",
+  "@originContentId": "311bcaaa98b34ae59913a2e15d51a5f3",
+  "@originModelId": "b809d65625874c89a880e5ab38babb47"
+}
