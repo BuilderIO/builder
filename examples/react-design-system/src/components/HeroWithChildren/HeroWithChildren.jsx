@@ -48,7 +48,7 @@ export const HeroWithEditableChildren = props => {
       </div>
       <Background className="custom-bg">
         {/* Builder optimized image with srcset, lazy, etc */}
-        <Image image={image} />
+        <img src={image} />
       </Background>
     </Parallax>
   );
