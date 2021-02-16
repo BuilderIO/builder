@@ -50,10 +50,10 @@ YOUR_KEY=...
 ### Run the dev server
 
 ```
-yarn develop
+npm run start
 ```
 
-It'll start a dev server at `http://localhost:8000`
+It'll start a dev server at `http://localhost:3000`
 
 
 <img width="796" alt="Screen Shot 2020-02-18 at 9 48 51 AM" src="https://user-images.githubusercontent.com/5093430/74763082-f5457100-5233-11ea-870b-a1b17c7f99fe.png">
