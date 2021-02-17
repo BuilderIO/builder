@@ -28,9 +28,9 @@ export function Blocks() {
             }
 
             // Or manually
-            const Component = Builder.components.find(item => item.name === name)?.class;
-            if (Component) {
-              return <Component {...options} />;
+            const Component = Builder.components.find(item => item.name === name);
+            if (Component && Component.class) {
+              return <Component.class {...options} />;
             }
 
             return null;
