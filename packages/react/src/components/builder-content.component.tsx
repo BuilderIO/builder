@@ -25,7 +25,11 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
     return this.props.builder || builder;
   }
   get name() {
-    return this.props.model || this.props.modelName;
+    // Setting props to any here since typescript complains
+    // about model not existing on the modelName variation of the type BuilderContentProps
+    // and vice versa
+    const props = this.props as any;
+    return props.model || props.modelName;
   }
 
   get renderedVairantId() {
@@ -145,9 +149,10 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
               loading: false,
             });
 
-            if (match && this.firstLoad && !Builder.isEditing) {
+            if (match && this.firstLoad) {
+              this.firstLoad = false;
               // TODO: autoTrack
-              if (builder.autoTrack) {
+              if (builder.autoTrack && !Builder.isEditing) {
                 let addedObserver = false;
                 if (typeof IntersectionObserver === 'function' && this.ref) {
                   try {
@@ -187,7 +192,6 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
                   });
                 }
               }
-              this.firstLoad = false;
             }
             if (this.props.contentLoaded) {
               this.props.contentLoaded(match && match.data, match);
