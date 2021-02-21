@@ -3,7 +3,7 @@ import Client, { Shop } from 'shopify-buy';
 import { pluginId } from '../constants';
 import appState from '@builder.io/app-context';
 
-const contentTemplate = (resource: any, resourceName: 'product' | 'collection') => ({
+const contentTemplate = ({ products, ...resource }: any, resourceName: 'product' | 'collection') => ({
   published: 'published',
   name: resource.title,
   meta: {
