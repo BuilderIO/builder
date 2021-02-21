@@ -7,6 +7,7 @@ import '@builder.io/widgets';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
+import { HomepageFullHeadless } from './pages/HomepageFullHeadless';
 import { Product } from './pages/Product';
 import { Collection } from './pages/Collection';
 import { CatchAll } from './pages/CatchAll';
@@ -27,6 +28,9 @@ const App = () => {
             <Blocks />
           </Route>
           <Route path="/products" component={props => <Product {...props} />} />
+          <Route path="/homepage-full-headless">
+            <HomepageFullHeadless />
+          </Route>
           <Route path="/">
             <CatchAll />
           </Route>
