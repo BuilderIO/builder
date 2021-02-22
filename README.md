@@ -48,8 +48,8 @@ export default let BuilderPage = () => {
 &nbsp;&nbsp;const [pageJson, setPage] = useState(null)
 &nbsp;
 &nbsp;&nbsp;useEffect(() => { 
-&nbsp;&nbsp;&nbsp;&nbsp;builder.get('page', { url: '/' })
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.promise().then(setPage)
+&nbsp;&nbsp;&nbsp;&nbsp;builder.get('page', { url: '/' })&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.promise().then(setPage)p;&nbsp;&nbsp;&nbsp;
 &nbsp;&nbsp;, [])
 &nbsp;
 &nbsp;&nbsp;return &lt;BuilderComponent model="page" content={pageJson} />
@@ -112,8 +112,8 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
       </td>
       <td align="left" valign="middle">
         <a target="_blank" href="https://www.builder.io/c/docs/getting-started">
-          REST API &nbsp;&nbsp;&nbsp;&nbsp;
-        </a>
+          REST API
+        </a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       </td>
       <td align="center" valign="middle">
         <a  target="_blank" href="https://www.builder.io/c/docs/getting-started">
@@ -122,8 +122,8 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
       </td>
       <td align="left" valign="middle">
         <a  target="_blank" href="https://www.builder.io/c/docs/getting-started">
-          GraphQL &nbsp;&nbsp;&nbsp;&nbsp;
-        </a>
+          GraphQL
+        </a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       </td>
       <td align="center" valign="middle">
         <a  target="_blank" href="https://apps.shopify.com/builder-2">
@@ -132,8 +132,8 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
       </td>
       <td align="left" valign="middle">
         <a  target="_blank" href="https://apps.shopify.com/builder-2">
-          Shopify &nbsp;&nbsp;&nbsp;&nbsp;
-        </a>
+          Shopify
+        </a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       </td>
     </tr>
     <tr>
@@ -144,8 +144,8 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
       </td>
       <td align="left" valign="middle">
         <a  target="_blank" href="https://github.com/BuilderIO/vscode">
-          VS Code &nbsp;&nbsp;&nbsp;&nbsp;
-        </a>
+          VS Code
+        </a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       </td>
       <td align="center" valign="middle">
         <a  target="_blank" href="https://github.com/builderio/html-to-figma">
@@ -154,8 +154,8 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
       </td>
       <td align="left" valign="middle">
         <a  target="_blank" href="https://github.com/builderio/html-to-figma">
-          Figma &nbsp;&nbsp;&nbsp;&nbsp;
-        </a>
+          Figma
+        </a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       </td>
       <td align="center" valign="middle">
         <a  target="_blank" href="#getting-started-with-react">
@@ -164,8 +164,8 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
       </td>
       <td align="left" valign="middle">
         <a  target="_blank" href="#getting-started-with-react">
-          React &nbsp;&nbsp;&nbsp;&nbsp;
-        </a>
+          React
+        </a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       </td>
     </tr>
     <tr>
@@ -176,8 +176,8 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
       </td>
       <td align="left" valign="middle">
         <a  target="_blank" href="examples/next-js">
-          Next.js &nbsp;&nbsp;&nbsp;&nbsp;
-        </a>
+          Next.js
+        </a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       </td>
       <td align="center" valign="middle">
         <a  target="_blank" href="examples/gatsby">
@@ -186,8 +186,8 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
       </td>
       <td align="left" valign="middle">
         <a  target="_blank" href="examples/gatsby">
-          Gatsby &nbsp;&nbsp;&nbsp;&nbsp;
-        </a>
+          Gatsby
+        </a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       </td>
       <td align="center" valign="middle">
         <a  target="_blank" href="packages/vue">
@@ -196,8 +196,8 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
       </td>
       <td align="left" valign="middle">
         <a  target="_blank" href="packages/vue">
-          Vue &nbsp;&nbsp;&nbsp;&nbsp;
-        </a>
+          Vue
+        </a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       </td>
     </tr>
     <tr>
@@ -208,8 +208,8 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
       </td>
       <td align="left" valign="middle">
         <a  target="_blank" href="examples/nuxt">
-          Nuxt &nbsp;&nbsp;&nbsp;&nbsp;
-        </a>
+          Nuxt
+        </a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       </td>
       <td align="center" valign="middle">
         <a  target="_blank" href="packages/angular">
@@ -218,8 +218,8 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
       </td>
       <td align="left" valign="middle">
         <a  target="_blank" href="packages/angular">
-          Angular &nbsp;&nbsp;&nbsp;&nbsp;
-        </a>
+          Angular
+        </a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       </td>
       <td align="center" valign="middle">
         <a  target="_blank" href="https://www.builder.io/c/docs/webcomponents-api">
@@ -228,8 +228,8 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
       </td>
       <td align="left" valign="middle">
         <a  target="_blank" href="https://www.builder.io/c/docs/webcomponents-api">
-          Webcomponents &nbsp;&nbsp;&nbsp;&nbsp;
-        </a>
+          Webcomponents
+        </a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       </td>
     </tr>
   </tbody>
