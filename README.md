@@ -99,9 +99,6 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
   <img src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ff956ac27f99e47cfa81fbba8213da1e3" />
 </a>
 
-<br />
-
-<p align="center">
 <table>
   <tbody>
     <tr>
@@ -234,7 +231,8 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
     </tr>
   </tbody>
 </table>
-</p>
+
+<br />
 
 Don't see an integration you're looking for? Our [HTML API](https://www.builder.io/c/docs/getting-started), [Content APIs](https://www.builder.io/c/docs/query-api), and [GraphQL APIs](https://www.builder.io/c/docs/graphql-api) works for all tech stacks and frameworks.
 
