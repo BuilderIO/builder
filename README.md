@@ -125,8 +125,6 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
           GraphQL
         </a>
       </td>
-      </tr>
-      <tr>
       <td align="center" valign="middle">
         <a  target="_blank" href="https://apps.shopify.com/builder-2">
           <img height="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F0f577e84eb4e4aa4a69d602dd376aa11" />
@@ -137,6 +135,8 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
           Shopify
         </a>
       </td>
+    </tr>
+    <tr>
       <td align="center" valign="middle">
         <a  target="_blank" href="https://github.com/BuilderIO/vscode">
           <img height="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ff83e94a9c504427cbc8a557f682efec3" />
@@ -147,8 +147,6 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
           VS Code
         </a>
       </td>
-      </tr>
-      <tr>
       <td align="center" valign="middle">
         <a  target="_blank" href="https://github.com/builderio/html-to-figma">
           <img height="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ffb77e93c28e044178e4694cc939bf4cf" />
@@ -169,8 +167,8 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
           React
         </a>
       </td>
-      </tr>
-      <tr>
+    </tr>
+    <tr>
       <td align="center" valign="middle">
         <a  target="_blank" href="examples/next-js">
           <img height="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fc6a3c58c0bde4f43b1fd6a350f491bdf" />
@@ -191,8 +189,6 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
           Gatsby
         </a>
       </td>
-      </tr>
-      <tr>
       <td align="center" valign="middle">
         <a  target="_blank" href="packages/vue">
           <img height="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F7cc6d5b6fc4045d5a9f9b12ddcc65407" />
@@ -203,6 +199,8 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
           Vue
         </a>
       </td>
+    </tr>
+    <tr>
       <td align="center" valign="middle">
         <a  target="_blank" href="examples/nuxt">
           <img height="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F73f47f47e0cc46cd95dbf72c26728858" />
@@ -213,8 +211,6 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
           Nuxt
         </a>
       </td>
-      </tr>
-      <tr>
       <td align="center" valign="middle">
         <a  target="_blank" href="packages/angular">
           <img height="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fa91e9e437203442d8ed481eef94a99dc" />
