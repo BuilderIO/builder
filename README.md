@@ -115,6 +115,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
           REST API
         </a>
       </td>
+      <td></td>
       <td align="center" valign="middle">
         <a  target="_blank" href="https://www.builder.io/c/docs/getting-started">
           <img height="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fb739b409e5b94937b5b11e3cf62cfae4" />
@@ -125,6 +126,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
           GraphQL
         </a>
       </td>
+      <td></td>
       <td align="center" valign="middle">
         <a  target="_blank" href="https://apps.shopify.com/builder-2">
           <img height="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F0f577e84eb4e4aa4a69d602dd376aa11" />
@@ -135,6 +137,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
           Shopify
         </a>
       </td>
+      <td></td>
     </tr>
     <tr>
       <td align="center" valign="middle">
@@ -147,6 +150,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
           VS Code
         </a>
       </td>
+      <td></td>
       <td align="center" valign="middle">
         <a  target="_blank" href="https://github.com/builderio/html-to-figma">
           <img height="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ffb77e93c28e044178e4694cc939bf4cf" />
@@ -157,6 +161,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
           Figma
         </a>
       </td>
+      <td></td>
       <td align="center" valign="middle">
         <a  target="_blank" href="#getting-started-with-react">
           <img height="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F2f3409f4f8b64d5f880195061aa481ab" />
@@ -167,6 +172,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
           React
         </a>
       </td>
+      <td></td>
     </tr>
     <tr>
       <td align="center" valign="middle">
@@ -179,6 +185,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
           Next.js
         </a>
       </td>
+      <td></td>
       <td align="center" valign="middle">
         <a  target="_blank" href="examples/gatsby">
           <img height="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F45e59fc603574e708dcb79e45ef72d02" />
@@ -189,6 +196,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
           Gatsby
         </a>
       </td>
+      <td></td>
       <td align="center" valign="middle">
         <a  target="_blank" href="packages/vue">
           <img height="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F7cc6d5b6fc4045d5a9f9b12ddcc65407" />
@@ -199,6 +207,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
           Vue
         </a>
       </td>
+      <td></td>
     </tr>
     <tr>
       <td align="center" valign="middle">
@@ -211,6 +220,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
           Nuxt
         </a>
       </td>
+      <td></td>
       <td align="center" valign="middle">
         <a  target="_blank" href="packages/angular">
           <img height="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fa91e9e437203442d8ed481eef94a99dc" />
@@ -221,6 +231,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
           Angular
         </a>
       </td>
+      <td></td>
       <td align="center" valign="middle">
         <a  target="_blank" href="https://www.builder.io/c/docs/webcomponents-api">
           <img height="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F5613cb3536be4c108b32c34bf06f1c59" />
@@ -231,6 +242,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
           Webcomponents
         </a>
       </td>
+      <td></td>
     </tr>
   </tbody>
 </table>
