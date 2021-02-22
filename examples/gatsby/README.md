@@ -1,4 +1,4 @@
-Next.js starters and resources:
+## Next.js starters and resources:
 
 | Starter | description |
 | --- | --- |
