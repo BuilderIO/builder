@@ -101,6 +101,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
 
 <br />
 
+<p align="center">
 <table>
   <tbody>
     <tr>
@@ -114,8 +115,6 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
           REST API
         </a>
       </td>
-      </tr>
-      <tr>
       <td align="center" valign="middle">
         <a  target="_blank" href="https://www.builder.io/c/docs/getting-started">
           <img height="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fb739b409e5b94937b5b11e3cf62cfae4" />
@@ -138,8 +137,6 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
           Shopify
         </a>
       </td>
-      </tr>
-      <tr>
       <td align="center" valign="middle">
         <a  target="_blank" href="https://github.com/BuilderIO/vscode">
           <img height="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ff83e94a9c504427cbc8a557f682efec3" />
@@ -162,8 +159,6 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
           Figma
         </a>
       </td>
-      </tr>
-      <tr>
       <td align="center" valign="middle">
         <a  target="_blank" href="#getting-started-with-react">
           <img height="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F2f3409f4f8b64d5f880195061aa481ab" />
@@ -186,8 +181,6 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
           Next.js
         </a>
       </td>
-      </tr>
-      <tr>
       <td align="center" valign="middle">
         <a  target="_blank" href="examples/gatsby">
           <img height="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F45e59fc603574e708dcb79e45ef72d02" />
@@ -210,8 +203,6 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
           Vue
         </a>
       </td>
-      </tr>
-      <tr>
       <td align="center" valign="middle">
         <a  target="_blank" href="examples/nuxt">
           <img height="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F73f47f47e0cc46cd95dbf72c26728858" />
@@ -234,8 +225,6 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
           Angular
         </a>
       </td>
-      </tr>
-      <tr>
       <td align="center" valign="middle">
         <a  target="_blank" href="https://www.builder.io/c/docs/webcomponents-api">
           <img height="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F5613cb3536be4c108b32c34bf06f1c59" />
@@ -246,10 +235,11 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
           Webcomponents
         </a>
       </td>
-      </tr>
-
+      <td></td>
+    </tr>
   </tbody>
 </table>
+</p>
 
 Don't see an integration you're looking for? Our [HTML API](https://www.builder.io/c/docs/getting-started), [Content APIs](https://www.builder.io/c/docs/query-api), and [GraphQL APIs](https://www.builder.io/c/docs/graphql-api) works for all tech stacks and frameworks.
 
