@@ -129,12 +129,12 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
       </tr>
       <tr>
       <td align="center" valign="middle">
-        <a  target="_blank" href="https://www.builder.io/c/docs/getting-started">
+        <a  target="_blank" href="https://apps.shopify.com/builder-2">
           <img height="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F0f577e84eb4e4aa4a69d602dd376aa11" />
         </a>
       </td>
       <td align="left" valign="middle">
-        <a  target="_blank" href="https://www.builder.io/c/docs/getting-started">
+        <a  target="_blank" href="https://apps.shopify.com/builder-2">
           Shopify
         </a>
       </td>
@@ -153,24 +153,24 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
       </tr>
       <tr>
       <td align="center" valign="middle">
-        <a  target="_blank" href="https://www.builder.io/c/docs/import-from-figma">
+        <a  target="_blank" href="https://github.com/builderio/html-to-figma">
           <img height="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ffb77e93c28e044178e4694cc939bf4cf" />
         </a>
       </td>
       <td align="left" valign="middle">
-        <a  target="_blank" href="https://www.builder.io/c/docs/import-from-figma">
+        <a  target="_blank" href="https://github.com/builderio/html-to-figma">
           Figma
         </a>
       </td>
       </tr>
       <tr>
       <td align="center" valign="middle">
-        <a  target="_blank" href="https://www.builder.io/c/docs/getting-started">
+        <a  target="_blank" href="#getting-started-with-react">
           <img height="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F2f3409f4f8b64d5f880195061aa481ab" />
         </a>
       </td>
       <td align="left" valign="middle">
-        <a  target="_blank" href="https://www.builder.io/c/docs/getting-started">
+        <a  target="_blank" href="#getting-started-with-react">
           React
         </a>
       </td>
@@ -237,12 +237,12 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
       </tr>
       <tr>
       <td align="center" valign="middle">
-        <a  target="_blank" href="packages/angular">
+        <a  target="_blank" href="https://www.builder.io/c/docs/webcomponents-api">
           <img height="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F5613cb3536be4c108b32c34bf06f1c59" />
         </a>
       </td>
       <td align="left" valign="middle">
-        <a  target="_blank" href="packages/angular">
+        <a  target="_blank" href="https://www.builder.io/c/docs/webcomponents-api">
           Webcomponents
         </a>
       </td>
