@@ -11,13 +11,13 @@ builder.init('jdGaMusrVpYgdcAnAtgn');
  */
 export default class ExamplePage extends React.Component<any> {
   render() {
-    const { header, page } = this.props.data.allBuilderModels;
-    return page[0] ? (
+    const { oneHeader, onePage } = this.props.data.allBuilderModels;
+    return onePage ? (
       <div>
         {/* Optionally render a header from Builder.io, or render your <Header /> instead */}
-        <BuilderComponent model="header" content={header[0]?.content} />
+        <BuilderComponent model="header" content={oneHeader?.content} />
         {/* Render other things in your code as you choose */}
-        <BuilderComponent model="page" content={page[0]?.content} />
+        <BuilderComponent model="page" content={onePage.content} />
       </div>
     ) : (
       'Page not found for this URL'
@@ -31,15 +31,14 @@ export const query = graphql`
   query {
     allBuilderModels {
       # (optional) example custom "header" component model, if you have one
-      header(limit: 1, options: { cachebust: true }) {
+      oneHeader(options: { cachebust: true }) {
         content
       }
       # Manually grab the page content matching "/example"
       # For Gatsby content, we want to make sure to always get fresh (cachebusted) content
-      page(
-        limit: 1
+      onePage(
         target: { urlPath: "/example" }
-        options: { cachebust: true }
+        options: { cachebust: true, includeRefs: true }
       ) {
         content
       }
