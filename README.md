@@ -235,7 +235,6 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
           Webcomponents
         </a>
       </td>
-      <td></td>
     </tr>
   </tbody>
 </table>
