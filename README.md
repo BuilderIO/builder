@@ -19,7 +19,6 @@
   <img src="https://imgur.com/HjBWIbv.gif" alt="Editor example" />
 </p>
 
-
 <table style="width:100%;">
   <tr>
     <td width="50%">Register components</td>
@@ -73,33 +72,32 @@ export default let BuilderPage = () => {
 ## Try it out!
 
 - [builder.io/fiddle](https://builder.io/fiddle)
-- Design system [live example](https://builder.io/fiddle/4b2e0a2e4b1a44a88a5e6f8c46cdfe7c) and [source](https://github.com/BuilderIO/builder/tree/master/examples/react-design-system)
+- Component-driven design system [live example](https://builder.io/fiddle/4b2e0a2e4b1a44a88a5e6f8c46cdfe7c) and [source](https://github.com/BuilderIO/builder/tree/master/examples/react-design-system)
 - [JSX Lite](https://github.com/BuilderIO/jsx-lite)
+- [VSCode plugin](https://github.com/BuilderIO/vscode)
+- Convert [Figma designs to code](https://github.com/BuilderIO/html-figma)
 - Storybook [live example](https://builder-storybook.firebaseapp.com) and [source](https://github.com/BuilderIO/builder/tree/master/packages/storybook)
 
 ## How does it work?
 
-- Integrate the [Builder API or SDK](#supported-frameworks) to your site or app
+- Integrate the [Builder API or SDK](https://www.builder.io/c/docs/getting-started) to your site or app
 - Create a free account on [builder.io](https://builder.io) and drag and drop to create and publish pages and content
 
 ## How is the content structured?
 
 In Builder, content is structured in [models](https://www.builder.io/c/docs/guides/getting-started-with-models), and customized with [custom fields](https://www.builder.io/c/docs/custom-fields) and [targeting](https://www.builder.io/c/docs/guides/targeting-and-scheduling)
 
-- **Builder pages** - full drag and drop control between your site's header and footer
-- **Builder sections** - make a part of a page visually editable in Builder and use our [targeting and scheduling](https://www.builder.io/c/docs/guides/targeting-and-scheduling) to decide who sees what
-- **Builder data** - fetch structured data from Builder and use it anywhere in your application (e.g. menu items)
-
+- **Builder pages** - full drag and drop control between your site's header and footer. [Try it out](https://builder.io/fiddle/fb98adf93ad5467180329fdaa9711f27)
+- **Builder sections** - make a part of a page visually editable in Builder and use our [targeting and scheduling](https://www.builder.io/c/docs/guides/targeting-and-scheduling) to decide who sees what. [Try it out](https://builder.io/fiddle/81b6a689f6c74c82bbd982497cf08e34)
+- **Builder data** - fetch structured data from Builder and use it anywhere in your application (e.g. menu items, structured pages). [Try it out](https://builder.io/fiddle/193e3e3128b84c80b1a9c4ba19612244)
 
 <img src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fe809eac6ae7140beab81ce4c3ee75e20" />
-
 
 Read more about how builder works [here](https://www.builder.io/c/docs/how-builder-works)
 
 See [here](#structuring-your-site) for examples on how to structure a site with Builder
 
-
-## Framework Support
+## Featured Integrations
 
 <a target="_blank" href="https://www.builder.io/c/docs/getting-started">
   <img src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ff956ac27f99e47cfa81fbba8213da1e3" />
@@ -107,25 +105,84 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
 
 <br />
 
-| Framework                                                                |                            Status                             |
-| ------------------------------------------------------------------------ | :-----------------------------------------------------------: |
-| [REST API](https://builder.io/c/docs/getting-started)                    |                            Stable                             |
-| [React](#getting-started-with-react)                                     |                            Stable                             |
-| [Vue](packages/vue)                                                      |                            Stable                             |
-| [Nuxt](examples/nust)                                                    |                            Stable                             |
-| [Next.js](examples/next-js)                                              |                            Stable                             |
-| [Gatsby](examples/gatsby)                                                |                            Stable                             |
-| [Shopify / Liquid](https://apps.shopify.com/builder-2)                   |                            Stable                             |
-| [JSX Lite](https://github.com/BuilderIO/jsx-lite)                        |                              WIP                              |
-| [Angular](packages/angular)                                              |                            Stable                             |
-| [Webcomponents](packages/webcomponents) (for any framework/stack)        |                            Stable                             |
-| [Email](packages/email)                                                  |                            Stable                             |
-| [AMP](examples/next-js-amp)                                              |                            Stable                             |
-| Preact                                                                   |                            Stable                             |
-| [React native](packages/react-native)                                    |                             Alpha                             |
-| **Everyting else** <br/> Go, Php, Java, Ruby/Rails, Vanilla JS, etc | Use our [HTML API](https://builder.io/c/docs/getting-started) |
+<table>
+  <tbody>
+    <tr>
+      <td width="100" align="center" valign="middle">
+        <a target="_blank" href="https://www.builder.io/c/docs/getting-started">
+          <img style="height: 50px;" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F7c16907175964f5dada038f6cceef77b" />
+          <p align="center">REST API</p>
+        </a>
+      </td>
+      <td width="100" align="center" valign="middle">
+        <a  target="_blank" href="https://www.builder.io/c/docs/getting-started">
+          <img style="height: 50px;" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fb739b409e5b94937b5b11e3cf62cfae4" />
+          <p align="center">GraphQL</p>
+        </a>
+      </td>
+      <td width="100" align="center" valign="middle">
+        <a  target="_blank" href="https://www.builder.io/c/docs/getting-started">
+          <img style="height: 50px;" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F0f577e84eb4e4aa4a69d602dd376aa11" />
+          <p align="center">Shopify</p>
+        </a>
+      </td>
+      <td width="100" align="center" valign="middle">
+        <a  target="_blank" href="https://www.builder.io/c/docs/import-from-figma">
+          <img style="height: 50px;" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ffb77e93c28e044178e4694cc939bf4cf" />
+          <p align="center">Figma</p>
+        </a>
+      </td>
+      <td width="100" align="center" valign="middle">
+        <a  target="_blank" href="https://www.builder.io/c/docs/getting-started">
+          <img style="height: 50px;" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F2f3409f4f8b64d5f880195061aa481ab" />
+          <p align="center">React</p>
+        </a>
+      </td>
+      <td width="100" align="center" valign="middle">
+        <a  target="_blank" href="examples/next-js">
+          <img style="height: 50px;" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fc6a3c58c0bde4f43b1fd6a350f491bdf" />
+          <p align="center">Next.js</p>
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td width="100" align="center" valign="middle">
+        <a  target="_blank" href="examples/gatsby">
+          <img style="height: 50px;" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F45e59fc603574e708dcb79e45ef72d02" />
+          <p align="center">Gatsby</p>
+        </a>
+      </td>
+      <td width="100" align="center" valign="middle">
+        <a  target="_blank" href="packages/vue">
+          <img style="height: 50px;" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F7cc6d5b6fc4045d5a9f9b12ddcc65407" />
+          <p align="center">Vue</p>
+        </a>
+      </td>
+      <td width="100" align="center" valign="middle">
+        <a  target="_blank" href="examples/nuxt">
+          <img style="height: 50px;" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F73f47f47e0cc46cd95dbf72c26728858" />
+          <p align="center">Nuxt</p>
+        </a>
+      </td>
+      <td width="100" align="center" valign="middle">
+        <a  target="_blank" href="packages/angular">
+          <img style="height: 50px;" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fa91e9e437203442d8ed481eef94a99dc" />
+          <p align="center">Angular</p>
+        </a>
+      </td>
+      <td width="100" align="center" valign="middle">
+        <a  target="_blank" href="packages/angular">
+          <img style="height: 50px;" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F5613cb3536be4c108b32c34bf06f1c59" />
+          <p align="center">Webcomponents</p>
+        </a>
+      </td>
+      <td></td>
+    </tr>
 
-Want support for something not listed here or for us to priotize something coming soon? Drop us an issue and let us know! We prioritize based on the community's needs and interests.
+  </tbody>
+</table>
+
+Don't see an integration you're looking for? Our [HTML API](https://www.builder.io/c/docs/getting-started), [Content APIs](https://www.builder.io/c/docs/query-api), and [GraphQL APIs](https://www.builder.io/c/docs/graphql-api) works for all tech stacks and frameworks.
 
 ## What's in this repository?
 
@@ -253,7 +310,6 @@ if (page) {
 
 ✨**Tip:** You can make reusable components for your Builder.io pages using [symbols](https://builder.io/c/docs/guides/symbols)
 
-
 ### Structuring your site
 
 There are a lot of ways you can use Builder for your site. Some of the main questions you'll want to ask yourselves - what on your site should be in your code vs in Builder.
@@ -262,9 +318,7 @@ As a general rule, parts of your site that should be managed by non developers s
 
 Here are some examples we recommend for how to structure various pages on your site, for instance for a headless commerce site:
 
-
 ![examples on how to structure your site](https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fc811a87f916f4e37990b1afc9df25721)
-
 
 ### Data models, components, SEO, and more
 
@@ -309,7 +363,6 @@ Check out [JSX Lite](https://github.com/builderio/jsx-lite) to dep dive into how
 </p>
 
 ![Codegen GIF](https://imgur.com/H1WTtGe.gif)
-
 
 ## We're hiring!
 

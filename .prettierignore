@@ -5,5 +5,3 @@ dist
 .cache-loader
 .cache
 docs
-*.json
-*.md
