@@ -33,7 +33,8 @@
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
     "react-slick": "^0.25.2",
-    "slick-carousel": "^1.8.1"
+    "slick-carousel": "^1.8.1",
+    "styled-components": "^5.2.1"
   },
   "devDependencies": {
     "typescript": "3.3.3"
