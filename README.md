@@ -38,7 +38,7 @@
         &nbsp; <a title="VS Code"  target="_blank" href="https://github.com/BuilderIO/vscode">
           <img width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ff83e94a9c504427cbc8a557f682efec3" /> 
         </a>&nbsp;
-        &nbsp; <a  target="_blank" href="https://github.com/builderio/html-to-figma">
+        &nbsp; <a target="_blank" href="https://github.com/builderio/html-to-figma">
           <img width="25" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ffb77e93c28e044178e4694cc939bf4cf" /> 
         </a>&nbsp;
         &nbsp; <a title="React"  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=react">
@@ -206,118 +206,118 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
         </a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       </td>
       <td align="center" valign="middle">
-        <a  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=graphql">
+        <a target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=graphql">
           <img width="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fb739b409e5b94937b5b11e3cf62cfae4" />
         </a>
       </td>
       <td align="left" valign="middle">
-        <a  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=graphql">
+        <a target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=graphql">
           GraphQL
         </a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       </td>
       <td align="center" valign="middle">
-        <a  target="_blank" href="https://apps.shopify.com/builder-2">
+        <a target="_blank" href="https://apps.shopify.com/builder-2">
           <img width="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F0f577e84eb4e4aa4a69d602dd376aa11" />
         </a>
       </td>
       <td align="left" valign="middle">
-        <a  target="_blank" href="https://apps.shopify.com/builder-2">
+        <a target="_blank" href="https://apps.shopify.com/builder-2">
           Shopify
         </a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       </td>
     </tr>
     <tr>
       <td align="center" valign="middle">
-        <a  target="_blank" href="https://github.com/BuilderIO/vscode">
+        <a target="_blank" href="https://github.com/BuilderIO/vscode">
           <img width="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ff83e94a9c504427cbc8a557f682efec3" />
         </a>
       </td>
       <td align="left" valign="middle">
-        <a  target="_blank" href="https://github.com/BuilderIO/vscode">
+        <a target="_blank" href="https://github.com/BuilderIO/vscode">
           VS Code
         </a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       </td>
       <td align="center" valign="middle">
-        <a  target="_blank" href="https://github.com/builderio/html-to-figma">
+        <a target="_blank" href="https://github.com/builderio/html-to-figma">
           <img width="25" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ffb77e93c28e044178e4694cc939bf4cf" />
         </a>
       </td>
       <td align="left" valign="middle">
-        <a  target="_blank" href="https://github.com/builderio/html-to-figma">
+        <a target="_blank" href="https://github.com/builderio/html-to-figma">
           Figma
         </a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       </td>
       <td align="center" valign="middle">
-        <a  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=react">
+        <a target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=react">
           <img width="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F2f3409f4f8b64d5f880195061aa481ab" />
         </a>
       </td>
       <td align="left" valign="middle">
-        <a  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=react">
+        <a target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=react">
           React
         </a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       </td>
     </tr>
     <tr>
       <td align="center" valign="middle">
-        <a  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=next">
+        <a target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=next">
           <img width="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fc6a3c58c0bde4f43b1fd6a350f491bdf" />
         </a>
       </td>
       <td align="left" valign="middle">
-        <a  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=next">
+        <a target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=next">
           Next.js
         </a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       </td>
       <td align="center" valign="middle">
-        <a  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=gatsby">
+        <a target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=gatsby">
           <img width="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F45e59fc603574e708dcb79e45ef72d02" />
         </a>
       </td>
       <td align="left" valign="middle">
-        <a  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=gatsby">
+        <a target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=gatsby">
           Gatsby
         </a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       </td>
       <td align="center" valign="middle">
-        <a  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=vue">
+        <a target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=vue">
           <img width="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F7cc6d5b6fc4045d5a9f9b12ddcc65407" />
         </a>
       </td>
       <td align="left" valign="middle">
-        <a  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=vue">
+        <a target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=vue">
           Vue
         </a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       </td>
     </tr>
     <tr>
       <td align="center" valign="middle">
-        <a  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=nuxt">
+        <a target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=nuxt">
           <img width="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F73f47f47e0cc46cd95dbf72c26728858" />
         </a>
       </td>
       <td align="left" valign="middle">
-        <a  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=nuxt">
+        <a target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=nuxt">
           Nuxt
         </a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       </td>
       <td align="center" valign="middle">
-        <a  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=angular">
+        <a target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=angular">
           <img width="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fa91e9e437203442d8ed481eef94a99dc" />
         </a>
       </td>
       <td align="left" valign="middle">
-        <a  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=angular">
+        <a target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=angular">
           Angular
         </a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       </td>
       <td align="center" valign="middle">
-        <a  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=webcomponents">
+        <a target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=webcomponents">
           <img width="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F5613cb3536be4c108b32c34bf06f1c59" />
         </a>
       </td>
       <td align="left" valign="middle">
-        <a  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=webcomponents">
+        <a target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=webcomponents">
           Webcomponents
         </a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       </td>
