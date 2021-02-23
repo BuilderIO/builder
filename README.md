@@ -64,6 +64,49 @@ export default let BuilderPage = () => {
   </tr>
 </table>
 
+<p align="center" valign="middle">
+  Choose your framework:
+</p>
+
+<p align="center" valign="middle">
+        <a title="REST API" target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=rest">
+          <img width="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F7c16907175964f5dada038f6cceef77b" /> &nbsp;&nbsp;&nbsp;&nbsp;
+        </a>
+        <a title="GraphQL"  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=graphql">
+          <img width="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fb739b409e5b94937b5b11e3cf62cfae4" /> &nbsp;&nbsp;&nbsp;&nbsp;
+        </a>
+        <a title="Shopify"  target="_blank" href="https://apps.shopify.com/builder-2">
+          <img width="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F0f577e84eb4e4aa4a69d602dd376aa11" /> &nbsp;&nbsp;&nbsp;&nbsp;
+        </a>
+        <a title="VS Code"  target="_blank" href="https://github.com/BuilderIO/vscode">
+          <img width="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ff83e94a9c504427cbc8a557f682efec3" /> &nbsp;&nbsp;&nbsp;&nbsp;
+        </a>
+        <a  target="_blank" href="https://github.com/builderio/html-to-figma">
+          <img width="25" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ffb77e93c28e044178e4694cc939bf4cf" /> &nbsp;&nbsp;&nbsp;&nbsp;
+        </a>
+        <a title="React"  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=react">
+          <img width="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F2f3409f4f8b64d5f880195061aa481ab" /> &nbsp;&nbsp;&nbsp;&nbsp;
+        </a>
+        <a title="Next.js"  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=next">
+          <img width="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fc6a3c58c0bde4f43b1fd6a350f491bdf" /> &nbsp;&nbsp;&nbsp;&nbsp;
+        </a>
+        <a title="Gatsby"  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=gatsby">
+          <img width="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F45e59fc603574e708dcb79e45ef72d02" /> &nbsp;&nbsp;&nbsp;&nbsp;
+        </a>
+        <a title="Vue"  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=vue">
+          <img width="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F7cc6d5b6fc4045d5a9f9b12ddcc65407" /> &nbsp;&nbsp;&nbsp;&nbsp;
+        </a>
+        <a title="Nuxt"  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=nuxt">
+          <img width="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F73f47f47e0cc46cd95dbf72c26728858" /> &nbsp;&nbsp;&nbsp;&nbsp;
+        </a>
+        <a title="Angular"  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=angular">
+          <img width="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fa91e9e437203442d8ed481eef94a99dc" /> &nbsp;&nbsp;&nbsp;&nbsp;
+        </a>
+        <a title="Webcomponents"  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=webcomponents">
+          <img width="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F5613cb3536be4c108b32c34bf06f1c59" /> &nbsp;&nbsp;&nbsp;&nbsp;
+        </a>
+</p>
+
 ## Who uses Builder.io?
 
 &nbsp;
