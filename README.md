@@ -80,8 +80,6 @@ export default let BuilderPage = () => {
         </p>
         Try our <a href="https://builder.io/fiddle/fb98adf93ad5467180329fdaa9711f27"><b>interactive fiddle</b></a> to try the visual editor
       </td>
-    </tr>
-    <tr>
       <td>
         <a href="https://github.com/builderio/figma-html"><img width="300" alt="Figma plugin" src="https://i.imgur.com/BoKsLFs.gif" /></a>
       </td>
@@ -102,8 +100,6 @@ export default let BuilderPage = () => {
         </p>
         Try our  <a href="https://github.com/builderio/figma-html"><b>interactive code generation</b></a> fiddle
       </td>
-    </tr>
-    <tr>
       <td>
         <a href="https://github.com/BuilderIO/vscode"><img width="300" alt="Vscode plugin" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F1d59909e2a214c79ad2b1e8ad3fb8245" /></a>
       </td>
@@ -124,8 +120,6 @@ export default let BuilderPage = () => {
         </p>
         Try our <a href="https://apps.shopify.com/builder-2"><b>Shopify app</b></a> for visual Shopify store building
       </td>
-    </tr>
-    <tr>
       <td>
         <a href="https://github.com/builderio/builder"><img width="300" alt="Vscode plugin" src="https://cdn.builder.io/api/v1/image/assets%2F444142b2cae54a19aeb8b5ba245feffe%2F8c2699f47fea48b296b43dbb422336e8" /></a>
       </td>
