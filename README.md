@@ -1,5 +1,5 @@
 <p align="center">
-  <img alt="BUILDER" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fdcd545fcda9c4be796889bf072cf72e9" width="300" />
+  <img alt="BUILDER" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fdcd545fcda9c4be796889bf072cf72e9" width="600" />
 </p>
 <br />
 <p align="center">
@@ -71,7 +71,7 @@ export default let BuilderPage = () => {
   <tbody>
      <tr>
       <td>
-        <a href="https://builder.io/fiddle/fb98adf93ad5467180329fdaa9711f27"><img width="300" alt="Builder fiddle" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fdcfc7eee454241b2bc059373f33ba0c5" /></a>
+        <a href="https://builder.io/fiddle/fb98adf93ad5467180329fdaa9711f27"><img width="600" alt="Builder fiddle" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fdcfc7eee454241b2bc059373f33ba0c5" /></a>
       </td>
       <td>
         <p>
@@ -80,7 +80,7 @@ export default let BuilderPage = () => {
         Try our <a href="https://builder.io/fiddle/fb98adf93ad5467180329fdaa9711f27"><b>interactive fiddle</b></a> to try the visual editor
       </td>
       <td>
-        <a href="https://github.com/builderio/figma-html"><img width="300" alt="Figma plugin" src="https://i.imgur.com/BoKsLFs.gif" /></a>
+        <a href="https://github.com/builderio/figma-html"><img width="600" alt="Figma plugin" src="https://i.imgur.com/BoKsLFs.gif" /></a>
       </td>
       <td>
         <p>
@@ -91,7 +91,7 @@ export default let BuilderPage = () => {
     </tr>
     <tr>
       <td>
-        <a href="https://github.com/builderio/figma-html"><img width="300" alt="Fiddle" src="https://imgur.com/H1WTtGe.gif" /></a>
+        <a href="https://github.com/builderio/figma-html"><img width="600" alt="Fiddle" src="https://imgur.com/H1WTtGe.gif" /></a>
       </td>
       <td>
         <p>
@@ -100,7 +100,7 @@ export default let BuilderPage = () => {
         Try our  <a href="https://github.com/builderio/figma-html"><b>interactive code generation</b></a> fiddle
       </td>
       <td>
-        <a href="https://github.com/BuilderIO/vscode"><img width="300" alt="Vscode plugin" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F1d59909e2a214c79ad2b1e8ad3fb8245" /></a>
+        <a href="https://github.com/BuilderIO/vscode"><img width="600" alt="Vscode plugin" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F1d59909e2a214c79ad2b1e8ad3fb8245" /></a>
       </td>
       <td>
         <p>
@@ -111,7 +111,7 @@ export default let BuilderPage = () => {
     </tr>
     <tr>
       <td>
-        <a href="https://apps.shopify.com/builder-2"><img width="300" alt="Vscode plugin" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F97c87a29d88e463b9c1ad22b0329b2f7" /></a>
+        <a href="https://apps.shopify.com/builder-2"><img width="600" alt="Vscode plugin" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F97c87a29d88e463b9c1ad22b0329b2f7" /></a>
       </td>
       <td>
         <p>
@@ -120,7 +120,7 @@ export default let BuilderPage = () => {
         Try our <a href="https://apps.shopify.com/builder-2"><b>Shopify app</b></a> for visual Shopify store building
       </td>
       <td>
-        <a href="https://github.com/builderio/builder"><img width="300" alt="Vscode plugin" src="https://cdn.builder.io/api/v1/image/assets%2F444142b2cae54a19aeb8b5ba245feffe%2F8c2699f47fea48b296b43dbb422336e8" /></a>
+        <a href="https://github.com/builderio/builder"><img width="600" alt="Vscode plugin" src="https://cdn.builder.io/api/v1/image/assets%2F444142b2cae54a19aeb8b5ba245feffe%2F8c2699f47fea48b296b43dbb422336e8" /></a>
       </td>
       <td>
         <p>
