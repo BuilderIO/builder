@@ -70,44 +70,44 @@ export default let BuilderPage = () => {
 <table>
   <tbody>
      <tr>
-      <td>
+      <td align="center" valign="middle">
         <a href="https://builder.io/fiddle/fb98adf93ad5467180329fdaa9711f27"><img width="120" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F084b1ebc3de4422185f9d36a409f3a24" /></a>
       </td>
-      <td>
+      <td align="center" valign="middle">
         Try our <a href="https://builder.io/fiddle/fb98adf93ad5467180329fdaa9711f27"><b>interactive fiddle</b></a> to try the visual editor
       </td>
-      <td align="center">
+      <td align="center" valign="middle">
         <a href="https://github.com/builderio/figma-html"><img width="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ffb77e93c28e044178e4694cc939bf4cf" /></a>
       </td>
-      <td>
+      <td align="center" valign="middle">
         Use our <a href="https://github.com/builderio/figma-html"><b>Figma plugin</b></a> to turn designs into code!
       </td>
     </tr>
     <tr>
-      <td>
+      <td align="center" valign="middle">
         <a href="https://github.com/builderio/figma-html"><img width="120" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fb99f450616a640529896a2a10d3267b0" /></a>
       </td>
-      <td>
+      <td align="center" valign="middle">
         Try our  <a href="https://github.com/builderio/figma-html"><b>interactive code generation</b></a> fiddle
       </td>
-      <td>
+      <td align="center" valign="middle">
         <a href="https://github.com/BuilderIO/vscode"><img width="120" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ff83e94a9c504427cbc8a557f682efec3" /></a>
       </td>
-      <td>
+      <td align="center" valign="middle">
         Try our <a href="https://github.com/BuilderIO/vscode"><b>VS Code extension</b></a> for in-IDE visual coding
       </td>
     </tr>
     <tr>
-      <td>
+      <td align="center" valign="middle">
         <a href="https://apps.shopify.com/builder-2"><img width="120" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F0f577e84eb4e4aa4a69d602dd376aa11" /></a>
       </td>
-      <td>
+      <td align="center" valign="middle">
         Try our <a href="https://apps.shopify.com/builder-2"><b>Shopify app</b></a> for visual Shopify store building
       </td>
-      <td>
+      <td align="center" valign="middle">
         <a href="https://github.com/builderio/builder"><img width="120" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F797d760607284eafad5c9697446896e7" /></a>
       </td>
-      <td>
+      <td align="center" valign="middle">
         Try our <a href="https://github.com/builderio/builder"><b>headless CMS</b></a> for no-code APIs for all sites and apps
       </td>
     </tr>
