@@ -71,13 +71,13 @@ export default let BuilderPage = () => {
   <tbody>
      <tr>
       <td>
-        <a href="https://builder.io/fiddle/fb98adf93ad5467180329fdaa9711f27"><img width="100" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F084b1ebc3de4422185f9d36a409f3a24" /></a>
+        <a href="https://builder.io/fiddle/fb98adf93ad5467180329fdaa9711f27"><img width="120" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F084b1ebc3de4422185f9d36a409f3a24" /></a>
       </td>
       <td>
         Try our <a href="https://builder.io/fiddle/fb98adf93ad5467180329fdaa9711f27"><b>interactive fiddle</b></a> to try the visual editor
       </td>
       <td>
-        <a href="https://github.com/builderio/figma-html"><img width="100" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ffb77e93c28e044178e4694cc939bf4cf" /></a>
+        <a href="https://github.com/builderio/figma-html"><img width="120" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ffb77e93c28e044178e4694cc939bf4cf" /></a>
       </td>
       <td>
         Use our <a href="https://github.com/builderio/figma-html"><b>Figma plugin</b></a> to turn designs into code!
@@ -91,7 +91,7 @@ export default let BuilderPage = () => {
         Try our  <a href="https://github.com/builderio/figma-html"><b>interactive code generation</b></a> fiddle
       </td>
       <td>
-        <a href="https://github.com/BuilderIO/vscode"><img width="100" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ff83e94a9c504427cbc8a557f682efec3" /></a>
+        <a href="https://github.com/BuilderIO/vscode"><img width="120" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ff83e94a9c504427cbc8a557f682efec3" /></a>
       </td>
       <td>
         Try our <a href="https://github.com/BuilderIO/vscode"><b>VS Code extension</b></a> for in-IDE visual coding
@@ -99,13 +99,13 @@ export default let BuilderPage = () => {
     </tr>
     <tr>
       <td>
-        <a href="https://apps.shopify.com/builder-2"><img width="100" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F0f577e84eb4e4aa4a69d602dd376aa11" /></a>
+        <a href="https://apps.shopify.com/builder-2"><img width="120" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F0f577e84eb4e4aa4a69d602dd376aa11" /></a>
       </td>
       <td>
         Try our <a href="https://apps.shopify.com/builder-2"><b>Shopify app</b></a> for visual Shopify store building
       </td>
       <td>
-        <a href="https://github.com/builderio/builder"><img width="100" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F084b1ebc3de4422185f9d36a409f3a24" /></a>
+        <a href="https://github.com/builderio/builder"><img width="120" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F084b1ebc3de4422185f9d36a409f3a24" /></a>
       </td>
       <td>
         Try our <a href="https://github.com/builderio/builder"><b>headless CMS</b></a> for no-code APIs for all sites and apps
