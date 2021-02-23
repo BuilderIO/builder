@@ -129,6 +129,7 @@ function MyApp({ Component, pageProps, router }: AppPropsType) {
         <title>
           Builder.io: Visual no-code content management for e-comerce
         </title>
+        <meta key="robots" name="robots" content="index, follow" />
         {/* We override og info for blog */}
         {!router.asPath.includes('/blog/') && (
           <>

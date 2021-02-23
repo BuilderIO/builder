@@ -31,7 +31,6 @@ export default class MyDocument extends Document {
     return (
       <Html>
         <Head>
-          <meta key="robots" name="robots" content="index, follow" />
           <meta charSet="UTF-8" />
           <meta name="theme-color" content="#f8f8f8" />
           <meta name="mobile-web-app-capable" content="yes" />
