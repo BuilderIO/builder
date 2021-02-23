@@ -178,7 +178,7 @@ export default let BuilderPage = () => {
           <a href="https://github.com/builderio/builder"><img height="60" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F797d760607284eafad5c9697446896e7" /></a>
         </p>
         <p align="center">
-          Try our <a href="https://github.com/builderio/builder"><b>headless CMS</b></a> for no-code APIs for all sites and apps
+          Try our <a href="https://github.com/builderio/builder"><b>headless CMS</b></a> for API-driven development
         </p>
       </td>
     </tr>
