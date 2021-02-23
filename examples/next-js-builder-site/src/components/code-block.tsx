@@ -8,6 +8,8 @@ import oneDark from 'react-syntax-highlighter/dist/cjs/styles/hljs/atom-one-dark
 SyntaxHighlighter.registerLanguage('html', html);
 SyntaxHighlighter.registerLanguage('xml', html);
 SyntaxHighlighter.registerLanguage('javascript', javascript);
+SyntaxHighlighter.registerLanguage('js', javascript);
+SyntaxHighlighter.registerLanguage('jsx', javascript);
 
 // Adapted from https://github.com/dpeek/highlightjs-graphql/blob/master/graphql.js#L10
 SyntaxHighlighter.registerLanguage('graphql', (hljs: any) => ({

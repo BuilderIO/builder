@@ -107,43 +107,22 @@ function DocsSearchBrowser(props: DocsSearchProps) {
     const results: SearchResult[] = uniqBy(
       builderResponse?.results || [],
       (item) => item.data.url,
-    )
-      .map(
-        (item) =>
-          ({
-            title: item.data.pageTitle,
-            url: `https://www.builder.io${item.data.url}`,
-            // Bold exact text matches
-            htmlTitle: escapeHtml(item.data.pageTitle || '').replace(
-              new RegExp(escapeRegExp(searchText), 'gi'),
-              (match) => `<b>${match}</b>`,
-            ),
-            htmlDescription: escapeHtml(item.data.description || '').replace(
-              new RegExp(escapeRegExp(searchText), 'gi'),
-              (match) => `<b>${match}</b>`,
-            ),
-          } as SearchResult),
-      )
-      .concat(
-        forumResponse?.topics?.map((item) => {
-          const blurb =
-            item.excerpt ||
-            forumResponse.posts?.find((post) => post.topic_id == item.id)
-              ?.blurb;
-          return {
-            title: item.title,
-            url: `https://forum.builder.io/t/${item.slug}/${item.id}`,
-            htmlTitle: escapeHtml(item.title || '').replace(
-              new RegExp(escapeRegExp(searchText), 'gi'),
-              (match) => `<b>${match}</b>`,
-            ),
-            htmlDescription: escapeHtml(blurb || '').replace(
-              new RegExp(escapeRegExp(searchText), 'gi'),
-              (match) => `<b>${match}</b>`,
-            ),
-          };
-        }) || [],
-      );
+    ).map(
+      (item) =>
+        ({
+          title: item.data.pageTitle,
+          url: `https://www.builder.io${item.data.url}`,
+          // Bold exact text matches
+          htmlTitle: escapeHtml(item.data.pageTitle || '').replace(
+            new RegExp(escapeRegExp(searchText), 'gi'),
+            (match) => `<b>${match}</b>`,
+          ),
+          htmlDescription: escapeHtml(item.data.description || '').replace(
+            new RegExp(escapeRegExp(searchText), 'gi'),
+            (match) => `<b>${match}</b>`,
+          ),
+        } as SearchResult),
+    );
 
     const googleResults = googleResponse!.items;
     if (googleResults) {
@@ -181,6 +160,28 @@ function DocsSearchBrowser(props: DocsSearchProps) {
         }
       }
     }
+
+    // TODO: filter to ensure google didn't also pick up this forum result
+    const forumResultstoUse =
+      forumResponse?.topics?.map((item) => {
+        const blurb =
+          item.excerpt ||
+          forumResponse.posts?.find((post) => post.topic_id == item.id)?.blurb;
+
+        return {
+          title: item.title,
+          url: `https://forum.builder.io/t/${item.slug}/${item.id}`,
+          htmlTitle: escapeHtml(item.title || '').replace(
+            new RegExp(escapeRegExp(searchText), 'gi'),
+            (match) => `<b>${match}</b>`,
+          ),
+          htmlDescription: escapeHtml(blurb || '').replace(
+            new RegExp(escapeRegExp(searchText), 'gi'),
+            (match) => `<b>${match}</b>`,
+          ),
+        };
+      }) || [];
+    results.push(...forumResultstoUse);
 
     setSearchResult(
       results.filter((item) => {

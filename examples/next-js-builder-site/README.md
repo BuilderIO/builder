@@ -1,3 +1,7 @@
 # Builder Site
 
-Using Next.js static site generation. This includes Builder's [blog](https://www.builder.io/blog), [docs](https://www.builder.io/c/docs/intro), and [marketing pages](https://www.builder.io/)
+Next.js + Vercel
+
+`main` is currently the main branch used
+
+Push to the `live` branch to deploy to production

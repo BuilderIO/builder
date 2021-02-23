@@ -122,7 +122,7 @@ table {
 }
 
 body {
-  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'Avenir', 'Helvetica', 'Arial', sans-serif;
 }
 
 * {
@@ -235,7 +235,7 @@ html {
   color white, we use `html body` to override this, as a last resort...
 */
 html body {
-  background-color: white;
+  background-color: #f4f3e9;
 }
 
 /* Nicer code tag formatting in CSS */
@@ -248,8 +248,6 @@ html body {
   color: steelblue;
 }
 
-/* TODO: when ready to go live with new site styling, maybe alias all currenr Robot stuff to be this
-by removing the Robot definition and duplicating this with font-family: 'Robot' */
 @font-face {
   font-family: 'basic-sans';
   src: url('https://use.typekit.net/af/721f9c/00000000000000007735abf2/30/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3')
@@ -262,28 +260,37 @@ by removing the Robot definition and duplicating this with font-family: 'Robot' 
   font-style: normal;
   font-weight: 400;
 }
-
+/* Alias */
 @font-face {
-  font-family: 'Roboto';
-  font-style: normal;
-  font-weight: 300;
+  font-family: 'Basic Sans';
+  src: url('https://use.typekit.net/af/721f9c/00000000000000007735abf2/30/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3')
+      format('woff2'),
+    url('https://use.typekit.net/af/721f9c/00000000000000007735abf2/30/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3')
+      format('woff'),
+    url('https://use.typekit.net/af/721f9c/00000000000000007735abf2/30/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3')
+      format('opentype');
   font-display: swap;
-  src: url(https://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmSU5fBBc4AMP6lQ.woff2)
-    format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
-    U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
-    U+FEFF, U+FFFD;
+  font-style: normal;
+  font-weight: 400;
 }
 
+/* Override any old Robot to be Avenir */
 @font-face {
   font-family: 'Roboto';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: local('Roboto'),
-    url(https://fonts.gstatic.com/s/roboto/v20/KFOmCnqEu92Fr1Mu4mxKKTU1Kg.woff2)
-      format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
-    U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
-    U+FEFF, U+FFFD;
+  src: local('Avenir'),
+    url(https://cdn.builder.io/o/assets%2FYJIGb4i01jvw0SRdL5Bt%2F8266b541dec2459497e8c87432814cbf?alt=media&token=72534d12-ae77-4454-8749-2020f23e7199&apiKey=YJIGb4i01jvw0SRdL5Bt)
+      format('opentype');
+}
+
+@font-face {
+  font-family: 'Avenir';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Avenir'),
+    url(https://cdn.builder.io/o/assets%2FYJIGb4i01jvw0SRdL5Bt%2F8266b541dec2459497e8c87432814cbf?alt=media&token=72534d12-ae77-4454-8749-2020f23e7199&apiKey=YJIGb4i01jvw0SRdL5Bt)
+      format('opentype');
 }

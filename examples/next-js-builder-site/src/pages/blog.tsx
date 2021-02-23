@@ -30,8 +30,9 @@ function Blog({ articles, header, footer, page }: any /* TODO: types */) {
         flexDirection: 'column',
         height: '100vh',
         fontSize: 16,
-        backgroundColor: 'white',
         padding: '0 20px',
+        backgroundColor: '#f5f4ed',
+
         code: {
           fontSize: 14,
           lineHeight: '0.9em',
@@ -58,7 +59,7 @@ function Blog({ articles, header, footer, page }: any /* TODO: types */) {
           margin: '0 auto',
           textAlign: 'center',
           [largeBreakpointMediaQuery]: {
-            padding: 0,
+            padding: '20px 0 0 0',
             maxWidth: 1210,
           },
         }}
@@ -98,6 +99,9 @@ function Blog({ articles, header, footer, page }: any /* TODO: types */) {
                   cursor: 'pointer',
                   display: 'inline-block',
                   float: 'left',
+                  '&:hover': {
+                    zIndex: 10,
+                  },
                   [largeBreakpointMediaQuery]: {
                     float: 'none',
                     margin: 'auto',
@@ -164,7 +168,8 @@ function Blog({ articles, header, footer, page }: any /* TODO: types */) {
                     css={{
                       padding: `0 ${makeBig ? 17 : 20}`,
                       textAlign: 'center',
-                      borderBottom: '1px solid #ddd',
+                      boxShadow:
+                        '0px 2px 2px rgba(0, 0, 0, 0.04), 0px 1px 11px rgba(0, 0, 0, 0.1)',
                     }}
                   >
                     <div
@@ -178,10 +183,7 @@ function Blog({ articles, header, footer, page }: any /* TODO: types */) {
                         [largeBreakpointMediaQuery]: { fontSize: 20 },
                       }}
                     >
-                      <div css={{ margin: 'auto 0px' }}>{item.data.title}</div>
-                    </div>
-                    <div css={{ fontSize: 12, opacity: 0.7 }}>
-                      {item.data.description}
+                      <div css={{ margin: 'auto 5px' }}>{item.data.title}</div>
                     </div>
                   </div>
                 </AtvImg>

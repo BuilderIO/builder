@@ -56,6 +56,10 @@ function Docs({ docsContent, docsNav, docsHeader }: any /* TODO: types */) {
 
   const router = useRouter();
 
+  const title = `${
+    (docsContent && docsContent.data.pageTitle) || defaultTitle
+  } | Builder.io`;
+
   return (
     <div
       css={{
@@ -75,10 +79,9 @@ function Docs({ docsContent, docsNav, docsHeader }: any /* TODO: types */) {
       }}
     >
       <Head>
-        <title>
-          {(docsContent && docsContent.data.pageTitle) || defaultTitle} |
-          Builder.io
-        </title>
+        <title>{title}</title>
+        <meta key="og:title" property="og:title" content={title} />
+        <meta key="twitter:title" property="twitter:title" content={title} />
         <meta
           name="description"
           content={
@@ -91,7 +94,9 @@ function Docs({ docsContent, docsNav, docsHeader }: any /* TODO: types */) {
         css={{
           width: '100vw',
           marginLeft: 'calc(50% - 50vw)',
-          borderBottom: '1px solid #ddd',
+          borderBottom: '1px solid #CBCAB7',
+          boxShadow:
+            '0px 2px 2px rgba(0, 0, 0, 0.04), 0px 1px 11px rgba(0, 0, 0, 0.1)',
         }}
       >
         <BuilderComponent
@@ -111,7 +116,6 @@ function Docs({ docsContent, docsNav, docsHeader }: any /* TODO: types */) {
           width: '100%',
           height: '100%',
           maxWidth: 1400,
-          background: 'white',
         }}
       >
         <div
@@ -131,7 +135,6 @@ function Docs({ docsContent, docsNav, docsHeader }: any /* TODO: types */) {
               flexShrink: 0,
               height: '100%',
               overflow: 'auto',
-              borderRight: '1px solid #ddd',
               [verticalBreakpoint]: {
                 width: '100%',
                 height: 'auto',
@@ -142,6 +145,7 @@ function Docs({ docsContent, docsNav, docsHeader }: any /* TODO: types */) {
           >
             <ClientRouteWrapper contentRef={pageContent}>
               <BuilderComponent
+                stopClickPropagationWhenEditing={true}
                 renderLink={renderLink}
                 name="docs-nav"
                 content={docsNav}
@@ -157,7 +161,6 @@ function Docs({ docsContent, docsNav, docsHeader }: any /* TODO: types */) {
               height: '100%',
               overflowY: 'auto',
               overflowX: 'hidden',
-              backgroundColor: 'white',
               borderRadius: 0,
               [verticalBreakpoint]: {
                 overflow: 'visible',
@@ -165,6 +168,9 @@ function Docs({ docsContent, docsNav, docsHeader }: any /* TODO: types */) {
                 height: 'auto',
                 padding: 20,
                 margin: '10px 0',
+              },
+              '& .builder-text': {
+                lineHeight: '1.5em',
               },
             }}
             ref={pageContent as any}
@@ -227,7 +233,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  return { revalidate: 1, props: await getContent(context) };
+  const props = await getContent(context);
+  return { revalidate: 1, props, notFound: !props.docsContent };
 };
 
 const getContent = async (context: GetStaticPropsContext) => {

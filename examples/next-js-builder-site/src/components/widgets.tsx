@@ -9,12 +9,19 @@ import { docsSearchConfig } from './docs-search.config';
 import { materialTableConfig } from './material-table.config';
 import { tooltipConfig } from './tooltip.config';
 import { materialTabsConfig } from './material-tabs.config';
+import { codeSnippetsConfig } from './code-snippets.config';
 
 Builder.registerComponent(
   dynamic(() =>
     import('./code-block').then((res) => res.CodeBlockComponent as any),
   ),
   codeBlockConfig,
+);
+Builder.registerComponent(
+  dynamic(() =>
+    import('./code-snippets').then((res) => res.CodeSnippets as any),
+  ),
+  codeSnippetsConfig,
 );
 Builder.registerComponent(
   dynamic(() => import('./docs-search').then((res) => res.DocsSearch as any)),

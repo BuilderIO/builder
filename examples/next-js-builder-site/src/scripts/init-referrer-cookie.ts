@@ -1,6 +1,6 @@
 export const COOKIE_NAME = 'builder.initialReferrer';
 
-function getQueryParam(url: string, variable: string): string | null {
+export function getQueryParam(url: string, variable: string): string | null {
   const query = url.split('?')[1] || '';
   const vars = query.split('&');
   for (let i = 0; i < vars.length; i++) {
@@ -13,6 +13,9 @@ function getQueryParam(url: string, variable: string): string | null {
 }
 
 export function getCookie(name: string) {
+  if (typeof window === 'undefined') {
+    return null;
+  }
   try {
     name += '=';
     const decodedCookie = decodeURIComponent(document.cookie);
@@ -33,7 +36,7 @@ export function getCookie(name: string) {
   return '';
 }
 
-function setCookie(
+export function setCookie(
   cname: string,
   cvalue: string,
   exdays: number,
