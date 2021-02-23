@@ -72,7 +72,7 @@ export default let BuilderPage = () => {
   <tbody>
      <tr>
       <td>
-        <a href="https://builder.io/fiddle/fb98adf93ad5467180329fdaa9711f27"><img width="400" alt="Builder fiddle" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fdcfc7eee454241b2bc059373f33ba0c5" /></a>
+        <a href="https://builder.io/fiddle/fb98adf93ad5467180329fdaa9711f27"><img width="250" alt="Builder fiddle" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fdcfc7eee454241b2bc059373f33ba0c5" /></a>
       </td>
       <td>
         <p>
@@ -83,7 +83,7 @@ export default let BuilderPage = () => {
     </tr>
     <tr>
       <td>
-        <a href="https://github.com/builderio/figma-html"><img width="400" alt="Figma plugin" src="https://i.imgur.com/BoKsLFs.gif" /></a>
+        <a href="https://github.com/builderio/figma-html"><img width="250" alt="Figma plugin" src="https://i.imgur.com/BoKsLFs.gif" /></a>
       </td>
       <td>
         <p>
@@ -94,7 +94,7 @@ export default let BuilderPage = () => {
     </tr>
     <tr>
       <td>
-        <a href="https://github.com/builderio/figma-html"><img width="400" alt="Fiddle" src="https://imgur.com/H1WTtGe.gif" /></a>
+        <a href="https://github.com/builderio/figma-html"><img width="250" alt="Fiddle" src="https://imgur.com/H1WTtGe.gif" /></a>
       </td>
       <td>
         <p>
@@ -105,7 +105,7 @@ export default let BuilderPage = () => {
     </tr>
     <tr>
       <td>
-        <a href="https://github.com/BuilderIO/vscode"><img width="400" alt="Vscode plugin" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F1d59909e2a214c79ad2b1e8ad3fb8245" /></a>
+        <a href="https://github.com/BuilderIO/vscode"><img width="250" alt="Vscode plugin" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F1d59909e2a214c79ad2b1e8ad3fb8245" /></a>
       </td>
       <td>
         <p>
@@ -116,7 +116,7 @@ export default let BuilderPage = () => {
     </tr>
     <tr>
       <td>
-        <a href="https://apps.shopify.com/builder-2"><img width="400" alt="Vscode plugin" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F97c87a29d88e463b9c1ad22b0329b2f7" /></a>
+        <a href="https://apps.shopify.com/builder-2"><img width="250" alt="Vscode plugin" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F97c87a29d88e463b9c1ad22b0329b2f7" /></a>
       </td>
       <td>
         <p>
@@ -127,7 +127,7 @@ export default let BuilderPage = () => {
     </tr>
     <tr>
       <td>
-        <a href="https://github.com/builderio/builder"><img width="400" alt="Vscode plugin" src="https://cdn.builder.io/api/v1/image/assets%2F444142b2cae54a19aeb8b5ba245feffe%2F8c2699f47fea48b296b43dbb422336e8" /></a>
+        <a href="https://github.com/builderio/builder"><img width="250" alt="Vscode plugin" src="https://cdn.builder.io/api/v1/image/assets%2F444142b2cae54a19aeb8b5ba245feffe%2F8c2699f47fea48b296b43dbb422336e8" /></a>
       </td>
       <td>
         <p>
