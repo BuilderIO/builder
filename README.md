@@ -123,59 +123,69 @@ export default let BuilderPage = () => {
      <tr>
       <td>
         <p>&nbsp;</p> <!-- spacer -->
-        <a href="https://builder.io/fiddle/fb98adf93ad5467180329fdaa9711f27"><img width="120" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F084b1ebc3de4422185f9d36a409f3a24" /></a>
-        <p>&nbsp;</p> <!-- spacer -->
+        <p align="center">
+          <a href="https://builder.io/fiddle/fb98adf93ad5467180329fdaa9711f27">
+            <img height="60" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F084b1ebc3de4422185f9d36a409f3a24" />
+          </a>
+        </p>
+        <p align="center">
+          Try our <a href="https://builder.io/fiddle/fb98adf93ad5467180329fdaa9711f27"><b>interactive fiddle</b></a> to try the visual editor
+        </p>
       </td>
       <td>
-        Try our <a href="https://builder.io/fiddle/fb98adf93ad5467180329fdaa9711f27"><b>interactive fiddle</b></a> to try the visual editor
-      </td>
-      <td align="center" valign="middle">
         <p>&nbsp;</p> <!-- spacer -->
-        <a align="center" valign="middle" href="https://github.com/builderio/figma-html"><img width="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ffb77e93c28e044178e4694cc939bf4cf" /></a>
-        <p>&nbsp;</p> <!-- spacer -->
+        <p align="center" >
+          <a href="https://github.com/builderio/figma-html">
+            <img height="60" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ffb77e93c28e044178e4694cc939bf4cf" />
+          </a>
+        </p>
+        <p align="center">
+          Use our <a href="https://github.com/builderio/figma-html"><b>Figma plugin</b></a> to turn designs into code!
+        </p>
       </td>
       <td>
-        Use our <a href="https://github.com/builderio/figma-html"><b>Figma plugin</b></a> to turn designs into code!
+        <p>&nbsp;</p> <!-- spacer -->
+        <p align="center">
+          <a href="https://github.com/builderio/figma-html"><img height="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fb99f450616a640529896a2a10d3267b0" /></a>
+        </p>
+        <p align="center">
+          Try our  <a href="https://github.com/builderio/figma-html"><b>interactive code generation</b></a> fiddle
+        </p>
       </td>
     </tr>
     <tr>
       <td>
         <p>&nbsp;</p> <!-- spacer -->
-        <a href="https://github.com/builderio/figma-html"><img width="120" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fb99f450616a640529896a2a10d3267b0" /></a>
-        <p>&nbsp;</p> <!-- spacer -->
-      </td>
-      <td>
-        Try our  <a href="https://github.com/builderio/figma-html"><b>interactive code generation</b></a> fiddle
-      </td>
-      <td>
-        <p>&nbsp;</p> <!-- spacer -->
-        <a href="https://github.com/BuilderIO/vscode"><img width="120" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ff83e94a9c504427cbc8a557f682efec3" /></a>
-        <p>&nbsp;</p> <!-- spacer -->
-      </td>
-      <td>
-        Try our <a href="https://github.com/BuilderIO/vscode"><b>VS Code extension</b></a> for in-IDE visual coding
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <p>&nbsp;</p> <!-- spacer -->
-        <a href="https://apps.shopify.com/builder-2"><img width="120" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F0f577e84eb4e4aa4a69d602dd376aa11" /></a>
-        <p>&nbsp;</p> <!-- spacer -->
-      </td>
-      <td>
-        Try our <a href="https://apps.shopify.com/builder-2"><b>Shopify app</b></a> for visual Shopify store building
+        <p align="center">
+          <a href="https://github.com/BuilderIO/vscode"><img height="60" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ff83e94a9c504427cbc8a557f682efec3" /></a>
+        </p>
+        <p align="center">
+          Try our <a href="https://github.com/BuilderIO/vscode"><b>VS Code extension</b></a> for in-IDE visual coding
+        </p>
       </td>
       <td>
         <p>&nbsp;</p> <!-- spacer -->
-        <a href="https://github.com/builderio/builder"><img width="120" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F797d760607284eafad5c9697446896e7" /></a>
-        <p>&nbsp;</p> <!-- spacer -->
+        <p align="center">
+          <a href="https://apps.shopify.com/builder-2"><img height="60" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F0f577e84eb4e4aa4a69d602dd376aa11" /></a>
+        </p>
+        <p align="center">
+          Try our <a href="https://apps.shopify.com/builder-2"><b>Shopify app</b></a> for visual Shopify store building
+        <p>
       </td>
       <td>
-        Try our <a href="https://github.com/builderio/builder"><b>headless CMS</b></a> for no-code APIs for all sites and apps
+        <p>&nbsp;</p> <!-- spacer -->
+        <p align="center">
+          <a href="https://github.com/builderio/builder"><img height="60" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F797d760607284eafad5c9697446896e7" /></a>
+        </p>
+        <p align="center">
+          Try our <a href="https://github.com/builderio/builder"><b>headless CMS</b></a> for no-code APIs for all sites and apps
+        </p>
       </td>
     </tr>
     </tbody>
   </table>
+
+<br />
 
 ## How does it work?
 
