@@ -121,7 +121,7 @@ export default let BuilderPage = () => {
 <table>
   <tbody>
      <tr>
-      <td>
+      <td valign="top">
         <p>&nbsp;</p> <!-- spacer -->
         <p align="center">
           <a href="https://builder.io/fiddle/fb98adf93ad5467180329fdaa9711f27">
@@ -132,7 +132,7 @@ export default let BuilderPage = () => {
           Try our <a href="https://builder.io/fiddle/fb98adf93ad5467180329fdaa9711f27"><b>interactive fiddle</b></a> to try the visual editor
         </p>
       </td>
-      <td>
+      <td valign="top">
         <p>&nbsp;</p> <!-- spacer -->
         <p align="center" >
           <a href="https://github.com/builderio/figma-html">
@@ -143,18 +143,18 @@ export default let BuilderPage = () => {
           Use our <a href="https://github.com/builderio/figma-html"><b>Figma plugin</b></a> to turn designs into code!
         </p>
       </td>
-      <td>
+      <td valign="top">
         <p>&nbsp;</p> <!-- spacer -->
         <p align="center">
-          <a href="https://github.com/builderio/figma-html"><img height="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fb99f450616a640529896a2a10d3267b0" /></a>
+          <a href="https://github.com/builderio/figma-html"><img height="60" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fb99f450616a640529896a2a10d3267b0" /></a>
         </p>
         <p align="center">
-          Try our  <a href="https://github.com/builderio/figma-html"><b>interactive code generation</b></a> fiddle
+          Try our  <a href="https://github.com/builderio/figma-html"><b>code generation</b></a> fiddle
         </p>
       </td>
     </tr>
     <tr>
-      <td>
+      <td valign="top">
         <p>&nbsp;</p> <!-- spacer -->
         <p align="center">
           <a href="https://github.com/BuilderIO/vscode"><img height="60" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ff83e94a9c504427cbc8a557f682efec3" /></a>
@@ -163,7 +163,7 @@ export default let BuilderPage = () => {
           Try our <a href="https://github.com/BuilderIO/vscode"><b>VS Code extension</b></a> for in-IDE visual coding
         </p>
       </td>
-      <td>
+      <td valign="top">
         <p>&nbsp;</p> <!-- spacer -->
         <p align="center">
           <a href="https://apps.shopify.com/builder-2"><img height="60" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F0f577e84eb4e4aa4a69d602dd376aa11" /></a>
@@ -172,7 +172,7 @@ export default let BuilderPage = () => {
           Try our <a href="https://apps.shopify.com/builder-2"><b>Shopify app</b></a> for visual Shopify store building
         <p>
       </td>
-      <td>
+      <td valign="top">
         <p>&nbsp;</p> <!-- spacer -->
         <p align="center">
           <a href="https://github.com/builderio/builder"><img height="60" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F797d760607284eafad5c9697446896e7" /></a>
