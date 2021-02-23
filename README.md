@@ -95,7 +95,7 @@ export default let BuilderPage = () => {
       </td>
       <td>
         <p>
-          <img height="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fb99f450616a640529896a2a10d3267b0" />
+          <img height="40" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fb99f450616a640529896a2a10d3267b0" />
         </p>
         Try our  <a href="https://github.com/builderio/figma-html"><b>interactive code generation</b></a> fiddle
       </td>
