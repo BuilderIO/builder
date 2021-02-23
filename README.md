@@ -282,6 +282,8 @@ This repo houses all of the various [SDKs](packages), [usage examples](examples)
 
 ## Getting Started with React
 
+> Don't use React? See our getting started guide for any framework or platform [here](https://www.builder.io/c/docs/getting-started)
+
 ```sh
 npm install @builder.io/react
 ```
