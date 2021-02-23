@@ -76,7 +76,7 @@ export default let BuilderPage = () => {
       <td>
         <p>
           <!-- Spacer -->
-          <img height="0" width="50" src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" />
+          <img height="1" width="100" src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" />
           <img height="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F084b1ebc3de4422185f9d36a409f3a24" />
         </p>
         Try our <a href="https://builder.io/fiddle/fb98adf93ad5467180329fdaa9711f27"><b>interactive fiddle</b></a> to try the visual editor
@@ -87,7 +87,7 @@ export default let BuilderPage = () => {
       <td>
         <p>
         <!-- Spacer -->
-          <img height="0" width="50" src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" />
+          <img height="1" width="100" src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" />
           <img height="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ffb77e93c28e044178e4694cc939bf4cf" />
         </p>
         Use our <a href="https://github.com/builderio/figma-html"><b>Figma plugin</b></a> to turn designs into code!
@@ -109,7 +109,7 @@ export default let BuilderPage = () => {
       <td>
         <p>
         <!-- Spacer -->
-          <img height="0" width="50" src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" />
+          <img height="1" width="100" src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" />
         <img height="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ff83e94a9c504427cbc8a557f682efec3" />
         </p>
         Try our <a href="https://github.com/BuilderIO/vscode"><b>VS Code extension</b></a> for in-IDE visual coding
@@ -122,7 +122,7 @@ export default let BuilderPage = () => {
       <td>
         <p>
         <!-- Spacer -->
-          <img height="0" width="50" src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" />
+          <img height="1" width="100" src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" />
           <img height="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F0f577e84eb4e4aa4a69d602dd376aa11" />
         </p>
         Try our <a href="https://apps.shopify.com/builder-2"><b>Shopify app</b></a> for visual Shopify store building
@@ -133,7 +133,7 @@ export default let BuilderPage = () => {
       <td>
         <p>
         <!-- Spacer -->
-          <img height="0" width="50" src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" />
+          <img height="1" width="100" src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" />
           <img height="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F084b1ebc3de4422185f9d36a409f3a24" />
         </p>
         Try our <a href="https://github.com/builderio/builder"><b>headless CMS</b></a> for no-code APIs for all sites and apps
@@ -173,7 +173,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
       <td align="center" valign="middle">
         <a target="_blank" href="https://www.builder.io/c/docs/getting-started">
           <!-- Spacer -->
-          <img height="0" width="50" src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" />
+          <img height="1" width="100" src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" />
           <img height="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F7c16907175964f5dada038f6cceef77b" />
         </a>
       </td>
@@ -185,7 +185,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
       <td align="center" valign="middle">
         <a  target="_blank" href="https://www.builder.io/c/docs/getting-started">
           <!-- Spacer -->
-          <img height="0" width="50" src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" />
+          <img height="1" width="100" src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" />
           <img height="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fb739b409e5b94937b5b11e3cf62cfae4" />
         </a>
       </td>
@@ -197,7 +197,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
       <td align="center" valign="middle">
         <a  target="_blank" href="https://apps.shopify.com/builder-2">
           <!-- Spacer -->
-          <img height="0" width="50" src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" />
+          <img height="1" width="100" src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" />
           <img height="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F0f577e84eb4e4aa4a69d602dd376aa11" />
         </a>
       </td>
@@ -211,7 +211,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
       <td align="center" valign="middle">
         <a  target="_blank" href="https://github.com/BuilderIO/vscode">
           <!-- Spacer -->
-          <img height="0" width="50" src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" />
+          <img height="1" width="100" src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" />
           <img height="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ff83e94a9c504427cbc8a557f682efec3" />
         </a>
       </td>
@@ -223,7 +223,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
       <td align="center" valign="middle">
         <a  target="_blank" href="https://github.com/builderio/html-to-figma">
           <!-- Spacer -->
-          <img height="0" width="50" src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" />
+          <img height="1" width="100" src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" />
           <img height="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ffb77e93c28e044178e4694cc939bf4cf" />
         </a>
       </td>
@@ -235,7 +235,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
       <td align="center" valign="middle">
         <a  target="_blank" href="#getting-started-with-react">
           <!-- Spacer -->
-          <img height="0" width="50" src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" />
+          <img height="1" width="100" src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" />
           <img height="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F2f3409f4f8b64d5f880195061aa481ab" />
         </a>
       </td>
@@ -249,7 +249,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
       <td align="center" valign="middle">
         <a  target="_blank" href="examples/next-js">
           <!-- Spacer -->
-          <img height="0" width="50" src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" />
+          <img height="1" width="100" src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" />
           <img height="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fc6a3c58c0bde4f43b1fd6a350f491bdf" />
         </a>
       </td>
@@ -261,7 +261,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
       <td align="center" valign="middle">
         <a  target="_blank" href="examples/gatsby">
           <!-- Spacer -->
-          <img height="0" width="50" src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" />
+          <img height="1" width="100" src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" />
           <img height="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F45e59fc603574e708dcb79e45ef72d02" />
         </a>
       </td>
@@ -273,7 +273,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
       <td align="center" valign="middle">
         <a  target="_blank" href="packages/vue">
           <!-- Spacer -->
-          <img height="0" width="50" src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" />
+          <img height="1" width="100" src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" />
           <img height="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F7cc6d5b6fc4045d5a9f9b12ddcc65407" />
         </a>
       </td>
@@ -287,7 +287,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
       <td align="center" valign="middle">
         <a  target="_blank" href="examples/nuxt">
           <!-- Spacer -->
-          <img height="0" width="50" src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" />
+          <img height="1" width="100" src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" />
           <img height="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F73f47f47e0cc46cd95dbf72c26728858" />
         </a>
       </td>
@@ -299,7 +299,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
       <td align="center" valign="middle">
         <a  target="_blank" href="packages/angular">
           <!-- Spacer -->
-          <img height="0" width="50" src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" />
+          <img height="1" width="100" src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" />
           <img height="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fa91e9e437203442d8ed481eef94a99dc" />
         </a>
       </td>
@@ -311,7 +311,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
       <td align="center" valign="middle">
         <a  target="_blank" href="https://www.builder.io/c/docs/webcomponents-api">
           <!-- Spacer -->
-          <img height="0" width="50" src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" />
+          <img height="1" width="100" src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" />
           <img height="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F5613cb3536be4c108b32c34bf06f1c59" />
         </a>
       </td>
