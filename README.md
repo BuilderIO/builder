@@ -217,7 +217,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
     <tr>
       <td align="center" valign="middle">
         <a target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=rest">
-          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" width="500" />
           <img width="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F7c16907175964f5dada038f6cceef77b" />
           <p align="center">
             REST API
@@ -226,7 +226,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
       </td>
       <td align="center" valign="middle">
         <a target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=graphql">
-          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" width="500" />
           <img width="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fb739b409e5b94937b5b11e3cf62cfae4" />
           <p align="center">
             GraphQL
@@ -235,7 +235,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
       </td>
       <td align="center" valign="middle">
         <a target="_blank" href="https://apps.shopify.com/builder-2">
-          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" width="500" />
           <img width="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F0f577e84eb4e4aa4a69d602dd376aa11" />
           <p align="center">
             Shopify 
@@ -244,7 +244,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
       </td>
       <td align="center" valign="middle">
         <a target="_blank" href="https://github.com/BuilderIO/vscode">
-          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" width="500" />
           <img width="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ff83e94a9c504427cbc8a557f682efec3" />
           <p align="center">
             VS Code
@@ -253,7 +253,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
       </td>
       <td align="center" valign="middle">
         <a target="_blank" href="https://github.com/builderio/html-to-figma">
-          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" width="500" />
           <img width="25" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ffb77e93c28e044178e4694cc939bf4cf" />
           <p align="center">
             Figma
@@ -262,7 +262,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
       </td>
       <td align="center" valign="middle">
         <a target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=react">
-          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" width="500" />
           <img width="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F2f3409f4f8b64d5f880195061aa481ab" />
           <p align="center">
             React
@@ -273,7 +273,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
     <tr>
       <td align="center" valign="middle">
         <a target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=next">
-          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" width="500" />
           <img width="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fc6a3c58c0bde4f43b1fd6a350f491bdf" />
           <p align="center">
             Next.js
@@ -282,7 +282,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
       </td>
       <td align="center" valign="middle">
         <a target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=gatsby">
-          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" width="500" />
           <img width="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F45e59fc603574e708dcb79e45ef72d02" />
           <p align="center">
             Gatsby
@@ -291,7 +291,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
       </td>
       <td align="center" valign="middle">
         <a target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=vue">
-          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" width="500" />
           <img width="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F7cc6d5b6fc4045d5a9f9b12ddcc65407" />
           <p align="center">
             Vue
@@ -300,7 +300,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
       </td>
       <td align="center" valign="middle">
         <a target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=nuxt">
-          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" width="500" />
           <img width="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F73f47f47e0cc46cd95dbf72c26728858" />
           <p align="center">
             Nuxt
@@ -309,7 +309,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
       </td>
       <td align="center" valign="middle">
         <a target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=angular">
-          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" width="500" />
           <img width="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fa91e9e437203442d8ed481eef94a99dc" />
           <p align="center">
             Angular
@@ -318,7 +318,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
       </td>
       <td align="center" valign="middle">
         <a target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=webcomponents">
-          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" width="500" />
           <img width="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F5613cb3536be4c108b32c34bf06f1c59" />
           <p align="center">
             Web Components
