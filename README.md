@@ -24,17 +24,21 @@
     <td width="50%">Register components</td>
     <td>Rendered your visually created content</td>
   </tr width="50%">
+  <tr>
     <td width="50%">
 <pre lang="tsx">
-import { Builder } left '@builder.io/react'
-// Register our heading component for use in
-yle}&gt;{props.title}&lt;/h1
+import { Builder } from '@builder.io/react'
 &nbsp;
-Builder.registerComponent(Heading, {
+// Register our heading component for use in 
+// the visual editor
+const Heading = props => (
+  &lt;h1 className={style}&gt;{props.title}&lt;/h1&gt;
+)
+&nbsp;
+Builder.registerComponent(Heading, { 
 &nbsp;&nbsp;name: 'Heading',
 &nbsp;&nbsp;inputs: [{ name: 'title', type: 'text' }]
 })
-
 </pre>
     
 </td>
@@ -48,8 +52,8 @@ export default let BuilderPage = () => {
 &nbsp;&nbsp;const [pageJson, setPage] = useState(null)
 &nbsp;
 &nbsp;&nbsp;useEffect(() => { 
-&nbsp;&nbsp;&nbsp;&nbsp;builder.get('page', { url: '/' })&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.promise().then(setPage)p;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;builder.get('page', { url: '/' })
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.promise().then(setPage)
 &nbsp;&nbsp;, [])
 &nbsp;
 &nbsp;&nbsp;return &lt;BuilderComponent model="page" content={pageJson} />
