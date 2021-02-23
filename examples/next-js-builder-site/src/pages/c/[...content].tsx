@@ -22,6 +22,7 @@ function Content({ builderPage, docsHeader }: any /* TODO: types */) {
   return (
     <div>
       <Head>
+        {!builderPage && <meta key="robots" name="robots" content="noindex" />}
         <title>{title}</title>
         <meta key="og:title" property="og:title" content={title} />
         <meta key="twitter:title" property="twitter:title" content={title} />

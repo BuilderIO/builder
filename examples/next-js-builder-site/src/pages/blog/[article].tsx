@@ -81,6 +81,11 @@ function BlogArticle(
         >
           {(data, loading, article) => (
             <>
+              {!article && (
+                <Head>
+                  <meta key="robots" name="robots" content="noindex" />
+                </Head>
+              )}
               {article && (
                 <Head>
                   <title>{article.data.title}</title>
