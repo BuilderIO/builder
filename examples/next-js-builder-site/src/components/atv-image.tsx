@@ -158,7 +158,7 @@ export default class AtvImg extends Component<AtvImgProps> {
       {this.props.children && (
         <div
           css={{
-            background: 'white',
+            background: '#f5f4ed',
             height: '100%',
           }}
         >
@@ -265,7 +265,7 @@ const styles: { [key: string]: CSSPropertiesWithMultiValues } = {
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'top',
     backgroundSize: '100%',
-    backgroundColor: 'white',
+    backgroundColor: '#f5f4ed',
     transition: 'all 0.1s ease-out',
   },
 

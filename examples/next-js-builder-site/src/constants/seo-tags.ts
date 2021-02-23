@@ -1,4 +1,4 @@
 export const defaultTitle =
-  'Builder: Drag and Drop Page Building for Any Tech Stack';
+  'Builder.io: Visual no-code content management for e-commerce';
 export const defaultDescription =
-  'Builder is the first and only headless CMS with full visual drag and drop editing';
+  'Build and optimize digital experiences for any tech stack, visually.';

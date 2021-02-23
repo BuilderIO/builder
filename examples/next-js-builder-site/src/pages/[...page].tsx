@@ -7,19 +7,26 @@ import { renderLink } from '../functions/render-link';
 import { defaultDescription, defaultTitle } from '../constants/seo-tags';
 import { getBuilderStaticPaths } from '../functions/get-builder-static-paths';
 import { getBuilderStaticProps } from '../functions/get-builder-static-props';
+import { USE_CODEGEN } from '@/constants/use-codegen';
 
 builder.init('YJIGb4i01jvw0SRdL5Bt');
 
+if (USE_CODEGEN) {
+  builder.env = process.env.NODE_ENV === 'development' ? 'dev' : 'test';
+}
+
 function LandingPage({ builderPage }: any /* TODO: types */) {
+  const title = `${
+    (builderPage && (builderPage.data.pageTitle || builderPage.data.title)) ||
+    defaultTitle
+  } | Builder.io`;
   return (
     <div>
       <Head>
-        <title>
-          {(builderPage &&
-            (builderPage.data.pageTitle || builderPage.data.title)) ||
-            defaultTitle}{' '}
-          | Builder.io
-        </title>
+        {!builderPage && <meta key="robots" name="robots" content="noindex" />}
+        <title>{title}</title>
+        <meta key="og:title" property="og:title" content={title} />
+        <meta key="twitter:title" property="twitter:title" content={title} />
         <meta
           name="description"
           content={
@@ -31,9 +38,9 @@ function LandingPage({ builderPage }: any /* TODO: types */) {
         />
       </Head>
 
-      {/* If we're editing or previewing we also need to render the BuilderComponent  */}
       {builderPage || Builder.isEditing || Builder.isPreviewing ? (
         <BuilderComponent
+          codegen={USE_CODEGEN}
           renderLink={renderLink}
           name="content-page"
           content={builderPage}

@@ -31,7 +31,7 @@ export default class MyDocument extends Document {
     return (
       <Html>
         <Head>
-          <meta name="robots" content="index, follow" />
+          <meta key="robots" name="robots" content="index, follow" />
           <meta charSet="UTF-8" />
           <meta name="theme-color" content="#f8f8f8" />
           <meta name="mobile-web-app-capable" content="yes" />
@@ -41,7 +41,7 @@ export default class MyDocument extends Document {
           <link
             rel="icon"
             type="image/png"
-            href="https://cdn.builder.io/static/favicon.png?v=3"
+            href="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F2d86a5bb30f44d2db3564aa2962bb093"
           />
           <link
             rel="chrome-webstore-item"
@@ -49,12 +49,19 @@ export default class MyDocument extends Document {
           />
           <script
             dangerouslySetInnerHTML={{
-              __html: `/* Redirect to www.builder.io */
+              __html: `              
+                /* Redirect to www.builder.io */
                 if (location.host === 'app.builder.io') {
                   location.href = location.href.replace('//app.builder.io', '//www.builder.io');
                 } else if (location.host === 'builder.io') {
                   location.href = location.href.replace('//builder.io', '//www.builder.io');
-                }`,
+                }
+                
+                // Redirect logged in users to the login page of the app
+                if (location.pathname === '/' && location.host === 'www.builder.io' && document.cookie.includes('builder.userLoggedIn=true') && !location.href.includes('__builder_editing__')) {
+                  location.href = 'https://builder.io/login';
+                }
+                `,
             }}
           />
         </Head>
@@ -138,6 +145,31 @@ export default class MyDocument extends Document {
             defer
             src="https://www.googletagmanager.com/gtag/js?id=UA-108006325-1"
           ></script>
+
+          {/* Start ZoomInfo tracking */}
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+              (function () {
+                var zi = document.createElement('script');
+                zi.type = 'text/javascript';
+                zi.async = true;
+                zi.src = 'https://ws.zoominfo.com/pixel/YkQV5texcwM26aYtS31R';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(zi, s);
+              })();
+              `,
+            }}
+          />
+          <noscript>
+            <img
+              src="https://ws.zoominfo.com/pixel/YkQV5texcwM26aYtS31R"
+              width="1"
+              height="1"
+              style={{ display: 'none' }}
+            />
+          </noscript>
+          {/* End ZoomInfo tracking */}
         </body>
       </Html>
     );

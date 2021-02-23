@@ -1,4 +1,9 @@
-import { builder, BuilderComponent, Image } from '@builder.io/react';
+import {
+  builder,
+  BuilderComponent,
+  BuilderContent,
+  Image,
+} from '@builder.io/react';
 import React from 'react';
 import Head from 'next/head';
 import { renderLink, RenderLink } from '../../functions/render-link';
@@ -25,8 +30,8 @@ function BlogArticle(
       css={{
         display: 'flex',
         flexDirection: 'column',
+        backgroundColor: '#f5f4ed',
         fontSize: 16,
-        backgroundColor: 'white',
         code: {
           fontSize: 14,
           lineHeight: '0.9em',
@@ -69,176 +74,241 @@ function BlogArticle(
           </div>
         </>
       ) : (
-        <>
-          {article && (
-            <Head>
-              <title>{article.data.title}</title>
-              <meta name="description" content={article.data.blurb} />
+        <BuilderContent
+          key={article?.id}
+          modelName="blog-article"
+          content={article}
+        >
+          {(data, loading, article) => (
+            <>
+              {!article && (
+                <Head>
+                  <meta key="robots" name="robots" content="noindex" />
+                </Head>
+              )}
+              {article && (
+                <Head>
+                  <title>{article.data.title}</title>
+                  <meta name="description" content={article.data.blurb} />
 
-              <meta property="og:type" content="article" />
-              <meta property="og:title" content={article.data.title} />
-              <meta property="og:description" content={article.data.blurb} />
-              <meta property="og:image" content={article.data.image} />
-              <meta property="twitter:card" content="summary_large_image" />
-              <meta property="twitter:title" content={article.data.title} />
-              <meta
-                property="twitter:description"
-                content={article.data.blurb}
-              />
-              <meta property="twitter:image" content={article.data.image} />
-            </Head>
-          )}
+                  <meta key="og:type" property="og:type" content="article" />
+                  <meta
+                    key="og:title"
+                    property="og:title"
+                    content={article.data.title}
+                  />
+                  <meta
+                    key="og:description"
+                    property="og:description"
+                    content={article.data.blurb}
+                  />
+                  <meta
+                    key="og:image"
+                    property="og:image"
+                    content={article.data.image}
+                  />
+                  <meta
+                    key="twitter:card"
+                    property="twitter:card"
+                    content="summary_large_image"
+                  />
+                  <meta
+                    key="twitter:title"
+                    property="twitter:title"
+                    content={article.data.title}
+                  />
+                  <meta
+                    key="twitter:description"
+                    property="twitter:description"
+                    content={article.data.blurb}
+                  />
+                  <meta
+                    key="twitter:image"
+                    property="twitter:image"
+                    content={article.data.image}
+                  />
+                </Head>
+              )}
 
-          <ReadProgress containerSelector=".blog-article-container" />
-          <div
-            css={{
-              padding: 50,
-              width: '100%',
-              maxWidth: 800,
-              margin: '0 auto',
-              [mediumBreakpointMediaQuery]: {
-                padding: 15,
-              },
-              '.builder-text': {
-                lineHeight: '1.7em',
-              },
-            }}
-          >
-            {article && !article.data.fullPage && (
-              <div>
-                <TextLink
-                  css={{
-                    color: '#999',
-                  }}
-                  href="/blog"
-                >
-                  ‹ Back to blog
-                </TextLink>
-                <div css={{ display: 'flex', alignItems: 'center' }}>
+              <ReadProgress containerSelector=".blog-article-container" />
+              <div
+                css={{
+                  padding: 50,
+                  width: '100%',
+                  maxWidth: 800,
+                  margin: '0 auto',
+                  [mediumBreakpointMediaQuery]: {
+                    padding: 15,
+                  },
+                  '.builder-text': {
+                    lineHeight: '1.7em',
+                  },
+                }}
+              >
+                {article && !article.data.fullPage && (
                   <div>
-                    <h1
+                    <TextLink
                       css={{
-                        fontSize: 40,
-                        marginTop: 30,
+                        color: '#999',
+                      }}
+                      href="/blog"
+                    >
+                      ‹ Back to blog
+                    </TextLink>
+                    <div css={{ display: 'flex', alignItems: 'center' }}>
+                      <div>
+                        <h1
+                          css={{
+                            fontSize: 40,
+                            marginTop: 30,
+                            [mediumBreakpointMediaQuery]: {
+                              fontSize: 32,
+                            },
+                          }}
+                        >
+                          {article.data.title}
+                        </h1>
+                        <div css={{ marginTop: 10 }}>
+                          <span css={{ opacity: 0.7 }}>By</span>{' '}
+                          <a
+                            target="_blank"
+                            rel="noopenner"
+                            href={article.data.author.value?.data.url}
+                            css={{
+                              color: theme.colors.primary,
+                            }}
+                          >
+                            {article.data.author.value?.data.fullName}
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                <div
+                  css={{
+                    borderRadius: 4,
+                    marginTop: article?.data.fullPage ? undefined : 30,
+                  }}
+                >
+                  <div className="blog-article-container">
+                    <BuilderComponent
+                      renderLink={renderLink}
+                      name="blog-article"
+                      content={article}
+                    />
+                  </div>
+
+                  <TextLink
+                    css={{
+                      color: theme.colors.primary,
+                      marginTop: 60,
+                      fontWeight: 500,
+                      fontSize: 18,
+                      display: 'block',
+                      textAlign: 'center',
+                    }}
+                    href="/blog"
+                  >
+                    Read more on the blog
+                  </TextLink>
+                  <div
+                    css={{
+                      width: '100vw',
+                      marginLeft: 'calc(50% - 50vw)',
+                      display: 'flex',
+                      flexDirection: 'column',
+                    }}
+                  >
+                    <div
+                      css={{
+                        width: '100%',
+                        alignSelf: 'stretch',
+                        flexGrow: 1,
+                        maxWidth: 1200,
+                        display: 'flex',
+                        justifyContent: 'center',
+                        flexWrap: 'wrap',
+                        alignItems: 'stretch',
+                        marginLeft: 'auto',
+                        marginRight: 'auto',
+                        marginTop: 80,
+                        marginBottom: 20,
+                        textAlign: 'center',
+                        paddingBottom: 50,
                         [mediumBreakpointMediaQuery]: {
-                          fontSize: 32,
+                          marginLeft: 0,
+                          marginRight: 0,
                         },
                       }}
                     >
-                      {article.data.title}
-                    </h1>
-                    <div css={{ marginTop: 10 }}>
-                      <span css={{ opacity: 0.7 }}>By</span>{' '}
-                      <a
-                        target="_blank"
-                        rel="noopenner"
-                        href={article.data.author.value.data.url}
-                        css={{
-                          color: theme.colors.primary,
-                        }}
-                      >
-                        {article.data.author.value.data.fullName}
-                      </a>
+                      {articles.map((item: any, index: number) => {
+                        const makeBig = index === 0;
+                        return (
+                          <RenderLink
+                            css={{
+                              cursor: 'pointer',
+                              display: 'inline-block',
+                            }}
+                            key={item.id}
+                            href={`/blog/${item.data.handle}`}
+                          >
+                            <AtvImg
+                              css={{
+                                maxWidth: 'calc(100vw - 30px)',
+                                marginRight: cellSpace,
+                                marginBottom: cellSpace,
+                                width: cellWidth,
+                              }}
+                              widthMultiple={
+                                makeBig ? cellWidth / 2 : cellWidth
+                              }
+                              heightMultiple={
+                                makeBig ? cellWidth / 2 : cellWidth
+                              }
+                            >
+                              <div
+                                css={{
+                                  display: 'block',
+                                  height: cellImageHeight,
+                                  position: 'relative',
+                                  overflow: 'hidden',
+                                }}
+                              >
+                                <Image
+                                  aspectRatio={0.5}
+                                  backgroundSize="cover"
+                                  image={item.data.image}
+                                  lazy
+                                />
+                              </div>
+                              <div
+                                css={{
+                                  padding: 20,
+                                  textAlign: 'center',
+                                }}
+                              >
+                                <div
+                                  css={{
+                                    fontSize: 16,
+                                    paddingLeft: 5,
+                                    paddingRight: 5,
+                                  }}
+                                >
+                                  {item.data.title}
+                                </div>
+                              </div>
+                            </AtvImg>
+                          </RenderLink>
+                        );
+                      })}
                     </div>
                   </div>
                 </div>
               </div>
-            )}
-            <div
-              css={{
-                backgroundColor: 'white',
-                borderRadius: 4,
-                marginTop: article?.data.fullPage ? undefined : 30,
-              }}
-            >
-              <div className="blog-article-container">
-                <BuilderComponent
-                  renderLink={renderLink}
-                  name="blog-article"
-                  content={article}
-                />
-              </div>
-
-              <TextLink
-                css={{
-                  color: theme.colors.primary,
-                  marginTop: 60,
-                  fontWeight: 500,
-                  fontSize: 18,
-                  display: 'block',
-                  textAlign: 'center',
-                }}
-                href="/blog"
-              >
-                Read more on the blog
-              </TextLink>
-              <div
-                css={{
-                  margin: '40px -20px 20px',
-                  textAlign: 'center',
-                  paddingBottom: 50,
-                  [mediumBreakpointMediaQuery]: {
-                    marginLeft: 0,
-                    marginRight: 0,
-                  },
-                }}
-              >
-                {articles.map((item: any, index: number) => {
-                  const makeBig = index === 0;
-                  return (
-                    <RenderLink
-                      css={{
-                        cursor: 'pointer',
-                        display: 'inline-block',
-                      }}
-                      key={item.id}
-                      href={`/blog/${item.data.handle}`}
-                    >
-                      <AtvImg
-                        css={{
-                          maxWidth: 'calc(100vw - 30px)',
-                          marginRight: cellSpace,
-                          marginBottom: cellSpace,
-                          width: cellWidth,
-                        }}
-                        widthMultiple={makeBig ? cellWidth / 2 : cellWidth}
-                        heightMultiple={makeBig ? cellWidth / 2 : cellWidth}
-                      >
-                        <div
-                          css={{
-                            display: 'block',
-                            height: cellImageHeight,
-                            position: 'relative',
-                            overflow: 'hidden',
-                            borderBottom: '1px solid #eee',
-                          }}
-                        >
-                          <Image
-                            aspectRatio={0.5}
-                            backgroundSize="cover"
-                            image={item.data.image}
-                            lazy
-                          />
-                        </div>
-                        <div
-                          css={{
-                            padding: 20,
-                            textAlign: 'center',
-                          }}
-                        >
-                          <div css={{ fontSize: 16 }}>{item.data.title}</div>
-                          <div css={{ fontSize: 12, opacity: 0.7 }}>
-                            {item.data.description}
-                          </div>
-                        </div>
-                      </AtvImg>
-                    </RenderLink>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        </>
+            </>
+          )}
+        </BuilderContent>
       )}
       <div css={{ maxWidth: 1200, width: '100%', margin: 'auto' }}>
         <BuilderComponent name="symbol" content={footer} />
@@ -262,7 +332,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  return { revalidate: 1, props: await getContent(context) };
+  const props = await getContent(context);
+  return { revalidate: 1, props, notFound: !props.article };
 };
 
 const getContent = async (context: GetStaticPropsContext) => {
@@ -273,6 +344,7 @@ const getContent = async (context: GetStaticPropsContext) => {
     builder
       .get('blog-article', {
         userAttributes: targeting,
+        key: context.params!.article as string,
         query: {
           // Get the specific article by handle
           'data.handle': context.params!.article,
@@ -294,7 +366,7 @@ const getContent = async (context: GetStaticPropsContext) => {
     builder.getAll('blog-article', {
       key: `blog-articles:all:_:4`,
       fields: 'data.image,data.handle,data.title',
-      limit: 4,
+      limit: 5,
       userAttributes: targeting,
       options: {
         noTargeting: true,
@@ -310,9 +382,11 @@ const getContent = async (context: GetStaticPropsContext) => {
     header: header || null,
     footer: footer || null,
     isEditing: context.params!.article === '_',
-    articles: articles.filter(
-      (item: any) => item.data && item.data?.handle !== article?.data.handle,
-    ),
+    articles: articles
+      .filter(
+        (item: any) => item.data && item.data?.handle !== article?.data.handle,
+      )
+      .slice(0, 3),
   };
 };
 

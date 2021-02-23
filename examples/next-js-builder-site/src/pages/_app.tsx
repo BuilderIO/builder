@@ -12,6 +12,7 @@ import { AppPropsType } from 'next/dist/next-server/lib/utils';
 
 import '../components/widgets';
 import '../components/logo';
+import { defaultDescription, defaultTitle } from '@/constants/seo-tags';
 
 Builder.isStatic = true;
 // Heavy handed disable fonts for perf
@@ -46,7 +47,7 @@ const theme = createMuiTheme({
     },
   },
   typography: {
-    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+    fontFamily: '"Avenir", "Helvetica", "Arial", sans-serif',
   },
   palette: {
     primary: { main: 'rgba(28, 151, 204, 1)' },
@@ -132,21 +133,52 @@ function MyApp({ Component, pageProps, router }: AppPropsType) {
         {!router.asPath.includes('/blog/') && (
           <>
             <meta
+              key="og:image"
               property="og:image"
-              content="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ff0b8ad1720b14706befb9c822d6d70e4"
+              content="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F1bfe678f91004935b3897c7f3881014b"
             />
-            <meta property="og:image:width" content="1346" />
-            <meta property="og:image:height" content="721" />
             <meta
-              name="description"
-              content="Build and optimize digital experiences for any tech stack, visually."
+              key="og:image:width"
+              property="og:image:width"
+              content="1200"
             />
-            <meta property="og:type" content="website" />
+            <meta
+              key="og:image:height"
+              property="og:image:height"
+              content="627"
+            />
+            <meta name="description" content={defaultDescription} />
+            <meta key="og:type" property="og:type" content="website" />
+
+            <meta
+              key="twitter:card"
+              property="twitter:card"
+              content="summary_large_image"
+            />
+            <meta
+              key="twitter:title"
+              property="twitter:title"
+              content={defaultTitle}
+            />
+            <meta
+              key="twitter:description"
+              property="twitter:description"
+              content={defaultDescription}
+            />
+            <meta
+              key="twitter:image"
+              property="twitter:image"
+              content="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F1bfe678f91004935b3897c7f3881014b"
+            />
           </>
         )}
 
         <link rel="canonical" href={`https://www.builder.io${urlPath}`} />
-        <meta property="og:url" content={`https://www.builder.io${urlPath}`} />
+        <meta
+          key="og:url"
+          property="og:url"
+          content={`https://www.builder.io${urlPath}`}
+        />
       </Head>
       <MuiThemeProvider theme={theme}>
         <CssBaseline />

@@ -4,21 +4,28 @@ import Head from 'next/head';
 import { renderLink } from '../../functions/render-link';
 import { defaultTitle, defaultDescription } from '../../constants/seo-tags';
 import { GetStaticProps } from 'next';
+import { USE_CODEGEN } from '@/constants/use-codegen';
 
 builder.init('YJIGb4i01jvw0SRdL5Bt');
 
 const verticalBreakpoint = '@media (max-width: 800px)';
 
+if (USE_CODEGEN) {
+  builder.env = process.env.NODE_ENV === 'development' ? 'dev' : 'test';
+}
+
 function Content({ builderPage, docsHeader }: any /* TODO: types */) {
+  const title = `${
+    (builderPage && (builderPage.data.pageTitle || builderPage.data.title)) ||
+    defaultTitle
+  } | Builder.io`;
   return (
     <div>
       <Head>
-        <title>
-          {(builderPage &&
-            (builderPage.data.pageTitle || builderPage.data.title)) ||
-            defaultTitle}{' '}
-          | Builder.io
-        </title>
+        {!builderPage && <meta key="robots" name="robots" content="noindex" />}
+        <title>{title}</title>
+        <meta key="og:title" property="og:title" content={title} />
+        <meta key="twitter:title" property="twitter:title" content={title} />
         <meta
           name="description"
           content={
@@ -42,10 +49,13 @@ function Content({ builderPage, docsHeader }: any /* TODO: types */) {
           css={{
             width: '100vw',
             marginLeft: 'calc(50% - 50vw)',
-            borderBottom: '1px solid #ddd',
+            borderBottom: '1px solid #CBCAB7',
+            boxShadow:
+              '0px 2px 2px rgba(0, 0, 0, 0.04), 0px 1px 11px rgba(0, 0, 0, 0.1)',
           }}
         >
           <BuilderComponent
+            codegen={USE_CODEGEN}
             renderLink={renderLink}
             name="docs-header"
             content={docsHeader}
@@ -66,7 +76,6 @@ function Content({ builderPage, docsHeader }: any /* TODO: types */) {
             width: '100%',
             height: '100%',
             maxWidth: 1400,
-            background: 'white',
           }}
         >
           <div
@@ -82,7 +91,6 @@ function Content({ builderPage, docsHeader }: any /* TODO: types */) {
                 padding: '30px 50px 50px 50px',
                 flexGrow: 1,
                 width: '100%',
-                backgroundColor: 'white',
                 borderRadius: 0,
                 [verticalBreakpoint]: {
                   padding: 20,
@@ -96,6 +104,7 @@ function Content({ builderPage, docsHeader }: any /* TODO: types */) {
                   renderLink={renderLink}
                   key={builderPage?.id}
                   name="content-page"
+                  codegen={USE_CODEGEN}
                   content={builderPage}
                 />
               ) : (
@@ -163,17 +172,31 @@ export const getStaticProps: GetStaticProps = async (context) => {
     builder
       .get('content-page', {
         userAttributes: { ...targeting, urlPath: path },
+        ...(!USE_CODEGEN
+          ? {}
+          : {
+              format: 'react',
+            }),
       })
       .promise(),
     builder
       .get('docs-header', {
         userAttributes: targeting,
+        ...(!USE_CODEGEN
+          ? {}
+          : {
+              format: 'react',
+            }),
       })
       .promise(),
   ]);
 
   // If there is a Builder page for this URL, this will be an object, otherwise it'll be null
-  return { revalidate: 1, props: { builderPage: page || null, docsHeader } };
+  return {
+    revalidate: 1,
+    props: { builderPage: page || null, docsHeader },
+    notFound: !page,
+  };
 };
 
 export default Content;
