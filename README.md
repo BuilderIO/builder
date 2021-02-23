@@ -26,42 +26,42 @@
 </p>
 
 <p align="center" valign="middle">
-        &nbsp; <a title="REST API" target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=rest">
-          <img width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F7c16907175964f5dada038f6cceef77b" /> 
-        </a>&nbsp;
-        &nbsp; <a title="GraphQL"  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=graphql">
-          <img width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fb739b409e5b94937b5b11e3cf62cfae4" /> 
-        </a>&nbsp;
-        &nbsp; <a title="Shopify"  target="_blank" href="https://apps.shopify.com/builder-2">
-          <img width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F0f577e84eb4e4aa4a69d602dd376aa11" /> 
-        </a>&nbsp;
-        &nbsp; <a title="VS Code"  target="_blank" href="https://github.com/BuilderIO/vscode">
-          <img width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ff83e94a9c504427cbc8a557f682efec3" /> 
-        </a>&nbsp;
-        &nbsp; <a target="_blank" href="https://github.com/builderio/html-to-figma">
-          <img width="25" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ffb77e93c28e044178e4694cc939bf4cf" /> 
-        </a>&nbsp;
-        &nbsp; <a title="React"  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=react">
-          <img width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F2f3409f4f8b64d5f880195061aa481ab" /> 
-        </a>&nbsp;
-        &nbsp; <a title="Next.js"  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=next">
-          <img width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fc6a3c58c0bde4f43b1fd6a350f491bdf" /> 
-        </a>&nbsp;
-        &nbsp; <a title="Gatsby"  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=gatsby">
-          <img width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F45e59fc603574e708dcb79e45ef72d02" /> 
-        </a>&nbsp;
-        &nbsp; <a title="Vue"  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=vue">
-          <img width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F7cc6d5b6fc4045d5a9f9b12ddcc65407" /> 
-        </a>&nbsp;
-        &nbsp; <a title="Nuxt"  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=nuxt">
-          <img width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F73f47f47e0cc46cd95dbf72c26728858" /> 
-        </a>&nbsp;
-        &nbsp; <a title="Angular"  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=angular">
-          <img width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fa91e9e437203442d8ed481eef94a99dc" /> 
-        </a>&nbsp;
-        &nbsp; <a title="Webcomponents"  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=webcomponents">
-          <img width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F5613cb3536be4c108b32c34bf06f1c59" /> 
-        </a>&nbsp;
+  &nbsp; <a title="REST API" target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=rest">
+    <img alt="REST API" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F7c16907175964f5dada038f6cceef77b" /> 
+  </a>&nbsp;
+  &nbsp; <a title="GraphQL"  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=graphql">
+    <img alt="GraphQL" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fb739b409e5b94937b5b11e3cf62cfae4" /> 
+  </a>&nbsp;
+  &nbsp; <a title="Shopify"  target="_blank" href="https://apps.shopify.com/builder-2">
+    <img alt="Shopify" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F0f577e84eb4e4aa4a69d602dd376aa11" /> 
+  </a>&nbsp;
+  &nbsp; <a title="VS Code"  target="_blank" href="https://github.com/BuilderIO/vscode">
+    <img alt="VS Code" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ff83e94a9c504427cbc8a557f682efec3" /> 
+  </a>&nbsp;
+  &nbsp; <a target="_blank" href="https://github.com/builderio/html-to-figma">
+    <img width="25" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ffb77e93c28e044178e4694cc939bf4cf" /> 
+  </a>&nbsp;
+  &nbsp; <a title="React"  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=react">
+    <img alt="React" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F2f3409f4f8b64d5f880195061aa481ab" /> 
+  </a>&nbsp;
+  &nbsp; <a title="Next.js"  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=next">
+    <img alt="Next.js9" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fc6a3c58c0bde4f43b1fd6a350f491bdf" /> 
+  </a>&nbsp;
+  &nbsp; <a title="Gatsby"  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=gatsby">
+    <img alt="Gatsby" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F45e59fc603574e708dcb79e45ef72d02" /> 
+  </a>&nbsp;
+  &nbsp; <a title="Vue"  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=vue">
+    <img alt="Vue" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F7cc6d5b6fc4045d5a9f9b12ddcc65407" /> 
+  </a>&nbsp;
+  &nbsp; <a title="Nuxt"  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=nuxt">
+    <img alt="Nuxt" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F73f47f47e0cc46cd95dbf72c26728858" /> 
+  </a>&nbsp;
+  &nbsp; <a title="Angular"  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=angular">
+    <img alt="Angular" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fa91e9e437203442d8ed481eef94a99dc" /> 
+  </a>&nbsp;
+  &nbsp; <a title="Webcomponents"  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=webcomponents">
+    <img alt="Webcomponents" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F5613cb3536be4c108b32c34bf06f1c59" /> 
+  </a>&nbsp;
 </p>
 
 <br />
@@ -111,8 +111,6 @@ export default let BuilderPage = () => {
   </tr>
 </table>
 
-
-
 ## Who uses Builder.io?
 
 &nbsp;
@@ -124,13 +122,17 @@ export default let BuilderPage = () => {
   <tbody>
      <tr>
       <td>
+        <p>&nbsp;</p> <!-- spacer -->
         <a href="https://builder.io/fiddle/fb98adf93ad5467180329fdaa9711f27"><img width="120" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F084b1ebc3de4422185f9d36a409f3a24" /></a>
+        <p>&nbsp;</p> <!-- spacer -->
       </td>
       <td>
         Try our <a href="https://builder.io/fiddle/fb98adf93ad5467180329fdaa9711f27"><b>interactive fiddle</b></a> to try the visual editor
       </td>
       <td align="center" valign="middle">
+        <p>&nbsp;</p> <!-- spacer -->
         <a align="center" valign="middle" href="https://github.com/builderio/figma-html"><img width="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ffb77e93c28e044178e4694cc939bf4cf" /></a>
+        <p>&nbsp;</p> <!-- spacer -->
       </td>
       <td>
         Use our <a href="https://github.com/builderio/figma-html"><b>Figma plugin</b></a> to turn designs into code!
@@ -138,13 +140,17 @@ export default let BuilderPage = () => {
     </tr>
     <tr>
       <td>
+        <p>&nbsp;</p> <!-- spacer -->
         <a href="https://github.com/builderio/figma-html"><img width="120" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fb99f450616a640529896a2a10d3267b0" /></a>
+        <p>&nbsp;</p> <!-- spacer -->
       </td>
       <td>
         Try our  <a href="https://github.com/builderio/figma-html"><b>interactive code generation</b></a> fiddle
       </td>
       <td>
+        <p>&nbsp;</p> <!-- spacer -->
         <a href="https://github.com/BuilderIO/vscode"><img width="120" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ff83e94a9c504427cbc8a557f682efec3" /></a>
+        <p>&nbsp;</p> <!-- spacer -->
       </td>
       <td>
         Try our <a href="https://github.com/BuilderIO/vscode"><b>VS Code extension</b></a> for in-IDE visual coding
@@ -152,13 +158,17 @@ export default let BuilderPage = () => {
     </tr>
     <tr>
       <td>
+        <p>&nbsp;</p> <!-- spacer -->
         <a href="https://apps.shopify.com/builder-2"><img width="120" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F0f577e84eb4e4aa4a69d602dd376aa11" /></a>
+        <p>&nbsp;</p> <!-- spacer -->
       </td>
       <td>
         Try our <a href="https://apps.shopify.com/builder-2"><b>Shopify app</b></a> for visual Shopify store building
       </td>
       <td>
+        <p>&nbsp;</p> <!-- spacer -->
         <a href="https://github.com/builderio/builder"><img width="120" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F797d760607284eafad5c9697446896e7" /></a>
+        <p>&nbsp;</p> <!-- spacer -->
       </td>
       <td>
         Try our <a href="https://github.com/builderio/builder"><b>headless CMS</b></a> for no-code APIs for all sites and apps
