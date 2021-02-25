@@ -146,10 +146,10 @@ export default let BuilderPage = () => {
       <td valign="top">
         <p>&nbsp;</p> <!-- spacer -->
         <p align="center">
-          <a href="https://github.com/builderio/figma-html"><img height="60" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fb99f450616a640529896a2a10d3267b0" /></a>
+          <a href="https://github.com/builderio/jsx-lite"><img height="60" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fb99f450616a640529896a2a10d3267b0" /></a>
         </p>
         <p align="center">
-          Try our  <a href="https://github.com/builderio/figma-html"><b>code generation</b></a> fiddle
+          Try our  <a href="https://github.com/builderio/jsx-lite"><b>code generation</b></a> fiddle
         </p>
       </td>
     </tr>
@@ -175,10 +175,10 @@ export default let BuilderPage = () => {
       <td valign="top">
         <p>&nbsp;</p> <!-- spacer -->
         <p align="center">
-          <a href="https://github.com/builderio/builder"><img height="60" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F797d760607284eafad5c9697446896e7" /></a>
+          <a href="https://www.builder.io/m/visual-cms"><img height="60" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F797d760607284eafad5c9697446896e7" /></a>
         </p>
         <p align="center">
-          Try our <a href="https://github.com/builderio/builder"><b>headless CMS</b></a> for API-driven development
+          Try our <a href="https://www.builder.io/m/visual-cms"><b>headless CMS</b></a> for API-driven development
         </p>
       </td>
     </tr>
