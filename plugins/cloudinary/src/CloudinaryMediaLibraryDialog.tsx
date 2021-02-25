@@ -50,7 +50,7 @@ export class CloudinaryMediaLibraryDialog extends React.Component<
       {
         cloud_name: this.props.cloudName ? this.props.cloudName : '',
         api_key: this.props.apiKey ? this.props.apiKey : '',
-        inline_container: '.container',
+        inline_container: '.cloudinaryContainer',
       },
       {
         insertHandler: (data: any) => {
@@ -80,7 +80,7 @@ export class CloudinaryMediaLibraryDialog extends React.Component<
             this.openCloudinaryMediaLibrary();
           }}
         >
-          <div className="container" css={{ height: '90vh' }} />
+          <div className="cloudinaryContainer" css={{ height: '90vh' }} />
           <DialogActions>
             <Button autoFocus onClick={this.props.closeDialog} color="primary">
               Close media library
