@@ -142,7 +142,7 @@ export const getSizes = (sizes: string, block: BuilderElement) => {
 };
 
 // TODO: use picture tag to support more formats
-class ImageComponent extends React.Component<any> {
+class ImageComponent extends React.Component<any, { imageLoaded: boolean; load: boolean }> {
   get useLazyLoading() {
     // Use builder.getLocation()
     return Builder.isBrowser && location.search.includes('builder.lazyLoadImages=false')
@@ -178,12 +178,16 @@ class ImageComponent extends React.Component<any> {
 
   componentDidMount() {
     if (this.props.lazy && Builder.isBrowser) {
-      if (typeof IntersectionObserver !== 'undefined' && this.pictureRef) {
+      if (typeof IntersectionObserver === 'function' && this.pictureRef) {
         const observer = (this.intersectionObserver = new IntersectionObserver(
           (entries, observer) => {
             entries.forEach(entry => {
               // In view
               if (entry.intersectionRatio > 0) {
+                this.setState(state => ({
+                  ...state,
+                  load: true,
+                }));
                 if (this.pictureRef) {
                   observer.unobserve(this.pictureRef);
                 }
