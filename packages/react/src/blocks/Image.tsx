@@ -245,8 +245,12 @@ class ImageComponent extends React.Component<any, { imageLoaded: boolean; load: 
     }
   }
 
+  get image() {
+    return this.props.image || this.props.src;
+  }
+
   getSrcSet(): string | undefined {
-    const url = this.props.image;
+    const url = this.image;
     if (!url) {
       return;
     }
@@ -266,7 +270,7 @@ class ImageComponent extends React.Component<any, { imageLoaded: boolean; load: 
 
     let srcset = this.props.srcset;
     const sizes = getSizes(this.props.sizes, this.props.builderBlock);
-    const image = this.props.image;
+    const image = this.image;
 
     if (srcset && image && image.includes('builder.io/api/v1/image')) {
       if (!srcset.includes(image.split('?')[0])) {
@@ -299,8 +303,7 @@ class ImageComponent extends React.Component<any, { imageLoaded: boolean; load: 
               alt={this.props.altText}
               key={
                 Builder.isEditing
-                  ? (typeof this.props.image === 'string' && this.props.image.split('?')[0]) ||
-                    undefined
+                  ? (typeof this.image === 'string' && this.image.split('?')[0]) || undefined
                   : undefined
               }
               role={!this.props.altText ? 'presentation' : undefined}
@@ -326,7 +329,7 @@ class ImageComponent extends React.Component<any, { imageLoaded: boolean; load: 
               }}
               loading="lazy"
               className={'builder-image' + (this.props.className ? ' ' + this.props.className : '')}
-              src={this.props.image}
+              src={this.image}
               {...(!amp && {
                 // TODO: queue these so react renders all loads at once
                 onLoad: () => this.setState({ imageLoaded: true }),
