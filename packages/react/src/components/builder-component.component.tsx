@@ -125,7 +125,7 @@ const Throttle = decorator(throttle);
 
 const fetchCache: { [key: string]: any } = {};
 
-export interface BuilderPageProps {
+export interface BuilderComponentProps {
   modelName?: string;
   model?: string;
   name?: string;
@@ -160,7 +160,7 @@ export interface BuilderPageProps {
   stopClickPropagationWhenEditing?: boolean;
 }
 
-export interface BuilderPageState {
+export interface BuilderComponentState {
   state: any;
   update: (state: any) => any;
   updates: number;
@@ -261,8 +261,8 @@ function searchToObject(location: Location | Url) {
   return obj;
 }
 
-export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageState> {
-  static defaults: Pick<BuilderPageProps, 'codegen'> = {
+export class BuilderComponent extends React.Component<BuilderComponentProps, BuilderComponentState> {
+  static defaults: Pick<BuilderComponentProps, 'codegen'> = {
     codegen: Boolean(Builder.isBrowser && location.href.includes('builder.codegen=true')),
   };
 
@@ -288,7 +288,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
   get options() {
     // TODO: for perf cache this
     return {
-      ...BuilderPage.defaults,
+      ...BuilderComponent.defaults,
       ...this.props,
     };
   }
@@ -312,7 +312,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     return this.props.content;
   }
 
-  constructor(props: BuilderPageProps) {
+  constructor(props: BuilderComponentProps) {
     super(props);
 
     // TODO: pass this all the way down - symbols, etc
@@ -466,7 +466,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
 
   static renderInto(
     elementOrSelector: string | HTMLElement,
-    props: BuilderPageProps = {},
+    props: BuilderComponentProps = {},
     hydrate = true,
     fresh = false
   ) {
@@ -558,11 +558,11 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     }
     if (shouldHydrate && element) {
       // TODO: maybe hydrate again. Maybe...
-      const val = ReactDOM.render(<BuilderPage {...props} />, useEl, (useEl as any).builderRootRef);
+      const val = ReactDOM.render(<BuilderComponent {...props} />, useEl, (useEl as any).builderRootRef);
       (useEl as any).builderRootRef = val;
       return val;
     }
-    const val = ReactDOM.render(<BuilderPage {...props} />, useEl, (useEl as any).builderRootRef);
+    const val = ReactDOM.render(<BuilderComponent {...props} />, useEl, (useEl as any).builderRootRef);
     (useEl as any).builderRootRef = val;
     return val;
   }
@@ -774,7 +774,7 @@ export class BuilderPage extends React.Component<BuilderPageProps, BuilderPageSt
     return data;
   }
 
-  componentDidUpdate(prevProps: BuilderPageProps) {
+  componentDidUpdate(prevProps: BuilderComponentProps) {
     // TODO: shallow diff
     if (this.props.data && prevProps.data !== this.props.data) {
       this.state.update((state: any) => {

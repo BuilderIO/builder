@@ -14,6 +14,17 @@ function removeProtocol(path: string) {
   return path.replace(/http(s)?:/, '');
 }
 
+function isElementInViewport(el: HTMLElement) {
+  const rect = el.getBoundingClientRect();
+
+  return (
+    rect.top >= 0 &&
+    rect.left >= 0 &&
+    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+  );
+}
+
 function getShopifyImageUrl(src: string, size: string): string | null {
   if (!src || !src?.match(/cdn\.shopify\.com/) || !size) {
     return src;
@@ -142,7 +153,7 @@ export const getSizes = (sizes: string, block: BuilderElement) => {
 };
 
 // TODO: use picture tag to support more formats
-class ImageComponent extends React.Component<any> {
+class ImageComponent extends React.Component<any, { imageLoaded: boolean; load: boolean }> {
   get useLazyLoading() {
     // Use builder.getLocation()
     return Builder.isBrowser && location.search.includes('builder.lazyLoadImages=false')
@@ -161,50 +172,87 @@ class ImageComponent extends React.Component<any> {
   pictureRef: HTMLPictureElement | null = null;
 
   scrollListener: null | ((e: Event) => void) = null;
+  intersectionObserver: IntersectionObserver | null = null;
 
   componentWillUnmount() {
-    if (Builder.isBrowser && this.scrollListener) {
-      window.removeEventListener('scroll', this.scrollListener);
-      this.scrollListener = null;
+    if (Builder.isBrowser) {
+      if (this.scrollListener) {
+        window.removeEventListener('scroll', this.scrollListener);
+        this.scrollListener = null;
+      }
+
+      if (this.intersectionObserver && this.pictureRef) {
+        this.intersectionObserver.unobserve(this.pictureRef);
+      }
     }
   }
 
   componentDidMount() {
     if (this.props.lazy && Builder.isBrowser) {
-      // throttled scroll capture listener
-      const listener = throttle(
-        (event: Event) => {
-          if (this.pictureRef) {
-            const rect = this.pictureRef.getBoundingClientRect();
-            const buffer = window.innerHeight / 2;
-            if (rect.top < window.innerHeight + buffer) {
-              this.setState({
-                ...this.state,
-                load: true,
-              });
-              window.removeEventListener('scroll', listener);
-              this.scrollListener = null;
-            }
+      if (this.pictureRef && isElementInViewport(this.pictureRef)) {
+        this.setState({
+          load: true,
+        });
+      } else if (typeof IntersectionObserver === 'function' && this.pictureRef) {
+        const observer = (this.intersectionObserver = new IntersectionObserver(
+          (entries, observer) => {
+            entries.forEach(entry => {
+              // In view
+              if (entry.intersectionRatio > 0) {
+                this.setState({
+                  load: true,
+                });
+                if (this.pictureRef) {
+                  observer.unobserve(this.pictureRef);
+                }
+              }
+            });
           }
-        },
-        400,
-        {
-          leading: false,
-          trailing: true,
-        }
-      );
-      this.scrollListener = listener;
+        ));
 
-      window.addEventListener('scroll', listener, {
-        capture: true,
-        passive: true,
-      });
-      listener();
+        observer.observe(this.pictureRef);
+      } else {
+        // throttled scroll capture listener
+        const listener = throttle(
+          (event: Event) => {
+            if (this.pictureRef) {
+              const rect = this.pictureRef.getBoundingClientRect();
+              const buffer = window.innerHeight / 2;
+              if (rect.top < window.innerHeight + buffer) {
+                this.setState({
+                  ...this.state,
+                  load: true,
+                });
+                window.removeEventListener('scroll', listener);
+                this.scrollListener = null;
+              }
+            }
+          },
+          400,
+          {
+            leading: false,
+            trailing: true,
+          }
+        );
+        this.scrollListener = listener;
+
+        window.addEventListener('scroll', listener, {
+          capture: true,
+          passive: true,
+        });
+        listener();
+      }
     }
   }
 
+  // Allow our legacy `image` prop, as well as allow a `src` prop for more intuitive
+  // DX of manual usage (<Image src="..." />)
+  get image() {
+    return this.props.image || this.props.src;
+  }
+
   getSrcSet(): string | undefined {
-    const url = this.props.image;
+    const url = this.image;
     if (!url) {
       return;
     }
@@ -224,7 +272,7 @@ class ImageComponent extends React.Component<any> {
 
     let srcset = this.props.srcset;
     const sizes = getSizes(this.props.sizes, this.props.builderBlock);
-    const image = this.props.image;
+    const image = this.image;
 
     if (srcset && image && image.includes('builder.io/api/v1/image')) {
       if (!srcset.includes(image.split('?')[0])) {
@@ -257,8 +305,7 @@ class ImageComponent extends React.Component<any> {
               alt={this.props.altText}
               key={
                 Builder.isEditing
-                  ? (typeof this.props.image === 'string' && this.props.image.split('?')[0]) ||
-                    undefined
+                  ? (typeof this.image === 'string' && this.image.split('?')[0]) || undefined
                   : undefined
               }
               role={!this.props.altText ? 'presentation' : undefined}
@@ -284,7 +331,7 @@ class ImageComponent extends React.Component<any> {
               }}
               loading="lazy"
               className={'builder-image' + (this.props.className ? ' ' + this.props.className : '')}
-              src={this.props.image}
+              src={this.image}
               {...(!amp && {
                 // TODO: queue these so react renders all loads at once
                 onLoad: () => this.setState({ imageLoaded: true }),
