@@ -161,45 +161,69 @@ class ImageComponent extends React.Component<any> {
   pictureRef: HTMLPictureElement | null = null;
 
   scrollListener: null | ((e: Event) => void) = null;
+  intersectionObserver: IntersectionObserver | null = null;
 
   componentWillUnmount() {
-    if (Builder.isBrowser && this.scrollListener) {
-      window.removeEventListener('scroll', this.scrollListener);
-      this.scrollListener = null;
+    if (Builder.isBrowser) {
+      if (this.scrollListener) {
+        window.removeEventListener('scroll', this.scrollListener);
+        this.scrollListener = null;
+      }
+
+      if (this.intersectionObserver && this.pictureRef) {
+        this.intersectionObserver.unobserve(this.pictureRef);
+      }
     }
   }
 
   componentDidMount() {
     if (this.props.lazy && Builder.isBrowser) {
-      // throttled scroll capture listener
-      const listener = throttle(
-        (event: Event) => {
-          if (this.pictureRef) {
-            const rect = this.pictureRef.getBoundingClientRect();
-            const buffer = window.innerHeight / 2;
-            if (rect.top < window.innerHeight + buffer) {
-              this.setState({
-                ...this.state,
-                load: true,
-              });
-              window.removeEventListener('scroll', listener);
-              this.scrollListener = null;
-            }
+      if (typeof IntersectionObserver !== 'undefined' && this.pictureRef) {
+        const observer = (this.intersectionObserver = new IntersectionObserver(
+          (entries, observer) => {
+            entries.forEach(entry => {
+              // In view
+              if (entry.intersectionRatio > 0) {
+                if (this.pictureRef) {
+                  observer.unobserve(this.pictureRef);
+                }
+              }
+            });
           }
-        },
-        400,
-        {
-          leading: false,
-          trailing: true,
-        }
-      );
-      this.scrollListener = listener;
+        ));
 
-      window.addEventListener('scroll', listener, {
-        capture: true,
-        passive: true,
-      });
-      listener();
+        observer.observe(this.pictureRef);
+      } else {
+        // throttled scroll capture listener
+        const listener = throttle(
+          (event: Event) => {
+            if (this.pictureRef) {
+              const rect = this.pictureRef.getBoundingClientRect();
+              const buffer = window.innerHeight / 2;
+              if (rect.top < window.innerHeight + buffer) {
+                this.setState({
+                  ...this.state,
+                  load: true,
+                });
+                window.removeEventListener('scroll', listener);
+                this.scrollListener = null;
+              }
+            }
+          },
+          400,
+          {
+            leading: false,
+            trailing: true,
+          }
+        );
+        this.scrollListener = listener;
+
+        window.addEventListener('scroll', listener, {
+          capture: true,
+          passive: true,
+        });
+        listener();
+      }
     }
   }
 
