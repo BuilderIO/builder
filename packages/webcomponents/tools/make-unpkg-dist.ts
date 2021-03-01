@@ -9,7 +9,7 @@ async function main() {
   // TODO: bootstrap script goes here... hmmm...
   // TODO: export basic builder stuff from here so people can use js, or System.import name it hmm
   const newFileStr = (useAngular = false) =>
-    `(() => { if (typeof window !== 'undefined' && !window.builderWebcomponentsLoaded) {\n` +
+    `(function () { if (typeof window !== 'undefined' && !window.builderWebcomponentsLoaded) {\n` +
     [
       'window.builderWebcomponentsLoaded = true;',
       // Don't load System.js multiple times...
