@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
 import React from 'react';
-import { BuilderPage } from '../components/builder-page.component';
+import { BuilderComponent } from '../components/builder-component.component';
 import { Builder, BuilderElement } from '@builder.io/sdk';
 import hash from 'hash-sum';
 import { NoWrap } from '../components/no-wrap';
@@ -46,7 +46,7 @@ export interface SymbolProps {
 }
 
 class SymbolComponent extends React.Component<SymbolProps> {
-  ref: BuilderPage | null = null;
+  ref: BuilderComponent | null = null;
   staticRef: HTMLDivElement | null = null;
 
   get placeholder() {
@@ -120,7 +120,7 @@ class SymbolComponent extends React.Component<SymbolProps> {
               {showPlaceholder ? (
                 this.placeholder
               ) : (
-                <BuilderPage
+                <BuilderComponent
                   isChild
                   ref={ref => (this.ref = ref)}
                   context={{ ...state.context }}
@@ -142,7 +142,7 @@ class SymbolComponent extends React.Component<SymbolProps> {
                 >
                   {/* TODO: builder blocks option for loading stuff */}
                   {this.props.children}
-                </BuilderPage>
+                </BuilderComponent>
               )}
             </TagName>
           );

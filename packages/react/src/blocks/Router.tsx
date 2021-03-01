@@ -3,7 +3,7 @@ import { jsx } from '@emotion/core';
 import React from 'react';
 import { BuilderElement, builder, Builder } from '@builder.io/sdk';
 import { BuilderStoreContext } from '../store/builder-store';
-import { BuilderPage } from '../components/builder-page.component';
+import { BuilderComponent } from '../components/builder-component.component';
 import { withBuilder } from '../functions/with-builder';
 
 export interface RouterProps {
@@ -286,7 +286,7 @@ class RouterComponent extends React.Component<RouterProps> {
                   border-left: 1px solid #808284;
                 }
               `}</style>
-              <BuilderPage
+              <BuilderComponent
                 // TODO: this key strategy is inidial bc it gives loading for full page when fetching content
                 // Also sometimes content flashes to loading even when it's already precached in memory and should immediately display
                 // - why
@@ -305,7 +305,7 @@ class RouterComponent extends React.Component<RouterProps> {
                     <div css={{ margin: '40vh auto' }} className="builder-page-loading" />
                   </div>
                 )}
-              </BuilderPage>
+              </BuilderComponent>
             </div>
           );
         }}
