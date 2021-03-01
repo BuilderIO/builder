@@ -245,6 +245,8 @@ class ImageComponent extends React.Component<any, { imageLoaded: boolean; load: 
     }
   }
 
+  // Allow our legacy `image` prop, as well as allow a `src` prop for more intuitive
+  // DX of manual usage (<Image src="..." />)
   get image() {
     return this.props.image || this.props.src;
   }
