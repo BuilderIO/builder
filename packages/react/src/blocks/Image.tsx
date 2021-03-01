@@ -14,6 +14,17 @@ function removeProtocol(path: string) {
   return path.replace(/http(s)?:/, '');
 }
 
+function isElementInViewport(el: HTMLElement) {
+  const rect = el.getBoundingClientRect();
+
+  return (
+    rect.top >= 0 &&
+    rect.left >= 0 &&
+    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+  );
+}
+
 function getShopifyImageUrl(src: string, size: string): string | null {
   if (!src || !src?.match(/cdn\.shopify\.com/) || !size) {
     return src;
@@ -178,16 +189,19 @@ class ImageComponent extends React.Component<any, { imageLoaded: boolean; load: 
 
   componentDidMount() {
     if (this.props.lazy && Builder.isBrowser) {
-      if (typeof IntersectionObserver === 'function' && this.pictureRef) {
+      if (this.pictureRef && isElementInViewport(this.pictureRef)) {
+        this.setState({
+          load: true,
+        });
+      } else if (typeof IntersectionObserver === 'function' && this.pictureRef) {
         const observer = (this.intersectionObserver = new IntersectionObserver(
           (entries, observer) => {
             entries.forEach(entry => {
               // In view
               if (entry.intersectionRatio > 0) {
-                this.setState(state => ({
-                  ...state,
+                this.setState({
                   load: true,
-                }));
+                });
                 if (this.pictureRef) {
                   observer.unobserve(this.pictureRef);
                 }
