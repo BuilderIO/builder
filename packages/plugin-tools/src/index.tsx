@@ -27,10 +27,10 @@ interface Model {
 
 export interface CommercePluginConfig {
   id: string; // match npm package name @builder.io/plugin-shopify,
-  name: string; // single word will prefix types with it
-  settings: any[];
-  ctaText: string;
-  onSave: (actions: OnSaveActions) => Promise<void>;
+  name: string; // single word will prefix types with it, e.g Shopify
+  settings: any[]; // list of setting commerce API needs to communicate, e.g storeFrontAccessToken
+  ctaText: string; // what to display on the button to save settings, e.g `Connect your store`
+  onSave?: (actions: OnSaveActions) => Promise<void>; // you can run any action post save here, for example importing product data, registering webhooks
 }
 
 export interface CommerceAPIOperations {}
