@@ -51,6 +51,7 @@ const options = {
         'node_modules/react/index.js': [
           'cloneElement',
           'createContext',
+          'useContext',
           'Component',
           'createElement',
           'forwardRef',

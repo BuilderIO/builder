@@ -76,10 +76,7 @@
     {
       "disallowRemove": false,
       "@type": "@builder.io/core:Field",
-      "enum": [
-        "vistaprint",
-        "promotique"
-      ],
+      "enum": ["vistaprint", "promotique"],
       "noPhotoPicker": false,
       "type": "text",
       "subFields": [],

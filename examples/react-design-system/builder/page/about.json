@@ -897,16 +897,12 @@
     {
       "operator": "is",
       "property": "device",
-      "value": [
-        "mobile"
-      ]
+      "value": ["mobile"]
     },
     {
       "operator": "is",
       "property": "environment",
-      "value": [
-        "staging"
-      ]
+      "value": ["staging"]
     }
   ],
   "testRatio": 1,

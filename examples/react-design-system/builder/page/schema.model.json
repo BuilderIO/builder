@@ -88,9 +88,7 @@
       "helperText": "",
       "mandatory": false,
       "permissionsRequiredToEdit": "",
-      "allowedFileTypes": [
-        "jpeg"
-      ],
+      "allowedFileTypes": ["jpeg"],
       "type": "file",
       "required": false,
       "hideFromUI": false,

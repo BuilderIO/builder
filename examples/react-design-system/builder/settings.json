@@ -13,21 +13,14 @@
   },
   "customTargetingAttributes": {
     "environment": {
-      "enum": [
-        "production",
-        "staging",
-        "development"
-      ],
+      "enum": ["production", "staging", "development"],
       "type": "string"
     },
     "queryString": {
       "type": "string"
     },
     "gender": {
-      "enum": [
-        "men",
-        "women"
-      ],
+      "enum": ["men", "women"],
       "type": "string"
     }
   },

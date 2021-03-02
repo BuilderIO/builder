@@ -18,8 +18,6 @@ The source code for the custom components used in this demo are [here](src/compo
 - Create a new page
 - Clone and start the project:
 
-
-
 ### Clone and install dependencies
 
 using git
@@ -37,6 +35,7 @@ npm install
 [Signup for Builder.io](builder.io/signup), then go to your [organization settings page](https://builder.io/account/organization?root=true), create a private key and copy it, then create your space and give it a name
 
 From the `examples/react-design-system` folder
+
 ```
 builder create -k [private-key] -n [space-name] -d
 ```
@@ -54,7 +53,6 @@ npm run start
 ```
 
 It'll start a dev server at `http://localhost:3000`
-
 
 <img width="796" alt="Screen Shot 2020-02-18 at 9 48 51 AM" src="https://user-images.githubusercontent.com/5093430/74763082-f5457100-5233-11ea-870b-a1b17c7f99fe.png">
 

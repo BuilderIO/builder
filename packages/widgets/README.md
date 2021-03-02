@@ -28,19 +28,16 @@ You can also lazy load these components. To do so, instead of importing the root
 
 Here is an example with Next.js
 
-
 ```ts
-import { Builder } from '@builder.io/react'
+import { Builder } from '@builder.io/react';
 import { accordionConfig } from '@builder.io/widgets/dist/lib/components/Accordion.config';
 import dynamic from 'next/dynamic';
 
 Builder.registerComponent(
   dynamic(() =>
-    import('@builder.io/widgets/dist/lib/components/Accordion').then(
-      (mod) => mod.AccordionComponent,
-    ),
+    import('@builder.io/widgets/dist/lib/components/Accordion').then(mod => mod.AccordionComponent)
   ),
-  accordionConfig,
+  accordionConfig
 );
 ```
 
@@ -49,5 +46,3 @@ You can also use this same methodology with [Loadable](https://github.com/jamieb
 ## Help and troubleshooting
 
 Questions or feedback - contact us at help@builder.io, we are happy to help!
-
-

@@ -8,5 +8,5 @@
     "strict": true,
     "allowJs": true,
     "resolveJsonModule": true
-   }
+  }
 }

@@ -25,6 +25,7 @@ export { BuilderComponent };
 export { BuilderComponent as RenderContent };
 
 export { Text } from './blocks/Text';
+export { Dropzone } from './blocks/SymbolDropzone';
 export { Fragment } from './blocks/Fragment';
 export { Columns } from './blocks/Columns';
 export { Embed } from './blocks/Embed';

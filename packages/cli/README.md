@@ -1,13 +1,18 @@
 # Builder.io CLI
 
 Builder.io CLI, experimental.
+
 <!-- toc -->
-* [Usage](#usage)
-* [Commands](#commands)
+
+- [Usage](#usage)
+- [Commands](#commands)
 
 <!-- tocstop -->
+
 # Usage
+
 <!-- usage -->
+
 ```sh-session
 $ npm install -g @builder.io/cli
 $ builder COMMAND
@@ -15,11 +20,15 @@ USAGE
   $ builder COMMAND
 ...
 ```
+
 <!-- usagestop -->
+
 # Commands
+
 <!-- commands -->
-* [`builder import`](#builder-import--k-private-key---o-output-directory)
-* [`builder create`](#builder-create)
+
+- [`builder import`](#builder-import--k-private-key---o-output-directory)
+- [`builder create`](#builder-create)
 
 ## `builder import -k [PRIVATE KEY] -o [OUTPUT DIRECTORY]`
 
@@ -62,7 +71,6 @@ OPTIONS
 DESCRIPTION
   This command will create a new space clone from your local builder directory.
 ```
-
 
 ## Developing
 

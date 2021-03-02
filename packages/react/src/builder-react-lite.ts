@@ -15,7 +15,7 @@ export { BuilderAsyncRequestsContext } from './store/builder-async-requests';
 export { withChildren } from './functions/with-children';
 
 export { BuilderComponent as BuilderPage };
-export { BuilderComponent as BuilderComponent };
+export { BuilderComponent };
 
 export { stringToFunction } from './functions/string-to-function';
 

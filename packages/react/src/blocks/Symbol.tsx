@@ -122,8 +122,8 @@ class SymbolComponent extends React.Component<SymbolProps> {
               ) : (
                 <BuilderComponent
                   isChild
-                  ref={ref => (this.ref = ref)}
-                  context={{ ...state.context }}
+                  ref={(ref: any) => (this.ref = ref)}
+                  context={{ ...state.context, symbolId: this.props.builderBlock?.id }}
                   modelName={model}
                   entry={entry}
                   data={{

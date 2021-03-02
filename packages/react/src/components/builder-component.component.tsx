@@ -73,11 +73,11 @@ const size = (thing: object) => Object.keys(thing).length;
 
 function debounce(func: Function, wait: number, immediate = false) {
   let timeout: any;
-  return function(this: any) {
+  return function (this: any) {
     const context = this;
     const args = arguments;
     clearTimeout(timeout);
-    timeout = setTimeout(function() {
+    timeout = setTimeout(function () {
       timeout = null;
       if (!immediate) func.apply(context, args);
     }, wait);
@@ -261,7 +261,10 @@ function searchToObject(location: Location | Url) {
   return obj;
 }
 
-export class BuilderComponent extends React.Component<BuilderComponentProps, BuilderComponentState> {
+export class BuilderComponent extends React.Component<
+  BuilderComponentProps,
+  BuilderComponentState
+> {
   static defaults: Pick<BuilderComponentProps, 'codegen'> = {
     codegen: Boolean(Builder.isBrowser && location.href.includes('builder.codegen=true')),
   };
@@ -558,11 +561,19 @@ export class BuilderComponent extends React.Component<BuilderComponentProps, Bui
     }
     if (shouldHydrate && element) {
       // TODO: maybe hydrate again. Maybe...
-      const val = ReactDOM.render(<BuilderComponent {...props} />, useEl, (useEl as any).builderRootRef);
+      const val = ReactDOM.render(
+        <BuilderComponent {...props} />,
+        useEl,
+        (useEl as any).builderRootRef
+      );
       (useEl as any).builderRootRef = val;
       return val;
     }
-    const val = ReactDOM.render(<BuilderComponent {...props} />, useEl, (useEl as any).builderRootRef);
+    const val = ReactDOM.render(
+      <BuilderComponent {...props} />,
+      useEl,
+      (useEl as any).builderRootRef
+    );
     (useEl as any).builderRootRef = val;
     return val;
   }
@@ -936,7 +947,7 @@ export class BuilderComponent extends React.Component<BuilderComponentProps, Bui
                           const useBuilderState = (initialState: any) => {
                             const [, setTick] = React.useState(0);
                             const [state] = React.useState(() =>
-                              onChange(initialState, function() {
+                              onChange(initialState, function () {
                                 setTick(tick => tick + 1);
                               })
                             );
