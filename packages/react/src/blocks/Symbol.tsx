@@ -102,8 +102,6 @@ class SymbolComponent extends React.Component<SymbolProps> {
       key += ':' + dataString;
     }
 
-    console.log('block 2', this.props.builderBlock);
-
     const attributes = this.props.attributes || {};
     return (
       <BuilderStoreContext.Consumer key={(model || 'no model') + ':' + (entry || 'no entry')}>

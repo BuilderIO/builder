@@ -11,14 +11,16 @@ export async function resolveBuilderContent(
   let page = await builder
     .get(modelName, {
       userAttributes: targetingAttributes,
-      ...(cachebust ? {
-        cachebust: true,
-        noCache: true,
-      } : {
-        staleCacheSeconds: 140
-      })
+      ...(cachebust
+        ? {
+            cachebust: true,
+            noCache: true,
+          }
+        : {
+            staleCacheSeconds: 140,
+          }),
     })
     .toPromise()
 
-  return page || null;
+  return page || null
 }

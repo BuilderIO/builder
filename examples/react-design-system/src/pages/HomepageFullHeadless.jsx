@@ -3,8 +3,7 @@ import { NotFound } from '../components/NotFound';
 import { BuilderComponent, BuilderContent, Builder } from '@builder.io/react';
 import { CircularProgress } from '@material-ui/core';
 import { ProductsList } from '../components/ProductsList/ProductsList';
-import styled from "styled-components";
-
+import styled from 'styled-components';
 
 // This is a "pure headless data" homepage example.
 // Use this as reference for using Builder data models w/ React.
@@ -27,7 +26,11 @@ const HeroContainer = styled.a`
   padding-right: 0px;
   background-color: rgba(255, 255, 255, 1);
   color: rgba(186, 202, 255, 1);
-  background-image: ${props => "url(" + (props.backgroundImage || "https://cdn.builder.io/api/v1/image/assets%2FbqNZC3dTGjwbxXySE419%2F0fb37235a9c94992b4400cbfbe884778?width=2000") + ")"};
+  background-image: ${props =>
+    'url(' +
+    (props.backgroundImage ||
+      'https://cdn.builder.io/api/v1/image/assets%2FbqNZC3dTGjwbxXySE419%2F0fb37235a9c94992b4400cbfbe884778?width=2000') +
+    ')'};
   cursor: pointer;
   pointer-events: auto;
   flex-grow: 0;
@@ -234,7 +237,11 @@ const SecondaryBannerContainer = styled.div`
   height: 90vh;
   width: 100vw;
   margin-left: calc(50% - 50vw);
-  background-image: ${props => "url(" + (props.backgroundImage || "https://cdn.builder.io/api/v1/image/assets%2Ffdbd25dbc32e4eb7a62b2e2389bb946b%2Fa400e9af9c2646ae9ef0a68784e74479") + ");"};
+  background-image: ${props =>
+    'url(' +
+    (props.backgroundImage ||
+      'https://cdn.builder.io/api/v1/image/assets%2Ffdbd25dbc32e4eb7a62b2e2389bb946b%2Fa400e9af9c2646ae9ef0a68784e74479') +
+    ');'};
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
@@ -267,9 +274,9 @@ const SecondaryBannerTitle = styled.div`
   height: auto;
   text-align: center;
   font-family: sans-serif, sans-serif;
-  color: ${props => props.textColor || "rgba(255, 255, 255, 1)"};
+  color: ${props => props.textColor || 'rgba(255, 255, 255, 1)'};
   font-size: 82px;
-  background-color: ${props => props.isTextOverlayShown ? "rgba(3, 2, 2, 0.38)" : "transparent"};
+  background-color: ${props => (props.isTextOverlayShown ? 'rgba(3, 2, 2, 0.38)' : 'transparent')};
   opacity: 1;
   border-radius: 5px;
   @media (max-width: 991px) {
@@ -294,8 +301,8 @@ const SecondaryBannerCta = styled.div`
   padding-left: 29px;
   padding-bottom: 18px;
   padding-right: 29px;
-  background-color: ${props => props.buttonColor || "rgba(255, 255, 255, 1)"};
-  color: ${props => props.buttonTextColor || "black"};
+  background-color: ${props => props.buttonColor || 'rgba(255, 255, 255, 1)'};
+  color: ${props => props.buttonTextColor || 'black'};
   letter-spacing: 2px;
   font-size: 12px;
   font-family: sans-serif, sans-serif;
@@ -556,13 +563,13 @@ export function HomepageFullHeadless(props) {
       <BuilderContent modelName="homepage-headless-content">
         {(data, loading) => (
           <div>
-
-            <HeroContainer href={data?.heroBanner?.ctaUrl || '/collections'} backgroundImage={data?.heroBanner?.backgroundImage}>
+            <HeroContainer
+              href={data?.heroBanner?.ctaUrl || '/collections'}
+              backgroundImage={data?.heroBanner?.backgroundImage}
+            >
               <HeroTopText>
                 <HeroHeader>
-                  <span>
-                    {data?.heroBanner?.header || 'WHY WAIT?'}
-                  </span>
+                  <span>{data?.heroBanner?.header || 'WHY WAIT?'}</span>
                 </HeroHeader>
                 <Block1>
                   <HeroTitle>
@@ -571,12 +578,12 @@ export function HomepageFullHeadless(props) {
                 </Block1>
               </HeroTopText>
               <HeroSubtitle>
-                <p>{data?.heroBanner?.subtitle || 'Browse the exclusive early-access collection.'}</p>
+                <p>
+                  {data?.heroBanner?.subtitle || 'Browse the exclusive early-access collection.'}
+                </p>
               </HeroSubtitle>
               <HeroCta>
-                <span>
-                  {data?.heroBanner?.cta || 'SHOP NOW'}
-                </span>
+                <span>{data?.heroBanner?.cta || 'SHOP NOW'}</span>
               </HeroCta>
             </HeroContainer>
 
@@ -584,10 +591,17 @@ export function HomepageFullHeadless(props) {
               {data?.secondaryBanners?.map((item, index) => (
                 <SecondaryBannerContainer key={index} backgroundImage={item.banner.backgroundImage}>
                   <Div9>
-                    <SecondaryBannerTitle isTextOverlayShown={item.banner.isTextOverlayShown} textColor={item.banner.textColor}>
+                    <SecondaryBannerTitle
+                      isTextOverlayShown={item.banner.isTextOverlayShown}
+                      textColor={item.banner.textColor}
+                    >
                       <p>{item.banner.title}</p>
                     </SecondaryBannerTitle>
-                    <SecondaryBannerCta href={item.banner.ctaUrl} buttonColor={item.banner.buttonColor} buttonTextColor={item.banner.buttonTextColor}>
+                    <SecondaryBannerCta
+                      href={item.banner.ctaUrl}
+                      buttonColor={item.banner.buttonColor}
+                      buttonTextColor={item.banner.buttonTextColor}
+                    >
                       <p>{item.banner.cta}</p>
                     </SecondaryBannerCta>
                   </Div9>
@@ -637,18 +651,15 @@ export function HomepageFullHeadless(props) {
                     </Div24>
                   </Div13>
                 </Div12>
-              ) : <div></div>}
+              ) : (
+                <div></div>
+              )}
             </div>
           </div>
         )}
       </BuilderContent>
 
-      <ProductsList1
-        category="living"
-        size="Medium"
-        amount={20}
-      ></ProductsList1>
+      <ProductsList1 category="living" size="Medium" amount={20}></ProductsList1>
     </>
   );
 }
-

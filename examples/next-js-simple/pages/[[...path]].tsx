@@ -1,7 +1,4 @@
-import type {
-  GetStaticPropsContext,
-  InferGetStaticPropsType,
-} from 'next'
+import type { GetStaticPropsContext, InferGetStaticPropsType } from 'next'
 import { NextSeo } from 'next-seo'
 import { useRouter } from 'next/router'
 import { BuilderComponent, Builder, builder } from '@builder.io/react'
@@ -10,7 +7,6 @@ import DefaultErrorPage from 'next/error'
 import Head from 'next/head'
 import { resolveBuilderContent } from '@lib/resolve-builder-content'
 import { Link } from '@components/Link/Link'
-
 
 export async function getStaticProps({
   params,
@@ -50,7 +46,7 @@ export default function Path({
   if (router.isFallback) {
     return <h1>Loading...</h1>
   }
-  const isLive = !Builder.isEditing && !Builder.isPreviewing;
+  const isLive = !Builder.isEditing && !Builder.isPreviewing
   if (!page && isLive) {
     return (
       <>
@@ -66,9 +62,9 @@ export default function Path({
   const { title, description, image } = page?.data! || {}
   return (
     <>
-    <Head>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    </Head>
+      <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </Head>
       <NextSeo
         title={title}
         description={description}
@@ -86,11 +82,7 @@ export default function Path({
           ],
         }}
       />
-      <BuilderComponent
-        renderLink={Link}
-        model="page"
-        content={page}
-      />
-      </>
+      <BuilderComponent renderLink={Link} model="page" content={page} />
+    </>
   )
 }

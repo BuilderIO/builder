@@ -7,6 +7,4 @@ Display Builder page or component content on any tech stack
 <script async src="https://cdn.builder.io/js/webcomponents"></script>
 ```
 
-
-
 [View the full docs here](https://www.builder.io/c/docs/webcomponents-api)

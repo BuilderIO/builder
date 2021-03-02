@@ -33,6 +33,7 @@ When adding the plugin to a custom component input, it will require two input ar
 
 The `url` argument will be templated with handlebars. The plugin is smart enough to figure out the handlebars values from the application context to replace them.
 The `mapper` argument will be a string method that will be executed on the side of the plugin given the answer from the `url` GET call. it has to be an arrow function that will receive a { data } object comming from the url request. The mapper function must return an object with the following signature:
+
 ```js
 {
   dimension1: [
@@ -44,11 +45,13 @@ The `mapper` argument will be a string method that will be executed on the side 
   ]
 }
 ```
+
 For each dimension in the object, a new dropdown will be generated.
 
-The `expectMultipleDropdowns` argument is a boolean, false by default. 
+The `expectMultipleDropdowns` argument is a boolean, false by default.
 The expected plugin return value when multiple dropdowns is enabled is: `{dimension1: "VALUE1", dimension2: "X"}`
 The return value when multiple dropdown is NOT enabled is a non key value, like: `"VALUE1`
+
 ## Developing on top of this plugin ?
 
 ### Install

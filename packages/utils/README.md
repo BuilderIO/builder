@@ -18,14 +18,15 @@ export function Products(props) {
   return <>{data.products.map(/*...*/)}</>;
 }
 
-Builder.registerComponent(Products, { 
-  name: 'Products', inputs: [{ name: 'category', type: 'string', enum: ['men', 'women'] }]
-})
+Builder.registerComponent(Products, {
+  name: 'Products',
+  inputs: [{ name: 'category', type: 'string', enum: ['men', 'women'] }],
+});
 ```
 
 This component will update to fetch product data browser side by category chosen in the Builder editor. But if you want this to render server side you need `props.data` to be passed with the needed data on render.
 
-To accomplish this, you can use `getAsyncProps`. 
+To accomplish this, you can use `getAsyncProps`.
 
 Here is a usage example with Next.js:
 
@@ -34,21 +35,21 @@ import { Builder, builder } from '@builder.io/react';
 import { getAsyncProps } from '@builder.io/utils';
 
 export default function MyPage(props) {
-  return <BuilderComponent model="page" content={props.content} />
+  return <BuilderComponent model="page" content={props.content} />;
 }
 
 export async function getStaticProps(context) {
   const content = await builder.get('page', { url: context.resolvedUrl }).promise();
-  
+
   await getAsyncProps(content, {
     async Products(props) {
       return {
-        data: await fetch(`${apiRoot}/products?cat=${props.category}`).then(res => res.json())
-      }
-    }
-  })
+        data: await fetch(`${apiRoot}/products?cat=${props.category}`).then(res => res.json()),
+      };
+    },
+  });
 
-  return { props: { content } }
+  return { props: { content } };
 }
 ```
 
@@ -110,18 +111,19 @@ const customQueryInput = {
     },
   ],
 }
-Builder.registerComponent(Products, { 
+Builder.registerComponent(Products, {
   name: 'ProductGrid', inputs: [customQueryInput}]
 })
-// another component 
-Builder.registerComponent(ProductsSlider, { 
+// another component
+Builder.registerComponent(ProductsSlider, {
   name: 'ProductsSlider', inputs: [customQueryInput}]
 })
 
 ```
+
 This component will update to fetch product data browser side by query chosen in the Builder editor. But if you want this to render server side you need `props.products` to be passed with the needed data on render.
 
-To accomplish this, you can use `extendAsyncProps`. 
+To accomplish this, you can use `extendAsyncProps`.
 
 Here is a usage example with Next.js:
 
@@ -130,20 +132,22 @@ import { Builder, builder } from '@builder.io/react';
 import { extendAsyncProps } from '@builder.io/utils';
 
 export default function MyPage(props) {
-  return <BuilderComponent model="page" content={props.content} />
+  return <BuilderComponent model="page" content={props.content} />;
 }
 
 export async function getStaticProps(context) {
   const content = await builder.get('page', { url: context.resolvedUrl }).promise();
-  
+
   await extendAsyncProps(content, {
     async productsQuery(props) {
       return {
-        products: await fetch(`${apiRoot}/products?${qs.stringify(props.productsQuery)}`).then(res => res.json())
-      }
-    }
-  })
+        products: await fetch(
+          `${apiRoot}/products?${qs.stringify(props.productsQuery)}`
+        ).then(res => res.json()),
+      };
+    },
+  });
 
-  return { props: { content } }
+  return { props: { content } };
 }
 ```
