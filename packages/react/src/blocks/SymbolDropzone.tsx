@@ -20,8 +20,6 @@ export function Dropzone(props: DropzoneProps) {
   const { name } = props;
   const context = useContext(BuilderStoreContext);
 
-  console.log('HELLO', context.context.symbolId, context, name);
-
   return (
     <div css={{ pointerEvents: 'auto' }}>
       <BuilderBlocks
