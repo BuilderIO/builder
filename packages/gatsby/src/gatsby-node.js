@@ -135,6 +135,10 @@ const createPagesAsync = async (config, createPage, graphql, models, offsets) =>
       entries = entries.filter(config.filter);
     }
 
+    if (config.resolveDynamicEntries) {
+      entries = await config.resolveDynamicEntries(entries);
+    }
+
     for (const entry of entries) {
       if (entry.content.data.url && entry.content.published === `published`) {
         let mappedProps = {};
