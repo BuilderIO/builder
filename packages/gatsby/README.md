@@ -30,7 +30,19 @@ module.exports = {
             dataFromQuery: result.data
             /* ... */
           };
-        }
+        },
+        resolveDynamicEntries: async (entries) => {
+          const entriesToBuild = []
+          for entry of entries {
+            if (entry.data.myprop.isDynamic){
+               entriesToBuild.push(await myEntryResolver(entry))
+            }
+            else {
+               entriesToBuild.push(entry)
+            }
+          }
+          return entriesToBuild;
+        },
         templates: {
           // `page` can be any model of choice, camelCased
           page: path.resolve('templates/my-page.tsx'),
