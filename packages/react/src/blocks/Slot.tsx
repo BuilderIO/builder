@@ -20,8 +20,17 @@ export function Slot(props: DropzoneProps) {
   const { name } = props;
   const context = useContext(BuilderStoreContext);
 
+  const isEditingThisSlot = !context.context.symbolId;
+
   return (
-    <div css={{ pointerEvents: 'auto' }}>
+    <div
+      css={{
+        pointerEvents: 'auto',
+      }}
+      {...(isEditingThisSlot && {
+        'builder-slot': name,
+      })}
+    >
       <BuilderBlocks
         child
         parentElementId={context.context.symbolId}
