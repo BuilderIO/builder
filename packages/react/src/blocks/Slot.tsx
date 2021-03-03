@@ -5,18 +5,18 @@ import { Builder } from '@builder.io/sdk';
 import { BuilderBlocks } from '../components/builder-blocks.component';
 import { BuilderStoreContext } from 'src/store/builder-store';
 
-Builder.registerComponent(Dropzone, {
-  name: 'Dropzone',
+Builder.registerComponent(Slot, {
+  name: 'Slot',
 
   // Maybe wrap this for canHaveChildren so bind children to this hm
-  inputs: [{ name: 'name', type: 'string', required: true, defaultValue: 'blocks' }],
+  inputs: [{ name: 'name', type: 'string', required: true, defaultValue: 'children' }],
 });
 
 type DropzoneProps = {
   name: string;
 };
 
-export function Dropzone(props: DropzoneProps) {
+export function Slot(props: DropzoneProps) {
   const { name } = props;
   const context = useContext(BuilderStoreContext);
 
