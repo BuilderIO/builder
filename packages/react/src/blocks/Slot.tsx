@@ -3,7 +3,7 @@ import { jsx } from '@emotion/core';
 import React, { useContext } from 'react';
 import { Builder } from '@builder.io/sdk';
 import { BuilderBlocks } from '../components/builder-blocks.component';
-import { BuilderStoreContext } from 'src/store/builder-store';
+import { BuilderStoreContext } from '../store/builder-store';
 
 Builder.registerComponent(Slot, {
   name: 'Slot',
