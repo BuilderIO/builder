@@ -5,3 +5,4 @@ dist
 .cache-loader
 .cache
 docs
+.nuxt
