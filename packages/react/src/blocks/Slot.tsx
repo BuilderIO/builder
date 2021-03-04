@@ -21,8 +21,18 @@ export function Slot(props: DropzoneProps) {
   const context = useContext(BuilderStoreContext);
 
   const isEditingThisSlot = !context.context.symbolId;
+  const blocks = (
+    <BuilderBlocks
+      child
+      parentElementId={context.context.symbolId}
+      dataPath={`symbol.data.${name}`}
+      blocks={context.state[name] || []}
+    />
+  );
 
-  return (
+  return !Builder.isEditing ? (
+    <React.Fragment>{blocks}</React.Fragment>
+  ) : (
     <div
       css={{
         pointerEvents: 'auto',
@@ -31,12 +41,7 @@ export function Slot(props: DropzoneProps) {
         'builder-slot': name,
       })}
     >
-      <BuilderBlocks
-        child
-        parentElementId={context.context.symbolId}
-        dataPath={`symbol.data.${name}`}
-        blocks={context.state[name] || []}
-      />
+      {blocks}
     </div>
   );
 }
