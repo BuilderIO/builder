@@ -21,7 +21,7 @@ function wrapHistoryPropertyWithCustomEvent(property: 'pushState' | 'replaceStat
   try {
     const anyHistory = history;
     const originalFunction = anyHistory[property];
-    anyHistory[property] = function (this: History) {
+    anyHistory[property] = function(this: History) {
       var rv = originalFunction.apply(this, arguments as any);
       var event = new CustomEvent(property, {
         detail: {
@@ -48,10 +48,14 @@ function addHistoryChangeEvent() {
 
 const componentName = process.env.ANGULAR ? 'builder-component-element' : 'builder-component';
 
+const isShopify = Boolean((window as any).Shopify);
+
 if (Builder.isIframe) {
   importReact();
   importWidgets();
-  importShopify();
+  if (isShopify) {
+    importShopify();
+  }
   import('@builder.io/email');
 }
 
@@ -116,9 +120,15 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
         styles.replace(
           /(@font-face\s*{\s*font-family:\s*(.*?);[\s\S]+?url\((\S+)\)[\s\S]+?})/g,
           (fullMatch, fontMatch, fontName, fontUrl) => {
-            const trimmedFontUrl = fontUrl.replace(/"/g, '').replace(/'/g, '').trim();
+            const trimmedFontUrl = fontUrl
+              .replace(/"/g, '')
+              .replace(/'/g, '')
+              .trim();
 
-            const trimmedFontName = fontName.replace(/"/g, '').replace(/'/g, '').trim();
+            const trimmedFontName = fontName
+              .replace(/"/g, '')
+              .replace(/'/g, '')
+              .trim();
 
             const weight = fullMatch.match(/font-weight:\s*(\d+)/)?.[1];
 
@@ -475,8 +485,8 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
 
       const getReactPromise = importReact(); // TODO: only import what needed based on what comes back
       const getWidgetsPromise = importWidgets();
-      const getShopifyPromise = importShopify();
-      const getShopifyJsPromise = importShopifyJs();
+      const getShopifyPromise = isShopify ? importShopify() : null;
+      const getShopifyJsPromise = isShopify ? importShopifyJs() : null;
       // TODO: only load shopify if needed
 
       let emailPromise: Promise<any> | null = null;
@@ -501,10 +511,16 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
         hasFullData
       ) {
         const { BuilderPage } = await getReactPromise;
-        await Promise.all([getWidgetsPromise, getShopifyPromise as any]);
-        const { Shopify } = await getShopifyJsPromise;
-
-        const shopify = new Shopify({});
+        await getWidgetsPromise;
+        if (isShopify) {
+          await getShopifyPromise;
+        }
+        
+        let shopify: any;
+        if (isShopify) {
+          const { Shopify } = await getShopifyJsPromise!;
+          shopify = new Shopify({});
+        }
 
         // Ensure styles don't load twice
         BuilderPage.renderInto(
@@ -513,8 +529,10 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
             ...({ ref: (ref: any) => (this.builderPageRef = ref) } as any),
             modelName: name!,
             context: {
-              shopify,
-              liquid: shopify.liquid,
+              ...(isShopify && {
+                shopify,
+                liquid: shopify.liquid,
+              }),
               apiKey: builder.apiKey,
             },
             entry,
@@ -551,16 +569,22 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
         .then(
           async data => {
             const { BuilderPage } = await getReactPromise;
-            await Promise.all([getWidgetsPromise, getShopifyPromise as any]);
+            await getWidgetsPromise;
+            if (isShopify) {
+              await getShopifyPromise;
+            }
+
             if (emailPromise) {
               await emailPromise;
             }
 
             const loadEvent = new CustomEvent('load', { detail: data });
             this.dispatchEvent(loadEvent);
-            const { Shopify } = await getShopifyJsPromise;
-
-            const shopify = new Shopify({});
+            let shopify: any;
+            if (isShopify) {
+              const { Shopify } = await getShopifyJsPromise!;
+              shopify = new Shopify({});
+            }
 
             BuilderPage.renderInto(
               wrapInDiv(this),
@@ -568,8 +592,10 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
                 ...({ ref: (ref: any) => (this.builderPageRef = ref) } as any),
                 modelName: name!,
                 context: {
-                  shopify,
-                  liquid: shopify.liquid,
+                  ...(isShopify && {
+                    shopify,
+                    liquid: shopify.liquid,
+                  }),
                   apiKey: builder.apiKey,
                 },
                 emailMode:
@@ -609,12 +635,18 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
           async (error: any) => {
             if (Builder.isEditing) {
               const { BuilderPage } = await getReactPromise;
-              await Promise.all([getWidgetsPromise, getShopifyPromise as any]);
+              await getWidgetsPromise;
+              if (isShopify) {
+                await getShopifyPromise;
+              }
               if (emailPromise) {
                 await emailPromise;
               }
-              const { Shopify } = await getShopifyJsPromise;
-              const shopify = new Shopify({});
+              let shopify: any;
+              if (isShopify) {
+                const { Shopify } = await getShopifyJsPromise!;
+                shopify = new Shopify({});
+              }
               BuilderPage.renderInto(
                 wrapInDiv(this),
                 {
@@ -622,8 +654,10 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
                     ref: (ref: any) => (this.builderPageRef = ref),
                   } as any),
                   context: {
-                    shopify,
-                    liquid: shopify.liquid,
+                    ...(isShopify && {
+                      shopify,
+                      liquid: shopify.liquid,
+                    }),
                     apiKey: builder.apiKey,
                   },
                   modelName: name!,
