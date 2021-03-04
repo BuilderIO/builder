@@ -258,6 +258,9 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
           onClick={this.onClick}
           builder-content-id={useData?.id}
           builder-model={this.name}
+          data-builder-component={this.name}
+          data-builder-content-id={useData.id}
+          data-builder-variation-id={useData.testVariationId || useData.variationId || useData.id}
         >
           {this.props.children(useData?.data, this.props.inline ? false : loading, useData)}
         </TagName>
@@ -291,6 +294,9 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
                         onClick={this.onClick}
                         builder-content-id={content?.id}
                         builder-model={this.name}
+                        data-builder-component={this.name}
+                        data-builder-content-id={useData.id}
+                        data-builder-variation-id={content.id}
                       >
                         {this.props.children(
                           content?.data! as any,

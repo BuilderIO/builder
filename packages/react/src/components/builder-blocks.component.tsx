@@ -78,7 +78,29 @@ export class BuilderBlocks extends React.Component<BuilderBlocksProps, BuilderBl
     const TagName = this.props.emailMode ? 'span' : 'div';
 
     // TODO: how deep check this automatically for mobx... hmmm optional / peer dependency?
-    return (
+    return !this.noBlocks ? (
+      <React.Fragment>
+        {/* TODO: if is react node (for react compatibility) render it */}
+        {/* TODO: maybe don't do this to preserve blocks always editable */}
+        {(blocks &&
+          Array.isArray(blocks) &&
+          (blocks as any[]).map((block, index) =>
+            block && block['@type'] === '@builder.io/sdk:Element' ? (
+              <BuilderBlock
+                key={block.id}
+                block={block}
+                index={index}
+                fieldName={this.props.fieldName}
+                child={this.props.child}
+                emailMode={this.props.emailMode}
+              />
+            ) : (
+              block
+            )
+          )) ||
+          blocks}
+      </React.Fragment>
+    ) : (
       // TODO: component <Stack direction="vertical">
       // TODO: react.fragment instead?
       <TagName

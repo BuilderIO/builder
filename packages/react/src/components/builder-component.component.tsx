@@ -73,11 +73,11 @@ const size = (thing: object) => Object.keys(thing).length;
 
 function debounce(func: Function, wait: number, immediate = false) {
   let timeout: any;
-  return function (this: any) {
+  return function(this: any) {
     const context = this;
     const args = arguments;
     clearTimeout(timeout);
-    timeout = setTimeout(function () {
+    timeout = setTimeout(function() {
       timeout = null;
       if (!immediate) func.apply(context, args);
     }, wait);
@@ -848,7 +848,8 @@ export class BuilderComponent extends React.Component<
     const contentId = this.useContent?.id;
 
     return (
-      // TODO: data attributes for model, id, etc?
+      // TODO: forward down to the content ref to just have one wrapper
+      // div for content + component
       <WrapComponent
         onClick={event => {
           // Prevent propagation from the root content component when editing to prevent issues
@@ -947,7 +948,7 @@ export class BuilderComponent extends React.Component<
                           const useBuilderState = (initialState: any) => {
                             const [, setTick] = React.useState(0);
                             const [state] = React.useState(() =>
-                              onChange(initialState, function () {
+                              onChange(initialState, function() {
                                 setTick(tick => tick + 1);
                               })
                             );
@@ -986,13 +987,7 @@ export class BuilderComponent extends React.Component<
                         // TODO: loading option - maybe that is what the children is or component prop
                         // TODO: get rid of all these wrapper divs
                         return data ? (
-                          <div
-                            data-builder-component={this.name}
-                            data-builder-content-id={fullData.id}
-                            data-builder-variation-id={
-                              fullData.testVariationId || fullData.variationId || fullData.id
-                            }
-                          >
+                          <>
                             {!codegen && this.getCss(data) && (
                               <style
                                 ref={ref => (this.styleRef = ref)}
@@ -1022,7 +1017,7 @@ export class BuilderComponent extends React.Component<
                                 />
                               )}
                             </BuilderStoreContext.Provider>
-                          </div>
+                          </>
                         ) : loading ? (
                           <div data-builder-component={this.name} className="builder-loading">
                             {this.props.children}
