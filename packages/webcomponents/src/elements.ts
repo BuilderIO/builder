@@ -6,22 +6,12 @@ const importWidgets = () => import('@builder.io/widgets');
 
 Builder.isStatic = true;
 
-function wrapInDiv(el: HTMLElement) {
-  const newDiv = document.createElement('div');
-  const currentChildren = Array.from(el.children);
-  for (const child of currentChildren) {
-    newDiv.appendChild(child);
-  }
-  el.appendChild(newDiv);
-  return newDiv;
-}
-
 // Credit: https://stackoverflow.com/a/25673911
 function wrapHistoryPropertyWithCustomEvent(property: 'pushState' | 'replaceState') {
   try {
     const anyHistory = history;
     const originalFunction = anyHistory[property];
-    anyHistory[property] = function (this: History) {
+    anyHistory[property] = function(this: History) {
       var rv = originalFunction.apply(this, arguments as any);
       var event = new CustomEvent(property, {
         detail: {
@@ -116,9 +106,15 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
         styles.replace(
           /(@font-face\s*{\s*font-family:\s*(.*?);[\s\S]+?url\((\S+)\)[\s\S]+?})/g,
           (fullMatch, fontMatch, fontName, fontUrl) => {
-            const trimmedFontUrl = fontUrl.replace(/"/g, '').replace(/'/g, '').trim();
+            const trimmedFontUrl = fontUrl
+              .replace(/"/g, '')
+              .replace(/'/g, '')
+              .trim();
 
-            const trimmedFontName = fontName.replace(/"/g, '').replace(/'/g, '').trim();
+            const trimmedFontName = fontName
+              .replace(/"/g, '')
+              .replace(/'/g, '')
+              .trim();
 
             const weight = fullMatch.match(/font-weight:\s*(\d+)/)?.[1];
 
@@ -508,7 +504,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
 
         // Ensure styles don't load twice
         BuilderPage.renderInto(
-          wrapInDiv(this),
+          this,
           {
             ...({ ref: (ref: any) => (this.builderPageRef = ref) } as any),
             modelName: name!,
@@ -563,7 +559,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
             const shopify = new Shopify({});
 
             BuilderPage.renderInto(
-              wrapInDiv(this),
+              this,
               {
                 ...({ ref: (ref: any) => (this.builderPageRef = ref) } as any),
                 modelName: name!,
@@ -616,7 +612,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
               const { Shopify } = await getShopifyJsPromise;
               const shopify = new Shopify({});
               BuilderPage.renderInto(
-                wrapInDiv(this),
+                this,
                 {
                   ...({
                     ref: (ref: any) => (this.builderPageRef = ref),

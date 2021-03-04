@@ -127,8 +127,6 @@ export class BuilderBlocks extends React.Component<BuilderBlocksProps, BuilderBl
           }
         }}
       >
-        {/* TODO: if is react node (for react compatibility) render it */}
-        {/* TODO: maybe don't do this to preserve blocks always editable */}
         {(blocks &&
           Array.isArray(blocks) &&
           (blocks as any[]).map((block, index) =>

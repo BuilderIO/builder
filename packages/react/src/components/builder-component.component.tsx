@@ -73,11 +73,11 @@ const size = (thing: object) => Object.keys(thing).length;
 
 function debounce(func: Function, wait: number, immediate = false) {
   let timeout: any;
-  return function (this: any) {
+  return function(this: any) {
     const context = this;
     const args = arguments;
     clearTimeout(timeout);
-    timeout = setTimeout(function () {
+    timeout = setTimeout(function() {
       timeout = null;
       if (!immediate) func.apply(context, args);
     }, wait);
@@ -548,34 +548,13 @@ export class BuilderComponent extends React.Component<
       console.debug('hydrate', shouldHydrate, element);
     }
 
-    let useEl = element;
-    if (!exists) {
-      const div = document.createElement('div');
-      element.insertAdjacentElement('beforebegin', div);
-      div.appendChild(element);
-      useEl = div;
-    }
-
-    if (Builder.isEditing || (Builder.isBrowser && location.search.includes('builder.preview='))) {
-      shouldHydrate = false;
-    }
-    if (shouldHydrate && element) {
-      // TODO: maybe hydrate again. Maybe...
-      const val = ReactDOM.render(
-        <BuilderComponent {...props} />,
-        useEl,
-        (useEl as any).builderRootRef
-      );
-      (useEl as any).builderRootRef = val;
-      return val;
-    }
-    const val = ReactDOM.render(
-      <BuilderComponent {...props} />,
-      useEl,
-      (useEl as any).builderRootRef
-    );
-    (useEl as any).builderRootRef = val;
-    return val;
+    ReactDOM.render(<BuilderComponent {...props} />, element, () => {
+      const builderContent = element!.children[0];
+      if (builderContent) {
+        element?.insertAdjacentElement('beforebegin', builderContent);
+        element?.remove();
+      }
+    });
   }
 
   mounted = false;
@@ -948,7 +927,7 @@ export class BuilderComponent extends React.Component<
                           const useBuilderState = (initialState: any) => {
                             const [, setTick] = React.useState(0);
                             const [state] = React.useState(() =>
-                              onChange(initialState, function () {
+                              onChange(initialState, function() {
                                 setTick(tick => tick + 1);
                               })
                             );
