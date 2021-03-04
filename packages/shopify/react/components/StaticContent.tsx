@@ -53,6 +53,8 @@ const StaticContentComponent: React.SFC<StaticContentProps> = props => {
 export const StaticContent = withBuilder(StaticContentComponent, {
   name: 'Shopify:StaticContent',
   canHaveChildren: true,
+  image:
+    'https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fa21e7dbe14b5404fb5ef1a4a2808fe7e',
   description: 'Advanced component that preserves server rendered nodes, use with caution',
   defaultStyles: {
     // height: '200px',

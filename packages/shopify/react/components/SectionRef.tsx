@@ -86,6 +86,9 @@ export const SectionRef = (props: SectionRefProps) => {
 Builder.registerComponent(SectionRef, {
   name: 'Shopify:SectionRef',
   friendlyName: 'Shopify Section',
+  image:
+    'https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ff3d80fca4afb49379d055b23e4c8b8c9',
+  description: 'Include a Shopify section template',
   inputs: [
     {
       name: 'section',
