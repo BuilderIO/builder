@@ -41,7 +41,7 @@ export const validEnvList = [
   'cloud',
   'fast',
   'cdn2',
-  'forceBuilderCDN',
+  'cdn-prod',
 ];
 
 function getQueryParam(url: string, variable: string): string | null {
@@ -1787,7 +1787,7 @@ export class Builder {
       case 'development':
       case 'dev':
         return 'http://localhost:5000';
-      case 'forceBuilderCDN':
+      case 'cdn-prod':
         return 'https://cdn.builder.io';
       default:
         return Builder.overrideHost || 'https://cdn.builder.io';
