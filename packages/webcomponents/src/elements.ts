@@ -120,14 +120,31 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
         styles.replace(
           /(@font-face\s*{\s*font-family:\s*(.*?);[\s\S]+?url\((\S+)\)[\s\S]+?})/g,
           (fullMatch, fontMatch, fontName, fontUrl) => {
-            const trimmedFontUrl = fontUrl.replace(/"/g, '').replace(/'/g, '').trim();
+            const trimmedFontUrl = fontUrl.replace(/(^"|"$)/g, '').replace(/(^'|'$)/g, '').trim();
+            const trimmedFontName = fontName.replace(/(^"|"$)/g, '').replace(/(^'|'$)/g, '').trim();
 
-            const trimmedFontName = fontName.replace(/"/g, '').replace(/'/g, '').trim();
+            let style = fullMatch.match(/font-style:\s*(.+)\s*;/gi)?.[1];
 
-            const weight = fullMatch.match(/font-weight:\s*(\d+)/)?.[1];
+            // When generating `@font-face` declarations, sometimes
+            // the `font-weight` rule gets generated like:
+            // `font-weight: 600italic`
+            // which actually indicates that the font-url referenced here is
+            // the italic version of the font, so we need to extract that style
+            // and mark the `FontFace` instance as `style: 'italic'`; otherwise
+            // this italic version of the font gets used even if no `font-style: italic`
+            // CSS rule is defined in the element.
+            const fontWeightMatch = fullMatch.match(/font-weight:\s*(\d+)(italic)?/);
+            let weight = '400';
+            if (fontWeightMatch) {
+              weight = fontWeightMatch[1];
+              if (fontWeightMatch[2]) {
+                style = 'italic';
+              }
+            }
 
             const font = new FontFace(trimmedFontName, `url("${trimmedFontUrl}")`, {
-              weight: weight || '400',
+              weight,
+              style,
             });
 
             if (!document.fonts.has(font)) {
