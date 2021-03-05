@@ -193,7 +193,7 @@ class ImageComponent extends React.Component<any, { imageLoaded: boolean; load: 
         this.setState({
           load: true,
         });
-      } else if (this.props.useIO && typeof IntersectionObserver === 'function' && this.pictureRef) {
+      } else if (this.props.useIntersectionObserver && typeof IntersectionObserver === 'function' && this.pictureRef) {
         const observer = (this.intersectionObserver = new IntersectionObserver(
           (entries, observer) => {
             entries.forEach(entry => {
