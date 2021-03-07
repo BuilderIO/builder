@@ -22,9 +22,7 @@ registerCommercePlugin(
       },
     ],
     ctaText: `Connect your swell.is store`,
-    onSave: async (
-      actions
-    ) =>
+    onSave: async actions =>
       await actions.updateSettings({
         hasConnected: true,
       }),

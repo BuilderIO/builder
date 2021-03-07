@@ -36,7 +36,7 @@ registerCommercePlugin(
   /**
    * settings here will be an observable map of the settings you configured above in settings,
    *  ( in this example settings.get('storeId') will give us the storeId entered by user)
-  */
+   */
   settings => {
     // setup basic cache for a better user experience
     const basicCache = new Map();
@@ -94,7 +94,7 @@ registerCommercePlugin(
         return {
           '@type': '@builder.io/core:Request',
           request: {
-            url: baseUrl(`${resourceName === 'product' ? 'products': 'categories'}/${id}`),
+            url: baseUrl(`${resourceName === 'product' ? 'products' : 'categories'}/${id}`),
           },
           options: {
             [resourceName]: id,
