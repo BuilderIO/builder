@@ -187,7 +187,7 @@ export const EcomProductPicker: React.FC<EcomProductPickerProps> = props => {
                 if (props.field?.isTargeting) {
                   props.onChange(this.productId);
                 } else {
-                  props.onChange(props.api.getRequestObject(this.productId));
+                  props.onChange(props.api.getRequestObject(this.productId, 'product'));
                 }
               }
             }

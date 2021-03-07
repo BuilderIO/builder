@@ -9,6 +9,9 @@ import {
 import appState from '@builder.io/app-context';
 import React from 'react';
 import { onEditorLoad } from './actions/on-editor-load';
+import { EcomProduct } from './interfaces/ecom-product';
+import { BuilderRequest } from './interfaces/builder-request';
+import { EcomCollection } from './interfaces/ecom-collection';
 
 // todo move to sdk
 interface OnSaveActions {
@@ -33,12 +36,28 @@ export interface CommercePluginConfig {
   onSave?: (actions: OnSaveActions) => Promise<void>; // you can run any action post save here, for example importing product data, registering webhooks
 }
 
-export interface CommerceAPIOperations {}
+export interface CommerceAPIOperations {
+  getProductById(id: string): Promise<EcomProduct>
+  getProductByHandle(handle: string): Promise<EcomProduct>
+  searchProducts(search: string): Promise<EcomProduct[]>
+  getRequestObject(id: string, resourceName: 'product' | 'collection'): BuilderRequest
+  getCollectionById?(id: string): Promise<EcomCollection>
+  getCollectionByHandle?(handle: string): Promise<EcomCollection>
+  searchCollections?(search: string): Promise<EcomCollection>
+};
 
 export const registerCommercePlugin = (
   config: CommercePluginConfig,
   apiOperationsFromSettings: (settings: any) => CommerceAPIOperations
 ) => {
+  const onSave = config.onSave;
+  config.onSave = async (actions) => {
+    await actions.updateSettings({ hasConnected: true});
+    if (onSave) {
+      await onSave(actions);
+    }
+  }
+
   Builder.register('plugin', config);
 
   Builder.register('app.onLoad', async ({ triggerSettingsDialog }: AppActions) => {
@@ -105,48 +124,50 @@ export const registerCommercePlugin = (
     ),
   });
 
-  Builder.registerEditor({
-    name: `${config.name}Collection`,
-    component: (props: EcomCollectionPickerProps) => (
-      <EcomCollectionPicker
-        {...props}
-        pluginId={config.id}
-        pluginName={config.name}
-        api={apiOperations}
-      />
-    ),
-  });
-
-  Builder.registerEditor({
-    name: `${config.name}CollectionPreview`,
-    component: (props: EcomCollectionPickerProps) => (
-      <EcomCollectionPicker
-        {...props}
-        pluginId={config.id}
-        pluginName={config.name}
-        isPreview
-        api={apiOperations}
-      />
-    ),
-  });
-
-  Builder.registerEditor({
-    name: `${config.name}CollectionHandle`,
-    component: (props: EcomCollectionPickerProps) => (
-      <EcomCollectionPicker
-        {...props}
-        pluginId={config.id}
-        pluginName={config.name}
-        handleOnly
-        api={apiOperations}
-      />
-    ),
-  });
-
-  Builder.registerEditor({
-    name: `${config.name}CollectionList`,
-    component: (props: PickEcomCollectionsListProps) => (
-      <PickEcomCollectionsButton {...props} api={apiOperations} />
-    ),
-  });
+  if (apiOperations.searchCollections) {
+    Builder.registerEditor({
+      name: `${config.name}Collection`,
+      component: (props: EcomCollectionPickerProps) => (
+        <EcomCollectionPicker
+          {...props}
+          pluginId={config.id}
+          pluginName={config.name}
+          api={apiOperations}
+        />
+      ),
+    });
+  
+    Builder.registerEditor({
+      name: `${config.name}CollectionPreview`,
+      component: (props: EcomCollectionPickerProps) => (
+        <EcomCollectionPicker
+          {...props}
+          pluginId={config.id}
+          pluginName={config.name}
+          isPreview
+          api={apiOperations}
+        />
+      ),
+    });
+  
+    Builder.registerEditor({
+      name: `${config.name}CollectionHandle`,
+      component: (props: EcomCollectionPickerProps) => (
+        <EcomCollectionPicker
+          {...props}
+          pluginId={config.id}
+          pluginName={config.name}
+          handleOnly
+          api={apiOperations}
+        />
+      ),
+    });
+  
+    Builder.registerEditor({
+      name: `${config.name}CollectionList`,
+      component: (props: PickEcomCollectionsListProps) => (
+        <PickEcomCollectionsButton {...props} api={apiOperations} />
+      ),
+    });  
+  }
 };

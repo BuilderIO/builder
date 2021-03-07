@@ -189,7 +189,7 @@ export const EcomCollectionPicker: React.FC<EcomCollectionPickerProps> = props =
                 if (props.field?.isTargeting) {
                   props.onChange(this.collectionId);
                 } else {
-                  props.onChange(props.api.getRequestObject(this.collectionId));
+                  props.onChange(props.api.getRequestObject(this.collectionId, 'collection'));
                 }
               }
             }

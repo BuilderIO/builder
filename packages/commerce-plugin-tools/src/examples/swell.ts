@@ -20,12 +20,6 @@ registerCommercePlugin(
       },
     ],
     ctaText: `Connect your swell.is store`,
-    onSave: async (
-      actions // update plugin setting
-    ) =>
-      await actions.updateSettings({
-        hasConnected: true,
-      }),
   },
   settings => {
     const basicCache = new Map();
@@ -83,10 +77,10 @@ registerCommercePlugin(
         return {
           '@type': '@builder.io/core:Request',
           request: {
-            url: baseUrl(`products/${id}`),
+            url: baseUrl(`${resourceName === 'product' ? 'products': 'categories'}/${id}`),
           },
           options: {
-            product: id,
+            [resourceName]: id,
           },
         };
       },
