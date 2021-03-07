@@ -9,7 +9,7 @@ This package main expor is `registerCommercePlugin`, which will allow you to def
 for real world example check the [@builder.io/ecom-swell-is](../../plugins/swell) folder.
 
 ```ts
-import { registerCommercePlugin } from '../index';
+import { registerCommercePlugin } from '@builder.io/commerce-plugin-tools';
 registerCommercePlugin(
   {
     name: 'Swell',
