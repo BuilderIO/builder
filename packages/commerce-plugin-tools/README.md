@@ -4,16 +4,17 @@ Easily connect your custom ecommerce backend data to your Builder.io content!
 
 <img alt="Shopify data example" src="https://imgur.com/BhtUeqK.gif" >
 
-This package main expor is `registerCommercePlugin`, which will allow you to define what your ecommerce backend needs ( apiToken, password), prompt Builder.io users for it and register multiple field types that allow for easy embedding and custom targeting for each product/collection in your ecommerce store.
+This package main expor is `registerCommercePlugin`, which will allow you to define what your ecommerce backend needs ( apiToken, password), prompt Builder.io users for it and register multiple field types per resource that allow for easy embedding and custom targeting for each resource ( products, collections, personas ...etc) in your ecommerce store.
 
 for real world example check the [@builder.io/ecom-swell-is](../../plugins/swell) folder.
 
 ```ts
 import { registerCommercePlugin } from '@builder.io/commerce-plugin-tools';
+
 registerCommercePlugin(
   {
     name: 'Swell',
-    id: '@builder.io/ecome-swell',
+    id: '@builder.io/ecome-swell-is',
     settings: [
       // list of information needed to connect store, optional
       {
@@ -49,7 +50,7 @@ registerCommercePlugin(
       'Content-Type': 'application/json',
     };
 
-    // always transform product to match EcomProduct interface, ts will notify you if not
+    // always transform product to match Resource interface, ts will notify you if not
     const transformProduct = (product: any) => ({
       id: product.id,
       title: product.name,
@@ -62,71 +63,46 @@ registerCommercePlugin(
     });
 
     return {
-      async getProductById(id: string) {
-        const key = `${id}productById`;
-        const product =
-          basicCache.get(key) ||
-          (await fetch(baseUrl(`products/${id}`), { headers })
-            .then(res => res.json())
-            .then(transformProduct));
-        basicCache.set(key, product);
-        return product;
-      },
-      async getProductByHandle(handle: string) {
-        const key = `${handle}productByHandle`;
-        const response =
-          basicCache.get(key) ||
-          (await fetch(baseUrl(`products?where[active]=true&where[slug]=${handle}`), {
+      product: {
+        async findById(id: string) {
+          const key = `${id}productById`;
+          const product =
+            basicCache.get(key) ||
+            (await fetch(baseUrl(`products/${id}`), { headers })
+              .then(res => res.json())
+              .then(transformProduct));
+          basicCache.set(key, product);
+          return product;
+        },
+        async findByHandle(handle: string) {
+          const key = `${handle}productByHandle`;
+          const response =
+            basicCache.get(key) ||
+            (await fetch(baseUrl(`products?where[active]=true&where[slug]=${handle}`), {
+              headers,
+            }).then(res => res.json()));
+          basicCache.set(key, response);
+          const product = response.results.map(transformProduct)[0];
+          return product;
+        },
+        async search(search: string) {
+          const response = await fetch(baseUrl(`products?where[active]=true&search=${search}`), {
             headers,
-          }).then(res => res.json()));
-        basicCache.set(key, response);
-        const product = response.results.map(transformProduct)[0];
-        return product;
-      },
-      async searchProducts(search: string) {
-        const response = await fetch(baseUrl(`products?where[active]=true&search=${search}`), {
-          headers,
-        }).then(res => res.json());
-        return response.results.map(transformProduct);
-      },
+          }).then(res => res.json());
+          return response.results.map(transformProduct);
+        },
 
-      getRequestObject(id: string, resourceName: 'product' | 'collection') {
-        return {
-          '@type': '@builder.io/core:Request',
-          request: {
-            url: baseUrl(`${resourceName === 'product' ? 'products' : 'categories'}/${id}`),
-          },
-          options: {
-            [resourceName]: id,
-          },
-        };
-      },
-      async getCollectionById(id: string) {
-        const key = `${id}collectionById`;
-        const collection =
-          basicCache.get(key) ||
-          (await fetch(baseUrl(`categories/${id}`), { headers })
-            .then(res => res.json())
-            .then(transformProduct));
-        basicCache.set(key, collection);
-        return collection;
-      },
-      async getCollectionByHandle(handle: string) {
-        const key = `${handle}collectionByHandle`;
-        const response =
-          basicCache.get(key) ||
-          (await fetch(baseUrl(`categories?where[active]=true&where[slug]=${handle}`), {
-            headers,
-          }).then(res => res.json()));
-        basicCache.set(key, response);
-        const collection = response.results.map(transformProduct)[0];
-        return collection;
-      },
-      async searchCollections(search: string) {
-        const response = await fetch(baseUrl(`categories?where[active]=true&search=${search}`), {
-          headers,
-        }).then(res => res.json());
-        return response.results.map(transformProduct);
+        getRequestObject(id: string) {
+          return {
+            '@type': '@builder.io/core:Request',
+            request: {
+              url: baseUrl(`products/${id}`),
+            },
+            options: {
+              product: id,
+            },
+          };
+        },
       },
     };
   }

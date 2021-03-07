@@ -1,5 +1,7 @@
 import appState from '@builder.io/app-context';
 import template from 'lodash.template';
+import { CommerceAPIOperations } from '..';
+import capitalize from 'lodash.capitalize';
 
 interface ContentEditorActions {
   updatePreviewUrl: (url: string) => void;
@@ -11,11 +13,12 @@ interface ContentEditorActions {
     }
   ): void;
 }
-export const onEditorLoad = (config: any, apiOperations: any) => ({
-  safeReaction,
-  updatePreviewUrl,
-}: ContentEditorActions) => {
-  // compile previewProduct if any
+export const onEditorLoad = (
+  config: any,
+  apiOperations: CommerceAPIOperations,
+  resourceName: string
+) => ({ safeReaction, updatePreviewUrl }: ContentEditorActions) => {
+  // compile previewResource if any, to allow user to have templated editing urls for their models (e.g in cases of product page template)
   safeReaction(
     () => {
       const modelUrl = appState.designerState.editingModel?.examplePageUrl;
@@ -23,13 +26,14 @@ export const onEditorLoad = (config: any, apiOperations: any) => ({
         return;
       }
       const previewField = appState.designerState.editingModel?.fields.find(
-        (field: { type: string }) => field.type === `${config.name}ProductPreview`
+        (field: { type: string }) =>
+          field.type === `${config.name}${capitalize(resourceName)}Preview`
       )?.name;
       if (previewField && appState.designerState.editingContentModel) {
-        const productId = appState.designerState.editingContentModel.data
+        const resourceId = appState.designerState.editingContentModel.data
           .get(previewField)
-          ?.options.get('product');
-        return apiOperations.getProductByIdSync(productId);
+          ?.options.get(resourceName);
+        return apiOperations[resourceName].findById(resourceId);
       }
       const pluginSettings = appState.user.organization.value.settings.plugins.get(config.id);
       const shouldSync = pluginSettings.get('syncPreviewUrlWithTargeting');
@@ -41,73 +45,23 @@ export const onEditorLoad = (config: any, apiOperations: any) => ({
       if (shouldSync && customAttributes && query) {
         for (const [key, value] of Object.entries(customAttributes)) {
           const targetingValue = query.find((q: any) => q.property === key)?.value;
-          if (targetingValue && value.type === `${config.name}Product`) {
-            return apiOperations.getProductByIdSync(targetingValue);
+          if (targetingValue && value.type === `${config.name}${capitalize(resourceName)}`) {
+            return apiOperations[resourceName].findById(targetingValue);
           }
-          if (targetingValue && value.type === `${config.name}ProductHandle`) {
-            return apiOperations.getProductByHandleSync(targetingValue);
-          }
-        }
-      }
-    },
-    async productObject => {
-      const modelUrl = appState.designerState.editingModel?.examplePageUrl;
-      if (productObject && modelUrl) {
-        const compiled = template(modelUrl);
-        const previewUrl = compiled(
-          withDefaults({
-            previewProduct: productObject,
-          })
-        );
-        if (modelUrl !== previewUrl) {
-          updatePreviewUrl(previewUrl);
-          appState.snackBar.show(`Previewing ${previewUrl}`);
-        }
-      }
-    }
-  );
-  // compile preview collection
-  safeReaction(
-    () => {
-      const modelUrl = appState.designerState.editingModel?.examplePageUrl;
-      if (!modelUrl) {
-        return;
-      }
-      const previewField = appState.designerState.editingModel?.fields.find(
-        (field: { type: string }) => field.type === `${config.name}CollectionPreview`
-      )?.name;
-      if (previewField && appState.designerState.editingContentModel) {
-        const collectionId = appState.designerState.editingContentModel.data
-          .get(previewField)
-          ?.options.get('collection');
-        return apiOperations.getCollectionByIdSync(collectionId);
-      }
-      const pluginSettings = appState.user.organization.value.settings.plugins.get(config.id);
-      const shouldSync = pluginSettings.get('syncPreviewUrlWithTargeting');
-      const query = appState.designerState.editingContentModel?.query?.toJSON();
-      const customAttributes: Record<
-        string,
-        { type: string }
-      > = appState.user.organization.value.customTargetingAttributes?.toJSON();
-      if (shouldSync && customAttributes && query) {
-        for (const [key, value] of Object.entries(customAttributes)) {
-          const targetingValue = query.find((q: any) => q.property === key)?.value;
-          if (targetingValue && value.type === `${config.name}Collection`) {
-            return apiOperations.getCollectionByIdSync(targetingValue);
-          }
-          if (targetingValue && value.type === `${config.name}CollectionHandle`) {
-            return apiOperations.getCollectionByHandleSync(targetingValue);
+          if (targetingValue && value.type === `${config.name}${capitalize(resourceName)}Handle`) {
+            return apiOperations[resourceName].findByHandle(targetingValue);
           }
         }
       }
     },
-    async collectionObj => {
+    async resourcePromise => {
       const modelUrl = appState.designerState.editingModel?.examplePageUrl;
-      if (collectionObj && modelUrl) {
+      if (resourcePromise && modelUrl) {
+        const previewResource = await resourcePromise;
         const compiled = template(modelUrl);
         const previewUrl = compiled(
           withDefaults({
-            previewCollection: collectionObj,
+            previewResource,
           })
         );
         if (modelUrl !== previewUrl) {

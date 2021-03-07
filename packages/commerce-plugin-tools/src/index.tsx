@@ -1,18 +1,18 @@
 import { Builder } from '@builder.io/react';
-import { EcomProductPicker, EcomProductPickerProps } from './editors/EcomProductPicker';
-import { PickEcomProductsButton, PickEcomProductsListProps } from './editors/EcomProductList';
-import { EcomCollectionPicker, EcomCollectionPickerProps } from './editors/EcomCollectionPicker';
+import { ResourcesPickerButton, ResourcesPickerButtonProps } from './editors/ResourcesPicker';
 import {
-  PickEcomCollectionsButton,
-  PickEcomCollectionsListProps,
-} from './editors/EcomCollectionList';
+  PickResourcesListButton,
+  PickResourceListProps,
+  PickResourceList,
+} from './editors/ResourcesList';
 import appState from '@builder.io/app-context';
 import React from 'react';
 import { onEditorLoad } from './actions/on-editor-load';
-import { EcomProduct } from './interfaces/ecom-product';
+import { Resource } from './interfaces/resource';
 import { BuilderRequest } from './interfaces/builder-request';
-import { EcomCollection } from './interfaces/ecom-collection';
-
+import { ErrorBoundary } from './components/error-boundary';
+import capitalize from 'lodash.capitalize';
+import pluralize from 'pluralize';
 // todo move to sdk
 interface OnSaveActions {
   updateSettings(partal: Record<string, any>): Promise<void>;
@@ -33,17 +33,16 @@ export interface CommercePluginConfig {
   name: string; // single word will prefix types with it, e.g Shopify
   settings: any[]; // list of setting commerce API needs to communicate, e.g storeFrontAccessToken
   ctaText: string; // what to display on the button to save settings, e.g `Connect your store`
-  onSave?: (actions: OnSaveActions) => Promise<void>; // you can run any action post save here, for example importing product data, registering webhooks
+  onSave?: (actions: OnSaveActions) => Promise<void>; // you can run any action post save here, for example importing ${capitalize(resourceName)} data, registering webhooks
 }
 
 export interface CommerceAPIOperations {
-  getProductById(id: string): Promise<EcomProduct>;
-  getProductByHandle(handle: string): Promise<EcomProduct>;
-  searchProducts(search: string): Promise<EcomProduct[]>;
-  getRequestObject(id: string, resourceName: 'product' | 'collection'): BuilderRequest;
-  getCollectionById?(id: string): Promise<EcomCollection>;
-  getCollectionByHandle?(handle: string): Promise<EcomCollection>;
-  searchCollections?(search: string): Promise<EcomCollection>;
+  [resourceName: string]: {
+    findById(id: string): Promise<Resource>;
+    findByHandle(handle: string): Promise<Resource>;
+    search(search: string): Promise<Resource[]>;
+    getRequestObject(id: string): BuilderRequest;
+  };
 }
 
 export const registerCommercePlugin = (
@@ -55,99 +54,66 @@ export const registerCommercePlugin = (
       appState.user.organization.value.settings.plugins.get(config.id)
     );
 
-    Builder.register('editor.onLoad', onEditorLoad(config, apiOperations));
+    const resources = Object.keys(apiOperations);
 
-    Builder.registerEditor({
-      name: `${config.name}Product`,
-      component: (props: EcomProductPickerProps) => (
-        <EcomProductPicker
-          {...props}
-          pluginId={config.id}
-          pluginName={config.name}
-          api={apiOperations}
-        />
-      ),
-    });
-
-    Builder.registerEditor({
-      name: `${config.name}ProductPreview`,
-      component: (props: EcomProductPickerProps) => (
-        <EcomProductPicker
-          {...props}
-          pluginId={config.id}
-          pluginName={config.name}
-          isPreview
-          api={apiOperations}
-        />
-      ),
-    });
-
-    Builder.registerEditor({
-      name: `${config.name}ProductHandle`,
-      component: (props: EcomProductPickerProps) => (
-        <EcomProductPicker
-          {...props}
-          pluginId={config.id}
-          pluginName={config.name}
-          handleOnly
-          api={apiOperations}
-        />
-      ),
-    });
-
-    Builder.registerEditor({
-      name: `${config.name}ProductList`,
-      component: (props: PickEcomProductsListProps) => (
-        <PickEcomProductsButton {...props} api={apiOperations} />
-      ),
-    });
-
-    if (apiOperations.searchCollections) {
+    resources.forEach(resourceName => {
+      Builder.register('editor.onLoad', onEditorLoad(config, apiOperations, resourceName));
       Builder.registerEditor({
-        name: `${config.name}Collection`,
-        component: (props: EcomCollectionPickerProps) => (
-          <EcomCollectionPicker
-            {...props}
-            pluginId={config.id}
-            pluginName={config.name}
-            api={apiOperations}
-          />
+        name: `${config.name}${capitalize(resourceName)}`,
+        component: (props: ResourcesPickerButtonProps) => (
+          <ErrorBoundary>
+            <ResourcesPickerButton
+              {...props}
+              resourceName={resourceName}
+              pluginId={config.id}
+              pluginName={config.name}
+              api={apiOperations}
+            />
+          </ErrorBoundary>
         ),
       });
 
       Builder.registerEditor({
-        name: `${config.name}CollectionPreview`,
-        component: (props: EcomCollectionPickerProps) => (
-          <EcomCollectionPicker
-            {...props}
-            pluginId={config.id}
-            pluginName={config.name}
-            isPreview
-            api={apiOperations}
-          />
+        name: `${config.name}${capitalize(resourceName)}Preview`,
+        component: (props: ResourcesPickerButtonProps) => (
+          <ErrorBoundary>
+            <ResourcesPickerButton
+              {...props}
+              resourceName={resourceName}
+              pluginId={config.id}
+              pluginName={config.name}
+              isPreview
+              api={apiOperations}
+            />
+          </ErrorBoundary>
         ),
       });
 
       Builder.registerEditor({
-        name: `${config.name}CollectionHandle`,
-        component: (props: EcomCollectionPickerProps) => (
-          <EcomCollectionPicker
-            {...props}
-            pluginId={config.id}
-            pluginName={config.name}
-            handleOnly
-            api={apiOperations}
-          />
+        name: `${config.name}${capitalize(resourceName)}Handle`,
+        component: (props: ResourcesPickerButtonProps) => (
+          <ErrorBoundary>
+            <ResourcesPickerButton
+              {...props}
+              resourceName={resourceName}
+              pluginId={config.id}
+              pluginName={config.name}
+              handleOnly
+              api={apiOperations}
+            />
+          </ErrorBoundary>
         ),
       });
 
       Builder.registerEditor({
-        name: `${config.name}CollectionList`,
-        component: (props: PickEcomCollectionsListProps) => (
-          <PickEcomCollectionsButton {...props} api={apiOperations} />
+        name: `${config.name}${capitalize(pluralize.plural(resourceName))}List`,
+        component: (props: PickResourceListProps) => (
+          <ErrorBoundary>
+            <PickResourceList {...props} api={apiOperations} />
+          </ErrorBoundary>
         ),
       });
-    }
+    });
   };
   const onSave = config.onSave;
   config.onSave = async actions => {

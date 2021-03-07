@@ -3,35 +3,35 @@ import { jsx } from '@emotion/core';
 import React, { useEffect } from 'react';
 import { action } from 'mobx';
 import { useObserver, useLocalStore } from 'mobx-react';
-import {
-  CollectionPreviewCell,
-  EcomCollectionPreviewCellProps,
-  CollectionPicker,
-} from './EcomCollectionPicker';
+import { ResourcePreviewCell, ResourcePreviewCellProps, ResourcePicker } from './ResourcesPicker';
 import { CircularProgress, Button, Typography, Tooltip, IconButton } from '@material-ui/core';
 import { Close } from '@material-ui/icons';
 import appState from '@builder.io/app-context';
-import { EcomCollection } from '../interfaces/ecom-collection';
+import { Resource } from '../interfaces/resource';
+import capitalize from 'lodash.capitalize';
+import pluralize from 'pluralize';
+import { CommerceAPIOperations } from '..';
 
-export type PickEcomCollectionsListProps = {
-  api: any;
+export type PickResourceListProps = {
+  api: CommerceAPIOperations;
   value?: string[];
   onChange(newValue: string[]): void;
   onDone(): void;
+  resourceName: string;
 };
 
-const CollectionPreviewById = (
-  props: { id: string; api: any } & Partial<EcomCollectionPreviewCellProps>
+const ResourcePreviewById = (
+  props: { id: string; api: CommerceAPIOperations; resourceName: string } & Partial<ResourcePreviewCellProps>
 ) => {
   const { id, ...rest } = props;
   const store = useLocalStore(() => ({
     loading: false,
-    collectionInfo: null as EcomCollection | null,
-    async getCollection() {
+    resourceInfo: null as Resource | null,
+    async getResource() {
       this.loading = true;
       try {
-        const value = await props.api.getCollectionById(props.id);
-        this.collectionInfo = value;
+        const value = await props.api[props.resourceName].findById(props.id);
+        this.resourceInfo = value;
       } catch (e) {
         console.error(e);
       }
@@ -39,7 +39,7 @@ const CollectionPreviewById = (
     },
   }));
   useEffect(() => {
-    store.getCollection();
+    store.getResource();
   }, []);
 
   return useObserver(() => {
@@ -50,14 +50,14 @@ const CollectionPreviewById = (
       return <CircularProgress disableShrink size={20} />;
     }
     return (
-      (store.collectionInfo && (
-        <CollectionPreviewCell collection={store.collectionInfo} {...rest} />
-      )) || <React.Fragment></React.Fragment>
+      (store.resourceInfo && <ResourcePreviewCell resource={store.resourceInfo} {...rest} />) || (
+        <React.Fragment></React.Fragment>
+      )
     );
   });
 };
 
-export function PickEcomCollectionsList(props: PickEcomCollectionsListProps) {
+export function PickResourceList(props: PickResourceListProps) {
   const store = useLocalStore(() => ({
     get value() {
       return props.value || [];
@@ -67,7 +67,7 @@ export function PickEcomCollectionsList(props: PickEcomCollectionsListProps) {
     return (
       <React.Fragment>
         <Typography variant="caption" css={{ paddingBottom: 15, textAlign: 'center' }}>
-          Choose collections
+          Choose {pluralize.plural(props.resourceName)}
         </Typography>
         <div>
           {store.value?.map((item, index) => (
@@ -80,8 +80,13 @@ export function PickEcomCollectionsList(props: PickEcomCollectionsListProps) {
               }}
               key={index}
             >
-              <CollectionPreviewById key={item} id={item} api={props.api} />
-              <Tooltip title="Remove collection">
+              <ResourcePreviewById
+                resourceName={props.resourceName}
+                key={item}
+                id={item}
+                api={props.api}
+              />
+              <Tooltip title="Remove product">
                 <IconButton
                   css={{
                     opacity: 0,
@@ -101,7 +106,7 @@ export function PickEcomCollectionsList(props: PickEcomCollectionsListProps) {
             </div>
           ))}
         </div>
-        {/* On click - choose collection */}
+        {/* On click - choose product */}
         <Button
           color="primary"
           variant="outlined"
@@ -109,13 +114,14 @@ export function PickEcomCollectionsList(props: PickEcomCollectionsListProps) {
           css={{ marginTop: 10 }}
           onClick={() => {
             const close = appState.globalState.openDialog(
-              <CollectionPicker
+              <ResourcePicker
+                resourceName={props.resourceName}
                 api={props.api}
                 context={appState}
                 omitIds={store.value}
-                onChange={action(collection => {
-                  if (collection) {
-                    props.onChange([...(store.value || []), String(collection.id)]);
+                onChange={action(resource => {
+                  if (resource) {
+                    props.onChange([...(store.value || []), String(resource.id)]);
                   }
                   close();
                 })}
@@ -123,7 +129,7 @@ export function PickEcomCollectionsList(props: PickEcomCollectionsListProps) {
             );
           }}
         >
-          + Collection
+          + {capitalize(props.resourceName)}
         </Button>
         <Button
           color="primary"
@@ -139,7 +145,7 @@ export function PickEcomCollectionsList(props: PickEcomCollectionsListProps) {
   });
 }
 
-export function PickEcomCollectionsButton(props: Omit<PickEcomCollectionsListProps, 'onDone'>) {
+export function PickResourcesListButton(props: Omit<PickResourceListProps, 'onDone'>) {
   useEffect(() => {
     if (typeof props.value === 'undefined') {
       props.onChange([]);
@@ -153,14 +159,14 @@ export function PickEcomCollectionsButton(props: Omit<PickEcomCollectionsListPro
           onClick={() => {
             const close = appState.globalState.openDialog(
               <div css={{ padding: 30, width: 500, maxWidth: '90vw' }}>
-                <PickEcomCollectionsList {...props} onDone={() => close()} />
+                <PickResourceList {...props} onDone={() => close()} />
               </div>
             );
           }}
           color="inherit"
           css={{ color: '#999', whiteSpace: 'nowrap' }}
         >
-          {props.value?.length || 0} collections
+          {props.value?.length || 0} {pluralize(props.resourceName, props.value?.length || 0)}
         </Button>
       </React.Fragment>
     );

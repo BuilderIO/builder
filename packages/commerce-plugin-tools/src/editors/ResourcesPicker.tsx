@@ -1,6 +1,5 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
-import { Builder } from '@builder.io/react';
 import {
   Avatar,
   Button,
@@ -19,35 +18,35 @@ import { runInAction, action } from 'mobx';
 import { useObserver, useLocalStore } from 'mobx-react';
 import React, { useEffect } from 'react';
 import { CustomReactEditorProps } from '../interfaces/custom-react-editor-props';
-import { EcomCollection } from '../interfaces/ecom-collection';
+import { Resource } from '../interfaces/resource';
 import { BuilderRequest } from '../interfaces/builder-request';
 import { SetEcomKeysMessage } from '../components/set-keys-message';
+import { CommerceAPIOperations } from '..';
+import pluralize from 'pluralize'
 
-export interface EcomCollectionPickerProps extends CustomReactEditorProps<BuilderRequest | string> {
+export interface ResourcesPickerButtonProps
+  extends CustomReactEditorProps<BuilderRequest | string> {
   isPreview?: boolean;
   handleOnly?: boolean;
-  api: any;
+  api: CommerceAPIOperations;
   pluginId: string;
   pluginName: string;
+  resourceName: string;
 }
 
-export interface EcomCollectionPreviewCellProps {
-  collection: EcomCollection;
+export interface ResourcePreviewCellProps {
+  resource: Resource;
   button?: boolean;
   selected?: boolean;
   className?: string;
 }
 
-export const CollectionPreviewCell: React.FC<EcomCollectionPreviewCellProps> = props =>
+export const ResourcePreviewCell: React.FC<ResourcePreviewCellProps> = props =>
   useObserver(() => (
     <ListItem className={props.className} button={props.button} selected={props.selected}>
-      {props.collection.image ? (
+      {props.resource.image && (
         <ListItemAvatar>
-          <Avatar css={{ borderRadius: 4 }} src={props.collection.image.src} />
-        </ListItemAvatar>
-      ) : (
-        <ListItemAvatar>
-          <Avatar css={{ borderRadius: 4 }} />
+          <Avatar css={{ borderRadius: 4 }} src={props.resource.image.src} />
         </ListItemAvatar>
       )}
       <ListItemText
@@ -60,35 +59,35 @@ export const CollectionPreviewCell: React.FC<EcomCollectionPreviewCellProps> = p
               whiteSpace: 'nowrap',
             }}
           >
-            {props.collection.title}
+            {props.resource.title}
           </div>
         }
       />
     </ListItem>
   ));
 
-export const CollectionPicker: React.FC<
-  CustomReactEditorProps<EcomCollection> & { api: any; omitIds?: string[] }
+export const ResourcePicker: React.FC<
+  CustomReactEditorProps<Resource> & { api: CommerceAPIOperations; omitIds?: string[]; resourceName: string }
 > = props => {
   const store = useLocalStore(() => ({
     searchInputText: '',
     loading: false,
-    collections: [] as EcomCollection[],
-    async searchCollections() {
+    resources: [] as Resource[],
+    async search() {
       this.loading = true;
-      const onEcomError = (err: any) => {
-        console.error('Ecom collection search error:', err);
-        props.context.snackBar.show('Oh no! There was an error searching for collections');
+      const catchError = (err: any) => {
+        console.error('search error:', err);
+        props.context.snackBar.show('Oh no! There was an error searching for resources');
       };
 
-      const collectionsResponse = await props.api
-        .searchCollections(store.searchInputText)
-        .catch(onEcomError);
+      const resourcesResponse = await props.api[props.resourceName]
+        .search(store.searchInputText)
+        .catch(catchError);
 
       runInAction(() => {
-        if (Array.isArray(collectionsResponse)) {
-          this.collections = collectionsResponse.filter(
-            collection => !(props.omitIds || []).includes(collection.id)
+        if (Array.isArray(resourcesResponse)) {
+          this.resources = resourcesResponse.filter(
+            resource => !(props.omitIds || []).includes(String(resource.id))
           );
         }
         this.loading = false;
@@ -97,7 +96,7 @@ export const CollectionPicker: React.FC<
   }));
 
   useEffect(() => {
-    store.searchCollections();
+    store.search();
   }, [store.searchInputText]);
 
   return useObserver(() => (
@@ -105,7 +104,7 @@ export const CollectionPicker: React.FC<
       <TextField
         css={{ margin: 15 }}
         value={store.searchInputText}
-        placeholder="Search collections..."
+        placeholder={`Search ${pluralize.plural(props.resourceName)}...`}
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
@@ -118,18 +117,18 @@ export const CollectionPicker: React.FC<
       {store.loading && <CircularProgress disableShrink css={{ margin: '50px auto' }} />}
       <div css={{ maxHeight: '80vh', overflow: 'auto' }}>
         {!store.loading &&
-          (store.collections.length ? (
-            store.collections.map(item => (
+          (store.resources.length ? (
+            store.resources.map(item => (
               <div
                 key={item.id}
                 onClick={e => {
                   props.onChange(item);
                 }}
               >
-                <CollectionPreviewCell
+                <ResourcePreviewCell
                   selected={String(item.id) === String(props.value?.id)}
                   button
-                  collection={item}
+                  resource={item}
                   key={item.id}
                 />
               </div>
@@ -144,7 +143,7 @@ export const CollectionPicker: React.FC<
                 }}
                 variant="caption"
               >
-                No collections found
+                No {pluralize.plural(props.resourceName)} found
               </Typography>
             </div>
           ))}
@@ -153,43 +152,45 @@ export const CollectionPicker: React.FC<
   ));
 };
 
-export const EcomCollectionPicker: React.FC<EcomCollectionPickerProps> = props => {
+export const ResourcesPickerButton: React.FC<ResourcesPickerButtonProps> = props => {
   const store = useLocalStore(() => ({
     loading: false,
-    collectionInfo: null as EcomCollection | null,
-    collectionHandle: props.handleOnly && typeof props.value === 'string' ? props.value : undefined,
-    collectionId: props.handleOnly && typeof props.value === 'string' ? props.value : undefined,
-    async getCollection() {
+    resourceInfo: null as Resource | null,
+    resourceHandle: props.handleOnly && typeof props.value === 'string' ? props.value : undefined,
+    resourceId: props.handleOnly && typeof props.value === 'string' ? props.value : undefined,
+    async getResource() {
       this.loading = true;
       try {
         const value =
-          (this.collectionId && (await props.api.getCollectionById(this.collectionId))) ||
-          (this.collectionHandle && (await props.api.getCollectionByHandle(this.collectionHandle)));
-        this.collectionInfo = value;
+          (this.resourceId && (await props.api[props.resourceName].findById(this.resourceId))) ||
+          (this.resourceHandle &&
+            (await props.api[props.resourceName].findByHandle(this.resourceHandle)));
+        this.resourceInfo = value || null;
       } catch (e) {
         console.error(e);
-        props.context.snackBar.show('Oh no! There was an error fetching collection');
+        props.context.snackBar.show(`Oh no! There was an error fetching ${pluralize.plural(props.resourceName)}`);
       }
       this.loading = false;
     },
-    async showChooseCollectionModal() {
+    async showPickResouceModal() {
       const close = await props.context.globalState.openDialog(
-        <CollectionPicker
+        <ResourcePicker
+          resourceName={props.resourceName}
           api={props.api}
           context={props.context}
-          {...(this.collectionInfo && { value: this.collectionInfo })}
+          {...(this.resourceInfo && { value: this.resourceInfo })}
           onChange={action(value => {
             if (value) {
-              this.collectionHandle = value.handle;
-              this.collectionId = String(value.id);
-              this.getCollection();
+              this.resourceHandle = value.handle;
+              this.resourceId = String(value.id);
+              this.getResource();
               if (props.handleOnly) {
-                props.onChange(this.collectionHandle);
+                props.onChange(this.resourceHandle);
               } else {
                 if (props.field?.isTargeting) {
-                  props.onChange(this.collectionId);
+                  props.onChange(this.resourceId);
                 } else {
-                  props.onChange(props.api.getRequestObject(this.collectionId, 'collection'));
+                  props.onChange(props.api[props.resourceName].getRequestObject(this.resourceId));
                 }
               }
             }
@@ -200,7 +201,7 @@ export const EcomCollectionPicker: React.FC<EcomCollectionPickerProps> = props =
         {
           PaperProps: {
             // Align modal to top so doesn't jump around centering itself when
-            // grows and shrinks to show more/less collections or loading
+            // grows and shrinks to show more/less resources or loading
             style: {
               alignSelf: 'flex-start',
             },
@@ -223,18 +224,14 @@ export const EcomCollectionPicker: React.FC<EcomCollectionPickerProps> = props =
         {store.loading && (
           <CircularProgress size={20} disableShrink css={{ margin: '30px auto' }} />
         )}
-        {store.collectionInfo && (
+        {store.resourceInfo && (
           <Paper
             css={{
               marginBottom: 15,
               position: 'relative',
             }}
           >
-            <CollectionPreviewCell
-              button
-              css={{ paddingRight: 30 }}
-              collection={store.collectionInfo}
-            />
+            <ResourcePreviewCell button css={{ paddingRight: 30 }} resource={store.resourceInfo} />
             <IconButton
               css={{
                 position: 'absolute',
@@ -246,22 +243,22 @@ export const EcomCollectionPicker: React.FC<EcomCollectionPickerProps> = props =
                 marginBottom: 'auto',
               }}
               onClick={() => {
-                store.showChooseCollectionModal();
+                store.showPickResouceModal();
               }}
             >
               <Create css={{ color: '#888' }} />
             </IconButton>
           </Paper>
         )}
-        {!store.collectionInfo && (
+        {!store.resourceInfo && (
           <Button
             color="primary"
             variant="contained"
             onClick={() => {
-              store.showChooseCollectionModal();
+              store.showPickResouceModal();
             }}
           >
-            Choose collection
+            Choose {props.resourceName}
           </Button>
         )}
       </div>
