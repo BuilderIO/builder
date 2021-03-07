@@ -14,10 +14,10 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core';
-import { Create, Search, Sync } from '@material-ui/icons';
-import { computed, observable, runInAction } from 'mobx';
-import { observer } from 'mobx-react';
-import React from 'react';
+import { Create, Search } from '@material-ui/icons';
+import { runInAction, action } from 'mobx';
+import { useObserver, useLocalStore } from 'mobx-react';
+import React, { useEffect } from 'react';
 import { SafeComponent } from '../components/safe-component';
 import { CustomReactEditorProps } from '../interfaces/custom-react-editor-props';
 import { EcomProduct } from '../interfaces/ecom-product';
@@ -40,245 +40,195 @@ export interface EcomProductPreviewCellProps {
   className?: string;
 }
 
-@observer
-export class ProductPreviewCell extends SafeComponent<EcomProductPreviewCellProps> {
-  render() {
-    return (
-      <ListItem
-        className={this.props.className}
-        button={this.props.button}
-        selected={this.props.selected}
-      >
-        {this.props.product.image && (
-          <ListItemAvatar>
-            <Avatar css={{ borderRadius: 4 }} src={this.props.product.image.src} />
-          </ListItemAvatar>
-        )}
-        <ListItemText
-          primary={
-            <div
-              css={{
-                maxWidth: 400,
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
-              }}
-            >
-              {this.props.product.title}
+export const ProductPreviewCell: React.FC<EcomProductPreviewCellProps> = props =>
+  useObserver(() => (
+    <ListItem className={props.className} button={props.button} selected={props.selected}>
+      {props.product.image && (
+        <ListItemAvatar>
+          <Avatar css={{ borderRadius: 4 }} src={props.product.image.src} />
+        </ListItemAvatar>
+      )}
+      <ListItemText
+        primary={
+          <div
+            css={{
+              maxWidth: 400,
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            {props.product.title}
+          </div>
+        }
+      />
+    </ListItem>
+  ));
+
+export const ProductPicker: React.FC<
+  CustomReactEditorProps<EcomProduct> & { api: any; omitIds?: string[] }
+> = props => {
+  const store = useLocalStore(() => ({
+    searchInputText: '',
+    loading: false,
+    products: [] as EcomProduct[],
+    async searchProducts() {
+      this.loading = true;
+      const onEcomError = (err: any) => {
+        console.error('Ecom product search error:', err);
+        props.context.snackBar.show('Oh no! There was an error searching for products');
+      };
+
+      const productsResponse = await props.api
+        .searchProducts(store.searchInputText)
+        .catch(onEcomError);
+
+      runInAction(() => {
+        if (Array.isArray(productsResponse)) {
+          this.products = productsResponse.filter(
+            product => !(props.omitIds || []).includes(product.id)
+          );
+        }
+        this.loading = false;
+      });
+    },
+  }));
+
+  useEffect(() => {
+    store.searchProducts();
+  }, [store.searchInputText]);
+
+  return useObserver(() => (
+    <div css={{ display: 'flex', flexDirection: 'column', minWidth: 500 }}>
+      <TextField
+        css={{ margin: 15 }}
+        value={store.searchInputText}
+        placeholder="Search products..."
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <Search css={{ color: '#999', marginRight: -2, fontSize: 20 }} />
+            </InputAdornment>
+          ),
+        }}
+        onChange={action(e => (store.searchInputText = e.target.value))}
+      />
+      {store.loading && <CircularProgress disableShrink css={{ margin: '50px auto' }} />}
+      <div css={{ maxHeight: '80vh', overflow: 'auto' }}>
+        {!store.loading &&
+          (store.products.length ? (
+            store.products.map(item => (
+              <div
+                key={item.id}
+                onClick={e => {
+                  props.onChange(item);
+                }}
+              >
+                <ProductPreviewCell
+                  selected={String(item.id) === String(props.value?.id)}
+                  button
+                  product={item}
+                  key={item.id}
+                />
+              </div>
+            ))
+          ) : (
+            <div>
+              <Typography
+                css={{
+                  margin: '40px 20px',
+                  textAlign: 'center',
+                  fontSize: 17,
+                }}
+                variant="caption"
+              >
+                No products found
+              </Typography>
             </div>
-          }
-        />
-      </ListItem>
-    );
-  }
-}
+          ))}
+      </div>
+    </div>
+  ));
+};
 
-@observer
-export class ProductPicker extends SafeComponent<
-  CustomReactEditorProps<EcomProduct> & { api: any }
-> {
-  @observable searchInputText = '';
-  @observable loading = false;
-
-  @observable products: EcomProduct[] = [];
-
-  async searchProducts() {
-    this.loading = true;
-
-    const onEcomError = (err: any) => {
-      console.error('Ecom product search error:', err);
-      this.props.context.snackBar.show(
-        'Oh no! There was an error syncing your page to Ecom. Please contact us for support'
-      );
-    };
-
-    // const agent =
-    // TODO: cancen pending requests if any
-    const productsResponse = await this.props.api
-      .searchProducts(this.searchInputText)
-      .catch(onEcomError);
-
-    runInAction(() => {
-      if (Array.isArray(productsResponse)) {
-        this.products = productsResponse;
+export const EcomProductPicker: React.FC<EcomProductPickerProps> = props => {
+  const store = useLocalStore(() => ({
+    loading: false,
+    productInfo: null as EcomProduct | null,
+    productHandle: props.handleOnly && typeof props.value === 'string' ? props.value : undefined,
+    productId: props.handleOnly && typeof props.value === 'string' ? props.value : undefined,
+    async getProduct() {
+      this.loading = true;
+      try {
+        const value =
+          (this.productId && (await props.api.getProductById(this.productId))) ||
+          (this.productHandle && (await props.api.getProductByHandle(this.productHandle)));
+        this.productInfo = value;
+      } catch (e) {
+        console.error(e);
+        props.context.snackBar.show('Oh no! There was an error fetching product');
       }
       this.loading = false;
-    });
-  }
-
-  componentDidMount() {
-    this.safeReaction(
-      () => this.searchInputText,
-      () => this.searchProducts(),
-      {
-        delay: 500,
-        fireImmediately: true,
-      }
-    );
-  }
-
-  render() {
-    return (
-      <div css={{ display: 'flex', flexDirection: 'column', minWidth: 500 }}>
-        <TextField
-          css={{ margin: 15 }}
-          value={this.searchInputText}
-          placeholder="Search products..."
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <Search css={{ color: '#999', marginRight: -2, fontSize: 20 }} />
-              </InputAdornment>
-            ),
-          }}
-          onChange={e => (this.searchInputText = e.target.value)}
-        />
-        {this.loading && <CircularProgress disableShrink css={{ margin: '50px auto' }} />}
-        <div css={{ maxHeight: '80vh', overflow: 'auto' }}>
-          {!this.loading &&
-            (this.products.length ? (
-              this.products.map(item => (
-                <div
-                  key={item.id}
-                  onClick={e => {
-                    this.props.onChange(item);
-                  }}
-                >
-                  <ProductPreviewCell
-                    selected={String(item.id) === String(this.props.value?.id)}
-                    button
-                    product={item}
-                    key={item.id}
-                  />
-                </div>
-              ))
-            ) : (
-              <div>
-                <Typography
-                  css={{
-                    margin: '40px 20px',
-                    textAlign: 'center',
-                    fontSize: 17,
-                  }}
-                  variant="caption"
-                >
-                  No products found
-                </Typography>
-              </div>
-            ))}
-        </div>
-      </div>
-    );
-  }
-}
-
-@observer
-export class EcomProductPicker extends SafeComponent<EcomProductPickerProps> {
-  @computed get loading() {
-    return this.productInfoCacheValue?.loading;
-  }
-
-  @computed get productInfo() {
-    return this.productHandle
-      ? this.productInfoCacheValue?.value?.products?.[0]
-      : this.productInfoCacheValue?.value?.product;
-  }
-
-  @computed get productInfoCacheValue() {
-    const id = this.productId || this.productHandle;
-    const apiKey = this.props.context.user.apiKey;
-    if (!(apiKey && id)) {
-      return null;
-    }
-    return this.productId
-      ? this.props.api.getProductById(id)
-      : this.props.api.getProductByHandle(id);
-  }
-
-  get productId() {
-    if (this.props.handleOnly) {
-      return '';
-    }
-    return typeof this.props.value === 'object'
-      ? this.props.value?.options?.get('product')
-      : this.props.value || '';
-  }
-
-  get productHandle() {
-    return this.props.handleOnly && typeof this.props.value === 'string'
-      ? this.props.value
-      : undefined;
-  }
-
-  get pluginSettings() {
-    return fastClone(
-      this.props.context.user.organization?.value.settings.plugins.get(this.props.pluginId) || {}
-    );
-  }
-
-  set productId(value) {
-    if (this.props.handleOnly) {
-      return;
-    }
-    if (this.props.field?.isTargeting) {
-      this.props.onChange(value);
-    } else {
-      this.props.onChange(this.props.api.getRequestObject(value));
-    }
-  }
-
-  set productHandle(value) {
-    if (this.props.handleOnly) {
-      this.props.onChange(value);
-    }
-  }
-
-  async showChooseProductModal() {
-    const close = await this.props.context.globalState.openDialog(
-      <ProductPicker
-        api={this.props.api}
-        context={this.props.context}
-        value={this.productInfo}
-        onChange={value => {
-          this.productHandle = value?.handle;
-          this.productId = value?.id;
-          close();
-        }}
-      />,
-      true,
-      {
-        PaperProps: {
-          // Align modal to top so doesn't jump around centering itself when
-          // grows and shrinks to show more/less products or loading
-          style: {
-            alignSelf: 'flex-start',
+    },
+    async showChooseProductModal() {
+      const close = await props.context.globalState.openDialog(
+        <ProductPicker
+          api={props.api}
+          context={props.context}
+          {...(this.productInfo && { value: this.productInfo })}
+          onChange={action(value => {
+            if (value) {
+              this.productHandle = value.handle;
+              this.productId = String(value.id);
+              this.getProduct();
+              if (props.handleOnly) {
+                props.onChange(this.productHandle);
+              } else {
+                if (props.field?.isTargeting) {
+                  props.onChange(this.productId);
+                } else {
+                  props.onChange(props.api.getRequestObject(this.productId));
+                }
+              }
+            }
+            close();
+          })}
+        />,
+        true,
+        {
+          PaperProps: {
+            // Align modal to top so doesn't jump around centering itself when
+            // grows and shrinks to show more/less products or loading
+            style: {
+              alignSelf: 'flex-start',
+            },
           },
-        },
-      }
-    );
-  }
-
-  render() {
-    const { apiKey, apiPassword } = this.pluginSettings;
-
-    if (!(apiKey && apiPassword)) {
-      return (
-        <SetEcomKeysMessage pluginId={this.props.pluginId} pluginName={this.props.pluginName} />
+        }
       );
+    },
+  }));
+
+  return useObserver(() => {
+    const pluginSettings = props.context.user.organization.value.settings.plugins.get(
+      props.pluginId
+    );
+
+    if (!pluginSettings.get('hasConnected')) {
+      return <SetEcomKeysMessage pluginId={props.pluginId} pluginName={props.pluginName} />;
     }
     return (
       <div css={{ display: 'flex', flexDirection: 'column', padding: '10px 0' }}>
-        {this.productInfoCacheValue?.loading && (
+        {store.loading && (
           <CircularProgress size={20} disableShrink css={{ margin: '30px auto' }} />
         )}
-        {this.productInfo && (
+        {store.productInfo && (
           <Paper
             css={{
               marginBottom: 15,
               position: 'relative',
             }}
           >
-            <ProductPreviewCell button css={{ paddingRight: 30 }} product={this.productInfo} />
+            <ProductPreviewCell button css={{ paddingRight: 30 }} product={store.productInfo} />
             <IconButton
               css={{
                 position: 'absolute',
@@ -290,19 +240,19 @@ export class EcomProductPicker extends SafeComponent<EcomProductPickerProps> {
                 marginBottom: 'auto',
               }}
               onClick={() => {
-                this.showChooseProductModal();
+                store.showChooseProductModal();
               }}
             >
               <Create css={{ color: '#888' }} />
             </IconButton>
           </Paper>
         )}
-        {!this.productInfo && (
+        {!store.productInfo && (
           <Button
             color="primary"
             variant="contained"
             onClick={() => {
-              this.showChooseProductModal();
+              store.showChooseProductModal();
             }}
           >
             Choose product
@@ -310,5 +260,5 @@ export class EcomProductPicker extends SafeComponent<EcomProductPickerProps> {
         )}
       </div>
     );
-  }
-}
+  });
+};

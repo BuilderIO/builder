@@ -1,11 +1,11 @@
 import { Builder } from '@builder.io/react';
+import { EcomProductPicker, EcomProductPickerProps } from './editors/EcomProductPicker';
+import { PickEcomProductsButton, PickEcomProductsListProps } from './editors/EcomProductList';
 import { EcomCollectionPicker, EcomCollectionPickerProps } from './editors/EcomCollectionPicker';
 import {
   PickEcomCollectionsButton,
   PickEcomCollectionsListProps,
 } from './editors/EcomCollectionList';
-import { EcomProductPicker, EcomProductPickerProps } from './editors/EcomProductPicker';
-import { PickEcomProductsButton, PickEcomProductsListProps } from './editors/EcomProductList';
 import appState from '@builder.io/app-context';
 import React from 'react';
 import { onEditorLoad } from './actions/on-editor-load';
@@ -37,15 +37,26 @@ export interface CommerceAPIOperations {}
 
 export const registerCommercePlugin = (
   config: CommercePluginConfig,
-  apiOperations: CommerceAPIOperations
+  apiOperationsFromSettings: (settings: any) => CommerceAPIOperations
 ) => {
+  Builder.register('plugin', config);
+
   Builder.register('app.onLoad', async ({ triggerSettingsDialog }: AppActions) => {
     const pluginSettings = appState.user.organization.value.settings.plugins.get(config.id);
-    const hasConnected = pluginSettings.get('hasConnected');
+    const hasConnected = pluginSettings?.get('hasConnected');
     if (!hasConnected) {
       await triggerSettingsDialog(config.id);
     }
   });
+
+  const savedSettings = appState.user.organization.value.settings.plugins.get(config.id);
+  if (!savedSettings) {
+    return;
+  }
+
+  const apiOperations = apiOperationsFromSettings(
+    appState.user.organization.value.settings.plugins.get(config.id)
+  );
 
   Builder.register('editor.onLoad', onEditorLoad(config, apiOperations));
 
@@ -95,13 +106,6 @@ export const registerCommercePlugin = (
   });
 
   Builder.registerEditor({
-    name: `${config.name}CollectionList`,
-    component: (props: PickEcomCollectionsListProps) => (
-      <PickEcomCollectionsButton {...props} api={apiOperations} />
-    ),
-  });
-
-  Builder.registerEditor({
     name: `${config.name}Collection`,
     component: (props: EcomCollectionPickerProps) => (
       <EcomCollectionPicker
@@ -116,14 +120,33 @@ export const registerCommercePlugin = (
   Builder.registerEditor({
     name: `${config.name}CollectionPreview`,
     component: (props: EcomCollectionPickerProps) => (
-      <EcomCollectionPicker {...props} pluginId={config.id} pluginName={config.name} isPreview />
+      <EcomCollectionPicker
+        {...props}
+        pluginId={config.id}
+        pluginName={config.name}
+        isPreview
+        api={apiOperations}
+      />
     ),
   });
 
   Builder.registerEditor({
     name: `${config.name}CollectionHandle`,
     component: (props: EcomCollectionPickerProps) => (
-      <EcomCollectionPicker {...props} pluginId={config.id} pluginName={config.name} handleOnly />
+      <EcomCollectionPicker
+        {...props}
+        pluginId={config.id}
+        pluginName={config.name}
+        handleOnly
+        api={apiOperations}
+      />
+    ),
+  });
+
+  Builder.registerEditor({
+    name: `${config.name}CollectionList`,
+    component: (props: PickEcomCollectionsListProps) => (
+      <PickEcomCollectionsButton {...props} api={apiOperations} />
     ),
   });
 };

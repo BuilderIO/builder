@@ -1,5 +1,5 @@
 export interface CustomReactEditorProps<T = any> {
-  value: T | undefined;
+  value?: T;
   onChange(val: T | undefined): void;
   context: any;
   field?: any;
