@@ -41,6 +41,7 @@ export const validEnvList = [
   'cloud',
   'fast',
   'cdn2',
+  'cdn-prod',
 ];
 
 function getQueryParam(url: string, variable: string): string | null {
@@ -433,6 +434,7 @@ export class Builder {
 
   static actions: Action[] = [];
   static registry: { [key: string]: any[] } = {};
+  static overrideHost: string | undefined;
 
   /**
    * @todo `key` property on any info where if a key matches a current
@@ -1785,14 +1787,19 @@ export class Builder {
       case 'development':
       case 'dev':
         return 'http://localhost:5000';
-      default:
+      case 'cdn-prod':
         return 'https://cdn.builder.io';
+      default:
+        return Builder.overrideHost || 'https://cdn.builder.io';
     }
   }
 
   private flushGetContentQueue(usePastQueue = false, useQueue?: GetContentOptions[]) {
     if (!this.apiKey) {
-      throw new Error('Builder needs to be initialized with an API key!');
+      throw new Error(
+        `Fetching content failed, expected apiKey to be defined instead got: ${this.apiKey}`
+      );
+      j;
     }
 
     if (!usePastQueue && !this.getContentQueue) {
@@ -2103,7 +2110,9 @@ export class Builder {
 
   getContent(modelName: string, options: GetContentOptions = {}) {
     if (!this.apiKey) {
-      throw new Error('Builder needs to be initialized with an API key!');
+      throw new Error(
+        `Fetching content from model ${modelName} failed, expected apiKey to be defined instead got: ${this.apiKey}`
+      );
     }
     return this.queueGetContent(modelName, options);
   }
