@@ -22,7 +22,7 @@ import { Resource } from '../interfaces/resource';
 import { BuilderRequest } from '../interfaces/builder-request';
 import { SetEcomKeysMessage } from '../components/set-keys-message';
 import { CommerceAPIOperations } from '..';
-import pluralize from 'pluralize'
+import pluralize from 'pluralize';
 
 export interface ResourcesPickerButtonProps
   extends CustomReactEditorProps<BuilderRequest | string> {
@@ -67,7 +67,11 @@ export const ResourcePreviewCell: React.FC<ResourcePreviewCellProps> = props =>
   ));
 
 export const ResourcePicker: React.FC<
-  CustomReactEditorProps<Resource> & { api: CommerceAPIOperations; omitIds?: string[]; resourceName: string }
+  CustomReactEditorProps<Resource> & {
+    api: CommerceAPIOperations;
+    omitIds?: string[];
+    resourceName: string;
+  }
 > = props => {
   const store = useLocalStore(() => ({
     searchInputText: '',
@@ -168,7 +172,9 @@ export const ResourcesPickerButton: React.FC<ResourcesPickerButtonProps> = props
         this.resourceInfo = value || null;
       } catch (e) {
         console.error(e);
-        props.context.snackBar.show(`Oh no! There was an error fetching ${pluralize.plural(props.resourceName)}`);
+        props.context.snackBar.show(
+          `Oh no! There was an error fetching ${pluralize.plural(props.resourceName)}`
+        );
       }
       this.loading = false;
     },

@@ -1,10 +1,6 @@
 import { Builder } from '@builder.io/react';
 import { ResourcesPickerButton, ResourcesPickerButtonProps } from './editors/ResourcesPicker';
-import {
-  PickResourcesListButton,
-  PickResourceListProps,
-  PickResourceList,
-} from './editors/ResourcesList';
+import { PickResourcesListButton, PickResourceListProps } from './editors/ResourcesList';
 import appState from '@builder.io/app-context';
 import React from 'react';
 import { onEditorLoad } from './actions/on-editor-load';
@@ -109,7 +105,7 @@ export const registerCommercePlugin = (
         name: `${config.name}${capitalize(pluralize.plural(resourceName))}List`,
         component: (props: PickResourceListProps) => (
           <ErrorBoundary>
-            <PickResourceList {...props} api={apiOperations} />
+            <PickResourcesListButton {...props} api={apiOperations} resourceName={resourceName} />
           </ErrorBoundary>
         ),
       });
