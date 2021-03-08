@@ -4,7 +4,7 @@ registerCommercePlugin(
   {
     name: 'Swell',
     // should always match package.json package name
-    id: '@builder.io/ecom-swell-is',
+    id: '@builder.io/plugin-swell',
     settings: [
       {
         name: 'storeId',

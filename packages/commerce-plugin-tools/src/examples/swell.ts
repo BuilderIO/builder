@@ -2,7 +2,7 @@ import { registerCommercePlugin } from '../index';
 registerCommercePlugin(
   {
     name: 'Swell',
-    id: '@builder.io/ecome-swell',
+    id: '@builder.io/plugin-swell',
     settings: [
       {
         name: 'storeId',
