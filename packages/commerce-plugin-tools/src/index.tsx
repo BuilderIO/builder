@@ -120,7 +120,7 @@ export const registerCommercePlugin = (
     registerEditors();
   };
 
-  Builder.register('plugin', config);
+  Builder.register('plugin', { ...config, isSourcePlugin: true });
 
   Builder.register('app.onLoad', async ({ triggerSettingsDialog }: AppActions) => {
     const pluginSettings = appState.user.organization.value.settings.plugins.get(config.id);
