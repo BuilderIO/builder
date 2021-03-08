@@ -1799,7 +1799,6 @@ export class Builder {
       throw new Error(
         `Fetching content failed, expected apiKey to be defined instead got: ${this.apiKey}`
       );
-      j;
     }
 
     if (!usePastQueue && !this.getContentQueue) {
