@@ -38,9 +38,9 @@
   &nbsp; <a title="VS Code"  target="_blank" href="https://github.com/BuilderIO/vscode">
     <img alt="VS Code" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ff83e94a9c504427cbc8a557f682efec3" /> 
   </a>&nbsp;
-  &nbsp; <a target="_blank" href="https://github.com/builderio/html-to-figma">
-    <img width="25" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ffb77e93c28e044178e4694cc939bf4cf" /> 
-  </a>&nbsp;
+  &nbsp;&nbsp; <a title="Figma" target="_blank" href="https://github.com/builderio/html-to-figma">
+    <img width="31" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ffb77e93c28e044178e4694cc939bf4cf" /> 
+  </a>&nbsp;&nbsp;
   &nbsp; <a title="React"  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=react">
     <img alt="React" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F2f3409f4f8b64d5f880195061aa481ab" /> 
   </a>&nbsp;
@@ -60,7 +60,7 @@
     <img alt="Angular" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fa91e9e437203442d8ed481eef94a99dc" /> 
   </a>&nbsp;
   &nbsp; <a title="Webcomponents"  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=webcomponents">
-    <img alt="Webcomponents" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F5613cb3536be4c108b32c34bf06f1c59" /> 
+    <img alt="Webcomponents" width="52" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F5613cb3536be4c108b32c34bf06f1c59" /> 
   </a>&nbsp;
 </p>
 
