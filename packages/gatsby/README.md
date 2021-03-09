@@ -22,6 +22,13 @@ module.exports = {
       options: {
         // public API Key
         publicAPIKey: 'MY_PUBLIC_API_KEY',
+        // optional
+        // mapping model names to template files, the plugin will create a page for each entry of the model at its specified url
+        templates: {
+          // `page` can be any model of choice, camelCased
+          page: path.resolve('templates/my-page.tsx'),
+        },
+        // optional
         mapEntryToContext: async ({ entry, graphql }) => {
           const result = await graphql('....');
           return {
@@ -31,6 +38,7 @@ module.exports = {
             /* ... */
           };
         },
+        // optional, to resolve a single entry to multiple, for e.g in localization
         resolveDynamicEntries: async (entries) => {
           const entriesToBuild = []
           for entry of entries {
@@ -42,10 +50,6 @@ module.exports = {
             }
           }
           return entriesToBuild;
-        },
-        templates: {
-          // `page` can be any model of choice, camelCased
-          page: path.resolve('templates/my-page.tsx'),
         },
       },
     },
