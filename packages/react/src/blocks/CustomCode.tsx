@@ -15,14 +15,27 @@ const globalReplaceNodes = ({} as { [key: string]: Element[] }) || null;
 const isShopify = Builder.isBrowser && 'Shopify' in window;
 
 if (Builder.isBrowser && globalReplaceNodes) {
+  const customCodeQuerySelector = isShopify
+    ? '.builder-custom-code'
+    : '.builder-custom-code.replace-nodes';
   try {
-    // TODO: keep track of indexes for if this is repeated have globalReplaceNodes[key][index]
-    Array.from(
-      document.querySelectorAll(
-        // Always use replace nodes by default for shopify for liquid compatibility
-        isShopify ? '.builder-custom-code' : '.builder-custom-code.replace-nodes'
-      )
-    ).forEach(el => {
+    let allCustomCodeElements = Array.from(document.querySelectorAll(customCodeQuerySelector));
+
+    // Search each template element (if present) for custom code blocks since
+    // querySelectorAll cannot search all templates that we use for variations, because they are
+    // considered document fragments and are not a part of the DOM.
+    const builderTemplates = document.querySelectorAll('template[data-template-variant-id]');
+    if (builderTemplates.length) {
+      Array.from(builderTemplates).forEach(template => {
+        const content: DocumentFragment = (template as any).content;
+        const codeElements = content.querySelectorAll(customCodeQuerySelector);
+        if (codeElements.length) {
+          allCustomCodeElements = allCustomCodeElements.concat(Array.from(codeElements));
+        }
+      });
+    }
+
+    allCustomCodeElements.forEach(el => {
       const parent = el.parentElement;
       const id = parent && parent.getAttribute('builder-id');
       if (id) {
