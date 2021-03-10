@@ -6,9 +6,9 @@ Easily connect your Swell.is data to your Builder.io content!
 
 ## Installation
 
-Go to [builder.io/account/organization](https://builder.io/account/organization) and type `@builder.io/ecom-swell-is`, then hit save, you'll be prompted for storeId and secretKey next.
+Go to [builder.io/account/organization](https://builder.io/account/organization) and press on `@builder.io/plugin-swell` in the list of plugins, then hit save, you'll be prompted for storeId and secretKey next.
 
-![Installation screenshot](https://cdn.builder.io/api/v1/image/assets%2Fc33bcd23c29e45789677ba9aaaa7ce1d%2Fe4df15a3d0ad48318f46bca7208bbfb3)
+![Installation screenshot](https://cdn.builder.io/api/v1/image/assets%2F6d39f4449e2b4e6792a793bb8c1d9615%2F18a7201313914cccae7f0311a1a614ae)
 
 You will now see six new field types (for [model](https://builder.io/c/docs/guides/getting-started-with-models) fields, [symbol](https://builder.io/c/docs/guides/symbols) inputs, [custom components](https://builder.io/c/docs/custom-react-components) fields), and [custom targeting attributes](https://www.builder.io/c/docs/guides/targeting-and-scheduling#custom-targeting) that can be used in three different contexts:
 
