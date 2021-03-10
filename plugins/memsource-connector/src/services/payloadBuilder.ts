@@ -52,17 +52,25 @@ const getTranslatablePageOptions = (builderContext: any) => {
 const getTranslatableComponents = (builderContext: any) => {
   const usedComponentsSchema = _getComponentsUsedSchema(builderContext);
   const translatableComponentNames = _getTranslatableComponentNames(
-    builderContext
+    usedComponentsSchema
   );
-  const translatableComponents = builderContext.designerState.editingContentModel.data
+
+  const allOccurrencies = builderContext.designerState.editingContentModel.data
     .get('blocks')
     .toJSON()
-    .map((each: any) => extractAllOccurrencies(each.toJSON(), 'component'))
+    .map((block: any) => {
+      const occurrencies = extractAllOccurrencies(block.toJSON(), 'component');
+      return occurrencies;
+    });
+
+  const filtered = allOccurrencies
     .flat()
-    .filter((each: any) => translatableComponentNames.includes(each.name))
-    .map((each: any) => _mapComponentToPayload(each, usedComponentsSchema))
+    .filter((block: any) => translatableComponentNames.includes(block.name));
+
+  const translatableComponents = filtered
+    .map((block: any) => _mapComponentToPayload(block, usedComponentsSchema))
     .flat()
-    .filter((each: any) => each);
+    .filter(Boolean);
 
   return translatableComponents;
 };
@@ -71,14 +79,13 @@ const _getComponentsUsedSchema = (builderContext: any) => {
   return builderContext.designerState.editingContentModel.componentsUsed;
 };
 
-const _getTranslatableComponentNames = (builderContext: any) => {
-  const schema = _getComponentsUsedSchema(builderContext);
+const _getTranslatableComponentNames = (schema: any) => {
   const translatableComponentNames = [];
   for (let key in schema) {
     const comp = schema[key];
     if (
       comp.inputs.some((input: any) =>
-        ['text', 'longText'].includes(input.type)
+        ['text', 'longText', 'list'].includes(input.type)
       )
     ) {
       translatableComponentNames.push(key);
@@ -88,30 +95,21 @@ const _getTranslatableComponentNames = (builderContext: any) => {
   return translatableComponentNames;
 };
 
-const _mapComponentToPayload = (component: any, schema: any) => {
-  const { name, options, id } = component;
-  const translatableInputs = Object.values(
-    schema[name].inputs
-      .filter((each: any) => ['text', 'longText'].includes(each.type))
-      .map((each: any) => each.name)
-  )
-    .map((each: any) => {
-      if (options[each]) {
-        return {
-          __id: id,
-          __optionKey: each,
-          toTranslate: options[each]
-        };
-      }
-    })
-    .filter((each: any) => each);
+const _mapComponentToPayload = (block: any, schema: any) => {
+  const { name, options, id } = block;
+  const singleValueOptions = mapSingleValueOptions(schema, name, options, id);
+  const multipleValueOptions = mapMultipleValueOptions(
+    schema,
+    name,
+    options,
+    id
+  );
 
-  return translatableInputs;
+  return [...singleValueOptions, ...multipleValueOptions];
 };
 
-const extractAllOccurrencies = (builderBlock: any, key: string) => {
-  return recursiveExtraction(builderBlock, key, []);
-};
+const extractAllOccurrencies = (builderBlock: any, key: string) =>
+  recursiveExtraction(builderBlock, key, []);
 
 const recursiveExtraction = (
   builderBlock: any,
@@ -142,4 +140,52 @@ const recursiveExtraction = (
     }
   }
   return ocurrencies;
+};
+const mapSingleValueOptions = (
+  schema: any,
+  name: any,
+  options: any,
+  id: any
+) => {
+  return Object.values(
+    schema[name].inputs
+      .filter((each: any) => ['text', 'longText'].includes(each.type))
+      .map((each: any) => each.name)
+  )
+    .map((each: any) => {
+      if (options[each]) {
+        return {
+          __id: id,
+          __optionKey: each,
+          toTranslate: options[each]
+        };
+      }
+    })
+    .filter((each: any) => each);
+};
+
+const mapMultipleValueOptions = (
+  schema: any,
+  name: any,
+  options: any,
+  id: any
+) => {
+  const multipleValues: any[] = [];
+  Object.values(
+    schema[name].inputs
+      .filter((each: any) => ['list'].includes(each.type))
+      .map((each: any) => each.name)
+  ).forEach((each: any) => {
+    if (options[each]) {
+      return options[each].map(({ item }: { item: string }) => {
+        multipleValues.push({
+          __id: id,
+          __optionKey: each,
+          toTranslate: item
+        });
+      });
+    }
+  });
+
+  return multipleValues.filter(Boolean);
 };

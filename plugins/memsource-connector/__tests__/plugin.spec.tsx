@@ -131,15 +131,15 @@ describe('Memsource connector', () => {
             },
             data: {
               get: (arg: string) =>
-                ({
-                  blocks: {
-                    toJSON: () => [
-                      {
-                        toJSON: () => ({})
-                      }
-                    ]
-                  }
-                }[arg]),
+              ({
+                blocks: {
+                  toJSON: () => [
+                    {
+                      toJSON: () => ({})
+                    }
+                  ]
+                }
+              }[arg]),
               toJSON: () => ({ locale: 'locale-1', title: 'page-title' })
             },
             model: {
@@ -203,7 +203,7 @@ describe('Memsource connector', () => {
 
           expect(spy).toHaveBeenCalledWith('http://example.com', {
             proxy: {
-              projectName: 'builderio__model-name__page-title__locale-1',
+              projectName: 'Builderio__model-name__page-title__locale-1',
               sourceLocale: 'locale-1',
               targetLocales: ['locale-2'],
               payload: {
@@ -220,7 +220,98 @@ describe('Memsource connector', () => {
             }
           });
         });
+
+        it('Then sends each translatable in an key-value pair structure', () => {
+          const spy = jest.fn();
+          jest
+            .spyOn(axios, 'post')
+            .mockImplementationOnce((...args) => spy(...args));
+
+          const listBlock = givenListBlock({ id: 'list-1', items: ['list item 1', 'list item 2'] });
+          const textBlock = givenTextBlock({ id: 'text-1', text: 'text content' })
+
+          ctx.designerState.editingContentModel.data.get = (arg) => {
+            return {
+              'blocks': {
+                toJSON: () => [listBlock, textBlock]
+              }
+            }[arg]
+          }
+
+          ctx.designerState.editingContentModel['componentsUsed'] = {
+            'list': { name: 'list', inputs: [{ name: 'list', type: 'list' }] },
+            'text': { name: 'text', inputs: [{ name: 'text', type: 'longText' }] }
+          }
+
+          const { getByTestId } = render(<MemsourceConnector context={ctx} />);
+
+          fireEvent.click(getByTestId('button-localise'));
+          fireEvent.click(getByTestId('locale-2-checkbox'));
+          fireEvent.click(getByTestId('dialog-form-submit-button'));
+
+          expect(spy).toHaveBeenCalledWith('http://example.com', {
+            proxy: expect.objectContaining({
+              payload: expect.objectContaining({
+                content: [
+                  {
+                    "__id": "list-1",
+                    "__optionKey": "list",
+                    "toTranslate": "list item 1",
+                  },
+                  {
+                    "__id": "list-1",
+                    "__optionKey": "list",
+                    "toTranslate": "list item 2",
+                  },
+                  {
+                    "__id": "text-1",
+                    "__optionKey": "text",
+                    "toTranslate": "text content",
+                  }
+                ]
+              })
+            })
+          });
+        })
       });
     });
   });
 });
+
+const givenListBlock = ({ id, items }) => {
+  return {
+    name: 'list',
+    id,
+    options: {
+      list: items.map((item: string) => ({ item }))
+    },
+    toJSON: () => ({
+      id,
+      component: {
+        name: 'list',
+        options: {
+          list: items.map((item: string) => ({ item }))
+        }
+      }
+    })
+  }
+}
+
+const givenTextBlock = ({ id, text }) => {
+  return {
+    name: 'text',
+    id,
+    options: {
+      text
+    },
+    toJSON: () => ({
+      id,
+      component: {
+        name: 'text',
+        options: {
+          text
+        }
+      }
+    })
+  }
+}
