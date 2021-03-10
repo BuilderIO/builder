@@ -139,10 +139,10 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
             // and mark the `FontFace` instance as `style: 'italic'`; otherwise
             // this italic version of the font gets used even if no `font-style: italic`
             // CSS rule is defined in the element.
-            const fontWeightMatch = fullMatch.match(/font-weight:\s*(\d+)(italic)?/);
+            const fontWeightMatch = fullMatch.match(/font-weight\s*:\s*(\d*)?\s*(italic)?\s*;/);
             let weight = '400';
             if (fontWeightMatch) {
-              weight = fontWeightMatch[1];
+              weight = fontWeightMatch[1] || weight;
               if (fontWeightMatch[2]) {
                 style = 'italic';
               }
