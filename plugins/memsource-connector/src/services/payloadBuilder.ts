@@ -177,10 +177,12 @@ const mapMultipleValueOptions = (
       .map((each: any) => each.name)
   ).forEach((each: any) => {
     if (options[each]) {
-      return options[each].map(({ item }: { item: string }) => {
+      return options[each].map(({ item }: { item: string }, index: number) => {
+        console.log('Addind index', index);
         multipleValues.push({
           __id: id,
           __optionKey: each,
+          __listIndex: index,
           toTranslate: item
         });
       });
