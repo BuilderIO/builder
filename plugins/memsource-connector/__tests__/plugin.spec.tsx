@@ -256,11 +256,13 @@ describe('Memsource connector', () => {
                   {
                     "__id": "list-1",
                     "__optionKey": "list",
+                    "__listIndex": 0,
                     "toTranslate": "list item 1",
                   },
                   {
                     "__id": "list-1",
                     "__optionKey": "list",
+                    "__listIndex": 1,
                     "toTranslate": "list item 2",
                   },
                   {
