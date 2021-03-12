@@ -25,11 +25,13 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
     return this.props.builder || builder;
   }
   get name() {
-    // Setting props to any here since typescript complains
-    // about model not existing on the modelName variation of the type BuilderContentProps
-    // and vice versa
-    const props = this.props as any;
-    return props.model || props.modelName;
+    const props = this.props;
+
+    if ('model' in props) {
+      return props.model;
+    } else {
+      return props.modelName;
+    }
   }
 
   get renderedVairantId() {
