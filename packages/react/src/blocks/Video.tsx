@@ -77,6 +77,9 @@ class VideoComponent extends React.Component<{
               }));
               window.removeEventListener('scroll', listener);
               this.scrollListener = null;
+              setTimeout(() => {
+                this.updateVideo();
+              });
             }
           }
         },
