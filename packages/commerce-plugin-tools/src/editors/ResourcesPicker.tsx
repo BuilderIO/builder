@@ -196,7 +196,7 @@ export const ResourcesPickerButton: React.FC<ResourcesPickerButtonProps> = props
                 if (props.field?.isTargeting) {
                   props.onChange(this.resourceId);
                 } else {
-                  props.onChange(props.api[props.resourceName].getRequestObject(this.resourceId));
+                  props.onChange(props.api[props.resourceName].getRequestObject(this.resourceId, value));
                 }
               }
             }

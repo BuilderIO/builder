@@ -37,7 +37,7 @@ export interface CommerceAPIOperations {
     findById(id: string): Promise<Resource>;
     findByHandle(handle: string): Promise<Resource>;
     search(search: string): Promise<Resource[]>;
-    getRequestObject(id: string): BuilderRequest;
+    getRequestObject(id: string, resource?: Resource): BuilderRequest;
   };
 }
 
