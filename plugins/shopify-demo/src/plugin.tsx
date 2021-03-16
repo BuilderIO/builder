@@ -11,9 +11,8 @@ registerCommercePlugin(
         name: 'shopUrl',
         type: 'string',
         required: true,
-        helperText:
-          'The url of your shopify store',
-      }
+        helperText: 'The url of your shopify store',
+      },
     ],
     ctaText: `Connect your Shopify store`,
   },
@@ -54,9 +53,13 @@ registerCommercePlugin(
             basicCache.get(key) ||
             (await fetch(`${baseUrl}/collections.json`).then(res => res.json()));
           basicCache.set(key, response);
-          const collections = response.collections || []
+          const collections = response.collections || [];
           if (search) {
-            return collections.filter( (collection: Resource) => collection.title.toLowerCase().includes(search.toLowerCase())).map(transformResource);
+            return collections
+              .filter((collection: Resource) =>
+                collection.title.toLowerCase().includes(search.toLowerCase())
+              )
+              .map(transformResource);
           }
           return collections.map(transformResource);
         },
@@ -64,7 +67,7 @@ registerCommercePlugin(
           return {
             '@type': '@builder.io/core:Request',
             request: {
-              url:`${baseUrl}/collections/${collection.handle}.json`,
+              url: `${baseUrl}/collections/${collection.handle}.json`,
             },
             options: {
               collection: collection.id,
@@ -96,7 +99,11 @@ registerCommercePlugin(
           basicCache.set(key, response);
           const products = response.products || [];
           if (search) {
-            return products.filter( (product: Resource) => product.title.toLowerCase().includes(search.toLowerCase())).map(transformResource);
+            return products
+              .filter((product: Resource) =>
+                product.title.toLowerCase().includes(search.toLowerCase())
+              )
+              .map(transformResource);
           }
           return products.map(transformResource);
         },
@@ -104,7 +111,7 @@ registerCommercePlugin(
           return {
             '@type': '@builder.io/core:Request',
             request: {
-              url:`${baseUrl}/products/${product.handle}.json`,
+              url: `${baseUrl}/products/${product.handle}.json`,
             },
             options: {
               product: product.id,
