@@ -36,6 +36,7 @@ const voidElements = new Set([
   'source',
   'track',
   'wbr',
+  'textarea', // In React, we want to treat this as void (no children, otherwise React throws errors)
 ]);
 
 const last = <T extends any>(arr: T[]) => arr[arr.length - 1];
