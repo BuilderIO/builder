@@ -4,6 +4,7 @@ import sourceMaps from 'rollup-plugin-sourcemaps';
 import camelCase from 'lodash.camelcase';
 import typescript from 'rollup-plugin-typescript2';
 import json from 'rollup-plugin-json';
+import replace from 'rollup-plugin-replace';
 import serve from 'rollup-plugin-serve';
 
 const SERVE = process.env.SERVE === 'true';
@@ -16,7 +17,19 @@ export default {
   input: `src/${libraryName}.tsx`,
   // Important! We need to have shared references to 'react' and '@builder.io/sdk'
   // for builder plugins to run properly
-  external: ['react', '@builder.io/sdk', '@material-ui/core', '@emotion/core', '@emotion/styled'],
+  // Do not change these! If you install new dependenies, that is ok, they should be
+  // left out of this list
+  external: [
+    'react',
+    '@builder.io/react',
+    '@builder.io/app-context',
+    '@material-ui/core',
+    '@emotion/core',
+    '@emotion/styled',
+    'mobx',
+    'react-dom',
+    'mobx-react',
+  ],
   output: [
     {
       file: pkg.main,
@@ -36,11 +49,17 @@ export default {
     // Compile TypeScript files
     typescript({ useTsconfigDeclarationDir: true }),
     // Allow bundling cjs modules (unlike webpack, rollup doesn't understand cjs)
-    commonjs(),
+    commonjs({
+      extensions: ['.js', '.ts', '.tsx'],
+    }),
     // Allow node_modules resolution, so you can use 'external' to control
     // which external modules to include in the bundle
     // https://github.com/rollup/rollup-plugin-node-resolve#usage
     resolve(),
+
+    replace({
+      'process.env.NODE_ENV': JSON.stringify('production'),
+    }),
 
     // Resolve source maps to the original source
     sourceMaps(),
