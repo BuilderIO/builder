@@ -43,13 +43,14 @@ export const onEditorLoad = (
         { type: string }
       > = appState.user.organization.value.customTargetingAttributes?.toJSON();
       if (shouldSync && customAttributes && query) {
+        const apiService = apiOperations[resourceName];
         for (const [key, value] of Object.entries(customAttributes)) {
           const targetingValue = query.find((q: any) => q.property === key)?.value;
           if (targetingValue && value.type === `${config.name}${capitalize(resourceName)}`) {
-            return apiOperations[resourceName].findById(targetingValue);
+            return apiService.findById(targetingValue);
           }
-          if (targetingValue && value.type === `${config.name}${capitalize(resourceName)}Handle`) {
-            return apiOperations[resourceName].findByHandle(targetingValue);
+          if (apiService.findByHandle && targetingValue && value.type === `${config.name}${capitalize(resourceName)}Handle`) {
+            return apiService.findByHandle(targetingValue);
           }
         }
       }
