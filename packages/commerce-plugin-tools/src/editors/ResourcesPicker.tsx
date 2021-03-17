@@ -165,10 +165,12 @@ export const ResourcesPickerButton: React.FC<ResourcesPickerButtonProps> = props
     async getResource() {
       this.loading = true;
       try {
+        const resourceService = props.api[props.resourceName];
         const value =
-          (this.resourceId && (await props.api[props.resourceName].findById(this.resourceId))) ||
+          (this.resourceId && (await resourceService.findById(this.resourceId))) ||
           (this.resourceHandle &&
-            (await props.api[props.resourceName].findByHandle(this.resourceHandle)));
+            resourceService.findByHandle &&
+            (await resourceService.findByHandle(this.resourceHandle)));
         this.resourceInfo = value || null;
       } catch (e) {
         console.error(e);
@@ -196,7 +198,9 @@ export const ResourcesPickerButton: React.FC<ResourcesPickerButtonProps> = props
                 if (props.field?.isTargeting) {
                   props.onChange(this.resourceId);
                 } else {
-                  props.onChange(props.api[props.resourceName].getRequestObject(this.resourceId));
+                  props.onChange(
+                    props.api[props.resourceName].getRequestObject(this.resourceId, value)
+                  );
                 }
               }
             }

@@ -35,9 +35,9 @@ export interface CommercePluginConfig {
 export interface CommerceAPIOperations {
   [resourceName: string]: {
     findById(id: string): Promise<Resource>;
-    findByHandle(handle: string): Promise<Resource>;
+    findByHandle?(handle: string): Promise<Resource>;
     search(search: string): Promise<Resource[]>;
-    getRequestObject(id: string): BuilderRequest;
+    getRequestObject(id: string, resource?: Resource): BuilderRequest;
   };
 }
 
@@ -85,21 +85,23 @@ export const registerCommercePlugin = (
         ),
       });
 
-      Builder.registerEditor({
-        name: `${config.name}${capitalize(resourceName)}Handle`,
-        component: (props: ResourcesPickerButtonProps) => (
-          <ErrorBoundary>
-            <ResourcesPickerButton
-              {...props}
-              resourceName={resourceName}
-              pluginId={config.id}
-              pluginName={config.name}
-              handleOnly
-              api={apiOperations}
-            />
-          </ErrorBoundary>
-        ),
-      });
+      if (apiOperations[resourceName].findByHandle) {
+        Builder.registerEditor({
+          name: `${config.name}${capitalize(resourceName)}Handle`,
+          component: (props: ResourcesPickerButtonProps) => (
+            <ErrorBoundary>
+              <ResourcesPickerButton
+                {...props}
+                resourceName={resourceName}
+                pluginId={config.id}
+                pluginName={config.name}
+                handleOnly
+                api={apiOperations}
+              />
+            </ErrorBoundary>
+          ),
+        });
+      }
 
       Builder.registerEditor({
         name: `${config.name}${capitalize(pluralize.plural(resourceName))}List`,
