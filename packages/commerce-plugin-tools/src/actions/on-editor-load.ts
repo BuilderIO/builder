@@ -49,7 +49,11 @@ export const onEditorLoad = (
           if (targetingValue && value.type === `${config.name}${capitalize(resourceName)}`) {
             return apiService.findById(targetingValue);
           }
-          if (apiService.findByHandle && targetingValue && value.type === `${config.name}${capitalize(resourceName)}Handle`) {
+          if (
+            apiService.findByHandle &&
+            targetingValue &&
+            value.type === `${config.name}${capitalize(resourceName)}Handle`
+          ) {
             return apiService.findByHandle(targetingValue);
           }
         }

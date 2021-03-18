@@ -53,18 +53,18 @@ export const registerCommercePlugin = (
     const resources = Object.keys(apiOperations);
 
     resources.forEach(resourceName => {
+      const contextProps = {
+        resourceName,
+        pluginId: config.id,
+        plulginName: config.name,
+        api: apiOperations,
+      };
       Builder.register('editor.onLoad', onEditorLoad(config, apiOperations, resourceName));
       Builder.registerEditor({
         name: `${config.name}${capitalize(resourceName)}`,
         component: (props: ResourcesPickerButtonProps) => (
           <ErrorBoundary>
-            <ResourcesPickerButton
-              {...props}
-              resourceName={resourceName}
-              pluginId={config.id}
-              pluginName={config.name}
-              api={apiOperations}
-            />
+            <ResourcesPickerButton {...props} {...contextProps} />
           </ErrorBoundary>
         ),
       });
@@ -73,14 +73,7 @@ export const registerCommercePlugin = (
         name: `${config.name}${capitalize(resourceName)}Preview`,
         component: (props: ResourcesPickerButtonProps) => (
           <ErrorBoundary>
-            <ResourcesPickerButton
-              {...props}
-              resourceName={resourceName}
-              pluginId={config.id}
-              pluginName={config.name}
-              isPreview
-              api={apiOperations}
-            />
+            <ResourcesPickerButton {...props} {...contextProps} isPreview />
           </ErrorBoundary>
         ),
       });
@@ -90,14 +83,7 @@ export const registerCommercePlugin = (
           name: `${config.name}${capitalize(resourceName)}Handle`,
           component: (props: ResourcesPickerButtonProps) => (
             <ErrorBoundary>
-              <ResourcesPickerButton
-                {...props}
-                resourceName={resourceName}
-                pluginId={config.id}
-                pluginName={config.name}
-                handleOnly
-                api={apiOperations}
-              />
+              <ResourcesPickerButton {...props} {...contextProps} handleOnly />
             </ErrorBoundary>
           ),
         });
@@ -107,7 +93,7 @@ export const registerCommercePlugin = (
         name: `${config.name}${capitalize(pluralize.plural(resourceName))}List`,
         component: (props: PickResourceListProps) => (
           <ErrorBoundary>
-            <PickResourcesListButton {...props} api={apiOperations} resourceName={resourceName} />
+            <PickResourcesListButton {...props} {...contextProps} />
           </ErrorBoundary>
         ),
       });

@@ -150,7 +150,11 @@ export function PickResourceList(props: PickResourceListProps) {
 export function PickResourcesListButton(props: Omit<PickResourceListProps, 'onDone'>) {
   useEffect(() => {
     if (typeof props.value === 'undefined') {
-      props.onChange([]);
+      try {
+        props.onChange([]);
+      } catch (e) {
+        console.warn('coudnt set default value', e);
+      }
     }
   }, []);
 
