@@ -19,7 +19,6 @@ export async function getStaticProps({
     props: {
       page,
     },
-    notFound: !page,
     // Next.js will attempt to re-generate the page:
     // - When a request comes in
     // - At most once every 5 seconds
