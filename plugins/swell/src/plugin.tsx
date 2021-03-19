@@ -1,4 +1,5 @@
 import { registerCommercePlugin } from '@builder.io/commerce-plugin-tools';
+import swell from 'swell-js';
 
 registerCommercePlugin(
   {
@@ -14,38 +15,27 @@ registerCommercePlugin(
           'Get your Store ID from swell store settings https://swell.store/docs/api/?javascript#authentication',
       },
       {
-        name: 'secretKey',
+        name: 'publicKey',
         type: 'string',
         required: true,
         helperText:
-          'Get your Secret key from swell store settings https://swell.store/docs/api/?javascript#authentication',
+          'Get your Public key from swell store settings > API keys > Public api key https://swell.store/docs/api/?javascript#authentication',
       },
     ],
     ctaText: `Connect your swell.is store`,
-    onSave: async actions =>
-      await actions.updateSettings({
-        hasConnected: true,
-      }),
   },
   settings => {
-    const basicCache = new Map();
+    const storeId = settings.get('storeId')?.trim();
+    const publicKey = settings.get('publicKey')?.trim();
+    swell.init(storeId, publicKey);
 
-    const baseUrl = (url: string) =>
-      'https://builder.io/api/v1/proxy-api?url=' +
-      encodeURIComponent('https://api.swell.store/' + url);
-    const headers = {
-      Authorization: `Basic ${btoa(`${settings.get('storeId')}:${settings.get('secretKey')}`)}`,
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    };
-
-    const transformProduct = (product: any) => ({
-      id: product.id,
-      title: product.name,
-      handle: product.slug,
-      ...(product.images && {
+    const transformResource = (resource: any) => ({
+      id: resource.id,
+      title: resource.name,
+      handle: resource.slug,
+      ...(resource.images && {
         image: {
-          src: product.images[0]?.file.url,
+          src: resource.images[0]?.file.url,
         },
       }),
     });
@@ -53,38 +43,29 @@ registerCommercePlugin(
     return {
       product: {
         async findById(id: string) {
-          const key = `${id}productById`;
-          const product =
-            basicCache.get(key) ||
-            (await fetch(baseUrl(`products/${id}`), { headers })
-              .then(res => res.json())
-              .then(transformProduct));
-          basicCache.set(key, product);
-          return product;
+          const product = await swell.products.get(id);
+          return transformResource(product);
         },
         async findByHandle(handle: string) {
-          const key = `${handle}productByHandle`;
-          const response =
-            basicCache.get(key) ||
-            (await fetch(baseUrl(`products?where[active]=true&where[slug]=${handle}`), {
-              headers,
-            }).then(res => res.json()));
-          basicCache.set(key, response);
-          const product = response.results.map(transformProduct)[0];
-          return product;
+          const product = await swell.products.get(handle);
+          return transformResource(product);
         },
         async search(search: string) {
-          const response = await fetch(baseUrl(`products?where[active]=true&search=${search}`), {
-            headers,
-          }).then(res => res.json());
-          return response.results.map(transformProduct);
+          const response = await swell.products.list({
+            search,
+            // TODO: pagination if needed
+            limit: 100,
+            page: 1,
+          });
+          return response.results.map(transformResource);
         },
 
         getRequestObject(id: string) {
           return {
             '@type': '@builder.io/core:Request',
             request: {
-              url: baseUrl(`products/${id}`),
+              // https://{public_key}@{client_id}.swell.store/api/products/5e31e67be53f9a59d89600f1.
+              url: `https://${publicKey}@${storeId}.swell.store/api/products/${id}`,
             },
             options: {
               product: id,
@@ -94,37 +75,29 @@ registerCommercePlugin(
       },
       category: {
         async findById(id: string) {
-          const key = `${id}collectionById`;
-          const collection =
-            basicCache.get(key) ||
-            (await fetch(baseUrl(`categories/${id}`), { headers })
-              .then(res => res.json())
-              .then(transformProduct));
-          basicCache.set(key, collection);
-          return collection;
+          const category = await swell.categories.get(id);
+          return transformResource(category);
         },
         async findByHandle(handle: string) {
-          const key = `${handle}collectionByHandle`;
-          const response =
-            basicCache.get(key) ||
-            (await fetch(baseUrl(`categories?where[active]=true&where[slug]=${handle}`), {
-              headers,
-            }).then(res => res.json()));
-          basicCache.set(key, response);
-          const collection = response.results.map(transformProduct)[0];
-          return collection;
+          const category = await swell.categories.get(handle);
+          return transformResource(category);
         },
         async search(search: string) {
-          const response = await fetch(baseUrl(`categories?where[active]=true&search=${search}`), {
-            headers,
-          }).then(res => res.json());
-          return response.results.map(transformProduct);
+          const response = await swell.categories.list({
+            search,
+            // TODO: pagination if needed
+            limit: 100,
+            page: 1,
+          });
+          return response.results.map(transformResource);
         },
+
         getRequestObject(id: string) {
           return {
             '@type': '@builder.io/core:Request',
             request: {
-              url: baseUrl(`categories/${id}`),
+              // https://{public_key}@{client_id}.swell.store/api/categories/5e31e67be53f9a59d89600f1.
+              url: `https://${publicKey}@${storeId}.swell.store/api/categories/${id}`,
             },
             options: {
               category: id,

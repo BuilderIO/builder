@@ -6,6 +6,7 @@ import typescript from 'rollup-plugin-typescript2';
 import json from 'rollup-plugin-json';
 import replace from 'rollup-plugin-replace';
 import serve from 'rollup-plugin-serve';
+import nodePolyfills from 'rollup-plugin-node-polyfills';
 
 const SERVE = process.env.SERVE === 'true';
 
@@ -63,6 +64,7 @@ export default {
 
     // Resolve source maps to the original source
     sourceMaps(),
+    nodePolyfills(),
     ...(SERVE
       ? [
           serve({

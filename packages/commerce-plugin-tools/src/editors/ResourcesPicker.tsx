@@ -161,7 +161,11 @@ export const ResourcesPickerButton: React.FC<ResourcesPickerButtonProps> = props
     loading: false,
     resourceInfo: null as Resource | null,
     resourceHandle: props.handleOnly && typeof props.value === 'string' ? props.value : undefined,
-    resourceId: props.handleOnly && typeof props.value === 'string' ? props.value : undefined,
+    resourceId: props.handleOnly
+      ? undefined
+      : typeof props.value === 'string'
+      ? props.value
+      : props.value?.options?.get(props.resourceName),
     async getResource() {
       this.loading = true;
       try {
@@ -221,6 +225,10 @@ export const ResourcesPickerButton: React.FC<ResourcesPickerButtonProps> = props
     },
   }));
 
+  useEffect(() => {
+    store.getResource();
+  }, []);
+
   return useObserver(() => {
     const pluginSettings = props.context.user.organization.value.settings.plugins.get(
       props.pluginId
@@ -260,7 +268,7 @@ export const ResourcesPickerButton: React.FC<ResourcesPickerButtonProps> = props
             </IconButton>
           </Paper>
         )}
-        {!store.resourceInfo && (
+        {!store.resourceInfo && !store.loading && (
           <Button
             color="primary"
             variant="contained"
