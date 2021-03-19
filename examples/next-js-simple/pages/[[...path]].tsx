@@ -19,7 +19,6 @@ export async function getStaticProps({
     props: {
       page,
     },
-    notFound: !page,
     // Next.js will attempt to re-generate the page:
     // - When a request comes in
     // - At most once every 5 seconds
@@ -46,8 +45,8 @@ export default function Path({
   if (router.isFallback) {
     return <h1>Loading...</h1>
   }
-  const isLive = !Builder.isEditing && !Builder.isPreviewing
-  if (!page && isLive) {
+
+  if (!page && !Builder.isEditing && !Builder.isPreviewing) {
     return (
       <>
         <Head>
