@@ -45,8 +45,8 @@ export default function Path({
   if (router.isFallback) {
     return <h1>Loading...</h1>
   }
-
-  if (!page && !Builder.isEditing && !Builder.isPreviewing) {
+  const isLive = !Builder.isEditing && !Builder.isPreviewing
+  if (!page && isLive) {
     return (
       <>
         <Head>
