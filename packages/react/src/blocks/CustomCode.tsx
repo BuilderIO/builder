@@ -171,7 +171,7 @@ class CustomCodeComponent extends React.Component<Props> {
 export const CustomCode = withBuilder(CustomCodeComponent, {
   name: 'Custom Code',
   static: true,
-  roleOption: 'editCode',
+  requiredPermissions: ['editCode'],
   inputs: [
     {
       name: 'code',

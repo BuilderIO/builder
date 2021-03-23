@@ -380,14 +380,14 @@ export interface Component {
   friendlyName?: string;
 
   /**
-   * Use to restrict access to your component based on a the current user role options
-   * By default components will show to every user role
-   * for more information on roles in builder check https://www.builder.io/c/docs/guides/roles-and-permissions
+   * Use to restrict access to your component based on a the current user permissions
+   * By default components will show to all users
+   * for more information on permissions in builder check https://www.builder.io/c/docs/guides/roles-and-permissions
   */
-  roleOption?: RoleOption;
+  requiredPermissions?: Array<Permission>;
 }
 
-type RoleOption = 'read' | 'publish' | 'editCode' | 'editDesigns' | 'admin' | 'create';
+type Permission = 'read' | 'publish' | 'editCode' | 'editDesigns' | 'admin' | 'create';
 
 type DeepPartial<T> = {
   [P in keyof T]?: T[P] extends Array<infer U>
