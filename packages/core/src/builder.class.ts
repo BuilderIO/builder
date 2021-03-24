@@ -325,6 +325,9 @@ export interface Component {
   defaultChildren?: BuilderElement[];
   defaults?: Partial<BuilderElement>;
   hooks?: { [key: string]: string | Function };
+  /**
+   * Hide your component in editor, useful for gradually deprecating components
+  */
   hideFromInsertMenu?: boolean;
   // For webcomponents
   tag?: string;
@@ -375,7 +378,16 @@ export interface Component {
 
   /** not yet implemented */
   friendlyName?: string;
+
+  /**
+   * Use to restrict access to your component based on a the current user permissions
+   * By default components will show to all users
+   * for more information on permissions in builder check https://www.builder.io/c/docs/guides/roles-and-permissions
+  */
+  requiredPermissions?: Array<Permission>;
 }
+
+type Permission = 'read' | 'publish' | 'editCode' | 'editDesigns' | 'admin' | 'create';
 
 type DeepPartial<T> = {
   [P in keyof T]?: T[P] extends Array<infer U>
