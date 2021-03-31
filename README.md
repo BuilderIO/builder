@@ -423,19 +423,18 @@ import { BuilderComponent, builder } from '@builder.io/react'
 builder.init('YOUR_KEY')
 
 export default let CatchAllPage = () => {
-  const [pageJson, setPage] = useState()
+  const [notFound, setNotFound] = useState()
 
-  useEffect(() => {
-    builder.get('page', { url: location.pathname })
-       // The value will be `null` if no page was found
-      .promise().then(setPage)
-  , [])
+  return notFound ? <NotFound/ > : <BuilderComponent
+        key={key}
+        model="page"
+        contentLoaded={(content) => {
+          setNotFound(Boolean(content));
+        }}
+      >
+        <Loading/>
+     </BuilderComponent>
 
-  return pageJson === undefined
-    ? <Loading />
-    : pageJson
-    ? <BuilderComponent model="page" content={pageJson} />
-    : <NotFound />
 }
 
 
