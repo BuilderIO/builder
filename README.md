@@ -428,7 +428,7 @@ export default let CatchAllPage = () => {
   return notFound ? <NotFound /> : <BuilderComponent
         model="page"
         contentLoaded={(content) => {
-          setNotFound(Boolean(content));
+          setNotFound(!content);
         }}
       >
         <Loading/>
