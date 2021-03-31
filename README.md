@@ -426,7 +426,6 @@ export default let CatchAllPage = () => {
   const [notFound, setNotFound] = useState()
 
   return notFound ? <NotFound/ > : <BuilderComponent
-        key={key}
         model="page"
         contentLoaded={(content) => {
           setNotFound(Boolean(content));
