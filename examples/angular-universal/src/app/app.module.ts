@@ -1,22 +1,25 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { RouterModule } from '@angular/router';
-import { BuilderModule } from '@builder.io/angular';
+
+import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HomeComponent } from './home/home.component';
-import { PrebootModule } from 'preboot';
+import { NotFoundComponent } from './not-found.component';
+import { BuilderModule } from '@builder.io/angular'
+import { Builder } from '@builder.io/sdk';
+
+Builder.isStatic = true
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent],
+  declarations: [
+    AppComponent,
+    NotFoundComponent,
+  ],
   imports: [
-    BrowserModule.withServerTransition({ appId: 'my-app' }),
-    PrebootModule.withConfig({ appRoot: 'app-root' }),
-    BuilderModule.forRoot('2bdcbde0dfc34ac4bd6385f29b564fcc'),
-    RouterModule.forRoot([{ path: '**', component: HomeComponent }], {
-      initialNavigation: 'enabled',
-    }),
+    BrowserModule.withServerTransition({ appId: 'ng-app' }),
+    AppRoutingModule,
+    BuilderModule.forRoot('db4da7332ae64a96b056ed574578485a'),
   ],
   providers: [],
-  bootstrap: [AppComponent],
+  bootstrap: [ AppComponent ],
 })
-export class AppModule {}
+export class AppModule { }
