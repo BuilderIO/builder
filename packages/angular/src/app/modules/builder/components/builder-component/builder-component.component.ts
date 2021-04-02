@@ -190,7 +190,7 @@ export class BuilderComponentComponent implements OnDestroy, OnInit {
       );
     }
 
-    if (this.hydrate !== false || Builder.isEditing) {
+    if (Builder.isBrowser && (this.hydrate !== false || Builder.isEditing)) {
       this.ensureWcLoadedAndUpdate();
     }
   }

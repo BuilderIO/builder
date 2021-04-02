@@ -80,10 +80,15 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
 
   ngOnInit() {
     const noop = () => null;
-    const task = Zone.current.scheduleMacroTask('builderFetchNextTick', noop, {}, noop, noop);
+    let task: any = null;
+    if (Builder.isBrowser) {
+      task = Zone.current.scheduleMacroTask('builderFetchNextTick', noop, {}, noop, noop);
+    }
     Builder.nextTick(() => {
       this.request();
-      task.invoke();
+      if (task) {
+        task.invoke();
+      }
     });
 
     if (this.router) {
@@ -206,7 +211,10 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
     }
 
     const noop = () => null;
-    const task = Zone.current.scheduleMacroTask('getBuilderContent', noop, {}, noop, noop);
+    let task: any = null;
+    if (Builder.isBrowser) {
+      task = Zone.current.scheduleMacroTask('getBuilderContent', noop, {}, noop, noop);
+    }
     let receivedFirstResponse = false;
     const model = this._context.model as string;
 
@@ -248,14 +256,18 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
             if (!receivedFirstResponse) {
             }
             setTimeout(() => {
-              task.invoke();
+              if (task) {
+                task.invoke();
+              }
             });
             return;
           }
 
           if (match && match.id === this.lastContentId) {
             setTimeout(() => {
-              task.invoke();
+              if (task) {
+                task.invoke();
+              }
             });
             return;
           }
@@ -283,7 +295,9 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
               if (rootNode && rootNode.classList.contains('builder-editor-injected')) {
                 viewRef.detach();
                 setTimeout(() => {
-                  task.invoke();
+                  if (task) {
+                    task.invoke();
+                  }
                 });
                 return;
               }
@@ -346,7 +360,9 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
           }
 
           setTimeout(() => {
-            task.invoke();
+            if (task) {
+              task.invoke();
+            }
           });
           if (!receivedFirstResponse) {
             receivedFirstResponse = true;
@@ -360,7 +376,9 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
           }
           if (!receivedFirstResponse) {
             // TODO: how to zone error
-            task.invoke();
+            if (task) {
+              task.invoke();
+            }
             receivedFirstResponse = true;
           }
         }
