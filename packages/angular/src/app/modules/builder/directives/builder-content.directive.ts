@@ -17,8 +17,6 @@ import { BuilderComponentService } from '../components/builder-component/builder
 import { Router, NavigationEnd, NavigationStart } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-declare let Zone: any;
-
 @Directive({
   selector: '[builderModel]',
   providers: [BuilderContentService],
@@ -79,16 +77,8 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    const noop = () => null;
-    let task: any = null;
-    if (Builder.isBrowser) {
-      task = Zone.current.scheduleMacroTask('builderFetchNextTick', noop, {}, noop, noop);
-    }
     Builder.nextTick(() => {
       this.request();
-      if (task) {
-        task.invoke();
-      }
     });
 
     if (this.router) {
@@ -210,11 +200,6 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
       return;
     }
 
-    const noop = () => null;
-    let task: any = null;
-    if (Builder.isBrowser) {
-      task = Zone.current.scheduleMacroTask('getBuilderContent', noop, {}, noop, noop);
-    }
     let receivedFirstResponse = false;
     const model = this._context.model as string;
 
@@ -255,20 +240,10 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
           if (this.contentSubscription !== subscription) {
             if (!receivedFirstResponse) {
             }
-            setTimeout(() => {
-              if (task) {
-                task.invoke();
-              }
-            });
             return;
           }
 
           if (match && match.id === this.lastContentId) {
-            setTimeout(() => {
-              if (task) {
-                task.invoke();
-              }
-            });
             return;
           }
 
@@ -294,11 +269,6 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
             if (rootNode) {
               if (rootNode && rootNode.classList.contains('builder-editor-injected')) {
                 viewRef.detach();
-                setTimeout(() => {
-                  if (task) {
-                    task.invoke();
-                  }
-                });
                 return;
               }
             }
@@ -358,12 +328,6 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
               });
             }
           }
-
-          setTimeout(() => {
-            if (task) {
-              task.invoke();
-            }
-          });
           if (!receivedFirstResponse) {
             receivedFirstResponse = true;
           }
@@ -376,9 +340,6 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
           }
           if (!receivedFirstResponse) {
             // TODO: how to zone error
-            if (task) {
-              task.invoke();
-            }
             receivedFirstResponse = true;
           }
         }
