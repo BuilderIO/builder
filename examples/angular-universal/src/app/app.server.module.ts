@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
-import { ServerModule } from '@angular/platform-server';
-
+import { ServerModule, ServerTransferStateModule } from '@angular/platform-server';
 import { AppComponent } from './app.component';
 import { AppModule } from './app.module';
 
@@ -11,6 +10,8 @@ import { AppModule } from './app.module';
     // by the ServerModule from @angular/platform-server.
     AppModule,
     ServerModule,
+    // Needed for builder.io to hydrate
+    ServerTransferStateModule,
   ],
   // Since the bootstrapped component is not inherited from your
   // imported AppModule, it needs to be repeated here.
