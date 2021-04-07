@@ -34,10 +34,10 @@ const Steps = ({ funnel }) => {
   const history = useHistory();
   const navigateNext = step => {
     // will be called in funnel sections as state.navigateNext;
-    history.push(`/step-${step + 1}`);
+    history.push(getStepLink(step + 1));
   };
 
-  const navigateBack = step => history.push(`/step-${step - 1}`);
+  const navigateBack = step => history.push(getStepLink(step - 1));
 
   const getStepLink = index => (index === 0 ? '/' : `/step-${index}`);
 
