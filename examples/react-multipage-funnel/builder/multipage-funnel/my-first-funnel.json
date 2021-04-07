@@ -1,0 +1,60 @@
+{
+  "createdBy": "4FFFg0MNRJT0z0nW4uUizDHfHJV2",
+  "createdDate": 1617811538869,
+  "data": {
+    "pages": [
+      {
+        "content": {
+          "@type": "@builder.io/core:Reference",
+          "id": "90ae15e125e446c98cd3342a408ffc87",
+          "model": "funnel-section"
+        },
+        "title": "First",
+        "urlPath": "/one"
+      },
+      {
+        "content": {
+          "@type": "@builder.io/core:Reference",
+          "id": "7e6a75fe7a20438c960d505b5a7f9607",
+          "model": "funnel-section"
+        },
+        "title": "Second",
+        "urlPath": "/section-2"
+      },
+      {
+        "content": {
+          "@type": "@builder.io/core:Reference",
+          "id": "875f3afb7c974481bb007f94e53d9b78",
+          "model": "funnel-section"
+        },
+        "title": "Third",
+        "urlPath": "/section-three"
+      },
+      {
+        "content": {
+          "@type": "@builder.io/core:Reference",
+          "id": "7e6a75fe7a20438c960d505b5a7f9607",
+          "model": "funnel-section"
+        },
+        "title": "Fourth",
+        "urlPath": "/fourth"
+      }
+    ]
+  },
+  "id": "ebdcbf81abf1406d803e1901796151cb",
+  "lastUpdatedBy": "4FFFg0MNRJT0z0nW4uUizDHfHJV2",
+  "meta": {
+    "kind": "data"
+  },
+  "modelId": "85b15d262e314964a0d73848eecba3ac",
+  "name": "My first funnel",
+  "published": "published",
+  "query": [],
+  "testRatio": 1,
+  "variations": {},
+  "lastUpdated": 1617812040454,
+  "rev": "x0yi7mcnny",
+  "@originOrg": "cebf462cf12940c78302d9b4a201d7e6",
+  "@originContentId": "e9186547fa384e938fd9aebf89d729ec",
+  "@originModelId": "08694cdb89834285b59e781d72d6c3a6"
+}

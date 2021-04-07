@@ -1,0 +1,43 @@
+{
+  "name": "@builder.io/example-react",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Builder.io example with React",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/builderio/builder.git"
+  },
+  "keywords": [
+    "builder.io",
+    "react"
+  ],
+  "author": "Steve Sewell",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/builderio/builder/issues"
+  },
+  "homepage": "https://github.com/builderio/builder#readme",
+  "main": "src/index.js",
+  "dependencies": {
+    "@builder.io/react": "^1.1.42",
+    "react": "16.8.6",
+    "react-dom": "16.8.6",
+    "react-router-dom": "^5.0.1",
+    "react-scripts": "3.0.1"
+  },
+  "devDependencies": {
+    "typescript": "3.3.3"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}
