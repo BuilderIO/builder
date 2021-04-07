@@ -23,7 +23,7 @@
     "@angular/platform-browser-dynamic": "~11.0.5",
     "@angular/platform-server": "~11.0.5",
     "@angular/router": "~11.0.5",
-    "@builder.io/angular": "^1.1.21-alpha.4",
+    "@builder.io/angular": "^2.0.0",
     "@nguniversal/express-engine": "^11.0.1",
     "express": "~4.17.1",
     "rxjs": "~6.6.0",
