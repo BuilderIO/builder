@@ -40,13 +40,11 @@ Head over to your [organization settings page](https://builder.io/account/organi
 private key, copy the key for the next step.
 
 - Visit the [organization settings page](https://builder.io/account/organization?root=true), or select
-  an organization from the list 
+  an organization from the list
 
-
-- Click "Account" from the left hand sidebar
-- Click the edit icon for the "Private keys" row
-- Copy the value of the auto-generated key, or create a new one with a name that's meaningful to you
-
+* Click "Account" from the left hand sidebar
+* Click the edit icon for the "Private keys" row
+* Copy the value of the auto-generated key, or create a new one with a name that's meaningful to you
 
 ![Example of how to get your private key](https://raw.githubusercontent.com/BuilderIO/nextjs-shopify/master/docs/images/private-key-flow.png)
 
@@ -72,12 +70,12 @@ builder create --key "<private-key>" --name "<space-name>" --debug
 If this was a success you should be greeted with a message that
 includes a public API key for your newly minted Builder.io space.
 
-*Note: This command will also publish some starter builder.io cms
+_Note: This command will also publish some starter builder.io cms
 content from the ./builder directory to your new space when it's
-created.*
+created._
 
-``` bash
-  ____            _   _       _                     _                    _   _ 
+```bash
+  ____            _   _       _                     _                    _   _
 | __ )   _   _  (_) | |   __| |   ___   _ __      (_)   ___       ___  | | (_)
 |  _ \  | | | | | | | |  / _` |  / _ \ | '__|     | |  / _ \     / __| | | | |
 | |_) | | |_| | | | | | | (_| | |  __/ | |     _  | | | (_) |   | (__  | | | |
