@@ -1,20 +1,19 @@
 {
-  "parentOrganization": "d8efe366bbd84e9bbc10fe6d1dc50753",
+  "hasIntegrated": "local",
   "type": "space",
-  "siteUrl": "https://de-skinny-san-hill.builder.codes",
   "@version": 5,
   "name": "multipage-funnels-space",
   "cloneInfo": {
     "contentIdMap": {
-      "53db687948bd404e87db20cf103ae1de": "875f3afb7c974481bb007f94e53d9b78",
-      "6def05afa3fa447aaac2e5941d95b79d": "7e6a75fe7a20438c960d505b5a7f9607",
-      "55db067e31554c058ba690b7bcec74b5": "90ae15e125e446c98cd3342a408ffc87",
-      "e9186547fa384e938fd9aebf89d729ec": "ebdcbf81abf1406d803e1901796151cb"
+      "e9186547fa384e938fd9aebf89d729ec": "fb18534574ee4aeb9a41e6b1ca2d94d7",
+      "c43342964b8d41fdadc3ede635df29ff": "00f7df7cdef64759a8453ce591953f08",
+      "6def05afa3fa447aaac2e5941d95b79d": "17812be68d454682b30118b048acc859",
+      "55db067e31554c058ba690b7bcec74b5": "adfd09c2c4534b498d72056fbde44410"
     },
     "modelIdMap": {
-      "09899f23743c428eb442c61ef4db43b9": "534cc59636cf4ca1ba4e6eee95edf543",
-      "8bf069b7015e4b07a5332b7c18ffbd3f": "6cb9f25b8a0d49bd98d23428dc9a6d4f",
-      "08694cdb89834285b59e781d72d6c3a6": "85b15d262e314964a0d73848eecba3ac"
+      "08694cdb89834285b59e781d72d6c3a6": "bdf6c5029b9f4f40b50148feb1e172fc",
+      "09899f23743c428eb442c61ef4db43b9": "54d871ad517d47c69645e3d7b9fc3e85",
+      "8bf069b7015e4b07a5332b7c18ffbd3f": "6be34b0798004d0b95625ab05dd539d0"
     }
   }
 }

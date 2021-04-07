@@ -2,6 +2,7 @@
   "createdBy": "4FFFg0MNRJT0z0nW4uUizDHfHJV2",
   "createdDate": 1617811505165,
   "data": {
+    "inputs": [],
     "blocks": [
       {
         "@type": "@builder.io/sdk:Element",
@@ -130,11 +131,78 @@
                           {
                             "@type": "@builder.io/sdk:Element",
                             "@version": 2,
+                            "actions": {
+                              "click": "var _virtual_index=state.navigateNext();return _virtual_index"
+                            },
+                            "bindings": {
+                              "show": "var _virtual_index=state.hasNext;return _virtual_index"
+                            },
+                            "code": {
+                              "actions": {
+                                "click": "state.navigateNext()"
+                              },
+                              "bindings": {
+                                "show": "state.hasNext"
+                              }
+                            },
+                            "layerName": "Let's go...",
                             "id": "builder-d84669e2bff04a18aee1bcb9d77df843",
                             "component": {
                               "name": "Core:Button",
                               "options": {
-                                "text": "Let's go"
+                                "text": "Next"
+                              }
+                            },
+                            "responsiveStyles": {
+                              "large": {
+                                "display": "flex",
+                                "flexDirection": "column",
+                                "alignItems": "stretch",
+                                "position": "relative",
+                                "flexShrink": "0",
+                                "boxSizing": "border-box",
+                                "marginTop": "26px",
+                                "appearance": "none",
+                                "paddingTop": "15px",
+                                "paddingBottom": "15px",
+                                "paddingLeft": "31px",
+                                "paddingRight": "31px",
+                                "backgroundColor": "rgba(50, 50, 50, 1)",
+                                "color": "white",
+                                "borderRadius": "4px",
+                                "textAlign": "center",
+                                "marginLeft": "auto",
+                                "marginRight": "auto",
+                                "cursor": "pointer"
+                              },
+                              "medium": {
+                                "marginLeft": "auto",
+                                "marginRight": "auto"
+                              }
+                            }
+                          },
+                          {
+                            "@type": "@builder.io/sdk:Element",
+                            "@version": 2,
+                            "actions": {
+                              "click": "var _virtual_index=state.navigateBack();return _virtual_index"
+                            },
+                            "bindings": {
+                              "show": "var _virtual_index=state.hasPrev;return _virtual_index"
+                            },
+                            "code": {
+                              "actions": {
+                                "click": "state.navigateBack()"
+                              },
+                              "bindings": {
+                                "show": "state.hasPrev"
+                              }
+                            },
+                            "id": "builder-c8d84f2c640345e4aec0524a5796dc7d",
+                            "component": {
+                              "name": "Core:Button",
+                              "options": {
+                                "text": "Back"
                               }
                             },
                             "responsiveStyles": {
@@ -222,7 +290,7 @@
         }
       },
       {
-        "id": "builder-pixel-rk5d9kp6k4c",
+        "id": "builder-pixel-sgsntpxk88f",
         "@type": "@builder.io/sdk:Element",
         "tagName": "img",
         "properties": {
@@ -251,21 +319,22 @@
       }
     }
   },
-  "id": "7e6a75fe7a20438c960d505b5a7f9607",
+  "id": "17812be68d454682b30118b048acc859",
   "lastUpdatedBy": "4FFFg0MNRJT0z0nW4uUizDHfHJV2",
   "meta": {
     "hasLinks": false,
     "kind": "component",
     "needsHydration": false
   },
-  "modelId": "6cb9f25b8a0d49bd98d23428dc9a6d4f",
+  "modelId": "6be34b0798004d0b95625ab05dd539d0",
   "name": "section two",
   "published": "published",
   "query": [],
   "testRatio": 1,
   "variations": {},
-  "lastUpdated": 1617811518655,
-  "rev": "qk9q7xlkzj",
+  "lastUpdated": 1617824233432,
+  "screenshot": "https://cdn.builder.io/api/v1/image/assets%2Fcebf462cf12940c78302d9b4a201d7e6%2F945b52f45826452ab5abd916a69c0545",
+  "rev": "npddlgk4eoj",
   "@originOrg": "cebf462cf12940c78302d9b4a201d7e6",
   "@originContentId": "6def05afa3fa447aaac2e5941d95b79d",
   "@originModelId": "8bf069b7015e4b07a5332b7c18ffbd3f"

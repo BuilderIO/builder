@@ -2,6 +2,7 @@
   "createdBy": "4FFFg0MNRJT0z0nW4uUizDHfHJV2",
   "createdDate": 1617811467804,
   "data": {
+    "inputs": [],
     "blocks": [
       {
         "@type": "@builder.io/sdk:Element",
@@ -94,6 +95,14 @@
               {
                 "@type": "@builder.io/sdk:Element",
                 "@version": 2,
+                "actions": {
+                  "click": "var _virtual_index=state.navigateNext();return _virtual_index"
+                },
+                "code": {
+                  "actions": {
+                    "click": "state.navigateNext()"
+                  }
+                },
                 "id": "builder-305032ecc566413d8a2136db8255fa78",
                 "component": {
                   "name": "Core:Button",
@@ -190,7 +199,7 @@
         }
       },
       {
-        "id": "builder-pixel-2n072yl2f6h",
+        "id": "builder-pixel-eek9uvwiw3",
         "@type": "@builder.io/sdk:Element",
         "tagName": "img",
         "properties": {
@@ -219,22 +228,22 @@
       }
     }
   },
-  "id": "90ae15e125e446c98cd3342a408ffc87",
+  "id": "adfd09c2c4534b498d72056fbde44410",
   "lastUpdatedBy": "4FFFg0MNRJT0z0nW4uUizDHfHJV2",
   "meta": {
     "hasLinks": false,
     "kind": "component",
     "needsHydration": false
   },
-  "modelId": "6cb9f25b8a0d49bd98d23428dc9a6d4f",
+  "modelId": "6be34b0798004d0b95625ab05dd539d0",
   "name": "section one",
   "published": "published",
   "query": [],
   "testRatio": 1,
   "variations": {},
-  "lastUpdated": 1617811499793,
-  "screenshot": "https://cdn.builder.io/api/v1/image/assets%2Fcebf462cf12940c78302d9b4a201d7e6%2Fa0f870460eee4c22b40947491e0b7eb7",
-  "rev": "qk9q7xlkzj",
+  "lastUpdated": 1617823597354,
+  "screenshot": "https://cdn.builder.io/api/v1/image/assets%2Fcebf462cf12940c78302d9b4a201d7e6%2F7318b75195604cb79ee5c249828b050a",
+  "rev": "npddlgk4eoj",
   "@originOrg": "cebf462cf12940c78302d9b4a201d7e6",
   "@originContentId": "55db067e31554c058ba690b7bcec74b5",
   "@originModelId": "8bf069b7015e4b07a5332b7c18ffbd3f"

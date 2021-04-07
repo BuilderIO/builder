@@ -1,12 +1,13 @@
 {
   "createdBy": "4FFFg0MNRJT0z0nW4uUizDHfHJV2",
-  "createdDate": 1617811524583,
+  "createdDate": 1617823747748,
   "data": {
+    "inputs": [],
     "blocks": [
       {
         "@type": "@builder.io/sdk:Element",
         "@version": 2,
-        "id": "builder-1d87f8edfdb44d308136ab3deb326423",
+        "id": "builder-71aa708d408c403f8174313c6f9fd977",
         "component": {
           "name": "Core:Section",
           "options": {
@@ -17,7 +18,7 @@
           {
             "@type": "@builder.io/sdk:Element",
             "@version": 2,
-            "id": "builder-634ca93f0b764c6c93f4904adf4df350",
+            "id": "builder-63c7112e5b384ff4acee53672160652e",
             "component": {
               "name": "Columns",
               "options": {
@@ -28,13 +29,13 @@
                         "@type": "@builder.io/sdk:Element",
                         "@version": 2,
                         "layerName": "Centered Box",
-                        "id": "builder-8cf372489a384bc890284e55673ce277",
+                        "id": "builder-94f34ba5dfbd42eca9710060fff8a3e7",
                         "children": [
                           {
                             "@type": "@builder.io/sdk:Element",
                             "@version": 2,
                             "layerName": "Title",
-                            "id": "builder-ef470e53b77144aeaadc8e72846c0f28",
+                            "id": "builder-e41ee9c64ba4471b9ba64884e2f76980",
                             "component": {
                               "name": "Text",
                               "options": {
@@ -67,7 +68,7 @@
                             "@type": "@builder.io/sdk:Element",
                             "@version": 2,
                             "layerName": "Subtitle",
-                            "id": "builder-b80808d7ec68479fa7d1bd775caba50d",
+                            "id": "builder-353823fb433e4561b7b6eeb0311ca087",
                             "component": {
                               "name": "Text",
                               "options": {
@@ -99,11 +100,78 @@
                           {
                             "@type": "@builder.io/sdk:Element",
                             "@version": 2,
-                            "id": "builder-8121a252e9f247879c20f1cb68f79825",
+                            "actions": {
+                              "click": "var _virtual_index=state.navigateNext();return _virtual_index"
+                            },
+                            "bindings": {
+                              "show": "var _virtual_index=state.hasNext;return _virtual_index"
+                            },
+                            "code": {
+                              "actions": {
+                                "click": "state.navigateNext()"
+                              },
+                              "bindings": {
+                                "show": "state.hasNext"
+                              }
+                            },
+                            "layerName": "Let's go...",
+                            "id": "builder-86ba5271bb9a4d56851c118ed9f03bdc",
                             "component": {
                               "name": "Core:Button",
                               "options": {
-                                "text": "Let's go"
+                                "text": "Next"
+                              }
+                            },
+                            "responsiveStyles": {
+                              "large": {
+                                "display": "flex",
+                                "flexDirection": "column",
+                                "alignItems": "stretch",
+                                "position": "relative",
+                                "flexShrink": "0",
+                                "boxSizing": "border-box",
+                                "marginTop": "26px",
+                                "appearance": "none",
+                                "paddingTop": "15px",
+                                "paddingBottom": "15px",
+                                "paddingLeft": "31px",
+                                "paddingRight": "31px",
+                                "backgroundColor": "rgba(50, 50, 50, 1)",
+                                "color": "white",
+                                "borderRadius": "4px",
+                                "textAlign": "center",
+                                "marginLeft": "auto",
+                                "marginRight": "auto",
+                                "cursor": "pointer"
+                              },
+                              "medium": {
+                                "marginLeft": "auto",
+                                "marginRight": "auto"
+                              }
+                            }
+                          },
+                          {
+                            "@type": "@builder.io/sdk:Element",
+                            "@version": 2,
+                            "actions": {
+                              "click": "var _virtual_index=state.navigateBack();return _virtual_index"
+                            },
+                            "bindings": {
+                              "show": "var _virtual_index=state.hasPrev;return _virtual_index"
+                            },
+                            "code": {
+                              "actions": {
+                                "click": "state.navigateBack()"
+                              },
+                              "bindings": {
+                                "show": "state.hasPrev"
+                              }
+                            },
+                            "id": "builder-da1e9fdeb021480eae6c68ea006e177b",
+                            "component": {
+                              "name": "Core:Button",
+                              "options": {
+                                "text": "Back"
                               }
                             },
                             "responsiveStyles": {
@@ -156,11 +224,11 @@
                       {
                         "@type": "@builder.io/sdk:Element",
                         "@version": 2,
-                        "id": "builder-d8428bf5654d47c58632d9ed83e606ca",
+                        "id": "builder-6ed142a68f3b41d1b307d5883e198eda",
                         "component": {
                           "name": "Image",
                           "options": {
-                            "image": "https://cdn.builder.io/api/v1/image/assets%2FagZ9n5CUKRfbL9t6CaJOyVSK4Es2%2F975106936a734566974059059f54ec8d?width=2000&height=1000",
+                            "image": "https://cdn.builder.io/api/v1/image/assets%2FagZ9n5CUKRfbL9t6CaJOyVSK4Es2%2Fbd858545a497457b9e1a3738a16df76d?width=2000&height=1000",
                             "backgroundPosition": "center",
                             "backgroundSize": "cover",
                             "aspectRatio": 0.7004048582995948
@@ -185,7 +253,7 @@
                 ],
                 "space": 42,
                 "stackColumnsAt": "tablet",
-                "reverseColumnsWhenStacked": true
+                "reverseColumnsWhenStacked": false
               }
             },
             "responsiveStyles": {
@@ -222,7 +290,7 @@
         }
       },
       {
-        "id": "builder-pixel-mnbh46x2df",
+        "id": "builder-pixel-2637op6ps69",
         "@type": "@builder.io/sdk:Element",
         "tagName": "img",
         "properties": {
@@ -251,22 +319,25 @@
       }
     }
   },
-  "id": "875f3afb7c974481bb007f94e53d9b78",
+  "id": "00f7df7cdef64759a8453ce591953f08",
+  "lastUpdated": 1617824263908,
   "lastUpdatedBy": "4FFFg0MNRJT0z0nW4uUizDHfHJV2",
   "meta": {
     "hasLinks": false,
     "kind": "component",
+    "originalContentId": "17812be68d454682b30118b048acc859",
+    "winningTest": null,
     "needsHydration": false
   },
-  "modelId": "6cb9f25b8a0d49bd98d23428dc9a6d4f",
+  "modelId": "6be34b0798004d0b95625ab05dd539d0",
   "name": "section three",
   "published": "published",
   "query": [],
+  "screenshot": "https://cdn.builder.io/api/v1/image/assets%2Fcebf462cf12940c78302d9b4a201d7e6%2F8b0fefe616e84acfb5a3f1a990fa24e4",
   "testRatio": 1,
   "variations": {},
-  "lastUpdated": 1617811532505,
-  "rev": "qk9q7xlkzj",
+  "rev": "npddlgk4eoj",
   "@originOrg": "cebf462cf12940c78302d9b4a201d7e6",
-  "@originContentId": "53db687948bd404e87db20cf103ae1de",
+  "@originContentId": "c43342964b8d41fdadc3ede635df29ff",
   "@originModelId": "8bf069b7015e4b07a5332b7c18ffbd3f"
 }

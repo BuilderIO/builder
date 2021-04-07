@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Switch, Route, BrowserRouter, Link } from 'react-router-dom';
+import { Switch, Route, BrowserRouter, Link, useHistory, useRouteMatch } from 'react-router-dom';
 import { BuilderComponent, BuilderContent, builder } from '@builder.io/react';
 
 import './index.css';
@@ -9,65 +9,62 @@ builder.init('cebf462cf12940c78302d9b4a201d7e6')
 
 function App() {
   return (
-    <BuilderContent model='multipage-funnel'>
-      {(data, loading) => {
-        if (loading) {
-          return 'loading...'
-        }
-        if (!data) {
-          return 'no data have you connected builder correctly?'
-        }
+    <BrowserRouter>
+      <BuilderContent model='multipage-funnel'>
+        {(funnel, loading) => {
+          if (loading) {
+            return 'loading...'
+          }
+          if (!funnel) {
+            return 'no data have you connected builder correctly?'
+          }
+          return <Steps funnel={funnel} />
 
-        return (<BrowserRouter>
-        <header>
-          <div className="logo">MY SITE</div>
-
-          <div className="links">
-            {
-              data.pages.map(page => <Link key={page.urlPath} className="link" to={page.urlPath}>{page.title}</Link>)
-            }
-          </div>
-        </header>
-        <div className="App">
-          <Switch>
-            {
-              data.pages.map((page) => {
-                return <Route key={page.urlPath} path={page.urlPath} exact component={() => <BuilderComponent model="funnel-section" entry={page.content.id} />} />
-              })
-            }
-            <Route render={({ location }) => <CatchallPage key={location.key} />} />
-          </Switch>
-        </div>
-      </BrowserRouter>)
-
-      }}
-    </BuilderContent>
+        }}
+      </BuilderContent>
+    </BrowserRouter>
 
   );
 }
 
-class CatchallPage extends React.Component {
-  state = { notFound: false };
-
-  render() {
-    return !this.state.notFound ? (
-      <BuilderComponent
-        model="page"
-        contentLoaded={content => {
-          if (!content) {
-            this.setState({ notFound: true });
-          }
-        }}
-      >
-        <div className="loading">Loading...</div>
-      </BuilderComponent>
-    ) : (
-      <NotFound /> // Your 404 content
-    );
-  }
+const CustomLink = ({ to , ...props }) => {
+  const match = useRouteMatch({ to, exact: true });
+  return <Link className={ match ? 'active-link': 'link'} to={to} {...props}/>
 }
 
-const NotFound = () => <h1>No page found for this URL, did you publish it?</h1>;
+const Steps = ({funnel}) => {
+  const history = useHistory();
+  const navigateNext = (step) => {
+    // will be called in funnel sections as state.navigateNext;
+    history.push(`/step-${step + 1}`)
+  }
+
+  const navigateBack = () => history.goBack();
+
+  const getStepLink = index => index=== 0 ? '/' : `/step-${index}`
+
+  return (<>
+  <header>
+    <div className="logo">MY Multistep Funnel</div>
+
+    <div className="links">
+      {
+        funnel.sections.map((page, index) => <CustomLink key={index} className="link" to={getStepLink(index)}>{page.title}</CustomLink>)
+      }
+    </div>
+  </header>
+  <div className="App">
+    <Switch>
+      {
+        funnel.sections.map((section, index) => {
+          return <Route key={index} path={getStepLink(index)} exact component={() => <BuilderComponent data={{ navigateBack, navigateNext: navigateNext.bind(null, index), hasPrev: index > 0 , hasNext: index < funnel.sections.length - 1 }} model="funnel-section" entry={section.content.id} />} />
+        })
+      }
+    </Switch>
+  </div>
+  </>
+)
+}
 
 const rootElement = document.getElementById('root');
 ReactDOM.render(<App />, rootElement);
