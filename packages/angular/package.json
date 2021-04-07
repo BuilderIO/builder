@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/angular",
-  "version": "1.1.21-alpha.4",
+  "version": "2.0.0",
   "main": "dist/bundles/builder.io-angular.umd.js",
   "module": "dist/fesm5/builder.io-angular.js",
   "es2015": "dist/fesm2015/builder.io-angular.js",
@@ -30,6 +30,7 @@
     "release": "npm run package && cd dist && ALLOW_PUBLISH=true npm publish",
     "release:patch": "npm run package && npm version patch && cd dist && npm version patch && ALLOW_PUBLISH=true npm publish",
     "release:minor": "npm run package && npm version minor && cd dist && npm version minor && ALLOW_PUBLISH=true npm publish",
+    "release:major": "npm run package && npm version major && cd dist && npm version major && ALLOW_PUBLISH=true npm publish",
     "release:dev": "npm run package && npm version prerelease && cd dist && npm version prerelease && ALLOW_PUBLISH=true npm publish --tag dev",
     "build:ssr": "npm run build:client-and-server-bundles && npm run webpack:server",
     "serve:ssr": "node dist/server.js",
