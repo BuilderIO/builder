@@ -4,7 +4,7 @@
 
 [Open this example in Codesandbox](https://codesandbox.io/s/github/BuilderIO/builder/tree/master/examples/react)
 
-<a target="_blank" href="https://codesandbox.io/s/github/BuilderIO/builder/tree/master/examples/react">
+<a target="_blank" href="https://codesandbox.io/s/github/BuilderIO/builder/tree/master/examples/react-multipage-funnel">
   <img width="597" height="375" src="https://i.imgur.com/zue72Q0.jpg">
 </a>
 
@@ -83,7 +83,7 @@ created.*
 | |_) | | |_| | | | | | | (_| | |  __/ | |     _  | | | (_) |   | (__  | | | |
 |____/   \__,_| |_| |_|  \__,_|  \___| |_|    (_) |_|  \___/     \___| |_| |_|
 
-|████████████████████████████████████████| multipage-funnel | 0/0
+|████████████████████████████████████████| multipage-funnel | 1/1
 |████████████████████████████████████████| funnel-section: writing section-three.json | 1/3
 
 Your new space "...." public API Key: 1234795283492198789217893712893
