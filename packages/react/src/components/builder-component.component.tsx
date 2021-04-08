@@ -128,16 +128,16 @@ const fetchCache: { [key: string]: any } = {};
 export interface BuilderComponentProps {
   /**
    * @package
-   * @deprecated use {@link name} instead.
+   * @deprecated use {@link model} instead.
    */
   modelName?: string;
   /**
-   * Name of the model this is rendering content for. Default's 
+   * Name of the model this is rendering content for. Default is "page".
    */
   model?: string;
   /**
    * @package
-   * @deprecated use {@link name} instead.
+   * @deprecated use {@link model} instead.
    */
   name?: string;
   /**
