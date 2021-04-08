@@ -430,8 +430,13 @@ export class Builder {
 
   static components: Component[] = [];
   static singletonInstance: Builder;
-  // isStatic delegates all variants rendering and election to the variants provider
-  // which in turn will always render default variation on server and winning variation on client
+  /**
+   * Makes it so that a/b tests generate code like {@link
+   * https://www.builder.io/blog/high-performance-no-code#__next:~:text=Static%20generated%20A%2FB%20testing}
+   * instead of the old way where we render only one test group at a time on the
+   * server. This is the preferred/better way not and we should ultimately make it
+   * the default
+   */
   static isStatic = false;
   static animator = new Animator();
 
