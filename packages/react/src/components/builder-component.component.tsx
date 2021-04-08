@@ -126,37 +126,149 @@ const Throttle = decorator(throttle);
 const fetchCache: { [key: string]: any } = {};
 
 export interface BuilderComponentProps {
+  /**
+   * @package
+   * @deprecated use {@link name} instead.
+   */
   modelName?: string;
+  /**
+   * Name of the model this is rendering content for. Default's 
+   */
   model?: string;
+  /**
+   * @package
+   * @deprecated use {@link name} instead.
+   */
   name?: string;
+  /**
+   * @see {@link https://github.com/BuilderIO/builder/tree/master/packages/react#passing-data-and-functions-down}
+   */
   data?: any;
+  /**
+   * Specific instance of Builder that should be used. You might use this for
+   * server side rendering. It's generally not recommended except for very
+   * advanced multi-tenant use cases.
+   */
   builder?: Builder;
+  /**
+   * Content entry ID for this component to fetch client side
+   */
   entry?: string;
+  /**
+   * @package
+   *
+   * Builder public API key.
+   *
+   * @see {@link builder.init()} for the preferred way of supplying your API key.
+   */
   apiKey?: string;
+  /**
+   * @private
+   */
   codegen?: boolean;
   options?: GetContentOptions;
+  /**
+   * @see {@link https://github.com/BuilderIO/builder/tree/master/packages/react#passing-data-and-functions-down}
+   */
   contentLoaded?: (data: any, content: any) => void;
+  /**
+   * Instead of having Builder render a link for you with plain anchor
+   * elements, use your own function. Useful when using Next.js, Gatsby, or
+   * other client side routers' custom `<Link>` components.
+   *
+   * ## Notes
+   *
+   * This must be a function that returns JSX, not a component!
+   *
+   * ## Examples
+   *
+   * @see {@link https://github.com/BuilderIO/builder/blob/0f0bc1ca835335f99fc21efb20ff3c4836bc9f41/examples/next-js-builder-site/src/functions/render-link.tsx#L6}
+   */
   renderLink?: (props: React.AnchorHTMLAttributes<any>) => React.ReactNode;
+  /**
+   * Callback to run if an error occurred while fetching content.
+   */
   contentError?: (error: any) => void;
+  /**
+   * Manually specify what Builder content JSON object to render. @see {@link
+   * https://github.com/BuilderIO/builder/tree/master/packages/react#passing-content-manually}
+   */
   content?: Content;
+  /**
+   * @package
+   *
+   * Location object that provides the current url, path, etc; for server side
+   * rendering.
+   */
   location?: Location | Url;
+  /**
+   * Callback to run when Builder state changes (e.g. state.foo = 'bar' in an
+   * action)
+   */
   onStateChange?: (newData: any) => void;
+  /**
+   * @package
+   * @deprecated
+   */
   noAsync?: boolean;
+  /**
+   * @package
+   *
+   * Flag to render email content (small differences in our render logic for
+   * email support).
+   */
   emailMode?: boolean;
+  /**
+   * @package
+   *
+   * Flag to render amp content (small differences in our render logic for amp
+   * support)
+   */
   ampMode?: boolean;
+  /**
+   * @package
+   *
+   * Render content in-line only (can't passed from the content prop) don't
+   * fetch content from our API.
+   */
   inlineContent?: boolean;
+  /**
+   * @package
+   * @deprecated
+   */
   builderBlock?: BuilderElement;
+  /**
+   * @package
+   * @deprecated
+   */
   dataOnly?: boolean;
+  /**
+   * @package
+   * @deprecated
+   */
   hydrate?: boolean;
-  // TODO: support default values in init
+  /**
+   * @package
+   * @deprecated use {@link Builder.isStatic} instead
+   */
   isStatic?: boolean;
+  /**
+   * @see {@link https://github.com/BuilderIO/builder/tree/master/packages/react#passing-data-and-functions-down}
+   */
   context?: any;
+  /**
+   * @deprecated
+   */
   url?: string;
-  // Set to true if this is not the root content component, for instance for symbols
+  /**
+   * Set to true if this is not the root content component, for instance for symbols
+   */
   isChild?: boolean;
-  // Set to true to not call event.stopPropagation() in the editor to avoid
-  // issues with client site routing triggering when editing in Builder, causing
-  // navigation to other pages unintended
+  /**
+   * Set to true to not call `event.stopPropagation()` in the editor to avoid
+   * issues with client site routing triggering when editing in Builder, causing
+   * navigation to other pages unintended
+   */
   stopClickPropagationWhenEditing?: boolean;
 }
 
