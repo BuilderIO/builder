@@ -128,20 +128,32 @@ const fetchCache: { [key: string]: any } = {};
 export interface BuilderComponentProps {
   /**
    * @package
-   * @deprecated use {@link name} instead.
+   * @deprecated use {@link model} instead.
    */
   modelName?: string;
   /**
-   * Name of the model this is rendering content for. Default's 
+   * Name of the model this is rendering content for. Default is "page".
    */
   model?: string;
   /**
    * @package
-   * @deprecated use {@link name} instead.
+   * @deprecated use {@link model} instead.
    */
   name?: string;
   /**
+   * Data is passed along as `state.*` to the component.
    * @see {@link https://github.com/BuilderIO/builder/tree/master/packages/react#passing-data-and-functions-down}
+   *
+   * @example
+   * ```
+   * <BuilderComponent
+   *  model="page"
+   *  data={{
+   *    products: productsList,
+   *    myFunction: () => alert('Triggered!'),
+   *    foo: 'bar'
+   *  }} >
+   * ```
    */
   data?: any;
   /**
@@ -168,6 +180,9 @@ export interface BuilderComponentProps {
   codegen?: boolean;
   options?: GetContentOptions;
   /**
+   * Function callback invoked with `data` and your content when it becomes
+   * available.
+   *
    * @see {@link https://github.com/BuilderIO/builder/tree/master/packages/react#passing-data-and-functions-down}
    */
   contentLoaded?: (data: any, content: any) => void;
@@ -253,6 +268,8 @@ export interface BuilderComponentProps {
    */
   isStatic?: boolean;
   /**
+   * Object that will be available in actions and bindings.
+   *
    * @see {@link https://github.com/BuilderIO/builder/tree/master/packages/react#passing-data-and-functions-down}
    */
   context?: any;
