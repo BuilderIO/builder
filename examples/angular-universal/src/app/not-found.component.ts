@@ -1,6 +1,7 @@
 import { Component, Inject, Optional } from '@angular/core';
 import { RESPONSE } from '@nguniversal/express-engine/tokens';
 import { Builder } from '@builder.io/sdk';
+import { Meta, Title } from '@angular/platform-browser'
 
 
 interface PartialResponse {
@@ -18,6 +19,8 @@ export class NotFoundComponent {
   showNotFound = false;
   constructor(
     @Optional() @Inject(RESPONSE) private response: PartialResponse,
+    private title: Title,
+    private meta: Meta,
   ) { }
   
   onContentLoad(content?: any) {
@@ -27,6 +30,15 @@ export class NotFoundComponent {
       }
       if (Builder.isBrowser && !Builder.isEditing && !Builder.isPreviewing) {
         this.showNotFound = true;
+      }
+    } else {
+      const { title, description } = content.data;
+      if (title) {
+        this.title.setTitle(title);
+        this.meta.addTag({ name: 'title', content: title});
+      }
+      if (description) {
+        this.meta.addTag({ name: 'description', content: description});
       }
     }
   }
