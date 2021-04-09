@@ -5,14 +5,46 @@ import { applyPatchWithMinimalMutationChain } from '../functions/apply-patch-wit
 import { VariantsProvider } from './variants-provider.component';
 
 export type BuilderContentProps<ContentType> = {
+  /**
+   * Callback to run when content is fetched and loaded.
+   */
   contentLoaded?: (data: any, content: any) => void;
+  /**
+   * Callback to run if an error occurred while fetching content.
+   */
   contentError?: (error: any) => void;
   options?: GetContentOptions;
+  /**
+   * Placeholder content displayed while real content is fetched.
+   */
   children: (content: ContentType, loading?: boolean, fullData?: any) => React.ReactNode;
+  /**
+   * Only render what was explicitly passed in via `content` - don't fetch from
+   * the Builder API.
+   *
+   * @see content
+   */
   inline?: boolean;
+  /**
+   * @package
+   * @deprecated
+   */
   dataOnly?: boolean;
+  /**
+   * @package
+   * Pass in a specific builder instance to use instead of the default
+   * singleton.
+   */
   builder?: Builder;
+  /**
+   * @deprecated use `Builder.isStatic` instead
+   */
   isStatic?: boolean;
+  /**
+   * Builder content object to use instead of fetching from the API.
+   *
+   * Required if `inline` is set to `true`.
+   */
   content?: BuilderContent;
 } & ({ model: string } | { modelName: string }); // model and modelName are aliases of the same thing¸
 
