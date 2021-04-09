@@ -45,6 +45,12 @@ export type BuilderContentProps<ContentType> = {
   content?: BuilderContent;
 } & ({ model: string } | { modelName: string }); // model and modelName are aliases of the same thing¸
 
+/**
+ * When passed content json explicitly it'll calculate a/b tests on the content
+ * and pass the winning variation down to the children function. If then content
+ * prop was omitted it'll try to fetch matching content from your Builder
+ * account based on the default user attributes and model.
+ */
 export class BuilderContent<ContentType extends object = any> extends React.Component<
   BuilderContentProps<ContentType>
 > {
