@@ -187,7 +187,15 @@ interface Event {
  * https://www.builder.io/c/docs/guides/targeting-and-scheduling}
  */
 export interface UserAttributes {
-  [key: string]: undefined | string | string[] | boolean | boolean[] | number | number[] | Record<string, any>;
+  [key: string]:
+    | undefined
+    | string
+    | string[]
+    | boolean
+    | boolean[]
+    | number
+    | number[]
+    | Record<string, any>;
   /**
    * URL path of the current user.
    */
@@ -264,7 +272,7 @@ export interface GetContentOptions {
    * &query.data.myCustomField=someValue
    * &query.data.someNumber.$ne=20
    * ```
-   * 
+   *
    * See more info on MongoDB's query operators and format.
    *
    * @see {@link https://docs.mongodb.com/manual/reference/operator/query/}
@@ -467,7 +475,7 @@ export interface Component {
   hooks?: { [key: string]: string | Function };
   /**
    * Hide your component in editor, useful for gradually deprecating components
-  */
+   */
   hideFromInsertMenu?: boolean;
   // For webcomponents
   tag?: string;
@@ -523,7 +531,7 @@ export interface Component {
    * Use to restrict access to your component based on a the current user permissions
    * By default components will show to all users
    * for more information on permissions in builder check https://www.builder.io/c/docs/guides/roles-and-permissions
-  */
+   */
   requiredPermissions?: Array<Permission>;
 }
 
