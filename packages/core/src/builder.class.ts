@@ -182,51 +182,199 @@ interface Event {
   data: EventData;
 }
 
+/**
+ * Attributes that can be used for custom targeting. {@link
+ * https://www.builder.io/c/docs/guides/targeting-and-scheduling}
+ */
 export interface UserAttributes {
+  [key: string]:
+    | undefined
+    | string
+    | string[]
+    | boolean
+    | boolean[]
+    | number
+    | number[]
+    | Record<string, any>;
+  /**
+   * URL path of the current user.
+   */
   urlPath?: string;
+  /** @deprecated */
   queryString?: string | ParamsMap;
+  /** @deprecated */
   device?: 'mobile' | 'tablet' | 'desktop';
+  /** @deprecated */
   location?: any;
+  /** @deprecated */
   userAgent?: string;
+  /** @deprecated */
   referrer?: string;
+  /** @deprecated */
   entryMedium?: string;
+  /** @deprecated */
   language?: string;
+  /** @deprecated */
   browser?: string;
+  /** @deprecated */
   cookie?: string;
+  /** @deprecated */
   newVisitor?: boolean;
+  /** @deprecated */
   operatingSystem?: string;
 }
 
 export interface GetContentOptions {
   userAttributes?: UserAttributes;
-  // Alias for userAttributes.urlPath
+  /**
+   * Alias for userAttributes.urlPath except it can handle a full URL (optionally with host,
+   * protocol, query, etc) and we will parse out the path.
+   */
   url?: string;
+  /**
+   * @package
+   */
   includeUrl?: boolean;
+  /**
+   * Follow references. If you use the `reference` field to pull in other content without this
+   * enabled we will not fetch that content for the final response.
+   */
   includeRefs?: boolean;
+  /**
+   * How long in seconds content should be cached for. Sets the max-age of the cache-control header
+   * response header.
+   *
+   * Use a higher value for better performance, lower for content that will change more frequently
+   *
+   * @see {@link https://www.builder.io/c/docs/query-api#__next:~:text=%26includeRefs%3Dtrue-,cacheSeconds,-No}
+   */
   cacheSeconds?: number;
+  /**
+   * Builder.io uses stale-while-revalidate caching at the CDN level. This means we always serve
+   * from edge cache and update caches in the background for maximum possible performance. This also
+   * means that the more frequently content is requested, the more fresh it will be. The longest we
+   * will ever hold something in stale cache is 1 day by default, and you can set this to be shorter
+   * yourself as well. We suggest keeping this high unless you have content that must change rapidly
+   * and gets very little traffic.
+   *
+   * @see {@link https://www.fastly.com/blog/prevent-application-network-instability-serve-stale-content}
+   */
   staleCacheSeconds?: number;
+  /**
+   * Maximum number of results to return. Defaults to `1`.
+   */
   limit?: number;
+  /**
+   * Mongodb style query of your data. E.g.:
+   *
+   * ```
+   * &query.data.id=abc123
+   * &query.data.myCustomField=someValue
+   * &query.data.someNumber.$ne=20
+   * ```
+   *
+   * See more info on MongoDB's query operators and format.
+   *
+   * @see {@link https://docs.mongodb.com/manual/reference/operator/query/}
+   */
   query?: any;
+  /**
+   * Bust through all caches. Not recommended for production (for performance),
+   * but can be useful for development and static builds (so the static site has
+   * fully fresh / up to date content)
+   */
   cachebust?: boolean;
+  /**
+   * Convert any visual builder content to HTML.
+   *
+   * This will be on data.html of the response's content entry object json.
+   */
   prerender?: boolean;
+  /**
+   * Extract any styles to a separate css property when generating HTML.
+   */
   extractCss?: boolean;
+  /**
+   * Pagination results offset. Defaults to zero.
+   */
   offset?: number;
+  /**
+   * @package
+   *
+   * `BuilderContent` to render instead of fetching.
+   */
   initialContent?: any;
+  /**
+   * The name of the model to fetch content for.
+   */
   model?: string;
+  /**
+   * Set to `false` to not cache responses when running on the client.
+   */
   cache?: boolean;
+  /**
+   * @package
+   *
+   * Indicate that the fetch request is for preview purposes.
+   */
   preview?: boolean;
+  /**
+   * Specific content entry ID to fetch.
+   */
   entry?: string;
+  /**
+   * @package
+   * @deprecated
+   */
   alias?: string;
   fields?: string;
+  /**
+   * Omit only these fields.
+   *
+   * @example
+   * ```
+   * &omit=data.bigField,data.blocks
+   * ```
+   */
   omit?: string;
   key?: string;
-  // For prerender (prerenderFormat?)
+  /**
+   * @package
+   *
+   * Affects HTML generation for specific targets.
+   */
   format?: 'amp' | 'email' | 'html' | 'react' | 'solid';
+  /** @deprecated */
   noWrap?: true;
+  /**
+   * @package
+   *
+   * Specific string to use for cache busting. e.g. every time we generate
+   * HTML we generate a rev (a revision ID) and we send that with each request
+   * on the client, such that if we generate new server HTML we get a new rev
+   * and we use that to bust the cache because even though the content ID may
+   * be the same, it could be an updated version of this content that needs to
+   * be fresh.
+   */
   rev?: string;
+  /**
+   * @package
+   *
+   * Tell the API that when generating HTML to generate it in static mode for
+   * a/b tests instead of the older way we did this
+   */
   static?: boolean;
-  // Additional query params of the Content API to send
+  /**
+   * Additional query params of the Content API to send.
+   */
   options?: { [key: string]: any };
+  /**
+   * @package
+   *
+   * Don't listen to updates in the editor - this is useful for embedded
+   * symbols so they don't accidentally listen to messages as you are editing
+   * content thinking they should updates when they actually shouldn't.
+   */
   noEditorUpdates?: boolean;
 }
 
@@ -327,7 +475,7 @@ export interface Component {
   hooks?: { [key: string]: string | Function };
   /**
    * Hide your component in editor, useful for gradually deprecating components
-  */
+   */
   hideFromInsertMenu?: boolean;
   // For webcomponents
   tag?: string;
@@ -383,7 +531,7 @@ export interface Component {
    * Use to restrict access to your component based on a the current user permissions
    * By default components will show to all users
    * for more information on permissions in builder check https://www.builder.io/c/docs/guides/roles-and-permissions
-  */
+   */
   requiredPermissions?: Array<Permission>;
 }
 
