@@ -187,6 +187,7 @@ interface Event {
  * https://www.builder.io/c/docs/guides/targeting-and-scheduling}
  */
 export interface UserAttributes {
+  [key: string]: undefined | string | string[] | boolean | boolean[] | number | number[] | Record<string, any>;
   /**
    * URL path of the current user.
    */
