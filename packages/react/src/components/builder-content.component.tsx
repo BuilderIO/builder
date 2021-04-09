@@ -14,9 +14,6 @@ export type BuilderContentProps<ContentType> = {
    */
   contentError?: (error: any) => void;
   options?: GetContentOptions;
-  /**
-   * Placeholder content displayed while real content is fetched.
-   */
   children: (content: ContentType, loading?: boolean, fullData?: any) => React.ReactNode;
   /**
    * Only render what was explicitly passed in via `content` - don't fetch from
