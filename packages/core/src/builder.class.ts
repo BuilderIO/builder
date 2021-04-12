@@ -414,6 +414,13 @@ export interface Input {
   mediaWidth?: number;
   hideFromUI?: boolean;
   modelId?: string;
+  /**
+   * Set this to `true` to show the editor for this input when
+   * children of this component are selected. This is useful for things
+   * like Tabs, such that users may not always select the Tabs component
+   * directly but will still be looking for how to add additional tabs
+   */
+  broadcast?: boolean;
   options?: { [key: string]: any };
   enum?: string[] | { label: string; value: any; helperText?: string }[];
   /** Regex field validation for all string types (text, longText, html, url, etc) */
