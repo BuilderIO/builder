@@ -50,6 +50,12 @@ export type BuilderContentProps<ContentType> = {
  * and pass the winning variation down to the children function. If then content
  * prop was omitted it'll try to fetch matching content from your Builder
  * account based on the default user attributes and model.
+ *
+ * ## Notes
+ *
+ * A/B testing will show only the default content if DoNotTrack is enabled.
+ *
+ * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/DNT
  */
 export class BuilderContent<ContentType extends object = any> extends React.Component<
   BuilderContentProps<ContentType>
