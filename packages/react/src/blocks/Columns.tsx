@@ -159,6 +159,7 @@ export const Columns = withBuilder(ColumnsComponent, {
     {
       name: 'columns',
       type: 'array',
+      broadcast: true,
       subFields: [
         {
           name: 'blocks',

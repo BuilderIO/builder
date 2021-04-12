@@ -6,11 +6,9 @@ import { createNewHosts } from '@angularclass/hmr';
 import { AppBrowserModule } from './app/app.browser.module';
 import { environment } from './environments/environment';
 
-
 if (environment.production) {
   enableProdMode();
 }
-
 
 async function main(): Promise<NgModuleRef<AppBrowserModule>> {
   const ngModuleRef = await platformBrowserDynamic().bootstrapModule(AppBrowserModule);
@@ -33,7 +31,6 @@ async function main(): Promise<NgModuleRef<AppBrowserModule>> {
 
   return ngModuleRef;
 }
-
 
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', main);

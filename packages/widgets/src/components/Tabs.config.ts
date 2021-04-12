@@ -48,6 +48,7 @@ export const tabsConfig: any = {
     {
       name: 'tabs',
       type: 'list',
+      broadcast: true,
       subFields: [
         {
           name: 'label',

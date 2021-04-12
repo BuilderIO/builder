@@ -1,4 +1,5 @@
 # Builder.io Angular Universal example
+
 Cloned from [https://github.com/enten/angular-universal](https://github.com/enten/angular-universal).
 This is an example of using Builder.io for dynamic page building with Angular and Angular Universal for server side rendering.
 
@@ -6,11 +7,11 @@ See the full Angular SDK source code and docs over [here](/packages/angular)
 
 ## Running locally
 
-This starter kit is **universal 100% which means you developing for both browser and server at the same time**. 
+This starter kit is **universal 100% which means you developing for both browser and server at the same time**.
 
-* `ng build` - Building bundles for both browser and server platforms in [same compilation][webpack-multicompiler-example] ;
-* `ng serve` - Running universal dev server with [Hot Module Replacement (HMR)][webpack-concept-hmr] enabled on browser and server sides ;
-* `ng serve -c spa` - Running universal dev server with Server Side Rendering (SSR) disabled for angular routes only.
+- `ng build` - Building bundles for both browser and server platforms in [same compilation][webpack-multicompiler-example] ;
+- `ng serve` - Running universal dev server with [Hot Module Replacement (HMR)][webpack-concept-hmr] enabled on browser and server sides ;
+- `ng serve -c spa` - Running universal dev server with Server Side Rendering (SSR) disabled for angular routes only.
 
 In other words, this starter kit gives superpower for those who want develop universal application fastly with no pain. Just keep in mind with great power comes [great responsibility (Universal Gotcha's)][universal-gotchas].
 

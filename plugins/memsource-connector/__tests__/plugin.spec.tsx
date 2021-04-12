@@ -131,15 +131,15 @@ describe('Memsource connector', () => {
             },
             data: {
               get: (arg: string) =>
-              ({
-                blocks: {
-                  toJSON: () => [
-                    {
-                      toJSON: () => ({})
-                    }
-                  ]
-                }
-              }[arg]),
+                ({
+                  blocks: {
+                    toJSON: () => [
+                      {
+                        toJSON: () => ({})
+                      }
+                    ]
+                  }
+                }[arg]),
               toJSON: () => ({ locale: 'locale-1', title: 'page-title' })
             },
             model: {
@@ -227,21 +227,27 @@ describe('Memsource connector', () => {
             .spyOn(axios, 'post')
             .mockImplementationOnce((...args) => spy(...args));
 
-          const listBlock = givenListBlock({ id: 'list-1', items: ['list item 1', 'list item 2'] });
-          const textBlock = givenTextBlock({ id: 'text-1', text: 'text content' })
+          const listBlock = givenListBlock({
+            id: 'list-1',
+            items: ['list item 1', 'list item 2']
+          });
+          const textBlock = givenTextBlock({
+            id: 'text-1',
+            text: 'text content'
+          });
 
           ctx.designerState.editingContentModel.data.get = (arg) => {
             return {
-              'blocks': {
+              blocks: {
                 toJSON: () => [listBlock, textBlock]
               }
-            }[arg]
-          }
+            }[arg];
+          };
 
           ctx.designerState.editingContentModel['componentsUsed'] = {
-            'list': { name: 'list', inputs: [{ name: 'list', type: 'list' }] },
-            'text': { name: 'text', inputs: [{ name: 'text', type: 'longText' }] }
-          }
+            list: { name: 'list', inputs: [{ name: 'list', type: 'list' }] },
+            text: { name: 'text', inputs: [{ name: 'text', type: 'longText' }] }
+          };
 
           const { getByTestId } = render(<MemsourceConnector context={ctx} />);
 
@@ -254,27 +260,27 @@ describe('Memsource connector', () => {
               payload: expect.objectContaining({
                 content: [
                   {
-                    "__id": "list-1",
-                    "__optionKey": "list",
-                    "__listIndex": 0,
-                    "toTranslate": "list item 1",
+                    __id: 'list-1',
+                    __optionKey: 'list',
+                    __listIndex: 0,
+                    toTranslate: 'list item 1'
                   },
                   {
-                    "__id": "list-1",
-                    "__optionKey": "list",
-                    "__listIndex": 1,
-                    "toTranslate": "list item 2",
+                    __id: 'list-1',
+                    __optionKey: 'list',
+                    __listIndex: 1,
+                    toTranslate: 'list item 2'
                   },
                   {
-                    "__id": "text-1",
-                    "__optionKey": "text",
-                    "toTranslate": "text content",
+                    __id: 'text-1',
+                    __optionKey: 'text',
+                    toTranslate: 'text content'
                   }
                 ]
               })
             })
           });
-        })
+        });
       });
     });
   });
@@ -296,8 +302,8 @@ const givenListBlock = ({ id, items }) => {
         }
       }
     })
-  }
-}
+  };
+};
 
 const givenTextBlock = ({ id, text }) => {
   return {
@@ -315,5 +321,5 @@ const givenTextBlock = ({ id, text }) => {
         }
       }
     })
-  }
-}
+  };
+};

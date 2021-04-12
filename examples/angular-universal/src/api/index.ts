@@ -2,13 +2,11 @@ import { APP_BASE_HREF } from '@angular/common';
 import { NgSetupOptions, ngExpressEngine } from '@nguniversal/express-engine';
 import * as express from 'express';
 
-
 export interface ServerAPIOptions {
   distPath: string;
   ngSetup: NgSetupOptions;
   hideSourceMap: boolean;
 }
-
 
 export function createApi(options: ServerAPIOptions): express.Express {
   const router = express();
@@ -23,8 +21,10 @@ export function createApi(options: ServerAPIOptions): express.Express {
   return router;
 }
 
-
-export function createNgRenderMiddleware(distPath: string, ngSetup: NgSetupOptions): express.Express {
+export function createNgRenderMiddleware(
+  distPath: string,
+  ngSetup: NgSetupOptions
+): express.Express {
   const router = express();
 
   router.set('view engine', 'html');
@@ -43,16 +43,18 @@ export function createNgRenderMiddleware(distPath: string, ngSetup: NgSetupOptio
   router.engine('html', ngExpressEngine(ngSetup) as any);
 
   // All regular routes use the Universal engine
-  router.get('*', (req, res) => res.render('index', {
-    req,
-    res,
-    providers: [
-      {
-        provide: APP_BASE_HREF,
-        useValue: req.baseUrl,
-      },
-    ],
-  }));
+  router.get('*', (req, res) =>
+    res.render('index', {
+      req,
+      res,
+      providers: [
+        {
+          provide: APP_BASE_HREF,
+          useValue: req.baseUrl,
+        },
+      ],
+    })
+  );
 
   return router;
 }
