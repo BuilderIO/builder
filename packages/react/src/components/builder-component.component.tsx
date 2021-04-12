@@ -390,6 +390,18 @@ function searchToObject(location: Location | Url) {
   return obj;
 }
 
+/**
+ * Responsible for rendering Builder content of type: 'page' or 'section' to
+ * react components. It will attempt to fetch content from the API based on
+ * defined user attributes (URL path, device type, and any custom targeting you set using `builder.setUserAttributes`) unless a `BuilderContent`
+ * object is provided to `props.content`
+ *
+ * Use it to mount content in desired location, enable editing in place when
+ * previewed in the editor.
+ *
+ * Supports server-side-rendering when passed the content json as
+ * `props.content`.
+ */
 export class BuilderComponent extends React.Component<
   BuilderComponentProps,
   BuilderComponentState
