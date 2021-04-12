@@ -8,9 +8,7 @@
   "angularCompilerOptions": {
     "entryModule": "./src/app/app.server.module#AppServerModule"
   },
-  "files": [
-    "src/server.ts"
-  ],
+  "files": ["src/server.ts"],
   "exclude": [
     "**/*.spec.ts",
     "**/*.stories.ts",

@@ -80,9 +80,9 @@ export const accordionConfig: any = {
   },
   inputs: [
     {
-      broadcast: true,
       name: 'items',
       type: 'list',
+      broadcast: true,
       subFields: [
         {
           name: 'title',

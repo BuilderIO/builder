@@ -1,8 +1,7 @@
 import { Component, Inject, Optional } from '@angular/core';
 import { RESPONSE } from '@nguniversal/express-engine/tokens';
 import { Builder } from '@builder.io/sdk';
-import { Meta, Title } from '@angular/platform-browser'
-
+import { Meta, Title } from '@angular/platform-browser';
 
 interface PartialResponse {
   status(code: number): this;
@@ -11,8 +10,12 @@ interface PartialResponse {
 @Component({
   selector: 'app-not-found',
   template: `
-  <builder-component (load)="onContentLoad($event)" (error)="onContentError($event)" model="page"></builder-component>
-  <div *ngIf="showNotFound">page not found</div>
+    <builder-component
+      (load)="onContentLoad($event)"
+      (error)="onContentError($event)"
+      model="page"
+    ></builder-component>
+    <div *ngIf="showNotFound">page not found</div>
   `,
 })
 export class NotFoundComponent {
@@ -20,9 +23,9 @@ export class NotFoundComponent {
   constructor(
     @Optional() @Inject(RESPONSE) private response: PartialResponse,
     private title: Title,
-    private meta: Meta,
-  ) { }
-  
+    private meta: Meta
+  ) {}
+
   onContentLoad(content?: any) {
     if (!content) {
       if (this.response) {
@@ -35,10 +38,10 @@ export class NotFoundComponent {
       const { title, description } = content.data;
       if (title) {
         this.title.setTitle(title);
-        this.meta.addTag({ name: 'title', content: title});
+        this.meta.addTag({ name: 'title', content: title });
       }
       if (description) {
-        this.meta.addTag({ name: 'description', content: description});
+        this.meta.addTag({ name: 'description', content: description });
       }
     }
   }

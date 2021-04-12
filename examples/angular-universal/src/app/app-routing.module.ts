@@ -3,15 +3,12 @@ import { RouterModule } from '@angular/router';
 
 import { APP_ROUTES } from './app-routes';
 
-
 @NgModule({
   imports: [
     RouterModule.forRoot(APP_ROUTES, {
       initialNavigation: 'enabled',
     }),
   ],
-  exports: [
-    RouterModule,
-  ],
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

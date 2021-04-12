@@ -3,7 +3,6 @@ import { ServerModule, ServerTransferStateModule } from '@angular/platform-serve
 import { AppComponent } from './app.component';
 import { AppModule } from './app.module';
 
-
 @NgModule({
   imports: [
     // The AppServerModule should import your AppModule followed
@@ -15,6 +14,6 @@ import { AppModule } from './app.module';
   ],
   // Since the bootstrapped component is not inherited from your
   // imported AppModule, it needs to be repeated here.
-  bootstrap: [ AppComponent ],
+  bootstrap: [AppComponent],
 })
-export class AppServerModule { }
+export class AppServerModule {}

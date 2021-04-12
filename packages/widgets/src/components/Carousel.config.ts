@@ -56,9 +56,9 @@ export const carouselConfig: any = {
   },
   inputs: [
     {
-      broadcast: true,
       name: 'slides',
       type: 'list',
+      broadcast: true,
       subFields: [
         {
           name: 'content',

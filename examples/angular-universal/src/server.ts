@@ -10,18 +10,15 @@ import { ServerAPIOptions, createApi } from './api';
 import { AppServerModule } from './app/app.server.module';
 import { environment } from './environments/environment';
 
-
 // WARN: don't remove export of AppServerModule.
 // Removing export below will break replaceServerBootstrap() transformer.
 export { AppServerModule } from './app/app.server.module';
-
 
 // Faster server renders w/ Prod mode.
 // Prod mode isn't enabled by default because that breaks debugging tools like Augury.
 if (environment.production) {
   enableProdMode();
 }
-
 
 // WARN: keep in mind that __filename ends with dist/app/server/main.js during runtime.
 // WARN: keep in mind that __dirname ends with dist/app/server during runtime.
@@ -36,14 +33,12 @@ export const getServerAPIOptions: (bootstrap: Type<{}>) => ServerAPIOptions = bo
   hideSourceMap: environment.production,
 });
 
-
 let requestListener = createApi(getServerAPIOptions(AppServerModule));
 
 // Create the Node server
 const server = createServer((req, res) => {
   requestListener(req, res);
 });
-
 
 // HMR on server side
 if (module.hot) {
@@ -67,17 +62,16 @@ if (module.hot) {
   module.hot.accept('./app/app.server.module', hmr);
 }
 
-
 // Webpack will replace 'require' with '__webpack_require__'
 // '__non_webpack_require__' is a proxy to Node 'require'
 // The below code is to ensure that the server is run only when not requiring the bundle.
 declare const __non_webpack_require__: NodeRequire;
 const mainModule = __non_webpack_require__.main;
-const moduleFilename = mainModule && mainModule.filename || '';
+const moduleFilename = (mainModule && mainModule.filename) || '';
 if (
-  moduleFilename === __filename
-  || moduleFilename.includes('iisnode')
-  || moduleFilename.includes('udk/lib/util/container')
+  moduleFilename === __filename ||
+  moduleFilename.includes('iisnode') ||
+  moduleFilename.includes('udk/lib/util/container')
 ) {
   const PORT = process.env.PORT ? +process.env.PORT : 4000;
 
@@ -85,7 +79,6 @@ if (
     console.log(`Server listening -- http://localhost:${PORT}`);
   });
 }
-
 
 // WARN: don't remove export default of server.
 // Removing export below will break universal dev server.
