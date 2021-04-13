@@ -283,6 +283,8 @@ class ImageComponent extends React.Component<any, { imageLoaded: boolean; load: 
       srcset = this.getSrcSet();
     }
 
+    const { fitContent } = this.props;
+
     return (
       <BuilderMetaContext.Consumer>
         {value => {
@@ -354,7 +356,7 @@ class ImageComponent extends React.Component<any, { imageLoaded: boolean; load: 
                   {imageContents}
                 </picture>
               )}
-              {aspectRatio && !amp ? (
+              {aspectRatio && !amp && !(fitContent && children && children.length) ? (
                 <div
                   className="builder-image-sizer"
                   css={{
@@ -368,24 +370,30 @@ class ImageComponent extends React.Component<any, { imageLoaded: boolean; load: 
                 </div>
               ) : null}
               {children && children.length ? (
-                // TODO: if no aspect ratio and has children, don't make this absolute but instead
-                // make the image absolute and fit the children (or with a special option)
-                <div
-                  css={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'stretch',
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
-                  }}
-                >
-                  {children.map((block: BuilderElement, index: number) => (
+                fitContent ? (
+                  children.map((block: BuilderElement, index: number) => (
                     <BuilderBlockComponent key={block.id} block={block} />
-                  ))}
-                </div>
+                  ))
+                ) : (
+                  // TODO: if no aspect ratio and has children, don't make this absolute but instead
+                  // make the image absolute and fit the children (or with a special option)
+                  <div
+                    css={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'stretch',
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      width: '100%',
+                      height: '100%',
+                    }}
+                  >
+                    {children.map((block: BuilderElement, index: number) => (
+                      <BuilderBlockComponent key={block.id} block={block} />
+                    ))}
+                  </div>
+                )
               ) : null}
             </React.Fragment>
           );
@@ -545,6 +553,13 @@ export const Image = withBuilder(ImageComponent, {
       type: 'boolean',
       defaultValue: true,
       hideFromUI: true,
+    },
+    {
+      name: 'fitContent',
+      type: 'boolean',
+      helperText: 'When child blocks are provided, fit to them instead of using the aspect ratio',
+      defaultValue: true,
+      advanced: true,
     },
     {
       name: 'aspectRatio',
