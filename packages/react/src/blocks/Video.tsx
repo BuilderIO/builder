@@ -22,6 +22,7 @@ class VideoComponent extends React.Component<{
   position?: string;
   posterImage?: string;
   lazyLoad?: boolean;
+  fitContent?: boolean;
 }> {
   video: HTMLVideoElement | null = null;
   containerRef: HTMLElement | null = null;
@@ -136,7 +137,7 @@ class VideoComponent extends React.Component<{
             <source type="video/mp4" src={this.props.video} />
           )}
         </video>
-        {aspectRatio ? (
+        {aspectRatio && !(this.props.fitContent && children) ? (
           <div
             css={{
               width: '100%',
@@ -146,7 +147,11 @@ class VideoComponent extends React.Component<{
             }}
           />
         ) : null}
-        {children && (
+        {children && this.props.fitContent ? (
+          <div css={{ display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
+            {children}
+          </div>
+        ) : (
           <div
             css={{
               display: 'flex',
@@ -170,6 +175,10 @@ class VideoComponent extends React.Component<{
 export const Video = Builder.registerComponent(withChildren(VideoComponent), {
   name: 'Video',
   canHaveChildren: true,
+  defaultStyles: {
+    minHeight: '20px',
+    minWidth: '20px',
+  },
   image:
     'https://firebasestorage.googleapis.com/v0/b/builder-3b0a2.appspot.com/o/images%2Fbaseline-videocam-24px%20(1).svg?alt=media&token=49a84e4a-b20e-4977-a650-047f986874bb',
   inputs: [
@@ -264,6 +273,13 @@ export const Video = Builder.registerComponent(withChildren(VideoComponent), {
       type: 'text',
       defaultValue: 'cover',
       enum: ['contain', 'cover', 'fill', 'auto'],
+    },
+    {
+      name: 'fitContent',
+      type: 'boolean',
+      helperText: 'When child blocks are provided, fit to them instead of using the aspect ratio',
+      defaultValue: true,
+      advanced: true,
     },
     {
       name: 'position',
