@@ -1,0 +1,86 @@
+{
+  "createdBy": "4FFFg0MNRJT0z0nW4uUizDHfHJV2",
+  "createdDate": 1617811538869,
+  "data": {
+    "pages": [
+      {
+        "content": {
+          "@type": "@builder.io/core:Reference",
+          "id": "adfd09c2c4534b498d72056fbde44410",
+          "model": "funnel-section"
+        },
+        "title": "First",
+        "urlPath": "/one"
+      },
+      {
+        "content": {
+          "@type": "@builder.io/core:Reference",
+          "id": "17812be68d454682b30118b048acc859",
+          "model": "funnel-section"
+        },
+        "title": "Second",
+        "urlPath": "/section-2"
+      },
+      {
+        "content": {
+          "@type": "@builder.io/core:Reference",
+          "id": "53db687948bd404e87db20cf103ae1de",
+          "model": "funnel-section"
+        },
+        "title": "Third",
+        "urlPath": "/section-three"
+      },
+      {
+        "content": {
+          "@type": "@builder.io/core:Reference",
+          "id": "17812be68d454682b30118b048acc859",
+          "model": "funnel-section"
+        },
+        "title": "Fourth",
+        "urlPath": "/fourth"
+      }
+    ],
+    "sections": [
+      {
+        "content": {
+          "@type": "@builder.io/core:Reference",
+          "id": "adfd09c2c4534b498d72056fbde44410",
+          "model": "funnel-section"
+        },
+        "title": "Welcome"
+      },
+      {
+        "content": {
+          "@type": "@builder.io/core:Reference",
+          "id": "17812be68d454682b30118b048acc859",
+          "model": "funnel-section"
+        },
+        "title": "Information"
+      },
+      {
+        "content": {
+          "@type": "@builder.io/core:Reference",
+          "id": "00f7df7cdef64759a8453ce591953f08",
+          "model": "funnel-section"
+        },
+        "title": "Good Bye"
+      }
+    ]
+  },
+  "id": "fb18534574ee4aeb9a41e6b1ca2d94d7",
+  "lastUpdatedBy": "4FFFg0MNRJT0z0nW4uUizDHfHJV2",
+  "meta": {
+    "kind": "data"
+  },
+  "modelId": "bdf6c5029b9f4f40b50148feb1e172fc",
+  "name": "My first funnel",
+  "published": "published",
+  "query": [],
+  "testRatio": 1,
+  "variations": {},
+  "lastUpdated": 1617823820578,
+  "rev": "3hrvryvycpi",
+  "@originOrg": "cebf462cf12940c78302d9b4a201d7e6",
+  "@originContentId": "e9186547fa384e938fd9aebf89d729ec",
+  "@originModelId": "08694cdb89834285b59e781d72d6c3a6"
+}

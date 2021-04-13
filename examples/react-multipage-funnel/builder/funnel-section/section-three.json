@@ -1,0 +1,343 @@
+{
+  "createdBy": "4FFFg0MNRJT0z0nW4uUizDHfHJV2",
+  "createdDate": 1617823747748,
+  "data": {
+    "inputs": [],
+    "blocks": [
+      {
+        "@type": "@builder.io/sdk:Element",
+        "@version": 2,
+        "id": "builder-71aa708d408c403f8174313c6f9fd977",
+        "component": {
+          "name": "Core:Section",
+          "options": {
+            "maxWidth": 1200
+          }
+        },
+        "children": [
+          {
+            "@type": "@builder.io/sdk:Element",
+            "@version": 2,
+            "id": "builder-63c7112e5b384ff4acee53672160652e",
+            "component": {
+              "name": "Columns",
+              "options": {
+                "columns": [
+                  {
+                    "blocks": [
+                      {
+                        "@type": "@builder.io/sdk:Element",
+                        "@version": 2,
+                        "layerName": "Centered Box",
+                        "id": "builder-94f34ba5dfbd42eca9710060fff8a3e7",
+                        "children": [
+                          {
+                            "@type": "@builder.io/sdk:Element",
+                            "@version": 2,
+                            "layerName": "Title",
+                            "id": "builder-e41ee9c64ba4471b9ba64884e2f76980",
+                            "component": {
+                              "name": "Text",
+                              "options": {
+                                "text": "<p>Something Great to Say</p>"
+                              }
+                            },
+                            "responsiveStyles": {
+                              "large": {
+                                "display": "flex",
+                                "flexDirection": "column",
+                                "alignItems": "stretch",
+                                "flexShrink": "0",
+                                "position": "relative",
+                                "marginTop": "-1.65625px",
+                                "textAlign": "center",
+                                "lineHeight": "normal",
+                                "height": "auto",
+                                "fontSize": "33px"
+                              },
+                              "medium": {
+                                "marginTop": "29.34375px",
+                                "textAlign": "center"
+                              },
+                              "small": {
+                                "fontSize": "25px"
+                              }
+                            }
+                          },
+                          {
+                            "@type": "@builder.io/sdk:Element",
+                            "@version": 2,
+                            "layerName": "Subtitle",
+                            "id": "builder-353823fb433e4561b7b6eeb0311ca087",
+                            "component": {
+                              "name": "Text",
+                              "options": {
+                                "text": "<p>Some more great things to elaborate on that wonderful things you have to tell your audience</p>"
+                              }
+                            },
+                            "responsiveStyles": {
+                              "large": {
+                                "display": "flex",
+                                "flexDirection": "column",
+                                "alignItems": "stretch",
+                                "flexShrink": "0",
+                                "position": "relative",
+                                "marginTop": "25.59375px",
+                                "textAlign": "center",
+                                "lineHeight": "normal",
+                                "height": "auto",
+                                "fontSize": "17px",
+                                "color": "rgba(86, 86, 86, 1)"
+                              },
+                              "medium": {
+                                "textAlign": "center"
+                              },
+                              "small": {
+                                "fontSize": "15px"
+                              }
+                            }
+                          },
+                          {
+                            "@type": "@builder.io/sdk:Element",
+                            "@version": 2,
+                            "actions": {
+                              "click": "var _virtual_index=state.navigateNext();return _virtual_index"
+                            },
+                            "bindings": {
+                              "show": "var _virtual_index=state.hasNext;return _virtual_index"
+                            },
+                            "code": {
+                              "actions": {
+                                "click": "state.navigateNext()"
+                              },
+                              "bindings": {
+                                "show": "state.hasNext"
+                              }
+                            },
+                            "layerName": "Let's go...",
+                            "id": "builder-86ba5271bb9a4d56851c118ed9f03bdc",
+                            "component": {
+                              "name": "Core:Button",
+                              "options": {
+                                "text": "Next"
+                              }
+                            },
+                            "responsiveStyles": {
+                              "large": {
+                                "display": "flex",
+                                "flexDirection": "column",
+                                "alignItems": "stretch",
+                                "position": "relative",
+                                "flexShrink": "0",
+                                "boxSizing": "border-box",
+                                "marginTop": "26px",
+                                "appearance": "none",
+                                "paddingTop": "15px",
+                                "paddingBottom": "15px",
+                                "paddingLeft": "31px",
+                                "paddingRight": "31px",
+                                "backgroundColor": "rgba(50, 50, 50, 1)",
+                                "color": "white",
+                                "borderRadius": "4px",
+                                "textAlign": "center",
+                                "marginLeft": "auto",
+                                "marginRight": "auto",
+                                "cursor": "pointer"
+                              },
+                              "medium": {
+                                "marginLeft": "auto",
+                                "marginRight": "auto"
+                              }
+                            }
+                          },
+                          {
+                            "@type": "@builder.io/sdk:Element",
+                            "@version": 2,
+                            "actions": {
+                              "click": "var _virtual_index=state.navigateBack();return _virtual_index"
+                            },
+                            "bindings": {
+                              "show": "var _virtual_index=state.hasPrev;return _virtual_index"
+                            },
+                            "code": {
+                              "actions": {
+                                "click": "state.navigateBack()"
+                              },
+                              "bindings": {
+                                "show": "state.hasPrev"
+                              }
+                            },
+                            "id": "builder-da1e9fdeb021480eae6c68ea006e177b",
+                            "component": {
+                              "name": "Core:Button",
+                              "options": {
+                                "text": "Back"
+                              }
+                            },
+                            "responsiveStyles": {
+                              "large": {
+                                "display": "flex",
+                                "flexDirection": "column",
+                                "alignItems": "stretch",
+                                "position": "relative",
+                                "flexShrink": "0",
+                                "boxSizing": "border-box",
+                                "marginTop": "26px",
+                                "appearance": "none",
+                                "paddingTop": "15px",
+                                "paddingBottom": "15px",
+                                "paddingLeft": "31px",
+                                "paddingRight": "31px",
+                                "backgroundColor": "rgba(50, 50, 50, 1)",
+                                "color": "white",
+                                "borderRadius": "4px",
+                                "textAlign": "center",
+                                "marginLeft": "auto",
+                                "marginRight": "auto",
+                                "cursor": "pointer"
+                              },
+                              "medium": {
+                                "marginLeft": "auto",
+                                "marginRight": "auto"
+                              }
+                            }
+                          }
+                        ],
+                        "responsiveStyles": {
+                          "large": {
+                            "display": "flex",
+                            "flexDirection": "column",
+                            "alignItems": "stretch",
+                            "position": "relative",
+                            "flexShrink": "0",
+                            "boxSizing": "border-box",
+                            "marginTop": "auto",
+                            "marginBottom": "auto",
+                            "paddingBottom": "16px"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "blocks": [
+                      {
+                        "@type": "@builder.io/sdk:Element",
+                        "@version": 2,
+                        "id": "builder-6ed142a68f3b41d1b307d5883e198eda",
+                        "component": {
+                          "name": "Image",
+                          "options": {
+                            "image": "https://cdn.builder.io/api/v1/image/assets%2FagZ9n5CUKRfbL9t6CaJOyVSK4Es2%2Fbd858545a497457b9e1a3738a16df76d?width=2000&height=1000",
+                            "backgroundPosition": "center",
+                            "backgroundSize": "cover",
+                            "aspectRatio": 0.7004048582995948
+                          }
+                        },
+                        "responsiveStyles": {
+                          "large": {
+                            "display": "flex",
+                            "flexDirection": "column",
+                            "alignItems": "stretch",
+                            "flexShrink": "0",
+                            "position": "relative",
+                            "marginTop": "-2.5px",
+                            "textAlign": "center",
+                            "lineHeight": "normal",
+                            "height": "auto"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "space": 42,
+                "stackColumnsAt": "tablet",
+                "reverseColumnsWhenStacked": false
+              }
+            },
+            "responsiveStyles": {
+              "large": {
+                "display": "flex",
+                "flexDirection": "column",
+                "alignItems": "stretch",
+                "position": "relative",
+                "flexShrink": "0",
+                "boxSizing": "border-box",
+                "marginTop": "2.34375px",
+                "paddingLeft": "0px",
+                "paddingRight": "0px"
+              }
+            }
+          }
+        ],
+        "responsiveStyles": {
+          "large": {
+            "display": "flex",
+            "flexDirection": "column",
+            "alignItems": "stretch",
+            "position": "relative",
+            "flexShrink": "0",
+            "boxSizing": "border-box",
+            "marginTop": "0px",
+            "paddingLeft": "20px",
+            "paddingRight": "20px",
+            "paddingTop": "50px",
+            "paddingBottom": "50px",
+            "width": "100vw",
+            "marginLeft": "calc(50% - 50vw)"
+          }
+        }
+      },
+      {
+        "id": "builder-pixel-2637op6ps69",
+        "@type": "@builder.io/sdk:Element",
+        "tagName": "img",
+        "properties": {
+          "src": "https://cdn.builder.io/api/v1/pixel?apiKey=cebf462cf12940c78302d9b4a201d7e6",
+          "role": "presentation",
+          "width": "0",
+          "height": "0"
+        },
+        "responsiveStyles": {
+          "large": {
+            "height": "0",
+            "width": "0",
+            "display": "inline-block",
+            "opacity": "0",
+            "overflow": "hidden",
+            "pointerEvents": "none"
+          }
+        }
+      }
+    ],
+    "state": {
+      "deviceSize": "large",
+      "location": {
+        "path": "",
+        "query": {}
+      }
+    }
+  },
+  "id": "00f7df7cdef64759a8453ce591953f08",
+  "lastUpdated": 1617824263908,
+  "lastUpdatedBy": "4FFFg0MNRJT0z0nW4uUizDHfHJV2",
+  "meta": {
+    "hasLinks": false,
+    "kind": "component",
+    "originalContentId": "17812be68d454682b30118b048acc859",
+    "winningTest": null,
+    "needsHydration": false
+  },
+  "modelId": "6be34b0798004d0b95625ab05dd539d0",
+  "name": "section three",
+  "published": "published",
+  "query": [],
+  "screenshot": "https://cdn.builder.io/api/v1/image/assets%2Fcebf462cf12940c78302d9b4a201d7e6%2F8b0fefe616e84acfb5a3f1a990fa24e4",
+  "testRatio": 1,
+  "variations": {},
+  "rev": "npddlgk4eoj",
+  "@originOrg": "cebf462cf12940c78302d9b4a201d7e6",
+  "@originContentId": "c43342964b8d41fdadc3ede635df29ff",
+  "@originModelId": "8bf069b7015e4b07a5332b7c18ffbd3f"
+}

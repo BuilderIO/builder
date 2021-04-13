@@ -1,0 +1,19 @@
+{
+  "hasIntegrated": "local",
+  "type": "space",
+  "@version": 5,
+  "name": "multipage-funnels-space",
+  "cloneInfo": {
+    "contentIdMap": {
+      "e9186547fa384e938fd9aebf89d729ec": "fb18534574ee4aeb9a41e6b1ca2d94d7",
+      "c43342964b8d41fdadc3ede635df29ff": "00f7df7cdef64759a8453ce591953f08",
+      "6def05afa3fa447aaac2e5941d95b79d": "17812be68d454682b30118b048acc859",
+      "55db067e31554c058ba690b7bcec74b5": "adfd09c2c4534b498d72056fbde44410"
+    },
+    "modelIdMap": {
+      "08694cdb89834285b59e781d72d6c3a6": "bdf6c5029b9f4f40b50148feb1e172fc",
+      "09899f23743c428eb442c61ef4db43b9": "54d871ad517d47c69645e3d7b9fc3e85",
+      "8bf069b7015e4b07a5332b7c18ffbd3f": "6be34b0798004d0b95625ab05dd539d0"
+    }
+  }
+}
