@@ -23,6 +23,7 @@ Builder.registerComponent(RawText, {
   inputs: [
     {
       name: 'text',
+      bubble: true,
       type: 'longText',
       required: true,
     },

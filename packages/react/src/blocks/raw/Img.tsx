@@ -33,6 +33,7 @@ export const Img = withBuilder(ImgComponent, {
   inputs: [
     {
       name: 'image',
+      bubble: true,
       type: 'file',
       allowedFileTypes: ['jpeg', 'jpg', 'png', 'svg'],
       required: true,
