@@ -46,10 +46,12 @@ export const Button = withBuilder(ButtonComponent, {
       name: 'text',
       type: 'text',
       defaultValue: 'Click me!',
+      bubble: true,
     },
     {
       name: 'link',
       type: 'url',
+      bubble: true,
     },
     {
       name: 'openLinkInNewTab',

@@ -421,6 +421,12 @@ export interface Input {
    * directly but will still be looking for how to add additional tabs
    */
   broadcast?: boolean;
+  /**
+   * Set this to `true` to show the editor for this input when
+   * group locked parents of this component are selected. This is useful
+   * to bubble up important inputs for locked groups, like text and images
+   */
+  bubble?: boolean;
   options?: { [key: string]: any };
   enum?: string[] | { label: string; value: any; helperText?: string }[];
   /** Regex field validation for all string types (text, longText, html, url, etc) */

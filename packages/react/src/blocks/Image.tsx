@@ -413,6 +413,7 @@ export const Image = withBuilder(ImageComponent, {
       // and sets an object and that is read here
       name: 'image',
       type: 'file',
+      bubble: true,
       allowedFileTypes: ['jpeg', 'jpg', 'png', 'svg'],
       required: true,
       defaultValue:
