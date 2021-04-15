@@ -1,0 +1,19 @@
+{
+  "name": "@builder.io/json-schema",
+  "version": "1.0.0",
+  "private": true,
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "make all",
+    "clean": "make clean"
+  },
+  "author": "Dylan Kendal",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^4.2.4",
+    "prettier": "^2.2.1",
+    "typescript-json-schema": "^0.50.0"
+  }
+}
