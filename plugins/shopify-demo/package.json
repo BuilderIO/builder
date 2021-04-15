@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/plugin-shopify-demo",
-  "version": "0.2.1-0",
+  "version": "0.2.1-1",
   "description": "",
   "keywords": [],
   "main": "dist/plugin.umd.js",
