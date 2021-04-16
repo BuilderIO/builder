@@ -104,7 +104,9 @@ export const VariantsProvider: React.SFC<VariantsProviderProps> = ({
   initialContent,
   children,
 }) => {
-  if (!builder.canTrack) return children([initialContent]);
+  if (Builder.isBrowser && !builder.canTrack) {
+    return children([initialContent]);
+  }
 
   const hasTests = Boolean(Object.keys(initialContent?.variations || {}).length);
 
