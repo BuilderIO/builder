@@ -21,6 +21,8 @@ import { BuilderModule } from '@builder.io/angular';
 export class MyAppModule { }
 ```
 
+> NOTE: You can get `YOUR_API_KEY` from https://builder.io/account/space.
+
 And then add the component wherever you like
 
 ```html
