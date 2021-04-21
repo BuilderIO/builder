@@ -29,6 +29,6 @@ builder
 builder.canTrack = false;
 ```
 
-More docs coming soon!
+More docs are coming soon!
 
-If you have questions or comments don't hesitate to each out by creating an issue or emailing steve@builder.io
+If you have questions or comments, don't hesitate to reach out by creating an issue or emailing steve@builder.io

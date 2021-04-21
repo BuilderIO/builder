@@ -1,5 +1,4 @@
 import { Injectable, Inject, Optional } from '@angular/core';
-import { Router } from '@angular/router';
 import { RESPONSE, REQUEST } from '@nguniversal/express-engine/tokens';
 import { Builder } from '@builder.io/sdk';
 import { HttpClient } from '@angular/common/http';
@@ -41,7 +40,6 @@ export class BuilderService extends Builder {
     @Optional()
     @Inject(RESPONSE)
     private expressEngineResponse: Response,
-    private router: Router,
     @Optional() private http: HttpClient
   ) {
     super(apiKey, expressEngineRequest || expressRequest, expressEngineResponse || expressResponse);
