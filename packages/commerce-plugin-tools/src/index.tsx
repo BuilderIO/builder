@@ -73,7 +73,12 @@ export const registerCommercePlugin = (
         name: `${config.name}${capitalize(resourceName)}Preview`,
         component: (props: ResourcesPickerButtonProps) => (
           <ErrorBoundary>
-            <ResourcesPickerButton {...props} {...contextProps} isPreview />
+            <ResourcesPickerButton
+              {...props}
+              {...contextProps}
+              previewType={`${config.name}${capitalize(resourceName)}Preview`}
+              isPreview
+            />
           </ErrorBoundary>
         ),
       });

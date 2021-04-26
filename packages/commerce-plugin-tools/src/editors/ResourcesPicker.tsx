@@ -32,6 +32,7 @@ export interface ResourcesPickerButtonProps
   pluginId: string;
   pluginName: string;
   resourceName: string;
+  previewType?: string;
 }
 
 export interface ResourcePreviewCellProps {
@@ -235,15 +236,19 @@ export const ResourcesPickerButton: React.FC<ResourcesPickerButtonProps> = props
   }, []);
 
   useEffect(() => {
+    const hasPreviewFields = Boolean(
+      props.context.designerState.editingModel?.fields.find(
+        (field: { type: string }) => field.type === props.previewType
+      )
+    );
     if (
+      hasPreviewFields &&
       props.context.globalState.globalDialogs.length === 0 &&
       props.context.designerState?.editingContentModel &&
       props.isPreview &&
       (!props.value || store.error)
     ) {
-      setTimeout(() =>
-        store.showPickResouceModal(`Pick a ${props.resourceName} to preview`)
-      );
+      setTimeout(() => store.showPickResouceModal(`Pick a ${props.resourceName} to preview`));
     }
   }, [store.error]);
 
