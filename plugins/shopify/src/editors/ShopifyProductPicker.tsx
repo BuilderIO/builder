@@ -291,7 +291,14 @@ export class ShopifyProductPicker extends SafeComponent<ShopifyProductPickerProp
   }
 
   componentDidMount() {
+    const hasPreviewFields = Boolean(
+      appState.designerState.editingModel?.fields.find(
+        (field: { type: string }) => field.type === 'ShopifyProductPreview'
+      )
+    );
+
     if (
+      hasPreviewFields &&
       this.props.context.globalState.globalDialogs.length === 0 &&
       this.props.context.designerState.editingContentModel &&
       this.props.isPreview &&

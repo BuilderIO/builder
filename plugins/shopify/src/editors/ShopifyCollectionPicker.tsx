@@ -295,7 +295,14 @@ export class ShopifyCollectionPicker extends SafeComponent<ShopifyCollectionPick
   }
 
   componentDidMount() {
+    const hasPreviewFields = Boolean(
+      appState.designerState.editingModel?.fields.find(
+        (field: { type: string }) => field.type === 'ShopifyCollectionPreview'
+      )
+    );
+
     if (
+      hasPreviewFields &&
       this.props.context.globalState.globalDialogs.length === 0 &&
       this.props.context.designerState.editingContentModel &&
       this.props.isPreview &&
