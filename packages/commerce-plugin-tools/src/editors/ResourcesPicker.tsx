@@ -241,7 +241,7 @@ export const ResourcesPickerButton: React.FC<ResourcesPickerButtonProps> = props
       props.isPreview &&
       (!props.value || store.error)
     ) {
-      requestAnimationFrame(() =>
+      setTimeout(() =>
         store.showPickResouceModal(`Pick a ${props.resourceName} to preview`)
       );
     }
