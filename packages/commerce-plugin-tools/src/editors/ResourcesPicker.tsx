@@ -71,6 +71,7 @@ export const ResourcePicker: React.FC<
     api: CommerceAPIOperations;
     omitIds?: string[];
     resourceName: string;
+    title?: string;
   }
 > = props => {
   const store = useLocalStore(() => ({
@@ -108,7 +109,7 @@ export const ResourcePicker: React.FC<
       <TextField
         css={{ margin: 15 }}
         value={store.searchInputText}
-        placeholder={`Search ${pluralize.plural(props.resourceName)}...`}
+        placeholder={props.title || `Search ${pluralize.plural(props.resourceName)}...`}
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
@@ -159,6 +160,7 @@ export const ResourcePicker: React.FC<
 export const ResourcesPickerButton: React.FC<ResourcesPickerButtonProps> = props => {
   const store = useLocalStore(() => ({
     loading: false,
+    error: null,
     resourceInfo: null as Resource | null,
     resourceHandle: props.handleOnly && typeof props.value === 'string' ? props.value : undefined,
     resourceId: props.handleOnly
@@ -167,6 +169,7 @@ export const ResourcesPickerButton: React.FC<ResourcesPickerButtonProps> = props
       ? props.value
       : props.value?.options?.get(props.resourceName),
     async getResource() {
+      this.error = null;
       this.loading = true;
       try {
         const resourceService = props.api[props.resourceName];
@@ -178,19 +181,21 @@ export const ResourcesPickerButton: React.FC<ResourcesPickerButtonProps> = props
         this.resourceInfo = value || null;
       } catch (e) {
         console.error(e);
+        this.error = e;
         props.context.snackBar.show(
           `Oh no! There was an error fetching ${pluralize.plural(props.resourceName)}`
         );
       }
       this.loading = false;
     },
-    async showPickResouceModal() {
+    async showPickResouceModal(title?: string) {
       const close = await props.context.globalState.openDialog(
         <ResourcePicker
           resourceName={props.resourceName}
           api={props.api}
           context={props.context}
           {...(this.resourceInfo && { value: this.resourceInfo })}
+          title={title}
           onChange={action(value => {
             if (value) {
               this.resourceHandle = value.handle;
@@ -228,6 +233,19 @@ export const ResourcesPickerButton: React.FC<ResourcesPickerButtonProps> = props
   useEffect(() => {
     store.getResource();
   }, []);
+
+  useEffect(() => {
+    if (
+      props.context.globalState.globalDialogs.length === 0 &&
+      props.context.designerState?.editingContentModel &&
+      props.isPreview &&
+      (!props.value || store.error)
+    ) {
+      setTimeout(() =>
+        store.showPickResouceModal(`Pick a ${props.resourceName} to preview`)
+      );
+    }
+  }, [store.error]);
 
   return useObserver(() => {
     const pluginSettings = props.context.user.organization.value.settings.plugins.get(
