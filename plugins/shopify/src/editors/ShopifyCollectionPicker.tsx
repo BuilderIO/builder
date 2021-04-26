@@ -60,7 +60,9 @@ export class CollectionPreviewCell extends SafeComponent<ShopifyCollectionPrevie
 }
 
 @observer
-export class CollectionPicker extends SafeComponent<CustomReactEditorProps<ShopifyCollection>> {
+export class CollectionPicker extends SafeComponent<
+  CustomReactEditorProps<ShopifyCollection> & { title?: string }
+> {
   @observable searchInputText = '';
   @observable loading = false;
 
@@ -132,7 +134,7 @@ export class CollectionPicker extends SafeComponent<CustomReactEditorProps<Shopi
         <TextField
           css={{ margin: 15 }}
           value={this.searchInputText}
-          placeholder="Search collections..."
+          placeholder={this.props.title || 'Search collections...'}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -259,9 +261,10 @@ export class ShopifyCollectionPicker extends SafeComponent<ShopifyCollectionPick
     }
   }
 
-  async showChooseCollectionModal() {
+  async showChooseCollectionModal(title?: string) {
     const close = await this.props.context.globalState.openDialog(
       <CollectionPicker
+        title={title}
         context={this.props.context}
         value={this.collectionId}
         onChange={value => {
@@ -289,6 +292,17 @@ export class ShopifyCollectionPicker extends SafeComponent<ShopifyCollectionPick
         '@builder.io/plugin-shopify'
       ) || {}
     );
+  }
+
+  componentDidMount() {
+    if (
+      this.props.context.globalState.globalDialogs.length === 0 &&
+      this.props.context.designerState.editingContentModel &&
+      this.props.isPreview &&
+      (!this.props.value || this.collectionInfoCacheValue?.error)
+    ) {
+      this.showChooseCollectionModal('Pick a collection to preview');
+    }
   }
 
   render() {

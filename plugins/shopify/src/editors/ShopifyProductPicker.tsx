@@ -72,7 +72,9 @@ export class ProductPreviewCell extends SafeComponent<ShopifyProductPreviewCellP
 }
 
 @observer
-export class ProductPicker extends SafeComponent<CustomReactEditorProps<ShopifyProduct>> {
+export class ProductPicker extends SafeComponent<
+  CustomReactEditorProps<ShopifyProduct> & { title?: string }
+> {
   @observable searchInputText = '';
   @observable loading = false;
 
@@ -130,7 +132,7 @@ export class ProductPicker extends SafeComponent<CustomReactEditorProps<ShopifyP
         <TextField
           css={{ margin: 15 }}
           value={this.searchInputText}
-          placeholder="Search products..."
+          placeholder={this.props.title || 'Search Products...'}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -263,9 +265,10 @@ export class ShopifyProductPicker extends SafeComponent<ShopifyProductPickerProp
     } as BuilderRequest;
   }
 
-  async showChooseProductModal() {
+  async showChooseProductModal(title?: string) {
     const close = await this.props.context.globalState.openDialog(
       <ProductPicker
+        title={title}
         context={this.props.context}
         value={this.productInfo}
         onChange={value => {
@@ -285,6 +288,17 @@ export class ShopifyProductPicker extends SafeComponent<ShopifyProductPickerProp
         },
       }
     );
+  }
+
+  componentDidMount() {
+    if (
+      this.props.context.globalState.globalDialogs.length === 0 &&
+      this.props.context.designerState.editingContentModel &&
+      this.props.isPreview &&
+      (!this.props.value || this.productInfoCacheValue?.error)
+    ) {
+      this.showChooseProductModal('Pick a product to preview');
+    }
   }
 
   render() {
