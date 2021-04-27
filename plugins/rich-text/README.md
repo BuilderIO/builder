@@ -13,7 +13,7 @@ contact help@builder.io for help
 
 ```bash
 git clone https://github.com/BuilderIO/builder.git
-cp -r plugins/example plugins/your-plugin-name
+cp -r plugins/rich-text plugins/your-plugin-name
 cd plugins/your-plugin-name
 npm install
 ```
