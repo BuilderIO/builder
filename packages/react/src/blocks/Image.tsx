@@ -557,9 +557,9 @@ export const Image = withBuilder(ImageComponent, {
     {
       name: 'fitContent',
       type: 'boolean',
-      helperText: 'When child blocks are provided, fit to them instead of using the aspect ratio',
+      helperText:
+        "When child blocks are provided, fit to them instead of using the image's aspect ratio",
       defaultValue: true,
-      advanced: true,
     },
     {
       name: 'aspectRatio',
