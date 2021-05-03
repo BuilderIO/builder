@@ -181,7 +181,6 @@ export const Symbol = withBuilder(SymbolComponent, {
       type: 'boolean',
       defaultValue: isShopify,
       advanced: true,
-      hideFromUI: true,
     },
     {
       name: 'renderToLiquid',
