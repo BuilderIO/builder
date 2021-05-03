@@ -29,7 +29,7 @@
     "@builder.io/block-publish": "^1.1.2",
     "babel-preset-gatsby-package": "^0.2.16",
     "cross-env": "^5.2.1",
-    "gatsby": "^2.32.12",
+    "gatsby": "^3.4.0",
     "jest": "^25.1.0"
   },
   "license": "MIT",
