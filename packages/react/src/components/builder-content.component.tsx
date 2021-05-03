@@ -107,7 +107,7 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
   }
 
   state = {
-    loading: true,
+    loading: !this.props.content,
     data: null as any,
     updates: 1,
   };
