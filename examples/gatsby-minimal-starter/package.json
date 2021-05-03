@@ -33,7 +33,7 @@
     "gatsby-image": "^2.2.1",
     "gatsby-plugin-react-helmet": "^3.10.0",
     "gatsby-plugin-typescript": "^2.12.1",
-    "gatsby-source-graphql": "^2.1.33",
+    "gatsby-source-graphql": "^3.4.0",
     "polished": "^3.4.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
