@@ -34,7 +34,7 @@
   },
   "license": "MIT",
   "peerDependencies": {
-    "gatsby": "^2.0.15"
+    "gatsby": "^2.0.15 || ^3.0.0"
   },
   "scripts": {
     "release:patch": "npm run build && npm version patch && ALLOW_PUBLISH=true npm publish",
