@@ -104,7 +104,7 @@ export function stringToFunction(
     }
   }
 
-  const final = (fnCache[cacheKey] = (...args: any[]) => {
+  const final = (...args: any[]) => {
     try {
       if (Builder.isBrowser) {
         return fn(...args);
@@ -155,7 +155,11 @@ export function stringToFunction(
         errors.push(error);
       }
     }
-  });
+  };
+
+  if (Builder.isBrowser) {
+    fnCache[cacheKey] = final;
+  }
 
   return final;
 }
