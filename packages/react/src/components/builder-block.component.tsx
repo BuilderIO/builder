@@ -7,7 +7,7 @@ import { Size, sizeNames, sizes } from '../constants/device-sizes.constant';
 import { set } from '../functions/set';
 import { api, stringToFunction } from '../functions/string-to-function';
 import { BuilderAsyncRequestsContext, RequestOrPromise } from '../store/builder-async-requests';
-import { BuilderStoreContext } from '../store/builder-store';
+import { BuilderStore, BuilderStoreContext } from '../store/builder-store';
 import { applyPatchWithMinimalMutationChain } from '../functions/apply-patch-with-mutation';
 import { blockToHtmlString } from '../functions/block-to-html-string';
 import { Link } from './Link';
@@ -102,6 +102,7 @@ export class BuilderBlock extends React.Component<
   private _asyncRequests?: RequestOrPromise[];
   private _errors?: Error[];
   private _logs?: string[];
+  private _forceRequire?: boolean;
 
   state = {
     hasError: false,
@@ -132,7 +133,7 @@ export class BuilderBlock extends React.Component<
   // TODO: handle adding return if none provided
   // TODO: cache/memoize this (globally with LRU?)
   stringToFunction(str: string, expression = true) {
-    return stringToFunction(str, expression, this._errors, this._logs);
+    return stringToFunction(str, expression, this._errors, this._logs, this._forceRequire);
   }
 
   get block() {
@@ -622,8 +623,9 @@ export class BuilderBlock extends React.Component<
     return block.id!;
   }
 
-  contents(state: BuilderBlockState) {
+  contents(state: BuilderStore) {
     const block = this.block;
+    this._forceRequire = state.forceRequire;
 
     // this.setState(state);
     this.privateState = state;

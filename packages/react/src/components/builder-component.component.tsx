@@ -287,6 +287,10 @@ export interface BuilderComponentProps {
    * navigation to other pages unintended
    */
   stopClickPropagationWhenEditing?: boolean;
+  /**
+   * To workaround missing vm2 in serverless nextjs environment
+   */
+  forceRequire?: boolean;
 }
 
 export interface BuilderComponentState {
@@ -1150,6 +1154,7 @@ export class BuilderComponent extends React.Component<
                                 state: this.data,
                                 content: fullData,
                                 renderLink: this.props.renderLink,
+                                forceRequire: this.props.forceRequire,
                               }}
                             >
                               {codegen && this.Component ? (

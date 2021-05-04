@@ -20,7 +20,8 @@ export function stringToFunction(
   str: string,
   expression = true,
   errors?: Error[],
-  logs?: string[]
+  logs?: string[],
+  forceRequire?: boolean,
 ): BuilderEvanFunction {
   /* TODO: objedct */
   if (!str || !str.trim()) {
@@ -118,7 +119,7 @@ export function stringToFunction(
         // for the server build
         // TODO: cache these for better performancs with new VmScript
         // tslint:disable:comment-format
-        const { VM } = safeDynamicRequire('vm2');
+        const { VM } = forceRequire ? require('vm2') : safeDynamicRequire('vm2');
         const [state, event] = args;
         return new VM({
           timeout: 100,
