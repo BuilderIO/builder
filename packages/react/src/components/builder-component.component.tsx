@@ -464,7 +464,10 @@ export class BuilderComponent extends React.Component<
 
     this.state = {
       // TODO: should change if this prop changes
-      context: props.context || {},
+      context: {
+        ...props.context,
+        apiKey: builder.apiKey || this.props.apiKey,
+      },
       state: Object.assign(this.rootState, {
         ...(this.inlinedContent && this.inlinedContent.data && this.inlinedContent.data.state),
         isBrowser: Builder.isBrowser, // !this.asServer,
