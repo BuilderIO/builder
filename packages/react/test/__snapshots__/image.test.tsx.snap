@@ -10,6 +10,7 @@ exports[`Image Builder image url 1`] = `
   />
   <img
     className="builder-image css-2qdlcf"
+    loading="lazy"
     onLoad={[Function]}
     role="presentation"
     src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F755c131471fb49ab91dc0bdc45bc85b5?width=1003"
@@ -26,6 +27,7 @@ exports[`Image Builder image url with width 1`] = `
   />
   <img
     className="builder-image css-2qdlcf"
+    loading="lazy"
     onLoad={[Function]}
     role="presentation"
     src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F755c131471fb49ab91dc0bdc45bc85b5?width=1003"
@@ -47,6 +49,7 @@ exports[`Image Shopify image url 1`] = `
 <picture>
   <img
     className="builder-image css-2qdlcf"
+    loading="lazy"
     onLoad={[Function]}
     role="presentation"
     src="https://cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash.jpg?v=1592506853"
@@ -66,6 +69,7 @@ exports[`Image with sizes, srcset, and alt 1`] = `
   <img
     alt="this great image"
     className="builder-image css-2qdlcf"
+    loading="lazy"
     onLoad={[Function]}
     sizes="(max-width: 600px) 67vw, 92vw"
     src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F755c131471fb49ab91dc0bdc45bc85b5?width=1003"
