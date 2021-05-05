@@ -3,9 +3,6 @@ import { Image } from '../src/blocks/Image';
 import * as reactTestRenderer from 'react-test-renderer';
 import { block } from './functions/render-block';
 import { BuilderPage } from '../src/builder-react';
-import { renderToStaticMarkup } from 'react-dom/server';
-
-const removeRenderIdRegex = /data-source="[\s\S]*?"/g;
 
 describe('Image', () => {
   it('Builder image url', () => {
@@ -55,17 +52,19 @@ describe('Image', () => {
       1234
     );
 
-    const renderedBlock = renderToStaticMarkup(
-      <BuilderPage
-        model="page"
-        ampMode
-        content={{
-          data: {
-            blocks: [imageBlock],
-          },
-        }}
-      />
-    ).replace(removeRenderIdRegex, '');
+    const renderedBlock = reactTestRenderer
+      .create(
+        <BuilderPage
+          model="page"
+          ampMode
+          content={{
+            data: {
+              blocks: [imageBlock],
+            },
+          }}
+        />
+      )
+      .toJSON();
 
     expect(renderedBlock).toMatchSnapshot();
   });
@@ -117,16 +116,18 @@ describe('Image', () => {
       1234
     );
 
-    const renderedBlock = renderToStaticMarkup(
-      <BuilderPage
-        model="page"
-        content={{
-          data: {
-            blocks: [imageBlock],
-          },
-        }}
-      />
-    ).replace(removeRenderIdRegex, '');
+    const renderedBlock = reactTestRenderer
+      .create(
+        <BuilderPage
+          model="page"
+          content={{
+            data: {
+              blocks: [imageBlock],
+            },
+          }}
+        />
+      )
+      .toJSON();
 
     expect(renderedBlock).toMatchSnapshot();
   });
