@@ -59,7 +59,7 @@
   },
   "jest": {
     "transform": {
-      ".(ts|tsx|jsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+      ".(ts|tsx|jsx)": "ts-jest"
     },
     "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx)$",
     "moduleFileExtensions": [
@@ -106,7 +106,7 @@
     "cross-env": "^5.0.1",
     "cz-conventional-changelog": "^2.0.0",
     "husky": "^0.14.0",
-    "jest": "^22.0.2",
+    "jest": "^25.5.4",
     "lint-staged": "^7.0.0",
     "prettier": "^1.4.4",
     "prompt": "^1.0.0",
@@ -125,7 +125,7 @@
     "rollup-plugin-terser": "^5.2.0",
     "rollup-plugin-typescript2": "^0.11.1",
     "semantic-release": "^17.4.2",
-    "ts-jest": "^22.4.6",
+    "ts-jest": "^25.5.1",
     "ts-node": "^6.0.0",
     "tslint": "^5.8.0",
     "tslint-config-prettier": "^1.1.0",
