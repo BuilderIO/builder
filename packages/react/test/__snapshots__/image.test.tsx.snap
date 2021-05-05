@@ -1,6 +1,49 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Image Amp image 1`] = `"<div class=\\"builder-component \\" data-name=\\"page\\" ><div class=\\"builder-content\\" builder-model=\\"page\\"><div data-builder-component=\\"page\\"><div class=\\"builder-blocks css-h47494\\" builder-type=\\"blocks\\"><div class=\\"builder-block builder-1234 css-5gq5mq\\" builder-id=\\"builder-1234\\"><amp-img layout=\\"responsive\\" role=\\"presentation\\" className=\\"builder-image css-yue2ks\\" src=\\"https://cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash.jpg?v=1592506853\\" srcSet=\\"//cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash_100x100.jpg?v=1592506853 100w, //cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash_200x200.jpg?v=1592506853 200w, //cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash_400x400.jpg?v=1592506853 400w, //cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash_800x800.jpg?v=1592506853 800w, //cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash_1200x1200.jpg?v=1592506853 1200w, //cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash_1600x1600.jpg?v=1592506853 1600w, //cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash_2000x2000.jpg?v=1592506853 2000w, https://cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash.jpg?v=1592506853\\"></amp-img></div></div></div></div></div>"`;
+exports[`Image Amp image 1`] = `
+<div
+  className="builder-component "
+  data-name="page"
+  data-source="Rendered by Builder.io"
+  onClick={[Function]}
+>
+  <div
+    builder-model="page"
+    className="builder-content"
+    onClick={[Function]}
+  >
+    <div
+      data-builder-component="page"
+    >
+      
+      <div
+        builder-type="blocks"
+        className="builder-blocks css-h47494"
+        onClick={[Function]}
+      >
+        <div
+          builder-id="builder-1234"
+          className="builder-block builder-1234 css-5gq5mq"
+          style={
+            Object {
+              "": undefined,
+            }
+          }
+        >
+          <amp-img
+            className="builder-image css-yue2ks"
+            layout="responsive"
+            loading="lazy"
+            role="presentation"
+            src="https://cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash.jpg?v=1592506853"
+            srcSet="//cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash_100x100.jpg?v=1592506853 100w, //cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash_200x200.jpg?v=1592506853 200w, //cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash_400x400.jpg?v=1592506853 400w, //cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash_800x800.jpg?v=1592506853 800w, //cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash_1200x1200.jpg?v=1592506853 1200w, //cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash_1600x1600.jpg?v=1592506853 1600w, //cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash_2000x2000.jpg?v=1592506853 2000w, https://cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash.jpg?v=1592506853"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
 
 exports[`Image Builder image url 1`] = `
 <picture>
@@ -10,6 +53,7 @@ exports[`Image Builder image url 1`] = `
   />
   <img
     className="builder-image css-2qdlcf"
+    loading="lazy"
     onLoad={[Function]}
     role="presentation"
     src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F755c131471fb49ab91dc0bdc45bc85b5?width=1003"
@@ -26,6 +70,7 @@ exports[`Image Builder image url with width 1`] = `
   />
   <img
     className="builder-image css-2qdlcf"
+    loading="lazy"
     onLoad={[Function]}
     role="presentation"
     src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F755c131471fb49ab91dc0bdc45bc85b5?width=1003"
@@ -47,6 +92,7 @@ exports[`Image Shopify image url 1`] = `
 <picture>
   <img
     className="builder-image css-2qdlcf"
+    loading="lazy"
     onLoad={[Function]}
     role="presentation"
     src="https://cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash.jpg?v=1592506853"
@@ -55,7 +101,53 @@ exports[`Image Shopify image url 1`] = `
 </picture>
 `;
 
-exports[`Image with responsive styles 1`] = `"<div class=\\"builder-component \\" data-name=\\"page\\" ><div class=\\"builder-content\\" builder-model=\\"page\\"><div data-builder-component=\\"page\\"><div class=\\"builder-blocks css-h47494\\" builder-type=\\"blocks\\"><div class=\\"builder-block builder-1234 css-5gq5mq\\" builder-id=\\"builder-1234\\"><picture><img role=\\"presentation\\" class=\\"builder-image css-2qdlcf\\" src=\\"https://cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash.jpg?v=1592506853\\" srcSet=\\"//cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash_100x100.jpg?v=1592506853 100w, //cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash_200x200.jpg?v=1592506853 200w, //cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash_400x400.jpg?v=1592506853 400w, //cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash_800x800.jpg?v=1592506853 800w, //cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash_1200x1200.jpg?v=1592506853 1200w, //cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash_1600x1600.jpg?v=1592506853 1600w, //cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash_2000x2000.jpg?v=1592506853 2000w, https://cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash.jpg?v=1592506853\\" sizes=\\"(max-width: 999px) 100vw, 345px\\"/></picture></div></div></div></div></div>"`;
+exports[`Image with responsive styles 1`] = `
+<div
+  className="builder-component "
+  data-name="page"
+  data-source="Rendered by Builder.io"
+  onClick={[Function]}
+>
+  <div
+    builder-model="page"
+    className="builder-content"
+    onClick={[Function]}
+  >
+    <div
+      data-builder-component="page"
+    >
+      
+      <div
+        builder-type="blocks"
+        className="builder-blocks css-h47494"
+        onClick={[Function]}
+      >
+        <div
+          builder-id="builder-1234"
+          className="builder-block builder-1234 css-5gq5mq"
+          style={
+            Object {
+              "": undefined,
+            }
+          }
+        >
+          <picture>
+            <img
+              className="builder-image css-2qdlcf"
+              loading="lazy"
+              onLoad={[Function]}
+              role="presentation"
+              sizes="(max-width: 999px) 100vw, 345px"
+              src="https://cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash.jpg?v=1592506853"
+              srcSet="//cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash_100x100.jpg?v=1592506853 100w, //cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash_200x200.jpg?v=1592506853 200w, //cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash_400x400.jpg?v=1592506853 400w, //cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash_800x800.jpg?v=1592506853 800w, //cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash_1200x1200.jpg?v=1592506853 1200w, //cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash_1600x1600.jpg?v=1592506853 1600w, //cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash_2000x2000.jpg?v=1592506853 2000w, https://cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash.jpg?v=1592506853"
+            />
+          </picture>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
 
 exports[`Image with sizes, srcset, and alt 1`] = `
 <picture>
@@ -66,6 +158,7 @@ exports[`Image with sizes, srcset, and alt 1`] = `
   <img
     alt="this great image"
     className="builder-image css-2qdlcf"
+    loading="lazy"
     onLoad={[Function]}
     sizes="(max-width: 600px) 67vw, 92vw"
     src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F755c131471fb49ab91dc0bdc45bc85b5?width=1003"
