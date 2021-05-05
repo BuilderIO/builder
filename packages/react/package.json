@@ -101,7 +101,7 @@
     "@types/rollup-plugin-node-resolve": "^4.1.0",
     "@types/rollup-plugin-sourcemaps": "^0.4.0",
     "colors": "^1.1.2",
-    "commitizen": "^2.9.6",
+    "commitizen": "^4.2.3",
     "coveralls": "^3.0.0",
     "cross-env": "^5.0.1",
     "cz-conventional-changelog": "^2.0.0",
