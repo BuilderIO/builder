@@ -47,6 +47,7 @@ const options = {
           'createElement',
           'forwardRef',
           'Fragment',
+          'useContext',
         ],
         'node_modules/react-dom/index.js': ['render', 'hydrate'],
         'node_modules/react-is/index.js': ['isElement', 'isValidElementType', 'ForwardRef'],
