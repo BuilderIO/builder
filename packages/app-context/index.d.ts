@@ -121,6 +121,14 @@ export interface ApplicationContext {
     canUndo: boolean;
     canRedo: boolean;
     xrayMode: boolean;
+    /**
+     * Creates a checkpoint from editing content state
+     */
+    createCheckpoint: () => Promise<void>;
+    /**
+     * returns whether editing content has unsaved changes
+     */
+    hasUnsavedChanges: () => boolean;
     editingIframeRef: null | HTMLIFrameElement;
     artboardSize: {
       width: number;
