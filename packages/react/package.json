@@ -40,7 +40,9 @@
     "release:dev": "npm run build && npm version prerelease --no-git-tag-version && ALLOW_PUBLISH=true npm publish --tag dev",
     "semantic-release": "semantic-release",
     "semantic-release-prepare": "ts-node tools/semantic-release-prepare",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "ci:test": "npm run test",
+    "ci:build": "npm run build"
   },
   "lint-staged": {
     "{src,test}/**/*.ts": [
