@@ -16,7 +16,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [12]
+        node-version: [12, 14]
         package: ["react", "widgets"]
 
     steps:
