@@ -121,6 +121,8 @@ export interface ApplicationContext {
     canUndo: boolean;
     canRedo: boolean;
     xrayMode: boolean;
+    createCheckpoint: () => Promise<void>;
+    isDirty: boolean;
     editingIframeRef: null | HTMLIFrameElement;
     artboardSize: {
       width: number;
