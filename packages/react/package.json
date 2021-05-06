@@ -46,7 +46,7 @@
     "ci:lint": "npx prettier --check '**/*.{js,jsx,ts,tsx,md,json}'"
   },
   "lint-staged": {
-    "{src,test}/**/*.ts": [
+    "**/*.{js,jsx,ts,tsx,md,json}": [
       "prettier --write",
       "git add"
     ]
