@@ -25,7 +25,7 @@
     "build": "npm run package && rm dist/package.json",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "package": "ng-packagr -p ng-package.json",
+    "package": "ng-packagr -p ng-package.js",
     "develop:package": "chokidar 'src/**/*.html' 'src/**/*.css' 'src/**/*.ts' | ng-packagr",
     "release": "npm run package && cd dist && ALLOW_PUBLISH=true npm publish",
     "release:patch": "npm run package && npm version patch && cd dist && npm version patch && ALLOW_PUBLISH=true npm publish",
@@ -46,7 +46,10 @@
     "@builder.io/sdk": "^1.1.23-0"
   },
   "peerDependencies": {
+    "@angular/cli": "8.3.22",
     "@angular/common": ">= 2",
+    "@angular/compiler": ">= 2",
+    "@angular/compiler-cli": ">= 2",
     "@angular/core": ">= 2",
     "@angular/elements": "^8.1.1",
     "@angular/forms": ">= 2",
@@ -54,9 +57,6 @@
     "@angular/platform-browser-dynamic": ">= 2",
     "@angular/platform-server": ">= 2",
     "@angular/router": ">= 2",
-    "@angular/cli": "8.3.22",
-    "@angular/compiler": ">= 2",
-    "@angular/compiler-cli": ">= 2",
     "rxjs": ">= 2",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1"

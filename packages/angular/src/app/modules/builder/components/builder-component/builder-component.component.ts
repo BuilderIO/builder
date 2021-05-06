@@ -29,7 +29,7 @@ let wcScriptInserted = false;
 const NAVIGATION_TIMEOUT_DEFAULT = 1000;
 
 function delay<T = any>(duration: number, resolveValue?: T) {
-  return new Promise<T>((resolve) => setTimeout(() => resolve(resolveValue), duration));
+  return new Promise<T>((resolve) => setTimeout(() => resolve(resolveValue!), duration));
 }
 
 export interface RouteEvent {
