@@ -21,7 +21,7 @@ function wrapHistoryPropertyWithCustomEvent(property: 'pushState' | 'replaceStat
   try {
     const anyHistory = history;
     const originalFunction = anyHistory[property];
-    anyHistory[property] = function (this: History) {
+    anyHistory[property] = function(this: History) {
       var rv = originalFunction.apply(this, arguments as any);
       var event = new CustomEvent(property, {
         detail: {
@@ -51,18 +51,23 @@ const componentName = process.env.ANGULAR ? 'builder-component-element' : 'build
 const isShopify = Boolean((window as any).Shopify);
 
 if (Builder.isIframe) {
+  // tslint:disable-next-line
   importReact();
+  // tslint:disable-next-line
   importWidgets();
   if (isShopify) {
+    // tslint:disable-next-line
     importShopify();
   }
+  // tslint:disable-next-line
   import('@builder.io/email');
 }
 
 if ((process.env.NODE_ENV as string) === 'development') {
   // Must use require here as import statements are only allowed
   // to exist at the top of a file.
-  import('preact/debug' as any);
+  // tslint:disable-next-line
+  import('preact/debug');
 }
 
 function onReady(cb: Function) {
@@ -237,6 +242,8 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
 
     private getOptionsFromAttribute() {
       const options = this.getAttribute('options');
+
+      // tslint:disable-next-line
       if (options && typeof options === 'string' && options.trim()[0] === '{') {
         // TODO: use JSON5
         this._options = JSON.parse(options);
@@ -271,6 +278,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
         })
         .promise()
         .then(data => {
+          // tslint:disable-next-line
           this.loadPreact(data);
         });
     };
@@ -409,6 +417,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
 
       if (!this.prerender || !builder.apiKey || fresh) {
         const currentContent = fresh ? null : this.currentContent;
+        // tslint:disable-next-line
         this.loadPreact(currentContent ? currentContent : entry ? { id: entry } : null, fresh);
         return;
       }
@@ -420,7 +429,9 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
       const currentContent = fresh ? null : this.currentContent;
       if (currentContent && !Builder.isEditing) {
         this.data = currentContent;
+        // tslint:disable-next-line
         this.loaded();
+        // tslint:disable-next-line
         this.loadPreact(this.data);
         return;
       }
@@ -465,11 +476,13 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
                 this.dispatchEvent(loadEvent);
               }
 
+              // tslint:disable-next-line
               this.loadPreact(data);
             }
           },
-          (error: any) => {
+          (_error: any) => {
             // Server render failed, not the end of the world, load react anyway
+            // tslint:disable-next-line
             this.loadPreact();
           }
         );
@@ -553,8 +566,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
               apiKey: builder.apiKey,
             },
             entry,
-            emailMode:
-              ((this.options as any) || {}).emailMode || this.getAttribute('email-mode') === 'true',
+            emailMode: (this.options || {}).emailMode || this.getAttribute('email-mode') === 'true',
             options: {
               ...this.options,
               key: this.key,
@@ -616,8 +628,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
                   apiKey: builder.apiKey,
                 },
                 emailMode:
-                  ((this.options as any) || {}).emailMode ||
-                  this.getAttribute('email-mode') === 'true',
+                  (this.options || {}).emailMode || this.getAttribute('email-mode') === 'true',
                 entry: data ? data.id : entry,
                 options: {
                   entry: data ? data.id : entry,
@@ -680,8 +691,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
                   modelName: name!,
                   entry: data ? data.id : entry,
                   emailMode:
-                    ((this.options as any) || {}).emailMode ||
-                    this.getAttribute('email-mode') === 'true',
+                    (this.options || {}).emailMode || this.getAttribute('email-mode') === 'true',
                   options: {
                     entry: data ? data.id : entry,
                     initialContent: data ? [data] : undefined,
