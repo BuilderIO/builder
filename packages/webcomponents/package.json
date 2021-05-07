@@ -25,7 +25,8 @@
     "build": "tsc --module commonjs && rollup -c rollup.config.ts && typedoc --out docs --target es6 --theme minimal --mode file src && npm run build:unpkg:dist",
     "build:unpkg:dist": "ts-node -O '{\"module\": \"commonjs\"}' tools/make-unpkg-dist.ts",
     "start": "SERVE=true rollup -c rollup.config.ts -w",
-    "test:watch": "jest --watch",
+    "test": "jest watch",
+    "test:watch": "npm run test -- --watch",
     "test:prod": "npm run lint && npm run test -- --coverage --no-cache",
     "deploy-docs": "ts-node tools/gh-pages-publish",
     "report-coverage": "cat ./coverage/lcov.info | coveralls",
@@ -39,7 +40,10 @@
     "release:nightly": "npm run build && npm version prerelease && npm run build:unpkg:dist && ALLOW_PUBLISH=true npm publish --tag nightly",
     "release:dev": "npm run build && npm version prerelease && npm run build:unpkg:dist && ALLOW_PUBLISH=true npm publish --tag dev",
     "release:beta": "npm run build && npm version prerelease && npm run build:unpkg:dist && ALLOW_PUBLISH=true npm publish --tag beta",
-    "prepublishOnly": "block-publish"
+    "prepublishOnly": "block-publish",
+    "ci:lint": "npm run lint",
+    "ci:build": "npm run build",
+    "ci:test": "npm run test"
   },
   "lint-staged": {
     "{src,test}/**/*.ts": [
