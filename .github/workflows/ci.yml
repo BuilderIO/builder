@@ -1,0 +1,57 @@
+---
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12, 14]
+        package: ["core", "webcomponents", "react", "widgets"]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Use node version ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Get npm cache directory
+      id: npm-cache-dir
+      run: |
+        echo "::set-output name=dir::$(npm config get cache)"
+
+    - uses: actions/cache@v2
+      id: npm-cache # use this to check for `cache-hit` ==> if: steps.npm-cache.outputs.cache-hit != 'true'
+      with:
+        path: ${{ steps.npm-cache-dir.outputs.dir }}
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+
+    - name: NPM install
+      run: npm ci
+      working-directory: packages/${{ matrix.package }}
+
+    - name: Lint
+      run: npm run ci:lint --if-present
+      working-directory: packages/${{ matrix.package }}
+
+    - name: Build
+      run: npm run ci:build --if-present
+      working-directory: packages/${{ matrix.package }}
+
+    - name: Test
+      run: npm run ci:test --if-present
+      working-directory: packages/${{ matrix.package }}
