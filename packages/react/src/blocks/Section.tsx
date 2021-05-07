@@ -31,6 +31,10 @@ class SectionComponent extends React.Component<SectionProps, { inView?: boolean 
     return this.state.inView;
   }
 
+  componentWillUnmount() {
+    this.unmountCallbacks.forEach(cb => cb());
+  }
+
   componentDidMount() {
     if (this.props.lazyLoad) {
       if (typeof IntersectionObserver === 'undefined' || !this.ref) {
