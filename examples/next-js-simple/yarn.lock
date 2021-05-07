@@ -337,12 +337,12 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@builder.io/react@^1.1.34-10":
-  version "1.1.34-10"
-  resolved "https://registry.yarnpkg.com/@builder.io/react/-/react-1.1.34-10.tgz#f6583965ac6a419192464f70ede5ebacb3277fff"
-  integrity sha512-etpSj0UkSAgO8bU0rKx1E20PT93XHVcpOm4MVWd8GmACQLD1LWm1UKknI+fSxBtmxZrHq4c3dcFI+0un39dgcg==
+"@builder.io/react@^1.1.42":
+  version "1.1.44"
+  resolved "https://registry.yarnpkg.com/@builder.io/react/-/react-1.1.44.tgz#07e166dfb1769ad07c834efa00636d49eb0c891b"
+  integrity sha512-Ij93bR8Up5MlWWC40svPn7qbmU41k/ea53cGRJSoYSrOTBlDeRMycUH4QiH3KiuCMdegoKZ0aKUyyzOQ5r7sew==
   dependencies:
-    "@builder.io/sdk" "^1.1.22-1"
+    "@builder.io/sdk" "^1.1.23-1"
     "@emotion/core" "^10.0.17"
     hash-sum "^2.0.0"
     preact "^10.1.0"
@@ -355,10 +355,10 @@
     node-fetch "^2.3.0"
     prop-types "^15.7.2"
 
-"@builder.io/sdk@^1.1.22-1":
-  version "1.1.22-2"
-  resolved "https://registry.yarnpkg.com/@builder.io/sdk/-/sdk-1.1.22-2.tgz#c3c96be3b0fda68cc3f63f3c167955820cd09b7a"
-  integrity sha512-T1PMwRo91APt2lVlLrgEXu/eld9vU0QNWYxDEaDsQAdikcQbEcIn2frSgum0FqGbbnMTugyCCqmwA3BXtza48A==
+"@builder.io/sdk@^1.1.23-1":
+  version "1.1.23-1"
+  resolved "https://registry.yarnpkg.com/@builder.io/sdk/-/sdk-1.1.23-1.tgz#4170cb713bb6e97a3bd6b0e82b15919e7119ada3"
+  integrity sha512-zrbv5LzEdcuf1MXNgyHVlKFfBQ5kzG+V5HBojBvXH5qBkVBrUsW4qcZYZqCLKuIkYKLO1BlKPg+fyJdlkLDO2w==
   dependencies:
     hash-sum "^2.0.0"
     node-fetch "^2.2.0"
@@ -4270,9 +4270,9 @@ lodash.sortby@^4.7.0:
   integrity sha1-7dFMgk4sycHgsKG0K7UhBRakJDg=
 
 lodash@^4.17.11, lodash@^4.17.13, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.20:
-  version "4.17.20"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.20.tgz#b44a9b6297bcb698f1c51a3545a2b3b368d59c52"
-  integrity sha512-PlhdFcillOINfeV7Ni6oF1TAEayyZBoZ8bcshTHqOYJYlrqzRK5hagpagky5o4HfCzzd1TRkXPMFq6cKk9rGmA==
+  version "4.17.21"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
+  integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
 
 log-symbols@^4.0.0:
   version "4.0.0"
