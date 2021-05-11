@@ -18,7 +18,6 @@ import { Create, Search } from '@material-ui/icons';
 import { computed, observable, runInAction } from 'mobx';
 import { observer } from 'mobx-react';
 import React from 'react';
-import template from 'lodash.template';
 import { SafeComponent } from '../components/safe-component';
 import { CustomReactEditorProps } from '../interfaces/custom-react-editor-props';
 import { BuilderRequest } from '../interfaces/builder-request';
