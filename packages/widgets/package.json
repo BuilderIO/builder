@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/widgets",
-  "version": "1.2.19",
+  "version": "1.2.20",
   "description": "",
   "keywords": [],
   "main": "dist/builder-widgets.cjs.js",
@@ -92,7 +92,7 @@
     "@types/react": "^16.4.1",
     "@types/react-dom": "^16.0.7",
     "@types/react-loadable": "^5.5.1",
-    "@types/react-slick": "^0.23.3",
+    "@types/react-slick": "^0.23.4",
     "colors": "^1.1.2",
     "commitizen": "^2.9.6",
     "coveralls": "^3.0.0",
@@ -148,7 +148,7 @@
     "react-dom": ">=14",
     "react-loadable": "^5.5.0",
     "react-masonry-component": "^6.2.1",
-    "react-slick": "^0.23.2",
+    "react-slick": "^0.28.1",
     "tslib": "^1.10.0"
   },
   "gitHead": "4d96fbc32864698afbb355ab991c6d90be991951"
