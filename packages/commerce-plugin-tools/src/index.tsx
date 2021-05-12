@@ -7,7 +7,7 @@ import { onEditorLoad } from './actions/on-editor-load';
 import { Resource } from './interfaces/resource';
 import { BuilderRequest } from './interfaces/builder-request';
 import { ErrorBoundary } from './components/error-boundary';
-import capitalize from 'lodash.capitalize';
+import capitalize from 'lodash/capitalize';
 import pluralize from 'pluralize';
 // todo move to sdk
 interface OnSaveActions {

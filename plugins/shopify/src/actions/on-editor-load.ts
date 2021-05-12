@@ -1,6 +1,6 @@
 import { Builder } from '@builder.io/react';
 import appState from '@builder.io/app-context';
-import template from 'lodash.template';
+import template from 'lodash/template';
 import { pluginId } from '../constants';
 
 interface ContentEditorActions {
