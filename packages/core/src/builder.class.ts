@@ -598,7 +598,7 @@ export class Builder {
    * server. This is the preferred/better way not and we should ultimately make it
    * the default
    */
-  static isStatic = false;
+  static isStatic = true;
   static animator = new Animator();
 
   static nextTick = nextTick;
