@@ -1,5 +1,11 @@
 import React from 'react';
-import { builder, Subscription, GetContentOptions, Builder, BuilderContent as Content } from '@builder.io/sdk';
+import {
+  builder,
+  Subscription,
+  GetContentOptions,
+  Builder,
+  BuilderContent as Content,
+} from '@builder.io/sdk';
 import { NoWrap } from './no-wrap';
 import { applyPatchWithMinimalMutationChain } from '../functions/apply-patch-with-mutation';
 import { VariantsProvider } from './variants-provider.component';
@@ -96,14 +102,13 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
   }
 
   get data() {
-    const content: Content = (
+    const content: Content =
       ((this.props.inline || !Builder.isBrowser || this.firstLoad) &&
         this.options.initialContent &&
         this.options.initialContent[0]) ||
-      this.state.data
-    );
+      this.state.data;
 
-    return getContentWithInfo(content)
+    return getContentWithInfo(content);
   }
 
   state = {
@@ -339,15 +344,17 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
 export const getContentWithInfo = (content?: Content) => {
   if (content) {
     const cookieValue = builder.getCookie(`builder.tests.${content.id}`);
-    const cookieVariation = cookieValue === content.id ? content : content.variations?.[cookieValue];
-    const variationName = cookieVariation?.name || (cookieVariation?.id === content.id ? 'Default variation' : '');
+    const cookieVariation =
+      cookieValue === content.id ? content : content.variations?.[cookieValue];
+    const variationName =
+      cookieVariation?.name || (cookieVariation?.id === content.id ? 'Default variation' : '');
 
     return {
       ...content,
       variationId: cookieValue,
       testVariationId: cookieValue,
       testVariationName: variationName,
-    }
+    };
   }
   return null;
-}
+};
