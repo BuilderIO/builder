@@ -28,4 +28,6 @@ export interface BuilderContent extends BuilderContentVariation {
   variations?: {
     [id: string]: BuilderContentVariation | undefined;
   };
+  testVariationId?: string;
+  testVariationName?: string;
 }
