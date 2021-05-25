@@ -2159,7 +2159,7 @@ export class Builder {
           const data = result[keyName];
           const sorted = data; // sortBy(data, item => item.priority);
           if (data) {
-            const testModifiedResults = Builder.isStatic
+            const testModifiedResults = Builder.isServer
               ? sorted
               : this.processResultsForTests(sorted);
             observer.next(testModifiedResults);

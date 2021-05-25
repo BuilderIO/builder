@@ -1,5 +1,11 @@
 import React from 'react';
-import { builder, Subscription, GetContentOptions, Builder } from '@builder.io/sdk';
+import {
+  builder,
+  Subscription,
+  GetContentOptions,
+  Builder,
+  BuilderContent as Content,
+} from '@builder.io/sdk';
 import { NoWrap } from './no-wrap';
 import { applyPatchWithMinimalMutationChain } from '../functions/apply-patch-with-mutation';
 import { VariantsProvider } from './variants-provider.component';
@@ -34,7 +40,7 @@ export type BuilderContentProps<ContentType> = {
    */
   builder?: Builder;
   /**
-   * @deprecated use `Builder.isStatic` instead
+   * @deprecated and unnecessary
    */
   isStatic?: boolean;
   /**
@@ -42,7 +48,7 @@ export type BuilderContentProps<ContentType> = {
    *
    * Required if `inline` is set to `true`.
    */
-  content?: BuilderContent;
+  content?: Content;
 } & ({ model: string } | { modelName: string }); // model and modelName are aliases of the same thing¸
 
 /**
@@ -75,7 +81,7 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
     }
   }
 
-  get renderedVairantId() {
+  get renderedVariantId() {
     const id = this.props.isStatic
       ? this.builder.getCookie(`builder.tests.${this.data?.id}`)
       : this.data?.variationId;
@@ -96,19 +102,18 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
   }
 
   get data() {
-    const { data } = this.state;
-
-    return (
+    const content: Content =
       ((this.props.inline || !Builder.isBrowser || this.firstLoad) &&
         this.options.initialContent &&
         this.options.initialContent[0]) ||
-      data
-    );
+      this.state.data;
+
+    return getContentWithInfo(content);
   }
 
   state = {
     loading: !this.props.content,
-    data: null as any,
+    data: getContentWithInfo(this.props.content),
     updates: 1,
   };
 
@@ -126,7 +131,7 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
         if (!(data && data.data)) {
           break;
         }
-        const patches = data.data[this.state.data?.id];
+        const patches = data.data[this.state.data?.id!];
         if (!(patches && patches.length)) {
           return;
         }
@@ -142,7 +147,7 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
           data: this.state.data ? { ...this.state.data } : this.state.data,
         });
         if (this.props.contentLoaded) {
-          this.props.contentLoaded(this.state.data.data, this.state.data);
+          this.props.contentLoaded(this.state.data?.data, this.state.data);
         }
 
         break;
@@ -168,7 +173,7 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
     } else if (this.props.inline && this.options?.initialContent?.length) {
       const contentData = this.options.initialContent[0];
       // TODO: intersectionobserver like in subscribetocontent - reuse the logic
-      this.builder.trackImpression(contentData.id, this.renderedVairantId, undefined, {
+      this.builder.trackImpression(contentData.id, this.renderedVariantId, undefined, {
         content: contentData,
       });
     }
@@ -206,7 +211,7 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
                           if (entry.intersectionRatio > 0 && !this.trackedImpression) {
                             this.builder.trackImpression(
                               match.id!,
-                              this.renderedVairantId,
+                              this.renderedVariantId,
                               undefined,
                               {
                                 content: this.data,
@@ -230,7 +235,7 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
                 }
                 if (!addedObserver) {
                   this.trackedImpression = true;
-                  this.builder.trackImpression(match.id!, this.renderedVairantId, undefined, {
+                  this.builder.trackImpression(match.id!, this.renderedVariantId, undefined, {
                     content: match,
                   });
                 }
@@ -273,7 +278,7 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
       return;
     }
     if (builder.autoTrack) {
-      this.builder.trackInteraction(content.id, this.renderedVairantId, this.clicked, event, {
+      this.builder.trackInteraction(content.id!, this.renderedVariantId, this.clicked, event, {
         content,
       });
     }
@@ -288,25 +293,8 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
     }
     const { loading } = this.state;
 
-    const useData = this.data;
+    const useData: any = this.data;
     const TagName = this.props.dataOnly ? NoWrap : 'div';
-
-    if (!this.props.isStatic) {
-      return (
-        <TagName
-          {...(!this.props.dataOnly && {
-            ref: (ref: any) => (this.ref = ref),
-          })}
-          className="builder-content"
-          onClick={this.onClick}
-          builder-content-id={useData?.id}
-          builder-model={this.name}
-        >
-          {this.props.children(useData?.data, this.props.inline ? false : loading, useData)}
-        </TagName>
-      );
-    }
-
     return (
       <VariantsProvider initialContent={useData}>
         {(variants, renderScript) => {
@@ -352,3 +340,21 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
     );
   }
 }
+
+export const getContentWithInfo = (content?: Content) => {
+  if (content) {
+    const cookieValue = builder.getCookie(`builder.tests.${content.id}`);
+    const cookieVariation =
+      cookieValue === content.id ? content : content.variations?.[cookieValue];
+    const variationName =
+      cookieVariation?.name || (cookieVariation?.id === content.id ? 'Default variation' : '');
+
+    return {
+      ...content,
+      variationId: cookieValue,
+      testVariationId: cookieValue,
+      testVariationName: variationName,
+    };
+  }
+  return null;
+};

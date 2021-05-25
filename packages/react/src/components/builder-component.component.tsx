@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { jsx, css } from '@emotion/core';
-import { BuilderContent } from './builder-content.component';
+import { BuilderContent, getContentWithInfo } from './builder-content.component';
 import { BuilderBlocks } from './builder-blocks.component';
 import {
   Builder,
@@ -185,7 +185,7 @@ export interface BuilderComponentProps {
    *
    * @see {@link https://github.com/BuilderIO/builder/tree/master/packages/react#passing-data-and-functions-down}
    */
-  contentLoaded?: (data: any, content: any) => void;
+  contentLoaded?: (data: any, content: Content) => void;
   /**
    * Instead of having Builder render a link for you with plain anchor
    * elements, use your own function. Useful when using Next.js, Gatsby, or
@@ -494,7 +494,7 @@ export class BuilderComponent extends React.Component<
       if (this.inlinedContent) {
         // Sometimes with graphql we get the content as `content.content`
         const content = (this.inlinedContent as any).content || this.inlinedContent;
-        this.onContentLoaded(content?.data, content);
+        this.onContentLoaded(content?.data, getContentWithInfo(content)!);
       }
     }
   }
@@ -1297,7 +1297,7 @@ export class BuilderComponent extends React.Component<
     }
   }
 
-  onContentLoaded = (data: any, content: any) => {
+  onContentLoaded = (data: any, content: Content) => {
     if (this.name === 'page' && Builder.isBrowser) {
       if (data) {
         const { title, pageTitle, description, pageDescription } = data;

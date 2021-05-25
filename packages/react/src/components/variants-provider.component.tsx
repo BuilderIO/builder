@@ -20,13 +20,13 @@ function getData(content: BuilderContentVariation) {
 const variantsScript = (variantsString: string, contentId: string) =>
   `
 (function() {
-  if (window.builderNoTrack || window.navigator.doNotTrack === '1') {
+  if (window.builderNoTrack) {
     return;
   }
 
   var variants = ${variantsString};
   function removeVariants() {
-    variants.forEach((template) => {
+    variants.forEach(function (template) {
       document.querySelector('template[data-template-variant-id="' + template.id + '"]').remove();
     });
   }
@@ -65,7 +65,6 @@ const variantsScript = (variantsString: string, contentId: string) =>
   }
   if (!variantId) {
     var n = 0;
-    var set = false;
     var random = Math.random();
     for (var i = 0; i < variants.length; i++) {
       var variant = variants[i];
@@ -110,7 +109,6 @@ export const VariantsProvider: React.SFC<VariantsProviderProps> = ({
 
   const hasTests = Boolean(Object.keys(initialContent?.variations || {}).length);
 
-  // when it's not isStatic variants are already elected by the sdk
   if (!hasTests) return children([initialContent]);
 
   const variants: BuilderContent[] = Object.keys(initialContent.variations!).map(id => ({
@@ -145,7 +143,6 @@ export const VariantsProvider: React.SFC<VariantsProviderProps> = ({
 
   if (!variantId && Builder.isBrowser) {
     let n = 0;
-    let set = false;
     const random = Math.random();
     for (let i = 0; i < variants.length; i++) {
       const variant = variants[i];

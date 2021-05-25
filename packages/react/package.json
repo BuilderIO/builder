@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/react",
-  "version": "1.1.45-11",
+  "version": "1.1.45-21",
   "description": "",
   "keywords": [],
   "main": "dist/builder-react.cjs.js",
@@ -144,7 +144,7 @@
     "prop-types": "^15.7.2"
   },
   "dependencies": {
-    "@builder.io/sdk": "^1.1.23-1",
+    "@builder.io/sdk": "^1.1.23-2",
     "@emotion/core": "^10.0.17",
     "hash-sum": "^2.0.0",
     "preact": "^10.1.0",
