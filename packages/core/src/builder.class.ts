@@ -1942,7 +1942,7 @@ export class Builder {
             try {
               resolve(JSON.parse(data));
             } catch (err) {
-              reject(err)
+              reject(err);
             }
           });
         })
