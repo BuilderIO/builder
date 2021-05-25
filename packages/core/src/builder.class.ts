@@ -1939,7 +1939,11 @@ export class Builder {
 
           // The whole response has been received. Print out the result.
           resp.on('end', () => {
-            resolve(JSON.parse(data));
+            try {
+              resolve(JSON.parse(data));
+            } catch (err) {
+              reject(err);
+            }
           });
         })
         .on('error', (error: any) => {
