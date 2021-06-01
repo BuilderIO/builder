@@ -84,34 +84,13 @@ export class CustomThing {
 }
 ```
 
-See [here](https://builder.io/c/docs/custom-react-components) for full detail on input types available.
+Note that custom Angular components use [angular elements](https://angular.io/guide/elements). This means they can only accept primitive inputs (string, boolean, number) and not complex ones (object, array, etc), and render in the browser only (no server-side rendering).
+
+If you need complex inputs or server-side rendering in reusable components with Builder, consider using [symbols](https://www.builder.io/c/docs/symbols)
+
+See [here](https://builder.io/c/docs/custom-react-components#input-type-examples) for full detail on input types available.
 
 <img src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F82d416601dbe4abb995b558fb4c121c1" alt="Visual of using your Angular component in Builder">
-
-## Use your state or functions in your Builder pages
-
-Use the data input for the Builder component tag to pass down data and actions to be used in the Builder editor.
-
-See [this guide](https://builder.io/c/docs/react/custom-actions) for usage of your data and actions in
-the editor UI in Builder.
-
-```ts
-@Component({
-  selector: 'my-page',
-  template: '<builder-component model="page" [data]="data"></builder-component>',
-})
-export class MyPage {
-  data = {
-    someStateProperty: 'foo',
-    someMethod: () => /* do something */,
-    myService: this.myService
-  }
-
-  constructor(public myService: MyService) {
-
-  }
-}
-```
 
 ## Using custom fields
 
