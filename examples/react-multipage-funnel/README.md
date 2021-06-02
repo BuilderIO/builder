@@ -2,7 +2,7 @@
 
 ### Quick start
 
-[Open this example in Codesandbox](https://codesandbox.io/s/github/BuilderIO/builder/tree/master/examples/react)
+[Open this example in Codesandbox](https://codesandbox.io/s/github/BuilderIO/builder/tree/master/examples/react-multipage-funnel)
 
 <a target="_blank" href="https://codesandbox.io/s/github/BuilderIO/builder/tree/master/examples/react-multipage-funnel">
   <img width="597" height="375" src="https://i.imgur.com/zue72Q0.jpg">

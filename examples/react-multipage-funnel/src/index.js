@@ -10,7 +10,7 @@ builder.init('cebf462cf12940c78302d9b4a201d7e6');
 function App() {
   return (
     <BrowserRouter>
-      <BuilderContent model="multipage-funnel">
+      <BuilderContent options={{ includeRefs: true }} model="multipage-funnel">
         {(funnel, loading) => {
           if (loading) {
             return 'loading...';
@@ -71,7 +71,7 @@ const Steps = ({ funnel }) => {
                       hasNext: index < funnel.sections.length - 1,
                     }}
                     model="funnel-section"
-                    entry={section.content.id}
+                    content={section.content.value}
                   />
                 )}
               />
