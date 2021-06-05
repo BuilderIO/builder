@@ -2,7 +2,7 @@
 import { jsx } from '@emotion/core';
 import React from 'react';
 import { Builder, BuilderElement } from '@builder.io/sdk';
-import { BuilderBlocks } from 'src/components/builder-blocks.component';
+import { BuilderBlocks } from '../components/builder-blocks.component';
 
 Builder.registerComponent(Mutation, {
   name: 'Builder:Mutation',
