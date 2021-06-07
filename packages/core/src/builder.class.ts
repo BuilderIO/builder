@@ -2318,14 +2318,13 @@ export class Builder {
     return instance
       .getContent(modelName, {
         limit: 30,
+        cache: true,
         ...options,
         key:
           options.key ||
           // Make the key include all options so we don't reuse cache for the same conent fetched
           // with different options
-          (Builder.isBrowser &&
-            `${modelName}:${hash(omit(options, 'initialContent', 'req', 'res'))}`) ||
-          undefined,
+          `${modelName}:${hash(omit(options, 'initialContent', 'req', 'res'))}`,
       })
       .promise();
   }
