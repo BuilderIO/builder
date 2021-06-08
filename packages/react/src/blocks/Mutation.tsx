@@ -10,9 +10,26 @@ Builder.registerComponent(Mutation, {
   noWrap: true,
   inputs: [
     {
+      name: 'type',
+      type: 'string',
+      defaultValue: 'replace',
+      enum: [
+        {
+          label: 'Replace',
+          value: 'replace',
+          helperText: 'Replace the contents of this site region with content from Builder',
+        },
+        {
+          label: 'Append',
+          value: 'afterEnd',
+          helperText: 'Append Builder content after the chosen site region',
+        },
+      ],
+    },
+    {
       name: 'selector',
       // TODO: special UI for this
-      type: 'uiSelector',
+      type: 'builder:domSelector',
     },
   ],
 });
@@ -20,6 +37,7 @@ Builder.registerComponent(Mutation, {
 type MutationProps = {
   selector: string;
   builderBlock?: BuilderElement;
+  type?: 'replace' | 'afterEnd';
 };
 
 export function Mutation(props: MutationProps) {
@@ -27,7 +45,9 @@ export function Mutation(props: MutationProps) {
 
   useWaitForSelector(props.selector, node => {
     // TODO: static generate this logic
-    node.innerHTML = '';
+    if (props.type !== 'afterEnd') {
+      node.innerHTML = '';
+    }
     node.appendChild(ref.current!.firstElementChild!);
   });
 
@@ -41,7 +61,7 @@ export function Mutation(props: MutationProps) {
         }}
         child
         parentElementId={props.builderBlock?.id}
-        dataPath="children"
+        dataPath="this.children"
         blocks={children}
       />
     </span>
@@ -50,16 +70,25 @@ export function Mutation(props: MutationProps) {
 
 function useWaitForSelector(selector: string, cb: (node: Element) => void) {
   React.useLayoutEffect(() => {
-    const existingElement = document.querySelector(selector);
-    if (existingElement) {
-      cb(existingElement);
-      return;
+    try {
+      const existingElement = document.querySelector(selector);
+      if (existingElement) {
+        cb(existingElement);
+        return;
+      }
+    } catch (err) {
+      console.warn(err);
     }
+
     const observer = new MutationObserver(() => {
-      const foundElement = document.querySelector(selector);
-      if (foundElement) {
-        observer.disconnect();
-        cb(foundElement);
+      try {
+        const foundElement = document.querySelector(selector);
+        if (foundElement) {
+          observer.disconnect();
+          cb(foundElement);
+        }
+      } catch (err) {
+        console.warn(err);
       }
     });
 
