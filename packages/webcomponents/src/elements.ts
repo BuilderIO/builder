@@ -51,16 +51,20 @@ const componentName = process.env.ANGULAR ? 'builder-component-element' : 'build
 const isShopify = Boolean((window as any).Shopify);
 
 if (Builder.isIframe) {
-  // tslint:disable-next-line
   importReact();
-  // tslint:disable-next-line
   importWidgets();
   if (isShopify) {
-    // tslint:disable-next-line
     importShopify();
   }
-  // tslint:disable-next-line
   import('@builder.io/email');
+}
+
+const parsedUrl = new URL(location.href);
+const injectComponent = parsedUrl.searchParams.get('builder.injectComponent');
+if (injectComponent) {
+  const injectElement = document.createElement('builder-component');
+  injectElement.setAttribute('model', injectComponent);
+  document.body.appendChild(injectElement);
 }
 
 if ((process.env.NODE_ENV as string) === 'development') {

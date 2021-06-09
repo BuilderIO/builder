@@ -37,6 +37,7 @@ export { Button } from './blocks/Button';
 export { Section } from './blocks/Section';
 export { StateProvider } from './blocks/StateProvider';
 export { Router } from './blocks/Router';
+export { Mutation } from './blocks/Mutation';
 
 export { Form } from './blocks/forms/Form';
 export { FormInput } from './blocks/forms/Input';
