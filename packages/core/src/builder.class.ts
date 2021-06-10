@@ -1792,8 +1792,9 @@ export class Builder {
     } = {}
   ) {
     let instance: Builder = this;
-    if (!Builder.isBrowser && (options.req || options.res)) {
+    if (!Builder.isBrowser) {
       instance = new Builder(options.apiKey || this.apiKey, options.req, options.res);
+      instance.setUserAttributes(this.getUserAttributes())
     } else {
       if (options.apiKey && !this.apiKey) {
         this.apiKey = options.apiKey;
@@ -2307,8 +2308,9 @@ export class Builder {
     } = {}
   ): Promise<BuilderContent[]> {
     let instance: Builder = this;
-    if (!Builder.isBrowser && (options.req || options.res)) {
+    if (!Builder.isBrowser) {
       instance = new Builder(options.apiKey || this.apiKey, options.req, options.res);
+      instance.setUserAttributes(this.getUserAttributes())
     } else {
       if (options.apiKey && !this.apiKey) {
         this.apiKey = options.apiKey;
@@ -2318,13 +2320,12 @@ export class Builder {
     return instance
       .getContent(modelName, {
         limit: 30,
-        cache: true,
         ...options,
         key:
           options.key ||
           // Make the key include all options so we don't reuse cache for the same conent fetched
           // with different options
-          `${modelName}:${hash(omit(options, 'initialContent', 'req', 'res'))}`,
+          Builder.isBrowser ? `${modelName}:${hash(omit(options, 'initialContent', 'req', 'res'))}` : undefined,
       })
       .promise();
   }
