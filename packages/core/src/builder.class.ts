@@ -950,7 +950,7 @@ export class Builder {
 
   get browserTrackingDisabled() {
     return Boolean(
-      Builder.isBrowser && ((navigator as any).doNotTrack === '1' || (window as any).builderNoTrack)
+      Builder.isBrowser && (window as any).builderNoTrack
     );
   }
 
