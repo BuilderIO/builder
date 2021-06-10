@@ -70,6 +70,20 @@ export class BuilderBlocks extends React.Component<BuilderBlocksProps, BuilderBl
       );
     }
   };
+  onHoverEmptyBlocks = () => {
+    if (Builder.isEditing && this.noBlocks) {
+      window.parent?.postMessage(
+        {
+          type: 'builder.hoverEmptyBlocks',
+          data: {
+            parentElementId: this.parentId,
+            dataPath: this.path,
+          },
+        },
+        '*'
+      );
+    }
+  };
 
   // <!-- Builder Blocks --> in comments hmm
   render() {
@@ -91,6 +105,7 @@ export class BuilderBlocks extends React.Component<BuilderBlocksProps, BuilderBl
         builder-type="blocks"
         // TODO: only fi in iframe?
         builder-path={Builder.isIframe ? this.path : undefined}
+        builder-parent-id={this.parentId}
         css={{
           ...(!this.props.emailMode && {
             display: 'flex',
@@ -104,6 +119,9 @@ export class BuilderBlocks extends React.Component<BuilderBlocksProps, BuilderBl
             this.onClickEmptyBlocks();
           }
         }}
+        {...(Builder.isEditing && {
+          onMouseEnter: () => this.onHoverEmptyBlocks(),
+        })}
       >
         {/* TODO: if is react node (for react compatibility) render it */}
         {/* TODO: maybe don't do this to preserve blocks always editable */}
