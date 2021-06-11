@@ -1,26 +1,41 @@
 import { pluginId } from './constants';
 import appState from '@builder.io/app-context';
-import { getSnapshot, applySnapshot } from '@builder.io/mobx-state-tree';
 
-const headers = {
-  'Content-Type': 'application/json',
-  ...appState.user.authHeaders,
-};
-
-export const createWebhook = async (modelName: string) => {
+export const createWebhook = async (model: any) => {
   const pluginSettings = appState.user.organization.value.settings.plugins.get(pluginId);
   const algoliaKey = pluginSettings.get('algoliaKey');
   const algoliaAppId = pluginSettings.get('algoliaAppId');
+  const customHeaders = [];
+
+  for (const headerName in appState.user.authHeaders) {
+    customHeaders.push({
+      name: headerName,
+      value: appState.user.authHeaders[headerName],
+    });
+  }
 
   const newWebhook = {
-    customHeaders: [{ name: 'Content-Type', value: 'application/json' }],
-    url: `${appState.config.apiEnv()}/api/v1/algolia-sync/webhook?algoliaKey=${algoliaKey}&algoliaAppId=${algoliaAppId}&modelName=${modelName}`,
+    customHeaders,
+    url: `${appState.config.apiRoot()}/api/v1/algolia-sync/webhook?algoliaKey=${algoliaKey}&algoliaAppId=${algoliaAppId}&modelName=${
+      model.name
+    }`,
+    disableProxy: true, // proxy has an issue with the POST request body
   };
 
-  // TODO: be smarter about finding existing webhooks and removing them
-  const allWebHooks = appState.user.organization.value.webhooks.concat([newWebhook]);
-  console.log('new hooks:', allWebHooks);
-  applySnapshot(appState.user.organization.value.webhooks, allWebHooks);
-  await appState.user.organization.save();
-  appState.snackBar.show('Webhooks saved!');
+  // if we have an existing algolia webhook on this model then we need to replace it with the new one
+  let existingAlgoliaHookIndex;
+  for (let i = 0; i < model.webhooks.length; i++) {
+    const currentHookPath = model.webhooks[i].url.split('?')[0];
+    const newHookPath = newWebhook.url.split('?')[0];
+    existingAlgoliaHookIndex = currentHookPath === newHookPath ? i : null;
+  }
+
+  if (existingAlgoliaHookIndex) {
+    model.webhooks[existingAlgoliaHookIndex] = newWebhook;
+  } else {
+    model.webhooks.push(newWebhook);
+  }
+
+  await appState.models.update(model, false);
+  appState.snackBar.show('Model saved!');
 };

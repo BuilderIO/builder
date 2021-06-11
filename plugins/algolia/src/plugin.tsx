@@ -9,7 +9,7 @@ Builder.register('plugin', {
   name: 'Shopify Algolia',
   settings: [
     {
-      name: 'alogiaKey',
+      name: 'algoliaKey',
       type: 'text',
       defaultValue: true,
       helperText: 'todo add here',
@@ -46,8 +46,7 @@ interface AppActions {
 
 Builder.register('app.onLoad', async ({ triggerSettingsDialog }: AppActions) => {
   const pluginSettings = appState.user.organization.value.settings.plugins?.get(pluginId);
-  // const hasConnected = pluginSettings?.get('hasConnected');
-  const hasConnected = false;
+  const hasConnected = pluginSettings?.get('hasConnected');
   if (!hasConnected) {
     await triggerSettingsDialog(pluginId);
   }
@@ -59,8 +58,6 @@ Builder.register('model.action', {
     return appState.user.can('admin');
   },
   async onClick(model: any) {
-    // TODO: either add a prompt here to create or delete webhook
-    // or add a new action to remove it
     if (
       !(await appState.dialogs.confirm(
         `This will sync all current and future entries in the "${model.name}" model to Algolia. It may take some time to complete.`,
@@ -71,7 +68,7 @@ Builder.register('model.action', {
     }
     appState.globalState.showGlobalBlockingLoadingIndicator = true;
     await syncToAlgolia(model.name);
-    await createWebhook(model.name);
+    await createWebhook(model);
     appState.globalState.showGlobalBlockingLoadingIndicator = false;
   },
 });

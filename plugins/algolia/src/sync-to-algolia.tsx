@@ -8,10 +8,13 @@ export const syncToAlgolia = async (modelName: string) => {
 
   fetch(
     `${appState.config.apiRoot()}/api/v1/algolia-sync/${modelName}?apiKey=${
-      appState.user.organization.id
+      appState.user.organization.value.id
     }`,
     {
       method: 'POST',
+      headers: {
+        ...appState.user.authHeaders,
+      },
       body: JSON.stringify({
         algoliaKey,
         algoliaAppId,
