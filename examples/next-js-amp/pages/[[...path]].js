@@ -64,6 +64,7 @@ export async function getServerSideProps({ req, res, params }) {
   const page = await builder
     .get('amp-page', {
       req,res,
+      noTraverse: false,
       userAttributes: {
         urlPath: '/' + (params?.path?.join('/') || ''),
       },

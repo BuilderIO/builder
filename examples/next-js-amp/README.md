@@ -2,38 +2,76 @@
 
 This is a [Next.js](https://nextjs.org/) project with amp support.
 
-## Get Started
+## Getting Started
 
-### Install the Builder.io cli
+**Pre-requisites**
 
-```
-npm install @builder.io/cli -g
-```
+This guide will assume that you have the following software installed:
 
-### Clone this repo
+- nodejs
+- npm or yarn
+- git
 
-using git
+**Introduction**
+After following this guide you will have your own Builder.io space with a an amp-page model and sample content configured and ready to use.
+
+### 1: Create an account for Builder.io
+
+Before we start, head over to Builder.io and [create an account](https://builder.io/signup).
+
+### 2: Your Builder.io private key
+
+Head over to your [organization settings page](https://builder.io/account/organization?root=true) and create a
+private key, copy the key for the next step.
+
+- Visit the [organization settings page](https://builder.io/account/organization?root=true), or select
+  an organization from the list
+
+* Click "Account" from the left hand sidebar
+* Click the edit icon for the "Private keys" row
+* Copy the value of the auto-generated key, or create a new one with a name that's meaningful to you
+
+![Example of how to get your private key](https://raw.githubusercontent.com/BuilderIO/nextjs-shopify/master/docs/images/private-key-flow.png)
+
+### 3: Clone this repository and initialize a Builder.io space
+
+Next, we'll create a copy of the starter project, and create a new
+[space](https://www.builder.io/c/docs/spaces) for it's content to live
+in.
+
+In the example below, replace `<private-key>` with the key you copied
+in the previous step, and change `<space-name>` to something that's
+meaningful to you -- don't worry, you can change it later!
 
 ```
 git clone https://github.com/BuilderIO/builder
+cd builder/examples/next-js-amp
+
+npm install --global "@builder.io/cli"
+
+builder create --key "<private-key>" --name "<space-name>" --debug
 ```
 
-### Generate your Builder.io space
+If this was a success you should be greeted with a message that
+includes a public API key for your newly minted Builder.io space.
 
-<!-- TODO: link "private key" to a forum post or doc showing how to create that -->
+_Note: This command will also publish some starter builder.io cms
+content from the ./builder directory to your new space when it's
+created._
 
-[Signup for Builder.io](builder.io/signup), then go to your [organization settings page](https://builder.io/account/organization?root=true), create a private key and copy it, then create your space and give it a name
+```bash
+  ____            _   _       _                     _                    _   _
+| __ )   _   _  (_) | |   __| |   ___   _ __      (_)   ___       ___  | | (_)
+|  _ \  | | | | | | | |  / _` |  / _ \ | '__|     | |  / _ \     / __| | | | |
+| |_) | | |_| | | | | | | (_| | |  __/ | |     _  | | | (_) |   | (__  | | | |
+|____/   \__,_| |_| |_|  \__,_|  \___| |_|    (_) |_|  \___/     \___| |_| |_|
 
+|████████████████████████████████████████| amp-page | 1/1
+
+Your new space "...." public API Key: 1234795283492198789217893712893
 ```
-cd examples/next-js-amp
-builder create -k [private-key] -n [space-name] -d
-```
 
-This command when done it'll print your new space's public API key, copy it and add it as the value for `BUILDER_PUBLIC_KEY` into the .env files (create a file named .env)
-
-```
-BUILDER_PUBLIC_KEY=...
-```
+Copy the public API key ("1234795283492198789217893712893" in the example above) and use it in in your env file ( create a .env file under this folder).
 
 Now you have to do is start up the project now and start building in Builder.
 ```
