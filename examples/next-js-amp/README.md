@@ -1,29 +1,45 @@
 # Builder.io & Next.js integration example with AMP support
 
-Check the comments in `pages/index.js` for all the technical details. You will need a Builder.io API key and some content with the proper URLs set up.
+This is a [Next.js](https://nextjs.org/) project with amp support.
 
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/zeit/next.js/tree/canary/packages/create-next-app).
+## Get Started
 
-## Getting Started
-
-First, run the development server (note the Builder.io API key):
-
-```bash
-REACT_APP_BUILDER_API_KEY="your-api-key-goes-here" npm run dev
-# or
-REACT_APP_BUILDER_API_KEY="your-api-key-goes-here" yarn dev
-```
-
-Alternatively, you can just add the API key to an `.env` file in the root (where the `package.json` file is):
+### Install the Builder.io cli
 
 ```
-# This is the contents of the `.env` file
-REACT_APP_BUILDER_API_KEY="your-api-key-goes-here"
+npm install @builder.io/cli -g
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result. Add `?amp=1` to switch the content to AMP mode.
+### Clone this repo
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+using git
+
+```
+git clone https://github.com/BuilderIO/builder
+```
+
+### Generate your Builder.io space
+
+<!-- TODO: link "private key" to a forum post or doc showing how to create that -->
+
+[Signup for Builder.io](builder.io/signup), then go to your [organization settings page](https://builder.io/account/organization?root=true), create a private key and copy it, then create your space and give it a name
+
+```
+cd examples/next-js-amp
+builder create -k [private-key] -n [space-name] -d
+```
+
+This command when done it'll print your new space's public API key, copy it and add it as the value for `BUILDER_PUBLIC_KEY` into the .env files (create a file named .env)
+
+```
+BUILDER_PUBLIC_KEY=...
+```
+
+Now you have to do is start up the project now and start building in Builder.
+```
+npm install
+npm run dev
+```
 
 ## Learn More
 
