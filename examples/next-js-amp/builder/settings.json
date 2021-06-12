@@ -1,0 +1,18 @@
+{
+  "settings": {
+    "lazyLoadImages": false,
+    "reloadPreviewOnUrlPathTargetChange": false
+  },
+  "name": "next-js-amp",
+  "@version": 6,
+  "type": "space",
+  "cloneInfo": {
+    "contentIdMap": {
+      "b8d9bfc23fe94b1796e82280ae127591": "e23f582a8fc84ac8a275c17d9481f0f7"
+    },
+    "modelIdMap": {
+      "34d4c10725424a52b0edbe5fb7fb382e": "3e591f2cd5554f09a63b120ac354bae6",
+      "b1db0e0b200546b99c04a1709a759732": "020f893747864cf5a21682c15d9fef7e"
+    }
+  }
+}

@@ -1,29 +1,83 @@
 # Builder.io & Next.js integration example with AMP support
 
-Check the comments in `pages/index.js` for all the technical details. You will need a Builder.io API key and some content with the proper URLs set up.
-
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/zeit/next.js/tree/canary/packages/create-next-app).
+This is a [Next.js](https://nextjs.org/) project with amp support.
 
 ## Getting Started
 
-First, run the development server (note the Builder.io API key):
+**Pre-requisites**
+
+This guide will assume that you have the following software installed:
+
+- nodejs
+- npm or yarn
+- git
+
+**Introduction**
+After following this guide you will have your own Builder.io space with a an amp-page model and sample content configured and ready to use.
+
+### 1: Create an account for Builder.io
+
+Before we start, head over to Builder.io and [create an account](https://builder.io/signup).
+
+### 2: Your Builder.io private key
+
+Head over to your [organization settings page](https://builder.io/account/organization?root=true) and create a
+private key, copy the key for the next step.
+
+- Visit the [organization settings page](https://builder.io/account/organization?root=true), or select
+  an organization from the list
+
+* Click "Account" from the left hand sidebar
+* Click the edit icon for the "Private keys" row
+* Copy the value of the auto-generated key, or create a new one with a name that's meaningful to you
+
+![Example of how to get your private key](https://raw.githubusercontent.com/BuilderIO/nextjs-shopify/master/docs/images/private-key-flow.png)
+
+### 3: Clone this repository and initialize a Builder.io space
+
+Next, we'll create a copy of the starter project, and create a new
+[space](https://www.builder.io/c/docs/spaces) for it's content to live
+in.
+
+In the example below, replace `<private-key>` with the key you copied
+in the previous step, and change `<space-name>` to something that's
+meaningful to you -- don't worry, you can change it later!
+
+```
+git clone https://github.com/BuilderIO/builder
+cd builder/examples/next-js-amp
+
+npm install --global "@builder.io/cli"
+
+builder create --key "<private-key>" --name "<space-name>" --debug
+```
+
+If this was a success you should be greeted with a message that
+includes a public API key for your newly minted Builder.io space.
+
+_Note: This command will also publish some starter builder.io cms
+content from the ./builder directory to your new space when it's
+created._
 
 ```bash
-REACT_APP_BUILDER_API_KEY="your-api-key-goes-here" npm run dev
-# or
-REACT_APP_BUILDER_API_KEY="your-api-key-goes-here" yarn dev
+  ____            _   _       _                     _                    _   _
+| __ )   _   _  (_) | |   __| |   ___   _ __      (_)   ___       ___  | | (_)
+|  _ \  | | | | | | | |  / _` |  / _ \ | '__|     | |  / _ \     / __| | | | |
+| |_) | | |_| | | | | | | (_| | |  __/ | |     _  | | | (_) |   | (__  | | | |
+|____/   \__,_| |_| |_|  \__,_|  \___| |_|    (_) |_|  \___/     \___| |_| |_|
+
+|████████████████████████████████████████| amp-page | 1/1
+
+Your new space "...." public API Key: 1234795283492198789217893712893
 ```
 
-Alternatively, you can just add the API key to an `.env` file in the root (where the `package.json` file is):
+Copy the public API key ("1234795283492198789217893712893" in the example above) and use it in in your env file ( create a .env file under this folder).
 
+Now you have to do is start up the project now and start building in Builder.
 ```
-# This is the contents of the `.env` file
-REACT_APP_BUILDER_API_KEY="your-api-key-goes-here"
+npm install
+npm run dev
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result. Add `?amp=1` to switch the content to AMP mode.
-
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
 
 ## Learn More
 

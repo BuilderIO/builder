@@ -9,8 +9,11 @@
     "start": "next start"
   },
   "dependencies": {
-    "@builder.io/react": "^1.1.28",
-    "next": "^9.5.3",
+    "@builder.io/react": "^1.1.44",
+    "@next/bundle-analyzer": "^10.2.3",
+    "cheerio": "^1.0.0-rc.10",
+    "next": "^10.2.3",
+    "next-seo": "^4.24.0",
     "prettier": "^2.0.5",
     "react": "^16.13.0",
     "react-dom": "^16.13.0"
