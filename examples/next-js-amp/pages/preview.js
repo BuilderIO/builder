@@ -1,4 +1,4 @@
-export const config = { amp: 'hybrid'};
+export const config = { amp: 'hybrid' };
 
 import page from './[[...path]]';
 
