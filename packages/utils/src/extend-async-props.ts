@@ -5,7 +5,9 @@ type PropsMappers = { [key: string]: (props: any) => Promise<any> };
 export async function extendAsyncProps(content: BuilderContent, mappers: PropsMappers) {
   const promises: Promise<any>[] = [];
   traverse(content).forEach(function (field) {
-    const isComponentOptions = this.path.slice(-2).join('.') === 'component.options';
+    const isComponentOptions = ['component.options', 'symbol.data'].includes(
+      this.path.slice(-2).join('.')
+    );
     if (field && isComponentOptions) {
       const keys = Object.keys(field);
       keys.forEach(key => {
