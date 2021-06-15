@@ -8,10 +8,9 @@ async function getDataFromAPI(query: any) {
 async function getProductByHandle(productHandle: string) {
   return {
     title: 'mock',
-    handle: productHandle
+    handle: productHandle,
   };
 }
-
 
 test('Extends async props on custom components', async () => {
   const content: BuilderContent = {
@@ -47,18 +46,18 @@ test('Extends async props on inlined symbols', async () => {
       blocks: [
         {
           '@type': '@builder.io/sdk:Element',
-          "@version": 2,
-          "layerName": "Product Box",
-          "component": {
-            "name": "Symbol",
-            "options": {
-              "symbol": {
-                "data": {
-                  "loading": false,
-                  "productHandle": productHandle,
+          '@version': 2,
+          layerName: 'Product Box',
+          component: {
+            name: 'Symbol',
+            options: {
+              symbol: {
+                data: {
+                  loading: false,
+                  productHandle: productHandle,
                 },
-              }
-            }
+              },
+            },
           },
         },
       ],
@@ -70,9 +69,11 @@ test('Extends async props on inlined symbols', async () => {
       return {
         initialState: {
           product,
-        }
+        },
       };
     },
   });
-  expect(content.data!.blocks![0].component!.options.symbol.data.initialState.product.handle).toBe(productHandle);
+  expect(content.data!.blocks![0].component!.options.symbol.data.initialState.product.handle).toBe(
+    productHandle
+  );
 });
