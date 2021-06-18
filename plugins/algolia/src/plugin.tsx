@@ -30,9 +30,7 @@ Builder.register('plugin', {
       hasConnected: true,
     });
 
-    appState.dialogs.alert(
-      'Plugin settings saved. Visit https://builder.io/models to sync a model to Algolia.'
-    );
+    appState.dialogs.alert('Plugin settings saved.');
   },
 });
 
@@ -60,8 +58,8 @@ Builder.register('model.action', {
   async onClick(model: any) {
     if (
       !(await appState.dialogs.confirm(
-        `This will sync all current and future entries in the "${model.name}" model to Algolia. It may take some time to complete.`,
-        'continue'
+        `This will sync all current and future entries in the "${model.name}" model to Algolia.`,
+        'Continue'
       ))
     ) {
       return;

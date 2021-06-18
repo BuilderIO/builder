@@ -37,5 +37,5 @@ export const createWebhook = async (model: any) => {
   }
 
   await appState.models.update(model, false);
-  appState.snackBar.show('Model saved!');
+  appState.snackBar.show('Algolia webhook saved');
 };
