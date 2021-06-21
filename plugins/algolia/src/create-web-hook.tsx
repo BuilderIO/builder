@@ -25,7 +25,7 @@ export const createWebhook = async (model: any) => {
   // if we have an existing algolia webhook on this model then we need to replace it with the new one
   let existingAlgoliaHookIndex;
   for (let i = 0; i < model.webhooks.length; i++) {
-    const currentHookPath = model.webhooks[i].url.split('?')[0];
+    const currentHookPath = model.webhooks[i].url?.split('?')[0];
     const newHookPath = newWebhook.url.split('?')[0];
     existingAlgoliaHookIndex = currentHookPath === newHookPath ? i : null;
   }

@@ -16,12 +16,14 @@ You'll need to create an Algolia API key and ensure that it has the correct [ACL
 Here's an example of the permissions you'll want to enter on the Create API Key form located at `www.algolia.com/apps/<your-account-id>/api-keys/restricted`:
 ![Create API Form](https://cdn.builder.io/api/v1/image/assets%2Fc323eb63ba4f413fb404381a691aff97%2Fb6a16f09c5df496d8160e02da7b2bc2a)
 
-### Syncing Model Data
+## Syncing Model Data
 
 Now that you have the plugin set up, you can start syncing your model content. First, head over to the Builder Model that you want to sync.
 
-Click the More Options button above the model fields:
+Click the More Options button above the model fields, then you'll see a button at the bottom of the Show More Options section, click this button and your existing content will automatically be sent to Algolia with the index name `builder-modelName`.
 
-![Builder Model View](https://cdn.builder.io/api/v1/image/assets%2Fc323eb63ba4f413fb404381a691aff97%2F40b999183f0c4335afce0729b0f930d5)
+![Builder Model Sync to Algolia](https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F84665735c1c3430696f3d382f23bec40)
 
-You'll see a button at the bottom of the Show More Options section, click this button and your existing content will automatically be sent to Algolia with the index name `builder-modelName`.
+## Adding Algolia Search Inputs via Builder
+
+We have plans to add pre-built Search interfaces to the plugin, in the meatime, you can use the [Algolia APIs](https://www.algolia.com/doc/api-client/getting-started/what-is-the-api-client/javascript/?client=javascript) or a library like [InstantSearch](https://www.algolia.com/doc/guides/building-search-ui/what-is-instantsearch/js/)
