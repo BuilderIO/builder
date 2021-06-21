@@ -141,13 +141,9 @@ class FormComponent extends React.Component<FormProps> {
                     }
                   });
 
-                  // TODO: send as urlEncoded or multipart by default
-                  // because of ease of use and reliability in browser API
-                  // for encoding the form?
-                  if (contentType !== 'application/json') {
+                  if (contentType === 'multipart/form-data') {
                     body = formData;
-                  } else {
-                    // Json
+                  } else if (contentType === 'application/json') {
                     const json = {};
 
                     Array.from(formPairs).forEach(({ value, key }) => {
@@ -155,6 +151,20 @@ class FormComponent extends React.Component<FormProps> {
                     });
 
                     body = JSON.stringify(json);
+                  } else if (contentType === 'application/x-www-form-urlencoded') {
+                    body = Array.from(formPairs)
+                      .map(({ value, key }) => {
+                        return (
+                          encodeURIComponent(key) +
+                          '=' +
+                          encodeURIComponent(value as boolean | number | string)
+                        );
+                      })
+                      .join('&');
+                  } else {
+                    // Unsupported content type
+                    console.error('Unsupported content type: ', contentType);
+                    return;
                   }
 
                   if (contentType && contentType !== 'multipart/form-data') {
@@ -405,6 +415,7 @@ export const Form = withBuilder(FormComponent, {
       name: 'method',
       type: 'string',
       showIf: 'options.get("sendSubmissionsTo") === "custom"',
+      defaultValue: 'POST',
       advanced: true,
     },
     {
