@@ -8,7 +8,7 @@ Go to [builder.io/account/organization](https://builder.io/account/organization)
 
 ![Installation screenshot](https://cdn.builder.io/api/v1/image/assets%2Fc323eb63ba4f413fb404381a691aff97%2Fc15c13b0d4c84a2da793df52f0564b42)
 
-The page will reload, asking you to enter in your Algolia account credentials. You can find your Account Id in the URL of the URL of the Algolia dashboard or in the top left of your dashboard:
+The page will reload, asking you to enter in your Algolia account credentials. You can find your Account Id in the URL of the Algolia dashboard or in the top left of your dashboard:
 `https://www.algolia.com/apps/<account-id>/dashboard`
 
 You'll need to create an Algolia API key and ensure that it has the correct [ACL permissions](https://www.algolia.com/doc/guides/security/api-keys/#rights-and-restrictions), most importantly `addObject`, `deleteObject` and `search`.
