@@ -30,6 +30,10 @@ export interface FormProps {
   errorMessagePath?: string;
 }
 
+const MULTIPART_CONTENT_TYPE = 'multipart/form-data';
+const JSON_CONTENT_TYPE = 'application/json';
+const ENCODED_CONTENT_TYPE = 'application/x-www-form-urlencoded';
+
 class FormComponent extends React.Component<FormProps> {
   ref: HTMLFormElement | null = null;
 
@@ -128,7 +132,7 @@ class FormComponent extends React.Component<FormProps> {
                   let contentType = this.props.contentType;
 
                   if (this.props.sendSubmissionsTo === 'email') {
-                    contentType = 'multipart/form-data';
+                    contentType = MULTIPART_CONTENT_TYPE;
                   }
 
                   Array.from(formPairs).forEach(({ value }) => {
@@ -137,17 +141,13 @@ class FormComponent extends React.Component<FormProps> {
                       (Array.isArray(value) && value[0] instanceof File) ||
                       value instanceof FileList
                     ) {
-                      contentType = 'multipart/form-data';
+                      contentType = MULTIPART_CONTENT_TYPE;
                     }
                   });
 
-                  // TODO: send as urlEncoded or multipart by default
-                  // because of ease of use and reliability in browser API
-                  // for encoding the form?
-                  if (contentType !== 'application/json') {
+                  if (contentType === MULTIPART_CONTENT_TYPE) {
                     body = formData;
-                  } else {
-                    // Json
+                  } else if (contentType === JSON_CONTENT_TYPE) {
                     const json = {};
 
                     Array.from(formPairs).forEach(({ value, key }) => {
@@ -155,9 +155,23 @@ class FormComponent extends React.Component<FormProps> {
                     });
 
                     body = JSON.stringify(json);
+                  } else if (contentType === ENCODED_CONTENT_TYPE) {
+                    body = Array.from(formPairs)
+                      .map(({ value, key }) => {
+                        return (
+                          encodeURIComponent(key) +
+                          '=' +
+                          encodeURIComponent(value as boolean | number | string)
+                        );
+                      })
+                      .join('&');
+                  } else {
+                    // Unsupported content type
+                    console.error('Unsupported content type: ', contentType);
+                    return;
                   }
 
-                  if (contentType && contentType !== 'multipart/form-data') {
+                  if (contentType && contentType !== MULTIPART_CONTENT_TYPE) {
                     if (
                       // Zapier doesn't allow content-type header to be sent from browsers
                       !(sendWithJs && this.props.action?.includes('zapier.com'))
@@ -200,7 +214,7 @@ class FormComponent extends React.Component<FormProps> {
                     async res => {
                       let body;
                       const contentType = res.headers.get('content-type');
-                      if (contentType && contentType.indexOf('application/json') !== -1) {
+                      if (contentType && contentType.indexOf(JSON_CONTENT_TYPE) !== -1) {
                         body = await res.json();
                       } else {
                         body = await res.text();
@@ -395,16 +409,17 @@ export const Form = withBuilder(FormComponent, {
     {
       name: 'contentType',
       type: 'string',
-      defaultValue: 'application/json',
+      defaultValue: JSON_CONTENT_TYPE,
       advanced: true,
       // TODO: do automatically if file input
-      enum: ['application/json', 'multipart/form-data', 'application/x-www-form-urlencoded'],
+      enum: [JSON_CONTENT_TYPE, MULTIPART_CONTENT_TYPE, ENCODED_CONTENT_TYPE],
       showIf: 'options.get("sendSubmissionsTo") === "custom" && options.get("sendWithJs") === true',
     },
     {
       name: 'method',
       type: 'string',
       showIf: 'options.get("sendSubmissionsTo") === "custom"',
+      defaultValue: 'POST',
       advanced: true,
     },
     {
