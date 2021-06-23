@@ -82,7 +82,7 @@ export class ProductPicker extends SafeComponent<
 
   async searchProducts() {
     this.loading = true;
-    const shopifyProductsUrl = appState.config.apiRoot() + '/api/v1/shopify/products.json';
+    const shopifyProductsUrl = appState.config.apiRoot() + '/api/v1/shopify/search/product';
 
     const onShopifyError = (err: any) => {
       console.error('Shopify product search error:', err);
@@ -94,9 +94,9 @@ export class ProductPicker extends SafeComponent<
     // const agent =
     // TODO: cancen pending requests if any
     const productsResponse = await fetch(
-      `${shopifyProductsUrl}?apiKey=${this.props.context.user.apiKey}&title=${encodeURIComponent(
-        this.searchInputText
-      )}&limit=40`
+      `${shopifyProductsUrl}?apiKey=${this.props.context.user.apiKey}&limit=40${
+        this.searchInputText ? `&search=title:*${this.searchInputText}*` : ''
+      }`
     )
       .then(async res => {
         if (!res.ok) {
