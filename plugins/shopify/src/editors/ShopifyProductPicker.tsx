@@ -42,15 +42,16 @@ export interface ShopifyProductPreviewCellProps {
 @observer
 export class ProductPreviewCell extends SafeComponent<ShopifyProductPreviewCellProps> {
   render() {
+    const image = this.props.product.image || this.props.product.images[0];
     return (
       <ListItem
         className={this.props.className}
         button={this.props.button}
         selected={this.props.selected}
       >
-        {this.props.product.image && (
+        {image && (
           <ListItemAvatar>
-            <Avatar css={{ borderRadius: 4 }} src={this.props.product.image.src} />
+            <Avatar css={{ borderRadius: 4 }} src={image.src} />
           </ListItemAvatar>
         )}
         <ListItemText
