@@ -25,6 +25,7 @@ import { ShopifyCollection } from '../interfaces/shopify-collection';
 import { SetShopifyKeysMessage } from '../components/set-shopify-keys-message';
 import { fastClone } from '../functions/fast-clone';
 import appState from '@builder.io/app-context';
+import Client from 'shopify-buy';
 
 interface ShopifyCollectionPickerProps extends CustomReactEditorProps<BuilderRequest | string> {
   isPreview?: boolean;
@@ -66,13 +67,17 @@ export class CollectionPicker extends SafeComponent<
   @observable loading = false;
 
   @observable collections: ShopifyCollection[] = [];
+  client = Client.buildClient({
+    storefrontAccessToken: appState.user.organization.value.settings.plugins
+      .get('@builder.io/plugin-shopify')
+      .get('storefrontAccessToken'),
+    domain: appState.user.organization.value.settings.plugins
+      .get('@builder.io/plugin-shopify')
+      .get('storeDomain'),
+  });
 
   async searchCollections() {
     this.loading = true;
-    const shopifyCustomCollectionsUrl =
-      appState.config.apiRoot() + '/api/v1/shopify/custom_collections.json';
-    const shopifySmartCollectionsUrl =
-      appState.config.apiRoot() + '/api/v1/shopify/smart_collections.json';
 
     const onShopifyError = (err: any) => {
       console.error('Shopify collection search error:', err);
@@ -81,37 +86,17 @@ export class CollectionPicker extends SafeComponent<
       );
     };
 
-    // const agent =
-    // TODO: cancen pending requests if any
-    const customCollectionQuery = fetch(
-      `${shopifyCustomCollectionsUrl}?apiKey=${
-        this.props.context.user.apiKey
-      }&title=${encodeURIComponent(this.searchInputText)}&limit=40`
-    )
-      .then(res => res.json())
+    const collectionsResponse = await this.client.collection
+      .fetchQuery({
+        query: this.searchInputText ? `title:*${this.searchInputText.trim()}*` : '',
+        sortBy: 'title',
+      })
       .catch(onShopifyError);
-
-    const smartCollectionQuery = fetch(
-      `${shopifySmartCollectionsUrl}?apiKey=${
-        this.props.context.user.apiKey
-      }&title=${encodeURIComponent(this.searchInputText)}&limit=40`
-    )
-      .then(res => res.json())
-      .catch(onShopifyError);
-    const [smartCollectionResponse, customCollectionResponse] = await Promise.all([
-      smartCollectionQuery,
-      customCollectionQuery,
-    ]);
 
     runInAction(() => {
-      let collections: any[] = [];
-      if (customCollectionResponse && customCollectionResponse.custom_collections) {
-        collections = collections.concat(customCollectionResponse.custom_collections);
+      if (collectionsResponse) {
+        this.collections = collectionsResponse as any;
       }
-      if (smartCollectionResponse && smartCollectionResponse.smart_collections) {
-        collections = collections.concat(smartCollectionResponse.smart_collections);
-      }
-      this.collections = collections;
       this.loading = false;
     });
   }
@@ -268,6 +253,14 @@ export class ShopifyCollectionPicker extends SafeComponent<ShopifyCollectionPick
         value={this.collectionId}
         onChange={value => {
           this.collectionId = value?.id;
+          let id = value?.id;
+          if (id) {
+            const gid = atob(String(id));
+            if (gid && gid.startsWith('gid://')) {
+              id = Number(gid.split('gid://shopify/Collection/')[1]);
+            }
+          }
+          this.collectionId = id;
           this.collectionHandle = value?.handle;
           close();
         }}
