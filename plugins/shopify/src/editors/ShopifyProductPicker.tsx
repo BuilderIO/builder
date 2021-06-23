@@ -25,6 +25,7 @@ import { BuilderRequest } from '../interfaces/builder-request';
 import { fastClone } from '../functions/fast-clone';
 import { SetShopifyKeysMessage } from '../components/set-shopify-keys-message';
 import appState from '@builder.io/app-context';
+import Client from 'shopify-buy';
 
 interface ShopifyProductPickerProps extends CustomReactEditorProps<BuilderRequest | string> {
   isPreview?: boolean;
@@ -79,10 +80,17 @@ export class ProductPicker extends SafeComponent<
   @observable loading = false;
 
   @observable products: ShopifyProduct[] = [];
+  client = Client.buildClient({
+    storefrontAccessToken: appState.user.organization.value.settings.plugins
+      .get('@builder.io/plugin-shopify')
+      .get('storefrontAccessToken'),
+    domain: appState.user.organization.value.settings.plugins
+      .get('@builder.io/plugin-shopify')
+      .get('storeDomain'),
+  });
 
   async searchProducts() {
     this.loading = true;
-    const shopifyProductsUrl = appState.config.apiRoot() + '/api/v1/shopify/search/product';
 
     const onShopifyError = (err: any) => {
       console.error('Shopify product search error:', err);
@@ -93,23 +101,16 @@ export class ProductPicker extends SafeComponent<
 
     // const agent =
     // TODO: cancen pending requests if any
-    const productsResponse = await fetch(
-      `${shopifyProductsUrl}?apiKey=${this.props.context.user.apiKey}&limit=40${
-        this.searchInputText ? `&search=title:*${this.searchInputText}*` : ''
-      }`
-    )
-      .then(async res => {
-        if (!res.ok) {
-          onShopifyError(await res.text());
-        }
-        return res;
+    const productsResponse = await this.client.product
+      .fetchQuery({
+        query: this.searchInputText ? `title:*${this.searchInputText}*` : '',
+        sortBy: 'title',
       })
-      .then(res => res && res.json())
       .catch(onShopifyError);
 
     runInAction(() => {
       if (productsResponse) {
-        this.products = productsResponse.products;
+        this.products = productsResponse as any;
       }
       this.loading = false;
     });
@@ -273,7 +274,14 @@ export class ShopifyProductPicker extends SafeComponent<ShopifyProductPickerProp
         value={this.productInfo}
         onChange={value => {
           this.productHandle = value?.handle;
-          this.productId = value?.id;
+          let id = value?.id;
+          if (id) {
+            const gid = atob(String(id));
+            if (gid && gid.startsWith('gid://')) {
+              id = Number(gid.split('gid://shopify/Product/')[1]);
+            }
+          }
+          this.productId = id;
           close();
         }}
       />,
