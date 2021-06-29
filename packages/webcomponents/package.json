@@ -143,7 +143,7 @@
   },
   "//": "TODO: make all of these optional dependencies, simple mode doesn't require",
   "dependencies": {
-    "@builder.io/react": "^1.1.45-35",
+    "@builder.io/react": "^1.1.45",
     "@builder.io/sdk": "^1.1.22",
     "@builder.io/shopify": "^1.3.41-0",
     "@builder.io/widgets": "^1.2.20",
