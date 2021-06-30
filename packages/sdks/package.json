@@ -1,0 +1,22 @@
+{
+  "name": "@builder.io/sdks",
+  "version": "0.0.1",
+  "scripts": {
+    "build": "jsx-lite build",
+    "lint": "eslint"
+  },
+  "exports": {
+    "./react/*": "./dist/react/src/*.js",
+    "./vue/*": "./dist/vue/src/*.js",
+    "./svelte/*": "./dist/svelte/src/*.js",
+    "./angular/*": "./dist/angular/src/*.js",
+    "./html/*": "./dist/html/src/*.js",
+    "./solid/*": "./dist/solid/src/*.js"
+  },
+  "dependencies": {
+    "@jsx-lite/cli": "^1.0.1",
+    "@jsx-lite/core": "0.0.44-12",
+    "@jsx-lite/eslint-plugin": "0.0.2",
+    "eslint": "^7.21.0"
+  }
+}

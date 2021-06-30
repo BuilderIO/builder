@@ -1,0 +1,1 @@
+export type BuilderContent = any; // TODO
