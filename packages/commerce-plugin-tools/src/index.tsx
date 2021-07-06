@@ -9,6 +9,7 @@ import { BuilderRequest } from './interfaces/builder-request';
 import { ErrorBoundary } from './components/error-boundary';
 import capitalize from 'lodash/capitalize';
 import pluralize from 'pluralize';
+import { when } from 'mobx';
 // todo move to sdk
 interface OnSaveActions {
   updateSettings(partal: Record<string, any>): Promise<void>;
@@ -41,10 +42,12 @@ export interface CommerceAPIOperations {
   };
 }
 
-export const registerCommercePlugin = (
+export const registerCommercePlugin = async (
   config: CommercePluginConfig,
   apiOperationsFromSettings: (settings: any) => CommerceAPIOperations
 ) => {
+  await when(() => appState.user.initialized);
+
   const registerEditors = () => {
     const apiOperations = apiOperationsFromSettings(
       appState.user.organization.value.settings.plugins.get(config.id)
