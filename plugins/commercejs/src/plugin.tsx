@@ -1,5 +1,6 @@
 import { registerCommercePlugin } from '@builder.io/commerce-plugin-tools';
-import Commerce from '@chec/commerce.js';
+// Import Commerce module
+const commerceSdk: any = require('@chec/commerce.js/lib/index.js');
 
 // Define Commerce.js plugin ID. ID string should match package name.
 const pluginId = '@builder.io/plugin-commercejs';
@@ -26,7 +27,7 @@ registerCommercePlugin(
     // Get public key input from user
     const publicKey = settings.get('publicKey')?.trim();
     // Initialize Commerce with the public API key
-    const commerce = new Commerce(publicKey, false);
+    const commerce = new commerceSdk(publicKey, false);
 
     // Transform product to match Resource interface
     const transformProduct = (product: any) => ({
