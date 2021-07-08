@@ -24,16 +24,16 @@ Or by passing it as a query param to the [content API](https://www.builder.io/c/
 
 - `Commerce.js product` when used as a custom targeting type, will target contexts where the field is set to the product ID, you'll need to set the product ID on the host environment, using one of the methods above. Alternatively, if you want to target by product handle use the `Commerce.js product handle` type in your custom targeting attributes.
 
-- `Commerce.js category` can be used as custom targeting attribute to target specific category by ID, you'll need to set the category ID on the host environment, using one of the methods above. Alternatively, if you want to target by product handle use the `Swell category handle` type in your custom targeting attributes.
+- `Commerce.js category` can be used as custom targeting attribute to target specific category by ID, you'll need to set the category ID on the host environment, using one of the methods above. Alternatively, if you want to target by product handle use the `Commerce.js category handle` type in your custom targeting attributes.
 
 ### Component model fields
 
 Component models can be used to represent product or collection page templates for all or a specific set of products/collections, using one of the following fields, you'll make previewing the templates for any product or collection straight-forward:
 
-- `Commerce.js Product Preview` is to be used as a custom field on component models, this will allow you to have templated editing url on your component model relevant to the swell product being previewed, for example you can set the url in your model to:
+- `Commerce.js Product Preview` is to be used as a custom field on component models, this will allow you to have templated editing url on your component model relevant to the Commerce.js product being previewed, for example you can set the url in your model to:
   `https://www.mystore.com/product/${previewProduct.handle}`, add a custom field of type `Commerce.js Product Preview` to the model, now when you create a new entry, the handle will be added dynamically to the preview url based on the preview product, it is recommended to add a default value to the `Commerce.js Product Preview` custom field, so users will land at a specific product page when developing a template component.
 
-- `Commerce.js Collection Preview` is to be used as a custom field on component models, this will allow you to have templated editing url on your component model relevant to the swell collection being previewed, for example you can set the url in your model to:
+- `Commerce.js Collection Preview` is to be used as a custom field on component models, this will allow you to have templated editing url on your component model relevant to the Commerce.js collection being previewed, for example you can set the url in your model to:
   `https://www.mystore.com/collection/${previewCollection.handle}`, add a custom field of type `Commerce.js Collection Preview`, now when you create a new entry, the handle will be added dynamically to the preview url based on the preview product, it is recommended to add a default value to the `Commerce.js Collection Preview` custom field, so users will land at a specific collection page when developing a template component.
 
 ### Symbol Inputs
@@ -87,7 +87,7 @@ To uninstall your plugin, just remove it in the plugins UI
 
 ### Seeing the plugin in action
 
-Try creating a custom [model](https://builder.io/c/docs/guides/getting-started-with-models), [component](https://builder.io/c/docs/custom-react-components), or [symbol](https://builder.io/c/docs/guides/symbols) using a Swell field, and edit away!
+Try creating a custom [model](https://builder.io/c/docs/guides/getting-started-with-models), [component](https://builder.io/c/docs/custom-react-components), or [symbol](https://builder.io/c/docs/guides/symbols) using a Commerce.js field, and edit away!
 
 <img src="https://i.imgur.com/uVOLn7A.gif" alt="Seeing your plugin in the editor example gif">
 
