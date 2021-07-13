@@ -494,7 +494,7 @@ export interface Component {
   tag?: string;
   static?: boolean;
   /**
-   * Passing a list of models will restrict using the component to only the models defined here
+   * Passing a list of model names will restrict using the component to only the models listed here, otherwise it'll be available for all models
    */
   models?: string[];
 
