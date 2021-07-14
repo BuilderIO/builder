@@ -493,6 +493,10 @@ export interface Component {
   // For webcomponents
   tag?: string;
   static?: boolean;
+  /**
+   * Passing a list of model names will restrict using the component to only the models listed here, otherwise it'll be available for all models
+   */
+  models?: string[];
 
   /**
    * Specify restrictions direct children must match
@@ -830,7 +834,11 @@ export class Builder {
       ...options,
     };
     this.addComponent(spec);
-    if (isBrowser) {
+    const editable =
+      options.models && this.singletonInstance.editingModel
+        ? isBrowser && options.models.includes(this.singletonInstance.editingModel)
+        : isBrowser;
+    if (editable) {
       const sendSpec = this.prepareComponentSpecToSend(spec);
       window.parent?.postMessage(
         {
@@ -949,9 +957,7 @@ export class Builder {
   private preview = false;
 
   get browserTrackingDisabled() {
-    return Boolean(
-      Builder.isBrowser && (window as any).builderNoTrack
-    );
+    return Boolean(Builder.isBrowser && (window as any).builderNoTrack);
   }
 
   get canTrack() {
@@ -1794,7 +1800,7 @@ export class Builder {
     let instance: Builder = this;
     if (!Builder.isBrowser) {
       instance = new Builder(options.apiKey || this.apiKey, options.req, options.res);
-      instance.setUserAttributes(this.getUserAttributes())
+      instance.setUserAttributes(this.getUserAttributes());
     } else {
       if (options.apiKey && !this.apiKey) {
         this.apiKey = options.apiKey;
@@ -2310,7 +2316,7 @@ export class Builder {
     let instance: Builder = this;
     if (!Builder.isBrowser) {
       instance = new Builder(options.apiKey || this.apiKey, options.req, options.res);
-      instance.setUserAttributes(this.getUserAttributes())
+      instance.setUserAttributes(this.getUserAttributes());
     } else {
       if (options.apiKey && !this.apiKey) {
         this.apiKey = options.apiKey;
@@ -2325,7 +2331,9 @@ export class Builder {
           options.key ||
           // Make the key include all options so we don't reuse cache for the same conent fetched
           // with different options
-          Builder.isBrowser ? `${modelName}:${hash(omit(options, 'initialContent', 'req', 'res'))}` : undefined,
+          Builder.isBrowser
+            ? `${modelName}:${hash(omit(options, 'initialContent', 'req', 'res'))}`
+            : undefined,
       })
       .promise();
   }
