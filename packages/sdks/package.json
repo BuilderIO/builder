@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "react-native": "^0.64.2",
-    "react-native-render-html": "^5.1.1"
+    "react-native-render-html": "^5.1.1",
+    "vue": "^2.6.14"
   }
 }
