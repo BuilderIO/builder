@@ -17,7 +17,7 @@ export interface ColumnProps {
   reverseColumnsWhenStacked?: boolean;
 }
 
-export default function Column(props: ColumnProps) {
+export default function Columns(props: ColumnProps) {
   const state = useState({
     // TODO: These methods are not used right now, but they will be when
     // support for dynamic CSS lands

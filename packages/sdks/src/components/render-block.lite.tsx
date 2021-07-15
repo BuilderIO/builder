@@ -1,4 +1,4 @@
-import { useState } from '@jsx-lite/core';
+import { useState, Show } from '@jsx-lite/core';
 import { sizes } from '../constants/device-sizes.constant';
 import { components } from '../functions/register-component';
 import { BuilderBlock } from '../types/builder-block';
@@ -7,9 +7,9 @@ export type RenderBlockProps = {
   block: BuilderBlock;
 };
 
-// TODO: bindings
-// TODO: responsive styles
 export default function RenderBlock(props: RenderBlockProps) {
+  // TODO: bindings
+  // TODO: responsive styles
   const state = useState({
     get component() {
       return components[props.block.component?.name];
@@ -47,14 +47,18 @@ export default function RenderBlock(props: RenderBlockProps) {
 
   return (
     <>
-      {state.componentInfo?.noWrap && (
-        <state.componentRef {...state.componentInfo?.options} css={state.css} />
-      )}
-      {!state.componentInfo?.noWrap && (
-        <state.tagName {...state.properties} css={state.css}>
-          {state.componentRef() && <state.componentRef {...state.componentOptions} />}
+      <Show when={state.componentInfo?.noWrap}>
+        <state.componentRef
+          attributes={state.properties}
+          {...state.componentInfo?.options}
+          style={state.css}
+        />
+      </Show>
+      <Show when={!state.componentInfo?.noWrap}>
+        <state.tagName {...state.properties} style={state.css}>
+          {state.componentRef && <state.componentRef {...state.componentOptions} />}
         </state.tagName>
-      )}
+      </Show>
     </>
   );
 }

@@ -1,4 +1,10 @@
-import { componentToReactNative, parseJsx } from '@jsx-lite/core';
+import {
+  componentToReact,
+  componentToReactNative,
+  componentToVue,
+  JSXLiteComponent,
+  parseJsx,
+} from '@jsx-lite/core';
 import * as esbuild from 'esbuild';
 import * as glob from 'fast-glob';
 import { outputFile, readFile } from 'fs-extra';
@@ -9,13 +15,37 @@ const TARGETS = ['react-native', 'vue', 'react'];
 
 export async function build() {
   const jsFiles = await buildTsFiles();
-  const tsLiteFiles = await glob(`${cwd}/src/**/*.lite.tsx`);
+  const tsLiteFiles = await Promise.all(
+    (await glob(`${cwd}/src/**/*.lite.tsx`)).map(async path => ({
+      path,
+      jsxLiteJson: parseJsx(await readFile(path, 'utf8')),
+    }))
+  );
 
   await Promise.all(
     TARGETS.map(async target => {
-      await outputTsFiles(target, jsFiles);
+      await Promise.all([outputTsFiles(target, jsFiles), outputTsxLiteFiles(target, tsLiteFiles)]);
     })
   );
+}
+
+async function outputTsxLiteFiles(
+  target: string,
+  files: { path: string; jsxLiteJson: JSXLiteComponent }[]
+) {
+  const output = files.map(({ path, jsxLiteJson }) => {
+    const transpiled =
+      target === 'react-native'
+        ? componentToReactNative(jsxLiteJson)
+        : target === 'vue'
+        ? componentToVue(jsxLiteJson)
+        : target === 'react'
+        ? componentToReact(jsxLiteJson)
+        : componentToReact(jsxLiteJson);
+
+    return outputFile(`${DIST_DIR}/${target}/${path.replace(/\.tsx?$/, '.js')}`, transpiled);
+  });
+  await Promise.all(output);
 }
 
 async function outputTsFiles(
