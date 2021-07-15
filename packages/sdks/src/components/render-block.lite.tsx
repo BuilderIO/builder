@@ -12,7 +12,7 @@ export default function RenderBlock(props: RenderBlockProps) {
   // TODO: responsive styles
   const state = useState({
     get component() {
-      return components[props.block.component?.name];
+      return components[props.block.component?.name!];
     },
     get componentInfo() {
       return this.component?.info;
@@ -27,7 +27,7 @@ export default function RenderBlock(props: RenderBlockProps) {
       return props.block.properties;
     },
     get css() {
-      const styles = {
+      const styles: any = {
         ...props.block.responsiveStyles?.large,
       };
 

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Image as ReactImage } from 'react-native';
 
 // Subset of Image props, many are irrelevant for native (such as altText, etc)
