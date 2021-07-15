@@ -1,5 +1,5 @@
 import { BuilderBlock } from '../types/builder-block';
-import RenderBlock from './render-block';
+import RenderBlock from './render-block.lite';
 
 export type RenderBlockProps = {
   blocks?: BuilderBlock[];

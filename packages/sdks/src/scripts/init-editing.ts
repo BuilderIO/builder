@@ -25,7 +25,7 @@ if (isBrowser()) {
           let result: any;
           let error: Error | null = null;
           try {
-            result = fn.apply(this, args);
+            result = fn.apply(null, args);
           } catch (err) {
             error = err;
           }

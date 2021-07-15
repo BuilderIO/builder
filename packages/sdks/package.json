@@ -2,7 +2,7 @@
   "name": "@builder.io/sdks",
   "version": "0.0.1",
   "scripts": {
-    "build": "jsx-lite build",
+    "build": "ts-node build/build",
     "lint": "eslint"
   },
   "exports": {
@@ -13,17 +13,21 @@
     "./html/*": "./dist/html/src/*.js",
     "./solid/*": "./dist/solid/src/*.js"
   },
-  "dependencies": {
+  "dependencies": {},
+  "devDependencies": {
     "@jsx-lite/cli": "^1.0.1",
     "@jsx-lite/core": "0.0.44-12",
     "@jsx-lite/eslint-plugin": "0.0.2",
+    "@swc/core": "^1.2.64",
     "@types/react": "^17.0.13",
+    "esbuild": "^0.12.15",
     "eslint": "^7.21.0",
-    "react": "^17.0.2"
-  },
-  "devDependencies": {
+    "fast-glob": "^3.2.7",
+    "fs-extra": "^10.0.0",
+    "react": "^17.0.2",
     "react-native": "^0.64.2",
     "react-native-render-html": "^5.1.1",
+    "ts-node": "^10.1.0",
     "vue": "^2.6.14"
   }
 }

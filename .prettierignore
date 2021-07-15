@@ -6,4 +6,3 @@ dist
 .cache
 docs
 .nuxt
-build
