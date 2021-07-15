@@ -1,7 +1,6 @@
 export type Size = 'large' | 'medium' | 'small' | 'xsmall';
 export const sizeNames: Size[] = ['xsmall', 'small', 'medium', 'large'];
 
-// TODO: put in @builder.io/core
 export const sizes = {
   xsmall: {
     min: 0,

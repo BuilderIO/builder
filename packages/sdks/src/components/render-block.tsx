@@ -1,49 +1,59 @@
+import { useState } from '@jsx-lite/core';
+import { sizes } from '../constants/device-sizes.constant';
 import { components } from '../functions/register-component';
 import { BuilderBlock } from '../types/builder-block';
-import { Component } from './component';
 
 export type RenderBlockProps = {
   block: BuilderBlock;
 };
 
 // TODO: bindings
+// TODO: responsive styles
 export default function RenderBlock(props: RenderBlockProps) {
-  function getComponent() {
-    return components[props.block.component?.name];
-  }
+  const state = useState({
+    get component() {
+      return components[props.block.component?.name];
+    },
+    get componentInfo() {
+      return this.component?.info;
+    },
+    get componentRef() {
+      return this.component?.ref;
+    },
+    get tagName() {
+      return props.block.tagName || 'div';
+    },
+    get properties() {
+      return props.block.properties;
+    },
+    get css() {
+      const styles = {
+        ...props.block.responsiveStyles?.large,
+      };
 
-  function getComponentInfo() {
-    return getComponent().info;
-  }
+      if (props.block.responsiveStyles?.medium) {
+        styles[`@media (max-width: ${sizes.medium}`] = props.block.responsiveStyles?.medium;
+      }
+      if (props.block.responsiveStyles?.small) {
+        styles[`@media (max-width: ${sizes.medium}`] = props.block.responsiveStyles?.medium;
+      }
 
-  function getComponentRef() {
-    return getComponent()?.ref;
-  }
-
-  function getTagName() {
-    return props.block.tagName || 'div';
-  }
-
-  function getProperties() {
-    return props.block.properties || {};
-  }
-
-  function getCss() {
-    // TODO: responsive @media queries too
-    return props.block.responsiveStyles?.large || {};
-  }
+      return styles;
+    },
+    get componentOptions() {
+      return props.block.component?.options;
+    },
+  });
 
   return (
     <>
-      {getComponentInfo().noWrap && (
-        <Component is={getComponentRef()} {...getComponentInfo().options} css={getCss()} />
+      {state.componentInfo?.noWrap && (
+        <state.componentRef {...state.componentInfo?.options} css={state.css} />
       )}
-      {!getComponentInfo().noWrap && (
-        <Component is={getTagName()} {...getProperties()} css={getCss()}>
-          {getComponentRef() && (
-            <Component is={getComponentRef()} {...getComponentInfo().options} />
-          )}
-        </Component>
+      {!state.componentInfo?.noWrap && (
+        <state.tagName {...state.properties} css={state.css}>
+          {state.componentRef() && <state.componentRef {...state.componentOptions} />}
+        </state.tagName>
       )}
     </>
   );
