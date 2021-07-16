@@ -15,7 +15,7 @@ export const transpile = async ({
 }) => {
   try {
     const output = await esbuild.transform(content ?? (await readFile(path, 'utf8')), {
-      format: format || 'cjs',
+      format: format || (target === 'react-native' ? 'esm' : 'cjs'),
       loader: 'tsx',
       target: 'es6',
     });

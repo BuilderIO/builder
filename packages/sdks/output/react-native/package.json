@@ -2,7 +2,7 @@
   "name": "@builder.io/sdk-react-native",
   "description": "Builder.io SDK for React Native",
   "version": "0.0.0",
-  "module": "src/index.js",
+  "main": "src/index.js",
   "dependencies": {
     "react-native-render-html": "^5.1.1"
   },

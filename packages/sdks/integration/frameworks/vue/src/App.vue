@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { RenderContent, Text } from '@builder.io/sdk-vue';
+import { RenderContent } from '@builder.io/sdk-vue';
 
 // TODO: .d.ts compilation for the JSX Lite SDK code
 const content = {
@@ -49,12 +49,9 @@ const content = {
 
 export default {
   name: 'App',
-  data: () => ({ content, text: 'hi' }),
+  data: () => ({ content }),
   components: {
     RenderContent,
-    Text,
   },
 };
 </script>
-
-<style></style>
