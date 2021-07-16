@@ -1,5 +1,8 @@
 import { useState, Show } from '@jsx-lite/core';
-import { sizes } from '../constants/device-sizes.constant';
+import { getBlockComponentOptions } from '../functions/get-block-component-options';
+import { getBlockProperties } from '../functions/get-block-properties';
+import { getBlockStyles } from '../functions/get-block-styles';
+import { getBlockTag } from '../functions/get-block-tag';
 import { components } from '../functions/register-component';
 import { BuilderBlock } from '../types/builder-block';
 
@@ -21,27 +24,16 @@ export default function RenderBlock(props: RenderBlockProps) {
       return state.component?.ref;
     },
     get tagName() {
-      return props.block.tagName || 'div';
+      return getBlockTag(props.block);
     },
     get properties() {
-      return props.block.properties;
+      return getBlockProperties(props.block);
     },
     get css() {
-      const styles: any = {
-        ...props.block.responsiveStyles?.large,
-      };
-
-      if (props.block.responsiveStyles?.medium) {
-        styles[`@media (max-width: ${sizes.medium}`] = props.block.responsiveStyles?.medium;
-      }
-      if (props.block.responsiveStyles?.small) {
-        styles[`@media (max-width: ${sizes.small}`] = props.block.responsiveStyles?.small;
-      }
-
-      return styles;
+      return getBlockStyles(props.block);
     },
     get componentOptions() {
-      return props.block.component?.options;
+      return getBlockComponentOptions(props.block);
     },
   });
 

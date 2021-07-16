@@ -8,6 +8,8 @@ import {
 import * as esbuild from 'esbuild';
 import * as glob from 'fast-glob';
 import { outputFile, readFile, remove } from 'fs-extra';
+import * as vueCompilerSfc from '@vue/compiler-sfc';
+import * as dedent from 'dedent'
 
 const cwd = process.cwd();
 const DIST_DIR = `${cwd}/output`;
@@ -81,6 +83,10 @@ async function clean() {
   );
 }
 
+function getSimpleId() {
+  return String(Math.random()).split('.')[1].toString(36);
+}
+
 async function outputOverrides(target: TARGET) {
   const files = await glob([`overrides/${target}/**/*`, `!overrides/${target}/node_modules/**/*`]);
   await Promise.all(
@@ -120,11 +126,54 @@ async function outputTsxLiteFiles(
     if (esbuildTranspile) {
       transpiled = await transpile({ path, content: transpiled, target });
     }
+    const vueCompile = target === 'vue';
+    if (vueCompile) {
+      const rootPath = `${DIST_DIR}/${target}/${path.replace(/\.lite\.tsx$/, '')}`;
+      const parsed = vueCompilerSfc.parse(transpiled);
+      const id = getSimpleId();
 
-    return outputFile(
-      `${DIST_DIR}/${target}/${path.replace(/\.lite\.tsx$/, target === 'vue' ? '.vue' : '.js')}`,
-      transpiled
-    );
+      const compiledTemplate = vueCompilerSfc.compileTemplate({
+        filename: path,
+        source: parsed.descriptor.template.content,
+        id,
+      });
+      if (compiledTemplate.errors.length) {
+        console.warn(`Vue template compiler errors in file ${path}`, compiledTemplate.errors);
+        console.warn(transpiled);
+      }
+      const compiledScript = vueCompilerSfc.compileScript(parsed.descriptor, {
+        id: id,
+      });
+
+      const compiledStyles = vueCompilerSfc.compileStyle({
+        id,
+        filename: path,
+        source: transpiled,
+      });
+      if (compiledStyles.errors.length > 1) {
+        console.warn(`Vue style compiler errors in file ${path}`, compiledTemplate.errors);
+        console.warn(transpiled);
+      }
+
+      // Via https://www.npmjs.com/package/@vue/compiler-sfc
+      const entry = dedent`      
+        import script from './script'
+        import { render } from './render'
+        import './styles.css'
+
+        script.render = render
+
+        export default script
+      `;
+      await Promise.all([
+        outputFile(`${rootPath}/index.js`, entry),
+        outputFile(`${rootPath}/script.js`, compiledScript.content),
+        outputFile(`${rootPath}/render.js`, compiledTemplate.code),
+        outputFile(`${rootPath}/styles.css`, compiledStyles.code),
+      ]);
+    } else {
+      return outputFile(`${DIST_DIR}/${target}/${path.replace(/\.lite\.tsx$/, '.js')}`, transpiled);
+    }
   });
   await Promise.all(output);
 }
