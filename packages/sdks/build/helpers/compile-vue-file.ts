@@ -1,11 +1,14 @@
+import { JSXLiteComponent } from '@jsx-lite/core';
 import * as vueCompilerSfc from '@vue/compiler-sfc';
 import * as dedent from 'dedent';
 import { getSimpleId } from './get-simple-id';
+import json5 from 'json5';
 
 export type CompileVueFileOptions = {
   distDir: string;
   path: string;
   contents: string;
+  jsxLiteComponent: JSXLiteComponent;
 };
 
 export type FileSpec = {
@@ -48,7 +51,9 @@ export async function compileVueFile(options: CompileVueFileOptions): Promise<Fi
     console.warn(options.contents);
   }
 
-  // Via https://www.npmjs.com/package/@vue/compiler-sfc
+  const registerComponentHook = options.jsxLiteComponent.meta.registerComponent;
+
+  // Via https://www.npmjs.com/package/@vue/compiler-sfc README
   const entry = dedent`      
     import script from './script'
     import { render } from './render'
@@ -56,6 +61,14 @@ export async function compileVueFile(options: CompileVueFileOptions): Promise<Fi
 
     script.render = render
 
+    ${
+      !registerComponentHook
+        ? ''
+        : dedent`
+          import { registerComponent } from '@builder.io/sdk-vue'
+          registerComponent(script, ${json5.stringify(registerComponentHook)})
+        `
+    }
     export default script
   `;
 

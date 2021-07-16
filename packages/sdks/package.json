@@ -28,6 +28,7 @@
     "eslint": "^7.21.0",
     "fast-glob": "^3.2.7",
     "fs-extra": "^10.0.0",
+    "json5": "^2.2.0",
     "react": "^17.0.2",
     "react-native": "^0.64.2",
     "react-native-render-html": "^5.1.1",

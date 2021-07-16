@@ -1,4 +1,5 @@
 import { useState, For } from '@jsx-lite/core';
+import { registerComponent } from '../functions/register-component';
 
 type Column = {
   content: any;
@@ -59,3 +60,5 @@ export default function Columns(props: ColumnProps) {
     </div>
   );
 }
+
+registerComponent({ name: 'Columns' });

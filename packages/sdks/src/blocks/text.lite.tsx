@@ -4,4 +4,4 @@ export default function Text(props: { text: string }) {
   return <div className="builder-text" innerHTML={props.text} />;
 }
 
-registerComponent(Text, { name: 'Text' });
+registerComponent({ name: 'Text' });

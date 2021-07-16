@@ -9,6 +9,8 @@ import * as glob from 'fast-glob';
 import { outputFile, readFile, remove } from 'fs-extra';
 import { compileVueFile } from './helpers/compile-vue-file';
 import { transpile } from './helpers/transpile';
+import dedent from 'dedent';
+import json5 from 'json5';
 
 const cwd = process.cwd();
 const DIST_DIR = `${cwd}/output`;
@@ -21,7 +23,9 @@ export async function build() {
   const tsLiteFiles = await Promise.all(
     (await glob(`src/**/*.lite.tsx`, { cwd })).map(async path => ({
       path,
-      jsxLiteJson: parseJsx(await readFile(path, 'utf8')),
+      jsxLiteJson: parseJsx(await readFile(path, 'utf8'), {
+        jsonHookNames: ['registerComponent'],
+      }),
     }))
   );
 
@@ -80,6 +84,17 @@ async function outputTsxLiteFiles(
     const esbuildTranspile = target === 'react-native' || target === 'react';
     if (esbuildTranspile) {
       transpiled = await transpile({ path, content: transpiled, target });
+      const registerComponentHook = jsxLiteJson.meta.registerComponent;
+      if (registerComponentHook) {
+        transpiled = dedent`
+          import { registerComponent } from '@builder.io/sdk-${target}';
+
+          ${transpiled}
+
+          registerComponent(${jsxLiteJson.name}, ${json5.stringify(registerComponentHook)});
+        
+        `;
+      }
     }
     const vueCompile = target === 'vue';
     if (vueCompile) {
@@ -87,6 +102,7 @@ async function outputTsxLiteFiles(
         distDir: DIST_DIR,
         contents: transpiled,
         path,
+        jsxLiteComponent: jsxLiteJson,
       });
       await Promise.all(files.map(file => outputFile(file.path, file.contents)));
     } else {

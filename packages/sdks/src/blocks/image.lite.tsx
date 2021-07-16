@@ -1,4 +1,5 @@
 import {} from '@jsx-lite/core';
+import { registerComponent } from '../functions/register-component';
 
 export interface ImageProps {
   class?: string;
@@ -44,3 +45,5 @@ export default function Image(props: ImageProps) {
     </>
   );
 }
+
+registerComponent({ name: 'Image' });
