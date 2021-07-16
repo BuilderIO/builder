@@ -949,9 +949,7 @@ export class Builder {
   private preview = false;
 
   get browserTrackingDisabled() {
-    return Boolean(
-      Builder.isBrowser && (window as any).builderNoTrack
-    );
+    return Boolean(Builder.isBrowser && (window as any).builderNoTrack);
   }
 
   get canTrack() {
@@ -1794,7 +1792,7 @@ export class Builder {
     let instance: Builder = this;
     if (!Builder.isBrowser) {
       instance = new Builder(options.apiKey || this.apiKey, options.req, options.res);
-      instance.setUserAttributes(this.getUserAttributes())
+      instance.setUserAttributes(this.getUserAttributes());
     } else {
       if (options.apiKey && !this.apiKey) {
         this.apiKey = options.apiKey;
@@ -2310,7 +2308,7 @@ export class Builder {
     let instance: Builder = this;
     if (!Builder.isBrowser) {
       instance = new Builder(options.apiKey || this.apiKey, options.req, options.res);
-      instance.setUserAttributes(this.getUserAttributes())
+      instance.setUserAttributes(this.getUserAttributes());
     } else {
       if (options.apiKey && !this.apiKey) {
         this.apiKey = options.apiKey;
@@ -2325,7 +2323,9 @@ export class Builder {
           options.key ||
           // Make the key include all options so we don't reuse cache for the same conent fetched
           // with different options
-          Builder.isBrowser ? `${modelName}:${hash(omit(options, 'initialContent', 'req', 'res'))}` : undefined,
+          Builder.isBrowser
+            ? `${modelName}:${hash(omit(options, 'initialContent', 'req', 'res'))}`
+            : undefined,
       })
       .promise();
   }

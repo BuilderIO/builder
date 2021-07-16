@@ -21,7 +21,7 @@ function wrapHistoryPropertyWithCustomEvent(property: 'pushState' | 'replaceStat
   try {
     const anyHistory = history;
     const originalFunction = anyHistory[property];
-    anyHistory[property] = function(this: History) {
+    anyHistory[property] = function (this: History) {
       let rv = originalFunction.apply(this, arguments as any);
       let event = new CustomEvent(property, {
         detail: {

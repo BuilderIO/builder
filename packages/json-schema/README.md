@@ -12,9 +12,10 @@ builder content schema:
 
 ```json
 {
-  "$schema": "https://raw.githubusercontent.com/BuilderIO/builder/main/packages/json-schema/dist/BuilderContent.json",
+  "$schema": "https://raw.githubusercontent.com/BuilderIO/builder/main/packages/json-schema/dist/BuilderContent.json"
 }
 ```
 
 Specific editor integration instructions:
-  - [VSCode](https://code.visualstudio.com/Docs/languages/json#_json-schemas-and-settings)
+
+- [VSCode](https://code.visualstudio.com/Docs/languages/json#_json-schemas-and-settings)
