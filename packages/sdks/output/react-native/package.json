@@ -1,5 +1,5 @@
 {
-  "name": "@builder.io/react-native",
+  "name": "@builder.io/sdk-react-native",
   "description": "Builder.io SDK for React Native",
   "version": "0.0.0",
   "dependencies": {

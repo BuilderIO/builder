@@ -9,8 +9,8 @@ import * as glob from 'fast-glob';
 import { outputFile, readFile, remove } from 'fs-extra';
 import { compileVueFile } from './helpers/compile-vue-file';
 import { transpile } from './helpers/transpile';
-import dedent from 'dedent';
-import json5 from 'json5';
+import * as dedent from 'dedent';
+import * as json5 from 'json5';
 
 const cwd = process.cwd();
 const DIST_DIR = `${cwd}/output`;
