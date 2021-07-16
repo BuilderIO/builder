@@ -53,11 +53,13 @@ export async function compileVueFile(options: CompileVueFileOptions): Promise<Fi
 
   const registerComponentHook = options.jsxLiteComponent.meta.registerComponent;
 
+  const fileName = rootPath.split('/').pop();
+
   // Via https://www.npmjs.com/package/@vue/compiler-sfc README
   const entry = dedent`      
-    import script from './script'
-    import { render } from './render'
-    import './styles.css'
+    import script from './${fileName}_script'
+    import { render } from './${fileName}_render'
+    import './${fileName}_styles.css'
 
     script.render = render
 
@@ -72,10 +74,15 @@ export async function compileVueFile(options: CompileVueFileOptions): Promise<Fi
     export default script
   `;
 
+  let scriptContents = compiledScript.content;
+  // Remove .lite extensions from imports without having to load a slow parser like babel
+  // E.g. convert `import { foo } from './block.lite';` -> `import { foo } from './block';`
+  scriptContents = scriptContents.replace(/\.lite(['"];)/g, '$1');
+
   return [
-    { path: `${rootPath}/index.js`, contents: entry },
-    { path: `${rootPath}/script.js`, contents: compiledScript.content },
-    { path: `${rootPath}/render.js`, contents: compiledTemplate.code },
-    { path: `${rootPath}/styles.css`, contents: compiledStyles.code },
+    { path: `${rootPath}.js`, contents: entry },
+    { path: `${rootPath}_script.js`, contents: scriptContents },
+    { path: `${rootPath}_render.js`, contents: compiledTemplate.code },
+    { path: `${rootPath}_styles.css`, contents: compiledStyles.code },
   ];
 }

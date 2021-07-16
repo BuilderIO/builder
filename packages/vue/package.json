@@ -14,6 +14,7 @@
     "release:patch": "npm run build && npm version patch && ALLOW_PUBLISH=true npm publish"
   },
   "main": "./dist/builder.common.js",
+  "module": "./dist/builder.common.js",
   "dependencies": {
     "@builder.io/sdk": "^1.1.21",
     "vue": "^2.6.11"

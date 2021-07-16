@@ -3,6 +3,7 @@
   "description": "Builder.io SDK for Vue",
   "version": "0.0.0",
   "dependencies": {},
+  "main": "src/index.js",
   "peerDependencies": {
     "vue": ">= 2"
   }
