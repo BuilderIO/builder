@@ -17,7 +17,7 @@ export default function RenderBlock(props: RenderBlockProps) {
     get componentInfo() {
       return state.component?.info;
     },
-    get componentRef() {
+    get √componentRef() {
       return state.component?.ref;
     },
     get tagName() {
