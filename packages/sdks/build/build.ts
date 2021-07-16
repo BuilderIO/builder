@@ -32,13 +32,20 @@ export async function build() {
   );
 }
 
-const transpile = async (path: string, target?: TARGET) => {
+const transpile = async ({
+  path,
+  content,
+  target,
+}: {
+  path: string;
+  content?: string | null;
+  target?: TARGET;
+}) => {
   try {
-    const output = await esbuild.transform(await readFile(path, 'utf8'), {
+    const output = await esbuild.transform(content ?? (await readFile(path, 'utf8')), {
       format: 'esm',
       loader: 'tsx',
       target: 'es6',
-      jsx: 'transform',
     });
 
     if (output.warnings.length) {
@@ -49,8 +56,8 @@ const transpile = async (path: string, target?: TARGET) => {
 
     // esbuild does not add the react-native import, so we need to add it
     if (target === 'react-native') {
-      if (!contents.match(/from\s+['"]react-native['"]/)) {
-        contents = `import * as React from 'react-native';\n${output.code}`;
+      if (!contents.match(/from\s+['"]react['"]/)) {
+        contents = `import * as React from 'react';\n${output.code}`;
       }
     }
 
@@ -82,7 +89,7 @@ async function outputOverrides(target: TARGET) {
 
       const esbuildTranspile = file.match(/\.tsx?$/);
       if (esbuildTranspile) {
-        const output = await transpile(file, target);
+        contents = await transpile({ path: file, target });
       }
 
       await outputFile(
@@ -111,7 +118,7 @@ async function outputTsxLiteFiles(
 
     const esbuildTranspile = target === 'react-native' || target === 'react';
     if (esbuildTranspile) {
-      transpiled = await transpile(path);
+      transpiled = await transpile({ path, content: transpiled, target });
     }
 
     return outputFile(
@@ -122,7 +129,7 @@ async function outputTsxLiteFiles(
   await Promise.all(output);
 }
 
-async function outputTsFiles(target: TARGET, files: { path: string; output: stringF }[]) {
+async function outputTsFiles(target: TARGET, files: { path: string; output: string }[]) {
   const output = files.map(({ path, output }) => {
     return outputFile(`${DIST_DIR}/${target}/${path.replace(/\.tsx?$/, '.js')}`, output);
   });
@@ -136,7 +143,7 @@ async function buildTsFiles() {
 
   return await Promise.all(
     tsFiles.map(async path => {
-      const output = await transpile(path);
+      const output = await transpile({ path });
 
       return {
         path,

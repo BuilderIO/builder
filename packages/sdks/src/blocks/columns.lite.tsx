@@ -18,26 +18,26 @@ export interface ColumnProps {
 }
 
 export default function Columns(props: ColumnProps) {
-  const state = useState({
-    // TODO: These methods are not used right now, but they will be when
-    // support for dynamic CSS lands
-    getColumns(): Column[] {
-      return props.columns || [];
-    },
-    getGutterSize(): number {
-      return typeof props.space === 'number' ? props.space || 0 : 20;
-    },
-    getWidth(index: number) {
-      const columns = this.getColumns();
-      return (columns[index] && columns[index].width) || 100 / columns.length;
-    },
-    getColumnCssWidth(index: number) {
-      const columns = this.getColumns();
-      const gutterSize = this.getGutterSize();
-      const subtractWidth = (gutterSize * (columns.length - 1)) / columns.length;
-      return `calc(${this.getWidth(index)}% - ${subtractWidth}px)`;
-    },
-  });
+  // const state = useState({
+  //   // TODO: These methods are not used right now, but they will be when
+  //   // support for dynamic CSS lands
+  //   getColumns(): Column[] {
+  //     return props.columns || [];
+  //   },
+  //   getGutterSize(): number {
+  //     return typeof props.space === 'number' ? props.space || 0 : 20;
+  //   },
+  //   getWidth(index: number) {
+  //     const columns = this.getColumns();
+  //     return (columns[index] && columns[index].width) || 100 / columns.length;
+  //   },
+  //   getColumnCssWidth(index: number) {
+  //     const columns = this.getColumns();
+  //     const gutterSize = this.getGutterSize();
+  //     const subtractWidth = (gutterSize * (columns.length - 1)) / columns.length;
+  //     return `calc(${this.getWidth(index)}% - ${subtractWidth}px)`;
+  //   },
+  // });
 
   return (
     <div

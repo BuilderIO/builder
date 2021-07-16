@@ -42,6 +42,8 @@ export default function RenderContent(props: RenderContentProps) {
     if (isBrowser()) {
       window.addEventListener('message', processMessage);
     }
+
+    console.log('state.content', state.content);
   });
 
   onUnMount(() => {

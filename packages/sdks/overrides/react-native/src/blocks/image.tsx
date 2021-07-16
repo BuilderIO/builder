@@ -12,7 +12,7 @@ export interface ImageProps {
 }
 
 // TODO: support children
-export function Image(props: ImageProps) {
+export default function Image(props: ImageProps) {
   return (
     <ReactImage
       style={{

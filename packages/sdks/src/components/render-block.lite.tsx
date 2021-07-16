@@ -15,10 +15,10 @@ export default function RenderBlock(props: RenderBlockProps) {
       return components[props.block.component?.name!];
     },
     get componentInfo() {
-      return this.component?.info;
+      return state.component?.info;
     },
     get componentRef() {
-      return this.component?.ref;
+      return state.component?.ref;
     },
     get tagName() {
       return props.block.tagName || 'div';
@@ -35,7 +35,7 @@ export default function RenderBlock(props: RenderBlockProps) {
         styles[`@media (max-width: ${sizes.medium}`] = props.block.responsiveStyles?.medium;
       }
       if (props.block.responsiveStyles?.small) {
-        styles[`@media (max-width: ${sizes.medium}`] = props.block.responsiveStyles?.medium;
+        styles[`@media (max-width: ${sizes.small}`] = props.block.responsiveStyles?.small;
       }
 
       return styles;
