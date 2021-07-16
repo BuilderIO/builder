@@ -11,8 +11,6 @@ export type RenderBlockProps = {
 };
 
 export default function RenderBlock(props: RenderBlockProps) {
-  // TODO: bindings
-  // TODO: responsive styles
   const state = useState({
     get component() {
       return components[props.block.component?.name!];
@@ -24,7 +22,7 @@ export default function RenderBlock(props: RenderBlockProps) {
       return state.component?.ref;
     },
     get tagName() {
-      return getBlockTag(props.block);
+      return getBlockTag(props.block) as any;
     },
     get properties() {
       return getBlockProperties(props.block);

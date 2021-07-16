@@ -5,16 +5,15 @@ import {
   JSXLiteComponent,
   parseJsx,
 } from '@jsx-lite/core';
-import * as esbuild from 'esbuild';
 import * as glob from 'fast-glob';
 import { outputFile, readFile, remove } from 'fs-extra';
-import * as vueCompilerSfc from '@vue/compiler-sfc';
-import * as dedent from 'dedent'
+import { compileVueFile } from './helpers/compile-vue-file';
+import { transpile } from './helpers/transpile';
 
 const cwd = process.cwd();
 const DIST_DIR = `${cwd}/output`;
 const TARGETS: TARGET[] = ['react-native', 'vue', 'react'];
-type TARGET = 'react-native' | 'vue' | 'react';
+export type TARGET = 'react-native' | 'vue' | 'react';
 
 export async function build() {
   await clean();
@@ -34,46 +33,6 @@ export async function build() {
   );
 }
 
-const transpile = async ({
-  path,
-  content,
-  target,
-}: {
-  path: string;
-  content?: string | null;
-  target?: TARGET;
-}) => {
-  try {
-    const output = await esbuild.transform(content ?? (await readFile(path, 'utf8')), {
-      format: 'esm',
-      loader: 'tsx',
-      target: 'es6',
-    });
-
-    if (output.warnings.length) {
-      console.warn(`Warnings found in file: ${path}`, output.warnings);
-    }
-
-    let contents = output.code;
-
-    // esbuild does not add the react-native import, so we need to add it
-    if (target === 'react-native') {
-      if (!contents.match(/from\s+['"]react['"]/)) {
-        contents = `import * as React from 'react';\n${output.code}`;
-      }
-    }
-
-    // Remove .lite extensions from imports without having to load a slow parser like babel
-    // E.g. convert `import { foo } from './block.lite';` -> `import { foo } from './block';`
-    contents = contents.replace(/\.lite(['"];)/g, '$1');
-
-    return contents;
-  } catch (e) {
-    console.error(`Error found in file: ${path}`);
-    throw e;
-  }
-};
-
 async function clean() {
   const files = await glob('output/*/src/**/*');
   await Promise.all(
@@ -81,10 +40,6 @@ async function clean() {
       await remove(file);
     })
   );
-}
-
-function getSimpleId() {
-  return String(Math.random()).split('.')[1].toString(36);
 }
 
 async function outputOverrides(target: TARGET) {
@@ -128,49 +83,12 @@ async function outputTsxLiteFiles(
     }
     const vueCompile = target === 'vue';
     if (vueCompile) {
-      const rootPath = `${DIST_DIR}/${target}/${path.replace(/\.lite\.tsx$/, '')}`;
-      const parsed = vueCompilerSfc.parse(transpiled);
-      const id = getSimpleId();
-
-      const compiledTemplate = vueCompilerSfc.compileTemplate({
-        filename: path,
-        source: parsed.descriptor.template.content,
-        id,
+      const files = await compileVueFile({
+        distDir: DIST_DIR,
+        contents: transpiled,
+        path,
       });
-      if (compiledTemplate.errors.length) {
-        console.warn(`Vue template compiler errors in file ${path}`, compiledTemplate.errors);
-        console.warn(transpiled);
-      }
-      const compiledScript = vueCompilerSfc.compileScript(parsed.descriptor, {
-        id: id,
-      });
-
-      const compiledStyles = vueCompilerSfc.compileStyle({
-        id,
-        filename: path,
-        source: transpiled,
-      });
-      if (compiledStyles.errors.length > 1) {
-        console.warn(`Vue style compiler errors in file ${path}`, compiledTemplate.errors);
-        console.warn(transpiled);
-      }
-
-      // Via https://www.npmjs.com/package/@vue/compiler-sfc
-      const entry = dedent`      
-        import script from './script'
-        import { render } from './render'
-        import './styles.css'
-
-        script.render = render
-
-        export default script
-      `;
-      await Promise.all([
-        outputFile(`${rootPath}/index.js`, entry),
-        outputFile(`${rootPath}/script.js`, compiledScript.content),
-        outputFile(`${rootPath}/render.js`, compiledTemplate.code),
-        outputFile(`${rootPath}/styles.css`, compiledStyles.code),
-      ]);
+      await Promise.all(files.map(file => outputFile(file.path, file.contents)));
     } else {
       return outputFile(`${DIST_DIR}/${target}/${path.replace(/\.lite\.tsx$/, '.js')}`, transpiled);
     }

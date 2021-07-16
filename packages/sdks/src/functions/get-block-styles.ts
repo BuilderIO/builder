@@ -1,4 +1,4 @@
-import { sizes } from '../constants/device-sizes.constant';
+import { sizes } from '../constants/device-sizes';
 import { BuilderBlock } from '../types/builder-block';
 
 export function getBlockStyles(block: BuilderBlock) {
