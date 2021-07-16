@@ -8,13 +8,8 @@ export const components: Record<string, any> = {};
 export function registerComponent(ref: any, info: ComponentInfo) {
   components[info.name] = ref;
 
-  const useInfo = {
-    class: ref,
-    ...info,
-  };
-
   if (isBrowser()) {
-    const sendInfo = prepareComponentInfoToSend(useInfo);
+    const sendInfo = prepareComponentInfoToSend(info);
     window.parent?.postMessage(
       {
         type: 'builder.registerComponent',
