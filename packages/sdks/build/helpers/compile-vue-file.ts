@@ -3,6 +3,7 @@ import * as vueCompilerSfc from '@vue/compiler-sfc';
 import * as dedent from 'dedent';
 import { getSimpleId } from './get-simple-id';
 import * as json5 from 'json5';
+import * as esbuild from 'esbuild';
 
 export type CompileVueFileOptions = {
   distDir: string;
@@ -15,6 +16,24 @@ export type FileSpec = {
   path: string;
   contents: string;
 };
+
+async function toCjs(path: string, contents: string) {
+  try {
+    const output = await esbuild.transform(contents, {
+      format: 'cjs',
+      target: 'es6',
+    });
+
+    if (output.warnings.length) {
+      console.warn(`Warnings found in file: ${path}`, output.warnings);
+    }
+
+    return output.code;
+  } catch (err) {
+    console.error(`Failed to transform file ${path}`, contents);
+    throw err;
+  }
+}
 
 export async function compileVueFile(options: CompileVueFileOptions): Promise<FileSpec[]> {
   const rootPath = `${options.distDir}/vue/${options.path.replace(/\.lite\.tsx$/, '')}`;
@@ -67,7 +86,7 @@ export async function compileVueFile(options: CompileVueFileOptions): Promise<Fi
       !registerComponentHook
         ? ''
         : dedent`
-          import { registerComponent } from '@builder.io/sdk-vue'
+          import { registerComponent } from '../functions/register-component'
           registerComponent(script, ${json5.stringify(registerComponentHook)})
         `
     }
@@ -79,10 +98,20 @@ export async function compileVueFile(options: CompileVueFileOptions): Promise<Fi
   // E.g. convert `import { foo } from './block.lite';` -> `import { foo } from './block';`
   scriptContents = scriptContents.replace(/\.lite(['"];)/g, '$1');
 
-  return [
-    { path: `${rootPath}.js`, contents: entry },
-    { path: `${rootPath}_script.js`, contents: scriptContents },
-    { path: `${rootPath}_render.js`, contents: compiledTemplate.code },
-    { path: `${rootPath}_styles.css`, contents: compiledStyles.code },
-  ];
+  return await Promise.all(
+    [
+      { path: `${rootPath}.original.vue`, contents: options.contents },
+      { path: `${rootPath}.js`, contents: entry },
+      { path: `${rootPath}_script.js`, contents: scriptContents },
+      { path: `${rootPath}_render.js`, contents: compiledTemplate.code },
+      { path: `${rootPath}_styles.css`, contents: compiledStyles.code },
+    ].map(async item =>
+      item.path.endsWith('.js')
+        ? {
+            path: item.path,
+            contents: await toCjs(item.path, item.contents),
+          }
+        : item
+    )
+  );
 }

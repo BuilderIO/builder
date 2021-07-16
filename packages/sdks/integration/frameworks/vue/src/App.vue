@@ -1,13 +1,14 @@
-<template></template>
+<template>
+  <div>
+    <RenderContent :content="content" />
+  </div>
+</template>
 
-<script lang="ts">
-import Vue from 'vue'
-import { RenderContent } from '@builder.io/sdk-vue'
+<script>
+import { RenderContent, Text } from '@builder.io/sdk-vue';
 
 // TODO: .d.ts compilation for the JSX Lite SDK code
-type BuilderContent = any
-
-const content: BuilderContent = {
+const content = {
   data: {
     blocks: [
       {
@@ -33,7 +34,6 @@ const content: BuilderContent = {
             margin: '10px',
             padding: '20px',
             backgroundColor: 'white',
-            color: 'white',
           },
         },
         component: {
@@ -45,16 +45,16 @@ const content: BuilderContent = {
       },
     ],
   },
-}
+};
 
-console.log(RenderContent)
-
-export default Vue.extend({
-  data: () => ({
-    content,
-  }),
+export default {
+  name: 'App',
+  data: () => ({ content, text: 'hi' }),
   components: {
     RenderContent,
+    Text,
   },
-})
+};
 </script>
+
+<style></style>

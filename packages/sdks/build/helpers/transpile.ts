@@ -6,14 +6,16 @@ export const transpile = async ({
   path,
   content,
   target,
+  format,
 }: {
   path: string;
   content?: string | null;
   target?: TARGET;
+  format?: 'esm' | 'cjs';
 }) => {
   try {
     const output = await esbuild.transform(content ?? (await readFile(path, 'utf8')), {
-      format: 'esm',
+      format: format || 'cjs',
       loader: 'tsx',
       target: 'es6',
     });
@@ -33,7 +35,7 @@ export const transpile = async ({
 
     // Remove .lite extensions from imports without having to load a slow parser like babel
     // E.g. convert `import { foo } from './block.lite';` -> `import { foo } from './block';`
-    contents = contents.replace(/\.lite(['"];)/g, '$1');
+    contents = contents.replace(/\.lite(['"][;\)])/g, '$1');
 
     return contents;
   } catch (e) {

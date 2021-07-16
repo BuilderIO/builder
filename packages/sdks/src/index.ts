@@ -5,7 +5,8 @@ if (isEditing()) {
 }
 
 // TODO: lazy option
-export * from './blocks/columns.lite'
-export * from './blocks/image.lite'
-export * from './blocks/text.lite'
-export * from './components/render-content.lite'
+export { default as Columns } from './blocks/columns.lite';
+export { default as Image } from './blocks/image.lite';
+export { default as Text } from './blocks/text.lite';
+export { default as RenderContent } from './components/render-content.lite';
+export * from './functions/register-component';

@@ -81,13 +81,15 @@ async function outputTsxLiteFiles(
         ? componentToReact(jsxLiteJson)
         : (null as never);
 
+    const original = transpiled;
+
     const esbuildTranspile = target === 'react-native' || target === 'react';
     if (esbuildTranspile) {
       transpiled = await transpile({ path, content: transpiled, target });
       const registerComponentHook = jsxLiteJson.meta.registerComponent;
       if (registerComponentHook) {
         transpiled = dedent`
-          import { registerComponent } from '@builder.io/sdk-${target}';
+          import { registerComponent } from '../functions/register-component';
 
           ${transpiled}
 
@@ -106,7 +108,10 @@ async function outputTsxLiteFiles(
       });
       await Promise.all(files.map(file => outputFile(file.path, file.contents)));
     } else {
-      return outputFile(`${DIST_DIR}/${target}/${path.replace(/\.lite\.tsx$/, '.js')}`, transpiled);
+      return await Promise.all([
+        outputFile(`${DIST_DIR}/${target}/${path.replace(/\.lite\.tsx$/, '.js')}`, transpiled),
+        outputFile(`${DIST_DIR}/${target}/${path.replace(/\.original\.jsx$/, '.js')}`, original),
+      ]);
     }
   });
   await Promise.all(output);
