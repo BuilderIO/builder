@@ -10,51 +10,48 @@ export type RenderContentProps = {
 
 export default function RenderContent(props: RenderContentProps) {
   const state = useState({
-    get content() {
+    get useContent(): any {
       return state.overrideContent || props.content;
     },
     overrideContent: null,
-  });
+    processMessage(event: MessageEvent): void {
+      const { data } = event;
+      if (data) {
+        switch (data.type) {
+          case 'builder.contentUpdate': {
+            const key = data.data.key || data.data.alias || data.data.entry || data.data.modelName;
 
-  function processMessage(event: MessageEvent) {
-    const { data } = event;
-    if (data) {
-      switch (data.type) {
-        case 'builder.contentUpdate': {
-          const key = data.data.key || data.data.alias || data.data.entry || data.data.modelName;
+            const contentData = data.data.data; // oof
 
-          const contentData = data.data.data; // oof
-
-          if (key === props.model) {
-            state.overrideContent = contentData;
+            if (key === props.model) {
+              state.overrideContent = contentData;
+            }
+            break;
           }
-          break;
-        }
-        case 'builder.patchUpdates': {
-          // TODO
-          break;
+          case 'builder.patchUpdates': {
+            // TODO
+            break;
+          }
         }
       }
-    }
-  }
+    },
+  });
 
   onMount(() => {
     if (isBrowser()) {
-      window.addEventListener('message', processMessage);
+      window.addEventListener('message', state.processMessage);
     }
-
-    console.log('state.content', state.content);
   });
 
   onUnMount(() => {
     if (isBrowser()) {
-      window.removeEventListener('message', processMessage);
+      window.removeEventListener('message', state.processMessage);
     }
   });
 
   return (
     <>
-      {state.content?.data?.blocks?.map((block: any) => (
+      {state.useContent?.data?.blocks?.map((block: any) => (
         <RenderBlock block={block} />
       ))}
     </>

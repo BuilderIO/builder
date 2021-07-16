@@ -47,6 +47,11 @@ export default function RenderBlock(props: RenderBlockProps) {
       <Show when={!state.componentInfo?.noWrap}>
         <state.tagName {...state.properties} style={state.css}>
           {state.componentRef && <state.componentRef {...state.componentOptions} />}
+          <Show when={!state.componentRef && props.block.children && props.block.children.length}>
+            {props.block.children.map((block: any) => (
+              <RenderBlock block={block} />
+            ))}
+          </Show>
         </state.tagName>
       </Show>
     </>

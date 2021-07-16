@@ -1,6 +1,7 @@
 import {
   componentToReact,
   componentToReactNative,
+  componentToSolid,
   componentToVue,
   JSXLiteComponent,
   parseJsx,
@@ -11,15 +12,16 @@ import { compileVueFile } from './helpers/compile-vue-file';
 import { transpile } from './helpers/transpile';
 import * as dedent from 'dedent';
 import * as json5 from 'json5';
+import { transpileSolidFile } from './helpers/transpile-solid-file';
 
 const cwd = process.cwd();
 const DIST_DIR = `${cwd}/output`;
-const TARGETS: TARGET[] = ['react-native', 'vue', 'react'];
-export type TARGET = 'react-native' | 'vue' | 'react';
+const TARGETS: TARGET[] = ['react-native', 'vue', 'react', 'solid'];
+export type TARGET = 'react-native' | 'vue' | 'react' | 'solid' | 'svelte';
 
 export async function build() {
   await clean();
-  const jsFiles = await buildTsFiles();
+
   const tsLiteFiles = await Promise.all(
     (await glob(`src/**/*.lite.tsx`, { cwd })).map(async path => ({
       path,
@@ -31,6 +33,7 @@ export async function build() {
 
   await Promise.all(
     TARGETS.map(async target => {
+      const jsFiles = await buildTsFiles(target);
       await Promise.all([outputTsFiles(target, jsFiles), outputTsxLiteFiles(target, tsLiteFiles)]);
       await outputOverrides(target);
     })
@@ -79,9 +82,20 @@ async function outputTsxLiteFiles(
         ? componentToVue(jsxLiteJson)
         : target === 'react'
         ? componentToReact(jsxLiteJson)
+        : target === 'solid'
+        ? componentToSolid(jsxLiteJson)
         : (null as never);
 
     const original = transpiled;
+
+    const solidTranspile = target === 'solid';
+    if (solidTranspile) {
+      transpiled = await transpileSolidFile({
+        contents: transpiled,
+        path,
+        jsxLiteComponent: jsxLiteJson,
+      });
+    }
 
     const esbuildTranspile = target === 'react-native' || target === 'react';
     if (esbuildTranspile) {
@@ -124,14 +138,14 @@ async function outputTsFiles(target: TARGET, files: { path: string; output: stri
   await Promise.all(output);
 }
 
-async function buildTsFiles() {
+async function buildTsFiles(target: TARGET) {
   const tsFiles = await glob(`src/**/*.ts`, {
     cwd: cwd,
   });
 
   return await Promise.all(
     tsFiles.map(async path => {
-      const output = await transpile({ path });
+      const output = await transpile({ path, target });
 
       return {
         path,

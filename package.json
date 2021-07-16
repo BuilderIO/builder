@@ -7,6 +7,7 @@
     "@bazel/typescript": "^3.4.2",
     "@builder.io/block-publish": "^1.1.2",
     "@typescript-eslint/parser": "^4.28.3",
+    "babel-preset-solid": "^1.0.1",
     "lerna": "^3.20.2",
     "tslib": "^2.2.0",
     "typescript": "^4.0.0"

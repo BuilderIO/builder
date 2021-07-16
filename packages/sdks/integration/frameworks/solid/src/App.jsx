@@ -1,13 +1,8 @@
-<template>
-  <div>
-    <RenderContent model="page" :content="content" />
-  </div>
-</template>
+import logo from './logo.svg';
+import styles from './App.module.css';
 
-<script>
-import { RenderContent } from '@builder.io/sdk-vue';
+import { RenderContent } from '@builder.io/sdk-solid';
 
-// TODO: .d.ts compilation for the JSX Lite SDK code
 const content = {
   data: {
     blocks: [
@@ -47,11 +42,12 @@ const content = {
   },
 };
 
-export default {
-  name: 'App',
-  data: () => ({ content }),
-  components: {
-    RenderContent,
-  },
-};
-</script>
+function App() {
+  return (
+    <>
+      <RenderContent model="page" content={content} />
+    </>
+  );
+}
+
+export default App;
