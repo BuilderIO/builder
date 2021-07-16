@@ -6,7 +6,7 @@ export type ComponentInfo = any;
 export const components: Record<string, any> = {};
 
 export function registerComponent(ref: any, info: ComponentInfo) {
-  components[info.name] = ref;
+  components[info.name] = { ref, info };
 
   if (isBrowser()) {
     const sendInfo = prepareComponentInfoToSend(info);

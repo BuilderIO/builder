@@ -1,4 +1,5 @@
 import { Image as ReactImage } from 'react-native';
+import { registerComponent } from '../functions/register-component';
 
 // Subset of Image props, many are irrelevant for native (such as altText, etc)
 export interface ImageProps {
@@ -25,3 +26,5 @@ export default function Image(props: ImageProps) {
     />
   );
 }
+
+registerComponent(Image, { name: 'Image' });
