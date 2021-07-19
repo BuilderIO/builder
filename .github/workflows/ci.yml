@@ -21,9 +21,6 @@ jobs:
         with:
           node-version: 12
 
-      - name: NPM install
-        run: npm i --production
-
       - run: npm run ci:lint
 
   build:
