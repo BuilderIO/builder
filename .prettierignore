@@ -6,3 +6,5 @@ dist
 .cache
 docs
 .nuxt
+.expo
+build

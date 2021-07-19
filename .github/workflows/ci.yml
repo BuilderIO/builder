@@ -11,6 +11,11 @@ on:
       - master
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - run: npm run ci:lint
+
   build:
     runs-on: ubuntu-latest
 
@@ -42,10 +47,6 @@ jobs:
 
       - name: NPM install
         run: npm ci
-        working-directory: packages/${{ matrix.package }}
-
-      - name: Lint
-        run: npm run ci:lint --if-present
         working-directory: packages/${{ matrix.package }}
 
       - name: Build
