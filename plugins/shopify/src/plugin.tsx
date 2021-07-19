@@ -94,6 +94,7 @@ Builder.register('plugin', {
         await actions.updateSettings({
           hasConnected: true,
         });
+        await appState.globalState.showPluginDialog(pluginId, true);
       } catch (e) {
         console.error(e);
         appState.dialogs.alert(
