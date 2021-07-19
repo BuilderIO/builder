@@ -2,7 +2,7 @@
 
 ## About
 
-This is an early preview of our Builder.io SDK for React native. See [App.jsx](./App.jsx) for usage
+This is an early preview of our Builder.io SDK for React native. See [App.jsx](./App.jsx) for usage. The visual editing is powered by [react-native-web](https://github.com/necolas/react-native-web). This example uses [Expo](https://expo.io/), but Expo is not required for using Builder.io with React Native
 
 ## Getting Started
 
