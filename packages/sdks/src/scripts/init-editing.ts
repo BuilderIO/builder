@@ -8,6 +8,7 @@ if (isBrowser()) {
         // TODO: compile these in
         type: process.env.SDK_TYPE,
         version: process.env.SDK_VERSION,
+        supportsPatchUpdates: false,
       },
     },
     '*'
