@@ -45,7 +45,7 @@ const content = {
   },
 };
 
-function CustomComponent(props: { text: string }) {
+function CustomComponent(props) {
   return (
     <>
       <Text>I am a custom comopnent!</Text>
