@@ -6,6 +6,8 @@
     "@bazel/ibazel": "^0.15.10",
     "@bazel/typescript": "^3.4.2",
     "@builder.io/block-publish": "^1.1.2",
+    "@typescript-eslint/parser": "^4.28.3",
+    "babel-preset-solid": "^1.0.1",
     "lerna": "^3.20.2",
     "tslib": "^2.2.0",
     "typescript": "^4.0.0"
@@ -39,9 +41,11 @@
     "release:minor": "npm run verify-git-not-dirty && npm run _install && npm run bootstrap && npm run build && lerna version minor --yes && lerna run build:unpkg:dist --no-private && ALLOW_PUBLISH=true lerna publish from-package --yes",
     "release:prerelease:dev": "npm run build && lerna version prerelease --yes && lerna run build:unpkg:dist --no-private && ALLOW_PUBLISH=true lerna publish from-package --dist-tag dev --yes",
     "release:dev": "npm run _install && npm run bootstrap && npm run release:prerelease:dev",
-    "prepublishOnly": "block-publish"
+    "prepublishOnly": "block-publish",
+    "ci:lint": "npx prettier@2.0.5 --check '**/*.{js,jsx,ts,tsx}'",
+    "lint:fix": "prettier --write '**/*.{js,jsx,ts,tsx}'"
   },
   "dependencies": {
-    "prettier": "^2.0.5"
+    "prettier": "2.0.5"
   }
 }

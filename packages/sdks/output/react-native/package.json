@@ -1,0 +1,18 @@
+{
+  "name": "@builder.io/sdk-react-native",
+  "description": "Builder.io SDK for React Native",
+  "version": "0.0.1-1",
+  "main": "src/index.js",
+  "scripts": {
+    "release:dev": "npm version prerelease --no-git-tag-version && npm publish --tag dev --access public"
+  },
+  "dependencies": {
+    "react-native-render-html": "^5.1.1"
+  },
+  "peerDependencies": {
+    "react-native": "^0.64.2"
+  },
+  "devDependencies": {
+    "react-native": "^0.64.2"
+  }
+}

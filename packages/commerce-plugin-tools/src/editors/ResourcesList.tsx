@@ -8,7 +8,7 @@ import { CircularProgress, Button, Typography, Tooltip, IconButton } from '@mate
 import { Close } from '@material-ui/icons';
 import appState from '@builder.io/app-context';
 import { Resource } from '../interfaces/resource';
-import capitalize  from 'lodash/capitalize';
+import capitalize from 'lodash/capitalize';
 import pluralize from 'pluralize';
 import { CommerceAPIOperations } from '..';
 

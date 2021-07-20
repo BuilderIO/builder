@@ -42,8 +42,7 @@
     "semantic-release-prepare": "ts-node tools/semantic-release-prepare",
     "precommit": "lint-staged",
     "ci:test": "npm run test",
-    "ci:build": "npm run build",
-    "ci:lint": "npx prettier --check '**/*.{js,jsx,ts,tsx,md,json}'"
+    "ci:build": "npm run build"
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx,md,json}": [
