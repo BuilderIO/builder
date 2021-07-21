@@ -1,9 +1,8 @@
 import { registerCommercePlugin } from '@builder.io/commerce-plugin-tools';
-// Import Commerce module
-const commerceSdk: any = require('@chec/commerce.js/lib/index.js');
-
+import Commerce from '@chec/commerce.js';
+import pkg from '../package.json';
 // Define Commerce.js plugin ID. ID string should match package name.
-const pluginId = '@builder.io/plugin-commercejs';
+const pluginId = pkg.name;
 
 // Commerce.js Builder.io plugin for integrating products, categories and merchant
 // data from your Chec store
@@ -17,8 +16,9 @@ registerCommercePlugin(
         name: 'publicKey',
         type: 'string',
         required: true,
-        helperText: 'Get your public API key from your Chec dashboard (Developer > API keys in https://dashboard.chec.io/settings/developer)'
-      }
+        helperText:
+          'Get your public API key from your Chec dashboard (Developer > API keys in https://dashboard.chec.io/settings/developer)',
+      },
     ],
     ctaText: `Connect your Commerce.js store`,
   },
@@ -27,7 +27,7 @@ registerCommercePlugin(
     // Get public key input from user
     const publicKey = settings.get('publicKey')?.trim();
     // Initialize Commerce with the public API key
-    const commerce = new commerceSdk(publicKey, false);
+    const commerce = new Commerce(publicKey, false);
 
     // Transform product to match Resource interface
     const transformProduct = (product: any) => ({
@@ -51,10 +51,7 @@ registerCommercePlugin(
           return transformProduct(productResponse);
         },
         async findByHandle(handle: string) {
-          const productResponse = await commerce.products.retrieve(
-            handle, 
-            { type: 'permalink' },
-          );
+          const productResponse = await commerce.products.retrieve(handle, { type: 'permalink' });
           return transformProduct(productResponse);
         },
         async search(search: string) {
@@ -65,7 +62,7 @@ registerCommercePlugin(
           });
           return response.data.map(transformProduct);
         },
-        
+
         getRequestObject(id: string) {
           return {
             '@type': '@builder.io/core:Request',
@@ -84,10 +81,7 @@ registerCommercePlugin(
           return transformCategory(categoryResponse);
         },
         async findByHandle(handle: string) {
-          const categoryResponse = await commerce.categories.retrieve(
-            handle, 
-            { type: 'slug' },
-          );
+          const categoryResponse = await commerce.categories.retrieve(handle, { type: 'slug' });
           return transformCategory(categoryResponse);
         },
         async search(search: string) {
@@ -98,7 +92,7 @@ registerCommercePlugin(
           });
           return response.data.map(transformCategory);
         },
-        
+
         getRequestObject(id: string) {
           return {
             '@type': '@builder.io/core:Request',

@@ -1,6 +1,6 @@
 # Builder.io Commerce.js plugin
 
-Connect your Commerce.js account and data to your Builder.io content! 
+Connect your Commerce.js account and data to your Builder.io content!
 
 ## Installation
 
