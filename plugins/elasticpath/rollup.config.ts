@@ -1,6 +1,6 @@
 import replace from 'rollup-plugin-replace';
 import serve from 'rollup-plugin-serve';
-import esbuild from 'rollup-plugin-esbuild'
+import esbuild from 'rollup-plugin-esbuild';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import json from '@rollup/plugin-json';
 const SERVE = process.env.SERVE === 'true';
@@ -26,9 +26,7 @@ export default {
     'react-dom',
     'mobx-react',
   ],
-  output: [
-    { file: pkg.unpkg, format: 'system', sourcemap: true },
-  ],
+  output: [{ file: pkg.unpkg, format: 'system', sourcemap: true }],
   watch: {
     include: 'src/**',
   },

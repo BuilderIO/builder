@@ -1,6 +1,6 @@
 import { registerCommercePlugin } from '@builder.io/commerce-plugin-tools';
-import { gateway } from '@moltin/sdk'
-import pkg from '../package.json'
+import { gateway } from '@moltin/sdk';
+import pkg from '../package.json';
 
 registerCommercePlugin(
   {
@@ -11,8 +11,7 @@ registerCommercePlugin(
         name: 'clientId',
         type: 'string',
         required: true,
-        helperText:
-          'Get your Client ID from Elasticpath Commerce Manager',
+        helperText: 'Get your Client ID from Elasticpath Commerce Manager',
       },
     ],
     ctaText: `Connect your Elasticpath store`,
@@ -21,8 +20,8 @@ registerCommercePlugin(
     const clientId = settings.get('clientId')?.trim();
     const elasticpathApi = gateway({
       client_id: clientId,
-    })
-    
+    });
+
     const transformResource = (resource: any) => ({
       id: resource.id,
       title: resource.name,
@@ -48,7 +47,7 @@ registerCommercePlugin(
         async findByHandle(handle: string) {
           const response = await elasticpathApi.Categories.Filter({
             eq: {
-              slug: handle
+              slug: handle,
             },
             // TODO: pagination if needed
           }).All();
@@ -56,9 +55,11 @@ registerCommercePlugin(
         },
         async search(search: string) {
           const response = await elasticpathApi.Categories.Filter({
-            ...(search && {like: {
-              name: search
-            }}),
+            ...(search && {
+              like: {
+                name: search,
+              },
+            }),
             // TODO: pagination if needed
           }).All();
           return response.data.map(transformResource);
@@ -69,7 +70,7 @@ registerCommercePlugin(
             '@type': '@builder.io/core:Request',
             request: {
               headers: {
-                'Authorization': `Bearer ${token}`
+                Authorization: `Bearer ${token}`,
               },
               // TODO: figure out public url for resource from elasticpath
               url: `https://api.moltin.com/v2/categories/${id}`,
@@ -79,7 +80,6 @@ registerCommercePlugin(
             },
           };
         },
-
       },
       product: {
         async findById(id: string) {
@@ -95,7 +95,7 @@ registerCommercePlugin(
         async findByHandle(handle: string) {
           const response = await elasticpathApi.Products.Filter({
             eq: {
-              slug: handle
+              slug: handle,
             },
             // TODO: pagination if needed
           }).All();
@@ -103,9 +103,11 @@ registerCommercePlugin(
         },
         async search(search: string) {
           const response = await elasticpathApi.Products.Filter({
-            ...(search && {like: {
-              name: search
-            }}),
+            ...(search && {
+              like: {
+                name: search,
+              },
+            }),
             // TODO: pagination if needed
           }).All();
           return response.data.map(transformResource);
@@ -116,7 +118,7 @@ registerCommercePlugin(
             '@type': '@builder.io/core:Request',
             request: {
               headers: {
-                'Authorization': `Bearer ${token}`
+                Authorization: `Bearer ${token}`,
               },
               url: `https://api.moltin.com/v2/products/${id}`,
             },
