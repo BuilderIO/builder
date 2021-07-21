@@ -1,11 +1,11 @@
 import { registerCommercePlugin } from '@builder.io/commerce-plugin-tools';
 import { gateway } from '@moltin/sdk'
+import pkg from '../package.json'
 
 registerCommercePlugin(
   {
     name: 'Elasticpath',
-    // should always match package.json package name
-    id: '@builder.io/plugin-elasticpath',
+    id: pkg.name,
     settings: [
       {
         name: 'clientId',
