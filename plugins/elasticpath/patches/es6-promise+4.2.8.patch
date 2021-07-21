@@ -1,0 +1,13 @@
+diff --git a/node_modules/es6-promise/dist/es6-promise.js b/node_modules/es6-promise/dist/es6-promise.js
+index 72fa0da..34f6390 100644
+--- a/node_modules/es6-promise/dist/es6-promise.js
++++ b/node_modules/es6-promise/dist/es6-promise.js
+@@ -10,7 +10,7 @@
+ 	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+ 	typeof define === 'function' && define.amd ? define(factory) :
+ 	(global.ES6Promise = factory());
+-}(this, (function () { 'use strict';
++}(window, (function () { 'use strict';
+ 
+ function objectOrFunction(x) {
+   var type = typeof x;

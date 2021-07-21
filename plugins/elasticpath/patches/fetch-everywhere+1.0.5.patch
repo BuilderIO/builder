@@ -1,0 +1,11 @@
+diff --git a/node_modules/fetch-everywhere/fetch-npm-browserify.js b/node_modules/fetch-everywhere/fetch-npm-browserify.js
+index b82f153..19117b8 100644
+--- a/node_modules/fetch-everywhere/fetch-npm-browserify.js
++++ b/node_modules/fetch-everywhere/fetch-npm-browserify.js
+@@ -3,5 +3,5 @@
+ //
+ // Return that as the export for use in Webpack, Browserify etc.
+ require('whatwg-fetch');
+-var globalObj = typeof self !== 'undefined' && self || this;
++var globalObj = typeof self !== 'undefined' && self || window;
+ module.exports = globalObj.fetch.bind(globalObj);
