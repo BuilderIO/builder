@@ -37,16 +37,9 @@ export default {
       'process.env.NODE_ENV': JSON.stringify('production'),
     }),
     json(),
-    // polyfills(),
     nodeResolve({ mainFields: ['module', 'browser'] }),
-    // commonjs(),
-    // commonjs({
-    //   extensions: ['.ts', 'tsx']
-    // }),
     esbuild(),
 
-
-    // Resolve source maps to the original source
     ...(SERVE
       ? [
           serve({

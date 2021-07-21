@@ -12,7 +12,7 @@ registerCommercePlugin(
         type: 'string',
         required: true,
         helperText:
-          'Get your Client ID from Elasticpath dashboard // todo add link ',
+          'Get your Client ID from Elasticpath Commerce Manager',
       },
     ],
     ctaText: `Connect your Elasticpath store`,
@@ -40,12 +40,58 @@ registerCommercePlugin(
     });
 
     return {
+      category: {
+        async findById(id: string) {
+          const category = await elasticpathApi.Categories.Get(id);
+          return transformResource(category.data);
+        },
+        async findByHandle(handle: string) {
+          const response = await elasticpathApi.Categories.Filter({
+            eq: {
+              slug: handle
+            },
+            // TODO: pagination if needed
+          }).All();
+          return response.data[0] && transformResource(response.data[0]);
+        },
+        async search(search: string) {
+          const response = await elasticpathApi.Categories.Filter({
+            ...(search && {like: {
+              name: search
+            }}),
+            // TODO: pagination if needed
+          }).All();
+          return response.data.map(transformResource);
+        },
+
+        getRequestObject(id: string) {
+          return {
+            '@type': '@builder.io/core:Request',
+            request: {
+              headers: {
+                'Authorization': `Bearer ${token}`
+              },
+              // TODO: figure out public url for resource from elasticpath
+              url: `https://api.moltin.com/v2/categories/${id}`,
+            },
+            options: {
+              category: id,
+            },
+          };
+        },
+
+      },
       product: {
         async findById(id: string) {
           const product = await elasticpathApi.Products.Get(id);
+          // todo: get image if api permit
+          // const image = await fetch(`https://api.moltin.com/v2/products/${id}/relationships/main-image`, {
+          //   headers: {
+          //     'Authorization': `Bearer ${token}`
+          //   }
+          // })
           return transformResource(product.data);
         },
-        // TODO: figure out how to get a product by a slug
         async findByHandle(handle: string) {
           const response = await elasticpathApi.Products.Filter({
             eq: {
@@ -72,7 +118,6 @@ registerCommercePlugin(
               headers: {
                 'Authorization': `Bearer ${token}`
               },
-              // TODO: figure out public url for resource from elasticpath
               url: `https://api.moltin.com/v2/products/${id}`,
             },
             options: {
