@@ -16,8 +16,9 @@ registerCommercePlugin(
         name: 'publicKey',
         type: 'string',
         required: true,
-        helperText: 'Get your public API key from your Chec dashboard (Developer > API keys in https://dashboard.chec.io/settings/developer)'
-      }
+        helperText:
+          'Get your public API key from your Chec dashboard (Developer > API keys in https://dashboard.chec.io/settings/developer)',
+      },
     ],
     ctaText: `Connect your Commerce.js store`,
   },
@@ -50,10 +51,7 @@ registerCommercePlugin(
           return transformProduct(productResponse);
         },
         async findByHandle(handle: string) {
-          const productResponse = await commerce.products.retrieve(
-            handle, 
-            { type: 'permalink' },
-          );
+          const productResponse = await commerce.products.retrieve(handle, { type: 'permalink' });
           return transformProduct(productResponse);
         },
         async search(search: string) {
@@ -64,7 +62,7 @@ registerCommercePlugin(
           });
           return response.data.map(transformProduct);
         },
-        
+
         getRequestObject(id: string) {
           return {
             '@type': '@builder.io/core:Request',
@@ -83,10 +81,7 @@ registerCommercePlugin(
           return transformCategory(categoryResponse);
         },
         async findByHandle(handle: string) {
-          const categoryResponse = await commerce.categories.retrieve(
-            handle, 
-            { type: 'slug' },
-          );
+          const categoryResponse = await commerce.categories.retrieve(handle, { type: 'slug' });
           return transformCategory(categoryResponse);
         },
         async search(search: string) {
@@ -97,7 +92,7 @@ registerCommercePlugin(
           });
           return response.data.map(transformCategory);
         },
-        
+
         getRequestObject(id: string) {
           return {
             '@type': '@builder.io/core:Request',
