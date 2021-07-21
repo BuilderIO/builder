@@ -1,5 +1,7 @@
 # Next.js starters and resources:
 
+Learn more about [getting started with Builder.io with Next.js here](https://www.builder.io/c/docs/getting-started?codeFramework=next)
+
 | Starter                                                               | description                                                                                                  |
 | --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
 | [Amp support](/examples/next-js-amp)                                  | example of using Builder.io to build amp pages with next.js                                                  |

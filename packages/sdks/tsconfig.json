@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "target": "es5",
+    "jsx": "preserve"
+  },
+  "include": ["src"],
+  "ts-node": {
+    "transpileOnly": true
+    // "transpiler": "ts-node/transpilers/swc-experimental"
+  }
+}

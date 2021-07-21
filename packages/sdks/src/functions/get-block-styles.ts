@@ -1,0 +1,18 @@
+import { sizes } from '../constants/device-sizes';
+import { BuilderBlock } from '../types/builder-block';
+
+export function getBlockStyles(block: BuilderBlock) {
+  // TODO: bindings
+  const styles: any = {
+    ...block.responsiveStyles?.large,
+  };
+
+  if (block.responsiveStyles?.medium) {
+    styles[`@media (max-width: ${sizes.medium})`] = block.responsiveStyles?.medium;
+  }
+  if (block.responsiveStyles?.small) {
+    styles[`@media (max-width: ${sizes.small})`] = block.responsiveStyles?.small;
+  }
+
+  return styles;
+}

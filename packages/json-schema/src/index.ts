@@ -3,10 +3,10 @@ type JSON = string | number | boolean | null | { [key: string]: JSON } | JSON[];
 // TODO: separate full and partial versions
 export interface BuilderContent extends BuilderContentVariation {
   // TODO: query
-  "@version"?: number;
+  '@version'?: number;
   id?: string;
   name?: string;
-  published?: "published" | "draft" | "archived";
+  published?: 'published' | 'draft' | 'archived';
   modelId?: string;
   priority?: number;
   lastUpdated?: number;
@@ -30,8 +30,8 @@ export interface BuilderContentVariation {
 }
 
 export interface BuilderElement {
-  "@type": "@builder.io/sdk:Element";
-  "@version"?: number;
+  '@type': '@builder.io/sdk:Element';
+  '@version'?: number;
   id?: string;
   tagName?: string;
   layerName?: string;

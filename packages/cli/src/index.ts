@@ -17,8 +17,9 @@ program
   .option('-k,--key <key>', 'Private Key')
   .option('-d,--debug', 'print debugging information')
   .option('-o,--output <output>', 'Path to folder default to ./builder', './builder')
+  .option('-l,--limit <limit>', 'Maximum number of content entries to request, default is 100')
   .action(options => {
-    importSpace(options.key, options.output, options.debug);
+    importSpace(options.key, options.output, options.debug, options.limit || 100);
   });
 
 program
