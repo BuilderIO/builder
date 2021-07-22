@@ -74,7 +74,7 @@ npm start
 
 Go to [builder.io/account/organization](https://builder.io/account/organization) and add the localhost URL to the plugin from the plugin settings (`http://localhost:1268/plugin.system.js?pluginId=@builder.io/ecom-elasticpath`)
 
-**NOTE:** Loading http:// content on an https:// website will give you a warning. Be sure to click the shield in the top right of your browser and choose "load unsafe scripts" to allow the http content on Builder's https site when devloping locally
+**NOTE:** Loading `http://` content on an `https://` website will give you a warning. Be sure to click the shield in the top right of your browser and choose "load unsafe scripts" to allow the HTTP content on Builder's HTTPS site when developing locally
 
 <img alt="Load unsafe script example" src="https://i.stack.imgur.com/uSaLL.png">
 
