@@ -1,5 +1,5 @@
 <template>
-  <div @click="onClick" v-if="!isEditing" v-html="html"></div>
+  <div @click="onClick" v-html="html"></div>
 </template>
 
 <script>
@@ -15,14 +15,13 @@ export default {
   name: 'RenderContent',
 
   data: () => ({
-    isEditing: Builder.isEditing,
     fetchInitialized: false,
     content: null,
   }),
 
   computed: {
     html() {
-      if (this.isEditing || Builder.isEditing) {
+      if (Builder.isEditing) {
         // Editing component
         return `<builder-component api-key="${builder.apiKey}" prerender="false" model="${
           this.model
@@ -52,7 +51,6 @@ export default {
 
   created() {
     if (Builder.isEditing) {
-      this.isEditing = true;
       this.loadEditScript();
     }
     if (!this.fetchInitialized && !this.content) {
