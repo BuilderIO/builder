@@ -6,13 +6,14 @@ import {
   JSXLiteComponent,
   parseJsx,
 } from '@jsx-lite/core';
-import * as glob from 'fast-glob';
 import { outputFile, readFile, remove } from 'fs-extra';
 import { compileVueFile } from './helpers/compile-vue-file';
 import { transpile } from './helpers/transpile';
 import * as dedent from 'dedent';
 import * as json5 from 'json5';
 import { transpileSolidFile } from './helpers/transpile-solid-file';
+
+const glob: typeof import('fast-glob') = require('fast-glob');
 
 const cwd = process.cwd();
 const DIST_DIR = `${cwd}/output`;
