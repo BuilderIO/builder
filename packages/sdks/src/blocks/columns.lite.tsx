@@ -257,34 +257,35 @@ registerComponent({
           ],
         },
       ],
-      onChange: `
-        function clearWidths() {
-          columns.forEach(col => {
-            col.delete('width');
-          });
-        }
-
-        const columns = options.get('columns') as Array<Map<String, any>>;
-
-        if (Array.isArray(columns)) {
-          const containsColumnWithWidth = !!columns.find(col => col.get('width'));
-
-          if (containsColumnWithWidth) {
-            const containsColumnWithoutWidth = !!columns.find(col => !col.get('width'));
-            if (containsColumnWithoutWidth) {
-              clearWidths();
-            } else {
-              const sumWidths = columns.reduce((memo, col) => {
-                return memo + col.get('width');
-              }, 0);
-              const widthsDontAddUp = sumWidths !== 100;
-              if (widthsDontAddUp) {
-                clearWidths();
-              }
-            }
-          }
-        }
-      }`,
+      onChange:
+        "\
+        function clearWidths() {\
+          columns.forEach(col => {\
+            col.delete('width');\
+          });\
+        }\
+\
+        const columns = options.get('columns') as Array<Map<String, any>>;\
+\
+        if (Array.isArray(columns)) {\
+          const containsColumnWithWidth = !!columns.find(col => col.get('width'));\
+\
+          if (containsColumnWithWidth) {\
+            const containsColumnWithoutWidth = !!columns.find(col => !col.get('width'));\
+            if (containsColumnWithoutWidth) {\
+              clearWidths();\
+            } else {\
+              const sumWidths = columns.reduce((memo, col) => {\
+                return memo + col.get('width');\
+              }, 0);\
+              const widthsDontAddUp = sumWidths !== 100;\
+              if (widthsDontAddUp) {\
+                clearWidths();\
+              }\
+            }\
+          }\
+        }\
+      ",
     },
     {
       name: 'space',
