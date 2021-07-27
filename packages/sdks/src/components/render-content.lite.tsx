@@ -16,6 +16,9 @@ export default function RenderContent(props: RenderContentProps) {
     get useContent(): any {
       return state.overrideContent || props.content;
     },
+    state: {},
+    // props.context or inherit from parent context
+    context: {},
     overrideContent: null,
     processMessage(event: MessageEvent): void {
       const { data } = event;
@@ -42,6 +45,8 @@ export default function RenderContent(props: RenderContentProps) {
 
   setContext(BuilderContext, {
     content: props.content,
+    state: state.state,
+    context: state.context,
   });
 
   onMount(() => {
@@ -58,6 +63,7 @@ export default function RenderContent(props: RenderContentProps) {
 
   return (
     <>
+      {state.useContent?.data?.cssCode && <style>{state.useContent.data.cssCode}</style>}
       {state.useContent?.data?.blocks?.map((block: any) => (
         <RenderBlock block={block} />
       ))}
