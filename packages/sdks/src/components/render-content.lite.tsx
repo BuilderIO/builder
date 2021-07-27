@@ -45,9 +45,15 @@ export default function RenderContent(props: RenderContentProps) {
   });
 
   setContext(BuilderContext, {
-    content: props.content,
-    state: state.state,
-    context: state.context,
+    get content() {
+      return props.content;
+    },
+    get state() {
+      return state.state;
+    },
+    get context() {
+      return state.context;
+    },
   });
 
   onMount(() => {
