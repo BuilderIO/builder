@@ -3,6 +3,7 @@ import { isBrowser } from '../functions/is-browser';
 import { BuilderContent } from '../types/builder-content';
 import RenderBlock from './render-block.lite';
 import BuilderContext from '../context/builder.context.lite';
+import { track } from '../functions/track';
 
 export type RenderContentProps = {
   content?: BuilderContent;
@@ -52,6 +53,9 @@ export default function RenderContent(props: RenderContentProps) {
   onMount(() => {
     if (isBrowser()) {
       window.addEventListener('message', state.processMessage);
+      track('impression', {
+        contentId: props.content!.id,
+      });
     }
   });
 
@@ -62,11 +66,18 @@ export default function RenderContent(props: RenderContentProps) {
   });
 
   return (
-    <>
+    <div
+      onClick={e => {
+        track('click', {
+          contentId: props.content!.id,
+        });
+      }}
+      data-builder-content-id={props.content?.id}
+    >
       {state.useContent?.data?.cssCode && <style>{state.useContent.data.cssCode}</style>}
       {state.useContent?.data?.blocks?.map((block: any) => (
         <RenderBlock block={block} />
       ))}
-    </>
+    </div>
   );
 }
