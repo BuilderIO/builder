@@ -1,11 +1,14 @@
-import { onMount, onUnMount, useState } from '@jsx-lite/core';
+import { onMount, onUnMount, setContext, useState } from '@jsx-lite/core';
 import { isBrowser } from '../functions/is-browser';
 import { BuilderContent } from '../types/builder-content';
 import RenderBlock from './render-block.lite';
+import BuilderContext from '../context/builder.context.lite';
 
 export type RenderContentProps = {
   content?: BuilderContent;
   model?: string;
+  data?: { [key: string]: any };
+  context?: { [key: string]: any };
 };
 
 export default function RenderContent(props: RenderContentProps) {
@@ -35,6 +38,10 @@ export default function RenderContent(props: RenderContentProps) {
         }
       }
     },
+  });
+
+  setContext(BuilderContext, {
+    content: props.content,
   });
 
   onMount(() => {
