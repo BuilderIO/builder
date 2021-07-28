@@ -1,4 +1,4 @@
-import { useState, Show, useContext } from '@jsx-lite/core';
+import { useState, Show, useContext, For } from '@jsx-lite/core';
 import { getBlockComponentOptions } from '../functions/get-block-component-options';
 import { getBlockProperties } from '../functions/get-block-properties';
 import { getBlockStyles } from '../functions/get-block-styles';
@@ -67,9 +67,7 @@ export default function RenderBlock(props: RenderBlockProps) {
         <state.tagName {...state.properties} style={state.css}>
           {state.componentRef && <state.componentRef {...state.componentOptions} />}
           <Show when={!state.componentRef && state.block.children && state.block.children.length}>
-            {state.block.children.map((block: any) => (
-              <RenderBlock block={block} />
-            ))}
+            <For each={state.block.children}>{(block: any) => <RenderBlock block={block} />}</For>
           </Show>
         </state.tagName>
       </Show>

@@ -1,6 +1,6 @@
 import * as babel from '@babel/core';
 import { JSXLiteComponent } from '@jsx-lite/core';
-import * as dedent from 'dedent';
+import dedent from 'dedent';
 import * as json5 from 'json5';
 
 const tsPreset = require('@babel/preset-typescript');

@@ -1,6 +1,6 @@
 import { JSXLiteComponent } from '@jsx-lite/core';
 import * as vueCompilerSfc from '@vue/compiler-sfc';
-import * as dedent from 'dedent';
+import dedent from 'dedent';
 import { getSimpleId } from './get-simple-id';
 import * as json5 from 'json5';
 import * as esbuild from 'esbuild';
