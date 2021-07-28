@@ -18,7 +18,7 @@
   "dependencies": {},
   "devDependencies": {
     "@jsx-lite/cli": "^1.0.1",
-    "@jsx-lite/core": "0.0.44-17",
+    "@jsx-lite/core": "0.0.44-18",
     "@jsx-lite/eslint-plugin": "0.0.2",
     "@swc/core": "^1.2.64",
     "@types/react": "^17.0.13",
