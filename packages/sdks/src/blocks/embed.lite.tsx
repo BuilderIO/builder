@@ -1,4 +1,4 @@
-import { useState, useRef, onMount } from '@jsx-lite/core';
+import { useState, useRef, onMount } from '@builder.io/mitosis';
 import { registerComponent } from '../functions/register-component';
 
 export interface EmbedProps {

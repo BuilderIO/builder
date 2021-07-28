@@ -1,4 +1,4 @@
-import { useContext } from '@jsx-lite/core';
+import { useContext } from '@builder.io/mitosis';
 import RenderContent from '../components/render-content.lite';
 import BuilderContext from '../context/builder.context.lite';
 

@@ -1,4 +1,4 @@
-import { createContext } from '@jsx-lite/core';
+import { createContext } from '@builder.io/mitosis';
 
 export const BuilderStoreContext = createContext<BuilderStore>({
   state: {},

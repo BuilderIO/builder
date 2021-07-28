@@ -2,7 +2,7 @@
   "name": "@builder.io/sdks",
   "version": "0.0.1",
   "scripts": {
-    "build": "node -r esbuild-register build/build.ts",
+    "build": "mitosis build",
     "lint": "eslint",
     "start": "watch 'npm run build' ./src ./overrides ./build",
     "ci:build": "npm run build"
@@ -18,7 +18,7 @@
   "dependencies": {},
   "devDependencies": {
     "@jsx-lite/cli": "^1.0.1",
-    "@jsx-lite/core": "0.0.44-18",
+    "@builder.io/mitosis": "0.0.44-18",
     "@jsx-lite/eslint-plugin": "0.0.2",
     "@swc/core": "^1.2.64",
     "@types/react": "^17.0.13",

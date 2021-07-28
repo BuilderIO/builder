@@ -1,4 +1,4 @@
-import { onMount, onUnMount, setContext, useState } from '@jsx-lite/core';
+import { onMount, onUnMount, setContext, useState } from '@builder.io/mitosis';
 import { isBrowser } from '../functions/is-browser';
 import { BuilderContent } from '../types/builder-content';
 import RenderBlock from './render-block.lite';

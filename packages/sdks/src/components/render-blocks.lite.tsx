@@ -1,4 +1,4 @@
-import { useState } from '@jsx-lite/core';
+import { useState } from '@builder.io/mitosis';
 import { isEditing } from '../functions/is-editing';
 import { BuilderBlock } from '../types/builder-block';
 import RenderBlock from './render-block.lite';

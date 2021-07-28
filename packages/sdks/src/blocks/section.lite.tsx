@@ -1,4 +1,4 @@
-import '@jsx-lite/core';
+import '@builder.io/mitosis';
 import { registerComponent } from '../functions/register-component';
 
 export interface SectionProps {

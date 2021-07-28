@@ -1,4 +1,4 @@
-import {} from '@jsx-lite/core';
+import {} from '@builder.io/mitosis';
 import { registerComponent } from '../functions/register-component';
 
 export interface ImageProps {
