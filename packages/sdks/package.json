@@ -5,7 +5,8 @@
     "build": "mitosis build",
     "lint": "eslint",
     "start": "watch 'npm run build' ./src ./overrides ./build",
-    "ci:build": "npm run build"
+    "ci:build": "npm run build",
+    "test": "jest"
   },
   "exports": {
     "./react/*": "./dist/react/src/*.js",
@@ -17,19 +18,21 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@jsx-lite/cli": "^1.0.1",
     "@builder.io/mitosis": "0.0.44-18",
+    "@jsx-lite/cli": "^1.0.1",
     "@jsx-lite/eslint-plugin": "0.0.2",
     "@swc/core": "^1.2.64",
     "@types/react": "^17.0.13",
     "@vue/compiler-sfc": "^3.1.4",
     "@vue/component-compiler-utils": "^3.2.2",
     "dedent": "^0.7.0",
-    "esbuild": "^0.12.15",
+    "esbuild": "^0.12.17",
+    "esbuild-jest": "^0.5.0",
     "esbuild-register": "^2.6.0",
     "eslint": "^7.21.0",
     "fast-glob": "^3.2.7",
     "fs-extra": "^10.0.0",
+    "jest": "^27.0.6",
     "json5": "^2.2.0",
     "react": "^17.0.2",
     "react-native": "^0.64.2",
@@ -37,5 +40,13 @@
     "vue": "2.6.12",
     "vue-template-compiler": "2.6.12",
     "watch": "^1.0.2"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "esbuild-jest"
+    },
+    "testMatch": [
+      "<rootDir>/src/**/*.test.ts"
+    ]
   }
 }

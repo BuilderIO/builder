@@ -4,6 +4,8 @@ import { BuilderContent } from '../types/builder-content';
 import RenderBlock from './render-block.lite';
 import BuilderContext from '../context/builder.context.lite';
 import { track } from '../functions/track';
+import { ifTarget } from '../functions/if-target';
+import { onChange } from '../functions/on-change';
 
 export type RenderContentProps = {
   content?: BuilderContent;
@@ -17,7 +19,16 @@ export default function RenderContent(props: RenderContentProps) {
     get useContent(): any {
       return state.overrideContent || props.content;
     },
-    state: {},
+    update: 0,
+    state: ifTarget(
+      // The reactive targets
+      ['vue', 'solid'],
+      () => ({}),
+      () =>
+        onChange({}, () => {
+          state.update = state.update + 1;
+        })
+    ),
     // props.context or inherit from parent context
     context: {},
     overrideContent: null,
