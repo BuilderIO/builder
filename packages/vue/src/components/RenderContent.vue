@@ -50,8 +50,8 @@ export default {
   },
 
   created() {
-    if (Builder.isEditing) {
-      this.loadEditScript();
+    if (Builder.isBrowser) {
+      this.loadWebComponents();
     }
     if (!this.fetchInitialized && !this.content) {
       this.getContent();
@@ -163,7 +163,7 @@ export default {
         return relativeUrl;
       }
     },
-    loadEditScript() {
+    loadWebComponents() {
       const editJsSrc = 'https://cdn.builder.io/js/webcomponents';
       if (!(window.BuilderWC || document.querySelector(`script[src="${editJsSrc}"]`))) {
         const script = document.createElement('script');
