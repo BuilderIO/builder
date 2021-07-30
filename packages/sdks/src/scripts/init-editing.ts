@@ -1,3 +1,4 @@
+import { getTarget } from '../functions/get-target';
 import { isBrowser } from '../functions/is-browser';
 
 if (isBrowser()) {
@@ -5,6 +6,7 @@ if (isBrowser()) {
     {
       type: 'builder.sdkInfo',
       data: {
+        target: getTarget(),
         // TODO: compile these in
         type: process.env.SDK_TYPE,
         version: process.env.SDK_VERSION,

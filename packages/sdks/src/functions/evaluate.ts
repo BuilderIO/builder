@@ -13,7 +13,6 @@ export function evaluate(options: { code: string; state: any; context: any; even
   const useReturn = !(
     code.includes(';') ||
     code.includes(' return ') ||
-    code.match(/(^|\s|;)export default/) ||
     code.trim().startsWith('return ')
   );
 

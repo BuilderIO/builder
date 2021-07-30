@@ -1,4 +1,4 @@
-import { onMount, onUnMount, setContext, useState } from '@builder.io/mitosis';
+import { onMount, onUnMount, setContext, useState, onCreate } from '@builder.io/mitosis';
 import { isBrowser } from '../functions/is-browser';
 import { BuilderContent } from '../types/builder-content';
 import RenderBlock from './render-block.lite';
@@ -20,16 +20,7 @@ export default function RenderContent(props: RenderContentProps) {
       return state.overrideContent || props.content;
     },
     update: 0,
-    state: ifTarget(
-      // The reactive targets
-      ['vue', 'solid'],
-      () => ({}),
-      () =>
-        onChange({}, () => {
-          state.update = state.update + 1;
-        })
-    ),
-    // props.context or inherit from parent context
+    state: {},
     context: {},
     overrideContent: null,
     processMessage(event: MessageEvent): void {
@@ -53,6 +44,20 @@ export default function RenderContent(props: RenderContentProps) {
         }
       }
     },
+  });
+
+  onCreate(() => {
+    state.state = ifTarget(
+      // The reactive targets
+      ['vue', 'solid'],
+      () => ({}),
+      () =>
+        onChange({}, () => {
+          state.update = state.update + 1;
+        })
+    );
+
+    // TODO: inherit context here too
   });
 
   setContext(BuilderContext, {

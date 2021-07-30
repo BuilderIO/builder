@@ -2,7 +2,7 @@ import { isBrowser } from './is-browser';
 import { isReactNative } from './is-react-native';
 
 if (!(isBrowser() || isReactNative())) {
-  require('node-fetch');
+  import('node-fetch');
 }
 
 export type GetContentOptions = {
@@ -18,8 +18,11 @@ export type GetContentOptions = {
   userAttributes?: Record<string, string> | null;
 };
 
-// TODO: targeting, a/b tests, limit
-export async function getContent(options: GetContentOptions) {
+export async function getContent(options: GetContentOptions): Promise<string> {
+  return (await getAllContent({ ...options, limit: 1 })).results[0] || null;
+}
+
+export async function getAllContent(options: GetContentOptions) {
   const { model, apiKey } = options;
 
   const { limit, testGroups, userAttributes } = {
@@ -45,7 +48,31 @@ export async function getContent(options: GetContentOptions) {
           item.testVariationId = variationValue.id;
           item.testVariationName = variationValue.name;
         } else {
-          
+          // TODO: a/b test iteration logic
+          let n = 0;
+          const random = Math.random();
+          let set = false;
+          for (const id in item.variations) {
+            const variation = item.variations[id]!;
+            const testRatio = variation.testRatio;
+            n += testRatio!;
+            if (random < n) {
+              const variationName =
+                variation.name || (variation.id === item.id ? 'Default variation' : '');
+              set = true;
+              Object.assign(item, {
+                data: variation.data,
+                testVariationId: variation.id,
+                testVariationName: variationName,
+              });
+            }
+          }
+          if (!set) {
+            Object.assign(item, {
+              testVariationId: item.id,
+              testVariationName: 'Default',
+            });
+          }
         }
       }
     }
