@@ -21,14 +21,11 @@ export default {
 
   computed: {
     html() {
-      if (Builder.isEditing) {
-        // Editing component
-        return `<builder-component api-key="${builder.apiKey}" prerender="false" model="${
-          this.model
-        }" options='${JSON.stringify(this.options || {}).replace(/'/g, '&apos;')}'>`;
-      }
-
-      return this.content && this.content.data.html;
+      return `<builder-component api-key="${builder.apiKey}" prerender="false" model="${
+        this.model
+      }" options='${JSON.stringify(this.options || {}).replace(/'/g, '&apos;')}'>
+      ${(!Builder.isEditing && this.content && this.content.data.html) || ''}
+      </builder-component>`;
     },
   },
 
