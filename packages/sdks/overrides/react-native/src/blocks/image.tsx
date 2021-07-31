@@ -1,4 +1,4 @@
-import { Image as ReactImage } from 'react-native';
+import { Image as ReactImage, View } from 'react-native';
 import { registerComponent } from '../functions/register-component';
 
 // Subset of Image props, many are irrelevant for native (such as altText, etc)
@@ -14,15 +14,24 @@ export interface ImageProps {
 // TODO: support children by wrapping in a View
 export default function Image(props: ImageProps) {
   return (
-    <ReactImage
-      style={{
-        opacity: '1',
-        transition: 'opacity 0.2s ease-in-out',
-        resizeMode: props.backgroundSize,
-        aspectRatio: props.aspectRatio
-      }}
-      source={props.image}
-    />
+    <View style={{ position: 'relative' }}>
+      <ReactImage
+        resizeMode={props.backgroundSize || ('contain' as any)}
+        style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }}
+        source={{ uri: props.image }}
+      />
+      <div
+        className="builder-image-sizer"
+        style={{
+          width: '100%',
+          paddingTop: props.aspectRatio * 100 + '%',
+          pointerEvents: 'none',
+          fontSize: 0,
+        }}
+      >
+        {' '}
+      </div>
+    </View>
   );
 }
 

@@ -1,8 +1,9 @@
 import { useState, For } from '@builder.io/mitosis';
+import RenderBlocks from '../components/render-blocks.lite';
 import { registerComponent } from '../functions/register-component';
 
 type Column = {
-  content: any;
+  blocks: any;
   // TODO: Implement this when support for dynamic CSS lands
   width?: number;
 };
@@ -58,7 +59,7 @@ export default function Columns(props: ColumnProps) {
             class="builder-column"
             css={{ flexGrow: '1' }}
           >
-            {column.content}
+            <RenderBlocks blocks={column.blocks} />
           </div>
         )}
       </For>

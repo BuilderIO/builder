@@ -75,9 +75,10 @@ export default function RenderContent(props: RenderContentProps) {
   onMount(() => {
     if (isBrowser()) {
       window.addEventListener('message', state.processMessage);
-      track('impression', {
-        contentId: props.content!.id,
-      });
+      // TODO: run this when content is defined
+      // track('impression', {
+      //   contentId: props.content!.id,
+      // });
     }
   });
 
@@ -98,7 +99,7 @@ export default function RenderContent(props: RenderContentProps) {
     >
       {state.useContent?.data?.cssCode && <style>{state.useContent.data.cssCode}</style>}
       {state.useContent?.data?.blocks?.map((block: any) => (
-        <RenderBlock block={block} />
+        <RenderBlock key={block.id} block={block} />
       ))}
     </div>
   );

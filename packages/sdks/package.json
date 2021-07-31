@@ -4,7 +4,7 @@
   "scripts": {
     "build": "mitosis build",
     "lint": "eslint",
-    "start": "watch 'npm run build' ./src ./overrides ./build",
+    "start": "watch 'npm run build' ./src ./overrides",
     "test": "jest",
     "ci:build": "npm run build",
     "ci:test": "npm run test"
@@ -27,6 +27,7 @@
     "@swc/core": "^1.2.64",
     "@types/node-fetch": "^2.5.12",
     "@types/react": "^17.0.13",
+    "@types/react-native": "^0.64.12",
     "@vue/compiler-sfc": "^3.1.4",
     "@vue/component-compiler-utils": "^3.2.2",
     "dedent": "^0.7.0",
