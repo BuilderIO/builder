@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/shopify",
-  "version": "1.3.41-0",
+  "version": "1.3.41",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "repository": {
@@ -23,6 +23,7 @@
     "@babel/helper-plugin-utils": "^7.0.0",
     "@babel/preset-env": "^7.7.7",
     "@builder.io/react": "^1.1.32-alpha.0",
+    "@builder.io/sdk": "^1.1.23-14",
     "@testing-library/react": "^9.4.0",
     "@types/clean-css": "^4.2.1",
     "@types/csso": "^3.5.1",
@@ -62,8 +63,7 @@
     "typescript": "^3.8.3"
   },
   "dependencies": {
-    "@builder.io/sdk": "^1.1.21-alpha.0",
-    "@emotion/core": "^10.0.27",
+    "@emotion/core": "^10.1.1",
     "@emotion/styled": "^10.0.27",
     "@glimmer/syntax": "^0.42.1",
     "axios": "^0.21.1",
