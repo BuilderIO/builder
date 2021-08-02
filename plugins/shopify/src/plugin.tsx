@@ -4,11 +4,9 @@ export * from './editors/ShopifyCollectionList';
 export * from './editors/ShopifyProductPicker';
 export * from './editors/ShopifyProductList';
 import './actions/on-editor-load';
-import { importProducts, importCollections } from './actions/import-product-data';
 import appState from '@builder.io/app-context';
 
 import { pluginId } from './constants';
-import { createWebhooks } from './actions/create-webhooks';
 
 const shopifyModels: Model[] = [
   {
@@ -87,10 +85,16 @@ Builder.register('plugin', {
       // import and register webhooks
       appState.globalState.showGlobalBlockingLoadingIndicator = true;
       try {
-        await importProducts('shopify-product');
-        await createWebhooks('product', 'shopify-product');
-        await importCollections('shopify-collection');
-        await createWebhooks('collection', 'shopify-collection');
+        await appState.createSyncRequest({
+          pluginId,
+          productModelName: 'shopify-product',
+          collectionModelName: 'shopify-collection'
+        })
+        // update plugin setting
+        await actions.updateSettings({
+          hasConnected: true,
+        });
+        await appState.globalState.showPluginDialog(pluginId, true);
       } catch (e) {
         console.error(e);
         appState.dialogs.alert(
@@ -100,10 +104,6 @@ Builder.register('plugin', {
       }
       appState.globalState.showGlobalBlockingLoadingIndicator = false;
     }
-    // update plugin setting
-    await actions.updateSettings({
-      hasConnected: true,
-    });
   },
 });
 
