@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/commerce-plugin-tools",
-  "version": "0.2.1-2",
+  "version": "0.2.1-4",
   "description": "",
   "keywords": [],
   "main": "dist/index.umd.js",

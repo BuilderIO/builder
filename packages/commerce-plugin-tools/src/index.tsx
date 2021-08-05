@@ -41,12 +41,14 @@ export interface CommerceAPIOperations {
   };
 }
 
-export const registerCommercePlugin = (
+export const registerCommercePlugin = async (
   config: CommercePluginConfig,
-  apiOperationsFromSettings: (settings: any) => CommerceAPIOperations
+  apiOperationsFromSettings: (
+    settings: any
+  ) => CommerceAPIOperations | Promise<CommerceAPIOperations>
 ) => {
-  const registerEditors = () => {
-    const apiOperations = apiOperationsFromSettings(
+  const registerEditors = async () => {
+    const apiOperations = await apiOperationsFromSettings(
       appState.user.organization.value.settings.plugins.get(config.id)
     );
 
@@ -128,5 +130,5 @@ export const registerCommercePlugin = (
     return;
   }
 
-  registerEditors();
+  await registerEditors();
 };

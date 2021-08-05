@@ -24,10 +24,10 @@ registerCommercePlugin(
     ],
     ctaText: `Connect your swell.is store`,
   },
-  settings => {
+  async settings => {
     const storeId = settings.get('storeId')?.trim();
     const publicKey = settings.get('publicKey')?.trim();
-    swell.init(storeId, publicKey);
+    await swell.init(storeId, publicKey);
 
     const transformResource = (resource: any) => ({
       id: resource.id,
@@ -62,7 +62,7 @@ registerCommercePlugin(
 
         getRequestObject(id: string) {
           return {
-            '@type': '@builder.io/core:Request',
+            '@type': '@builder.io/core:Request' as const,
             request: {
               // https://{public_key}@{client_id}.swell.store/api/products/5e31e67be53f9a59d89600f1.
               url: `https://${publicKey}@${storeId}.swell.store/api/products/${id}`,
@@ -94,7 +94,7 @@ registerCommercePlugin(
 
         getRequestObject(id: string) {
           return {
-            '@type': '@builder.io/core:Request',
+            '@type': '@builder.io/core:Request' as const,
             request: {
               // https://{public_key}@{client_id}.swell.store/api/categories/5e31e67be53f9a59d89600f1.
               url: `https://${publicKey}@${storeId}.swell.store/api/categories/${id}`,
