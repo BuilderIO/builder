@@ -1,0 +1,6 @@
+framework module absl {
+  umbrella header "abseil-framework-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -1,0 +1,6 @@
+framework module FBLPromises {
+  umbrella header "PromisesObjC-framework-umbrella.h"
+
+  export *
+  module * { export * }
+}

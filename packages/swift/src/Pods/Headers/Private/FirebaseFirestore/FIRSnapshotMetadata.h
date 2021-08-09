@@ -1,0 +1,1 @@
+../../../FirebaseFirestore/Firestore/Source/Public/FirebaseFirestore/FIRSnapshotMetadata.h

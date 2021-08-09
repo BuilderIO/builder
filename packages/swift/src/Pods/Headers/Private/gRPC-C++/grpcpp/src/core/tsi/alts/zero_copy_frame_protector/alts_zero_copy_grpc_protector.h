@@ -1,0 +1,1 @@
+../../../../../../../../../gRPC-C++/src/core/tsi/alts/zero_copy_frame_protector/alts_zero_copy_grpc_protector.h

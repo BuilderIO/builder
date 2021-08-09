@@ -1,0 +1,6 @@
+  framework module openssl {
+    umbrella header "umbrella.h"
+    textual header "arm_arch.h"
+    export *
+    module * { export * }
+  }

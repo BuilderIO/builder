@@ -1,0 +1,1 @@
+../../../../../../../../../../gRPC-Core/src/core/lib/security/credentials/alts/check_gcp_environment.h
