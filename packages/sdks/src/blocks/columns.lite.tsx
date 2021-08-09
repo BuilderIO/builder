@@ -1,8 +1,9 @@
-import { useState, For } from '@jsx-lite/core';
+import { useState, For } from '@builder.io/mitosis';
+import RenderBlocks from '../components/render-blocks.lite';
 import { registerComponent } from '../functions/register-component';
 
 type Column = {
-  content: any;
+  blocks: any;
   // TODO: Implement this when support for dynamic CSS lands
   width?: number;
 };
@@ -58,7 +59,7 @@ export default function Columns(props: ColumnProps) {
             class="builder-column"
             css={{ flexGrow: '1' }}
           >
-            {column.content}
+            <RenderBlocks blocks={column.blocks} />
           </div>
         )}
       </For>
@@ -66,8 +67,8 @@ export default function Columns(props: ColumnProps) {
   );
 }
 
-// TODO: ways to statically preprocess JSON for references, functions, etc
 registerComponent({
+  // TODO: ways to statically preprocess JSON for references, functions, etc
   name: 'Columns',
   inputs: [
     {
@@ -257,34 +258,35 @@ registerComponent({
           ],
         },
       ],
-      onChange: `
-        function clearWidths() {
-          columns.forEach(col => {
-            col.delete('width');
-          });
-        }
-
-        const columns = options.get('columns') as Array<Map<String, any>>;
-
-        if (Array.isArray(columns)) {
-          const containsColumnWithWidth = !!columns.find(col => col.get('width'));
-
-          if (containsColumnWithWidth) {
-            const containsColumnWithoutWidth = !!columns.find(col => !col.get('width'));
-            if (containsColumnWithoutWidth) {
-              clearWidths();
-            } else {
-              const sumWidths = columns.reduce((memo, col) => {
-                return memo + col.get('width');
-              }, 0);
-              const widthsDontAddUp = sumWidths !== 100;
-              if (widthsDontAddUp) {
-                clearWidths();
-              }
-            }
-          }
-        }
-      }`,
+      onChange:
+        "\
+        function clearWidths() {\
+          columns.forEach(col => {\
+            col.delete('width');\
+          });\
+        }\
+\
+        const columns = options.get('columns') as Array<Map<String, any>>;\
+\
+        if (Array.isArray(columns)) {\
+          const containsColumnWithWidth = !!columns.find(col => col.get('width'));\
+\
+          if (containsColumnWithWidth) {\
+            const containsColumnWithoutWidth = !!columns.find(col => !col.get('width'));\
+            if (containsColumnWithoutWidth) {\
+              clearWidths();\
+            } else {\
+              const sumWidths = columns.reduce((memo, col) => {\
+                return memo + col.get('width');\
+              }, 0);\
+              const widthsDontAddUp = sumWidths !== 100;\
+              if (widthsDontAddUp) {\
+                clearWidths();\
+              }\
+            }\
+          }\
+        }\
+      ",
     },
     {
       name: 'space',

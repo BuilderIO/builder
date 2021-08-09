@@ -31,6 +31,7 @@ Features supported
 | Animations          | No          | Custom animation components supported, but not Builder.io's "animations" tab       |
 | Data bindings       | Coming soon | Custom components with dynamic data supported, but not yet Builder.io's "data" tab |
 | Symbols             | Coming soon |                                                                                    |
+| A/B testing         | Coming soon |                                                                                    |
 
 ## Todo
 
