@@ -17,4 +17,4 @@ temp
 test-lib/**/*.js
 yarn-error.log
 .build
-Pods
+Pods/

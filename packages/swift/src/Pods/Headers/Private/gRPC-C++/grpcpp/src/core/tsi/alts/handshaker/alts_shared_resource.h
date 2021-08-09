@@ -1,1 +1,0 @@
-../../../../../../../../../gRPC-C++/src/core/tsi/alts/handshaker/alts_shared_resource.h

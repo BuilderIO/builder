@@ -1,1 +1,0 @@
-../../../../../../../../../../gRPC-C++/src/core/ext/upb-generated/envoy/annotations/resource.upb.h

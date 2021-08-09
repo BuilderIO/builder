@@ -1,1 +1,0 @@
-../../../../../../../../../../gRPC-Core/src/core/lib/security/security_connector/alts/alts_security_connector.h

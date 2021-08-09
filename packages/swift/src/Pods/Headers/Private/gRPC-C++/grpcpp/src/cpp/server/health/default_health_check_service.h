@@ -1,1 +1,0 @@
-../../../../../../../../gRPC-C++/src/cpp/server/health/default_health_check_service.h

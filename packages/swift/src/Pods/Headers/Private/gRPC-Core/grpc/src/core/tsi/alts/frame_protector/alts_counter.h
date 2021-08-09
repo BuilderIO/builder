@@ -1,1 +1,0 @@
-../../../../../../../../../gRPC-Core/src/core/tsi/alts/frame_protector/alts_counter.h

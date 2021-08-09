@@ -1,1 +1,0 @@
-../../../../../../../../../gRPC-Core/src/core/tsi/alts/zero_copy_frame_protector/alts_iovec_record_protocol.h

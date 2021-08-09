@@ -1,1 +1,0 @@
-../../../../../../../../../gRPC-Core/src/core/tsi/alts/handshaker/alts_handshaker_client.h

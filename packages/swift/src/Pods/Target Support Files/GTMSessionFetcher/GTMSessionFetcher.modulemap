@@ -1,6 +1,0 @@
-framework module GTMSessionFetcher {
-  umbrella header "GTMSessionFetcher-umbrella.h"
-
-  export *
-  module * { export * }
-}

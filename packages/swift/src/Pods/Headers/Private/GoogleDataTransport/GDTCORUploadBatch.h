@@ -1,1 +1,0 @@
-../../../GoogleDataTransport/GoogleDataTransport/GDTCORLibrary/Private/GDTCORUploadBatch.h

@@ -1,1 +1,0 @@
-../../../../leveldb-library/table/format.h

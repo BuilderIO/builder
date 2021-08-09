@@ -1,1 +1,0 @@
-../../../FirebaseFirestore/FirebaseCore/Sources/Private/FIRComponent.h
