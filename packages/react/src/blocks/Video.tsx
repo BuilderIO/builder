@@ -151,7 +151,7 @@ class VideoComponent extends React.Component<{
           <div css={{ display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
             {children}
           </div>
-        ) : (
+        ) : children ? (
           <div
             css={{
               display: 'flex',
@@ -166,7 +166,7 @@ class VideoComponent extends React.Component<{
           >
             {children}
           </div>
-        )}
+        ) : null}
       </div>
     );
   }
