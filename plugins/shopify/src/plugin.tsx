@@ -88,8 +88,8 @@ Builder.register('plugin', {
         await appState.createSyncRequest({
           pluginId,
           productModelName: 'shopify-product',
-          collectionModelName: 'shopify-collection'
-        })
+          collectionModelName: 'shopify-collection',
+        });
         // update plugin setting
         await actions.updateSettings({
           hasConnected: true,
