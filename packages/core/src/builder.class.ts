@@ -4,7 +4,7 @@ import { nextTick } from './functions/next-tick.function';
 import { QueryString } from './classes/query-string.class';
 import { version } from '../package.json';
 import { BehaviorSubject } from './classes/observable.class';
-import { fetch } from './functions/fetch.function';
+import { fetch, SimplifiedFetchOptions } from './functions/fetch.function';
 import { assign } from './functions/assign.function';
 import { throttle } from './functions/throttle.function';
 import { Animator } from './classes/animator.class';
@@ -608,8 +608,6 @@ export class Builder {
   static nextTick = nextTick;
   static throttle = throttle;
 
-  authToken = '';
-
   static editors: any[] = [];
   static trustedHosts: string[] = ['builder.io', 'localhost'];
   static plugins: any[] = [];
@@ -972,6 +970,7 @@ export class Builder {
 
   private canTrack$ = new BehaviorSubject(!this.browserTrackingDisabled);
   private apiKey$ = new BehaviorSubject<string | null>(null);
+  private authToken$ = new BehaviorSubject<string | null>(null);
 
   userAttributesChanged = new BehaviorSubject<any>(null);
 
@@ -1291,11 +1290,20 @@ export class Builder {
     this.apiKey$.next(key);
   }
 
+  get authToken() {
+    return this.authToken$.value;
+  }
+
+  set authToken(token: string | null) {
+    this.authToken$.next(token);
+  }
+
   constructor(
     apiKey: string | null = null,
     protected request?: IncomingMessage,
     protected response?: ServerResponse,
-    forceNewInstance = false
+    forceNewInstance = false,
+    authToken: string | null = null,
   ) {
     // TODO: use a window variable for this perhaps, e.g. bc webcomponents may be loading builder twice
     // with it's and react (use rollup build to fix)
@@ -1310,6 +1318,9 @@ export class Builder {
 
     if (apiKey) {
       this.apiKey = apiKey;
+    }
+    if (authToken) {
+      this.authToken = authToken;
     }
     if (isBrowser) {
       this.bindMessageListeners();
@@ -1686,7 +1697,8 @@ export class Builder {
     apiKey: string,
     canTrack = this.defaultCanTrack,
     req?: IncomingMessage,
-    res?: ServerResponse
+    res?: ServerResponse,
+    authToken?: string
   ) {
     if (req) {
       this.request = req;
@@ -1696,6 +1708,9 @@ export class Builder {
     }
     this.canTrack = canTrack;
     this.apiKey = apiKey;
+    if (authToken) {
+      this.authToken = authToken;
+    }
     return this;
   }
 
@@ -1795,15 +1810,19 @@ export class Builder {
       req?: IncomingMessage;
       res?: ServerResponse;
       apiKey?: string;
+      authToken?: string;
     } = {}
   ) {
     let instance: Builder = this;
     if (!Builder.isBrowser) {
-      instance = new Builder(options.apiKey || this.apiKey, options.req, options.res);
+      instance = new Builder(options.apiKey || this.apiKey, options.req, options.res, undefined, options.authToken || this.authToken);
       instance.setUserAttributes(this.getUserAttributes());
     } else {
       if (options.apiKey && !this.apiKey) {
         this.apiKey = options.apiKey;
+      }
+      if (options.authToken && !this.authToken) {
+        this.authToken = options.authToken;
       }
     }
     return instance.queueGetContent(modelName, options).map(
@@ -1918,25 +1937,24 @@ export class Builder {
     return observable;
   }
 
-  requestUrl(url: string) {
+  requestUrl(url: string, options?: { headers: { [header: string]: number | string | string[] | undefined } }) {
     if (Builder.isBrowser) {
-      // TODO: send auth header if builder.authToken
       return fetch(
         url,
-        this.authToken
-          ? {
-              headers: {
-                Authorization: `Bearer ${this.authToken}`,
-              },
-            }
-          : undefined
+        options as SimplifiedFetchOptions
       ).then(res => res.json());
     }
     return new Promise((resolve, reject) => {
-      const module =
-        url.indexOf('http:') === 0 ? serverOnlyRequire('http') : serverOnlyRequire('https');
+      const parsedUrl = parse(url);
+      const module = (parsedUrl.protocol === 'http:') ? serverOnlyRequire('http') : serverOnlyRequire('https');
+      const requestOptions = {
+          host: parsedUrl.hostname,
+          port: parsedUrl.port,
+          path: parsedUrl.pathname + parsedUrl.search,
+          headers: {...options?.headers},
+      };
       module
-        .get(url, (resp: any) => {
+          .get(requestOptions, function (resp: any) {
           let data = '';
 
           // A chunk of data has been recieved.
@@ -2142,10 +2160,19 @@ export class Builder {
 
     const format = queryParams.format;
 
+    const requestOptions = {headers: {}};
+    if (this.authToken) {
+      requestOptions.headers = {
+        ...requestOptions.headers,
+        Authorization: `Bearer ${this.authToken}`
+      }
+    }
+
     const promise = this.requestUrl(
       `${host}/api/v1/${format === 'solid' || format === 'react' ? 'codegen' : 'query'}/${
         this.apiKey
-      }/${keyNames}` + (queryParams && hasParams ? `?${queryStr}` : '')
+      }/${keyNames}` + (queryParams && hasParams ? `?${queryStr}` : ''),
+      requestOptions
     ).then(
       result => {
         for (const options of queue) {
