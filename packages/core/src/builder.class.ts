@@ -1937,7 +1937,7 @@ export class Builder {
     return observable;
   }
 
-  requestUrl(url: string, options: {headers: { [header: string]: number | string | string[] | undefined;}}) {
+  requestUrl(url: string, options?: { headers: { [header: string]: number | string | string[] | undefined } }) {
     if (Builder.isBrowser) {
       return fetch(
         url,
