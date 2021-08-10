@@ -1945,14 +1945,14 @@ export class Builder {
       ).then(res => res.json());
     }
     return new Promise((resolve, reject) => {
-      var parsedUrl = parse(url);
-      var module = (parsedUrl.protocol === 'http:') ? serverOnlyRequire('http') : serverOnlyRequire('https');
-      var requestOptions = {
+      const parsedUrl = parse(url);
+      const module = (parsedUrl.protocol === 'http:') ? serverOnlyRequire('http') : serverOnlyRequire('https');
+      const requestOptions = {
           host: parsedUrl.hostname,
           port: parsedUrl.port,
           path: parsedUrl.pathname + parsedUrl.search,
           headers: {...options?.headers},
-      }
+      };
       module
           .get(requestOptions, function (resp: any) {
           let data = '';
