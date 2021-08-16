@@ -18,7 +18,18 @@ export default function RenderBlock(props: RenderBlockProps) {
 
   const state = useState({
     get component() {
-      return components[state.block.component?.name!];
+      const componentName = state.block.component?.name;
+      if (!componentName) {
+        return null;
+      }
+      const ref = components[state.block.component?.name!];
+      if (componentName && !ref) {
+        // TODO: Public doc page with more info about this message
+        console.warn(`
+          Could not find a registered component named "${componentName}". 
+          If you registered it, is the file that registered it imported by the file that needs to render it?`);
+      }
+      return ref;
     },
     get componentInfo() {
       return state.component?.info;
@@ -61,11 +72,14 @@ export default function RenderBlock(props: RenderBlockProps) {
           attributes={state.properties}
           {...state.componentInfo?.options}
           style={state.css}
+          children={state.block.children}
         />
       </Show>
       <Show when={!state.componentInfo?.noWrap}>
         <state.tagName {...state.properties} style={state.css}>
-          {state.componentRef && <state.componentRef {...state.componentOptions} />}
+          {state.componentRef && (
+            <state.componentRef {...state.componentOptions} children={state.block.children} />
+          )}
           <Show when={!state.componentRef && state.block.children && state.block.children.length}>
             <For each={state.block.children}>{(child: any) => <RenderBlock block={child} />}</For>
           </Show>

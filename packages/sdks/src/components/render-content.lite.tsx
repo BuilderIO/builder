@@ -6,6 +6,7 @@ import BuilderContext from '../context/builder.context.lite';
 import { track } from '../functions/track';
 import { ifTarget } from '../functions/if-target';
 import { onChange } from '../functions/on-change';
+import { isReactNative } from '../functions/is-react-native';
 
 export type RenderContentProps = {
   content?: BuilderContent;
@@ -97,7 +98,9 @@ export default function RenderContent(props: RenderContentProps) {
       }}
       data-builder-content-id={props.content?.id}
     >
-      {state.useContent?.data?.cssCode && <style>{state.useContent.data.cssCode}</style>}
+      {state.useContent?.data?.cssCode && !isReactNative() && (
+        <style>{state.useContent.data.cssCode}</style>
+      )}
       {state.useContent?.data?.blocks?.map((block: any) => (
         <RenderBlock key={block.id} block={block} />
       ))}

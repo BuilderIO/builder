@@ -15,7 +15,7 @@ export type GetContentOptions = {
   /** Number of items to fetch. Default is 1 */
   limit?: number;
   /** User attributes to target on, such as { urlPath: '/foo', device: 'mobile', ...etc } */
-  userAttributes?: Record<string, string> | null;
+  userAttributes?: (Record<string, string> & { urlPath?: string }) | null;
 };
 
 export async function getContent(options: GetContentOptions): Promise<string> {
@@ -39,7 +39,7 @@ export async function getAllContent(options: GetContentOptions) {
   ).then(res => res.json());
 
   if (testGroups) {
-    for (const item of content) {
+    for (const item of content.results) {
       if (item.variations && Object.keys(item.variations).length) {
         const testGroup = testGroups[item.id];
         const variationValue = item.variations[testGroup];

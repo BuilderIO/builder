@@ -1,4 +1,4 @@
-import { useState } from '@builder.io/mitosis';
+import { Show, useState } from '@builder.io/mitosis';
 import { isEditing } from '../functions/is-editing';
 import { BuilderBlock } from '../types/builder-block';
 import RenderBlock from './render-block.lite';
@@ -54,9 +54,11 @@ export default function RenderBlocks(props: RenderBlockProps) {
       onClick={state.onClick}
       onMouseEnter={state.onMouseEnter}
     >
-      {props.blocks?.map((block: any) => (
-        <RenderBlock block={block} />
-      ))}
+      <Show when={props.blocks}>
+        {props.blocks?.map((block: any) => (
+          <RenderBlock block={block} />
+        ))}
+      </Show>
     </div>
   );
 }

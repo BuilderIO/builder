@@ -20,17 +20,12 @@ export default function Image(props: ImageProps) {
         style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }}
         source={{ uri: props.image }}
       />
-      <div
-        className="builder-image-sizer"
+      <View
         style={{
           width: '100%',
-          paddingTop: props.aspectRatio * 100 + '%',
-          pointerEvents: 'none',
-          fontSize: 0,
+          paddingTop: props.aspectRatio * 100 + '%'
         }}
-      >
-        {' '}
-      </div>
+      />
     </View>
   );
 }
