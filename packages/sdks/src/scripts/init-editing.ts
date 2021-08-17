@@ -1,21 +1,5 @@
 import { getTarget } from '../functions/get-target';
 import { isBrowser } from '../functions/is-browser';
-import { register } from '../functions/register';
-import { setEditorSettings } from '../functions/set-editor-settings';
-
-setEditorSettings({
-  customInsertMenu: true,
-});
-
-register('insertMenu', {
-  name: 'Builder Components',
-  items: [
-    { name: 'Box' },
-    { name: 'Text' },
-    { name: 'Image' },
-    { name: 'Columns' },
-  ],
-});
 
 if (isBrowser()) {
   window.parent?.postMessage(
