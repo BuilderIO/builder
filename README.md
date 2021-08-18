@@ -105,7 +105,7 @@ export default let BuilderPage = () => {
 &nbsp;&nbsp;useEffect(() => { 
 &nbsp;&nbsp;&nbsp;&nbsp;builder.get('page', { url: '/' })
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.promise().then(setPage)
-&nbsp;&nbsp;, [])
+&nbsp;&nbsp;}, [])
 &nbsp;
 &nbsp;&nbsp;return &lt;BuilderComponent model="page" content={pageJson} />
 }
