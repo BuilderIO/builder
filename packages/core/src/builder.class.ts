@@ -415,6 +415,19 @@ export interface Input {
   hideFromUI?: boolean;
   modelId?: string;
   /**
+   * Number field type validation maximum accepted input
+   */
+  max?: number,
+  /**
+   * Number field type validation minimum accepted input
+   */
+  min?: number,
+  /**
+   * Number field type step size when using arrows
+   */
+  step?: number,
+
+  /**
    * Set this to `true` to show the editor for this input when
    * children of this component are selected. This is useful for things
    * like Tabs, such that users may not always select the Tabs component
