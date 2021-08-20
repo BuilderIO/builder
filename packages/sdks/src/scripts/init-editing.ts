@@ -1,5 +1,12 @@
 import { getTarget } from '../functions/get-target';
 import { isBrowser } from '../functions/is-browser';
+import { register } from '../functions/register';
+
+register('insertMenu', {
+  name: '_default',
+  default: true,
+  items: [{ name: 'Box' }, { name: 'Text' }, { name: 'Image' }, { name: 'Columns' }],
+});
 
 if (isBrowser()) {
   window.parent?.postMessage(

@@ -8,6 +8,7 @@ import { BuilderBlock } from '../types/builder-block';
 import BuilderContext from '../context/builder.context.lite';
 import { getBlockActions } from '../functions/get-block-actions';
 import { getProcessedBlock } from '../functions/get-processed-block';
+import BlockStyles from './block-styles.lite';
 
 export type RenderBlockProps = {
   block: BuilderBlock;
@@ -67,6 +68,7 @@ export default function RenderBlock(props: RenderBlockProps) {
 
   return (
     <>
+      <BlockStyles block={state.block} />
       <Show when={state.componentInfo?.noWrap}>
         <state.componentRef
           attributes={state.properties}
