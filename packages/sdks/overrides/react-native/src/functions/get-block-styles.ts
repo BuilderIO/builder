@@ -30,10 +30,10 @@ function validateReactNativeStyles(styles: Record<string, string | number>) {
 }
 
 export function getBlockStyles(block: BuilderBlock) {
-  // TODO: bindings
   // TODO: responsive CSS using react native viewport width hooks
   const styles: any = {
     ...block.responsiveStyles?.large,
+    ...(block as any).styles,
   };
 
   if (block.responsiveStyles?.medium) {

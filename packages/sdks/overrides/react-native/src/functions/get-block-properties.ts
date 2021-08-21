@@ -4,7 +4,6 @@ import { isBrowser } from './is-browser';
 import { isReactNative } from './is-react-native';
 
 export function getBlockProperties(block: BuilderBlock) {
-  // TODO: bindings
   return {
     ...block.properties,
     ref: ref => {

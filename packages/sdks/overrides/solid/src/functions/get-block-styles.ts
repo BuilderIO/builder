@@ -15,7 +15,6 @@ const convertStyleObject = (obj: Record<string, string>) => {
 };
 
 export function getBlockStyles(block: BuilderBlock) {
-  // TODO: bindings
   const styles: any = {
     ...convertStyleObject(block.responsiveStyles?.large),
   };

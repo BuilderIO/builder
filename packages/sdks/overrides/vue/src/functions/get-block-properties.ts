@@ -14,7 +14,6 @@ function classStringToObject(str: string) {
 
 // TODO: way to import the original and then modify
 export function getBlockProperties(block: BuilderBlock) {
-  // TODO: bindings
   return {
     ...block.properties,
     'builder-id': block.id,

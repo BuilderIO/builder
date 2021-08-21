@@ -19,11 +19,11 @@ export default function RenderBlock(props: RenderBlockProps) {
 
   const state = useState({
     get component() {
-      const componentName = state.block.component?.name;
+      const componentName = state.useBlock.component?.name;
       if (!componentName) {
         return null;
       }
-      const ref = components[state.block.component?.name!];
+      const ref = components[state.useBlock.component?.name!];
       if (componentName && !ref) {
         // TODO: Public doc page with more info about this message
         console.warn(`
@@ -39,12 +39,12 @@ export default function RenderBlock(props: RenderBlockProps) {
       return state.component?.component;
     },
     get tagName() {
-      return getBlockTag(state.block) as any;
+      return getBlockTag(state.useBlock) as any;
     },
     get properties() {
-      return getBlockProperties(state.block);
+      return getBlockProperties(state.useBlock);
     },
-    get block() {
+    get useBlock() {
       return getProcessedBlock({
         block: props.block,
         state: builderContext.state,
@@ -53,40 +53,43 @@ export default function RenderBlock(props: RenderBlockProps) {
     },
     get actions() {
       return getBlockActions({
-        block: state.block,
+        block: state.useBlock,
         state: builderContext.state,
         context: builderContext.context,
       });
     },
     get css() {
-      return getBlockStyles(state.block);
+      return getBlockStyles(state.useBlock);
     },
     get componentOptions() {
-      return getBlockComponentOptions(state.block);
+      return getBlockComponentOptions(state.useBlock);
     },
   });
 
   return (
     <>
-      <BlockStyles block={state.block} />
-      <Show when={state.componentInfo?.noWrap}>
+      {/* TODO: add the below back when support `else` */}
+      {/* <Show when={state.componentInfo?.noWrap}>
         <state.componentRef
           attributes={state.properties}
           {...state.componentInfo?.options}
           style={state.css}
-          children={state.block.children}
+          children={state.useBlock.children}
         />
       </Show>
-      <Show when={!state.componentInfo?.noWrap}>
-        <state.tagName {...state.properties} style={state.css}>
-          {state.componentRef && (
-            <state.componentRef {...state.componentOptions} children={state.block.children} />
-          )}
-          <Show when={!state.componentRef && state.block.children && state.block.children.length}>
-            <For each={state.block.children}>{(child: any) => <RenderBlock block={child} />}</For>
-          </Show>
-        </state.tagName>
-      </Show>
+      <Show when={!state.componentInfo?.noWrap}> */}
+      <state.tagName {...state.properties} style={state.css}>
+        <BlockStyles block={state.useBlock} />
+        {state.componentRef && (
+          <state.componentRef {...state.componentOptions} children={state.useBlock.children} />
+        )}
+        <Show
+          when={!state.componentRef && state.useBlock.children && state.useBlock.children.length}
+        >
+          <For each={state.useBlock.children}>{(child: any) => <RenderBlock block={child} />}</For>
+        </Show>
+      </state.tagName>
+      {/* </Show> */}
     </>
   );
 }
