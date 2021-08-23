@@ -417,15 +417,15 @@ export interface Input {
   /**
    * Number field type validation maximum accepted input
    */
-  max?: number,
+  max?: number;
   /**
    * Number field type validation minimum accepted input
    */
-  min?: number,
+  min?: number;
   /**
    * Number field type step size when using arrows
    */
-  step?: number,
+  step?: number;
 
   /**
    * Set this to `true` to show the editor for this input when
@@ -1071,6 +1071,14 @@ export class Builder {
       return;
     }
 
+    const apiKey = this.apiKey;
+    if (!apiKey) {
+      console.error(
+        'Builder integration error: Looks like the Builder SDK has not been initialized properly (your API key has not been set). Make sure you are calling `builder.init("«YOUR-API-KEY»");` as early as possible in your application\'s code.'
+      );
+      return;
+    }
+
     let eventData: Event = JSON.parse(
       JSON.stringify({
         type: eventName,
@@ -1082,7 +1090,7 @@ export class Builder {
             ...properties.meta,
             ...properties.metadata,
           },
-          ownerId: this.apiKey!,
+          ownerId: apiKey,
           userAttributes: this.getUserAttributes(),
           sessionId: this.sessionId,
           visitorId: this.visitorId,
@@ -1316,7 +1324,7 @@ export class Builder {
     protected request?: IncomingMessage,
     protected response?: ServerResponse,
     forceNewInstance = false,
-    authToken: string | null = null,
+    authToken: string | null = null
   ) {
     // TODO: use a window variable for this perhaps, e.g. bc webcomponents may be loading builder twice
     // with it's and react (use rollup build to fix)
@@ -1828,7 +1836,13 @@ export class Builder {
   ) {
     let instance: Builder = this;
     if (!Builder.isBrowser) {
-      instance = new Builder(options.apiKey || this.apiKey, options.req, options.res, undefined, options.authToken || this.authToken);
+      instance = new Builder(
+        options.apiKey || this.apiKey,
+        options.req,
+        options.res,
+        undefined,
+        options.authToken || this.authToken
+      );
       instance.setUserAttributes(this.getUserAttributes());
     } else {
       if (options.apiKey && !this.apiKey) {
@@ -1950,24 +1964,25 @@ export class Builder {
     return observable;
   }
 
-  requestUrl(url: string, options?: { headers: { [header: string]: number | string | string[] | undefined } }) {
+  requestUrl(
+    url: string,
+    options?: { headers: { [header: string]: number | string | string[] | undefined } }
+  ) {
     if (Builder.isBrowser) {
-      return fetch(
-        url,
-        options as SimplifiedFetchOptions
-      ).then(res => res.json());
+      return fetch(url, options as SimplifiedFetchOptions).then(res => res.json());
     }
     return new Promise((resolve, reject) => {
       const parsedUrl = parse(url);
-      const module = (parsedUrl.protocol === 'http:') ? serverOnlyRequire('http') : serverOnlyRequire('https');
+      const module =
+        parsedUrl.protocol === 'http:' ? serverOnlyRequire('http') : serverOnlyRequire('https');
       const requestOptions = {
-          host: parsedUrl.hostname,
-          port: parsedUrl.port,
-          path: parsedUrl.pathname + parsedUrl.search,
-          headers: {...options?.headers},
+        host: parsedUrl.hostname,
+        port: parsedUrl.port,
+        path: parsedUrl.pathname + parsedUrl.search,
+        headers: { ...options?.headers },
       };
       module
-          .get(requestOptions, function (resp: any) {
+        .get(requestOptions, function (resp: any) {
           let data = '';
 
           // A chunk of data has been recieved.
@@ -2173,12 +2188,12 @@ export class Builder {
 
     const format = queryParams.format;
 
-    const requestOptions = {headers: {}};
+    const requestOptions = { headers: {} };
     if (this.authToken) {
       requestOptions.headers = {
         ...requestOptions.headers,
-        Authorization: `Bearer ${this.authToken}`
-      }
+        Authorization: `Bearer ${this.authToken}`,
+      };
     }
 
     const promise = this.requestUrl(

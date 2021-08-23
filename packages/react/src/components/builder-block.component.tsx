@@ -363,9 +363,15 @@ export class BuilderBlock extends React.Component<
           InnerComponent = componentInfo.tag;
         } else {
           if (componentName.startsWith('Builder:')) {
-            console.warn(`Missing @builder.io/widgets installation, please install and import @builder.io/widgets to use ${componentName.split(':')[1]} in your content, more info here: https://github.com/BuilderIO/builder/tree/main/packages/widgets`)
+            console.warn(
+              `Missing @builder.io/widgets installation, please install and import @builder.io/widgets to use ${
+                componentName.split(':')[1]
+              } in your content, more info here: https://github.com/BuilderIO/builder/tree/main/packages/widgets`
+            );
           } else {
-            console.warn(`Missing registration for ${componentName}, have you included the registration in your bundle?`)
+            console.warn(
+              `Missing registration for ${componentName}, have you included the registration in your bundle?`
+            );
           }
         }
       }
