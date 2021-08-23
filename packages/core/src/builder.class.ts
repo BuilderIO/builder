@@ -1071,6 +1071,12 @@ export class Builder {
       return;
     }
 
+    const apiKey = this.apiKey;
+    if (!apiKey) {
+      console.error('Builder integration error: Looks like the Builder SDK has not been initialized properly (your API key has not been set). Make sure you are calling `builder.init("«YOUR-API-KEY»");` as early as possible in your application\'s code.');
+      return;
+    }
+
     let eventData: Event = JSON.parse(
       JSON.stringify({
         type: eventName,
@@ -1082,7 +1088,7 @@ export class Builder {
             ...properties.meta,
             ...properties.metadata,
           },
-          ownerId: this.apiKey!,
+          ownerId: apiKey,
           userAttributes: this.getUserAttributes(),
           sessionId: this.sessionId,
           visitorId: this.visitorId,
