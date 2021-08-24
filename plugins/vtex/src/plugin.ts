@@ -1,13 +1,6 @@
 import { registerCommercePlugin } from '@builder.io/commerce-plugin-tools';
-import { gateway } from '@moltin/sdk';
 import pkg from '../package.json';
-/**
- * 
- * Account Name: schneiderinternal
-Secret key: OYJEGVWPBKLSHPZIVLQVZVYKNBGEQRZFPTULIDCFXZPOQBZZMBGXKGOTAYREPSZKLGCOVOASJKXAGKULCGSOLCVIEAKKLXQFAFDKZKEXBNNZJNMQEGCJZKYIKTJUEPGM
-Access KEY: vtexappkey-schneiderinternal-GCKAEM
 
- */
 registerCommercePlugin(
   {
     name: 'Vtex',
@@ -33,7 +26,7 @@ registerCommercePlugin(
         name: 'environment',
         type: 'string',
         required: true,
-        defaultValue: 'vtexcommercestable'
+        defaultValue: 'vtexcommercestable',
       },
     ],
     ctaText: `Connect your Vtex store`,
@@ -47,10 +40,12 @@ registerCommercePlugin(
     const isDev = settings.get('environment') === 'development';
     const environment = 'vtexcommercestable';
 
-    const baseUrl = (url: string) => { 
-      const endUrl = `https://${accountName}.${environment}.com.br/${url}`
-      return `${isDev ? 'http://localhost:5000' : 'https://builder.io'}/api/v1/proxy-api?url=${encodeURIComponent(endUrl)}`;
-    }
+    const baseUrl = (url: string) => {
+      const endUrl = `https://${accountName}.${environment}.com.br/${url}`;
+      return `${
+        isDev ? 'http://localhost:5000' : 'https://builder.io'
+      }/api/v1/proxy-api?url=${encodeURIComponent(endUrl)}`;
+    };
 
     const headers = {
       'X-VTEX-API-AppToken': secretKey,
@@ -63,7 +58,8 @@ registerCommercePlugin(
       ...product,
       id: product.Id || product.id || product.productId || product.items?.[0]?.productId,
       title: product.name || product.Name || product.productName,
-      handle: product.linkText || product.items?.[0]?.linkText || product.href?.split('/').reverse()[1],
+      handle:
+        product.linkText || product.items?.[0]?.linkText || product.href?.split('/').reverse()[1],
       ...(product.images && {
         image: {
           src: product.images[0]?.imageUrl,
@@ -74,10 +70,9 @@ registerCommercePlugin(
           src: product.thumbUrl,
         },
       }),
-
     });
 
-    const service =  {
+    const service = {
       product: {
         async findById(id: string) {
           const key = `${id}productById`;
@@ -92,17 +87,22 @@ registerCommercePlugin(
         },
 
         async findByHandle(handle: string) {
-          const response =
-            (await fetch(baseUrl(`api/catalog_system/pub/products/search/${handle}/p`), {
+          const response = await fetch(
+            baseUrl(`api/catalog_system/pub/products/search/${handle}/p`),
+            {
               headers,
-            }).then(res => res.json()));
+            }
+          ).then(res => res.json());
           const product = response.map(transformProduct)[0];
           return product;
         },
         async search(search: string) {
-          const response: any = await fetch(baseUrl(`/buscaautocomplete?productNameContains=${search}`), {
-            headers,
-          }).then(res => {
+          const response: any = await fetch(
+            baseUrl(`/buscaautocomplete?productNameContains=${search}`),
+            {
+              headers,
+            }
+          ).then(res => {
             return res.json();
           });
           return response.itemsReturned.map(transformProduct);
@@ -135,26 +135,33 @@ registerCommercePlugin(
         },
 
         async findByHandle(handle: string) {
-          const response =
-            (await fetch(baseUrl(`api/catalog_system/pub/categories/search/${handle}/p`), {
+          const response = await fetch(
+            baseUrl(`api/catalog_system/pub/categories/search/${handle}/p`),
+            {
               headers,
-            }).then(res => res.json()));
+            }
+          ).then(res => res.json());
           const category = response.map(transformProduct)[0];
           return category;
         },
         async search(search: string) {
-          const response: any = await fetch(baseUrl(`/buscaautocomplete?categoryNameContains=${search}`), {
-            headers,
-          }).then(res => {
+          const response: any = await fetch(
+            baseUrl(`/buscaautocomplete?categoryNameContains=${search}`),
+            {
+              headers,
+            }
+          ).then(res => {
             return res.json();
           });
 
           // TODO: figure out how to search without this hack
-          const categories = await Promise.all(response.itemsReturned.map(async (item: any) => {
-            const product = await service.product.findById(item.items[0].productId);
-            return await service.category.findById(product.CategoryId);
-          }))
-          
+          const categories = await Promise.all(
+            response.itemsReturned.map(async (item: any) => {
+              const product = await service.product.findById(item.items[0].productId);
+              return await service.category.findById(product.CategoryId);
+            })
+          );
+
           return categories;
         },
 
@@ -170,8 +177,8 @@ registerCommercePlugin(
             },
           };
         },
-      }
+      },
+    };
+    return service;
   }
-  return service;
-}
 );

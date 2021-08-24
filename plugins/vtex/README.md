@@ -6,7 +6,7 @@ Easily connect your Vtex catalog to your Builder.io content!
 
 ## Installation
 
-Go to [builder.io/account/organization](https://builder.io/account/organization) and type  `@builder.io/plugin-vtex` , then hit save, a prompt will ask you for your client ID / Secret Key / Account Name.
+Go to [builder.io/account/organization](https://builder.io/account/organization) and type `@builder.io/plugin-vtex` , then hit save, a prompt will ask you for your client ID / Secret Key / Account Name.
 
 ![Installation screenshot](https://cdn.builder.io/api/v1/image/assets%2F6d39f4449e2b4e6792a793bb8c1d9615%2F18a7201313914cccae7f0311a1a614ae)
 
