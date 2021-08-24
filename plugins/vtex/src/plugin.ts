@@ -47,11 +47,8 @@ registerCommercePlugin(
     const isDev = settings.get('environment') === 'development';
     const environment = 'vtexcommercestable';
 
-    const baseUrl = (url: string, shouldProxy = true) => { 
+    const baseUrl = (url: string) => { 
       const endUrl = `https://${accountName}.${environment}.com.br/${url}`
-      if (!shouldProxy) {
-        return endUrl;
-      }
       return `${isDev ? 'http://localhost:5000' : 'https://builder.io'}/api/v1/proxy-api?url=${encodeURIComponent(endUrl)}`;
     }
 
@@ -63,6 +60,7 @@ registerCommercePlugin(
     };
 
     const transformProduct = (product: any) => ({
+      ...product,
       id: product.Id || product.id || product.productId || product.items?.[0]?.productId,
       title: product.name || product.Name || product.productName,
       handle: product.linkText || product.items?.[0]?.linkText || product.href?.split('/').reverse()[1],
@@ -79,7 +77,7 @@ registerCommercePlugin(
 
     });
 
-    return {
+    const service =  {
       product: {
         async findById(id: string) {
           const key = `${id}productById`;
@@ -114,7 +112,8 @@ registerCommercePlugin(
           return {
             '@type': '@builder.io/core:Request',
             request: {
-              url: baseUrl(`products/${id}`),
+              url: baseUrl(`api/catalog/pvt/product/${id}`),
+              headers,
             },
             options: {
               product: id,
@@ -122,46 +121,57 @@ registerCommercePlugin(
           };
         },
       },
-      // category: {
-      //   async findById(id: string) {
-      //     const key = `${id}collectionById`;
-      //     const collection =
-      //       basicCache.get(key) ||
-      //       (await fetch(baseUrl(`categories/${id}`), { headers })
-      //         .then(res => res.json())
-      //         .then(transformProduct));
-      //     basicCache.set(key, collection);
-      //     return collection;
-      //   },
-      //   async findByHandle(handle: string) {
-      //     const key = `${handle}collectionByHandle`;
-      //     const response =
-      //       basicCache.get(key) ||
-      //       (await fetch(baseUrl(`categories?where[active]=true&where[slug]=${handle}`), {
-      //         headers,
-      //       }).then(res => res.json()));
-      //     basicCache.set(key, response);
-      //     const collection = response.results.map(transformProduct)[0];
-      //     return collection;
-      //   },
-      //   async search(search: string) {
-      //     const response = await fetch(baseUrl(`categories?where[active]=true&search=${search}`), {
-      //       headers,
-      //     }).then(res => res.json());
-      //     return response.results.map(transformProduct);
-      //   },
-      //   getRequestObject(id: string) {
-      //     return {
-      //       '@type': '@builder.io/core:Request',
-      //       request: {
-      //         url: baseUrl(`categories/${id}`),
-      //       },
-      //       options: {
-      //         category: id,
-      //       },
-      //     };
-      //   },
-      // },
+      category: {
+        async findById(id: string) {
+          const key = `${id}categoryById`;
+          // https://{accountName}.{environment}.com.br/api/catalog/pvt/category/categoryId
+          const category =
+            basicCache.get(key) ||
+            (await fetch(baseUrl(`api/catalog/pvt/category/${id}`), { headers })
+              .then(res => res.json())
+              .then(transformProduct));
+          basicCache.set(key, category);
+          return category;
+        },
+
+        async findByHandle(handle: string) {
+          const response =
+            (await fetch(baseUrl(`api/catalog_system/pub/categories/search/${handle}/p`), {
+              headers,
+            }).then(res => res.json()));
+          const category = response.map(transformProduct)[0];
+          return category;
+        },
+        async search(search: string) {
+          const response: any = await fetch(baseUrl(`/buscaautocomplete?categoryNameContains=${search}`), {
+            headers,
+          }).then(res => {
+            return res.json();
+          });
+
+          // TODO: figure out how to search without this hack
+          const categories = await Promise.all(response.itemsReturned.map(async (item: any) => {
+            const product = await service.product.findById(item.items[0].productId);
+            return await service.category.findById(product.CategoryId);
+          }))
+          
+          return categories;
+        },
+
+        getRequestObject(id: string) {
+          return {
+            '@type': '@builder.io/core:Request',
+            request: {
+              url: baseUrl(`api/catalog/pvt/category/${id}`),
+              headers,
+            },
+            options: {
+              category: id,
+            },
+          };
+        },
+      }
   }
+  return service;
 }
 );
