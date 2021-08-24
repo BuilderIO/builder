@@ -44,15 +44,15 @@ registerCommercePlugin(
     const secretKey = settings.get('secretKey');
     const accessKey = settings.get('accessKey');
     const accountName = settings.get('accountName');
-    const environment = settings.get('environment') || 'vtexcommercestable';
+    const isDev = settings.get('environment') === 'development';
+    const environment = 'vtexcommercestable';
 
     const baseUrl = (url: string, shouldProxy = true) => { 
       const endUrl = `https://${accountName}.${environment}.com.br/${url}`
-      console.log
       if (!shouldProxy) {
         return endUrl;
       }
-      return `http://localhost:5000/api/v1/proxy-api?url=${encodeURIComponent(endUrl)}`;
+      return `${isDev ? 'http://localhost:5000' : 'https://builder.io'}/api/v1/proxy-api?url=${encodeURIComponent(endUrl)}`;
     }
 
     const headers = {
@@ -82,7 +82,6 @@ registerCommercePlugin(
     return {
       product: {
         async findById(id: string) {
-          console.log('findById here ', id);
           const key = `${id}productById`;
           // https://{accountName}.{environment}.com.br/api/catalog/pvt/product/productId
           const product =
@@ -95,8 +94,6 @@ registerCommercePlugin(
         },
 
         async findByHandle(handle: string) {
-          console.log('findByHandle here ', handle);
-          // https://{accountName}.{environment}.com.br/api/catalog_system/pub/products/search/product-text-link/p
           const response =
             (await fetch(baseUrl(`api/catalog_system/pub/products/search/${handle}/p`), {
               headers,
@@ -108,11 +105,7 @@ registerCommercePlugin(
           const response: any = await fetch(baseUrl(`/buscaautocomplete?productNameContains=${search}`), {
             headers,
           }).then(res => {
-            console.log('here in rest' , res);
             return res.json();
-          }).catch(res => {
-            console.log('here in catch2', res);
-            throw res;
           });
           return response.itemsReturned.map(transformProduct);
         },
