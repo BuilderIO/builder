@@ -17,7 +17,6 @@
     "node": ">=6.0.0"
   },
   "scripts": {
-    "postinstall": "patch-package",
     "lint": "tslint  --project tsconfig.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
     "prebuild": "rimraf dist",
     "build": "rollup -c rollup.config.ts",
@@ -98,7 +97,6 @@
     "jest-config": "^23.6.0",
     "lint-staged": "^8.0.0",
     "lodash.camelcase": "^4.3.0",
-    "patch-package": "^6.4.7",
     "prettier": "^1.14.3",
     "prompt": "^1.0.0",
     "replace-in-file": "^3.4.2",
