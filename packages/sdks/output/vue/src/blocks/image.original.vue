@@ -2,7 +2,7 @@
   <picture>
     <img
       loading="lazy"
-      class="img-1eauc05wdgy"
+      class="img-2hex46lk8aw"
       :alt="altText"
       :aria-role="altText ? 'presentation' : undefined"
       :class="
@@ -41,7 +41,7 @@ export default {
 };
 </script>
 <style scoped>
-.img-1eauc05wdgy {
+.img-2hex46lk8aw {
   opacity: 1;
   transition: opacity 0.2s ease-in-out;
   object-fit: cover;

@@ -29,7 +29,7 @@
     </template>
 
     <template v-if="submissionState === 'error' && responseData">
-      <pre class="builder-form-error-text pre-wu4dnshdv0">
+      <pre class="builder-form-error-text pre-o3y26b7a0b">
         {{ JSON.stringify(responseData, null, 2) }}
       </pre>
     </template>
@@ -305,7 +305,7 @@ export default {
 };
 </script>
 <style scoped>
-.pre-wu4dnshdv0 {
+.pre-o3y26b7a0b {
   padding: 10px;
   color: red;
   text-align: center;

@@ -69,6 +69,7 @@ export default function Columns(props: ColumnProps) {
 registerComponent({
   // TODO: ways to statically preprocess JSON for references, functions, etc
   name: 'Columns',
+  builtIn: true,
   inputs: [
     {
       name: 'columns',

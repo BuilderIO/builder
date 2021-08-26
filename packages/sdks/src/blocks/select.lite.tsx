@@ -28,6 +28,7 @@ export default function SelectComponent(props: FormSelectProps) {
 
 registerComponent({
   name: 'Form:Select',
+  builtIn: true,
   image:
     'https://cdn.builder.io/api/v1/image/assets%2FIsxPKMo2gPRRKeakUztj1D6uqed2%2F83acca093fb24aaf94dee136e9a4b045',
   defaultStyles: {

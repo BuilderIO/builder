@@ -16,6 +16,7 @@ registerComponent({
   name: 'Fragment',
   static: true,
   hidden: true,
+  builtIn: true,
   canHaveChildren: true,
   noWrap: true,
 });

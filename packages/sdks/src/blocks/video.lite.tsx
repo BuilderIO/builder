@@ -54,6 +54,7 @@ export default function Video(props: VideoProps) {
 registerComponent({
   name: 'Video',
   canHaveChildren: true,
+  builtIn: true,
   defaultStyles: {
     minHeight: '20px',
     minWidth: '20px',

@@ -290,6 +290,7 @@ export default function FormComponent(props: FormProps) {
 
 registerComponent({
   name: 'Form:Form',
+  builtIn: true,
   // editableTags: ['builder-form-error']
   defaults: {
     responsiveStyles: {
