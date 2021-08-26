@@ -44,7 +44,6 @@ export default function Columns(props: ColumnProps) {
       class="builder-columns"
       css={{
         display: 'flex',
-        flexDirection: 'column',
         alignItems: 'stretch',
         lineHeight: 'normal',
       }}

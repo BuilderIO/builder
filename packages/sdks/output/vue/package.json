@@ -1,7 +1,7 @@
 {
   "name": "@builder.io/sdk-vue",
   "description": "Builder.io SDK for Vue",
-  "version": "0.0.1-14",
+  "version": "0.0.1-17",
   "dependencies": {},
   "main": "src/index.js",
   "scripts": {

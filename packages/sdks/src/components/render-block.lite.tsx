@@ -73,6 +73,7 @@ export default function RenderBlock(props: RenderBlockProps) {
         <state.componentRef
           attributes={state.properties}
           {...state.componentInfo?.options}
+          builderBlock={state.useBlock} 
           style={state.css}
           children={state.useBlock.children}
         />
@@ -81,7 +82,7 @@ export default function RenderBlock(props: RenderBlockProps) {
       <state.tagName {...state.properties} style={state.css}>
         <BlockStyles block={state.useBlock} />
         {state.componentRef && (
-          <state.componentRef {...state.componentOptions} children={state.useBlock.children} />
+          <state.componentRef {...state.componentOptions} builderBlock={state.useBlock}  children={state.useBlock.children} />
         )}
         <Show
           when={!state.componentRef && state.useBlock.children && state.useBlock.children.length}

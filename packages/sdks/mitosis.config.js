@@ -1,4 +1,4 @@
 module.exports = {
   files: 'src/**',
-  targets: ['reactNative', 'qwik', 'vue'],
+  targets: ['reactNative', 'vue'],
 };
