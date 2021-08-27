@@ -1768,7 +1768,7 @@ const P7 = styled.p`
   white-space: nowrap;
 `;
 
-const P8 = styled.p`
+const P8 = styled.a`
   margin-bottom: 16px;
   display: block;
   text-align: center;
