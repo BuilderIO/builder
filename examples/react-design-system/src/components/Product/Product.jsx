@@ -7,11 +7,20 @@ import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    maxWidth: '100%',
-    margin: 10,
+    width: 'calc(50vw - 3px)',
     display: 'flex',
     flexDirection: 'column',
     boxShadow: 'none'
+  },
+  '@media (min-width: 724px)': {
+    root: {
+      width: 'calc(33vw - 3px)'
+    }
+  },
+  '@media (min-width: 1224px)': {
+    root: {
+      width: 'calc(25vw - 3px)'
+    }
   },
   expand: {
     transform: 'rotate(0deg)',
@@ -52,8 +61,10 @@ export const Product = props => {
   const price = seller?.commertialOffer?.Price;
 
   return (
-    <Link to={`/products/${props.productId}`}>
-      <Card className={classes.root} style={{ width: widthMap[props.sizeName] }}>
+    <Link style={{
+      border: '0.5px solid #eaeef5',
+    }} to={`/products/${props.productId}`}>
+      <Card className={classes.root}>
         
         <CardMedia
           style={{ height: widthMap[props.sizeName] * 1.2 }}
@@ -75,7 +86,8 @@ export const Product = props => {
             font: 'serif',
             color: '#999',
             fontWeight: 100,
-            marginTop: 30
+            marginTop: 30,
+            marginBottom: 30,
           }}>
             ${price}.00
           </div>

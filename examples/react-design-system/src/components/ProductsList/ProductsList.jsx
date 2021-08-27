@@ -11,7 +11,6 @@ const useStyles = makeStyles(theme => ({
   },
   container: {
     display: 'flex',
-    justifyContent: 'center',
     flexWrap: 'wrap',
   },
 }));
@@ -36,7 +35,7 @@ export const ProductsList = props => {
 
   return (
     <div className={classes.root}>
-      <div className={classes.container}>
+      <div style={{ border: '0.5px solid #eaeef5' }} className={classes.container}>
         {data.slice(0, amount || 20).map(product => (
           <Product key={product.productId} sizeName={size || 'Medium'} {...product} />
         ))}

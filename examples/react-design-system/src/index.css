@@ -14,3 +14,8 @@ a {
   cursor: pointer;
   color: black;
 }
+
+@font-face {
+  font-family: "Lora";
+  src: url("https://jamesavery-productionv3-weblinc.netdna-ssl.com/assets/workarea/storefront/lora-bc26a420e1fad74a8bf10efb6f908f674f3719661746a966bb79b102dee16c34.woff") format("woff");
+}
