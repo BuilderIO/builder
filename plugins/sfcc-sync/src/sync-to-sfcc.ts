@@ -17,7 +17,7 @@ export const syncToSFCC = (modelId: string) => {
     }
   ).then(async res => {
     const json = await res.json();
-    if(res.status !== 200) {
+    if (res.status !== 200) {
       throw json;
     }
     return json;

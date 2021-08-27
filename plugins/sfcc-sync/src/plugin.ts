@@ -95,7 +95,7 @@ Builder.register('model.action', {
       try {
         await syncToSFCC(model.id);
         await createWebhook(model);
-      } catch(e) {
+      } catch (e) {
         console.error('error syncing model entries', e);
         appState.snackBar.show('Error syncing model entries, check console');
       }
