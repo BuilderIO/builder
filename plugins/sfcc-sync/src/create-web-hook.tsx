@@ -15,9 +15,9 @@ export const createWebhook = async (model: any) => {
 
   const newWebhook = {
     customHeaders,
-    url: `${forceQA ? 'https://qa.builder.io' : appState.config.apiRoot()}/api/v1/sfcc-sync/webhook?&modelId=${
-      model.id
-    }&apiKey=${appState.user.apiKey}`,
+    url: `${
+      forceQA ? 'https://qa.builder.io' : appState.config.apiRoot()
+    }/api/v1/sfcc-sync/webhook?&modelId=${model.id}&apiKey=${appState.user.apiKey}`,
     disableProxy: true, // proxy has an issue with the POST request body
   };
 

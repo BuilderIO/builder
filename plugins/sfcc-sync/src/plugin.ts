@@ -1,6 +1,6 @@
 import { Builder } from '@builder.io/react';
 import appState from '@builder.io/app-context';
-import {  syncToSFCC } from './sync-to-sfcc';
+import { syncToSFCC } from './sync-to-sfcc';
 import { createWebhook } from './create-web-hook';
 import pkg from '../package.json';
 
@@ -35,7 +35,8 @@ Builder.register('plugin', {
       name: 'apiPath',
       type: 'text',
       helperText: 'SFCC API path, no trailing slash or sub path, just domain.com',
-    },  ],
+    },
+  ],
 
   ctaText: 'Connect',
 
@@ -65,7 +66,8 @@ Builder.register('app.onLoad', async ({ triggerSettingsDialog }: AppActions) => 
   }
 });
 
-const getSFCCWebhookIndex = (model: { webhooks: Array<Map<string, string>>}) => model.webhooks.findIndex((webhook) => webhook.get('url')?.includes('sfcc-sync/webhook'))
+const getSFCCWebhookIndex = (model: { webhooks: Array<Map<string, string>> }) =>
+  model.webhooks.findIndex(webhook => webhook.get('url')?.includes('sfcc-sync/webhook'));
 
 Builder.register('model.action', {
   // TODO: uncomment once editor is released
@@ -81,13 +83,11 @@ Builder.register('model.action', {
   },
   async onClick(model: any) {
     const webhookIndex = getSFCCWebhookIndex(model);
-    const confirmation = webhookIndex !== -1 ? `Remove syncing "${model.name}" entries to SFCC?` : `This will sync all current and future entries in the "${model.name}" model to SFCC`
-    if (
-      !(await appState.dialogs.confirm(
-        confirmation,
-        'Continue'
-      ))
-    ) {
+    const confirmation =
+      webhookIndex !== -1
+        ? `Remove syncing "${model.name}" entries to SFCC?`
+        : `This will sync all current and future entries in the "${model.name}" model to SFCC`;
+    if (!(await appState.dialogs.confirm(confirmation, 'Continue'))) {
       return;
     }
     // appState.globalState.showGlobalBlockingLoadingIndicator = true;

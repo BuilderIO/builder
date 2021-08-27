@@ -6,9 +6,9 @@ export const syncToSFCC = async (modelId: string) => {
   const forceQA = pluginSettings.get('forceUseQaApi') === true;
 
   await fetch(
-    `${forceQA ? 'https://qa.builder.io' : appState.config.apiRoot()}/api/v1/sfcc-sync?modelId=${modelId}&apiKey=${
-      appState.user.organization.value.id
-    }`,
+    `${
+      forceQA ? 'https://qa.builder.io' : appState.config.apiRoot()
+    }/api/v1/sfcc-sync?modelId=${modelId}&apiKey=${appState.user.organization.value.id}`,
     {
       method: 'POST',
       headers: {
