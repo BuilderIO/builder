@@ -1,29 +1,54 @@
 import React, { useState, useEffect } from 'react';
-import queryString from 'query-string';
 import { CircularProgress, Button } from '@material-ui/core';
 import { ProductsList } from '../components/ProductsList/ProductsList';
-import { BuilderComponent } from '@builder.io/react';
+import { BuilderComponent, Builder } from '@builder.io/react';
 
-export function Product() {
-  const id = window.location.pathname.split('/')[2];
+const VTEX_API_TOKEN = 'OYJEGVWPBKLSHPZIVLQVZVYKNBGEQRZFPTULIDCFXZPOQBZZMBGXKGOTAYREPSZKLGCOVOASJKXAGKULCGSOLCVIEAKKLXQFAFDKZKEXBNNZJNMQEGCJZKYIKTJUEPGM'
+const VTEX_APP_KEY = 'vtexappkey-schneiderinternal-GCKAEM'
+
+Builder.registerComponent(ProductInfo, {
+  name: 'Product Info',
+  inputs: [
+    {
+      name: 'product',
+      type: 'VtexProduct',
+    },
+    {
+      name: 'size',
+      type: 'string',
+      defaultValue: 'small',
+      enum: [
+        'small',
+        'large'
+      ]
+    }
+  ]
+})
+
+function ProductInfo(props) {
+  const id = props.product?.options?.product || window.location.pathname.split('/')[2];
 
   const [product, setProduct] = useState(null);
   useEffect(() => {
-    const url = `https://api.shopstyle.com/api/v2/products/${id}`;
+    const url = `https://schneiderinternal.myvtex.com/api/catalog_system/pub/products/search?fq=productId:${id}`;
     if (product !== null) {
       setProduct(null);
     }
     async function fetchProduct() {
-      const qs = queryString.stringify({
-        view: 'web',
-        useElasticsearch: true,
-        pid: 'shopstyle',
-      });
-      const result = await fetch(`${url}?${qs}`).then(res => res.json());
-      setProduct(result);
+      const result = await fetch(`https://builder.io/api/v1/proxy-api?url=${encodeURIComponent(url)}&v=2`, {
+        headers: {
+          'X-VTEX-API-AppKey': VTEX_APP_KEY,
+          'X-VTEX-API-AppToken': VTEX_API_TOKEN
+        }
+      }).then(res => res.json());
+      setProduct(result?.[0]);
     }
     fetchProduct();
   }, [id]);
+
+  const item = product?.items?.[0];
+  const seller = item?.sellers?.[0];
+  const price = seller?.commertialOffer?.Price;
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', padding: 50 }}>
@@ -43,8 +68,9 @@ export function Product() {
         ) : (
           <div>
             <div style={{ display: 'flex', position: 'relative', alignItems: 'flex-start' }}>
-              <div style={{ width: '50%', flexShrink: 0, textAlign: 'center', minHeight: '80vh' }}>
-                {[product.image].concat(product.alternateImages).map(image => (
+              <div style={{ width: '50%', flexShrink: 0, textAlign: 'center',  }}>
+                {item.images
+                .slice(0, props.size === 'small' ? 1 : 2).map(image => 
                   <img
                     style={{
                       display: 'block',
@@ -53,26 +79,26 @@ export function Product() {
                       width: '100%',
                       maxHeight: 800,
                     }}
-                    src={image.sizes.Best.url}
+                    src={image.imageUrl}
                   />
-                ))}
+                )}
               </div>
-              <div style={{ position: 'sticky', top: 100, marginLeft: 50 }}>
-                <h2>{product.name}</h2>
-                <h3>{product.priceLabel}</h3>
+              <div style={{ marginLeft: 50, position: 'sticky', top: 50 }}>
+                <h2>{item.name}</h2>
+                <h3>${price}.00</h3>
                 <p>{product.description}</p>
-                <Button variant="outlined" size="large" style={{ marginTop: 10 }} fullWidth>
+                <Button href={seller.addToCartLink} variant="outlined" size="large" style={{ marginTop: 10 }} fullWidth>
                   Add to bag
                 </Button>
-                <BuilderComponent model="product-detail" />
               </div>
-            </div>
-            <div style={{ marginTop: 50 }}>
-              <ProductsList />
             </div>
           </div>
         )}
       </div>
     </div>
   );
+}
+
+export function Product() {
+  return <BuilderComponent model="product-detail" />
 }

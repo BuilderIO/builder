@@ -6,23 +6,23 @@ export const ProductsListBuilderConfig = {
     {
       name: 'category',
       type: 'string',
-      defaultValue: 'mens',
+      defaultValue: 'charm',
       enum: [
         {
-          label: 'Women',
-          value: 'womens-fashion',
+          label: 'Charms',
+          value: 'charm',
         },
         {
-          label: 'Mens',
-          value: 'mens-clothes',
+          label: 'Necklaces',
+          value: 'necklace',
         },
         {
-          label: 'Kids',
-          value: 'kids-and-baby',
+          label: 'Pendants',
+          value: 'pendant',
         },
         {
-          label: 'home',
-          value: 'living',
+          label: 'Bracelets',
+          value: 'bracelet',
         },
       ],
     },

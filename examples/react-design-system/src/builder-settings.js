@@ -15,7 +15,7 @@ import './components/DynamicColumns/DynamicColumns.builder';
 import './components/ProductsListWithServerSideData/ProductsListWithServerSideData.builder';
 
 // Add your public apiKey here
-const YOUR_KEY = '7f7bbcf72a1a4d72bac5daa359e7befd';
+const YOUR_KEY = '08fdda75eebf4f769364e1bf0ccc51a4';
 builder.init(YOUR_KEY);
 
 // Remove this to allow all built-in components to be used too

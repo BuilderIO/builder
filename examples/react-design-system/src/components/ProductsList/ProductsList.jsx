@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import queryString from 'query-string';
 import { Product } from '../Product/Product';
 import { makeStyles } from '@material-ui/core/styles';
+
+const VTEX_API_TOKEN = 'OYJEGVWPBKLSHPZIVLQVZVYKNBGEQRZFPTULIDCFXZPOQBZZMBGXKGOTAYREPSZKLGCOVOASJKXAGKULCGSOLCVIEAKKLXQFAFDKZKEXBNNZJNMQEGCJZKYIKTJUEPGM'
+const VTEX_APP_KEY = 'vtexappkey-schneiderinternal-GCKAEM'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -14,39 +16,29 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const defaultParams = {
-  abbreviatedCategoryHistogram: true,
-  limit: 20,
-  cat: 'womens-fashion',
-  view: 'web',
-  useElasticsearch: true,
-  sorts: 'Popular',
-  pid: 'shopstyle',
-};
-
 export const ProductsList = props => {
   const { amount, category, size } = props;
-  const url = 'https://api.shopstyle.com/api/v2/products';
-  const [data, setData] = useState({ products: [] });
+  const url = 'https://schneiderinternal.myvtex.com/api/catalog_system/pub/products/search';
+  const [data, setData] = useState([]);
   const classes = useStyles();
   useEffect(() => {
     async function fetchProducts() {
-      const qs = queryString.stringify({
-        ...defaultParams,
-        limit: amount || defaultParams.limit,
-        cat: category || defaultParams.cat,
-      });
-      const result = await fetch(`${url}?${qs}`).then(res => res.json());
+      const result = await fetch(`https://builder.io/api/v1/proxy-api?url=${encodeURIComponent(`${url}/${encodeURI(category || 'charm')}`)}&v=2`, {
+        headers: {
+          'X-VTEX-API-AppKey': VTEX_APP_KEY,
+          'X-VTEX-API-AppToken': VTEX_API_TOKEN
+        }
+      }).then(res => res.json());
       setData(result);
     }
     fetchProducts();
-  }, [amount, category, url]);
+  }, [category, url]);
 
   return (
     <div className={classes.root}>
       <div className={classes.container}>
-        {data.products.map(product => (
-          <Product key={product.id} sizeName={size || 'Medium'} {...product} />
+        {data.slice(0, amount || 20).map(product => (
+          <Product key={product.productId} sizeName={size || 'Medium'} {...product} />
         ))}
       </div>
     </div>

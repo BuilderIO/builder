@@ -18,6 +18,12 @@ const useStyles = makeStyles(theme => ({
     margin: '0 auto',
     letterSpacing: 2,
     fontWeight: 600,
+    position: 'absolute',
+    width: 300,
+    top: 55,
+    left: 0,
+    right: 0,
+    textAlign: 'center'
   },
 }));
 
@@ -33,7 +39,7 @@ export const Header = () => {
           {(data, loading) => (
             <div style={{ display: 'flex' }}>
               {data?.links?.map((item, index) => (
-                <div key={index} style={{ marginRight: 15 }}>
+                <div key={index} style={{ marginRight: 25 }}>
                   <Link to={item.link}>{item.text}</Link>
                 </div>
               ))}
@@ -42,9 +48,10 @@ export const Header = () => {
         </BuilderContent>
 
         <Link to="/" className={classes.logo}>
-          SHOPAHOLIC
+          <img style={{ height: 40, }} src="https://jamesavery-productionv3-weblinc.netdna-ssl.com/assets/workarea/storefront/logo-a352408084bba6d78441a5478f6f0603d426d3170e4616432c05e39f9abefe02.svg" />
         </Link>
         <a
+          style={{ marginLeft: 'auto' }}
           className={classes.link}
           onClick={() => {
             setShowCart(!showCart);
