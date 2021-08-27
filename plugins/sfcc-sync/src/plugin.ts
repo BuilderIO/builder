@@ -90,13 +90,19 @@ Builder.register('model.action', {
     if (!(await appState.dialogs.confirm(confirmation, 'Continue'))) {
       return;
     }
-    // appState.globalState.showGlobalBlockingLoadingIndicator = true;
+    appState.globalState.showGlobalBlockingLoadingIndicator = true;
     if (webhookIndex === -1) {
-      await syncToSFCC(model.id);
-      await createWebhook(model);
+      try {
+        await syncToSFCC(model.id);
+        await createWebhook(model);
+      } catch(e) {
+        console.error('error syncing model entries', e);
+        appState.snackBar.show('Error syncing model entries, check console');
+      }
     } else {
-      // TODO: remove webhook
+      model.webhooks.splice(webhookIndex, 1);
+      await appState.models.update(model, false);
     }
-    // appState.globalState.showGlobalBlockingLoadingIndicator = false;
+    appState.globalState.showGlobalBlockingLoadingIndicator = false;
   },
 });
