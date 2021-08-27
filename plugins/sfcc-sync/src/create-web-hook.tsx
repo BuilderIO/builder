@@ -1,4 +1,5 @@
 import appState from '@builder.io/app-context';
+import pkg from '../package.json';
 
 export const createWebhook = async (model: any) => {
   const customHeaders = [];
@@ -9,11 +10,13 @@ export const createWebhook = async (model: any) => {
       value: appState.user.authHeaders[headerName],
     });
   }
+  const pluginSettings = appState.user.organization.value.settings.plugins?.get(pkg.name);
+  const forceQA = pluginSettings.get('forceUseQaApi') === true;
 
   const newWebhook = {
     customHeaders,
-    url: `${appState.config.apiRoot()}/api/v1/sfcc-sync/webhook?&modelName=${
-      model.name
+    url: `${forceQA ? 'https://qa.builder.io' : appState.config.apiRoot()}/api/v1/sfcc-sync/webhook?&modelId=${
+      model.id
     }&apiKey=${appState.user.apiKey}`,
     disableProxy: true, // proxy has an issue with the POST request body
   };

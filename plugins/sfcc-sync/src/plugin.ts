@@ -9,20 +9,35 @@ Builder.register('plugin', {
   name: 'SFCC Content Sync',
   settings: [
     {
-      name: 'algoliaKey',
+      name: 'clientId',
       type: 'text',
       defaultValue: true,
-      helperText: 'todo add here',
+      helperText: 'SFCC OCAPI client Id',
     },
     {
-      name: 'algoliaAppId',
-      type: 'text',
-      defaultValue: true,
-      helperText: 'todo add here',
+      name: 'password',
+      type: 'password',
+      helperText: 'SFCC OCAPI password',
     },
-  ],
+    ,
+    {
+      name: 'libraryName',
+      type: 'text',
+      defaultValue: 'RefArchGlobal',
+      helperText: 'RefArchGlobal',
+    },
+    {
+      name: 'forceUseQaApi',
+      type: 'boolean',
+      helperText: `Use Builder's QA API`,
+    },
+    {
+      name: 'apiPath',
+      type: 'text',
+      helperText: 'SFCC API path, no trailing slash or sub path, just domain.com',
+    },  ],
 
-  ctaText: 'Save',
+  ctaText: 'Connect',
 
   async onSave(actions: OnSaveActions) {
     // update plugin setting
@@ -50,7 +65,7 @@ Builder.register('app.onLoad', async ({ triggerSettingsDialog }: AppActions) => 
   }
 });
 
-const getSFCCWebhookIndex = (model: { webhooks: Array<{url: string}>}) => model.webhooks.findIndex((webhook) => webhook.url.includes('sfcc-sync/webhook'))
+const getSFCCWebhookIndex = (model: { webhooks: Array<Map<string, string>>}) => model.webhooks.findIndex((webhook) => webhook.get('url')?.includes('sfcc-sync/webhook'))
 
 Builder.register('model.action', {
   // TODO: uncomment once editor is released
@@ -75,13 +90,13 @@ Builder.register('model.action', {
     ) {
       return;
     }
-    appState.globalState.showGlobalBlockingLoadingIndicator = true;
+    // appState.globalState.showGlobalBlockingLoadingIndicator = true;
     if (webhookIndex === -1) {
-      await syncToSFCC(model.name);
+      await syncToSFCC(model.id);
       await createWebhook(model);
     } else {
       // TODO: remove webhook
     }
-    appState.globalState.showGlobalBlockingLoadingIndicator = false;
+    // appState.globalState.showGlobalBlockingLoadingIndicator = false;
   },
 });
