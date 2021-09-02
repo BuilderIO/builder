@@ -1,8 +1,8 @@
-import appState, { Content, ContentModel } from '@builder.io/app-context'
-import { Builder, BuilderContent, Input, builder } from '@builder.io/sdk'
+import appState, { Content } from '@builder.io/app-context'
+import { Builder } from '@builder.io/sdk'
 import LangugeSwitcher from './components/language-switcher'
 import { pluginId } from './constants'
-import { ApplicationContext } from './interfaces/application-context'
+import { ExtendedApplicationContext } from './interfaces/application-context'
 declare global {
   interface Window {
     languageSettingsTrigger: () => Promise<void>
@@ -15,29 +15,17 @@ interface Model {
   kind: 'data' | 'page' | 'component' | 'function';
 }
 interface IAppState {
-  user: {
-    organization: {
-      value: {
-        settings: {
-          plugins: {
-            get: (model: string) => any,
-            set: (partal: Record<string, any>) => void,
-          },
-        },
-      },
-    },
-  },
   models: {
     result: Model[]
   },
 }
 
-const context: ApplicationContext & IAppState = require('@builder.io/app-context').default
+const context: ExtendedApplicationContext & IAppState = require('@builder.io/app-context').default
 
 const localization: Model = {
   name: 'localization',
   kind: 'data',
-  hideFromUI: false,
+  hideFromUI: true,
 }
 // Add buttons to the top toolbar when editing content
 Builder.register('editor.toolbarButton', {
@@ -49,11 +37,9 @@ interface OnSaveActions {
   addModel(model: Model): Promise<void>;
 }
 
-
-
 Builder.register('plugin', {
   id: pluginId,
-  name: 'wecre8Websites Localization',
+  name: 'Localized Preview',
   settings: [
     {
       name: 'locales',
@@ -81,10 +67,13 @@ Builder.register('plugin', {
       localeName: l.get('localeName'),
       localeCode: l.get('localeCode')
     }))
-    const existingModel: any = context.models.result.find((m: Model) => m.name === localization.name)
-    if (!existingModel)
-      actions.addModel(localization);
-    else console.log({ existingModel });
+    let existingModel: any = context.models.result.find((m: Model) => m.name === localization.name)
+    console.log({existingModel})
+    if (!existingModel) {
+      await actions.addModel(localization);
+      let existingModel: any = context.models.result.find((m: Model) => m.name === localization.name)
+      existingModel = true;
+    }
     const activeLocales: Content = {
       name: "activeLocales",
       //modelId: "localization",
@@ -93,22 +82,20 @@ Builder.register('plugin', {
       }
     }
     try {
-      //@ts-ignore
-      if (existing) {
-        const updated = await context.content.update(activeLocales);
+      if (existingModel) {
+        await context.content.update(activeLocales);
+        location.reload();
       }
-
     } catch (e) {
-      console.log(e);
-      const content = await context.createContent('localization', activeLocales)
-      //@ts-ignore
-      const locales = content.data.get('locales').map(l => ({ localeName: l.get('localeName'), localeCode: l.get('localeCode') }))
-
-      console.log({ locales })
+      console.error(e.message);
+      try {
+        await context.createContent('localization', activeLocales)
+        location.reload();
+      } catch(e) {
+        console.error(e.message);
+      }
     }
-    //context.content.update(activeLocales);
-
-    //context.models.update({...existingModel,hideFromUI:false})
+    //! @Aziz Type error: Property 'dialogs' does not exist on typedef
     //@ts-ignore
     appState.dialogs.alert('Plugin settings saved.');
   },

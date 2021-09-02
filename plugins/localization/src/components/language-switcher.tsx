@@ -1,8 +1,11 @@
-import React, { useState } from 'react'
-import { ApplicationContext } from '../interfaces/application-context'
-import { useEffect } from 'react'
-import Gear from '../icons/gear'
-const context: ApplicationContext = require('@builder.io/app-context').default
+import { MenuItem, Select } from '@material-ui/core'
+import { Settings } from '@material-ui/icons'
+import React, { useEffect, useState } from 'react'
+import { ExtendedApplicationContext } from '../interfaces/application-context'
+
+const context: ExtendedApplicationContext = require('@builder.io/app-context')
+  .default
+
 const pluginId = 'language-switcher'
 
 declare global {
@@ -19,29 +22,52 @@ const LangugeSwitcher = () => {
     }[]
   >()
   const onLoad = async () => {
-    const currentUser = await context.user.getUser(context.user.id)
-    //@ts-ignore
-    const currentOrg = await context.user.organization
-    //@ts-ignore
-    const pluginSettings = await (await currentOrg.value.settings.plugins).get(
-      pluginId
-    )
-    console.log({ pluginSettings })
+    const currentOrg = context.user.organization
+    const pluginSettings = currentOrg.value.settings.plugins.get(pluginId)
     const localesMap = await pluginSettings?.get('locales')
     const locales = localesMap.map((l: any) => ({
       name: l.get('localeName'),
       code: l.get('localeCode')
     }))
     setLocales(locales)
+    setSelectedLocale(locales[0].code)
   }
 
   useEffect(() => {
     onLoad()
   }, [])
 
+  const [selectedLocale, setSelectedLocale] = useState<string>()
+
+  const handleLocaleChange = (code: string) => {
+    if (
+      context.designerState.editingIframeRef &&
+      context.designerState.editingContentModel?.url
+    ) {
+      const { origin, search } = new URL(
+        context.designerState.editingIframeRef.src
+      )
+      if (locales?.length && code === locales[0].code) {
+        //! Unreliable -- Only succeeds in changing url intermittently. Also seems to save the preview path, overwriting the default
+        // context.designerState.editingContentModel.previewUrl = origin + context.designerState.editingContentModel?.url
+        context.designerState.editingIframeRef.src =
+          origin + context.designerState.editingContentModel?.url + search
+      } else {
+        //! Unreliable -- Only succeeds in changing url intermittently. Also seems to save the preview path, overwriting the default
+        // context.designerState.editingContentModel.previewUrl = origin + '/' + code + context.designerState.editingContentModel?.url
+        context.designerState.editingIframeRef.src =
+          origin +
+          '/' +
+          code +
+          context.designerState.editingContentModel?.url +
+          search
+      }
+    }
+    setSelectedLocale(code)
+  }
+
   return (
     <React.Fragment>
-      {/*@ts-ignore*/}
       <div
         onClick={() => window?.languageSettingsTrigger()}
         style={{
@@ -52,36 +78,19 @@ const LangugeSwitcher = () => {
           padding: '5px'
         }}
       >
-        <Gear />
+        <Settings color="action"/>
       </div>
-      <select
+      <Select
+        defaultValue={selectedLocale}
+        value={selectedLocale}
         onChange={v => {
-          if (
-            context.designerState.editingIframeRef &&
-            context.designerState.editingContentModel?.url
-          ) {
-            const { origin, search } = new URL(
-              context.designerState.editingIframeRef.src
-            )
-            if (!!v.target.dataset.default && v.target.value === v.target.dataset.default) {
-              context.designerState.editingIframeRef.src =
-                origin + context.designerState.editingContentModel?.url + search
-            } else {
-              context.designerState.editingIframeRef.src =
-                origin +
-                '/' +
-                v.target.value +
-                context.designerState.editingContentModel?.url +
-                search
-            }
-          }
+          handleLocaleChange(v.target.value as string)
         }}
-        data-default={locales && locales[0]?locales[0]?.code:undefined}
       >
-        {locales?.map((locale, index) => (
-          <option key={index} value={locale.code}>{locale.name}</option>
+        {locales?.map(locale => (
+          <MenuItem value={locale.code}>{locale.name}</MenuItem>
         ))}
-      </select>
+      </Select>
     </React.Fragment>
   )
 }
