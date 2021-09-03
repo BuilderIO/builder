@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/plugin-elasticpath",
-  "version": "0.0.2-1",
+  "version": "0.2.0",
   "description": "",
   "keywords": [],
   "unpkg": "dist/plugin.system.js",
