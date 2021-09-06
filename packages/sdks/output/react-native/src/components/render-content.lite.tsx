@@ -173,7 +173,7 @@ export default function RenderContent(props) {
         },
       }}
     >
-      {useContent() && (
+      {useContent() ? (
         <>
           <View
             onClick={(event) => {
@@ -188,20 +188,20 @@ export default function RenderContent(props) {
             {(useContent?.()?.data?.cssCode ||
               (useContent?.()?.data?.customFonts &&
                 useContent?.()?.data?.customFonts.length)) &&
-              !isReactNative() && (
-                <View>
-                  <Text>{useContent().data.cssCode}</Text>
+            !isReactNative() ? (
+              <View>
+                <Text>{useContent().data.cssCode}</Text>
 
-                  <Text>{getFontCss(useContent().data)}</Text>
-                </View>
-              )}
+                <Text>{getFontCss(useContent().data)}</Text>
+              </View>
+            ) : null}
 
             {useContent?.()?.data?.blocks?.map((block) => (
               <RenderBlock key={block.id} block={block} />
             ))}
           </View>
         </>
-      )}
+      ) : null}
     </BuilderContext.Provider>
   );
 }

@@ -69,34 +69,37 @@ export default function RenderBlock(props: RenderBlockProps) {
 
   return (
     <>
-      {/* TODO: add the below back when support `else` - needed for Vue */}
-      {/* <Show when={state.componentInfo?.noWrap}>
-        <state.componentRef
-          attributes={state.properties}
-          {...state.componentInfo?.options}
-          builderBlock={state.useBlock} 
-          style={state.css}
-          children={state.useBlock.children}
-        />
+      <Show
+        when={!state.componentInfo?.noWrap}
+        else={
+          <state.componentRef
+            attributes={state.properties}
+            {...state.componentInfo?.options}
+            builderBlock={state.useBlock}
+            style={state.css}
+            children={state.useBlock.children}
+          />
+        }
+      >
+        <state.tagName {...state.properties} style={state.css}>
+          <BlockStyles block={state.useBlock} />
+          {state.componentRef && (
+            <state.componentRef {...state.componentOptions} builderBlock={state.useBlock}>
+              {/* Maybe only include if `canHaveChildren: true` */}
+              <Show when={state.useBlock.children}>
+                <RenderBlocks path="children" blocks={state.useBlock.children} />
+              </Show>
+            </state.componentRef>
+          )}
+          <Show
+            when={!state.componentRef && state.useBlock.children && state.useBlock.children.length}
+          >
+            <For each={state.useBlock.children}>
+              {(child: any) => <RenderBlock block={child} />}
+            </For>
+          </Show>
+        </state.tagName>
       </Show>
-      <Show when={!state.componentInfo?.noWrap}> */}
-      <state.tagName {...state.properties} style={state.css}>
-        <BlockStyles block={state.useBlock} />
-        {state.componentRef && (
-          <state.componentRef {...state.componentOptions} builderBlock={state.useBlock}>
-            {/* Maybe only include if `canHaveChildren: true` */}
-            <Show when={state.useBlock.children}>
-              <RenderBlocks path="children" blocks={state.useBlock.children} />
-            </Show>
-          </state.componentRef>
-        )}
-        <Show
-          when={!state.componentRef && state.useBlock.children && state.useBlock.children.length}
-        >
-          <For each={state.useBlock.children}>{(child: any) => <RenderBlock block={child} />}</For>
-        </Show>
-      </state.tagName>
-      {/* </Show> */}
     </>
   );
 }

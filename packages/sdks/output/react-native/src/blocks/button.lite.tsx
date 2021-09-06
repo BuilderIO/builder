@@ -5,7 +5,7 @@ import { useContext } from "react";
 export default function Button(props) {
   return (
     <>
-      {props.link && (
+      {props.link ? (
         <>
           <View
             {...props.attributes}
@@ -15,15 +15,15 @@ export default function Button(props) {
             <Text>{props.text}</Text>
           </View>
         </>
-      )}
+      ) : null}
 
-      {!props.link && (
+      {!props.link ? (
         <>
           <View {...props.attributes}>
             <Text>{props.text}</Text>
           </View>
         </>
-      )}
+      ) : null}
     </>
   );
 }

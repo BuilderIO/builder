@@ -1,8 +1,8 @@
 <template>
-  <div class="builder-columns div-2ls6kgfiq48">
+  <div class="builder-columns div-13z7qbdscri">
     <template :key="index" v-for="(column, index) in columns">
       <div
-        class="builder-column div-2ls6kgfiq48-2"
+        class="builder-column div-13z7qbdscri-2"
         :style="{
           width: getColumnCssWidth(index),
           marginLeft: `${index === 0 ? 0 : getGutterSize()}px`,
@@ -43,12 +43,12 @@ export default {
 };
 </script>
 <style scoped>
-.div-2ls6kgfiq48 {
+.div-13z7qbdscri {
   display: flex;
   align-items: stretch;
   line-height: normal;
 }
-.div-2ls6kgfiq48-2 {
+.div-13z7qbdscri-2 {
   flex-grow: 1;
 }
 </style>

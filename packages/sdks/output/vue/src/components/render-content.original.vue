@@ -23,6 +23,7 @@
           {{ getFontCss(useContent.data) }}
         </component>
       </template>
+
       <template
         :key="block.id"
         v-for="(block, index) in useContent?.data?.blocks"

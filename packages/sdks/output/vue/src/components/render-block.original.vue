@@ -1,28 +1,43 @@
 <template>
-  <component v-bind="properties" :style="css" :is="tagName">
-    <block-styles :block="useBlock"></block-styles>
-    <template v-if="componentRef">
-      <component
-        v-bind="componentOptions"
-        :builderBlock="useBlock"
-        :is="componentRef"
-      >
-        <template v-if="useBlock.children">
-          <render-blocks
-            path="children"
-            :blocks="useBlock.children"
-          ></render-blocks>
-        </template>
-      </component>
-    </template>
-    <template
-      v-if="!componentRef && useBlock.children && useBlock.children.length"
-    >
-      <template :key="index" v-for="(child, index) in useBlock.children">
-        <render-block :block="child"></render-block>
+  <template v-if="!componentInfo?.noWrap">
+    <component v-bind="properties" :style="css" :is="tagName">
+      <block-styles :block="useBlock"></block-styles>
+
+      <template v-if="componentRef">
+        <component
+          v-bind="componentOptions"
+          :builderBlock="useBlock"
+          :is="componentRef"
+        >
+          <template v-if="useBlock.children">
+            <render-blocks
+              path="children"
+              :blocks="useBlock.children"
+            ></render-blocks>
+          </template>
+        </component>
       </template>
-    </template>
-  </component>
+
+      <template
+        v-if="!componentRef && useBlock.children && useBlock.children.length"
+      >
+        <template :key="index" v-for="(child, index) in useBlock.children">
+          <render-block :block="child"></render-block>
+        </template>
+      </template>
+    </component>
+  </template>
+
+  <template v-else>
+    <component
+      v-bind="componentInfo?.options"
+      :attributes="properties"
+      :builderBlock="useBlock"
+      :style="css"
+      :children="useBlock.children"
+      :is="componentRef"
+    ></component>
+  </template>
 </template>
 <script>
 import { getBlockComponentOptions } from "../functions/get-block-component-options";

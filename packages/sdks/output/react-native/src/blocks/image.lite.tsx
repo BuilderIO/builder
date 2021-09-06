@@ -21,23 +21,23 @@ export default function Image(props) {
       </View>
 
       {props.aspectRatio &&
-        !(props.fitContent && props.builderBlock?.children?.length) && (
-          <View className="builder-image-sizer" style={styles.view3}>
-            <Text> </Text>
-          </View>
-        )}
+      !(props.fitContent && props.builderBlock?.children?.length) ? (
+        <View className="builder-image-sizer" style={styles.view3}>
+          <Text> </Text>
+        </View>
+      ) : null}
 
-      {props.builderBlock?.children?.length && props.fitContent && (
+      {props.builderBlock?.children?.length && props.fitContent ? (
         <Text>{props.children}</Text>
-      )}
+      ) : null}
 
-      {!props.fitContent && (
+      {!props.fitContent ? (
         <>
           <View style={styles.view4}>
             <Text>{props.children}</Text>
           </View>
         </>
-      )}
+      ) : null}
     </View>
   );
 }

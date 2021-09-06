@@ -213,42 +213,42 @@ export default function FormComponent(props) {
       onSubmit={(event) => onSubmit(event)}
     >
       {" "}
-      {props.builderBlock && props.builderBlock.children && (
+      {props.builderBlock && props.builderBlock.children ? (
         <>
           {props.builderBlock?.children?.map((block) => (
             <BuilderBlockComponent block={block} />
           ))}
         </>
-      )}{" "}
-      {submissionState() === "error" && (
+      ) : null}{" "}
+      {submissionState() === "error" ? (
         <>
           <BuilderBlocks dataPath="errorMessage" blocks={props.errorMessage} />
         </>
-      )}{" "}
-      {submissionState() === "sending" && (
+      ) : null}{" "}
+      {submissionState() === "sending" ? (
         <>
           <BuilderBlocks
             dataPath="sendingMessage"
             blocks={props.sendingMessage}
           />
         </>
-      )}{" "}
-      {submissionState() === "error" && responseData && (
+      ) : null}{" "}
+      {submissionState() === "error" && responseData ? (
         <>
           <View className="builder-form-error-text" style={styles.view1}>
             {" "}
             <Text>{JSON.stringify(responseData, null, 2)}</Text>{" "}
           </View>
         </>
-      )}{" "}
-      {submissionState() === "success" && (
+      ) : null}{" "}
+      {submissionState() === "success" ? (
         <>
           <BuilderBlocks
             dataPath="successMessage"
             blocks={props.successMessage}
           />
         </>
-      )}{" "}
+      ) : null}{" "}
     </View>
   );
 }

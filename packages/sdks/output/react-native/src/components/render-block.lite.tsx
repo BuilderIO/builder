@@ -74,32 +74,52 @@ export default function RenderBlock(props) {
 
   const builderContext = useContext(BuilderContext);
 
-  const TagNameRef = tagName();
   const ComponentRefRef = componentRef();
+  const TagNameRef = tagName();
 
   return (
     <>
-      <TagNameRef {...properties()} style={css()}>
-        <BlockStyles block={useBlock()} />
+      {!componentInfo?.()?.noWrap ? (
+        <>
+          <TagNameRef {...properties()} style={css()}>
+            <BlockStyles block={useBlock()} />
 
-        {componentRef() && (
-          <ComponentRefRef {...componentOptions()} builderBlock={useBlock()}>
-            {useBlock().children && (
+            {componentRef() ? (
+              <ComponentRefRef
+                {...componentOptions()}
+                builderBlock={useBlock()}
+              >
+                {useBlock().children ? (
+                  <>
+                    <RenderBlocks
+                      path="children"
+                      blocks={useBlock().children}
+                    />
+                  </>
+                ) : null}
+              </ComponentRefRef>
+            ) : null}
+
+            {!componentRef() &&
+            useBlock().children &&
+            useBlock().children.length ? (
               <>
-                <RenderBlocks path="children" blocks={useBlock().children} />
+                {useBlock().children?.map((child) => (
+                  <RenderBlock block={child} />
+                ))}
               </>
-            )}
-          </ComponentRefRef>
-        )}
-
-        {!componentRef() && useBlock().children && useBlock().children.length && (
-          <>
-            {useBlock().children?.map((child) => (
-              <RenderBlock block={child} />
-            ))}
-          </>
-        )}
-      </TagNameRef>
+            ) : null}
+          </TagNameRef>
+        </>
+      ) : (
+        <ComponentRefRef
+          {...componentInfo?.()?.options}
+          attributes={properties()}
+          builderBlock={useBlock()}
+          style={css()}
+          children={useBlock().children}
+        />
+      )}
     </>
   );
 }

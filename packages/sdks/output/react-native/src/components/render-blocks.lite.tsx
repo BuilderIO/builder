@@ -44,13 +44,13 @@ export default function RenderBlocks(props) {
       className={"builder-blocks" + (!props.blocks?.length ? " no-blocks" : "")}
       style={styles.view1}
     >
-      {props.blocks && (
+      {props.blocks ? (
         <>
           {props.blocks?.map((block) => (
             <RenderBlock block={block} />
           ))}
         </>
-      )}
+      ) : null}
     </View>
   );
 }
