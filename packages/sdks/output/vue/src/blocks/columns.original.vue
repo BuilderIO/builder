@@ -1,11 +1,11 @@
 <template>
-  <div class="builder-columns div-2oo96by5l6a">
+  <div class="builder-columns div-23eqzmze2cf">
     <template :key="index" v-for="(column, index) in columns">
       <div
-        class="builder-column div-2oo96by5l6a-2"
+        class="builder-column div-23eqzmze2cf-2"
         :style="{
           width: getColumnCssWidth(index),
-          marginLeft: index === 0 ? 0 : getGutterSize(),
+          marginLeft: `${index === 0 ? 0 : getGutterSize()}px`,
         }"
       >
         <render-blocks :blocks="column.blocks"></render-blocks>
@@ -45,12 +45,12 @@ export default {
 };
 </script>
 <style scoped>
-.div-2oo96by5l6a {
+.div-23eqzmze2cf {
   display: flex;
   align-items: stretch;
   line-height: normal;
 }
-.div-2oo96by5l6a-2 {
+.div-23eqzmze2cf-2 {
   flex-grow: 1;
 }
 </style>

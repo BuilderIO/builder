@@ -9,6 +9,7 @@ import BuilderContext from '../context/builder.context.lite';
 import { getBlockActions } from '../functions/get-block-actions';
 import { getProcessedBlock } from '../functions/get-processed-block';
 import BlockStyles from './block-styles.lite';
+import RenderBlocks from './render-blocks.lite';
 
 export type RenderBlockProps = {
   block: BuilderBlock;
@@ -68,7 +69,7 @@ export default function RenderBlock(props: RenderBlockProps) {
 
   return (
     <>
-      {/* TODO: add the below back when support `else` */}
+      {/* TODO: add the below back when support `else` - needed for Vue */}
       {/* <Show when={state.componentInfo?.noWrap}>
         <state.componentRef
           attributes={state.properties}
@@ -82,7 +83,12 @@ export default function RenderBlock(props: RenderBlockProps) {
       <state.tagName {...state.properties} style={state.css}>
         <BlockStyles block={state.useBlock} />
         {state.componentRef && (
-          <state.componentRef {...state.componentOptions} builderBlock={state.useBlock}  children={state.useBlock.children} />
+          <state.componentRef {...state.componentOptions} builderBlock={state.useBlock}>
+            {/* Maybe only include if `canHaveChildren: true` */}
+            <Show when={state.useBlock.children}>
+              <RenderBlocks path="children" blocks={state.useBlock.children} />
+            </Show>
+          </state.componentRef>
         )}
         <Show
           when={!state.componentRef && state.useBlock.children && state.useBlock.children.length}

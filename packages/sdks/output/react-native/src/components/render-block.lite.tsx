@@ -10,6 +10,7 @@ import BuilderContext from "../context/builder.context.lite";
 import { getBlockActions } from "../functions/get-block-actions";
 import { getProcessedBlock } from "../functions/get-processed-block";
 import BlockStyles from "./block-styles.lite";
+import RenderBlocks from "./render-blocks.lite";
 
 export default function RenderBlock(props) {
   function component() {
@@ -82,11 +83,13 @@ export default function RenderBlock(props) {
         <BlockStyles block={useBlock()} />
 
         {componentRef() && (
-          <ComponentRefRef
-            {...componentOptions()}
-            builderBlock={useBlock()}
-            children={useBlock().children}
-          />
+          <ComponentRefRef {...componentOptions()} builderBlock={useBlock()}>
+            {useBlock().children && (
+              <>
+                <RenderBlocks path="children" blocks={useBlock().children} />
+              </>
+            )}
+          </ComponentRefRef>
         )}
 
         {!componentRef() && useBlock().children && useBlock().children.length && (

@@ -1,10 +1,12 @@
 import '@builder.io/mitosis';
 import { registerComponent } from '../functions/register-component';
+import RenderBlocks from '../components/render-blocks.lite';
 
 export interface SectionProps {
   maxWidth?: number;
   attributes?: any;
   children?: any;
+  builderBlock?: any;
 }
 
 export default function SectionComponent(props: SectionProps) {

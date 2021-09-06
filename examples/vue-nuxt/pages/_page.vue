@@ -1,0 +1,42 @@
+<template>
+  <div v-if="notFound && !isEditing">
+    <!-- Show your 404 content -->
+    Page not found
+  </div>
+  <div v-else>
+    <RenderContent model="page" :content="content" />
+  </div>
+</template>
+
+<script>
+import Vue from 'vue'
+import { RenderContent, getContent } from '@builder.io/sdk-vue'
+// Important to import this anywhere you use <RenderContent /> so the custom
+// components will be registered and usable
+import '../scripts/register-builder-components'
+
+// TODO: enter your public API key
+const BUILDER_PUBLIC_API_KEY = 'jdGaMusrVpYgdcAnAtgn'
+
+export default Vue.extend({
+  data: () => ({
+    notFound: false,
+    // TODO: figure out right flag for this
+    isEditing: true,
+  }),
+  components: { RenderContent },
+  async asyncData({ route }) {
+    let content = await getContent({
+      model: 'page',
+      apiKey: BUILDER_PUBLIC_API_KEY,
+      userAttributes: {
+        urlPath: route.path,
+      },
+    })
+    if (!content) {
+      // this.$nuxt.context.ssrContext.res.statusCode = 404
+    }
+    return { content, notFound: !content }
+  },
+})
+</script>

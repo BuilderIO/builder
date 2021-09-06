@@ -5,9 +5,15 @@
       <component
         v-bind="componentOptions"
         :builderBlock="useBlock"
-        :children="useBlock.children"
         :is="componentRef"
-      ></component>
+      >
+        <template v-if="useBlock.children">
+          <render-blocks
+            path="children"
+            :blocks="useBlock.children"
+          ></render-blocks>
+        </template>
+      </component>
     </template>
     <template
       v-if="!componentRef && useBlock.children && useBlock.children.length"
@@ -28,13 +34,14 @@ import BuilderContext from "../context/builder.context.lite";
 import { getBlockActions } from "../functions/get-block-actions";
 import { getProcessedBlock } from "../functions/get-processed-block";
 import BlockStyles from "./block-styles.lite";
+import RenderBlocks from "./render-blocks.lite";
 
 export default {
   name: "RenderBlock",
-  components: { BlockStyles },
+  components: { BlockStyles, RenderBlocks },
   props: ["block"],
 
-  data: () => ({ BlockStyles }),
+  data: () => ({ BlockStyles, RenderBlocks }),
 
   inject: {
     builderContext: "BuilderContext",

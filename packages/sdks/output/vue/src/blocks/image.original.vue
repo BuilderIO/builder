@@ -1,29 +1,63 @@
 <template>
-  <picture>
-    <img
-      loading="lazy"
-      class="img-2hex46lk8aw"
-      :alt="altText"
-      :aria-role="altText ? 'presentation' : undefined"
-      :class="
-        _classStringToObject(
-          'builder-image' + (this.class ? ' ' + this.class : '')
-        )
-      "
-      :src="image"
-      :srcset="srcset"
-      :sizes="sizes"
-    />
-    <source :srcSet="srcset" />
-  </picture>
+  <div class="div-21uq6jesqkc">
+    <picture>
+      <img
+        loading="lazy"
+        class="img-21uq6jesqkc"
+        :alt="altText"
+        :aria-role="altText ? 'presentation' : undefined"
+        :style="{
+          objectPosition: backgroundSize || 'center',
+          objectFit: backgroundSize || 'cover',
+        }"
+        :class="
+          _classStringToObject(
+            'builder-image' + (this.class ? ' ' + this.class : '')
+          )
+        "
+        :src="image"
+        :srcset="srcset"
+        :sizes="sizes"
+      />
+      <source :srcSet="srcset" />
+    </picture>
+    <template
+      v-if="aspectRatio && !(fitContent && builderBlock?.children?.length)"
+    >
+      <div
+        class="builder-image-sizer div-21uq6jesqkc-2"
+        :style="{
+          paddingTop: aspectRatio * 100 + '%',
+        }"
+      >
+        {{ " " }}
+      </div>
+    </template>
+    <template v-if="builderBlock?.children?.length && fitContent">
+      <slot></slot>
+    </template>
 
-  <slot></slot>
+    <template v-if="!fitContent">
+      <div class="div-21uq6jesqkc-3">
+        <slot></slot>
+      </div>
+    </template>
+  </div>
 </template>
 <script>
 export default {
   name: "Image",
 
-  props: ["altText", "class", "image", "srcset", "sizes"],
+  props: [
+    "altText",
+    "backgroundSize",
+    "image",
+    "srcset",
+    "sizes",
+    "aspectRatio",
+    "fitContent",
+    "builderBlock",
+  ],
 
   methods: {
     _classStringToObject(str) {
@@ -41,10 +75,31 @@ export default {
 };
 </script>
 <style scoped>
-.img-2hex46lk8aw {
+.div-21uq6jesqkc {
+  position: relative;
+}
+.img-21uq6jesqkc {
   opacity: 1;
   transition: opacity 0.2s ease-in-out;
-  object-fit: cover;
-  object-position: center;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0px;
+  left: 0px;
+}
+.div-21uq6jesqkc-2 {
+  width: 100%;
+  pointer-events: none;
+  font-size: 0;
+}
+.div-21uq6jesqkc-3 {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 </style>

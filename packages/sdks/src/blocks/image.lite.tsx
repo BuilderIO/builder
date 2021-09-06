@@ -1,4 +1,4 @@
-import {} from '@builder.io/mitosis';
+import { Show } from '@builder.io/mitosis';
 import { registerComponent } from '../functions/register-component';
 
 export interface ImageProps {
@@ -11,17 +11,16 @@ export interface ImageProps {
   altText?: string;
   backgroundSize?: string;
   backgroundPosition?: string;
-  // TODO: Support generating Builder.io and or Shopify `srcset`s when needed
   srcset?: string;
-  // TODO: Implement support for custom aspect ratios
   aspectRatio?: number;
-  // TODO: This might not work as expected in terms of positioning
   children?: any;
+  fitContent?: boolean;
+  builderBlock?: any;
 }
 
 export default function Image(props: ImageProps) {
   return (
-    <>
+    <div css={{ position: 'relative' }}>
       <picture>
         <img
           loading="lazy"
@@ -30,8 +29,15 @@ export default function Image(props: ImageProps) {
           css={{
             opacity: '1',
             transition: 'opacity 0.2s ease-in-out',
-            objectFit: 'cover',
-            objectPosition: 'center',
+            position: 'absolute',
+            height: '100%',
+            width: '100%',
+            top: '0px',
+            left: '0px',
+          }}
+          style={{
+            objectPosition: props.backgroundSize || 'center',
+            objectFit: (props.backgroundSize as any) || 'cover',
           }}
           class={'builder-image' + (props.class ? ' ' + props.class : '')}
           src={props.image}
@@ -41,8 +47,40 @@ export default function Image(props: ImageProps) {
         />
         <source srcSet={props.srcset} />
       </picture>
-      {props.children}
-    </>
+      {props.aspectRatio && !(props.fitContent && props.builderBlock?.children?.length) && (
+        <div
+          class="builder-image-sizer"
+          style={{
+            paddingTop: props.aspectRatio * 100 + '%',
+          }}
+          css={{
+            width: '100%',
+            pointerEvents: 'none',
+            fontSize: '0',
+          }}
+        >
+          {' '}
+        </div>
+      )}
+      <Show when={props.builderBlock?.children?.length && props.fitContent}>{props.children}</Show>
+
+      <Show when={!props.fitContent}>
+        <div
+          css={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'stretch',
+            position: 'absolute',
+            top: '0',
+            left: '0',
+            width: '100%',
+            height: '100%',
+          }}
+        >
+          {props.children}
+        </div>
+      </Show>
+    </div>
   );
 }
 

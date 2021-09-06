@@ -9,7 +9,7 @@ export interface FragmentProps {
 }
 
 export default function FragmentComponent(props: FragmentProps) {
-  return <RenderBlocks path="children" blocks={props.children} />;
+  return <>{props.children}</>;
 }
 
 registerComponent({
