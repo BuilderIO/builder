@@ -1,8 +1,8 @@
 <template>
-  <div class="builder-columns div-23eqzmze2cf">
+  <div class="builder-columns div-2ls6kgfiq48">
     <template :key="index" v-for="(column, index) in columns">
       <div
-        class="builder-column div-23eqzmze2cf-2"
+        class="builder-column div-2ls6kgfiq48-2"
         :style="{
           width: getColumnCssWidth(index),
           marginLeft: `${index === 0 ? 0 : getGutterSize()}px`,
@@ -17,11 +17,9 @@
 import RenderBlocks from "../components/render-blocks.lite";
 
 export default {
-  name: "Columns",
-  components: { RenderBlocks },
+  name: "columns",
+  components: { "render-blocks": async () => RenderBlocks },
   props: ["space", "columns"],
-
-  data: () => ({ RenderBlocks }),
 
   methods: {
     getGutterSize() {
@@ -45,12 +43,12 @@ export default {
 };
 </script>
 <style scoped>
-.div-23eqzmze2cf {
+.div-2ls6kgfiq48 {
   display: flex;
   align-items: stretch;
   line-height: normal;
 }
-.div-23eqzmze2cf-2 {
+.div-2ls6kgfiq48-2 {
   flex-grow: 1;
 }
 </style>

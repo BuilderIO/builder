@@ -3,7 +3,7 @@
 </template>
 <script>
 export default {
-  name: "Text",
+  name: "text",
 
   props: ["text"],
 };

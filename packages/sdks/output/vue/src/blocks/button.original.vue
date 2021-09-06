@@ -10,14 +10,12 @@
   </template>
 
   <template v-if="!link">
-    <button v-bind="attributes" type="button">
-      {{ text }}
-    </button>
+    <span v-bind="attributes">{{ text }}</span>
   </template>
 </template>
 <script>
 export default {
-  name: "Button",
+  name: "button",
 
   props: ["link", "attributes", "openLinkInNewTab", "text"],
 };

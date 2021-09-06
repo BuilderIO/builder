@@ -13,11 +13,9 @@ import RenderContent from "../components/render-content.lite";
 import BuilderContext from "../context/builder.context.lite";
 
 export default {
-  name: "Symbol",
-  components: { RenderContent },
+  name: "symbol",
+  components: { "render-content": async () => RenderContent },
   props: ["symbol"],
-
-  data: () => ({ RenderContent }),
 
   inject: {
     builderContext: "BuilderContext",

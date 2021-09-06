@@ -19,7 +19,7 @@ export default function Button(props) {
 
       {!props.link && (
         <>
-          <View {...props.attributes} type="button">
+          <View {...props.attributes}>
             <Text>{props.text}</Text>
           </View>
         </>

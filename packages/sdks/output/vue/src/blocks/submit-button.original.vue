@@ -5,7 +5,7 @@
 </template>
 <script>
 export default {
-  name: "SubmitButton",
+  name: "submit-button",
 
   props: ["attributes", "text"],
 };

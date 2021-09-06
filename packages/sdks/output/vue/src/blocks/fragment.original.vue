@@ -3,7 +3,7 @@
 </template>
 <script>
 export default {
-  name: "FragmentComponent",
+  name: "fragment-component",
 
   props: [],
 };

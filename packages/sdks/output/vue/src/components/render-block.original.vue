@@ -37,11 +37,12 @@ import BlockStyles from "./block-styles.lite";
 import RenderBlocks from "./render-blocks.lite";
 
 export default {
-  name: "RenderBlock",
-  components: { BlockStyles, RenderBlocks },
+  name: "render-block",
+  components: {
+    "block-styles": async () => BlockStyles,
+    "render-blocks": async () => RenderBlocks,
+  },
   props: ["block"],
-
-  data: () => ({ BlockStyles, RenderBlocks }),
 
   inject: {
     builderContext: "BuilderContext",

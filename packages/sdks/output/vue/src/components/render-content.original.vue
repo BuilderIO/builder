@@ -46,8 +46,8 @@ import { previewingModelName } from "../functions/previewing-model-name";
 import { getContent } from "../functions/get-content";
 
 export default {
-  name: "RenderContent",
-  components: { RenderBlock },
+  name: "render-content",
+  components: { "render-block": async () => RenderBlock },
   props: ["content", "model"],
 
   data: () => ({
@@ -55,7 +55,6 @@ export default {
     state: {},
     context: {},
     overrideContent: null,
-    RenderBlock,
     track,
     isReactNative,
     isEditing,

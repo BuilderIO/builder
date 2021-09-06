@@ -9,7 +9,7 @@
 </template>
 <script>
 export default {
-  name: "Textarea",
+  name: "textarea",
 
   props: ["attributes", "placeholder", "name", "value", "defaultValue"],
 };

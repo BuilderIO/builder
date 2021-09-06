@@ -29,7 +29,7 @@
     </template>
 
     <template v-if="submissionState === 'error' && responseData">
-      <pre class="builder-form-error-text pre-2k03q0uubbk">
+      <pre class="builder-form-error-text pre-24igpcm0177">
         {{ JSON.stringify(responseData, null, 2) }}
       </pre>
     </template>
@@ -50,8 +50,11 @@ import { set } from "@dummy";
 import { get } from "@dummy";
 
 export default {
-  name: "FormComponent",
-  components: { BuilderBlockComponent, BuilderBlocks },
+  name: "form-component",
+  components: {
+    "builder-block-component": async () => BuilderBlockComponent,
+    "builder-blocks": async () => BuilderBlocks,
+  },
   props: [
     "previewState",
     "sendWithJs",
@@ -78,7 +81,6 @@ export default {
     responseData: null,
     formErrorMessage: "",
     BuilderBlock,
-    BuilderBlocks,
   }),
 
   computed: {
@@ -305,7 +307,7 @@ export default {
 };
 </script>
 <style scoped>
-.pre-2k03q0uubbk {
+.pre-24igpcm0177 {
   padding: 10px;
   color: red;
   text-align: center;

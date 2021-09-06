@@ -3,7 +3,7 @@
 </template>
 <script>
 export default {
-  name: "Embed",
+  name: "embed",
 
   props: ["content"],
 

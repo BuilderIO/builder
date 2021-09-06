@@ -1,6 +1,6 @@
 <template>
   <div
-    class="div-1c0as1o1r3y"
+    class="div-1w44c96rh1s"
     :builder-path="path"
     :builder-parent-id="parent"
     @click="onClick"
@@ -23,11 +23,9 @@ import { isEditing } from "../functions/is-editing";
 import RenderBlock from "./render-block.lite";
 
 export default {
-  name: "RenderBlocks",
-  components: { RenderBlock },
+  name: "render-blocks",
+  components: { "render-block": async () => RenderBlock },
   props: ["blocks", "parent", "path"],
-
-  data: () => ({ RenderBlock }),
 
   methods: {
     onClick() {
@@ -73,7 +71,7 @@ export default {
 };
 </script>
 <style scoped>
-.div-1c0as1o1r3y {
+.div-1w44c96rh1s {
   display: flex;
   flex-direction: column;
   align-items: stretch;

@@ -22,7 +22,7 @@
 </template>
 <script>
 export default {
-  name: "Video",
+  name: "video",
 
   props: [
     "attributes",

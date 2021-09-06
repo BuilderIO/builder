@@ -14,7 +14,7 @@
 </template>
 <script>
 export default {
-  name: "SectionComponent",
+  name: "section-component",
 
   props: ["attributes", "maxWidth"],
 };

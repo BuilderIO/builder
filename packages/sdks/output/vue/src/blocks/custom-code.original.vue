@@ -11,7 +11,7 @@
 </template>
 <script>
 export default {
-  name: "CustomCode",
+  name: "custom-code",
 
   props: ["replaceNodes", "code"],
 

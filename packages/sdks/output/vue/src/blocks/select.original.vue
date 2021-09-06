@@ -15,7 +15,7 @@
 import { Builder } from "@builder.io/sdk";
 
 export default {
-  name: "SelectComponent",
+  name: "select-component",
 
   props: ["attributes", "value", "defaultValue", "name", "options"],
 

@@ -14,7 +14,7 @@
 import { Builder } from "@builder.io/sdk";
 
 export default {
-  name: "FormInputComponent",
+  name: "form-input-component",
 
   props: [
     "attributes",

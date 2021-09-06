@@ -8,7 +8,7 @@
 </template>
 <script>
 export default {
-  name: "RawText",
+  name: "raw-text",
 
   props: ["attributes", "text"],
 

@@ -14,7 +14,7 @@
 import { Builder } from "@builder.io/sdk";
 
 export default {
-  name: "ImgComponent",
+  name: "img-component",
 
   props: [
     "backgroundSize",
