@@ -150,10 +150,11 @@ export default let BuilderPage = () => {
       <td valign="top">
         <p>&nbsp;</p> <!-- spacer -->
         <p align="center">
-          <a href="https://github.com/builderio/jsx-lite"><img height="60" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fb99f450616a640529896a2a10d3267b0" /></a>
+          <a href="https://github.com/builderio/
+                   -lite"><img height="60" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fb99f450616a640529896a2a10d3267b0" /></a>
         </p>
         <p align="center">
-          Try our  <a href="https://github.com/builderio/jsx-lite"><b>code generation</b></a> fiddle
+          Try our  <a href="https://github.com/builderio/mitosis"><b>code generation</b></a> fiddle
         </p>
       </td>
     </tr>
@@ -509,7 +510,7 @@ As well as some handy power features like:
 
 ## Code generation
 
-Check out [JSX Lite](https://github.com/builderio/jsx-lite) to dep dive into how our codegen works and try it yourself!
+Check out [Mitosis](https://github.com/builderio/mitosis) to deep dive into how our codegen works and try it yourself!
 
 <p align="center">
   <img width="600" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F3c0dc574aa8c4b06adff6f91e01cda3d" />
