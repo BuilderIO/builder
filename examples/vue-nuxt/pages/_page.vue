@@ -10,7 +10,7 @@
 
 <script>
 import Vue from 'vue'
-import { getContent } from '@builder.io/sdk-vue'
+import { getContent, isEditing } from '@builder.io/sdk-vue'
 
 // Important to import this anywhere you use <RenderContent /> so the custom
 // components will be registered and usable
@@ -23,8 +23,7 @@ export default Vue.extend({
   data: () => ({
     notFound: false,
     content: null,
-    // TODO: figure out right flag for this
-    isEditing: true,
+    isEditing: isEditing(),
   }),
   async fetch() {
     let content = await getContent({
