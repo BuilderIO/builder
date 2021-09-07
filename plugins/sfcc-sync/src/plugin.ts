@@ -75,7 +75,7 @@ const getSFCCWebhookIndex = (model: { webhooks: Array<Map<string, string>> }) =>
 Builder.register('model.action', {
   name(model: any) {
     if (getSFCCWebhookIndex(model) === -1) {
-      return 'Sync to SFCC'
+      return 'Sync to SFCC';
     }
     return 'Cancel syncing to SFCC';
   },

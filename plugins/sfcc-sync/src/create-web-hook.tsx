@@ -12,7 +12,7 @@ export const createWebhook = async (model: any) => {
       {
         name: 'Authorization',
         value: `Bearer ${pluginPrivateKey}`,
-      }
+      },
     ],
     url: `${
       forceQA ? 'https://qa.builder.io' : appState.config.apiRoot()
