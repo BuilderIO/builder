@@ -66,6 +66,7 @@ export default function CustomCode(props: CustomCodeProps) {
 registerComponent({
   name: 'Custom Code',
   static: true,
+  builtIn: true,
   requiredPermissions: ['editCode'],
   inputs: [
     {

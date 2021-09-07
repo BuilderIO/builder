@@ -1,4 +1,4 @@
-import { onMount, onUnMount, setContext, useState, onCreate } from '@builder.io/mitosis';
+import { onMount, onUnMount, setContext, useState, onCreate, Show } from '@builder.io/mitosis';
 import { isBrowser } from '../functions/is-browser';
 import { BuilderContent } from '../types/builder-content';
 import RenderBlock from './render-block.lite';
@@ -6,6 +6,11 @@ import BuilderContext from '../context/builder.context.lite';
 import { track } from '../functions/track';
 import { ifTarget } from '../functions/if-target';
 import { onChange } from '../functions/on-change';
+import { isReactNative } from '../functions/is-react-native';
+import { isEditing } from '../functions/is-editing';
+import { isPreviewing } from '../functions/is-previewing';
+import { previewingModelName } from '../functions/previewing-model-name';
+import { getContent } from '../functions/get-content';
 
 export type RenderContentProps = {
   content?: BuilderContent;
@@ -22,7 +27,61 @@ export default function RenderContent(props: RenderContentProps) {
     update: 0,
     state: {},
     context: {},
-    overrideContent: null,
+    overrideContent: null as BuilderContent | null,
+    getCssFromFont(font: any, data?: any) {
+      // TODO: compute what font sizes are used and only load those.......
+      const family = font.family + (font.kind && !font.kind.includes('#') ? ', ' + font.kind : '');
+      const name = family.split(',')[0];
+      const url = font.fileUrl ? font.fileUrl : font.files && font.files.regular;
+      let str = '';
+      if (url && family && name) {
+        str += `
+  @font-face {
+    font-family: "${family}";
+    src: local("${name}"), url('${url}') format('woff2');
+    font-display: fallback;
+    font-weight: 400;
+  }
+          `.trim();
+      }
+
+      if (font.files) {
+        for (const weight in font.files) {
+          const isNumber = String(Number(weight)) === weight;
+          if (!isNumber) {
+            continue;
+          }
+          // TODO: maybe limit number loaded
+          const weightUrl = font.files[weight];
+          if (weightUrl && weightUrl !== url) {
+            str += `
+  @font-face {
+    font-family: "${family}";
+    src: url('${weightUrl}') format('woff2');
+    font-display: fallback;
+    font-weight: ${weight};
+  }
+            `.trim();
+          }
+        }
+      }
+      return str;
+    },
+
+    getFontCss(data?: any) {
+      // TODO: flag for this
+      // if (!this.builder.allowCustomFonts) {
+      //   return '';
+      // }
+      // TODO: separate internal data from external
+      return (
+        (data?.customFonts &&
+          data.customFonts.length &&
+          data.customFonts.map((font: any) => this.getCssFromFont(font, data)).join(' ')) ||
+        ''
+      );
+    },
+
     processMessage(event: MessageEvent): void {
       const { data } = event;
       if (data) {
@@ -62,7 +121,7 @@ export default function RenderContent(props: RenderContentProps) {
 
   setContext(BuilderContext, {
     get content() {
-      return props.content;
+      return state.useContent;
     },
     get state() {
       return state.state;
@@ -74,11 +133,41 @@ export default function RenderContent(props: RenderContentProps) {
 
   onMount(() => {
     if (isBrowser()) {
-      window.addEventListener('message', state.processMessage);
-      // TODO: run this when content is defined
-      // track('impression', {
-      //   contentId: props.content!.id,
-      // });
+      if (isEditing()) {
+        window.addEventListener('message', state.processMessage);
+      }
+      if (state.useContent && !isEditing()) {
+        track('impression', {
+          contentId: state.useContent!.id,
+        });
+      }
+      if (isPreviewing()) {
+        if (props.model && previewingModelName() === props.model) {
+          const options: Record<string, any> = {};
+          const currentUrl = new URL(location.href);
+          const apiKey = currentUrl.searchParams.get('apiKey');
+          if (apiKey) {
+            const builderPrefix = 'builder.';
+            currentUrl.searchParams.forEach((value, key) => {
+              if (key.startsWith(builderPrefix)) {
+                options[key.replace(builderPrefix, '')] = value;
+              }
+            });
+
+            // TODO: need access to API key
+            getContent({
+              model: props.model,
+              apiKey,
+              options,
+            }).then(content => {
+              if (content) {
+                state.overrideContent = content;
+              }
+            });
+          }
+          // TODO: fetch content and override. Forward all builder.* params
+        }
+      }
     }
   });
 
@@ -88,19 +177,31 @@ export default function RenderContent(props: RenderContentProps) {
     }
   });
 
+  // TODO: `else` message for when there is no content passed, or maybe a console.log
   return (
-    <div
-      onClick={e => {
-        track('click', {
-          contentId: props.content!.id,
-        });
-      }}
-      data-builder-content-id={props.content?.id}
-    >
-      {state.useContent?.data?.cssCode && <style>{state.useContent.data.cssCode}</style>}
-      {state.useContent?.data?.blocks?.map((block: any) => (
-        <RenderBlock key={block.id} block={block} />
-      ))}
-    </div>
+    <Show when={state.useContent}>
+      <div
+        onClick={e => {
+          if (!isEditing()) {
+            track('click', {
+              contentId: state.useContent!.id,
+            });
+          }
+        }}
+        data-builder-content-id={state.useContent?.id}
+      >
+        {(state.useContent?.data?.cssCode ||
+          (state.useContent?.data?.customFonts && state.useContent?.data?.customFonts.length)) &&
+          !isReactNative() && (
+            <style>
+              {state.useContent.data.cssCode}
+              {state.getFontCss(state.useContent.data)}
+            </style>
+          )}
+        {state.useContent?.data?.blocks?.map((block: any) => (
+          <RenderBlock key={block.id} block={block} />
+        ))}
+      </div>
+    </Show>
   );
 }

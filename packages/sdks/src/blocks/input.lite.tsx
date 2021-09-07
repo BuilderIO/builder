@@ -1,5 +1,5 @@
 import '@builder.io/mitosis';
-import { Builder } from '@builder.io/sdk';
+import { isEditing } from '../functions/is-editing';
 import { registerComponent } from '../functions/register-component';
 
 export interface FormInputProps {
@@ -16,7 +16,7 @@ export default function FormInputComponent(props: FormInputProps) {
   return (
     <input
       {...props.attributes}
-      key={Builder.isEditing && props.defaultValue ? props.defaultValue : 'default-key'}
+      key={isEditing() && props.defaultValue ? props.defaultValue : 'default-key'}
       placeholder={props.placeholder}
       type={props.type}
       name={props.name}
@@ -29,6 +29,7 @@ export default function FormInputComponent(props: FormInputProps) {
 
 registerComponent({
   name: 'Form:Input',
+  builtIn: true,
   image:
     'https://cdn.builder.io/api/v1/image/assets%2FIsxPKMo2gPRRKeakUztj1D6uqed2%2Fad6f37889d9e40bbbbc72cdb5875d6ca',
   inputs: [

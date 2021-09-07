@@ -4,20 +4,21 @@
   "homepage": "https://github.com/BuilderIO/builder",
   "private": true,
   "scripts": {
-    "dev": "nuxt",
-    "build": "nuxt build",
-    "start": "nuxt start",
-    "generate": "nuxt generate"
+    "dev": "NODE_PRESERVE_SYMLINKS=1 nuxt",
+    "build": "NODE_PRESERVE_SYMLINKS=1 nuxt build",
+    "start": "NODE_PRESERVE_SYMLINKS=1 nuxt start",
+    "generate": "NODE_PRESERVE_SYMLINKS=1 nuxt generate"
   },
   "dependencies": {
-    "@builder.io/vue": "^0.1.9-17",
+    "@builder.io/sdk-vue": "0.0.1-41",
+    "@nuxt/components": "^2.2.1",
     "@nuxt/typescript-runtime": "^2.0.1",
     "@nuxtjs/pwa": "^3.3.5",
     "core-js": "^3.8.3",
-    "nuxt": "^2.14.12"
+    "nuxt": "^2.15.8"
   },
   "devDependencies": {
-    "@nuxt/types": "^2.14.12",
+    "@nuxt/types": "^2.15.8",
     "@nuxt/typescript-build": "^2.0.4",
     "eslint-config-prettier": "^7.2.0",
     "eslint-plugin-prettier": "^3.3.1",

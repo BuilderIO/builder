@@ -1,9 +1,5 @@
 import { useState, useRef, Show, For } from '@builder.io/mitosis';
-import { BuilderBlock as BuilderBlockComponent } from '@dummy';
-import { BuilderElement, Builder, builder } from '@builder.io/sdk';
-import { BuilderBlocks } from '@dummy';
-import { set } from '@dummy';
-import { get } from '@dummy';
+import RenderBlock from '../components/render-block.lite';
 import { registerComponent } from '../functions/register-component';
 
 export interface FormProps {
@@ -259,9 +255,7 @@ export default function FormComponent(props: FormProps) {
       {...props.attributes}
     >
       <Show when={props.builderBlock && props.builderBlock.children}>
-        <For each={props.builderBlock?.children}>
-          {block => <BuilderBlockComponent block={block} />}
-        </For>
+        <For each={props.builderBlock?.children}>{block => <RenderBlock block={block} />}</For>
       </Show>
 
       <Show when={state.submissionState === 'error'}>
@@ -290,6 +284,7 @@ export default function FormComponent(props: FormProps) {
 
 registerComponent({
   name: 'Form:Form',
+  builtIn: true,
   // editableTags: ['builder-form-error']
   defaults: {
     responsiveStyles: {

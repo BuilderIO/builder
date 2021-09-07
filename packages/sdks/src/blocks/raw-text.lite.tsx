@@ -18,6 +18,7 @@ export default function RawText(props: RawTextProps) {
 registerComponent({
   name: 'Builder:RawText',
   hideFromInsertMenu: true,
+  builtIn: true,
   inputs: [
     {
       name: 'text',
