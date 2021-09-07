@@ -12,7 +12,6 @@ interface ContentEditorActions {
 }
 
 export const onContentEditorLoad =  ({ safeReaction, updatePreviewUrl }: ContentEditorActions) => {
-  console.log(' here registering ', updatePreviewUrl);
   safeReaction(() => appState.designerState.editingContentModel?.meta.get('sfccPreviewOptions'), (obj: any) => {
     if (obj) {
       const options = JSON.parse(JSON.stringify(obj));
