@@ -6,7 +6,7 @@ See [\_page.vue](pages/_page.vue) for rendering usage, and [register-builder-com
 
 ## Status
 
-This example uses tnpm run ci:buildhe beta v2 of the Vue SDK.
+This example uses the beta v2 of the Vue SDK.
 
 Left to implement:
 
