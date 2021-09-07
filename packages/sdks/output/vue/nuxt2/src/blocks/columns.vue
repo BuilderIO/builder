@@ -1,7 +1,7 @@
 <template>
-  <div class="builder-columns div-2diga6vzifb">
+  <div class="builder-columns div-1ncb1sgtbs4">
     <div
-      class="builder-column div-2diga6vzifb-2"
+      class="builder-column div-1ncb1sgtbs4-2"
       v-for="(column, index) in columns"
       :style="{
         width: getColumnCssWidth(index),
@@ -262,12 +262,12 @@ export default registerComponent(
 );
 </script>
 <style scoped>
-.div-2diga6vzifb {
+.div-1ncb1sgtbs4 {
   display: flex;
   align-items: stretch;
   line-height: normal;
 }
-.div-2diga6vzifb-2 {
+.div-1ncb1sgtbs4-2 {
   flex-grow: 1;
 }
 </style>
