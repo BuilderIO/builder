@@ -2,22 +2,21 @@ import appState from '@builder.io/app-context';
 import pkg from '../package.json';
 
 export const createWebhook = async (model: any) => {
-  const customHeaders = [];
+  const pluginPrivateKey = await appState.globalState.getPluginPrivateKey(pkg.name);
 
-  for (const headerName in appState.user.authHeaders) {
-    customHeaders.push({
-      name: headerName,
-      value: appState.user.authHeaders[headerName],
-    });
-  }
   const pluginSettings = appState.user.organization.value.settings.plugins?.get(pkg.name);
   const forceQA = pluginSettings.get('forceUseQaApi') === true;
 
   const newWebhook = {
-    customHeaders,
+    customHeaders: [
+      {
+        name: 'Authorization',
+        value: `Bearer ${pluginPrivateKey}`,
+      },
+    ],
     url: `${
       forceQA ? 'https://qa.builder.io' : appState.config.apiRoot()
-    }/api/v1/sfcc-sync/webhook?&modelId=${model.id}&apiKey=${appState.user.apiKey}`,
+    }/api/v1/sfcc-sync/webhook?modelId=${model.id}&apiKey=${appState.user.apiKey}`,
     disableProxy: true, // proxy has an issue with the POST request body
   };
 

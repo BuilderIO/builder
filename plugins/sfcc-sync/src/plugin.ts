@@ -3,6 +3,9 @@ import appState from '@builder.io/app-context';
 import { syncToSFCC } from './sync-to-sfcc';
 import { createWebhook } from './create-web-hook';
 import pkg from '../package.json';
+import { onContentEditorLoad } from './on-editor-load';
+
+Builder.register('editor.onLoad', onContentEditorLoad);
 
 Builder.register('plugin', {
   id: pkg.name,
@@ -70,14 +73,12 @@ const getSFCCWebhookIndex = (model: { webhooks: Array<Map<string, string>> }) =>
   model.webhooks.findIndex(webhook => webhook.get('url')?.includes('sfcc-sync/webhook'));
 
 Builder.register('model.action', {
-  // TODO: uncomment once editor is released
-  // name(model: any) {
-  //   if (getSFCCWebhookIndex(model) === -1) {
-  //     return 'Cancel syncing to SFCC'
-  //   }
-  //   return 'Sync to SFCC';
-  // },
-  name: 'Sync to SFCC',
+  name(model: any) {
+    if (getSFCCWebhookIndex(model) === -1) {
+      return 'Sync to SFCC';
+    }
+    return 'Cancel syncing to SFCC';
+  },
   showIf() {
     return appState.user.can('admin');
   },
@@ -93,8 +94,14 @@ Builder.register('model.action', {
     appState.globalState.showGlobalBlockingLoadingIndicator = true;
     if (webhookIndex === -1) {
       try {
-        await syncToSFCC(model.id);
         await createWebhook(model);
+        await syncToSFCC(model.id);
+        const pluginSettings = appState.user.organization.value.settings.plugins?.get(pkg.name);
+        const apiPath = pluginSettings.get('apiPath');
+        // todo: library name per model ?
+        const libraryName = pluginSettings.get('libraryName');
+        model.examplePageUrl = `${apiPath}/s/${libraryName}/bulider-preview-${model.name}.html`.trim();
+        await appState.models.update(model, false);
       } catch (e) {
         console.error('error syncing model entries', e);
         appState.snackBar.show('Error syncing model entries, check console');
