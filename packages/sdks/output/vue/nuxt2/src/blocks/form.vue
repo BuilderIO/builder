@@ -27,7 +27,7 @@
     ></builder-blocks>
 
     <pre
-      class="builder-form-error-text pre-14sgiurofpo"
+      class="builder-form-error-text pre-5oqb1ig66v4"
       v-if="submissionState === 'error' && responseData"
     >
         {{ JSON.stringify(responseData, null, 2) }}
@@ -515,7 +515,7 @@ export default registerComponent(
 );
 </script>
 <style scoped>
-.pre-14sgiurofpo {
+.pre-5oqb1ig66v4 {
   padding: 10px;
   color: red;
   text-align: center;

@@ -10,10 +10,14 @@ register('insertMenu', {
     { name: 'Text' },
     { name: 'Image' },
     { name: 'Columns' },
-    { name: 'Core:Section' },
-    { name: 'Core:Button' },
-    { name: 'Embed' },
-    { name: 'Custom Code' },
+    ...(getTarget() === 'reactNative'
+      ? []
+      : [
+          { name: 'Core:Section' },
+          { name: 'Core:Button' },
+          { name: 'Embed' },
+          { name: 'Custom Code' },
+        ]),
   ],
 });
 
