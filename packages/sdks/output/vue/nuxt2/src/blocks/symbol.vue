@@ -9,16 +9,16 @@
   </div>
 </template>
 <script>
-import RenderContent from "../components/render-content";
-import BuilderContext from "../context/builder.context";
+import RenderContent from '../components/render-content';
+import BuilderContext from '../context/builder.context';
 
 export default {
-  name: "builder-symbol",
-  components: { "render-content": async () => RenderContent },
-  props: ["symbol"],
+  name: 'builder-symbol',
+  components: { 'render-content': async () => RenderContent },
+  props: ['symbol'],
 
   inject: {
-    builderContext: "BuilderContext",
+    builderContext: 'BuilderContext',
   },
 };
 </script>

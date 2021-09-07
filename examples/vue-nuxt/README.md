@@ -2,23 +2,23 @@
 
 Example using Builder.io drag and drop page and section building for Nuxt
 
+See [\_page.vue](pages/_page.vue) for rendering usage, and [register-builder-components.js](scripts/register-builder-components.js) for registering custom components
+
 ## Status
 
-This example uses the beta v2 of the Vue SDK. We are incrementally rolling out features:
+This example uses the beta v2 of the Vue SDK.
 
-Features supported
+Left to implement:
 
-| Feature             | Supported   | Notes                                                                              |
-| ------------------- | ----------- | ---------------------------------------------------------------------------------- |
-| Custom components   | Yes         |                                                                                    |
-| Built-in components | Yes         |                                                                                    |
-| Custom styles       | Yes         |                                                                                    |
-| Animations          | Coming soon | Custom animation components supported, but not Builder.io's "animations" tab       |
-| Data bindings       | Coming soon | Custom components with dynamic data supported, but not yet Builder.io's "data" tab |
-| Symbols             | Coming soon |                                                                                    |
-| A/B testing         | Coming soon |                                                                                    |
+- SSR (Nuxt currently can't find the custom components on the server, looking into)
+- Stacking columns on breakpoints
+- "View current draft" logic
+- "+ add block" button when starting a page (for now just drag your first block to the "layers" tab)
+- Symbols
+- Server side a/b testing
+- "animations" tab and "data" tab
 
-## Build Setup
+## Local Setup
 
 ```bash
 # install dependencies
@@ -34,5 +34,3 @@ $ npm run start
 # generate static project
 $ npm run generate
 ```
-
-For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).

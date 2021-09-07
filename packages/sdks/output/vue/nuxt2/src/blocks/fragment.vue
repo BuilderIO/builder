@@ -2,16 +2,16 @@
   <span><slot></slot></span>
 </template>
 <script>
-import { registerComponent } from "@builder.io/sdk-vue";
+import { registerComponent } from '@builder.io/sdk-vue';
 
 export default registerComponent(
   {
-    name: "builder-fragment-component",
+    name: 'builder-fragment-component',
 
     props: [],
   },
   {
-    name: "Fragment",
+    name: 'Fragment',
     static: true,
     hidden: true,
     builtIn: true,
