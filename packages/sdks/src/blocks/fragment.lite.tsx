@@ -9,7 +9,9 @@ export interface FragmentProps {
 }
 
 export default function FragmentComponent(props: FragmentProps) {
-  return <>{props.children}</>;
+  // TODO: flag for if target supports fragments / doesn't need root/host elements
+  // and use a normal fragment, otherwise use span
+  return <span>{props.children}</span>;
 }
 
 registerComponent({

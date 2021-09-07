@@ -1,5 +1,5 @@
 import '@builder.io/mitosis';
-import { Builder } from '@builder.io/sdk';
+import { isEditing } from '../functions/is-editing';
 import { registerComponent } from '../functions/register-component';
 
 export interface FormInputProps {
@@ -16,7 +16,7 @@ export default function FormInputComponent(props: FormInputProps) {
   return (
     <input
       {...props.attributes}
-      key={Builder.isEditing && props.defaultValue ? props.defaultValue : 'default-key'}
+      key={isEditing() && props.defaultValue ? props.defaultValue : 'default-key'}
       placeholder={props.placeholder}
       type={props.type}
       name={props.name}

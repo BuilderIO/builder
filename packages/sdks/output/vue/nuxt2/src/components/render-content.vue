@@ -1,42 +1,34 @@
 <template>
-  <template v-if="useContent">
-    <div
-      @click="
-        if (!isEditing()) {
-          track('click', {
-            contentId: useContent.id,
-          });
-        }
-      "
-      :data-builder-content-id="useContent?.id"
+  <div
+    v-if="useContent"
+    @click="
+      if (!isEditing()) {
+        track('click', {
+          contentId: useContent.id,
+        });
+      }
+    "
+    :data-builder-content-id="(useContent && useContent.id)"
+  >
+    <component
+      v-if="(((useContent && useContent.data) && (useContent && useContent.data).cssCode) || ((useContent && useContent.data) && (useContent && useContent.data).customFonts) && (((useContent && useContent.data) && (useContent && useContent.data).customFonts) && ((useContent && useContent.data) && (useContent && useContent.data).customFonts).length)) && !isReactNative()"
+      is="style"
     >
-      <template
-        v-if="
-          (useContent?.data?.cssCode ||
-            (useContent?.data?.customFonts &&
-              useContent?.data?.customFonts.length)) &&
-          !isReactNative()
-        "
-      >
-        <component is="style">
-          {{ useContent.data.cssCode }}
-          {{ getFontCss(useContent.data) }}
-        </component>
-      </template>
+      {{ useContent.data.cssCode }}
+      {{ getFontCss(useContent.data) }}
+    </component>
 
-      <template
-        :key="block.id"
-        v-for="(block, index) in useContent?.data?.blocks"
-      >
-        <render-block :block="block"></render-block>
-      </template>
-    </div>
-  </template>
+    <render-block
+      v-for="(block, index) in ((useContent && useContent.data) && (useContent && useContent.data).blocks)"
+      :block="block"
+      :key="block.id"
+    ></render-block>
+  </div>
 </template>
 <script>
 import { isBrowser } from "../functions/is-browser";
-import RenderBlock from "./render-block.lite";
-import BuilderContext from "../context/builder.context.lite";
+import RenderBlock from "./render-block";
+import BuilderContext from "../context/builder.context";
 import { track } from "../functions/track";
 import { ifTarget } from "../functions/if-target";
 import { onChange } from "../functions/on-change";

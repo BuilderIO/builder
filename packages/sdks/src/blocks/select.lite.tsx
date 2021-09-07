@@ -1,5 +1,5 @@
 import { For } from '@builder.io/mitosis';
-import { Builder } from '@builder.io/sdk';
+import { isEditing } from '../functions/is-editing';
 import { registerComponent } from '../functions/register-component';
 
 export interface FormSelectProps {
@@ -15,7 +15,7 @@ export default function SelectComponent(props: FormSelectProps) {
     <select
       {...props.attributes}
       value={props.value}
-      key={Builder.isEditing && props.defaultValue ? props.defaultValue : 'default-key'}
+      key={isEditing() && props.defaultValue ? props.defaultValue : 'default-key'}
       defaultValue={props.defaultValue}
       name={props.name}
     >

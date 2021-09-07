@@ -15,15 +15,11 @@ export default function Button(props) {
             <Text>{props.text}</Text>
           </View>
         </>
-      ) : null}
-
-      {!props.link ? (
-        <>
-          <View {...props.attributes}>
-            <Text>{props.text}</Text>
-          </View>
-        </>
-      ) : null}
+      ) : (
+        <View {...props.attributes}>
+          <Text>{props.text}</Text>
+        </View>
+      )}
     </>
   );
 }

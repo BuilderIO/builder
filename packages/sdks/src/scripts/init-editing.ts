@@ -5,7 +5,16 @@ import { register } from '../functions/register';
 register('insertMenu', {
   name: '_default',
   default: true,
-  items: [{ name: 'Box' }, { name: 'Text' }, { name: 'Image' }, { name: 'Columns' }],
+  items: [
+    { name: 'Box' },
+    { name: 'Text' },
+    { name: 'Image' },
+    { name: 'Columns' },
+    { name: 'Core:Section' },
+    { name: 'Core:Button' },
+    { name: 'Embed' },
+    { name: 'Custom Code' },
+  ],
 });
 
 if (isBrowser()) {

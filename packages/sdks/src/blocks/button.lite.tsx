@@ -11,7 +11,7 @@ export interface ButtonProps {
 export default function Button(props: ButtonProps) {
   return (
     <>
-      <Show when={props.link}>
+      <Show when={props.link} else={<span {...props.attributes}>{props.text}</span>}>
         <a
           {...props.attributes}
           href={props.link}
@@ -19,9 +19,6 @@ export default function Button(props: ButtonProps) {
         >
           {props.text}
         </a>
-      </Show>
-      <Show when={!props.link}>
-        <span {...props.attributes}>{props.text}</span>
       </Show>
     </>
   );

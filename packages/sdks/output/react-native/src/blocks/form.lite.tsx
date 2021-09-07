@@ -1,11 +1,7 @@
 import * as React from "react";
 import { View, StyleSheet, Image, Text } from "react-native";
 import { useState, useContext, useRef } from "react";
-import { BuilderBlockComponent as BuilderBlock } from "@dummy";
-import { Builder, builder } from "@builder.io/sdk";
-import { BuilderBlocks } from "@dummy";
-import { set } from "@dummy";
-import { get } from "@dummy";
+import RenderBlock from "../components/render-block.lite";
 
 export default function FormComponent(props) {
   const [state, setState] = useState(() => "unsubmitted");
@@ -216,7 +212,7 @@ export default function FormComponent(props) {
       {props.builderBlock && props.builderBlock.children ? (
         <>
           {props.builderBlock?.children?.map((block) => (
-            <BuilderBlockComponent block={block} />
+            <RenderBlock block={block} />
           ))}
         </>
       ) : null}{" "}

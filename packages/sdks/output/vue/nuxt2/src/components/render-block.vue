@@ -1,43 +1,40 @@
 <template>
-  <template v-if="!componentInfo?.noWrap">
-    <component v-bind="properties" :style="css" :is="tagName">
-      <block-styles :block="useBlock"></block-styles>
+  <component
+    v-bind="properties"
+    v-if="!(componentInfo && componentInfo.noWrap)"
+    :style="css"
+    :is="tagName"
+  >
+    <block-styles :block="useBlock"></block-styles>
 
-      <template v-if="componentRef">
-        <component
-          v-bind="componentOptions"
-          :builderBlock="useBlock"
-          :is="componentRef"
-        >
-          <template v-if="useBlock.children">
-            <render-blocks
-              path="children"
-              :blocks="useBlock.children"
-            ></render-blocks>
-          </template>
-        </component>
-      </template>
-
-      <template
-        v-if="!componentRef && useBlock.children && useBlock.children.length"
-      >
-        <template :key="index" v-for="(child, index) in useBlock.children">
-          <render-block :block="child"></render-block>
-        </template>
-      </template>
-    </component>
-  </template>
-
-  <template v-else>
     <component
-      v-bind="componentInfo?.options"
-      :attributes="properties"
+      v-bind="componentOptions"
+      v-if="componentRef"
       :builderBlock="useBlock"
-      :style="css"
-      :children="useBlock.children"
       :is="componentRef"
-    ></component>
-  </template>
+    >
+      <render-blocks
+        path="children"
+        v-if="useBlock.children"
+        :blocks="useBlock.children"
+      ></render-blocks>
+    </component>
+
+    <render-block
+      v-for="(child, index) in useBlock.children"
+      :block="child"
+      :key="index"
+    ></render-block>
+  </component>
+  <component
+    v-bind="(componentInfo && componentInfo.options)"
+    v-else=""
+    :attributes="properties"
+    :builderBlock="useBlock"
+    :style="css"
+    :children="useBlock.children"
+    :is="componentRef"
+  ></component>
 </template>
 <script>
 import { getBlockComponentOptions } from "../functions/get-block-component-options";
@@ -45,11 +42,11 @@ import { getBlockProperties } from "../functions/get-block-properties";
 import { getBlockStyles } from "../functions/get-block-styles";
 import { getBlockTag } from "../functions/get-block-tag";
 import { components } from "../functions/register-component";
-import BuilderContext from "../context/builder.context.lite";
+import BuilderContext from "../context/builder.context";
 import { getBlockActions } from "../functions/get-block-actions";
 import { getProcessedBlock } from "../functions/get-processed-block";
-import BlockStyles from "./block-styles.lite";
-import RenderBlocks from "./render-blocks.lite";
+import BlockStyles from "./block-styles";
+import RenderBlocks from "./render-blocks";
 
 export default {
   name: "render-block",

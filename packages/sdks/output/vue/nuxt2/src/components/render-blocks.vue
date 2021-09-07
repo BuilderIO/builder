@@ -1,26 +1,22 @@
 <template>
   <div
-    class="div-27epbbx2o0l"
+    class="div-28j5uhvxf8u"
     :builder-path="path"
     :builder-parent-id="parent"
     @click="onClick"
     @mouseenter="onMouseEnter"
-    :class="
-      _classStringToObject(
-        'builder-blocks' + (!this.blocks?.length ? ' no-blocks' : '')
-      )
-    "
+    :class="_classStringToObject('builder-blocks' + (!(this.blocks && this.blocks.length) ? ' no-blocks' : ''))"
   >
-    <template v-if="blocks">
-      <template :key="index" v-for="(block, index) in blocks">
-        <render-block :block="block"></render-block>
-      </template>
-    </template>
+    <render-block
+      v-for="(block, index) in blocks"
+      :block="block"
+      :key="index"
+    ></render-block>
   </div>
 </template>
 <script>
 import { isEditing } from "../functions/is-editing";
-import RenderBlock from "./render-block.lite";
+import RenderBlock from "./render-block";
 
 export default {
   name: "render-blocks",
@@ -71,7 +67,7 @@ export default {
 };
 </script>
 <style scoped>
-.div-27epbbx2o0l {
+.div-28j5uhvxf8u {
   display: flex;
   flex-direction: column;
   align-items: stretch;

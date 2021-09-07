@@ -1,5 +1,5 @@
 import '@builder.io/mitosis';
-import { Builder } from '@builder.io/sdk';
+import { isEditing } from '../functions/is-editing';
 import { registerComponent } from '../functions/register-component';
 
 export interface ImgProps {
@@ -27,7 +27,7 @@ export default function ImgComponent(props: ImgProps) {
         objectPosition: props.backgroundPosition || 'center',
       }}
       {...props.attributes}
-      key={(Builder.isEditing && props.imgSrc) || 'default-key'}
+      key={(isEditing() && props.imgSrc) || 'default-key'}
       alt={props.altText}
       src={props.imgSrc}
     />
