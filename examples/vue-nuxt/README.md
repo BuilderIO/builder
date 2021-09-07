@@ -2,7 +2,7 @@
 
 Example using Builder.io drag and drop page and section building for Nuxt
 
-See [_page.vue](pages/_page.vue) for rendering usage, and [register-builder-components.js](scripts/register-builder-components.js) for registering custom components
+See [\_page.vue](pages/_page.vue) for rendering usage, and [register-builder-components.js](scripts/register-builder-components.js) for registering custom components
 
 ## Status
 
