@@ -13,12 +13,12 @@ Left to implement:
 - SSR (Nuxt currently can't find the custom components on the server, looking into)
 - Stacking columns on breakpoints
 - "View current draft" logic
-- "+ add block" button when starting a page
+- "+ add block" button when starting a page (for now just drag your first block to the "layers" tab)
 - Symbols
 - Server side a/b testing
 - "animations" tab and "data" tab
 
-## Build Setup
+## Local Setup
 
 ```bash
 # install dependencies
@@ -34,5 +34,3 @@ $ npm run start
 # generate static project
 $ npm run generate
 ```
-
-For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
