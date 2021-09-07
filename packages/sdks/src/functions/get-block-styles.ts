@@ -4,7 +4,7 @@ import { BuilderBlock } from '../types/builder-block';
 export function getBlockStyles(block: BuilderBlock) {
   const styles: any = {
     ...block.responsiveStyles?.large,
-    ...(block as any).styles
+    ...(block as any).styles,
   };
 
   if (block.responsiveStyles?.medium) {

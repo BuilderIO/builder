@@ -1,17 +1,17 @@
-import * as React from "react";
-import { View, StyleSheet, Image, Text } from "react-native";
-import { useState, useContext, useEffect } from "react";
-import { isBrowser } from "../functions/is-browser";
-import RenderBlock from "./render-block.lite";
-import BuilderContext from "../context/builder.context.lite";
-import { track } from "../functions/track";
-import { ifTarget } from "../functions/if-target";
-import { onChange } from "../functions/on-change";
-import { isReactNative } from "../functions/is-react-native";
-import { isEditing } from "../functions/is-editing";
-import { isPreviewing } from "../functions/is-previewing";
-import { previewingModelName } from "../functions/previewing-model-name";
-import { getContent } from "../functions/get-content";
+import * as React from 'react';
+import { View, StyleSheet, Image, Text } from 'react-native';
+import { useState, useContext, useEffect } from 'react';
+import { isBrowser } from '../functions/is-browser';
+import RenderBlock from './render-block.lite';
+import BuilderContext from '../context/builder.context.lite';
+import { track } from '../functions/track';
+import { ifTarget } from '../functions/if-target';
+import { onChange } from '../functions/on-change';
+import { isReactNative } from '../functions/is-react-native';
+import { isEditing } from '../functions/is-editing';
+import { isPreviewing } from '../functions/is-previewing';
+import { previewingModelName } from '../functions/previewing-model-name';
+import { getContent } from '../functions/get-content';
 
 export default function RenderContent(props) {
   function useContent() {
@@ -28,12 +28,10 @@ export default function RenderContent(props) {
 
   function getCssFromFont(font, data) {
     // TODO: compute what font sizes are used and only load those.......
-    const family =
-      font.family +
-      (font.kind && !font.kind.includes("#") ? ", " + font.kind : "");
-    const name = family.split(",")[0];
+    const family = font.family + (font.kind && !font.kind.includes('#') ? ', ' + font.kind : '');
+    const name = family.split(',')[0];
     const url = font.fileUrl ? font.fileUrl : font.files && font.files.regular;
-    let str = "";
+    let str = '';
 
     if (url && family && name) {
       str += `
@@ -81,10 +79,8 @@ export default function RenderContent(props) {
     return (
       (data?.customFonts &&
         data.customFonts.length &&
-        data.customFonts
-          .map((font) => this.getCssFromFont(font, data))
-          .join(" ")) ||
-      ""
+        data.customFonts.map(font => this.getCssFromFont(font, data)).join(' ')) ||
+      ''
     );
   }
 
@@ -93,12 +89,8 @@ export default function RenderContent(props) {
 
     if (data) {
       switch (data.type) {
-        case "builder.contentUpdate": {
-          const key =
-            data.data.key ||
-            data.data.alias ||
-            data.data.entry ||
-            data.data.modelName;
+        case 'builder.contentUpdate': {
+          const key = data.data.key || data.data.alias || data.data.entry || data.data.modelName;
           const contentData = data.data.data; // oof
 
           if (key === props.model) {
@@ -108,7 +100,7 @@ export default function RenderContent(props) {
           break;
         }
 
-        case "builder.patchUpdates": {
+        case 'builder.patchUpdates': {
           // TODO
           break;
         }
@@ -119,11 +111,11 @@ export default function RenderContent(props) {
   useEffect(() => {
     if (isBrowser()) {
       if (isEditing()) {
-        window.addEventListener("message", processMessage);
+        window.addEventListener('message', processMessage);
       }
 
       if (useContent() && !isEditing()) {
-        track("impression", {
+        track('impression', {
           contentId: useContent().id,
         });
       }
@@ -132,13 +124,13 @@ export default function RenderContent(props) {
         if (props.model && previewingModelName() === props.model) {
           const options = {};
           const currentUrl = new URL(location.href);
-          const apiKey = currentUrl.searchParams.get("apiKey");
+          const apiKey = currentUrl.searchParams.get('apiKey');
 
           if (apiKey) {
-            const builderPrefix = "builder.";
+            const builderPrefix = 'builder.';
             currentUrl.searchParams.forEach((value, key) => {
               if (key.startsWith(builderPrefix)) {
-                options[key.replace(builderPrefix, "")] = value;
+                options[key.replace(builderPrefix, '')] = value;
               }
             }); // TODO: need access to API key
 
@@ -146,7 +138,7 @@ export default function RenderContent(props) {
               model: props.model,
               apiKey,
               options,
-            }).then((content) => {
+            }).then(content => {
               if (content) {
                 setOverrideContent(content);
               }
@@ -176,9 +168,9 @@ export default function RenderContent(props) {
       {useContent() ? (
         <>
           <View
-            onClick={(event) => {
+            onClick={event => {
               if (!isEditing()) {
-                track("click", {
+                track('click', {
                   contentId: useContent().id,
                 });
               }
@@ -186,8 +178,7 @@ export default function RenderContent(props) {
             data-builder-content-id={useContent?.()?.id}
           >
             {(useContent?.()?.data?.cssCode ||
-              (useContent?.()?.data?.customFonts &&
-                useContent?.()?.data?.customFonts.length)) &&
+              (useContent?.()?.data?.customFonts && useContent?.()?.data?.customFonts.length)) &&
             !isReactNative() ? (
               <View>
                 <Text>{useContent().data.cssCode}</Text>
@@ -196,7 +187,7 @@ export default function RenderContent(props) {
               </View>
             ) : null}
 
-            {useContent?.()?.data?.blocks?.map((block) => (
+            {useContent?.()?.data?.blocks?.map(block => (
               <RenderBlock key={block.id} block={block} />
             ))}
           </View>

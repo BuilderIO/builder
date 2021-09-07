@@ -23,7 +23,7 @@ export default function Image(props: ImageProps) {
       <View
         style={{
           width: '100%',
-          paddingTop: props.aspectRatio * 100 + '%'
+          paddingTop: props.aspectRatio * 100 + '%',
         }}
       />
     </View>
