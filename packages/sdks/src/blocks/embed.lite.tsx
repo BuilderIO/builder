@@ -59,6 +59,7 @@ export default function Embed(props: EmbedProps) {
 registerComponent({
   name: 'Embed',
   static: true,
+  builtIn: true,
   inputs: [
     {
       name: 'url',

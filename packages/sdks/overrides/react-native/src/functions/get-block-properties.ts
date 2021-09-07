@@ -1,15 +1,18 @@
 import { BuilderBlock } from '../types/builder-block';
 import { findDOMNode } from 'react-dom';
+import { isBrowser } from './is-browser';
+import { isReactNative } from './is-react-native';
 
 export function getBlockProperties(block: BuilderBlock) {
-  // TODO: bindings
   return {
     ...block.properties,
     ref: ref => {
-      const el = findDOMNode(ref);
-      if (el) {
-        el.setAttribute('builder-id', block.id);
-        el.classList.add(block.id);
+      if (isBrowser() && !isReactNative()) {
+        const el = findDOMNode(ref);
+        if (el) {
+          el.setAttribute('builder-id', block.id);
+          el.classList.add(block.id);
+        }
       }
     },
     dataSet: {

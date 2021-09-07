@@ -11,7 +11,7 @@ export interface ButtonProps {
 export default function Button(props: ButtonProps) {
   return (
     <>
-      <Show when={props.link}>
+      <Show when={props.link} else={<span {...props.attributes}>{props.text}</span>}>
         <a
           {...props.attributes}
           href={props.link}
@@ -20,17 +20,13 @@ export default function Button(props: ButtonProps) {
           {props.text}
         </a>
       </Show>
-      <Show when={!props.link}>
-        <button {...props.attributes} type="button">
-          {props.text}
-        </button>
-      </Show>
     </>
   );
 }
 
 registerComponent({
   name: 'Core:Button',
+  builtIn: true,
   image:
     'https://cdn.builder.io/api/v1/image/assets%2FIsxPKMo2gPRRKeakUztj1D6uqed2%2F81a15681c3e74df09677dfc57a615b13',
   defaultStyles: {

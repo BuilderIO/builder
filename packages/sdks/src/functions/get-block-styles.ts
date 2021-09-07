@@ -2,9 +2,9 @@ import { sizes } from '../constants/device-sizes';
 import { BuilderBlock } from '../types/builder-block';
 
 export function getBlockStyles(block: BuilderBlock) {
-  // TODO: bindings
   const styles: any = {
     ...block.responsiveStyles?.large,
+    ...(block as any).styles
   };
 
   if (block.responsiveStyles?.medium) {

@@ -44,7 +44,6 @@ export default function Columns(props: ColumnProps) {
       class="builder-columns"
       css={{
         display: 'flex',
-        flexDirection: 'column',
         alignItems: 'stretch',
         lineHeight: 'normal',
       }}
@@ -54,7 +53,7 @@ export default function Columns(props: ColumnProps) {
           <div
             style={{
               width: state.getColumnCssWidth(index),
-              marginLeft: index === 0 ? 0 : state.getGutterSize(),
+              marginLeft: `${index === 0 ? 0 : state.getGutterSize()}px`,
             }}
             class="builder-column"
             css={{ flexGrow: '1' }}
@@ -70,6 +69,7 @@ export default function Columns(props: ColumnProps) {
 registerComponent({
   // TODO: ways to statically preprocess JSON for references, functions, etc
   name: 'Columns',
+  builtIn: true,
   inputs: [
     {
       name: 'columns',

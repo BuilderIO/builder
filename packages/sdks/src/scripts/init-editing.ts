@@ -1,5 +1,21 @@
 import { getTarget } from '../functions/get-target';
 import { isBrowser } from '../functions/is-browser';
+import { register } from '../functions/register';
+
+register('insertMenu', {
+  name: '_default',
+  default: true,
+  items: [
+    { name: 'Box' },
+    { name: 'Text' },
+    { name: 'Image' },
+    { name: 'Columns' },
+    { name: 'Core:Section' },
+    { name: 'Core:Button' },
+    { name: 'Embed' },
+    { name: 'Custom Code' },
+  ],
+});
 
 if (isBrowser()) {
   window.parent?.postMessage(
@@ -8,8 +24,8 @@ if (isBrowser()) {
       data: {
         target: getTarget(),
         // TODO: compile these in
-        type: process.env.SDK_TYPE,
-        version: process.env.SDK_VERSION,
+        // type: process.env.SDK_TYPE,
+        // version: process.env.SDK_VERSION,
         supportsPatchUpdates: false,
       },
     },

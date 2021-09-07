@@ -20,17 +20,12 @@ export default function Image(props: ImageProps) {
         style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }}
         source={{ uri: props.image }}
       />
-      <div
-        className="builder-image-sizer"
+      <View
         style={{
           width: '100%',
-          paddingTop: props.aspectRatio * 100 + '%',
-          pointerEvents: 'none',
-          fontSize: 0,
+          paddingTop: props.aspectRatio * 100 + '%'
         }}
-      >
-        {' '}
-      </div>
+      />
     </View>
   );
 }
@@ -40,6 +35,7 @@ export default function Image(props: ImageProps) {
 registerComponent(Image, {
   name: 'Image',
   static: true,
+  builtIn: true,
   image:
     'https://firebasestorage.googleapis.com/v0/b/builder-3b0a2.appspot.com/o/images%2Fbaseline-insert_photo-24px.svg?alt=media&token=4e5d0ef4-f5e8-4e57-b3a9-38d63a9b9dc4',
   defaultStyles: {

@@ -20,6 +20,8 @@ export function registerComponent(component: any, info?: ComponentInfo): void {
       '*'
     );
   }
+
+  return component;
 }
 
 function prepareComponentInfoToSend(info: ComponentInfo) {
