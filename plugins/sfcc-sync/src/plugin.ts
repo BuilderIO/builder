@@ -100,7 +100,7 @@ Builder.register('model.action', {
         const apiPath = pluginSettings.get('apiPath');
         // todo: library name per model ?
         const libraryName = pluginSettings.get('libraryName');
-        model.examplePageUrl = `${apiPath}/s/${libraryName}/bulider-preview-${model.name}.html`.trim();
+        model.examplePageUrl = `${apiPath}/s/${libraryName}/builder-preview-${model.name}.html`.trim();
         await appState.models.update(model, false);
       } catch (e) {
         console.error('error syncing model entries', e);
