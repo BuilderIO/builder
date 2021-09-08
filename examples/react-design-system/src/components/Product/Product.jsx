@@ -69,7 +69,7 @@ export const Product = props => {
         <CardMedia
           style={{ height: widthMap[props.sizeName] * 1.2 }}
           className={classes.media}
-          image={item.images[0].imageUrl}
+          image={item?.images[0].imageUrl}
           title={item.name}
         />
         <div>

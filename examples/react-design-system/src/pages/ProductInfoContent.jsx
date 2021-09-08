@@ -51,6 +51,14 @@ import React from 'react'
 
 export function ProductInfoContent(props) {
   const { product, price, seller, item } = props;
+  if (!(product && item)) {
+    return <div style={{
+      padding: 50,
+      textAlign: 'center'
+    }}>
+      Double click to choose a product
+    </div>;
+  }
   return (
     <>
       <Div>
@@ -71,7 +79,7 @@ export function ProductInfoContent(props) {
                     <Span>
                       <RawImg1
                         alt="View Larger Image of Heart and Vine Ring"
-                        src={item.images[0]?.imageUrl}
+                        src={item?.images[0]?.imageUrl}
                         height={528}
                         width={528}
                       />
@@ -252,7 +260,7 @@ export function ProductInfoContent(props) {
             <Div10 data-slider='{"presetConfig":"productAlternateImageSliderOptions","slidesToShow":4}'>
               <Div11 aria-live="polite">
                 <Div12 role="listbox">
-                 {item.images.map(image => {
+                 {item?.images.map(image => {
                    return  <Div13
                    data-slick-index="0"
                    aria-hidden="false"
