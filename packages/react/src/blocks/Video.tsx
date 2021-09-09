@@ -40,17 +40,21 @@ class VideoComponent extends React.Component<{
   };
 
   updateVideo() {
-    if (this.video) {
-      const attributes: Array<'muted' | 'playsInline' | 'autoPlay'> = [
+    const video = this.video;
+    if (video) {
+      // There are some issues with boolean attributes and media elements
+      // see: https://github.com/facebook/react/issues/10389
+      const boolProps: Array<'muted' | 'playsInline' | 'autoPlay'> = [
         'muted',
         'playsInline',
         'autoPlay',
       ];
-      attributes.forEach(attr => {
-        if (this.props[attr]) {
-          this.video?.setAttribute(attr.toLowerCase(), 'true');
+      boolProps.forEach(prop => {
+        const attr = prop.toLowerCase();
+        if (this.props[prop]) {
+          video.setAttribute(attr, attr);
         } else {
-          this.video?.removeAttribute(attr.toLowerCase());
+          video.removeAttribute(attr);
         }
       });
     }
@@ -154,6 +158,7 @@ class VideoComponent extends React.Component<{
         ) : children ? (
           <div
             css={{
+              pointerEvents: 'none',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'stretch',
