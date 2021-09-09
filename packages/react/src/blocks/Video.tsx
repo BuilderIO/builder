@@ -154,6 +154,7 @@ class VideoComponent extends React.Component<{
         ) : children ? (
           <div
             css={{
+              pointerEvents: 'none',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'stretch',
