@@ -10,17 +10,18 @@ declare global {
 }
 
 interface Model {
-  name: string;
-  hideFromUI?: boolean;
-  kind: 'data' | 'page' | 'component' | 'function';
+  name: string
+  hideFromUI?: boolean
+  kind: 'data' | 'page' | 'component' | 'function'
 }
 interface IAppState {
   models: {
     result: Model[]
-  },
+  }
 }
 
-const appState: ExtendedApplicationContext & IAppState = require('@builder.io/app-context').default
+const appState: ExtendedApplicationContext &
+  IAppState = require('@builder.io/app-context').default
 
 const localization: Model = {
   name: 'localization',
@@ -33,8 +34,8 @@ Builder.register('editor.toolbarButton', {
 })
 
 interface OnSaveActions {
-  updateSettings(partal: Record<string, any>): Promise<void>;
-  addModel(model: Model): Promise<void>;
+  updateSettings(partal: Record<string, any>): Promise<void>
+  addModel(model: Model): Promise<void>
 }
 
 Builder.register('plugin', {
@@ -54,24 +55,27 @@ Builder.register('plugin', {
           name: 'localeName',
           type: 'string',
         },
-      ]
-    }
-
+      ],
+    },
   ],
   ctaText: 'Save',
 })
 
 interface AppActions {
-  triggerSettingsDialog(pluginId: string): Promise<void>;
+  triggerSettingsDialog(pluginId: string): Promise<void>
 }
 
-Builder.register('app.onLoad', async ({ triggerSettingsDialog }: AppActions) => {
-  const currentOrg = appState.user.organization;
-  const pluginSettings = currentOrg.value.settings.plugins.get(pluginId);
-  const locales = pluginSettings?.get('locales');
-  if (typeof locales === "string" || !locales) {
-    pluginSettings?.set("locales", []);
-    await triggerSettingsDialog(pluginId);
+Builder.register(
+  'app.onLoad',
+  async ({ triggerSettingsDialog }: AppActions) => {
+    const currentOrg = appState.user.organization
+    const pluginSettings = currentOrg.value.settings.plugins.get(pluginId)
+    const locales = pluginSettings?.get('locales')
+    if (typeof locales === 'string' || !locales) {
+      pluginSettings?.set('locales', [])
+      await triggerSettingsDialog(pluginId)
+    }
+    window.languageSettingsTrigger = async () =>
+      await triggerSettingsDialog(pluginId)
   }
-  window.languageSettingsTrigger = async () => await triggerSettingsDialog(pluginId)
-});
+)

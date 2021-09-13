@@ -6,7 +6,6 @@ import { pluginId } from '../constants'
 const context: ExtendedApplicationContext = require('@builder.io/app-context')
   .default
 
-
 declare global {
   interface Window {
     languageSettingsTrigger: () => Promise<void>
@@ -26,7 +25,7 @@ const LangugeSwitcher = () => {
     const localesMap = pluginSettings?.get('locales')
     const locales = localesMap.map((l: any) => ({
       name: l.get('localeName'),
-      code: l.get('localeCode')
+      code: l.get('localeCode'),
     }))
     setLocales(locales)
     setSelectedLocale(locales[0].code)
@@ -48,7 +47,8 @@ const LangugeSwitcher = () => {
       )
       let finalUrl = ''
       if (locales?.length && code === locales[0].code) {
-        finalUrl =           origin + context.designerState.editingContentModel?.url + search;
+        finalUrl =
+          origin + context.designerState.editingContentModel?.url + search
       } else {
         //! Unreliable -- Only succeeds in changing url intermittently. Also seems to save the preview path, overwriting the default
         // context.designerState.editingContentModel.previewUrl = origin + '/' + code + context.designerState.editingContentModel?.url
@@ -59,9 +59,9 @@ const LangugeSwitcher = () => {
           context.designerState.editingContentModel?.url +
           search
       }
-      context.designerState.editingIframeRef.src = finalUrl;
-      const preview = locales?.find((locale) => locale.code === code);
-      context.snackBar.show(`Previewing ${preview?.name || code}`);
+      context.designerState.editingIframeRef.src = finalUrl
+      const preview = locales?.find((locale) => locale.code === code)
+      context.snackBar.show(`Previewing ${preview?.name || code}`)
     }
     setSelectedLocale(code)
   }
@@ -75,19 +75,19 @@ const LangugeSwitcher = () => {
           justifyContent: 'center',
           alignItems: 'center',
           cursor: 'pointer',
-          padding: '5px'
+          padding: '5px',
         }}
       >
-        <Settings color="action"/>
+        <Settings color="action" />
       </div>
       <Select
         defaultValue={selectedLocale}
         value={selectedLocale}
-        onChange={v => {
+        onChange={(v) => {
           handleLocaleChange(v.target.value as string)
         }}
       >
-        {locales?.map(locale => (
+        {locales?.map((locale) => (
           <MenuItem value={locale.code}>{locale.name}</MenuItem>
         ))}
       </Select>
