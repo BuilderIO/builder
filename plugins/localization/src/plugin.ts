@@ -1,4 +1,4 @@
-import appState, { Content } from '@builder.io/app-context'
+import { Content } from '@builder.io/app-context'
 import { Builder } from '@builder.io/sdk'
 import LangugeSwitcher from './components/language-switcher'
 import { pluginId } from './constants'
@@ -20,7 +20,7 @@ interface IAppState {
   },
 }
 
-const context: ExtendedApplicationContext & IAppState = require('@builder.io/app-context').default
+const appState: ExtendedApplicationContext & IAppState = require('@builder.io/app-context').default
 
 const localization: Model = {
   name: 'localization',
@@ -44,6 +44,7 @@ Builder.register('plugin', {
     {
       name: 'locales',
       type: 'list',
+      defaultValue: [],
       subFields: [
         {
           name: 'localeCode',
@@ -58,47 +59,6 @@ Builder.register('plugin', {
 
   ],
   ctaText: 'Save',
-
-  async onSave(actions: OnSaveActions) {
-    const currentOrg = context.user.organization;
-    const pluginSettings = currentOrg.value.settings.plugins.get(pluginId);
-    const localesMap = await pluginSettings?.get('locales')
-    const locales = localesMap.map((l: any) => ({
-      localeName: l.get('localeName'),
-      localeCode: l.get('localeCode')
-    }))
-    let existingModel: any = context.models.result.find((m: Model) => m.name === localization.name)
-    console.log({existingModel})
-    if (!existingModel) {
-      await actions.addModel(localization);
-      let existingModel: any = context.models.result.find((m: Model) => m.name === localization.name)
-      existingModel = true;
-    }
-    const activeLocales: Content = {
-      name: "activeLocales",
-      //modelId: "localization",
-      data: {
-        locales
-      }
-    }
-    try {
-      if (existingModel) {
-        await context.content.update(activeLocales);
-        location.reload();
-      }
-    } catch (e) {
-      console.error(e.message);
-      try {
-        await context.createContent('localization', activeLocales)
-        location.reload();
-      } catch(e) {
-        console.error(e.message);
-      }
-    }
-    //! @Aziz Type error: Property 'dialogs' does not exist on typedef
-    //@ts-ignore
-    appState.dialogs.alert('Plugin settings saved.');
-  },
 })
 
 interface AppActions {
@@ -106,11 +66,11 @@ interface AppActions {
 }
 
 Builder.register('app.onLoad', async ({ triggerSettingsDialog }: AppActions) => {
-  const currentOrg = context.user.organization;
+  const currentOrg = appState.user.organization;
   const pluginSettings = currentOrg.value.settings.plugins.get(pluginId);
   const locales = pluginSettings?.get('locales');
   if (typeof locales === "string" || !locales) {
-    pluginSettings.set("locales", []);
+    pluginSettings?.set("locales", []);
     await triggerSettingsDialog(pluginId);
   }
   window.languageSettingsTrigger = async () => await triggerSettingsDialog(pluginId)

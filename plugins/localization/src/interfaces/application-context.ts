@@ -35,6 +35,9 @@ export interface ExtendedApplicationContext extends ApplicationContext {
       width: number
     }
   },
+  snackBar: {
+    show: (str: string) => void;
+  },
   models: {
     result: Model[],
     update(model: Model): Promise<void>;
