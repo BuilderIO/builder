@@ -54,7 +54,6 @@ registerCommercePlugin(
         type: 'password',
         required: true,
       },
-      ,
       {
         name: 'scopes',
         type: 'string',
