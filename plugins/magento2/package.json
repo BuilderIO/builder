@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/plugin-magento2",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "keywords": [],
   "unpkg": "dist/plugin.system.js",
