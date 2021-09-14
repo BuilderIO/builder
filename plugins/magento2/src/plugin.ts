@@ -17,7 +17,6 @@ registerCommercePlugin(
     ctaText: `Connect your Magento2 Store`,
   },
   async settings => {
-
     const storeUrl = new URL(settings.get('storeUrl')).origin;
 
     return getAPI(storeUrl);
