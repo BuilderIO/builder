@@ -23,17 +23,6 @@ const getToken = async (options: {
   return response;
 };
 
-/**
- * 
- * 
- * export CTP_PROJECT_KEY="bulider-test-1"
-export CTP_CLIENT_SECRET="n5ZPhavJKOMerUM0qf4StplBCDTrhrV4"
-export CTP_CLIENT_ID="uZHTioFtOnYh1_n1i1o5WIo1"
-export CTP_AUTH_URL="https://auth.us-central1.gcp.commercetools.com"
-export CTP_API_URL="https://api.us-central1.gcp.commercetools.com"
-export CTP_SCOPES="view_customers:bulider-test-1 view_stores:bulider-test-1 view_customer_groups:bulider-test-1 view_published_products:bulider-test-1 view_import_sinks:bulider-test-1 view_key_value_documents:bulider-test-1 view_products:bulider-test-1 view_categories:bulider-test-1"
-
- */
 registerCommercePlugin(
   {
     name: 'Commercetools',
