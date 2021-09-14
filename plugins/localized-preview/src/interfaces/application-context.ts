@@ -1,5 +1,10 @@
-import { ApplicationContext, BuilderUser, ContentModel, Model } from "@builder.io/app-context";
-import { BuilderElement, Component } from "@builder.io/sdk";
+import {
+  ApplicationContext,
+  BuilderUser,
+  ContentModel,
+  Model,
+} from '@builder.io/app-context'
+import { BuilderElement, Component } from '@builder.io/sdk'
 
 export interface ExtendedContentModel extends ContentModel {
   data: Map<string, any>
@@ -34,10 +39,13 @@ export interface ExtendedApplicationContext extends ApplicationContext {
     artboardSize: {
       width: number
     }
-  },
+  }
+  snackBar: {
+    show: (str: string) => void
+  }
   models: {
-    result: Model[],
-    update(model: Model): Promise<void>;
-    remove(model: Model): Promise<void>;
-  },
+    result: Model[]
+    update(model: Model): Promise<void>
+    remove(model: Model): Promise<void>
+  }
 }

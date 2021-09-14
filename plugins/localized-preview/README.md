@@ -50,4 +50,4 @@ builder.plugins.replace([])
 builder.savePlugins().then(() => location.reload())
 ```
 
-Used in production at [www.wecre8websites.com](https://www.wecre8websites.com)! 
+Used in production at [www.wecre8websites.com](https://www.wecre8websites.com)!
