@@ -64,6 +64,8 @@ export const registerCommercePlugin = async (
       Builder.register('editor.onLoad', onEditorLoad(config, apiOperations, resourceName));
       Builder.registerEditor({
         name: `${config.name}${capitalize(resourceName)}`,
+        isDataResource: true,
+        pluginId: config.id,
         component: (props: ResourcesPickerButtonProps) => (
           <ErrorBoundary>
             <ResourcesPickerButton {...props} {...contextProps} />
