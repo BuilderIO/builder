@@ -46,6 +46,7 @@
     "lint:fix": "prettier --write '**/*.{js,jsx,ts,tsx}'"
   },
   "dependencies": {
+    "@types/react-native-video": "^5.0.9",
     "prettier": "2.0.5"
   }
 }
