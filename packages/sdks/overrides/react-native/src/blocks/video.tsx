@@ -55,8 +55,8 @@ export default function Video(props: VideoProps) {
 
 // TODO: make a way to share these configs by Mitoris being able to trace
 // references for config data
-registerComponent(Image, {
-  name: 'Image',
+registerComponent(Video, {
+  name: 'Video',
   static: true,
   builtIn: true,
   image:
