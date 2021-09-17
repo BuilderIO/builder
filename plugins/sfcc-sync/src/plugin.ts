@@ -4,6 +4,7 @@ import { syncToSFCC } from './sync-to-sfcc';
 import { createWebhook } from './create-web-hook';
 import pkg from '../package.json';
 import { onContentEditorLoad } from './on-editor-load';
+import { getSFCCWebhookIndex } from './utils';
 
 Builder.register('editor.onLoad', onContentEditorLoad);
 
@@ -68,9 +69,6 @@ Builder.register('app.onLoad', async ({ triggerSettingsDialog }: AppActions) => 
     await triggerSettingsDialog(pkg.name);
   }
 });
-
-const getSFCCWebhookIndex = (model: { webhooks: Array<Map<string, string>> }) =>
-  model.webhooks.findIndex(webhook => webhook.get('url')?.includes('sfcc-sync/webhook'));
 
 Builder.register('model.action', {
   name(model: any) {
