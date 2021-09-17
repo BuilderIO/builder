@@ -11,7 +11,7 @@ Before using this example, make sure you have the following:
 
 A basic understanding of the following is helpful too:
 * The [command line](https://developer.mozilla.org/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Command_line)
-* JavaScript and [React](https://reactjs.org/).
+* JavaScript and [React](https://reactjs.org/)
 * [Next.js](https://nextjs.org/)
 * What it means to [clone a GitHub repo](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)
 
@@ -52,7 +52,6 @@ For this example, click **Add Builder to an existing site or app**.
 
 <figure>
     <img src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F19683b4ef3f54eb78e8c2fa6c65759a7" alt="Builder.io Welcome screen for creating a new Organization" width="600" style="display: block; margin: auto"/>
-    <figcaption style="text-align: center">You can choose to create a new Builder site or Add Builder to an existing application.</figcaption>
 </figure>
 
 **If you don't have the introductory prompt for creating a space, take the following steps. If you do have the prompt in the previous step, skip to step 4.**
@@ -60,15 +59,13 @@ For this example, click **Add Builder to an existing site or app**.
 1. Click on the Organization icon on the bottom left. 
 
     <figure>
-      <img src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F279657f9a38743e99a028173200d6f76" alt="Space icon with two people standing together" width="600" style="display: block; margin: auto"/>
-      <figcaption style="text-align: center">The Organization icon features two figures and is on the left sidebar at the bottom.</figcaption>
+      <img src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F279657f9a38743e99a028173200d6f76" alt="Organization icon with two people standing together" width="600" style="display: block; margin: auto"/>
     </figure>
 
 1. Hover over **Builder.io** and choose **+ New Space**.
 
     <figure>
       <img src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F32d67ac4249c40fda0486fb7f38ac71b" alt="Menu options for creating a new space" width="400" style="display: block; margin: auto"/>
-      <figcaption style="text-align: center">Access the menu for creating a new space by clicking on the Organization icon.</figcaption>
     </figure>
 
 1. Click **Add Builder to an existing site or app**.
@@ -79,7 +76,6 @@ For this example, click **Add Builder to an existing site or app**.
 
 <figure>
     <img src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F3b434d77529f4ae392a3d481a926092d" alt="Dialogue for creating a new space" width="400" style="display: block; margin: auto"/>
-    <figcaption style="text-align: center">Enter a name for your new space, such as "My Next.js App".</figcaption>
 </figure>
 
 Now that you have a new space, the next step is connecting "My Next.js App" with your application.
@@ -92,14 +88,12 @@ To connect your Builder.io space and your application, set the site URL and get 
 
     <figure>
        <img src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fd26eb45cd52a4cada42413cd5c99419d" alt="Account icon in left sidenav" width="200" style="display: block; margin: auto"/>
-       <figcaption style="text-align: center">The Account icon takes you to important data about this space.</figcaption>
     </figure>
 
 1. Change the Site URL to `http://localhost:3000` and click to copy the Public API Key.
 
     <figure>
        <img src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Faec18bf8ccf543ab94c4230a7791c894" alt="Change the Site URL in account settings." width="400" style="display: block; margin: auto"/>
-       <figcaption style="text-align: center">The Site URL and API Key are in the **Space** tab.</figcaption>
     </figure>
 
 1. In your code editor, configure `.env.production` and `.env.development` with the [Public API Key](https://builder.io/account/space) by adding a line to each file as follows, but using your Public API Key that you copied in the previous step. 
@@ -142,6 +136,7 @@ You can deploy anywhere you like, but for this project we recommend [Vercel](htt
 
 ## Next steps
 
+* Learn how to [use your react components in our visual editor](https://www.builder.io/c/docs/custom-react-components)
 * For more information on previewing your applications, see [Editing and previewing directly on your site](https://www.builder.io/c/docs/guides/preview-url).
 * See [Getting started with the visual editor](https://www.builder.io/c/docs/guides/page-building) for an introduction to editing your pages without having to code. 
 * Check out [Builder best practices](https://www.builder.io/c/docs/best-practices) for guidance on how to approach site development with Builder.
