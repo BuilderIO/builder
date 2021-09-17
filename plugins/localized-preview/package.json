@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/plugin-localized-preview",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Localized preview plugin for Builder.io",
   "keywords": [],
   "output": "plugin.system.js",
@@ -12,7 +12,7 @@
   "author": "Jonathan St-Jean (jonathan@wecre8websites.com)",
   "repository": {
     "type": "git",
-    "url": "https://github.com/wecre8websites/builder/plugins/localization"
+    "url": "https://github.com/BuilderIO/builder/tree/main/plugins/localized-preview"
   },
   "license": "MIT",
   "engines": {
