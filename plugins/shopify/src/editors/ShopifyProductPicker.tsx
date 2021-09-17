@@ -26,6 +26,7 @@ import { fastClone } from '../functions/fast-clone';
 import { SetShopifyKeysMessage } from '../components/set-shopify-keys-message';
 import appState from '@builder.io/app-context';
 import Client from 'shopify-buy';
+import { pluginId } from '../constants';
 
 interface ShopifyProductPickerProps extends CustomReactEditorProps<BuilderRequest | string> {
   isPreview?: boolean;
@@ -372,6 +373,8 @@ export class ShopifyProductPicker extends SafeComponent<ShopifyProductPickerProp
 
 Builder.registerEditor({
   name: 'ShopifyProduct',
+  isDataResource: true,
+  pluginId,
   component: ShopifyProductPicker,
 });
 
