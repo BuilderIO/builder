@@ -61,19 +61,22 @@ registerCommercePlugin(
           return product;
         },
 
-        /* async findByHandle(handle: string) {
-          const response = await fetch(
-            baseUrl(`api/catalog_system/pub/products/search/${handle}/p`),
+        async findByHandle(handle: string) {
+          const queryParams = '?limit=100&include=primary_image';
+          const response: any = await fetch(
+            baseUrl(`products${queryParams}`),
             {
               headers,
             }
-          ).then(res => res.json());
-          const product = response.map(transformProduct)[0];
-          return product;
-        }, */
+          ).then(res => {
+            return res.json();
+          });
+          const products = response.data.map(transformResource);
+          return products.find((each: any) =>  each.handle === handle);
+        },
         async search(search: string) {
-          const queryParams = '?include=primary_image' +
-             (search ? `&name=${search}` : '');
+          let queryParams = '?limit=100&include=primary_image';
+          queryParams += (search ? `&keyword=${search}` : '');
           const response: any = await fetch(
             baseUrl(`products${queryParams}`),
             {
@@ -111,18 +114,23 @@ registerCommercePlugin(
           return category;
         },
 
-        /* async findByHandle(handle: string) {
-          const response = await fetch(
-            baseUrl(`api/catalog_system/pub/categories/search/${handle}/p`),
+        async findByHandle(handle: string) {
+          const queryParams = `?limit=100`;
+          const response: any = await fetch(
+            baseUrl(`categories${queryParams}`),
             {
               headers,
             }
-          ).then(res => res.json());
-          const category = response.map(transformProduct)[0];
-          return category;
-        }, */
+          ).then(res => {
+            return res.json();
+          });
+          return response.data
+            .map(transformResource)
+            .find((each: any) => each.handle === handle);
+        },
         async search(search: string) {
-          const queryParams = search ? `?name=${search}` : '';
+          let queryParams = '?limit=100';
+          queryParams += search ? `&keyword=${search}` : '';
           const response: any = await fetch(
             baseUrl(`categories${queryParams}`),
             {
