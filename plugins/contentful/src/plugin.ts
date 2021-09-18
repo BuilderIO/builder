@@ -55,13 +55,13 @@ registerDataPlugin(
                   type: 'number',
                 }
             ];
-            const acceptableFields = type.fields.filter(field => ['Text', 'Boolean', 'Number'].includes(field.type));
+            const acceptableFields = type.fields.filter(field => ['Text', 'Boolean', 'Number', 'Symbol'].includes(field.type));
             if (acceptableFields.length > 0) {
               fields.push( {
                 name: 'fields',
                 type: 'object',
                 friendlyName: `${type.name} fields`,
-                subFields: acceptableFields.map(field => ({...field, type: field.type.toLowerCase(), name: field.id, friendlyName: field.name}))
+                subFields: acceptableFields.map(field => ({...field, type: field.type === 'Symbol' ? 'Text' : field.type.toLowerCase(), name: field.id || 'sdfw', friendlyName: field.name}))
               } as any )
             }
             return fields;
