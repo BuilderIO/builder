@@ -1,6 +1,11 @@
 import contentstack from 'contentstack';
 import pkg from '../package.json';
-import { registerDataPlugin, ResourceType, ResourceEntryType } from '@builder.io/data-plugin-tools';
+import {
+  registerDataPlugin,
+  ResourceType,
+  ResourceEntryType,
+  APIOperations,
+} from '@builder.io/data-plugin-tools';
 import kebabCase from 'lodash/capitalize';
 import capitalize from 'lodash/kebabCase';
 import appState from '@builder.io/app-context';
@@ -72,7 +77,7 @@ registerDataPlugin(
     const environmentName = settings.get('environmentName')?.trim();
     const Stack = contentstack.Stack(apiKey, deliveryToken, environmentName);
 
-    return {
+    const apiOperations: APIOperations = {
       getResourceTypes: async () => {
         const contentTypesResponse = await Stack.getContentTypes();
         // `any` override is to fix https://github.com/contentstack/contentstack-javascript/pull/61
@@ -158,5 +163,7 @@ registerDataPlugin(
         );
       },
     };
+
+    return apiOperations;
   }
 );
