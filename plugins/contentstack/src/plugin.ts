@@ -92,11 +92,10 @@ registerDataPlugin(
           };
 
           return Object.entries(headers)
-            .map(([key, value]) => `headers[]=${key}:::${value}`)
+            .map(([key, value]) => `headers.${key}=${value}`)
             .join('&');
         };
 
-        // For other providers use their APIs for this ofc (and plugin settings for keys)
         return contentTypesWithReferences.map(
           (model): ResourceType => ({
             name: humanCase(model.title),
@@ -126,10 +125,7 @@ registerDataPlugin(
           })
         );
       },
-      getEntriesByResourceType: async (
-        resourceTypeId: string,
-        options: { searchText?: string; resourceEntryId?: string } = {}
-      ) => {
+      getEntriesByResourceType: async (resourceTypeId, options = {}) => {
         const StackForContentType = Stack.ContentType(resourceTypeId);
 
         const makeApiRequest = (options: { searchText?: string; resourceEntryId?: string }) => {
