@@ -36,7 +36,6 @@ registerDataPlugin(
       space: spaceId,
       accessToken,
     });
-    console.log(' here contentful ', client);
     return {
       async getResourceTypes() {
         const contentTypes = await client.getContentTypes();
