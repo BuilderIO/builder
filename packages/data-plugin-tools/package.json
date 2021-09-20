@@ -1,18 +1,19 @@
 {
-  "name": "@builder.io/plugin-localized-preview",
-  "version": "0.0.3",
-  "description": "Localized preview plugin for Builder.io",
+  "name": "@builder.io/data-plugin-tools",
+  "version": "0.0.2",
+  "description": "",
   "keywords": [],
-  "output": "plugin.system.js",
-  "main": "dist/plugin.system.js",
-  "typings": "dist/types/plugin.d.ts",
+  "main": "dist/index.umd.js",
+  "module": "dist/index.es5.js",
+  "unpkg": "dist/index.system.js",
+  "typings": "dist/types/index.d.ts",
   "files": [
     "dist"
   ],
-  "author": "Jonathan St-Jean (jonathan@wecre8websites.com)",
+  "author": "Steve Sewell <steve@builder.io>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/BuilderIO/builder/tree/main/plugins/localized-preview"
+    "url": ""
   },
   "license": "MIT",
   "engines": {
@@ -21,13 +22,18 @@
   "scripts": {
     "lint": "tslint  --project tsconfig.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
     "prebuild": "rimraf dist",
-    "build": "webpack --mode production",
-    "start": "webpack serve --mode development",
+    "build": "tsc --module commonjs && rollup -c rollup.config.ts",
     "release:dev": "npm run build && npm version prerelease --no-git-tag-version && npm publish --tag dev",
+    "start": "SERVE=true concurrently 'rollup -c rollup.config.ts -w' 'tsc -w'",
     "test": "jest --coverage",
     "test:watch": "jest --coverage --watch",
     "test:prod": "npm run lint && npm run test -- --no-cache",
-    "report-coverage": "cat ./coverage/lcov.info | coveralls"
+    "deploy-docs": "ts-node tools/gh-pages-publish",
+    "report-coverage": "cat ./coverage/lcov.info | coveralls",
+    "commit": "git-cz",
+    "semantic-release": "semantic-release",
+    "semantic-release-prepare": "ts-node tools/semantic-release-prepare",
+    "travis-deploy-once": "travis-deploy-once"
   },
   "lint-staged": {
     "{src,test}/**/*.ts": [
@@ -67,32 +73,24 @@
       "src/*.{js,ts}"
     ]
   },
-  "prettier": {
-    "semi": false,
-    "singleQuote": true
-  },
   "commitlint": {
     "extends": [
       "@commitlint/config-conventional"
     ]
   },
-  "dependencies": {
-    "@builder.io/app-context": "^1.0.0",
-    "@builder.io/commerce-plugin-tools": "^0.2.0",
-    "@builder.io/sdk": "^1.1.23"
-  },
   "devDependencies": {
+    "@builder.io/react": "^1.1.29",
     "@commitlint/cli": "^7.1.2",
     "@commitlint/config-conventional": "^7.1.2",
-    "@material-ui/core": "^4.12.3",
     "@types/jest": "^23.3.2",
-    "@types/node": "^16.4.10",
-    "@types/react": "^17.0.15",
+    "@types/node": "^10.17.5",
+    "@types/react": "^16.9.11",
+    "@types/shopify-buy": "^2.10.4",
     "colors": "^1.3.2",
     "commitizen": "^3.0.0",
+    "concurrently": "^5.3.0",
     "coveralls": "^3.0.2",
     "cross-env": "^5.2.0",
-    "css-loader": "^3.5.3",
     "cz-conventional-changelog": "^2.1.0",
     "husky": "^1.0.1",
     "jest": "^23.6.0",
@@ -101,28 +99,39 @@
     "lodash.camelcase": "^4.3.0",
     "prettier": "^1.14.3",
     "prompt": "^1.0.0",
-    "react-dom": "^17.0.0",
     "replace-in-file": "^3.4.2",
     "rimraf": "^2.6.2",
-    "semantic-release": "^15.9.16",
+    "rollup": "^2.40.0",
+    "rollup-plugin-commonjs": "^9.1.8",
+    "rollup-plugin-json": "^3.1.0",
+    "rollup-plugin-node-resolve": "^3.4.0",
+    "rollup-plugin-replace": "^2.2.0",
+    "rollup-plugin-serve": "^1.0.1",
+    "rollup-plugin-sourcemaps": "^0.4.2",
+    "rollup-plugin-typescript2": "^0.30.0",
+    "semantic-release": "^17.2.3",
     "shelljs": "^0.8.3",
-    "source-map-loader": "^0.2.4",
-    "style-loader": "^1.2.1",
     "travis-deploy-once": "^5.0.9",
     "ts-jest": "^23.10.2",
-    "ts-loader": "^7.0.4",
     "ts-node": "^7.0.1",
     "tslint": "^5.11.0",
     "tslint-config-prettier": "^1.15.0",
     "tslint-config-standard": "^8.0.1",
     "typedoc": "^0.12.0",
-    "typescript": "^4.3.5",
-    "webpack": "^5.48.0",
-    "webpack-cli": "^4.7.2",
-    "webpack-dev-server": "^3.11.2"
+    "typescript": "^3.0.3"
   },
-  "peerDependencies": {
-    "@material-ui/icons": "^4.11.2",
-    "react": "^17.0.2"
+  "dependencies": {
+    "@builder.io/sdk": "^1.1.3-alpha.4",
+    "@emotion/core": "^10.0.22",
+    "@emotion/styled": "^10.0.23",
+    "@material-ui/core": "^3.9.2",
+    "@material-ui/icons": "^1.1.1",
+    "@types/pluralize": "0.0.29",
+    "lodash": "^4.17.21",
+    "mobx": "^5.15.4",
+    "mobx-react": "^6.1.8",
+    "pluralize": "^8.0.0",
+    "react": "^16.11.0",
+    "shopify-buy": "^2.11.0"
   }
 }
