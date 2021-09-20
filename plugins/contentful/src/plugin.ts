@@ -4,6 +4,7 @@ import contentful from 'contentful';
 import qs from 'qs';
 
 const pluginId = pkg.name;
+const metaFields = ['environment', 'space', 'revision', 'type'];
 
 registerDataPlugin(
   {
@@ -16,13 +17,15 @@ registerDataPlugin(
         name: 'spaceId',
         type: 'string',
         required: true,
-        helperText: 'Get your space ID, from your contentful space settings > API Keys https://www.contentful.com/developers/docs/references/authentication/',
+        helperText:
+          'Get your space ID, from your contentful space settings > API Keys https://www.contentful.com/developers/docs/references/authentication/',
       },
       {
         name: 'accessToken',
         type: 'string',
         required: true,
-        helperText: 'Get your access token, from your contentful space settings > API Keys https://www.contentful.com/developers/docs/references/authentication/',
+        helperText:
+          'Get your access token, from your contentful space settings > API Keys https://www.contentful.com/developers/docs/references/authentication/',
       },
     ],
     ctaText: `Connect your Contentful space`,
@@ -43,30 +46,53 @@ registerDataPlugin(
           id: type.sys.id,
           canPickEntries: true,
           inputs: () => {
-            const fields = [
+            const acceptableFields = type.fields.filter(field =>
+              ['Text', 'Boolean', 'Number', 'Symbol'].includes(field.type)
+            );
+            const fields: any = [
               {
                 name: 'include',
                 friendlyName: 'limit',
                 defaultValue: 10,
+                // contentful api restricts include to be between 0 and 10
+                min: 0,
+                max: 10,
                 type: 'number',
               },
+              {
+                name: 'order',
+                type: 'string',
+                enum: Object.keys(type.sys)
+                  .filter(key => !metaFields.includes(key))
+                  .map(key => ({
+                    label: key,
+                    value: `sys.${key}`,
+                  }))
+                  .concat(
+                    acceptableFields
+                      .filter(field => field.type === 'Symbol')
+                      .map(field => ({
+                        label: field.name,
+                        value: `fields.${field.id}`,
+                      }))
+                  ),
+              },
             ];
-            const acceptableFields = type.fields.filter(field =>
-              ['Text', 'Boolean', 'Number', 'Symbol'].includes(field.type)
-            );
+
             if (acceptableFields.length > 0) {
               fields.push({
                 name: 'fields',
+                advanced: true,
                 type: 'object',
                 friendlyName: `${type.name} fields`,
                 subFields: acceptableFields.map(field => ({
-                  ...field,
                   type: field.type === 'Symbol' ? 'text' : field.type.toLowerCase(),
                   name: field.id,
                   friendlyName: field.name,
                 })),
               } as any);
             }
+
             return fields;
           },
           toUrl: (options: any) => {
