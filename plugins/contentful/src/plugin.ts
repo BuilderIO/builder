@@ -2,7 +2,7 @@ import { registerDataPlugin } from '@builder.io/data-plugin-tools';
 import pkg from '../package.json';
 import contentful from 'contentful';
 import qs from 'qs';
-// Define Commerce.js plugin ID. ID string should match package name.
+
 const pluginId = pkg.name;
 
 registerDataPlugin(
@@ -16,20 +16,19 @@ registerDataPlugin(
         name: 'spaceId',
         type: 'string',
         required: true,
-        helperText: 'TODO',
+        helperText: 'Get your space ID, from your contentful space settings > API Keys https://www.contentful.com/developers/docs/references/authentication/',
       },
       {
         name: 'accessToken',
         type: 'string',
         required: true,
-        helperText: 'TODO',
+        helperText: 'Get your access token, from your contentful space settings > API Keys https://www.contentful.com/developers/docs/references/authentication/',
       },
     ],
     ctaText: `Connect your Contentful space`,
   },
   // Observable map of the settings configured above
   async settings => {
-    // Get public key input from user
     const spaceId = settings.get('spaceId')?.trim();
     const accessToken = settings.get('accessToken')?.trim();
     const client = await contentful.createClient({
@@ -39,7 +38,6 @@ registerDataPlugin(
     return {
       async getResourceTypes() {
         const contentTypes = await client.getContentTypes();
-        console.log(' here content types are ', contentTypes);
         return contentTypes.items.map(type => ({
           name: type.name,
           id: type.sys.id,
@@ -63,7 +61,7 @@ registerDataPlugin(
                 friendlyName: `${type.name} fields`,
                 subFields: acceptableFields.map(field => ({
                   ...field,
-                  type: field.type === 'Symbol' ? 'Text' : field.type.toLowerCase(),
+                  type: field.type === 'Symbol' ? 'text' : field.type.toLowerCase(),
                   name: field.id,
                   friendlyName: field.name,
                 })),
