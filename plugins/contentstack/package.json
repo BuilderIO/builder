@@ -121,12 +121,15 @@
   },
   "dependencies": {
     "@builder.io/commerce-plugin-tools": "^0.2.1-4",
+    "@builder.io/data-plugin-tools": "0.0.3-0",
     "@builder.io/sdk": "^1.1.3-alpha.4",
     "@emotion/core": "^10.0.22",
     "@emotion/styled": "^10.0.23",
     "@material-ui/core": "^3.9.2",
     "@material-ui/icons": "^1.1.1",
     "contentstack": "^3.13.3",
+    "lodash.capitalize": "^4.2.1",
+    "lodash.kebabcase": "^4.1.1",
     "node-fetch": "^3.0.0",
     "react": "^16.11.0",
     "rollup-plugin-node-resolve": "^5.2.0"

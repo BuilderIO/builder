@@ -1,7 +1,20 @@
-import { CommerceAPIOperations, registerCommercePlugin } from '@builder.io/commerce-plugin-tools';
-import { Resource } from '@builder.io/commerce-plugin-tools/dist/types/interfaces/resource';
 import contentstack from 'contentstack';
 import pkg from '../package.json';
+import { registerDataPlugin, ResourceType, ResourceEntryType } from '@builder.io/data-plugin-tools';
+import kebabCase from 'lodash/capitalize';
+import capitalize from 'lodash/kebabCase';
+
+function humanCase(str = '') {
+  if (str.includes('$')) {
+    // kebabCase removes the $ but we need to keep it for chart names
+    return capitalize(str.replace(/[- ]+/g, ' ').trim());
+  }
+  return capitalize(
+    kebabCase(str)
+      .replace(/[- ]+/g, ' ')
+      .trim()
+  );
+}
 
 interface Entity {
   title: string;
@@ -10,6 +23,7 @@ interface Entity {
 }
 
 interface ContentType extends Entity {
+  description: string;
   schema: {
     data_type: string;
     display_name: string;
@@ -23,20 +37,7 @@ interface Result {
   object: () => any;
 }
 
-const transformResource = (result: Result): Resource => {
-  const resource: Entity = result.object();
-
-  return {
-    // fix this in commerce-plugin-tools
-    // @ts-ignore
-    id: resource.uid,
-    title: resource.title,
-    // might wanna make `handle` nullable in commerce-plugin-tools
-    handle: resource.slug,
-  };
-};
-
-registerCommercePlugin(
+registerDataPlugin(
   {
     name: 'Contentstack',
     id: pkg.name,
@@ -64,66 +65,101 @@ registerCommercePlugin(
     ctaText: `Connect your ContentStack stack`,
   },
   async settings => {
+    const isDev = settings.get('environment') === 'development';
     const apiKey = settings.get('apiKey')?.trim();
     const deliveryToken = settings.get('deliveryToken')?.trim();
     const environmentName = settings.get('environmentName')?.trim();
     const Stack = contentstack.Stack(apiKey, deliveryToken, environmentName);
 
-    const contentTypesResponse = await Stack.getContentTypes();
-    // `any` override is to fix https://github.com/contentstack/contentstack-javascript/pull/61
-    const contentTypes = (contentTypesResponse as any).content_types as ContentType[];
+    return {
+      getResourceTypes: async () => {
+        const contentTypesResponse = await Stack.getContentTypes();
+        // `any` override is to fix https://github.com/contentstack/contentstack-javascript/pull/61
+        const contentTypes = (contentTypesResponse as any).content_types as ContentType[];
+        const contentTypesWithReferences = contentTypes.map(contentType => {
+          const references = contentType.schema.filter(field => field.data_type === 'reference');
+          // https://www.contentstack.com/docs/developers/apis/content-delivery-api/#include-reference
+          const referenceSearchParams = references.map(field => `include[]=${field.uid}`).join('&');
 
-    const contentTypesWithReferences = contentTypes.map(contentType => {
-      const references = contentType.schema.filter(field => field.data_type === 'reference');
-      // https://www.contentstack.com/docs/developers/apis/content-delivery-api/#include-reference
-      const referenceSearchParams = references.map(field => `include[]=${field.uid}`).join('&');
+          return { ...contentType, referenceSearchParams };
+        });
 
-      return { ...contentType, referenceSearchParams };
-    });
+        const buildHeaders = () => {
+          const headers = {
+            api_key: apiKey,
+            access_token: deliveryToken,
+          };
 
-    const resourcesMaps = contentTypesWithReferences.map(
-      ({ title, uid: contentTypeUid, referenceSearchParams }): CommerceAPIOperations => ({
-        [title]: {
-          async findById(id: string) {
-            const response: Result = await Stack.ContentType(contentTypeUid)
-              .Entry(id)
-              .fetch();
-            return transformResource(response);
-          },
-          async search(search?: string) {
-            const searchQuery =
-              typeof search === 'string' && search.length > 0
-                ? Stack.ContentType(contentTypeUid)
-                    .Query()
-                    .search(search)
-                    .find()
-                : Stack.ContentType(contentTypeUid)
-                    .Query()
-                    .find();
+          return Object.entries(headers)
+            .map(([key, value]) => `headers[]=${key}:::${value}`)
+            .join('&');
+        };
 
-            const response: [Result[]] = await searchQuery;
+        // For other providers use their APIs for this ofc (and plugin settings for keys)
+        return contentTypesWithReferences.map(
+          (model): ResourceType => ({
+            name: humanCase(model.title),
+            id: model.uid,
+            description: model.description,
+            inputs: () => [{ name: 'limit', type: 'number', defaultValue: 10 }],
+            toUrl: options => {
+              const buildUrl = (url: string) => {
+                const endUrl = `https://cdn.contentstack.io/v3/content_types/${model.uid}/${url}`;
+                return `${
+                  isDev ? 'http://localhost:5000' : 'https://builder.io'
+                }/api/v1/proxy-api?url=${encodeURIComponent(endUrl)}&${buildHeaders()}`;
+              };
 
-            return response[0].map(transformResource);
-          },
+              const entry =
+                /* TODO: wrapper so this '_new' logic  not needed */
+                options.entry !== '_new' && options.entry;
 
-          getRequestObject(id: string) {
+              const envName = `environment=${environmentName}`;
+              if (entry) {
+                return buildUrl(`entries/${entry}?${envName}&${model.referenceSearchParams}`);
+              }
+
+              return buildUrl(`entries?${envName}`);
+            },
+            canPickEntries: true,
+          })
+        );
+      },
+      getEntriesByResourceType: async (
+        resourceTypeId: string,
+        options: { searchText?: string; resourceEntryId?: string } = {}
+      ) => {
+        const StackForContentType = Stack.ContentType(resourceTypeId);
+
+        const makeApiRequest = (options: { searchText?: string; resourceEntryId?: string }) => {
+          if (options.resourceEntryId) {
+            return StackForContentType.Entry(options.resourceEntryId)
+              .fetch()
+              .then(res => [res]);
+          } else if (options.searchText) {
+            return StackForContentType.Query()
+              .search(options.searchText)
+              .find()
+              .then(res => res[0]);
+          } else {
+            return StackForContentType.Query()
+              .find()
+              .then(res => res[0]);
+          }
+        };
+
+        const response: Result[] = await makeApiRequest(options);
+
+        return response.map(
+          (result): ResourceEntryType => {
+            const item = result.object();
             return {
-              '@type': '@builder.io/core:Request' as const,
-              request: {
-                url: `https://cdn.contentstack.io/v3/content_types/${contentTypeUid}/entries/${id}?environment=${environmentName}&${referenceSearchParams}`,
-              },
+              id: item.uid,
+              name: item.title,
             };
-          },
-        },
-      })
-    );
-
-    const resourcesOperations: CommerceAPIOperations = {};
-
-    resourcesMaps.forEach(resourceMap => {
-      Object.assign(resourcesOperations, resourceMap);
-    });
-
-    return resourcesOperations;
+          }
+        );
+      },
+    };
   }
 );
