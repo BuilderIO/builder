@@ -47,20 +47,21 @@ registerDataPlugin(
         name: 'apiKey',
         type: 'string',
         required: true,
-        helperText: 'Get your API Key from here: ...',
+        helperText:
+          'To get your API Key, go to https://app.contentstack.com, choose a Stack and click Settings -> Stack.',
       },
       {
         name: 'deliveryToken',
         type: 'string',
         required: true,
         helperText:
-          'https://www.contentstack.com/docs/developers/create-tokens/about-delivery-tokens/',
+          'https://www.contentstack.com/docs/developers/create-tokens/create-a-delivery-token/',
       },
       {
         name: 'environmentName',
         type: 'string',
         required: true,
-        helperText: 'Get your Environment Name from here: ...',
+        helperText: 'Enter the name of your Stack Environment that you want to read data from.',
       },
     ],
     ctaText: `Connect your ContentStack stack`,
