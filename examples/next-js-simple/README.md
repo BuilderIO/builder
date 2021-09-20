@@ -11,12 +11,10 @@ Before using this example, make sure you have the following:
 
 A basic understanding of the following is helpful too:
 
-- # What it means to [clone a GitHub repo](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)
-
-* The [command line](https://developer.mozilla.org/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Command_line)
-* JavaScript and [React](https://reactjs.org/).
-* [Next.js](https://nextjs.org/)
-* What it means to [clone a GitHub repo](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)
+- The [command line](https://developer.mozilla.org/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Command_line)
+- JavaScript and [React](https://reactjs.org/)
+- [Next.js](https://nextjs.org/)
+- What it means to [clone a GitHub repo](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)
 
 ## Overview
 
