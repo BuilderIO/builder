@@ -89,6 +89,7 @@ registerDataPlugin(
                   type: field.type === 'Symbol' ? 'text' : field.type.toLowerCase(),
                   name: field.id,
                   friendlyName: field.name,
+                  helperText: `Query by a specific "${field.name}"" on ${type.name}`,
                 })),
               } as any);
             }
