@@ -3,6 +3,7 @@ import pkg from '../package.json';
 import { registerDataPlugin, ResourceType, ResourceEntryType } from '@builder.io/data-plugin-tools';
 import kebabCase from 'lodash/capitalize';
 import capitalize from 'lodash/kebabCase';
+import appState from '@builder.io/app-context';
 
 function humanCase(str = '') {
   if (str.includes('$')) {
@@ -65,7 +66,6 @@ registerDataPlugin(
     ctaText: `Connect your ContentStack stack`,
   },
   async settings => {
-    const isDev = settings.get('environment') === 'development';
     const apiKey = settings.get('apiKey')?.trim();
     const deliveryToken = settings.get('deliveryToken')?.trim();
     const environmentName = settings.get('environmentName')?.trim();
@@ -105,9 +105,9 @@ registerDataPlugin(
             toUrl: options => {
               const buildUrl = (url: string) => {
                 const endUrl = `https://cdn.contentstack.io/v3/content_types/${model.uid}/${url}`;
-                return `${
-                  isDev ? 'http://localhost:5000' : 'https://builder.io'
-                }/api/v1/proxy-api?url=${encodeURIComponent(endUrl)}&${buildHeaders()}`;
+                return `${appState.config.apiRoot()}/api/v1/proxy-api?url=${encodeURIComponent(
+                  endUrl
+                )}&${buildHeaders()}`;
               };
 
               const entry =
