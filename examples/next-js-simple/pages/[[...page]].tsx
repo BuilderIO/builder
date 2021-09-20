@@ -7,16 +7,18 @@ import Head from 'next/head'
 const BUILDER_API_KEY = 'PUT YOUR API KEY HERE'
 builder.init(BUILDER_API_KEY)
 
-// tells you what paths are being built 
+// tells you what paths are being built
 export async function getStaticProps({
   params,
 }: GetStaticPropsContext<{ path: string[] }>) {
-  const page = await builder.get('page', {
-    userAttributes: {
-      urlPath: '/' + (params?.page?.join('/') || ''),
-    }
-  })
-  .toPromise() || null
+  const page =
+    (await builder
+      .get('page', {
+        userAttributes: {
+          urlPath: '/' + (params?.page?.join('/') || ''),
+        },
+      })
+      .toPromise()) || null
 
   return {
     props: {
@@ -33,7 +35,7 @@ export async function getStaticProps({
 export async function getStaticPaths() {
   const pages = await builder.getAll('page', {
     options: { noTargeting: true },
-    omit: "data.blocks"
+    omit: 'data.blocks',
   })
 
   return {
@@ -41,7 +43,6 @@ export async function getStaticPaths() {
     fallback: true,
   }
 }
-
 
 // React Component
 export default function Page({
@@ -69,7 +70,7 @@ export default function Page({
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      
+
       <BuilderComponent model="page" content={page} />
     </>
   )

@@ -192,11 +192,12 @@ export const CustomCode = withBuilder(CustomCodeComponent, {
     {
       name: 'scriptsClientOnly',
       type: 'boolean',
-      defaultValue: false,
-      // TODO: default true?
       helperText:
         'Only print and run scripts on the client. Important when scripts influence DOM that could be replaced when client loads',
       advanced: true,
+      ...(!isShopify && {
+        defaultValue: true,
+      }),
     },
   ],
 } as any);

@@ -1,5 +1,5 @@
 import { Builder } from '@builder.io/react';
-import { Input } from '@builder.io/sdk'
+import { Input } from '@builder.io/sdk';
 import appState from '@builder.io/app-context';
 import { ReactNode } from 'react';
 
@@ -60,6 +60,7 @@ export const registerDataPlugin = async (
     apiOperationsFromSettings: (
     settings: any
   ) => APIOperations | Promise<APIOperations>) => {
+
 
   const registerEditors = async () => {
     const savedSettings = appState.user.organization.value.settings.plugins.get(config.id);
