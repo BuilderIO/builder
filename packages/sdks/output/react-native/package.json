@@ -14,6 +14,7 @@
     "react-native": "^0.64.2"
   },
   "devDependencies": {
+    "@types/react-native-video": "^5.0.9",
     "react-native": "^0.64.2"
   }
 }

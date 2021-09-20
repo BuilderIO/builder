@@ -1,6 +1,6 @@
 # Builder.io example with Vue + Nuxt
 
-Example using Builder.io drag and drop page and section building for Nuxt
+Example using Builder.io drag and drop page and section building for Nuxt using our beta v2 Vue SDK
 
 See [\_page.vue](pages/_page.vue) for rendering usage, and [register-builder-components.js](scripts/register-builder-components.js) for registering custom components
 
