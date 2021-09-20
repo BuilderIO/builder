@@ -10,18 +10,13 @@ Before using this example, make sure you have the following:
 - [npm](https://www.npmjs.com/)
 
 A basic understanding of the following is helpful too:
-<<<<<<< HEAD
+
+- # What it means to [clone a GitHub repo](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)
+
 * The [command line](https://developer.mozilla.org/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Command_line)
-* JavaScript and [React](https://reactjs.org/)
+* JavaScript and [React](https://reactjs.org/).
 * [Next.js](https://nextjs.org/)
 * What it means to [clone a GitHub repo](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)
-=======
-
-- The [command line](https://developer.mozilla.org/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Command_line)
-- JavaScript and [React](https://reactjs.org/).
-- [Next.js](https://nextjs.org/)
-- What it means to [clone a GitHub repo](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)
->>>>>>> 0aa641bd (remove noisy warnings for react native)
 
 ## Overview
 
@@ -66,22 +61,24 @@ For this example, click **Add Builder to an existing site or app**.
 1. Click on the Organization icon on the bottom left.
 
 <<<<<<< HEAD
-    <figure>
-      <img src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F279657f9a38743e99a028173200d6f76" alt="Organization icon with two people standing together" width="600" style="display: block; margin: auto"/>
-    </figure>
 
-1. Hover over **Builder.io** and choose **+ New Space**.
-
-    <figure>
-      <img src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F32d67ac4249c40fda0486fb7f38ac71b" alt="Menu options for creating a new space" width="400" style="display: block; margin: auto"/>
-    </figure>
-=======
 <figure>
-  <img src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F279657f9a38743e99a028173200d6f76" alt="Space icon with two people standing together" width="600" style="display: block; margin: auto"/>
-  <figcaption style="text-align: center">The Organization icon features two figures and is on the left sidebar at the bottom.</figcaption>
+<img src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F279657f9a38743e99a028173200d6f76" alt="Organization icon with two people standing together" width="600" style="display: block; margin: auto"/>
 </figure>
 
-1. Hover over **Builder.io** and choose **+ New Space**.
+1.  Hover over **Builder.io** and choose **+ New Space**.
+
+        <figure>
+          <img src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F32d67ac4249c40fda0486fb7f38ac71b" alt="Menu options for creating a new space" width="400" style="display: block; margin: auto"/>
+        </figure>
+
+    =======
+    <figure>
+      <img src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F279657f9a38743e99a028173200d6f76" alt="Space icon with two people standing together" width="600" style="display: block; margin: auto"/>
+      <figcaption style="text-align: center">The Organization icon features two figures and is on the left sidebar at the bottom.</figcaption>
+    </figure>
+
+1.  Hover over **Builder.io** and choose **+ New Space**.
 
 <figure>
   <img src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F32d67ac4249c40fda0486fb7f38ac71b" alt="Menu options for creating a new space" width="400" style="display: block; margin: auto"/>
@@ -108,22 +105,24 @@ To connect your Builder.io space and your application, set the site URL and get 
 1. In Builder.io, click on the Account icon on the left sidenav.
 
 <<<<<<< HEAD
-    <figure>
-       <img src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fd26eb45cd52a4cada42413cd5c99419d" alt="Account icon in left sidenav" width="200" style="display: block; margin: auto"/>
-    </figure>
 
-1. Change the Site URL to `http://localhost:3000` and click to copy the Public API Key.
-
-    <figure>
-       <img src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Faec18bf8ccf543ab94c4230a7791c894" alt="Change the Site URL in account settings." width="400" style="display: block; margin: auto"/>
-    </figure>
-=======
 <figure>
-   <img src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fd26eb45cd52a4cada42413cd5c99419d" alt="Account icon in left sidenav" width="200" style="display: block; margin: auto"/>
-   <figcaption style="text-align: center">The Account icon takes you to important data about this space.</figcaption>
+<img src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fd26eb45cd52a4cada42413cd5c99419d" alt="Account icon in left sidenav" width="200" style="display: block; margin: auto"/>
 </figure>
 
-1. Change the Site URL to `http://localhost:3000` and click to copy the Public API Key.
+1.  Change the Site URL to `http://localhost:3000` and click to copy the Public API Key.
+
+        <figure>
+           <img src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Faec18bf8ccf543ab94c4230a7791c894" alt="Change the Site URL in account settings." width="400" style="display: block; margin: auto"/>
+        </figure>
+
+    =======
+    <figure>
+       <img src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fd26eb45cd52a4cada42413cd5c99419d" alt="Account icon in left sidenav" width="200" style="display: block; margin: auto"/>
+       <figcaption style="text-align: center">The Account icon takes you to important data about this space.</figcaption>
+    </figure>
+
+1.  Change the Site URL to `http://localhost:3000` and click to copy the Public API Key.
 
 <figure>
    <img src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Faec18bf8ccf543ab94c4230a7791c894" alt="Change the Site URL in account settings." width="400" style="display: block; margin: auto"/>
@@ -171,12 +170,13 @@ You can deploy anywhere you like, but for this project we recommend [Vercel](htt
 ## Next steps
 
 <<<<<<< HEAD
-* Learn how to [use your react components in our visual editor](https://www.builder.io/c/docs/custom-react-components)
-* For more information on previewing your applications, see [Editing and previewing directly on your site](https://www.builder.io/c/docs/guides/preview-url).
-* See [Getting started with the visual editor](https://www.builder.io/c/docs/guides/page-building) for an introduction to editing your pages without having to code. 
-* Check out [Builder best practices](https://www.builder.io/c/docs/best-practices) for guidance on how to approach site development with Builder.
-=======
+
+- Learn how to [use your react components in our visual editor](https://www.builder.io/c/docs/custom-react-components)
 - For more information on previewing your applications, see [Editing and previewing directly on your site](https://www.builder.io/c/docs/guides/preview-url).
 - See [Getting started with the visual editor](https://www.builder.io/c/docs/guides/page-building) for an introduction to editing your pages without having to code.
-- Check out [Builder best practices](https://www.builder.io/c/docs/best-practices) for guidance on how to approach site development with Builder.
->>>>>>> 0aa641bd (remove noisy warnings for react native)
+- # Check out [Builder best practices](https://www.builder.io/c/docs/best-practices) for guidance on how to approach site development with Builder.
+
+* For more information on previewing your applications, see [Editing and previewing directly on your site](https://www.builder.io/c/docs/guides/preview-url).
+* See [Getting started with the visual editor](https://www.builder.io/c/docs/guides/page-building) for an introduction to editing your pages without having to code.
+* Check out [Builder best practices](https://www.builder.io/c/docs/best-practices) for guidance on how to approach site development with Builder.
+  > > > > > > > 0aa641bd (remove noisy warnings for react native)
