@@ -128,7 +128,7 @@ registerDataPlugin(
         const displayField = await client.getContentType(id).then(type => type.displayField);
         const entries = await client
           .getEntries({
-            content_type: id.toLowerCase(),
+            content_type: id,
             ...(options?.searchText && { query: options?.searchText }),
           })
           .then(res => res.items);
