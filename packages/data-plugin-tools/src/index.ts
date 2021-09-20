@@ -1,5 +1,5 @@
 import { Builder } from '@builder.io/react';
-import { Input } from '@builder.io/sdk'
+import { Input } from '@builder.io/sdk';
 import appState from '@builder.io/app-context';
 import { ReactNode } from 'react';
 
@@ -54,10 +54,7 @@ export type GetEntriesByResourceType = (
   options?: { searchText?: string; resourceEntryId?: string }
 ) => Promise<ResourceEntryType[]>;
 
-export const registerDataPlugin = async (
-  config: DataPluginOptions,
-) => {
-
+export const registerDataPlugin = async (config: DataPluginOptions) => {
   const registerEditors = async () => {
     appState.registerDataPlugin(config);
   };

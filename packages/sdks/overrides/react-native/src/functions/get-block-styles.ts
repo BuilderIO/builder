@@ -4,15 +4,19 @@ import { BuilderBlock } from '../types/builder-block';
 const propertiesThatMustBeNumber = new Set(['lineHeight']);
 const displayValues = new Set(['flex', 'none']);
 
+const SHOW_WARNINGS = false;
+
 function validateReactNativeStyles(styles: Record<string, string | number>) {
   // Style properties like `"20px"` need to be numbers like `20` for react native
   for (const key in styles) {
     const propertyValue = styles[key];
 
     if (key === 'display' && !displayValues.has(propertyValue as string)) {
-      console.warn(
-        `Style value for key "display" must be "flex" or "none" but had ${propertyValue}`
-      );
+      if (SHOW_WARNINGS) {
+        console.warn(
+          `Style value for key "display" must be "flex" or "none" but had ${propertyValue}`
+        );
+      }
       delete styles[key];
     }
 
@@ -23,7 +27,9 @@ function validateReactNativeStyles(styles: Record<string, string | number>) {
       }
     }
     if (propertiesThatMustBeNumber.has(key) && typeof styles[key] !== 'number') {
-      console.warn(`Style key ${key} must be a number, but had value \`${styles[key]}\``);
+      if (SHOW_WARNINGS) {
+        console.warn(`Style key ${key} must be a number, but had value \`${styles[key]}\``);
+      }
       delete styles[key];
     }
   }
