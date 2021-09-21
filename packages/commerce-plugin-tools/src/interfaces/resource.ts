@@ -5,8 +5,8 @@ export interface Image {
 }
 
 export interface Resource {
-  id: number;
+  id: string | number;
   title: string;
-  handle: string;
+  handle?: string;
   image?: Image;
 }
