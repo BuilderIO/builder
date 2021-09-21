@@ -8,8 +8,10 @@ import {
 } from '@builder.io/data-plugin-tools';
 import kebabCase from 'lodash/capitalize';
 import capitalize from 'lodash/kebabCase';
+import mapValues from 'lodash/mapValues';
 import appState from '@builder.io/app-context';
 import qs from 'qs';
+import { Input } from '@builder.io/sdk';
 
 function humanCase(str = '') {
   if (str.includes('$')) {
@@ -85,7 +87,7 @@ registerDataPlugin(
         const contentTypesResponse = await Stack.getContentTypes();
         // `any` override is to fix https://github.com/contentstack/contentstack-javascript/pull/61
         const contentTypes = (contentTypesResponse as any).content_types as ContentType[];
-        const contentTypesWithReferences = contentTypes.map(contentType => {
+        const augmentedContentTypes = contentTypes.map(contentType => {
           const references = contentType.schema.filter(field => field.data_type === 'reference');
           // https://www.contentstack.com/docs/developers/apis/content-delivery-api/#include-reference
           const referenceSearchParams = references.map(field => field.uid);
@@ -104,12 +106,31 @@ registerDataPlugin(
             .join('&');
         };
 
-        return contentTypesWithReferences.map(
+        return augmentedContentTypes.map(
           (model): ResourceType => ({
             name: humanCase(model.title),
             id: model.uid,
             description: model.description,
-            inputs: () => [{ name: 'limit', type: 'number', defaultValue: 10 }],
+            inputs: () => {
+              return [
+                { name: 'limit', type: 'number', defaultValue: 10 },
+                {
+                  name: 'fields',
+                  // comment
+                  friendlyName: `${model.title} fields`,
+                  subFields: model.schema.map(
+                    (field): Input => {
+                      const isReference = field.data_type === 'reference';
+                      return {
+                        name: field.uid,
+                        friendlyName: `${field.display_name}${isReference ? ' ID' : ''}`,
+                        type: isReference ? 'Text' : field.data_type,
+                      };
+                    }
+                  ),
+                },
+              ];
+            },
             toUrl: options => {
               const buildUrl = (url: string) => {
                 const endUrl = `https://cdn.contentstack.io/v3/content_types/${model.uid}/${url}`;
@@ -118,9 +139,22 @@ registerDataPlugin(
                 )}&${buildHeaders()}`;
               };
 
+              /** https://www.contentstack.com/docs/developers/apis/content-delivery-api/#search-by-regex */
+              const transformFieldQuery = (query: string) => {
+                return { $regex: `.*${query}.*`, $options: 'i' };
+              };
+
+              const baseQuery = {
+                environment: environmentName,
+                ...(options.limit ? { limit: options.limit } : {}),
+                ...(options.fields
+                  ? { query: mapValues(options.fields, transformFieldQuery) }
+                  : {}),
+              };
+
               if (options.entry) {
                 const query = qs.stringify(
-                  { environment: environmentName, include: model.searchParams.include },
+                  { ...baseQuery, include: model.searchParams.include },
                   {
                     allowDots: true,
                     // this avoids encoding `include[0]` into `include%5B1%5D`, which contentstack does not
@@ -130,9 +164,7 @@ registerDataPlugin(
                 );
                 return buildUrl(`entries/${options.entry}?${query}`);
               } else {
-                const query = qs.stringify({
-                  environment: environmentName,
-                });
+                const query = qs.stringify(baseQuery);
                 return buildUrl(`entries?${query}`);
               }
             },
