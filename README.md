@@ -99,7 +99,7 @@ import { BuilderComponent, builder } from '@builder.io/react'
 &nbsp; 
 builder.init('YOUR_KEY')
 &nbsp; 
-export default let BuilderPage = () => {
+export let BuilderPage = () => {
 &nbsp;&nbsp;const [pageJson, setPage] = useState(null)
 &nbsp;
 &nbsp;&nbsp;useEffect(() => { 
@@ -423,7 +423,7 @@ import { BuilderComponent, builder } from '@builder.io/react'
 
 builder.init('YOUR_KEY')
 
-export default let CatchAllPage = () => {
+export let CatchAllPage = () => {
   const [notFound, setNotFound] = useState()
 
   return notFound ? <NotFound /> : <BuilderComponent
