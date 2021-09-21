@@ -83,7 +83,7 @@ import { Builder } from '@builder.io/react'
 // Register our heading component for use in 
 // the visual editor
 const Heading = props => (
-  &lt;h1 className={style}&gt;{props.title}&lt;/h1&gt;
+  &lt;h1 className="my-heading"&gt;{props.title}&lt;/h1&gt;
 )
 &nbsp;
 Builder.registerComponent(Heading, { 
