@@ -9,6 +9,7 @@ import {
 import kebabCase from 'lodash/capitalize';
 import capitalize from 'lodash/kebabCase';
 import appState from '@builder.io/app-context';
+import qs from 'qs';
 
 function humanCase(str = '') {
   if (str.includes('$')) {
@@ -87,9 +88,9 @@ registerDataPlugin(
         const contentTypesWithReferences = contentTypes.map(contentType => {
           const references = contentType.schema.filter(field => field.data_type === 'reference');
           // https://www.contentstack.com/docs/developers/apis/content-delivery-api/#include-reference
-          const referenceSearchParams = references.map(field => `include[]=${field.uid}`).join('&');
+          const referenceSearchParams = references.map(field => field.uid);
 
-          return { ...contentType, referenceSearchParams };
+          return { ...contentType, searchParams: { include: referenceSearchParams } };
         });
 
         const buildHeaders = () => {
@@ -117,14 +118,23 @@ registerDataPlugin(
                 )}&${buildHeaders()}`;
               };
 
-              const envName = `environment=${environmentName}`;
               if (options.entry) {
-                return buildUrl(
-                  `entries/${options.entry}?${envName}&${model.referenceSearchParams}`
+                const query = qs.stringify(
+                  { environment: environmentName, include: model.searchParams.include },
+                  {
+                    allowDots: true,
+                    // this avoids encoding `include[0]` into `include%5B1%5D`, which contentstack does not
+                    // handle properly.
+                    encodeValuesOnly: true,
+                  }
                 );
+                return buildUrl(`entries/${options.entry}?${query}`);
+              } else {
+                const query = qs.stringify({
+                  environment: environmentName,
+                });
+                return buildUrl(`entries?${query}`);
               }
-
-              return buildUrl(`entries?${envName}`);
             },
             canPickEntries: true,
           })
