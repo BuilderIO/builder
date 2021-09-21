@@ -47,6 +47,8 @@ registerDataPlugin(
   {
     name: 'Contentstack',
     id: pkg.name,
+    icon:
+      'https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F490404fa90f74ec8b6ea44c345e7ba64',
     settings: [
       {
         name: 'apiKey',
