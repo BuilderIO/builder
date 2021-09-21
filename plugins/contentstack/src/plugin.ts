@@ -117,13 +117,11 @@ registerDataPlugin(
                 )}&${buildHeaders()}`;
               };
 
-              const entry =
-                /* TODO: wrapper so this '_new' logic  not needed */
-                options.entry !== '_new' && options.entry;
-
               const envName = `environment=${environmentName}`;
-              if (entry) {
-                return buildUrl(`entries/${entry}?${envName}&${model.referenceSearchParams}`);
+              if (options.entry) {
+                return buildUrl(
+                  `entries/${options.entry}?${envName}&${model.referenceSearchParams}`
+                );
               }
 
               return buildUrl(`entries?${envName}`);
