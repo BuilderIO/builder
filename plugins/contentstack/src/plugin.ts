@@ -10,7 +10,6 @@ import kebabCase from 'lodash/capitalize';
 import capitalize from 'lodash/kebabCase';
 import mapValues from 'lodash/mapValues';
 import appState from '@builder.io/app-context';
-import qs from 'qs';
 import { Input } from '@builder.io/sdk';
 
 function humanCase(str = '') {
@@ -79,7 +78,7 @@ registerDataPlugin(
   async settings => {
     const apiKey = settings.get('apiKey')?.trim();
     const deliveryToken = settings.get('deliveryToken')?.trim();
-    const environmentName = settings.get('environmentName')?.trim();
+    const environmentName: string = settings.get('environmentName')?.trim();
     const Stack = contentstack.Stack(apiKey, deliveryToken, environmentName);
 
     const apiOperations: APIOperations = {
@@ -112,24 +111,62 @@ registerDataPlugin(
             id: model.uid,
             description: model.description,
             inputs: () => {
-              return [
+              const subFields = model.schema
+                // searching by ref UID seems pointless, so we exclude that for now.
+                // In the future, we could add searching within references:
+                // https://www.contentstack.com/docs/developers/apis/content-delivery-api/#reference-search-equals
+                .filter(field => field.data_type !== 'reference')
+                .map(
+                  (field): Input => ({
+                    name: field.uid,
+                    friendlyName: field.display_name,
+                    type: field.data_type,
+                  })
+                );
+
+              const inputs: Input[] = [
                 { name: 'limit', type: 'number', defaultValue: 10 },
                 {
+                  name: 'orderBy',
+                  friendlyName: 'Order By',
+                  type: 'object',
+                  subFields: [
+                    {
+                      name: 'value',
+                      friendlyName: 'Order By',
+                      type: 'string',
+                      enum: subFields.map(field => ({
+                        value: field.name,
+                        label: field.friendlyName ?? '',
+                      })),
+                    },
+                    {
+                      name: 'order',
+                      friendlyName: 'order',
+                      type: 'string',
+                      enum: [
+                        {
+                          value: 'asc',
+                          label: 'ascending',
+                        },
+                        {
+                          value: 'desc',
+                          label: 'descending',
+                        },
+                      ],
+                      defaultValue: 'asc',
+                    },
+                  ],
+                },
+                {
                   name: 'fields',
-                  // comment
-                  friendlyName: `${model.title} fields`,
-                  subFields: model.schema.map(
-                    (field): Input => {
-                      const isReference = field.data_type === 'reference';
-                      return {
-                        name: field.uid,
-                        friendlyName: `${field.display_name}${isReference ? ' ID' : ''}`,
-                        type: isReference ? 'Text' : field.data_type,
-                      };
-                    }
-                  ),
+                  type: 'object',
+                  advanced: true,
+                  friendlyName: `Search by ${model.title} fields`,
+                  subFields,
                 },
               ];
+              return inputs;
             },
             toUrl: options => {
               const buildUrl = (url: string) => {
@@ -140,31 +177,28 @@ registerDataPlugin(
               };
 
               /** https://www.contentstack.com/docs/developers/apis/content-delivery-api/#search-by-regex */
-              const transformFieldQuery = (query: string) => {
-                return { $regex: `.*${query}.*`, $options: 'i' };
-              };
+              const transformFieldQuery = (query: string) => ({
+                $regex: `.*${query}.*`,
+                $options: 'i',
+              });
 
-              const baseQuery = {
-                environment: environmentName,
-                ...(options.limit ? { limit: options.limit } : {}),
+              const baseQuery = [
+                ['environment', environmentName],
+                ...(options.limit ? [['limit', options.limit]] : []),
                 ...(options.fields
-                  ? { query: mapValues(options.fields, transformFieldQuery) }
-                  : {}),
-              };
+                  ? [['query', JSON.stringify(mapValues(options.fields, transformFieldQuery))]]
+                  : []),
+                ...(options.orderBy.value ? [[options.orderBy.order, options.orderBy.value]] : []),
+              ];
 
               if (options.entry) {
-                const query = qs.stringify(
-                  { ...baseQuery, include: model.searchParams.include },
-                  {
-                    allowDots: true,
-                    // this avoids encoding `include[0]` into `include%5B1%5D`, which contentstack does not
-                    // handle properly.
-                    encodeValuesOnly: true,
-                  }
-                );
+                const query = new URLSearchParams([
+                  ...baseQuery,
+                  ['include[]', model.searchParams.include],
+                ]);
                 return buildUrl(`entries/${options.entry}?${query}`);
               } else {
-                const query = qs.stringify(baseQuery);
+                const query = new URLSearchParams(baseQuery);
                 return buildUrl(`entries?${query}`);
               }
             },
