@@ -8,7 +8,9 @@ import {
 } from '@builder.io/data-plugin-tools';
 import kebabCase from 'lodash/capitalize';
 import capitalize from 'lodash/kebabCase';
+import mapValues from 'lodash/mapValues';
 import appState from '@builder.io/app-context';
+import { Input } from '@builder.io/sdk';
 
 function humanCase(str = '') {
   if (str.includes('$')) {
@@ -43,6 +45,65 @@ interface Result {
   object: () => any;
 }
 
+const buildInputs = (model: ContentType) => (): Input[] => {
+  const subFields = model.schema
+    // searching by ref UID seems pointless, so we exclude that for now.
+    // In the future, we could add searching within references:
+    // https://www.contentstack.com/docs/developers/apis/content-delivery-api/#reference-search-equals
+    .filter(field => field.data_type !== 'reference')
+    .map(
+      (field): Input => ({
+        name: field.uid,
+        friendlyName: field.display_name,
+        type: field.data_type,
+      })
+    );
+
+  const inputs: Input[] = [
+    { name: 'limit', type: 'number', defaultValue: 10 },
+    {
+      name: 'orderBy',
+      friendlyName: 'Order By',
+      type: 'object',
+      subFields: [
+        {
+          name: 'value',
+          friendlyName: 'Order By',
+          type: 'string',
+          enum: subFields.map(field => ({
+            value: field.name,
+            label: field.friendlyName ?? '',
+          })),
+        },
+        {
+          name: 'order',
+          friendlyName: 'order',
+          type: 'string',
+          enum: [
+            {
+              value: 'asc',
+              label: 'ascending',
+            },
+            {
+              value: 'desc',
+              label: 'descending',
+            },
+          ],
+          defaultValue: 'asc',
+        },
+      ],
+    },
+    {
+      name: 'fields',
+      type: 'object',
+      advanced: true,
+      friendlyName: `Search by ${model.title} fields`,
+      subFields,
+    },
+  ];
+  return inputs;
+};
+
 registerDataPlugin(
   {
     name: 'Contentstack',
@@ -76,7 +137,7 @@ registerDataPlugin(
   async settings => {
     const apiKey = settings.get('apiKey')?.trim();
     const deliveryToken = settings.get('deliveryToken')?.trim();
-    const environmentName = settings.get('environmentName')?.trim();
+    const environmentName: string = settings.get('environmentName')?.trim();
     const Stack = contentstack.Stack(apiKey, deliveryToken, environmentName);
 
     const apiOperations: APIOperations = {
@@ -84,12 +145,12 @@ registerDataPlugin(
         const contentTypesResponse = await Stack.getContentTypes();
         // `any` override is to fix https://github.com/contentstack/contentstack-javascript/pull/61
         const contentTypes = (contentTypesResponse as any).content_types as ContentType[];
-        const contentTypesWithReferences = contentTypes.map(contentType => {
+        const augmentedContentTypes = contentTypes.map(contentType => {
           const references = contentType.schema.filter(field => field.data_type === 'reference');
           // https://www.contentstack.com/docs/developers/apis/content-delivery-api/#include-reference
-          const referenceSearchParams = references.map(field => `include[]=${field.uid}`).join('&');
+          const referenceSearchParams = references.map(field => field.uid);
 
-          return { ...contentType, referenceSearchParams };
+          return { ...contentType, searchParams: { include: referenceSearchParams } };
         });
 
         const buildHeaders = () => {
@@ -103,12 +164,12 @@ registerDataPlugin(
             .join('&');
         };
 
-        return contentTypesWithReferences.map(
+        return augmentedContentTypes.map(
           (model): ResourceType => ({
             name: humanCase(model.title),
             id: model.uid,
             description: model.description,
-            inputs: () => [{ name: 'limit', type: 'number', defaultValue: 10 }],
+            inputs: buildInputs(model),
             toUrl: options => {
               const buildUrl = (url: string) => {
                 const endUrl = `https://cdn.contentstack.io/v3/content_types/${model.uid}/${url}`;
@@ -117,16 +178,33 @@ registerDataPlugin(
                 )}&${buildHeaders()}`;
               };
 
-              const entry =
-                /* TODO: wrapper so this '_new' logic  not needed */
-                options.entry !== '_new' && options.entry;
+              /** https://www.contentstack.com/docs/developers/apis/content-delivery-api/#search-by-regex */
+              const transformFieldQuery = (query: string) => ({
+                $regex: `.*${query}.*`,
+                $options: 'i',
+              });
 
-              const envName = `environment=${environmentName}`;
-              if (entry) {
-                return buildUrl(`entries/${entry}?${envName}&${model.referenceSearchParams}`);
+              const baseQuery = [
+                ['environment', environmentName],
+                ...(options.limit ? [['limit', options.limit]] : []),
+                ...(options.fields
+                  ? [['query', JSON.stringify(mapValues(options.fields, transformFieldQuery))]]
+                  : []),
+                ...(options.orderBy?.value && options.orderBy?.order
+                  ? [[options.orderBy.order, options.orderBy.value]]
+                  : []),
+              ];
+
+              if (options.entry) {
+                const query = new URLSearchParams([
+                  ...baseQuery,
+                  ['include[]', model.searchParams.include],
+                ]);
+                return buildUrl(`entries/${options.entry}?${query}`);
+              } else {
+                const query = new URLSearchParams(baseQuery);
+                return buildUrl(`entries?${query}`);
               }
-
-              return buildUrl(`entries?${envName}`);
             },
             canPickEntries: true,
           })
