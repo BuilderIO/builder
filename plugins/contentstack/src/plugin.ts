@@ -186,7 +186,9 @@ registerDataPlugin(
                 ...(options.fields
                   ? [['query', JSON.stringify(mapValues(options.fields, transformFieldQuery))]]
                   : []),
-                ...(options.orderBy.value ? [[options.orderBy.order, options.orderBy.value]] : []),
+                ...(options.orderBy?.value && options.orderBy?.order
+                  ? [[options.orderBy.order, options.orderBy.value]]
+                  : []),
               ];
 
               if (options.entry) {
