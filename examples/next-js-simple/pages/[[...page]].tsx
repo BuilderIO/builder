@@ -10,7 +10,7 @@ builder.init(BUILDER_API_KEY)
 // tells you what paths are being built
 export async function getStaticProps({
   params,
-}: GetStaticPropsContext<{ path: string[] }>) {
+}: GetStaticPropsContext<{ page: string[] }>) {
   const page =
     (await builder
       .get('page', {
