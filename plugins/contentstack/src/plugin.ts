@@ -45,6 +45,65 @@ interface Result {
   object: () => any;
 }
 
+const buildInputs = (model: ContentType) => (): Input[] => {
+  const subFields = model.schema
+    // searching by ref UID seems pointless, so we exclude that for now.
+    // In the future, we could add searching within references:
+    // https://www.contentstack.com/docs/developers/apis/content-delivery-api/#reference-search-equals
+    .filter(field => field.data_type !== 'reference')
+    .map(
+      (field): Input => ({
+        name: field.uid,
+        friendlyName: field.display_name,
+        type: field.data_type,
+      })
+    );
+
+  const inputs: Input[] = [
+    { name: 'limit', type: 'number', defaultValue: 10 },
+    {
+      name: 'orderBy',
+      friendlyName: 'Order By',
+      type: 'object',
+      subFields: [
+        {
+          name: 'value',
+          friendlyName: 'Order By',
+          type: 'string',
+          enum: subFields.map(field => ({
+            value: field.name,
+            label: field.friendlyName ?? '',
+          })),
+        },
+        {
+          name: 'order',
+          friendlyName: 'order',
+          type: 'string',
+          enum: [
+            {
+              value: 'asc',
+              label: 'ascending',
+            },
+            {
+              value: 'desc',
+              label: 'descending',
+            },
+          ],
+          defaultValue: 'asc',
+        },
+      ],
+    },
+    {
+      name: 'fields',
+      type: 'object',
+      advanced: true,
+      friendlyName: `Search by ${model.title} fields`,
+      subFields,
+    },
+  ];
+  return inputs;
+};
+
 registerDataPlugin(
   {
     name: 'Contentstack',
@@ -110,64 +169,7 @@ registerDataPlugin(
             name: humanCase(model.title),
             id: model.uid,
             description: model.description,
-            inputs: () => {
-              const subFields = model.schema
-                // searching by ref UID seems pointless, so we exclude that for now.
-                // In the future, we could add searching within references:
-                // https://www.contentstack.com/docs/developers/apis/content-delivery-api/#reference-search-equals
-                .filter(field => field.data_type !== 'reference')
-                .map(
-                  (field): Input => ({
-                    name: field.uid,
-                    friendlyName: field.display_name,
-                    type: field.data_type,
-                  })
-                );
-
-              const inputs: Input[] = [
-                { name: 'limit', type: 'number', defaultValue: 10 },
-                {
-                  name: 'orderBy',
-                  friendlyName: 'Order By',
-                  type: 'object',
-                  subFields: [
-                    {
-                      name: 'value',
-                      friendlyName: 'Order By',
-                      type: 'string',
-                      enum: subFields.map(field => ({
-                        value: field.name,
-                        label: field.friendlyName ?? '',
-                      })),
-                    },
-                    {
-                      name: 'order',
-                      friendlyName: 'order',
-                      type: 'string',
-                      enum: [
-                        {
-                          value: 'asc',
-                          label: 'ascending',
-                        },
-                        {
-                          value: 'desc',
-                          label: 'descending',
-                        },
-                      ],
-                      defaultValue: 'asc',
-                    },
-                  ],
-                },
-                {
-                  name: 'fields',
-                  type: 'object',
-                  advanced: true,
-                  friendlyName: `Search by ${model.title} fields`,
-                  subFields,
-                },
-              ];
-              return inputs;
-            },
+            inputs: buildInputs(model),
             toUrl: options => {
               const buildUrl = (url: string) => {
                 const endUrl = `https://cdn.contentstack.io/v3/content_types/${model.uid}/${url}`;
