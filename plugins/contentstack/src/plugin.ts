@@ -70,10 +70,20 @@ const buildInputs = (model: ContentType) => (): Input[] => {
           name: 'value',
           friendlyName: 'Order By',
           type: 'string',
-          enum: subFields.map(field => ({
-            value: field.name,
-            label: field.friendlyName ?? '',
-          })),
+          enum: [
+            {
+              value: 'created_at',
+              label: 'Created At',
+            },
+            {
+              value: 'updated_at',
+              label: 'Updated At',
+            },
+            ...subFields.map(field => ({
+              value: field.name,
+              label: field.friendlyName ?? '',
+            })),
+          ],
         },
         {
           name: 'order',
