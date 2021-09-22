@@ -94,10 +94,16 @@ registerDataPlugin(
           return { ...contentType, searchParams: { include: referenceSearchParams } };
         });
 
-        const headersParams = Object.entries({
-          api_key: apiKey,
-          access_token: deliveryToken,
-        }).map(([key, value]) => [`headers.${key}`, value] as [string, string]);
+        const buildHeaders = () => {
+          const headers = {
+            api_key: apiKey,
+            access_token: deliveryToken,
+          };
+
+          return Object.entries(headers)
+            .map(([key, value]) => `headers.${key}=${value}`)
+            .join('&');
+        };
 
         return augmentedContentTypes.map(
           (model): ResourceType => ({
@@ -165,13 +171,9 @@ registerDataPlugin(
             toUrl: options => {
               const buildUrl = (url: string) => {
                 const endUrl = `https://cdn.contentstack.io/v3/content_types/${model.uid}/${url}`;
-
-                const search = new URLSearchParams([
-                  ['url', encodeURIComponent(endUrl)],
-                  ...headersParams,
-                ]);
-
-                return `${appState.config.apiRoot()}/api/v1/proxy-api?${search}`;
+                return `${appState.config.apiRoot()}/api/v1/proxy-api?url=${encodeURIComponent(
+                  endUrl
+                )}&${buildHeaders()}`;
               };
 
               /** https://www.contentstack.com/docs/developers/apis/content-delivery-api/#search-by-regex */
