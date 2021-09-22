@@ -37,8 +37,6 @@ export interface DataPluginOptions {
   ctaText: string; // what to display on the button to save settings, e.g `Connect your store`
   onSave?: (actions: OnSaveActions) => Promise<void>; // you can run any action post save here, for example importing ${capitalize(resourceName)} data, registering webhooks
   icon?: string;
-  getResourceTypes: GetResourceTypes;
-  getEntriesByResourceType?: GetEntriesByResourceType;
   noResourceTypesFoundMessage?: string | ReactNode;
 }
 
@@ -54,9 +52,23 @@ export type GetEntriesByResourceType = (
   options?: { searchText?: string; resourceEntryId?: string }
 ) => Promise<ResourceEntryType[]>;
 
-export const registerDataPlugin = async (config: DataPluginOptions) => {
+export type APIOperations =  {  getResourceTypes: GetResourceTypes;
+  getEntriesByResourceType?: GetEntriesByResourceType }
+
+export const registerDataPlugin = async (
+  config: DataPluginOptions,
+    apiOperationsFromSettings: (
+    settings: any
+  ) => APIOperations | Promise<APIOperations>) => {
+
+
   const registerEditors = async () => {
-    appState.registerDataPlugin(config);
+    const savedSettings = appState.user.organization.value.settings.plugins.get(config.id);
+    const allSettings =  {
+      ...config,
+      ...await apiOperationsFromSettings(savedSettings)
+    }
+    appState.registerDataPlugin(allSettings);
   };
 
   const onSave = config.onSave;
