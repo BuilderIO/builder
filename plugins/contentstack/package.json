@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/plugin-contentstack",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "",
   "keywords": [],
   "main": "dist/plugin.umd.js",
