@@ -27,7 +27,7 @@ registerCommercePlugin(
 
     const baseUrl = (url: string) => {
       const endUrl = `https://api.bigcommerce.com/stores/${storeHash}/v3/catalog/${url}`;
-      return `https://builder.io/api/v1/proxy-api?url=${encodeURIComponent(endUrl)}`;
+      return `https://cdn.builder.io/api/v1/proxy-api?url=${encodeURIComponent(endUrl)}`;
     };
 
     const headers = {
@@ -56,24 +56,12 @@ registerCommercePlugin(
             basicCache.get(key) ||
             (await fetch(baseUrl(`products/${id}?include=primary_image`), { headers })
               .then(res => res.json())
+              .then(res => res.data)
               .then(transformResource));
           basicCache.set(key, product);
           return product;
         },
 
-        async findByHandle(handle: string) {
-          const queryParams = '?limit=100&include=primary_image';
-          const response: any = await fetch(
-            baseUrl(`products${queryParams}`),
-            {
-              headers,
-            }
-          ).then(res => {
-            return res.json();
-          });
-          const products = response.data.map(transformResource);
-          return products.find((each: any) =>  each.handle === handle);
-        },
         async search(search: string) {
           let queryParams = '?limit=100&include=primary_image';
           queryParams += (search ? `&keyword=${search}` : '');
@@ -104,30 +92,16 @@ registerCommercePlugin(
       category: {
         async findById(id: string) {
           const key = `${id}categoryById`;
-          // https://{accountName}.{environment}.com.br/api/catalog/pvt/category/categoryId
           const category =
             basicCache.get(key) ||
             (await fetch(baseUrl(`categories/${id}`), { headers })
               .then(res => res.json())
+              .then(res => res.data)
               .then(transformResource));
           basicCache.set(key, category);
           return category;
         },
 
-        async findByHandle(handle: string) {
-          const queryParams = `?limit=100`;
-          const response: any = await fetch(
-            baseUrl(`categories${queryParams}`),
-            {
-              headers,
-            }
-          ).then(res => {
-            return res.json();
-          });
-          return response.data
-            .map(transformResource)
-            .find((each: any) => each.handle === handle);
-        },
         async search(search: string) {
           let queryParams = '?limit=100';
           queryParams += search ? `&keyword=${search}` : '';
