@@ -8,7 +8,7 @@ import {
 } from '@builder.io/data-plugin-tools';
 import kebabCase from 'lodash/capitalize';
 import capitalize from 'lodash/kebabCase';
-import mapValues from 'lodash/mapValues';
+import fromPairs from 'lodash/fromPairs';
 import appState from '@builder.io/app-context';
 import { Input } from '@builder.io/sdk';
 
@@ -45,17 +45,35 @@ interface Result {
   object: () => any;
 }
 
+const filterableDataTypes = ['text', 'boolean', 'number'];
+
 const buildInputs = (model: ContentType) => (): Input[] => {
   const subFields = model.schema
-    // searching by ref UID seems pointless, so we exclude that for now.
-    // In the future, we could add searching within references:
-    // https://www.contentstack.com/docs/developers/apis/content-delivery-api/#reference-search-equals
-    .filter(field => field.data_type !== 'reference')
+    .filter(field => filterableDataTypes.includes(field.data_type))
     .map(
       (field): Input => ({
         name: field.uid,
         friendlyName: field.display_name,
-        type: field.data_type,
+        ...(field.data_type === 'boolean'
+          ? {
+              type: 'string',
+              defaultValue: null,
+              enum: [
+                {
+                  label: 'True',
+                  value: 'true',
+                },
+                {
+                  label: 'False',
+                  value: 'false',
+                },
+                {
+                  label: 'ALL',
+                  value: null,
+                },
+              ],
+            }
+          : { type: field.data_type }),
       })
     );
 
@@ -71,6 +89,10 @@ const buildInputs = (model: ContentType) => (): Input[] => {
           friendlyName: 'Order By',
           type: 'string',
           enum: [
+            {
+              value: null,
+              label: 'DEFAULT',
+            },
             {
               value: 'created_at',
               label: 'Created At',
@@ -112,6 +134,36 @@ const buildInputs = (model: ContentType) => (): Input[] => {
     },
   ];
   return inputs;
+};
+
+/** https://www.contentstack.com/docs/developers/apis/content-delivery-api/#search-by-regex */
+const transformFieldQuery = (query: string | number) => ({
+  $regex: `.*${query}.*`,
+  $options: 'i',
+});
+
+const transformFieldsFilters = (fields: any) => {
+  if (fields) {
+    const nonEmptyFieldsQueries = Object.keys(fields).filter(fieldKey => {
+      const query = fields[fieldKey];
+      return (
+        // this excludes the  ALL boolean value
+        query !== null ||
+        // this excludes empty strings
+        (typeof query === 'string' && query.length > 0) ||
+        // this excludes `NaN` numbers`
+        Number.isInteger(query)
+      );
+    });
+
+    if (nonEmptyFieldsQueries.length > 0) {
+      return fromPairs(nonEmptyFieldsQueries.map(key => [key, transformFieldQuery(fields[key])]));
+    } else {
+      return undefined;
+    }
+  } else {
+    return undefined;
+  }
 };
 
 registerDataPlugin(
@@ -188,18 +240,12 @@ registerDataPlugin(
                 )}&${buildHeaders()}`;
               };
 
-              /** https://www.contentstack.com/docs/developers/apis/content-delivery-api/#search-by-regex */
-              const transformFieldQuery = (query: string) => ({
-                $regex: `.*${query}.*`,
-                $options: 'i',
-              });
+              const fieldQueries = transformFieldsFilters(options.fields);
 
               const baseQuery = [
                 ['environment', environmentName],
                 ...(options.limit ? [['limit', options.limit]] : []),
-                ...(options.fields
-                  ? [['query', JSON.stringify(mapValues(options.fields, transformFieldQuery))]]
-                  : []),
+                ...(fieldQueries ? [['query', JSON.stringify(fieldQueries)]] : []),
                 ...(options.orderBy?.value && options.orderBy?.order
                   ? [[options.orderBy.order, options.orderBy.value]]
                   : []),
