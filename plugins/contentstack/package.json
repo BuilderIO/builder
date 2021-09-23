@@ -129,6 +129,7 @@
     "@material-ui/icons": "^1.1.1",
     "contentstack": "^3.13.3",
     "lodash.capitalize": "^4.2.1",
+    "lodash.frompairs": "^4.0.1",
     "lodash.kebabcase": "^4.1.1",
     "lodash.mapvalues": "^4.6.0",
     "node-fetch": "^3.0.0",
