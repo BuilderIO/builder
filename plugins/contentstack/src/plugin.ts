@@ -210,7 +210,9 @@ registerDataPlugin(
         const augmentedContentTypes = contentTypes.map(contentType => {
           const references = contentType.schema.filter(field => field.data_type === 'reference');
           // https://www.contentstack.com/docs/developers/apis/content-delivery-api/#include-reference
-          const referenceSearchParams = references.map(field => field.uid);
+          const referenceSearchParams = references
+            .map(field => field.uid)
+            .map(includeId => ['include[]', includeId] as [string, string]);
 
           return { ...contentType, searchParams: { include: referenceSearchParams } };
         });
@@ -252,10 +254,7 @@ registerDataPlugin(
               ];
 
               if (options.entry) {
-                const query = new URLSearchParams([
-                  ...baseQuery,
-                  ['include[]', model.searchParams.include],
-                ]);
+                const query = new URLSearchParams([...baseQuery, ...model.searchParams.include]);
                 return buildUrl(`entries/${options.entry}?${query}`);
               } else {
                 const query = new URLSearchParams(baseQuery);
