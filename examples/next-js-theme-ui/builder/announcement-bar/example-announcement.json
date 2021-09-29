@@ -1,0 +1,74 @@
+{
+  "@originContentId": "43c6ada191ff128631ec6685aa27c03f5f6f18ace26a6bd8cde8c16cf4989513",
+  "@originModelId": "aec58ef81d95fccab63302a62bc7c773a94e58bb74decfb6962ade7c84c51e8f",
+  "@originOrg": "303981477d1e41d08587796c8f3bf623",
+  "createdBy": "4FFFg0MNRJT0z0nW4uUizDHfHJV2",
+  "createdDate": 1613961025095,
+  "data": {
+    "inputs": [],
+    "state": {
+      "deviceSize": "large",
+      "location": {
+        "path": "",
+        "query": {}
+      }
+    },
+    "blocks": [
+      {
+        "@type": "@builder.io/sdk:Element",
+        "@version": 2,
+        "bindings": {
+          "style.color": "var _virtual_index=state.theme.colors.text;return _virtual_index",
+          "style.backgroundColor": "var _virtual_index=state.theme.colors.primary;return _virtual_index"
+        },
+        "code": {
+          "bindings": {
+            "style.color": "state.theme.colors.text",
+            "style.backgroundColor": "state.theme.colors.primary"
+          }
+        },
+        "id": "builder-6e6067861ced40a6b4760093ea015e04",
+        "component": {
+          "name": "Text",
+          "options": {
+            "text": "<p>Announcement bar section</p>"
+          }
+        },
+        "responsiveStyles": {
+          "large": {
+            "display": "flex",
+            "flexDirection": "column",
+            "position": "relative",
+            "flexShrink": "0",
+            "boxSizing": "border-box",
+            "marginTop": "0px",
+            "lineHeight": "normal",
+            "height": "auto",
+            "textAlign": "center",
+            "backgroundColor": "rgba(0, 0, 0, 1)",
+            "color": "rgba(255, 251, 251, 1)",
+            "paddingTop": "10px",
+            "paddingBottom": "10px"
+          }
+        }
+      }
+    ]
+  },
+  "id": "f6da03c7d2e646c98a502862c6e6f4cb",
+  "lastUpdated": 1613962660457,
+  "lastUpdatedBy": "4FFFg0MNRJT0z0nW4uUizDHfHJV2",
+  "meta": {
+    "hasLinks": false,
+    "kind": "component",
+    "needsHydration": false,
+    "shopifyDomain": "builder-io-demo.myshopify.com/"
+  },
+  "modelId": "e4a1504918e14cc8891aa9925a7c4182",
+  "name": "announcement for loose sweaters",
+  "published": "published",
+  "query": [],
+  "rev": "581inu7487i",
+  "screenshot": "https://cdn.builder.io/api/v1/image/assets%2F9aa8825c0d33424ca3e9076c2cc4a328%2F0eff1cf140714ca08daa3aeeb2930c06",
+  "testRatio": 1,
+  "variations": {}
+}

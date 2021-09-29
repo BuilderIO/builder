@@ -1,0 +1,11 @@
+{
+  "title": "Builder.io + Shopify + Next.js",
+  "titleTemplate": "%s - Headless Demo",
+  "description": "A starter kit demo store for using headless shopify with Builder.io ->  https://github.com/BuilderIO/nextjs-shopify",
+  "openGraph": {
+    "type": "website",
+    "locale": "en_IE",
+    "url": "https://github.com/BuilderIO/nextjs-shopify",
+    "site_name": "Builder.io + Shopify + Next.js"
+  }
+}

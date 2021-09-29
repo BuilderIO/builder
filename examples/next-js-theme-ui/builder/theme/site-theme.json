@@ -1,0 +1,47 @@
+{
+  "createdBy": "4FFFg0MNRJT0z0nW4uUizDHfHJV2",
+  "createdDate": 1618890934748,
+  "data": {
+    "siteInformation": {
+      "titleTemplate": "%s - Headless Demo",
+      "title": "Builder.io + Next.js + Shopify Demo",
+      "openGraph": {
+        "site_name": "Builder.io + Next.js + Shopify Demo",
+        "locale": "en_IE",
+        "url": "https://github.com/BuilderIO/nextjs-shopify",
+        "type": "website"
+      },
+      "description": "A starter kit demo store for using headless shopify with Builder.io ->  https://github.com/BuilderIO/nextjs-shopify"
+    },
+    "theme": "swiss",
+    "colorOverrides": {
+      "secondary": "rgba(129, 129, 131, 1)",
+      "muted": "rgba(200, 198, 202, 1)",
+      "primary": "rgba(71, 71, 71, 1)"
+    },
+    "siteSettings": {
+      "logo": { "text": "Headless" },
+      "navigationLinks": [
+        { "link": "/faq", "title": "FAQ" },
+        { "link": "/about-us", "title": "About us" }
+      ]
+    }
+  },
+  "id": "6c21f1828cc14a2e83566dbc587b3b93",
+  "lastUpdatedBy": "4FFFg0MNRJT0z0nW4uUizDHfHJV2",
+  "meta": {
+    "kind": "data",
+    "shopifyDomain": "builder-io-demo.myshopify.com/"
+  },
+  "modelId": "75d7d923971f422e816a647dc70c3666",
+  "name": "Site theme",
+  "published": "published",
+  "query": [],
+  "testRatio": 1,
+  "variations": {},
+  "lastUpdated": 1618894011624,
+  "rev": "rosgwf7mxe",
+  "@originOrg": "303981477d1e41d08587796c8f3bf623",
+  "@originContentId": "8354d78d332347eea236c378df1970ff",
+  "@originModelId": "68f8ce55161bb70a95d9916ec9e7c41b0cf93215ea0be6c4137ababfc7ce3f7d"
+}
