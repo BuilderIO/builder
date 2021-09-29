@@ -1,4 +1,5 @@
 import { registerCommercePlugin } from '@builder.io/commerce-plugin-tools';
+import { Resource } from '@builder.io/commerce-plugin-tools/dist/types/interfaces/resource'
 import pkg from '../package.json';
 
 registerCommercePlugin(
@@ -20,14 +21,7 @@ registerCommercePlugin(
         name: 'accessKey',
         type: 'string',
         required: true,
-      },
-      ,
-      {
-        name: 'environment',
-        type: 'string',
-        required: true,
-        defaultValue: 'vtexcommercestable',
-      },
+      }
     ],
     ctaText: `Connect your Vtex store`,
   },
@@ -37,14 +31,11 @@ registerCommercePlugin(
     const secretKey = settings.get('secretKey');
     const accessKey = settings.get('accessKey');
     const accountName = settings.get('accountName');
-    const isDev = settings.get('environment') === 'development';
     const environment = 'vtexcommercestable';
 
     const baseUrl = (url: string) => {
       const endUrl = `https://${accountName}.${environment}.com.br/${url}`;
-      return `${
-        isDev ? 'http://localhost:5000' : 'https://builder.io'
-      }/api/v1/proxy-api?url=${encodeURIComponent(endUrl)}`;
+      return `https://builder.io/api/v1/proxy-api?url=${encodeURIComponent(endUrl)}`;
     };
 
     const headers = {
@@ -105,12 +96,12 @@ registerCommercePlugin(
           ).then(res => {
             return res.json();
           });
-          return response.itemsReturned.map(transformProduct);
+          return response.itemsReturned.map(transformProduct) as Resource[];
         },
 
         getRequestObject(id: string) {
           return {
-            '@type': '@builder.io/core:Request',
+            '@type': '@builder.io/core:Request' as const,
             request: {
               url: baseUrl(`api/catalog/pvt/product/${id}`),
               headers,
@@ -162,12 +153,12 @@ registerCommercePlugin(
             })
           );
 
-          return categories;
+          return categories as Resource[];
         },
 
         getRequestObject(id: string) {
           return {
-            '@type': '@builder.io/core:Request',
+            '@type': '@builder.io/core:Request' as const,
             request: {
               url: baseUrl(`api/catalog/pvt/category/${id}`),
               headers,
