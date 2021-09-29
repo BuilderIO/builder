@@ -1,6 +1,7 @@
 import { registerCommercePlugin } from '@builder.io/commerce-plugin-tools';
 import { Resource } from '@builder.io/commerce-plugin-tools/dist/types/interfaces/resource'
 import pkg from '../package.json';
+import appState from '@builder.io/app-context';
 
 registerCommercePlugin(
   {
@@ -10,15 +11,20 @@ registerCommercePlugin(
       {
         name: 'accountName',
         type: 'string',
+        helperText: `Get your accountname from your account details in Vtex admin dasbhoard, on (/admin/license-manager/#/account-details) `,
         required: true,
       },
       {
         name: 'secretKey',
+        friendlyName: 'Application Secret',
+        helperText: `Get your application secret from "{{account name}}.myvtex.com/admin/mykeys" and copy the application secret, or generate a new one if you don't have keys configured `,
         type: 'string',
         required: true,
       },
       {
         name: 'accessKey',
+        friendlyName: 'Application Key',
+        helperText: `Get your application key from "{{account name}}.myvtex.com/admin/mykeys" and copy the application key, or generate a new one if you don't have keys configured `,
         type: 'string',
         required: true,
       }
@@ -35,7 +41,7 @@ registerCommercePlugin(
 
     const baseUrl = (url: string) => {
       const endUrl = `https://${accountName}.${environment}.com.br/${url}`;
-      return `https://builder.io/api/v1/proxy-api?url=${encodeURIComponent(endUrl)}`;
+      return `${appState.config.apiRoot()}/api/v1/proxy-api?url=${encodeURIComponent(endUrl)}`;
     };
 
     const headers = {
