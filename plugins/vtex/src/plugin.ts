@@ -1,5 +1,7 @@
 import { registerCommercePlugin } from '@builder.io/commerce-plugin-tools';
+import { Resource } from '@builder.io/commerce-plugin-tools/dist/types/interfaces/resource'
 import pkg from '../package.json';
+import appState from '@builder.io/app-context';
 
 registerCommercePlugin(
   {
@@ -9,25 +11,23 @@ registerCommercePlugin(
       {
         name: 'accountName',
         type: 'string',
+        helperText: `Get your accountname from your account details in Vtex admin dasbhoard, on (/admin/license-manager/#/account-details) `,
         required: true,
       },
       {
         name: 'secretKey',
+        friendlyName: 'Application Secret',
+        helperText: `Get your application secret from "{{account name}}.myvtex.com/admin/mykeys" and copy the application secret, or generate a new one if you don't have keys configured `,
         type: 'string',
         required: true,
       },
       {
         name: 'accessKey',
+        friendlyName: 'Application Key',
+        helperText: `Get your application key from "{{account name}}.myvtex.com/admin/mykeys" and copy the application key, or generate a new one if you don't have keys configured `,
         type: 'string',
         required: true,
-      },
-      ,
-      {
-        name: 'environment',
-        type: 'string',
-        required: true,
-        defaultValue: 'vtexcommercestable',
-      },
+      }
     ],
     ctaText: `Connect your Vtex store`,
   },
@@ -37,14 +37,11 @@ registerCommercePlugin(
     const secretKey = settings.get('secretKey');
     const accessKey = settings.get('accessKey');
     const accountName = settings.get('accountName');
-    const isDev = settings.get('environment') === 'development';
     const environment = 'vtexcommercestable';
 
     const baseUrl = (url: string) => {
       const endUrl = `https://${accountName}.${environment}.com.br/${url}`;
-      return `${
-        isDev ? 'http://localhost:5000' : 'https://builder.io'
-      }/api/v1/proxy-api?url=${encodeURIComponent(endUrl)}`;
+      return `${appState.config.apiRoot()}/api/v1/proxy-api?url=${encodeURIComponent(endUrl)}`;
     };
 
     const headers = {
@@ -105,12 +102,12 @@ registerCommercePlugin(
           ).then(res => {
             return res.json();
           });
-          return response.itemsReturned.map(transformProduct);
+          return response.itemsReturned.map(transformProduct) as Resource[];
         },
 
         getRequestObject(id: string) {
           return {
-            '@type': '@builder.io/core:Request',
+            '@type': '@builder.io/core:Request' as const,
             request: {
               url: baseUrl(`api/catalog/pvt/product/${id}`),
               headers,
@@ -162,12 +159,12 @@ registerCommercePlugin(
             })
           );
 
-          return categories;
+          return categories as Resource[];
         },
 
         getRequestObject(id: string) {
           return {
-            '@type': '@builder.io/core:Request',
+            '@type': '@builder.io/core:Request' as const,
             request: {
               url: baseUrl(`api/catalog/pvt/category/${id}`),
               headers,
