@@ -40,10 +40,9 @@ registerCommercePlugin(
       ...resource,
       id: resource.id,
       title: resource.name,
-      handle:
-        resource.customUrl?.url,
+      handle: resource.customUrl?.url,
       image: {
-        src: resource.primary_image?.url_thumbnail || resource.image_url
+        src: resource.primary_image?.url_thumbnail || resource.image_url,
       },
     });
 
@@ -64,13 +63,10 @@ registerCommercePlugin(
 
         async search(search: string) {
           let queryParams = '?limit=100&include=primary_image';
-          queryParams += (search ? `&keyword=${search}` : '');
-          const response: any = await fetch(
-            baseUrl(`products${queryParams}`),
-            {
-              headers,
-            }
-          ).then(res => {
+          queryParams += search ? `&keyword=${search}` : '';
+          const response: any = await fetch(baseUrl(`products${queryParams}`), {
+            headers,
+          }).then(res => {
             return res.json();
           });
           return response.data.map(transformResource);
@@ -105,12 +101,9 @@ registerCommercePlugin(
         async search(search: string) {
           let queryParams = '?limit=100';
           queryParams += search ? `&keyword=${search}` : '';
-          const response: any = await fetch(
-            baseUrl(`categories${queryParams}`),
-            {
-              headers,
-            }
-          ).then(res => {
+          const response: any = await fetch(baseUrl(`categories${queryParams}`), {
+            headers,
+          }).then(res => {
             return res.json();
           });
           return response.data.map(transformResource);

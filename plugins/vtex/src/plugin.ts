@@ -1,5 +1,5 @@
 import { registerCommercePlugin } from '@builder.io/commerce-plugin-tools';
-import { Resource } from '@builder.io/commerce-plugin-tools/dist/types/interfaces/resource'
+import { Resource } from '@builder.io/commerce-plugin-tools/dist/types/interfaces/resource';
 import pkg from '../package.json';
 import appState from '@builder.io/app-context';
 
@@ -27,7 +27,7 @@ registerCommercePlugin(
         helperText: `Get your application key from "{{account name}}.myvtex.com/admin/mykeys" and copy the application key, or generate a new one if you don't have keys configured `,
         type: 'string',
         required: true,
-      }
+      },
     ],
     ctaText: `Connect your Vtex store`,
   },
