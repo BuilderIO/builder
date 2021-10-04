@@ -258,7 +258,7 @@ export class ShopifyProductPicker extends SafeComponent<ShopifyProductPickerProp
     return {
       '@type': '@builder.io/core:Request',
       request: {
-        url: `${appState.config.apiRoot()}/api/v1/shopify/products/{{this.options.product}}.json?apiKey=${
+        url: `${appState.config.apiRoot()}/api/v1/shopify/products/${productId}.json?apiKey=${
           this.props.context.user.apiKey
         }`,
       },

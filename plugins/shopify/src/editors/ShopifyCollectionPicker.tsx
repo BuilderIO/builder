@@ -204,7 +204,7 @@ export class ShopifyCollectionPicker extends SafeComponent<ShopifyCollectionPick
     return {
       '@type': '@builder.io/core:Request',
       request: {
-        url: `${appState.config.apiRoot()}/api/v1/shopify/collections/{{this.options.collection}}.json?apiKey=${
+        url: `${appState.config.apiRoot()}/api/v1/shopify/collections/${collectionId}.json?apiKey=${
           this.props.context.user.apiKey
         }`,
       },
