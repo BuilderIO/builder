@@ -85,12 +85,6 @@ registerComponent(Video, {
       helperText: 'Image to show before the video plays',
     },
     {
-      name: 'posterImage',
-      type: 'file',
-      allowedFileTypes: ['jpeg', 'png'],
-      helperText: 'Image to show before the video plays',
-    },
-    {
       name: 'autoPlay',
       type: 'boolean',
       defaultValue: true,
