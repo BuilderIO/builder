@@ -37,6 +37,7 @@ export const LiquidBlock = ({
 
     if (!node || Builder.isEditing || Builder.isPreviewing) {
       if (cache[cacheKey]) {
+        setHtml(cache[cacheKey]);
         return;
       }
 
@@ -62,7 +63,7 @@ export const LiquidBlock = ({
           builderState?.context.apiKey
         }&args=${encodeURIComponent(args)}${
           previewThemeID ? `&preview_theme_id=${previewThemeID}` : ''
-        }`
+        }${Builder.isEditing ? `&cachebust=true` : ''}`
       )
         .then(res => res.json())
         .then(json => {
