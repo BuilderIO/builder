@@ -37,6 +37,7 @@ export const LiquidBlock = ({
 
     if (!node || Builder.isEditing || Builder.isPreviewing) {
       if (cache[cacheKey]) {
+        setHtml(cache[cacheKey]);
         return;
       }
 
