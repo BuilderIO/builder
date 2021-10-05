@@ -25,6 +25,10 @@ function validateReactNativeStyles(styles: Record<string, string | number>) {
       if (!isNaN(newValue)) {
         styles[key] = newValue;
       }
+
+      if (typeof newValue === 'number' && newValue < 0) {
+        styles[key] = 0;
+      }
     }
     if (propertiesThatMustBeNumber.has(key) && typeof styles[key] !== 'number') {
       if (SHOW_WARNINGS) {
