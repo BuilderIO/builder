@@ -1,9 +1,9 @@
 <template>
-  <div class="div-1u950q5qkvz">
+  <div class="div-91tv53eg5f">
     <picture>
       <img
         loading="lazy"
-        class="img-1u950q5qkvz"
+        class="img-91tv53eg5f"
         :alt="altText"
         :aria-role="altText ? 'presentation' : undefined"
         :style="{
@@ -19,7 +19,7 @@
     </picture>
 
     <div
-      class="builder-image-sizer div-1u950q5qkvz-2"
+      class="builder-image-sizer div-91tv53eg5f-2"
       v-if="
         aspectRatio &&
         !(
@@ -38,7 +38,7 @@
 
     <slot></slot>
 
-    <div class="div-1u950q5qkvz-3" v-if="!fitContent">
+    <div class="div-91tv53eg5f-3" v-if="!fitContent">
       <slot></slot>
     </div>
   </div>
@@ -163,10 +163,10 @@ export default registerComponent(
 );
 </script>
 <style scoped>
-.div-1u950q5qkvz {
+.div-91tv53eg5f {
   position: relative;
 }
-.img-1u950q5qkvz {
+.img-91tv53eg5f {
   opacity: 1;
   transition: opacity 0.2s ease-in-out;
   position: absolute;
@@ -175,12 +175,12 @@ export default registerComponent(
   top: 0px;
   left: 0px;
 }
-.div-1u950q5qkvz-2 {
+.div-91tv53eg5f-2 {
   width: 100%;
   pointer-events: none;
   font-size: 0;
 }
-.div-1u950q5qkvz-3 {
+.div-91tv53eg5f-3 {
   display: flex;
   flex-direction: column;
   align-items: stretch;

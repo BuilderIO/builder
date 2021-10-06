@@ -39,7 +39,8 @@ export type GetContentOptions = {
   limit?: number;
   /** User attributes to target on, such as { urlPath: '/foo', device: 'mobile', ...etc } */
   userAttributes?: (Record<string, string> & { urlPath?: string }) | null;
-
+  /** Custom query */
+  query?: Record<string, any>;
   /** Other API options as key:value pairs */
   options?: Record<string, any>;
 };
@@ -51,7 +52,7 @@ export async function getContent(options: GetContentOptions): Promise<BuilderCon
 export async function getAllContent(options: GetContentOptions) {
   const { model, apiKey } = options;
 
-  const { limit, testGroups, userAttributes } = {
+  const { limit, testGroups, userAttributes, query } = {
     limit: 1,
     userAttributes: null,
     testGroups: null,
@@ -59,15 +60,23 @@ export async function getAllContent(options: GetContentOptions) {
   };
 
   const url = new URL(
-    `https://cdn.builder.io/api/v2/content/${model}?apiKey=${apiKey}&limit=${limit}&userAttributes=${JSON.stringify(
-      userAttributes
-    )}`
+    `https://cdn.builder.io/api/v2/content/${model}?apiKey=${apiKey}&limit=${limit}`
   );
 
   if (options.options) {
     const flattened = flatten(options.options);
     for (const key in flattened) {
       url.searchParams.set(key, String(flattened[key]));
+    }
+  }
+
+  if (userAttributes) {
+    url.searchParams.set('userAttributes', JSON.stringify(userAttributes));
+  }
+  if (query) {
+    const flattened = flatten({ query });
+    for (const key in flattened) {
+      url.searchParams.set(key, JSON.stringify((flattened as any)[key]));
     }
   }
 

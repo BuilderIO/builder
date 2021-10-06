@@ -22,7 +22,7 @@
     "node-fetch": "^2.6.1"
   },
   "devDependencies": {
-    "@builder.io/mitosis": "0.0.44-18",
+    "@builder.io/mitosis": "0.0.45-5",
     "@jsx-lite/cli": "^1.0.1",
     "@jsx-lite/eslint-plugin": "0.0.2",
     "@swc/core": "^1.2.64",
@@ -39,6 +39,7 @@
     "fast-glob": "^3.2.7",
     "fs-extra": "^10.0.0",
     "jest": "^27.0.6",
+    "jest-fetch-mock": "^3.0.3",
     "json5": "^2.2.0",
     "react": "^17.0.2",
     "react-native": "^0.64.2",
