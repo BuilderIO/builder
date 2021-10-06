@@ -1,4 +1,4 @@
-# Example of using Builder.io with React Native (alpha)
+# Example of using Builder.io with React Native (beta)
 
 ## About
 
