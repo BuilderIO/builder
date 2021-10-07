@@ -60,6 +60,7 @@ registerDataPlugin(
               {
                 name: 'include',
                 friendlName: 'Retrieve linked assets level',
+                advanced: true,
                 defaultValue: 2,
                 // contentful api restricts include to be between 0 and 10
                 min: 0,
