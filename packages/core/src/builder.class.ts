@@ -15,6 +15,7 @@ import { getTopLevelDomain } from './functions/get-top-level-domain';
 import serverOnlyRequire from './functions/server-only-require.function';
 import { BuilderContent } from './types/content';
 import { uuid } from './functions/uuid';
+import { EditorOptions } from './types/appState';
 
 // Do not change this to a require! It throws runtime errors - rollup
 // will preserve the `require` and throw runtime errors
@@ -634,6 +635,7 @@ export class Builder {
    * key it gets removed
    */
   static register(type: 'insertMenu', info: InsertMenuConfig): void;
+  static register(type: 'editor.settings', info: EditorOptions): void;
   static register(type: string, info: any): void;
   static register(type: string, info: any) {
     // TODO: all must have name and can't conflict?
