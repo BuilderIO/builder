@@ -1,6 +1,7 @@
 import { registerDataPlugin } from '@builder.io/data-plugin-tools';
 import pkg from '../package.json';
 import contentful from 'contentful';
+import appState from '@builder.io/app-context';
 import qs from 'qs';
 
 const pluginId = pkg.name;
@@ -41,6 +42,12 @@ registerDataPlugin(
     return {
       async getResourceTypes() {
         const contentTypes = await client.getContentTypes();
+        const buildUrl = (url: string, single = false) => {
+          return `${appState.config.apiRoot()}/api/v1/contentful-proxy?single=${single}&select=fields&url=${encodeURIComponent(
+            url
+          )}`;
+        };
+
         return contentTypes.items.map(type => ({
           name: type.name,
           id: type.sys.id,
@@ -52,13 +59,23 @@ registerDataPlugin(
             const fields: any = [
               {
                 name: 'include',
-                friendlyName: 'limit',
-                defaultValue: 10,
+                friendlName: 'Retrieve linked assets level',
+                advanced: true,
+                defaultValue: 2,
                 // contentful api restricts include to be between 0 and 10
                 min: 0,
                 max: 10,
                 type: 'number',
               },
+              {
+                name: 'limit',
+                defaultValue: 10,
+                // contentful api restricts limit to be between 0 and 100
+                min: 0,
+                max: 100,
+                type: 'number',
+              },
+
               {
                 name: 'order',
                 type: 'string',
@@ -101,7 +118,10 @@ registerDataPlugin(
             // https://cdn.contentful.com/spaces/{space_id}/environments/{environment_id}/entries/{entry_id}?access_token={access_token}
             if (options.entry) {
               // todo: maybe environment should be an input
-              return `https://cdn.contentful.com/spaces/${spaceId}/environments/master/entries/${options.entry}?access_token=${accessToken}`;
+              return buildUrl(
+                `https://cdn.contentful.com/spaces/${spaceId}/environments/master/entries?access_token=${accessToken}&content_type=${type.sys.id}&sys.id=${options.entry}&include=10`,
+                true
+              );
             }
             let fields =
               (options.fields && Object.keys(options.fields).length > 0 && options.fields) || null;
@@ -120,7 +140,9 @@ registerDataPlugin(
               { allowDots: true, skipNulls: true }
             );
             // by query
-            return `https://cdn.contentful.com/spaces/${spaceId}/environments/master/entries?${params}`;
+            return buildUrl(
+              `https://cdn.contentful.com/spaces/${spaceId}/environments/master/entries?${params}`
+            );
           },
         }));
       },
