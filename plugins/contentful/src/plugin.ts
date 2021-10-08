@@ -148,10 +148,19 @@ registerDataPlugin(
       },
       async getEntriesByResourceType(id: string, options) {
         const displayField = await client.getContentType(id).then(type => type.displayField);
+        const params = options?.searchText
+          ? {
+              query: options?.searchText,
+            }
+          : options?.resourceEntryId
+          ? {
+              'sys.id': options?.resourceEntryId,
+            }
+          : {};
         const entries = await client
           .getEntries({
             content_type: id,
-            ...(options?.searchText && { query: options?.searchText }),
+            ...params,
           })
           .then(res => res.items);
 
