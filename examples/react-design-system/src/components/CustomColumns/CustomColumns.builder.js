@@ -12,7 +12,6 @@ Builder.registerComponent(CustomColumns, {
         {
           image:
             'https://cdn.builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d',
-          text: 'Hello',
           blocks: [
             {
               '@type': '@builder.io/sdk:Element',
@@ -41,7 +40,6 @@ Builder.registerComponent(CustomColumns, {
         {
           image:
             'https://cdn.builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d',
-          text: 'Hello',
           blocks: [
             {
               '@type': '@builder.io/sdk:Element',
@@ -76,11 +74,6 @@ Builder.registerComponent(CustomColumns, {
           required: true,
           defaultValue:
             'https://cdn.builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d',
-        },
-        {
-          name: 'text',
-          type: 'string',
-          defaultValue: 'Your Title Here',
         },
         {
           name: 'blocks',
