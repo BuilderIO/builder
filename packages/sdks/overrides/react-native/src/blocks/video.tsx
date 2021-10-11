@@ -111,22 +111,6 @@ registerComponent(Video, {
       defaultValue: 'cover',
       enum: ['contain', 'cover', 'stretch'],
     },
-    //     {
-    //       name: 'position',
-    //       type: 'text',
-    //       defaultValue: 'center',
-    //       enum: [
-    //         'center',
-    //         'top',
-    //         'left',
-    //         'right',
-    //         'bottom',
-    //         'top left',
-    //         'top right',
-    //         'bottom left',
-    //         'bottom right',
-    //       ],
-    //     },
     {
       name: 'aspectRatio',
       type: 'number',
