@@ -14,6 +14,7 @@ class ButtonComponent extends React.Component<ButtonProps> {
     const Tag = this.props.link ? Link : 'span';
     return (
       <Tag
+        role="button"
         href={this.props.link}
         target={this.props.openLinkInNewTab ? '_blank' : undefined}
         {...this.props.attributes}
