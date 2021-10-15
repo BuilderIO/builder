@@ -70,6 +70,6 @@ Nodejs SDK to interact with Builder.io Graphql Admin API (beta).
  - check the graphiql explorer on [beta.builder.io/api/v2/admin](https://beta.builder.io/api/v2/admin), add your private key to the http headers section and inspect available queries / mutations:
 
  <p align="center">
-  <img alt="BUILDER" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F281068da62e44bb5bce7d48307cec9f0" width="240" />
+  <img alt="BUILDER" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F281068da62e44bb5bce7d48307cec9f0"  />
 </p>
 
