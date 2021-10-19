@@ -36,7 +36,7 @@ export const Button = withBuilder(ButtonComponent, {
     paddingBottom: '15px',
     paddingLeft: '25px',
     paddingRight: '25px',
-    backgroundColor: '#3898EC',
+    backgroundColor: '#000000',
     color: 'white',
     borderRadius: '4px',
     textAlign: 'center',
