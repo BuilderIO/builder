@@ -156,6 +156,7 @@ class CustomCodeComponent extends React.Component<Props> {
     // like embed
     return (
       <div
+        ref={ref => (this.elementRef = ref)}
         // TODO: add a class when node replaced in (?)
         className={'builder-custom-code' + (this.props.replaceNodes ? ' replace-nodes' : '')}
         {...(!this.replaceNodes &&
