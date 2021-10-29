@@ -40,7 +40,7 @@ if (Builder.isBrowser && globalReplaceNodes) {
       const id = parent && parent.getAttribute('builder-id');
       if (id) {
         globalReplaceNodes[id] = globalReplaceNodes[id] || [];
-        globalReplaceNodes[id].push(el.cloneNode(true));
+        globalReplaceNodes[id].push(isShopify ? el : el.cloneNode(true));
       }
     });
   } catch (err) {
@@ -50,7 +50,7 @@ if (Builder.isBrowser && globalReplaceNodes) {
 
 class CustomCodeComponent extends React.Component<Props> {
   elementRef: Element | null = null;
-  originalRef: Node | null = null;
+  originalRef: Node | Element | null = null;
 
   scriptsInserted = new Set();
   scriptsRun = new Set();
@@ -80,7 +80,7 @@ class CustomCodeComponent extends React.Component<Props> {
         if (existing.length === 1) {
           const node = existing[0];
           this.originalRef = node as HTMLElement;
-          this.originalRef.remove();
+          (this.originalRef as Element).remove();
         }
       }
     }
@@ -154,11 +154,6 @@ class CustomCodeComponent extends React.Component<Props> {
   render() {
     // TODO: remove <script> tags for server render (unless has some param to say it's only goingn to be run on server)
     // like embed
-
-    if (this.replaceNodes) {
-      return <div ref={ref => (this.elementRef = ref)}></div>;
-    }
-
     return (
       <div
         // TODO: add a class when node replaced in (?)
