@@ -13,6 +13,7 @@ import '@builder.io/widgets'
 import 'react-spring-modal/styles.css'
 import seoConfig from '@config/seo.json'
 import NoSSR from './NoSSR'
+import { makeTheme } from '@theme-ui/css/utils'
 
 const FeatureBar = dynamic(() => import('@components/common/FeatureBar'), {
   ssr: false,
@@ -33,6 +34,7 @@ const Layout: React.FC<{ pageProps: any }> = ({ children, pageProps }) => {
           }
           const siteSettings = data?.siteSettings
           const colorOverrides = data?.colorOverrides
+          const fontsOverrides = data?.fontsOverrides
           const siteSeoInfo = data?.siteInformation
           return (
             <ManagedUIContext key={data?.id} siteSettings={siteSettings}>
@@ -40,6 +42,7 @@ const Layout: React.FC<{ pageProps: any }> = ({ children, pageProps }) => {
               <InnerLayout
                 themeName={data?.theme || 'base'}
                 colorOverrides={colorOverrides}
+                fontsOverrides={fontsOverrides}
               >
                 {children}
               </InnerLayout>
@@ -58,15 +61,20 @@ const InnerLayout: React.FC<{
     primary?: string
     secondary?: string
     muted?: string
-  }
-}> = ({ themeName, children, colorOverrides }) => {
-  const theme = {
+  },
+  fontsOverrides?: any,
+}> = ({ themeName, children, colorOverrides, fontsOverrides }) => {
+  const theme = makeTheme({
     ...themesMap[themeName],
     colors: {
       ...themesMap[themeName].colors,
       ...colorOverrides,
     },
-  }
+    fonts: {
+      ...themesMap[themeName].fonts,
+      ...fontsOverrides,
+    }
+  })
   const { acceptedCookies, onAcceptCookies } = useAcceptCookies()
   return (
     <ThemeProvider theme={theme}>

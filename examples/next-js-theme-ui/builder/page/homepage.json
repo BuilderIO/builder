@@ -1,7 +1,4 @@
 {
-  "@originContentId": "d823ef3cf0c147f9a449deed26c00b8f",
-  "@originModelId": "b798c9133380b5cda025a0540d5cbd789c49566ae06145a6a85e7387b4a63bef",
-  "@originOrg": "303981477d1e41d08587796c8f3bf623",
   "createdBy": "4FFFg0MNRJT0z0nW4uUizDHfHJV2",
   "createdDate": 1618540272925,
   "data": {
@@ -14,8 +11,13 @@
         },
         "kind": "webfonts#webfont",
         "lastModified": "2017-10-10",
-        "subsets": ["latin", "latin-ext"],
-        "variants": ["regular"],
+        "subsets": [
+          "latin",
+          "latin-ext"
+        ],
+        "variants": [
+          "regular"
+        ],
         "version": "v6"
       }
     ],
@@ -27,9 +29,91 @@
         "query": {}
       }
     },
-    "title": "about-us",
-    "url": "/about-us",
+    "title": "homepage",
+    "url": "/",
     "blocks": [
+      {
+        "@type": "@builder.io/sdk:Element",
+        "@version": 2,
+        "id": "builder-56fbf8642c734974b1fe519422ae31b5",
+        "component": {
+          "name": "ProductCollectionGrid",
+          "options": {
+            "cardProps": {
+              "imgPriority": true,
+              "imgLayout": "responsive",
+              "imgLoading": "eager",
+              "imgWidth": 540,
+              "imgHeight": 540,
+              "layout": "fixed"
+            },
+            "limit": 9,
+            "collection": "men"
+          }
+        },
+        "responsiveStyles": {
+          "large": {
+            "display": "flex",
+            "flexDirection": "column",
+            "position": "relative",
+            "flexShrink": "0",
+            "boxSizing": "border-box",
+            "marginTop": "20px"
+          }
+        }
+      },
+      {
+        "@type": "@builder.io/sdk:Element",
+        "@version": 2,
+        "id": "builder-70e6e7a13cc04164826462f8eaf4eaec",
+        "component": {
+          "name": "ProductGrid",
+          "options": {
+            "cardProps": {
+              "imgPriority": true,
+              "imgLayout": "responsive",
+              "imgLoading": "eager",
+              "imgWidth": 540,
+              "imgHeight": 540,
+              "layout": "fixed"
+            },
+            "limit": 9
+          }
+        },
+        "responsiveStyles": {
+          "large": {
+            "display": "flex",
+            "flexDirection": "column",
+            "position": "relative",
+            "flexShrink": "0",
+            "boxSizing": "border-box",
+            "marginTop": "20px"
+          }
+        }
+      },
+      {
+        "@type": "@builder.io/sdk:Element",
+        "@version": 2,
+        "id": "builder-d4f720f9c8c54020b9d3337a8d96b34d",
+        "component": {
+          "name": "ProductBox",
+          "options": {
+            "product": "2019-new-womens-casual-shearling-coat-turkey-wool-coat-long-fur-jacket-womens-trench-coat-sheepskin-coat"
+          }
+        },
+        "responsiveStyles": {
+          "large": {
+            "display": "flex",
+            "flexDirection": "column",
+            "position": "relative",
+            "flexShrink": "0",
+            "boxSizing": "border-box",
+            "marginTop": "20px",
+            "marginLeft": "auto",
+            "marginRight": "auto"
+          }
+        }
+      },
       {
         "@type": "@builder.io/sdk:Element",
         "@version": 2,
@@ -89,7 +173,7 @@
                             "image": "https://cdn.builder.io/api/v1/image/assets%2F89d6bbb44070475d9580fd22f21ef8f1%2F83d17ef628cc439c9e7f0fece7ef7da1?width=767",
                             "backgroundSize": "cover",
                             "backgroundPosition": "top",
-                            "lazy": false,
+                            "lazy": true,
                             "aspectRatio": 1.1104,
                             "height": 1300,
                             "width": 867,
@@ -139,6 +223,10 @@
                             "lineHeight": "25px",
                             "height": "auto"
                           },
+                          "medium": {
+                            "contentVisibility": "auto",
+                            "containIntrinsicSize": "125px"
+                          },
                           "small": {
                             "fontSize": "14px"
                           }
@@ -165,6 +253,10 @@
                             "textAlign": "left",
                             "lineHeight": "25px",
                             "height": "auto"
+                          },
+                          "medium": {
+                            "contentVisibility": "auto",
+                            "containIntrinsicSize": "125px"
                           },
                           "small": {
                             "fontSize": "14px",
@@ -193,6 +285,10 @@
                             "textAlign": "left",
                             "lineHeight": "25px",
                             "height": "auto"
+                          },
+                          "medium": {
+                            "contentVisibility": "auto",
+                            "containIntrinsicSize": "25px"
                           },
                           "small": {
                             "fontSize": "14px",
@@ -226,7 +322,9 @@
                             "fontSize": "28px"
                           },
                           "medium": {
-                            "paddingBottom": "0px"
+                            "paddingBottom": "0px",
+                            "contentVisibility": "auto",
+                            "containIntrinsicSize": "25px"
                           },
                           "small": {
                             "fontSize": "14px"
@@ -256,7 +354,9 @@
                             "height": "auto"
                           },
                           "medium": {
-                            "paddingBottom": "20px"
+                            "paddingBottom": "20px",
+                            "contentVisibility": "auto",
+                            "containIntrinsicSize": "25px"
                           },
                           "small": {
                             "fontSize": "14px"
@@ -795,6 +895,10 @@
                 "paddingBottom": "30px",
                 "borderStyle": "none",
                 "borderColor": "rgb(210, 214, 220)"
+              },
+              "medium": {
+                "contentVisibility": "auto",
+                "containIntrinsicSize": "958px"
               }
             }
           },
@@ -878,6 +982,10 @@
                 "marginTop": "20px",
                 "height": "auto",
                 "paddingBottom": "30px"
+              },
+              "medium": {
+                "contentVisibility": "auto",
+                "containIntrinsicSize": "172px"
               }
             }
           },
@@ -1784,6 +1892,10 @@
                 "paddingBottom": "30px",
                 "flexWrap": "wrap",
                 "justifyContent": "center"
+              },
+              "medium": {
+                "contentVisibility": "auto",
+                "containIntrinsicSize": "717px"
               }
             }
           }
@@ -1796,14 +1908,63 @@
             "position": "relative",
             "flexShrink": "0",
             "boxSizing": "border-box",
-            "marginTop": "0px"
+            "marginTop": "0px",
+            "contentVisibility": "auto",
+            "containIntrinsicSize": "2191px"
+          },
+          "small": {
+            "contentVisibility": "auto",
+            "containIntrinsicSize": "2995px"
+          }
+        }
+      },
+      {
+        "@type": "@builder.io/sdk:Element",
+        "@version": 2,
+        "tagName": "img",
+        "id": "builder-pixel-lipp2pbn488",
+        "properties": {
+          "src": "https://cdn.builder.io/api/v1/pixel?apiKey=b99ba3685ce3427ba25ec84d21651ce3",
+          "role": "presentation",
+          "width": "0",
+          "height": "0"
+        },
+        "responsiveStyles": {
+          "large": {
+            "height": "0",
+            "width": "0",
+            "display": "inline-block",
+            "opacity": "0",
+            "overflow": "hidden",
+            "pointerEvents": "none"
+          }
+        }
+      },
+      {
+        "id": "builder-pixel-wfmor26v1d",
+        "@type": "@builder.io/sdk:Element",
+        "tagName": "img",
+        "properties": {
+          "src": "https://cdn.builder.io/api/v1/pixel?apiKey=303981477d1e41d08587796c8f3bf623",
+          "role": "presentation",
+          "width": "0",
+          "height": "0"
+        },
+        "responsiveStyles": {
+          "large": {
+            "height": "0",
+            "width": "0",
+            "display": "inline-block",
+            "opacity": "0",
+            "overflow": "hidden",
+            "pointerEvents": "none"
           }
         }
       }
     ]
   },
-  "id": "af8959f5d40a481cbfa6d55f8fefc414",
-  "lastUpdated": 1618545639341,
+  "id": "c46095079f70463daf7dacad5727c74b",
+  "lastUpdated": 1620847181729,
   "lastUpdatedBy": "4FFFg0MNRJT0z0nW4uUizDHfHJV2",
   "meta": {
     "hasLinks": false,
@@ -1811,18 +1972,18 @@
     "needsHydration": false,
     "shopifyDomain": "builder-io-demo.myshopify.com/"
   },
-  "modelId": "11194fd7edd743719276f4324a7bd972",
-  "name": "about-us",
+  "modelId": "342f3fb2e42546da8848a1585f064c30",
+  "name": "homepage",
   "published": "published",
   "query": [
     {
       "operator": "is",
       "property": "urlPath",
-      "value": "/about-us"
+      "value": "/"
     }
   ],
-  "rev": "159wo8k3pqjj",
-  "screenshot": "https://cdn.builder.io/api/v1/image/assets%2Fb99ba3685ce3427ba25ec84d21651ce3%2F5e55a3f435124f63b838d57cfd1da3a5",
+  "rev": "qtq1hg58yq",
+  "screenshot": "https://cdn.builder.io/api/v1/image/assets%2F303981477d1e41d08587796c8f3bf623%2F7313b7eebb5b49459982805df43e755d",
   "testRatio": 1,
   "variations": {}
 }

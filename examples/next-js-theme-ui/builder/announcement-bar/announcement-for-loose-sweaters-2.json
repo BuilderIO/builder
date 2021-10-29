@@ -1,0 +1,157 @@
+{
+  "createdBy": "4FFFg0MNRJT0z0nW4uUizDHfHJV2",
+  "createdDate": 1621910415532,
+  "data": {
+    "inputs": [],
+    "jsCode": "console.log(\"context  \",context)",
+    "state": {
+      "deviceSize": "large",
+      "location": {
+        "path": "",
+        "query": {}
+      }
+    },
+    "blocks": [
+      {
+        "@type": "@builder.io/sdk:Element",
+        "@version": 2,
+        "bindings": {
+          "style.backgroundColor": "var _virtual_index=state.theme.colors.primary;return _virtual_index",
+          "style.color": "var _virtual_index=state.theme.colors.background;return _virtual_index"
+        },
+        "code": {
+          "bindings": {
+            "style.backgroundColor": "state.theme.colors.primary",
+            "style.color": "state.theme.colors.background"
+          }
+        },
+        "id": "builder-7e6681df9deb405db41d862e412e5d4a",
+        "component": {
+          "name": "Text",
+          "options": {
+            "text": "<p>Announcement bar section 11</p>"
+          }
+        },
+        "responsiveStyles": {
+          "large": {
+            "display": "flex",
+            "flexDirection": "column",
+            "position": "relative",
+            "flexShrink": "0",
+            "boxSizing": "border-box",
+            "marginTop": "0px",
+            "lineHeight": "normal",
+            "height": "auto",
+            "textAlign": "center",
+            "backgroundColor": "rgba(0, 0, 0, 1)",
+            "color": "rgba(255, 251, 251, 1)",
+            "paddingTop": "10px",
+            "paddingBottom": "10px"
+          }
+        }
+      },
+      {
+        "id": "builder-pixel-rwbt093q0mp",
+        "@type": "@builder.io/sdk:Element",
+        "tagName": "img",
+        "properties": {
+          "src": "https://cdn.builder.io/api/v1/pixel?apiKey=303981477d1e41d08587796c8f3bf623",
+          "role": "presentation",
+          "width": "0",
+          "height": "0"
+        },
+        "responsiveStyles": {
+          "large": {
+            "height": "0",
+            "width": "0",
+            "display": "inline-block",
+            "opacity": "0",
+            "overflow": "hidden",
+            "pointerEvents": "none"
+          }
+        }
+      }
+    ]
+  },
+  "id": "b0c8892e99034728a4c34a5595bb3a63",
+  "lastUpdated": 1621910465166,
+  "lastUpdatedBy": "4FFFg0MNRJT0z0nW4uUizDHfHJV2",
+  "meta": {
+    "hasLinks": false,
+    "kind": "component",
+    "needsHydration": false,
+    "originalContentId": "cb75c789ab2a4b33a8a8fc389c1f5943",
+    "shopifyDomain": "builder-io-demo.myshopify.com/",
+    "winningTest": null
+  },
+  "modelId": "e4524251f0ac41ec948df38d39a88efc",
+  "name": "announcement for loose sweaters 2",
+  "published": "published",
+  "query": [],
+  "screenshot": "https://cdn.builder.io/api/v1/image/assets%2F303981477d1e41d08587796c8f3bf623%2Fe8ca2a763901428e9d352e30364ff5a0",
+  "testRatio": 0.5,
+  "variations": {
+    "0be5b84379a041bf9e413c29a959d97a": {
+      "createdDate": 1621910431233,
+      "data": {
+        "inputs": [],
+        "jsCode": "console.log(\"context  \",context)",
+        "state": {
+          "deviceSize": "large",
+          "location": {
+            "path": "",
+            "query": {}
+          }
+        },
+        "tsCode": "/*\n * Global objects available:\n *\n * state - builder state object - learn about state https://www.builder.io/c/docs/guides/state-and-actions\n * fetch - Fetch API - https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API'\n *\n * visit https://www.builder.io/c/docs/guides/custom-code\n * for more information on writing custom code\n */\n\nconsole.log('context  ', context)",
+        "blocks": [
+          {
+            "@type": "@builder.io/sdk:Element",
+            "@version": 2,
+            "bindings": {
+              "style.backgroundColor": "var _virtual_index=state.theme.colors.primary;return _virtual_index",
+              "style.color": "var _virtual_index=state.theme.colors.background;return _virtual_index"
+            },
+            "code": {
+              "bindings": {
+                "style.backgroundColor": "state.theme.colors.primary",
+                "style.color": "state.theme.colors.background"
+              }
+            },
+            "id": "builder-359b8008c9964e09ba755e0f0fed1662",
+            "component": {
+              "name": "Text",
+              "options": {
+                "text": "<p>Announcement bar section </p>"
+              }
+            },
+            "responsiveStyles": {
+              "large": {
+                "display": "flex",
+                "flexDirection": "column",
+                "position": "relative",
+                "flexShrink": "0",
+                "boxSizing": "border-box",
+                "marginTop": "0px",
+                "lineHeight": "normal",
+                "height": "auto",
+                "textAlign": "center",
+                "backgroundColor": "rgba(0, 0, 0, 1)",
+                "color": "rgba(255, 251, 251, 1)",
+                "paddingTop": "10px",
+                "paddingBottom": "10px"
+              }
+            }
+          }
+        ]
+      },
+      "id": "0be5b84379a041bf9e413c29a959d97a",
+      "name": "",
+      "testRatio": 0.5
+    }
+  },
+  "rev": "obndxuo5hn",
+  "@originOrg": "303981477d1e41d08587796c8f3bf623",
+  "@originContentId": "6db7b61e10e8426988c254701e08ee40",
+  "@originModelId": "aec58ef81d95fccab63302a62bc7c773a94e58bb74decfb6962ade7c84c51e8f"
+}

@@ -6,6 +6,7 @@
   "createdDate": 1613961025095,
   "data": {
     "inputs": [],
+    "jsCode": "console.log(\"context  \",context)",
     "state": {
       "deviceSize": "large",
       "location": {
@@ -18,13 +19,13 @@
         "@type": "@builder.io/sdk:Element",
         "@version": 2,
         "bindings": {
-          "style.color": "var _virtual_index=state.theme.colors.text;return _virtual_index",
-          "style.backgroundColor": "var _virtual_index=state.theme.colors.primary;return _virtual_index"
+          "style.backgroundColor": "var _virtual_index=state.theme.colors.primary;return _virtual_index",
+          "style.color": "var _virtual_index=state.theme.colors.background;return _virtual_index"
         },
         "code": {
           "bindings": {
-            "style.color": "state.theme.colors.text",
-            "style.backgroundColor": "state.theme.colors.primary"
+            "style.backgroundColor": "state.theme.colors.primary",
+            "style.color": "state.theme.colors.background"
           }
         },
         "id": "builder-6e6067861ced40a6b4760093ea015e04",
@@ -51,11 +52,32 @@
             "paddingBottom": "10px"
           }
         }
+      },
+      {
+        "id": "builder-pixel-b4joq9omxw7",
+        "@type": "@builder.io/sdk:Element",
+        "tagName": "img",
+        "properties": {
+          "src": "https://cdn.builder.io/api/v1/pixel?apiKey=303981477d1e41d08587796c8f3bf623",
+          "role": "presentation",
+          "width": "0",
+          "height": "0"
+        },
+        "responsiveStyles": {
+          "large": {
+            "height": "0",
+            "width": "0",
+            "display": "inline-block",
+            "opacity": "0",
+            "overflow": "hidden",
+            "pointerEvents": "none"
+          }
+        }
       }
     ]
   },
-  "id": "f6da03c7d2e646c98a502862c6e6f4cb",
-  "lastUpdated": 1613962660457,
+  "id": "cb75c789ab2a4b33a8a8fc389c1f5943",
+  "lastUpdated": 1620251081623,
   "lastUpdatedBy": "4FFFg0MNRJT0z0nW4uUizDHfHJV2",
   "meta": {
     "hasLinks": false,
@@ -63,12 +85,12 @@
     "needsHydration": false,
     "shopifyDomain": "builder-io-demo.myshopify.com/"
   },
-  "modelId": "e4a1504918e14cc8891aa9925a7c4182",
+  "modelId": "e4524251f0ac41ec948df38d39a88efc",
   "name": "announcement for loose sweaters",
   "published": "published",
   "query": [],
-  "rev": "581inu7487i",
-  "screenshot": "https://cdn.builder.io/api/v1/image/assets%2F9aa8825c0d33424ca3e9076c2cc4a328%2F0eff1cf140714ca08daa3aeeb2930c06",
+  "rev": "obndxuo5hn",
+  "screenshot": "https://cdn.builder.io/api/v1/image/assets%2F303981477d1e41d08587796c8f3bf623%2F11db4b7f379b4ad8aebf1cdde1400c08",
   "testRatio": 1,
   "variations": {}
 }
