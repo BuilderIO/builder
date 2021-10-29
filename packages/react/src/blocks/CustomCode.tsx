@@ -10,7 +10,7 @@ interface Props {
 }
 
 // TODO: settings context to pass this down. do in shopify-specific generated code
-const globalReplaceNodes = ({} as { [key: string]: Element[] }) || null;
+const globalReplaceNodes = ({} as { [key: string]: Node[] }) || null;
 
 const isShopify = Builder.isBrowser && 'Shopify' in window;
 
@@ -40,7 +40,7 @@ if (Builder.isBrowser && globalReplaceNodes) {
       const id = parent && parent.getAttribute('builder-id');
       if (id) {
         globalReplaceNodes[id] = globalReplaceNodes[id] || [];
-        globalReplaceNodes[id].push(el);
+        globalReplaceNodes[id].push(el.cloneNode(true));
       }
     });
   } catch (err) {
@@ -50,7 +50,7 @@ if (Builder.isBrowser && globalReplaceNodes) {
 
 class CustomCodeComponent extends React.Component<Props> {
   elementRef: Element | null = null;
-  originalRef: Element | null = null;
+  originalRef: Node | null = null;
 
   scriptsInserted = new Set();
   scriptsRun = new Set();
@@ -154,9 +154,13 @@ class CustomCodeComponent extends React.Component<Props> {
   render() {
     // TODO: remove <script> tags for server render (unless has some param to say it's only goingn to be run on server)
     // like embed
+
+    if (this.replaceNodes) {
+      return <div ref={ref => (this.elementRef = ref)}></div>;
+    }
+
     return (
       <div
-        ref={ref => (this.elementRef = ref)}
         // TODO: add a class when node replaced in (?)
         className={'builder-custom-code' + (this.props.replaceNodes ? ' replace-nodes' : '')}
         {...(!this.replaceNodes &&
