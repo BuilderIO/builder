@@ -10,7 +10,7 @@ interface Props {
 }
 
 // TODO: settings context to pass this down. do in shopify-specific generated code
-const globalReplaceNodes = ({} as { [key: string]: Element[] }) || null;
+const globalReplaceNodes = ({} as { [key: string]: Node[] }) || null;
 
 const isShopify = Builder.isBrowser && 'Shopify' in window;
 
@@ -40,7 +40,7 @@ if (Builder.isBrowser && globalReplaceNodes) {
       const id = parent && parent.getAttribute('builder-id');
       if (id) {
         globalReplaceNodes[id] = globalReplaceNodes[id] || [];
-        globalReplaceNodes[id].push(el);
+        globalReplaceNodes[id].push(isShopify ? el : el.cloneNode(true));
       }
     });
   } catch (err) {
@@ -50,7 +50,7 @@ if (Builder.isBrowser && globalReplaceNodes) {
 
 class CustomCodeComponent extends React.Component<Props> {
   elementRef: Element | null = null;
-  originalRef: Element | null = null;
+  originalRef: Node | Element | null = null;
 
   scriptsInserted = new Set();
   scriptsRun = new Set();
@@ -80,7 +80,7 @@ class CustomCodeComponent extends React.Component<Props> {
         if (existing.length === 1) {
           const node = existing[0];
           this.originalRef = node as HTMLElement;
-          this.originalRef.remove();
+          (this.originalRef as Element).remove();
         }
       }
     }

@@ -14,6 +14,7 @@ export default function Button(props: ButtonProps) {
       <Show when={props.link} else={<span {...props.attributes}>{props.text}</span>}>
         <a
           {...props.attributes}
+          role="button"
           href={props.link}
           target={props.openLinkInNewTab ? '_blank' : undefined}
         >
@@ -36,7 +37,7 @@ registerComponent({
     paddingBottom: '15px',
     paddingLeft: '25px',
     paddingRight: '25px',
-    backgroundColor: '#3898EC',
+    backgroundColor: '#000000',
     color: 'white',
     borderRadius: '4px',
     textAlign: 'center',

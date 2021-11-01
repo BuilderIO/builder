@@ -8,6 +8,7 @@ Builder.registerComponent(Mutation, {
   name: 'Builder:Mutation',
   canHaveChildren: true,
   noWrap: true,
+  hideFromInsertMenu: true,
   inputs: [
     {
       name: 'type',
