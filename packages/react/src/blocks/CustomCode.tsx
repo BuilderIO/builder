@@ -91,6 +91,10 @@ class CustomCodeComponent extends React.Component<Props> {
     return Boolean(isShopify && this.props.code?.match(/{[{%]/g));
   }
 
+  get isHydrating() {
+    return !isShopify && this.originalRef;
+  }
+
   componentDidUpdate(prevProps: Props) {
     if (this.props.code !== prevProps.code) {
       this.findAndRunScripts();
@@ -100,7 +104,11 @@ class CustomCodeComponent extends React.Component<Props> {
   componentDidMount() {
     this.firstLoad = false;
     if (!this.replaceNodes) {
-      this.findAndRunScripts();
+      if (this.isHydrating) {
+        Builder.nextTick(() => this.findAndRunScripts());
+      } else {
+        this.findAndRunScripts();
+      }
     }
     if (Builder.isBrowser && this.replaceNodes && this.originalRef && this.elementRef) {
       this.elementRef.appendChild(this.originalRef);
@@ -142,7 +150,8 @@ class CustomCodeComponent extends React.Component<Props> {
   }
 
   get code() {
-    if (Builder.isServer && this.props.scriptsClientOnly) {
+    // when ssr'd by nextjs it'll break hydration if initial client render doesn't match ssr
+    if ((Builder.isServer || this.isHydrating && this.firstLoad) && this.props.scriptsClientOnly) {
       return (this.props.code || '').replace(
         /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi,
         ''
