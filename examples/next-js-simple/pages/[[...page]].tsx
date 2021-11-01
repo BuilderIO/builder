@@ -7,7 +7,6 @@ import Head from 'next/head'
 const BUILDER_API_KEY = 'PUT YOUR API KEY HERE'
 builder.init(BUILDER_API_KEY)
 
-// tells you what paths are being built
 export async function getStaticProps({
   params,
 }: GetStaticPropsContext<{ page: string[] }>) {
@@ -31,7 +30,6 @@ export async function getStaticProps({
   }
 }
 
-// returns a list
 export async function getStaticPaths() {
   const pages = await builder.getAll('page', {
     options: { noTargeting: true },
@@ -44,7 +42,6 @@ export async function getStaticPaths() {
   }
 }
 
-// React Component
 export default function Page({
   page,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
