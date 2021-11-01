@@ -13,6 +13,7 @@ import './components/Heading/Heading.builder';
 import './components/HeroWithChildren/HeroWithChildren.builder';
 import './components/DynamicColumns/DynamicColumns.builder';
 import './components/ProductsListWithServerSideData/ProductsListWithServerSideData.builder';
+import './components/CustomColumns/CustomColumns.builder';
 
 // Add your public apiKey here
 const YOUR_KEY = '7f7bbcf72a1a4d72bac5daa359e7befd';
