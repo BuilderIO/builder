@@ -3,7 +3,12 @@ import traverse from 'traverse';
 
 export const readAsJson = async (path: string) => {
   const content = await fse.readFile(path);
-  return JSON.parse(content.toString());
+  try {
+    return JSON.parse(content.toString());
+  } catch (e)  {
+    console.error(`error parsing ${path}`);
+    throw e;
+  }
 };
 
 export const getDirectories = async (source: string) =>
