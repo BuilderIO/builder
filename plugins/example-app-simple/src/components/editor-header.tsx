@@ -34,8 +34,7 @@ export const Header = () => {
                   }}
                   css={{ fontSize: 20, padding: 20 }}
                 >
-                  {/* This of course can be dynamic campaign name */}
-                  Campaign name
+                  Landing page
                 </div>
                 <Button
                   css={{ marginLeft: 'auto', marginRight: 20 }}
