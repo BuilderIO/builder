@@ -65,14 +65,14 @@ class CustomCodeComponent extends React.Component<Props> {
       Builder.isBrowser && (props.replaceNodes || isShopify) && id && globalReplaceNodes?.[id]
     );
 
-    if (this.replaceNodes && Builder.isBrowser && this.firstLoad && this.props.builderBlock) {
+    if (Builder.isBrowser && this.firstLoad && this.props.builderBlock) {
       if (id && globalReplaceNodes?.[id]) {
         const el = globalReplaceNodes[id].shift() || null;
         this.originalRef = el;
         if (globalReplaceNodes[id].length === 0) {
           delete globalReplaceNodes[id];
         }
-      } else {
+      } else if (this.replaceNodes) {
         const existing = document.querySelectorAll(
           `.${this.props.builderBlock.id} .builder-custom-code`
         );
