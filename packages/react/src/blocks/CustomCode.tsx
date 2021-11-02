@@ -15,9 +15,8 @@ const globalReplaceNodes = ({} as { [key: string]: Node[] }) || null;
 const isShopify = Builder.isBrowser && 'Shopify' in window;
 
 if (Builder.isBrowser && globalReplaceNodes) {
-  const customCodeQuerySelector = isShopify
-    ? '.builder-custom-code'
-    : '.builder-custom-code.replace-nodes';
+  const customCodeQuerySelector = '.builder-custom-code';
+
   try {
     let allCustomCodeElements = Array.from(document.querySelectorAll(customCodeQuerySelector));
 
@@ -167,7 +166,7 @@ class CustomCodeComponent extends React.Component<Props> {
       <div
         ref={ref => (this.elementRef = ref)}
         // TODO: add a class when node replaced in (?)
-        className={'builder-custom-code' + (this.props.replaceNodes ? ' replace-nodes' : '')}
+        className='builder-custom-code'
         {...(!this.replaceNodes &&
           !this.noReactRender && {
             dangerouslySetInnerHTML: { __html: this.code },
