@@ -15,9 +15,8 @@ const globalReplaceNodes = ({} as { [key: string]: Node[] }) || null;
 const isShopify = Builder.isBrowser && 'Shopify' in window;
 
 if (Builder.isBrowser && globalReplaceNodes) {
-  const customCodeQuerySelector = isShopify
-    ? '.builder-custom-code'
-    : '.builder-custom-code.replace-nodes';
+  const customCodeQuerySelector = '.builder-custom-code';
+
   try {
     let allCustomCodeElements = Array.from(document.querySelectorAll(customCodeQuerySelector));
 
@@ -56,39 +55,48 @@ class CustomCodeComponent extends React.Component<Props> {
   scriptsRun = new Set();
 
   firstLoad = true;
-  replaceNodes: boolean;
+  replaceNodes = false;
+  state = {
+    hydrated: false,
+  }
 
   constructor(props: Props) {
     super(props);
-
-    const id = this.props.builderBlock?.id;
-    this.replaceNodes = Boolean(
-      Builder.isBrowser && (props.replaceNodes || isShopify) && id && globalReplaceNodes?.[id]
-    );
-
-    if (this.replaceNodes && Builder.isBrowser && this.firstLoad && this.props.builderBlock) {
-      if (id && globalReplaceNodes?.[id]) {
-        const el = globalReplaceNodes[id].shift() || null;
-        this.originalRef = el;
-        if (globalReplaceNodes[id].length === 0) {
-          delete globalReplaceNodes[id];
-        }
-      } else {
-        const existing = document.querySelectorAll(
-          `.${this.props.builderBlock.id} .builder-custom-code`
-        );
-        if (existing.length === 1) {
-          const node = existing[0];
-          this.originalRef = node as HTMLElement;
-          (this.originalRef as Element).remove();
+    if (Builder.isBrowser){
+      const id = this.props.builderBlock?.id;
+      this.replaceNodes = Boolean(
+        Builder.isBrowser && (props.replaceNodes || isShopify) && id && globalReplaceNodes?.[id]
+      );
+  
+      if (this.firstLoad && this.props.builderBlock) {
+        if (id && globalReplaceNodes?.[id]) {
+          const el = globalReplaceNodes[id].shift() || null;
+          this.originalRef = el;
+          if (globalReplaceNodes[id].length === 0) {
+            delete globalReplaceNodes[id];
+          }
+        } else if (this.replaceNodes) {
+          const existing = document.querySelectorAll(
+            `.${this.props.builderBlock.id} .builder-custom-code`
+          );
+          if (existing.length === 1) {
+            const node = existing[0];
+            this.originalRef = node as HTMLElement;
+            (this.originalRef as Element).remove();
+          }
         }
       }
     }
+
   }
 
   get noReactRender() {
     // Don't render liquid client side
     return Boolean(isShopify && this.props.code?.match(/{[{%]/g));
+  }
+
+  get isHydrating() {
+    return !isShopify && this.originalRef;
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -100,7 +108,15 @@ class CustomCodeComponent extends React.Component<Props> {
   componentDidMount() {
     this.firstLoad = false;
     if (!this.replaceNodes) {
-      this.findAndRunScripts();
+      if (this.isHydrating) {
+        // first render need to match what's on ssr (issue with next.js)
+        this.setState({
+          hydrated: true,
+        })
+        Builder.nextTick(() => this.findAndRunScripts());
+      } else {
+        this.findAndRunScripts();
+      }
     }
     if (Builder.isBrowser && this.replaceNodes && this.originalRef && this.elementRef) {
       this.elementRef.appendChild(this.originalRef);
@@ -142,7 +158,8 @@ class CustomCodeComponent extends React.Component<Props> {
   }
 
   get code() {
-    if (Builder.isServer && this.props.scriptsClientOnly) {
+    // when ssr'd by nextjs it'll break hydration if initial client render doesn't match ssr
+    if ((Builder.isServer || this.isHydrating && this.firstLoad) && this.props.scriptsClientOnly) {
       return (this.props.code || '').replace(
         /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi,
         ''
@@ -158,7 +175,7 @@ class CustomCodeComponent extends React.Component<Props> {
       <div
         ref={ref => (this.elementRef = ref)}
         // TODO: add a class when node replaced in (?)
-        className={'builder-custom-code' + (this.props.replaceNodes ? ' replace-nodes' : '')}
+        className='builder-custom-code'
         {...(!this.replaceNodes &&
           !this.noReactRender && {
             dangerouslySetInnerHTML: { __html: this.code },
