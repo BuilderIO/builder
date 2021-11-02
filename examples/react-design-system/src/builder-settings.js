@@ -38,6 +38,7 @@ Builder.register('insertMenu', {
     { name: 'Double Columns' },
     { name: 'Triple Columns' },
     { name: 'Dynamic Columns' },
+    { name: 'Custom Columns' },
   ],
 });
 
