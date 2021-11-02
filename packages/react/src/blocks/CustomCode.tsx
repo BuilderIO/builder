@@ -55,34 +55,39 @@ class CustomCodeComponent extends React.Component<Props> {
   scriptsRun = new Set();
 
   firstLoad = true;
-  replaceNodes: boolean;
+  replaceNodes = false;
+  state = {
+    hydrated: false,
+  }
 
   constructor(props: Props) {
     super(props);
-
-    const id = this.props.builderBlock?.id;
-    this.replaceNodes = Boolean(
-      Builder.isBrowser && (props.replaceNodes || isShopify) && id && globalReplaceNodes?.[id]
-    );
-
-    if (Builder.isBrowser && this.firstLoad && this.props.builderBlock) {
-      if (id && globalReplaceNodes?.[id]) {
-        const el = globalReplaceNodes[id].shift() || null;
-        this.originalRef = el;
-        if (globalReplaceNodes[id].length === 0) {
-          delete globalReplaceNodes[id];
-        }
-      } else if (this.replaceNodes) {
-        const existing = document.querySelectorAll(
-          `.${this.props.builderBlock.id} .builder-custom-code`
-        );
-        if (existing.length === 1) {
-          const node = existing[0];
-          this.originalRef = node as HTMLElement;
-          (this.originalRef as Element).remove();
+    if (Builder.isBrowser){
+      const id = this.props.builderBlock?.id;
+      this.replaceNodes = Boolean(
+        Builder.isBrowser && (props.replaceNodes || isShopify) && id && globalReplaceNodes?.[id]
+      );
+  
+      if (this.firstLoad && this.props.builderBlock) {
+        if (id && globalReplaceNodes?.[id]) {
+          const el = globalReplaceNodes[id].shift() || null;
+          this.originalRef = el;
+          if (globalReplaceNodes[id].length === 0) {
+            delete globalReplaceNodes[id];
+          }
+        } else if (this.replaceNodes) {
+          const existing = document.querySelectorAll(
+            `.${this.props.builderBlock.id} .builder-custom-code`
+          );
+          if (existing.length === 1) {
+            const node = existing[0];
+            this.originalRef = node as HTMLElement;
+            (this.originalRef as Element).remove();
+          }
         }
       }
     }
+
   }
 
   get noReactRender() {
@@ -104,6 +109,10 @@ class CustomCodeComponent extends React.Component<Props> {
     this.firstLoad = false;
     if (!this.replaceNodes) {
       if (this.isHydrating) {
+        // first render need to match what's on ssr (issue with next.js)
+        this.setState({
+          hydrated: true,
+        })
         Builder.nextTick(() => this.findAndRunScripts());
       } else {
         this.findAndRunScripts();
