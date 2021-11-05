@@ -71,13 +71,19 @@ created._
 Your new space "...." public API Key: 1234795283492198789217893712893
 ```
 
-Copy the public API key ("1234795283492198789217893712893" in the example above) and use it in in your env file ( create a .env file under this folder).
+Copy the public API key ("1234795283492198789217893712893" in the example above) and use it in in your .env file.
+
+```shell
+   BUILDER_PUBLIC_KEY=1234795283492198789217893712893 <-- replace this with your API Key
+   ```
 
 Now you have to do is start up the project now and start building in Builder.
 ```
 npm install
 npm run dev
 ```
+
+[Click here](https://test-pied-iota.vercel.app/) to view a demo of this example deployed on Vercel.
 
 ## Learn More
 
