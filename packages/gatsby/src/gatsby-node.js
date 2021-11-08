@@ -17,6 +17,7 @@ exports.sourceNodes = async ({ actions, createNodeId, cache, createContentDigest
   const link = createHttpLink({
     uri: url,
     fetch,
+    useGETForQueries: true,
   });
 
   const cacheKey = `@builder.io/gatsby-schema-${typeName}-${fieldName}`;
