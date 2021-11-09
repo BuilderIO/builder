@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Builder, BuilderElement, BuilderStore, builder } from '@builder.io/react';
 import { findAndRunScripts } from '../functions/find-and-run-scripts';
-import { serializeLiquidArgs } from '../functions/serialize-liquid-args';
 
 interface LiquidBlockProps {
   options?: Record<string, number | boolean | string>;
@@ -28,12 +27,13 @@ export const LiquidBlock = ({
   const [loading, setLoading] = useState(0);
   const ref = useRef<HTMLDivElement | null>(null);
   const blockName = templatePath?.split('/')[1].replace(/\.liquid$/, '')!;
+  const renderArgs = JSON.stringify(options);
 
   useEffect(() => {
     const blockId = builderBlock?.id;
     const node = blockId && refs && refs[blockId];
-    const args = serializeLiquidArgs(options);
-    const cacheKey = blockName + args;
+
+    const cacheKey = blockName + renderArgs;
 
     if (!node || Builder.isEditing || Builder.isPreviewing) {
       if (cache[cacheKey]) {
@@ -41,7 +41,6 @@ export const LiquidBlock = ({
         return;
       }
 
-      // Convert `sections/foo.liquid` -> `foo`
       if (!blockName) {
         return;
       }
@@ -58,10 +57,11 @@ export const LiquidBlock = ({
       const previewThemeID =
         (Builder.isBrowser && (window as any).Shopify?.theme?.id) ||
         builderState?.state?.location?.query?.preview_theme_id;
+
       fetch(
         `${builder.host}/api/v1/shopify/data/render-liquid-snippet?snippet=${blockName}&apiKey=${
           builderState?.context.apiKey
-        }&args=${encodeURIComponent(args)}${
+        }&args=${encodeURIComponent(renderArgs)}${
           previewThemeID ? `&preview_theme_id=${previewThemeID}` : ''
         }${Builder.isEditing ? `&cachebust=true` : ''}`
       )
@@ -134,7 +134,7 @@ export const LiquidBlock = ({
         builder-liquid-block={builderBlock?.id}
         className="builder-liquid-block"
         dangerouslySetInnerHTML={{
-          __html: html || cache[blockName + serializeLiquidArgs(options)] || '',
+          __html: html || cache[blockName + renderArgs] || '',
         }}
       />
     </>
