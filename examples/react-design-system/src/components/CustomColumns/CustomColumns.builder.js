@@ -78,6 +78,8 @@ Builder.registerComponent(CustomColumns, {
         {
           name: 'blocks',
           type: 'blocks',
+          hideFromUI: true,
+          helperText: 'This is an editable region where you can drag and drop blocks.',
           defaultValue: [
             {
               '@type': '@builder.io/sdk:Element',
