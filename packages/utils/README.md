@@ -8,7 +8,7 @@ For cases where you want to render Builder content server side with custom data 
 
 ### Example
 
-Say you have a component that takes input props and also feteches data sync
+Say you have a component that takes input props and also fetches data sync
 
 ```tsx
 import { Builder } from '@builder.io/react';
