@@ -68,7 +68,7 @@ Builder.register('plugin', {
   ctaText: 'Connect your store',
 
   async onSave(actions: OnSaveActions) {
-    const confirm = await appState.dialogs.confirm(
+    const confirm = (appState.user.isBuilderAdmin || appState.user.isEnterprise ) && await appState.dialogs.confirm(
       'Would you like to index your products and collections from shopify?'
     );
     if (confirm) {
@@ -90,10 +90,6 @@ Builder.register('plugin', {
           productModelName: 'shopify-product',
           collectionModelName: 'shopify-collection',
         });
-        // update plugin setting
-        await actions.updateSettings({
-          hasConnected: true,
-        });
         await appState.globalState.showPluginDialog(pluginId, true);
       } catch (e) {
         console.error(e);
@@ -104,6 +100,10 @@ Builder.register('plugin', {
       }
       appState.globalState.showGlobalBlockingLoadingIndicator = false;
     }
+    // update plugin setting
+    await actions.updateSettings({
+      hasConnected: true,
+    });
   },
 });
 
