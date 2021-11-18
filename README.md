@@ -394,3 +394,6 @@ Questions? Requests? Feedback? Chat with us in our [official forum](https://foru
 ## Troubleshooting and feedback
 
 Problems? Requests? Open an [issue](https://github.com/BuilderIO/builder/issues). We always want to hear feedback and interesting new use cases and are happy to help.
+
+## We're hiring!
+Help us enable anyone to build digital experiences and bring more ideas to life --> https://www.builder.io/m/careers
