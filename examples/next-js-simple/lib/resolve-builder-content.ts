@@ -1,14 +1,13 @@
 import { builder, Builder } from '@builder.io/react'
 import builderConfig from '@config/builder'
 builder.init(builderConfig.apiKey)
-Builder.isStatic = true
 
 export async function resolveBuilderContent(
   modelName: string,
   targetingAttributes: any,
   cachebust?: boolean
 ) {
-  let page = await builder
+  const content = await builder
     .get(modelName, {
       userAttributes: targetingAttributes,
       ...(cachebust
@@ -22,5 +21,5 @@ export async function resolveBuilderContent(
     })
     .toPromise()
 
-  return page || null
+  return content || null
 }
