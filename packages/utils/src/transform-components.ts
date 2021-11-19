@@ -22,12 +22,14 @@ export function transformComponents(content: BuilderContent, mappers: PropsMappe
                     bindings: {
                       ...item.code.bindings,
                       ...Object.keys(mapper.props).reduce((acc, key) => {
-                        const binding = item.code!.bindings![mapper.props[key]];
+                        const binding = item.code!.bindings!![
+                          `component.options.${mapper.props[key]}`
+                        ];
                         if (binding) {
                           return {
                             ...acc,
-                            [key]: binding
-                          };  
+                            [key]: binding,
+                          };
                         }
                         return acc;
                       }, {}),
@@ -40,12 +42,12 @@ export function transformComponents(content: BuilderContent, mappers: PropsMappe
                   bindings: {
                     ...item.bindings,
                     ...Object.keys(mapper.props).reduce((acc, key) => {
-                      const binding = item.bindings![mapper.props[key]]
+                      const binding = item.bindings![`component.options.${mapper.props[key]}`];
                       if (binding) {
                         return {
                           ...acc,
-                          [key]: item.bindings![mapper.props[key]],
-                        };  
+                          [key]: binding,
+                        };
                       }
                       return acc;
                     }, {}),
