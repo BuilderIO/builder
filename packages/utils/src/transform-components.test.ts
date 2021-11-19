@@ -25,7 +25,6 @@ test('Transforms components name and options', async () => {
       },
     },
   });
-  console.log(result.data!);
   expect(result.data!.blocks![0].component!.options.collection).toBe('women');
   expect(result.data!.blocks![0].component!.name).toBe('ProductsV2');
 });
