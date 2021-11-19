@@ -1,7 +1,7 @@
 import { BuilderContent } from '@builder.io/sdk';
 import { transformComponents } from './transform-components';
 
-test('Migrate component props', async () => {
+test('Transforms components name and options', async () => {
   const content: BuilderContent = {
     data: {
       blocks: [
