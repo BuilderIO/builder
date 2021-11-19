@@ -22,10 +22,14 @@ export function transformComponents(content: BuilderContent, mappers: PropsMappe
                     bindings: {
                       ...item.code.bindings,
                       ...Object.keys(mapper.props).reduce((acc, key) => {
-                        return {
-                          ...acc,
-                          [key]: item.code!.bindings![mapper.props[key]],
-                        };
+                        const binding = item.code!.bindings![mapper.props[key]];
+                        if (binding) {
+                          return {
+                            ...acc,
+                            [key]: binding
+                          };  
+                        }
+                        return acc;
                       }, {}),
                     },
                   },
@@ -36,10 +40,14 @@ export function transformComponents(content: BuilderContent, mappers: PropsMappe
                   bindings: {
                     ...item.bindings,
                     ...Object.keys(mapper.props).reduce((acc, key) => {
-                      return {
-                        ...acc,
-                        [key]: item.bindings![mapper.props[key]],
-                      };
+                      const binding = item.bindings![mapper.props[key]]
+                      if (binding) {
+                        return {
+                          ...acc,
+                          [key]: item.bindings![mapper.props[key]],
+                        };  
+                      }
+                      return acc;
                     }, {}),
                   },
                 }
