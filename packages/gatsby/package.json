@@ -44,7 +44,8 @@
     "prepare": "cross-env NODE_ENV=production npm run build",
     "watch": "babel -w src --out-dir . --ignore **/__tests__",
     "test": "jest",
-    "prepublishOnly": "block-publish"
+    "prepublishOnly": "block-publish",
+    "postinstall": "patch-package"
   },
   "engines": {
     "node": ">=8.0.0"
