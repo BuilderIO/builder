@@ -117,8 +117,10 @@ export let BuilderPage = () => {
 
 ## Who uses Builder.io?
 
-&nbsp;
-<img src="https://i.imgur.com/HXKroZm.jpg" />
+<br />
+<p align="center">
+  <img width="600" src="https://user-images.githubusercontent.com/844291/143297932-686144d0-598c-49ad-8493-0bffdf45aec8.png" />
+</p>
 
 ## Try it out!
 
