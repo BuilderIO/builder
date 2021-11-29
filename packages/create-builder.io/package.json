@@ -1,5 +1,5 @@
 {
-  "name": "create-experimental",
+  "name": "create-builder-experimental",
   "version": "0.0.7",
   "description": "Quickly create a new builder.io application: npm init builder.io",
   "main": "index.js",
