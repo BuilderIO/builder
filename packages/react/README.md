@@ -45,7 +45,6 @@ All data passed down is available in Builder [actions and bindings](https://www.
   model="page"
   data={{
     products: productsList,
-    myFunction: () => alert('Triggered!'),
     foo: 'bar'
   }} >
 ```
@@ -56,6 +55,7 @@ You can also pass down complex data like custom objects and libraries you can us
 <BuilderComponent
   model="page"
   context={{
+    myFunction: () => alert('Triggered!'),
     lodash: lodash,
   }} >
 ```
