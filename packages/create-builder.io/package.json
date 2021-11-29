@@ -1,6 +1,6 @@
 {
-  "name": "create-builder.io",
-  "version": "0.0.1",
+  "name": "create-experimental",
+  "version": "0.0.7",
   "description": "Quickly create a new builder.io application: npm init builder.io",
   "main": "index.js",
   "scripts": {
@@ -14,6 +14,9 @@
     "fmt": "prettier --write src",
     "release": "np"
   },
+  "files": [
+    "index.js"
+  ],
   "engines": {
     "node": ">=10.0.0",
     "npm": ">=6.0.0"
