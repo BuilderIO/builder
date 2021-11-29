@@ -8,6 +8,7 @@
 .nyc_output
 .rpt2_cache/
 .vscode
+.next
 bazel-*
 coverage
 dist

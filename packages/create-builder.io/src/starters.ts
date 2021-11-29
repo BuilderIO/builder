@@ -11,17 +11,17 @@ export interface Starter {
 export const STARTERS: Starter[] = [
   {
     name: 'react',
-    repo: 'manucorporat/test-builder-starter',
+    repo: 'BuilderIO/builder',
     description: 'Simple create-react-app using builder',
-    docs: 'https://github.com/BuilderIO/builder-react-example-starter',
-    prefix: 'create-react-app',
+    docs: 'https://www.builder.io/blog/drag-drop-react',
+    prefix: 'starters/create-builder/create-react-app',
   },
   {
     name: 'nextjs (SSR)',
-    repo: 'manucorporat/test-builder-starter',
+    repo: 'BuilderIO/builder',
     description: 'Basic React app with nextjs server-side rendering',
-    docs: 'https://github.com/BuilderIO/nextjs-shopify#readme',
-    prefix: 'nextjs',
+    docs: 'https://www.builder.io/blog/visual-next-js',
+    prefix: 'starters/create-builder/nextjs',
   },
 ];
 
