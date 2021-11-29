@@ -45,26 +45,26 @@ All data passed down is available in Builder [actions and bindings](https://www.
   model="page"
   data={{
     products: productsList,
-    myFunction: () => alert('Triggered!'),
     foo: 'bar'
   }} >
 ```
 
-You can also pass down complex data like custom objects and libraries you can use `context`. Similar to React context, context passes all the way down (e.g. through symbols, etc). This data is not observed for changes and mutations
+You can also pass down functions, complex data like custom objects and libraries you can use `context`. Similar to React context, context passes all the way down (e.g. through symbols, etc). This data is not observed for changes and mutations
 
 ```tsx
 <BuilderComponent
   model="page"
   context={{
+    myFunction: () => alert('Triggered!'),
     lodash: lodash,
   }} >
 ```
 
-Context is available in [actions and bindings](https://www.builder.io/c/docs/guides/custom-code) as `context.*`, such as `context.lodash` in the example above
+Context is available in [actions and bindings](https://www.builder.io/c/docs/guides/custom-code) as `context.*`, such as `context.lodash` or `context.myFunction()` in the example above
 
 #### Passing complex
 
-Everything passed down is available on the `state` object in data and actions - e.g. `state.products[0].name` or `state.myFunction()`
+Everything passed down is available on the `state` object in data and actions - e.g. `state.products[0].name`
 
 See more about using data passed down [here](https://www.builder.io/c/docs/react/custom-actions)
 
