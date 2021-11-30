@@ -118,10 +118,21 @@ export class TextPrompt extends Prompt {
   }
 
   render() {
-    const prompt = [style.symbol(this.done, this.aborted), bold(this.msg), style.delimiter(false), this.done ? green(this.rendered) : this.rendered].join(' ');
+    const prompt = [
+      style.symbol(this.done, this.aborted),
+      bold(this.msg),
+      style.delimiter(false),
+      this.done ? green(this.rendered) : this.rendered,
+    ].join(' ');
 
     this.out.write(this.clear + prompt);
-    this.out.write(cursor.move(this.placeholder ? -this.initial.length * this.scale : -this.rendered.length + this.cursor * this.scale));
+    this.out.write(
+      cursor.move(
+        this.placeholder
+          ? -this.initial.length * this.scale
+          : -this.rendered.length + this.cursor * this.scale
+      )
+    );
 
     this.clear = clear(prompt);
   }

@@ -5,23 +5,39 @@ import { bold, cyan, dim, green } from 'colorette';
 import { downloadStarter } from './download';
 import { Starter } from './starters';
 import { unZipBuffer } from './unzip';
-import { askQuestion, logSuccess, npm, npmInstall, onlyUnix, printDuration, setTmpDirectory, terminalPrompt } from './utils';
+import {
+  askQuestion,
+  logSuccess,
+  npm,
+  npmInstall,
+  onlyUnix,
+  printDuration,
+  setTmpDirectory,
+  terminalPrompt,
+} from './utils';
 import { BUILD, START, TEST } from './texts';
 import { replaceInFile } from 'replace-in-file';
 import { mustGetApiKey } from './login';
 import { openBuilder } from './open';
 
-const starterPromises = new Map<Starter, Promise<undefined | ((name: string, context: { [context: string]: string }) => Promise<void>)>>();
+const starterPromises = new Map<
+  Starter,
+  Promise<undefined | ((name: string, context: { [context: string]: string }) => Promise<void>)>
+>();
 
 export async function createApp(starter: Starter, projectName: string, autoRun: boolean) {
   if (fs.existsSync(projectName)) {
-    throw new Error(`Folder "./${projectName}" already exists, please choose a different project name.`);
+    throw new Error(
+      `Folder "./${projectName}" already exists, please choose a different project name.`
+    );
   }
 
   projectName = projectName.toLowerCase().trim();
 
   if (!validateProjectName(projectName)) {
-    throw new Error(`Project name "${projectName}" is not valid. It must be a kebab-case name without spaces.`);
+    throw new Error(
+      `Project name "${projectName}" is not valid. It must be a kebab-case name without spaces.`
+    );
   }
 
   const startT = Date.now();
@@ -53,7 +69,9 @@ ${renderDocs(starter)}
 `);
 
   if (autoRun) {
-    const next = await askQuestion(`Run dev server and open the builder's editor in the browser. ${bold('Confirm?')}`);
+    const next = await askQuestion(
+      `Run dev server and open the builder's editor in the browser. ${bold('Confirm?')}`
+    );
     if (next) {
       console.log(`
 ${dim('Opening dev server and editor in the browser:')}
@@ -122,7 +140,12 @@ async function prepare(starter: Starter) {
     await rename(tmpPath, filePath);
     for (const [key, value] of Object.entries(context)) {
       await replaceInFile({
-        files: [join(filePath, '*'), join(filePath, 'src/**/*'), join(filePath, 'pages/**/*'), join(filePath, 'components/**/*')],
+        files: [
+          join(filePath, '*'),
+          join(filePath, 'src/**/*'),
+          join(filePath, 'pages/**/*'),
+          join(filePath, 'components/**/*'),
+        ],
         ignore: ['node_modules', 'dist', 'build', '.git'],
         from: new RegExp(`builder-${key}`, 'g'),
         allowEmptyPaths: true,

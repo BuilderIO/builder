@@ -1,5 +1,13 @@
 import { ChildProcess, spawn } from 'child_process';
-import { existsSync, readdirSync, lstatSync, unlinkSync, rmdirSync, readFile, readdir } from 'fs-extra';
+import {
+  existsSync,
+  readdirSync,
+  lstatSync,
+  unlinkSync,
+  rmdirSync,
+  readFile,
+  readdir,
+} from 'fs-extra';
 import { join } from 'path';
 import { bold, green, red, yellow } from 'colorette';
 import { prompt } from './vendor/prompts';
@@ -56,7 +64,9 @@ export function npm(command: string, projectPath: string, stdio: any = 'ignore')
 
 export function npmInstall(projectPath: string) {
   return new Promise<void>((resolve, reject) => {
-    const commands = IS_YARN ? ['--silent', '--ignore-engines', '--no-node-version-check'] : ['install', '--loglevel=error', '--no-audit', '--no-fund'];
+    const commands = IS_YARN
+      ? ['--silent', '--ignore-engines', '--no-node-version-check']
+      : ['install', '--loglevel=error', '--no-audit', '--no-fund'];
     const p = spawn(IS_YARN ? 'yarn' : 'npm', commands, {
       shell: true,
       stdio: 'inherit',
@@ -127,8 +137,8 @@ export function nodeVersionWarning() {
     if (major < 14) {
       console.log(
         yellow(
-          `Your current version of Node is ${process.version}, however the recommendation is a minimum of Node v14. Note that future versions of Builder will eventually remove support for non-LTS Node versions.`,
-        ),
+          `Your current version of Node is ${process.version}, however the recommendation is a minimum of Node v14. Note that future versions of Builder will eventually remove support for non-LTS Node versions.`
+        )
       );
     }
   } catch (e) {}
@@ -144,10 +154,11 @@ export const readAsJson = async (path: string) => {
   }
 };
 
-export const getDirectories = async (source: string) => (await readdir(source, { withFileTypes: true })).filter(dirent => dirent.isDirectory());
+export const getDirectories = async (source: string) =>
+  (await readdir(source, { withFileTypes: true })).filter(dirent => dirent.isDirectory());
 
-export const getFiles = async (source: string) => (await readdir(source, { withFileTypes: true })).filter(dirent => dirent.isFile());
-
+export const getFiles = async (source: string) =>
+  (await readdir(source, { withFileTypes: true })).filter(dirent => dirent.isFile());
 
 export const logSuccess = (str: string) => {
   console.log(`${green('✔')} ${bold(str)}`);

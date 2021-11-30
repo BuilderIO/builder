@@ -98,7 +98,9 @@ const PORT = 10110;
 const getNewToken = () => {
   console.log(`\n🔑 ${yellowBright(bold('Login required'))}`);
 
-  return askQuestion(` Your browser will open to complete authentication. ${bold('Confirm?')}`).then(next => {
+  return askQuestion(
+    ` Your browser will open to complete authentication. ${bold('Confirm?')}`
+  ).then(next => {
     if (!next) {
       throw new Error('aborted');
     }

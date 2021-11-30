@@ -89,7 +89,12 @@ export class SelectPrompt extends Prompt {
 
     // Print prompt
     this.out.write(
-      [style.symbol(this.done, this.aborted), bold(this.msg), style.delimiter(false), this.done ? green(this.values[this.cursor].title.split(' ')[0]) : gray(this.hint)].join(' '),
+      [
+        style.symbol(this.done, this.aborted),
+        bold(this.msg),
+        style.delimiter(false),
+        this.done ? green(this.values[this.cursor].title.split(' ')[0]) : gray(this.hint),
+      ].join(' ')
     );
 
     // Print choices
@@ -102,7 +107,7 @@ export class SelectPrompt extends Prompt {
               let prefix = this.cursor === i ? cyan(figures.pointer) + ' ' : '  ';
               return `${prefix} ${title}`;
             })
-            .join('\n'),
+            .join('\n')
       );
     }
   }

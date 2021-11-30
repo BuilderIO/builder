@@ -17,11 +17,13 @@ const symbols = Object.freeze({
   default: cyan('?'),
 });
 
-const symbol = (done, aborted) => (aborted ? symbols.aborted : done ? symbols.done : symbols.default);
+const symbol = (done, aborted) =>
+  aborted ? symbols.aborted : done ? symbols.done : symbols.default;
 
 // between the question and the user's input.
 const delimiter = completing => gray(completing ? figures.ellipsis : figures.pointerSmall);
 
-const item = (expandable, expanded) => gray(expandable ? (expanded ? figures.pointerSmall : '+') : figures.line);
+const item = (expandable, expanded) =>
+  gray(expandable ? (expanded ? figures.pointerSmall : '+') : figures.line);
 
 export { styles, render, symbols, symbol, delimiter, item };

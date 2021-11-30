@@ -26,7 +26,8 @@ export async function prompt(questions = [], { onSubmit = noop, onCancel = noop 
     for (let key in question) {
       if (ignore.includes(key)) continue;
       let value = question[key];
-      question[key] = typeof value === 'function' ? await value(answer, { ...answers }, question) : value;
+      question[key] =
+        typeof value === 'function' ? await value(answer, { ...answers }, question) : value;
     }
 
     if (typeof question.message !== 'string') {
