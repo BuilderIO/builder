@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "allowJs": true,
+    "module": "esnext",
+    "target": "es2019",
+    "strict": true,
+    "noEmitOnError": false,
+    "sourceMap": false,
+    "declaration": false,
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "outDir": "dist/src"
+  },
+  "files": [
+    "src/index.ts",
+  ],
+  "include": [
+    "autogen/client/*.js"
+  ]
+}
