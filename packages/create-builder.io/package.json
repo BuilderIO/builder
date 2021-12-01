@@ -2,11 +2,11 @@
   "name": "create-builder.io",
   "version": "0.0.1",
   "description": "Quickly create a new builder.io application: npm init builder.io",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node dist/index.js",
     "build.bundle": "rollup -c",
-    "minify": "terser --compress --mangle --toplevel --output index.js -- index.js",
+    "minify": "terser --compress --mangle --toplevel --output dist/index.js -- dist/index.js",
     "build": "npm run build.bundle && npm run minify",
     "build.dev": "npm run build.bundle",
     "dev": "npm run build.dev && npm start",
@@ -15,14 +15,16 @@
     "release": "np"
   },
   "files": [
-    "index.js"
+    "dist/index.js"
   ],
   "engines": {
     "node": ">=10.0.0",
     "npm": ">=6.0.0"
   },
   "bin": {
-    "create-builder": "index.js"
+    "create-builder.io": "dist/index.js",
+    "create-builderio": "dist/index.js",
+    "create-builder": "dist/index.js"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "21.0.1",
