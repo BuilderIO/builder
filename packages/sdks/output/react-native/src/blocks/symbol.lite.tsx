@@ -1,8 +1,8 @@
-import * as React from 'react';
-import { View, StyleSheet, Image, Text } from 'react-native';
-import { useContext } from 'react';
-import RenderContent from '../components/render-content.lite';
-import BuilderContext from '../context/builder.context.lite';
+import * as React from "react";
+import { View, StyleSheet, Image, Text } from "react-native";
+import { useContext } from "react";
+import RenderContent from "../components/render-content.lite";
+import BuilderContext from "../context/builder.context.lite";
 
 export default function Symbol(props) {
   const builderContext = useContext(BuilderContext);

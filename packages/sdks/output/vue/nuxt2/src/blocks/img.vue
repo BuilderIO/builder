@@ -11,30 +11,36 @@
   />
 </template>
 <script>
-import { isEditing } from '../functions/is-editing';
+import { isEditing } from "../functions/is-editing";
 
-import { registerComponent } from '@builder.io/sdk-vue';
+import { registerComponent } from "@builder.io/sdk-vue";
 
 export default registerComponent(
   {
-    name: 'builder-img-component',
+    name: "builder-img-component",
 
-    props: ['backgroundSize', 'backgroundPosition', 'attributes', 'imgSrc', 'altText'],
+    props: [
+      "backgroundSize",
+      "backgroundPosition",
+      "attributes",
+      "imgSrc",
+      "altText",
+    ],
 
     data: () => ({ isEditing }),
   },
   {
-    name: 'Raw:Img',
+    name: "Raw:Img",
     hideFromInsertMenu: true,
     builtIn: true,
     image:
-      'https://firebasestorage.googleapis.com/v0/b/builder-3b0a2.appspot.com/o/images%2Fbaseline-insert_photo-24px.svg?alt=media&token=4e5d0ef4-f5e8-4e57-b3a9-38d63a9b9dc4',
+      "https://firebasestorage.googleapis.com/v0/b/builder-3b0a2.appspot.com/o/images%2Fbaseline-insert_photo-24px.svg?alt=media&token=4e5d0ef4-f5e8-4e57-b3a9-38d63a9b9dc4",
     inputs: [
       {
-        name: 'image',
+        name: "image",
         bubble: true,
-        type: 'file',
-        allowedFileTypes: ['jpeg', 'jpg', 'png', 'svg'],
+        type: "file",
+        allowedFileTypes: ["jpeg", "jpg", "png", "svg"],
         required: true,
       },
     ],
