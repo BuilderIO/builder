@@ -68,8 +68,10 @@ function Shoe({ random, ...props }: any) {
     const t = state.clock.getElapsedTime() + random * 10000;
     const lerp = THREE.MathUtils.lerp(ref.current!.scale.z, hovered ? 1.4 : 1, 0.1);
 
-    const hoverColor = "red";
-    const positionPulse = 1 / 1.5;
+    // Change some of the code, live reload with update the editor automatically
+    const hoverColor = "red"; // Change to "yellow"
+    const positionPulse = 1 / 1.5; // Change 1.5 to 0.1
+    // Play with different value
     const rotationPulse = {
       x: 1 / 4,
       y: 1 / 4,
