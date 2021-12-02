@@ -48,12 +48,13 @@ export function killChildren() {
   childrenProcesses.forEach(p => p.kill('SIGINT'));
 }
 
-export function npm(command: string, projectPath: string, stdio: any = 'ignore') {
+export function npm(command: string, projectPath: string, stdio: any = 'ignore', env?: any) {
   return new Promise<void>((resolve, reject) => {
     const p = spawn(IS_YARN ? 'yarn' : 'npm', [command], {
       shell: true,
       stdio,
       cwd: projectPath,
+      env,
     });
     p.once('exit', () => resolve());
     p.once('error', reject);
@@ -66,7 +67,7 @@ export function npmInstall(projectPath: string) {
   return new Promise<void>((resolve, reject) => {
     const commands = IS_YARN
       ? ['--silent', '--ignore-engines', '--no-node-version-check']
-      : ['install', '--loglevel=error', '--no-audit', '--no-fund'];
+      : ['install', '--loglevel=error', '--no-audit', '--no-fund', '--no-update-notifier'];
     const p = spawn(IS_YARN ? 'yarn' : 'npm', commands, {
       shell: true,
       stdio: 'inherit',
@@ -135,9 +136,9 @@ export function nodeVersionWarning() {
     const v = process.version.replace('v', '').split('.');
     const major = parseInt(v[0], 10);
     if (major < 14) {
-      console.log(
+      console.error(
         yellow(
-          `Your current version of Node is ${process.version}, however the recommendation is a minimum of Node v14. Note that future versions of Builder will eventually remove support for non-LTS Node versions.`
+          `Your current version of Node is ${process.version}, however the recommendation is a minimum of Node v14. Use nvm to easy switch between nodejs versions: https://github.com/nvm-sh/nvm`
         )
       );
     }

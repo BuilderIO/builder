@@ -80,9 +80,11 @@ ${dim('Opening dev server and editor in the browser:')}
   ${green('✔')} ${dim(terminalPrompt())} ${green(START)}
 `);
       setTimeout(() => {
-        openBuilder(projectName, 3000);
+        openBuilder(projectName, starter, 3000);
       }, 2000);
-      await npm('start', projectName, 'inherit');
+      await npm('start', projectName, 'inherit', {
+        BROWSER: 'none',
+      });
     } else {
       console.log('\n  aborting...');
     }
