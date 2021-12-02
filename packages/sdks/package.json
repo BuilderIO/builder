@@ -18,7 +18,7 @@
     "./solid/*": "./dist/solid/src/*.js"
   },
   "dependencies": {
-    "@builder.io/mitosis-cli": "0.0.6",
+    "@builder.io/mitosis-cli": "0.0.8",
     "node-fetch": "^2.6.1"
   },
   "devDependencies": {
