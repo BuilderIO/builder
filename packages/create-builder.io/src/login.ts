@@ -109,13 +109,10 @@ const getNewToken = () => {
       const server = http
         .createServer((req, res) => {
           const parsedUrl = new URL(req.url!, 'http://localhost:10110/');
-          console.log('parsedUrl.pathname', parsedUrl.pathname);
-          console.log('req.method', req.method);
           if (parsedUrl.pathname !== '/auth') {
             reject(new Error('Bad path'));
             return;
           }
-          console.log(req.url);
           const queryAsObject = parsedUrl.searchParams;
           const privateKey = queryAsObject.get('p-key');
           if (!privateKey) {
