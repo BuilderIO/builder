@@ -1,6 +1,6 @@
 {
   "name": "create-builder.io",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Quickly create a new builder.io application: npm init builder.io",
   "main": "dist/index.js",
   "scripts": {
@@ -11,8 +11,7 @@
     "build.dev": "npm run build.bundle",
     "dev": "npm run build.dev && npm start",
     "version": "npm build",
-    "fmt": "prettier --write src",
-    "release": "np --no-release-draft --no-yarn --contents=dist"
+    "fmt": "prettier --write src"
   },
   "files": [
     "dist/index.js"
