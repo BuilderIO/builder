@@ -1,10 +1,11 @@
 import open from 'open';
 import os from 'os';
+import { Starter } from './starters';
 
 export const HOST = 'http://beta.builder.io';
-export const openBuilder = async (projectName: string, port: number = 3000) => {
+export const openBuilder = async (projectName: string, starter: Starter, port: number = 3000) => {
   const overridePreviewUrl = encodeURIComponent(`http://localhost:${port}`);
-  const url = `${HOST}/onboarding/starter?overridePreviewUrl=${overridePreviewUrl}&project_name=${projectName}`;
+  const url = `${HOST}/onboarding/starter?overridePreviewUrl=${overridePreviewUrl}&project_name=${projectName}&starter=${starter.name}`;
   console.log(`🌐 Visit this URL on this device to open the editor:\n  ${url}`);
   await open(url, {
     app: {
