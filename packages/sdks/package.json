@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "scripts": {
     "build": "mitosis build",
-    "lint": "eslint",
+    "lint": "prettier --write .",
     "start": "watch 'npm run build' ./src ./overrides",
     "test": "jest",
     "ci:build": "npm run build",
