@@ -11,39 +11,39 @@
   <span v-bind="attributes" v-else="">{{ text }}</span>
 </template>
 <script>
-import { registerComponent } from "@builder.io/sdk-vue";
+import { registerComponent } from '@builder.io/sdk-vue';
 
 export default registerComponent(
   {
-    name: "builder-button",
+    name: 'builder-button',
 
-    props: ["attributes", "text", "link", "openLinkInNewTab"],
+    props: ['attributes', 'text', 'link', 'openLinkInNewTab'],
   },
   {
-    name: "Core:Button",
+    name: 'Core:Button',
     builtIn: true,
     image:
-      "https://cdn.builder.io/api/v1/image/assets%2FIsxPKMo2gPRRKeakUztj1D6uqed2%2F81a15681c3e74df09677dfc57a615b13",
+      'https://cdn.builder.io/api/v1/image/assets%2FIsxPKMo2gPRRKeakUztj1D6uqed2%2F81a15681c3e74df09677dfc57a615b13',
     defaultStyles: {
-      appearance: "none",
-      paddingTop: "15px",
-      paddingBottom: "15px",
-      paddingLeft: "25px",
-      paddingRight: "25px",
-      backgroundColor: "#000000",
-      color: "white",
-      borderRadius: "4px",
-      textAlign: "center",
-      cursor: "pointer",
+      appearance: 'none',
+      paddingTop: '15px',
+      paddingBottom: '15px',
+      paddingLeft: '25px',
+      paddingRight: '25px',
+      backgroundColor: '#000000',
+      color: 'white',
+      borderRadius: '4px',
+      textAlign: 'center',
+      cursor: 'pointer',
     },
     inputs: [
-      { name: "text", type: "text", defaultValue: "Click me!", bubble: true },
-      { name: "link", type: "url", bubble: true },
+      { name: 'text', type: 'text', defaultValue: 'Click me!', bubble: true },
+      { name: 'link', type: 'url', bubble: true },
       {
-        name: "openLinkInNewTab",
-        type: "boolean",
+        name: 'openLinkInNewTab',
+        type: 'boolean',
         defaultValue: false,
-        friendlyName: "Open link in new tab",
+        friendlyName: 'Open link in new tab',
       },
     ],
     static: true,

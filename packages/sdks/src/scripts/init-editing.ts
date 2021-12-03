@@ -64,7 +64,7 @@ if (isBrowser()) {
           } else {
             if (result && typeof result.then === 'function') {
               (result as Promise<any>)
-                .then(finalResult => {
+                .then((finalResult) => {
                   window.parent?.postMessage(
                     {
                       type: 'builder.evaluateResult',

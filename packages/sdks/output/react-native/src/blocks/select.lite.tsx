@@ -1,7 +1,7 @@
-import * as React from "react";
-import { View, StyleSheet, Image, Text } from "react-native";
-import { useContext } from "react";
-import { isEditing } from "../functions/is-editing";
+import * as React from 'react';
+import { View, StyleSheet, Image, Text } from 'react-native';
+import { useContext } from 'react';
+import { isEditing } from '../functions/is-editing';
 
 export default function SelectComponent(props) {
   return (
@@ -9,7 +9,7 @@ export default function SelectComponent(props) {
       {...props.attributes}
       value={props.value}
       key={
-        isEditing() && props.defaultValue ? props.defaultValue : "default-key"
+        isEditing() && props.defaultValue ? props.defaultValue : 'default-key'
       }
       defaultValue={props.defaultValue}
       name={props.name}

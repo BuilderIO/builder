@@ -1,7 +1,8 @@
 import { sizes } from '../constants/device-sizes';
 import { BuilderBlock } from '../types/builder-block';
 
-const camelCaseToDashCase = (str = '') => str.replace(/[A-Z]/g, match => '-' + match.toLowerCase());
+const camelCaseToDashCase = (str = '') =>
+  str.replace(/[A-Z]/g, (match) => '-' + match.toLowerCase());
 
 const convertStyleObject = (obj: Record<string, string>) => {
   if (!obj) {

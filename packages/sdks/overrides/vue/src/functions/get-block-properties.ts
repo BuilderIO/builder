@@ -18,7 +18,9 @@ export function getBlockProperties(block: BuilderBlock) {
     ...block.properties,
     'builder-id': block.id,
     class: classStringToObject(
-      [block.id, 'builder-block', block.class, block.properties?.class].filter(Boolean).join(' ')
+      [block.id, 'builder-block', block.class, block.properties?.class]
+        .filter(Boolean)
+        .join(' ')
     ),
   };
 }

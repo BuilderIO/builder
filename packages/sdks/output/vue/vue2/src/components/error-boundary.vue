@@ -9,7 +9,9 @@ export default {
     this.error = true;
   },
   render(h) {
-    return this.error ? h('p', 'Builder.io render error') : this.$slots.default[0];
+    return this.error
+      ? h('p', 'Builder.io render error')
+      : this.$slots.default[0];
   },
 };
 </script>

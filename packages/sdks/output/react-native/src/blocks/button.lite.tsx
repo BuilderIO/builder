@@ -1,6 +1,6 @@
-import * as React from "react";
-import { View, StyleSheet, Image, Text } from "react-native";
-import { useContext } from "react";
+import * as React from 'react';
+import { View, StyleSheet, Image, Text } from 'react-native';
+import { useContext } from 'react';
 
 export default function Button(props) {
   return (
@@ -11,7 +11,7 @@ export default function Button(props) {
             {...props.attributes}
             role="button"
             href={props.link}
-            target={props.openLinkInNewTab ? "_blank" : undefined}
+            target={props.openLinkInNewTab ? '_blank' : undefined}
           >
             <Text>{props.text}</Text>
           </View>

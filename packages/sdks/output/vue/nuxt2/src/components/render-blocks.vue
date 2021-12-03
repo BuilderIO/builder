@@ -5,7 +5,12 @@
     :builder-parent-id="parent"
     @click="onClick"
     @mouseenter="onMouseEnter"
-    :class="_classStringToObject('builder-blocks' + (!(this.blocks && this.blocks.length) ? ' no-blocks' : ''))"
+    :class="
+      _classStringToObject(
+        'builder-blocks' +
+          (!(this.blocks && this.blocks.length) ? ' no-blocks' : '')
+      )
+    "
   >
     <render-block
       v-for="(block, index) in blocks"
@@ -15,26 +20,26 @@
   </div>
 </template>
 <script>
-import { isEditing } from "../functions/is-editing";
-import RenderBlock from "./render-block";
+import { isEditing } from '../functions/is-editing';
+import RenderBlock from './render-block';
 
 export default {
-  name: "render-blocks",
-  components: { "render-block": async () => RenderBlock },
-  props: ["blocks", "parent", "path"],
+  name: 'render-blocks',
+  components: { 'render-block': async () => RenderBlock },
+  props: ['blocks', 'parent', 'path'],
 
   methods: {
     onClick() {
       if (isEditing() && !this.blocks?.length) {
         window.parent?.postMessage(
           {
-            type: "builder.clickEmptyBlocks",
+            type: 'builder.clickEmptyBlocks',
             data: {
               parentElementId: this.parent,
               dataPath: this.path,
             },
           },
-          "*"
+          '*'
         );
       }
     },
@@ -42,19 +47,19 @@ export default {
       if (isEditing() && !this.blocks?.length) {
         window.parent?.postMessage(
           {
-            type: "builder.hoverEmptyBlocks",
+            type: 'builder.hoverEmptyBlocks',
             data: {
               parentElementId: this.parent,
               dataPath: this.path,
             },
           },
-          "*"
+          '*'
         );
       }
     },
     _classStringToObject(str) {
       const obj = {};
-      if (typeof str !== "string") {
+      if (typeof str !== 'string') {
         return obj;
       }
       const classNames = str.trim().split(/\s+/);

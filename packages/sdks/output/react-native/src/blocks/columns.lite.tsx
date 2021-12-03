@@ -1,11 +1,11 @@
-import * as React from "react";
-import { View, StyleSheet, Image, Text } from "react-native";
-import { useState, useContext } from "react";
-import RenderBlocks from "../components/render-blocks.lite";
+import * as React from 'react';
+import { View, StyleSheet, Image, Text } from 'react-native';
+import { useState, useContext } from 'react';
+import RenderBlocks from '../components/render-blocks.lite';
 
 export default function Columns(props) {
   function getGutterSize() {
-    return typeof props.space === "number" ? props.space || 0 : 20;
+    return typeof props.space === 'number' ? props.space || 0 : 20;
   }
 
   function getColumns() {
@@ -36,6 +36,6 @@ export default function Columns(props) {
 }
 
 const styles = StyleSheet.create({
-  view1: { display: "flex", alignItems: "stretch" },
+  view1: { display: 'flex', alignItems: 'stretch' },
   view2: { flexGrow: 1 },
 });

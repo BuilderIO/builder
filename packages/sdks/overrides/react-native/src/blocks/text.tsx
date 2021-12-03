@@ -52,10 +52,17 @@ function getCss(block: BuilderBlock) {
   return str;
 }
 
-export default function Text(props: { text: string; builderBlock: BuilderBlock }) {
+export default function Text(props: {
+  text: string;
+  builderBlock: BuilderBlock;
+}) {
   return (
     <HTML
-      source={{ html: `<div style="${getCss(props.builderBlock)}">${props.text || ''}</div>` }}
+      source={{
+        html: `<div style="${getCss(props.builderBlock)}">${
+          props.text || ''
+        }</div>`,
+      }}
     />
   );
 }

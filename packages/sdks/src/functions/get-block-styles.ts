@@ -8,10 +8,12 @@ export function getBlockStyles(block: BuilderBlock) {
   };
 
   if (block.responsiveStyles?.medium) {
-    styles[`@media (max-width: ${sizes.medium})`] = block.responsiveStyles?.medium;
+    styles[`@media (max-width: ${sizes.medium})`] =
+      block.responsiveStyles?.medium;
   }
   if (block.responsiveStyles?.small) {
-    styles[`@media (max-width: ${sizes.small})`] = block.responsiveStyles?.small;
+    styles[`@media (max-width: ${sizes.small})`] =
+      block.responsiveStyles?.small;
   }
 
   return styles;

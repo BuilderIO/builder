@@ -41,6 +41,7 @@
     "jest": "^27.0.6",
     "jest-fetch-mock": "^3.0.3",
     "json5": "^2.2.0",
+    "prettier": "^2.5.0",
     "react": "^17.0.2",
     "react-native": "^0.64.2",
     "react-native-render-html": "^5.1.1",

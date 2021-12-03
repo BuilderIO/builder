@@ -1,7 +1,11 @@
 import { evaluate } from './evaluate';
 import { set } from './set';
 
-export function getProcessedBlock(options: { block: any; state: any; context: any }) {
+export function getProcessedBlock(options: {
+  block: any;
+  state: any;
+  context: any;
+}) {
   const { block, state, context } = options;
   if (!block.bindings) {
     return block;

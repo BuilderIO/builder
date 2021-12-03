@@ -17,7 +17,11 @@ test('Can process bindings', () => {
       'properties.isEditing': 'builder.isEditing',
     },
   };
-  const processed = getProcessedBlock({ block, context: {}, state: { test: 'hello' } });
+  const processed = getProcessedBlock({
+    block,
+    context: {},
+    state: { test: 'hello' },
+  });
   expect(processed).not.toEqual(block);
   expect(processed.properties.foo).toEqual('baz');
   expect((processed.properties as any).test).toEqual('hello');

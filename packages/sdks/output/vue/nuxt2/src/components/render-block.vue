@@ -27,7 +27,7 @@
     ></render-block>
   </component>
   <component
-    v-bind="(componentInfo && componentInfo.options)"
+    v-bind="componentInfo && componentInfo.options"
     v-else=""
     :attributes="properties"
     :builderBlock="useBlock"
@@ -37,27 +37,27 @@
   ></component>
 </template>
 <script>
-import { getBlockComponentOptions } from "../functions/get-block-component-options";
-import { getBlockProperties } from "../functions/get-block-properties";
-import { getBlockStyles } from "../functions/get-block-styles";
-import { getBlockTag } from "../functions/get-block-tag";
-import { components } from "../functions/register-component";
-import BuilderContext from "../context/builder.context";
-import { getBlockActions } from "../functions/get-block-actions";
-import { getProcessedBlock } from "../functions/get-processed-block";
-import BlockStyles from "./block-styles";
-import RenderBlocks from "./render-blocks";
+import { getBlockComponentOptions } from '../functions/get-block-component-options';
+import { getBlockProperties } from '../functions/get-block-properties';
+import { getBlockStyles } from '../functions/get-block-styles';
+import { getBlockTag } from '../functions/get-block-tag';
+import { components } from '../functions/register-component';
+import BuilderContext from '../context/builder.context';
+import { getBlockActions } from '../functions/get-block-actions';
+import { getProcessedBlock } from '../functions/get-processed-block';
+import BlockStyles from './block-styles';
+import RenderBlocks from './render-blocks';
 
 export default {
-  name: "render-block",
+  name: 'render-block',
   components: {
-    "block-styles": async () => BlockStyles,
-    "render-blocks": async () => RenderBlocks,
+    'block-styles': async () => BlockStyles,
+    'render-blocks': async () => RenderBlocks,
   },
-  props: ["block"],
+  props: ['block'],
 
   inject: {
-    builderContext: "BuilderContext",
+    builderContext: 'BuilderContext',
   },
 
   computed: {

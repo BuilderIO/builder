@@ -34,7 +34,8 @@ export default function Columns(props: ColumnProps) {
     getColumnCssWidth(index: number) {
       const columns = this.getColumns();
       const gutterSize = this.getGutterSize();
-      const subtractWidth = (gutterSize * (columns.length - 1)) / columns.length;
+      const subtractWidth =
+        (gutterSize * (columns.length - 1)) / columns.length;
       return `calc(${this.getWidth(index)}% - ${subtractWidth}px)`;
     },
   });
@@ -143,7 +144,8 @@ registerComponent({
         {
           name: 'link',
           type: 'url',
-          helperText: 'Optionally set a url that clicking this column will link to',
+          helperText:
+            'Optionally set a url that clicking this column will link to',
         },
       ],
       defaultValue: [
@@ -307,7 +309,8 @@ registerComponent({
       name: 'reverseColumnsWhenStacked',
       type: 'boolean',
       defaultValue: false,
-      helperText: 'When stacking columns for mobile devices, reverse the ordering',
+      helperText:
+        'When stacking columns for mobile devices, reverse the ordering',
       advanced: true,
     },
   ],
