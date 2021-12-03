@@ -1,9 +1,9 @@
 <template>
-  <div class="div-b9rp5gat7n4">
+  <div class="div-1rp9odcxpsx">
     <picture>
       <img
         loading="lazy"
-        class="img-b9rp5gat7n4"
+        class="img-1rp9odcxpsx"
         :alt="altText"
         :aria-role="altText ? 'presentation' : undefined"
         :style="{
@@ -23,7 +23,7 @@
     </picture>
 
     <div
-      class="builder-image-sizer div-b9rp5gat7n4-2"
+      class="builder-image-sizer div-1rp9odcxpsx-2"
       v-if="aspectRatio && !(fitContent && ((builderBlock && builderBlock.children) && (builderBlock && builderBlock.children).length))"
       :style="{
         paddingTop: aspectRatio * 100 + '%',
@@ -34,7 +34,7 @@
 
     <slot></slot>
 
-    <div class="div-b9rp5gat7n4-3" v-if="!fitContent">
+    <div class="div-1rp9odcxpsx-3" v-if="!fitContent">
       <slot></slot>
     </div>
   </div>
@@ -159,10 +159,10 @@ export default registerComponent(
 );
 </script>
 <style scoped>
-.div-b9rp5gat7n4 {
+.div-1rp9odcxpsx {
   position: relative;
 }
-.img-b9rp5gat7n4 {
+.img-1rp9odcxpsx {
   opacity: 1;
   transition: opacity 0.2s ease-in-out;
   position: absolute;
@@ -171,12 +171,12 @@ export default registerComponent(
   top: 0px;
   left: 0px;
 }
-.div-b9rp5gat7n4-2 {
+.div-1rp9odcxpsx-2 {
   width: 100%;
   pointer-events: none;
   font-size: 0;
 }
-.div-b9rp5gat7n4-3 {
+.div-1rp9odcxpsx-3 {
   display: flex;
   flex-direction: column;
   align-items: stretch;
