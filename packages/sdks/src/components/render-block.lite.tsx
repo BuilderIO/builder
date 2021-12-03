@@ -84,15 +84,25 @@ export default function RenderBlock(props: RenderBlockProps) {
         <state.tagName {...state.properties} style={state.css}>
           <BlockStyles block={state.useBlock} />
           {state.componentRef && (
-            <state.componentRef {...state.componentOptions} builderBlock={state.useBlock}>
+            <state.componentRef
+              {...state.componentOptions}
+              builderBlock={state.useBlock}
+            >
               {/* Maybe only include if `canHaveChildren: true` */}
               <Show when={state.useBlock.children}>
-                <RenderBlocks path="children" blocks={state.useBlock.children} />
+                <RenderBlocks
+                  path="children"
+                  blocks={state.useBlock.children}
+                />
               </Show>
             </state.componentRef>
           )}
           <Show
-            when={!state.componentRef && state.useBlock.children && state.useBlock.children.length}
+            when={
+              !state.componentRef &&
+              state.useBlock.children &&
+              state.useBlock.children.length
+            }
           >
             <For each={state.useBlock.children}>
               {(child: any) => <RenderBlock block={child} />}

@@ -9,7 +9,7 @@
     @submit="onSubmit(event)"
   >
     <render-block
-      v-for="(block, index) in (builderBlock && builderBlock.children)"
+      v-for="(block, index) in builderBlock && builderBlock.children"
       :block="block"
       :key="index"
     ></render-block>
@@ -27,7 +27,7 @@
     ></builder-blocks>
 
     <pre
-      class="builder-form-error-text pre-5r63lmism48"
+      class="builder-form-error-text pre-2hxd3dhvji0"
       v-if="submissionState === 'error' && responseData"
     >
         {{ JSON.stringify(responseData, null, 2) }}
@@ -88,7 +88,8 @@ export default registerComponent(
 
     methods: {
       onSubmit(event) {
-        const sendWithJs = this.sendWithJs || this.sendSubmissionsTo === 'email';
+        const sendWithJs =
+          this.sendWithJs || this.sendSubmissionsTo === 'email';
 
         if (this.sendSubmissionsTo === 'zapier') {
           event.preventDefault();
@@ -107,8 +108,8 @@ export default registerComponent(
           const formPairs = Array.from(
             event.currentTarget.querySelectorAll('input,select,textarea')
           )
-            .filter(el => !!el.name)
-            .map(el => {
+            .filter((el) => !!el.name)
+            .map((el) => {
               let value;
               const key = el.name;
 
@@ -198,7 +199,9 @@ export default registerComponent(
 
           this.state = 'sending';
           const formUrl = `${
-            builder.env === 'dev' ? 'http://localhost:5000' : 'https://builder.io'
+            builder.env === 'dev'
+              ? 'http://localhost:5000'
+              : 'https://builder.io'
           }/api/v1/form-submit?apiKey=${builder.apiKey}&to=${btoa(
             this.sendSubmissionsToEmail || ''
           )}&name=${encodeURIComponent(this.name || '')}`;
@@ -211,11 +214,14 @@ export default registerComponent(
               method: this.method || 'post',
             }
           ).then(
-            async res => {
+            async (res) => {
               let body;
               const contentType = res.headers.get('content-type');
 
-              if (contentType && contentType.indexOf('application/json') !== -1) {
+              if (
+                contentType &&
+                contentType.indexOf('application/json') !== -1
+              ) {
                 body = await res.json();
               } else {
                 body = await res.text();
@@ -279,7 +285,7 @@ export default registerComponent(
                 }
               }
             },
-            err => {
+            (err) => {
               const submitErrorEvent = new CustomEvent('submit:error', {
                 detail: {
                   error: err,
@@ -318,7 +324,8 @@ export default registerComponent(
           {
             label: 'Send to email',
             value: 'email',
-            helperText: 'Send form submissions to the email address of your choosing',
+            helperText:
+              'Send form submissions to the email address of your choosing',
           },
           {
             label: 'Custom',
@@ -355,7 +362,11 @@ export default registerComponent(
         type: 'string',
         defaultValue: 'application/json',
         advanced: true,
-        enum: ['application/json', 'multipart/form-data', 'application/x-www-form-urlencoded'],
+        enum: [
+          'application/json',
+          'multipart/form-data',
+          'application/x-www-form-urlencoded',
+        ],
         showIf:
           'options.get("sendSubmissionsTo") === "custom" && options.get("sendWithJs") === true',
       },
@@ -379,7 +390,8 @@ export default registerComponent(
       {
         name: 'successUrl',
         type: 'url',
-        helperText: 'Optional URL to redirect the user to on form submission success',
+        helperText:
+          'Optional URL to redirect the user to on form submission success',
         showIf:
           'options.get("sendSubmissionsTo") !== "zapier" && options.get("sendWithJs") === true',
       },
@@ -422,13 +434,13 @@ export default registerComponent(
             '@type': '@builder.io/sdk:Element',
             responsiveStyles: { large: { marginTop: '10px' } },
             bindings: {
-              'component.options.text': 'state.formErrorMessage || block.component.options.text',
+              'component.options.text':
+                'state.formErrorMessage || block.component.options.text',
             },
             component: {
               name: 'Text',
               options: {
-                text:
-                  '<span>Form submission error :( Please check your answers and try again</span>',
+                text: '<span>Form submission error :( Please check your answers and try again</span>',
               },
             },
           },
@@ -503,7 +515,7 @@ export default registerComponent(
 );
 </script>
 <style scoped>
-.pre-5r63lmism48 {
+.pre-2hxd3dhvji0 {
   padding: 10px;
   color: red;
   text-align: center;

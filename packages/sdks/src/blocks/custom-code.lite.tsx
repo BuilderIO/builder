@@ -31,9 +31,11 @@ export default function CustomCode(props: CustomCodeProps) {
             document.head.appendChild(newScript);
           } else if (
             !script.type ||
-            ['text/javascript', 'application/javascript', 'application/ecmascript'].includes(
-              script.type
-            )
+            [
+              'text/javascript',
+              'application/javascript',
+              'application/ecmascript',
+            ].includes(script.type)
           ) {
             if (state.scriptsRun.includes(script.innerText)) {
               continue;
@@ -57,7 +59,9 @@ export default function CustomCode(props: CustomCodeProps) {
   return (
     <div
       ref={elem}
-      class={'builder-custom-code' + (props.replaceNodes ? ' replace-nodes' : '')}
+      class={
+        'builder-custom-code' + (props.replaceNodes ? ' replace-nodes' : '')
+      }
       innerHTML={props.code}
     ></div>
   );

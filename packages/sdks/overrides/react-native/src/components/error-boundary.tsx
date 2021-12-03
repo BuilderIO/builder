@@ -19,7 +19,9 @@ export default class ErrorBoundary extends React.Component<any, any> {
 
   render() {
     if (this.state.hasError) {
-      return <Text style={{ color: 'gray' }}>Error rendering Builder.io block</Text>;
+      return (
+        <Text style={{ color: 'gray' }}>Error rendering Builder.io block</Text>
+      );
     }
 
     return this.props.children;

@@ -45,7 +45,9 @@ export type GetContentOptions = {
   options?: Record<string, any>;
 };
 
-export async function getContent(options: GetContentOptions): Promise<BuilderContent | null> {
+export async function getContent(
+  options: GetContentOptions
+): Promise<BuilderContent | null> {
   return (await getAllContent({ ...options, limit: 1 })).results[0] || null;
 }
 
@@ -80,7 +82,7 @@ export async function getAllContent(options: GetContentOptions) {
     }
   }
 
-  const content = await fetch(url.href).then(res => res.json());
+  const content = await fetch(url.href).then((res) => res.json());
 
   if (testGroups) {
     for (const item of content.results) {
@@ -102,7 +104,8 @@ export async function getAllContent(options: GetContentOptions) {
             n += testRatio!;
             if (random < n) {
               const variationName =
-                variation.name || (variation.id === item.id ? 'Default variation' : '');
+                variation.name ||
+                (variation.id === item.id ? 'Default variation' : '');
               set = true;
               Object.assign(item, {
                 data: variation.data,

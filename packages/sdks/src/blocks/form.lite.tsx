@@ -35,7 +35,8 @@ export default function FormComponent(props: FormProps) {
       return (Builder.isEditing && props.previewState) || state.state;
     },
     onSubmit(event: Event & { currentTarget: HTMLFormElement }) {
-      const sendWithJs = props.sendWithJs || props.sendSubmissionsTo === 'email';
+      const sendWithJs =
+        props.sendWithJs || props.sendSubmissionsTo === 'email';
 
       if (props.sendSubmissionsTo === 'zapier') {
         event.preventDefault();
@@ -57,9 +58,11 @@ export default function FormComponent(props: FormProps) {
         const formPairs: {
           key: string;
           value: File | boolean | number | string | FileList;
-        }[] = Array.from(event.currentTarget.querySelectorAll('input,select,textarea'))
-          .filter(el => !!(el as HTMLInputElement).name)
-          .map(el => {
+        }[] = Array.from(
+          event.currentTarget.querySelectorAll('input,select,textarea')
+        )
+          .filter((el) => !!(el as HTMLInputElement).name)
+          .map((el) => {
             let value: any;
             const key = (el as HTMLImageElement).name;
             if (el instanceof HTMLInputElement) {
@@ -159,7 +162,7 @@ export default function FormComponent(props: FormProps) {
             method: props.method || 'post',
           }
         ).then(
-          async res => {
+          async (res) => {
             let body;
             const contentType = res.headers.get('content-type');
             if (contentType && contentType.indexOf('application/json') !== -1) {
@@ -221,7 +224,7 @@ export default function FormComponent(props: FormProps) {
               }
             }
           },
-          err => {
+          (err) => {
             const submitErrorEvent = new CustomEvent('submit:error', {
               detail: {
                 error: err,
@@ -251,11 +254,13 @@ export default function FormComponent(props: FormProps) {
       action={!props.sendWithJs && props.action}
       method={props.method}
       name={props.name}
-      onSubmit={event => state.onSubmit(event)}
+      onSubmit={(event) => state.onSubmit(event)}
       {...props.attributes}
     >
       <Show when={props.builderBlock && props.builderBlock.children}>
-        <For each={props.builderBlock?.children}>{block => <RenderBlock block={block} />}</For>
+        <For each={props.builderBlock?.children}>
+          {(block) => <RenderBlock block={block} />}
+        </For>
       </Show>
 
       <Show when={state.submissionState === 'error'}>
@@ -263,7 +268,10 @@ export default function FormComponent(props: FormProps) {
       </Show>
 
       <Show when={state.submissionState === 'sending'}>
-        <BuilderBlocks dataPath="sendingMessage" blocks={props.sendingMessage!} />
+        <BuilderBlocks
+          dataPath="sendingMessage"
+          blocks={props.sendingMessage!}
+        />
       </Show>
 
       <Show when={state.submissionState === 'error' && state.responseData}>
@@ -276,7 +284,10 @@ export default function FormComponent(props: FormProps) {
       </Show>
 
       <Show when={state.submissionState === 'success'}>
-        <BuilderBlocks dataPath="successMessage" blocks={props.successMessage!} />
+        <BuilderBlocks
+          dataPath="successMessage"
+          blocks={props.successMessage!}
+        />
       </Show>
     </form>
   );
@@ -309,7 +320,8 @@ registerComponent({
         {
           label: 'Send to email',
           value: 'email',
-          helperText: 'Send form submissions to the email address of your choosing',
+          helperText:
+            'Send form submissions to the email address of your choosing',
         },
         {
           label: 'Custom',
@@ -352,8 +364,13 @@ registerComponent({
       defaultValue: 'application/json',
       advanced: true,
       // TODO: do automatically if file input
-      enum: ['application/json', 'multipart/form-data', 'application/x-www-form-urlencoded'],
-      showIf: 'options.get("sendSubmissionsTo") === "custom" && options.get("sendWithJs") === true',
+      enum: [
+        'application/json',
+        'multipart/form-data',
+        'application/x-www-form-urlencoded',
+      ],
+      showIf:
+        'options.get("sendSubmissionsTo") === "custom" && options.get("sendWithJs") === true',
     },
     {
       name: 'method',
@@ -370,18 +387,22 @@ registerComponent({
       defaultValue: 'unsubmitted',
       helperText:
         'Choose a state to edit, e.g. choose "success" to show what users see on success and edit the message',
-      showIf: 'options.get("sendSubmissionsTo") !== "zapier" && options.get("sendWithJs") === true',
+      showIf:
+        'options.get("sendSubmissionsTo") !== "zapier" && options.get("sendWithJs") === true',
     },
     {
       name: 'successUrl',
       type: 'url',
-      helperText: 'Optional URL to redirect the user to on form submission success',
-      showIf: 'options.get("sendSubmissionsTo") !== "zapier" && options.get("sendWithJs") === true',
+      helperText:
+        'Optional URL to redirect the user to on form submission success',
+      showIf:
+        'options.get("sendSubmissionsTo") !== "zapier" && options.get("sendWithJs") === true',
     },
     {
       name: 'resetFormOnSubmit',
       type: 'boolean',
-      showIf: "options.get('sendSubmissionsTo') === 'custom' && options.get('sendWithJs') === true",
+      showIf:
+        "options.get('sendSubmissionsTo') === 'custom' && options.get('sendWithJs') === true",
       advanced: true,
     },
     {
@@ -431,7 +452,8 @@ registerComponent({
             },
           },
           bindings: {
-            'component.options.text': 'state.formErrorMessage || block.component.options.text',
+            'component.options.text':
+              'state.formErrorMessage || block.component.options.text',
           },
           component: {
             name: 'Text',
@@ -470,7 +492,8 @@ registerComponent({
         type: 'string',
       },
       advanced: true,
-      showIf: 'options.get("sendSubmissionsTo") === "custom" && options.get("sendWithJs") === true',
+      showIf:
+        'options.get("sendSubmissionsTo") === "custom" && options.get("sendWithJs") === true',
     },
   ],
   noWrap: true,

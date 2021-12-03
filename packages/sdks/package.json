@@ -2,8 +2,8 @@
   "name": "@builder.io/sdks",
   "version": "0.0.1",
   "scripts": {
-    "build": "mitosis build",
-    "lint": "eslint",
+    "build": "mitosis build && npm run lint",
+    "lint": "prettier --write .",
     "start": "watch 'npm run build' ./src ./overrides",
     "test": "jest",
     "ci:build": "npm run build",
@@ -18,7 +18,7 @@
     "./solid/*": "./dist/solid/src/*.js"
   },
   "dependencies": {
-    "@builder.io/mitosis-cli": "0.0.6",
+    "@builder.io/mitosis-cli": "0.0.8",
     "node-fetch": "^2.6.1"
   },
   "devDependencies": {
@@ -41,6 +41,7 @@
     "jest": "^27.0.6",
     "jest-fetch-mock": "^3.0.3",
     "json5": "^2.2.0",
+    "prettier": "^2.5.0",
     "react": "^17.0.2",
     "react-native": "^0.64.2",
     "react-native-render-html": "^5.1.1",

@@ -2,7 +2,8 @@
   <span
     :class="
       _classStringToObject(
-        (this.attributes && this.attributes.class) || (this.attributes && this.attributes.className)
+        (this.attributes && this.attributes.class) ||
+          (this.attributes && this.attributes.className)
       )
     "
     v-html="text || ''"

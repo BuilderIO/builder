@@ -1,17 +1,22 @@
 <template>
   <div
-    class="div-1x7i0dgw6mn"
+    class="div-6gr0dfe3mlc"
     :builder-path="path"
     :builder-parent-id="parent"
     @click="onClick"
     @mouseenter="onMouseEnter"
     :class="
       _classStringToObject(
-        'builder-blocks' + (!(this.blocks && this.blocks.length) ? ' no-blocks' : '')
+        'builder-blocks' +
+          (!(this.blocks && this.blocks.length) ? ' no-blocks' : '')
       )
     "
   >
-    <render-block v-for="(block, index) in blocks" :block="block" :key="index"></render-block>
+    <render-block
+      v-for="(block, index) in blocks"
+      :block="block"
+      :key="index"
+    ></render-block>
   </div>
 </template>
 <script>
@@ -67,7 +72,7 @@ export default {
 };
 </script>
 <style scoped>
-.div-1x7i0dgw6mn {
+.div-6gr0dfe3mlc {
   display: flex;
   flex-direction: column;
   align-items: stretch;

@@ -85,18 +85,26 @@ export default function RenderBlock(props) {
             <BlockStyles block={useBlock()} />
 
             {componentRef() ? (
-              <ComponentRefRef {...componentOptions()} builderBlock={useBlock()}>
+              <ComponentRefRef
+                {...componentOptions()}
+                builderBlock={useBlock()}
+              >
                 {useBlock().children ? (
                   <>
-                    <RenderBlocks path="children" blocks={useBlock().children} />
+                    <RenderBlocks
+                      path="children"
+                      blocks={useBlock().children}
+                    />
                   </>
                 ) : null}
               </ComponentRefRef>
             ) : null}
 
-            {!componentRef() && useBlock().children && useBlock().children.length ? (
+            {!componentRef() &&
+            useBlock().children &&
+            useBlock().children.length ? (
               <>
-                {useBlock().children?.map(child => (
+                {useBlock().children?.map((child) => (
                   <RenderBlock block={child} />
                 ))}
               </>

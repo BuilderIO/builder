@@ -31,9 +31,11 @@ export default function FormComponent(props) {
       let body;
       const formData = new FormData(el); // TODO: maybe support null
 
-      const formPairs = Array.from(event.currentTarget.querySelectorAll('input,select,textarea'))
-        .filter(el => !!el.name)
-        .map(el => {
+      const formPairs = Array.from(
+        event.currentTarget.querySelectorAll('input,select,textarea')
+      )
+        .filter((el) => !!el.name)
+        .map((el) => {
           let value;
           const key = el.name;
 
@@ -126,7 +128,7 @@ export default function FormComponent(props) {
           : props.action /* TODO: throw error if no action URL */,
         { body, headers, method: props.method || 'post' }
       ).then(
-        async res => {
+        async (res) => {
           let body;
           const contentType = res.headers.get('content-type');
           if (contentType && contentType.indexOf('application/json') !== -1) {
@@ -135,15 +137,12 @@ export default function FormComponent(props) {
             body = await res.text();
           }
           if (!res.ok && props.errorMessagePath) {
-            /* TODO: allow supplying an error formatter function */ let message = get(
-              body,
-              props.errorMessagePath
-            );
+            /* TODO: allow supplying an error formatter function */ let message =
+              get(body, props.errorMessagePath);
             if (message) {
               if (typeof message !== 'string') {
-                /* TODO: ideally convert json to yaml so it woul dbe like             error: - email has been taken */ message = JSON.stringify(
-                  message
-                );
+                /* TODO: ideally convert json to yaml so it woul dbe like             error: - email has been taken */ message =
+                  JSON.stringify(message);
               }
               setFormErrorMessage(message);
             }
@@ -159,7 +158,9 @@ export default function FormComponent(props) {
               if (submitSuccessEvent.defaultPrevented) {
                 return;
               }
-              /* TODO: option to turn this on/off? */ if (props.resetFormOnSubmit !== false) {
+              /* TODO: option to turn this on/off? */ if (
+                props.resetFormOnSubmit !== false
+              ) {
                 formRef.current.reset();
               }
             }
@@ -180,7 +181,7 @@ export default function FormComponent(props) {
             }
           }
         },
-        err => {
+        (err) => {
           const submitErrorEvent = new CustomEvent('submit:error', {
             detail: { error: err },
           });
@@ -205,12 +206,12 @@ export default function FormComponent(props) {
       action={!props.sendWithJs && props.action}
       method={props.method}
       name={props.name}
-      onSubmit={event => onSubmit(event)}
+      onSubmit={(event) => onSubmit(event)}
     >
       {' '}
       {props.builderBlock && props.builderBlock.children ? (
         <>
-          {props.builderBlock?.children?.map(block => (
+          {props.builderBlock?.children?.map((block) => (
             <RenderBlock block={block} />
           ))}
         </>
@@ -222,7 +223,10 @@ export default function FormComponent(props) {
       ) : null}{' '}
       {submissionState() === 'sending' ? (
         <>
-          <BuilderBlocks dataPath="sendingMessage" blocks={props.sendingMessage} />
+          <BuilderBlocks
+            dataPath="sendingMessage"
+            blocks={props.sendingMessage}
+          />
         </>
       ) : null}{' '}
       {submissionState() === 'error' && responseData ? (
@@ -235,7 +239,10 @@ export default function FormComponent(props) {
       ) : null}{' '}
       {submissionState() === 'success' ? (
         <>
-          <BuilderBlocks dataPath="successMessage" blocks={props.successMessage} />
+          <BuilderBlocks
+            dataPath="successMessage"
+            blocks={props.successMessage}
+          />
         </>
       ) : null}{' '}
     </View>

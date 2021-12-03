@@ -30,9 +30,14 @@ function validateReactNativeStyles(styles: Record<string, string | number>) {
         styles[key] = 0;
       }
     }
-    if (propertiesThatMustBeNumber.has(key) && typeof styles[key] !== 'number') {
+    if (
+      propertiesThatMustBeNumber.has(key) &&
+      typeof styles[key] !== 'number'
+    ) {
       if (SHOW_WARNINGS) {
-        console.warn(`Style key ${key} must be a number, but had value \`${styles[key]}\``);
+        console.warn(
+          `Style key ${key} must be a number, but had value \`${styles[key]}\``
+        );
       }
       delete styles[key];
     }

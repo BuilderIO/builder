@@ -2,7 +2,9 @@
   <div
     ref="elem"
     :class="
-      _classStringToObject('builder-custom-code' + (this.replaceNodes ? ' replace-nodes' : ''))
+      _classStringToObject(
+        'builder-custom-code' + (this.replaceNodes ? ' replace-nodes' : '')
+      )
     "
     v-html="code"
   ></div>
@@ -44,9 +46,11 @@ export default registerComponent(
               document.head.appendChild(newScript);
             } else if (
               !script.type ||
-              ['text/javascript', 'application/javascript', 'application/ecmascript'].includes(
-                script.type
-              )
+              [
+                'text/javascript',
+                'application/javascript',
+                'application/ecmascript',
+              ].includes(script.type)
             ) {
               if (this.scriptsRun.includes(script.innerText)) {
                 continue;

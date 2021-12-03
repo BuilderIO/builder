@@ -8,11 +8,13 @@ export default function SelectComponent(props) {
     <View
       {...props.attributes}
       value={props.value}
-      key={isEditing() && props.defaultValue ? props.defaultValue : 'default-key'}
+      key={
+        isEditing() && props.defaultValue ? props.defaultValue : 'default-key'
+      }
       defaultValue={props.defaultValue}
       name={props.name}
     >
-      {props.options?.map(option => (
+      {props.options?.map((option) => (
         <View value={option.value}>
           <Text>{option.name || option.value}</Text>
         </View>

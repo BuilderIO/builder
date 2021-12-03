@@ -1,4 +1,11 @@
-import { onMount, onUnMount, setContext, useState, onCreate, Show } from '@builder.io/mitosis';
+import {
+  onMount,
+  onUnMount,
+  setContext,
+  useState,
+  onCreate,
+  Show,
+} from '@builder.io/mitosis';
 import { isBrowser } from '../functions/is-browser';
 import { BuilderContent } from '../types/builder-content';
 import RenderBlock from './render-block.lite';
@@ -30,9 +37,13 @@ export default function RenderContent(props: RenderContentProps) {
     overrideContent: null as BuilderContent | null,
     getCssFromFont(font: any, data?: any) {
       // TODO: compute what font sizes are used and only load those.......
-      const family = font.family + (font.kind && !font.kind.includes('#') ? ', ' + font.kind : '');
+      const family =
+        font.family +
+        (font.kind && !font.kind.includes('#') ? ', ' + font.kind : '');
       const name = family.split(',')[0];
-      const url = font.fileUrl ? font.fileUrl : font.files && font.files.regular;
+      const url = font.fileUrl
+        ? font.fileUrl
+        : font.files && font.files.regular;
       let str = '';
       if (url && family && name) {
         str += `
@@ -77,7 +88,9 @@ export default function RenderContent(props: RenderContentProps) {
       return (
         (data?.customFonts &&
           data.customFonts.length &&
-          data.customFonts.map((font: any) => this.getCssFromFont(font, data)).join(' ')) ||
+          data.customFonts
+            .map((font: any) => this.getCssFromFont(font, data))
+            .join(' ')) ||
         ''
       );
     },
@@ -87,7 +100,11 @@ export default function RenderContent(props: RenderContentProps) {
       if (data) {
         switch (data.type) {
           case 'builder.contentUpdate': {
-            const key = data.data.key || data.data.alias || data.data.entry || data.data.modelName;
+            const key =
+              data.data.key ||
+              data.data.alias ||
+              data.data.entry ||
+              data.data.modelName;
 
             const contentData = data.data.data; // oof
 
@@ -159,7 +176,7 @@ export default function RenderContent(props: RenderContentProps) {
               model: props.model,
               apiKey,
               options,
-            }).then(content => {
+            }).then((content) => {
               if (content) {
                 state.overrideContent = content;
               }
@@ -181,7 +198,7 @@ export default function RenderContent(props: RenderContentProps) {
   return (
     <Show when={state.useContent}>
       <div
-        onClick={e => {
+        onClick={(e) => {
           if (!isEditing()) {
             track('click', {
               contentId: state.useContent!.id,
@@ -191,7 +208,8 @@ export default function RenderContent(props: RenderContentProps) {
         data-builder-content-id={state.useContent?.id}
       >
         {(state.useContent?.data?.cssCode ||
-          (state.useContent?.data?.customFonts && state.useContent?.data?.customFonts.length)) &&
+          (state.useContent?.data?.customFonts &&
+            state.useContent?.data?.customFonts.length)) &&
           !isReactNative() && (
             <style>
               {state.useContent.data.cssCode}

@@ -39,14 +39,14 @@ export default function RenderBlocks(props) {
     <View
       builder-path={props.path}
       builder-parent-id={props.parent}
-      onClick={event => onClick}
-      onMouseEnter={event => onMouseEnter}
+      onClick={(event) => onClick}
+      onMouseEnter={(event) => onMouseEnter}
       className={'builder-blocks' + (!props.blocks?.length ? ' no-blocks' : '')}
       style={styles.view1}
     >
       {props.blocks ? (
         <>
-          {props.blocks?.map(block => (
+          {props.blocks?.map((block) => (
             <RenderBlock block={block} />
           ))}
         </>

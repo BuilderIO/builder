@@ -76,7 +76,8 @@ export default registerComponent(
       {
         name: 'fitContent',
         type: 'boolean',
-        helperText: 'When child blocks are provided, fit to them instead of using the aspect ratio',
+        helperText:
+          'When child blocks are provided, fit to them instead of using the aspect ratio',
         defaultValue: true,
         advanced: true,
       },

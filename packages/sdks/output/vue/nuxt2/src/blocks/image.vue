@@ -1,16 +1,20 @@
 <template>
-  <div class="div-1xc1rm31v7q">
+  <div class="div-1lmobbief0v">
     <picture>
       <img
         loading="lazy"
-        class="img-1xc1rm31v7q"
+        class="img-1lmobbief0v"
         :alt="altText"
         :aria-role="altText ? 'presentation' : undefined"
         :style="{
           objectPosition: backgroundSize || 'center',
           objectFit: backgroundSize || 'cover',
         }"
-        :class="_classStringToObject('builder-image' + (this.class ? ' ' + this.class : ''))"
+        :class="
+          _classStringToObject(
+            'builder-image' + (this.class ? ' ' + this.class : '')
+          )
+        "
         :src="image"
         :srcset="srcset"
         :sizes="sizes"
@@ -19,7 +23,7 @@
     </picture>
 
     <div
-      class="builder-image-sizer div-1xc1rm31v7q-2"
+      class="builder-image-sizer div-1lmobbief0v-2"
       v-if="
         aspectRatio &&
         !(
@@ -38,7 +42,7 @@
 
     <slot></slot>
 
-    <div class="div-1xc1rm31v7q-3" v-if="!fitContent">
+    <div class="div-1lmobbief0v-3" v-if="!fitContent">
       <slot></slot>
     </div>
   </div>
@@ -163,10 +167,10 @@ export default registerComponent(
 );
 </script>
 <style scoped>
-.div-1xc1rm31v7q {
+.div-1lmobbief0v {
   position: relative;
 }
-.img-1xc1rm31v7q {
+.img-1lmobbief0v {
   opacity: 1;
   transition: opacity 0.2s ease-in-out;
   position: absolute;
@@ -175,12 +179,12 @@ export default registerComponent(
   top: 0px;
   left: 0px;
 }
-.div-1xc1rm31v7q-2 {
+.div-1lmobbief0v-2 {
   width: 100%;
   pointer-events: none;
   font-size: 0;
 }
-.div-1xc1rm31v7q-3 {
+.div-1lmobbief0v-3 {
   display: flex;
   flex-direction: column;
   align-items: stretch;

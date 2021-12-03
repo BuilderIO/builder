@@ -1,5 +1,11 @@
 <template>
-  <a v-bind="attributes" v-if="link" :href="link" :target="openLinkInNewTab ? '_blank' : undefined">
+  <a
+    v-bind="attributes"
+    role="button"
+    v-if="link"
+    :href="link"
+    :target="openLinkInNewTab ? '_blank' : undefined"
+  >
     {{ text }}
   </a>
   <span v-bind="attributes" v-else="">{{ text }}</span>
@@ -24,7 +30,7 @@ export default registerComponent(
       paddingBottom: '15px',
       paddingLeft: '25px',
       paddingRight: '25px',
-      backgroundColor: '#3898EC',
+      backgroundColor: '#000000',
       color: 'white',
       borderRadius: '4px',
       textAlign: 'center',

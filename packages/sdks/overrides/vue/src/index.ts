@@ -5,6 +5,7 @@ if (isEditing()) {
 }
 
 // TODO: way to make a nuxt-only override
+export * from './functions/is-editing';
 export * from './functions/register-component';
 export * from './functions/register';
 export * from './functions/set-editor-settings';

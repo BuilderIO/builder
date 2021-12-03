@@ -9,6 +9,7 @@ export default function Button(props) {
         <>
           <View
             {...props.attributes}
+            role="button"
             href={props.link}
             target={props.openLinkInNewTab ? '_blank' : undefined}
           >

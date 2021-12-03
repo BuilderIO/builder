@@ -6,7 +6,11 @@
     :defaultValue="defaultValue"
     :name="name"
   >
-    <option v-for="(option, index) in options" :value="option.value" :key="index">
+    <option
+      v-for="(option, index) in options"
+      :value="option.value"
+      :key="index"
+    >
       {{ option.name || option.value }}
     </option>
   </select>

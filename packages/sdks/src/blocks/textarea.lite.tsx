@@ -35,7 +35,8 @@ registerComponent({
       name: 'name',
       type: 'string',
       required: true,
-      helperText: 'Every input in a form needs a unique name describing what it gets, e.g. "email"',
+      helperText:
+        'Every input in a form needs a unique name describing what it gets, e.g. "email"',
     },
     {
       name: 'defaultValue',

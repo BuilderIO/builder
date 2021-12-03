@@ -1,7 +1,12 @@
 import { isBrowser } from './is-browser';
 import { isEditing } from './is-editing';
 
-export function evaluate(options: { code: string; state: any; context: any; event?: Event }): any {
+export function evaluate(options: {
+  code: string;
+  state: any;
+  context: any;
+  event?: Event;
+}): any {
   const { code } = options;
   const builder = {
     isEditing: isEditing(),
@@ -19,13 +24,14 @@ export function evaluate(options: { code: string; state: any; context: any; even
   const useCode = `${useReturn ? `return (${code});` : code}`;
 
   try {
-    return new Function('builder', 'Builder' /* <- legacy */, 'state', 'context', 'event', useCode)(
-      builder,
-      builder,
-      options.state,
-      options.context,
-      options.event
-    );
+    return new Function(
+      'builder',
+      'Builder' /* <- legacy */,
+      'state',
+      'context',
+      'event',
+      useCode
+    )(builder, builder, options.state, options.context, options.event);
   } catch (e) {
     console.warn('Builder custom code error', e);
   }

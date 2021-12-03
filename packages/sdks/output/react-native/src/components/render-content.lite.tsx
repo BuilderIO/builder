@@ -28,7 +28,9 @@ export default function RenderContent(props) {
 
   function getCssFromFont(font, data) {
     // TODO: compute what font sizes are used and only load those.......
-    const family = font.family + (font.kind && !font.kind.includes('#') ? ', ' + font.kind : '');
+    const family =
+      font.family +
+      (font.kind && !font.kind.includes('#') ? ', ' + font.kind : '');
     const name = family.split(',')[0];
     const url = font.fileUrl ? font.fileUrl : font.files && font.files.regular;
     let str = '';
@@ -79,7 +81,9 @@ export default function RenderContent(props) {
     return (
       (data?.customFonts &&
         data.customFonts.length &&
-        data.customFonts.map(font => this.getCssFromFont(font, data)).join(' ')) ||
+        data.customFonts
+          .map((font) => this.getCssFromFont(font, data))
+          .join(' ')) ||
       ''
     );
   }
@@ -90,7 +94,11 @@ export default function RenderContent(props) {
     if (data) {
       switch (data.type) {
         case 'builder.contentUpdate': {
-          const key = data.data.key || data.data.alias || data.data.entry || data.data.modelName;
+          const key =
+            data.data.key ||
+            data.data.alias ||
+            data.data.entry ||
+            data.data.modelName;
           const contentData = data.data.data; // oof
 
           if (key === props.model) {
@@ -138,7 +146,7 @@ export default function RenderContent(props) {
               model: props.model,
               apiKey,
               options,
-            }).then(content => {
+            }).then((content) => {
               if (content) {
                 setOverrideContent(content);
               }
@@ -168,7 +176,7 @@ export default function RenderContent(props) {
       {useContent() ? (
         <>
           <View
-            onClick={event => {
+            onClick={(event) => {
               if (!isEditing()) {
                 track('click', {
                   contentId: useContent().id,
@@ -178,7 +186,8 @@ export default function RenderContent(props) {
             data-builder-content-id={useContent?.()?.id}
           >
             {(useContent?.()?.data?.cssCode ||
-              (useContent?.()?.data?.customFonts && useContent?.()?.data?.customFonts.length)) &&
+              (useContent?.()?.data?.customFonts &&
+                useContent?.()?.data?.customFonts.length)) &&
             !isReactNative() ? (
               <View>
                 <Text>{useContent().data.cssCode}</Text>
@@ -187,7 +196,7 @@ export default function RenderContent(props) {
               </View>
             ) : null}
 
-            {useContent?.()?.data?.blocks?.map(block => (
+            {useContent?.()?.data?.blocks?.map((block) => (
               <RenderBlock key={block.id} block={block} />
             ))}
           </View>

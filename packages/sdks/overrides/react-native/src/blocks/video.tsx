@@ -40,7 +40,14 @@ export default function Video(props: VideoProps) {
         poster={props.posterImage}
         posterResizeMode={props.fit || 'contain'}
         resizeMode={props.fit || ('contain' as any)}
-        style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, zIndex: 1 }}
+        style={{
+          position: 'absolute',
+          top: 0,
+          bottom: 0,
+          left: 0,
+          right: 0,
+          zIndex: 1,
+        }}
         source={{ uri: props.video }}
       />
       <View

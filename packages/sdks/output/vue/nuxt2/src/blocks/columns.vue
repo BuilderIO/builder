@@ -1,7 +1,7 @@
 <template>
-  <div class="builder-columns div-t7lfhjbb34">
+  <div class="builder-columns div-njzf3onbkj">
     <div
-      class="builder-column div-t7lfhjbb34-2"
+      class="builder-column div-njzf3onbkj-2"
       v-for="(column, index) in columns"
       :style="{
         width: getColumnCssWidth(index),
@@ -38,7 +38,8 @@ export default registerComponent(
       getColumnCssWidth(index) {
         const columns = this.getColumns();
         const gutterSize = this.getGutterSize();
-        const subtractWidth = (gutterSize * (columns.length - 1)) / columns.length;
+        const subtractWidth =
+          (gutterSize * (columns.length - 1)) / columns.length;
         return `calc(${this.getWidth(index)}% - ${subtractWidth}px)`;
       },
     },
@@ -117,7 +118,8 @@ export default registerComponent(
           {
             name: 'link',
             type: 'url',
-            helperText: 'Optionally set a url that clicking this column will link to',
+            helperText:
+              'Optionally set a url that clicking this column will link to',
           },
         ],
         defaultValue: [
@@ -242,7 +244,8 @@ export default registerComponent(
         name: 'stackColumnsAt',
         type: 'string',
         defaultValue: 'tablet',
-        helperText: 'Convert horizontal columns to vertical at what device size',
+        helperText:
+          'Convert horizontal columns to vertical at what device size',
         enum: ['tablet', 'mobile', 'never'],
         advanced: true,
       },
@@ -250,7 +253,8 @@ export default registerComponent(
         name: 'reverseColumnsWhenStacked',
         type: 'boolean',
         defaultValue: false,
-        helperText: 'When stacking columns for mobile devices, reverse the ordering',
+        helperText:
+          'When stacking columns for mobile devices, reverse the ordering',
         advanced: true,
       },
     ],
@@ -258,12 +262,12 @@ export default registerComponent(
 );
 </script>
 <style scoped>
-.div-t7lfhjbb34 {
+.div-njzf3onbkj {
   display: flex;
   align-items: stretch;
   line-height: normal;
 }
-.div-t7lfhjbb34-2 {
+.div-njzf3onbkj-2 {
   flex-grow: 1;
 }
 </style>

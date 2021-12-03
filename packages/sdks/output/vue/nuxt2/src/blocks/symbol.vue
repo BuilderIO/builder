@@ -2,9 +2,9 @@
   <div class="builder-symbol">
     <render-content
       :context="builderContext.context"
-      :data="(symbol && symbol.data)"
-      :model="(symbol && symbol.model)"
-      :content="(symbol && symbol.content)"
+      :data="symbol && symbol.data"
+      :model="symbol && symbol.model"
+      :content="symbol && symbol.content"
     ></render-content>
   </div>
 </template>

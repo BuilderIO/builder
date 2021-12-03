@@ -8,19 +8,24 @@
         });
       }
     "
-    :data-builder-content-id="(useContent && useContent.id)"
+    :data-builder-content-id="useContent && useContent.id"
   >
     <component
       v-if="
-        ((useContent && useContent.data && (useContent && useContent.data).cssCode) ||
+        ((useContent &&
+          useContent.data &&
+          (useContent && useContent.data).cssCode) ||
           (useContent &&
             useContent.data &&
             (useContent && useContent.data).customFonts &&
             useContent &&
             useContent.data &&
             (useContent && useContent.data).customFonts &&
-            (useContent && useContent.data && (useContent && useContent.data).customFonts)
-              .length)) &&
+            (
+              useContent &&
+              useContent.data &&
+              (useContent && useContent.data).customFonts
+            ).length)) &&
         !isReactNative()
       "
       is="style"
@@ -30,7 +35,9 @@
     </component>
 
     <render-block
-      v-for="(block, index) in ((useContent && useContent.data) && (useContent && useContent.data).blocks)"
+      v-for="(block, index) in useContent &&
+      useContent.data &&
+      (useContent && useContent.data).blocks"
       :block="block"
       :key="block.id"
     ></render-block>
@@ -111,7 +118,7 @@ export default {
               model: this.model,
               apiKey,
               options,
-            }).then(content => {
+            }).then((content) => {
               if (content) {
                 this.overrideContent = content;
               }
@@ -131,9 +138,13 @@ export default {
   methods: {
     getCssFromFont(font, data) {
       // TODO: compute what font sizes are used and only load those.......
-      const family = font.family + (font.kind && !font.kind.includes('#') ? ', ' + font.kind : '');
+      const family =
+        font.family +
+        (font.kind && !font.kind.includes('#') ? ', ' + font.kind : '');
       const name = family.split(',')[0];
-      const url = font.fileUrl ? font.fileUrl : font.files && font.files.regular;
+      const url = font.fileUrl
+        ? font.fileUrl
+        : font.files && font.files.regular;
       let str = '';
 
       if (url && family && name) {
@@ -181,7 +192,9 @@ export default {
       return (
         (data?.customFonts &&
           data.customFonts.length &&
-          data.customFonts.map(font => this.getCssFromFont(font, data)).join(' ')) ||
+          data.customFonts
+            .map((font) => this.getCssFromFont(font, data))
+            .join(' ')) ||
         ''
       );
     },
@@ -191,7 +204,11 @@ export default {
       if (data) {
         switch (data.type) {
           case 'builder.contentUpdate': {
-            const key = data.data.key || data.data.alias || data.data.entry || data.data.modelName;
+            const key =
+              data.data.key ||
+              data.data.alias ||
+              data.data.entry ||
+              data.data.modelName;
             const contentData = data.data.data; // oof
 
             if (key === this.model) {

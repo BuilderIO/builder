@@ -19,7 +19,13 @@ export default registerComponent(
   {
     name: 'builder-img-component',
 
-    props: ['backgroundSize', 'backgroundPosition', 'attributes', 'imgSrc', 'altText'],
+    props: [
+      'backgroundSize',
+      'backgroundPosition',
+      'attributes',
+      'imgSrc',
+      'altText',
+    ],
 
     data: () => ({ isEditing }),
   },

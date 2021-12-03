@@ -7,7 +7,9 @@ export default function FormInputComponent(props) {
   return (
     <View
       {...props.attributes}
-      key={isEditing() && props.defaultValue ? props.defaultValue : 'default-key'}
+      key={
+        isEditing() && props.defaultValue ? props.defaultValue : 'default-key'
+      }
       placeholder={props.placeholder}
       type={props.type}
       name={props.name}

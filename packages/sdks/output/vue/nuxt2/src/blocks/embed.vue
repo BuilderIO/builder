@@ -38,9 +38,11 @@ export default registerComponent(
               document.head.appendChild(newScript);
             } else if (
               !script.type ||
-              ['text/javascript', 'application/javascript', 'application/ecmascript'].includes(
-                script.type
-              )
+              [
+                'text/javascript',
+                'application/javascript',
+                'application/ecmascript',
+              ].includes(script.type)
             ) {
               if (this.scriptsRun.includes(script.innerText)) {
                 continue;
@@ -75,7 +77,8 @@ export default registerComponent(
       {
         name: 'content',
         type: 'html',
-        defaultValue: '<div style="padding: 20px; text-align: center">(Choose an embed URL)<div>',
+        defaultValue:
+          '<div style="padding: 20px; text-align: center">(Choose an embed URL)<div>',
         hideFromUI: true,
       },
     ],

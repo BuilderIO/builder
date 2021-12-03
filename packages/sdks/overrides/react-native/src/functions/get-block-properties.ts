@@ -6,7 +6,7 @@ import { isReactNative } from './is-react-native';
 export function getBlockProperties(block: BuilderBlock) {
   return {
     ...block.properties,
-    ref: ref => {
+    ref: (ref) => {
       if (isBrowser() && !isReactNative()) {
         const el = findDOMNode(ref);
         if (el) {

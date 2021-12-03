@@ -20,14 +20,17 @@ export default function Image(props) {
         <View srcSet={props.srcset} />
       </View>
 
-      {props.aspectRatio && !(props.fitContent && props.builderBlock?.children?.length) ? (
+      {props.aspectRatio &&
+      !(props.fitContent && props.builderBlock?.children?.length) ? (
         <View className="builder-image-sizer" style={styles.view3}>
           <Text> </Text>
         </View>
       ) : null}
 
       {props.builderBlock?.children?.length && props.fitContent ? (
-        <Text>{props.children}</Text>
+        <>
+          <Text>{props.children}</Text>
+        </>
       ) : null}
 
       {!props.fitContent ? (

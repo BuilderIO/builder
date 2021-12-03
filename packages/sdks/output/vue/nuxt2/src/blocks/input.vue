@@ -19,7 +19,15 @@ export default registerComponent(
   {
     name: 'builder-form-input-component',
 
-    props: ['attributes', 'defaultValue', 'placeholder', 'type', 'name', 'value', 'required'],
+    props: [
+      'attributes',
+      'defaultValue',
+      'placeholder',
+      'type',
+      'name',
+      'value',
+      'required',
+    ],
 
     data: () => ({ isEditing }),
   },
