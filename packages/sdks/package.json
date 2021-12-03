@@ -2,7 +2,7 @@
   "name": "@builder.io/sdks",
   "version": "0.0.1",
   "scripts": {
-    "build": "mitosis build",
+    "build": "mitosis build && npm run lint",
     "lint": "prettier --write .",
     "start": "watch 'npm run build' ./src ./overrides",
     "test": "jest",

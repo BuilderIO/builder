@@ -1,6 +1,6 @@
 <template>
   <div
-    class="div-tbntn4xeqx"
+    class="div-6gr0dfe3mlc"
     :builder-path="path"
     :builder-parent-id="parent"
     @click="onClick"
@@ -72,7 +72,7 @@ export default {
 };
 </script>
 <style scoped>
-.div-tbntn4xeqx {
+.div-6gr0dfe3mlc {
   display: flex;
   flex-direction: column;
   align-items: stretch;

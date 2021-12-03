@@ -28,7 +28,9 @@ export default function Image(props) {
       ) : null}
 
       {props.builderBlock?.children?.length && props.fitContent ? (
-        <Text>{props.children}</Text>
+        <>
+          <Text>{props.children}</Text>
+        </>
       ) : null}
 
       {!props.fitContent ? (
