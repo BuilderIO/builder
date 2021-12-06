@@ -7,7 +7,7 @@ import { IS_YARN } from './utils';
 let openBrowser = false;
 
 export const didOpenBroswer = () => openBrowser;
-export const HOST = 'http://beta.builder.io';
+export const HOST = 'http://builder.io';
 export const openBuilder = async (projectName: string, starter: Starter, port: number = 3000) => {
   const url = getEditorURL(projectName, starter, port);
   console.log(`🌐 Visit this URL on this device to open the editor:\n  ${url}`);
