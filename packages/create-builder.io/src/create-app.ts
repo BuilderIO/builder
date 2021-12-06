@@ -18,7 +18,7 @@ import {
 import { BUILD, START, TEST } from './texts';
 import { replaceInFile } from 'replace-in-file';
 import { mustGetApiKey } from './login';
-import { openBuilder } from './open';
+import { didOpenBroswer, getEditorURL, openBuilder } from './open';
 
 const starterPromises = new Map<
   Starter,
@@ -46,7 +46,9 @@ export async function createApp(starter: Starter, projectName: string, autoRun: 
     throw new Error('starter install failed');
   }
 
-  const apiKey = await mustGetApiKey();
+  const apiKey = await mustGetApiKey({
+    redirectURL: autoRun ? getEditorURL(projectName, starter, 3000) : undefined
+  });
   await moveTo(projectName, {
     'project-name': projectName,
     'public-key': apiKey,
@@ -69,9 +71,12 @@ ${renderDocs(starter)}
 `);
 
   if (autoRun) {
-    const next = await askQuestion(
-      `Run dev server and open the builder's editor in the browser. ${bold('Confirm?')}`
-    );
+    const next = didOpenBroswer()
+      ? true
+      : await askQuestion(
+        `Run dev server and open the builder's editor in the browser. ${bold('Confirm?')}`
+      );
+
     if (next) {
       console.log(`
 ${dim('Opening dev server and editor in the browser:')}
@@ -79,9 +84,11 @@ ${dim('Opening dev server and editor in the browser:')}
   ${green('✔')} ${dim(terminalPrompt())} ${green('cd')} ${projectName}
   ${green('✔')} ${dim(terminalPrompt())} ${green(START)}
 `);
-      setTimeout(() => {
-        openBuilder(projectName, starter, 3000);
-      }, 2000);
+      if (!didOpenBroswer()) {
+        setTimeout(() => {
+          openBuilder(projectName, starter, 3000);
+        }, 2000);
+      }
       await npm('start', projectName, 'inherit', {
         BROWSER: 'none',
       });
