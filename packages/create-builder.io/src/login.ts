@@ -15,12 +15,16 @@ interface Credentials {
 
 let credential: Credentials | undefined;
 
+export interface LoginOpts {
+  redirectURL?: string;
+}
+
 export const getCredentialsFilePath = () => {
   const info = userInfo();
   return join(info.homedir, '.config', 'builder', 'credentials.json');
 };
 
-export const getLogin = async () => {
+export const getLogin = async (opts?: LoginOpts) => {
   if (credential) {
     return credential;
   }
@@ -37,35 +41,35 @@ export const getLogin = async () => {
     console.error(err);
     return undefined;
   }
-  return await login();
+  return await login(opts);
 };
 
-export const mustLogin = async () => {
-  const login = await getLogin();
+export const mustLogin = async (opts?: LoginOpts) => {
+  const login = await getLogin(opts);
   if (!login) {
     throw new Error('Login with builder.io failed');
   }
   return login;
 };
 
-export const mustGetApiKey = async () => {
-  const l = await mustLogin();
+export const mustGetApiKey = async (opts?: LoginOpts) => {
+  const l = await mustLogin(opts);
   if (!l.apiKey) {
     return (await login()).apiKey;
   }
   return l.apiKey;
 };
 
-export const mustGetPrivateKey = async () => {
-  const l = await mustLogin();
+export const mustGetPrivateKey = async (opts?: LoginOpts) => {
+  const l = await mustLogin(opts);
   if (!l.privateKey) {
     return (await login()).privateKey;
   }
   return l.privateKey;
 };
 
-export const login = async () => {
-  const token = await getNewToken();
+export const login = async (opts?: LoginOpts) => {
+  const token = await getNewToken(opts);
   credential = await saveLogin(token);
   return credential as Required<Credentials>;
 };
@@ -95,8 +99,8 @@ export const saveLogin = async (input: Partial<LoginData>): Promise<Credentials>
 const CLIENT_ID = 'create-builder';
 const PORT = 10110;
 
-const getNewToken = () => {
-  console.log(`\n🔑 ${yellowBright(bold('Login required'))}`);
+const getNewToken = (opts?: LoginOpts) => {
+  console.log(`\n🔑 ${yellowBright(bold('Login / Signup required'))}`);
 
   return askQuestion(
     ` Your browser will open to complete authentication. ${bold('Confirm?')}`
@@ -126,8 +130,9 @@ const getNewToken = () => {
             return;
           }
 
+          const location = opts?.redirectURL ?? `${HOST}/cli-auth?success=true`;
           res.writeHead(302, {
-            Location: `${HOST}/cli-auth?success=true`,
+            Location: location,
           });
           res.end();
           req.socket.end();
