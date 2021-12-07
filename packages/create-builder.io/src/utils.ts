@@ -49,21 +49,6 @@ export function killChildren() {
   childrenProcesses.forEach(p => p.kill('SIGINT'));
 }
 
-let _options: any;
-
-export const defaultActions = async (options: any) => {
-  _options = options;
-  if (options.pkey) {
-    await saveLogin({
-      privateKey: options.pkey,
-    });
-  }
-};
-
-export const getCLIOptions = () => {
-  return _options;
-};
-
 export function npm(command: string, projectPath: string, stdio: any = 'ignore', env?: any) {
   return new Promise<void>((resolve, reject) => {
     const p = spawn(IS_YARN ? 'yarn' : 'npm', [command], {

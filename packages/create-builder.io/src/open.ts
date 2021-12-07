@@ -1,8 +1,9 @@
 import open from 'open';
 import os from 'os';
 import { URLSearchParams } from 'url';
+import { cliOptions } from './cli';
 import { Starter } from './starters';
-import { getCLIOptions, IS_YARN } from './utils';
+import { IS_YARN } from './utils';
 
 let openBrowser = false;
 
@@ -21,7 +22,6 @@ export const openBuilder = async (projectName: string, starter: Starter, port: n
 
 export const getEditorURL = (projectName: string, starter: Starter, port: number = 3000) => {
   const params = new URLSearchParams();
-  const options = getCLIOptions();
   params.set('overridePreviewUrl', `http://localhost:${port}`);
   params.set('projectName', projectName);
   params.set('starter', starter.name);
@@ -32,7 +32,7 @@ export const getEditorURL = (projectName: string, starter: Starter, port: number
   params.set('node', process.version);
   params.set('yarn', `${IS_YARN}`);
   params.set('cli', 'true');
-  params.set('onboarding', `${'welcome' in options}`);
+  params.set('onboarding', `${'welcome' in cliOptions}`);
   return `${HOST}/onboarding/${starter.template}?${params.toString()}`;
 };
 
@@ -42,7 +42,7 @@ export const openBuilderAuth = async (port: number, clientId: string) => {
   console.log(`🌐 Visit this URL on this device to log in:\n  ${url}`);
   await open(url, {
     app: {
-      name: 'google chrome',
+      name: open.apps.chrome,
     },
   });
   openBrowser = true;

@@ -6,6 +6,7 @@ import { bold, yellowBright } from 'colorette';
 import { Spinner } from 'cli-spinner';
 import { HOST, openBuilderAuth } from './open';
 import { askQuestion } from './utils';
+import { cliOptions } from './cli';
 
 interface Credentials {
   version: '1';
@@ -152,4 +153,13 @@ const getNewToken = (opts?: LoginOpts) => {
       openBuilderAuth(PORT, CLIENT_ID);
     });
   });
+};
+
+export const defaultActions = async (options: any) => {
+  Object.assign(cliOptions, options);
+  if (options.pkey) {
+    await saveLogin({
+      privateKey: options.pkey,
+    });
+  }
 };

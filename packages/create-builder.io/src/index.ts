@@ -1,7 +1,6 @@
 import { Command } from 'commander';
 import { init } from './init';
-import { saveLogin } from './login';
-import { defaultActions } from './utils';
+import { saveLogin, defaultActions } from './login';
 
 async function run() {
   const program = new Command();
