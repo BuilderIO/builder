@@ -47,7 +47,7 @@ export async function createApp(starter: Starter, projectName: string, autoRun: 
   }
 
   const apiKey = await mustGetApiKey({
-    redirectURL: autoRun ? getEditorURL(projectName, starter, 3000) : undefined
+    redirectURL: autoRun ? getEditorURL(projectName, starter, 3000) : undefined,
   });
   await moveTo(projectName, {
     'project-name': projectName,
@@ -74,8 +74,8 @@ ${renderDocs(starter)}
     const next = didOpenBroswer()
       ? true
       : await askQuestion(
-        `Run dev server and open the builder's editor in the browser. ${bold('Confirm?')}`
-      );
+          `Run dev server and open the builder's editor in the browser. ${bold('Confirm?')}`
+        );
 
     if (next) {
       console.log(`

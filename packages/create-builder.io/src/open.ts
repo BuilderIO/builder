@@ -1,6 +1,7 @@
 import open from 'open';
 import os from 'os';
 import { URLSearchParams } from 'url';
+import { cliOptions } from './cli';
 import { Starter } from './starters';
 import { IS_YARN } from './utils';
 
@@ -31,9 +32,9 @@ export const getEditorURL = (projectName: string, starter: Starter, port: number
   params.set('node', process.version);
   params.set('yarn', `${IS_YARN}`);
   params.set('cli', 'true');
-
+  params.set('onboarding', `${'welcome' in cliOptions}`);
   return `${HOST}/onboarding/${starter.template}?${params.toString()}`;
-}
+};
 
 export const openBuilderAuth = async (port: number, clientId: string) => {
   const host = encodeURIComponent(os.hostname());
@@ -41,7 +42,7 @@ export const openBuilderAuth = async (port: number, clientId: string) => {
   console.log(`🌐 Visit this URL on this device to log in:\n  ${url}`);
   await open(url, {
     app: {
-      name: 'google chrome',
+      name: open.apps.chrome,
     },
   });
   openBrowser = true;

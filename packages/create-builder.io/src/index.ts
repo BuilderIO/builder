@@ -1,16 +1,9 @@
 import { Command } from 'commander';
 import { init } from './init';
-import { saveLogin } from './login';
+import { saveLogin, defaultActions } from './login';
 
 async function run() {
   const program = new Command();
-  const defaultActions = async (options: any) => {
-    if (options.pkey) {
-      await saveLogin({
-        privateKey: options.pkey,
-      });
-    }
-  };
   program
     .option('-d,--debug', 'print debugging information')
     .option('--pkey [pkey]', 'set private key manually')

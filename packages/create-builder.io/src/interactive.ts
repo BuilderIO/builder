@@ -1,5 +1,5 @@
 import { cursor, erase } from 'sisteransi';
-import { bold, dim } from 'colorette';
+import { blueBright, bold, dim } from 'colorette';
 import fs from 'fs-extra';
 import { createApp } from './create-app';
 import { STARTERS, Starter, getStarterRepo } from './starters';
@@ -29,36 +29,47 @@ export async function runInteractive(starterName: string | undefined, autoRun: b
 }
 
 async function askStarterName(): Promise<string> {
-  const { starterName }: any = await prompt([
-    {
-      type: 'select',
-      name: 'starterName',
-      message: 'Pick a starter',
-      choices: getChoices(),
-    },
-    {
-      type: (prev: any) => (prev === null ? 'text' : null),
-      name: 'starterName',
-      message: 'Type a custom starter',
-    },
-  ]);
-  if (!starterName) {
-    throw new Error(`No starter was provided, try again.`);
+  let showOthers = true;
+  while (true) {
+    const { starterName }: any = await prompt([
+      {
+        type: 'select',
+        name: 'starterName',
+        message: 'Pick a starter',
+        choices: getChoices(showOthers),
+      },
+    ]);
+    showOthers = false;
+    if (!starterName) {
+      throw new Error(`No starter was provided, try again.`);
+    }
+    if (starterName === 'other') {
+      console.log(`\nBuilder.io supports all major frameworks but starters are not ready just yet. \nInstead, you can get started over here: \n
+ - ${blueBright('https://www.builder.io/c/docs/getting-started')}\n
+ `);
+    }
+    if (starterName && starterName !== 'other') {
+      return starterName;
+    }
   }
-  return starterName;
 }
 
-function getChoices() {
+function getChoices(showOthers: boolean) {
   const maxLength = Math.max(...STARTERS.map(s => s.name.length)) + 1;
-  return [
-    ...STARTERS.filter(s => s.hidden !== true).map(s => {
-      const description = s.description ? dim(s.description) : '';
-      return {
-        title: `${padEnd(s.name, maxLength)}   ${description}`,
-        value: s.name,
-      };
-    }),
-  ];
+  const choices = STARTERS.filter(s => s.hidden !== true).map(s => {
+    const description = s.description ? dim(s.description) : '';
+    return {
+      title: `${padEnd(s.name, maxLength)}   ${description}`,
+      value: s.name,
+    };
+  });
+  if (showOthers) {
+    choices.push({
+      title: `${padEnd('Other 🔗', maxLength)}   ${dim('Angular, Vue, WebComponents...')}`,
+      value: 'other',
+    });
+  }
+  return choices;
 }
 
 async function askProjectName(): Promise<string> {

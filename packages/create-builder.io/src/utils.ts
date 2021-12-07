@@ -11,6 +11,7 @@ import {
 import { join } from 'path';
 import { bold, green, red, yellow } from 'colorette';
 import { prompt } from './vendor/prompts';
+import { saveLogin } from './login';
 
 export const IS_YARN = (() => {
   const config = process.env['npm_config_registry'];
@@ -54,7 +55,10 @@ export function npm(command: string, projectPath: string, stdio: any = 'ignore',
       shell: true,
       stdio,
       cwd: projectPath,
-      env,
+      env: {
+        ...process.env,
+        ...env,
+      },
     });
     p.once('exit', () => resolve());
     p.once('error', reject);
