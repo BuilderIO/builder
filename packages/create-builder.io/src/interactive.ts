@@ -81,7 +81,10 @@ async function askProjectName(): Promise<string> {
       initial: 'my-builder-app',
     },
   ]);
-  if (!projectName || fs.existsSync(projectName)) {
+  if (!projectName) {
+    throw new Error(`No project name provided, try again.`);
+  }
+  if (projectName && fs.existsSync(projectName)) {
     logError(`Folder "./${projectName}" already exists, try a different project name.`);
     return await askProjectName();
   }
