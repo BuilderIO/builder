@@ -2,7 +2,7 @@ import open from 'open';
 import os from 'os';
 import { URLSearchParams } from 'url';
 import { Starter } from './starters';
-import { IS_YARN } from './utils';
+import { getCLIOptions, IS_YARN } from './utils';
 
 let openBrowser = false;
 
@@ -21,6 +21,7 @@ export const openBuilder = async (projectName: string, starter: Starter, port: n
 
 export const getEditorURL = (projectName: string, starter: Starter, port: number = 3000) => {
   const params = new URLSearchParams();
+  const options = getCLIOptions();
   params.set('overridePreviewUrl', `http://localhost:${port}`);
   params.set('projectName', projectName);
   params.set('starter', starter.name);
@@ -31,9 +32,9 @@ export const getEditorURL = (projectName: string, starter: Starter, port: number
   params.set('node', process.version);
   params.set('yarn', `${IS_YARN}`);
   params.set('cli', 'true');
-
+  params.set('onboarding', `${'welcome' in options}`);
   return `${HOST}/onboarding/${starter.template}?${params.toString()}`;
-}
+};
 
 export const openBuilderAuth = async (port: number, clientId: string) => {
   const host = encodeURIComponent(os.hostname());

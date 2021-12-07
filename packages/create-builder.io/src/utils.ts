@@ -11,6 +11,7 @@ import {
 import { join } from 'path';
 import { bold, green, red, yellow } from 'colorette';
 import { prompt } from './vendor/prompts';
+import { saveLogin } from './login';
 
 export const IS_YARN = (() => {
   const config = process.env['npm_config_registry'];
@@ -47,6 +48,21 @@ export function cleanup(didError = false) {
 export function killChildren() {
   childrenProcesses.forEach(p => p.kill('SIGINT'));
 }
+
+let _options: any;
+
+export const defaultActions = async (options: any) => {
+  _options = options;
+  if (options.pkey) {
+    await saveLogin({
+      privateKey: options.pkey,
+    });
+  }
+};
+
+export const getCLIOptions = () => {
+  return _options;
+};
 
 export function npm(command: string, projectPath: string, stdio: any = 'ignore', env?: any) {
   return new Promise<void>((resolve, reject) => {
