@@ -70,7 +70,10 @@ export function npm(command: string, projectPath: string, stdio: any = 'ignore',
       shell: true,
       stdio,
       cwd: projectPath,
-      env,
+      env: {
+        ...process.env,
+        ...env,
+      },
     });
     p.once('exit', () => resolve());
     p.once('error', reject);
