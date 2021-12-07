@@ -10,7 +10,7 @@
     "build": "npm run build.bundle && npm run minify",
     "build.dev": "npm run build.bundle",
     "dev": "npm run build.dev && npm start",
-    "version": "npm build",
+    "version": "npm run build",
     "fmt": "prettier --write src"
   },
   "files": [
