@@ -55,7 +55,7 @@ You can also pass down functions, complex data like custom objects and libraries
 <BuilderComponent
   model="page"
   context={{
-    myFunction: () => alert('Triggered!'),
+    addToCart: () => myService.addToCart(currentProduct),
     lodash: lodash,
   }} >
 ```
