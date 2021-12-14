@@ -137,7 +137,7 @@ See our full guide on [registering custom components here](https://www.builder.i
 
 #### Usage with Data Models
 
-Although you can already fetch data models from our Content API directly and use it as you would any other API resource, with a BuilderContent component you are able to use live Editing / Previewing / A/B testing of your Data Models within the Builder Visual Editor.
+Although you can already fetch data models from our Content API directly and use it as you would any other API resource, with a BuilderContent component you are able to use live Editing / Previewing / [A/B testing](https://forum.builder.io/t/a-b-testing-data-models/158) of your Data Models within the Builder Visual Editor.
 
 ##### Example, setting up an editable theme:
 ```tsx
@@ -146,10 +146,10 @@ Although you can already fetch data models from our Content API directly and use
      return <Spinner />
    }
    return <>
-/*pass values down to an example ThemeComponent, used as a wrapper in your application*/     
-       <ThemeProvider theme={data?.theme} > 
+      /*pass values down to an example ThemeProvider, used as a wrapper in your application*/     
+       <ThemeProvider theme={data.theme} > 
            {props.children}
-       </ThemeComponent>
+       </ThemeProvider>
    </>
    }}
 </BuilderContent>
@@ -158,7 +158,7 @@ Although you can already fetch data models from our Content API directly and use
 
 #### Usage with Page/Section Custom Fields
 
-Page and section models in builder can be extended with custom fields.   To enable live editing / previewing on components that uses those custom fields you can use BuilderContent to pass input data from the model to your components that are outside the rendered content
+Page and section models in builder can be extended with [custom fields](https://www.builder.io/c/docs/custom-fields).   To enable live editing / previewing on components that uses those custom fields, you can use BuilderContent to pass input data from the model to your components that are outside the rendered content
 
 ##### Example, passing Custom Field input: 
 ```tsx
@@ -180,7 +180,7 @@ loading data from other sources than our default APIs, such as data in your own 
 ```tsx
 const content = await builder.get(‘your-data-model’, { ...options });
 if (content) {
-  /* You can use custom fields from the response */
+  /*use your data here*/
   return <BuilderContent model="your-data-model" content={content} >
 }
 ```
