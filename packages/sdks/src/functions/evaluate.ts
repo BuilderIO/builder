@@ -33,6 +33,6 @@ export function evaluate(options: {
       useCode
     )(builder, builder, options.state, options.context, options.event);
   } catch (e) {
-    console.warn('Builder custom code error', e);
+    console.warn('Builder custom code error: ', e);
   }
 }

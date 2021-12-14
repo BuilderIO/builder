@@ -17,7 +17,7 @@ import { getContent, isEditing } from '@builder.io/sdk-vue'
 import '../scripts/register-builder-components'
 
 // TODO: enter your public API key
-const BUILDER_PUBLIC_API_KEY = 'jdGaMusrVpYgdcAnAtgn'
+const BUILDER_PUBLIC_API_KEY = '14df3669544146ed91ea75f999b0124b'
 
 export default Vue.extend({
   data: () => ({
@@ -33,6 +33,7 @@ export default Vue.extend({
         urlPath: this.$route.path,
       },
     })
+    console.log({name: content.name})
     if (!content) {
       if (this.$nuxt.context?.ssrContext?.res) {
         this.$nuxt.context.ssrContext.res.statusCode = 404
