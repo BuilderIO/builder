@@ -133,6 +133,75 @@ Builder.registerComponent(CodeBlockComponent, {
 
 See our full guide on [registering custom components here](https://www.builder.io/c/docs/custom-react-components)
 
+### BuilderContent
+
+#### Usage with Data Models
+
+Although you can already fetch data models from our Content API directly and use it as you would any other API resource, with a BuilderContent component you are able to use live Editing / Previewing / [A/B testing](https://forum.builder.io/t/a-b-testing-data-models/158) of your Data Models within the Builder Visual Editor.
+
+##### Example, setting up an editable theme:
+```tsx
+ <BuilderContent model="site-settings"> { (data, loading) => {
+   If (loading) {
+     return <Spinner />
+   }
+   return <>
+      /*pass values down to an example ThemeProvider, used as a wrapper in your application*/     
+       <ThemeProvider theme={data.theme} > 
+           {props.children}
+       </ThemeProvider>
+   </>
+   }}
+</BuilderContent>
+```
+
+
+#### Usage with Page/Section Custom Fields
+
+Page and section models in builder can be extended with [custom fields](https://www.builder.io/c/docs/custom-fields).   To enable live editing / previewing on components that uses those custom fields, you can use BuilderContent to pass input data from the model to your components that are outside the rendered content
+
+##### Example, passing Custom Field input: 
+```tsx
+<BuilderContent model="landing-page">{ (data) => {
+       /*use your data here within your custom component*/
+        return <>
+           <FeaturedImage image={data.featuredImage} />
+           <BuilderComponent content={content} model="landing-page" />
+       </>
+   }}
+</BuilderContent>
+```
+
+#### Passing content manually
+
+This is useful for doing server side rendering, e.g. with [Gatsby](https://github.com/BuilderIO/builder/tree/master/examples/gatsby) and [Next.js](https://github.com/BuilderIO/builder/tree/master/examples/next-js) or via
+loading data from other sources than our default APIs, such as data in your own database saved via [webhooks](https://www.builder.io/c/docs/webhooks)
+
+```tsx
+const content = await builder.get(‘your-data-model’, { ...options });
+if (content) {
+  /*use your data here*/
+  return <BuilderContent model="your-data-model" content={content} >
+}
+```
+
+#### Advanced querying
+When using custom [models](https://www.builder.io/c/docs/guides/getting-started-with-models) and [fields](https://www.builder.io/c/docs/custom-fields) you can do more advanced filtering of your content with [queries](<(https://www.builder.io/c/docs/custom-fields)>)
+and [targeting](https://www.builder.io/c/docs/guides/targeting-and-scheduling)
+
+```tsx
+import { BuilderContent, builder } from '@builder.io/react';
+
+builder.setUserAttributes({ isLoggedIn: false })
+
+export default () => <div>
+  <BuilderContent
+     model="your-data-model"
+     options={{ query: { 'data.something.$in': ['value a', 'value b'] } }} />
+  <!-- some other content -->
+</div>
+```
+
 ### builder
 
 The React SDK exports the core SDK's [builder object](../core), which can be used for setting things like
