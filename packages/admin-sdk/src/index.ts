@@ -3,7 +3,7 @@ export * from './autogen/client/schema';
 
 import { createClient } from './autogen/client/createClient';
 
-const root = 'https://qa.builder.io';
+const root = 'https://cdn.builder.io';
 
 export const createAdminApiClient = (privateKey: string) =>
   createClient({
