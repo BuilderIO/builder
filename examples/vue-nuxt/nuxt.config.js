@@ -13,4 +13,12 @@ export default {
   components: true,
 
   buildModules: ['@nuxt/components', '@builder.io/sdk-vue/nuxt'],
+
+  build: {
+    extend(config, ctx) {
+      if (ctx.isDev) {
+        config.devtool = ctx.isClient ? 'source-map' : 'inline-source-map'
+      }
+    },
+  },
 }

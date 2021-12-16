@@ -1,16 +1,10 @@
 <template>
-  <div v-if="notFound && !isEditing">
-    <!-- Show your 404 content -->
-    Page not found
-  </div>
-  <div v-else>
-    <builder-render-content model="page" :content="content" />
-  </div>
+<builder-render-content model="page"  />
 </template>
 
 <script>
 import Vue from 'vue'
-import { getContent, isEditing } from '@builder.io/sdk-vue'
+import { getContent, isEditing, isPreviewing } from '@builder.io/sdk-vue'
 
 // Important to import this anywhere you use <RenderContent /> so the custom
 // components will be registered and usable
@@ -33,14 +27,16 @@ export default Vue.extend({
         urlPath: this.$route.path,
       },
     })
-    console.log({name: content.name})
+    console.log(content)
     if (!content) {
       if (this.$nuxt.context?.ssrContext?.res) {
         this.$nuxt.context.ssrContext.res.statusCode = 404
       }
     }
     this.content = content
-    this.notFound = !content
+    console.log({ isEditing, isEdit: isEditing()})
+    this.notFound = !content && !isEditing()
+    // && !isPreviewing()
   },
 })
 </script>
