@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { RenderContent, registerComponent, isEditing } from '@builder.io/sdk-react-native';
 
 // TO-DO: add your own public Builder API key here
-const BUILDER_API_KEY = '14df3669544146ed91ea75f999b0124b';
+const BUILDER_API_KEY = 'TO-DO: ADD your API key here!';
 
 // create a custom React component
 function CustomComponent(props: { text: string }) {
@@ -22,7 +22,7 @@ registerComponent(CustomComponent, {
 });
 
 export default function App() {
-  const [content, setContent] = useState(undefined);
+  const [content, setContent] = useState<any>(undefined);
 
   useEffect(() => {
     // simple example: fetches a content entry from your "Page" model whose urlPath is set to "/" (i.e. your home page).
@@ -38,10 +38,12 @@ export default function App() {
     });
   }, []);
 
+  const shouldRenderBuilderContent = content || isEditing();
+
   return (
     <View style={styles.container}>
       <Text>Hello world from Expo. Below is your Builder content:</Text>
-      {(content || isEditing()) && <RenderContent model="page" content={content} />}
+      {shouldRenderBuilderContent ? <RenderContent model="page" content={content} /> : null}
     </View>
   );
 }
