@@ -3,6 +3,10 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { RenderContent, registerComponent } from '@builder.io/sdk-react-native';
 
+const API_KEY = '79558c1ca315428ba966b935760e76a8';
+
+const url = `https://cdn.builder.io/api/v2/content/page?apiKey=${API_KEY}&userAttributes.urlPath=%2F&limit=1`;
+
 // You can fetch this content in your code via our Content APIs
 // https://builder.io/c/docs/query-api
 const content = {
@@ -59,10 +63,50 @@ registerComponent(CustomComponent, {
   inputs: [{ name: 'text', type: 'string' }],
 });
 
+import { NativeBaseProvider, Box, Progress } from 'native-base';
+import { useState } from 'react';
+import { useEffect } from 'react';
+
+registerComponent(Progress, {
+  name: 'NativeBase Radio',
+  inputs: [
+    {
+      name: 'value',
+      type: 'number',
+    },
+    {
+      name: 'min',
+      type: 'number',
+    },
+    {
+      name: 'max',
+      type: 'number',
+    },
+    {
+      name: 'size',
+      type: 'string',
+    },
+  ],
+});
 export default function App() {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    fetch(url).then(res => {
+      return res.json().then(response => {
+        const data = response.results[0];
+        setData(data);
+        console.log(data);
+      });
+    });
+  }, []);
+
   return (
     <View style={styles.container}>
-      <RenderContent model="page" content={content} />
+      <NativeBaseProvider>
+        <Box>Hello world</Box>
+        <RenderContent model="page" content={data} />
+      </NativeBaseProvider>
     </View>
   );
 }

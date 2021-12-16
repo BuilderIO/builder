@@ -8,12 +8,16 @@
     "eject": "expo eject"
   },
   "dependencies": {
-    "@builder.io/sdk-react-native": "0.0.1-1",
+    "@builder.io/sdk-react-native": "0.0.1-36",
     "expo": "~42.0.1",
     "expo-status-bar": "~1.0.4",
+    "native-base": "^3.2.2",
+    "prettier": "^2.5.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-42.0.0.tar.gz",
+    "react-native-safe-area-context": "3.2.0",
+    "react-native-svg": "12.1.1",
     "react-native-web": "~0.13.12"
   },
   "devDependencies": {
