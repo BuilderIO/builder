@@ -11,13 +11,10 @@
     "@builder.io/sdk-react-native": "^0.0.1-36",
     "expo": "^43.0.0",
     "expo-status-bar": "~1.1.0",
-    "native-base": "^3.2.2",
     "prettier": "^2.5.1",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-native": "0.64.3",
-    "react-native-safe-area-context": "3.3.2",
-    "react-native-svg": "12.1.1",
     "react-native-web": "0.17.1"
   },
   "devDependencies": {

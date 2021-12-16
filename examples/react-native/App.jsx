@@ -1,54 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-
 import { RenderContent, registerComponent } from '@builder.io/sdk-react-native';
 
-const API_KEY = '79558c1ca315428ba966b935760e76a8';
+// TO-DO: add your own public Builder API key here
+const BUILDER_API_KEY = '79558c1ca315428ba966b935760e76a8';
 
-const url = `https://cdn.builder.io/api/v2/content/page?apiKey=${API_KEY}&userAttributes.urlPath=%2F&limit=1`;
-
-// You can fetch this content in your code via our Content APIs
-// https://builder.io/c/docs/query-api
-const content = {
-  data: {
-    blocks: [
-      {
-        '@type': '@builder.io/sdk:Element',
-        responsiveStyles: {
-          large: {
-            padding: '20px',
-            backgroundColor: 'steelblue',
-            color: 'white',
-          },
-        },
-        component: {
-          name: 'Text',
-          options: {
-            text: 'Hi there',
-          },
-        },
-      },
-      {
-        '@type': '@builder.io/sdk:Element',
-        responsiveStyles: {
-          large: {
-            margin: '10px',
-            padding: '20px',
-            backgroundColor: 'white',
-            color: 'white',
-          },
-        },
-        component: {
-          name: 'Text',
-          options: {
-            text: 'Hello',
-          },
-        },
-      },
-    ],
-  },
-};
-
+// create a custom React component
 function CustomComponent(props) {
   return (
     <>
@@ -58,14 +15,11 @@ function CustomComponent(props) {
   );
 }
 
+// register your custom component with Builder
 registerComponent(CustomComponent, {
   name: 'Custom Component',
   inputs: [{ name: 'text', type: 'string' }],
 });
-
-import { NativeBaseProvider, Box, Progress } from 'native-base';
-import { useState } from 'react';
-import { useEffect } from 'react';
 
 registerComponent(Progress, {
   name: 'NativeBase Radio',
@@ -89,24 +43,24 @@ registerComponent(Progress, {
   ],
 });
 export default function App() {
-  const [data, setData] = useState(null);
+  const [content, setContent] = useState(null);
 
   useEffect(() => {
+    // simple example: fetches a content entry from your "Page" model whose urlPath is set to "/" (i.e. your home page).
+    const url = `https://cdn.builder.io/api/v2/content/page?apiKey=${BUILDER_API_KEY}&userAttributes.urlPath=%2F&limit=1`;
+
     fetch(url).then(res => {
       return res.json().then(response => {
-        const data = response.results[0];
-        setData(data);
-        console.log(data);
+        const content = response.results[0];
+        setContent(content);
       });
     });
   }, []);
 
   return (
     <View style={styles.container}>
-      <NativeBaseProvider>
-        <Box>Hello world</Box>
-        <RenderContent model="page" content={data} />
-      </NativeBaseProvider>
+      <Box>Hello world</Box>
+      <RenderContent model="page" content={content} />
     </View>
   );
 }
