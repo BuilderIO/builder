@@ -16,19 +16,19 @@ To install latest version of `npm`
 ### Interactive mode
 
 ```
-npm init builder
+npm init builder.io@latest
 ```
 
 ### Command mode
 
 ```
-npm init builder <starter> <projectName>
+npm init builder.io@latest <starter> <projectName>
 ```
 
 Example:
 
 ```
-npm init builder nextjs my-site
+npm init builder.io@latest nextjs my-site
 ```
 
 ## Built-in starters

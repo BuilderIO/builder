@@ -20,6 +20,12 @@
 <br />
 
 <p align="center">
+<pre lang="bash">
+npm init builder.io@latest
+</pre>
+</p>
+
+<p align="center">
   <img src="https://imgur.com/HjBWIbv.gif" alt="Editor example" />
 </p>
 
@@ -31,40 +37,40 @@
 
 <p align="center" valign="middle">
   &nbsp; <a title="REST API" target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=rest">
-    <img alt="REST API" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F7c16907175964f5dada038f6cceef77b" /> 
+    <img alt="REST API" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F7c16907175964f5dada038f6cceef77b" />
   </a>&nbsp;
   &nbsp; <a title="GraphQL"  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=graphql">
-    <img alt="GraphQL" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fb739b409e5b94937b5b11e3cf62cfae4" /> 
+    <img alt="GraphQL" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fb739b409e5b94937b5b11e3cf62cfae4" />
   </a>&nbsp;
   &nbsp; <a title="Shopify"  target="_blank" href="https://apps.shopify.com/builder-2">
-    <img alt="Shopify" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F0f577e84eb4e4aa4a69d602dd376aa11" /> 
+    <img alt="Shopify" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F0f577e84eb4e4aa4a69d602dd376aa11" />
   </a>&nbsp;
   &nbsp; <a title="VS Code"  target="_blank" href="https://github.com/BuilderIO/vscode">
-    <img alt="VS Code" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ff83e94a9c504427cbc8a557f682efec3" /> 
+    <img alt="VS Code" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ff83e94a9c504427cbc8a557f682efec3" />
   </a>&nbsp;
   &nbsp;&nbsp; <a title="Figma" target="_blank" href="https://github.com/builderio/html-to-figma">
-    <img width="31" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ffb77e93c28e044178e4694cc939bf4cf" /> 
+    <img width="31" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ffb77e93c28e044178e4694cc939bf4cf" />
   </a>&nbsp;&nbsp;
   &nbsp; <a title="React"  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=react">
-    <img alt="React" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F2f3409f4f8b64d5f880195061aa481ab" /> 
+    <img alt="React" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F2f3409f4f8b64d5f880195061aa481ab" />
   </a>&nbsp;
   &nbsp; <a title="Next.js"  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=next">
-    <img alt="Next.js9" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fc6a3c58c0bde4f43b1fd6a350f491bdf" /> 
+    <img alt="Next.js9" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fc6a3c58c0bde4f43b1fd6a350f491bdf" />
   </a>&nbsp;
   &nbsp; <a title="Gatsby"  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=gatsby">
-    <img alt="Gatsby" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F45e59fc603574e708dcb79e45ef72d02" /> 
+    <img alt="Gatsby" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F45e59fc603574e708dcb79e45ef72d02" />
   </a>&nbsp;
   &nbsp; <a title="Vue"  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=vue">
-    <img alt="Vue" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F7cc6d5b6fc4045d5a9f9b12ddcc65407" /> 
+    <img alt="Vue" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F7cc6d5b6fc4045d5a9f9b12ddcc65407" />
   </a>&nbsp;
   &nbsp; <a title="Nuxt"  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=nuxt">
-    <img alt="Nuxt" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F73f47f47e0cc46cd95dbf72c26728858" /> 
+    <img alt="Nuxt" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F73f47f47e0cc46cd95dbf72c26728858" />
   </a>&nbsp;
   &nbsp; <a title="Angular"  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=angular">
-    <img alt="Angular" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fa91e9e437203442d8ed481eef94a99dc" /> 
+    <img alt="Angular" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fa91e9e437203442d8ed481eef94a99dc" />
   </a>&nbsp;
   &nbsp; <a title="Webcomponents"  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=webcomponents">
-    <img alt="Webcomponents" width="52" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F5613cb3536be4c108b32c34bf06f1c59" /> 
+    <img alt="Webcomponents" width="52" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F5613cb3536be4c108b32c34bf06f1c59" />
   </a>&nbsp;
 </p>
 
@@ -80,29 +86,29 @@
 <pre lang="tsx">
 import { Builder } from '@builder.io/react'
 &nbsp;
-// Register our heading component for use in 
+// Register our heading component for use in
 // the visual editor
 const Heading = props => (
   &lt;h1 className="my-heading"&gt;{props.title}&lt;/h1&gt;
 )
 &nbsp;
-Builder.registerComponent(Heading, { 
+Builder.registerComponent(Heading, {
 &nbsp;&nbsp;name: 'Heading',
 &nbsp;&nbsp;inputs: [{ name: 'title', type: 'text' }]
 })
 </pre>
-    
+
 </td>
     <td width="50%">
 <pre lang="tsx">
 import { BuilderComponent, builder } from '@builder.io/react'
-&nbsp; 
+&nbsp;
 builder.init('YOUR_KEY')
-&nbsp; 
+&nbsp;
 export let BuilderPage = () => {
 &nbsp;&nbsp;const [pageJson, setPage] = useState(null)
 &nbsp;
-&nbsp;&nbsp;useEffect(() => { 
+&nbsp;&nbsp;useEffect(() => {
 &nbsp;&nbsp;&nbsp;&nbsp;builder.get('page', { url: '/' })
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.promise().then(setPage)
 &nbsp;&nbsp;}, [])
@@ -228,7 +234,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
           <p align="center">
             REST API
           <p>
-        </a> 
+        </a>
       </td>
       <td align="center" valign="middle">
         <a target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=graphql">
@@ -237,16 +243,16 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
           <p align="center">
             GraphQL
           </p>
-        </a> 
+        </a>
       </td>
       <td align="center" valign="middle">
         <a target="_blank" href="https://apps.shopify.com/builder-2">
           <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" width="500" height="1" />
           <img width="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F0f577e84eb4e4aa4a69d602dd376aa11" />
           <p align="center">
-            Shopify 
+            Shopify
           </P>
-        </a> 
+        </a>
       </td>
       <td align="center" valign="middle">
         <a target="_blank" href="https://github.com/BuilderIO/vscode">
@@ -255,7 +261,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
           <p align="center">
             VS Code
           </p>
-        </a> 
+        </a>
       </td>
       <td align="center" valign="middle">
         <a target="_blank" href="https://github.com/builderio/html-to-figma">
