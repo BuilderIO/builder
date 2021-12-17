@@ -52,6 +52,12 @@ export default function RenderBlock(props: RenderBlockProps) {
         context: builderContext.context,
       });
     },
+    get propertiesAndActions() {
+      return {
+        ...state.properties,
+        ...state.actions,
+      };
+    },
     get actions() {
       return getBlockActions({
         block: state.useBlock,
@@ -73,7 +79,7 @@ export default function RenderBlock(props: RenderBlockProps) {
         when={!state.componentInfo?.noWrap}
         else={
           <state.componentRef
-            attributes={state.properties}
+            attributes={state.propertiesAndActions}
             {...state.componentInfo?.options}
             builderBlock={state.useBlock}
             style={state.css}
@@ -81,7 +87,7 @@ export default function RenderBlock(props: RenderBlockProps) {
           />
         }
       >
-        <state.tagName {...state.properties} style={state.css}>
+        <state.tagName {...state.propertiesAndActions} style={state.css}>
           <BlockStyles block={state.useBlock} />
           {state.componentRef && (
             <state.componentRef
