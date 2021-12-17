@@ -6,10 +6,10 @@ export interface SourceCodeLinkProps {
   column?: number;
 }
 
-export const SourceCodeLink: FunctionComponent<SourceCodeLinkProps> = ({fileName, line, column, children, ...rest}) => {
+export const SourceCodeLink: FunctionComponent<SourceCodeLinkProps> = ({children}) => {
   return (
-    <a {...rest} href="#">
+    <div>
       {children}
-    </a>
+    </div>
   );
 }
