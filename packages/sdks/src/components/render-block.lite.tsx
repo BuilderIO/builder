@@ -74,6 +74,7 @@ export default function RenderBlock(props: RenderBlockProps) {
         else={
           <state.componentRef
             attributes={state.properties}
+            {...state.actions}
             {...state.componentInfo?.options}
             builderBlock={state.useBlock}
             style={state.css}
@@ -81,7 +82,7 @@ export default function RenderBlock(props: RenderBlockProps) {
           />
         }
       >
-        <state.tagName {...state.properties} style={state.css}>
+        <state.tagName {...state.properties} {...state.actions} style={state.css}>
           <BlockStyles block={state.useBlock} />
           {state.componentRef && (
             <state.componentRef {...state.componentOptions} builderBlock={state.useBlock}>
