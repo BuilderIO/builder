@@ -1,5 +1,9 @@
 <template>
-<builder-render-content model="page"  />
+<div>
+<div>From SSR</div>
+  <div v-if="canShowContent">
+    <builder-render-content model="page" :content="content" />
+  </div></div>
 </template>
 
 <script>
@@ -15,28 +19,24 @@ const BUILDER_PUBLIC_API_KEY = '14df3669544146ed91ea75f999b0124b'
 
 export default Vue.extend({
   data: () => ({
-    notFound: false,
+    canShowContent: false,
     content: null,
-    isEditing: isEditing(),
   }),
   async fetch() {
-    let content = await getContent({
+    const content = await getContent({
       model: 'page',
       apiKey: BUILDER_PUBLIC_API_KEY,
       userAttributes: {
         urlPath: this.$route.path,
       },
     })
-    console.log(content)
     if (!content) {
       if (this.$nuxt.context?.ssrContext?.res) {
         this.$nuxt.context.ssrContext.res.statusCode = 404
       }
     }
     this.content = content
-    console.log({ isEditing, isEdit: isEditing()})
-    this.notFound = !content && !isEditing()
-    // && !isPreviewing()
+    this.canShowContent = content || isEditing()
   },
 })
 </script>
