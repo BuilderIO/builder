@@ -1,6 +1,7 @@
 {
   "name": "@builder.io/sdks",
   "version": "0.0.1",
+  "private": true,
   "scripts": {
     "mitosis": "mitosis build",
     "build": "npm run mitosis && npm run lint",
@@ -10,20 +11,11 @@
     "ci:build": "npm run build",
     "ci:test": "npm run test"
   },
-  "exports": {
-    "./react/*": "./dist/react/src/*.js",
-    "./vue/*": "./dist/vue/src/*.js",
-    "./svelte/*": "./dist/svelte/src/*.js",
-    "./angular/*": "./dist/angular/src/*.js",
-    "./html/*": "./dist/html/src/*.js",
-    "./solid/*": "./dist/solid/src/*.js"
-  },
   "dependencies": {
     "@builder.io/mitosis-cli": "0.0.8",
     "node-fetch": "^2.6.1"
   },
   "devDependencies": {
-    "@builder.io/mitosis": "0.0.45-5",
     "@jsx-lite/cli": "^1.0.1",
     "@jsx-lite/eslint-plugin": "0.0.2",
     "@swc/core": "^1.2.64",
