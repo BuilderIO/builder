@@ -20,20 +20,24 @@
 <br />
 
 <p align="center">
-<pre lang="bash">
-npm init builder.io@latest
-</pre>
-</p>
-
-<p align="center">
   <img src="https://imgur.com/HjBWIbv.gif" alt="Editor example" />
 </p>
 
 <br />
 
-<p align="center" valign="middle">
-  Choose your framework:
+
+<h4 align="center">
+  Quick start:
+</h4>
+<p align="center">
+<pre align="center" lang="bash">
+npm init builder.io@latest
+</pre>
 </p>
+
+<h5 align="center" valign="middle">
+  Or choose your framework:
+</h5>
 
 <p align="center" valign="middle">
   &nbsp; <a title="REST API" target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=rest">
@@ -129,6 +133,16 @@ export let BuilderPage = () => {
 </p>
 
 ## Try it out!
+
+Use our CLI to get started with one command:
+
+<p align="center">
+<pre align="center" lang="bash">
+npm init builder.io@latest
+</pre>
+</p>
+
+Or try out:
 
 <table>
   <tbody>

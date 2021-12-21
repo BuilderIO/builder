@@ -1,9 +1,5 @@
 import { evaluate } from './evaluate';
 
-function capitalizeFirstLetter(string: string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
 export function getBlockActions(options: {
   block: any;
   context: any;
@@ -15,8 +11,9 @@ export function getBlockActions(options: {
       if (!options.block.actions.hasOwnProperty(key)) {
         continue;
       }
+
       const value = options.block.actions[key];
-      obj['on' + capitalizeFirstLetter(key)] = (event: Event) =>
+      obj['v-on:' + key.toLowerCase()] = (event: Event) =>
         evaluate({
           code: value,
           context: options.context,

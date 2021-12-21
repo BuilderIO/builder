@@ -16,8 +16,7 @@ const MULTIBAR = new cliProgress.MultiBar(
   cliProgress.Presets.shades_grey
 );
 
-// todo change this to prod
-const root = 'https://qa.builder.io';
+const root = 'https://cdn.builder.io';
 
 const createGraphqlClient = (privateKey: string) =>
   createClient({
