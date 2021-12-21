@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { View, StyleSheet, Image, Text } from 'react-native';
-import { useContext } from 'react';
 import { isEditing } from '../functions/is-editing';
 
 export default function FormInputComponent(props) {
