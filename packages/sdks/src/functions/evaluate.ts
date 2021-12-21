@@ -24,37 +24,15 @@ export function evaluate(options: {
   const useCode = `${useReturn ? `return (${code});` : code}`;
 
   try {
-    console.log('1');
-    const fn = new Function(
+    return new Function(
       'builder',
       'Builder' /* <- legacy */,
       'state',
       'context',
       'event',
-      // https://github.com/samijaber/builder/blob/ssr-support/packages/react/src/functions/string-to-function.ts#L51
-      // 'block',
       useCode
-    );
-    console.log('2');
-    const out = fn(
-      builder,
-      builder,
-      options.state,
-      options.context,
-      options.event
-      // might need to add something like this, but where do we get `block` from?
-      // I should look at how react SDK does this. what calls this function all the way at the top
-      // both here and in React SDK
-      // https://github.com/samijaber/builder/blob/ssr-support/packages/react/src/functions/string-to-function.ts#L51
-      // options.block
-    );
-    console.log('3');
-
-    return out;
+    )(builder, builder, options.state, options.context, options.event);
   } catch (e) {
     console.warn('Builder custom code error: ', e);
-    console.warn('===== EXTRA LOGS ======');
-    console.warn(options);
-    console.warn('===== END LOGS ======');
   }
 }
