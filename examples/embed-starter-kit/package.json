@@ -1,0 +1,15 @@
+{
+  "name": "multi-site-poc",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "cd ./site && next build",
+    "prettier": "prettier"
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true
+  },
+  "devDependencies": {
+    "prettier": "^2.1.2"
+  }
+}
