@@ -12,7 +12,7 @@
     "ci:test": "npm run test"
   },
   "dependencies": {
-    "@builder.io/mitosis-cli": "0.0.9",
+    "@builder.io/mitosis-cli": "0.0.10",
     "node-fetch": "^2.6.1"
   },
   "devDependencies": {
