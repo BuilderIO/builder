@@ -1,9 +1,9 @@
 <template>
-  <div class="div-1lmobbief0v">
+  <div class="div-2m37ml0pmfw">
     <picture>
       <img
         loading="lazy"
-        class="img-1lmobbief0v"
+        class="img-2m37ml0pmfw"
         :alt="altText"
         :aria-role="altText ? 'presentation' : undefined"
         :style="{
@@ -23,7 +23,7 @@
     </picture>
 
     <div
-      class="builder-image-sizer div-1lmobbief0v-2"
+      class="builder-image-sizer div-2m37ml0pmfw-2"
       v-if="
         aspectRatio &&
         !(
@@ -42,13 +42,13 @@
 
     <slot></slot>
 
-    <div class="div-1lmobbief0v-3" v-if="!fitContent">
+    <div class="div-2m37ml0pmfw-3" v-if="!fitContent">
       <slot></slot>
     </div>
   </div>
 </template>
 <script>
-import { registerComponent } from '@builder.io/sdk-vue';
+import { registerComponent } from '../functions/register-component';
 
 export default registerComponent(
   {
@@ -167,10 +167,10 @@ export default registerComponent(
 );
 </script>
 <style scoped>
-.div-1lmobbief0v {
+.div-2m37ml0pmfw {
   position: relative;
 }
-.img-1lmobbief0v {
+.img-2m37ml0pmfw {
   opacity: 1;
   transition: opacity 0.2s ease-in-out;
   position: absolute;
@@ -179,12 +179,12 @@ export default registerComponent(
   top: 0px;
   left: 0px;
 }
-.div-1lmobbief0v-2 {
+.div-2m37ml0pmfw-2 {
   width: 100%;
   pointer-events: none;
   font-size: 0;
 }
-.div-1lmobbief0v-3 {
+.div-2m37ml0pmfw-3 {
   display: flex;
   flex-direction: column;
   align-items: stretch;

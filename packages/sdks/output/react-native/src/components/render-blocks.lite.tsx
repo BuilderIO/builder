@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { View, StyleSheet, Image, Text } from 'react-native';
-import { useState, useContext } from 'react';
 import { isEditing } from '../functions/is-editing';
 import RenderBlock from './render-block.lite';
 

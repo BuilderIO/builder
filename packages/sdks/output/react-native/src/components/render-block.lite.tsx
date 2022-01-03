@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, StyleSheet, Image, Text } from 'react-native';
-import { useState, useContext } from 'react';
+import { useContext } from 'react';
 import { getBlockComponentOptions } from '../functions/get-block-component-options';
 import { getBlockProperties } from '../functions/get-block-properties';
 import { getBlockStyles } from '../functions/get-block-styles';
@@ -56,6 +56,10 @@ export default function RenderBlock(props) {
     });
   }
 
+  function propertiesAndActions() {
+    return { ...properties(), ...actions() };
+  }
+
   function actions() {
     return getBlockActions({
       block: useBlock(),
@@ -81,7 +85,7 @@ export default function RenderBlock(props) {
     <>
       {!componentInfo?.()?.noWrap ? (
         <>
-          <TagNameRef {...properties()} style={css()}>
+          <TagNameRef {...propertiesAndActions()} style={css()}>
             <BlockStyles block={useBlock()} />
 
             {componentRef() ? (
@@ -114,7 +118,7 @@ export default function RenderBlock(props) {
       ) : (
         <ComponentRefRef
           {...componentInfo?.()?.options}
-          attributes={properties()}
+          attributes={propertiesAndActions()}
           builderBlock={useBlock()}
           style={css()}
           children={useBlock().children}

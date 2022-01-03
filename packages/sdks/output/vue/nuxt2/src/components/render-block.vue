@@ -1,6 +1,6 @@
 <template>
   <component
-    v-bind="properties"
+    v-bind="propertiesAndActions"
     v-if="!(componentInfo && componentInfo.noWrap)"
     :style="css"
     :is="tagName"
@@ -29,7 +29,7 @@
   <component
     v-bind="componentInfo && componentInfo.options"
     v-else=""
-    :attributes="properties"
+    :attributes="propertiesAndActions"
     :builderBlock="useBlock"
     :style="css"
     :children="useBlock.children"
@@ -97,6 +97,9 @@ export default {
         state: this.builderContext.state,
         context: this.builderContext.context,
       });
+    },
+    propertiesAndActions() {
+      return { ...this.properties, ...this.actions };
     },
     actions() {
       return getBlockActions({

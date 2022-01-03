@@ -1,32 +1,30 @@
 <template>
-  <div v-if="notFound && !isEditing">
-    <!-- Show your 404 content -->
-    Page not found
-  </div>
-  <div v-else>
-    <builder-render-content model="page" :content="content" />
+  <div>
+    <div>Hello world from your Vue project. Below is Builder Content:</div>
+    <div v-if="canShowContent">
+      <builder-render-content model="page" :content="content" />
+    </div>
   </div>
 </template>
 
 <script>
 import Vue from 'vue'
-import { getContent, isEditing } from '@builder.io/sdk-vue'
+import { getContent, isEditing, isPreviewing } from '@builder.io/sdk-vue'
 
 // Important to import this anywhere you use <RenderContent /> so the custom
 // components will be registered and usable
 import '../scripts/register-builder-components'
 
 // TODO: enter your public API key
-const BUILDER_PUBLIC_API_KEY = 'jdGaMusrVpYgdcAnAtgn'
+const BUILDER_PUBLIC_API_KEY = '14df3669544146ed91ea75f999b0124b'
 
 export default Vue.extend({
   data: () => ({
-    notFound: false,
+    canShowContent: false,
     content: null,
-    isEditing: isEditing(),
   }),
   async fetch() {
-    let content = await getContent({
+    const content = await getContent({
       model: 'page',
       apiKey: BUILDER_PUBLIC_API_KEY,
       userAttributes: {
@@ -39,7 +37,7 @@ export default Vue.extend({
       }
     }
     this.content = content
-    this.notFound = !content
+    this.canShowContent = content || isEditing()
   },
 })
 </script>

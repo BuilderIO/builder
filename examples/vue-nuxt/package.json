@@ -10,7 +10,7 @@
     "generate": "NODE_PRESERVE_SYMLINKS=1 nuxt generate"
   },
   "dependencies": {
-    "@builder.io/sdk-vue": "0.0.1-43",
+    "@builder.io/sdk-vue": "0.0.1-44",
     "@nuxt/components": "^2.2.1",
     "@nuxt/typescript-runtime": "^2.0.1",
     "@nuxtjs/pwa": "^3.3.5",

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, StyleSheet, Image, Text } from 'react-native';
-import { useState, useContext, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 export default function Embed(props) {
   const [scriptsInserted, setScriptsInserted] = useState(() => []);
