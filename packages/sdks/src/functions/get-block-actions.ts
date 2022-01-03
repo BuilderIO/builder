@@ -1,8 +1,5 @@
 import { evaluate } from './evaluate';
-
-function capitalizeFirstLetter(string: string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-}
+import { getEventHandlerName } from './name-event-handlers';
 
 export function getBlockActions(options: {
   block: any;
@@ -16,7 +13,7 @@ export function getBlockActions(options: {
         continue;
       }
       const value = options.block.actions[key];
-      obj['on' + capitalizeFirstLetter(key)] = (event: Event) =>
+      obj[getEventHandlerName(key)] = (event: Event) =>
         evaluate({
           code: value,
           context: options.context,
