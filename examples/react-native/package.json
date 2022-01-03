@@ -8,7 +8,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
-    "@builder.io/sdk-react-native": "^0.0.1-36",
+    "@builder.io/sdk-react-native": "0.0.1-37",
     "expo": "^43.0.0",
     "expo-status-bar": "~1.1.0",
     "prettier": "^2.5.1",

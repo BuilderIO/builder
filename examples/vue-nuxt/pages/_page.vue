@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div>From SSR</div>
+    <div>Hello world from your Vue project. Below is Builder Content:</div>
     <div v-if="canShowContent">
       <builder-render-content model="page" :content="content" />
     </div>
