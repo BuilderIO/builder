@@ -1,9 +1,10 @@
 <template>
-<div>
-<div>From SSR</div>
-  <div v-if="canShowContent">
-    <builder-render-content model="page" :content="content" />
-  </div></div>
+  <div>
+    <div>From SSR</div>
+    <div v-if="canShowContent">
+      <builder-render-content model="page" :content="content" />
+    </div>
+  </div>
 </template>
 
 <script>
