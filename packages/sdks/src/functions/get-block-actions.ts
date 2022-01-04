@@ -1,3 +1,4 @@
+import { BuilderBlock } from '../types/builder-block';
 import { evaluate } from './evaluate';
 
 function capitalizeFirstLetter(string: string) {
@@ -5,7 +6,7 @@ function capitalizeFirstLetter(string: string) {
 }
 
 export function getBlockActions(options: {
-  block: any;
+  block: BuilderBlock;
   context: any;
   state: any;
 }): any {
