@@ -1,9 +1,10 @@
+import { BuilderBlock } from '../types/builder-block';
 import { evaluate } from './evaluate';
 import { set } from './set';
 import { transformBlock } from './transform-block';
 
 export function getProcessedBlock(options: {
-  block: any;
+  block: BuilderBlock;
   state: any;
   context: any;
 }) {
