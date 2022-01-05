@@ -1,6 +1,6 @@
 import { BuilderBlock } from '../types/builder-block';
 import { evaluate } from './evaluate';
-import { getEventHandlerName } from './name-event-handlers';
+import { getEventHandlerName } from './event-handler-name';
 
 export function getBlockActions(options: {
   block: BuilderBlock;
