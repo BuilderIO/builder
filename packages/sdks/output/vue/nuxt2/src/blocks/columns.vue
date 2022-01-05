@@ -1,7 +1,7 @@
 <template>
-  <div class="builder-columns div-2jys55qqvfs">
+  <div class="builder-columns div-38o6qlysr38">
     <div
-      class="builder-column div-2jys55qqvfs-2"
+      class="builder-column div-38o6qlysr38-2"
       v-for="(column, index) in columns"
       :style="{
         width: getColumnCssWidth(index),
@@ -16,7 +16,7 @@
 <script>
 import RenderBlocks from '../components/render-blocks';
 
-import { registerComponent } from '@builder.io/sdk-vue';
+import { registerComponent } from '../functions/register-component';
 
 export default registerComponent(
   {
@@ -262,12 +262,12 @@ export default registerComponent(
 );
 </script>
 <style scoped>
-.div-2jys55qqvfs {
+.div-38o6qlysr38 {
   display: flex;
   align-items: stretch;
   line-height: normal;
 }
-.div-2jys55qqvfs-2 {
+.div-38o6qlysr38-2 {
   flex-grow: 1;
 }
 </style>

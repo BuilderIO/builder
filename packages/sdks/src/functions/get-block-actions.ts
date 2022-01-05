@@ -1,8 +1,9 @@
+import { BuilderBlock } from '../types/builder-block';
 import { evaluate } from './evaluate';
 import { getEventHandlerName } from './name-event-handlers';
 
 export function getBlockActions(options: {
-  block: any;
+  block: BuilderBlock;
   context: any;
   state: any;
 }): any {

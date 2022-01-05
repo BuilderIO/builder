@@ -27,7 +27,7 @@
     ></builder-blocks>
 
     <pre
-      class="builder-form-error-text pre-1a5hjeqkcvl"
+      class="builder-form-error-text pre-2o44605xnuc"
       v-if="submissionState === 'error' && responseData"
     >
         {{ JSON.stringify(responseData, null, 2) }}
@@ -44,7 +44,7 @@
 <script>
 import RenderBlock from '../components/render-block';
 
-import { registerComponent } from '@builder.io/sdk-vue';
+import { registerComponent } from '../functions/register-component';
 
 export default registerComponent(
   {
@@ -515,7 +515,7 @@ export default registerComponent(
 );
 </script>
 <style scoped>
-.pre-1a5hjeqkcvl {
+.pre-2o44605xnuc {
   padding: 10px;
   color: red;
   text-align: center;

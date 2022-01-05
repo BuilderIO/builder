@@ -1,12 +1,16 @@
+import { BuilderBlock } from '../types/builder-block';
 import { evaluate } from './evaluate';
 import { set } from './set';
+import { transformBlock } from './transform-block';
 
 export function getProcessedBlock(options: {
-  block: any;
+  block: BuilderBlock;
   state: any;
   context: any;
 }) {
-  const { block, state, context } = options;
+  const { state, context } = options;
+  const block = transformBlock(options.block);
+
   if (!block.bindings) {
     return block;
   }

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { View, StyleSheet, Image, Text } from 'react-native';
-import { useState, useContext } from 'react';
 import RenderBlocks from '../components/render-blocks.lite';
 
 export default function Columns(props) {

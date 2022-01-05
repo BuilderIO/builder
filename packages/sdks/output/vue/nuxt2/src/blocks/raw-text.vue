@@ -10,7 +10,7 @@
   ></span>
 </template>
 <script>
-import { registerComponent } from '@builder.io/sdk-vue';
+import { registerComponent } from '../functions/register-component';
 
 export default registerComponent(
   {

@@ -283,6 +283,7 @@ class ImageComponent extends React.Component<any, { imageLoaded: boolean; load: 
       srcset = this.getSrcSet();
     }
 
+    const isPixel = this.props.builderBlock?.id.startsWith('builder-pixel-');
     const { fitContent } = this.props;
 
     return (
@@ -331,7 +332,7 @@ class ImageComponent extends React.Component<any, { imageLoaded: boolean; load: 
                   },
                 }),
               }}
-              loading="lazy"
+              loading={isPixel ? 'eager' : 'lazy'}
               className={'builder-image' + (this.props.className ? ' ' + this.props.className : '')}
               src={this.image}
               {...(!amp && {

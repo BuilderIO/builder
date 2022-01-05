@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, StyleSheet, Image, Text } from 'react-native';
-import { useState, useContext } from 'react';
+import { useContext } from 'react';
 import { getBlockComponentOptions } from '../functions/get-block-component-options';
 import { getBlockProperties } from '../functions/get-block-properties';
 import { getBlockStyles } from '../functions/get-block-styles';
