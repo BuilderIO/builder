@@ -1,5 +1,5 @@
 <template>
-  <div @click="onClick" v-if="!isEditing" v-html="html"></div>
+  <div @click="onClick" v-html="html"></div>
 </template>
 
 <script>
@@ -15,21 +15,17 @@ export default {
   name: 'RenderContent',
 
   data: () => ({
-    isEditing: Builder.isEditing,
     fetchInitialized: false,
     content: null,
   }),
 
   computed: {
     html() {
-      if (this.isEditing || Builder.isEditing) {
-        // Editing component
-        return `<builder-component api-key="${builder.apiKey}" prerender="false" model="${
-          this.model
-        }" options='${JSON.stringify(this.options || {}).replace(/'/g, '&apos;')}'>`;
-      }
-
-      return this.content && this.content.data.html;
+      return `<builder-component api-key="${builder.apiKey}" prerender="false" model="${
+        this.model
+      }" options='${JSON.stringify(this.options || {}).replace(/'/g, '&apos;')}'>
+      ${(!Builder.isEditing && this.content && this.content.data.html) || ''}
+      </builder-component>`;
     },
   },
 
@@ -51,9 +47,8 @@ export default {
   },
 
   created() {
-    if (Builder.isEditing) {
-      this.isEditing = true;
-      this.loadEditScript();
+    if (Builder.isBrowser) {
+      this.loadWebComponents();
     }
     if (!this.fetchInitialized && !this.content) {
       this.getContent();
@@ -165,7 +160,7 @@ export default {
         return relativeUrl;
       }
     },
-    loadEditScript() {
+    loadWebComponents() {
       const editJsSrc = 'https://cdn.builder.io/js/webcomponents';
       if (!(window.BuilderWC || document.querySelector(`script[src="${editJsSrc}"]`))) {
         const script = document.createElement('script');

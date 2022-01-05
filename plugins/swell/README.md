@@ -1,6 +1,6 @@
-# Builder.io Swell.is plugin
+# Builder.io Swell plugin
 
-Easily connect your Swell.is data to your Builder.io content!
+Easily connect your Swell data to your Builder.io content!
 
 <img alt="Swell data example" src="https://imgur.com/BhtUeqK.gif" >
 
@@ -14,7 +14,7 @@ You will now see six new field types (for [model](https://builder.io/c/docs/guid
 
 ### Custom targeting
 
-Custom targeting in Builder.io allow users to target content by a multitude of attributes, and in this plugin you'll be able to add specific content to swell.is collections or products, for this you'll need first to set the target attributes on the host site, either by setting the `userAttributes` if you're rendering client side:
+Custom targeting in Builder.io allow users to target content by a multitude of attributes, and in this plugin you'll be able to add specific content to swell collections or products, for this you'll need first to set the target attributes on the host site, either by setting the `userAttributes` if you're rendering client side:
 
 ```ts
 builder.setUserAttributes({

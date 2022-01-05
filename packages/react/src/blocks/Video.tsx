@@ -40,17 +40,21 @@ class VideoComponent extends React.Component<{
   };
 
   updateVideo() {
-    if (this.video) {
-      const attributes: Array<'muted' | 'playsInline' | 'autoPlay'> = [
+    const video = this.video;
+    if (video) {
+      // There are some issues with boolean attributes and media elements
+      // see: https://github.com/facebook/react/issues/10389
+      const boolProps: Array<'muted' | 'playsInline' | 'autoPlay'> = [
         'muted',
         'playsInline',
         'autoPlay',
       ];
-      attributes.forEach(attr => {
-        if (this.props[attr]) {
-          this.video?.setAttribute(attr.toLowerCase(), 'true');
+      boolProps.forEach(prop => {
+        const attr = prop.toLowerCase();
+        if (this.props[prop]) {
+          video.setAttribute(attr, attr);
         } else {
-          this.video?.removeAttribute(attr.toLowerCase());
+          video.removeAttribute(attr);
         }
       });
     }
@@ -123,6 +127,7 @@ class VideoComponent extends React.Component<{
             height: '100%',
             objectFit: this.props.fit,
             objectPosition: this.props.position,
+            zIndex: 2,
             // Hack to get object fit to work as expected and not have the video
             // overflow
             borderRadius: 1,
@@ -151,9 +156,10 @@ class VideoComponent extends React.Component<{
           <div css={{ display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
             {children}
           </div>
-        ) : (
+        ) : children ? (
           <div
             css={{
+              pointerEvents: 'none',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'stretch',
@@ -166,7 +172,7 @@ class VideoComponent extends React.Component<{
           >
             {children}
           </div>
-        )}
+        ) : null}
       </div>
     );
   }
@@ -190,52 +196,6 @@ export const Video = Builder.registerComponent(withChildren(VideoComponent), {
       defaultValue:
         'https://firebasestorage.googleapis.com/v0/b/builder-3b0a2.appspot.com/o/assets%2FKQlEmWDxA0coC3PK6UvkrjwkIGI2%2F28cb070609f546cdbe5efa20e931aa4b?alt=media&token=912e9551-7a7c-4dfb-86b6-3da1537d1a7f',
       required: true,
-      onChange: (options: Map<string, any>) => {
-        const DEFAULT_ASPECT_RATIO = 0.7004048582995948;
-        function loadImage(url: string, timeout = 60000): Promise<HTMLImageElement> {
-          return new Promise((resolve, reject) => {
-            const img = document.createElement('img');
-            let loaded = false;
-            img.onload = () => {
-              loaded = true;
-              resolve(img);
-            };
-
-            img.addEventListener('error', event => {
-              console.warn('Image load failed', event.error);
-              reject(event.error);
-            });
-
-            img.src = url;
-            setTimeout(() => {
-              if (!loaded) {
-                reject(new Error('Image load timed out'));
-              }
-            }, timeout);
-          });
-        }
-
-        function round(num: number) {
-          return Math.round(num * 1000) / 1000;
-        }
-
-        // // TODO
-        const value = options.get('image');
-        const aspectRatio = options.get('aspectRatio');
-        if (value && (!aspectRatio || aspectRatio === DEFAULT_ASPECT_RATIO)) {
-          return loadImage(value).then(img => {
-            const possiblyUpdatedAspectRatio = options.get('aspectRatio');
-            if (
-              options.get('image') === value &&
-              (!possiblyUpdatedAspectRatio || possiblyUpdatedAspectRatio === DEFAULT_ASPECT_RATIO)
-            ) {
-              if (img.width && img.height) {
-                options.set('aspectRatio', round(img.height / img.width));
-              }
-            }
-          });
-        }
-      },
     },
     {
       name: 'posterImage',

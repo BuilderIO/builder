@@ -1,0 +1,23 @@
+{
+  "name": "@builder.io/sdk-vue",
+  "description": "Builder.io SDK for Vue",
+  "version": "0.0.1-44",
+  "dependencies": {
+    "node-fetch": "^2.6.1"
+  },
+  "main": "./nuxt2/src/index.js",
+  "exports": {
+    "vue2": "./vue2/src/index.js",
+    "nuxt2": "./nuxt2/src/index.js",
+    "vue3": "./vue3/src/index.js"
+  },
+  "scripts": {
+    "release:dev": "npm version prerelease --no-git-tag-version && npm publish --tag dev --access public"
+  },
+  "peerDependencies": {
+    "vue": ">= 2"
+  },
+  "devDependencies": {
+    "vue": "^2.6.12"
+  }
+}

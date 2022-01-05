@@ -1,12 +1,13 @@
 {
   "name": "@builder.io/utils",
-  "version": "1.0.4",
+  "version": "1.0.5-0",
   "description": "Utils for working with Builder.io content",
   "main": "./dist/index.js",
   "scripts": {
     "build": "tsc",
     "prepublish": "npm run build",
-    "test": "jest"
+    "test": "jest",
+    "release:dev": "npm run build && npm version prerelease --no-git-tag-version && ALLOW_PUBLISH=true npm publish --tag dev"
   },
   "devDependencies": {
     "@builder.io/sdk": "^1.1.20",

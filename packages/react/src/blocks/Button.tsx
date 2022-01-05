@@ -14,6 +14,7 @@ class ButtonComponent extends React.Component<ButtonProps> {
     const Tag = this.props.link ? Link : 'span';
     return (
       <Tag
+        role="button"
         href={this.props.link}
         target={this.props.openLinkInNewTab ? '_blank' : undefined}
         {...this.props.attributes}
@@ -35,7 +36,7 @@ export const Button = withBuilder(ButtonComponent, {
     paddingBottom: '15px',
     paddingLeft: '25px',
     paddingRight: '25px',
-    backgroundColor: '#3898EC',
+    backgroundColor: '#000000',
     color: 'white',
     borderRadius: '4px',
     textAlign: 'center',

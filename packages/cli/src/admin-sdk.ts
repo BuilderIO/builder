@@ -16,8 +16,7 @@ const MULTIBAR = new cliProgress.MultiBar(
   cliProgress.Presets.shades_grey
 );
 
-// todo change this to prod
-const root = 'https://qa.builder.io';
+const root = 'https://cdn.builder.io';
 
 const createGraphqlClient = (privateKey: string) =>
   createClient({
@@ -32,18 +31,31 @@ const createGraphqlClient = (privateKey: string) =>
       }).then(r => r.json()),
   });
 
-export const importSpace = async (privateKey: string, directory: string, debug = false) => {
+export const importSpace = async (
+  privateKey: string,
+  directory: string,
+  debug = false,
+  limit = 100,
+  offset = 0
+) => {
   const graphqlClient = createGraphqlClient(privateKey);
 
   const spaceProgress = MULTIBAR.create(1, 0);
   spaceProgress.start(1, 0, { name: 'getting space settings' });
 
   try {
-    const space = await graphqlClient.chain.query.downloadClone().execute({
-      models: { name: true, everything: true, content: true },
-      settings: true,
-      meta: true,
-    });
+    const space = await graphqlClient.chain.query
+      .downloadClone({
+        contentQuery: {
+          limit,
+          offset,
+        },
+      })
+      .execute({
+        models: { name: true, everything: true, content: true },
+        settings: true,
+        meta: true,
+      });
     spaceProgress.setTotal(space.models.length);
     await fse.outputFile(
       `${directory}/settings.json`,

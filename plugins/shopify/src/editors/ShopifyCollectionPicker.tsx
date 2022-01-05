@@ -26,6 +26,7 @@ import { SetShopifyKeysMessage } from '../components/set-shopify-keys-message';
 import { fastClone } from '../functions/fast-clone';
 import appState from '@builder.io/app-context';
 import Client from 'shopify-buy';
+import { pluginId } from '../constants';
 
 interface ShopifyCollectionPickerProps extends CustomReactEditorProps<BuilderRequest | string> {
   isPreview?: boolean;
@@ -203,7 +204,7 @@ export class ShopifyCollectionPicker extends SafeComponent<ShopifyCollectionPick
     return {
       '@type': '@builder.io/core:Request',
       request: {
-        url: `${appState.config.apiRoot()}/api/v1/shopify/collections/{{this.options.collection}}.json?apiKey=${
+        url: `${appState.config.apiRoot()}/api/v1/shopify/collections/${collectionId}.json?apiKey=${
           this.props.context.user.apiKey
         }`,
       },
@@ -364,6 +365,8 @@ export class ShopifyCollectionPicker extends SafeComponent<ShopifyCollectionPick
 
 Builder.registerEditor({
   name: 'ShopifyCollection',
+  isDataResource: true,
+  pluginId,
   component: ShopifyCollectionPicker,
 });
 

@@ -361,6 +361,18 @@ export class BuilderBlock extends React.Component<
           InnerComponent = componentInfo.class;
         } else if (componentInfo && componentInfo.tag) {
           InnerComponent = componentInfo.tag;
+        } else {
+          if (componentName?.startsWith('Builder:')) {
+            console.warn(
+              `Missing @builder.io/widgets installation, please install and import @builder.io/widgets to use ${
+                componentName.split(':')[1]
+              } in your content, more info here: https://github.com/BuilderIO/builder/tree/main/packages/widgets`
+            );
+          } else if (componentName) {
+            console.warn(
+              `Missing registration for ${componentName}, have you included the registration in your bundle?`
+            );
+          }
         }
       }
     }
@@ -630,13 +642,7 @@ export class BuilderBlock extends React.Component<
 
     if (block.repeat && block.repeat.collection) {
       const collectionPath = block.repeat.collection;
-      const collectionName = last(
-        (collectionPath || '')
-          .trim()
-          .split('(')[0]
-          .trim()
-          .split('.')
-      );
+      const collectionName = last((collectionPath || '').trim().split('(')[0].trim().split('.'));
       const itemName = block.repeat.itemName || (collectionName ? collectionName + 'Item' : 'item');
       const array = this.stringToFunction(collectionPath)(
         state.state,

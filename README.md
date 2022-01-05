@@ -25,46 +25,56 @@
 
 <br />
 
-<p align="center" valign="middle">
-  Choose your framework:
+
+<h4 align="center">
+  Quick start:
+</h4>
+<p align="center">
+<pre align="center" lang="bash">
+npm init builder.io@latest
+</pre>
 </p>
+
+<h5 align="center" valign="middle">
+  Or choose your framework:
+</h5>
 
 <p align="center" valign="middle">
   &nbsp; <a title="REST API" target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=rest">
-    <img alt="REST API" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F7c16907175964f5dada038f6cceef77b" /> 
+    <img alt="REST API" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F7c16907175964f5dada038f6cceef77b" />
   </a>&nbsp;
   &nbsp; <a title="GraphQL"  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=graphql">
-    <img alt="GraphQL" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fb739b409e5b94937b5b11e3cf62cfae4" /> 
+    <img alt="GraphQL" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fb739b409e5b94937b5b11e3cf62cfae4" />
   </a>&nbsp;
   &nbsp; <a title="Shopify"  target="_blank" href="https://apps.shopify.com/builder-2">
-    <img alt="Shopify" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F0f577e84eb4e4aa4a69d602dd376aa11" /> 
+    <img alt="Shopify" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F0f577e84eb4e4aa4a69d602dd376aa11" />
   </a>&nbsp;
   &nbsp; <a title="VS Code"  target="_blank" href="https://github.com/BuilderIO/vscode">
-    <img alt="VS Code" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ff83e94a9c504427cbc8a557f682efec3" /> 
+    <img alt="VS Code" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ff83e94a9c504427cbc8a557f682efec3" />
   </a>&nbsp;
   &nbsp;&nbsp; <a title="Figma" target="_blank" href="https://github.com/builderio/html-to-figma">
-    <img width="31" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ffb77e93c28e044178e4694cc939bf4cf" /> 
+    <img width="31" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ffb77e93c28e044178e4694cc939bf4cf" />
   </a>&nbsp;&nbsp;
   &nbsp; <a title="React"  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=react">
-    <img alt="React" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F2f3409f4f8b64d5f880195061aa481ab" /> 
+    <img alt="React" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F2f3409f4f8b64d5f880195061aa481ab" />
   </a>&nbsp;
   &nbsp; <a title="Next.js"  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=next">
-    <img alt="Next.js9" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fc6a3c58c0bde4f43b1fd6a350f491bdf" /> 
+    <img alt="Next.js9" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fc6a3c58c0bde4f43b1fd6a350f491bdf" />
   </a>&nbsp;
   &nbsp; <a title="Gatsby"  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=gatsby">
-    <img alt="Gatsby" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F45e59fc603574e708dcb79e45ef72d02" /> 
+    <img alt="Gatsby" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F45e59fc603574e708dcb79e45ef72d02" />
   </a>&nbsp;
   &nbsp; <a title="Vue"  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=vue">
-    <img alt="Vue" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F7cc6d5b6fc4045d5a9f9b12ddcc65407" /> 
+    <img alt="Vue" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F7cc6d5b6fc4045d5a9f9b12ddcc65407" />
   </a>&nbsp;
   &nbsp; <a title="Nuxt"  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=nuxt">
-    <img alt="Nuxt" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F73f47f47e0cc46cd95dbf72c26728858" /> 
+    <img alt="Nuxt" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F73f47f47e0cc46cd95dbf72c26728858" />
   </a>&nbsp;
   &nbsp; <a title="Angular"  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=angular">
-    <img alt="Angular" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fa91e9e437203442d8ed481eef94a99dc" /> 
+    <img alt="Angular" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fa91e9e437203442d8ed481eef94a99dc" />
   </a>&nbsp;
   &nbsp; <a title="Webcomponents"  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=webcomponents">
-    <img alt="Webcomponents" width="52" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F5613cb3536be4c108b32c34bf06f1c59" /> 
+    <img alt="Webcomponents" width="52" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F5613cb3536be4c108b32c34bf06f1c59" />
   </a>&nbsp;
 </p>
 
@@ -80,32 +90,32 @@
 <pre lang="tsx">
 import { Builder } from '@builder.io/react'
 &nbsp;
-// Register our heading component for use in 
+// Register our heading component for use in
 // the visual editor
 const Heading = props => (
-  &lt;h1 className={style}&gt;{props.title}&lt;/h1&gt;
+  &lt;h1 className="my-heading"&gt;{props.title}&lt;/h1&gt;
 )
 &nbsp;
-Builder.registerComponent(Heading, { 
+Builder.registerComponent(Heading, {
 &nbsp;&nbsp;name: 'Heading',
 &nbsp;&nbsp;inputs: [{ name: 'title', type: 'text' }]
 })
 </pre>
-    
+
 </td>
     <td width="50%">
 <pre lang="tsx">
 import { BuilderComponent, builder } from '@builder.io/react'
-&nbsp; 
+&nbsp;
 builder.init('YOUR_KEY')
-&nbsp; 
-export default let BuilderPage = () => {
+&nbsp;
+export let BuilderPage = () => {
 &nbsp;&nbsp;const [pageJson, setPage] = useState(null)
 &nbsp;
-&nbsp;&nbsp;useEffect(() => { 
+&nbsp;&nbsp;useEffect(() => {
 &nbsp;&nbsp;&nbsp;&nbsp;builder.get('page', { url: '/' })
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.promise().then(setPage)
-&nbsp;&nbsp;, [])
+&nbsp;&nbsp;}, [])
 &nbsp;
 &nbsp;&nbsp;return &lt;BuilderComponent model="page" content={pageJson} />
 }
@@ -117,10 +127,22 @@ export default let BuilderPage = () => {
 
 ## Who uses Builder.io?
 
-&nbsp;
-<img src="https://i.imgur.com/HXKroZm.jpg" />
+<br />
+<p align="center">
+  <img width="600" src="https://user-images.githubusercontent.com/844291/143297932-686144d0-598c-49ad-8493-0bffdf45aec8.png" />
+</p>
 
 ## Try it out!
+
+Use our CLI to get started with one command:
+
+<p align="center">
+<pre align="center" lang="bash">
+npm init builder.io@latest
+</pre>
+</p>
+
+Or try out:
 
 <table>
   <tbody>
@@ -150,10 +172,10 @@ export default let BuilderPage = () => {
       <td valign="top">
         <p>&nbsp;</p> <!-- spacer -->
         <p align="center">
-          <a href="https://github.com/builderio/jsx-lite"><img height="60" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fb99f450616a640529896a2a10d3267b0" /></a>
+          <a href="https://github.com/builderio/mitosis"><img height="60" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F928fd46bd9d84a3fbc5b31fd5b93a7df" /></a>
         </p>
         <p align="center">
-          Try our  <a href="https://github.com/builderio/jsx-lite"><b>code generation</b></a> fiddle
+          Try our  <a href="https://github.com/builderio/mitosis"><b>code generation</b></a> fiddle
         </p>
       </td>
     </tr>
@@ -182,7 +204,7 @@ export default let BuilderPage = () => {
           <a href="https://www.builder.io/m/visual-cms"><img height="60" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F797d760607284eafad5c9697446896e7" /></a>
         </p>
         <p align="center">
-          Try our <a href="https://www.builder.io/m/visual-cms"><b>headless CMS</b></a> for API-driven development
+          Try our <a href="https://www.builder.io/m/visual-cms"><b>headless platform</b></a> for API-driven development
         </p>
       </td>
     </tr>
@@ -226,7 +248,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
           <p align="center">
             REST API
           <p>
-        </a> 
+        </a>
       </td>
       <td align="center" valign="middle">
         <a target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=graphql">
@@ -235,16 +257,16 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
           <p align="center">
             GraphQL
           </p>
-        </a> 
+        </a>
       </td>
       <td align="center" valign="middle">
         <a target="_blank" href="https://apps.shopify.com/builder-2">
           <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" width="500" height="1" />
           <img width="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F0f577e84eb4e4aa4a69d602dd376aa11" />
           <p align="center">
-            Shopify 
+            Shopify
           </P>
-        </a> 
+        </a>
       </td>
       <td align="center" valign="middle">
         <a target="_blank" href="https://github.com/BuilderIO/vscode">
@@ -253,7 +275,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
           <p align="center">
             VS Code
           </p>
-        </a> 
+        </a>
       </td>
       <td align="center" valign="middle">
         <a target="_blank" href="https://github.com/builderio/html-to-figma">
@@ -341,128 +363,6 @@ Don't see an integration you're looking for? Our [HTML API](https://www.builder.
 
 This repo houses all of the various [SDKs](packages), [usage examples](examples), [starter projects](starters), and [plugins](plugins).
 
-## Getting Started with React
-
-> Don't use React? See our getting started guide for any framework or platform [here](https://www.builder.io/c/docs/getting-started)
-
-```sh
-npm install @builder.io/react
-```
-
-Grab a free account at [builder.io](https://builder.io) and find your [API key](https://builder.io/account/organization)
-
-Next, create a new page in Builder with URL `/something` and publish it.
-
-Then, in your code:
-
-```ts
-import { builder, BuilderComponent } from '@builder.io/react';
-
-builder.init(YOUR_KEY);
-```
-
-And in your router
-
-```tsx
-// You can use the url="..." prop to automatically fetch the content for that URL,
-// or omit this prop and Builder.io will fetch the corresponding page for the current
-// location.pathname, if available
-<Route path="/something" render={() => <BuilderComponent model="page" url="/something" />}>
-```
-
-Create a new page with url "/something" in Builder and change the [preview URL](https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F4670438a077f497d8a486f890201ae85) to localhost:port/something (e.g. localhost:8888/something if your dev server is on port 8888) and edit!
-
-See more info on setting up your [preview urls](https://www.builder.io/c/docs/guides/preview-url) here.
-
-Also, see the full [React API here](https://github.com/BuilderIO/builder/blob/master/packages/react/README.md)
-
-### Using your components
-
-See this [design systems example](/examples/react-design-system) for lots of examples using your design system + custom components + storybook
-
-> 👉**Tip: want to limit page building to only your components? Try [components only mode](https://builder.io/c/docs/guides/components-only-mode)**
-
-Register a component
-
-```tsx
-import { Builder } from '@builder.io/react';
-
-const SimpleText = props => <h1>{props.text}</h1>;
-
-Builder.registerComponent(SimpleText, {
-  name: 'Simple Text',
-  inputs: [{ name: 'text', type: 'text' }],
-});
-```
-
-Then back at your page
-
-```tsx
-import './simple-text'
-
-// ...
-
-<Route path="/something" render={() => <BuilderComponent model="page" url="/something">}>
-```
-
-Open the dashboard and use it!
-
-See our [docs site](https://builder.io/c/docs/custom-react-components) for additional help and information, or contact us if you run into any issues or questions!
-
-For lots of examples of using React components in Builder, see the source for our built-in Builder blocks [here](https://github.com/BuilderIO/builder/tree/master/packages/react/src/blocks) and widgets [here](https://github.com/BuilderIO/builder/tree/master/packages/widgets/src/components)
-
-### Dynamic landing pages
-
-👉**Tip:** see our guides for **[Next.js](examples/next-js)** and **[Gatsby](examples/gatsby)** for best support for those frameworks
-
-One of Builder's most powerful features is allowing the creation of new pages for you. See a simple example of how to do this with react-router below:
-
-```tsx
-import { BuilderComponent, builder } from '@builder.io/react'
-
-builder.init('YOUR_KEY')
-
-export default let CatchAllPage = () => {
-  const [notFound, setNotFound] = useState()
-
-  return notFound ? <NotFound /> : <BuilderComponent
-        model="page"
-        contentLoaded={(content) => {
-          setNotFound(!content);
-        }}
-      >
-        <Loading/>
-     </BuilderComponent>
-
-}
-
-
-// Then in your app.js
-export default () => (
-  <Switch>
-    <Route path="/" component={Home} />
-    {/* Your other routes... */}
-    <Route component={CatchAllPage} />
-  </Switch>
-);
-```
-
-## Don't use React?
-
-Check out our [quick start guide](https://www.builder.io/c/docs/getting-started) for options for many frameworks, including our [HTML API](https://builder.io/c/docs/getting-started) that works for any site
-
-```javascript
-let page = await request(
-  `https://cdn.builder.io/api/v1/html/page?url=${PAGE_URL}&apiKey=${YOUR_KEY}`
-);
-if (page) {
-  let html = page.data.html;
-  // Put the html in your page template between your header and footer and you are done!
-}
-```
-
-✨**Tip:** You can make reusable components for your Builder.io pages using [symbols](https://builder.io/c/docs/guides/symbols)
-
 ### Structuring your site
 
 There are a lot of ways you can use Builder for your site. Some of the main questions you'll want to ask yourselves - what on your site should be in your code vs in Builder.
@@ -472,6 +372,12 @@ As a general rule, parts of your site that should be managed by non developers s
 Here are some examples we recommend for how to structure various pages on your site, for instance for a headless commerce site:
 
 ![examples on how to structure your site](https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fc811a87f916f4e37990b1afc9df25721)
+
+## How the Builder.io platform works
+
+<p align="center">
+  <img alt="How it works" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F1cae534290f54294a7b7b279ebda89fb" width="800" />
+</p>
 
 ### Data models, components, SEO, and more
 
@@ -503,24 +409,6 @@ As well as some handy power features like:
 - [Targeting and scheduling content](https://builder.io/c/docs/guides/targeting-and-scheduling)
 - [Extending Builder.io with plugins](https://github.com/BuilderIO/builder/tree/master/plugins)
 
-## How the Builder.io platform works
-
-![How it works](https://i.imgur.com/tAnTKeN.png)
-
-## Code generation
-
-Check out [JSX Lite](https://github.com/builderio/jsx-lite) to dep dive into how our codegen works and try it yourself!
-
-<p align="center">
-  <img width="600" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F3c0dc574aa8c4b06adff6f91e01cda3d" />
-</p>
-
-![Codegen GIF](https://imgur.com/H1WTtGe.gif)
-
-## We're hiring!
-
-Want to work on the future of visual software development? Email me at steve@builder.io and let's talk
-
 ## Join the community!
 
 Questions? Requests? Feedback? Chat with us in our [official forum](https://forum.builder.io)!
@@ -528,3 +416,6 @@ Questions? Requests? Feedback? Chat with us in our [official forum](https://foru
 ## Troubleshooting and feedback
 
 Problems? Requests? Open an [issue](https://github.com/BuilderIO/builder/issues). We always want to hear feedback and interesting new use cases and are happy to help.
+
+## We're hiring!
+Help us enable anyone to build digital experiences and bring more ideas to life --> https://www.builder.io/m/careers

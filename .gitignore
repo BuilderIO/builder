@@ -8,6 +8,7 @@
 .nyc_output
 .rpt2_cache/
 .vscode
+.next
 bazel-*
 coverage
 dist
@@ -16,3 +17,5 @@ node_modules
 temp
 test-lib/**/*.js
 yarn-error.log
+.build
+Pods/

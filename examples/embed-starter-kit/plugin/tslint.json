@@ -1,0 +1,6 @@
+{
+  "rules": {
+    "no-floating-promises": false
+  },
+  "extends": ["tslint-config-standard", "tslint-config-prettier"]
+}

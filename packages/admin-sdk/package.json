@@ -1,0 +1,50 @@
+{
+  "name": "@builder.io/admin-sdk",
+  "version": "0.0.5-2",
+  "description": "Builder.io Admin API SDK",
+  "author": "Steve Sewell <steve@builder.io>",
+  "keywords": [
+    "builder.io",
+    "cli"
+  ],
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "files": [
+    "dist/**/*",
+    "!dist/**/*.test.js"
+  ],
+  "scripts": {
+    "codegen-client": "generate-graphql-client -e https://cdn.builder.io/api/v2/admin -o src/autogen/client",
+    "dev": "nodemon --watch 'src/index.ts' --exec npm run build",
+    "clean": "rimraf ./dist/ ./exec/",
+    "build": "npm run clean && npm run codegen-client && tsc",
+    "test": "npm run build && ava --verbose",
+    "bundle": "npm run build && pkg . --out-dir ./exec/",
+    "release:dev": "npm run build && npm version prerelease --no-git-tag-version && npm publish --tag dev"
+  },
+  "devDependencies": {
+    "@types/cli-progress": "^3.8.0",
+    "@types/fs-extra": "^9.0.5",
+    "@types/node": "12.19.8",
+    "@types/node-fetch": "^2.5.7",
+    "ava": "^2.2.0",
+    "nodemon": "^2.0.6",
+    "pkg": "^4.4.9",
+    "rimraf": "^2.6.3",
+    "ts-node": "^8.10.2",
+    "typescript": "^3.9.7"
+  },
+  "dependencies": {
+    "@types/traverse": "^0.6.32",
+    "chalk": "^4.1.0",
+    "clear": "^0.1.0",
+    "cli-progress": "^3.8.2",
+    "commander": "^2.20.3",
+    "figlet": "^1.5.0",
+    "fs-extra": "^9.0.1",
+    "graphql-typed-client": "^1.7.4",
+    "lodash": "^4.17.20",
+    "node-fetch": "^2.6.1",
+    "traverse": "^0.6.6"
+  }
+}

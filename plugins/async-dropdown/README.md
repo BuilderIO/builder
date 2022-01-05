@@ -1,6 +1,6 @@
 # Builder.io async dropdown
 
-See [here](src/dropdown.tsx) for the React component that powers this plugin
+See [here](src/components/Dropdown.tsx) for the React component that powers this plugin
 
 ## Using this plugin in production code
 
