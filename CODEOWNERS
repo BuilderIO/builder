@@ -1,3 +1,28 @@
+# catch-all group
 * @BuilderIO/core-team
 
+# General groups
+/packages/ @BuilderIO/packages
+/plugins/ @BuilderIO/plugins
+/starters/ @BuilderIO/starters
+
+#### Project-specific groups
+
+# Mitosis
 /packages/sdks/ @BuilderIO/mitosis
+
+
+# E-commerce plugins
+/plugins/magento2 @BuilderIO/e-commerce-plugins
+/plugins/sfcc-sync @BuilderIO/e-commerce-plugins
+/plugins/swell @BuilderIO/e-commerce-plugins
+/plugins/shopify @BuilderIO/e-commerce-plugins
+/plugins/vtex @BuilderIO/e-commerce-plugins
+/plugins/bigcommerce @BuilderIO/cms-plugins
+/plugins/commercejs @BuilderIO/cms-plugins
+/plugins/commercetools @BuilderIO/cms-plugins
+
+
+# CMS plugins
+/plugins/contentful @BuilderIO/cms-plugins
+/plugins/contentstack @BuilderIO/cms-plugins
