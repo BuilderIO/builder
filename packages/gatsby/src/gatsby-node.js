@@ -9,6 +9,9 @@ const invariant = require(`invariant`);
 const { NamespaceUnderFieldTransform, StripNonQueryTransform } = require(`./transforms`);
 const { getGQLOptions, defaultOptions } = require(`./builder-config`);
 
+/**
+ * @type { import('gatsby').GatsbyNode['sourceNodes'] }
+ */
 exports.sourceNodes = async ({ actions, createNodeId, cache, createContentDigest }, options) => {
   const { addThirdPartySchema, createNode } = actions;
   const config = getGQLOptions(options);
@@ -86,6 +89,9 @@ function createSchemaNode({ id, typeName, fieldName, createContentDigest }) {
   };
 }
 
+/**
+ * @type { import('gatsby').GatsbyNode['createPages'] }
+ */
 exports.createPages = async ({ graphql, actions }, options) => {
   const config = {
     ...defaultOptions,
@@ -99,6 +105,14 @@ exports.createPages = async ({ graphql, actions }, options) => {
   }
 };
 
+/**
+ *
+ * @param {*} config
+ * @param {*} createPage
+ * @param {import('gatsby').CreatePagesArgs['graphql']} graphql
+ * @param {*} models
+ * @param {*} offsets
+ */
 const createPagesAsync = async (config, createPage, graphql, models, offsets) => {
   const result = await graphql(`
     query {
@@ -164,6 +178,9 @@ const createPagesAsync = async (config, createPage, graphql, models, offsets) =>
   }
 };
 
+/**
+ * @type { import('gatsby').GatsbyNode['onCreatePage'] }
+ */
 exports.onCreatePage = ({ page, actions }, options) => {
   const { deletePage, createPage } = actions;
   const config = {
