@@ -7,6 +7,7 @@ module.exports.defaultOptions = {
   limit: 30,
   baseURL: `https://cdn.builder.io/api/v1/graphql`,
   overrideDev404: true,
+  useCache: false,
   // custom404Dev: 'path to custom 404'
   // globalContext: { store: process.env.STORE_TOKEN } // helpful in multi stores repo
   // filter: (entry) => entry.content.data.store === process.env.STORE_TOKEN // helpful in multi-store builder organization
@@ -30,6 +31,6 @@ module.exports.getGQLOptions = options => {
     // Field under which the remote schema will be accessible. You'll use this in your Gatsby query
     fieldName: config.fieldName,
     // Url to query from 30
-    url: `${config.baseURL}/${config.publicAPIKey}?cachebust=true`,
+    url: `${config.baseURL}/${config.publicAPIKey}?${!config.useCache ? "cachebust=true" : ''}`,
   };
 };
