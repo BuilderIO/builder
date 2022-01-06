@@ -5,6 +5,7 @@ const { transformSchema, introspectSchema, RenameTypes } = require(`graphql-tool
 const { createHttpLink } = require(`apollo-link-http`);
 const fetch = require(`node-fetch`);
 const invariant = require(`invariant`);
+const promiseRetry = require('promise-retry');
 
 const { NamespaceUnderFieldTransform, StripNonQueryTransform } = require(`./transforms`);
 const { getGQLOptions, defaultOptions } = require(`./builder-config`);
@@ -107,22 +108,27 @@ exports.createPages = async ({ graphql, actions }, options) => {
 
 /**
  *
- * @param {*} config
- * @param {*} createPage
- * @param {import('gatsby').CreatePagesArgs['graphql']} graphql
- * @param {*} models
- * @param {*} offsets
+ * @typedef {{
+ *  graphql: import('gatsby').CreatePagesArgs['graphql'],
+ *  fieldName: any,
+ *  models: any,
+ *  offsets: any,
+ *  limit: any
+ * }} FetchPagesArgs
+ *
+ *
+ * @param {FetchPagesArgs} param0
  */
-const createPagesAsync = async (config, createPage, graphql, models, offsets) => {
-  const result = await graphql(`
+const fetchPages = ({ fieldName, models, offsets, graphql, limit }) =>
+  graphql(`
     query {
-      ${config.fieldName} {
+      ${fieldName} {
         ${models
           .map(
             (
               model,
               index
-            ) => `${model}(limit: ${config.limit}, offset: ${offsets[index]}, options: { cacheSeconds: 2, staleCacheSeconds: 2 }) {
+            ) => `${model}(limit: ${limit}, offset: ${offsets[index]}, options: { cacheSeconds: 2, staleCacheSeconds: 2 }) {
             content
           }`
           )
@@ -130,6 +136,38 @@ const createPagesAsync = async (config, createPage, graphql, models, offsets) =>
       }
     }
   `);
+
+/**
+ *
+ * @param {FetchPagesArgs} args
+ */
+const wrappedFetchPages = args =>
+  promiseRetry(
+    (retry, number) => {
+      console.log('attempt number', number);
+
+      return fetchPages(args).catch(retry);
+    },
+    { retries: 5 }
+  );
+
+/**
+ *
+ * @param {*} config
+ * @param {*} createPage
+ * @param {import('gatsby').CreatePagesArgs['graphql']} graphql
+ * @param {*} models
+ * @param {*} offsets
+ */
+const createPagesAsync = async (config, createPage, graphql, models, offsets) => {
+  const result = await wrappedFetchPages({
+    fieldName: config.fieldName,
+    models,
+    offsets,
+    graphql,
+    limit: config.limit,
+  });
+
   let hasMore = false;
   for (let index = 0; index < models.length; index++) {
     const modelName = models[index];
