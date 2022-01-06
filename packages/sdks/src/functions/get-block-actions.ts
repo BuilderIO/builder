@@ -1,9 +1,6 @@
 import { BuilderBlock } from '../types/builder-block';
 import { evaluate } from './evaluate';
-
-function capitalizeFirstLetter(string: string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-}
+import { getEventHandlerName } from './event-handler-name';
 
 export function getBlockActions(options: {
   block: BuilderBlock;
@@ -17,7 +14,7 @@ export function getBlockActions(options: {
         continue;
       }
       const value = options.block.actions[key];
-      obj['on' + capitalizeFirstLetter(key)] = (event: Event) =>
+      obj[getEventHandlerName(key)] = (event: Event) =>
         evaluate({
           code: value,
           context: options.context,
