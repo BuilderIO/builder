@@ -137,6 +137,7 @@ const fetchPages = ({ fieldName, models, offsets, graphql, limit }) =>
     }
   `);
 
+const MAX_TRIES = 3;
 /**
  *
  * @param {FetchPagesArgs} args
@@ -144,11 +145,15 @@ const fetchPages = ({ fieldName, models, offsets, graphql, limit }) =>
 const wrappedFetchPages = args =>
   promiseRetry(
     (retry, number) => {
-      console.log('attempt number', number);
+      if (number > 1) {
+        console.log(
+          `[Builder.io] data-fetching for ${args.fieldName} failed. Retrying: ${number}/${MAX_TRIES}`
+        );
+      }
 
       return fetchPages(args).catch(retry);
     },
-    { retries: 5 }
+    { retries: MAX_TRIES }
   );
 
 /**
