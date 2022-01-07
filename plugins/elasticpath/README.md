@@ -2,8 +2,6 @@
 
 Easily connect your Elasticpath catalog to your Builder.io content!
 
-<img alt="Elasticpath data example" src="https://imgur.com/BhtUeqK.gif" >
-
 ## Installation
 
 Go to [builder.io/account/organization](https://builder.io/account/organization) and press on `@builder.io/plugin-elasticpath` in the list of plugins, then hit save, a prompt will ask you for your client ID.

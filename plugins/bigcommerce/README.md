@@ -1,9 +1,6 @@
 # Builder.io Bigcommerce plugin
 
 Easily connect your BigCommerce catalog to your Builder.io content!
-
-<img alt="Vtex data example" src="https://imgur.com/BhtUeqK.gif" >
-
 ## Installation
 
 Go to [builder.io/account/organization](https://builder.io/account/organization) and type `@builder.io/plugin-bigcommerce` , then hit save, a prompt will ask you for your Store Hash / Access Token.
