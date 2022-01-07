@@ -10,6 +10,7 @@ module.exports = {
       options: {
         /** TODO: update this with your API key! */
         publicAPIKey: 'jdGaMusrVpYgdcAnAtgn',
+        useCache: false,
         // to allow editing on local host
         custom404Dev: path.resolve('src/pages/404.tsx'),
         templates: {

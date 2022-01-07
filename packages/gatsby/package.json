@@ -7,7 +7,7 @@
     "url": "https://github.com/BuilderIO/builder.git",
     "directory": "packages/gatsby"
   },
-  "version": "2.0.5-4",
+  "version": "2.0.5-7",
   "keywords": [
     "gatsby",
     "gatsby-plugin",
@@ -21,6 +21,7 @@
     "graphql-tools": "^5.0.0",
     "invariant": "^2.2.4",
     "node-fetch": "^2.6.1",
+    "promise-retry": "^2.0.1",
     "uuid": "^3.3.3"
   },
   "devDependencies": {

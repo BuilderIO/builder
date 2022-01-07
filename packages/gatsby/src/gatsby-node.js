@@ -5,10 +5,14 @@ const { transformSchema, introspectSchema, RenameTypes } = require(`graphql-tool
 const { createHttpLink } = require(`apollo-link-http`);
 const fetch = require(`node-fetch`);
 const invariant = require(`invariant`);
+const promiseRetry = require('promise-retry');
 
 const { NamespaceUnderFieldTransform, StripNonQueryTransform } = require(`./transforms`);
 const { getGQLOptions, defaultOptions } = require(`./builder-config`);
 
+/**
+ * @type { import('gatsby').GatsbyNode['sourceNodes'] }
+ */
 exports.sourceNodes = async ({ actions, createNodeId, cache, createContentDigest }, options) => {
   const { addThirdPartySchema, createNode } = actions;
   const config = getGQLOptions(options);
@@ -86,6 +90,9 @@ function createSchemaNode({ id, typeName, fieldName, createContentDigest }) {
   };
 }
 
+/**
+ * @type { import('gatsby').GatsbyNode['createPages'] }
+ */
 exports.createPages = async ({ graphql, actions }, options) => {
   const config = {
     ...defaultOptions,
@@ -99,16 +106,29 @@ exports.createPages = async ({ graphql, actions }, options) => {
   }
 };
 
-const createPagesAsync = async (config, createPage, graphql, models, offsets) => {
-  const result = await graphql(`
+/**
+ *
+ * @typedef {{
+ *  graphql: import('gatsby').CreatePagesArgs['graphql'],
+ *  fieldName: any,
+ *  models: any,
+ *  offsets: any,
+ *  limit: any
+ * }} FetchPagesArgs
+ *
+ *
+ * @param {FetchPagesArgs} param0
+ */
+const fetchPages = ({ fieldName, models, offsets, graphql, limit }) =>
+  graphql(`
     query {
-      ${config.fieldName} {
+      ${fieldName} {
         ${models
           .map(
             (
               model,
               index
-            ) => `${model}(limit: ${config.limit}, offset: ${offsets[index]}, options: { cacheSeconds: 2, staleCacheSeconds: 2 }) {
+            ) => `${model}(limit: ${limit}, offset: ${offsets[index]}, options: { cacheSeconds: 2, staleCacheSeconds: 2 }) {
             content
           }`
           )
@@ -116,6 +136,43 @@ const createPagesAsync = async (config, createPage, graphql, models, offsets) =>
       }
     }
   `);
+
+const MAX_TRIES = 3;
+/**
+ *
+ * @param {FetchPagesArgs} args
+ */
+const wrappedFetchPages = args =>
+  promiseRetry(
+    (retry, number) => {
+      if (number > 1) {
+        console.log(
+          `[Builder.io] data-fetching for ${args.fieldName} failed. Retrying: ${number}/${MAX_TRIES}`
+        );
+      }
+
+      return fetchPages(args).catch(retry);
+    },
+    { retries: MAX_TRIES }
+  );
+
+/**
+ *
+ * @param {*} config
+ * @param {*} createPage
+ * @param {import('gatsby').CreatePagesArgs['graphql']} graphql
+ * @param {*} models
+ * @param {*} offsets
+ */
+const createPagesAsync = async (config, createPage, graphql, models, offsets) => {
+  const result = await wrappedFetchPages({
+    fieldName: config.fieldName,
+    models,
+    offsets,
+    graphql,
+    limit: config.limit,
+  });
+
   let hasMore = false;
   for (let index = 0; index < models.length; index++) {
     const modelName = models[index];
@@ -164,6 +221,9 @@ const createPagesAsync = async (config, createPage, graphql, models, offsets) =>
   }
 };
 
+/**
+ * @type { import('gatsby').GatsbyNode['onCreatePage'] }
+ */
 exports.onCreatePage = ({ page, actions }, options) => {
   const { deletePage, createPage } = actions;
   const config = {
