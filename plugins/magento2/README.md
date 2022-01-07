@@ -2,8 +2,6 @@
 
 Easily connect your Magento data to your Builder.io content!
 
-<img alt="Magento data example" src="https://imgur.com/BhtUeqK.gif" >
-
 ## Installation
 
 Go to [builder.io/integrations](https://builder.io/account/organization) and enable the magento integration in the list of integrations, then hit save, you'll be prompted for store URL.

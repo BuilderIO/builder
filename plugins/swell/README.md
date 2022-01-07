@@ -1,9 +1,6 @@
 # Builder.io Swell plugin
 
 Easily connect your Swell data to your Builder.io content!
-
-<img alt="Swell data example" src="https://imgur.com/BhtUeqK.gif" >
-
 ## Installation
 
 Go to [builder.io/account/organization](https://builder.io/account/organization) and press on `@builder.io/plugin-swell` in the list of plugins, then hit save, you'll be prompted for storeId and secretKey next.
