@@ -1,7 +1,7 @@
 {
   "name": "@builder.io/sdk-react-native",
   "description": "Builder.io SDK for React Native",
-  "version": "0.0.1-39",
+  "version": "0.0.1-40",
   "main": "src/index.js",
   "scripts": {
     "release:dev": "npm version prerelease --no-git-tag-version && npm publish --tag dev --access public"
