@@ -11,10 +11,10 @@
     "react-native-video": "^5.1.1"
   },
   "peerDependencies": {
-    "react-native": "^0.64.2"
+    "react-native": "^0.64.3"
   },
   "devDependencies": {
     "@types/react-native-video": "^5.0.9",
-    "react-native": "^0.64.2"
+    "react-native": "^0.64.3"
   }
 }
