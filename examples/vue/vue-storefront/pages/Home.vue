@@ -13,6 +13,11 @@
         />
       </SfHero>
     </LazyHydrate>
+    <div>Hello world from your Vue project. Below is Builder Content:</div>
+    <div>{{ content.data.title }}</div>
+    <div v-if="canShowContent">
+      <builder-render-content model="page" :content="content" />
+    </div>
 
     <LazyHydrate when-visible>
       <SfBannerGrid :banner-grid="1" class="banner-grid">
@@ -33,7 +38,7 @@
 
     <LazyHydrate when-visible>
       <div class="similar-products">
-        <SfHeading title="Match with it" :level="2"/>
+        <SfHeading title="Match with it" :level="2" />
         <nuxt-link :to="localePath('/c/women')" class="smartphone-only">
           {{ $t('See all') }}
         </nuxt-link>
@@ -41,36 +46,31 @@
     </LazyHydrate>
 
     <LazyHydrate when-visible>
-        <SfCarousel class="carousel" :settings="{ peek: 16, breakpoints: { 1023: { peek: 0, perView: 2 } } }">
-          <template #prev="{go}">
-            <SfArrow
-              aria-label="prev"
-              class="sf-arrow--left sf-arrow--long"
-              @click="go('prev')"
-            />
-          </template>
-          <template #next="{go}">
-            <SfArrow
-              aria-label="next"
-              class="sf-arrow--right sf-arrow--long"
-              @click="go('next')"
-            />
-          </template>
-          <SfCarouselItem class="carousel__item" v-for="(product, i) in products" :key="i">
-            <SfProductCard
-              :title="product.title"
-              :image="product.image"
-              :regular-price="product.price.regular"
-              :max-rating="product.rating.max"
-              :score-rating="product.rating.score"
-              :show-add-to-cart-button="true"
-              :is-on-wishlist="product.isInWishlist"
-              :link="localePath({ name: 'home' })"
-              class="carousel__item__product"
-              @click:wishlist="toggleWishlist(i)"
-            />
-          </SfCarouselItem>
-        </SfCarousel>
+      <SfCarousel
+        class="carousel"
+        :settings="{ peek: 16, breakpoints: { 1023: { peek: 0, perView: 2 } } }"
+      >
+        <template #prev="{go}">
+          <SfArrow aria-label="prev" class="sf-arrow--left sf-arrow--long" @click="go('prev')" />
+        </template>
+        <template #next="{go}">
+          <SfArrow aria-label="next" class="sf-arrow--right sf-arrow--long" @click="go('next')" />
+        </template>
+        <SfCarouselItem class="carousel__item" v-for="(product, i) in products" :key="i">
+          <SfProductCard
+            :title="product.title"
+            :image="product.image"
+            :regular-price="product.price.regular"
+            :max-rating="product.rating.max"
+            :score-rating="product.rating.score"
+            :show-add-to-cart-button="true"
+            :is-on-wishlist="product.isInWishlist"
+            :link="localePath({ name: 'home' })"
+            class="carousel__item__product"
+            @click:wishlist="toggleWishlist(i)"
+          />
+        </SfCarouselItem>
+      </SfCarousel>
     </LazyHydrate>
 
     <LazyHydrate when-visible>
@@ -100,10 +100,10 @@
     <LazyHydrate when-visible>
       <InstagramFeed />
     </LazyHydrate>
-
   </div>
 </template>
 <script>
+import Vue from 'vue';
 import {
   SfHero,
   SfBanner,
@@ -115,7 +115,7 @@ import {
   SfBannerGrid,
   SfHeading,
   SfArrow,
-  SfButton
+  SfButton,
 } from '@storefront-ui/vue';
 import { ref, useContext } from '@nuxtjs/composition-api';
 import InstagramFeed from '~/components/InstagramFeed.vue';
@@ -124,11 +124,17 @@ import LazyHydrate from 'vue-lazy-hydration';
 import { useUiState } from '../composables';
 import cacheControl from './../helpers/cacheControl';
 
-export default {
+import './init-builder';
+import { getContent, isEditing } from '@builder.io/sdk-vue';
+
+// TODO: enter your public API key
+const BUILDER_PUBLIC_API_KEY = '14df3669544146ed91ea75f999b0124b';
+
+export default Vue.extend({
   name: 'Home',
   middleware: cacheControl({
     'max-age': 60,
-    'stale-when-revalidate': 5
+    'stale-when-revalidate': 5,
   }),
   components: {
     InstagramFeed,
@@ -144,8 +150,29 @@ export default {
     SfArrow,
     SfButton,
     NewsletterModal,
-    LazyHydrate
+    LazyHydrate,
   },
+  data: () => ({
+    canShowContent: false,
+    content: null,
+  }),
+  async fetch() {
+    const content = await getContent({
+      model: 'page',
+      apiKey: BUILDER_PUBLIC_API_KEY,
+      userAttributes: {
+        urlPath: this.$route.path,
+      },
+    });
+    if (!content) {
+      if (this.$nuxt.context?.ssrContext?.res) {
+        this.$nuxt.context.ssrContext.res.statusCode = 404;
+      }
+    }
+    this.content = content;
+    this.canShowContent = content || isEditing();
+  },
+
   setup() {
     const { $config } = useContext();
     const { toggleNewsletterModal } = useUiState();
@@ -155,79 +182,78 @@ export default {
         image: '/homepage/productA.webp',
         price: { regular: '50.00 $' },
         rating: { max: 5, score: 4 },
-        isInWishlist: true
+        isInWishlist: true,
       },
       {
         title: 'Cream Beach Bag',
         image: '/homepage/productB.webp',
         price: { regular: '50.00 $' },
         rating: { max: 5, score: 4 },
-        isInWishlist: false
+        isInWishlist: false,
       },
       {
         title: 'Cream Beach Bag',
         image: '/homepage/productC.webp',
         price: { regular: '50.00 $' },
         rating: { max: 5, score: 4 },
-        isInWishlist: false
+        isInWishlist: false,
       },
       {
         title: 'Cream Beach Bag',
         image: '/homepage/productA.webp',
         price: { regular: '50.00 $' },
         rating: { max: 5, score: 4 },
-        isInWishlist: false
+        isInWishlist: false,
       },
       {
         title: 'Cream Beach Bag',
         image: '/homepage/productB.webp',
         price: { regular: '50.00 $' },
         rating: { max: 5, score: 4 },
-        isInWishlist: false
+        isInWishlist: false,
       },
       {
         title: 'Cream Beach Bag',
         image: '/homepage/productC.webp',
         price: { regular: '50.00 $' },
         rating: { max: 5, score: 4 },
-        isInWishlist: false
+        isInWishlist: false,
       },
       {
         title: 'Cream Beach Bag',
         image: '/homepage/productA.webp',
         price: { regular: '50.00 $' },
         rating: { max: 5, score: 4 },
-        isInWishlist: false
+        isInWishlist: false,
       },
       {
         title: 'Cream Beach Bag',
         image: '/homepage/productB.webp',
         price: { regular: '50.00 $' },
         rating: { max: 5, score: 4 },
-        isInWishlist: false
-      }
+        isInWishlist: false,
+      },
     ]);
     const heroes = [
       {
         title: 'Colorful summer dresses are already in store',
         subtitle: 'SUMMER COLLECTION 2019',
         background: '#eceff1',
-        image: '/homepage/bannerH.webp'
+        image: '/homepage/bannerH.webp',
       },
       {
         title: 'Colorful summer dresses are already in store',
         subtitle: 'SUMMER COLLECTION 2019',
         background: '#efebe9',
         image: '/homepage/bannerA.webp',
-        className:
-          'sf-hero-item--position-bg-top-left sf-hero-item--align-right'
+        className: 'sf-hero-item--position-bg-top-left sf-hero-item--align-right',
       },
       {
         title: 'Colorful summer dresses are already in store',
         subtitle: 'SUMMER COLLECTION 2019',
         background: '#fce4ec',
-        image: '/homepage/bannerB.webp'
-      }
+        image: '/homepage/bannerB.webp',
+      },
     ];
     const banners = [
       {
@@ -235,25 +261,25 @@ export default {
         subtitle: 'Dresses',
         title: 'Cocktail & Party',
         description:
-          'Find stunning women\'s cocktail dresses and party dresses. Stand out in lace and metallic cocktail dresses from all your favorite brands.',
+          "Find stunning women's cocktail dresses and party dresses. Stand out in lace and metallic cocktail dresses from all your favorite brands.",
         buttonText: 'Shop now',
         image: {
           mobile: $config.theme.home.bannerA.image.mobile,
-          desktop: $config.theme.home.bannerA.image.desktop
+          desktop: $config.theme.home.bannerA.image.desktop,
         },
         class: 'sf-banner--slim desktop-only',
-        link: $config.theme.home.bannerA.link
+        link: $config.theme.home.bannerA.link,
       },
       {
         slot: 'banner-B',
         subtitle: 'Dresses',
         title: 'Linen Dresses',
         description:
-          'Find stunning women\'s cocktail dresses and party dresses. Stand out in lace and metallic cocktail dresses from all your favorite brands.',
+          "Find stunning women's cocktail dresses and party dresses. Stand out in lace and metallic cocktail dresses from all your favorite brands.",
         buttonText: 'Shop now',
         image: $config.theme.home.bannerB.image,
         class: 'sf-banner--slim banner-central desktop-only',
-        link: $config.theme.home.bannerB.link
+        link: $config.theme.home.bannerB.link,
       },
       {
         slot: 'banner-C',
@@ -261,7 +287,7 @@ export default {
         title: 'The Office Life',
         image: $config.theme.home.bannerC.image,
         class: 'sf-banner--slim banner__tshirt',
-        link: $config.theme.home.bannerC.link
+        link: $config.theme.home.bannerC.link,
       },
       {
         slot: 'banner-D',
@@ -269,16 +295,16 @@ export default {
         title: 'Eco Sandals',
         image: $config.theme.home.bannerD.image,
         class: 'sf-banner--slim',
-        link: $config.theme.home.bannerD.link
-      }
+        link: $config.theme.home.bannerD.link,
+      },
     ];
 
-    const onSubscribe = (emailAddress) => {
+    const onSubscribe = emailAddress => {
       console.log(`Email ${emailAddress} was added to newsletter.`);
       toggleNewsletterModal();
     };
 
-    const toggleWishlist = (index) => {
+    const toggleWishlist = index => {
       products.value[index].isInWishlist = !products.value[index].isInWishlist;
     };
 
@@ -288,10 +314,10 @@ export default {
       onSubscribe,
       banners,
       heroes,
-      products
+      products,
     };
-  }
-};
+  },
+});
 </script>
 
 <style lang="scss" scoped>
@@ -326,7 +352,8 @@ export default {
     }
   }
   ::v-deep .sf-hero__control {
-    &--right, &--left {
+    &--right,
+    &--left {
       display: none;
     }
   }
@@ -381,7 +408,7 @@ export default {
 }
 
 .carousel {
-    margin: 0 calc(0 - var(--spacer-sm)) 0 0;
+  margin: 0 calc(0 - var(--spacer-sm)) 0 0;
   @include for-desktop {
     margin: 0;
   }
@@ -396,9 +423,8 @@ export default {
   }
   ::v-deep .sf-arrow--long .sf-arrow--right {
     --arrow-icon-transform: rotate(180deg);
-     -webkit-transform-origin: center;
-     transform-origin: center;
+    -webkit-transform-origin: center;
+    transform-origin: center;
   }
 }
-
 </style>

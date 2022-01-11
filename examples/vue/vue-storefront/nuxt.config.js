@@ -34,6 +34,7 @@ export default {
       }
     }
   },
+  components: true,
   buildModules: [
     // to core
     '@nuxtjs/composition-api/module',
@@ -58,7 +59,8 @@ export default {
         ]
       }
     }],
-    ,['@vue-storefront/nuxt-theme'],
+    ['@vue-storefront/nuxt-theme'],
+    '@builder.io/sdk-vue/nuxt',
   ],
   modules: [
     ['nuxt-i18n', {
