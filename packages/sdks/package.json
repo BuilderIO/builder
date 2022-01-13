@@ -37,7 +37,7 @@
     "json5": "^2.2.0",
     "prettier": "^2.5.0",
     "react": "^17.0.2",
-    "react-native": "^0.64.2",
+    "react-native": "^0.64.3",
     "react-native-render-html": "^5.1.1",
     "vue": "2.6.12",
     "vue-template-compiler": "2.6.12",
