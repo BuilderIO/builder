@@ -1,7 +1,8 @@
 <template>
-  <div class="builder-columns div-21azgz5avex">
+  <div class="builder-columns div-t9spj7joih">
+    <component is="style">{{ getMediaQuery() }}</component>
     <div
-      class="builder-column div-21azgz5avex-2"
+      class="builder-column div-t9spj7joih-2"
       v-for="(column, index) in columns"
       :style="{
         width: getColumnCssWidth(index),
@@ -22,7 +23,7 @@ export default registerComponent(
   {
     name: 'builder-columns',
     components: { 'render-blocks': async () => RenderBlocks },
-    props: ['space', 'columns'],
+    props: ['space', 'columns', 'stackColumnsAt', 'reverseColumnsWhenStacked'],
 
     methods: {
       getGutterSize() {
@@ -33,7 +34,7 @@ export default registerComponent(
       },
       getWidth(index) {
         const columns = this.getColumns();
-        return (columns[index] && columns[index].width) || 100 / columns.length;
+        return columns[index]?.width || 100 / columns.length;
       },
       getColumnCssWidth(index) {
         const columns = this.getColumns();
@@ -41,6 +42,43 @@ export default registerComponent(
         const subtractWidth =
           (gutterSize * (columns.length - 1)) / columns.length;
         return `calc(${this.getWidth(index)}% - ${subtractWidth}px)`;
+      },
+      getMaxWidthQuery() {
+        if (this.stackColumnsAt === 'never') {
+          return null;
+        }
+
+        const MAX_WIDTH_BREAKPOINTS = {
+          tablet: 999,
+          mobile: 639,
+        };
+
+        const getMaxWidthBreakpoint = (stackColumnsAt = 'tablet') => {
+          switch (stackColumnsAt) {
+            case 'tablet':
+            case 'mobile':
+              return MAX_WIDTH_BREAKPOINTS[stackColumnsAt];
+          }
+        };
+
+        return `max-width: ${getMaxWidthBreakpoint(this.stackColumnsAt)}px`;
+      },
+      getMediaQuery() {
+        return `
+@media (${this.getMaxWidthQuery()}) {
+  .builder-columns {
+    flex-direction: ${
+      this.reverseColumnsWhenStacked ? 'column-reverse' : 'column'
+    };
+    align-items: stretch; 
+  }
+
+  .builder-column[style] {
+    width: 100% !important;
+    margin-left: 0 !important;
+  }
+}
+`;
       },
     },
   },
@@ -262,12 +300,12 @@ export default registerComponent(
 );
 </script>
 <style scoped>
-.div-21azgz5avex {
+.div-t9spj7joih {
   display: flex;
   align-items: stretch;
   line-height: normal;
 }
-.div-21azgz5avex-2 {
+.div-t9spj7joih-2 {
   flex-grow: 1;
 }
 </style>

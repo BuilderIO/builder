@@ -8,13 +8,15 @@ type Column = {
   width?: number;
 };
 
+type StackColumnsAt = 'tablet' | 'mobile' | 'never';
+
 export interface ColumnProps {
   columns?: Column[];
 
   // TODO: Implement this when support for dynamic CSS lands
   space?: number;
   // TODO: Implement this when support for dynamic CSS lands
-  stackColumnsAt?: 'tablet' | 'mobile' | 'never';
+  stackColumnsAt?: StackColumnsAt;
   // TODO: Implement this when support for dynamic CSS lands
   reverseColumnsWhenStacked?: boolean;
 }
@@ -29,7 +31,7 @@ export default function Columns(props: ColumnProps) {
     },
     getWidth(index: number) {
       const columns = this.getColumns();
-      return (columns[index] && columns[index].width) || 100 / columns.length;
+      return columns[index]?.width || 100 / columns.length;
     },
     getColumnCssWidth(index: number) {
       const columns = this.getColumns();
@@ -37,6 +39,46 @@ export default function Columns(props: ColumnProps) {
       const subtractWidth =
         (gutterSize * (columns.length - 1)) / columns.length;
       return `calc(${this.getWidth(index)}% - ${subtractWidth}px)`;
+    },
+
+    getMaxWidthQuery() {
+      if (props.stackColumnsAt === 'never') {
+        return null;
+      }
+
+      const MAX_WIDTH_BREAKPOINTS = {
+        tablet: 999,
+        mobile: 639,
+      };
+
+      const getMaxWidthBreakpoint = (
+        stackColumnsAt: Exclude<StackColumnsAt, 'never'> = 'tablet'
+      ): number => {
+        switch (stackColumnsAt) {
+          case 'tablet':
+          case 'mobile':
+            return MAX_WIDTH_BREAKPOINTS[stackColumnsAt];
+        }
+      };
+      return `max-width: ${getMaxWidthBreakpoint(props.stackColumnsAt)}px`;
+    },
+
+    getMediaQuery() {
+      return `
+  @media (${this.getMaxWidthQuery()}) {
+    .builder-columns {
+      flex-direction: ${
+        props.reverseColumnsWhenStacked ? 'column-reverse' : 'column'
+      };
+      align-items: stretch; 
+    }
+
+    .builder-column[style] {
+      width: 100% !important;
+      margin-left: 0 !important;
+    }
+  }
+`;
     },
   });
 
@@ -49,6 +91,7 @@ export default function Columns(props: ColumnProps) {
         lineHeight: 'normal',
       }}
     >
+      <style scoped>{state.getMediaQuery()}</style>
       <For each={props.columns}>
         {(column, index) => (
           <div
