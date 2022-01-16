@@ -1,9 +1,9 @@
 {
   "name": "@builder.io/plugin-async-dropdown",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "",
   "keywords": [],
-  "main": "dist/builder-plugin-async-dropdown.umd.js",
+  "main": "dist/builder-plugin-async-dropdown.system.js",
   "module": "dist/builder-plugin-async-dropdown.es5.js",
   "unpkg": "dist/builder-plugin-async-dropdown.system.js",
   "typings": "dist/types/builder-plugin-async-dropdown.d.ts",
