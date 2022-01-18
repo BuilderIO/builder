@@ -32,7 +32,7 @@
     "amplitude-js": "7.4.1",
     "axios": "0.21.1",
     "dedent": "0.7.0",
-    "lodash": "4.17.20",
+    "lodash": "4.17.21",
     "module-alias": "2.2.2",
     "next": "10.0.5",
     "next-plugin-preact": "3.0.3",
