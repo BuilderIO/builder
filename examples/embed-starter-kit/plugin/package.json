@@ -98,7 +98,7 @@
     "replace-in-file": "^3.4.2",
     "rimraf": "^2.6.2",
     "semantic-release": "^15.9.16",
-    "shelljs": "^0.8.3",
+    "shelljs": "^0.8.5",
     "source-map-loader": "^0.2.4",
     "style-loader": "^1.2.1",
     "travis-deploy-once": "^5.0.9",
