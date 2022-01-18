@@ -1,6 +1,5 @@
 {
   "name": "@builder.io/sdks",
-  "version": "0.0.1",
   "private": true,
   "scripts": {
     "mitosis": "mitosis build",
@@ -13,7 +12,8 @@
   },
   "dependencies": {
     "@builder.io/mitosis-cli": "0.0.10",
-    "node-fetch": "^2.6.1"
+    "node-fetch": "^2.6.1",
+    "seedrandom": "^3.0.5"
   },
   "devDependencies": {
     "@jsx-lite/cli": "^1.0.1",
