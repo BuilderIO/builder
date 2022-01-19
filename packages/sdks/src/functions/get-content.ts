@@ -54,15 +54,16 @@ export async function getContent(
 export async function getAllContent(options: GetContentOptions) {
   const { model, apiKey } = options;
 
-  const { limit, testGroups, userAttributes, query } = {
+  const { limit, testGroups, userAttributes, query, noTraverse } = {
     limit: 1,
     userAttributes: null,
     testGroups: null,
+    noTraverse: false,
     ...options,
   };
 
   const url = new URL(
-    `https://cdn.builder.io/api/v2/content/${model}?apiKey=${apiKey}&limit=${limit}`
+    `https://cdn.builder.io/api/v2/content/${model}?apiKey=${apiKey}&limit=${limit}&noTraverse=${noTraverse}`
   );
 
   if (options.options) {
