@@ -23,7 +23,7 @@ export interface ColumnProps {
 
 export default function Columns(props: ColumnProps) {
   const state = useState({
-    getGutterSize(): number {
+    get gutterSize(): number {
       return typeof props.space === 'number' ? props.space || 0 : 20;
     },
     getColumns() {
@@ -35,50 +35,39 @@ export default function Columns(props: ColumnProps) {
     },
     getColumnCssWidth(index: number) {
       const columns = this.getColumns();
-      const gutterSize = this.getGutterSize();
+      const gutterSize = this.gutterSize;
       const subtractWidth =
         (gutterSize * (columns.length - 1)) / columns.length;
       return `calc(${this.getWidth(index)}% - ${subtractWidth}px)`;
     },
 
-    getMaxWidthQuery() {
-      if (props.stackColumnsAt === 'never') {
-        return null;
-      }
-
-      const MAX_WIDTH_BREAKPOINTS = {
-        tablet: 999,
-        mobile: 639,
-      };
-
-      const getMaxWidthBreakpoint = (
-        stackColumnsAt: Exclude<StackColumnsAt, 'never'> = 'tablet'
-      ): number => {
-        switch (stackColumnsAt) {
-          case 'tablet':
-          case 'mobile':
-            return MAX_WIDTH_BREAKPOINTS[stackColumnsAt];
-        }
-      };
-      return `max-width: ${getMaxWidthBreakpoint(props.stackColumnsAt)}px`;
+    maybeApplyForTablet(prop: string) {
+      const stackColumnsAt = props.stackColumnsAt || 'tablet';
+      return stackColumnsAt === 'tablet' ? prop : 'inherit';
     },
 
-    getMediaQuery() {
-      return `
-  @media (${this.getMaxWidthQuery()}) {
-    .builder-columns {
-      flex-direction: ${
-        props.reverseColumnsWhenStacked ? 'column-reverse' : 'column'
+    get columnsCssVars() {
+      const flexDir =
+        props.stackColumnsAt === 'never'
+          ? 'inherit'
+          : props.reverseColumnsWhenStacked
+          ? 'column-reverse'
+          : 'column';
+      return {
+        '--flex-dir': flexDir,
+        '--flex-dir-tablet': this.maybeApplyForTablet(flexDir),
       };
-      align-items: stretch; 
-    }
+    },
 
-    .builder-column[style] {
-      width: 100% !important;
-      margin-left: 0 !important;
-    }
-  }
-`;
+    get columnCssVars() {
+      const width = '100%';
+      const marginLeft = '0';
+      return {
+        '--column-width': width,
+        '--column-margin-left': marginLeft,
+        '--column-width-tablet': this.maybeApplyForTablet(width),
+        '--column-margin-left-tablet': this.maybeApplyForTablet(marginLeft),
+      };
     },
   });
 
@@ -89,18 +78,35 @@ export default function Columns(props: ColumnProps) {
         display: 'flex',
         alignItems: 'stretch',
         lineHeight: 'normal',
+        '@media (max-width: 999px)': {
+          flexDirection: 'var(--flex-dir-tablet)',
+        },
+        '@media (max-width: 639px)': {
+          flexDirection: 'var(--flex-dir)',
+        },
       }}
+      style={state.columnsCssVars}
     >
-      <style scoped>{state.getMediaQuery()}</style>
       <For each={props.columns}>
         {(column, index) => (
           <div
             style={{
               width: state.getColumnCssWidth(index),
-              marginLeft: `${index === 0 ? 0 : state.getGutterSize()}px`,
+              marginLeft: `${index === 0 ? 0 : state.gutterSize}px`,
+              ...state.columnCssVars,
             }}
             class="builder-column"
-            css={{ flexGrow: '1' }}
+            css={{
+              flexGrow: '1',
+              '@media (max-width: 999px)': {
+                width: 'var(--column-width-tablet) !important',
+                marginLeft: 'var(--column-margin-left-tablet) !important',
+              },
+              '@media (max-width: 639px)': {
+                width: 'var(--column-width) !important',
+                marginLeft: 'var(--column-margin-left) !important',
+              },
+            }}
           >
             <RenderBlocks blocks={column.blocks} />
           </div>

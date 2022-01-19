@@ -1,12 +1,12 @@
 <template>
-  <div class="builder-columns div-t9spj7joih">
-    <component is="style">{{ getMediaQuery() }}</component>
+  <div class="builder-columns div-21azgz5avex" :style="columnsCssVars">
     <div
-      class="builder-column div-t9spj7joih-2"
+      class="builder-column div-21azgz5avex-2"
       v-for="(column, index) in columns"
       :style="{
         width: getColumnCssWidth(index),
-        marginLeft: `${index === 0 ? 0 : getGutterSize()}px`,
+        marginLeft: `${index === 0 ? 0 : gutterSize}px`,
+        ...columnCssVars,
       }"
       :key="index"
     >
@@ -25,10 +25,35 @@ export default registerComponent(
     components: { 'render-blocks': async () => RenderBlocks },
     props: ['space', 'columns', 'stackColumnsAt', 'reverseColumnsWhenStacked'],
 
-    methods: {
-      getGutterSize() {
+    computed: {
+      gutterSize() {
         return typeof this.space === 'number' ? this.space || 0 : 20;
       },
+      columnsCssVars() {
+        const flexDir =
+          this.stackColumnsAt === 'never'
+            ? 'inherit'
+            : this.reverseColumnsWhenStacked
+            ? 'column-reverse'
+            : 'column';
+        return {
+          '--flex-dir': flexDir,
+          '--flex-dir-tablet': this.maybeApplyForTablet(flexDir),
+        };
+      },
+      columnCssVars() {
+        const width = '100%';
+        const marginLeft = '0';
+        return {
+          '--column-width': width,
+          '--column-margin-left': marginLeft,
+          '--column-width-tablet': this.maybeApplyForTablet(width),
+          '--column-margin-left-tablet': this.maybeApplyForTablet(marginLeft),
+        };
+      },
+    },
+
+    methods: {
       getColumns() {
         return this.columns || [];
       },
@@ -38,47 +63,14 @@ export default registerComponent(
       },
       getColumnCssWidth(index) {
         const columns = this.getColumns();
-        const gutterSize = this.getGutterSize();
+        const gutterSize = this.gutterSize;
         const subtractWidth =
           (gutterSize * (columns.length - 1)) / columns.length;
         return `calc(${this.getWidth(index)}% - ${subtractWidth}px)`;
       },
-      getMaxWidthQuery() {
-        if (this.stackColumnsAt === 'never') {
-          return null;
-        }
-
-        const MAX_WIDTH_BREAKPOINTS = {
-          tablet: 999,
-          mobile: 639,
-        };
-
-        const getMaxWidthBreakpoint = (stackColumnsAt = 'tablet') => {
-          switch (stackColumnsAt) {
-            case 'tablet':
-            case 'mobile':
-              return MAX_WIDTH_BREAKPOINTS[stackColumnsAt];
-          }
-        };
-
-        return `max-width: ${getMaxWidthBreakpoint(this.stackColumnsAt)}px`;
-      },
-      getMediaQuery() {
-        return `
-@media (${this.getMaxWidthQuery()}) {
-  .builder-columns {
-    flex-direction: ${
-      this.reverseColumnsWhenStacked ? 'column-reverse' : 'column'
-    };
-    align-items: stretch; 
-  }
-
-  .builder-column[style] {
-    width: 100% !important;
-    margin-left: 0 !important;
-  }
-}
-`;
+      maybeApplyForTablet(prop) {
+        const stackColumnsAt = this.stackColumnsAt || 'tablet';
+        return stackColumnsAt === 'tablet' ? prop : 'inherit';
       },
     },
   },
@@ -300,12 +292,34 @@ export default registerComponent(
 );
 </script>
 <style scoped>
-.div-t9spj7joih {
+.div-21azgz5avex {
   display: flex;
   align-items: stretch;
   line-height: normal;
 }
-.div-t9spj7joih-2 {
+@media (max-width: 999px) {
+  .div-21azgz5avex {
+    flex-direction: var(--flex-dir-tablet);
+  }
+}
+@media (max-width: 639px) {
+  .div-21azgz5avex {
+    flex-direction: var(--flex-dir);
+  }
+}
+.div-21azgz5avex-2 {
   flex-grow: 1;
+}
+@media (max-width: 999px) {
+  .div-21azgz5avex-2 {
+    width: var(--column-width-tablet) !important;
+    margin-left: var(--column-margin-left-tablet) !important;
+  }
+}
+@media (max-width: 639px) {
+  .div-21azgz5avex-2 {
+    width: var(--column-width) !important;
+    margin-left: var(--column-margin-left) !important;
+  }
 }
 </style>

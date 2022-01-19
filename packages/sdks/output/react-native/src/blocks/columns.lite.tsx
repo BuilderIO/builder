@@ -3,7 +3,7 @@ import { View, StyleSheet, Image, Text } from 'react-native';
 import RenderBlocks from '../components/render-blocks.lite';
 
 export default function Columns(props) {
-  function getGutterSize() {
+  function gutterSize() {
     return typeof props.space === 'number' ? props.space || 0 : 20;
   }
 
@@ -12,62 +12,48 @@ export default function Columns(props) {
   }
 
   function getWidth(index) {
-    const columns = getColumns();
+    const columns = this.getColumns();
     return columns[index]?.width || 100 / columns.length;
   }
 
   function getColumnCssWidth(index) {
-    const columns = getColumns();
-    const gutterSize = getGutterSize();
+    const columns = this.getColumns();
+    const gutterSize = this.gutterSize;
     const subtractWidth = (gutterSize * (columns.length - 1)) / columns.length;
-    return `calc(${getWidth(index)}% - ${subtractWidth}px)`;
+    return `calc(${this.getWidth(index)}% - ${subtractWidth}px)`;
   }
 
-  function getMaxWidthQuery() {
-    if (props.stackColumnsAt === 'never') {
-      return null;
-    }
+  function maybeApplyForTablet(prop) {
+    const stackColumnsAt = props.stackColumnsAt || 'tablet';
+    return stackColumnsAt === 'tablet' ? prop : 'inherit';
+  }
 
-    const MAX_WIDTH_BREAKPOINTS = {
-      tablet: 999,
-      mobile: 639,
+  function columnsCssVars() {
+    const flexDir =
+      props.stackColumnsAt === 'never'
+        ? 'inherit'
+        : props.reverseColumnsWhenStacked
+        ? 'column-reverse'
+        : 'column';
+    return {
+      '--flex-dir': flexDir,
+      '--flex-dir-tablet': this.maybeApplyForTablet(flexDir),
     };
+  }
 
-    const getMaxWidthBreakpoint = (stackColumnsAt = 'tablet') => {
-      switch (stackColumnsAt) {
-        case 'tablet':
-        case 'mobile':
-          return MAX_WIDTH_BREAKPOINTS[stackColumnsAt];
-      }
+  function columnCssVars() {
+    const width = '100%';
+    const marginLeft = '0';
+    return {
+      '--column-width': width,
+      '--column-margin-left': marginLeft,
+      '--column-width-tablet': this.maybeApplyForTablet(width),
+      '--column-margin-left-tablet': this.maybeApplyForTablet(marginLeft),
     };
-
-    return `max-width: ${getMaxWidthBreakpoint(props.stackColumnsAt)}px`;
-  }
-
-  function getMediaQuery() {
-    return `
-@media (${getMaxWidthQuery()}) {
-  .builder-columns {
-    flex-direction: ${
-      props.reverseColumnsWhenStacked ? 'column-reverse' : 'column'
-    };
-    align-items: stretch; 
-  }
-
-  .builder-column[style] {
-    width: 100% !important;
-    margin-left: 0 !important;
-  }
-}
-`;
   }
 
   return (
     <View className="builder-columns" style={styles.view1}>
-      <View>
-        <Text>{getMediaQuery()}</Text>
-      </View>
-
       {props.columns?.map((column) => (
         <View className="builder-column" style={styles.view2}>
           <RenderBlocks blocks={column.blocks} />
@@ -78,6 +64,21 @@ export default function Columns(props) {
 }
 
 const styles = StyleSheet.create({
-  view1: { display: 'flex', alignItems: 'stretch' },
-  view2: { flexGrow: 1 },
+  view1: {
+    display: 'flex',
+    alignItems: 'stretch',
+    '@media (max-width: 999px)': { flexDirection: 'var(--flex-dir-tablet)' },
+    '@media (max-width: 639px)': { flexDirection: 'var(--flex-dir)' },
+  },
+  view2: {
+    flexGrow: 1,
+    '@media (max-width: 999px)': {
+      width: 'var(--column-width-tablet) !important',
+      marginLeft: 'var(--column-margin-left-tablet) !important',
+    },
+    '@media (max-width: 639px)': {
+      width: 'var(--column-width) !important',
+      marginLeft: 'var(--column-margin-left) !important',
+    },
+  },
 });
