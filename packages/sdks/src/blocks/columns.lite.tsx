@@ -23,7 +23,7 @@ export interface ColumnProps {
 
 export default function Columns(props: ColumnProps) {
   const state = useState({
-    get gutterSize(): number {
+    getGutterSize(): number {
       return typeof props.space === 'number' ? props.space || 0 : 20;
     },
     getColumns() {
@@ -35,7 +35,7 @@ export default function Columns(props: ColumnProps) {
     },
     getColumnCssWidth(index: number) {
       const columns = this.getColumns();
-      const gutterSize = this.gutterSize;
+      const gutterSize = this.getGutterSize();
       const subtractWidth =
         (gutterSize * (columns.length - 1)) / columns.length;
       return `calc(${this.getWidth(index)}% - ${subtractWidth}px)`;
@@ -92,7 +92,7 @@ export default function Columns(props: ColumnProps) {
           <div
             style={{
               width: state.getColumnCssWidth(index),
-              marginLeft: `${index === 0 ? 0 : state.gutterSize}px`,
+              marginLeft: `${index === 0 ? 0 : state.getGutterSize()}px`,
               ...state.columnCssVars,
             }}
             class="builder-column"

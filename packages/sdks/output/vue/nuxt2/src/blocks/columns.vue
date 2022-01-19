@@ -1,11 +1,11 @@
 <template>
-  <div class="builder-columns div-t9spj7joih" :style="columnsCssVars">
+  <div class="builder-columns div-21azgz5avex" :style="columnsCssVars">
     <div
-      class="builder-column div-t9spj7joih-2"
+      class="builder-column div-21azgz5avex-2"
       v-for="(column, index) in columns"
       :style="{
         width: getColumnCssWidth(index),
-        marginLeft: `${index === 0 ? 0 : gutterSize}px`,
+        marginLeft: `${index === 0 ? 0 : getGutterSize()}px`,
         ...columnCssVars,
       }"
       :key="index"
@@ -26,9 +26,6 @@ export default registerComponent(
     props: ['space', 'columns', 'stackColumnsAt', 'reverseColumnsWhenStacked'],
 
     computed: {
-      gutterSize() {
-        return typeof this.space === 'number' ? this.space || 0 : 20;
-      },
       columnsCssVars() {
         const flexDir =
           this.stackColumnsAt === 'never'
@@ -54,6 +51,9 @@ export default registerComponent(
     },
 
     methods: {
+      getGutterSize() {
+        return typeof this.space === 'number' ? this.space || 0 : 20;
+      },
       getColumns() {
         return this.columns || [];
       },
@@ -63,7 +63,7 @@ export default registerComponent(
       },
       getColumnCssWidth(index) {
         const columns = this.getColumns();
-        const gutterSize = this.gutterSize;
+        const gutterSize = this.getGutterSize();
         const subtractWidth =
           (gutterSize * (columns.length - 1)) / columns.length;
         return `calc(${this.getWidth(index)}% - ${subtractWidth}px)`;
@@ -292,32 +292,32 @@ export default registerComponent(
 );
 </script>
 <style scoped>
-.div-t9spj7joih {
+.div-21azgz5avex {
   display: flex;
   align-items: stretch;
   line-height: normal;
 }
 @media (max-width: 999px) {
-  .div-t9spj7joih {
+  .div-21azgz5avex {
     flex-direction: var(--flex-dir-tablet);
   }
 }
 @media (max-width: 639px) {
-  .div-t9spj7joih {
+  .div-21azgz5avex {
     flex-direction: var(--flex-dir);
   }
 }
-.div-t9spj7joih-2 {
+.div-21azgz5avex-2 {
   flex-grow: 1;
 }
 @media (max-width: 999px) {
-  .div-t9spj7joih-2 {
+  .div-21azgz5avex-2 {
     width: var(--column-width-tablet) !important;
     margin-left: var(--column-margin-left-tablet) !important;
   }
 }
 @media (max-width: 639px) {
-  .div-t9spj7joih-2 {
+  .div-21azgz5avex-2 {
     width: var(--column-width) !important;
     margin-left: var(--column-margin-left) !important;
   }

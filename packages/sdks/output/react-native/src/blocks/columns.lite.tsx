@@ -3,7 +3,7 @@ import { View, StyleSheet, Image, Text } from 'react-native';
 import RenderBlocks from '../components/render-blocks.lite';
 
 export default function Columns(props) {
-  function gutterSize() {
+  function getGutterSize() {
     return typeof props.space === 'number' ? props.space || 0 : 20;
   }
 
@@ -18,7 +18,7 @@ export default function Columns(props) {
 
   function getColumnCssWidth(index) {
     const columns = getColumns();
-    const gutterSize = gutterSize;
+    const gutterSize = getGutterSize();
     const subtractWidth = (gutterSize * (columns.length - 1)) / columns.length;
     return `calc(${getWidth(index)}% - ${subtractWidth}px)`;
   }
