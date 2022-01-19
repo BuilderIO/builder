@@ -74,14 +74,13 @@ export default function RenderContent(props) {
 
   function getFontCss(data) {
     // TODO: flag for this
-    // if (!this.builder.allowCustomFonts) {
+    // if (!builder.allowCustomFonts) {
     //   return '';
     // }
     // TODO: separate internal data from external
     return (
-      data?.customFonts
-        ?.map((font) => this.getCssFromFont(font, data))
-        ?.join(' ') || ''
+      data?.customFonts?.map((font) => getCssFromFont(font, data))?.join(' ') ||
+      ''
     );
   }
 

@@ -12,15 +12,15 @@ export default function Columns(props) {
   }
 
   function getWidth(index) {
-    const columns = this.getColumns();
+    const columns = getColumns();
     return columns[index]?.width || 100 / columns.length;
   }
 
   function getColumnCssWidth(index) {
-    const columns = this.getColumns();
-    const gutterSize = this.gutterSize;
+    const columns = getColumns();
+    const gutterSize = gutterSize;
     const subtractWidth = (gutterSize * (columns.length - 1)) / columns.length;
-    return `calc(${this.getWidth(index)}% - ${subtractWidth}px)`;
+    return `calc(${getWidth(index)}% - ${subtractWidth}px)`;
   }
 
   function maybeApplyForTablet(prop) {
@@ -37,7 +37,7 @@ export default function Columns(props) {
         : 'column';
     return {
       '--flex-dir': flexDir,
-      '--flex-dir-tablet': this.maybeApplyForTablet(flexDir),
+      '--flex-dir-tablet': maybeApplyForTablet(flexDir),
     };
   }
 
@@ -47,8 +47,8 @@ export default function Columns(props) {
     return {
       '--column-width': width,
       '--column-margin-left': marginLeft,
-      '--column-width-tablet': this.maybeApplyForTablet(width),
-      '--column-margin-left-tablet': this.maybeApplyForTablet(marginLeft),
+      '--column-width-tablet': maybeApplyForTablet(width),
+      '--column-margin-left-tablet': maybeApplyForTablet(marginLeft),
     };
   }
 
