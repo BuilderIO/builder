@@ -18,13 +18,23 @@ export default function ProductCard(props: {
   subtitle: string;
 }) {
   const [product, setProduct] = useState<Client.Product | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
   useEffect(() => {
     async function fetchProduct() {
-      const response = await client.product.fetchByHandle(props.productHandle);
-      setProduct(response);
+      if (props.productHandle) {
+        setLoading(true);
+        const response = await client.product.fetchByHandle(props.productHandle);
+        setProduct(response);
+        setLoading(false);
+      }
     }
     fetchProduct();
   }, [props.productHandle]);
+
+  if (loading) {
+    // todo: indicator
+    return null;
+  }
 
   if (!product) {
     return <Text>Pick a product to show</Text>;

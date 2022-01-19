@@ -1,10 +1,11 @@
-import { RenderContent, registerComponent, isEditing } from '@builder.io/sdk-react-native';
+import { RenderContent, isEditing } from '@builder.io/sdk-react-native';
 import * as React from 'react';
 import './Card';
 import './ProductCard';
 import './CollectionCard';
 import './Video';
 import { builder } from '@builder.io/sdk';
+import { Box } from 'native-base';
 
 export default function RenderBuilderScreen(props: { route: { name: string } }) {
   const [content, setContent] = React.useState<any>(undefined);
@@ -15,12 +16,6 @@ export default function RenderBuilderScreen(props: { route: { name: string } }) 
       return;
     }
     async function fetchContent() {
-      console.log(
-        ' here fetching content ',
-        props.route,
-        props.route.name,
-        builder.getUserAttributes()
-      );
       const result = await builder
         .get('screen', {
           prerender: false,
@@ -36,6 +31,9 @@ export default function RenderBuilderScreen(props: { route: { name: string } }) 
   }, [props.route.name]);
 
   const shouldRenderBuilderContent = content || isEditing();
-  console.log(' here content should render ', shouldRenderBuilderContent);
-  return shouldRenderBuilderContent ? <RenderContent model="screen" content={content} /> : null;
+  return shouldRenderBuilderContent ? (
+    <Box mb={2} pb={8}>
+      <RenderContent model="screen" content={content} />{' '}
+    </Box>
+  ) : null;
 }

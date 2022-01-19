@@ -40,6 +40,7 @@ export default function CollectionCard(props: {
   return (
     <Box
       p="2"
+      mb="12"
       rounded="lg"
       overflow="hidden"
       borderColor="coolGray.200"

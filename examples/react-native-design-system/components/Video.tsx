@@ -48,7 +48,10 @@ registerComponent(Video, {
     {
       name: 'video',
       type: 'file',
-      allowedFileTypes: ['mp4', 'mov', 'ogg', 'webm'],
+      allowedFileTypes: ['mp4'],
+      bubble: true,
+      defaultValue:
+        'https://firebasestorage.googleapis.com/v0/b/builder-3b0a2.appspot.com/o/assets%2FKQlEmWDxA0coC3PK6UvkrjwkIGI2%2F28cb070609f546cdbe5efa20e931aa4b?alt=media&token=912e9551-7a7c-4dfb-86b6-3da1537d1a7f',
       required: true,
     },
     {
