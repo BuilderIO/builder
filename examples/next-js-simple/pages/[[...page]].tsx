@@ -4,6 +4,7 @@ import { BuilderComponent, Builder, builder } from '@builder.io/react'
 import DefaultErrorPage from 'next/error'
 import Head from 'next/head'
 import builderConfig from '@config/builder'
+import '@builder.io/widgets'
 
 builder.init(builderConfig.apiKey)
 

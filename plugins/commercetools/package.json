@@ -1,8 +1,9 @@
 {
   "name": "@builder.io/plugin-commercetools",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "keywords": [],
+  "main": "dist/plugin.system.js",
   "unpkg": "dist/plugin.system.js",
   "files": [
     "dist"
