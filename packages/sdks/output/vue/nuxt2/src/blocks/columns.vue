@@ -1,7 +1,7 @@
 <template>
-  <div class="builder-columns div-16nol0lwi20" :style="columnsCssVars">
+  <div class="builder-columns div-21azgz5avex" :style="columnsCssVars">
     <div
-      class="builder-column div-16nol0lwi20-2"
+      class="builder-column div-21azgz5avex-2"
       v-for="(column, index) in columns"
       :style="{
         width: getColumnCssWidth(index),
@@ -292,32 +292,32 @@ export default registerComponent(
 );
 </script>
 <style scoped>
-.div-16nol0lwi20 {
+.div-21azgz5avex {
   display: flex;
   align-items: stretch;
   line-height: normal;
 }
 @media (max-width: 999px) {
-  .div-16nol0lwi20 {
+  .div-21azgz5avex {
     flex-direction: var(--flex-dir-tablet);
   }
 }
 @media (max-width: 639px) {
-  .div-16nol0lwi20 {
+  .div-21azgz5avex {
     flex-direction: var(--flex-dir);
   }
 }
-.div-16nol0lwi20-2 {
+.div-21azgz5avex-2 {
   flex-grow: 1;
 }
 @media (max-width: 999px) {
-  .div-16nol0lwi20-2 {
+  .div-21azgz5avex-2 {
     width: var(--column-width-tablet) !important;
     margin-left: var(--column-margin-left-tablet) !important;
   }
 }
 @media (max-width: 639px) {
-  .div-16nol0lwi20-2 {
+  .div-21azgz5avex-2 {
     width: var(--column-width) !important;
     margin-left: var(--column-margin-left) !important;
   }
