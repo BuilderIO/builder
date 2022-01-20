@@ -32,18 +32,18 @@ export default function RenderContent(props) {
       font.family +
       (font.kind && !font.kind.includes('#') ? ', ' + font.kind : '');
     const name = family.split(',')[0];
-    const url = font.fileUrl ? font.fileUrl : font.files && font.files.regular;
+    const url = font.fileUrl ?? font?.files?.regular;
     let str = '';
 
     if (url && family && name) {
       str += `
- @font-face {
-   font-family: "${family}";
-   src: local("${name}"), url('${url}') format('woff2');
-   font-display: fallback;
-   font-weight: 400;
- }
-         `.trim();
+@font-face {
+  font-family: "${family}";
+  src: local("${name}"), url('${url}') format('woff2');
+  font-display: fallback;
+  font-weight: 400;
+}
+        `.trim();
     }
 
     if (font.files) {
@@ -58,13 +58,13 @@ export default function RenderContent(props) {
 
         if (weightUrl && weightUrl !== url) {
           str += `
- @font-face {
-   font-family: "${family}";
-   src: url('${weightUrl}') format('woff2');
-   font-display: fallback;
-   font-weight: ${weight};
- }
-           `.trim();
+@font-face {
+  font-family: "${family}";
+  src: url('${weightUrl}') format('woff2');
+  font-display: fallback;
+  font-weight: ${weight};
+}
+          `.trim();
         }
       }
     }
@@ -74,16 +74,12 @@ export default function RenderContent(props) {
 
   function getFontCss(data) {
     // TODO: flag for this
-    // if (!this.builder.allowCustomFonts) {
+    // if (!builder.allowCustomFonts) {
     //   return '';
     // }
     // TODO: separate internal data from external
     return (
-      (data?.customFonts &&
-        data.customFonts.length &&
-        data.customFonts
-          .map((font) => this.getCssFromFont(font, data))
-          .join(' ')) ||
+      data?.customFonts?.map((font) => getCssFromFont(font, data))?.join(' ') ||
       ''
     );
   }
@@ -186,8 +182,7 @@ export default function RenderContent(props) {
             data-builder-content-id={useContent?.()?.id}
           >
             {(useContent?.()?.data?.cssCode ||
-              (useContent?.()?.data?.customFonts &&
-                useContent?.()?.data?.customFonts.length)) &&
+              useContent?.()?.data?.customFonts?.length) &&
             !isReactNative() ? (
               <View>
                 <Text>{useContent().data.cssCode}</Text>

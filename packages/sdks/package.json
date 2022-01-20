@@ -8,10 +8,14 @@
     "start": "watch 'npm run mitosis' ./src ./overrides",
     "test": "jest",
     "ci:build": "npm run build",
-    "ci:test": "npm run test"
+    "ci:test": "npm run test",
+    "rm": "rm -rf ./node_modules/@builder.io/mitosis-cli && rm -rf ./node_modules/@builder.io/mitosis",
+    "symlink-cli": "ln -sf ../../../../../mitosis/packages/cli ./node_modules/@builder.io/mitosis-cli",
+    "symlink-core": "ln -sf ../../../../../mitosis/packages/core ./node_modules/@builder.io/mitosis",
+    "symlink": "npm run rm && npm run symlink-cli && npm run symlink-core"
   },
   "dependencies": {
-    "@builder.io/mitosis-cli": "0.0.10",
+    "@builder.io/mitosis-cli": "0.0.11",
     "node-fetch": "^2.6.1",
     "seedrandom": "^3.0.5"
   },

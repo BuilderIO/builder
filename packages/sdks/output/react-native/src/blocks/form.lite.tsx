@@ -141,7 +141,7 @@ export default function FormComponent(props) {
               get(body, props.errorMessagePath);
             if (message) {
               if (typeof message !== 'string') {
-                /* TODO: ideally convert json to yaml so it woul dbe like             error: - email has been taken */ message =
+                /* TODO: ideally convert json to yaml so it woul dbe like            error: - email has been taken */ message =
                   JSON.stringify(message);
               }
               setFormErrorMessage(message);

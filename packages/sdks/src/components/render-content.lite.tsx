@@ -41,9 +41,7 @@ export default function RenderContent(props: RenderContentProps) {
         font.family +
         (font.kind && !font.kind.includes('#') ? ', ' + font.kind : '');
       const name = family.split(',')[0];
-      const url = font.fileUrl
-        ? font.fileUrl
-        : font.files && font.files.regular;
+      const url = font.fileUrl ?? font?.files?.regular;
       let str = '';
       if (url && family && name) {
         str += `
@@ -86,12 +84,9 @@ export default function RenderContent(props: RenderContentProps) {
       // }
       // TODO: separate internal data from external
       return (
-        (data?.customFonts &&
-          data.customFonts.length &&
-          data.customFonts
-            .map((font: any) => this.getCssFromFont(font, data))
-            .join(' ')) ||
-        ''
+        data?.customFonts
+          ?.map((font: any) => this.getCssFromFont(font, data))
+          ?.join(' ') || ''
       );
     },
 
@@ -208,8 +203,7 @@ export default function RenderContent(props: RenderContentProps) {
         data-builder-content-id={state.useContent?.id}
       >
         {(state.useContent?.data?.cssCode ||
-          (state.useContent?.data?.customFonts &&
-            state.useContent?.data?.customFonts.length)) &&
+          state.useContent?.data?.customFonts?.length) &&
           !isReactNative() && (
             <style>
               {state.useContent.data.cssCode}

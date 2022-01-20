@@ -2,7 +2,7 @@ import { isBrowser } from './is-browser';
 import { isReactNative } from './is-react-native';
 
 export function track(event: string, properties: Record<string, any>) {
-  if (!isBrowser() || isReactNative()) {
+  if (!(isBrowser() || isReactNative())) {
     return;
   }
 
