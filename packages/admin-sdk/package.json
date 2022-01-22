@@ -44,7 +44,7 @@
     "fs-extra": "^9.0.1",
     "graphql-typed-client": "^1.7.4",
     "lodash": "^4.17.20",
-    "node-fetch": "^2.6.1",
+    "node-fetch": "^3.1.1",
     "traverse": "^0.6.6"
   }
 }

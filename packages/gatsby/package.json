@@ -20,7 +20,7 @@
     "apollo-link-http": "^1.5.16",
     "graphql-tools": "^5.0.0",
     "invariant": "^2.2.4",
-    "node-fetch": "^2.6.1",
+    "node-fetch": "^3.1.1",
     "promise-retry": "^2.0.1",
     "uuid": "^3.3.3"
   },
