@@ -104,7 +104,14 @@ export function PickShopifyCollectionsList(props: PickShopifyCollectionsListProp
                 onChange={collection => {
                   if (collection?.id) {
                     const value = props.value || [];
-                    value.push(String(collection.id));
+                    let id = collection.id;
+                    if (id) {
+                      const gid = atob(String(id));
+                      if (gid && gid.startsWith('gid://')) {
+                        id = Number(gid.split('gid://shopify/Collection/')[1]);
+                      }
+                    }
+                    value.push(String(id));
                     props.onChange(value);
                   }
                   close();
