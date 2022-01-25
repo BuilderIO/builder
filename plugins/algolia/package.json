@@ -1,9 +1,9 @@
 {
   "name": "@builder.io/plugin-algolia",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "",
   "keywords": [],
-  "main": "dist/plugin.umd.js",
+  "main": "dist/plugin.system.js",
   "module": "dist/plugin.es5.js",
   "unpkg": "dist/plugin.system.js",
   "typings": "dist/types/plugin.d.ts",

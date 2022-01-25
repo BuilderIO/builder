@@ -1,9 +1,9 @@
 {
   "name": "@builder.io/plugin-cloudinary",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "",
   "keywords": [],
-  "main": "dist/builder-plugin-cloudinary.umd.js",
+  "main": "dist/builder-plugin-cloudinary.system.js",
   "module": "dist/builder-plugin-cloudinary.es5.js",
   "unpkg": "dist/builder-plugin-cloudinary.system.js",
   "typings": "dist/types/builder-plugin-cloudinary.d.ts",

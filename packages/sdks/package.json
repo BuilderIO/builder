@@ -1,6 +1,5 @@
 {
   "name": "@builder.io/sdks",
-  "version": "0.0.1",
   "private": true,
   "scripts": {
     "mitosis": "mitosis build",
@@ -9,11 +8,16 @@
     "start": "watch 'npm run mitosis' ./src ./overrides",
     "test": "jest",
     "ci:build": "npm run build",
-    "ci:test": "npm run test"
+    "ci:test": "npm run test",
+    "rm": "rm -rf ./node_modules/@builder.io/mitosis-cli && rm -rf ./node_modules/@builder.io/mitosis",
+    "symlink-cli": "ln -sf ../../../../../mitosis/packages/cli ./node_modules/@builder.io/mitosis-cli",
+    "symlink-core": "ln -sf ../../../../../mitosis/packages/core ./node_modules/@builder.io/mitosis",
+    "symlink": "npm run rm && npm run symlink-cli && npm run symlink-core"
   },
   "dependencies": {
-    "@builder.io/mitosis-cli": "0.0.10",
-    "node-fetch": "^2.6.1"
+    "@builder.io/mitosis-cli": "0.0.11",
+    "node-fetch": "^2.6.1",
+    "seedrandom": "^3.0.5"
   },
   "devDependencies": {
     "@jsx-lite/cli": "^1.0.1",
@@ -36,7 +40,7 @@
     "json5": "^2.2.0",
     "prettier": "^2.5.0",
     "react": "^17.0.2",
-    "react-native": "^0.64.2",
+    "react-native": "^0.64.3",
     "react-native-render-html": "^5.1.1",
     "vue": "2.6.12",
     "vue-template-compiler": "2.6.12",

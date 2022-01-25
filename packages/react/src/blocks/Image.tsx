@@ -500,7 +500,7 @@ export const Image = withBuilder(ImageComponent, {
         {
           label: 'cover',
           value: 'cover',
-          helperText: `The image should fill it's box, cropping when needed`,
+          helperText: `The image should fill its box, cropping when needed`,
         },
         // TODO: add these options back
         // { label: 'auto', value: 'auto', helperText: '' },

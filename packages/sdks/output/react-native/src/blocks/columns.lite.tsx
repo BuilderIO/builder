@@ -12,15 +12,44 @@ export default function Columns(props) {
   }
 
   function getWidth(index) {
-    const columns = this.getColumns();
-    return (columns[index] && columns[index].width) || 100 / columns.length;
+    const columns = getColumns();
+    return columns[index]?.width || 100 / columns.length;
   }
 
   function getColumnCssWidth(index) {
-    const columns = this.getColumns();
-    const gutterSize = this.getGutterSize();
+    const columns = getColumns();
+    const gutterSize = getGutterSize();
     const subtractWidth = (gutterSize * (columns.length - 1)) / columns.length;
-    return `calc(${this.getWidth(index)}% - ${subtractWidth}px)`;
+    return `calc(${getWidth(index)}% - ${subtractWidth}px)`;
+  }
+
+  function maybeApplyForTablet(prop) {
+    const stackColumnsAt = props.stackColumnsAt || 'tablet';
+    return stackColumnsAt === 'tablet' ? prop : 'inherit';
+  }
+
+  function columnsCssVars() {
+    const flexDir =
+      props.stackColumnsAt === 'never'
+        ? 'inherit'
+        : props.reverseColumnsWhenStacked
+        ? 'column-reverse'
+        : 'column';
+    return {
+      '--flex-dir': flexDir,
+      '--flex-dir-tablet': maybeApplyForTablet(flexDir),
+    };
+  }
+
+  function columnCssVars() {
+    const width = '100%';
+    const marginLeft = '0';
+    return {
+      '--column-width': width,
+      '--column-margin-left': marginLeft,
+      '--column-width-tablet': maybeApplyForTablet(width),
+      '--column-margin-left-tablet': maybeApplyForTablet(marginLeft),
+    };
   }
 
   return (
@@ -35,6 +64,21 @@ export default function Columns(props) {
 }
 
 const styles = StyleSheet.create({
-  view1: { display: 'flex', alignItems: 'stretch' },
-  view2: { flexGrow: 1 },
+  view1: {
+    display: 'flex',
+    alignItems: 'stretch',
+    '@media (max-width: 999px)': { flexDirection: 'var(--flex-dir-tablet)' },
+    '@media (max-width: 639px)': { flexDirection: 'var(--flex-dir)' },
+  },
+  view2: {
+    flexGrow: 1,
+    '@media (max-width: 999px)': {
+      width: 'var(--column-width-tablet) !important',
+      marginLeft: 'var(--column-margin-left-tablet) !important',
+    },
+    '@media (max-width: 639px)': {
+      width: 'var(--column-width) !important',
+      marginLeft: 'var(--column-margin-left) !important',
+    },
+  },
 });
