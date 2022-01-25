@@ -92,7 +92,14 @@ export function PickShopifyProductsList(props: PickShopifyProductsListProps) {
                 onChange={product => {
                   if (product) {
                     const value = props.value || [];
-                    value.push(String(product.id));
+                    let id = product.id;
+                    if (id) {
+                      const gid = atob(String(id));
+                      if (gid && gid.startsWith('gid://')) {
+                        id = Number(gid.split('gid://shopify/Product/')[1]);
+                      }
+                    }
+                    value.push(String(id));
                     props.onChange(value);
                   }
                   close();
