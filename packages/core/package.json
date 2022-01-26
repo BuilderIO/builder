@@ -22,7 +22,8 @@
     "release:patch:nightly": "npm run build && npm version patch && ALLOW_PUBLISH=true npm publish",
     "release:dev": "npm run build && npm version prerelease --no-git-tag-version && ALLOW_PUBLISH=true npm publish --tag dev",
     "prepublishOnly": "block-publish",
-    "ci:build": "npm run build"
+    "ci:build": "npm run build",
+    "test": "jest"
   },
   "devDependencies": {
     "@builder.io/block-publish": "^1.1.2",
