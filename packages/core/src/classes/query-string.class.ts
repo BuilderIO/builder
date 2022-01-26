@@ -51,8 +51,7 @@ export class QueryString {
       let t = output;
       const parts = k.split('.');
       const key = parts.pop()!;
-      while (parts.length) {
-        const part = parts.shift()!;
+      for (const part of parts) {
         assertAllowedPropertyName(part);
         t = t[part] = t[part] || Object.create(null);
       }
