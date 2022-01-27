@@ -2,7 +2,7 @@
 
 Easily connect your data resources to your Builder.io content!
 
-<video autoplay="true" muted="true" loop="" class="builder-video css-6heqsi" playsinline="true"><source type="video/mp4" src="https://cdn.builder.io/o/assets%2FYJIGb4i01jvw0SRdL5Bt%2F0f54f2048dfe4eaa86d19066033f6974?alt=media&amp;token=2a9087a0-6988-44ae-899d-ad170d3b73e3&amp;apiKey=YJIGb4i01jvw0SRdL5Bt"></video>
+<img src="https://cdn.builder.io/o/assets%2FYJIGb4i01jvw0SRdL5Bt%2F25f8482abb53418795404c174e46e8c0%2Fcompressed?apiKey=YJIGb4i01jvw0SRdL5Bt&token=25f8482abb53418795404c174e46e8c0&alt=media&optimized=true" alt="Data source demo">
 
 This package main export is `registerDataPlugin`, which will allow you to define what your data API needs (for example: apiToken, password, environment), prompt Builder.io users for those settings, and registers all the resources you define in your plugin.
 
