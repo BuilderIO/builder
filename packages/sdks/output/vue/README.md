@@ -1,4 +1,9 @@
-# Builder.io Vue SDK
+# Builder.io Vue 2.0 SDK (BETA)
+
+This is the 2.0 Vue SDK. It is currently in beta.
+
+NOTE: If you are looking for the stable 1.0 Vue SDK, you can find it [here](https://github.com/BuilderIO/builder/tree/main/packages/vue)
+
 
 ## Getting Started
 
