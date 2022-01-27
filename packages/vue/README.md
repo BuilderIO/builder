@@ -1,6 +1,9 @@
 # Builder.io Vue SDK
 
-Builder.io drag and drop page and section building for Vue
+Builder.io drag and drop page and section building for Vue.
+
+
+NOTE: If you are looking for the _beta_ 2.0 Vue SDK, you can find it [here](https://github.com/BuilderIO/builder/tree/main/packages/sdks/output/vue)
 
 ## Get started
 
