@@ -4,19 +4,21 @@ import { registerComponent } from '../functions/register-component';
 // Subset of Image props, many are irrelevant for native (such as altText, etc)
 export interface ImageProps {
   image: string;
-  backgroundSize?: string;
+  backgroundSize?: 'cover' | 'contain';
   backgroundPosition?: string;
   aspectRatio?: number;
+  width?: number;
+  height?: number;
   // TODO: support children
   children?: any;
 }
 
 // TODO: support children by wrapping in a View
 export default function Image(props: ImageProps) {
-  return (
+  return props.aspectRatio ? (
     <View style={{ position: 'relative' }}>
       <ReactImage
-        resizeMode={props.backgroundSize || ('contain' as any)}
+        resizeMode={props.backgroundSize || 'contain'}
         style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }}
         source={{ uri: props.image }}
       />
@@ -27,10 +29,20 @@ export default function Image(props: ImageProps) {
         }}
       />
     </View>
+  ) : (
+    <ReactImage
+      resizeMode={props.backgroundSize || 'contain'}
+      style={{
+        position: 'relative',
+        ...(props.width ? { width: props.width } : {}),
+        ...(props.height ? { height: props.height } : {}),
+      }}
+      source={{ uri: props.image }}
+    />
   );
 }
 
-// TODO: make a way to share these configs by Mitoris being able to trace
+// TODO: make a way to share these configs by Mitosis being able to trace
 // references for config data
 registerComponent(Image, {
   name: 'Image',
