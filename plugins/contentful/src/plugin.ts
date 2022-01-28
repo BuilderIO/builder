@@ -85,7 +85,11 @@ registerDataPlugin(
                 max: 100,
                 type: 'number',
               },
-
+              {
+                name: 'locale',
+                type: 'text',
+                enum: locales.items.map(item => item.code),
+              },
               {
                 name: 'order',
                 type: 'string',
