@@ -48,10 +48,20 @@ registerDataPlugin(
           )}`;
         };
 
+        const locales = await client.getLocales();
         return contentTypes.items.map(type => ({
           name: type.name,
           id: type.sys.id,
           canPickEntries: true,
+          entryInputs: () => {
+            return [
+              {
+                name: 'locale',
+                type: 'text',
+                enum: locales.items.map(item => item.code),
+              },
+            ];
+          },
           inputs: () => {
             const acceptableFields = type.fields.filter(field =>
               ['Text', 'Boolean', 'Number', 'Symbol'].includes(field.type)
@@ -75,7 +85,11 @@ registerDataPlugin(
                 max: 100,
                 type: 'number',
               },
-
+              {
+                name: 'locale',
+                type: 'text',
+                enum: locales.items.map(item => item.code),
+              },
               {
                 name: 'order',
                 type: 'string',
@@ -119,7 +133,11 @@ registerDataPlugin(
             if (options.entry) {
               // todo: maybe environment should be an input
               return buildUrl(
-                `https://cdn.contentful.com/spaces/${spaceId}/environments/master/entries?access_token=${accessToken}&content_type=${type.sys.id}&sys.id=${options.entry}&include=10`,
+                `https://cdn.contentful.com/spaces/${spaceId}/environments/master/entries?access_token=${accessToken}&content_type=${
+                  type.sys.id
+                }&sys.id=${options.entry}&include=10${
+                  options.locale ? `&locale=${options.locale}` : ''
+                }`,
                 true
               );
             }

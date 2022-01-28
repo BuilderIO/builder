@@ -68,9 +68,11 @@ Builder.register('plugin', {
   ctaText: 'Connect your store',
 
   async onSave(actions: OnSaveActions) {
-    const confirm = (appState.user.isBuilderAdmin || appState.user.isEnterprise ) && await appState.dialogs.confirm(
-      'Would you like to index your products and collections from shopify?'
-    );
+    const confirm =
+      (appState.user.isBuilderAdmin || appState.user.isEnterprise) &&
+      (await appState.dialogs.confirm(
+        'Would you like to index your products and collections from shopify?'
+      ));
     if (confirm) {
       //TODO: create targeting attributes, productHandle: ShopifyProductHandle , collectionHandle: ShopifyCollectionHandle
 
