@@ -103,17 +103,9 @@ export default function RenderBlock(props: RenderBlockProps) {
               </Show>
             </state.componentRef>
           )}
-          <Show
-            when={
-              !state.componentRef &&
-              state.useBlock.children &&
-              state.useBlock.children.length
-            }
-          >
-            <For each={state.useBlock.children}>
-              {(child: any) => <RenderBlock block={child} />}
-            </For>
-          </Show>
+          <For each={!state.componentRef ? state.useBlock.children : []}>
+            {(child: any) => <RenderBlock block={child} />}
+          </For>
         </state.tagName>
       </Show>
     </>

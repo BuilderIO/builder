@@ -21,7 +21,7 @@
     </component>
 
     <render-block
-      v-for="(child, index) in useBlock.children"
+      v-for="(child, index) in !componentRef ? useBlock.children : []"
       :block="child"
       :key="index"
     ></render-block>
