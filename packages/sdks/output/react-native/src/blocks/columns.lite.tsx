@@ -64,21 +64,6 @@ export default function Columns(props) {
 }
 
 const styles = StyleSheet.create({
-  view1: {
-    display: 'flex',
-    alignItems: 'stretch',
-    '@media (max-width: 999px)': { flexDirection: 'var(--flex-dir-tablet)' },
-    '@media (max-width: 639px)': { flexDirection: 'var(--flex-dir)' },
-  },
-  view2: {
-    flexGrow: 1,
-    '@media (max-width: 999px)': {
-      width: 'var(--column-width-tablet) !important',
-      marginLeft: 'var(--column-margin-left-tablet) !important',
-    },
-    '@media (max-width: 639px)': {
-      width: 'var(--column-width) !important',
-      marginLeft: 'var(--column-margin-left) !important',
-    },
-  },
+  view1: { display: 'flex', alignItems: 'stretch' },
+  view2: { flexGrow: 1 },
 });
