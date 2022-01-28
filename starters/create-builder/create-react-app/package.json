@@ -10,7 +10,7 @@
     "@builder.io/react": "^1.1.47",
     "@react-three/drei": "^7.22.6",
     "@react-three/fiber": "^7.0.19",
-    "three": "^0.134.0"
+    "three": "^0.137.0"
   },
   "devDependencies": {
     "@types/node": "^12.0.0",
