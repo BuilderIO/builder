@@ -84,7 +84,20 @@ export default function RenderBlock(props: RenderBlockProps) {
             builderBlock={state.useBlock}
             style={state.css}
           >
-            <For each={state.useBlock.children}>
+            <Show
+              when={
+                state.componentInfo.canHaveChildren && state.useBlock.children
+              }
+            >
+              <RenderBlocks path="children" blocks={state.useBlock.children} />
+            </Show>
+            <For
+              each={
+                !state.componentInfo.canHaveChildren
+                  ? state.useBlock.children
+                  : []
+              }
+            >
               {(child: any) => <RenderBlock block={child} />}
             </For>
           </state.componentRef>
@@ -97,16 +110,41 @@ export default function RenderBlock(props: RenderBlockProps) {
               {...state.componentOptions}
               builderBlock={state.useBlock}
             >
-              {/* Maybe only include if `state.componentInfo.canHaveChildren: true` */}
-              <Show when={state.useBlock.children}>
+              <Show
+                when={
+                  state.componentInfo.canHaveChildren && state.useBlock.children
+                }
+              >
                 <RenderBlocks
                   path="children"
                   blocks={state.useBlock.children}
                 />
               </Show>
+              <For
+                each={
+                  !state.componentInfo.canHaveChildren
+                    ? state.useBlock.children
+                    : []
+                }
+              >
+                {(child: any) => <RenderBlock block={child} />}
+              </For>
             </state.componentRef>
           )}
-          <For each={!state.componentRef ? state.useBlock.children : []}>
+          <Show
+            when={
+              state.componentInfo.canHaveChildren && state.useBlock.children
+            }
+          >
+            <RenderBlocks path="children" blocks={state.useBlock.children} />
+          </Show>
+          <For
+            each={
+              !state.componentInfo.canHaveChildren
+                ? state.useBlock.children
+                : []
+            }
+          >
             {(child: any) => <RenderBlock block={child} />}
           </For>
         </state.tagName>

@@ -15,13 +15,29 @@
     >
       <render-blocks
         path="children"
-        v-if="useBlock.children"
+        v-if="componentInfo.canHaveChildren && useBlock.children"
         :blocks="useBlock.children"
       ></render-blocks>
+
+      <render-block
+        v-for="(child, index) in !componentInfo.canHaveChildren
+          ? useBlock.children
+          : []"
+        :block="child"
+        :key="index"
+      ></render-block>
     </component>
 
+    <render-blocks
+      path="children"
+      v-if="componentInfo.canHaveChildren && useBlock.children"
+      :blocks="useBlock.children"
+    ></render-blocks>
+
     <render-block
-      v-for="(child, index) in !componentRef ? useBlock.children : []"
+      v-for="(child, index) in !componentInfo.canHaveChildren
+        ? useBlock.children
+        : []"
       :block="child"
       :key="index"
     ></render-block>
@@ -34,8 +50,16 @@
     :style="css"
     :is="componentRef"
   >
+    <render-blocks
+      path="children"
+      v-if="componentInfo.canHaveChildren && useBlock.children"
+      :blocks="useBlock.children"
+    ></render-blocks>
+
     <render-block
-      v-for="(child, index) in useBlock.children"
+      v-for="(child, index) in !componentInfo.canHaveChildren
+        ? useBlock.children
+        : []"
       :block="child"
       :key="index"
     ></render-block>
@@ -56,8 +80,8 @@ import RenderBlocks from './render-blocks';
 export default {
   name: 'render-block',
   components: {
-    'block-styles': async () => BlockStyles,
     'render-blocks': async () => RenderBlocks,
+    'block-styles': async () => BlockStyles,
   },
   props: ['block'],
 
