@@ -13,18 +13,8 @@
       :builderBlock="useBlock"
       :is="componentRef"
     >
-      <render-blocks
-        path="children"
-        v-if="
-          componentInfo && componentInfo.canHaveChildren && useBlock.children
-        "
-        :blocks="useBlock.children"
-      ></render-blocks>
-
       <render-block
-        v-for="(child, index) in !(
-          componentInfo && componentInfo.canHaveChildren
-        )
+        v-for="(child, index) in componentInfo && componentInfo.canHaveChildren
           ? useBlock.children
           : []"
         :block="child"
@@ -32,20 +22,10 @@
       ></render-block>
     </component>
 
-    <render-blocks
-      path="children"
-      v-if="
-        !componentRef &&
-        componentInfo &&
-        componentInfo.canHaveChildren &&
-        useBlock.children
-      "
-      :blocks="useBlock.children"
-    ></render-blocks>
-
     <render-block
       v-for="(child, index) in !componentRef &&
-      !(componentInfo && componentInfo.canHaveChildren)
+      componentInfo &&
+      componentInfo.canHaveChildren
         ? useBlock.children
         : []"
       :block="child"
@@ -60,13 +40,8 @@
     :style="css"
     :is="componentRef"
   >
-    <render-blocks
-      v-if="componentInfo && componentInfo.canHaveChildren && useBlock.children"
-      :blocks="useBlock.children"
-    ></render-blocks>
-
     <render-block
-      v-for="(child, index) in !(componentInfo && componentInfo.canHaveChildren)
+      v-for="(child, index) in componentInfo && componentInfo.canHaveChildren
         ? useBlock.children
         : []"
       :block="child"
@@ -84,14 +59,10 @@ import BuilderContext from '../context/builder.context';
 import { getBlockActions } from '../functions/get-block-actions';
 import { getProcessedBlock } from '../functions/get-processed-block';
 import BlockStyles from './block-styles';
-import RenderBlocks from './render-blocks';
 
 export default {
   name: 'render-block',
-  components: {
-    'render-blocks': async () => RenderBlocks,
-    'block-styles': async () => BlockStyles,
-  },
+  components: { 'block-styles': async () => BlockStyles },
   props: ['block'],
 
   inject: {

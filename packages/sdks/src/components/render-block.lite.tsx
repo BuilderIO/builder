@@ -9,7 +9,6 @@ import BuilderContext from '../context/builder.context.lite';
 import { getBlockActions } from '../functions/get-block-actions';
 import { getProcessedBlock } from '../functions/get-processed-block';
 import BlockStyles from './block-styles.lite';
-import RenderBlocks from './render-blocks.lite';
 
 export type RenderBlockProps = {
   block: BuilderBlock;
@@ -84,16 +83,9 @@ export default function RenderBlock(props: RenderBlockProps) {
             builderBlock={state.useBlock}
             style={state.css}
           >
-            <Show
-              when={
-                state.componentInfo?.canHaveChildren && state.useBlock.children
-              }
-            >
-              <RenderBlocks blocks={state.useBlock.children} />
-            </Show>
             <For
               each={
-                !state.componentInfo?.canHaveChildren
+                state.componentInfo?.canHaveChildren
                   ? state.useBlock.children
                   : []
               }
@@ -110,20 +102,9 @@ export default function RenderBlock(props: RenderBlockProps) {
               {...state.componentOptions}
               builderBlock={state.useBlock}
             >
-              <Show
-                when={
-                  state.componentInfo?.canHaveChildren &&
-                  state.useBlock.children
-                }
-              >
-                <RenderBlocks
-                  path="children"
-                  blocks={state.useBlock.children}
-                />
-              </Show>
               <For
                 each={
-                  !state.componentInfo?.canHaveChildren
+                  state.componentInfo?.canHaveChildren
                     ? state.useBlock.children
                     : []
                 }
@@ -132,18 +113,9 @@ export default function RenderBlock(props: RenderBlockProps) {
               </For>
             </state.componentRef>
           )}
-          <Show
-            when={
-              !state.componentRef &&
-              state.componentInfo?.canHaveChildren &&
-              state.useBlock.children
-            }
-          >
-            <RenderBlocks path="children" blocks={state.useBlock.children} />
-          </Show>
           <For
             each={
-              !state.componentRef && !state.componentInfo?.canHaveChildren
+              !state.componentRef && state.componentInfo?.canHaveChildren
                 ? state.useBlock.children
                 : []
             }

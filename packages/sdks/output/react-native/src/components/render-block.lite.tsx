@@ -10,7 +10,6 @@ import BuilderContext from '../context/builder.context.lite';
 import { getBlockActions } from '../functions/get-block-actions';
 import { getProcessedBlock } from '../functions/get-processed-block';
 import BlockStyles from './block-styles.lite';
-import RenderBlocks from './render-blocks.lite';
 
 export default function RenderBlock(props) {
   function component() {
@@ -93,30 +92,13 @@ export default function RenderBlock(props) {
                 {...componentOptions()}
                 builderBlock={useBlock()}
               >
-                {componentInfo?.()?.canHaveChildren && useBlock().children ? (
-                  <>
-                    <RenderBlocks
-                      path="children"
-                      blocks={useBlock().children}
-                    />
-                  </>
-                ) : null}
-
-                {!componentInfo?.()?.canHaveChildren
+                {componentInfo?.()?.canHaveChildren
                   ? useBlock().children
                   : []?.map((child) => <RenderBlock block={child} />)}
               </ComponentRefRef>
             ) : null}
 
-            {!componentRef() &&
-            componentInfo?.()?.canHaveChildren &&
-            useBlock().children ? (
-              <>
-                <RenderBlocks path="children" blocks={useBlock().children} />
-              </>
-            ) : null}
-
-            {!componentRef() && !componentInfo?.()?.canHaveChildren
+            {!componentRef() && componentInfo?.()?.canHaveChildren
               ? useBlock().children
               : []?.map((child) => <RenderBlock block={child} />)}
           </TagNameRef>
@@ -128,13 +110,7 @@ export default function RenderBlock(props) {
           builderBlock={useBlock()}
           style={css()}
         >
-          {componentInfo?.()?.canHaveChildren && useBlock().children ? (
-            <>
-              <RenderBlocks blocks={useBlock().children} />
-            </>
-          ) : null}
-
-          {!componentInfo?.()?.canHaveChildren
+          {componentInfo?.()?.canHaveChildren
             ? useBlock().children
             : []?.map((child) => <RenderBlock block={child} />)}
         </ComponentRefRef>
