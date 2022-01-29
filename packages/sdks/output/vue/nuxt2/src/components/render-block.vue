@@ -27,7 +27,7 @@
     ></render-block>
   </component>
   <component
-    v-bind="componentInfo && componentInfo.options"
+    v-bind="componentOptions"
     v-else=""
     :attributes="propertiesAndActions"
     :builderBlock="useBlock"

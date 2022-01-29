@@ -111,7 +111,7 @@ export default function RenderBlock(props) {
         </>
       ) : (
         <ComponentRefRef
-          {...componentInfo?.()?.options}
+          {...componentOptions()}
           attributes={propertiesAndActions()}
           builderBlock={useBlock()}
           style={css()}

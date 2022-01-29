@@ -80,7 +80,7 @@ export default function RenderBlock(props: RenderBlockProps) {
         else={
           <state.componentRef
             attributes={state.propertiesAndActions}
-            {...state.componentInfo?.options}
+            {...state.componentOptions}
             builderBlock={state.useBlock}
             style={state.css}
             children={state.useBlock.children}
@@ -94,7 +94,7 @@ export default function RenderBlock(props: RenderBlockProps) {
               {...state.componentOptions}
               builderBlock={state.useBlock}
             >
-              {/* Maybe only include if `canHaveChildren: true` */}
+              {/* Maybe only include if `state.componentInfo.canHaveChildren: true` */}
               <Show when={state.useBlock.children}>
                 <RenderBlocks
                   path="children"
