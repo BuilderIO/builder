@@ -108,15 +108,19 @@ export default function RenderBlock(props) {
               </ComponentRefRef>
             ) : null}
 
-            {componentInfo().canHaveChildren && useBlock().children ? (
-              <>
-                <RenderBlocks path="children" blocks={useBlock().children} />
-              </>
-            ) : null}
+            <>
+              {!componentRef() &&
+              componentInfo().canHaveChildren &&
+              useBlock().children ? (
+                <>
+                  <RenderBlocks path="children" blocks={useBlock().children} />
+                </>
+              ) : null}
 
-            {!componentInfo().canHaveChildren
-              ? useBlock().children
-              : []?.map((child) => <RenderBlock block={child} />)}
+              {!componentRef() && !componentInfo().canHaveChildren
+                ? useBlock().children
+                : []?.map((child) => <RenderBlock block={child} />)}
+            </>
           </TagNameRef>
         </>
       ) : (

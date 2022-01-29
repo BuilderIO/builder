@@ -30,12 +30,12 @@
 
     <render-blocks
       path="children"
-      v-if="componentInfo.canHaveChildren && useBlock.children"
+      v-if="!componentRef && componentInfo.canHaveChildren && useBlock.children"
       :blocks="useBlock.children"
     ></render-blocks>
 
     <render-block
-      v-for="(child, index) in !componentInfo.canHaveChildren
+      v-for="(child, index) in !componentRef && !componentInfo.canHaveChildren
         ? useBlock.children
         : []"
       :block="child"
