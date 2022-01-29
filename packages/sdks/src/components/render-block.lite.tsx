@@ -83,8 +83,11 @@ export default function RenderBlock(props: RenderBlockProps) {
             {...state.componentOptions}
             builderBlock={state.useBlock}
             style={state.css}
-            children={state.useBlock.children}
-          />
+          >
+            <For each={state.useBlock.children}>
+              {(child: any) => <RenderBlock block={child} />}
+            </For>
+          </state.componentRef>
         }
       >
         <state.tagName {...state.propertiesAndActions} style={state.css}>

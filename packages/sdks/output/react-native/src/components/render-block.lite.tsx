@@ -115,8 +115,11 @@ export default function RenderBlock(props) {
           attributes={propertiesAndActions()}
           builderBlock={useBlock()}
           style={css()}
-          children={useBlock().children}
-        />
+        >
+          {useBlock().children?.map((child) => (
+            <RenderBlock block={child} />
+          ))}
+        </ComponentRefRef>
       )}
     </>
   );

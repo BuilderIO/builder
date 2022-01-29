@@ -32,9 +32,14 @@
     :attributes="propertiesAndActions"
     :builderBlock="useBlock"
     :style="css"
-    :children="useBlock.children"
     :is="componentRef"
-  ></component>
+  >
+    <render-block
+      v-for="(child, index) in useBlock.children"
+      :block="child"
+      :key="index"
+    ></render-block>
+  </component>
 </template>
 <script>
 import { getBlockComponentOptions } from '../functions/get-block-component-options';
