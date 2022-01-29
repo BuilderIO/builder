@@ -86,14 +86,14 @@ export default function RenderBlock(props: RenderBlockProps) {
           >
             <Show
               when={
-                state.componentInfo.canHaveChildren && state.useBlock.children
+                state.componentInfo?.canHaveChildren && state.useBlock.children
               }
             >
-              <RenderBlocks path="children" blocks={state.useBlock.children} />
+              <RenderBlocks blocks={state.useBlock.children} />
             </Show>
             <For
               each={
-                !state.componentInfo.canHaveChildren
+                !state.componentInfo?.canHaveChildren
                   ? state.useBlock.children
                   : []
               }
@@ -112,7 +112,8 @@ export default function RenderBlock(props: RenderBlockProps) {
             >
               <Show
                 when={
-                  state.componentInfo.canHaveChildren && state.useBlock.children
+                  state.componentInfo?.canHaveChildren &&
+                  state.useBlock.children
                 }
               >
                 <RenderBlocks
@@ -122,7 +123,7 @@ export default function RenderBlock(props: RenderBlockProps) {
               </Show>
               <For
                 each={
-                  !state.componentInfo.canHaveChildren
+                  !state.componentInfo?.canHaveChildren
                     ? state.useBlock.children
                     : []
                 }
@@ -134,7 +135,7 @@ export default function RenderBlock(props: RenderBlockProps) {
           <Show
             when={
               !state.componentRef &&
-              state.componentInfo.canHaveChildren &&
+              state.componentInfo?.canHaveChildren &&
               state.useBlock.children
             }
           >
@@ -142,7 +143,7 @@ export default function RenderBlock(props: RenderBlockProps) {
           </Show>
           <For
             each={
-              !state.componentRef && !state.componentInfo.canHaveChildren
+              !state.componentRef && !state.componentInfo?.canHaveChildren
                 ? state.useBlock.children
                 : []
             }

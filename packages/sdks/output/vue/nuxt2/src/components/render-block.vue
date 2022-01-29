@@ -15,12 +15,16 @@
     >
       <render-blocks
         path="children"
-        v-if="componentInfo.canHaveChildren && useBlock.children"
+        v-if="
+          componentInfo && componentInfo.canHaveChildren && useBlock.children
+        "
         :blocks="useBlock.children"
       ></render-blocks>
 
       <render-block
-        v-for="(child, index) in !componentInfo.canHaveChildren
+        v-for="(child, index) in !(
+          componentInfo && componentInfo.canHaveChildren
+        )
           ? useBlock.children
           : []"
         :block="child"
@@ -30,12 +34,18 @@
 
     <render-blocks
       path="children"
-      v-if="!componentRef && componentInfo.canHaveChildren && useBlock.children"
+      v-if="
+        !componentRef &&
+        componentInfo &&
+        componentInfo.canHaveChildren &&
+        useBlock.children
+      "
       :blocks="useBlock.children"
     ></render-blocks>
 
     <render-block
-      v-for="(child, index) in !componentRef && !componentInfo.canHaveChildren
+      v-for="(child, index) in !componentRef &&
+      !(componentInfo && componentInfo.canHaveChildren)
         ? useBlock.children
         : []"
       :block="child"
@@ -51,13 +61,12 @@
     :is="componentRef"
   >
     <render-blocks
-      path="children"
-      v-if="componentInfo.canHaveChildren && useBlock.children"
+      v-if="componentInfo && componentInfo.canHaveChildren && useBlock.children"
       :blocks="useBlock.children"
     ></render-blocks>
 
     <render-block
-      v-for="(child, index) in !componentInfo.canHaveChildren
+      v-for="(child, index) in !(componentInfo && componentInfo.canHaveChildren)
         ? useBlock.children
         : []"
       :block="child"

@@ -93,7 +93,7 @@ export default function RenderBlock(props) {
                 {...componentOptions()}
                 builderBlock={useBlock()}
               >
-                {componentInfo().canHaveChildren && useBlock().children ? (
+                {componentInfo?.()?.canHaveChildren && useBlock().children ? (
                   <>
                     <RenderBlocks
                       path="children"
@@ -102,21 +102,21 @@ export default function RenderBlock(props) {
                   </>
                 ) : null}
 
-                {!componentInfo().canHaveChildren
+                {!componentInfo?.()?.canHaveChildren
                   ? useBlock().children
                   : []?.map((child) => <RenderBlock block={child} />)}
               </ComponentRefRef>
             ) : null}
 
             {!componentRef() &&
-            componentInfo().canHaveChildren &&
+            componentInfo?.()?.canHaveChildren &&
             useBlock().children ? (
               <>
                 <RenderBlocks path="children" blocks={useBlock().children} />
               </>
             ) : null}
 
-            {!componentRef() && !componentInfo().canHaveChildren
+            {!componentRef() && !componentInfo?.()?.canHaveChildren
               ? useBlock().children
               : []?.map((child) => <RenderBlock block={child} />)}
           </TagNameRef>
@@ -128,13 +128,13 @@ export default function RenderBlock(props) {
           builderBlock={useBlock()}
           style={css()}
         >
-          {componentInfo().canHaveChildren && useBlock().children ? (
+          {componentInfo?.()?.canHaveChildren && useBlock().children ? (
             <>
-              <RenderBlocks path="children" blocks={useBlock().children} />
+              <RenderBlocks blocks={useBlock().children} />
             </>
           ) : null}
 
-          {!componentInfo().canHaveChildren
+          {!componentInfo?.()?.canHaveChildren
             ? useBlock().children
             : []?.map((child) => <RenderBlock block={child} />)}
         </ComponentRefRef>
