@@ -1,4 +1,6 @@
-export type StringMap = { [key: string]: string };
+export type StringMap = Record<string, string>;
+
+const PROPERTY_NAME_DENY_LIST = Object.freeze(['__proto__', 'prototype']);
 
 // TODO: unit tests
 export class QueryString {
@@ -42,15 +44,16 @@ export class QueryString {
   }
 
   static deepen(map: StringMap) {
-    const output: any = {};
-    const temporaryOutput: any = output;
+    // FIXME; Should be type Tree = Record<string, string | Tree>
+    // requires a typescript upgrade.
+    const output: any = Object.create(null);
     for (const k in map) {
       let t = output;
       const parts = k.split('.');
       const key = parts.pop()!;
-      while (parts.length) {
-        const part = parts.shift()!;
-        t = t[part] = t[part] || {};
+      for (const part of parts) {
+        assertAllowedPropertyName(part);
+        t = t[part] = t[part] || Object.create(null);
       }
       t[key] = map[k];
     }
@@ -70,4 +73,9 @@ export class QueryString {
 
     return _res;
   }
+}
+
+function assertAllowedPropertyName(name: string): asserts name {
+  if (PROPERTY_NAME_DENY_LIST.indexOf(name) >= 0)
+    throw new Error(`Property name "${name}" is not allowed`);
 }

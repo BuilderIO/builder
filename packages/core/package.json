@@ -22,13 +22,15 @@
     "release:patch:nightly": "npm run build && npm version patch && ALLOW_PUBLISH=true npm publish",
     "release:dev": "npm run build && npm version prerelease --no-git-tag-version && ALLOW_PUBLISH=true npm publish --tag dev",
     "prepublishOnly": "block-publish",
-    "ci:build": "npm run build"
+    "ci:build": "npm run build",
+    "test": "jest --color"
   },
   "devDependencies": {
     "@builder.io/block-publish": "^1.1.2",
     "@medv/finder": "^1.1.1",
     "@types/axios": "^0.14.0",
     "@types/es6-promise": "^3.3.0",
+    "@types/jest": "27.4.0",
     "@types/js-cookie": "^2.1.0",
     "@types/json-stable-stringify": "^1.0.32",
     "@types/node": "^9.4.6",
@@ -37,6 +39,9 @@
     "@types/query-string": "^5.0.1",
     "@types/ua-parser-js": "^0.7.32",
     "@types/virtual-dom": "^2.0.27",
+    "esbuild": "0.14.14",
+    "esbuild-runner": "2.2.1",
+    "jest": "27.4.7",
     "rollup": "^0.58.2",
     "rollup-plugin-alias": "^1.4.0",
     "rollup-plugin-commonjs": "^9.1.3",
