@@ -1,0 +1,25 @@
+VERSION 0.6
+
+prepare:
+  FROM node:14-alpine
+  WORKDIR /app
+  COPY package.json package-lock.json .
+  RUN npm install --shrinkwrap
+  COPY --dir \
+       rollup.config.js \
+       tsconfig.json \
+       src \
+       index.ts \
+       types.d.ts \
+       .
+
+build:
+  FROM +prepare
+  RUN npm run build
+  SAVE ARTIFACT dist AS LOCAL dist
+  SAVE IMAGE builder.io/core:latest
+
+test:
+  FROM +prepare
+  COPY jest.config.ts .
+  RUN npm run test
