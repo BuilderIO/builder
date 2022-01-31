@@ -116,7 +116,11 @@ export default {
       return getBlockComponentOptions(this.useBlock);
     },
     children() {
-      return this.componentInfo?.canHaveChildren ? this.useBlock.children : [];
+      // TO-DO: When should `canHaveChildren` dictate rendering?
+      // This is currently commented out because some Builder components (e.g. Box) do not have `canHaveChildren: true`,
+      // but still receive and need to render children.
+      // return this.componentInfo?.canHaveChildren ? this.useBlock.children : [];
+      return this.useBlock.children ?? [];
     },
     noCompRefChildren() {
       return this.componentRef ? [] : this.children;

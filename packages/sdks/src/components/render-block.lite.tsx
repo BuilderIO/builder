@@ -71,9 +71,11 @@ export default function RenderBlock(props: RenderBlockProps) {
       return getBlockComponentOptions(state.useBlock);
     },
     get children() {
-      return state.componentInfo?.canHaveChildren
-        ? state.useBlock.children
-        : [];
+      // TO-DO: When should `canHaveChildren` dictate rendering?
+      // This is currently commented out because some Builder components (e.g. Box) do not have `canHaveChildren: true`,
+      // but still receive and need to render children.
+      // return state.componentInfo?.canHaveChildren ? state.useBlock.children : [];
+      return state.useBlock.children ?? [];
     },
     get noCompRefChildren() {
       return state.componentRef ? [] : state.children;
