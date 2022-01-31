@@ -3,7 +3,7 @@ import appState from '@builder.io/app-context';
 import { syncToSFCC } from './sync-to-sfcc';
 import { createWebhook } from './create-web-hook';
 import pkg from '../package.json';
-import { onContentEditorLoad } from './on-editor-load';
+import { getPath, onContentEditorLoad } from './on-editor-load';
 import { getSFCCWebhookIndex } from './utils';
 
 Builder.register('editor.onLoad', onContentEditorLoad);
@@ -39,6 +39,12 @@ Builder.register('plugin', {
       name: 'apiPath',
       type: 'text',
       helperText: 'SFCC API path, no trailing slash or sub path, just domain.com',
+    },
+    {
+      name: 'pathPrefix',
+      friendlyName: 'Preview Path Prefix',
+      type: 'url',
+      helperText: 'An optional URL prefix for the preview area, e.g: /us/en/',
     },
   ],
 
@@ -96,9 +102,15 @@ Builder.register('model.action', {
         await syncToSFCC(model.id);
         const pluginSettings = appState.user.organization.value.settings.plugins?.get(pkg.name);
         const apiPath = pluginSettings.get('apiPath');
+        const pathPrefix = pluginSettings.get('pathPrefix');
         // todo: library name per model ?
         const libraryName = pluginSettings.get('libraryName');
-        model.examplePageUrl = `${apiPath}/s/${libraryName}/builder-preview-${model.name}.html`.trim();
+        model.examplePageUrl = getPath({
+          apiPath,
+          libraryName,
+          pathPrefix,
+          assetId: `builder-preview-${model.name}`,
+        });
         await appState.models.update(model, false);
       } catch (e) {
         console.error('error syncing model entries', e);

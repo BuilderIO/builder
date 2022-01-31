@@ -24,8 +24,7 @@ export const onContentEditorLoad = ({ safeReaction, updatePreviewUrl }: ContentE
       }
       if (obj) {
         const options = JSON.parse(JSON.stringify(obj));
-        const { apiPath, libraryName, assetId } = options;
-        const previewUrl = `${apiPath}/s/${libraryName}/${assetId}.html`.trim();
+        const previewUrl = getPath(options);
         setTimeout(() => updatePreviewUrl(previewUrl), 500);
         appState.snackBar.show(`Previewing ${previewUrl}`);
       } else {
@@ -37,4 +36,17 @@ export const onContentEditorLoad = ({ safeReaction, updatePreviewUrl }: ContentE
       }
     }
   );
+};
+
+export const getPath = (options: {
+  apiPath: string;
+  libraryName: string;
+  assetId: string;
+  pathPrefix?: string;
+}) => {
+  const { apiPath, libraryName, assetId, pathPrefix = '' } = options;
+  const parts = pathPrefix.split('/');
+  return `${apiPath}/s/${libraryName}/${
+    pathPrefix ? `${parts.filter(p => p).join('/')}/` : ''
+  }${assetId}.html`.trim();
 };

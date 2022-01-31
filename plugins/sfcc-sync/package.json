@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/plugin-sfcc-sync",
-  "version": "0.0.6",
+  "version": "0.0.7-0",
   "description": "",
   "keywords": [],
   "main": "dist/plugin.system.js",
