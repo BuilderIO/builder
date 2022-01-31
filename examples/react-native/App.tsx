@@ -1,5 +1,6 @@
+import { StatusBar } from 'expo-status-bar';
+import { StyleSheet, Text, View, Image } from 'react-native';
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
 import { RenderContent, registerComponent, isEditing } from '@builder.io/sdk-react-native';
 
 // TO-DO: add your own public Builder API key here
@@ -44,6 +45,7 @@ export default function App() {
     <View style={styles.container}>
       <Text>Hello world from Expo. Below is your Builder content:</Text>
       {shouldRenderBuilderContent ? <RenderContent model="page" content={content} /> : null}
+      <StatusBar style="auto" />
     </View>
   );
 }
@@ -52,6 +54,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    padding: '20px',
+    justifyContent: 'center',
+    padding: 20,
+  },
+  photo: {
+    width: 50,
+    height: 50,
   },
 });

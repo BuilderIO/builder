@@ -13,6 +13,8 @@ export function transformBlock(block: BuilderBlock): BuilderBlock {
         name: 'Image',
         options: {
           image: block.properties.src,
+          width: 1,
+          height: 1,
         },
       },
     };

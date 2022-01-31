@@ -9,9 +9,8 @@
   },
   "dependencies": {
     "@builder.io/sdk-react-native": "^0.0.1-40",
-    "expo": "^43.0.0",
-    "expo-status-bar": "~1.1.0",
-    "prettier": "^2.5.1",
+    "expo": "~44.0.0",
+    "expo-status-bar": "~1.2.0",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-native": "0.64.3",
@@ -22,6 +21,9 @@
     "@types/react": "~17.0.21",
     "@types/react-native": "~0.64.12",
     "typescript": "~4.3.5"
+  },
+  "resolutions": {
+    "react-devtools-core": "4.14.0"
   },
   "private": true
 }
