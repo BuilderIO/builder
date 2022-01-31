@@ -75,6 +75,14 @@ export default function RenderBlock(props) {
     return getBlockComponentOptions(useBlock());
   }
 
+  function children() {
+    return componentInfo?.()?.canHaveChildren ? useBlock().children : [];
+  }
+
+  function noCompRefChildren() {
+    return componentRef() ? [] : children();
+  }
+
   const builderContext = useContext(BuilderContext);
 
   const ComponentRefRef = componentRef();
@@ -92,15 +100,15 @@ export default function RenderBlock(props) {
                 {...componentOptions()}
                 builderBlock={useBlock()}
               >
-                {componentInfo?.()?.canHaveChildren
-                  ? useBlock().children
-                  : []?.map((child) => <RenderBlock block={child} />)}
+                {children()?.map((child) => (
+                  <RenderBlock block={child} />
+                ))}
               </ComponentRefRef>
             ) : null}
 
-            {!componentRef() && componentInfo?.()?.canHaveChildren
-              ? useBlock().children
-              : []?.map((child) => <RenderBlock block={child} />)}
+            {noCompRefChildren()?.map((child) => (
+              <RenderBlock block={child} />
+            ))}
           </TagNameRef>
         </>
       ) : (
@@ -110,9 +118,9 @@ export default function RenderBlock(props) {
           builderBlock={useBlock()}
           style={css()}
         >
-          {componentInfo?.()?.canHaveChildren
-            ? useBlock().children
-            : []?.map((child) => <RenderBlock block={child} />)}
+          {children()?.map((child) => (
+            <RenderBlock block={child} />
+          ))}
         </ComponentRefRef>
       )}
     </>

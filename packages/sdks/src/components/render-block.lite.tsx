@@ -70,6 +70,14 @@ export default function RenderBlock(props: RenderBlockProps) {
     get componentOptions() {
       return getBlockComponentOptions(state.useBlock);
     },
+    get children() {
+      return state.componentInfo?.canHaveChildren
+        ? state.useBlock.children
+        : [];
+    },
+    get noCompRefChildren() {
+      return state.componentRef ? [] : state.children;
+    },
   });
 
   return (
@@ -83,13 +91,7 @@ export default function RenderBlock(props: RenderBlockProps) {
             builderBlock={state.useBlock}
             style={state.css}
           >
-            <For
-              each={
-                state.componentInfo?.canHaveChildren
-                  ? state.useBlock.children
-                  : []
-              }
-            >
+            <For each={state.children}>
               {(child: any) => <RenderBlock block={child} />}
             </For>
           </state.componentRef>
@@ -102,24 +104,12 @@ export default function RenderBlock(props: RenderBlockProps) {
               {...state.componentOptions}
               builderBlock={state.useBlock}
             >
-              <For
-                each={
-                  state.componentInfo?.canHaveChildren
-                    ? state.useBlock.children
-                    : []
-                }
-              >
+              <For each={state.children}>
                 {(child: any) => <RenderBlock block={child} />}
               </For>
             </state.componentRef>
           )}
-          <For
-            each={
-              !state.componentRef && state.componentInfo?.canHaveChildren
-                ? state.useBlock.children
-                : []
-            }
-          >
+          <For each={state.noCompRefChildren}>
             {(child: any) => <RenderBlock block={child} />}
           </For>
         </state.tagName>

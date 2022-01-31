@@ -14,20 +14,14 @@
       :is="componentRef"
     >
       <render-block
-        v-for="(child, index) in componentInfo && componentInfo.canHaveChildren
-          ? useBlock.children
-          : []"
+        v-for="(child, index) in children"
         :block="child"
         :key="index"
       ></render-block>
     </component>
 
     <render-block
-      v-for="(child, index) in !componentRef &&
-      componentInfo &&
-      componentInfo.canHaveChildren
-        ? useBlock.children
-        : []"
+      v-for="(child, index) in noCompRefChildren"
       :block="child"
       :key="index"
     ></render-block>
@@ -41,9 +35,7 @@
     :is="componentRef"
   >
     <render-block
-      v-for="(child, index) in componentInfo && componentInfo.canHaveChildren
-        ? useBlock.children
-        : []"
+      v-for="(child, index) in children"
       :block="child"
       :key="index"
     ></render-block>
@@ -122,6 +114,12 @@ export default {
     },
     componentOptions() {
       return getBlockComponentOptions(this.useBlock);
+    },
+    children() {
+      return this.componentInfo?.canHaveChildren ? this.useBlock.children : [];
+    },
+    noCompRefChildren() {
+      return this.componentRef ? [] : this.children;
     },
   },
 };
