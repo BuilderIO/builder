@@ -49,6 +49,7 @@ registerDataPlugin(
         };
 
         const locales = await client.getLocales();
+        const localeEnum = locales.items.map(item => ({ value: item.code, label: item.name }))
         return contentTypes.items.map(type => ({
           name: type.name,
           id: type.sys.id,
@@ -58,7 +59,7 @@ registerDataPlugin(
               {
                 name: 'locale',
                 type: 'text',
-                enum: locales.items.map(item => item.code),
+                enum: localeEnum,
               },
             ];
           },
@@ -88,7 +89,7 @@ registerDataPlugin(
               {
                 name: 'locale',
                 type: 'text',
-                enum: locales.items.map(item => item.code),
+                enum: localeEnum,
               },
               {
                 name: 'order',
