@@ -16,6 +16,14 @@ builder content schema:
 }
 ```
 
+## Setup
+
+```
+$ npm install  # install the JS dependencies
+$ mkdir dist  # we need to create the destination dir
+$ make all  # then this generates the JSON file in the destination dir
+```
+
 Specific editor integration instructions:
 
 - [VSCode](https://code.visualstudio.com/Docs/languages/json#_json-schemas-and-settings)
