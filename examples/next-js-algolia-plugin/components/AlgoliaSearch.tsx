@@ -1,27 +1,19 @@
-// Importing modules
+import builder, { BuilderContent } from "@builder.io/react";
 import algoliasearch, { SearchClient } from "algoliasearch/lite";
 import Head from "next/head";
-import { useEffect, useState } from "react";
-import { InstantSearch, SearchBox, Hits, Highlight } from "react-instantsearch-dom";
-
-// if (!process.env.ALGOLIA_APPLICATION_ID || !process.env.ALGOLIA_SEARCH_ONLY_API_KEY) {
-//   throw new Error(
-//     "Missing env variable ALGOLIA_APPLICATION_ID or ALGOLIA_SEARCH_ONLY_API_KEY check next.config.js"
-//   );
-// }
-// const searchClient = algoliasearch(
-//   process.env.ALGOLIA_APPLICATION_ID,
-//   process.env.ALGOLIA_SEARCH_ONLY_API_KEY
-// );
+import { Children, cloneElement, isValidElement, useEffect, useState } from "react";
+import { InstantSearch, Hits, Highlight } from "react-instantsearch-dom";
 
 export function AlgoliaSearch({
   applicationId,
   searchApiKey,
   indexName,
+  children,
 }: {
   applicationId: string;
   searchApiKey: string;
   indexName: string;
+  children?: JSX.Element;
 }) {
   const [algoliaConfig, setAlgoliaConfig] = useState<null | {
     applicationId: string;
@@ -82,11 +74,7 @@ export function AlgoliaSearch({
                 />
               </Head>
               <InstantSearch searchClient={searchClient} indexName={algoliaConfig?.indexName}>
-                {/* Adding Search Box */}
-                <SearchBox />
-
-                {/* Adding Data */}
-                <Hits hitComponent={Hit} />
+                {children}
               </InstantSearch>
             </>
           )}
@@ -95,14 +83,31 @@ export function AlgoliaSearch({
     </>
   );
 }
-function Hit({ hit }: { hit: any }) {
-  console.log(`desc: ${hit.data.description}`, hit);
+
+export function AlgoliaHits({ children }: { children?: JSX.Element }) {
   return (
-    <article>
-      <h2>
-        <Highlight attribute="data.title" hit={hit} />
-      </h2>
-      <Highlight attribute="data.description" hit={hit} />
-    </article>
+    <Hits
+      hitComponent={({ hit }: { hit: any }) => {
+        const childrenWithProps = Children.map(children, child => {
+          if (isValidElement(child)) {
+            const props = child.props as any;
+            props.block.children.map((c: any) => {
+              if (c.component.name === "AlgoliaHighlight") {
+                c.component.options.hit = hit;
+              }
+            });
+            return cloneElement(child, (hit = hit));
+          }
+          return child;
+        });
+        return (
+          <>
+            {/* <Highlight attribute="data.title" hit={hit} />
+            <Highlight attribute="data.description" hit={hit} /> */}
+            {childrenWithProps}
+          </>
+        );
+      }}
+    />
   );
 }
