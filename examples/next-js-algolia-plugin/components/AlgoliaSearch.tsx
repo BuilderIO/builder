@@ -85,17 +85,26 @@ export function AlgoliaSearch({
 }
 
 export function AlgoliaHits({ children }: { children?: JSX.Element }) {
+  const addHit = (block: any, hit: any) => {
+    block.children.map((c: any) => {
+      if (c?.component?.name === "AlgoliaHighlight") {
+        c.component.options.hit = hit;
+      }
+      if (c?.children) {
+        addHit(c, hit);
+      }
+    });
+  };
+
   return (
     <Hits
       hitComponent={({ hit }: { hit: any }) => {
         const childrenWithProps = Children.map(children, child => {
           if (isValidElement(child)) {
+            console.log(child);
             const props = child.props as any;
-            props.block.children.map((c: any) => {
-              if (c.component.name === "AlgoliaHighlight") {
-                c.component.options.hit = hit;
-              }
-            });
+            const block = props?.block as any;
+            addHit(block, hit);
             return cloneElement(child, (hit = hit));
           }
           return child;

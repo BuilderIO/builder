@@ -70,10 +70,6 @@ Builder.registerComponent(Highlight, {
       name: "attribute",
       type: "string",
     },
-    {
-      name: "hit",
-      type: "object",
-    },
   ],
 });
 
