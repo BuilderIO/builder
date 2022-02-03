@@ -30,7 +30,7 @@ const getToken = async (options: {
   } catch (error) {
     console.error(error);
     appState.snackBar.show(
-      `Error authenticating with CommerceTools, check console for deetails`,
+      `Error authenticating with CommerceTools, check console for details`,
       15000
     );
 
