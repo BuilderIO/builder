@@ -61,7 +61,6 @@ registerCommercePlugin(
       {
         name: 'scopes',
         type: 'string',
-        required: true,
       },
       {
         name: 'apiUrl',
