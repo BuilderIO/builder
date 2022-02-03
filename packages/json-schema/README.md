@@ -16,7 +16,7 @@ builder content schema:
 }
 ```
 
-## Setup
+## Local Setup
 
 ```
 $ npm install  # install the JS dependencies
