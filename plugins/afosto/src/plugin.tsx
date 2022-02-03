@@ -76,6 +76,7 @@ registerCommercePlugin(
             '@type': '@builder.io/core:Request' as const,
             request: {
               url: `${shopUrl}${id}`,
+              headers,
             },
             options: {
               product: id,
@@ -106,9 +107,10 @@ registerCommercePlugin(
             '@type': '@builder.io/core:Request' as const,
             request: {
               url: `${shopUrl}${id}`,
+              headers,
             },
             options: {
-              product: id,
+              category: id,
             },
           };
         },
