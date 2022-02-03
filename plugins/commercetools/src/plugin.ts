@@ -2,25 +2,40 @@ import { registerCommercePlugin } from '@builder.io/commerce-plugin-tools';
 import { Resource } from '@builder.io/commerce-plugin-tools/dist/types/interfaces/resource';
 import pkg from '../package.json';
 import { createRequestBuilder } from '@commercetools/api-request-builder';
+import appState from '@builder.io/app-context';
+
 const getToken = async (options: {
   clientId: string;
   secret: string;
   authUrl: string;
   projectKey: string;
+  scopes?: string;
 }) => {
-  const { authUrl, clientId, secret, projectKey } = options;
-  const response = await fetch(
-    `${authUrl}/oauth/token?grant_type=client_credentials&scope=view_products:${projectKey}`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        Authorization: `Basic ${btoa(`${clientId}:${secret}`)}`,
-      },
-    }
-  ).then(res => res.json());
+  try {
+    const { authUrl, clientId, secret, projectKey, scopes } = options;
+    const response = await fetch(
+      `${authUrl}/oauth/token?grant_type=client_credentials&scope=${
+        scopes || `view_products:${projectKey}`
+      }`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          Authorization: `Basic ${btoa(`${clientId}:${secret}`)}`,
+        },
+      }
+    ).then(res => res.json());
 
-  return response;
+    return response;
+  } catch (error) {
+    console.error(error);
+    appState.snackBar.show(
+      `Error authenticating with CommerceTools, check console for details`,
+      15000
+    );
+
+    throw error;
+  }
 };
 
 registerCommercePlugin(
@@ -58,20 +73,22 @@ registerCommercePlugin(
         type: 'string',
         required: true,
       },
+      {
+        name: 'locale',
+        type: 'string',
+      },
     ],
     ctaText: `Connect your Commercetools API`,
   },
   async settings => {
-    const basicCache = new Map();
-
     const clientId = settings.get('clientId');
     const secret = settings.get('secret');
     const scopes = settings.get('scopes');
     const projectKey = settings.get('projectKey');
     const authUrl = new URL(settings.get('authUrl')).origin;
     const apiUrl = new URL(settings.get('apiUrl')).origin;
-
-    const token = await getToken({ authUrl, projectKey, clientId, secret });
+    const locale = settings.get('locale') || 'en-US';
+    const token = await getToken({ authUrl, projectKey, clientId, secret, scopes });
     const headers = {
       Authorization: `${token.token_type} ${token.access_token}`,
     };
@@ -81,11 +98,11 @@ registerCommercePlugin(
       title:
         typeof resource.name === 'string'
           ? resource.name
-          : resource.name?.['en-US'] || resource.masterData?.current.name['en-US'],
+          : resource.name?.[locale] || resource.masterData?.current.name[locale],
       handle:
         typeof resource.slug === 'string'
           ? resource.slug
-          : resource.slug?.['en-US'] || resource.masterData?.current.slug['en-US'],
+          : resource.slug?.[locale] || resource.masterData?.current.slug[locale],
     });
 
     const service = {
@@ -112,7 +129,7 @@ registerCommercePlugin(
           let request = requestBuilder.products;
           if (search) {
             request = request.where(
-              `masterData(current(slug(en-US="${search}") or name(en-US="${search}")))`
+              `masterData(current(slug(${locale}="${search}") or name(${locale}="${search}")))`
             );
           }
 
@@ -160,7 +177,7 @@ registerCommercePlugin(
           const requestBuilder = createRequestBuilder({ projectKey });
           let request = requestBuilder.categories;
           if (search) {
-            request = request.where(`slug(en-US="${search}") or name(en-US="${search}")`);
+            request = request.where(`slug(${locale}="${search}") or name(${locale}="${search}")`);
           }
 
           const results = await fetch(`${apiUrl}${request.build()}`, {
