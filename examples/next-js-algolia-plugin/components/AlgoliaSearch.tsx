@@ -7,18 +7,28 @@ import builder, {
 import algoliasearch, { SearchClient } from "algoliasearch/lite";
 import Head from "next/head";
 import { Children, cloneElement, isValidElement, useEffect, useReducer, useState } from "react";
-import { BasicDoc } from "react-instantsearch-core";
+import { BasicDoc, Configure } from "react-instantsearch-core";
 import { InstantSearch, HierarchicalMenu, connectHits, Hits } from "react-instantsearch-dom";
 
 export function AlgoliaSearch({
   applicationId,
   searchApiKey,
   indexName,
+  filters,
+  hitsPerPage,
+  analytics,
+  enablePersonalization,
+  distinct,
   children,
 }: {
   applicationId: string;
   searchApiKey: string;
   indexName: string;
+  filters: string;
+  hitsPerPage: number;
+  analytics: boolean;
+  enablePersonalization: boolean;
+  distinct: boolean;
   children?: JSX.Element;
 }) {
   const [algoliaConfig, setAlgoliaConfig] = useState<null | {
@@ -80,6 +90,13 @@ export function AlgoliaSearch({
                 />
               </Head>
               <InstantSearch searchClient={searchClient} indexName={algoliaConfig?.indexName}>
+                <Configure
+                  filters={filters}
+                  hitsPerPage={hitsPerPage}
+                  analytics={analytics}
+                  enablePersonalization={enablePersonalization}
+                  distinct={distinct}
+                />
                 {children}
               </InstantSearch>
             </>

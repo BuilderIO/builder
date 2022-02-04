@@ -36,6 +36,32 @@ Builder.registerComponent(withChildren(AlgoliaSearch), {
       name: "indexName",
       type: "string",
     },
+    // Configure params
+    {
+      name: "filters",
+      type: "string",
+      defaultValue: "",
+    },
+    {
+      name: "hitsPerPage",
+      type: "number",
+      defaultValue: 6,
+    },
+    {
+      name: "analytics",
+      type: "boolean",
+      defaultValue: false,
+    },
+    {
+      name: "enablePersonalization",
+      type: "boolean",
+      defaultValue: false,
+    },
+    {
+      name: "distinct",
+      type: "boolean",
+      defaultValue: false,
+    },
   ],
 });
 
