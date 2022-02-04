@@ -134,7 +134,6 @@ exports.onCreatePage = ({ page, actions }, options) => {
   }
 };
 
-
 exports.createPages = async ({ graphql, actions }, options) => {
   const config = {
     ...defaultOptions,
