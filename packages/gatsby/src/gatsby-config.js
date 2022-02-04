@@ -3,6 +3,7 @@ const { RetryLink } = require(`apollo-link-retry`)
 const { defaultOptions } = require('./constants');
 const  { ApolloLink } = require('apollo-link');
 const invariant = require(`invariant`);
+const nodeFetch = require('node-fetch');
 
 const retryLink = new RetryLink({
   delay: {
@@ -42,7 +43,7 @@ module.exports = (options) => {
     batch: config.batch,
     createLink: pluginOptions => ApolloLink.from([
           retryLink,
-          createHttpLink({ uri: pluginOptions.url }),
+          createHttpLink({ uri: pluginOptions.url, fetch: nodeFetch },),
         ]),
   };
 
