@@ -1,111 +1,6 @@
-const uuidv4 = require(`uuid/v4`);
-const fs = require(`fs`);
-const { buildSchema, printSchema } = require(`gatsby/graphql`);
-const { transformSchema, introspectSchema, RenameTypes } = require(`graphql-tools`);
-const { createHttpLink } = require(`apollo-link-http`);
-const fetch = require(`node-fetch`);
+const { defaultOptions } = require('./constants');
 const invariant = require(`invariant`);
-const promiseRetry = require('promise-retry');
-
-const { NamespaceUnderFieldTransform, StripNonQueryTransform } = require(`./transforms`);
-const { getGQLOptions, defaultOptions } = require(`./builder-config`);
-
-/**
- * @type { import('gatsby').GatsbyNode['sourceNodes'] }
- */
-exports.sourceNodes = async ({ actions, createNodeId, cache, createContentDigest }, options) => {
-  const { addThirdPartySchema, createNode } = actions;
-  const config = getGQLOptions(options);
-  const { url, typeName, fieldName } = config;
-
-  const link = createHttpLink({
-    uri: url,
-    fetch,
-    useGETForQueries: true,
-  });
-
-  const cacheKey = `@builder.io/gatsby-schema-${typeName}-${fieldName}`;
-  let sdl = await cache.get(cacheKey);
-  let introspectionSchema;
-
-  if (!sdl) {
-    introspectionSchema = await introspectSchema(link);
-    sdl = printSchema(introspectionSchema);
-  } else {
-    introspectionSchema = buildSchema(sdl);
-  }
-
-  await cache.set(cacheKey, sdl);
-
-  const nodeId = createNodeId(`@builder.io/gatsby-${typeName}`);
-  const node = createSchemaNode({
-    id: nodeId,
-    typeName,
-    fieldName,
-    createContentDigest,
-  });
-  createNode(node);
-
-  const resolver = (_, __, context) => {
-    const { path, nodeModel } = context;
-    nodeModel.createPageDependency({
-      path,
-      nodeId,
-    });
-    return {};
-  };
-
-  const schema = transformSchema(
-    {
-      schema: introspectionSchema,
-      link,
-    },
-    [
-      new StripNonQueryTransform(),
-      new RenameTypes(name => `${typeName}_${name}`),
-      new NamespaceUnderFieldTransform({
-        typeName,
-        fieldName,
-        resolver,
-      }),
-    ]
-  );
-
-  addThirdPartySchema({ schema });
-};
-
-function createSchemaNode({ id, typeName, fieldName, createContentDigest }) {
-  const contentDigest = createContentDigest(uuidv4());
-  return {
-    id,
-    typeName,
-    fieldName,
-    parent: null,
-    children: [],
-    internal: {
-      type: `BuilderPlugin`,
-      contentDigest,
-      ignoreType: true,
-    },
-  };
-}
-
-/**
- * @type { import('gatsby').GatsbyNode['createPages'] }
- */
-exports.createPages = async ({ graphql, actions }, options) => {
-  const config = {
-    ...defaultOptions,
-    ...options,
-  };
-  const { createPage } = actions;
-  if (typeof config.templates === 'object') {
-    const models = Object.keys(config.templates);
-    const offsets = models.map(() => 0);
-    await createPagesAsync(config, createPage, graphql, models, offsets);
-  }
-};
-
+const fs = require('fs');
 /**
  *
  * @typedef {{
@@ -137,25 +32,6 @@ const fetchPages = ({ fieldName, models, offsets, graphql, limit }) =>
     }
   `);
 
-const MAX_TRIES = 3;
-/**
- *
- * @param {FetchPagesArgs} args
- */
-const wrappedFetchPages = args =>
-  promiseRetry(
-    (retry, number) => {
-      if (number > 1) {
-        console.log(
-          `[Builder.io] data-fetching for ${args.fieldName} failed. Retrying: ${number}/${MAX_TRIES}`
-        );
-      }
-
-      return fetchPages(args).catch(retry);
-    },
-    { retries: MAX_TRIES }
-  );
-
 /**
  *
  * @param {*} config
@@ -165,7 +41,7 @@ const wrappedFetchPages = args =>
  * @param {*} offsets
  */
 const createPagesAsync = async (config, createPage, graphql, models, offsets) => {
-  const result = await wrappedFetchPages({
+  const result = await fetchPages({
     fieldName: config.fieldName,
     models,
     offsets,
@@ -255,5 +131,19 @@ exports.onCreatePage = ({ page, actions }, options) => {
         context,
       });
     }
+  }
+};
+
+
+exports.createPages = async ({ graphql, actions }, options) => {
+  const config = {
+    ...defaultOptions,
+    ...options,
+  };
+  const { createPage } = actions;
+  if (typeof config.templates === 'object') {
+    const models = Object.keys(config.templates);
+    const offsets = models.map(() => 0);
+    await createPagesAsync(config, createPage, graphql, models, offsets);
   }
 };
