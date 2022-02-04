@@ -1,8 +1,14 @@
-import builder, { BuilderContent } from "@builder.io/react";
+import builder, {
+  BuilderBlockComponent,
+  BuilderComponent,
+  BuilderContent,
+  StateProvider,
+} from "@builder.io/react";
 import algoliasearch, { SearchClient } from "algoliasearch/lite";
 import Head from "next/head";
-import { Children, cloneElement, isValidElement, useEffect, useState } from "react";
-import { InstantSearch, Hits, Highlight } from "react-instantsearch-dom";
+import { Children, cloneElement, isValidElement, useEffect, useReducer, useState } from "react";
+import { BasicDoc } from "react-instantsearch-core";
+import { InstantSearch, HierarchicalMenu, connectHits, Hits } from "react-instantsearch-dom";
 
 export function AlgoliaSearch({
   applicationId,
@@ -84,39 +90,24 @@ export function AlgoliaSearch({
   );
 }
 
+// Fully using Algolia's components and passing state to each hit item.
 export function AlgoliaHits({ children }: { children?: JSX.Element }) {
-  const addHit = (block: any, hit: any) => {
-    block.children.map((c: any) => {
-      if (c?.component?.name === "AlgoliaHighlight") {
-        c.component.options.hit = hit;
-      }
-      if (c?.children) {
-        addHit(c, hit);
-      }
-    });
-  };
-
   return (
     <Hits
       hitComponent={({ hit }: { hit: any }) => {
-        const childrenWithProps = Children.map(children, child => {
-          if (isValidElement(child)) {
-            console.log(child);
-            const props = child.props as any;
-            const block = props?.block as any;
-            addHit(block, hit);
-            return cloneElement(child, (hit = hit));
-          }
-          return child;
-        });
-        return (
-          <>
-            {/* <Highlight attribute="data.title" hit={hit} />
-            <Highlight attribute="data.description" hit={hit} /> */}
-            {childrenWithProps}
-          </>
-        );
+        return <StateProvider state={{ hit }}>{children}</StateProvider>;
       }}
-    />
+    ></Hits>
   );
+}
+
+function hitHOC({ children, hits }: { children?: JSX.Element; hits: any }) {
+  return <StateProvider state={{ hits }}>{children}</StateProvider>;
+}
+
+// Pass all hits back to any item
+export const AlgoliaHitsWrapper = connectHits(hitHOC);
+
+export function AlgoliaHierarchicalMenu({ attributes }: { attributes: string }) {
+  return <HierarchicalMenu attributes={attributes.split(",")} />;
 }
