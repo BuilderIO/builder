@@ -164,7 +164,7 @@ const {
 
 exports.pluginOptionsSchema = ({ Joi }) =>
   Joi.object({
-    publicApiKey: Joi.string().required(),
+    publicAPIKey: Joi.string().required(),
   })
 
 exports.createSchemaCustomization = async (
