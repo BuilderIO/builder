@@ -1,4 +1,4 @@
-const { createHttpLink, ApolloLink } = require(`@apollo/client`)
+const { createHttpLink, ApolloLink } = require(`@apollo/client`);
 const { RetryLink } = require(`@apollo/client/link/retry`);
 const invariant = require(`invariant`);
 const nodeFetch = require('node-fetch');
@@ -16,7 +16,6 @@ const retryLink = new RetryLink({
   },
 });
 
-
 export const defaultOptions = {
   // Arbitrary name for the remote schema Query type
   fieldName: `allBuilderModels`,
@@ -30,7 +29,6 @@ export const defaultOptions = {
   // globalContext: { store: process.env.STORE_TOKEN } // helpful in multi stores repo
   // filter: (entry) => entry.content.data.store === process.env.STORE_TOKEN // helpful in multi-store builder organization
 };
-
 
 export function getConfig(options) {
   const config = {
@@ -57,7 +55,6 @@ export function getConfig(options) {
 
   return {
     ...config,
-    ...graphqlOptions
-  }
-
+    ...graphqlOptions,
+  };
 }

@@ -147,65 +147,47 @@ exports.createPages = async ({ graphql, actions }, options) => {
   }
 };
 
+const { uuid } = require(`gatsby-core-utils`);
+const { buildSchema, printSchema } = require(`gatsby/graphql`);
+const { wrapSchema, introspectSchema, RenameTypes } = require(`@graphql-tools/wrap`);
+const { linkToExecutor } = require(`@graphql-tools/links`);
 
-const { uuid } = require(`gatsby-core-utils`)
-const { buildSchema, printSchema } = require(`gatsby/graphql`)
-const {
-  wrapSchema,
-  introspectSchema,
-  RenameTypes,
-} = require(`@graphql-tools/wrap`)
-const { linkToExecutor } = require(`@graphql-tools/links`)
+const { NamespaceUnderFieldTransform, StripNonQueryTransform } = require(`./transforms`);
 
-const {
-  NamespaceUnderFieldTransform,
-  StripNonQueryTransform,
-} = require(`./transforms`)
-
-
-exports.createSchemaCustomization = async (
-  { actions, createNodeId, cache },
-  baseOptions
-) => {
+exports.createSchemaCustomization = async ({ actions, createNodeId, cache }, baseOptions) => {
   const options = getConfig(baseOptions);
-  const { addThirdPartySchema } = actions
-  const {
-    typeName,
-    fieldName,
-    createLink,
-    createSchema,
-    transformSchema,
-  } = options;
+  const { addThirdPartySchema } = actions;
+  const { typeName, fieldName, createLink, createSchema, transformSchema } = options;
 
   const link = await createLink(options);
-  let introspectionSchema
+  let introspectionSchema;
 
   if (createSchema) {
-    introspectionSchema = await createSchema(options)
+    introspectionSchema = await createSchema(options);
   } else {
-    const cacheKey = `gatsby-source-graphql-schema-${typeName}-${fieldName}`
-    let sdl = await cache.get(cacheKey)
+    const cacheKey = `gatsby-source-graphql-schema-${typeName}-${fieldName}`;
+    let sdl = await cache.get(cacheKey);
 
     if (!sdl) {
-      introspectionSchema = await introspectSchema(linkToExecutor(link))
-      sdl = printSchema(introspectionSchema)
+      introspectionSchema = await introspectSchema(linkToExecutor(link));
+      sdl = printSchema(introspectionSchema);
     } else {
-      introspectionSchema = buildSchema(sdl)
+      introspectionSchema = buildSchema(sdl);
     }
 
-    await cache.set(cacheKey, sdl)
+    await cache.set(cacheKey, sdl);
   }
 
   // This node is created in `sourceNodes`.
-  const nodeId = createSchemaNodeId({ typeName, createNodeId })
+  const nodeId = createSchemaNodeId({ typeName, createNodeId });
 
   const resolver = (parent, args, context) => {
     context.nodeModel.createPageDependency({
       path: context.path,
       nodeId: nodeId,
-    })
-    return {}
-  }
+    });
+    return {};
+  };
 
   const defaultTransforms = [
     new StripNonQueryTransform(),
@@ -215,7 +197,7 @@ exports.createSchemaCustomization = async (
       fieldName,
       resolver,
     }),
-  ]
+  ];
 
   const schema = transformSchema
     ? transformSchema({
@@ -229,31 +211,28 @@ exports.createSchemaCustomization = async (
         schema: introspectionSchema,
         executor: linkToExecutor(link),
         transforms: defaultTransforms,
-      })
+      });
 
-  addThirdPartySchema({ schema })
-}
+  addThirdPartySchema({ schema });
+};
 
-exports.sourceNodes = async (
-  { actions, createNodeId, createContentDigest },
-  baseOptions
-) => {
+exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }, baseOptions) => {
   const options = getConfig(baseOptions);
-  const { createNode } = actions
-  const { typeName, fieldName, refetchInterval } = options
+  const { createNode } = actions;
+  const { typeName, fieldName, refetchInterval } = options;
 
-  const nodeId = createSchemaNodeId({ typeName, createNodeId })
+  const nodeId = createSchemaNodeId({ typeName, createNodeId });
   const node = createSchemaNode({
     id: nodeId,
     typeName,
     fieldName,
     createContentDigest,
-  })
-  createNode(node)
+  });
+  createNode(node);
 
   if (process.env.NODE_ENV !== `production`) {
     if (refetchInterval) {
-      const msRefetchInterval = refetchInterval * 1000
+      const msRefetchInterval = refetchInterval * 1000;
       const refetcher = () => {
         createNode(
           createSchemaNode({
@@ -262,21 +241,21 @@ exports.sourceNodes = async (
             fieldName,
             createContentDigest,
           })
-        )
-        setTimeout(refetcher, msRefetchInterval)
-      }
-      setTimeout(refetcher, msRefetchInterval)
+        );
+        setTimeout(refetcher, msRefetchInterval);
+      };
+      setTimeout(refetcher, msRefetchInterval);
     }
   }
-}
+};
 
 function createSchemaNodeId({ typeName, createNodeId }) {
-  return createNodeId(`gatsby-source-graphql-${typeName}`)
+  return createNodeId(`gatsby-source-graphql-${typeName}`);
 }
 
 function createSchemaNode({ id, typeName, fieldName, createContentDigest }) {
-  const nodeContent = uuid.v4()
-  const nodeContentDigest = createContentDigest(nodeContent)
+  const nodeContent = uuid.v4();
+  const nodeContentDigest = createContentDigest(nodeContent);
   return {
     id,
     typeName: typeName,
@@ -288,5 +267,5 @@ function createSchemaNode({ id, typeName, fieldName, createContentDigest }) {
       contentDigest: nodeContentDigest,
       ignoreType: true,
     },
-  }
+  };
 }
