@@ -45,7 +45,7 @@ module.exports = options => {
   return {
     plugins: [
       {
-        resolve: 'gatsby-source-graphql',
+        resolve: 'gatsby-source-graphql-fork',
         options: graphqlOptions,
       },
     ],

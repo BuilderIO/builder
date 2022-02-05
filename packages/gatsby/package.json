@@ -15,6 +15,11 @@
     "builder-io"
   ],
   "dependencies": {
+    "@graphql-tools/links": "^7.1.0",
+    "@graphql-tools/utils": "^7.10.0",
+    "@graphql-tools/wrap": "^7.0.8",
+    "dataloader": "^2.0.0",
+    "gatsby-core-utils": "^3.7.0-next.1",
     "@apollo/client": "^3.3.21",
     "@babel/runtime": "^7.7.6",
     "apollo-link": "1.2.13",
@@ -24,7 +29,6 @@
     "graphql-tools": "^5.0.0",
     "invariant": "^2.2.4",
     "node-fetch": "^2.6.1",
-    "promise-retry": "^2.0.1",
     "uuid": "^3.3.3"
   },
   "devDependencies": {
