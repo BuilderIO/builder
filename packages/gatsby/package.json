@@ -7,7 +7,7 @@
     "url": "https://github.com/BuilderIO/builder.git",
     "directory": "packages/gatsby"
   },
-  "version": "2.0.6-10",
+  "version": "2.0.6-12",
   "keywords": [
     "gatsby",
     "gatsby-plugin",
@@ -15,13 +15,13 @@
     "builder-io"
   ],
   "dependencies": {
-    "@graphql-tools/links": "^7.1.0",
+    "@apollo/client": "^3.3.21",
+    "@babel/runtime": "^7.7.6",
+    "@graphql-tools/links": "^8.2.1",
     "@graphql-tools/utils": "^7.10.0",
     "@graphql-tools/wrap": "^7.0.8",
     "dataloader": "^2.0.0",
     "gatsby-core-utils": "^3.7.0-next.1",
-    "@apollo/client": "^3.3.21",
-    "@babel/runtime": "^7.7.6",
     "invariant": "^2.2.4",
     "node-fetch": "^2.6.1"
   },
