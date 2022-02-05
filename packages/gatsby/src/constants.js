@@ -1,6 +1,5 @@
-const { createHttpLink } = require(`apollo-link-http`);
-const { RetryLink } = require(`apollo-link-retry`);
-const { ApolloLink } = require('apollo-link');
+const { createHttpLink, ApolloLink } = require(`@apollo/client`)
+const { RetryLink } = require(`@apollo/client/link/retry`);
 const invariant = require(`invariant`);
 const nodeFetch = require('node-fetch');
 
