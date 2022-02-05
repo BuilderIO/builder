@@ -162,10 +162,6 @@ const {
   StripNonQueryTransform,
 } = require(`./transforms`)
 
-exports.pluginOptionsSchema = ({ Joi }) =>
-  Joi.object({
-    publicAPIKey: Joi.string().required(),
-  })
 
 exports.createSchemaCustomization = async (
   { actions, createNodeId, cache },
