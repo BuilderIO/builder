@@ -124,7 +124,7 @@ export let BuilderPage = () => {
 
 ## Why Builder.io?
 
-Hard-coding pages and layouts for content that needs constant testing and iteration, such as marketing pages, e-commerce sites, etc leads to strain on teams to constantly keep up with ever changing needs and tests leading to a mess of code and releases
+Hardcoding layouts for frequently changing content bottlenecks your team and makes releases messy
 
 Using an API-driven UI allows you to:
 
