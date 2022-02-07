@@ -1,16 +1,13 @@
-<br />
 <p align="center">
   <img alt="BUILDER" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fdcd545fcda9c4be796889bf072cf72e9" width="240" />
 </p>
-<br />
 <h3 align="center">
   Drag and drop page builder and CMS for React, Vue, Angular, and more
 </h3>
 <p align="center">
-  Use your code components and the stack of your choice. No more being pestered for HTML changes :)
+  Integrate with any site or app. Use your code components. High speed, full control, no compromises
 </p>
 
-<br />
 <p align="center">
   <a href="https://github.com/prettier/prettier"><img alt="code style: prettier" src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg" /></a>
   <a href="https://github.com/builderio/builder/pulls"><img alt="PRs Welcome" src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" /></a>
@@ -125,6 +122,20 @@ export let BuilderPage = () => {
   </tr>
 </table>
 
+## Why Builder.io?
+
+Hard-coding pages and layouts for content that needs constant testing and iteration, such as marketing pages, e-commerce sites, etc leads to strain on teams to constantly keep up with ever changing needs and tests leading to a mess of code and releases
+
+Using an API-driven UI allows you to:
+
+- Decouple page updates from deploys
+- Schedule, a/b test, and personalize via APIs
+- Reduce code + increase composability
+
+<br />
+<img src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F5b4fb32baace4475b993f6361e75e1b2" />
+
+
 ## Who uses Builder.io?
 
 <br />
@@ -136,11 +147,10 @@ export let BuilderPage = () => {
 
 Use our CLI to get started with one command:
 
-<p align="center">
+
 <pre align="center" lang="bash">
 npm init builder.io@latest
 </pre>
-</p>
 
 Or try out:
 
