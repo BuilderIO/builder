@@ -478,7 +478,7 @@ export interface Component {
    */
   image?: string;
   /**
-   * Link to a screenshot to be shown on when user hover's over the component in Builder's editor
+   * Link to a screenshot shown when user hovers over the component in Builder's editor
    * use https://builder.io/upload to upload your screeshot, for easier resizing by Builder.
    */
   screeshot?: string;
