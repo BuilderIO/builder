@@ -13,6 +13,7 @@ import HelloWorldComponent from '../components/HelloWorld.vue';
 
 registerComponent(HelloWorldComponent, {
   name: 'Hello World',
+  canHaveChildren: true,
   inputs: [
     {
       name: 'text',

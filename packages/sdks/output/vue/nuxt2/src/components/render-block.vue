@@ -13,28 +13,33 @@
       :builderBlock="useBlock"
       :is="componentRef"
     >
-      <render-blocks
-        path="children"
-        v-if="useBlock.children"
-        :blocks="useBlock.children"
-      ></render-blocks>
+      <render-block
+        v-for="(child, index) in children"
+        :block="child"
+        :key="index"
+      ></render-block>
     </component>
 
     <render-block
-      v-for="(child, index) in useBlock.children"
+      v-for="(child, index) in noCompRefChildren"
       :block="child"
       :key="index"
     ></render-block>
   </component>
   <component
-    v-bind="componentInfo && componentInfo.options"
+    v-bind="componentOptions"
     v-else=""
     :attributes="propertiesAndActions"
     :builderBlock="useBlock"
     :style="css"
-    :children="useBlock.children"
     :is="componentRef"
-  ></component>
+  >
+    <render-block
+      v-for="(child, index) in children"
+      :block="child"
+      :key="index"
+    ></render-block>
+  </component>
 </template>
 <script>
 import { getBlockComponentOptions } from '../functions/get-block-component-options';
@@ -46,14 +51,10 @@ import BuilderContext from '../context/builder.context';
 import { getBlockActions } from '../functions/get-block-actions';
 import { getProcessedBlock } from '../functions/get-processed-block';
 import BlockStyles from './block-styles';
-import RenderBlocks from './render-blocks';
 
 export default {
   name: 'render-block',
-  components: {
-    'block-styles': async () => BlockStyles,
-    'render-blocks': async () => RenderBlocks,
-  },
+  components: { 'block-styles': async () => BlockStyles },
   props: ['block'],
 
   inject: {
@@ -113,6 +114,16 @@ export default {
     },
     componentOptions() {
       return getBlockComponentOptions(this.useBlock);
+    },
+    children() {
+      // TO-DO: When should `canHaveChildren` dictate rendering?
+      // This is currently commented out because some Builder components (e.g. Box) do not have `canHaveChildren: true`,
+      // but still receive and need to render children.
+      // return this.componentInfo?.canHaveChildren ? this.useBlock.children : [];
+      return this.useBlock.children ?? [];
+    },
+    noCompRefChildren() {
+      return this.componentRef ? [] : this.children;
     },
   },
 };

@@ -14,7 +14,7 @@
       </SfHero>
     </LazyHydrate>
     <div>Hello world from your Vue project. Below is Builder Content:</div>
-    <div>{{ content.data.title }}</div>
+    <div>page: {{ content.data.title }}</div>
     <div v-if="canShowContent">
       <builder-render-content model="page" :content="content" />
     </div>
