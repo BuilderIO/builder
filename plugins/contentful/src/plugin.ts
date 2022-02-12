@@ -5,6 +5,7 @@ import appState from '@builder.io/app-context';
 import qs from 'qs';
 
 const pluginId = pkg.name;
+const dynamicPlaceholder = 'dynamic_placeholder';
 const metaFields = ['environment', 'space', 'revision', 'type'];
 
 registerDataPlugin(
@@ -42,14 +43,21 @@ registerDataPlugin(
     return {
       async getResourceTypes() {
         const contentTypes = await client.getContentTypes();
-        const buildUrl = (url: string, single = false) => {
-          return `${appState.config.apiRoot()}/api/v1/contentful-proxy?single=${single}&select=fields&url=${encodeURIComponent(
-            url
-          )}`;
+        const buildUrl = (url: string, locale: string, single = false) => {
+          return `${appState.config.apiRoot()}/api/v1/contentful-proxy?${
+            locale ? `locale=${locale}&` : ''
+          }single=${single}&select=fields&url=${encodeURIComponent(url)}`;
         };
 
         const locales = await client.getLocales();
-        const localeEnum = locales.items.map(item => ({ value: item.code, label: item.name }))
+        const localeEnum = locales.items
+          .map(item => ({ value: item.code, label: item.name }))
+          .concat([
+            {
+              label: 'Dynamic (bound to state)',
+              value: dynamicPlaceholder,
+            },
+          ]);
         return contentTypes.items.map(type => ({
           name: type.name,
           id: type.sys.id,
@@ -128,17 +136,19 @@ registerDataPlugin(
 
             return fields;
           },
-          toUrl: (options: any) => {
+          toUrl: (userOptions: any) => {
+            let { locale, ...options } = userOptions;
+            if (locale === dynamicPlaceholder) {
+              locale = '{{state.locale}}';
+            }
+
             // by entry
             // https://cdn.contentful.com/spaces/{space_id}/environments/{environment_id}/entries/{entry_id}?access_token={access_token}
             if (options.entry) {
               // todo: maybe environment should be an input
               return buildUrl(
-                `https://cdn.contentful.com/spaces/${spaceId}/environments/master/entries?access_token=${accessToken}&content_type=${
-                  type.sys.id
-                }&sys.id=${options.entry}&include=10${
-                  options.locale ? `&locale=${options.locale}` : ''
-                }`,
+                `https://cdn.contentful.com/spaces/${spaceId}/environments/master/entries?access_token=${accessToken}&content_type=${type.sys.id}&sys.id=${options.entry}&include=10`,
+                locale,
                 true
               );
             }
@@ -160,7 +170,8 @@ registerDataPlugin(
             );
             // by query
             return buildUrl(
-              `https://cdn.contentful.com/spaces/${spaceId}/environments/master/entries?${params}`
+              `https://cdn.contentful.com/spaces/${spaceId}/environments/master/entries?${params}`,
+              locale
             );
           },
         }));
