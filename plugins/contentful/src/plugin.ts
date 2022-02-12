@@ -5,7 +5,6 @@ import appState from '@builder.io/app-context';
 import qs from 'qs';
 
 const pluginId = pkg.name;
-const dynamicPlaceholder = 'dynamic_placeholder';
 const metaFields = ['environment', 'space', 'revision', 'type'];
 
 registerDataPlugin(
@@ -55,7 +54,7 @@ registerDataPlugin(
           .concat([
             {
               label: 'Dynamic (bound to state)',
-              value: dynamicPlaceholder,
+              value: '{{state.locale}}',
             },
           ]);
         return contentTypes.items.map(type => ({
@@ -137,11 +136,7 @@ registerDataPlugin(
             return fields;
           },
           toUrl: (userOptions: any) => {
-            let { locale, ...options } = userOptions;
-            if (locale === dynamicPlaceholder) {
-              locale = '{{state.locale}}';
-            }
-
+            const { locale, ...options } = userOptions;
             // by entry
             // https://cdn.contentful.com/spaces/{space_id}/environments/{environment_id}/entries/{entry_id}?access_token={access_token}
             if (options.entry) {
