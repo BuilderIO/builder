@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { RenderContent, registerComponent, isEditing } from '@builder.io/sdk-react-native';
 
 // TO-DO: add your own public Builder API key here
-const BUILDER_API_KEY = 'TO-DO: ADD your API key here!';
+const BUILDER_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660';
 
 // create a custom React component
 function CustomComponent(props: { text: string }) {
