@@ -6,6 +6,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
+    "link": "yarn link @builder.io/sdk-react-native",
     "unlink": "yarn unlink @builder.io/sdk-react-native",
     "cp-sdk": "npm run unlink && cp -R ../../packages/sdks/output/react-native/src node_modules/@builder.io/sdk-react-native/src"
   },
