@@ -1,10 +1,28 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image } from 'react-native';
 import React, { useState, useEffect } from 'react';
-import { RenderContent, registerComponent, isEditing } from '@builder.io/sdk-react-native';
+import {
+  RenderContent,
+  registerComponent,
+  isEditing,
+  getContent,
+} from '@builder.io/sdk-react-native';
+import { LinkingOptions, NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 // TO-DO: add your own public Builder API key here
 const BUILDER_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660';
+
+const linking: LinkingOptions<any> = {
+  prefixes: ['http://localhost:19006'],
+  config: {
+    screens: {
+      Page: {
+        path: ':page?',
+      },
+    },
+  },
+};
 
 // create a custom React component
 function CustomComponent(props: { text: string }) {
@@ -22,20 +40,20 @@ registerComponent(CustomComponent, {
   inputs: [{ name: 'text', type: 'string' }],
 });
 
-export default function App() {
+const BuilderContent = ({ path }: { path: string }) => {
   const [content, setContent] = useState<any>(undefined);
 
   useEffect(() => {
-    // simple example: fetches a content entry from your "Page" model whose urlPath is set to "/" (i.e. your home page).
-    const url = `https://cdn.builder.io/api/v2/content/page?apiKey=${BUILDER_API_KEY}&userAttributes.urlPath=%2F&limit=1`;
-
-    fetch(url).then(res => {
-      return res.json().then(response => {
-        const content = response.results[0];
-        if (content) {
-          setContent(content);
-        }
-      });
+    getContent({
+      model: 'page',
+      apiKey: BUILDER_API_KEY,
+      userAttributes: {
+        urlPath: path,
+      },
+    }).then((content: any) => {
+      if (content) {
+        setContent(content);
+      }
     });
   }, []);
 
@@ -43,18 +61,32 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Text>Hello world from Expo. Below is your Builder content:</Text>
+      <Text>Hello world from your React-Native codebase. Below is your Builder content:</Text>
       {shouldRenderBuilderContent ? <RenderContent model="page" content={content} /> : null}
       <StatusBar style="auto" />
     </View>
+  );
+};
+
+const Stack = createNativeStackNavigator();
+
+export default function App() {
+  return (
+    <NavigationContainer linking={linking} fallback={<Text>Loading...</Text>}>
+      <Stack.Navigator
+        initialRouteName="Page"
+        screenOptions={{ contentStyle: { backgroundColor: 'white' } }}
+      >
+        <Stack.Screen name="Page" options={{ headerShown: false }}>
+          {({ route }) => <BuilderContent path={route.path || '/'} />}
+        </Stack.Screen>
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    justifyContent: 'center',
     padding: 20,
   },
   photo: {
