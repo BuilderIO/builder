@@ -1,0 +1,88 @@
+import { registerCommercePlugin } from '@builder.io/commerce-plugin-tools';
+
+import Client from 'shopify-buy';
+import pkg from '../package.json';
+import appState from '@builder.io/app-context';
+
+registerCommercePlugin(
+  {
+    name: 'Shopify',
+    // should always match package.json package name
+    id: pkg.name,
+    settings: [
+      {
+        name: 'storefrontAccessToken',
+        type: 'string',
+        helperText:
+          'Required to sync, index, and cache your storefront product data to avoid rate limits',
+        required: true,
+      },
+      {
+        name: 'storeDomain',
+        type: 'text',
+        helperText: 'your-store.myshopify.com',
+        required: true,
+      },
+    ],
+    ctaText: `Connect your shopify custom app`,
+  },
+  async settings => {
+    const client = Client.buildClient({
+      storefrontAccessToken: settings.get('storefrontAccessToken'),
+      domain: settings.get('storeDomain'),
+    });
+
+    return {
+      product: {
+        async findById(id: string) {
+          return client.product.fetch(id);
+        },
+        async findByHandle(handle: string) {
+          return client.product.fetchByHandle(handle);
+        },
+        async search(search: string) {
+          return client.product.fetchQuery({
+            query: search ? `title:*${search}*` : '',
+            sortKey: 'title',
+          });
+        },
+
+        getRequestObject(id: string) {
+          return {
+            '@type': '@builder.io/core:Request' as const,
+            request: {
+              url: `${appState.config.apiRoot()}/api/v1/shopify-storefront/products/${id}?apiKey=${
+                appState.user.apiKey
+              }`,
+            },
+          };
+        },
+      },
+      collection: {
+        async findById(id: string) {
+          return client.collection.fetch(id);
+        },
+        async findByHandle(handle: string) {
+          return client.collection.fetchByHandle(handle);
+        },
+        async search(search: string) {
+          return client.collection.fetchQuery({
+            query: search ? `title:*${search}*` : '',
+            sortKey: 'title',
+          });
+        },
+
+        getRequestObject(id: string) {
+          return {
+            '@type': '@builder.io/core:Request' as const,
+            request: {
+              url: `${appState.config.apiRoot()}/api/v1/shopify-storefront/collections/${id}?apiKey=${
+                appState.user.apiKey
+              }`,
+            },
+          };
+        },
+      },
+    };
+  }
+);
