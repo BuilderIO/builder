@@ -13,6 +13,7 @@ export { default as Symbol } from './blocks/symbol.lite';
 export { default as Section } from './blocks/section.lite';
 export { default as Fragment } from './blocks/fragment.lite';
 export { default as RenderContent } from './components/render-content.lite';
+export { default as Button } from './blocks/button.lite';
 
 export * from './functions/is-editing';
 export * from './functions/register-component';
