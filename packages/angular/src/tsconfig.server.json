@@ -6,6 +6,10 @@
     "module": "commonjs",
     "types": []
   },
+  "files": [
+    "./main.server.ts",
+    "../server.ts"
+  ],
   "exclude": ["test.ts", "**/*.spec.ts"],
   "angularCompilerOptions": {
     "entryModule": "app/app.server.module#AppServerModule"

@@ -10,7 +10,7 @@ import { BuilderService } from './modules/builder/services/builder.service';
   declarations: [AppComponent],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
-    BuilderModule.forRoot('VQ7kLiTnpLQvaokXJSed'),
+    BuilderModule.forRoot('afa4910e04ea4d5b948075edbbfc5d80'),
     AppRoutingModule,
     BrowserTransferStateModule,
   ],
