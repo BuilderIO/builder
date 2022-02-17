@@ -26,7 +26,7 @@ Legend:
 
 | Features                                  | Details                                                  | Vue | Vue details | React-Native | React-Native details |
 | ----------------------------------------- | -------------------------------------------------------- | --- | ----------- | ------------ | -------------------- |
-| A/B Tests                                 | No SSR/SSG support yet, which the React SDK has.         | ✅  |             | ✅           |                      |
+| A/B Tests                                 | No SSG support yet, which the React SDK has.             | 🏗   |             | 🏗            |                      |
 | SSR                                       |                                                          | ✅  |             | N/A          |                      |
 | Children for Custom Components            |                                                          | 🏗   |             | 🏗            |                      |
 | Dynamic Data Bindings                     |                                                          | ⚠️  |             | ⚠️           |                      |
