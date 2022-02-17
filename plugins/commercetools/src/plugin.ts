@@ -170,7 +170,7 @@ registerCommercePlugin(
 
         async findByHandle(handle: string): Promise<Resource> {
           const requestBuilder = createRequestBuilder({ projectKey });
-          const request = requestBuilder.categories.where(`slug(${locale}="${handle})"`);
+          const request = requestBuilder.categories.where(`slug(${locale}="${handle}")`);
           const category = await fetch(`${apiUrl}${request.build()}`, {
             headers,
           })
