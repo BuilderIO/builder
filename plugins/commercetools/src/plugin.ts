@@ -144,7 +144,7 @@ registerCommercePlugin(
           return {
             '@type': '@builder.io/core:Request' as const,
             request: {
-              url: `${apiUrl}${requestBuilder.products.byId(id)}`,
+              url: `${apiUrl}${requestBuilder.products.byId(id).build()}`,
               headers,
             },
             options: {
@@ -191,7 +191,7 @@ registerCommercePlugin(
           return {
             '@type': '@builder.io/core:Request' as const,
             request: {
-              url: `${apiUrl}${requestBuilder.categories.byId(id)}`,
+              url: `${apiUrl}${requestBuilder.categories.byId(id).build()}`,
               headers,
             },
             options: {
