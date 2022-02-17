@@ -19,7 +19,7 @@ export const createWebhook = async (model: any) => {
     ],
     url: `${appState.config.apiRoot()}/api/v1/algolia-sync/webhook?algoliaKey=${algoliaKey}&algoliaAppId=${algoliaAppId}&modelName=${
       model.name
-    }`,
+    }&apiKey=${appState.user.apiKey}`,
     disableProxy: true, // proxy has an issue with the POST request body
   };
 
