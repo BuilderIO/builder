@@ -45,6 +45,7 @@ export default {
             port: 1268,
             headers: {
               'Access-Control-Allow-Origin': '*',
+              'Access-Control-Allow-Private-Network': 'true',
             },
           }),
         ]
