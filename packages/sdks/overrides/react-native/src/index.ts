@@ -1,5 +1,8 @@
 // This override exists to omit the Video export from react-native, which currently causes issues.
 
+// this is needed because react-native's URL polyfill is lacking all features we use, such as `URLSearchParams.set()`.
+import 'react-native-url-polyfill/auto';
+
 import { isEditing } from './functions/is-editing';
 
 if (isEditing()) {
