@@ -14,7 +14,7 @@
     "unlink-and-cp-sdk": "yarn run unlink && yarn run cp-sdk"
   },
   "dependencies": {
-    "@builder.io/sdk-react-native": "^0.0.1-40",
+    "@builder.io/sdk-react-native": "^0.0.1-44",
     "@react-navigation/native": "^6.0.8",
     "@react-navigation/native-stack": "^6.5.0",
     "expo": "~44.0.0",

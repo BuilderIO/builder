@@ -981,10 +981,10 @@
     "@babel/helper-validator-identifier" "^7.15.7"
     to-fast-properties "^2.0.0"
 
-"@builder.io/sdk-vue@0.0.1-47":
-  version "0.0.1-47"
-  resolved "https://registry.yarnpkg.com/@builder.io/sdk-vue/-/sdk-vue-0.0.1-47.tgz#8a876f81cb5360f1267337cd04f07474330218d4"
-  integrity sha512-yQfJ1YZCO9CZdspA8K0kJGeoJXgiZyc2L73CerNrnkKxYiLMFNTcBntKHtpYh3lLC8mWhBK+Du43nxAghU/+8w==
+"@builder.io/sdk-vue@^0.0.1-48":
+  version "0.0.1-48"
+  resolved "https://registry.yarnpkg.com/@builder.io/sdk-vue/-/sdk-vue-0.0.1-48.tgz#df515596ef6a4974eeffc6c4772c89a759cd9c6d"
+  integrity sha512-5ckQZ5NljXXj709k4PO5I2Unr7TX1bKrVZbyYkthnrt7AwOC5RlVvZpkGBTJGy0we9zhhHYNHWvGPVBvZ5SIag==
   dependencies:
     node-fetch "^2.6.1"
 
