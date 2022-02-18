@@ -143,7 +143,7 @@
     "@emotion/core": ">=10",
     "@emotion/styled": ">=10",
     "lodash-es": "^4.17.10",
-    "next": "^10.2.0",
+    "next": "^12.1.0",
     "react": ">=14",
     "react-dom": ">=14",
     "react-loadable": "^5.5.0",
