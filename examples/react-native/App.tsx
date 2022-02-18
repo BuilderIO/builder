@@ -28,7 +28,7 @@ const linking: LinkingOptions<any> = {
 function CustomComponent(props: { text: string }) {
   return (
     <>
-      <Text>I am a custom comopnent!</Text>
+      <Text>I am a custom component!</Text>
       <Text>{props.text}</Text>
     </>
   );
@@ -50,11 +50,15 @@ const BuilderContent = ({ path }: { path: string }) => {
       userAttributes: {
         urlPath: path,
       },
-    }).then((content: any) => {
-      if (content) {
-        setContent(content);
-      }
-    });
+    })
+      .then((content: any) => {
+        if (content) {
+          setContent(content);
+        }
+      })
+      .catch((err: any) => {
+        console.log('something went wrong while fetching Builder Content: ', err);
+      });
   }, []);
 
   const shouldRenderBuilderContent = content || isEditing();
@@ -70,20 +74,20 @@ const BuilderContent = ({ path }: { path: string }) => {
 
 const Stack = createNativeStackNavigator();
 
-export default function App() {
-  return (
-    <NavigationContainer linking={linking} fallback={<Text>Loading...</Text>}>
-      <Stack.Navigator
-        initialRouteName="Page"
-        screenOptions={{ contentStyle: { backgroundColor: 'white' } }}
-      >
-        <Stack.Screen name="Page" options={{ headerShown: false }}>
-          {({ route }) => <BuilderContent path={route.path || '/'} />}
-        </Stack.Screen>
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
-}
+const App = () => (
+  <NavigationContainer linking={linking} fallback={<Text>Loading...</Text>}>
+    <Stack.Navigator
+      initialRouteName="Page"
+      screenOptions={{ contentStyle: { backgroundColor: 'white' } }}
+    >
+      <Stack.Screen name="Page" options={{ headerShown: false }}>
+        {({ route }) => <BuilderContent path={route.path || '/'} />}
+      </Stack.Screen>
+    </Stack.Navigator>
+  </NavigationContainer>
+);
+
+export default App;
 
 const styles = StyleSheet.create({
   container: {

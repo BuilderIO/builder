@@ -8,7 +8,10 @@
     "eject": "expo eject",
     "link": "yarn link @builder.io/sdk-react-native",
     "unlink": "yarn unlink @builder.io/sdk-react-native",
-    "cp-sdk": "npm run unlink && cp -R ../../packages/sdks/output/react-native/src node_modules/@builder.io/sdk-react-native/src"
+    "unlink-fr": "npm run unlink && yarn install --force",
+    "rm-sdk-src": "rm -rf node_modules/@builder.io/sdk-react-native/src",
+    "cp-sdk": "yarn run rm-sdk-src && cp -R ../../packages/sdks/output/react-native/src node_modules/@builder.io/sdk-react-native/src",
+    "unlink-and-cp-sdk": "yarn run unlink && yarn run cp-sdk"
   },
   "dependencies": {
     "@builder.io/sdk-react-native": "^0.0.1-40",
@@ -21,6 +24,7 @@
     "react-native": "0.64.3",
     "react-native-safe-area-context": "3.3.2",
     "react-native-screens": "~3.10.1",
+    "react-native-url-polyfill": "^1.3.0",
     "react-native-web": "0.17.1"
   },
   "devDependencies": {
@@ -30,7 +34,9 @@
     "typescript": "~4.3.5"
   },
   "resolutions": {
-    "react-devtools-core": "4.14.0"
+    "react-devtools-core": "4.14.0",
+    "react-native": "0.64.3",
+    "react": "17.0.1"
   },
   "private": true
 }
