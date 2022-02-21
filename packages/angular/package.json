@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/angular",
-  "version": "2.0.1",
+  "version": "2.0.2-0",
   "main": "dist/bundles/builder.io-angular.umd.js",
   "module": "dist/fesm5/builder.io-angular.js",
   "es2015": "dist/fesm2015/builder.io-angular.js",
@@ -34,7 +34,6 @@
     "release:dev": "npm run package && npm version prerelease && cd dist && npm version prerelease && ALLOW_PUBLISH=true npm publish --tag dev",
     "build:ssr": "ng build --configuration production  --output-hashing=none && ng run angular:server",
     "serve:ssr": "node dist/server/main.js",
-    "webpack:server": "webpack --config webpack.server.config.js --progress --color",
     "prepublishOnly": "block-publish"
   },
   "optionalDependencies": {
