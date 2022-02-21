@@ -11,7 +11,7 @@ import { FooComponent } from './foo.component';
   entryComponents: [CustomThing],
   imports: [
     BrowserModule,
-    BuilderModule.forRoot('1f3bf1d766354f32ba70dde440fcef97'),
+    BuilderModule.forRoot('afa4910e04ea4d5b948075edbbfc5d80'),
     RouterModule.forRoot([
       {
         path: '**',
