@@ -18,6 +18,10 @@ import { isEditing } from '../functions/is-editing';
 import { isPreviewing } from '../functions/is-previewing';
 import { previewingModelName } from '../functions/previewing-model-name';
 import { getContent } from '../functions/get-content';
+import {
+  convertSearchParamsToQueryObject,
+  getBuilderSearchParams,
+} from '../functions/get-builder-search-params';
 
 export type RenderContentProps = {
   content?: BuilderContent;
@@ -155,29 +159,22 @@ export default function RenderContent(props: RenderContentProps) {
       }
       if (isPreviewing()) {
         if (props.model && previewingModelName() === props.model) {
-          const options: Record<string, any> = {};
           const currentUrl = new URL(location.href);
           const apiKey = currentUrl.searchParams.get('apiKey');
-          if (apiKey) {
-            const builderPrefix = 'builder.';
-            currentUrl.searchParams.forEach((value, key) => {
-              if (key.startsWith(builderPrefix)) {
-                options[key.replace(builderPrefix, '')] = value;
-              }
-            });
 
-            // TODO: need access to API key
+          if (apiKey) {
             getContent({
               model: props.model,
               apiKey,
-              options,
+              options: getBuilderSearchParams(
+                convertSearchParamsToQueryObject(currentUrl.searchParams)
+              ),
             }).then((content) => {
               if (content) {
                 state.overrideContent = content;
               }
             });
           }
-          // TODO: fetch content and override. Forward all builder.* params
         }
       }
     }
