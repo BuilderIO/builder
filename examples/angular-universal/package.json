@@ -1,5 +1,5 @@
 {
-  "name": "builder-angular-universal-example",
+  "name": "@builder.io/angular-universal-example",
   "license": "MIT",
   "scripts": {
     "ng": "ng",

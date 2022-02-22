@@ -11,7 +11,7 @@ import { FooComponent } from './foo.component';
   entryComponents: [CustomThing],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
-    BuilderModule.forRoot('afa4910e04ea4d5b948075edbbfc5d80'),
+    BuilderModule.forRoot('db4da7332ae64a96b056ed574578485a'),
     RouterModule.forRoot([
       {
         path: '**',
