@@ -27,6 +27,7 @@ export class BuilderModule {
   constructor(injector: Injector, @Inject(PLATFORM_ID) private platformId: string) {
     if (isPlatformBrowser(platformId)) {
       // This cannot use a normal import, via https://github.com/angular/angular/issues/24551
+      // Cannot use require, so use import. This otherwise breaks at runtime
       import('@angular/elements').then(({ createCustomElement }) => {
         for (const component of Builder.components) {
           if (
