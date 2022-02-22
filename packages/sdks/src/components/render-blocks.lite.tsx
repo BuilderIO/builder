@@ -6,7 +6,7 @@ import RenderBlock from './render-block.lite';
 export type RenderBlockProps = {
   blocks?: BuilderBlock[];
   parent?: string;
-  path: string;
+  path?: string;
 };
 
 export default function RenderBlocks(props: RenderBlockProps) {

@@ -9,7 +9,6 @@ import BuilderContext from '../context/builder.context.lite';
 import { getBlockActions } from '../functions/get-block-actions';
 import { getProcessedBlock } from '../functions/get-processed-block';
 import BlockStyles from './block-styles.lite';
-import RenderBlocks from './render-blocks.lite';
 
 export type RenderBlockProps = {
   block: BuilderBlock;
@@ -71,6 +70,16 @@ export default function RenderBlock(props: RenderBlockProps) {
     get componentOptions() {
       return getBlockComponentOptions(state.useBlock);
     },
+    get children() {
+      // TO-DO: When should `canHaveChildren` dictate rendering?
+      // This is currently commented out because some Builder components (e.g. Box) do not have `canHaveChildren: true`,
+      // but still receive and need to render children.
+      // return state.componentInfo?.canHaveChildren ? state.useBlock.children : [];
+      return state.useBlock.children ?? [];
+    },
+    get noCompRefChildren() {
+      return state.componentRef ? [] : state.children;
+    },
   });
 
   return (
@@ -80,11 +89,14 @@ export default function RenderBlock(props: RenderBlockProps) {
         else={
           <state.componentRef
             attributes={state.propertiesAndActions}
-            {...state.componentInfo?.options}
+            {...state.componentOptions}
             builderBlock={state.useBlock}
             style={state.css}
-            children={state.useBlock.children}
-          />
+          >
+            <For each={state.children}>
+              {(child: any) => <RenderBlock block={child} />}
+            </For>
+          </state.componentRef>
         }
       >
         <state.tagName {...state.propertiesAndActions} style={state.css}>
@@ -94,26 +106,14 @@ export default function RenderBlock(props: RenderBlockProps) {
               {...state.componentOptions}
               builderBlock={state.useBlock}
             >
-              {/* Maybe only include if `canHaveChildren: true` */}
-              <Show when={state.useBlock.children}>
-                <RenderBlocks
-                  path="children"
-                  blocks={state.useBlock.children}
-                />
-              </Show>
+              <For each={state.children}>
+                {(child: any) => <RenderBlock block={child} />}
+              </For>
             </state.componentRef>
           )}
-          <Show
-            when={
-              !state.componentRef &&
-              state.useBlock.children &&
-              state.useBlock.children.length
-            }
-          >
-            <For each={state.useBlock.children}>
-              {(child: any) => <RenderBlock block={child} />}
-            </For>
-          </Show>
+          <For each={state.noCompRefChildren}>
+            {(child: any) => <RenderBlock block={child} />}
+          </For>
         </state.tagName>
       </Show>
     </>

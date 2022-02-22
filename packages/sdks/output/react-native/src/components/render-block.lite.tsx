@@ -10,7 +10,6 @@ import BuilderContext from '../context/builder.context.lite';
 import { getBlockActions } from '../functions/get-block-actions';
 import { getProcessedBlock } from '../functions/get-processed-block';
 import BlockStyles from './block-styles.lite';
-import RenderBlocks from './render-blocks.lite';
 
 export default function RenderBlock(props) {
   function component() {
@@ -76,6 +75,18 @@ export default function RenderBlock(props) {
     return getBlockComponentOptions(useBlock());
   }
 
+  function children() {
+    // TO-DO: When should `canHaveChildren` dictate rendering?
+    // This is currently commented out because some Builder components (e.g. Box) do not have `canHaveChildren: true`,
+    // but still receive and need to render children.
+    // return componentInfo?.()?.canHaveChildren ? useBlock().children : [];
+    return useBlock().children ?? [];
+  }
+
+  function noCompRefChildren() {
+    return componentRef() ? [] : children();
+  }
+
   const builderContext = useContext(BuilderContext);
 
   const ComponentRefRef = componentRef();
@@ -93,36 +104,28 @@ export default function RenderBlock(props) {
                 {...componentOptions()}
                 builderBlock={useBlock()}
               >
-                {useBlock().children ? (
-                  <>
-                    <RenderBlocks
-                      path="children"
-                      blocks={useBlock().children}
-                    />
-                  </>
-                ) : null}
+                {children()?.map((child) => (
+                  <RenderBlock block={child} />
+                ))}
               </ComponentRefRef>
             ) : null}
 
-            {!componentRef() &&
-            useBlock().children &&
-            useBlock().children.length ? (
-              <>
-                {useBlock().children?.map((child) => (
-                  <RenderBlock block={child} />
-                ))}
-              </>
-            ) : null}
+            {noCompRefChildren()?.map((child) => (
+              <RenderBlock block={child} />
+            ))}
           </TagNameRef>
         </>
       ) : (
         <ComponentRefRef
-          {...componentInfo?.()?.options}
+          {...componentOptions()}
           attributes={propertiesAndActions()}
           builderBlock={useBlock()}
           style={css()}
-          children={useBlock().children}
-        />
+        >
+          {children()?.map((child) => (
+            <RenderBlock block={child} />
+          ))}
+        </ComponentRefRef>
       )}
     </>
   );
