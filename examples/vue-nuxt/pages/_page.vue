@@ -16,7 +16,7 @@ import { getContent, isEditing, isPreviewing } from '@builder.io/sdk-vue'
 import '../scripts/register-builder-components'
 
 // TODO: enter your public API key
-const BUILDER_PUBLIC_API_KEY = '14df3669544146ed91ea75f999b0124b'
+const BUILDER_PUBLIC_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660'
 
 export default Vue.extend({
   data: () => ({
