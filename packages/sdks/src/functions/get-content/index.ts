@@ -56,13 +56,15 @@ export async function getContent(
   return (await getAllContent({ ...options, limit: 1 })).results[0] || null;
 }
 
-export const generateContentUrl = (baseOptions: GetContentOptions): URL => {
-  const options = {
-    ...OPTIONS_DEFAULTS,
-    ...baseOptions,
-  };
-
-  const { limit, userAttributes, query, noTraverse, model, apiKey } = options;
+export const generateContentUrl = (options: GetContentOptions): URL => {
+  const {
+    limit = 1,
+    userAttributes,
+    query,
+    noTraverse = false,
+    model,
+    apiKey,
+  } = options;
 
   const url = new URL(
     `https://cdn.builder.io/api/v2/content/${model}?apiKey=${apiKey}&limit=${limit}&noTraverse=${noTraverse}`
@@ -86,13 +88,6 @@ export const generateContentUrl = (baseOptions: GetContentOptions): URL => {
   }
 
   return url;
-};
-
-const OPTIONS_DEFAULTS: Partial<GetContentOptions> = {
-  limit: 1,
-  userAttributes: null,
-  testGroups: null,
-  noTraverse: false,
 };
 
 const handleABTesting = (
