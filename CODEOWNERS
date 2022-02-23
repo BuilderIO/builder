@@ -8,8 +8,14 @@
 
 #### Project-specific groups
 
-# Mitosis
-/packages/sdks/ @BuilderIO/mitosis
+# SDKs
+## new-gen (Mitosis-built)
+/packages/sdks/ @BuilderIO/sdks
+## old-gen
+/packages/react/ @BuilderIO/sdks
+/packages/vue/ @BuilderIO/sdks
+/packages/angular/ @BuilderIO/sdks
+/packages/core/ @BuilderIO/sdks
 
 
 # E-commerce plugins
