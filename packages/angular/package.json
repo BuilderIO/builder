@@ -44,8 +44,6 @@
   },
   "peerDependencies": {
     "@angular/common": ">= 2",
-    "@angular/compiler": ">= 2",
-    "@angular/compiler-cli": ">= 2",
     "@angular/core": ">= 2",
     "@angular/elements": ">= 8.1.1",
     "@angular/forms": ">= 2",
