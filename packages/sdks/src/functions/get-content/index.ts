@@ -56,7 +56,12 @@ export async function getContent(
   return (await getAllContent({ ...options, limit: 1 })).results[0] || null;
 }
 
-export const generateContentUrl = (options: GetContentOptions): URL => {
+export const generateContentUrl = (baseOptions: GetContentOptions): URL => {
+  const options = {
+    ...OPTIONS_DEFAULTS,
+    ...baseOptions,
+  };
+
   const { limit, userAttributes, query, noTraverse, model, apiKey } = options;
 
   const url = new URL(
@@ -135,17 +140,12 @@ const handleABTesting = (
 };
 
 export async function getAllContent(options: GetContentOptions) {
-  const optionsWithDefaults = {
-    ...OPTIONS_DEFAULTS,
-    ...options,
-  };
-
-  const url = generateContentUrl(optionsWithDefaults);
+  const url = generateContentUrl(options);
 
   const content = await fetch(url.href).then((res) => res.json());
 
-  if (optionsWithDefaults.testGroups) {
-    handleABTesting(content, optionsWithDefaults.testGroups);
+  if (options.testGroups) {
+    handleABTesting(content, options.testGroups);
   }
 
   return content;

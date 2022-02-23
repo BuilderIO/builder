@@ -1,22 +1,26 @@
-import { describe, test, beforeEach, expect } from '@jest/globals';
+import { describe, test, expect } from '@jest/globals';
 import { generateContentUrl } from '.';
 
 const testKey = 'YJIGb4i01jvw0SRdL5Bt';
 const testModel = 'page';
 const testId = 'c1b81bab59704599b997574eb0736def';
 
-beforeEach(() => {
-  // TODO: figure out why fetchMock is not working
-});
+const options = {
+  cachebust: 'true',
+  noCache: 'true',
+  'overrides.037948e52eaf4743afed464f02c70da4':
+    '037948e52eaf4743afed464f02c70da4',
+  'overrides.page': '037948e52eaf4743afed464f02c70da4',
+  'overrides.page:/': '037948e52eaf4743afed464f02c70da4',
+  preview: 'page',
+};
 
 describe('Generate Content URL', () => {
   test('generates the proper value for a simple query', () => {
     const output = generateContentUrl({
       apiKey: testKey,
       model: testModel,
-      query: {
-        id: testId,
-      },
+      query: { id: testId },
     });
     expect(output).toMatchSnapshot();
   });
@@ -24,9 +28,8 @@ describe('Generate Content URL', () => {
     const output = generateContentUrl({
       apiKey: testKey,
       model: testModel,
-      query: {
-        id: testId,
-      },
+      query: { id: testId },
+      options,
     });
     expect(output).toMatchSnapshot();
   });
