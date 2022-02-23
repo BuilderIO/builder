@@ -6,10 +6,10 @@ const config = {
   lib: {
     entryFile: 'src/public_api.ts',
   },
-  whitelistedNonPeerDependencies: ['.'],
+  allowedNonPeerDependencies: ['.'],
 };
 
-if (outputPath && outputPath.startsWith('bazel-out/') !== -1) {
+if (outputPath && outputPath.startsWith('bazel-out/')) {
   // This is a work around for Bazel.
   // Bazel needs to tell ng-packager where the output should be ng-packager does not have such
   // command line options. So we hack it a bit by reading it ourselves.

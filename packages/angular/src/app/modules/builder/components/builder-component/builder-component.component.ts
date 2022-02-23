@@ -11,7 +11,6 @@ import {
   ElementRef,
 } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { parse } from 'url';
 import { BuilderComponentService } from './builder-component.service';
 import { GetContentOptions, Builder } from '@builder.io/sdk';
 import { Subscription, BehaviorSubject } from 'rxjs';
@@ -306,8 +305,8 @@ export class BuilderComponentComponent implements OnDestroy, OnInit {
 
   // Attempt to convert an absolute url to relative if possible (aka if the hosts match)
   private convertToRelative(href: string) {
-    const currentUrl = parse(location.href);
-    const hrefUrl = parse(href);
+    const currentUrl = new URL(location.href);
+    const hrefUrl = new URL(href);
 
     if (currentUrl.host === hrefUrl.host) {
       const relativeUrl = hrefUrl.pathname + (hrefUrl.search ? hrefUrl.search : '');

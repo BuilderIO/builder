@@ -29,8 +29,11 @@ BuilderBlock({
 })
 export class AppComponent {
   title = 'app';
-  options: GetContentOptions = {
+  options: any = {
     cacheSeconds: 1,
+    data: {
+      'locale': 'en-US',
+    }
   };
 
   data = {
