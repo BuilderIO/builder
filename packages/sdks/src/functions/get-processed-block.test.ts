@@ -1,6 +1,6 @@
 import { expect, test } from '@jest/globals';
 import { BuilderBlock } from '../types/builder-block';
-import * as file from './get-processed-block';
+import { getProcessedBlock } from './get-processed-block';
 
 test('Can process bindings', () => {
   const block: BuilderBlock = {
@@ -19,7 +19,7 @@ test('Can process bindings', () => {
       'properties.isEditing': 'builder.isEditing',
     },
   };
-  const processed = file.getProcessedBlock({
+  const processed = getProcessedBlock({
     block,
     context: {},
     state: { test: 'hello' },
