@@ -1,3 +1,7 @@
+### UPCOMING
+
+- Add `getBuilderSearchParams` helper export to easily view current drafts on your production site.
+
 ### 0.0.1-48
 
 Changes:
