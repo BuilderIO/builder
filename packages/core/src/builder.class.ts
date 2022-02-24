@@ -1130,7 +1130,15 @@ export class Builder {
 
     // Give the app a second to start up and set canTrack to false if needed
     if (Builder.isBrowser) {
-      this.setCookie(sessionStorageKey, sessionId, datePlusMinutes(30));
+      setTimeout(() => {
+        try {
+          if (this.canTrack) {
+            this.setCookie(sessionStorageKey, sessionId, datePlusMinutes(30));
+          }
+        } catch (err) {
+          console.debug('Cookie setting error', err);
+        }
+      });
     }
     return sessionId;
   }
