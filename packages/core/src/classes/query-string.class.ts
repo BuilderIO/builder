@@ -1,6 +1,6 @@
 export type StringMap = Record<string, string>;
 
-const PROPERTY_NAME_DENY_LIST = Object.freeze(['__proto__', 'prototype', 'contructor']);
+const PROPERTY_NAME_DENY_LIST = Object.freeze(['__proto__', 'prototype', 'constructor']);
 
 // TODO: unit tests
 export class QueryString {
