@@ -1,6 +1,6 @@
 export type StringMap = Record<string, string>;
 
-const PROPERTY_NAME_DENY_LIST = Object.freeze(['__proto__', 'prototype']);
+const PROPERTY_NAME_DENY_LIST = Object.freeze(['__proto__', 'prototype', 'constructor']);
 
 // TODO: unit tests
 export class QueryString {
@@ -46,14 +46,14 @@ export class QueryString {
   static deepen(map: StringMap) {
     // FIXME; Should be type Tree = Record<string, string | Tree>
     // requires a typescript upgrade.
-    const output: any = Object.create(null);
+    const output: any = {};
     for (const k in map) {
       let t = output;
       const parts = k.split('.');
       const key = parts.pop()!;
       for (const part of parts) {
         assertAllowedPropertyName(part);
-        t = t[part] = t[part] || Object.create(null);
+        t = t[part] = t[part] || {};
       }
       t[key] = map[k];
     }
