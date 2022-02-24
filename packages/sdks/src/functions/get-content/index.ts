@@ -1,5 +1,5 @@
-import { BuilderContent } from '../types/builder-content';
-import { getFetch } from './get-fetch';
+import { BuilderContent } from '../../types/builder-content';
+import { getFetch } from '../get-fetch';
 
 const fetch = getFetch();
 
@@ -43,6 +43,11 @@ export type GetContentOptions = {
   query?: Record<string, any>;
   /** Other API options as key:value pairs */
   options?: Record<string, any>;
+  /**
+   * If set to `true`, it will lazy load symbols/references.
+   * If set to `false`, it will render the entire content tree eagerly.
+   */
+  noTraverse?: boolean;
 };
 
 export async function getContent(
@@ -51,16 +56,15 @@ export async function getContent(
   return (await getAllContent({ ...options, limit: 1 })).results[0] || null;
 }
 
-export async function getAllContent(options: GetContentOptions) {
-  const { model, apiKey } = options;
-
-  const { limit, testGroups, userAttributes, query, noTraverse } = {
-    limit: 1,
-    userAttributes: null,
-    testGroups: null,
-    noTraverse: false,
-    ...options,
-  };
+export const generateContentUrl = (options: GetContentOptions): URL => {
+  const {
+    limit = 1,
+    userAttributes,
+    query,
+    noTraverse = false,
+    model,
+    apiKey,
+  } = options;
 
   const url = new URL(
     `https://cdn.builder.io/api/v2/content/${model}?apiKey=${apiKey}&limit=${limit}&noTraverse=${noTraverse}`
@@ -83,47 +87,60 @@ export async function getAllContent(options: GetContentOptions) {
     }
   }
 
-  const content = await fetch(url.href).then((res) => res.json());
+  return url;
+};
 
-  if (testGroups) {
-    for (const item of content.results) {
-      if (item.variations && Object.keys(item.variations).length) {
-        const testGroup = testGroups[item.id];
-        const variationValue = item.variations[testGroup];
-        if (testGroup && variationValue) {
-          item.data = variationValue.data;
-          item.testVariationId = variationValue.id;
-          item.testVariationName = variationValue.name;
-        } else {
-          // TODO: a/b test iteration logic
-          let n = 0;
-          const random = Math.random();
-          let set = false;
-          for (const id in item.variations) {
-            const variation = item.variations[id]!;
-            const testRatio = variation.testRatio;
-            n += testRatio!;
-            if (random < n) {
-              const variationName =
-                variation.name ||
-                (variation.id === item.id ? 'Default variation' : '');
-              set = true;
-              Object.assign(item, {
-                data: variation.data,
-                testVariationId: variation.id,
-                testVariationName: variationName,
-              });
-            }
-          }
-          if (!set) {
+const handleABTesting = (
+  content: any,
+  testGroups: NonNullable<GetContentOptions['testGroups']>
+) => {
+  for (const item of content.results) {
+    if (item.variations && Object.keys(item.variations).length) {
+      const testGroup = testGroups[item.id];
+      const variationValue = item.variations[testGroup];
+      if (testGroup && variationValue) {
+        item.data = variationValue.data;
+        item.testVariationId = variationValue.id;
+        item.testVariationName = variationValue.name;
+      } else {
+        // TODO: a/b test iteration logic
+        let n = 0;
+        const random = Math.random();
+        let set = false;
+        for (const id in item.variations) {
+          const variation = item.variations[id]!;
+          const testRatio = variation.testRatio;
+          n += testRatio!;
+          if (random < n) {
+            const variationName =
+              variation.name ||
+              (variation.id === item.id ? 'Default variation' : '');
+            set = true;
             Object.assign(item, {
-              testVariationId: item.id,
-              testVariationName: 'Default',
+              data: variation.data,
+              testVariationId: variation.id,
+              testVariationName: variationName,
             });
           }
         }
+        if (!set) {
+          Object.assign(item, {
+            testVariationId: item.id,
+            testVariationName: 'Default',
+          });
+        }
       }
     }
+  }
+};
+
+export async function getAllContent(options: GetContentOptions) {
+  const url = generateContentUrl(options);
+
+  const content = await fetch(url.href).then((res) => res.json());
+
+  if (options.testGroups) {
+    handleABTesting(content, options.testGroups);
   }
 
   return content;
