@@ -1,6 +1,5 @@
 {
   "name": "@builder.io/example-nuxt",
-  "version": "1.0.0",
   "homepage": "https://github.com/BuilderIO/builder",
   "private": true,
   "scripts": {
@@ -10,7 +9,7 @@
     "generate": "NODE_PRESERVE_SYMLINKS=1 nuxt generate"
   },
   "dependencies": {
-    "@builder.io/sdk-vue": "^0.0.1-48",
+    "@builder.io/vue": "^0.1.11",
     "@nuxt/components": "^2.2.1",
     "@nuxt/typescript-runtime": "^2.0.1",
     "@nuxtjs/pwa": "^3.3.5",

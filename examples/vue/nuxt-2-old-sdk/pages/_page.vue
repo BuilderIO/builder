@@ -1,43 +1,42 @@
 <template>
   <div>
     <div>Hello world from your Vue project. Below is Builder Content:</div>
-    <div v-if="canShowContent">
-      <builder-render-content model="page" :content="content" />
-    </div>
+    <RenderContent
+      model="page"
+      @contentLoaded="contentLoaded"
+      @contentError="contentError"
+      :options="{
+        // optional - define the URL to pull content for
+        // in browsers this is grabbed automatically from location.href for pages
+        // and content targeted to specific URLs
+        url: $route.path,
+      }"
+    />
   </div>
 </template>
 
 <script>
 import Vue from 'vue'
-import { getContent, isEditing, isPreviewing } from '@builder.io/sdk-vue'
-
-// Important to import this anywhere you use <RenderContent /> so the custom
-// components will be registered and usable
-import '../scripts/register-builder-components'
+import { builder, RenderContent } from '@builder.io/vue'
 
 // TODO: enter your public API key
 const BUILDER_PUBLIC_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660'
+builder.init(BUILDER_PUBLIC_API_KEY)
 
 export default Vue.extend({
+  components: { RenderContent },
   data: () => ({
-    canShowContent: false,
-    content: null,
+    notFound: false,
   }),
-  async fetch() {
-    const content = await getContent({
-      model: 'page',
-      apiKey: BUILDER_PUBLIC_API_KEY,
-      userAttributes: {
-        urlPath: this.$route.path,
-      },
-    })
-    if (!content) {
-      if (this.$nuxt.context?.ssrContext?.res) {
-        this.$nuxt.context.ssrContext.res.statusCode = 404
+  methods: {
+    contentLoaded(content) {
+      if (!content) {
+        this.notFound = true
       }
-    }
-    this.content = content
-    this.canShowContent = content || isEditing()
+    },
+    contentError(err) {
+      // Handle error
+    },
   },
 })
 </script>

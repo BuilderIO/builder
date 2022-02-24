@@ -12,7 +12,7 @@ export default {
 
   components: true,
 
-  buildModules: ['@nuxt/components', '@builder.io/sdk-vue/nuxt'],
+  buildModules: ['@nuxt/components'],
 
   build: {
     extend(config, ctx) {
