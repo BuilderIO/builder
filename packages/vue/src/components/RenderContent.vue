@@ -48,7 +48,7 @@ export default {
 
   created() {
     if (Builder.isBrowser) {
-      this.loadWebComponents();
+      this.ensureWcLoadedAndUpdate();
     }
     if (!this.fetchInitialized && !this.content) {
       this.getContent();
@@ -167,6 +167,20 @@ export default {
         script.src = editJsSrc;
         script.async = true;
         document.body.appendChild(script);
+        return new Promise((resolve, reject) => {
+          script.addEventListener('load', resolve);
+          script.addEventListener('error', e => reject(e.error));
+        });
+      }
+    },
+    async ensureWcLoadedAndUpdate() {
+      await this.loadWebComponents();
+      const { onBuilderWcLoad } = window;
+      if (onBuilderWcLoad) {
+        onBuilderWcLoad(BuilderWC => {
+          const builder = BuilderWC.builder;
+          builder.canTrack = !window.builderNoTrack;
+        });
       }
     },
     findHrefTarget(event) {
