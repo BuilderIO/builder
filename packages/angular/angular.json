@@ -25,7 +25,6 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,
@@ -80,9 +79,20 @@
           "builder": "@angular-devkit/build-angular:server",
           "options": {
             "outputPath": "dist/server",
-            "main": "src/main.server.ts",
+            "main": "server.ts",
             "tsConfig": "src/tsconfig.server.json"
-          }
+          },
+          "configurations": {
+            "production": {
+              "outputHashing": "none"
+            },
+            "development": {
+              "optimization": false,
+              "sourceMap": true,
+              "extractLicenses": false
+            }
+          },
+          "defaultConfiguration": "production"
         }
       }
     },
@@ -111,8 +121,7 @@
   "defaultProject": "angular",
   "schematics": {
     "@schematics/angular:component": {
-      "prefix": "builder",
-      "styleext": "css"
+      "prefix": "builder"
     },
     "@schematics/angular:directive": {
       "prefix": "builder"
