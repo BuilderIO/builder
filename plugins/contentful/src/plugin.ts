@@ -54,7 +54,7 @@ registerDataPlugin(
           .concat([
             {
               label: 'Dynamic (bound to state)',
-              value: '{{state.locale}}',
+              value: '{{state.locale || ""}}',
             },
           ]);
         return contentTypes.items.map(type => ({
