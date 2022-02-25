@@ -7,7 +7,7 @@
     "url": "https://github.com/BuilderIO/builder.git",
     "directory": "packages/gatsby"
   },
-  "version": "2.0.6-16",
+  "version": "3.0.0",
   "keywords": [
     "gatsby",
     "gatsby-plugin",
@@ -38,6 +38,7 @@
     "gatsby": "^4.0.0-next"
   },
   "scripts": {
+    "release:major": "npm run prepare && npm version major && ALLOW_PUBLISH=true npm publish",
     "release:patch": "npm run prepare && npm version patch && ALLOW_PUBLISH=true npm publish",
     "release:dev": "npm run prepare && npm version prerelease && ALLOW_PUBLISH=true npm publish --tag dev",
     "build": "babel src --out-dir . --ignore **/__tests__",
