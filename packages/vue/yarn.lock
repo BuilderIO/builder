@@ -932,10 +932,10 @@
     "@babel/helper-validator-identifier" "^7.16.7"
     to-fast-properties "^2.0.0"
 
-"@builder.io/sdk@^1.1.21":
-  version "1.1.25"
-  resolved "https://registry.yarnpkg.com/@builder.io/sdk/-/sdk-1.1.25.tgz#4037b0c0ba71a5d31e02fe528c865d45c411b36c"
-  integrity sha512-QRO9g5Nmxxw2ZaIfOc9hJI/YWpCgQ/yT3levK+qGm965ZuBR7zh0Y9UXXnOP8uY5N1NBGlL16N/Hnnv7kh5U6w==
+"@builder.io/sdk@^1.1.26":
+  version "1.1.26"
+  resolved "https://registry.yarnpkg.com/@builder.io/sdk/-/sdk-1.1.26.tgz#1959edc7986af919a3b4b4dc91d17880bbdf2f14"
+  integrity sha512-tas5giE363Lv4f35xKPkRxDnPSyjzKo1zifGVuWJCztJJjUbNIe+vaRewitzqS3u+B8sWU0pHj2Id9R1Mtx6pA==
   dependencies:
     hash-sum "^2.0.0"
     node-fetch "^2.2.0"
