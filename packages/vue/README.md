@@ -2,8 +2,7 @@
 
 Builder.io drag and drop page and section building for Vue.
 
-
-NOTE: If you are looking for the _beta_ 2.0 Vue SDK, you can find it [here](https://github.com/BuilderIO/builder/tree/main/packages/sdks/output/vue)
+NOTE: If you are looking for the _beta_ 2.0 Vue SDK, you can find it [here](/packages/sdks/output/vue)
 
 ## Get started
 
@@ -33,7 +32,7 @@ export default Vue.extend({
 
 ## Example
 
-Take a look at this in practice in an example you can run with our [Nuxt](../../examples/nuxt) example
+Take a look at this in practice in an example you can run with our [Nuxt](/examples/vue/nuxt-2-old-sdk/) example
 
 ## Options
 
