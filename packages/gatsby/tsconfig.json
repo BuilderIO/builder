@@ -6,6 +6,6 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "checkJs": true,
-    "noImplicitAny": false,
+    "noImplicitAny": false
   }
 }

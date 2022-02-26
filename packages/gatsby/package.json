@@ -7,7 +7,7 @@
     "url": "https://github.com/BuilderIO/builder.git",
     "directory": "packages/gatsby"
   },
-  "version": "2.0.5",
+  "version": "3.0.0",
   "keywords": [
     "gatsby",
     "gatsby-plugin",
@@ -15,31 +15,32 @@
     "builder-io"
   ],
   "dependencies": {
-    "@babel/runtime": "^7.7.6",
-    "apollo-link": "1.2.13",
-    "apollo-link-http": "^1.5.16",
-    "graphql-tools": "^5.0.0",
+    "@apollo/client": "^3.3.21",
+    "@babel/runtime": "^7.15.4",
+    "@graphql-tools/links": "^8.2.1",
+    "@graphql-tools/utils": "^8.6.1",
+    "@graphql-tools/wrap": "^8.3.3",
+    "dataloader": "^2.0.0",
+    "gatsby-core-utils": "^3.7.0-next.1",
     "invariant": "^2.2.4",
-    "node-fetch": "^2.6.1",
-    "promise-retry": "^2.0.1",
-    "uuid": "^3.3.3"
+    "node-fetch": "^2.6.1"
   },
   "devDependencies": {
-    "@babel/cli": "^7.13.16",
-    "@babel/core": "^7.7.5",
+    "@babel/cli": "^7.15.4",
+    "@babel/core": "^7.15.5",
     "@builder.io/block-publish": "^1.1.2",
-    "babel-preset-gatsby-package": "^0.2.16",
+    "babel-preset-gatsby-package": "^2.9.0-next.0",
     "cross-env": "^5.2.1",
-    "gatsby": "^3.4.0",
     "jest": "^25.1.0"
   },
   "license": "MIT",
   "peerDependencies": {
-    "gatsby": "^2.0.15 || ^3.0.0"
+    "gatsby": "^4.0.0-next"
   },
   "scripts": {
-    "release:patch": "npm run build && npm version patch && ALLOW_PUBLISH=true npm publish",
-    "release:dev": "npm run build && npm version prerelease && ALLOW_PUBLISH=true npm publish --tag dev",
+    "release:major": "npm run prepare && npm version major && ALLOW_PUBLISH=true npm publish",
+    "release:patch": "npm run prepare && npm version patch && ALLOW_PUBLISH=true npm publish",
+    "release:dev": "npm run prepare && npm version prerelease && ALLOW_PUBLISH=true npm publish --tag dev",
     "build": "babel src --out-dir . --ignore **/__tests__",
     "prepare": "cross-env NODE_ENV=production npm run build",
     "watch": "babel -w src --out-dir . --ignore **/__tests__",
@@ -47,7 +48,7 @@
     "prepublishOnly": "block-publish"
   },
   "engines": {
-    "node": ">=8.0.0"
+    "node": ">=14.15.0"
   },
   "gitHead": "4d96fbc32864698afbb355ab991c6d90be991951"
 }
