@@ -6,17 +6,7 @@ See [\_page.vue](pages/_page.vue) for rendering usage, and [register-builder-com
 
 ## Status
 
-This example uses the beta v2 of the Vue SDK.
-
-Left to implement:
-
-- SSR (Nuxt currently can't find the custom components on the server, looking into)
-- Stacking columns on breakpoints
-- "View current draft" logic
-- "+ add block" button when starting a page (for now just drag your first block to the "layers" tab)
-- Symbols
-- Server side a/b testing
-- "animations" tab and "data" tab
+For the status of the SDK, look at [these tables](/packages/sdks/README.md#feature-implementation).
 
 ## Local Setup
 

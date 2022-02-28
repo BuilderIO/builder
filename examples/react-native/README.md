@@ -27,19 +27,7 @@ For text instructions:
 
 ## Status
 
-Currently, this example supports the Box, Text, and Image components, as well as using custom components
-
-Features supported
-
-| Feature             | Supported   | Notes                                                                              |
-| ------------------- | ----------- | ---------------------------------------------------------------------------------- |
-| Custom components   | Yes         |                                                                                    |
-| Built-in components | Some        | Text, Image, Box - the rest coming soon                                            |
-| Custom styles       | Yes         | Those that React Native supports                                                   |
-| Animations          | No          | Custom animation components supported, but not Builder.io's "animations" tab       |
-| Data bindings       | Coming soon | Custom components with dynamic data supported, but not yet Builder.io's "data" tab |
-| Symbols             | Coming soon |                                                                                    |
-| A/B testing         | Yes         |                                                                                    |
+For the status of the SDK, look at [these tables](/packages/sdks/README.md#feature-implementation).
 
 ## Todo
 
