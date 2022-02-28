@@ -3,11 +3,14 @@
 Builder.io drag-and-drop page and section building for Vue Storefront
 
 ## Status
+
 This example uses the beta v2 of the Vue SDK.
+
+For the status of the SDK, look at [these tables](/packages/sdks/README.md#feature-implementation).
 
 ## Build Setup
 
-``` bash
+```bash
 # install dependencies
 $ yarn install
 
@@ -31,6 +34,5 @@ $ yarn generate
 - drag a component into the layers tab, and it will appear in the Editor!
 
 Checkout this Loom for a visual walkthrough: https://www.loom.com/share/afd7c9a1f8f148959ea0396be42560fd (it's originally intended for React-Native, but all of the steps are still the exact same)
-
 
 For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
