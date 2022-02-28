@@ -30,6 +30,7 @@ export interface CommercePluginConfig {
   settings: any[]; // list of setting commerce API needs to communicate, e.g storeFrontAccessToken
   ctaText: string; // what to display on the button to save settings, e.g `Connect your store`
   onSave?: (actions: OnSaveActions) => Promise<void>; // you can run any action post save here, for example importing ${capitalize(resourceName)} data, registering webhooks
+  noPreviewTypes?: boolean;
 }
 
 export interface CommerceAPIOperations {
@@ -73,20 +74,23 @@ export const registerCommercePlugin = async (
         ),
       });
 
-      Builder.registerEditor({
-        name: `${config.name}${capitalize(resourceName)}Preview`,
-        component: (props: ResourcesPickerButtonProps) => (
-          <ErrorBoundary>
-            <ResourcesPickerButton
-              {...props}
-              {...contextProps}
-              previewType={`${config.name}${capitalize(resourceName)}Preview`}
-              isPreview
-            />
-          </ErrorBoundary>
-        ),
-      });
+      if (!config.noPreviewTypes) {
+        Builder.registerEditor({
+          name: `${config.name}${capitalize(resourceName)}Preview`,
+          component: (props: ResourcesPickerButtonProps) => (
+            <ErrorBoundary>
+              <ResourcesPickerButton
+                {...props}
+                {...contextProps}
+                previewType={`${config.name}${capitalize(resourceName)}Preview`}
+                isPreview
+              />
+            </ErrorBoundary>
+          ),
+        });  
+      }
 
+    
       if (apiOperations[resourceName].findByHandle) {
         Builder.registerEditor({
           name: `${config.name}${capitalize(resourceName)}Handle`,
