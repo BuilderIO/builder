@@ -250,7 +250,7 @@ exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }, bas
 };
 
 function createSchemaNodeId({ typeName, createNodeId }) {
-  return createNodeId(`gatsby-source-graphql-${typeName}`);
+  return createNodeId(`builder-gatsby-source-graphql-${typeName}`);
 }
 
 function createSchemaNode({ id, typeName, fieldName, createContentDigest }) {
@@ -263,7 +263,7 @@ function createSchemaNode({ id, typeName, fieldName, createContentDigest }) {
     parent: null,
     children: [],
     internal: {
-      type: `GraphQLSource`,
+      type: `BuilderGraphQLSource`,
       contentDigest: nodeContentDigest,
       ignoreType: true,
     },
