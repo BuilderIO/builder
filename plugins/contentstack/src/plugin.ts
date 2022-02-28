@@ -9,15 +9,20 @@ import {
 import kebabCase from 'lodash/capitalize';
 import capitalize from 'lodash/kebabCase';
 import fromPairs from 'lodash/fromPairs';
-import appState from '@builder.io/app-context';
-import { Input } from '@builder.io/sdk';
+import appState, { Model } from '@builder.io/app-context';
+
+type Input = Model['fields'][0];
 
 function humanCase(str = '') {
   if (str.includes('$')) {
     // kebabCase removes the $ but we need to keep it for chart names
     return capitalize(str.replace(/[- ]+/g, ' ').trim());
   }
-  return capitalize(kebabCase(str).replace(/[- ]+/g, ' ').trim());
+  return capitalize(
+    kebabCase(str)
+      .replace(/[- ]+/g, ' ')
+      .trim()
+  );
 }
 
 interface Entity {
@@ -233,7 +238,7 @@ registerDataPlugin(
             toUrl: options => {
               const buildUrl = (url: string) => {
                 const endUrl = `https://cdn.contentstack.io/v3/content_types/${model.uid}/${url}`;
-                return `${appState.config.apiRoot()}/api/v1/proxy-api?url=${encodeURIComponent(
+                return `${(appState as any).config.apiRoot()}/api/v1/proxy-api?url=${encodeURIComponent(
                   endUrl
                 )}&${buildHeaders()}`;
               };
