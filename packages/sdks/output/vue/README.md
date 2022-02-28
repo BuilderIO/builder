@@ -8,6 +8,22 @@ NOTE: If you are looking for the stable 1.0 Vue SDK, you can find it [here](/pac
 
 To check the status of the SDK, look at [these tables](../../README.md#feature-implementation).
 
+## Version Support
+
+Legend:
+
+- ✅: implemented
+- 🏗: currently in progress
+- ⚠️: not-yet implemented
+- N/A : does not apply
+
+| Platform | Support |
+| -------- | ------- |
+| Vue 2    | 🏗       |
+| Nuxt 2   | 🏗       |
+| Vue 3    | ⚠️      |
+| Nuxt 3   | ⚠️      |
+
 ## Getting Started
 
 ```
