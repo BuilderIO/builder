@@ -1993,6 +1993,9 @@ export class Builder {
         .get(requestOptions, function (resp: any) {
           let data = '';
 
+          // We are collecting textual data
+          resp.setEncoding('utf8');
+
           // A chunk of data has been recieved.
           resp.on('data', (chunk: string | Buffer) => {
             data += chunk;
