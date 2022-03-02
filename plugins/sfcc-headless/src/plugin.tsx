@@ -2,33 +2,10 @@ import { registerCommercePlugin } from '@builder.io/commerce-plugin-tools';
 import pkg from '../package.json';
 import { CategoriesPicker } from './CategoriesPicker';
 import { ProductsPicker } from './ProductsPicker';
-/**
- * Category API – Returns the list of categories
-
-https://www.jcrew.com/browse/categories/(${comma,separated,categories})?levels=2&country-code=US
-
-Example: https://www.jcrew.com/browse/categories/(mens,womens)?levels=2&country-code=US
-
- 
-
-Array page API – Returns the list of products within a category/folder:
-
-https://www.jcrew.com/browse/product_search?expand=prices,variations,availability&count=60&refine=category_id&refine_1=c_displayOn=standard&refine_2=c_allowedCountries=ALL|US&locale=en-US&country-code=US
-
-Example: https://www.jcrew.com/browse/product_search?expand=variations,availability&count=60&start=0&refine=c_allowedCountries=ALL|US&refine_1=c_displayOn=standard_usd&refine_2=cgid=womens|categories|clothing|sweaters&country-code=US
-
- 
-
-Product API – Returns the details of a product:
-
-https://www.jcrew.com/browse/products/{product_id}?expand=availability,variations&display=all&locale=en-US&country-code=US
-
-Example: https://www.jcrew.com/browse/products/BF721?expand=availability,variations&display=standard&locale=en-US&country-code=US
- */
-
+import appState from '@builder.io/app-context';
 
 const proxyFetch = (url: string) => {
-  return fetch(`https://cdn.builder.io/api/v1/proxy-api?url=${encodeURIComponent(url)}`);
+  return fetch(`${appState.config.apiRoot()}/api/v1/proxy-api?url=${encodeURIComponent(url)}`);
 };
 
 registerCommercePlugin(
