@@ -10,7 +10,7 @@ const proxyFetch = (url: string) => {
 };
 
 const proxyUrl = (url: string) => {
-  return `${appState.config.apiRoot()}/api/v1/proxy-api?apiKey=${appState.user.apiKey}&url=${encodeURIComponent(url)}`
+  return `${appState.config.apiRoot()}/api/v1/proxy-api?debug=true&apiKey=${appState.user.apiKey}&url=${encodeURIComponent(url)}`
 }
 
 registerCommercePlugin(
