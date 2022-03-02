@@ -114,7 +114,7 @@ export const ProductsPicker: React.FC<
                   return {
                     '@type': '@builder.io/core:Request',
                     options: {
-                      get(key: string) {
+                      get() {
                         return store.rootCategory;
                       },
                     },

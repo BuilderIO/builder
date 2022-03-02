@@ -30,26 +30,26 @@ export const CategoriesPicker: React.FC<
     formValue: '',
     rootCategory: props.rootCategory || 'all',
     loading: false,
-    resources: [] as Resource[],
+    categories: [] as Resource[],
     expanded: {} as Record<string, boolean>,
     catchError: (err: any) => {
       console.error('search error:', err);
-      props.context.snackBar.show('Oh no! There was an error searching for resources');
+      props.context.snackBar.show('Oh no! There was an error searching for categories');
     },
     async search() {
       this.loading = true;
 
-      const resourcesResponse = await props.api.category
+      const categoriesResponse = await props.api.category
         .search(store.rootCategory)
         .catch(store.catchError);
 
       runInAction(() => {
-        if (Array.isArray(resourcesResponse)) {
-          this.resources = resourcesResponse.filter(
+        if (Array.isArray(categoriesResponse)) {
+          this.categories = categoriesResponse.filter(
             resource => !(props.omitIds || []).includes(String(resource.id))
           );
-          if (this.resources.length === 1) {
-            this.expanded[this.resources[0].id] = true;
+          if (this.categories.length === 1) {
+            this.expanded[this.categories[0].id] = true;
           }
         }
         this.loading = false;
@@ -106,8 +106,8 @@ export const CategoriesPicker: React.FC<
       {store.loading && <CircularProgress disableShrink css={{ margin: '50px auto' }} />}
       <div css={{ maxHeight: '80vh', overflow: 'auto' }}>
         {!store.loading &&
-          (store.resources.length ? (
-            store.resources.map(item => (
+          (store.categories.length ? (
+            store.categories.map(item => (
               <ExpansionPanel
                 expanded={store.expanded[item.id]}
                 key={item.id}

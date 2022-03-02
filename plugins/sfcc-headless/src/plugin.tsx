@@ -26,8 +26,9 @@ https://www.jcrew.com/browse/products/{product_id}?expand=availability,variation
 Example: https://www.jcrew.com/browse/products/BF721?expand=availability,variations&display=standard&locale=en-US&country-code=US
  */
 
+
 const proxyFetch = (url: string) => {
-  return fetch(`http://localhost:4000/api/v1/proxy-api?url=${encodeURIComponent(url)}`);
+  return fetch(`https://cdn.builder.io/api/v1/proxy-api?url=${encodeURIComponent(url)}`);
 };
 
 registerCommercePlugin(
@@ -40,7 +41,7 @@ registerCommercePlugin(
         name: 'baseURL',
         type: 'URL',
         required: true,
-        helperText: 'https://jcrew.com',
+        helperText: 'https://www.jcrew.com',
       },
       {
         name: 'countryCode',
