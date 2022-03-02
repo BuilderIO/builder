@@ -1,5 +1,9 @@
 import { Builder } from '@builder.io/react';
-import { ResourcesPickerButton, ResourcesPickerButtonProps } from './editors/ResourcesPicker';
+import {
+  ResourcePickerProps,
+  ResourcesPickerButton,
+  ResourcesPickerButtonProps,
+} from './editors/ResourcesPicker';
 import { PickResourcesListButton, PickResourceListProps } from './editors/ResourcesList';
 import appState from '@builder.io/app-context';
 import React from 'react';
@@ -35,9 +39,10 @@ export interface CommercePluginConfig {
 
 export interface CommerceAPIOperations {
   [resourceName: string]: {
+    resourcePicker?: React.FC<ResourcePickerProps>;
     findById(id: string): Promise<Resource>;
     findByHandle?(handle: string): Promise<Resource>;
-    search(search: string): Promise<Resource[]>;
+    search(search: string, offset?: number, limit?: number): Promise<Resource[]>;
     getRequestObject(id: string, resource?: Resource): BuilderRequest;
   };
 }
@@ -63,13 +68,14 @@ export const registerCommercePlugin = async (
         api: apiOperations,
       };
       Builder.register('editor.onLoad', onEditorLoad(config, apiOperations, resourceName));
+      const resourcePicker = apiOperations[resourceName].resourcePicker;
       Builder.registerEditor({
         name: `${config.name}${capitalize(resourceName)}`,
         isDataResource: true,
         pluginId: config.id,
         component: (props: ResourcesPickerButtonProps) => (
           <ErrorBoundary>
-            <ResourcesPickerButton {...props} {...contextProps} />
+            <ResourcesPickerButton resourcePicker={resourcePicker} {...props} {...contextProps} />
           </ErrorBoundary>
         ),
       });
@@ -80,6 +86,7 @@ export const registerCommercePlugin = async (
           component: (props: ResourcesPickerButtonProps) => (
             <ErrorBoundary>
               <ResourcesPickerButton
+                resourcePicker={resourcePicker}
                 {...props}
                 {...contextProps}
                 previewType={`${config.name}${capitalize(resourceName)}Preview`}
@@ -87,16 +94,20 @@ export const registerCommercePlugin = async (
               />
             </ErrorBoundary>
           ),
-        });  
+        });
       }
 
-    
       if (apiOperations[resourceName].findByHandle) {
         Builder.registerEditor({
           name: `${config.name}${capitalize(resourceName)}Handle`,
           component: (props: ResourcesPickerButtonProps) => (
             <ErrorBoundary>
-              <ResourcesPickerButton {...props} {...contextProps} handleOnly />
+              <ResourcesPickerButton
+                resourcePicker={resourcePicker}
+                {...props}
+                {...contextProps}
+                handleOnly
+              />
             </ErrorBoundary>
           ),
         });
@@ -106,7 +117,7 @@ export const registerCommercePlugin = async (
         name: `${config.name}${capitalize(pluralize.plural(resourceName))}List`,
         component: (props: PickResourceListProps) => (
           <ErrorBoundary>
-            <PickResourcesListButton {...props} {...contextProps} />
+            <PickResourcesListButton resourcePicker={resourcePicker} {...props} {...contextProps} />
           </ErrorBoundary>
         ),
       });
@@ -138,3 +149,11 @@ export const registerCommercePlugin = async (
 
   await registerEditors();
 };
+
+export { Resource } from './interfaces/resource';
+export { BuilderRequest } from './interfaces/builder-request';
+export {
+  ResourcePreviewCell,
+  ResourcePickerProps,
+  ResourcePreviewCellProps,
+} from './editors/ResourcesPicker';

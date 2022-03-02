@@ -121,13 +121,17 @@
     "typescript": "^3.0.3"
   },
   "dependencies": {
-    "@builder.io/commerce-plugin-tools": "^0.2.3-2",
+    "@builder.io/commerce-plugin-tools": "^0.2.3-5",
     "@commercetools/api-request-builder": "^5.6.3",
     "@types/lodash.debounce": "^4.0.6",
+    "@types/lodash.throttle": "^4.1.6",
     "@types/pluralize": "^0.0.29",
     "lodash.debounce": "^4.0.8",
+    "lodash.throttle": "^4.1.1",
     "pluralize": "^8.0.0",
+    "react-infinite-scroll-component": "^6.1.0",
     "react-vtree": "^2.0.4",
-    "react-window": "^1.8.6"
+    "react-window": "^1.8.6",
+    "safe-localstorage": "^1.0.1"
   }
 }

@@ -1,6 +1,7 @@
 import { registerCommercePlugin } from '@builder.io/commerce-plugin-tools';
 import pkg from '../package.json';
 import { CategoriesPicker } from './CategoriesPicker';
+import { ProductsPicker } from './ProductsPicker';
 /**
  * Category API – Returns the list of categories
 
@@ -26,10 +27,6 @@ Example: https://www.jcrew.com/browse/products/BF721?expand=availability,variati
  */
 
 const proxyFetch = (url: string) => {
-  console.log(
-    'proxying to ',
-    `http://localhost:4000/api/v1/proxy-api?url=${encodeURIComponent(url)}`
-  );
   return fetch(`http://localhost:4000/api/v1/proxy-api?url=${encodeURIComponent(url)}`);
 };
 
@@ -66,6 +63,8 @@ registerCommercePlugin(
     const countryCode = settings.get('countryCode')?.trim() || 'US';
     const locale = settings.get('locale')?.trim() || 'en-US';
 
+    const basicCache = new Map();
+
     const transformResource = (resource: any) => ({
       ...resource,
       id: resource.id,
@@ -80,21 +79,36 @@ registerCommercePlugin(
 
     return {
       product: {
+        resourcePicker: ProductsPicker,
+
         async findById(id: string) {
           // https://www.jcrew.com/browse/products/BF721?expand=availability,variations&display=standard&locale=en-US&country-code=US
-          const product = await proxyFetch(
-            `${baseURL}/browse/products/${id}?display=standard&locale=${locale}&country-code=${countryCode}`
-          ).then(res => res.json());
+          const product =
+            basicCache.get(id) ||
+            (await proxyFetch(
+              `${baseURL}/browse/products/${id}?display=standard&locale=${locale}&country-code=${countryCode}`
+            ).then(res => res.json()));
+
+          basicCache.set(id, product);
           return transformResource(product);
         },
-        async search(search: string) {
+        async search(search: string, offset, limit) {
+          const key = `search:product:${search}:${offset}:${limit}`;
           // https://www.jcrew.com/browse/product_search?count=60&start=0&refine=c_allowedCountries=ALL|US&refine_1=c_displayOn=standard_usd&refine_2=cgid=all&country-code=US
-          const response = await proxyFetch(
-            `${baseURL}/browse/product_search?count=60&start=0&refine=c_allowedCountries=ALL|US&refine_1=c_displayOn=standard_usd&refine_2=cgid=all&country-code=${countryCode}&locale=${locale}`
-          ).then(res => res.json());
-          return response.hits.map((hit: any) => ({
+          const response =
+            basicCache.get(key) ||
+            (await proxyFetch(
+              `${baseURL}/browse/product_search?count=${limit || 60}&start=${
+                offset || 0
+              }&refine=c_allowedCountries=ALL|US&refine_1=c_displayOn=standard_usd&refine_2=cgid=${
+                search || 'all'
+              }&country-code=${countryCode}&locale=${locale}`
+            ).then(res => res.json()));
+
+          basicCache.set(key, response);
+          return (response.hits || []).map((hit: any) => ({
             id: hit.product_id,
-            title: `${hit.product_name} - (id: ${hit.product_id})`,
+            title: hit.product_name,
           }));
         },
 
@@ -112,19 +126,27 @@ registerCommercePlugin(
       },
       category: {
         async findById(id: string) {
+          const key = `category:${id}`;
           // https://www.jcrew.com/browse/categories/(mens%7Ccategories%7Cclothing)?country-code=US
-          const category = await proxyFetch(
-            `${baseURL}/browse/categories/${id}?display=standard&locale=${locale}&country-code=${countryCode}`
-          ).then(res => res.json());
+          const category =
+            basicCache.get(key) ||
+            (await proxyFetch(
+              `${baseURL}/browse/categories/${id}?display=standard&locale=${locale}&country-code=${countryCode}`
+            ).then(res => res.json()));
+          basicCache.set(key, category);
           return transformResource(category);
         },
         async search(search: string) {
+          const key = `search:category:${search}`;
           // https://www.jcrew.com/browse/categories/all?country-code=US
-          const response = await proxyFetch(
-            `${baseURL}/browse/categories/${
-              search ? `(${search})` : 'all'
-            }?display=standard&locale=${locale}&country-code=${countryCode}`
-          ).then(res => res.json());
+          const response =
+            basicCache.get(key) ||
+            (await proxyFetch(
+              `${baseURL}/browse/categories/${
+                search ? `(${search})` : 'all'
+              }?display=standard&locale=${locale}&country-code=${countryCode}`
+            ).then(res => res.json()));
+          basicCache.set(key, response);
           return (response.categories || response.data?.[0].categories || []).map(
             transformResource
           );

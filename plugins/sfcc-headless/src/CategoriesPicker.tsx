@@ -39,7 +39,7 @@ export const CategoriesPicker: React.FC<
     async search() {
       this.loading = true;
 
-      const resourcesResponse = await props.api[props.resourceName]
+      const resourcesResponse = await props.api.category
         .search(store.rootCategory)
         .catch(store.catchError);
 
@@ -56,7 +56,7 @@ export const CategoriesPicker: React.FC<
       });
     },
     goUp: debounce(async (candidate: string) => {
-      const rootCategory: any = await props.api[props.resourceName]
+      const rootCategory: any = await props.api.category
         .findById(candidate)
         .catch(store.catchError);
 
@@ -116,19 +116,21 @@ export const CategoriesPicker: React.FC<
                 }}
               >
                 <ExpansionPanelSummary expandIcon={<ExpandMore />}>
-                  <Tooltip title={item.id}>
-                    <IconButton
-                      onClick={action(() => {
-                        props.onChange(item);
-                      })}
-                    >
-                      {String(item.id) === String(props.value?.id) ? (
-                        <CheckBox />
-                      ) : (
-                        <CheckBoxOutlineBlank />
-                      )}
-                    </IconButton>
-                  </Tooltip>
+                  {
+                    <Tooltip title={item.id}>
+                      <IconButton
+                        onClick={action(() => {
+                          props.onChange(item);
+                        })}
+                      >
+                        {String(item.id) === String(props.value?.id) ? (
+                          <CheckBox />
+                        ) : (
+                          <CheckBoxOutlineBlank />
+                        )}
+                      </IconButton>
+                    </Tooltip>
+                  }
 
                   <ResourcePreviewCell
                     selected={store.formValue === item.id}
@@ -154,7 +156,7 @@ export const CategoriesPicker: React.FC<
                 }}
                 variant="caption"
               >
-                No Categories found
+                No categories found
               </Typography>
             </div>
           ))}
