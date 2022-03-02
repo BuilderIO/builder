@@ -1,12 +1,17 @@
-import { registerCommercePlugin } from '@builder.io/commerce-plugin-tools';
+import { CommerceAPIOperations, CommercePluginConfig, registerCommercePlugin } from '@builder.io/commerce-plugin-tools';
 import pkg from '../package.json';
 import { CategoriesPicker } from './CategoriesPicker';
 import { ProductsPicker } from './ProductsPicker';
 import appState from '@builder.io/app-context';
+import { dataProvider } from './data-provider';
 
 const proxyFetch = (url: string) => {
-  return fetch(`${appState.config.apiRoot()}/api/v1/proxy-api?url=${encodeURIComponent(url)}`);
+  return fetch(proxyUrl(url));
 };
+
+const proxyUrl = (url: string) => {
+  return `${appState.config.apiRoot()}/api/v1/proxy-api?apiKey=${appState.user.apiKey}&url=${encodeURIComponent(url)}`
+}
 
 registerCommercePlugin(
   {
@@ -55,7 +60,7 @@ registerCommercePlugin(
       }),
     });
 
-    return {
+    const service: CommerceAPIOperations =  {
       product: {
         resourcePicker: ProductsPicker,
 
@@ -94,7 +99,7 @@ registerCommercePlugin(
           return {
             '@type': '@builder.io/core:Request' as const,
             request: {
-              url: `${baseURL}/browse/products/${id}?display=standard&locale=${locale}&country-code=${countryCode}`,
+              url: proxyUrl(`${baseURL}/browse/products/${id}?display=standard&locale=${locale}&country-code=${countryCode}`),
             },
             options: {
               product: id,
@@ -136,7 +141,7 @@ registerCommercePlugin(
           return {
             '@type': '@builder.io/core:Request' as const,
             request: {
-              url: `${baseURL}/browse/categories/${id}?display=standard&locale=${locale}&country-code=${countryCode}`,
+              url: proxyUrl(`${baseURL}/browse/categories/${id}?display=standard&locale=${locale}&country-code=${countryCode}`),
             },
             options: {
               category: id,
@@ -145,5 +150,9 @@ registerCommercePlugin(
         },
       },
     };
+
+    appState.registerDataPlugin(dataProvider(service));
+
+    return service;
   }
 );
