@@ -1,6 +1,6 @@
 {
-  "name": "@builder.io/plugin-sfcc-ecom",
-  "version": "0.0.2",
+  "name": "@builder.io/plugin-sfcc-headless",
+  "version": "0.0.2-0",
   "description": "",
   "keywords": [],
   "main": "dist/plugin.system.js",
