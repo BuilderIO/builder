@@ -604,6 +604,9 @@ export interface Action {
 }
 
 export class Builder {
+  /**
+   * @deprecated. This is buggy, and always behind by a version.
+   */
   static VERSION = version;
 
   static components: Component[] = [];
