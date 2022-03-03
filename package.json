@@ -46,6 +46,7 @@
     "lint:fix": "prettier --write '**/*.{js,jsx,ts,tsx}'"
   },
   "dependencies": {
-    "prettier": "2.0.5"
+    "prettier": "2.0.5",
+    "zx": "^5.1.0"
   }
 }

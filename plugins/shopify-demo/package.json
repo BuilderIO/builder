@@ -119,7 +119,6 @@
   },
   "dependencies": {
     "@builder.io/commerce-plugin-tools": "^0.2.1-2",
-    "@builder.io/sdk": "^1.1.3-alpha.4",
     "@emotion/core": "^10.0.22",
     "@emotion/styled": "^10.0.23",
     "@material-ui/core": "^3.9.2",

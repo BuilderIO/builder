@@ -1,8 +1,10 @@
 import { expect, test } from '@jest/globals';
+import { BuilderBlock } from '../types/builder-block';
 import { getProcessedBlock } from './get-processed-block';
 
 test('Can process bindings', () => {
-  const block = {
+  const block: BuilderBlock = {
+    '@type': '@builder.io/sdk:Element',
     properties: {
       foo: 'bar',
     },
@@ -23,9 +25,9 @@ test('Can process bindings', () => {
     state: { test: 'hello' },
   });
   expect(processed).not.toEqual(block);
-  expect(processed.properties.foo).toEqual('baz');
-  expect((processed.properties as any).test).toEqual('hello');
-  expect((processed.properties as any).block).toEqual('bar');
-  expect((processed.properties as any).isEditing).toEqual(false);
-  expect((processed as any).responsiveStyles.large.zIndex).toEqual(2);
+  expect(processed.properties?.foo).toEqual('baz');
+  expect(processed.properties?.test).toEqual('hello');
+  expect(processed.properties?.block).toEqual('bar');
+  expect(processed.properties?.isEditing).toEqual(false);
+  expect(processed.responsiveStyles?.large?.zIndex).toEqual(2);
 });
