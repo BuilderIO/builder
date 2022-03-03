@@ -2006,6 +2006,13 @@ export class Builder {
             try {
               resolve(JSON.parse(data));
             } catch (err) {
+              if ((err as any)?.name === 'SyntaxError') {
+                const jsonParseError = new Error(
+                  `[Builder.io] JSON parsing error: expected valid JSON content, instead received: ${data}`
+                );
+                reject(jsonParseError);
+              }
+
               reject(err);
             }
           });
