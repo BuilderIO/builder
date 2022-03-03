@@ -11,7 +11,7 @@ import { LinkingOptions, NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 // TO-DO: add your own public Builder API key here
-const BUILDER_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660';
+const BUILDER_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660'; // ggignore
 
 const linking: LinkingOptions<any> = {
   prefixes: ['http://localhost:19006'],

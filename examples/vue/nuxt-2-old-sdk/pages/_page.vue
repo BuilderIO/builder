@@ -20,7 +20,7 @@ import Vue from 'vue'
 import { builder, RenderContent } from '@builder.io/vue'
 
 // TODO: enter your public API key
-const BUILDER_PUBLIC_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660'
+const BUILDER_PUBLIC_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660' // ggignore
 builder.init(BUILDER_PUBLIC_API_KEY)
 
 export default Vue.extend({
