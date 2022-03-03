@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/vue",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "repository": {
     "type": "git",
     "url": "https://github.com/builderio/builder"
