@@ -167,9 +167,11 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
     } else if (this.props.inline && this.options?.initialContent?.length) {
       const contentData = this.options.initialContent[0];
       // TODO: intersectionobserver like in subscribetocontent - reuse the logic
-      this.builder.trackImpression(contentData.id, this.renderedVariantId, undefined, {
-        content: contentData,
-      });
+      if (contentData?.id) {
+        this.builder.trackImpression(contentData.id, this.renderedVariantId, undefined, {
+          content: contentData,
+        });
+      }
     }
 
     if (Builder.isEditing) {
