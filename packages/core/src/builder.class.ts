@@ -604,6 +604,9 @@ export interface Action {
 }
 
 export class Builder {
+  /**
+   * @deprecated. This is buggy, and always behind by a version.
+   */
   static VERSION = version;
 
   static components: Component[] = [];
@@ -2006,6 +2009,16 @@ export class Builder {
             try {
               resolve(JSON.parse(data));
             } catch (err) {
+              if ((err as any)?.name === 'SyntaxError') {
+                const jsonParseError = new Error(
+                  `[Builder.io] ERROR: invalid response.
+Request: ${JSON.stringify(requestOptions, null, 2)}
+Response Data: ${data}
+`
+                );
+                reject(jsonParseError);
+              }
+
               reject(err);
             }
           });
