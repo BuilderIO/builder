@@ -2008,7 +2008,10 @@ export class Builder {
             } catch (err) {
               if ((err as any)?.name === 'SyntaxError') {
                 const jsonParseError = new Error(
-                  `[Builder.io] JSON parsing error: expected valid JSON content, instead received: ${data}`
+                  `[Builder.io] ERROR: invalid response.
+Request: ${JSON.stringify(requestOptions, null, 2)}
+Response Data: ${data}
+`
                 );
                 reject(jsonParseError);
               }
