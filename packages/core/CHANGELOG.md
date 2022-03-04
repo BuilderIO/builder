@@ -2,6 +2,7 @@
 
 - improved logging during JSON.parse errors
 - deprecation notice on `Builder.VERSION`
+- stop tracking impressions for content with no id
 
 ### 1.1.26
 
