@@ -121,8 +121,6 @@ function decorator(fn: Function) {
   };
 }
 
-const Throttle = decorator(throttle);
-
 const fetchCache: { [key: string]: any } = {};
 
 export interface BuilderComponentProps {
@@ -1192,7 +1190,6 @@ export class BuilderComponent extends React.Component<
   }
 
   // TODO: customizable hm
-  @Throttle(100, { leading: true, trailing: true })
   throttledHandleRequest(propertyName: string, url: string) {
     return this.handleRequest(propertyName, url);
   }
