@@ -55,9 +55,11 @@ export default function RenderBlocks(props: RenderBlockProps) {
       onMouseEnter={state.onMouseEnter}
     >
       <Show when={props.blocks}>
-        {props.blocks?.map((block: any) => (
-          <RenderBlock block={block} />
-        ))}
+        <>
+          {props.blocks?.map((block: any, index) => (
+            <RenderBlock block={block} key={index} />
+          ))}
+        </>
       </Show>
     </div>
   );
