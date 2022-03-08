@@ -62,18 +62,19 @@ const RESOURCE_TYPES: {
     name: 'Collection',
     id: 'collection',
     description: 'All of your Shopify custom app products.',
-  }
+  },
 ];
 
 interface DataPluginConfig extends APIOperations {
-  name: string,
-  icon: string,
+  name: string;
+  icon: string;
 }
 
-export const getDataConfig = (service: CommerceAPIOperations) : DataPluginConfig  => {
+export const getDataConfig = (service: CommerceAPIOperations): DataPluginConfig => {
   return {
     name: 'Shopify',
-    icon: 'https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fc9156e9ba658458db6fcad3f101773c7',
+    icon:
+      'https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fc9156e9ba658458db6fcad3f101773c7',
     getResourceTypes: async () =>
       RESOURCE_TYPES.map(
         (model): ResourceType => ({
@@ -99,11 +100,11 @@ export const getDataConfig = (service: CommerceAPIOperations) : DataPluginConfig
         resource: resourceTypeId as ShopifyResourceType,
         ...options,
       });
-  
+
       const response = await fetch(contentUrl).then(res => res.json());
-  
+
       const results = resourceId ? [response[resourceTypeId]] : response[`${resourceTypeId}s`];
-  
+
       return results.map(
         (result: any): ResourceEntryType => ({
           id: result.id,
@@ -111,5 +112,5 @@ export const getDataConfig = (service: CommerceAPIOperations) : DataPluginConfig
         })
       );
     },
-  }
+  };
 };
