@@ -3,6 +3,7 @@ import { registerCommercePlugin } from '@builder.io/commerce-plugin-tools';
 import Client from 'shopify-buy';
 import pkg from '../package.json';
 import appState from '@builder.io/app-context';
+import { getDataConfig } from './data-plugin';
 
 registerCommercePlugin(
   {
@@ -32,7 +33,7 @@ registerCommercePlugin(
       domain: settings.get('storeDomain'),
     });
 
-    return {
+    const service = {
       product: {
         async findById(id: string) {
           return client.product.fetch(id);
@@ -84,5 +85,9 @@ registerCommercePlugin(
         },
       },
     };
+
+    appState.registerDataPlugin(getDataConfig(service));
+
+    return service;
   }
 );
