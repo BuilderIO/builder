@@ -51,9 +51,9 @@ registerCommercePlugin(
           return {
             '@type': '@builder.io/core:Request' as const,
             request: {
-              url: `${appState.config.apiRoot()}/api/v1/shopify-storefront/products/${id}?apiKey=${
+              url: `${appState.config.apiRoot()}/api/v1/shopify/storefront/product/${id}?apiKey=${
                 appState.user.apiKey
-              }`,
+              }&pluginId=${pkg.name}`,
             },
           };
         },
@@ -76,9 +76,9 @@ registerCommercePlugin(
           return {
             '@type': '@builder.io/core:Request' as const,
             request: {
-              url: `${appState.config.apiRoot()}/api/v1/shopify-storefront/collections/${id}?apiKey=${
+              url: `${appState.config.apiRoot()}/api/v1/shopify/storefront/collection/${id}?apiKey=${
                 appState.user.apiKey
-              }`,
+              }&pluginId=${pkg.name}`,
             },
           };
         },
