@@ -21,7 +21,7 @@ registerCommercePlugin(
       {
         name: 'storeDomain',
         type: 'text',
-        helperText: 'your-store.myshopify.com',
+        helperText: 'Your entire store domain, such as "your-store.myshopify.com"',
         required: true,
       },
     ],
