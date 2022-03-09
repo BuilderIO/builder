@@ -25,24 +25,21 @@
             ).length)) &&
         !isReactNative()
       "
-      is="style"
+      :is="style"
     >
       {{ useContent.data.cssCode }}
       {{ getFontCss(useContent.data) }}
     </component>
 
-    <render-block
-      v-for="(block, index) in useContent &&
-      useContent.data &&
-      (useContent && useContent.data).blocks"
-      :block="block"
-      :key="block.id"
-    ></render-block>
+    <render-blocks
+      :blocks="
+        useContent && useContent.data && (useContent && useContent.data).blocks
+      "
+    ></render-blocks>
   </div>
 </template>
 <script>
 import { isBrowser } from '../functions/is-browser';
-import RenderBlock from './render-block';
 import BuilderContext from '../context/builder.context';
 import { track } from '../functions/track';
 import { ifTarget } from '../functions/if-target';
@@ -56,10 +53,11 @@ import {
   convertSearchParamsToQueryObject,
   getBuilderSearchParams,
 } from '../functions/get-builder-search-params';
+import RenderBlocks from './render-blocks';
 
 export default {
   name: 'render-content',
-  components: { 'render-block': async () => RenderBlock },
+  components: { 'render-blocks': async () => RenderBlocks },
   props: ['content', 'model'],
 
   data: () => ({
@@ -121,6 +119,12 @@ export default {
           }
         }
       }
+    }
+  },
+
+  unmounted() {
+    if (isBrowser()) {
+      window.removeEventListener('message', this.processMessage);
     }
   },
 

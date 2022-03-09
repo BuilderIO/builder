@@ -53,9 +53,9 @@ export default function Columns(props) {
   }
 
   return (
-    <View className="builder-columns" style={styles.view1}>
+    <View style={styles.view1}>
       {props.columns?.map((column) => (
-        <View className="builder-column" style={styles.view2}>
+        <View style={styles.view2}>
           <RenderBlocks blocks={column.blocks} />
         </View>
       ))}

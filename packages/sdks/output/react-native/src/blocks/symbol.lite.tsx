@@ -8,7 +8,7 @@ export default function Symbol(props) {
   const builderContext = useContext(BuilderContext);
 
   return (
-    <View className="builder-symbol">
+    <View>
       <RenderContent
         context={builderContext.context}
         data={props.symbol?.data}
