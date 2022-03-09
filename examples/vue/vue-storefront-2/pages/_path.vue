@@ -1,8 +1,9 @@
 <template>
   <div id="home">
     <div>Hello world from your Vue project. Below is Builder Content:</div>
-    <div>page: {{ content.data.title }}</div>
+
     <div v-if="canShowContent">
+      <div>page: {{ content.data.title }}</div>
       <builder-render-content model="page" :content="content" />
     </div>
   </div>

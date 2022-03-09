@@ -8,7 +8,6 @@ import {
 } from '@builder.io/mitosis';
 import { isBrowser } from '../functions/is-browser';
 import { BuilderContent } from '../types/builder-content';
-import RenderBlock from './render-block.lite';
 import BuilderContext from '../context/builder.context.lite';
 import { track } from '../functions/track';
 import { ifTarget } from '../functions/if-target';
@@ -22,6 +21,7 @@ import {
   convertSearchParamsToQueryObject,
   getBuilderSearchParams,
 } from '../functions/get-builder-search-params';
+import RenderBlocks from './render-blocks.lite';
 
 export type RenderContentProps = {
   content?: BuilderContent;
@@ -207,9 +207,7 @@ export default function RenderContent(props: RenderContentProps) {
               {state.getFontCss(state.useContent.data)}
             </style>
           )}
-        {state.useContent?.data?.blocks?.map((block: any) => (
-          <RenderBlock key={block.id} block={block} />
-        ))}
+        <RenderBlocks blocks={state.useContent?.data?.blocks} />
       </div>
     </Show>
   );

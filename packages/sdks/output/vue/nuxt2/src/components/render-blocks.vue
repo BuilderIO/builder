@@ -1,16 +1,14 @@
 <template>
   <div
-    class="div-178o76acnws"
+    class="div-21azgz5avex"
     :builder-path="path"
     :builder-parent-id="parent"
-    @click="onClick"
-    @mouseenter="onMouseEnter"
-    :class="
-      _classStringToObject(
-        'builder-blocks' +
-          (!(this.blocks && this.blocks.length) ? ' no-blocks' : '')
-      )
-    "
+    :dataSet="{
+      class: className,
+    }"
+    @click="onClick()"
+    @mouseenter="onMouseEnter()"
+    :class="_classStringToObject(this.className)"
   >
     <render-block
       v-for="(block, index) in blocks"
@@ -27,6 +25,12 @@ export default {
   name: 'render-blocks',
   components: { 'render-block': async () => RenderBlock },
   props: ['blocks', 'parent', 'path'],
+
+  computed: {
+    className() {
+      return 'builder-blocks' + (!this.blocks?.length ? ' no-blocks' : '');
+    },
+  },
 
   methods: {
     onClick() {
@@ -72,7 +76,7 @@ export default {
 };
 </script>
 <style scoped>
-.div-178o76acnws {
+.div-21azgz5avex {
   display: flex;
   flex-direction: column;
   align-items: stretch;

@@ -11,6 +11,9 @@ export type RenderBlockProps = {
 
 export default function RenderBlocks(props: RenderBlockProps) {
   const state = useState({
+    get className() {
+      return 'builder-blocks' + (!props.blocks?.length ? ' no-blocks' : '');
+    },
     onClick() {
       if (isEditing() && !props.blocks?.length) {
         window.parent?.postMessage(
@@ -43,16 +46,19 @@ export default function RenderBlocks(props: RenderBlockProps) {
 
   return (
     <div
-      className={'builder-blocks' + (!props.blocks?.length ? ' no-blocks' : '')}
+      className={state.className}
       builder-path={props.path}
       builder-parent-id={props.parent}
+      dataSet={{
+        class: state.className,
+      }}
       css={{
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'stretch',
       }}
-      onClick={state.onClick}
-      onMouseEnter={state.onMouseEnter}
+      onClick={(event) => state.onClick()}
+      onMouseEnter={(event) => state.onMouseEnter()}
     >
       <Show when={props.blocks}>
         {props.blocks?.map((block: any) => (

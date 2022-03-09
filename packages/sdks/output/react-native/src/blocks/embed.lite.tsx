@@ -56,10 +56,6 @@ export default function Embed(props) {
   }, []);
 
   return (
-    <View
-      className="builder-embed"
-      ref={elem}
-      dangerouslySetInnerHTML={{ __html: 'props.content' }}
-    />
+    <View ref={elem} dangerouslySetInnerHTML={{ __html: 'props.content' }} />
   );
 }
