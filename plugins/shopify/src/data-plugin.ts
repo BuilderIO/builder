@@ -1,7 +1,7 @@
-import { APIOperations, ResourceEntryType, ResourceType } from '@builder.io/data-plugin-tools';
+import { APIOperations, ResourceType } from '@builder.io/data-plugin-tools';
 import appState from '@builder.io/app-context';
 import { CommerceAPIOperations } from '@builder.io/commerce-plugin-tools';
-
+import pkg from '../package.json'
 type ShopifyResourceType = 'product' | 'collection';
 
 const buildPath = ({
@@ -39,6 +39,7 @@ const buildShopifyUrl = ({
   const path = buildPath({ resource, resourceId });
 
   const search = new URLSearchParams({
+    pluginId: pkg.name,
     apiKey: appState.user.apiKey!,
     query: query ? `title:*${query}*` : '',
     first: (first || 20).toString(),
@@ -80,7 +81,7 @@ export const getDataConfig = (service: CommerceAPIOperations): DataPluginConfig 
         (model): ResourceType => ({
           ...model,
           inputs: () => [
-            { friendlyName: 'limit', name: 'first', type: 'number', defaultValue: 10 },
+            { friendlyName: 'limit', name: 'first', type: 'number', defaultValue: 10, max: 60, min: 0 },
             { friendlyName: 'Search', name: 'query', type: 'string' },
           ],
           toUrl: ({ entry, query, first }) =>
@@ -94,20 +95,20 @@ export const getDataConfig = (service: CommerceAPIOperations): DataPluginConfig 
         })
       ),
     getEntriesByResourceType: async (resourceTypeId, options = {}) => {
-      const resourceId = options.resourceEntryId;
-      const contentUrl = buildShopifyUrl({
-        resourceId,
-        resource: resourceTypeId as ShopifyResourceType,
-        ...options,
-      });
+      const entry = options.resourceEntryId as ShopifyResourceType;
 
-      const response = await fetch(contentUrl).then(res => res.json());
+      if (entry) {
+        const entryObj = await service[resourceTypeId].findById(entry);
+        return [{
+          id: String(entryObj.id),
+          name: entryObj.title,
+        }]
+      }
 
-      const results = resourceId ? [response[resourceTypeId]] : response[`${resourceTypeId}s`];
+      const response = await service[resourceTypeId].search(options.searchText || '');
 
-      return results.map(
-        (result: any): ResourceEntryType => ({
-          id: result.id,
+      return response.map(result => ({
+          id: String(result.id),
           name: result.title,
         })
       );
