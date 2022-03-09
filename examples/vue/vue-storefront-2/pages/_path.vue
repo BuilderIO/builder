@@ -43,7 +43,6 @@ export default Vue.extend({
     }
     this.content = content;
     this.canShowContent = content || isEditing();
-    console.log({ canShowContent: this.canShowContent, isEditing: isEditing(), content });
   },
 });
 </script>
