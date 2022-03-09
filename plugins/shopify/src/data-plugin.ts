@@ -43,7 +43,7 @@ const buildShopifyUrl = ({
     apiKey: appState.user.apiKey!,
     query: query ? `title:*${query}*` : '',
     first: (first || 20).toString(),
-    sortKey: 'title',
+    sortKey: 'TITLE',
   });
 
   return `${base}/${path}?${search}`;
@@ -95,7 +95,7 @@ export const getDataConfig = (service: CommerceAPIOperations): DataPluginConfig 
         })
       ),
     getEntriesByResourceType: async (resourceTypeId, options = {}) => {
-      const entry = options.resourceEntryId as ShopifyResourceType;
+      const entry = options.resourceEntryId;
 
       if (entry) {
         const entryObj = await service[resourceTypeId].findById(entry);

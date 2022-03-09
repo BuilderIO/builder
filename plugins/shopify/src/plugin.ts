@@ -44,7 +44,7 @@ registerCommercePlugin(
         async search(search: string) {
           return client.product.fetchQuery({
             query: search ? `title:*${search}*` : '',
-            sortKey: 'title',
+            sortKey: 'TITLE',
           });
         },
 
@@ -56,6 +56,9 @@ registerCommercePlugin(
                 appState.user.apiKey
               }&pluginId=${pkg.name}`,
             },
+            options: {
+              product: id
+            }
           };
         },
       },
@@ -69,7 +72,7 @@ registerCommercePlugin(
         async search(search: string) {
           return client.collection.fetchQuery({
             query: search ? `title:*${search}*` : '',
-            sortKey: 'title',
+            sortKey: 'TITLE',
           });
         },
 
@@ -81,6 +84,9 @@ registerCommercePlugin(
                 appState.user.apiKey
               }&pluginId=${pkg.name}`,
             },
+            options: {
+              collection: id,
+            }
           };
         },
       },
