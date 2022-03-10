@@ -10,7 +10,6 @@ export default function Image(props) {
           alt={props.altText}
           aria-role={props.altText ? 'presentation' : undefined}
           style={styles.view2}
-          className={'builder-image' + (props.class ? ' ' + props.class : '')}
           src={props.image}
           srcset={props.srcset}
           sizes={props.sizes}
@@ -21,7 +20,7 @@ export default function Image(props) {
 
       {props.aspectRatio &&
       !(props.fitContent && props.builderBlock?.children?.length) ? (
-        <View className="builder-image-sizer" style={styles.view3}>
+        <View style={styles.view3}>
           <Text> </Text>
         </View>
       ) : null}

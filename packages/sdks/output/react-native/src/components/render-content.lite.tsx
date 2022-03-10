@@ -2,7 +2,6 @@ import * as React from 'react';
 import { View, StyleSheet, Image, Text } from 'react-native';
 import { useState, useContext, useEffect } from 'react';
 import { isBrowser } from '../functions/is-browser';
-import RenderBlock from './render-block.lite';
 import BuilderContext from '../context/builder.context.lite';
 import { track } from '../functions/track';
 import { ifTarget } from '../functions/if-target';
@@ -12,6 +11,11 @@ import { isEditing } from '../functions/is-editing';
 import { isPreviewing } from '../functions/is-previewing';
 import { previewingModelName } from '../functions/previewing-model-name';
 import { getContent } from '../functions/get-content';
+import {
+  convertSearchParamsToQueryObject,
+  getBuilderSearchParams,
+} from '../functions/get-builder-search-params';
+import RenderBlocks from './render-blocks.lite';
 
 export default function RenderContent(props) {
   function useContent() {
@@ -126,31 +130,33 @@ export default function RenderContent(props) {
 
       if (isPreviewing()) {
         if (props.model && previewingModelName() === props.model) {
-          const options = {};
           const currentUrl = new URL(location.href);
           const apiKey = currentUrl.searchParams.get('apiKey');
 
           if (apiKey) {
-            const builderPrefix = 'builder.';
-            currentUrl.searchParams.forEach((value, key) => {
-              if (key.startsWith(builderPrefix)) {
-                options[key.replace(builderPrefix, '')] = value;
-              }
-            }); // TODO: need access to API key
-
             getContent({
               model: props.model,
               apiKey,
-              options,
+              options: getBuilderSearchParams(
+                convertSearchParamsToQueryObject(currentUrl.searchParams)
+              ),
             }).then((content) => {
               if (content) {
                 setOverrideContent(content);
               }
             });
-          } // TODO: fetch content and override. Forward all builder.* params
+          }
         }
       }
     }
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (isBrowser()) {
+        window.removeEventListener('message', processMessage);
+      }
+    };
   }, []);
 
   return (
@@ -191,9 +197,7 @@ export default function RenderContent(props) {
               </View>
             ) : null}
 
-            {useContent?.()?.data?.blocks?.map((block) => (
-              <RenderBlock key={block.id} block={block} />
-            ))}
+            <RenderBlocks blocks={useContent?.()?.data?.blocks} />
           </View>
         </>
       ) : null}

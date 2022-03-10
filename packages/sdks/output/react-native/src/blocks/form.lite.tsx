@@ -231,7 +231,7 @@ export default function FormComponent(props) {
       ) : null}{' '}
       {submissionState() === 'error' && responseData ? (
         <>
-          <View className="builder-form-error-text" style={styles.view1}>
+          <View style={styles.view1}>
             {' '}
             <Text>{JSON.stringify(responseData, null, 2)}</Text>{' '}
           </View>

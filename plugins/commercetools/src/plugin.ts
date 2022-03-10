@@ -117,11 +117,15 @@ registerCommercePlugin(
 
         async findByHandle(handle: string): Promise<Resource> {
           const requestBuilder = createRequestBuilder({ projectKey });
-          let request = requestBuilder.products.byKey(handle);
+          let request = requestBuilder.products.where(
+            `masterData(current(slug(${locale}="${handle}")))`
+          );
           const product = await fetch(`${apiUrl}${request.build()}`, {
             headers,
-          }).then(res => res.json());
-          return transform(product);
+          })
+            .then(res => res.json())
+            .then(res => res.results[0]);
+          return product && transform(product);
         },
         async search(search: string): Promise<Resource[]> {
           const requestBuilder = createRequestBuilder({ projectKey });
@@ -144,7 +148,7 @@ registerCommercePlugin(
           return {
             '@type': '@builder.io/core:Request' as const,
             request: {
-              url: `${apiUrl}${requestBuilder.products.byId(id)}`,
+              url: `${apiUrl}${requestBuilder.products.byId(id).build()}`,
               headers,
             },
             options: {
@@ -166,11 +170,13 @@ registerCommercePlugin(
 
         async findByHandle(handle: string): Promise<Resource> {
           const requestBuilder = createRequestBuilder({ projectKey });
-          let request = requestBuilder.categories.byKey(handle);
-          const product = await fetch(`${apiUrl}${request.build()}`, {
+          const request = requestBuilder.categories.where(`slug(${locale}="${handle}")`);
+          const category = await fetch(`${apiUrl}${request.build()}`, {
             headers,
-          }).then(res => res.json());
-          return transform(product);
+          })
+            .then(res => res.json())
+            .then(res => res.results[0]);
+          return category && transform(category);
         },
         async search(search: string): Promise<Resource[]> {
           const requestBuilder = createRequestBuilder({ projectKey });
@@ -191,7 +197,7 @@ registerCommercePlugin(
           return {
             '@type': '@builder.io/core:Request' as const,
             request: {
-              url: `${apiUrl}${requestBuilder.categories.byId(id)}`,
+              url: `${apiUrl}${requestBuilder.categories.byId(id).build()}`,
               headers,
             },
             options: {

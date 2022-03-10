@@ -25,24 +25,21 @@
             ).length)) &&
         !isReactNative()
       "
-      is="style"
+      :is="style"
     >
       {{ useContent.data.cssCode }}
       {{ getFontCss(useContent.data) }}
     </component>
 
-    <render-block
-      v-for="(block, index) in useContent &&
-      useContent.data &&
-      (useContent && useContent.data).blocks"
-      :block="block"
-      :key="block.id"
-    ></render-block>
+    <render-blocks
+      :blocks="
+        useContent && useContent.data && (useContent && useContent.data).blocks
+      "
+    ></render-blocks>
   </div>
 </template>
 <script>
 import { isBrowser } from '../functions/is-browser';
-import RenderBlock from './render-block';
 import BuilderContext from '../context/builder.context';
 import { track } from '../functions/track';
 import { ifTarget } from '../functions/if-target';
@@ -52,10 +49,15 @@ import { isEditing } from '../functions/is-editing';
 import { isPreviewing } from '../functions/is-previewing';
 import { previewingModelName } from '../functions/previewing-model-name';
 import { getContent } from '../functions/get-content';
+import {
+  convertSearchParamsToQueryObject,
+  getBuilderSearchParams,
+} from '../functions/get-builder-search-params';
+import RenderBlocks from './render-blocks';
 
 export default {
   name: 'render-content',
-  components: { 'render-block': async () => RenderBlock },
+  components: { 'render-blocks': async () => RenderBlocks },
   props: ['content', 'model'],
 
   data: () => ({
@@ -99,30 +101,30 @@ export default {
 
       if (isPreviewing()) {
         if (this.model && previewingModelName() === this.model) {
-          const options = {};
           const currentUrl = new URL(location.href);
           const apiKey = currentUrl.searchParams.get('apiKey');
 
           if (apiKey) {
-            const builderPrefix = 'builder.';
-            currentUrl.searchParams.forEach((value, key) => {
-              if (key.startsWith(builderPrefix)) {
-                options[key.replace(builderPrefix, '')] = value;
-              }
-            }); // TODO: need access to API key
-
             getContent({
               model: this.model,
               apiKey,
-              options,
+              options: getBuilderSearchParams(
+                convertSearchParamsToQueryObject(currentUrl.searchParams)
+              ),
             }).then((content) => {
               if (content) {
                 this.overrideContent = content;
               }
             });
-          } // TODO: fetch content and override. Forward all builder.* params
+          }
         }
       }
+    }
+  },
+
+  unmounted() {
+    if (isBrowser()) {
+      window.removeEventListener('message', this.processMessage);
     }
   },
 

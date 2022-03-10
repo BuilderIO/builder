@@ -1,17 +1,51 @@
-import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
+import { BuilderBlock } from '@builder.io/angular';
+import { Component, Input } from '@angular/core';
+import { GetContentOptions } from '@builder.io/sdk';
 
-import { environment } from '../environments/environment';
+@Component({
+  selector: 'custom-thing',
+  template: 'Hello: {{name}}',
+})
+export class CustomThing {
+  @Input()
+  name = '';
+}
+
+BuilderBlock({
+  tag: 'custom-thing',
+  name: 'Custom thing',
+  inputs: [
+    {
+      name: 'name',
+      type: 'string',
+    },
+  ],
+})(CustomThing);
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css'],
 })
-export class AppComponent implements OnInit {
-  constructor(private elementRef: ElementRef<HTMLElement>, private renderer: Renderer2) {}
-
-  ngOnInit(): void {
-    if (environment.production) {
-      this.renderer.removeAttribute(this.elementRef.nativeElement, 'ng-version');
+export class AppComponent {
+  title = 'app';
+  options: any = {
+    cacheSeconds: 1,
+    data: {
+      'locale': 'en-US',
     }
+  };
+
+  data = {
+    property: 'hello',
+    fn: (text: string) => alert(text),
+  };
+
+  load(event: any) {
+    console.log('load', event);
+  }
+
+  error(event: any) {
+    console.log('error', event);
   }
 }

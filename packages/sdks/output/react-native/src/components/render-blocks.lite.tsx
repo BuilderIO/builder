@@ -4,6 +4,10 @@ import { isEditing } from '../functions/is-editing';
 import RenderBlock from './render-block.lite';
 
 export default function RenderBlocks(props) {
+  function className() {
+    return 'builder-blocks' + (!props.blocks?.length ? ' no-blocks' : '');
+  }
+
   function onClick() {
     if (isEditing() && !props.blocks?.length) {
       window.parent?.postMessage(
@@ -38,9 +42,11 @@ export default function RenderBlocks(props) {
     <View
       builder-path={props.path}
       builder-parent-id={props.parent}
-      onClick={(event) => onClick}
-      onMouseEnter={(event) => onMouseEnter}
-      className={'builder-blocks' + (!props.blocks?.length ? ' no-blocks' : '')}
+      dataSet={{
+        class: className(),
+      }}
+      onClick={(event) => onClick()}
+      onMouseEnter={(event) => onMouseEnter()}
       style={styles.view1}
     >
       {props.blocks ? (

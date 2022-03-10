@@ -1,20 +1,23 @@
-import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { NotFoundComponent } from './not-found.component';
+import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { BuilderModule } from '@builder.io/angular';
-import { Builder } from '@builder.io/sdk';
 
-Builder.isStatic = true;
+import { AppComponent, CustomThing } from './app.component';
+import { FooComponent } from './foo.component';
 
 @NgModule({
-  declarations: [AppComponent, NotFoundComponent],
+  declarations: [AppComponent, FooComponent, CustomThing],
+  entryComponents: [CustomThing],
   imports: [
-    BrowserModule.withServerTransition({ appId: 'ng-app' }),
-    AppRoutingModule,
+    BrowserModule.withServerTransition({ appId: 'serverApp' }),
     BuilderModule.forRoot('db4da7332ae64a96b056ed574578485a'),
+    RouterModule.forRoot([
+      {
+        path: '**',
+        component: FooComponent,
+      },
+    ]),
   ],
   providers: [],
   bootstrap: [AppComponent],

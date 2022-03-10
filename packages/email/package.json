@@ -121,7 +121,6 @@
   },
   "dependencies": {
     "@builder.io/react": "^1.1.32-alpha.0",
-    "@builder.io/sdk": "^1.1.21-alpha.0",
     "lodash-es": "^4.17.10",
     "react": "^16.4.1",
     "react-dom": "^16.4.2",

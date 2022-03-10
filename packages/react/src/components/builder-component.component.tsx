@@ -121,8 +121,6 @@ function decorator(fn: Function) {
   };
 }
 
-const Throttle = decorator(throttle);
-
 const fetchCache: { [key: string]: any } = {};
 
 export interface BuilderComponentProps {
@@ -1191,11 +1189,6 @@ export class BuilderComponent extends React.Component<
     return expression.replace(/{{([^}]+)}}/g, (match, group) => tryEval(group, data, this._errors));
   }
 
-  // TODO: customizable hm
-  @Throttle(100, { leading: true, trailing: true })
-  throttledHandleRequest(propertyName: string, url: string) {
-    return this.handleRequest(propertyName, url);
-  }
 
   async handleRequest(propertyName: string, url: string) {
     // TODO: Builder.isEditing = just checks if iframe and parent page is this.builder.io or localhost:1234
@@ -1451,7 +1444,7 @@ export class BuilderComponent extends React.Component<
               const builderModelMatch = url.match(builderModelRe);
               const model = builderModelMatch && builderModelMatch[1];
               if (false && Builder.isEditing && model && this.builder.editingModel === model) {
-                this.throttledHandleRequest(key, finalUrl);
+                this.handleRequest(key, finalUrl)
                 // TODO: fix this
                 // this.subscriptions.add(
                 //   this.builder.get(model).subscribe(data => {
@@ -1461,7 +1454,7 @@ export class BuilderComponent extends React.Component<
                 //   })
                 // )
               } else {
-                this.throttledHandleRequest(key, finalUrl);
+                this.handleRequest(key, finalUrl)
                 const currentSubscription = this.httpSubscriptionPerKey[key];
                 if (currentSubscription) {
                   currentSubscription.unsubscribe();
@@ -1473,7 +1466,7 @@ export class BuilderComponent extends React.Component<
                 ] = this.onStateChange.subscribe(() => {
                   const newUrl = this.evalExpression(url);
                   if (newUrl !== finalUrl) {
-                    this.throttledHandleRequest(key, newUrl);
+                    this.handleRequest(key, newUrl)
                     this.lastHttpRequests[key] = newUrl;
                   }
                 }));

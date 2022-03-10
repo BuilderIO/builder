@@ -604,6 +604,9 @@ export interface Action {
 }
 
 export class Builder {
+  /**
+   * @deprecated. This is buggy, and always behind by a version.
+   */
   static VERSION = version;
 
   static components: Component[] = [];
@@ -1130,7 +1133,15 @@ export class Builder {
 
     // Give the app a second to start up and set canTrack to false if needed
     if (Builder.isBrowser) {
-      this.setCookie(sessionStorageKey, sessionId, datePlusMinutes(30));
+      setTimeout(() => {
+        try {
+          if (this.canTrack) {
+            this.setCookie(sessionStorageKey, sessionId, datePlusMinutes(30));
+          }
+        } catch (err) {
+          console.debug('Cookie setting error', err);
+        }
+      });
     }
     return sessionId;
   }
@@ -1985,6 +1996,9 @@ export class Builder {
         .get(requestOptions, function (resp: any) {
           let data = '';
 
+          // We are collecting textual data
+          resp.setEncoding('utf8');
+
           // A chunk of data has been recieved.
           resp.on('data', (chunk: string | Buffer) => {
             data += chunk;
@@ -1995,6 +2009,16 @@ export class Builder {
             try {
               resolve(JSON.parse(data));
             } catch (err) {
+              if ((err as any)?.name === 'SyntaxError') {
+                const jsonParseError = new Error(
+                  `[Builder.io] ERROR: invalid response.
+Request: ${JSON.stringify(requestOptions, null, 2)}
+Response Data: ${data}
+`
+                );
+                reject(jsonParseError);
+              }
+
               reject(err);
             }
           });

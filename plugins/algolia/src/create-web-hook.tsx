@@ -5,20 +5,21 @@ export const createWebhook = async (model: any) => {
   const pluginSettings = appState.user.organization.value.settings.plugins.get(pluginId);
   const algoliaKey = pluginSettings.get('algoliaKey');
   const algoliaAppId = pluginSettings.get('algoliaAppId');
-  const customHeaders = [];
-
-  for (const headerName in appState.user.authHeaders) {
-    customHeaders.push({
-      name: headerName,
-      value: appState.user.authHeaders[headerName],
-    });
-  }
+  const pluginPrivateKey = await appState.globalState.getPluginPrivateKey(pluginId);
 
   const newWebhook = {
-    customHeaders,
-    url: `${appState.config.apiRoot()}/api/v1/algolia-sync/webhook?algoliaKey=${algoliaKey}&algoliaAppId=${algoliaAppId}&modelName=${
-      model.name
-    }`,
+    meta: {
+      pluginId
+    },
+    customHeaders: [
+      {
+        name: 'Authorization',
+        value: `Bearer ${pluginPrivateKey}`,
+      },
+    ],
+    url: `${appState.config.apiRoot()}/api/v1/algolia-sync/webhook?algoliaKey=${algoliaKey}&algoliaAppId=${algoliaAppId}&modelId=${
+      model.id
+    }&apiKey=${appState.user.apiKey}`,
     disableProxy: true, // proxy has an issue with the POST request body
   };
 

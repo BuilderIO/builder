@@ -121,7 +121,6 @@
     "typescript": "^3.8.3"
   },
   "optionalDependencies": {
-    "@builder.io/sdk": "^0.1.45",
     "@webcomponents/custom-elements": "^1.2.1"
   },
   "dependencies": {
