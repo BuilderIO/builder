@@ -10,7 +10,8 @@
     "babel-preset-solid": "^1.0.1",
     "lerna": "^3.20.2",
     "tslib": "^2.2.0",
-    "typescript": "^4.0.0"
+    "typescript": "^4.0.0",
+    "husky": "^7.0.0"
   },
   "license": "MIT",
   "repository": {
@@ -43,9 +44,12 @@
     "release:dev": "npm run _install && npm run bootstrap && npm run release:prerelease:dev",
     "prepublishOnly": "block-publish",
     "ci:lint": "npx prettier@2.0.5 --check '**/*.{js,jsx,ts,tsx}'",
-    "lint:fix": "prettier --write '**/*.{js,jsx,ts,tsx}'"
+    "lint:fix": "prettier --write '**/*.{js,jsx,ts,tsx}'",
+    "prepare": "husky install"
   },
   "dependencies": {
+    "husky": "^7.0.4",
+    "pinst": "^3.0.0",
     "prettier": "2.0.5",
     "zx": "^5.1.0"
   }

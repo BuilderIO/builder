@@ -1,0 +1,7 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+if npx zx scripts/check-is-husky-ready-dir.mjs --git-prefix=$GIT_PREFIX; then
+  cd $GIT_PREFIX
+  exec </dev/tty && yarn run cz --hook || true
+fi
