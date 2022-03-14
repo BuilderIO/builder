@@ -67,6 +67,7 @@ export const onEditorLoad = (
         const previewUrl = compiled(
           withDefaults({
             previewResource,
+            [`preview${capitalize(resourceName)}`]: previewResource,
           })
         );
         if (modelUrl !== previewUrl) {

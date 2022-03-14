@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/plugin-shopify",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "keywords": [],
   "main": "dist/plugin.system.js",
@@ -122,7 +122,7 @@
     "typescript": "^3.0.3"
   },
   "dependencies": {
-    "@builder.io/commerce-plugin-tools": "^0.2.1",
+    "@builder.io/commerce-plugin-tools": "^0.2.3",
     "@builder.io/data-plugin-tools": "0.0.4",
     "@emotion/core": "^10.0.22",
     "@emotion/styled": "^10.0.23",
