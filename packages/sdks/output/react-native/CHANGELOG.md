@@ -1,6 +1,7 @@
-### UPCOMING
+### 0.0.1-49
 
-- Add `getBuilderSearchParams` helper export to easily view current drafts on your production site.
+- Fix: show the "+ add block" button on empty pages https://github.com/BuilderIO/builder/pull/934
+- Add `getBuilderSearchParams` helper export to easily view current drafts on your production site. https://github.com/BuilderIO/builder/pull/883
 
 ### 0.0.1-44
 
