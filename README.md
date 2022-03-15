@@ -134,7 +134,7 @@ Using an API-driven UI allows you to:
 - Reduce code + increase composability
 
 <br />
-<img src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F5b4fb32baace4475b993f6361e75e1b2" />
+<img src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F73868572aeff49bdbf00a32fea8c1126" />
 
 
 ## Who uses Builder.io?
