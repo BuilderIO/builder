@@ -1,0 +1,12 @@
+diff --git a/node_modules/@moltin/sdk/dist/moltin.esm.js b/node_modules/@moltin/sdk/dist/moltin.esm.js
+index 0431448..d0df87e 100644
+--- a/node_modules/@moltin/sdk/dist/moltin.esm.js
++++ b/node_modules/@moltin/sdk/dist/moltin.esm.js
+@@ -1,7 +1,4 @@
+ import { pluralize, underscore, singularize, dasherize } from 'inflected';
+-import FormData$1 from 'form-data';
+-import 'fetch-everywhere';
+-import 'es6-promise';
+ 
+ function _typeof(obj) {
+   if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
