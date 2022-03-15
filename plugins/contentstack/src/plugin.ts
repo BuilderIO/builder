@@ -46,7 +46,9 @@ interface Result {
   object: () => any;
 }
 
-const filterableDataTypes = ['text', 'boolean', 'number'];
+// You can see what data types are valid in this doc:
+// https://www.contentstack.com/docs/developers/create-content-types/json-schema-for-creating-a-content-type/
+const filterableDataTypes = ['isodate', 'text', 'boolean', 'number'];
 
 const buildInputs = (model: ContentType) => (): Input[] => {
   const subFields = model.schema
