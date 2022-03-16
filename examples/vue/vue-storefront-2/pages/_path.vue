@@ -3,7 +3,7 @@
     <div>Hello world from your Vue project. Below is Builder Content:</div>
 
     <div v-if="canShowContent">
-      <div>page: {{ content.data.title }}</div>
+      <div>page: {{ (content && content.data && content.data.title) || 'Unpublished' }}</div>
       <builder-render-content model="page" :content="content" />
     </div>
   </div>
@@ -28,6 +28,10 @@ export default Vue.extend({
     canShowContent: false,
     content: null,
   }),
+  mounted() {
+    // we need to re-reun this check on the client in case of SSR
+    this.canShowContent = this.content || isEditing();
+  },
   async fetch() {
     const content = await getContent({
       model: 'page',
@@ -36,13 +40,14 @@ export default Vue.extend({
         urlPath: this.$route.path,
       },
     });
-    if (!content) {
+    this.canShowContent = content || isEditing();
+    this.content = content;
+
+    if (!this.canShowContent) {
       if (this.$nuxt.context?.ssrContext?.res) {
         this.$nuxt.context.ssrContext.res.statusCode = 404;
       }
     }
-    this.content = content;
-    this.canShowContent = content || isEditing();
   },
 });
 </script>

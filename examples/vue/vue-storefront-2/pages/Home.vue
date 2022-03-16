@@ -14,7 +14,6 @@
       </SfHero>
     </LazyHydrate>
     <div>Hello world from your Vue project. Below is Builder Content:</div>
-    <div>page: {{ content.data.title }}</div>
     <div v-if="canShowContent">
       <builder-render-content model="page" :content="content" />
     </div>
@@ -156,6 +155,10 @@ export default Vue.extend({
     canShowContent: false,
     content: null,
   }),
+  mounted() {
+    // we need to re-reun this check on the client in case of SSR
+    this.canShowContent = this.content || isEditing();
+  },
   async fetch() {
     const content = await getContent({
       model: 'page',
