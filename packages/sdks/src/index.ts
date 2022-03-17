@@ -9,6 +9,7 @@ if (isEditing()) {
 export * from './index-helpers/blocks-exports';
 
 export * from './functions/is-editing';
+export * from './functions/is-previewing';
 export * from './functions/register-component';
 export * from './functions/register';
 export * from './functions/set-editor-settings';
