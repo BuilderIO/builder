@@ -1,6 +1,6 @@
-import * as React from 'react';
-import { View, StyleSheet, Image, Text } from 'react-native';
-import { useState, useRef, useEffect } from 'react';
+import * as React from "react";
+import { View, StyleSheet, Image, Text } from "react-native";
+import { useState, useRef, useEffect } from "react";
 
 export default function Embed(props) {
   const [scriptsInserted, setScriptsInserted] = useState(() => []);
@@ -9,9 +9,9 @@ export default function Embed(props) {
 
   function findAndRunScripts() {
     // TODO: Move this function to standalone one in '@builder.io/utils'
-    if (elem.current && typeof window !== 'undefined') {
+    if (elem.current && typeof window !== "undefined") {
       /** @type {HTMLScriptElement[]} */
-      const scripts = elem.current.getElementsByTagName('script');
+      const scripts = elem.current.getElementsByTagName("script");
 
       for (let i = 0; i < scripts.length; i++) {
         const script = scripts[i];
@@ -22,16 +22,16 @@ export default function Embed(props) {
           }
 
           scriptsInserted.push(script.src);
-          const newScript = document.createElement('script');
+          const newScript = document.createElement("script");
           newScript.async = true;
           newScript.src = script.src;
           document.head.appendChild(newScript);
         } else if (
           !script.type ||
           [
-            'text/javascript',
-            'application/javascript',
-            'application/ecmascript',
+            "text/javascript",
+            "application/javascript",
+            "application/ecmascript",
           ].includes(script.type)
         ) {
           if (scriptsRun.includes(script.innerText)) {
@@ -42,7 +42,7 @@ export default function Embed(props) {
             scriptsRun.push(script.innerText);
             new Function(script.innerText)();
           } catch (error) {
-            console.warn('`Embed`: Error running script:', error);
+            console.warn("`Embed`: Error running script:", error);
           }
         }
       }
@@ -56,6 +56,10 @@ export default function Embed(props) {
   }, []);
 
   return (
-    <View ref={elem} dangerouslySetInnerHTML={{ __html: 'props.content' }} />
+    <View
+      className="builder-embed"
+      ref={elem}
+      dangerouslySetInnerHTML={{ __html: "props.content" }}
+    />
   );
 }

@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { View, StyleSheet, Image, Text } from 'react-native';
+import * as React from "react";
+import { View, StyleSheet, Image, Text } from "react-native";
 
 export default function Image(props) {
   return (
@@ -8,8 +8,9 @@ export default function Image(props) {
         <View
           loading="lazy"
           alt={props.altText}
-          aria-role={props.altText ? 'presentation' : undefined}
+          aria-role={props.altText ? "presentation" : undefined}
           style={styles.view2}
+          className={"builder-image" + (props.class ? " " + props.class : "")}
           src={props.image}
           srcset={props.srcset}
           sizes={props.sizes}
@@ -20,7 +21,7 @@ export default function Image(props) {
 
       {props.aspectRatio &&
       !(props.fitContent && props.builderBlock?.children?.length) ? (
-        <View style={styles.view3}>
+        <View className="builder-image-sizer" style={styles.view3}>
           <Text> </Text>
         </View>
       ) : null}
@@ -43,22 +44,22 @@ export default function Image(props) {
 }
 
 const styles = StyleSheet.create({
-  view1: { position: 'relative' },
+  view1: { position: "relative" },
   view2: {
     opacity: 1,
-    transition: 'opacity 0.2s ease-in-out',
-    position: 'absolute',
+    transition: "opacity 0.2s ease-in-out",
+    position: "absolute",
     height: 100,
     width: 100,
     top: 0,
     left: 0,
   },
-  view3: { width: 100, pointerEvents: 'none', fontSize: 0 },
+  view3: { width: 100, pointerEvents: "none", fontSize: 0 },
   view4: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'stretch',
-    position: 'absolute',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "stretch",
+    position: "absolute",
     top: 0,
     left: 0,
     width: 100,
