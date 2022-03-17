@@ -28,6 +28,7 @@ export type RenderContentProps = {
   model?: string;
   data?: { [key: string]: any };
   context?: { [key: string]: any };
+  apiKey: string;
 };
 
 export default function RenderContent(props: RenderContentProps) {
@@ -145,6 +146,9 @@ export default function RenderContent(props: RenderContentProps) {
     get context() {
       return state.context;
     },
+    get apiKey() {
+      return props.apiKey;
+    },
   });
 
   onMount(() => {
@@ -160,12 +164,12 @@ export default function RenderContent(props: RenderContentProps) {
       if (isPreviewing()) {
         if (props.model && previewingModelName() === props.model) {
           const currentUrl = new URL(location.href);
-          const apiKey = currentUrl.searchParams.get('apiKey');
+          const previewApiKey = currentUrl.searchParams.get('apiKey');
 
-          if (apiKey) {
+          if (previewApiKey) {
             getContent({
               model: props.model,
-              apiKey,
+              apiKey: previewApiKey,
               options: getBuilderSearchParams(
                 convertSearchParamsToQueryObject(currentUrl.searchParams)
               ),

@@ -26,6 +26,7 @@ export default function Symbol(props: SymbolProps) {
   return (
     <div class="builder-symbol">
       <RenderContent
+        apiKey={builderContext.apiKey}
         context={builderContext.context}
         data={props.symbol?.data}
         model={props.symbol?.model}
