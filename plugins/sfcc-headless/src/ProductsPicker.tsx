@@ -2,17 +2,14 @@
 import { jsx } from '@emotion/core';
 import {
   CircularProgress,
-  InputAdornment,
-  TextField,
   Typography,
-  ExpansionPanel,
-  ExpansionPanelDetails,
-  ExpansionPanelSummary,
-  Button,
   IconButton,
   Tooltip,
+  ExpansionPanel,
+  ExpansionPanelSummary,
+  ExpansionPanelDetails,
 } from '@material-ui/core';
-import { Add, ExpandMore, ChevronLeft, CheckBoxOutlineBlank, CheckBox } from '@material-ui/icons';
+import { CheckBoxOutlineBlank, CheckBox, FilterList } from '@material-ui/icons';
 import { runInAction, action } from 'mobx';
 import { useObserver, useLocalStore } from 'mobx-react';
 import React, { useEffect } from 'react';
@@ -24,8 +21,17 @@ import {
 import InfiniteScroll from 'react-infinite-scroll-component';
 import throttle from 'lodash.throttle';
 import safeLocalStorage from 'safe-localstorage';
+import { observable, reaction, IReactionOptions } from 'mobx';
 
-const PAGE = 60;
+function useReaction<T = any>(
+  expression: () => T,
+  effect: (value: T) => void,
+  options: IReactionOptions = { fireImmediately: true }
+): void {
+  useEffect(() => reaction(expression, effect, options), []);
+}
+
+const PAGE = 30;
 const LS_KEY = 'sfcc-headless.lastChoice';
 export const ProductsPicker: React.FC<
   ResourcePickerProps & {
@@ -36,8 +42,18 @@ export const ProductsPicker: React.FC<
 > = props => {
   const store = useLocalStore(() => ({
     loading: false,
-    rootCategory: '',
     products: [] as Resource[],
+    filters: null as any,
+    searchQuery: observable.map({
+      keyword: '',
+      rootCategory: '',
+    }),
+    get rootCategory() {
+      return store.searchQuery.get('rootCategory') || 'all';
+    },
+    get keyword() {
+      return store.searchQuery.get('keyword');
+    },
     catchError: (err: any) => {
       console.error('search error:', err);
       props.context.snackBar.show('Oh no! There was an error searching for products');
@@ -46,7 +62,7 @@ export const ProductsPicker: React.FC<
     fetchMore: throttle(
       async () => {
         const moreProducts = await props.api.product
-          .search(store.rootCategory, store.products.length, PAGE)
+          .search(`${store.rootCategory}:${store.keyword || ''}`, store.products.length, PAGE)
           .catch(store.catchError);
         runInAction(() => {
           if (Array.isArray(moreProducts)) {
@@ -65,7 +81,7 @@ export const ProductsPicker: React.FC<
     async search() {
       this.loading = true;
       const productsResponse = await props.api.product
-        .search(store.rootCategory || 'all')
+        .search(`${store.rootCategory}:${store.keyword || ''}`)
         .catch(store.catchError);
 
       runInAction(() => {
@@ -80,65 +96,72 @@ export const ProductsPicker: React.FC<
   }));
   useEffect(() => {
     if (safeLocalStorage.get(LS_KEY)) {
-      store.rootCategory = safeLocalStorage.get(LS_KEY);
+      store.searchQuery.set('rootCategory', safeLocalStorage.get(LS_KEY));
     } else {
       const val = props.value?.c_categories?.at(-1);
       if (val) {
-        store.rootCategory = val.includes('~') ? val.split('~').join('|') : val;
+        store.searchQuery.set('rootCategory', val.includes('~') ? val.split('~').join('|') : val);
       } else {
-        store.rootCategory = 'all';
+        store.searchQuery.set('rootCategory', 'all');
       }
     }
+    store.filters = observable.map({
+      rootCategory: {
+        options: observable.map({ category: store.searchQuery.get('rootCategory') }),
+      },
+    });
   }, [props.value]);
 
-  useEffect(() => {
-    store.search();
-    safeLocalStorage.set(LS_KEY, store.rootCategory);
-  }, [store.rootCategory]);
+  useReaction(
+    () => `${store.searchQuery.get('rootCategory')}${store.searchQuery.get('keyword')}`,
+    () => {
+      store.search();
+      safeLocalStorage.set(LS_KEY, store.rootCategory);
+    }
+  );
 
   return useObserver(() => (
     <div css={{ display: 'flex', flexDirection: 'column', minWidth: 500 }}>
-      <div css={{ padding: 5 }}>
-        {Boolean(store.rootCategory) &&
-          props.renderEditor?.({
-            fields: [
-              {
-                name: 'category',
-                friendlyName: 'Search by category',
-                type: 'SalesforceCategory',
-              },
-            ],
-            object: {
-              get() {
-                if (store.rootCategory !== 'all') {
-                  return {
-                    '@type': '@builder.io/core:Request',
-                    options: {
-                      get() {
-                        return store.rootCategory;
-                      },
-                    },
+      <div css={{ margin: '40px 20px 5px' }}>
+        <ExpansionPanel>
+          <ExpansionPanelSummary expandIcon={<FilterList />}>Filters</ExpansionPanelSummary>
+          <ExpansionPanelDetails css={{ flexDirection: 'column' }}>
+            {Boolean(store.filters) &&
+              props.renderEditor?.({
+                fields: [
+                  {
+                    name: 'rootCategory',
+                    friendlyName: 'Search by category',
+                    type: 'SalesforceCategory',
+                  },
+                  {
+                    name: 'keyword',
+                    friendlyName: 'Search by keyword',
+                    type: 'text',
+                  },
+                ],
+                object: store.filters,
+                onChange: (map: any) => {
+                  const options = fastClone(map);
+                  const query = {
+                    rootCategory:
+                      options.rootCategory?.options?.category ||
+                      store.searchQuery.get('rootCategory'),
+                    keyword: options.keyword,
                   };
-                }
-              },
-              set(key: string, value: any) {
-                if (value) {
-                  runInAction(() => {
-                    store.rootCategory = value.options?.category;
-                    store.search();
-                  });
-                }
-              },
-            },
-          })}
+                  store.searchQuery.replace(query);
+                },
+              })}
+          </ExpansionPanelDetails>
+        </ExpansionPanel>
       </div>
-      <div id="products-container" css={{ maxHeight: '80vh', overflow: 'auto' }}>
+      <div id="products-container" css={{ maxHeight: '80vh', overflow: 'auto', padding: 5 }}>
         <InfiniteScroll
           scrollableTarget="products-container"
           dataLength={store.products.length}
           next={store.fetchMore}
-          hasMore={store.products.length % PAGE === 0}
-          loader={<CircularProgress />}
+          hasMore={store.products.length > 0 && store.products.length % PAGE === 0}
+          loader="fetching ..."
         >
           {!store.loading &&
             (store.products.length ? (
@@ -186,3 +209,5 @@ export const ProductsPicker: React.FC<
     </div>
   ));
 };
+
+const fastClone = (obj: any) => JSON.parse(JSON.stringify(obj));
