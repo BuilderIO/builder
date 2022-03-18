@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/plugin-sfcc-headless",
-  "version": "0.0.2-2",
+  "version": "0.0.2",
   "description": "",
   "keywords": [],
   "main": "dist/plugin.system.js",
