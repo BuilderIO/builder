@@ -80,7 +80,7 @@ registerCommercePlugin(
     const transformResource = (resource: any) => ({
       ...resource,
       id: resource.id,
-      title: `${resource.name} [${resource.id}]`,
+      title: `[${resource.id}] ${resource.name || 'Untitled'} `,
       handle: resource.slug,
       ...(resource.c_imageURL && {
         image: {
@@ -98,7 +98,14 @@ registerCommercePlugin(
             basicCache.get(id) ||
             (await proxyFetch(
               `${baseURL}/products/${id}?display=standard&locale=${locale}&country-code=${countryCode}`
-            ).then(res => res.json()));
+            )
+              .then(res => res.json())
+              .then((res: any) => {
+                if (res.fault) {
+                  throw res.fault;
+                }
+                return res;
+              }));
 
           basicCache.set(id, product);
           return transformResource(product);
@@ -117,10 +124,12 @@ registerCommercePlugin(
             ).then(res => res.json()));
 
           basicCache.set(key, response);
-          return (response.hits || []).map((hit: any) => ({
-            id: hit.product_id,
-            title: hit.product_name,
-          }));
+          return (response.hits || [])
+            .map((hit: any) => ({
+              id: hit.product_id,
+              name: hit.product_name,
+            }))
+            .map(transformResource);
         },
 
         getRequestObject(id: string) {

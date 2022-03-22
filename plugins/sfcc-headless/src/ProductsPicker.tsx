@@ -47,6 +47,7 @@ export const ProductsPicker: React.FC<
     searchQuery: observable.map({
       keyword: '',
       rootCategory: '',
+      id: '',
     }),
     get rootCategory() {
       return store.searchQuery.get('rootCategory') || 'all';
@@ -56,7 +57,7 @@ export const ProductsPicker: React.FC<
     },
     catchError: (err: any) => {
       console.error('search error:', err);
-      props.context.snackBar.show('Oh no! There was an error searching for products');
+      props.context.snackBar.show('There was an error searching for products');
     },
 
     fetchMore: throttle(
@@ -78,21 +79,30 @@ export const ProductsPicker: React.FC<
         leading: true,
       }
     ),
-    async search() {
-      this.loading = true;
-      const productsResponse = await props.api.product
-        .search(`${store.rootCategory}:${store.keyword || ''}`)
-        .catch(store.catchError);
+    search: throttle(
+      async () => {
+        store.loading = true;
+        const id = store.searchQuery.get('id');
+        const productsResponse = id
+          ? await props.api.product.findById(id).catch(store.catchError)
+          : await props.api.product
+              .search(`${store.rootCategory}:${store.keyword || ''}`)
+              .catch(store.catchError);
 
-      runInAction(() => {
-        if (Array.isArray(productsResponse)) {
-          this.products = productsResponse.filter(
-            resource => !(props.omitIds || []).includes(String(resource.id))
-          );
-        }
-        this.loading = false;
-      });
-    },
+        runInAction(() => {
+          if (Array.isArray(productsResponse)) {
+            store.products = productsResponse.filter(
+              resource => resource && !(props.omitIds || []).includes(String(resource.id))
+            );
+          } else if (productsResponse) {
+            store.products = [productsResponse];
+          }
+          store.loading = false;
+        });
+      },
+      500,
+      { leading: true }
+    ),
   }));
   useEffect(() => {
     if (safeLocalStorage.get(LS_KEY)) {
@@ -113,7 +123,10 @@ export const ProductsPicker: React.FC<
   }, [props.value]);
 
   useReaction(
-    () => `${store.searchQuery.get('rootCategory')}${store.searchQuery.get('keyword')}`,
+    () =>
+      `${store.searchQuery.get('rootCategory')}${store.searchQuery.get(
+        'keyword'
+      )}${store.searchQuery.get('id')}`,
     () => {
       store.search();
       safeLocalStorage.set(LS_KEY, store.rootCategory);
@@ -139,6 +152,11 @@ export const ProductsPicker: React.FC<
                     friendlyName: 'Search by keyword',
                     type: 'text',
                   },
+                  {
+                    name: 'id',
+                    friendlyName: 'Search by product ID',
+                    type: 'search',
+                  },
                 ],
                 object: store.filters,
                 onChange: (map: any) => {
@@ -148,6 +166,7 @@ export const ProductsPicker: React.FC<
                       options.rootCategory?.options?.category ||
                       store.searchQuery.get('rootCategory'),
                     keyword: options.keyword,
+                    id: options.id || '',
                   };
                   store.searchQuery.replace(query);
                 },
@@ -160,7 +179,11 @@ export const ProductsPicker: React.FC<
           scrollableTarget="products-container"
           dataLength={store.products.length}
           next={store.fetchMore}
-          hasMore={store.products.length > 0 && store.products.length % PAGE === 0}
+          hasMore={
+            !store.searchQuery.get('id') &&
+            store.products.length > 0 &&
+            store.products.length % PAGE === 0
+          }
           loader="fetching ..."
         >
           {!store.loading &&
@@ -168,24 +191,26 @@ export const ProductsPicker: React.FC<
               store.products.map(item => (
                 <div css={{ display: 'flex' }} key={item.id}>
                   <Tooltip title={item.id}>
-                    <IconButton
-                      onClick={action(() => {
-                        props.onChange(item);
-                      })}
-                    >
-                      {String(item.id) === String(props.value?.id) ? (
-                        <CheckBox />
-                      ) : (
-                        <CheckBoxOutlineBlank />
-                      )}
-                    </IconButton>
-                  </Tooltip>
+                    <React.Fragment>
+                      <IconButton
+                        onClick={action(() => {
+                          props.onChange(item);
+                        })}
+                      >
+                        {String(item.id) === String(props.value?.id) ? (
+                          <CheckBox />
+                        ) : (
+                          <CheckBoxOutlineBlank />
+                        )}
+                      </IconButton>
 
-                  <ResourcePreviewCell
-                    selected={props.value?.id === item.id}
-                    resource={item}
-                    key={item.id}
-                  />
+                      <ResourcePreviewCell
+                        selected={props.value?.id === item.id}
+                        resource={item}
+                        key={item.id}
+                      />
+                    </React.Fragment>
+                  </Tooltip>
                 </div>
               ))
             ) : (
