@@ -88,6 +88,9 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
     let options = {
       ...(this.props.options || ({} as GetContentOptions)),
     };
+    if (!options.key && this.props.content?.id) {
+      options.key = this.props.content.id;
+    }
     if (this.props.content && !options.initialContent?.length) {
       options.initialContent = [this.props.content];
     }
@@ -188,6 +191,7 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
         builder.queueGetContent(this.name, this.options).subscribe(
           matches => {
             const match = matches && matches[0];
+            console.log('matches', matches);
             this.setState({
               data: match,
               loading: false,
