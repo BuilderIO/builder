@@ -1414,7 +1414,7 @@ export class Builder {
 
   setTestsFromUrl() {
     const search = this.getLocation().search;
-    const params = QueryString.parseDeep(this.modifySearch(search || '').substr(1));
+    const params = QueryString.parseDeep(this.modifySearch(search || '').slice(1));
     const tests = params.builder && params.builder.tests;
     if (tests && typeof tests === 'object') {
       for (const key in tests) {
@@ -1442,7 +1442,7 @@ export class Builder {
 
   getOverridesFromQueryString() {
     const location = this.getLocation();
-    const params = QueryString.parseDeep(this.modifySearch(location.search || '').substr(1));
+    const params = QueryString.parseDeep(this.modifySearch(location.search || '').slice(1));
     const { builder } = params;
     if (builder) {
       const {
@@ -1748,7 +1748,7 @@ export class Builder {
 
   get previewingModel() {
     const search = this.getLocation().search;
-    const params = QueryString.parse((search || '').substr(1));
+    const params = QueryString.parse((search || '').slice(1));
     return params['builder.preview'];
   }
 
@@ -2084,7 +2084,7 @@ Response Data: ${data}
 
     const pageQueryParams: ParamsMap =
       typeof location !== 'undefined'
-        ? QueryString.parseDeep(location.search.substr(1))
+        ? QueryString.parseDeep(location.search.slice(1))
         : undefined || {};
 
     const userAttributes =
