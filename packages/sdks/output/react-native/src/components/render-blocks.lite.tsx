@@ -52,7 +52,7 @@ export default function RenderBlocks(props) {
       {props.blocks ? (
         <>
           {props.blocks?.map((block, index) => (
-            <RenderBlock block={block} />
+            <RenderBlock key={block.id} block={block} />
           ))}
         </>
       ) : null}

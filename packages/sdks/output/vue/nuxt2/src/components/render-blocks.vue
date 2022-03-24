@@ -1,6 +1,6 @@
 <template>
   <div
-    class="div-178o76acnws"
+    class="div-2flfunvabst"
     :builder-path="path"
     :builder-parent-id="parent"
     :dataSet="{
@@ -13,7 +13,7 @@
     <render-block
       v-for="(block, index) in blocks"
       :block="block"
-      :key="index"
+      :key="block.id"
     ></render-block>
   </div>
 </template>
@@ -76,7 +76,7 @@ export default {
 };
 </script>
 <style scoped>
-.div-178o76acnws {
+.div-2flfunvabst {
   display: flex;
   flex-direction: column;
   align-items: stretch;
