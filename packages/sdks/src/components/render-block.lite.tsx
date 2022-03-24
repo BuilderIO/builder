@@ -41,9 +41,6 @@ export default function RenderBlock(props: RenderBlockProps) {
     get tagName() {
       return getBlockTag(state.useBlock) as any;
     },
-    get properties() {
-      return getBlockProperties(state.useBlock);
-    },
     get useBlock() {
       return getProcessedBlock({
         block: props.block,
@@ -53,16 +50,13 @@ export default function RenderBlock(props: RenderBlockProps) {
     },
     get propertiesAndActions() {
       return {
-        ...state.properties,
-        ...state.actions,
+        ...getBlockProperties(state.useBlock),
+        ...getBlockActions({
+          block: state.useBlock,
+          state: builderContext.state,
+          context: builderContext.context,
+        }),
       };
-    },
-    get actions() {
-      return getBlockActions({
-        block: state.useBlock,
-        state: builderContext.state,
-        context: builderContext.context,
-      });
     },
     get css() {
       return getBlockStyles(state.useBlock);
