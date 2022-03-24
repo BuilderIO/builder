@@ -8,40 +8,57 @@
         });
       }
     "
-    :data-builder-content-id="(useContent && useContent.id)"
+    :data-builder-content-id="useContent && useContent.id"
   >
     <component
-      v-if="(((useContent && useContent.data) && (useContent && useContent.data).cssCode) || (((useContent && useContent.data) && (useContent && useContent.data).customFonts) && ((useContent && useContent.data) && (useContent && useContent.data).customFonts).length)) && !isReactNative()"
-      is="style"
+      v-if="
+        ((useContent &&
+          useContent.data &&
+          (useContent && useContent.data).cssCode) ||
+          (useContent &&
+            useContent.data &&
+            (useContent && useContent.data).customFonts &&
+            (
+              useContent &&
+              useContent.data &&
+              (useContent && useContent.data).customFonts
+            ).length)) &&
+        !isReactNative()
+      "
+      :is="style"
     >
       {{ useContent.data.cssCode }}
       {{ getFontCss(useContent.data) }}
     </component>
 
-    <render-blocks :blocks="((useContent && useContent.data) && (useContent && useContent.data).blocks)"></render-blocks>
+    <render-blocks
+      :blocks="
+        useContent && useContent.data && (useContent && useContent.data).blocks
+      "
+    ></render-blocks>
   </div>
 </template>
 <script>
-import { isBrowser } from "../functions/is-browser";
-import BuilderContext from "../context/builder.context";
-import { track } from "../functions/track";
-import { ifTarget } from "../functions/if-target";
-import { onChange } from "../functions/on-change";
-import { isReactNative } from "../functions/is-react-native";
-import { isEditing } from "../functions/is-editing";
-import { isPreviewing } from "../functions/is-previewing";
-import { previewingModelName } from "../functions/previewing-model-name";
-import { getContent } from "../functions/get-content";
+import { isBrowser } from '../functions/is-browser';
+import BuilderContext from '../context/builder.context';
+import { track } from '../functions/track';
+import { ifTarget } from '../functions/if-target';
+import { onChange } from '../functions/on-change';
+import { isReactNative } from '../functions/is-react-native';
+import { isEditing } from '../functions/is-editing';
+import { isPreviewing } from '../functions/is-previewing';
+import { previewingModelName } from '../functions/previewing-model-name';
+import { getContent } from '../functions/get-content';
 import {
   convertSearchParamsToQueryObject,
   getBuilderSearchParams,
-} from "../functions/get-builder-search-params";
-import RenderBlocks from "./render-blocks";
+} from '../functions/get-builder-search-params';
+import RenderBlocks from './render-blocks';
 
 export default {
-  name: "render-content",
-  components: { "render-blocks": async () => RenderBlocks },
-  props: ["content", "model", "apiKey"],
+  name: 'render-content',
+  components: { 'render-blocks': async () => RenderBlocks },
+  props: ['content', 'model', 'apiKey'],
 
   data: () => ({
     update: 0,
@@ -76,11 +93,11 @@ export default {
   mounted() {
     if (isBrowser()) {
       if (isEditing()) {
-        window.addEventListener("message", this.processMessage);
+        window.addEventListener('message', this.processMessage);
       }
 
       if (this.useContent && !isEditing()) {
-        track("impression", {
+        track('impression', {
           contentId: this.useContent.id,
         });
       }
@@ -88,7 +105,7 @@ export default {
       if (isPreviewing()) {
         if (this.model && previewingModelName() === this.model) {
           const currentUrl = new URL(location.href);
-          const previewApiKey = currentUrl.searchParams.get("apiKey");
+          const previewApiKey = currentUrl.searchParams.get('apiKey');
 
           if (previewApiKey) {
             getContent({
@@ -108,6 +125,12 @@ export default {
     }
   },
 
+  unmounted() {
+    if (isBrowser()) {
+      window.removeEventListener('message', this.processMessage);
+    }
+  },
+
   computed: {
     useContent() {
       return this.overrideContent || this.content;
@@ -119,10 +142,10 @@ export default {
       // TODO: compute what font sizes are used and only load those.......
       const family =
         font.family +
-        (font.kind && !font.kind.includes("#") ? ", " + font.kind : "");
-      const name = family.split(",")[0];
+        (font.kind && !font.kind.includes('#') ? ', ' + font.kind : '');
+      const name = family.split(',')[0];
       const url = font.fileUrl ?? font?.files?.regular;
-      let str = "";
+      let str = '';
 
       if (url && family && name) {
         str += `
@@ -169,7 +192,7 @@ export default {
       return (
         data?.customFonts
           ?.map((font) => this.getCssFromFont(font, data))
-          ?.join(" ") || ""
+          ?.join(' ') || ''
       );
     },
     processMessage(event) {
@@ -177,7 +200,7 @@ export default {
 
       if (data) {
         switch (data.type) {
-          case "builder.contentUpdate": {
+          case 'builder.contentUpdate': {
             const key =
               data.data.key ||
               data.data.alias ||
@@ -192,7 +215,7 @@ export default {
             break;
           }
 
-          case "builder.patchUpdates": {
+          case 'builder.patchUpdates': {
             // TODO
             break;
           }

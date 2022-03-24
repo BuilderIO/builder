@@ -4,7 +4,7 @@
 
     <div v-if="canShowContent">
       <div>page: {{ (content && content.data && content.data.title) || 'Unpublished' }}</div>
-      <builder-render-content model="page" :content="content" />
+      <builder-render-content model="page" :content="content" :api-key="apiKey" />
     </div>
   </div>
 </template>
@@ -13,7 +13,7 @@ import Vue from 'vue';
 import cacheControl from '../helpers/cacheControl';
 
 import './init-builder';
-import { getContent, isEditing } from '@builder.io/sdk-vue';
+import { getContent, isEditing, isPreviewing, getBuilderSearchParams } from '@builder.io/sdk-vue';
 
 // TODO: enter your public API key
 const BUILDER_PUBLIC_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660'; // ggignore
@@ -27,15 +27,17 @@ export default Vue.extend({
   data: () => ({
     canShowContent: false,
     content: null,
+    apiKey: BUILDER_PUBLIC_API_KEY,
   }),
   mounted() {
     // we need to re-reun this check on the client in case of SSR
-    this.canShowContent = this.content || isEditing();
+    this.canShowContent = this.content || isEditing() || isPreviewing();
   },
   async fetch() {
     const content = await getContent({
       model: 'page',
       apiKey: BUILDER_PUBLIC_API_KEY,
+      options: getBuilderSearchParams(this.$route.query),
       userAttributes: {
         urlPath: this.$route.path,
       },

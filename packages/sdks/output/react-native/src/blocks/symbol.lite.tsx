@@ -1,12 +1,12 @@
-import * as React from "react";
-import { View, StyleSheet, Image, Text } from "react-native";
-import { useState, useContext, useEffect } from "react";
-import RenderContent from "../components/render-content.lite";
-import BuilderContext from "../context/builder.context.lite";
-import { getContent } from "../functions/get-content";
+import * as React from 'react';
+import { View, StyleSheet, Image, Text } from 'react-native';
+import { useState, useContext, useEffect } from 'react';
+import RenderContent from '../components/render-content.lite';
+import BuilderContext from '../context/builder.context.lite';
+import { getContent } from '../functions/get-content';
 
 export default function Symbol(props) {
-  const [className, setClassName] = useState(() => "builder-symbol");
+  const [className, setClassName] = useState(() => 'builder-symbol');
 
   const [content, setContent] = useState(() => null);
 
@@ -16,12 +16,33 @@ export default function Symbol(props) {
     setContent(props.symbol?.content);
   }, []);
 
+  useEffect(() => {
+    const symbol = props.symbol;
+
+    if (symbol && !symbol.content && !content && symbol.model) {
+      getContent({
+        model: symbol.model,
+        apiKey: builderContext.apiKey,
+        options: {
+          entry: symbol.entry,
+        },
+      }).then((response) => {
+        setContent(response);
+      });
+    }
+  }, [
+    props.symbol?.content,
+    props.symbol?.model,
+    props.symbol?.entry,
+    state.content,
+  ]);
+
   return (
     <View
+      {...props.attributes}
       dataSet={{
         class: className,
       }}
-      className={className}
     >
       <RenderContent
         apiKey={builderContext.apiKey}

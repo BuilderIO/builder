@@ -1,15 +1,15 @@
-import * as React from "react";
-import { View, StyleSheet, Image, Text } from "react-native";
-import { useContext } from "react";
-import { getBlockComponentOptions } from "../functions/get-block-component-options";
-import { getBlockProperties } from "../functions/get-block-properties";
-import { getBlockStyles } from "../functions/get-block-styles";
-import { getBlockTag } from "../functions/get-block-tag";
-import { components } from "../functions/register-component";
-import BuilderContext from "../context/builder.context.lite";
-import { getBlockActions } from "../functions/get-block-actions";
-import { getProcessedBlock } from "../functions/get-processed-block";
-import BlockStyles from "./block-styles.lite";
+import * as React from 'react';
+import { View, StyleSheet, Image, Text } from 'react-native';
+import { useContext } from 'react';
+import { getBlockComponentOptions } from '../functions/get-block-component-options';
+import { getBlockProperties } from '../functions/get-block-properties';
+import { getBlockStyles } from '../functions/get-block-styles';
+import { getBlockTag } from '../functions/get-block-tag';
+import { components } from '../functions/register-component';
+import BuilderContext from '../context/builder.context.lite';
+import { getBlockActions } from '../functions/get-block-actions';
+import { getProcessedBlock } from '../functions/get-processed-block';
+import BlockStyles from './block-styles.lite';
 
 export default function RenderBlock(props) {
   function component() {
@@ -43,10 +43,6 @@ export default function RenderBlock(props) {
     return getBlockTag(useBlock());
   }
 
-  function properties() {
-    return getBlockProperties(useBlock());
-  }
-
   function useBlock() {
     return getProcessedBlock({
       block: props.block,
@@ -56,15 +52,14 @@ export default function RenderBlock(props) {
   }
 
   function propertiesAndActions() {
-    return { ...properties(), ...actions() };
-  }
-
-  function actions() {
-    return getBlockActions({
-      block: useBlock(),
-      state: builderContext.state,
-      context: builderContext.context,
-    });
+    return {
+      ...getBlockProperties(useBlock()),
+      ...getBlockActions({
+        block: useBlock(),
+        state: builderContext.state,
+        context: builderContext.context,
+      }),
+    };
   }
 
   function css() {
@@ -104,13 +99,13 @@ export default function RenderBlock(props) {
                 {...componentOptions()}
                 builderBlock={useBlock()}
               >
-                {children()?.map((child) => (
+                {children()?.map((child, index) => (
                   <RenderBlock block={child} />
                 ))}
               </ComponentRefRef>
             ) : null}
 
-            {noCompRefChildren()?.map((child) => (
+            {noCompRefChildren()?.map((child, index) => (
               <RenderBlock block={child} />
             ))}
           </TagNameRef>
@@ -122,7 +117,7 @@ export default function RenderBlock(props) {
           builderBlock={useBlock()}
           style={css()}
         >
-          {children()?.map((child) => (
+          {children()?.map((child, index) => (
             <RenderBlock block={child} />
           ))}
         </ComponentRefRef>

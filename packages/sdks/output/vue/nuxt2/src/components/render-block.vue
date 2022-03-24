@@ -42,23 +42,23 @@
   </component>
 </template>
 <script>
-import { getBlockComponentOptions } from "../functions/get-block-component-options";
-import { getBlockProperties } from "../functions/get-block-properties";
-import { getBlockStyles } from "../functions/get-block-styles";
-import { getBlockTag } from "../functions/get-block-tag";
-import { components } from "../functions/register-component";
-import BuilderContext from "../context/builder.context";
-import { getBlockActions } from "../functions/get-block-actions";
-import { getProcessedBlock } from "../functions/get-processed-block";
-import BlockStyles from "./block-styles";
+import { getBlockComponentOptions } from '../functions/get-block-component-options';
+import { getBlockProperties } from '../functions/get-block-properties';
+import { getBlockStyles } from '../functions/get-block-styles';
+import { getBlockTag } from '../functions/get-block-tag';
+import { components } from '../functions/register-component';
+import BuilderContext from '../context/builder.context';
+import { getBlockActions } from '../functions/get-block-actions';
+import { getProcessedBlock } from '../functions/get-processed-block';
+import BlockStyles from './block-styles';
 
 export default {
-  name: "render-block",
-  components: { "block-styles": async () => BlockStyles },
-  props: ["block"],
+  name: 'render-block',
+  components: { 'block-styles': async () => BlockStyles },
+  props: ['block'],
 
   inject: {
-    builderContext: "BuilderContext",
+    builderContext: 'BuilderContext',
   },
 
   computed: {
@@ -89,9 +89,6 @@ export default {
     tagName() {
       return getBlockTag(this.useBlock);
     },
-    properties() {
-      return getBlockProperties(this.useBlock);
-    },
     useBlock() {
       return getProcessedBlock({
         block: this.block,
@@ -100,14 +97,14 @@ export default {
       });
     },
     propertiesAndActions() {
-      return { ...this.properties, ...this.actions };
-    },
-    actions() {
-      return getBlockActions({
-        block: this.useBlock,
-        state: this.builderContext.state,
-        context: this.builderContext.context,
-      });
+      return {
+        ...getBlockProperties(this.useBlock),
+        ...getBlockActions({
+          block: this.useBlock,
+          state: this.builderContext.state,
+          context: this.builderContext.context,
+        }),
+      };
     },
     css() {
       return getBlockStyles(this.useBlock);
