@@ -47,7 +47,7 @@ export default registerComponent(
     updated() {
       const symbol = this.symbol;
 
-      if (symbol && !symbol.content && symbol.model) {
+      if (symbol && !symbol.content && !this.content && symbol.model) {
         getContent({
           model: symbol.model,
           apiKey: this.builderContext.apiKey,

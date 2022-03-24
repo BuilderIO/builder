@@ -38,7 +38,7 @@ export default function Symbol(props: SymbolProps) {
   onUpdate(() => {
     const symbol = props.symbol;
 
-    if (symbol && !symbol.content && symbol.model) {
+    if (symbol && !symbol.content && !state.content && symbol.model) {
       getContent({
         model: symbol.model,
         apiKey: builderContext.apiKey!,
@@ -49,7 +49,12 @@ export default function Symbol(props: SymbolProps) {
         state.content = response;
       });
     }
-  }, [props.symbol?.content, props.symbol?.model, props.symbol?.entry]);
+  }, [
+    props.symbol?.content,
+    props.symbol?.model,
+    props.symbol?.entry,
+    state.content,
+  ]);
 
   return (
     <div
