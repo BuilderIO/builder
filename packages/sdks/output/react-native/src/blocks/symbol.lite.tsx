@@ -19,7 +19,7 @@ export default function Symbol(props) {
   useEffect(() => {
     const symbol = props.symbol;
 
-    if (symbol && !symbol.content && !content && symbol.model) {
+    if (symbol && !symbol.content && symbol.model) {
       getContent({
         model: symbol.model,
         apiKey: builderContext.apiKey,
@@ -30,12 +30,7 @@ export default function Symbol(props) {
         setContent(response);
       });
     }
-  }, [
-    props.symbol?.content,
-    props.symbol?.model,
-    props.symbol?.entry,
-    state.content,
-  ]);
+  }, [props.symbol?.content, props.symbol?.model, props.symbol?.entry]);
 
   return (
     <View
