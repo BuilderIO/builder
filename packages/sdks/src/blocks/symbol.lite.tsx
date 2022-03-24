@@ -2,7 +2,6 @@ import { onMount, onUpdate, useContext, useState } from '@builder.io/mitosis';
 import RenderContent from '../components/render-content.lite';
 import BuilderContext from '../context/builder.context.lite';
 import { getContent } from '../functions/get-content';
-import { isBrowser } from '../functions/is-browser';
 import { registerComponent } from '../functions/register-component';
 import { BuilderContent } from '../types/builder-content';
 
@@ -39,14 +38,10 @@ export default function Symbol(props: SymbolProps) {
   onUpdate(() => {
     const symbol = props.symbol;
 
-    if (
-      symbol &&
-      !symbol.content &&
-      symbol.model
-    ) {
+    if (symbol && !symbol.content && !state.content && symbol.model) {
       getContent({
         model: symbol.model,
-        apiKey: builderContext.apiKey,
+        apiKey: builderContext.apiKey!,
         options: {
           entry: symbol.entry,
         },
@@ -54,12 +49,21 @@ export default function Symbol(props: SymbolProps) {
         state.content = response;
       });
     }
-  }, [props.symbol?.content, props.symbol?.model, props.symbol?.entry]);
+  }, [
+    props.symbol?.content,
+    props.symbol?.model,
+    props.symbol?.entry,
+    state.content,
+  ]);
 
   return (
-    <div className={state.className} dataSet={{ class: state.className }}>
+    <div
+      {...props.attributes}
+      className={state.className}
+      dataSet={{ class: state.className }}
+    >
       <RenderContent
-        apiKey={builderContext.apiKey}
+        apiKey={builderContext.apiKey!}
         context={builderContext.context}
         data={{
           ...props.symbol?.data,
@@ -67,7 +71,7 @@ export default function Symbol(props: SymbolProps) {
           ...props.symbol?.content?.data?.state,
         }}
         model={props.symbol?.model}
-        content={state.content}
+        content={state.content!}
       />
     </div>
   );
