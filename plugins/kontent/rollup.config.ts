@@ -36,13 +36,14 @@ export default {
       'process.env.NODE_ENV': JSON.stringify('production'),
     }),
     json(),
-    nodeResolve({ mainFields: ['module', 'browser'] }),
+    nodeResolve({ mainFields: ['main'] }),
     commonjs(),
     esbuild(),
 
     ...(SERVE
       ? [
           serve({
+            open: true,
             contentBase: 'dist',
             port: 1268,
             headers: {
