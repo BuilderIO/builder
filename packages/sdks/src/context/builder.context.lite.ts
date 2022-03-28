@@ -1,7 +1,15 @@
 import { createContext } from '@builder.io/mitosis';
 
-export default createContext({
-  content: null as any,
-  context: {} as any,
-  state: {} as any,
+interface BuilderContext {
+  content: any;
+  context: any;
+  state: any;
+  apiKey: string | null;
+}
+
+export default createContext<BuilderContext>({
+  content: null,
+  context: {},
+  state: {},
+  apiKey: null,
 });

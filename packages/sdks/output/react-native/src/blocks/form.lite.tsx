@@ -211,7 +211,7 @@ export default function FormComponent(props) {
       {' '}
       {props.builderBlock && props.builderBlock.children ? (
         <>
-          {props.builderBlock?.children?.map((block) => (
+          {props.builderBlock?.children?.map((block, index) => (
             <RenderBlock block={block} />
           ))}
         </>

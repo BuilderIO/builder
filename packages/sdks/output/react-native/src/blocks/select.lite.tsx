@@ -13,7 +13,7 @@ export default function SelectComponent(props) {
       defaultValue={props.defaultValue}
       name={props.name}
     >
-      {props.options?.map((option) => (
+      {props.options?.map((option, index) => (
         <View value={option.value}>
           <Text>{option.name || option.value}</Text>
         </View>

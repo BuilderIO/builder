@@ -58,7 +58,7 @@ import RenderBlocks from './render-blocks';
 export default {
   name: 'render-content',
   components: { 'render-blocks': async () => RenderBlocks },
-  props: ['content', 'model'],
+  props: ['content', 'model', 'apiKey'],
 
   data: () => ({
     update: 0,
@@ -83,6 +83,9 @@ export default {
         get context() {
           return _this.context;
         },
+        get apiKey() {
+          return _this.apiKey;
+        },
       },
     };
   },
@@ -102,12 +105,12 @@ export default {
       if (isPreviewing()) {
         if (this.model && previewingModelName() === this.model) {
           const currentUrl = new URL(location.href);
-          const apiKey = currentUrl.searchParams.get('apiKey');
+          const previewApiKey = currentUrl.searchParams.get('apiKey');
 
-          if (apiKey) {
+          if (previewApiKey) {
             getContent({
               model: this.model,
-              apiKey,
+              apiKey: previewApiKey,
               options: getBuilderSearchParams(
                 convertSearchParamsToQueryObject(currentUrl.searchParams)
               ),

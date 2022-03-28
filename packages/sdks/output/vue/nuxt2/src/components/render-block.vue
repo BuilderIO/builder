@@ -89,9 +89,6 @@ export default {
     tagName() {
       return getBlockTag(this.useBlock);
     },
-    properties() {
-      return getBlockProperties(this.useBlock);
-    },
     useBlock() {
       return getProcessedBlock({
         block: this.block,
@@ -100,14 +97,14 @@ export default {
       });
     },
     propertiesAndActions() {
-      return { ...this.properties, ...this.actions };
-    },
-    actions() {
-      return getBlockActions({
-        block: this.useBlock,
-        state: this.builderContext.state,
-        context: this.builderContext.context,
-      });
+      return {
+        ...getBlockProperties(this.useBlock),
+        ...getBlockActions({
+          block: this.useBlock,
+          state: this.builderContext.state,
+          context: this.builderContext.context,
+        }),
+      };
     },
     css() {
       return getBlockStyles(this.useBlock);

@@ -54,7 +54,7 @@ export default function Columns(props) {
 
   return (
     <View style={styles.view1}>
-      {props.columns?.map((column) => (
+      {props.columns?.map((column, index) => (
         <View style={styles.view2}>
           <RenderBlocks blocks={column.blocks} />
         </View>

@@ -131,12 +131,12 @@ export default function RenderContent(props) {
       if (isPreviewing()) {
         if (props.model && previewingModelName() === props.model) {
           const currentUrl = new URL(location.href);
-          const apiKey = currentUrl.searchParams.get('apiKey');
+          const previewApiKey = currentUrl.searchParams.get('apiKey');
 
-          if (apiKey) {
+          if (previewApiKey) {
             getContent({
               model: props.model,
-              apiKey,
+              apiKey: previewApiKey,
               options: getBuilderSearchParams(
                 convertSearchParamsToQueryObject(currentUrl.searchParams)
               ),
@@ -172,6 +172,10 @@ export default function RenderContent(props) {
 
         get context() {
           return context;
+        },
+
+        get apiKey() {
+          return props.apiKey;
         },
       }}
     >
