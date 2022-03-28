@@ -34,7 +34,7 @@ export default function Symbol(props) {
     props.symbol?.content,
     props.symbol?.model,
     props.symbol?.entry,
-    state.content,
+    content,
   ]);
 
   return (

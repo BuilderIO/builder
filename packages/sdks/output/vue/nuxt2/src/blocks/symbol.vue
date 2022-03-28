@@ -33,7 +33,7 @@ export default registerComponent(
   {
     name: 'builder-symbol',
     components: { 'render-content': async () => RenderContent },
-    props: ['attributes', 'symbol'],
+    props: ['symbol', 'attributes'],
 
     data: () => ({ className: 'builder-symbol', content: null }),
 
@@ -44,20 +44,28 @@ export default registerComponent(
     mounted() {
       this.content = this.symbol?.content;
     },
-    updated() {
-      const symbol = this.symbol;
+    watch: {
+      onUpdateHook() {
+        const symbol = this.symbol;
 
-      if (symbol && !symbol.content && !this.content && symbol.model) {
-        getContent({
-          model: symbol.model,
-          apiKey: this.builderContext.apiKey,
-          options: {
-            entry: symbol.entry,
-          },
-        }).then((response) => {
-          this.content = response;
-        });
-      }
+        if (symbol && !symbol.content && !this.content && symbol.model) {
+          getContent({
+            model: symbol.model,
+            apiKey: this.builderContext.apiKey,
+            options: {
+              entry: symbol.entry,
+            },
+          }).then((response) => {
+            this.content = response;
+          });
+        }
+      },
+    },
+
+    computed: {
+      onUpdateHook() {
+        return `${this.symbol?.content}|${this.symbol?.model}|${this.symbol?.entry}|${this.content}`;
+      },
     },
 
     methods: {
