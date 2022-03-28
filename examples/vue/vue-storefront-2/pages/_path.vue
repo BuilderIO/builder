@@ -30,7 +30,7 @@ export default Vue.extend({
     apiKey: BUILDER_PUBLIC_API_KEY,
   }),
   mounted() {
-    // we need to re-reun this check on the client in case of SSR
+    // we need to re-run this check on the client in case of SSR
     this.canShowContent = this.content || isEditing() || isPreviewing();
   },
   async fetch() {

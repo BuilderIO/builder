@@ -66,7 +66,9 @@ const BuilderContent = ({ path }: { path: string }) => {
   return (
     <View style={styles.container}>
       <Text>Hello world from your React-Native codebase. Below is your Builder content:</Text>
-      {shouldRenderBuilderContent ? <RenderContent model="page" content={content} /> : null}
+      {shouldRenderBuilderContent ? (
+        <RenderContent apiKey={BUILDER_API_KEY} model="page" content={content} />
+      ) : null}
       <StatusBar style="auto" />
     </View>
   );
