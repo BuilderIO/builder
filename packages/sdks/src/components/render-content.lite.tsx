@@ -25,6 +25,7 @@ import {
 import RenderBlocks from './render-blocks.lite';
 import { Nullable } from '../types/typescript';
 import { evaluate } from '../functions/evaluate';
+import { getFetch } from '../functions/get-fetch';
 
 export type RenderContentProps = {
   content?: BuilderContent;
@@ -134,6 +135,43 @@ export default function RenderContent(props: RenderContentProps) {
           state: state.state,
         });
       }
+    },
+    get httpReqsData(): { [index: string]: any } {
+      return {};
+    },
+
+    evalExpression(expression: string) {
+      return expression.replace(/{{([^}]+)}}/g, (_match, group) =>
+        evaluate({
+          code: group,
+          context: state.context,
+          state: state.state,
+        })
+      );
+    },
+    handleRequest({ url, key }: { key: string; url: string }) {
+      console.log('handleReq');
+
+      const fetchAndSetState = async () => {
+        console.log('fetch: ', { url, key });
+
+        const response = await getFetch()(url);
+        const json = await response.json();
+        state.state = json;
+      };
+      fetchAndSetState();
+    },
+    runHttpRequests() {
+      const requests = state.useContent?.data?.httpRequests ?? {};
+      Object.entries(requests).forEach(([key, url]) => {
+        if (url && (!state.httpReqsData[key] || isEditing())) {
+          const evaluatedUrl = state.evalExpression(url);
+          if (isBrowser()) {
+            state.handleRequest({ url: evaluatedUrl, key });
+          } else {
+          }
+        }
+      });
     },
   });
 
