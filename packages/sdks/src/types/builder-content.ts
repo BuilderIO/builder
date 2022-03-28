@@ -8,6 +8,9 @@ export interface BuilderContentVariation {
     blocks?: BuilderBlock[];
     inputs?: Input[];
     state?: { [key: string]: any };
+    jsCode?: string;
+    tsCode: string;
+    httpRequests?: { [key: string]: string };
     [key: string]: any;
   };
   name?: string;

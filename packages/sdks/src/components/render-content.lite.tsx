@@ -5,6 +5,7 @@ import {
   useState,
   onCreate,
   Show,
+  onUpdate,
 } from '@builder.io/mitosis';
 import { isBrowser } from '../functions/is-browser';
 import { BuilderContent } from '../types/builder-content';
@@ -22,6 +23,8 @@ import {
   getBuilderSearchParams,
 } from '../functions/get-builder-search-params';
 import RenderBlocks from './render-blocks.lite';
+import { Nullable } from '../types/typescript';
+import { evaluate } from '../functions/evaluate';
 
 export type RenderContentProps = {
   content?: BuilderContent;
@@ -33,13 +36,13 @@ export type RenderContentProps = {
 
 export default function RenderContent(props: RenderContentProps) {
   const state = useState({
-    get useContent(): any {
+    get useContent(): Nullable<BuilderContent> {
       return state.overrideContent || props.content;
     },
     update: 0,
     state: {},
     context: {},
-    overrideContent: null as BuilderContent | null,
+    overrideContent: null as Nullable<BuilderContent>,
     getCssFromFont(font: any, data?: any) {
       // TODO: compute what font sizes are used and only load those.......
       const family =
@@ -120,6 +123,18 @@ export default function RenderContent(props: RenderContentProps) {
         }
       }
     },
+
+    evaluateJsCode() {
+      // run any dynamic JS code attached to content
+      const jsCode = state.useContent?.data?.jsCode;
+      if (jsCode) {
+        evaluate({
+          code: jsCode,
+          context: state.context,
+          state: state.state,
+        });
+      }
+    },
   });
 
   onCreate(() => {
@@ -161,6 +176,8 @@ export default function RenderContent(props: RenderContentProps) {
           contentId: state.useContent!.id,
         });
       }
+
+      // override normal content in preview mode
       if (isPreviewing()) {
         if (props.model && previewingModelName() === props.model) {
           const currentUrl = new URL(location.href);
@@ -181,8 +198,14 @@ export default function RenderContent(props: RenderContentProps) {
           }
         }
       }
+
+      state.evaluateJsCode();
     }
   });
+
+  onUpdate(() => {
+    state.evaluateJsCode();
+  }, [state.useContent?.data?.jsCode]);
 
   onUnMount(() => {
     if (isBrowser()) {

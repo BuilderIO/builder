@@ -16,6 +16,7 @@ import {
   getBuilderSearchParams,
 } from '../functions/get-builder-search-params';
 import RenderBlocks from './render-blocks.lite';
+import { evaluate } from '../functions/evaluate';
 
 export default function RenderContent(props) {
   function useContent() {
@@ -116,6 +117,19 @@ export default function RenderContent(props) {
     }
   }
 
+  function evaluateJsCode() {
+    // run any dynamic JS code attached to content
+    const jsCode = useContent?.()?.data?.jsCode;
+
+    if (jsCode) {
+      evaluate({
+        code: jsCode,
+        context: context,
+        state: state,
+      });
+    }
+  }
+
   useEffect(() => {
     if (isBrowser()) {
       if (isEditing()) {
@@ -126,7 +140,7 @@ export default function RenderContent(props) {
         track('impression', {
           contentId: useContent().id,
         });
-      }
+      } // override normal content in preview mode
 
       if (isPreviewing()) {
         if (props.model && previewingModelName() === props.model) {
@@ -148,8 +162,14 @@ export default function RenderContent(props) {
           }
         }
       }
+
+      evaluateJsCode();
     }
   }, []);
+
+  useEffect(() => {
+    evaluateJsCode();
+  }, [useContent?.()?.data?.jsCode]);
 
   useEffect(() => {
     return () => {

@@ -54,6 +54,7 @@ import {
   getBuilderSearchParams,
 } from '../functions/get-builder-search-params';
 import RenderBlocks from './render-blocks';
+import { evaluate } from '../functions/evaluate';
 
 export default {
   name: 'render-content',
@@ -100,7 +101,7 @@ export default {
         track('impression', {
           contentId: this.useContent.id,
         });
-      }
+      } // override normal content in preview mode
 
       if (isPreviewing()) {
         if (this.model && previewingModelName() === this.model) {
@@ -122,9 +123,15 @@ export default {
           }
         }
       }
+
+      this.evaluateJsCode();
     }
   },
-
+  watch: {
+    onUpdateHook() {
+      this.evaluateJsCode();
+    },
+  },
   unmounted() {
     if (isBrowser()) {
       window.removeEventListener('message', this.processMessage);
@@ -134,6 +141,9 @@ export default {
   computed: {
     useContent() {
       return this.overrideContent || this.content;
+    },
+    onUpdateHook() {
+      return `${this.useContent?.data?.jsCode}`;
     },
   },
 
@@ -220,6 +230,18 @@ export default {
             break;
           }
         }
+      }
+    },
+    evaluateJsCode() {
+      // run any dynamic JS code attached to content
+      const jsCode = this.useContent?.data?.jsCode;
+
+      if (jsCode) {
+        evaluate({
+          code: jsCode,
+          context: this.context,
+          state: this.state,
+        });
       }
     },
   },

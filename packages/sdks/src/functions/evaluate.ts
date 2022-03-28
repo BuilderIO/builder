@@ -1,16 +1,21 @@
 import { isBrowser } from './is-browser';
 import { isEditing } from './is-editing';
 
-export function evaluate(options: {
+export function evaluate({
+  code,
+  context,
+  state,
+  event,
+}: {
   code: string;
   state: any;
   context: any;
   event?: Event;
 }): any {
-  const { code } = options;
   const builder = {
     isEditing: isEditing(),
     isBrowser: isBrowser(),
+    isServer: !isBrowser(),
   };
 
   // Be able to handle simple expressions like "state.foo" or "1 + 1"
@@ -21,7 +26,7 @@ export function evaluate(options: {
     code.trim().startsWith('return ')
   );
 
-  const useCode = `${useReturn ? `return (${code});` : code}`;
+  const useCode = useReturn ? `return (${code});` : code;
 
   try {
     return new Function(
@@ -31,7 +36,7 @@ export function evaluate(options: {
       'context',
       'event',
       useCode
-    )(builder, builder, options.state, options.context, options.event);
+    )(builder, builder, state, context, event);
   } catch (e) {
     console.warn('Builder custom code error: ', e);
   }
