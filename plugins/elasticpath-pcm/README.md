@@ -6,9 +6,15 @@ Easily connect your Elasticpath catalog to your Builder.io content!
 
 Go to [builder.io/account/organization](https://builder.io/account/organization) and type `@builder.io/plugin-elasticpath-pcm` in the input, then hit save, a prompt will ask you for your client ID, and Client Secret.
 
-![Installation screenshot](https://cdn.builder.io/api/v1/image/assets%2F6d39f4449e2b4e6792a793bb8c1d9615%2F18a7201313914cccae7f0311a1a614ae)
+![Installation screenshot](https://cdn.builder.io/api/v1/image/assets%2F1fa6810c36c54e87bfe1a6cc0f0be906%2F73b8cfe01dde493f918701d7f9c51d79)
 
-You will now see three new field types (for [model](https://builder.io/c/docs/guides/getting-started-with-models) fields, [symbol](https://builder.io/c/docs/guides/symbols) inputs, [custom components](https://builder.io/c/docs/custom-react-components) fields), and [custom targeting attributes](https://www.builder.io/c/docs/guides/targeting-and-scheduling#custom-targeting) that can be used in three different contexts:
+![Credentials screenshot](https://cdn.builder.io/api/v1/image/assets%2F1fa6810c36c54e87bfe1a6cc0f0be906%2Ff30a7a80a74942edbd9039c0f40949ab)
+
+
+
+You will now see a few new field types (for [model](https://builder.io/c/docs/guides/getting-started-with-models) fields, [symbol](https://builder.io/c/docs/guides/symbols) inputs, [custom components](https://builder.io/c/docs/custom-react-components) fields), and [custom targeting attributes](https://www.builder.io/c/docs/guides/targeting-and-scheduling#custom-targeting) that can be used in three different contexts:
+
+![Custom targeting attributes](https://cdn.builder.io/api/v1/image/assets%2F1fa6810c36c54e87bfe1a6cc0f0be906%2F1090c59bd79147568ffd87e8d78bc6cf)
 
 ### Custom targeting
 
@@ -52,5 +58,6 @@ Using the field types `ElasticpathPCMProduct` and `ElasticpathPCMHeirarchy` as i
 
 Try creating a custom [model](https://builder.io/c/docs/guides/getting-started-with-models), [component](https://builder.io/c/docs/custom-react-components), or [symbol](https://builder.io/c/docs/guides/symbols) using any of the Elasticpath PCM field types, and edit away!
 
-<img src="https://i.imgur.com/uVOLn7A.gif" alt="Seeing your plugin in the editor example gif">
+
+<video width="80%" src="https://cdn.builder.io/o/assets%2F1fa6810c36c54e87bfe1a6cc0f0be906%2Fe84e09f8c7ea4fdea63c7b329c756c4e%2Fcompressed?apiKey=1fa6810c36c54e87bfe1a6cc0f0be906&token=e84e09f8c7ea4fdea63c7b329c756c4e&alt=media&optimized=true" autoplay controls/>
 
