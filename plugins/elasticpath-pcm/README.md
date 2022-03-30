@@ -59,5 +59,5 @@ Using the field types `ElasticpathPCMProduct` and `ElasticpathPCMHeirarchy` as i
 Try creating a custom [model](https://builder.io/c/docs/guides/getting-started-with-models), [component](https://builder.io/c/docs/custom-react-components), or [symbol](https://builder.io/c/docs/guides/symbols) using any of the Elasticpath PCM field types, and edit away!
 
 
-<video width="80%" src="https://cdn.builder.io/o/assets%2F1fa6810c36c54e87bfe1a6cc0f0be906%2Fe84e09f8c7ea4fdea63c7b329c756c4e%2Fcompressed?apiKey=1fa6810c36c54e87bfe1a6cc0f0be906&token=e84e09f8c7ea4fdea63c7b329c756c4e&alt=media&optimized=true" autoplay controls/>
+[![Custom Targeting Page](https://j.gifs.com/6Wx3rO.gif)](https://cdn.builder.io/o/assets%2F1fa6810c36c54e87bfe1a6cc0f0be906%2Fe84e09f8c7ea4fdea63c7b329c756c4e%2Fcompressed?apiKey=1fa6810c36c54e87bfe1a6cc0f0be906&token=e84e09f8c7ea4fdea63c7b329c756c4e&alt=media)
 
