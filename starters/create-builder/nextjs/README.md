@@ -96,11 +96,11 @@ To connect your Builder.io space and your application, set the site URL and get 
    <img src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Faec18bf8ccf543ab94c4230a7791c894" alt="Change the Site URL in account settings." width="400" style="display: block; margin: auto"/>
 </figure>
 
-1. In your code editor, configure `.env.production` and `.env.development` with the [Public API Key](https://builder.io/account/space) by adding a line to each file as follows, but using your Public API Key that you copied in the previous step.
+1. In your code editor, update `_app.tsx` with your [Public API Key](https://builder.io/account/space) like below, but using your Public API Key that you copied in the previous step.
    For example:
 
    ```shell
-   BUILDER_PUBLIC_KEY=08837cee608a405c806a3bed69acfe2d <-- replace this with your API Key
+   builder.init("YOUR_PUBLIC_KEY"); <-- replace this with your API Key
    ```
 
 ## Running your application
