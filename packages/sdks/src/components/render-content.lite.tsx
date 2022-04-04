@@ -209,9 +209,9 @@ export default function RenderContent(props: RenderContentProps) {
       if (isEditing()) {
         window.addEventListener('message', state.processMessage);
       }
-      if (state.useContent && !isEditing()) {
+      if (state.useContent) {
         track('impression', {
-          contentId: state.useContent!.id,
+          contentId: state.useContent.id,
         });
       }
 
@@ -255,13 +255,11 @@ export default function RenderContent(props: RenderContentProps) {
   return (
     <Show when={state.useContent}>
       <div
-        onClick={(e) => {
-          if (!isEditing()) {
-            track('click', {
-              contentId: state.useContent!.id,
-            });
-          }
-        }}
+        onClick={(_e) =>
+          track('click', {
+            contentId: state.useContent!.id,
+          })
+        }
         data-builder-content-id={state.useContent?.id}
       >
         {(state.useContent?.data?.cssCode ||
