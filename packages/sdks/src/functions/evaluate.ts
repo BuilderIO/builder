@@ -12,6 +12,11 @@ export function evaluate({
   context: any;
   event?: Event;
 }): any {
+  if (code === '') {
+    console.warn('Skipping evaluation of empty code block.');
+    return;
+  }
+
   const builder = {
     isEditing: isEditing(),
     isBrowser: isBrowser(),
