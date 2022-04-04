@@ -24,6 +24,8 @@
   "devDependencies": {
     "@types/jest": "^27.4.0",
     "@types/node-fetch": "^2.5.12",
+    "@types/react": "^17.0.43",
+    "@types/react-dom": "^17.0.14",
     "commitizen": "^4.2.4",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^7.21.0",
