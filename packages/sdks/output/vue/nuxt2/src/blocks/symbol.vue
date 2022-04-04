@@ -44,8 +44,9 @@ export default registerComponent(
     mounted() {
       this.content = this.symbol?.content;
     },
+
     watch: {
-      onUpdateHook() {
+      onUpdateHook0() {
         const symbol = this.symbol;
 
         if (symbol && !symbol.content && !this.content && symbol.model) {
@@ -63,7 +64,7 @@ export default registerComponent(
     },
 
     computed: {
-      onUpdateHook() {
+      onUpdateHook0() {
         return `${this.symbol?.content}|${this.symbol?.model}|${this.symbol?.entry}|${this.content}`;
       },
     },

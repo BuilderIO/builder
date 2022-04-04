@@ -2,11 +2,9 @@
   <div
     v-if="useContent"
     @click="
-      if (!isEditing()) {
-        track('click', {
-          contentId: useContent.id,
-        });
-      }
+      track('click', {
+        contentId: useContent.id,
+      })
     "
     :data-builder-content-id="useContent && useContent.id"
   >
@@ -42,8 +40,6 @@
 import { isBrowser } from '../functions/is-browser';
 import BuilderContext from '../context/builder.context';
 import { track } from '../functions/track';
-import { ifTarget } from '../functions/if-target';
-import { onChange } from '../functions/on-change';
 import { isReactNative } from '../functions/is-react-native';
 import { isEditing } from '../functions/is-editing';
 import { isPreviewing } from '../functions/is-previewing';
@@ -55,21 +51,15 @@ import {
 } from '../functions/get-builder-search-params';
 import RenderBlocks from './render-blocks';
 import { evaluate } from '../functions/evaluate';
+import { getFetch } from '../functions/get-fetch';
+import { onChange } from '../functions/on-change';
 
 export default {
   name: 'render-content',
   components: { 'render-blocks': async () => RenderBlocks },
   props: ['content', 'model', 'apiKey'],
 
-  data: () => ({
-    update: 0,
-    state: {},
-    context: {},
-    overrideContent: null,
-    track,
-    isReactNative,
-    isEditing,
-  }),
+  data: () => ({ update: 0, overrideContent: null, track, isReactNative }),
 
   provide() {
     const _this = this;
@@ -95,9 +85,13 @@ export default {
     if (isBrowser()) {
       if (isEditing()) {
         window.addEventListener('message', this.processMessage);
+        window.addEventListener(
+          'builder:component:stateChangeListenerActivated',
+          this.emitStateUpdate
+        );
       }
 
-      if (this.useContent && !isEditing()) {
+      if (this.useContent) {
         track('impression', {
           contentId: this.useContent.id,
         });
@@ -125,16 +119,29 @@ export default {
       }
 
       this.evaluateJsCode();
+      this.runHttpRequests();
+      this.emitStateUpdate();
     }
   },
+
   watch: {
-    onUpdateHook() {
+    onUpdateHook0() {
       this.evaluateJsCode();
+    },
+    onUpdateHook1() {
+      this.runHttpRequests();
+    },
+    onUpdateHook2() {
+      this.emitStateUpdate();
     },
   },
   unmounted() {
     if (isBrowser()) {
       window.removeEventListener('message', this.processMessage);
+      window.removeEventListener(
+        'builder:component:stateChangeListenerActivated',
+        this.emitStateUpdate
+      );
     }
   },
 
@@ -142,8 +149,23 @@ export default {
     useContent() {
       return this.overrideContent || this.content;
     },
-    onUpdateHook() {
+    state() {
+      return this.content?.data?.state || {};
+    },
+    context() {
+      return {};
+    },
+    httpReqsData() {
+      return {};
+    },
+    onUpdateHook0() {
       return `${this.useContent?.data?.jsCode}`;
+    },
+    onUpdateHook1() {
+      return `${this.useContent?.data?.httpRequests}`;
+    },
+    onUpdateHook2() {
+      return `${this.state}`;
     },
   },
 
@@ -211,12 +233,14 @@ export default {
       if (data) {
         switch (data.type) {
           case 'builder.contentUpdate': {
+            const messageContent = data.data;
             const key =
-              data.data.key ||
-              data.data.alias ||
-              data.data.entry ||
-              data.data.modelName;
-            const contentData = data.data.data; // oof
+              messageContent.key ||
+              messageContent.alias ||
+              messageContent.entry ||
+              messageContent.modelName;
+            const contentData = messageContent.data;
+            console.log('content update', key, contentData);
 
             if (key === this.model) {
               this.overrideContent = contentData;
@@ -243,6 +267,59 @@ export default {
           state: this.state,
         });
       }
+    },
+    evalExpression(expression) {
+      return expression.replace(/{{([^}]+)}}/g, (_match, group) =>
+        evaluate({
+          code: group,
+          context: this.context,
+          state: this.state,
+        })
+      );
+    },
+    handleRequest({ url, key }) {
+      console.log('handleReq');
+
+      const fetchAndSetState = async () => {
+        console.log('fetch: ', {
+          url,
+          key,
+        });
+        const response = await getFetch()(url);
+        const json = await response.json();
+        this.state[key] = json;
+      };
+
+      fetchAndSetState();
+    },
+    runHttpRequests() {
+      const requests = this.useContent?.data?.httpRequests ?? {};
+      console.log('about to run HTTP requests', requests.toString());
+      Object.entries(requests).forEach(([key, url]) => {
+        if (url && (!this.httpReqsData[key] || isEditing())) {
+          const evaluatedUrl = this.evalExpression(url);
+
+          if (isBrowser()) {
+            this.handleRequest({
+              url: evaluatedUrl,
+              key,
+            });
+          } else {
+          }
+        }
+      });
+    },
+    emitStateUpdate() {
+      window.dispatchEvent(
+        new CustomEvent('builder:component:stateChange', {
+          detail: {
+            state: this.state,
+            ref: {
+              name: this.model,
+            },
+          },
+        })
+      );
     },
   },
 };

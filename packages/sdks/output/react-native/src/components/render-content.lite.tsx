@@ -4,8 +4,6 @@ import { useState, useContext, useEffect } from 'react';
 import { isBrowser } from '../functions/is-browser';
 import BuilderContext from '../context/builder.context.lite';
 import { track } from '../functions/track';
-import { ifTarget } from '../functions/if-target';
-import { onChange } from '../functions/on-change';
 import { isReactNative } from '../functions/is-react-native';
 import { isEditing } from '../functions/is-editing';
 import { isPreviewing } from '../functions/is-previewing';
@@ -17,6 +15,8 @@ import {
 } from '../functions/get-builder-search-params';
 import RenderBlocks from './render-blocks.lite';
 import { evaluate } from '../functions/evaluate';
+import { getFetch } from '../functions/get-fetch';
+import { onChange } from '../functions/on-change';
 
 export default function RenderContent(props) {
   function useContent() {
@@ -25,9 +25,13 @@ export default function RenderContent(props) {
 
   const [update, setUpdate] = useState(() => 0);
 
-  const [state, setState] = useState(() => ({}));
+  function state() {
+    return props.content?.data?.state || {};
+  }
 
-  const [context, setContext] = useState(() => ({}));
+  function context() {
+    return {};
+  }
 
   const [overrideContent, setOverrideContent] = useState(() => null);
 
@@ -95,12 +99,14 @@ export default function RenderContent(props) {
     if (data) {
       switch (data.type) {
         case 'builder.contentUpdate': {
+          const messageContent = data.data;
           const key =
-            data.data.key ||
-            data.data.alias ||
-            data.data.entry ||
-            data.data.modelName;
-          const contentData = data.data.data; // oof
+            messageContent.key ||
+            messageContent.alias ||
+            messageContent.entry ||
+            messageContent.modelName;
+          const contentData = messageContent.data;
+          console.log('content update', key, contentData);
 
           if (key === props.model) {
             setOverrideContent(contentData);
@@ -124,19 +130,84 @@ export default function RenderContent(props) {
     if (jsCode) {
       evaluate({
         code: jsCode,
-        context: context,
-        state: state,
+        context: context(),
+        state: state(),
       });
     }
+  }
+
+  function httpReqsData() {
+    return {};
+  }
+
+  function evalExpression(expression) {
+    return expression.replace(/{{([^}]+)}}/g, (_match, group) =>
+      evaluate({
+        code: group,
+        context: context(),
+        state: state(),
+      })
+    );
+  }
+
+  function handleRequest({ url, key }) {
+    console.log('handleReq');
+
+    const fetchAndSetState = async () => {
+      console.log('fetch: ', {
+        url,
+        key,
+      });
+      const response = await getFetch()(url);
+      const json = await response.json();
+      state()[key] = json;
+    };
+
+    fetchAndSetState();
+  }
+
+  function runHttpRequests() {
+    const requests = useContent?.()?.data?.httpRequests ?? {};
+    console.log('about to run HTTP requests', requests.toString());
+    Object.entries(requests).forEach(([key, url]) => {
+      if (url && (!httpReqsData()[key] || isEditing())) {
+        const evaluatedUrl = evalExpression(url);
+
+        if (isBrowser()) {
+          handleRequest({
+            url: evaluatedUrl,
+            key,
+          });
+        } else {
+        }
+      }
+    });
+  }
+
+  function emitStateUpdate() {
+    window.dispatchEvent(
+      new CustomEvent('builder:component:stateChange', {
+        detail: {
+          state: state(),
+          ref: {
+            name: props.model,
+          },
+        },
+      })
+    );
   }
 
   useEffect(() => {
     if (isBrowser()) {
       if (isEditing()) {
         window.addEventListener('message', processMessage);
+        window.addEventListener(
+          'builder:component:stateChangeListenerActivated',
+          emitStateUpdate
+        );
       }
 
-      if (useContent() && !isEditing()) {
+      if (useContent()) {
         track('impression', {
           contentId: useContent().id,
         });
@@ -164,17 +235,29 @@ export default function RenderContent(props) {
       }
 
       evaluateJsCode();
+      runHttpRequests();
+      emitStateUpdate();
     }
   }, []);
 
   useEffect(() => {
     evaluateJsCode();
   }, [useContent?.()?.data?.jsCode]);
+  useEffect(() => {
+    runHttpRequests();
+  }, [useContent?.()?.data?.httpRequests]);
+  useEffect(() => {
+    emitStateUpdate();
+  }, [state()]);
 
   useEffect(() => {
     return () => {
       if (isBrowser()) {
         window.removeEventListener('message', processMessage);
+        window.removeEventListener(
+          'builder:component:stateChangeListenerActivated',
+          emitStateUpdate
+        );
       }
     };
   }, []);
@@ -187,11 +270,11 @@ export default function RenderContent(props) {
         },
 
         get state() {
-          return state;
+          return state();
         },
 
         get context() {
-          return context;
+          return context();
         },
 
         get apiKey() {
@@ -202,13 +285,11 @@ export default function RenderContent(props) {
       {useContent() ? (
         <>
           <View
-            onClick={(event) => {
-              if (!isEditing()) {
-                track('click', {
-                  contentId: useContent().id,
-                });
-              }
-            }}
+            onClick={(event) =>
+              track('click', {
+                contentId: useContent().id,
+              })
+            }
             data-builder-content-id={useContent?.()?.id}
           >
             {(useContent?.()?.data?.cssCode ||
@@ -217,7 +298,7 @@ export default function RenderContent(props) {
               <View>
                 <Text>{useContent().data.cssCode}</Text>
 
-                <Text>{getFontCss(useContent().data)}</Text>
+                <Text>{state().getFontCss(useContent().data)}</Text>
               </View>
             ) : null}
 

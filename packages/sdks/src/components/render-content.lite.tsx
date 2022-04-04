@@ -128,6 +128,7 @@ export default function RenderContent(props: RenderContentProps) {
 
             const contentData = messageContent.data;
 
+            console.log('content update', key, contentData);
 
             if (key === props.model) {
               state.overrideContent = contentData;
@@ -180,6 +181,7 @@ export default function RenderContent(props: RenderContentProps) {
     },
     runHttpRequests() {
       const requests = state.useContent?.data?.httpRequests ?? {};
+      console.log('about to run HTTP requests', requests.toString());
 
       Object.entries(requests).forEach(([key, url]) => {
         if (url && (!state.httpReqsData[key] || isEditing())) {
