@@ -11,8 +11,6 @@ import { isBrowser } from '../functions/is-browser';
 import { BuilderContent } from '../types/builder-content';
 import BuilderContext from '../context/builder.context.lite';
 import { track } from '../functions/track';
-import { ifTarget } from '../functions/if-target';
-import { onChange } from '../functions/on-change';
 import { isReactNative } from '../functions/is-react-native';
 import { isEditing } from '../functions/is-editing';
 import { isPreviewing } from '../functions/is-previewing';
@@ -26,6 +24,7 @@ import RenderBlocks from './render-blocks.lite';
 import { Nullable } from '../types/typescript';
 import { evaluate } from '../functions/evaluate';
 import { getFetch } from '../functions/get-fetch';
+import { onChange } from '../functions/on-change';
 
 export type RenderContentProps = {
   content?: BuilderContent;
@@ -35,14 +34,30 @@ export type RenderContentProps = {
   apiKey: string;
 };
 
+interface BuilderComponentStateChange {
+  state: { [key: string]: any };
+  ref: {
+    name?: string;
+    props?: {
+      builderBlock?: {
+        id?: string;
+      };
+    };
+  };
+}
+
 export default function RenderContent(props: RenderContentProps) {
   const state = useState({
     get useContent(): Nullable<BuilderContent> {
       return state.overrideContent || props.content;
     },
     update: 0,
-    state: {},
-    context: {},
+    get state(): { [key: string]: any } {
+      return props.content?.data?.state || {};
+    },
+    get context() {
+      return {} as { [index: string]: any };
+    },
     overrideContent: null as Nullable<BuilderContent>,
     getCssFromFont(font: any, data?: any) {
       // TODO: compute what font sizes are used and only load those.......
@@ -104,13 +119,15 @@ export default function RenderContent(props: RenderContentProps) {
       if (data) {
         switch (data.type) {
           case 'builder.contentUpdate': {
+            const messageContent = data.data;
             const key =
-              data.data.key ||
-              data.data.alias ||
-              data.data.entry ||
-              data.data.modelName;
+              messageContent.key ||
+              messageContent.alias ||
+              messageContent.entry ||
+              messageContent.modelName;
 
-            const contentData = data.data.data; // oof
+            const contentData = messageContent.data;
+
 
             if (key === props.model) {
               state.overrideContent = contentData;
@@ -157,12 +174,13 @@ export default function RenderContent(props: RenderContentProps) {
 
         const response = await getFetch()(url);
         const json = await response.json();
-        state.state = json;
+        state.state[key] = json;
       };
       fetchAndSetState();
     },
     runHttpRequests() {
       const requests = state.useContent?.data?.httpRequests ?? {};
+
       Object.entries(requests).forEach(([key, url]) => {
         if (url && (!state.httpReqsData[key] || isEditing())) {
           const evaluatedUrl = state.evalExpression(url);
@@ -173,14 +191,31 @@ export default function RenderContent(props: RenderContentProps) {
         }
       });
     },
+    emitStateUpdate() {
+      window.dispatchEvent(
+        new CustomEvent<BuilderComponentStateChange>(
+          'builder:component:stateChange',
+          {
+            detail: {
+              state: state.state,
+              ref: {
+                name: props.model,
+              },
+            },
+          }
+        )
+      );
+    },
   });
 
+  // This currently doesn't do anything as `onCreate` is not implemented
   onCreate(() => {
     state.state = ifTarget(
       // The reactive targets
       ['vue', 'solid'],
       () => ({}),
       () =>
+        // This is currently a no-op, since it's listening to changes on `{}`.
         onChange({}, () => {
           state.update = state.update + 1;
         })
@@ -208,6 +243,10 @@ export default function RenderContent(props: RenderContentProps) {
     if (isBrowser()) {
       if (isEditing()) {
         window.addEventListener('message', state.processMessage);
+        window.addEventListener(
+          'builder:component:stateChangeListenerActivated',
+          state.emitStateUpdate
+        );
       }
       if (state.useContent) {
         track('impression', {
@@ -238,6 +277,8 @@ export default function RenderContent(props: RenderContentProps) {
       }
 
       state.evaluateJsCode();
+      state.runHttpRequests();
+      state.emitStateUpdate();
     }
   });
 
@@ -245,9 +286,21 @@ export default function RenderContent(props: RenderContentProps) {
     state.evaluateJsCode();
   }, [state.useContent?.data?.jsCode]);
 
+  onUpdate(() => {
+    state.runHttpRequests();
+  }, [state.useContent?.data?.httpRequests]);
+
+  onUpdate(() => {
+    state.emitStateUpdate();
+  }, [state.state]);
+
   onUnMount(() => {
     if (isBrowser()) {
       window.removeEventListener('message', state.processMessage);
+      window.removeEventListener(
+        'builder:component:stateChangeListenerActivated',
+        state.emitStateUpdate
+      );
     }
   });
 
