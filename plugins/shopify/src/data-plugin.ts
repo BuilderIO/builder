@@ -1,7 +1,7 @@
 import { APIOperations, ResourceType } from '@builder.io/data-plugin-tools';
 import appState from '@builder.io/app-context';
 import { CommerceAPIOperations } from '@builder.io/commerce-plugin-tools';
-import pkg from '../package.json'
+import pkg from '../package.json';
 type ShopifyResourceType = 'product' | 'collection';
 
 const buildPath = ({
@@ -81,7 +81,14 @@ export const getDataConfig = (service: CommerceAPIOperations): DataPluginConfig 
         (model): ResourceType => ({
           ...model,
           inputs: () => [
-            { friendlyName: 'limit', name: 'first', type: 'number', defaultValue: 10, max: 60, min: 0 },
+            {
+              friendlyName: 'limit',
+              name: 'first',
+              type: 'number',
+              defaultValue: 10,
+              max: 60,
+              min: 0,
+            },
             { friendlyName: 'Search', name: 'query', type: 'string' },
           ],
           toUrl: ({ entry, query, first }) =>
@@ -99,19 +106,20 @@ export const getDataConfig = (service: CommerceAPIOperations): DataPluginConfig 
 
       if (entry) {
         const entryObj = await service[resourceTypeId].findById(entry);
-        return [{
-          id: String(entryObj.id),
-          name: entryObj.title,
-        }]
+        return [
+          {
+            id: String(entryObj.id),
+            name: entryObj.title,
+          },
+        ];
       }
 
       const response = await service[resourceTypeId].search(options.searchText || '');
 
       return response.map(result => ({
-          id: String(result.id),
-          name: result.title,
-        })
-      );
+        id: String(result.id),
+        name: result.title,
+      }));
     },
   };
 };

@@ -3,9 +3,9 @@ import intercept from '../utils/network';
 
 context(['regression'], 'Product page', () => {
   beforeEach(function () {
-    cy.fixture('test-data/e2e-product-page').then((fixture) => {
+    cy.fixture('test-data/e2e-product-page').then(fixture => {
       this.fixtures = {
-        data: fixture
+        data: fixture,
       };
     });
     cy.clearLocalStorage();
@@ -28,19 +28,26 @@ context(['regression'], 'Product page', () => {
     page.product().sizeSelect.should('have.value', data.product.attributes.size);
   });
 
-  it('Should add correct variant to cart', function() {
+  it('Should add correct variant to cart', function () {
     const data = this.fixtures.data[this.test.title];
     const getProductReq = intercept.getProduct();
     page.product(data.product.id, data.product.slug).visit();
-    page.product().sizeSelect.select(data.product.attributes.size).then(() => {
-      cy.wait(getProductReq);
-    });
+    page
+      .product()
+      .sizeSelect.select(data.product.attributes.size)
+      .then(() => {
+        cy.wait(getProductReq);
+      });
     page.product().addToCartButton.click();
     page.product().header.openCart();
     page.components.cart.productProperties.should('be.visible').then(() => {
-      page.components.cart.product().each((product) => {
-        page.components.cart.productSizeProperty(product).should('contain', data.product.attributes.size);
-        page.components.cart.productColorProperty(product).should('contain', data.product.attributes.color);
+      page.components.cart.product().each(product => {
+        page.components.cart
+          .productSizeProperty(product)
+          .should('contain', data.product.attributes.size);
+        page.components.cart
+          .productColorProperty(product)
+          .should('contain', data.product.attributes.color);
       });
     });
   });

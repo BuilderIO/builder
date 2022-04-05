@@ -57,8 +57,8 @@ registerCommercePlugin(
               }&pluginId=${pkg.name}`,
             },
             options: {
-              product: id
-            }
+              product: id,
+            },
           };
         },
       },
@@ -86,7 +86,7 @@ registerCommercePlugin(
             },
             options: {
               collection: id,
-            }
+            },
           };
         },
       },

@@ -1189,7 +1189,6 @@ export class BuilderComponent extends React.Component<
     return expression.replace(/{{([^}]+)}}/g, (match, group) => tryEval(group, data, this._errors));
   }
 
-
   async handleRequest(propertyName: string, url: string) {
     // TODO: Builder.isEditing = just checks if iframe and parent page is this.builder.io or localhost:1234
     if (Builder.isIframe && fetchCache[url]) {
@@ -1444,7 +1443,7 @@ export class BuilderComponent extends React.Component<
               const builderModelMatch = url.match(builderModelRe);
               const model = builderModelMatch && builderModelMatch[1];
               if (false && Builder.isEditing && model && this.builder.editingModel === model) {
-                this.handleRequest(key, finalUrl)
+                this.handleRequest(key, finalUrl);
                 // TODO: fix this
                 // this.subscriptions.add(
                 //   this.builder.get(model).subscribe(data => {
@@ -1454,7 +1453,7 @@ export class BuilderComponent extends React.Component<
                 //   })
                 // )
               } else {
-                this.handleRequest(key, finalUrl)
+                this.handleRequest(key, finalUrl);
                 const currentSubscription = this.httpSubscriptionPerKey[key];
                 if (currentSubscription) {
                   currentSubscription.unsubscribe();
@@ -1466,7 +1465,7 @@ export class BuilderComponent extends React.Component<
                 ] = this.onStateChange.subscribe(() => {
                   const newUrl = this.evalExpression(url);
                   if (newUrl !== finalUrl) {
-                    this.handleRequest(key, newUrl)
+                    this.handleRequest(key, newUrl);
                     this.lastHttpRequests[key] = newUrl;
                   }
                 }));

@@ -3,9 +3,9 @@ import page from '../pages/factory';
 
 context(['regression'], 'Checkout - Access quard', () => {
   beforeEach(function () {
-    cy.fixture('test-data/e2e-checkout-access-guard').then((fixture) => {
+    cy.fixture('test-data/e2e-checkout-access-guard').then(fixture => {
       this.fixtures = {
-        data: fixture
+        data: fixture,
       };
     });
   });
@@ -19,7 +19,12 @@ context(['regression'], 'Checkout - Access quard', () => {
     const data = this.fixtures.data[this.test.title];
     requests.createCart().then((response: CreateCartResponse) => {
       requests.addToCart(response.body.data.cart.id, data.product);
-      requests.updateCart(response.body.data.cart.id, { addresses: { shipping: data.customer.address.shipping, billing: data.customer.address.billing }});
+      requests.updateCart(response.body.data.cart.id, {
+        addresses: {
+          shipping: data.customer.address.shipping,
+          billing: data.customer.address.billing,
+        },
+      });
     });
     page.checkout.payment.visit();
     cy.url().should('contain', page.checkout.payment.path);
@@ -29,7 +34,12 @@ context(['regression'], 'Checkout - Access quard', () => {
     const data = this.fixtures.data[this.test.title];
     requests.createCart().then((response: CreateCartResponse) => {
       requests.addToCart(response.body.data.cart.id, data.product);
-      requests.updateCart(response.body.data.cart.id, { addresses: { shipping: data.customer.address.shipping, billing: data.customer.address.billing }});
+      requests.updateCart(response.body.data.cart.id, {
+        addresses: {
+          shipping: data.customer.address.shipping,
+          billing: data.customer.address.billing,
+        },
+      });
     });
     page.checkout.payment.visit();
     page.checkout.payment.paymentMethods.first().click();

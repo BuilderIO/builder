@@ -1,7 +1,6 @@
 import { el } from '../utils/element';
 
 class Header {
-
   get account(): Cypress.Chainable {
     return this.icons.eq(0);
   }
@@ -17,7 +16,7 @@ class Header {
   get category() {
     return {
       women: () => el('app-header-url_women'),
-      men: () => el('app-header-url_men')
+      men: () => el('app-header-url_men'),
     };
   }
 

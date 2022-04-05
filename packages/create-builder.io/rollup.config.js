@@ -12,8 +12,28 @@ export default {
     banner: '#! /usr/bin/env node\n',
     preferConst: true,
   },
-  plugins: [resolve(), typescript(), json(), commonjs({
-    dynamicRequireTargets: ["graphql-typed-client", "figlet"]
-  })],
-  external: ['child_process', 'replace-in-file', "graphql-typed-client", 'figlet', 'fs', 'path', 'os', 'https', 'readline', 'zlib', 'events', 'stream', 'util', 'buffer'],
+  plugins: [
+    resolve(),
+    typescript(),
+    json(),
+    commonjs({
+      dynamicRequireTargets: ['graphql-typed-client', 'figlet'],
+    }),
+  ],
+  external: [
+    'child_process',
+    'replace-in-file',
+    'graphql-typed-client',
+    'figlet',
+    'fs',
+    'path',
+    'os',
+    'https',
+    'readline',
+    'zlib',
+    'events',
+    'stream',
+    'util',
+    'buffer',
+  ],
 };

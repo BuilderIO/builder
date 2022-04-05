@@ -4,9 +4,9 @@ import generator from '../utils/data-generator';
 
 context(['regression'], 'Checkout - Shipping', () => {
   beforeEach(function () {
-    cy.fixture('test-data/e2e-checkout-shipping-validation').then((fixture) => {
+    cy.fixture('test-data/e2e-checkout-shipping-validation').then(fixture => {
       this.fixtures = {
-        data: fixture
+        data: fixture,
       };
     });
   });
@@ -47,7 +47,7 @@ context(['regression'], 'Checkout - Shipping', () => {
     'Street Number',
     'City',
     'Postal Code',
-    'Phone'
+    'Phone',
   ];
 
   requiredFields.forEach(requiredField => {
@@ -60,17 +60,14 @@ context(['regression'], 'Checkout - Shipping', () => {
       page.checkout.shipping.fillForm(data.customer);
       page.checkout.shipping.selectShippingButton.click();
       page.checkout.shipping[Cypress._.camelCase(requiredField)].parent().within(() => {
-        cy.get('input').then(($input) => {
+        cy.get('input').then($input => {
           expect($input[0].validationMessage).to.be.eq(data.errorMessage);
         });
       });
     });
   });
 
-  const requiredSelects = [
-    'Country',
-    'State'
-  ];
+  const requiredSelects = ['Country', 'State'];
 
   requiredSelects.forEach(requiredSelect => {
     it(`Should display an error - ${requiredSelect} empty`, function () {

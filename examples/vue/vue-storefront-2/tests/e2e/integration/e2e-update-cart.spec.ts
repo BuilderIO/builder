@@ -4,9 +4,9 @@ import intercept from '../utils/network';
 
 context(['regression'], 'Update cart', () => {
   beforeEach(function () {
-    cy.fixture('test-data/e2e-update-cart').then((fixture) => {
+    cy.fixture('test-data/e2e-update-cart').then(fixture => {
       this.fixtures = {
-        data: fixture
+        data: fixture,
       };
     });
   });
@@ -22,9 +22,12 @@ context(['regression'], 'Update cart', () => {
     page.home.header.openCart();
     page.components.cart.product(data.productToUpdate.name).should('be.visible');
     const updateCartRequest = intercept.updateCartQuantity();
-    page.components.cart.increaseQtyButton(data.productToUpdate.name).click().then(() => {
-      cy.wait(updateCartRequest);
-    });
+    page.components.cart
+      .increaseQtyButton(data.productToUpdate.name)
+      .click()
+      .then(() => {
+        cy.wait(updateCartRequest);
+      });
     page.components.cart.productName.each((name, index) => {
       cy.wrap(name).should('contain', data.expectedCart[index].name);
     });
@@ -44,9 +47,12 @@ context(['regression'], 'Update cart', () => {
     page.home.header.openCart();
     page.components.cart.product(data.productToUpdate.name).should('be.visible');
     const updateCartRequest = intercept.updateCartQuantity();
-    page.components.cart.decreaseQtyButton(data.productToUpdate.name).click().then(() => {
-      cy.wait(updateCartRequest);
-    });
+    page.components.cart
+      .decreaseQtyButton(data.productToUpdate.name)
+      .click()
+      .then(() => {
+        cy.wait(updateCartRequest);
+      });
     page.components.cart.productName.each((name, index) => {
       cy.wrap(name).should('contain', data.expectedCart[index].name);
     });

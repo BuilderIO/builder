@@ -52,7 +52,10 @@ export function serializeLiquidArgs(data?: Record<string, any>) {
  *
  * Capture is arguably better for strings to properly handle multiline strings, HTML quotes, etc.
  */
-export function generateLiquidAssignCaptureTags(data?: Record<string, any>, scopePrefix: string = ''): {
+export function generateLiquidAssignCaptureTags(
+  data?: Record<string, any>,
+  scopePrefix: string = ''
+): {
   renderArgs: string;
   assignments: string;
 } {
@@ -76,6 +79,8 @@ export function generateLiquidAssignCaptureTags(data?: Record<string, any>, scop
           })
           .join('\n')
       : '',
-    renderArgs: args.length ? args.map(([argName]) => `${argName}: ${withPrefix(argName)}`).join(', ') : '',
+    renderArgs: args.length
+      ? args.map(([argName]) => `${argName}: ${withPrefix(argName)}`).join(', ')
+      : '',
   };
 }
