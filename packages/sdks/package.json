@@ -4,20 +4,16 @@
   "scripts": {
     "prepare": "cd ../../ && npx husky install",
     "cz": "cz",
-    "mitosis": "mitosis build",
-    "build": "npm run mitosis && npm run lint",
+    "mitosis": "./node_modules/@builder.io/mitosis-cli/bin/mitosis build",
+    "build": "yarn run mitosis && yarn run lint",
     "lint": "prettier --write .",
-    "start": "watch 'npm run mitosis' ./src ./overrides",
+    "start": "watch 'yarn run mitosis' ./src ./overrides",
     "test": "jest",
-    "ci:build": "npm run build",
-    "ci:test": "npm run test",
-    "rm": "rm -rf ./node_modules/@builder.io/mitosis-cli && rm -rf ./node_modules/@builder.io/mitosis",
-    "symlink-cli": "ln -sf ../../../../../mitosis/packages/cli ./node_modules/@builder.io/mitosis-cli",
-    "symlink-core": "ln -sf ../../../../../mitosis/packages/core ./node_modules/@builder.io/mitosis",
-    "symlink": "npm run rm && npm run symlink-cli && npm run symlink-core"
+    "ci:build": "mitosis build && yarn run lint",
+    "ci:test": "yarn run test"
   },
   "dependencies": {
-    "@builder.io/mitosis-cli": "^0.0.12",
+    "@builder.io/mitosis-cli": "0.0.13-3",
     "node-fetch": "^2.6.1",
     "seedrandom": "^3.0.5"
   },
@@ -41,5 +37,8 @@
     "commitizen": {
       "path": "git-cz"
     }
+  },
+  "resolutions": {
+    "@builder.io/mitosis-cli": "link:../../../mitosis/packages/cli"
   }
 }
