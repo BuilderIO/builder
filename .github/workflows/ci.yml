@@ -29,7 +29,7 @@ jobs:
     strategy:
       matrix:
         node-version: [12]
-        package: ['core', 'webcomponents', 'react', 'widgets', 'sdks']
+        package: ['core', 'webcomponents', 'react', 'widgets']
 
     steps:
       - uses: actions/checkout@v2
@@ -63,3 +63,26 @@ jobs:
       - name: Test
         run: npm run ci:test --if-present
         working-directory: packages/${{ matrix.package }}
+  build-sdks:
+      runs-on: ubuntu-latest
+    steps:
+      - name: Setup
+        uses: actions/checkout@v2
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: Run prettier
+        run: yarn ci:lint
+
+      - name: Build
+        run: yarn ci:build
+
+      - name: Run tests
+        run: yarn ci:test
