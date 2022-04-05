@@ -29,7 +29,7 @@ jobs:
     strategy:
       matrix:
         node-version: [12]
-        package: ['core', 'webcomponents', 'react', 'widgets', 'sdks']
+        package: ['core', 'webcomponents', 'react', 'widgets']
 
     steps:
       - uses: actions/checkout@v2
