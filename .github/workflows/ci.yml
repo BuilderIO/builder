@@ -83,7 +83,7 @@ jobs:
           cache-dependency-path: ./packages/sdks/yarn.lock
 
       - name: Remove mitosis resolutions from package.json
-        run: yarn run remove-mitosis-resolutions
+        run: ./scripts/remove-mitosis-resolutions.sh
 
       - name: Install dependencies
         run: yarn

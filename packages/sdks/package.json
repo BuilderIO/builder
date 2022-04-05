@@ -8,7 +8,7 @@
     "build": "yarn run mitosis && yarn run lint",
     "start": "watch 'yarn run mitosis' ./src ./overrides",
     "test": "jest",
-    "remove-mitosis-resolutions": "node scripts/remove-mitosis-resolutions.js",
+    "remove-mitosis-resolutions": "./scripts/remove-mitosis-resolutions.sh",
     "prettier": "prettier .",
     "lint": "yarn run prettier --write",
     "ci:lint": "yarn run prettier --check",
