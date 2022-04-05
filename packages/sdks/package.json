@@ -42,7 +42,7 @@
     }
   },
   "resolutions": {
-    "// this is removed in CI to allow for proper usage of Mitosis.": "0.0.1",
+    "@X/X: mitosis line below is removed in CI to allow for proper usage of Mitosis.": "0.0.1",
     "@builder.io/mitosis-cli": "link:../../../mitosis/packages/cli"
   }
 }
