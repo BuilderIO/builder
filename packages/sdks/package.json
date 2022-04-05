@@ -1,6 +1,9 @@
 {
   "name": "@builder.io/sdks",
   "private": true,
+  "engines": {
+    "yarn": ">= 3.0.0"
+  },
   "scripts": {
     "prepare": "cd ../../ && npx husky install",
     "cz": "cz",
@@ -44,5 +47,6 @@
   "resolutions": {
     "@X/X: mitosis line below is removed in CI to allow for proper usage of Mitosis.": "0.0.1",
     "@builder.io/mitosis-cli": "link:../../../mitosis/packages/cli"
-  }
+  },
+  "packageManager": "yarn@3.2.0"
 }
