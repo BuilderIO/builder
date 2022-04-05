@@ -6,9 +6,12 @@
     "cz": "cz",
     "mitosis": "./node_modules/@builder.io/mitosis-cli/bin/mitosis build",
     "build": "yarn run mitosis && yarn run lint",
-    "lint": "prettier --write .",
     "start": "watch 'yarn run mitosis' ./src ./overrides",
     "test": "jest",
+    "remove-mitosis-resolutions": "node scripts/remove-mitosis-resolutions.js",
+    "prettier": "prettier .",
+    "lint": "yarn run prettier --write",
+    "ci:lint": "yarn run prettier --check",
     "ci:build": "mitosis build && yarn run lint",
     "ci:test": "yarn run test"
   },
@@ -39,6 +42,7 @@
     }
   },
   "resolutions": {
+    "// this is removed in CI to allow for proper usage of Mitosis.": "0.0.1",
     "@builder.io/mitosis-cli": "link:../../../mitosis/packages/cli"
   }
 }
