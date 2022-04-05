@@ -43,14 +43,14 @@
     "release:prerelease:dev": "npm run build && lerna version prerelease --yes && lerna run build:unpkg:dist --no-private && ALLOW_PUBLISH=true lerna publish from-package --dist-tag dev --yes",
     "release:dev": "npm run _install && npm run bootstrap && npm run release:prerelease:dev",
     "prepublishOnly": "block-publish",
-    "ci:lint": "npx prettier@2.0.5 --check '**/*.{js,jsx,ts,tsx}'",
+    "ci:lint": "prettier --check '**/*.{js,jsx,ts,tsx}'",
     "lint:fix": "prettier --write '**/*.{js,jsx,ts,tsx}'",
     "prepare": "husky install"
   },
   "dependencies": {
     "husky": "^7.0.4",
     "pinst": "^3.0.0",
-    "prettier": "2.0.5",
+    "prettier": "^2.6.2",
     "zx": "^5.1.0"
   }
 }

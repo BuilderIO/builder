@@ -1,11 +1,13 @@
-const cacheControl = values => ({ res }) => {
-  if (!process.server) return;
+const cacheControl =
+  values =>
+  ({ res }) => {
+    if (!process.server) return;
 
-  const cacheControlValue = Object.entries(values)
-    .map(([key, value]) => `${key}=${value}`)
-    .join(',');
+    const cacheControlValue = Object.entries(values)
+      .map(([key, value]) => `${key}=${value}`)
+      .join(',');
 
-  res.setHeader('Cache-Control', cacheControlValue);
-};
+    res.setHeader('Cache-Control', cacheControlValue);
+  };
 
 export default cacheControl;

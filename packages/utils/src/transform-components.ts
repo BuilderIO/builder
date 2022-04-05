@@ -22,9 +22,8 @@ export function transformComponents(content: BuilderContent, mappers: PropsMappe
                     bindings: {
                       ...item.code.bindings,
                       ...Object.keys(mapper.props).reduce((acc, key) => {
-                        const binding = item.code!.bindings!![
-                          `component.options.${mapper.props[key]}`
-                        ];
+                        const binding =
+                          item.code!.bindings!![`component.options.${mapper.props[key]}`];
                         if (binding) {
                           return {
                             ...acc,

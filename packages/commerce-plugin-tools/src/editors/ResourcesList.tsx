@@ -21,9 +21,11 @@ export type PickResourceListProps = {
 };
 
 const ResourcePreviewById = (
-  props: { id: string; api: CommerceAPIOperations; resourceName: string } & Partial<
-    ResourcePreviewCellProps
-  >
+  props: {
+    id: string;
+    api: CommerceAPIOperations;
+    resourceName: string;
+  } & Partial<ResourcePreviewCellProps>
 ) => {
   const { id, ...rest } = props;
   const store = useLocalStore(() => ({
