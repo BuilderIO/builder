@@ -591,15 +591,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis-cli@npm:0.0.13-3":
-  version: 0.0.13-3
-  resolution: "@builder.io/mitosis-cli@npm:0.0.13-3"
+"@builder.io/mitosis-cli@npm:0.0.13-4":
+  version: 0.0.13-4
+  resolution: "@builder.io/mitosis-cli@npm:0.0.13-4"
   dependencies:
     "@babel/preset-typescript": ^7.15.0
     "@builder.io/mitosis": 0.0.50-8
     "@vue/compiler-sfc": ^3.1.5
     babel-preset-solid: ^1.0.6
     chalk: ^4.1.0
+    dedent: ^0.7.0
     esbuild: ^0.12.16
     fs-extra: ^9.1.0
     globby: ^11.0.2
@@ -612,7 +613,7 @@ __metadata:
     vue-template-validator: ^1.1.5
   bin:
     mitosis: bin/mitosis
-  checksum: d6a837c8b77befd843699b82f0feafd3213acb3c0acd84d8c57318d3a9060a86f536e769d5d744df6d0e46bcf0bfaab806f09ddd8d8e1d008f3d04ee606eb9a3
+  checksum: 62769155a3092b93f33e0006db22d97ae96df9ebcd49c7d14cab0a868ac51582386c3a933e7189aa5bd4707b8fd887a4711a3012d3bda8a61c3d25daf71f815d
   languageName: node
   linkType: hard
 
@@ -687,7 +688,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@builder.io/sdks@workspace:."
   dependencies:
-    "@builder.io/mitosis-cli": 0.0.13-3
+    "@builder.io/mitosis-cli": 0.0.13-4
     "@types/jest": ^27.4.0
     "@types/node-fetch": ^2.5.12
     commitizen: ^4.2.4

@@ -19,7 +19,7 @@
     "ci:test": "yarn run test"
   },
   "dependencies": {
-    "@builder.io/mitosis-cli": "0.0.13-3",
+    "@builder.io/mitosis-cli": "0.0.13-4",
     "node-fetch": "^2.6.1",
     "seedrandom": "^3.0.5"
   },
