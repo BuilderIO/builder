@@ -32,8 +32,8 @@ export class AppComponent {
   options: any = {
     cacheSeconds: 1,
     data: {
-      'locale': 'en-US',
-    }
+      locale: 'en-US',
+    },
   };
 
   data = {

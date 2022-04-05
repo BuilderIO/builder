@@ -1,10 +1,9 @@
 import { el } from './utils/element';
 import Base from './base';
 
-type View = 'tiles' | 'list'
+type View = 'tiles' | 'list';
 
 export class Category extends Base {
-
   private readonly _category: string;
   private readonly _subcategory: string;
   private _view: View = 'tiles';
@@ -43,12 +42,12 @@ export class Category extends Base {
     return {
       productCard: {
         tiles: '.sf-product-card',
-        list: '.sf-product-card-horizontal'
+        list: '.sf-product-card-horizontal',
       },
       addToCardButton: {
         tiles: '.sf-product-card__add-button',
-        list: '.sf-add-to-cart__button'
-      }
+        list: '.sf-add-to-cart__button',
+      },
     };
   }
 
@@ -56,7 +55,7 @@ export class Category extends Base {
     const views = el('category-header-views').get('[role="button"]');
     const buttons = {
       titles: () => views.eq(0),
-      list: () => views.eq(1)
+      list: () => views.eq(1),
     };
     return buttons[view]();
   }
@@ -71,9 +70,9 @@ export class Category extends Base {
   }
 
   addToCart(name: string): Cypress.Chainable {
-    return this.product(name).parents(this.selectors.productCard[this.view])
+    return this.product(name)
+      .parents(this.selectors.productCard[this.view])
       .find(this.selectors.addToCardButton[this.view])
       .click();
   }
-
 }

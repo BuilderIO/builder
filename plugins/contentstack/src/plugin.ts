@@ -18,11 +18,7 @@ function humanCase(str = '') {
     // kebabCase removes the $ but we need to keep it for chart names
     return capitalize(str.replace(/[- ]+/g, ' ').trim());
   }
-  return capitalize(
-    kebabCase(str)
-      .replace(/[- ]+/g, ' ')
-      .trim()
-  );
+  return capitalize(kebabCase(str).replace(/[- ]+/g, ' ').trim());
 }
 
 interface Entity {

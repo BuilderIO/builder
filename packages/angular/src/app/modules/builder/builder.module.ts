@@ -46,7 +46,6 @@ export class BuilderModule {
           }
         }
       });
-      
     }
   }
 

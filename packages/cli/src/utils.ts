@@ -5,7 +5,7 @@ export const readAsJson = async (path: string) => {
   const content = await fse.readFile(path);
   try {
     return JSON.parse(content.toString());
-  } catch (e)  {
+  } catch (e) {
     console.error(`error parsing ${path}`);
     throw e;
   }

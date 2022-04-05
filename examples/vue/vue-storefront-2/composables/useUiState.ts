@@ -7,7 +7,7 @@ const state = reactive({
   isNewsletterModalOpen: false,
   isCategoryGridView: true,
   isFilterSidebarOpen: false,
-  isMobileMenuOpen: false
+  isMobileMenuOpen: false,
 });
 
 const useUiState = () => {
@@ -67,7 +67,7 @@ const useUiState = () => {
     changeToCategoryGridView,
     changeToCategoryListView,
     toggleFilterSidebar,
-    toggleMobileMenu
+    toggleMobileMenu,
   };
 };
 

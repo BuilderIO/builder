@@ -1,4 +1,4 @@
-import { builder, Builder } from "@builder.io/react";
+import { builder, Builder } from '@builder.io/react';
 
 Builder.isStatic = true;
 

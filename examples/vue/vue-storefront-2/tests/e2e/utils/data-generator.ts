@@ -8,8 +8,7 @@ const generator = {
       const random = Math.floor(Math.random() * 16);
       return random.toString(16);
     });
-  }
-
+  },
 };
 
 export default generator;

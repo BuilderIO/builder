@@ -23,7 +23,7 @@ export const Header = () => {
             css={{
               display: 'flex',
               flexDirection: 'column',
-              alignItems: 'stretch'
+              alignItems: 'stretch',
             }}
           >
             <div css={{ width: '100%', margin: 'auto' }}>

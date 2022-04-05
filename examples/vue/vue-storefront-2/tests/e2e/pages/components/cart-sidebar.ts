@@ -1,10 +1,11 @@
 import { el } from '../utils/element';
 
 class Cart {
-
   product(name?: string): Cypress.Chainable {
     const product = el('collected-product');
-    return name === undefined ? product : product.contains(name).parents('[data-e2e="collected-product"]');
+    return name === undefined
+      ? product
+      : product.contains(name).parents('[data-e2e="collected-product"]');
   }
 
   get productName(): Cypress.Chainable {
