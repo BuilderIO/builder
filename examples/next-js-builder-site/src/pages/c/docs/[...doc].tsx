@@ -229,7 +229,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
         doc: (item.data?.url?.replace('/c/docs/', '') || '').split('/'),
       },
     })),
-    fallback: true,
+    fallback: 'blocking',
   };
 };
 
