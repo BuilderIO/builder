@@ -4,9 +4,9 @@ import generator from '../utils/data-generator';
 
 context(['regression'], 'Checkout - Billing', () => {
   beforeEach(function () {
-    cy.fixture('test-data/e2e-checkout-billing-validation').then((fixture) => {
+    cy.fixture('test-data/e2e-checkout-billing-validation').then(fixture => {
       this.fixtures = {
-        data: fixture
+        data: fixture,
       };
     });
   });
@@ -15,7 +15,9 @@ context(['regression'], 'Checkout - Billing', () => {
     const data = this.fixtures.data[this.test.title];
     requests.createCart().then((response: CreateCartResponse) => {
       requests.addToCart(response.body.data.cart.id, data.product);
-      requests.updateCart(response.body.data.cart.id, { addresses: { shipping: data.customer.address.shipping }});
+      requests.updateCart(response.body.data.cart.id, {
+        addresses: { shipping: data.customer.address.shipping },
+      });
     });
     page.checkout.shipping.visit();
     page.checkout.shipping.selectShippingButton.click();
@@ -33,7 +35,9 @@ context(['regression'], 'Checkout - Billing', () => {
     requests.customerSignMeUp(data.customer);
     requests.createCart().then((response: CreateCartResponse) => {
       requests.addToCart(response.body.data.cart.id, data.product);
-      requests.updateCart(response.body.data.cart.id, { addresses: { shipping: data.customer.address.shipping }});
+      requests.updateCart(response.body.data.cart.id, {
+        addresses: { shipping: data.customer.address.shipping },
+      });
     });
     page.checkout.shipping.visit();
     page.checkout.shipping.selectShippingButton.click();
@@ -53,7 +57,7 @@ context(['regression'], 'Checkout - Billing', () => {
     'Street Number',
     'City',
     'Postal Code',
-    'Phone'
+    'Phone',
   ];
 
   requiredFields.forEach(requiredField => {
@@ -61,7 +65,9 @@ context(['regression'], 'Checkout - Billing', () => {
       const data = this.fixtures.data[this.test.title];
       requests.createCart().then((response: CreateCartResponse) => {
         requests.addToCart(response.body.data.cart.id, data.product);
-        requests.updateCart(response.body.data.cart.id, { addresses: { shipping: data.customer.address.shipping }});
+        requests.updateCart(response.body.data.cart.id, {
+          addresses: { shipping: data.customer.address.shipping },
+        });
       });
       page.checkout.shipping.visit();
       page.checkout.shipping.selectShippingButton.click();
@@ -71,24 +77,23 @@ context(['regression'], 'Checkout - Billing', () => {
       page.checkout.billing.fillForm(data.customer);
       page.checkout.billing.continueToPaymentButton.click();
       page.checkout.billing[Cypress._.camelCase(requiredField)].parent().within(() => {
-        cy.get('input').then(($input) => {
+        cy.get('input').then($input => {
           expect($input[0].validationMessage).to.be.eq(data.errorMessage);
         });
       });
     });
   });
 
-  const requiredSelects = [
-    'Country',
-    'State'
-  ];
+  const requiredSelects = ['Country', 'State'];
 
   requiredSelects.forEach(requiredSelect => {
     it(`Should display an error - ${requiredSelect} empty`, function () {
       const data = this.fixtures.data[this.test.title];
       requests.createCart().then((response: CreateCartResponse) => {
         requests.addToCart(response.body.data.cart.id, data.product);
-        requests.updateCart(response.body.data.cart.id, { addresses: { shipping: data.customer.address.shipping }});
+        requests.updateCart(response.body.data.cart.id, {
+          addresses: { shipping: data.customer.address.shipping },
+        });
       });
       page.checkout.shipping.visit();
       page.checkout.shipping.selectShippingButton.click();
@@ -107,7 +112,9 @@ context(['regression'], 'Checkout - Billing', () => {
     const data = this.fixtures.data[this.test.title];
     requests.createCart().then((response: CreateCartResponse) => {
       requests.addToCart(response.body.data.cart.id, data.product);
-      requests.updateCart(response.body.data.cart.id, { addresses: { shipping: data.customer.address.shipping }});
+      requests.updateCart(response.body.data.cart.id, {
+        addresses: { shipping: data.customer.address.shipping },
+      });
     });
     page.checkout.shipping.visit();
     page.checkout.shipping.selectShippingButton.click();

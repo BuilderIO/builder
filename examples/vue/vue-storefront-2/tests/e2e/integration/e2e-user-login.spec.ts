@@ -4,15 +4,15 @@ import generator from '../utils/data-generator';
 
 context(['regression'], 'User login', () => {
   beforeEach(function () {
-    cy.fixture('test-data/e2e-user-login').then((fixture) => {
+    cy.fixture('test-data/e2e-user-login').then(fixture => {
       this.fixtures = {
-        data: fixture
+        data: fixture,
       };
     });
     cy.clearLocalStorage();
   });
 
-  it('Should successfully login', function() {
+  it('Should successfully login', function () {
     const data = this.fixtures.data[this.test.title];
     data.customer.email = generator.email;
     requests.customerSignMeUp(data.customer).then(() => {

@@ -3,7 +3,7 @@ import { contains, el } from './utils/element';
 
 export enum MyAccountTab {
   PERSONAL_DATA = 'Personal data',
-  PASSWORD_CHANGE = 'Password change'
+  PASSWORD_CHANGE = 'Password change',
 }
 
 export enum MenuItems {
@@ -14,7 +14,7 @@ export enum MenuItems {
   MY_NEWSLETTER = 'My newsletter',
   ORDER_HISTORY = 'Order history',
   MY_REVIEWS = 'My reviews',
-  LOG_OUT = 'Log out'
+  LOG_OUT = 'Log out',
 }
 
 class Menu {
@@ -24,7 +24,6 @@ class Menu {
 }
 
 class MyAccount extends Base {
-
   get path(): string {
     return '/my-account';
   }
@@ -39,7 +38,6 @@ class MyAccount extends Base {
 }
 
 class MyProfile extends MyAccount {
-
   get firstName(): Cypress.Chainable {
     return el('myaccount-firstName').find('input');
   }
@@ -143,8 +141,4 @@ class OrderHistory extends Base {
   }
 }
 
-export {
-  MyAccount,
-  MyProfile,
-  OrderHistory
-};
+export { MyAccount, MyProfile, OrderHistory };

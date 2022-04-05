@@ -1,23 +1,14 @@
 import page from '../pages/factory';
 
-const testsCases = [
-  'category',
-  'subcategory',
-  'nested subcategory'
-];
+const testsCases = ['category', 'subcategory', 'nested subcategory'];
 
-const breadcrumbsNames = [
-  'Home',
-  'Women',
-  'Clothing',
-  'Jackets'
-];
+const breadcrumbsNames = ['Home', 'Women', 'Clothing', 'Jackets'];
 
 context(['regression'], 'Breadcrumbs', () => {
   beforeEach(function () {
-    cy.fixture('test-data/e2e-breadcrumbs').then((fixture) => {
+    cy.fixture('test-data/e2e-breadcrumbs').then(fixture => {
       this.fixtures = {
-        data: fixture
+        data: fixture,
       };
     });
   });

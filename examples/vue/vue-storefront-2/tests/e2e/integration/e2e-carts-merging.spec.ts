@@ -4,9 +4,9 @@ import generator from '../utils/data-generator';
 
 context(['regression'], 'Carts merging', () => {
   beforeEach(function () {
-    cy.fixture('test-data/e2e-carts-merging').then((fixture) => {
+    cy.fixture('test-data/e2e-carts-merging').then(fixture => {
       this.fixtures = {
-        data: fixture
+        data: fixture,
       };
     });
   });
@@ -30,8 +30,12 @@ context(['regression'], 'Carts merging', () => {
       cy.wrap(input).should('have.value', data.expectedCart[index].quantity);
     });
     page.components.cart.product().each((product, index) => {
-      page.components.cart.productSizeProperty(product).should('contain', data.expectedCart[index].size);
-      page.components.cart.productColorProperty(product).should('contain', data.expectedCart[index].color);
+      page.components.cart
+        .productSizeProperty(product)
+        .should('contain', data.expectedCart[index].size);
+      page.components.cart
+        .productColorProperty(product)
+        .should('contain', data.expectedCart[index].color);
     });
   });
 
@@ -39,13 +43,16 @@ context(['regression'], 'Carts merging', () => {
     const data = this.fixtures.data[this.test.title];
     data.customer.email = generator.email;
     requests.customerSignMeUp(data.customer);
-    requests.createCart().then((response: CreateCartResponse) => {
-      data.products.customer.forEach(product => {
-        requests.addToCart(response.body.data.cart.id, product, product.quantity);
+    requests
+      .createCart()
+      .then((response: CreateCartResponse) => {
+        data.products.customer.forEach(product => {
+          requests.addToCart(response.body.data.cart.id, product, product.quantity);
+        });
+      })
+      .then(() => {
+        cy.clearCookies();
       });
-    }).then(() => {
-      cy.clearCookies();
-    });
     requests.createCart().then((response: CreateCartResponse) => {
       data.products.guest.forEach(product => {
         requests.addToCart(response.body.data.cart.id, product, product.quantity);
@@ -67,9 +74,12 @@ context(['regression'], 'Carts merging', () => {
       cy.wrap(input).should('have.value', data.expectedCart[index].quantity);
     });
     page.components.cart.product().each((product, index) => {
-      page.components.cart.productSizeProperty(product).should('contain', data.expectedCart[index].size);
-      page.components.cart.productColorProperty(product).should('contain', data.expectedCart[index].color);
+      page.components.cart
+        .productSizeProperty(product)
+        .should('contain', data.expectedCart[index].size);
+      page.components.cart
+        .productColorProperty(product)
+        .should('contain', data.expectedCart[index].color);
     });
   });
-
 });

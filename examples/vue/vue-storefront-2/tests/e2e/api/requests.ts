@@ -5,20 +5,20 @@ export type CreateCartResponse = {
     data: {
       cart: {
         id: string;
-      }
-    }
-  }
-}
+      };
+    };
+  };
+};
 
 export type CreateMyOrderFromCartResponse = {
-   body: {
-     data: {
-       order: {
-         id: string;
-       }
-     }
-   }
-}
+  body: {
+    data: {
+      order: {
+        id: string;
+      };
+    };
+  };
+};
 
 export type CustomerSignMeInResponse = {
   body: {
@@ -28,11 +28,11 @@ export type CustomerSignMeInResponse = {
           firstName: string;
           lastName: string;
           email: string;
-        }
-      }
-    }
-  }
-}
+        };
+      };
+    };
+  };
+};
 
 export type GetMeResponse = {
   body: {
@@ -42,45 +42,48 @@ export type GetMeResponse = {
           firstName: string;
           lastName: string;
           email: string;
-        }
-      }
-    }
-  }
-}
+        };
+      };
+    };
+  };
+};
 
 export type GetShippingMethodsResponse = {
   body: {
     data: {
-      shippingMethods: [{
-        id: string;
-        name: string;
-      }]
-    }
-  }
-}
+      shippingMethods: [
+        {
+          id: string;
+          name: string;
+        }
+      ];
+    };
+  };
+};
 
 const requests = {
-
   addToCart(cartId: string, product: Product, quantity?: number): Cypress.Chainable {
     const options = {
       url: '/api/ct/addToCart',
       method: 'POST',
       headers: {
         Accept: 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       body: [
         {
-          id: cartId, version: 1
+          id: cartId,
+          version: 1,
         },
         {
           product: {
-            id: product.id, sku: product.sku
+            id: product.id,
+            sku: product.sku,
           },
-          quantity: quantity ?? 1
+          quantity: quantity ?? 1,
         },
-        null
-      ]
+        null,
+      ],
     };
     return cy.request(options);
   },
@@ -91,9 +94,9 @@ const requests = {
       method: 'POST',
       headers: {
         Accept: 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: [{}, null]
+      body: [{}, null],
     };
     return cy.request(options);
   },
@@ -104,15 +107,15 @@ const requests = {
       method: 'POST',
       headers: {
         Accept: 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       body: [
         {
           id: id,
-          version: version ?? 1
+          version: version ?? 1,
         },
-        null
-      ]
+        null,
+      ],
     };
     return cy.request(options);
   },
@@ -123,14 +126,14 @@ const requests = {
       method: 'POST',
       headers: {
         Accept: 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       body: [
         {
           email: customer.email,
-          password: customer.password
-        }
-      ]
+          password: customer.password,
+        },
+      ],
     };
     return cy.request(options);
   },
@@ -141,16 +144,16 @@ const requests = {
       method: 'POST',
       headers: {
         Accept: 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       body: [
         {
           email: customer.email,
           password: customer.password,
           firstName: customer.firstName,
-          lastName: customer.lastName
-        }
-      ]
+          lastName: customer.lastName,
+        },
+      ],
     };
     return cy.request(options);
   },
@@ -161,11 +164,9 @@ const requests = {
       method: 'POST',
       headers: {
         Accept: 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: [
-        {customer: customer ?? false}, null
-      ]
+      body: [{ customer: customer ?? false }, null],
     };
     return cy.request(options);
   },
@@ -176,64 +177,66 @@ const requests = {
       method: 'POST',
       headers: {
         Accept: 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: [
-        cartId
-      ]
+      body: [cartId],
     };
     return cy.request(options);
   },
 
-  updateCart(cartId: string, data?: { addresses?: { shipping?: Address, billing?: Address }, shippingMethodId?: string }): Cypress.Chainable {
+  updateCart(
+    cartId: string,
+    data?: { addresses?: { shipping?: Address; billing?: Address }; shippingMethodId?: string }
+  ): Cypress.Chainable {
     const actions = [];
 
     if (data.addresses !== undefined) {
-      if (data.addresses.shipping !== undefined) actions.push({
-        setShippingAddress: {
-          address: {
-            ...data.addresses.shipping
-          }
-        }
-      });
+      if (data.addresses.shipping !== undefined)
+        actions.push({
+          setShippingAddress: {
+            address: {
+              ...data.addresses.shipping,
+            },
+          },
+        });
 
-      if (data.addresses.billing !== undefined) actions.push({
-        setBillingAddress: {
-          address: {
-            ...data.addresses.billing
-          }
-        }
-      });
+      if (data.addresses.billing !== undefined)
+        actions.push({
+          setBillingAddress: {
+            address: {
+              ...data.addresses.billing,
+            },
+          },
+        });
     }
 
-    if (data.shippingMethodId !== undefined) actions.push({
-      setShippingMethod: {
-        shippingMethod: {
-          id: data.shippingMethodId
-        }
-      }
-    });
+    if (data.shippingMethodId !== undefined)
+      actions.push({
+        setShippingMethod: {
+          shippingMethod: {
+            id: data.shippingMethodId,
+          },
+        },
+      });
 
     const options = {
       url: '/api/ct/updateCart',
       method: 'POST',
       headers: {
         Accept: 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       body: [
         {
           id: cartId,
           version: 1,
-          actions: [
-            ...actions
-          ]
+          actions: [...actions],
         },
-        null
-      ]
+        null,
+      ],
     };
     return cy.request(options);
-  }
+  },
 };
 
 export default requests;

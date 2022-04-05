@@ -2,17 +2,18 @@ import generator from '../utils/data-generator';
 
 type Options = {
   as?: string;
-  fixture?: any
-}
+  fixture?: any;
+};
 
 function _intercept(path: string, options?: Options) {
   const as = options?.as ?? generator.uuid;
-  options?.fixture ? cy.intercept(path, { fixture: options?.fixture }).as(as) : cy.intercept(path).as(as);
+  options?.fixture
+    ? cy.intercept(path, { fixture: options?.fixture }).as(as)
+    : cy.intercept(path).as(as);
   return `@${as}`;
 }
 
 const intercept = {
-
   customerChangeMyPassword(options?: Options): string {
     return _intercept('**/customerChangeMyPassword', options);
   },
@@ -39,7 +40,7 @@ const intercept = {
 
   updateCartQuantity(options?: Options): string {
     return _intercept('**/updateCartQuantity', options);
-  }
+  },
 };
 
 export default intercept;

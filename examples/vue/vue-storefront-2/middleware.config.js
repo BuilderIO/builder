@@ -1,4 +1,3 @@
-
 module.exports = {
   integrations: {
     ct: {
@@ -18,24 +17,21 @@ module.exports = {
             'manage_my_profile:vsf-generic-ent-demo',
             'manage_my_orders:vsf-generic-ent-demo',
             'manage_my_payments:vsf-generic-ent-demo',
-            'manage_my_shopping_lists:vsf-generic-ent-demo'
-          ]
+            'manage_my_shopping_lists:vsf-generic-ent-demo',
+          ],
         },
         serverApi: {
           clientId: 'y-ia9E9gne-uybwVa9Lqzqfn',
           clientSecret: 'sX5T3-5zF3ieIoVyvtDDnl3cjxTXNTDs',
-          scopes: [
-            'manage_customers:vsf-generic-ent-demo',
-            'manage_products:vsf-generic-ent-demo'
-          ]
+          scopes: ['manage_customers:vsf-generic-ent-demo', 'manage_products:vsf-generic-ent-demo'],
         },
         currency: 'USD',
         country: 'US',
         languageMap: {
           en: ['en', 'de'],
-          de: ['de', 'en']
-        }
-      }
-    }
-  }
+          de: ['de', 'en'],
+        },
+      },
+    },
+  },
 };

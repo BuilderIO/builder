@@ -9,7 +9,7 @@ export const createWebhook = async (model: any) => {
 
   const newWebhook = {
     meta: {
-      pluginId
+      pluginId,
     },
     customHeaders: [
       {

@@ -4,6 +4,6 @@ export const usePaymentProviderMock = () => {
   const status = sharedRef(false, 'usePaymentProviderMock-status');
 
   return {
-    status
+    status,
   };
 };

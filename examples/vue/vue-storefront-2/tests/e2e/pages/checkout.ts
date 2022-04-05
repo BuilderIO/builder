@@ -3,8 +3,7 @@ import Base from './base';
 import { el } from './utils/element';
 
 class Checkout extends Base {
-
-  protected step = ''
+  protected step = '';
 
   get addNewAddressButton(): Cypress.Chainable {
     return cy.contains('Add new address');
@@ -63,7 +62,6 @@ class Checkout extends Base {
 }
 
 class Shipping extends Checkout {
-
   constructor() {
     super();
     this.step = 'shipping';
@@ -96,11 +94,9 @@ class Shipping extends Checkout {
   public fillForm(customer: Customer) {
     super.fillForm(customer.address.shipping);
   }
-
 }
 
 class Billing extends Checkout {
-
   constructor() {
     super();
     this.step = 'billing';
@@ -128,7 +124,6 @@ class Billing extends Checkout {
 }
 
 class Payment extends Base {
-
   get path(): string {
     return '/checkout/payment';
   }
@@ -172,7 +167,6 @@ class Payment extends Base {
   get cartPreviewValues(): Cypress.Chainable {
     return el('cart-preview-summary', '.sf-property__value');
   }
-
 }
 
 class ThankYou {
@@ -189,9 +183,4 @@ class ThankYou {
   }
 }
 
-export {
-  Shipping,
-  Billing,
-  Payment,
-  ThankYou
-};
+export { Shipping, Billing, Payment, ThankYou };

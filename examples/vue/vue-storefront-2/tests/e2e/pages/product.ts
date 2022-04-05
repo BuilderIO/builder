@@ -2,7 +2,6 @@ import Base from './base';
 import { el } from './utils/element';
 
 export class Product extends Base {
-
   private _id: string;
   private _slug: string;
 
@@ -43,5 +42,4 @@ export class Product extends Base {
   get sizeOptions(): Cypress.Chainable {
     return el('size-select', 'select option');
   }
-
 }
