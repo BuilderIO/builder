@@ -63,6 +63,7 @@ jobs:
       - name: Test
         run: npm run ci:test --if-present
         working-directory: packages/${{ matrix.package }}
+
   build-sdks:
     runs-on: ubuntu-latest
 
@@ -79,6 +80,7 @@ jobs:
         with:
           node-version: '16.x'
           cache: 'yarn'
+          cache-dependency-path: ./packages/sdks/yarn.lock
 
       - name: Remove mitosis resolutions from package.json
         run: yarn run remove-mitosis-resolutions
