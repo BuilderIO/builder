@@ -1,3 +1,11 @@
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
 # Created by .ignore support plugin (hsz.mobi)
 ### Node template
 # Logs
