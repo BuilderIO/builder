@@ -1,4 +1,3 @@
-import { expect, test } from '@jest/globals';
 import { set } from './set';
 
 test('can shallow set a property', () => {
