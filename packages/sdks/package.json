@@ -12,7 +12,7 @@
     "start": "watch 'yarn run mitosis' ./src ./overrides",
     "test": "jest",
     "remove-mitosis-resolutions": "./scripts/remove-mitosis-resolutions.sh",
-    "prettier": "prettier --ignore-path .gitignore .",
+    "prettier": "prettier .",
     "lint": "yarn run prettier --write",
     "ci:lint": "yarn run prettier --check",
     "ci:build": "mitosis build && yarn run lint",
