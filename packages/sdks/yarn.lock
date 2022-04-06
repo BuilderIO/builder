@@ -71,7 +71,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/core@npm:^7.1.0, @babel/core@npm:^7.12.3, @babel/core@npm:^7.7.2, @babel/core@npm:^7.8.0":
+"@babel/core@npm:^7.1.0, @babel/core@npm:^7.12.3, @babel/core@npm:^7.17.8, @babel/core@npm:^7.7.2, @babel/core@npm:^7.8.0":
   version: 7.17.8
   resolution: "@babel/core@npm:7.17.8"
   dependencies:
@@ -523,7 +523,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/preset-typescript@npm:^7.13.0, @babel/preset-typescript@npm:^7.15.0":
+"@babel/preset-typescript@npm:^7.13.0, @babel/preset-typescript@npm:^7.16.7":
   version: 7.16.7
   resolution: "@babel/preset-typescript@npm:7.16.7"
   dependencies:
@@ -591,14 +591,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis-cli@npm:0.0.13-6":
-  version: 0.0.13-6
-  resolution: "@builder.io/mitosis-cli@npm:0.0.13-6"
+"@builder.io/mitosis-cli@npm:0.0.13-7":
+  version: 0.0.13-7
+  resolution: "@builder.io/mitosis-cli@npm:0.0.13-7"
   dependencies:
-    "@babel/preset-typescript": ^7.15.0
+    "@babel/core": ^7.17.8
+    "@babel/preset-typescript": ^7.16.7
     "@builder.io/mitosis": 0.0.50-8
     "@vue/compiler-sfc": ^3.1.5
-    babel-preset-solid: ^1.0.6
+    babel-preset-solid: ^1.3.13
     chalk: ^4.1.0
     dedent: ^0.7.0
     esbuild: ^0.12.16
@@ -615,7 +616,7 @@ __metadata:
     vue-template-validator: ^1.1.5
   bin:
     mitosis: bin/mitosis
-  checksum: 64a5db4e9e645287d5c29c97ea752c92c6469b94c6b1cd96f77904a039199fabf7b55a8736a077b4a7bf811295296a3666d642275ad458b8e1e7028844b0cdab
+  checksum: 75bc7a28487094b7eef7005161baea04d5d0659fd7965a8123f4390121b60a1f880b2052c16e5f0267f34970f39766a74facbbdb8d6b04c68b5722adaa179023
   languageName: node
   linkType: hard
 
@@ -690,7 +691,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@builder.io/sdks@workspace:."
   dependencies:
-    "@builder.io/mitosis-cli": 0.0.13-6
+    "@builder.io/mitosis-cli": 0.0.13-7
     "@types/jest": ^27.4.0
     "@types/node-fetch": ^2.5.12
     commitizen: ^4.2.4
@@ -1938,7 +1939,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-preset-solid@npm:^1.0.6":
+"babel-preset-solid@npm:^1.3.13":
   version: 1.3.13
   resolution: "babel-preset-solid@npm:1.3.13"
   dependencies:
