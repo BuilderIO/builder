@@ -71,8 +71,8 @@ export function PreviewToolbar() {
           tooltip="Full screen editing"
           active={context.contentEditorPage.fullScreenIframe}
           onClick={() => {
-            context.contentEditorPage.fullScreenIframe = !context
-              .contentEditorPage.fullScreenIframe
+            context.contentEditorPage.fullScreenIframe =
+              !context.contentEditorPage.fullScreenIframe
           }}
         >
           <Fullscreen />
@@ -83,8 +83,8 @@ export function PreviewToolbar() {
           tooltip="Content-only mode"
           active={context.contentEditorPage.contentEditingMode}
           onClick={() => {
-            context.contentEditorPage.contentEditingMode = !context
-              .contentEditorPage.contentEditingMode
+            context.contentEditorPage.contentEditingMode =
+              !context.contentEditorPage.contentEditingMode
           }}
         >
           <Create />

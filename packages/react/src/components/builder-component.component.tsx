@@ -1460,15 +1460,14 @@ export class BuilderComponent extends React.Component<
                 }
 
                 // TODO: fix this
-                const newSubscription = (this.httpSubscriptionPerKey[
-                  key
-                ] = this.onStateChange.subscribe(() => {
-                  const newUrl = this.evalExpression(url);
-                  if (newUrl !== finalUrl) {
-                    this.handleRequest(key, newUrl);
-                    this.lastHttpRequests[key] = newUrl;
-                  }
-                }));
+                const newSubscription = (this.httpSubscriptionPerKey[key] =
+                  this.onStateChange.subscribe(() => {
+                    const newUrl = this.evalExpression(url);
+                    if (newUrl !== finalUrl) {
+                      this.handleRequest(key, newUrl);
+                      this.lastHttpRequests[key] = newUrl;
+                    }
+                  }));
                 this.subscriptions.add(newSubscription);
               }
             } else {

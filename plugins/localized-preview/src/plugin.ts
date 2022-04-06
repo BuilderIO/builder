@@ -20,8 +20,8 @@ interface IAppState {
   }
 }
 
-const appState: ExtendedApplicationContext &
-  IAppState = require('@builder.io/app-context').default
+const appState: ExtendedApplicationContext & IAppState =
+  require('@builder.io/app-context').default
 
 const localization: Model = {
   name: 'localization',

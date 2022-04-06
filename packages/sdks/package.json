@@ -1,28 +1,30 @@
 {
   "name": "@builder.io/sdks",
   "private": true,
+  "engines": {
+    "yarn": ">= 3.0.0"
+  },
   "scripts": {
     "prepare": "cd ../../ && npx husky install",
     "cz": "cz",
-    "mitosis": "mitosis build",
-    "build": "npm run mitosis && npm run lint",
-    "lint": "prettier --write .",
-    "start": "watch 'npm run mitosis' ./src ./overrides",
+    "mitosis": "./node_modules/@builder.io/mitosis-cli/bin/mitosis build",
+    "build": "yarn run mitosis && yarn run lint",
+    "start": "watch 'yarn run mitosis' ./src ./overrides",
     "test": "jest",
-    "ci:build": "npm run build",
-    "ci:test": "npm run test",
-    "rm": "rm -rf ./node_modules/@builder.io/mitosis-cli && rm -rf ./node_modules/@builder.io/mitosis",
-    "symlink-cli": "ln -sf ../../../../../mitosis/packages/cli ./node_modules/@builder.io/mitosis-cli",
-    "symlink-core": "ln -sf ../../../../../mitosis/packages/core ./node_modules/@builder.io/mitosis",
-    "symlink": "npm run rm && npm run symlink-cli && npm run symlink-core"
+    "remove-mitosis-resolutions": "./scripts/remove-mitosis-resolutions.sh",
+    "prettier": "prettier --ignore-path .gitignore .",
+    "lint": "yarn run prettier --write",
+    "ci:lint": "yarn run prettier --check",
+    "ci:build": "mitosis build && yarn run lint",
+    "ci:test": "yarn run test"
   },
   "dependencies": {
-    "@builder.io/mitosis-cli": "^0.0.12",
+    "@builder.io/mitosis-cli": "0.0.13-7",
     "node-fetch": "^2.6.1",
     "seedrandom": "^3.0.5"
   },
   "devDependencies": {
-    "@types/jest": "^27.4.0",
+    "@types/jest": "^27.4.1",
     "@types/node-fetch": "^2.5.12",
     "commitizen": "^4.2.4",
     "cz-conventional-changelog": "^3.3.0",
@@ -33,7 +35,7 @@
     "jest-fetch-mock": "^3.0.3",
     "pinst": "^3.0.0",
     "prettier": "^2.5.0",
-    "ts-jest": "^27.1.3",
+    "ts-jest": "^27.1.4",
     "typescript": "^4.5.5",
     "watch": "^1.0.2"
   },
@@ -41,5 +43,10 @@
     "commitizen": {
       "path": "git-cz"
     }
-  }
+  },
+  "resolutions": {
+    "@X/X: mitosis line below is removed in CI to allow for proper usage of Mitosis.": "0.0.1",
+    "@builder.io/mitosis-cli": "link:../../../mitosis/packages/cli"
+  },
+  "packageManager": "yarn@3.2.0"
 }

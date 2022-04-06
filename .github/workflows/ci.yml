@@ -63,3 +63,36 @@ jobs:
       - name: Test
         run: npm run ci:test --if-present
         working-directory: packages/${{ matrix.package }}
+
+  build-sdks:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: packages/sdks
+
+    steps:
+      - name: Setup
+        uses: actions/checkout@v2
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+          cache: 'yarn'
+          cache-dependency-path: ./packages/sdks/yarn.lock
+
+      - name: Remove mitosis resolutions from package.json
+        run: ./scripts/remove-mitosis-resolutions.sh
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: Run prettier
+        run: yarn ci:lint
+
+      - name: Build
+        run: yarn ci:build
+
+      - name: Run tests
+        run: yarn ci:test

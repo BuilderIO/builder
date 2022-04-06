@@ -458,8 +458,7 @@ registerComponent({
           component: {
             name: 'Text',
             options: {
-              text:
-                '<span>Form submission error :( Please check your answers and try again</span>',
+              text: '<span>Form submission error :( Please check your answers and try again</span>',
             },
           },
         },

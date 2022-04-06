@@ -74,8 +74,7 @@ interface DataPluginConfig extends APIOperations {
 export const getDataConfig = (service: CommerceAPIOperations): DataPluginConfig => {
   return {
     name: 'Shopify',
-    icon:
-      'https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fc9156e9ba658458db6fcad3f101773c7',
+    icon: 'https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fc9156e9ba658458db6fcad3f101773c7',
     getResourceTypes: async () =>
       RESOURCE_TYPES.map(
         (model): ResourceType => ({
