@@ -19,6 +19,6 @@ export const getBuilderStaticPaths = async (modelName: string) => {
 
   return {
     paths,
-    fallback: 'blocking',
+    fallback: true,
   };
 };
