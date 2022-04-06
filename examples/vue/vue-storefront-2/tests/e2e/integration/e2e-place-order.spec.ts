@@ -4,21 +4,25 @@ import intercept from '../utils/network';
 
 context(['happypath', 'regression'], 'Order placement', () => {
   beforeEach(function () {
-    cy.fixture('test-data/e2e-place-order').then((fixture) => {
+    cy.fixture('test-data/e2e-place-order').then(fixture => {
       this.fixtures = {
-        data: fixture
+        data: fixture,
       };
     });
   });
 
-  it('Should successfully place an order as a guest', function() {
+  it('Should successfully place an order as a guest', function () {
     const data = this.fixtures.data[this.test.title];
     const getProductReq = intercept.getProduct();
     page.home.visit();
     page.home.header.categories.first().click();
-    page.category().products.first().click().then(() => {
-      cy.wait([getProductReq, getProductReq]);
-    });
+    page
+      .category()
+      .products.first()
+      .click()
+      .then(() => {
+        cy.wait([getProductReq, getProductReq]);
+      });
     page.product().addToCartButton.click();
     page.product().header.openCart();
     page.components.cart.goToCheckoutButton.click();
@@ -36,7 +40,7 @@ context(['happypath', 'regression'], 'Order placement', () => {
     page.checkout.thankyou.heading.should('be.visible');
   });
 
-  it('Should successfully place an order as a registered customer', function() {
+  it('Should successfully place an order as a registered customer', function () {
     const data = this.fixtures.data[this.test.title];
     const getProductReq = intercept.getProduct();
     data.customer.email = generator.email;
@@ -46,9 +50,13 @@ context(['happypath', 'regression'], 'Order placement', () => {
     page.components.loginModal.iWantToCreateAccountCheckbox.click();
     page.components.loginModal.createAccountButton.click();
     page.home.header.categories.first().click();
-    page.category().products.first().click().then(() => {
-      cy.wait([getProductReq, getProductReq]);
-    });
+    page
+      .category()
+      .products.first()
+      .click()
+      .then(() => {
+        cy.wait([getProductReq, getProductReq]);
+      });
     page.product().addToCartButton.click();
     page.product().header.openCart();
     page.components.cart.goToCheckoutButton.click();
@@ -64,7 +72,7 @@ context(['happypath', 'regression'], 'Order placement', () => {
     page.checkout.payment.terms.click();
     page.checkout.payment.makeAnOrderButton.click();
     page.checkout.thankyou.heading.should('be.visible');
-    page.checkout.thankyou.orderNumber.then(($order) => {
+    page.checkout.thankyou.orderNumber.then($order => {
       page.myAccount.orderHistory.visit();
       page.myAccount.orderHistory.orderNumber.should('have.text', $order.text().substring(1));
     });

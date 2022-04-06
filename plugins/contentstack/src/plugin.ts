@@ -18,11 +18,7 @@ function humanCase(str = '') {
     // kebabCase removes the $ but we need to keep it for chart names
     return capitalize(str.replace(/[- ]+/g, ' ').trim());
   }
-  return capitalize(
-    kebabCase(str)
-      .replace(/[- ]+/g, ' ')
-      .trim()
-  );
+  return capitalize(kebabCase(str).replace(/[- ]+/g, ' ').trim());
 }
 
 interface Entity {
@@ -173,8 +169,7 @@ registerDataPlugin(
   {
     name: 'Contentstack',
     id: pkg.name,
-    icon:
-      'https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F490404fa90f74ec8b6ea44c345e7ba64',
+    icon: 'https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F490404fa90f74ec8b6ea44c345e7ba64',
     settings: [
       {
         name: 'apiKey',
@@ -240,7 +235,9 @@ registerDataPlugin(
             toUrl: options => {
               const buildUrl = (url: string) => {
                 const endUrl = `https://cdn.contentstack.io/v3/content_types/${model.uid}/${url}`;
-                return `${(appState as any).config.apiRoot()}/api/v1/proxy-api?url=${encodeURIComponent(
+                return `${(
+                  appState as any
+                ).config.apiRoot()}/api/v1/proxy-api?url=${encodeURIComponent(
                   endUrl
                 )}&${buildHeaders()}`;
               };
@@ -290,15 +287,13 @@ registerDataPlugin(
 
         const response: Result[] = await makeApiRequest(options);
 
-        return response.map(
-          (result): ResourceEntryType => {
-            const item = result.object();
-            return {
-              id: item.uid,
-              name: item.title,
-            };
-          }
-        );
+        return response.map((result): ResourceEntryType => {
+          const item = result.object();
+          return {
+            id: item.uid,
+            name: item.title,
+          };
+        });
       },
     };
 

@@ -2,7 +2,6 @@ import { Customer } from '../../types/types';
 import { el } from '../utils/element';
 
 class LoginModal {
-
   get container(): Cypress.Chainable {
     return el('login-modal', '.sf-modal__container');
   }
@@ -45,7 +44,6 @@ class LoginModal {
     if (customer.lastName) this.lastName.type(customer.lastName);
     if (customer.password) this.password.type(customer.password);
   }
-
 }
 
 export default new LoginModal();

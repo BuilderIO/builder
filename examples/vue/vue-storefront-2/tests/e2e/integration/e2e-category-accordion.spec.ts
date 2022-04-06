@@ -2,9 +2,9 @@ import page from '../pages/factory';
 
 context(['regression'], 'Category page accordion', () => {
   beforeEach(function () {
-    cy.fixture('test-data/e2e-category-accordion').then((fixture) => {
+    cy.fixture('test-data/e2e-category-accordion').then(fixture => {
       this.fixtures = {
-        data: fixture
+        data: fixture,
       };
     });
   });
@@ -31,11 +31,14 @@ context(['regression'], 'Category page accordion', () => {
     category.visit();
     page.components.categoryAccordion.categories.first().click();
     data.categories.forEach(category => {
-      page.components.categoryAccordion.category(category.name).click().then(() => {
-        category.subCategories.forEach(subCategory => {
-          page.components.categoryAccordion.subCategoryName(subCategory).should('be.visible');
+      page.components.categoryAccordion
+        .category(category.name)
+        .click()
+        .then(() => {
+          category.subCategories.forEach(subCategory => {
+            page.components.categoryAccordion.subCategoryName(subCategory).should('be.visible');
+          });
         });
-      });
     });
   });
 });

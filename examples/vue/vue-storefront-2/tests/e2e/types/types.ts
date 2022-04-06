@@ -8,7 +8,7 @@ export type Address = {
   country?: string;
   postalCode?: string;
   phone?: string;
-}
+};
 
 export type Customer = {
   firstName?: string;
@@ -16,12 +16,12 @@ export type Customer = {
   email?: string;
   password?: string;
   address?: {
-    shipping?: Address,
-    billing?: Address
-  }
-}
+    shipping?: Address;
+    billing?: Address;
+  };
+};
 
 export type Product = {
   sku: string;
   id: number;
-}
+};

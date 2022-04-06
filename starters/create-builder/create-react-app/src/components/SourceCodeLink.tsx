@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent } from 'react';
 
 export interface SourceCodeLinkProps {
   fileName: string;
@@ -6,7 +6,12 @@ export interface SourceCodeLinkProps {
   column?: number;
 }
 
-export const SourceCodeLink: FunctionComponent<SourceCodeLinkProps> = ({fileName, line, column, children}) => {
+export const SourceCodeLink: FunctionComponent<SourceCodeLinkProps> = ({
+  fileName,
+  line,
+  column,
+  children,
+}) => {
   const params = new URLSearchParams();
   params.set('fileName', fileName);
   if (line) {
@@ -19,7 +24,7 @@ export const SourceCodeLink: FunctionComponent<SourceCodeLinkProps> = ({fileName
   return (
     <div
       style={{
-        cursor: 'pointer'
+        cursor: 'pointer',
       }}
       onClick={() => {
         fetch(url);
@@ -28,4 +33,4 @@ export const SourceCodeLink: FunctionComponent<SourceCodeLinkProps> = ({fileName
       {children}
     </div>
   );
-}
+};

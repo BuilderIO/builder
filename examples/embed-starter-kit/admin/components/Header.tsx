@@ -18,14 +18,14 @@ export default function Header({ onDrawerButtonClick }: any) {
 
   const handleLogout = (event: any) => {
     const app: any = document.querySelector('builder-app')
-      // // example on communicating with plugin in the iframe window
-      // app.iframeRef.contentWindow.postMessage(
-      //   {
-      //     type: 'admin.logout',
-      //   },
-      //   '*'
-      // )
-      window.location.href = '/api/logout'
+    // // example on communicating with plugin in the iframe window
+    // app.iframeRef.contentWindow.postMessage(
+    //   {
+    //     type: 'admin.logout',
+    //   },
+    //   '*'
+    // )
+    window.location.href = '/api/logout'
   }
 
   const handleMobileMenuClose = () => {

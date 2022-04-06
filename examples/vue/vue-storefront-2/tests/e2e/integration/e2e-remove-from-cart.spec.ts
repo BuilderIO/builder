@@ -3,9 +3,9 @@ import page from '../pages/factory';
 
 context(['regression'], 'Remove from cart', () => {
   beforeEach(function () {
-    cy.fixture('test-data/e2e-remove-from-cart').then((fixture) => {
+    cy.fixture('test-data/e2e-remove-from-cart').then(fixture => {
       this.fixtures = {
-        data: fixture
+        data: fixture,
       };
     });
   });
@@ -39,5 +39,4 @@ context(['regression'], 'Remove from cart', () => {
       page.components.cart.product(product.name).should('be.visible');
     });
   });
-
 });

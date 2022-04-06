@@ -2,7 +2,7 @@ const { createHttpLink, ApolloLink } = require(`@apollo/client`);
 const { RetryLink } = require(`@apollo/client/link/retry`);
 const invariant = require(`invariant`);
 const nodeFetch = require('node-fetch');
-const { createDataloaderLink } = require(`./batching/dataloader-link`)
+const { createDataloaderLink } = require(`./batching/dataloader-link`);
 
 const retryLink = new RetryLink({
   delay: {
@@ -50,15 +50,12 @@ export function getConfig(options) {
     fieldName: config.fieldName,
     // Url to query from 30
     url: `${config.baseURL}/${config.publicAPIKey}?${!config.useCache ? 'cachebust=true' : ''}`,
-    createLink: async ({ headers , url }) => {
+    createLink: async ({ headers, url }) => {
       const options = {
         headers: typeof headers === `function` ? await headers() : headers,
-      }  
-      return ApolloLink.from([
-        retryLink,
-        createDataloaderLink({ uri: url, fetch: nodeFetch })
-      ]);
-    }
+      };
+      return ApolloLink.from([retryLink, createDataloaderLink({ uri: url, fetch: nodeFetch })]);
+    },
   };
 
   return {

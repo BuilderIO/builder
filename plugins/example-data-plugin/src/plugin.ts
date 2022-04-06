@@ -23,8 +23,8 @@ registerDataPlugin(
   },
   // settings will be an Observable map of the settings configured above
   async settings => {
-      const contentTypes = [{ name: 'test ', id: 'test' }];
-      return {
+    const contentTypes = [{ name: 'test ', id: 'test' }];
+    return {
       async getResourceTypes() {
         return contentTypes.map(type => ({
           name: type.name,

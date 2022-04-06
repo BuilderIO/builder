@@ -11,7 +11,6 @@ import { join } from 'path';
 
 import { AppServerModule } from './src/main.server';
 
-
 // Faster server renders w/ Prod mode (dev mode never needed)
 enableProdMode();
 
@@ -23,9 +22,12 @@ const DIST_FOLDER = join(process.cwd(), 'dist');
 
 // * NOTE :: leave this as require() since this file is built Dynamically from webpack
 
-app.engine('html', ngExpressEngine({
-  bootstrap: AppServerModule
-}));
+app.engine(
+  'html',
+  ngExpressEngine({
+    bootstrap: AppServerModule,
+  })
+);
 
 app.set('view engine', 'html');
 app.set('views', join(DIST_FOLDER, 'browser'));

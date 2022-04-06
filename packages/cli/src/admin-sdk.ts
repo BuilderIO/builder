@@ -131,9 +131,9 @@ export const newSpace = async (
       }),
       {}
     );
-    const spaceContentIdsMap = (Object.values(
-      spaceSettings.cloneInfo.contentIdMap
-    ) as string[]).reduce<Record<string, string>>(
+    const spaceContentIdsMap = (
+      Object.values(spaceSettings.cloneInfo.contentIdMap) as string[]
+    ).reduce<Record<string, string>>(
       (contenIdMap, id) => ({
         ...contenIdMap,
         [id]: createHash('sha256')

@@ -31,7 +31,7 @@ const PageTemplate: React.SFC<PageTemplateProps> = ({ data }) => {
 
 export default PageTemplate;
 export const pageQuery = graphql`
-  query($path: String!) {
+  query ($path: String!) {
     allBuilderModels {
       page(target: { urlPath: $path }, limit: 1, options: { cachebust: true }) {
         content
