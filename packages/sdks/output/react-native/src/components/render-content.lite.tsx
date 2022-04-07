@@ -21,25 +21,27 @@ import { ifTarget } from "../functions/if-target";
 
 export default function RenderContent(props) {
   function useContent() {
-    const overrideContent = {
+    const mergedContent = {
       ...props.content,
       ...overrideContent,
       data: { ...props.content?.data, ...overrideContent?.data },
     };
-    return overrideContent;
+    return mergedContent;
   }
+
+  const [overrideContent, setOverrideContent] = useState(() => null);
 
   const [update, setUpdate] = useState(() => 0);
 
+  const [overrideState, setOverrideState] = useState(() => ({}));
+
   function state() {
-    return props.content?.data?.state || {};
+    return { ...props.content?.data?.state, ...overrideState };
   }
 
   function context() {
     return {};
   }
-
-  const [overrideContent, setOverrideContent] = useState(() => null);
 
   function getCssFromFont(font, data) {
     // TODO: compute what font sizes are used and only load those.......
@@ -159,7 +161,8 @@ export default function RenderContent(props) {
     const fetchAndSetState = async () => {
       const response = await getFetch()(url);
       const json = await response.json();
-      state()[key] = json;
+      const newOverrideState = { ...overrideState, [key]: json };
+      setOverrideState(newOverrideState);
     };
 
     fetchAndSetState();
