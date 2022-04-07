@@ -25,6 +25,7 @@ import { Nullable } from '../types/typescript';
 import { evaluate } from '../functions/evaluate';
 import { getFetch } from '../functions/get-fetch';
 import { onChange } from '../functions/on-change';
+import { ifTarget } from '../functions/if-target';
 
 export type RenderContentProps = {
   content?: BuilderContent;
@@ -49,7 +50,15 @@ interface BuilderComponentStateChange {
 export default function RenderContent(props: RenderContentProps) {
   const state = useState({
     get useContent(): Nullable<BuilderContent> {
-      return state.overrideContent || props.content;
+      const overrideContent: BuilderContent = {
+        ...props.content,
+        ...state.overrideContent,
+        data: {
+          ...props.content?.data,
+          ...state.overrideContent?.data,
+        },
+      };
+      return overrideContent;
     },
     update: 0,
     get state(): { [key: string]: any } {
@@ -128,8 +137,6 @@ export default function RenderContent(props: RenderContentProps) {
 
             const contentData = messageContent.data;
 
-            console.log('content update', key, contentData);
-
             if (key === props.model) {
               state.overrideContent = contentData;
             }
@@ -168,11 +175,7 @@ export default function RenderContent(props: RenderContentProps) {
       );
     },
     handleRequest({ url, key }: { key: string; url: string }) {
-      console.log('handleReq');
-
       const fetchAndSetState = async () => {
-        console.log('fetch: ', { url, key });
-
         const response = await getFetch()(url);
         const json = await response.json();
         state.state[key] = json;
@@ -181,15 +184,11 @@ export default function RenderContent(props: RenderContentProps) {
     },
     runHttpRequests() {
       const requests = state.useContent?.data?.httpRequests ?? {};
-      console.log('about to run HTTP requests', requests.toString());
 
       Object.entries(requests).forEach(([key, url]) => {
         if (url && (!state.httpReqsData[key] || isEditing())) {
           const evaluatedUrl = state.evalExpression(url);
-          if (isBrowser()) {
-            state.handleRequest({ url: evaluatedUrl, key });
-          } else {
-          }
+          state.handleRequest({ url: evaluatedUrl, key });
         }
       });
     },
