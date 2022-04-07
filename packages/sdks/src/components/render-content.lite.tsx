@@ -50,7 +50,7 @@ interface BuilderComponentStateChange {
 export default function RenderContent(props: RenderContentProps) {
   const state = useState({
     get useContent(): Nullable<BuilderContent> {
-      const overrideContent: BuilderContent = {
+      const mergedContent: BuilderContent = {
         ...props.content,
         ...state.overrideContent,
         data: {
@@ -58,7 +58,7 @@ export default function RenderContent(props: RenderContentProps) {
           ...state.overrideContent?.data,
         },
       };
-      return overrideContent;
+      return mergedContent;
     },
     update: 0,
     get state(): { [key: string]: any } {
