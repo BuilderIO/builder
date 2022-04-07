@@ -21,7 +21,7 @@ import {
   getBuilderSearchParams,
 } from '../functions/get-builder-search-params';
 import RenderBlocks from './render-blocks.lite';
-import { Nullable } from '../types/typescript';
+import { Dictionary, Nullable } from '../types/typescript';
 import { evaluate } from '../functions/evaluate';
 import { getFetch } from '../functions/get-fetch';
 import { onChange } from '../functions/on-change';
@@ -60,14 +60,18 @@ export default function RenderContent(props: RenderContentProps) {
       };
       return mergedContent;
     },
+    overrideContent: null as Nullable<BuilderContent>,
     update: 0,
-    get state(): { [key: string]: any } {
-      return props.content?.data?.state || {};
+    overrideState: {} as Dictionary<any>,
+    get state(): Dictionary<any> {
+      return {
+        ...props.content?.data?.state,
+        ...state.overrideState,
+      };
     },
     get context() {
       return {} as { [index: string]: any };
     },
-    overrideContent: null as Nullable<BuilderContent>,
     getCssFromFont(font: any, data?: any) {
       // TODO: compute what font sizes are used and only load those.......
       const family =
@@ -178,7 +182,12 @@ export default function RenderContent(props: RenderContentProps) {
       const fetchAndSetState = async () => {
         const response = await getFetch()(url);
         const json = await response.json();
-        state.state[key] = json;
+
+        const newOverrideState = {
+          ...state.overrideState,
+          [key]: json,
+        };
+        state.overrideState = newOverrideState;
       };
       fetchAndSetState();
     },

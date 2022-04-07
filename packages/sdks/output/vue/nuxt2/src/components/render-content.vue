@@ -60,7 +60,13 @@ export default {
   components: { 'render-blocks': async () => RenderBlocks },
   props: ['content', 'model', 'apiKey'],
 
-  data: () => ({ update: 0, overrideContent: null, track, isReactNative }),
+  data: () => ({
+    overrideContent: null,
+    update: 0,
+    overrideState: {},
+    track,
+    isReactNative,
+  }),
 
   provide() {
     const _this = this;
@@ -148,15 +154,15 @@ export default {
 
   computed: {
     useContent() {
-      const overrideContent = {
+      const mergedContent = {
         ...this.content,
         ...this.overrideContent,
         data: { ...this.content?.data, ...this.overrideContent?.data },
       };
-      return overrideContent;
+      return mergedContent;
     },
     state() {
-      return this.content?.data?.state || {};
+      return { ...this.content?.data?.state, ...this.overrideState };
     },
     context() {
       return {};
@@ -292,7 +298,8 @@ export default {
       const fetchAndSetState = async () => {
         const response = await getFetch()(url);
         const json = await response.json();
-        this.state[key] = json;
+        const newOverrideState = { ...this.overrideState, [key]: json };
+        this.overrideState = newOverrideState;
       };
 
       fetchAndSetState();
