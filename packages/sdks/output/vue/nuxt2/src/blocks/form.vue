@@ -9,7 +9,7 @@
     @submit="onSubmit(event)"
   >
     <render-block
-      v-for="(block, index) in builderBlock && builderBlock.children"
+      v-for="(block, index) in (builderBlock && builderBlock.children)"
       :block="block"
       :key="index"
     ></render-block>
@@ -27,7 +27,7 @@
     ></builder-blocks>
 
     <pre
-      class="builder-form-error-text pre-1be3j8m9ewb"
+      class="builder-form-error-text pre-t9spj7joih"
       v-if="submissionState === 'error' && responseData"
     >
         {{ JSON.stringify(responseData, null, 2) }}
@@ -42,42 +42,42 @@
   </form>
 </template>
 <script>
-import RenderBlock from '../components/render-block';
+import RenderBlock from "../components/render-block";
 
-import { registerComponent } from '../functions/register-component';
+import { registerComponent } from "../functions/register-component";
 
 export default registerComponent(
   {
-    name: 'builder-form-component',
+    name: "builder-form-component",
     components: {
-      'render-block': async () => RenderBlock,
-      'builder-blocks': async () => BuilderBlocks,
+      "render-block": async () => RenderBlock,
+      "builder-blocks": async () => BuilderBlocks,
     },
     props: [
-      'previewState',
-      'sendWithJs',
-      'sendSubmissionsTo',
-      'action',
-      'customHeaders',
-      'contentType',
-      'sendSubmissionsToEmail',
-      'name',
-      'method',
-      'errorMessagePath',
-      'resetFormOnSubmit',
-      'successUrl',
-      'validate',
-      'attributes',
-      'builderBlock',
-      'errorMessage',
-      'sendingMessage',
-      'successMessage',
+      "previewState",
+      "sendWithJs",
+      "sendSubmissionsTo",
+      "action",
+      "customHeaders",
+      "contentType",
+      "sendSubmissionsToEmail",
+      "name",
+      "method",
+      "errorMessagePath",
+      "resetFormOnSubmit",
+      "successUrl",
+      "validate",
+      "attributes",
+      "builderBlock",
+      "errorMessage",
+      "sendingMessage",
+      "successMessage",
     ],
 
     data: () => ({
-      state: 'unsubmitted',
+      state: "unsubmitted",
       responseData: null,
-      formErrorMessage: '',
+      formErrorMessage: "",
     }),
 
     computed: {
@@ -89,12 +89,12 @@ export default registerComponent(
     methods: {
       onSubmit(event) {
         const sendWithJs =
-          this.sendWithJs || this.sendSubmissionsTo === 'email';
+          this.sendWithJs || this.sendSubmissionsTo === "email";
 
-        if (this.sendSubmissionsTo === 'zapier') {
+        if (this.sendSubmissionsTo === "zapier") {
           event.preventDefault();
         } else if (sendWithJs) {
-          if (!(this.action || this.sendSubmissionsTo === 'email')) {
+          if (!(this.action || this.sendSubmissionsTo === "email")) {
             event.preventDefault();
             return;
           }
@@ -106,7 +106,7 @@ export default registerComponent(
           const formData = new FormData(el); // TODO: maybe support null
 
           const formPairs = Array.from(
-            event.currentTarget.querySelectorAll('input,select,textarea')
+            event.currentTarget.querySelectorAll("input,select,textarea")
           )
             .filter((el) => !!el.name)
             .map((el) => {
@@ -114,7 +114,7 @@ export default registerComponent(
               const key = el.name;
 
               if (el instanceof HTMLInputElement) {
-                if (el.type === 'radio') {
+                if (el.type === "radio") {
                   if (el.checked) {
                     value = el.name;
                     return {
@@ -122,15 +122,15 @@ export default registerComponent(
                       value,
                     };
                   }
-                } else if (el.type === 'checkbox') {
+                } else if (el.type === "checkbox") {
                   value = el.checked;
-                } else if (el.type === 'number' || el.type === 'range') {
+                } else if (el.type === "number" || el.type === "range") {
                   const num = el.valueAsNumber;
 
                   if (!isNaN(num)) {
                     value = num;
                   }
-                } else if (el.type === 'file') {
+                } else if (el.type === "file") {
                   // TODO: one vs multiple files
                   value = el.files;
                 } else {
@@ -147,8 +147,8 @@ export default registerComponent(
             });
           let contentType = this.contentType;
 
-          if (this.sendSubmissionsTo === 'email') {
-            contentType = 'multipart/form-data';
+          if (this.sendSubmissionsTo === "email") {
+            contentType = "multipart/form-data";
           }
 
           Array.from(formPairs).forEach(({ value }) => {
@@ -157,13 +157,13 @@ export default registerComponent(
               (Array.isArray(value) && value[0] instanceof File) ||
               value instanceof FileList
             ) {
-              contentType = 'multipart/form-data';
+              contentType = "multipart/form-data";
             }
           }); // TODO: send as urlEncoded or multipart by default
           // because of ease of use and reliability in browser API
           // for encoding the form?
 
-          if (contentType !== 'application/json') {
+          if (contentType !== "application/json") {
             body = formData;
           } else {
             // Json
@@ -174,16 +174,16 @@ export default registerComponent(
             body = JSON.stringify(json);
           }
 
-          if (contentType && contentType !== 'multipart/form-data') {
+          if (contentType && contentType !== "multipart/form-data") {
             if (
               /* Zapier doesn't allow content-type header to be sent from browsers */
-              !(sendWithJs && this.action?.includes('zapier.com'))
+              !(sendWithJs && this.action?.includes("zapier.com"))
             ) {
-              headers['content-type'] = contentType;
+              headers["content-type"] = contentType;
             }
           }
 
-          const presubmitEvent = new CustomEvent('presubmit', {
+          const presubmitEvent = new CustomEvent("presubmit", {
             detail: {
               body,
             },
@@ -197,30 +197,30 @@ export default registerComponent(
             }
           }
 
-          this.state = 'sending';
+          this.state = "sending";
           const formUrl = `${
-            builder.env === 'dev'
-              ? 'http://localhost:5000'
-              : 'https://builder.io'
+            builder.env === "dev"
+              ? "http://localhost:5000"
+              : "https://builder.io"
           }/api/v1/form-submit?apiKey=${builder.apiKey}&to=${btoa(
-            this.sendSubmissionsToEmail || ''
-          )}&name=${encodeURIComponent(this.name || '')}`;
+            this.sendSubmissionsToEmail || ""
+          )}&name=${encodeURIComponent(this.name || "")}`;
           fetch(
-            this.sendSubmissionsTo === 'email' ? formUrl : this.action,
+            this.sendSubmissionsTo === "email" ? formUrl : this.action,
             /* TODO: throw error if no action URL */
             {
               body,
               headers,
-              method: this.method || 'post',
+              method: this.method || "post",
             }
           ).then(
             async (res) => {
               let body;
-              const contentType = res.headers.get('content-type');
+              const contentType = res.headers.get("content-type");
 
               if (
                 contentType &&
-                contentType.indexOf('application/json') !== -1
+                contentType.indexOf("application/json") !== -1
               ) {
                 body = await res.json();
               } else {
@@ -232,7 +232,7 @@ export default registerComponent(
                 let message = get(body, this.errorMessagePath);
 
                 if (message) {
-                  if (typeof message !== 'string') {
+                  if (typeof message !== "string") {
                     /* TODO: ideally convert json to yaml so it woul dbe like
            error: - email has been taken */
                     message = JSON.stringify(message);
@@ -243,10 +243,10 @@ export default registerComponent(
               }
 
               this.responseData = body;
-              this.state = res.ok ? 'success' : 'error';
+              this.state = res.ok ? "success" : "error";
 
               if (res.ok) {
-                const submitSuccessEvent = new CustomEvent('submit:success', {
+                const submitSuccessEvent = new CustomEvent("submit:success", {
                   detail: {
                     res,
                     body,
@@ -269,7 +269,7 @@ export default registerComponent(
 
                 if (this.successUrl) {
                   if (this.$refs.formRef) {
-                    const event = new CustomEvent('route', {
+                    const event = new CustomEvent("route", {
                       detail: {
                         url: this.successUrl,
                       },
@@ -286,7 +286,7 @@ export default registerComponent(
               }
             },
             (err) => {
-              const submitErrorEvent = new CustomEvent('submit:error', {
+              const submitErrorEvent = new CustomEvent("submit:error", {
                 detail: {
                   error: err,
                 },
@@ -301,7 +301,7 @@ export default registerComponent(
               }
 
               this.responseData = err;
-              this.state = 'error';
+              this.state = "error";
             }
           );
         }
@@ -309,162 +309,162 @@ export default registerComponent(
     },
   },
   {
-    name: 'Form:Form',
+    name: "Form:Form",
     builtIn: true,
     defaults: {
-      responsiveStyles: { large: { marginTop: '15px', paddingBottom: '15px' } },
+      responsiveStyles: { large: { marginTop: "15px", paddingBottom: "15px" } },
     },
     image:
-      'https://cdn.builder.io/api/v1/image/assets%2FIsxPKMo2gPRRKeakUztj1D6uqed2%2Fef36d2a846134910b64b88e6d18c5ca5',
+      "https://cdn.builder.io/api/v1/image/assets%2FIsxPKMo2gPRRKeakUztj1D6uqed2%2Fef36d2a846134910b64b88e6d18c5ca5",
     inputs: [
       {
-        name: 'sendSubmissionsTo',
-        type: 'string',
+        name: "sendSubmissionsTo",
+        type: "string",
         enum: [
           {
-            label: 'Send to email',
-            value: 'email',
+            label: "Send to email",
+            value: "email",
             helperText:
-              'Send form submissions to the email address of your choosing',
+              "Send form submissions to the email address of your choosing",
           },
           {
-            label: 'Custom',
-            value: 'custom',
+            label: "Custom",
+            value: "custom",
             helperText:
-              'Handle where the form requests go manually with a little code, e.g. to your own custom backend',
+              "Handle where the form requests go manually with a little code, e.g. to your own custom backend",
           },
         ],
-        defaultValue: 'email',
+        defaultValue: "email",
       },
       {
-        name: 'sendSubmissionsToEmail',
-        type: 'string',
+        name: "sendSubmissionsToEmail",
+        type: "string",
         required: true,
-        defaultValue: 'your@email.com',
+        defaultValue: "your@email.com",
         showIf: 'options.get("sendSubmissionsTo") === "email"',
       },
       {
-        name: 'sendWithJs',
-        type: 'boolean',
-        helperText: 'Set to false to use basic html form action',
+        name: "sendWithJs",
+        type: "boolean",
+        helperText: "Set to false to use basic html form action",
         defaultValue: true,
         showIf: 'options.get("sendSubmissionsTo") === "custom"',
       },
-      { name: 'name', type: 'string', defaultValue: 'My form' },
+      { name: "name", type: "string", defaultValue: "My form" },
       {
-        name: 'action',
-        type: 'string',
-        helperText: 'URL to send the form data to',
+        name: "action",
+        type: "string",
+        helperText: "URL to send the form data to",
         showIf: 'options.get("sendSubmissionsTo") === "custom"',
       },
       {
-        name: 'contentType',
-        type: 'string',
-        defaultValue: 'application/json',
+        name: "contentType",
+        type: "string",
+        defaultValue: "application/json",
         advanced: true,
         enum: [
-          'application/json',
-          'multipart/form-data',
-          'application/x-www-form-urlencoded',
+          "application/json",
+          "multipart/form-data",
+          "application/x-www-form-urlencoded",
         ],
         showIf:
           'options.get("sendSubmissionsTo") === "custom" && options.get("sendWithJs") === true',
       },
       {
-        name: 'method',
-        type: 'string',
+        name: "method",
+        type: "string",
         showIf: 'options.get("sendSubmissionsTo") === "custom"',
-        defaultValue: 'POST',
+        defaultValue: "POST",
         advanced: true,
       },
       {
-        name: 'previewState',
-        type: 'string',
-        enum: ['unsubmitted', 'sending', 'success', 'error'],
-        defaultValue: 'unsubmitted',
+        name: "previewState",
+        type: "string",
+        enum: ["unsubmitted", "sending", "success", "error"],
+        defaultValue: "unsubmitted",
         helperText:
           'Choose a state to edit, e.g. choose "success" to show what users see on success and edit the message',
         showIf:
           'options.get("sendSubmissionsTo") !== "zapier" && options.get("sendWithJs") === true',
       },
       {
-        name: 'successUrl',
-        type: 'url',
+        name: "successUrl",
+        type: "url",
         helperText:
-          'Optional URL to redirect the user to on form submission success',
+          "Optional URL to redirect the user to on form submission success",
         showIf:
           'options.get("sendSubmissionsTo") !== "zapier" && options.get("sendWithJs") === true',
       },
       {
-        name: 'resetFormOnSubmit',
-        type: 'boolean',
+        name: "resetFormOnSubmit",
+        type: "boolean",
         showIf:
           "options.get('sendSubmissionsTo') === 'custom' && options.get('sendWithJs') === true",
         advanced: true,
       },
       {
-        name: 'successMessage',
-        type: 'uiBlocks',
+        name: "successMessage",
+        type: "uiBlocks",
         hideFromUI: true,
         defaultValue: [
           {
-            '@type': '@builder.io/sdk:Element',
-            responsiveStyles: { large: { marginTop: '10px' } },
+            "@type": "@builder.io/sdk:Element",
+            responsiveStyles: { large: { marginTop: "10px" } },
             component: {
-              name: 'Text',
-              options: { text: '<span>Thanks!</span>' },
+              name: "Text",
+              options: { text: "<span>Thanks!</span>" },
             },
           },
         ],
       },
-      { name: 'validate', type: 'boolean', defaultValue: true, advanced: true },
+      { name: "validate", type: "boolean", defaultValue: true, advanced: true },
       {
-        name: 'errorMessagePath',
-        type: 'text',
+        name: "errorMessagePath",
+        type: "text",
         advanced: true,
         helperText:
           'Path to where to get the error message from in a JSON response to display to the user, e.g. "error.message" for a response like { "error": { "message": "this username is taken" }}',
       },
       {
-        name: 'errorMessage',
-        type: 'uiBlocks',
+        name: "errorMessage",
+        type: "uiBlocks",
         hideFromUI: true,
         defaultValue: [
           {
-            '@type': '@builder.io/sdk:Element',
-            responsiveStyles: { large: { marginTop: '10px' } },
+            "@type": "@builder.io/sdk:Element",
+            responsiveStyles: { large: { marginTop: "10px" } },
             bindings: {
-              'component.options.text':
-                'state.formErrorMessage || block.component.options.text',
+              "component.options.text":
+                "state.formErrorMessage || block.component.options.text",
             },
             component: {
-              name: 'Text',
+              name: "Text",
               options: {
-                text: '<span>Form submission error :( Please check your answers and try again</span>',
+                text: "<span>Form submission error :( Please check your answers and try again</span>",
               },
             },
           },
         ],
       },
       {
-        name: 'sendingMessage',
-        type: 'uiBlocks',
+        name: "sendingMessage",
+        type: "uiBlocks",
         hideFromUI: true,
         defaultValue: [
           {
-            '@type': '@builder.io/sdk:Element',
-            responsiveStyles: { large: { marginTop: '10px' } },
+            "@type": "@builder.io/sdk:Element",
+            responsiveStyles: { large: { marginTop: "10px" } },
             component: {
-              name: 'Text',
-              options: { text: '<span>Sending...</span>' },
+              name: "Text",
+              options: { text: "<span>Sending...</span>" },
             },
           },
         ],
       },
       {
-        name: 'customHeaders',
-        type: 'map',
-        valueType: { type: 'string' },
+        name: "customHeaders",
+        type: "map",
+        valueType: { type: "string" },
         advanced: true,
         showIf:
           'options.get("sendSubmissionsTo") === "custom" && options.get("sendWithJs") === true',
@@ -474,48 +474,48 @@ export default registerComponent(
     canHaveChildren: true,
     defaultChildren: [
       {
-        '@type': '@builder.io/sdk:Element',
-        responsiveStyles: { large: { marginTop: '10px' } },
+        "@type": "@builder.io/sdk:Element",
+        responsiveStyles: { large: { marginTop: "10px" } },
         component: {
-          name: 'Text',
-          options: { text: '<span>Enter your name</span>' },
+          name: "Text",
+          options: { text: "<span>Enter your name</span>" },
         },
       },
       {
-        '@type': '@builder.io/sdk:Element',
-        responsiveStyles: { large: { marginTop: '10px' } },
+        "@type": "@builder.io/sdk:Element",
+        responsiveStyles: { large: { marginTop: "10px" } },
         component: {
-          name: 'Form:Input',
-          options: { name: 'name', placeholder: 'Jane Doe' },
+          name: "Form:Input",
+          options: { name: "name", placeholder: "Jane Doe" },
         },
       },
       {
-        '@type': '@builder.io/sdk:Element',
-        responsiveStyles: { large: { marginTop: '10px' } },
+        "@type": "@builder.io/sdk:Element",
+        responsiveStyles: { large: { marginTop: "10px" } },
         component: {
-          name: 'Text',
-          options: { text: '<span>Enter your email</span>' },
+          name: "Text",
+          options: { text: "<span>Enter your email</span>" },
         },
       },
       {
-        '@type': '@builder.io/sdk:Element',
-        responsiveStyles: { large: { marginTop: '10px' } },
+        "@type": "@builder.io/sdk:Element",
+        responsiveStyles: { large: { marginTop: "10px" } },
         component: {
-          name: 'Form:Input',
-          options: { name: 'email', placeholder: 'jane@doe.com' },
+          name: "Form:Input",
+          options: { name: "email", placeholder: "jane@doe.com" },
         },
       },
       {
-        '@type': '@builder.io/sdk:Element',
-        responsiveStyles: { large: { marginTop: '10px' } },
-        component: { name: 'Form:SubmitButton', options: { text: 'Submit' } },
+        "@type": "@builder.io/sdk:Element",
+        responsiveStyles: { large: { marginTop: "10px" } },
+        component: { name: "Form:SubmitButton", options: { text: "Submit" } },
       },
     ],
   }
 );
 </script>
 <style scoped>
-.pre-1be3j8m9ewb {
+.pre-t9spj7joih {
   padding: 10px;
   color: red;
   text-align: center;

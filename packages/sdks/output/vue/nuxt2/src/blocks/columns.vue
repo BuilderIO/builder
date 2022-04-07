@@ -1,7 +1,7 @@
 <template>
-  <div class="builder-columns div-t9spj7joih" :style="columnsCssVars">
+  <div class="builder-columns div-21azgz5avex" :style="columnsCssVars">
     <div
-      class="builder-column div-t9spj7joih-2"
+      class="builder-column div-21azgz5avex-2"
       v-for="(column, index) in columns"
       :style="{
         width: getColumnCssWidth(index),
@@ -15,44 +15,44 @@
   </div>
 </template>
 <script>
-import RenderBlocks from '../components/render-blocks';
+import RenderBlocks from "../components/render-blocks";
 
-import { registerComponent } from '../functions/register-component';
+import { registerComponent } from "../functions/register-component";
 
 export default registerComponent(
   {
-    name: 'builder-columns',
-    components: { 'render-blocks': async () => RenderBlocks },
-    props: ['space', 'columns', 'stackColumnsAt', 'reverseColumnsWhenStacked'],
+    name: "builder-columns",
+    components: { "render-blocks": async () => RenderBlocks },
+    props: ["space", "columns", "stackColumnsAt", "reverseColumnsWhenStacked"],
 
     computed: {
       columnsCssVars() {
         const flexDir =
-          this.stackColumnsAt === 'never'
-            ? 'inherit'
+          this.stackColumnsAt === "never"
+            ? "inherit"
             : this.reverseColumnsWhenStacked
-            ? 'column-reverse'
-            : 'column';
+            ? "column-reverse"
+            : "column";
         return {
-          '--flex-dir': flexDir,
-          '--flex-dir-tablet': this.maybeApplyForTablet(flexDir),
+          "--flex-dir": flexDir,
+          "--flex-dir-tablet": this.maybeApplyForTablet(flexDir),
         };
       },
       columnCssVars() {
-        const width = '100%';
-        const marginLeft = '0';
+        const width = "100%";
+        const marginLeft = "0";
         return {
-          '--column-width': width,
-          '--column-margin-left': marginLeft,
-          '--column-width-tablet': this.maybeApplyForTablet(width),
-          '--column-margin-left-tablet': this.maybeApplyForTablet(marginLeft),
+          "--column-width": width,
+          "--column-margin-left": marginLeft,
+          "--column-width-tablet": this.maybeApplyForTablet(width),
+          "--column-margin-left-tablet": this.maybeApplyForTablet(marginLeft),
         };
       },
     },
 
     methods: {
       getGutterSize() {
-        return typeof this.space === 'number' ? this.space || 0 : 20;
+        return typeof this.space === "number" ? this.space || 0 : 20;
       },
       getColumns() {
         return this.columns || [];
@@ -69,139 +69,139 @@ export default registerComponent(
         return `calc(${this.getWidth(index)}% - ${subtractWidth}px)`;
       },
       maybeApplyForTablet(prop) {
-        const stackColumnsAt = this.stackColumnsAt || 'tablet';
-        return stackColumnsAt === 'tablet' ? prop : 'inherit';
+        const stackColumnsAt = this.stackColumnsAt || "tablet";
+        return stackColumnsAt === "tablet" ? prop : "inherit";
       },
     },
   },
   {
-    name: 'Columns',
+    name: "Columns",
     builtIn: true,
     inputs: [
       {
-        name: 'columns',
-        type: 'array',
+        name: "columns",
+        type: "array",
         broadcast: true,
         subFields: [
           {
-            name: 'blocks',
-            type: 'array',
+            name: "blocks",
+            type: "array",
             hideFromUI: true,
             defaultValue: [
               {
-                '@type': '@builder.io/sdk:Element',
+                "@type": "@builder.io/sdk:Element",
                 responsiveStyles: {
                   large: {
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'stretch',
-                    flexShrink: '0',
-                    position: 'relative',
-                    marginTop: '30px',
-                    textAlign: 'center',
-                    lineHeight: 'normal',
-                    height: 'auto',
-                    minHeight: '20px',
-                    minWidth: '20px',
-                    overflow: 'hidden',
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "stretch",
+                    flexShrink: "0",
+                    position: "relative",
+                    marginTop: "30px",
+                    textAlign: "center",
+                    lineHeight: "normal",
+                    height: "auto",
+                    minHeight: "20px",
+                    minWidth: "20px",
+                    overflow: "hidden",
                   },
                 },
                 component: {
-                  name: 'Image',
+                  name: "Image",
                   options: {
                     image:
-                      'https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d',
-                    backgroundPosition: 'center',
-                    backgroundSize: 'cover',
+                      "https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d",
+                    backgroundPosition: "center",
+                    backgroundSize: "cover",
                     aspectRatio: 0.7004048582995948,
                   },
                 },
               },
               {
-                '@type': '@builder.io/sdk:Element',
+                "@type": "@builder.io/sdk:Element",
                 responsiveStyles: {
                   large: {
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'stretch',
-                    flexShrink: '0',
-                    position: 'relative',
-                    marginTop: '30px',
-                    textAlign: 'center',
-                    lineHeight: 'normal',
-                    height: 'auto',
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "stretch",
+                    flexShrink: "0",
+                    position: "relative",
+                    marginTop: "30px",
+                    textAlign: "center",
+                    lineHeight: "normal",
+                    height: "auto",
                   },
                 },
                 component: {
-                  name: 'Text',
-                  options: { text: '<p>Enter some text...</p>' },
+                  name: "Text",
+                  options: { text: "<p>Enter some text...</p>" },
                 },
               },
             ],
           },
           {
-            name: 'width',
-            type: 'number',
+            name: "width",
+            type: "number",
             hideFromUI: true,
-            helperText: 'Width %, e.g. set to 50 to fill half of the space',
+            helperText: "Width %, e.g. set to 50 to fill half of the space",
           },
           {
-            name: 'link',
-            type: 'url',
+            name: "link",
+            type: "url",
             helperText:
-              'Optionally set a url that clicking this column will link to',
+              "Optionally set a url that clicking this column will link to",
           },
         ],
         defaultValue: [
           {
             blocks: [
               {
-                '@type': '@builder.io/sdk:Element',
+                "@type": "@builder.io/sdk:Element",
                 responsiveStyles: {
                   large: {
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'stretch',
-                    flexShrink: '0',
-                    position: 'relative',
-                    marginTop: '30px',
-                    textAlign: 'center',
-                    lineHeight: 'normal',
-                    height: 'auto',
-                    minHeight: '20px',
-                    minWidth: '20px',
-                    overflow: 'hidden',
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "stretch",
+                    flexShrink: "0",
+                    position: "relative",
+                    marginTop: "30px",
+                    textAlign: "center",
+                    lineHeight: "normal",
+                    height: "auto",
+                    minHeight: "20px",
+                    minWidth: "20px",
+                    overflow: "hidden",
                   },
                 },
                 component: {
-                  name: 'Image',
+                  name: "Image",
                   options: {
                     image:
-                      'https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d',
-                    backgroundPosition: 'center',
-                    backgroundSize: 'cover',
+                      "https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d",
+                    backgroundPosition: "center",
+                    backgroundSize: "cover",
                     aspectRatio: 0.7004048582995948,
                   },
                 },
               },
               {
-                '@type': '@builder.io/sdk:Element',
+                "@type": "@builder.io/sdk:Element",
                 responsiveStyles: {
                   large: {
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'stretch',
-                    flexShrink: '0',
-                    position: 'relative',
-                    marginTop: '30px',
-                    textAlign: 'center',
-                    lineHeight: 'normal',
-                    height: 'auto',
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "stretch",
+                    flexShrink: "0",
+                    position: "relative",
+                    marginTop: "30px",
+                    textAlign: "center",
+                    lineHeight: "normal",
+                    height: "auto",
                   },
                 },
                 component: {
-                  name: 'Text',
-                  options: { text: '<p>Enter some text...</p>' },
+                  name: "Text",
+                  options: { text: "<p>Enter some text...</p>" },
                 },
               },
             ],
@@ -209,52 +209,52 @@ export default registerComponent(
           {
             blocks: [
               {
-                '@type': '@builder.io/sdk:Element',
+                "@type": "@builder.io/sdk:Element",
                 responsiveStyles: {
                   large: {
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'stretch',
-                    flexShrink: '0',
-                    position: 'relative',
-                    marginTop: '30px',
-                    textAlign: 'center',
-                    lineHeight: 'normal',
-                    height: 'auto',
-                    minHeight: '20px',
-                    minWidth: '20px',
-                    overflow: 'hidden',
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "stretch",
+                    flexShrink: "0",
+                    position: "relative",
+                    marginTop: "30px",
+                    textAlign: "center",
+                    lineHeight: "normal",
+                    height: "auto",
+                    minHeight: "20px",
+                    minWidth: "20px",
+                    overflow: "hidden",
                   },
                 },
                 component: {
-                  name: 'Image',
+                  name: "Image",
                   options: {
                     image:
-                      'https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d',
-                    backgroundPosition: 'center',
-                    backgroundSize: 'cover',
+                      "https://builder.io/api/v1/image/assets%2Fpwgjf0RoYWbdnJSbpBAjXNRMe9F2%2Ffb27a7c790324294af8be1c35fe30f4d",
+                    backgroundPosition: "center",
+                    backgroundSize: "cover",
                     aspectRatio: 0.7004048582995948,
                   },
                 },
               },
               {
-                '@type': '@builder.io/sdk:Element',
+                "@type": "@builder.io/sdk:Element",
                 responsiveStyles: {
                   large: {
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'stretch',
-                    flexShrink: '0',
-                    position: 'relative',
-                    marginTop: '30px',
-                    textAlign: 'center',
-                    lineHeight: 'normal',
-                    height: 'auto',
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "stretch",
+                    flexShrink: "0",
+                    position: "relative",
+                    marginTop: "30px",
+                    textAlign: "center",
+                    lineHeight: "normal",
+                    height: "auto",
                   },
                 },
                 component: {
-                  name: 'Text',
-                  options: { text: '<p>Enter some text...</p>' },
+                  name: "Text",
+                  options: { text: "<p>Enter some text...</p>" },
                 },
               },
             ],
@@ -264,27 +264,27 @@ export default registerComponent(
           "        function clearWidths() {          columns.forEach(col => {            col.delete('width');          });        }        const columns = options.get('columns') as Array<map<string, any>>;        if (Array.isArray(columns)) {          const containsColumnWithWidth = !!columns.find(col => col.get('width'));          if (containsColumnWithWidth) {            const containsColumnWithoutWidth = !!columns.find(col => !col.get('width'));            if (containsColumnWithoutWidth) {              clearWidths();            } else {              const sumWidths = columns.reduce((memo, col) => {                return memo + col.get('width');              }, 0);              const widthsDontAddUp = sumWidths !== 100;              if (widthsDontAddUp) {                clearWidths();              }            }          }        }      ",
       },
       {
-        name: 'space',
-        type: 'number',
+        name: "space",
+        type: "number",
         defaultValue: 20,
-        helperText: 'Size of gap between columns',
+        helperText: "Size of gap between columns",
         advanced: true,
       },
       {
-        name: 'stackColumnsAt',
-        type: 'string',
-        defaultValue: 'tablet',
+        name: "stackColumnsAt",
+        type: "string",
+        defaultValue: "tablet",
         helperText:
-          'Convert horizontal columns to vertical at what device size',
-        enum: ['tablet', 'mobile', 'never'],
+          "Convert horizontal columns to vertical at what device size",
+        enum: ["tablet", "mobile", "never"],
         advanced: true,
       },
       {
-        name: 'reverseColumnsWhenStacked',
-        type: 'boolean',
+        name: "reverseColumnsWhenStacked",
+        type: "boolean",
         defaultValue: false,
         helperText:
-          'When stacking columns for mobile devices, reverse the ordering',
+          "When stacking columns for mobile devices, reverse the ordering",
         advanced: true,
       },
     ],
@@ -292,32 +292,32 @@ export default registerComponent(
 );
 </script>
 <style scoped>
-.div-t9spj7joih {
+.div-21azgz5avex {
   display: flex;
   align-items: stretch;
   line-height: normal;
 }
 @media (max-width: 999px) {
-  .div-t9spj7joih {
+  .div-21azgz5avex {
     flex-direction: var(--flex-dir-tablet);
   }
 }
 @media (max-width: 639px) {
-  .div-t9spj7joih {
+  .div-21azgz5avex {
     flex-direction: var(--flex-dir);
   }
 }
-.div-t9spj7joih-2 {
+.div-21azgz5avex-2 {
   flex-grow: 1;
 }
 @media (max-width: 999px) {
-  .div-t9spj7joih-2 {
+  .div-21azgz5avex-2 {
     width: var(--column-width-tablet) !important;
     margin-left: var(--column-margin-left-tablet) !important;
   }
 }
 @media (max-width: 639px) {
-  .div-t9spj7joih-2 {
+  .div-21azgz5avex-2 {
     width: var(--column-width) !important;
     margin-left: var(--column-margin-left) !important;
   }
