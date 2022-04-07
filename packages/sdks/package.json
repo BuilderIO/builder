@@ -12,13 +12,15 @@
     "start": "watch 'yarn run mitosis' ./src ./overrides",
     "test": "jest",
     "remove-mitosis-resolutions": "./scripts/remove-mitosis-resolutions.sh",
-    "prettier": "prettier --ignore-path .gitignore .",
+    "undo-mitosis-symlinks": "yarn run remove-mitosis-resolutions && yarn",
+    "prettier": "prettier .",
     "lint": "yarn run prettier --write",
     "ci:lint": "yarn run prettier --check",
     "ci:build": "mitosis build && yarn run lint",
     "ci:test": "yarn run test"
   },
   "dependencies": {
+    "@builder.io/mitosis": "dev",
     "@builder.io/mitosis-cli": "0.0.13-7",
     "node-fetch": "^2.6.1",
     "seedrandom": "^3.0.5"
@@ -26,6 +28,8 @@
   "devDependencies": {
     "@types/jest": "^27.4.1",
     "@types/node-fetch": "^2.5.12",
+    "@types/react": "^17.0.43",
+    "@types/react-dom": "^17.0.14",
     "commitizen": "^4.2.4",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^7.21.0",
@@ -45,8 +49,9 @@
     }
   },
   "resolutions": {
-    "@X/X: mitosis line below is removed in CI to allow for proper usage of Mitosis.": "0.0.1",
-    "@builder.io/mitosis-cli": "link:../../../mitosis/packages/cli"
+    "@X/X: mitosis lines below are removed in CI to allow for proper Mitosis npm imports": "0.0.1",
+    "@builder.io/mitosis-cli": "link:../../../mitosis/packages/cli",
+    "@builder.io/mitosis": "link:../../../mitosis/packages/core"
   },
   "packageManager": "yarn@3.2.0"
 }

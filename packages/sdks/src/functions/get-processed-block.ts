@@ -7,7 +7,7 @@ export function getProcessedBlock(options: {
   block: BuilderBlock;
   state: any;
   context: any;
-}) {
+}): BuilderBlock {
   const { state, context } = options;
   const block = transformBlock(options.block);
 

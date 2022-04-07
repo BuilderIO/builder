@@ -1,7 +1,11 @@
 import { isBrowser } from './is-browser';
+import { isEditing } from './is-editing';
 import { isReactNative } from './is-react-native';
 
 export function track(event: string, properties: Record<string, any>) {
+  if (isEditing()) {
+    return;
+  }
   if (!(isBrowser() || isReactNative())) {
     return;
   }

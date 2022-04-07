@@ -5,13 +5,12 @@ import {
   useState,
   onCreate,
   Show,
+  onUpdate,
 } from '@builder.io/mitosis';
 import { isBrowser } from '../functions/is-browser';
 import { BuilderContent } from '../types/builder-content';
 import BuilderContext from '../context/builder.context.lite';
 import { track } from '../functions/track';
-import { ifTarget } from '../functions/if-target';
-import { onChange } from '../functions/on-change';
 import { isReactNative } from '../functions/is-react-native';
 import { isEditing } from '../functions/is-editing';
 import { isPreviewing } from '../functions/is-previewing';
@@ -22,6 +21,11 @@ import {
   getBuilderSearchParams,
 } from '../functions/get-builder-search-params';
 import RenderBlocks from './render-blocks.lite';
+import { Dictionary, Nullable } from '../types/typescript';
+import { evaluate } from '../functions/evaluate';
+import { getFetch } from '../functions/get-fetch';
+import { onChange } from '../functions/on-change';
+import { ifTarget } from '../functions/if-target';
 
 export type RenderContentProps = {
   content?: BuilderContent;
@@ -31,15 +35,43 @@ export type RenderContentProps = {
   apiKey: string;
 };
 
+interface BuilderComponentStateChange {
+  state: { [key: string]: any };
+  ref: {
+    name?: string;
+    props?: {
+      builderBlock?: {
+        id?: string;
+      };
+    };
+  };
+}
+
 export default function RenderContent(props: RenderContentProps) {
   const state = useState({
-    get useContent(): any {
-      return state.overrideContent || props.content;
+    get useContent(): Nullable<BuilderContent> {
+      const mergedContent: BuilderContent = {
+        ...props.content,
+        ...state.overrideContent,
+        data: {
+          ...props.content?.data,
+          ...state.overrideContent?.data,
+        },
+      };
+      return mergedContent;
     },
+    overrideContent: null as Nullable<BuilderContent>,
     update: 0,
-    state: {},
-    context: {},
-    overrideContent: null as BuilderContent | null,
+    overrideState: {} as Dictionary<any>,
+    get state(): Dictionary<any> {
+      return {
+        ...props.content?.data?.state,
+        ...state.overrideState,
+      };
+    },
+    get context() {
+      return {} as { [index: string]: any };
+    },
     getCssFromFont(font: any, data?: any) {
       // TODO: compute what font sizes are used and only load those.......
       const family =
@@ -100,13 +132,14 @@ export default function RenderContent(props: RenderContentProps) {
       if (data) {
         switch (data.type) {
           case 'builder.contentUpdate': {
+            const messageContent = data.data;
             const key =
-              data.data.key ||
-              data.data.alias ||
-              data.data.entry ||
-              data.data.modelName;
+              messageContent.key ||
+              messageContent.alias ||
+              messageContent.entry ||
+              messageContent.modelName;
 
-            const contentData = data.data.data; // oof
+            const contentData = messageContent.data;
 
             if (key === props.model) {
               state.overrideContent = contentData;
@@ -120,14 +153,79 @@ export default function RenderContent(props: RenderContentProps) {
         }
       }
     },
+
+    evaluateJsCode() {
+      // run any dynamic JS code attached to content
+      const jsCode = state.useContent?.data?.jsCode;
+      if (jsCode) {
+        evaluate({
+          code: jsCode,
+          context: state.context,
+          state: state.state,
+        });
+      }
+    },
+    get httpReqsData(): { [index: string]: any } {
+      return {};
+    },
+
+    evalExpression(expression: string) {
+      return expression.replace(/{{([^}]+)}}/g, (_match, group) =>
+        evaluate({
+          code: group,
+          context: state.context,
+          state: state.state,
+        })
+      );
+    },
+    handleRequest({ url, key }: { key: string; url: string }) {
+      const fetchAndSetState = async () => {
+        const response = await getFetch()(url);
+        const json = await response.json();
+
+        const newOverrideState = {
+          ...state.overrideState,
+          [key]: json,
+        };
+        state.overrideState = newOverrideState;
+      };
+      fetchAndSetState();
+    },
+    runHttpRequests() {
+      const requests = state.useContent?.data?.httpRequests ?? {};
+
+      Object.entries(requests).forEach(([key, url]) => {
+        if (url && (!state.httpReqsData[key] || isEditing())) {
+          const evaluatedUrl = state.evalExpression(url);
+          state.handleRequest({ url: evaluatedUrl, key });
+        }
+      });
+    },
+    emitStateUpdate() {
+      window.dispatchEvent(
+        new CustomEvent<BuilderComponentStateChange>(
+          'builder:component:stateChange',
+          {
+            detail: {
+              state: state.state,
+              ref: {
+                name: props.model,
+              },
+            },
+          }
+        )
+      );
+    },
   });
 
+  // This currently doesn't do anything as `onCreate` is not implemented
   onCreate(() => {
     state.state = ifTarget(
       // The reactive targets
       ['vue', 'solid'],
       () => ({}),
       () =>
+        // This is currently a no-op, since it's listening to changes on `{}`.
         onChange({}, () => {
           state.update = state.update + 1;
         })
@@ -155,12 +253,18 @@ export default function RenderContent(props: RenderContentProps) {
     if (isBrowser()) {
       if (isEditing()) {
         window.addEventListener('message', state.processMessage);
+        window.addEventListener(
+          'builder:component:stateChangeListenerActivated',
+          state.emitStateUpdate
+        );
       }
-      if (state.useContent && !isEditing()) {
+      if (state.useContent) {
         track('impression', {
-          contentId: state.useContent!.id,
+          contentId: state.useContent.id,
         });
       }
+
+      // override normal content in preview mode
       if (isPreviewing()) {
         if (props.model && previewingModelName() === props.model) {
           const currentUrl = new URL(location.href);
@@ -181,12 +285,32 @@ export default function RenderContent(props: RenderContentProps) {
           }
         }
       }
+
+      state.evaluateJsCode();
+      state.runHttpRequests();
+      state.emitStateUpdate();
     }
   });
+
+  onUpdate(() => {
+    state.evaluateJsCode();
+  }, [state.useContent?.data?.jsCode]);
+
+  onUpdate(() => {
+    state.runHttpRequests();
+  }, [state.useContent?.data?.httpRequests]);
+
+  onUpdate(() => {
+    state.emitStateUpdate();
+  }, [state.state]);
 
   onUnMount(() => {
     if (isBrowser()) {
       window.removeEventListener('message', state.processMessage);
+      window.removeEventListener(
+        'builder:component:stateChangeListenerActivated',
+        state.emitStateUpdate
+      );
     }
   });
 
@@ -194,13 +318,11 @@ export default function RenderContent(props: RenderContentProps) {
   return (
     <Show when={state.useContent}>
       <div
-        onClick={(e) => {
-          if (!isEditing()) {
-            track('click', {
-              contentId: state.useContent!.id,
-            });
-          }
-        }}
+        onClick={(_e) =>
+          track('click', {
+            contentId: state.useContent!.id,
+          })
+        }
         data-builder-content-id={state.useContent?.id}
       >
         {(state.useContent?.data?.cssCode ||

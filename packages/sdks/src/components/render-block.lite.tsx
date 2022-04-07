@@ -39,9 +39,9 @@ export default function RenderBlock(props: RenderBlockProps) {
       return state.component?.component;
     },
     get tagName() {
-      return getBlockTag(state.useBlock) as any;
+      return getBlockTag(state.useBlock);
     },
-    get useBlock() {
+    get useBlock(): BuilderBlock {
       return getProcessedBlock({
         block: props.block,
         state: builderContext.state,
