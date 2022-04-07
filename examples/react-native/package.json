@@ -9,10 +9,10 @@
     "link": "yarn link @builder.io/sdk-react-native",
     "rm-sdk-src": "rm -rf node_modules/@builder.io/sdk-react-native/src",
     "cp-sdk": "yarn run rm-sdk-src && cp -R ../../packages/sdks/output/react-native/src node_modules/@builder.io/sdk-react-native/src",
-    "remove-resolutions": "./scripts/remove-sdks-resolutions.sh",
+    "remove-resolutions": "./scripts/remove-resolutions.sh",
     "remove-symlinks": "yarn run remove-resolutions && yarn",
-    "add-resolutions": "./scripts/set-sdks-resolutions.sh",
-    "add-symlinks": "yarn run set-resolutions && yarn"
+    "add-resolutions": "./scripts/add-resolutions.sh",
+    "add-symlinks": "yarn run add-resolutions && yarn"
   },
   "dependencies": {
     "@builder.io/sdk-react-native": "^0.0.1-44",
