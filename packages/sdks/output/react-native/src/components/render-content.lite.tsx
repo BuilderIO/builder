@@ -17,10 +17,16 @@ import RenderBlocks from './render-blocks.lite';
 import { evaluate } from '../functions/evaluate';
 import { getFetch } from '../functions/get-fetch';
 import { onChange } from '../functions/on-change';
+import { ifTarget } from '../functions/if-target';
 
 export default function RenderContent(props) {
   function useContent() {
-    return overrideContent || props.content;
+    const overrideContent = {
+      ...props.content,
+      ...overrideContent,
+      data: { ...props.content?.data, ...overrideContent?.data },
+    };
+    return overrideContent;
   }
 
   const [update, setUpdate] = useState(() => 0);
@@ -106,7 +112,6 @@ export default function RenderContent(props) {
             messageContent.entry ||
             messageContent.modelName;
           const contentData = messageContent.data;
-          console.log('content update', key, contentData);
 
           if (key === props.model) {
             setOverrideContent(contentData);
@@ -151,13 +156,7 @@ export default function RenderContent(props) {
   }
 
   function handleRequest({ url, key }) {
-    console.log('handleReq');
-
     const fetchAndSetState = async () => {
-      console.log('fetch: ', {
-        url,
-        key,
-      });
       const response = await getFetch()(url);
       const json = await response.json();
       state()[key] = json;
@@ -168,18 +167,13 @@ export default function RenderContent(props) {
 
   function runHttpRequests() {
     const requests = useContent?.()?.data?.httpRequests ?? {};
-    console.log('about to run HTTP requests', requests.toString());
     Object.entries(requests).forEach(([key, url]) => {
       if (url && (!httpReqsData()[key] || isEditing())) {
         const evaluatedUrl = evalExpression(url);
-
-        if (isBrowser()) {
-          handleRequest({
-            url: evaluatedUrl,
-            key,
-          });
-        } else {
-        }
+        handleRequest({
+          url: evaluatedUrl,
+          key,
+        });
       }
     });
   }

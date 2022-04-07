@@ -53,6 +53,7 @@ import RenderBlocks from './render-blocks';
 import { evaluate } from '../functions/evaluate';
 import { getFetch } from '../functions/get-fetch';
 import { onChange } from '../functions/on-change';
+import { ifTarget } from '../functions/if-target';
 
 export default {
   name: 'render-content',
@@ -147,7 +148,12 @@ export default {
 
   computed: {
     useContent() {
-      return this.overrideContent || this.content;
+      const overrideContent = {
+        ...this.content,
+        ...this.overrideContent,
+        data: { ...this.content?.data, ...this.overrideContent?.data },
+      };
+      return overrideContent;
     },
     state() {
       return this.content?.data?.state || {};
@@ -159,13 +165,19 @@ export default {
       return {};
     },
     onUpdateHook0() {
-      return `${this.useContent?.data?.jsCode}`;
+      return {
+        0: this.useContent?.data?.jsCode,
+      };
     },
     onUpdateHook1() {
-      return `${this.useContent?.data?.httpRequests}`;
+      return {
+        0: this.useContent?.data?.httpRequests,
+      };
     },
     onUpdateHook2() {
-      return `${this.state}`;
+      return {
+        0: this.state,
+      };
     },
   },
 
@@ -240,7 +252,6 @@ export default {
               messageContent.entry ||
               messageContent.modelName;
             const contentData = messageContent.data;
-            console.log('content update', key, contentData);
 
             if (key === this.model) {
               this.overrideContent = contentData;
@@ -278,13 +289,7 @@ export default {
       );
     },
     handleRequest({ url, key }) {
-      console.log('handleReq');
-
       const fetchAndSetState = async () => {
-        console.log('fetch: ', {
-          url,
-          key,
-        });
         const response = await getFetch()(url);
         const json = await response.json();
         this.state[key] = json;
@@ -294,18 +299,13 @@ export default {
     },
     runHttpRequests() {
       const requests = this.useContent?.data?.httpRequests ?? {};
-      console.log('about to run HTTP requests', requests.toString());
       Object.entries(requests).forEach(([key, url]) => {
         if (url && (!this.httpReqsData[key] || isEditing())) {
           const evaluatedUrl = this.evalExpression(url);
-
-          if (isBrowser()) {
-            this.handleRequest({
-              url: evaluatedUrl,
-              key,
-            });
-          } else {
-          }
+          this.handleRequest({
+            url: evaluatedUrl,
+            key,
+          });
         }
       });
     },
