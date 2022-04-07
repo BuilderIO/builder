@@ -55,7 +55,6 @@ export default function Path({
     return <h1>Loading...</h1>
   }
 
-  // @ts-ignore
   const { title, description, image } = page?.data! || {}
 
   return (
