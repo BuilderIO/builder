@@ -10,7 +10,7 @@ yarn
 yarn run start
 ```
 
-You might need `jq` for symlinking mitosis or the SDKs themselves to examples. You can install that with `brew install jq`.
+You might need [jq](https://stedolan.github.io/jq/) for symlinking mitosis or the SDKs themselves to examples. You can install that with `brew install jq`.
 
 ## Test changes
 
@@ -71,4 +71,6 @@ All the above assumes you are using the latest version of Mitosis in production.
 
 You should now be using your local version of Mitosis.
 
-**IMPORTANT:** remember to run `yarn run remove-symlinks` before you commit to your branch.
+## REMOVING SYM-LINKS
+
+**IMPORTANT:** remember to run `yarn run remove-symlinks` before you commit to your branch. This applies to `project/sdks`, but also any example that you symlink the SDKs to (i.e. vue-storefront or react-native examples)

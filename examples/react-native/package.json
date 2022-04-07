@@ -7,11 +7,12 @@
     "web": "expo start --web",
     "eject": "expo eject",
     "link": "yarn link @builder.io/sdk-react-native",
-    "unlink": "yarn unlink @builder.io/sdk-react-native",
-    "unlink-fr": "npm run unlink && yarn install --force",
     "rm-sdk-src": "rm -rf node_modules/@builder.io/sdk-react-native/src",
     "cp-sdk": "yarn run rm-sdk-src && cp -R ../../packages/sdks/output/react-native/src node_modules/@builder.io/sdk-react-native/src",
-    "unlink-and-cp-sdk": "yarn run unlink && yarn run cp-sdk"
+    "remove-resolutions": "./scripts/remove-sdks-resolutions.sh",
+    "remove-symlinks": "yarn run remove-resolutions && yarn",
+    "add-resolutions": "./scripts/set-sdks-resolutions.sh",
+    "add-symlinks": "yarn run set-resolutions && yarn"
   },
   "dependencies": {
     "@builder.io/sdk-react-native": "^0.0.1-44",
@@ -22,6 +23,7 @@
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-native": "0.64.3",
+    "react-native-render-html": "^6.3.4",
     "react-native-safe-area-context": "3.3.2",
     "react-native-screens": "~3.10.1",
     "react-native-url-polyfill": "^1.3.0",
