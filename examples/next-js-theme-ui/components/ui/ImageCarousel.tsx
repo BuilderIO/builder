@@ -20,7 +20,7 @@ const ImageCarousel: React.FC<props> = ({
   ...imageProps
 }) => {
   return (
-    <AspectRatio ratio={Number(imageProps.height ) / Number(imageProps.width)}>
+    <AspectRatio ratio={Number(imageProps.height) / Number(imageProps.width)}>
       <UntilInteraction
         skeleton={<Image src={images[0].src} {...imageProps} />}
       >

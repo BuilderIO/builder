@@ -14,7 +14,6 @@ import { Link } from '@components/ui'
 import { Themed } from '@theme-ui/mdx'
 import { getLayoutProps } from '@lib/get-layout-props'
 
-
 builder.init(builderConfig.apiKey)
 
 export async function getStaticProps({

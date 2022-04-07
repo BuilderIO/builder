@@ -8,7 +8,6 @@ interface Props {
 }
 
 const UserNav: FC<Props> = ({ className, children, ...props }) => {
-
   return (
     <Button aria-label="Cart">
       <Bag />

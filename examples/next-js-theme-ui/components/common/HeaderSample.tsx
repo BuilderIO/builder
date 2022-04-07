@@ -11,9 +11,7 @@ interface HeaderSampleProps {
   delay?: number
 }
 
-const HeaderSample: React.FC<HeaderSampleProps> = ({
-  title,
-}) => {
+const HeaderSample: React.FC<HeaderSampleProps> = ({ title }) => {
   return (
     <Themed.div sx={{ display: 'flex', justifyContent: 'center', p: [1, 2] }}>
       <Themed.h1 sx={{ color: 'primary' }}>{title}</Themed.h1>

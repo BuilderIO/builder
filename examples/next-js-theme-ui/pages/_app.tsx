@@ -13,7 +13,6 @@ Builder.register('insertMenu', {
 })
 
 export default function MyApp({ Component, pageProps }: AppProps) {
-
   return (
     <>
       <Layout pageProps={pageProps}>

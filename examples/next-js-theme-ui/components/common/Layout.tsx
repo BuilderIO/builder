@@ -23,30 +23,30 @@ const Layout: React.FC<{ pageProps: any }> = ({ children, pageProps }) => {
   const isLive = !Builder.isEditing && !Builder.isPreviewing
   return (
     <BuilderContent
-        isStatic
-        {...(isLive && { content: builderTheme })}
-        modelName="theme"
-      >
-        {(data, loading) => {
-          if (loading && !builderTheme) {
-            return 'loading ...'
-          }
+      isStatic
+      {...(isLive && { content: builderTheme })}
+      modelName="theme"
+    >
+      {(data, loading) => {
+        if (loading && !builderTheme) {
+          return 'loading ...'
+        }
 
-          const colorOverrides = data?.colorOverrides
-          const siteSeoInfo = data?.siteInformation
-          return (
-            <>
-              <Head seoInfo={siteSeoInfo || seoConfig} />
-              <InnerLayout
-                themeName={data?.theme || 'base'}
-                colorOverrides={colorOverrides}
-              >
-                {children}
-              </InnerLayout>
-            </>
-          )
-        }}
-      </BuilderContent>
+        const colorOverrides = data?.colorOverrides
+        const siteSeoInfo = data?.siteInformation
+        return (
+          <>
+            <Head seoInfo={siteSeoInfo || seoConfig} />
+            <InnerLayout
+              themeName={data?.theme || 'base'}
+              colorOverrides={colorOverrides}
+            >
+              {children}
+            </InnerLayout>
+          </>
+        )
+      }}
+    </BuilderContent>
   )
 }
 

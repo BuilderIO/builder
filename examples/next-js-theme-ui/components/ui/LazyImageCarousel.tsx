@@ -80,25 +80,24 @@ const ImageCarousel: FC<ImageCarouselProps> = ({
     hasMasterSpinner={false}
     totalSlides={images.length}
   >
-      <Slider>
-        {images.map((image, index) => (
-          <Slide index={index} key={index}>
-            {showZoom ? (
-              <ImageWithZoom src={image.src} />
-            ) : (
-              <Image src={image.src} {...imageProps} />
-            )}
-          </Slide>
-        ))}
-      </Slider>
-      {showZoom && (
-        <CustomDotGroup
-          {...imageProps}
-          onThumbnailClick={onThumbnailClick}
-          images={images}
-        />
-      )}
-
+    <Slider>
+      {images.map((image, index) => (
+        <Slide index={index} key={index}>
+          {showZoom ? (
+            <ImageWithZoom src={image.src} />
+          ) : (
+            <Image src={image.src} {...imageProps} />
+          )}
+        </Slide>
+      ))}
+    </Slider>
+    {showZoom && (
+      <CustomDotGroup
+        {...imageProps}
+        onThumbnailClick={onThumbnailClick}
+        images={images}
+      />
+    )}
   </CarouselProvider>
 )
 
