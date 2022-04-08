@@ -6,7 +6,8 @@ export const trackEventId = 'track-gtag';
 
 // TODO: doc for how to do this and how to hook into your own analytics providers too
 appContext.registerAction({
-  name: 'Track Event with Google Analytics',
+  name: 'Track Event (gtag)',
+  helperText: 'Send events to Google Analytics',
   id: trackEventId,
   kind: 'function',
   icon: <TrackChanges />,
