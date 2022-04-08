@@ -15,7 +15,7 @@ Legend:
 
 | Builder Blocks | Vue | Vue details | React-Native | React-Native details |
 | -------------- | --- | ----------- | ------------ | -------------------- |
-| Columns        | 🏗   |             | ✅           |                      |
+| Columns        | ✅  |             | ✅           |                      |
 | Text           | ✅  |             | ✅           |                      |
 | Image          | ✅  |             | ✅           |                      |
 | Buttons        | ✅  |             | 🏗            |                      |
@@ -26,14 +26,13 @@ Legend:
 | Fragment       | ✅  |             | ✅           |                      |
 | Input          | ✅  |             | ✅           |                      |
 
-| Features                                  | Details                                                                      | Vue | Vue details | React-Native | React-Native details             |
-| ----------------------------------------- | ---------------------------------------------------------------------------- | --- | ----------- | ------------ | -------------------------------- |
-| A/B Tests                                 | No SSG support yet, which the React SDK has.                                 | 🏗   |             | 🏗            |                                  |
-| SSR                                       |                                                                              | ✅  |             | N/A          |                                  |
-| Children for Custom Components            |                                                                              | 🏗   |             | 🏗            |                                  |
-| Dynamic Data Bindings                     |                                                                              | ⚠️  |             | ⚠️           |                                  |
-| Animations                                | Custom animation components supported, but not Builder.io's "animations" tab | ⚠️  |             | ⚠️           |                                  |
-| View Current Draft                        |                                                                              | ⚠️  |             | ⚠️           |                                  |
-| Symbols                                   |                                                                              | ⚠️  |             | ⚠️           |                                  |
-| `+ add block` button when starting a page | (for now just drag your first block to the "layers" tab)                     | ⚠️  |             | ⚠️           |                                  |
-| Custom styles                             |                                                                              | ✅  |             | ✅           | Those that React Native supports |
+| Features                       | Details                                                                      | Vue | Vue details | React-Native | React-Native details             |
+| ------------------------------ | ---------------------------------------------------------------------------- | --- | ----------- | ------------ | -------------------------------- |
+| A/B Tests                      | No SSG support yet, which the React SDK has.                                 | 🏗   |             | 🏗            |                                  |
+| SSR                            |                                                                              | ✅  |             | N/A          |                                  |
+| Children for Custom Components |                                                                              | 🏗   |             | 🏗            |                                  |
+| Dynamic Data Bindings          |                                                                              | ✅  |             | ✅           |                                  |
+| Animations                     | Custom animation components supported, but not Builder.io's "animations" tab | ⚠️  |             | ⚠️           |                                  |
+| View Current Draft             |                                                                              | ✅  |             | ✅           |                                  |
+| Symbols                        |                                                                              | ✅  |             | ✅           |                                  |
+| Custom styles                  |                                                                              | ✅  |             | ✅           | Those that React Native supports |
