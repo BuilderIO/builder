@@ -55,6 +55,7 @@ export default function RenderContent(props: RenderContentProps) {
         ...state.overrideContent,
         data: {
           ...props.content?.data,
+          ...props.data,
           ...state.overrideContent?.data,
         },
       };
@@ -66,6 +67,7 @@ export default function RenderContent(props: RenderContentProps) {
     get state(): Dictionary<any> {
       return {
         ...props.content?.data?.state,
+        ...props.data,
         ...state.overrideState,
       };
     },
