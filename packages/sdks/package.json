@@ -11,8 +11,10 @@
     "build": "yarn run mitosis",
     "start": "watch 'yarn run mitosis' ./src ./overrides",
     "test": "jest",
-    "remove-mitosis-resolutions": "./scripts/remove-mitosis-resolutions.sh",
-    "undo-mitosis-symlinks": "yarn run remove-mitosis-resolutions && yarn",
+    "remove-resolutions": "./scripts/remove-resolutions.sh",
+    "remove-symlinks": "yarn run remove-resolutions && yarn",
+    "add-resolutions": "./scripts/add-resolutions.sh",
+    "add-symlinks": "yarn run add-resolutions && yarn",
     "prettier": "prettier .",
     "lint": "yarn run prettier --write",
     "ci:lint": "yarn run prettier --check",
@@ -47,11 +49,6 @@
     "commitizen": {
       "path": "git-cz"
     }
-  },
-  "resolutions": {
-    "@X/X: mitosis lines below are removed in CI to allow for proper Mitosis npm imports": "0.0.1",
-    "@builder.io/mitosis-cli": "link:../../../mitosis/packages/cli",
-    "@builder.io/mitosis": "link:../../../mitosis/packages/core"
   },
   "packageManager": "yarn@3.2.0"
 }

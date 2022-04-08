@@ -10,6 +10,10 @@
     "dev": "nuxt",
     "build": "nuxt build -m",
     "build:analyze": "nuxt build -a -m",
+    "remove-resolutions": "./scripts/remove-resolutions.sh",
+    "remove-symlinks": "yarn run remove-resolutions && yarn",
+    "add-resolutions": "./scripts/add-resolutions.sh",
+    "add-symlinks": "yarn run add-resolutions && yarn",
     "start": "nuxt start",
     "test": "jest",
     "test:e2e": "cypress open --config-file tests/e2e/cypress.json",
@@ -45,5 +49,6 @@
     "mochawesome-merge": "^4.2.0",
     "mochawesome-report-generator": "^5.2.0",
     "vue-jest": "^4.0.0-0"
-  }
+  },
+  "packageManager": "yarn@3.2.0"
 }
