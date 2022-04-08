@@ -1,3 +1,10 @@
+### 0.0.1-50
+
+- feat: 🎸 export `isPreviewing()` (https://github.com/BuilderIO/builder/pull/951)
+- feat: 🎸 Add support for Symbols (https://github.com/BuilderIO/builder/pull/951)
+- feat: 🎸 Add support for Data Bindings https://github.com/BuilderIO/builder/pull/970
+
+- BREAKING CHANGE: 🧨 RenderContent must now be provided the `apiKey` as a prop (https://github.com/BuilderIO/builder/pull/951)
 ### 0.0.1-49
 
 - Fix: show the "+ add block" button on empty pages https://github.com/BuilderIO/builder/pull/934
