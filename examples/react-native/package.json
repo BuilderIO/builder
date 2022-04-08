@@ -15,7 +15,7 @@
     "add-symlinks": "yarn run add-resolutions && yarn"
   },
   "dependencies": {
-    "@builder.io/sdk-react-native": "^0.0.1-44",
+    "@builder.io/sdk-react-native": "^0.0.1-50",
     "@react-navigation/native": "^6.0.8",
     "@react-navigation/native-stack": "^6.5.0",
     "expo": "~44.0.0",

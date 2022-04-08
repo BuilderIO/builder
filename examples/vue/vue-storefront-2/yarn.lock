@@ -1388,14 +1388,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@builder.io/sdk-vue@npm:^0.0.1-49":
-  version: 0.0.1-49
-  resolution: "@builder.io/sdk-vue@npm:0.0.1-49"
+"@builder.io/sdk-vue@npm:^0.0.1-50":
+  version: 0.0.1-50
+  resolution: "@builder.io/sdk-vue@npm:0.0.1-50"
   dependencies:
     node-fetch: ^2.6.1
   peerDependencies:
     vue: ">= 2"
-  checksum: f08113fc2d3e7eaa54d25f2e3ebcac21ce7c318ed7d790b3e53f6893d7566d89432995293969245132d3b27ef1b5b877e4a5bc2352682539c41600f304282e27
+  checksum: 49b458f15205183bbae47c079ce4bcdbc99e9a9f0557bacf7de9096436fd6efa4aeaaf03853e75a2b270f4c43cb4c2d994f1defb0830c98508ef744ed59b9339
   languageName: node
   linkType: hard
 
@@ -2950,7 +2950,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-storefront/commercetools-theme@workspace:."
   dependencies:
-    "@builder.io/sdk-vue": ^0.0.1-49
+    "@builder.io/sdk-vue": ^0.0.1-50
     "@nuxt/types": ^2.15.8
     "@nuxtjs/google-fonts": 1.3.0
     "@nuxtjs/pwa": ^3.2.2
