@@ -6,8 +6,9 @@ import {
   registerComponent,
   isEditing,
   getContent,
+  getBuilderSearchParams,
 } from '@builder.io/sdk-react-native';
-import { LinkingOptions, NavigationContainer } from '@react-navigation/native';
+import { LinkingOptions, NavigationContainer, RouteProp } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 // TO-DO: add your own public Builder API key here
@@ -40,15 +41,16 @@ registerComponent(CustomComponent, {
   inputs: [{ name: 'text', type: 'string' }],
 });
 
-const BuilderContent = ({ path }: { path: string }) => {
+const BuilderContent = ({ route }: { route: RouteProp<any, 'Page'> }) => {
   const [content, setContent] = useState<any>(undefined);
 
   useEffect(() => {
     getContent({
       model: 'page',
       apiKey: BUILDER_API_KEY,
+      options: getBuilderSearchParams(route.params || {}),
       userAttributes: {
-        urlPath: path,
+        urlPath: route.path,
       },
     })
       .then((content: any) => {
@@ -83,7 +85,7 @@ const App = () => (
       screenOptions={{ contentStyle: { backgroundColor: 'white' } }}
     >
       <Stack.Screen name="Page" options={{ headerShown: false }}>
-        {({ route }) => <BuilderContent path={route.path || '/'} />}
+        {({ route }) => <BuilderContent route={route} />}
       </Stack.Screen>
     </Stack.Navigator>
   </NavigationContainer>
