@@ -226,3 +226,7 @@ export interface ApplicationContext {
   };
   registerAction: (action: Action) => void;
 }
+
+declare const context: ApplicationContext;
+
+export default context;
