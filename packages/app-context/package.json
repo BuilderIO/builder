@@ -1,9 +1,13 @@
 {
   "name": "@builder.io/app-context",
-  "version": "1.0.0",
+  "version": "1.0.1-1",
   "description": "Builder.io plugin application context",
   "main": "index.js",
+  "scripts": {
+    "release:dev": "npm version prerelease --no-git-tag-version && ALLOW_PUBLISH=true npm publish --tag dev"
+  },
   "devDependencies": {
-    "@builder.io/sdk": "^1.1.26"
+    "@builder.io/sdk": "^1.1.26",
+    "react": "^18.0.0"
   }
 }
