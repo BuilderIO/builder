@@ -77,7 +77,6 @@ registerComponent(SfTabs, {
   ],
 });
 
-// import SfTab from '@storefront-ui/vue/src/components/organisms/SfTabs/_internal/SfTab.vue';
 import SfTab from '../components/Builder/CustomSfTab.vue';
 registerComponent(SfTab, {
   name: 'SfTab',
