@@ -8,7 +8,7 @@ const getSeededId = () => {
 
 module.exports = {
   files: 'src/**',
-  targets: ['reactNative', 'vue'],
+  targets: ['reactNative', 'vue', 'svelte'],
   options: {
     vue: {
       registerComponentPrepend:
