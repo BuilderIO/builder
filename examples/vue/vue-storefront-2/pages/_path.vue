@@ -3,8 +3,8 @@
     <div>Hello world from your Vue project. Below is Builder Content:</div>
 
     <div v-if="canShowContent">
-      <div>page: {{ content.data.title }}</div>
-      <builder-render-content model="page" :content="content" />
+      <div>page: {{ (content && content.data && content.data.title) || 'Unpublished' }}</div>
+      <builder-render-content model="page" :content="content" :api-key="apiKey" />
     </div>
   </div>
 </template>
@@ -13,7 +13,7 @@ import Vue from 'vue';
 import cacheControl from '../helpers/cacheControl';
 
 import './init-builder';
-import { getContent, isEditing } from '@builder.io/sdk-vue';
+import { getContent, isEditing, isPreviewing, getBuilderSearchParams } from '@builder.io/sdk-vue';
 
 // TODO: enter your public API key
 const BUILDER_PUBLIC_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660'; // ggignore
@@ -27,22 +27,29 @@ export default Vue.extend({
   data: () => ({
     canShowContent: false,
     content: null,
+    apiKey: BUILDER_PUBLIC_API_KEY,
   }),
+  mounted() {
+    // we need to re-run this check on the client in case of SSR
+    this.canShowContent = this.content || isEditing() || isPreviewing();
+  },
   async fetch() {
     const content = await getContent({
       model: 'page',
       apiKey: BUILDER_PUBLIC_API_KEY,
+      options: getBuilderSearchParams(this.$route.query),
       userAttributes: {
         urlPath: this.$route.path,
       },
     });
-    if (!content) {
+    this.canShowContent = content || isEditing();
+    this.content = content;
+
+    if (!this.canShowContent) {
       if (this.$nuxt.context?.ssrContext?.res) {
         this.$nuxt.context.ssrContext.res.statusCode = 404;
       }
     }
-    this.content = content;
-    this.canShowContent = content || isEditing();
   },
 });
 </script>

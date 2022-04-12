@@ -1,10 +1,10 @@
-import * as React from 'react';
-import { View, StyleSheet, Image, Text } from 'react-native';
-import RenderBlocks from '../components/render-blocks.lite';
+import * as React from "react";
+import { View, StyleSheet, Image, Text } from "react-native";
+import RenderBlocks from "../components/render-blocks.lite";
 
 export default function Columns(props) {
   function getGutterSize() {
-    return typeof props.space === 'number' ? props.space || 0 : 20;
+    return typeof props.space === "number" ? props.space || 0 : 20;
   }
 
   function getColumns() {
@@ -24,31 +24,31 @@ export default function Columns(props) {
   }
 
   function maybeApplyForTablet(prop) {
-    const stackColumnsAt = props.stackColumnsAt || 'tablet';
-    return stackColumnsAt === 'tablet' ? prop : 'inherit';
+    const stackColumnsAt = props.stackColumnsAt || "tablet";
+    return stackColumnsAt === "tablet" ? prop : "inherit";
   }
 
   function columnsCssVars() {
     const flexDir =
-      props.stackColumnsAt === 'never'
-        ? 'inherit'
+      props.stackColumnsAt === "never"
+        ? "inherit"
         : props.reverseColumnsWhenStacked
-        ? 'column-reverse'
-        : 'column';
+        ? "column-reverse"
+        : "column";
     return {
-      '--flex-dir': flexDir,
-      '--flex-dir-tablet': maybeApplyForTablet(flexDir),
+      "--flex-dir": flexDir,
+      "--flex-dir-tablet": maybeApplyForTablet(flexDir),
     };
   }
 
   function columnCssVars() {
-    const width = '100%';
-    const marginLeft = '0';
+    const width = "100%";
+    const marginLeft = "0";
     return {
-      '--column-width': width,
-      '--column-margin-left': marginLeft,
-      '--column-width-tablet': maybeApplyForTablet(width),
-      '--column-margin-left-tablet': maybeApplyForTablet(marginLeft),
+      "--column-width": width,
+      "--column-margin-left": marginLeft,
+      "--column-width-tablet": maybeApplyForTablet(width),
+      "--column-margin-left-tablet": maybeApplyForTablet(marginLeft),
     };
   }
 
@@ -64,6 +64,6 @@ export default function Columns(props) {
 }
 
 const styles = StyleSheet.create({
-  view1: { display: 'flex', alignItems: 'stretch' },
+  view1: { display: "flex", alignItems: "stretch" },
   view2: { flexGrow: 1 },
 });

@@ -1,5 +1,5 @@
 import { BuilderContent, Input, BuilderElement, Component } from '@builder.io/sdk';
-
+import React from 'react';
 type Content = BuilderContent | ContentModel;
 
 /**
@@ -47,6 +47,59 @@ export type Model = {
   id: string;
   name: string;
   fields: ExtendedArray<Input>;
+};
+
+export type RoleOption = 'read' | 'publish' | 'editCode' | 'editDesigns' | 'admin' | 'create';
+
+export type Action = {
+  /**
+   * Friendly name for an action, e.g. "Set State"
+   */
+  name: string;
+
+  /**
+   * Globally unique ID for an action, e.g. "@builder.io:setState"
+   */
+  id: string;
+
+  /**
+   * Function to turn the provided options into a string of code
+   *
+   * e.g.
+   *    toJs: options => `state.${camelCase(options.name)} = ${JSON.stringify(options.value)};`,
+   */
+  toJs: (options: Record<string, any>) => string;
+
+  /**
+   * Friendly helper text describing the action in the UIs
+   */
+  helperText?: string | React.ReactNode;
+
+  /**
+   * Link to learn more about how to use this action
+   */
+  learnMoreLink?: string;
+
+  /**
+   * Inputs this action takes. Aka function arguments
+   */
+  inputs: () => Input[];
+
+  /**
+   * Is an action for expression (e.g. calculating a binding like a formula
+   * to fill a value based on locale) or a function (e.g. something to trigger
+   * on an event like add to cart) or either (e.g. a custom code block)
+   */
+  kind: 'expression' | 'function' | 'any';
+
+  /**
+   * Require certain permissions to create or edit this action
+   * type, e.g. require 'editCode' permissions to create or edit
+   * 'custom code' actions
+   */
+  requiredPermissions?: RoleOption;
+
+  icon?: React.ReactNode;
 };
 
 export interface HttpCacheValue<ValueType = any> {
@@ -171,4 +224,9 @@ export interface ApplicationContext {
      */
     pathname: string;
   };
+  registerAction: (action: Action) => void;
 }
+
+declare const context: ApplicationContext;
+
+export default context;
