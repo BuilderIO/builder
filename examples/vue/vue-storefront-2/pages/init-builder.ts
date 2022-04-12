@@ -50,48 +50,6 @@ registerComponent(SfCard, {
   ],
 });
 
-// Organisms (other UI molecules/atoms as custom children)
-import { SfTabs } from '@storefront-ui/vue';
-
-// TO-DO: can you restrict the type of children it receives, to just the `SfTab` component?
-registerComponent(SfTabs, {
-  name: 'SfTabs',
-  canHaveChildren: true,
-  inputs: [
-    {
-      name: 'openTab',
-      type: 'number',
-    },
-    {
-      name: 'tabMaxContentHeight',
-      type: 'string',
-    },
-    {
-      name: 'tabShowText',
-      type: 'string',
-    },
-    {
-      name: 'tabHideText',
-      type: 'string',
-    },
-  ],
-});
-
-import SfTab from '../components/Builder/CustomSfTab.vue';
-registerComponent(SfTab, {
-  name: 'SfTab',
-  canHaveChildren: true,
-  // needed to get correct DOM hierarchy with `SfTabs`
-  noWrap: true,
-  inputs: [
-    {
-      name: 'title',
-      type: 'string',
-      default: '',
-    },
-  ],
-});
-
 // Register your Builder components
 import HelloWorldComponent from '../components/Builder/HelloWorld.vue';
 
