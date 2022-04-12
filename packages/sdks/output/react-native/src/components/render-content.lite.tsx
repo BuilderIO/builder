@@ -24,7 +24,7 @@ export default function RenderContent(props) {
     const mergedContent = {
       ...props.content,
       ...overrideContent,
-      data: { ...props.content?.data, ...overrideContent?.data },
+      data: { ...props.content?.data, ...props.data, ...overrideContent?.data },
     };
     return mergedContent;
   }
@@ -36,7 +36,7 @@ export default function RenderContent(props) {
   const [overrideState, setOverrideState] = useState(() => ({}));
 
   function state() {
-    return { ...props.content?.data?.state, ...overrideState };
+    return { ...props.content?.data?.state, ...props.data, ...overrideState };
   }
 
   function context() {

@@ -41,7 +41,7 @@ import { ifTarget } from "../functions/if-target";
 export default {
   name: "render-content",
   components: { "render-blocks": async () => RenderBlocks },
-  props: ["content", "model", "apiKey"],
+  props: ["content", "data", "model", "apiKey"],
 
   data: () => ({
     overrideContent: null,
@@ -140,12 +140,20 @@ export default {
       const mergedContent = {
         ...this.content,
         ...this.overrideContent,
-        data: { ...this.content?.data, ...this.overrideContent?.data },
+        data: {
+          ...this.content?.data,
+          ...this.data,
+          ...this.overrideContent?.data,
+        },
       };
       return mergedContent;
     },
     state() {
-      return { ...this.content?.data?.state, ...this.overrideState };
+      return {
+        ...this.content?.data?.state,
+        ...this.data,
+        ...this.overrideState,
+      };
     },
     context() {
       return {};

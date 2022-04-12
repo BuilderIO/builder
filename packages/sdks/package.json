@@ -28,13 +28,17 @@
     "seedrandom": "^3.0.5"
   },
   "devDependencies": {
+    "@builder.io/eslint-plugin-mitosis": "dev",
     "@types/jest": "^27.4.1",
     "@types/node-fetch": "^2.5.12",
     "@types/react": "^17.0.43",
     "@types/react-dom": "^17.0.14",
+    "@typescript-eslint/eslint-plugin": "latest",
+    "@typescript-eslint/parser": "latest",
     "commitizen": "^4.2.4",
     "cz-conventional-changelog": "^3.3.0",
-    "eslint": "^7.21.0",
+    "eslint": "^8.12.0",
+    "eslint-plugin-react": "latest",
     "git-cz": "^4.8.0",
     "husky": "^7.0.4",
     "jest": "^27.5.1",
