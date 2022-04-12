@@ -220,6 +220,9 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
     builderPageRef: any;
     builderRootRef: any;
 
+    stateOverride = {};
+    contextOverride = {};
+
     prerender = !Builder.isEditing;
 
     private _options: any = {};
@@ -492,6 +495,15 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
         );
     }
 
+    setContextOverrides(context: any) {
+      this.contextOverride = context || {};
+    }
+
+    setStateOverride(state: any) {
+      this.stateOverride = state || {};
+    }
+
+
     findAndRunScripts() {
       const scripts = this.getElementsByTagName('script');
       for (let i = 0; i < scripts.length; i++) {
@@ -568,6 +580,10 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
                 liquid: shopify.liquid,
               }),
               apiKey: builder.apiKey,
+              ...this.contextOverride
+            },
+            data : {
+              ...this.stateOverride,
             },
             entry,
             emailMode: (this.options || {}).emailMode || this.getAttribute('email-mode') === 'true',
@@ -630,10 +646,14 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
                     liquid: shopify.liquid,
                   }),
                   apiKey: builder.apiKey,
+                  ...this.contextOverride,
                 },
                 emailMode:
                   (this.options || {}).emailMode || this.getAttribute('email-mode') === 'true',
                 entry: data ? data.id : entry,
+                data: {
+                  ...this.stateOverride,
+                },
                 options: {
                   entry: data ? data.id : entry,
                   initialContent: data ? [data] : undefined,
@@ -691,9 +711,13 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
                       liquid: shopify.liquid,
                     }),
                     apiKey: builder.apiKey,
+                    ...this.contextOverride,
                   },
                   modelName: name!,
                   entry: data ? data.id : entry,
+                  data: {
+                    ...this.stateOverride,
+                  },
                   emailMode:
                     (this.options || {}).emailMode || this.getAttribute('email-mode') === 'true',
                   options: {
