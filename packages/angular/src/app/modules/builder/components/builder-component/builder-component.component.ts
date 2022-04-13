@@ -77,6 +77,7 @@ export class BuilderComponentComponent implements OnDestroy, OnInit {
   @Input() options: GetContentOptions | null = null;
 
   @Input() data: any = {};
+  @Input() context: any = {};
   @Input() hydrate = true;
   @Input() prerender = true;
 
@@ -122,8 +123,8 @@ export class BuilderComponentComponent implements OnDestroy, OnInit {
       return null;
     }
     const script = document.createElement('script');
-
-    const wcVersion = getQueryParam(location.href, 'builder.wcVersion');
+    // TODO remove hardcoded version
+    const wcVersion = getQueryParam(location.href, 'builder.wcVersion') || '1.3.47-1';
     script.id = SCRIPT_ID;
     // TODO: detect builder.wcVersion and if customEleemnts exists and do
     // dynamic versions and lite here
@@ -151,6 +152,15 @@ export class BuilderComponentComponent implements OnDestroy, OnInit {
         this.builderService.userAttributesChanged.subscribe((attrs) =>
           builder.setUserAttributes(attrs)
         );
+        const element: any = document.querySelector(`builder-component-element[key=${this.key}]`)
+        if (element) {
+          element.setStateOverrides({
+            ...this.data,
+            ...(this.options as any)?.data,
+          })
+
+          element.setContextOverrides(this.context);
+        }
       });
     }
   }
