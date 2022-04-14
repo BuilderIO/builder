@@ -510,7 +510,6 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
       }
     }
 
-
     findAndRunScripts() {
       const scripts = this.getElementsByTagName('script');
       for (let i = 0; i < scripts.length; i++) {
@@ -587,7 +586,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
               }),
               apiKey: builder.apiKey,
             }),
-            data : this.state,
+            data: this.state,
             entry,
             emailMode: (this.options || {}).emailMode || this.getAttribute('email-mode') === 'true',
             options: {
