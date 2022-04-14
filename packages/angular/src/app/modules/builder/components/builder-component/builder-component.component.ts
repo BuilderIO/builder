@@ -7,8 +7,10 @@ import {
   Optional,
   OnDestroy,
   OnInit,
+  OnChanges,
   ViewContainerRef,
   ElementRef,
+  SimpleChanges,
 } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { BuilderComponentService } from './builder-component.service';
@@ -60,7 +62,7 @@ export interface RouteEvent {
   providers: [BuilderComponentService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BuilderComponentComponent implements OnDestroy, OnInit {
+export class BuilderComponentComponent implements OnDestroy, OnInit, OnChanges {
   @Input() model: string | undefined /* THIS IS ACTUALLY REQUIRED */;
 
   @Input() set name(name: string | undefined) {
@@ -123,8 +125,9 @@ export class BuilderComponentComponent implements OnDestroy, OnInit {
       return null;
     }
     const script = document.createElement('script');
-    // TODO remove hardcoded version
-    const wcVersion = getQueryParam(location.href, 'builder.wcVersion') || '1.3.47-1';
+    // TODO remove hardcoded version, maybe a tag?
+    const ANGULAR_LATEST_VERSION = '1.3.47-7'
+    const wcVersion = getQueryParam(location.href, 'builder.wcVersion') || ANGULAR_LATEST_VERSION;
     script.id = SCRIPT_ID;
     // TODO: detect builder.wcVersion and if customEleemnts exists and do
     // dynamic versions and lite here
@@ -152,15 +155,7 @@ export class BuilderComponentComponent implements OnDestroy, OnInit {
         this.builderService.userAttributesChanged.subscribe((attrs) =>
           builder.setUserAttributes(attrs)
         );
-        const element: any = document.querySelector(`builder-component-element[key=${this.key}]`)
-        if (element) {
-          element.setStateOverrides({
-            ...this.data,
-            ...(this.options as any)?.data,
-          })
-
-          element.setContextOverrides(this.context);
-        }
+        this.triggerstateChange();
       });
     }
   }
@@ -201,6 +196,24 @@ export class BuilderComponentComponent implements OnDestroy, OnInit {
 
     if (Builder.isBrowser && (this.hydrate !== false || Builder.isEditing)) {
       this.ensureWcLoadedAndUpdate();
+    }
+  }
+
+  async triggerstateChange() {
+    const query = `builder-component-element[name="${this.model}"]`;
+    const element: any = document.querySelector(query);
+    if (element) {
+    customElements.whenDefined('builder-component-element').then(() => {
+        element.setState(this.data)
+        element.setContext(this.context);
+    })
+  }
+
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.data) {
+      this.triggerstateChange();
     }
   }
 
