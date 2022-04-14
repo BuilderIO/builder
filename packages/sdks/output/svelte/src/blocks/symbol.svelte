@@ -2,7 +2,7 @@
   import { onMount } from "svelte";
   import { afterUpdate } from "svelte";
 
-  import RenderContent from "../components/render-content.lite";
+  import RenderContent from "../components/render-content/render-content.lite";
   import BuilderContext from "../context/builder.context.lite";
   import { getContent } from "../functions/get-content";
 

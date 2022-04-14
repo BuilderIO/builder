@@ -3,86 +3,28 @@
   import { afterUpdate } from "svelte";
   import { onDestroy } from "svelte";
 
-  import { isBrowser } from "../functions/is-browser";
-  import BuilderContext from "../context/builder.context.lite";
-  import { track } from "../functions/track";
-  import { isReactNative } from "../functions/is-react-native";
-  import { isEditing } from "../functions/is-editing";
-  import { isPreviewing } from "../functions/is-previewing";
-  import { previewingModelName } from "../functions/previewing-model-name";
-  import { getContent } from "../functions/get-content";
+  import { isBrowser } from "../../functions/is-browser";
+  import BuilderContext from "../../context/builder.context.lite";
+  import { track } from "../../functions/track";
+  import { isEditing } from "../../functions/is-editing";
+  import { isPreviewing } from "../../functions/is-previewing";
+  import { previewingModelName } from "../../functions/previewing-model-name";
+  import { getContent } from "../../functions/get-content";
   import {
     convertSearchParamsToQueryObject,
     getBuilderSearchParams,
-  } from "../functions/get-builder-search-params";
-  import RenderBlocks from "./render-blocks.lite";
-  import { evaluate } from "../functions/evaluate";
-  import { getFetch } from "../functions/get-fetch";
-  import { onChange } from "../functions/on-change";
-  import { ifTarget } from "../functions/if-target";
+  } from "../../functions/get-builder-search-params";
+  import RenderBlocks from "../render-blocks.lite";
+  import { evaluate } from "../../functions/evaluate";
+  import { getFetch } from "../../functions/get-fetch";
+  import { TARGET } from "../../constants/target";
+  import RenderStyles from "./components/render-styles.lite";
 
   export let content;
   export let data;
   export let model;
   export let apiKey;
 
-  function getCssFromFont(font: any, data?: any) {
-    // TODO: compute what font sizes are used and only load those.......
-    const family =
-      font.family +
-      (font.kind && !font.kind.includes("#") ? ", " + font.kind : "");
-    const name = family.split(",")[0];
-    const url = font.fileUrl ?? font?.files?.regular;
-    let str = "";
-
-    if (url && family && name) {
-      str += `
- @font-face {
-   font-family: "${family}";
-   src: local("${name}"), url('${url}') format('woff2');
-   font-display: fallback;
-   font-weight: 400;
- }
-         `.trim();
-    }
-
-    if (font.files) {
-      for (const weight in font.files) {
-        const isNumber = String(Number(weight)) === weight;
-
-        if (!isNumber) {
-          continue;
-        } // TODO: maybe limit number loaded
-
-        const weightUrl = font.files[weight];
-
-        if (weightUrl && weightUrl !== url) {
-          str += `
- @font-face {
-   font-family: "${family}";
-   src: url('${weightUrl}') format('woff2');
-   font-display: fallback;
-   font-weight: ${weight};
- }
-           `.trim();
-        }
-      }
-    }
-
-    return str;
-  }
-  function getFontCss(data?: any) {
-    // TODO: flag for this
-    // if (!this.builder.allowCustomFonts) {
-    //   return '';
-    // }
-    // TODO: separate internal data from external
-    return (
-      data?.customFonts
-        ?.map((font: any) => this.getCssFromFont(font, data))
-        ?.join(" ") || ""
-    );
-  }
   function processMessage(event: MessageEvent) {
     const { data } = event;
 
@@ -263,15 +205,10 @@
   <div
     on:click={(event) => track('click', { contentId: useContent.id })}
     data-builder-content-id={useContent?.id}>
-    {#if (useContent?.data?.cssCode || useContent?.data?.customFonts?.length) && !isReactNative()}
-      <style>
-             
-{useContent.data.cssCode}
-
-             
-{getFontCss(useContent.data)}
-
-      </style>
+    {#if (useContent?.data?.cssCode || useContent?.data?.customFonts?.length) && TARGET !== 'reactNative'}
+      <RenderStyles
+        cssCode={useContent.data.cssCode}
+        customFonts={useContent.data.customFonts} />
     {/if}
 
     <RenderBlocks blocks={useContent?.data?.blocks} />
