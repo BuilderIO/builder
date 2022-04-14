@@ -6,6 +6,9 @@ const getSeededId = () => {
   return Number(String(rngVal).split('.')[1]).toString(36);
 };
 
+/**
+ * @type {import('@builder.io/mitosis'.MitosisConfig)}
+ */
 module.exports = {
   files: 'src/**',
   targets: ['reactNative', 'vue', 'svelte'],
@@ -14,6 +17,11 @@ module.exports = {
       registerComponentPrepend:
         "import { registerComponent } from '../functions/register-component'",
       cssNamespace: getSeededId,
+    },
+    svelte: {
+      // prettier & svelte don't play well together when it comes to parsing @html content for some reason
+      // https://github.com/sveltejs/prettier-plugin-svelte/issues/290
+      prettier: false,
     },
   },
 };
