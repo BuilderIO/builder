@@ -88,7 +88,7 @@ get _innerHtml() {
     const element: any = document.querySelector(query);
     if (element) {
       await customElements.whenDefined('builder-blocks-slot');
-      element.setProps(this.options);
+      element.setProps(this.options, this.builderState);
     }
   }
 

@@ -6,6 +6,7 @@ import { BuilderBlock } from './builder-block.component';
 // TODO: fetch these for user and send them with same response like graphql
 import { Size } from '../constants/device-sizes.constant';
 import ReactDOM from 'react-dom';
+import { BuilderStoreContext } from '../store/builder-store'
 
 export interface BuilderBlocksProps {
   fieldName?: string;
@@ -150,6 +151,7 @@ export class BuilderBlocks extends React.Component<BuilderBlocksProps, BuilderBl
   static renderInto(
     elementOrSelector: string | HTMLElement,
     props: BuilderBlocksProps = {},
+    builderState: any,
   ) {
     console.debug('BuilderBlocks.renderInto', elementOrSelector, props, this);
 
@@ -167,7 +169,9 @@ export class BuilderBlocks extends React.Component<BuilderBlocksProps, BuilderBl
       }
     }
     return ReactDOM.render(
-      <BuilderBlocks {...props} />,
+      <BuilderStoreContext.Provider value={builderState}>
+          <BuilderBlocks {...props} />
+      </BuilderStoreContext.Provider>,
       element,
     );
   }

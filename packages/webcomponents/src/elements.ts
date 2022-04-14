@@ -785,13 +785,15 @@ type BuilderBlocksProps = import('@builder.io/react/dist/types/src/components/bu
 if (Builder.isBrowser && !customElements.get('builder-blocks-slot')) {
   class BuilderBlocksSlot extends HTMLElement {
     props?: BuilderBlocksProps;
-    setProps(props: BuilderBlocksProps) {
+    builderState: any;
+    setProps(props: BuilderBlocksProps, builderState: any) {
       this.props = props;
+      this.builderState = builderState;
       this.render();
     }
     async render() {
       const { BuilderBlocks } = await importReact();
-      BuilderBlocks.renderInto(wrapInDiv(this), this.props);
+      BuilderBlocks.renderInto(wrapInDiv(this), this.props, this.builderState);
     }
   }
   customElements.define('builder-blocks-slot', BuilderBlocksSlot);
