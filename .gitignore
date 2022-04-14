@@ -19,3 +19,12 @@ test-lib/**/*.js
 yarn-error.log
 .build
 Pods/
+
+
+**/.pnp.*
+**/.yarn/*
+!**/.yarn/patches
+!**/.yarn/plugins
+!**/.yarn/releases
+!**/.yarn/sdks
+!**/.yarn/versions

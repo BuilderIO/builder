@@ -2,72 +2,53 @@
   <div
     v-if="useContent"
     @click="
-      if (!isEditing()) {
-        track('click', {
-          contentId: useContent.id,
-        });
-      }
+      track('click', {
+        contentId: useContent.id,
+      })
     "
-    :data-builder-content-id="useContent && useContent.id"
+    :data-builder-content-id="(useContent && useContent.id)"
   >
     <component
-      v-if="
-        ((useContent &&
-          useContent.data &&
-          (useContent && useContent.data).cssCode) ||
-          (useContent &&
-            useContent.data &&
-            (useContent && useContent.data).customFonts &&
-            (
-              useContent &&
-              useContent.data &&
-              (useContent && useContent.data).customFonts
-            ).length)) &&
-        !isReactNative()
-      "
+      v-if="(((useContent && useContent.data) && (useContent && useContent.data).cssCode) || (((useContent && useContent.data) && (useContent && useContent.data).customFonts) && ((useContent && useContent.data) && (useContent && useContent.data).customFonts).length)) && !isReactNative()"
       :is="style"
     >
       {{ useContent.data.cssCode }}
       {{ getFontCss(useContent.data) }}
     </component>
 
-    <render-blocks
-      :blocks="
-        useContent && useContent.data && (useContent && useContent.data).blocks
-      "
-    ></render-blocks>
+    <render-blocks :blocks="((useContent && useContent.data) && (useContent && useContent.data).blocks)"></render-blocks>
   </div>
 </template>
 <script>
-import { isBrowser } from '../functions/is-browser';
-import BuilderContext from '../context/builder.context';
-import { track } from '../functions/track';
-import { ifTarget } from '../functions/if-target';
-import { onChange } from '../functions/on-change';
-import { isReactNative } from '../functions/is-react-native';
-import { isEditing } from '../functions/is-editing';
-import { isPreviewing } from '../functions/is-previewing';
-import { previewingModelName } from '../functions/previewing-model-name';
-import { getContent } from '../functions/get-content';
+import { isBrowser } from "../functions/is-browser";
+import BuilderContext from "../context/builder.context";
+import { track } from "../functions/track";
+import { isReactNative } from "../functions/is-react-native";
+import { isEditing } from "../functions/is-editing";
+import { isPreviewing } from "../functions/is-previewing";
+import { previewingModelName } from "../functions/previewing-model-name";
+import { getContent } from "../functions/get-content";
 import {
   convertSearchParamsToQueryObject,
   getBuilderSearchParams,
-} from '../functions/get-builder-search-params';
-import RenderBlocks from './render-blocks';
+} from "../functions/get-builder-search-params";
+import RenderBlocks from "./render-blocks";
+import { evaluate } from "../functions/evaluate";
+import { getFetch } from "../functions/get-fetch";
+import { onChange } from "../functions/on-change";
+import { ifTarget } from "../functions/if-target";
 
 export default {
-  name: 'render-content',
-  components: { 'render-blocks': async () => RenderBlocks },
-  props: ['content', 'model', 'apiKey'],
+  name: "render-content",
+  components: { "render-blocks": async () => RenderBlocks },
+  props: ["content", "data", "model", "apiKey"],
 
   data: () => ({
-    update: 0,
-    state: {},
-    context: {},
     overrideContent: null,
+    update: 0,
+    overrideState: {},
     track,
     isReactNative,
-    isEditing,
   }),
 
   provide() {
@@ -93,19 +74,23 @@ export default {
   mounted() {
     if (isBrowser()) {
       if (isEditing()) {
-        window.addEventListener('message', this.processMessage);
+        window.addEventListener("message", this.processMessage);
+        window.addEventListener(
+          "builder:component:stateChangeListenerActivated",
+          this.emitStateUpdate
+        );
       }
 
-      if (this.useContent && !isEditing()) {
-        track('impression', {
+      if (this.useContent) {
+        track("impression", {
           contentId: this.useContent.id,
         });
-      }
+      } // override normal content in preview mode
 
       if (isPreviewing()) {
         if (this.model && previewingModelName() === this.model) {
           const currentUrl = new URL(location.href);
-          const previewApiKey = currentUrl.searchParams.get('apiKey');
+          const previewApiKey = currentUrl.searchParams.get("apiKey");
 
           if (previewApiKey) {
             getContent({
@@ -122,18 +107,74 @@ export default {
           }
         }
       }
+
+      this.evaluateJsCode();
+      this.runHttpRequests();
+      this.emitStateUpdate();
     }
   },
 
+  watch: {
+    onUpdateHook0() {
+      this.evaluateJsCode();
+    },
+    onUpdateHook1() {
+      this.runHttpRequests();
+    },
+    onUpdateHook2() {
+      this.emitStateUpdate();
+    },
+  },
   unmounted() {
     if (isBrowser()) {
-      window.removeEventListener('message', this.processMessage);
+      window.removeEventListener("message", this.processMessage);
+      window.removeEventListener(
+        "builder:component:stateChangeListenerActivated",
+        this.emitStateUpdate
+      );
     }
   },
 
   computed: {
     useContent() {
-      return this.overrideContent || this.content;
+      const mergedContent = {
+        ...this.content,
+        ...this.overrideContent,
+        data: {
+          ...this.content?.data,
+          ...this.data,
+          ...this.overrideContent?.data,
+        },
+      };
+      return mergedContent;
+    },
+    state() {
+      return {
+        ...this.content?.data?.state,
+        ...this.data,
+        ...this.overrideState,
+      };
+    },
+    context() {
+      return {};
+    },
+    httpReqsData() {
+      return {};
+    },
+    onUpdateHook0() {
+      return {
+        0: this.useContent?.data?.jsCode,
+      };
+    },
+    onUpdateHook1() {
+      return {
+        0: this.useContent?.data?.httpRequests,
+      };
+    },
+    onUpdateHook2() {
+      return {
+        0: this.state,
+      };
     },
   },
 
@@ -142,10 +183,10 @@ export default {
       // TODO: compute what font sizes are used and only load those.......
       const family =
         font.family +
-        (font.kind && !font.kind.includes('#') ? ', ' + font.kind : '');
-      const name = family.split(',')[0];
+        (font.kind && !font.kind.includes("#") ? ", " + font.kind : "");
+      const name = family.split(",")[0];
       const url = font.fileUrl ?? font?.files?.regular;
-      let str = '';
+      let str = "";
 
       if (url && family && name) {
         str += `
@@ -192,7 +233,7 @@ export default {
       return (
         data?.customFonts
           ?.map((font) => this.getCssFromFont(font, data))
-          ?.join(' ') || ''
+          ?.join(" ") || ""
       );
     },
     processMessage(event) {
@@ -200,13 +241,14 @@ export default {
 
       if (data) {
         switch (data.type) {
-          case 'builder.contentUpdate': {
+          case "builder.contentUpdate": {
+            const messageContent = data.data;
             const key =
-              data.data.key ||
-              data.data.alias ||
-              data.data.entry ||
-              data.data.modelName;
-            const contentData = data.data.data; // oof
+              messageContent.key ||
+              messageContent.alias ||
+              messageContent.entry ||
+              messageContent.modelName;
+            const contentData = messageContent.data;
 
             if (key === this.model) {
               this.overrideContent = contentData;
@@ -215,12 +257,67 @@ export default {
             break;
           }
 
-          case 'builder.patchUpdates': {
+          case "builder.patchUpdates": {
             // TODO
             break;
           }
         }
       }
+    },
+    evaluateJsCode() {
+      // run any dynamic JS code attached to content
+      const jsCode = this.useContent?.data?.jsCode;
+
+      if (jsCode) {
+        evaluate({
+          code: jsCode,
+          context: this.context,
+          state: this.state,
+        });
+      }
+    },
+    evalExpression(expression) {
+      return expression.replace(/{{([^}]+)}}/g, (_match, group) =>
+        evaluate({
+          code: group,
+          context: this.context,
+          state: this.state,
+        })
+      );
+    },
+    handleRequest({ url, key }) {
+      const fetchAndSetState = async () => {
+        const response = await getFetch()(url);
+        const json = await response.json();
+        const newOverrideState = { ...this.overrideState, [key]: json };
+        this.overrideState = newOverrideState;
+      };
+
+      fetchAndSetState();
+    },
+    runHttpRequests() {
+      const requests = this.useContent?.data?.httpRequests ?? {};
+      Object.entries(requests).forEach(([key, url]) => {
+        if (url && (!this.httpReqsData[key] || isEditing())) {
+          const evaluatedUrl = this.evalExpression(url);
+          this.handleRequest({
+            url: evaluatedUrl,
+            key,
+          });
+        }
+      });
+    },
+    emitStateUpdate() {
+      window.dispatchEvent(
+        new CustomEvent("builder:component:stateChange", {
+          detail: {
+            state: this.state,
+            ref: {
+              name: this.model,
+            },
+          },
+        })
+      );
     },
   },
 };

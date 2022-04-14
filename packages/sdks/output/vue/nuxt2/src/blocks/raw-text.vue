@@ -1,27 +1,22 @@
 <template>
   <span
-    :class="
-      _classStringToObject(
-        (this.attributes && this.attributes.class) ||
-          (this.attributes && this.attributes.className)
-      )
-    "
+    :class="_classStringToObject((this.attributes && this.attributes.class) || (this.attributes && this.attributes.className))"
     v-html="text || ''"
   ></span>
 </template>
 <script>
-import { registerComponent } from '../functions/register-component';
+import { registerComponent } from "../functions/register-component";
 
 export default registerComponent(
   {
-    name: 'builder-raw-text',
+    name: "builder-raw-text",
 
-    props: ['attributes', 'text'],
+    props: ["attributes", "text"],
 
     methods: {
       _classStringToObject(str) {
         const obj = {};
-        if (typeof str !== 'string') {
+        if (typeof str !== "string") {
           return obj;
         }
         const classNames = str.trim().split(/\s+/);
@@ -33,10 +28,10 @@ export default registerComponent(
     },
   },
   {
-    name: 'Builder:RawText',
+    name: "Builder:RawText",
     hideFromInsertMenu: true,
     builtIn: true,
-    inputs: [{ name: 'text', bubble: true, type: 'longText', required: true }],
+    inputs: [{ name: "text", bubble: true, type: "longText", required: true }],
   }
 );
 </script>

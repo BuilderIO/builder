@@ -8,27 +8,37 @@
     "prepare": "cd ../../ && npx husky install",
     "cz": "cz",
     "mitosis": "./node_modules/@builder.io/mitosis-cli/bin/mitosis build",
-    "build": "yarn run mitosis && yarn run lint",
+    "build": "yarn run mitosis",
     "start": "watch 'yarn run mitosis' ./src ./overrides",
     "test": "jest",
-    "remove-mitosis-resolutions": "./scripts/remove-mitosis-resolutions.sh",
-    "prettier": "prettier --ignore-path .gitignore .",
+    "remove-resolutions": "./scripts/remove-resolutions.sh",
+    "remove-symlinks": "yarn run remove-resolutions && yarn",
+    "add-resolutions": "./scripts/add-resolutions.sh",
+    "add-symlinks": "yarn run add-resolutions && yarn",
+    "prettier": "prettier .",
     "lint": "yarn run prettier --write",
     "ci:lint": "yarn run prettier --check",
-    "ci:build": "mitosis build && yarn run lint",
+    "ci:build": "mitosis build",
     "ci:test": "yarn run test"
   },
   "dependencies": {
+    "@builder.io/mitosis": "dev",
     "@builder.io/mitosis-cli": "0.0.13-7",
     "node-fetch": "^2.6.1",
     "seedrandom": "^3.0.5"
   },
   "devDependencies": {
+    "@builder.io/eslint-plugin-mitosis": "dev",
     "@types/jest": "^27.4.1",
     "@types/node-fetch": "^2.5.12",
+    "@types/react": "^17.0.43",
+    "@types/react-dom": "^17.0.14",
+    "@typescript-eslint/eslint-plugin": "latest",
+    "@typescript-eslint/parser": "latest",
     "commitizen": "^4.2.4",
     "cz-conventional-changelog": "^3.3.0",
-    "eslint": "^7.21.0",
+    "eslint": "^8.12.0",
+    "eslint-plugin-react": "latest",
     "git-cz": "^4.8.0",
     "husky": "^7.0.4",
     "jest": "^27.5.1",
@@ -43,10 +53,6 @@
     "commitizen": {
       "path": "git-cz"
     }
-  },
-  "resolutions": {
-    "@X/X: mitosis line below is removed in CI to allow for proper usage of Mitosis.": "0.0.1",
-    "@builder.io/mitosis-cli": "link:../../../mitosis/packages/cli"
   },
   "packageManager": "yarn@3.2.0"
 }

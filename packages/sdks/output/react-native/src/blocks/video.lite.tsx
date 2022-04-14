@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { View, StyleSheet, Image, Text } from 'react-native';
+import * as React from "react";
+import { View, StyleSheet, Image, Text } from "react-native";
 
 export default function Video(props) {
   return (
@@ -7,8 +7,8 @@ export default function Video(props) {
       {...props.attributes}
       preload="none"
       style={{
-        width: '100%',
-        height: '100%',
+        width: "100%",
+        height: "100%",
         ...props.attributes?.style,
         objectFit: props.fit,
         objectPosition: props.position,
@@ -16,7 +16,7 @@ export default function Video(props) {
         // not have the video overflow
         borderRadius: 1,
       }}
-      key={props.video || 'no-src'}
+      key={props.video || "no-src"}
       poster={props.posterImage}
       autoPlay={props.autoPlay}
       muted={props.muted}

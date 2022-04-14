@@ -1,3 +1,5 @@
+// TO-DO: this seems to cause issues with `vue`. `import()` does not get converted to require, and is not being parsed
+// properly.
 import('./index-helpers/top-of-file');
 
 import { isEditing } from './functions/is-editing';
