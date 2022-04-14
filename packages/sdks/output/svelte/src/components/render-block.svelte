@@ -20,14 +20,14 @@ import  BlockStyles,  {  }  from './block-styles.lite';
     export let block;
 
     
-    $:  component = () =>  {
+    $: component = () => {
 const componentName = useBlock().component?.name;
 
 if (!componentName) {
   return null;
 }
 
-const ref = components[useBlock().component?.name!];
+const ref = components[useBlock().component?.name];
 
 if (componentName && !ref) {
   // TODO: Public doc page with more info about this message
@@ -37,24 +37,29 @@ if (componentName && !ref) {
 }
 
 return ref;
-}
-$:  componentInfo = () =>  {
+};
+
+$: componentInfo = () => {
 return component?.()?.info;
-}
-$:  componentRef = () =>  {
+};
+
+$: componentRef = () => {
 return component?.()?.component;
-}
-$:  tagName = () =>  {
+};
+
+$: tagName = () => {
 return getBlockTag(useBlock());
-}
-$:  useBlock = () =>  {
+};
+
+$: useBlock = () => {
 return getProcessedBlock({
   block: block,
   state: builderContext.state,
   context: builderContext.context
 });
-}
-$:  propertiesAndActions = () =>  {
+};
+
+$: propertiesAndActions = () => {
 return { ...getBlockProperties(useBlock()),
   ...getBlockActions({
     block: useBlock(),
@@ -62,24 +67,27 @@ return { ...getBlockProperties(useBlock()),
     context: builderContext.context
   })
 };
-}
-$:  css = () =>  {
+};
+
+$: css = () => {
 return getBlockStyles(useBlock());
-}
-$:  componentOptions = () =>  {
+};
+
+$: componentOptions = () => {
 return getBlockComponentOptions(useBlock());
-}
-$:  children = () =>  {
+};
+
+$: children = () => {
 // TO-DO: When should `canHaveChildren` dictate rendering?
 // This is currently commented out because some Builder components (e.g. Box) do not have `canHaveChildren: true`,
 // but still receive and need to render children.
 // return componentInfo?.()?.canHaveChildren ? useBlock().children : [];
 return useBlock().children ?? [];
-}
-$:  noCompRefChildren = () =>  {
-return componentRef() ? [] : children();
-}
+};
 
+$: noCompRefChildren = () => {
+return componentRef() ? [] : children();
+};
 
     
 

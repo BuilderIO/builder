@@ -17,9 +17,8 @@ export let symbol;
      
      
 
-     let  className= 'builder-symbol'
-let  content= null
-
+     let className = 'builder-symbol';
+let content = null;
 
      onMount(() => { 
  content = symbol?.content;

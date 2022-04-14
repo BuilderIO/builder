@@ -11,7 +11,7 @@
      export let elem;
 export let content;
 
-     function  findAndRunScripts() {
+     function findAndRunScripts() {
  // TODO: Move this function to standalone one in '@builder.io/utils'
  if (elem && typeof window !== 'undefined') {
    /** @type {HTMLScriptElement[]} */
@@ -45,12 +45,10 @@ export let content;
    }
  }
 }
-
      
 
-     let  scriptsInserted= []
-let  scriptsRun= []
-
+     let scriptsInserted = [];
+let scriptsRun = [];
 
      onMount(() => { 
  findAndRunScripts();

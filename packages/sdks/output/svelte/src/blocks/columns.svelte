@@ -14,35 +14,39 @@ export let columns;
 export let stackColumnsAt;
 export let reverseColumnsWhenStacked;
 
-    function  getGutterSize() {
+    function getGutterSize() {
 return typeof space === 'number' ? space || 0 : 20;
 }
-function  getColumns() {
+
+function getColumns() {
 return columns || [];
 }
-function  getWidth(index: number) {
+
+function getWidth(index) {
 const columns = this.getColumns();
 return columns[index]?.width || 100 / columns.length;
 }
-function  getColumnCssWidth(index: number) {
+
+function getColumnCssWidth(index) {
 const columns = this.getColumns();
 const gutterSize = this.getGutterSize();
 const subtractWidth = gutterSize * (columns.length - 1) / columns.length;
 return `calc(${this.getWidth(index)}% - ${subtractWidth}px)`;
 }
-function  maybeApplyForTablet(prop: string) {
+
+function maybeApplyForTablet(prop) {
 const stackColumnsAt = stackColumnsAt || 'tablet';
 return stackColumnsAt === 'tablet' ? prop : 'inherit';
 }
-
-    $:  columnsCssVars = () =>  {
+    $: columnsCssVars = () => {
 const flexDir = stackColumnsAt === 'never' ? 'inherit' : reverseColumnsWhenStacked ? 'column-reverse' : 'column';
 return {
   '--flex-dir': flexDir,
   '--flex-dir-tablet': this.maybeApplyForTablet(flexDir)
 };
-}
-$:  columnCssVars = () =>  {
+};
+
+$: columnCssVars = () => {
 const width = '100%';
 const marginLeft = '0';
 return {
@@ -51,8 +55,7 @@ return {
   '--column-width-tablet': this.maybeApplyForTablet(width),
   '--column-margin-left-tablet': this.maybeApplyForTablet(marginLeft)
 };
-}
-
+};
 
     
 

@@ -29,9 +29,7 @@ export let errorMessage;
 export let sendingMessage;
 export let successMessage;
 
-    function  onSubmit(event: Event & {
-currentTarget: HTMLFormElement;
-}) {
+    function onSubmit(event) {
 const sendWithJs = sendWithJs || sendSubmissionsTo === 'email';
 
 if (sendSubmissionsTo === 'zapier') {
@@ -45,15 +43,12 @@ if (sendSubmissionsTo === 'zapier') {
   event.preventDefault();
   const el = event.currentTarget;
   const headers = customHeaders || {};
-  let body: any;
+  let body;
   const formData = new FormData(el); // TODO: maybe support null
 
-  const formPairs: {
-    key: string;
-    value: File | boolean | number | string | FileList;
-  }[] = Array.from(event.currentTarget.querySelectorAll('input,select,textarea')).filter(el => !!(el as HTMLInputElement).name).map(el => {
-    let value: any;
-    const key = (el as HTMLImageElement).name;
+  const formPairs = Array.from(event.currentTarget.querySelectorAll('input,select,textarea')).filter(el => !!el.name).map(el => {
+    let value;
+    const key = el.name;
 
     if (el instanceof HTMLInputElement) {
       if (el.type === 'radio') {
@@ -79,7 +74,7 @@ if (sendSubmissionsTo === 'zapier') {
         value = el.value;
       }
     } else {
-      value = (el as HTMLInputElement).value;
+      value = el.value;
     }
 
     return {
@@ -141,7 +136,7 @@ if (sendSubmissionsTo === 'zapier') {
 
   state = 'sending';
   const formUrl = `${builder.env === 'dev' ? 'http://localhost:5000' : 'https://builder.io'}/api/v1/form-submit?apiKey=${builder.apiKey}&to=${btoa(sendSubmissionsToEmail || '')}&name=${encodeURIComponent(name || '')}`;
-  fetch(sendSubmissionsTo === 'email' ? formUrl : action!
+  fetch(sendSubmissionsTo === 'email' ? formUrl : action
   /* TODO: throw error if no action URL */
   , {
     body,
@@ -236,16 +231,13 @@ if (sendSubmissionsTo === 'zapier') {
   });
 }
 }
-
-    $:  submissionState = () =>  {
+    $: submissionState = () => {
 return Builder.isEditing && previewState || state;
-}
+};
 
-
-    let  state= 'unsubmitted'
-let  responseData= null
-let  formErrorMessage= ''
-
+    let state = 'unsubmitted';
+let responseData = null;
+let formErrorMessage = '';
 
     
 

@@ -12,7 +12,7 @@
 export let replaceNodes;
 export let code;
 
-     function  findAndRunScripts() {
+     function findAndRunScripts() {
  // TODO: Move this function to standalone one in '@builder.io/utils'
  if (elem && typeof window !== 'undefined') {
    /** @type {HTMLScriptElement[]} */
@@ -46,12 +46,10 @@ export let code;
    }
  }
 }
-
      
 
-     let  scriptsInserted= []
-let  scriptsRun= []
-
+     let scriptsInserted = [];
+let scriptsRun = [];
 
      onMount(() => { 
  findAndRunScripts();

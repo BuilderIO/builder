@@ -12,7 +12,7 @@
     export let cssCode;
 export let customFonts;
 
-    function  getCssFromFont(font: CustomFont) {
+    function getCssFromFont(font) {
 // TODO: compute what font sizes are used and only load those.......
 const family = font.family + (font.kind && !font.kind.includes('#') ? ', ' + font.kind : '');
 const name = family.split(',')[0];
@@ -56,10 +56,9 @@ if (font.files) {
 
 return str;
 }
-function  getFontCss({
+
+function getFontCss({
 customFonts
-}: {
-customFonts?: CustomFont[];
 }) {
 // TODO: flag for this
 // if (!this.builder.allowCustomFonts) {
@@ -68,18 +67,17 @@ customFonts?: CustomFont[];
 // TODO: separate internal data from external
 return customFonts?.map(font => this.getCssFromFont(font))?.join(' ') || '';
 }
-
-    $:  injectedStyles = () =>  {
+    $: injectedStyles = () => {
 return `
 ${cssCode || ''}
 ${getFontCss({
   customFonts: customFonts
 })}`;
-}
-$:  injectedStyleScript = () =>  {
-return `<style>${injectedStyles()}</style>`;
-}
+};
 
+$: injectedStyleScript = () => {
+return `<style>${injectedStyles()}</style>`;
+};
 
     
 

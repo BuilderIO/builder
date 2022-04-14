@@ -14,7 +14,7 @@ import  RenderBlock,  {  }  from './render-block.lite';
 export let parent;
 export let path;
 
-    function  onClick() {
+    function onClick() {
 if (isEditing() && !blocks?.length) {
   window.parent?.postMessage({
     type: 'builder.clickEmptyBlocks',
@@ -25,7 +25,8 @@ if (isEditing() && !blocks?.length) {
   }, '*');
 }
 }
-function  onMouseEnter() {
+
+function onMouseEnter() {
 if (isEditing() && !blocks?.length) {
   window.parent?.postMessage({
     type: 'builder.hoverEmptyBlocks',
@@ -36,11 +37,9 @@ if (isEditing() && !blocks?.length) {
   }, '*');
 }
 }
-
-    $:  className = () =>  {
+    $: className = () => {
 return 'builder-blocks' + (!blocks?.length ? ' no-blocks' : '');
-}
-
+};
 
     
 

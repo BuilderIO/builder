@@ -26,7 +26,7 @@ export let data;
 export let model;
 export let apiKey;
 
-     function  processMessage(event: MessageEvent) {
+     function processMessage(event) {
  const {
    data
  } = event;
@@ -54,7 +54,8 @@ export let apiKey;
    }
  }
 }
-function  evaluateJsCode() {
+
+function evaluateJsCode() {
  // run any dynamic JS code attached to content
  const jsCode = useContent?.()?.data?.jsCode;
 
@@ -66,19 +67,18 @@ function  evaluateJsCode() {
    });
  }
 }
-function  evalExpression(expression: string) {
+
+function evalExpression(expression) {
  return expression.replace(/{{([^}]+)}}/g, (_match, group) => evaluate({
    code: group,
    context: context(),
    state: state()
  }));
 }
-function  handleRequest({
+
+function handleRequest({
  url,
  key
-}: {
- key: string;
- url: string;
 }) {
  const fetchAndSetState = async () => {
    const response = await getFetch()(url);
@@ -91,7 +91,8 @@ function  handleRequest({
 
  fetchAndSetState();
 }
-function  runHttpRequests() {
+
+function runHttpRequests() {
  const requests = useContent?.()?.data?.httpRequests ?? {};
  Object.entries(requests).forEach(([key, url]) => {
    if (url && (!httpReqsData()[key] || isEditing())) {
@@ -103,8 +104,9 @@ function  runHttpRequests() {
    }
  });
 }
-function  emitStateUpdate() {
- window.dispatchEvent(new CustomEvent<BuilderComponentStateChange>('builder:component:stateChange', {
+
+function emitStateUpdate() {
+ window.dispatchEvent(new CustomEvent('builder:component:stateChange', {
    detail: {
      state: state(),
      ref: {
@@ -113,9 +115,8 @@ function  emitStateUpdate() {
    }
  }));
 }
-
-     $:  useContent = () =>  {
- const mergedContent: BuilderContent = { ...content,
+     $: useContent = () => {
+ const mergedContent = { ...content,
    ...overrideContent,
    data: { ...content?.data,
      ...data,
@@ -123,27 +124,26 @@ function  emitStateUpdate() {
    }
  };
  return mergedContent;
-}
-$:  state = () =>  {
+};
+
+$: state = () => {
  return { ...content?.data?.state,
    ...data,
    ...overrideState
  };
-}
-$:  context = () =>  {
- return ({} as {
-   [index: string]: any;
- });
-}
-$:  httpReqsData = () =>  {
+};
+
+$: context = () => {
  return {};
-}
+};
 
+$: httpReqsData = () => {
+ return {};
+};
 
-     let  overrideContent= null
-let  update= 0
-let  overrideState= {}
-
+     let overrideContent = null;
+let update = 0;
+let overrideState = {};
 
      onMount(() => { 
  if (isBrowser()) {
