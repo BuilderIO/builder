@@ -1,4 +1,5 @@
-import { useState } from '@builder.io/mitosis';
+import { Fragment, useState, useMetadata, Show } from '@builder.io/mitosis';
+import { TARGET } from '../../../constants/target';
 
 interface CustomFont {
   family?: string;
@@ -69,12 +70,22 @@ export default function RenderStyles(props: Props) {
       );
     },
 
-    getInjectedStyles() {
+    get injectedStyles(): string {
       return `
-${props.cssCode}
+${props.cssCode || ''}
 ${state.getFontCss({ customFonts: props.customFonts })}`;
+    },
+    get injectedStyleScript(): string {
+      return `<style>${state.injectedStyles}</style>`;
     },
   });
 
-  return <style>{state.getInjectedStyles()}</style>;
+  return (
+    <Show
+      when={TARGET === 'svelte'}
+      else={<style innerHTML={state.injectedStyles}></style>}
+    >
+      <Fragment innerHTML={state.injectedStyleScript} />
+    </Show>
+  );
 }
