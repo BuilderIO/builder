@@ -1,11 +1,28 @@
 <template>
-  <component :is="style">{{ getInjectedStyles() }}</component>
+  <component v-else="" v-html="injectedStyles" :is="style"></component>
 </template>
 <script>
+import { TARGET } from "../../../constants/target";
+
 export default {
   name: "render-styles",
 
   props: ["cssCode", "customFonts"],
+
+  data: () => ({ TARGET }),
+
+  computed: {
+    injectedStyles() {
+      return `
+${this.cssCode || ""}
+${this.getFontCss({
+  customFonts: this.customFonts,
+})}`;
+    },
+    injectedStyleScript() {
+      return `<style>${this.injectedStyles}</style>`;
+    },
+  },
 
   methods: {
     getCssFromFont(font) {
@@ -62,13 +79,6 @@ export default {
       return (
         customFonts?.map((font) => this.getCssFromFont(font))?.join(" ") || ""
       );
-    },
-    getInjectedStyles() {
-      return `
-${this.cssCode}
-${this.getFontCss({
-  customFonts: this.customFonts,
-})}`;
     },
   },
 };

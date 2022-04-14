@@ -1,7 +1,30 @@
 <script>
-  export let attributes;
-  export let text;
+  
+  
+  
+  
 
+
+
+
+  
+  export let attributes;
+export let text;
+
+  
+  
+
+  
+
+  
+
+  
+
+  
 </script>
 
-<button {...attributes} type="submit"> {text} </button>
+<button {...attributes} type="submit" >
+  
+{text}
+
+</button>

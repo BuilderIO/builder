@@ -1,6 +1,25 @@
 <script>
+  
+  
+  
+  
+
+
+
+
+  
   export let text;
 
+  
+  
+
+  
+
+  
+
+  
+
+  
 </script>
 
-<div class="builder-text" innerHTML={text} />
+<div  class="builder-text" >{@html text}</div>

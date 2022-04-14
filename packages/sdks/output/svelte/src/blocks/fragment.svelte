@@ -1,6 +1,25 @@
 <script>
+  
+  
+  
+  
+
+
+
+
+  
   export let children;
 
+  
+  
+
+  
+
+  
+
+  
+
+  
 </script>
 
-<span><slot /></span>
+<span ><slot></slot></span>

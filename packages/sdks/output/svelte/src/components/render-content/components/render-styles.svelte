@@ -1,18 +1,26 @@
 <script>
-  export let cssCode;
-  export let customFonts;
+    
+    
+    
+    
+  import  {  TARGET  }  from '../../../constants/target';
 
-  function getCssFromFont(font: CustomFont) {
-    // TODO: compute what font sizes are used and only load those.......
-    const family =
-      font.family +
-      (font.kind && !font.kind.includes("#") ? ", " + font.kind : "");
-    const name = family.split(",")[0];
-    const url = font.fileUrl ?? font?.files?.regular;
-    let str = "";
+  
 
-    if (url && family && name) {
-      str += `
+
+    
+    export let cssCode;
+export let customFonts;
+
+    function  getCssFromFont(font: CustomFont) {
+// TODO: compute what font sizes are used and only load those.......
+const family = font.family + (font.kind && !font.kind.includes('#') ? ', ' + font.kind : '');
+const name = family.split(',')[0];
+const url = font.fileUrl ?? font?.files?.regular;
+let str = '';
+
+if (url && family && name) {
+  str += `
 @font-face {
   font-family: "${family}";
   src: local("${name}"), url('${url}') format('woff2');
@@ -20,20 +28,21 @@
   font-weight: 400;
 }
         `.trim();
-    }
+}
 
-    if (font.files) {
-      for (const weight in font.files) {
-        const isNumber = String(Number(weight)) === weight;
+if (font.files) {
+  for (const weight in font.files) {
+    const isNumber = String(Number(weight)) === weight;
 
-        if (!isNumber) {
-          continue;
-        } // TODO: maybe limit number loaded
+    if (!isNumber) {
+      continue;
+    } // TODO: maybe limit number loaded
 
-        const weightUrl = font.files[weight];
 
-        if (weightUrl && weightUrl !== url) {
-          str += `
+    const weightUrl = font.files[weight];
+
+    if (weightUrl && weightUrl !== url) {
+      str += `
 @font-face {
   font-family: "${family}";
   src: url('${weightUrl}') format('woff2');
@@ -41,32 +50,48 @@
   font-weight: ${weight};
 }
           `.trim();
-        }
-      }
     }
+  }
+}
 
-    return str;
-  }
-  function getFontCss({ customFonts }: { customFonts?: CustomFont[] }) {
-    // TODO: flag for this
-    // if (!this.builder.allowCustomFonts) {
-    //   return '';
-    // }
-    // TODO: separate internal data from external
-    return (
-      customFonts?.map((font) => this.getCssFromFont(font))?.join(" ") || ""
-    );
-  }
-  function getInjectedStyles() {
-    return `
-${cssCode}
+return str;
+}
+function  getFontCss({
+customFonts
+}: {
+customFonts?: CustomFont[];
+}) {
+// TODO: flag for this
+// if (!this.builder.allowCustomFonts) {
+//   return '';
+// }
+// TODO: separate internal data from external
+return customFonts?.map(font => this.getCssFromFont(font))?.join(' ') || '';
+}
+
+    $:  injectedStyles = () =>  {
+return `
+${cssCode || ''}
 ${getFontCss({
-  customFonts: customFonts,
+  customFonts: customFonts
 })}`;
-  }
+}
+$:  injectedStyleScript = () =>  {
+return `<style>${injectedStyles()}</style>`;
+}
 
-</script>
 
-<style>
-{getInjectedStyles()}
-</style>
+    
+
+    
+
+    
+
+    
+  </script>
+
+  {#if TARGET === 'svelte' }
+    
+{@html injectedStyleScript()}
+
+  {/if}

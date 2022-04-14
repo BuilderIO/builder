@@ -1,9 +1,26 @@
 <script>
-  export let attributes;
-  export let text;
+  
+  
+  
+  
 
+
+
+
+  
+  export let attributes;
+export let text;
+
+  
+  
+
+  
+
+  
+
+  
+
+  
 </script>
 
-<span
-  class={attributes?.class || attributes?.className}
-  innerHTML={text || ''} />
+<span  class={attributes?.class || attributes?.className} >{@html text || ''}</span>
