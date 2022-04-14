@@ -780,4 +780,21 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
   customElements.define('builder-init', BuilderInit);
 }
 
+type BuilderBlocksProps = import('@builder.io/react/dist/types/src/components/builder-blocks.component').BuilderBlocksProps;
+
+if (Builder.isBrowser && !customElements.get('builder-blocks-slot')) {
+  class BuilderBlocksSlot extends HTMLElement {
+    props?: BuilderBlocksProps;
+    setProps(props: BuilderBlocksProps) {
+      this.props = props;
+      this.render();
+    }
+    async render() {
+      const { BuilderBlocks } = await importReact();
+      BuilderBlocks.renderInto(wrapInDiv(this), this.props);
+    }
+  }
+  customElements.define('builder-blocks-slot', BuilderBlocksSlot);
+}
+
 window.dispatchEvent(new CustomEvent('builder:load', { detail: { builder, Builder } }));
