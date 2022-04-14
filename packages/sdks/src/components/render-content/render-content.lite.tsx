@@ -3,29 +3,27 @@ import {
   onUnMount,
   setContext,
   useState,
-  onCreate,
   Show,
   onUpdate,
 } from '@builder.io/mitosis';
-import { isBrowser } from '../functions/is-browser';
-import { BuilderContent } from '../types/builder-content';
-import BuilderContext from '../context/builder.context.lite';
-import { track } from '../functions/track';
-import { isReactNative } from '../functions/is-react-native';
-import { isEditing } from '../functions/is-editing';
-import { isPreviewing } from '../functions/is-previewing';
-import { previewingModelName } from '../functions/previewing-model-name';
-import { getContent } from '../functions/get-content';
+import { isBrowser } from '../../functions/is-browser';
+import { BuilderContent } from '../../types/builder-content';
+import BuilderContext from '../../context/builder.context.lite';
+import { track } from '../../functions/track';
+import { isEditing } from '../../functions/is-editing';
+import { isPreviewing } from '../../functions/is-previewing';
+import { previewingModelName } from '../../functions/previewing-model-name';
+import { getContent } from '../../functions/get-content';
 import {
   convertSearchParamsToQueryObject,
   getBuilderSearchParams,
-} from '../functions/get-builder-search-params';
-import RenderBlocks from './render-blocks.lite';
-import { Dictionary, Nullable } from '../types/typescript';
-import { evaluate } from '../functions/evaluate';
-import { getFetch } from '../functions/get-fetch';
-import { onChange } from '../functions/on-change';
-import { ifTarget } from '../functions/if-target';
+} from '../../functions/get-builder-search-params';
+import RenderBlocks from '../render-blocks.lite';
+import { Dictionary, Nullable } from '../../types/typescript';
+import { evaluate } from '../../functions/evaluate';
+import { getFetch } from '../../functions/get-fetch';
+import { TARGET } from '../../constants/target';
+import RenderStyles from './components/render-styles.lite';
 
 export type RenderContentProps = {
   content?: BuilderContent;
@@ -73,60 +71,6 @@ export default function RenderContent(props: RenderContentProps) {
     },
     get context() {
       return {} as { [index: string]: any };
-    },
-    getCssFromFont(font: any, data?: any) {
-      // TODO: compute what font sizes are used and only load those.......
-      const family =
-        font.family +
-        (font.kind && !font.kind.includes('#') ? ', ' + font.kind : '');
-      const name = family.split(',')[0];
-      const url = font.fileUrl ?? font?.files?.regular;
-      let str = '';
-      if (url && family && name) {
-        str += `
-  @font-face {
-    font-family: "${family}";
-    src: local("${name}"), url('${url}') format('woff2');
-    font-display: fallback;
-    font-weight: 400;
-  }
-          `.trim();
-      }
-
-      if (font.files) {
-        for (const weight in font.files) {
-          const isNumber = String(Number(weight)) === weight;
-          if (!isNumber) {
-            continue;
-          }
-          // TODO: maybe limit number loaded
-          const weightUrl = font.files[weight];
-          if (weightUrl && weightUrl !== url) {
-            str += `
-  @font-face {
-    font-family: "${family}";
-    src: url('${weightUrl}') format('woff2');
-    font-display: fallback;
-    font-weight: ${weight};
-  }
-            `.trim();
-          }
-        }
-      }
-      return str;
-    },
-
-    getFontCss(data?: any) {
-      // TODO: flag for this
-      // if (!this.builder.allowCustomFonts) {
-      //   return '';
-      // }
-      // TODO: separate internal data from external
-      return (
-        data?.customFonts
-          ?.map((font: any) => this.getCssFromFont(font, data))
-          ?.join(' ') || ''
-      );
     },
 
     processMessage(event: MessageEvent): void {
@@ -221,20 +165,20 @@ export default function RenderContent(props: RenderContentProps) {
   });
 
   // This currently doesn't do anything as `onCreate` is not implemented
-  onCreate(() => {
-    state.state = ifTarget(
-      // The reactive targets
-      ['vue', 'solid'],
-      () => ({}),
-      () =>
-        // This is currently a no-op, since it's listening to changes on `{}`.
-        onChange({}, () => {
-          state.update = state.update + 1;
-        })
-    );
+  // onCreate(() => {
+  //   state.state = ifTarget(
+  //     // The reactive targets
+  //     ['vue', 'solid'],
+  //     () => ({}),
+  //     () =>
+  //       // This is currently a no-op, since it's listening to changes on `{}`.
+  //       onChange({}, () => {
+  //         state.update = state.update + 1;
+  //       })
+  //   );
 
-    // TODO: inherit context here too
-  });
+  // TODO: inherit context here too
+  // });
 
   setContext(BuilderContext, {
     get content() {
@@ -329,11 +273,11 @@ export default function RenderContent(props: RenderContentProps) {
       >
         {(state.useContent?.data?.cssCode ||
           state.useContent?.data?.customFonts?.length) &&
-          !isReactNative() && (
-            <style>
-              {state.useContent.data.cssCode}
-              {state.getFontCss(state.useContent.data)}
-            </style>
+          TARGET !== 'reactNative' && (
+            <RenderStyles
+              cssCode={state.useContent.data.cssCode}
+              customFonts={state.useContent.data.customFonts}
+            />
           )}
         <RenderBlocks blocks={state.useContent?.data?.blocks} />
       </div>

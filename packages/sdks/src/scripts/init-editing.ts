@@ -1,4 +1,4 @@
-import { getTarget } from '../functions/get-target';
+import { TARGET } from '../constants/target';
 import { isBrowser } from '../functions/is-browser';
 import { register } from '../functions/register';
 
@@ -10,7 +10,7 @@ register('insertMenu', {
     { name: 'Text' },
     { name: 'Image' },
     { name: 'Columns' },
-    ...(getTarget() === 'reactNative'
+    ...(TARGET === 'reactNative'
       ? []
       : [
           { name: 'Core:Section' },
@@ -26,7 +26,7 @@ if (isBrowser()) {
     {
       type: 'builder.sdkInfo',
       data: {
-        target: getTarget(),
+        target: TARGET,
         // TODO: compile these in
         // type: process.env.SDK_TYPE,
         // version: process.env.SDK_VERSION,
