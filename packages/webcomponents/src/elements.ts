@@ -221,7 +221,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
     builderRootRef: any;
 
     stateOverride = {};
-    contextOverride = {};
+    context = {};
 
     prerender = !Builder.isEditing;
 
@@ -245,6 +245,10 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
           this.getAttribute('reload-on-route-change') !== 'false' &&
           !Builder.isEditing
       );
+    }
+
+    get state() {
+      return Object.assign(this.stateOverride, this.options?.data || {});
     }
 
     private getOptionsFromAttribute() {
@@ -495,12 +499,15 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
         );
     }
 
-    setContextOverrides(context: any) {
-      this.contextOverride = context || {};
+    setContext(context: any) {
+      this.context = context || {};
     }
 
-    setStateOverride(state: any) {
+    setState(state: any) {
       this.stateOverride = state || {};
+      if (this.builderPageRef) {
+        Object.assign(this.builderPageRef.state.state, this.state);
+      }
     }
 
 
@@ -567,24 +574,20 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
           const { Shopify } = await getShopifyJsPromise!;
           shopify = new Shopify({});
         }
-
         // Ensure styles don't load twice
         BuilderPage.renderInto(
           wrapInDiv(this),
           {
             ...({ ref: (ref: any) => (this.builderPageRef = ref) } as any),
             modelName: name!,
-            context: {
+            context: Object.assign(this.context, {
               ...(isShopify && {
                 shopify,
                 liquid: shopify.liquid,
               }),
               apiKey: builder.apiKey,
-              ...this.contextOverride
-            },
-            data : {
-              ...this.stateOverride,
-            },
+            }),
+            data : this.state,
             entry,
             emailMode: (this.options || {}).emailMode || this.getAttribute('email-mode') === 'true',
             options: {
@@ -640,20 +643,17 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
               {
                 ...({ ref: (ref: any) => (this.builderPageRef = ref) } as any),
                 modelName: name!,
-                context: {
+                context: Object.assign(this.context, {
                   ...(isShopify && {
                     shopify,
                     liquid: shopify.liquid,
                   }),
                   apiKey: builder.apiKey,
-                  ...this.contextOverride,
-                },
+                }),
                 emailMode:
                   (this.options || {}).emailMode || this.getAttribute('email-mode') === 'true',
                 entry: data ? data.id : entry,
-                data: {
-                  ...this.stateOverride,
-                },
+                data: this.state,
                 options: {
                   entry: data ? data.id : entry,
                   initialContent: data ? [data] : undefined,
@@ -705,19 +705,16 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
                   ...({
                     ref: (ref: any) => (this.builderPageRef = ref),
                   } as any),
-                  context: {
+                  context: Object.assign(this.context, {
                     ...(isShopify && {
                       shopify,
                       liquid: shopify.liquid,
                     }),
                     apiKey: builder.apiKey,
-                    ...this.contextOverride,
-                  },
+                  }),
                   modelName: name!,
                   entry: data ? data.id : entry,
-                  data: {
-                    ...this.stateOverride,
-                  },
+                  data: this.state,
                   emailMode:
                     (this.options || {}).emailMode || this.getAttribute('email-mode') === 'true',
                   options: {
