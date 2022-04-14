@@ -1,7 +1,7 @@
 /** @jsxImportSource theme-ui */
 import { FC } from 'react'
 import { Bag } from '@components/icons'
-import { Button, jsx } from 'theme-ui'
+import { Button } from 'theme-ui'
 
 interface Props {
   className?: string

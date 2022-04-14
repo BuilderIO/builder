@@ -1,0 +1,31 @@
+{
+  "createdBy": "XNHR3dCzCSXqg2Sumbh99KBD3XC2",
+  "createdDate": 1649213949721,
+  "data": {
+    "colorOverrides": {
+      "background": "#586EED",
+      "muted": "#7DA360",
+      "primary": "#2B3DA1",
+      "secondary": "#ED906F",
+      "text": "#aaa"
+    },
+    "theme": "dark"
+  },
+  "id": "1e4b9e9f2c5e4e9db9128b93b379d553",
+  "lastUpdatedBy": "XNHR3dCzCSXqg2Sumbh99KBD3XC2",
+  "meta": {
+    "kind": "data"
+  },
+  "modelId": "cfbd3a4b7de0430ea1ec68c3df66dd92",
+  "name": "dark theme",
+  "published": "published",
+  "query": [],
+  "testRatio": 1,
+  "variations": {},
+  "lastUpdated": 1649214031112,
+  "firstPublished": 1649214031110,
+  "rev": "srwkj8fz9hb",
+  "@originOrg": "42ef6b1448cf4254b7f51d83ca88d9d1",
+  "@originContentId": "ef362a79a2b94a459004281cdabb83a3",
+  "@originModelId": "db2a380dda804d25a678f3c1252e2267"
+}

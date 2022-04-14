@@ -1,8 +1,12 @@
 # Next.js + theme-ui + Builder.io starter kit
 
-This is a starter kit for using Themes with them-ui + next.js and Builder.io.
+This is a starter kit for using Themes with [theme-ui](https://theme-ui.com/) + next.js and Builder.io.
 
-Demo live at: [headless.builders](https://headless.builders/)
+Demo live at: [builder-next-js-theme-ui](https://builder-next-js-theme-ui.vercel.app)
+
+### In this example, you should see already some content created, such as the "Theme" model with some examples, feel free to edit, delete or use it how you want.
+
+### You can check them out at [builder.io/content](https://builder.io/content) or under /builder folder of this project.
 
 ## Goals and Features
 
@@ -10,15 +14,6 @@ Demo live at: [headless.builders](https://headless.builders/)
 - SEO optimized
 - Themable
 - Personalizable (internationalization, a/b testing, etc)
-- Builder.io Visual CMS integrated
-
-## Video walkthrough
-
-Learn how to get started with this Builder + Next.js + Shopify starter with this step by step video guide here:
-
-<a href="https://www.youtube.com/watch?v=uIHqPu2t1O0">
-  <img width="400" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fc161ccb26f6446869cba865d014c7caf" />  
-</a>
 
 ## Table of contents
 
@@ -89,7 +84,7 @@ Note:
 if you're only interested in using this starter for a landing page with Shopify use this command instead:
 
 ```
-builder create --key "<private-key>" --name "<space-name>" --input builder-landing-page-only --debug
+builder create --key "<private-key>" --name "<space-name>" --debug
 ```
 
 If this was a success you should be greeted with a message that
