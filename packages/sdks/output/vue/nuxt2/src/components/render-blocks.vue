@@ -1,6 +1,6 @@
 <template>
   <div
-    class="div-1k2igrjdg3x"
+    class="div-21azgz5avex"
     :builder-path="path"
     :builder-parent-id="parent"
     :dataSet="{
@@ -76,7 +76,7 @@ export default {
 };
 </script>
 <style scoped>
-.div-1k2igrjdg3x {
+.div-21azgz5avex {
   display: flex;
   flex-direction: column;
   align-items: stretch;
