@@ -37,6 +37,9 @@ export class BuilderBlocksOutletComponent implements AfterViewInit, OnChanges {
   blocks: any;
 
   @Input()
+  renderOnChange = true;
+
+  @Input()
   dataPath: string | undefined;
 
   lastInnerHtml = '';
@@ -93,7 +96,7 @@ get _innerHtml() {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.blocks) {
+    if (changes.blocks && this.renderOnChange) {
       this.triggerstateChange();
     }
   }
