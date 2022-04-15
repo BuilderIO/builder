@@ -780,7 +780,8 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
   customElements.define('builder-init', BuilderInit);
 }
 
-type BuilderBlocksProps = import('@builder.io/react/dist/types/src/components/builder-blocks.component').BuilderBlocksProps;
+type BuilderBlocksProps =
+  import('@builder.io/react/dist/types/src/components/builder-blocks.component').BuilderBlocksProps;
 
 if (Builder.isBrowser && !customElements.get('builder-blocks-slot')) {
   class BuilderBlocksSlot extends HTMLElement {

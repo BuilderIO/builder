@@ -18,17 +18,16 @@ interface BuilderBlocksProps {
   parentElementId?: string;
   dataPath?: string;
 }
-    
+
 @Component({
   selector: 'builder-blocks-outlet',
   templateUrl: './builder-blocks-outlet.component.html',
   styleUrls: ['./builder-blocks-outlet.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-
 export class BuilderBlocksOutletComponent implements AfterViewInit, OnChanges {
   @Input()
-  builderBlock: any
+  builderBlock: any;
 
   @Input()
   builderState: any;
@@ -45,40 +44,36 @@ export class BuilderBlocksOutletComponent implements AfterViewInit, OnChanges {
   lastInnerHtml = '';
   lastInnerHtmlSanitized?: SafeHtml;
 
-
-  get options() : BuilderBlocksProps {
+  get options(): BuilderBlocksProps {
     return {
       child: true,
       parentElementId: this.builderBlock.id,
       blocks: this.blocks,
       dataPath: this.dataPath,
-    }
+    };
   }
 
   get key() {
     return this.builderBlock.id + this.dataPath;
   }
 
-get innerHtml() {
-  const html = this._innerHtml;
-  if (html === this.lastInnerHtml) {
-    return this.lastInnerHtmlSanitized || '';
+  get innerHtml() {
+    const html = this._innerHtml;
+    if (html === this.lastInnerHtml) {
+      return this.lastInnerHtmlSanitized || '';
+    }
+
+    this.lastInnerHtml = html;
+    this.lastInnerHtmlSanitized = this.domSanitizer.bypassSecurityTrustHtml(html);
+
+    return this.lastInnerHtmlSanitized;
   }
 
-  this.lastInnerHtml = html;
-  this.lastInnerHtmlSanitized = this.domSanitizer.bypassSecurityTrustHtml(html);
+  get _innerHtml() {
+    return `<builder-blocks-slot key="${this.key}"></builder-blocks-slot>`;
+  }
 
-  return this.lastInnerHtmlSanitized;
-}
-
-get _innerHtml() {
-  return `<builder-blocks-slot key="${this.key}"></builder-blocks-slot>`
-}
-
-
-  constructor(
-    private domSanitizer: DomSanitizer
-  ) {}
+  constructor(private domSanitizer: DomSanitizer) {}
 
   ngAfterViewInit() {
     if (Builder.isBrowser) {

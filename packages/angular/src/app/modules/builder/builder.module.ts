@@ -16,7 +16,12 @@ Builder.isStatic = true;
 
 const directives = [BuilderContentDirective];
 
-const components = [BuilderContentComponent, BuilderBlocksComponent, BuilderComponentComponent, BuilderBlocksOutletComponent];
+const components = [
+  BuilderContentComponent,
+  BuilderBlocksComponent,
+  BuilderComponentComponent,
+  BuilderBlocksOutletComponent,
+];
 
 @NgModule({
   imports: [CommonModule],
