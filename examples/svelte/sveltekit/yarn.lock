@@ -589,6 +589,12 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@builder.io/sdk-svelte@link:../../../packages/sdks/output/svelte::locator=sveltekit%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@builder.io/sdk-svelte@link:../../../packages/sdks/output/svelte::locator=sveltekit%40workspace%3A."
+  languageName: node
+  linkType: soft
+
 "@eslint/eslintrc@npm:^0.4.3":
   version: 0.4.3
   resolution: "@eslint/eslintrc@npm:0.4.3"
@@ -718,6 +724,15 @@ __metadata:
     mkdirp: ^1.0.4
     rimraf: ^3.0.2
   checksum: 1388777b507b0c592d53f41b9d182e1a8de7763bc625fc07999b8edbc22325f074e5b3ec90af79c89d6987fdb2325bc66d59f483258543c14a43661621f841b0
+  languageName: node
+  linkType: hard
+
+"@originjs/vite-plugin-commonjs@npm:^1.0.3":
+  version: 1.0.3
+  resolution: "@originjs/vite-plugin-commonjs@npm:1.0.3"
+  dependencies:
+    esbuild: ^0.14.14
+  checksum: e4cd22a73e2be726fc78f794942333b8c6ede20c7b57edebe3d7bf52119532ef3206142f36498fbb22fb34fc706d30cd5efb10d1d84bf8d11be09ed7b90b8aaf
   languageName: node
   linkType: hard
 
@@ -1796,7 +1811,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild@npm:^0.14.21, esbuild@npm:^0.14.27":
+"esbuild@npm:^0.14.14, esbuild@npm:^0.14.21, esbuild@npm:^0.14.27":
   version: 0.14.36
   resolution: "esbuild@npm:0.14.36"
   dependencies:
@@ -3884,8 +3899,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "sveltekit@workspace:."
   dependencies:
+    "@builder.io/sdk-svelte": ^0.0.1-0
     "@fontsource/fira-mono": ^4.5.0
     "@lukeed/uuid": ^2.0.0
+    "@originjs/vite-plugin-commonjs": ^1.0.3
     "@playwright/test": ^1.21.0
     "@sveltejs/adapter-auto": next
     "@sveltejs/kit": next

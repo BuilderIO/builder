@@ -4,6 +4,38 @@
 
 <script lang="ts">
 	import Counter from '$lib/Counter.svelte';
+	import { page } from '$app/stores';
+
+	import { getContent, isEditing, isPreviewing, getBuilderSearchParams, RenderContent } from '@builder.io/sdk-svelte';
+
+// TODO: enter your public API key
+const BUILDER_PUBLIC_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660'; // ggignore
+
+	// onMounted() {
+  //   // we need to re-run this check on the client in case of SSR
+  //   this.canShowContent = this.content || isEditing() || isPreviewing();
+  // },
+
+let content = undefined
+let canShowContent 	= false
+const fetch = async () => {
+    content = await getContent({
+      model: 'page',
+      apiKey: BUILDER_PUBLIC_API_KEY,
+      options: getBuilderSearchParams($page.params),
+      userAttributes: {
+        urlPath: $page.url.pathname,
+      },
+    });
+    canShowContent = content || isEditing();
+
+    if (!this.canShowContent) {
+			// 404
+    }
+  }
+
+	fetch()
+
 </script>
 
 <svelte:head>
@@ -22,11 +54,18 @@
 		to your new<br />SvelteKit app
 	</h1>
 
-	<h2>
+	<div>Hello world from your SvelteKit project. Below is Builder Content:</div>
+
+	<div v-if="canShowContent">
+		<div>page: { (content && content.data && content.data.title) || 'Unpublished' }</div>
+		<RenderContent model="page" content={content} api-key={BUILDER_PUBLIC_API_KEY} />
+	</div>
+
+	<!-- <h2>
 		try editing <strong>src/routes/index.svelte</strong>
 	</h2>
 
-	<Counter />
+	<Counter /> -->
 </section>
 
 <style>
