@@ -748,7 +748,20 @@ export class Builder {
       };
       parent.postMessage(message, '*');
     }
-    this.settingsChange.next(this.settings);
+    this.settingsChange.next({...this.settings});
+  }
+
+  // TODO: Check if editor options in prod is fixed
+  static setSettings(settings: Settings): void {
+    if (Builder.isBrowser) {
+      Object.assign(this.settings, settings);
+      const message = {
+        type: 'builder.settingsChange',
+       data: this.settings,
+      };
+      parent.postMessage(message, '*');
+    }
+    this.settingsChange.next({...this.settings});
   }
 
   static import(packageName: string) {
