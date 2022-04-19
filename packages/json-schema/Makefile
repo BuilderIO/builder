@@ -7,4 +7,5 @@ clean:
 	rm dist/BuilderContent.json
 
 dist/%.json: tsconfig.json src/index.ts
-	npx typescript-json-schema tsconfig.json $(basename $(notdir $@)) > $@
+	mkdir -p dist
+	yarn --silent run typescript-json-schema tsconfig.json $(basename $(notdir $@)) > $@
