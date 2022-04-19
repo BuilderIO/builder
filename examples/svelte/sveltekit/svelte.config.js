@@ -17,6 +17,8 @@ const config = {
 		methodOverride: {
 			allowed: ['PATCH', 'DELETE']
 		},
+		// This vite config is needed to build our Builder Svelte SDK, which is a CJS module at the moment.
+		// https://github.com/vitejs/vite/issues/2579#issuecomment-1025058519
 		vite: {
 			plugins: [viteCommonjs()],
 			optimizeDeps: {
