@@ -29,7 +29,10 @@ module.exports = {
               return (
                 content
                   // use <svelte:self>
-                  .replace()
+                  .replace(
+                    /<RenderBlock  block=\{child\} ><\/RenderBlock>/g,
+                    '<svelte:self block={child}></svelte:self>'
+                  )
                   // temporary workaround for <style> causing vite-plugin-svelte to break
                   // TBD issue
                   .replace(

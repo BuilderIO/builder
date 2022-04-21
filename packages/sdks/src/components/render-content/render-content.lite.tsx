@@ -8,7 +8,7 @@ import {
 } from '@builder.io/mitosis';
 import { isBrowser } from '../../functions/is-browser';
 import { BuilderContent } from '../../types/builder-content';
-import BuilderContext from '../../context/builder.context';
+import BuilderContext from '../../context/builder.context.lite';
 import { track } from '../../functions/track';
 import { isEditing } from '../../functions/is-editing';
 import { isPreviewing } from '../../functions/is-previewing';
