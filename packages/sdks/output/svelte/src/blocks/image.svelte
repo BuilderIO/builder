@@ -10,7 +10,7 @@
     
     export let altText;
 export let backgroundSize;
-export let class;
+export let className;
 export let image;
 export let srcset;
 export let sizes;
@@ -38,7 +38,7 @@ export let children;
 <img  loading="lazy"  class="img"  alt={altText}  aria-role={altText ? 'presentation' : undefined}  style={{
 objectPosition: backgroundSize || 'center',
 objectFit: backgroundSize || 'cover'
-}}  class={'builder-image' + (class ? ' ' + class : '')}  src={image}  srcset={srcset}  sizes={sizes}  />
+}}  class={'builder-image' + (className ? ' ' + className : '')}  src={image}  srcset={srcset}  sizes={sizes}  />
 
       
 <source  srcSet={srcset}  />

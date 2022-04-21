@@ -4,18 +4,18 @@
      import { onDestroy } from 'svelte'
      
    import  {  isBrowser  }  from '../../functions/is-browser';
-import  BuilderContext,  {  }  from '../../context/builder.context.lite';
+import  BuilderContext,  {  }  from '../../context/builder.context.svelte';
 import  {  track  }  from '../../functions/track';
 import  {  isEditing  }  from '../../functions/is-editing';
 import  {  isPreviewing  }  from '../../functions/is-previewing';
 import  {  previewingModelName  }  from '../../functions/previewing-model-name';
 import  {  getContent  }  from '../../functions/get-content';
 import  {  convertSearchParamsToQueryObject  ,  getBuilderSearchParams  }  from '../../functions/get-builder-search-params';
-import  RenderBlocks,  {  }  from '../render-blocks.lite';
+import  RenderBlocks,  {  }  from '../render-blocks.svelte';
 import  {  evaluate  }  from '../../functions/evaluate';
 import  {  getFetch  }  from '../../functions/get-fetch';
 import  {  TARGET  }  from '../../constants/target';
-import  RenderStyles,  {  }  from './components/render-styles.lite';
+import  RenderStyles,  {  }  from './components/render-styles.svelte';
 
    
  

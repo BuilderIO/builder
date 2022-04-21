@@ -3,7 +3,7 @@
     
     
     
-  import  RenderBlock,  {  }  from '../components/render-block.lite';
+  import  RenderBlock,  {  }  from '../components/render-block.svelte';
 
   
 
@@ -250,7 +250,7 @@ let formErrorMessage = '';
     
 {#if builderBlock && builderBlock.children }
       
-{#each builderBlock?.children as block }<RenderBlock  block={block} ></RenderBlock>{/each}
+{#each builderBlock?.children as block, index }<RenderBlock  block={block} ></RenderBlock>{/each}
 
     {/if}
 

@@ -3,8 +3,8 @@
      import { afterUpdate } from 'svelte'
      
      
-   import  RenderContent,  {  }  from '../components/render-content/render-content.lite';
-import  BuilderContext,  {  }  from '../context/builder.context.lite';
+   import  RenderContent,  {  }  from '../components/render-content/render-content.svelte';
+import  BuilderContext,  {  }  from '../context/builder.context.svelte';
 import  {  getContent  }  from '../functions/get-content';
 
    

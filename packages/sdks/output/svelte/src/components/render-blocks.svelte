@@ -4,7 +4,7 @@
     
     
   import  {  isEditing  }  from '../functions/is-editing';
-import  RenderBlock,  {  }  from './render-block.lite';
+import  RenderBlock,  {  }  from './render-block.svelte';
 
   
 
@@ -56,7 +56,7 @@ class: className()
     
 {#if blocks }
       
-{#each blocks as block }<RenderBlock  key={block.id}  block={block} ></RenderBlock>{/each}
+{#each blocks as block, index }<RenderBlock  key={block.id}  block={block} ></RenderBlock>{/each}
 
     {/if}
 

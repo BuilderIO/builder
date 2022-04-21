@@ -8,10 +8,10 @@ import  {  getBlockProperties  }  from '../functions/get-block-properties';
 import  {  getBlockStyles  }  from '../functions/get-block-styles';
 import  {  getBlockTag  }  from '../functions/get-block-tag';
 import  {  components  }  from '../functions/register-component';
-import  BuilderContext,  {  }  from '../context/builder.context.lite';
+import  BuilderContext,  {  }  from '../context/builder.context.svelte';
 import  {  getBlockActions  }  from '../functions/get-block-actions';
 import  {  getProcessedBlock  }  from '../functions/get-processed-block';
-import  BlockStyles,  {  }  from './block-styles.lite';
+import  BlockStyles,  {  }  from './block-styles.svelte';
 
   
 
@@ -109,12 +109,12 @@ return componentRef() ? [] : children();
         
 {#if componentRef() }<componentRef() {...componentOptions()} builderBlock={useBlock()} >
             
-{#each children() as child }<RenderBlock  block={child} ></RenderBlock>{/each}
+{#each children() as child, index }<RenderBlock  block={child} ></RenderBlock>{/each}
 
           </componentRef()>{/if}
 
         
-{#each noCompRefChildren() as child }<RenderBlock  block={child} ></RenderBlock>{/each}
+{#each noCompRefChildren() as child, index }<RenderBlock  block={child} ></RenderBlock>{/each}
 
       </tagName()>
 

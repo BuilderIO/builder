@@ -3,7 +3,7 @@
     
     
     
-  import  RenderBlocks,  {  }  from '../components/render-blocks.lite';
+  import  RenderBlocks,  {  }  from '../components/render-blocks.svelte';
 
   
 
@@ -68,7 +68,7 @@ return {
 
   <div  class="builder-columns div"  style={columnsCssVars()} >
     
-{#each columns as column }<div  class="builder-column div-2"  style={{
+{#each columns as column, index }<div  class="builder-column div-2"  style={{
 width: getColumnCssWidth(index),
 marginLeft: `${index === 0 ? 0 : getGutterSize()}px`,
 ...columnCssVars()
