@@ -19,7 +19,7 @@
   </div>
 </template>
 <script>
-import RenderContent from "../components/render-content";
+import RenderContent from "../components/render-content/render-content";
 import BuilderContext from "../context/builder.context";
 import { getContent } from "../functions/get-content";
 

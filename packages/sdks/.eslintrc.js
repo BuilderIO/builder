@@ -15,5 +15,6 @@ module.exports = {
   plugins: ['@typescript-eslint', '@builder.io/mitosis'],
   rules: {
     '@builder.io/mitosis/css-no-vars': 'error',
+    '@typescript-eslint/no-empty-interface': 'off',
   },
 };
