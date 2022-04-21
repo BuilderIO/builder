@@ -83,7 +83,7 @@ ${state.getFontCss({ customFonts: props.customFonts })}`;
   return (
     <Show
       when={TARGET === 'svelte'}
-      else={<style innerHTML={state.injectedStyles}></style>}
+      else={<style innerHTML={state.injectedStyles} />}
     >
       <Fragment innerHTML={state.injectedStyleScript} />
     </Show>

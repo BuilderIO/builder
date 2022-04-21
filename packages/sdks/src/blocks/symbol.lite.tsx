@@ -36,14 +36,19 @@ export default function Symbol(props: SymbolProps) {
   });
 
   onUpdate(() => {
-    const symbol = props.symbol;
+    const symbolToUse = props.symbol;
 
-    if (symbol && !symbol.content && !state.content && symbol.model) {
+    if (
+      symbolToUse &&
+      !symbolToUse.content &&
+      !state.content &&
+      symbolToUse.model
+    ) {
       getContent({
-        model: symbol.model,
+        model: symbolToUse.model,
         apiKey: builderContext.apiKey!,
         options: {
-          entry: symbol.entry,
+          entry: symbolToUse.entry,
         },
       }).then((response) => {
         state.content = response;

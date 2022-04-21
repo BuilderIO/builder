@@ -1,55 +1,51 @@
 <script>
-     import { onMount } from 'svelte'
-     import { afterUpdate } from 'svelte'
-     
-     
-   import  RenderContent,  {  }  from '../components/render-content/render-content.svelte';
+    import { onMount } from 'svelte'
+    import { afterUpdate } from 'svelte'
+    
+    
+  import  RenderContent,  {  }  from '../components/render-content/render-content.svelte';
 import  BuilderContext,  {  }  from '../context/builder.context';
 import  {  getContent  }  from '../functions/get-content';
 
-   
- 
+  
 
-     
-     export let attributes;
+
+    
+    export let attributes;
 export let symbol;
 
-     
-     
+    
+    
 
-     let className = 'builder-symbol';
+    let className = 'builder-symbol';
 let content = null;
 
-     onMount(() => { 
- content = symbol?.content;
+    onMount(() => { content = symbol?.content; });
+
+    afterUpdate(() => { const symbolToUse = symbol;
+
+if (symbolToUse && !symbolToUse.content && !content && symbolToUse.model) {
+getContent({
+  model: symbolToUse.model,
+  apiKey: builderContext.apiKey,
+  options: {
+    entry: symbolToUse.entry
+  }
+}).then(response => {
+  content = response;
 });
+} })
 
-     afterUpdate(() => { 
- const symbol = symbol;
+    
+  </script>
 
- if (symbol && !symbol.content && !content && symbol.model) {
-   getContent({
-     model: symbol.model,
-     apiKey: builderContext.apiKey!,
-     options: {
-       entry: symbol.entry
-     }
-   }).then(response => {
-     content = response;
-   });
- }
-})
-
-     
-   </script>
-
-   <div {...attributes} dataSet={{
- class: className
+  <div {...attributes} dataSet={{
+class: className
 }}  class={className} >
-     
+    
 <RenderContent  apiKey={builderContext.apiKey}  context={builderContext.context}  data={{ ...symbol?.data,
- ...builderContext.state,
- ...symbol?.content?.data?.state
+...builderContext.state,
+...symbol?.content?.data?.state
 }}  model={symbol?.model}  content={content} ></RenderContent>
 
-   </div>
+  </div>

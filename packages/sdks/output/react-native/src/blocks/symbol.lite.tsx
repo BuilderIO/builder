@@ -17,14 +17,14 @@ export default function Symbol(props) {
   }, []);
 
   useEffect(() => {
-    const symbol = props.symbol;
+    const symbolToUse = props.symbol;
 
-    if (symbol && !symbol.content && !content && symbol.model) {
+    if (symbolToUse && !symbolToUse.content && !content && symbolToUse.model) {
       getContent({
-        model: symbol.model,
+        model: symbolToUse.model,
         apiKey: builderContext.apiKey,
         options: {
-          entry: symbol.entry,
+          entry: symbolToUse.entry,
         },
       }).then((response) => {
         setContent(response);
