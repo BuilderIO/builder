@@ -1,6 +1,6 @@
 import { onMount, onUpdate, useContext, useState } from '@builder.io/mitosis';
 import RenderContent from '../components/render-content/render-content.lite';
-import BuilderContext from '../context/builder.context.lite';
+import BuilderContext from '../context/builder.context';
 import { getContent } from '../functions/get-content';
 import { registerComponent } from '../functions/register-component';
 import { BuilderContent } from '../types/builder-content';

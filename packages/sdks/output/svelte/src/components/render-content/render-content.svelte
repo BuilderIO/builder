@@ -4,7 +4,7 @@
      import { onDestroy } from 'svelte'
      
    import  {  isBrowser  }  from '../../functions/is-browser';
-import  BuilderContext,  {  }  from '../../context/builder.context.svelte';
+import  BuilderContext,  {  }  from '../../context/builder.context';
 import  {  track  }  from '../../functions/track';
 import  {  isEditing  }  from '../../functions/is-editing';
 import  {  isPreviewing  }  from '../../functions/is-previewing';

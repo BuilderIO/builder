@@ -4,7 +4,7 @@
      
      
    import  RenderContent,  {  }  from '../components/render-content/render-content.svelte';
-import  BuilderContext,  {  }  from '../context/builder.context.svelte';
+import  BuilderContext,  {  }  from '../context/builder.context';
 import  {  getContent  }  from '../functions/get-content';
 
    

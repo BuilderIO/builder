@@ -2,7 +2,7 @@ import * as React from "react";
 import { View, StyleSheet, Image, Text } from "react-native";
 import { useState, useContext, useEffect } from "react";
 import { isBrowser } from "../../functions/is-browser";
-import BuilderContext from "../../context/builder.context.lite";
+import BuilderContext from "../../context/builder.context";
 import { track } from "../../functions/track";
 import { isEditing } from "../../functions/is-editing";
 import { isPreviewing } from "../../functions/is-previewing";
