@@ -62,7 +62,7 @@ export default function RenderContent(props: RenderContentProps) {
     overrideContent: null as Nullable<BuilderContent>,
     update: 0,
     overrideState: {} as Dictionary<any>,
-    get state(): Dictionary<any> {
+    get contentState(): Dictionary<any> {
       return {
         ...props.content?.data?.state,
         ...props.data,
@@ -107,7 +107,7 @@ export default function RenderContent(props: RenderContentProps) {
         evaluate({
           code: jsCode,
           context: state.context,
-          state: state.state,
+          state: state.contentState,
         });
       }
     },
@@ -120,7 +120,7 @@ export default function RenderContent(props: RenderContentProps) {
         evaluate({
           code: group,
           context: state.context,
-          state: state.state,
+          state: state.contentState,
         })
       );
     },
@@ -153,7 +153,7 @@ export default function RenderContent(props: RenderContentProps) {
           'builder:component:stateChange',
           {
             detail: {
-              state: state.state,
+              state: state.contentState,
               ref: {
                 name: props.model,
               },
@@ -185,7 +185,7 @@ export default function RenderContent(props: RenderContentProps) {
       return state.useContent;
     },
     get state() {
-      return state.state;
+      return state.contentState;
     },
     get context() {
       return state.context;
@@ -248,7 +248,7 @@ export default function RenderContent(props: RenderContentProps) {
 
   onUpdate(() => {
     state.emitStateUpdate();
-  }, [state.state]);
+  }, [state.contentState]);
 
   onUnMount(() => {
     if (isBrowser()) {
@@ -264,7 +264,7 @@ export default function RenderContent(props: RenderContentProps) {
   return (
     <Show when={state.useContent}>
       <div
-        onClick={(_e) =>
+        onClick={() =>
           track('click', {
             contentId: state.useContent!.id,
           })

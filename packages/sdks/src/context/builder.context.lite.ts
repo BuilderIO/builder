@@ -4,8 +4,8 @@ import { Nullable } from '../types/typescript';
 
 interface BuilderContext {
   content: Nullable<BuilderContent>;
-  context: {};
-  state: {};
+  context: Record<string, unknown>;
+  state: Record<string, unknown>;
   apiKey: string | null;
 }
 

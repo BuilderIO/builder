@@ -63,7 +63,7 @@ function evaluateJsCode() {
    evaluate({
      code: jsCode,
      context: context(),
-     state: state()
+     state: contentState()
    });
  }
 }
@@ -72,7 +72,7 @@ function evalExpression(expression) {
  return expression.replace(/{{([^}]+)}}/g, (_match, group) => evaluate({
    code: group,
    context: context(),
-   state: state()
+   state: contentState()
  }));
 }
 
@@ -108,7 +108,7 @@ function runHttpRequests() {
 function emitStateUpdate() {
  window.dispatchEvent(new CustomEvent('builder:component:stateChange', {
    detail: {
-     state: state(),
+     state: contentState(),
      ref: {
        name: model
      }
@@ -126,7 +126,7 @@ function emitStateUpdate() {
  return mergedContent;
 };
 
-$: state = () => {
+$: contentState = () => {
  return { ...content?.data?.state,
    ...data,
    ...overrideState

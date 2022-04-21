@@ -2,16 +2,17 @@ import * as React from "react";
 import { View, StyleSheet, Image, Text } from "react-native";
 import { useState, useRef } from "react";
 import RenderBlock from "../components/render-block.lite";
+import { isEditing } from "../functions/is-editing";
 
 export default function FormComponent(props) {
-  const [state, setState] = useState(() => "unsubmitted");
+  const [formState, setFormState] = useState(() => "unsubmitted");
 
   const [responseData, setResponseData] = useState(() => null);
 
   const [formErrorMessage, setFormErrorMessage] = useState(() => "");
 
   function submissionState() {
-    return (Builder.isEditing && props.previewState) || state;
+    return (isEditing() && props.previewState) || formState;
   }
 
   function onSubmit(event) {
@@ -116,7 +117,7 @@ export default function FormComponent(props) {
           return;
         }
       }
-      setState("sending");
+      setFormState("sending");
       const formUrl = `${
         builder.env === "dev" ? "http://localhost:5000" : "https://builder.io"
       }/api/v1/form-submit?apiKey=${builder.apiKey}&to=${btoa(
@@ -148,7 +149,7 @@ export default function FormComponent(props) {
             }
           }
           setResponseData(body);
-          setState(res.ok ? "success" : "error");
+          setFormState(res.ok ? "success" : "error");
           if (res.ok) {
             const submitSuccessEvent = new CustomEvent("submit:success", {
               detail: { res, body },
@@ -192,7 +193,7 @@ export default function FormComponent(props) {
             }
           }
           setResponseData(err);
-          setState("error");
+          setFormState("error");
         }
       );
     }

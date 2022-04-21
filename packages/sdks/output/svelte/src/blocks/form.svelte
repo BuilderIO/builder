@@ -4,6 +4,7 @@
     
     
   import  RenderBlock,  {  }  from '../components/render-block.svelte';
+import  {  isEditing  }  from '../functions/is-editing';
 
   
 
@@ -134,7 +135,7 @@ if (sendSubmissionsTo === 'zapier') {
     }
   }
 
-  state = 'sending';
+  formState = 'sending';
   const formUrl = `${builder.env === 'dev' ? 'http://localhost:5000' : 'https://builder.io'}/api/v1/form-submit?apiKey=${builder.apiKey}&to=${btoa(sendSubmissionsToEmail || '')}&name=${encodeURIComponent(name || '')}`;
   fetch(sendSubmissionsTo === 'email' ? formUrl : action
   /* TODO: throw error if no action URL */
@@ -168,7 +169,7 @@ if (sendSubmissionsTo === 'zapier') {
     }
 
     responseData = body;
-    state = res.ok ? 'success' : 'error';
+    formState = res.ok ? 'success' : 'error';
 
     if (res.ok) {
       const submitSuccessEvent = new CustomEvent('submit:success', {
@@ -227,15 +228,15 @@ if (sendSubmissionsTo === 'zapier') {
     }
 
     responseData = err;
-    state = 'error';
+    formState = 'error';
   });
 }
 }
     $: submissionState = () => {
-return Builder.isEditing && previewState || state;
+return isEditing() && previewState || formState;
 };
 
-    let state = 'unsubmitted';
+    let formState = 'unsubmitted';
 let responseData = null;
 let formErrorMessage = '';
 

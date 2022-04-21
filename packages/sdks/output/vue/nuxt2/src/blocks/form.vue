@@ -27,7 +27,7 @@
     ></builder-blocks>
 
     <pre
-      class="builder-form-error-text pre-2brhoa1k8gd"
+      class="builder-form-error-text pre-4wbls88y960"
       v-if="submissionState === 'error' && responseData"
     >
         {{ JSON.stringify(responseData, null, 2) }}
@@ -43,6 +43,7 @@
 </template>
 <script>
 import RenderBlock from "../components/render-block";
+import { isEditing } from "../functions/is-editing";
 
 import { registerComponent } from "../functions/register-component";
 
@@ -75,14 +76,14 @@ export default registerComponent(
     ],
 
     data: () => ({
-      state: "unsubmitted",
+      formState: "unsubmitted",
       responseData: null,
       formErrorMessage: "",
     }),
 
     computed: {
       submissionState() {
-        return (Builder.isEditing && this.previewState) || this.state;
+        return (isEditing() && this.previewState) || this.formState;
       },
     },
 
@@ -197,7 +198,7 @@ export default registerComponent(
             }
           }
 
-          this.state = "sending";
+          this.formState = "sending";
           const formUrl = `${
             builder.env === "dev"
               ? "http://localhost:5000"
@@ -243,7 +244,7 @@ export default registerComponent(
               }
 
               this.responseData = body;
-              this.state = res.ok ? "success" : "error";
+              this.formState = res.ok ? "success" : "error";
 
               if (res.ok) {
                 const submitSuccessEvent = new CustomEvent("submit:success", {
@@ -301,7 +302,7 @@ export default registerComponent(
               }
 
               this.responseData = err;
-              this.state = "error";
+              this.formState = "error";
             }
           );
         }
@@ -515,7 +516,7 @@ export default registerComponent(
 );
 </script>
 <style scoped>
-.pre-2brhoa1k8gd {
+.pre-4wbls88y960 {
   padding: 10px;
   color: red;
   text-align: center;

@@ -12,7 +12,7 @@
         }"
         :class="
           _classStringToObject(
-            'builder-image' + (this.class ? ' ' + this.class : '')
+            'builder-image' + (this.className ? ' ' + this.className : '')
           )
         "
         :src="image"
@@ -49,6 +49,7 @@ export default registerComponent(
     props: [
       "altText",
       "backgroundSize",
+      "className",
       "image",
       "srcset",
       "sizes",

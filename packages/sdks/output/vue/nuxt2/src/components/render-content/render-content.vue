@@ -59,7 +59,7 @@ export default {
           return _this.useContent;
         },
         get state() {
-          return _this.state;
+          return _this.contentState;
         },
         get context() {
           return _this.context;
@@ -148,7 +148,7 @@ export default {
       };
       return mergedContent;
     },
-    state() {
+    contentState() {
       return {
         ...this.content?.data?.state,
         ...this.data,
@@ -173,7 +173,7 @@ export default {
     },
     onUpdateHook2() {
       return {
-        0: this.state,
+        0: this.contentState,
       };
     },
   },
@@ -215,7 +215,7 @@ export default {
         evaluate({
           code: jsCode,
           context: this.context,
-          state: this.state,
+          state: this.contentState,
         });
       }
     },
@@ -224,7 +224,7 @@ export default {
         evaluate({
           code: group,
           context: this.context,
-          state: this.state,
+          state: this.contentState,
         })
       );
     },
@@ -254,7 +254,7 @@ export default {
       window.dispatchEvent(
         new CustomEvent("builder:component:stateChange", {
           detail: {
-            state: this.state,
+            state: this.contentState,
             ref: {
               name: this.model,
             },

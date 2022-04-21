@@ -19,7 +19,7 @@ export default function RenderBlock(props) {
       return null;
     }
 
-    const ref = components[useBlock().component?.name];
+    const ref = components[componentName];
 
     if (componentName && !ref) {
       // TODO: Public doc page with more info about this message

@@ -1,7 +1,14 @@
 import { useState, useRef, Show, For } from '@builder.io/mitosis';
 import RenderBlock from '../components/render-block.lite';
+import { isEditing } from '../functions/is-editing';
 import { registerComponent } from '../functions/register-component';
 
+/**
+ * This component was copied over from the old SDKs and has a lot of code pointing to invalid functions/env vars. It needs
+ * to be cleaned up before the component can actually be usable.
+ */
+
+interface BuilderElement {}
 export interface FormProps {
   attributes?: any;
   name?: string;
@@ -27,12 +34,12 @@ export type FormState = 'unsubmitted' | 'sending' | 'success' | 'error';
 
 export default function FormComponent(props: FormProps) {
   const state = useState({
-    state: 'unsubmitted' as FormState,
+    formState: 'unsubmitted' as FormState,
     // TODO: separate response and error?
     responseData: null as any,
     formErrorMessage: '',
     get submissionState(): FormState {
-      return (Builder.isEditing && props.previewState) || state.state;
+      return (isEditing() && props.previewState) || state.formState;
     },
     onSubmit(event: Event & { currentTarget: HTMLFormElement }) {
       const sendWithJs =
@@ -144,7 +151,7 @@ export default function FormComponent(props: FormProps) {
           }
         }
 
-        state.state = 'sending';
+        state.formState = 'sending';
 
         const formUrl = `${
           builder.env === 'dev' ? 'http://localhost:5000' : 'https://builder.io'
@@ -186,7 +193,7 @@ export default function FormComponent(props: FormProps) {
             }
 
             state.responseData = body;
-            state.state = res.ok ? 'success' : 'error';
+            state.formState = res.ok ? 'success' : 'error';
 
             if (res.ok) {
               const submitSuccessEvent = new CustomEvent('submit:success', {
@@ -238,7 +245,7 @@ export default function FormComponent(props: FormProps) {
             }
 
             state.responseData = err;
-            state.state = 'error';
+            state.formState = 'error';
           }
         );
       }
