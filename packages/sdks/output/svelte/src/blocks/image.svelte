@@ -31,11 +31,11 @@ export let children;
     
   </script>
 
-  <div  class="div" >
+  <div   >
     
 <picture >
       
-<img  loading="lazy"  class="img"  alt={altText}  aria-role={altText ? 'presentation' : undefined}  style={{
+<img  loading="lazy"    alt={altText}  aria-role={altText ? 'presentation' : undefined}  style={{
 objectPosition: backgroundSize || 'center',
 objectFit: backgroundSize || 'cover'
 }}  class={'builder-image' + (className ? ' ' + className : '')}  src={image}  srcset={srcset}  sizes={sizes}  />

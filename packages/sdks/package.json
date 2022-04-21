@@ -54,5 +54,9 @@
       "path": "git-cz"
     }
   },
-  "packageManager": "yarn@3.2.0"
+  "packageManager": "yarn@3.2.0",
+  "resolutions": {
+    "@builder.io/mitosis-cli": "link:../../../mitosis/packages/cli",
+    "@builder.io/mitosis": "link:../../../mitosis/packages/core"
+  }
 }

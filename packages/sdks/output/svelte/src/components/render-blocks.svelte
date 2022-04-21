@@ -50,7 +50,7 @@ return 'builder-blocks' + (!blocks?.length ? ' no-blocks' : '');
     
   </script>
 
-  <div  class="div"  builder-path={path}  builder-parent-id={parent}  dataSet={{
+  <div    builder-path={path}  builder-parent-id={parent}  dataSet={{
 class: className()
 }}  on:click="{event => onClick()}"  on:mouseenter="{event => onMouseEnter()}"  class={className()} >
     

@@ -22,6 +22,28 @@ module.exports = {
       // prettier & svelte don't play well together when it comes to parsing @html content for some reason
       // https://github.com/sveltejs/prettier-plugin-svelte/issues/290
       prettier: false,
+      plugins: [
+        () => ({
+          code: {
+            post: (content) => {
+              return (
+                content
+                  // use <svelte:self>
+                  .replace()
+                  // temporary workaround for <style> causing vite-plugin-svelte to break
+                  // TBD issue
+                  .replace(
+                    '`<style>${injectedStyles()}</style>`',
+                    '`<styles>${injectedStyles()}</styles>`'
+                  )
+                  // temporary workaround until https://github.com/BuilderIO/mitosis/issues/282 is fixed
+                  .replace('class="img"', '')
+                  .replace('class="div"', '')
+              );
+            },
+          },
+        }),
+      ],
     },
   },
 };

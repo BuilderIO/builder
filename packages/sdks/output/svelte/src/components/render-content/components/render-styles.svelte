@@ -76,7 +76,7 @@ ${getFontCss({
 };
 
 $: injectedStyleScript = () => {
-return `<style>${injectedStyles()}</style>`;
+return `<styles>${injectedStyles()}</styles>`;
 };
 
     
