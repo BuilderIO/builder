@@ -7,13 +7,14 @@
 
   
 
+    
 
     
     export let space;
 export let columns;
 export let stackColumnsAt;
 export let reverseColumnsWhenStacked;
-
+    
     function getGutterSize() {
 return typeof space === 'number' ? space || 0 : 20;
 }
@@ -23,26 +24,27 @@ return columns || [];
 }
 
 function getWidth(index) {
-const columns = this.getColumns();
+const columns = getColumns();
 return columns[index]?.width || 100 / columns.length;
 }
 
 function getColumnCssWidth(index) {
-const columns = this.getColumns();
-const gutterSize = this.getGutterSize();
+const columns = getColumns();
+const gutterSize = getGutterSize();
 const subtractWidth = gutterSize * (columns.length - 1) / columns.length;
-return `calc(${this.getWidth(index)}% - ${subtractWidth}px)`;
+return `calc(${getWidth(index)}% - ${subtractWidth}px)`;
 }
 
 function maybeApplyForTablet(prop) {
-const stackColumnsAt = stackColumnsAt || 'tablet';
-return stackColumnsAt === 'tablet' ? prop : 'inherit';
+const _stackColumnsAt = stackColumnsAt || 'tablet';
+
+return _stackColumnsAt === 'tablet' ? prop : 'inherit';
 }
     $: columnsCssVars = () => {
 const flexDir = stackColumnsAt === 'never' ? 'inherit' : reverseColumnsWhenStacked ? 'column-reverse' : 'column';
 return {
   '--flex-dir': flexDir,
-  '--flex-dir-tablet': this.maybeApplyForTablet(flexDir)
+  '--flex-dir-tablet': maybeApplyForTablet(flexDir)
 };
 };
 
@@ -52,11 +54,13 @@ const marginLeft = '0';
 return {
   '--column-width': width,
   '--column-margin-left': marginLeft,
-  '--column-width-tablet': this.maybeApplyForTablet(width),
-  '--column-margin-left-tablet': this.maybeApplyForTablet(marginLeft)
+  '--column-width-tablet': maybeApplyForTablet(width),
+  '--column-margin-left-tablet': maybeApplyForTablet(marginLeft)
 };
 };
 
+    
+    
     
 
     
@@ -68,7 +72,9 @@ return {
 
   <div  class="builder-columns div"  style={columnsCssVars()} >
     
-{#each columns as column, index }<div  class="builder-column div-2"  style={{
+
+{#each columns as column, index }
+<div  class="builder-column div-2"  style={{
 width: getColumnCssWidth(index),
 marginLeft: `${index === 0 ? 0 : getGutterSize()}px`,
 ...columnCssVars()
@@ -76,7 +82,9 @@ marginLeft: `${index === 0 ? 0 : getGutterSize()}px`,
           
 <RenderBlocks  blocks={column.blocks} ></RenderBlocks>
 
-        </div>{/each}
+        </div>
+{/each}
+
 
   </div>
 

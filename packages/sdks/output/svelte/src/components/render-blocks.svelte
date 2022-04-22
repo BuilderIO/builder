@@ -8,12 +8,13 @@ import  RenderBlock,  {  }  from './render-block.svelte';
 
   
 
+    
 
     
     export let blocks;
 export let parent;
 export let path;
-
+    
     function onClick() {
 if (isEditing() && !blocks?.length) {
   window.parent?.postMessage({
@@ -42,6 +43,8 @@ return 'builder-blocks' + (!blocks?.length ? ' no-blocks' : '');
 };
 
     
+    
+    
 
     
 
@@ -54,11 +57,18 @@ return 'builder-blocks' + (!blocks?.length ? ' no-blocks' : '');
 class: className()
 }}  on:click="{event => onClick()}"  on:mouseenter="{event => onMouseEnter()}"  class={className()} >
     
-{#if blocks }
-      
-{#each blocks as block, index }<RenderBlock  key={block.id}  block={block} ></RenderBlock>{/each}
 
-    {/if}
+{#if blocks }
+
+      
+
+{#each blocks as block, index }
+<RenderBlock  key={block.id}  block={block} ></RenderBlock>
+{/each}
+
+
+    
+{/if}
 
   </div>
 

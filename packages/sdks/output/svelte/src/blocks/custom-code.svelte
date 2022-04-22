@@ -6,12 +6,13 @@
   
   
 
+    
 
     
     export let elem;
 export let replaceNodes;
 export let code;
-
+    
     function findAndRunScripts() {
 // TODO: Move this function to standalone one in '@builder.io/utils'
 if (elem && typeof window !== 'undefined') {
@@ -48,6 +49,8 @@ if (elem && typeof window !== 'undefined') {
 }
     
 
+    
+    
     let scriptsInserted = [];
 let scriptsRun = [];
 

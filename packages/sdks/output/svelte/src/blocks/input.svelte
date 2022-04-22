@@ -7,6 +7,7 @@ import  {  isEditing  }  from '../functions/is-editing';
 
 
 
+  
 
   
   export let attributes;
@@ -16,10 +17,12 @@ export let type;
 export let name;
 export let value;
 export let required;
+  
+  
+  
 
   
   
-
   
 
   

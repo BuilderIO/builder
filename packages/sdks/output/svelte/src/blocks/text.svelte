@@ -6,13 +6,16 @@
 
 
 
+  
 
   
   export let text;
+  
+  
+  
 
   
   
-
   
 
   

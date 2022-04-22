@@ -7,6 +7,7 @@
 
   
 
+    
 
     
     export let backgroundSize;
@@ -14,10 +15,12 @@ export let backgroundPosition;
 export let attributes;
 export let imgSrc;
 export let altText;
+    
+    
+    
 
     
     
-
     
 
     

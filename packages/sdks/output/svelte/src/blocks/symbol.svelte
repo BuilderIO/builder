@@ -9,14 +9,17 @@ import  {  getContent  }  from '../functions/get-content';
 
   
 
+    import { getContext, setContext } from "svelte";
 
     
     export let attributes;
 export let symbol;
-
     
     
+    
 
+    let builderContext = getContext(BuilderContext.key);
+    
     let className = 'builder-symbol';
 let content = null;
 

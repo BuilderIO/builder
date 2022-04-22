@@ -15,10 +15,11 @@ import  BlockStyles,  {  }  from './block-styles.svelte';
 
   
 
+    import { getContext, setContext } from "svelte";
 
     
     export let block;
-
+    
     
     $: component = () => {
 const componentName = useBlock().component?.name;
@@ -89,6 +90,8 @@ $: noCompRefChildren = () => {
 return componentRef() ? [] : children();
 };
 
+    let builderContext = getContext(BuilderContext.key);
+    
     
 
     
@@ -100,22 +103,36 @@ return componentRef() ? [] : children();
 
   
     
+
 {#if !componentInfo?.()?.noWrap }
+
       
-<tagName() {...propertiesAndActions()} style={css()} >
+<svelte:element {...propertiesAndActions()} style={css()}  this={tagName()} >
         
 <BlockStyles  block={useBlock()} ></BlockStyles>
 
         
-{#if componentRef() }<componentRef() {...componentOptions()} builderBlock={useBlock()} >
-            
-{#each children() as child, index }<RenderBlock  block={child} ></RenderBlock>{/each}
 
-          </componentRef()>{/if}
+{#if componentRef() }
+<svelte:component {...componentOptions()} builderBlock={useBlock()}  this={componentRef()} >
+            
+
+{#each children() as child, index }
+<svelte:self  block={child} ></svelte:self>
+{/each}
+
+
+          </svelte:component>
+{/if}
 
         
-{#each noCompRefChildren() as child, index }<RenderBlock  block={child} ></RenderBlock>{/each}
 
-      </tagName()>
+{#each noCompRefChildren() as child, index }
+<svelte:self  block={child} ></svelte:self>
+{/each}
 
-    {/if}
+
+      </svelte:element>
+
+    
+{/if}

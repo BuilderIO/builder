@@ -69,8 +69,9 @@ export default registerComponent(
         return `calc(${this.getWidth(index)}% - ${subtractWidth}px)`;
       },
       maybeApplyForTablet(prop) {
-        const stackColumnsAt = this.stackColumnsAt || "tablet";
-        return stackColumnsAt === "tablet" ? prop : "inherit";
+        const _stackColumnsAt = this.stackColumnsAt || "tablet";
+
+        return _stackColumnsAt === "tablet" ? prop : "inherit";
       },
     },
   },

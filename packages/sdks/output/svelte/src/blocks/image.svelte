@@ -6,6 +6,7 @@
   
   
 
+    
 
     
     export let altText;
@@ -17,11 +18,13 @@ export let sizes;
 export let aspectRatio;
 export let fitContent;
 export let builderBlock;
-export let children;
 
     
     
+    
 
+    
+    
     
 
     
@@ -46,24 +49,32 @@ objectFit: backgroundSize || 'cover'
     </picture>
 
     
-{#if aspectRatio && !(fitContent && builderBlock?.children?.length) }<div  class="builder-image-sizer div-2"  style={{
+
+{#if aspectRatio && !(fitContent && builderBlock?.children?.length) }
+<div  class="builder-image-sizer div-2"  style={{
 paddingTop: aspectRatio * 100 + '%'
 }} >
           
 {' '}
 
-        </div>{/if}
+        </div>
+{/if}
 
     
+
 {#if builderBlock?.children?.length && fitContent }
+
       
 <slot></slot>
 
-    {/if}
+    
+{/if}
 
 
     
+
 {#if !fitContent }
+
       
 <div  class="div-3" >
         
@@ -71,7 +82,8 @@ paddingTop: aspectRatio * 100 + '%'
 
       </div>
 
-    {/if}
+    
+{/if}
 
   </div>
 

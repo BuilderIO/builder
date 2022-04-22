@@ -19,13 +19,14 @@ import  RenderStyles,  {  }  from './components/render-styles.svelte';
 
   
 
+    import { getContext, setContext } from "svelte";
 
     
     export let content;
 export let data;
 export let model;
 export let apiKey;
-
+    
     function processMessage(event) {
 const {
   data
@@ -141,6 +142,16 @@ $: httpReqsData = () => {
 return {};
 };
 
+    
+    setContext(BuilderContext.key, { get content() {
+return useContent();
+}, get state() {
+return contentState();
+}, get context() {
+return context();
+}, get apiKey() {
+return props.apiKey;
+},});
     let overrideContent = null;
 let update = 0;
 let overrideState = {};
@@ -190,17 +201,23 @@ window.removeEventListener('builder:component:stateChangeListenerActivated', emi
 } });
   </script>
 
-  {#if useContent() }
+  
+{#if useContent() }
+
     
 <div  on:click="{event => track('click', {
 contentId: useContent().id
 })}"  data-builder-content-id={useContent?.()?.id} >
       
-{#if (useContent?.()?.data?.cssCode || useContent?.()?.data?.customFonts?.length) && TARGET !== 'reactNative' }<RenderStyles  cssCode={useContent().data.cssCode}  customFonts={useContent().data.customFonts} ></RenderStyles>{/if}
+
+{#if (useContent?.()?.data?.cssCode || useContent?.()?.data?.customFonts?.length) && TARGET !== 'reactNative' }
+<RenderStyles  cssCode={useContent().data.cssCode}  customFonts={useContent().data.customFonts} ></RenderStyles>
+{/if}
 
       
 <RenderBlocks  blocks={useContent?.()?.data?.blocks} ></RenderBlocks>
 
     </div>
 
-  {/if}
+  
+{/if}

@@ -7,11 +7,12 @@
 
   
 
+    
 
     
     export let cssCode;
 export let customFonts;
-
+    
     function getCssFromFont(font) {
 // TODO: compute what font sizes are used and only load those.......
 const family = font.family + (font.kind && !font.kind.includes('#') ? ', ' + font.kind : '');
@@ -61,11 +62,11 @@ function getFontCss({
 customFonts
 }) {
 // TODO: flag for this
-// if (!this.builder.allowCustomFonts) {
+// if (!builder.allowCustomFonts) {
 //   return '';
 // }
 // TODO: separate internal data from external
-return customFonts?.map(font => this.getCssFromFont(font))?.join(' ') || '';
+return customFonts?.map(font => getCssFromFont(font))?.join(' ') || '';
 }
     $: injectedStyles = () => {
 return `
@@ -80,6 +81,8 @@ return `<styles>${injectedStyles()}</styles>`;
 };
 
     
+    
+    
 
     
 
@@ -88,8 +91,11 @@ return `<styles>${injectedStyles()}</styles>`;
     
   </script>
 
-  {#if TARGET === 'svelte' }
+  
+{#if TARGET === 'svelte' }
+
     
 {@html injectedStyleScript()}
 
-  {/if}
+  
+{/if}

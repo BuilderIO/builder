@@ -6,6 +6,7 @@
   
   
 
+    
 
     
     export let attributes;
@@ -17,10 +18,12 @@ export let autoPlay;
 export let muted;
 export let controls;
 export let loop;
+    
+    
+    
 
     
     
-
     
 
     

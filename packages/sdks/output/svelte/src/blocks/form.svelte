@@ -8,6 +8,7 @@ import  {  isEditing  }  from '../functions/is-editing';
 
   
 
+    
 
     
     export let formRef;
@@ -29,7 +30,7 @@ export let builderBlock;
 export let errorMessage;
 export let sendingMessage;
 export let successMessage;
-
+    
     function onSubmit(event) {
 const sendWithJs = sendWithJs || sendSubmissionsTo === 'email';
 
@@ -236,6 +237,8 @@ if (sendSubmissionsTo === 'zapier') {
 return isEditing() && previewState || formState;
 };
 
+    
+    
     let formState = 'unsubmitted';
 let responseData = null;
 let formErrorMessage = '';
@@ -249,31 +252,46 @@ let formErrorMessage = '';
 
   <form {...attributes} validate={validate}  bind:this={formRef}  action={!sendWithJs && action}  method={method}  name={name}  on:submit="{event => onSubmit(event)}" >
     
+
 {#if builderBlock && builderBlock.children }
-      
-{#each builderBlock?.children as block, index }<RenderBlock  block={block} ></RenderBlock>{/each}
 
-    {/if}
+      
+
+{#each builderBlock?.children as block, index }
+<RenderBlock  block={block} ></RenderBlock>
+{/each}
 
 
     
+{/if}
+
+
+    
+
 {#if submissionState() === 'error' }
-      
-<BuilderBlocks  dataPath="errorMessage"  blocks={errorMessage} ></BuilderBlocks>
 
-    {/if}
+      
+<svelte:component  dataPath="errorMessage"  blocks={errorMessage}  this={BuilderBlocks} ></svelte:component>
+
+    
+{/if}
 
 
     
+
 {#if submissionState() === 'sending' }
-      
-<BuilderBlocks  dataPath="sendingMessage"  blocks={sendingMessage} ></BuilderBlocks>
 
-    {/if}
+      
+<svelte:component  dataPath="sendingMessage"  blocks={sendingMessage}  this={BuilderBlocks} ></svelte:component>
+
+    
+{/if}
 
 
     
+
 {#if submissionState() === 'error' && responseData }
+
       
 <pre  class="builder-form-error-text pre" >
         
@@ -281,15 +299,19 @@ let formErrorMessage = '';
 
       </pre>
 
-    {/if}
+    
+{/if}
 
 
     
-{#if submissionState() === 'success' }
-      
-<BuilderBlocks  dataPath="successMessage"  blocks={successMessage} ></BuilderBlocks>
 
-    {/if}
+{#if submissionState() === 'success' }
+
+      
+<svelte:component  dataPath="successMessage"  blocks={successMessage}  this={BuilderBlocks} ></svelte:component>
+
+    
+{/if}
 
   </form>
 

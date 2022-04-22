@@ -6,15 +6,18 @@
   
   
 
+    
 
     
     export let attributes;
 export let maxWidth;
-export let children;
 
     
     
+    
 
+    
+    
     
 
     
