@@ -1,3 +1,4 @@
+const traverse = require('traverse');
 const seedrandom = require('seedrandom');
 const rng = seedrandom('vue-sdk-seed');
 
@@ -24,12 +25,36 @@ module.exports = {
       prettier: false,
       plugins: [
         () => ({
+          json: {
+            pre: (json) => {
+              const tag =
+                json.meta.useMetadata && json.meta.useMetadata.elementTag;
+
+              const isMitosisNode = (x) =>
+                x && x['@type'] === '@builder.io/mitosis/node';
+
+              if (tag) {
+                traverse(json).forEach(function (item) {
+                  if (!isMitosisNode(item)) {
+                    return;
+                  }
+
+                  if (item.name === tag) {
+                    item.bindings.this = item.name;
+                    item.name = 'svelte:element';
+                  }
+                });
+              }
+            },
+          },
           code: {
             post: (content) => {
               return (
                 content
-                  // use <svelte:self>
+                  // use <svelte:self>'
+                  // no longer necessary once PR is merged
                   .replace(
+                    // eslint-disable-next-line no-regex-spaces
                     /<RenderBlock  block=\{child\} ><\/RenderBlock>/g,
                     '<svelte:self block={child}></svelte:self>'
                   )

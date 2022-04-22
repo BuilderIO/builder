@@ -1,4 +1,10 @@
-import { useState, Show, useContext, For } from '@builder.io/mitosis';
+import {
+  useMetadata,
+  useState,
+  Show,
+  useContext,
+  For,
+} from '@builder.io/mitosis';
 import { getBlockComponentOptions } from '../functions/get-block-component-options';
 import { getBlockProperties } from '../functions/get-block-properties';
 import { getBlockStyles } from '../functions/get-block-styles';
@@ -13,6 +19,10 @@ import BlockStyles from './block-styles.lite';
 export type RenderBlockProps = {
   block: BuilderBlock;
 };
+
+useMetadata({
+  elementTag: 'state.tagName',
+});
 
 export default function RenderBlock(props: RenderBlockProps) {
   const builderContext = useContext(BuilderContext);
