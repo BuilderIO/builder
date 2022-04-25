@@ -1,169 +1,110 @@
 import { registerDataPlugin } from '@builder.io/data-plugin-tools';
 import pkg from '../package.json';
 import { createDeliveryClient } from '@kentico/kontent-delivery';
-import appState from '@builder.io/app-context';
-import qs from 'qs';
-import { withBuilder } from '../../../packages/react/src/functions/with-builder';
+
+// https://localhost:1268/plugin.system.js?pluginId=@builder.io/plugin-kontent
 
 const pluginId = pkg.name;
-const metaFields = ['environment', 'space', 'revision', 'type'];
 
 registerDataPlugin(
   {
     id: pluginId,
     name: 'Kontent',
-    icon:
-      'https://raw.githubusercontent.com/Kentico/Home/master/images/kk-logo-shortcut.png',
+    icon: 'https://raw.githubusercontent.com/Kentico/Home/master/images/kk-logo-shortcut.png',
+    // Settings is optional and it represents what input you need from the user to connect their data
     settings: [
+      // Example of a settings input
       {
         name: 'projectId',
         type: 'string',
         required: true,
         helperText:
-          'Get your project ID from your Project settings > API keys https://kontent.ai/learn/tutorials/develop-apps/get-content/get-content-items/#a-1-find-your-project-id',
-      },
-      {
-        name: 'accessToken',
-        type: 'string',
-        required: false,
-        helperText:
-          'Get your preview API key from your Project settings > API key'
+          'Get your project ID'
       },
     ],
-    ctaText: `Connect your Kontent project`,
+    ctaText: ``,
   },
-  // Observable map of the settings configured above
+  // settings will be an Observable map of the settings configured above
   async settings => {
     const projectId = settings.get('projectId')?.trim();
-    const apiKey = settings.get('apiKey')?.trim();
-    const client = await createDeliveryClient({
-      projectId: projectId,
-      previewApiKey: apiKey,
-      defaultQueryConfig: {
-        usePreviewMode: !!apiKey
-      }
+
+    const client = createDeliveryClient({
+      projectId
     });
+
     return {
       async getResourceTypes() {
-        const contentTypes = await client.types().toAllPromise();
-        // const buildUrl = (url: string, locale: string, single = false) => {
-        //   return `${appState.config.apiRoot()}/api/v1/contentful-proxy?${
-        //     locale ? `locale=${locale}&` : ''
-        //   }single=${single}&select=fields&url=${encodeURIComponent(url)}`;
-        // };
 
-        const locales = await client.languages().toAllPromise();
-        const localeEnum = locales.data.items
-          .map(item => ({ value: item.system.codename, label: item.system.name }))
+        const languagesResponse = await client.languages().toAllPromise();
+        const languagesEnum = languagesResponse.data.items
+          .map(language => ({ value: language.system.codename, label: language.system.name }))
+          // Ask about this
           .concat([
             {
               label: 'Dynamic (bound to state)',
               value: '{{state.locale || ""}}',
             },
           ]);
-        return contentTypes.data.items.map(type => ({
+
+        const result = await client.types().toAllPromise();
+        return result.data.items.map(type => ({
           name: type.system.name,
-          id: type.system.id,
+          id: type.system.codename,
           canPickEntries: true,
           entryInputs: () => {
             return [
               {
-                name: 'locale',
+                name: 'language',
                 type: 'text',
-                enum: localeEnum,
+                enum: languagesEnum,
               },
             ];
           },
           inputs: () => {
-            const acceptableElements = type.elements.filter(element =>
-              // TODO validate supported options - https://kontent.ai/learn/reference/delivery-api/#tag/Content-elements
-              ['text', 'number', 'url_slug'].includes(element.type)
-            );
-            const elements: any = [
+            // return a list of inputs to query your data, think of this as the query schema: limit / offset / specific fields to query against
+            const fields = [
               {
-                name: 'locale',
-                type: 'text',
-                enum: localeEnum,
+                name: 'limit',
+                defaultValue: 10,
+                min: 0,
+                max: 100,
+                type: 'number',
               },
               {
-                name: 'order',
-                type: 'string',
-                enum: Object.keys(type.elements)
-                  .filter(key => !metaFields.includes(key))
-                  .map(key => ({
-                    label: key,
-                    value: `element.sys.${key}`,
-                  }))
+                name: 'language',
+                type: 'text',
+                enum: languagesEnum,
               },
             ];
-
-            if (acceptableElements.length > 0) {
-              elements.push({
-                name: 'fields',
-                advanced: true,
-                type: 'object',
-                friendlyName: `${type.system.name} fields`,
-                subFields: acceptableElements.map(element => ({
-                  type: element.type,
-                  name: element.id,
-                  friendlyName: element.name,
-                  helperText: `Query by a specific "${element.name}"" on ${type.system.name}`,
-                })),
-              } as any);
-            }
-
-            return elements;
+            return fields;
           },
-          toUrl: (userOptions: any) => {
-            const { locale, ...options } = userOptions;
+          toUrl: (options: any) => {
             // by entry
-            // https://cdn.contentful.com/spaces/{space_id}/environments/{environment_id}/entries/{entry_id}?access_token={access_token}
             if (options.entry) {
-              // todo: maybe environment should be an input
-              return client.item(options.entry).languageParameter(locale).getUrl();
+              const url =  client.items().type(type.system.codename).getUrl();
+              return url;
             }
-            let elements =
-              (options.fields && Object.keys(options.fields).length > 0 && options.fields) || null;
-            if (elements) {
-              elements = Object.keys(elements).reduce((acc, key) => {
-                const omitValue = elements[key] === '';
-                return {
-                  ...acc,
-                  ...(omitValue ? {} : { ['elements.' + key]: elements[key] }),
-                };
-              }, {});
-            }
-
-            const query = client.items()
-              .type(type.system.codename)
-              .elementsParameter(elements)
-              .withCustomParameter('allowDots', 'true')
-              .withCustomParameter('skipNulls', 'true');
-
-            // TODO ass other options
-
-            // by query
-            return query.languageParameter(locale).getUrl();
+            // by query, read query values from the schema you defined in inputs above and generate a public url to the results
+            return '';
           },
         }));
       },
-      async getEntriesByResourceType(resourceTypeId: string, options) {
-
-        if(options?.resourceEntryId as string){
-          const resourceEntryId = options?.resourceEntryId as string;
-          return await client.items()
-          .type(resourceTypeId)
-          .elementsParameter(["elements." + resourceEntryId])
-          .toAllPromise()
-          .then(response => response.data.items[0])
-          .then(item => {
-            return {
-              id: item.system.id,
-              name: item.elements[resourceEntryId].name
-            };
-          })
+      async getEntriesByResourceType(id: string, options) {
+        const query = client.items().type(id);;
+        if (options?.resourceEntryId) {
+          // data plugins UI is asking for a specific entry return [entry]
+          return [];
+        } else if (options?.searchText) {
+          // data plugins UI is asking for the results of a free form search on entries per resource type
+          // hit api with searchText and return an array that matches interface Array<{ name: string, id: string}>
+          return [];
         }
-        // TODO options.options?.searchText
+        // no search or specific entry , return all entries for  this specific resource type
+        const result = await query.toAllPromise();
+        return result.data.items.map(entry => ({
+          id: entry.system.codename,
+          name: entry.system.name as string,
+        }));
       },
     };
   }
