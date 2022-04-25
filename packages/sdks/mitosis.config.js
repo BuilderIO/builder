@@ -51,19 +51,6 @@ module.exports = {
             post: (content) => {
               return (
                 content
-                  // use <svelte:self>'
-                  // no longer necessary once PR is merged
-                  .replace(
-                    // eslint-disable-next-line no-regex-spaces
-                    /<RenderBlock  block=\{child\} ><\/RenderBlock>/g,
-                    '<svelte:self block={child}></svelte:self>'
-                  )
-                  // temporary workaround for <style> causing vite-plugin-svelte to break
-                  // TBD issue
-                  .replace(
-                    '`<style>${injectedStyles()}</style>`',
-                    '`<styles>${injectedStyles()}</styles>`'
-                  )
                   // temporary workaround until https://github.com/BuilderIO/mitosis/issues/282 is fixed
                   .replace('class="img"', '')
                   .replace('class="div"', '')
