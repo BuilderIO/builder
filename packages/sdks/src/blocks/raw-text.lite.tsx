@@ -1,5 +1,3 @@
-import { registerComponent } from '../functions/register-component';
-
 export interface RawTextProps {
   attributes?: any;
   text?: string;
@@ -14,17 +12,3 @@ export default function RawText(props: RawTextProps) {
     />
   );
 }
-
-registerComponent({
-  name: 'Builder:RawText',
-  hideFromInsertMenu: true,
-  builtIn: true,
-  inputs: [
-    {
-      name: 'text',
-      bubble: true,
-      type: 'longText',
-      required: true,
-    },
-  ],
-});

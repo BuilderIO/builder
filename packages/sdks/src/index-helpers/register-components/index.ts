@@ -1,0 +1,19 @@
+export default function registerComponents() {
+  require('./button');
+  require('./columns');
+  require('./custom-code');
+  require('./embed');
+  require('./form');
+  require('./fragment');
+  require('./image');
+  require('./img');
+  require('./input');
+  require('./raw-text');
+  require('./section');
+  require('./select');
+  require('./submit-button');
+  require('./symbol');
+  require('./text');
+  require('./textarea');
+  require('./video');
+}

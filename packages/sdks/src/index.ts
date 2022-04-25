@@ -2,6 +2,10 @@
 // properly.
 import('./index-helpers/top-of-file');
 
+// register all Builder components
+import registerComponents from './index-helpers/register-components';
+registerComponents();
+
 import { isEditing } from './functions/is-editing';
 
 if (isEditing()) {

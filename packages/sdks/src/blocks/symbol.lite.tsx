@@ -2,7 +2,7 @@ import { onMount, onUpdate, useContext, useState } from '@builder.io/mitosis';
 import RenderContent from '../components/render-content/render-content.lite';
 import BuilderContext from '../context/builder.context.lite';
 import { getContent } from '../functions/get-content';
-import { registerComponent } from '../functions/register-component';
+
 import { BuilderContent } from '../types/builder-content';
 
 export interface SymbolInfo {
@@ -81,44 +81,3 @@ export default function Symbol(props: SymbolProps) {
     </div>
   );
 }
-
-registerComponent({
-  name: 'Symbol',
-  noWrap: true,
-  static: true,
-  inputs: [
-    {
-      name: 'symbol',
-      type: 'uiSymbol',
-    },
-    {
-      name: 'dataOnly',
-      helperText: "Make this a data symbol that doesn't display any UI",
-      type: 'boolean',
-      defaultValue: false,
-      advanced: true,
-      hideFromUI: true,
-    },
-    {
-      name: 'inheritState',
-      helperText: 'Inherit the parent component state and data',
-      type: 'boolean',
-      defaultValue: false,
-      advanced: true,
-    },
-    {
-      name: 'renderToLiquid',
-      helperText:
-        'Render this symbols contents to liquid. Turn off to fetch with javascript and use custom targeting',
-      type: 'boolean',
-      defaultValue: false,
-      advanced: true,
-      hideFromUI: true,
-    },
-    {
-      name: 'useChildren',
-      hideFromUI: true,
-      type: 'boolean',
-    },
-  ],
-});

@@ -1,6 +1,4 @@
 import '@builder.io/mitosis';
-import RenderBlocks from '../components/render-blocks.lite';
-import { registerComponent } from '../functions/register-component';
 
 export interface FragmentProps {
   maxWidth?: number;
@@ -13,12 +11,3 @@ export default function FragmentComponent(props: FragmentProps) {
   // and use a normal fragment, otherwise use span
   return <span>{props.children}</span>;
 }
-
-registerComponent({
-  name: 'Fragment',
-  static: true,
-  hidden: true,
-  builtIn: true,
-  canHaveChildren: true,
-  noWrap: true,
-});
