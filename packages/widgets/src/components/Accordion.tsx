@@ -118,7 +118,6 @@ export class AccordionComponent extends React.Component<AccordionProps> {
             }`}
             style={{
               order: typeof openGridItemOrder === 'number' ? openGridItemOrder : undefined,
-              maxHeight: this.props.animate ? (open ? '100vh' : 0) : undefined,
               transition: this.props.animate ? 'max-height 0.5s' : undefined,
               ...(grid && {
                 width: '100%',
