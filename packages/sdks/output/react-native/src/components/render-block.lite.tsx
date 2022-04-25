@@ -89,39 +89,43 @@ export default function RenderBlock(props) {
 
   return (
     <>
-      {!componentInfo?.()?.noWrap ? (
-        <>
-          <TagNameRef {...propertiesAndActions()} style={css()}>
-            <BlockStyles block={useBlock()} />
+      <>
+        {!componentInfo?.()?.noWrap ? (
+          <>
+            <TagNameRef {...propertiesAndActions()} style={css()}>
+              <BlockStyles block={useBlock()} />
 
-            {componentRef() ? (
-              <ComponentRefRef
-                {...componentOptions()}
-                builderBlock={useBlock()}
-              >
-                {children()?.map((child, index) => (
-                  <RenderBlock block={child} />
-                ))}
-              </ComponentRefRef>
-            ) : null}
+              <>
+                {componentRef() ? (
+                  <ComponentRefRef
+                    {...componentOptions()}
+                    builderBlock={useBlock()}
+                  >
+                    {children()?.map((child, index) => (
+                      <RenderBlock block={child} />
+                    ))}
+                  </ComponentRefRef>
+                ) : null}
+              </>
 
-            {noCompRefChildren()?.map((child, index) => (
+              {noCompRefChildren()?.map((child, index) => (
+                <RenderBlock block={child} />
+              ))}
+            </TagNameRef>
+          </>
+        ) : (
+          <ComponentRefRef
+            {...componentOptions()}
+            attributes={propertiesAndActions()}
+            builderBlock={useBlock()}
+            style={css()}
+          >
+            {children()?.map((child, index) => (
               <RenderBlock block={child} />
             ))}
-          </TagNameRef>
-        </>
-      ) : (
-        <ComponentRefRef
-          {...componentOptions()}
-          attributes={propertiesAndActions()}
-          builderBlock={useBlock()}
-          style={css()}
-        >
-          {children()?.map((child, index) => (
-            <RenderBlock block={child} />
-          ))}
-        </ComponentRefRef>
-      )}
+          </ComponentRefRef>
+        )}
+      </>
     </>
   );
 }

@@ -1,7 +1,7 @@
 <template>
-  <div class="builder-columns div-21azgz5avex" :style="columnsCssVars">
+  <div class="builder-columns div-1be3j8m9ewb" :style="columnsCssVars">
     <div
-      class="builder-column div-21azgz5avex-2"
+      class="builder-column div-1be3j8m9ewb-2"
       v-for="(column, index) in columns"
       :style="{
         width: getColumnCssWidth(index),
@@ -293,32 +293,32 @@ export default registerComponent(
 );
 </script>
 <style scoped>
-.div-21azgz5avex {
+.div-1be3j8m9ewb {
   display: flex;
   align-items: stretch;
   line-height: normal;
 }
 @media (max-width: 999px) {
-  .div-21azgz5avex {
+  .div-1be3j8m9ewb {
     flex-direction: var(--flex-dir-tablet);
   }
 }
 @media (max-width: 639px) {
-  .div-21azgz5avex {
+  .div-1be3j8m9ewb {
     flex-direction: var(--flex-dir);
   }
 }
-.div-21azgz5avex-2 {
+.div-1be3j8m9ewb-2 {
   flex-grow: 1;
 }
 @media (max-width: 999px) {
-  .div-21azgz5avex-2 {
+  .div-1be3j8m9ewb-2 {
     width: var(--column-width-tablet) !important;
     margin-left: var(--column-margin-left-tablet) !important;
   }
 }
 @media (max-width: 639px) {
-  .div-21azgz5avex-2 {
+  .div-1be3j8m9ewb-2 {
     width: var(--column-width) !important;
     margin-left: var(--column-margin-left) !important;
   }

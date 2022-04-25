@@ -77,7 +77,9 @@ ${getFontCss({
 };
 
 $: injectedStyleScript = () => {
-return `<styles>${injectedStyles()}</styles>`;
+// NOTE: we have to obfusctate the name of the tag due to a limitation in the svelte-preprocessor plugin.
+// https://github.com/sveltejs/vite-plugin-svelte/issues/315#issuecomment-1109000027
+return `<sty${''}le>${injectedStyles()}</sty${''}le>`;
 };
 
     

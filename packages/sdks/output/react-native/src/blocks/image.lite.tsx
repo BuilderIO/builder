@@ -18,26 +18,32 @@ export default function Image(props) {
         <View srcSet={props.srcset} />
       </View>
 
-      {props.aspectRatio &&
-      !(props.fitContent && props.builderBlock?.children?.length) ? (
-        <View style={styles.view3}>
-          <Text> </Text>
-        </View>
-      ) : null}
-
-      {props.builderBlock?.children?.length && props.fitContent ? (
-        <>
-          <Text>{props.children}</Text>
-        </>
-      ) : null}
-
-      {!props.fitContent ? (
-        <>
-          <View style={styles.view4}>
-            <Text>{props.children}</Text>
+      <>
+        {props.aspectRatio &&
+        !(props.fitContent && props.builderBlock?.children?.length) ? (
+          <View style={styles.view3}>
+            <Text> </Text>
           </View>
-        </>
-      ) : null}
+        ) : null}
+      </>
+
+      <>
+        {props.builderBlock?.children?.length && props.fitContent ? (
+          <>
+            <Text>{props.children}</Text>
+          </>
+        ) : null}
+      </>
+
+      <>
+        {!props.fitContent ? (
+          <>
+            <View style={styles.view4}>
+              <Text>{props.children}</Text>
+            </View>
+          </>
+        ) : null}
+      </>
     </View>
   );
 }
