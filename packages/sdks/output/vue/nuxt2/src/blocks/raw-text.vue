@@ -5,33 +5,23 @@
   ></span>
 </template>
 <script>
-import { registerComponent } from "../functions/register-component";
+export default {
+  name: "builder-raw-text",
 
-export default registerComponent(
-  {
-    name: "builder-raw-text",
+  props: ["attributes", "text"],
 
-    props: ["attributes", "text"],
-
-    methods: {
-      _classStringToObject(str) {
-        const obj = {};
-        if (typeof str !== "string") {
-          return obj;
-        }
-        const classNames = str.trim().split(/\s+/);
-        for (const name of classNames) {
-          obj[name] = true;
-        }
+  methods: {
+    _classStringToObject(str) {
+      const obj = {};
+      if (typeof str !== "string") {
         return obj;
-      },
+      }
+      const classNames = str.trim().split(/\s+/);
+      for (const name of classNames) {
+        obj[name] = true;
+      }
+      return obj;
     },
   },
-  {
-    name: "Builder:RawText",
-    hideFromInsertMenu: true,
-    builtIn: true,
-    inputs: [{ name: "text", bubble: true, type: "longText", required: true }],
-  }
-);
+};
 </script>

@@ -1,19 +1,17 @@
-export default function registerComponents() {
-  require('./button');
-  require('./columns');
-  require('./custom-code');
-  require('./embed');
-  require('./form');
-  require('./fragment');
-  require('./image');
-  require('./img');
-  require('./input');
-  require('./raw-text');
-  require('./section');
-  require('./select');
-  require('./submit-button');
-  require('./symbol');
-  require('./text');
-  require('./textarea');
-  require('./video');
-}
+import './button';
+import './columns';
+import './custom-code';
+import './embed';
+import './form';
+import './fragment';
+import './image';
+import './img';
+import './input';
+import './raw-text';
+import './section';
+import './select';
+import './submit-button';
+import './symbol';
+import './text';
+import './textarea';
+import './video';

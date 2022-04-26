@@ -1,16 +1,11 @@
 // TO-DO: this seems to cause issues with `vue`. `import()` does not get converted to require, and is not being parsed
 // properly.
-import('./index-helpers/top-of-file');
+import './index-helpers/top-of-file';
 
 // register all Builder components
-import registerComponents from './index-helpers/register-components';
-registerComponents();
+import './index-helpers/register-components';
 
-import { isEditing } from './functions/is-editing';
-
-if (isEditing()) {
-  import('./scripts/init-editing');
-}
+import './scripts/init-editing';
 
 export * from './index-helpers/blocks-exports';
 
