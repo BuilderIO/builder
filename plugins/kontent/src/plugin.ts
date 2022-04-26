@@ -1,6 +1,8 @@
 import { registerDataPlugin } from '@builder.io/data-plugin-tools';
 import pkg from '../package.json';
 import { createDeliveryClient } from '@kentico/kontent-delivery';
+import { system } from '../../../packages/plugin-loader/src/plugin-loader';
+import { pushd } from 'shelljs';
 
 // https://localhost:1268/plugin.system.js?pluginId=@builder.io/plugin-kontent
 
@@ -34,10 +36,14 @@ registerDataPlugin(
 
     return {
       async getResourceTypes() {
+        console.log('getResourceTypes');
 
         const languagesResponse = await client.languages().toAllPromise();
         const languagesEnum = languagesResponse.data.items
-          .map(language => ({ value: language.system.codename, label: language.system.name }))
+          .map(language => ({
+            value: language.system.codename,
+            label: language.system.name
+          }))
           // Ask about this
           .concat([
             {
@@ -52,15 +58,21 @@ registerDataPlugin(
           id: type.system.codename,
           canPickEntries: true,
           entryInputs: () => {
+            console.log('entryInputs', type);
             return [
               {
                 name: 'language',
                 type: 'text',
                 enum: languagesEnum,
+
               },
             ];
           },
           inputs: () => {
+            console.log('inputs', type);
+            const acceptableElements = type.elements.filter(element =>
+              // extend to all types - ask about possibilities
+              ['text',/* 'number', 'date', 'custom_element'*/].includes(element.type));
             // return a list of inputs to query your data, think of this as the query schema: limit / offset / specific fields to query against
             const fields = [
               {
@@ -74,37 +86,84 @@ registerDataPlugin(
                 name: 'language',
                 type: 'text',
                 enum: languagesEnum,
-              },
+              }
             ];
+
+            if (acceptableElements.length > 0) {
+              fields.push({
+                name: 'elements',
+                advanced: true,
+                type: 'object',
+                friendlyName: `${type.system.name} elements`,
+                subFields: acceptableElements.map(element => ({
+                  type: element.type,
+                  name: element.id,
+                  friendlyName: element.name
+                })),
+                // ask about this
+              } as any);
+            }
+
+            console.log('fields', fields);
             return fields;
           },
           toUrl: (options: any) => {
+            console.log('toUrl', options);
+
             // by entry
             if (options.entry) {
-              const url =  client.items().type(type.system.codename).getUrl();
+              const url = client.item(options.entry).getUrl();
               return url;
             }
             // by query, read query values from the schema you defined in inputs above and generate a public url to the results
-            return '';
+            const query = client.items()
+              .type(type.system.codename);
+
+            if (options.language) {
+              query.languageParameter(options.language);
+            }
+
+            if (options.limit) {
+              query.limitParameter(options.limit);
+            }
+
+            return query.getUrl();
           },
         }));
       },
       async getEntriesByResourceType(id: string, options) {
-        const query = client.items().type(id);;
+        console.log('getEntriesByResourceType', 'options: ', options, 'id: ', id);
+        const query = client.items().type(id);
+        const result = await query.toAllPromise();
         if (options?.resourceEntryId) {
           // data plugins UI is asking for a specific entry return [entry]
-          return [];
-        } else if (options?.searchText) {
+          const entry = result.data.items.find(item => item.system.codename === options.resourceEntryId);
+          if (entry) {
+            return [{
+              id: entry.system.codename,
+              name: entry.system.name,
+            }];
+          }
+        } else if (options?.searchText != undefined) {
           // data plugins UI is asking for the results of a free form search on entries per resource type
           // hit api with searchText and return an array that matches interface Array<{ name: string, id: string}>
-          return [];
+
+          return result.data.items
+            .filter(({ system: { name } }) =>
+              name.toLowerCase()
+                .includes((options?.searchText as string)?.toLowerCase())
+            ).map(item => ({
+              id: item.system.codename,
+              name: item.system.name
+            }));
         }
         // no search or specific entry , return all entries for  this specific resource type
-        const result = await query.toAllPromise();
-        return result.data.items.map(entry => ({
-          id: entry.system.codename,
-          name: entry.system.name as string,
-        }));
+        return result.data.items.map(entry => {
+          return ({
+            id: entry.system.codename,
+            name: entry.system.name,
+          });
+        });
       },
     };
   }
