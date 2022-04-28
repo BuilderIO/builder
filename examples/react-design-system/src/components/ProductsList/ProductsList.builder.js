@@ -6,7 +6,7 @@ export const ProductsListBuilderConfig = {
     {
       name: 'category',
       type: 'string',
-      defaultValue: 'mens-clothes',
+      defaultValue: 'living',
       enum: [
         {
           label: 'Women',
