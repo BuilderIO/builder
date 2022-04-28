@@ -1,7 +1,13 @@
 <template>
+<<<<<<< HEAD
   <div class="builder-columns div-21azgz5avex" :style="columnsCssVars">
     <div
       class="builder-column div-21azgz5avex-2"
+=======
+  <div class="builder-columns div-t9spj7joih" :style="columnsCssVars">
+    <div
+      class="builder-column div-t9spj7joih-2"
+>>>>>>> 63ce611d (updates)
       v-for="(column, index) in columns"
       :style="{
         width: getColumnCssWidth(index),
@@ -292,17 +298,26 @@ export default registerComponent(
 );
 </script>
 <style scoped>
+<<<<<<< HEAD
 .div-21azgz5avex {
+=======
+.div-t9spj7joih {
+>>>>>>> 63ce611d (updates)
   display: flex;
   align-items: stretch;
   line-height: normal;
 }
 @media (max-width: 999px) {
+<<<<<<< HEAD
   .div-21azgz5avex {
+=======
+  .div-t9spj7joih {
+>>>>>>> 63ce611d (updates)
     flex-direction: var(--flex-dir-tablet);
   }
 }
 @media (max-width: 639px) {
+<<<<<<< HEAD
   .div-21azgz5avex {
     flex-direction: var(--flex-dir);
   }
@@ -312,12 +327,27 @@ export default registerComponent(
 }
 @media (max-width: 999px) {
   .div-21azgz5avex-2 {
+=======
+  .div-t9spj7joih {
+    flex-direction: var(--flex-dir);
+  }
+}
+.div-t9spj7joih-2 {
+  flex-grow: 1;
+}
+@media (max-width: 999px) {
+  .div-t9spj7joih-2 {
+>>>>>>> 63ce611d (updates)
     width: var(--column-width-tablet) !important;
     margin-left: var(--column-margin-left-tablet) !important;
   }
 }
 @media (max-width: 639px) {
+<<<<<<< HEAD
   .div-21azgz5avex-2 {
+=======
+  .div-t9spj7joih-2 {
+>>>>>>> 63ce611d (updates)
     width: var(--column-width) !important;
     margin-left: var(--column-margin-left) !important;
   }
