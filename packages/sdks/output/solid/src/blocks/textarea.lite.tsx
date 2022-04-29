@@ -1,4 +1,4 @@
-export default function Textarea(props) {
+function Textarea(props) {
   return (
     <textarea
       {...props.attributes}
@@ -9,3 +9,5 @@ export default function Textarea(props) {
     ></textarea>
   );
 }
+
+export default Textarea;

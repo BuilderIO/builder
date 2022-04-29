@@ -1,4 +1,4 @@
-export default function SectionComponent(props) {
+function SectionComponent(props) {
   return (
     <section
       {...props.attributes}
@@ -14,3 +14,5 @@ export default function SectionComponent(props) {
     </section>
   );
 }
+
+export default SectionComponent;

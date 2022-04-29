@@ -22,8 +22,8 @@
     "ci:test": "yarn run test"
   },
   "dependencies": {
-    "@builder.io/mitosis": "dev",
-    "@builder.io/mitosis-cli": "0.0.13-7",
+    "@builder.io/mitosis": "latest",
+    "@builder.io/mitosis-cli": "latest",
     "node-fetch": "^2.6.1",
     "seedrandom": "^3.0.5"
   },
@@ -54,5 +54,9 @@
       "path": "git-cz"
     }
   },
-  "packageManager": "yarn@3.2.0"
+  "packageManager": "yarn@3.2.0",
+  "resolutions": {
+    "@builder.io/mitosis-cli": "link:../../../mitosis/packages/cli",
+    "@builder.io/mitosis": "link:../../../mitosis/packages/core"
+  }
 }

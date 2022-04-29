@@ -3,7 +3,7 @@ import { Show } from "solid-js";
 import { createMutable } from "solid-js/store";
 import { css } from "solid-styled-components";
 
-export default function Image(props) {
+function Image(props) {
   const state = createMutable({
     updateQueryParam: function updateQueryParam(uri = "", key, value) {
       const re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
@@ -167,3 +167,5 @@ export default function Image(props) {
     </div>
   );
 }
+
+export default Image;

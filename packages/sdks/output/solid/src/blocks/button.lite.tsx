@@ -1,4 +1,4 @@
-export default function Button(props) {
+function Button(props) {
   return (
     <a
       {...props.attributes}
@@ -10,3 +10,5 @@ export default function Button(props) {
     </a>
   );
 }
+
+export default Button;

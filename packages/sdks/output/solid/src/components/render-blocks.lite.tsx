@@ -6,7 +6,7 @@ import { css } from "solid-styled-components";
 import { isEditing } from "../functions/is-editing";
 import RenderBlock from "./render-block.lite";
 
-export default function RenderBlocks(props) {
+function RenderBlocks(props) {
   const state = createMutable({
     get className() {
       return "builder-blocks" + (!props.blocks?.length ? " no-blocks" : "");
@@ -62,11 +62,14 @@ export default function RenderBlocks(props) {
     >
       <Show when={props.blocks}>
         <For each={props.blocks}>
-          {(block, index) => (
-            <RenderBlock key={block.id} block={block}></RenderBlock>
-          )}
+          {(block, _index) => {
+            const index = _index();
+            return <RenderBlock key={block.id} block={block}></RenderBlock>;
+          }}
         </For>
       </Show>
     </div>
   );
 }
+
+export default RenderBlocks;
