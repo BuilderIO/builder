@@ -8,9 +8,14 @@
   pointer-events: none;
 }
 
+.funtext {
+  padding: 20px;
+  color: darkred;
+  background: lightcoral;
+}
+
 .header {
   background-color: #282c34;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;

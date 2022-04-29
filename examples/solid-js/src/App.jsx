@@ -1,50 +1,51 @@
 import logo from './logo.svg';
 import styles from './App.module.css';
 
-import { getContent, RenderContent } from '@builder.io/sdk-solid';
+import { getContent, RenderContent, registerComponent } from '@builder.io/sdk-solid';
+import { createEffect } from 'solid-js';
+import { createMutable } from 'solid-js/store';
 
-const content = {
-  data: {
-    blocks: [
-      {
-        '@type': '@builder.io/sdk:Element',
-        responsiveStyles: {
-          large: {
-            textAlign: 'left',
-            display: 'flex',
-            flexDirection: 'column',
-          },
-        },
-        component: {
-          name: 'Text',
-          options: {
-            text: 'I am an accordion title. Click me!',
-          },
-        },
-      },
-    ],
-  },
-};
+const apiKey = 'bff7106486204af59835fddec84f708f';
+
+function MyFunComponent({ text }) {
+  return <div class={styles.funtext}>{text}</div>;
+}
+
+registerComponent(MyFunComponent, {
+  name: 'MyFunComponent',
+  inputs: [
+    {
+      name: 'text',
+      type: 'string',
+    },
+  ],
+});
 
 function App() {
+  const state = createMutable({
+    content: null,
+  });
+
+  createEffect(() => {
+    getContent({
+      model: 'page',
+      apiKey,
+      userAttributes: {
+        urlPath: window.location.pathname,
+      },
+    }).then(content => {
+      state.content = content;
+    });
+  });
+
   return (
     <div class={styles.App}>
       <header class={styles.header}>
         <img src={logo} class={styles.logo} alt="logo" />
-        <p>
-          Edit <code>src/App.jsx</code> and save to reload.
-        </p>
-        <a
-          class={styles.link}
-          href="https://github.com/solidjs/solid"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn Solid
-        </a>
-
-        <RenderContent content={content} />
       </header>
+      <div>
+        <RenderContent model="page" content={state.content} />
+      </div>
     </div>
   );
 }
