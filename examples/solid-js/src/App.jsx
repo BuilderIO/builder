@@ -18,6 +18,7 @@ registerComponent(MyFunComponent, {
     {
       name: 'text',
       type: 'string',
+      defaultValue: 'Hello world',
     },
   ],
 });
