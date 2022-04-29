@@ -15,7 +15,6 @@ const builderContent = await getContent({
 })
 
 ---
-
-<Layout title="Welcome to Astro.">
-	<App client:load builderContent={builderContent} />
+<Layout title={builderContent?.data?.title || "Welcome to Astro."}>
+	<App client:visible builderContent={builderContent} />
 </Layout>
