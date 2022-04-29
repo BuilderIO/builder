@@ -9,7 +9,17 @@ import { createMutable } from 'solid-js/store';
 const apiKey = 'bff7106486204af59835fddec84f708f';
 
 function MyFunComponent({ text }) {
-  return <div class={styles.funtext}>{text}</div>;
+  const state = createMutable({
+    count: 0,
+  });
+
+  return (
+    <div class={styles.funtext}>
+      <h3>{text.toUpperCase()}</h3>
+      <p>{state.count}</p>
+      <button onClick={() => state.count++}>Click me </button>
+    </div>
+  );
 }
 
 registerComponent(MyFunComponent, {

@@ -20,7 +20,7 @@ Go to the models page ([https://builder.io/models](https://builder.io/models)) a
 
 Then go to the account page ([https://builder.io/models](https://builder.io/account)) and copy your public API key, and paste it into the `apiKey` variable in the [App.jsx](./src/App.jsx) file.
 
-Now, go to the content page ([https://builder.io/content](https://builder.io/content)) and choose "+ new page" (or may say "+ new entry") and create a new page
+Now, go to the content page ([https://builder.io/content](https://builder.io/content)) and choose "+ new" in the top right and create a new page with URL `/`
 
 You should now be able to use the Builder drag and drop editor in your solidjs app. Be sure to always have the `<RenderContent>` component be present anywhere
 
