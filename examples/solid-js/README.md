@@ -24,7 +24,7 @@ npm run dev
 
 5. Go to the models page ([https://builder.io/models](https://builder.io/models)) and choose the "page" model and change the "editing url" to `http://localhost:3000` to use your local dev server.
 
-<img alt="Where to add preview URL" src="https://cdn.builder.io/api/v1/image/assets%2Fbff7106486204af59835fddec84f708f%2F8e700ecfdbf84cb3a93044b3ad68cd3a">
+<img width="600" alt="Where to add preview URL" src="https://cdn.builder.io/api/v1/image/assets%2Fbff7106486204af59835fddec84f708f%2F8e700ecfdbf84cb3a93044b3ad68cd3a">
 
 6. Then go to the account page ([https://builder.io/account](https://builder.io/account)) and copy your public API key, and paste it into the `apiKey` variable in the [App.jsx](./src/App.jsx) file.
 
