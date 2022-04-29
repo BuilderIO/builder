@@ -8,7 +8,7 @@ function MyFunComponent({ text }) {
   });
 
   return (
-    <div class={styles.funtext}>
+    <div>
       <h3>{text.toUpperCase()}</h3>
       <p>{state.count}</p>
       <button onClick={() => state.count++}>Click me </button>
@@ -32,7 +32,7 @@ function App({ builderContent }) {
     <div>
       <header class="text-center p-5">Hello world!</header>
       <div>
-        <RenderContent model="page" content={builderContent} />
+        <RenderContent builderContent={builderContent} model="page" />
       </div>
     </div>
   );

@@ -2,7 +2,7 @@
 import Layout from '../components/Layout.astro';
 
 import { getContent } from '@builder.io/sdk-solid';
-import App from '../components/App.jsx'
+import App from '../components/App'
 
 const apiKey = 'bff7106486204af59835fddec84f708f';
   
@@ -17,5 +17,5 @@ const builderContent = await getContent({
 ---
 
 <Layout title="Welcome to Astro.">
-	<App builderContent={builderContent} />
+	<App client:load builderContent={builderContent} />
 </Layout>
