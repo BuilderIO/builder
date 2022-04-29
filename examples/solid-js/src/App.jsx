@@ -5,6 +5,7 @@ import { getContent, RenderContent, registerComponent } from '@builder.io/sdk-so
 import { createEffect } from 'solid-js';
 import { createMutable } from 'solid-js/store';
 
+// Enter your key here!
 const apiKey = 'bff7106486204af59835fddec84f708f';
 
 function MyFunComponent({ text }) {

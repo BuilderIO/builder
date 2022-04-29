@@ -1,8 +1,8 @@
-## Usage
+## Builder.io example with Solid
 
-Those templates dependencies are maintained via [pnpm](https://pnpm.io) via `pnpm up -Lri`.
+Example of using Builder.io with Solidjs
 
-This is the reason you see a `pnpm-lock.yaml`. That being said, any package manager will work. This file can be safely be removed once you clone a template.
+See [App.jsx](./src/App.jsx) for usage
 
 ```bash
 $ npm install # or pnpm install or yarn install
