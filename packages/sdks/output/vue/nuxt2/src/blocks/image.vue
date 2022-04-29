@@ -1,9 +1,9 @@
 <template>
-  <div class="div-20351ewpue7">
+  <div class="div-4wbls88y960">
     <picture>
       <img
         loading="lazy"
-        class="img-20351ewpue7"
+        class="img-4wbls88y960"
         :alt="altText"
         :aria-role="altText ? 'presentation' : undefined"
         :style="{
@@ -16,14 +16,19 @@
           )
         "
         :src="image"
-        :srcset="srcset"
+        :srcset="srcset || getSrcSet(image)"
         :sizes="sizes"
       />
-      <source :srcSet="srcset" />
+
+      <source
+        type="image/webp"
+        v-if="!noWebp && useSrcSet().includes('builder.io')"
+        :srcSet="useSrcSet().replace(/\?/g, '?format=webp&')"
+      />
     </picture>
 
     <div
-      class="builder-image-sizer div-20351ewpue7-2"
+      class="builder-image-sizer div-4wbls88y960-2"
       v-if="aspectRatio && !(fitContent && ((builderBlock && builderBlock.children) && (builderBlock && builderBlock.children).length))"
       :style="{
         paddingTop: aspectRatio * 100 + '%',
@@ -34,7 +39,7 @@
 
     <slot></slot>
 
-    <div class="div-20351ewpue7-3" v-if="!fitContent">
+    <div class="div-4wbls88y960-3" v-if="!fitContent">
       <slot></slot>
     </div>
   </div>
@@ -47,17 +52,97 @@ export default registerComponent(
     name: "builder-image",
 
     props: [
+      "srcset",
+      "image",
       "altText",
       "backgroundSize",
-      "image",
-      "srcset",
       "sizes",
+      "noWebp",
       "aspectRatio",
       "fitContent",
       "builderBlock",
     ],
 
     methods: {
+      updateQueryParam: function updateQueryParam(uri = "", key, value) {
+        const re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
+        const separator = uri.indexOf("?") !== -1 ? "&" : "?";
+
+        if (uri.match(re)) {
+          return uri.replace(
+            re,
+            "$1" + key + "=" + encodeURIComponent(value) + "$2"
+          );
+        }
+
+        return uri + separator + key + "=" + encodeURIComponent(value);
+      },
+      removeProtocol: function removeProtocol(path) {
+        return path.replace(/http(s)?:/, "");
+      },
+      getShopifyImageUrl: function getShopifyImageUrl(src, size) {
+        if (!src || !src?.match(/cdn\.shopify\.com/) || !size) {
+          return src;
+        }
+
+        if (size === "master") {
+          return this.removeProtocol(src);
+        }
+
+        const match = src.match(
+          /(_\d+x(\d+)?)?(\.(jpg|jpeg|gif|png|bmp|bitmap|tiff|tif)(\?v=\d+)?)/i
+        );
+
+        if (match) {
+          const prefix = src.split(match[0]);
+          const suffix = match[3];
+          const useSize = size.match("x") ? size : `${size}x`;
+          return this.removeProtocol(`${prefix[0]}_${useSize}${suffix}`);
+        }
+
+        return null;
+      },
+      getSrcSet: function getSrcSet(url) {
+        if (!url) {
+          return url;
+        }
+
+        const sizes = [100, 200, 400, 800, 1200, 1600, 2000];
+
+        if (url.match(/builder\.io/)) {
+          let srcUrl = url;
+          const widthInSrc = Number(url.split("?width=")[1]);
+
+          if (!isNaN(widthInSrc)) {
+            srcUrl = `${srcUrl} ${widthInSrc}w`;
+          }
+
+          return sizes
+            .filter((size) => size !== widthInSrc)
+            .map(
+              (size) => `${this.updateQueryParam(url, "width", size)} ${size}w`
+            )
+            .concat([srcUrl])
+            .join(", ");
+        }
+
+        if (url.match(/cdn\.shopify\.com/)) {
+          return sizes
+            .map((size) => [
+              this.getShopifyImageUrl(url, `${size}x${size}`),
+              size,
+            ])
+            .filter(([sizeUrl]) => !!sizeUrl)
+            .map(([sizeUrl, size]) => `${sizeUrl} ${size}w`)
+            .concat([url])
+            .join(", ");
+        }
+
+        return url;
+      },
+      useSrcSet: function useSrcSet() {
+        return this.srcset || this.getSrcSet(this.image) || "";
+      },
       _classStringToObject(str) {
         const obj = {};
         if (typeof str !== "string") {
@@ -159,10 +244,10 @@ export default registerComponent(
 );
 </script>
 <style scoped>
-.div-20351ewpue7 {
+.div-4wbls88y960 {
   position: relative;
 }
-.img-20351ewpue7 {
+.img-4wbls88y960 {
   opacity: 1;
   transition: opacity 0.2s ease-in-out;
   position: absolute;
@@ -171,12 +256,12 @@ export default registerComponent(
   top: 0px;
   left: 0px;
 }
-.div-20351ewpue7-2 {
+.div-4wbls88y960-2 {
   width: 100%;
   pointer-events: none;
   font-size: 0;
 }
-.div-20351ewpue7-3 {
+.div-4wbls88y960-3 {
   display: flex;
   flex-direction: column;
   align-items: stretch;

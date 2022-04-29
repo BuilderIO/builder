@@ -2,7 +2,7 @@ import * as React from "react";
 import { View, StyleSheet, Image, Text } from "react-native";
 import { useState, useContext, useEffect } from "react";
 import RenderContent from "../components/render-content/render-content.lite";
-import BuilderContext from "../context/builder.context.lite";
+import BuilderContext from "../context/builder.context";
 import { getContent } from "../functions/get-content";
 
 export default function Symbol(props) {
