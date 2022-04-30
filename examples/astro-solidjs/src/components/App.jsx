@@ -32,7 +32,7 @@ function App({ builderContent }) {
     <div>
       <header class="text-center p-5">Hello world!</header>
       <div>
-        <RenderContent builderContent={builderContent} model="page" />
+        <RenderContent content={builderContent} model="page" />
       </div>
     </div>
   );
