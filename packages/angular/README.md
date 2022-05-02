@@ -231,6 +231,39 @@ BuilderBlock({
 
 ```
 
+## Passing data and context down
+
+You can also pass [data](https://www.builder.io/c/docs/guides/connecting-api-data) and [functions](https://www.builder.io/c/docs/react/custom-actions) down to the Builder component to use in the UIs (e.g. bind
+data values to UIs e.g. for text values or iterating over lists, and actions to trigger for instance on click of a button)
+
+All data passed down is available in Builder [actions and bindings](https://www.builder.io/c/docs/guides/custom-code) as `state.*`, for instance in the below example `state.resources`, etc will be available
+
+```tsx
+@Component({
+  selector: 'app-root',
+  template: '<builder-component [options]="options" [context]="context" [data]="data" model="page"></builder-component>',
+})
+export class AppComponent {
+  options: any = {
+    cacheSeconds: 1,
+    data: {
+      locale: 'en-US',
+    },
+  };
+
+  data = {
+    resources: [ { foo: 'bar'} ]
+  };
+
+  context= {
+    myFunction: (text: string) => alert(text),
+  }
+```
+
+You can also pass down functions, complex data like custom objects and libraries you can use `context`. Context passes all the way down (e.g. through symbols, etc). This data is not observed for changes and mutations
+
+Context is available in [actions and bindings](https://www.builder.io/c/docs/guides/custom-code) as `context.*`, such as `context.myFunction('hello world')` in the example above
+
 
 ## Example projects
 
