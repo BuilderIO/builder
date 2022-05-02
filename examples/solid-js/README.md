@@ -1,7 +1,5 @@
 # Builder.io example with Solid
 
-Example of using Builder.io with Solidjs
-
 See [App.jsx](./src/App.jsx) for usage
 
 ## Try it out

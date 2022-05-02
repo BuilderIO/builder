@@ -5,7 +5,7 @@ import { css } from "solid-styled-components";
 
 import RenderBlock from "../components/render-block.lite";
 
-export default function FormComponent(props) {
+function FormComponent(props) {
   const state = createMutable({
     state: "unsubmitted",
     responseData: null,
@@ -250,7 +250,10 @@ export default function FormComponent(props) {
     >
       <Show when={props.builderBlock && props.builderBlock.children}>
         <For each={props.builderBlock?.children}>
-          {(block, index) => <RenderBlock block={block}></RenderBlock>}
+          {(block, _index) => {
+            const index = _index();
+            return <RenderBlock block={block}></RenderBlock>;
+          }}
         </For>
       </Show>
       <Show when={state.submissionState === "error"}>
@@ -285,3 +288,5 @@ export default function FormComponent(props) {
     </form>
   );
 }
+
+export default FormComponent;

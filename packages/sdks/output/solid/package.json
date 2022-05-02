@@ -1,8 +1,9 @@
 {
   "name": "@builder.io/sdk-solid",
-  "version": "0.0.5",
+  "version": "0.0.7",
+  "type": "module",
   "description": "",
-  "main": "src/index.js",
+  "module": "src/index.js",
   "dependencies": {
     "solid-styled-components": "^0.27.6"
   },
