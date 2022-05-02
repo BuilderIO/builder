@@ -220,33 +220,29 @@ export default function RenderContent(props) {
         },
       }}
     >
-      <>
-        {useContent() ? (
-          <>
-            <View
-              onClick={(event) =>
-                track("click", {
-                  contentId: useContent().id,
-                })
-              }
-              data-builder-content-id={useContent?.()?.id}
-            >
-              <>
-                {(useContent?.()?.data?.cssCode ||
-                  useContent?.()?.data?.customFonts?.length) &&
-                TARGET !== "reactNative" ? (
-                  <RenderStyles
-                    cssCode={useContent().data.cssCode}
-                    customFonts={useContent().data.customFonts}
-                  />
-                ) : null}
-              </>
+      {useContent() ? (
+        <>
+          <View
+            onClick={(event) =>
+              track("click", {
+                contentId: useContent().id,
+              })
+            }
+            data-builder-content-id={useContent?.()?.id}
+          >
+            {(useContent?.()?.data?.cssCode ||
+              useContent?.()?.data?.customFonts?.length) &&
+            TARGET !== "reactNative" ? (
+              <RenderStyles
+                cssCode={useContent().data.cssCode}
+                customFonts={useContent().data.customFonts}
+              />
+            ) : null}
 
-              <RenderBlocks blocks={useContent?.()?.data?.blocks} />
-            </View>
-          </>
-        ) : null}
-      </>
+            <RenderBlocks blocks={useContent?.()?.data?.blocks} />
+          </View>
+        </>
+      ) : null}
     </BuilderContext.Provider>
   );
 }

@@ -210,55 +210,42 @@ export default function FormComponent(props) {
       onSubmit={(event) => onSubmit(event)}
     >
       {" "}
-      <>
-        {props.builderBlock && props.builderBlock.children ? (
-          <>
-            {props.builderBlock?.children?.map((block, index) => (
-              <RenderBlock block={block} />
-            ))}
-          </>
-        ) : null}
-      </>{" "}
-      <>
-        {submissionState() === "error" ? (
-          <>
-            <BuilderBlocks
-              dataPath="errorMessage"
-              blocks={props.errorMessage}
-            />
-          </>
-        ) : null}
-      </>{" "}
-      <>
-        {submissionState() === "sending" ? (
-          <>
-            <BuilderBlocks
-              dataPath="sendingMessage"
-              blocks={props.sendingMessage}
-            />
-          </>
-        ) : null}
-      </>{" "}
-      <>
-        {submissionState() === "error" && responseData ? (
-          <>
-            <View style={styles.view1}>
-              {" "}
-              <Text>{JSON.stringify(responseData, null, 2)}</Text>{" "}
-            </View>
-          </>
-        ) : null}
-      </>{" "}
-      <>
-        {submissionState() === "success" ? (
-          <>
-            <BuilderBlocks
-              dataPath="successMessage"
-              blocks={props.successMessage}
-            />
-          </>
-        ) : null}
-      </>{" "}
+      {props.builderBlock && props.builderBlock.children ? (
+        <>
+          {props.builderBlock?.children?.map((block, index) => (
+            <RenderBlock block={block} />
+          ))}
+        </>
+      ) : null}{" "}
+      {submissionState() === "error" ? (
+        <>
+          <BuilderBlocks dataPath="errorMessage" blocks={props.errorMessage} />
+        </>
+      ) : null}{" "}
+      {submissionState() === "sending" ? (
+        <>
+          <BuilderBlocks
+            dataPath="sendingMessage"
+            blocks={props.sendingMessage}
+          />
+        </>
+      ) : null}{" "}
+      {submissionState() === "error" && responseData ? (
+        <>
+          <View style={styles.view1}>
+            {" "}
+            <Text>{JSON.stringify(responseData, null, 2)}</Text>{" "}
+          </View>
+        </>
+      ) : null}{" "}
+      {submissionState() === "success" ? (
+        <>
+          <BuilderBlocks
+            dataPath="successMessage"
+            blocks={props.successMessage}
+          />
+        </>
+      ) : null}{" "}
     </View>
   );
 }

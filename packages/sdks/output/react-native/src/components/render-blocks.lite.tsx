@@ -49,15 +49,13 @@ export default function RenderBlocks(props) {
       onMouseEnter={(event) => onMouseEnter()}
       style={styles.view1}
     >
-      <>
-        {props.blocks ? (
-          <>
-            {props.blocks?.map((block, index) => (
-              <RenderBlock key={block.id} block={block} />
-            ))}
-          </>
-        ) : null}
-      </>
+      {props.blocks ? (
+        <>
+          {props.blocks?.map((block, index) => (
+            <RenderBlock key={block.id} block={block} />
+          ))}
+        </>
+      ) : null}
     </View>
   );
 }
