@@ -77,7 +77,7 @@ contentLoaded(data) {
 
 ## Builder sections within existing pages
 
-With setction models you can also use Builder.io components in/around existing pages (aka it doesn't have to control the whole page). See info on making custom models for this [here](https://www.builder.io/c/docs/guides/getting-started-with-models)
+With section models you can use Builder.io components in/around existing pages (aka it doesn't have to control the whole page). See info on making custom models for this [here](https://www.builder.io/c/docs/guides/getting-started-with-models)
 
 ```html
 <!-- The first part of your page -->
