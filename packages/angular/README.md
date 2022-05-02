@@ -125,7 +125,7 @@ See [here](https://builder.io/c/docs/custom-react-components#input-type-examples
 
 ### Editable Regions within your custom components
 
-<img src="https://aws1.discourse-cdn.com/business7/uploads/builder/original/1X/03339b3549d131e91f05cd0627aa7c9f0b962c68.png" alt="Visual of adding custom editable regions within your components in Builder">
+<img src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fb486c35599034bba9ee2aaed7f92d53e" alt="Visual of adding custom editable regions within your components in Builder">
 
 - Register inputs for each of your editable sections of type `blocks`
 - Use `builder-blocks-outlet` component to render those blocks withing your component template.
