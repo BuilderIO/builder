@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@builder.io/mitosis": "dev",
-    "@builder.io/mitosis-cli": "0.0.13-7",
+    "@builder.io/mitosis-cli": "dev",
     "node-fetch": "^2.6.1",
     "seedrandom": "^3.0.5",
     "traverse": "^0.6.6"
