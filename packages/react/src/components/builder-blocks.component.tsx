@@ -153,7 +153,6 @@ export class BuilderBlocks extends React.Component<BuilderBlocksProps, BuilderBl
     props: BuilderBlocksProps = {},
     builderState: any
   ) {
-    console.debug('BuilderBlocks.renderInto', elementOrSelector, props, this);
 
     if (!elementOrSelector) {
       return;
