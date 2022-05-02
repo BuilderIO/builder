@@ -55,6 +55,7 @@ Simply replace your 404 component with something like the below to allow creatin
 </builder-component>
 <my-404-component *ngIf="noBuilderPageForUrl"> </my-404-component>
 ```
+
 ## Using custom fields
 
 [Custom fields](https://www.builder.io/c/docs/custom-fields) are a powerful feature when using [custom models](https://www.builder.io/c/docs/guides/getting-started-with-models), for all sorts of customization, such as [SEO optimization](https://www.builder.io/c/docs/seo) of your content
@@ -85,7 +86,6 @@ With setction models you can also use Builder.io components in/around existing p
 ```
 
 You can then use [queries](https://www.builder.io/c/docs/custom-fields) and [targeting](https://www.builder.io/c/docs/guides/targeting-and-scheduling) to customize what content loads where
-
 
 ## Use your angular components in your Builder pages
 
@@ -134,10 +134,20 @@ See [here](https://builder.io/c/docs/custom-react-components#input-type-examples
 @Component({
   selector: 'custom-thing',
   template: `
-      <h2> Section A </h2>
-      <builder-blocks-outlet [blocks]="sectionA" [builderState]="builderState" [builderBlock]="builderBlock" dataPath="component.options.sectionA"></builder-blocks-outlet>
-      <h2> Section B </h2>
-      <builder-blocks-outlet [blocks]="sectionB" [builderState]="builderState" [builderBlock]="builderBlock" dataPath="component.options.sectionB"></builder-blocks-outlet>
+    <h2>Section A</h2>
+    <builder-blocks-outlet
+      [blocks]="sectionA"
+      [builderState]="builderState"
+      [builderBlock]="builderBlock"
+      dataPath="component.options.sectionA"
+    ></builder-blocks-outlet>
+    <h2>Section B</h2>
+    <builder-blocks-outlet
+      [blocks]="sectionB"
+      [builderState]="builderState"
+      [builderBlock]="builderBlock"
+      dataPath="component.options.sectionB"
+    ></builder-blocks-outlet>
   `,
 })
 export class CustomThing implements OnChanges {
@@ -149,7 +159,7 @@ export class CustomThing implements OnChanges {
 
   @Input()
   builderState = null;
-  
+
   @Input()
   sectionA = null;
 
@@ -195,40 +205,39 @@ BuilderBlock({
           },
         },
       ],
-},
-{
-  name: 'sectionB',
-  type: 'blocks',
-  hideFromUI: true,
-  helperText: 'This is an editable region where you can drag and drop blocks.',
-  defaultValue: [
+    },
     {
-      '@type': '@builder.io/sdk:Element',
-      component: {
-        name: 'Text',
-        options: {
-          text: 'Section B Editable in Builder...',
+      name: 'sectionB',
+      type: 'blocks',
+      hideFromUI: true,
+      helperText: 'This is an editable region where you can drag and drop blocks.',
+      defaultValue: [
+        {
+          '@type': '@builder.io/sdk:Element',
+          component: {
+            name: 'Text',
+            options: {
+              text: 'Section B Editable in Builder...',
+            },
+          },
+          responsiveStyles: {
+            large: {
+              display: 'flex',
+              flexDirection: 'column',
+              position: 'relative',
+              flexShrink: '0',
+              boxSizing: 'border-box',
+              marginTop: '20px',
+              lineHeight: 'normal',
+              height: 'auto',
+              textAlign: 'center',
+            },
+          },
         },
-      },
-      responsiveStyles: {
-        large: {
-          display: 'flex',
-          flexDirection: 'column',
-          position: 'relative',
-          flexShrink: '0',
-          boxSizing: 'border-box',
-          marginTop: '20px',
-          lineHeight: 'normal',
-          height: 'auto',
-          textAlign: 'center',
-        },
-      },
+      ],
     },
   ],
-}
-  ],
 })(CustomThing);
-
 ```
 
 ## Passing data and context down
@@ -263,7 +272,6 @@ export class AppComponent {
 You can also pass down functions, complex data like custom objects and libraries you can use `context`. Context passes all the way down (e.g. through symbols, etc). This data is not observed for changes and mutations
 
 Context is available in [actions and bindings](https://www.builder.io/c/docs/guides/custom-code) as `context.*`, such as `context.myFunction('hello world')` in the example above
-
 
 ## Example projects
 
