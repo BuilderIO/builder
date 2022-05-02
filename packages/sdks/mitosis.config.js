@@ -54,6 +54,8 @@ module.exports = {
                   // temporary workaround until https://github.com/BuilderIO/mitosis/issues/282 is fixed
                   .replace('class="img"', '')
                   .replace('class="div"', '')
+                  // temporary workaround until we have
+                  .replace(/..\/blocks\/(.*).svelte/g, /..\/blocks\/$1/)
               );
             },
           },

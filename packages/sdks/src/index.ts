@@ -2,9 +2,6 @@
 // properly.
 import './index-helpers/top-of-file';
 
-// register all Builder components
-import './index-helpers/register-components';
-
 import './scripts/init-editing';
 
 export * from './index-helpers/blocks-exports';
