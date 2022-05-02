@@ -126,7 +126,7 @@ export class BuilderComponentComponent implements OnDestroy, OnInit, OnChanges {
     }
     const script = document.createElement('script');
     // TODO remove hardcoded version, maybe a tag?
-    const ANGULAR_LATEST_VERSION = '1.3.47-9';
+    const ANGULAR_LATEST_VERSION = '1.3.47-10';
     const wcVersion = getQueryParam(location.href, 'builder.wcVersion') || ANGULAR_LATEST_VERSION;
     script.id = SCRIPT_ID;
     // TODO: detect builder.wcVersion and if customEleemnts exists and do
