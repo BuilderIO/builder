@@ -1,5 +1,3 @@
-function BlockStyles(props) {
+export default function BlockStyles(props) {
   return <></>;
 }
-
-export default BlockStyles;

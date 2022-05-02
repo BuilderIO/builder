@@ -1,4 +1,4 @@
-function RawText(props) {
+export default function RawText(props) {
   return (
     <span
       class={props.attributes?.class || props.attributes?.className}
@@ -6,5 +6,3 @@ function RawText(props) {
     ></span>
   );
 }
-
-export default RawText;

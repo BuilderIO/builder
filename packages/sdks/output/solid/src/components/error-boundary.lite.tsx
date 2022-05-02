@@ -1,5 +1,3 @@
-function ErrorBoundary(props) {
+export default function ErrorBoundary(props) {
   return <></>;
 }
-
-export default ErrorBoundary;

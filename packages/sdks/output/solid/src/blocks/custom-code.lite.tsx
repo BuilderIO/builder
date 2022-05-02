@@ -1,6 +1,6 @@
 import { createMutable } from "solid-js/store";
 
-function CustomCode(props) {
+export default function CustomCode(props) {
   const state = createMutable({
     scriptsInserted: [],
     scriptsRun: [],
@@ -63,5 +63,3 @@ function CustomCode(props) {
     ></div>
   );
 }
-
-export default CustomCode;

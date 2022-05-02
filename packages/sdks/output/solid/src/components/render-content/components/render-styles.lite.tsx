@@ -1,6 +1,6 @@
 import { createMutable } from "solid-js/store";
 
-function RenderStyles(props) {
+export default function RenderStyles(props) {
   const state = createMutable({
     getCssFromFont(font: CustomFont) {
       // TODO: compute what font sizes are used and only load those.......
@@ -57,16 +57,14 @@ function RenderStyles(props) {
         customFonts?.map((font) => this.getCssFromFont(font))?.join(" ") || ""
       );
     },
-    get injectedStyles() {
+    getInjectedStyles() {
       return `
-${props.cssCode || ""}
+${props.cssCode}
 ${state.getFontCss({
   customFonts: props.customFonts,
 })}`;
     },
   });
 
-  return <style>{state.injectedStyles}</style>;
+  return <style>{state.getInjectedStyles()}</style>;
 }
-
-export default RenderStyles;

@@ -1,6 +1,6 @@
 import { createMutable } from "solid-js/store";
 
-function Embed(props) {
+export default function Embed(props) {
   const state = createMutable({
     scriptsInserted: [],
     scriptsRun: [],
@@ -55,5 +55,3 @@ function Embed(props) {
 
   return <div ref={elem} innerHTML={props.content}></div>;
 }
-
-export default Embed;

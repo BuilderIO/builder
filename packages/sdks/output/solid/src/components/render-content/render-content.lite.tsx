@@ -19,7 +19,7 @@ import { getFetch } from "../../functions/get-fetch";
 import { TARGET } from "../../constants/target";
 import RenderStyles from "./components/render-styles.lite";
 
-function RenderContent(props) {
+export default function RenderContent(props) {
   const state = createMutable({
     get useContent() {
       const mergedContent: BuilderContent = {
@@ -36,7 +36,7 @@ function RenderContent(props) {
     overrideContent: null,
     update: 0,
     overrideState: {},
-    get contentState() {
+    get state() {
       return {
         ...props.content?.data?.state,
         ...props.data,
@@ -84,7 +84,7 @@ function RenderContent(props) {
         evaluate({
           code: jsCode,
           context: state.context,
-          state: state.contentState,
+          state: state.state,
         });
       }
     },
@@ -96,7 +96,7 @@ function RenderContent(props) {
         evaluate({
           code: group,
           context: state.context,
-          state: state.contentState,
+          state: state.state,
         })
       );
     },
@@ -128,7 +128,7 @@ function RenderContent(props) {
           "builder:component:stateChange",
           {
             detail: {
-              state: state.contentState,
+              state: state.state,
               ref: {
                 name: props.model,
               },
@@ -189,7 +189,7 @@ function RenderContent(props) {
           return state.useContent;
         },
         get state() {
-          return state.contentState;
+          return state.state;
         },
         get context() {
           return state.context;
@@ -227,5 +227,3 @@ function RenderContent(props) {
     </Dynamic>
   );
 }
-
-export default RenderContent;

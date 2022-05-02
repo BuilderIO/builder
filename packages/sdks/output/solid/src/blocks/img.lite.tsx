@@ -1,6 +1,6 @@
 import { isEditing } from "../functions/is-editing";
 
-function ImgComponent(props) {
+export default function ImgComponent(props) {
   return (
     <img
       {...props.attributes}
@@ -14,5 +14,3 @@ function ImgComponent(props) {
     />
   );
 }
-
-export default ImgComponent;

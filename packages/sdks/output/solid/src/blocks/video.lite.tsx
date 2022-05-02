@@ -1,4 +1,4 @@
-function Video(props) {
+export default function Video(props) {
   return (
     <video
       {...props.attributes}
@@ -22,5 +22,3 @@ function Video(props) {
     ></video>
   );
 }
-
-export default Video;

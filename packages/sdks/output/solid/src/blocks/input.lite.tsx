@@ -1,6 +1,6 @@
 import { isEditing } from "../functions/is-editing";
 
-function FormInputComponent(props) {
+export default function FormInputComponent(props) {
   return (
     <input
       {...props.attributes}
@@ -16,5 +16,3 @@ function FormInputComponent(props) {
     />
   );
 }
-
-export default FormInputComponent;

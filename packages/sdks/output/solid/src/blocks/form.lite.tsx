@@ -4,15 +4,14 @@ import { createMutable } from "solid-js/store";
 import { css } from "solid-styled-components";
 
 import RenderBlock from "../components/render-block.lite";
-import { isEditing } from "../functions/is-editing";
 
-function FormComponent(props) {
+export default function FormComponent(props) {
   const state = createMutable({
-    formState: "unsubmitted",
+    state: "unsubmitted",
     responseData: null,
     formErrorMessage: "",
     get submissionState() {
-      return (isEditing() && props.previewState) || state.formState;
+      return (Builder.isEditing && props.previewState) || state.state;
     },
     onSubmit(
       event: Event & {
@@ -131,7 +130,7 @@ function FormComponent(props) {
           }
         }
 
-        state.formState = "sending";
+        state.state = "sending";
         const formUrl = `${
           builder.env === "dev" ? "http://localhost:5000" : "https://builder.io"
         }/api/v1/form-submit?apiKey=${builder.apiKey}&to=${btoa(
@@ -172,7 +171,7 @@ function FormComponent(props) {
             }
 
             state.responseData = body;
-            state.formState = res.ok ? "success" : "error";
+            state.state = res.ok ? "success" : "error";
 
             if (res.ok) {
               const submitSuccessEvent = new CustomEvent("submit:success", {
@@ -230,7 +229,7 @@ function FormComponent(props) {
             }
 
             state.responseData = err;
-            state.formState = "error";
+            state.state = "error";
           }
         );
       }
@@ -251,10 +250,7 @@ function FormComponent(props) {
     >
       <Show when={props.builderBlock && props.builderBlock.children}>
         <For each={props.builderBlock?.children}>
-          {(block, _index) => {
-            const index = _index();
-            return <RenderBlock block={block}></RenderBlock>;
-          }}
+          {(block, index) => <RenderBlock block={block}></RenderBlock>}
         </For>
       </Show>
       <Show when={state.submissionState === "error"}>
@@ -289,5 +285,3 @@ function FormComponent(props) {
     </form>
   );
 }
-
-export default FormComponent;

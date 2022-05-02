@@ -5,7 +5,7 @@ import { css } from "solid-styled-components";
 
 import RenderBlocks from "../components/render-blocks.lite";
 
-function Columns(props) {
+export default function Columns(props) {
   const state = createMutable({
     getGutterSize() {
       return typeof props.space === "number" ? props.space || 0 : 20;
@@ -25,9 +25,8 @@ function Columns(props) {
       return `calc(${this.getWidth(index)}% - ${subtractWidth}px)`;
     },
     maybeApplyForTablet(prop: string) {
-      const _stackColumnsAt = props.stackColumnsAt || "tablet";
-
-      return _stackColumnsAt === "tablet" ? prop : "inherit";
+      const stackColumnsAt = props.stackColumnsAt || "tablet";
+      return stackColumnsAt === "tablet" ? prop : "inherit";
     },
     get columnsCssVars() {
       const flexDir =
@@ -69,34 +68,29 @@ function Columns(props) {
       style={state.columnsCssVars}
     >
       <For each={props.columns}>
-        {(column, _index) => {
-          const index = _index();
-          return (
-            <div
-              class={css({
-                flexGrow: "1",
-                "@media (max-width: 999px)": {
-                  width: "var(--column-width-tablet) !important",
-                  marginLeft: "var(--column-margin-left-tablet) !important",
-                },
-                "@media (max-width: 639px)": {
-                  width: "var(--column-width) !important",
-                  marginLeft: "var(--column-margin-left) !important",
-                },
-              })}
-              style={{
-                width: state.getColumnCssWidth(index),
-                "margin-left": `${index === 0 ? 0 : state.getGutterSize()}px`,
-                ...state.columnCssVars,
-              }}
-            >
-              <RenderBlocks blocks={column.blocks}></RenderBlocks>
-            </div>
-          );
-        }}
+        {(column, index) => (
+          <div
+            class={css({
+              flexGrow: "1",
+              "@media (max-width: 999px)": {
+                width: "var(--column-width-tablet) !important",
+                marginLeft: "var(--column-margin-left-tablet) !important",
+              },
+              "@media (max-width: 639px)": {
+                width: "var(--column-width) !important",
+                marginLeft: "var(--column-margin-left) !important",
+              },
+            })}
+            style={{
+              width: state.getColumnCssWidth(index),
+              "margin-left": `${index === 0 ? 0 : state.getGutterSize()}px`,
+              ...state.columnCssVars,
+            }}
+          >
+            <RenderBlocks blocks={column.blocks}></RenderBlocks>
+          </div>
+        )}
       </For>
     </div>
   );
 }
-
-export default Columns;

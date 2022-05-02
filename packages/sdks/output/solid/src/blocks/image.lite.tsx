@@ -3,7 +3,7 @@ import { Show } from "solid-js";
 import { createMutable } from "solid-js/store";
 import { css } from "solid-styled-components";
 
-function Image(props) {
+export default function Image(props) {
   const state = createMutable({
     updateQueryParam: function updateQueryParam(uri = "", key, value) {
       const re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
@@ -96,7 +96,7 @@ function Image(props) {
         <img
           class={
             "builder-image" +
-            (props.className ? " " + props.className : "") +
+            (props.class ? " " + props.class : "") +
             " " +
             css({
               opacity: "1",
@@ -167,5 +167,3 @@ function Image(props) {
     </div>
   );
 }
-
-export default Image;

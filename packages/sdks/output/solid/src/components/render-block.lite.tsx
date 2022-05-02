@@ -12,7 +12,7 @@ import { getBlockActions } from "../functions/get-block-actions";
 import { getProcessedBlock } from "../functions/get-processed-block";
 import BlockStyles from "./block-styles.lite";
 
-function RenderBlock(props) {
+export default function RenderBlock(props) {
   const state = createMutable({
     get component() {
       const componentName = state.useBlock.component?.name;
@@ -21,7 +21,7 @@ function RenderBlock(props) {
         return null;
       }
 
-      const ref = components[componentName];
+      const ref = components[state.useBlock.component?.name!];
 
       if (componentName && !ref) {
         // TODO: Public doc page with more info about this message
@@ -94,23 +94,15 @@ function RenderBlock(props) {
               component={state.componentRef}
             >
               <For each={state.children}>
-                {(child, _index) => {
-                  const index = _index();
-                  return <RenderBlock block={child}></RenderBlock>;
-                }}
+                {(child, index) => <RenderBlock block={child}></RenderBlock>}
               </For>
             </Dynamic>
           </Show>
           <For each={state.noCompRefChildren}>
-            {(child, _index) => {
-              const index = _index();
-              return <RenderBlock block={child}></RenderBlock>;
-            }}
+            {(child, index) => <RenderBlock block={child}></RenderBlock>}
           </For>
         </Dynamic>
       </Show>
     </>
   );
 }
-
-export default RenderBlock;
