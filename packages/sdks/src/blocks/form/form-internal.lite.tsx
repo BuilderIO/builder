@@ -300,5 +300,3 @@ export default function FormComponent(props: FormProps) {
     </form>
   );
 }
-
-useMetadata({ componentInfo });

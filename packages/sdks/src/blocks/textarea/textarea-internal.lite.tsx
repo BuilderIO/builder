@@ -20,5 +20,3 @@ export default function Textarea(props: TextareaProps) {
     />
   );
 }
-
-useMetadata({ componentInfo });

@@ -51,5 +51,3 @@ export default function Video(props: VideoProps) {
     />
   );
 }
-
-useMetadata({ componentInfo });

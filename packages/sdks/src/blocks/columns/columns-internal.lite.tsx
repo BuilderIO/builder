@@ -116,5 +116,3 @@ export default function Columns(props: ColumnProps) {
     </div>
   );
 }
-
-useMetadata({ componentInfo });

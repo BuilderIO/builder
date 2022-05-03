@@ -29,5 +29,3 @@ export default function FormInputComponent(props: FormInputProps) {
     />
   );
 }
-
-useMetadata({ componentInfo });

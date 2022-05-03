@@ -15,5 +15,3 @@ export default function RawText(props: RawTextProps) {
     />
   );
 }
-
-useMetadata({ componentInfo });

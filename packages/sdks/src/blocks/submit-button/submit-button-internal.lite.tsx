@@ -14,5 +14,3 @@ export default function SubmitButton(props: ButtonProps) {
     </button>
   );
 }
-
-useMetadata({ componentInfo });

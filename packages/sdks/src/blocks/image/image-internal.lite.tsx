@@ -89,5 +89,3 @@ export default function Image(props: ImageProps) {
     </div>
   );
 }
-
-useMetadata({ componentInfo });

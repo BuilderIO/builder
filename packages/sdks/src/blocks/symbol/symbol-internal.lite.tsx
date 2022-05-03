@@ -82,5 +82,3 @@ export default function Symbol(props: SymbolProps) {
     </div>
   );
 }
-
-useMetadata({ componentInfo });

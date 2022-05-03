@@ -13,5 +13,3 @@ export default function FragmentComponent(props: FragmentProps) {
   // and use a normal fragment, otherwise use span
   return <span>{props.children}</span>;
 }
-
-useMetadata({ componentInfo });

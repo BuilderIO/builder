@@ -24,5 +24,3 @@ export default function SectionComponent(props: SectionProps) {
     </section>
   );
 }
-
-useMetadata({ componentInfo });

@@ -28,5 +28,3 @@ export default function Button(props: ButtonProps) {
     </>
   );
 }
-
-useMetadata({ componentInfo });

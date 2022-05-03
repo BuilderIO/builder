@@ -30,5 +30,3 @@ export default function SelectComponent(props: FormSelectProps) {
     </select>
   );
 }
-
-useMetadata({ componentInfo });

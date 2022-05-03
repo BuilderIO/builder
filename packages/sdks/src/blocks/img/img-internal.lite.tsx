@@ -34,5 +34,3 @@ export default function ImgComponent(props: ImgProps) {
     />
   );
 }
-
-useMetadata({ componentInfo });
