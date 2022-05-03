@@ -126,7 +126,8 @@ export default function RenderContent(props: RenderContentProps) {
     },
     handleRequest({ url, key }: { key: string; url: string }) {
       const fetchAndSetState = async () => {
-        const response = await getFetch()(url);
+        const fetch = await getFetch();
+        const response = await fetch(url);
         const json = await response.json();
 
         const newOverrideState = {
