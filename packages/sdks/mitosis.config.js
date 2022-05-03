@@ -13,6 +13,12 @@ const getSeededId = () => {
 module.exports = {
   files: 'src/**',
   targets: ['reactNative', 'vue', 'svelte'],
+  transpiler: {
+    vue: { format: 'esm' },
+    svelte: { format: 'esm' },
+    solid: { format: 'esm' },
+    reactNative: { format: 'esm' },
+  },
   options: {
     vue: {
       registerComponentPrepend:
