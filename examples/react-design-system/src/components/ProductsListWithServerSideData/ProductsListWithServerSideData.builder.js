@@ -36,7 +36,7 @@ Builder.registerComponent(ProductsListWithServerSideData, {
     {
       name: 'category',
       type: 'string',
-      defaultValue: 'mens',
+      defaultValue: 'living',
       enum: [
         {
           label: 'Women',
