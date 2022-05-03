@@ -123,6 +123,8 @@ return componentRef() ? [] : children();
 
 
           </svelte:component>
+
+
 {/if}
 
         
@@ -135,4 +137,17 @@ return componentRef() ? [] : children();
       </svelte:element>
 
     
+
+
+{:else}
+<svelte:component {...componentOptions()} attributes={propertiesAndActions()}  builderBlock={useBlock()}  style={css()}  this={componentRef()} >
+          
+
+{#each children() as child, index }
+<svelte:self  block={child} ></svelte:self>
+{/each}
+
+
+        </svelte:component>
+
 {/if}

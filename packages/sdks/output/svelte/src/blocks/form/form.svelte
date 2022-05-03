@@ -263,6 +263,8 @@ let formErrorMessage = '';
 
 
     
+
+
 {/if}
 
 
@@ -274,6 +276,8 @@ let formErrorMessage = '';
 <svelte:component  dataPath="errorMessage"  blocks={errorMessage}  this={BuilderBlocks} ></svelte:component>
 
     
+
+
 {/if}
 
 
@@ -285,6 +289,8 @@ let formErrorMessage = '';
 <svelte:component  dataPath="sendingMessage"  blocks={sendingMessage}  this={BuilderBlocks} ></svelte:component>
 
     
+
+
 {/if}
 
 
@@ -300,6 +306,8 @@ let formErrorMessage = '';
       </pre>
 
     
+
+
 {/if}
 
 
@@ -311,6 +319,8 @@ let formErrorMessage = '';
 <svelte:component  dataPath="successMessage"  blocks={successMessage}  this={BuilderBlocks} ></svelte:component>
 
     
+
+
 {/if}
 
   </form>

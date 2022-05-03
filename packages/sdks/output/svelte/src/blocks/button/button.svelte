@@ -1,44 +1,49 @@
 <script>
-  
-  
+    
+    
+    
+    
   
   
 
+    
 
-
-  
-
-  
-  export let attributes;
+    
+    export let attributes;
 export let text;
 export let link;
 export let openLinkInNewTab;
-  
-  
-  
+    
+    
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+  </script>
 
   
-  
-  
-
-  
-
-  
-
-  
-</script>
-
-
-  
+    
 
 {#if link }
 
-    
-<a {...attributes} role="button"  href={link}  target={openLinkInNewTab ? '_blank' : undefined} >
       
+<a {...attributes} role="button"  href={link}  target={openLinkInNewTab ? '_blank' : undefined} >
+        
 {text}
 
-    </a>
+      </a>
 
-  
+    
+
+
+{:else}
+<span {...attributes}>{text}</span>
+
 {/if}

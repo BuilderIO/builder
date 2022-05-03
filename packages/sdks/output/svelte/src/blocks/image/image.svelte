@@ -58,6 +58,8 @@ paddingTop: aspectRatio * 100 + '%'
 {' '}
 
         </div>
+
+
 {/if}
 
     
@@ -68,6 +70,8 @@ paddingTop: aspectRatio * 100 + '%'
 <slot></slot>
 
     
+
+
 {/if}
 
 
@@ -83,6 +87,8 @@ paddingTop: aspectRatio * 100 + '%'
       </div>
 
     
+
+
 {/if}
 
   </div>

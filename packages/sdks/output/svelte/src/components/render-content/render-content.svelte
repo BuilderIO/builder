@@ -151,7 +151,7 @@ return contentState();
 }, get context() {
 return context();
 }, get apiKey() {
-return props.apiKey;
+return apiKey;
 },});
     let overrideContent = null;
 let update = 0;
@@ -213,6 +213,8 @@ contentId: useContent().id
 
 {#if (useContent?.()?.data?.cssCode || useContent?.()?.data?.customFonts?.length) && TARGET !== 'reactNative' }
 <RenderStyles  cssCode={useContent().data.cssCode}  customFonts={useContent().data.customFonts} ></RenderStyles>
+
+
 {/if}
 
       
@@ -221,4 +223,6 @@ contentId: useContent().id
     </div>
 
   
+
+
 {/if}

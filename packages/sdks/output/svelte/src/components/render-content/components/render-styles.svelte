@@ -100,4 +100,9 @@ return `<sty${''}le>${injectedStyles()}</sty${''}le>`;
 {@html injectedStyleScript()}
 
   
+
+
+{:else}
+<style >{@html injectedStyles()}</style>
+
 {/if}
