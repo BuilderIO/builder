@@ -4,7 +4,7 @@ import RenderContent from "../components/render-content/render-content.lite";
 import BuilderContext from "../context/builder.context";
 import { getContent } from "../functions/get-content";
 
-export default function Symbol(props) {
+function Symbol(props) {
   const state = createMutable({ className: "builder-symbol", content: null });
 
   const builderContext = useContext(BuilderContext);
@@ -35,3 +35,5 @@ export default function Symbol(props) {
     </div>
   );
 }
+
+export default Symbol;

@@ -2,7 +2,7 @@ import { For } from "solid-js";
 
 import { isEditing } from "../functions/is-editing";
 
-export default function SelectComponent(props) {
+function SelectComponent(props) {
   return (
     <select
       {...props.attributes}
@@ -14,10 +14,15 @@ export default function SelectComponent(props) {
       name={props.name}
     >
       <For each={props.options}>
-        {(option, index) => (
-          <option value={option.value}>{option.name || option.value}</option>
-        )}
+        {(option, _index) => {
+          const index = _index();
+          return (
+            <option value={option.value}>{option.name || option.value}</option>
+          );
+        }}
       </For>
     </select>
   );
 }
+
+export default SelectComponent;

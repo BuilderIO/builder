@@ -19,7 +19,7 @@ import { getFetch } from "../../functions/get-fetch";
 import { TARGET } from "../../constants/target";
 import RenderStyles from "./components/render-styles.lite";
 
-export default function RenderContent(props) {
+function RenderContent(props) {
   const state = createMutable({
     get useContent() {
       const mergedContent: BuilderContent = {
@@ -227,3 +227,5 @@ export default function RenderContent(props) {
     </Dynamic>
   );
 }
+
+export default RenderContent;
