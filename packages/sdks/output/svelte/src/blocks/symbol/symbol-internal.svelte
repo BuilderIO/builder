@@ -3,9 +3,9 @@
     import { afterUpdate } from 'svelte'
     
     
-  import  RenderContent,  {  }  from '../components/render-content/render-content.svelte';
-import  BuilderContext,  {  }  from '../context/builder.context';
-import  {  getContent  }  from '../functions/get-content';
+  import  RenderContent,  {  }  from '../../components/render-content/render-content.svelte';
+import  BuilderContext,  {  }  from '../../context/builder.context';
+import  {  getContent  }  from '../../functions/get-content';
 
   
 

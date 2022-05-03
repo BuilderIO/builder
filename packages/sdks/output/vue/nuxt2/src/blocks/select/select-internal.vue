@@ -16,7 +16,7 @@
   </select>
 </template>
 <script>
-import { isEditing } from "../functions/is-editing";
+import { isEditing } from "../../functions/is-editing";
 
 export default {
   name: "builder-select-component",

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { View, StyleSheet, Image, Text } from "react-native";
-import { isEditing } from "../functions/is-editing";
+import { isEditing } from "../../functions/is-editing";
 
 export default function ImgComponent(props) {
   return (

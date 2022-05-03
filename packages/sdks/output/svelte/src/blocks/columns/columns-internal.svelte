@@ -3,7 +3,7 @@
     
     
     
-  import  RenderBlocks,  {  }  from '../components/render-blocks.svelte';
+  import  RenderBlocks,  {  }  from '../../components/render-blocks.svelte';
 
   
 

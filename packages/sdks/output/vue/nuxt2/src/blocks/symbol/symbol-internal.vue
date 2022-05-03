@@ -19,9 +19,9 @@
   </div>
 </template>
 <script>
-import RenderContent from "../components/render-content/render-content";
-import BuilderContext from "../context/builder.context";
-import { getContent } from "../functions/get-content";
+import RenderContent from "../../components/render-content/render-content";
+import BuilderContext from "../../context/builder.context";
+import { getContent } from "../../functions/get-content";
 
 export default {
   name: "builder-symbol",

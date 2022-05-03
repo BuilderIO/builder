@@ -1,21 +1,21 @@
 import * as React from "react";
 import { View, StyleSheet, Image, Text } from "react-native";
 import { useState, useContext, useEffect } from "react";
-import { isBrowser } from "../../functions/is-browser";
+import { TARGET } from "../../constants/target";
 import BuilderContext from "../../context/builder.context";
-import { track } from "../../functions/track";
-import { isEditing } from "../../functions/is-editing";
-import { isPreviewing } from "../../functions/is-previewing";
-import { previewingModelName } from "../../functions/previewing-model-name";
-import { getContent } from "../../functions/get-content";
+import { evaluate } from "../../functions/evaluate";
 import {
   convertSearchParamsToQueryObject,
   getBuilderSearchParams,
 } from "../../functions/get-builder-search-params";
-import RenderBlocks from "../render-blocks.lite";
-import { evaluate } from "../../functions/evaluate";
+import { getContent } from "../../functions/get-content";
 import { getFetch } from "../../functions/get-fetch";
-import { TARGET } from "../../constants/target";
+import { isBrowser } from "../../functions/is-browser";
+import { isEditing } from "../../functions/is-editing";
+import { isPreviewing } from "../../functions/is-previewing";
+import { previewingModelName } from "../../functions/previewing-model-name";
+import { track } from "../../functions/track";
+import RenderBlocks from "../render-blocks.lite";
 import RenderStyles from "./components/render-styles.lite";
 
 export default function RenderContent(props) {
@@ -100,7 +100,8 @@ export default function RenderContent(props) {
 
   function handleRequest({ url, key }) {
     const fetchAndSetState = async () => {
-      const response = await getFetch()(url);
+      const fetch = await getFetch();
+      const response = await fetch(url);
       const json = await response.json();
       const newOverrideState = { ...overrideState, [key]: json };
       setOverrideState(newOverrideState);
@@ -220,33 +221,29 @@ export default function RenderContent(props) {
         },
       }}
     >
-      <>
-        {useContent() ? (
-          <>
-            <View
-              onClick={(event) =>
-                track("click", {
-                  contentId: useContent().id,
-                })
-              }
-              data-builder-content-id={useContent?.()?.id}
-            >
-              <>
-                {(useContent?.()?.data?.cssCode ||
-                  useContent?.()?.data?.customFonts?.length) &&
-                TARGET !== "reactNative" ? (
-                  <RenderStyles
-                    cssCode={useContent().data.cssCode}
-                    customFonts={useContent().data.customFonts}
-                  />
-                ) : null}
-              </>
+      {useContent() ? (
+        <>
+          <View
+            onClick={(event) =>
+              track("click", {
+                contentId: useContent().id,
+              })
+            }
+            data-builder-content-id={useContent?.()?.id}
+          >
+            {(useContent?.()?.data?.cssCode ||
+              useContent?.()?.data?.customFonts?.length) &&
+            TARGET !== "reactNative" ? (
+              <RenderStyles
+                cssCode={useContent().data.cssCode}
+                customFonts={useContent().data.customFonts}
+              />
+            ) : null}
 
-              <RenderBlocks blocks={useContent?.()?.data?.blocks} />
-            </View>
-          </>
-        ) : null}
-      </>
+            <RenderBlocks blocks={useContent?.()?.data?.blocks} />
+          </View>
+        </>
+      ) : null}
     </BuilderContext.Provider>
   );
 }

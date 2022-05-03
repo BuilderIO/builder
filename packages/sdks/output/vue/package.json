@@ -6,6 +6,7 @@
     "node-fetch": "^2.6.1"
   },
   "main": "./nuxt2/src/index.js",
+  "type": "module",
   "exports": {
     "./nuxt": "./nuxt.js",
     "./vue2": "./vue2/src/index.js",

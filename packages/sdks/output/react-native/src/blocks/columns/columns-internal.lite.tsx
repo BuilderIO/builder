@@ -1,6 +1,6 @@
 import * as React from "react";
 import { View, StyleSheet, Image, Text } from "react-native";
-import RenderBlocks from "../components/render-blocks.lite";
+import RenderBlocks from "../../components/render-blocks.lite";
 
 export default function Columns(props) {
   function getGutterSize() {

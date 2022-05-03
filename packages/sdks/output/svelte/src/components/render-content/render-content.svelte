@@ -3,18 +3,18 @@
     import { afterUpdate } from 'svelte'
     import { onDestroy } from 'svelte'
     
-  import  {  isBrowser  }  from '../../functions/is-browser';
+  import  {  TARGET  }  from '../../constants/target';
 import  BuilderContext,  {  }  from '../../context/builder.context';
-import  {  track  }  from '../../functions/track';
+import  {  evaluate  }  from '../../functions/evaluate';
+import  {  convertSearchParamsToQueryObject  ,  getBuilderSearchParams  }  from '../../functions/get-builder-search-params';
+import  {  getContent  }  from '../../functions/get-content';
+import  {  getFetch  }  from '../../functions/get-fetch';
+import  {  isBrowser  }  from '../../functions/is-browser';
 import  {  isEditing  }  from '../../functions/is-editing';
 import  {  isPreviewing  }  from '../../functions/is-previewing';
 import  {  previewingModelName  }  from '../../functions/previewing-model-name';
-import  {  getContent  }  from '../../functions/get-content';
-import  {  convertSearchParamsToQueryObject  ,  getBuilderSearchParams  }  from '../../functions/get-builder-search-params';
+import  {  track  }  from '../../functions/track';
 import  RenderBlocks,  {  }  from '../render-blocks.svelte';
-import  {  evaluate  }  from '../../functions/evaluate';
-import  {  getFetch  }  from '../../functions/get-fetch';
-import  {  TARGET  }  from '../../constants/target';
 import  RenderStyles,  {  }  from './components/render-styles.svelte';
 
   
@@ -82,7 +82,8 @@ url,
 key
 }) {
 const fetchAndSetState = async () => {
-  const response = await getFetch()(url);
+  const fetch = await getFetch();
+  const response = await fetch(url);
   const json = await response.json();
   const newOverrideState = { ...overrideState,
     [key]: json

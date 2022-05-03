@@ -3,14 +3,14 @@
     
     
     
-  import  {  getBlockComponentOptions  }  from '../functions/get-block-component-options';
+  import  BuilderContext,  {  }  from '../context/builder.context';
+import  {  getBlockActions  }  from '../functions/get-block-actions';
+import  {  getBlockComponentOptions  }  from '../functions/get-block-component-options';
 import  {  getBlockProperties  }  from '../functions/get-block-properties';
 import  {  getBlockStyles  }  from '../functions/get-block-styles';
 import  {  getBlockTag  }  from '../functions/get-block-tag';
-import  {  components  }  from '../functions/register-component';
-import  BuilderContext,  {  }  from '../context/builder.context';
-import  {  getBlockActions  }  from '../functions/get-block-actions';
 import  {  getProcessedBlock  }  from '../functions/get-processed-block';
+import  {  components  }  from '../functions/register-component';
 import  BlockStyles,  {  }  from './block-styles.svelte';
 
   

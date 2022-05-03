@@ -18,21 +18,21 @@
   </div>
 </template>
 <script>
-import { isBrowser } from "../../functions/is-browser";
+import { TARGET } from "../../constants/target";
 import BuilderContext from "../../context/builder.context";
-import { track } from "../../functions/track";
-import { isEditing } from "../../functions/is-editing";
-import { isPreviewing } from "../../functions/is-previewing";
-import { previewingModelName } from "../../functions/previewing-model-name";
-import { getContent } from "../../functions/get-content";
+import { evaluate } from "../../functions/evaluate";
 import {
   convertSearchParamsToQueryObject,
   getBuilderSearchParams,
 } from "../../functions/get-builder-search-params";
-import RenderBlocks from "../render-blocks";
-import { evaluate } from "../../functions/evaluate";
+import { getContent } from "../../functions/get-content";
 import { getFetch } from "../../functions/get-fetch";
-import { TARGET } from "../../constants/target";
+import { isBrowser } from "../../functions/is-browser";
+import { isEditing } from "../../functions/is-editing";
+import { isPreviewing } from "../../functions/is-previewing";
+import { previewingModelName } from "../../functions/previewing-model-name";
+import { track } from "../../functions/track";
+import RenderBlocks from "../render-blocks";
 import RenderStyles from "./components/render-styles";
 
 export default {
@@ -47,8 +47,8 @@ export default {
     overrideContent: null,
     update: 0,
     overrideState: {},
-    track,
     TARGET,
+    track,
   }),
 
   provide() {
@@ -230,7 +230,8 @@ export default {
     },
     handleRequest({ url, key }) {
       const fetchAndSetState = async () => {
-        const response = await getFetch()(url);
+        const fetch = await getFetch();
+        const response = await fetch(url);
         const json = await response.json();
         const newOverrideState = { ...this.overrideState, [key]: json };
         this.overrideState = newOverrideState;

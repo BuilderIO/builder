@@ -18,6 +18,7 @@ export default function () {
     dirs.push({
       path: join(__dirname, 'nuxt2/src/blocks'),
       prefix: 'builder',
+      pattern: "**/index.*",
     });
   });
 }

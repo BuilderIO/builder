@@ -3,8 +3,8 @@
     
     
     
-  import  RenderBlock,  {  }  from '../components/render-block.svelte';
-import  {  isEditing  }  from '../functions/is-editing';
+  import  RenderBlock,  {  }  from '../../components/render-block.svelte';
+import  {  isEditing  }  from '../../functions/is-editing';
 
   
 

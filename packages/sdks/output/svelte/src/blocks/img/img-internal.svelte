@@ -3,7 +3,7 @@
     
     
     
-  import  {  isEditing  }  from '../functions/is-editing';
+  import  {  isEditing  }  from '../../functions/is-editing';
 
   
 
