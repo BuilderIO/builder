@@ -31,9 +31,8 @@ builder
   .getAll(YOUR_MODEL_NAME, {
     limit: 10,
   })
-  .promise()
-  .then(({ data }) => {
-    // Do something with the data
+  .then( results => {
+    // Do something with the results
   });
 
 // Turn of cookies/tracking
