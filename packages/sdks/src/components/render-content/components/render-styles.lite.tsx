@@ -1,5 +1,5 @@
-import { Fragment, useState, useMetadata, Show } from '@builder.io/mitosis';
 import { TARGET } from '../../../constants/target';
+import { Fragment, Show, useMetadata, useState } from '@builder.io/mitosis';
 
 interface CustomFont {
   family?: string;

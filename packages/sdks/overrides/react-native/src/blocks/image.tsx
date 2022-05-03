@@ -1,5 +1,5 @@
-import { Image as ReactImage, View } from 'react-native';
 import { registerComponent } from '../functions/register-component';
+import { Image as ReactImage, View } from 'react-native';
 
 // Subset of Image props, many are irrelevant for native (such as altText, etc)
 export interface ImageProps {

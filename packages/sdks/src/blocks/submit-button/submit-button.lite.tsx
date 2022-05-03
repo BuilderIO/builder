@@ -1,4 +1,6 @@
+import { componentInfo } from './component-info';
 import '@builder.io/mitosis';
+import { useMetadata } from '@builder.io/mitosis';
 
 export interface ButtonProps {
   attributes?: any;
@@ -12,3 +14,5 @@ export default function SubmitButton(props: ButtonProps) {
     </button>
   );
 }
+
+useMetadata({ componentInfo });

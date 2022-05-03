@@ -1,5 +1,7 @@
-import '@builder.io/mitosis';
 import { isEditing } from '../../functions/is-editing';
+import { componentInfo } from './component-info';
+import '@builder.io/mitosis';
+import { useMetadata } from '@builder.io/mitosis';
 
 export interface ImgProps {
   attributes?: any;
@@ -32,3 +34,5 @@ export default function ImgComponent(props: ImgProps) {
     />
   );
 }
+
+useMetadata({ componentInfo });

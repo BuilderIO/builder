@@ -1,9 +1,10 @@
-import { onMount, onUpdate, useContext, useState } from '@builder.io/mitosis';
 import RenderContent from '../../components/render-content/render-content.lite';
 import BuilderContext from '../../context/builder.context.lite';
 import { getContent } from '../../functions/get-content';
-
 import { BuilderContent } from '../../types/builder-content';
+import { componentInfo } from './component-info';
+import { onMount, onUpdate, useContext, useState } from '@builder.io/mitosis';
+import { useMetadata } from '@builder.io/mitosis';
 
 export interface SymbolInfo {
   model?: string;
@@ -81,3 +82,5 @@ export default function Symbol(props: SymbolProps) {
     </div>
   );
 }
+
+useMetadata({ componentInfo });

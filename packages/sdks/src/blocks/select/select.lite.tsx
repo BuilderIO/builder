@@ -1,5 +1,7 @@
-import { For } from '@builder.io/mitosis';
 import { isEditing } from '../../functions/is-editing';
+import { componentInfo } from './component-info';
+import { For } from '@builder.io/mitosis';
+import { useMetadata } from '@builder.io/mitosis';
 
 export interface FormSelectProps {
   options?: { name?: string; value: string }[];
@@ -28,3 +30,5 @@ export default function SelectComponent(props: FormSelectProps) {
     </select>
   );
 }
+
+useMetadata({ componentInfo });

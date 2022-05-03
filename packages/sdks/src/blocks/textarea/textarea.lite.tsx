@@ -1,3 +1,6 @@
+import { componentInfo } from './component-info';
+import { useMetadata } from '@builder.io/mitosis';
+
 export interface TextareaProps {
   attributes?: any;
   name?: string;
@@ -17,3 +20,5 @@ export default function Textarea(props: TextareaProps) {
     />
   );
 }
+
+useMetadata({ componentInfo });

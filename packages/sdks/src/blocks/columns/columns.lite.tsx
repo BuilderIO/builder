@@ -1,5 +1,7 @@
-import { useState, For } from '@builder.io/mitosis';
 import RenderBlocks from '../../components/render-blocks.lite';
+import { componentInfo } from './component-info';
+import { For, useState } from '@builder.io/mitosis';
+import { useMetadata } from '@builder.io/mitosis';
 
 type Column = {
   blocks: any;
@@ -114,3 +116,5 @@ export default function Columns(props: ColumnProps) {
     </div>
   );
 }
+
+useMetadata({ componentInfo });

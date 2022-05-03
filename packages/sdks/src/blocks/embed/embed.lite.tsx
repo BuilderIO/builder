@@ -1,11 +1,12 @@
-import { useState, useRef, onMount } from '@builder.io/mitosis';
+import { componentInfo } from './component-info';
+import { onMount, useRef, useState } from '@builder.io/mitosis';
+import { useMetadata } from '@builder.io/mitosis';
 
-export interface CustomCodeProps {
-  code: string;
-  replaceNodes?: boolean;
+export interface EmbedProps {
+  content: string;
 }
 
-export default function CustomCode(props: CustomCodeProps) {
+export default function Embed(props: EmbedProps) {
   const elem = useRef();
 
   const state = useState({
@@ -43,7 +44,7 @@ export default function CustomCode(props: CustomCodeProps) {
               state.scriptsRun.push(script.innerText);
               new Function(script.innerText)();
             } catch (error) {
-              console.warn('`CustomCode`: Error running script:', error);
+              console.warn('`Embed`: Error running script:', error);
             }
           }
         }
@@ -55,13 +56,7 @@ export default function CustomCode(props: CustomCodeProps) {
     state.findAndRunScripts();
   });
 
-  return (
-    <div
-      ref={elem}
-      class={
-        'builder-custom-code' + (props.replaceNodes ? ' replace-nodes' : '')
-      }
-      innerHTML={props.code}
-    ></div>
-  );
+  return <div ref={elem} class="builder-embed" innerHTML={props.content}></div>;
 }
+
+useMetadata({ componentInfo });

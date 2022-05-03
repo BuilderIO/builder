@@ -1,6 +1,8 @@
-import { useState, useRef, Show, For } from '@builder.io/mitosis';
 import RenderBlock from '../../components/render-block.lite';
 import { isEditing } from '../../functions/is-editing';
+import { componentInfo } from './component-info';
+import { For, Show, useRef, useState } from '@builder.io/mitosis';
+import { useMetadata } from '@builder.io/mitosis';
 
 /**
  * This component was copied over from the old SDKs and has a lot of code pointing to invalid functions/env vars. It needs
@@ -298,3 +300,5 @@ export default function FormComponent(props: FormProps) {
     </form>
   );
 }
+
+useMetadata({ componentInfo });

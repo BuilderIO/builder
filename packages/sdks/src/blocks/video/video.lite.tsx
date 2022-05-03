@@ -1,3 +1,6 @@
+import { componentInfo } from './component-info';
+import { useMetadata } from '@builder.io/mitosis';
+
 export interface VideoProps {
   attributes?: any;
   video?: string;
@@ -48,3 +51,5 @@ export default function Video(props: VideoProps) {
     />
   );
 }
+
+useMetadata({ componentInfo });

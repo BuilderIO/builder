@@ -1,4 +1,6 @@
+import { componentInfo } from './component-info';
 import '@builder.io/mitosis';
+import { useMetadata } from '@builder.io/mitosis';
 
 export interface FragmentProps {
   maxWidth?: number;
@@ -11,3 +13,5 @@ export default function FragmentComponent(props: FragmentProps) {
   // and use a normal fragment, otherwise use span
   return <span>{props.children}</span>;
 }
+
+useMetadata({ componentInfo });

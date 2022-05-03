@@ -1,6 +1,7 @@
-import '@builder.io/mitosis';
-
 import RenderBlocks from '../../components/render-blocks.lite';
+import { componentInfo } from './component-info';
+import '@builder.io/mitosis';
+import { useMetadata } from '@builder.io/mitosis';
 
 export interface SectionProps {
   maxWidth?: number;
@@ -23,3 +24,5 @@ export default function SectionComponent(props: SectionProps) {
     </section>
   );
 }
+
+useMetadata({ componentInfo });

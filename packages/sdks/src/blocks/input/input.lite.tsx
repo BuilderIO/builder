@@ -1,5 +1,7 @@
-import '@builder.io/mitosis';
 import { isEditing } from '../../functions/is-editing';
+import { componentInfo } from './component-info';
+import '@builder.io/mitosis';
+import { useMetadata } from '@builder.io/mitosis';
 
 export interface FormInputProps {
   type?: string;
@@ -27,3 +29,5 @@ export default function FormInputComponent(props: FormInputProps) {
     />
   );
 }
+
+useMetadata({ componentInfo });

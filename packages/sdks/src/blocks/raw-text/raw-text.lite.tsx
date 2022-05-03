@@ -1,3 +1,6 @@
+import { componentInfo } from './component-info';
+import { useMetadata } from '@builder.io/mitosis';
+
 export interface RawTextProps {
   attributes?: any;
   text?: string;
@@ -12,3 +15,5 @@ export default function RawText(props: RawTextProps) {
     />
   );
 }
+
+useMetadata({ componentInfo });

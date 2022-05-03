@@ -1,4 +1,6 @@
+import { componentInfo } from './component-info';
 import { Show } from '@builder.io/mitosis';
+import { useMetadata } from '@builder.io/mitosis';
 
 export interface ImageProps {
   className?: string;
@@ -87,3 +89,5 @@ export default function Image(props: ImageProps) {
     </div>
   );
 }
+
+useMetadata({ componentInfo });
