@@ -57,9 +57,9 @@ export default function RenderStyles(props) {
     return customFonts?.map((font) => getCssFromFont(font))?.join(" ") || "";
   }
 
-  function getInjectedStyles() {
+  function injectedStyles() {
     return `
-${props.cssCode}
+${props.cssCode || ""}
 ${getFontCss({
   customFonts: props.customFonts,
 })}`;
@@ -67,7 +67,7 @@ ${getFontCss({
 
   return (
     <View>
-      <Text>{getInjectedStyles()}</Text>
+      <Text>{injectedStyles()}</Text>
     </View>
   );
 }

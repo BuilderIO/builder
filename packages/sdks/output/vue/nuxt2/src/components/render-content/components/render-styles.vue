@@ -1,11 +1,21 @@
 <template>
-  <component :is="style">{{ getInjectedStyles() }}</component>
+  <component :is="style">{{ injectedStyles }}</component>
 </template>
 <script>
 export default {
   name: "render-styles",
 
   props: ["cssCode", "customFonts"],
+
+  computed: {
+    injectedStyles() {
+      return `
+${this.cssCode || ""}
+${this.getFontCss({
+  customFonts: this.customFonts,
+})}`;
+    },
+  },
 
   methods: {
     getCssFromFont(font) {
@@ -62,13 +72,6 @@ export default {
       return (
         customFonts?.map((font) => this.getCssFromFont(font))?.join(" ") || ""
       );
-    },
-    getInjectedStyles() {
-      return `
-${this.cssCode}
-${this.getFontCss({
-  customFonts: this.customFonts,
-})}`;
     },
   },
 };

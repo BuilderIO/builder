@@ -877,6 +877,7 @@ __metadata:
     pinst: ^3.0.0
     prettier: ^2.5.0
     seedrandom: ^3.0.5
+    traverse: ^0.6.6
     ts-jest: ^27.1.4
     typescript: ^4.5.5
     watch: ^1.0.2

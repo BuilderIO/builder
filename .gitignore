@@ -26,3 +26,6 @@ Pods/
 !**/.yarn/releases
 !**/.yarn/sdks
 !**/.yarn/versions
+
+# macOS
+.DS_Store

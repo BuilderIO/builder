@@ -12,7 +12,7 @@
         }"
         :class="
           _classStringToObject(
-            'builder-image' + (this.class ? ' ' + this.class : '')
+            'builder-image' + (this.className ? ' ' + this.className : '')
           )
         "
         :src="image"
@@ -56,6 +56,7 @@ export default registerComponent(
       "image",
       "altText",
       "backgroundSize",
+      "className",
       "sizes",
       "noWebp",
       "aspectRatio",

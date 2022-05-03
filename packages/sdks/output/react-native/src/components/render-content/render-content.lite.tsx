@@ -34,7 +34,7 @@ export default function RenderContent(props) {
 
   const [overrideState, setOverrideState] = useState(() => ({}));
 
-  function state() {
+  function contentState() {
     return { ...props.content?.data?.state, ...props.data, ...overrideState };
   }
 
@@ -79,7 +79,7 @@ export default function RenderContent(props) {
       evaluate({
         code: jsCode,
         context: context(),
-        state: state(),
+        state: contentState(),
       });
     }
   }
@@ -93,7 +93,7 @@ export default function RenderContent(props) {
       evaluate({
         code: group,
         context: context(),
-        state: state(),
+        state: contentState(),
       })
     );
   }
@@ -126,7 +126,7 @@ export default function RenderContent(props) {
     window.dispatchEvent(
       new CustomEvent("builder:component:stateChange", {
         detail: {
-          state: state(),
+          state: contentState(),
           ref: {
             name: props.model,
           },
@@ -186,7 +186,7 @@ export default function RenderContent(props) {
   }, [useContent?.()?.data?.httpRequests]);
   useEffect(() => {
     emitStateUpdate();
-  }, [state()]);
+  }, [contentState()]);
 
   useEffect(() => {
     return () => {
@@ -208,7 +208,7 @@ export default function RenderContent(props) {
         },
 
         get state() {
-          return state();
+          return contentState();
         },
 
         get context() {

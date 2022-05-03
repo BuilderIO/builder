@@ -42,8 +42,8 @@ export default function Columns(props: ColumnProps) {
     },
 
     maybeApplyForTablet(prop: string) {
-      const stackColumnsAt = props.stackColumnsAt || 'tablet';
-      return stackColumnsAt === 'tablet' ? prop : 'inherit';
+      const _stackColumnsAt = props.stackColumnsAt || 'tablet';
+      return _stackColumnsAt === 'tablet' ? prop : 'inherit';
     },
 
     get columnsCssVars() {

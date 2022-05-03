@@ -1,4 +1,10 @@
-import { useState, Show, useContext, For } from '@builder.io/mitosis';
+import {
+  useMetadata,
+  useState,
+  Show,
+  useContext,
+  For,
+} from '@builder.io/mitosis';
 import { getBlockComponentOptions } from '../functions/get-block-component-options';
 import { getBlockProperties } from '../functions/get-block-properties';
 import { getBlockStyles } from '../functions/get-block-styles';
@@ -14,6 +20,10 @@ export type RenderBlockProps = {
   block: BuilderBlock;
 };
 
+useMetadata({
+  elementTag: 'state.tagName',
+});
+
 export default function RenderBlock(props: RenderBlockProps) {
   const builderContext = useContext(BuilderContext);
 
@@ -23,7 +33,7 @@ export default function RenderBlock(props: RenderBlockProps) {
       if (!componentName) {
         return null;
       }
-      const ref = components[state.useBlock.component?.name!];
+      const ref = components[componentName];
       if (componentName && !ref) {
         // TODO: Public doc page with more info about this message
         console.warn(`

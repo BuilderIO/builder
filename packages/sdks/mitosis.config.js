@@ -6,6 +6,9 @@ const getSeededId = () => {
   return Number(String(rngVal).split('.')[1]).toString(36);
 };
 
+/**
+ * @type {import('@builder.io/mitosis'.MitosisConfig)}
+ */
 module.exports = {
   files: 'src/**',
   targets: ['reactNative', 'vue', 'solid'],

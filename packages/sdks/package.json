@@ -11,10 +11,8 @@
     "build": "yarn run mitosis",
     "start": "watch 'yarn run mitosis' ./src ./overrides",
     "test": "jest",
-    "remove-resolutions": "./scripts/remove-resolutions.sh",
-    "remove-symlinks": "yarn run remove-resolutions && yarn",
-    "add-resolutions": "./scripts/add-resolutions.sh",
-    "add-symlinks": "yarn run add-resolutions && yarn",
+    "remove-symlinks": "./scripts/remove-resolutions.sh && yarn",
+    "add-symlinks": "./scripts/add-resolutions.sh && yarn",
     "prettier": "prettier .",
     "lint": "yarn run prettier --write",
     "ci:lint": "yarn run prettier --check",
@@ -25,7 +23,8 @@
     "@builder.io/mitosis": "dev",
     "@builder.io/mitosis-cli": "dev",
     "node-fetch": "^2.6.1",
-    "seedrandom": "^3.0.5"
+    "seedrandom": "^3.0.5",
+    "traverse": "^0.6.6"
   },
   "devDependencies": {
     "@builder.io/eslint-plugin-mitosis": "dev",

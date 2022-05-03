@@ -43,14 +43,19 @@ export default registerComponent(
 
     watch: {
       onUpdateHook0() {
-        const symbol = this.symbol;
+        const symbolToUse = this.symbol;
 
-        if (symbol && !symbol.content && !this.content && symbol.model) {
+        if (
+          symbolToUse &&
+          !symbolToUse.content &&
+          !this.content &&
+          symbolToUse.model
+        ) {
           getContent({
-            model: symbol.model,
+            model: symbolToUse.model,
             apiKey: this.builderContext.apiKey,
             options: {
-              entry: symbol.entry,
+              entry: symbolToUse.entry,
             },
           }).then((response) => {
             this.content = response;

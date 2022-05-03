@@ -69,7 +69,7 @@ export default {
         return null;
       }
 
-      const ref = components[this.useBlock.component?.name];
+      const ref = components[componentName];
 
       if (componentName && !ref) {
         // TODO: Public doc page with more info about this message
