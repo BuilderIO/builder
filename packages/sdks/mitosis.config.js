@@ -12,7 +12,7 @@ const getSeededId = () => {
  */
 module.exports = {
   files: 'src/**',
-  targets: ['reactNative', 'vue', 'svelte'],
+  targets: ['reactNative', 'vue', 'solid', 'svelte'],
   transpiler: {
     vue: { format: 'esm' },
     svelte: { format: 'esm' },
