@@ -1,114 +1,51 @@
-<template>
-  <form
-    v-bind="attributes"
-    :validate="validate"
-    ref="formRef"
-    :action="!sendWithJs && action"
-    :method="method"
-    :name="name"
-    @submit="onSubmit(event)"
-  >
-    <render-block
-      v-for="(block, index) in (builderBlock && builderBlock.children)"
-      :block="block"
-      :key="index"
-    ></render-block>
+import { Show, For } from "solid-js";
 
-    <builder-blocks
-      dataPath="errorMessage"
-      v-if="submissionState === 'error'"
-      :blocks="errorMessage"
-    ></builder-blocks>
+import { createMutable } from "solid-js/store";
+import { css } from "solid-styled-components";
 
-    <builder-blocks
-      dataPath="sendingMessage"
-      v-if="submissionState === 'sending'"
-      :blocks="sendingMessage"
-    ></builder-blocks>
-
-    <pre
-      class="builder-form-error-text pre-1pl23ac79ld"
-      v-if="submissionState === 'error' && responseData"
-    >
-        {{ JSON.stringify(responseData, null, 2) }}
-      </pre
-    >
-
-    <builder-blocks
-      dataPath="successMessage"
-      v-if="submissionState === 'success'"
-      :blocks="successMessage"
-    ></builder-blocks>
-  </form>
-</template>
-<script>
-import RenderBlock from "../../components/render-block/render-block";
+import RenderBlock from "../../components/render-block/render-block.lite";
 import { isEditing } from "../../functions/is-editing";
 
-export default {
-  name: "builder-form-component",
-  components: {
-    "render-block": async () => RenderBlock,
-    "builder-blocks": async () => BuilderBlocks,
-  },
-  props: [
-    "previewState",
-    "sendWithJs",
-    "sendSubmissionsTo",
-    "action",
-    "customHeaders",
-    "contentType",
-    "sendSubmissionsToEmail",
-    "name",
-    "method",
-    "errorMessagePath",
-    "resetFormOnSubmit",
-    "successUrl",
-    "validate",
-    "attributes",
-    "builderBlock",
-    "errorMessage",
-    "sendingMessage",
-    "successMessage",
-  ],
-
-  data: () => ({
+function FormComponent(props) {
+  const state = createMutable({
     formState: "unsubmitted",
     responseData: null,
     formErrorMessage: "",
-  }),
-
-  computed: {
-    submissionState() {
-      return (isEditing() && this.previewState) || this.formState;
+    get submissionState() {
+      return (isEditing() && props.previewState) || state.formState;
     },
-  },
+    onSubmit(
+      event: Event & {
+        currentTarget: HTMLFormElement;
+      }
+    ) {
+      const sendWithJs =
+        props.sendWithJs || props.sendSubmissionsTo === "email";
 
-  methods: {
-    onSubmit(event) {
-      const sendWithJs = this.sendWithJs || this.sendSubmissionsTo === "email";
-
-      if (this.sendSubmissionsTo === "zapier") {
+      if (props.sendSubmissionsTo === "zapier") {
         event.preventDefault();
       } else if (sendWithJs) {
-        if (!(this.action || this.sendSubmissionsTo === "email")) {
+        if (!(props.action || props.sendSubmissionsTo === "email")) {
           event.preventDefault();
           return;
         }
 
         event.preventDefault();
         const el = event.currentTarget;
-        const headers = this.customHeaders || {};
-        let body;
+        const headers = props.customHeaders || {};
+        let body: any;
         const formData = new FormData(el); // TODO: maybe support null
 
-        const formPairs = Array.from(
+        const formPairs: {
+          key: string;
+          value: File | boolean | number | string | FileList;
+        }[] = Array.from(
           event.currentTarget.querySelectorAll("input,select,textarea")
         )
-          .filter((el) => !!el.name)
+          .filter((el) => !!(el as HTMLInputElement).name)
           .map((el) => {
-            let value;
-            const key = el.name;
+            let value: any;
+            const key = (el as HTMLImageElement).name;
 
             if (el instanceof HTMLInputElement) {
               if (el.type === "radio") {
@@ -134,7 +71,7 @@ export default {
                 value = el.value;
               }
             } else {
-              value = el.value;
+              value = (el as HTMLInputElement).value;
             }
 
             return {
@@ -142,9 +79,9 @@ export default {
               value,
             };
           });
-        let contentType = this.contentType;
+        let contentType = props.contentType;
 
-        if (this.sendSubmissionsTo === "email") {
+        if (props.sendSubmissionsTo === "email") {
           contentType = "multipart/form-data";
         }
 
@@ -174,7 +111,7 @@ export default {
         if (contentType && contentType !== "multipart/form-data") {
           if (
             /* Zapier doesn't allow content-type header to be sent from browsers */
-            !(sendWithJs && this.action?.includes("zapier.com"))
+            !(sendWithJs && props.action?.includes("zapier.com"))
           ) {
             headers["content-type"] = contentType;
           }
@@ -186,27 +123,27 @@ export default {
           },
         });
 
-        if (this.$refs.formRef) {
-          this.$refs.formRef.dispatchEvent(presubmitEvent);
+        if (formRef) {
+          formRef.dispatchEvent(presubmitEvent);
 
           if (presubmitEvent.defaultPrevented) {
             return;
           }
         }
 
-        this.formState = "sending";
+        state.formState = "sending";
         const formUrl = `${
           builder.env === "dev" ? "http://localhost:5000" : "https://builder.io"
         }/api/v1/form-submit?apiKey=${builder.apiKey}&to=${btoa(
-          this.sendSubmissionsToEmail || ""
-        )}&name=${encodeURIComponent(this.name || "")}`;
+          props.sendSubmissionsToEmail || ""
+        )}&name=${encodeURIComponent(props.name || "")}`;
         fetch(
-          this.sendSubmissionsTo === "email" ? formUrl : this.action,
+          props.sendSubmissionsTo === "email" ? formUrl : props.action!,
           /* TODO: throw error if no action URL */
           {
             body,
             headers,
-            method: this.method || "post",
+            method: props.method || "post",
           }
         ).then(
           async (res) => {
@@ -219,9 +156,9 @@ export default {
               body = await res.text();
             }
 
-            if (!res.ok && this.errorMessagePath) {
+            if (!res.ok && props.errorMessagePath) {
               /* TODO: allow supplying an error formatter function */
-              let message = get(body, this.errorMessagePath);
+              let message = get(body, props.errorMessagePath);
 
               if (message) {
                 if (typeof message !== "string") {
@@ -230,12 +167,12 @@ export default {
                   message = JSON.stringify(message);
                 }
 
-                this.formErrorMessage = message;
+                state.formErrorMessage = message;
               }
             }
 
-            this.responseData = body;
-            this.formState = res.ok ? "success" : "error";
+            state.responseData = body;
+            state.formState = res.ok ? "success" : "error";
 
             if (res.ok) {
               const submitSuccessEvent = new CustomEvent("submit:success", {
@@ -245,34 +182,34 @@ export default {
                 },
               });
 
-              if (this.$refs.formRef) {
-                this.$refs.formRef.dispatchEvent(submitSuccessEvent);
+              if (formRef) {
+                formRef.dispatchEvent(submitSuccessEvent);
 
                 if (submitSuccessEvent.defaultPrevented) {
                   return;
                 }
                 /* TODO: option to turn this on/off? */
 
-                if (this.resetFormOnSubmit !== false) {
-                  this.$refs.formRef.reset();
+                if (props.resetFormOnSubmit !== false) {
+                  formRef.reset();
                 }
               }
               /* TODO: client side route event first that can be preventDefaulted */
 
-              if (this.successUrl) {
-                if (this.$refs.formRef) {
+              if (props.successUrl) {
+                if (formRef) {
                   const event = new CustomEvent("route", {
                     detail: {
-                      url: this.successUrl,
+                      url: props.successUrl,
                     },
                   });
-                  this.$refs.formRef.dispatchEvent(event);
+                  formRef.dispatchEvent(event);
 
                   if (!event.defaultPrevented) {
-                    location.href = this.successUrl;
+                    location.href = props.successUrl;
                   }
                 } else {
-                  location.href = this.successUrl;
+                  location.href = props.successUrl;
                 }
               }
             }
@@ -284,27 +221,73 @@ export default {
               },
             });
 
-            if (this.$refs.formRef) {
-              this.$refs.formRef.dispatchEvent(submitErrorEvent);
+            if (formRef) {
+              formRef.dispatchEvent(submitErrorEvent);
 
               if (submitErrorEvent.defaultPrevented) {
                 return;
               }
             }
 
-            this.responseData = err;
-            this.formState = "error";
+            state.responseData = err;
+            state.formState = "error";
           }
         );
       }
     },
-  },
-};
-</script>
-<style scoped>
-.pre-1pl23ac79ld {
-  padding: 10px;
-  color: red;
-  text-align: center;
+  });
+
+  const formRef = useRef();
+
+  return (
+    <form
+      {...props.attributes}
+      validate={props.validate}
+      ref={formRef}
+      action={!props.sendWithJs && props.action}
+      method={props.method}
+      name={props.name}
+      onSubmit={(event) => state.onSubmit(event)}
+    >
+      <Show when={props.builderBlock && props.builderBlock.children}>
+        <For each={props.builderBlock?.children}>
+          {(block, _index) => {
+            const index = _index();
+            return <RenderBlock block={block}></RenderBlock>;
+          }}
+        </For>
+      </Show>
+      <Show when={state.submissionState === "error"}>
+        <BuilderBlocks
+          dataPath="errorMessage"
+          blocks={props.errorMessage}
+        ></BuilderBlocks>
+      </Show>
+      <Show when={state.submissionState === "sending"}>
+        <BuilderBlocks
+          dataPath="sendingMessage"
+          blocks={props.sendingMessage}
+        ></BuilderBlocks>
+      </Show>
+      <Show when={state.submissionState === "error" && state.responseData}>
+        <pre
+          class={css({
+            padding: "10px",
+            color: "red",
+            textAlign: "center",
+          })}
+        >
+          {JSON.stringify(state.responseData, null, 2)}
+        </pre>
+      </Show>
+      <Show when={state.submissionState === "success"}>
+        <BuilderBlocks
+          dataPath="successMessage"
+          blocks={props.successMessage}
+        ></BuilderBlocks>
+      </Show>
+    </form>
+  );
 }
-</style>
+
+export default FormComponent;
