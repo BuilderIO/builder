@@ -11,10 +11,8 @@
     "build": "yarn run mitosis",
     "start": "watch 'yarn run mitosis' ./src ./overrides",
     "test": "jest",
-    "remove-resolutions": "./scripts/remove-resolutions.sh",
-    "remove-symlinks": "yarn run remove-resolutions && yarn",
-    "add-resolutions": "./scripts/add-resolutions.sh",
-    "add-symlinks": "yarn run add-resolutions && yarn",
+    "remove-symlinks": "./scripts/remove-resolutions.sh && yarn",
+    "add-symlinks": "./scripts/add-resolutions.sh && yarn",
     "prettier": "prettier .",
     "lint": "yarn run prettier --write",
     "ci:lint": "yarn run prettier --check",
@@ -23,7 +21,7 @@
   },
   "dependencies": {
     "@builder.io/mitosis": "dev",
-    "@builder.io/mitosis-cli": "0.0.13-7",
+    "@builder.io/mitosis-cli": "dev",
     "node-fetch": "^2.6.1",
     "seedrandom": "^3.0.5",
     "traverse": "^0.6.6"
@@ -56,9 +54,5 @@
       "path": "git-cz"
     }
   },
-  "packageManager": "yarn@3.2.0",
-  "resolutions": {
-    "@builder.io/mitosis-cli": "link:../../../mitosis/packages/cli",
-    "@builder.io/mitosis": "link:../../../mitosis/packages/core"
-  }
+  "packageManager": "yarn@3.2.0"
 }

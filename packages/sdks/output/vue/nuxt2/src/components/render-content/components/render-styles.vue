@@ -1,12 +1,10 @@
 <template>
-  <render-inlined-styles :styles="injectedStyles"></render-inlined-styles>
+  <component :is="style">{{ injectedStyles }}</component>
 </template>
 <script>
-import RenderInlinedStyles from "../../render-inlined-styles";
-
 export default {
-  name: "render-content-styles",
-  components: { "render-inlined-styles": async () => RenderInlinedStyles },
+  name: "render-styles",
+
   props: ["cssCode", "customFonts"],
 
   computed: {

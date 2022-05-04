@@ -1,6 +1,6 @@
 <template>
   <div
-    class="div-23e8fqt91nf"
+    class="div-21azgz5avex"
     :builder-path="path"
     :builder-parent-id="parent"
     :dataSet="{
@@ -19,7 +19,7 @@
 </template>
 <script>
 import { isEditing } from "../functions/is-editing";
-import RenderBlock from "./render-block/render-block";
+import RenderBlock from "./render-block";
 
 export default {
   name: "render-blocks",
@@ -76,7 +76,7 @@ export default {
 };
 </script>
 <style scoped>
-.div-23e8fqt91nf {
+.div-21azgz5avex {
   display: flex;
   flex-direction: column;
   align-items: stretch;

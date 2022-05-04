@@ -42,7 +42,7 @@
   </form>
 </template>
 <script>
-import RenderBlock from "../../components/render-block/render-block";
+import RenderBlock from "../../components/render-block";
 import { isEditing } from "../../functions/is-editing";
 
 export default {

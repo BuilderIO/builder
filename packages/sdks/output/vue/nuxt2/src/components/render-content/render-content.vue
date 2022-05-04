@@ -8,11 +8,11 @@
     "
     :data-builder-content-id="(useContent && useContent.id)"
   >
-    <render-content-styles
+    <render-styles
       v-if="(((useContent && useContent.data) && (useContent && useContent.data).cssCode) || (((useContent && useContent.data) && (useContent && useContent.data).customFonts) && ((useContent && useContent.data) && (useContent && useContent.data).customFonts).length)) && TARGET !== 'reactNative'"
       :cssCode="useContent.data.cssCode"
       :customFonts="useContent.data.customFonts"
-    ></render-content-styles>
+    ></render-styles>
 
     <render-blocks :blocks="((useContent && useContent.data) && (useContent && useContent.data).blocks)"></render-blocks>
   </div>
@@ -33,12 +33,12 @@ import { isPreviewing } from "../../functions/is-previewing";
 import { previewingModelName } from "../../functions/previewing-model-name";
 import { track } from "../../functions/track";
 import RenderBlocks from "../render-blocks";
-import RenderContentStyles from "./components/render-styles";
+import RenderStyles from "./components/render-styles";
 
 export default {
   name: "render-content",
   components: {
-    "render-content-styles": async () => RenderContentStyles,
+    "render-styles": async () => RenderStyles,
     "render-blocks": async () => RenderBlocks,
   },
   props: ["content", "data", "model", "apiKey"],

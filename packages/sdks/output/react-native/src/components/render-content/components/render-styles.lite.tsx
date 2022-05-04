@@ -1,8 +1,7 @@
 import * as React from "react";
 import { View, StyleSheet, Image, Text } from "react-native";
-import RenderInlinedStyles from "../../render-inlined-styles.lite";
 
-export default function RenderContentStyles(props) {
+export default function RenderStyles(props) {
   function getCssFromFont(font) {
     // TODO: compute what font sizes are used and only load those.......
     const family =
@@ -66,5 +65,9 @@ ${getFontCss({
 })}`;
   }
 
-  return <RenderInlinedStyles styles={injectedStyles()} />;
+  return (
+    <View>
+      <Text>{injectedStyles()}</Text>
+    </View>
+  );
 }
