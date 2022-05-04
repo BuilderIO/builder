@@ -1,5 +1,6 @@
 import * as React from "react";
 import { View, StyleSheet, Image, Text } from "react-native";
+import { TARGET } from "../../../constants/target";
 
 export default function RenderStyles(props) {
   function getCssFromFont(font) {
@@ -65,9 +66,21 @@ ${getFontCss({
 })}`;
   }
 
+  function injectedStyleScript() {
+    // NOTE: we have to obfusctate the name of the tag due to a limitation in the svelte-preprocessor plugin.
+    // https://github.com/sveltejs/vite-plugin-svelte/issues/315#issuecomment-1109000027
+    return `<sty${""}le>${injectedStyles()}</sty${""}le>`;
+  }
+
   return (
-    <View>
-      <Text>{injectedStyles()}</Text>
-    </View>
+    <>
+      {TARGET === "svelte" ? (
+        <>
+          <></>
+        </>
+      ) : (
+        <View dangerouslySetInnerHTML={{ __html: "injectedStyles()" }} />
+      )}
+    </>
   );
 }

@@ -738,13 +738,17 @@ export class Builder {
   static settings: Settings = {};
   static settingsChange = new BehaviorSubject<Settings>({});
 
-  /**
-   * @deprecated
-   *
-   * Use Builder.register('editor.settings', {}) instead.
-   */
-  static set(settings: Settings): void {
-    Builder.register('editor.settings', settings);
+  static set(settings: Settings) {
+    if (Builder.isBrowser) {
+      // TODO: merge
+      Object.assign(this.settings, settings);
+      const message = {
+        type: 'builder.settingsChange',
+        data: this.settings,
+      };
+      parent.postMessage(message, '*');
+    }
+    this.settingsChange.next(this.settings);
   }
 
   static import(packageName: string) {

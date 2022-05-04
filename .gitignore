@@ -1,13 +1,15 @@
-node_modules
+**/.DS_Store
 *.log
-dist
-test-lib/**/*.js
-coverage
+.DS_Store
+.cache
+.firebase*
 .history
-.nyc_output
 .idea
+.nyc_output
+.rpt2_cache/
 .vscode
 .next
+bazel-*
 coverage
 dist
 firebase.json
@@ -26,6 +28,3 @@ Pods/
 !**/.yarn/releases
 !**/.yarn/sdks
 !**/.yarn/versions
-
-# macOS
-.DS_Store

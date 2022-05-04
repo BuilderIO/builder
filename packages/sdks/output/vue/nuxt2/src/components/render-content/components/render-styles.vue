@@ -1,11 +1,15 @@
 <template>
-  <component :is="style">{{ injectedStyles }}</component>
+  <component v-else="" v-html="injectedStyles" :is="style"></component>
 </template>
 <script>
+import { TARGET } from "../../../constants/target";
+
 export default {
   name: "render-styles",
 
   props: ["cssCode", "customFonts"],
+
+  data: () => ({ TARGET }),
 
   computed: {
     injectedStyles() {
@@ -14,6 +18,11 @@ ${this.cssCode || ""}
 ${this.getFontCss({
   customFonts: this.customFonts,
 })}`;
+    },
+    injectedStyleScript() {
+      // NOTE: we have to obfusctate the name of the tag due to a limitation in the svelte-preprocessor plugin.
+      // https://github.com/sveltejs/vite-plugin-svelte/issues/315#issuecomment-1109000027
+      return `<sty${""}le>${this.injectedStyles}</sty${""}le>`;
     },
   },
 

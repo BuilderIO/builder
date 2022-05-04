@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/angular",
-  "version": "2.1.0",
+  "version": "2.0.2",
   "main": "dist/bundles/builder.io-angular.umd.js",
   "module": "dist/fesm5/builder.io-angular.js",
   "es2015": "dist/fesm2015/builder.io-angular.js",
@@ -40,7 +40,7 @@
     "@nguniversal/express-engine": "*"
   },
   "dependencies": {
-    "@builder.io/sdk": "^1.1.23-0"
+    "@builder.io/sdk": "^1.1.26"
   },
   "peerDependencies": {
     "@angular/common": ">= 2",
@@ -57,16 +57,7 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^13.0.0",
-    "@angular/common": "13.2.3",
-    "@angular/core": "13.2.3",
-    "@angular/elements": "13.2.3",
-    "@angular/forms": "13.2.3",
-    "@angular/platform-browser": "13.2.3",
-    "@angular/platform-browser-dynamic": "13.2.3",
-    "@angular/platform-server": "13.2.3",
-    "@angular/router": "13.2.3",
-    "@angular/cli": "13.2.3",
-    "@angular/compiler-cli": "13.2.3",
+    "@angular/cli": "^13.2.3",
     "@babel/core": "^7.17.4",
     "@babel/preset-env": "^7.16.11",
     "@builder.io/block-publish": "^1.1.2",
@@ -94,9 +85,5 @@
     "webpack": "^5.69.0",
     "webpack-cli": "^4.9.2"
   },
-  "gitHead": "4d96fbc32864698afbb355ab991c6d90be991951",
-  "resolutions": {
-    "codelyzer/@angular/compiler": "13.2.3",
-    "codelyzer/@angular/core": "13.2.3"
-  }
+  "gitHead": "4d96fbc32864698afbb355ab991c6d90be991951"
 }

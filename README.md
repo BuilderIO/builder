@@ -47,7 +47,10 @@ npm init builder.io@latest
   &nbsp; <a title="Shopify"  target="_blank" href="https://apps.shopify.com/builder-2">
     <img alt="Shopify" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F0f577e84eb4e4aa4a69d602dd376aa11" />
   </a>&nbsp;
-  &nbsp;<a title="Figma" target="_blank" href="https://github.com/builderio/html-to-figma">
+  &nbsp; <a title="VS Code"  target="_blank" href="https://github.com/BuilderIO/vscode">
+    <img alt="VS Code" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ff83e94a9c504427cbc8a557f682efec3" />
+  </a>&nbsp;
+  &nbsp;&nbsp; <a title="Figma" target="_blank" href="https://github.com/builderio/html-to-figma">
     <img width="31" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ffb77e93c28e044178e4694cc939bf4cf" />
   </a>&nbsp;&nbsp;
   &nbsp; <a title="React"  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=react">
@@ -150,14 +153,81 @@ Use our CLI to get started with one command:
 npm init builder.io@latest
 </pre>
 
+Or try out:
+
+<table>
+  <tbody>
+     <tr>
+      <td valign="top">
+        <p>&nbsp;</p> <!-- spacer -->
+        <p align="center">
+          <a href="https://builder.io/fiddle/fb98adf93ad5467180329fdaa9711f27">
+            <img height="60" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F084b1ebc3de4422185f9d36a409f3a24" />
+          </a>
+        </p>
+        <p align="center">
+          Try our <a href="https://builder.io/fiddle/fb98adf93ad5467180329fdaa9711f27"><b>interactive fiddle</b></a> to try the visual editor
+        </p>
+      </td>
+      <td valign="top">
+        <p>&nbsp;</p> <!-- spacer -->
+        <p align="center" >
+          <a href="https://github.com/builderio/figma-html">
+            <img height="60" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ffb77e93c28e044178e4694cc939bf4cf" />
+          </a>
+        </p>
+        <p align="center">
+          Use our <a href="https://github.com/builderio/figma-html"><b>Figma plugin</b></a> to turn designs into code!
+        </p>
+      </td>
+      <td valign="top">
+        <p>&nbsp;</p> <!-- spacer -->
+        <p align="center">
+          <a href="https://github.com/builderio/mitosis"><img height="60" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F928fd46bd9d84a3fbc5b31fd5b93a7df" /></a>
+        </p>
+        <p align="center">
+          Try our  <a href="https://github.com/builderio/mitosis"><b>code generation</b></a> fiddle
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">
+        <p>&nbsp;</p> <!-- spacer -->
+        <p align="center">
+          <a href="https://github.com/BuilderIO/vscode"><img height="60" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ff83e94a9c504427cbc8a557f682efec3" /></a>
+        </p>
+        <p align="center">
+          Try our <a href="https://github.com/BuilderIO/vscode"><b>VS Code extension</b></a> for in-IDE visual coding
+        </p>
+      </td>
+      <td valign="top">
+        <p>&nbsp;</p> <!-- spacer -->
+        <p align="center">
+          <a href="https://apps.shopify.com/builder-2"><img height="60" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F0f577e84eb4e4aa4a69d602dd376aa11" /></a>
+        </p>
+        <p align="center">
+          Try our <a href="https://apps.shopify.com/builder-2"><b>Shopify app</b></a> for visual Shopify store building
+        <p>
+      </td>
+      <td valign="top">
+        <p>&nbsp;</p> <!-- spacer -->
+        <p align="center">
+          <a href="https://www.builder.io/m/visual-cms"><img height="60" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F797d760607284eafad5c9697446896e7" /></a>
+        </p>
+        <p align="center">
+          Try our <a href="https://www.builder.io/m/visual-cms"><b>headless platform</b></a> for API-driven development
+        </p>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+<br />
 
 ## How does it work?
 
 - Integrate the [Builder API or SDK](https://www.builder.io/c/docs/getting-started) to your site or app
 - Create a free account on [builder.io](https://builder.io) and drag and drop to create and publish pages and content
-
-<img alt="how builder works diagram" src="https://user-images.githubusercontent.com/844291/165143897-d6461b21-f065-456a-8a6d-1e61115e2901.jpeg" width="500">
-
 
 ## How is the content structured?
 
@@ -192,12 +262,30 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
         </a>
       </td>
       <td align="center" valign="middle">
+        <a target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=graphql">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" width="500" height="1" />
+          <img width="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fb739b409e5b94937b5b11e3cf62cfae4" />
+          <p align="center">
+            GraphQL
+          </p>
+        </a>
+      </td>
+      <td align="center" valign="middle">
         <a target="_blank" href="https://apps.shopify.com/builder-2">
           <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" width="500" height="1" />
           <img width="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F0f577e84eb4e4aa4a69d602dd376aa11" />
           <p align="center">
             Shopify
           </P>
+        </a>
+      </td>
+      <td align="center" valign="middle">
+        <a target="_blank" href="https://github.com/BuilderIO/vscode">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" width="500" height="1" />
+          <img width="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ff83e94a9c504427cbc8a557f682efec3" />
+          <p align="center">
+            VS Code
+          </p>
         </a>
       </td>
       <td align="center" valign="middle">
@@ -218,6 +306,8 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
           </p>
         </a>
       </td>
+    </tr>
+    <tr>
       <td align="center" valign="middle">
         <a target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=next">
           <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" width="500" height="1" />
@@ -227,8 +317,6 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
           </p>
         </a>
       </td>
-    </tr>
-    <tr>
       <td align="center" valign="middle">
         <a target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=gatsby">
           <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" width="500" height="1" />

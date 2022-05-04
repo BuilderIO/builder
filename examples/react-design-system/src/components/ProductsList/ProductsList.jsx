@@ -24,12 +24,6 @@ const defaultParams = {
   pid: 'shopstyle',
 };
 
-const catSwaps = {
-  // Due to issues with ShopStyle's API returning inappropriate content for some categories,
-  // we override to another category that doesn't have these issues
-  ['womens-fashion']: 'handbags',
-};
-
 export const ProductsList = props => {
   const { amount, category, size } = props;
   const url = 'https://api.shopstyle.com/api/v2/products';
@@ -37,12 +31,10 @@ export const ProductsList = props => {
   const classes = useStyles();
   useEffect(() => {
     async function fetchProducts() {
-      let cat = category || defaultParams.cat;
-      cat = catSwaps[cat] || cat;
       const qs = queryString.stringify({
         ...defaultParams,
         limit: amount || defaultParams.limit,
-        cat,
+        cat: category || defaultParams.cat,
       });
       const result = await fetch(`${url}?${qs}`).then(res => res.json());
       setData(result);

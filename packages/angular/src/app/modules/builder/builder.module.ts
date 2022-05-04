@@ -7,8 +7,6 @@ import { BuilderContentDirective } from './directives/builder-content.directive'
 import { BUILDER_API_KEY, BuilderService } from './services/builder.service';
 import { BuilderContentService } from './services/builder-content.service';
 import { BuilderBlocksComponent } from './components/builder-blocks/builder-blocks.component';
-import { BuilderBlocksOutletComponent } from './components/builder-blocks-outlet/builder-blocks-outlet.component';
-
 import { BuilderComponentComponent } from './components/builder-component/builder-component.component';
 import { BuilderComponentService } from './components/builder-component/builder-component.service';
 
@@ -16,12 +14,7 @@ Builder.isStatic = true;
 
 const directives = [BuilderContentDirective];
 
-const components = [
-  BuilderContentComponent,
-  BuilderBlocksComponent,
-  BuilderComponentComponent,
-  BuilderBlocksOutletComponent,
-];
+const components = [BuilderContentComponent, BuilderBlocksComponent, BuilderComponentComponent];
 
 @NgModule({
   imports: [CommonModule],
