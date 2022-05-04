@@ -15,7 +15,7 @@ import  {  isPreviewing  }  from '../../functions/is-previewing';
 import  {  previewingModelName  }  from '../../functions/previewing-model-name';
 import  {  track  }  from '../../functions/track';
 import  RenderBlocks,  {  }  from '../render-blocks.svelte';
-import  RenderStyles,  {  }  from './components/render-styles.svelte';
+import  RenderContentStyles,  {  }  from './components/render-styles.svelte';
 
   
 
@@ -212,7 +212,7 @@ contentId: useContent().id
       
 
 {#if (useContent?.()?.data?.cssCode || useContent?.()?.data?.customFonts?.length) && TARGET !== 'reactNative' }
-<RenderStyles  cssCode={useContent().data.cssCode}  customFonts={useContent().data.customFonts} ></RenderStyles>
+<RenderContentStyles  cssCode={useContent().data.cssCode}  customFonts={useContent().data.customFonts} ></RenderContentStyles>
 
 
 {/if}

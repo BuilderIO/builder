@@ -3,7 +3,7 @@
     
     
     
-  import  RenderBlock,  {  }  from '../../components/render-block.svelte';
+  import  RenderBlock,  {  }  from '../../components/render-block/render-block.svelte';
 import  {  isEditing  }  from '../../functions/is-editing';
 
   

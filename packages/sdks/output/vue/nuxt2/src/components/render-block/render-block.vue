@@ -5,7 +5,10 @@
     :style="css"
     :is="tagName"
   >
-    <block-styles :block="useBlock"></block-styles>
+    <block-styles
+      v-if="TARGET === 'vue' || TARGET === 'svelte'"
+      :block="useBlock"
+    ></block-styles>
 
     <component
       v-bind="componentOptions"
@@ -42,20 +45,23 @@
   </component>
 </template>
 <script>
-import BuilderContext from "../context/builder.context";
-import { getBlockActions } from "../functions/get-block-actions";
-import { getBlockComponentOptions } from "../functions/get-block-component-options";
-import { getBlockProperties } from "../functions/get-block-properties";
-import { getBlockStyles } from "../functions/get-block-styles";
-import { getBlockTag } from "../functions/get-block-tag";
-import { getProcessedBlock } from "../functions/get-processed-block";
-import { components } from "../functions/register-component";
+import { TARGET } from "../../constants/target";
+import BuilderContext from "../../context/builder.context";
+import { getBlockActions } from "../../functions/get-block-actions";
+import { getBlockComponentOptions } from "../../functions/get-block-component-options";
+import { getBlockProperties } from "../../functions/get-block-properties";
+import { getBlockStyles } from "../../functions/get-block-styles";
+import { getBlockTag } from "../../functions/get-block-tag";
+import { getProcessedBlock } from "../../functions/get-processed-block";
+import { components } from "../../functions/register-component";
 import BlockStyles from "./block-styles";
 
 export default {
   name: "render-block",
   components: { "block-styles": async () => BlockStyles },
   props: ["block"],
+
+  data: () => ({ TARGET }),
 
   inject: {
     builderContext: "BuilderContext",

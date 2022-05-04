@@ -3,7 +3,7 @@
     
     
     
-  import  {  TARGET  }  from '../../../constants/target';
+  import  RenderInlinedStyles,  {  }  from '../../render-inlined-styles.svelte';
 
   
 
@@ -76,12 +76,6 @@ ${getFontCss({
 })}`;
 };
 
-$: injectedStyleScript = () => {
-// NOTE: we have to obfusctate the name of the tag due to a limitation in the svelte-preprocessor plugin.
-// https://github.com/sveltejs/vite-plugin-svelte/issues/315#issuecomment-1109000027
-return `<sty${''}le>${injectedStyles()}</sty${''}le>`;
-};
-
     
     
     
@@ -93,16 +87,4 @@ return `<sty${''}le>${injectedStyles()}</sty${''}le>`;
     
   </script>
 
-  
-{#if TARGET === 'svelte' }
-
-    
-{@html injectedStyleScript()}
-
-  
-
-
-{:else}
-<style >{@html injectedStyles()}</style>
-
-{/if}
+  <RenderInlinedStyles  styles={injectedStyles()} ></RenderInlinedStyles>

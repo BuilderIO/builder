@@ -1,8 +1,8 @@
 import * as React from "react";
 import { View, StyleSheet, Image, Text } from "react-native";
-import { TARGET } from "../../../constants/target";
+import RenderInlinedStyles from "../../render-inlined-styles.lite";
 
-export default function RenderStyles(props) {
+export default function RenderContentStyles(props) {
   function getCssFromFont(font) {
     // TODO: compute what font sizes are used and only load those.......
     const family =
@@ -66,21 +66,5 @@ ${getFontCss({
 })}`;
   }
 
-  function injectedStyleScript() {
-    // NOTE: we have to obfusctate the name of the tag due to a limitation in the svelte-preprocessor plugin.
-    // https://github.com/sveltejs/vite-plugin-svelte/issues/315#issuecomment-1109000027
-    return `<sty${""}le>${injectedStyles()}</sty${""}le>`;
-  }
-
-  return (
-    <>
-      {TARGET === "svelte" ? (
-        <>
-          <></>
-        </>
-      ) : (
-        <View dangerouslySetInnerHTML={{ __html: "injectedStyles()" }} />
-      )}
-    </>
-  );
+  return <RenderInlinedStyles styles={injectedStyles()} />;
 }

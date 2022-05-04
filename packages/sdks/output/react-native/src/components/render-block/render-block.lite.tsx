@@ -1,14 +1,15 @@
 import * as React from "react";
 import { View, StyleSheet, Image, Text } from "react-native";
 import { useContext } from "react";
-import BuilderContext from "../context/builder.context";
-import { getBlockActions } from "../functions/get-block-actions";
-import { getBlockComponentOptions } from "../functions/get-block-component-options";
-import { getBlockProperties } from "../functions/get-block-properties";
-import { getBlockStyles } from "../functions/get-block-styles";
-import { getBlockTag } from "../functions/get-block-tag";
-import { getProcessedBlock } from "../functions/get-processed-block";
-import { components } from "../functions/register-component";
+import { TARGET } from "../../constants/target";
+import BuilderContext from "../../context/builder.context";
+import { getBlockActions } from "../../functions/get-block-actions";
+import { getBlockComponentOptions } from "../../functions/get-block-component-options";
+import { getBlockProperties } from "../../functions/get-block-properties";
+import { getBlockStyles } from "../../functions/get-block-styles";
+import { getBlockTag } from "../../functions/get-block-tag";
+import { getProcessedBlock } from "../../functions/get-processed-block";
+import { components } from "../../functions/register-component";
 import BlockStyles from "./block-styles.lite";
 
 export default function RenderBlock(props) {
@@ -92,7 +93,11 @@ export default function RenderBlock(props) {
       {!componentInfo?.()?.noWrap ? (
         <>
           <TagNameRef {...propertiesAndActions()} style={css()}>
-            <BlockStyles block={useBlock()} />
+            {TARGET === "vue" || TARGET === "svelte" ? (
+              <>
+                <BlockStyles block={useBlock()} />
+              </>
+            ) : null}
 
             {componentRef() ? (
               <ComponentRefRef
