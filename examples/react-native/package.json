@@ -7,17 +7,16 @@
     "web": "expo start --web",
     "eject": "expo eject",
     "link": "yarn link @builder.io/sdk-react-native",
-    "rm-sdk-src": "rm -rf node_modules/@builder.io/sdk-react-native/src",
-    "cp-sdk": "yarn run rm-sdk-src && cp -R ../../packages/sdks/output/react-native/src node_modules/@builder.io/sdk-react-native/src",
-    "remove-resolutions": "./scripts/remove-resolutions.sh",
-    "remove-symlinks": "yarn run remove-resolutions && yarn",
-    "add-resolutions": "./scripts/add-resolutions.sh",
-    "add-symlinks": "yarn run add-resolutions && yarn"
+    "rm-sdk-src": "rm -rf node_modules/@builder.io/sdk-react-native",
+    "cp-sdk": "yarn run remove-symlinks && yarn run rm-sdk-src && cp -R ../../packages/sdks/output/react-native node_modules/@builder.io/sdk-react-native",
+    "remove-symlinks": "./scripts/remove-resolutions.sh && yarn",
+    "add-symlinks": "./scripts/add-resolutions.sh && yarn"
   },
   "dependencies": {
-    "@builder.io/sdk-react-native": "^0.0.1-50",
+    "@builder.io/sdk-react-native": "0.0.1-50",
     "@react-navigation/native": "^6.0.8",
     "@react-navigation/native-stack": "^6.5.0",
+    "custom-event-polyfill": "^1.0.7",
     "expo": "~44.0.0",
     "expo-status-bar": "~1.2.0",
     "react": "17.0.1",
