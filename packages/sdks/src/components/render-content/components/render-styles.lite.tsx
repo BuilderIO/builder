@@ -1,5 +1,5 @@
-import { TARGET } from '../../../constants/target';
-import { Fragment, Show, useMetadata, useState } from '@builder.io/mitosis';
+import RenderInlinedStyles from '../../render-inlined-styles.lite';
+import { useState } from '@builder.io/mitosis';
 
 interface CustomFont {
   family?: string;
@@ -15,7 +15,7 @@ interface Props {
   customFonts?: CustomFont[];
 }
 
-export default function RenderStyles(props: Props) {
+export default function RenderContentStyles(props: Props) {
   const state = useState({
     getCssFromFont(font: CustomFont) {
       // TODO: compute what font sizes are used and only load those.......
@@ -77,5 +77,5 @@ ${state.getFontCss({ customFonts: props.customFonts })}`;
     },
   });
 
-  return <style>{state.injectedStyles}</style>;
+  return <RenderInlinedStyles styles={state.injectedStyles} />;
 }

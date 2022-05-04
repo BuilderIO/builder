@@ -1,6 +1,8 @@
 import { createMutable } from "solid-js/store";
 
-function RenderStyles(props) {
+import RenderInlinedStyles from "../../render-inlined-styles.lite";
+
+function RenderContentStyles(props) {
   const state = createMutable({
     getCssFromFont(font: CustomFont) {
       // TODO: compute what font sizes are used and only load those.......
@@ -66,7 +68,9 @@ ${state.getFontCss({
     },
   });
 
-  return <style>{state.injectedStyles}</style>;
+  return (
+    <RenderInlinedStyles styles={state.injectedStyles}></RenderInlinedStyles>
+  );
 }
 
-export default RenderStyles;
+export default RenderContentStyles;

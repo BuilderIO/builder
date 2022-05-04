@@ -2,14 +2,15 @@ import { useContext, Show, For } from "solid-js";
 import { Dynamic } from "solid-js/web";
 import { createMutable } from "solid-js/store";
 
-import BuilderContext from "../context/builder.context";
-import { getBlockActions } from "../functions/get-block-actions";
-import { getBlockComponentOptions } from "../functions/get-block-component-options";
-import { getBlockProperties } from "../functions/get-block-properties";
-import { getBlockStyles } from "../functions/get-block-styles";
-import { getBlockTag } from "../functions/get-block-tag";
-import { getProcessedBlock } from "../functions/get-processed-block";
-import { components } from "../functions/register-component";
+import { TARGET } from "../../constants/target";
+import BuilderContext from "../../context/builder.context";
+import { getBlockActions } from "../../functions/get-block-actions";
+import { getBlockComponentOptions } from "../../functions/get-block-component-options";
+import { getBlockProperties } from "../../functions/get-block-properties";
+import { getBlockStyles } from "../../functions/get-block-styles";
+import { getBlockTag } from "../../functions/get-block-tag";
+import { getProcessedBlock } from "../../functions/get-processed-block";
+import { components } from "../../functions/register-component";
 import BlockStyles from "./block-styles.lite";
 
 function RenderBlock(props) {
@@ -86,7 +87,9 @@ function RenderBlock(props) {
           style={state.css}
           component={state.tagName}
         >
-          <BlockStyles block={state.useBlock}></BlockStyles>
+          <Show when={TARGET === "vue" || TARGET === "svelte"}>
+            <BlockStyles block={state.useBlock}></BlockStyles>
+          </Show>
           <Show when={state.componentRef}>
             <Dynamic
               {...state.componentOptions}

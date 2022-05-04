@@ -17,7 +17,7 @@ import { isPreviewing } from "../../functions/is-previewing";
 import { previewingModelName } from "../../functions/previewing-model-name";
 import { track } from "../../functions/track";
 import RenderBlocks from "../render-blocks.lite";
-import RenderStyles from "./components/render-styles.lite";
+import RenderContentStyles from "./components/render-styles.lite";
 
 function RenderContent(props) {
   const state = createMutable({
@@ -217,10 +217,10 @@ function RenderContent(props) {
               TARGET !== "reactNative"
             }
           >
-            <RenderStyles
+            <RenderContentStyles
               cssCode={state.useContent.data.cssCode}
               customFonts={state.useContent.data.customFonts}
-            ></RenderStyles>
+            ></RenderContentStyles>
           </Show>
           <RenderBlocks blocks={state.useContent?.data?.blocks}></RenderBlocks>
         </div>

@@ -27,7 +27,7 @@
     ></builder-blocks>
 
     <pre
-      class="builder-form-error-text pre-4wbls88y960"
+      class="builder-form-error-text pre-1pl23ac79ld"
       v-if="submissionState === 'error' && responseData"
     >
         {{ JSON.stringify(responseData, null, 2) }}
@@ -42,7 +42,7 @@
   </form>
 </template>
 <script>
-import RenderBlock from "../../components/render-block";
+import RenderBlock from "../../components/render-block/render-block";
 import { isEditing } from "../../functions/is-editing";
 
 export default {
@@ -302,7 +302,7 @@ export default {
 };
 </script>
 <style scoped>
-.pre-4wbls88y960 {
+.pre-1pl23ac79ld {
   padding: 10px;
   color: red;
   text-align: center;

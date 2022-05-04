@@ -1,4 +1,4 @@
-import RenderBlock from '../../components/render-block.lite';
+import RenderBlock from '../../components/render-block/render-block.lite';
 import { isEditing } from '../../functions/is-editing';
 import { componentInfo } from './component-info';
 import { For, Show, useRef, useState } from '@builder.io/mitosis';

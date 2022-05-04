@@ -1,7 +1,7 @@
 import * as React from "react";
 import { View, StyleSheet, Image, Text } from "react-native";
 import { useState, useRef } from "react";
-import RenderBlock from "../../components/render-block.lite";
+import RenderBlock from "../../components/render-block/render-block.lite";
 import { isEditing } from "../../functions/is-editing";
 
 export default function FormComponent(props) {

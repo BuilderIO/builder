@@ -8,12 +8,8 @@ coverage
 .idea
 .vscode
 .next
-coverage
-dist
 firebase.json
-node_modules
 temp
-test-lib/**/*.js
 yarn-error.log
 .build
 Pods/
@@ -29,3 +25,7 @@ Pods/
 
 # macOS
 .DS_Store
+
+
+.cache
+.rpt2_cache/

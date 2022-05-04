@@ -3,7 +3,7 @@ import { Show, For } from "solid-js";
 import { createMutable } from "solid-js/store";
 import { css } from "solid-styled-components";
 
-import RenderBlock from "../../components/render-block.lite";
+import RenderBlock from "../../components/render-block/render-block.lite";
 import { isEditing } from "../../functions/is-editing";
 
 function FormComponent(props) {

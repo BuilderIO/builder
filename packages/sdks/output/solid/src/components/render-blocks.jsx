@@ -2,7 +2,7 @@ import { Show, For } from "solid-js";
 import { createMutable } from "solid-js/store";
 import { css } from "solid-styled-components";
 import { isEditing } from "../functions/is-editing";
-import RenderBlock from "./render-block";
+import RenderBlock from "./render-block/render-block";
 
 function RenderBlocks(props) {
   const state = createMutable({
