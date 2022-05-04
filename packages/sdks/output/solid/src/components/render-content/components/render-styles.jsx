@@ -58,16 +58,16 @@ function RenderStyles(props) {
       return customFonts?.map(font => this.getCssFromFont(font))?.join(" ") || "";
     },
 
-    getInjectedStyles() {
+    get injectedStyles() {
       return `
-${props.cssCode}
+${props.cssCode || ""}
 ${state.getFontCss({
         customFonts: props.customFonts
       })}`;
     }
 
   });
-  return <style>{state.getInjectedStyles()}</style>;
+  return <style>{state.injectedStyles}</style>;
 }
 
 export default RenderStyles;

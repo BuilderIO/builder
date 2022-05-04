@@ -1,7 +1,7 @@
-import { Show, useState } from '@builder.io/mitosis';
 import { isEditing } from '../functions/is-editing';
 import { BuilderBlock } from '../types/builder-block';
 import RenderBlock from './render-block.lite';
+import { Show, useState } from '@builder.io/mitosis';
 
 export type RenderBlockProps = {
   blocks?: BuilderBlock[];

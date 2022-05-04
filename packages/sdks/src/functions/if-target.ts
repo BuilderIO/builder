@@ -1,5 +1,6 @@
-type Target = import('../types/targets').Target;
 import { TARGET } from '../constants/target';
+
+type Target = import('../types/targets').Target;
 
 // TODO: babel compile to include certain code only if the target matches
 export function ifTarget<A, B>({

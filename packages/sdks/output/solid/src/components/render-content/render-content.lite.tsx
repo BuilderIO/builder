@@ -2,21 +2,21 @@ import { useContext, Show, onMount } from "solid-js";
 import { Dynamic } from "solid-js/web";
 import { createMutable } from "solid-js/store";
 
-import { isBrowser } from "../../functions/is-browser";
+import { TARGET } from "../../constants/target";
 import BuilderContext from "../../context/builder.context";
-import { track } from "../../functions/track";
-import { isEditing } from "../../functions/is-editing";
-import { isPreviewing } from "../../functions/is-previewing";
-import { previewingModelName } from "../../functions/previewing-model-name";
-import { getContent } from "../../functions/get-content";
+import { evaluate } from "../../functions/evaluate";
 import {
   convertSearchParamsToQueryObject,
   getBuilderSearchParams,
 } from "../../functions/get-builder-search-params";
-import RenderBlocks from "../render-blocks.lite";
-import { evaluate } from "../../functions/evaluate";
+import { getContent } from "../../functions/get-content";
 import { getFetch } from "../../functions/get-fetch";
-import { TARGET } from "../../constants/target";
+import { isBrowser } from "../../functions/is-browser";
+import { isEditing } from "../../functions/is-editing";
+import { isPreviewing } from "../../functions/is-previewing";
+import { previewingModelName } from "../../functions/previewing-model-name";
+import { track } from "../../functions/track";
+import RenderBlocks from "../render-blocks.lite";
 import RenderStyles from "./components/render-styles.lite";
 
 function RenderContent(props) {
@@ -36,7 +36,7 @@ function RenderContent(props) {
     overrideContent: null,
     update: 0,
     overrideState: {},
-    get state() {
+    get contentState() {
       return {
         ...props.content?.data?.state,
         ...props.data,
@@ -84,7 +84,7 @@ function RenderContent(props) {
         evaluate({
           code: jsCode,
           context: state.context,
-          state: state.state,
+          state: state.contentState,
         });
       }
     },
@@ -96,13 +96,14 @@ function RenderContent(props) {
         evaluate({
           code: group,
           context: state.context,
-          state: state.state,
+          state: state.contentState,
         })
       );
     },
     handleRequest({ url, key }: { key: string; url: string }) {
       const fetchAndSetState = async () => {
-        const response = await getFetch()(url);
+        const fetch = await getFetch();
+        const response = await fetch(url);
         const json = await response.json();
         const newOverrideState = { ...state.overrideState, [key]: json };
         state.overrideState = newOverrideState;
@@ -128,7 +129,7 @@ function RenderContent(props) {
           "builder:component:stateChange",
           {
             detail: {
-              state: state.state,
+              state: state.contentState,
               ref: {
                 name: props.model,
               },
@@ -189,7 +190,7 @@ function RenderContent(props) {
           return state.useContent;
         },
         get state() {
-          return state.state;
+          return state.contentState;
         },
         get context() {
           return state.context;

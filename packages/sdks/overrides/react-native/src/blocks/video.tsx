@@ -1,6 +1,6 @@
+import { registerComponent } from '../functions/register-component';
 import { View } from 'react-native';
 import ReactVideo from 'react-native-video';
-import { registerComponent } from '../functions/register-component';
 
 // Subset of Image props, many are irrelevant for native (such as altText, etc)
 export interface VideoProps {

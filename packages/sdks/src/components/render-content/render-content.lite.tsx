@@ -1,29 +1,29 @@
-import {
-  onMount,
-  onUnMount,
-  setContext,
-  useState,
-  Show,
-  onUpdate,
-} from '@builder.io/mitosis';
-import { isBrowser } from '../../functions/is-browser';
-import { BuilderContent } from '../../types/builder-content';
+import { TARGET } from '../../constants/target';
 import BuilderContext from '../../context/builder.context.lite';
-import { track } from '../../functions/track';
-import { isEditing } from '../../functions/is-editing';
-import { isPreviewing } from '../../functions/is-previewing';
-import { previewingModelName } from '../../functions/previewing-model-name';
-import { getContent } from '../../functions/get-content';
+import { evaluate } from '../../functions/evaluate';
 import {
   convertSearchParamsToQueryObject,
   getBuilderSearchParams,
 } from '../../functions/get-builder-search-params';
-import RenderBlocks from '../render-blocks.lite';
-import { Dictionary, Nullable } from '../../types/typescript';
-import { evaluate } from '../../functions/evaluate';
+import { getContent } from '../../functions/get-content';
 import { getFetch } from '../../functions/get-fetch';
-import { TARGET } from '../../constants/target';
+import { isBrowser } from '../../functions/is-browser';
+import { isEditing } from '../../functions/is-editing';
+import { isPreviewing } from '../../functions/is-previewing';
+import { previewingModelName } from '../../functions/previewing-model-name';
+import { track } from '../../functions/track';
+import { BuilderContent } from '../../types/builder-content';
+import { Dictionary, Nullable } from '../../types/typescript';
+import RenderBlocks from '../render-blocks.lite';
 import RenderStyles from './components/render-styles.lite';
+import {
+  Show,
+  onMount,
+  onUnMount,
+  onUpdate,
+  setContext,
+  useState,
+} from '@builder.io/mitosis';
 
 export type RenderContentProps = {
   content?: BuilderContent;
@@ -126,7 +126,8 @@ export default function RenderContent(props: RenderContentProps) {
     },
     handleRequest({ url, key }: { key: string; url: string }) {
       const fetchAndSetState = async () => {
-        const response = await getFetch()(url);
+        const fetch = await getFetch();
+        const response = await fetch(url);
         const json = await response.json();
 
         const newOverrideState = {
