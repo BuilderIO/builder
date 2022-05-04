@@ -15,7 +15,7 @@ import { track } from '../../functions/track';
 import { BuilderContent } from '../../types/builder-content';
 import { Dictionary, Nullable } from '../../types/typescript';
 import RenderBlocks from '../render-blocks.lite';
-import RenderStyles from './components/render-styles.lite';
+import RenderContentStyles from './components/render-styles.lite';
 import {
   Show,
   onMount,
@@ -275,7 +275,7 @@ export default function RenderContent(props: RenderContentProps) {
         {(state.useContent?.data?.cssCode ||
           state.useContent?.data?.customFonts?.length) &&
           TARGET !== 'reactNative' && (
-            <RenderStyles
+            <RenderContentStyles
               cssCode={state.useContent.data.cssCode}
               customFonts={state.useContent.data.customFonts}
             />

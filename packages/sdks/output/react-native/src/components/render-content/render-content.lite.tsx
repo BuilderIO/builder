@@ -16,7 +16,7 @@ import { isPreviewing } from "../../functions/is-previewing";
 import { previewingModelName } from "../../functions/previewing-model-name";
 import { track } from "../../functions/track";
 import RenderBlocks from "../render-blocks.lite";
-import RenderStyles from "./components/render-styles.lite";
+import RenderContentStyles from "./components/render-styles.lite";
 
 export default function RenderContent(props) {
   function useContent() {
@@ -234,7 +234,7 @@ export default function RenderContent(props) {
             {(useContent?.()?.data?.cssCode ||
               useContent?.()?.data?.customFonts?.length) &&
             TARGET !== "reactNative" ? (
-              <RenderStyles
+              <RenderContentStyles
                 cssCode={useContent().data.cssCode}
                 customFonts={useContent().data.customFonts}
               />

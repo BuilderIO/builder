@@ -1,7 +1,7 @@
 import * as React from "react";
 import { View, StyleSheet, Image, Text } from "react-native";
 import { isEditing } from "../functions/is-editing";
-import RenderBlock from "./render-block.lite";
+import RenderBlock from "./render-block/render-block.lite";
 
 export default function RenderBlocks(props) {
   function className() {
