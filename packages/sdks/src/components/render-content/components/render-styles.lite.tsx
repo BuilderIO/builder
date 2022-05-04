@@ -1,5 +1,5 @@
-import { useState } from '@builder.io/mitosis';
 import RenderInlinedStyles from '../../render-inlined-styles.lite';
+import { useState } from '@builder.io/mitosis';
 
 interface CustomFont {
   family?: string;
@@ -77,7 +77,5 @@ ${state.getFontCss({ customFonts: props.customFonts })}`;
     },
   });
 
-  return (
-    <RenderInlinedStyles styles={state.injectedStyles} />
-  );
+  return <RenderInlinedStyles styles={state.injectedStyles} />;
 }
