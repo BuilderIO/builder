@@ -220,6 +220,9 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
     builderPageRef: any;
     builderRootRef: any;
 
+    stateOverride = {};
+    context = {};
+
     prerender = !Builder.isEditing;
 
     private _options: any = {};
@@ -242,6 +245,10 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
           this.getAttribute('reload-on-route-change') !== 'false' &&
           !Builder.isEditing
       );
+    }
+
+    get state() {
+      return Object.assign(this.stateOverride, this.options?.data || {});
     }
 
     private getOptionsFromAttribute() {
@@ -492,6 +499,17 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
         );
     }
 
+    setContext(context: any) {
+      this.context = context || {};
+    }
+
+    setState(state: any) {
+      this.stateOverride = state || {};
+      if (this.builderPageRef) {
+        Object.assign(this.builderPageRef.state.state, this.state);
+      }
+    }
+
     findAndRunScripts() {
       const scripts = this.getElementsByTagName('script');
       for (let i = 0; i < scripts.length; i++) {
@@ -555,20 +573,20 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
           const { Shopify } = await getShopifyJsPromise!;
           shopify = new Shopify({});
         }
-
         // Ensure styles don't load twice
         BuilderPage.renderInto(
           wrapInDiv(this),
           {
             ...({ ref: (ref: any) => (this.builderPageRef = ref) } as any),
             modelName: name!,
-            context: {
+            context: Object.assign(this.context, {
               ...(isShopify && {
                 shopify,
                 liquid: shopify.liquid,
               }),
               apiKey: builder.apiKey,
-            },
+            }),
+            data: this.state,
             entry,
             emailMode: (this.options || {}).emailMode || this.getAttribute('email-mode') === 'true',
             options: {
@@ -624,16 +642,17 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
               {
                 ...({ ref: (ref: any) => (this.builderPageRef = ref) } as any),
                 modelName: name!,
-                context: {
+                context: Object.assign(this.context, {
                   ...(isShopify && {
                     shopify,
                     liquid: shopify.liquid,
                   }),
                   apiKey: builder.apiKey,
-                },
+                }),
                 emailMode:
                   (this.options || {}).emailMode || this.getAttribute('email-mode') === 'true',
                 entry: data ? data.id : entry,
+                data: this.state,
                 options: {
                   entry: data ? data.id : entry,
                   initialContent: data ? [data] : undefined,
@@ -685,15 +704,16 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
                   ...({
                     ref: (ref: any) => (this.builderPageRef = ref),
                   } as any),
-                  context: {
+                  context: Object.assign(this.context, {
                     ...(isShopify && {
                       shopify,
                       liquid: shopify.liquid,
                     }),
                     apiKey: builder.apiKey,
-                  },
+                  }),
                   modelName: name!,
                   entry: data ? data.id : entry,
+                  data: this.state,
                   emailMode:
                     (this.options || {}).emailMode || this.getAttribute('email-mode') === 'true',
                   options: {
@@ -758,6 +778,26 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
   }
 
   customElements.define('builder-init', BuilderInit);
+}
+
+type BuilderBlocksProps =
+  import('@builder.io/react/dist/types/src/components/builder-blocks.component').BuilderBlocksProps;
+
+if (Builder.isBrowser && !customElements.get('builder-blocks-slot')) {
+  class BuilderBlocksSlot extends HTMLElement {
+    props?: BuilderBlocksProps;
+    builderState: any;
+    setProps(props: BuilderBlocksProps, builderState: any) {
+      this.props = props;
+      this.builderState = builderState;
+      this.render();
+    }
+    async render() {
+      const { BuilderBlocks } = await importReact();
+      BuilderBlocks.renderInto(wrapInDiv(this), this.props, this.builderState);
+    }
+  }
+  customElements.define('builder-blocks-slot', BuilderBlocksSlot);
 }
 
 window.dispatchEvent(new CustomEvent('builder:load', { detail: { builder, Builder } }));
