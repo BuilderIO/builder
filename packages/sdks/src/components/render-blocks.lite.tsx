@@ -1,6 +1,6 @@
 import { isEditing } from '../functions/is-editing';
 import { BuilderBlock } from '../types/builder-block';
-import RenderBlock from './render-block.lite';
+import RenderBlock from './render-block/render-block.lite';
 import { Show, useState } from '@builder.io/mitosis';
 
 export type RenderBlockProps = {

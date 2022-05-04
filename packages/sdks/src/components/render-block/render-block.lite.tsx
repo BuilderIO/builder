@@ -1,12 +1,13 @@
-import BuilderContext from '../context/builder.context.lite';
-import { getBlockActions } from '../functions/get-block-actions';
-import { getBlockComponentOptions } from '../functions/get-block-component-options';
-import { getBlockProperties } from '../functions/get-block-properties';
-import { getBlockStyles } from '../functions/get-block-styles';
-import { getBlockTag } from '../functions/get-block-tag';
-import { getProcessedBlock } from '../functions/get-processed-block';
-import { components } from '../functions/register-component';
-import { BuilderBlock } from '../types/builder-block';
+import { TARGET } from '../../constants/target';
+import BuilderContext from '../../context/builder.context.lite';
+import { getBlockActions } from '../../functions/get-block-actions';
+import { getBlockComponentOptions } from '../../functions/get-block-component-options';
+import { getBlockProperties } from '../../functions/get-block-properties';
+import { getBlockStyles } from '../../functions/get-block-styles';
+import { getBlockTag } from '../../functions/get-block-tag';
+import { getProcessedBlock } from '../../functions/get-processed-block';
+import { components } from '../../functions/register-component';
+import { BuilderBlock } from '../../types/builder-block';
 import BlockStyles from './block-styles.lite';
 import {
   For,
@@ -104,7 +105,9 @@ export default function RenderBlock(props: RenderBlockProps) {
         }
       >
         <state.tagName {...state.propertiesAndActions} style={state.css}>
-          <BlockStyles block={state.useBlock} />
+          <Show when={TARGET === 'vue' || TARGET === 'svelte'}>
+            <BlockStyles block={state.useBlock} />
+          </Show>
           {state.componentRef && (
             <state.componentRef
               {...state.componentOptions}
