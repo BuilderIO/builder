@@ -4,7 +4,7 @@ import theme from './themeConfig';
 export default {
   mode: 'universal',
   server: {
-    port: 3009,
+    port: 3001,
     host: '0.0.0.0',
   },
   head: {
@@ -142,7 +142,6 @@ export default {
         }),
       }),
     ],
-    standalone: true,
   },
   pwa: {
     meta: {

@@ -75,19 +75,7 @@ export default function RenderStyles(props: Props) {
 ${props.cssCode || ''}
 ${state.getFontCss({ customFonts: props.customFonts })}`;
     },
-    get injectedStyleScript(): string {
-      // NOTE: we have to obfusctate the name of the tag due to a limitation in the svelte-preprocessor plugin.
-      // https://github.com/sveltejs/vite-plugin-svelte/issues/315#issuecomment-1109000027
-      return `<sty${''}le>${state.injectedStyles}</sty${''}le>`;
-    },
   });
 
-  return (
-    <Show
-      when={TARGET === 'svelte'}
-      else={<style innerHTML={state.injectedStyles} />}
-    >
-      <Fragment innerHTML={state.injectedStyleScript} />
-    </Show>
-  );
+  return <style>{state.injectedStyles}</style>;
 }
