@@ -1,5 +1,5 @@
-import { isBrowser } from './is-browser';
-import { isEditing } from './is-editing';
+import { isBrowser } from './is-browser.js';
+import { isEditing } from './is-editing.js';
 
 export function isPreviewing() {
   if (!isBrowser()) {

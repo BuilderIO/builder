@@ -1,5 +1,5 @@
-import { isEditing } from '../functions/is-editing';
-import { BuilderBlock } from '../types/builder-block';
+import { isEditing } from '../functions/is-editing.js';
+import { BuilderBlock } from '../types/builder-block.js';
 import RenderBlock from './render-block/render-block.lite';
 import { Show, useState } from '@builder.io/mitosis';
 

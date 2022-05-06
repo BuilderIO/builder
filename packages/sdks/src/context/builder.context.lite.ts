@@ -1,5 +1,5 @@
-import { BuilderContent } from '../types/builder-content';
-import { Nullable } from '../types/typescript';
+import { BuilderContent } from '../types/builder-content.js';
+import { Nullable } from '../types/typescript.js';
 import { createContext } from '@builder.io/mitosis';
 
 interface BuilderContext {

@@ -1,4 +1,4 @@
-import { BuilderBlock } from '../../types/builder-block';
+import { BuilderBlock } from '../../types/builder-block.js';
 import RenderInlinedStyles from '../render-inlined-styles.lite';
 import { useState } from '@builder.io/mitosis';
 

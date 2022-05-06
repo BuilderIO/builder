@@ -1,8 +1,8 @@
 import RenderContent from '../../components/render-content/render-content.lite';
 import BuilderContext from '../../context/builder.context.lite';
-import { getContent } from '../../functions/get-content';
-import { BuilderContent } from '../../types/builder-content';
-import { componentInfo } from './component-info';
+import { getContent } from '../../functions/get-content/index.js';
+import { BuilderContent } from '../../types/builder-content.js';
+import { componentInfo } from './component-info.js';
 import { onMount, onUpdate, useContext, useState } from '@builder.io/mitosis';
 import { useMetadata } from '@builder.io/mitosis';
 

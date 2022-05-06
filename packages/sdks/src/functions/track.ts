@@ -1,6 +1,6 @@
-import { TARGET } from '../constants/target';
-import { isBrowser } from './is-browser';
-import { isEditing } from './is-editing';
+import { TARGET } from '../constants/target.js';
+import { isBrowser } from './is-browser.js';
+import { isEditing } from './is-editing.js';
 
 export function track(event: string, properties: Record<string, any>) {
   if (isEditing()) {
