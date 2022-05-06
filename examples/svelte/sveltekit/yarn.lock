@@ -3899,7 +3899,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "sveltekit@workspace:."
   dependencies:
-    "@builder.io/sdk-svelte": ^0.0.1-0
+    "@builder.io/sdk-svelte": dev
     "@fontsource/fira-mono": ^4.5.0
     "@lukeed/uuid": ^2.0.0
     "@originjs/vite-plugin-commonjs": ^1.0.3
