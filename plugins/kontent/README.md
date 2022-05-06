@@ -1,14 +1,49 @@
 # Builder.io Kontent plugin
 
-Connect your Kontent space data to your Builder.io content!
+Connect your Kontent project data to your Builder.io project!
 
 ## Installation
 
-Go to [builder.io/account/space](https://builder.io/account/space) and type `@builder.io/plugin-kontent` in the , then hit save, you'll be prompted for to enter your `projectId` and `apiKey` next, which you can get them from your "Project Settings" > "API keys".
-.
+Go to [builder.io/account/space](https://builder.io/account/space) and type `@builder.io/plugin-kontent` in the text input.
 
-![Installation screenshot](https://cdn.builder.io/api/v1/image/assets%2F6d39f4449e2b4e6792a793bb8c1d9615%2F18a7201313914cccae7f0311a1a614ae)
+![Installation screenshot](https://cdn.builder.io/api/v1/image/assets%2Fe85723a1cdde410591c232f4b375ef9b%2F24a58312cbcc49909007413049d695a8)
+
+Then hit save, you'll be prompted for to enter your `projectId`, which you can get from your ["Project Settings" > "API keys" Kontent application](https://kontent.ai/learn/tutorials/develop-apps/get-content/get-content-items/#a-1-find-your-project-id).
+
+![Configuration screenshot](https://cdn.builder.io/api/v1/image/assets%2Fe85723a1cdde410591c232f4b375ef9b%2F008dc324bf624debba2e31436f71a4e2)
 
 ## Usage
 
-Once installed, you'll have the option to query your Kontent content and bind it in your builder.io sections and pages.
+When you have data that resides in Kontent that you want to use in your Builder app, you can use Builder's data provider plugin to fetch and display it on your site.
+
+> For following showcase we are using tha sample project created in [Kontent.ai](https://kontent.ai/) for demonstration purposes - it's project ID is `975bf280-fd91-488c-994c-2f04416e5ee3`.
+
+Once you have your plugin configured, your Bilder.io project allow you to select items you what to use on your site.
+
+First, create a new page and insert a text block to your page.
+
+![Adding first text block](https://cdn.builder.io/api/v1/image/assets%2Fe85723a1cdde410591c232f4b375ef9b%2F449d4c0c99d2482bb824ea10d1cd87df)
+
+Then pick the [content type](https://kontent.ai/learn/tutorials/references/terminology/#a-content-type) you want to select item(s) based on (i.e. `Article`).
+
+![Picking content type](https://cdn.builder.io/api/v1/image/assets%2Fe85723a1cdde410591c232f4b375ef9b%2Ffcac7f18a9544a41b1f92b24ad760d07)
+
+Pick a [content item](https://kontent.ai/learn/tutorials/references/terminology/#a-content-item) (entry) base on the content type you picked (i.e. `Coffee processing techniques`).
+
+![Picking content item](https://cdn.builder.io/api/v1/image/assets%2Fe85723a1cdde410591c232f4b375ef9b%2Fe167b0d2ca7b4892afa2c55f6a4a53ec)
+
+Edit text block  properties (by double click on in) and select "Edit bindings"
+
+![Open text block bindings settings](https://cdn.builder.io/api/v1/image/assets%2Fe85723a1cdde410591c232f4b375ef9b%2F168b8937434a4b8099204c0fb1f150f3)
+
+Select the value of element (i.e. `title`'s value) - you can use search box for easier selection.
+
+![Select title value to bindings](https://cdn.builder.io/api/v1/image/assets%2Fe85723a1cdde410591c232f4b375ef9b%2Feeb2c7fa678c422d8f3e83245b595366)
+
+Now repeat for second text element (you don't need to pick an entry again) and set text clock binding to other element's value (i.e. `body_copy`).
+
+![Setting second text block bindings](https://cdn.builder.io/api/v1/image/assets%2Fe85723a1cdde410591c232f4b375ef9b%2F388b616baee040bbac4ea3937f9f3a9f)
+
+Finally tune up a style a little - set heading fon size to 32px site and edit layout around of the article to have 640px width and center it horizontally and here we go:
+
+![Final article showcase](https://cdn.builder.io/api/v1/image/assets%2Fe85723a1cdde410591c232f4b375ef9b%2F359bfc3365994e16818d449ee32c780d)
