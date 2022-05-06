@@ -1,6 +1,6 @@
 import { BuilderBlock } from '../types/builder-block';
-import { findDOMNode } from 'react-dom';
 import { isEditing } from './is-editing';
+import { findDOMNode } from 'react-dom';
 
 export function getBlockProperties(block: BuilderBlock) {
   return {

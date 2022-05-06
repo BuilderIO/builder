@@ -1,11 +1,11 @@
-import { createContext } from '@builder.io/mitosis';
 import { BuilderContent } from '../types/builder-content';
 import { Nullable } from '../types/typescript';
+import { createContext } from '@builder.io/mitosis';
 
 interface BuilderContext {
   content: Nullable<BuilderContent>;
-  context: {};
-  state: {};
+  context: Record<string, unknown>;
+  state: Record<string, unknown>;
   apiKey: string | null;
 }
 

@@ -1,7 +1,7 @@
 import { BuilderContent } from '../../types/builder-content';
 import { getFetch } from '../get-fetch';
 
-const fetch = getFetch();
+const fetch$ = getFetch();
 
 /**
  * Convert deep object to a flat object with dots
@@ -137,6 +137,7 @@ const handleABTesting = (
 export async function getAllContent(options: GetContentOptions) {
   const url = generateContentUrl(options);
 
+  const fetch = await fetch$;
   const content = await fetch(url.href).then((res) => res.json());
 
   if (options.testGroups) {

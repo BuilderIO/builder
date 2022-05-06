@@ -1,14 +1,9 @@
 {
   "private": true,
   "devDependencies": {
-    "@bazel/bazelisk": "^1.8.1",
-    "@bazel/buildifier": "^4.0.1",
-    "@bazel/ibazel": "^0.15.10",
-    "@bazel/typescript": "^3.4.2",
     "@builder.io/block-publish": "^1.1.2",
     "@typescript-eslint/parser": "^4.28.3",
     "babel-preset-solid": "^1.0.1",
-    "husky": "^7.0.0",
     "lerna": "^3.20.2",
     "tslib": "^2.2.0",
     "typescript": "^4.0.0"
@@ -19,13 +14,6 @@
     "url": "https://github.com/BuilderIO/builder"
   },
   "scripts": {
-    "postinstall": "npm run patch-m1-bazel && npm run patch-m1-ibazel && npm run patch-m1-buildifier",
-    "patch-m1-bazel": "test \"$(uname -s)\" = 'Darwin' && echo Patching Bazel for Apple M1 architecture compatibility && ln -fs ./bazelisk-darwin_amd64 node_modules/@bazel/bazelisk/bazelisk-darwin_arm64 || echo 'Skipping M1 arch patching'",
-    "patch-m1-ibazel": "test \"$(uname -s)\" = 'Darwin' && echo Patching iBazel for Apple M1 architecture compatibility && sed -i .bak \"s/'x64' : 'amd64',\\$/'x64' : 'amd64', 'arm64' : 'amd64',/\" ./node_modules/@bazel/ibazel/index.js || echo 'Skipping M1 arch patching'",
-    "patch-m1-buildifier": "test \"$(uname -s)\" = 'Darwin' && echo Patching Buildifier for Apple M1 architecture compatibility && sed -i .bak \"s/'x64' : 'amd64',\\$/'x64' : 'amd64', 'arm64' : 'amd64',/\" ./node_modules/@bazel/buildifier/buildifier.js || echo 'Skipping M1 arch patching'",
-    "bazel:format": "find . -type f \\( -name \"*.bzl\" -or -name WORKSPACE -or -name BUILD -or -name BUILD.bazel \\) ! -path \"*/node_modules/*\" | xargs buildifier -v --warnings=attr-cfg,attr-license,attr-non-empty,attr-output-default,attr-single-file,constant-glob,ctx-actions,ctx-args,depset-iteration,depset-union,dict-concatenation,duplicated-name,filetype,git-repository,http-archive,integer-division,load,load-on-top,native-build,native-package,out-of-order-load,output-group,package-name,package-on-top,positional-args,redefined-variable,repository-name,same-origin-load,string-iteration,unsorted-dict-items,unused-variable",
-    "bazel:lint": "npm run bazel:format --lint=warn",
-    "bazel:lint-fix": "npm run bazel:format --lint=fix",
     "prettier": "prettier",
     "verify-git-not-dirty": "git diff --quiet || exit 1",
     "_unlink": "lerna run _unlink --parallel",

@@ -1,6 +1,6 @@
-import HTML from 'react-native-render-html';
 import { registerComponent } from '../functions/register-component';
 import type { BuilderBlock } from '../types/builder-block';
+import HTML from 'react-native-render-html';
 
 function camelToKebabCase(string: string) {
   return string.replace(/([a-z0-9]|(?=[A-Z]))([A-Z])/g, '$1-$2').toLowerCase();

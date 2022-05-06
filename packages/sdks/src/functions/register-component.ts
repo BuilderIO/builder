@@ -6,7 +6,6 @@ export type ComponentInfo = any;
 export const components: Record<string, any> = {};
 
 // Compile only facade
-export function registerComponent(info: ComponentInfo): void;
 export function registerComponent(component: any, info?: ComponentInfo): void {
   components[info.name] = { component, info };
 
