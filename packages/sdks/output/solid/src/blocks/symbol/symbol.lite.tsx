@@ -2,7 +2,7 @@ import { createMutable } from "solid-js/store";
 
 import RenderContent from "../../components/render-content/render-content.lite";
 import BuilderContext from "../../context/builder.context";
-import { getContent } from "../../functions/get-content";
+import { getContent } from "../../functions/get-content/index.js";
 
 function Symbol(props) {
   const state = createMutable({ className: "builder-symbol", content: null });

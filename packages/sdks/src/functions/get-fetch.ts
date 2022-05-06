@@ -1,4 +1,4 @@
-import { getGlobalThis } from './get-global-this';
+import { getGlobalThis } from './get-global-this.js';
 
 export async function getFetch(): Promise<typeof global.fetch> {
   const globalFetch: typeof global.fetch = getGlobalThis().fetch;

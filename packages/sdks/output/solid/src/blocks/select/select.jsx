@@ -1,5 +1,5 @@
 import { For } from "solid-js";
-import { isEditing } from "../../functions/is-editing";
+import { isEditing } from "../../functions/is-editing.js";
 
 function SelectComponent(props) {
   return <select {...props.attributes} value={props.value} key={isEditing() && props.defaultValue ? props.defaultValue : "default-key"} defaultValue={props.defaultValue} name={props.name}>

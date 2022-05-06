@@ -4,7 +4,7 @@ import { createMutable } from "solid-js/store";
 import { css } from "solid-styled-components";
 
 import RenderBlock from "../../components/render-block/render-block.lite";
-import { isEditing } from "../../functions/is-editing";
+import { isEditing } from "../../functions/is-editing.js";
 
 function FormComponent(props) {
   const state = createMutable({

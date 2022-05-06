@@ -1,4 +1,4 @@
-import { isPreviewing } from './is-previewing';
+import { isPreviewing } from './is-previewing.js';
 
 export function previewingModelName() {
   if (!isPreviewing()) {
