@@ -40,8 +40,5 @@
 		"@fontsource/fira-mono": "^4.5.0",
 		"@lukeed/uuid": "^2.0.0",
 		"cookie": "^0.4.1"
-	},
-	"resolutions": {
-		"@builder.io/sdk-svelte": "link:../../../packages/sdks/output/svelte"
 	}
 }

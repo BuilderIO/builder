@@ -589,11 +589,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@builder.io/sdk-svelte@link:../../../packages/sdks/output/svelte::locator=sveltekit%40workspace%3A.":
-  version: 0.0.0-use.local
-  resolution: "@builder.io/sdk-svelte@link:../../../packages/sdks/output/svelte::locator=sveltekit%40workspace%3A."
+"@builder.io/sdk-svelte@npm:dev":
+  version: 0.0.1-3
+  resolution: "@builder.io/sdk-svelte@npm:0.0.1-3"
+  dependencies:
+    node-fetch: ^2.6.1
+  checksum: cf3ae89301fd266c4fc4ef94d77d58b525facadf81dc61f5f6e8612fd13a88dd4ec00e86812c5026f227a68fa4038460ed437cf67c18cea6b4143ccd50e4c7ff
   languageName: node
-  linkType: soft
+  linkType: hard
 
 "@eslint/eslintrc@npm:^0.4.3":
   version: 0.4.3
@@ -3035,6 +3038,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"node-fetch@npm:^2.6.1":
+  version: 2.6.7
+  resolution: "node-fetch@npm:2.6.7"
+  dependencies:
+    whatwg-url: ^5.0.0
+  peerDependencies:
+    encoding: ^0.1.0
+  peerDependenciesMeta:
+    encoding:
+      optional: true
+  checksum: 8d816ffd1ee22cab8301c7756ef04f3437f18dace86a1dae22cf81db8ef29c0bf6655f3215cb0cdb22b420b6fe141e64b26905e7f33f9377a7fa59135ea3e10b
+  languageName: node
+  linkType: hard
+
 "node-gyp@npm:latest":
   version: 9.0.0
   resolution: "node-gyp@npm:9.0.0"
@@ -3983,6 +4000,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tr46@npm:~0.0.3":
+  version: 0.0.3
+  resolution: "tr46@npm:0.0.3"
+  checksum: 726321c5eaf41b5002e17ffbd1fb7245999a073e8979085dacd47c4b4e8068ff5777142fc6726d6ca1fd2ff16921b48788b87225cbc57c72636f6efa8efbffe3
+  languageName: node
+  linkType: hard
+
 "tslib@npm:^1.8.1":
   version: 1.14.1
   resolution: "tslib@npm:1.14.1"
@@ -4111,6 +4135,23 @@ __metadata:
   bin:
     vite: bin/vite.js
   checksum: 48cb8509bce4a00fb7cdb17cd13b21c43642cd220553a8ee0ae2bfb40f73869ce8cebb3c9b4324dd3bb642084161044e70dc737cf935ca4d6c3432faeb84687a
+  languageName: node
+  linkType: hard
+
+"webidl-conversions@npm:^3.0.0":
+  version: 3.0.1
+  resolution: "webidl-conversions@npm:3.0.1"
+  checksum: c92a0a6ab95314bde9c32e1d0a6dfac83b578f8fa5f21e675bc2706ed6981bc26b7eb7e6a1fab158e5ce4adf9caa4a0aee49a52505d4d13c7be545f15021b17c
+  languageName: node
+  linkType: hard
+
+"whatwg-url@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "whatwg-url@npm:5.0.0"
+  dependencies:
+    tr46: ~0.0.3
+    webidl-conversions: ^3.0.0
+  checksum: b8daed4ad3356cc4899048a15b2c143a9aed0dfae1f611ebd55073310c7b910f522ad75d727346ad64203d7e6c79ef25eafd465f4d12775ca44b90fa82ed9e2c
   languageName: node
   linkType: hard
 
