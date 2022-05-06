@@ -8,6 +8,7 @@
   ],
   "main": "./src/index.js",
   "module": "./src/index.js",
+  "svelte": "./src/index.js",
   "exports": {
     ".": {
       "import": "./src/index.js",
