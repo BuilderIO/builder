@@ -1,10 +1,9 @@
 import { registerDataPlugin } from '@builder.io/data-plugin-tools';
 import pkg from '../package.json';
 import { createDeliveryClient } from '@kentico/kontent-delivery';
-import { system } from '../../../packages/plugin-loader/src/plugin-loader';
-import { pushd } from 'shelljs';
+import { Input } from "@builder.io/sdk";
 
-// https://localhost:1268/plugin.system.js?pluginId=@builder.io/plugin-kontent
+// development URL https://localhost:1268/plugin.system.js?pluginId=@builder.io/plugin-kontent
 
 const pluginId = pkg.name;
 
@@ -12,10 +11,8 @@ registerDataPlugin(
   {
     id: pluginId,
     name: 'Kontent',
-    icon: 'https://raw.githubusercontent.com/Kentico/Home/master/images/kk-logo-shortcut.png',
-    // Settings is optional and it represents what input you need from the user to connect their data
+    icon: 'https://cdn.builder.io/api/v1/image/assets%2Fe85723a1cdde410591c232f4b375ef9b%2F2a37f60f2d234039af6284f35ae81a61',
     settings: [
-      // Example of a settings input
       {
         name: 'projectId',
         type: 'string',
@@ -24,7 +21,7 @@ registerDataPlugin(
           'Get your project ID'
       },
     ],
-    ctaText: ``,
+    ctaText: `Connect your Kontent project`,
   },
   // settings will be an Observable map of the settings configured above
   async settings => {
@@ -44,7 +41,7 @@ registerDataPlugin(
             value: language.system.codename,
             label: language.system.name
           }))
-          // Ask about this
+          // You can override state from the outside
           .concat([
             {
               label: 'Dynamic (bound to state)',
@@ -71,8 +68,8 @@ registerDataPlugin(
           inputs: () => {
             console.log('inputs', type);
             const acceptableElements = type.elements.filter(element =>
-              // extend to all types - ask about possibilities
-              ['text',/* 'number', 'date', 'custom_element'*/].includes(element.type));
+              // possible extend to more types https://kontent.ai/learn/reference/delivery-api/#tag/Filtering-content
+              ['text'].includes(element.type));
             // return a list of inputs to query your data, think of this as the query schema: limit / offset / specific fields to query against
             const fields = [
               {
@@ -98,18 +95,16 @@ registerDataPlugin(
                 subFields: acceptableElements.map(element => ({
                   type: element.type,
                   name: element.id,
+                  helperText: 'Exact match only: see https://kontent.ai/learn/reference/delivery-api/#tag/Filtering-content',
                   friendlyName: element.name
-                })),
+                } as Input)),
                 // ask about this
               } as any);
             }
 
-            console.log('fields', fields);
             return fields;
           },
           toUrl: (options: any) => {
-            console.log('toUrl', options);
-
             // by entry
             if (options.entry) {
               const url = client.item(options.entry).getUrl();
@@ -147,7 +142,6 @@ registerDataPlugin(
         } else if (options?.searchText != undefined) {
           // data plugins UI is asking for the results of a free form search on entries per resource type
           // hit api with searchText and return an array that matches interface Array<{ name: string, id: string}>
-
           return result.data.items
             .filter(({ system: { name } }) =>
               name.toLowerCase()
