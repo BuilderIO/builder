@@ -24,6 +24,10 @@ First, create a new page and insert a text block to your page.
 
 ![Adding first text block](https://cdn.builder.io/api/v1/image/assets%2Fe85723a1cdde410591c232f4b375ef9b%2F449d4c0c99d2482bb824ea10d1cd87df)
 
+Now let's connect data from Kontent with Builder's page. Select data tab and use "Connect data" button to select Kontent.
+
+![Connect Kontent with Builder's page](https://cdn.builder.io/api/v1/image/assets%2Fe85723a1cdde410591c232f4b375ef9b%2F1c3b1c1a6b1943a9b5576bd31c83bc50)
+
 Then pick the [content type](https://kontent.ai/learn/tutorials/references/terminology/#a-content-type) you want to select item(s) based on (i.e. `Article`).
 
 ![Picking content type](https://cdn.builder.io/api/v1/image/assets%2Fe85723a1cdde410591c232f4b375ef9b%2Ffcac7f18a9544a41b1f92b24ad760d07)
@@ -32,7 +36,7 @@ Pick a [content item](https://kontent.ai/learn/tutorials/references/terminology/
 
 ![Picking content item](https://cdn.builder.io/api/v1/image/assets%2Fe85723a1cdde410591c232f4b375ef9b%2Fe167b0d2ca7b4892afa2c55f6a4a53ec)
 
-Edit text block  properties (by double click on in) and select "Edit bindings"
+Edit text block  properties (by double click on in) and select "Edit bindings".
 
 ![Open text block bindings settings](https://cdn.builder.io/api/v1/image/assets%2Fe85723a1cdde410591c232f4b375ef9b%2F168b8937434a4b8099204c0fb1f150f3)
 
