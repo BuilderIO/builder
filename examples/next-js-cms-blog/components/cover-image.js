@@ -1,6 +1,6 @@
-import BuilderImage from './builder-image'
-import Link from 'next/link'
-import cn from 'classnames'
+import BuilderImage from './builder-image';
+import Link from 'next/link';
+import cn from 'classnames';
 
 export default function CoverImage({ title, url, slug }) {
   const image = (
@@ -13,7 +13,7 @@ export default function CoverImage({ title, url, slug }) {
       })}
       src={url}
     />
-  )
+  );
 
   return (
     <div className="sm:mx-0">
@@ -25,5 +25,5 @@ export default function CoverImage({ title, url, slug }) {
         image
       )}
     </div>
-  )
+  );
 }
