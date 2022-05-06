@@ -49,12 +49,10 @@ export default {
           open: true,
           contentBase: 'dist',
           port: 1268,
-          // TODO - remove and use is as env variable
-          https: {
-            key: readFileSync('./cert/localhost.key'),
-            cert: readFileSync('./cert/localhost.crt'),
-            // ca: readFileSync('/path/to/ca.pem')
-          },
+          // https: {
+          //   key: readFileSync('./cert/localhost.key'),
+          //   cert: readFileSync('./cert/localhost.crt'),
+          // },
           headers: {
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Private-Network': 'true',
