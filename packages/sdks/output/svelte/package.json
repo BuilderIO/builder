@@ -2,11 +2,20 @@
   "name": "@builder.io/sdk-svelte",
   "description": "Builder.io SDK for Svelte",
   "version": "0.0.1-2",
-  "dependencies": {
-    "node-fetch": "^2.6.1"
+  "type": "module",
+  "files": [    "src"  ],
+  "main": "./src/index.js",
+  "module": "./src/index.js",
+  "exports": {
+    ".": {
+      "import": "./src/index.js",
+      "require": "./src/index.js"
+    }
   },
-  "main": "src/index.js",
   "scripts": {
     "release:dev": "npm version prerelease --no-git-tag-version && npm publish --tag dev --access public"
+  },
+  "dependencies": {
+    "node-fetch": "^2.6.1"
   }
 }
