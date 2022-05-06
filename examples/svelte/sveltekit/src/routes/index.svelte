@@ -10,11 +10,6 @@
 	// TODO: enter your public API key
 	const BUILDER_PUBLIC_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660'; // ggignore
 
-	// onMounted() {
-	//   // we need to re-run this check on the client in case of SSR
-	//   this.canShowContent = this.content || isEditing() || isPreviewing();
-	// },
-
 	let content = undefined;
 	let canShowContent = false;
 	const fetch = async () => {
@@ -27,10 +22,6 @@
 			}
 		});
 		canShowContent = content || BuilderSDK.isEditing();
-
-		// if (!this.canShowContent) {
-		// 	// 404
-		// }
 	};
 
 	fetch();

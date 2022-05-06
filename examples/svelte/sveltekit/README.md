@@ -1,29 +1,34 @@
-# create-svelte
+# Builder.io example with Sveltekit
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+Builder.io drag-and-drop page and section building for Sveltekit!
 
-## Creating a project
+## Status
 
-If you're seeing this, you've probably already done this step. Congrats!
+For the status of the SDK, look at [these tables](/packages/sdks/README.md#feature-implementation).
 
-```bash
-# create a new project in the current directory
-npm init svelte
-
-# create a new project in my-app
-npm init svelte my-app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+## Build Setup
 
 ```bash
-npm run dev
+# install dependencies
+$ yarn install
 
+# serve with hot reload at localhost:3000
+$ yarn run dev
 # or start the server and open the app in a new browser tab
-npm run dev -- --open
+$ yarn run dev -- --open
 ```
+
+## Builder.io Setup
+
+- log into builder.io
+- from your account page, copy your API key and paste it into BUILDER_API_KEY in `[slug].svelte` and `index.svelte`
+- open the Builder.io Visual Editor for the model named "page"
+- enter http://localhost:3000 in the URL bar to the top right of the preview in Builder
+- drag a component into the layers tab, and it will appear in the Editor!
+
+Checkout this Loom for a visual walkthrough: https://www.loom.com/share/afd7c9a1f8f148959ea0396be42560fd (it's originally intended for React-Native, but all of the steps are still the exact same)
+
+For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
 
 ## Building
 
