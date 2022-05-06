@@ -2,7 +2,7 @@
   <component v-else="" :is="tagName">{{ styles }}</component>
 </template>
 <script>
-import { TARGET } from "../constants/target";
+import { TARGET } from "../constants/target.js";
 
 export default {
   name: "render-inlined-styles",
