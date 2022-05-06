@@ -2,7 +2,7 @@ import * as React from "react";
 import { View, StyleSheet, Image, Text } from "react-native";
 import { useState, useRef } from "react";
 import RenderBlock from "../../components/render-block/render-block.lite";
-import { isEditing } from "../../functions/is-editing";
+import { isEditing } from "../../functions/is-editing.js";
 
 export default function FormComponent(props) {
   const [formState, setFormState] = useState(() => "unsubmitted");
@@ -212,7 +212,7 @@ export default function FormComponent(props) {
       {" "}
       {props.builderBlock && props.builderBlock.children ? (
         <>
-          {props.builderBlock?.children?.map((block, index) => (
+          {props.builderBlock?.children?.map((block) => (
             <RenderBlock block={block} />
           ))}
         </>

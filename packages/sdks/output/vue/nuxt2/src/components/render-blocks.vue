@@ -18,7 +18,7 @@
   </div>
 </template>
 <script>
-import { isEditing } from "../functions/is-editing";
+import { isEditing } from "../functions/is-editing.js";
 import RenderBlock from "./render-block/render-block";
 
 export default {

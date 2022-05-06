@@ -1,5 +1,5 @@
-import { BuilderContent } from '../../types/builder-content';
-import { getFetch } from '../get-fetch';
+import { BuilderContent } from '../../types/builder-content.js';
+import { getFetch } from '../get-fetch.js';
 
 const fetch$ = getFetch();
 

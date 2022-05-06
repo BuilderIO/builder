@@ -21,7 +21,7 @@
 <script>
 import RenderContent from "../../components/render-content/render-content";
 import BuilderContext from "../../context/builder.context";
-import { getContent } from "../../functions/get-content";
+import { getContent } from "../../functions/get-content/index.js";
 
 export default {
   name: "builder-symbol",

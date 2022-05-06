@@ -3,17 +3,17 @@
     import { afterUpdate } from 'svelte'
     import { onDestroy } from 'svelte'
     
-  import  {  TARGET  }  from '../../constants/target';
+  import  {  TARGET  }  from '../../constants/target.js';
 import  BuilderContext,  {  }  from '../../context/builder.context';
-import  {  evaluate  }  from '../../functions/evaluate';
-import  {  convertSearchParamsToQueryObject  ,  getBuilderSearchParams  }  from '../../functions/get-builder-search-params';
-import  {  getContent  }  from '../../functions/get-content';
-import  {  getFetch  }  from '../../functions/get-fetch';
-import  {  isBrowser  }  from '../../functions/is-browser';
-import  {  isEditing  }  from '../../functions/is-editing';
-import  {  isPreviewing  }  from '../../functions/is-previewing';
-import  {  previewingModelName  }  from '../../functions/previewing-model-name';
-import  {  track  }  from '../../functions/track';
+import  {  evaluate  }  from '../../functions/evaluate.js';
+import  {  convertSearchParamsToQueryObject  ,  getBuilderSearchParams  }  from '../../functions/get-builder-search-params/index.js';
+import  {  getContent  }  from '../../functions/get-content/index.js';
+import  {  getFetch  }  from '../../functions/get-fetch.js';
+import  {  isBrowser  }  from '../../functions/is-browser.js';
+import  {  isEditing  }  from '../../functions/is-editing.js';
+import  {  isPreviewing  }  from '../../functions/is-previewing.js';
+import  {  previewingModelName  }  from '../../functions/previewing-model-name.js';
+import  {  track  }  from '../../functions/track.js';
 import  RenderBlocks,  {  }  from '../render-blocks.svelte';
 import  RenderContentStyles,  {  }  from './components/render-styles.svelte';
 

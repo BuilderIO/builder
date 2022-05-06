@@ -1,4 +1,4 @@
-import { isEditing } from "../../functions/is-editing";
+import { isEditing } from "../../functions/is-editing.js";
 
 function ImgComponent(props) {
   return (

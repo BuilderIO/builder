@@ -3,7 +3,7 @@ import { View, StyleSheet, Image, Text } from "react-native";
 import { useState, useContext, useEffect } from "react";
 import RenderContent from "../../components/render-content/render-content.lite";
 import BuilderContext from "../../context/builder.context";
-import { getContent } from "../../functions/get-content";
+import { getContent } from "../../functions/get-content/index.js";
 
 export default function Symbol(props) {
   const [className, setClassName] = useState(() => "builder-symbol");

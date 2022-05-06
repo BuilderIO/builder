@@ -1,4 +1,4 @@
-import { TARGET } from '../constants/target';
+import { TARGET } from '../constants/target.js';
 import { Fragment, Show, useState } from '@builder.io/mitosis';
 
 interface Props {

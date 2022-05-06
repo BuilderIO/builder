@@ -1,4 +1,4 @@
-import { componentInfo } from './component-info';
+import { componentInfo } from './component-info.js';
 import { Show } from '@builder.io/mitosis';
 import { useMetadata } from '@builder.io/mitosis';
 

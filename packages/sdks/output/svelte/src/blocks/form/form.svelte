@@ -4,7 +4,7 @@
     
     
   import  RenderBlock,  {  }  from '../../components/render-block/render-block.svelte';
-import  {  isEditing  }  from '../../functions/is-editing';
+import  {  isEditing  }  from '../../functions/is-editing.js';
 
   
 

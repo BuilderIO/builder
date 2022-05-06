@@ -2,15 +2,15 @@ import { useContext, Show, For } from "solid-js";
 import { Dynamic } from "solid-js/web";
 import { createMutable } from "solid-js/store";
 
-import { TARGET } from "../../constants/target";
+import { TARGET } from "../../constants/target.js";
 import BuilderContext from "../../context/builder.context";
-import { getBlockActions } from "../../functions/get-block-actions";
-import { getBlockComponentOptions } from "../../functions/get-block-component-options";
-import { getBlockProperties } from "../../functions/get-block-properties";
-import { getBlockStyles } from "../../functions/get-block-styles";
-import { getBlockTag } from "../../functions/get-block-tag";
-import { getProcessedBlock } from "../../functions/get-processed-block";
-import { components } from "../../functions/register-component";
+import { getBlockActions } from "../../functions/get-block-actions.js";
+import { getBlockComponentOptions } from "../../functions/get-block-component-options.js";
+import { getBlockProperties } from "../../functions/get-block-properties.js";
+import { getBlockStyles } from "../../functions/get-block-styles.js";
+import { getBlockTag } from "../../functions/get-block-tag.js";
+import { getProcessedBlock } from "../../functions/get-processed-block.js";
+import { components } from "../../functions/register-component.js";
 import BlockStyles from "./block-styles.lite";
 
 function RenderBlock(props) {

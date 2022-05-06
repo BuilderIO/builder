@@ -1,6 +1,6 @@
-import { BuilderBlock } from '../types/builder-block';
-import { evaluate } from './evaluate';
-import { getEventHandlerName } from './event-handler-name';
+import { BuilderBlock } from '../types/builder-block.js';
+import { evaluate } from './evaluate.js';
+import { getEventHandlerName } from './event-handler-name.js';
 
 type Actions = { [index: string]: (event: Event) => any };
 

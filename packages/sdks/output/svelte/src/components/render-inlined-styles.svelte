@@ -3,7 +3,7 @@
     
     
     
-  import  {  TARGET  }  from '../constants/target';
+  import  {  TARGET  }  from '../constants/target.js';
 
   
 
