@@ -4,6 +4,9 @@
   "type": "module",
   "description": "",
   "module": "src/index.js",
+  "exports": {
+    ".": "./src/index.js"
+  },
   "dependencies": {
     "solid-styled-components": "^0.27.6"
   },

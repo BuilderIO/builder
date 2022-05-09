@@ -1,5 +1,5 @@
 import { TARGET } from '../constants/target.js';
-import { Fragment, Show, useState } from '@builder.io/mitosis';
+import { Show, useState } from '@builder.io/mitosis';
 
 interface Props {
   styles: string;
@@ -22,7 +22,11 @@ export default function RenderInlinedStyles(props: Props) {
       when={TARGET === 'svelte'}
       else={<state.tagName>{props.styles}</state.tagName>}
     >
-      <Fragment innerHTML={state.injectedStyleScript} />
+      {/**
+       * We have a Svelte plugin that converts this `div` to a `Fragment`. We cannot directly use a "Fragment" here because
+       * not all frameworks support providing properties to a "Fragment" (e.g. Solid)
+       */}
+      <div innerHTML={state.injectedStyleScript} />
     </Show>
   );
 }

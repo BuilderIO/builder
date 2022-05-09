@@ -7,6 +7,8 @@ const getSeededId = () => {
   return Number(String(rngVal).split('.')[1]).toString(36);
 };
 
+const isMitosisNode = (x) => x && x['@type'] === '@builder.io/mitosis/node';
+
 /**
  * @type {import('@builder.io/mitosis'.MitosisConfig)}
  */
@@ -36,9 +38,6 @@ module.exports = {
               const tag =
                 json.meta.useMetadata && json.meta.useMetadata.elementTag;
 
-              const isMitosisNode = (x) =>
-                x && x['@type'] === '@builder.io/mitosis/node';
-
               if (tag) {
                 traverse(json).forEach(function (item) {
                   if (!isMitosisNode(item)) {
@@ -63,6 +62,23 @@ module.exports = {
                   // temporary workaround until we have
                   .replace(/..\/blocks\/(.*).svelte/g, /..\/blocks\/$1/)
               );
+            },
+          },
+        }),
+        () => ({
+          json: {
+            pre: (json) => {
+              if (json.name === 'RenderInlinedStyles') {
+                traverse(json).forEach(function (item) {
+                  if (!isMitosisNode(item)) {
+                    return;
+                  }
+
+                  if (item.bindings.innerHTML) {
+                    item.name = 'Fragment';
+                  }
+                });
+              }
             },
           },
         }),

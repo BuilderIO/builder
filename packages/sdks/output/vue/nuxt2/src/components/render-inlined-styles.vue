@@ -1,4 +1,5 @@
 <template>
+  <div v-if="TARGET === 'svelte'" v-html="injectedStyleScript"></div>
   <component v-else="" :is="tagName">{{ styles }}</component>
 </template>
 <script>
