@@ -1,6 +1,3 @@
-import { componentInfo } from './component-info.js';
-import { useMetadata } from '@builder.io/mitosis';
-
 export interface VideoProps {
   attributes?: any;
   video?: string;

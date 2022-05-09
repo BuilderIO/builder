@@ -1,8 +1,6 @@
 import RenderBlock from '../../components/render-block/render-block.lite';
 import { isEditing } from '../../functions/is-editing.js';
-import { componentInfo } from './component-info.js';
 import { For, Show, useRef, useState } from '@builder.io/mitosis';
-import { useMetadata } from '@builder.io/mitosis';
 
 /**
  * This component was copied over from the old SDKs and has a lot of code pointing to invalid functions/env vars. It needs
