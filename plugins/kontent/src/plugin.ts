@@ -3,14 +3,14 @@ import pkg from '../package.json';
 import { createDeliveryClient } from '@kentico/kontent-delivery';
 import { Input } from "@builder.io/sdk";
 
-// development URL https://localhost:1268/plugin.system.js?pluginId=@builder.io/plugin-kontent
+// development URL https://localhost:1268/plugin.system.js?pluginId=@builder.io/plugin-kontent-ai
 
 const pluginId = pkg.name;
 
 registerDataPlugin(
   {
     id: pluginId,
-    name: 'Kontent',
+    name: 'Kontent.ai',
     icon: 'https://cdn.builder.io/api/v1/image/assets%2Fe85723a1cdde410591c232f4b375ef9b%2F2a37f60f2d234039af6284f35ae81a61',
     settings: [
       {
@@ -21,7 +21,7 @@ registerDataPlugin(
           'Get your project ID'
       },
     ],
-    ctaText: `Connect your Kontent project`,
+    ctaText: `Connect your Kontent.ai project`,
   },
   // settings will be an Observable map of the settings configured above
   async settings => {

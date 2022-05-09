@@ -1,20 +1,20 @@
-# Builder.io Kontent plugin
+# Builder.io Kontent.ai plugin
 
-Connect your Kontent project data to your Builder.io project!
+Connect your Kontent.ai project data to your Builder.io project!
 
 ## Installation
 
-Go to [builder.io/account/space](https://builder.io/account/space) and type `@builder.io/plugin-kontent` in the text input.
+Go to [builder.io/account/space](https://builder.io/account/space) and type `@builder.io/plugin-kontent-ai` in the text input.
 
 ![Installation screenshot](https://cdn.builder.io/api/v1/image/assets%2Fe85723a1cdde410591c232f4b375ef9b%2F24a58312cbcc49909007413049d695a8)
 
-Then hit save, you'll be prompted for to enter your `projectId`, which you can get from your ["Project Settings" > "API keys" Kontent application](https://kontent.ai/learn/tutorials/develop-apps/get-content/get-content-items/#a-1-find-your-project-id).
+Then hit save, you'll be prompted for to enter your `projectId`, which you can get from your ["Project Settings" > "API keys" in Kontent.ai application](https://kontent.ai/learn/tutorials/develop-apps/get-content/get-content-items/#a-1-find-your-project-id).
 
 ![Configuration screenshot](https://cdn.builder.io/api/v1/image/assets%2Fe85723a1cdde410591c232f4b375ef9b%2F008dc324bf624debba2e31436f71a4e2)
 
 ## Usage
 
-When you have data that resides in Kontent that you want to use in your Builder app, you can use Builder's data provider plugin to fetch and display it on your site.
+When you have data that resides in Kontent.ai that you want to use in your Builder app, you can use Builder's data provider plugin to fetch and display it on your site.
 
 > For following showcase we are using tha sample project created in [Kontent.ai](https://kontent.ai/) for demonstration purposes - it's project ID is `975bf280-fd91-488c-994c-2f04416e5ee3`.
 
@@ -24,9 +24,9 @@ First, create a new page and insert a text block to your page.
 
 ![Adding first text block](https://cdn.builder.io/api/v1/image/assets%2Fe85723a1cdde410591c232f4b375ef9b%2F449d4c0c99d2482bb824ea10d1cd87df)
 
-Now let's connect data from Kontent with Builder's page. Select data tab and use "Connect data" button to select Kontent.
+Now let's connect data from Kontent.ai with Builder's page. Select data tab and use "Connect data" button to select Kontent.ai.
 
-![Connect Kontent with Builder's page](https://cdn.builder.io/api/v1/image/assets%2Fe85723a1cdde410591c232f4b375ef9b%2F1c3b1c1a6b1943a9b5576bd31c83bc50)
+![Connect Kontent.ai with Builder.io's page](https://cdn.builder.io/api/v1/image/assets%2Fe85723a1cdde410591c232f4b375ef9b%2F1c3b1c1a6b1943a9b5576bd31c83bc50)
 
 Then pick the [content type](https://kontent.ai/learn/tutorials/references/terminology/#a-content-type) you want to select item(s) based on (i.e. `Article`).
 
