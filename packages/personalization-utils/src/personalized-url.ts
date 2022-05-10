@@ -1,7 +1,6 @@
 import stringify from 'json-stringify-deterministic';
-import { getUserAttributes } from './utils';
 
-export class PerosonalizedURL {
+export class PersonalizedURL {
   prefix = 'builder';
   attributes: Record<string, string>;
 
@@ -9,7 +8,7 @@ export class PerosonalizedURL {
     this.prefix = config.prefix || this.prefix;
     this.attributes = {
       urlPath: config.pathname,
-      ...getUserAttributes(config.attributes),
+      ...config.attributes,
     };
   }
 
@@ -25,7 +24,7 @@ export class PerosonalizedURL {
   static fromHash(hash: string, prefix = 'builder') {
     const stringified = Buffer.from(hash, 'base64').toString('utf-8');
     const attributes = JSON.parse(stringified);
-    return new PerosonalizedURL({
+    return new PersonalizedURL({
       prefix,
       pathname: attributes.urlPath,
       attributes,

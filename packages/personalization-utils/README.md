@@ -64,15 +64,14 @@ export default function middleware(
       pathname: url.pathname,
       attributes: {
         // optionally add geo information to target by city/country in builder
-        'builder.userAttributes.city': request.geo?.city || '',
-        'builder.userAttributes.country': request.geo?.country || '',
-        ...request.cookies,
-        // passing query is to add support for studio tab navigation [viewing pages per targeting attributes]
-        ...query
+        city: request.geo?.city || '',
+        country: request.geo?.country || '',
+        // pass cookies and query [read all values for keys prefixed with `builder.userAttributes`], useful for studio tab navigation and assigning cookies to targeting groups
+        ...getUserAttributes({ ...request.cookies, ...query }),
       }
     })
 
-    url.pathname = personlizedURL.toHash();
+    url.pathname = personlizedURL.rewritePath();
     response = NextResponse.rewrite(url);
   }
   return response
