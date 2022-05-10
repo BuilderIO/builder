@@ -17,6 +17,6 @@
     "solid-js": "^1.3.17"
   },
   "dependencies": {
-    "@builder.io/sdk-solid": "^0.0.7"
+    "@builder.io/sdk-solid": "^0.0.8-3"
   }
 }
