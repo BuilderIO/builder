@@ -152,13 +152,13 @@ export function transform(context: ts.TransformationContext) {
     node = previousOnSubstituteNode(hint, node);
 
     if (ts.isJsxElement(node)) {
-      node = jsonObjectToAst((jsxElementToObject(node as ts.JsxElement) as unknown) as JsonObject);
+      node = jsonObjectToAst(jsxElementToObject(node as ts.JsxElement) as unknown as JsonObject);
     } else if (ts.isJsxFragment(node)) {
       node = ts.createArrayLiteral(
         node.children
           .filter(item => ts.isJsxElement(item))
           .map(item =>
-            jsonObjectToAst((jsxElementToObject(item as ts.JsxElement) as unknown) as JsonObject)
+            jsonObjectToAst(jsxElementToObject(item as ts.JsxElement) as unknown as JsonObject)
           )
       );
     }

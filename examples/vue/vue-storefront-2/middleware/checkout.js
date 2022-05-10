@@ -29,4 +29,3 @@ export default async ({ app, $vsf }) => {
       break;
   }
 };
-

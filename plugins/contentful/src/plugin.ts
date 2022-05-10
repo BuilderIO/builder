@@ -11,8 +11,7 @@ registerDataPlugin(
   {
     id: pluginId,
     name: 'Contentful',
-    icon:
-      'https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fd6097cd40fef4b94b18a3e0c4c53584d',
+    icon: 'https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fd6097cd40fef4b94b18a3e0c4c53584d',
     settings: [
       {
         name: 'spaceId',

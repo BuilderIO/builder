@@ -1,13 +1,7 @@
-import * as THREE from "three";
-import { Suspense, useRef, useState } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
-import {
-  Instances,
-  Instance,
-  OrbitControls,
-  Environment,
-  useGLTF,
-} from "@react-three/drei";
+import * as THREE from 'three';
+import { Suspense, useRef, useState } from 'react';
+import { Canvas, useFrame } from '@react-three/fiber';
+import { Instances, Instance, OrbitControls, Environment, useGLTF } from '@react-three/drei';
 
 const color = new THREE.Color();
 
@@ -27,12 +21,9 @@ const randomData = Array.from({ length: 1000 }, (_, r) => ({
   rotation: randomEuler(),
 }));
 
-export function ShoesViewer({nuShoes, ambientLight}: any) {
+export function ShoesViewer({ nuShoes, ambientLight }: any) {
   return (
-    <Canvas
-      camera={{ position: [0, 0, 5], fov: 50 }}
-      performance={{ min: 0.1 }}
-    >
+    <Canvas camera={{ position: [0, 0, 5], fov: 50 }} performance={{ min: 0.1 }}>
       <ambientLight intensity={ambientLight} />
       <directionalLight intensity={0.3} position={[5, 25, 20]} />
       <Suspense fallback={null}>
@@ -45,13 +36,9 @@ export function ShoesViewer({nuShoes, ambientLight}: any) {
 }
 
 function Shoes({ range }: any) {
-  const { nodes, materials } = useGLTF("https://public.sethealth.app/shoe.glb") as any;
+  const { nodes, materials } = useGLTF('https://public.sethealth.app/shoe.glb') as any;
   return (
-    <Instances
-      range={range}
-      material={materials.phong1SG}
-      geometry={nodes.Shoe.geometry}
-    >
+    <Instances range={range} material={materials.phong1SG} geometry={nodes.Shoe.geometry}>
       {randomData.map((props, i) => (
         <Shoe key={i} {...props} />
       ))}
@@ -62,18 +49,18 @@ function Shoes({ range }: any) {
 function Shoe({ random, ...props }: any) {
   const ref = useRef<any>()!;
   const [hovered, setHover] = useState(false);
-  useFrame((state) => {
+  useFrame(state => {
     const t = state.clock.getElapsedTime() + random * 10000;
     const lerp = THREE.MathUtils.lerp(ref.current!.scale.z, hovered ? 1.4 : 1, 0.1);
 
     // Change some of the code, live reload with update the editor automatically
-    const hoverColor = "red"; // Change to "yellow"
+    const hoverColor = 'red'; // Change to "yellow"
     const positionPulse = 1 / 1.5; // Change 1.5 to 0.1
     // Play with different value
     const rotationPulse = {
       x: 1 / 4,
       y: 1 / 4,
-      z: 1 / 1.5
+      z: 1 / 1.5,
     };
 
     ref.current.rotation.set(
@@ -82,20 +69,15 @@ function Shoe({ random, ...props }: any) {
       Math.cos(t * rotationPulse.z) / 2
     );
     ref.current.position.y = Math.sin(t * positionPulse) / 2;
-    ref.current.scale.x =
-      ref.current.scale.y =
-      ref.current.scale.z = lerp;
+    ref.current.scale.x = ref.current.scale.y = ref.current.scale.z = lerp;
 
-    ref.current.color.lerp(
-      color.set(hovered ? hoverColor : "white"),
-      hovered ? 1 : 0.1
-    );
+    ref.current.color.lerp(color.set(hovered ? hoverColor : 'white'), hovered ? 1 : 0.1);
   });
   return (
     <group {...props}>
       <Instance
         ref={ref}
-        onPointerOver={(e) => {
+        onPointerOver={e => {
           e.stopPropagation();
           setHover(true);
         }}

@@ -14,7 +14,7 @@ const page = {
       shipping: new Shipping(),
       billing: new Billing(),
       payment: new Payment(),
-      thankyou: new ThankYou()
+      thankyou: new ThankYou(),
     };
   },
 
@@ -23,7 +23,7 @@ const page = {
       cart: Cart,
       loginModal: LoginModal,
       breadcrumbs: Breadcrumbs,
-      categoryAccordion: CategoryAccordion
+      categoryAccordion: CategoryAccordion,
     };
   },
 
@@ -34,7 +34,7 @@ const page = {
   get myAccount() {
     return {
       myProfile: new MyProfile(),
-      orderHistory: new OrderHistory()
+      orderHistory: new OrderHistory(),
     };
   },
 
@@ -44,8 +44,7 @@ const page = {
 
   product(id?: string, slug?: string) {
     return new Product(id, slug);
-  }
-
+  },
 };
 
 export default page;

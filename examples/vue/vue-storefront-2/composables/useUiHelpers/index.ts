@@ -4,24 +4,22 @@ import { AgnosticFacet } from '@vue-storefront/core';
 
 const nonFilters = ['page', 'sort', 'phrase', 'itemsPerPage'];
 
-const reduceFilters = (query) => (prev, curr) => {
+const reduceFilters = query => (prev, curr) => {
   const makeArray = Array.isArray(query[curr]) || nonFilters.includes(curr);
 
   return {
     ...prev,
-    [curr]: makeArray ? query[curr] : [query[curr]]
+    [curr]: makeArray ? query[curr] : [query[curr]],
   };
 };
 
 const getQueryParameter = (item): string => {
-  return Array.isArray(item)
-    ? item[0]
-    : item;
+  return Array.isArray(item) ? item[0] : item;
 };
 
 const getFiltersDataFromUrl = (query, onlyFilters) => {
   return Object.keys(query)
-    .filter(f => onlyFilters ? !nonFilters.includes(f) : nonFilters.includes(f))
+    .filter(f => (onlyFilters ? !nonFilters.includes(f) : nonFilters.includes(f)))
     .reduce(reduceFilters(query), {});
 };
 
@@ -31,7 +29,10 @@ const useUiHelpers = () => {
   const { query, params } = route.value;
 
   const getFacetsFromURL = () => {
-    const categorySlug = Object.keys(params).reduce((prev, curr) => params[curr] || prev, params.slug_1);
+    const categorySlug = Object.keys(params).reduce(
+      (prev, curr) => params[curr] || prev,
+      params.slug_1
+    );
 
     return {
       rootCatSlug: params.slug_1,
@@ -40,7 +41,7 @@ const useUiHelpers = () => {
       sort: query.sort || 'latest',
       filters: getFiltersDataFromUrl(query, true),
       itemsPerPage: parseInt(getQueryParameter(query.itemsPerPage), 10) || 20,
-      phrase: query.phrase
+      phrase: query.phrase,
     };
   };
 
@@ -55,7 +56,7 @@ const useUiHelpers = () => {
       sort: query.sort || 'latest',
       filters: getFiltersDataFromUrl(query, true),
       itemsPerPage: parseInt(getQueryParameter(query.itemsPerPage), 10) || 20,
-      phrase: query.phrase
+      phrase: query.phrase,
     };
   };
 
@@ -71,8 +72,8 @@ const useUiHelpers = () => {
     router.push({
       query: {
         ...getFiltersDataFromUrl(query, false),
-        ...filters
-      }
+        ...filters,
+      },
     });
   };
 
@@ -80,8 +81,8 @@ const useUiHelpers = () => {
     router.push({
       query: {
         ...getFiltersDataFromUrl(query, false),
-        itemsPerPage
-      }
+        itemsPerPage,
+      },
     });
   };
 
@@ -89,8 +90,8 @@ const useUiHelpers = () => {
     router.push({
       query: {
         ...getFiltersDataFromUrl(query, false),
-        phrase: term || undefined
-      }
+        phrase: term || undefined,
+      },
     });
   };
 
@@ -107,7 +108,7 @@ const useUiHelpers = () => {
     setTermForUrl,
     isFacetColor,
     isFacetCheckbox,
-    getSearchTermFromUrl
+    getSearchTermFromUrl,
   };
 };
 

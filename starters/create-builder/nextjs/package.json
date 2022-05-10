@@ -11,13 +11,13 @@
   },
   "dependencies": {
     "@builder.io/react": "^1.1.47",
-    "@react-three/drei": "^7.22.6",
-    "@react-three/fiber": "^7.0.19",
+    "@react-three/drei": "8.11.0",
+    "@react-three/fiber": "7.0.26",
+    "three": "0.137.5",
     "@vercel/fetch": "^6.1.0",
     "next": "^12.1.0",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "three": "^0.137.0"
+    "react-dom": "^17.0.2"
   },
   "devDependencies": {
     "@types/node": "16.11.9",

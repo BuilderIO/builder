@@ -4,9 +4,9 @@ import generator from '../utils/data-generator';
 
 context(['regression'], 'User registration', () => {
   beforeEach(function () {
-    cy.fixture('test-data/e2e-user-registration').then((fixture) => {
+    cy.fixture('test-data/e2e-user-registration').then(fixture => {
       this.fixtures = {
-        data: fixture
+        data: fixture,
       };
     });
   });
@@ -35,6 +35,8 @@ context(['regression'], 'User registration', () => {
     page.components.loginModal.fillForm(data.customer);
     page.components.loginModal.iWantToCreateAccountCheckbox.click();
     page.components.loginModal.createAccountButton.click();
-    page.components.loginModal.container.contains(`${data.errorMessage} '"${data.customer.email}"'`).should('be.visible');
+    page.components.loginModal.container
+      .contains(`${data.errorMessage} '"${data.customer.email}"'`)
+      .should('be.visible');
   });
 });

@@ -1,6 +1,5 @@
-import { expect, test } from '@jest/globals';
-import { BuilderBlock } from '../types/builder-block';
-import { getProcessedBlock } from './get-processed-block';
+import { BuilderBlock } from '../types/builder-block.js';
+import { getProcessedBlock } from './get-processed-block.js';
 
 test('Can process bindings', () => {
   const block: BuilderBlock = {

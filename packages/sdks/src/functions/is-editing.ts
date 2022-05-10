@@ -1,4 +1,4 @@
-import { isIframe } from './is-iframe';
+import { isIframe } from './is-iframe.js';
 
 export function isEditing(): boolean {
   return (

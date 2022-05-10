@@ -1,5 +1,4 @@
 class Breadcrumbs {
-
   get container(): Cypress.Chainable {
     return cy.get('.breadcrumbs');
   }

@@ -3,8 +3,8 @@ import { Settings } from '@material-ui/icons'
 import React, { useEffect, useState } from 'react'
 import { ExtendedApplicationContext } from '../interfaces/application-context'
 import { pluginId } from '../constants'
-const context: ExtendedApplicationContext = require('@builder.io/app-context')
-  .default
+const context: ExtendedApplicationContext =
+  require('@builder.io/app-context').default
 
 declare global {
   interface Window {

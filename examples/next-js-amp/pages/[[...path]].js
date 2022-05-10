@@ -25,11 +25,13 @@ export default function Page({ builderPage }) {
               <meta name="robots" content="noindex,nofollow" />
               <meta
                 name="viewport"
-                content="width=device-width,minimum-scale=1,initial-scale=1"></meta>
+                content="width=device-width,minimum-scale=1,initial-scale=1"
+              ></meta>
               <link
                 rel="preload"
                 href="https://cdn.ampproject.org/v0.js"
-                as="script"></link>
+                as="script"
+              ></link>
               <script async="" src="https://cdn.ampproject.org/v0.js"></script>
               <style amp-boilerplate>{boilerplate}</style>
             </>

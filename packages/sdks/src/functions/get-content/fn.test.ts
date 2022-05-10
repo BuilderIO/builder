@@ -1,4 +1,3 @@
-import { describe, test, expect } from '@jest/globals';
 import { generateContentUrl } from '.';
 
 const testKey = 'YJIGb4i01jvw0SRdL5Bt';

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="div-21azgz5avex"
+    class="div-23e8fqt91nf"
     :builder-path="path"
     :builder-parent-id="parent"
     :dataSet="{
@@ -13,22 +13,22 @@
     <render-block
       v-for="(block, index) in blocks"
       :block="block"
-      :key="index"
+      :key="block.id"
     ></render-block>
   </div>
 </template>
 <script>
-import { isEditing } from '../functions/is-editing';
-import RenderBlock from './render-block';
+import { isEditing } from "../functions/is-editing.js";
+import RenderBlock from "./render-block/render-block";
 
 export default {
-  name: 'render-blocks',
-  components: { 'render-block': async () => RenderBlock },
-  props: ['blocks', 'parent', 'path'],
+  name: "render-blocks",
+  components: { "render-block": async () => RenderBlock },
+  props: ["blocks", "parent", "path"],
 
   computed: {
     className() {
-      return 'builder-blocks' + (!this.blocks?.length ? ' no-blocks' : '');
+      return "builder-blocks" + (!this.blocks?.length ? " no-blocks" : "");
     },
   },
 
@@ -37,13 +37,13 @@ export default {
       if (isEditing() && !this.blocks?.length) {
         window.parent?.postMessage(
           {
-            type: 'builder.clickEmptyBlocks',
+            type: "builder.clickEmptyBlocks",
             data: {
               parentElementId: this.parent,
               dataPath: this.path,
             },
           },
-          '*'
+          "*"
         );
       }
     },
@@ -51,19 +51,19 @@ export default {
       if (isEditing() && !this.blocks?.length) {
         window.parent?.postMessage(
           {
-            type: 'builder.hoverEmptyBlocks',
+            type: "builder.hoverEmptyBlocks",
             data: {
               parentElementId: this.parent,
               dataPath: this.path,
             },
           },
-          '*'
+          "*"
         );
       }
     },
     _classStringToObject(str) {
       const obj = {};
-      if (typeof str !== 'string') {
+      if (typeof str !== "string") {
         return obj;
       }
       const classNames = str.trim().split(/\s+/);
@@ -76,7 +76,7 @@ export default {
 };
 </script>
 <style scoped>
-.div-21azgz5avex {
+.div-23e8fqt91nf {
   display: flex;
   flex-direction: column;
   align-items: stretch;

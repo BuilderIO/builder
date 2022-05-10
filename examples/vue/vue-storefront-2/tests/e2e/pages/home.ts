@@ -5,7 +5,6 @@ class Home extends Base {
   get header() {
     return Header;
   }
-
 }
 
 export default new Home();
