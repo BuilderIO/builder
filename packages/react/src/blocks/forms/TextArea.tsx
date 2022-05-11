@@ -18,7 +18,7 @@ class TextAreaComponent extends React.Component<FormTextAreaProps> {
         name={this.props.name}
         value={this.props.value}
         defaultValue={this.props.defaultValue}
-        {...(this.props.required ? { required: "required" } : {})}
+        {...(this.props.required ? { required: 'required' } : {})}
         {...this.props.attributes}
       />
     );
