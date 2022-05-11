@@ -422,7 +422,7 @@ export class BuilderComponent extends React.Component<
   lastJsCode = '';
   lastHttpRequests: { [key: string]: string | undefined } = {};
   httpSubscriptionPerKey: { [key: string]: Subscription | undefined } = {};
-
+  firstLoad = true;
   ref: HTMLElement | null = null;
 
   Component: any;
@@ -740,6 +740,9 @@ export class BuilderComponent extends React.Component<
     }
 
     if (Builder.isBrowser) {
+      Builder.nextTick(() => {
+        this.firstLoad = false;
+      })
       // TODO: remove event on unload
       window.addEventListener('resize', this.resizeListener);
       if (Builder.isEditing) {
@@ -783,7 +786,7 @@ export class BuilderComponent extends React.Component<
 
   get isPreviewing() {
     return (
-      (Builder.isServer || (Builder.isBrowser && Builder.isPreviewing)) &&
+      (Builder.isServer || (Builder.isBrowser && Builder.isPreviewing && !this.firstLoad)) &&
       builder.previewingModel === this.name
     );
   }

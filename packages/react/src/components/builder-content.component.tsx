@@ -313,7 +313,6 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
                       })}
                     >
                       <TagName
-                        suppressHydrationWarning={true}
                         {...(index === 0 &&
                           !this.props.dataOnly && {
                             ref: (ref: any) => (this.ref = ref),
