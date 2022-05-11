@@ -7,6 +7,7 @@ export interface FormTextAreaProps {
   value?: string;
   defaultValue?: string;
   placeholder?: string;
+  required?: boolean;
 }
 
 class TextAreaComponent extends React.Component<FormTextAreaProps> {
@@ -17,6 +18,7 @@ class TextAreaComponent extends React.Component<FormTextAreaProps> {
         name={this.props.name}
         value={this.props.value}
         defaultValue={this.props.defaultValue}
+        {if (this.props.required) 'required'}
         {...this.props.attributes}
       />
     );
