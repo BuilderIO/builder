@@ -24,7 +24,7 @@ const OVERRIDE_INSERT_MENU = false;
 if (OVERRIDE_INSERT_MENU) {
   // (optionally) use this to hide all default built-in components and fully manage
   // the insert menu components and sections yourself
-  Builder.set({ customInsertMenu: true });
+  Builder.register('editor.settings', { customInsertMenu: true });
 }
 
 // (optionally) set these to add your own sections of components arranged as you choose.
