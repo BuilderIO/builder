@@ -740,13 +740,17 @@ export class BuilderComponent extends React.Component<
     }
 
     if (Builder.isBrowser) {
-      Builder.nextTick(() => {
-        this.firstLoad = false;
-      })
       // TODO: remove event on unload
       window.addEventListener('resize', this.resizeListener);
       if (Builder.isEditing) {
         window.addEventListener('message', this.messageListener);
+      }
+
+      if(Builder.isEditing || Builder.isPreviewing) {
+        Builder.nextTick(() => {
+          this.firstLoad = false;
+          this.reload();
+        });
       }
 
       setTimeout(() => {
