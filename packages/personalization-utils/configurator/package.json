@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/personalization-context-menu",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Right click menu for personalized pages",
   "main": "./dist/index.js",
   "scripts": {
