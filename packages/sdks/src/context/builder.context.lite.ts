@@ -1,6 +1,6 @@
 import { BuilderContent } from '../types/builder-content.js';
 import { ComponentInfo } from '../types/components.js';
-import { Nullable } from '../types/typescript.js';
+import { Dictionary, Nullable } from '../types/typescript.js';
 import { createContext } from '@builder.io/mitosis';
 
 export interface RegisteredComponent {
@@ -8,12 +8,14 @@ export interface RegisteredComponent {
   info: ComponentInfo;
 }
 
+export type RegisteredComponents = Dictionary<RegisteredComponent>;
+
 interface BuilderContext {
   content: Nullable<BuilderContent>;
   context: Record<string, unknown>;
   state: Record<string, unknown>;
   apiKey: string | null;
-  registeredComponents: Record<string, Nullable<RegisteredComponent>>;
+  registeredComponents: RegisteredComponents;
 }
 
 export default createContext<BuilderContext>({

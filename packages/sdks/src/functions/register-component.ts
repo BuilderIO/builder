@@ -1,26 +1,20 @@
 import { RegisteredComponent } from '../context/builder.context.lite.js';
-import type { ComponentInfo, Input } from '../types/components.js';
-import { isBrowser } from './is-browser.js';
+import type { ComponentInfo } from '../types/components.js';
 
-export const components: Record<
-  string,
-  { component: any; info?: ComponentInfo }
-> = {};
+/**
+ * @deprecated.  Use the `customComponents` prop in RenderContent instead to provide your custom components to the builder SDK.
+ */
+export const components: RegisteredComponent[] = [];
 
-// Compile only facade
+/**
+ * @deprecated.  Use the `customComponents` prop in RenderContent instead to provide your custom components to the builder SDK.
+ */
 export function registerComponent(component: any, info: ComponentInfo): void {
-  components[info.name] = { component, info };
+  components.push({ component, info });
 
-  if (isBrowser()) {
-    const sendInfo = prepareComponentInfoToSend(info);
-    window.parent?.postMessage(
-      {
-        type: 'builder.registerComponent',
-        data: sendInfo,
-      },
-      '*'
-    );
-  }
+  console.warn(
+    `⚠️ registerComponent is deprecated. Use the \`customComponents\` prop in RenderContent instead to provide your custom components to the builder SDK.`
+  );
 
   return component;
 }

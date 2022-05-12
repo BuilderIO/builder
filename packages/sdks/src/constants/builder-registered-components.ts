@@ -20,25 +20,14 @@ import type { RegisteredComponent } from '../context/builder.context.lite';
  * Returns a list of all registered components.
  * NOTE: This needs to be a function to work around ESM circular dependencies.
  */
-export const getDefaultRegisteredComponents: () => Record<
-  string,
-  RegisteredComponent
-> = () => ({
-  [columnsComponentInfo.name]: {
-    component: Columns,
-    info: columnsComponentInfo,
-  },
-  [imageComponentInfo.name]: { component: Image, info: imageComponentInfo },
-  [textComponentInfo.name]: { component: Text, info: textComponentInfo },
-  [videoComponentInfo.name]: { component: Video, info: videoComponentInfo },
-  [symbolComponentInfo.name]: { component: Symbol, info: symbolComponentInfo },
-  [buttonComponentInfo.name]: { component: Button, info: buttonComponentInfo },
-  [sectionComponentInfo.name]: {
-    component: Section,
-    info: sectionComponentInfo,
-  },
-  [fragmentComponentInfo.name]: {
-    component: Fragment,
-    info: fragmentComponentInfo,
-  },
-});
+export const getDefaultRegisteredComponents: () => RegisteredComponent[] =
+  () => [
+    { component: Columns, info: columnsComponentInfo },
+    { component: Image, info: imageComponentInfo },
+    { component: Text, info: textComponentInfo },
+    { component: Video, info: videoComponentInfo },
+    { component: Symbol, info: symbolComponentInfo },
+    { component: Button, info: buttonComponentInfo },
+    { component: Section, info: sectionComponentInfo },
+    { component: Fragment, info: fragmentComponentInfo },
+  ];
