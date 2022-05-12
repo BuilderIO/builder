@@ -1,4 +1,4 @@
-import { DEFAULT_REGISTERED_COMPONENTS } from '../../constants/builder-registered-components.js';
+import { getDefaultRegisteredComponents } from '../../constants/builder-registered-components.js';
 import { TARGET } from '../../constants/target.js';
 import BuilderContext, {
   RegisteredComponent,
@@ -80,7 +80,7 @@ export default function RenderContent(props: RenderContentProps) {
 
     get allRegisteredComponents() {
       return {
-        ...DEFAULT_REGISTERED_COMPONENTS,
+        ...getDefaultRegisteredComponents(),
         ...props.customComponents,
       };
     },

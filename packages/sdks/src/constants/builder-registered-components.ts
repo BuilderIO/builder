@@ -16,10 +16,14 @@ import { componentInfo as videoComponentInfo } from '../blocks/video/component-i
 import { default as Video } from '../blocks/video/video.lite';
 import type { RegisteredComponent } from '../context/builder.context.lite';
 
-export const DEFAULT_REGISTERED_COMPONENTS: Record<
+/**
+ * Returns a list of all registered components.
+ * NOTE: This needs to be a function to work around ESM circular dependencies.
+ */
+export const getDefaultRegisteredComponents: () => Record<
   string,
   RegisteredComponent
-> = {
+> = () => ({
   [columnsComponentInfo.name]: {
     component: Columns,
     info: columnsComponentInfo,
@@ -37,4 +41,4 @@ export const DEFAULT_REGISTERED_COMPONENTS: Record<
     component: Fragment,
     info: fragmentComponentInfo,
   },
-};
+});
