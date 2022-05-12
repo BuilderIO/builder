@@ -3,10 +3,10 @@
   "version": "0.0.8-3",
   "description": "",
   "type": "module",
-  "main": "./src/index.js",
-  "module": "./src/index.js",
+  "main": "./entry-point/index.jsx",
+  "module": "./entry-point/index.jsx",
   "exports": {
-    ".": "./src/index.js"
+    ".": "./entry-point/index.jsx"
   },
   "scripts": {
     "build": "vite build",
