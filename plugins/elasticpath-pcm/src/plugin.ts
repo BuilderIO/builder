@@ -2,7 +2,7 @@ import { registerCommercePlugin } from '@builder.io/commerce-plugin-tools';
 import { gateway } from '@moltin/sdk';
 import pkg from '../package.json';
 
-const defaultApiUrl = 'https://api.moltin.com'
+const defaultApiUrl = 'https://api.moltin.com';
 
 registerCommercePlugin(
   {
@@ -33,7 +33,7 @@ registerCommercePlugin(
   async settings => {
     const clientId = settings.get('clientId')?.trim();
     const clientSecret = settings.get('clientSecret')?.trim();
-    console.log('API URL FORM USER ', settings.get('apiURL')?.trim())
+    console.log('API URL FORM USER ', settings.get('apiURL')?.trim());
     const finalApiUrl = settings.get('apiURL')?.trim() || defaultApiUrl;
 
     const elasticpathApi = gateway({
