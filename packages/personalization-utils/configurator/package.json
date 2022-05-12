@@ -1,5 +1,5 @@
 {
-  "name": "@builder.io/personalization-utils-configurator",
+  "name": "@builder.io/personalization-context-menu",
   "version": "0.0.1",
   "description": "Right click menu for personalized pages",
   "main": "./dist/index.js",
@@ -7,7 +7,9 @@
     "build": "tsc",
     "prepublish": "npm run build",
     "test": "jest",
-    "prettier": "prettier"
+    "prettier": "prettier",
+    "release:dev": "npm run build && npm version prerelease --no-git-tag-version && npm publish --tag dev",
+    "release:patch": "npm run build && npm version patch --no-git-tag-version && npm publish"
   },
   "files": [
     "dist/**/*",

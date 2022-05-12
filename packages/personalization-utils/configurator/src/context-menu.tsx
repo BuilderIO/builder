@@ -17,12 +17,12 @@ export interface TargetingAttributes {
   [key: string]: Input;
 }
 
-export interface ConfiguratorProps {
+export interface ContextMenuProps {
   targetingAttributes?: TargetingAttributes;
   attributesApiPath?: string;
 }
 
-export const Configurator: React.FC<ConfiguratorProps> = ({ targetingAttributes, attributesApiPath }) => {
+export const ContextMenu: React.FC<ContextMenuProps> = ({ targetingAttributes, attributesApiPath }) => {
   const { x, y, menu, enableContextMenu } = useContextMenu();
   const [loading, setLoading] = useState(false);
 
