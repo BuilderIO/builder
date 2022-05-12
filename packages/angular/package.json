@@ -57,7 +57,9 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^13.0.0",
+    "@angular/cli": "13.2.3",
     "@angular/common": "13.2.3",
+    "@angular/compiler-cli": "13.2.3",
     "@angular/core": "13.2.3",
     "@angular/elements": "13.2.3",
     "@angular/forms": "13.2.3",
@@ -65,8 +67,6 @@
     "@angular/platform-browser-dynamic": "13.2.3",
     "@angular/platform-server": "13.2.3",
     "@angular/router": "13.2.3",
-    "@angular/cli": "13.2.3",
-    "@angular/compiler-cli": "13.2.3",
     "@babel/core": "^7.17.4",
     "@babel/preset-env": "^7.16.11",
     "@builder.io/block-publish": "^1.1.2",
