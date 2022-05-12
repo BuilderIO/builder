@@ -2,6 +2,8 @@ import { registerCommercePlugin } from '@builder.io/commerce-plugin-tools';
 import { gateway } from '@moltin/sdk';
 import pkg from '../package.json';
 
+const defaultApiUrl = 'https://api.moltin.com';
+
 registerCommercePlugin(
   {
     name: 'ElasticpathPCM',
@@ -19,15 +21,24 @@ registerCommercePlugin(
         required: true,
         helperText: 'Get your Client Secret from Elasticpath Commerce Manager',
       },
+      {
+        name: 'apiUrl',
+        type: 'string',
+        required: true,
+        helperText: 'API url to be used, https://api.moltin.com is default',
+      },
     ],
     ctaText: `Connect your Elasticpath PCM store`,
   },
   async settings => {
     const clientId = settings.get('clientId')?.trim();
     const clientSecret = settings.get('clientSecret')?.trim();
+    const finalApiUrl = settings.get('apiURL')?.trim() || defaultApiUrl;
+
     const elasticpathApi = gateway({
       client_id: clientId,
       client_secret: clientSecret,
+      host: new URL(finalApiUrl).host,
     });
 
     const transformPCMProduct = (resource: any) => {
@@ -79,7 +90,7 @@ registerCommercePlugin(
               headers: {
                 Authorization: `Bearer ${token}`,
               },
-              url: `https://api.moltin.com/pcm/hierarchies/${id}`,
+              url: `${finalApiUrl}/pcm/hierarchies/${id}`,
             },
             options: {
               heirarchy: id,
@@ -119,7 +130,7 @@ registerCommercePlugin(
               headers: {
                 Authorization: `Bearer ${token}`,
               },
-              url: `https://api.moltin.com/pcm/products/${id}`,
+              url: `${finalApiUrl}/pcm/products/${id}`,
             },
             options: {
               product: id,
