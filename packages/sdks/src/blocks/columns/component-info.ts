@@ -1,4 +1,4 @@
-import { ComponentInfo } from '../../functions/register-component';
+import { ComponentInfo } from '../../functions/register-component.js';
 
 export const componentInfo: ComponentInfo = {
   // TODO: ways to statically preprocess JSON for references, functions, etc

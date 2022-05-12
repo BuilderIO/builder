@@ -1,6 +1,6 @@
 import * as React from "react";
 import { View, StyleSheet, Image, Text } from "react-native";
-import { TARGET } from "../constants/target";
+import { TARGET } from "../constants/target.js";
 
 export default function RenderInlinedStyles(props) {
   function injectedStyleScript() {

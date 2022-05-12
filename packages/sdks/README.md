@@ -13,26 +13,26 @@ Legend:
 - ⚠️: not-yet implemented
 - N/A : does not apply
 
-| Builder Blocks | Vue | Vue details | React-Native | React-Native details |
-| -------------- | --- | ----------- | ------------ | -------------------- |
-| Columns        | ✅  |             | ✅           |                      |
-| Text           | ✅  |             | ✅           |                      |
-| Image          | ✅  |             | ✅           |                      |
-| Buttons        | ✅  |             | 🏗            |                      |
-| Video          | ✅  |             | 🏗            |                      |
-| Custom Code    | ✅  |             | ✅           |                      |
-| Section        | ✅  |             | ✅           |                      |
-| Form           | ✅  |             | ✅           |                      |
-| Fragment       | ✅  |             | ✅           |                      |
-| Input          | ✅  |             | ✅           |                      |
+| Builder Blocks | Vue | Vue details | React-Native | React-Native details | Svelte | Svelte details |
+| -------------- | --- | ----------- | ------------ | -------------------- | ------ | -------------- |
+| Columns        | ✅  |             | ✅           |                      | ✅     |                |
+| Text           | ✅  |             | ✅           |                      | ✅     |                |
+| Image          | ✅  |             | ✅           |                      | ✅     |                |
+| Buttons        | ✅  |             | 🏗            |                      | ✅     |                |
+| Video          | ✅  |             | 🏗            |                      | ✅     |                |
+| Custom Code    | ✅  |             | ✅           |                      | ✅     |                |
+| Section        | ✅  |             | ✅           |                      | ✅     |                |
+| Form           | ✅  |             | ✅           |                      | ✅     |                |
+| Fragment       | ✅  |             | ✅           |                      | ✅     |                |
+| Input          | ✅  |             | ✅           |                      | ✅     |                |
 
-| Features                       | Details                                                                      | Vue | Vue details | React-Native | React-Native details             |
-| ------------------------------ | ---------------------------------------------------------------------------- | --- | ----------- | ------------ | -------------------------------- |
-| A/B Tests                      | No SSG support yet, which the React SDK has.                                 | 🏗   |             | 🏗            |                                  |
-| SSR                            |                                                                              | ✅  |             | N/A          |                                  |
-| Children for Custom Components |                                                                              | 🏗   |             | 🏗            |                                  |
-| Dynamic Data Bindings          |                                                                              | ✅  |             | ✅           |                                  |
-| Animations                     | Custom animation components supported, but not Builder.io's "animations" tab | ⚠️  |             | ⚠️           |                                  |
-| View Current Draft             |                                                                              | ✅  |             | ✅           |                                  |
-| Symbols                        |                                                                              | ✅  |             | ✅           |                                  |
+| Features                       | Details                                                                      | Vue | Vue details | React-Native | React-Native details             | Svelte | Svelte details |
+| ------------------------------ | ---------------------------------------------------------------------------- | --- | ----------- | ------------ | -------------------------------- | ------ | -------------- |
+| A/B Tests                      | No SSG support yet, which the React SDK has.                                 | 🏗   |             | 🏗            |                                  | 🏗      |
+| SSR                            |                                                                              | ✅  |             | N/A          |                                  | ✅     |
+| Children for Custom Components |                                                                              | ✅  |             | ✅           |                                  | ✅     |
+| Dynamic Data Bindings          |                                                                              | ✅  |             | ✅           |                                  | ✅     |
+| Animations                     | Custom animation components supported, but not Builder.io's "animations" tab | ⚠️  |             | ⚠️           |                                  | ⚠️     |
+| View Current Draft             |                                                                              | ✅  |             | ✅           |                                  | ✅     |
+| Symbols                        |                                                                              | ✅  |             | ✅           |                                  | ✅     |
 | Custom styles                  |                                                                              | ✅  |             | ✅           | Those that React Native supports |

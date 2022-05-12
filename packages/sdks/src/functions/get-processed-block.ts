@@ -1,7 +1,7 @@
-import { BuilderBlock } from '../types/builder-block';
-import { evaluate } from './evaluate';
-import { set } from './set';
-import { transformBlock } from './transform-block';
+import { BuilderBlock } from '../types/builder-block.js';
+import { evaluate } from './evaluate.js';
+import { set } from './set.js';
+import { transformBlock } from './transform-block.js';
 
 export function getProcessedBlock(options: {
   block: BuilderBlock;

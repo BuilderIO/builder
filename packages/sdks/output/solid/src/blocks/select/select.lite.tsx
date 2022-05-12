@@ -1,6 +1,6 @@
 import { For } from "solid-js";
 
-import { isEditing } from "../../functions/is-editing";
+import { isEditing } from "../../functions/is-editing.js";
 
 function SelectComponent(props) {
   return (
