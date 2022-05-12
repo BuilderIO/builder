@@ -142,6 +142,10 @@ export default {
         }),
       }),
     ],
+    /**
+     * This is required due to the Builder Vue SDK being an ES Module.
+     * https://github.com/nuxt/nuxt.js/issues/9223
+     */
     standalone: true,
   },
   pwa: {

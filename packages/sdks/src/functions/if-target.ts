@@ -1,4 +1,4 @@
-import { TARGET } from '../constants/target';
+import { TARGET } from '../constants/target.js';
 
 type Target = import('../types/targets').Target;
 

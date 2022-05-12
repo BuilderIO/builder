@@ -1,4 +1,4 @@
-import { isBrowser } from './is-browser';
+import { isBrowser } from './is-browser.js';
 
 // TODO
 export type ComponentInfo = any;

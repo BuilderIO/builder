@@ -1,19 +1,19 @@
-import { TARGET } from '../../constants/target';
+import { TARGET } from '../../constants/target.js';
 import BuilderContext from '../../context/builder.context.lite';
-import { evaluate } from '../../functions/evaluate';
+import { evaluate } from '../../functions/evaluate.js';
 import {
   convertSearchParamsToQueryObject,
   getBuilderSearchParams,
-} from '../../functions/get-builder-search-params';
-import { getContent } from '../../functions/get-content';
-import { getFetch } from '../../functions/get-fetch';
-import { isBrowser } from '../../functions/is-browser';
-import { isEditing } from '../../functions/is-editing';
-import { isPreviewing } from '../../functions/is-previewing';
-import { previewingModelName } from '../../functions/previewing-model-name';
-import { track } from '../../functions/track';
-import { BuilderContent } from '../../types/builder-content';
-import { Dictionary, Nullable } from '../../types/typescript';
+} from '../../functions/get-builder-search-params/index.js';
+import { getContent } from '../../functions/get-content/index.js';
+import { getFetch } from '../../functions/get-fetch.js';
+import { isBrowser } from '../../functions/is-browser.js';
+import { isEditing } from '../../functions/is-editing.js';
+import { isPreviewing } from '../../functions/is-previewing.js';
+import { previewingModelName } from '../../functions/previewing-model-name.js';
+import { track } from '../../functions/track.js';
+import { BuilderContent } from '../../types/builder-content.js';
+import { Dictionary, Nullable } from '../../types/typescript.js';
 import RenderBlocks from '../render-blocks.lite';
 import RenderContentStyles from './components/render-styles.lite';
 import {

@@ -16,7 +16,7 @@ import '../blocks/page/dynamic-columns/dynamic-columns.builder'
 
 builder.init(process.env.BUILDER_PUBLIC_KEY!)
 
-Builder.set({ customInsertMenu: true })
+Builder.register('editor.settings', { customInsertMenu: true })
 
 if (Builder.isBrowser) {
   if (builder.editingModel === 'header') {
