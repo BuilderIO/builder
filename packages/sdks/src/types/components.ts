@@ -114,6 +114,10 @@ export interface ComponentInfo {
    */
   models?: string[];
 
+  // TO-DO specific to new SDKs?
+  // not used in visual editor. Can likely be removed
+  builtIn: true;
+
   /**
    * Specify restrictions direct children must match
    */

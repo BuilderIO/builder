@@ -1,5 +1,8 @@
+import { DEFAULT_REGISTERED_COMPONENTS } from '../../constants/builder-registered-components.js';
 import { TARGET } from '../../constants/target.js';
-import BuilderContext from '../../context/builder.context.lite';
+import BuilderContext, {
+  RegisteredComponent,
+} from '../../context/builder.context.lite';
 import { evaluate } from '../../functions/evaluate.js';
 import {
   convertSearchParamsToQueryObject,
@@ -11,6 +14,7 @@ import { isBrowser } from '../../functions/is-browser.js';
 import { isEditing } from '../../functions/is-editing.js';
 import { isPreviewing } from '../../functions/is-previewing.js';
 import { previewingModelName } from '../../functions/previewing-model-name.js';
+import { createRegisterComponentMessage } from '../../functions/register-component.js';
 import { track } from '../../functions/track.js';
 import { BuilderContent } from '../../types/builder-content.js';
 import { Dictionary, Nullable } from '../../types/typescript.js';
@@ -31,6 +35,7 @@ export type RenderContentProps = {
   data?: { [key: string]: any };
   context?: { [key: string]: any };
   apiKey: string;
+  customComponents: Record<string, RegisteredComponent>;
 };
 
 interface BuilderComponentStateChange {
@@ -71,6 +76,13 @@ export default function RenderContent(props: RenderContentProps) {
     },
     get context() {
       return {} as { [index: string]: any };
+    },
+
+    get allRegisteredComponents() {
+      return {
+        ...DEFAULT_REGISTERED_COMPONENTS,
+        ...props.customComponents,
+      };
     },
 
     processMessage(event: MessageEvent): void {
@@ -194,11 +206,20 @@ export default function RenderContent(props: RenderContentProps) {
     get apiKey() {
       return props.apiKey;
     },
+    get registeredComponents() {
+      return state.allRegisteredComponents;
+    },
   });
 
   onMount(() => {
     if (isBrowser()) {
       if (isEditing()) {
+        Object.values(state.allRegisteredComponents).forEach(
+          (registeredComponent) => {
+            const message = createRegisterComponentMessage(registeredComponent);
+            window.parent?.postMessage(message, '*');
+          }
+        );
         window.addEventListener('message', state.processMessage);
         window.addEventListener(
           'builder:component:stateChangeListenerActivated',

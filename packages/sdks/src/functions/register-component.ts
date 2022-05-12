@@ -1,12 +1,14 @@
+import { RegisteredComponent } from '../context/builder.context.lite.js';
+import type { ComponentInfo, Input } from '../types/components.js';
 import { isBrowser } from './is-browser.js';
 
-// TODO
-export type ComponentInfo = any;
-
-export const components: Record<string, any> = {};
+export const components: Record<
+  string,
+  { component: any; info?: ComponentInfo }
+> = {};
 
 // Compile only facade
-export function registerComponent(component: any, info?: ComponentInfo): void {
+export function registerComponent(component: any, info: ComponentInfo): void {
   components[info.name] = { component, info };
 
   if (isBrowser()) {
@@ -23,19 +25,26 @@ export function registerComponent(component: any, info?: ComponentInfo): void {
   return component;
 }
 
+export const createRegisterComponentMessage = ({
+  info,
+}: RegisteredComponent) => ({
+  type: 'builder.registerComponent',
+  data: prepareComponentInfoToSend(info),
+});
+
 function prepareComponentInfoToSend(info: ComponentInfo) {
   return {
     ...info,
     ...(info.inputs && {
-      inputs: info.inputs.map((input: any) => {
+      inputs: info.inputs.map((input) => {
         // TODO: do for nexted fields too
         // TODO: probably just convert all functions, not just
         // TODO: put this in input hooks: { onChange: ..., showIf: ... }
-        const keysToConvertFnToString = ['onChange', 'showIf'];
+        const keysToConvertFnToString = ['onChange', 'showIf'] as const;
 
         for (const key of keysToConvertFnToString) {
-          if (input[key] && typeof input[key] === 'function') {
-            const fn = input[key];
+          const fn = input[key];
+          if (fn && typeof fn === 'function') {
             input = {
               ...input,
               [key]: `return (${fn.toString()}).apply(this, arguments)`,

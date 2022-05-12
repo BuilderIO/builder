@@ -34,14 +34,16 @@ export default function RenderBlock(props: RenderBlockProps) {
       if (!componentName) {
         return null;
       }
-      const ref = components[componentName];
-      if (componentName && !ref) {
+      const ref = builderContext.registeredComponents[componentName];
+      if (!ref) {
         // TODO: Public doc page with more info about this message
         console.warn(`
           Could not find a registered component named "${componentName}". 
           If you registered it, is the file that registered it imported by the file that needs to render it?`);
+        return undefined;
+      } else {
+        return ref;
       }
-      return ref;
     },
     get componentInfo() {
       return state.component?.info;
