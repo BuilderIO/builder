@@ -1,6 +1,7 @@
 import { Show, onMount } from "solid-js";
 import { Dynamic } from "solid-js/web";
 import { createMutable } from "solid-js/store";
+import { DEFAULT_REGISTERED_COMPONENTS } from "../../constants/builder-registered-components.js";
 import { TARGET } from "../../constants/target.js";
 import BuilderContext from "../../context/builder.context";
 import { evaluate } from "../../functions/evaluate.js";
@@ -11,6 +12,7 @@ import { isBrowser } from "../../functions/is-browser.js";
 import { isEditing } from "../../functions/is-editing.js";
 import { isPreviewing } from "../../functions/is-previewing.js";
 import { previewingModelName } from "../../functions/previewing-model-name.js";
+import { createRegisterComponentMessage } from "../../functions/register-component.js";
 import { track } from "../../functions/track.js";
 import RenderBlocks from "../render-blocks";
 import RenderContentStyles from "./components/render-styles";
@@ -41,6 +43,12 @@ function RenderContent(props) {
 
     get context() {
       return {};
+    },
+
+    get allRegisteredComponents() {
+      return { ...DEFAULT_REGISTERED_COMPONENTS,
+        ...props.customComponents
+      };
     },
 
     processMessage(event) {
@@ -142,6 +150,10 @@ function RenderContent(props) {
   onMount(() => {
     if (isBrowser()) {
       if (isEditing()) {
+        Object.values(state.allRegisteredComponents).forEach(registeredComponent => {
+          const message = createRegisterComponentMessage(registeredComponent);
+          window.parent?.postMessage(message, "*");
+        });
         window.addEventListener("message", state.processMessage);
         window.addEventListener("builder:component:stateChangeListenerActivated", state.emitStateUpdate);
       }
@@ -192,6 +204,10 @@ function RenderContent(props) {
 
     get apiKey() {
       return props.apiKey;
+    },
+
+    get registeredComponents() {
+      return state.allRegisteredComponents;
     }
 
   }} component={BuilderContext.Provider}>

@@ -1,6 +1,7 @@
 import * as React from "react";
 import { View, StyleSheet, Image, Text } from "react-native";
 import { useState, useContext, useEffect } from "react";
+import { DEFAULT_REGISTERED_COMPONENTS } from "../../constants/builder-registered-components.js";
 import { TARGET } from "../../constants/target.js";
 import BuilderContext from "../../context/builder.context";
 import { evaluate } from "../../functions/evaluate.js";
@@ -14,6 +15,7 @@ import { isBrowser } from "../../functions/is-browser.js";
 import { isEditing } from "../../functions/is-editing.js";
 import { isPreviewing } from "../../functions/is-previewing.js";
 import { previewingModelName } from "../../functions/previewing-model-name.js";
+import { createRegisterComponentMessage } from "../../functions/register-component.js";
 import { track } from "../../functions/track.js";
 import RenderBlocks from "../render-blocks.lite";
 import RenderContentStyles from "./components/render-styles.lite";
@@ -40,6 +42,10 @@ export default function RenderContent(props) {
 
   function context() {
     return {};
+  }
+
+  function allRegisteredComponents() {
+    return { ...DEFAULT_REGISTERED_COMPONENTS, ...props.customComponents };
   }
 
   function processMessage(event) {
@@ -139,6 +145,12 @@ export default function RenderContent(props) {
   useEffect(() => {
     if (isBrowser()) {
       if (isEditing()) {
+        Object.values(allRegisteredComponents()).forEach(
+          (registeredComponent) => {
+            const message = createRegisterComponentMessage(registeredComponent);
+            window.parent?.postMessage(message, "*");
+          }
+        );
         window.addEventListener("message", processMessage);
         window.addEventListener(
           "builder:component:stateChangeListenerActivated",
@@ -218,6 +230,10 @@ export default function RenderContent(props) {
 
         get apiKey() {
           return props.apiKey;
+        },
+
+        get registeredComponents() {
+          return allRegisteredComponents();
         },
       }}
     >

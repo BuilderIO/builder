@@ -18,6 +18,7 @@
   </div>
 </template>
 <script>
+import { DEFAULT_REGISTERED_COMPONENTS } from "../../constants/builder-registered-components.js";
 import { TARGET } from "../../constants/target.js";
 import BuilderContext from "../../context/builder.context";
 import { evaluate } from "../../functions/evaluate.js";
@@ -31,6 +32,7 @@ import { isBrowser } from "../../functions/is-browser.js";
 import { isEditing } from "../../functions/is-editing.js";
 import { isPreviewing } from "../../functions/is-previewing.js";
 import { previewingModelName } from "../../functions/previewing-model-name.js";
+import { createRegisterComponentMessage } from "../../functions/register-component.js";
 import { track } from "../../functions/track.js";
 import RenderBlocks from "../render-blocks";
 import RenderContentStyles from "./components/render-styles";
@@ -41,7 +43,7 @@ export default {
     "render-content-styles": async () => RenderContentStyles,
     "render-blocks": async () => RenderBlocks,
   },
-  props: ["content", "data", "model", "apiKey"],
+  props: ["content", "data", "customComponents", "model", "apiKey"],
 
   data: () => ({
     overrideContent: null,
@@ -67,6 +69,9 @@ export default {
         get apiKey() {
           return _this.apiKey;
         },
+        get registeredComponents() {
+          return _this.allRegisteredComponents;
+        },
       },
     };
   },
@@ -74,6 +79,12 @@ export default {
   mounted() {
     if (isBrowser()) {
       if (isEditing()) {
+        Object.values(this.allRegisteredComponents).forEach(
+          (registeredComponent) => {
+            const message = createRegisterComponentMessage(registeredComponent);
+            window.parent?.postMessage(message, "*");
+          }
+        );
         window.addEventListener("message", this.processMessage);
         window.addEventListener(
           "builder:component:stateChangeListenerActivated",
@@ -157,6 +168,9 @@ export default {
     },
     context() {
       return {};
+    },
+    allRegisteredComponents() {
+      return { ...DEFAULT_REGISTERED_COMPONENTS, ...this.customComponents };
     },
     httpReqsData() {
       return {};
