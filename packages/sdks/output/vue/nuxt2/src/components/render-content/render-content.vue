@@ -18,7 +18,7 @@
   </div>
 </template>
 <script>
-import { DEFAULT_REGISTERED_COMPONENTS } from "../../constants/builder-registered-components.js";
+import { getDefaultRegisteredComponents } from "../../constants/builder-registered-components.js";
 import { TARGET } from "../../constants/target.js";
 import BuilderContext from "../../context/builder.context";
 import { evaluate } from "../../functions/evaluate.js";
@@ -32,7 +32,10 @@ import { isBrowser } from "../../functions/is-browser.js";
 import { isEditing } from "../../functions/is-editing.js";
 import { isPreviewing } from "../../functions/is-previewing.js";
 import { previewingModelName } from "../../functions/previewing-model-name.js";
-import { createRegisterComponentMessage } from "../../functions/register-component.js";
+import {
+  components,
+  createRegisterComponentMessage,
+} from "../../functions/register-component.js";
 import { track } from "../../functions/track.js";
 import RenderBlocks from "../render-blocks";
 import RenderContentStyles from "./components/render-styles";
@@ -170,7 +173,20 @@ export default {
       return {};
     },
     allRegisteredComponents() {
-      return { ...DEFAULT_REGISTERED_COMPONENTS, ...this.customComponents };
+      const allComponentsArray = [
+        ...getDefaultRegisteredComponents(), // While this `components` object is deprecated, we must maintain support for it.
+        // Since users are able to override our default components, we need to make sure that we do not break such
+        // existing usage.
+        // This is why we spread `components` after the default Builder.io components, but before the `this.customComponents`,
+        // which is the new standard way of providing custom components, and must therefore take precedence.
+        ...components,
+        ...this.customComponents,
+      ];
+      const allComponents = allComponentsArray.reduce(
+        (acc, curr) => ({ ...acc, [curr.info.name]: curr }),
+        {}
+      );
+      return allComponents;
     },
     httpReqsData() {
       return {};
