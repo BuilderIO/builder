@@ -1,5 +1,6 @@
 import { RegisteredComponent } from '../context/builder.context.lite.js';
 import type { ComponentInfo } from '../types/components.js';
+import { fastClone } from './fast-clone.js';
 
 /**
  * @deprecated.  Use the `customComponents` prop in RenderContent instead to provide your custom components to the builder SDK.
@@ -23,7 +24,7 @@ export const createRegisterComponentMessage = ({
   info,
 }: RegisteredComponent) => ({
   type: 'builder.registerComponent',
-  data: prepareComponentInfoToSend(info),
+  data: prepareComponentInfoToSend(fastClone(info)),
 });
 
 function prepareComponentInfoToSend(info: ComponentInfo) {
