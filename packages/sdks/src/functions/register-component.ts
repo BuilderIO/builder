@@ -13,7 +13,7 @@ export function registerComponent(component: any, info: ComponentInfo): void {
   components.push({ component, info });
 
   console.warn(
-    `⚠️ registerComponent is deprecated. Use the \`customComponents\` prop in RenderContent instead to provide your custom components to the builder SDK.`
+    'registerComponent is deprecated. Use the `customComponents` prop in RenderContent instead to provide your custom components to the builder SDK.'
   );
 
   return component;
