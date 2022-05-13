@@ -1,6 +1,4 @@
-import { componentInfo } from './component-info.js';
 import { onMount, useRef, useState } from '@builder.io/mitosis';
-import { useMetadata } from '@builder.io/mitosis';
 
 export interface CustomCodeProps {
   code: string;

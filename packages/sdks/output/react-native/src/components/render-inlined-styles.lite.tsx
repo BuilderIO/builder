@@ -19,7 +19,7 @@ export default function RenderInlinedStyles(props) {
     <>
       {TARGET === "svelte" ? (
         <>
-          <></>
+          <View dangerouslySetInnerHTML={{ __html: "injectedStyleScript()" }} />
         </>
       ) : (
         <TagNameRef>

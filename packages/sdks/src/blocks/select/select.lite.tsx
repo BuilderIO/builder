@@ -1,7 +1,5 @@
 import { isEditing } from '../../functions/is-editing.js';
-import { componentInfo } from './component-info.js';
 import { For } from '@builder.io/mitosis';
-import { useMetadata } from '@builder.io/mitosis';
 
 export interface FormSelectProps {
   options?: { name?: string; value: string }[];

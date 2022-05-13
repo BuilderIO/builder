@@ -38,6 +38,8 @@ return 'sty' + 'le';
 {#if TARGET === 'svelte' }
 
     
+
+    
 {@html injectedStyleScript()}
 
   

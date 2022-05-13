@@ -6,7 +6,7 @@ import { createEffect } from 'solid-js';
 import { createMutable } from 'solid-js/store';
 
 // Enter your key here!
-const apiKey = 'bff7106486204af59835fddec84f708f';
+const apiKey = 'f1a790f8c3204b3b8c5c1795aeac4660'; // ggignore
 
 function MyFunComponent({ text }) {
   const state = createMutable({
@@ -56,7 +56,7 @@ function App() {
         <img src={logo} class={styles.logo} alt="logo" />
       </header>
       <div>
-        <RenderContent model="page" content={state.content} />
+        {state.content && <RenderContent model="page" content={state.content} apiKey={apiKey} />}
       </div>
     </div>
   );

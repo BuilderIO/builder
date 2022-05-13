@@ -7,4 +7,4 @@ export { default as Symbol } from '../blocks/symbol/index.js';
 export { default as Button } from '../blocks/button/index.js';
 export { default as Section } from '../blocks/section/index.js';
 export { default as Fragment } from '../blocks/fragment/index.js';
-export { default as RenderContent } from '../components/render-content/render-content.lite';
+export { default as RenderContent } from '../components/render-content/index.js';
