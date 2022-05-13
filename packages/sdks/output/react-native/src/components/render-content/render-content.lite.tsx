@@ -55,7 +55,7 @@ export default function RenderContent(props) {
       // This is why we spread `components` after the default Builder.io components, but before the `props.customComponents`,
       // which is the new standard way of providing custom components, and must therefore take precedence.
       ...components,
-      ...props.customComponents,
+      ...(props.customComponents || []),
     ];
     const allComponents = allComponentsArray.reduce(
       (acc, curr) => ({ ...acc, [curr.info.name]: curr }),
