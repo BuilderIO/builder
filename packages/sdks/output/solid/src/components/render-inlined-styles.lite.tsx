@@ -17,7 +17,10 @@ function RenderInlinedStyles(props) {
   });
 
   return (
-    <Show when={TARGET === "svelte"}>
+    <Show
+      fallback={<Dynamic component={state.tagName}>{props.styles}</Dynamic>}
+      when={TARGET === "svelte"}
+    >
       <div innerHTML={state.injectedStyleScript}></div>
     </Show>
   );
