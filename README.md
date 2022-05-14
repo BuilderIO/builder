@@ -17,27 +17,9 @@
 </p>
 <br />
 
-<table style="width:100%;">
-  <tr>
-    <td align="center" width="50%">Integrate with your site</td>
-    <td align="center">Using the visual editor</td>
-  </tr>
-  <tr>
-    <td>
-        <a href="https://www.youtube.com/watch?v=FfrrigefdiY">
-    <img width="700" alt="How Builder.io works" src="https://user-images.githubusercontent.com/844291/168448879-12c988c5-343d-41ce-b1ba-c1d1c7eef036.gif" />
-  </a>
-    </td>
-    <td>
-      <a href="https://www.builder.io">
-        <img width="700" alt="Using the visual editor" src="https://user-images.githubusercontent.com/844291/168449314-8ec6f1b0-0ddd-4491-8edb-5fbb96774a69.gif" />
-      </a>
-    </td>
-  </tr>
-</table>
-    
-    
-
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/844291/168449314-8ec6f1b0-0ddd-4491-8edb-5fbb96774a69.gif" alt="Editor example" />
+</p>
 
 <h4 align="center">
   Quick start:
