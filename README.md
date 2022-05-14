@@ -18,9 +18,10 @@
 <br />
 
 <p align="center">
-  <img src="https://imgur.com/HjBWIbv.gif" alt="Editor example" />
+  <a href="https://www.youtube.com/watch?v=FfrrigefdiY">
+    <img width="700" alt="How Builder.io works" src="https://user-images.githubusercontent.com/844291/168448879-12c988c5-343d-41ce-b1ba-c1d1c7eef036.gif" />
+  </a>
 </p>
-
 <br />
 
 
@@ -156,7 +157,12 @@ npm init builder.io@latest
 - Integrate the [Builder API or SDK](https://www.builder.io/c/docs/getting-started) to your site or app
 - Create a free account on [builder.io](https://builder.io) and drag and drop to create and publish pages and content
 
-<img alt="how builder works diagram" src="https://user-images.githubusercontent.com/844291/165143897-d6461b21-f065-456a-8a6d-1e61115e2901.jpeg" width="500">
+
+<a href="https://www.youtube.com/watch?v=FfrrigefdiY">
+  <img width="983" alt="Thumbnail to go to a video on how Builder works" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F5a98332583ac48db9af376b11a9b3d3c">
+</a>
+ 
+Learn more about <a href="https://www.builder.io/c/docs/how-builder-works-technical">how builder works here</a>
 
 
 ## How is the content structured?
@@ -169,7 +175,7 @@ In Builder, content is structured in [models](https://www.builder.io/c/docs/guid
 
 <img src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fe809eac6ae7140beab81ce4c3ee75e20" />
 
-Read more about how builder works [here](https://www.builder.io/c/docs/how-builder-works)
+Read more about how builder works [here](https://www.builder.io/c/docs/how-builder-works-technical)
 
 See [here](#structuring-your-site) for examples on how to structure a site with Builder
 
