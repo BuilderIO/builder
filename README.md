@@ -6,7 +6,7 @@
   Drag and drop page builder and CMS for React, Vue, Angular, and more
 </h3>
 <p align="center">
-  Integrate with any site or app. Use your code components. High speed, full control, no compromises
+  Integrate with any site or app. Drag and drop with the components already in your codebase. High speed, full control, no compromises
 </p>
 
 <p align="center">
@@ -17,12 +17,26 @@
 </p>
 <br />
 
-<p align="center">
-  <a href="https://www.youtube.com/watch?v=FfrrigefdiY">
+<table style="width:100%;">
+  <tr>
+    <td align="center" width="50%">Integrate with your site</td>
+    <td align="center">Using the visual editor</td>
+  </tr>
+  <tr>
+    <td>
+        <a href="https://www.youtube.com/watch?v=FfrrigefdiY">
     <img width="700" alt="How Builder.io works" src="https://user-images.githubusercontent.com/844291/168448879-12c988c5-343d-41ce-b1ba-c1d1c7eef036.gif" />
   </a>
-</p>
-<br />
+    </td>
+    <td>
+      <a href="https://www.builder.io">
+        <img width="700" alt="Using the visual editor" src="https://user-images.githubusercontent.com/844291/168449314-8ec6f1b0-0ddd-4491-8edb-5fbb96774a69.gif" />
+      </a>
+    </td>
+  </tr>
+</table>
+    
+    
 
 
 <h4 align="center">
@@ -105,15 +119,18 @@ import { BuilderComponent, builder } from '@builder.io/react'
 &nbsp;
 builder.init('YOUR_KEY')
 &nbsp;
-export let BuilderPage = () => {
-&nbsp;&nbsp;const [pageJson, setPage] = useState(null)
+export const getStaticProps = async () => ({ 
+&nbsp;&nbsp;props: {
+&nbsp;&nbsp;&nbsp;&nbsp;builderJson: await builder.get('page', { url: '/' }).promise()
+&nbsp;&nbsp;}
+})
 &nbsp;
-&nbsp;&nbsp;useEffect(() => {
-&nbsp;&nbsp;&nbsp;&nbsp;builder.get('page', { url: '/' })
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.promise().then(setPage)
-&nbsp;&nbsp;}, [])
-&nbsp;
-&nbsp;&nbsp;return &lt;BuilderComponent model="page" content={pageJson} />
+export default function BuilderPage({ builderJson }) => {
+&nbsp;&nbsp;return &lt;>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;YourHeader />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;BuilderComponent model="page" content={pageJson} />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;YourFooter />
+&nbsp;&nbsp;&lt;/>
 }
 
 </pre>
