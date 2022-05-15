@@ -54,6 +54,8 @@ const content = await builder
 
 The builder content is simply json that you pass to a `<BuilderComponent />` to render. [Learn more about it here](https://www.builder.io/c/docs/how-builder-works-technical)
 
+You can view all of the options for `builder.get` for fetching content [in our full reference here](../core/docs/interfaces/GetContentOptions.md)
+
 For example, with Next.js, to render Builder as your homepage:
 
 ```tsx
@@ -102,6 +104,8 @@ Builder.registerComponent(MyHero, {
 Learn more about [registering components in Builder](https://www.builder.io/c/docs/custom-react-components)
 
 ### BuilderComponent
+
+You can find the full [reference docs for the BuilderComponent props here](docs/interfaces/BuilderComponentProps.md)
 
 ```tsx
 const MODEL_NAME = 'page';
