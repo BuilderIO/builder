@@ -200,58 +200,58 @@ export interface UserAttributes {
    * URL path of the current user.
    */
   urlPath?: string;
-  /** 
-   * @deprecated 
+  /**
+   * @deprecated
    * @hidden
    */
   queryString?: string | ParamsMap;
-  /** 
-   * @deprecated 
+  /**
+   * @deprecated
    * @hidden
    */
   device?: 'mobile' | 'tablet' | 'desktop';
-  /** 
-   * @deprecated 
+  /**
+   * @deprecated
    * @hidden
    */
   location?: any;
-  /** 
-   * @deprecated 
+  /**
+   * @deprecated
    * @hidden
    */
   userAgent?: string;
-  /** 
-   * @deprecated 
+  /**
+   * @deprecated
    * @hidden
    */
   referrer?: string;
-  /** 
-   * @deprecated 
+  /**
+   * @deprecated
    * @hidden
    */
   entryMedium?: string;
-  /** 
-   * @deprecated 
+  /**
+   * @deprecated
    * @hidden
    */
   language?: string;
-  /** 
-   * @deprecated 
+  /**
+   * @deprecated
    * @hidden
    */
   browser?: string;
-  /** 
-   * @deprecated 
+  /**
+   * @deprecated
    * @hidden
    */
   cookie?: string;
-  /** 
-   * @deprecated 
+  /**
+   * @deprecated
    * @hidden
    */
   newVisitor?: boolean;
-  /** 
-   * @deprecated 
+  /**
+   * @deprecated
    * @hidden
    */
   operatingSystem?: string;
@@ -378,8 +378,8 @@ export interface GetContentOptions {
    * Affects HTML generation for specific targets.
    */
   format?: 'amp' | 'email' | 'html' | 'react' | 'solid';
-  /** 
-   * @deprecated 
+  /**
+   * @deprecated
    * @hidden
    */
   noWrap?: true;
