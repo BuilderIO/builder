@@ -35,10 +35,10 @@ npm init builder.io@latest
 </h5>
 
 <p align="center" valign="middle">
-  &nbsp; <a title="REST API" target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=rest">
+  &nbsp; <a title="REST API" target="_blank" href="https://www.builder.io/c/docs/developers?codeFramework=rest">
     <img alt="REST API" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F7c16907175964f5dada038f6cceef77b" />
   </a>&nbsp;
-  &nbsp; <a title="GraphQL"  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=graphql">
+  &nbsp; <a title="GraphQL"  target="_blank" href="https://www.builder.io/c/docs/developers?codeFramework=graphql">
     <img alt="GraphQL" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fb739b409e5b94937b5b11e3cf62cfae4" />
   </a>&nbsp;
   &nbsp; <a title="Shopify"  target="_blank" href="https://apps.shopify.com/builder-2">
@@ -47,25 +47,25 @@ npm init builder.io@latest
   &nbsp;<a title="Figma" target="_blank" href="https://github.com/builderio/html-to-figma">
     <img width="31" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ffb77e93c28e044178e4694cc939bf4cf" />
   </a>&nbsp;&nbsp;
-  &nbsp; <a title="React"  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=react">
+  &nbsp; <a title="React"  target="_blank" href="https://www.builder.io/c/docs/developers?codeFramework=react">
     <img alt="React" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F2f3409f4f8b64d5f880195061aa481ab" />
   </a>&nbsp;
-  &nbsp; <a title="Next.js"  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=next">
+  &nbsp; <a title="Next.js"  target="_blank" href="https://www.builder.io/c/docs/developers?codeFramework=next">
     <img alt="Next.js9" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fc6a3c58c0bde4f43b1fd6a350f491bdf" />
   </a>&nbsp;
-  &nbsp; <a title="Gatsby"  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=gatsby">
+  &nbsp; <a title="Gatsby"  target="_blank" href="https://www.builder.io/c/docs/developers?codeFramework=gatsby">
     <img alt="Gatsby" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F45e59fc603574e708dcb79e45ef72d02" />
   </a>&nbsp;
-  &nbsp; <a title="Vue"  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=vue">
+  &nbsp; <a title="Vue"  target="_blank" href="https://www.builder.io/c/docs/developers?codeFramework=vue">
     <img alt="Vue" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F7cc6d5b6fc4045d5a9f9b12ddcc65407" />
   </a>&nbsp;
-  &nbsp; <a title="Nuxt"  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=nuxt">
+  &nbsp; <a title="Nuxt"  target="_blank" href="https://www.builder.io/c/docs/developers?codeFramework=nuxt">
     <img alt="Nuxt" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F73f47f47e0cc46cd95dbf72c26728858" />
   </a>&nbsp;
-  &nbsp; <a title="Angular"  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=angular">
+  &nbsp; <a title="Angular"  target="_blank" href="https://www.builder.io/c/docs/developers?codeFramework=angular">
     <img alt="Angular" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fa91e9e437203442d8ed481eef94a99dc" />
   </a>&nbsp;
-  &nbsp; <a title="Webcomponents"  target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=webcomponents">
+  &nbsp; <a title="Webcomponents"  target="_blank" href="https://www.builder.io/c/docs/developers?codeFramework=webcomponents">
     <img alt="Webcomponents" width="52" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F5613cb3536be4c108b32c34bf06f1c59" />
   </a>&nbsp;
 </p>
@@ -153,7 +153,7 @@ npm init builder.io@latest
 
 ## How does it work?
 
-- Integrate the [Builder API or SDK](https://www.builder.io/c/docs/getting-started) to your site or app
+- Integrate the [Builder API or SDK](https://www.builder.io/c/docs/developers) to your site or app
 - Create a free account on [builder.io](https://builder.io) and drag and drop to create and publish pages and content
 
 
@@ -166,7 +166,7 @@ Learn more about <a href="https://www.builder.io/c/docs/how-builder-works-techni
 
 ## How is the content structured?
 
-In Builder, content is structured in [models](https://www.builder.io/c/docs/guides/getting-started-with-models), and customized with [custom fields](https://www.builder.io/c/docs/custom-fields) and [targeting](https://www.builder.io/c/docs/guides/targeting-and-scheduling)
+In Builder, content is structured in [models](https://www.builder.io/c/docs/guides/developers-with-models), and customized with [custom fields](https://www.builder.io/c/docs/custom-fields) and [targeting](https://www.builder.io/c/docs/guides/targeting-and-scheduling)
 
 - **Builder pages** - full drag and drop control between your site's header and footer. [Try it out](https://builder.io/fiddle/fb98adf93ad5467180329fdaa9711f27)
 - **Builder sections** - make a part of a page visually editable in Builder and use our [targeting and scheduling](https://www.builder.io/c/docs/guides/targeting-and-scheduling) to decide who sees what. [Try it out](https://builder.io/fiddle/81b6a689f6c74c82bbd982497cf08e34)
@@ -180,7 +180,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
 
 ## Featured Integrations
 
-<a target="_blank" href="https://www.builder.io/c/docs/getting-started">
+<a target="_blank" href="https://www.builder.io/c/docs/developers">
   <img src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ff956ac27f99e47cfa81fbba8213da1e3" />
 </a>
 
@@ -188,7 +188,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
   <tbody>
     <tr>
       <td align="center" valign="middle">
-        <a target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=rest">
+        <a target="_blank" href="https://www.builder.io/c/docs/developers?codeFramework=rest">
           <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" width="500" height="1" />
           <img width="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F7c16907175964f5dada038f6cceef77b" />
           <p align="center">
@@ -215,7 +215,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
         </a>
       </td>
       <td align="center" valign="middle">
-        <a target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=react">
+        <a target="_blank" href="https://www.builder.io/c/docs/developers?codeFramework=react">
           <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" width="500" height="1" />
           <img width="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F2f3409f4f8b64d5f880195061aa481ab" />
           <p align="center">
@@ -224,7 +224,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
         </a>
       </td>
       <td align="center" valign="middle">
-        <a target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=next">
+        <a target="_blank" href="https://www.builder.io/c/docs/developers?codeFramework=next">
           <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" width="500" height="1" />
           <img width="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fc6a3c58c0bde4f43b1fd6a350f491bdf" />
           <p align="center">
@@ -235,7 +235,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
     </tr>
     <tr>
       <td align="center" valign="middle">
-        <a target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=gatsby">
+        <a target="_blank" href="https://www.builder.io/c/docs/developers?codeFramework=gatsby">
           <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" width="500" height="1" />
           <img width="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F45e59fc603574e708dcb79e45ef72d02" />
           <p align="center">
@@ -244,7 +244,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
         </a>
       </td>
       <td align="center" valign="middle">
-        <a target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=vue">
+        <a target="_blank" href="https://www.builder.io/c/docs/developers?codeFramework=vue">
           <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" width="500" height="1" />
           <img width="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F7cc6d5b6fc4045d5a9f9b12ddcc65407" />
           <p align="center">
@@ -253,7 +253,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
         </a>
       </td>
       <td align="center" valign="middle">
-        <a target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=nuxt">
+        <a target="_blank" href="https://www.builder.io/c/docs/developers?codeFramework=nuxt">
           <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" width="500" height="1" />
           <img width="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F73f47f47e0cc46cd95dbf72c26728858" />
           <p align="center">
@@ -262,7 +262,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
         </a>
       </td>
       <td align="center" valign="middle">
-        <a target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=angular">
+        <a target="_blank" href="https://www.builder.io/c/docs/developers?codeFramework=angular">
           <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" width="500" height="1" />
           <img width="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fa91e9e437203442d8ed481eef94a99dc" />
           <p align="center">
@@ -271,7 +271,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
         </a>
       </td>
       <td align="center" valign="middle">
-        <a target="_blank" href="https://www.builder.io/c/docs/getting-started?codeFramework=webcomponents">
+        <a target="_blank" href="https://www.builder.io/c/docs/developers?codeFramework=webcomponents">
           <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png" width="500" height="1" />
           <img width="50" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F5613cb3536be4c108b32c34bf06f1c59" />
           <p align="center">
@@ -285,7 +285,7 @@ See [here](#structuring-your-site) for examples on how to structure a site with 
 
 <br />
 
-Don't see an integration you're looking for? Our [HTML API](https://www.builder.io/c/docs/getting-started), [Content APIs](https://www.builder.io/c/docs/query-api), and [GraphQL APIs](https://www.builder.io/c/docs/graphql-api) works for all tech stacks and frameworks.
+Don't see an integration you're looking for? Our [HTML API](https://www.builder.io/c/docs/developers), [Content APIs](https://www.builder.io/c/docs/query-api), and [GraphQL APIs](https://www.builder.io/c/docs/graphql-api) works for all tech stacks and frameworks.
 
 ## What's in this repository?
 
@@ -313,7 +313,7 @@ Here are some examples we recommend for how to structure various pages on your s
 
 Builder.io gives you a ton more power and control than just page building. Check our guides on
 
-- [Custom models](https://builder.io/c/docs/guides/getting-started-with-models)
+- [Custom models](https://builder.io/c/docs/guides/developers-with-models)
 - [Custom design systems in Builder.io](https://github.com/BuilderIO/builder/tree/master/examples/react-design-system)
 - [SEO optimizing Builder.io content](https://builder.io/c/docs/seo)
 - [Custom React components in the visual editor](https://www.builder.io/c/docs/custom-react-components)
