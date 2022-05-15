@@ -39,4 +39,4 @@ builder
 builder.canTrack = false;
 ```
 
-If you have questions or comments, don't hesitate to reach out by creating an issue or emailing steve@builder.io
+If you have questions or comments, don't hesitate to reach out by creating an issue or emailing support@builder.io
