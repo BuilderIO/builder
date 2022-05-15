@@ -1,3 +1,9 @@
 /index.js
 node_modules
 *.log
+
+docs/README.md
+docs/modules.md
+docs/.nojekyll
+docs/classes
+docs/interfaces/Action.md

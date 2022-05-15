@@ -1,5 +1,5 @@
 module.exports = {
-  entryPoints: ["./src/builder-react.ts"],
+  entryPoints: ["./src/components/builder-component.component.tsx"],
   out: "docs",
   exclude: ['**/*.test.tsx?'],
 }
