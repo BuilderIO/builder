@@ -107,10 +107,10 @@ export const getStaticProps = async () => ({
 &nbsp;&nbsp;}
 })
 &nbsp;
-export default function BuilderPage({ builderJson }) => {
+export function BuilderPage({ builderJson }) => {
 &nbsp;&nbsp;return &lt;>
 &nbsp;&nbsp;&nbsp;&nbsp;&lt;YourHeader />
-&nbsp;&nbsp;&nbsp;&nbsp;&lt;BuilderComponent model="page" content={pageJson} />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;BuilderComponent model="page" content={builderJson} />
 &nbsp;&nbsp;&nbsp;&nbsp;&lt;YourFooter />
 &nbsp;&nbsp;&lt;/>
 }
