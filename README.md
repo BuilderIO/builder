@@ -167,7 +167,9 @@ See our full [getting started docs](https://www.builder.io/c/docs/developers), o
       </a>
     </td>
     <td align="center">
-              <img alt="CTA to integrate section buliding" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F9db93cd1a29443fca7b67c1f9f458356" />
+      <a href="https://www.builder.io/c/docs/integrate-section-building">
+        <img alt="CTA to integrate section buliding" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F9db93cd1a29443fca7b67c1f9f458356" />
+      </a>
     </td>    
   </tr>
 </table>
