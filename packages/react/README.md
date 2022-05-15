@@ -47,9 +47,38 @@ const content = await builder
     }
   })
   .promise()
+  
+// Later, pass the fetched content to the BuilderComponent
+<BuilderComponent model={MODEL_NAME} content={content} />
 ```
 
 The builder content is simply json that you pass to a `<BuilderComponent />` to render. [Learn more about it here](https://www.builder.io/c/docs/how-builder-works-technical)
+
+For example, with Next.js, to render Builder as your homepage:
+
+```tsx
+export const getStaticProps = async () => {
+  return {
+    props: {
+      builderContent: await builder.get('page', {
+        userAttributes: {
+          urlPath: '/' // Fetch content targeted to the homepage ("/" url)
+        }
+      }).promise()
+    }
+  }
+}
+
+export default function MyHomePage({ builderContent }) {
+  return <>
+    <YourHeader />
+    <BuilderComponent model="page" content={builderContent} />
+    <YourFooter />
+  </>
+}
+```
+
+You can also allow dynamic page building (the ability to create new pages on new URLs dynamically). E.g. see [this guide](https://www.builder.io/c/docs/integrating-builder-pages) on how to do that
 
 ### BuilderComponent
 
@@ -57,7 +86,7 @@ The builder content is simply json that you pass to a `<BuilderComponent />` to 
 const MODEL_NAME = 'page';
 
 // Render 
-<BuilderComponent model={MODEL_NAME} content={content} />
+<BuilderComponent model={MODEL_NAME} content={builderJson} />
 ```
 
 See our guides for [Gatsby](https://github.com/BuilderIO/builder/tree/master/examples/gatsby) and [Next.js](https://github.com/BuilderIO/builder/tree/master/examples/next-js) for guides on using with those frameworks
@@ -76,7 +105,8 @@ All data passed down is available in Builder [actions and bindings](https://www.
   data={{
     products: productsList,
     foo: 'bar'
-  }} >
+  }} 
+  content={builderJson} />
 ```
 
 You can also pass down functions, complex data like custom objects and libraries you can use `context`. Similar to React context, context passes all the way down (e.g. through symbols, etc). This data is not observed for changes and mutations
@@ -87,7 +117,8 @@ You can also pass down functions, complex data like custom objects and libraries
   context={{
     addToCart: () => myService.addToCart(currentProduct),
     lodash: lodash,
-  }} >
+  }} 
+  content={builderJson} />
 ```
 
 Context is available in [actions and bindings](https://www.builder.io/c/docs/guides/custom-code) as `context.*`, such as `context.lodash` or `context.myFunction()` in the example above
@@ -97,37 +128,6 @@ Context is available in [actions and bindings](https://www.builder.io/c/docs/gui
 Everything passed down is available on the `state` object in data and actions - e.g. `state.products[0].name`
 
 See more about using data passed down [here](https://www.builder.io/c/docs/react/custom-actions)
-
-#### Advanced querying
-
-When using custom [models](https://www.builder.io/c/docs/guides/getting-started-with-models) and [fields](https://www.builder.io/c/docs/custom-fields) you can do more advanced filtering of your content with [queries](<(https://www.builder.io/c/docs/custom-fields)>)
-and [targeting](https://www.builder.io/c/docs/guides/targeting-and-scheduling)
-
-```tsx
-import { BuilderComponent, builder } from '@builder.io/react';
-
-builder.setUserAttributes({ isLoggedIn: false })
-
-export default () => <div>
-  <BuilderComponent
-     model="section"
-     options={{ query: { 'data.something.$in': ['value a', 'value b'] } }} />
-  <!-- some other content -->
-</div>
-```
-
-#### contentLoaded
-
-The contentLoaded callback can be useful for when you add [custom fields](https://www.builder.io/c/docs/custom-fields)
-
-```tsx
-<BuilderComponent
-  model="page"
-  contentLoaded={data => {
-    document.title = data.title; // E.g. if your custom field is called `title`
-  }}
-/>
-```
 
 ### Builder
 
