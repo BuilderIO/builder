@@ -145,10 +145,32 @@ Using an API-driven UI allows you to:
 
 Use our CLI to get started with one command:
 
-
 <pre align="center" lang="bash">
 npm init builder.io@latest
 </pre>
+
+Or try out a [quick fiddle online](https://builder.io/fiddle/fb98adf93ad5467180329fdaa9711f27)
+
+## Get Started
+
+See our full [getting started docs](https://www.builder.io/c/docs/developers), or jump right into integration. We generally recommend to start with page buliding as your initial integration:
+
+<table>
+  <tr>
+    <td align="center">Integrate Page Building</td>
+    <td align="center">Integrate Section Building</td>
+  </tr>
+  <tr>
+    <td align="center">
+      <a href="https://www.builder.io/c/docs/integrating-builder-pages">
+        <img alt="CTA to integrate page buliding" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F48bbb0ef5efb4d19a95a3f09f83c98f0" />
+      </a>
+    </td>
+    <td align="center">
+              <img alt="CTA to integrate section buliding" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F9db93cd1a29443fca7b67c1f9f458356" />
+    </td>    
+  </tr>
+</table>
 
 
 ## How does it work?
