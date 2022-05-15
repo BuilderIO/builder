@@ -1,27 +1,29 @@
-[@builder.io/react](../README.md) / [Exports](../modules.md) / BuilderComponentProps
+[@builder.io/react](../README.md) / [Modules](../modules.md) / [builder-component.component](../modules/builder_component_component.md) / BuilderComponentProps
 
 # Interface: BuilderComponentProps
+
+[builder-component.component](../modules/builder_component_component.md).BuilderComponentProps
 
 ## Table of contents
 
 ### Properties
 
-- [apiKey](BuilderComponentProps.md#apikey)
-- [builder](BuilderComponentProps.md#builder)
-- [content](BuilderComponentProps.md#content)
-- [context](BuilderComponentProps.md#context)
-- [data](BuilderComponentProps.md#data)
-- [entry](BuilderComponentProps.md#entry)
-- [model](BuilderComponentProps.md#model)
-- [options](BuilderComponentProps.md#options)
-- [stopClickPropagationWhenEditing](BuilderComponentProps.md#stopclickpropagationwhenediting)
+- [apiKey](builder_component_component.BuilderComponentProps.md#apikey)
+- [builder](builder_component_component.BuilderComponentProps.md#builder)
+- [content](builder_component_component.BuilderComponentProps.md#content)
+- [context](builder_component_component.BuilderComponentProps.md#context)
+- [data](builder_component_component.BuilderComponentProps.md#data)
+- [entry](builder_component_component.BuilderComponentProps.md#entry)
+- [model](builder_component_component.BuilderComponentProps.md#model)
+- [options](builder_component_component.BuilderComponentProps.md#options)
+- [stopClickPropagationWhenEditing](builder_component_component.BuilderComponentProps.md#stopclickpropagationwhenediting)
 
 ### Methods
 
-- [contentError](BuilderComponentProps.md#contenterror)
-- [contentLoaded](BuilderComponentProps.md#contentloaded)
-- [onStateChange](BuilderComponentProps.md#onstatechange)
-- [renderLink](BuilderComponentProps.md#renderlink)
+- [contentError](builder_component_component.BuilderComponentProps.md#contenterror)
+- [contentLoaded](builder_component_component.BuilderComponentProps.md#contentloaded)
+- [onStateChange](builder_component_component.BuilderComponentProps.md#onstatechange)
+- [renderLink](builder_component_component.BuilderComponentProps.md#renderlink)
 
 ## Properties
 
@@ -37,7 +39,7 @@ Builder public API key.
 
 #### Defined in
 
-[src/components/builder-component.component.tsx:176](https://github.com/builderio/builder/blob/8c1a05a9/packages/react/src/components/builder-component.component.tsx#L176)
+[src/components/builder-component.component.tsx:176](https://github.com/builderio/builder/blob/ee7a3a06/packages/react/src/components/builder-component.component.tsx#L176)
 
 ___
 
@@ -51,7 +53,7 @@ advanced multi-tenant use cases.
 
 #### Defined in
 
-[src/components/builder-component.component.tsx:164](https://github.com/builderio/builder/blob/8c1a05a9/packages/react/src/components/builder-component.component.tsx#L164)
+[src/components/builder-component.component.tsx:164](https://github.com/builderio/builder/blob/ee7a3a06/packages/react/src/components/builder-component.component.tsx#L164)
 
 ___
 
@@ -63,7 +65,7 @@ Manually specify what Builder content JSON object to render. @see [https://githu
 
 #### Defined in
 
-[src/components/builder-component.component.tsx:212](https://github.com/builderio/builder/blob/8c1a05a9/packages/react/src/components/builder-component.component.tsx#L212)
+[src/components/builder-component.component.tsx:212](https://github.com/builderio/builder/blob/ee7a3a06/packages/react/src/components/builder-component.component.tsx#L212)
 
 ___
 
@@ -77,7 +79,7 @@ Object that will be available in actions and bindings.
 
 #### Defined in
 
-[src/components/builder-component.component.tsx:285](https://github.com/builderio/builder/blob/8c1a05a9/packages/react/src/components/builder-component.component.tsx#L285)
+[src/components/builder-component.component.tsx:285](https://github.com/builderio/builder/blob/ee7a3a06/packages/react/src/components/builder-component.component.tsx#L285)
 
 ___
 
@@ -102,7 +104,7 @@ Data is passed along as `state.*` to the component.
 
 #### Defined in
 
-[src/components/builder-component.component.tsx:158](https://github.com/builderio/builder/blob/8c1a05a9/packages/react/src/components/builder-component.component.tsx#L158)
+[src/components/builder-component.component.tsx:158](https://github.com/builderio/builder/blob/ee7a3a06/packages/react/src/components/builder-component.component.tsx#L158)
 
 ___
 
@@ -114,7 +116,7 @@ Content entry ID for this component to fetch client side
 
 #### Defined in
 
-[src/components/builder-component.component.tsx:168](https://github.com/builderio/builder/blob/8c1a05a9/packages/react/src/components/builder-component.component.tsx#L168)
+[src/components/builder-component.component.tsx:168](https://github.com/builderio/builder/blob/ee7a3a06/packages/react/src/components/builder-component.component.tsx#L168)
 
 ___
 
@@ -126,7 +128,7 @@ Name of the model this is rendering content for. Default is "page".
 
 #### Defined in
 
-[src/components/builder-component.component.tsx:136](https://github.com/builderio/builder/blob/8c1a05a9/packages/react/src/components/builder-component.component.tsx#L136)
+[src/components/builder-component.component.tsx:136](https://github.com/builderio/builder/blob/ee7a3a06/packages/react/src/components/builder-component.component.tsx#L136)
 
 ___
 
@@ -136,7 +138,7 @@ ___
 
 #### Defined in
 
-[src/components/builder-component.component.tsx:182](https://github.com/builderio/builder/blob/8c1a05a9/packages/react/src/components/builder-component.component.tsx#L182)
+[src/components/builder-component.component.tsx:182](https://github.com/builderio/builder/blob/ee7a3a06/packages/react/src/components/builder-component.component.tsx#L182)
 
 ___
 
@@ -150,7 +152,7 @@ navigation to other pages unintended
 
 #### Defined in
 
-[src/components/builder-component.component.tsx:301](https://github.com/builderio/builder/blob/8c1a05a9/packages/react/src/components/builder-component.component.tsx#L301)
+[src/components/builder-component.component.tsx:301](https://github.com/builderio/builder/blob/ee7a3a06/packages/react/src/components/builder-component.component.tsx#L301)
 
 ## Methods
 
@@ -172,7 +174,7 @@ Callback to run if an error occurred while fetching content.
 
 #### Defined in
 
-[src/components/builder-component.component.tsx:207](https://github.com/builderio/builder/blob/8c1a05a9/packages/react/src/components/builder-component.component.tsx#L207)
+[src/components/builder-component.component.tsx:207](https://github.com/builderio/builder/blob/ee7a3a06/packages/react/src/components/builder-component.component.tsx#L207)
 
 ___
 
@@ -198,7 +200,7 @@ available.
 
 #### Defined in
 
-[src/components/builder-component.component.tsx:189](https://github.com/builderio/builder/blob/8c1a05a9/packages/react/src/components/builder-component.component.tsx#L189)
+[src/components/builder-component.component.tsx:189](https://github.com/builderio/builder/blob/ee7a3a06/packages/react/src/components/builder-component.component.tsx#L189)
 
 ___
 
@@ -221,7 +223,7 @@ action)
 
 #### Defined in
 
-[src/components/builder-component.component.tsx:225](https://github.com/builderio/builder/blob/8c1a05a9/packages/react/src/components/builder-component.component.tsx#L225)
+[src/components/builder-component.component.tsx:225](https://github.com/builderio/builder/blob/ee7a3a06/packages/react/src/components/builder-component.component.tsx#L225)
 
 ___
 
@@ -253,4 +255,4 @@ This must be a function that returns JSX, not a component!
 
 #### Defined in
 
-[src/components/builder-component.component.tsx:203](https://github.com/builderio/builder/blob/8c1a05a9/packages/react/src/components/builder-component.component.tsx#L203)
+[src/components/builder-component.component.tsx:203](https://github.com/builderio/builder/blob/ee7a3a06/packages/react/src/components/builder-component.component.tsx#L203)

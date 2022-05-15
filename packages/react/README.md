@@ -186,7 +186,9 @@ Builder.registerComponent(CodeBlockComponent, {
 });
 ```
 
-See our full guide on [registering custom components here](https://www.builder.io/c/docs/custom-react-components)
+See our full guide on [registering custom components here](https://www.builder.io/c/docs/custom-react-components).
+
+See the [full reference docs for registerComponent options here](../core/docs/interfaces/Component.md).
 
 ### BuilderContent
 
