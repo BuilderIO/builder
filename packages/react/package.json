@@ -23,6 +23,7 @@
   "scripts": {
     "_unlink": "npm unlink *",
     "_install": "npm install",
+    "docs": "typedoc",
     "lint": "tslint -t codeFrame '../**/*.ts' 'test/**/*.ts'",
     "prebuild": "rimraf dist",
     "build": "NODE_ENV=production tsc --module commonjs && rollup -c rollup.config.ts",
@@ -132,7 +133,7 @@
     "tslint": "^5.8.0",
     "tslint-config-prettier": "^1.1.0",
     "tslint-config-standard": "^7.0.0",
-    "typedoc": "^0.20.36",
+    "typedoc": "^0.20.37",
     "typescript": "^3.8.3",
     "validate-commit-msg": "^2.12.2"
   },
