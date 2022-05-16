@@ -31,7 +31,7 @@ builder
   .getAll(YOUR_MODEL_NAME, {
     limit: 10,
   })
-  .then( results => {
+  .then(results => {
     // Do something with the results
   });
 
@@ -39,4 +39,6 @@ builder
 builder.canTrack = false;
 ```
 
-If you have questions or comments, don't hesitate to reach out by creating an issue or emailing steve@builder.io
+View all options for `builder.get` [here](./docs/interfaces/GetContentOptions.md)
+
+If you have questions or comments, don't hesitate to reach out by creating an issue or emailing support@builder.io

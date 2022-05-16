@@ -9,4 +9,10 @@ dist
 compiled
 .awcache
 .rpt2_cache
-docs
+
+docs/.nojekyll
+docs/classes
+docs/modules.md
+docs/modules
+docs/README.md
+docs/interfaces/BuilderComponentState.md

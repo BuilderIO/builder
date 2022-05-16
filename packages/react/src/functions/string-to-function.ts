@@ -89,7 +89,7 @@ export function stringToFunction(
         `
       );
     }
-  } catch (error) {
+  } catch (error: any) {
     if (errors) {
       errors.push(error);
     }
@@ -131,7 +131,7 @@ export function stringToFunction(
         }).run(str.replace(/(^|;)return /, '$1'));
         // tslint:enable:comment-format
       }
-    } catch (error) {
+    } catch (error: any) {
       if (Builder.isBrowser) {
         console.warn(
           'Builder custom code error:',
