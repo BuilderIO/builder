@@ -1,41 +1,45 @@
-import { isBrowser } from './is-browser.js';
+import { RegisteredComponent } from '../context/builder.context.lite.js';
+import type { ComponentInfo } from '../types/components.js';
+import { fastClone } from './fast-clone.js';
 
-// TODO
-export type ComponentInfo = any;
+/**
+ * @deprecated.  Use the `customComponents` prop in RenderContent instead to provide your custom components to the builder SDK.
+ */
+export const components: RegisteredComponent[] = [];
 
-export const components: Record<string, any> = {};
+/**
+ * @deprecated.  Use the `customComponents` prop in RenderContent instead to provide your custom components to the builder SDK.
+ */
+export function registerComponent(component: any, info: ComponentInfo): void {
+  components.push({ component, info });
 
-// Compile only facade
-export function registerComponent(component: any, info?: ComponentInfo): void {
-  components[info.name] = { component, info };
-
-  if (isBrowser()) {
-    const sendInfo = prepareComponentInfoToSend(info);
-    window.parent?.postMessage(
-      {
-        type: 'builder.registerComponent',
-        data: sendInfo,
-      },
-      '*'
-    );
-  }
+  console.warn(
+    'registerComponent is deprecated. Use the `customComponents` prop in RenderContent instead to provide your custom components to the builder SDK.'
+  );
 
   return component;
 }
+
+export const createRegisterComponentMessage = ({
+  info,
+}: RegisteredComponent) => ({
+  type: 'builder.registerComponent',
+  data: prepareComponentInfoToSend(fastClone(info)),
+});
 
 function prepareComponentInfoToSend(info: ComponentInfo) {
   return {
     ...info,
     ...(info.inputs && {
-      inputs: info.inputs.map((input: any) => {
+      inputs: info.inputs.map((input) => {
         // TODO: do for nexted fields too
         // TODO: probably just convert all functions, not just
         // TODO: put this in input hooks: { onChange: ..., showIf: ... }
-        const keysToConvertFnToString = ['onChange', 'showIf'];
+        const keysToConvertFnToString = ['onChange', 'showIf'] as const;
 
         for (const key of keysToConvertFnToString) {
-          if (input[key] && typeof input[key] === 'function') {
-            const fn = input[key];
+          const fn = input[key];
+          if (fn && typeof fn === 'function') {
             input = {
               ...input,
               [key]: `return (${fn.toString()}).apply(this, arguments)`,

@@ -1,6 +1,7 @@
 import * as React from "react";
 import { View, StyleSheet, Image, Text } from "react-native";
 import { useState, useContext, useEffect } from "react";
+import { getDefaultRegisteredComponents } from "../../constants/builder-registered-components.js";
 import { TARGET } from "../../constants/target.js";
 import BuilderContext from "../../context/builder.context";
 import { evaluate } from "../../functions/evaluate.js";
@@ -14,6 +15,10 @@ import { isBrowser } from "../../functions/is-browser.js";
 import { isEditing } from "../../functions/is-editing.js";
 import { isPreviewing } from "../../functions/is-previewing.js";
 import { previewingModelName } from "../../functions/previewing-model-name.js";
+import {
+  components,
+  createRegisterComponentMessage,
+} from "../../functions/register-component.js";
 import { track } from "../../functions/track.js";
 import RenderBlocks from "../render-blocks.lite";
 import RenderContentStyles from "./components/render-styles.lite";
@@ -40,6 +45,23 @@ export default function RenderContent(props) {
 
   function context() {
     return {};
+  }
+
+  function allRegisteredComponents() {
+    const allComponentsArray = [
+      ...getDefaultRegisteredComponents(), // While this `components` object is deprecated, we must maintain support for it.
+      // Since users are able to override our default components, we need to make sure that we do not break such
+      // existing usage.
+      // This is why we spread `components` after the default Builder.io components, but before the `props.customComponents`,
+      // which is the new standard way of providing custom components, and must therefore take precedence.
+      ...components,
+      ...(props.customComponents || []),
+    ];
+    const allComponents = allComponentsArray.reduce(
+      (acc, curr) => ({ ...acc, [curr.info.name]: curr }),
+      {}
+    );
+    return allComponents;
   }
 
   function processMessage(event) {
@@ -139,6 +161,12 @@ export default function RenderContent(props) {
   useEffect(() => {
     if (isBrowser()) {
       if (isEditing()) {
+        Object.values(allRegisteredComponents()).forEach(
+          (registeredComponent) => {
+            const message = createRegisterComponentMessage(registeredComponent);
+            window.parent?.postMessage(message, "*");
+          }
+        );
         window.addEventListener("message", processMessage);
         window.addEventListener(
           "builder:component:stateChangeListenerActivated",
@@ -218,6 +246,10 @@ export default function RenderContent(props) {
 
         get apiKey() {
           return props.apiKey;
+        },
+
+        get registeredComponents() {
+          return allRegisteredComponents();
         },
       }}
     >

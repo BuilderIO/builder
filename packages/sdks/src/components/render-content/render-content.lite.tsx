@@ -1,5 +1,9 @@
+import { getDefaultRegisteredComponents } from '../../constants/builder-registered-components.js';
 import { TARGET } from '../../constants/target.js';
-import BuilderContext from '../../context/builder.context.lite';
+import BuilderContext, {
+  RegisteredComponent,
+  RegisteredComponents,
+} from '../../context/builder.context.lite';
 import { evaluate } from '../../functions/evaluate.js';
 import {
   convertSearchParamsToQueryObject,
@@ -11,6 +15,10 @@ import { isBrowser } from '../../functions/is-browser.js';
 import { isEditing } from '../../functions/is-editing.js';
 import { isPreviewing } from '../../functions/is-previewing.js';
 import { previewingModelName } from '../../functions/previewing-model-name.js';
+import {
+  components,
+  createRegisterComponentMessage,
+} from '../../functions/register-component.js';
 import { track } from '../../functions/track.js';
 import { BuilderContent } from '../../types/builder-content.js';
 import { Dictionary, Nullable } from '../../types/typescript.js';
@@ -31,6 +39,7 @@ export type RenderContentProps = {
   data?: { [key: string]: any };
   context?: { [key: string]: any };
   apiKey: string;
+  customComponents?: RegisteredComponent[];
 };
 
 interface BuilderComponentStateChange {
@@ -70,7 +79,30 @@ export default function RenderContent(props: RenderContentProps) {
       };
     },
     get context() {
-      return {} as { [index: string]: any };
+      return {} as Dictionary<any>;
+    },
+
+    get allRegisteredComponents(): RegisteredComponents {
+      const allComponentsArray = [
+        ...getDefaultRegisteredComponents(),
+        // While this `components` object is deprecated, we must maintain support for it.
+        // Since users are able to override our default components, we need to make sure that we do not break such
+        // existing usage.
+        // This is why we spread `components` after the default Builder.io components, but before the `props.customComponents`,
+        // which is the new standard way of providing custom components, and must therefore take precedence.
+        ...components,
+        ...(props.customComponents || []),
+      ];
+
+      const allComponents = allComponentsArray.reduce(
+        (acc, curr) => ({
+          ...acc,
+          [curr.info.name]: curr,
+        }),
+        {} as RegisteredComponents
+      );
+
+      return allComponents;
     },
 
     processMessage(event: MessageEvent): void {
@@ -111,7 +143,7 @@ export default function RenderContent(props: RenderContentProps) {
         });
       }
     },
-    get httpReqsData(): { [index: string]: any } {
+    get httpReqsData(): Dictionary<any> {
       return {};
     },
 
@@ -194,11 +226,20 @@ export default function RenderContent(props: RenderContentProps) {
     get apiKey() {
       return props.apiKey;
     },
+    get registeredComponents() {
+      return state.allRegisteredComponents;
+    },
   });
 
   onMount(() => {
     if (isBrowser()) {
       if (isEditing()) {
+        Object.values(state.allRegisteredComponents).forEach(
+          (registeredComponent) => {
+            const message = createRegisterComponentMessage(registeredComponent);
+            window.parent?.postMessage(message, '*');
+          }
+        );
         window.addEventListener('message', state.processMessage);
         window.addEventListener(
           'builder:component:stateChangeListenerActivated',

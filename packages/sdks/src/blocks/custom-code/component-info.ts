@@ -1,4 +1,4 @@
-import { ComponentInfo } from '../../functions/register-component.js';
+import type { ComponentInfo } from '../../types/components';
 
 export const componentInfo: ComponentInfo = {
   name: 'Custom Code',

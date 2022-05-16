@@ -3,7 +3,8 @@
     import { afterUpdate } from 'svelte'
     import { onDestroy } from 'svelte'
     
-  import  {  TARGET  }  from '../../constants/target.js';
+  import  {  getDefaultRegisteredComponents  }  from '../../constants/builder-registered-components.js';
+import  {  TARGET  }  from '../../constants/target.js';
 import  BuilderContext,  {  }  from '../../context/builder.context';
 import  {  evaluate  }  from '../../functions/evaluate.js';
 import  {  convertSearchParamsToQueryObject  ,  getBuilderSearchParams  }  from '../../functions/get-builder-search-params/index.js';
@@ -13,6 +14,7 @@ import  {  isBrowser  }  from '../../functions/is-browser.js';
 import  {  isEditing  }  from '../../functions/is-editing.js';
 import  {  isPreviewing  }  from '../../functions/is-previewing.js';
 import  {  previewingModelName  }  from '../../functions/previewing-model-name.js';
+import  {  components  ,  createRegisterComponentMessage  }  from '../../functions/register-component.js';
 import  {  track  }  from '../../functions/track.js';
 import  RenderBlocks,  {  }  from '../render-blocks.svelte';
 import  RenderContentStyles,  {  }  from './components/render-styles.svelte';
@@ -24,6 +26,7 @@ import  RenderContentStyles,  {  }  from './components/render-styles.svelte';
     
     export let content;
 export let data;
+export let customComponents;
 export let model;
 export let apiKey;
     
@@ -139,6 +142,19 @@ $: context = () => {
 return {};
 };
 
+$: allRegisteredComponents = () => {
+const allComponentsArray = [...getDefaultRegisteredComponents(), // While this `components` object is deprecated, we must maintain support for it.
+// Since users are able to override our default components, we need to make sure that we do not break such
+// existing usage.
+// This is why we spread `components` after the default Builder.io components, but before the `customComponents`,
+// which is the new standard way of providing custom components, and must therefore take precedence.
+...components, ...(customComponents || [])];
+const allComponents = allComponentsArray.reduce((acc, curr) => ({ ...acc,
+  [curr.info.name]: curr
+}), {});
+return allComponents;
+};
+
 $: httpReqsData = () => {
 return {};
 };
@@ -152,6 +168,8 @@ return contentState();
 return context();
 }, get apiKey() {
 return apiKey;
+}, get registeredComponents() {
+return allRegisteredComponents();
 },});
     let overrideContent = null;
 let update = 0;
@@ -159,6 +177,10 @@ let overrideState = {};
 
     onMount(() => { if (isBrowser()) {
 if (isEditing()) {
+  Object.values(allRegisteredComponents()).forEach(registeredComponent => {
+    const message = createRegisterComponentMessage(registeredComponent);
+    window.parent?.postMessage(message, '*');
+  });
   window.addEventListener('message', processMessage);
   window.addEventListener('builder:component:stateChangeListenerActivated', emitStateUpdate);
 }

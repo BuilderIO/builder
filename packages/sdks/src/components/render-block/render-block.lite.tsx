@@ -6,7 +6,6 @@ import { getBlockProperties } from '../../functions/get-block-properties.js';
 import { getBlockStyles } from '../../functions/get-block-styles.js';
 import { getBlockTag } from '../../functions/get-block-tag.js';
 import { getProcessedBlock } from '../../functions/get-processed-block.js';
-import { components } from '../../functions/register-component.js';
 import { BuilderBlock } from '../../types/builder-block.js';
 import BlockStyles from './block-styles.lite';
 import {
@@ -34,14 +33,18 @@ export default function RenderBlock(props: RenderBlockProps) {
       if (!componentName) {
         return null;
       }
-      const ref = components[componentName];
-      if (componentName && !ref) {
+
+      const ref = builderContext.registeredComponents[componentName];
+
+      if (!ref) {
         // TODO: Public doc page with more info about this message
         console.warn(`
           Could not find a registered component named "${componentName}". 
           If you registered it, is the file that registered it imported by the file that needs to render it?`);
+        return undefined;
+      } else {
+        return ref;
       }
-      return ref;
     },
     get componentInfo() {
       return state.component?.info;
