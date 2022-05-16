@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useState } from "react";
+import { useEffect, useCallback, useState } from 'react';
 
 export const useContextMenu = () => {
   const [x, setX] = useState(0);
@@ -8,7 +8,7 @@ export const useContextMenu = () => {
   const [ctrlDown, setCtrlDown] = useState(false);
 
   const handleContextMenu = useCallback(
-    (event) => {
+    event => {
       if (!enabled || !ctrlDown) {
         return;
       }
@@ -32,13 +32,13 @@ export const useContextMenu = () => {
   );
 
   useEffect(() => {
-    document.addEventListener("click", handleClick);
-    document.addEventListener("contextmenu", handleContextMenu);
-    document.addEventListener("keydown", handleKeydown);
+    document.addEventListener('click', handleClick);
+    document.addEventListener('contextmenu', handleContextMenu);
+    document.addEventListener('keydown', handleKeydown);
     return () => {
-      document.removeEventListener("click", handleClick);
-      document.removeEventListener("contextmenu", handleContextMenu);
-      document.removeEventListener("keydown", handleKeydown);
+      document.removeEventListener('click', handleClick);
+      document.removeEventListener('contextmenu', handleContextMenu);
+      document.removeEventListener('keydown', handleKeydown);
     };
   });
 
