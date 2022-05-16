@@ -422,7 +422,7 @@ export class BuilderComponent extends React.Component<
   lastJsCode = '';
   lastHttpRequests: { [key: string]: string | undefined } = {};
   httpSubscriptionPerKey: { [key: string]: Subscription | undefined } = {};
-
+  firstLoad = true;
   ref: HTMLElement | null = null;
 
   Component: any;
@@ -746,6 +746,13 @@ export class BuilderComponent extends React.Component<
         window.addEventListener('message', this.messageListener);
       }
 
+      if (Builder.isEditing || Builder.isPreviewing) {
+        Builder.nextTick(() => {
+          this.firstLoad = false;
+          this.reload();
+        });
+      }
+
       setTimeout(() => {
         window.dispatchEvent(
           new CustomEvent('builder:component:load', {
@@ -783,7 +790,7 @@ export class BuilderComponent extends React.Component<
 
   get isPreviewing() {
     return (
-      (Builder.isServer || (Builder.isBrowser && Builder.isPreviewing)) &&
+      (Builder.isServer || (Builder.isBrowser && Builder.isPreviewing && !this.firstLoad)) &&
       builder.previewingModel === this.name
     );
   }
