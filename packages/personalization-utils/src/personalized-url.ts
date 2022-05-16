@@ -1,28 +1,41 @@
 import stringify from 'json-stringify-deterministic';
 
+
+export interface PersonalizedURLOptions { pathname: string; prefix?: string; attributes: Record<string, string>, encode?: (str: string) => string }
+
+const defaultOptions = {
+  decode:  (str: string) => {
+    return Buffer.from(str, 'base64').toString('utf-8');
+  },
+  encode: (str: string) => {
+    return Buffer.from(str).toString('base64');
+  },
+  prefix: 'builder',
+  attributes: {},
+}
+
 export class PersonalizedURL {
-  prefix = 'builder';
-  attributes: Record<string, string>;
+  options = defaultOptions;
 
-  constructor(config: { pathname: string; prefix?: string; attributes: Record<string, string> }) {
-    this.prefix = config.prefix || this.prefix;
-    this.attributes = {
-      urlPath: config.pathname,
-      ...config.attributes,
-    };
-  }
-
-  toHash() {
-    const stringified = stringify(this.attributes);
-    return Buffer.from(stringified).toString('base64');
+  constructor(options: PersonalizedURLOptions) {
+    this.options = {
+      ...defaultOptions,
+      ...options,
+      attributes: {
+        urlPath: options.pathname,
+        ...options.attributes,
+      }
+    }
   }
 
   rewritePath() {
-    return `/${this.prefix}/${this.toHash()}`;
+    const stringified = stringify(this.options.attributes);
+    const encoded= this.options.encode(stringified)
+    return `/${this.options.prefix}/${encoded}`;
   }
 
-  static fromHash(hash: string, prefix = 'builder') {
-    const stringified = Buffer.from(hash, 'base64').toString('utf-8');
+  static fromRewrite(rewrite: string, prefix = 'builder', decode = defaultOptions.decode) {
+    const stringified = decode(rewrite);
     const attributes = JSON.parse(stringified);
     return new PersonalizedURL({
       prefix,
