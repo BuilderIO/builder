@@ -31,9 +31,11 @@ registerCommercePlugin(
     ctaText: `Connect your Elasticpath PCM store`,
   },
   async settings => {
+    const userAPIURL = settings.get('apiUrl')?.trim();
     const clientId = settings.get('clientId')?.trim();
     const clientSecret = settings.get('clientSecret')?.trim();
-    const finalApiUrl = settings.get('apiURL')?.trim() || defaultApiUrl;
+
+    const finalApiUrl = userAPIURL || defaultApiUrl;
 
     const elasticpathApi = gateway({
       client_id: clientId,
