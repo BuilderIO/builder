@@ -68,7 +68,7 @@ class RouterComponent extends React.Component<RouterProps> {
     this.routed = true;
 
     // TODO: check if relative?
-    if (window.history && window.history.pushState) {
+    if (typeof window.history?.pushState === 'function') {
       history.pushState(null, '', url);
       this.updateLocationState();
       return true;

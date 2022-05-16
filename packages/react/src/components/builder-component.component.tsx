@@ -127,6 +127,7 @@ export interface BuilderComponentProps {
   /**
    * @package
    * @deprecated use {@link model} instead.
+   * @hidden
    */
   modelName?: string;
   /**
@@ -136,6 +137,7 @@ export interface BuilderComponentProps {
   /**
    * @package
    * @deprecated use {@link model} instead.
+   * @hidden
    */
   name?: string;
   /**
@@ -174,6 +176,7 @@ export interface BuilderComponentProps {
   apiKey?: string;
   /**
    * @private
+   * @hidden
    */
   codegen?: boolean;
   options?: GetContentOptions;
@@ -209,6 +212,7 @@ export interface BuilderComponentProps {
   content?: Content;
   /**
    * @package
+   * @hidden
    *
    * Location object that provides the current url, path, etc; for server side
    * rendering.
@@ -222,10 +226,12 @@ export interface BuilderComponentProps {
   /**
    * @package
    * @deprecated
+   * @hidden
    */
   noAsync?: boolean;
   /**
    * @package
+   * @hidden
    *
    * Flag to render email content (small differences in our render logic for
    * email support).
@@ -233,6 +239,7 @@ export interface BuilderComponentProps {
   emailMode?: boolean;
   /**
    * @package
+   * @hidden
    *
    * Flag to render amp content (small differences in our render logic for amp
    * support)
@@ -240,6 +247,7 @@ export interface BuilderComponentProps {
   ampMode?: boolean;
   /**
    * @package
+   * @hidden
    *
    * Render content in-line only (can't passed from the content prop) don't
    * fetch content from our API.
@@ -248,21 +256,25 @@ export interface BuilderComponentProps {
   /**
    * @package
    * @deprecated
+   * @hidden
    */
   builderBlock?: BuilderElement;
   /**
    * @package
    * @deprecated
+   * @hidden
    */
   dataOnly?: boolean;
   /**
    * @package
    * @deprecated
+   * @hidden
    */
   hydrate?: boolean;
   /**
    * @package
    * @deprecated use {@link Builder.isStatic} instead
+   * @hidden
    */
   isStatic?: boolean;
   /**
@@ -273,9 +285,11 @@ export interface BuilderComponentProps {
   context?: any;
   /**
    * @deprecated
+   * @hidden
    */
   url?: string;
   /**
+   * @hidden
    * Set to true if this is not the root content component, for instance for symbols
    */
   isChild?: boolean;
@@ -355,7 +369,7 @@ const tryEval = (str?: string, data: any = {}, errors?: Error[]): any => {
       }).run(value.replace(/(^|;)return /, '$1'));
       // tslint:enable:comment-format
     }
-  } catch (error) {
+  } catch (error: any) {
     if (errors) {
       errors.push(error);
     }
@@ -1213,7 +1227,7 @@ export class BuilderComponent extends React.Component<
       try {
         const result = await fetch(url);
         json = await result.json();
-      } catch (err) {
+      } catch (err: any) {
         if (this._errors) {
           this._errors.push(err);
         }
@@ -1403,7 +1417,7 @@ export class BuilderComponent extends React.Component<
 
           // TODO: allow exports = { } syntax?
           // TODO: do something with reuslt like view - methods, computed, actions, properties, template, etc etc
-        } catch (error) {
+        } catch (error: any) {
           if (Builder.isBrowser) {
             console.warn(
               'Builder custom code error:',
