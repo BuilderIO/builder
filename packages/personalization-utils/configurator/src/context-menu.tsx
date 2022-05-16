@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import Cookies from "js-cookie";
-import type { Input } from "@builder.io/sdk";
+import React, { useEffect, useState } from 'react';
+import Cookies from 'js-cookie';
+import type { Input } from '@builder.io/sdk';
 import {
   ControlledMenu,
   FocusableItem,
@@ -9,9 +9,9 @@ import {
   MenuRadioGroup,
   SubMenu,
   useMenuState,
-} from "@szhsin/react-menu";
+} from '@szhsin/react-menu';
 
-import { useContextMenu } from "./use-context-menu";
+import { useContextMenu } from './use-context-menu';
 
 export interface TargetingAttributes {
   [key: string]: Input;
@@ -22,7 +22,10 @@ export interface ContextMenuProps {
   attributesApiPath?: string;
 }
 
-export const ContextMenu: React.FC<ContextMenuProps> = ({ targetingAttributes, attributesApiPath }) => {
+export const ContextMenu: React.FC<ContextMenuProps> = ({
+  targetingAttributes,
+  attributesApiPath,
+}) => {
   const { x, y, menu, enableContextMenu } = useContextMenu();
   const [loading, setLoading] = useState(false);
 
@@ -34,9 +37,9 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({ targetingAttributes, a
       } else {
         setLoading(true);
         try {
-          const response = await fetch(
-            attributesApiPath || "/api/attributes"
-          ).then((res) => res.json());
+          const response = await fetch(attributesApiPath || '/api/attributes').then(res =>
+            res.json()
+          );
           setAttributes(response);
           enableContextMenu(true);
         } catch (error) {
@@ -54,7 +57,8 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({ targetingAttributes, a
 
   const reset = () => {
     Object.keys(Cookies.get())
-    .filter(key => key.startsWith('builder.userAttributes')).forEach((cookie) => Cookies.remove(cookie));
+      .filter(key => key.startsWith('builder.userAttributes'))
+      .forEach(cookie => Cookies.remove(cookie));
     location.reload();
   };
 
@@ -69,11 +73,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({ targetingAttributes, a
   const keys = Object.keys(attributes || {});
 
   return (
-    <ControlledMenu
-      {...menuProps}
-      anchorPoint={{ x, y }}
-      onClose={() => toggleMenu(false)}
-    >
+    <ControlledMenu {...menuProps} anchorPoint={{ x, y }} onClose={() => toggleMenu(false)}>
       <MenuHeader>Personalization settings</MenuHeader>
       <MenuItem onClick={reset}>Reset</MenuItem>
 
@@ -82,15 +82,9 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({ targetingAttributes, a
         return (
           <SubMenu key={index} label={`${attr} settings`}>
             {options ? (
-              <MenuRadioGroup
-                value={Cookies.get(`builder.userAttributes.${attr}`)}
-              >
-                {options.map((option) => (
-                  <MenuItem
-                    key={option}
-                    value={option}
-                    onClick={setCookie(attr, String(option))}
-                  >
+              <MenuRadioGroup value={Cookies.get(`builder.userAttributes.${attr}`)}>
+                {options.map(option => (
+                  <MenuItem key={option} value={option} onClick={setCookie(attr, String(option))}>
                     {option}
                   </MenuItem>
                 ))}
@@ -99,7 +93,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({ targetingAttributes, a
               <FocusableItem>
                 {({ ref }) => (
                   <form
-                    onSubmit={(e) => {
+                    onSubmit={e => {
                       const data = new FormData(e.currentTarget);
                       const values = Object.fromEntries(data.entries());
                       e.preventDefault();
@@ -110,9 +104,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({ targetingAttributes, a
                       ref={ref}
                       name={attr}
                       type="text"
-                      defaultValue={Cookies.get(
-                        `builder.userAttributes.${attr}`
-                      )}
+                      defaultValue={Cookies.get(`builder.userAttributes.${attr}`)}
                     />
                   </form>
                 )}
@@ -121,7 +113,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({ targetingAttributes, a
           </SubMenu>
         );
       })}
-      {loading && "Loading.."}
+      {loading && 'Loading..'}
     </ControlledMenu>
   );
 };
