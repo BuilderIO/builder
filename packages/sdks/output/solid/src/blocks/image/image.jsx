@@ -14,7 +14,7 @@ function Image(props) {
         width: "100%",
         top: "0px",
         left: "0px"
-      })} loading="lazy" alt={props.altText} aria-role={props.altText ? "presentation" : undefined} style={{
+      })} loading="lazy" alt={props.altText} role={props.altText ? "presentation" : undefined} style={{
         "object-position": props.backgroundSize || "center",
         "object-fit": props.backgroundSize || "cover"
       }} src={props.image} srcset={props.srcset} sizes={props.sizes} />

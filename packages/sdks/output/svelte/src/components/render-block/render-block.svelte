@@ -128,7 +128,7 @@ return componentRef() ? [] : children();
             
 
 {#each children() as child, index }
-<svelte:self  block={child} ></svelte:self>
+<svelte:self  key={child.id}  block={child} ></svelte:self>
 {/each}
 
 
@@ -140,7 +140,7 @@ return componentRef() ? [] : children();
         
 
 {#each noCompRefChildren() as child, index }
-<svelte:self  block={child} ></svelte:self>
+<svelte:self  key={child.id}  block={child} ></svelte:self>
 {/each}
 
 
@@ -154,7 +154,7 @@ return componentRef() ? [] : children();
           
 
 {#each children() as child, index }
-<svelte:self  block={child} ></svelte:self>
+<svelte:self  key={child.id}  block={child} ></svelte:self>
 {/each}
 
 

@@ -80,7 +80,7 @@ function Columns(props) {
           width: state.getColumnCssWidth(index),
           "margin-left": `${index === 0 ? 0 : state.getGutterSize()}px`,
           ...state.columnCssVars
-        }}>
+        }} key={index}>
               <RenderBlocks blocks={column.blocks}></RenderBlocks>
             </div>;
       }}

@@ -81,7 +81,25 @@ function RenderBlock(props) {
 
   return (
     <>
-      <Show when={!state.componentInfo?.noWrap}>
+      <Show
+        fallback={
+          <Dynamic
+            {...state.componentOptions}
+            attributes={state.propertiesAndActions}
+            builderBlock={state.useBlock}
+            style={state.css}
+            component={state.componentRef}
+          >
+            <For each={state.children}>
+              {(child, _index) => {
+                const index = _index();
+                return <RenderBlock key={child.id} block={child}></RenderBlock>;
+              }}
+            </For>
+          </Dynamic>
+        }
+        when={!state.componentInfo?.noWrap}
+      >
         <Dynamic
           {...state.propertiesAndActions}
           style={state.css}
@@ -99,7 +117,9 @@ function RenderBlock(props) {
               <For each={state.children}>
                 {(child, _index) => {
                   const index = _index();
-                  return <RenderBlock block={child}></RenderBlock>;
+                  return (
+                    <RenderBlock key={child.id} block={child}></RenderBlock>
+                  );
                 }}
               </For>
             </Dynamic>
@@ -107,7 +127,7 @@ function RenderBlock(props) {
           <For each={state.noCompRefChildren}>
             {(child, _index) => {
               const index = _index();
-              return <RenderBlock block={child}></RenderBlock>;
+              return <RenderBlock key={child.id} block={child}></RenderBlock>;
             }}
           </For>
         </Dynamic>

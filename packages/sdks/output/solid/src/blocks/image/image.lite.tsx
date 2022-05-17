@@ -27,7 +27,7 @@ function Image(props) {
           }
           loading="lazy"
           alt={props.altText}
-          aria-role={props.altText ? "presentation" : undefined}
+          role={props.altText ? "presentation" : undefined}
           style={{
             "object-position": props.backgroundSize || "center",
             "object-fit": props.backgroundSize || "cover",

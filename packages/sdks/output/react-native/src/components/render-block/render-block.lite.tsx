@@ -105,13 +105,13 @@ export default function RenderBlock(props) {
                 builderBlock={useBlock()}
               >
                 {children()?.map((child) => (
-                  <RenderBlock block={child} />
+                  <RenderBlock key={child.id} block={child} />
                 ))}
               </ComponentRefRef>
             ) : null}
 
             {noCompRefChildren()?.map((child) => (
-              <RenderBlock block={child} />
+              <RenderBlock key={child.id} block={child} />
             ))}
           </TagNameRef>
         </>
@@ -123,7 +123,7 @@ export default function RenderBlock(props) {
           style={css()}
         >
           {children()?.map((child) => (
-            <RenderBlock block={child} />
+            <RenderBlock key={child.id} block={child} />
           ))}
         </ComponentRefRef>
       )}
