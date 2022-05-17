@@ -1,7 +1,7 @@
 import { isEditing } from '../functions/is-editing.js';
 import { BuilderBlock } from '../types/builder-block.js';
 import RenderBlock from './render-block/render-block.lite';
-import { Show, useState } from '@builder.io/mitosis';
+import { For, Show, useState } from '@builder.io/mitosis';
 
 export type RenderBlockProps = {
   blocks?: BuilderBlock[];
@@ -61,9 +61,9 @@ export default function RenderBlocks(props: RenderBlockProps) {
       onMouseEnter={(event) => state.onMouseEnter()}
     >
       <Show when={props.blocks}>
-        {props.blocks?.map((block) => (
-          <RenderBlock key={block.id} block={block} />
-        ))}
+        <For each={props.blocks}>
+          {(block) => <RenderBlock key={block.id} block={block} />}
+        </For>
       </Show>
     </div>
   );
