@@ -3350,13 +3350,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"custom-event-polyfill@npm:^1.0.7":
-  version: 1.0.7
-  resolution: "custom-event-polyfill@npm:1.0.7"
-  checksum: f9ff2cf13e482a75b3cf83dce9e2c6e3063c5ac1b9c23ac440e4f27e875b0873445b11811237f3f30aeb1216e9ad20f9f9d30ccf5b1b658a4e50dd0b3e67b629
-  languageName: node
-  linkType: hard
-
 "dayjs@npm:^1.8.15":
   version: 1.10.7
   resolution: "dayjs@npm:1.10.7"
@@ -7134,7 +7127,6 @@ __metadata:
     "@react-navigation/native-stack": ^6.5.0
     "@types/react": ~17.0.21
     "@types/react-native": ~0.64.12
-    custom-event-polyfill: ^1.0.7
     expo: ~44.0.0
     expo-status-bar: ~1.2.0
     react: 17.0.1
