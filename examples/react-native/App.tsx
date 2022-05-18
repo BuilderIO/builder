@@ -1,22 +1,3 @@
-// This is needed because we use the `CustomEvent` API to communicate with our Builder Visual Editor in the iframe.
-
-(function () {
-  if (typeof window.CustomEvent === 'function') return false;
-
-  // @ts-ignore
-  function CustomEvent(event, params) {
-    params = params || { bubbles: false, cancelable: false, detail: undefined };
-    var evt = document.createEvent('CustomEvent');
-    evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
-    return evt;
-  }
-
-  CustomEvent.prototype = window.Event.prototype;
-
-  // @ts-ignore
-  window.CustomEvent = CustomEvent;
-})();
-
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image } from 'react-native';
 import React, { useState, useEffect } from 'react';

@@ -963,7 +963,6 @@ __metadata:
   resolution: "@builder.io/sdk-react-native@workspace:."
   dependencies:
     "@types/react-native-video": ^5.0.9
-    custom-event-polyfill: ^1.0.7
     react-native: ^0.64.3
     react-native-render-html: ^6.3.4
     react-native-video: ^5.1.1
@@ -2409,13 +2408,6 @@ __metadata:
   version: 3.0.10
   resolution: "csstype@npm:3.0.10"
   checksum: 20a8fa324f2b33ddf94aa7507d1b6ab3daa6f3cc308888dc50126585d7952f2471de69b2dbe0635d1fdc31223fef8e070842691877e725caf456e2378685a631
-  languageName: node
-  linkType: hard
-
-"custom-event-polyfill@npm:^1.0.7":
-  version: 1.0.7
-  resolution: "custom-event-polyfill@npm:1.0.7"
-  checksum: f9ff2cf13e482a75b3cf83dce9e2c6e3063c5ac1b9c23ac440e4f27e875b0873445b11811237f3f30aeb1216e9ad20f9f9d30ccf5b1b658a4e50dd0b3e67b629
   languageName: node
   linkType: hard
 
