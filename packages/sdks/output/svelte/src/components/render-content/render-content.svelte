@@ -111,14 +111,16 @@ Object.entries(requests).forEach(([key, url]) => {
 }
 
 function emitStateUpdate() {
-window.dispatchEvent(new CustomEvent('builder:component:stateChange', {
-  detail: {
-    state: contentState(),
-    ref: {
-      name: model
+if (isEditing()) {
+  window.dispatchEvent(new CustomEvent('builder:component:stateChange', {
+    detail: {
+      state: contentState(),
+      ref: {
+        name: model
+      }
     }
-  }
-}));
+  }));
+}
 }
     $: useContent = () => {
 const mergedContent = { ...content,
