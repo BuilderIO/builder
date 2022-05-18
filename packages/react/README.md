@@ -105,7 +105,7 @@ Learn more about [registering components in Builder](https://www.builder.io/c/do
 
 ### BuilderComponent
 
-You can find the full [reference docs for the BuilderComponent props here](docs/interfaces/BuilderComponentProps.md)
+You can find the full [reference docs for the BuilderComponent props here](docs/interfaces/builder_component_component.BuilderComponentProps.md)
 
 ```tsx
 const MODEL_NAME = 'page';
