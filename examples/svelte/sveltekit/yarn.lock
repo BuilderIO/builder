@@ -589,12 +589,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@builder.io/sdk-svelte@npm:0.0.1-5":
-  version: 0.0.1-5
-  resolution: "@builder.io/sdk-svelte@npm:0.0.1-5"
+"@builder.io/sdk-svelte@npm:dev":
+  version: 0.0.1-6
+  resolution: "@builder.io/sdk-svelte@npm:0.0.1-6"
   dependencies:
     node-fetch: ^2.6.1
-  checksum: 6bc07bb3fe208a9573c9bf94cb9691af649c7eb58663ae64ec57fc4470ca9d06c7f6b68936551dce85f92692ccc355dca0ba49fc6522cdb62770fc63eb57e3a5
+  checksum: 644db9d36f6868fb81df76ace29dc5a71497db6c8620bfd5ad02aa4495a7ec9e3c24d635c9e77e1f296dc95d24213d8a9047f019bff1edd713e57737f7a8a7d8
   languageName: node
   linkType: hard
 
@@ -3916,7 +3916,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "sveltekit@workspace:."
   dependencies:
-    "@builder.io/sdk-svelte": 0.0.1-5
+    "@builder.io/sdk-svelte": dev
     "@fontsource/fira-mono": ^4.5.0
     "@lukeed/uuid": ^2.0.0
     "@originjs/vite-plugin-commonjs": ^1.0.3
