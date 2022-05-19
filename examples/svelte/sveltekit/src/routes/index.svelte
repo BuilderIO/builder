@@ -16,7 +16,9 @@
 		content = await BuilderSDK.getContent({
 			model: 'page',
 			apiKey: BUILDER_PUBLIC_API_KEY,
-			options: BuilderSDK.getBuilderSearchParams($page.params),
+			options: BuilderSDK.getBuilderSearchParams(
+				BuilderSDK.convertSearchParamsToQueryObject($page.url.searchParams)
+			),
 			userAttributes: {
 				urlPath: $page.url.pathname
 			}
