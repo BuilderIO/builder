@@ -49,6 +49,7 @@ export { Img } from './blocks/raw/Img';
 export { RawText } from './blocks/raw/RawText';
 
 export { stringToFunction } from './functions/string-to-function';
+export { isPreviewing } from './hooks/isPreviewing';
 
 export { builder, Builder };
 export default builder;
