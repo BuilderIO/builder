@@ -11,7 +11,7 @@ npm install @builder.io/personalization-utils
 `PersonalizedURL` identifies the current personalization target based on attributes in cookies, headers, query, and origin URL path, it should be used in middleware in combination with a page path handler defined in `pages/builder/[hash].jsx`:
 
 ```ts
-// in pages/[[...path]].jsx
+// in pages/builder/[hash].jsx
 export async function getStaticProps({ params }) {
   const personlizedURL = PersonalizedURL.fromRewrite(params.hash);
   const page =
