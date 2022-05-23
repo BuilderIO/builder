@@ -1,0 +1,31 @@
+{
+  "name": "@builder.io/personalization-utils",
+  "version": "1.0.2",
+  "description": "Utils for personalization at the edge [Experimental]",
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "prepublish": "npm run build",
+    "test": "jest",
+    "prettier": "prettier",
+    "release:dev": "npm run build && npm version prerelease --no-git-tag-version && npm publish --tag dev"
+  },
+  "files": [
+    "dist/**/*",
+    "src/**/*"
+  ],
+  "devDependencies": {
+    "@builder.io/sdk": "^1.1.20",
+    "jest": "^26.6.3",
+    "react-dom": "^16.14.0",
+    "ts-jest": "^26.4.4",
+    "typescript": "^4.1.3"
+  },
+  "dependencies": {
+    "json-stringify-deterministic": "^1.0.6"
+  },
+  "peerDependencies": {
+    "@builder.io/sdk": "^1.1.20",
+    "react-dom": "^16.14.0"
+  }
+}
