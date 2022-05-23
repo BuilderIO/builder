@@ -8,12 +8,12 @@ npm install @builder.io/personalization-utils
 
 # How to start with personalized rewrites? 
 
-`PersonalizedURL` identifies the current personalization target based on attributes in cookies, headers, query, and origin URL path, it should be used in middleware in combination with a page path handler defined in `pages/builder/[hash].jsx`:
+`PersonalizedURL` identifies the current personalization target based on attributes in cookies, headers, query, and origin URL path, it should be used in middleware in combination with a page path handler defined in `pages/builder/[rewrite].jsx`:
 
 ```ts
-// in pages/builder/[hash].jsx
+// in pages/builder/[rewrite].jsx
 export async function getStaticProps({ params }) {
-  const personlizedURL = PersonalizedURL.fromRewrite(params.hash);
+  const personlizedURL = PersonalizedURL.fromRewrite(params.rewrite);
   const page =
     (await builder
       .get('page', {
@@ -41,7 +41,7 @@ export function getStaticPaths() {
   }
 }
 
-export default function Path({ page }) {
+export default function Rewrite({ page }) {
   return  <BuilderComponent renderLink={Link} model="page" content={page} />
 }
 ```
