@@ -53,7 +53,7 @@ export default function Page({
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const router = useRouter()
   const isPreviewingInBuilder = isPreviewing()
-  const show404Componet = !page && !isPreviewingInBuilder
+  const show404 = !page && !isPreviewingInBuilder
   if (router.isFallback) {
     return <h1>Loading...</h1>
   }
@@ -64,7 +64,7 @@ export default function Page({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         {!page && <meta name="robots" content="noindex" />}
       </Head>
-      {show404Componet ? (
+      {show404 ? (
         <DefaultErrorPage statusCode={404} />
       ) : (
         <BuilderComponent model="page" content={page} />
