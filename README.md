@@ -6,7 +6,7 @@
   Drag and drop page builder and CMS for React, Vue, Angular, and more
 </h3>
 <p align="center">
-  Integrate with any site or app. Drag and drop with the components already in your codebase. High speed, full control, no compromises
+  Integrate with any site or app. Drag and drop with the components already in your codebase.
 </p>
 
 <p align="center">
