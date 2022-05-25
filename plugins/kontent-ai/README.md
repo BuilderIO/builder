@@ -36,7 +36,7 @@ Pick a [content item](https://kontent.ai/learn/tutorials/references/terminology/
 
 ![Picking content item](https://cdn.builder.io/api/v1/image/assets%2Fe85723a1cdde410591c232f4b375ef9b%2Fe167b0d2ca7b4892afa2c55f6a4a53ec)
 
-Edit text block  properties (by double click on in) and select "Edit bindings".
+Edit text block properties (by double click on in) and select "Edit bindings".
 
 ![Open text block bindings settings](https://cdn.builder.io/api/v1/image/assets%2Fe85723a1cdde410591c232f4b375ef9b%2F168b8937434a4b8099204c0fb1f150f3)
 

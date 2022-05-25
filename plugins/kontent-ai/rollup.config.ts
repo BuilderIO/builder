@@ -4,7 +4,7 @@ import esbuild from 'rollup-plugin-esbuild';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
-import { readFileSync } from "fs-extra";
+import { readFileSync } from 'fs-extra';
 
 const SERVE = process.env.SERVE === 'true';
 
@@ -28,7 +28,7 @@ export default {
     'mobx',
     'react-dom',
     'mobx-react',
-    'http'
+    'http',
   ],
   output: [{ file: pkg.unpkg, format: 'system', sourcemap: true }],
   watch: {
@@ -45,20 +45,20 @@ export default {
 
     ...(SERVE
       ? [
-        serve({
-          open: true,
-          contentBase: 'dist',
-          port: 1268,
-          // https: {
-          //   key: readFileSync('./cert/localhost.key'),
-          //   cert: readFileSync('./cert/localhost.crt'),
-          // },
-          headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Private-Network': 'true',
-          }
-        }),
-      ]
+          serve({
+            open: true,
+            contentBase: 'dist',
+            port: 1268,
+            // https: {
+            //   key: readFileSync('./cert/localhost.key'),
+            //   cert: readFileSync('./cert/localhost.crt'),
+            // },
+            headers: {
+              'Access-Control-Allow-Origin': '*',
+              'Access-Control-Allow-Private-Network': 'true',
+            },
+          }),
+        ]
       : []),
   ],
 };
