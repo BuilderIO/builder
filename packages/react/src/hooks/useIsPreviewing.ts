@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Builder } from '@builder.io/sdk';
 
-export function isPreviewing() {
+export function useIsPreviewing() {
   const [isPreviewing, setIsPreviewing] = useState(false);
 
   useEffect(() => {
