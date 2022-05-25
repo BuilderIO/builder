@@ -1,7 +1,7 @@
 import { registerDataPlugin } from '@builder.io/data-plugin-tools';
 import pkg from '../package.json';
 import { createDeliveryClient } from '@kentico/kontent-delivery';
-import { Input } from "@builder.io/sdk";
+import { Input } from '@builder.io/sdk';
 
 // development URL https://localhost:1268/plugin.system.js?pluginId=@builder.io/plugin-kontent-ai
 
@@ -17,8 +17,7 @@ registerDataPlugin(
         name: 'projectId',
         type: 'string',
         required: true,
-        helperText:
-          'Get your project ID from "Project Settings" > "API keys"'
+        helperText: 'Get your project ID from "Project Settings" > "API keys"',
       },
     ],
     ctaText: `Connect your project`,
@@ -28,18 +27,16 @@ registerDataPlugin(
     const projectId = settings.get('projectId')?.trim();
 
     const client = createDeliveryClient({
-      projectId
+      projectId,
     });
 
     return {
       async getResourceTypes() {
-        console.log('getResourceTypes');
-
         const languagesResponse = await client.languages().toAllPromise();
         const languagesEnum = languagesResponse.data.items
           .map(language => ({
             value: language.system.codename,
-            label: language.system.name
+            label: language.system.name,
           }))
           // You can override state from the outside
           .concat([
@@ -55,21 +52,19 @@ registerDataPlugin(
           id: type.system.codename,
           canPickEntries: true,
           entryInputs: () => {
-            console.log('entryInputs', type);
             return [
               {
                 name: 'language',
                 type: 'text',
                 enum: languagesEnum,
-
               },
             ];
           },
           inputs: () => {
-            console.log('inputs', type);
             const acceptableElements = type.elements.filter(element =>
               // possible extend to more types https://kontent.ai/learn/reference/delivery-api/#tag/Filtering-content
-              ['text'].includes(element.type));
+              ['text'].includes(element.type)
+            );
             // return a list of inputs to query your data, think of this as the query schema: limit / offset / specific fields to query against
             const fields = [
               {
@@ -83,7 +78,7 @@ registerDataPlugin(
                 name: 'language',
                 type: 'text',
                 enum: languagesEnum,
-              }
+              },
             ];
 
             if (acceptableElements.length > 0) {
@@ -92,12 +87,16 @@ registerDataPlugin(
                 advanced: true,
                 type: 'object',
                 friendlyName: `${type.system.name} elements`,
-                subFields: acceptableElements.map(element => ({
-                  type: element.type,
-                  name: element.id,
-                  helperText: 'Exact match only: see https://kontent.ai/learn/reference/delivery-api/#tag/Filtering-content',
-                  friendlyName: element.name
-                } as Input)),
+                subFields: acceptableElements.map(
+                  element =>
+                    ({
+                      type: element.type,
+                      name: element.id,
+                      helperText:
+                        'Exact match only: see https://kontent.ai/learn/reference/delivery-api/#tag/Filtering-content',
+                      friendlyName: element.name,
+                    } as Input)
+                ),
                 // ask about this
               } as any);
             }
@@ -111,8 +110,7 @@ registerDataPlugin(
               return url;
             }
             // by query, read query values from the schema you defined in inputs above and generate a public url to the results
-            const query = client.items()
-              .type(type.system.codename);
+            const query = client.items().type(type.system.codename);
 
             if (options.language) {
               query.languageParameter(options.language);
@@ -127,36 +125,39 @@ registerDataPlugin(
         }));
       },
       async getEntriesByResourceType(id: string, options) {
-        console.log('getEntriesByResourceType', 'options: ', options, 'id: ', id);
         const query = client.items().type(id);
         const result = await query.toAllPromise();
         if (options?.resourceEntryId) {
           // data plugins UI is asking for a specific entry return [entry]
-          const entry = result.data.items.find(item => item.system.codename === options.resourceEntryId);
+          const entry = result.data.items.find(
+            item => item.system.codename === options.resourceEntryId
+          );
           if (entry) {
-            return [{
-              id: entry.system.codename,
-              name: entry.system.name,
-            }];
+            return [
+              {
+                id: entry.system.codename,
+                name: entry.system.name,
+              },
+            ];
           }
         } else if (options?.searchText != undefined) {
           // data plugins UI is asking for the results of a free form search on entries per resource type
           // hit api with searchText and return an array that matches interface Array<{ name: string, id: string}>
           return result.data.items
             .filter(({ system: { name } }) =>
-              name.toLowerCase()
-                .includes((options?.searchText as string)?.toLowerCase())
-            ).map(item => ({
+              name.toLowerCase().includes((options?.searchText as string)?.toLowerCase())
+            )
+            .map(item => ({
               id: item.system.codename,
-              name: item.system.name
+              name: item.system.name,
             }));
         }
         // no search or specific entry , return all entries for  this specific resource type
         return result.data.items.map(entry => {
-          return ({
+          return {
             id: entry.system.codename,
             name: entry.system.name,
-          });
+          };
         });
       },
     };
