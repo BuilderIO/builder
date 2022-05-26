@@ -261,8 +261,8 @@ export interface GetContentOptions {
   /**
    * User attribute key value pairs to be used for targeting
    * https://www.builder.io/c/docs/custom-targeting-attributes
-   * 
-   * e.g. 
+   *
+   * e.g.
    * ```js
    * userAttributes: {
    *   urlPath: '/',
