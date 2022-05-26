@@ -45,7 +45,7 @@
 
 #### Defined in
 
-[builder.class.ts:494](https://github.com/builderio/builder/blob/8c1a05a9/packages/core/src/builder.class.ts#L494)
+[builder.class.ts:509](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L509)
 
 ___
 
@@ -55,7 +55,7 @@ ___
 
 #### Defined in
 
-[builder.class.ts:447](https://github.com/builderio/builder/blob/8c1a05a9/packages/core/src/builder.class.ts#L447)
+[builder.class.ts:462](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L462)
 
 ___
 
@@ -65,7 +65,7 @@ ___
 
 #### Defined in
 
-[builder.class.ts:444](https://github.com/builderio/builder/blob/8c1a05a9/packages/core/src/builder.class.ts#L444)
+[builder.class.ts:459](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L459)
 
 ___
 
@@ -80,7 +80,7 @@ directly but will still be looking for how to add additional tabs
 
 #### Defined in
 
-[builder.class.ts:473](https://github.com/builderio/builder/blob/8c1a05a9/packages/core/src/builder.class.ts#L473)
+[builder.class.ts:488](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L488)
 
 ___
 
@@ -94,7 +94,7 @@ to bubble up important inputs for locked groups, like text and images
 
 #### Defined in
 
-[builder.class.ts:479](https://github.com/builderio/builder/blob/8c1a05a9/packages/core/src/builder.class.ts#L479)
+[builder.class.ts:494](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L494)
 
 ___
 
@@ -104,7 +104,7 @@ ___
 
 #### Defined in
 
-[builder.class.ts:496](https://github.com/builderio/builder/blob/8c1a05a9/packages/core/src/builder.class.ts#L496)
+[builder.class.ts:511](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L511)
 
 ___
 
@@ -114,7 +114,7 @@ ___
 
 #### Defined in
 
-[builder.class.ts:499](https://github.com/builderio/builder/blob/8c1a05a9/packages/core/src/builder.class.ts#L499)
+[builder.class.ts:514](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L514)
 
 ___
 
@@ -124,7 +124,7 @@ ___
 
 #### Defined in
 
-[builder.class.ts:441](https://github.com/builderio/builder/blob/8c1a05a9/packages/core/src/builder.class.ts#L441)
+[builder.class.ts:456](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L456)
 
 ___
 
@@ -134,7 +134,7 @@ ___
 
 #### Defined in
 
-[builder.class.ts:440](https://github.com/builderio/builder/blob/8c1a05a9/packages/core/src/builder.class.ts#L440)
+[builder.class.ts:455](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L455)
 
 ___
 
@@ -144,7 +144,7 @@ ___
 
 #### Defined in
 
-[builder.class.ts:481](https://github.com/builderio/builder/blob/8c1a05a9/packages/core/src/builder.class.ts#L481)
+[builder.class.ts:496](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L496)
 
 ___
 
@@ -154,7 +154,7 @@ ___
 
 #### Defined in
 
-[builder.class.ts:439](https://github.com/builderio/builder/blob/8c1a05a9/packages/core/src/builder.class.ts#L439)
+[builder.class.ts:454](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L454)
 
 ___
 
@@ -164,7 +164,7 @@ ___
 
 #### Defined in
 
-[builder.class.ts:446](https://github.com/builderio/builder/blob/8c1a05a9/packages/core/src/builder.class.ts#L446)
+[builder.class.ts:461](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L461)
 
 ___
 
@@ -174,7 +174,7 @@ ___
 
 #### Defined in
 
-[builder.class.ts:452](https://github.com/builderio/builder/blob/8c1a05a9/packages/core/src/builder.class.ts#L452)
+[builder.class.ts:467](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L467)
 
 ___
 
@@ -184,7 +184,7 @@ ___
 
 #### Defined in
 
-[builder.class.ts:448](https://github.com/builderio/builder/blob/8c1a05a9/packages/core/src/builder.class.ts#L448)
+[builder.class.ts:463](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L463)
 
 ___
 
@@ -194,7 +194,7 @@ ___
 
 #### Defined in
 
-[builder.class.ts:449](https://github.com/builderio/builder/blob/8c1a05a9/packages/core/src/builder.class.ts#L449)
+[builder.class.ts:464](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L464)
 
 ___
 
@@ -206,7 +206,7 @@ Number field type validation maximum accepted input
 
 #### Defined in
 
-[builder.class.ts:457](https://github.com/builderio/builder/blob/8c1a05a9/packages/core/src/builder.class.ts#L457)
+[builder.class.ts:472](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L472)
 
 ___
 
@@ -216,7 +216,7 @@ ___
 
 #### Defined in
 
-[builder.class.ts:450](https://github.com/builderio/builder/blob/8c1a05a9/packages/core/src/builder.class.ts#L450)
+[builder.class.ts:465](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L465)
 
 ___
 
@@ -226,7 +226,7 @@ ___
 
 #### Defined in
 
-[builder.class.ts:451](https://github.com/builderio/builder/blob/8c1a05a9/packages/core/src/builder.class.ts#L451)
+[builder.class.ts:466](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L466)
 
 ___
 
@@ -238,7 +238,7 @@ Number field type validation minimum accepted input
 
 #### Defined in
 
-[builder.class.ts:461](https://github.com/builderio/builder/blob/8c1a05a9/packages/core/src/builder.class.ts#L461)
+[builder.class.ts:476](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L476)
 
 ___
 
@@ -248,7 +248,7 @@ ___
 
 #### Defined in
 
-[builder.class.ts:453](https://github.com/builderio/builder/blob/8c1a05a9/packages/core/src/builder.class.ts#L453)
+[builder.class.ts:468](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L468)
 
 ___
 
@@ -258,7 +258,7 @@ ___
 
 #### Defined in
 
-[builder.class.ts:438](https://github.com/builderio/builder/blob/8c1a05a9/packages/core/src/builder.class.ts#L438)
+[builder.class.ts:453](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L453)
 
 ___
 
@@ -268,7 +268,7 @@ ___
 
 #### Defined in
 
-[builder.class.ts:495](https://github.com/builderio/builder/blob/8c1a05a9/packages/core/src/builder.class.ts#L495)
+[builder.class.ts:510](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L510)
 
 ___
 
@@ -282,7 +282,7 @@ ___
 
 #### Defined in
 
-[builder.class.ts:480](https://github.com/builderio/builder/blob/8c1a05a9/packages/core/src/builder.class.ts#L480)
+[builder.class.ts:495](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L495)
 
 ___
 
@@ -302,7 +302,7 @@ Regex field validation for all string types (text, longText, html, url, etc)
 
 #### Defined in
 
-[builder.class.ts:483](https://github.com/builderio/builder/blob/8c1a05a9/packages/core/src/builder.class.ts#L483)
+[builder.class.ts:498](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L498)
 
 ___
 
@@ -312,7 +312,7 @@ ___
 
 #### Defined in
 
-[builder.class.ts:443](https://github.com/builderio/builder/blob/8c1a05a9/packages/core/src/builder.class.ts#L443)
+[builder.class.ts:458](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L458)
 
 ___
 
@@ -322,7 +322,7 @@ ___
 
 #### Defined in
 
-[builder.class.ts:497](https://github.com/builderio/builder/blob/8c1a05a9/packages/core/src/builder.class.ts#L497)
+[builder.class.ts:512](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L512)
 
 ___
 
@@ -332,7 +332,7 @@ ___
 
 #### Defined in
 
-[builder.class.ts:498](https://github.com/builderio/builder/blob/8c1a05a9/packages/core/src/builder.class.ts#L498)
+[builder.class.ts:513](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L513)
 
 ___
 
@@ -344,7 +344,7 @@ Number field type step size when using arrows
 
 #### Defined in
 
-[builder.class.ts:465](https://github.com/builderio/builder/blob/8c1a05a9/packages/core/src/builder.class.ts#L465)
+[builder.class.ts:480](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L480)
 
 ___
 
@@ -354,7 +354,7 @@ ___
 
 #### Defined in
 
-[builder.class.ts:445](https://github.com/builderio/builder/blob/8c1a05a9/packages/core/src/builder.class.ts#L445)
+[builder.class.ts:460](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L460)
 
 ___
 
@@ -364,4 +364,4 @@ ___
 
 #### Defined in
 
-[builder.class.ts:442](https://github.com/builderio/builder/blob/8c1a05a9/packages/core/src/builder.class.ts#L442)
+[builder.class.ts:457](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L457)

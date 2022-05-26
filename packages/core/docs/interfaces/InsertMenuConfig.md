@@ -20,7 +20,7 @@
 
 #### Defined in
 
-[builder.class.ts:625](https://github.com/builderio/builder/blob/8c1a05a9/packages/core/src/builder.class.ts#L625)
+[builder.class.ts:640](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L640)
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 #### Defined in
 
-[builder.class.ts:626](https://github.com/builderio/builder/blob/8c1a05a9/packages/core/src/builder.class.ts#L626)
+[builder.class.ts:641](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L641)
 
 ___
 
@@ -40,7 +40,7 @@ ___
 
 #### Defined in
 
-[builder.class.ts:622](https://github.com/builderio/builder/blob/8c1a05a9/packages/core/src/builder.class.ts#L622)
+[builder.class.ts:637](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L637)
 
 ___
 
@@ -50,7 +50,7 @@ ___
 
 #### Defined in
 
-[builder.class.ts:624](https://github.com/builderio/builder/blob/8c1a05a9/packages/core/src/builder.class.ts#L624)
+[builder.class.ts:639](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L639)
 
 ___
 
@@ -60,4 +60,4 @@ ___
 
 #### Defined in
 
-[builder.class.ts:623](https://github.com/builderio/builder/blob/8c1a05a9/packages/core/src/builder.class.ts#L623)
+[builder.class.ts:638](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L638)
