@@ -8,7 +8,7 @@ export default function Image(props) {
         <View
           loading="lazy"
           alt={props.altText}
-          aria-role={props.altText ? "presentation" : undefined}
+          role={props.altText ? "presentation" : undefined}
           style={styles.view2}
           src={props.image}
           srcset={props.srcset}

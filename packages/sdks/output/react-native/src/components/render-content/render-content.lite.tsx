@@ -146,16 +146,18 @@ export default function RenderContent(props) {
   }
 
   function emitStateUpdate() {
-    window.dispatchEvent(
-      new CustomEvent("builder:component:stateChange", {
-        detail: {
-          state: contentState(),
-          ref: {
-            name: props.model,
+    if (isEditing()) {
+      window.dispatchEvent(
+        new CustomEvent("builder:component:stateChange", {
+          detail: {
+            state: contentState(),
+            ref: {
+              name: props.model,
+            },
           },
-        },
-      })
-    );
+        })
+      );
+    }
   }
 
   useEffect(() => {

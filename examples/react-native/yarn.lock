@@ -1472,7 +1472,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@builder.io/sdk-react-native@npm:^0.0.1-50":
+"@builder.io/sdk-react-native@npm:0.0.1-50":
   version: 0.0.1-50
   resolution: "@builder.io/sdk-react-native@npm:0.0.1-50"
   dependencies:
@@ -3538,9 +3538,9 @@ __metadata:
   linkType: hard
 
 "eme-encryption-scheme-polyfill@npm:^2.0.1":
-  version: 2.0.3
-  resolution: "eme-encryption-scheme-polyfill@npm:2.0.3"
-  checksum: b26ec4af94585f0b36a3b7b03ce8f9c95b27573f52cfd4cb764f688f51727fdb091d24d1dff1eb77c909c03824ce1ed02b07074fa042f4348cfde8e9c89bdf94
+  version: 2.0.4
+  resolution: "eme-encryption-scheme-polyfill@npm:2.0.4"
+  checksum: 2655ecc261b428a62dcaaee43ad92d945769f43584773954221d7eef67e43a1bcb711e78ccadcc2ed11b18930ce0092f67e8ee07c5a5fb108ecc5dd403176fba
   languageName: node
   linkType: hard
 
@@ -7122,7 +7122,7 @@ __metadata:
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
     "@babel/core": ^7.12.9
-    "@builder.io/sdk-react-native": ^0.0.1-50
+    "@builder.io/sdk-react-native": 0.0.1-50
     "@react-navigation/native": ^6.0.8
     "@react-navigation/native-stack": ^6.5.0
     "@types/react": ~17.0.21

@@ -18,6 +18,7 @@ export { BuilderComponent as BuilderPage };
 export { BuilderComponent };
 
 export { stringToFunction } from './functions/string-to-function';
+export { useIsPreviewing } from './hooks/useIsPreviewing';
 
 export { builder, Builder };
 export default builder;

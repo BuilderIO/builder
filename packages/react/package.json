@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/react",
-  "version": "1.1.52",
+  "version": "2.0.1",
   "description": "",
   "keywords": [],
   "main": "dist/builder-react.cjs.js",
@@ -36,6 +36,7 @@
     "report-coverage": "cat ./coverage/lcov.info≈ | coveralls",
     "commit": "git-cz",
     "release": "npm run build && ALLOW_PUBLISH=true npm publish",
+    "release:major": "npm run build && npm version major && ALLOW_PUBLISH=true npm publish",
     "release:patch": "npm run build && npm version patch && ALLOW_PUBLISH=true npm publish",
     "release:nightly": "npm run build && npm version prerelease --no-git-tag-version && ALLOW_PUBLISH=true npm publish --tag nightly",
     "release:dev": "npm run build && npm version prerelease --no-git-tag-version && ALLOW_PUBLISH=true npm publish --tag dev",
@@ -140,7 +141,6 @@
   },
   "//": "TODO: maybe make @builder.io/sdk peerdependency",
   "optionalDependencies": {
-    "create-react-context": "^0.2.3",
     "node-fetch": "^2.3.0",
     "prop-types": "^15.7.2"
   },
@@ -149,8 +149,8 @@
     "@emotion/core": "^10.0.17",
     "hash-sum": "^2.0.0",
     "preact": "^10.1.0",
-    "react": ">=14",
-    "react-dom": ">=14",
+    "react": ">=17.0.1",
+    "react-dom": ">=17.0.1",
     "tslib": "^2.4.0",
     "vm2": "^3.6.4"
   },

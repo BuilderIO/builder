@@ -44,7 +44,7 @@
     ]
   },
   "dependencies": {
-    "@builder.io/react": "^1.1.47",
+    "@builder.io/react": "^1.1.53-0",
     "@builder.io/widgets": "^1.2.21",
     "@vercel/fetch": "^6.1.0",
     "atob": "^2.1.2",

@@ -1,7 +1,7 @@
 <template>
   <component
     v-bind="propertiesAndActions"
-    v-if="!(componentInfo && componentInfo.noWrap)"
+    v-if="!isEmptyHtmlElement(tagName)"
     :style="css"
     :is="tagName"
   >
@@ -19,16 +19,23 @@
       <render-block
         v-for="(child, index) in children"
         :block="child"
-        :key="index"
+        :key="child.id"
       ></render-block>
     </component>
 
     <render-block
       v-for="(child, index) in noCompRefChildren"
       :block="child"
-      :key="index"
+      :key="child.id"
     ></render-block>
   </component>
+  <component
+    v-bind="propertiesAndActions"
+    v-else=""
+    :style="css"
+    :is="tagName"
+  ></component>
+
   <component
     v-bind="componentOptions"
     v-else=""
@@ -40,7 +47,7 @@
     <render-block
       v-for="(child, index) in children"
       :block="child"
-      :key="index"
+      :key="child.id"
     ></render-block>
   </component>
 </template>
@@ -54,13 +61,14 @@ import { getBlockStyles } from "../../functions/get-block-styles.js";
 import { getBlockTag } from "../../functions/get-block-tag.js";
 import { getProcessedBlock } from "../../functions/get-processed-block.js";
 import BlockStyles from "./block-styles";
+import { isEmptyHtmlElement } from "./render-block.helpers.js";
 
 export default {
   name: "render-block",
   components: { "block-styles": async () => BlockStyles },
   props: ["block"],
 
-  data: () => ({ TARGET }),
+  data: () => ({ TARGET, isEmptyHtmlElement }),
 
   inject: {
     builderContext: "BuilderContext",

@@ -102,7 +102,7 @@ export default function RenderBlock(props: RenderBlockProps) {
           style={state.css}
         >
           <For each={state.children}>
-            {(child) => <RenderBlock block={child} />}
+            {(child) => <RenderBlock key={child.id} block={child} />}
           </For>
         </state.componentRef>
       }
@@ -127,12 +127,12 @@ export default function RenderBlock(props: RenderBlockProps) {
               builderBlock={state.useBlock}
             >
               <For each={state.children}>
-                {(child) => <RenderBlock block={child} />}
+                {(child) => <RenderBlock key={child.id} block={child} />}
               </For>
             </state.componentRef>
           )}
           <For each={state.noCompRefChildren}>
-            {(child) => <RenderBlock block={child} />}
+            {(child) => <RenderBlock key={child.id} block={child} />}
           </For>
         </state.tagName>
       </Show>

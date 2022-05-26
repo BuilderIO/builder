@@ -10,6 +10,7 @@ import { getBlockStyles } from "../../functions/get-block-styles.js";
 import { getBlockTag } from "../../functions/get-block-tag.js";
 import { getProcessedBlock } from "../../functions/get-processed-block.js";
 import BlockStyles from "./block-styles.lite";
+import { isEmptyHtmlElement } from "./render-block.helpers.js";
 
 export default function RenderBlock(props) {
   function component() {
@@ -92,28 +93,34 @@ export default function RenderBlock(props) {
     <>
       {!componentInfo?.()?.noWrap ? (
         <>
-          <TagNameRef {...propertiesAndActions()} style={css()}>
-            {TARGET === "vue" || TARGET === "svelte" ? (
-              <>
-                <BlockStyles block={useBlock()} />
-              </>
-            ) : null}
+          {!isEmptyHtmlElement(tagName()) ? (
+            <>
+              <TagNameRef {...propertiesAndActions()} style={css()}>
+                {TARGET === "vue" || TARGET === "svelte" ? (
+                  <>
+                    <BlockStyles block={useBlock()} />
+                  </>
+                ) : null}
 
-            {componentRef() ? (
-              <ComponentRefRef
-                {...componentOptions()}
-                builderBlock={useBlock()}
-              >
-                {children()?.map((child) => (
-                  <RenderBlock block={child} />
+                {componentRef() ? (
+                  <ComponentRefRef
+                    {...componentOptions()}
+                    builderBlock={useBlock()}
+                  >
+                    {children()?.map((child) => (
+                      <RenderBlock key={child.id} block={child} />
+                    ))}
+                  </ComponentRefRef>
+                ) : null}
+
+                {noCompRefChildren()?.map((child) => (
+                  <RenderBlock key={child.id} block={child} />
                 ))}
-              </ComponentRefRef>
-            ) : null}
-
-            {noCompRefChildren()?.map((child) => (
-              <RenderBlock block={child} />
-            ))}
-          </TagNameRef>
+              </TagNameRef>
+            </>
+          ) : (
+            <TagNameRef {...propertiesAndActions()} style={css()} />
+          )}
         </>
       ) : (
         <ComponentRefRef
@@ -123,7 +130,7 @@ export default function RenderBlock(props) {
           style={css()}
         >
           {children()?.map((child) => (
-            <RenderBlock block={child} />
+            <RenderBlock key={child.id} block={child} />
           ))}
         </ComponentRefRef>
       )}

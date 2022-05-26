@@ -1,4 +1,3 @@
-// TODO: lazy option
 export { default as Columns } from '../blocks/columns/columns.lite';
 export { default as Image } from '../blocks/image/image.lite';
 export { default as Text } from '../blocks/text/text.lite';
