@@ -91,7 +91,7 @@ function RenderBlock(props) {
               {(child, _index) => {
           const index = _index();
 
-          return <RenderBlock block={child}></RenderBlock>;
+          return <RenderBlock key={child.id} block={child}></RenderBlock>;
         }}
             </For>
           </Dynamic>} when={!state.componentInfo?.noWrap}>
@@ -105,7 +105,7 @@ function RenderBlock(props) {
                 {(child, _index) => {
                 const index = _index();
 
-                return <RenderBlock block={child}></RenderBlock>;
+                return <RenderBlock key={child.id} block={child}></RenderBlock>;
               }}
               </For>
             </Dynamic>
@@ -114,7 +114,7 @@ function RenderBlock(props) {
             {(child, _index) => {
             const index = _index();
 
-            return <RenderBlock block={child}></RenderBlock>;
+            return <RenderBlock key={child.id} block={child}></RenderBlock>;
           }}
           </For>
         </Dynamic>

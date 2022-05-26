@@ -19,14 +19,14 @@
       <render-block
         v-for="(child, index) in children"
         :block="child"
-        :key="index"
+        :key="child.id"
       ></render-block>
     </component>
 
     <render-block
       v-for="(child, index) in noCompRefChildren"
       :block="child"
-      :key="index"
+      :key="child.id"
     ></render-block>
   </component>
   <component
@@ -40,7 +40,7 @@
     <render-block
       v-for="(child, index) in children"
       :block="child"
-      :key="index"
+      :key="child.id"
     ></render-block>
   </component>
 </template>

@@ -24,7 +24,7 @@ export default function Image(props: ImageProps) {
         <img
           loading="lazy"
           alt={props.altText}
-          aria-role={props.altText ? 'presentation' : undefined}
+          role={props.altText ? 'presentation' : undefined}
           css={{
             opacity: '1',
             transition: 'opacity 0.2s ease-in-out',

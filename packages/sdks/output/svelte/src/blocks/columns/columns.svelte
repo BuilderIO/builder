@@ -78,7 +78,7 @@ return {
 width: getColumnCssWidth(index),
 marginLeft: `${index === 0 ? 0 : getGutterSize()}px`,
 ...columnCssVars()
-}} >
+}}  key={index} >
           
 <RenderBlocks  blocks={column.blocks} ></RenderBlocks>
 

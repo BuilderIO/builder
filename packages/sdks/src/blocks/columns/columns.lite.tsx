@@ -106,6 +106,7 @@ export default function Columns(props: ColumnProps) {
                 marginLeft: 'var(--column-margin-left) !important',
               },
             }}
+            key={index}
           >
             <RenderBlocks blocks={column.blocks} />
           </div>

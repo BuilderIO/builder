@@ -181,19 +181,21 @@ export default function RenderContent(props: RenderContentProps) {
       });
     },
     emitStateUpdate() {
-      window.dispatchEvent(
-        new CustomEvent<BuilderComponentStateChange>(
-          'builder:component:stateChange',
-          {
-            detail: {
-              state: state.contentState,
-              ref: {
-                name: props.model,
+      if (isEditing()) {
+        window.dispatchEvent(
+          new CustomEvent<BuilderComponentStateChange>(
+            'builder:component:stateChange',
+            {
+              detail: {
+                state: state.contentState,
+                ref: {
+                  name: props.model,
+                },
               },
-            },
-          }
-        )
-      );
+            }
+          )
+        );
+      }
     },
   });
 

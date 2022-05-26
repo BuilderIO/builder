@@ -93,7 +93,7 @@ function RenderBlock(props) {
             <For each={state.children}>
               {(child, _index) => {
                 const index = _index();
-                return <RenderBlock block={child}></RenderBlock>;
+                return <RenderBlock key={child.id} block={child}></RenderBlock>;
               }}
             </For>
           </Dynamic>
@@ -117,7 +117,9 @@ function RenderBlock(props) {
               <For each={state.children}>
                 {(child, _index) => {
                   const index = _index();
-                  return <RenderBlock block={child}></RenderBlock>;
+                  return (
+                    <RenderBlock key={child.id} block={child}></RenderBlock>
+                  );
                 }}
               </For>
             </Dynamic>
@@ -125,7 +127,7 @@ function RenderBlock(props) {
           <For each={state.noCompRefChildren}>
             {(child, _index) => {
               const index = _index();
-              return <RenderBlock block={child}></RenderBlock>;
+              return <RenderBlock key={child.id} block={child}></RenderBlock>;
             }}
           </For>
         </Dynamic>

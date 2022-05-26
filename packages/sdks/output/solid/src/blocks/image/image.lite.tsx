@@ -27,7 +27,7 @@ function Image(props) {
           }
           loading="lazy"
           alt={props.altText}
-          aria-role={props.altText ? "presentation" : undefined}
+          role={props.altText ? "presentation" : undefined}
           style={{
             "object-position": props.backgroundSize || "center",
             "object-fit": props.backgroundSize || "cover",
@@ -45,11 +45,14 @@ function Image(props) {
         }
       >
         <div
-          class={css({
-            width: "100%",
-            pointerEvents: "none",
-            fontSize: "0",
-          })}
+          class={
+            "builder-image-sizer " +
+            css({
+              width: "100%",
+              pointerEvents: "none",
+              fontSize: "0",
+            })
+          }
           style={{
             "padding-top": props.aspectRatio * 100 + "%",
           }}
