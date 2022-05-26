@@ -12,6 +12,7 @@ import  {  getBlockStyles  }  from '../../functions/get-block-styles.js';
 import  {  getBlockTag  }  from '../../functions/get-block-tag.js';
 import  {  getProcessedBlock  }  from '../../functions/get-processed-block.js';
 import  BlockStyles,  {  }  from './block-styles.svelte';
+import  {  isEmptyHtmlElement  }  from './render-block.helpers.js';
 
   
 
@@ -103,12 +104,14 @@ return componentRef() ? [] : children();
   </script>
 
   
-    
-
 {#if !componentInfo?.()?.noWrap }
 
+    
+
+{#if !isEmptyHtmlElement(tagName()) }
+
       
-<svelte:element {...propertiesAndActions()} style={css()}  this={} >
+<svelte:element {...propertiesAndActions()} style={css()}  this={tagName()} >
         
 
 {#if TARGET === 'vue' || TARGET === 'svelte' }
@@ -150,14 +153,22 @@ return componentRef() ? [] : children();
 
 
 {:else}
+<svelte:element {...propertiesAndActions()} style={css()}  this={tagName()} ></svelte:element>
+
+{/if}
+
+  
+
+
+{:else}
 <svelte:component {...componentOptions()} attributes={propertiesAndActions()}  builderBlock={useBlock()}  style={css()}  this={componentRef()} >
-          
+        
 
 {#each children() as child, index }
 <svelte:self  key={child.id}  block={child} ></svelte:self>
 {/each}
 
 
-        </svelte:component>
+      </svelte:component>
 
 {/if}

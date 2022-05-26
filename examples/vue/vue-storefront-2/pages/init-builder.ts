@@ -1,13 +1,5 @@
 import { registerComponent } from '@builder.io/sdk-vue';
 
-// Import the Builder blocks you want
-// TODO: find a way to do this automatically
-import '@builder.io/sdk-vue/nuxt2/src/blocks/image';
-import '@builder.io/sdk-vue/nuxt2/src/blocks/text';
-import '@builder.io/sdk-vue/nuxt2/src/blocks/columns';
-import '@builder.io/sdk-vue/nuxt2/src/blocks/button';
-import '@builder.io/sdk-vue/nuxt2/src/blocks/section';
-
 // Register Vue Storefront UI components
 
 // Atoms
