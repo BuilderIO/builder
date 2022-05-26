@@ -8,6 +8,7 @@ import { getBlockTag } from '../../functions/get-block-tag.js';
 import { getProcessedBlock } from '../../functions/get-processed-block.js';
 import { BuilderBlock } from '../../types/builder-block.js';
 import BlockStyles from './block-styles.lite';
+import { isEmptyHtmlElement } from './render-block.helpers.js';
 import {
   For,
   Show,
@@ -91,20 +92,29 @@ export default function RenderBlock(props: RenderBlockProps) {
   });
 
   return (
-    <>
+    <Show
+      when={!state.componentInfo?.noWrap}
+      else={
+        <state.componentRef
+          attributes={state.propertiesAndActions}
+          {...state.componentOptions}
+          builderBlock={state.useBlock}
+          style={state.css}
+        >
+          <For each={state.children}>
+            {(child) => <RenderBlock block={child} />}
+          </For>
+        </state.componentRef>
+      }
+    >
       <Show
-        when={!state.componentInfo?.noWrap}
+        when={!isEmptyHtmlElement(state.tagName)}
         else={
-          <state.componentRef
-            attributes={state.propertiesAndActions}
-            {...state.componentOptions}
-            builderBlock={state.useBlock}
-            style={state.css}
-          >
-            <For each={state.children}>
-              {(child: any) => <RenderBlock block={child} />}
-            </For>
-          </state.componentRef>
+          /**
+           * Svelte is super finicky, and does not allow an empty HTML element (e.g. `img`) to have logic inside of it,
+           * _even_ if that logic ends up not rendering anything.
+           */
+          <state.tagName {...state.propertiesAndActions} style={state.css} />
         }
       >
         <state.tagName {...state.propertiesAndActions} style={state.css}>
@@ -117,15 +127,15 @@ export default function RenderBlock(props: RenderBlockProps) {
               builderBlock={state.useBlock}
             >
               <For each={state.children}>
-                {(child: any) => <RenderBlock block={child} />}
+                {(child) => <RenderBlock block={child} />}
               </For>
             </state.componentRef>
           )}
           <For each={state.noCompRefChildren}>
-            {(child: any) => <RenderBlock block={child} />}
+            {(child) => <RenderBlock block={child} />}
           </For>
         </state.tagName>
       </Show>
-    </>
+    </Show>
   );
 }
