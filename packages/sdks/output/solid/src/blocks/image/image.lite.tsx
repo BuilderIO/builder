@@ -45,11 +45,14 @@ function Image(props) {
         }
       >
         <div
-          class={css({
-            width: "100%",
-            pointerEvents: "none",
-            fontSize: "0",
-          })}
+          class={
+            "builder-image-sizer " +
+            css({
+              width: "100%",
+              pointerEvents: "none",
+              fontSize: "0",
+            })
+          }
           style={{
             "padding-top": props.aspectRatio * 100 + "%",
           }}

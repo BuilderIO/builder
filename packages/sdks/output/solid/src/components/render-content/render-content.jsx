@@ -143,14 +143,16 @@ function RenderContent(props) {
     },
 
     emitStateUpdate() {
-      window.dispatchEvent(new CustomEvent("builder:component:stateChange", {
-        detail: {
-          state: state.contentState,
-          ref: {
-            name: props.model
+      if (isEditing()) {
+        window.dispatchEvent(new CustomEvent("builder:component:stateChange", {
+          detail: {
+            state: state.contentState,
+            ref: {
+              name: props.model
+            }
           }
-        }
-      }));
+        }));
+      }
     }
 
   });

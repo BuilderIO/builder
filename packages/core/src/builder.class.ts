@@ -258,6 +258,18 @@ export interface UserAttributes {
 }
 
 export interface GetContentOptions {
+  /**
+   * User attribute key value pairs to be used for targeting
+   * https://www.builder.io/c/docs/custom-targeting-attributes
+   *
+   * e.g.
+   * ```js
+   * userAttributes: {
+   *   urlPath: '/',
+   *   returnVisitor: true,
+   * }
+   * ```
+   */
   userAttributes?: UserAttributes;
   /**
    * Alias for userAttributes.urlPath except it can handle a full URL (optionally with host,
@@ -300,10 +312,13 @@ export interface GetContentOptions {
   /**
    * Mongodb style query of your data. E.g.:
    *
-   * ```
-   * &query.data.id=abc123
-   * &query.data.myCustomField=someValue
-   * &query.data.someNumber.$ne=20
+   * ```js
+   * query: {
+   *  id: 'abc123',
+   *  data: {
+   *    myCustomField: { $gt: 20 },
+   *  }
+   * }
    * ```
    *
    * See more info on MongoDB's query operators and format.

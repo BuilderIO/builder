@@ -6,7 +6,7 @@
   Drag and drop page builder and CMS for React, Vue, Angular, and more
 </h3>
 <p align="center">
-  Integrate with any site or app. Drag and drop with the components already in your codebase. High speed, full control, no compromises
+  Integrate with any site or app. Drag and drop with the components already in your codebase.
 </p>
 
 <p align="center">
@@ -159,6 +159,7 @@ See our full [getting started docs](https://www.builder.io/c/docs/developers), o
   <tr>
     <td align="center">Integrate Page Building</td>
     <td align="center">Integrate Section Building</td>
+    <td align="center">Integrate CMS Data</td>
   </tr>
   <tr>
     <td align="center">
@@ -171,6 +172,11 @@ See our full [getting started docs](https://www.builder.io/c/docs/developers), o
         <img alt="CTA to integrate section buliding" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F9db93cd1a29443fca7b67c1f9f458356" />
       </a>
     </td>    
+    <td align="center">
+      <a href="https://www.builder.io/c/docs/integrate-cms-data">
+        <img alt="CTA to integrate CMS data" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F8df098759b0a4c89b8c25edec1f3c9eb" />
+      </a>
+    </td>        
   </tr>
 </table>
 
