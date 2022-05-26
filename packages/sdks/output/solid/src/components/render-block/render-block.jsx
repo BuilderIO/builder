@@ -86,7 +86,15 @@ function RenderBlock(props) {
   });
   const builderContext = useContext(BuilderContext);
   return <>
-      <Show when={!state.componentInfo?.noWrap}>
+      <Show fallback={<Dynamic {...state.componentOptions} attributes={state.propertiesAndActions} builderBlock={state.useBlock} style={state.css} component={state.componentRef}>
+            <For each={state.children}>
+              {(child, _index) => {
+          const index = _index();
+
+          return <RenderBlock key={child.id} block={child}></RenderBlock>;
+        }}
+            </For>
+          </Dynamic>} when={!state.componentInfo?.noWrap}>
         <Dynamic {...state.propertiesAndActions} style={state.css} component={state.tagName}>
           <Show when={TARGET === "vue" || TARGET === "svelte"}>
             <BlockStyles block={state.useBlock}></BlockStyles>

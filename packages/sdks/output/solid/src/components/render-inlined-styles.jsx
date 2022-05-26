@@ -1,4 +1,5 @@
 import { Show } from "solid-js";
+import { Dynamic } from "solid-js/web";
 import { createMutable } from "solid-js/store";
 import { TARGET } from "../constants/target.js";
 
@@ -15,7 +16,7 @@ function RenderInlinedStyles(props) {
     }
 
   });
-  return <Show when={TARGET === "svelte"}>
+  return <Show fallback={<Dynamic component={state.tagName}>{props.styles}</Dynamic>} when={TARGET === "svelte"}>
       <div innerHTML={state.injectedStyleScript}></div>
     </Show>;
 }
