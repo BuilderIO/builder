@@ -21,7 +21,7 @@ function Image(props) {
         <source srcSet={props.srcset} />
       </picture>
       <Show when={props.aspectRatio && !(props.fitContent && props.builderBlock?.children?.length)}>
-        <div class={"builder-image-sizer " + css({
+        <div class={css({
         width: "100%",
         pointerEvents: "none",
         fontSize: "0"

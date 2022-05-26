@@ -51,7 +51,7 @@ function Columns(props) {
     }
 
   });
-  return <div class={"builder-columns " + css({
+  return <div class={css({
     display: "flex",
     alignItems: "stretch",
     lineHeight: "normal",
@@ -66,7 +66,7 @@ function Columns(props) {
         {(column, _index) => {
         const index = _index();
 
-        return <div class={"builder-column " + css({
+        return <div class={css({
           flexGrow: "1",
           "@media (max-width: 999px)": {
             width: "var(--column-width-tablet) !important",

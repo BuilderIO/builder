@@ -271,14 +271,11 @@ function FormComponent(props) {
       </Show>
       <Show when={state.submissionState === "error" && state.responseData}>
         <pre
-          class={
-            "builder-form-error-text " +
-            css({
-              padding: "10px",
-              color: "red",
-              textAlign: "center",
-            })
-          }
+          class={css({
+            padding: "10px",
+            color: "red",
+            textAlign: "center",
+          })}
         >
           {JSON.stringify(state.responseData, null, 2)}
         </pre>

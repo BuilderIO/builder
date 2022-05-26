@@ -1,4 +1,3 @@
-import { useContext, onMount } from "solid-js";
 import { createMutable } from "solid-js/store";
 import RenderContent from "../../components/render-content/render-content";
 import BuilderContext from "../../context/builder.context";
@@ -17,7 +16,7 @@ function Symbol(props) {
   }}>
       <RenderContent apiKey={builderContext.apiKey} context={builderContext.context} data={{ ...props.symbol?.data,
       ...builderContext.state,
-      ...props.symbol?.content?.data?.state
+      ...props.symbol?.state.content?.data?.state
     }} model={props.symbol?.model} content={state.content}></RenderContent>
     </div>;
 }

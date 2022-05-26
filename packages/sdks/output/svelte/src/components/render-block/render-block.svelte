@@ -108,7 +108,7 @@ return componentRef() ? [] : children();
 {#if !componentInfo?.()?.noWrap }
 
       
-<svelte:element {...propertiesAndActions()} style={css()}  this={} >
+<svelte:element {...propertiesAndActions()} style={css()}  this={tagName()} >
         
 
 {#if TARGET === 'vue' || TARGET === 'svelte' }

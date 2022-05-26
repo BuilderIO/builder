@@ -55,5 +55,5 @@ export default function CustomCode(props) {
     findAndRunScripts();
   }, []);
 
-  return <View ref={elem} dangerouslySetInnerHTML={{ __html: props.code }} />;
+  return <View ref={elem} dangerouslySetInnerHTML={{ __html: "props.code" }} />;
 }

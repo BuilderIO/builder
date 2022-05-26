@@ -55,20 +55,17 @@ function Columns(props) {
 
   return (
     <div
-      class={
-        "builder-columns " +
-        css({
-          display: "flex",
-          alignItems: "stretch",
-          lineHeight: "normal",
-          "@media (max-width: 999px)": {
-            flexDirection: "var(--flex-dir-tablet)",
-          },
-          "@media (max-width: 639px)": {
-            flexDirection: "var(--flex-dir)",
-          },
-        })
-      }
+      class={css({
+        display: "flex",
+        alignItems: "stretch",
+        lineHeight: "normal",
+        "@media (max-width: 999px)": {
+          flexDirection: "var(--flex-dir-tablet)",
+        },
+        "@media (max-width: 639px)": {
+          flexDirection: "var(--flex-dir)",
+        },
+      })}
       style={state.columnsCssVars}
     >
       <For each={props.columns}>
@@ -76,20 +73,17 @@ function Columns(props) {
           const index = _index();
           return (
             <div
-              class={
-                "builder-column " +
-                css({
-                  flexGrow: "1",
-                  "@media (max-width: 999px)": {
-                    width: "var(--column-width-tablet) !important",
-                    marginLeft: "var(--column-margin-left-tablet) !important",
-                  },
-                  "@media (max-width: 639px)": {
-                    width: "var(--column-width) !important",
-                    marginLeft: "var(--column-margin-left) !important",
-                  },
-                })
-              }
+              class={css({
+                flexGrow: "1",
+                "@media (max-width: 999px)": {
+                  width: "var(--column-width-tablet) !important",
+                  marginLeft: "var(--column-margin-left-tablet) !important",
+                },
+                "@media (max-width: 639px)": {
+                  width: "var(--column-width) !important",
+                  marginLeft: "var(--column-margin-left) !important",
+                },
+              })}
               style={{
                 width: state.getColumnCssWidth(index),
                 "margin-left": `${index === 0 ? 0 : state.getGutterSize()}px`,

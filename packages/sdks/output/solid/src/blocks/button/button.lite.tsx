@@ -3,10 +3,7 @@ import { Show } from "solid-js";
 function Button(props) {
   return (
     <>
-      <Show
-        fallback={<span {...props.attributes}>{props.text}</span>}
-        when={props.link}
-      >
+      <Show when={props.link}>
         <a
           {...props.attributes}
           role="button"

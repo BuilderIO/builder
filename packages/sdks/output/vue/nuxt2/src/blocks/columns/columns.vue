@@ -1,7 +1,7 @@
 <template>
-  <div class="builder-columns div-2brhoa1k8gd" :style="columnsCssVars">
+  <div class="builder-columns div-4wbls88y960" :style="columnsCssVars">
     <div
-      class="builder-column div-2brhoa1k8gd-2"
+      class="builder-column div-4wbls88y960-2"
       v-for="(column, index) in columns"
       :style="{
         width: getColumnCssWidth(index),
@@ -74,32 +74,32 @@ export default {
 };
 </script>
 <style scoped>
-.div-2brhoa1k8gd {
+.div-4wbls88y960 {
   display: flex;
   align-items: stretch;
   line-height: normal;
 }
 @media (max-width: 999px) {
-  .div-2brhoa1k8gd {
+  .div-4wbls88y960 {
     flex-direction: var(--flex-dir-tablet);
   }
 }
 @media (max-width: 639px) {
-  .div-2brhoa1k8gd {
+  .div-4wbls88y960 {
     flex-direction: var(--flex-dir);
   }
 }
-.div-2brhoa1k8gd-2 {
+.div-4wbls88y960-2 {
   flex-grow: 1;
 }
 @media (max-width: 999px) {
-  .div-2brhoa1k8gd-2 {
+  .div-4wbls88y960-2 {
     width: var(--column-width-tablet) !important;
     margin-left: var(--column-margin-left-tablet) !important;
   }
 }
 @media (max-width: 639px) {
-  .div-2brhoa1k8gd-2 {
+  .div-4wbls88y960-2 {
     width: var(--column-width) !important;
     margin-left: var(--column-margin-left) !important;
   }

@@ -81,25 +81,7 @@ function RenderBlock(props) {
 
   return (
     <>
-      <Show
-        fallback={
-          <Dynamic
-            {...state.componentOptions}
-            attributes={state.propertiesAndActions}
-            builderBlock={state.useBlock}
-            style={state.css}
-            component={state.componentRef}
-          >
-            <For each={state.children}>
-              {(child, _index) => {
-                const index = _index();
-                return <RenderBlock key={child.id} block={child}></RenderBlock>;
-              }}
-            </For>
-          </Dynamic>
-        }
-        when={!state.componentInfo?.noWrap}
-      >
+      <Show when={!state.componentInfo?.noWrap}>
         <Dynamic
           {...state.propertiesAndActions}
           style={state.css}

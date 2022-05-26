@@ -236,7 +236,7 @@ function FormComponent(props) {
         <BuilderBlocks dataPath="sendingMessage" blocks={props.sendingMessage}></BuilderBlocks>
       </Show>
       <Show when={state.submissionState === "error" && state.responseData}>
-        <pre class={"builder-form-error-text " + css({
+        <pre class={css({
         padding: "10px",
         color: "red",
         textAlign: "center"
