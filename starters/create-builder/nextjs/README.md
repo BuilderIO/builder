@@ -82,21 +82,27 @@ Now that you have a new space, the next step is connecting "My Next.js App" with
 
 ### Connecting Builder.io to your application
 
-To connect your Builder.io space and your application, set the site URL and get the API key as follows:
+To connect your Builder.io space and your application, set the model preview URL and get your API key as follows:
 
-1. In Builder.io, click on the Account icon on the left sidenav.
+#### Setting the model preview URL
+To enable Builder to open your site in the visual editor, you will need to provide a URL that we can open which has the Builder rendering component in it.
 
-<figure>
-   <img src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fd26eb45cd52a4cada42413cd5c99419d" alt="Account icon in left sidenav" width="200" style="display: block; margin: auto"/>
-</figure>
+Go to the [/models](https://builder.io/models) page in Builder and choose your **page** model.
 
-1. Change the Site URL to `http://localhost:3000` and click to copy the Public API Key.
+Then, set the Preview URL to http://localhost:3000. Be sure to include the http://.
 
-<figure>
-   <img src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Faec18bf8ccf543ab94c4230a7791c894" alt="Change the Site URL in account settings." width="400" style="display: block; margin: auto"/>
-</figure>
+![Image showing where to put the Preview URL](https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F5c26e2c8b4ec437aaef196c8d4e32fc3)
 
-1. In your code editor, update `_app.tsx` with your [Public API Key](https://builder.io/account/space) like below, but using your Public API Key that you copied in the previous step.
+**Note: once you deploy your updates, you will want to update this to a public URL, such as your live site or your staging site (e.g. `https://your-site.com`), so anyone on your team can connect to your site for visual editing**
+
+#### Getting your API Key
+
+In the [Account settings](https://builder.io/account/space), copy your Public API Key. We're going to paste the API Key into your Next.js app in the next section.
+
+![Image showing where to get your API Key](https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F761e521019724d8bbd59ed0d5f079c8e)
+
+
+In your code editor, update `_app.tsx` with your [Public API Key](https://builder.io/account/space) like below, but using your Public API Key that you copied in the previous step.
    For example:
 
    ```shell
