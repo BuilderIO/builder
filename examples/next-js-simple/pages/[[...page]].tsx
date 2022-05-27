@@ -1,6 +1,11 @@
 import type { GetStaticPropsContext, InferGetStaticPropsType } from 'next'
 import { useRouter } from 'next/router'
-import { BuilderComponent, builder, useIsPreviewing } from '@builder.io/react'
+import {
+  BuilderComponent,
+  Builder,
+  builder,
+  isPreviewing,
+} from '@builder.io/react'
 import DefaultErrorPage from 'next/error'
 import Head from 'next/head'
 import builderConfig from '@config/builder'
@@ -47,9 +52,8 @@ export default function Page({
   page,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const router = useRouter()
-  const isPreviewingInBuilder = useIsPreviewing()
+  const isPreviewingInBuilder = isPreviewing()
   const show404 = !page && !isPreviewingInBuilder
-
   if (router.isFallback) {
     return <h1>Loading...</h1>
   }
