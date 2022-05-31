@@ -525,7 +525,16 @@ export interface Component {
    * Link to a documentation page for this component
    */
   docsLink?: string;
+  /**
+   * Link to an image to be used as an icon for this component in Builder's editor
+   */
   image?: string;
+  /**
+   * Link to a screenshot shown when user hovers over the component in Builder's editor
+   * use https://builder.io/upload to upload your screeshot, for easier resizing by Builder.
+   */
+  screenshot?: string;
+
   /**
    * Input schema for your component for users to fill in the options
    */
