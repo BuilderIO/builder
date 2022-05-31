@@ -1,6 +1,6 @@
 {
   "title": "Next.JS with theme-ui starter",
-  "titleTemplate": "%s - Headless Demo",
+  "titleTemplate": "%s - Demo",
   "description": "A starter kit for demo site with Builder.io and themes",
   "openGraph": {
     "type": "website",
