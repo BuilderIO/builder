@@ -19,5 +19,9 @@ const EMPTY_HTML_ELEMENTS = [
   'wbr',
 ];
 
-export const isEmptyHtmlElement = (tagName: string) =>
-  EMPTY_HTML_ELEMENTS.includes(tagName.toLowerCase());
+export const isEmptyHtmlElement = (tagName: unknown) => {
+  return (
+    typeof tagName === 'string' &&
+    EMPTY_HTML_ELEMENTS.includes(tagName.toLowerCase())
+  );
+};
