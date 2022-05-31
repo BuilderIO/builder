@@ -4,7 +4,6 @@ import { builder } from '@builder.io/react'
 import builderConfig from '@config/builder'
 import Layout from '@components/common/Layout'
 
-
 builder.init(builderConfig.apiKey)
 
 export default function MyApp({ Component, pageProps }: AppProps) {

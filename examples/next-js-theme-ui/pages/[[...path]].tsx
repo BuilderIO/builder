@@ -50,7 +50,7 @@ export default function Path({
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const router = useRouter()
   const { theme } = useThemeUI()
-  const isPreviewing = useIsPreviewing();
+  const isPreviewing = useIsPreviewing()
   if (router.isFallback) {
     return <h1>Loading...</h1>
   }

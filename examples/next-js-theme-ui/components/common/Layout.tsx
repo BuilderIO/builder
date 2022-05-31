@@ -8,15 +8,10 @@ import seoConfig from '@config/seo.json'
 import HeaderSample from './HeaderSample'
 import Head from './Head'
 
-
 const Layout: React.FC<{ pageProps: any }> = ({ children, pageProps }) => {
   const builderTheme = pageProps.theme
   return (
-    <BuilderContent
-      isStatic
-      content={builderTheme}
-      model="theme"
-    >
+    <BuilderContent isStatic content={builderTheme} model="theme">
       {(data, loading) => {
         if (loading && !builderTheme) {
           return 'loading ...'
@@ -24,7 +19,7 @@ const Layout: React.FC<{ pageProps: any }> = ({ children, pageProps }) => {
 
         const colorOverrides = data?.colorOverrides
         const siteSeoInfo = data?.siteInformation
-        const themeName= data?.theme || 'base'
+        const themeName = data?.theme || 'base'
         const theme = {
           ...themesMap[themeName],
           colors: {
@@ -32,7 +27,7 @@ const Layout: React.FC<{ pageProps: any }> = ({ children, pageProps }) => {
             ...colorOverrides,
           },
         }
-      
+
         return (
           <>
             <Head seoInfo={siteSeoInfo || seoConfig} />
