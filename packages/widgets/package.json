@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/widgets",
-  "version": "1.2.21",
+  "version": "1.2.22",
   "description": "",
   "keywords": [],
   "main": "dist/builder-widgets.cjs.js",
@@ -137,7 +137,7 @@
     "prop-types": "^15.7.2"
   },
   "peerDependencies": {
-    "@builder.io/react": "^1.1.0"
+    "@builder.io/react": ">=1.1.0"
   },
   "dependencies": {
     "@emotion/core": ">=10",
