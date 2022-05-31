@@ -18,7 +18,7 @@
 
 #### Defined in
 
-[builder.class.ts:617](https://github.com/builderio/builder/blob/8c1a05a9/packages/core/src/builder.class.ts#L617)
+[builder.class.ts:632](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L632)
 
 ___
 
@@ -28,7 +28,7 @@ ___
 
 #### Defined in
 
-[builder.class.ts:618](https://github.com/builderio/builder/blob/8c1a05a9/packages/core/src/builder.class.ts#L618)
+[builder.class.ts:633](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L633)
 
 ___
 
@@ -38,4 +38,4 @@ ___
 
 #### Defined in
 
-[builder.class.ts:616](https://github.com/builderio/builder/blob/8c1a05a9/packages/core/src/builder.class.ts#L616)
+[builder.class.ts:631](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L631)

@@ -282,16 +282,18 @@ export default {
       });
     },
     emitStateUpdate() {
-      window.dispatchEvent(
-        new CustomEvent("builder:component:stateChange", {
-          detail: {
-            state: this.contentState,
-            ref: {
-              name: this.model,
+      if (isEditing()) {
+        window.dispatchEvent(
+          new CustomEvent("builder:component:stateChange", {
+            detail: {
+              state: this.contentState,
+              ref: {
+                name: this.model,
+              },
             },
-          },
-        })
-      );
+          })
+        );
+      }
     },
   },
 };

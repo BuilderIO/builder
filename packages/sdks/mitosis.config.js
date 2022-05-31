@@ -45,7 +45,7 @@ module.exports = {
                   }
 
                   if (item.name === tag) {
-                    item.bindings.this = item.name;
+                    item.bindings.this = { code: item.name };
                     item.name = 'svelte:element';
                   }
                 });
@@ -59,8 +59,6 @@ module.exports = {
                   // temporary workaround until https://github.com/BuilderIO/mitosis/issues/282 is fixed
                   .replace('class="img"', '')
                   .replace('class="div"', '')
-                  // temporary workaround until we have
-                  .replace(/..\/blocks\/(.*).svelte/g, /..\/blocks\/$1/)
               );
             },
           },

@@ -11,6 +11,7 @@ import { getBlockStyles } from "../../functions/get-block-styles.js";
 import { getBlockTag } from "../../functions/get-block-tag.js";
 import { getProcessedBlock } from "../../functions/get-processed-block.js";
 import BlockStyles from "./block-styles.lite";
+import { isEmptyHtmlElement } from "./render-block.helpers.js";
 
 function RenderBlock(props) {
   const state = createMutable({
@@ -80,25 +81,34 @@ function RenderBlock(props) {
   const builderContext = useContext(BuilderContext);
 
   return (
-    <>
+    <Show
+      fallback={
+        <Dynamic
+          {...state.componentOptions}
+          attributes={state.propertiesAndActions}
+          builderBlock={state.useBlock}
+          style={state.css}
+          component={state.componentRef}
+        >
+          <For each={state.children}>
+            {(child, _index) => {
+              const index = _index();
+              return <RenderBlock key={child.id} block={child}></RenderBlock>;
+            }}
+          </For>
+        </Dynamic>
+      }
+      when={!state.componentInfo?.noWrap}
+    >
       <Show
         fallback={
           <Dynamic
-            {...state.componentOptions}
-            attributes={state.propertiesAndActions}
-            builderBlock={state.useBlock}
+            {...state.propertiesAndActions}
             style={state.css}
-            component={state.componentRef}
-          >
-            <For each={state.children}>
-              {(child, _index) => {
-                const index = _index();
-                return <RenderBlock block={child}></RenderBlock>;
-              }}
-            </For>
-          </Dynamic>
+            component={state.tagName}
+          ></Dynamic>
         }
-        when={!state.componentInfo?.noWrap}
+        when={!isEmptyHtmlElement(state.tagName)}
       >
         <Dynamic
           {...state.propertiesAndActions}
@@ -117,7 +127,9 @@ function RenderBlock(props) {
               <For each={state.children}>
                 {(child, _index) => {
                   const index = _index();
-                  return <RenderBlock block={child}></RenderBlock>;
+                  return (
+                    <RenderBlock key={child.id} block={child}></RenderBlock>
+                  );
                 }}
               </For>
             </Dynamic>
@@ -125,12 +137,12 @@ function RenderBlock(props) {
           <For each={state.noCompRefChildren}>
             {(child, _index) => {
               const index = _index();
-              return <RenderBlock block={child}></RenderBlock>;
+              return <RenderBlock key={child.id} block={child}></RenderBlock>;
             }}
           </For>
         </Dynamic>
       </Show>
-    </>
+    </Show>
   );
 }
 

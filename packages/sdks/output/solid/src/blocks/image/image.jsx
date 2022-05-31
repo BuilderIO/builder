@@ -14,14 +14,14 @@ function Image(props) {
         width: "100%",
         top: "0px",
         left: "0px"
-      })} loading="lazy" alt={props.altText} aria-role={props.altText ? "presentation" : undefined} style={{
+      })} loading="lazy" alt={props.altText} role={props.altText ? "presentation" : undefined} style={{
         "object-position": props.backgroundSize || "center",
         "object-fit": props.backgroundSize || "cover"
       }} src={props.image} srcset={props.srcset} sizes={props.sizes} />
         <source srcSet={props.srcset} />
       </picture>
       <Show when={props.aspectRatio && !(props.fitContent && props.builderBlock?.children?.length)}>
-        <div class={css({
+        <div class={"builder-image-sizer " + css({
         width: "100%",
         pointerEvents: "none",
         fontSize: "0"

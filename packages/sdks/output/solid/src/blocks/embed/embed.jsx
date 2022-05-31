@@ -46,7 +46,7 @@ function Embed(props) {
   onMount(() => {
     state.findAndRunScripts();
   });
-  return <div ref={elem} innerHTML={props.content}></div>;
+  return <div class="builder-embed" ref={elem} innerHTML={props.content}></div>;
 }
 
 export default Embed;

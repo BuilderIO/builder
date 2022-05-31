@@ -56,6 +56,6 @@ export default function Embed(props) {
   }, []);
 
   return (
-    <View ref={elem} dangerouslySetInnerHTML={{ __html: "props.content" }} />
+    <View ref={elem} dangerouslySetInnerHTML={{ __html: props.content }} />
   );
 }

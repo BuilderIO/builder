@@ -50,7 +50,7 @@ const BuilderContent = ({ route }: { route: RouteProp<any, 'Page'> }) => {
       apiKey: BUILDER_API_KEY,
       options: getBuilderSearchParams(route.params || {}),
       userAttributes: {
-        urlPath: route.path,
+        urlPath: route.path || '/',
       },
     })
       .then((content: any) => {

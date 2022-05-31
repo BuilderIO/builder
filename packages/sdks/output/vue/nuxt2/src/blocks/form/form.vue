@@ -6,7 +6,7 @@
     :action="!sendWithJs && action"
     :method="method"
     :name="name"
-    @submit="onSubmit(event)"
+    @submit="onSubmit($event)"
   >
     <render-block
       v-for="(block, index) in (builderBlock && builderBlock.children)"

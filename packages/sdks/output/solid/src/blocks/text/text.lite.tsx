@@ -1,5 +1,5 @@
 function Text(props) {
-  return <div innerHTML={props.text}></div>;
+  return <div class="builder-text" innerHTML={props.text}></div>;
 }
 
 export default Text;
