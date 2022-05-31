@@ -14,5 +14,5 @@ export async function resolveBuilderContent(
     } as any)
     .toPromise()
 
-  return page
+  return page || null
 }

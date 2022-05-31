@@ -2,6 +2,7 @@
   "enableIframeFormSubmissions": false,
   "publicReadable": true,
   "subType": "",
+  "examplePageUrl": "http://localhost:3000",
   "publicWritable": false,
   "allowMetrics": true,
   "lastUpdateBy": null,
