@@ -5,7 +5,30 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 
+	import Counter from '$lib/Counter.svelte';
+
 	import * as BuilderSDK from '@builder.io/sdk-svelte';
+
+	const CUSTOM_COMPONENTS = [
+		{
+			component: Counter,
+			info: {
+				name: 'Counter',
+				inputs: [
+					{
+						name: 'name',
+						type: 'string',
+						defaultValue: 'hello'
+					},
+					{
+						name: 'count',
+						type: 'number',
+						defaultValue: 0
+					}
+				]
+			}
+		}
+	];
 
 	// TODO: enter your public API key
 	const BUILDER_PUBLIC_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660'; // ggignore
@@ -49,7 +72,12 @@
 
 	{#if canShowContent}
 		<div>page: {(content && content.data && content.data.title) || 'Unpublished'}</div>
-		<BuilderSDK.RenderContent model="page" {content} api-key={BUILDER_PUBLIC_API_KEY} />
+		<BuilderSDK.RenderContent
+			model="page"
+			{content}
+			api-key={BUILDER_PUBLIC_API_KEY}
+			customComponents={CUSTOM_COMPONENTS}
+		/>
 	{/if}
 </section>
 
