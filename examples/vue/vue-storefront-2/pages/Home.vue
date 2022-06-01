@@ -15,7 +15,12 @@
     </LazyHydrate>
     <div>Hello world from your Vue project. Below is Builder Content:</div>
     <div v-if="canShowContent">
-      <builder-render-content model="page" :content="content" />
+      <builder-render-content
+        model="page"
+        :content="content"
+        :api-key="apiKey"
+        :customComponents="getRegisteredComponents()"
+      />
     </div>
 
     <LazyHydrate when-visible>
@@ -49,10 +54,10 @@
         class="carousel"
         :settings="{ peek: 16, breakpoints: { 1023: { peek: 0, perView: 2 } } }"
       >
-        <template #prev="{go}">
+        <template #prev="{ go }">
           <SfArrow aria-label="prev" class="sf-arrow--left sf-arrow--long" @click="go('prev')" />
         </template>
-        <template #next="{go}">
+        <template #next="{ go }">
           <SfArrow aria-label="next" class="sf-arrow--right sf-arrow--long" @click="go('next')" />
         </template>
         <SfCarouselItem class="carousel__item" v-for="(product, i) in products" :key="i">
@@ -123,7 +128,7 @@ import LazyHydrate from 'vue-lazy-hydration';
 import { useUiState } from '../composables';
 import cacheControl from './../helpers/cacheControl';
 
-import './init-builder';
+import { REGISTERED_COMPONENTS } from './init-builder';
 import { getContent, isEditing, getBuilderSearchParams } from '@builder.io/sdk-vue';
 
 // TODO: enter your public API key
@@ -154,7 +159,14 @@ export default Vue.extend({
   data: () => ({
     canShowContent: false,
     content: null,
+    apiKey: BUILDER_PUBLIC_API_KEY,
   }),
+
+  methods: {
+    getRegisteredComponents() {
+      return REGISTERED_COMPONENTS;
+    },
+  },
   mounted() {
     // we need to re-reun this check on the client in case of SSR
     this.canShowContent = this.content || isEditing();

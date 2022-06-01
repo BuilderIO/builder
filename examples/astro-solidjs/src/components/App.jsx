@@ -1,5 +1,4 @@
-import { RenderContent, registerComponent } from '@builder.io/sdk-solid';
-import { createEffect } from 'solid-js';
+import { RenderContent } from '@builder.io/sdk-solid';
 import { createMutable } from 'solid-js/store';
 
 function MyFunComponent({ text }) {
@@ -16,23 +15,28 @@ function MyFunComponent({ text }) {
   );
 }
 
-registerComponent(MyFunComponent, {
-  name: 'MyFunComponent',
-  inputs: [
-    {
-      name: 'text',
-      type: 'string',
-      defaultValue: 'Hello world',
+const CUSTOM_COMPONENTS = [
+  {
+    component: MyFunComponent,
+    info: {
+      name: 'MyFunComponent',
+      inputs: [
+        {
+          name: 'text',
+          type: 'string',
+          defaultValue: 'Hello world',
+        },
+      ],
     },
-  ],
-});
+  },
+];
 
 function App({ builderContent }) {
   return (
     <div>
       <header class="text-center p-5">Hello world!</header>
       <div>
-        <RenderContent content={builderContent} model="page" />
+        <RenderContent content={builderContent} model="page" customComponents={CUSTOM_COMPONENTS} />
       </div>
     </div>
   );
