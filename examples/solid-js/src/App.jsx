@@ -1,7 +1,12 @@
 import logo from './logo.svg';
 import styles from './App.module.css';
 
-import { getContent, RenderContent, registerComponent } from '@builder.io/sdk-solid';
+import {
+  getContent,
+  RenderContent,
+  getBuilderSearchParams,
+  convertSearchParamsToQueryObject,
+} from '@builder.io/sdk-solid';
 import { createEffect } from 'solid-js';
 import { createMutable } from 'solid-js/store';
 
@@ -22,16 +27,21 @@ function MyFunComponent({ text }) {
   );
 }
 
-registerComponent(MyFunComponent, {
-  name: 'MyFunComponent',
-  inputs: [
-    {
-      name: 'text',
-      type: 'string',
-      defaultValue: 'Hello world',
+const CUSTOM_COMPONENTS = [
+  {
+    component: MyFunComponent,
+    info: {
+      name: 'MyFunComponent',
+      inputs: [
+        {
+          name: 'text',
+          type: 'string',
+          defaultValue: 'Hello world',
+        },
+      ],
     },
-  ],
-});
+  },
+];
 
 function App() {
   const state = createMutable({
@@ -42,6 +52,9 @@ function App() {
     getContent({
       model: 'page',
       apiKey,
+      options: getBuilderSearchParams(
+        convertSearchParamsToQueryObject(new URLSearchParams(window.location.search))
+      ),
       userAttributes: {
         urlPath: window.location.pathname,
       },
@@ -56,7 +69,14 @@ function App() {
         <img src={logo} class={styles.logo} alt="logo" />
       </header>
       <div>
-        {state.content && <RenderContent model="page" content={state.content} apiKey={apiKey} />}
+        {state.content && (
+          <RenderContent
+            model="page"
+            content={state.content}
+            apiKey={apiKey}
+            customComponents={CUSTOM_COMPONENTS}
+          />
+        )}
       </div>
     </div>
   );

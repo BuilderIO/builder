@@ -4,7 +4,12 @@
 
     <div v-if="canShowContent">
       <div>page: {{ (content && content.data && content.data.title) || 'Unpublished' }}</div>
-      <builder-render-content model="page" :content="content" :api-key="apiKey" />
+      <builder-render-content
+        model="page"
+        :content="content"
+        :api-key="apiKey"
+        :customComponents="getRegisteredComponents()"
+      />
     </div>
   </div>
 </template>
@@ -12,7 +17,7 @@
 import Vue from 'vue';
 import cacheControl from '../helpers/cacheControl';
 
-import './init-builder';
+import { REGISTERED_COMPONENTS } from './init-builder';
 import { getContent, isEditing, isPreviewing, getBuilderSearchParams } from '@builder.io/sdk-vue';
 
 // TODO: enter your public API key
@@ -29,6 +34,11 @@ export default Vue.extend({
     content: null,
     apiKey: BUILDER_PUBLIC_API_KEY,
   }),
+  methods: {
+    getRegisteredComponents() {
+      return REGISTERED_COMPONENTS;
+    },
+  },
   mounted() {
     // we need to re-run this check on the client in case of SSR
     this.canShowContent = this.content || isEditing() || isPreviewing();

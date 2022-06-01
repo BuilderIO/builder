@@ -3,7 +3,6 @@ import { StyleSheet, Text, View, Image } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import {
   RenderContent,
-  registerComponent,
   isEditing,
   getContent,
   getBuilderSearchParams,
@@ -36,10 +35,15 @@ function CustomComponent(props: { text: string }) {
 }
 
 // register your custom component with Builder
-registerComponent(CustomComponent, {
-  name: 'Custom Component',
-  inputs: [{ name: 'text', type: 'string' }],
-});
+const CUSTOM_COMPONENTS = [
+  {
+    component: CustomComponent,
+    info: {
+      name: 'Custom Component',
+      inputs: [{ name: 'text', type: 'string' }],
+    },
+  },
+];
 
 const BuilderContent = ({ route }: { route: RouteProp<any, 'Page'> }) => {
   const [content, setContent] = useState<any>(undefined);
@@ -69,7 +73,12 @@ const BuilderContent = ({ route }: { route: RouteProp<any, 'Page'> }) => {
     <View style={styles.container}>
       <Text>Hello world from your React-Native codebase. Below is your Builder content:</Text>
       {shouldRenderBuilderContent ? (
-        <RenderContent apiKey={BUILDER_API_KEY} model="page" content={content} />
+        <RenderContent
+          apiKey={BUILDER_API_KEY}
+          model="page"
+          content={content}
+          customComponents={CUSTOM_COMPONENTS}
+        />
       ) : null}
       <StatusBar style="auto" />
     </View>

@@ -1,0 +1,37 @@
+---
+import Layout from '../components/Layout.astro';
+
+import { getAllContent, getContent } from '@builder.io/sdk-solid';
+import App from '../components/App'
+
+const API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660';
+
+const builderContent = await getContent({
+  model: 'page',
+  apiKey: API_KEY,
+  userAttributes: {
+    urlPath: `/${Astro.params.slug}`
+  },
+})
+
+export async function getStaticPaths() {
+  const allPages = await getAllContent({
+    model: 'page',
+    // we can't reuse constants outside of `getStaticPaths`, so this is duplicated
+    apiKey: 'f1a790f8c3204b3b8c5c1795aeac4660',
+    limit: 0
+  })
+  const paths = allPages.results.map(page => ({
+    params: {
+      // gotta strip the leading slash
+      slug: (page.data.url as string).slice(1),
+    },
+  }))
+  return paths
+}
+
+---
+
+<Layout title={builderContent?.data?.title || "Welcome to Astro." }>
+  <App client:visible builderContent={builderContent} />
+</Layout>

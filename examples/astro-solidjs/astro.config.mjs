@@ -14,7 +14,7 @@ export default defineConfig({
       polyfillDynamicImport: false,
     },
     ssr: {
-      noExternal: ['@builder. io/sdk-solid'],
+      noExternal: ['@builder.io/sdk-solid'],
     },
     optimizeDeps: {
       // sub-dependencies of our sym-linked package must be manually included here
