@@ -23,8 +23,7 @@ module.exports = {
   },
   options: {
     vue: {
-      registerComponentPrepend:
-        "import { registerComponent } from '../functions/register-component'",
+      namePrefix: (path) => (path.includes('/blocks/') ? 'builder' : undefined),
       cssNamespace: getSeededId,
     },
     svelte: {
