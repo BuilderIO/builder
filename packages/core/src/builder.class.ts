@@ -469,9 +469,9 @@ export interface Input {
   description?: string;
   /** A default value to use */
   defaultValue?: any;
-  /** 
+  /**
    * The type of input to use, such as 'text'
-   * 
+   *
    * See all available inputs [here](https://www.builder.io/c/docs/custom-react-components#input-types)
    * and you can create your own custom input types and associated editor UIs with [plugins](https://www.builder.io/c/docs/extending/plugins)
    */
@@ -481,9 +481,9 @@ export interface Input {
   /** @hidden */
   autoFocus?: boolean;
   subFields?: Input[];
-  /** 
-   * Additional text to render in the UI to give guidance on how to use this 
-   * 
+  /**
+   * Additional text to render in the UI to give guidance on how to use this
+   *
    * @example
    * ```js
    * helperText: 'Be sure to use a proper URL, starting with "https://"'
@@ -548,10 +548,10 @@ export interface Input {
      */
     message: string;
   };
-  /** 
-   * Set this to `true` to put this under the "show more" section of 
+  /**
+   * Set this to `true` to put this under the "show more" section of
    * the options editor. Useful for things that are more advanced
-   * or more rarely used and don't need to be too prominent 
+   * or more rarely used and don't need to be too prominent
    */
   advanced?: boolean;
   /** @hidden */
@@ -591,7 +591,7 @@ export interface Component {
   docsLink?: string;
   /**
    * Link to an image to be used as an icon for this component in Builder's editor
-   * 
+   *
    * @example
    * ```js
    * image: 'https://some-cdn.com/my-icon-for-this-component.png'
@@ -615,7 +615,7 @@ export interface Component {
   type?: 'angular' | 'webcomponent' | 'react' | 'vue';
   /**
    * Default styles to apply when droppged into the Builder.io editor
-   * 
+   *
    * @example
    * ```js
    * defaultStyles: {
@@ -654,7 +654,7 @@ export interface Component {
    * Hide your component in editor, useful for gradually deprecating components
    */
   hideFromInsertMenu?: boolean;
-  /** Custom tag name (for custom webcomponents only) */ 
+  /** Custom tag name (for custom webcomponents only) */
   tag?: string;
   /** @hidden @deprecated */
   static?: boolean;

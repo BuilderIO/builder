@@ -6,7 +6,7 @@ interface JSONObject {
 
 interface JSONArray extends Array<JSONValue> {}
 
-/** 
+/**
  * An object representing an element in Builder
  */
 export interface BuilderElement {
