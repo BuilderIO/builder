@@ -1,5 +1,3 @@
-[@builder.io/sdk](../README.md) / [Exports](../modules.md) / InsertMenuItem
-
 # Interface: InsertMenuItem
 
 ## Table of contents
@@ -18,7 +16,7 @@
 
 #### Defined in
 
-[builder.class.ts:632](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L632)
+[builder.class.ts:654](https://github.com/builderio/builder/blob/5f50f6aa/packages/core/src/builder.class.ts#L654)
 
 ___
 
@@ -28,7 +26,7 @@ ___
 
 #### Defined in
 
-[builder.class.ts:633](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L633)
+[builder.class.ts:655](https://github.com/builderio/builder/blob/5f50f6aa/packages/core/src/builder.class.ts#L655)
 
 ___
 
@@ -38,4 +36,4 @@ ___
 
 #### Defined in
 
-[builder.class.ts:631](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L631)
+[builder.class.ts:653](https://github.com/builderio/builder/blob/5f50f6aa/packages/core/src/builder.class.ts#L653)
