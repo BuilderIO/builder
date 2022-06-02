@@ -6,15 +6,17 @@ to make new sections to organize your custom components
 ![Example of what a custom section looks like](https://cdn.builder.io/api/v1/image/assets%2F7f7bbcf72a1a4d72bac5daa359e7befd%2Fe5f2792e9c0f44ed89a9dcb77b945858)
 
 **`example`**
-   Builder.register('insertMenu', {
-     name: 'Our components',
-     items: [
-       { name: 'Hero' },
-       { name: 'Double Columns' },
-       { name: 'Triple Columns' },
-       { name: 'Dynamic Columns' },
-     ],
-   })
+```js
+Builder.register('insertMenu', {
+  name: 'Our components',
+  items: [
+    { name: 'Hero' },
+    { name: 'Double Columns' },
+    { name: 'Triple Columns' },
+    { name: 'Dynamic Columns' },
+  ],
+})
+```
 
 You can make as many custom sections as you like
 
@@ -38,7 +40,7 @@ See a complete usage example [here](https://github.com/builderio/builder/blob/ma
 
 #### Defined in
 
-[builder.class.ts:683](https://github.com/builderio/builder/blob/5f50f6aa/packages/core/src/builder.class.ts#L683)
+[builder.class.ts:694](https://github.com/builderio/builder/blob/093375b7/packages/core/src/builder.class.ts#L694)
 
 ___
 
@@ -48,7 +50,7 @@ ___
 
 #### Defined in
 
-[builder.class.ts:684](https://github.com/builderio/builder/blob/5f50f6aa/packages/core/src/builder.class.ts#L684)
+[builder.class.ts:695](https://github.com/builderio/builder/blob/093375b7/packages/core/src/builder.class.ts#L695)
 
 ___
 
@@ -58,7 +60,7 @@ ___
 
 #### Defined in
 
-[builder.class.ts:680](https://github.com/builderio/builder/blob/5f50f6aa/packages/core/src/builder.class.ts#L680)
+[builder.class.ts:691](https://github.com/builderio/builder/blob/093375b7/packages/core/src/builder.class.ts#L691)
 
 ___
 
@@ -68,7 +70,7 @@ ___
 
 #### Defined in
 
-[builder.class.ts:682](https://github.com/builderio/builder/blob/5f50f6aa/packages/core/src/builder.class.ts#L682)
+[builder.class.ts:693](https://github.com/builderio/builder/blob/093375b7/packages/core/src/builder.class.ts#L693)
 
 ___
 
@@ -78,4 +80,4 @@ ___
 
 #### Defined in
 
-[builder.class.ts:681](https://github.com/builderio/builder/blob/5f50f6aa/packages/core/src/builder.class.ts#L681)
+[builder.class.ts:692](https://github.com/builderio/builder/blob/093375b7/packages/core/src/builder.class.ts#L692)
