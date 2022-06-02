@@ -12,21 +12,19 @@
 	const CUSTOM_COMPONENTS = [
 		{
 			component: Counter,
-			info: {
-				name: 'Counter',
-				inputs: [
-					{
-						name: 'name',
-						type: 'string',
-						defaultValue: 'hello'
-					},
-					{
-						name: 'count',
-						type: 'number',
-						defaultValue: 0
-					}
-				]
-			}
+			name: 'Counter',
+			inputs: [
+				{
+					name: 'name',
+					type: 'string',
+					defaultValue: 'hello'
+				},
+				{
+					name: 'count',
+					type: 'number',
+					defaultValue: 0
+				}
+			]
 		}
 	];
 	// TODO: enter your public API key

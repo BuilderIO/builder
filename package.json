@@ -33,6 +33,7 @@
     "prepublishOnly": "block-publish",
     "ci:lint": "npx prettier@2.6.2 --check '**/*.{js,jsx,ts,tsx}'",
     "lint:fix": "prettier --write '**/*.{js,jsx,ts,tsx}'",
+    "update-npm-dependency": "zx ./scripts/update-npm-dependency.mjs",
     "prepare": "husky install"
   },
   "dependencies": {

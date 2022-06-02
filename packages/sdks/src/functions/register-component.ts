@@ -11,7 +11,7 @@ export const components: RegisteredComponent[] = [];
  * @deprecated.  Use the `customComponents` prop in RenderContent instead to provide your custom components to the builder SDK.
  */
 export function registerComponent(component: any, info: ComponentInfo): void {
-  components.push({ component, info });
+  components.push({ component, ...info });
 
   console.warn(
     'registerComponent is deprecated. Use the `customComponents` prop in RenderContent instead to provide your custom components to the builder SDK.'
@@ -21,7 +21,8 @@ export function registerComponent(component: any, info: ComponentInfo): void {
 }
 
 export const createRegisterComponentMessage = ({
-  info,
+  component,
+  ...info
 }: RegisteredComponent) => ({
   type: 'builder.registerComponent',
   data: prepareComponentInfoToSend(fastClone(info)),

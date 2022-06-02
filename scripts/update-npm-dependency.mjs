@@ -1,4 +1,5 @@
 #!/usr/bin/env zx
+import { question } from 'zx';
 import { echo } from 'zx/experimental';
 
 /**
@@ -14,6 +15,12 @@ const NPM_MODULE_TO_UPDATE = await question(
   `Hey there! which npm package do you want to update across the mono-repo? (e.g. @builder.io/sdk) -> `
 );
 
+const versionAnswer = await question(
+  'and which version do you want? (e.g. "1.0.0", "dev", "latest"). Defaults to latest -> '
+);
+
+const VERSION = versionAnswer || 'latest';
+
 echo`Searching for usage of ${NPM_MODULE_TO_UPDATE}! Give me a moment...`;
 
 // Including `: ` in front to avoid matching the `package.json` of the project itself.
@@ -21,7 +28,8 @@ const grepVal = `\"${NPM_MODULE_TO_UPDATE}\": `;
 
 // find all projects that import the module directly
 /** @type ProcessOutput */
-const filesGrepOutput = await $`grep -Rl --exclude-dir=node_modules --include=package.json . -e ${grepVal}`;
+const filesGrepOutput =
+  await $`grep -Rl --exclude-dir=node_modules --include=package.json . -e ${grepVal}`;
 
 // get the relative folder paths
 const folderNames = filesGrepOutput
@@ -64,10 +72,10 @@ async function updateModuleInFolder() {
   $.verbose = true;
   if (projectUsesYarn) {
     echo`project is using yarn.`;
-    await $`yarn upgrade ${NPM_MODULE_TO_UPDATE} --latest`;
+    await $`yarn up ${NPM_MODULE_TO_UPDATE}@${VERSION}`;
   } else {
     echo`project is using npm.`;
-    await $`npm install ${NPM_MODULE_TO_UPDATE}@latest --legacy-peer-deps`;
+    await $`npm install ${NPM_MODULE_TO_UPDATE}@${VERSION} --legacy-peer-deps`;
   }
   $.verbose = false;
 }

@@ -3,10 +3,9 @@ import { ComponentInfo } from '../types/components.js';
 import { Dictionary, Nullable } from '../types/typescript.js';
 import { createContext } from '@builder.io/mitosis';
 
-export interface RegisteredComponent {
+export type RegisteredComponent = ComponentInfo & {
   component: any;
-  info: ComponentInfo;
-}
+};
 
 export type RegisteredComponents = Dictionary<RegisteredComponent>;
 

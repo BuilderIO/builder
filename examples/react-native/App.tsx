@@ -38,10 +38,8 @@ function CustomComponent(props: { text: string }) {
 const CUSTOM_COMPONENTS = [
   {
     component: CustomComponent,
-    info: {
-      name: 'Custom Component',
-      inputs: [{ name: 'text', type: 'string' }],
-    },
+    name: 'Custom Component',
+    inputs: [{ name: 'text', type: 'string' }],
   },
 ];
 

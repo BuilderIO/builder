@@ -58,7 +58,7 @@ export default function RenderContent(props) {
       ...(props.customComponents || []),
     ];
     const allComponents = allComponentsArray.reduce(
-      (acc, curr) => ({ ...acc, [curr.info.name]: curr }),
+      (acc, curr) => ({ ...acc, [curr.name]: curr }),
       {}
     );
     return allComponents;

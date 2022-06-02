@@ -18,7 +18,9 @@
     "lint": "yarn run prettier --write",
     "ci:lint": "yarn run prettier --check",
     "ci:build": "mitosis build",
-    "ci:test": "yarn run test"
+    "ci:test": "yarn run test",
+    "release-sdk": "bash ./scripts/release-sdk.sh",
+    "release:dev:all": "npm run release-sdk -- svelte && npm run release-sdk -- react-native && npm run release-sdk -- solid && npm run release-sdk -- vue"
   },
   "dependencies": {
     "@builder.io/mitosis": "dev",

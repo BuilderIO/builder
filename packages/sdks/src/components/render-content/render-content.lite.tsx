@@ -97,7 +97,7 @@ export default function RenderContent(props: RenderContentProps) {
       const allComponents = allComponentsArray.reduce(
         (acc, curr) => ({
           ...acc,
-          [curr.info.name]: curr,
+          [curr.name]: curr,
         }),
         {} as RegisteredComponents
       );
