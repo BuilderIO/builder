@@ -5,7 +5,7 @@ import { SfButton } from '@storefront-ui/vue';
 // Molecules (multiple slots)
 import { SfCard } from '@storefront-ui/vue';
 // Register your Builder components
-import HelloWorldComponent from '../components/Builder/HelloWorld.vue';
+import HelloWorldComponent from './HelloWorld.vue';
 
 export const REGISTERED_COMPONENTS = [
   {

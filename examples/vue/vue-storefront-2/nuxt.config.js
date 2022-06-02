@@ -132,7 +132,11 @@ export default {
     babel: {
       plugins: [['@babel/plugin-proposal-private-methods', { loose: true }]],
     },
-    transpile: ['vee-validate/dist/rules'],
+    transpile: [
+      'vee-validate/dist/rules',
+      // This is needed since the SDK is an ESM package
+      '@builder.io/sdk-vue',
+    ],
     plugins: [
       new webpack.DefinePlugin({
         'process.VERSION': JSON.stringify({
@@ -142,11 +146,6 @@ export default {
         }),
       }),
     ],
-    /**
-     * This is required due to the Builder Vue SDK being an ES Module.
-     * https://github.com/nuxt/nuxt.js/issues/9223
-     */
-    standalone: true,
   },
   pwa: {
     meta: {

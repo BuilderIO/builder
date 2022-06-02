@@ -20,6 +20,8 @@ export default {
         config.devtool = ctx.isClient ? 'source-map' : 'inline-source-map'
       }
     },
+    // This is needed because the package is an ESM module
+    transpile: ['@builder.io/sdk-vue'],
   },
 
   server: { port: 3001 },
