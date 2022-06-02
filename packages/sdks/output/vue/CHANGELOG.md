@@ -1,3 +1,8 @@
+### 0.0.1-52
+
+🧨 Breaking change: the format of the `customComponents` prop has changed from `[{ component, info }]` to `[{ component, ...info }]`.
+See [builder-registered-components.ts](/packages/sdks/src/constants/builder-registered-components.ts) for examples of how to do so, or see the example provided for this SDK.
+
 ### 0.0.1-51
 
 ⚠️ Deprecation notice: Registering components via `registerComponent(component, info)` is now deprecated. 
