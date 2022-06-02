@@ -22,12 +22,12 @@ import type { RegisteredComponent } from '../context/builder.context.lite';
  */
 export const getDefaultRegisteredComponents: () => RegisteredComponent[] =
   () => [
-    { component: Columns, info: columnsComponentInfo },
-    { component: Image, info: imageComponentInfo },
-    { component: Text, info: textComponentInfo },
-    { component: Video, info: videoComponentInfo },
-    { component: Symbol, info: symbolComponentInfo },
-    { component: Button, info: buttonComponentInfo },
-    { component: Section, info: sectionComponentInfo },
-    { component: Fragment, info: fragmentComponentInfo },
+    { component: Columns, ...columnsComponentInfo },
+    { component: Image, ...imageComponentInfo },
+    { component: Text, ...textComponentInfo },
+    { component: Video, ...videoComponentInfo },
+    { component: Symbol, ...symbolComponentInfo },
+    { component: Button, ...buttonComponentInfo },
+    { component: Section, ...sectionComponentInfo },
+    { component: Fragment, ...fragmentComponentInfo },
   ];
