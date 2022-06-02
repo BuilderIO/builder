@@ -13,15 +13,7 @@
         />
       </SfHero>
     </LazyHydrate>
-    <div>Hello world from your Vue project. Below is Builder Content:</div>
-    <div v-if="canShowContent">
-      <builder-render-content
-        model="page"
-        :content="content"
-        :api-key="apiKey"
-        :customComponents="getRegisteredComponents()"
-      />
-    </div>
+    <BuilderContent />
 
     <LazyHydrate when-visible>
       <SfBannerGrid :banner-grid="1" class="banner-grid">
@@ -128,12 +120,6 @@ import LazyHydrate from 'vue-lazy-hydration';
 import { useUiState } from '../composables';
 import cacheControl from './../helpers/cacheControl';
 
-import { REGISTERED_COMPONENTS } from './init-builder';
-import { getContent, isEditing, getBuilderSearchParams } from '@builder.io/sdk-vue';
-
-// TODO: enter your public API key
-const BUILDER_PUBLIC_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660'; // ggignore
-
 export default Vue.extend({
   name: 'Home',
   middleware: cacheControl({
@@ -155,38 +141,6 @@ export default Vue.extend({
     SfButton,
     NewsletterModal,
     LazyHydrate,
-  },
-  data: () => ({
-    canShowContent: false,
-    content: null,
-    apiKey: BUILDER_PUBLIC_API_KEY,
-  }),
-
-  methods: {
-    getRegisteredComponents() {
-      return REGISTERED_COMPONENTS;
-    },
-  },
-  mounted() {
-    // we need to re-reun this check on the client in case of SSR
-    this.canShowContent = this.content || isEditing();
-  },
-  async fetch() {
-    const content = await getContent({
-      model: 'page',
-      apiKey: BUILDER_PUBLIC_API_KEY,
-      options: getBuilderSearchParams(this.$route.query),
-      userAttributes: {
-        urlPath: this.$route.path,
-      },
-    });
-    if (!content) {
-      if (this.$nuxt.context?.ssrContext?.res) {
-        this.$nuxt.context.ssrContext.res.statusCode = 404;
-      }
-    }
-    this.content = content;
-    this.canShowContent = content || isEditing();
   },
 
   setup() {
