@@ -1,6 +1,26 @@
-[@builder.io/sdk](../README.md) / [Exports](../modules.md) / InsertMenuConfig
-
 # Interface: InsertMenuConfig
+
+Use this to register custom sections in the Insert menu, for instance
+to make new sections to organize your custom components
+
+![Example of what a custom section looks like](https://cdn.builder.io/api/v1/image/assets%2F7f7bbcf72a1a4d72bac5daa359e7befd%2Fe5f2792e9c0f44ed89a9dcb77b945858)
+
+**`example`**
+```js
+Builder.register('insertMenu', {
+  name: 'Our components',
+  items: [
+    { name: 'Hero' },
+    { name: 'Double Columns' },
+    { name: 'Triple Columns' },
+    { name: 'Dynamic Columns' },
+  ],
+})
+```
+
+You can make as many custom sections as you like
+
+See a complete usage example [here](https://github.com/builderio/builder/blob/main/examples/react-design-system/src/builder-settings.js)
 
 ## Table of contents
 
@@ -20,7 +40,7 @@
 
 #### Defined in
 
-[builder.class.ts:640](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L640)
+[builder.class.ts:694](https://github.com/builderio/builder/blob/093375b7/packages/core/src/builder.class.ts#L694)
 
 ___
 
@@ -30,7 +50,7 @@ ___
 
 #### Defined in
 
-[builder.class.ts:641](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L641)
+[builder.class.ts:695](https://github.com/builderio/builder/blob/093375b7/packages/core/src/builder.class.ts#L695)
 
 ___
 
@@ -40,7 +60,7 @@ ___
 
 #### Defined in
 
-[builder.class.ts:637](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L637)
+[builder.class.ts:691](https://github.com/builderio/builder/blob/093375b7/packages/core/src/builder.class.ts#L691)
 
 ___
 
@@ -50,7 +70,7 @@ ___
 
 #### Defined in
 
-[builder.class.ts:639](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L639)
+[builder.class.ts:693](https://github.com/builderio/builder/blob/093375b7/packages/core/src/builder.class.ts#L693)
 
 ___
 
@@ -60,4 +80,4 @@ ___
 
 #### Defined in
 
-[builder.class.ts:638](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L638)
+[builder.class.ts:692](https://github.com/builderio/builder/blob/093375b7/packages/core/src/builder.class.ts#L692)

@@ -1,5 +1,3 @@
-[@builder.io/sdk](../README.md) / [Exports](../modules.md) / UserAttributes
-
 # Interface: UserAttributes
 
 Attributes that can be used for custom targeting. [https://www.builder.io/c/docs/guides/targeting-and-scheduling](https://www.builder.io/c/docs/guides/targeting-and-scheduling)
@@ -24,4 +22,4 @@ URL path of the current user.
 
 #### Defined in
 
-[builder.class.ts:202](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L202)
+[builder.class.ts:202](https://github.com/builderio/builder/blob/093375b7/packages/core/src/builder.class.ts#L202)

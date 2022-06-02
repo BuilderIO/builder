@@ -1,5 +1,3 @@
-[@builder.io/sdk](../README.md) / [Exports](../modules.md) / GetContentOptions
-
 # Interface: GetContentOptions
 
 ## Table of contents
@@ -42,7 +40,7 @@ Set to `false` to not cache responses when running on the client.
 
 #### Defined in
 
-[builder.class.ts:362](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L362)
+[builder.class.ts:362](https://github.com/builderio/builder/blob/093375b7/packages/core/src/builder.class.ts#L362)
 
 ___
 
@@ -59,7 +57,7 @@ Use a higher value for better performance, lower for content that will change mo
 
 #### Defined in
 
-[builder.class.ts:296](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L296)
+[builder.class.ts:296](https://github.com/builderio/builder/blob/093375b7/packages/core/src/builder.class.ts#L296)
 
 ___
 
@@ -73,7 +71,7 @@ fully fresh / up to date content)
 
 #### Defined in
 
-[builder.class.ts:334](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L334)
+[builder.class.ts:334](https://github.com/builderio/builder/blob/093375b7/packages/core/src/builder.class.ts#L334)
 
 ___
 
@@ -85,7 +83,7 @@ Specific content entry ID to fetch.
 
 #### Defined in
 
-[builder.class.ts:372](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L372)
+[builder.class.ts:372](https://github.com/builderio/builder/blob/093375b7/packages/core/src/builder.class.ts#L372)
 
 ___
 
@@ -97,7 +95,7 @@ Extract any styles to a separate css property when generating HTML.
 
 #### Defined in
 
-[builder.class.ts:344](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L344)
+[builder.class.ts:344](https://github.com/builderio/builder/blob/093375b7/packages/core/src/builder.class.ts#L344)
 
 ___
 
@@ -107,7 +105,7 @@ ___
 
 #### Defined in
 
-[builder.class.ts:379](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L379)
+[builder.class.ts:379](https://github.com/builderio/builder/blob/093375b7/packages/core/src/builder.class.ts#L379)
 
 ___
 
@@ -121,7 +119,7 @@ Affects HTML generation for specific targets.
 
 #### Defined in
 
-[builder.class.ts:395](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L395)
+[builder.class.ts:395](https://github.com/builderio/builder/blob/093375b7/packages/core/src/builder.class.ts#L395)
 
 ___
 
@@ -134,7 +132,7 @@ enabled we will not fetch that content for the final response.
 
 #### Defined in
 
-[builder.class.ts:287](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L287)
+[builder.class.ts:287](https://github.com/builderio/builder/blob/093375b7/packages/core/src/builder.class.ts#L287)
 
 ___
 
@@ -146,7 +144,7 @@ ___
 
 #### Defined in
 
-[builder.class.ts:282](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L282)
+[builder.class.ts:282](https://github.com/builderio/builder/blob/093375b7/packages/core/src/builder.class.ts#L282)
 
 ___
 
@@ -160,7 +158,7 @@ ___
 
 #### Defined in
 
-[builder.class.ts:354](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L354)
+[builder.class.ts:354](https://github.com/builderio/builder/blob/093375b7/packages/core/src/builder.class.ts#L354)
 
 ___
 
@@ -170,7 +168,7 @@ ___
 
 #### Defined in
 
-[builder.class.ts:389](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L389)
+[builder.class.ts:389](https://github.com/builderio/builder/blob/093375b7/packages/core/src/builder.class.ts#L389)
 
 ___
 
@@ -182,7 +180,7 @@ Maximum number of results to return. Defaults to `1`.
 
 #### Defined in
 
-[builder.class.ts:311](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L311)
+[builder.class.ts:311](https://github.com/builderio/builder/blob/093375b7/packages/core/src/builder.class.ts#L311)
 
 ___
 
@@ -194,7 +192,7 @@ The name of the model to fetch content for.
 
 #### Defined in
 
-[builder.class.ts:358](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L358)
+[builder.class.ts:358](https://github.com/builderio/builder/blob/093375b7/packages/core/src/builder.class.ts#L358)
 
 ___
 
@@ -210,7 +208,7 @@ content thinking they should updates when they actually shouldn't.
 
 #### Defined in
 
-[builder.class.ts:430](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L430)
+[builder.class.ts:430](https://github.com/builderio/builder/blob/093375b7/packages/core/src/builder.class.ts#L430)
 
 ___
 
@@ -222,7 +220,7 @@ Pagination results offset. Defaults to zero.
 
 #### Defined in
 
-[builder.class.ts:348](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L348)
+[builder.class.ts:348](https://github.com/builderio/builder/blob/093375b7/packages/core/src/builder.class.ts#L348)
 
 ___
 
@@ -239,7 +237,7 @@ Omit only these fields.
 
 #### Defined in
 
-[builder.class.ts:388](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L388)
+[builder.class.ts:388](https://github.com/builderio/builder/blob/093375b7/packages/core/src/builder.class.ts#L388)
 
 ___
 
@@ -255,7 +253,7 @@ Additional query params of the Content API to send.
 
 #### Defined in
 
-[builder.class.ts:422](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L422)
+[builder.class.ts:422](https://github.com/builderio/builder/blob/093375b7/packages/core/src/builder.class.ts#L422)
 
 ___
 
@@ -269,7 +267,7 @@ This will be on data.html of the response's content entry object json.
 
 #### Defined in
 
-[builder.class.ts:340](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L340)
+[builder.class.ts:340](https://github.com/builderio/builder/blob/093375b7/packages/core/src/builder.class.ts#L340)
 
 ___
 
@@ -283,7 +281,7 @@ Indicate that the fetch request is for preview purposes.
 
 #### Defined in
 
-[builder.class.ts:368](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L368)
+[builder.class.ts:368](https://github.com/builderio/builder/blob/093375b7/packages/core/src/builder.class.ts#L368)
 
 ___
 
@@ -308,7 +306,7 @@ See more info on MongoDB's query operators and format.
 
 #### Defined in
 
-[builder.class.ts:328](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L328)
+[builder.class.ts:328](https://github.com/builderio/builder/blob/093375b7/packages/core/src/builder.class.ts#L328)
 
 ___
 
@@ -327,7 +325,7 @@ be fresh.
 
 #### Defined in
 
-[builder.class.ts:411](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L411)
+[builder.class.ts:411](https://github.com/builderio/builder/blob/093375b7/packages/core/src/builder.class.ts#L411)
 
 ___
 
@@ -346,7 +344,7 @@ and gets very little traffic.
 
 #### Defined in
 
-[builder.class.ts:307](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L307)
+[builder.class.ts:307](https://github.com/builderio/builder/blob/093375b7/packages/core/src/builder.class.ts#L307)
 
 ___
 
@@ -361,7 +359,7 @@ a/b tests instead of the older way we did this
 
 #### Defined in
 
-[builder.class.ts:418](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L418)
+[builder.class.ts:418](https://github.com/builderio/builder/blob/093375b7/packages/core/src/builder.class.ts#L418)
 
 ___
 
@@ -374,7 +372,7 @@ protocol, query, etc) and we will parse out the path.
 
 #### Defined in
 
-[builder.class.ts:278](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L278)
+[builder.class.ts:278](https://github.com/builderio/builder/blob/093375b7/packages/core/src/builder.class.ts#L278)
 
 ___
 
@@ -395,4 +393,4 @@ userAttributes: {
 
 #### Defined in
 
-[builder.class.ts:273](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L273)
+[builder.class.ts:273](https://github.com/builderio/builder/blob/093375b7/packages/core/src/builder.class.ts#L273)
