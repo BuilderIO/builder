@@ -457,6 +457,8 @@ interface Map<K, V> {
  *   inputs: [...] // <- Input[]
  * })
  * ```
+ * 
+ * Learn more about registering custom components [here](https://www.builder.io/c/docs/custom-react-components)
  */
 export interface Input {
   name: string;
@@ -531,6 +533,8 @@ export interface Input {
  *  // <- Component options
  * })
  * ```
+ * 
+ * Learn more about registering custom components [here](https://www.builder.io/c/docs/custom-react-components)
  */
 export interface Component {
   /**
@@ -651,6 +655,27 @@ export interface InsertMenuItem {
   item: DeepPartial<BuilderElement>;
 }
 
+/**
+ * Use this to register custom sections in the Insert menu, for instance
+ * to make new sections to organize your custom components
+ * 
+ * ![Example of what a custom section looks like](https://cdn.builder.io/api/v1/image/assets%2F7f7bbcf72a1a4d72bac5daa359e7befd%2Fe5f2792e9c0f44ed89a9dcb77b945858)
+ * 
+ * @example
+ *    Builder.register('insertMenu', {
+ *      name: 'Our components',
+ *      items: [
+ *        { name: 'Hero' },
+ *        { name: 'Double Columns' },
+ *        { name: 'Triple Columns' },
+ *        { name: 'Dynamic Columns' },
+ *      ],
+ *    })
+ * 
+ * You can make as many custom sections as you like
+ * 
+ * See a complete usage example [here](https://github.com/builderio/builder/blob/main/examples/react-design-system/src/builder-settings.js)
+ */
 export interface InsertMenuConfig {
   name: string;
   priority?: number;
