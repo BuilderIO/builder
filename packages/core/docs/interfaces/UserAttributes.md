@@ -24,4 +24,4 @@ URL path of the current user.
 
 #### Defined in
 
-[builder.class.ts:202](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L202)
+[builder.class.ts:202](https://github.com/builderio/builder/blob/569bb57f/packages/core/src/builder.class.ts#L202)

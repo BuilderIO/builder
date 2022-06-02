@@ -449,6 +449,15 @@ interface Map<K, V> {
   [Symbol.iterator](): IterableIterator<[K, V]>;
 }
 
+/**
+ * This is the interface for inputs in `Builder.registerComponent`
+ * 
+ * ```js
+ * Builder.registerComponent(MyComponent, {
+ *   inputs: [...] // <- Input[]
+ * })
+ * ```
+ */
 export interface Input {
   name: string;
   friendlyName?: string;
@@ -514,6 +523,15 @@ export interface Input {
   copyOnAdd?: boolean;
 }
 
+/**
+ * This is the interface for the options for `Builder.registerComponent`
+ * 
+ * ```js
+ * Builder.registerComponent(YourComponent, {
+ *  // <- Component options
+ * })
+ * ```
+ */
 export interface Component {
   /**
    * Name your component something unique, e.g. 'MyButton'. You can override built-in components
