@@ -1,9 +1,9 @@
 <template>
-  <div class="div-1pl23ac79ld">
+  <div class="div-t43jfuqn6g">
     <picture>
       <img
         loading="lazy"
-        class="img-1pl23ac79ld"
+        class="img-t43jfuqn6g"
         :alt="altText"
         :role="altText ? 'presentation' : undefined"
         :style="{
@@ -23,7 +23,7 @@
     </picture>
 
     <div
-      class="builder-image-sizer div-1pl23ac79ld-2"
+      class="builder-image-sizer div-t43jfuqn6g-2"
       v-if="aspectRatio && !(fitContent && ((builderBlock && builderBlock.children) && (builderBlock && builderBlock.children).length))"
       :style="{
         paddingTop: aspectRatio * 100 + '%',
@@ -34,7 +34,7 @@
 
     <slot></slot>
 
-    <div class="div-1pl23ac79ld-3" v-if="!fitContent">
+    <div class="div-t43jfuqn6g-3" v-if="!fitContent">
       <slot></slot>
     </div>
   </div>
@@ -71,10 +71,10 @@ export default {
 };
 </script>
 <style scoped>
-.div-1pl23ac79ld {
+.div-t43jfuqn6g {
   position: relative;
 }
-.img-1pl23ac79ld {
+.img-t43jfuqn6g {
   opacity: 1;
   transition: opacity 0.2s ease-in-out;
   position: absolute;
@@ -83,12 +83,12 @@ export default {
   top: 0px;
   left: 0px;
 }
-.div-1pl23ac79ld-2 {
+.div-t43jfuqn6g-2 {
   width: 100%;
   pointer-events: none;
   font-size: 0;
 }
-.div-1pl23ac79ld-3 {
+.div-t43jfuqn6g-3 {
   display: flex;
   flex-direction: column;
   align-items: stretch;
