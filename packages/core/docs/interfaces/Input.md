@@ -1,38 +1,31 @@
-[@builder.io/sdk](../README.md) / [Exports](../modules.md) / Input
-
 # Interface: Input
+
+This is the interface for inputs in `Builder.registerComponent`
+
+```js
+Builder.registerComponent(MyComponent, {
+  inputs: [{ name: 'title', type: 'text' }] // <- Input[]
+})
+```
+
+Learn more about registering custom components [here](https://www.builder.io/c/docs/custom-react-components)
 
 ## Table of contents
 
 ### Properties
 
 - [advanced](Input.md#advanced)
-- [allowedFileTypes](Input.md#allowedfiletypes)
-- [autoFocus](Input.md#autofocus)
 - [broadcast](Input.md#broadcast)
 - [bubble](Input.md#bubble)
-- [code](Input.md#code)
-- [copyOnAdd](Input.md#copyonadd)
 - [defaultValue](Input.md#defaultvalue)
-- [description](Input.md#description)
 - [enum](Input.md#enum)
 - [friendlyName](Input.md#friendlyname)
 - [helperText](Input.md#helpertext)
-- [hideFromUI](Input.md#hidefromui)
-- [imageHeight](Input.md#imageheight)
-- [imageWidth](Input.md#imagewidth)
 - [max](Input.md#max)
-- [mediaHeight](Input.md#mediaheight)
-- [mediaWidth](Input.md#mediawidth)
 - [min](Input.md#min)
-- [modelId](Input.md#modelid)
 - [name](Input.md#name)
-- [onChange](Input.md#onchange)
-- [options](Input.md#options)
 - [regex](Input.md#regex)
 - [required](Input.md#required)
-- [richText](Input.md#richtext)
-- [showIf](Input.md#showif)
 - [step](Input.md#step)
 - [subFields](Input.md#subfields)
 - [type](Input.md#type)
@@ -43,29 +36,13 @@
 
 • `Optional` **advanced**: `boolean`
 
-#### Defined in
-
-[builder.class.ts:509](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L509)
-
-___
-
-### allowedFileTypes
-
-• `Optional` **allowedFileTypes**: `string`[]
+Set this to `true` to put this under the "show more" section of
+the options editor. Useful for things that are more advanced
+or more rarely used and don't need to be too prominent
 
 #### Defined in
 
-[builder.class.ts:462](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L462)
-
-___
-
-### autoFocus
-
-• `Optional` **autoFocus**: `boolean`
-
-#### Defined in
-
-[builder.class.ts:459](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L459)
+[builder.class.ts:556](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L556)
 
 ___
 
@@ -80,7 +57,7 @@ directly but will still be looking for how to add additional tabs
 
 #### Defined in
 
-[builder.class.ts:488](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L488)
+[builder.class.ts:526](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L526)
 
 ___
 
@@ -94,27 +71,7 @@ to bubble up important inputs for locked groups, like text and images
 
 #### Defined in
 
-[builder.class.ts:494](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L494)
-
-___
-
-### code
-
-• `Optional` **code**: `boolean`
-
-#### Defined in
-
-[builder.class.ts:511](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L511)
-
-___
-
-### copyOnAdd
-
-• `Optional` **copyOnAdd**: `boolean`
-
-#### Defined in
-
-[builder.class.ts:514](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L514)
+[builder.class.ts:532](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L532)
 
 ___
 
@@ -122,19 +79,11 @@ ___
 
 • `Optional` **defaultValue**: `any`
 
-#### Defined in
-
-[builder.class.ts:456](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L456)
-
-___
-
-### description
-
-• `Optional` **description**: `string`
+A default value to use
 
 #### Defined in
 
-[builder.class.ts:455](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L455)
+[builder.class.ts:471](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L471)
 
 ___
 
@@ -142,9 +91,11 @@ ___
 
 • `Optional` **enum**: `string`[] \| { `helperText?`: `string` ; `label`: `string` ; `value`: `any`  }[]
 
+For "text" input type, specifying an enum will show a dropdown of options instead
+
 #### Defined in
 
-[builder.class.ts:496](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L496)
+[builder.class.ts:538](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L538)
 
 ___
 
@@ -152,9 +103,11 @@ ___
 
 • `Optional` **friendlyName**: `string`
 
+A friendlier name to show in the UI if the component prop name is not ideal for end users
+
 #### Defined in
 
-[builder.class.ts:454](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L454)
+[builder.class.ts:467](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L467)
 
 ___
 
@@ -162,39 +115,16 @@ ___
 
 • `Optional` **helperText**: `string`
 
-#### Defined in
+Additional text to render in the UI to give guidance on how to use this
 
-[builder.class.ts:461](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L461)
-
-___
-
-### hideFromUI
-
-• `Optional` **hideFromUI**: `boolean`
+**`example`**
+```js
+helperText: 'Be sure to use a proper URL, starting with "https://"'
+111
 
 #### Defined in
 
-[builder.class.ts:467](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L467)
-
-___
-
-### imageHeight
-
-• `Optional` **imageHeight**: `number`
-
-#### Defined in
-
-[builder.class.ts:463](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L463)
-
-___
-
-### imageWidth
-
-• `Optional` **imageWidth**: `number`
-
-#### Defined in
-
-[builder.class.ts:464](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L464)
+[builder.class.ts:492](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L492)
 
 ___
 
@@ -206,27 +136,7 @@ Number field type validation maximum accepted input
 
 #### Defined in
 
-[builder.class.ts:472](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L472)
-
-___
-
-### mediaHeight
-
-• `Optional` **mediaHeight**: `number`
-
-#### Defined in
-
-[builder.class.ts:465](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L465)
-
-___
-
-### mediaWidth
-
-• `Optional` **mediaWidth**: `number`
-
-#### Defined in
-
-[builder.class.ts:466](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L466)
+[builder.class.ts:510](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L510)
 
 ___
 
@@ -238,17 +148,7 @@ Number field type validation minimum accepted input
 
 #### Defined in
 
-[builder.class.ts:476](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L476)
-
-___
-
-### modelId
-
-• `Optional` **modelId**: `string`
-
-#### Defined in
-
-[builder.class.ts:468](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L468)
+[builder.class.ts:514](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L514)
 
 ___
 
@@ -256,33 +156,11 @@ ___
 
 • **name**: `string`
 
-#### Defined in
-
-[builder.class.ts:453](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L453)
-
-___
-
-### onChange
-
-• `Optional` **onChange**: `string` \| `Function`
+This is the name of the component prop this input represents
 
 #### Defined in
 
-[builder.class.ts:510](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L510)
-
-___
-
-### options
-
-• `Optional` **options**: `Object`
-
-#### Index signature
-
-▪ [key: `string`]: `any`
-
-#### Defined in
-
-[builder.class.ts:495](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L495)
+[builder.class.ts:465](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L465)
 
 ___
 
@@ -302,7 +180,7 @@ Regex field validation for all string types (text, longText, html, url, etc)
 
 #### Defined in
 
-[builder.class.ts:498](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L498)
+[builder.class.ts:540](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L540)
 
 ___
 
@@ -310,29 +188,11 @@ ___
 
 • `Optional` **required**: `boolean`
 
-#### Defined in
-
-[builder.class.ts:458](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L458)
-
-___
-
-### richText
-
-• `Optional` **richText**: `boolean`
+Is this input mandatory or not
 
 #### Defined in
 
-[builder.class.ts:512](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L512)
-
-___
-
-### showIf
-
-• `Optional` **showIf**: `string` \| (`options`: `Map`<`string`, `any`\>) => `boolean`
-
-#### Defined in
-
-[builder.class.ts:513](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L513)
+[builder.class.ts:480](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L480)
 
 ___
 
@@ -344,7 +204,7 @@ Number field type step size when using arrows
 
 #### Defined in
 
-[builder.class.ts:480](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L480)
+[builder.class.ts:518](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L518)
 
 ___
 
@@ -354,7 +214,7 @@ ___
 
 #### Defined in
 
-[builder.class.ts:460](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L460)
+[builder.class.ts:483](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L483)
 
 ___
 
@@ -362,6 +222,11 @@ ___
 
 • **type**: `string`
 
+The type of input to use, such as 'text'
+
+See all available inputs [here](https://www.builder.io/c/docs/custom-react-components#input-types)
+and you can create your own custom input types and associated editor UIs with [plugins](https://www.builder.io/c/docs/extending/plugins)
+
 #### Defined in
 
-[builder.class.ts:457](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L457)
+[builder.class.ts:478](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L478)

@@ -449,22 +449,60 @@ interface Map<K, V> {
   [Symbol.iterator](): IterableIterator<[K, V]>;
 }
 
+/**
+ * This is the interface for inputs in `Builder.registerComponent`
+ *
+ * ```js
+ * Builder.registerComponent(MyComponent, {
+ *   inputs: [{ name: 'title', type: 'text' }] // <- Input[]
+ * })
+ * ```
+ *
+ * Learn more about registering custom components [here](https://www.builder.io/c/docs/custom-react-components)
+ */
 export interface Input {
+  /** This is the name of the component prop this input represents */
   name: string;
+  /** A friendlier name to show in the UI if the component prop name is not ideal for end users */
   friendlyName?: string;
+  /** @hidden @deprecated */
   description?: string;
+  /** A default value to use */
   defaultValue?: any;
+  /**
+   * The type of input to use, such as 'text'
+   *
+   * See all available inputs [here](https://www.builder.io/c/docs/custom-react-components#input-types)
+   * and you can create your own custom input types and associated editor UIs with [plugins](https://www.builder.io/c/docs/extending/plugins)
+   */
   type: string;
+  /** Is this input mandatory or not */
   required?: boolean;
+  /** @hidden */
   autoFocus?: boolean;
   subFields?: Input[];
+  /**
+   * Additional text to render in the UI to give guidance on how to use this
+   *
+   * @example
+   * ```js
+   * helperText: 'Be sure to use a proper URL, starting with "https://"'
+   * 111
+   */
   helperText?: string;
+  /** @hidden */
   allowedFileTypes?: string[];
+  /** @hidden */
   imageHeight?: number;
+  /** @hidden */
   imageWidth?: number;
+  /** @hidden */
   mediaHeight?: number;
+  /** @hidden */
   mediaWidth?: number;
+  /** @hidden */
   hideFromUI?: boolean;
+  /** @hidden */
   modelId?: string;
   /**
    * Number field type validation maximum accepted input
@@ -492,7 +530,11 @@ export interface Input {
    * to bubble up important inputs for locked groups, like text and images
    */
   bubble?: boolean;
+  /** @hidden */
   options?: { [key: string]: any };
+  /**
+   * For "text" input type, specifying an enum will show a dropdown of options instead
+   */
   enum?: string[] | { label: string; value: any; helperText?: string }[];
   /** Regex field validation for all string types (text, longText, html, url, etc) */
   regex?: {
@@ -506,20 +548,42 @@ export interface Input {
      */
     message: string;
   };
+  /**
+   * Set this to `true` to put this under the "show more" section of
+   * the options editor. Useful for things that are more advanced
+   * or more rarely used and don't need to be too prominent
+   */
   advanced?: boolean;
+  /** @hidden */
   onChange?: Function | string;
+  /** @hidden */
   code?: boolean;
+  /** @hidden */
   richText?: boolean;
+  /** @hidden */
   showIf?: ((options: Map<string, any>) => boolean) | string;
+  /** @hidden */
   copyOnAdd?: boolean;
 }
 
+/**
+ * This is the interface for the options for `Builder.registerComponent`
+ *
+ * ```js
+ * Builder.registerComponent(YourComponent, {
+ *  // <- Component options
+ * })
+ * ```
+ *
+ * Learn more about registering custom components [here](https://www.builder.io/c/docs/custom-react-components)
+ */
 export interface Component {
   /**
    * Name your component something unique, e.g. 'MyButton'. You can override built-in components
    * by registering a component with the same name, e.g. 'Text', to replace the built-in text component
    */
   name: string;
+  /** @hidden @deprecated */
   description?: string;
   /**
    * Link to a documentation page for this component
@@ -527,6 +591,11 @@ export interface Component {
   docsLink?: string;
   /**
    * Link to an image to be used as an icon for this component in Builder's editor
+   *
+   * @example
+   * ```js
+   * image: 'https://some-cdn.com/my-icon-for-this-component.png'
+   * ```
    */
   image?: string;
   /**
@@ -536,11 +605,27 @@ export interface Component {
   screenshot?: string;
 
   /**
-   * Input schema for your component for users to fill in the options
+   * Input schema for your component for users to fill in the options via a UI
+   * that translate to this components props
    */
   inputs?: Input[];
+  /** @hidden @deprecated */
   class?: any;
+  /** @hidden @deprecated */
   type?: 'angular' | 'webcomponent' | 'react' | 'vue';
+  /**
+   * Default styles to apply when droppged into the Builder.io editor
+   *
+   * @example
+   * ```js
+   * defaultStyles: {
+   *   // large (default) breakpoint
+   *   large: {
+   *     backgroundColor: 'black'
+   *   },
+   * }
+   * ```
+   */
   defaultStyles?: { [key: string]: string };
   /**
    * Turn on if your component can accept children. Be sure to use in combination with
@@ -548,6 +633,7 @@ export interface Component {
    * github.com/BuilderIO/builder/blob/master/examples/react-design-system/src/components/HeroWithChildren/HeroWithChildren.builder.js#L5
    */
   canHaveChildren?: boolean;
+  /** @hidden */
   fragment?: boolean;
   /**
    * Do not wrap a component in a dom element. Be sure to use {...props.attributes} with this option
@@ -558,14 +644,19 @@ export interface Component {
    * Default children
    */
   defaultChildren?: BuilderElement[];
+  /**
+   * Default options to merge in when creating this block
+   */
   defaults?: Partial<BuilderElement>;
+  /** @hidden @deprecated */
   hooks?: { [key: string]: string | Function };
   /**
    * Hide your component in editor, useful for gradually deprecating components
    */
   hideFromInsertMenu?: boolean;
-  // For webcomponents
+  /** Custom tag name (for custom webcomponents only) */
   tag?: string;
+  /** @hidden @deprecated */
   static?: boolean;
   /**
    * Passing a list of model names will restrict using the component to only the models listed here, otherwise it'll be available for all models
@@ -615,7 +706,7 @@ export interface Component {
     query?: any;
   };
 
-  /** not yet implemented */
+  /** @hidden @deprecated */
   friendlyName?: string;
 
   /**
@@ -642,6 +733,29 @@ export interface InsertMenuItem {
   item: DeepPartial<BuilderElement>;
 }
 
+/**
+ * Use this to register custom sections in the Insert menu, for instance
+ * to make new sections to organize your custom components
+ *
+ * ![Example of what a custom section looks like](https://cdn.builder.io/api/v1/image/assets%2F7f7bbcf72a1a4d72bac5daa359e7befd%2Fe5f2792e9c0f44ed89a9dcb77b945858)
+ *
+ * @example
+ * ```js
+ * Builder.register('insertMenu', {
+ *   name: 'Our components',
+ *   items: [
+ *     { name: 'Hero' },
+ *     { name: 'Double Columns' },
+ *     { name: 'Triple Columns' },
+ *     { name: 'Dynamic Columns' },
+ *   ],
+ * })
+ * ```
+ *
+ * You can make as many custom sections as you like
+ *
+ * See a complete usage example [here](https://github.com/builderio/builder/blob/main/examples/react-design-system/src/builder-settings.js)
+ */
 export interface InsertMenuConfig {
   name: string;
   priority?: number;

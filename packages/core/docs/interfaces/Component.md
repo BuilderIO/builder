@@ -1,6 +1,14 @@
-[@builder.io/sdk](../README.md) / [Exports](../modules.md) / Component
-
 # Interface: Component
+
+This is the interface for the options for `Builder.registerComponent`
+
+```js
+Builder.registerComponent(YourComponent, {
+ // <- Component options
+})
+```
+
+Learn more about registering custom components [here](https://www.builder.io/c/docs/custom-react-components)
 
 ## Table of contents
 
@@ -8,16 +16,11 @@
 
 - [canHaveChildren](Component.md#canhavechildren)
 - [childRequirements](Component.md#childrequirements)
-- [class](Component.md#class)
 - [defaultChildren](Component.md#defaultchildren)
 - [defaultStyles](Component.md#defaultstyles)
 - [defaults](Component.md#defaults)
-- [description](Component.md#description)
 - [docsLink](Component.md#docslink)
-- [fragment](Component.md#fragment)
-- [friendlyName](Component.md#friendlyname)
 - [hideFromInsertMenu](Component.md#hidefrominsertmenu)
-- [hooks](Component.md#hooks)
 - [image](Component.md#image)
 - [inputs](Component.md#inputs)
 - [models](Component.md#models)
@@ -25,9 +28,8 @@
 - [noWrap](Component.md#nowrap)
 - [requiredPermissions](Component.md#requiredpermissions)
 - [requiresParent](Component.md#requiresparent)
-- [static](Component.md#static)
+- [screenshot](Component.md#screenshot)
 - [tag](Component.md#tag)
-- [type](Component.md#type)
 
 ## Properties
 
@@ -41,7 +43,7 @@ github.com/BuilderIO/builder/blob/master/examples/react-design-system/src/compon
 
 #### Defined in
 
-[builder.class.ts:541](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L541)
+[builder.class.ts:635](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L635)
 
 ___
 
@@ -61,17 +63,7 @@ Specify restrictions direct children must match
 
 #### Defined in
 
-[builder.class.ts:569](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L569)
-
-___
-
-### class
-
-• `Optional` **class**: `any`
-
-#### Defined in
-
-[builder.class.ts:533](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L533)
+[builder.class.ts:669](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L669)
 
 ___
 
@@ -83,7 +75,7 @@ Default children
 
 #### Defined in
 
-[builder.class.ts:551](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L551)
+[builder.class.ts:646](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L646)
 
 ___
 
@@ -91,13 +83,25 @@ ___
 
 • `Optional` **defaultStyles**: `Object`
 
+Default styles to apply when droppged into the Builder.io editor
+
+**`example`**
+```js
+defaultStyles: {
+  // large (default) breakpoint
+  large: {
+    backgroundColor: 'black'
+  },
+}
+```
+
 #### Index signature
 
 ▪ [key: `string`]: `string`
 
 #### Defined in
 
-[builder.class.ts:535](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L535)
+[builder.class.ts:629](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L629)
 
 ___
 
@@ -105,19 +109,11 @@ ___
 
 • `Optional` **defaults**: `Partial`<`BuilderElement`\>
 
-#### Defined in
-
-[builder.class.ts:552](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L552)
-
-___
-
-### description
-
-• `Optional` **description**: `string`
+Default options to merge in when creating this block
 
 #### Defined in
 
-[builder.class.ts:523](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L523)
+[builder.class.ts:650](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L650)
 
 ___
 
@@ -129,29 +125,7 @@ Link to a documentation page for this component
 
 #### Defined in
 
-[builder.class.ts:527](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L527)
-
-___
-
-### fragment
-
-• `Optional` **fragment**: `boolean`
-
-#### Defined in
-
-[builder.class.ts:542](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L542)
-
-___
-
-### friendlyName
-
-• `Optional` **friendlyName**: `string`
-
-not yet implemented
-
-#### Defined in
-
-[builder.class.ts:610](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L610)
+[builder.class.ts:591](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L591)
 
 ___
 
@@ -163,21 +137,7 @@ Hide your component in editor, useful for gradually deprecating components
 
 #### Defined in
 
-[builder.class.ts:557](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L557)
-
-___
-
-### hooks
-
-• `Optional` **hooks**: `Object`
-
-#### Index signature
-
-▪ [key: `string`]: `string` \| `Function`
-
-#### Defined in
-
-[builder.class.ts:553](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L553)
+[builder.class.ts:656](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L656)
 
 ___
 
@@ -185,9 +145,16 @@ ___
 
 • `Optional` **image**: `string`
 
+Link to an image to be used as an icon for this component in Builder's editor
+
+**`example`**
+```js
+image: 'https://some-cdn.com/my-icon-for-this-component.png'
+```
+
 #### Defined in
 
-[builder.class.ts:528](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L528)
+[builder.class.ts:600](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L600)
 
 ___
 
@@ -195,11 +162,12 @@ ___
 
 • `Optional` **inputs**: [`Input`](Input.md)[]
 
-Input schema for your component for users to fill in the options
+Input schema for your component for users to fill in the options via a UI
+that translate to this components props
 
 #### Defined in
 
-[builder.class.ts:532](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L532)
+[builder.class.ts:611](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L611)
 
 ___
 
@@ -211,7 +179,7 @@ Passing a list of model names will restrict using the component to only the mode
 
 #### Defined in
 
-[builder.class.ts:564](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L564)
+[builder.class.ts:664](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L664)
 
 ___
 
@@ -224,7 +192,7 @@ by registering a component with the same name, e.g. 'Text', to replace the built
 
 #### Defined in
 
-[builder.class.ts:522](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L522)
+[builder.class.ts:585](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L585)
 
 ___
 
@@ -237,7 +205,7 @@ like here github.com/BuilderIO/builder/blob/master/packages/react/src/blocks/for
 
 #### Defined in
 
-[builder.class.ts:547](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L547)
+[builder.class.ts:642](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L642)
 
 ___
 
@@ -251,7 +219,7 @@ for more information on permissions in builder check https://www.builder.io/c/do
 
 #### Defined in
 
-[builder.class.ts:617](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L617)
+[builder.class.ts:717](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L717)
 
 ___
 
@@ -271,17 +239,20 @@ Specify restrictions any parent must match
 
 #### Defined in
 
-[builder.class.ts:590](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L590)
+[builder.class.ts:690](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L690)
 
 ___
 
-### static
+### screenshot
 
-• `Optional` **static**: `boolean`
+• `Optional` **screenshot**: `string`
+
+Link to a screenshot shown when user hovers over the component in Builder's editor
+use https://builder.io/upload to upload your screeshot, for easier resizing by Builder.
 
 #### Defined in
 
-[builder.class.ts:560](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L560)
+[builder.class.ts:605](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L605)
 
 ___
 
@@ -289,16 +260,8 @@ ___
 
 • `Optional` **tag**: `string`
 
-#### Defined in
-
-[builder.class.ts:559](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L559)
-
-___
-
-### type
-
-• `Optional` **type**: ``"react"`` \| ``"angular"`` \| ``"webcomponent"`` \| ``"vue"``
+Custom tag name (for custom webcomponents only)
 
 #### Defined in
 
-[builder.class.ts:534](https://github.com/builderio/builder/blob/9edde48f/packages/core/src/builder.class.ts#L534)
+[builder.class.ts:658](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L658)

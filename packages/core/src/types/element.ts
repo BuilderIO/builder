@@ -6,7 +6,9 @@ interface JSONObject {
 
 interface JSONArray extends Array<JSONValue> {}
 
-/** @todo typedoc this */
+/**
+ * An object representing an element in Builder
+ */
 export interface BuilderElement {
   '@type': '@builder.io/sdk:Element';
   '@version'?: number;
@@ -15,7 +17,7 @@ export interface BuilderElement {
   layerName?: string;
   groupLocked?: boolean;
   layerLocked?: boolean;
-  /** @todo make alias for properties.class */
+  /** @deprecated @hidden */
   class?: string;
   children?: BuilderElement[];
   responsiveStyles?: {

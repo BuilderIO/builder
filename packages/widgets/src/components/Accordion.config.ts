@@ -116,12 +116,6 @@ export const accordionConfig: any = {
       defaultValue: false,
     },
     {
-      name: 'animate',
-      helperText: 'Animate openning and closing',
-      type: 'boolean',
-      defaultValue: true,
-    },
-    {
       name: 'grid',
       helperText: 'Display as a grid',
       type: 'boolean',
