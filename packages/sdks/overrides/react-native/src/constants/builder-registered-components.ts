@@ -22,15 +22,15 @@ import type { RegisteredComponent } from '../context/builder.context.lite';
  */
 export const getDefaultRegisteredComponents: () => RegisteredComponent[] =
   () => [
-    { component: Columns, info: columnsComponentInfo },
-    { component: Image, info: imageComponentInfo },
-    { component: Text, info: textComponentInfo },
+    { component: Columns, ...columnsComponentInfo },
+    { component: Image, ...imageComponentInfo },
+    { component: Text, ...textComponentInfo },
     // TO-DO: This file breaks due to this issue:
     // https://github.com/expo/web-examples/issues/73
     // For now, we do not import it elsewhere to avoid crashing Expo servers on web when importing the SDK.
-    // { component: Video, info: videoComponentInfo },
-    { component: Symbol, info: symbolComponentInfo },
-    { component: Button, info: buttonComponentInfo },
-    { component: Section, info: sectionComponentInfo },
-    { component: Fragment, info: fragmentComponentInfo },
+    // { component: Video, ...videoComponentInfo },
+    { component: Symbol, ...symbolComponentInfo },
+    { component: Button, ...buttonComponentInfo },
+    { component: Section, ...sectionComponentInfo },
+    { component: Fragment, ...fragmentComponentInfo },
   ];
