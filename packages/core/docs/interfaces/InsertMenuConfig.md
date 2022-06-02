@@ -40,7 +40,7 @@ See a complete usage example [here](https://github.com/builderio/builder/blob/ma
 
 #### Defined in
 
-[builder.class.ts:694](https://github.com/builderio/builder/blob/093375b7/packages/core/src/builder.class.ts#L694)
+[builder.class.ts:763](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L763)
 
 ___
 
@@ -50,7 +50,7 @@ ___
 
 #### Defined in
 
-[builder.class.ts:695](https://github.com/builderio/builder/blob/093375b7/packages/core/src/builder.class.ts#L695)
+[builder.class.ts:764](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L764)
 
 ___
 
@@ -60,7 +60,7 @@ ___
 
 #### Defined in
 
-[builder.class.ts:691](https://github.com/builderio/builder/blob/093375b7/packages/core/src/builder.class.ts#L691)
+[builder.class.ts:760](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L760)
 
 ___
 
@@ -70,7 +70,7 @@ ___
 
 #### Defined in
 
-[builder.class.ts:693](https://github.com/builderio/builder/blob/093375b7/packages/core/src/builder.class.ts#L693)
+[builder.class.ts:762](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L762)
 
 ___
 
@@ -80,4 +80,4 @@ ___
 
 #### Defined in
 
-[builder.class.ts:692](https://github.com/builderio/builder/blob/093375b7/packages/core/src/builder.class.ts#L692)
+[builder.class.ts:761](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L761)
