@@ -152,7 +152,7 @@ const allComponentsArray = [...getDefaultRegisteredComponents(), // While this `
 // which is the new standard way of providing custom components, and must therefore take precedence.
 ...components, ...(customComponents || [])];
 const allComponents = allComponentsArray.reduce((acc, curr) => ({ ...acc,
-  [curr.info.name]: curr
+  [curr.name]: curr
 }), {});
 return allComponents;
 };
