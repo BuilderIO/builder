@@ -30,16 +30,14 @@ function MyFunComponent({ text }) {
 const CUSTOM_COMPONENTS = [
   {
     component: MyFunComponent,
-    info: {
-      name: 'MyFunComponent',
-      inputs: [
-        {
-          name: 'text',
-          type: 'string',
-          defaultValue: 'Hello world',
-        },
-      ],
-    },
+    name: 'MyFunComponent',
+    inputs: [
+      {
+        name: 'text',
+        type: 'string',
+        defaultValue: 'Hello world',
+      },
+    ],
   },
 ];
 

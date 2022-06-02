@@ -1472,15 +1472,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@builder.io/sdk-react-native@npm:0.0.1-51":
-  version: 0.0.1-51
-  resolution: "@builder.io/sdk-react-native@npm:0.0.1-51"
+"@builder.io/sdk-react-native@npm:dev":
+  version: 0.0.1-54
+  resolution: "@builder.io/sdk-react-native@npm:0.0.1-54"
   dependencies:
     react-native-render-html: ^6.3.4
     react-native-video: ^5.1.1
   peerDependencies:
     react-native: ^0.64.3
-  checksum: 345b07b1436e844041091246d572083eeca4a422c07d0ee7c2ff57d37f20b2a6d9c0a51d0120e75cd3963d09522bfdce531f8f5773a3f56c60d19bbe345f0ca2
+  checksum: f90a54380d905c22cb24510a9a7b2fae7fadea9b1a0909bd4d273c01731a035d5a726a87a33fb25e1987e408fb8b643ce7f45c1f7a4f564280886dd668a85f6b
   languageName: node
   linkType: hard
 
@@ -7122,7 +7122,7 @@ __metadata:
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
     "@babel/core": ^7.12.9
-    "@builder.io/sdk-react-native": 0.0.1-51
+    "@builder.io/sdk-react-native": dev
     "@react-navigation/native": ^6.0.8
     "@react-navigation/native-stack": ^6.5.0
     "@types/react": ~17.0.21

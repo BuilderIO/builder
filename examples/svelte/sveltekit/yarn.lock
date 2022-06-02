@@ -590,11 +590,11 @@ __metadata:
   linkType: hard
 
 "@builder.io/sdk-svelte@npm:dev":
-  version: 0.0.1-6
-  resolution: "@builder.io/sdk-svelte@npm:0.0.1-6"
+  version: 0.0.1-9
+  resolution: "@builder.io/sdk-svelte@npm:0.0.1-9"
   dependencies:
     node-fetch: ^2.6.1
-  checksum: 644db9d36f6868fb81df76ace29dc5a71497db6c8620bfd5ad02aa4495a7ec9e3c24d635c9e77e1f296dc95d24213d8a9047f019bff1edd713e57737f7a8a7d8
+  checksum: 26ae080ffba2dd812226c97b84053b3d6306f00473746e846c6d90333ca40827f6c52924555df679a60250d776c03efdd1b1128e3021f23c2ca2eb35f252b795
   languageName: node
   linkType: hard
 
