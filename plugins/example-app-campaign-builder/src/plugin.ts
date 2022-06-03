@@ -109,8 +109,7 @@ Builder.register('appSettings', {
     defaultRoute: '/apps/campaigns',
   },
   theme: {
-    logo:
-      'https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F4aab65cdfa6644e5b6c396429956d513',
+    logo: 'https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F4aab65cdfa6644e5b6c396429956d513',
     colors: {
       primary: 'rgb(220 130 86)',
     },
@@ -128,7 +127,6 @@ Builder.register('appSettings', {
 Builder.register('appTab', {
   name: 'Campaigns',
   path: 'campaigns',
-  icon:
-    'https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F20c994a85a6741b5be6a6ead7316c8d9',
+  icon: 'https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F20c994a85a6741b5be6a6ead7316c8d9',
   component: CampaignsPage,
 })

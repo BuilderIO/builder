@@ -200,31 +200,76 @@ export interface UserAttributes {
    * URL path of the current user.
    */
   urlPath?: string;
-  /** @deprecated */
+  /**
+   * @deprecated
+   * @hidden
+   */
   queryString?: string | ParamsMap;
-  /** @deprecated */
+  /**
+   * @deprecated
+   * @hidden
+   */
   device?: 'mobile' | 'tablet' | 'desktop';
-  /** @deprecated */
+  /**
+   * @deprecated
+   * @hidden
+   */
   location?: any;
-  /** @deprecated */
+  /**
+   * @deprecated
+   * @hidden
+   */
   userAgent?: string;
-  /** @deprecated */
+  /**
+   * @deprecated
+   * @hidden
+   */
   referrer?: string;
-  /** @deprecated */
+  /**
+   * @deprecated
+   * @hidden
+   */
   entryMedium?: string;
-  /** @deprecated */
+  /**
+   * @deprecated
+   * @hidden
+   */
   language?: string;
-  /** @deprecated */
+  /**
+   * @deprecated
+   * @hidden
+   */
   browser?: string;
-  /** @deprecated */
+  /**
+   * @deprecated
+   * @hidden
+   */
   cookie?: string;
-  /** @deprecated */
+  /**
+   * @deprecated
+   * @hidden
+   */
   newVisitor?: boolean;
-  /** @deprecated */
+  /**
+   * @deprecated
+   * @hidden
+   */
   operatingSystem?: string;
 }
 
 export interface GetContentOptions {
+  /**
+   * User attribute key value pairs to be used for targeting
+   * https://www.builder.io/c/docs/custom-targeting-attributes
+   *
+   * e.g.
+   * ```js
+   * userAttributes: {
+   *   urlPath: '/',
+   *   returnVisitor: true,
+   * }
+   * ```
+   */
   userAttributes?: UserAttributes;
   /**
    * Alias for userAttributes.urlPath except it can handle a full URL (optionally with host,
@@ -267,10 +312,13 @@ export interface GetContentOptions {
   /**
    * Mongodb style query of your data. E.g.:
    *
-   * ```
-   * &query.data.id=abc123
-   * &query.data.myCustomField=someValue
-   * &query.data.someNumber.$ne=20
+   * ```js
+   * query: {
+   *  id: 'abc123',
+   *  data: {
+   *    myCustomField: { $gt: 20 },
+   *  }
+   * }
    * ```
    *
    * See more info on MongoDB's query operators and format.
@@ -325,6 +373,7 @@ export interface GetContentOptions {
   /**
    * @package
    * @deprecated
+   * @hidden
    */
   alias?: string;
   fields?: string;
@@ -344,7 +393,10 @@ export interface GetContentOptions {
    * Affects HTML generation for specific targets.
    */
   format?: 'amp' | 'email' | 'html' | 'react' | 'solid';
-  /** @deprecated */
+  /**
+   * @deprecated
+   * @hidden
+   */
   noWrap?: true;
   /**
    * @package
@@ -397,22 +449,60 @@ interface Map<K, V> {
   [Symbol.iterator](): IterableIterator<[K, V]>;
 }
 
+/**
+ * This is the interface for inputs in `Builder.registerComponent`
+ *
+ * ```js
+ * Builder.registerComponent(MyComponent, {
+ *   inputs: [{ name: 'title', type: 'text' }] // <- Input[]
+ * })
+ * ```
+ *
+ * Learn more about registering custom components [here](https://www.builder.io/c/docs/custom-react-components)
+ */
 export interface Input {
+  /** This is the name of the component prop this input represents */
   name: string;
+  /** A friendlier name to show in the UI if the component prop name is not ideal for end users */
   friendlyName?: string;
+  /** @hidden @deprecated */
   description?: string;
+  /** A default value to use */
   defaultValue?: any;
+  /**
+   * The type of input to use, such as 'text'
+   *
+   * See all available inputs [here](https://www.builder.io/c/docs/custom-react-components#input-types)
+   * and you can create your own custom input types and associated editor UIs with [plugins](https://www.builder.io/c/docs/extending/plugins)
+   */
   type: string;
+  /** Is this input mandatory or not */
   required?: boolean;
+  /** @hidden */
   autoFocus?: boolean;
   subFields?: Input[];
+  /**
+   * Additional text to render in the UI to give guidance on how to use this
+   *
+   * @example
+   * ```js
+   * helperText: 'Be sure to use a proper URL, starting with "https://"'
+   * 111
+   */
   helperText?: string;
+  /** @hidden */
   allowedFileTypes?: string[];
+  /** @hidden */
   imageHeight?: number;
+  /** @hidden */
   imageWidth?: number;
+  /** @hidden */
   mediaHeight?: number;
+  /** @hidden */
   mediaWidth?: number;
+  /** @hidden */
   hideFromUI?: boolean;
+  /** @hidden */
   modelId?: string;
   /**
    * Number field type validation maximum accepted input
@@ -440,7 +530,11 @@ export interface Input {
    * to bubble up important inputs for locked groups, like text and images
    */
   bubble?: boolean;
+  /** @hidden */
   options?: { [key: string]: any };
+  /**
+   * For "text" input type, specifying an enum will show a dropdown of options instead
+   */
   enum?: string[] | { label: string; value: any; helperText?: string }[];
   /** Regex field validation for all string types (text, longText, html, url, etc) */
   regex?: {
@@ -454,32 +548,84 @@ export interface Input {
      */
     message: string;
   };
+  /**
+   * Set this to `true` to put this under the "show more" section of
+   * the options editor. Useful for things that are more advanced
+   * or more rarely used and don't need to be too prominent
+   */
   advanced?: boolean;
+  /** @hidden */
   onChange?: Function | string;
+  /** @hidden */
   code?: boolean;
+  /** @hidden */
   richText?: boolean;
+  /** @hidden */
   showIf?: ((options: Map<string, any>) => boolean) | string;
+  /** @hidden */
   copyOnAdd?: boolean;
 }
 
+/**
+ * This is the interface for the options for `Builder.registerComponent`
+ *
+ * ```js
+ * Builder.registerComponent(YourComponent, {
+ *  // <- Component options
+ * })
+ * ```
+ *
+ * Learn more about registering custom components [here](https://www.builder.io/c/docs/custom-react-components)
+ */
 export interface Component {
   /**
    * Name your component something unique, e.g. 'MyButton'. You can override built-in components
    * by registering a component with the same name, e.g. 'Text', to replace the built-in text component
    */
   name: string;
+  /** @hidden @deprecated */
   description?: string;
   /**
    * Link to a documentation page for this component
    */
   docsLink?: string;
+  /**
+   * Link to an image to be used as an icon for this component in Builder's editor
+   *
+   * @example
+   * ```js
+   * image: 'https://some-cdn.com/my-icon-for-this-component.png'
+   * ```
+   */
   image?: string;
   /**
-   * Input schema for your component for users to fill in the options
+   * Link to a screenshot shown when user hovers over the component in Builder's editor
+   * use https://builder.io/upload to upload your screeshot, for easier resizing by Builder.
+   */
+  screenshot?: string;
+
+  /**
+   * Input schema for your component for users to fill in the options via a UI
+   * that translate to this components props
    */
   inputs?: Input[];
+  /** @hidden @deprecated */
   class?: any;
+  /** @hidden @deprecated */
   type?: 'angular' | 'webcomponent' | 'react' | 'vue';
+  /**
+   * Default styles to apply when droppged into the Builder.io editor
+   *
+   * @example
+   * ```js
+   * defaultStyles: {
+   *   // large (default) breakpoint
+   *   large: {
+   *     backgroundColor: 'black'
+   *   },
+   * }
+   * ```
+   */
   defaultStyles?: { [key: string]: string };
   /**
    * Turn on if your component can accept children. Be sure to use in combination with
@@ -487,6 +633,7 @@ export interface Component {
    * github.com/BuilderIO/builder/blob/master/examples/react-design-system/src/components/HeroWithChildren/HeroWithChildren.builder.js#L5
    */
   canHaveChildren?: boolean;
+  /** @hidden */
   fragment?: boolean;
   /**
    * Do not wrap a component in a dom element. Be sure to use {...props.attributes} with this option
@@ -497,14 +644,19 @@ export interface Component {
    * Default children
    */
   defaultChildren?: BuilderElement[];
+  /**
+   * Default options to merge in when creating this block
+   */
   defaults?: Partial<BuilderElement>;
+  /** @hidden @deprecated */
   hooks?: { [key: string]: string | Function };
   /**
    * Hide your component in editor, useful for gradually deprecating components
    */
   hideFromInsertMenu?: boolean;
-  // For webcomponents
+  /** Custom tag name (for custom webcomponents only) */
   tag?: string;
+  /** @hidden @deprecated */
   static?: boolean;
   /**
    * Passing a list of model names will restrict using the component to only the models listed here, otherwise it'll be available for all models
@@ -554,7 +706,7 @@ export interface Component {
     query?: any;
   };
 
-  /** not yet implemented */
+  /** @hidden @deprecated */
   friendlyName?: string;
 
   /**
@@ -581,6 +733,29 @@ export interface InsertMenuItem {
   item: DeepPartial<BuilderElement>;
 }
 
+/**
+ * Use this to register custom sections in the Insert menu, for instance
+ * to make new sections to organize your custom components
+ *
+ * ![Example of what a custom section looks like](https://cdn.builder.io/api/v1/image/assets%2F7f7bbcf72a1a4d72bac5daa359e7befd%2Fe5f2792e9c0f44ed89a9dcb77b945858)
+ *
+ * @example
+ * ```js
+ * Builder.register('insertMenu', {
+ *   name: 'Our components',
+ *   items: [
+ *     { name: 'Hero' },
+ *     { name: 'Double Columns' },
+ *     { name: 'Triple Columns' },
+ *     { name: 'Dynamic Columns' },
+ *   ],
+ * })
+ * ```
+ *
+ * You can make as many custom sections as you like
+ *
+ * See a complete usage example [here](https://github.com/builderio/builder/blob/main/examples/react-design-system/src/builder-settings.js)
+ */
 export interface InsertMenuConfig {
   name: string;
   priority?: number;
@@ -604,6 +779,10 @@ export interface Action {
 }
 
 export class Builder {
+  /**
+   * @hidden
+   * @deprecated. This is buggy, and always behind by a version.
+   */
   static VERSION = version;
 
   static components: Component[] = [];
@@ -735,17 +914,14 @@ export class Builder {
   static settings: Settings = {};
   static settingsChange = new BehaviorSubject<Settings>({});
 
-  static set(settings: Settings) {
-    if (Builder.isBrowser) {
-      // TODO: merge
-      Object.assign(this.settings, settings);
-      const message = {
-        type: 'builder.settingsChange',
-        data: this.settings,
-      };
-      parent.postMessage(message, '*');
-    }
-    this.settingsChange.next(this.settings);
+  /**
+   * @deprecated
+   * @hidden
+   *
+   * Use Builder.register('editor.settings', {}) instead.
+   */
+  static set(settings: Settings): void {
+    Builder.register('editor.settings', settings);
   }
 
   static import(packageName: string) {
@@ -1130,7 +1306,15 @@ export class Builder {
 
     // Give the app a second to start up and set canTrack to false if needed
     if (Builder.isBrowser) {
-      this.setCookie(sessionStorageKey, sessionId, datePlusMinutes(30));
+      setTimeout(() => {
+        try {
+          if (this.canTrack) {
+            this.setCookie(sessionStorageKey, sessionId, datePlusMinutes(30));
+          }
+        } catch (err) {
+          console.debug('Cookie setting error', err);
+        }
+      });
     }
     return sessionId;
   }
@@ -1657,7 +1841,7 @@ export class Builder {
               let error: Error | null = null;
               try {
                 result = fn.apply(this, args);
-              } catch (err) {
+              } catch (err: any) {
                 error = err;
               }
 
@@ -1985,6 +2169,9 @@ export class Builder {
         .get(requestOptions, function (resp: any) {
           let data = '';
 
+          // We are collecting textual data
+          resp.setEncoding('utf8');
+
           // A chunk of data has been recieved.
           resp.on('data', (chunk: string | Buffer) => {
             data += chunk;
@@ -1995,6 +2182,16 @@ export class Builder {
             try {
               resolve(JSON.parse(data));
             } catch (err) {
+              if ((err as any)?.name === 'SyntaxError') {
+                const jsonParseError = new Error(
+                  `[Builder.io] ERROR: invalid response.
+Request: ${JSON.stringify(requestOptions, null, 2)}
+Response Data: ${data}
+`
+                );
+                reject(jsonParseError);
+              }
+
               reject(err);
             }
           });

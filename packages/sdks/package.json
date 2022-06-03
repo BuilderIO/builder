@@ -1,57 +1,61 @@
 {
   "name": "@builder.io/sdks",
   "private": true,
+  "engines": {
+    "yarn": ">= 3.0.0"
+  },
   "scripts": {
-    "mitosis": "mitosis build",
-    "build": "npm run mitosis && npm run lint",
-    "lint": "prettier --write .",
-    "start": "watch 'npm run mitosis' ./src ./overrides",
+    "prepare": "cd ../../ && npx husky install",
+    "cz": "cz",
+    "mitosis": "./node_modules/@builder.io/mitosis-cli/bin/mitosis build",
+    "build": "yarn run mitosis",
+    "start": "watch 'yarn run mitosis' ./src ./overrides",
     "test": "jest",
-    "ci:build": "npm run build",
-    "ci:test": "npm run test",
-    "rm": "rm -rf ./node_modules/@builder.io/mitosis-cli && rm -rf ./node_modules/@builder.io/mitosis",
-    "symlink-cli": "ln -sf ../../../../../mitosis/packages/cli ./node_modules/@builder.io/mitosis-cli",
-    "symlink-core": "ln -sf ../../../../../mitosis/packages/core ./node_modules/@builder.io/mitosis",
-    "symlink": "npm run rm && npm run symlink-cli && npm run symlink-core"
+    "remove-symlinks": "./scripts/remove-resolutions.sh && yarn",
+    "add-symlinks": "./scripts/add-resolutions.sh && yarn",
+    "upgrade-mitosis": "yarn up @builder.io/mitosis@dev @builder.io/mitosis-cli@dev",
+    "prettier": "prettier .",
+    "lint": "yarn run prettier --write",
+    "ci:lint": "yarn run prettier --check",
+    "ci:build": "mitosis build",
+    "ci:test": "yarn run test",
+    "release-sdk": "bash ./scripts/release-sdk.sh",
+    "release:dev:all": "npm run release-sdk -- svelte && npm run release-sdk -- react-native && npm run release-sdk -- solid && npm run release-sdk -- vue"
   },
   "dependencies": {
-    "@builder.io/mitosis-cli": "^0.0.12",
+    "@builder.io/mitosis": "dev",
+    "@builder.io/mitosis-cli": "dev",
     "node-fetch": "^2.6.1",
-    "seedrandom": "^3.0.5"
+    "seedrandom": "^3.0.5",
+    "traverse": "^0.6.6"
   },
   "devDependencies": {
-    "@jsx-lite/cli": "^1.0.1",
-    "@jsx-lite/eslint-plugin": "0.0.2",
-    "@swc/core": "^1.2.64",
+    "@builder.io/eslint-plugin-mitosis": "dev",
+    "@trivago/prettier-plugin-sort-imports": "^3.2.0",
+    "@types/jest": "^27.4.1",
     "@types/node-fetch": "^2.5.12",
-    "@types/react": "^17.0.13",
-    "@types/react-native": "^0.64.12",
-    "@vue/compiler-sfc": "^3.1.4",
-    "@vue/component-compiler-utils": "^3.2.2",
-    "dedent": "^0.7.0",
-    "esbuild": "^0.12.17",
-    "esbuild-jest": "^0.5.0",
-    "esbuild-register": "^2.6.0",
-    "eslint": "^7.21.0",
-    "fast-glob": "^3.2.7",
-    "fs-extra": "^10.0.0",
-    "jest": "^27.0.6",
+    "@types/react": "^17.0.43",
+    "@types/react-dom": "^17.0.14",
+    "@typescript-eslint/eslint-plugin": "latest",
+    "@typescript-eslint/parser": "latest",
+    "commitizen": "^4.2.4",
+    "cz-conventional-changelog": "^3.3.0",
+    "eslint": "^8.12.0",
+    "eslint-plugin-react": "latest",
+    "git-cz": "^4.8.0",
+    "husky": "^7.0.4",
+    "jest": "^27.5.1",
     "jest-fetch-mock": "^3.0.3",
-    "json5": "^2.2.0",
+    "pinst": "^3.0.0",
     "prettier": "^2.5.0",
-    "react": "^17.0.2",
-    "react-native": "^0.64.3",
-    "react-native-render-html": "^5.1.1",
-    "vue": "2.6.12",
-    "vue-template-compiler": "2.6.12",
+    "ts-jest": "^27.1.4",
+    "typescript": "^4.5.5",
     "watch": "^1.0.2"
   },
-  "jest": {
-    "transform": {
-      "^.+\\.tsx?$": "esbuild-jest"
-    },
-    "testMatch": [
-      "<rootDir>/src/**/*.test.ts"
-    ]
-  }
+  "config": {
+    "commitizen": {
+      "path": "git-cz"
+    }
+  },
+  "packageManager": "yarn@3.2.0"
 }

@@ -1,16 +1,19 @@
-import { Show, useState } from '@builder.io/mitosis';
-import { isEditing } from '../functions/is-editing';
-import { BuilderBlock } from '../types/builder-block';
-import RenderBlock from './render-block.lite';
+import { isEditing } from '../functions/is-editing.js';
+import { BuilderBlock } from '../types/builder-block.js';
+import RenderBlock from './render-block/render-block.lite';
+import { For, Show, useState } from '@builder.io/mitosis';
 
 export type RenderBlockProps = {
   blocks?: BuilderBlock[];
   parent?: string;
-  path: string;
+  path?: string;
 };
 
 export default function RenderBlocks(props: RenderBlockProps) {
   const state = useState({
+    get className() {
+      return 'builder-blocks' + (!props.blocks?.length ? ' no-blocks' : '');
+    },
     onClick() {
       if (isEditing() && !props.blocks?.length) {
         window.parent?.postMessage(
@@ -43,21 +46,24 @@ export default function RenderBlocks(props: RenderBlockProps) {
 
   return (
     <div
-      className={'builder-blocks' + (!props.blocks?.length ? ' no-blocks' : '')}
+      className={state.className}
       builder-path={props.path}
       builder-parent-id={props.parent}
+      dataSet={{
+        class: state.className,
+      }}
       css={{
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'stretch',
       }}
-      onClick={state.onClick}
-      onMouseEnter={state.onMouseEnter}
+      onClick={(event) => state.onClick()}
+      onMouseEnter={(event) => state.onMouseEnter()}
     >
       <Show when={props.blocks}>
-        {props.blocks?.map((block: any) => (
-          <RenderBlock block={block} />
-        ))}
+        <For each={props.blocks}>
+          {(block) => <RenderBlock key={block.id} block={block} />}
+        </For>
       </Show>
     </div>
   );

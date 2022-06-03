@@ -10,10 +10,11 @@
   "license": "MIT",
   "main": "n/a",
   "scripts": {
-    "build": "gatsby build",
+    "build": "gatsby clean && gatsby build",
     "clean": "rimraf public",
     "deploy": "gatsby build --prefix-paths && gh-pages -d public",
     "dev": "gatsby develop",
+    "serve": "gatsby serve",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,md}\"",
     "lint": "eslint 'src/**/*.{ts,tsx}'",
     "start": "npm run dev",
@@ -24,23 +25,21 @@
     "node": ">=12.13.0"
   },
   "dependencies": {
-    "@builder.io/gatsby": "^2.0.5-7",
+    "@builder.io/gatsby": "^3.0.0",
     "@builder.io/react": "^1.0.7",
     "@builder.io/widgets": "^1.0.16",
     "@material-ui/core": "^4.9.5",
     "classnames": "^2.2.6",
-    "gatsby": "^3.4.0",
+    "gatsby": "^4.8.0",
     "gatsby-image": "^2.2.1",
-    "gatsby-plugin-react-helmet": "^3.10.0",
-    "gatsby-plugin-typescript": "^2.12.1",
-    "gatsby-source-graphql": "^3.4.0",
+    "gatsby-plugin-typescript": "^4.8.0",
     "polished": "^3.4.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-helmet": "^5.2.1",
     "react-parallax": "^3.0.3",
     "react-syntax-highlighter": "^15.4.3",
-    "typescript": "^3.5.2"
+    "typescript": "^4.5.5"
   },
   "devDependencies": {
     "@types/classnames": "^2.2.8",

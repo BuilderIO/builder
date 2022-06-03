@@ -1,5 +1,6 @@
 import appState from '@builder.io/app-context';
 import { getSFCCWebhookIndex } from './utils';
+import pkg from '../package.json';
 
 interface ContentEditorActions {
   updatePreviewUrl: (url: string) => void;
@@ -24,7 +25,11 @@ export const onContentEditorLoad = ({ safeReaction, updatePreviewUrl }: ContentE
       }
       if (obj) {
         const options = JSON.parse(JSON.stringify(obj));
-        const previewUrl = getPath(options);
+        const pluginSettings = appState.user.organization.value.settings.plugins?.get(pkg.name);
+        const previewUrl = getPath({
+          ...options,
+          libraryName: pluginSettings?.get('previewLibraryName') || options.libraryName,
+        });
         setTimeout(() => updatePreviewUrl(previewUrl), 500);
         appState.snackBar.show(`Previewing ${previewUrl}`);
       } else {

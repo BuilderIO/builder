@@ -10,7 +10,7 @@
  *
  *
  * You should generally use this in conjunction with `customInsertMenu` moe, e.g.:
- *    Builder.set({ customInsertMenu: true });
+ *    Builder.register('editor.settings', { customInsertMenu: true })
  * to ensure that no components are displayed that aren't imported
  *
  *

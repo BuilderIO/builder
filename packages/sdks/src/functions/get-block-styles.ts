@@ -1,5 +1,5 @@
-import { sizes } from '../constants/device-sizes';
-import { BuilderBlock } from '../types/builder-block';
+import { sizes } from '../constants/device-sizes.js';
+import { BuilderBlock } from '../types/builder-block.js';
 
 export function getBlockStyles(block: BuilderBlock) {
   const styles: any = {

@@ -1,22 +1,12 @@
-import { isEditing } from './functions/is-editing';
+import './index-helpers/top-of-file.js';
+import './scripts/init-editing.js';
 
-if (isEditing()) {
-  import('./scripts/init-editing');
-}
+export * from './index-helpers/blocks-exports.js';
 
-// TODO: lazy option
-export { default as Columns } from './blocks/columns.lite';
-export { default as Image } from './blocks/image.lite';
-export { default as Text } from './blocks/text.lite';
-export { default as Video } from './blocks/video.lite';
-export { default as Symbol } from './blocks/symbol.lite';
-export { default as Button } from './blocks/button.lite';
-export { default as Section } from './blocks/section.lite';
-export { default as Fragment } from './blocks/fragment.lite';
-export { default as RenderContent } from './components/render-content.lite';
-
-export * from './functions/is-editing';
-export * from './functions/register-component';
-export * from './functions/register';
-export * from './functions/set-editor-settings';
-export * from './functions/get-content';
+export * from './functions/is-editing.js';
+export * from './functions/is-previewing.js';
+export * from './functions/register-component.js';
+export * from './functions/register.js';
+export * from './functions/set-editor-settings.js';
+export * from './functions/get-content/index.js';
+export * from './functions/get-builder-search-params/index.js';

@@ -21,12 +21,12 @@ export function getBlockStyles(block: BuilderBlock) {
   };
 
   if (block.responsiveStyles?.medium) {
-    styles[`@media (max-width: ${sizes.medium})`] = convertStyleObject(
+    styles[`@media (max-width: ${sizes.medium.max})`] = convertStyleObject(
       block.responsiveStyles?.medium
     );
   }
   if (block.responsiveStyles?.small) {
-    styles[`@media (max-width: ${sizes.small})`] = convertStyleObject(
+    styles[`@media (max-width: ${sizes.small.max})`] = convertStyleObject(
       block.responsiveStyles?.small
     );
   }

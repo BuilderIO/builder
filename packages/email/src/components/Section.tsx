@@ -29,8 +29,7 @@ interface SectionProps {
           component: {
             name: 'Email:Text',
             options: {
-              text:
-                "<span>I am a section! My content keeps from getting too wide, so that it's easy to read even on big screens. Lorem ipsum dolor kismet etc etc :)</span>",
+              text: "<span>I am a section! My content keeps from getting too wide, so that it's easy to read even on big screens. Lorem ipsum dolor kismet etc etc :)</span>",
             },
           },
         },

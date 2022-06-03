@@ -1,20 +1,24 @@
-import * as React from 'react';
-import { View, StyleSheet, Image, Text } from 'react-native';
-import { isEditing } from '../functions/is-editing';
-import RenderBlock from './render-block.lite';
+import * as React from "react";
+import { View, StyleSheet, Image, Text } from "react-native";
+import { isEditing } from "../functions/is-editing.js";
+import RenderBlock from "./render-block/render-block.lite";
 
 export default function RenderBlocks(props) {
+  function className() {
+    return "builder-blocks" + (!props.blocks?.length ? " no-blocks" : "");
+  }
+
   function onClick() {
     if (isEditing() && !props.blocks?.length) {
       window.parent?.postMessage(
         {
-          type: 'builder.clickEmptyBlocks',
+          type: "builder.clickEmptyBlocks",
           data: {
             parentElementId: props.parent,
             dataPath: props.path,
           },
         },
-        '*'
+        "*"
       );
     }
   }
@@ -23,13 +27,13 @@ export default function RenderBlocks(props) {
     if (isEditing() && !props.blocks?.length) {
       window.parent?.postMessage(
         {
-          type: 'builder.hoverEmptyBlocks',
+          type: "builder.hoverEmptyBlocks",
           data: {
             parentElementId: props.parent,
             dataPath: props.path,
           },
         },
-        '*'
+        "*"
       );
     }
   }
@@ -38,15 +42,17 @@ export default function RenderBlocks(props) {
     <View
       builder-path={props.path}
       builder-parent-id={props.parent}
-      onClick={(event) => onClick}
-      onMouseEnter={(event) => onMouseEnter}
-      className={'builder-blocks' + (!props.blocks?.length ? ' no-blocks' : '')}
+      dataSet={{
+        class: className(),
+      }}
+      onClick={(event) => onClick()}
+      onMouseEnter={(event) => onMouseEnter()}
       style={styles.view1}
     >
       {props.blocks ? (
         <>
           {props.blocks?.map((block) => (
-            <RenderBlock block={block} />
+            <RenderBlock key={block.id} block={block} />
           ))}
         </>
       ) : null}
@@ -55,5 +61,5 @@ export default function RenderBlocks(props) {
 }
 
 const styles = StyleSheet.create({
-  view1: { display: 'flex', flexDirection: 'column', alignItems: 'stretch' },
+  view1: { display: "flex", flexDirection: "column", alignItems: "stretch" },
 });

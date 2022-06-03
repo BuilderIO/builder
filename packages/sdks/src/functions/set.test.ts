@@ -1,5 +1,4 @@
-import { expect, test } from '@jest/globals';
-import { set } from './set';
+import { set } from './set.js';
 
 test('can shallow set a property', () => {
   const obj = { foo: 'bar' };

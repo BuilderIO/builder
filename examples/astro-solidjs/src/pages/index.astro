@@ -1,0 +1,21 @@
+---
+import Layout from '../components/Layout.astro';
+
+import { getContent } from '@builder.io/sdk-solid';
+import App from '../components/App'
+
+const apiKey = 'f1a790f8c3204b3b8c5c1795aeac4660';
+
+const builderContent = await getContent({
+	model: 'page',
+	apiKey,
+	userAttributes: {
+		urlPath: '/',
+	},
+})
+
+---
+
+<Layout title={builderContent?.data?.title || "Welcome to Astro." }>
+	<App client:visible builderContent={builderContent} />
+</Layout>

@@ -1,0 +1,23 @@
+{
+  "name": "@example/basics",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "devDependencies": {
+    "@astrojs/partytown": "^0.1.2",
+    "@astrojs/solid-js": "^0.1.2",
+    "@astrojs/tailwind": "^0.2.1",
+    "@astrojs/turbolinks": "^0.1.1",
+    "astro": "^1.0.0-beta.40",
+    "solid-js": "1.4.3"
+  },
+  "dependencies": {
+    "@builder.io/sdk-solid": "^0.0.8-9",
+    "solid-styled-components": "^0.27.6"
+  }
+}

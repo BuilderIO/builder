@@ -1,11 +1,12 @@
 {
   "name": "@builder.io/sdk-vue",
   "description": "Builder.io SDK for Vue",
-  "version": "0.0.1-47",
+  "version": "0.0.1-53",
   "dependencies": {
     "node-fetch": "^2.6.1"
   },
   "main": "./nuxt2/src/index.js",
+  "type": "module",
   "exports": {
     "./nuxt": "./nuxt.js",
     "./vue2": "./vue2/src/index.js",

@@ -1,13 +1,17 @@
-import { BuilderBlock } from './builder-block';
+import { BuilderBlock } from './builder-block.js';
 
 // TODO
 type Input = any;
 
 export interface BuilderContentVariation {
   data?: {
+    title?: string;
     blocks?: BuilderBlock[];
     inputs?: Input[];
     state?: { [key: string]: any };
+    jsCode?: string;
+    tsCode?: string;
+    httpRequests?: { [key: string]: string };
     [key: string]: any;
   };
   name?: string;

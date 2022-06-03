@@ -121,14 +121,13 @@ function decorator(fn: Function) {
   };
 }
 
-const Throttle = decorator(throttle);
-
 const fetchCache: { [key: string]: any } = {};
 
 export interface BuilderComponentProps {
   /**
    * @package
    * @deprecated use {@link model} instead.
+   * @hidden
    */
   modelName?: string;
   /**
@@ -138,6 +137,7 @@ export interface BuilderComponentProps {
   /**
    * @package
    * @deprecated use {@link model} instead.
+   * @hidden
    */
   name?: string;
   /**
@@ -176,6 +176,7 @@ export interface BuilderComponentProps {
   apiKey?: string;
   /**
    * @private
+   * @hidden
    */
   codegen?: boolean;
   options?: GetContentOptions;
@@ -211,6 +212,7 @@ export interface BuilderComponentProps {
   content?: Content;
   /**
    * @package
+   * @hidden
    *
    * Location object that provides the current url, path, etc; for server side
    * rendering.
@@ -224,10 +226,12 @@ export interface BuilderComponentProps {
   /**
    * @package
    * @deprecated
+   * @hidden
    */
   noAsync?: boolean;
   /**
    * @package
+   * @hidden
    *
    * Flag to render email content (small differences in our render logic for
    * email support).
@@ -235,6 +239,7 @@ export interface BuilderComponentProps {
   emailMode?: boolean;
   /**
    * @package
+   * @hidden
    *
    * Flag to render amp content (small differences in our render logic for amp
    * support)
@@ -242,6 +247,7 @@ export interface BuilderComponentProps {
   ampMode?: boolean;
   /**
    * @package
+   * @hidden
    *
    * Render content in-line only (can't passed from the content prop) don't
    * fetch content from our API.
@@ -250,21 +256,25 @@ export interface BuilderComponentProps {
   /**
    * @package
    * @deprecated
+   * @hidden
    */
   builderBlock?: BuilderElement;
   /**
    * @package
    * @deprecated
+   * @hidden
    */
   dataOnly?: boolean;
   /**
    * @package
    * @deprecated
+   * @hidden
    */
   hydrate?: boolean;
   /**
    * @package
    * @deprecated use {@link Builder.isStatic} instead
+   * @hidden
    */
   isStatic?: boolean;
   /**
@@ -275,9 +285,11 @@ export interface BuilderComponentProps {
   context?: any;
   /**
    * @deprecated
+   * @hidden
    */
   url?: string;
   /**
+   * @hidden
    * Set to true if this is not the root content component, for instance for symbols
    */
   isChild?: boolean;
@@ -357,7 +369,7 @@ const tryEval = (str?: string, data: any = {}, errors?: Error[]): any => {
       }).run(value.replace(/(^|;)return /, '$1'));
       // tslint:enable:comment-format
     }
-  } catch (error) {
+  } catch (error: any) {
     if (errors) {
       errors.push(error);
     }
@@ -424,7 +436,7 @@ export class BuilderComponent extends React.Component<
   lastJsCode = '';
   lastHttpRequests: { [key: string]: string | undefined } = {};
   httpSubscriptionPerKey: { [key: string]: Subscription | undefined } = {};
-
+  firstLoad = true;
   ref: HTMLElement | null = null;
 
   Component: any;
@@ -748,6 +760,13 @@ export class BuilderComponent extends React.Component<
         window.addEventListener('message', this.messageListener);
       }
 
+      if (Builder.isEditing || Builder.isPreviewing) {
+        Builder.nextTick(() => {
+          this.firstLoad = false;
+          this.reload();
+        });
+      }
+
       setTimeout(() => {
         window.dispatchEvent(
           new CustomEvent('builder:component:load', {
@@ -785,7 +804,7 @@ export class BuilderComponent extends React.Component<
 
   get isPreviewing() {
     return (
-      (Builder.isServer || (Builder.isBrowser && Builder.isPreviewing)) &&
+      (Builder.isServer || (Builder.isBrowser && Builder.isPreviewing && !this.firstLoad)) &&
       builder.previewingModel === this.name
     );
   }
@@ -1191,12 +1210,6 @@ export class BuilderComponent extends React.Component<
     return expression.replace(/{{([^}]+)}}/g, (match, group) => tryEval(group, data, this._errors));
   }
 
-  // TODO: customizable hm
-  @Throttle(100, { leading: true, trailing: true })
-  throttledHandleRequest(propertyName: string, url: string) {
-    return this.handleRequest(propertyName, url);
-  }
-
   async handleRequest(propertyName: string, url: string) {
     // TODO: Builder.isEditing = just checks if iframe and parent page is this.builder.io or localhost:1234
     if (Builder.isIframe && fetchCache[url]) {
@@ -1214,7 +1227,7 @@ export class BuilderComponent extends React.Component<
       try {
         const result = await fetch(url);
         json = await result.json();
-      } catch (err) {
+      } catch (err: any) {
         if (this._errors) {
           this._errors.push(err);
         }
@@ -1404,7 +1417,7 @@ export class BuilderComponent extends React.Component<
 
           // TODO: allow exports = { } syntax?
           // TODO: do something with reuslt like view - methods, computed, actions, properties, template, etc etc
-        } catch (error) {
+        } catch (error: any) {
           if (Builder.isBrowser) {
             console.warn(
               'Builder custom code error:',
@@ -1451,7 +1464,7 @@ export class BuilderComponent extends React.Component<
               const builderModelMatch = url.match(builderModelRe);
               const model = builderModelMatch && builderModelMatch[1];
               if (false && Builder.isEditing && model && this.builder.editingModel === model) {
-                this.throttledHandleRequest(key, finalUrl);
+                this.handleRequest(key, finalUrl);
                 // TODO: fix this
                 // this.subscriptions.add(
                 //   this.builder.get(model).subscribe(data => {
@@ -1461,22 +1474,21 @@ export class BuilderComponent extends React.Component<
                 //   })
                 // )
               } else {
-                this.throttledHandleRequest(key, finalUrl);
+                this.handleRequest(key, finalUrl);
                 const currentSubscription = this.httpSubscriptionPerKey[key];
                 if (currentSubscription) {
                   currentSubscription.unsubscribe();
                 }
 
                 // TODO: fix this
-                const newSubscription = (this.httpSubscriptionPerKey[
-                  key
-                ] = this.onStateChange.subscribe(() => {
-                  const newUrl = this.evalExpression(url);
-                  if (newUrl !== finalUrl) {
-                    this.throttledHandleRequest(key, newUrl);
-                    this.lastHttpRequests[key] = newUrl;
-                  }
-                }));
+                const newSubscription = (this.httpSubscriptionPerKey[key] =
+                  this.onStateChange.subscribe(() => {
+                    const newUrl = this.evalExpression(url);
+                    if (newUrl !== finalUrl) {
+                      this.handleRequest(key, newUrl);
+                      this.lastHttpRequests[key] = newUrl;
+                    }
+                  }));
                 this.subscriptions.add(newSubscription);
               }
             } else {

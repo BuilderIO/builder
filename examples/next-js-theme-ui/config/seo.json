@@ -1,0 +1,11 @@
+{
+  "title": "Next.JS with theme-ui starter",
+  "titleTemplate": "%s - Demo",
+  "description": "A starter kit for demo site with Builder.io and themes",
+  "openGraph": {
+    "type": "website",
+    "locale": "en_IE",
+    "url": "https://github.com/BuilderIO/builder",
+    "site_name": "Builder.io + theme-ui + Next.js"
+  }
+}

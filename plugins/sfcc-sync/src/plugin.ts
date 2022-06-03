@@ -36,6 +36,11 @@ Builder.register('plugin', {
       helperText: `Use Builder's QA API`,
     },
     {
+      name: 'previewLibraryName',
+      type: 'text',
+      helperText: 'Optional, only provide if different than library name',
+    },
+    {
       name: 'apiPath',
       type: 'text',
       helperText: 'SFCC API path, no trailing slash or sub path, just domain.com',
@@ -105,9 +110,11 @@ Builder.register('model.action', {
         const pathPrefix = pluginSettings.get('pathPrefix');
         // todo: library name per model ?
         const libraryName = pluginSettings.get('libraryName');
+        const previewLibraryName = pluginSettings.get('previewLibraryName');
+
         model.examplePageUrl = getPath({
           apiPath,
-          libraryName,
+          libraryName: previewLibraryName || libraryName,
           pathPrefix,
           assetId: `builder-preview-${model.name}`,
         });

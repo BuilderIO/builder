@@ -19,9 +19,7 @@ export interface CloudinaryImage {
   derived: any[];
 }
 
-export class CloudinaryMediaLibraryDialog extends React.Component<
-  CloudinaryMediaLibraryDialogProps
-> {
+export class CloudinaryMediaLibraryDialog extends React.Component<CloudinaryMediaLibraryDialogProps> {
   private generateNewMediaLibrary(): any {
     let mediaLibrary: any;
     const newWindow = window as any;

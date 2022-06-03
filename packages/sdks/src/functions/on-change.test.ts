@@ -1,5 +1,4 @@
-import { expect, test } from '@jest/globals';
-import { onChange } from './on-change';
+import { onChange } from './on-change.js';
 
 test('onChange can observe a shallow change', () => {
   let changeHappend = false;

@@ -1,0 +1,16 @@
+{
+  "type": "space",
+  "siteUrl": "http://localhost:3000",
+  "name": "nextjs-theme",
+  "loadPlugins": [],
+  "id": "42ef6b1448cf4254b7f51d83ca88d9d1",
+  "@version": 6,
+  "cloneInfo": {
+    "contentIdMap": {
+    },
+    "modelIdMap": {
+      "db2a380dda804d25a678f3c1252e2267": "75d7d923971f422e816a647dc70c3666",
+      "5e1d867a58c14be48eca0a67a0c745b2": "4fbfb21a31c145839e1c6b2b1306a2f0"
+    }
+  }
+}

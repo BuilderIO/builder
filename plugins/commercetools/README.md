@@ -1,6 +1,7 @@
 # Builder.io Commercetools plugin
 
 Easily connect your Commercetools data to your Builder.io content!
+
 ## Installation
 
 Go to [builder.io/account/organization](https://builder.io/account/organization) and press on `@builder.io/plugin-commercetools` in the list of plugins, then hit save, you'll be prompted for storeId and secretKey next.

@@ -339,9 +339,11 @@ export const frameworkTabs: Record<Tab, TabInfo> = {
 export function CodeSnippets(props: CodeSnippetsProps) {
   const [tab, _setTab] = useState(getDefaultTab);
 
-  let useTabs = (props.tabs
-    ? props.tabs.split(',').filter((tab) => tabs.includes(tab as any))
-    : tabs) as Tab[];
+  let useTabs = (
+    props.tabs
+      ? props.tabs.split(',').filter((tab) => tabs.includes(tab as any))
+      : tabs
+  ) as Tab[];
 
   if (props.omitTabs) {
     const omitTabsArr = props.omitTabs.split(',');

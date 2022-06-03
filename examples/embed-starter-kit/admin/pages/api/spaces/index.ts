@@ -53,14 +53,12 @@ export default async function spaces(
       // Create a new space
       const rootPrivateKey = process.env.BUILDER_ROOT_PRIVATE_KEY
       const { storeId, storeName, storeConfig } = JSON.parse(req.body)
-      const {
-        publicKey: spacePublicKey,
-        privateKey: spacePrivateKey,
-      } = await createNewSpace(rootPrivateKey!, {
-        storeId,
-        storeConfig,
-        storeName,
-      })
+      const { publicKey: spacePublicKey, privateKey: spacePrivateKey } =
+        await createNewSpace(rootPrivateKey!, {
+          storeId,
+          storeConfig,
+          storeName,
+        })
       const themeModel = await addNewModel(spacePrivateKey.key, 'theme')
       const pageModel = await addNewModel(spacePrivateKey.key, 'page')
       const headerModel = await addNewModel(spacePrivateKey.key, 'header')

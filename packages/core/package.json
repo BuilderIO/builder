@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/sdk",
-  "version": "1.1.23",
+  "version": "1.1.27-0",
   "unpkg": "./dist/index.browser.js",
   "main": "./dist/index.cjs.js",
   "module": "./dist/index.esm.js",
@@ -13,6 +13,9 @@
   "scripts": {
     "_unlink": "npm unlink *",
     "_install": "npm install",
+    "docs": "npm run docs:generate && npm run docs:cleanup",
+    "docs:generate": "typedoc",
+    "docs:cleanup": "node scripts/cleanup-generated-docs",
     "build": "npm run tsc && rollup -c",
     "watch": "rollup -cw",
     "start": "npm run watch",
@@ -41,6 +44,8 @@
     "@types/virtual-dom": "^2.0.27",
     "esbuild": "0.14.14",
     "esbuild-runner": "2.2.1",
+    "glob": "^7.2.3",
+    "glob-promise": "^4.2.2",
     "jest": "27.4.7",
     "rollup": "^0.58.2",
     "rollup-plugin-alias": "^1.4.0",
@@ -53,7 +58,9 @@
     "rollup-plugin-typescript": "^0.8.1",
     "rollup-plugin-typescript2": "^0.13.0",
     "rollup-plugin-uglify": "^3.0.0",
-    "typescript": "^3.8.3"
+    "typedoc": "^0.22.15",
+    "typedoc-plugin-markdown": "^3.12.1",
+    "typescript": "^4.6.4"
   },
   "dependencies": {
     "hash-sum": "^2.0.0",

@@ -1,6 +1,6 @@
 # Builder.io Shopify plugin
 
-Easily connect your Shopify data to your Builder.io content!
+Easily connect your Shopify custom apps to your Builder.io content!
 
 <img alt="Shopify data example" src="https://imgur.com/BhtUeqK.gif" >
 

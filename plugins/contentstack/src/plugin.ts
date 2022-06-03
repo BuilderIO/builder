@@ -9,8 +9,9 @@ import {
 import kebabCase from 'lodash/capitalize';
 import capitalize from 'lodash/kebabCase';
 import fromPairs from 'lodash/fromPairs';
-import appState from '@builder.io/app-context';
-import { Input } from '@builder.io/sdk';
+import appState, { Model } from '@builder.io/app-context';
+
+type Input = Model['fields'][0];
 
 function humanCase(str = '') {
   if (str.includes('$')) {
@@ -41,7 +42,9 @@ interface Result {
   object: () => any;
 }
 
-const filterableDataTypes = ['text', 'boolean', 'number'];
+// You can see what data types are valid in this doc:
+// https://www.contentstack.com/docs/developers/create-content-types/json-schema-for-creating-a-content-type/
+const filterableDataTypes = ['isodate', 'text', 'boolean', 'number'];
 
 const buildInputs = (model: ContentType) => (): Input[] => {
   const subFields = model.schema
@@ -166,8 +169,7 @@ registerDataPlugin(
   {
     name: 'Contentstack',
     id: pkg.name,
-    icon:
-      'https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F490404fa90f74ec8b6ea44c345e7ba64',
+    icon: 'https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F490404fa90f74ec8b6ea44c345e7ba64',
     settings: [
       {
         name: 'apiKey',
@@ -233,7 +235,9 @@ registerDataPlugin(
             toUrl: options => {
               const buildUrl = (url: string) => {
                 const endUrl = `https://cdn.contentstack.io/v3/content_types/${model.uid}/${url}`;
-                return `${appState.config.apiRoot()}/api/v1/proxy-api?url=${encodeURIComponent(
+                return `${(
+                  appState as any
+                ).config.apiRoot()}/api/v1/proxy-api?url=${encodeURIComponent(
                   endUrl
                 )}&${buildHeaders()}`;
               };
@@ -283,15 +287,13 @@ registerDataPlugin(
 
         const response: Result[] = await makeApiRequest(options);
 
-        return response.map(
-          (result): ResourceEntryType => {
-            const item = result.object();
-            return {
-              id: item.uid,
-              name: item.title,
-            };
-          }
-        );
+        return response.map((result): ResourceEntryType => {
+          const item = result.object();
+          return {
+            id: item.uid,
+            name: item.title,
+          };
+        });
       },
     };
 
