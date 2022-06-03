@@ -26,8 +26,7 @@ export const dataProvider = (
   }
 ) => ({
   name: 'Saleforce',
-  icon:
-    'https://cdn.builder.io/api/v1/image/assets%2F864765e8a4e8491d8d2558bb50417df1%2Fa69f493ae61e4a0790da2feaafdf4eeb',
+  icon: 'https://cdn.builder.io/api/v1/image/assets%2F864765e8a4e8491d8d2558bb50417df1%2Fa69f493ae61e4a0790da2feaafdf4eeb',
   getResourceTypes: async () =>
     RESOURCE_TYPES.map(model => ({
       ...model,
