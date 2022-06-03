@@ -1,10 +1,10 @@
 # Builder.io Commercetools plugin
 
-Easily connect your Commercetools data to your Builder.io content!
+Easily connect your Salesforce products and collections to your Builder.io content!
 
 ## Installation
 
-Go to [builder.io/account/organization](https://builder.io/account/organization) and press on `@builder.io/plugin-commercetools` in the list of plugins, then hit save, you'll be prompted for storeId and secretKey next.
+Go to [builder.io/account/space](https://builder.io/account/space) and type `@builder.io/plugin-sfcc-headless` in plugins options, then hit save, you'll be prompted for few configuration options needed to connect to you SFCC instance.
 
 ![Installation screenshot](https://cdn.builder.io/api/v1/image/assets%2F6d39f4449e2b4e6792a793bb8c1d9615%2F18a7201313914cccae7f0311a1a614ae)
 
@@ -22,23 +22,14 @@ builder.setUserAttributes({
 
 Or by passing it as a query param to the [content API](https://www.builder.io/c/docs/query-api#:~:text=userAttributes) call, or in [graqhql query](https://www.builder.io/c/docs/graphql-api#:~:text=with%20targeting) for e.g in Gatsby or nextjs.
 
-- `Commercetools Product` when used as a custom targeting type, it'll target contexts where the field is set to the product ID, you'll need to set the product ID on the host environment, using one of the methods above. Alternatively, if you want to target by product handle use the `Commercetools Product Handle` type in your custom targeting attributes.
+- `Salesforce Product` when used as a custom targeting type, it'll target contexts where the field is set to the product ID, you'll need to set the product ID on the host environment, using one of the methods above. Alternatively, if you want to target by product handle use the `Commercetools Product Handle` type in your custom targeting attributes.
 
-- `Commercetools Category` can be used as custom targeting attribute to target specific category by ID, you'll need to set the category ID on the host environment, using one of the methods above. Alternatively, if you want to target by product handle use the `Commercetools Category Handle` type in your custom targeting attributes.
+- `Salesforce Collection` can be used as custom targeting attribute to target specific category by ID, you'll need to set the category ID on the host environment, using one of the methods above. Alternatively, if you want to target by product handle use the `Commercetools Category Handle` type in your custom targeting attributes.
 
-### Component model fields
 
-Component models can be used to represent product or category page templates for all or a specific set of products/categorys, using one of the following fields, you'll make previewing the templates for any product or category straight-forward:
+### Custom Components Inputs
 
-- `Commercetools Product Preview` is to be used as a custom field on component models, this will allow you to have templated editing url on your component model relevant to the commercetools product being previewed, for example you can set the url in your model to:
-  `https://www.mystore.com/product/${previewProduct.handle}`, add a custom field of type `Commercetools Product Preview` to the model, now when you create a new entry, the handle will be added dynamically to the preview url based on the preview product, it is recommended to add a default value to the `Commercetools Product Preview` custom field, so users will land at a specific product page when developing a template component.
-
-- `Commercetools Category Preview` is to be used as a custom field on component models, this will allow you to have templated editing url on your component model relevant to the commercetools category being previewed, for example you can set the url in your model to:
-  `https://www.mystore.com/category/${previewCategory.handle}`, add a custom field of type `Commercetools Category Preview`, now when you create a new entry, the handle will be added dynamically to the preview url based on the preview product, it is recommended to add a default value to the `Commercetools Category Preview` custom field, so users will land at a specific category page when developing a template component.
-
-### Symbol Inputs
-
-Using the field types `Commercetools Product` and `Commercetools Category` as inputs, the UIs will prompt to search for products and categorys. When consumed by APIs, SDKs, or in the Builder.io UIs, the value will be resolved automatically the in the form of a Builder.io `Request` object
+Using the field types `Salesforce Product` and `Salesforce Collection` as inputs, the UIs will prompt to search for products and collections. When consumed by APIs, SDKs, or in the Builder.io UIs, the value will be resolved automatically the in the form of a Builder.io `Request` object
 
 ```js
 {
