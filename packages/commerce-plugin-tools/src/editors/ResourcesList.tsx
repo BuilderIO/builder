@@ -3,7 +3,12 @@ import { jsx } from '@emotion/core';
 import React, { useEffect } from 'react';
 import { action } from 'mobx';
 import { useObserver, useLocalStore } from 'mobx-react';
-import { ResourcePreviewCell, ResourcePreviewCellProps, ResourcePicker } from './ResourcesPicker';
+import {
+  ResourcePreviewCell,
+  ResourcePreviewCellProps,
+  ResourcePicker,
+  ResourcePickerProps,
+} from './ResourcesPicker';
 import { CircularProgress, Button, Typography, Tooltip, IconButton } from '@material-ui/core';
 import { Close } from '@material-ui/icons';
 import appState from '@builder.io/app-context';
@@ -16,6 +21,7 @@ export type PickResourceListProps = {
   api: CommerceAPIOperations;
   value?: string[];
   onChange(newValue: string[]): void;
+  resourcePicker?: React.FC<ResourcePickerProps>;
   onDone(): void;
   resourceName: string;
 };
@@ -117,10 +123,11 @@ export function PickResourceList(props: PickResourceListProps) {
           fullWidth
           css={{ marginTop: 10 }}
           onClick={() => {
+            const { value, resourcePicker, ...rest } = props;
+            const PickerCompnent = resourcePicker || ResourcePicker;
             const close = appState.globalState.openDialog(
-              <ResourcePicker
-                resourceName={props.resourceName}
-                api={props.api}
+              <PickerCompnent
+                {...rest}
                 context={appState}
                 omitIds={store.value}
                 onChange={action(resource => {
