@@ -1,4 +1,4 @@
-# Builder.io Commercetools plugin
+# Builder.io Salesforce Headless plugin
 
 Easily connect your Salesforce products and collections to your Builder.io content!
 
