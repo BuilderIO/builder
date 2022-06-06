@@ -164,38 +164,3 @@ export const CategoriesPicker: React.FC<
     </div>
   ));
 };
-
-/***
- * 
- *                 <div
-                  css={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'stretch',
-                  }}
-                >  
-                      <Tooltip title="Click to select">
-                        <IconButton
-                          css={{ padding: 3, marginRight: 10 }}
-                          onClick={() => {
-                          }}
-                        >
-                          <CheckCircle css={{ color: '#888' }} />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip title='Click to expand this category'>
-                        <IconButton
-                          css={{ padding: 3 }}
-                          onClick={() => {
-                          }}
-                        >
-                          <ExpandMore
-                            css={{
-                              color: '#888',
-                            }}
-                          />
-                        </IconButton>
-                      </Tooltip>
-                    </div>
-
- */
