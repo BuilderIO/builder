@@ -108,8 +108,8 @@ export function PickResourceList(props: PickResourceListProps) {
                   onClick={() => {
                     const res = [
                       ...props.value!.slice(0, props.value!.indexOf(item)),
-                      ...props.value!.slice(props.value!.indexOf(item) + 1)
-                    ]
+                      ...props.value!.slice(props.value!.indexOf(item) + 1),
+                    ];
                     props.onChange(res);
                   }}
                 >
