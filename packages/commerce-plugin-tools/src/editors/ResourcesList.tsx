@@ -90,7 +90,7 @@ export function PickResourceList(props: PickResourceListProps) {
                 id={item}
                 api={props.api}
               />
-              <Tooltip title="Remove product">
+              <Tooltip title="Remove product s">
                 <IconButton
                   css={{
                     opacity: 0,
@@ -100,7 +100,10 @@ export function PickResourceList(props: PickResourceListProps) {
                     alignSelf: 'center',
                   }}
                   onClick={() => {
-                    const res = [...props.value!].splice(props.value!.indexOf(item) + 1, 1);
+                    const res = [
+                      ...props.value!.slice(0, props.value!.indexOf(item)),
+                      ...props.value!.slice(props.value!.indexOf(item) + 1)
+                    ]
                     props.onChange(res);
                   }}
                 >
