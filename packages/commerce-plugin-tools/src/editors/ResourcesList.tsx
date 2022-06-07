@@ -96,7 +96,7 @@ export function PickResourceList(props: PickResourceListProps) {
                 id={item}
                 api={props.api}
               />
-              <Tooltip title="Remove product s">
+              <Tooltip title="Remove product">
                 <IconButton
                   css={{
                     opacity: 0,
