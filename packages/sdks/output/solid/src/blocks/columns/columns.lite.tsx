@@ -24,7 +24,7 @@ function Columns(props) {
         (gutterSize * (columns.length - 1)) / columns.length;
       return `calc(${this.getWidth(index)}% - ${subtractWidth}px)`;
     },
-    maybeApplyForTablet(prop: string) {
+    maybeApplyForTablet(prop: CSSProperties["flexDirection"]) {
       const _stackColumnsAt = props.stackColumnsAt || "tablet";
 
       return _stackColumnsAt === "tablet" ? prop : "inherit";

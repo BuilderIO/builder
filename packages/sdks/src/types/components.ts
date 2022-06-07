@@ -6,6 +6,9 @@ export interface Input {
   description?: string;
   defaultValue?: any;
   type: string;
+  valueType?: {
+    type?: string;
+  };
   required?: boolean;
   autoFocus?: boolean;
   subFields?: Input[];
@@ -172,6 +175,9 @@ export interface ComponentInfo {
    * for more information on permissions in builder check https://www.builder.io/c/docs/guides/roles-and-permissions
    */
   requiredPermissions?: Array<Permission>;
+
+  // TO-DO: is this used?
+  hidden?: boolean;
 }
 
 type Permission =

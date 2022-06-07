@@ -21,7 +21,7 @@
     "typecheck": "tsc --noEmit",
     "typecheck:watch": "yarn run typecheck --watch",
     "ci:lint": "yarn run prettier --check && yarn run eslint",
-    "ci:build": "mitosis build",
+    "ci:build": "yarn run typecheck && mitosis build",
     "ci:test": "yarn run test",
     "release-sdk": "bash ./scripts/release-sdk.sh",
     "release:dev:all": "npm run release-sdk -- svelte && npm run release-sdk -- react-native && npm run release-sdk -- solid && npm run release-sdk -- vue"

@@ -35,7 +35,15 @@ function RenderBlock(props) {
     },
 
     get componentInfo() {
-      return state.component?.info;
+      if (state.component) {
+        const {
+          component: _,
+          ...info
+        } = state.component;
+        return info;
+      } else {
+        return undefined;
+      }
     },
 
     get componentRef() {
