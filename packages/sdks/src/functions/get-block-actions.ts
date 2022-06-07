@@ -13,6 +13,7 @@ export function getBlockActions(options: {
   const optionActions = options.block.actions ?? {};
 
   for (const key in optionActions) {
+    // eslint-disable-next-line no-prototype-builtins
     if (!optionActions.hasOwnProperty(key)) {
       continue;
     }

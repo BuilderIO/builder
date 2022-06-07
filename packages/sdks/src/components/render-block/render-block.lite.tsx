@@ -1,5 +1,7 @@
 import { TARGET } from '../../constants/target.js';
-import BuilderContext from '../../context/builder.context.lite';
+import BuilderContext, {
+  RegisteredComponent,
+} from '../../context/builder.context.lite';
 import { getBlockActions } from '../../functions/get-block-actions.js';
 import { getBlockComponentOptions } from '../../functions/get-block-component-options.js';
 import { getBlockProperties } from '../../functions/get-block-properties.js';
@@ -7,6 +9,7 @@ import { getBlockStyles } from '../../functions/get-block-styles.js';
 import { getBlockTag } from '../../functions/get-block-tag.js';
 import { getProcessedBlock } from '../../functions/get-processed-block.js';
 import { BuilderBlock } from '../../types/builder-block.js';
+import { Nullable } from '../../types/typescript.js';
 import BlockStyles from './block-styles.lite';
 import { isEmptyHtmlElement } from './render-block.helpers.js';
 import {
@@ -21,6 +24,7 @@ export type RenderBlockProps = {
   block: BuilderBlock;
 };
 
+// eslint-disable-next-line @builder.io/mitosis/only-default-function-and-imports
 useMetadata({
   elementTag: 'state.tagName',
 });
@@ -29,7 +33,7 @@ export default function RenderBlock(props: RenderBlockProps) {
   const builderContext = useContext(BuilderContext);
 
   const state = useState({
-    get component() {
+    get component(): Nullable<RegisteredComponent> {
       const componentName = state.useBlock.component?.name;
       if (!componentName) {
         return null;
@@ -48,7 +52,12 @@ export default function RenderBlock(props: RenderBlockProps) {
       }
     },
     get componentInfo() {
-      return state.component?.info;
+      if (state.component) {
+        const { component: _, ...info } = state.component;
+        return info;
+      } else {
+        return undefined;
+      }
     },
     get componentRef() {
       return state.component?.component;

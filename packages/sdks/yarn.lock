@@ -918,14 +918,14 @@ __metadata:
   linkType: hard
 
 "@builder.io/eslint-plugin-mitosis@npm:dev":
-  version: 0.0.1-1
-  resolution: "@builder.io/eslint-plugin-mitosis@npm:0.0.1-1"
+  version: 0.0.1-2
+  resolution: "@builder.io/eslint-plugin-mitosis@npm:0.0.1-2"
   dependencies:
     "@babel/types": 7.12.6
     ts-pattern: ^3.3.5
   peerDependencies:
     eslint: ">=0.8.0"
-  checksum: 2b68ce5597d5a869ccbd6fe524bb60f2eebefbf661f3aee6e97a84939e05e4cb31f75d23dede955096936318d0b282d9b6c0d4302aa21ff5bc6dae80b8de9a62
+  checksum: 230ad7280045586df2d306b6eb1fd638e57d517645e4abade96662c8d8098bebb3e351808e5c803afea9f4db9433a563dbec734e0a0add11a8d21f8dbf1c5815
   languageName: node
   linkType: hard
 

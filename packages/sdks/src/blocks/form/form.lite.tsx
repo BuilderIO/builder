@@ -1,3 +1,4 @@
+/* eslint-disable */
 import RenderBlock from '../../components/render-block/render-block.lite';
 import { isEditing } from '../../functions/is-editing.js';
 import { For, Show, useRef, useState } from '@builder.io/mitosis';

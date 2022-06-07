@@ -5,6 +5,7 @@ export interface EmbedProps {
 }
 
 export default function Embed(props: EmbedProps) {
+  // eslint-disable-next-line @builder.io/mitosis/no-var-declaration-or-assignment-in-component
   const elem = useRef();
 
   const state = useState({

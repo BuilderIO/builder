@@ -20,7 +20,7 @@ function validateReactNativeStyles(styles: Record<string, string | number>) {
       delete styles[key];
     }
 
-    if (typeof propertyValue === 'string' && propertyValue.match(/^\-?\d/)) {
+    if (typeof propertyValue === 'string' && propertyValue.match(/^-?\d/)) {
       const newValue = parseFloat(propertyValue);
       if (!isNaN(newValue)) {
         styles[key] = newValue;
