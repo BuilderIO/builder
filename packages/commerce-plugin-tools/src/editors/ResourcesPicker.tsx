@@ -29,6 +29,7 @@ export interface ResourcesPickerButtonProps
   isPreview?: boolean;
   handleOnly?: boolean;
   api: CommerceAPIOperations;
+  resourcePicker?: React.FC<ResourcePickerProps>;
   pluginId: string;
   pluginName: string;
   resourceName: string;
@@ -67,14 +68,14 @@ export const ResourcePreviewCell: React.FC<ResourcePreviewCellProps> = props =>
     </ListItem>
   ));
 
-export const ResourcePicker: React.FC<
-  CustomReactEditorProps<Resource> & {
-    api: CommerceAPIOperations;
-    omitIds?: string[];
-    resourceName: string;
-    title?: string;
-  }
-> = props => {
+export type ResourcePickerProps = CustomReactEditorProps<Resource> & {
+  api: CommerceAPIOperations;
+  omitIds?: string[];
+  resourceName: string;
+  title?: string;
+};
+
+export const ResourcePicker: React.FC<ResourcePickerProps> = props => {
   const store = useLocalStore(() => ({
     searchInputText: '',
     loading: false,
@@ -182,7 +183,7 @@ export const ResourcesPickerButton: React.FC<ResourcesPickerButtonProps> = props
         this.resourceInfo = value || null;
       } catch (e) {
         console.error(e);
-        this.error = e;
+        this.error = e as any;
         props.context.snackBar.show(
           `Oh no! There was an error fetching ${pluralize.plural(props.resourceName)}`
         );
@@ -190,11 +191,13 @@ export const ResourcesPickerButton: React.FC<ResourcesPickerButtonProps> = props
       this.loading = false;
     },
     async showPickResouceModal(title?: string) {
+      const { value, resourcePicker, ...rest } = props;
+      const PickerCompnent = resourcePicker || ResourcePicker;
+
       const close = await props.context.globalState.openDialog(
-        <ResourcePicker
+        <PickerCompnent
+          {...rest}
           resourceName={props.resourceName}
-          api={props.api}
-          context={props.context}
           {...(this.resourceInfo && { value: this.resourceInfo })}
           title={title}
           onChange={action(value => {
