@@ -5,10 +5,7 @@
     "jsx": "preserve",
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
+    "forceConsistentCasingInFileNames": true
   },
-  "include": [
-    "src",
-    "typings"
-  ],
+  "include": ["src", "typings"]
 }
