@@ -9,8 +9,9 @@ import { getBlockTag } from '../../functions/get-block-tag.js';
 import { getProcessedBlock } from '../../functions/get-processed-block.js';
 import { BuilderBlock } from '../../types/builder-block.js';
 import { Nullable } from '../../types/typescript.js';
+import BlockStyles from './block-styles.lite';
 import { isEmptyHtmlElement } from './render-block.helpers.js';
-import RenderComponentAndStyles from './render-component-and-styles.lite';
+import RenderComponent from './render-component.lite';
 import {
   For,
   Show,
@@ -117,8 +118,7 @@ export default function RenderBlock(props: RenderBlockProps) {
     <Show
       when={state.shouldWrap}
       else={
-        <RenderComponentAndStyles
-          block={state.useBlock}
+        <RenderComponent
           blockChildren={state.children}
           componentRef={state.componentRef}
           componentOptions={state.componentOptions}
@@ -136,14 +136,20 @@ export default function RenderBlock(props: RenderBlockProps) {
         }
       >
         <state.tagName {...state.attributes}>
-          <RenderComponentAndStyles
-            block={state.useBlock}
+          <RenderComponent
             blockChildren={state.children}
             componentRef={state.componentRef}
             componentOptions={state.componentOptions}
           />
           <For each={state.noCompRefChildren}>
-            {(child) => <RenderBlock key={child.id} block={child} />}
+            {(child) => (
+              <RenderBlock key={'render-block-' + child.id} block={child} />
+            )}
+          </For>
+          <For each={state.noCompRefChildren}>
+            {(child) => (
+              <BlockStyles key={'block-style-' + child.id} block={child} />
+            )}
           </For>
         </state.tagName>
       </Show>
