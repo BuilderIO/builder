@@ -26,10 +26,7 @@ function stripSlashes(path: string) {
 
 export async function integrateWithLocalCodebase(options: IntegrateOptions) {
   let failed;
-  const filePath = options.pathPrefix
-    .split('/')
-    .filter(item => item)
-    .join('/');
+  const filePath = stripSlashes(options.pathPrefix);
 
   if (!options.apiKey) {
     console.error('apiKey is required, you can find it on builder.io/account/settings');

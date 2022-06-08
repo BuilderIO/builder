@@ -19,7 +19,7 @@ export async function getStaticProps({ params }) {
   return {
     props: {
       page: page || null,
-      revalidate: 5
+      revalidate: 5,
     },
   };
 }
@@ -28,7 +28,7 @@ export async function getStaticPaths() {
   // Get a list of all pages in builder
   const pages = await builder.getAll('<<<MODEL_NAME>>>', {
     // We only need the URL field
-    fields: 'data.url', 
+    fields: 'data.url',
     options: { noTargeting: true },
   });
 
@@ -43,11 +43,11 @@ export default function Page({ page }) {
   const isPreviewing = useIsPreviewing();
 
   if (router.isFallback) {
-    return <h1>Loading...</h1>
+    return <h1>Loading...</h1>;
   }
 
   if (!page && !isPreviewing) {
-    return <DefaultErrorPage statusCode={404} />
+    return <DefaultErrorPage statusCode={404} />;
   }
 
   return (
