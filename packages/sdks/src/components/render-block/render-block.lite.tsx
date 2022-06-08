@@ -1,4 +1,3 @@
-import { TARGET } from '../../constants/target.js';
 import BuilderContext, {
   RegisteredComponent,
 } from '../../context/builder.context.lite';
@@ -10,8 +9,8 @@ import { getBlockTag } from '../../functions/get-block-tag.js';
 import { getProcessedBlock } from '../../functions/get-processed-block.js';
 import { BuilderBlock } from '../../types/builder-block.js';
 import { Nullable } from '../../types/typescript.js';
-import BlockStyles from './block-styles.lite';
 import { isEmptyHtmlElement } from './render-block.helpers.js';
+import RenderComponentAndStyles from './render-component-and-styles.lite';
 import {
   For,
   Show,
@@ -72,7 +71,7 @@ export default function RenderBlock(props: RenderBlockProps) {
         context: builderContext.context,
       });
     },
-    get propertiesAndActions() {
+    get attributes() {
       return {
         ...getBlockProperties(state.useBlock),
         ...getBlockActions({
@@ -80,13 +79,23 @@ export default function RenderBlock(props: RenderBlockProps) {
           state: builderContext.state,
           context: builderContext.context,
         }),
+        style: getBlockStyles(state.useBlock),
       };
     },
-    get css() {
-      return getBlockStyles(state.useBlock);
+
+    get shouldWrap() {
+      return !state.componentInfo?.noWrap;
     },
+
     get componentOptions() {
-      return getBlockComponentOptions(state.useBlock);
+      return {
+        ...getBlockComponentOptions(state.useBlock),
+        /**
+         * These attributes are passed to the wrapper element when there is one. If `noWrap` is set to true, then
+         * they are provided to the component itself directly.
+         */
+        ...(state.shouldWrap ? {} : { attributes: state.attributes }),
+      };
     },
     get children() {
       // TO-DO: When should `canHaveChildren` dictate rendering?
@@ -96,24 +105,24 @@ export default function RenderBlock(props: RenderBlockProps) {
       return state.useBlock.children ?? [];
     },
     get noCompRefChildren() {
+      /**
+       * When there is no `componentRef`, there might still be children that need to be rendered. In this case,
+       * we render them outside of `componentRef`
+       */
       return state.componentRef ? [] : state.children;
     },
   });
 
   return (
     <Show
-      when={!state.componentInfo?.noWrap}
+      when={state.shouldWrap}
       else={
-        <state.componentRef
-          attributes={state.propertiesAndActions}
-          {...state.componentOptions}
-          builderBlock={state.useBlock}
-          style={state.css}
-        >
-          <For each={state.children}>
-            {(child) => <RenderBlock key={child.id} block={child} />}
-          </For>
-        </state.componentRef>
+        <RenderComponentAndStyles
+          block={state.useBlock}
+          blockChildren={state.children}
+          componentRef={state.componentRef}
+          componentOptions={state.componentOptions}
+        />
       }
     >
       <Show
@@ -123,23 +132,16 @@ export default function RenderBlock(props: RenderBlockProps) {
            * Svelte is super finicky, and does not allow an empty HTML element (e.g. `img`) to have logic inside of it,
            * _even_ if that logic ends up not rendering anything.
            */
-          <state.tagName {...state.propertiesAndActions} style={state.css} />
+          <state.tagName {...state.attributes} />
         }
       >
-        <state.tagName {...state.propertiesAndActions} style={state.css}>
-          <Show when={TARGET === 'vue' || TARGET === 'svelte'}>
-            <BlockStyles block={state.useBlock} />
-          </Show>
-          {state.componentRef && (
-            <state.componentRef
-              {...state.componentOptions}
-              builderBlock={state.useBlock}
-            >
-              <For each={state.children}>
-                {(child) => <RenderBlock key={child.id} block={child} />}
-              </For>
-            </state.componentRef>
-          )}
+        <state.tagName {...state.attributes}>
+          <RenderComponentAndStyles
+            block={state.useBlock}
+            blockChildren={state.children}
+            componentRef={state.componentRef}
+            componentOptions={state.componentOptions}
+          />
           <For each={state.noCompRefChildren}>
             {(child) => <RenderBlock key={child.id} block={child} />}
           </For>
