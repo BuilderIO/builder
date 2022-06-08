@@ -8,5 +8,6 @@
     "strict": true,
     "allowJs": true,
     "resolveJsonModule": true
-  }
+  },
+  "exclude": ["src/templates/*", "pages/*"],
 }
