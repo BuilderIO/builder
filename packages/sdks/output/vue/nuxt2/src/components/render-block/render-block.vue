@@ -1,58 +1,32 @@
 <template>
   <component
-    v-bind="propertiesAndActions"
+    v-bind="attributes"
     v-if="!isEmptyHtmlElement(tagName)"
-    :style="css"
     :is="tagName"
   >
-    <block-styles
-      v-if="TARGET === 'vue' || TARGET === 'svelte'"
+    <render-component-and-styles
       :block="useBlock"
-    ></block-styles>
-
-    <component
-      v-bind="componentOptions"
-      v-if="componentRef"
-      :builderBlock="useBlock"
-      :is="componentRef"
-    >
-      <render-block
-        v-for="(child, index) in children"
-        :block="child"
-        :key="child.id"
-      ></render-block>
-    </component>
-
+      :blockChildren="children"
+      :componentRef="componentRef"
+      :componentOptions="componentOptions"
+    ></render-component-and-styles>
     <render-block
       v-for="(child, index) in noCompRefChildren"
       :block="child"
       :key="child.id"
     ></render-block>
   </component>
-  <component
-    v-bind="propertiesAndActions"
-    v-else=""
-    :style="css"
-    :is="tagName"
-  ></component>
+  <component v-bind="attributes" v-else="" :is="tagName"></component>
 
-  <component
-    v-bind="componentOptions"
+  <render-component-and-styles
     v-else=""
-    :attributes="propertiesAndActions"
-    :builderBlock="useBlock"
-    :style="css"
-    :is="componentRef"
-  >
-    <render-block
-      v-for="(child, index) in children"
-      :block="child"
-      :key="child.id"
-    ></render-block>
-  </component>
+    :block="useBlock"
+    :blockChildren="children"
+    :componentRef="componentRef"
+    :componentOptions="componentOptions"
+  ></render-component-and-styles>
 </template>
 <script>
-import { TARGET } from "../../constants/target.js";
 import BuilderContext from "../../context/builder.context";
 import { getBlockActions } from "../../functions/get-block-actions.js";
 import { getBlockComponentOptions } from "../../functions/get-block-component-options.js";
@@ -60,15 +34,17 @@ import { getBlockProperties } from "../../functions/get-block-properties.js";
 import { getBlockStyles } from "../../functions/get-block-styles.js";
 import { getBlockTag } from "../../functions/get-block-tag.js";
 import { getProcessedBlock } from "../../functions/get-processed-block.js";
-import BlockStyles from "./block-styles";
 import { isEmptyHtmlElement } from "./render-block.helpers.js";
+import RenderComponentAndStyles from "./render-component-and-styles";
 
 export default {
   name: "render-block",
-  components: { "block-styles": async () => BlockStyles },
+  components: {
+    "render-component-and-styles": async () => RenderComponentAndStyles,
+  },
   props: ["block"],
 
-  data: () => ({ TARGET, isEmptyHtmlElement }),
+  data: () => ({ isEmptyHtmlElement }),
 
   inject: {
     builderContext: "BuilderContext",
@@ -115,7 +91,7 @@ export default {
         context: this.builderContext.context,
       });
     },
-    propertiesAndActions() {
+    attributes() {
       return {
         ...getBlockProperties(this.useBlock),
         ...getBlockActions({
@@ -123,13 +99,26 @@ export default {
           state: this.builderContext.state,
           context: this.builderContext.context,
         }),
+        style: getBlockStyles(this.useBlock),
       };
     },
-    css() {
-      return getBlockStyles(this.useBlock);
+    shouldWrap() {
+      return !this.componentInfo?.noWrap;
     },
     componentOptions() {
-      return getBlockComponentOptions(this.useBlock);
+      return {
+        ...getBlockComponentOptions(this.useBlock),
+
+        /**
+         * These attributes are passed to the wrapper element when there is one. If `noWrap` is set to true, then
+         * they are provided to the component itself directly.
+         */
+        ...(this.shouldWrap
+          ? {}
+          : {
+              attributes: this.attributes,
+            }),
+      };
     },
     children() {
       // TO-DO: When should `canHaveChildren` dictate rendering?
@@ -139,6 +128,10 @@ export default {
       return this.useBlock.children ?? [];
     },
     noCompRefChildren() {
+      /**
+       * When there is no `componentRef`, there might still be children that need to be rendered. In this case,
+       * we render them outside of `componentRef`
+       */
       return this.componentRef ? [] : this.children;
     },
   },

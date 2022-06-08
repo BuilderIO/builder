@@ -1,7 +1,6 @@
 import { useContext, Show, For } from "solid-js";
 import { Dynamic } from "solid-js/web";
 import { createMutable } from "solid-js/store";
-import { TARGET } from "../../constants/target.js";
 import BuilderContext from "../../context/builder.context";
 import { getBlockActions } from "../../functions/get-block-actions.js";
 import { getBlockComponentOptions } from "../../functions/get-block-component-options.js";
@@ -9,8 +8,8 @@ import { getBlockProperties } from "../../functions/get-block-properties.js";
 import { getBlockStyles } from "../../functions/get-block-styles.js";
 import { getBlockTag } from "../../functions/get-block-tag.js";
 import { getProcessedBlock } from "../../functions/get-processed-block.js";
-import BlockStyles from "./block-styles";
 import { isEmptyHtmlElement } from "./render-block.helpers.js";
+import RenderComponentAndStyles from "./render-component-and-styles";
 
 function RenderBlock(props) {
   const state = createMutable({
@@ -62,22 +61,32 @@ function RenderBlock(props) {
       });
     },
 
-    get propertiesAndActions() {
+    get attributes() {
       return { ...getBlockProperties(state.useBlock),
         ...getBlockActions({
           block: state.useBlock,
           state: builderContext.state,
           context: builderContext.context
-        })
+        }),
+        style: getBlockStyles(state.useBlock)
       };
     },
 
-    get css() {
-      return getBlockStyles(state.useBlock);
+    get shouldWrap() {
+      return !state.componentInfo?.noWrap;
     },
 
     get componentOptions() {
-      return getBlockComponentOptions(state.useBlock);
+      return { ...getBlockComponentOptions(state.useBlock),
+
+        /**
+         * These attributes are passed to the wrapper element when there is one. If `noWrap` is set to true, then
+         * they are provided to the component itself directly.
+         */
+        ...(state.shouldWrap ? {} : {
+          attributes: state.attributes
+        })
+      };
     },
 
     get children() {
@@ -89,36 +98,19 @@ function RenderBlock(props) {
     },
 
     get noCompRefChildren() {
+      /**
+       * When there is no `componentRef`, there might still be children that need to be rendered. In this case,
+       * we render them outside of `componentRef`
+       */
       return state.componentRef ? [] : state.children;
     }
 
   });
   const builderContext = useContext(BuilderContext);
-  return <Show fallback={<Dynamic {...state.componentOptions} attributes={state.propertiesAndActions} builderBlock={state.useBlock} style={state.css} component={state.componentRef}>
-          <For each={state.children}>
-            {(child, _index) => {
-        const index = _index();
-
-        return <RenderBlock key={child.id} block={child}></RenderBlock>;
-      }}
-          </For>
-        </Dynamic>} when={!state.componentInfo?.noWrap}>
-      <Show fallback={<Dynamic {...state.propertiesAndActions} style={state.css} component={state.tagName}></Dynamic>} when={!isEmptyHtmlElement(state.tagName)}>
-        <Dynamic {...state.propertiesAndActions} style={state.css} component={state.tagName}>
-          <Show when={TARGET === "vue" || TARGET === "svelte"}>
-            <BlockStyles block={state.useBlock}></BlockStyles>
-          </Show>
-          <Show when={state.componentRef}>
-            <Dynamic {...state.componentOptions} builderBlock={state.useBlock} component={state.componentRef}>
-              <For each={state.children}>
-                {(child, _index) => {
-                const index = _index();
-
-                return <RenderBlock key={child.id} block={child}></RenderBlock>;
-              }}
-              </For>
-            </Dynamic>
-          </Show>
+  return <Show fallback={<RenderComponentAndStyles block={state.useBlock} blockChildren={state.children} componentRef={state.componentRef} componentOptions={state.componentOptions}></RenderComponentAndStyles>} when={state.shouldWrap}>
+      <Show fallback={<Dynamic {...state.attributes} component={state.tagName}></Dynamic>} when={!isEmptyHtmlElement(state.tagName)}>
+        <Dynamic {...state.attributes} component={state.tagName}>
+          <RenderComponentAndStyles block={state.useBlock} blockChildren={state.children} componentRef={state.componentRef} componentOptions={state.componentOptions}></RenderComponentAndStyles>
           <For each={state.noCompRefChildren}>
             {(child, _index) => {
             const index = _index();

@@ -1,7 +1,6 @@
 import * as React from "react";
 import { View, StyleSheet, Image, Text } from "react-native";
 import { useContext } from "react";
-import { TARGET } from "../../constants/target.js";
 import BuilderContext from "../../context/builder.context";
 import { getBlockActions } from "../../functions/get-block-actions.js";
 import { getBlockComponentOptions } from "../../functions/get-block-component-options.js";
@@ -9,8 +8,8 @@ import { getBlockProperties } from "../../functions/get-block-properties.js";
 import { getBlockStyles } from "../../functions/get-block-styles.js";
 import { getBlockTag } from "../../functions/get-block-tag.js";
 import { getProcessedBlock } from "../../functions/get-processed-block.js";
-import BlockStyles from "./block-styles.lite";
 import { isEmptyHtmlElement } from "./render-block.helpers.js";
+import RenderComponentAndStyles from "./render-component-and-styles.lite";
 
 export default function RenderBlock(props) {
   function component() {
@@ -58,7 +57,7 @@ export default function RenderBlock(props) {
     });
   }
 
-  function propertiesAndActions() {
+  function attributes() {
     return {
       ...getBlockProperties(useBlock()),
       ...getBlockActions({
@@ -66,15 +65,28 @@ export default function RenderBlock(props) {
         state: builderContext.state,
         context: builderContext.context,
       }),
+      style: getBlockStyles(useBlock()),
     };
   }
 
-  function css() {
-    return getBlockStyles(useBlock());
+  function shouldWrap() {
+    return !componentInfo?.()?.noWrap;
   }
 
   function componentOptions() {
-    return getBlockComponentOptions(useBlock());
+    return {
+      ...getBlockComponentOptions(useBlock()),
+
+      /**
+       * These attributes are passed to the wrapper element when there is one. If `noWrap` is set to true, then
+       * they are provided to the component itself directly.
+       */
+      ...(shouldWrap()
+        ? {}
+        : {
+            attributes: attributes(),
+          }),
+    };
   }
 
   function children() {
@@ -86,37 +98,30 @@ export default function RenderBlock(props) {
   }
 
   function noCompRefChildren() {
+    /**
+     * When there is no `componentRef`, there might still be children that need to be rendered. In this case,
+     * we render them outside of `componentRef`
+     */
     return componentRef() ? [] : children();
   }
 
   const builderContext = useContext(BuilderContext);
 
-  const ComponentRefRef = componentRef();
   const TagNameRef = tagName();
 
   return (
     <>
-      {!componentInfo?.()?.noWrap ? (
+      {shouldWrap() ? (
         <>
           {!isEmptyHtmlElement(tagName()) ? (
             <>
-              <TagNameRef {...propertiesAndActions()} style={css()}>
-                {TARGET === "vue" || TARGET === "svelte" ? (
-                  <>
-                    <BlockStyles block={useBlock()} />
-                  </>
-                ) : null}
-
-                {componentRef() ? (
-                  <ComponentRefRef
-                    {...componentOptions()}
-                    builderBlock={useBlock()}
-                  >
-                    {children()?.map((child) => (
-                      <RenderBlock key={child.id} block={child} />
-                    ))}
-                  </ComponentRefRef>
-                ) : null}
+              <TagNameRef {...attributes()}>
+                <RenderComponentAndStyles
+                  block={useBlock()}
+                  blockChildren={children()}
+                  componentRef={componentRef()}
+                  componentOptions={componentOptions()}
+                />
 
                 {noCompRefChildren()?.map((child) => (
                   <RenderBlock key={child.id} block={child} />
@@ -124,20 +129,16 @@ export default function RenderBlock(props) {
               </TagNameRef>
             </>
           ) : (
-            <TagNameRef {...propertiesAndActions()} style={css()} />
+            <TagNameRef {...attributes()} />
           )}
         </>
       ) : (
-        <ComponentRefRef
-          {...componentOptions()}
-          attributes={propertiesAndActions()}
-          builderBlock={useBlock()}
-          style={css()}
-        >
-          {children()?.map((child) => (
-            <RenderBlock key={child.id} block={child} />
-          ))}
-        </ComponentRefRef>
+        <RenderComponentAndStyles
+          block={useBlock()}
+          blockChildren={children()}
+          componentRef={componentRef()}
+          componentOptions={componentOptions()}
+        />
       )}
     </>
   );

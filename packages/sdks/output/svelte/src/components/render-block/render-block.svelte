@@ -3,16 +3,15 @@
     
     
     
-  import  {  TARGET  }  from '../../constants/target.js';
-import  BuilderContext,  {  }  from '../../context/builder.context';
+  import  BuilderContext,  {  }  from '../../context/builder.context';
 import  {  getBlockActions  }  from '../../functions/get-block-actions.js';
 import  {  getBlockComponentOptions  }  from '../../functions/get-block-component-options.js';
 import  {  getBlockProperties  }  from '../../functions/get-block-properties.js';
 import  {  getBlockStyles  }  from '../../functions/get-block-styles.js';
 import  {  getBlockTag  }  from '../../functions/get-block-tag.js';
 import  {  getProcessedBlock  }  from '../../functions/get-processed-block.js';
-import  BlockStyles,  {  }  from './block-styles.svelte';
 import  {  isEmptyHtmlElement  }  from './render-block.helpers.js';
+import  RenderComponentAndStyles,  {  }  from './render-component-and-styles.svelte';
 
   
 
@@ -70,22 +69,32 @@ return getProcessedBlock({
 });
 };
 
-$: propertiesAndActions = () => {
+$: attributes = () => {
 return { ...getBlockProperties(useBlock()),
   ...getBlockActions({
     block: useBlock(),
     state: builderContext.state,
     context: builderContext.context
-  })
+  }),
+  style: getBlockStyles(useBlock())
 };
 };
 
-$: css = () => {
-return getBlockStyles(useBlock());
+$: shouldWrap = () => {
+return !componentInfo?.()?.noWrap;
 };
 
 $: componentOptions = () => {
-return getBlockComponentOptions(useBlock());
+return { ...getBlockComponentOptions(useBlock()),
+
+  /**
+   * These attributes are passed to the wrapper element when there is one. If `noWrap` is set to true, then
+   * they are provided to the component itself directly.
+   */
+  ...(shouldWrap() ? {} : {
+    attributes: attributes()
+  })
+};
 };
 
 $: children = () => {
@@ -97,6 +106,10 @@ return useBlock().children ?? [];
 };
 
 $: noCompRefChildren = () => {
+/**
+ * When there is no `componentRef`, there might still be children that need to be rendered. In this case,
+ * we render them outside of `componentRef`
+ */
 return componentRef() ? [] : children();
 };
 
@@ -112,41 +125,16 @@ return componentRef() ? [] : children();
   </script>
 
   
-{#if !componentInfo?.()?.noWrap }
+{#if shouldWrap() }
 
     
 
 {#if !isEmptyHtmlElement(tagName()) }
 
       
-<svelte:element {...propertiesAndActions()} style={css()}  this={tagName()} >
+<svelte:element {...attributes()} this={tagName()} >
         
-
-{#if TARGET === 'vue' || TARGET === 'svelte' }
-
-          
-<BlockStyles  block={useBlock()} ></BlockStyles>
-
-        
-
-
-{/if}
-
-        
-
-{#if componentRef() }
-<svelte:component {...componentOptions()} builderBlock={useBlock()}  this={componentRef()} >
-            
-
-{#each children() as child, index }
-<svelte:self  key={child.id}  block={child} ></svelte:self>
-{/each}
-
-
-          </svelte:component>
-
-
-{/if}
+<RenderComponentAndStyles  block={useBlock()}  blockChildren={children()}  componentRef={componentRef()}  componentOptions={componentOptions()} ></RenderComponentAndStyles>
 
         
 
@@ -161,7 +149,7 @@ return componentRef() ? [] : children();
 
 
 {:else}
-<svelte:element {...propertiesAndActions()} style={css()}  this={tagName()} ></svelte:element>
+<svelte:element {...attributes()} this={tagName()} ></svelte:element>
 
 {/if}
 
@@ -169,14 +157,6 @@ return componentRef() ? [] : children();
 
 
 {:else}
-<svelte:component {...componentOptions()} attributes={propertiesAndActions()}  builderBlock={useBlock()}  style={css()}  this={componentRef()} >
-        
-
-{#each children() as child, index }
-<svelte:self  key={child.id}  block={child} ></svelte:self>
-{/each}
-
-
-      </svelte:component>
+<RenderComponentAndStyles  block={useBlock()}  blockChildren={children()}  componentRef={componentRef()}  componentOptions={componentOptions()} ></RenderComponentAndStyles>
 
 {/if}
