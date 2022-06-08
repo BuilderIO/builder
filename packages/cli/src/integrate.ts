@@ -1,5 +1,5 @@
-import { installPackage, readFile, writeFile } from "./utils";
-import fse from "fs-extra";
+import { installPackage, readFile, writeFile } from './utils';
+import fse from 'fs-extra';
 
 interface IntegrateOptions {
   apiKey: string;
@@ -7,10 +7,10 @@ interface IntegrateOptions {
   pathPrefix: string;
 }
 
-const NEXTJS_PAGES_TEMPLATE_PATH = "./src/templates/nextjs-[pages].tsx";
+const NEXTJS_PAGES_TEMPLATE_PATH = './src/templates/nextjs-[pages].tsx';
 
 function verifyPagesDirectory() {
-  return fse.existsSync("pages");
+  return fse.existsSync('pages');
 }
 
 function checkForPagesFile(prefix: string, extension: string) {
@@ -19,22 +19,20 @@ function checkForPagesFile(prefix: string, extension: string) {
 
 function stripSlashes(path: string) {
   return path
-    .split("/")
-    .filter((item) => item)
-    .join("/");
+    .split('/')
+    .filter(item => item)
+    .join('/');
 }
 
 export async function integrateWithLocalCodebase(options: IntegrateOptions) {
   let failed;
   const filePath = options.pathPrefix
-    .split("/")
-    .filter((item) => item)
-    .join("/");
+    .split('/')
+    .filter(item => item)
+    .join('/');
 
   if (!options.apiKey) {
-    console.error(
-      "apiKey is required, you can find it on builder.io/account/settings"
-    );
+    console.error('apiKey is required, you can find it on builder.io/account/settings');
     failed = true;
   }
 
@@ -44,16 +42,12 @@ export async function integrateWithLocalCodebase(options: IntegrateOptions) {
   }
 
   if (!verifyPagesDirectory) {
-    console.error(
-      "/pages directory not found, ensure you're in a Next.js project"
-    );
+    console.error("/pages directory not found, ensure you're in a Next.js project");
     failed = true;
   }
 
-  if (checkForPagesFile(filePath, "jsx")) {
-    console.error(
-      `found existing [pages].jsx file in ${filePath} directory, exiting now.`
-    );
+  if (checkForPagesFile(filePath, 'jsx')) {
+    console.error(`found existing [pages].jsx file in ${filePath} directory, exiting now.`);
     failed = true;
   }
 
@@ -61,17 +55,17 @@ export async function integrateWithLocalCodebase(options: IntegrateOptions) {
     return;
   }
 
-  console.log("installing the @builder.io/react sdk...");
-  await installPackage("@builder.io/react");
+  console.log('installing the @builder.io/react sdk...');
+  await installPackage('@builder.io/react');
 
   const nextJsPagesTemplateString = readFile(NEXTJS_PAGES_TEMPLATE_PATH);
   const finalFileString = nextJsPagesTemplateString
     .replace(/<<<YOUR_API_KEY>>>/g, options.apiKey)
     .replace(/<<<MODEL_NAME>>>/g, options.model);
 
-  writeFile(finalFileString, `./pages/${filePath}`, "[pages].jsx");
+  writeFile(finalFileString, `./pages/${filePath}`, '[pages].jsx');
 
-  console.log("finished.");
+  console.log('finished.');
 
   // TODO:
   // if you integrate from a specific entry, then open chrome

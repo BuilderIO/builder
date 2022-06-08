@@ -1,12 +1,12 @@
-import fse from "fs-extra";
-import traverse from "traverse";
-import { ChildProcess, spawn } from "child_process";
+import fse from 'fs-extra';
+import traverse from 'traverse';
+import { ChildProcess, spawn } from 'child_process';
 
 const childrenProcesses: ChildProcess[] = [];
 
 export const IS_YARN = (() => {
-  const config = process.env["npm_config_registry"];
-  return !!(config && config.includes("yarn"));
+  const config = process.env['npm_config_registry'];
+  return !!(config && config.includes('yarn'));
 })();
 
 export const readAsJson = async (path: string) => {
@@ -20,18 +20,14 @@ export const readAsJson = async (path: string) => {
 };
 
 export const getDirectories = async (source: string) =>
-  (await fse.readdir(source, { withFileTypes: true })).filter((dirent) =>
-    dirent.isDirectory()
-  );
+  (await fse.readdir(source, { withFileTypes: true })).filter(dirent => dirent.isDirectory());
 
 export const getFiles = async (source: string) =>
-  (await fse.readdir(source, { withFileTypes: true })).filter((dirent) =>
-    dirent.isFile()
-  );
+  (await fse.readdir(source, { withFileTypes: true })).filter(dirent => dirent.isFile());
 
 export const replaceField = (json: any, newValue: string, oldValue: string) => {
   return traverse(json).map(function (field) {
-    if (this.key?.includes("@")) {
+    if (this.key?.includes('@')) {
       // exclude meta keys from updates
       return;
     }
@@ -42,14 +38,10 @@ export const replaceField = (json: any, newValue: string, oldValue: string) => {
 };
 
 export function readFile(path: string) {
-  return fse.readFileSync(path, "utf8");
+  return fse.readFileSync(path, 'utf8');
 }
 
-export function writeFile(
-  fileContents: string,
-  filePath: string,
-  fileName: string
-) {
+export function writeFile(fileContents: string, filePath: string, fileName: string) {
   if (!fse.existsSync(filePath)) {
     fse.mkdirSync(filePath);
   }
@@ -58,33 +50,27 @@ export function writeFile(
 }
 
 export function killChildren() {
-  childrenProcesses.forEach((p) => p.kill("SIGINT"));
+  childrenProcesses.forEach(p => p.kill('SIGINT'));
 }
 
 export function installPackage(packageName: string) {
   return new Promise<void>((resolve, reject) => {
     const commands = IS_YARN
-      ? [
-          "add",
-          packageName,
-          "--silent",
-          "--ignore-engines",
-          "--no-node-version-check",
-        ]
+      ? ['add', packageName, '--silent', '--ignore-engines', '--no-node-version-check']
       : [
-          "install",
+          'install',
           packageName,
-          "--loglevel=error",
-          "--no-audit",
-          "--no-fund",
-          "--no-update-notifier",
+          '--loglevel=error',
+          '--no-audit',
+          '--no-fund',
+          '--no-update-notifier',
         ];
-    const p = spawn(IS_YARN ? "yarn" : "npm", commands, {
+    const p = spawn(IS_YARN ? 'yarn' : 'npm', commands, {
       shell: true,
-      stdio: "inherit",
+      stdio: 'inherit',
     });
-    p.once("exit", () => resolve());
-    p.once("error", reject);
+    p.once('exit', () => resolve());
+    p.once('error', reject);
 
     childrenProcesses.push(p);
   });
