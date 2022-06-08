@@ -34,7 +34,12 @@ export default function RenderBlock(props) {
   }
 
   function componentInfo() {
-    return component?.()?.info;
+    if (component()) {
+      const { component: _, ...info } = component();
+      return info;
+    } else {
+      return undefined;
+    }
   }
 
   function componentRef() {

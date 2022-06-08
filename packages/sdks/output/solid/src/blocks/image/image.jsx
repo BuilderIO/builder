@@ -17,7 +17,7 @@ function Image(props) {
       })} loading="lazy" alt={props.altText} role={props.altText ? "presentation" : undefined} style={{
         "object-position": props.backgroundSize || "center",
         "object-fit": props.backgroundSize || "cover"
-      }} src={props.image} srcset={props.srcset} sizes={props.sizes} />
+      }} src={props.image} srcSet={props.srcset} sizes={props.sizes} />
         <source srcSet={props.srcset} />
       </picture>
       <Show when={props.aspectRatio && !(props.fitContent && props.builderBlock?.children?.length)}>

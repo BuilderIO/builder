@@ -43,7 +43,7 @@ export default function Image(props: ImageProps) {
           }
           src={props.image}
           // TODO: memoize on image on client
-          srcset={props.srcset}
+          srcSet={props.srcset}
           sizes={props.sizes}
         />
         <source srcSet={props.srcset} />

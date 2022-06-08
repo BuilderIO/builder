@@ -41,7 +41,7 @@ export let builderBlock;
 <img  loading="lazy"    alt={altText}  role={altText ? 'presentation' : undefined}  style={{
 objectPosition: backgroundSize || 'center',
 objectFit: backgroundSize || 'cover'
-}}  class={'builder-image' + (className ? ' ' + className : '')}  src={image}  srcset={srcset}  sizes={sizes}  />
+}}  class={'builder-image' + (className ? ' ' + className : '')}  src={image}  srcSet={srcset}  sizes={sizes}  />
 
       
 <source  srcSet={srcset}  />

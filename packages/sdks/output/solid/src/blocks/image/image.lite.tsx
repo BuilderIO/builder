@@ -33,7 +33,7 @@ function Image(props) {
             "object-fit": props.backgroundSize || "cover",
           }}
           src={props.image}
-          srcset={props.srcset}
+          srcSet={props.srcset}
           sizes={props.sizes}
         />
         <source srcSet={props.srcset} />

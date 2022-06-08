@@ -6,6 +6,7 @@ export interface CustomCodeProps {
 }
 
 export default function CustomCode(props: CustomCodeProps) {
+  // eslint-disable-next-line @builder.io/mitosis/no-var-declaration-or-assignment-in-component
   const elem = useRef();
 
   const state = useState({

@@ -43,7 +43,15 @@ if (!ref) {
 };
 
 $: componentInfo = () => {
-return component?.()?.info;
+if (component()) {
+  const {
+    component: _,
+    ...info
+  } = component();
+  return info;
+} else {
+  return undefined;
+}
 };
 
 $: componentRef = () => {

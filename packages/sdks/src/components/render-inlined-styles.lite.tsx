@@ -20,7 +20,11 @@ export default function RenderInlinedStyles(props: Props) {
   return (
     <Show
       when={TARGET === 'svelte'}
-      else={<state.tagName>{props.styles}</state.tagName>}
+      else={
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        <state.tagName>{props.styles}</state.tagName>
+      }
     >
       {/**
        * We have a Svelte plugin that converts this `div` to a `Fragment`. We cannot directly use a "Fragment" here because

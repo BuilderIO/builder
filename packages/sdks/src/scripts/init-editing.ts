@@ -52,9 +52,10 @@ const setupBrowserForEditing = () => {
             let result: any;
             let error: Error | null = null;
             try {
+              // eslint-disable-next-line prefer-spread
               result = fn.apply(null, args);
             } catch (err) {
-              error = err;
+              error = err as Error;
             }
 
             if (error) {

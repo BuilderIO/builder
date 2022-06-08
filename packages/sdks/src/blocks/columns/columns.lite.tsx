@@ -1,5 +1,6 @@
 import RenderBlocks from '../../components/render-blocks.lite';
 import { For, useState } from '@builder.io/mitosis';
+import { CSSProperties } from 'react';
 
 type Column = {
   blocks: any;
@@ -40,12 +41,14 @@ export default function Columns(props: ColumnProps) {
       return `calc(${this.getWidth(index)}% - ${subtractWidth}px)`;
     },
 
-    maybeApplyForTablet(prop: string) {
+    maybeApplyForTablet(
+      prop: CSSProperties['flexDirection']
+    ): CSSProperties['flexDirection'] {
       const _stackColumnsAt = props.stackColumnsAt || 'tablet';
       return _stackColumnsAt === 'tablet' ? prop : 'inherit';
     },
 
-    get columnsCssVars() {
+    get columnsCssVars(): any {
       const flexDir =
         props.stackColumnsAt === 'never'
           ? 'inherit'

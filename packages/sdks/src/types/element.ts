@@ -54,5 +54,7 @@ export interface BuilderElement {
     collection: string;
     itemName?: string;
   } | null;
-  animations?: any[]; // TODO: type the animation spec
+  animations?: Animation[]; // TODO: type the animation spec
 }
+
+interface Animation {}

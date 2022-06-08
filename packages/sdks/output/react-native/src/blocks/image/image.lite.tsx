@@ -11,7 +11,7 @@ export default function Image(props) {
           role={props.altText ? "presentation" : undefined}
           style={styles.view2}
           src={props.image}
-          srcset={props.srcset}
+          srcSet={props.srcset}
           sizes={props.sizes}
         />
 

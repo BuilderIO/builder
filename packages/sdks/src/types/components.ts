@@ -6,6 +6,9 @@ export interface Input {
   description?: string;
   defaultValue?: any;
   type: string;
+  valueType?: {
+    type?: string;
+  };
   required?: boolean;
   autoFocus?: boolean;
   subFields?: Input[];
@@ -58,6 +61,7 @@ export interface Input {
     message: string;
   };
   advanced?: boolean;
+  // eslint-disable-next-line @typescript-eslint/ban-types
   onChange?: Function | string;
   code?: boolean;
   richText?: boolean;
@@ -101,6 +105,7 @@ export interface ComponentInfo {
    */
   defaultChildren?: BuilderElement[];
   defaults?: Partial<BuilderElement>;
+  // eslint-disable-next-line @typescript-eslint/ban-types
   hooks?: { [key: string]: string | Function };
   /**
    * Hide your component in editor, useful for gradually deprecating components
@@ -170,6 +175,9 @@ export interface ComponentInfo {
    * for more information on permissions in builder check https://www.builder.io/c/docs/guides/roles-and-permissions
    */
   requiredPermissions?: Array<Permission>;
+
+  // TO-DO: is this used?
+  hidden?: boolean;
 }
 
 type Permission =

@@ -95,7 +95,12 @@ export default {
       }
     },
     componentInfo() {
-      return this.component?.info;
+      if (this.component) {
+        const { component: _, ...info } = this.component;
+        return info;
+      } else {
+        return undefined;
+      }
     },
     componentRef() {
       return this.component?.component;
