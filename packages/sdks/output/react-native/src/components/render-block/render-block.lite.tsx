@@ -8,8 +8,9 @@ import { getBlockProperties } from "../../functions/get-block-properties.js";
 import { getBlockStyles } from "../../functions/get-block-styles.js";
 import { getBlockTag } from "../../functions/get-block-tag.js";
 import { getProcessedBlock } from "../../functions/get-processed-block.js";
+import BlockStyles from "./block-styles.lite";
 import { isEmptyHtmlElement } from "./render-block.helpers.js";
-import RenderComponentAndStyles from "./render-component-and-styles.lite";
+import RenderComponent from "./render-component.lite";
 
 export default function RenderBlock(props) {
   function component() {
@@ -116,15 +117,18 @@ export default function RenderBlock(props) {
           {!isEmptyHtmlElement(tagName()) ? (
             <>
               <TagNameRef {...attributes()}>
-                <RenderComponentAndStyles
-                  block={useBlock()}
+                <RenderComponent
                   blockChildren={children()}
                   componentRef={componentRef()}
                   componentOptions={componentOptions()}
                 />
 
                 {noCompRefChildren()?.map((child) => (
-                  <RenderBlock key={child.id} block={child} />
+                  <RenderBlock key={"render-block-" + child.id} block={child} />
+                ))}
+
+                {noCompRefChildren()?.map((child) => (
+                  <BlockStyles key={"block-style-" + child.id} block={child} />
                 ))}
               </TagNameRef>
             </>
@@ -133,8 +137,7 @@ export default function RenderBlock(props) {
           )}
         </>
       ) : (
-        <RenderComponentAndStyles
-          block={useBlock()}
+        <RenderComponent
           blockChildren={children()}
           componentRef={componentRef()}
           componentOptions={componentOptions()}

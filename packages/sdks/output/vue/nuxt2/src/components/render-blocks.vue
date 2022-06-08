@@ -1,6 +1,6 @@
 <template>
   <div
-    class="div-23e8fqt91nf"
+    class="div-1zgn626bpbf"
     :builder-path="path"
     :builder-parent-id="parent"
     :dataSet="{
@@ -13,17 +13,27 @@
     <render-block
       v-for="(block, index) in blocks"
       :block="block"
-      :key="block.id"
+      :key="'render-block-' + block.id"
     ></render-block>
+
+    <block-styles
+      v-for="(block, index) in blocks"
+      :block="block"
+      :key="'block-style-' + block.id"
+    ></block-styles>
   </div>
 </template>
 <script>
 import { isEditing } from "../functions/is-editing.js";
+import BlockStyles from "./render-block/block-styles";
 import RenderBlock from "./render-block/render-block";
 
 export default {
   name: "render-blocks",
-  components: { "render-block": async () => RenderBlock },
+  components: {
+    "render-block": async () => RenderBlock,
+    "block-styles": async () => BlockStyles,
+  },
   props: ["blocks", "parent", "path"],
 
   computed: {
@@ -76,7 +86,7 @@ export default {
 };
 </script>
 <style scoped>
-.div-23e8fqt91nf {
+.div-1zgn626bpbf {
   display: flex;
   flex-direction: column;
   align-items: stretch;

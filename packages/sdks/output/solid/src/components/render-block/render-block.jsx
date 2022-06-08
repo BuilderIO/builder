@@ -8,8 +8,9 @@ import { getBlockProperties } from "../../functions/get-block-properties.js";
 import { getBlockStyles } from "../../functions/get-block-styles.js";
 import { getBlockTag } from "../../functions/get-block-tag.js";
 import { getProcessedBlock } from "../../functions/get-processed-block.js";
+import BlockStyles from "./block-styles";
 import { isEmptyHtmlElement } from "./render-block.helpers.js";
-import RenderComponentAndStyles from "./render-component-and-styles";
+import RenderComponent from "./render-component";
 
 function RenderBlock(props) {
   const state = createMutable({
@@ -107,15 +108,22 @@ function RenderBlock(props) {
 
   });
   const builderContext = useContext(BuilderContext);
-  return <Show fallback={<RenderComponentAndStyles block={state.useBlock} blockChildren={state.children} componentRef={state.componentRef} componentOptions={state.componentOptions}></RenderComponentAndStyles>} when={state.shouldWrap}>
+  return <Show fallback={<RenderComponent blockChildren={state.children} componentRef={state.componentRef} componentOptions={state.componentOptions}></RenderComponent>} when={state.shouldWrap}>
       <Show fallback={<Dynamic {...state.attributes} component={state.tagName}></Dynamic>} when={!isEmptyHtmlElement(state.tagName)}>
         <Dynamic {...state.attributes} component={state.tagName}>
-          <RenderComponentAndStyles block={state.useBlock} blockChildren={state.children} componentRef={state.componentRef} componentOptions={state.componentOptions}></RenderComponentAndStyles>
+          <RenderComponent blockChildren={state.children} componentRef={state.componentRef} componentOptions={state.componentOptions}></RenderComponent>
           <For each={state.noCompRefChildren}>
             {(child, _index) => {
             const index = _index();
 
-            return <RenderBlock key={child.id} block={child}></RenderBlock>;
+            return <RenderBlock key={"render-block-" + child.id} block={child}></RenderBlock>;
+          }}
+          </For>
+          <For each={state.noCompRefChildren}>
+            {(child, _index) => {
+            const index = _index();
+
+            return <BlockStyles key={"block-style-" + child.id} block={child}></BlockStyles>;
           }}
           </For>
         </Dynamic>

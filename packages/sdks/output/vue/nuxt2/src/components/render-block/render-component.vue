@@ -1,30 +1,27 @@
 <template>
-  <block-styles
-    v-if="TARGET === 'vue' || TARGET === 'svelte'"
-    :block="block"
-  ></block-styles>
-
   <component v-bind="componentOptions" v-if="componentRef" :is="componentRef">
     <render-block
       v-for="(child, index) in blockChildren"
       :block="child"
-      :key="child.id"
+      :key="'render-block-' + child.id"
     ></render-block>
+    <block-styles
+      v-for="(child, index) in blockChildren"
+      :block="child"
+      :key="'block-style-' + child.id"
+    ></block-styles>
   </component>
 </template>
 <script>
-import { TARGET } from "../../constants/target.js";
 import BlockStyles from "./block-styles";
 import RenderBlock from "./render-block";
 
 export default {
-  name: "render-component-and-styles",
+  name: "render-component",
   components: {
-    "block-styles": async () => BlockStyles,
     "render-block": async () => RenderBlock,
+    "block-styles": async () => BlockStyles,
   },
-  props: ["block", "componentRef", "componentOptions", "blockChildren"],
-
-  data: () => ({ TARGET }),
+  props: ["componentRef", "componentOptions", "blockChildren"],
 };
 </script>

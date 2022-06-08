@@ -4,6 +4,7 @@
     
     
   import  {  isEditing  }  from '../functions/is-editing.js';
+import  BlockStyles,  {  }  from './render-block/block-styles.svelte';
 import  RenderBlock,  {  }  from './render-block/render-block.svelte';
 
   
@@ -58,12 +59,30 @@ class: className()
 }}  on:click="{event => onClick()}"  on:mouseenter="{event => onMouseEnter()}"  class={className()} >
     
 
+    
+
 {#if blocks }
 
       
 
 {#each blocks as block, index }
-<RenderBlock  key={block.id}  block={block} ></RenderBlock>
+<RenderBlock  key={'render-block-' + block.id}  block={block} ></RenderBlock>
+{/each}
+
+
+    
+
+
+{/if}
+
+    
+
+{#if blocks }
+
+      
+
+{#each blocks as block, index }
+<BlockStyles  key={'block-style-' + block.id}  block={block} ></BlockStyles>
 {/each}
 
 

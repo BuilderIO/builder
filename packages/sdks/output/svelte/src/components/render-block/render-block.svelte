@@ -10,8 +10,9 @@ import  {  getBlockProperties  }  from '../../functions/get-block-properties.js'
 import  {  getBlockStyles  }  from '../../functions/get-block-styles.js';
 import  {  getBlockTag  }  from '../../functions/get-block-tag.js';
 import  {  getProcessedBlock  }  from '../../functions/get-processed-block.js';
+import  BlockStyles,  {  }  from './block-styles.svelte';
 import  {  isEmptyHtmlElement  }  from './render-block.helpers.js';
-import  RenderComponentAndStyles,  {  }  from './render-component-and-styles.svelte';
+import  RenderComponent,  {  }  from './render-component.svelte';
 
   
 
@@ -134,12 +135,21 @@ return componentRef() ? [] : children();
       
 <svelte:element {...attributes()} this={tagName()} >
         
-<RenderComponentAndStyles  block={useBlock()}  blockChildren={children()}  componentRef={componentRef()}  componentOptions={componentOptions()} ></RenderComponentAndStyles>
+<RenderComponent  blockChildren={children()}  componentRef={componentRef()}  componentOptions={componentOptions()} ></RenderComponent>
+
+        
 
         
 
 {#each noCompRefChildren() as child, index }
-<svelte:self  key={child.id}  block={child} ></svelte:self>
+<svelte:self  key={'render-block-' + child.id}  block={child} ></svelte:self>
+{/each}
+
+
+        
+
+{#each noCompRefChildren() as child, index }
+<BlockStyles  key={'block-style-' + child.id}  block={child} ></BlockStyles>
 {/each}
 
 
@@ -157,6 +167,6 @@ return componentRef() ? [] : children();
 
 
 {:else}
-<RenderComponentAndStyles  block={useBlock()}  blockChildren={children()}  componentRef={componentRef()}  componentOptions={componentOptions()} ></RenderComponentAndStyles>
+<RenderComponent  blockChildren={children()}  componentRef={componentRef()}  componentOptions={componentOptions()} ></RenderComponent>
 
 {/if}

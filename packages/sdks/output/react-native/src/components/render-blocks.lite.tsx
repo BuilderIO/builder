@@ -1,6 +1,7 @@
 import * as React from "react";
 import { View, StyleSheet, Image, Text } from "react-native";
 import { isEditing } from "../functions/is-editing.js";
+import BlockStyles from "./render-block/block-styles.lite";
 import RenderBlock from "./render-block/render-block.lite";
 
 export default function RenderBlocks(props) {
@@ -52,7 +53,15 @@ export default function RenderBlocks(props) {
       {props.blocks ? (
         <>
           {props.blocks?.map((block) => (
-            <RenderBlock key={block.id} block={block} />
+            <RenderBlock key={"render-block-" + block.id} block={block} />
+          ))}
+        </>
+      ) : null}
+
+      {props.blocks ? (
+        <>
+          {props.blocks?.map((block) => (
+            <BlockStyles key={"block-style-" + block.id} block={block} />
           ))}
         </>
       ) : null}

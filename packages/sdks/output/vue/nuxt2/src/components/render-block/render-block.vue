@@ -4,27 +4,31 @@
     v-if="!isEmptyHtmlElement(tagName)"
     :is="tagName"
   >
-    <render-component-and-styles
-      :block="useBlock"
+    <render-component
       :blockChildren="children"
       :componentRef="componentRef"
       :componentOptions="componentOptions"
-    ></render-component-and-styles>
+    ></render-component>
+
     <render-block
       v-for="(child, index) in noCompRefChildren"
       :block="child"
-      :key="child.id"
+      :key="'render-block-' + child.id"
     ></render-block>
+    <block-styles
+      v-for="(child, index) in noCompRefChildren"
+      :block="child"
+      :key="'block-style-' + child.id"
+    ></block-styles>
   </component>
   <component v-bind="attributes" v-else="" :is="tagName"></component>
 
-  <render-component-and-styles
+  <render-component
     v-else=""
-    :block="useBlock"
     :blockChildren="children"
     :componentRef="componentRef"
     :componentOptions="componentOptions"
-  ></render-component-and-styles>
+  ></render-component>
 </template>
 <script>
 import BuilderContext from "../../context/builder.context";
@@ -34,13 +38,15 @@ import { getBlockProperties } from "../../functions/get-block-properties.js";
 import { getBlockStyles } from "../../functions/get-block-styles.js";
 import { getBlockTag } from "../../functions/get-block-tag.js";
 import { getProcessedBlock } from "../../functions/get-processed-block.js";
+import BlockStyles from "./block-styles";
 import { isEmptyHtmlElement } from "./render-block.helpers.js";
-import RenderComponentAndStyles from "./render-component-and-styles";
+import RenderComponent from "./render-component";
 
 export default {
   name: "render-block",
   components: {
-    "render-component-and-styles": async () => RenderComponentAndStyles,
+    "render-component": async () => RenderComponent,
+    "block-styles": async () => BlockStyles,
   },
   props: ["block"],
 

@@ -2,6 +2,7 @@ import { Show, For } from "solid-js";
 import { createMutable } from "solid-js/store";
 import { css } from "solid-styled-components";
 import { isEditing } from "../functions/is-editing.js";
+import BlockStyles from "./render-block/block-styles";
 import RenderBlock from "./render-block/render-block";
 
 function RenderBlocks(props) {
@@ -47,7 +48,16 @@ function RenderBlocks(props) {
           {(block, _index) => {
           const index = _index();
 
-          return <RenderBlock key={block.id} block={block}></RenderBlock>;
+          return <RenderBlock key={"render-block-" + block.id} block={block}></RenderBlock>;
+        }}
+        </For>
+      </Show>
+      <Show when={props.blocks}>
+        <For each={props.blocks}>
+          {(block, _index) => {
+          const index = _index();
+
+          return <BlockStyles key={"block-style-" + block.id} block={block}></BlockStyles>;
         }}
         </For>
       </Show>
