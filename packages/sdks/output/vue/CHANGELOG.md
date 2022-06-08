@@ -1,4 +1,4 @@
-### 0.0.1-53
+### 0.0.1-54
 
 🐛 Fix: custom components were not rendering correctly
 🐛 Fix: Image component's `srcSet` was not being set correctly
