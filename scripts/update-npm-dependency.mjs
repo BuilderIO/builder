@@ -11,13 +11,17 @@ $.verbose = false;
 /** @type ProcessOutput */
 const currentDir = (await $`pwd`).toString().trim();
 
-const NPM_MODULE_TO_UPDATE = await question(
-  `Hey there! which npm package do you want to update across the mono-repo? (e.g. @builder.io/sdk) -> `
-);
+const NPM_MODULE_TO_UPDATE =
+  argv.lib ??
+  (await question(
+    `Hey there! which npm package do you want to update across the mono-repo? (e.g. @builder.io/sdk) -> `
+  ));
 
-const versionAnswer = await question(
-  'and which version do you want? (e.g. "1.0.0", "dev", "latest"). Defaults to latest -> '
-);
+const versionAnswer =
+  argv.version ??
+  (await question(
+    'and which version do you want? (e.g. "1.0.0", "dev", "latest"). Defaults to latest -> '
+  ));
 
 const VERSION = versionAnswer || 'latest';
 
@@ -40,12 +44,14 @@ const folderNames = filesGrepOutput
 
 echo`\n Found "${NPM_MODULE_TO_UPDATE}" in the following projects:\n${folderNames.join('\n')}`;
 
-const confirm = await question(
-  `Are you sure you want to update "${NPM_MODULE_TO_UPDATE}" in all of these folders to the latest version? [y/n] -> `,
-  {
-    choices: ['yes', 'no'],
-  }
-);
+const confirm = argv['force-lib-upgrade']
+  ? 'yes'
+  : await question(
+      `Are you sure you want to update "${NPM_MODULE_TO_UPDATE}" in all of these folders to version "${VERSION}"? [y/n] -> `,
+      {
+        choices: ['yes', 'no'],
+      }
+    );
 
 if (['yes', 'y'].includes(confirm.toLowerCase())) {
   echo`Updating ${folderNames.length} projects.`;
