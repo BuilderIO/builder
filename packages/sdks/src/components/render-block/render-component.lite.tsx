@@ -13,6 +13,10 @@ export default function RenderComponent(props: Props) {
   return (
     <Show when={props.componentRef}>
       <props.componentRef {...props.componentOptions}>
+        {/**
+         * We need to run two separate loops for content + styles to workaround the fact that Vue 2
+         * does not support multiple root elements.
+         */}
         <For each={props.blockChildren}>
           {(child) => (
             <RenderBlock key={'render-block-' + child.id} block={child} />

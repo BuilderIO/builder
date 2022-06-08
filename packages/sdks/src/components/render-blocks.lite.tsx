@@ -61,6 +61,10 @@ export default function RenderBlocks(props: RenderBlockProps) {
       onClick={(event) => state.onClick()}
       onMouseEnter={(event) => state.onMouseEnter()}
     >
+      {/**
+       * We need to run two separate loops for content + styles to workaround the fact that Vue 2
+       * does not support multiple root elements.
+       */}
       <Show when={props.blocks}>
         <For each={props.blocks}>
           {(block) => (
