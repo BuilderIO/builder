@@ -1,3 +1,8 @@
+### 0.0.1-9
+
+🐛 Fix: custom components were not rendering correctly
+🐛 Fix: Image component's `srcSet` was not being set correctly
+
 ### 0.0.1-8
 
 🧨 Breaking change: the format of the `customComponents` prop has changed from `[{ component, info }]` to `[{ component, ...info }]`.
