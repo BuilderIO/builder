@@ -15,18 +15,20 @@ const isMitosisNode = (x) => x && x['@type'] === '@builder.io/mitosis/node';
 module.exports = {
   files: 'src/**',
   targets: ['reactNative', 'vue', 'solid', 'svelte'],
-  transpiler: {
-    vue: { format: 'esm' },
-    svelte: { format: 'esm' },
-    solid: { format: 'esm' },
-    reactNative: { format: 'esm' },
-  },
   options: {
+    solid: {
+      transpiler: { format: 'esm' },
+    },
+    reactNative: {
+      transpiler: { format: 'esm' },
+    },
     vue: {
       namePrefix: (path) => (path.includes('/blocks/') ? 'builder' : undefined),
       cssNamespace: getSeededId,
+      transpiler: { format: 'esm' },
     },
     svelte: {
+      transpiler: { format: 'esm' },
       // prettier & svelte don't play well together when it comes to parsing @html content for some reason
       // https://github.com/sveltejs/prettier-plugin-svelte/issues/290
       prettier: false,
