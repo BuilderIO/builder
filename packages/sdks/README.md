@@ -20,8 +20,8 @@ Legend:
 - ⚠️: not-yet implemented
 - N/A : does not apply
 
-| Builder Blocks | Vue | Vue details | React-Native | React-Native details | Svelte | Svelte details |
-| -------------- | --- | ----------- | ------------ | -------------------- | ------ | -------------- |
+| Builder Blocks | Vue | Vue details | React-Native | React-Native details | Svelte | Svelte details | Solid (TBD) | Solid details |
+| -------------- | --- | ----------- | ------------ | -------------------- | ------ | -------------- | ----------- | ------------- |
 | Columns        | ✅  |             | ✅           |                      | ✅     |                |
 | Text           | ✅  |             | ✅           |                      | ✅     |                |
 | Image          | ✅  |             | ✅           |                      | ✅     |                |
