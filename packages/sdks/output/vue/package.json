@@ -6,12 +6,21 @@
     "node-fetch": "^2.6.1"
   },
   "main": "./nuxt2/src/index.js",
+  "module": "./nuxt2/src/index.js",
   "type": "module",
   "exports": {
-    "./nuxt": "./nuxt.js",
-    "./vue2": "./vue2/src/index.js",
-    "./nuxt2": "./nuxt2/src/index.js",
-    "./vue3": "./vue3/src/index.js"
+    ".": {
+      "import": "./nuxt2/src/index.js",
+      "require": "./nuxt2/src/index.js"
+    },
+    "./nuxt2": {
+      "import": "./nuxt2/src/index.js",
+      "require": "./nuxt2/src/index.js"
+    },
+    "./nuxt": {
+      "import": "./nuxt.js",
+      "require": "./nuxt.js"
+    }
   },
   "scripts": {
     "release:dev": "npm version prerelease --no-git-tag-version && npm publish --tag dev --access public"
