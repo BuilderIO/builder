@@ -6,8 +6,7 @@ import path from 'path';
 const childrenProcesses: ChildProcess[] = [];
 
 export const IS_YARN = (() => {
-  const config = process.env['npm_config_registry'];
-  return !!(config && config.includes('yarn'));
+  return fse.existsSync(path.join(process.cwd(), 'yarn.lock'));
 })();
 
 export const readAsJson = async (path: string) => {
@@ -62,6 +61,7 @@ export function installPackage(packageName: string) {
           '--no-fund',
           '--no-update-notifier',
         ];
+
     const p = spawn(IS_YARN ? 'yarn' : 'npm', commands, {
       shell: true,
       stdio: 'inherit',

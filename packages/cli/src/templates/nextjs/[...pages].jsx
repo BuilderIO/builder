@@ -53,7 +53,7 @@ export default function Page({ page }) {
   return (
     <>
       <Head>
-        <title>{page.data.title}</title>
+        <title>{page?.data.title}</title>
       </Head>
       {/* Render the Builder page */}
       <BuilderComponent model="page" content={page} />

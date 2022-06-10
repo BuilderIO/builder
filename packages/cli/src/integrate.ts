@@ -1,6 +1,7 @@
 import { installPackage, writeFile } from './utils';
 import fse from 'fs-extra';
 import path from 'path';
+import { IS_YARN } from './utils';
 interface IntegrateOptions {
   apiKey: string;
   model: string;
@@ -64,17 +65,17 @@ export async function integrateWithLocalCodebase(options: IntegrateOptions) {
   }
 
   // TODO: remove if there are issues, test yarn
-  console.info('installing the @builder.io/react sdk...');
+  console.info('installing the @builder.io/react sdk...', IS_YARN);
   await installPackage('@builder.io/react');
 
-  const pageTemplateString = getTemplate('nextjs', `[pages].${extension}`)
+  const pageTemplateString = getTemplate('nextjs', `[...pages].${extension}`)
     .replace(/<<<YOUR_API_KEY>>>/g, options.apiKey)
     .replace(/<<<MODEL_NAME>>>/g, options.model);
 
   writeFile(
     pageTemplateString,
     path.join(process.cwd(), 'pages', filePath),
-    `[pages].${extension}`
+    `[...pages].${extension}`
   );
 
   console.info('finished.');
