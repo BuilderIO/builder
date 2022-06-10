@@ -73,7 +73,7 @@ export default function Page({ page }) {
       <Head>
         {/* Add any relevant SEO metadata or open graph tags here */}
         <title>{page?.data.title}</title>
-        <meta name="description" content={page?.data.descripton}>
+        <meta name="description" content={page?.data.descripton} />
       </Head>
       {/* Render the Builder page */}
       <BuilderComponent model="page" content={page} />
