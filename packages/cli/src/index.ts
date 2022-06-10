@@ -37,7 +37,15 @@ program
   .option('-s,--stack <stack>', 'currently supports nextjs', 'nextjs')
   .option('-m,--model <model>', 'name of the model you want to integrate')
   .option('-a,--apiKey <apiKey>', 'you can find your apiKey on builder.io/account/settings')
-  .option('-p,--pathPrefix <prefix>', 'ADD SOMETHING GOOD HERE', '/m/')
+  .option(
+    '-p,--pathPrefix <prefix>',
+    'URL path prefix where all your landing pages will be nested under',
+    '/builder/'
+  )
+  .option(
+    '--typescript',
+    'use this flag if your project uses TypeScript and you want to create .tsx files vs .jsx'
+  )
   .action(async options => {
     await integrateWithLocalCodebase(options);
   });
