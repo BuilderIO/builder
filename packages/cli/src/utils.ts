@@ -1,6 +1,7 @@
 import fse from 'fs-extra';
 import traverse from 'traverse';
 import { ChildProcess, spawn } from 'child_process';
+import path from 'path';
 
 const childrenProcesses: ChildProcess[] = [];
 
@@ -37,16 +38,12 @@ export const replaceField = (json: any, newValue: string, oldValue: string) => {
   });
 };
 
-export function readFile(path: string) {
-  return fse.readFileSync(path, 'utf8');
-}
-
 export function writeFile(fileContents: string, filePath: string, fileName: string) {
   if (!fse.existsSync(filePath)) {
     fse.mkdirSync(filePath);
   }
 
-  fse.writeFileSync(`${filePath}/${fileName}`, fileContents);
+  fse.writeFileSync(path.join(filePath, fileName), fileContents);
 }
 
 export function killChildren() {

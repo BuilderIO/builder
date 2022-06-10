@@ -1,20 +1,33 @@
-import { installPackage, readFile, writeFile } from './utils';
+import { installPackage, writeFile } from './utils';
 import fse from 'fs-extra';
-
+import path from 'path';
 interface IntegrateOptions {
   apiKey: string;
   model: string;
   pathPrefix: string;
+  language: 'typescript' | 'javascript';
 }
-
-const NEXTJS_PAGES_TEMPLATE_PATH = './src/templates/nextjs-[pages].tsx';
 
 function verifyPagesDirectory() {
   return fse.existsSync('pages');
 }
 
 function checkForPagesFile(prefix: string, extension: string) {
-  return fse.existsSync(`./pages/${prefix}/[pages].${extension}`);
+  const prefixPath = path.join(process.cwd(), 'pages', prefix);
+  if (fse.existsSync(prefixPath)) {
+    const directoryContents = fse.readdirSync(prefixPath);
+    return directoryContents.find(item => {
+      console.log(item, /\[(.*)\]/.test(item));
+      return /\[(.*)\]/.test(item);
+    });
+  } else {
+    return false;
+  }
+}
+
+function getTemplate(framework = 'nextjs', filename: string) {
+  const filePath = path.join(__dirname, 'templates', framework, filename);
+  return fse.readFileSync(filePath).toString();
 }
 
 function stripSlashes(path: string) {
@@ -27,6 +40,7 @@ function stripSlashes(path: string) {
 export async function integrateWithLocalCodebase(options: IntegrateOptions) {
   let failed;
   const filePath = stripSlashes(options.pathPrefix);
+  const extension = options.language === 'typescript' ? 'tsx' : 'jsx';
 
   if (!options.apiKey) {
     console.error('apiKey is required, you can find it on builder.io/account/settings');
@@ -43,8 +57,8 @@ export async function integrateWithLocalCodebase(options: IntegrateOptions) {
     failed = true;
   }
 
-  if (checkForPagesFile(filePath, 'jsx')) {
-    console.error(`found existing [pages].jsx file in ${filePath} directory, exiting now.`);
+  if (checkForPagesFile(filePath, extension)) {
+    console.error(`found existing dynamic path file in ${filePath} directory, exiting now.`);
     failed = true;
   }
 
@@ -55,12 +69,15 @@ export async function integrateWithLocalCodebase(options: IntegrateOptions) {
   console.log('installing the @builder.io/react sdk...');
   await installPackage('@builder.io/react');
 
-  const nextJsPagesTemplateString = readFile(NEXTJS_PAGES_TEMPLATE_PATH);
-  const finalFileString = nextJsPagesTemplateString
+  const pageTemplateString = getTemplate('nextjs', `[pages].${extension}`)
     .replace(/<<<YOUR_API_KEY>>>/g, options.apiKey)
     .replace(/<<<MODEL_NAME>>>/g, options.model);
 
-  writeFile(finalFileString, `./pages/${filePath}`, '[pages].jsx');
+  writeFile(
+    pageTemplateString,
+    path.join(process.cwd(), 'pages', filePath),
+    `[pages].${extension}`
+  );
 
   console.log('finished.');
 
