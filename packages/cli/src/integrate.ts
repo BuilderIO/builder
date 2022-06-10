@@ -16,10 +16,7 @@ function checkForPagesFile(prefix: string, extension: string) {
   const prefixPath = path.join(process.cwd(), 'pages', prefix);
   if (fse.existsSync(prefixPath)) {
     const directoryContents = fse.readdirSync(prefixPath);
-    return directoryContents.find(item => {
-      console.log(item, /\[(.*)\]/.test(item));
-      return /\[(.*)\]/.test(item);
-    });
+    return directoryContents.find(item => /\[(.*)\]/.test(item));
   } else {
     return false;
   }
@@ -66,7 +63,8 @@ export async function integrateWithLocalCodebase(options: IntegrateOptions) {
     return;
   }
 
-  console.log('installing the @builder.io/react sdk...');
+  // TODO: remove if there are issues, test yarn
+  console.info('installing the @builder.io/react sdk...');
   await installPackage('@builder.io/react');
 
   const pageTemplateString = getTemplate('nextjs', `[pages].${extension}`)
@@ -79,7 +77,7 @@ export async function integrateWithLocalCodebase(options: IntegrateOptions) {
     `[pages].${extension}`
   );
 
-  console.log('finished.');
+  console.info('finished.');
 
   // TODO:
   // if you integrate from a specific entry, then open chrome
