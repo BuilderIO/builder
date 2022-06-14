@@ -146,7 +146,7 @@ class TextComponent extends React.Component<TextProps> {
                   dangerouslySetInnerHTML: {
                     __html: this.evalExpression(
                       this.props.text || (this.props as any).content || '',
-                      state
+                      state.state
                     ),
                   },
                 })}
