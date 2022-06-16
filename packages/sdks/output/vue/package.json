@@ -9,6 +9,15 @@
   "module": "./nuxt2/src/index.js",
   "type": "module",
   "exports": {
+    "./Columns": "./nuxt2/src/blocks/columns/columns.vue",
+    "./Image": "./nuxt2/src/blocks/image/image.vue",
+    "./Text": "./nuxt2/src/blocks/text/text.vue",
+    "./Video": "./nuxt2/src/blocks/video/video.vue",
+    "./Symbol": "./nuxt2/src/blocks/symbol/symbol.vue",
+    "./Button": "./nuxt2/src/blocks/button/button.vue",
+    "./Section": "./nuxt2/src/blocks/section/section.vue",
+    "./Fragment": "./nuxt2/src/blocks/fragment/fragment.vue",
+    "./RenderContent": "./nuxt2/src/components/render-content/render-content.vue",
     ".": {
       "import": "./nuxt2/src/index.js",
       "require": "./nuxt2/src/index.js"

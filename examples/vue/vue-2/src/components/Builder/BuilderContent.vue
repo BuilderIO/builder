@@ -21,6 +21,7 @@ import Vue from 'vue';
 
 import { REGISTERED_COMPONENTS } from './init-builder.ts';
 import * as BuilderSDK from '@builder.io/sdk-vue';
+import BuilderRenderContent from '@builder.io/sdk-vue/RenderContent';
 
 // TODO: enter your public API key
 const BUILDER_PUBLIC_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660'; // ggignore
@@ -28,7 +29,7 @@ const BUILDER_PUBLIC_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660'; // ggignore
 export default Vue.extend({
   name: 'BuilderContent',
   components: {
-    'builder-render-content': BuilderSDK.RenderContent,
+    'builder-render-content': BuilderRenderContent,
   },
   data: () => ({
     canShowContent: false,
