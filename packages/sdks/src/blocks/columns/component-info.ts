@@ -193,7 +193,7 @@ export const componentInfo: ComponentInfo = {
           ],
         },
       ],
-      onChange(options: Map<string, any>) {
+      onChange: `${(options: Map<string, any>) => {
         function clearWidths() {
           columns.forEach((col) => {
             col.delete('width');
@@ -224,7 +224,7 @@ export const componentInfo: ComponentInfo = {
             }
           }
         }
-      },
+      }}`,
     },
     {
       name: 'space',

@@ -7,8 +7,8 @@ export async function getFetch(): Promise<typeof global.fetch> {
     const nodeFetch = import('node-fetch').then((d) => d.default) as Promise<
       typeof global.fetch
     >;
-    return nodeFetch;
+    return (nodeFetch as any).default || nodeFetch;
   }
 
-  return globalFetch;
+  return (globalFetch as any).default || globalFetch;
 }

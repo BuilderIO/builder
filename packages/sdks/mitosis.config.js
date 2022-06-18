@@ -24,7 +24,7 @@ const vueConfig = {
  */
 module.exports = {
   files: 'src/**',
-  targets: ['reactNative', 'vue2', 'vue3', 'solid', 'svelte'],
+  targets: ['reactNative', 'vue2', 'vue3', 'solid', 'svelte', 'qwik'],
   options: {
     vue2: vueConfig,
     vue3: vueConfig,

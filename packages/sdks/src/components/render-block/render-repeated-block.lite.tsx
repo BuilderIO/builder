@@ -8,6 +8,7 @@ import RenderBlock from './render-block.lite';
 type Props = {
   block: BuilderBlock;
   repeatContext: BuilderContextInterface;
+  context: BuilderContextInterface;
 };
 
 /**
@@ -38,5 +39,5 @@ export default function RenderRepeatedBlock(props: Props) {
     },
   });
 
-  return <RenderBlock block={props.block} />;
+  return <RenderBlock block={props.block} context={props.context} />;
 }

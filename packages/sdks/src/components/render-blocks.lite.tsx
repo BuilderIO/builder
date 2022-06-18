@@ -1,8 +1,24 @@
+import BuilderContext from '../context/builder.context.lite';
 import { isEditing } from '../functions/is-editing.js';
 import { BuilderBlock } from '../types/builder-block.js';
 import BlockStyles from './render-block/block-styles.lite';
 import RenderBlock from './render-block/render-block.lite';
-import { For, Show, useStore } from '@builder.io/mitosis';
+import {
+  For,
+  Show,
+  useStore,
+  useMetadata,
+  useContext,
+} from '@builder.io/mitosis';
+
+// eslint-disable-next-line @builder.io/mitosis/only-default-function-and-imports
+useMetadata({
+  qwik: {
+    component: {
+      isLight: false,
+    },
+  },
+});
 
 export type RenderBlockProps = {
   blocks?: BuilderBlock[];
@@ -11,6 +27,8 @@ export type RenderBlockProps = {
 };
 
 export default function RenderBlocks(props: RenderBlockProps) {
+  const builderContext = useContext(BuilderContext);
+
   const state = useStore({
     get className() {
       return 'builder-blocks' + (!props.blocks?.length ? ' no-blocks' : '');
@@ -72,14 +90,22 @@ export default function RenderBlocks(props: RenderBlockProps) {
       <Show when={props.blocks}>
         <For each={props.blocks}>
           {(block) => (
-            <RenderBlock key={'render-block-' + block.id} block={block} />
+            <RenderBlock
+              key={'render-block-' + block.id}
+              block={block}
+              context={builderContext}
+            />
           )}
         </For>
       </Show>
       <Show when={props.blocks}>
         <For each={props.blocks}>
           {(block) => (
-            <BlockStyles key={'block-style-' + block.id} block={block} />
+            <BlockStyles
+              key={'block-style-' + block.id}
+              block={block}
+              context={builderContext}
+            />
           )}
         </For>
       </Show>
