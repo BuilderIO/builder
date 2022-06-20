@@ -1330,7 +1330,7 @@
     "jsdom" "19.0.0"
     "tslib" "^2.3.0"
 
-"@nguniversal/express-engine@14.0.1":
+"@nguniversal/express-engine@*":
   "integrity" "sha512-tVNJhDLMNchpYnKMWKq+qoVElb/fU5foLYOyKb/4HyXHF1GfJHhQqgA694p/sSdt6Z+o7ZU/diej0McOyHWvUg=="
   "resolved" "https://registry.npmjs.org/@nguniversal/express-engine/-/express-engine-14.0.1.tgz"
   "version" "14.0.1"

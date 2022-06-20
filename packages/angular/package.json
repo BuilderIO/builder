@@ -37,7 +37,7 @@
     "prepublishOnly": "block-publish"
   },
   "optionalDependencies": {
-    "@nguniversal/express-engine": "14.0.1"
+    "@nguniversal/express-engine": "*"
   },
   "dependencies": {
     "@builder.io/sdk": "^1.1.23-0"
