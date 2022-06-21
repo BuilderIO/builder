@@ -1,4 +1,4 @@
-import { onMount, useRef, useState } from '@builder.io/mitosis';
+import { onMount, useRef, useStore } from '@builder.io/mitosis';
 
 export interface CustomCodeProps {
   code: string;
@@ -9,7 +9,7 @@ export default function CustomCode(props: CustomCodeProps) {
   // eslint-disable-next-line @builder.io/mitosis/no-var-declaration-or-assignment-in-component
   const elem = useRef();
 
-  const state = useState({
+  const state = useStore({
     scriptsInserted: [] as string[],
     scriptsRun: [] as string[],
 

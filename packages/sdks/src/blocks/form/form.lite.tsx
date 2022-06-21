@@ -4,7 +4,7 @@
 /* eslint-disable */
 import RenderBlock from '../../components/render-block/render-block.lite';
 import { isEditing } from '../../functions/is-editing.js';
-import { For, Show, useRef, useState } from '@builder.io/mitosis';
+import { For, Show, useRef, useStore } from '@builder.io/mitosis';
 
 /**
  * This component was copied over from the old SDKs and has a lot of code pointing to invalid functions/env vars. It needs
@@ -36,7 +36,7 @@ export interface FormProps {
 export type FormState = 'unsubmitted' | 'sending' | 'success' | 'error';
 
 export default function FormComponent(props: FormProps) {
-  const state = useState({
+  const state = useStore({
     formState: 'unsubmitted' as FormState,
     // TODO: separate response and error?
     responseData: null as any,

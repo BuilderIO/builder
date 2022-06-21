@@ -2,7 +2,7 @@ import { isEditing } from '../functions/is-editing.js';
 import { BuilderBlock } from '../types/builder-block.js';
 import BlockStyles from './render-block/block-styles.lite';
 import RenderBlock from './render-block/render-block.lite';
-import { For, Show, useState } from '@builder.io/mitosis';
+import { For, Show, useStore } from '@builder.io/mitosis';
 
 export type RenderBlockProps = {
   blocks?: BuilderBlock[];
@@ -11,7 +11,7 @@ export type RenderBlockProps = {
 };
 
 export default function RenderBlocks(props: RenderBlockProps) {
-  const state = useState({
+  const state = useStore({
     get className() {
       return 'builder-blocks' + (!props.blocks?.length ? ' no-blocks' : '');
     },
