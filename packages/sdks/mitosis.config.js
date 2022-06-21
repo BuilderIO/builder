@@ -26,6 +26,10 @@ module.exports = {
       namePrefix: (path) => (path.includes('/blocks/') ? 'builder' : undefined),
       cssNamespace: getSeededId,
       transpiler: { format: 'esm' },
+      vueVersion: {
+        2: true,
+        3: true,
+      },
     },
     svelte: {
       transpiler: { format: 'esm' },

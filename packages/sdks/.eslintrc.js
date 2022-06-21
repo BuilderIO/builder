@@ -18,7 +18,7 @@ module.exports = {
   },
   plugins: ['@typescript-eslint', '@builder.io/mitosis'],
   rules: {
-    // '@builder.io/mitosis/no-var-declaration-or-assignment-in-component': 'error',
+    '@builder.io/mitosis/no-var-declaration-or-assignment-in-component': 'off',
     '@typescript-eslint/no-empty-interface': 'off',
   },
 };
