@@ -40,8 +40,6 @@
     "@trivago/prettier-plugin-sort-imports": "^3.2.0",
     "@types/jest": "^27.4.1",
     "@types/node-fetch": "^2.5.12",
-    "@types/react": "^17.0.43",
-    "@types/react-dom": "^17.0.14",
     "@typescript-eslint/eslint-plugin": "latest",
     "@typescript-eslint/parser": "latest",
     "commitizen": "^4.2.4",
@@ -63,5 +61,5 @@
       "path": "git-cz"
     }
   },
-  "packageManager": "yarn@3.2.0"
+  "packageManager": "yarn@3.2.0",
 }
