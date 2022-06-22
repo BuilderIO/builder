@@ -53,8 +53,8 @@ The first time you use the component, you will be prompted to authenticate your 
 
 ---
 
-## Development (Advanced)
-If this plugin doesn't suit your needs and you would like to modify it for your specfic use case then read on to see how you can do so! Please not that custom plugins are a feature only availble on Builder.io spaces with an enterprise subscription plan.
+## Plugin Development (Advanced)
+If this plugin doesn't suit your needs and you would like to modify it for your specific use case then read on to see how you can do so! Please note that custom plugins are a feature only available on Builder.io spaces with an enterprise subscription plan. You can find general information about plugins [here](https://www.builder.io/c/docs/plugins-overview).
 
 See [here](src/CloudinaryImageEditor.tsx) for the React component that powers this plugin
 
@@ -92,7 +92,7 @@ Using these frameworks in Builder plugins ensures best possible experience and p
 
 ### Publishing
 
-If you think your plugin will benefit others in the Builder.io community you can send a pull request to this repo with your plugin, and we will review it! Otherwise, once you're plugin is ready for use you can publish the package and add the link to its bundled JS in **Account Settings > Plugins** (enterprise only).
+If you think your plugin will benefit others in the Builder.io community you can send a pull request to this repo with your plugin, and we will review it! Otherwise, once your plugin is ready for use you can publish the package and add the link to its bundled JS in **Account Settings > Plugins** (enterprise only).
 
 ---
 ## Contributors
