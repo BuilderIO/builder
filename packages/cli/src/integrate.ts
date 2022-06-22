@@ -6,14 +6,13 @@ interface IntegrateOptions {
   apiKey: string;
   model: string;
   pathPrefix: string;
-  language: 'typescript' | 'javascript';
 }
 
 function verifyPagesDirectory() {
   return fse.existsSync('pages');
 }
 
-function checkForCatchAll(prefix: string, extension: string) {
+function checkForCatchAll(prefix: string) {
   const prefixPath = path.join(process.cwd(), 'pages', prefix);
   if (fse.existsSync(prefixPath)) {
     const directoryContents = fse.readdirSync(prefixPath);
@@ -22,6 +21,22 @@ function checkForCatchAll(prefix: string, extension: string) {
     return directoryContents.find(item => /\[\.\.\.(.*)\]/.test(item));
   } else {
     return false;
+  }
+}
+
+function getExtension() {
+  const jsxIndexFilePath = path.join(process.cwd(), 'pages', 'index.jsx');
+  const tsIndexFilePath = path.join(process.cwd(), 'pages', 'index.ts');
+  const tsxIndexFilePath = path.join(process.cwd(), 'pages', 'index.tsx');
+
+  if (fse.existsSync(jsxIndexFilePath)) {
+    return 'jsx';
+  } else if (fse.existsSync(tsIndexFilePath)) {
+    return 'ts';
+  } else if (fse.existsSync(tsxIndexFilePath)) {
+    return 'tsx';
+  } else {
+    return 'js'
   }
 }
 
@@ -40,7 +55,8 @@ function stripSlashes(path: string) {
 export async function integrateWithLocalCodebase(options: IntegrateOptions) {
   let failed;
   const filePath = stripSlashes(options.pathPrefix);
-  const extension = options.language === 'typescript' ? 'tsx' : 'jsx';
+  const extension = getExtension();
+  const useTypeScript = extension === 'ts' || extension === 'tsx';
 
   if (!options.apiKey) {
     console.error('apiKey is required, you can find it on builder.io/account/settings');
@@ -57,7 +73,7 @@ export async function integrateWithLocalCodebase(options: IntegrateOptions) {
     failed = true;
   }
 
-  if (checkForCatchAll(filePath, extension)) {
+  if (checkForCatchAll(filePath)) {
     console.error(`found existing catch all file in ${filePath} directory, exiting now.`);
     failed = true;
   }
@@ -70,7 +86,7 @@ export async function integrateWithLocalCodebase(options: IntegrateOptions) {
   console.info('installing the @builder.io/react sdk...', IS_YARN);
   await installPackage('@builder.io/react');
 
-  const pageTemplateString = getTemplate('nextjs', `[...page].${extension}`)
+  const pageTemplateString = getTemplate('nextjs', `[...page].${useTypeScript ? 'tsx' : 'jsx'}`)
     .replace(/<<<YOUR_API_KEY>>>/g, options.apiKey)
     .replace(/<<<MODEL_NAME>>>/g, options.model);
 

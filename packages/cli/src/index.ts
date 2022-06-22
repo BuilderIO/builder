@@ -42,10 +42,6 @@ program
     'URL path prefix where all your landing pages will be nested under',
     ''
   )
-  .option(
-    '--typescript',
-    'use this flag if your project uses TypeScript and you want to create .tsx files vs .jsx'
-  )
   .action(async options => {
     await integrateWithLocalCodebase(options);
   });
