@@ -16,7 +16,7 @@ function checkForCatchAll(prefix: string) {
   const prefixPath = path.join(process.cwd(), 'pages', prefix);
   if (fse.existsSync(prefixPath)) {
     const directoryContents = fse.readdirSync(prefixPath);
-    // need to look for a catch all page, it can have any name 
+    // need to look for a catch all page, it can have any name
     // so we need to look for the "[...anyWord]" pattern
     return directoryContents.find(item => /\[\.\.\.(.*)\]/.test(item));
   } else {
@@ -36,7 +36,7 @@ function getExtension() {
   } else if (fse.existsSync(tsxIndexFilePath)) {
     return 'tsx';
   } else {
-    return 'js'
+    return 'js';
   }
 }
 
