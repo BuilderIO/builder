@@ -40,7 +40,7 @@ program
   .option(
     '-p,--pathPrefix <prefix>',
     'URL path prefix where all your landing pages will be nested under',
-    '/builder/'
+    ''
   )
   .option(
     '--typescript',

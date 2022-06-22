@@ -13,11 +13,13 @@ function verifyPagesDirectory() {
   return fse.existsSync('pages');
 }
 
-function checkForPagesFile(prefix: string, extension: string) {
+function checkForCatchAll(prefix: string, extension: string) {
   const prefixPath = path.join(process.cwd(), 'pages', prefix);
   if (fse.existsSync(prefixPath)) {
     const directoryContents = fse.readdirSync(prefixPath);
-    return directoryContents.find(item => /\[(.*)\]/.test(item));
+    // need to look for a catch all page, it can have any name 
+    // so we need to look for the "[...anyWord]" pattern
+    return directoryContents.find(item => /\[\.\.\.(.*)\]/.test(item));
   } else {
     return false;
   }
@@ -55,8 +57,8 @@ export async function integrateWithLocalCodebase(options: IntegrateOptions) {
     failed = true;
   }
 
-  if (checkForPagesFile(filePath, extension)) {
-    console.error(`found existing dynamic path file in ${filePath} directory, exiting now.`);
+  if (checkForCatchAll(filePath, extension)) {
+    console.error(`found existing catch all file in ${filePath} directory, exiting now.`);
     failed = true;
   }
 
@@ -68,14 +70,14 @@ export async function integrateWithLocalCodebase(options: IntegrateOptions) {
   console.info('installing the @builder.io/react sdk...', IS_YARN);
   await installPackage('@builder.io/react');
 
-  const pageTemplateString = getTemplate('nextjs', `[...pages].${extension}`)
+  const pageTemplateString = getTemplate('nextjs', `[...page].${extension}`)
     .replace(/<<<YOUR_API_KEY>>>/g, options.apiKey)
     .replace(/<<<MODEL_NAME>>>/g, options.model);
 
   writeFile(
     pageTemplateString,
     path.join(process.cwd(), 'pages', filePath),
-    `[...pages].${extension}`
+    `[...page].${extension}`
   );
 
   console.info('finished.');
