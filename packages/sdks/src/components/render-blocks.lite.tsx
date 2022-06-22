@@ -1,5 +1,6 @@
 import { isEditing } from '../functions/is-editing.js';
 import { BuilderBlock } from '../types/builder-block.js';
+import BlockStyles from './render-block/block-styles.lite';
 import RenderBlock from './render-block/render-block.lite';
 import { For, Show, useState } from '@builder.io/mitosis';
 
@@ -60,9 +61,22 @@ export default function RenderBlocks(props: RenderBlockProps) {
       onClick={(event) => state.onClick()}
       onMouseEnter={(event) => state.onMouseEnter()}
     >
+      {/**
+       * We need to run two separate loops for content + styles to workaround the fact that Vue 2
+       * does not support multiple root elements.
+       */}
       <Show when={props.blocks}>
         <For each={props.blocks}>
-          {(block) => <RenderBlock key={block.id} block={block} />}
+          {(block) => (
+            <RenderBlock key={'render-block-' + block.id} block={block} />
+          )}
+        </For>
+      </Show>
+      <Show when={props.blocks}>
+        <For each={props.blocks}>
+          {(block) => (
+            <BlockStyles key={'block-style-' + block.id} block={block} />
+          )}
         </For>
       </Show>
     </div>
