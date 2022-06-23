@@ -6,4 +6,5 @@ export { default as Symbol } from '../blocks/symbol/symbol.lite';
 export { default as Button } from '../blocks/button/button.lite';
 export { default as Section } from '../blocks/section/section.lite';
 export { default as Fragment } from '../blocks/fragment/fragment.lite';
+export { default as RenderContent } from '../components/render-content/render-content.lite';
 export { default as RenderBlocks } from '../components/render-blocks.lite';
