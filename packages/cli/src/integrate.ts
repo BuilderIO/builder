@@ -121,7 +121,7 @@ export async function integrateWithLocalCodebase(options: IntegrateOptions) {
   );
 
   if (options.content) {
-    const builderContentUrl = `https://builder.io/api/v1/content/${options.content}`;
+    const builderContentUrl = `https://builder.io/api/v1/content/${options.content}?source=builder-cli`;
     console.info(
       `[SUCCESS] - opening your landing page in your browser: ${chalk.blue(builderContentUrl)}`
     );
