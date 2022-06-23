@@ -37,6 +37,7 @@ program
   .option('-s,--stack <stack>', 'currently supports nextjs', 'nextjs')
   .option('-m,--model <model>', 'name of the model you want to integrate')
   .option('-a,--apiKey <apiKey>', 'you can find your apiKey on builder.io/account/settings')
+  .option('-c,--content <contentId>', 'opens the content entry in builder.io after integration has completed')
   .option(
     '-p,--pathPrefix <prefix>',
     'URL path prefix where all your landing pages will be nested under',

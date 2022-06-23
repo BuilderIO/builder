@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/cli",
-  "version": "1.1.2-25",
+  "version": "1.1.2-30",
   "description": "Official Builder.io CLI",
   "author": "Steve Sewell <steve@builder.io>",
   "keywords": [
@@ -40,6 +40,7 @@
     "typescript": "^3.9.7"
   },
   "dependencies": {
+    "@builder.io/react": "^2.0.1",
     "@types/traverse": "^0.6.32",
     "chalk": "^4.1.0",
     "clear": "^0.1.0",
@@ -50,6 +51,7 @@
     "graphql-typed-client": "^1.7.4",
     "lodash": "^4.17.20",
     "node-fetch": "^2.6.1",
+    "open": "^8.4.0",
     "traverse": "^0.6.6"
   }
 }
