@@ -88,7 +88,9 @@ export async function integrateWithLocalCodebase(options: IntegrateOptions) {
 
   if (checkForCatchAll(filePath)) {
     console.error(
-      `[ERROR] - found existing catch all file in ${filePath} directory. You can remove that file, or use the ${chalk.cyan(
+      `[ERROR] - found existing catch all file in ${
+        filePath || '/pages'
+      } directory. You can remove that file, or use the ${chalk.cyan(
         '--pathPrefix'
       )} option to nest the landing pages within a prefix.`
     );
@@ -96,7 +98,13 @@ export async function integrateWithLocalCodebase(options: IntegrateOptions) {
   }
 
   if (failed) {
-    console.error(chalk.red(`Integration failed, please fix the above errors and try again.`));
+    const errorMessage =
+      'It looks like the integration failed, please fix the above errors and try again.';
+    const feedbackMessage = `If you're still having issues or would like to leave us feedback on the CLI, please let us know here:\n${chalk.cyan(
+      `https://docs.google.com/forms/d/e/1FAIpQLScBdpNELFPX6hvWO70WuQ5W1nW5jfMglSCcUZ5w-0saXfsbEA/viewform?usp=pp_url&entry.1994483577=${options.apiKey}`
+    )}`;
+
+    console.error(`\n${chalk.red(errorMessage)}\n\n${feedbackMessage}`);
     return;
   }
 
@@ -116,7 +124,7 @@ export async function integrateWithLocalCodebase(options: IntegrateOptions) {
 
   let builderContentUrl;
   if (options.content) {
-    builderContentUrl = `https://builder.io/api/v1/content/${options.content}?source=builder-cli`;
+    builderContentUrl = `https://builder.io/content/${options.content}?source=builder-cli`;
     open(builderContentUrl);
   }
 
@@ -133,16 +141,18 @@ export async function integrateWithLocalCodebase(options: IntegrateOptions) {
       `• opening the Builder.io landing page in your browser: ${chalk.cyan(builderContentUrl)}`
     }
 
-    Next Steps:
-    1. If you had created a new 404 page, you'll want to add it to the [...page].${extension} file.
-       in place of the <DefaultErrorPage> component.
+    ${chalk.bold('Next Steps:')}
+    1. If you have a custom 404 page, you'll want to add it to the [...page].${extension} file. in place of the <DefaultErrorPage> component.
+
     2. Commit and deply the integration to your dev/staging site so your team members can test Builder.io. Alternatively, you can use ${chalk.green(
       'Vercel'
     )} or ${chalk.green('Netlify')} to quickly deploy your project for testing.
+
     3. Once you've deployed to a remote url, you'll want to edit the ${chalk.cyan(
       'previewUrl'
     )} property of your model here:
-       ${chalk.cyan(`https://builder.io//model/${options.model}`)}
+       ${chalk.cyan(`https://builder.io/models/${options.model}`)}
+
     --------------------------------------------------
     --------------------------------------------------
 
