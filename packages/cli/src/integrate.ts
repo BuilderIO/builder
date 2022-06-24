@@ -63,7 +63,7 @@ export async function integrateWithLocalCodebase(options: IntegrateOptions) {
 
   if (!options.apiKey) {
     console.error(
-      `[ERROR] - ${chalk.yellow('--apiKey')} is required, you can find it on ${chalk.blue(
+      `[ERROR] - ${chalk.yellow('--apiKey')} is required, you can find it on ${chalk.cyan(
         'https://builder.io/account/settings'
       )}`
     );
@@ -79,7 +79,7 @@ export async function integrateWithLocalCodebase(options: IntegrateOptions) {
     console.error(
       `[ERROR] - ${chalk.yellow(
         '/pages'
-      )} directory not found, ensure you're in a Next.js project. If you believe this is an error, please file a bug report here: ${chalk.blue(
+      )} directory not found, ensure you're in a Next.js project. If you believe this is an error, please file a bug report here: ${chalk.cyan(
         'https://github.com/BuilderIO/builder/issues/new?assignees=&labels=&template=bug_report.md&title=[BUG]%20-%20CLI%20Integration'
       )}`
     );
@@ -88,7 +88,7 @@ export async function integrateWithLocalCodebase(options: IntegrateOptions) {
 
   if (checkForCatchAll(filePath)) {
     console.error(
-      `[ERROR] - found existing catch all file in ${filePath} directory. You can remove that file, or use the ${chalk.blue(
+      `[ERROR] - found existing catch all file in ${filePath} directory. You can remove that file, or use the ${chalk.cyan(
         '--pathPrefix'
       )} option to nest the landing pages within a prefix.`
     );
@@ -114,17 +114,9 @@ export async function integrateWithLocalCodebase(options: IntegrateOptions) {
     `[...page].${extension}`
   );
 
-  console.info(
-    `[SUCCESS] - integration complete, you can now edit the page in ${chalk.blue(
-      path.join(process.cwd(), 'pages', filePath, `[...page].${extension}`)
-    )}`
-  );
-
+  let builderContentUrl;
   if (options.content) {
-    const builderContentUrl = `https://builder.io/api/v1/content/${options.content}?source=builder-cli`;
-    console.info(
-      `[SUCCESS] - opening your landing page in your browser: ${chalk.blue(builderContentUrl)}`
-    );
+    builderContentUrl = `https://builder.io/api/v1/content/${options.content}?source=builder-cli`;
     open(builderContentUrl);
   }
 
@@ -133,16 +125,24 @@ export async function integrateWithLocalCodebase(options: IntegrateOptions) {
     --------------------------------------------------
     Congratulations! You've successfully integrated with Builder.io.
     
+    • view/edit the integration file here: ${chalk.cyan(
+      path.join(process.cwd(), 'pages', filePath, `[...page].${extension}`)
+    )}
+    ${
+      options.content &&
+      `• opening the Builder.io landing page in your browser: ${chalk.cyan(builderContentUrl)}`
+    }
+
     Next Steps:
     1. If you had created a new 404 page, you'll want to add it to the [...page].${extension} file.
        in place of the <DefaultErrorPage> component.
     2. Commit and deply the integration to your dev/staging site so your team members can test Builder.io. Alternatively, you can use ${chalk.green(
       'Vercel'
     )} or ${chalk.green('Netlify')} to quickly deploy your project for testing.
-    3. Once you've deployed to a remote url, you'll want to edit the ${chalk.blue(
+    3. Once you've deployed to a remote url, you'll want to edit the ${chalk.cyan(
       'previewUrl'
     )} property of your model here:
-       ${chalk.blue(`https://builder.io//model/${options.model}`)}
+       ${chalk.cyan(`https://builder.io//model/${options.model}`)}
     --------------------------------------------------
     --------------------------------------------------
 
