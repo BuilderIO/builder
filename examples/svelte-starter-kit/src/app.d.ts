@@ -14,6 +14,6 @@ declare namespace App {
 	// interface Stuff {}
 }
 
-declare module "@builder.io/sdk-svelte"
+declare module '@builder.io/sdk-svelte';
 
-declare module "svelte-parallax"
+declare module 'svelte-parallax';
