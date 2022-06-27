@@ -29,6 +29,7 @@ USAGE
 
 - [`builder import`](#builder-import--k-private-key---o-output-directory)
 - [`builder create`](#builder-create)
+- [`builder integrate`](#builder-integrate)
 
 ## `builder import -k [PRIVATE KEY] -o [OUTPUT DIRECTORY]`
 
@@ -70,6 +71,27 @@ OPTIONS
 
 DESCRIPTION
   This command will create a new space clone from your local builder directory.
+```
+
+## `builder integrate`
+
+Integrates Builder with an existing Next.js project. Currently supports "page" models by creating a catchall route that fetches Builder content that matches the current path.
+
+If you want don't want the catch-all at the route of your `pages` directory, you can add a `--pathPrefix` to nest the route under a different path.
+
+```
+Usage:
+  $builder integrate [options]
+
+integrate Builder.io with an existing codebase, currently supports Next.js
+
+Options:
+  -d,--debug                print debugging information
+  -s,--stack <stack>        currently supports nextjs (default: "nextjs")
+  -m,--model <model>        name of the model you want to integrate
+  -a,--apiKey <apiKey>      you can find your apiKey on builder.io/account/settings
+  -p,--pathPrefix <prefix>  URL path prefix where all your landing pages will be nested under (default: "")
+  -h, --help                output usage information
 ```
 
 ## Developing

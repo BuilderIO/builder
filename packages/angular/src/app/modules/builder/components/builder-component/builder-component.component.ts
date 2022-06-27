@@ -322,7 +322,14 @@ export class BuilderComponentComponent implements OnDestroy, OnInit, OnChanges {
   }
 
   private isRelative(href: string) {
-    return !href.match(/^(\/\/|https?:\/\/)/i);
+    return (
+      !href.match(/^(\/\/|https?:\/\/)/i) &&
+      // Handle Mailto and Tel links
+      !href.startsWith('tel:') &&
+      !href.startsWith('mailto:') &&
+      // Handle local hash links
+      !href.startsWith('#')
+    );
   }
 
   // Attempt to convert an absolute url to relative if possible (aka if the hosts match)

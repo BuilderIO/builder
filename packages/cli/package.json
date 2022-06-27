@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/cli",
-  "version": "1.1.2-3",
+  "version": "1.2.0",
   "description": "Official Builder.io CLI",
   "author": "Steve Sewell <steve@builder.io>",
   "keywords": [
@@ -20,17 +20,20 @@
     "codegen-client": "generate-graphql-client -e https://cdn.builder.io/api/v2/admin -o src/autogen/client",
     "dev": "nodemon --watch 'src/index.ts' --exec npm run build",
     "clean": "rimraf ./dist/ ./exec/",
-    "build": "npm run clean && npm run codegen-client && tsc",
+    "build": "npm run clean && npm run codegen-client && tsc && npm run copy:templates",
     "test": "npm run build && ava --verbose",
     "bundle": "npm run build && pkg . --out-dir ./exec/",
-    "release:dev": "npm run build && npm version prerelease --no-git-tag-version && npm publish --tag dev"
+    "copy:templates": "cpy --flat ./src/templates/nextjs/ ./dist/templates/nextjs",
+    "release:dev": "npm run build && npm version prerelease --no-git-tag-version && npm publish --tag dev",
+    "release:minor": "npm run build && npm version minor --no-git-tag-version && npm publish"
   },
   "devDependencies": {
     "@types/cli-progress": "^3.8.0",
     "@types/fs-extra": "^9.0.5",
-    "@types/node": "12.19.8",
+    "@types/node": "^12.19.8",
     "@types/node-fetch": "^2.5.7",
     "ava": "^2.2.0",
+    "cpy-cli": "^4.1.0",
     "nodemon": "^2.0.6",
     "pkg": "^4.4.9",
     "rimraf": "^2.6.3",
@@ -38,6 +41,7 @@
     "typescript": "^3.9.7"
   },
   "dependencies": {
+    "@builder.io/react": "^2.0.1",
     "@types/traverse": "^0.6.32",
     "chalk": "^4.1.0",
     "clear": "^0.1.0",
@@ -48,6 +52,7 @@
     "graphql-typed-client": "^1.7.4",
     "lodash": "^4.17.20",
     "node-fetch": "^2.6.1",
+    "open": "^8.4.0",
     "traverse": "^0.6.6"
   }
 }

@@ -1,0 +1,20 @@
+{
+  "printWidth": 100,
+  "trailingComma": "es5",
+  "singleQuote": true,
+  "arrowParens": "avoid",
+  "overrides": [
+    {
+      "files": ".prettierrc",
+      "options": { "parser": "json" }
+    },
+    {
+      "files": "*.unit.ts",
+      "options": { "parser": "typescript" }
+    },
+    {
+      "files": "*.ejson",
+      "options": { "parser": "json" }
+    }
+  ]
+}
