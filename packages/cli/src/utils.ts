@@ -1,5 +1,13 @@
 import fse from 'fs-extra';
 import traverse from 'traverse';
+import { ChildProcess, spawn } from 'child_process';
+import path from 'path';
+
+const childrenProcesses: ChildProcess[] = [];
+
+export const IS_YARN = (() => {
+  return fse.existsSync(path.join(process.cwd(), 'yarn.lock'));
+})();
 
 export const readAsJson = async (path: string) => {
   const content = await fse.readFile(path);
@@ -28,3 +36,39 @@ export const replaceField = (json: any, newValue: string, oldValue: string) => {
     }
   });
 };
+
+export function writeFile(fileContents: string, filePath: string, fileName: string) {
+  if (!fse.existsSync(filePath)) {
+    fse.mkdirSync(filePath);
+  }
+
+  fse.writeFileSync(path.join(filePath, fileName), fileContents);
+}
+
+export function killChildren() {
+  childrenProcesses.forEach(p => p.kill('SIGINT'));
+}
+
+export function installPackage(packageName: string) {
+  return new Promise<void>((resolve, reject) => {
+    const commands = IS_YARN
+      ? ['add', packageName, '--silent', '--ignore-engines', '--no-node-version-check']
+      : [
+          'install',
+          packageName,
+          '--loglevel=error',
+          '--no-audit',
+          '--no-fund',
+          '--no-update-notifier',
+        ];
+
+    const p = spawn(IS_YARN ? 'yarn' : 'npm', commands, {
+      shell: true,
+      stdio: 'inherit',
+    });
+    p.once('exit', () => resolve());
+    p.once('error', reject);
+
+    childrenProcesses.push(p);
+  });
+}
