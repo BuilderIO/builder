@@ -1,5 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-
+import { Component, Input } from '@angular/core';
 import { BuilderBlock } from '@builder.io/angular';
 
 @Component({
@@ -21,7 +20,7 @@ import { BuilderBlock } from '@builder.io/angular';
     ></builder-blocks-outlet>
   `,
 })
-export class CustomThingChildren implements OnChanges {
+export class CustomThingChildren {
   @Input()
   name = '';
 
@@ -36,10 +35,6 @@ export class CustomThingChildren implements OnChanges {
 
   @Input()
   sectionB = null;
-
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log('in onChanges', changes);
-  }
 }
 
 BuilderBlock({
