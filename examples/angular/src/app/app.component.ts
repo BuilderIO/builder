@@ -1,6 +1,5 @@
 import { BuilderBlock } from '@builder.io/angular';
 import { Component, Input } from '@angular/core';
-import './with-children';
 
 @Component({
   selector: 'custom-thing',
