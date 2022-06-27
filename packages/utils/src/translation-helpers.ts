@@ -20,7 +20,7 @@ export function getTranslateableFields(content: BuilderContent, sourceLocaleId: 
   // metadata [content's localized custom fields]
   traverse(customFields).forEach(function (el) {
     if (this.key && el && el['@type'] === localizedType) {
-      results.metadata[this.key] = el.Default || el[sourceLocaleId];
+      results.metadata[this.key] = el[sourceLocaleId] || el.Default;
     }
   });
 
