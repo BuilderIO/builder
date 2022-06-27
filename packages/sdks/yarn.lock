@@ -930,12 +930,12 @@ __metadata:
   linkType: hard
 
 "@builder.io/mitosis-cli@npm:dev":
-  version: 0.0.17-13
-  resolution: "@builder.io/mitosis-cli@npm:0.0.17-13"
+  version: 0.0.17-14
+  resolution: "@builder.io/mitosis-cli@npm:0.0.17-14"
   dependencies:
     "@babel/core": ^7.17.8
     "@babel/preset-typescript": ^7.16.7
-    "@builder.io/mitosis": 0.0.56-14
+    "@builder.io/mitosis": 0.0.56-15
     "@vue/compiler-sfc": ^3.1.5
     babel-preset-solid: ^1.3.13
     chalk: ^4.1.0
@@ -955,13 +955,13 @@ __metadata:
     vue-template-validator: ^1.1.5
   bin:
     mitosis: bin/mitosis
-  checksum: 37590bbc476cc933f6fd2349475867314f9644c0579252fdb7547f185c08c604138089435b7f6a649830fdec82cafd2d71400d53b60e5fa32696d85f232c83cc
+  checksum: 1ba9e85659ecef8478c87410792d17841c9445b7932f93e030842f9cf210a092880eeeee775f842b5a7948e1da52b7272a7e4a9b014b1ac091faab43b77cdf53
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis@npm:0.0.56-14, @builder.io/mitosis@npm:dev":
-  version: 0.0.56-14
-  resolution: "@builder.io/mitosis@npm:0.0.56-14"
+"@builder.io/mitosis@npm:0.0.56-15, @builder.io/mitosis@npm:dev":
+  version: 0.0.56-15
+  resolution: "@builder.io/mitosis@npm:0.0.56-15"
   dependencies:
     "@angular/compiler": ^11.2.11
     "@babel/core": 7.14.5
@@ -985,8 +985,10 @@ __metadata:
     prettier-plugin-svelte: ^1.4.1
     svelte: ^3.30.0
     traverse: ^0.6.6
+    typescript: ^4.7.3
+    vue: ^2
     vue-template-compiler: ^2.6.12
-  checksum: d9a51d58a978a4b01eb86936cafca2091113406275b0a47edf71fc0dc84dd3e9dab756e783c662c70813c7e1eff348a73e94925f77942e8cfeb1fe883f91c205
+  checksum: f9adf46459d1c1f8ff981d9cdd64350200a52888294f2fe257b223eb79b3a984a1f696efae2e37fe8b49402aff4140b1ce6ec6e30e04c468c7130d391a085fa7
   languageName: node
   linkType: hard
 
@@ -7642,6 +7644,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"typescript@npm:^4.7.3":
+  version: 4.7.4
+  resolution: "typescript@npm:4.7.4"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 5750181b1cd7e6482c4195825547e70f944114fb47e58e4aa7553e62f11b3f3173766aef9c281783edfd881f7b8299cf35e3ca8caebe73d8464528c907a164df
+  languageName: node
+  linkType: hard
+
 "typescript@patch:typescript@^4.4.3#~builtin<compat/typescript>, typescript@patch:typescript@^4.5.5#~builtin<compat/typescript>":
   version: 4.6.3
   resolution: "typescript@patch:typescript@npm%3A4.6.3#~builtin<compat/typescript>::version=4.6.3&hash=bda367"
@@ -7649,6 +7661,16 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 6bf45caf847062420592e711bc9c28bf5f9a9a7fa8245343b81493e4ededae33f1774009d1234d911422d1646a2c839f44e1a23ecb111b40a60ac2ea4c1482a8
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@^4.7.3#~builtin<compat/typescript>":
+  version: 4.7.4
+  resolution: "typescript@patch:typescript@npm%3A4.7.4#~builtin<compat/typescript>::version=4.7.4&hash=bda367"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 96d3030cb01143570567cb4f3a616b10df65f658f0e74e853e77a089a6a954e35c800be7db8b9bfe9a1ae05d9c2897e281359f65e4caa1caf266368e1c4febd3
   languageName: node
   linkType: hard
 
@@ -7797,6 +7819,13 @@ __metadata:
   peerDependencies:
     parse5: ^2.1.0
   checksum: f544ed81550728b821a3ef243a5f25fc24c2d871b20b86227df19d317785eedcf8832b668c0c58cf1654330983160248df8f9abf9be1940c23cc6bc6d125fac6
+  languageName: node
+  linkType: hard
+
+"vue@npm:^2":
+  version: 2.6.14
+  resolution: "vue@npm:2.6.14"
+  checksum: 23524a1bdca094d62cb3491a46317eed75184b5d61d28fa846ea5d2b241c1cc7084fc67ee259d47a50a6d0bbc33ecaceb7bb52bff81312fe7da07263f3419942
   languageName: node
   linkType: hard
 
