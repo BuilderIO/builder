@@ -1,10 +1,5 @@
 import { useRouter } from 'next/router';
-import {
-  BuilderComponent,
-  builder,
-  useIsPreviewing,
-  Builder,
-} from "@builder.io/react";
+import { BuilderComponent, builder, useIsPreviewing, Builder } from '@builder.io/react';
 import DefaultErrorPage from 'next/error';
 import Head from 'next/head';
 
@@ -91,13 +86,12 @@ export default function Page({ page }) {
   You would typically do this in the file where the component is defined.
 */
 
-const MyCustomComponent = (props) => (
+const MyCustomComponent = props => (
   <div>
     <h1>{props.title}</h1>
     <p>{props.description}</p>
   </div>
 );
-
 
 /* `
   This is a simple example of a custom component, you can view more complex input types here:
@@ -108,5 +102,5 @@ Builder.registerComponent(MyCustomComponent, {
   inputs: [
     { name: 'title', type: 'string' },
     { name: 'description', type: 'string' },
-  ]
-})
+  ],
+});
