@@ -9,9 +9,14 @@ const getSeededId = () => {
 
 const isMitosisNode = (x) => x && x['@type'] === '@builder.io/mitosis/node';
 
+/**
+ * @type {import('@builder.io/mitosis'.MitosisConfig['options']['vue'])}
+ */
 const vueConfig = {
+  transpiler: { format: 'esm' },
   namePrefix: (path) => (path.includes('/blocks/') ? 'builder' : undefined),
   cssNamespace: getSeededId,
+  asyncComponentImports: true,
 };
 
 /**
