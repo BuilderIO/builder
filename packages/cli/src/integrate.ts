@@ -160,7 +160,7 @@ export async function integrateWithLocalCodebase(options: IntegrateOptions) {
     --------------------------------------------------
     --------------------------------------------------
 
-    ${chalk.green(`We'd love to here from you! Please give us feedback on any 
+    ${chalk.green(`We'd love to here from you! Please send us any feedback you have here:
     https://docs.google.com/forms/d/e/1FAIpQLScBdpNELFPX6hvWO70WuQ5W1nW5jfMglSCcUZ5w-0saXfsbEA/viewform?usp=pp_url&entry.1994483577=${options.apiKey}`)}
   `);
 }
