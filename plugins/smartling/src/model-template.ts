@@ -1,4 +1,11 @@
+import appState from '@builder.io/app-context';
+
 export const translationModelName = 'translation-job';
+
+export function getTranslationModel() {
+  return appState.models.result.find((m: any) => m.name === translationModelName);
+}
+
 export const getTranslationModelTemplate = (
   privateKey: string,
   apiKey: string,

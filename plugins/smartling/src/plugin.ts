@@ -1,11 +1,12 @@
-import { registerCommercePlugin } from '@builder.io/commerce-plugin-tools';
+import { registerCommercePlugin as registerPlugin } from '@builder.io/commerce-plugin-tools';
 import pkg from '../package.json';
 import appState from '@builder.io/app-context';
 import isEqual from 'lodash/isEqual';
-import { Builder } from '@builder.io/react';
-import { getTranslationModelTemplate, translationModelName } from './model-template';
+import { getTranslationModelTemplate, getTranslationModel } from './model-template';
+import { registerBulkAction, registerContentAction, registerElementAction } from './plugin-helpers';
+import { SmartlingApi } from './smartling';
 
-registerCommercePlugin(
+registerPlugin(
   {
     name: 'Smartling',
     id: pkg.name,
@@ -37,13 +38,9 @@ registerCommercePlugin(
     ctaText: `Connect your Smartling project`,
   },
   async () => {
-    // fetch project
-    // private key generate
     const pluginPrivateKey = await appState.globalState.getPluginPrivateKey(pkg.name);
     const api = new SmartlingApi(pluginPrivateKey);
     const { project } = await api.getProject();
-
-    console.log(project, 'project');
 
     // assign locales to custom targeting attributes
 
@@ -61,6 +58,7 @@ registerCommercePlugin(
         enum: smartlingLocales,
       });
     }
+
     // create a new action on content to add to job
 
     registerBulkAction({
@@ -85,7 +83,6 @@ registerCommercePlugin(
         const selectedContent = selectedContentIds.map(id =>
           contentEntries.find(entry => entry.id === id)
         );
-        console.log(' here t', translationJobId);
         if (translationJobId === null) {
           const name = await appState.dialogs.prompt({
             placeholderText: 'Enter a name for your new job',
@@ -176,128 +173,6 @@ registerCommercePlugin(
     return {};
   }
 );
-
-class SmartlingApi {
-  getBaseUrl(path: string, search = {}) {
-    const params = new URLSearchParams({
-      ...search,
-      pluginId: pkg.name,
-      apiKey: appState.user.apiKey,
-    });
-
-    const baseUrl = new URL(`http://localhost:4000/api/v1/smartling/${path}`);
-    baseUrl.search = params.toString();
-    return baseUrl.toString();
-  }
-  constructor(private privateKey: string) {}
-
-  request(path: string, config?: RequestInit, search = {}) {
-    return fetch(`${this.getBaseUrl(path, search)}`, {
-      ...config,
-      headers: {
-        Authorization: `Bearer ${this.privateKey}`,
-        'Content-Type': 'application/json',
-      },
-    }).then(res => res.json());
-  }
-  // todo separate types
-  getProject(): Promise<{
-    project: {
-      targetLocales: Array<{ enabled: boolean; localeId: string }>;
-      sourceLocaleId: string;
-    };
-  }> {
-    return this.request('project');
-  }
-
-  getJob(id: string): Promise<{ job: any }> {
-    return this.request('job', { method: 'GET' }, { id });
-  }
-
-  createLocalJob(name: string, content: any[]): Promise<any> {
-    const translationModel = getTranslationModel();
-    return appState.createContent(translationModel.name, {
-      name,
-      meta: {
-        createdBy: pkg.name,
-      },
-      data: {
-        entries: content.map(getContentReference),
-      },
-    });
-  }
-  async updateLocalJob(jobId: string, content: any[]) {
-    const latestDraft = await appState.getLatestDraft(jobId);
-    const draft = {
-      ...latestDraft,
-      data: {
-        ...latestDraft.data,
-        entries: [...(latestDraft.data.entries || []), ...content.map(c => getContentReference(c))],
-      },
-    };
-    appState.updateLatestDraft(draft);
-  }
-
-  applyTranslation(id: string, model: string) {
-    return this.request('apply-translation', {
-      method: 'POST',
-      body: JSON.stringify({
-        id,
-        model,
-      }),
-    });
-  }
-}
-
-type BulkAction = {
-  label: string;
-  showIf(selectedContentIds: string[], content: any[], model: any): Boolean;
-  onClick(
-    actions: { refreshList: () => void },
-    selectedContentIds: string[],
-    content: any[],
-    model: any
-  ): Promise<void>;
-};
-
-function registerBulkAction(bulkAction: BulkAction) {
-  Builder.register('content.bulkAction', bulkAction);
-}
-
-type ContentAction = {
-  label: string;
-  showIf(content: any, model: any): Boolean;
-  onClick(content: any): Promise<void>;
-};
-
-function registerContentAction(contentAction: ContentAction) {
-  Builder.register('content.action', contentAction);
-}
-
-type ElementAction = {
-  label: string;
-  showIf(element: any, model: any): Boolean;
-  onClick(element: any): Promise<void> | void;
-};
-
-function registerElementAction(elementAction: ElementAction) {
-  Builder.register('element.action', elementAction);
-}
-
-function getContentReference(content: any) {
-  return {
-    content: {
-      '@type': '@builder.io/core:Reference',
-      id: content.id,
-      model: content.modelName,
-    },
-    preview: content.previewUrl,
-  };
-}
-
-function getTranslationModel() {
-  return appState.models.result.find((m: any) => m.name === translationModelName);
-}
 
 function pickTranslationJob() {
   const translationModel = getTranslationModel();

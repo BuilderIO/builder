@@ -20,7 +20,6 @@ How To translate?
 - once a translation job is ready for submission press `authorize`, this will send it to smartling.
 - You apply translations [pending or completed] at any time after authorization from the option `apply translation`
 
-
 Future work:
 - Automating the translation application on content once a job is completed in smartling.
 - Including custom components localized text inputs.
