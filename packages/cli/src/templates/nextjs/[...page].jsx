@@ -93,7 +93,7 @@ const MyCustomComponent = props => (
   </div>
 );
 
-/* `
+/*
   This is a simple example of a custom component, you can view more complex input types here:
   https://www.builder.io/c/docs/custom-react-components#input-types
 */
