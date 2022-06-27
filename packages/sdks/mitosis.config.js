@@ -9,6 +9,11 @@ const getSeededId = () => {
 
 const isMitosisNode = (x) => x && x['@type'] === '@builder.io/mitosis/node';
 
+const vueConfig = {
+  namePrefix: (path) => (path.includes('/blocks/') ? 'builder' : undefined),
+  cssNamespace: getSeededId,
+};
+
 /**
  * @type {import('@builder.io/mitosis'.MitosisConfig)}
  */
@@ -16,21 +21,8 @@ module.exports = {
   files: 'src/**',
   targets: ['reactNative', 'vue', 'solid', 'svelte'],
   options: {
-    solid: {
-      transpiler: { format: 'esm' },
-    },
-    reactNative: {
-      transpiler: { format: 'esm' },
-    },
-    vue: {
-      namePrefix: (path) => (path.includes('/blocks/') ? 'builder' : undefined),
-      cssNamespace: getSeededId,
-      transpiler: { format: 'esm' },
-      vueVersion: {
-        2: true,
-        3: true,
-      },
-    },
+    vue2: vueConfig,
+    vue3: vueConfig,
     svelte: {
       transpiler: { format: 'esm' },
       // prettier & svelte don't play well together when it comes to parsing @html content for some reason
