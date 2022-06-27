@@ -3,7 +3,11 @@ import pkg from '../package.json';
 import appState from '@builder.io/app-context';
 import isEqual from 'lodash/isEqual';
 import { getTranslationModelTemplate, getTranslationModel } from './model-template';
-import { registerBulkAction, registerContentAction, registerElementAction } from './plugin-helpers';
+import {
+  registerBulkAction,
+  registerContentAction,
+  registerContextMenuAction,
+} from './plugin-helpers';
 import { SmartlingApi } from './smartling';
 
 registerPlugin(
@@ -110,14 +114,36 @@ registerPlugin(
         actions.refreshList();
       },
     });
-
-    registerElementAction({
-      label: 'exclude from future translation requests',
-      showIf(element) {
-        return element.component.name === 'Text';
+    const transcludedMetaKey = 'excludeFromTranslation';
+    registerContextMenuAction({
+      label: 'Exclude from future translations',
+      showIf(selectedElements) {
+        if (selectedElements.length !== 1) {
+          // todo maybe apply for multiple
+          return false;
+        }
+        const element = selectedElements[0];
+        const isExcluded = element.meta?.get(transcludedMetaKey);
+        return element.component?.name === 'Text' && !isExcluded;
       },
-      onClick(element) {
-        element.meta.set('excludeFromTranslation', true);
+      onClick(elements) {
+        elements.forEach(el => el.meta.set('excludeFromTranslation', true));
+      },
+    });
+
+    registerContextMenuAction({
+      label: 'Include in future translations',
+      showIf(selectedElements) {
+        if (selectedElements.length !== 1) {
+          // todo maybe apply for multiple
+          return false;
+        }
+        const element = selectedElements[0];
+        const isExcluded = element.meta?.get(transcludedMetaKey);
+        return element.component?.name === 'Text' && isExcluded;
+      },
+      onClick(elements) {
+        elements.forEach(el => el.meta.set('excludeFromTranslation', false));
       },
     });
 
@@ -125,11 +151,10 @@ registerPlugin(
       label: 'Add to translation job',
       showIf(content, model) {
         const translationModel = getTranslationModel();
-        return model.name !== translationModel.name;
+        return content.published === 'published' && model.name !== translationModel.name;
       },
       async onClick(content) {
         let translationJobId = await pickTranslationJob();
-        console.log(' here t', translationJobId);
         if (translationJobId === null) {
           const name = await appState.dialogs.prompt({
             placeholderText: 'Enter a name for your new job',
@@ -151,7 +176,6 @@ registerPlugin(
             translationJobId,
           },
         });
-        // todo add flag to content meta for translation job
       },
     });
 

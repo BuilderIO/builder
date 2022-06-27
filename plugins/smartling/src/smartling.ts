@@ -81,6 +81,7 @@ function getContentReference(content: any) {
       id: content.id,
       model: content.modelName,
     },
-    preview: content.previewUrl,
+    preview:
+      content.previewUrl || content.meta?.get?.('lastPreviewUrl') || content.meta?.lastPreviewUrl,
   };
 }

@@ -25,12 +25,12 @@ export function registerContentAction(contentAction: ContentAction) {
   Builder.register('content.action', contentAction);
 }
 
-export type ElementAction = {
+export type ContextMenuAction = {
   label: string;
-  showIf(element: any, model: any): Boolean;
-  onClick(element: any): Promise<void> | void;
+  showIf(elements: any[], model: any): Boolean;
+  onClick(element: any[], model: any): void;
 };
 
-export function registerElementAction(elementAction: ElementAction) {
-  Builder.register('element.action', elementAction);
+export function registerContextMenuAction(contextMenuAction: ContextMenuAction) {
+  Builder.register('contextMenu.action', contextMenuAction);
 }

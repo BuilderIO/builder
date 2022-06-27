@@ -3,7 +3,7 @@ import traverse from 'traverse';
 import omit from 'lodash/omit';
 const localizedType = '@builder.io/core:LocalizedValue';
 
-type TranslateableFields = {
+export type TranslateableFields = {
   metadata: Record<string, string>;
   blocks: Record<string, string>;
 };
