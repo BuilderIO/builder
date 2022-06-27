@@ -99,7 +99,7 @@ export async function integrateWithLocalCodebase(options: IntegrateOptions) {
 
   if (failed) {
     const errorMessage =
-      'It looks like the integration failed, please fix the above errors and try again.';
+      'It looks like the integration failed, please fix the above errors and try again. Our full integration guide can be found here: https://www.builder.io/c/docs/integrating-builder-pages';
     const feedbackMessage = `If you're still having issues or would like to leave us feedback on the CLI, please let us know here:\n${chalk.cyan(
       `https://docs.google.com/forms/d/e/1FAIpQLScBdpNELFPX6hvWO70WuQ5W1nW5jfMglSCcUZ5w-0saXfsbEA/viewform?usp=pp_url&entry.1994483577=${options.apiKey}`
     )}`;
@@ -144,11 +144,15 @@ export async function integrateWithLocalCodebase(options: IntegrateOptions) {
     ${chalk.bold('Next Steps:')}
     1. If you have a custom 404 page, you'll want to add it to the [...page].${extension} file. in place of the <DefaultErrorPage> component.
 
-    2. Commit and deply the integration to your dev/staging site so your team members can test Builder.io. Alternatively, you can use ${chalk.green(
+    2. Add your header and footer components to the [...page].${extension} file.
+
+    3. Register custom components for your team to use in Builder.io. We created an example custom component at the bottom of your [...page].${extension} file. You can find more information about custom components here:\nhttps://www.builder.io/c/docs/custom-react-components
+
+    4. Commit and deploy the code updates to your dev/staging site so your team members can test Builder.io. Alternatively, you can use ${chalk.green(
       'Vercel'
     )} or ${chalk.green('Netlify')} to quickly deploy your project for testing.
 
-    3. Once you've deployed to a remote url, you'll want to edit the ${chalk.cyan(
+    5. Once you've deployed to a remote url, you'll want to edit the ${chalk.cyan(
       'previewUrl'
     )} property of your model here:
        ${chalk.cyan(`https://builder.io/models/${options.model}`)}
