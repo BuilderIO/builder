@@ -4,12 +4,14 @@ import omit from 'lodash/omit';
 const localizedType = '@builder.io/core:LocalizedValue';
 
 export type TranslateableFields = {
-  metadata: Record<string, string>;
-  blocks: Record<string, string>;
+  [key: string]: {
+    instructions: string,
+    value: string,
+  }
 };
 
-export function getTranslateableFields(content: BuilderContent, sourceLocaleId: string) {
-  const results: TranslateableFields = { blocks: {}, metadata: {} };
+export function getTranslateableFields(content: BuilderContent, sourceLocaleId: string, defaultInstructions: string) {
+  const results: TranslateableFields = { };
 
   let { blocks, blocksString, state, ...customFields } = content.data!;
 
@@ -20,7 +22,10 @@ export function getTranslateableFields(content: BuilderContent, sourceLocaleId: 
   // metadata [content's localized custom fields]
   traverse(customFields).forEach(function (el) {
     if (this.key && el && el['@type'] === localizedType) {
-      results.metadata[this.key] = el[sourceLocaleId] || el.Default;
+      results[`metadata.${this.path.join('#')}`] = {
+        instructions: el.meta?.instructions || defaultInstructions,
+        value: el[sourceLocaleId] || el.Default
+      }
     }
   });
 
@@ -28,7 +33,10 @@ export function getTranslateableFields(content: BuilderContent, sourceLocaleId: 
   traverse(blocks).forEach(function (el) {
     // TODO: localized custom components inputs
     if (el && el.id && el.component?.name === 'Text' && !el.meta?.excludeFromTranslation) {
-      results.blocks[`${el.id}#text`] = el.component.options.text;
+      results[`blocks.${el.id}#text`] = {
+        value: el.component.options.text,
+        instructions: el.meta?.instructions || defaultInstructions,
+      }
     }
   });
 
@@ -37,7 +45,7 @@ export function getTranslateableFields(content: BuilderContent, sourceLocaleId: 
 
 export function appLyTranslation(
   content: BuilderContent,
-  translation: TranslateableFields,
+  translation: Record<string,string>,
   locale: string
 ) {
   let { blocks, blocksString, state, ...customFields } = content.data!;
@@ -47,10 +55,10 @@ export function appLyTranslation(
 
   traverse(customFields).forEach(function (el) {
     const path = this.path?.join('#');
-    if (translation.metadata[path]) {
+    if (translation[`metadata.${path}`]) {
       this.update({
         ...el,
-        [locale]: translation.metadata[path],
+        [locale]: translation[`metadata.${path}`],
       });
     }
   });
@@ -62,7 +70,7 @@ export function appLyTranslation(
       el.id &&
       el.component?.name === 'Text' &&
       !el.meta?.excludeFromTranslation &&
-      translation.blocks[`${el.id}#text`]
+      translation[`blocks.${el.id}#text`]
     ) {
       this.update({
         ...el,
@@ -72,21 +80,25 @@ export function appLyTranslation(
         },
         bindings: {
           ...el.bindings,
-          'component.options.text': `state.translation['${el.id}#text'][state.locale || 'Default'] || \`${el.component.options.text}\``,
+          'component.options.text': `state.translation['blocks.${el.id}#text'][state.locale || 'Default'] || \`${el.component.options.text}\``,
         },
       });
     }
   });
 
-  const translationState = Object.keys(translation.blocks).reduce((acc, key) => {
-    return {
-      ...acc,
-      [key]: {
-        '@type': localizedType,
-        ...content.data!.state?.translation?.[key],
-        [locale]: translation.blocks[key],
-      },
-    };
+  const translationState = Object.keys(translation).reduce((acc, key) => {
+    if (key.startsWith('blocks.')) {
+      return {
+        ...acc,
+        [key]: {
+          '@type': localizedType,
+          ...content.data!.state?.translation?.[key],
+          [locale]: translation[key],
+        },
+      };
+    }
+
+    return acc;
   }, {});
 
   content.data!.state = {
