@@ -21,6 +21,13 @@ export const getTranslationModelTemplate = (
   fields: [
     {
       '@type': '@builder.io/core:Field',
+      name: 'description',
+      type: 'text',
+      required: false,
+      helperText: 'Smartling job description',
+    },
+    {
+      '@type': '@builder.io/core:Field',
       name: 'entries',
       type: 'list',
       required: false,
