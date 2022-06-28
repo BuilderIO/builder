@@ -153,8 +153,7 @@ export const getTranslationModelTemplate = (
           value: `Bearer ${privateKey}`,
         },
       ],
-      // TODO apiRoot()
-      url: `http://localhost:4000/api/v1/smartling/job-publish-hook?apiKey=${apiKey}&pluginId=${pluginId}`,
+      url: `${appState.config.apiRoot()}/api/v1/smartling/job-publish-hook?apiKey=${apiKey}&pluginId=${pluginId}`,
       disableProxy: true, // proxy has an issue with the POST request body
     },
   ],

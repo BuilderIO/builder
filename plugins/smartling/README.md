@@ -1,4 +1,4 @@
-# Builder.io Smartling Integration Plugin
+# Builder.io Smartling Integration Plugin [Alpha]
 
 ## Installation
 
