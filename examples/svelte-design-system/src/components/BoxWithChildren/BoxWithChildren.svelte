@@ -1,6 +1,8 @@
 <script lang="ts">
   export let textBefore = ''
   export let textAfter = ''
+  export let children : any[]
+  import * as BuilderSDK from '@builder.io/sdk-svelte';
   /*
   ! Important
   Simple component to show how to render children components
@@ -14,6 +16,10 @@
 <div class="container">
   <p>{textBefore}</p>
   <slot></slot>
+  <BuilderSDK.RenderBlocks
+    child
+    blocks={children}
+  />
   <p>{textAfter}</p>
 </div>
 
