@@ -7,7 +7,7 @@ From the integrations tab, pick `smartling`
 ## Translating content
 What's being translated:
 - All text elements in builder content [you can exclude specific element by right click + `exclude from future translations`]
-- All custom fields in content that's marked as `localized`
+- All custom fields in content that are marked as `localized`
 
 From what language?
 The source language should match your smartling project source locale.
