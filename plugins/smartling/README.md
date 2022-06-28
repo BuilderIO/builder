@@ -5,7 +5,7 @@
 From the integrations tab, pick `smartling`
 
 ## Translating content
-What's beging traanslated:
+What's being translated:
 - All text elements in builder content [you can exclude specific element by right click + `exclude from future translations`]
 - All custom fields in content that's marked as `localized`
 
