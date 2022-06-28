@@ -5,13 +5,17 @@ const localizedType = '@builder.io/core:LocalizedValue';
 
 export type TranslateableFields = {
   [key: string]: {
-    instructions: string,
-    value: string,
-  }
+    instructions?: string;
+    value: string;
+  };
 };
 
-export function getTranslateableFields(content: BuilderContent, sourceLocaleId: string, defaultInstructions: string) {
-  const results: TranslateableFields = { };
+export function getTranslateableFields(
+  content: BuilderContent,
+  sourceLocaleId: string,
+  defaultInstructions: string
+) {
+  const results: TranslateableFields = {};
 
   let { blocks, blocksString, state, ...customFields } = content.data!;
 
@@ -24,8 +28,8 @@ export function getTranslateableFields(content: BuilderContent, sourceLocaleId: 
     if (this.key && el && el['@type'] === localizedType) {
       results[`metadata.${this.path.join('#')}`] = {
         instructions: el.meta?.instructions || defaultInstructions,
-        value: el[sourceLocaleId] || el.Default
-      }
+        value: el[sourceLocaleId] || el.Default,
+      };
     }
   });
 
@@ -36,7 +40,7 @@ export function getTranslateableFields(content: BuilderContent, sourceLocaleId: 
       results[`blocks.${el.id}#text`] = {
         value: el.component.options.text,
         instructions: el.meta?.instructions || defaultInstructions,
-      }
+      };
     }
   });
 
@@ -45,7 +49,7 @@ export function getTranslateableFields(content: BuilderContent, sourceLocaleId: 
 
 export function appLyTranslation(
   content: BuilderContent,
-  translation: Record<string,string>,
+  translation: TranslateableFields,
   locale: string
 ) {
   let { blocks, blocksString, state, ...customFields } = content.data!;
@@ -58,7 +62,7 @@ export function appLyTranslation(
     if (translation[`metadata.${path}`]) {
       this.update({
         ...el,
-        [locale]: translation[`metadata.${path}`],
+        [locale]: translation[`metadata.${path}`].value,
       });
     }
   });
@@ -93,7 +97,7 @@ export function appLyTranslation(
         [key]: {
           '@type': localizedType,
           ...content.data!.state?.translation?.[key],
-          [locale]: translation[key],
+          [locale]: translation[key].value,
         },
       };
     }
