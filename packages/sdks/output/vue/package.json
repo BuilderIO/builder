@@ -24,6 +24,10 @@
     "./nuxt": {
       "import": "./nuxt.js",
       "require": "./nuxt.js"
+    },
+    "./nuxt2": {
+      "import": "./nuxt.js",
+      "require": "./nuxt.js"
     }
   },
   "scripts": {

@@ -10,7 +10,7 @@ See [builder-registered-components.ts](/packages/sdks/src/constants/builder-regi
 
 ### 0.0.1-51
 
-⚠️ Deprecation notice: Registering components via `registerComponent(component, info)` is now deprecated. 
+⚠️ Deprecation notice: Registering components via `registerComponent(component, info)` is now deprecated.
 To register your custom components in Builder, you must now provide a `customComponents` array to the `RenderContent` component containing `[{ component, info }]`.
 See [builder-registered-components.ts](/packages/sdks/src/constants/builder-registered-components.ts) for examples of how to do so, or see the example provided for this SDK.
 
@@ -21,6 +21,7 @@ See [builder-registered-components.ts](/packages/sdks/src/constants/builder-regi
 - feat: 🎸 Add support for Data Bindings https://github.com/BuilderIO/builder/pull/970
 
 - BREAKING CHANGE: 🧨 RenderContent must now be provided the `apiKey` as a prop (https://github.com/BuilderIO/builder/pull/951)
+
 ### 0.0.1-49
 
 - Fix: show the "+ add block" button on empty pages https://github.com/BuilderIO/builder/pull/934
