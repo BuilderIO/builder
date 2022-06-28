@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`applyTranslation from content to match snapshot 1`] = `
+Object {
+  "data": Object {
+    "blocks": Array [
+      Object {
+        "@type": "@builder.io/sdk:Element",
+        "bindings": Object {
+          "component.options.text": "state.translation['block-id#text'][state.locale || 'Default'] || \`test\`",
+        },
+        "component": Object {
+          "name": "Text",
+          "options": Object {
+            "text": "test",
+          },
+        },
+        "id": "block-id",
+        "meta": Object {
+          "translated": true,
+        },
+      },
+    ],
+    "state": Object {
+      "translation": Object {
+        "block-id#text": Object {
+          "@type": "@builder.io/core:LocalizedValue",
+          "fr-FR": "block-id",
+        },
+      },
+    },
+    "title": Object {
+      "@type": "@builder.io/core:LocalizedValue",
+      "Default": "Test",
+      "en-US": "Hello",
+      "fr-FR": "salut",
+    },
+  },
+}
+`;
+
+exports[`getTranslateableFields from content to match snapshot 1`] = `
+Object {
+  "blocks": Object {
+    "block-id#text": "test",
+  },
+  "metadata": Object {
+    "title": "Hello",
+  },
+}
+`;
