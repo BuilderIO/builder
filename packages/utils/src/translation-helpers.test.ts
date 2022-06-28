@@ -11,6 +11,9 @@ test('getTranslateableFields from content to match snapshot', async () => {
       },
       blocks: [
         {
+          meta: {
+            instructions: 'This is a mobile only element',
+          },
           id: 'block-id',
           '@type': '@builder.io/sdk:Element',
           component: {
@@ -23,7 +26,11 @@ test('getTranslateableFields from content to match snapshot', async () => {
       ],
     },
   };
-  const result = getTranslateableFields(content, 'en-US');
+  const result = getTranslateableFields(
+    content,
+    'en-US',
+    'Visit https://builder.io/fiddle/... for more details'
+  );
   expect(result).toMatchSnapshot();
 });
 
@@ -51,12 +58,8 @@ test('applyTranslation from content to match snapshot', async () => {
   };
 
   const translations = {
-    metadata: {
-      title: 'salut',
-    },
-    blocks: {
-      'block-id#text': 'block-id',
-    },
+    'metadata.title': { value: 'salut' },
+    'blocks.block-id#text': { value: 'block-id' },
   };
 
   const result = appLyTranslation(content, translations, 'fr-FR');

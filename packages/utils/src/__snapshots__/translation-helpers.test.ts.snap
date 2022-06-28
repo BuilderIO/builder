@@ -7,7 +7,7 @@ Object {
       Object {
         "@type": "@builder.io/sdk:Element",
         "bindings": Object {
-          "component.options.text": "state.translation['block-id#text'][state.locale || 'Default'] || \`test\`",
+          "component.options.text": "state.translation['blocks.block-id#text'][state.locale || 'Default'] || \`test\`",
         },
         "component": Object {
           "name": "Text",
@@ -23,7 +23,7 @@ Object {
     ],
     "state": Object {
       "translation": Object {
-        "block-id#text": Object {
+        "blocks.block-id#text": Object {
           "@type": "@builder.io/core:LocalizedValue",
           "fr-FR": "block-id",
         },
@@ -41,11 +41,13 @@ Object {
 
 exports[`getTranslateableFields from content to match snapshot 1`] = `
 Object {
-  "blocks": Object {
-    "block-id#text": "test",
+  "blocks.block-id#text": Object {
+    "instructions": "This is a mobile only element",
+    "value": "test",
   },
-  "metadata": Object {
-    "title": "Hello",
+  "metadata.title": Object {
+    "instructions": "Visit https://builder.io/fiddle/... for more details",
+    "value": "Hello",
   },
 }
 `;
