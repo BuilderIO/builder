@@ -42,10 +42,10 @@ From the `examples/svelte-design-system` folder
 builder create -k [private-key] -n [space-name] -d
 ```
 
-This command when done it'll print your new space's public api key, copy it and add as the value for `YOUR_KEY` in [builder-settings](./src/builder-settings.s)
+This command when done it'll print your new space's public api key, copy it and add as the value for `VITE_BUILDER_PUBLIC_API_KEY` in [builder-settings](./src/builder-settings.s)
 
 ```
-YOUR_KEY=...
+VITE_BUILDER_PUBLIC_API_KEY=...
 ```
 
 ### Run the dev server
