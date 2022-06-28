@@ -1,5 +1,5 @@
 <script context="module" lang="ts">
-	export const prerender = true;
+	export const prerender = false;
 </script>
 
 <script lang="ts">

@@ -1,9 +1,10 @@
 <script context="module" lang="ts">
-	export const prerender = true;
+	export const prerender = false;
 </script>
 
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { variables } from '$lib/variables';
 	import CustomComponents from '../components'
 
 	import * as BuilderSDK from '@builder.io/sdk-svelte';
@@ -11,15 +12,13 @@
 	const CUSTOM_COMPONENTS = [
 		...CustomComponents,
 	];
-	// TODO: enter your public API key
-	const BUILDER_PUBLIC_API_KEY = 'bcda49ef60db482bbac8998a73a2f312';
 
 	let content: any = undefined;
 	let canShowContent = false;
 	const fetch = async () => {
 		content = await BuilderSDK.getContent({
 			model: 'page',
-			apiKey: BUILDER_PUBLIC_API_KEY,
+			apiKey: variables.builderKey,
 			options: BuilderSDK.getBuilderSearchParams(
 				BuilderSDK.convertSearchParamsToQueryObject($page.url.searchParams)
 			),
@@ -41,7 +40,7 @@
 	<BuilderSDK.RenderContent
 		model="page"
 		{content}
-		apiKey={BUILDER_PUBLIC_API_KEY}
+		apiKey={variables.builderKey}
 		customComponents={CUSTOM_COMPONENTS}
 	/>
 {/if}

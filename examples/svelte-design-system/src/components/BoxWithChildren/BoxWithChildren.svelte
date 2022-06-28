@@ -1,4 +1,4 @@
-<script src="ts">
+<script lang="ts">
   export let textBefore = ''
   export let textAfter = ''
   /*
