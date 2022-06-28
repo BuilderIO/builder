@@ -14,8 +14,7 @@
 	// TODO: enter your public API key
 	const BUILDER_PUBLIC_API_KEY = 'bcda49ef60db482bbac8998a73a2f312';
 
-  // @ts-ignore
-	let content :PageContent = undefined;
+	let content: any = undefined;
 	let canShowContent = false;
 	const fetch = async () => {
 		content = await BuilderSDK.getContent({
