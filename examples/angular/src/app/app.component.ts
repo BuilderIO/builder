@@ -1,6 +1,5 @@
 import { BuilderBlock } from '@builder.io/angular';
 import { Component, Input } from '@angular/core';
-import { GetContentOptions } from '@builder.io/sdk';
 
 @Component({
   selector: 'custom-thing',
