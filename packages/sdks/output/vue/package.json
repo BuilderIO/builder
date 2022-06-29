@@ -5,8 +5,8 @@
   "dependencies": {
     "node-fetch": "^2.6.1"
   },
-  "main": "./nuxt2/src/index.js",
-  "module": "./nuxt2/src/index.js",
+  "main": "./vue2/src/index.js",
+  "module": "./vue2/src/index.js",
   "type": "module",
   "exports": {
     ".": {
