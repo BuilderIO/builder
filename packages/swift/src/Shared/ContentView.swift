@@ -161,10 +161,12 @@ struct RenderBlock: View {
                     let factoryValue = componentDict[name!]
                     if factoryValue != nil && block.component?.options! != nil {
                         AnyView(_fromValue: factoryValue!(block.component!.options!))
+                    } else {
+                        let _ = print("Could not find component", name!)
                     }
                     
-                } else {
-                    let _ = print("Could not find component for block \(block)")
+                } else if block.children != nil {
+                    RenderBlocks(blocks: block.children!)
                 }
             }
             .padding(.leading, getDirectionStyleValue("padding", "Left"))
@@ -200,7 +202,6 @@ struct RenderBlock: View {
             let matches = allMatches[0]
             
             if (matches.count > 3) {
-                print(matches, value)
                 return Color(red: Double(matches[1])! / 255, green: Double(matches[2])! / 255, blue: Double(matches[3])! / 255, opacity: Double(matches[4])!)
             }
         }
@@ -397,7 +398,6 @@ struct ContentView: View {
     
     func getContent() -> BuilderContent? {
         if overrideContent.content != nil {
-            print("Sending override content?")
             return overrideContent.content
         }
         
