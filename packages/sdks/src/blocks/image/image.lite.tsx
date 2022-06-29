@@ -43,10 +43,10 @@ export default function Image(props: ImageProps) {
           }
           src={props.image}
           // TODO: memoize on image on client
-          srcSet={props.srcset}
+          srcset={props.srcset}
           sizes={props.sizes}
         />
-        <source srcSet={props.srcset} />
+        <source srcset={props.srcset} />
       </picture>
       {props.aspectRatio &&
         !(props.fitContent && props.builderBlock?.children?.length) && (

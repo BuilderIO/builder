@@ -6,8 +6,7 @@ export interface CustomCodeProps {
 }
 
 export default function CustomCode(props: CustomCodeProps) {
-  // eslint-disable-next-line @builder.io/mitosis/no-var-declaration-or-assignment-in-component
-  const elem = useRef();
+  const elem = useRef<HTMLDivElement>();
 
   const state = useStore({
     scriptsInserted: [] as string[],
@@ -16,7 +15,6 @@ export default function CustomCode(props: CustomCodeProps) {
     findAndRunScripts() {
       // TODO: Move this function to standalone one in '@builder.io/utils'
       if (elem && typeof window !== 'undefined') {
-        /** @type {HTMLScriptElement[]} */
         const scripts = elem.getElementsByTagName('script');
         for (let i = 0; i < scripts.length; i++) {
           const script = scripts[i];

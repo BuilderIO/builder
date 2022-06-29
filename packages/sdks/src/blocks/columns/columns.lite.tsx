@@ -1,6 +1,5 @@
 import RenderBlocks from '../../components/render-blocks.lite';
 import { For, useStore } from '@builder.io/mitosis';
-import { CSSProperties } from 'react';
 
 type Column = {
   blocks: any;
@@ -42,8 +41,8 @@ export default function Columns(props: ColumnProps) {
     },
 
     maybeApplyForTablet(
-      prop: CSSProperties['flexDirection']
-    ): CSSProperties['flexDirection'] {
+      prop: JSX.CSSProperties['flexDirection']
+    ): JSX.CSSProperties['flexDirection'] {
       const _stackColumnsAt = props.stackColumnsAt || 'tablet';
       return _stackColumnsAt === 'tablet' ? prop : 'inherit';
     },

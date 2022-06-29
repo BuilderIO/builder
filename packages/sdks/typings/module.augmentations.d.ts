@@ -1,12 +1,22 @@
-declare namespace React {
-  interface HTMLAttributes {
-    innerHTML?: string;
-    dataSet?: {
-      [key: string]: string;
-    };
-    css?: Partial<CSSStyleDeclaration> & {
-      [index: string]: Partial<CSSStyleDeclaration>;
-    };
-    class?: string;
+import '@builder.io/mitosis/dist/src/jsx-types';
+
+declare global {
+  declare namespace JSX {
+    type CSSProperties = NonNullable<JSX.HTMLAttributes<never>['style']>;
+    interface HTMLAttributes {
+      innerHTML?: string;
+      dataSet?: {
+        [key: string]: string;
+      };
+    }
+
+    interface ImgHTMLAttributes {
+      loading?: string;
+      role?: string;
+    }
+
+    interface IntrinsicAttributes {
+      key?: string | number;
+    }
   }
 }

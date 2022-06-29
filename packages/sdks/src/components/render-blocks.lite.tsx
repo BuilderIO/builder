@@ -47,7 +47,7 @@ export default function RenderBlocks(props: RenderBlockProps) {
 
   return (
     <div
-      className={state.className}
+      class={state.className}
       builder-path={props.path}
       builder-parent-id={props.parent}
       dataSet={{
