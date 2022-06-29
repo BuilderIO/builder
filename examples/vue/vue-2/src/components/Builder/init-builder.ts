@@ -1,5 +1,5 @@
 // Register your Builder components
-import HelloWorldComponent from './HelloWorld.vue'
+import HelloWorldComponent from './HelloWorld.vue';
 
 export const REGISTERED_COMPONENTS = [
   {
@@ -14,4 +14,4 @@ export const REGISTERED_COMPONENTS = [
       },
     ],
   },
-]
+];
