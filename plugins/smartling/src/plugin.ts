@@ -10,6 +10,9 @@ import {
 } from './plugin-helpers';
 import { SmartlingApi } from './smartling';
 
+// translation status that indicate the content is being queued for translations
+const enabledTranslationStatuses = ['pending', 'local'];
+
 registerPlugin(
   {
     name: 'Smartling',
@@ -64,7 +67,6 @@ registerPlugin(
     }
 
     // create a new action on content to add to job
-
     registerBulkAction({
       label: 'Translate',
       showIf(selectedContentIds, content, model) {
@@ -77,7 +79,7 @@ registerPlugin(
           const fullContent = content.find(entry => entry.id === id);
           return (
             fullContent.published !== 'published' ||
-            ['pending', 'local'].includes(fullContent.meta?.get('translationStatus'))
+            enabledTranslationStatuses.includes(fullContent.meta?.get('translationStatus'))
           );
         });
         return appState.user.can('publish') && !hasDraftOrTranslationPending;
@@ -101,10 +103,11 @@ registerPlugin(
         }
         await Promise.all(
           selectedContent.map(entry =>
-            appState.updateContent({
+            appState.updateLatestDraft({
               id: entry.id,
+              modelId: entry.modelId,
               meta: {
-                ...entry.meta,
+                ...fastClone(entry.meta),
                 translationStatus: 'local',
                 translationJobId,
               },
@@ -151,7 +154,11 @@ registerPlugin(
       label: 'Add to translation job',
       showIf(content, model) {
         const translationModel = getTranslationModel();
-        return content.published === 'published' && model.name !== translationModel.name;
+        return (
+          content.published === 'published' &&
+          model.name !== translationModel.name &&
+          !enabledTranslationStatuses.includes(content.meta?.get('translationStatus'))
+        );
       },
       async onClick(content) {
         let translationJobId = await pickTranslationJob();
@@ -168,10 +175,11 @@ registerPlugin(
           await api.updateLocalJob(translationJobId, [content]);
         }
 
-        await appState.updateContent({
+        await appState.updateLatestDraft({
           id: content.id,
+          modelId: content.modelId,
           meta: {
-            ...content.meta,
+            ...fastClone(content.meta),
             translationStatus: 'local',
             translationJobId,
           },
@@ -191,6 +199,21 @@ registerPlugin(
         await api.applyTranslation(localTranslationJob.id, translationModel.name);
         appState.globalState.hideGlobalBlockingLoading();
         appState.snackBar.show('Done!');
+      },
+    });
+
+    registerContentAction({
+      label: 'Go to translation job',
+      showIf(content, model) {
+        const translationModel = getTranslationModel();
+        return (
+          content.published === 'published' &&
+          model.name !== translationModel.name &&
+          enabledTranslationStatuses.includes(content.meta?.get('translationStatus'))
+        );
+      },
+      async onClick(content) {
+        appState.location.go(`/content/${content.meta.get(`translationJobId`)}`);
       },
     });
 
@@ -214,3 +237,5 @@ function pickTranslationJob() {
     ],
   });
 }
+
+const fastClone = (obj: any) => JSON.parse(JSON.stringify(obj));
