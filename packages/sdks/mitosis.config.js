@@ -67,16 +67,6 @@ module.exports = {
               }
             },
           },
-          code: {
-            post: (content) => {
-              return (
-                content
-                  // temporary workaround until https://github.com/BuilderIO/mitosis/issues/282 is fixed
-                  .replace('class="img"', '')
-                  .replace('class="div"', '')
-              );
-            },
-          },
         }),
         () => ({
           json: {
