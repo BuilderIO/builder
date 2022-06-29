@@ -28,6 +28,19 @@ module.exports = {
   options: {
     vue2: vueConfig,
     vue3: vueConfig,
+    reactNative: {
+      plugins: [
+        () => ({
+          code: {
+            pre: (code) => {
+              // workaround until we resolve
+              // https://github.com/BuilderIO/mitosis/issues/526
+              code.replace('srcset=', 'srcSet=');
+            },
+          },
+        }),
+      ],
+    },
     svelte: {
       transpiler: { format: 'esm' },
       // prettier & svelte don't play well together when it comes to parsing @html content for some reason
