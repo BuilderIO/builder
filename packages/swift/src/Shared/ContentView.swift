@@ -13,6 +13,8 @@ struct BuilderBlock: Codable {
     
 }
 
+let debug = true;
+
 struct BuilderBlockComponent: Codable {
     var name: String
     var options: JSON? = [:]
@@ -28,50 +30,13 @@ struct BuilderContent: Codable {
     var data = BuilderContentData()
 }
 
+struct BuilderContentList: Codable {
+    var results: [BuilderContent] = []
+}
+
 struct BuilderContentData: Codable {
     var blocks: [BuilderBlock] = []
 }
-
-let jsonString = """
-{
-  "data": {
-    "blocks": [
-      {
-        "id": "abc123",
-        "responsiveStyles": {
-          "large": {
-            "padding": "20px",
-            "backgroundColor": "blue",
-            "color": "white"
-          }
-        },
-        "component": {
-          "name": "Text",
-          "options": {
-            "text": "Hi there"
-          }
-        }
-      },
-      {
-        "id": "abc124",
-        "responsiveStyles": {
-          "large": {
-            "padding": "20px",
-            "backgroundColor": "white",
-            "color": "gray"
-          }
-        },
-        "component": {
-          "name": "Text",
-          "options": {
-            "text": "Hello"
-          }
-        }
-      }
-    ]
-  }
-}
-"""
 
 struct RenderContent: View {
     
@@ -92,7 +57,6 @@ struct RenderContent: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            let _ = print("render: RenderContent")
             RenderBlocks(blocks: content.data.blocks)
         }
     }
@@ -123,7 +87,6 @@ struct BuilderText: View {
             let newString = regex.stringByReplacingMatches(in: text, options: .withTransparentBounds, range: NSMakeRange(0, text.count ), withTemplate: "")
             
             return newString
-            
         }
         
         return ""
@@ -131,6 +94,7 @@ struct BuilderText: View {
     
     var body: some View {
         Text(getTextWithoutHtml(text))
+            .frame(maxWidth: .infinity)
     }
 }
 
@@ -143,7 +107,7 @@ struct RenderBlock: View {
     }
     
     var body: some View {
-        let _ = print("render: RenderBlock")
+        let textAlignValue = getStyleValue("textAlign")
         GeometryReader { geometry in
             let _ = setGeometry(newGeometry: geometry)
             VStack {
@@ -159,17 +123,18 @@ struct RenderBlock: View {
                         let _ = print("Could not find component for block \(block)")
                     }
                 }
-                .padding(.leading, getStyleValue("padding", "Left"))
-                .padding(.top, getStyleValue("padding", "Top"))
-                .padding(.trailing,  getStyleValue("padding", "Right"))
-                .padding(.bottom,  getStyleValue("padding", "Bottom"))
+                .padding(.leading, getDirectionStyleValue("padding", "Left"))
+                .padding(.top, getDirectionStyleValue("padding", "Top"))
+                .padding(.trailing,  getDirectionStyleValue("padding", "Right"))
+                .padding(.bottom,  getDirectionStyleValue("padding", "Bottom"))
                 .foregroundColor(getColor(propertyName: "color"))
                 .background(getColor(propertyName: "backgroundColor"))
+                .multilineTextAlignment(textAlignValue == "center" ? .center : textAlignValue == "right" ? .trailing : .leading)
             }
-            .padding(.leading, getStyleValue("margin", "Left"))
-            .padding(.top, getStyleValue("margin", "Top"))
-            .padding(.trailing,  getStyleValue("margin", "Right"))
-            .padding(.bottom,  getStyleValue("margin", "Bottom"))
+            .padding(.leading, getDirectionStyleValue("margin", "Left"))
+            .padding(.top, getDirectionStyleValue("margin", "Top"))
+            .padding(.trailing,  getDirectionStyleValue("margin", "Right"))
+            .padding(.bottom,  getDirectionStyleValue("margin", "Bottom"))
         }
     }
     
@@ -226,7 +191,12 @@ struct RenderBlock: View {
         return nil
     }
     
-    func getStyleValue(_ type: String, _ direction: String) -> CGFloat {
+    func getStyleValue(_ property: String) -> String? {
+        let styles = getStyles()
+        return styles?[property]
+    }
+    
+    func getDirectionStyleValue(_ type: String, _ direction: String) -> CGFloat {
         let styles = getStyles()
         var paddingStr = styles?[type + direction]
         if (paddingStr == nil) {
@@ -254,9 +224,7 @@ struct RenderBlocks: View {
     var blocks: [BuilderBlock]
     
     var body: some View {
-        let _ = print("render: RenderBlocks")
         ForEach(blocks, id: \.id) { block in
-            let _ = print("render: RenderBlocks inner")
             RenderBlock(block: block)
         }
     }
@@ -269,10 +237,48 @@ struct FirestoreData: Codable {
     var screenshot: String?
 }
 
+func getContent(model: String, apiKey: String, url: String, callback: @escaping ((BuilderContent?)->())) {
+    let encodedUrl = String(describing: url.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!)
+    let str = "https://cdn.builder.io/api/v2/content/\(model)?apiKey=\(apiKey)&url=\(encodedUrl)"
+    let url = URL(string: str)!
+
+    let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
+        guard let data = data else {
+            callback(nil)
+            return
+        }
+        let decoder = JSONDecoder()
+        let jsonString = String(data: data, encoding: .utf8)!
+        
+        do {
+            let content = try decoder.decode(BuilderContentList.self, from: Data(jsonString.utf8))
+            callback(content.results[0])
+        } catch {
+            print(error)
+            callback(nil)
+        }
+    }
+
+    task.resume()
+}
+
 
 struct ContentView: View {
+    let isEditing = false;
+    
     init() {
-        initFirestore()
+        if (isEditing) {
+            initFirestore()
+        } else {
+            initContent()
+        }
+        
+    }
+    
+    func initContent() {
+        testing.getContent(model: "page", apiKey: "7ff1b55f7ecb4f08a012fbb2a859aced", url: "/") {(content) in
+            self.overrideContent.content = content
+        }
     }
     
     @ObservedObject var overrideContent = ContentTracker()
@@ -280,51 +286,51 @@ struct ContentView: View {
     @State var lastScreenshot: String? = nil;
     
     func initFirestore() {
-        let collectionName = "components"
-        let docId = "testing"
-        
-        let collection = testingApp.db.collection(collectionName)
-        let doc = collection.document(docId)
-        doc.addSnapshotListener { documentSnapshot, error in
-            do {
-                guard let document = documentSnapshot else {
-                    print("Error fetching document: \(error!)")
-                    return
-                }
-                guard let data = try document.data(as: FirestoreData.self) else {
-                    print("Document data was empty.")
-                    return
-                }
-                if data.content != nil {
-                    overrideContent.content = data.content
-                } else {
-                    print("Not overriding content? \(data.content)")
-                }
-            } catch {
-                print("Error decoding firestore data \(error)")
-            }
-        }
-        
-        var timer = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: true) { _ in
-            if let screenshot = takeScreenshot() {
-                if screenshot != nil && screenshot != lastScreenshot {
-                    lastScreenshot = screenshot
-                    doc.updateData([ "screenshot": screenshot ]) {  err in
-                        if let err = err {
-                            print("Error updating document: \(err)")
-                        } else {
-                            print("Added screenshot")
-                        }
-                    }
-                }
-                
-            }
-            
-        }
-        
-        func convertImageToBase64String (img: UIImage) -> String {
-            return img.jpegData(compressionQuality: 1)?.base64EncodedString() ?? ""
-        }
+//        let collectionName = "components"
+//        let docId = "testing"
+//
+//        let collection = testingApp.db.collection(collectionName)
+//        let doc = collection.document(docId)
+//        doc.addSnapshotListener { documentSnapshot, error in
+//            do {
+//                guard let document = documentSnapshot else {
+//                    print("Error fetching document: \(error!)")
+//                    return
+//                }
+//                guard let data = try document.data(as: FirestoreData.self) else {
+//                    print("Document data was empty.")
+//                    return
+//                }
+//                if data.content != nil {
+//                    overrideContent.content = data.content
+//                } else {
+//                    print("Not overriding content? \(data.content)")
+//                }
+//            } catch {
+//                print("Error decoding firestore data \(error)")
+//            }
+//        }
+//
+//        var timer = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: true) { _ in
+//            if let screenshot = takeScreenshot() {
+//                if screenshot != nil && screenshot != lastScreenshot {
+//                    lastScreenshot = screenshot
+//                    doc.updateData([ "screenshot": screenshot ]) {  err in
+//                        if let err = err {
+//                            print("Error updating document: \(err)")
+//                        } else {
+//                            print("Added screenshot")
+//                        }
+//                    }
+//                }
+//
+//            }
+//
+//        }
+//
+//        func convertImageToBase64String (img: UIImage) -> String {
+//            return img.jpegData(compressionQuality: 1)?.base64EncodedString() ?? ""
+//        }
     }
     
     func takeScreenshot() -> String? {
@@ -346,25 +352,11 @@ struct ContentView: View {
     
     
     func getContent() -> BuilderContent? {
-        print("Get content?")
         if overrideContent.content != nil {
             print("Sending override content?")
             return overrideContent.content
         }
-        
-        print("Getting old content")
-        
-        let jsonData = Data(jsonString.utf8)
-        let decoder = JSONDecoder()
-        
-        
-        do {
-            let content = try decoder.decode(BuilderContent.self, from: jsonData)
-            return content
-        } catch {
-            print(error)
-        }
-        
+    
         return nil
     }
     
@@ -373,10 +365,8 @@ struct ContentView: View {
         ScrollView {
             VStack(alignment: .leading) {
                 if $overrideContent.content.wrappedValue != nil {
-                    let _ = print("Doing override content")
                     RenderContent(content: $overrideContent.content.wrappedValue!)
                 } else {
-                    let _ = print("Doing default content")
                     let content = getContent()
                     if content != nil {
                         RenderContent(content: content!)
@@ -386,13 +376,16 @@ struct ContentView: View {
                 }
             }
         }
+        if debug && !isEditing {
+            Button("Reload") {
+                initContent()
+            }
+        }
     }
 }
 
 final class ContentTracker: ObservableObject {
     @Published var content: BuilderContent?;
-    
-    
 }
 
 struct ContentView_Previews: PreviewProvider {
