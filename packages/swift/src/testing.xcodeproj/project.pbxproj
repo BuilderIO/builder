@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		8CBDB823D26EE4D1805B2766 /* libPods-testing (macOS).a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBB2D943D052A0F66C9E5D36 /* libPods-testing (macOS).a */; };
 		A2E015EE4D9CD5AD8E0FDFA9 /* Pods_testing__iOS_.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF83C0DD6DDD34AE6F894C94 /* Pods_testing__iOS_.framework */; };
+		AF0BBCCA286CF28C00235EF2 /* BackportAsyncImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0BBCC9286CF28B00235EF2 /* BackportAsyncImage.swift */; };
+		AF0BBCCB286CF28C00235EF2 /* BackportAsyncImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0BBCC9286CF28B00235EF2 /* BackportAsyncImage.swift */; };
 		AF15815426B83DE000531EAD /* Tests_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF15815326B83DE000531EAD /* Tests_iOS.swift */; };
 		AF15815F26B83DE000531EAD /* Tests_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF15815E26B83DE000531EAD /* Tests_macOS.swift */; };
 		AF15816126B83DE000531EAD /* testingApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF15813826B83DDF00531EAD /* testingApp.swift */; };
@@ -42,6 +44,7 @@
 		0F45360A35F7E5E5E7E004AF /* Pods-testing (iOS).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-testing (iOS).release.xcconfig"; path = "Target Support Files/Pods-testing (iOS)/Pods-testing (iOS).release.xcconfig"; sourceTree = "<group>"; };
 		8A5294DF3C0C1C783088C165 /* Pods-testing (iOS).debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-testing (iOS).debug.xcconfig"; path = "Target Support Files/Pods-testing (iOS)/Pods-testing (iOS).debug.xcconfig"; sourceTree = "<group>"; };
 		8EEB049F7313DE5094A42A90 /* Pods-testing (macOS).debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-testing (macOS).debug.xcconfig"; path = "Target Support Files/Pods-testing (macOS)/Pods-testing (macOS).debug.xcconfig"; sourceTree = "<group>"; };
+		AF0BBCC9286CF28B00235EF2 /* BackportAsyncImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackportAsyncImage.swift; sourceTree = "<group>"; };
 		AF15813826B83DDF00531EAD /* testingApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = testingApp.swift; sourceTree = "<group>"; };
 		AF15813926B83DDF00531EAD /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		AF15813A26B83DE000531EAD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -105,7 +108,6 @@
 				8EEB049F7313DE5094A42A90 /* Pods-testing (macOS).debug.xcconfig */,
 				B52B583E91FB93CBCFDB4841 /* Pods-testing (macOS).release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -129,6 +131,7 @@
 				AF15813826B83DDF00531EAD /* testingApp.swift */,
 				AF15813926B83DDF00531EAD /* ContentView.swift */,
 				AF15813A26B83DE000531EAD /* Assets.xcassets */,
+				AF0BBCC9286CF28B00235EF2 /* BackportAsyncImage.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -439,6 +442,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AF15816326B83DE000531EAD /* ContentView.swift in Sources */,
+				AF0BBCCA286CF28C00235EF2 /* BackportAsyncImage.swift in Sources */,
 				AF15816126B83DE000531EAD /* testingApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -448,6 +452,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AF15816426B83DE000531EAD /* ContentView.swift in Sources */,
+				AF0BBCCB286CF28C00235EF2 /* BackportAsyncImage.swift in Sources */,
 				AF15816226B83DE000531EAD /* testingApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

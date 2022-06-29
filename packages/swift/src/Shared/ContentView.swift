@@ -38,6 +38,10 @@ struct BuilderContentData: Codable {
     var blocks: [BuilderBlock] = []
 }
 
+struct BuilderColumn: Codable {
+    var blocks: [BuilderBlock] = []
+}
+
 struct RenderContent: View {
     
     static var registered = false;
@@ -47,6 +51,15 @@ struct RenderContent: View {
         if (!RenderContent.registered) {
             registerComponent(name: "Text", factory: { options in
                 return BuilderText(text: options["text"].stringValue)
+            })
+            registerComponent(name: "Image", factory: { options in
+                return BuilderImage(image: options["image"].stringValue, backgroundSize: options["backgroundSize: <#T##String#>"].stringValue)
+            })
+            registerComponent(name: "Columns", factory: { options in
+                let decoder = JSONDecoder()
+                let jsonString = options["columns"].rawString()!
+                let columns = try! decoder.decode([BuilderColumn].self, from: Data(jsonString.utf8))
+                return BuilderColumns(columns: columns, space: CGFloat(options["space"].floatValue))
             })
             RenderContent.registered = true
         }
@@ -98,44 +111,75 @@ struct BuilderText: View {
     }
 }
 
-struct RenderBlock: View {
-    var block: BuilderBlock
-    @State var geometry: GeometryProxy?
-    
-    func setGeometry(newGeometry: GeometryProxy) {
-        geometry = newGeometry
-    }
+struct BuilderImage: View {
+    var image: String
+    var backgroundSize: String
     
     var body: some View {
-        let textAlignValue = getStyleValue("textAlign")
-        GeometryReader { geometry in
-            let _ = setGeometry(newGeometry: geometry)
-            VStack {
-                VStack(alignment: .leading) {
-                    let name = block.component?.name
-                    if name != nil {
-                        let factoryValue = componentDict[name!]
-                        if factoryValue != nil && block.component?.options! != nil {
-                            AnyView(_fromValue: factoryValue!(block.component!.options!))
-                        }
-                        
-                    } else {
-                        let _ = print("Could not find component for block \(block)")
-                    }
-                }
-                .padding(.leading, getDirectionStyleValue("padding", "Left"))
-                .padding(.top, getDirectionStyleValue("padding", "Top"))
-                .padding(.trailing,  getDirectionStyleValue("padding", "Right"))
-                .padding(.bottom,  getDirectionStyleValue("padding", "Bottom"))
-                .foregroundColor(getColor(propertyName: "color"))
-                .background(getColor(propertyName: "backgroundColor"))
-                .multilineTextAlignment(textAlignValue == "center" ? .center : textAlignValue == "right" ? .trailing : .leading)
+        BackportAsyncImage(url: URL(string: image)) { phase in
+            if let image = phase.image {
+                image
+                    .resizable()
+                    .aspectRatio(contentMode: backgroundSize == "cover" ? .fill : .fit)
+            }else if phase.error != nil {
+                Color.red
+            } else {
+                Color.blue
             }
-            .padding(.leading, getDirectionStyleValue("margin", "Left"))
-            .padding(.top, getDirectionStyleValue("margin", "Top"))
-            .padding(.trailing,  getDirectionStyleValue("margin", "Right"))
-            .padding(.bottom,  getDirectionStyleValue("margin", "Bottom"))
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+}
+
+struct BuilderColumns: View {
+    var columns: [BuilderColumn]
+    var space: CGFloat = 0
+    
+    var body: some View {
+        HStack(alignment: .top, spacing: space) {
+            ForEach(0...columns.count - 1, id: \.self) { index in
+                VStack {
+                    
+                    
+                    let blocks = columns[index].blocks
+                    RenderBlocks(blocks: blocks)
+                    
+                }.frame(minWidth: 0, maxWidth: .infinity)
+            }
+        }
+    }
+}
+
+struct RenderBlock: View {
+    var block: BuilderBlock
+    var body: some View {
+        let textAlignValue = getStyleValue("textAlign")
+        VStack {
+            VStack(alignment: .leading) {
+                let name = block.component?.name
+                if name != nil {
+                    let factoryValue = componentDict[name!]
+                    if factoryValue != nil && block.component?.options! != nil {
+                        AnyView(_fromValue: factoryValue!(block.component!.options!))
+                    }
+                    
+                } else {
+                    let _ = print("Could not find component for block \(block)")
+                }
+            }
+            .padding(.leading, getDirectionStyleValue("padding", "Left"))
+            .padding(.top, getDirectionStyleValue("padding", "Top"))
+            .padding(.trailing,  getDirectionStyleValue("padding", "Right"))
+            .padding(.bottom,  getDirectionStyleValue("padding", "Bottom"))
+            .foregroundColor(getColor(propertyName: "color"))
+            .background(getColor(propertyName: "backgroundColor"))
+            .multilineTextAlignment(textAlignValue == "center" ? .center : textAlignValue == "right" ? .trailing : .leading)
+        }
+        .padding(.leading, getDirectionStyleValue("margin", "Left"))
+        .padding(.top, getDirectionStyleValue("margin", "Top"))
+        .padding(.trailing,  getDirectionStyleValue("margin", "Right"))
+        .padding(.bottom,  getDirectionStyleValue("margin", "Bottom"))
+        
     }
     
     func getColor(propertyName: String) -> Color? {
@@ -170,8 +214,8 @@ struct RenderBlock: View {
         return results.map { result in
             (0..<result.numberOfRanges).map {
                 result.range(at: $0).location != NSNotFound
-                    ? nsString.substring(with: result.range(at: $0))
-                    : ""
+                ? nsString.substring(with: result.range(at: $0))
+                : ""
             }
         }
     }
@@ -241,7 +285,7 @@ func getContent(model: String, apiKey: String, url: String, callback: @escaping 
     let encodedUrl = String(describing: url.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!)
     let str = "https://cdn.builder.io/api/v2/content/\(model)?apiKey=\(apiKey)&url=\(encodedUrl)"
     let url = URL(string: str)!
-
+    
     let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
         guard let data = data else {
             callback(nil)
@@ -258,7 +302,7 @@ func getContent(model: String, apiKey: String, url: String, callback: @escaping 
             callback(nil)
         }
     }
-
+    
     task.resume()
 }
 
@@ -286,51 +330,51 @@ struct ContentView: View {
     @State var lastScreenshot: String? = nil;
     
     func initFirestore() {
-//        let collectionName = "components"
-//        let docId = "testing"
-//
-//        let collection = testingApp.db.collection(collectionName)
-//        let doc = collection.document(docId)
-//        doc.addSnapshotListener { documentSnapshot, error in
-//            do {
-//                guard let document = documentSnapshot else {
-//                    print("Error fetching document: \(error!)")
-//                    return
-//                }
-//                guard let data = try document.data(as: FirestoreData.self) else {
-//                    print("Document data was empty.")
-//                    return
-//                }
-//                if data.content != nil {
-//                    overrideContent.content = data.content
-//                } else {
-//                    print("Not overriding content? \(data.content)")
-//                }
-//            } catch {
-//                print("Error decoding firestore data \(error)")
-//            }
-//        }
-//
-//        var timer = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: true) { _ in
-//            if let screenshot = takeScreenshot() {
-//                if screenshot != nil && screenshot != lastScreenshot {
-//                    lastScreenshot = screenshot
-//                    doc.updateData([ "screenshot": screenshot ]) {  err in
-//                        if let err = err {
-//                            print("Error updating document: \(err)")
-//                        } else {
-//                            print("Added screenshot")
-//                        }
-//                    }
-//                }
-//
-//            }
-//
-//        }
-//
-//        func convertImageToBase64String (img: UIImage) -> String {
-//            return img.jpegData(compressionQuality: 1)?.base64EncodedString() ?? ""
-//        }
+        //        let collectionName = "components"
+        //        let docId = "testing"
+        //
+        //        let collection = testingApp.db.collection(collectionName)
+        //        let doc = collection.document(docId)
+        //        doc.addSnapshotListener { documentSnapshot, error in
+        //            do {
+        //                guard let document = documentSnapshot else {
+        //                    print("Error fetching document: \(error!)")
+        //                    return
+        //                }
+        //                guard let data = try document.data(as: FirestoreData.self) else {
+        //                    print("Document data was empty.")
+        //                    return
+        //                }
+        //                if data.content != nil {
+        //                    overrideContent.content = data.content
+        //                } else {
+        //                    print("Not overriding content? \(data.content)")
+        //                }
+        //            } catch {
+        //                print("Error decoding firestore data \(error)")
+        //            }
+        //        }
+        //
+        //        var timer = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: true) { _ in
+        //            if let screenshot = takeScreenshot() {
+        //                if screenshot != nil && screenshot != lastScreenshot {
+        //                    lastScreenshot = screenshot
+        //                    doc.updateData([ "screenshot": screenshot ]) {  err in
+        //                        if let err = err {
+        //                            print("Error updating document: \(err)")
+        //                        } else {
+        //                            print("Added screenshot")
+        //                        }
+        //                    }
+        //                }
+        //
+        //            }
+        //
+        //        }
+        //
+        //        func convertImageToBase64String (img: UIImage) -> String {
+        //            return img.jpegData(compressionQuality: 1)?.base64EncodedString() ?? ""
+        //        }
     }
     
     func takeScreenshot() -> String? {
@@ -356,7 +400,7 @@ struct ContentView: View {
             print("Sending override content?")
             return overrideContent.content
         }
-    
+        
         return nil
     }
     
