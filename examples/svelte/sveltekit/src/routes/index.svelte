@@ -3,7 +3,7 @@
 </script>
 
 <script lang="ts">
-	import Builder from '$lib/Builder.svelte';
+	import DynamicallyRenderBuilderPage from '$lib/DynamicallyRenderBuilderPage.svelte';
 </script>
 
 <svelte:head>
@@ -13,16 +13,13 @@
 <section>
 	<h1>
 		<div class="welcome">
-			<picture>
-				<source srcset="svelte-welcome.webp" type="image/webp" />
-				<img src="svelte-welcome.png" alt="Welcome" />
-			</picture>
+			<img src="svelte-welcome.png" alt="Welcome" />
 		</div>
 
 		to your new<br />SvelteKit app
 	</h1>
 
-	<Builder />
+	<DynamicallyRenderBuilderPage />
 </section>
 
 <style>

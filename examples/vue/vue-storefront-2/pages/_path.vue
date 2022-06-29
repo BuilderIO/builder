@@ -1,6 +1,6 @@
 <template>
   <div id="home">
-    <BuilderContent />
+    <DynamicallyRenderBuilderPage />
   </div>
 </template>
 <script>

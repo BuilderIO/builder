@@ -3,7 +3,7 @@
 </script>
 
 <script lang="ts">
-	import Builder from '$lib/Builder.svelte';
+	import DynamicallyRenderBuilderPage from '$lib/DynamicallyRenderBuilderPage.svelte';
 </script>
 
 <svelte:head>
@@ -22,7 +22,7 @@
 		to your new<br />SvelteKit app
 	</h1>
 
-	<Builder />
+	<DynamicallyRenderBuilderPage />
 </section>
 
 <style>

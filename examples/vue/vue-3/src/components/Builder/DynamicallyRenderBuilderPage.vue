@@ -1,6 +1,6 @@
 <template>
   <div id="home">
-    <div>Hello world from your Vue project. Below is Builder Content:</div>
+    <div>Hello world from your Vue 3 project. Below is Builder Content:</div>
 
     <div v-if="canShowContent">
       <div>
@@ -16,20 +16,24 @@
     </div>
   </div>
 </template>
-<script>
-import Vue from 'vue';
-
+<script lang="ts">
 import { REGISTERED_COMPONENTS } from './init-builder.ts';
-import * as BuilderSDK from '@builder.io/sdk-vue';
-import BuilderRenderContent from '@builder.io/sdk-vue/RenderContent';
+import {
+  RenderContent,
+  getContent,
+  getBuilderSearchParams,
+  convertSearchParamsToQueryObject,
+  isEditing,
+  isPreviewing,
+} from '@builder.io/sdk-vue/vue3';
 
 // TODO: enter your public API key
 const BUILDER_PUBLIC_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660'; // ggignore
 
-export default Vue.extend({
-  name: 'BuilderContent',
+export default {
+  name: 'DynamicallyRenderBuilderPage',
   components: {
-    'builder-render-content': BuilderRenderContent,
+    'builder-render-content': RenderContent,
   },
   data: () => ({
     canShowContent: false,
@@ -42,21 +46,21 @@ export default Vue.extend({
     },
   },
   mounted() {
-    BuilderSDK.getContent({
+    getContent({
       model: 'page',
       apiKey: BUILDER_PUBLIC_API_KEY,
-      options: BuilderSDK.getBuilderSearchParams(
-        BuilderSDK.convertSearchParamsToQueryObject(new URLSearchParams(window.location.search))
+      options: getBuilderSearchParams(
+        convertSearchParamsToQueryObject(new URLSearchParams(window.location.search))
       ),
       userAttributes: {
         urlPath: window.location.pathname,
       },
     }).then(res => {
       this.content = res;
-      this.canShowContent = this.content || BuilderSDK.isEditing() || BuilderSDK.isPreviewing();
+      this.canShowContent = this.content || isEditing() || isPreviewing();
     });
   },
-});
+};
 </script>
 
 <style>

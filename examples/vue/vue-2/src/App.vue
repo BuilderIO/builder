@@ -1,17 +1,17 @@
 <template>
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png" />
-    <BuilderContent />
+    <DynamicallyRenderBuilderPage />
   </div>
 </template>
 
 <script>
-import BuilderContent from './components/Builder/BuilderContent.vue';
+import DynamicallyRenderBuilderPage from './components/Builder/DynamicallyRenderBuilderPage.vue';
 
 export default {
   name: 'App',
   components: {
-    BuilderContent,
+    DynamicallyRenderBuilderPage,
   },
 };
 </script>

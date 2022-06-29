@@ -17,16 +17,26 @@
   </div>
 </template>
 <script>
-import Vue from 'vue';
+import Vue from 'vue'
 
-import { REGISTERED_COMPONENTS } from './init-builder';
-import { getContent, isEditing, isPreviewing, getBuilderSearchParams } from '@builder.io/sdk-vue';
+import { REGISTERED_COMPONENTS } from './init-builder.ts'
+import {
+  RenderContent,
+  getContent,
+  getBuilderSearchParams,
+  convertSearchParamsToQueryObject,
+  isEditing,
+  isPreviewing,
+} from '@builder.io/sdk-vue'
 
 // TODO: enter your public API key
-const BUILDER_PUBLIC_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660'; // ggignore
+const BUILDER_PUBLIC_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660' // ggignore
 
 export default Vue.extend({
-  name: 'BuilderContent',
+  name: 'DynamicallyRenderBuilderPage',
+  components: {
+    'builder-render-content': RenderContent,
+  },
   data: () => ({
     canShowContent: false,
     content: null,
@@ -34,12 +44,12 @@ export default Vue.extend({
   }),
   methods: {
     getRegisteredComponents() {
-      return REGISTERED_COMPONENTS;
+      return REGISTERED_COMPONENTS
     },
   },
   mounted() {
     // we need to re-run this check on the client in case of SSR
-    this.canShowContent = this.content || isEditing() || isPreviewing();
+    this.canShowContent = this.content || isEditing() || isPreviewing()
   },
   async fetch() {
     const content = await getContent({
@@ -49,17 +59,17 @@ export default Vue.extend({
       userAttributes: {
         urlPath: this.$route.path,
       },
-    });
-    this.canShowContent = content || isEditing();
-    this.content = content;
+    })
+    this.canShowContent = content || isEditing()
+    this.content = content
 
     if (!this.canShowContent) {
       if (this.$nuxt.context?.ssrContext?.res) {
-        this.$nuxt.context.ssrContext.res.statusCode = 404;
+        this.$nuxt.context.ssrContext.res.statusCode = 404
       }
     }
   },
-});
+})
 </script>
 
 <style>

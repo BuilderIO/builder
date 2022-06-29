@@ -17,21 +17,26 @@
   </div>
 </template>
 <script>
-import Vue from 'vue'
+import Vue from 'vue';
 
-import { REGISTERED_COMPONENTS } from './init-builder.ts'
+import { REGISTERED_COMPONENTS } from './init-builder.ts';
 import {
+  RenderContent,
   getContent,
+  getBuilderSearchParams,
+  convertSearchParamsToQueryObject,
   isEditing,
   isPreviewing,
-  getBuilderSearchParams,
-} from '@builder.io/sdk-vue'
+} from '@builder.io/sdk-vue/vue2';
 
 // TODO: enter your public API key
-const BUILDER_PUBLIC_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660' // ggignore
+const BUILDER_PUBLIC_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660'; // ggignore
 
 export default Vue.extend({
-  name: 'BuilderContent',
+  name: 'DynamicallyRenderBuilderPage',
+  components: {
+    'builder-render-content': RenderContent,
+  },
   data: () => ({
     canShowContent: false,
     content: null,
@@ -39,32 +44,25 @@ export default Vue.extend({
   }),
   methods: {
     getRegisteredComponents() {
-      return REGISTERED_COMPONENTS
+      return REGISTERED_COMPONENTS;
     },
   },
   mounted() {
-    // we need to re-run this check on the client in case of SSR
-    this.canShowContent = this.content || isEditing() || isPreviewing()
-  },
-  async fetch() {
-    const content = await getContent({
+    getContent({
       model: 'page',
       apiKey: BUILDER_PUBLIC_API_KEY,
-      options: getBuilderSearchParams(this.$route.query),
+      options: getBuilderSearchParams(
+        convertSearchParamsToQueryObject(new URLSearchParams(window.location.search))
+      ),
       userAttributes: {
-        urlPath: this.$route.path,
+        urlPath: window.location.pathname,
       },
-    })
-    this.canShowContent = content || isEditing()
-    this.content = content
-
-    if (!this.canShowContent) {
-      if (this.$nuxt.context?.ssrContext?.res) {
-        this.$nuxt.context.ssrContext.res.statusCode = 404
-      }
-    }
+    }).then(res => {
+      this.content = res;
+      this.canShowContent = this.content || isEditing() || isPreviewing();
+    });
   },
-})
+});
 </script>
 
 <style>

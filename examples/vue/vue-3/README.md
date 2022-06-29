@@ -1,6 +1,16 @@
-# vue-3
+# Builder.io example with Vue 3
 
-This template should help get you started developing with Vue 3 in Vite.
+This example shows our [Vue SDK](/packages/sdks/output/vue) with Vue 3.
+
+## Builder.io Setup
+
+- log into builder.io
+- from your account page, copy your API key and paste it into BUILDER_API_KEY in `DynamicallyRenderBuilderPage.vue`
+- open the Builder.io Visual Editor for the model named "page"
+- enter http://localhost:3000 in the URL bar to the top right of the preview in Builder
+- drag a component into the layers tab, and it will appear in the Editor!
+
+Checkout this Loom for a visual walkthrough: https://www.loom.com/share/afd7c9a1f8f148959ea0396be42560fd (it's originally intended for React-Native, but all of the steps are still the exact same)
 
 ## Recommended IDE Setup
 
