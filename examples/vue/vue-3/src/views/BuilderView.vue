@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import BuilderContent from '@/components/Builder/BuilderContent.vue';
+import DynamicallyRenderBuilderPage from '@/components/Builder/DynamicallyRenderBuilderPage.vue';
 </script>
 
 <template>
   <main>
-    <BuilderContent />
+    <DynamicallyRenderBuilderPage />
   </main>
 </template>

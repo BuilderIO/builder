@@ -1,6 +1,6 @@
 <template>
   <div id="home">
-    <div>Hello world from your Vue 3 project. Below is Builder Content:</div>
+    <div>Hello world from your Vue project. Below is Builder Content:</div>
 
     <div v-if="canShowContent">
       <div>
@@ -16,18 +16,22 @@
     </div>
   </div>
 </template>
-<script lang="ts">
-import { REGISTERED_COMPONENTS } from './init-builder.ts';
-import * as BuilderSDK from '@builder.io/sdk-vue/vue3';
+<script>
+import Vue from 'vue';
+
+import { REGISTERED_COMPONENTS } from './init-builder';
+import {
+  getContent,
+  isEditing,
+  isPreviewing,
+  getBuilderSearchParams,
+} from '@builder.io/sdk-vue/nuxt2';
 
 // TODO: enter your public API key
 const BUILDER_PUBLIC_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660'; // ggignore
 
-export default {
-  name: 'BuilderContent',
-  components: {
-    'builder-render-content': BuilderSDK.RenderContent,
-  },
+export default Vue.extend({
+  name: 'DynamicallyRenderBuilderPage',
   data: () => ({
     canShowContent: false,
     content: null,
@@ -39,21 +43,28 @@ export default {
     },
   },
   mounted() {
-    BuilderSDK.getContent({
+    // we need to re-run this check on the client in case of SSR
+    this.canShowContent = this.content || isEditing() || isPreviewing();
+  },
+  async fetch() {
+    const content = await getContent({
       model: 'page',
       apiKey: BUILDER_PUBLIC_API_KEY,
-      options: BuilderSDK.getBuilderSearchParams(
-        BuilderSDK.convertSearchParamsToQueryObject(new URLSearchParams(window.location.search))
-      ),
+      options: getBuilderSearchParams(this.$route.query),
       userAttributes: {
-        urlPath: window.location.pathname,
+        urlPath: this.$route.path,
       },
-    }).then(res => {
-      this.content = res;
-      this.canShowContent = this.content || BuilderSDK.isEditing() || BuilderSDK.isPreviewing();
     });
+    this.canShowContent = content || isEditing();
+    this.content = content;
+
+    if (!this.canShowContent) {
+      if (this.$nuxt.context?.ssrContext?.res) {
+        this.$nuxt.context.ssrContext.res.statusCode = 404;
+      }
+    }
   },
-};
+});
 </script>
 
 <style>

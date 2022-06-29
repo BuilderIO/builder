@@ -13,7 +13,7 @@
         />
       </SfHero>
     </LazyHydrate>
-    <BuilderContent />
+    <DynamicallyRenderBuilderPage />
 
     <LazyHydrate when-visible>
       <SfBannerGrid :banner-grid="1" class="banner-grid">

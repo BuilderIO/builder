@@ -64,7 +64,7 @@ export default {
       },
     ],
     ['@vue-storefront/nuxt-theme'],
-    '@builder.io/sdk-vue/nuxt',
+    '@builder.io/sdk-vue/nuxt2',
   ],
   modules: [
     [
