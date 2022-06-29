@@ -1,3 +1,15 @@
+### 0.0.1-56
+
+- Feature: We now provide initial support for Vue 3.
+
+🧨 Breaking change: you must now explicitly import the Vue SDK version that you want (for Vue 2 or Vue 3) e.g.
+
+```ts
+import * as BuilderSDK from '@builder.io/sdk-vue/vue2';
+// OR
+import * as BuilderSDK from '@builder.io/sdk-vue/vue3';
+```
+
 ### 0.0.1-54
 
 🐛 Fix: custom components were not rendering correctly

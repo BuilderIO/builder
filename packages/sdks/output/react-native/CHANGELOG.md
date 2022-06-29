@@ -1,3 +1,7 @@
+### 0.0.1-56
+
+🐛 Fix: image block `srcSet` was incorrectly set as `srcset`
+
 ### 0.0.1-55
 
 🐛 Fix: custom components were not rendering correctly
