@@ -12,7 +12,6 @@ This example shows our [Svelte SDK](/packages/sdks/output/svelte) with Sveltekit
 
 Checkout this Loom for a visual walkthrough: https://www.loom.com/share/afd7c9a1f8f148959ea0396be42560fd (it's originally intended for React-Native, but all of the steps are still the exact same)
 
-
 ## Status
 
 For the status of the SDK, look at [these tables](/packages/sdks/README.md#feature-implementation).
