@@ -6,9 +6,13 @@
 <script>
 import Vue from 'vue';
 import cacheControl from '../helpers/cacheControl';
+import DynamicallyRenderBuilderPage from '~/components/Builder/DynamicallyRenderBuilderPage.vue';
 
 export default Vue.extend({
   name: 'Home',
+  components: {
+    DynamicallyRenderBuilderPage,
+  },
   middleware: cacheControl({
     'max-age': 60,
     'stale-when-revalidate': 5,
