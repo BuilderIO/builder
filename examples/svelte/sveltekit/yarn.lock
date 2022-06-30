@@ -58,13 +58,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fontsource/fira-mono@npm:^4.5.0":
-  version: 4.5.7
-  resolution: "@fontsource/fira-mono@npm:4.5.7"
-  checksum: 268adb84a26961ea6f88f187e15dcec0a9fb5d163d019a01b35c40d2e71e2495de628eaa9d0570e99bb5c8f855f27e8532c7fde1332d67445c3c8d60f4f82410
-  languageName: node
-  linkType: hard
-
 "@gar/promisify@npm:^1.1.3":
   version: 1.1.3
   resolution: "@gar/promisify@npm:1.1.3"
@@ -94,22 +87,6 @@ __metadata:
   version: 2.2.5
   resolution: "@iarna/toml@npm:2.2.5"
   checksum: b63b2b2c4fd67969a6291543ada0303d45593801ee744b60f5390f183c03d9192bc67a217abb24be945158f1935f02840d9ffff40c0142aa171b5d3b6b6a3ea5
-  languageName: node
-  linkType: hard
-
-"@lukeed/csprng@npm:^1.0.0":
-  version: 1.0.1
-  resolution: "@lukeed/csprng@npm:1.0.1"
-  checksum: fd84d6832775052d6bff3e78b0bc7f4b29b2fafa71b04826b0713f55d9a447a0b273d4eb70d02d89bb879e9d768cd9716da818dafa32ba6f7ecb639cbdc6806d
-  languageName: node
-  linkType: hard
-
-"@lukeed/uuid@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "@lukeed/uuid@npm:2.0.0"
-  dependencies:
-    "@lukeed/csprng": ^1.0.0
-  checksum: 7d55c0a9f26db9f63728db46f74948cf539f2690556cb30a9b21eb86d7ef48f184d4bfe808975e22fba0f493f5742f1e9adf97af9efe456049a6f82be83c71f6
   languageName: node
   linkType: hard
 
@@ -758,13 +735,6 @@ __metadata:
   version: 1.1.0
   resolution: "console-control-strings@npm:1.1.0"
   checksum: 8755d76787f94e6cf79ce4666f0c5519906d7f5b02d4b884cf41e11dcd759ed69c57da0670afd9236d229a46e0f9cf519db0cd829c6dca820bb5a5c3def584ed
-  languageName: node
-  linkType: hard
-
-"cookie@npm:^0.4.1":
-  version: 0.4.2
-  resolution: "cookie@npm:0.4.2"
-  checksum: a00833c998bedf8e787b4c342defe5fa419abd96b32f4464f718b91022586b8f1bafbddd499288e75c037642493c83083da426c6a9080d309e3bd90fd11baa9b
   languageName: node
   linkType: hard
 
@@ -2719,15 +2689,12 @@ __metadata:
   resolution: "sveltekit@workspace:."
   dependencies:
     "@builder.io/sdk-svelte": ^0.0.1-0
-    "@fontsource/fira-mono": ^4.5.0
-    "@lukeed/uuid": ^2.0.0
     "@originjs/vite-plugin-commonjs": ^1.0.3
     "@sveltejs/adapter-auto": next
     "@sveltejs/kit": ^1.0.0-next.350
     "@types/cookie": ^0.4.1
     "@typescript-eslint/eslint-plugin": ^5.10.1
     "@typescript-eslint/parser": ^5.10.1
-    cookie: ^0.4.1
     eslint: ^7.32.0
     eslint-config-prettier: ^8.3.0
     eslint-plugin-svelte3: ^3.2.1

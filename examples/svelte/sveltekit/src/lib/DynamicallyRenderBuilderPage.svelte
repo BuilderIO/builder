@@ -7,7 +7,13 @@
 
   import Counter from '$lib/Counter.svelte';
 
-  import * as BuilderSDK from '@builder.io/sdk-svelte';
+  import {
+    getContent,
+    getBuilderSearchParams,
+    convertSearchParamsToQueryObject,
+    isEditing,
+    RenderContent
+  } from '@builder.io/sdk-svelte';
 
   const CUSTOM_COMPONENTS = [
     {
@@ -33,17 +39,15 @@
   let content = undefined;
   let canShowContent = false;
   const fetch = async () => {
-    content = await BuilderSDK.getContent({
+    content = await getContent({
       model: 'page',
       apiKey: BUILDER_PUBLIC_API_KEY,
-      options: BuilderSDK.getBuilderSearchParams(
-        BuilderSDK.convertSearchParamsToQueryObject($page.url.searchParams)
-      ),
+      options: getBuilderSearchParams(convertSearchParamsToQueryObject($page.url.searchParams)),
       userAttributes: {
         urlPath: $page.url.pathname
       }
     });
-    canShowContent = content || BuilderSDK.isEditing();
+    canShowContent = content || isEditing();
   };
 
   fetch();
@@ -53,7 +57,7 @@
 
 {#if canShowContent}
   <div>page: {(content && content.data && content.data.title) || 'Unpublished'}</div>
-  <BuilderSDK.RenderContent
+  <RenderContent
     model="page"
     {content}
     apiKey={BUILDER_PUBLIC_API_KEY}
