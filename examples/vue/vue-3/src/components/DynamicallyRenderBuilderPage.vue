@@ -17,7 +17,6 @@
   </div>
 </template>
 <script lang="ts">
-import { REGISTERED_COMPONENTS } from './init-builder.ts';
 import {
   RenderContent,
   getContent,
@@ -26,6 +25,23 @@ import {
   isEditing,
   isPreviewing,
 } from '@builder.io/sdk-vue/vue3';
+import HelloWorldComponent from './HelloWorld.vue';
+
+// Register your Builder components
+export const REGISTERED_COMPONENTS = [
+  {
+    component: HelloWorldComponent,
+    name: 'Hello World',
+    canHaveChildren: true,
+    inputs: [
+      {
+        name: 'text',
+        type: 'string',
+        defaultValue: 'World',
+      },
+    ],
+  },
+];
 
 // TODO: enter your public API key
 const BUILDER_PUBLIC_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660'; // ggignore
