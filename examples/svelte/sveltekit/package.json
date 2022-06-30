@@ -19,7 +19,7 @@
     "@originjs/vite-plugin-commonjs": "^1.0.3",
     "@playwright/test": "^1.21.0",
     "@sveltejs/adapter-auto": "next",
-    "@sveltejs/kit": "next",
+    "@sveltejs/kit": "^1.0.0-next.350",
     "@types/cookie": "^0.4.1",
     "@typescript-eslint/eslint-plugin": "^5.10.1",
     "@typescript-eslint/parser": "^5.10.1",
