@@ -19,15 +19,10 @@
 <script>
 import Vue from 'vue';
 
-import {
-  getContent,
-  isEditing,
-  isPreviewing,
-  getBuilderSearchParams,
-} from '@builder.io/sdk-vue/nuxt2';
+import { getContent, isEditing, isPreviewing, getBuilderSearchParams } from '@builder.io/sdk-vue';
 import HelloWorldComponent from './HelloWorld.vue';
-// Register your Builder components
 
+// Register your Builder components
 export const REGISTERED_COMPONENTS = [
   {
     component: HelloWorldComponent,

@@ -11,12 +11,12 @@ export default function () {
   this.nuxt.hook('components:dirs', (dirs) => {
     // Add ./components dir to the list
     dirs.push({
-      path: join(__dirname, 'nuxt2/src/components'),
+      path: join(__dirname, 'vue2/src/components'),
       prefix: 'builder',
     });
     // Add ./blocks dir to the list
     dirs.push({
-      path: join(__dirname, 'nuxt2/src/blocks'),
+      path: join(__dirname, 'vue2/src/blocks'),
       prefix: 'builder',
       pattern: '**/index.*',
     });
