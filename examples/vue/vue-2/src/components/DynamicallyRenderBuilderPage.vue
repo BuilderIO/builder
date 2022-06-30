@@ -19,7 +19,7 @@
 <script>
 import Vue from 'vue';
 
-import { REGISTERED_COMPONENTS } from './init-builder.ts';
+import { REGISTERED_COMPONENTS } from '.../init-builder.ts';
 import {
   RenderContent,
   getContent,

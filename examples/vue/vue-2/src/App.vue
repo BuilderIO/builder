@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import DynamicallyRenderBuilderPage from './components/Builder/DynamicallyRenderBuilderPage.vue';
+import DynamicallyRenderBuilderPage from './components/DynamicallyRenderBuilderPage.vue';
 
 export default {
   name: 'App',
