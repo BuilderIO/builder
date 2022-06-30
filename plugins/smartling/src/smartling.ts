@@ -30,6 +30,7 @@ export class SmartlingApi {
     project: {
       targetLocales: Array<{ enabled: boolean; localeId: string }>;
       sourceLocaleId: string;
+      projectId: string;
     };
   }> {
     return this.request('project');

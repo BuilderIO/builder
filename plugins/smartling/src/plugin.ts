@@ -9,7 +9,7 @@ import {
   registerContextMenuAction,
 } from './plugin-helpers';
 import { SmartlingApi } from './smartling';
-
+import { showJobNotification } from './snackbar-utils';
 // translation status that indicate the content is being queued for translations
 const enabledTranslationStatuses = ['pending', 'local'];
 
@@ -115,6 +115,7 @@ registerPlugin(
           )
         );
         actions.refreshList();
+        showJobNotification(translationJobId);
       },
     });
     const transcludedMetaKey = 'excludeFromTranslation';
@@ -184,6 +185,7 @@ registerPlugin(
             translationJobId,
           },
         });
+        showJobNotification(translationJobId);
       },
     });
 

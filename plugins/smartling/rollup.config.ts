@@ -21,6 +21,7 @@ export default {
     '@builder.io/react',
     '@builder.io/app-context',
     '@material-ui/core',
+    '@material-ui/icons',
     '@emotion/core',
     '@emotion/styled',
     'mobx',
