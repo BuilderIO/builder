@@ -1,5 +1,5 @@
 <template>
-  <BuilderDynamicallyRenderBuilderPage />
+  <DynamicallyRenderBuilderPage />
 </template>
 
 <script>

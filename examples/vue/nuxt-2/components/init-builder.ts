@@ -1,5 +1,5 @@
 // Register your Builder components
-import HelloWorldComponent from './Builder/HelloWorld.vue'
+import HelloWorldComponent from './HelloWorld.vue'
 
 export const REGISTERED_COMPONENTS = [
   {
