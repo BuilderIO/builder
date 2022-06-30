@@ -17,7 +17,7 @@ import {
   Show,
   useContext,
   useMetadata,
-  useState,
+  useStore,
 } from '@builder.io/mitosis';
 
 export type RenderBlockProps = {
@@ -32,7 +32,7 @@ useMetadata({
 export default function RenderBlock(props: RenderBlockProps) {
   const builderContext = useContext(BuilderContext);
 
-  const state = useState({
+  const state = useStore({
     get component(): Nullable<RegisteredComponent> {
       const componentName = state.useBlock.component?.name;
       if (!componentName) {

@@ -30,7 +30,7 @@ import {
   onUnMount,
   onUpdate,
   setContext,
-  useState,
+  useStore,
 } from '@builder.io/mitosis';
 
 export type RenderContentProps = {
@@ -55,7 +55,7 @@ interface BuilderComponentStateChange {
 }
 
 export default function RenderContent(props: RenderContentProps) {
-  const state = useState({
+  const state = useStore({
     get useContent(): Nullable<BuilderContent> {
       const mergedContent: BuilderContent = {
         ...props.content,

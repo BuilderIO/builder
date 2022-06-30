@@ -10,23 +10,39 @@ const getSeededId = () => {
 const isMitosisNode = (x) => x && x['@type'] === '@builder.io/mitosis/node';
 
 /**
+ * @type {import('@builder.io/mitosis'.MitosisConfig['options']['vue'])}
+ */
+const vueConfig = {
+  transpiler: { format: 'esm' },
+  namePrefix: (path) => (path.includes('/blocks/') ? 'builder' : undefined),
+  cssNamespace: getSeededId,
+  asyncComponentImports: true,
+};
+
+/**
  * @type {import('@builder.io/mitosis'.MitosisConfig)}
  */
 module.exports = {
   files: 'src/**',
-  targets: ['reactNative', 'vue', 'solid', 'svelte'],
-  transpiler: {
-    vue: { format: 'esm' },
-    svelte: { format: 'esm' },
-    solid: { format: 'esm' },
-    reactNative: { format: 'esm' },
-  },
+  targets: ['reactNative', 'vue2', 'vue3', 'solid', 'svelte'],
   options: {
-    vue: {
-      namePrefix: (path) => (path.includes('/blocks/') ? 'builder' : undefined),
-      cssNamespace: getSeededId,
+    vue2: vueConfig,
+    vue3: vueConfig,
+    reactNative: {
+      plugins: [
+        () => ({
+          code: {
+            pre: (code) => {
+              // workaround until we resolve
+              // https://github.com/BuilderIO/mitosis/issues/526
+              code.replace('srcset=', 'srcSet=');
+            },
+          },
+        }),
+      ],
     },
     svelte: {
+      transpiler: { format: 'esm' },
       // prettier & svelte don't play well together when it comes to parsing @html content for some reason
       // https://github.com/sveltejs/prettier-plugin-svelte/issues/290
       prettier: false,
@@ -49,16 +65,6 @@ module.exports = {
                   }
                 });
               }
-            },
-          },
-          code: {
-            post: (content) => {
-              return (
-                content
-                  // temporary workaround until https://github.com/BuilderIO/mitosis/issues/282 is fixed
-                  .replace('class="img"', '')
-                  .replace('class="div"', '')
-              );
             },
           },
         }),

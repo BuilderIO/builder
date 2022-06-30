@@ -3,7 +3,7 @@ import BuilderContext from '../../context/builder.context.lite';
 import { getProcessedBlock } from '../../functions/get-processed-block.js';
 import { BuilderBlock } from '../../types/builder-block.js';
 import RenderInlinedStyles from '../render-inlined-styles.lite';
-import { Show, useContext, useState } from '@builder.io/mitosis';
+import { Show, useContext, useStore } from '@builder.io/mitosis';
 
 export type BlockStylesProps = {
   block: BuilderBlock;
@@ -12,7 +12,7 @@ export type BlockStylesProps = {
 export default function BlockStyles(props: BlockStylesProps) {
   const builderContext = useContext(BuilderContext);
 
-  const state = useState({
+  const state = useStore({
     get useBlock(): BuilderBlock {
       return getProcessedBlock({
         block: props.block,
