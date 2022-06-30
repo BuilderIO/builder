@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import DynamicallyRenderBuilderPage from '@/components/Builder/DynamicallyRenderBuilderPage.vue';
+import DynamicallyRenderBuilderPage from '@/components/DynamicallyRenderBuilderPage.vue';
 </script>
 
 <template>
