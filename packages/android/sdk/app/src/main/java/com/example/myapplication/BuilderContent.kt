@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
 
 @Serializable
-data class BuilderContent(val name: String, val data: BuilderData)
+data class BuilderContent(val name: String? = null, val data: BuilderData? = null)
 
 @Serializable
 data class BuilderBlock(
@@ -25,9 +25,9 @@ data class BuilderBlockResponsiveStyles(
 
 @Serializable
 data class BuilderBlockComponent(
-    val name: String,
-    val options: Map<String, JsonElement>? = null
+    val name: String = "",
+    val options: Map<String, JsonElement?>? = null
 )
 
 @Serializable
-data class BuilderData(val blocks: ArrayList<BuilderBlock>?)
+data class BuilderData(val blocks: ArrayList<BuilderBlock>? = null)

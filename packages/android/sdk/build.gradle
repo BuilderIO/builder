@@ -4,10 +4,14 @@ buildscript {
     }
 
     ext.kotlin_version = '1.6.10'
-    repositories { mavenCentral() }
+    repositories { 
+        mavenCentral() 
+        google() 
+    }
 
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-serialization:$kotlin_version"
+        classpath 'com.google.gms:google-services:4.3.13'
     }
 }// Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
@@ -19,4 +23,10 @@ plugins {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+allprojects {
+  repositories {
+    google()
+  }
 }
