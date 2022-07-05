@@ -28,12 +28,12 @@
 		<key>testing (iOS).xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>36</integer>
+			<integer>34</integer>
 		</dict>
 		<key>testing (macOS).xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>37</integer>
+			<integer>33</integer>
 		</dict>
 	</dict>
 </dict>

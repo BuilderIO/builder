@@ -3,8 +3,6 @@ package com.example.myapplication
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.rememberScrollState
@@ -17,16 +15,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import java.net.URL
-import kotlinx.serialization.*
-import kotlinx.serialization.json.*
-import org.json.JSONObject
+import kotlinx.serialization.json.contentOrNull
+import kotlinx.serialization.json.jsonPrimitive
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,6 +48,9 @@ fun Main() {
     getContent(modelName, apiKey, url) { received ->
         content = received
     }
+
+    registerCustomComponents()
+
     Column(
         Modifier
             .fillMaxHeight()
@@ -84,5 +78,29 @@ fun Main() {
 fun DefaultPreview() {
     MyApplicationTheme {
         Main()
+    }
+}
+
+@Composable
+fun MyButton(text: String) {
+    Button(
+        onClick = {  }
+    ) {
+        Text(text)
+    }
+}
+
+fun registerCustomComponents() {
+    registerComponent(ComponentOptions(
+        name = "Button",
+        inputs = arrayListOf(
+            ComponentInput(
+                name = "text",
+                type = "text"
+            )
+        )
+    )) @Composable { options, _ ->
+        val text = options?.get("text")?.jsonPrimitive?.contentOrNull
+        MyButton(text!!)
     }
 }

@@ -8,15 +8,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.boundsInWindow
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.dp
-import com.example.myapplication.blocks.BuilderColumns
-import com.example.myapplication.blocks.BuilderImage
-import com.example.myapplication.blocks.BuilderText
-import com.example.myapplication.blocks.Column
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.contentOrNull
-import kotlinx.serialization.json.jsonPrimitive
+import kotlinx.serialization.json.JsonElement
+
+val docRef = db.collection(collectionName).document(docId)
 
 @Composable
 fun RenderBlock(block: BuilderBlock) {
@@ -37,36 +34,23 @@ fun RenderBlock(block: BuilderBlock) {
                 getStyleInt(block, "paddingRight").dp,
                 getStyleInt(block, "paddingBottom").dp
             )
-    ) {
-        // TODO: component map and registerComponent()
-        if (block.component?.name == "Text") {
-            val text = block.component.options?.get("text")?.jsonPrimitive?.contentOrNull
-            if (text is String) {
-                BuilderText(block, text)
+            .onGloballyPositioned { layoutCoordinates ->
+                if (isEditing) {
+                    val bounds = layoutCoordinates.boundsInWindow()
+                    val blockId = block.id
+                    docRef.update("blocks.$blockId.top", bounds.top)
+                    docRef.update("blocks.$blockId.left", bounds.left)
+                    docRef.update("blocks.$blockId.width", bounds.width)
+                    docRef.update("blocks.$blockId.height", bounds.height)
+                }
             }
-        } else if (block.component?.name == "Columns") {
-            val columnsString = block.component.options?.get("columns").toString()
+    ) {
+        val name = block.component?.name
 
-            val columns = Json {
-                ignoreUnknownKeys = true
-            }.decodeFromString<ArrayList<Column>>(columnsString)
-            BuilderColumns(
-                block,
-                columns,
-                block.component.options?.get("space")?.jsonPrimitive?.contentOrNull?.toInt() ?: 0
-            )
-        } else if (block.component?.name == "Image") {
-            val image = block.component.options?.get("image")?.jsonPrimitive?.contentOrNull
-            val aspectRatio =
-                block.component.options?.get("aspectRatio")?.jsonPrimitive?.contentOrNull
-            if (image is String) {
-                BuilderImage(
-                    block, image, if (aspectRatio == null) {
-                        null
-                    } else {
-                        1 / aspectRatio.toFloat()
-                    }
-                )
+        if (name != null) {
+            val factory = components.get(name)
+            if (factory != null) {
+                factory(block.component.options as Map<String, JsonElement>, block)
             }
         } else if (block.children != null) {
             Column {
@@ -77,3 +61,17 @@ fun RenderBlock(block: BuilderBlock) {
         }
     }
 }
+
+typealias ComponentFactory =  @Composable (Map<String, JsonElement>, BuilderBlock) -> Unit
+val components = mutableMapOf<String, ComponentFactory>()
+
+fun registerComponent(options: ComponentOptions, component: ComponentFactory) {
+    components[options.name] = component
+}
+
+data class ComponentOptions(val name: String, val inputs: ArrayList<ComponentInput>? = null)
+
+data class ComponentInput(
+    val type: String,
+    val name: String
+)

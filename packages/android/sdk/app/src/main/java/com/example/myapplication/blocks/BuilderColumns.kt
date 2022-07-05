@@ -6,8 +6,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.myapplication.BuilderBlock
+import com.example.myapplication.ComponentOptions
 import com.example.myapplication.RenderBlock
+import com.example.myapplication.registerComponent
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.contentOrNull
+import kotlinx.serialization.json.jsonPrimitive
 
 @Composable
 fun BuilderColumns(block: BuilderBlock, columns: ArrayList<Column>, gap: Int = 0) {
@@ -26,3 +32,21 @@ fun BuilderColumns(block: BuilderBlock, columns: ArrayList<Column>, gap: Int = 0
 
 @Serializable
 data class Column(val blocks: ArrayList<BuilderBlock>)
+
+fun registerColumns() {
+    registerComponent(
+        ComponentOptions(name = "Columns")
+    ) @Composable { options, block ->
+        val columnsString = options["columns"].toString()
+
+        val columns = Json {
+            ignoreUnknownKeys = true
+        }.decodeFromString<ArrayList<Column>>(columnsString)
+        BuilderColumns(
+            block,
+            columns,
+            options["space"]?.jsonPrimitive?.contentOrNull?.toInt() ?: 0
+        )
+    }
+}
+

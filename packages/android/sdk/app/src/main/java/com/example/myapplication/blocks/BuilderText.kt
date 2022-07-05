@@ -6,9 +6,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
-import com.example.myapplication.BuilderBlock
-import com.example.myapplication.getStyle
-import com.example.myapplication.getStyleColor
+import com.example.myapplication.*
+import kotlinx.serialization.json.contentOrNull
+import kotlinx.serialization.json.jsonPrimitive
 
 @Composable
 fun BuilderText(block: BuilderBlock, text: String) {
@@ -31,4 +31,16 @@ fun BuilderText(block: BuilderBlock, text: String) {
         },
         modifier = Modifier.fillMaxWidth()
     )
+}
+
+
+fun registerText() {
+    registerComponent(
+        ComponentOptions(name = "Text")
+    ) @Composable { options, block ->
+        val text = options?.get("text")?.jsonPrimitive?.contentOrNull
+        if (text is String) {
+            BuilderText(block, text)
+        }
+    }
 }
