@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`applyTranslation from content to match snapshot 1`] = `
+Object {
+  "data": Object {
+    "blocks": Array [
+      Object {
+        "@type": "@builder.io/sdk:Element",
+        "bindings": Object {
+          "component.options.text": "state.translation['blocks.block-id#text'][state.locale || 'Default'] || \`test\`",
+        },
+        "component": Object {
+          "name": "Text",
+          "options": Object {
+            "text": "test",
+          },
+        },
+        "id": "block-id",
+        "meta": Object {
+          "translated": true,
+        },
+      },
+    ],
+    "state": Object {
+      "translation": Object {
+        "blocks.block-id#text": Object {
+          "@type": "@builder.io/core:LocalizedValue",
+          "fr-FR": "block-id",
+        },
+      },
+    },
+    "title": Object {
+      "@type": "@builder.io/core:LocalizedValue",
+      "Default": "Test",
+      "en-US": "Hello",
+      "fr-FR": "salut",
+    },
+  },
+}
+`;
+
+exports[`getTranslateableFields from content to match snapshot 1`] = `
+Object {
+  "blocks.block-id#text": Object {
+    "instructions": "This is a mobile only element",
+    "value": "test",
+  },
+  "metadata.title": Object {
+    "instructions": "Visit https://builder.io/fiddle/... for more details",
+    "value": "Hello",
+  },
+}
+`;

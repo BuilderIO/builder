@@ -1,5 +1,6 @@
 import { BuilderBlock } from '../types/builder-block.js';
-import type { JSXElementConstructor } from 'react';
+
+type JSXElementConstructor<P> = (props: P) => JSX.Element | null;
 
 export type TagName = string | JSXElementConstructor<any>;
 /**

@@ -1,12 +1,12 @@
 import { TARGET } from '../constants/target.js';
-import { Show, useState } from '@builder.io/mitosis';
+import { Show, useStore } from '@builder.io/mitosis';
 
 interface Props {
   styles: string;
 }
 
 export default function RenderInlinedStyles(props: Props) {
-  const state = useState({
+  const state = useStore({
     get injectedStyleScript(): string {
       return `<${state.tagName}>${props.styles}</${state.tagName}>`;
     },

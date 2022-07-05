@@ -1,5 +1,5 @@
 import RenderInlinedStyles from '../../render-inlined-styles.lite';
-import { useState } from '@builder.io/mitosis';
+import { useStore } from '@builder.io/mitosis';
 
 interface CustomFont {
   family?: string;
@@ -16,7 +16,7 @@ interface Props {
 }
 
 export default function RenderContentStyles(props: Props) {
-  const state = useState({
+  const state = useStore({
     getCssFromFont(font: CustomFont) {
       // TODO: compute what font sizes are used and only load those.......
       const family =

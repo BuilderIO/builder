@@ -1,3 +1,7 @@
+### 0.0.1-56
+
+🐛 Fix: image block `srcSet` was incorrectly set as `srcset`
+
 ### 0.0.1-55
 
 🐛 Fix: custom components were not rendering correctly
@@ -10,7 +14,7 @@ See [builder-registered-components.ts](/packages/sdks/src/constants/builder-regi
 
 ### 0.0.1-51
 
-⚠️ Deprecation notice: Registering components via `registerComponent(component, info)` is now deprecated. 
+⚠️ Deprecation notice: Registering components via `registerComponent(component, info)` is now deprecated.
 To register your custom components in Builder, you must now provide a `customComponents` array to the `RenderContent` component containing `[{ component, info }]`.
 See [builder-registered-components.ts](/packages/sdks/src/constants/builder-registered-components.ts) for examples of how to do so, or see the example provided for this SDK.
 

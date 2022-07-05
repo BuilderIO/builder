@@ -1,21 +1,19 @@
-import { onMount, useRef, useState } from '@builder.io/mitosis';
+import { onMount, useRef, useStore } from '@builder.io/mitosis';
 
 export interface EmbedProps {
   content: string;
 }
 
 export default function Embed(props: EmbedProps) {
-  // eslint-disable-next-line @builder.io/mitosis/no-var-declaration-or-assignment-in-component
-  const elem = useRef();
+  const elem = useRef<HTMLDivElement>();
 
-  const state = useState({
+  const state = useStore({
     scriptsInserted: [] as string[],
     scriptsRun: [] as string[],
 
     findAndRunScripts() {
       // TODO: Move this function to standalone one in '@builder.io/utils'
       if (elem && typeof window !== 'undefined') {
-        /** @type {HTMLScriptElement[]} */
         const scripts = elem.getElementsByTagName('script');
         for (let i = 0; i < scripts.length; i++) {
           const script = scripts[i];

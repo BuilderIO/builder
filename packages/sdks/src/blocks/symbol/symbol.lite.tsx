@@ -2,7 +2,7 @@ import RenderContent from '../../components/render-content/render-content.lite';
 import BuilderContext from '../../context/builder.context.lite';
 import { getContent } from '../../functions/get-content/index.js';
 import { BuilderContent } from '../../types/builder-content.js';
-import { onMount, onUpdate, useContext, useState } from '@builder.io/mitosis';
+import { onMount, onUpdate, useContext, useStore } from '@builder.io/mitosis';
 
 export interface SymbolInfo {
   model?: string;
@@ -25,7 +25,7 @@ export interface SymbolProps {
 export default function Symbol(props: SymbolProps) {
   const builderContext = useContext(BuilderContext);
 
-  const state = useState({
+  const state = useStore({
     className: 'builder-symbol',
     content: null as BuilderContent | null,
   });

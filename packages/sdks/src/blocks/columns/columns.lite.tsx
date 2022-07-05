@@ -1,6 +1,5 @@
 import RenderBlocks from '../../components/render-blocks.lite';
-import { For, useState } from '@builder.io/mitosis';
-import { CSSProperties } from 'react';
+import { For, useStore } from '@builder.io/mitosis';
 
 type Column = {
   blocks: any;
@@ -22,7 +21,7 @@ export interface ColumnProps {
 }
 
 export default function Columns(props: ColumnProps) {
-  const state = useState({
+  const state = useStore({
     getGutterSize(): number {
       return typeof props.space === 'number' ? props.space || 0 : 20;
     },
@@ -42,8 +41,8 @@ export default function Columns(props: ColumnProps) {
     },
 
     maybeApplyForTablet(
-      prop: CSSProperties['flexDirection']
-    ): CSSProperties['flexDirection'] {
+      prop: JSX.CSSProperties['flexDirection']
+    ): JSX.CSSProperties['flexDirection'] {
       const _stackColumnsAt = props.stackColumnsAt || 'tablet';
       return _stackColumnsAt === 'tablet' ? prop : 'inherit';
     },

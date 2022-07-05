@@ -4,6 +4,8 @@ import React from 'react';
 import { Builder, BuilderElement } from '@builder.io/sdk';
 import { withBuilder } from '../functions/with-builder';
 import { BuilderStoreContext } from '../store/builder-store';
+import { tryEval } from '../functions/try-eval';
+
 const iconUrl =
   'https://firebasestorage.googleapis.com/v0/b/builder-3b0a2.appspot.com/o/images%2Fbaseline-text_fields-24px%20(1).svg?alt=media&token=12177b73-0ee3-42ca-98c6-0dd003de1929';
 
@@ -33,6 +35,10 @@ class TextComponent extends React.Component<TextProps> {
     if (this.textRef) {
       this.textRef.innerHTML = this.props.text;
     }
+  }
+
+  evalExpression(expression: string, state: any) {
+    return expression.replace(/{{([^}]+)}}/g, (match, group) => tryEval(group, state));
   }
 
   get allowTextEdit() {
@@ -138,7 +144,10 @@ class TextComponent extends React.Component<TextProps> {
                 className="builder-text"
                 {...(!allowEditingText && {
                   dangerouslySetInnerHTML: {
-                    __html: this.props.text || (this.props as any).content || '',
+                    __html: this.evalExpression(
+                      this.props.text || (this.props as any).content || '',
+                      state.state
+                    ),
                   },
                 })}
               />
