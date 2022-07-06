@@ -48,22 +48,24 @@ export default function Image(props: ImageProps) {
         />
         <source srcset={props.srcset} />
       </picture>
-      {props.aspectRatio &&
-        !(props.fitContent && props.builderBlock?.children?.length) && (
-          <div
-            class="builder-image-sizer"
-            style={{
-              paddingTop: props.aspectRatio * 100 + '%',
-            }}
-            css={{
-              width: '100%',
-              pointerEvents: 'none',
-              fontSize: '0',
-            }}
-          >
-            {' '}
-          </div>
-        )}
+      <Show
+        when={
+          props.aspectRatio &&
+          !(props.fitContent && props.builderBlock?.children?.length)
+        }
+      >
+        <div
+          class="builder-image-sizer"
+          style={{
+            paddingTop: props.aspectRatio! * 100 + '%',
+          }}
+          css={{
+            width: '100%',
+            pointerEvents: 'none',
+            fontSize: '0',
+          }}
+        />
+      </Show>
       <Show when={props.builderBlock?.children?.length && props.fitContent}>
         {props.children}
       </Show>
