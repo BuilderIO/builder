@@ -32,12 +32,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@builder.io/sdk-svelte@npm:^0.0.1-0":
-  version: 0.0.1-16
-  resolution: "@builder.io/sdk-svelte@npm:0.0.1-16"
+"@builder.io/sdk-svelte@npm:dev":
+  version: 0.0.1-17
+  resolution: "@builder.io/sdk-svelte@npm:0.0.1-17"
   dependencies:
     node-fetch: ^2.6.1
-  checksum: c040ba9701ecc87ad16bca4fc0ac61f5471e9054e4831ec36e6c16972e279ed747f398e0f5925c96fb4e94173dc12cf6caaa81773562a725b0321f2be0bc0bc8
+  checksum: 8561eff2a684d0bc6028d2f7c39d45de78fe2e7662103e1455f46bc91f48ff888e3597775da5376ffd385e41f59e7a741505013b1145107099554d137a4aebcb
   languageName: node
   linkType: hard
 
@@ -238,13 +238,6 @@ __metadata:
   version: 2.0.0
   resolution: "@tootallnate/once@npm:2.0.0"
   checksum: ad87447820dd3f24825d2d947ebc03072b20a42bfc96cbafec16bff8bbda6c1a81fcb0be56d5b21968560c5359a0af4038a68ba150c3e1694fe4c109a063bed8
-  languageName: node
-  linkType: hard
-
-"@types/cookie@npm:^0.4.1":
-  version: 0.4.1
-  resolution: "@types/cookie@npm:0.4.1"
-  checksum: 3275534ed69a76c68eb1a77d547d75f99fedc80befb75a3d1d03662fb08d697e6f8b1274e12af1a74c6896071b11510631ba891f64d30c78528d0ec45a9c1a18
   languageName: node
   linkType: hard
 
@@ -2688,11 +2681,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "sveltekit@workspace:."
   dependencies:
-    "@builder.io/sdk-svelte": ^0.0.1-0
+    "@builder.io/sdk-svelte": dev
     "@originjs/vite-plugin-commonjs": ^1.0.3
     "@sveltejs/adapter-auto": next
     "@sveltejs/kit": ^1.0.0-next.350
-    "@types/cookie": ^0.4.1
     "@typescript-eslint/eslint-plugin": ^5.10.1
     "@typescript-eslint/parser": ^5.10.1
     eslint: ^7.32.0
