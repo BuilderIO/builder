@@ -25,7 +25,7 @@ Legend:
 | -------- | ------- |
 | Vue 2    | 🏗       |
 | Nuxt 2   | 🏗       |
-| Vue 3    | 🏗      |
+| Vue 3    | 🏗       |
 | Nuxt 3   | ✅      |
 
 ## Getting Started
