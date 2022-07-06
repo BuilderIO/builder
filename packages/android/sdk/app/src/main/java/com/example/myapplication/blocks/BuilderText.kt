@@ -35,7 +35,7 @@ fun BuilderText(block: BuilderBlock, text: String) {
 
 
 fun registerText() {
-    registerComponent(
+    _registerComponent(
         ComponentOptions(name = "Text")
     ) @Composable { options, block ->
         val text = options?.get("text")?.jsonPrimitive?.contentOrNull

@@ -36,9 +36,9 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-val modelName = "page"
-val apiKey = "7ff1b55f7ecb4f08a012fbb2a859aced"
-val url = "/"
+const val modelName = "page"
+const val apiKey = "7ff1b55f7ecb4f08a012fbb2a859aced"
+const val url = "/"
 
 @Composable
 fun Main() {
@@ -92,15 +92,16 @@ fun MyButton(text: String) {
 
 fun registerCustomComponents() {
     registerComponent(ComponentOptions(
-        name = "Button",
+        name = "OurButton",
         inputs = arrayListOf(
             ComponentInput(
                 name = "text",
-                type = "text"
+                type = "text",
+                defaultValue = "Hello!"
             )
         )
     )) @Composable { options, _ ->
-        val text = options?.get("text")?.jsonPrimitive?.contentOrNull
-        MyButton(text!!)
+        var text = options?.get("text")?.jsonPrimitive?.contentOrNull ?: ""
+        MyButton(text)
     }
 }

@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import coil.compose.AsyncImage
 import com.example.myapplication.BuilderBlock
 import com.example.myapplication.ComponentOptions
+import com.example.myapplication._registerComponent
 import com.example.myapplication.registerComponent
 import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.jsonPrimitive
@@ -25,7 +26,7 @@ fun BuilderImage(block: BuilderBlock, image: String, aspectRatio: Float?) {
 }
 
 fun registerImage() {
-    registerComponent(
+    _registerComponent(
         ComponentOptions(name = "Image")
     ) @Composable { options, block ->
         val image = options["image"]?.jsonPrimitive?.contentOrNull

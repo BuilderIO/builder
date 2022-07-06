@@ -39,11 +39,11 @@ import java.io.ByteArrayOutputStream
 
 
 val db = Firebase.firestore
-var isEditing = true
-tODO: move out of here
-//
-val collectionName = "components"
-val docId = "00df1822dbdf48d18a1fdef36d98a315"
+
+// TODO: move out of here
+var isEditing: Boolean = true
+const val collectionName = "components"
+const val docId = "00df1822dbdf48d18a1fdef36d98a315"
 
 @Composable
 fun RenderContent(content: BuilderContent) {
@@ -60,8 +60,8 @@ fun RenderContent(content: BuilderContent) {
     if (isEditing) {
         val docRef = db.collection(collectionName).document(docId)
 
-        val takeScreenshot: (Unit) -> Unit = throttleLatest(
-            5,
+        val takeScreenshot: (Unit) -> Unit = debounce(
+            50,
             lifecycleOwner!!.lifecycleScope,
         ) {
             val window = (context as Activity).window
@@ -74,8 +74,8 @@ fun RenderContent(content: BuilderContent) {
                 val encoded = Base64.encodeToString(byteArray, Base64.DEFAULT)
 
                 docRef.update("screenshot", encoded)
-                docRef.update("screenshotHeight", view.height.dp.value.toInt() / 2)
-                docRef.update("screenshotWidth", view.width.dp.value.toInt() / 2)
+                docRef.update("screenshotHeight", dpToPixel(view.height.dp))
+                docRef.update("screenshotWidth", dpToPixel(view.width.dp))
             }
         }
 
@@ -108,23 +108,21 @@ fun RenderContent(content: BuilderContent) {
     }
 }
 
-fun <T> throttleLatest(
-    intervalMs: Long = 300L,
+fun <T> debounce(
+    waitMs: Long = 300L,
     coroutineScope: CoroutineScope,
     destinationFunction: (T) -> Unit
 ): (T) -> Unit {
-    var throttleJob: Job? = null
-    var latestParam: T
+    var debounceJob: Job? = null
     return { param: T ->
-        latestParam = param
-        if (throttleJob?.isCompleted != false) {
-            throttleJob = coroutineScope.launch {
-                delay(intervalMs)
-                latestParam.let(destinationFunction)
-            }
+        debounceJob?.cancel()
+        debounceJob = coroutineScope.launch {
+            delay(waitMs)
+            destinationFunction(param)
         }
     }
 }
+
 
 
 fun captureView(view: View, window: Window, bitmapCallback: (Bitmap) -> Unit) {

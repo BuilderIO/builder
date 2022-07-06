@@ -8,12 +8,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.boundsInWindow
+import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import kotlinx.serialization.json.JsonElement
 
 val docRef = db.collection(collectionName).document(docId)
+
+fun dpToPixel(dp: Dp): Int {
+    return dp.value.toInt() / 2
+}
 
 @Composable
 fun RenderBlock(block: BuilderBlock) {
@@ -28,29 +33,30 @@ fun RenderBlock(block: BuilderBlock) {
             )
             .background(getStyleColor(block, "backgroundColor", Color.Transparent))
             .fillMaxWidth()
+            .onGloballyPositioned { layoutCoordinates ->
+                if (isEditing) {
+                    val bounds = layoutCoordinates.boundsInRoot()
+                    val blockId = block.id
+                    docRef.update("blocks.$blockId.top", dpToPixel(bounds.top.dp))
+                    docRef.update("blocks.$blockId.left", dpToPixel(bounds.left.dp))
+                    docRef.update("blocks.$blockId.width", dpToPixel(bounds.width.dp))
+                    docRef.update("blocks.$blockId.height", dpToPixel(bounds.height.dp))
+                }
+            }
             .padding(
                 getStyleInt(block, "paddingLeft").dp,
                 getStyleInt(block, "paddingTop").dp,
                 getStyleInt(block, "paddingRight").dp,
                 getStyleInt(block, "paddingBottom").dp
             )
-            .onGloballyPositioned { layoutCoordinates ->
-                if (isEditing) {
-                    val bounds = layoutCoordinates.boundsInWindow()
-                    val blockId = block.id
-                    docRef.update("blocks.$blockId.top", bounds.top)
-                    docRef.update("blocks.$blockId.left", bounds.left)
-                    docRef.update("blocks.$blockId.width", bounds.width)
-                    docRef.update("blocks.$blockId.height", bounds.height)
-                }
-            }
     ) {
         val name = block.component?.name
 
         if (name != null) {
             val factory = components.get(name)
             if (factory != null) {
-                factory(block.component.options as Map<String, JsonElement>, block)
+                var options = block.component.options ?: emptyMap()
+                factory(options as Map<String, JsonElement>, block)
             }
         } else if (block.children != null) {
             Column {
@@ -66,6 +72,13 @@ typealias ComponentFactory =  @Composable (Map<String, JsonElement>, BuilderBloc
 val components = mutableMapOf<String, ComponentFactory>()
 
 fun registerComponent(options: ComponentOptions, component: ComponentFactory) {
+    _registerComponent(options, component)
+    val docRef = db.collection(collectionName).document(docId)
+    val componentName = options.name;
+    docRef.update("inputs.$componentName", options.inputs)
+}
+
+fun _registerComponent(options: ComponentOptions, component: ComponentFactory) {
     components[options.name] = component
 }
 
@@ -73,5 +86,6 @@ data class ComponentOptions(val name: String, val inputs: ArrayList<ComponentInp
 
 data class ComponentInput(
     val type: String,
-    val name: String
+    val name: String,
+    val defaultValue: Any
 )
