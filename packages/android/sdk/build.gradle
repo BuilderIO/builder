@@ -1,0 +1,32 @@
+buildscript {
+    ext {
+        compose_version = '1.1.0-beta01'
+    }
+
+    ext.kotlin_version = '1.6.10'
+    repositories { 
+        mavenCentral() 
+        google() 
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-serialization:$kotlin_version"
+        classpath 'com.google.gms:google-services:4.3.13'
+    }
+}// Top-level build file where you can add configuration options common to all sub-projects/modules.
+plugins {
+    id 'com.android.application' version '7.2.1' apply false
+    id 'com.android.library' version '7.2.1' apply false
+    id 'org.jetbrains.kotlin.android' version '1.5.31' apply false
+    id 'org.jetbrains.kotlin.plugin.serialization' version '1.6.10'
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+allprojects {
+  repositories {
+    google()
+  }
+}

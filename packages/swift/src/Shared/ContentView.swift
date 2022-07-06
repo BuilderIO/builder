@@ -18,7 +18,7 @@ struct ContentView: View {
     }
     
     func initContent() {
-        testing.getContent(model: "page", apiKey: "7ff1b55f7ecb4f08a012fbb2a859aced", url: "/") {(content) in
+        testing.getContent(model: "page", apiKey: "7ff1b55f7ecb4f08a012fbb2a859aced", url: "/") { content in
             self.overrideContent.content = content
         }
     }
@@ -32,26 +32,26 @@ struct ContentView: View {
         // TODO: hardoded only for now
         let docId = "00df1822dbdf48d18a1fdef36d98a315"
         
-        //        let collection = testingApp.db.collection(collectionName)
-        //        let doc = collection.document(docId)
-        //        doc.addSnapshotListener { documentSnapshot, error in
-        //            do {
-        //                guard let document = documentSnapshot else {
-        //                    print("Error fetching document: \(error!)")
-        //                    return
-        //                }
-        //                guard let data = try document.data(as: BuilderContent.self) else {
-        //                    print("Document data was empty.")
-        //                    return
-        //                }
-        //
-        //                print("Got snapshot")
-        //
-        //            } catch {
-        //                print("Error decoding firestore data \(error)")
-        //            }
-        //        }
-        //
+        let collection = testingApp.db.collection(collectionName)
+        let doc = collection.document(docId)
+        doc.addSnapshotListener { documentSnapshot, error in
+            do {
+                guard let document = documentSnapshot else {
+                    print("Error fetching document: \(error!)")
+                    return
+                }
+                guard let data = try document.data(as: BuilderContent.self) else {
+                    print("Document data was empty.")
+                    return
+                }
+
+                print("Got snapshot")
+
+            } catch {
+                print("Error decoding firestore data \(error)")
+            }
+        }
+
         
         func convertImageToBase64String (img: UIImage) -> String {
             return img.jpegData(compressionQuality: 1)?.base64EncodedString() ?? ""
