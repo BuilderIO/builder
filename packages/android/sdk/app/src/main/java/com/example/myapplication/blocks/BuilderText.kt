@@ -12,6 +12,7 @@ import kotlinx.serialization.json.jsonPrimitive
 
 @Composable
 fun BuilderText(block: BuilderBlock, text: String) {
+    // Strip HTML out
     val stripped = text.replace(
         "<.*?>".toRegex(),
         ""
