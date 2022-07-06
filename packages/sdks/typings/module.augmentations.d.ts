@@ -4,6 +4,7 @@ declare global {
   declare namespace JSX {
     type CSSProperties = NonNullable<JSX.HTMLAttributes<never>['style']>;
     interface HTMLAttributes {
+      children?: Element | Element[] | string | undefined | false;
       innerHTML?: string;
       dataSet?: {
         [key: string]: string;

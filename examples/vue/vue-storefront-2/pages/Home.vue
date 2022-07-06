@@ -13,89 +13,7 @@
         />
       </SfHero>
     </LazyHydrate>
-    <BuilderContent />
-
-    <LazyHydrate when-visible>
-      <SfBannerGrid :banner-grid="1" class="banner-grid">
-        <template v-for="item in banners" v-slot:[item.slot]>
-          <SfBanner
-            :key="item.slot"
-            :title="item.title"
-            :subtitle="item.subtitle"
-            :description="item.description"
-            :button-text="item.buttonText"
-            :link="localePath(item.link)"
-            :image="item.image"
-            :class="item.class"
-          />
-        </template>
-      </SfBannerGrid>
-    </LazyHydrate>
-
-    <LazyHydrate when-visible>
-      <div class="similar-products">
-        <SfHeading title="Match with it" :level="2" />
-        <nuxt-link :to="localePath('/c/women')" class="smartphone-only">
-          {{ $t('See all') }}
-        </nuxt-link>
-      </div>
-    </LazyHydrate>
-
-    <LazyHydrate when-visible>
-      <SfCarousel
-        class="carousel"
-        :settings="{ peek: 16, breakpoints: { 1023: { peek: 0, perView: 2 } } }"
-      >
-        <template #prev="{ go }">
-          <SfArrow aria-label="prev" class="sf-arrow--left sf-arrow--long" @click="go('prev')" />
-        </template>
-        <template #next="{ go }">
-          <SfArrow aria-label="next" class="sf-arrow--right sf-arrow--long" @click="go('next')" />
-        </template>
-        <SfCarouselItem class="carousel__item" v-for="(product, i) in products" :key="i">
-          <SfProductCard
-            :title="product.title"
-            :image="product.image"
-            :regular-price="product.price.regular"
-            :max-rating="product.rating.max"
-            :score-rating="product.rating.score"
-            :show-add-to-cart-button="true"
-            :is-on-wishlist="product.isInWishlist"
-            :link="localePath({ name: 'home' })"
-            class="carousel__item__product"
-            @click:wishlist="toggleWishlist(i)"
-          />
-        </SfCarouselItem>
-      </SfCarousel>
-    </LazyHydrate>
-
-    <LazyHydrate when-visible>
-      <SfCallToAction
-        title="Subscribe to Newsletters"
-        button-text="Subscribe"
-        description="Be aware of upcoming sales and events. Receive gifts and special offers!"
-        image="/homepage/newsletter.webp"
-        class="call-to-action"
-      >
-        <template #button>
-          <SfButton
-            class="sf-call-to-action__button"
-            data-testid="cta-button"
-            @click="toggleNewsletterModal"
-          >
-            {{ $t('Subscribe') }}
-          </SfButton>
-        </template>
-      </SfCallToAction>
-    </LazyHydrate>
-
-    <LazyHydrate when-visible>
-      <NewsletterModal @email-submitted="onSubscribe" />
-    </LazyHydrate>
-
-    <LazyHydrate when-visible>
-      <InstagramFeed />
-    </LazyHydrate>
+    <DynamicallyRenderBuilderPage />
   </div>
 </template>
 <script>
@@ -119,7 +37,7 @@ import NewsletterModal from '~/components/NewsletterModal.vue';
 import LazyHydrate from 'vue-lazy-hydration';
 import { useUiState } from '../composables';
 import cacheControl from './../helpers/cacheControl';
-
+import DynamicallyRenderBuilderPage from '~/components/Builder/DynamicallyRenderBuilderPage.vue';
 export default Vue.extend({
   name: 'Home',
   middleware: cacheControl({
@@ -127,6 +45,7 @@ export default Vue.extend({
     'stale-when-revalidate': 5,
   }),
   components: {
+    DynamicallyRenderBuilderPage,
     InstagramFeed,
     SfHero,
     SfBanner,

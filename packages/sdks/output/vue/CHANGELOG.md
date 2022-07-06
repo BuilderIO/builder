@@ -5,8 +5,12 @@
 🧨 Breaking change: you must now explicitly import the Vue SDK version that you want (for Vue 2 or Vue 3) e.g.
 
 ```ts
+// imports Vue 2 SDK
 import * as BuilderSDK from '@builder.io/sdk-vue/vue2';
-// OR
+// fallback to Vue 2 SDK
+import * as BuilderSDK from '@builder.io/sdk-vue';
+
+// imports Vue 3 SDK
 import * as BuilderSDK from '@builder.io/sdk-vue/vue3';
 ```
 

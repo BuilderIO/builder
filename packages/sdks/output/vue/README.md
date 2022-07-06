@@ -25,8 +25,8 @@ Legend:
 | -------- | ------- |
 | Vue 2    | 🏗       |
 | Nuxt 2   | 🏗       |
-| Vue 3    | ⚠️      |
-| Nuxt 3   | ⚠️      |
+| Vue 3    | 🏗       |
+| Nuxt 3   | ✅      |
 
 ## Getting Started
 
@@ -34,19 +34,11 @@ Legend:
 npm install @builder.io/sdk-vue@dev
 ```
 
-## Usage with Nuxt
-
-> Requires nuxt >= @2.15
-
-Add to your `nuxt.config.js`:
-
-```js
-buildModules: ['@builder.io/sdk-vue/nuxt'];
-```
-
-Then register built in and custom components as seen [here](/examples/vue/nuxt-2/scripts/register-builder-components.js)
+## Usage
 
 You can see examples of using Builder.io:
 
-- with Nuxt [here](/examples/vue/nuxt-2/)
-- with Vue Storefront [here](/examples/vue/vue-storefront-2)
+- with Vue 2 [here](/examples/vue/vue-2/)
+- with Nuxt 2 [here](/examples/vue/nuxt-2/)
+- with Vue Storefront 2 [here](/examples/vue/vue-storefront-2)
+- with Vue 3 [here](/examples/vue/vue-3/)

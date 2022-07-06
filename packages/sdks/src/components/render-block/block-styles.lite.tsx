@@ -48,7 +48,7 @@ export default function BlockStyles(props: BlockStylesProps) {
     },
   });
   return (
-    <Show when={TARGET === 'vue' || TARGET === 'svelte'}>
+    <Show when={TARGET === 'vue2' || TARGET === 'vue3' || TARGET === 'svelte'}>
       <RenderInlinedStyles styles={state.css} />
     </Show>
   );
