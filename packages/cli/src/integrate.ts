@@ -9,14 +9,26 @@ interface IntegrateOptions {
   model: string;
   pathPrefix: string;
   content?: string;
+  skipInstall?: boolean;
 }
 
 function verifyPagesDirectory() {
-  return fse.existsSync('pages');
+  return fse.existsSync(getPathToPages());
+}
+
+// some projects nest the pages directory inside a /src directory
+function getPathToPages() {
+  const srcPath = path.join(process.cwd(), 'src');
+  const srcPagesPath = path.join(srcPath, 'pages');
+  if (fse.existsSync(srcPath) && fse.existsSync(srcPagesPath)) {
+    return srcPagesPath;
+  } else {
+    return path.join(process.cwd(), 'pages');
+  }
 }
 
 function checkForCatchAll(prefix: string) {
-  const prefixPath = path.join(process.cwd(), 'pages', prefix);
+  const prefixPath = path.join(getPathToPages(), prefix);
   if (fse.existsSync(prefixPath)) {
     const directoryContents = fse.readdirSync(prefixPath);
     // need to look for a catch all page, it can have any name
@@ -28,9 +40,9 @@ function checkForCatchAll(prefix: string) {
 }
 
 function getExtension() {
-  const jsxIndexFilePath = path.join(process.cwd(), 'pages', 'index.jsx');
-  const tsIndexFilePath = path.join(process.cwd(), 'pages', 'index.ts');
-  const tsxIndexFilePath = path.join(process.cwd(), 'pages', 'index.tsx');
+  const jsxIndexFilePath = path.join(getPathToPages(), 'index.jsx');
+  const tsIndexFilePath = path.join(getPathToPages(), 'index.ts');
+  const tsxIndexFilePath = path.join(getPathToPages(), 'index.tsx');
 
   if (fse.existsSync(jsxIndexFilePath)) {
     return 'jsx';
@@ -77,11 +89,7 @@ export async function integrateWithLocalCodebase(options: IntegrateOptions) {
 
   if (!verifyPagesDirectory()) {
     console.error(
-      `[ERROR] - ${chalk.yellow(
-        '/pages'
-      )} directory not found, ensure you're in a Next.js project. If you believe this is an error, please file a bug report here: ${chalk.cyan(
-        'https://github.com/BuilderIO/builder/issues/new?assignees=&labels=&template=bug_report.md&title=[BUG]%20-%20CLI%20Integration'
-      )}`
+      `[ERROR] - ${chalk.yellow('/pages')} directory not found, ensure you're in a Next.js project.`
     );
     failed = true;
   }
@@ -108,24 +116,22 @@ export async function integrateWithLocalCodebase(options: IntegrateOptions) {
     return;
   }
 
-  // NOTE: remove if there are issues, test yarn
-  console.info('installing the @builder.io/react sdk...', IS_YARN);
-  await installPackage('@builder.io/react');
+  if (!options.skipInstall) {
+    // NOTE: remove if there are issues, test yarn
+    console.info('installing the @builder.io/react sdk...', IS_YARN);
+    await installPackage('@builder.io/react');
+  }
 
   const pageTemplateString = getTemplate('nextjs', `[...page].${useTypeScript ? 'tsx' : 'jsx'}`)
     .replace(/<<<YOUR_API_KEY>>>/g, options.apiKey)
     .replace(/<<<MODEL_NAME>>>/g, options.model);
 
-  writeFile(
-    pageTemplateString,
-    path.join(process.cwd(), 'pages', filePath),
-    `[...page].${extension}`
-  );
+  writeFile(pageTemplateString, path.join(getPathToPages(), filePath), `[...page].${extension}`);
 
   let builderContentUrl;
   if (options.content) {
     builderContentUrl = `https://builder.io/content/${options.content}?source=builder-cli`;
-    open(builderContentUrl);
+    // open(builderContentUrl);
   }
 
   console.info(`
@@ -133,26 +139,25 @@ export async function integrateWithLocalCodebase(options: IntegrateOptions) {
     --------------------------------------------------
     Congratulations! You've successfully integrated with Builder.io.
     
-    • view/edit the integration file here: ${chalk.cyan(
-      path.join(process.cwd(), 'pages', filePath, `[...page].${extension}`)
+    • View/edit the integration file here: ${chalk.cyan(
+      path.join(getPathToPages(), filePath, `[...page].${extension}`)
     )}
-    ${
-      options.content &&
-      `• opening the Builder.io landing page in your browser: ${chalk.cyan(builderContentUrl)}`
-    }
+    ${options.content ? `• Builder content link: ${chalk.cyan(builderContentUrl)}` : ''}
 
     ${chalk.bold('Next Steps:')}
-    1. If you have a custom 404 page, you'll want to add it to the [...page].${extension} file. in place of the <DefaultErrorPage> component.
+    • Start your dev server if it's not already running.
 
-    2. Add your header and footer components to the [...page].${extension} file.
+    • If you have a custom 404 page, you'll want to add it to the [...page].${extension} file. in place of the <DefaultErrorPage> component.
 
-    3. Register custom components for your team to use in Builder.io. We created an example custom component at the bottom of your [...page].${extension} file. You can find more information about custom components here:\nhttps://www.builder.io/c/docs/custom-react-components
+    • Add your header and footer components to the [...page].${extension} file.
 
-    4. Commit and deploy the code updates to your dev/staging site so your team members can test Builder.io. Alternatively, you can use ${chalk.green(
+    • Register custom components for your team to use in Builder.io. We created an example custom component at the bottom of your [...page].${extension} file. You can find more information about custom components here:\nhttps://www.builder.io/c/docs/custom-react-components    
+
+    • Commit and deploy the code updates to your dev/staging site so your team members can test Builder.io. Alternatively, you can use ${chalk.green(
       'Vercel'
     )} or ${chalk.green('Netlify')} to quickly deploy your project for testing.
 
-    5. Once you've deployed to a remote url, you'll want to edit the ${chalk.cyan(
+    • Once you've deployed to a remote url, you'll want to edit the ${chalk.cyan(
       'previewUrl'
     )} property of your model here:
        ${chalk.cyan(`https://builder.io/models/${options.model}`)}
