@@ -32,7 +32,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@builder.io/sdk-svelte@npm:dev":
+"@builder.io/sdk-svelte@npm:^0.0.1-0":
   version: 0.0.1-17
   resolution: "@builder.io/sdk-svelte@npm:0.0.1-17"
   dependencies:
@@ -197,7 +197,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sveltejs/kit@npm:^1.0.0-next.350":
+"@sveltejs/kit@npm:1.0.0-next.350":
   version: 1.0.0-next.350
   resolution: "@sveltejs/kit@npm:1.0.0-next.350"
   dependencies:
@@ -2681,10 +2681,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "sveltekit@workspace:."
   dependencies:
-    "@builder.io/sdk-svelte": dev
+    "@builder.io/sdk-svelte": ^0.0.1-0
     "@originjs/vite-plugin-commonjs": ^1.0.3
     "@sveltejs/adapter-auto": next
-    "@sveltejs/kit": ^1.0.0-next.350
+    "@sveltejs/kit": 1.0.0-next.350
     "@typescript-eslint/eslint-plugin": ^5.10.1
     "@typescript-eslint/parser": ^5.10.1
     eslint: ^7.32.0
