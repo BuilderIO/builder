@@ -17,7 +17,7 @@
   "devDependencies": {
     "@originjs/vite-plugin-commonjs": "^1.0.3",
     "@sveltejs/adapter-auto": "next",
-    "@sveltejs/kit": "^1.0.0-next.350",
+    "@sveltejs/kit": "1.0.0-next.350",
     "@typescript-eslint/eslint-plugin": "^5.10.1",
     "@typescript-eslint/parser": "^5.10.1",
     "eslint": "^7.32.0",
@@ -33,6 +33,6 @@
   },
   "type": "module",
   "dependencies": {
-    "@builder.io/sdk-svelte": "dev"
+    "@builder.io/sdk-svelte": "^0.0.1-0"
   }
 }
