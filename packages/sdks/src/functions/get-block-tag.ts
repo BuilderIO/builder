@@ -1,3 +1,4 @@
+import { JSX } from '@builder.io/mitosis/jsx-runtime';
 import { BuilderBlock } from '../types/builder-block.js';
 
 type JSXElementConstructor<P> = (props: P) => JSX.Element | null;

@@ -3,9 +3,13 @@
     "strict": true,
     "target": "es5",
     "jsx": "preserve",
+    "jsxImportSource": "@builder.io/mitosis",
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["src", "typings"]
+  "include": [
+    "src",
+    "typings"
+  ]
 }
