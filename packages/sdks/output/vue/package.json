@@ -1,7 +1,7 @@
 {
   "name": "@builder.io/sdk-vue",
   "description": "Builder.io SDK for Vue",
-  "version": "0.0.1-59",
+  "version": "0.0.1-60",
   "dependencies": {
     "node-fetch": "^2.6.1"
   },

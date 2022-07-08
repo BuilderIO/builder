@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/cli",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Official Builder.io CLI",
   "author": "Steve Sewell <steve@builder.io>",
   "keywords": [
@@ -25,6 +25,7 @@
     "bundle": "npm run build && pkg . --out-dir ./exec/",
     "copy:templates": "cpy --flat ./src/templates/nextjs/ ./dist/templates/nextjs",
     "release:dev": "npm run build && npm version prerelease --no-git-tag-version && npm publish --tag dev",
+    "release:patch": "npm run build && npm version patch --no-git-tag-version && npm publish",
     "release:minor": "npm run build && npm version minor --no-git-tag-version && npm publish"
   },
   "devDependencies": {
