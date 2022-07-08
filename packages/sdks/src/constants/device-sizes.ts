@@ -1,12 +1,12 @@
-export type Size = 'large' | 'medium' | 'small' | 'xsmall';
-export const sizeNames: Size[] = ['xsmall', 'small', 'medium', 'large'];
+export type SizeName = 'large' | 'medium' | 'small';
 
-export const sizes = {
-  xsmall: {
-    min: 0,
-    default: 0,
-    max: 0,
-  },
+interface Size {
+  min: number;
+  default: number;
+  max: number;
+}
+
+const SIZES: Record<SizeName, Size> = {
   small: {
     min: 320,
     default: 321,
@@ -22,16 +22,7 @@ export const sizes = {
     default: 991,
     max: 1200,
   },
-  getWidthForSize(size: Size) {
-    return this[size].default;
-  },
-  getSizeForWidth(width: number) {
-    for (const size of sizeNames) {
-      const value = this[size];
-      if (width <= value.max) {
-        return size;
-      }
-    }
-    return 'large';
-  },
 };
+
+export const getMaxWidthQueryForSize = (size: SizeName) =>
+  `@media (max-width: ${SIZES[size].max}px)`;
