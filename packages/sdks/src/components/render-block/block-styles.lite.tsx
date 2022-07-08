@@ -4,6 +4,8 @@ import { getProcessedBlock } from '../../functions/get-processed-block.js';
 import { BuilderBlock } from '../../types/builder-block.js';
 import RenderInlinedStyles from '../render-inlined-styles.lite';
 import { Show, useContext, useStore } from '@builder.io/mitosis';
+import { convertStyleMaptoCSS } from '../../helpers/css.js';
+import { getMaxWidthQueryForSize } from '../../constants/device-sizes.js';
 
 export type BlockStylesProps = {
   block: BuilderBlock;
@@ -20,31 +22,35 @@ export default function BlockStyles(props: BlockStylesProps) {
         context: builderContext.context,
       });
     },
-    camelToKebabCase(string: string) {
-      return string
-        .replace(/([a-z0-9]|(?=[A-Z]))([A-Z])/g, '$1-$2')
-        .toLowerCase();
-    },
 
     get css(): string {
-      // TODO: media queries
-      const styleObject = state.useBlock.responsiveStyles?.large;
-      if (!styleObject) {
-        return '';
-      }
+      const styles = state.useBlock.responsiveStyles;
 
-      let str = `.${state.useBlock.id} {`;
+      const largeStyles = styles?.large;
+      const mediumStyles = styles?.medium;
+      const smallStyles = styles?.small;
 
-      for (const key in styleObject) {
-        const value = styleObject[key];
-        if (typeof value === 'string') {
-          str += `${state.camelToKebabCase(key)}: ${value};`;
+      return `
+        ${
+          largeStyles
+            ? `.${state.useBlock.id} {${convertStyleMaptoCSS(largeStyles)}}`
+            : ''
         }
-      }
-
-      str += '}';
-
-      return str;
+        ${
+          mediumStyles
+            ? `${getMaxWidthQueryForSize('medium')} {
+              .${state.useBlock.id} {${convertStyleMaptoCSS(mediumStyles)}}
+            }`
+            : ''
+        }
+        ${
+          smallStyles
+            ? `${getMaxWidthQueryForSize('small')} {
+              .${state.useBlock.id} {${convertStyleMaptoCSS(smallStyles)}}
+            }`
+            : ''
+        }
+      }`;
     },
   });
   return (
