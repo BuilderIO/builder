@@ -33,11 +33,11 @@ __metadata:
   linkType: hard
 
 "@builder.io/sdk-svelte@npm:dev":
-  version: 0.0.1-19
-  resolution: "@builder.io/sdk-svelte@npm:0.0.1-19"
+  version: 0.0.1-20
+  resolution: "@builder.io/sdk-svelte@npm:0.0.1-20"
   dependencies:
     node-fetch: ^2.6.1
-  checksum: 28adde2ad4b04e578e5c3378810b7522ab0b8c2a42f5d3143060692ac0e81892e59ee4d1273ac82effeace37655f533bfac135e3d533af349d30e2ee0687cdaa
+  checksum: 15be5497883dd1c1eb132e033963d1d73a25d94b2f7e6544d2e1d7f79dc9cbd5dd380b55f9277d9891a0d83d2574dfc11e379ce3f329e23da3f68e2460961301
   languageName: node
   linkType: hard
 
