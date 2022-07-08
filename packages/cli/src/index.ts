@@ -34,6 +34,7 @@ program
   .command('integrate')
   .description('integrate Builder.io with an existing codebase, currently supports Next.js')
   .option('-d,--debug', 'print debugging information')
+  .option('--skip-install', 'skip installing the @builder.io/react sdk')
   .option('-s,--stack <stack>', 'currently supports nextjs', 'nextjs')
   .option('-m,--model <model>', 'name of the model you want to integrate')
   .option('-a,--apiKey <apiKey>', 'you can find your apiKey on builder.io/account/settings')
