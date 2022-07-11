@@ -1,4 +1,4 @@
-import { RegisteredComponent } from '../context/builder.context.lite.js';
+import { RegisteredComponent } from '../context/builder.context.lite';
 import type { ComponentInfo } from '../types/components.js';
 import { fastClone } from './fast-clone.js';
 

@@ -13,7 +13,7 @@ export type BuilderRenderState = Record<string, unknown>;
 
 export type BuilderRenderContext = Record<string, unknown>;
 
-interface BuilderContext {
+export interface BuilderContextInterface {
   content: Nullable<BuilderContent>;
   context: BuilderRenderContext;
   state: BuilderRenderState;
@@ -21,7 +21,7 @@ interface BuilderContext {
   registeredComponents: RegisteredComponents;
 }
 
-export default createContext<BuilderContext>({
+export default createContext<BuilderContextInterface>({
   content: null,
   context: {},
   state: {},

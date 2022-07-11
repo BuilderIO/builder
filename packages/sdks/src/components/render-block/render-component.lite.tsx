@@ -3,13 +3,13 @@ import BlockStyles from './block-styles.lite';
 import RenderBlock from './render-block.lite';
 import { For, Show } from '@builder.io/mitosis';
 
-type Props = {
+export interface RenderComponentProps {
   componentRef: any;
   componentOptions: any;
   blockChildren: BuilderBlock[];
-};
+}
 
-export default function RenderComponent(props: Props) {
+export default function RenderComponent(props: RenderComponentProps) {
   return (
     <Show when={props.componentRef}>
       <props.componentRef {...props.componentOptions}>

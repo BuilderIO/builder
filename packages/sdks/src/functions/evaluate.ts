@@ -1,7 +1,7 @@
-import {
+import type {
   BuilderRenderContext,
   BuilderRenderState,
-} from '../context/builder.context.lite.js';
+} from '../context/builder.context.lite';
 import { isBrowser } from './is-browser.js';
 import { isEditing } from './is-editing.js';
 

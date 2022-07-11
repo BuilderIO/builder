@@ -1,7 +1,7 @@
-import {
+import type {
   BuilderRenderContext,
   BuilderRenderState,
-} from '../context/builder.context.lite.js';
+} from '../context/builder.context.lite';
 import { BuilderBlock } from '../types/builder-block.js';
 import { evaluate } from './evaluate.js';
 import { getEventHandlerName } from './event-handler-name.js';
