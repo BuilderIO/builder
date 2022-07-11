@@ -9,7 +9,7 @@ type Props = {
   repeatContext: BuilderContextInterface;
 };
 
-export default function RepeatRenderComponent(props: Props) {
+export default function ProvideContext(props: Props) {
   setContext(BuilderContext, {
     get content() {
       return props.repeatContext.content;
@@ -28,5 +28,5 @@ export default function RepeatRenderComponent(props: Props) {
     },
   });
 
-  return props.children;
+  return <>{props.children}</>;
 }

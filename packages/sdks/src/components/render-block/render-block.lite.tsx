@@ -22,7 +22,7 @@ import {
   useMetadata,
   useStore,
 } from '@builder.io/mitosis';
-import RepeatRenderComponent from './provide-context';
+import ProvideContext from './provide-context.lite';
 
 export type RenderBlockProps = {
   block: BuilderBlock;
@@ -38,7 +38,13 @@ export default function RenderBlock(props: RenderBlockProps) {
 
   const state = useStore({
     get component(): Nullable<RegisteredComponent> {
-      const componentName = state.useBlock.component?.name;
+      const componentName = getProcessedBlock({
+        block: props.block,
+        state: builderContext.state,
+        context: builderContext.context,
+        evaluateBindings: false,
+      }).component?.name;
+
       if (!componentName) {
         return null;
       }
@@ -76,6 +82,7 @@ export default function RenderBlock(props: RenderBlockProps) {
             block: props.block,
             state: builderContext.state,
             context: builderContext.context,
+            evaluateBindings: true,
           });
     },
     get attributes() {
@@ -199,16 +206,12 @@ export default function RenderBlock(props: RenderBlockProps) {
           >
             <For each={state.repeatItemData}>
               {(data, index) => (
-                <RepeatRenderComponent key={index} repeatContext={data.context}>
+                <ProvideContext key={index} repeatContext={data.context}>
                   <RenderBlock block={data.block} />
-                </RepeatRenderComponent>
+                </ProvideContext>
               )}
             </For>
           </Show>
-          {/**
-           * TO-DO: what happens with these during state repeats?
-           * - do we add a condition to `noCompRefChildren` to not render them if theres a repeat?
-           */}
           {/**
            * We need to run two separate loops for content + styles to workaround the fact that Vue 2
            * does not support multiple root elements.

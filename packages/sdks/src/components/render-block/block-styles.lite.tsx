@@ -20,6 +20,7 @@ export default function BlockStyles(props: BlockStylesProps) {
         block: props.block,
         state: builderContext.state,
         context: builderContext.context,
+        evaluateBindings: true,
       });
     },
 

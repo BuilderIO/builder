@@ -22,6 +22,7 @@ test('Can process bindings', () => {
     block,
     context: {},
     state: { test: 'hello' },
+    evaluateBindings: true,
   });
   expect(processed).not.toEqual(block);
   expect(processed.properties?.foo).toEqual('baz');
