@@ -8,8 +8,5 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": [
-    "src",
-    "typings"
-  ]
+  "include": ["src", "typings"]
 }
