@@ -1,3 +1,7 @@
+import {
+  BuilderRenderContext,
+  BuilderRenderState,
+} from '../context/builder.context.lite.js';
 import { isBrowser } from './is-browser.js';
 import { isEditing } from './is-editing.js';
 
@@ -8,8 +12,8 @@ export function evaluate({
   event,
 }: {
   code: string;
-  state: any;
-  context: any;
+  state: BuilderRenderState;
+  context: BuilderRenderContext;
   event?: Event;
 }): any {
   if (code === '') {

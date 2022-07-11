@@ -9,10 +9,14 @@ export type RegisteredComponent = ComponentInfo & {
 
 export type RegisteredComponents = Dictionary<RegisteredComponent>;
 
+export type BuilderRenderState = Record<string, unknown>;
+
+export type BuilderRenderContext = Record<string, unknown>;
+
 interface BuilderContext {
   content: Nullable<BuilderContent>;
-  context: Record<string, unknown>;
-  state: Record<string, unknown>;
+  context: BuilderRenderContext;
+  state: BuilderRenderState;
   apiKey: string | null;
   registeredComponents: RegisteredComponents;
 }

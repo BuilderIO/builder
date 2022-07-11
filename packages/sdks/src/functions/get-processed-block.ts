@@ -1,3 +1,7 @@
+import {
+  BuilderRenderContext,
+  BuilderRenderState,
+} from '../context/builder.context.lite.js';
 import { BuilderBlock } from '../types/builder-block.js';
 import { evaluate } from './evaluate.js';
 import { set } from './set.js';
@@ -5,8 +9,8 @@ import { transformBlock } from './transform-block.js';
 
 export function getProcessedBlock(options: {
   block: BuilderBlock;
-  state: any;
-  context: any;
+  state: BuilderRenderState;
+  context: BuilderRenderContext;
 }): BuilderBlock {
   const { state, context } = options;
   const block = transformBlock(options.block);
