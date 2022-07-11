@@ -1,4 +1,6 @@
 import BuilderContext, {
+  BuilderContextInterface,
+  BuilderRenderState,
   RegisteredComponent,
 } from '../../context/builder.context.lite';
 import { getBlockActions } from '../../functions/get-block-actions.js';
@@ -9,9 +11,10 @@ import { getBlockTag } from '../../functions/get-block-tag.js';
 import { getProcessedBlock } from '../../functions/get-processed-block.js';
 import { BuilderBlock } from '../../types/builder-block.js';
 import { Nullable } from '../../types/typescript.js';
+import { evaluate } from '../../functions/evaluate.js';
 import BlockStyles from './block-styles.lite';
 import { isEmptyHtmlElement } from './render-block.helpers.js';
-import RenderComponent from './render-component.lite';
+import RenderComponent, { RenderComponentProps } from './render-component.lite';
 import {
   For,
   Show,
@@ -19,6 +22,7 @@ import {
   useMetadata,
   useStore,
 } from '@builder.io/mitosis';
+import RepeatRenderComponent from './provide-context';
 
 export type RenderBlockProps = {
   block: BuilderBlock;
@@ -66,11 +70,13 @@ export default function RenderBlock(props: RenderBlockProps) {
       return getBlockTag(state.useBlock);
     },
     get useBlock(): BuilderBlock {
-      return getProcessedBlock({
-        block: props.block,
-        state: builderContext.state,
-        context: builderContext.context,
-      });
+      return state.repeatItemData
+        ? props.block
+        : getProcessedBlock({
+            block: props.block,
+            state: builderContext.state,
+            context: builderContext.context,
+          });
     },
     get attributes() {
       return {
@@ -98,6 +104,14 @@ export default function RenderBlock(props: RenderBlockProps) {
         ...(state.shouldWrap ? {} : { attributes: state.attributes }),
       };
     },
+
+    get renderComponentProps(): RenderComponentProps {
+      return {
+        blockChildren: state.children,
+        componentRef: state.componentRef,
+        componentOptions: state.componentOptions,
+      };
+    },
     get children() {
       // TO-DO: When should `canHaveChildren` dictate rendering?
       // This is currently commented out because some Builder components (e.g. Box) do not have `canHaveChildren: true`,
@@ -110,20 +124,63 @@ export default function RenderBlock(props: RenderBlockProps) {
        * When there is no `componentRef`, there might still be children that need to be rendered. In this case,
        * we render them outside of `componentRef`
        */
-      return state.componentRef ? [] : state.children;
+      return state.componentRef && !state.repeatItemData ? [] : state.children;
+    },
+
+    get repeatItemData():
+      | { block: BuilderBlock; context: BuilderContextInterface }[]
+      | undefined {
+      /**
+       * we don't use `state.useBlock` here because the processing done within its logic includes evaluating the block's bindings,
+       * which will not work if there is a repeat.
+       */
+      const { repeat, ...blockWithoutRepeat } = props.block;
+
+      if (!repeat) {
+        return undefined;
+      }
+
+      const { collection, itemName } = repeat;
+
+      console.log(builderContext.state, collection, builderContext.context);
+      const itemsArray = evaluate({
+        code: collection,
+        state: builderContext.state,
+        context: builderContext.context,
+      });
+
+      if (Array.isArray(itemsArray)) {
+        const collectionName = collection.split('.').pop();
+        const itemNameToUse =
+          itemName || (collectionName ? collectionName + 'Item' : 'item');
+
+        const repeatArray = itemsArray.map((item, index) => {
+          const itemState: BuilderRenderState = {
+            ...builderContext.state,
+            $index: index,
+            $item: item,
+            [itemNameToUse]: item,
+            [`$${itemNameToUse}Index`]: index,
+          };
+          const itemContext: BuilderContextInterface = {
+            ...builderContext,
+            state: itemState,
+          };
+
+          return { context: itemContext, block: blockWithoutRepeat };
+        });
+        console.log(repeatArray);
+        return repeatArray;
+      } else {
+        return undefined;
+      }
     },
   });
 
   return (
     <Show
       when={state.shouldWrap}
-      else={
-        <RenderComponent
-          blockChildren={state.children}
-          componentRef={state.componentRef}
-          componentOptions={state.componentOptions}
-        />
-      }
+      else={<RenderComponent {...state.renderComponentProps} />}
     >
       <Show
         when={!isEmptyHtmlElement(state.tagName)}
@@ -136,11 +193,22 @@ export default function RenderBlock(props: RenderBlockProps) {
         }
       >
         <state.tagName {...state.attributes}>
-          <RenderComponent
-            blockChildren={state.children}
-            componentRef={state.componentRef}
-            componentOptions={state.componentOptions}
-          />
+          <Show
+            when={state.repeatItemData}
+            else={<RenderComponent {...state.renderComponentProps} />}
+          >
+            <For each={state.repeatItemData}>
+              {(data, index) => (
+                <RepeatRenderComponent key={index} repeatContext={data.context}>
+                  <RenderBlock block={data.block} />
+                </RepeatRenderComponent>
+              )}
+            </For>
+          </Show>
+          {/**
+           * TO-DO: what happens with these during state repeats?
+           * - do we add a condition to `noCompRefChildren` to not render them if theres a repeat?
+           */}
           {/**
            * We need to run two separate loops for content + styles to workaround the fact that Vue 2
            * does not support multiple root elements.
