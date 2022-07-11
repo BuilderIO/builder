@@ -126,12 +126,17 @@ export default function RenderBlock(props: RenderBlockProps) {
       // return state.componentInfo?.canHaveChildren ? state.useBlock.children : [];
       return state.useBlock.children ?? [];
     },
-    get noCompRefChildren() {
+    get childrenWithoutParentComponent() {
       /**
        * When there is no `componentRef`, there might still be children that need to be rendered. In this case,
-       * we render them outside of `componentRef`
+       * we render them outside of `componentRef`.
+       * NOTE: We make sure not to render this if `repeatItemData` is non-null, because that means we are rendering an array of
+       * blocks, and the children will be repeated within those blocks.
        */
-      return state.componentRef && !state.repeatItemData ? [] : state.children;
+      const shouldRenderChildrenOutsideRef =
+        !state.componentRef && !state.repeatItemData;
+
+      return shouldRenderChildrenOutsideRef ? state.children : [];
     },
 
     get repeatItemData():
@@ -216,12 +221,12 @@ export default function RenderBlock(props: RenderBlockProps) {
            * We need to run two separate loops for content + styles to workaround the fact that Vue 2
            * does not support multiple root elements.
            */}
-          <For each={state.noCompRefChildren}>
+          <For each={state.childrenWithoutParentComponent}>
             {(child) => (
               <RenderBlock key={'render-block-' + child.id} block={child} />
             )}
           </For>
-          <For each={state.noCompRefChildren}>
+          <For each={state.childrenWithoutParentComponent}>
             {(child) => (
               <BlockStyles key={'block-style-' + child.id} block={child} />
             )}
