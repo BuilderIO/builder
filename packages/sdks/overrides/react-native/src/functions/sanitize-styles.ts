@@ -1,12 +1,11 @@
-import { sizes } from '../constants/device-sizes';
-import { BuilderBlock } from '../types/builder-block';
-
 const propertiesThatMustBeNumber = new Set(['lineHeight']);
 const displayValues = new Set(['flex', 'none']);
 
 const SHOW_WARNINGS = false;
 
-function validateReactNativeStyles(styles: Record<string, string | number>) {
+export const sanitizeBlockStyles = (
+  styles: Record<string, string | number>
+) => {
   // Style properties like `"20px"` need to be numbers like `20` for react native
   for (const key in styles) {
     const propertyValue = styles[key];
@@ -42,23 +41,4 @@ function validateReactNativeStyles(styles: Record<string, string | number>) {
       delete styles[key];
     }
   }
-}
-
-export function getBlockStyles(block: BuilderBlock) {
-  // TODO: responsive CSS using react native viewport width hooks
-  const styles: any = {
-    ...block.responsiveStyles?.large,
-    ...(block as any).styles,
-  };
-
-  if (block.responsiveStyles?.medium) {
-    Object.assign(styles, block.responsiveStyles.medium);
-  }
-  if (block.responsiveStyles?.small) {
-    Object.assign(styles, block.responsiveStyles.small);
-  }
-
-  validateReactNativeStyles(styles);
-
-  return styles;
-}
+};
