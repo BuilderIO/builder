@@ -21,7 +21,7 @@ export function registerComponent(component: any, info: ComponentInfo): void {
 }
 
 export const createRegisterComponentMessage = ({
-  component,
+  component: _,
   ...info
 }: RegisteredComponent) => ({
   type: 'builder.registerComponent',

@@ -1,4 +1,3 @@
-import RenderBlocks from '../../components/render-blocks.lite';
 import '@builder.io/mitosis';
 
 export interface SectionProps {
