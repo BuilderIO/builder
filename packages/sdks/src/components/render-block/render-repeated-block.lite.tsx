@@ -1,15 +1,25 @@
 import { setContext } from '@builder.io/mitosis';
-import { JSX } from '@builder.io/mitosis/jsx-runtime';
 import BuilderContext, {
   BuilderContextInterface,
 } from '../../context/builder.context.lite';
+import { BuilderBlock } from '../../types/builder-block';
+import RenderBlock from './render-block.lite';
 
 type Props = {
-  children: JSX.Element;
+  block: BuilderBlock;
   repeatContext: BuilderContextInterface;
 };
 
-export default function ProvideContext(props: Props) {
+/**
+ * We can't make this a generic `ProvideContext` function because Vue 2 won't support root slots, e.g.
+ *
+ * ```vue
+ * <template>
+ *  <slot></slot>
+ * </template>
+ * ```
+ */
+export default function RenderRepeatedBlock(props: Props) {
   setContext(BuilderContext, {
     get content() {
       return props.repeatContext.content;
@@ -28,5 +38,5 @@ export default function ProvideContext(props: Props) {
     },
   });
 
-  return <>{props.children}</>;
+  return <RenderBlock block={props.block} />;
 }

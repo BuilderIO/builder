@@ -80,7 +80,7 @@ export default function RenderContent(props: RenderContentProps) {
         ...state.overrideState,
       };
     },
-    get context() {
+    get contextContext() {
       return props.context || {};
     },
 
@@ -140,7 +140,7 @@ export default function RenderContent(props: RenderContentProps) {
       if (jsCode) {
         evaluate({
           code: jsCode,
-          context: state.context,
+          context: state.contextContext,
           state: state.contentState,
         });
       }
@@ -153,7 +153,7 @@ export default function RenderContent(props: RenderContentProps) {
       return expression.replace(/{{([^}]+)}}/g, (_match, group) =>
         evaluate({
           code: group,
-          context: state.context,
+          context: state.contextContext,
           state: state.contentState,
         })
       );
@@ -225,7 +225,7 @@ export default function RenderContent(props: RenderContentProps) {
       return state.contentState;
     },
     get context() {
-      return state.context;
+      return state.contextContext;
     },
     get apiKey() {
       return props.apiKey;

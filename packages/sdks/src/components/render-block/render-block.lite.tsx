@@ -1,6 +1,5 @@
 import BuilderContext, {
   BuilderContextInterface,
-  BuilderRenderState,
   RegisteredComponent,
 } from '../../context/builder.context.lite';
 import { getBlockActions } from '../../functions/get-block-actions.js';
@@ -22,7 +21,7 @@ import {
   useMetadata,
   useStore,
 } from '@builder.io/mitosis';
-import ProvideContext from './provide-context.lite';
+import RenderRepeatedBlock from './render-repeated-block.lite';
 
 export type RenderBlockProps = {
   block: BuilderBlock;
@@ -32,6 +31,11 @@ export type RenderBlockProps = {
 useMetadata({
   elementTag: 'state.tagName',
 });
+
+interface RepeatData {
+  block: BuilderBlock;
+  context: BuilderContextInterface;
+}
 
 export default function RenderBlock(props: RenderBlockProps) {
   const builderContext = useContext(BuilderContext);
@@ -139,22 +143,19 @@ export default function RenderBlock(props: RenderBlockProps) {
       return shouldRenderChildrenOutsideRef ? state.children : [];
     },
 
-    get repeatItemData():
-      | { block: BuilderBlock; context: BuilderContextInterface }[]
-      | undefined {
+    get repeatItemData(): RepeatData[] | undefined {
       /**
        * we don't use `state.useBlock` here because the processing done within its logic includes evaluating the block's bindings,
        * which will not work if there is a repeat.
        */
       const { repeat, ...blockWithoutRepeat } = props.block;
 
-      if (!repeat) {
+      if (!repeat?.collection) {
         return undefined;
       }
 
       const { collection, itemName } = repeat;
 
-      console.log(builderContext.state, collection, builderContext.context);
       const itemsArray = evaluate({
         code: collection,
         state: builderContext.state,
@@ -166,22 +167,19 @@ export default function RenderBlock(props: RenderBlockProps) {
         const itemNameToUse =
           itemName || (collectionName ? collectionName + 'Item' : 'item');
 
-        const repeatArray = itemsArray.map((item, index) => {
-          const itemState: BuilderRenderState = {
-            ...builderContext.state,
-            $index: index,
-            $item: item,
-            [itemNameToUse]: item,
-            [`$${itemNameToUse}Index`]: index,
-          };
-          const itemContext: BuilderContextInterface = {
+        const repeatArray = itemsArray.map<RepeatData>((item, index) => ({
+          context: {
             ...builderContext,
-            state: itemState,
-          };
-
-          return { context: itemContext, block: blockWithoutRepeat };
-        });
-        console.log(repeatArray);
+            state: {
+              ...builderContext.state,
+              $index: index,
+              $item: item,
+              [itemNameToUse]: item,
+              [`$${itemNameToUse}Index`]: index,
+            },
+          },
+          block: blockWithoutRepeat,
+        }));
         return repeatArray;
       } else {
         return undefined;
@@ -211,9 +209,11 @@ export default function RenderBlock(props: RenderBlockProps) {
           >
             <For each={state.repeatItemData}>
               {(data, index) => (
-                <ProvideContext key={index} repeatContext={data.context}>
-                  <RenderBlock block={data.block} />
-                </ProvideContext>
+                <RenderRepeatedBlock
+                  key={index}
+                  repeatContext={data.context}
+                  block={data.block}
+                />
               )}
             </For>
           </Show>
