@@ -43,9 +43,6 @@ module.exports = {
     },
     svelte: {
       transpiler: { format: 'esm' },
-      // prettier & svelte don't play well together when it comes to parsing @html content for some reason
-      // https://github.com/sveltejs/prettier-plugin-svelte/issues/290
-      prettier: false,
       plugins: [
         () => ({
           json: {

@@ -20,5 +20,9 @@ module.exports = {
   rules: {
     '@builder.io/mitosis/no-var-declaration-or-assignment-in-component': 'off',
     '@typescript-eslint/no-empty-interface': 'off',
+    '@typescript-eslint/no-unused-vars': [
+      'error',
+      { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
+    ],
   },
 };

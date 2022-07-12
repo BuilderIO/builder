@@ -1,6 +1,8 @@
 import { getDefaultRegisteredComponents } from '../../constants/builder-registered-components.js';
 import { TARGET } from '../../constants/target.js';
 import BuilderContext, {
+  BuilderRenderContext,
+  BuilderRenderState,
   RegisteredComponent,
   RegisteredComponents,
 } from '../../context/builder.context.lite';
@@ -37,13 +39,13 @@ export type RenderContentProps = {
   content?: BuilderContent;
   model?: string;
   data?: { [key: string]: any };
-  context?: { [key: string]: any };
+  context?: BuilderRenderContext;
   apiKey: string;
   customComponents?: RegisteredComponent[];
 };
 
 interface BuilderComponentStateChange {
-  state: { [key: string]: any };
+  state: BuilderRenderState;
   ref: {
     name?: string;
     props?: {
@@ -70,16 +72,16 @@ export default function RenderContent(props: RenderContentProps) {
     },
     overrideContent: null as Nullable<BuilderContent>,
     update: 0,
-    overrideState: {} as Dictionary<any>,
-    get contentState(): Dictionary<any> {
+    overrideState: {} as BuilderRenderState,
+    get contentState(): BuilderRenderState {
       return {
         ...props.content?.data?.state,
         ...props.data,
         ...state.overrideState,
       };
     },
-    get context() {
-      return {} as Dictionary<any>;
+    get contextContext() {
+      return props.context || {};
     },
 
     get allRegisteredComponents(): RegisteredComponents {
@@ -138,7 +140,7 @@ export default function RenderContent(props: RenderContentProps) {
       if (jsCode) {
         evaluate({
           code: jsCode,
-          context: state.context,
+          context: state.contextContext,
           state: state.contentState,
         });
       }
@@ -151,7 +153,7 @@ export default function RenderContent(props: RenderContentProps) {
       return expression.replace(/{{([^}]+)}}/g, (_match, group) =>
         evaluate({
           code: group,
-          context: state.context,
+          context: state.contextContext,
           state: state.contentState,
         })
       );
@@ -223,7 +225,7 @@ export default function RenderContent(props: RenderContentProps) {
       return state.contentState;
     },
     get context() {
-      return state.context;
+      return state.contextContext;
     },
     get apiKey() {
       return props.apiKey;

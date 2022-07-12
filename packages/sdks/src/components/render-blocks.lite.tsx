@@ -60,7 +60,9 @@ export default function RenderBlocks(props: RenderBlockProps) {
         flexDirection: 'column',
         alignItems: 'stretch',
       }}
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       onClick={(event) => state.onClick()}
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       onMouseEnter={(event) => state.onMouseEnter()}
     >
       {/**

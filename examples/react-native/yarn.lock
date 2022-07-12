@@ -1473,14 +1473,14 @@ __metadata:
   linkType: hard
 
 "@builder.io/sdk-react-native@npm:dev":
-  version: 0.0.1-59
-  resolution: "@builder.io/sdk-react-native@npm:0.0.1-59"
+  version: 0.0.1-60
+  resolution: "@builder.io/sdk-react-native@npm:0.0.1-60"
   dependencies:
     react-native-render-html: ^6.3.4
     react-native-video: ^5.1.1
   peerDependencies:
     react-native: ^0.64.3
-  checksum: 4cc589ab85ec0451451d5eabeb17a86a0e4eadbf9ccc448706a990e84452118101512de06e3fc0bafc2d4be8b66177985dd9c6493f86bcbf6ddd1a1d23eafae6
+  checksum: 1961067a5b820350e855cb2186e6a71b1ec9c0edbba1cd0a8e058c76c376d71d67a980a9e4b86995f99e3024c1bea36dc84781dbc19f226f836cb51c35df18b4
   languageName: node
   linkType: hard
 
@@ -3538,9 +3538,9 @@ __metadata:
   linkType: hard
 
 "eme-encryption-scheme-polyfill@npm:^2.0.1":
-  version: 2.0.4
-  resolution: "eme-encryption-scheme-polyfill@npm:2.0.4"
-  checksum: 2655ecc261b428a62dcaaee43ad92d945769f43584773954221d7eef67e43a1bcb711e78ccadcc2ed11b18930ce0092f67e8ee07c5a5fb108ecc5dd403176fba
+  version: 2.0.5
+  resolution: "eme-encryption-scheme-polyfill@npm:2.0.5"
+  checksum: a66764ffc4fd3157696f46d3a24e565a836e7104c5d5f38fc847dafaab9f68530bbe79a6567a32eb8e3d80d2176b37bbab75889377a5c4f6f5384d5f01590a0d
   languageName: node
   linkType: hard
 
