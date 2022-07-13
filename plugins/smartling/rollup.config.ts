@@ -11,7 +11,7 @@ const pkg = require('./package.json');
 const libraryName = 'plugin';
 
 export default {
-  input: `src/${libraryName}.ts`,
+  input: `src/${libraryName}.tsx`,
   // Important! We need to have shared references to 'react' and '@builder.io/sdk'
   // for builder plugins to run properly
   // Do not change these! If you install new dependenies, that is ok, they should be
@@ -21,6 +21,7 @@ export default {
     '@builder.io/react',
     '@builder.io/app-context',
     '@material-ui/core',
+    '@material-ui/icons',
     '@emotion/core',
     '@emotion/styled',
     'mobx',

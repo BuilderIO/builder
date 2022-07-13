@@ -132,6 +132,35 @@ export const getTranslationModelTemplate = (
       noPhotoPicker: false,
       model: '',
     },
+    {
+      '@type': '@builder.io/core:Field',
+      name: 'jobDetails',
+      type: 'SmartlingConfiguration',
+      defaultValue: {
+        project: '',
+        targetLocales: [],
+      },
+      required: true,
+      subFields: [],
+      helperText: '',
+      autoFocus: false,
+      simpleTextOnly: false,
+      disallowRemove: false,
+      broadcast: false,
+      bubble: false,
+      hideFromUI: false,
+      hideFromFieldsEditor: false,
+      showTemplatePicker: true,
+      permissionsRequiredToEdit: '',
+      advanced: false,
+      copyOnAdd: true,
+      onChange: '',
+      showIf: '',
+      mandatory: false,
+      hidden: false,
+      noPhotoPicker: false,
+      model: '',
+    },
   ],
   helperText: 'Smartling Translation Jobs',
   publicWritable: false,
@@ -144,13 +173,36 @@ export const getTranslationModelTemplate = (
   showScheduling: false,
   hooks: {
     validate: `async function run() {
-            if (contentModel.published === 'published') {
-                return {
-                    level: 'error',
-                    message: 'Job was already sent to smartling, please duplicate to create a new job'
-                }
-            }
-        } return run();`,
+      if (contentModel.published === 'published') {
+          return {
+              level: 'error',
+              message: 'Job was already sent to smartling, please duplicate to create a new job'
+          }
+      }
+      if (!contentModel.data.get('jobDetails')?.get('project')) {
+        return {
+            level: 'error',
+            message: 'Please choose a smartling project for this job'
+        }
+      }
+      if (!contentModel.data.get('jobDetails')?.get('targetLocales')?.length) {
+        return {
+            level: 'error',
+            message: 'Please choose at least one target locale for this job'
+        }
+      }
+      const entries = contentModel.data.get('entries');
+
+      const validEntries = entries.length > 0 && entries.every(entry => entry.get('content')?.id);
+
+      if (!validEntries) {
+          return {
+              level: 'error',
+              message: 'Please add content to this job'
+          }
+      }
+  }
+  return run();`,
   },
   webhooks: [
     {
