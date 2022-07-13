@@ -50,11 +50,14 @@ const val docId = "00df1822dbdf48d18a1fdef36d98a315"
 @Composable
 fun RenderContent(content: BuilderContent) {
     var content by remember { mutableStateOf<BuilderContent?>(content) }
+
     val view = LocalView.current
     val context = LocalContext.current
     val lifecycleOwner = view.findViewTreeLifecycleOwner()
 
-    registerComponents()
+    LaunchedEffect(Unit, block = {
+        registerComponents()
+    })
 
     KeepScreenOn()
 
