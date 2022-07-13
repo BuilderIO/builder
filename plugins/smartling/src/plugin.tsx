@@ -259,9 +259,6 @@ registerPlugin(
           return id as any;
         },
       },
-      // target: {
-
-      // }
     };
   }
 );
