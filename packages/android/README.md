@@ -17,12 +17,15 @@ See [MainActivity.kt](./sdk/app/src/main/java/com/example/myapplication/MainActi
 fun Main() {
     var content by remember { mutableStateOf<BuilderContent?>(null) }
 
-    // Fetch content
-    getContent(modelName, apiKey, url) { received ->
-        content = received
-    }
+    LaunchedEffect(Unit, block = {
+        // Fetch content JSON from Builder.io API
+        getContent(modelName, apiKey, url) { received ->
+            content = received
+        }
 
-    registerCustomComponents()
+        // Register your custom components
+        registerCustomComponents()
+    })
 
     if (content != null) {
       // Render content
