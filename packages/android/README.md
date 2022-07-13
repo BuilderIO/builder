@@ -44,8 +44,7 @@ fun MyButton(text: String) {
 }
 
 fun registerCustomComponents() {
-    // Register custom component
-    registerComponent(ComponentOptions(
+    val componentOptions = ComponentOptions(
         name = "OurButton",
         inputs = arrayListOf(
             ComponentInput(
@@ -54,7 +53,10 @@ fun registerCustomComponents() {
                 defaultValue = "Hello!"
             )
         )
-    )) @Composable { options, _ ->
+    )
+    
+    // Register custom component
+    registerComponent(componentOptions) @Composable { options, _ ->
         var text = options?.get("text")?.jsonPrimitive?.contentOrNull ?: ""
         MyButton(text)
     }
