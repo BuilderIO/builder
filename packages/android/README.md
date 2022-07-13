@@ -17,12 +17,15 @@ See [MainActivity.kt](./sdk/app/src/main/java/com/example/myapplication/MainActi
 fun Main() {
     var content by remember { mutableStateOf<BuilderContent?>(null) }
 
-    // Fetch content
-    getContent(modelName, apiKey, url) { received ->
-        content = received
-    }
+    LaunchedEffect(Unit, block = {
+        // Fetch content JSON from Builder.io API
+        getContent(modelName, apiKey, url) { received ->
+            content = received
+        }
 
-    registerCustomComponents()
+        // Register your custom components
+        registerCustomComponents()
+    })
 
     if (content != null) {
       // Render content
@@ -41,8 +44,7 @@ fun MyButton(text: String) {
 }
 
 fun registerCustomComponents() {
-    // Register custom component
-    registerComponent(ComponentOptions(
+    val componentOptions = ComponentOptions(
         name = "OurButton",
         inputs = arrayListOf(
             ComponentInput(
@@ -51,12 +53,19 @@ fun registerCustomComponents() {
                 defaultValue = "Hello!"
             )
         )
-    )) @Composable { options, _ ->
+    )
+    
+    // Register custom component
+    registerComponent(componentOptions) @Composable { options, _ ->
         var text = options?.get("text")?.jsonPrimitive?.contentOrNull ?: ""
         MyButton(text)
     }
 }
 ```
+
+## Interoperability
+
+You don't need to use Jetpack Compose to use this SDK, you can learn about interoperability with Android Views [here](https://developer.android.com/jetpack/compose/interop/interop-apis)
 
 ## TODO
 - Make final installable package

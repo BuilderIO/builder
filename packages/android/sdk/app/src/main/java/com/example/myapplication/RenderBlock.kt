@@ -1,5 +1,7 @@
 package com.example.myapplication
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,7 +16,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import kotlinx.serialization.json.JsonElement
 
-val docRef = db.collection(collectionName).document(docId)
+val metaDocRef = db.collection(collectionName).document("$docId:meta")
 
 fun dpToPixel(dp: Dp): Int {
     return dp.value.toInt() / 2
@@ -35,12 +37,13 @@ fun RenderBlock(block: BuilderBlock) {
             .fillMaxWidth()
             .onGloballyPositioned { layoutCoordinates ->
                 if (isEditing) {
+                    Log.d(TAG, "Sending position $docId:meta")
                     val bounds = layoutCoordinates.boundsInRoot()
                     val blockId = block.id
-                    docRef.update("blocks.$blockId.top", dpToPixel(bounds.top.dp))
-                    docRef.update("blocks.$blockId.left", dpToPixel(bounds.left.dp))
-                    docRef.update("blocks.$blockId.width", dpToPixel(bounds.width.dp))
-                    docRef.update("blocks.$blockId.height", dpToPixel(bounds.height.dp))
+                    metaDocRef.update("blocks.$blockId.top", dpToPixel(bounds.top.dp))
+                    metaDocRef.update("blocks.$blockId.left", dpToPixel(bounds.left.dp))
+                    metaDocRef.update("blocks.$blockId.width", dpToPixel(bounds.width.dp))
+                    metaDocRef.update("blocks.$blockId.height", dpToPixel(bounds.height.dp))
                 }
             }
             .padding(
@@ -73,9 +76,8 @@ val components = mutableMapOf<String, ComponentFactory>()
 
 fun registerComponent(options: ComponentOptions, component: ComponentFactory) {
     _registerComponent(options, component)
-    val docRef = db.collection(collectionName).document(docId)
     val componentName = options.name;
-    docRef.update("inputs.$componentName", options.inputs)
+    metaDocRef.update("inputs.$componentName", options.inputs)
 }
 
 fun _registerComponent(options: ComponentOptions, component: ComponentFactory) {

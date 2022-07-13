@@ -1,12 +1,15 @@
 import SwiftUI
 import SwiftyJSON
 import FirebaseFirestoreSwift
+import FirebaseFirestore
 
 
 let debug = true
 
 struct ContentView: View {
-    let isEditing = false
+    let isEditing = true
+    
+    @State private var firestoreSubscription: ListenerRegistration?
     
     init() {
         if (isEditing) {
@@ -34,7 +37,7 @@ struct ContentView: View {
         
         let collection = testingApp.db.collection(collectionName)
         let doc = collection.document(docId)
-        doc.addSnapshotListener { documentSnapshot, error in
+        firestoreSubscription = doc.addSnapshotListener { documentSnapshot, error in
             do {
                 guard let document = documentSnapshot else {
                     print("Error fetching document: \(error!)")
@@ -44,6 +47,8 @@ struct ContentView: View {
                     print("Document data was empty.")
                     return
                 }
+                
+                overrideContent.content = data
 
                 print("Got snapshot")
 
@@ -99,6 +104,8 @@ struct ContentView: View {
                     }
                 }
             }
+        }.onDisappear {
+            firestoreSubscription?.remove()
         }
         if debug && !isEditing {
             Button("Reload") {

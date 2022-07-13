@@ -19,6 +19,7 @@ import android.view.WindowManager
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.findViewTreeLifecycleOwner
@@ -26,6 +27,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.myapplication.blocks.registerColumns
 import com.example.myapplication.blocks.registerImage
 import com.example.myapplication.blocks.registerText
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
@@ -49,54 +51,71 @@ const val docId = "00df1822dbdf48d18a1fdef36d98a315"
 fun RenderContent(content: BuilderContent) {
     var content by remember { mutableStateOf<BuilderContent?>(content) }
 
-    registerComponents()
-
-    KeepScreenOn()
-
     val view = LocalView.current
     val context = LocalContext.current
     val lifecycleOwner = view.findViewTreeLifecycleOwner()
 
+    LaunchedEffect(Unit, block = {
+        registerComponents()
+    })
+
+    KeepScreenOn()
+
     if (isEditing) {
-        val docRef = db.collection(collectionName).document(docId)
+        DisposableEffect(LocalLifecycleOwner.current) {
+            Log.d(TAG, "Init ran")
+            val docRef = db.collection(collectionName).document(docId)
+            val metaDocRef = db.collection(collectionName).document("$docId:meta")
 
-        val takeScreenshot: (Unit) -> Unit = debounce(
-            50,
-            lifecycleOwner!!.lifecycleScope,
-        ) {
-            val window = (context as Activity).window
-            captureView(view, window) { screenshot ->
-                // Convert bitmap to WEBP byteArray
-                val byteArrayOutputStream = ByteArrayOutputStream()
-                screenshot.compress(Bitmap.CompressFormat.WEBP, 60, byteArrayOutputStream)
-                val byteArray: ByteArray = byteArrayOutputStream.toByteArray()
+            val takeScreenshot: (Unit) -> Unit = debounce(
+                200L,
+                lifecycleOwner!!.lifecycleScope,
+            ) {
+                val window = (context as Activity).window
+                Log.d(TAG, "Init screenshot")
+                captureView(view, window) { screenshot ->
+                    // Convert bitmap to WEBP byteArray
+                    val byteArrayOutputStream = ByteArrayOutputStream()
+                    screenshot.compress(Bitmap.CompressFormat.WEBP, 60, byteArrayOutputStream)
+                    val byteArray: ByteArray = byteArrayOutputStream.toByteArray()
 
-                val encoded = Base64.encodeToString(byteArray, Base64.DEFAULT)
+                    val encoded = Base64.encodeToString(byteArray, Base64.DEFAULT)
 
-                docRef.update("screenshot", encoded)
-                docRef.update("screenshotHeight", dpToPixel(view.height.dp))
-                docRef.update("screenshotWidth", dpToPixel(view.width.dp))
+                    val data = hashMapOf(
+                        "screenshot" to encoded,
+                        "screenshotHeight" to dpToPixel(view.height.dp),
+                        "screenshotWidth" to dpToPixel(view.width.dp)
+                    )
+                    Log.d(TAG, "Send screenshot")
+                    metaDocRef.set(data, SetOptions.merge())
+                }
             }
-        }
 
-        docRef.addSnapshotListener { snapshot, e ->
-            if (e != null) {
-                Log.w(TAG, "Listen failed.", e)
-                return@addSnapshotListener
+            val ref = docRef.addSnapshotListener { snapshot, e ->
+                if (e != null) {
+                    Log.w(TAG, "Listen failed.", e)
+                    return@addSnapshotListener
+                }
+
+                if (snapshot != null && snapshot.exists()) {
+                    Log.d(TAG, "Got data")
+                    val gson = Gson();
+
+                    val now = System.currentTimeMillis()
+                    val json = gson.toJson(snapshot.data)
+                    val obj = Json {
+                        ignoreUnknownKeys = true
+                    }.decodeFromString<BuilderContent>(json)
+                    content = obj
+                    takeScreenshot(Unit)
+                    val timeDelta = System.currentTimeMillis() - now
+                    Log.d(TAG, "Update took $timeDelta ms")
+                } else {
+                    Log.d(TAG, "Current data: null")
+                }
             }
-
-            if (snapshot != null && snapshot.exists()) {
-                Log.d(TAG, "Current data: ${snapshot.data}")
-                val gson = Gson();
-
-                val json = gson.toJson(snapshot.data)
-                val obj = Json {
-                    ignoreUnknownKeys = true
-                }.decodeFromString<BuilderContent>(json)
-                content = obj
-                takeScreenshot(Unit)
-            } else {
-                Log.d(TAG, "Current data: null")
+            onDispose {
+                ref.remove()
             }
         }
     }
@@ -122,7 +141,6 @@ fun <T> debounce(
         }
     }
 }
-
 
 
 fun captureView(view: View, window: Window, bitmapCallback: (Bitmap) -> Unit) {
@@ -156,7 +174,8 @@ fun captureView(view: View, window: Window, bitmapCallback: (Bitmap) -> Unit) {
 @Composable
 fun KeepScreenOn() {
     val context = LocalContext.current
-    DisposableEffect(Unit) {
+
+    DisposableEffect(LocalLifecycleOwner.current) {
         val window = context.findActivity()?.window
         window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         onDispose {
