@@ -1144,7 +1144,7 @@ export class Builder {
   private preview = false;
 
   get browserTrackingDisabled() {
-    return Boolean(Builder.isBrowser && (window as any).builderNoTrack);
+    return Builder.isBrowser && Boolean((window as any).builderNoTrack || !navigator.cookieEnabled);
   }
 
   get canTrack() {
