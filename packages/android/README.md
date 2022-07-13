@@ -58,6 +58,10 @@ fun registerCustomComponents() {
 }
 ```
 
+## Interoperability
+
+You don't need to use Jetpack Compose to use this SDK, you can learn about interoperability with Android Views [here](https://developer.android.com/jetpack/compose/interop/interop-apis)
+
 ## TODO
 - Make final installable package
 - QR code based editing workflow (scan QR code in builder editor to connect your device and init editing)
