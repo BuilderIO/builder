@@ -1,6 +1,5 @@
 import { RegisteredComponent } from '../context/builder.context.lite';
-import type { ComponentInfo } from '../types/components.js';
-import { fastClone } from './fast-clone.js';
+import type { ComponentInfo, Input } from '../types/components.js';
 
 /**
  * @deprecated.  Use the `customComponents` prop in RenderContent instead to provide your custom components to the builder SDK.
@@ -25,31 +24,26 @@ export const createRegisterComponentMessage = ({
   ...info
 }: RegisteredComponent) => ({
   type: 'builder.registerComponent',
-  data: prepareComponentInfoToSend(fastClone(info)),
+  data: prepareComponentInfoToSend(info),
 });
 
-function prepareComponentInfoToSend(info: ComponentInfo) {
-  return {
-    ...info,
-    ...(info.inputs && {
-      inputs: info.inputs.map((input) => {
-        // TODO: do for nexted fields too
-        // TODO: probably just convert all functions, not just
-        // TODO: put this in input hooks: { onChange: ..., showIf: ... }
-        const keysToConvertFnToString = ['onChange', 'showIf'] as const;
+/**
+ * Input attributes that are functions must be converted to strings before being serialized to JSON.
+ */
+// eslint-disable-next-line @typescript-eslint/ban-types
+const serializeFn = (fn: Function) =>
+  `return (${fn.toString()}).apply(this, arguments)`;
 
-        for (const key of keysToConvertFnToString) {
-          const fn = input[key];
-          if (fn && typeof fn === 'function') {
-            input = {
-              ...input,
-              [key]: `return (${fn.toString()}).apply(this, arguments)`,
-            };
-          }
-        }
-
-        return input;
-      }),
-    }),
-  };
-}
+const prepareComponentInfoToSend = (info: ComponentInfo): ComponentInfo => ({
+  ...info,
+  inputs: info.inputs?.map(
+    (input): Input =>
+      Object.entries(input).reduce(
+        (acc, [key, value]) => ({
+          ...acc,
+          [key]: typeof value === 'function' ? serializeFn(value) : value,
+        }),
+        {} as Input
+      )
+  ),
+});
