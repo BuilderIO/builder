@@ -1,6 +1,7 @@
-import { Show } from '@builder.io/mitosis';
+import { Show, useStore } from '@builder.io/mitosis';
 import { JSX } from '@builder.io/mitosis/jsx-runtime';
 import { BuilderBlock } from '../../types/builder-block';
+import { getSrcSet } from './image.helpers';
 
 export interface ImageProps {
   className?: string;
@@ -18,15 +19,41 @@ export interface ImageProps {
   fitContent?: boolean;
   builderBlock?: BuilderBlock;
   noWebp?: boolean;
+  src?: string;
 }
 
 export default function Image(props: ImageProps) {
+  const state = useStore({
+    get srcSetToUse(): string | undefined {
+      const imageToUse = props.image || props.src;
+      const url = imageToUse;
+      if (
+        !url ||
+        // We can auto add srcset for cdn.builder.io and shopify
+        // images, otherwise you can supply this prop manually
+        !(url.match(/builder\.io/) || url.match(/cdn\.shopify\.com/))
+      ) {
+        return props.srcset;
+      }
+
+      if (props.srcset && props.image?.includes('builder.io/api/v1/image')) {
+        if (!props.srcset.includes(props.image.split('?')[0])) {
+          console.debug('Removed given srcset');
+          return getSrcSet(url);
+        }
+      } else if (props.image && !props.srcset) {
+        return getSrcSet(url);
+      }
+
+      return getSrcSet(url);
+    },
+  });
   return (
     <div css={{ position: 'relative' }}>
       <picture>
-        <Show when={props.srcset?.match(/builder\.io/) && !props.noWebp}>
+        <Show when={state.srcSetToUse?.match(/builder\.io/) && !props.noWebp}>
           <source
-            srcset={props.srcset?.replace(/\?/g, '?format=webp&')}
+            srcset={state.srcSetToUse?.replace(/\?/g, '?format=webp&')}
             type="image/webp"
           />
         </Show>
@@ -52,10 +79,10 @@ export default function Image(props: ImageProps) {
           }
           src={props.image}
           // TODO: memoize on image on client
-          srcset={props.srcset}
+          srcset={state.srcSetToUse}
           sizes={props.sizes}
         />
-        <source srcset={props.srcset} />
+        <source srcset={state.srcSetToUse} />
       </picture>
       <Show
         when={
