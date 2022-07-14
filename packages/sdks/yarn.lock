@@ -841,12 +841,12 @@ __metadata:
   linkType: hard
 
 "@builder.io/mitosis-cli@npm:dev":
-  version: 0.0.17-22
-  resolution: "@builder.io/mitosis-cli@npm:0.0.17-22"
+  version: 0.0.17-23
+  resolution: "@builder.io/mitosis-cli@npm:0.0.17-23"
   dependencies:
     "@babel/core": ^7.17.8
     "@babel/preset-typescript": ^7.16.7
-    "@builder.io/mitosis": 0.0.56-24
+    "@builder.io/mitosis": 0.0.56-25
     "@vue/compiler-sfc": ^3.1.5
     babel-preset-solid: ^1.3.13
     chalk: ^4.1.0
@@ -866,13 +866,13 @@ __metadata:
     vue-template-validator: ^1.1.5
   bin:
     mitosis: bin/mitosis
-  checksum: f71c69a2b52ee58a05cb2e4165856c3b4fa368bdf86e4aa1cbbbf20802283209eb29683dec4eb18914c2554c143289cf35289b37ad6c707bd85843c911542a60
+  checksum: fcb4b231283b3ed8f5881f32c7a4b89399b33f1cd4ee5abc953270f70e974125c89c372d84358f592a35bc438a9c06eaf6dab9fbf26c01d7ebccf48ff278d343
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis@npm:0.0.56-24, @builder.io/mitosis@npm:dev":
-  version: 0.0.56-24
-  resolution: "@builder.io/mitosis@npm:0.0.56-24"
+"@builder.io/mitosis@npm:0.0.56-25, @builder.io/mitosis@npm:dev":
+  version: 0.0.56-25
+  resolution: "@builder.io/mitosis@npm:0.0.56-25"
   dependencies:
     "@angular/compiler": ^11.2.11
     "@babel/core": 7.14.5
@@ -899,7 +899,7 @@ __metadata:
     typescript: ^4.7.3
     vue: ^2
     vue-template-compiler: ^2.6.12
-  checksum: 333c0fc762d50d3086a9b872a6c37e94fa4f7eae438d0f8404dbceea6d157fe9248f41ec06af1a5c0630db36c9d0e7b4c2f3f0f1a035155109665e953c6b2353
+  checksum: 51548fdc3b30fbd0d3a5f33feea4ee67f04f657611ea46d4c7e53850953fee7bd8e348b4b6f04896bf55c4bd0195002c098e1a96bd0c5b5974579e7999e7d528
   languageName: node
   linkType: hard
 
@@ -1853,14 +1853,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/compiler-sfc@npm:2.7.4":
-  version: 2.7.4
-  resolution: "@vue/compiler-sfc@npm:2.7.4"
+"@vue/compiler-sfc@npm:2.7.5":
+  version: 2.7.5
+  resolution: "@vue/compiler-sfc@npm:2.7.5"
   dependencies:
     "@babel/parser": ^7.18.4
     postcss: ^8.4.14
     source-map: ^0.6.1
-  checksum: f4f4ce4196b1f3668b4e15dfff969b6e2d06aadff9431608ffe977ce1b184eef99fc5553d9770f41960d3543b3dae37f3a8ea9732b80be9ae018a334140d1ec6
+  checksum: 81608274dd12b5794f8e5d8a083837feb0da0b4dec490e5c7ab44475b91ae21415ee686b9b6691d81eab7d28baad140fabede6c2aea46d11505ae562207c71ed
   languageName: node
   linkType: hard
 
@@ -2444,16 +2444,16 @@ __metadata:
   linkType: hard
 
 "browserslist@npm:^4.20.2":
-  version: 4.21.1
-  resolution: "browserslist@npm:4.21.1"
+  version: 4.21.2
+  resolution: "browserslist@npm:4.21.2"
   dependencies:
-    caniuse-lite: ^1.0.30001359
-    electron-to-chromium: ^1.4.172
-    node-releases: ^2.0.5
+    caniuse-lite: ^1.0.30001366
+    electron-to-chromium: ^1.4.188
+    node-releases: ^2.0.6
     update-browserslist-db: ^1.0.4
   bin:
     browserslist: cli.js
-  checksum: 4904a9ded0702381adc495e003e7f77970abb7f8c8b8edd9e54f026354b5a96b1bddc26e6d9a7df9f043e468ecd2fcff2c8f40fc489909a042880117c2aca8ff
+  checksum: 30fe59f8b065f99665ea63819d29c797660f7975857c290f61f570403abed4d7039ca15b6fd21e39a57b87e1a9262f94676114040766fc0da6ccc11faf9fc377
   languageName: node
   linkType: hard
 
@@ -2570,10 +2570,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"caniuse-lite@npm:^1.0.30001359":
-  version: 1.0.30001365
-  resolution: "caniuse-lite@npm:1.0.30001365"
-  checksum: 5d043006e9bd9de1ae06c0e12c31997f0ed26f889f47ea6403dc2d08f46a5bd4bf0fe1a5b1099561fc447201ddf13083f277de68829e77fd238ff2af8c05e0a6
+"caniuse-lite@npm:^1.0.30001366":
+  version: 1.0.30001366
+  resolution: "caniuse-lite@npm:1.0.30001366"
+  checksum: eeb878e0be4090a4247dd3de5392ff1a864d086e5401790c7c81697918ce6ce3dac75956a21f9404b5ac770bfdabdb18619d0f920dc2295f3211ee893355f697
   languageName: node
   linkType: hard
 
@@ -3213,10 +3213,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron-to-chromium@npm:^1.4.172":
-  version: 1.4.186
-  resolution: "electron-to-chromium@npm:1.4.186"
-  checksum: 9f87db963070473702c0a999dc4066fdd12abff0b2b98dfae1c7492b62fe3feb42bae64ff7fd837e4e347dab043a411e82cab64ada902726b782c60bf9fc40de
+"electron-to-chromium@npm:^1.4.188":
+  version: 1.4.189
+  resolution: "electron-to-chromium@npm:1.4.189"
+  checksum: 3971bf78de177d66663076393ceeca761ba72f1b080205202f04868791da613c8312fdb08aeaa855f39a739f67781722903d198a1591b2f02382dc65f289e3d6
   languageName: node
   linkType: hard
 
@@ -6016,7 +6016,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-releases@npm:^2.0.5":
+"node-releases@npm:^2.0.6":
   version: 2.0.6
   resolution: "node-releases@npm:2.0.6"
   checksum: e86a926dc9fbb3b41b4c4a89d998afdf140e20a4e8dbe6c0a807f7b2948b42ea97d7fd3ad4868041487b6e9ee98409829c6e4d84a734a4215dff060a7fbeb4bf
@@ -6409,9 +6409,9 @@ __metadata:
   linkType: hard
 
 "preact@npm:^10.1.0":
-  version: 10.9.0
-  resolution: "preact@npm:10.9.0"
-  checksum: 752109823affeb531fd1a97a62a08015f93aef4f46e876cdbc4db5a11023269aa24728a61916f965adc7d864e5d43b6a25c00dee49051ace6b6e95db7b0f77f5
+  version: 10.10.0
+  resolution: "preact@npm:10.10.0"
+  checksum: ec34f0e7a8677080debb5e7035a749d30a23694a68389e6f577e051e91a1e1014913c56845a615d1f9a4f2cd0321c46faaded4d4a0457c755d637a3a811fd69e
   languageName: node
   linkType: hard
 
@@ -7699,12 +7699,12 @@ __metadata:
   linkType: hard
 
 "vue-template-compiler@npm:^2.6.12":
-  version: 2.7.4
-  resolution: "vue-template-compiler@npm:2.7.4"
+  version: 2.7.5
+  resolution: "vue-template-compiler@npm:2.7.5"
   dependencies:
     de-indent: ^1.0.2
     he: ^1.2.0
-  checksum: 01d0f670c1abf96407b2b7d70a0ca3976e7ef397d7184f3e0443d0d09d4962cc1d30b54858c5a97091efc1727cd1fd18eb8ff5bd9171a0e07bbce1074c83da81
+  checksum: 9f13e05fbe1634c2ed7de870bec5325838ba05040d14b2dcdf31a7b00640ab9c9140cab3f2036223ec8f099d40e741031f6faa427872a89dc2b07f5f6fd511ee
   languageName: node
   linkType: hard
 
@@ -7727,12 +7727,12 @@ __metadata:
   linkType: hard
 
 "vue@npm:^2":
-  version: 2.7.4
-  resolution: "vue@npm:2.7.4"
+  version: 2.7.5
+  resolution: "vue@npm:2.7.5"
   dependencies:
-    "@vue/compiler-sfc": 2.7.4
+    "@vue/compiler-sfc": 2.7.5
     csstype: ^3.1.0
-  checksum: 5347f88b43b9addf061944739550e00c19d031bf1f36d2b7c2eb321a3df7ff329be52eadd2fe7d267cd9358f8ba45386225fca8e77a863c6cdc67f2e3fdd9a89
+  checksum: 2daa69afec7adae125b678e945b59d2fa51e8775a41ff452a5db0020367774ecd697855092b30f15eeb5fde51660596ea21d5805a2e9c5db151fc076f80178d7
   languageName: node
   linkType: hard
 
