@@ -1,4 +1,6 @@
 import { Show } from '@builder.io/mitosis';
+import { JSX } from '@builder.io/mitosis/jsx-runtime';
+import { BuilderBlock } from '../../types/builder-block';
 
 export interface ImageProps {
   className?: string;
@@ -12,15 +14,22 @@ export interface ImageProps {
   backgroundPosition?: string;
   srcset?: string;
   aspectRatio?: number;
-  children?: any;
+  children?: JSX.Element;
   fitContent?: boolean;
-  builderBlock?: any;
+  builderBlock?: BuilderBlock;
+  noWebp?: boolean;
 }
 
 export default function Image(props: ImageProps) {
   return (
     <div css={{ position: 'relative' }}>
       <picture>
+        <Show when={props.srcset?.match(/builder\.io/) && !props.noWebp}>
+          <source
+            srcset={props.srcset?.replace(/\?/g, '?format=webp&')}
+            type="image/webp"
+          />
+        </Show>
         <img
           loading="lazy"
           alt={props.altText}
@@ -36,7 +45,7 @@ export default function Image(props: ImageProps) {
           }}
           style={{
             objectPosition: props.backgroundSize || 'center',
-            objectFit: (props.backgroundSize as any) || 'cover',
+            objectFit: props.backgroundSize || 'cover',
           }}
           class={
             'builder-image' + (props.className ? ' ' + props.className : '')
@@ -57,7 +66,9 @@ export default function Image(props: ImageProps) {
         <div
           class="builder-image-sizer"
           style={{
-            paddingTop: props.aspectRatio! * 100 + '%',
+            paddingTop:
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+              props.aspectRatio! * 100 + '%',
           }}
           css={{
             width: '100%',
