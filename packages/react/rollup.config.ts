@@ -15,7 +15,7 @@ const resolvePlugin = resolve();
 const externalDependencies = Object.keys(pkg.dependencies)
   .concat(Object.keys(pkg.optionalDependencies || {}))
   .filter(item => item !== 'tslib')
-  .concat(Object.keys(pkg.peerDependencies || {}))
+  .concat(Object.keys(pkg.peerDependencies || {}));
 
 const options = {
   input: `src/${libraryName}.ts`,
