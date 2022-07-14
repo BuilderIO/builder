@@ -97,7 +97,7 @@ export default [
       { file: pkg.module, format: 'es', sourcemap: true },
       { file: pkg.main, format: 'cjs', sourcemap: true },
     ],
-    external: externalDependencies,
+    external: externalDependencies.concat('node-fetch'),
     plugins: options.plugins
       .filter(plugin => plugin !== resolvePlugin)
       .concat([
