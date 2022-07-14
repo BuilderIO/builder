@@ -2,7 +2,16 @@ import pkg from '../package.json';
 import appState from '@builder.io/app-context';
 import { getTranslationModel } from './model-template';
 
+export type Project = {
+  targetLocales: Array<{ enabled: boolean; localeId: string; description: string }>;
+  sourceLocaleId: string;
+  sourceLocaleDescription: string;
+  projectId: string;
+  projectName: string;
+};
+
 export class SmartlingApi {
+  // TODO: basic cache
   getBaseUrl(path: string, search = {}) {
     const params = new URLSearchParams({
       ...search,
@@ -26,17 +35,16 @@ export class SmartlingApi {
     }).then(res => res.json());
   }
   // todo separate types
-  getProject(): Promise<{
-    project: {
-      targetLocales: Array<{ enabled: boolean; localeId: string }>;
-      sourceLocaleId: string;
-    };
-  }> {
-    return this.request('project');
+  getProject(id: string): Promise<{ project: Project }> {
+    return this.request(`project/${id}`);
   }
 
-  getJob(id: string): Promise<{ job: any }> {
-    return this.request('job', { method: 'GET' }, { id });
+  getAllProjects(): Promise<{ results: Project[] }> {
+    return this.request('project/all');
+  }
+
+  getJob(id: string, projectId: string): Promise<{ job: any }> {
+    return this.request('job', { method: 'GET' }, { id, projectId });
   }
 
   createLocalJob(name: string, content: any[]): Promise<any> {

@@ -20,7 +20,7 @@ function getData(content: BuilderContentVariation) {
 const variantsScript = (variantsString: string, contentId: string) =>
   `
 (function() {
-  if (window.builderNoTrack) {
+  if (window.builderNoTrack || !navigator.cookieEnabled) {
     return;
   }
 

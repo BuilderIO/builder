@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/plugin-smartling",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "",
   "keywords": [],
   "main": "dist/plugin.system.js",
@@ -75,6 +75,10 @@
     "@builder.io/react": "^1.1.29",
     "@commitlint/cli": "^7.1.2",
     "@commitlint/config-conventional": "^7.1.2",
+    "@emotion/core": "^10.0.22",
+    "@emotion/styled": "^10.0.23",
+    "@material-ui/core": "^3.9.2",
+    "@material-ui/icons": "^1.1.1",
     "@rollup/plugin-commonjs": "^19.0.1",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^13.0.2",
@@ -94,6 +98,8 @@
     "jest": "^23.6.0",
     "jest-config": "^23.6.0",
     "lint-staged": "^8.0.0",
+    "mobx": "^6.6.1",
+    "mobx-react": "^7.5.1",
     "mobx-state-tree": "^5.1.5",
     "prettier": "^1.14.3",
     "prompt": "^1.0.0",
@@ -118,7 +124,7 @@
     "typescript": "^3.0.3"
   },
   "dependencies": {
-    "@builder.io/commerce-plugin-tools": "^0.2.3",
+    "@builder.io/commerce-plugin-tools": "^0.3.0",
     "lodash": "^4.17.21",
     "traverse": "^0.6.6",
     "uuid": "^8.3.2"
