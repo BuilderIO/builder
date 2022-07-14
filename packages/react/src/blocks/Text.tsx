@@ -38,7 +38,7 @@ class TextComponent extends React.Component<TextProps> {
   }
 
   evalExpression(expression: string, state: any) {
-    return expression.replace(/{{([^}]+)}}/g, (match, group) => tryEval(group, state));
+    return String(expression).replace(/{{([^}]+)}}/g, (match, group) => tryEval(group, state));
   }
 
   get allowTextEdit() {
