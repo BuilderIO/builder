@@ -10,9 +10,7 @@ export default function Embed(props: EmbedProps) {
   const state = useStore({
     scriptsInserted: [] as string[],
     scriptsRun: [] as string[],
-
     findAndRunScripts() {
-      // TODO: Move this function to standalone one in '@builder.io/utils'
       if (elem && typeof window !== 'undefined') {
         const scripts = elem.getElementsByTagName('script');
         for (let i = 0; i < scripts.length; i++) {

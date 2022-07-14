@@ -15,6 +15,8 @@ import { default as Text } from '../blocks/text/text.lite';
 import { componentInfo as videoComponentInfo } from '../blocks/video/component-info';
 import { default as Video } from '../blocks/video/video.lite';
 import type { RegisteredComponent } from '../context/builder.context.lite';
+import { componentInfo as embedComponentInfo } from '../blocks/embed/component-info';
+import { default as embed } from '../blocks/embed/embed.lite';
 
 /**
  * Returns a list of all registered components.
@@ -30,4 +32,5 @@ export const getDefaultRegisteredComponents: () => RegisteredComponent[] =
     { component: Button, ...buttonComponentInfo },
     { component: Section, ...sectionComponentInfo },
     { component: Fragment, ...fragmentComponentInfo },
+    { component: embed, ...embedComponentInfo },
   ];
