@@ -13,8 +13,6 @@ export default function Embed(props: EmbedProps) {
     scriptsRun: [] as string[],
     ranInitFn: false,
     findAndRunScripts() {
-      state.ranInitFn = true;
-
       const scripts = elem.getElementsByTagName('script');
       for (let i = 0; i < scripts.length; i++) {
         const script = scripts[i];
@@ -41,6 +39,7 @@ export default function Embed(props: EmbedProps) {
 
   onUpdate(() => {
     if (elem && !state.ranInitFn) {
+      state.ranInitFn = true;
       state.findAndRunScripts();
     }
   }, [elem, state.ranInitFn]);
