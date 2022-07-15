@@ -29,8 +29,8 @@
   section {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    justify-content: stretch;
+    align-items: stretch;
     flex: 1;
   }
 

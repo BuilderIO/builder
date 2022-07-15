@@ -61,8 +61,7 @@ export interface Input {
     message: string;
   };
   advanced?: boolean;
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  onChange?: Function | string;
+  onChange?: ((options: Map<string, any>) => void | Promise<void>) | string;
   code?: boolean;
   richText?: boolean;
   showIf?: ((options: Map<string, any>) => boolean) | string;

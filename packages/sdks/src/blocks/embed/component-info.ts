@@ -11,7 +11,7 @@ export const componentInfo: ComponentInfo = {
       required: true,
       defaultValue: '',
       helperText: 'e.g. enter a youtube url, google map, etc',
-      onChange: (options: Map<string, any>) => {
+      onChange(options) {
         const url = options.get('url');
         if (url) {
           options.set('content', 'Loading...');
