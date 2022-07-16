@@ -1,3 +1,5 @@
+import appState from '@builder.io/app-context';
+
 export class Api {
   getBaseUrl(path: string, search = {}) {
     const params = new URLSearchParams({
@@ -5,7 +7,7 @@ export class Api {
       pluginId: this.pluginId,
       apiKey: this.apiKey,
     });
-    const root = 'http://localhost:4000'; // todo appState.config.apiRoot();
+    const root = appState.config.apiRoot();
     const baseUrl = new URL(`${root}/api/v1/sfcc-commerce/${path}`);
     baseUrl.search = params.toString();
     return baseUrl.toString();
