@@ -23,6 +23,7 @@ import { BuilderRequest } from '../interfaces/builder-request';
 import { SetEcomKeysMessage } from '../components/set-keys-message';
 import { CommerceAPIOperations } from '..';
 import pluralize from 'pluralize';
+import throttle from 'lodash/throttle';
 
 export interface ResourcesPickerButtonProps
   extends CustomReactEditorProps<BuilderRequest | string> {
@@ -80,8 +81,8 @@ export const ResourcePicker: React.FC<ResourcePickerProps> = props => {
     searchInputText: '',
     loading: false,
     resources: [] as Resource[],
-    async search() {
-      this.loading = true;
+    search: throttle(async () => {
+      store.loading = true;
       const catchError = (err: any) => {
         console.error('search error:', err);
         props.context.snackBar.show('Oh no! There was an error searching for resources');
@@ -93,13 +94,13 @@ export const ResourcePicker: React.FC<ResourcePickerProps> = props => {
 
       runInAction(() => {
         if (Array.isArray(resourcesResponse)) {
-          this.resources = resourcesResponse.filter(
+          store.resources = resourcesResponse.filter(
             resource => !(props.omitIds || []).includes(String(resource.id))
           );
         }
-        this.loading = false;
+        store.loading = false;
       });
-    },
+    }, 400),
   }));
 
   useEffect(() => {

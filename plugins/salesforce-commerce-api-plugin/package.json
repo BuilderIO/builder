@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/plugin-sfcc-commerce-api",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "description": "",
   "keywords": [],
   "main": "dist/plugin.system.js",
@@ -121,7 +121,7 @@
     "typescript": "^3.0.3"
   },
   "dependencies": {
-    "@builder.io/commerce-plugin-tools": "^0.2.1-4",
+    "@builder.io/commerce-plugin-tools": "^0.3.1-1",
     "commerce-sdk-isomorphic": "^1.7.0"
   }
 }

@@ -1,5 +1,4 @@
-import { registerCommercePlugin } from '@builder.io/commerce-plugin-tools';
-import { Resource } from '@builder.io/commerce-plugin-tools/dist/types/interfaces/resource';
+import { registerCommercePlugin, Resource } from '@builder.io/commerce-plugin-tools';
 import pkg from '../package.json';
 import appState from '@builder.io/app-context';
 import { Api } from './api';
@@ -48,50 +47,14 @@ registerCommercePlugin(
   },
   async () => {
     const api = new Api(appState.user.apiKey, pkg.name);
-
-    const transform = (resource: any) => ({
-      ...resource,
-      id: resource.id as any,
-      title: resource.name || 'untitled',
-      handle: resource.id,
-      image: {
-        src:
-          resource.imageGroups?.[0].images?.[0].link ||
-          'https://cdn.builder.io/api/v1/image/assets%2F979b06c19c1f41b0825d33993be6cdd4%2F478d9c03b7c24eaabbdb6346e67d5ed2',
-      },
-    });
-
-    const transformCat = (cat: any) => ({
-      id: cat.id,
-      title: cat.name,
-      handle: cat.id,
-      image: {
-        src: cat.image || 'https://unpkg.com/css.gg@2.0.0/icons/svg/box.svg',
-      },
-    });
-
-    const service = {
+    return {
       product: {
-        async findById(id: string): Promise<Resource> {
-          const product = await api.getProduct(id);
-          return transform(product);
+        async findById(id: string) {
+          return await api.getProduct(id);
         },
-
-        async search(search: string): Promise<Resource[]> {
-          const searchResult = await api.search(search || 'womens');
-
-          return (
-            searchResult.hits?.map((hit: any) => ({
-              id: hit.productId as any,
-              title: hit.productName || 'untitled',
-              handle: hit.productId,
-              image: {
-                src: hit.image?.link || 'https://unpkg.com/css.gg@2.0.0/icons/svg/toolbox.svg',
-              },
-            })) || []
-          );
+        async search(search: string) {
+          return await api.search(search || 'womens');
         },
-
         getRequestObject(id: string) {
           return {
             '@type': '@builder.io/core:Request' as const,
@@ -104,18 +67,14 @@ registerCommercePlugin(
           };
         },
       },
+
       category: {
-        async findById(id: string): Promise<Resource> {
-          const cat = await api.getCategory(id);
-          return transformCat(cat);
+        async findById(id: string) {
+          return await api.getCategory(id);
         },
-
-        async search(search: string): Promise<Resource[]> {
-          const categories = await api.searchCategories(search || '');
-
-          return categories.map(transformCat);
+        async search(search: string) {
+          return await api.searchCategories(search || '');
         },
-
         getRequestObject(id: string) {
           return {
             '@type': '@builder.io/core:Request' as const,
@@ -129,6 +88,5 @@ registerCommercePlugin(
         },
       },
     };
-    return service;
   }
 );
