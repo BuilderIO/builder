@@ -46,6 +46,11 @@ fun Main() {
 
         registerCustomComponents()
     })
+
+    if (content != null) {
+        // Render content
+        RenderContent(content!!)
+    }
 }
 
 @Preview(showBackground = true)
