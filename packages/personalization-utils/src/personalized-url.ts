@@ -15,7 +15,7 @@ const defaultOptions = {
     return Buffer.from(str).toString('base64');
   },
   prefix: 'builder',
-  attributes: {},
+  attributes: {} as Record<string, string>,
 };
 
 export class PersonalizedURL {
