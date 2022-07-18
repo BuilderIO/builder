@@ -179,7 +179,7 @@ export default function MyPage({ builderJson }) {
 }
 ```
 
-### Use descriptive variables names
+### Use descriptive variables name
 
 Builder is full of new abstract concepts, so more descriptive names can make things much more clear
 
