@@ -178,3 +178,19 @@ export default function MyPage({ builderJson }) {
   return <RenderContent content={builderJson}>
 }
 ```
+
+### Use descriptive variables names
+
+Builder is full of new abstract concepts, so more descriptive names can make things much more clear
+
+#### ✅ Good
+```jsx
+const builderPageJson = await getContent(...)
+```
+
+#### ❌ Avoid
+```jsx
+// In particular avoid naming anything just "builder", in the context of builder examples
+// it means literally nothing of value (and can even cause extra confusion)
+const builder = await getContent(...)
+```
