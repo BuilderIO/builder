@@ -4,7 +4,7 @@ A few important things to stick to when contributing to our examples:
 
 ## Keep it simple
 
-The point of examples is to show how Builder.io integrates with a site, and make it easy for someone to discover it. Some things to stick to
+The point of examples is to show how Builder.io integrates with a site, and make it easy for someone to discover it.
 
 ### Use as little boilerplate as possible
 
@@ -116,7 +116,7 @@ At the top, briefly explain what this example is, and what files in particular s
 ```md
 # Builder.io example with SvelteKit
 
-This is an examlpe of using Builder with SvelteKit. See [pages/index.svelte] to see the example integration point in detail
+This is an example of using Builder with SvelteKit. See (pages/index.svelte)[pages/index.svelte] to see the example integration point in detail
 
 ## Get Started
 ...
@@ -131,6 +131,7 @@ Builder and Svelte
 
 
 ## Use best practices
+Be sure to guide people into the "pit of success" by sticking to best practices throughout.
 
 ### SSR/SSG
 
