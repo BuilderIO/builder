@@ -47,15 +47,17 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
   return url;
 };
 
-interface PaginatedResponse {
+interface ContentResponse {
   results: BuilderContent[];
 }
 
-export async function getAllContent(options: GetContentOptions) {
+export async function getAllContent(
+  options: GetContentOptions
+): Promise<ContentResponse> {
   const url = generateContentUrl(options);
 
   const fetch = await fetch$;
-  const content: PaginatedResponse = await fetch(url.href).then((res) =>
+  const content: ContentResponse = await fetch(url.href).then((res) =>
     res.json()
   );
 
