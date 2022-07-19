@@ -12,7 +12,6 @@ import { getFetch } from '../../functions/get-fetch.js';
 import { isBrowser } from '../../functions/is-browser.js';
 import { isEditing } from '../../functions/is-editing.js';
 import { isPreviewing } from '../../functions/is-previewing.js';
-import { previewingModelName } from '../../functions/previewing-model-name.js';
 import {
   components,
   createRegisterComponentMessage,
