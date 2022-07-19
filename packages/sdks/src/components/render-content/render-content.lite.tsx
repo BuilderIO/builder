@@ -195,6 +195,13 @@ export default function RenderContent(props: RenderContentProps) {
         );
       }
     },
+    get shouldRenderContentStyles(): boolean {
+      return Boolean(
+        (state.useContent?.data?.cssCode ||
+          state.useContent?.data?.customFonts?.length) &&
+          TARGET !== 'reactNative'
+      );
+    },
   });
 
   // This currently doesn't do anything as `onCreate` is not implemented
@@ -306,21 +313,15 @@ export default function RenderContent(props: RenderContentProps) {
   return (
     <Show when={state.useContent}>
       <div
-        onClick={() =>
-          track('click', {
-            contentId: state.useContent!.id,
-          })
-        }
+        onClick={() => track('click', { contentId: state.useContent!.id })}
         data-builder-content-id={state.useContent?.id}
       >
-        {(state.useContent?.data?.cssCode ||
-          state.useContent?.data?.customFonts?.length) &&
-          TARGET !== 'reactNative' && (
-            <RenderContentStyles
-              cssCode={state.useContent.data.cssCode}
-              customFonts={state.useContent.data.customFonts}
-            />
-          )}
+        {state.shouldRenderContentStyles && (
+          <RenderContentStyles
+            cssCode={state.useContent?.data?.cssCode}
+            customFonts={state.useContent?.data?.customFonts}
+          />
+        )}
         <RenderBlocks blocks={state.useContent?.data?.blocks} />
       </div>
     </Show>
