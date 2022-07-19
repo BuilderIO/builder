@@ -47,15 +47,19 @@ export default function Image(props: ImageProps) {
 
       return getSrcSet(url);
     },
+    get webpSrcSet() {
+      if (state.srcSetToUse?.match(/builder\.io/) && !props.noWebp) {
+        return state.srcSetToUse.replace(/\?/g, '?format=webp&');
+      } else {
+        return '';
+      }
+    },
   });
   return (
     <div css={{ position: 'relative' }}>
       <picture>
-        <Show when={state.srcSetToUse?.match(/builder\.io/) && !props.noWebp}>
-          <source
-            srcset={state.srcSetToUse?.replace(/\?/g, '?format=webp&')}
-            type="image/webp"
-          />
+        <Show when={state.webpSrcSet}>
+          <source srcset={state.webpSrcSet} type="image/webp" />
         </Show>
         <img
           loading="lazy"
