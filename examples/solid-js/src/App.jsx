@@ -1,12 +1,7 @@
 import logo from './logo.svg';
 import styles from './App.module.css';
 
-import {
-  getContent,
-  RenderContent,
-  getBuilderSearchParams,
-  convertSearchParamsToQueryObject,
-} from '@builder.io/sdk-solid';
+import { getContent, RenderContent } from '@builder.io/sdk-solid';
 import { createEffect } from 'solid-js';
 import { createMutable } from 'solid-js/store';
 
@@ -50,9 +45,6 @@ function App() {
     getContent({
       model: 'page',
       apiKey,
-      options: getBuilderSearchParams(
-        convertSearchParamsToQueryObject(new URLSearchParams(window.location.search))
-      ),
       userAttributes: {
         urlPath: window.location.pathname,
       },

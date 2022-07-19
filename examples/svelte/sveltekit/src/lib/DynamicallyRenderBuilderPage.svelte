@@ -7,12 +7,7 @@
 
   import Counter from '$lib/Counter.svelte';
 
-  import {
-    getContent,
-    getBuilderSearchParams,
-    convertSearchParamsToQueryObject,
-    RenderContent
-  } from '@builder.io/sdk-svelte';
+  import { getContent, RenderContent } from '@builder.io/sdk-svelte';
 
   const CUSTOM_COMPONENTS = [
     {
@@ -40,7 +35,7 @@
     content = await getContent({
       model: 'page',
       apiKey: BUILDER_PUBLIC_API_KEY,
-      options: getBuilderSearchParams(convertSearchParamsToQueryObject($page.url.searchParams)),
+      options: $page.url.searchParams,
       userAttributes: {
         urlPath: $page.url.pathname
       }

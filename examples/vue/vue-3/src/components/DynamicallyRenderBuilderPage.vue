@@ -1,19 +1,16 @@
 <template>
   <div id="home">
     <div>Hello world from your Vue 3 project. Below is Builder Content:</div>
-
-    <div v-if="canShowContent">
-      <div>
-        page:
-        {{ (content && content.data && content.data.title) || 'Unpublished' }}
-      </div>
-      <builder-render-content
-        model="page"
-        :content="content"
-        :api-key="apiKey"
-        :customComponents="getRegisteredComponents()"
-      />
+    <div>
+      page title:
+      {{ (content && content.data && content.data.title) || 'Unpublished' }}
     </div>
+    <builder-render-content
+      model="page"
+      :content="content"
+      :api-key="apiKey"
+      :customComponents="getRegisteredComponents()"
+    />
   </div>
 </template>
 <script lang="ts">
@@ -65,15 +62,11 @@ export default {
     getContent({
       model: 'page',
       apiKey: BUILDER_PUBLIC_API_KEY,
-      options: getBuilderSearchParams(
-        convertSearchParamsToQueryObject(new URLSearchParams(window.location.search))
-      ),
       userAttributes: {
         urlPath: window.location.pathname,
       },
     }).then(res => {
       this.content = res;
-      this.canShowContent = this.content || isEditing() || isPreviewing();
     });
   },
 };

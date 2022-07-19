@@ -19,7 +19,7 @@
 <script>
 import Vue from 'vue';
 
-import { getContent, isEditing, isPreviewing, getBuilderSearchParams } from '@builder.io/sdk-vue';
+import { getContent, isEditing, isPreviewing } from '@builder.io/sdk-vue';
 import HelloWorldComponent from './HelloWorld.vue';
 
 // Register your Builder components
@@ -61,7 +61,7 @@ export default Vue.extend({
     const content = await getContent({
       model: 'page',
       apiKey: BUILDER_PUBLIC_API_KEY,
-      options: getBuilderSearchParams(this.$route.query),
+      options: this.$route.query,
       userAttributes: {
         urlPath: this.$route.path,
       },

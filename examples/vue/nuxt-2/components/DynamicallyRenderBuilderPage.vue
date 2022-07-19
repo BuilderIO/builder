@@ -22,8 +22,6 @@ import Vue from 'vue'
 import {
   RenderContent,
   getContent,
-  getBuilderSearchParams,
-  convertSearchParamsToQueryObject,
   isEditing,
   isPreviewing,
 } from '@builder.io/sdk-vue'
@@ -72,7 +70,7 @@ export default Vue.extend({
     const content = await getContent({
       model: 'page',
       apiKey: BUILDER_PUBLIC_API_KEY,
-      options: getBuilderSearchParams(this.$route.query),
+      options: this.$route.query,
       userAttributes: {
         urlPath: this.$route.path,
       },
