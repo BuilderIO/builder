@@ -154,36 +154,35 @@ export default function RenderBlock(props: RenderBlockProps) {
         return undefined;
       }
 
-      const { collection, itemName } = repeat;
-
       const itemsArray = evaluate({
-        code: collection,
+        code: repeat.collection,
         state: builderContext.state,
         context: builderContext.context,
       });
 
-      if (Array.isArray(itemsArray)) {
-        const collectionName = collection.split('.').pop();
-        const itemNameToUse =
-          itemName || (collectionName ? collectionName + 'Item' : 'item');
-
-        const repeatArray = itemsArray.map<RepeatData>((item, index) => ({
-          context: {
-            ...builderContext,
-            state: {
-              ...builderContext.state,
-              $index: index,
-              $item: item,
-              [itemNameToUse]: item,
-              [`$${itemNameToUse}Index`]: index,
-            },
-          },
-          block: blockWithoutRepeat,
-        }));
-        return repeatArray;
-      } else {
+      if (!Array.isArray(itemsArray)) {
         return undefined;
       }
+
+      const collectionName = repeat.collection.split('.').pop();
+      const itemNameToUse =
+        repeat.itemName || (collectionName ? collectionName + 'Item' : 'item');
+
+      const repeatArray = itemsArray.map<RepeatData>((item, index) => ({
+        context: {
+          ...builderContext,
+          state: {
+            ...builderContext.state,
+            $index: index,
+            $item: item,
+            [itemNameToUse]: item,
+            [`$${itemNameToUse}Index`]: index,
+          },
+        },
+        block: blockWithoutRepeat,
+      }));
+
+      return repeatArray;
     },
   });
 

@@ -3,12 +3,14 @@ import BuilderContext from '../../context/builder.context.lite';
 import { getContent } from '../../functions/get-content/index.js';
 import { BuilderContent } from '../../types/builder-content.js';
 import { onMount, onUpdate, useContext, useStore } from '@builder.io/mitosis';
+import { Nullable } from '../../types/typescript.js';
+import { BuilderBlock } from '../../types/builder-block.js';
 
 export interface SymbolInfo {
   model?: string;
   entry?: string;
   data?: any;
-  content?: any;
+  content?: BuilderContent;
   inline?: boolean;
   dynamic?: boolean;
 }
@@ -17,7 +19,7 @@ export interface SymbolProps {
   symbol?: SymbolInfo;
   dataOnly?: boolean;
   dynamic?: boolean;
-  builderBlock?: any; // TODO: BuilderElement
+  builderBlock?: BuilderBlock;
   attributes?: any;
   inheritState?: boolean;
 }
@@ -27,7 +29,7 @@ export default function Symbol(props: SymbolProps) {
 
   const state = useStore({
     className: 'builder-symbol',
-    content: null as BuilderContent | null,
+    content: null as Nullable<BuilderContent>,
   });
 
   onMount(() => {
@@ -37,6 +39,15 @@ export default function Symbol(props: SymbolProps) {
   onUpdate(() => {
     const symbolToUse = props.symbol;
 
+    /**
+     * If:
+     * - we have a symbol prop
+     * - yet it does not have any content
+     * - and we have not already stored content from before
+     * - and it has a model name
+     *
+     * then we want to re-fetch the symbol content.
+     */
     if (
       symbolToUse &&
       !symbolToUse.content &&
@@ -46,8 +57,8 @@ export default function Symbol(props: SymbolProps) {
       getContent({
         model: symbolToUse.model,
         apiKey: builderContext.apiKey!,
-        options: {
-          entry: symbolToUse.entry,
+        query: {
+          id: symbolToUse.entry,
         },
       }).then((response) => {
         state.content = response;
@@ -75,7 +86,7 @@ export default function Symbol(props: SymbolProps) {
           ...props.symbol?.content?.data?.state,
         }}
         model={props.symbol?.model}
-        content={state.content!}
+        content={state.content}
       />
     </div>
   );

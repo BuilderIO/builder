@@ -36,7 +36,7 @@ import {
 } from '@builder.io/mitosis';
 
 export type RenderContentProps = {
-  content?: BuilderContent;
+  content?: Nullable<BuilderContent>;
   model?: string;
   data?: { [key: string]: any };
   context?: BuilderRenderContext;
@@ -259,15 +259,15 @@ export default function RenderContent(props: RenderContentProps) {
       // override normal content in preview mode
       if (isPreviewing()) {
         if (props.model && previewingModelName() === props.model) {
-          const currentUrl = new URL(location.href);
-          const previewApiKey = currentUrl.searchParams.get('apiKey');
-
+          const searchParams = new URL(location.href).searchParams;
+          const previewApiKey =
+            searchParams.get('apiKey') || searchParams.get('builder.space');
           if (previewApiKey) {
             getContent({
               model: props.model,
               apiKey: previewApiKey,
               options: getBuilderSearchParams(
-                convertSearchParamsToQueryObject(currentUrl.searchParams)
+                convertSearchParamsToQueryObject(searchParams)
               ),
             }).then((content) => {
               if (content) {
