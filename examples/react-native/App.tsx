@@ -60,15 +60,21 @@ const BuilderContent = ({ route }: { route: RouteProp<any, 'Page'> }) => {
       });
   }, []);
 
+  const shouldRenderBuilderContent = content || isPreviewing();
+
   return (
     <View style={styles.container}>
       <Text>Hello world from your React-Native codebase. Below is your Builder content:</Text>
-      <RenderContent
-        apiKey={BUILDER_API_KEY}
-        model="page"
-        content={content}
-        customComponents={CUSTOM_COMPONENTS}
-      />
+      {shouldRenderBuilderContent ? (
+        <RenderContent
+          apiKey={BUILDER_API_KEY}
+          model="page"
+          content={content}
+          customComponents={CUSTOM_COMPONENTS}
+        />
+      ) : (
+        <div>Not Found.</div>
+      )}
       <StatusBar style="auto" />
     </View>
   );

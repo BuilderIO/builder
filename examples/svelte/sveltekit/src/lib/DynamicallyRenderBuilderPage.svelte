@@ -7,7 +7,7 @@
 
   import Counter from '$lib/Counter.svelte';
 
-  import { getContent, RenderContent } from '@builder.io/sdk-svelte';
+  import { getContent, isPreviewing, RenderContent } from '@builder.io/sdk-svelte';
 
   const CUSTOM_COMPONENTS = [
     {
@@ -31,6 +31,7 @@
   const BUILDER_PUBLIC_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660'; // ggignore
 
   let content = undefined;
+  let canShowContent = false;
   const fetch = async () => {
     content = await getContent({
       model: 'page',
@@ -39,6 +40,7 @@
         urlPath: $page.url.pathname
       }
     });
+    canShowContent = content || isPreviewing();
   };
 
   fetch();
@@ -46,10 +48,14 @@
 
 <div>Hello world from your SvelteKit project. Below is Builder Content:</div>
 
-<div>page: {content?.data?.title || 'Unpublished'}</div>
-<RenderContent
-  model="page"
-  {content}
-  apiKey={BUILDER_PUBLIC_API_KEY}
-  customComponents={CUSTOM_COMPONENTS}
-/>
+{#if canShowContent}
+  <div>page Title: {content?.data?.title || 'Unpublished'}</div>
+  <RenderContent
+    model="page"
+    {content}
+    apiKey={BUILDER_PUBLIC_API_KEY}
+    customComponents={CUSTOM_COMPONENTS}
+  />
+{:else}
+  Content Not Found
+{/if}

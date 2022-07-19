@@ -1,20 +1,23 @@
 <template>
   <div id="home">
     <div>Hello world from your Vue 3 project. Below is Builder Content:</div>
-    <div>
-      page title:
-      {{ content?.data?.title || 'Unpublished' }}
+    <div v-if="canShowContent">
+      <div>
+        page title:
+        {{ (content && content.data && content.data.title) || 'Unpublished' }}
+      </div>
+      <builder-render-content
+        model="page"
+        :content="content"
+        :api-key="apiKey"
+        :customComponents="getRegisteredComponents()"
+      />
     </div>
-    <builder-render-content
-      model="page"
-      :content="content"
-      :api-key="apiKey"
-      :customComponents="getRegisteredComponents()"
-    />
+    <div v-else>Content not Found</div>
   </div>
 </template>
 <script lang="ts">
-import { RenderContent, getContent } from '@builder.io/sdk-vue/vue3';
+import { RenderContent, getContent, isPreviewing } from '@builder.io/sdk-vue/vue3';
 import HelloWorldComponent from './HelloWorld.vue';
 
 // Register your Builder components
@@ -60,6 +63,7 @@ export default {
       },
     }).then(res => {
       this.content = res;
+      this.canShowContent = this.content || isPreviewing();
     });
   },
 };

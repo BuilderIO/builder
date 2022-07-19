@@ -4,7 +4,7 @@
 
     <div v-if="canShowContent">
       <div>
-        page:
+        page title:
         {{ (content && content.data && content.data.title) || 'Unpublished' }}
       </div>
       <builder-render-content
@@ -14,6 +14,7 @@
         :customComponents="getRegisteredComponents()"
       />
     </div>
+    <div v-else>Content not Found</div>
   </div>
 </template>
 <script>
