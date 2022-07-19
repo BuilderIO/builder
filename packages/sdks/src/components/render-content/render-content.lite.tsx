@@ -7,10 +7,6 @@ import BuilderContext, {
   RegisteredComponents,
 } from '../../context/builder.context.lite';
 import { evaluate } from '../../functions/evaluate.js';
-import {
-  convertSearchParamsToQueryObject,
-  getBuilderSearchParams,
-} from '../../functions/get-builder-search-params/index.js';
 import { getContent } from '../../functions/get-content/index.js';
 import { getFetch } from '../../functions/get-fetch.js';
 import { isBrowser } from '../../functions/is-browser.js';
@@ -258,17 +254,17 @@ export default function RenderContent(props: RenderContentProps) {
 
       // override normal content in preview mode
       if (isPreviewing()) {
-        if (props.model && previewingModelName() === props.model) {
-          const searchParams = new URL(location.href).searchParams;
+        const searchParams = new URL(location.href).searchParams;
+        if (
+          props.model &&
+          searchParams.get('builder.preview') === props.model
+        ) {
           const previewApiKey =
             searchParams.get('apiKey') || searchParams.get('builder.space');
           if (previewApiKey) {
             getContent({
               model: props.model,
               apiKey: previewApiKey,
-              options: getBuilderSearchParams(
-                convertSearchParamsToQueryObject(searchParams)
-              ),
             }).then((content) => {
               if (content) {
                 state.overrideContent = content;
