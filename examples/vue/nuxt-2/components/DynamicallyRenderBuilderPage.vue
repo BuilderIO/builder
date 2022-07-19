@@ -65,7 +65,6 @@ export default Vue.extend({
     const content = await getContent({
       model: 'page',
       apiKey: BUILDER_PUBLIC_API_KEY,
-      options: this.$route.query,
       userAttributes: {
         urlPath: this.$route.path,
       },

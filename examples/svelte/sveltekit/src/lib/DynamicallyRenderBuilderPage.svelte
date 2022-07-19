@@ -35,7 +35,6 @@
     content = await getContent({
       model: 'page',
       apiKey: BUILDER_PUBLIC_API_KEY,
-      options: $page.url.searchParams,
       userAttributes: {
         urlPath: $page.url.pathname
       }
