@@ -80,6 +80,7 @@ export default function Symbol(props: SymbolProps) {
       <RenderContent
         apiKey={builderContext.apiKey!}
         context={builderContext.context}
+        customComponents={Object.values(builderContext.registeredComponents)}
         data={{
           ...props.symbol?.data,
           ...builderContext.state,
