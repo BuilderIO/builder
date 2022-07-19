@@ -3,7 +3,7 @@
     <div>Hello world from your Vue 3 project. Below is Builder Content:</div>
     <div>
       page title:
-      {{ (content && content.data && content.data.title) || 'Unpublished' }}
+      {{ content?.data?.title || 'Unpublished' }}
     </div>
     <builder-render-content
       model="page"
@@ -14,14 +14,7 @@
   </div>
 </template>
 <script lang="ts">
-import {
-  RenderContent,
-  getContent,
-  getBuilderSearchParams,
-  convertSearchParamsToQueryObject,
-  isEditing,
-  isPreviewing,
-} from '@builder.io/sdk-vue/vue3';
+import { RenderContent, getContent } from '@builder.io/sdk-vue/vue3';
 import HelloWorldComponent from './HelloWorld.vue';
 
 // Register your Builder components
