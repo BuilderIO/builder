@@ -3,7 +3,7 @@
 Easily connect your SalesForce B2C Commerce PWA APP to your Builder.io content!
 
 ## SalesForce Setup API Access
-Ready through this [get started guide](https://developer.salesforce.com/docs/commerce/pwa-kit-managed-runtime/guide/setting-up-api-access.html) to make sure you have your *Shopper Login and API Access Service (SLAS)* client setup ready.
+Read through this [get started guide](https://developer.salesforce.com/docs/commerce/pwa-kit-managed-runtime/guide/setting-up-api-access.html) to make sure you have your *Shopper Login and API Access Service (SLAS)* client setup ready.
 
 
 ## Installation
