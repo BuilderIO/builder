@@ -67,14 +67,12 @@ function App() {
         <img src={logo} class={styles.logo} alt="logo" />
       </header>
       <div>
-        {state.content && (
-          <RenderContent
-            model="page"
-            content={state.content}
-            apiKey={apiKey}
-            customComponents={CUSTOM_COMPONENTS}
-          />
-        )}
+        <RenderContent
+          model="page"
+          content={state.content}
+          apiKey={apiKey}
+          customComponents={CUSTOM_COMPONENTS}
+        />
       </div>
     </div>
   );

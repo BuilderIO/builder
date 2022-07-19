@@ -14,7 +14,7 @@
     "vite-plugin-solid": "^2.2.6"
   },
   "dependencies": {
-    "@builder.io/sdk-solid": "^0.0.8-16",
+    "@builder.io/sdk-solid": "^0.0.8-17",
     "solid-js": "^1.4.3",
     "solid-styled-components": "^0.27.6"
   }
