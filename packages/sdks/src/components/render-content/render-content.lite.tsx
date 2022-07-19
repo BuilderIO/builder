@@ -36,7 +36,7 @@ import {
 } from '@builder.io/mitosis';
 
 export type RenderContentProps = {
-  content?: BuilderContent;
+  content?: Nullable<BuilderContent>;
   model?: string;
   data?: { [key: string]: any };
   context?: BuilderRenderContext;

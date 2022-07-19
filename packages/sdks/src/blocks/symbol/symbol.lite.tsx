@@ -37,6 +37,15 @@ export default function Symbol(props: SymbolProps) {
   onUpdate(() => {
     const symbolToUse = props.symbol;
 
+    /**
+     * If:
+     * - we have a symbol prop
+     * - yet it does not have any content
+     * - and we have not already stored content from before
+     * - and it has a model name
+     *
+     * then we want to re-fetch the symbol content.
+     */
     if (
       symbolToUse &&
       !symbolToUse.content &&
@@ -46,8 +55,8 @@ export default function Symbol(props: SymbolProps) {
       getContent({
         model: symbolToUse.model,
         apiKey: builderContext.apiKey!,
-        options: {
-          entry: symbolToUse.entry,
+        query: {
+          id: symbolToUse.entry,
         },
       }).then((response) => {
         state.content = response;
@@ -75,7 +84,7 @@ export default function Symbol(props: SymbolProps) {
           ...props.symbol?.content?.data?.state,
         }}
         model={props.symbol?.model}
-        content={state.content!}
+        content={state.content}
       />
     </div>
   );
