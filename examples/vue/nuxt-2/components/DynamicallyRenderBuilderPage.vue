@@ -19,12 +19,7 @@
 <script>
 import Vue from 'vue'
 
-import {
-  RenderContent,
-  getContent,
-  isEditing,
-  isPreviewing,
-} from '@builder.io/sdk-vue'
+import { RenderContent, getContent, isPreviewing } from '@builder.io/sdk-vue'
 
 import HelloWorldComponent from './HelloWorld.vue'
 
@@ -64,7 +59,7 @@ export default Vue.extend({
   },
   mounted() {
     // we need to re-run this check on the client in case of SSR
-    this.canShowContent = this.content || isEditing() || isPreviewing()
+    this.canShowContent = this.content || isPreviewing()
   },
   async fetch() {
     const content = await getContent({
@@ -75,7 +70,7 @@ export default Vue.extend({
         urlPath: this.$route.path,
       },
     })
-    this.canShowContent = content || isEditing()
+    this.canShowContent = content || isPreviewing()
     this.content = content
 
     if (!this.canShowContent) {

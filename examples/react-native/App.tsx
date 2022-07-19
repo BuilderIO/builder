@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import React, { useState, useEffect } from 'react';
-import { RenderContent, isEditing, getContent } from '@builder.io/sdk-react-native';
+import { RenderContent, isPreviewing, getContent } from '@builder.io/sdk-react-native';
 import { LinkingOptions, NavigationContainer, RouteProp } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -60,7 +60,7 @@ const BuilderContent = ({ route }: { route: RouteProp<any, 'Page'> }) => {
       });
   }, []);
 
-  const shouldRenderBuilderContent = content || isEditing();
+  const shouldRenderBuilderContent = content || isPreviewing();
 
   return (
     <View style={styles.container}>
