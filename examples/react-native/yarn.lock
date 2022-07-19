@@ -1473,14 +1473,14 @@ __metadata:
   linkType: hard
 
 "@builder.io/sdk-react-native@npm:dev":
-  version: 0.0.1-60
-  resolution: "@builder.io/sdk-react-native@npm:0.0.1-60"
+  version: 0.0.1-61
+  resolution: "@builder.io/sdk-react-native@npm:0.0.1-61"
   dependencies:
     react-native-render-html: ^6.3.4
     react-native-video: ^5.1.1
   peerDependencies:
     react-native: ^0.64.3
-  checksum: 1961067a5b820350e855cb2186e6a71b1ec9c0edbba1cd0a8e058c76c376d71d67a980a9e4b86995f99e3024c1bea36dc84781dbc19f226f836cb51c35df18b4
+  checksum: fbaabba3023ae87f37efddc3130b313cf94002699370465f9485cb4e29ec17187021f2616a5d3654812ac0be815acfa932c74dd444f751506767b1fa787f9777
   languageName: node
   linkType: hard
 
