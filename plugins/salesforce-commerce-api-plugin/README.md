@@ -48,8 +48,12 @@ Or by passing it as a query param to the [content API](https://www.builder.io/c/
 
 - `SfCommerceProduct` when used as a custom targeting type, it'll target contexts where the field is set to the product ID, you'll need to set the product ID on the host environment, using one of the methods above.
 
-- `SfProductPreview` is to be used as a custom field on component models, this will allow you to have templated editing url on your component model relevant to the SFCC product being previewed, for example you can set the url in your model to:
-  `https://www.mystore.com/product/${previewResource.handle}`, add a custom field of type `Sf Commerce Product preview` to the model, now when you create a new entry, the handle will be added dynamically to the preview url based on the preview product, it is recommended to add a default value to the `Sf Commerce Product preview` custom field, so users will land at a specific product page when developing a template component.
+- `SfCommerceProductsList` when used as a custom targeting type, it'll target contexts where the field is set to the a list of product Ids, you'll need to set the list of product Ids on the host environment, using one of the methods above.
+
+- `SfCommerceCategory` can be used as custom targeting attribute to target specific category by ID, you'll need to set the category ID on the host environment, using one of the methods above.
+
+- `SfCommerceCategoriesList` when used as a custom targeting type, it'll target contexts where the field is set to the a list of category Ids, you'll need to set the list of category Ids on the host environment, using one of the methods above.
+
 
 ### Seeing the plugin in action
 
