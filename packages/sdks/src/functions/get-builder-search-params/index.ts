@@ -1,3 +1,5 @@
+import { isBrowser } from '../is-browser';
+
 const BUILDER_SEARCHPARAMS_PREFIX = 'builder.';
 
 type QueryObject = Record<string, string>;
@@ -24,7 +26,7 @@ export const getBuilderSearchParams = (options: QueryObject) => {
 };
 
 export const getBuilderSearchParamsFromWindow = () => {
-  if (!window) {
+  if (!isBrowser()) {
     return {};
   }
   const searchParams = new URLSearchParams(window.location.search);
