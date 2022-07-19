@@ -1,4 +1,4 @@
-import { generateContentPageUrl } from '.';
+import { generateContentUrl } from '.';
 
 const testKey = 'YJIGb4i01jvw0SRdL5Bt';
 const testModel = 'page';
@@ -16,7 +16,7 @@ const options = {
 
 describe('Generate Content URL', () => {
   test('generates the proper value for a simple query', () => {
-    const output = generateContentPageUrl({
+    const output = generateContentUrl({
       apiKey: testKey,
       model: testModel,
       query: { id: testId },
@@ -24,7 +24,7 @@ describe('Generate Content URL', () => {
     expect(output).toMatchSnapshot();
   });
   test('Handles overrides correctly', () => {
-    const output = generateContentPageUrl({
+    const output = generateContentUrl({
       apiKey: testKey,
       model: testModel,
       query: { id: testId },
