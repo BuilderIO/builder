@@ -1,5 +1,4 @@
 import BuilderContext, {
-  BuilderContextInterface,
   RegisteredComponent,
 } from '../../context/builder.context.lite';
 import { getBlockActions } from '../../functions/get-block-actions.js';
@@ -21,6 +20,7 @@ import {
   useMetadata,
   useStore,
 } from '@builder.io/mitosis';
+import { RepeatData } from './types.js';
 import RenderRepeatedBlock from './render-repeated-block.lite';
 
 export type RenderBlockProps = {
@@ -31,11 +31,6 @@ export type RenderBlockProps = {
 useMetadata({
   elementTag: 'state.tagName',
 });
-
-interface RepeatData {
-  block: BuilderBlock;
-  context: BuilderContextInterface;
-}
 
 export default function RenderBlock(props: RenderBlockProps) {
   const builderContext = useContext(BuilderContext);
@@ -202,10 +197,11 @@ export default function RenderBlock(props: RenderBlockProps) {
         }
       >
         <state.tagName {...state.attributes}>
-          <Show
-            when={state.repeatItemData}
-            else={<RenderComponent {...state.renderComponentProps} />}
-          >
+          {/**
+           * We can't use `Show`'s `when` prop to combine the below 2 `Show` components because Vue 2 won't
+           * support `v-if` && `v-for` in the same element in a way that allows for `v-else` to be used afterwards.
+           */}
+          <Show when={state.repeatItemData}>
             <For each={state.repeatItemData}>
               {(data, index) => (
                 <RenderRepeatedBlock
@@ -215,6 +211,9 @@ export default function RenderBlock(props: RenderBlockProps) {
                 />
               )}
             </For>
+          </Show>
+          <Show when={!state.repeatItemData}>
+            <RenderComponent {...state.renderComponentProps} />
           </Show>
           {/**
            * We need to run two separate loops for content + styles to workaround the fact that Vue 2
