@@ -26,8 +26,5 @@
   "type": "module",
   "dependencies": {
     "@builder.io/sdk-svelte": "dev"
-  },
-  "resolutions": {
-    "@builder.io/sdk-svelte": "link:../../../packages/sdks/output/svelte"
   }
 }
