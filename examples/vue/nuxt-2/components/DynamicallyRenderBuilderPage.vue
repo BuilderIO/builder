@@ -4,7 +4,7 @@
 
     <div v-if="canShowContent">
       <div>
-        page:
+        page title:
         {{ (content && content.data && content.data.title) || 'Unpublished' }}
       </div>
       <builder-render-content
@@ -14,19 +14,13 @@
         :customComponents="getRegisteredComponents()"
       />
     </div>
+    <div v-else>Content not Found</div>
   </div>
 </template>
 <script>
 import Vue from 'vue'
 
-import {
-  RenderContent,
-  getContent,
-  getBuilderSearchParams,
-  convertSearchParamsToQueryObject,
-  isEditing,
-  isPreviewing,
-} from '@builder.io/sdk-vue'
+import { RenderContent, getContent, isPreviewing } from '@builder.io/sdk-vue'
 
 import HelloWorldComponent from './HelloWorld.vue'
 
@@ -66,18 +60,17 @@ export default Vue.extend({
   },
   mounted() {
     // we need to re-run this check on the client in case of SSR
-    this.canShowContent = this.content || isEditing() || isPreviewing()
+    this.canShowContent = this.content || isPreviewing()
   },
   async fetch() {
     const content = await getContent({
       model: 'page',
       apiKey: BUILDER_PUBLIC_API_KEY,
-      options: getBuilderSearchParams(this.$route.query),
       userAttributes: {
         urlPath: this.$route.path,
       },
     })
-    this.canShowContent = content || isEditing()
+    this.canShowContent = content || isPreviewing()
     this.content = content
 
     if (!this.canShowContent) {

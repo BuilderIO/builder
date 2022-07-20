@@ -7,16 +7,11 @@ import BuilderContext, {
   RegisteredComponents,
 } from '../../context/builder.context.lite';
 import { evaluate } from '../../functions/evaluate.js';
-import {
-  convertSearchParamsToQueryObject,
-  getBuilderSearchParams,
-} from '../../functions/get-builder-search-params/index.js';
 import { getContent } from '../../functions/get-content/index.js';
 import { getFetch } from '../../functions/get-fetch.js';
 import { isBrowser } from '../../functions/is-browser.js';
 import { isEditing } from '../../functions/is-editing.js';
 import { isPreviewing } from '../../functions/is-previewing.js';
-import { previewingModelName } from '../../functions/previewing-model-name.js';
 import {
   components,
   createRegisterComponentMessage,
@@ -199,6 +194,13 @@ export default function RenderContent(props: RenderContentProps) {
         );
       }
     },
+    get shouldRenderContentStyles(): boolean {
+      return Boolean(
+        (state.useContent?.data?.cssCode ||
+          state.useContent?.data?.customFonts?.length) &&
+          TARGET !== 'reactNative'
+      );
+    },
   });
 
   // This currently doesn't do anything as `onCreate` is not implemented
@@ -258,17 +260,17 @@ export default function RenderContent(props: RenderContentProps) {
 
       // override normal content in preview mode
       if (isPreviewing()) {
-        if (props.model && previewingModelName() === props.model) {
-          const searchParams = new URL(location.href).searchParams;
+        const searchParams = new URL(location.href).searchParams;
+        if (
+          props.model &&
+          searchParams.get('builder.preview') === props.model
+        ) {
           const previewApiKey =
             searchParams.get('apiKey') || searchParams.get('builder.space');
           if (previewApiKey) {
             getContent({
               model: props.model,
               apiKey: previewApiKey,
-              options: getBuilderSearchParams(
-                convertSearchParamsToQueryObject(searchParams)
-              ),
             }).then((content) => {
               if (content) {
                 state.overrideContent = content;
@@ -310,21 +312,15 @@ export default function RenderContent(props: RenderContentProps) {
   return (
     <Show when={state.useContent}>
       <div
-        onClick={() =>
-          track('click', {
-            contentId: state.useContent!.id,
-          })
-        }
+        onClick={() => track('click', { contentId: state.useContent!.id })}
         data-builder-content-id={state.useContent?.id}
       >
-        {(state.useContent?.data?.cssCode ||
-          state.useContent?.data?.customFonts?.length) &&
-          TARGET !== 'reactNative' && (
-            <RenderContentStyles
-              cssCode={state.useContent.data.cssCode}
-              customFonts={state.useContent.data.customFonts}
-            />
-          )}
+        {state.shouldRenderContentStyles && (
+          <RenderContentStyles
+            cssCode={state.useContent?.data?.cssCode}
+            customFonts={state.useContent?.data?.customFonts}
+          />
+        )}
         <RenderBlocks blocks={state.useContent?.data?.blocks} />
       </div>
     </Show>

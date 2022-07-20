@@ -1,5 +1,9 @@
 import { flatten } from '../../helpers/flatten.js';
 import { BuilderContent } from '../../types/builder-content.js';
+import {
+  getBuilderSearchParamsFromWindow,
+  normalizeSearchParams,
+} from '../get-builder-search-params/index.js';
 import { getFetch } from '../get-fetch.js';
 import { handleABTesting } from './ab-testing.js';
 
@@ -27,11 +31,14 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
     `https://cdn.builder.io/api/v2/content/${model}?apiKey=${apiKey}&limit=${limit}&noTraverse=${noTraverse}`
   );
 
-  if (options.options) {
-    const flattened = flatten(options.options);
-    for (const key in flattened) {
-      url.searchParams.set(key, String(flattened[key]));
-    }
+  const queryOptions = {
+    ...getBuilderSearchParamsFromWindow(),
+    ...normalizeSearchParams(options.options || {}),
+  };
+
+  const flattened = flatten(queryOptions);
+  for (const key in flattened) {
+    url.searchParams.set(key, String(flattened[key]));
   }
 
   if (userAttributes) {

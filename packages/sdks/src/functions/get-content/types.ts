@@ -11,8 +11,11 @@ export interface GetContentOptions {
   userAttributes?: (Record<string, string> & { urlPath?: string }) | null;
   /** Custom query */
   query?: Record<string, any>;
-  /** Other API options as key:value pairs */
-  options?: Record<string, any>;
+  /**
+   * Any other API options.
+   * Accepts both a key/value object or a `URLSearchParams` instance
+   * */
+  options?: Record<string, any> | URLSearchParams;
   /**
    * If set to `true`, it will lazy load symbols/references.
    * If set to `false`, it will render the entire content tree eagerly.

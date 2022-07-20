@@ -1,10 +1,9 @@
 <template>
   <div id="home">
     <div>Hello world from your Vue 3 project. Below is Builder Content:</div>
-
     <div v-if="canShowContent">
       <div>
-        page:
+        page title:
         {{ (content && content.data && content.data.title) || 'Unpublished' }}
       </div>
       <builder-render-content
@@ -14,17 +13,11 @@
         :customComponents="getRegisteredComponents()"
       />
     </div>
+    <div v-else>Content not Found</div>
   </div>
 </template>
 <script lang="ts">
-import {
-  RenderContent,
-  getContent,
-  getBuilderSearchParams,
-  convertSearchParamsToQueryObject,
-  isEditing,
-  isPreviewing,
-} from '@builder.io/sdk-vue/vue3';
+import { RenderContent, getContent, isPreviewing } from '@builder.io/sdk-vue/vue3';
 import HelloWorldComponent from './HelloWorld.vue';
 
 // Register your Builder components
@@ -65,15 +58,12 @@ export default {
     getContent({
       model: 'page',
       apiKey: BUILDER_PUBLIC_API_KEY,
-      options: getBuilderSearchParams(
-        convertSearchParamsToQueryObject(new URLSearchParams(window.location.search))
-      ),
       userAttributes: {
         urlPath: window.location.pathname,
       },
     }).then(res => {
       this.content = res;
-      this.canShowContent = this.content || isEditing() || isPreviewing();
+      this.canShowContent = this.content || isPreviewing();
     });
   },
 };
