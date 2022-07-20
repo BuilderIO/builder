@@ -23,6 +23,6 @@
   },
   "type": "module",
   "dependencies": {
-    "@builder.io/sdk-svelte": "dev"
+    "@builder.io/sdk-svelte": "^0.0.1-26"
   }
 }
