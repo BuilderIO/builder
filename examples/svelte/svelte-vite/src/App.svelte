@@ -2,6 +2,7 @@
   import Counter from './lib/Counter.svelte';
   import { getContent, isPreviewing, RenderContent } from '@builder.io/sdk-svelte';
 
+  // Create an array of your custom components and their properties
   const CUSTOM_COMPONENTS = [
     {
       component: Counter,
@@ -26,6 +27,7 @@
   let content = undefined;
   let canShowContent = false;
   const fetch = async () => {
+    // fetch your Builder content
     content = await getContent({
       model: 'page',
       apiKey: BUILDER_PUBLIC_API_KEY,
@@ -33,6 +35,7 @@
         urlPath: window.location.pathname || '/'
       }
     });
+    // handle preview mode
     canShowContent = content || isPreviewing();
   };
 
@@ -51,6 +54,7 @@
   <div>Below is your Builder Content:</div>
   {#if canShowContent}
     <div>page Title: {content?.data?.title || 'Unpublished'}</div>
+    <!-- Render builder content with all required props -->
     <RenderContent
       model="page"
       {content}
