@@ -313,7 +313,7 @@ export default function RenderContent(props: RenderContentProps) {
     <Show when={state.useContent}>
       <div
         onClick={() => track('click', { contentId: state.useContent!.id })}
-        data-builder-content-id={state.useContent?.id}
+        builder-content-id={state.useContent?.id}
       >
         {state.shouldRenderContentStyles && (
           <RenderContentStyles
