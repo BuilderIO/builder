@@ -115,6 +115,7 @@ export const registerCommercePlugin = async (
 
       Builder.registerEditor({
         name: `${config.name}${capitalize(pluralize.plural(resourceName))}List`,
+        enum: true,
         component: (props: PickResourceListProps) => (
           <ErrorBoundary>
             <PickResourcesListButton resourcePicker={resourcePicker} {...props} {...contextProps} />
