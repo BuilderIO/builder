@@ -3,9 +3,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "vite dev",
-    "build": "vite build",
-    "remove-symlinks": "./scripts/remove-resolutions.sh && yarn",
-    "add-symlinks": "./scripts/add-resolutions.sh && yarn"
+    "build": "vite build"
   },
   "devDependencies": {
     "@originjs/vite-plugin-commonjs": "^1.0.3",

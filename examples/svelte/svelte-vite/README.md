@@ -20,10 +20,10 @@ For the status of the SDK, look at [these tables](/packages/sdks/README.md#featu
 
 ```bash
 # install dependencies
-$ yarn install
+$ npm install
 
 # serve with hot reload at localhost:3000
-$ yarn run dev
+$ npm run dev
 # or start the server and open the app in a new browser tab
-$ yarn run dev -- --open
+$ npm run dev -- --open
 ```
