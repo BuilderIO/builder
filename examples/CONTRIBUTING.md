@@ -83,10 +83,13 @@ export async function getStaticProps() {
 #### ❌ Avoid
 
 ```ts
-import { getBuilderContent } from './get-builder-content'
-
-// Unnecessary abstraction away from the APIs people are trying to learn
-getBuilderContent(...)
+export async function getStaticProps() {
+  const page = await getContent({ model: 'page', url: '/' })
+  if (!page) {
+    return { notFound: true }
+  }
+  return { props: { page } }
+}
 ```
 
 ### Use JavaScript, not TypeScript
@@ -140,7 +143,7 @@ When possible, do things in an SSR/SSG compatible way, vs complete client side
 #### ✅ Good
 ```tsx
 export default function MyPage({ builderJson }) {
-  return <RenderContent content={builderJson}>
+  return <RenderContent content={builderJson} />
 }
 ```
 
@@ -151,7 +154,7 @@ export default function MyPage({ builderJson }) {
   useEffect(() => {
     getContent(...).then(setBuilderJson
   }, [])
-  return <RenderContent content={builderJson}>
+  return <RenderContent content={builderJson} />
 }
 ```
 
