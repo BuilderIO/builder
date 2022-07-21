@@ -44,16 +44,12 @@
     ]
   },
   "dependencies": {
-    "@builder.io/react": "^2.0.1",
-    "@builder.io/widgets": "^1.2.22",
-    "@vercel/fetch": "^6.1.0",
-    "atob": "^2.1.2",
-    "jest": "^26.6.3",
-    "next": "^12.1.0",
-    "next-seo": "^4.11.0",
-    "react": "^16.14.0",
-    "react-dom": "^16.14.0",
-    "react-merge-refs": "^1.1.0"
+    "@builder.io/react": "^2.0.2",
+    "@builder.io/widgets": "^1.2.23",
+    "next": "^12.2.2",
+    "next-seo": "^5.4.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^10.0.1",

@@ -4,7 +4,8 @@ import { BuilderComponent, builder, useIsPreviewing } from '@builder.io/react'
 import DefaultErrorPage from 'next/error'
 import Head from 'next/head'
 import builderConfig from '@config/builder'
-import '@builder.io/widgets'
+// loading widgets dynamically to reduce bundle size, will only be included in bundle when is used in the content
+import '@builder.io/widgets/dist/lib/builder-widgets-async'
 
 builder.init(builderConfig.apiKey)
 

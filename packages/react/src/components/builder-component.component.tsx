@@ -1129,7 +1129,9 @@ export class BuilderComponent extends React.Component<
 
   evalExpression(expression: string) {
     const { data } = this;
-    return expression.replace(/{{([^}]+)}}/g, (match, group) => tryEval(group, data, this._errors));
+    return String(expression).replace(/{{([^}]+)}}/g, (match, group) =>
+      tryEval(group, data, this._errors)
+    );
   }
 
   async handleRequest(propertyName: string, url: string) {

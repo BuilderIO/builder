@@ -14,9 +14,8 @@ const resolvePlugin = resolve();
 
 const externalDependencies = Object.keys(pkg.dependencies)
   .concat(Object.keys(pkg.optionalDependencies || {}))
-  .filter(item => item !== 'tslib');
-// TODO: go back to using peerDependencies once fix rollup iife issue
-// .concat(Object.keys(pkg.peerDependencies || {}))
+  .filter(item => item !== 'tslib')
+  .concat(Object.keys(pkg.peerDependencies || {}));
 
 const options = {
   input: `src/${libraryName}.ts`,
@@ -97,7 +96,7 @@ export default [
       { file: pkg.module, format: 'es', sourcemap: true },
       { file: pkg.main, format: 'cjs', sourcemap: true },
     ],
-    external: externalDependencies,
+    external: externalDependencies.concat('node-fetch'),
     plugins: options.plugins
       .filter(plugin => plugin !== resolvePlugin)
       .concat([

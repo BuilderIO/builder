@@ -1,3 +1,7 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import * as React from 'react';
 import { renderToString } from 'react-dom/server';
 import { render } from '@testing-library/react';
@@ -6,8 +10,6 @@ import { BuilderPage } from '../src/builder-react';
 import { el, block } from './functions/render-block';
 
 builder.init('null');
-
-import '@testing-library/jest-dom/extend-expect';
 
 describe('Dummy test', () => {
   it('tests run correctly', () => {

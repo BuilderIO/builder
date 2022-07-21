@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/widgets",
-  "version": "1.2.22",
+  "version": "1.2.23",
   "description": "",
   "keywords": [],
   "main": "dist/builder-widgets.cjs.js",
@@ -85,7 +85,7 @@
   },
   "devDependencies": {
     "@builder.io/block-publish": "^1.1.2",
-    "@builder.io/react": "^1.1.33",
+    "@builder.io/react": "^2.0.2-5",
     "@types/jest": "^22.0.0",
     "@types/lodash-es": "^4.17.1",
     "@types/node": "^10.0.3",
@@ -127,10 +127,6 @@
     "validate-commit-msg": "^2.12.2"
   },
   "optionalDependencies": {
-    "create-inferno-context": "^0.2.4",
-    "create-react-context": "^0.2.3",
-    "inferno": "^7.1.9",
-    "inferno-compat": "^7.1.9",
     "preact": "^8.4.2",
     "preact-compat": "^3.18.4",
     "preact-context": "^1.1.3",
