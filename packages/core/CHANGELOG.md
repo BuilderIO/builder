@@ -1,4 +1,4 @@
-### UPCOMING
+### 1.1.27
 
 - improved logging during JSON.parse errors
 - deprecation notice on `Builder.VERSION`
