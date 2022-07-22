@@ -11,7 +11,7 @@ registerDataPlugin(
   {
     id: pluginId,
     name: 'Kontent.ai',
-    icon: 'https://cdn.builder.io/api/v1/image/assets%2Fe85723a1cdde410591c232f4b375ef9b%2F2a37f60f2d234039af6284f35ae81a61',
+    icon: 'https://cdn.builder.io/api/v1/image/assets%2F0b9554e4c74747a08f247f55227230e0%2F4830cd357f5f480983ae6e0caf817076',
     settings: [
       {
         name: 'projectId',
