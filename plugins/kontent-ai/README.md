@@ -26,7 +26,7 @@ First, create a new page and insert a text block to your page.
 
 Now let's connect data from Kontent.ai with Builder's page. Select data tab and use "Connect data" button to select Kontent.ai.
 
-![Connect Kontent.ai with Builder.io's page](https://cdn.builder.io/api/v1/image/assets%2Fe85723a1cdde410591c232f4b375ef9b%2F54e90cac01f04844853cffdcd29136ae)
+![Connect Kontent.ai with Builder.io's page](https://cdn.builder.io/api/v1/image/assets%2F0b9554e4c74747a08f247f55227230e0%2Fb6e1c8592d9a435c9ec936b5fb54db71)
 
 Then pick the [content type](https://kontent.ai/learn/tutorials/references/terminology/#a-content-type) you want to select item(s) based on (i.e. `Article`).
 
@@ -46,8 +46,8 @@ Select the value of element (i.e. `title`'s value) - you can use search box for 
 
 Now repeat for second text element (you don't need to pick an entry again) and set text clock binding to other element's value (i.e. `body_copy`).
 
-![Setting second text block bindings](https://cdn.builder.io/api/v1/image/assets%2Fe85723a1cdde410591c232f4b375ef9b%2F388b616baee040bbac4ea3937f9f3a9f)
+![Setting second text block bindings](https://cdn.builder.io/api/v1/image/assets%2F0b9554e4c74747a08f247f55227230e0%2F0f18dfebebcf4ba99700eb5c3e83796d)
 
 Finally tune up a style a little - set heading fon size to 32px site and edit layout around of the article to have 640px width and center it horizontally and here we go:
 
-![Final article showcase](https://cdn.builder.io/api/v1/image/assets%2Fe85723a1cdde410591c232f4b375ef9b%2F359bfc3365994e16818d449ee32c780d)
+![Final article showcase](https://cdn.builder.io/api/v1/image/assets%2F0b9554e4c74747a08f247f55227230e0%2F2198adfdaf814cf3a85494477a0af1fb)
