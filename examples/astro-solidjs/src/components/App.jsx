@@ -34,7 +34,12 @@ function App({ builderContent }) {
     <div>
       <header class="text-center p-5">Hello world!</header>
       <div>
-        <RenderContent content={builderContent} model="page" customComponents={CUSTOM_COMPONENTS} />
+        <RenderContent
+          content={builderContent}
+          model="page"
+          customComponents={CUSTOM_COMPONENTS}
+          apiKey={'f1a790f8c3204b3b8c5c1795aeac4660'}
+        />
       </div>
     </div>
   );
