@@ -1568,6 +1568,7 @@ __metadata:
     "@builder.io/eslint-plugin-mitosis": dev
     "@builder.io/mitosis": dev
     "@builder.io/mitosis-cli": dev
+    "@playwright/test": ^1.24.0
     "@types/jest": ^27.4.1
     "@types/node-fetch": ^2.5.12
     "@typescript-eslint/eslint-plugin": latest
