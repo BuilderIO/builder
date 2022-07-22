@@ -1,6 +1,10 @@
 {
   "name": "@builder.io/sdks",
   "private": true,
+  "workspaces": [
+    "e2e/*",
+    "output/*"
+  ],
   "engines": {
     "yarn": ">= 3.0.0"
   },

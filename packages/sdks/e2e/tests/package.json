@@ -1,0 +1,9 @@
+{
+  "name": "@builder.io/sdks-e2e-tests",
+  "description": "Workspace containing e2e tests for SDKs",
+  "private": true,
+  "version": "0.0.1",
+  "devDependencies": {
+    "@playwright/test": "^1.24.0"
+  }
+}
