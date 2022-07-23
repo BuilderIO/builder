@@ -1,15 +1,14 @@
 <script lang="ts">
-// @ts-ignore
-import { MyComponent } from '@builder.io/e2e-app/vue2';
+import DynamicallyRenderBuilderPage from './DynamicallyRenderBuilderPage.vue';
 
 export default {
   name: 'app',
   components: {
-    MyComponent,
+    DynamicallyRenderBuilderPage,
   },
 };
 </script>
 
 <template>
-  <MyComponent></MyComponent>
+  <DynamicallyRenderBuilderPage></DynamicallyRenderBuilderPage>
 </template>

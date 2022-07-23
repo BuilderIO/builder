@@ -1376,7 +1376,7 @@ __metadata:
     vue: ^2.6.12
     vue-class-component: ^7.2.6
     vue-property-decorator: ^9.1.2
-    vue-template-compiler: ^2.6.12
+    vue-template-compiler: ^2.7.8
   languageName: unknown
   linkType: soft
 
@@ -3065,17 +3065,6 @@ __metadata:
     "@vue/compiler-core": 3.2.37
     "@vue/shared": 3.2.37
   checksum: 6cfa9d2ee123339549ba005fa61b2cd5ccf079ba8d8d797f0075e7054c2766744029cb0997341bcb6a51e129ae43489263aa7d8500b262ef7b81c63c2b0c4576
-  languageName: node
-  linkType: hard
-
-"@vue/compiler-sfc@npm:2.7.7":
-  version: 2.7.7
-  resolution: "@vue/compiler-sfc@npm:2.7.7"
-  dependencies:
-    "@babel/parser": ^7.18.4
-    postcss: ^8.4.14
-    source-map: ^0.6.1
-  checksum: 7771fdb5172cd4185cd7ef01ffae59ef8391361875b314ce2a379a588ccc542ab9cae4e67e6d3c7e51d62202b1772591fe4447d855129b274f2c6d955cc85311
   languageName: node
   linkType: hard
 
@@ -12880,13 +12869,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-template-compiler@npm:^2.6.12":
-  version: 2.7.7
-  resolution: "vue-template-compiler@npm:2.7.7"
+"vue-template-compiler@npm:^2.7.8":
+  version: 2.7.8
+  resolution: "vue-template-compiler@npm:2.7.8"
   dependencies:
     de-indent: ^1.0.2
     he: ^1.2.0
-  checksum: 3ef7956ba1907206224e8bd198010c27f67dd14d29840b457b2a36c17c288e1af314f04e82aaa0734bc22bf92cf55b3e86fe2aae662fe2c4e45894808de69636
+  checksum: e0886488f46055c6e8f59c57fdcc624d1b241aaa0995977482381124a4bf602142743bb6127cf13fa8b04e4c1070253c7aa9b77abc158cf7ab988b223cddbf24
   languageName: node
   linkType: hard
 
@@ -12921,17 +12910,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue@npm:^2":
-  version: 2.7.7
-  resolution: "vue@npm:2.7.7"
-  dependencies:
-    "@vue/compiler-sfc": 2.7.7
-    csstype: ^3.1.0
-  checksum: 3c6dacc33351d729e2d1b41242ad8ece5a1879d438a56d29c8ce3523ad5bf10f0e5c8ff622dcd778ab935248b14aa958e58199e7ffd87bcbe67df091f9045992
-  languageName: node
-  linkType: hard
-
-"vue@npm:^2.6.12":
+"vue@npm:^2, vue@npm:^2.6.12":
   version: 2.7.8
   resolution: "vue@npm:2.7.8"
   dependencies:

@@ -9,7 +9,7 @@
   </div>
   <div v-else>Content not Found</div>
 </template>
-<script>
+<script lang="ts">
 import { RenderContent } from '@builder.io/sdk-vue/vue2';
 import { CONTENTS } from '@builder.io/sdks-e2e-tests/specs';
 
@@ -34,6 +34,7 @@ export default {
     },
   },
   mounted() {
+    // @ts-ignore
     this.content = this.getContent();
   },
 };

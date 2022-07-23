@@ -1,15 +1,15 @@
 <script setup>
-import { MyComponent } from '@builder.io/e2e-app-vue3-output';
+import DynamicallyRenderBuilderPage from './DynamicallyRenderBuilderPage.vue';
 </script>
 
 <script>
 export default {
   components: {
-    MyComponent,
+    DynamicallyRenderBuilderPage,
   },
 };
 </script>
 
 <template>
-  <MyComponent></MyComponent>
+  <DynamicallyRenderBuilderPage></DynamicallyRenderBuilderPage>
 </template>
