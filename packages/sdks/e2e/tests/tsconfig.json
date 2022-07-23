@@ -4,10 +4,7 @@
     "strict": true,
     "jsx": "preserve",
     "moduleResolution": "node",
-    "jsxImportSource": "@builder.io/mitosis",
+    "jsxImportSource": "@builder.io/mitosis"
   },
-  "include": [
-    "tests",
-    "./shared.config.ts"
-  ]
+  "include": ["tests", "./shared.config.ts"]
 }
