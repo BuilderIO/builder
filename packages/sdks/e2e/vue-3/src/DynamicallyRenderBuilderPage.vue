@@ -1,15 +1,10 @@
 <template>
   <div v-if="content">
-    <builder-render-content
-      model="page"
-      :content="content"
-      :api-key="apiKey"
-      :customComponents="getRegisteredComponents()"
-    />
+    <builder-render-content model="page" :content="content" />
   </div>
   <div v-else>Content not Found</div>
 </template>
-<script>
+<script lang="ts">
 import { RenderContent } from '@builder.io/sdk-vue/vue3';
 import { CONTENTS } from '@builder.io/sdks-e2e-tests/specs';
 
@@ -18,9 +13,12 @@ export default {
   components: {
     'builder-render-content': RenderContent,
   },
-  data: () => ({
-    content: null,
-  }),
+  computed: {
+    content(): any {
+      // @ts-ignore
+      return this.getContent();
+    },
+  },
   methods: {
     getContent() {
       switch (window.location.pathname) {
@@ -32,9 +30,6 @@ export default {
           return null;
       }
     },
-  },
-  mounted() {
-    this.content = this.getContent();
   },
 };
 </script>

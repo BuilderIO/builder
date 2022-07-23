@@ -1,11 +1,6 @@
 <template>
   <div v-if="content">
-    <builder-render-content
-      model="page"
-      :content="content"
-      :api-key="apiKey"
-      :customComponents="getRegisteredComponents()"
-    />
+    <builder-render-content model="page" :content="content" />
   </div>
   <div v-else>Content not Found</div>
 </template>
@@ -18,9 +13,12 @@ export default {
   components: {
     'builder-render-content': RenderContent,
   },
-  data: () => ({
-    content: null,
-  }),
+  computed: {
+    content(): any {
+      // @ts-ignore
+      return this.getContent();
+    },
+  },
   methods: {
     getContent() {
       switch (window.location.pathname) {
@@ -32,10 +30,6 @@ export default {
           return null;
       }
     },
-  },
-  mounted() {
-    // @ts-ignore
-    this.content = this.getContent();
   },
 };
 </script>
