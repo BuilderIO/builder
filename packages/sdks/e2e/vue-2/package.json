@@ -1,0 +1,25 @@
+{
+  "name": "@builder.io/e2e-vue2",
+  "private": true,
+  "version": "0.0.1",
+  "scripts": {
+    "build": "tsc --noEmit && vite build",
+    "dev": "tsc --noEmit && vite",
+    "e2e": "../../node_modules/.bin/playwright test",
+    "serve": "vite preview"
+  },
+  "dependencies": {
+    "@builder.io/sdk-vue": "workspace:*",
+    "@builder.io/sdks-e2e-tests": "workspace:*",
+    "vue": "^2.6.12",
+    "vue-class-component": "^7.2.6",
+    "vue-property-decorator": "^9.1.2"
+  },
+  "devDependencies": {
+    "typescript": "^4",
+    "vite": "^2.9.13",
+    "vite-plugin-components": "^0.13.2",
+    "vite-plugin-vue2": "^1.2.1",
+    "vue-template-compiler": "^2.7.8"
+  }
+}
