@@ -20,7 +20,7 @@ Anywhere that you render a `<BuilderComponent ... />`, and now the widgets will 
 
 ## Example
 
-See here for a real [working example in our next.js example repo](/examples/next-js/pages/[...slug].js)
+See here for a real [working example in our next.js example repo](/examples/next-js-simple/pages/%5B%5B...page%5D%5D.tsx)
 
 ## Lazy Loading
 Instead of importing the root `@builder.io/widgets` which synchronously registers all components, you can asynchrnously import only the widgets used in builder content:
