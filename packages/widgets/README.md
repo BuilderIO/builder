@@ -23,15 +23,16 @@ Anywhere that you render a `<BuilderComponent ... />`, and now the widgets will 
 See here for a real [working example in our next.js example repo](/examples/next-js/pages/[...slug].js)
 
 ## Lazy Loading
+Instead of importing the root `@builder.io/widgets` which synchronously registers all components, you can asynchrnously import only the widgets used in builder content:
 
 #### With Next.js
-Use this import to only dynamically import widgets in next.js that's used within the content:
+To only dynamically import widgets in next.js:
 ```
 import '@builder.io/widgets/dist/lib/builder-widgets-async'
 ```
 
 #### Other Frameworks
-You'd want to lazy load the widget components explicitly. To do so, instead of importing the root `@builder.io/widgets` which synchronously registers all components, you can register them with your lazy loading library of choice, for e.g  [Loadable](https://github.com/jamiebuilds/react-loadable), and these components will only load when used in content, as needed.
+You'd want to lazy load the widget components explicitly. To do so, , you can register them with your lazy loading library of choice, for e.g  [Loadable](https://github.com/jamiebuilds/react-loadable), and these components will only load when used in content, as needed.
 
 Here is an example with Next.js
 
