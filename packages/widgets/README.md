@@ -34,8 +34,6 @@ import '@builder.io/widgets/dist/lib/builder-widgets-async'
 #### Other Frameworks
 You'd want to lazy load the widget components explicitly. To do so, , you can register them with your lazy loading library of choice, for e.g  [Loadable](https://github.com/jamiebuilds/react-loadable), and these components will only load when used in content, as needed.
 
-Here is an example with Next.js
-
 ```ts
 import { Builder } from '@builder.io/react';
 import { accordionConfig } from '@builder.io/widgets/dist/lib/components/Accordion.config';
