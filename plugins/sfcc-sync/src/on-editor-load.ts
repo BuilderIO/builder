@@ -23,6 +23,11 @@ export const onContentEditorLoad = ({ safeReaction, updatePreviewUrl }: ContentE
         // running on a non sfcc model
         return;
       }
+      const urlOverride = appState.location.query.get('overridePreviewUrl');
+      if (urlOverride) {
+        // chrome extension now appends the preview url from context, no need to update if so
+        return;
+      }
       if (obj) {
         const options = JSON.parse(JSON.stringify(obj));
         const pluginSettings = appState.user.organization.value.settings.plugins?.get(pkg.name);
