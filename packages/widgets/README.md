@@ -20,28 +20,34 @@ Anywhere that you render a `<BuilderComponent ... />`, and now the widgets will 
 
 ## Example
 
-See here for a real [working example in our next.js example repo](/examples/next-js/pages/[...slug].js)
+See here for a real [working example in our next.js example repo](/examples/next-js-simple/pages/%5B%5B...page%5D%5D.tsx)
 
 ## Lazy Loading
+Instead of importing the root `@builder.io/widgets` which synchronously registers all components, you can asynchrnously import only the widgets used in builder content:
 
-You can also lazy load these components. To do so, instead of importing the root `@builder.io/widgets` which synchronously registers all components, you can insteda register them with your lazy loading library of choice, and these components will only load when used in content, as needed.
+#### With Next.js
+To only dynamically import widgets in next.js:
+```
+import '@builder.io/widgets/dist/lib/builder-widgets-async'
+```
 
-Here is an example with Next.js
+#### Other Frameworks
+You'd want to lazy load the widget components explicitly. To do so, , you can register them with your lazy loading library of choice, for e.g  [Loadable](https://github.com/jamiebuilds/react-loadable), and these components will only load when used in content, as needed.
 
 ```ts
 import { Builder } from '@builder.io/react';
 import { accordionConfig } from '@builder.io/widgets/dist/lib/components/Accordion.config';
-import dynamic from 'next/dynamic';
+import loadable from '@loadable/component';
 
 Builder.registerComponent(
-  dynamic(() =>
+  loadable(() =>
     import('@builder.io/widgets/dist/lib/components/Accordion').then(mod => mod.AccordionComponent)
   ),
   accordionConfig
 );
 ```
 
-You can also use this same methodology with [Loadable](https://github.com/jamiebuilds/react-loadable) or [Suspense](https://reactjs.org/docs/concurrent-mode-suspense.html) as well.
+You can also use this same methodology with [Suspense](https://reactjs.org/docs/concurrent-mode-suspense.html) as well.
 
 ## Help and troubleshooting
 
