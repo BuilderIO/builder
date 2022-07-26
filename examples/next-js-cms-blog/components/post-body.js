@@ -1,5 +1,5 @@
-import { BUILDER_CONFIG } from '@/lib/constants'
-import { BuilderComponent } from '@builder.io/react'
+import { BUILDER_CONFIG } from '@/lib/constants';
+import { BuilderComponent } from '@builder.io/react';
 
 export default function PostBody({ content }) {
   return (
@@ -10,5 +10,5 @@ export default function PostBody({ content }) {
         content={content}
       />
     </div>
-  )
+  );
 }

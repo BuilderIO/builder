@@ -1,5 +1,5 @@
-import Footer from '../components/footer'
-import Meta from '../components/meta'
+import Footer from '../components/footer';
+import Meta from '../components/meta';
 
 export default function Layout({ children }) {
   return (
@@ -10,5 +10,5 @@ export default function Layout({ children }) {
       </div>
       <Footer />
     </>
-  )
+  );
 }
