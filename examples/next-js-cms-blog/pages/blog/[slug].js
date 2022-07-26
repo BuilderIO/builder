@@ -65,21 +65,17 @@ export async function getStaticProps({ params }) {
   const slug = params.slug;
 
   /*
-    usage of our react sdks to fetch data
-    more of our react sdk at:
-    https://github.com/BuilderIO/builder/tree/main/packages/react
-  */
+    usage of builder sdks to fetch data
+    more examples at https://github.com/BuilderIO/builder/tree/main/packages/core  */
 
   let post =
     (await builder
       .get('post', {
+        // Content API params are detailed in this doc
+        // https://www.builder.io/c/docs/query-api
         includeRefs: true,
-        preview: 'post',
-        options: {
-          noTargeting: true,
-        },
         query: {
-          'data.slug': { $eq: slug },
+          'data.slug': slug,
         },
       })
       .toPromise()) || null;
