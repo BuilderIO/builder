@@ -2,10 +2,8 @@ import Container from '@/components/container';
 import Intro from '@/components/intro';
 import Layout from '@/components/layout';
 import Head from 'next/head';
-import PostHeader from '@/components/post-header';
 import { builder } from '@builder.io/react';
 import PostCard from '@/components/post-card';
-import Link from 'next/link';
 
 export default function Index({ allPosts, preview }) {
   const heroPost = allPosts[0];
@@ -19,15 +17,14 @@ export default function Index({ allPosts, preview }) {
         <Container>
           <Intro />
           {heroPost && (
-            <Link href={`/blog/${heroPost.data.slug}`}>
-              <a className="hover:underline">
-                <PostHeader
-                  title={heroPost.data.title}
-                  coverImage={heroPost.data.image}
-                  author={heroPost.data.author.value?.data}
-                />
-              </a>
-            </Link>
+            <PostCard
+              intro={heroPost.data.intro}
+              key={heroPost.data.slug}
+              title={heroPost.data.title}
+              coverImage={heroPost.data.image}
+              author={heroPost.data.author.value?.data}
+              slug={heroPost.data.slug}
+            />
           )}
           {morePosts.length > 0 && (
             <section>
