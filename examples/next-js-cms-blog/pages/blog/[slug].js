@@ -41,9 +41,7 @@ export default function Post({ post }) {
                 data && (
                   <article>
                     <Head>
-                      <title>
-                        {data.title} | Next.js Blog Example with Builder.io
-                      </title>
+                      <title>{data.title} | Next.js Blog Example with Builder.io</title>
                       <meta property="og:image" content={data.image} />
                     </Head>
                     {data.author?.value && (
@@ -68,8 +66,8 @@ export default function Post({ post }) {
 }
 
 export async function getStaticProps({ params }) {
-  const slug = params.slug
-   
+  const slug = params.slug;
+
   /*
     usage of our react sdks to fetch data
     more of our react sdk at:
@@ -86,8 +84,8 @@ export async function getStaticProps({ params }) {
       query: {
         'data.slug': { $eq: slug },
       },
-    }).toPromise();
-
+    })
+    .toPromise();
 
   return {
     props: {
@@ -100,7 +98,7 @@ export async function getStaticProps({ params }) {
 export async function getStaticPaths() {
   const allPosts = await builder.getAll('posts', {
     options: { noTargeting: true },
-  });;
+  });
   return {
     paths: allPosts?.map(post => `/blog/${post.data.slug}`) || [],
     fallback: true,
