@@ -1,6 +1,6 @@
 {
   "createdBy": "XNHR3dCzCSXqg2Sumbh99KBD3XC2",
-  "createdDate": 1650039267021,
+  "createdDate": 1658862555797,
   "data": {
     "author": {
       "@type": "@builder.io/core:Reference",
@@ -68,7 +68,7 @@
       {
         "@type": "@builder.io/sdk:Element",
         "@version": 2,
-        "id": "builder-49e51b8816374160ba5373eb8b1c30b8",
+        "id": "builder-248c382cff4c4156b849862941680e0a",
         "component": {
           "name": "Text",
           "options": {
@@ -93,7 +93,7 @@
       {
         "@type": "@builder.io/sdk:Element",
         "@version": 2,
-        "id": "builder-8976bdc3354c4590ab40bbbd9b550831",
+        "id": "builder-03fcef7ab3484493b1de9b1440f83c70",
         "component": {
           "name": "Text",
           "options": {
@@ -126,20 +126,20 @@
           }
         },
         "layerName": "Collection showcase",
-        "id": "builder-94a165c9af844e13a7596a7e7c571be4",
+        "id": "builder-318b0f48850d4744a734dbcff1503e73",
         "animations": [
           {
             "trigger": "hover",
             "animation": "custom",
             "steps": [
               {
-                "id": "0122aeb4bd384e2a8513a863db22e4c0",
+                "id": "e515c9cf9b09455fb494c81c60de5a72",
                 "isStartState": false,
                 "styles": {},
                 "delay": 0
               },
               {
-                "id": "3bcbcddb258d4d57a204b3a8083eaaf3",
+                "id": "49914704fc1449d69a7866b9993388c8",
                 "isStartState": false,
                 "styles": {
                   "overflow": "hidden",
@@ -173,14 +173,14 @@
           {
             "@type": "@builder.io/sdk:Element",
             "@version": 2,
-            "id": "builder-cd64a83862e54961845e950f03436119",
+            "id": "builder-175538b738b741a1bdbfc2de82f44b31",
             "animations": [
               {
                 "trigger": "pageLoad",
                 "animation": "fadeInUp",
                 "steps": [
                   {
-                    "id": "bc0e3feb33cf4257a5a6e27f1e918d0e",
+                    "id": "f182cfebbfae409c806be5f030fb0ecb",
                     "isStartState": false,
                     "styles": {
                       "opacity": "0",
@@ -189,7 +189,7 @@
                     "delay": 0
                   },
                   {
-                    "id": "1fe07680f4c94b3babfa67bee737db72",
+                    "id": "4e98430b5b2348129527e8ac156229f8",
                     "isStartState": false,
                     "styles": {
                       "opacity": "1",
@@ -216,14 +216,14 @@
                     "component.options.text": "state.post.data.title"
                   }
                 },
-                "id": "builder-ee18f1f7eecb499c894c250c7291e8c2",
+                "id": "builder-6194c9e1972a4485ae1619da17471f70",
                 "animations": [
                   {
                     "trigger": "scrollInView",
                     "animation": "fadeInUp",
                     "steps": [
                       {
-                        "id": "9ef14164b01e41189875dd27d072d66b",
+                        "id": "b0762a2c12f949889beb39c8ca7d5ae9",
                         "isStartState": false,
                         "styles": {
                           "opacity": "0",
@@ -232,7 +232,7 @@
                         "delay": 0
                       },
                       {
-                        "id": "950d19df43d946e8ae0a8bd6d8d9f2b7",
+                        "id": "20cf3abbaf66457ea65bb1b3ef41d89d",
                         "isStartState": false,
                         "styles": {
                           "opacity": "1",
@@ -274,22 +274,22 @@
                 "@type": "@builder.io/sdk:Element",
                 "@version": 2,
                 "bindings": {
-                  "component.options.link": "var _virtual_index=\"/posts/\"+state.post.data.slug;return _virtual_index"
+                  "component.options.link": "var _virtual_index=\"/blog/\".concat(state.post.data.slug);return _virtual_index"
                 },
                 "code": {
                   "bindings": {
-                    "component.options.link": "`/posts/${state.post.data.slug}`"
+                    "component.options.link": "`/blog/${state.post.data.slug}`"
                   }
                 },
                 "layerName": "Button",
-                "id": "builder-88218c244a8647898153ffc22c1c6425",
+                "id": "builder-e7e855c260b54faa8af26045b765e78b",
                 "animations": [
                   {
                     "trigger": "scrollInView",
                     "animation": "fadeInUp",
                     "steps": [
                       {
-                        "id": "8c3c34029b0d42b6976b68f3201a59f9",
+                        "id": "1c714a4d1497442988c7e92f65a2ea51",
                         "isStartState": false,
                         "styles": {
                           "opacity": "0",
@@ -298,7 +298,7 @@
                         "delay": 0
                       },
                       {
-                        "id": "c03caad611614741952d5c88b59f5737",
+                        "id": "6635d113dc024330b6d1c2f9f957f3ab",
                         "isStartState": false,
                         "styles": {
                           "opacity": "1",
@@ -404,7 +404,7 @@
       {
         "@type": "@builder.io/sdk:Element",
         "@version": 2,
-        "id": "builder-691383409a454e91940606d11ac5402a",
+        "id": "builder-5580443024344208afb937557692d806",
         "component": {
           "name": "Core:Section",
           "options": {
@@ -415,7 +415,7 @@
           {
             "@type": "@builder.io/sdk:Element",
             "@version": 2,
-            "id": "builder-f0006bf9cdea4f9abdfbb92a266f1e56",
+            "id": "builder-52eeecba0a384181adacacf8781d5028",
             "component": {
               "name": "Text",
               "options": {
@@ -458,14 +458,14 @@
         "@type": "@builder.io/sdk:Element",
         "@version": 2,
         "layerName": "Collection list",
-        "id": "builder-32581d95fbbc494eadf3aabdf8ae3790",
+        "id": "builder-617e9b5128c747eaa9dc8f38c3a9a972",
         "animations": [
           {
             "trigger": "scrollInView",
             "animation": "fadeInUp",
             "steps": [
               {
-                "id": "f7da5267b1e14f0ebad87e2dcb345a9f",
+                "id": "cafe81ba70854fa6abe9b9186b652c71",
                 "isStartState": false,
                 "styles": {
                   "opacity": "0",
@@ -474,7 +474,7 @@
                 "delay": 0
               },
               {
-                "id": "1666a6b704bc4ffcb1ef27fda5fad9cc",
+                "id": "4115f25be44e46b2be3e846697cf7229",
                 "isStartState": false,
                 "styles": {
                   "opacity": "1",
@@ -505,19 +505,19 @@
               "collection": "state.post2.results"
             },
             "layerName": "Collection showcase mini",
-            "id": "builder-63936c3a1ebd4764bd3308bf1b6881cf",
+            "id": "builder-ef63226cc1714297889c4723d792a180",
             "children": [
               {
                 "@type": "@builder.io/sdk:Element",
                 "@version": 2,
-                "id": "builder-81539e90ca4e49909221b92feaf0057e",
+                "id": "builder-f7acec6629bc476ca90539de75b0a074",
                 "animations": [
                   {
                     "trigger": "pageLoad",
                     "animation": "fadeInUp",
                     "steps": [
                       {
-                        "id": "0f13a25090ab46499e8b8432529ba455",
+                        "id": "8705ae1ed5f54f56be8236b83b2c2363",
                         "isStartState": false,
                         "styles": {
                           "opacity": "0",
@@ -526,7 +526,7 @@
                         "delay": 0
                       },
                       {
-                        "id": "76c5555857684ebcbd40024685593ea5",
+                        "id": "79497c72ef3641828d804cc9772a5a02",
                         "isStartState": false,
                         "styles": {
                           "opacity": "1",
@@ -553,7 +553,7 @@
                         "component.options.text": "state.resultsItem.data.title"
                       }
                     },
-                    "id": "builder-03127dce9216451e8ab25c338ed5d4d8",
+                    "id": "builder-ce9e7625dd3645f487bef45902f01875",
                     "component": {
                       "name": "Text",
                       "options": {
@@ -582,28 +582,28 @@
                     "@type": "@builder.io/sdk:Element",
                     "@version": 2,
                     "bindings": {
-                      "component.options.link": "var _virtual_index=\"/posts/\"+state.resultsItem.data.slug;return _virtual_index"
+                      "component.options.link": "var _virtual_index=\"/blog/\".concat(state.resultsItem.data.slug);return _virtual_index"
                     },
                     "code": {
                       "bindings": {
-                        "component.options.link": "`/posts/${state.resultsItem.data.slug}`"
+                        "component.options.link": "`/blog/${state.resultsItem.data.slug}`"
                       }
                     },
                     "layerName": "Button",
-                    "id": "builder-b393adc091f54783b967ed341e713bab",
+                    "id": "builder-7b5aaf2ef24a4145811a2a8cb2dbef6a",
                     "animations": [
                       {
                         "trigger": "hover",
                         "animation": "custom",
                         "steps": [
                           {
-                            "id": "f39f947cfab046f09537b868b8762997",
+                            "id": "67ef508515014b3ebfbf1665f95bf18f",
                             "isStartState": false,
                             "styles": {},
                             "delay": 0
                           },
                           {
-                            "id": "458645a564354e70ac449c8b0d46a0f7",
+                            "id": "137fb3de39d94d198d31e0239126bfde",
                             "isStartState": false,
                             "styles": {
                               "color": "rgba(255, 255, 255, 1)",
@@ -733,14 +733,16 @@
       }
     }
   },
-  "id": "d7e18ff6d6af43af9a1fc7aa9284b11d",
-  "lastUpdatedBy": "XNHR3dCzCSXqg2Sumbh99KBD3XC2",
+  "firstPublished": 1650039278399,
+  "id": "9ec586564f804d83a2dff5643af4eec0",
+  "lastUpdated": 1658862625531,
+  "lastUpdatedBy": "IqzTkBgwWTbzaXDAhTL6IpwiCah1",
   "meta": {
     "dataSources": [
       {
         "dataPluginName": "Builder.io",
         "options": {
-          "entry": "f0acfad7e5bc46d6b39bc4fede76e1eb",
+          "entry": "01104c3455014309b74952e41fa470fb",
           "limit": 10,
           "orderBy": "priority",
           "orderType": "descending",
@@ -748,7 +750,7 @@
           "single": false
         },
         "propertyName": "post",
-        "resourceId": "4e8ba03f462d4dc092680c13b2dd77ac",
+        "resourceId": "402c55e5df9248df8acd266dce63a360",
         "resourceName": "Post"
       },
       {
@@ -761,16 +763,19 @@
           "single": false
         },
         "propertyName": "post2",
-        "resourceId": "4e8ba03f462d4dc092680c13b2dd77ac",
+        "resourceId": "402c55e5df9248df8acd266dce63a360",
         "resourceName": "Post"
       }
     ],
     "hasLinks": false,
     "kind": "page",
+    "originalContentId": "62bd46f95d0b47e88dbfc31d42b77552",
+    "winningTest": null,
     "needsHydration": false
   },
-  "modelId": "9f22db20d5184e62882757b533cbb0e7",
-  "name": "/",
+  "modelId": "6d6368da4a0f4804bd53f3966b76926a",
+  "name": "home 2",
+  "previewUrl": "http://localhost:3000/",
   "published": "published",
   "query": [
     {
@@ -780,14 +785,11 @@
       "value": "/"
     }
   ],
+  "screenshot": "https://cdn.builder.io/api/v1/image/assets%2Fda10ebf47ea346cf9079e7563d4c2af3%2Ff761cd9f26434d5b9cc43cc6bf67c59c",
   "testRatio": 1,
   "variations": {},
-  "lastUpdated": 1650326210095,
-  "firstPublished": 1650039278399,
-  "previewUrl": "http://localhost:3000/",
-  "screenshot": "https://cdn.builder.io/api/v1/image/assets%2Fda10ebf47ea346cf9079e7563d4c2af3%2Fb0e0557b73b747b98005926ba3d3ab7a",
-  "rev": "tuvtvzeloxc",
+  "rev": "nl7irmp7qg",
   "@originOrg": "da10ebf47ea346cf9079e7563d4c2af3",
-  "@originContentId": "62bd46f95d0b47e88dbfc31d42b77552",
+  "@originContentId": "eb0ecd8c78b8436ba2426dce532bca7d",
   "@originModelId": "a877a6591eeb413e9e06289c986932b3"
 }

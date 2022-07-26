@@ -7,7 +7,7 @@
   "data": {
     "author": {
       "@type": "@builder.io/core:Reference",
-      "id": "d4b3b626b5054f7d9eabb7dddf3b4e39",
+      "id": "372b0cd54a3c46acb609403850ed0d61",
       "model": "author"
     },
     "image": "https://cdn.builder.io/api/v1/image/assets%2F8f6bae86bfa3487eb1a18f263118c832%2F79e961dbf6d54a9a8f189c5bd48454d8",
@@ -266,7 +266,7 @@
       }
     ]
   },
-  "id": "fec9ffb9b9b84a5888d95ca3087f6085",
+  "id": "1fa3ba090c8941fead04fde0a4c9328d",
   "lastUpdated": 1650378378243,
   "lastUpdatedBy": "XNHR3dCzCSXqg2Sumbh99KBD3XC2",
   "meta": {
@@ -274,7 +274,7 @@
     "kind": "component",
     "needsHydration": false
   },
-  "modelId": "4e8ba03f462d4dc092680c13b2dd77ac",
+  "modelId": "402c55e5df9248df8acd266dce63a360",
   "name": "first one",
   "published": "published",
   "query": [
@@ -285,7 +285,7 @@
       "value": null
     }
   ],
-  "rev": "f52zffkmdoo",
+  "rev": "7df951thvs7",
   "screenshot": "https://cdn.builder.io/api/v1/image/assets%2F8f6bae86bfa3487eb1a18f263118c832%2Ffb7a0bb3ded54a8cbcdd8ddd98d24a7e",
   "testRatio": 1,
   "variations": {},

@@ -7,7 +7,7 @@
   "data": {
     "author": {
       "@type": "@builder.io/core:Reference",
-      "id": "e1efa9afdfa34d88abecfc4b7d4e00fa",
+      "id": "6e71e092305b4af581f52e47deeb99f6",
       "model": "author"
     },
     "customFonts": [
@@ -1289,7 +1289,7 @@
       }
     ]
   },
-  "id": "f0acfad7e5bc46d6b39bc4fede76e1eb",
+  "id": "01104c3455014309b74952e41fa470fb",
   "lastUpdated": 1650378389284,
   "lastUpdatedBy": "XNHR3dCzCSXqg2Sumbh99KBD3XC2",
   "meta": {
@@ -1297,11 +1297,11 @@
     "kind": "component",
     "needsHydration": false
   },
-  "modelId": "4e8ba03f462d4dc092680c13b2dd77ac",
+  "modelId": "402c55e5df9248df8acd266dce63a360",
   "name": "second ",
   "published": "published",
   "query": [],
-  "rev": "f52zffkmdoo",
+  "rev": "7df951thvs7",
   "screenshot": "https://cdn.builder.io/api/v1/image/assets%2F8f6bae86bfa3487eb1a18f263118c832%2Fae6b7a78f9994ba2bded4527c22b647f",
   "testRatio": 1,
   "variations": {},
