@@ -2,7 +2,7 @@ import Avatar from '../components/avatar';
 import CoverImage from '../components/cover-image';
 import PostTitle from '../components/post-title';
 
-export default function PostHeader({ title, coverImage, date, author }) {
+export default function PostHeader({ title, coverImage, author }) {
   return (
     <>
       <PostTitle>{title}</PostTitle>

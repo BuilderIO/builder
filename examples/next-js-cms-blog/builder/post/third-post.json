@@ -1,34 +1,729 @@
 {
+  "@originContentId": "12bab00bb5c1e97acd83cae58e5b5153fb128c7f547713086d126a04a9e8900a",
+  "@originModelId": "28a5a29ecc51d51f1422f61f9942f40b9f4f6415f0dda6f8f4937be4e6391adc",
+  "@originOrg": "5ff84b57721a49c8890c6a7189c877ec",
   "createdBy": "XNHR3dCzCSXqg2Sumbh99KBD3XC2",
   "createdDate": 1650044164562,
   "data": {
     "author": {
       "@type": "@builder.io/core:Reference",
-      "id": "6e71e092305b4af581f52e47deeb99f6",
+      "id": "0a5ab9ce0b4844db9fb7b6dda7ac350c",
       "model": "author"
     },
     "image": "https://cdn.builder.io/api/v1/image/assets%2Fda10ebf47ea346cf9079e7563d4c2af3%2F4d1a8765cdaa4c59b4472b46def3b1cb",
+    "inputs": [],
     "intro": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Orci sagittis eu volutpat odio facilisis mauris. Commodo nulla facilisi nullam vehicula. Tellus cras adipiscing enim eu. Morbi blandit cursus risus at ultrices mi tempus imperdiet nulla. Tempus quam pellentesque nec nam aliquam. Tincidunt id aliquet risus feugiat in ante metus dictum at. Nascetur ridiculus mus mauris vitae ultricies leo integer malesuada nunc. Tellus cras adipiscing enim eu turpis. Ultrices eros in cursus turpis massa tincidunt dui. Feugiat nisl pretium fusce id. Mauris augue neque gravida in fermentum et. Sed elementum tempus egestas sed. At consectetur lorem donec massa sapien faucibus et. Tellus pellentesque eu tincidunt tortor. Blandit turpis cursus in hac habitasse. Dui nunc mattis enim ut tellus elementum sagittis vitae. Ipsum.",
     "lastUpdated": "Wed Apr 20 2022 00:00:00 GMT-0300 (Horário Padrão de Brasília)",
     "slug": "third-one",
-    "title": "Third one"
+    "title": "You're getting ALL THIS.... and it's not even Christmas Yet !!",
+    "blocks": [
+      {
+        "@type": "@builder.io/sdk:Element",
+        "@version": 2,
+        "layerName": "FAQ page",
+        "id": "builder-d8daa58c090b46ceb9f0c2d60a7cf531",
+        "component": {
+          "name": "Core:Section",
+          "options": {
+            "maxWidth": null
+          }
+        },
+        "children": [
+          {
+            "@type": "@builder.io/sdk:Element",
+            "@version": 2,
+            "layerName": "Accordion",
+            "id": "builder-68c11b4f82824feeab5bf3b71540de70",
+            "properties": {
+              "id": "ordering"
+            },
+            "groupLocked": true,
+            "children": [
+              {
+                "@type": "@builder.io/sdk:Element",
+                "@version": 2,
+                "id": "builder-f656fd0bf2eb4d698d7377d2911ac537",
+                "component": {
+                  "name": "Builder:Accordion",
+                  "options": {
+                    "items": [
+                      {
+                        "title": [
+                          {
+                            "@type": "@builder.io/sdk:Element",
+                            "@version": 2,
+                            "actions": {
+                              "click": "var _virtual_index=state.accordionActive=!state.accordionActive;return _virtual_index"
+                            },
+                            "code": {
+                              "actions": {
+                                "click": "state.accordionActive = !state.accordionActive"
+                              }
+                            },
+                            "layerName": "Accordion item title",
+                            "id": "builder-c62e30d2a9704f8991cca4f278fabee9",
+                            "children": [
+                              {
+                                "@type": "@builder.io/sdk:Element",
+                                "@version": 2,
+                                "id": "builder-3c66c5f047a44aed843743eaa90a2c84",
+                                "component": {
+                                  "name": "Text",
+                                  "options": {
+                                    "text": "<p>How can I cancel an order?</p>"
+                                  }
+                                },
+                                "responsiveStyles": {
+                                  "large": {
+                                    "textAlign": "left",
+                                    "display": "flex",
+                                    "flexDirection": "column",
+                                    "paddingLeft": "10px",
+                                    "fontSize": "24px",
+                                    "paddingTop": "5px",
+                                    "paddingBottom": "5px"
+                                  },
+                                  "small": {
+                                    "fontSize": "20px"
+                                  }
+                                }
+                              },
+                              {
+                                "@type": "@builder.io/sdk:Element",
+                                "@version": 2,
+                                "bindings": {
+                                  "style.transform": "var _virtual_index=state.accordionActive?\"rotate(0deg)\":\"rotate(-180deg)\";return _virtual_index",
+                                  "style.color": "var _virtual_index=state.accordionActive?\"white\":\"black\";return _virtual_index",
+                                  "style.backgroundColor": "var _virtual_index=state.accordionActive?state.activeColor:state.defaultColor;return _virtual_index"
+                                },
+                                "code": {
+                                  "bindings": {
+                                    "style.transform": "state.accordionActive ? 'rotate(0deg)' : 'rotate(-180deg)'",
+                                    "style.color": "state.accordionActive ? 'white' : 'black'",
+                                    "style.backgroundColor": "state.accordionActive ? state.activeColor : state.defaultColor"
+                                  }
+                                },
+                                "id": "builder-f1e7512a1bd840c0a157346315cd3446",
+                                "component": {
+                                  "name": "Text",
+                                  "options": {
+                                    "text": "<p>⌃</p>"
+                                  }
+                                },
+                                "responsiveStyles": {
+                                  "large": {
+                                    "textAlign": "center",
+                                    "display": "flex",
+                                    "flexDirection": "column",
+                                    "fontSize": "24px",
+                                    "marginLeft": "auto",
+                                    "transition": ".2s ease-in",
+                                    "borderRadius": "25px",
+                                    "width": "30px",
+                                    "height": "30px",
+                                    "paddingTop": "5px"
+                                  }
+                                }
+                              }
+                            ],
+                            "responsiveStyles": {
+                              "large": {
+                                "marginTop": "10px",
+                                "position": "relative",
+                                "display": "flex",
+                                "flexDirection": "row",
+                                "paddingBottom": "20px",
+                                "paddingTop": "20px",
+                                "backgroundColor": "rgba(255, 255, 255, 1)",
+                                "alignItems": "center",
+                                "paddingRight": "20px",
+                                "borderRadius": "2px",
+                                "boxShadow": "0 1px 3px rgba(55, 60, 80, .05)",
+                                "transition": "box-shadow .3s, -webkit-box-shadow .3s",
+                                "paddingLeft": "10px"
+                              }
+                            }
+                          }
+                        ],
+                        "detail": [
+                          {
+                            "@type": "@builder.io/sdk:Element",
+                            "@version": 2,
+                            "layerName": "Accordion item detail",
+                            "id": "builder-8220b42a970c4cf392b5b21bd790c50e",
+                            "children": [
+                              {
+                                "@type": "@builder.io/sdk:Element",
+                                "@version": 2,
+                                "id": "builder-e963fc8052704951b4aaa9414872dc9f",
+                                "component": {
+                                  "name": "Text",
+                                  "options": {
+                                    "text": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>"
+                                  }
+                                },
+                                "responsiveStyles": {
+                                  "large": {
+                                    "display": "flex",
+                                    "flexDirection": "column",
+                                    "alignItems": "stretch",
+                                    "position": "relative",
+                                    "flexShrink": "0",
+                                    "boxSizing": "border-box",
+                                    "marginTop": "20px",
+                                    "lineHeight": "normal",
+                                    "height": "auto",
+                                    "textAlign": "left"
+                                  }
+                                }
+                              },
+                              {
+                                "@type": "@builder.io/sdk:Element",
+                                "@version": 2,
+                                "id": "builder-48ee75d5602b4bec8ea100997cb5459f",
+                                "component": {
+                                  "name": "Text",
+                                  "options": {
+                                    "text": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>"
+                                  }
+                                },
+                                "responsiveStyles": {
+                                  "large": {
+                                    "display": "flex",
+                                    "flexDirection": "column",
+                                    "alignItems": "stretch",
+                                    "position": "relative",
+                                    "flexShrink": "0",
+                                    "boxSizing": "border-box",
+                                    "marginTop": "20px",
+                                    "lineHeight": "normal",
+                                    "height": "auto",
+                                    "textAlign": "left"
+                                  }
+                                }
+                              },
+                              {
+                                "@type": "@builder.io/sdk:Element",
+                                "@version": 2,
+                                "id": "builder-7b2ee38dd64c4553a2006d9143aad4ca",
+                                "component": {
+                                  "name": "Text",
+                                  "options": {
+                                    "text": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>"
+                                  }
+                                },
+                                "responsiveStyles": {
+                                  "large": {
+                                    "display": "flex",
+                                    "flexDirection": "column",
+                                    "alignItems": "stretch",
+                                    "position": "relative",
+                                    "flexShrink": "0",
+                                    "boxSizing": "border-box",
+                                    "marginTop": "20px",
+                                    "lineHeight": "normal",
+                                    "height": "auto",
+                                    "textAlign": "left"
+                                  }
+                                }
+                              }
+                            ],
+                            "responsiveStyles": {
+                              "large": {
+                                "position": "relative",
+                                "display": "flex",
+                                "alignItems": "stretch",
+                                "flexDirection": "column",
+                                "paddingBottom": "30px",
+                                "height": "auto",
+                                "flexGrow": "0",
+                                "backgroundColor": "rgba(255, 255, 255, 1)",
+                                "paddingTop": "30px",
+                                "paddingLeft": "20px",
+                                "paddingRight": "20px"
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "title": [
+                          {
+                            "@type": "@builder.io/sdk:Element",
+                            "@version": 2,
+                            "actions": {
+                              "click": "var _virtual_index=state.accordionActive2=!state.accordionActive2;return _virtual_index"
+                            },
+                            "code": {
+                              "actions": {
+                                "click": "state.accordionActive2 = !state.accordionActive2"
+                              }
+                            },
+                            "layerName": "Accordion item title",
+                            "id": "builder-14def6c975334d7d8cc7e3dab6f3a568",
+                            "children": [
+                              {
+                                "@type": "@builder.io/sdk:Element",
+                                "@version": 2,
+                                "id": "builder-4f56e7aa32e94a9db99d1e81437601c5",
+                                "component": {
+                                  "name": "Text",
+                                  "options": {
+                                    "text": "<p>How can I place an order?</p>"
+                                  }
+                                },
+                                "responsiveStyles": {
+                                  "large": {
+                                    "textAlign": "left",
+                                    "display": "flex",
+                                    "flexDirection": "column",
+                                    "paddingLeft": "10px",
+                                    "fontSize": "24px",
+                                    "paddingTop": "5px",
+                                    "paddingBottom": "5px"
+                                  },
+                                  "small": {
+                                    "fontSize": "20px"
+                                  }
+                                }
+                              },
+                              {
+                                "@type": "@builder.io/sdk:Element",
+                                "@version": 2,
+                                "bindings": {
+                                  "style.transform": "var _virtual_index=state.accordionActive2?\"rotate(0deg)\":\"rotate(-180deg)\";return _virtual_index",
+                                  "style.color": "var _virtual_index=state.accordionActive2?\"white\":\"black\";return _virtual_index",
+                                  "style.backgroundColor": "var _virtual_index=state.accordionActive2?state.activeColor:state.defaultColor;return _virtual_index"
+                                },
+                                "code": {
+                                  "bindings": {
+                                    "style.transform": "state.accordionActive2 ? 'rotate(0deg)' : 'rotate(-180deg)'",
+                                    "style.color": "state.accordionActive2 ? 'white' : 'black'",
+                                    "style.backgroundColor": "state.accordionActive2 ? state.activeColor : state.defaultColor"
+                                  }
+                                },
+                                "id": "builder-11290cdae4e24fdb859509d0d5fbc9b3",
+                                "component": {
+                                  "name": "Text",
+                                  "options": {
+                                    "text": "<p>⌃</p>"
+                                  }
+                                },
+                                "responsiveStyles": {
+                                  "large": {
+                                    "textAlign": "center",
+                                    "display": "flex",
+                                    "flexDirection": "column",
+                                    "fontSize": "24px",
+                                    "marginLeft": "auto",
+                                    "transition": ".2s ease-in",
+                                    "borderRadius": "25px",
+                                    "width": "30px",
+                                    "height": "30px",
+                                    "paddingTop": "5px"
+                                  }
+                                }
+                              }
+                            ],
+                            "responsiveStyles": {
+                              "large": {
+                                "marginTop": "10px",
+                                "position": "relative",
+                                "display": "flex",
+                                "flexDirection": "row",
+                                "paddingBottom": "20px",
+                                "paddingTop": "20px",
+                                "backgroundColor": "rgba(255, 255, 255, 1)",
+                                "alignItems": "center",
+                                "paddingRight": "20px",
+                                "borderRadius": "2px",
+                                "boxShadow": "0 1px 3px rgba(55, 60, 80, .05)",
+                                "transition": "box-shadow .3s, -webkit-box-shadow .3s",
+                                "paddingLeft": "10px"
+                              }
+                            }
+                          }
+                        ],
+                        "detail": [
+                          {
+                            "@type": "@builder.io/sdk:Element",
+                            "@version": 2,
+                            "layerName": "Accordion item detail",
+                            "id": "builder-edefc114199a4ba0865d0ca04e4a207f",
+                            "children": [
+                              {
+                                "@type": "@builder.io/sdk:Element",
+                                "@version": 2,
+                                "id": "builder-50039594319e4a52b0adffbd87e11cc2",
+                                "component": {
+                                  "name": "Text",
+                                  "options": {
+                                    "text": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>"
+                                  }
+                                },
+                                "responsiveStyles": {
+                                  "large": {
+                                    "display": "flex",
+                                    "flexDirection": "column",
+                                    "alignItems": "stretch",
+                                    "position": "relative",
+                                    "flexShrink": "0",
+                                    "boxSizing": "border-box",
+                                    "marginTop": "20px",
+                                    "lineHeight": "normal",
+                                    "height": "auto",
+                                    "textAlign": "left"
+                                  }
+                                }
+                              },
+                              {
+                                "@type": "@builder.io/sdk:Element",
+                                "@version": 2,
+                                "id": "builder-943164f8823c46c2b5a748174935c250",
+                                "component": {
+                                  "name": "Text",
+                                  "options": {
+                                    "text": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>"
+                                  }
+                                },
+                                "responsiveStyles": {
+                                  "large": {
+                                    "display": "flex",
+                                    "flexDirection": "column",
+                                    "alignItems": "stretch",
+                                    "position": "relative",
+                                    "flexShrink": "0",
+                                    "boxSizing": "border-box",
+                                    "marginTop": "20px",
+                                    "lineHeight": "normal",
+                                    "height": "auto",
+                                    "textAlign": "left"
+                                  }
+                                }
+                              },
+                              {
+                                "@type": "@builder.io/sdk:Element",
+                                "@version": 2,
+                                "id": "builder-df4cc76a03a347dab84ba15e5cf6e0d9",
+                                "component": {
+                                  "name": "Text",
+                                  "options": {
+                                    "text": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>"
+                                  }
+                                },
+                                "responsiveStyles": {
+                                  "large": {
+                                    "display": "flex",
+                                    "flexDirection": "column",
+                                    "alignItems": "stretch",
+                                    "position": "relative",
+                                    "flexShrink": "0",
+                                    "boxSizing": "border-box",
+                                    "marginTop": "20px",
+                                    "lineHeight": "normal",
+                                    "height": "auto",
+                                    "textAlign": "left"
+                                  }
+                                }
+                              }
+                            ],
+                            "responsiveStyles": {
+                              "large": {
+                                "position": "relative",
+                                "display": "flex",
+                                "alignItems": "stretch",
+                                "flexDirection": "column",
+                                "paddingBottom": "30px",
+                                "height": "auto",
+                                "flexGrow": "0",
+                                "backgroundColor": "rgba(255, 255, 255, 1)",
+                                "paddingTop": "30px",
+                                "paddingLeft": "20px",
+                                "paddingRight": "20px"
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "title": [
+                          {
+                            "@type": "@builder.io/sdk:Element",
+                            "@version": 2,
+                            "actions": {
+                              "click": "var _virtual_index=state.accordionActive3=!state.accordionActive3;return _virtual_index"
+                            },
+                            "code": {
+                              "actions": {
+                                "click": "state.accordionActive3 = !state.accordionActive3"
+                              }
+                            },
+                            "layerName": "Accordion item title",
+                            "id": "builder-a53c15ec01134b2c9c0b9294cfb7d2d7",
+                            "children": [
+                              {
+                                "@type": "@builder.io/sdk:Element",
+                                "@version": 2,
+                                "id": "builder-381038c0a9594389af84e22f359f59c8",
+                                "component": {
+                                  "name": "Text",
+                                  "options": {
+                                    "text": "<p>Order question</p>"
+                                  }
+                                },
+                                "responsiveStyles": {
+                                  "large": {
+                                    "textAlign": "left",
+                                    "display": "flex",
+                                    "flexDirection": "column",
+                                    "paddingLeft": "10px",
+                                    "fontSize": "24px",
+                                    "paddingTop": "5px",
+                                    "paddingBottom": "5px"
+                                  },
+                                  "small": {
+                                    "fontSize": "20px"
+                                  }
+                                }
+                              },
+                              {
+                                "@type": "@builder.io/sdk:Element",
+                                "@version": 2,
+                                "bindings": {
+                                  "style.transform": "var _virtual_index=state.accordionActive3?\"rotate(0deg)\":\"rotate(-180deg)\";return _virtual_index",
+                                  "style.color": "var _virtual_index=state.accordionActive3?\"white\":\"black\";return _virtual_index",
+                                  "style.backgroundColor": "var _virtual_index=state.accordionActive3?state.activeColor:state.defaultColor;return _virtual_index"
+                                },
+                                "code": {
+                                  "bindings": {
+                                    "style.transform": "state.accordionActive3 ? 'rotate(0deg)' : 'rotate(-180deg)'",
+                                    "style.color": "state.accordionActive3 ? 'white' : 'black'",
+                                    "style.backgroundColor": "state.accordionActive3 ? state.activeColor : state.defaultColor"
+                                  }
+                                },
+                                "id": "builder-5125b861867743ba9d563fa7a0773945",
+                                "component": {
+                                  "name": "Text",
+                                  "options": {
+                                    "text": "<p>⌃</p>"
+                                  }
+                                },
+                                "responsiveStyles": {
+                                  "large": {
+                                    "textAlign": "center",
+                                    "display": "flex",
+                                    "flexDirection": "column",
+                                    "fontSize": "24px",
+                                    "marginLeft": "auto",
+                                    "transition": ".2s ease-in",
+                                    "borderRadius": "25px",
+                                    "width": "30px",
+                                    "height": "30px",
+                                    "paddingTop": "5px"
+                                  }
+                                }
+                              }
+                            ],
+                            "responsiveStyles": {
+                              "large": {
+                                "marginTop": "10px",
+                                "position": "relative",
+                                "display": "flex",
+                                "flexDirection": "row",
+                                "paddingBottom": "20px",
+                                "paddingTop": "20px",
+                                "backgroundColor": "rgba(255, 255, 255, 1)",
+                                "alignItems": "center",
+                                "paddingRight": "20px",
+                                "borderRadius": "2px",
+                                "boxShadow": "0 1px 3px rgba(55, 60, 80, .05)",
+                                "transition": "box-shadow .3s, -webkit-box-shadow .3s",
+                                "paddingLeft": "10px"
+                              }
+                            }
+                          }
+                        ],
+                        "detail": [
+                          {
+                            "@type": "@builder.io/sdk:Element",
+                            "@version": 2,
+                            "layerName": "Accordion item detail",
+                            "id": "builder-58c805f77bcb428e9f4cd51860d0f9db",
+                            "children": [
+                              {
+                                "@type": "@builder.io/sdk:Element",
+                                "@version": 2,
+                                "id": "builder-da97d48114274896b1c8efbd9755f858",
+                                "component": {
+                                  "name": "Text",
+                                  "options": {
+                                    "text": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>"
+                                  }
+                                },
+                                "responsiveStyles": {
+                                  "large": {
+                                    "display": "flex",
+                                    "flexDirection": "column",
+                                    "alignItems": "stretch",
+                                    "position": "relative",
+                                    "flexShrink": "0",
+                                    "boxSizing": "border-box",
+                                    "marginTop": "20px",
+                                    "lineHeight": "normal",
+                                    "height": "auto",
+                                    "textAlign": "left"
+                                  }
+                                }
+                              },
+                              {
+                                "@type": "@builder.io/sdk:Element",
+                                "@version": 2,
+                                "id": "builder-33dfe15db63e43a694949bc4687cf518",
+                                "component": {
+                                  "name": "Text",
+                                  "options": {
+                                    "text": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>"
+                                  }
+                                },
+                                "responsiveStyles": {
+                                  "large": {
+                                    "display": "flex",
+                                    "flexDirection": "column",
+                                    "alignItems": "stretch",
+                                    "position": "relative",
+                                    "flexShrink": "0",
+                                    "boxSizing": "border-box",
+                                    "marginTop": "20px",
+                                    "lineHeight": "normal",
+                                    "height": "auto",
+                                    "textAlign": "left"
+                                  }
+                                }
+                              },
+                              {
+                                "@type": "@builder.io/sdk:Element",
+                                "@version": 2,
+                                "id": "builder-a098179c339d43a0b0714b10eeb4d169",
+                                "component": {
+                                  "name": "Text",
+                                  "options": {
+                                    "text": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>"
+                                  }
+                                },
+                                "responsiveStyles": {
+                                  "large": {
+                                    "display": "flex",
+                                    "flexDirection": "column",
+                                    "alignItems": "stretch",
+                                    "position": "relative",
+                                    "flexShrink": "0",
+                                    "boxSizing": "border-box",
+                                    "marginTop": "20px",
+                                    "lineHeight": "normal",
+                                    "height": "auto",
+                                    "textAlign": "left"
+                                  }
+                                }
+                              }
+                            ],
+                            "responsiveStyles": {
+                              "large": {
+                                "position": "relative",
+                                "display": "flex",
+                                "alignItems": "stretch",
+                                "flexDirection": "column",
+                                "paddingBottom": "30px",
+                                "height": "auto",
+                                "flexGrow": "0",
+                                "backgroundColor": "rgba(255, 255, 255, 1)",
+                                "paddingTop": "30px",
+                                "paddingLeft": "20px",
+                                "paddingRight": "20px"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    ],
+                    "animate": true,
+                    "gridRowWidth": "25%"
+                  }
+                },
+                "responsiveStyles": {
+                  "large": {
+                    "display": "flex",
+                    "flexDirection": "column",
+                    "alignItems": "stretch",
+                    "position": "relative",
+                    "flexShrink": "0",
+                    "boxSizing": "border-box",
+                    "marginTop": "20px"
+                  }
+                }
+              }
+            ],
+            "responsiveStyles": {
+              "large": {
+                "display": "flex",
+                "flexDirection": "column",
+                "alignItems": "stretch",
+                "position": "relative",
+                "flexShrink": "0",
+                "boxSizing": "border-box",
+                "marginTop": "-1px",
+                "height": "auto",
+                "paddingBottom": "30px",
+                "width": "80%",
+                "marginLeft": "auto",
+                "marginRight": "auto"
+              }
+            }
+          }
+        ],
+        "responsiveStyles": {
+          "large": {
+            "display": "flex",
+            "flexDirection": "column",
+            "alignItems": "stretch",
+            "position": "relative",
+            "flexShrink": "0",
+            "boxSizing": "border-box",
+            "marginTop": "0px",
+            "paddingLeft": "0px",
+            "paddingRight": "0px",
+            "paddingTop": "0px",
+            "paddingBottom": "50px",
+            "width": "100vw",
+            "marginLeft": "calc(50% - 50vw)"
+          }
+        }
+      }
+    ],
+    "state": {
+      "deviceSize": "large",
+      "location": {
+        "path": "",
+        "query": {}
+      }
+    }
   },
-  "id": "90f6c07e29de4aa6bc042f68817e84a5",
-  "lastUpdatedBy": "XNHR3dCzCSXqg2Sumbh99KBD3XC2",
+  "firstPublished": 1650044263516,
+  "id": "f788ee8bf3f94c588327a91a6250e317",
+  "lastUpdated": 1658864369892,
+  "lastUpdatedBy": "4FFFg0MNRJT0z0nW4uUizDHfHJV2",
   "meta": {
-    "kind": "component"
+    "hasLinks": false,
+    "kind": "component",
+    "lastPreviewUrl": "http://localhost:3000/blog/third-one?builder.space=5ff84b57721a49c8890c6a7189c877ec&builder.cachebust=true&builder.preview=post&builder.noCache=true&__builder_editing__=true&builder.overrides.post=12bab00bb5c1e97acd83cae58e5b5153fb128c7f547713086d126a04a9e8900a&builder.overrides.12bab00bb5c1e97acd83cae58e5b5153fb128c7f547713086d126a04a9e8900a=12bab00bb5c1e97acd83cae58e5b5153fb128c7f547713086d126a04a9e8900a",
+    "needsHydration": false
   },
-  "modelId": "402c55e5df9248df8acd266dce63a360",
+  "modelId": "e1e88dfc0b51458e96998b7e83ab1145",
   "name": "Third post",
+  "previewUrl": "http://localhost:3000/blog/third-one",
   "published": "published",
   "query": [],
+  "rev": "58dc0mut7lf",
   "testRatio": 1,
   "variations": {},
-  "lastUpdated": 1650378407882,
-  "previewUrl": "http://localhost:3000/posts/third-one",
-  "firstPublished": 1650044263516,
-  "rev": "7df951thvs7",
-  "@originOrg": "da10ebf47ea346cf9079e7563d4c2af3",
-  "@originContentId": "c2272afd1e3943c7808ada93748f0110",
-  "@originModelId": "5815ecdde412fcc54b774bec92be8e7e405595e3ce681db84f88047cb7447505"
+  "screenshot": "https://cdn.builder.io/api/v1/image/assets%2F5ff84b57721a49c8890c6a7189c877ec%2Fea416560045e48979f0ffb62738db998"
 }
