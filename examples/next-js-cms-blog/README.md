@@ -12,7 +12,7 @@ Before you begin, ensure that you have the following accounts set up:
 
 -   [Builder.io Account](https://builder.io)
 -   Node 14 or later
--   npm 6.14.4 or later
+-   yarn
 
 
 ### Getting started with Builder.io :

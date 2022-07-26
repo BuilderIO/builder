@@ -1,4 +1,3 @@
-import { BUILDER_CONFIG } from '@/lib/constants';
 import { BuilderComponent } from '@builder.io/react';
 
 export default function PostBody({ content }) {
@@ -6,7 +5,7 @@ export default function PostBody({ content }) {
     <div className="max-w-2xl mx-auto">
       <BuilderComponent
         options={{ includeRefs: true }}
-        model={BUILDER_CONFIG.postsModel}
+        model="posts"
         content={content}
       />
     </div>

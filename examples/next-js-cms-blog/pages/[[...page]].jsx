@@ -2,11 +2,9 @@ import { BuilderComponent, builder, useIsPreviewing } from '@builder.io/react';
 import DefaultErrorPage from 'next/error';
 import { useRouter } from 'next/router';
 import Layout from '@/components/layout';
-import { BUILDER_CONFIG } from '@/lib/constants';
 import Head from 'next/head';
-import { CMS_NAME } from '@/lib/constants';
 
-builder.init(BUILDER_CONFIG.apiKey);
+builder.init(process.env.NEXT_PUBLIC_BUILDER_API_KEY);
 
 export default function Page({ page }) {
   const router = useRouter();
@@ -14,7 +12,7 @@ export default function Page({ page }) {
     return <h1>Loading...</h1>;
   }
 
-  const isPreviewing = !useIsPreviewing();
+  const isPreviewing = useIsPreviewing();
   if (!page && !isPreviewing) {
     return (
       <>
@@ -30,8 +28,10 @@ export default function Page({ page }) {
     <>
       <Layout>
         <Head>
-          <title>Next.js Blog Example with {CMS_NAME}</title>
+          <title>Next.js Blog Example with Builder.io</title>
         </Head>
+        {/* Integrating landing pages to the app */}
+        {/* https://www.builder.io/c/docs/integrating-builder-pages */}
         <BuilderComponent model="page" content={page} />
       </Layout>
     </>

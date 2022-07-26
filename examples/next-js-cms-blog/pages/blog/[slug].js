@@ -4,18 +4,18 @@ import Container from '@/components/container';
 import PostBody from '@/components/post-body';
 import Header from '@/components/header';
 import PostHeader from '@/components/post-header';
-import SectionSeparator from '@/components/section-separator';
 import Layout from '@/components/layout';
-import { getAllPostsWithSlug, getPostBySlug } from '@/lib/api';
 import PostTitle from '@/components/post-title';
 import Head from 'next/head';
-import { CMS_NAME, BUILDER_CONFIG } from '@/lib/constants';
 import { Builder, builder, BuilderContent, useIsPreviewing } from '@builder.io/react';
 import '@builder.io/widgets';
 
-builder.init(BUILDER_CONFIG.apiKey);
+builder.init(process.env.NEXT_PUBLIC_BUILDER_API_KEY);
+
 Builder.isStatic = true;
 
+// Post model created to display a specific blog post.
+// read more at: https://www.builder.io/blog/creating-blog
 export default function Post({ post }) {
   const router = useRouter();
   const isPreviewing = useIsPreviewing();
@@ -33,8 +33,8 @@ export default function Post({ post }) {
           <>
             <BuilderContent
               {...(!isPreviewing && { content: post })}
-              modelName={BUILDER_CONFIG.postsModel}
-              options={{ includeRefs: true, model: BUILDER_CONFIG.postsModel }}
+              modelName="posts"
+              options={{ includeRefs: true }}
               isStatic
             >
               {data =>
@@ -42,7 +42,7 @@ export default function Post({ post }) {
                   <article>
                     <Head>
                       <title>
-                        {data.title} | Next.js Blog Example with {CMS_NAME}
+                        {data.title} | Next.js Blog Example with Builder.io
                       </title>
                       <meta property="og:image" content={data.image} />
                     </Head>
@@ -60,8 +60,6 @@ export default function Post({ post }) {
                 )
               }
             </BuilderContent>
-            <SectionSeparator />
-            {/* {morePosts.length > 0 && <MoreStories posts={morePosts} />} */}
           </>
         )}
       </Container>
@@ -70,18 +68,39 @@ export default function Post({ post }) {
 }
 
 export async function getStaticProps({ params }) {
-  let { post } = await getPostBySlug(params.handle);
+  const slug = params.slug
+   
+  /*
+    usage of our react sdks to fetch data
+    more of our react sdk at:
+    https://github.com/BuilderIO/builder/tree/main/packages/react
+  */
+
+  let post = await builder
+    .get('post', {
+      includeRefs: true,
+      preview: 'post',
+      options: {
+        noTargeting: true,
+      },
+      query: {
+        'data.slug': { $eq: slug },
+      },
+    }).toPromise();
+
 
   return {
     props: {
-      key: post?.id + post?.data.slug + params.handle,
+      key: post?.id + post?.data.slug + params.slug,
       post,
     },
   };
 }
 
 export async function getStaticPaths() {
-  const allPosts = await getAllPostsWithSlug();
+  const allPosts = await builder.getAll('posts', {
+    options: { noTargeting: true },
+  });;
   return {
     paths: allPosts?.map(post => `/blog/${post.data.slug}`) || [],
     fallback: true,
