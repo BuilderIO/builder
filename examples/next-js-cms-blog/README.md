@@ -1,24 +1,24 @@
 # A statically generated blog example using Next.js and Builder.io
 
-This example showcases Next.js's [Static Generation](https://nextjs.org/docs/basic-features/pages) feature using [Builder.io](https://builder.io/) as the data source.
+This example showcases Next.js's [Static Generation](https://nextjs.org/docs/basic-features/pages) feature using [Builder.io](https://builder.io/) as CMS and editor.
 
-## Demo
+## Live Demo
 
-[https://cms-builder-io.vercel.app/](https://cms-builder-io.vercel.app/)
+[https://next-js-cms-blog.vercel.app/](https://next-js-cms-blog.vercel.app/)
 
-## How to use
+## Requirements
 
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init) or [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/) to bootstrap the example:
+Before you begin, ensure that you have the following accounts set up:
 
-```bash
-npx create-next-app --example cms-builder-io cms-builder-io-app
-# or
-yarn create next-app --example cms-builder-io cms-builder-io-app
-# or
-pnpm create next-app -- --example cms-builder-io cms-builder-io-app
-```
+-   [Builder.io Account](https://builder.io)
+-   Node 14 or later
+-   npm 6.14.4 or later
 
-## Configuration
+
+### Getting started with Builder.io :
+  - [1: Create an account for Builder.io](#1-create-an-account-for-builderio)
+  - [2: Your Builder.io private key](#2-your-builderio-private-key)
+  - [3: Clone this repository and initialize a Builder.io space](#3-clone-this-repository-and-initialize-a-builderio-space)
 
 ### Step 1 Install the Builder.io cli
 
@@ -31,59 +31,40 @@ npm install @builder.io/cli -g
 [Signup for Builder.io](https://builder.io/signup), then go to your [organization settings page](https://builder.io/account/organization?root=true), create a private key and copy it and supply it for `[private-key]` below. For `[space-name]` create a name for your space, such as "Blog"
 
 ```
-cd cms-builder-io-app
 builder create -k [private-key] -n [space-name] -d
 ```
 
 This command when done it'll print your new space's public api key, copy it and add as the value for `NEXT_PUBLIC_BUILDER_API_KEY` into the .env files (`.env.production` and `.env.development`)
 
+``` bash
+  ____            _   _       _                     _                    _   _ 
+| __ )   _   _  (_) | |   __| |   ___   _ __      (_)   ___       ___  | | (_)
+|  _ \  | | | | | | | |  / _` |  / _ \ | '__|     | |  / _ \     / __| | | | |
+| |_) | | |_| | | | | | | (_| | |  __/ | |     _  | | | (_) |   | (__  | | | |
+|____/   \__,_| |_| |_|  \__,_|  \___| |_|    (_) |_|  \___/     \___| |_| |_|
+
+|████████████████████████████████████████| product-footer writing schema.json | 1/1
+|████████████████████████████████████████| announcement-bar: writing schema.json | 1/1
+|████████████████████████████████████████| category-hero: writing schema.json | 1/1
+|████████████████████████████████████████| page: writing schema.json | 2/2
+
+
+Your new space "blog demo" public API Key: <your new api key>
 ```
-BUILDER_PUBLIC_KEY=...
+
+Copy the created API key and add it to your .env.local file: 
+
+```
+BUILDER_PUBLIC_KEY=<your new api key>
 ```
 
 ### Step 3 Run Next.js in development mode
 
 ```bash
-npm install
-npm run dev
-
-# or
-
 yarn install
 yarn dev
 ```
 
 Your blog should be up and running on [http://localhost:3000](http://localhost:3000)! If it doesn't work, you can post on [GitHub discussions](https://github.com/vercel/next.js/discussions).
 
-### Step 4 Deploy on Vercel
 
-You can deploy this app to the cloud with [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
-
-#### Deploy Your Local Project
-
-To deploy your local project to Vercel, push it to GitHub/GitLab/Bitbucket and [import to Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example).
-
-**Important**: When you import your project on Vercel, make sure to click on **Environment Variables** and set them to match your `.env.local` file.
-
-#### Deploy from Our Template
-
-Alternatively, you can deploy using our template by clicking on the Deploy button below.
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/cms-builder-io&project-name=cms-builder-io&repository-name=cms-builder-io&env=BUILDER_PUBLIC_KEY&envDescription=Required%20to%20connect%20the%20app%20with%20Builder.io&envLink=https://www.builder.io/c/docs/custom-react-components#api-key)
-
-### Related examples
-
-- [WordPress](/examples/cms-wordpress)
-- [DatoCMS](/examples/cms-datocms)
-- [Sanity](/examples/cms-sanity)
-- [TakeShape](/examples/cms-takeshape)
-- [Prismic](/examples/cms-prismic)
-- [Contentful](/examples/cms-contentful)
-- [Agility CMS](/examples/cms-agilitycms)
-- [Cosmic](/examples/cms-cosmic)
-- [Strapi](/examples/cms-strapi)
-- [ButterCMS](/examples/cms-buttercms)
-- [GraphCMS](/examples/cms-graphcms)
-- [Kontent](/examples/cms-kontent)
-- [Ghost](/examples/cms-ghost)
-- [Blog Starter](/examples/blog-starter)
