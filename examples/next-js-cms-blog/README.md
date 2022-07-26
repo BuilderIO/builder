@@ -4,7 +4,7 @@ This example showcases Next.js's [Static Generation](https://nextjs.org/docs/bas
 
 ## Live Demo
 
-[cms-blog-builder.vercel.app](cms-blog-builder.vercel.app/)
+[cms-builder-blog](https://cms-builder-blog-sand.vercel.app)
 
 ## Requirements
 
