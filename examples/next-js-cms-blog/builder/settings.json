@@ -1,0 +1,25 @@
+{
+  "settings": {
+    "editorEnableEditingUrlLogic": true
+  },
+  "type": "space",
+  "siteUrl": "http://localhost:3000",
+  "name": "blog-demo",
+  "id": "da10ebf47ea346cf9079e7563d4c2af3",
+  "@version": 6,
+  "cloneInfo": {
+    "contentIdMap": {
+      "eb6dc4a4ac9b7a07908da412ee217783887498eb6bdfa1eaf82883120314b316": "6e71e092305b4af581f52e47deeb99f6",
+      "d402bee410c135951543cc52c63da9452d197bdd80f3a1722ed7b4a91054c7ca": "372b0cd54a3c46acb609403850ed0d61",
+      "eb0ecd8c78b8436ba2426dce532bca7d": "9ec586564f804d83a2dff5643af4eec0",
+      "c2272afd1e3943c7808ada93748f0110": "90f6c07e29de4aa6bc042f68817e84a5",
+      "82a462fbb98adc39fae63e713d31eec444fba1d5e4868ce62d167e644ed90276": "01104c3455014309b74952e41fa470fb",
+      "d8b74bf35356878c128588fda6f66a435ad2c07c1b352d921aa2857b86b2d6b7": "1fa3ba090c8941fead04fde0a4c9328d"
+    },
+    "modelIdMap": {
+      "531493162195677f389030e6b7294c58ac6e7e40143824f95bec29be1ff1b37a": "99cf55aa9e5d478fb93fa10d73b2e66f",
+      "a877a6591eeb413e9e06289c986932b3": "6d6368da4a0f4804bd53f3966b76926a",
+      "5815ecdde412fcc54b774bec92be8e7e405595e3ce681db84f88047cb7447505": "402c55e5df9248df8acd266dce63a360"
+    }
+  }
+}

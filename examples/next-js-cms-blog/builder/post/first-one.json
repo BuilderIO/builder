@@ -1,0 +1,294 @@
+{
+  "@originContentId": "d8b74bf35356878c128588fda6f66a435ad2c07c1b352d921aa2857b86b2d6b7",
+  "@originModelId": "5815ecdde412fcc54b774bec92be8e7e405595e3ce681db84f88047cb7447505",
+  "@originOrg": "da10ebf47ea346cf9079e7563d4c2af3",
+  "createdBy": "4FFFg0MNRJT0z0nW4uUizDHfHJV2",
+  "createdDate": 1613015962185,
+  "data": {
+    "author": {
+      "@type": "@builder.io/core:Reference",
+      "id": "372b0cd54a3c46acb609403850ed0d61",
+      "model": "author"
+    },
+    "image": "https://cdn.builder.io/api/v1/image/assets%2F8f6bae86bfa3487eb1a18f263118c832%2F79e961dbf6d54a9a8f189c5bd48454d8",
+    "inputs": [],
+    "intro": "pellentesque nec nam aliquam. Tincidunt id aliquet risus feugiat in ante metus dictum at. Nascetur ridiculus mus mauris vitae ultricies leo integer malesuada nunc. Tellus cras adipiscing enim eu turpis. Ultrices eros in cursus turpis massa tincidunt dui. Feugiat nisl pretium fusce id. Mauris augue neque gravida infermentum et. Sed elementum tempus egestas sed. At consectetur lorem donec massa sapien faucibus et.",
+    "lastUpdated": "Tue Apr 19 2022 00:00:00 GMT-0300 (Horário Padrão de Brasília)",
+    "slug": "first-one",
+    "state": {
+      "deviceSize": "large",
+      "location": {
+        "path": "",
+        "query": {}
+      }
+    },
+    "title": "Now howoiofweewf",
+    "blocks": [
+      {
+        "@type": "@builder.io/sdk:Element",
+        "@version": 2,
+        "id": "builder-73d17ca4f7bc472dbd5b146c075d7976",
+        "component": {
+          "name": "Core:Section",
+          "options": {
+            "maxWidth": 1200
+          }
+        },
+        "children": [
+          {
+            "@type": "@builder.io/sdk:Element",
+            "@version": 2,
+            "id": "builder-2ac544bf3b9941b2b4e629e34e44c069",
+            "component": {
+              "name": "Columns",
+              "options": {
+                "columns": [
+                  {
+                    "blocks": [
+                      {
+                        "@type": "@builder.io/sdk:Element",
+                        "@version": 2,
+                        "layerName": "Centered Box",
+                        "id": "builder-90ecefea6830467787059c4a74a67bc9",
+                        "children": [
+                          {
+                            "@type": "@builder.io/sdk:Element",
+                            "@version": 2,
+                            "layerName": "Title",
+                            "id": "builder-86d8df34f7924d90b1f0326f644f3dd6",
+                            "component": {
+                              "name": "Text",
+                              "options": {
+                                "text": "<p>Something Great to Say</p>"
+                              }
+                            },
+                            "responsiveStyles": {
+                              "large": {
+                                "display": "flex",
+                                "flexDirection": "column",
+                                "alignItems": "stretch",
+                                "flexShrink": "0",
+                                "position": "relative",
+                                "marginTop": "-1.65625px",
+                                "textAlign": "center",
+                                "lineHeight": "normal",
+                                "height": "auto",
+                                "fontSize": "33px"
+                              },
+                              "medium": {
+                                "marginTop": "29.34375px",
+                                "textAlign": "center"
+                              },
+                              "small": {
+                                "fontSize": "25px"
+                              }
+                            }
+                          },
+                          {
+                            "@type": "@builder.io/sdk:Element",
+                            "@version": 2,
+                            "layerName": "Subtitle",
+                            "id": "builder-796f2f44186e4206ad59bde67dcd969c",
+                            "component": {
+                              "name": "Text",
+                              "options": {
+                                "text": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Orci sagittis eu volutpat odio facilisis mauris. Commodo nulla facilisi nullam vehicula. Tellus cras adipiscing enim eu. Morbi blandit cursus risus at ultrices mi tempus imperdiet nulla. Tempus quam pellentesque nec nam aliquam. Tincidunt id aliquet risus feugiat in ante metus dictum at. Nascetur ridiculus mus mauris vitae ultricies leo integer malesuada nunc. Tellus cras adipiscing enim eu turpis. Ultrices eros in cursus turpis massa tincidunt dui. Feugiat nisl pretium fusce id. Mauris augue neque gravida infermentum et. Sed elementum tempus egestas sed. At consectetur lorem donec massa sapien faucibus et. Tellus pellentesque eu tincidunt tortor. Blandit turpis cursus in hac habitasse. Dui nunc mattis enim ut tellus elementum sagittis vitae.</p>"
+                              }
+                            },
+                            "responsiveStyles": {
+                              "large": {
+                                "display": "flex",
+                                "flexDirection": "column",
+                                "alignItems": "stretch",
+                                "flexShrink": "0",
+                                "position": "relative",
+                                "marginTop": "25.59375px",
+                                "textAlign": "center",
+                                "lineHeight": "normal",
+                                "height": "auto",
+                                "fontSize": "17px",
+                                "color": "rgba(86, 86, 86, 1)"
+                              },
+                              "medium": {
+                                "textAlign": "center"
+                              },
+                              "small": {
+                                "fontSize": "15px"
+                              }
+                            }
+                          },
+                          {
+                            "@type": "@builder.io/sdk:Element",
+                            "@version": 2,
+                            "id": "builder-f299f4294fbb46659a49c44f230ae1e0",
+                            "component": {
+                              "name": "Core:Button",
+                              "options": {
+                                "text": "Let's go"
+                              }
+                            },
+                            "responsiveStyles": {
+                              "large": {
+                                "display": "flex",
+                                "flexDirection": "column",
+                                "alignItems": "stretch",
+                                "position": "relative",
+                                "flexShrink": "0",
+                                "boxSizing": "border-box",
+                                "marginTop": "26px",
+                                "appearance": "none",
+                                "paddingTop": "15px",
+                                "paddingBottom": "15px",
+                                "paddingLeft": "31px",
+                                "paddingRight": "31px",
+                                "backgroundColor": "rgba(50, 50, 50, 1)",
+                                "color": "white",
+                                "borderRadius": "4px",
+                                "textAlign": "center",
+                                "marginLeft": "auto",
+                                "marginRight": "auto",
+                                "cursor": "pointer"
+                              },
+                              "medium": {
+                                "marginLeft": "auto",
+                                "marginRight": "auto"
+                              }
+                            }
+                          }
+                        ],
+                        "responsiveStyles": {
+                          "large": {
+                            "display": "flex",
+                            "flexDirection": "column",
+                            "alignItems": "stretch",
+                            "position": "relative",
+                            "flexShrink": "0",
+                            "boxSizing": "border-box",
+                            "marginTop": "auto",
+                            "marginBottom": "auto",
+                            "paddingBottom": "16px"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "blocks": [
+                      {
+                        "@type": "@builder.io/sdk:Element",
+                        "@version": 2,
+                        "id": "builder-104a7e15a7d648e6896fbc98cc9b17ed",
+                        "component": {
+                          "name": "Image",
+                          "options": {
+                            "image": "https://cdn.builder.io/api/v1/image/assets%2FagZ9n5CUKRfbL9t6CaJOyVSK4Es2%2F975106936a734566974059059f54ec8d?width=2000&height=1000",
+                            "backgroundPosition": "center",
+                            "backgroundSize": "cover",
+                            "aspectRatio": 0.7004048582995948
+                          }
+                        },
+                        "responsiveStyles": {
+                          "large": {
+                            "display": "flex",
+                            "flexDirection": "column",
+                            "alignItems": "stretch",
+                            "flexShrink": "0",
+                            "position": "relative",
+                            "marginTop": "-2.5px",
+                            "textAlign": "center",
+                            "lineHeight": "normal",
+                            "height": "auto"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "space": 42,
+                "stackColumnsAt": "tablet",
+                "reverseColumnsWhenStacked": true
+              }
+            },
+            "responsiveStyles": {
+              "large": {
+                "display": "flex",
+                "flexDirection": "column",
+                "alignItems": "stretch",
+                "position": "relative",
+                "flexShrink": "0",
+                "boxSizing": "border-box",
+                "marginTop": "2.34375px",
+                "paddingLeft": "0px",
+                "paddingRight": "0px"
+              }
+            }
+          }
+        ],
+        "responsiveStyles": {
+          "large": {
+            "display": "flex",
+            "flexDirection": "column",
+            "alignItems": "stretch",
+            "position": "relative",
+            "flexShrink": "0",
+            "boxSizing": "border-box",
+            "marginTop": "0px",
+            "paddingLeft": "20px",
+            "paddingRight": "20px",
+            "paddingTop": "50px",
+            "paddingBottom": "50px",
+            "width": "100vw",
+            "marginLeft": "calc(50% - 50vw)"
+          }
+        }
+      },
+      {
+        "@type": "@builder.io/sdk:Element",
+        "@version": 2,
+        "tagName": "img",
+        "id": "builder-pixel-3zydvairp32",
+        "properties": {
+          "src": "https://cdn.builder.io/api/v1/pixel?apiKey=8f6bae86bfa3487eb1a18f263118c832",
+          "role": "presentation",
+          "width": "0",
+          "height": "0"
+        },
+        "responsiveStyles": {
+          "large": {
+            "height": "0",
+            "width": "0",
+            "display": "inline-block",
+            "opacity": "0",
+            "overflow": "hidden",
+            "pointerEvents": "none"
+          }
+        }
+      }
+    ]
+  },
+  "id": "1fa3ba090c8941fead04fde0a4c9328d",
+  "lastUpdated": 1650378378243,
+  "lastUpdatedBy": "XNHR3dCzCSXqg2Sumbh99KBD3XC2",
+  "meta": {
+    "hasLinks": false,
+    "kind": "component",
+    "needsHydration": false
+  },
+  "modelId": "402c55e5df9248df8acd266dce63a360",
+  "name": "first one",
+  "published": "published",
+  "query": [
+    {
+      "@type": "@builder.io/core:Query",
+      "operator": "is",
+      "property": null,
+      "value": null
+    }
+  ],
+  "rev": "7df951thvs7",
+  "screenshot": "https://cdn.builder.io/api/v1/image/assets%2F8f6bae86bfa3487eb1a18f263118c832%2Ffb7a0bb3ded54a8cbcdd8ddd98d24a7e",
+  "testRatio": 1,
+  "variations": {},
+  "firstPublished": 1613015962185,
+  "previewUrl": "http://localhost:3000/posts/first-one"
+}
