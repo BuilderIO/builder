@@ -75,13 +75,30 @@ async function updateModuleInFolder() {
     projectUsesYarn = true;
   } catch (error) {}
 
+  let projectUsesNpm = false;
+  try {
+    await $`test -f package-lock.json`;
+    projectUsesNpm = true;
+  } catch (error) {}
+
+  let isYarnWorkspaceVersion = false;
+  try {
+    const jqCommand = `jq '.devDependencies."${NPM_MODULE_TO_UPDATE}" == "workspace:*" or .dependencies."${NPM_MODULE_TO_UPDATE}" == "workspace:*"'`;
+    await $`${jqCommand}`;
+    isYarnWorkspaceVersion = true;
+  } catch (error) {}
+
   $.verbose = true;
-  if (projectUsesYarn) {
+  if (isYarnWorkspaceVersion) {
+    echo`project is using local workspace version of ${NPM_MODULE_TO_UPDATE}. Skipping...`;
+  } else if (projectUsesYarn) {
     echo`project is using yarn.`;
     await $`yarn up ${NPM_MODULE_TO_UPDATE}@${VERSION}`;
-  } else {
+  } else if (projectUsesNpm) {
     echo`project is using npm.`;
     await $`npm install ${NPM_MODULE_TO_UPDATE}@${VERSION} --legacy-peer-deps`;
+  } else {
+    echo`project is using neither yarn/npm. Skipping...`;
   }
   $.verbose = false;
 }
