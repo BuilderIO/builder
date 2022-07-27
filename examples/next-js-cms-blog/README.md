@@ -4,7 +4,7 @@ This example showcases Next.js's [Static Generation](https://nextjs.org/docs/bas
 
 ## Live Demo
 
-[cms-builder-blog](https://cms-builder-blog-sand.vercel.app)
+[Live demo](https://nextjs-blog-demo-eight.vercel.app/)
 
 ## Requirements
 
@@ -34,7 +34,7 @@ npm install @builder.io/cli -g
 builder create -k [private-key] -n [space-name] -d
 ```
 
-This command when done it'll print your new space's public api key, copy it and add as the value for `NEXT_PUBLIC_BUILDER_API_KEY` into the .env files (`.env.production` and `.env.development`)
+This command when done it'll print your new space's public api key, copy it and add as the value for `NEXT_PUBLIC_BUILDER_API_KEY` into the .env file
 
 ``` bash
   ____            _   _       _                     _                    _   _ 
@@ -52,7 +52,7 @@ This command when done it'll print your new space's public api key, copy it and 
 Your new space "blog demo" public API Key: <your new api key>
 ```
 
-Copy the created API key and add it to your .env.local file: 
+Copy the created API key and add it to your .env file: 
 
 ```
 BUILDER_PUBLIC_KEY=<your new api key>

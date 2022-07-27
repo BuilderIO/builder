@@ -1,13 +1,13 @@
 {
-  "@originContentId": "82a462fbb98adc39fae63e713d31eec444fba1d5e4868ce62d167e644ed90276",
-  "@originModelId": "5815ecdde412fcc54b774bec92be8e7e405595e3ce681db84f88047cb7447505",
-  "@originOrg": "da10ebf47ea346cf9079e7563d4c2af3",
+  "@originContentId": "1119f3ca9b3fd343f74fddf085f1110719028f979f713e253321aae0f335e4b3",
+  "@originModelId": "28a5a29ecc51d51f1422f61f9942f40b9f4f6415f0dda6f8f4937be4e6391adc",
+  "@originOrg": "5ff84b57721a49c8890c6a7189c877ec",
   "createdBy": "4FFFg0MNRJT0z0nW4uUizDHfHJV2",
   "createdDate": 1613031378505,
   "data": {
     "author": {
       "@type": "@builder.io/core:Reference",
-      "id": "6e71e092305b4af581f52e47deeb99f6",
+      "id": "0a5ab9ce0b4844db9fb7b6dda7ac350c",
       "model": "author"
     },
     "customFonts": [
@@ -41,7 +41,7 @@
         "query": {}
       }
     },
-    "title": "aber",
+    "title": "This WORKS even if you are newbie",
     "blocks": [
       {
         "@type": "@builder.io/sdk:Element",
@@ -1289,22 +1289,23 @@
       }
     ]
   },
-  "id": "01104c3455014309b74952e41fa470fb",
-  "lastUpdated": 1650378389284,
-  "lastUpdatedBy": "XNHR3dCzCSXqg2Sumbh99KBD3XC2",
+  "firstPublished": 1613031378505,
+  "id": "20eae2b67cdf4a8fb98179f9110a741d",
+  "lastUpdated": 1658863861213,
+  "lastUpdatedBy": "4FFFg0MNRJT0z0nW4uUizDHfHJV2",
   "meta": {
     "hasLinks": false,
     "kind": "component",
+    "lastPreviewUrl": "http://localhost:3000/blog/second-one?builder.space=5ff84b57721a49c8890c6a7189c877ec&builder.cachebust=true&builder.preview=post&builder.noCache=true&__builder_editing__=true&builder.overrides.post=1119f3ca9b3fd343f74fddf085f1110719028f979f713e253321aae0f335e4b3&builder.overrides.1119f3ca9b3fd343f74fddf085f1110719028f979f713e253321aae0f335e4b3=1119f3ca9b3fd343f74fddf085f1110719028f979f713e253321aae0f335e4b3",
     "needsHydration": false
   },
-  "modelId": "402c55e5df9248df8acd266dce63a360",
+  "modelId": "e1e88dfc0b51458e96998b7e83ab1145",
   "name": "second ",
+  "previewUrl": "http://localhost:3000/blog/second-one",
   "published": "published",
   "query": [],
-  "rev": "7df951thvs7",
-  "screenshot": "https://cdn.builder.io/api/v1/image/assets%2F8f6bae86bfa3487eb1a18f263118c832%2Fae6b7a78f9994ba2bded4527c22b647f",
+  "rev": "58dc0mut7lf",
+  "screenshot": "https://cdn.builder.io/api/v1/image/assets%2F5ff84b57721a49c8890c6a7189c877ec%2F1ea383245a61457e943beabb0bdf8e47",
   "testRatio": 1,
-  "variations": {},
-  "firstPublished": 1613031378505,
-  "previewUrl": "http://localhost:3000/posts/second-one"
+  "variations": {}
 }

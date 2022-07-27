@@ -7,12 +7,8 @@ import PostHeader from '@/components/post-header';
 import Layout from '@/components/layout';
 import PostTitle from '@/components/post-title';
 import Head from 'next/head';
-import { Builder, builder, BuilderContent, useIsPreviewing } from '@builder.io/react';
+import { builder, BuilderContent, useIsPreviewing } from '@builder.io/react';
 import '@builder.io/widgets';
-
-builder.init(process.env.NEXT_PUBLIC_BUILDER_API_KEY);
-
-Builder.isStatic = true;
 
 // Post model created to display a specific blog post.
 // read more at: https://www.builder.io/blog/creating-blog
@@ -33,11 +29,11 @@ export default function Post({ post }) {
           <>
             <BuilderContent
               {...(!isPreviewing && { content: post })}
-              modelName="posts"
+              modelName="post"
               options={{ includeRefs: true }}
               isStatic
             >
-              {data =>
+              {(data, loading, fullContent) =>
                 data && (
                   <article>
                     <Head>
@@ -48,12 +44,12 @@ export default function Post({ post }) {
                       <PostHeader
                         title={data.title}
                         coverImage={data.image}
-                        date={post.lastUpdated}
+                        date={data.lastUpdated}
                         author={data.author.value?.data}
                       />
                     )}
-                    <p>{post.data.intro}</p>
-                    <PostBody content={post} />
+                    <p>{data.intro}</p>
+                    <PostBody content={fullContent} />
                   </article>
                 )
               }
@@ -69,34 +65,30 @@ export async function getStaticProps({ params }) {
   const slug = params.slug;
 
   /*
-    usage of our react sdks to fetch data
-    more of our react sdk at:
-    https://github.com/BuilderIO/builder/tree/main/packages/react
-  */
+    usage of builder sdks to fetch data
+    more examples at https://github.com/BuilderIO/builder/tree/main/packages/core  */
 
-  let post = await builder
-    .get('post', {
-      includeRefs: true,
-      preview: 'post',
-      options: {
-        noTargeting: true,
-      },
-      query: {
-        'data.slug': { $eq: slug },
-      },
-    })
-    .toPromise();
+  let post =
+    (await builder
+      .get('post', {
+        // Content API params are detailed in this doc
+        // https://www.builder.io/c/docs/query-api
+        includeRefs: true,
+        query: {
+          'data.slug': slug,
+        },
+      })
+      .toPromise()) || null;
 
   return {
     props: {
-      key: post?.id + post?.data.slug + params.slug,
       post,
     },
   };
 }
 
 export async function getStaticPaths() {
-  const allPosts = await builder.getAll('posts', {
+  const allPosts = await builder.getAll('post', {
     options: { noTargeting: true },
   });
   return {

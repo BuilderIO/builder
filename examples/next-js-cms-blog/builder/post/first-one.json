@@ -1,13 +1,13 @@
 {
-  "@originContentId": "d8b74bf35356878c128588fda6f66a435ad2c07c1b352d921aa2857b86b2d6b7",
-  "@originModelId": "5815ecdde412fcc54b774bec92be8e7e405595e3ce681db84f88047cb7447505",
-  "@originOrg": "da10ebf47ea346cf9079e7563d4c2af3",
+  "@originContentId": "6d6b9c2e7c3cde1ee82c8897b410ac37a73dee994eb40aefdfb89657467bb2e9",
+  "@originModelId": "28a5a29ecc51d51f1422f61f9942f40b9f4f6415f0dda6f8f4937be4e6391adc",
+  "@originOrg": "5ff84b57721a49c8890c6a7189c877ec",
   "createdBy": "4FFFg0MNRJT0z0nW4uUizDHfHJV2",
   "createdDate": 1613015962185,
   "data": {
     "author": {
       "@type": "@builder.io/core:Reference",
-      "id": "372b0cd54a3c46acb609403850ed0d61",
+      "id": "43dc4d04fcf24ba1803625214c1930b7",
       "model": "author"
     },
     "image": "https://cdn.builder.io/api/v1/image/assets%2F8f6bae86bfa3487eb1a18f263118c832%2F79e961dbf6d54a9a8f189c5bd48454d8",
@@ -22,7 +22,7 @@
         "query": {}
       }
     },
-    "title": "Now howoiofweewf",
+    "title": "Boom shakalak! Let’s get started.",
     "blocks": [
       {
         "@type": "@builder.io/sdk:Element",
@@ -266,16 +266,19 @@
       }
     ]
   },
-  "id": "1fa3ba090c8941fead04fde0a4c9328d",
-  "lastUpdated": 1650378378243,
-  "lastUpdatedBy": "XNHR3dCzCSXqg2Sumbh99KBD3XC2",
+  "firstPublished": 1613015962185,
+  "id": "cad1519b21324343960a45d48b43d1f9",
+  "lastUpdated": 1658863836873,
+  "lastUpdatedBy": "4FFFg0MNRJT0z0nW4uUizDHfHJV2",
   "meta": {
     "hasLinks": false,
     "kind": "component",
+    "lastPreviewUrl": "http://localhost:3000/blog/first-one?builder.space=5ff84b57721a49c8890c6a7189c877ec&builder.cachebust=true&builder.preview=post&builder.noCache=true&__builder_editing__=true&builder.overrides.post=6d6b9c2e7c3cde1ee82c8897b410ac37a73dee994eb40aefdfb89657467bb2e9&builder.overrides.6d6b9c2e7c3cde1ee82c8897b410ac37a73dee994eb40aefdfb89657467bb2e9=6d6b9c2e7c3cde1ee82c8897b410ac37a73dee994eb40aefdfb89657467bb2e9",
     "needsHydration": false
   },
-  "modelId": "402c55e5df9248df8acd266dce63a360",
+  "modelId": "e1e88dfc0b51458e96998b7e83ab1145",
   "name": "first one",
+  "previewUrl": "http://localhost:3000/blog/first-one",
   "published": "published",
   "query": [
     {
@@ -285,10 +288,8 @@
       "value": null
     }
   ],
-  "rev": "7df951thvs7",
-  "screenshot": "https://cdn.builder.io/api/v1/image/assets%2F8f6bae86bfa3487eb1a18f263118c832%2Ffb7a0bb3ded54a8cbcdd8ddd98d24a7e",
+  "rev": "58dc0mut7lf",
+  "screenshot": "https://cdn.builder.io/api/v1/image/assets%2F5ff84b57721a49c8890c6a7189c877ec%2F564baceccccf4a9ebd6225a12e395e9a",
   "testRatio": 1,
-  "variations": {},
-  "firstPublished": 1613015962185,
-  "previewUrl": "http://localhost:3000/posts/first-one"
+  "variations": {}
 }
