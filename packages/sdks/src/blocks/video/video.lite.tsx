@@ -1,3 +1,5 @@
+import { useStore } from '@builder.io/mitosis';
+
 export interface VideoProps {
   attributes?: any;
   video?: string;
@@ -25,9 +27,21 @@ export interface VideoProps {
 }
 
 export default function Video(props: VideoProps) {
+  const state = useStore({
+    get videoProps() {
+      return {
+        ...(props.autoPlay === true ? { autoPlay: true } : {}),
+        ...(props.muted === true ? { muted: true } : {}),
+        ...(props.controls === true ? { controls: true } : {}),
+        ...(props.loop === true ? { loop: true } : {}),
+        ...(props.playsInline === true ? { playsInline: true } : {}),
+      };
+    },
+  });
   return (
     <video
       {...props.attributes}
+      {...state.videoProps}
       style={{
         width: '100%',
         height: '100%',
@@ -38,13 +52,8 @@ export default function Video(props: VideoProps) {
         // not have the video overflow
         borderRadius: 1,
       }}
-      preload="none"
       src={props.video || 'no-src'}
       poster={props.posterImage}
-      autoPlay={props.autoPlay}
-      muted={props.muted}
-      controls={props.controls}
-      loop={props.loop}
     />
   );
 }
