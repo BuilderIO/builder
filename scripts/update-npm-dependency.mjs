@@ -69,10 +69,13 @@ if (['yes', 'y'].includes(confirm.toLowerCase())) {
 }
 
 async function updateModuleInFolder() {
-  let projectUsesYarn = false;
+  /** @type string | undefined */
+  let yarnVersion = undefined;
   try {
     await $`test -f yarn.lock`;
-    projectUsesYarn = true;
+    /** @type ProcessOutput */
+    const yarnVersionOutput = await $`yarn --version`;
+    yarnVersion = yarnVersionOutput.toString().trim();
   } catch (error) {}
 
   let projectUsesNpm = false;
@@ -91,9 +94,14 @@ async function updateModuleInFolder() {
   $.verbose = true;
   if (isYarnWorkspaceVersion) {
     echo`project is using local workspace version of ${NPM_MODULE_TO_UPDATE}. Skipping...`;
-  } else if (projectUsesYarn) {
-    echo`project is using yarn.`;
-    await $`yarn up ${NPM_MODULE_TO_UPDATE}@${VERSION}`;
+  } else if (yarnVersion) {
+    if (yarnVersion.startsWith('1.')) {
+      echo`project is using yarn v1`;
+      await $`yarn upgrade ${NPM_MODULE_TO_UPDATE}@${VERSION}`;
+    } else {
+      echo`project is using yarn v3.`;
+      await $`yarn up ${NPM_MODULE_TO_UPDATE}@${VERSION}`;
+    }
   } else if (projectUsesNpm) {
     echo`project is using npm.`;
     await $`npm install ${NPM_MODULE_TO_UPDATE}@${VERSION} --legacy-peer-deps`;
