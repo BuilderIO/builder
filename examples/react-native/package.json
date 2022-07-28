@@ -38,5 +38,6 @@
     "react-native": "0.64.3",
     "react": "17.0.1"
   },
-  "private": true
+  "private": true,
+  "packageManager": "yarn@3.2.2"
 }

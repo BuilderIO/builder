@@ -1473,14 +1473,14 @@ __metadata:
   linkType: hard
 
 "@builder.io/sdk-react-native@npm:dev":
-  version: 0.0.1-63
-  resolution: "@builder.io/sdk-react-native@npm:0.0.1-63"
+  version: 0.0.1-64
+  resolution: "@builder.io/sdk-react-native@npm:0.0.1-64"
   dependencies:
     react-native-render-html: ^6.3.4
     react-native-video: ^5.1.1
   peerDependencies:
     react-native: ^0.64.3
-  checksum: 046f370c42f7e186767629ffe05775e9bc2ee81d60951a5165a9dab5e70c8adda439f80d08b6bbb694c869f54fc0381285f6584989a2bcc72de0a8d80c4b4b9d
+  checksum: 3979fcbed2008a5d4f9f4c7bf71389fe92c68c34d660671b76949c1452a53c7010fe4d17ffa73af4ad09f705ce5e261af52895d4d6fafdb0096f690cad6655cb
   languageName: node
   linkType: hard
 
@@ -7943,7 +7943,7 @@ __metadata:
 
 "typescript@patch:typescript@~4.3.5#~builtin<compat/typescript>":
   version: 4.3.5
-  resolution: "typescript@patch:typescript@npm%3A4.3.5#~builtin<compat/typescript>::version=4.3.5&hash=bda367"
+  resolution: "typescript@patch:typescript@npm%3A4.3.5#~builtin<compat/typescript>::version=4.3.5&hash=f456af"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
