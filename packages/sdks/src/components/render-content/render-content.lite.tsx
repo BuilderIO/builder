@@ -37,6 +37,7 @@ export type RenderContentProps = {
   context?: BuilderRenderContext;
   apiKey: string;
   customComponents?: RegisteredComponent[];
+  canTrack?: boolean;
 };
 
 interface BuilderComponentStateChange {
@@ -142,6 +143,12 @@ export default function RenderContent(props: RenderContentProps) {
     },
     get httpReqsData(): Dictionary<any> {
       return {};
+    },
+
+    onClick(_event: MouseEvent) {
+      if (state.useContent && props.canTrack !== false) {
+        track('click', { contentId: state.useContent.id });
+      }
     },
 
     evalExpression(expression: string) {
@@ -252,7 +259,7 @@ export default function RenderContent(props: RenderContentProps) {
           state.emitStateUpdate
         );
       }
-      if (state.useContent) {
+      if (state.useContent && props.canTrack !== false) {
         track('impression', {
           contentId: state.useContent.id,
         });
@@ -312,7 +319,7 @@ export default function RenderContent(props: RenderContentProps) {
   return (
     <Show when={state.useContent}>
       <div
-        onClick={() => track('click', { contentId: state.useContent!.id })}
+        onClick={(event) => state.onClick(event)}
         builder-content-id={state.useContent?.id}
       >
         {state.shouldRenderContentStyles && (
