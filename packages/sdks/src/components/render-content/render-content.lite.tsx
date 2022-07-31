@@ -28,7 +28,24 @@ import {
   onUpdate,
   setContext,
   useStore,
+  useMetadata,
 } from '@builder.io/mitosis';
+
+// eslint-disable-next-line @builder.io/mitosis/only-default-function-and-imports
+useMetadata({
+  qwik: {
+    component: {
+      useHostElement: true,
+    },
+    replace: {
+      '// QWIK-REPLACE: _useMutableProps':
+        '_useMutableProps(hostElement, true);',
+    },
+    imports: {
+      _useMutableProps: '@builder.io/qwik',
+    },
+  },
+});
 
 export type RenderContentProps = {
   content?: Nullable<BuilderContent>;
@@ -247,6 +264,7 @@ export default function RenderContent(props: RenderContentProps) {
   onMount(() => {
     if (isBrowser()) {
       if (isEditing()) {
+        // QWIK-REPLACE: _useMutableProps
         Object.values(state.allRegisteredComponents).forEach(
           (registeredComponent) => {
             const message = createRegisterComponentMessage(registeredComponent);

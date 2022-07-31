@@ -1,13 +1,8 @@
-type Dictionary<T> = Record<string, T>;
-type BuilderContent = any;
-type BuilderBlock = any;
-type RegisteredComponent = any;
-type RegisteredComponents = any;
-declare const builder: { env: 'dev'; apiKey: string };
-// TODO(misko): HACKS to be removed
-declare const get: (obj: any, key: string) => any;
-declare const set: (obj: any, key: string, value: any) => void;
-interface CSSProperties {
-  flexDirection: any;
+declare module '@builder.io/sdk-qwik' {
+  const getContent: (options: {
+    model: string;
+    apiKey: string;
+    userAttributes: Record<string, string>;
+  }) => Promise<any>;
+  const RenderContent: any;
 }
-declare const BuilderBlocks: (props: any) => any;
