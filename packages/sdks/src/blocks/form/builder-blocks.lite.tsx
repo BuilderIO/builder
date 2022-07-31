@@ -6,7 +6,7 @@ export interface BuilderBlocksProps {
 export default function BuilderBlocks(props: BuilderBlocksProps) {
   return (
     <>
-      NOT YET IMPLEMENTED: <code>BuilderBlocks</code>
+      NOT YET IMPLEMENTED: <code>BuilderBlocks {JSON.stringify(props)}</code>
     </>
   );
 }

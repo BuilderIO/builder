@@ -1,6 +1,5 @@
 import { TARGET } from '../constants/target.js';
 import { isBrowser } from '../functions/is-browser.js';
-import { isEditing } from '../functions/is-editing.js';
 import { register } from '../functions/register.js';
 
 export const registerInsertMenu = () => {
