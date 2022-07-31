@@ -28,7 +28,7 @@ export default function BlockStyles(props: BlockStylesProps) {
         block: props.block,
         state: props.context.state,
         context: props.context.context,
-        houldEvaluateBindings: true,
+        shouldEvaluateBindings: true,
       });
     },
 
