@@ -279,7 +279,7 @@ export default function RenderContent(props: RenderContentProps) {
   onMount(() => {
     if (isBrowser()) {
       if (isEditing()) {
-        state.forceReRenderCount++;
+        state.forceReRenderCount = state.forceReRenderCount + 1;
         // QWIK-REPLACE: _useMutableProps
         registerInsertMenu();
         setupBrowserForEditing();

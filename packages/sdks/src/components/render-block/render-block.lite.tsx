@@ -213,7 +213,6 @@ export default function RenderBlock(props: RenderBlockProps) {
                   key={index}
                   repeatContext={data.context}
                   block={data.block}
-                  context={props.context}
                 />
               )}
             </For>
