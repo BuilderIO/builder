@@ -30,6 +30,10 @@ import {
   useStore,
   useMetadata,
 } from '@builder.io/mitosis';
+import {
+  registerInsertMenu,
+  setupBrowserForEditing,
+} from '../../scripts/init-editing.js';
 
 // eslint-disable-next-line @builder.io/mitosis/only-default-function-and-imports
 useMetadata({
@@ -265,6 +269,8 @@ export default function RenderContent(props: RenderContentProps) {
     if (isBrowser()) {
       if (isEditing()) {
         // QWIK-REPLACE: _useMutableProps
+        registerInsertMenu();
+        setupBrowserForEditing();
         Object.values(state.allRegisteredComponents).forEach(
           (registeredComponent) => {
             const message = createRegisterComponentMessage(registeredComponent);
@@ -334,19 +340,20 @@ export default function RenderContent(props: RenderContentProps) {
   });
 
   // TODO: `else` message for when there is no content passed, or maybe a console.log
+  const _useContent = state.useContent;
   return (
-    <Show when={state.useContent}>
+    <Show when={_useContent}>
       <div
         onClick={(event) => state.onClick(event)}
-        builder-content-id={state.useContent?.id}
+        builder-content-id={_useContent?.id}
       >
         {state.shouldRenderContentStyles && (
           <RenderContentStyles
-            cssCode={state.useContent?.data?.cssCode}
-            customFonts={state.useContent?.data?.customFonts}
+            cssCode={_useContent?.data?.cssCode}
+            customFonts={_useContent?.data?.customFonts}
           />
         )}
-        <RenderBlocks blocks={state.useContent?.data?.blocks} />
+        <RenderBlocks blocks={_useContent?.data?.blocks} />
       </div>
     </Show>
   );
