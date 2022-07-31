@@ -1495,6 +1495,14 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@builder.io/sdk-qwik@workspace:output/qwik":
+  version: 0.0.0-use.local
+  resolution: "@builder.io/sdk-qwik@workspace:output/qwik"
+  peerDependencies:
+    "@builder.io/qwik": ^0.0.25
+  languageName: unknown
+  linkType: soft
+
 "@builder.io/sdk-react-native@workspace:output/react-native":
   version: 0.0.0-use.local
   resolution: "@builder.io/sdk-react-native@workspace:output/react-native"
