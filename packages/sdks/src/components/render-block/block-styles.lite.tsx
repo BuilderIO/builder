@@ -1,4 +1,4 @@
-import { Show, useStore } from '@builder.io/mitosis';
+import { Show, useMetadata, useStore } from '@builder.io/mitosis';
 import { getMaxWidthQueryForSize } from '../../constants/device-sizes.js';
 import { TARGET } from '../../constants/target.js';
 import { BuilderContextInterface } from '../../context/builder.context.lite';

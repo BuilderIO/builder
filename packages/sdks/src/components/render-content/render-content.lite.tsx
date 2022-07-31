@@ -75,7 +75,7 @@ interface BuilderComponentStateChange {
 }
 
 export default function RenderContent(props: RenderContentProps) {
-  const elementRef = useRef();
+  const elementRef = useRef<HTMLDivElement>();
   const state = useStore({
     forceReRenderCount: 0,
     get useContent(): Nullable<BuilderContent> {
