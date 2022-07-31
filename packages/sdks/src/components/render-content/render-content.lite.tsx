@@ -29,6 +29,7 @@ import {
   setContext,
   useStore,
   useMetadata,
+  useRef,
 } from '@builder.io/mitosis';
 import {
   registerInsertMenu,
@@ -43,7 +44,7 @@ useMetadata({
     },
     replace: {
       '// QWIK-REPLACE: _useMutableProps':
-        '_useMutableProps(hostElement, true);',
+        '_useMutableProps(elementRef.current, true);',
     },
     imports: {
       _useMutableProps: '@builder.io/qwik',
@@ -74,7 +75,9 @@ interface BuilderComponentStateChange {
 }
 
 export default function RenderContent(props: RenderContentProps) {
+  const elementRef = useRef();
   const state = useStore({
+    forceReRenderCount: 0,
     get useContent(): Nullable<BuilderContent> {
       const mergedContent: BuilderContent = {
         ...props.content,
@@ -268,6 +271,7 @@ export default function RenderContent(props: RenderContentProps) {
   onMount(() => {
     if (isBrowser()) {
       if (isEditing()) {
+        state.forceReRenderCount++;
         // QWIK-REPLACE: _useMutableProps
         registerInsertMenu();
         setupBrowserForEditing();
@@ -340,20 +344,23 @@ export default function RenderContent(props: RenderContentProps) {
   });
 
   // TODO: `else` message for when there is no content passed, or maybe a console.log
-  const _useContent = state.useContent;
   return (
-    <Show when={_useContent}>
+    <Show when={state.useContent}>
       <div
+        ref={elementRef}
         onClick={(event) => state.onClick(event)}
-        builder-content-id={_useContent?.id}
+        builder-content-id={state.useContent?.id}
       >
         {state.shouldRenderContentStyles && (
           <RenderContentStyles
-            cssCode={_useContent?.data?.cssCode}
-            customFonts={_useContent?.data?.customFonts}
+            cssCode={state.useContent?.data?.cssCode}
+            customFonts={state.useContent?.data?.customFonts}
           />
         )}
-        <RenderBlocks blocks={_useContent?.data?.blocks} />
+        <RenderBlocks
+          blocks={state.useContent?.data?.blocks}
+          key={state.forceReRenderCount}
+        />
       </div>
     </Show>
   );

@@ -32,7 +32,7 @@ Add Qwik SDK code to a particular route (such as `src/routes/index.tsx`)
 ```typscript
 import { component$, Host, Resource, useResource$ } from "@builder.io/qwik";
 import { DocumentHead, useLocation } from "@builder.io/qwik-city";
-import { getContent, RenderContent } from "@builder.io/sdk-qwik";
+import { getContent, RenderContent, getBuilderSearchParams } from "@builder.io/sdk-qwik";
 
 export const BUILDER_PUBLIC_API_KEY = "YOUR_API_KEY_GOES_HERE"; // ggignore
 export default component$(() => {
@@ -41,6 +41,7 @@ export default component$(() => {
     return getContent({
       model: "page",
       apiKey: BUILDER_PUBLIC_API_KEY,
+      options: getBuilderSearchParams(location.query),
       userAttributes: {
         urlPath: location.pathname || "/",
       },
@@ -48,19 +49,17 @@ export default component$(() => {
   });
 
   return (
-    <Host>
-      <Resource
-        resource={builderContentRsrc}
-        onPending={() => <div>Loading...</div>}
-        onResolved={(content) => (
-          <RenderContent
-            model="page"
-            content={content}
-            apiKey={BUILDER_PUBLIC_API_KEY}
-          />
-        )}
-      />
-    </Host>
+    <Resource
+      resource={builderContentRsrc}
+      onPending={() => <div>Loading...</div>}
+      onResolved={(content) => (
+        <RenderContent
+          model="page"
+          content={content}
+          apiKey={BUILDER_PUBLIC_API_KEY}
+        />
+      )}
+    />
   );
 });
 ```

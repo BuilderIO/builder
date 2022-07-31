@@ -115,6 +115,7 @@ export default function RenderBlock(props: RenderBlockProps) {
         blockChildren: state.children,
         componentRef: state.componentRef,
         componentOptions: state.componentOptions,
+        context: props.context,
       };
     },
     get children() {
@@ -212,6 +213,7 @@ export default function RenderBlock(props: RenderBlockProps) {
                   key={index}
                   repeatContext={data.context}
                   block={data.block}
+                  context={props.context}
                 />
               )}
             </For>
