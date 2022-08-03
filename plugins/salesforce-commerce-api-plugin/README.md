@@ -1,30 +1,31 @@
-# Builder.io Salesforce Commerce Api plugin [alpha]
+# Builder.io Salesforce Commerce Api plugin
 
-Easily connect your SalesForce B2C Commerce PWA APP to your Builder.io content!
+Easily connect your SalesForce B2C Commerce API to your Builder.io content!
 
-## SalesForce Setup API Access
+## Setup Salesforce Commerce API Access
 Read through this [get started guide](https://developer.salesforce.com/docs/commerce/pwa-kit-managed-runtime/guide/setting-up-api-access.html) to make sure you have your *Shopper Login and API Access Service (SLAS)* client setup ready.
 
 
 ## Installation
 
-Go to [builder.io/account/organization](https://builder.io/account/organization) and type `@builder.io/plugin-sfcc-commerce-api` in the input, then hit save.
-
-
-![Installation screenshot](https://cdn.builder.io/api/v1/image/assets%2Fd1ed12c3338144da8dd6b63b35d14c30%2F2c0da6f6b3104d6d87bdf62caa9ee271)
-
+On any builder space, go to the [integrations tab](https://builder.io/app/integrations) and find the Salesforce B2C Commerce API integration
+![screenshot](https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F395a09d16129469d862851d23a56522c) and click `enable`,
 Following, you'll be prompted to enter the following data:
-* Client id
-* Organization id
-* Proxy address
-* Short code
-* Site id
+* Client ID
+* Organization ID
+* Proxy Address
+* Short Code
+* Site ID
 
-**The same configuration you find at your config/default.js file**
+And optionally:
+* Einstein API Client ID.
+* Einstein Site ID.
+
+
+**If you're using Salesforce's Composable Storefront kit it should be the same configuration you find at your config/default.js file**
 ![Config screenshot](https://cdn.builder.io/api/v1/image/assets%2F1fa6810c36c54e87bfe1a6cc0f0be906%2Fa1e74597f82e46d390fd0b328c19bf78)
 
-Log into your Administration panel with your SFCC credentials at your [account administrator panel](https://account.demandware.com/)
-
+Then enter it in your Builder's space integration configuration options:
 ![Credentials screenshot](https://cdn.builder.io/api/v1/image/assets%2Fd1ed12c3338144da8dd6b63b35d14c30%2F92cfc4b9885d41eaa4d5c23b00ebeace)
 
 
@@ -39,9 +40,12 @@ After putting the required info, hit the connect button. You will now see a few 
 Custom targeting in Builder.io allow users to target content by a multitude of attributes, and in this plugin you'll be able to add specific content from SFCC products, for this you'll need first to set the target attributes on the host site, either by setting the `userAttributes` if you're rendering client side:
 
 ```ts
-builder.setUserAttributes({
-  product: currentProduct.id,
-});
+// example for fetching content specific for a product in a product details page
+const productFooterContent = await builder.get('product-footer', {
+  userAttributes: {
+    product: product.productId,
+  }
+})
 ```
 
 Or by passing it as a query param to the [content API](https://www.builder.io/c/docs/query-api#:~:text=userAttributes) call, or in [graqhql query](https://www.builder.io/c/docs/graphql-api#:~:text=with%20targeting) for e.g in Gatsby or nextjs.
