@@ -24,7 +24,7 @@ const sizes = {
   medium: {
     min: 640,
     default: 641,
-    max: 999,
+    max: 991,
   },
   large: {
     min: 1000,

@@ -94,7 +94,7 @@ class ColumnsComponent extends React.Component<any> {
           css={{
             display: 'flex',
             ...(this.props.stackColumnsAt !== 'never' && {
-              [`@media (max-width: ${this.props.stackColumnsAt !== 'tablet' ? 639 : 999}px)`]: {
+              [`@media (max-width: ${this.props.stackColumnsAt !== 'tablet' ? 639 : 991}px)`]: {
                 flexDirection: this.props.reverseColumnsWhenStacked ? 'column-reverse' : 'column',
                 alignItems: 'stretch',
               },
@@ -125,7 +125,7 @@ class ColumnsComponent extends React.Component<any> {
                     marginLeft: index === 0 ? 0 : gutterSize,
                     ...(this.props.stackColumnsAt !== 'never' && {
                       [`@media (max-width: ${
-                        this.props.stackColumnsAt !== 'tablet' ? 639 : 999
+                        this.props.stackColumnsAt !== 'tablet' ? 639 : 991
                       }px)`]: {
                         width: '100%',
                         marginLeft: 0,
