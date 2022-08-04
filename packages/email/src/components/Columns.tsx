@@ -142,7 +142,7 @@ export class Columns extends React.Component<ColumnsProps> {
           <style>
             {`
           @media only screen and (max-width:${
-            this.props.stackColumnsAt === 'mobile' ? 639 : 999
+            this.props.stackColumnsAt === 'mobile' ? 639 : 991
           }px) {
             .${this.props.builderBlock.id}-separator-td {
               display: none !important;

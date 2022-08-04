@@ -80,7 +80,7 @@ export default function Columns(props: ColumnProps) {
         display: 'flex',
         alignItems: 'stretch',
         lineHeight: 'normal',
-        '@media (max-width: 999px)': {
+        '@media (max-width: 991px)': {
           flexDirection: 'var(--flex-dir-tablet)',
         },
         '@media (max-width: 639px)': {
@@ -100,7 +100,7 @@ export default function Columns(props: ColumnProps) {
             class="builder-column"
             css={{
               flexGrow: '1',
-              '@media (max-width: 999px)': {
+              '@media (max-width: 991px)': {
                 width: 'var(--column-width-tablet) !important',
                 marginLeft: 'var(--column-margin-left-tablet) !important',
               },
