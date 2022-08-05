@@ -129,7 +129,7 @@ export const getSizes = (sizes: string, block: BuilderElement) => {
 
     if (block.responsiveStyles?.medium?.width?.match(unitRegex)) {
       hasSmallOrMediumSize = true;
-      const mediaQuery = '(max-width: 999px)';
+      const mediaQuery = '(max-width: 991px)';
       const widthAndQuery = `${mediaQuery} ${block.responsiveStyles.medium.width.replace(
         '%',
         'vw'

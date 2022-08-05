@@ -320,7 +320,7 @@ const Div12 = styled.div`
 
 const Div13 = styled.div`
   display: flex;
-  @media (max-width: 999px) {
+  @media (max-width: 991px) {
     flex-direction: column;
     align-items: stretch;
   }
@@ -332,7 +332,7 @@ const Div14 = styled.div`
   line-height: normal;
   width: calc(33.333333333333336% - 13.333333333333334px);
   margin-left: 0px;
-  @media (max-width: 999px) {
+  @media (max-width: 991px) {
     width: 100%;
   }
 `;
@@ -406,7 +406,7 @@ const Div19 = styled.div`
   line-height: normal;
   width: calc(33.333333333333336% - 13.333333333333334px);
   margin-left: 20px;
-  @media (max-width: 999px) {
+  @media (max-width: 991px) {
     width: 100%;
   }
 `;
@@ -480,7 +480,7 @@ const Div24 = styled.div`
   line-height: normal;
   width: calc(33.333333333333336% - 13.333333333333334px);
   margin-left: 20px;
-  @media (max-width: 999px) {
+  @media (max-width: 991px) {
     width: 100%;
   }
 `;
