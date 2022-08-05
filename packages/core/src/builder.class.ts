@@ -11,14 +11,17 @@ import { Animator } from './classes/animator.class';
 import { BuilderElement } from './types/element';
 import Cookies from './classes/cookies.class';
 import { omit } from './functions/omit.function';
-import { getTopLevelDomain } from './functions/get-top-level-domain';
 import serverOnlyRequire from './functions/server-only-require.function';
+import { getTopLevelDomain } from './functions/get-top-level-domain';
 import { BuilderContent } from './types/content';
 import { uuid } from './functions/uuid';
+import { parse as urlParse } from 'url';
 
 // Do not change this to a require! It throws runtime errors - rollup
 // will preserve the `require` and throw runtime errors
 import hash from 'hash-sum';
+import { toError } from './functions/to-error';
+import { emptyUrl, UrlLike } from './url';
 
 export type Url = any;
 
@@ -57,15 +60,26 @@ function getQueryParam(url: string, variable: string): string | null {
 }
 
 const urlParser = {
-  parse(url: string) {
-    const parser = document.createElement('a') as any;
-    parser.href = url;
+  parse(url: string): UrlLike {
+    const el: HTMLAnchorElement = document.createElement('a') as any;
+    el.href = url;
     const out: any = {};
-    const props = 'username password host hostname port protocol origin pathname search hash'.split(
-      ' '
-    );
-    for (let i = props.length; i--; ) {
-      out[props[i]] = parser[props[i]];
+
+    const props = [
+      'username',
+      'password',
+      'host',
+      'hostname',
+      'port',
+      'protocol',
+      'origin',
+      'pathname',
+      'search',
+      'hash',
+    ] as const;
+
+    for (const prop of props) {
+      out[prop] = el[prop];
     }
 
     // IE 11 pathname handling workaround
@@ -82,11 +96,11 @@ const urlParser = {
   },
 };
 
-const parse = isReactNative
-  ? () => ({})
+const parse: (url: string) => UrlLike = isReactNative
+  ? () => (emptyUrl())
   : typeof window === 'object'
   ? urlParser.parse
-  : serverOnlyRequire('url').parse;
+  : urlParse;
 
 function setCookie(name: string, value: string, expires?: Date) {
   try {
@@ -1841,8 +1855,8 @@ export class Builder {
               let error: Error | null = null;
               try {
                 result = fn.apply(this, args);
-              } catch (err: any) {
-                error = err;
+              } catch (err) {
+                error = toError(err);
               }
 
               if (error) {
@@ -1931,7 +1945,7 @@ export class Builder {
 
     // in ssr mode
     if (this.request) {
-      parsedLocation = parse(this.request.url);
+      parsedLocation = parse(this.request.url ?? '');
     } else if (typeof location === 'object') {
       // in the browser
       parsedLocation = parse(location.href);
@@ -2162,7 +2176,7 @@ export class Builder {
       const requestOptions = {
         host: parsedUrl.hostname,
         port: parsedUrl.port,
-        path: parsedUrl.pathname + parsedUrl.search,
+        path: (parsedUrl.pathname ?? '') + (parsedUrl.search ?? ''),
         headers: { ...options?.headers },
       };
       module
