@@ -15,7 +15,7 @@ import serverOnlyRequire from './functions/server-only-require.function';
 import { getTopLevelDomain } from './functions/get-top-level-domain';
 import { BuilderContent } from './types/content';
 import { uuid } from './functions/uuid';
-import { parse as urlParse } from 'url';
+import { parse as urlParse } from './url';
 
 // Do not change this to a require! It throws runtime errors - rollup
 // will preserve the `require` and throw runtime errors
@@ -97,7 +97,7 @@ const urlParser = {
 };
 
 const parse: (url: string) => UrlLike = isReactNative
-  ? () => (emptyUrl())
+  ? () => emptyUrl()
   : typeof window === 'object'
   ? urlParser.parse
   : urlParse;
