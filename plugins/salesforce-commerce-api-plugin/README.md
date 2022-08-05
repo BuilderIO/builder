@@ -58,9 +58,9 @@ Once you install the plugin, you will also be able to use the SFCC types as inpu
 
 - `SFCommerceCategory` when used as an input type, you will be able to search and select a specific category of products to provide to your component, as example you can fetch products from a specific category from inside your component.
 
-- `SfCommerceProductsList` when used as an input type, it enables users to select multiple products to provide to your component. As an example you can select multiple products and display them on a grid.
+- `SFCommerceProductsList` when used as an input type, it enables users to select multiple products to provide to your component. As an example you can select multiple products and display them on a grid.
 
-- `SfCommerceCategoriesList` when used as an input type enables users to select multiple categories to provide to your component.
+- `SFCommerceCategoriesList` when used as an input type enables users to select multiple categories to provide to your component.
 
 #### Example of a Custom Component with SFCommerceProduct input type:
 
