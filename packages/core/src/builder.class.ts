@@ -2166,54 +2166,8 @@ export class Builder {
     url: string,
     options?: { headers: { [header: string]: number | string | string[] | undefined } }
   ) {
-    if (Builder.isBrowser) {
-      return fetch(url, options as SimplifiedFetchOptions).then(res => res.json());
-    }
-    return new Promise((resolve, reject) => {
-      const parsedUrl = parse(url);
-      const module =
-        parsedUrl.protocol === 'http:' ? serverOnlyRequire('http') : serverOnlyRequire('https');
-      const requestOptions = {
-        host: parsedUrl.hostname,
-        port: parsedUrl.port,
-        path: (parsedUrl.pathname ?? '') + (parsedUrl.search ?? ''),
-        headers: { ...options?.headers },
-      };
-      module
-        .get(requestOptions, function (resp: any) {
-          let data = '';
-
-          // We are collecting textual data
-          resp.setEncoding('utf8');
-
-          // A chunk of data has been recieved.
-          resp.on('data', (chunk: string | Buffer) => {
-            data += chunk;
-          });
-
-          // The whole response has been received. Print out the result.
-          resp.on('end', () => {
-            try {
-              resolve(JSON.parse(data));
-            } catch (err) {
-              if ((err as any)?.name === 'SyntaxError') {
-                const jsonParseError = new Error(
-                  `[Builder.io] ERROR: invalid response.
-Request: ${JSON.stringify(requestOptions, null, 2)}
-Response Data: ${data}
-`
-                );
-                reject(jsonParseError);
-              }
-
-              reject(err);
-            }
-          });
-        })
-        .on('error', (error: any) => {
-          reject(error);
-        });
-    });
+    const f = Builder.isBrowser ? fetch : (serverOnlyRequire('node-fetch') as typeof fetch);
+    return f(url, options as SimplifiedFetchOptions).then(res => res.json());
   }
 
   get host() {
