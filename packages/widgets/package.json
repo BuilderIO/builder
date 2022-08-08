@@ -1,11 +1,10 @@
 {
   "name": "@builder.io/widgets",
-  "version": "1.2.23",
+  "version": "1.2.24-5",
   "description": "",
   "keywords": [],
-  "main": "dist/builder-widgets.cjs.js",
-  "module": "dist/builder-widgets.es5.js",
-  "unpkg": "dist/builder-widgets.browser.js",
+  "main": "dist/builder-widgets-cjs/builder-widgets.js",
+  "module": "dist/builder-widgets-es5/builder-widgets.js",
   "typings": "dist/types/builder-widgets.d.ts",
   "files": [
     "dist",
@@ -85,8 +84,9 @@
   },
   "devDependencies": {
     "@builder.io/block-publish": "^1.1.2",
-    "@builder.io/react": "^2.0.2-5",
+    "@builder.io/react": "^2.0.2",
     "@types/jest": "^22.0.0",
+    "@types/loadable__component": "^5.13.4",
     "@types/lodash-es": "^4.17.1",
     "@types/node": "^10.0.3",
     "@types/react": "^16.4.1",
@@ -133,11 +133,12 @@
     "prop-types": "^15.7.2"
   },
   "peerDependencies": {
-    "@builder.io/react": ">=1.1.0"
+    "@builder.io/react": "^2.0.2"
   },
   "dependencies": {
     "@emotion/core": ">=10",
     "@emotion/styled": ">=10",
+    "@loadable/component": "^5.15.2",
     "lodash-es": "^4.17.10",
     "next": "^12.1.0",
     "react": ">=14",
