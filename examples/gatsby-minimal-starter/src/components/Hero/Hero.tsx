@@ -39,7 +39,7 @@ export const Hero = (props: any) => {
       </Box>
       <Background className="custom-bg">
         {/* Builder optimized image with srcset, lazy, etc */}
-        <img src={image} />
+        <Image src={image} alt="builder-optimized-example" />
       </Background>
     </Parallax>
   );

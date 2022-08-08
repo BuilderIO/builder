@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "@builder.io/gatsby": "^3.0.0",
-    "@builder.io/react": "^1.0.7",
+    "@builder.io/react": "^1.1.52",
     "@builder.io/widgets": "^1.0.16",
     "@material-ui/core": "^4.9.5",
     "classnames": "^2.2.6",
