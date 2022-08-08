@@ -54,29 +54,29 @@ describe('.parse', () => {
   });
 
   describe('behaves the same as the old query function', () => {
-    describe.each([
-      { url: '/foo/bar?a=1&b=2' },
-      { url: 'http://example.com/foo/bar?a=1&b=2' },
-    ])('with url `$url`', ({ url }) => {
-      const expected = Object.assign({}, oldParse(url));
-      const actual = parse(url);
+    describe.each([{ url: '/foo/bar?a=1&b=2' }, { url: 'http://example.com/foo/bar?a=1&b=2' }])(
+      'with url `$url`',
+      ({ url }) => {
+        const expected = Object.assign({}, oldParse(url));
+        const actual = parse(url);
 
-      test.each([
-        { prop: 'query' },
-        { prop: 'port' },
-        { prop: 'auth' },
-        { prop: 'hash' },
-        { prop: 'host' },
-        { prop: 'hostname' },
-        { prop: 'href' },
-        { prop: 'path' },
-        { prop: 'pathname' },
-        { prop: 'protocol' },
-        { prop: 'search' },
-        { prop: 'slashes' },
-      ] as const)('`$prop` is the same', async ({ prop }) => {
-        expect(actual[prop]).toEqual(expected[prop]);
-      });
-    });
+        test.each([
+          { prop: 'query' },
+          { prop: 'port' },
+          { prop: 'auth' },
+          { prop: 'hash' },
+          { prop: 'host' },
+          { prop: 'hostname' },
+          { prop: 'href' },
+          { prop: 'path' },
+          { prop: 'pathname' },
+          { prop: 'protocol' },
+          { prop: 'search' },
+          { prop: 'slashes' },
+        ] as const)('`$prop` is the same', async ({ prop }) => {
+          expect(actual[prop]).toEqual(expected[prop]);
+        });
+      }
+    );
   });
 });
