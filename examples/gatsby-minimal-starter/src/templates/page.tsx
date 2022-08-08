@@ -23,8 +23,14 @@ const PageTemplate: React.SFC<PageTemplateProps> = ({ data }) => {
       <Helmet>
         <title>{content?.data.title}</title>
       </Helmet>
+      <header>
+        <h1>Gatsby Minimal Starter</h1>
+      </header>
 
       <BuilderComponent content={content} />
+      <footer>
+        <p>A Builder.io starter with Gatsby</p>
+      </footer>
     </>
   );
 };
