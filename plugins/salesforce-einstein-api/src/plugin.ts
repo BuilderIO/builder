@@ -1,6 +1,6 @@
 import { registerCommercePlugin, Resource } from '@builder.io/commerce-plugin-tools';
 import pkg from '../package.json';
-import {  getRecommenders } from './api';
+import { getRecommenders } from './api';
 /**
  * 
 parameters: {
@@ -36,9 +36,7 @@ registerCommercePlugin(
     return {
       recommender: {
         search(search = '') {
-          return Promise.resolve(
-            recommenders.filter(rec => JSON.stringify(rec).includes(search))
-          );
+          return Promise.resolve(recommenders.filter(rec => JSON.stringify(rec).includes(search)));
         },
         findById(id: string) {
           return Promise.resolve(recommenders.find(rec => rec.id === id) as Resource);
