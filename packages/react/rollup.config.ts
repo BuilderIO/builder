@@ -76,25 +76,11 @@ const options = {
 };
 
 export default [
-  // UMD browser build
-  {
-    ...options,
-    output: {
-      file: 'dist/builder-react.browser.js',
-      name: 'BuilderReact',
-      format: 'umd',
-      sourcemap: true,
-      amd: {
-        id: '@builder.io/react',
-      },
-    },
-  },
-  // Main ES and CJS builds
   {
     ...options,
     output: [
-      { file: pkg.module, format: 'es', sourcemap: true },
-      { file: pkg.main, format: 'cjs', sourcemap: true },
+      { dir: 'dist/builder-react-es5', format: 'es', sourcemap: true },
+      { file: 'dist/builder-react-cjs', format: 'cjs', sourcemap: true },
     ],
     external: externalDependencies.concat('node-fetch'),
     plugins: options.plugins
@@ -111,12 +97,12 @@ export default [
     input: `src/${libraryName}-lite.ts`,
     output: [
       {
-        file: `dist/${libraryName}-lite.esm.js`,
+        dir: `dist/${libraryName}-lite-esm`,
         format: 'es',
         sourcemap: true,
       },
       {
-        file: `dist/${libraryName}-lite.cjs.js`,
+        dir: `dist/${libraryName}-lite-cjs`,
         format: 'cjs',
         sourcemap: true,
       },
@@ -129,15 +115,5 @@ export default [
             only: [/^\.{0,2}\//],
           })
     ),
-  },
-  // iife build
-  {
-    ...options,
-    output: {
-      file: pkg.unpkg,
-      format: 'iife',
-      name: 'BuilderReact',
-      sourcemap: true,
-    },
   },
 ];

@@ -1017,7 +1017,7 @@ export class Builder {
   static registerComponent(component: any, options: Component) {
     const spec = {
       class: component,
-      ...component.builderOptions,
+      ...component?.builderOptions,
       ...options,
     };
     this.addComponent(spec);

@@ -3,9 +3,8 @@
   "version": "2.0.2",
   "description": "",
   "keywords": [],
-  "main": "dist/builder-react.cjs.js",
-  "unpkg": "dist/builder-react.unpkg.js",
-  "module": "dist/builder-react.es5.js",
+  "main": "dist/builder-react-cjs/builder-react.js",
+  "module": "dist/builder-react-es5/builder-react.js",
   "typings": "dist/types/src/builder-react.d.ts",
   "author": "Steve Sewell <steve@builder.io>",
   "repository": {
