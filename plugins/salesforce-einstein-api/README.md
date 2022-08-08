@@ -4,7 +4,7 @@ Easily connect your SalesForce Einestein API to your Builder.io content!
 
 ## Installation
 
-On any builder space, go to the [integrations tab](https://builder.io/app/integrations) and in the `Advanced Configurations` section all they way to the end, add a custom plugin `@builder.io/plugin-sfcc-einstein-api`,
+On any builder space, go to the [integrations tab](https://builder.io/app/integrations) and in the `Advanced Configurations` section all the way to the end, add a custom plugin `@builder.io/plugin-sfcc-einstein-api`,
 you'll be prompted to enter the following data:
 * Einstein API Client ID.
 * Einstein Site ID.
