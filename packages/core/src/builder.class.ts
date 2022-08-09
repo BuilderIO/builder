@@ -2162,14 +2162,6 @@ export class Builder {
     return observable;
   }
 
-  requestUrl(
-    url: string,
-    options?: { headers: { [header: string]: number | string | string[] | undefined } }
-  ) {
-    const f = Builder.isBrowser ? fetch : (serverOnlyRequire('node-fetch') as typeof fetch);
-    return f(url, options as SimplifiedFetchOptions).then(res => res.json());
-  }
-
   get host() {
     switch (this.env) {
       case 'qa':
@@ -2361,59 +2353,62 @@ export class Builder {
       };
     }
 
-    const promise = this.requestUrl(
-      `${host}/api/v1/${format === 'solid' || format === 'react' ? 'codegen' : 'query'}/${
-        this.apiKey
-      }/${keyNames}` + (queryParams && hasParams ? `?${queryStr}` : ''),
-      requestOptions
-    ).then(
-      result => {
-        for (const options of queue) {
-          const keyName = options.key!;
-          if (options.model === this.blockContentLoading && !options.noEditorUpdates) {
-            continue;
-          }
+    const fn = format === 'solid' || format === 'react' ? 'codegen' : 'query';
 
-          const isEditingThisModel = this.editingModel === options.model;
-          if (isEditingThisModel && Builder.isEditing) {
-            parent.postMessage({ type: 'builder.updateContent', data: { options } }, '*');
-            // return;
-          }
-          const observer = this.observersByKey[keyName];
-          if (!observer) {
-            return;
-          }
-          const data = result[keyName];
-          const sorted = data; // sortBy(data, item => item.priority);
-          if (data) {
-            const testModifiedResults = Builder.isServer
-              ? sorted
-              : this.processResultsForTests(sorted);
-            observer.next(testModifiedResults);
-          } else {
-            const search = this.getLocation().search;
-            if ((search || '').includes('builder.preview=' + options.model)) {
-              const previewData = {
-                id: 'preview',
-                name: 'Preview',
-                data: {},
-              };
-              observer.next([previewData]);
+    const url =
+      `${host}/api/v1/${fn}/${this.apiKey}/${keyNames}` +
+      (queryParams && hasParams ? `?${queryStr}` : '');
+
+    const promise = fetch(url, requestOptions)
+      .then(res => res.json())
+      .then(
+        result => {
+          for (const options of queue) {
+            const keyName = options.key!;
+            if (options.model === this.blockContentLoading && !options.noEditorUpdates) {
+              continue;
             }
-            observer.next([]);
+
+            const isEditingThisModel = this.editingModel === options.model;
+            if (isEditingThisModel && Builder.isEditing) {
+              parent.postMessage({ type: 'builder.updateContent', data: { options } }, '*');
+              // return;
+            }
+            const observer = this.observersByKey[keyName];
+            if (!observer) {
+              return;
+            }
+            const data = result[keyName];
+            const sorted = data; // sortBy(data, item => item.priority);
+            if (data) {
+              const testModifiedResults = Builder.isServer
+                ? sorted
+                : this.processResultsForTests(sorted);
+              observer.next(testModifiedResults);
+            } else {
+              const search = this.getLocation().search;
+              if ((search || '').includes('builder.preview=' + options.model)) {
+                const previewData = {
+                  id: 'preview',
+                  name: 'Preview',
+                  data: {},
+                };
+                observer.next([previewData]);
+              }
+              observer.next([]);
+            }
+          }
+        },
+        err => {
+          for (const options of queue) {
+            const observer = this.observersByKey[options.key!];
+            if (!observer) {
+              return;
+            }
+            observer.error(err);
           }
         }
-      },
-      err => {
-        for (const options of queue) {
-          const observer = this.observersByKey[options.key!];
-          if (!observer) {
-            return;
-          }
-          observer.error(err);
-        }
-      }
-    );
+      );
 
     return promise;
   }
