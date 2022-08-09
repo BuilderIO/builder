@@ -99,7 +99,7 @@ if (globalThis.fetch) {
 
 // If fetch is not defined, in a Node.js environment, use node-fetch.
 if (typeof window === 'undefined') {
-  fetch ??=serverOnlyRequire('node-fetch')
+  fetch ??= serverOnlyRequire('node-fetch');
 }
 
 // Otherwise, use tiny-fetch.
