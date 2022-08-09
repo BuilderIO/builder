@@ -87,8 +87,9 @@ function debounce(func: Function, wait: number, immediate = false) {
 
 const fontsLoaded = new Set();
 
-// TODO: get fetch from core JS....
-const fetch = Builder.isBrowser ? window.fetch : require('node-fetch');
+let fetch: typeof globalThis['fetch']
+if (globalThis.fetch) fetch = globalThis.fetch;
+fetch ??= require('node-fetch')
 
 const sizeMap = {
   desktop: 'large',
