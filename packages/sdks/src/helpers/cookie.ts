@@ -1,5 +1,6 @@
 import { isBrowser } from '../functions/is-browser';
 import { CanTrack } from '../types/can-track';
+import { getTopLevelDomain } from './url';
 
 export const getCookie = ({
   name,
@@ -24,19 +25,6 @@ export const getCookie = ({
     console.debug('[COOKIE] GET error: ', err);
   }
 };
-
-/**
- * Only gets one level up from hostname
- * wwww.example.com -> example.com
- * www.example.co.uk -> example.co.uk
- */
-export function getTopLevelDomain(host: string) {
-  const parts = host.split('.');
-  if (parts.length > 2) {
-    return parts.slice(1).join('.');
-  }
-  return host;
-}
 
 type CookieConfiguration = Array<
   | ['expires', string]
