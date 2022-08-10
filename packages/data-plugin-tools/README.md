@@ -11,7 +11,7 @@ for real world example check the [@builder.io/plugin-contentful](../../plugins/c
 ```ts
 import { registerDataPlugin } from '@builder.io/data-plugin-tools';
 
-registerCommercePlugin(
+registerDataPlugin(
   {
     name: 'Foobar',
     id: '@builder.io/plugin-foobar',
