@@ -28,7 +28,7 @@ Resources:
 Data connector plugins are a way to enrich the data available in the editor sections and pages from external sources, once linked a data source users will be able to pick and choose entries or query that source and bind to the results of those queries directly in builder.
 Resources:
 1. [Utility library that makes creating Data Connectors easier](https://github.com/BuilderIO/builder/tree/main/packages/data-plugin-tools)
-2. [Reference implementation: Contentful data connector](https://www.builder.io/blog/builder-contentful](https://www.builder.io/blog/builder-contentful)
+2. [Reference implementation: Contentful data connector](https://www.builder.io/blog/builder-contentful)
 
 ## Action shortcut plugins:
 
