@@ -19,19 +19,16 @@ The easiest way to start is to pick a starting point from the list of plugin typ
 With e-commerce plugins, users can search and link selected products and categories from their E-Commerce backend to structured data entries, sections, and pages built within the visual editor. This allows teams to easily enrich content for selected products and build landing pages or custom sections with elements linked directly to their E-Commerce backend, for e.g product cards, product galleries, add to cart buttons, list of product recommendations, and much more.
 
 Resources:
-1. How to:  [https://forum.builder.io/t/how-to-build-a-custom-editor-plugin-for-my-ecommerce-backend-with-builder-io/519](https://forum.builder.io/t/how-to-build-a-custom-editor-plugin-for-my-ecommerce-backend-with-builder-io/519)
-2. Good starting point: [https://github.com/BuilderIO/builder/tree/main/plugins/swell](https://github.com/BuilderIO/builder/tree/main/plugins/swell)
-3. utility library that makes things easier for this use case: [https://github.com/BuilderIO/builder/tree/main/packages/commerce-plugin-tools](https://github.com/BuilderIO/builder/tree/main/packages/commerce-plugin-tools)
+1. [Utility library that makes connecting e-commerce backends easier](https://github.com/BuilderIO/builder/tree/main/packages/commerce-plugin-tools)
+2. [Forum post details how to use the utils library](https://forum.builder.io/t/how-to-build-a-custom-editor-plugin-for-my-ecommerce-backend-with-builder-io/519)
+3. Good starting point and/or a reference implementation [https://github.com/BuilderIO/builder/tree/main/plugins/swell](https://github.com/BuilderIO/builder/tree/main/plugins/swell)
 
 ## Data Connector plugins
 
 Data connector plugins are a way to enrich the data available in the editor sections and pages from external sources, once linked a data source users will be able to pick and choose entries or query that source and bind to the results of those queries directly in builder.
 Resources:
-
-1. an example : Contentful data connector [https://www.builder.io/blog/builder-contentful](https://www.builder.io/blog/builder-contentful)
-2. Good starting point: [https://github.com/BuilderIO/builder/blob/main/plugins/example-data-plugin/src/plugin.ts](https://github.com/BuilderIO/builder/blob/main/plugins/example-data-plugin/src/plugin.ts)
-3. Contentful reference implementation: [https://github.com/BuilderIO/builder/tree/main/plugins/contentful](https://github.com/BuilderIO/builder/tree/main/plugins/contentful) 
-4. utility library that makes things easier for this use case [https://github.com/BuilderIO/builder/tree/main/packages/data-plugin-tools](https://github.com/BuilderIO/builder/tree/main/packages/data-plugin-tools)
+1. [Utility library that makes creating Data Connectors easier](https://github.com/BuilderIO/builder/tree/main/packages/data-plugin-tools)
+2. [Reference implementation: Contentful data connector](https://www.builder.io/blog/builder-contentful](https://www.builder.io/blog/builder-contentful)
 
 ## Action shortcut plugins:
 
@@ -42,13 +39,15 @@ For example in the screenshot below, the action `Track Event with Google Analyti
 :-------------------------:|:-------------------------:
 ![picking an actino from the list](https://user-images.githubusercontent.com/5093430/162526704-0baec86b-06bd-4a97-8aa4-2233e7c6a5b7.png) | ![action parameters](https://user-images.githubusercontent.com/5093430/162527958-266881c3-ec82-4208-a804-d60b64e12c82.png)
 
-
+Resources:
 A good starting point here is : [https://github.com/BuilderIO/builder/tree/main/plugins/example-action-plugin](https://github.com/BuilderIO/builder/tree/main/plugins/example-action-plugin) 
 
 ## Generic Custom Editor plugin:
 Custom editor plugins allow you to register custom field types for your Builder model custom fields and inputs for your custom components, custom targeting or symbols.
 To create a custom editor, you will need to build a react component that takes a value prop and an onChange prop. Then within your custom editor component you simply call the passed in onChange function when the value is updated (example). The value you set can be any type serializable to JSON (e.g. string, number, null, array, object, etc) and be as deeply nested as you need.
-example: [https://github.com/BuilderIO/builder/tree/main/plugins/rich-text](https://github.com/BuilderIO/builder/tree/main/plugins/rich-text)
+Resources:
+1. [Builder plugins doc](https://www.builder.io/c/docs/extending/plugins)
+2. [Rich Text editor example](https://github.com/BuilderIO/builder/tree/main/plugins/rich-text)
 
 ## None of the above?
 See this [doc for more info](https://www.builder.io/c/docs/extending/plugins)
