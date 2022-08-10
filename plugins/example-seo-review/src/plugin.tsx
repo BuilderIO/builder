@@ -7,6 +7,7 @@ import {
   registerContentAction,
   getIframeHTMLContent,
   showReviewNotifications,
+  fastClone
 } from './utils';
 registerPlugin(
   {
