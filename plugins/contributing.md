@@ -30,7 +30,7 @@ Resources:
 1. [Utility library that makes creating Data Connectors easier](https://github.com/BuilderIO/builder/tree/main/packages/data-plugin-tools)
 2. [Reference implementation: Contentful data connector](https://www.builder.io/blog/builder-contentful)
 
-## Action shortcut plugins:
+## Action shortcut plugins
 
 Action shortcuts in Builder are a great way to simplify some of the tasks that would otherwise require developer involvement, using action shortcuts a user can trigger tracking events, set up conditional values, or set specific values on state without having to write code.
 
@@ -42,14 +42,14 @@ For example in the screenshot below, the action `Track Event with Google Analyti
 Resources:
 A good starting point here is : [https://github.com/BuilderIO/builder/tree/main/plugins/example-action-plugin](https://github.com/BuilderIO/builder/tree/main/plugins/example-action-plugin) 
 
-## Generic Custom Editor plugin:
+## Generic Custom Editor plugin
 Custom editor plugins allow you to register custom field types for your Builder model custom fields and inputs for your custom components, custom targeting or symbols.
 To create a custom editor, you will need to build a react component that takes a value prop and an onChange prop. Then within your custom editor component you simply call the passed in onChange function when the value is updated (example). The value you set can be any type serializable to JSON (e.g. string, number, null, array, object, etc) and be as deeply nested as you need.
 Resources:
 1. [Builder plugins doc](https://www.builder.io/c/docs/extending/plugins)
 2. [Rich Text editor example](https://github.com/BuilderIO/builder/tree/main/plugins/rich-text)
 
-## None of the above?
+## None of the above
 See this [doc for more info](https://www.builder.io/c/docs/extending/plugins)
 
 
