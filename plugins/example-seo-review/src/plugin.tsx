@@ -40,8 +40,7 @@ registerPlugin(
     registerContentAction({
       label: 'Request SEO Review',
       showIf(content, model) {
-        const seoReviewModel = getSEOReviewModel();
-        console.log('plugin: in Request SEO Review content action', content, model);
+        console.log('plugin: in Request SEO Review content action showIf', content, model);
         // content is the current content object in editor
         // model is the current model in editor
         return model.kind === 'page';
