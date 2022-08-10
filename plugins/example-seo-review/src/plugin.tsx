@@ -9,6 +9,10 @@ import {
   showReviewNotifications,
   fastClone,
 } from './utils';
+
+/**
+ * Instruct builder to require few settings before running the plugin code, for example when an apiKey for the service is required
+ */
 registerPlugin(
   {
     name: 'SEOReview',
@@ -21,6 +25,7 @@ registerPlugin(
         required: true,
       },
     ],
+    // Builder will notify plugin user to configure the settings above, and call this function when it's filled
     onSave: async actions => {
       // adds a new model, only once when the user has added their api key
       if (!getSEOReviewModel()) {
@@ -29,6 +34,7 @@ registerPlugin(
     },
     ctaText: `Connect your Foo bar service account`,
   },
+  // settings is a map of the settings fields above
   async settings => {
     // press the vertical dots in the content editor to see this in action
     registerContentAction({
@@ -38,7 +44,7 @@ registerPlugin(
         console.log('plugin: in Request SEO Review content action', content, model);
         // content is the current content object in editor
         // model is the current model in editor
-        return model.name !== seoReviewModel.name;
+        return model.kind === 'page';
       },
       async onClick(content) {
         const seoReviewModel = getSEOReviewModel();
