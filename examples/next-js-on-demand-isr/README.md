@@ -111,8 +111,12 @@ In your code editor, configure `.env` with the [Public API Key](https://builder.
 #### Setting up revalidation webhook
 - add a random `REVALiDATE_SECRET` to your `.env` file
 - Go to your [page model setting](https://builder.io/models)
-- Add a new webhook pointing to your revalidate API endpoint
-- Point the webhook to the API endpoint, this can be localhost if you'd like, make sure to disable proxying as in the screenshot.
+- Click on `page` model, `show advanced options`, and then `edit webhooks`.
+- Point the webhook to the API endpoint, this can be localhost if you'd like, make sure to disable proxying as in the screenshot and pass the secret as a query param: `http://localhost:3000/api/revalidate?secret=.....`.
+<figure>
+    <img src="https://cdn.builder.io/api/v1/image/assets%2F2147724041d04a2e91ccee14347a9469%2Ff5367e1956c0425cba81f971a98034f6" alt="Dialogue for creating a new webhook on a model" width="400" style="display: block; margin: auto"/>
+</figure>
+
 - You're all set now, to test try updating, publishing, deleting content from builder.
 
 
