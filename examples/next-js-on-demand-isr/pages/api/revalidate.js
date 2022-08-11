@@ -44,10 +44,7 @@ export default async (req, res) => {
     })
     .filter(Boolean)
 
-  if (
-    (urls.length > 0) &&
-    (req.query.secret === process.env.REVALIDATE_SECRET)
-  ) {
+  if (urls.length > 0 && req.query.secret === process.env.REVALIDATE_SECRET) {
     // using Set to ensure uniqueness
     await Promise.all([...new Set(urls)].map((url) => res.revalidate(url)))
     return res.send({ revalidated: true })
