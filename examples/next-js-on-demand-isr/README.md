@@ -44,41 +44,6 @@ This example provides you with a ready-made application that you can copy locall
 1. Open this directory in your favorite code editor.
    You'll come back here when you're ready to connect your application to your Builder space.
 
-### Generating your Builder.io space
-
-If you've just created your Builder.io account and logged in for the first time, Builder prompts you to create a space with a new Builder site or add Builder to an existing application.
-For this example, click **Add Builder to an existing site or app**.
-
-<figure>
-    <img src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F19683b4ef3f54eb78e8c2fa6c65759a7" alt="Builder.io Welcome screen for creating a new Organization" width="600" style="display: block; margin: auto"/>
-</figure>
-
-**If you don't have the introductory prompt for creating a space, take the following steps. If you do have the prompt in the previous step, skip to step 4.**
-
-1. Click on the Organization icon on the bottom left.
-
-<figure>
-  <img src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F279657f9a38743e99a028173200d6f76" alt="Organization icon with two people standing together" width="600" style="display: block; margin: auto"/>
-</figure>
-
-1. Hover over **Builder.io** and choose **+ New Space**.
-
-<figure>
-  <img src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F32d67ac4249c40fda0486fb7f38ac71b" alt="Menu options for creating a new space" width="400" style="display: block; margin: auto"/>
-</figure>
-
-1. Click **Add Builder to an existing site or app**.
-
-1. When Builder asks you which ecommerce platform you use, select **None**.
-
-1. Name your new space by entering "My Next.js App" and click **Create**.
-
-<figure>
-    <img src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F3b434d77529f4ae392a3d481a926092d" alt="Dialogue for creating a new space" width="400" style="display: block; margin: auto"/>
-</figure>
-
-Now that you have a new space, the next step is connecting "My Next.js App" with your application.
-
 ### Connecting Builder.io to your application
 
 To connect your Builder.io space and your application, set the model preview URL and get your API key as follows:
