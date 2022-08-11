@@ -1,5 +1,5 @@
 # Next.js + Builder.io On-Demand ISR
-Example of generating pages with Builder using nextjs ISR with [on-demand revalidation](https://nextjs.org/docs/basic-features/data-fetching/incremental-static-regeneration#on-demand-revalidation)
+Example of generating pages with Builder using Next.js ISR with [on-demand revalidation](https://nextjs.org/docs/basic-features/data-fetching/incremental-static-regeneration#on-demand-revalidation).
 
 ## Prerequisites
 
