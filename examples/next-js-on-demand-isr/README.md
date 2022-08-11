@@ -38,7 +38,7 @@ This example provides you with a ready-made application that you can copy locall
 1. Change into the example application by using the `cd` command:
 
    ```shell
-   cd builder/examples/next-js-simple
+   cd builder/examples/next-js-on-demand-isr
    ```
 
 1. Open this directory in your favorite code editor.
@@ -148,7 +148,7 @@ For more detail and ideas on creating pages, see [Creating a landing page in Bui
 ### Deploy
 
 You can deploy anywhere you like, but for this project we recommend [Vercel](https://nextjs.org/docs/deployment).
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https%3A%2F%2Fgithub.com%2Fbuilderio%2Fbuilder%2Ftree%2Fmaster%2Fexamples%2Fnext-js-simple)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https%3A%2F%2Fgithub.com%2Fbuilderio%2Fbuilder%2Ftree%2Fmaster%2Fexamples%2Fnext-js-on-demand-isr)
 
 ## Next steps
 
