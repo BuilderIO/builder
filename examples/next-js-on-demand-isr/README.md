@@ -5,7 +5,7 @@ Example of generating pages with Builder using nextjs ISR with [on-demand revali
 
 Before using this example, make sure you have the following:
 
-- A [Builder.io](builder.io) account. Check out the [plans](https://www.builder.io/m/pricing), which range from our free tier to custom.
+- A [Builder.io](https://builder.io) account. Check out the [plans](https://www.builder.io/m/pricing), which range from our free tier to custom.
 - [npm](https://www.npmjs.com/)
 
 A basic understanding of the following is helpful too:
