@@ -45,7 +45,7 @@ export default async (req, res) => {
     .filter(Boolean)
 
   if (
-    (urls.length > 0) &
+    (urls.length > 0) &&
     (req.query.secret === process.env.REVALIDATE_SECRET)
   ) {
     // using Set to ensure uniqueness
