@@ -1,6 +1,5 @@
 # Next.js + Builder.io On-Demand ISR
-
-This example walks you through using Builder.io with a minimal Next.js application.
+Example of generating pages with Builder using nextjs ISR with [on-demand revalidation](https://nextjs.org/docs/basic-features/data-fetching/incremental-static-regeneration#on-demand-revalidation)
 
 ## Prerequisites
 
@@ -102,12 +101,20 @@ In the [Account settings](https://builder.io/account/space), copy your Public AP
 ![Image showing where to get your API Key](https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F761e521019724d8bbd59ed0d5f079c8e)
 
 
-In your code editor, configure `.env.production` and `.env.development` with the [Public API Key](https://builder.io/account/space) by adding a line to each file as follows, but using your Public API Key that you copied in the previous step.
+In your code editor, configure `.env` with the [Public API Key](https://builder.io/account/space) by adding a line to each file as follows, but using your Public API Key that you copied in the previous step.
    For example:
 
    ```shell
    BUILDER_PUBLIC_KEY=08837cee608a405c806a3bed69acfe2d <-- replace this with your API Key
    ```
+
+#### Setting up revalidation webhook
+- add a random `REVALiDATE_SECRET` to your `.env` file
+- Go to your [page model setting](https://builder.io/models)
+- Add a new webhook pointing to your revalidate API endpoint
+- Point the webhook to the API endpoint, this can be localhost if you'd like, make sure to disable proxying as in the screenshot.
+- You're all set now, to test try updating, publishing, deleting content from builder.
+
 
 ## Running your application
 
