@@ -1,6 +1,6 @@
 # Builder.io React SDK v2 (BETA)
 
-This is the React v2 SDK.
+This is the React v2 SDK. It is still in Beta: for the stable React v1 SDK [go here](../../../react/).
 
 ## Mitosis
 
