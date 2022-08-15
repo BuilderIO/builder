@@ -306,7 +306,7 @@ builder.setUserAttributes({
 
 #### Lite version
 This SDK has a lite version where it provides only the bare minimum of components needed to render your Builder content, it won't have any built-in components registered by default, this option should work with custom components. The main difference is that you need to specifically add any built-in components you want to use or they won’t show up.
-To use the lite package, you change all your imports from @buidler/react to @builder/react/lite and then import any of the built-in components that you want to use:
+To use the lite package, you change all your imports from `@buidler/react` to `@builder/react/lite` and then import only the built-in components that you want to use:
 ```ts
     // Change all imports from '@builder.io/react' to '@builder.io/react/lite'
     import { BuilderComponent } from '@builder.io/react/lite';
