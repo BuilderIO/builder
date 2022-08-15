@@ -126,7 +126,7 @@
     "rollup-plugin-typescript2": "^0.25.3",
     "rollup-plugin-uglify": "^6.0.1",
     "rollup-plugin-visualizer": "^3.3.0",
-    "semantic-release": "^17.2.3",
+    "semantic-release": "^19.0.3",
     "systemjs": "^6.3.2",
     "ts-jest": "^24.2.0",
     "ts-node": "^8.0.1",
