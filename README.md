@@ -81,7 +81,7 @@ npm init builder.io@latest
   <tr>
     <td width="50%">Register components</td>
     <td>Rendered your visually created content</td>
-  </tr width="50%">
+  </tr>
   <tr>
     <td width="50%">
 <pre lang="tsx">
