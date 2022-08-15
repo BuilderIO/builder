@@ -16,4 +16,4 @@ To check the status of the SDK, look at [these tables](../../README.md#feature-i
 npm install @builder.io/sdk-react@dev
 ```
 
-Take a look at [our example repo](/examples/react-native) for how to use this SDK.
+Take a look at [our example repo](/examples/react-v2) for how to use this SDK.
