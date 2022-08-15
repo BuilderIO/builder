@@ -84,21 +84,9 @@ const options = {
 export default [
   {
     ...options,
-    output: {
-      format: 'umd',
-      file: 'dist/builder-widgets.umd.js',
-      name: 'BuilderWidgets',
-      sourcemap: true,
-      amd: {
-        id: '@builder.io/widgets',
-      },
-    },
-  },
-  {
-    ...options,
     output: [
-      { file: pkg.module, format: 'es', sourcemap: true },
-      { file: pkg.main, format: 'cjs', sourcemap: true },
+      { dir: 'dist/builder-widgets-es5', format: 'es', sourcemap: true },
+      { dir: 'dist/builder-widgets-cjs', format: 'cjs', sourcemap: true },
     ],
     // Do not resolve for es module build
     // TODO: should really do a cjs build too (probably for the default build instead of umd...)
@@ -125,91 +113,5 @@ export default [
           only: [/^\.{0,2}\//, /lodash\-es/],
         }),
       ]),
-  },
-  // React 15
-  {
-    ...options,
-    output: [
-      { file: './dist/15.esm.js', format: 'es', sourcemap: true },
-      { file: './dist/15.js', format: 'cjs', sourcemap: true },
-    ],
-    external: externalDependencies.filter(name => !name.startsWith('lodash')),
-    plugins: options.plugins
-      .filter(plugin => plugin !== resolvePlugin)
-      .concat([
-        resolve({
-          only: [/^\.{0,2}\//, /lodash\-es/],
-        }),
-        replace({
-          'React.Fragment': '"span"',
-        }),
-        regexReplace({
-          // ... do replace before commonjs
-          patterns: [
-            {
-              test: /\/\/\/REACT15ONLY/g,
-              replace: '',
-            },
-            {
-              test: /\/\*\*\*REACT15ONLY([^\*]+)\*\//g,
-              replace: '$1',
-            },
-          ],
-        }),
-      ]),
-  },
-  // Preact
-  // TODO: may have to do react 15 modifications for support (no fragment/context?)
-  {
-    ...options,
-    output: [
-      { file: './dist/preact.esm.js', format: 'es', sourcemap: true },
-      { file: './dist/preact.js', format: 'cjs', sourcemap: true },
-    ],
-    external: externalDependencies.filter(name => !name.startsWith('lodash')),
-    plugins: options.plugins
-      .filter(plugin => plugin !== resolvePlugin)
-      .concat([
-        regexReplace({
-          // ... do replace before commonjs
-          patterns: [
-            {
-              // regexp match with resolved path
-              // match: /formidable(\/|\\)lib/,
-              // string or regexp
-              test: /require\(['"]react(-dom)?['"]\)/g,
-              replace: 'require("preact/compat")',
-            },
-            {
-              // regexp match with resolved path
-              // match: /formidable(\/|\\)lib/,
-              // string or regexp
-              test: /from ['"]react(-dom)?['"]/g,
-              replace: 'from "preact/compat"',
-            },
-          ],
-        }),
-        resolve({
-          only: [/^\.{0,2}\//, /lodash\-es/],
-        }),
-      ]),
-  },
-  {
-    ...options,
-    output: {
-      file: pkg.unpkg,
-      format: 'iife',
-      name: 'BuilderReact',
-      sourcemap: true,
-    },
-  },
-  {
-    ...options,
-    output: {
-      format: 'iife',
-      file: pkg.unpkg,
-      name: 'BuilderWidgets',
-      sourcemap: true,
-    },
   },
 ];

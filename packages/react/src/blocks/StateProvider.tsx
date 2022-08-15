@@ -2,7 +2,6 @@ import React from 'react';
 import { BuilderElement } from '@builder.io/sdk';
 import { BuilderBlock as BuilderBlockComponent } from '../components/builder-block.component';
 import { BuilderStoreContext } from '../store/builder-store';
-import { withBuilder } from '../functions/with-builder';
 
 interface StateProviderProps {
   builderBlock?: BuilderElement;
@@ -41,11 +40,4 @@ class StateProviderComponent extends React.Component<StateProviderProps> {
   }
 }
 
-export const StateProvider = withBuilder(StateProviderComponent, {
-  name: 'Builder:StateProvider',
-  // TODO: default children
-  canHaveChildren: true,
-  static: true,
-  noWrap: true,
-  hideFromInsertMenu: true,
-});
+export const StateProvider = StateProviderComponent;
