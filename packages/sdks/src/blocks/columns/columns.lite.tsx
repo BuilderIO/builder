@@ -1,6 +1,7 @@
 import RenderBlocks from '../../components/render-blocks.lite';
 import { For, useStore } from '@builder.io/mitosis';
 import { JSX } from '@builder.io/mitosis/jsx-runtime';
+import { BuilderBlock } from '../../types/builder-block';
 
 type Column = {
   blocks: any;
@@ -12,6 +13,7 @@ type StackColumnsAt = 'tablet' | 'mobile' | 'never';
 
 export interface ColumnProps {
   columns?: Column[];
+  builderBlock: BuilderBlock;
 
   // TODO: Implement this when support for dynamic CSS lands
   space?: number;
@@ -111,7 +113,11 @@ export default function Columns(props: ColumnProps) {
             }}
             key={index}
           >
-            <RenderBlocks blocks={column.blocks} />
+            <RenderBlocks
+              blocks={column.blocks}
+              path={`component.options.columns.${index}.blocks`}
+              parent={props.builderBlock.id}
+            />
           </div>
         )}
       </For>

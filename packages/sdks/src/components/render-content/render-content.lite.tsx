@@ -68,6 +68,9 @@ export default function RenderContent(props: RenderContentProps) {
     },
     overrideContent: null as Nullable<BuilderContent>,
     update: 0,
+    get canTrackToUse(): boolean {
+      return props.canTrack || true;
+    },
     overrideState: {} as BuilderRenderState,
     get contentState(): BuilderRenderState {
       return {
@@ -146,8 +149,13 @@ export default function RenderContent(props: RenderContentProps) {
     },
 
     onClick(_event: MouseEvent) {
-      if (state.useContent && props.canTrack !== false) {
-        track('click', { contentId: state.useContent.id });
+      if (state.useContent) {
+        track({
+          type: 'click',
+          canTrack: state.canTrackToUse,
+          contentId: state.useContent.id,
+          orgId: props.apiKey,
+        });
       }
     },
 
@@ -259,9 +267,12 @@ export default function RenderContent(props: RenderContentProps) {
           state.emitStateUpdate
         );
       }
-      if (state.useContent && props.canTrack !== false) {
-        track('impression', {
+      if (state.useContent) {
+        track({
+          type: 'impression',
+          canTrack: state.canTrackToUse,
           contentId: state.useContent.id,
+          orgId: props.apiKey,
         });
       }
 
