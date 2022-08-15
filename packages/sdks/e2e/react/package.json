@@ -3,9 +3,9 @@
   "private": true,
   "version": "0.0.1",
   "scripts": {
-    "clean": "rimraf dist",
-    "build": "tsc && vite build",
-    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "dev": "tsc --noEmit && vite",
+    "e2e": "../../node_modules/.bin/playwright test",
     "serve": "vite preview"
   },
   "dependencies": {
