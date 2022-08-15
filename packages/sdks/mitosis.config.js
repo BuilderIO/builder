@@ -24,10 +24,13 @@ const vueConfig = {
  */
 module.exports = {
   files: 'src/**',
-  targets: ['reactNative', 'vue2', 'vue3', 'solid', 'svelte', 'qwik'],
+  targets: ['reactNative', 'vue2', 'vue3', 'solid', 'svelte', 'react', 'qwik'],
   options: {
     vue2: vueConfig,
     vue3: vueConfig,
+    react: {
+      transpiler: { format: 'esm' },
+    },
     reactNative: {
       plugins: [
         () => ({
