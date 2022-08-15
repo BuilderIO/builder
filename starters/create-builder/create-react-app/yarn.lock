@@ -4270,10 +4270,8 @@ events@^3.0.0:
   resolved "https://registry.npmjs.org/events/-/events-3.2.0.tgz"
 
 eventsource@^1.0.7:
-  version "1.0.7"
-  resolved "https://registry.npmjs.org/eventsource/-/eventsource-1.0.7.tgz"
-  dependencies:
-    original "^1.0.0"
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/eventsource/-/eventsource-1.1.2.tgz#bc75ae1c60209e7cb1541231980460343eaea7c2"
 
 evp_bytestokey@^1.0.0, evp_bytestokey@^1.0.3:
   version "1.0.3"
@@ -6926,12 +6924,6 @@ optionator@^0.9.1:
     prelude-ls "^1.2.1"
     type-check "^0.4.0"
     word-wrap "^1.2.3"
-
-original@^1.0.0:
-  version "1.0.2"
-  resolved "https://registry.npmjs.org/original/-/original-1.0.2.tgz"
-  dependencies:
-    url-parse "^1.4.3"
 
 os-browserify@^0.3.0:
   version "0.3.0"
@@ -9702,7 +9694,7 @@ url-loader@4.1.1:
     mime-types "^2.1.27"
     schema-utils "^3.0.0"
 
-url-parse@^1.4.3, url-parse@^1.4.7:
+url-parse@^1.4.7:
   version "1.5.10"
   resolved "https://registry.yarnpkg.com/url-parse/-/url-parse-1.5.10.tgz#9d3c2f736c1d75dd3bd2be507dcc111f1e2ea9c1"
   dependencies:
