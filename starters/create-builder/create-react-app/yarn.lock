@@ -952,9 +952,15 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@babel/runtime@^7.10.2", "@babel/runtime@^7.11.2", "@babel/runtime@^7.13.10", "@babel/runtime@^7.14.6", "@babel/runtime@^7.5.5", "@babel/runtime@^7.7.2", "@babel/runtime@^7.8.4":
+"@babel/runtime@^7.10.2", "@babel/runtime@^7.11.2", "@babel/runtime@^7.13.10", "@babel/runtime@^7.5.5", "@babel/runtime@^7.7.2", "@babel/runtime@^7.8.4":
   version "7.16.3"
   resolved "https://registry.npmjs.org/@babel/runtime/-/runtime-7.16.3.tgz"
+  dependencies:
+    regenerator-runtime "^0.13.4"
+
+"@babel/runtime@^7.16.7":
+  version "7.18.9"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.18.9.tgz#b4fcfce55db3d2e5e080d2490f608a3b9f407f4a"
   dependencies:
     regenerator-runtime "^0.13.4"
 
@@ -1017,13 +1023,28 @@
     node-fetch "^2.2.0"
     tslib "^1.10.0"
 
-"@chevrotain/types@^9.1.0":
-  version "9.1.0"
-  resolved "https://registry.npmjs.org/@chevrotain/types/-/types-9.1.0.tgz"
+"@chevrotain/cst-dts-gen@^10.1.2":
+  version "10.1.2"
+  resolved "https://registry.yarnpkg.com/@chevrotain/cst-dts-gen/-/cst-dts-gen-10.1.2.tgz#4ee6eff237bb47f4990cfb76c18ee2e71237929c"
+  dependencies:
+    "@chevrotain/gast" "^10.1.2"
+    "@chevrotain/types" "^10.1.2"
+    lodash "4.17.21"
 
-"@chevrotain/utils@^9.1.0":
-  version "9.1.0"
-  resolved "https://registry.npmjs.org/@chevrotain/utils/-/utils-9.1.0.tgz"
+"@chevrotain/gast@^10.1.2":
+  version "10.1.2"
+  resolved "https://registry.yarnpkg.com/@chevrotain/gast/-/gast-10.1.2.tgz#91d5b342480d7532118a6cf3958955f86c9cc03e"
+  dependencies:
+    "@chevrotain/types" "^10.1.2"
+    lodash "4.17.21"
+
+"@chevrotain/types@^10.1.2":
+  version "10.1.2"
+  resolved "https://registry.yarnpkg.com/@chevrotain/types/-/types-10.1.2.tgz#f4caa373b1cd14d13ecb61c77dfee2456eef1ab3"
+
+"@chevrotain/utils@^10.1.2":
+  version "10.1.2"
+  resolved "https://registry.yarnpkg.com/@chevrotain/utils/-/utils-10.1.2.tgz#d2fb7b968141139e5c2419553e5295382c265e7d"
 
 "@cnakazawa/watch@^1.0.3":
   version "1.0.4"
@@ -1358,34 +1379,76 @@
     schema-utils "^2.6.5"
     source-map "^0.7.3"
 
-"@react-three/drei@^7.22.6":
-  version "7.22.7"
-  resolved "https://registry.npmjs.org/@react-three/drei/-/drei-7.22.7.tgz"
+"@react-spring/animated@~9.5.1":
+  version "9.5.1"
+  resolved "https://registry.yarnpkg.com/@react-spring/animated/-/animated-9.5.1.tgz#663aa587ea83cd16fb8fa650dc0966a226bbc8b2"
+  dependencies:
+    "@react-spring/shared" "~9.5.1"
+    "@react-spring/types" "~9.5.1"
+
+"@react-spring/core@~9.5.1":
+  version "9.5.1"
+  resolved "https://registry.yarnpkg.com/@react-spring/core/-/core-9.5.1.tgz#378ffc74a131b8c476673dfe1efed28bcfb8d2ca"
+  dependencies:
+    "@react-spring/animated" "~9.5.1"
+    "@react-spring/rafz" "~9.5.1"
+    "@react-spring/shared" "~9.5.1"
+    "@react-spring/types" "~9.5.1"
+
+"@react-spring/rafz@~9.5.1":
+  version "9.5.1"
+  resolved "https://registry.yarnpkg.com/@react-spring/rafz/-/rafz-9.5.1.tgz#4b885b0ff3d8c4afdf5fe4d19e607f9189d35d48"
+
+"@react-spring/shared@~9.5.1":
+  version "9.5.1"
+  resolved "https://registry.yarnpkg.com/@react-spring/shared/-/shared-9.5.1.tgz#82c65bfbcc31cba194921187220ff503c85c4fc9"
+  dependencies:
+    "@react-spring/rafz" "~9.5.1"
+    "@react-spring/types" "~9.5.1"
+
+"@react-spring/three@^9.3.1":
+  version "9.5.1"
+  resolved "https://registry.yarnpkg.com/@react-spring/three/-/three-9.5.1.tgz#66c04c26b17c64bf000c15de9d945a6874ae4910"
+  dependencies:
+    "@react-spring/animated" "~9.5.1"
+    "@react-spring/core" "~9.5.1"
+    "@react-spring/shared" "~9.5.1"
+    "@react-spring/types" "~9.5.1"
+
+"@react-spring/types@~9.5.1":
+  version "9.5.1"
+  resolved "https://registry.yarnpkg.com/@react-spring/types/-/types-9.5.1.tgz#00514faf8f655f46c8c15c98c89ddb59d3acff66"
+
+"@react-three/drei@8.11.0":
+  version "8.11.0"
+  resolved "https://registry.yarnpkg.com/@react-three/drei/-/drei-8.11.0.tgz#aed175b670e02091d35e19d46338de0b538087da"
   dependencies:
     "@babel/runtime" "^7.11.2"
-    detect-gpu "^3.1.25"
+    "@react-spring/three" "^9.3.1"
+    "@use-gesture/react" "^10.2.0"
+    detect-gpu "^3.1.28"
     glsl-noise "^0.0.0"
     lodash.omit "^4.5.0"
     lodash.pick "^4.4.0"
     react-composer "^5.0.2"
     react-merge-refs "^1.1.0"
     stats.js "^0.17.0"
-    three-mesh-bvh "^0.5.2"
-    three-stdlib "^2.5.9"
-    troika-three-text "^0.43.0"
-    use-asset "^1.0.4"
+    suspend-react "^0.0.8"
+    three-mesh-bvh "^0.5.4"
+    three-stdlib "^2.8.7"
+    troika-three-text "^0.45.0"
     utility-types "^3.10.0"
     zustand "^3.5.13"
 
-"@react-three/fiber@^7.0.19":
-  version "7.0.19"
-  resolved "https://registry.npmjs.org/@react-three/fiber/-/fiber-7.0.19.tgz"
+"@react-three/fiber@7.0.26":
+  version "7.0.26"
+  resolved "https://registry.yarnpkg.com/@react-three/fiber/-/fiber-7.0.26.tgz#36ec19fa7bff00738a7dd368d37d81fed912dd52"
   dependencies:
     "@babel/runtime" "^7.13.10"
     react-merge-refs "^1.1.0"
     react-reconciler "^0.26.2"
     react-three-fiber "0.0.0-deprecated"
-    react-use-measure "^2.0.4"
+    react-use-measure "^2.1.1"
     resize-observer-polyfill "^1.5.1"
     scheduler "^0.20.2"
     use-asset "^1.0.4"
@@ -1813,6 +1876,16 @@
     "@typescript-eslint/types" "4.15.2"
     eslint-visitor-keys "^2.0.0"
 
+"@use-gesture/core@10.2.17":
+  version "10.2.17"
+  resolved "https://registry.yarnpkg.com/@use-gesture/core/-/core-10.2.17.tgz#dc78913cd5d105217c3f1d1c16a32ad6426a00ba"
+
+"@use-gesture/react@^10.2.0":
+  version "10.2.17"
+  resolved "https://registry.yarnpkg.com/@use-gesture/react/-/react-10.2.17.tgz#00bc413da42a358dd3f9173c0631b54522e76614"
+  dependencies:
+    "@use-gesture/core" "10.2.17"
+
 "@webassemblyjs/ast@1.9.0":
   version "1.9.0"
   resolved "https://registry.npmjs.org/@webassemblyjs/ast/-/ast-1.9.0.tgz"
@@ -1943,10 +2016,6 @@
 "@webgpu/glslang@^0.0.15":
   version "0.0.15"
   resolved "https://registry.npmjs.org/@webgpu/glslang/-/glslang-0.0.15.tgz"
-
-"@webxr-input-profiles/motion-controllers@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.npmjs.org/@webxr-input-profiles/motion-controllers/-/motion-controllers-1.0.0.tgz"
 
 "@xtuc/ieee754@^1.2.0":
   version "1.2.0"
@@ -2676,8 +2745,8 @@ bser@2.1.1:
     node-int64 "^0.4.0"
 
 buffer-from@^1.0.0:
-  version "1.1.1"
-  resolved "https://registry.npmjs.org/buffer-from/-/buffer-from-1.1.1.tgz"
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/buffer-from/-/buffer-from-1.1.2.tgz#2b146a6fd72e80b4f55d255f35ed59a3a9a41bd5"
 
 buffer-indexof@^1.0.0:
   version "1.1.1"
@@ -2859,12 +2928,15 @@ check-types@^11.1.1:
   version "11.1.2"
   resolved "https://registry.npmjs.org/check-types/-/check-types-11.1.2.tgz"
 
-chevrotain@^9.0.2:
-  version "9.1.0"
-  resolved "https://registry.npmjs.org/chevrotain/-/chevrotain-9.1.0.tgz"
+chevrotain@^10.1.2:
+  version "10.1.2"
+  resolved "https://registry.yarnpkg.com/chevrotain/-/chevrotain-10.1.2.tgz#c990ab43e32fd0bfb176ad1cbdebf48302ac8542"
   dependencies:
-    "@chevrotain/types" "^9.1.0"
-    "@chevrotain/utils" "^9.1.0"
+    "@chevrotain/cst-dts-gen" "^10.1.2"
+    "@chevrotain/gast" "^10.1.2"
+    "@chevrotain/types" "^10.1.2"
+    "@chevrotain/utils" "^10.1.2"
+    lodash "4.17.21"
     regexp-to-ast "0.5.0"
 
 chokidar@^2.1.8:
@@ -3032,7 +3104,7 @@ combined-stream@^1.0.6, combined-stream@~1.0.6:
 
 commander@^2.20.0:
   version "2.20.3"
-  resolved "https://registry.npmjs.org/commander/-/commander-2.20.3.tgz"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-2.20.3.tgz#fd485e84c03eb4881c20722ba48035e8531aeb33"
 
 commander@^4.1.1:
   version "4.1.1"
@@ -3503,9 +3575,9 @@ data-urls@^2.0.0:
     whatwg-mimetype "^2.3.0"
     whatwg-url "^8.0.0"
 
-debounce@^1.2.0:
+debounce@^1.2.1:
   version "1.2.1"
-  resolved "https://registry.npmjs.org/debounce/-/debounce-1.2.1.tgz"
+  resolved "https://registry.yarnpkg.com/debounce/-/debounce-1.2.1.tgz#38881d8f4166a5c5848020c11827b834bcb3e0a5"
 
 debug@2.6.9, debug@^2.2.0, debug@^2.3.3, debug@^2.6.0, debug@^2.6.9:
   version "2.6.9"
@@ -3623,9 +3695,9 @@ destroy@~1.0.4:
   version "1.0.4"
   resolved "https://registry.npmjs.org/destroy/-/destroy-1.0.4.tgz"
 
-detect-gpu@^3.1.25:
-  version "3.1.27"
-  resolved "https://registry.npmjs.org/detect-gpu/-/detect-gpu-3.1.27.tgz"
+detect-gpu@^3.1.28:
+  version "3.1.30"
+  resolved "https://registry.yarnpkg.com/detect-gpu/-/detect-gpu-3.1.30.tgz#5f81d02dc8c6417f686e1057256b3bd5d5a6f3f5"
   dependencies:
     webgl-constants "^1.1.1"
 
@@ -6203,7 +6275,7 @@ lodash.uniq@^4.5.0:
   version "4.5.0"
   resolved "https://registry.npmjs.org/lodash.uniq/-/lodash.uniq-4.5.0.tgz"
 
-"lodash@>=3.5 <5", lodash@^4.17.11, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.20, lodash@^4.17.5:
+lodash@4.17.21, "lodash@>=3.5 <5", lodash@^4.17.11, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.20, lodash@^4.17.5:
   version "4.17.21"
   resolved "https://registry.npmjs.org/lodash/-/lodash-4.17.21.tgz"
 
@@ -8103,11 +8175,11 @@ react-three-fiber@0.0.0-deprecated:
   version "0.0.0-deprecated"
   resolved "https://registry.npmjs.org/react-three-fiber/-/react-three-fiber-0.0.0-deprecated.tgz"
 
-react-use-measure@^2.0.4:
-  version "2.0.4"
-  resolved "https://registry.npmjs.org/react-use-measure/-/react-use-measure-2.0.4.tgz"
+react-use-measure@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/react-use-measure/-/react-use-measure-2.1.1.tgz#5824537f4ee01c9469c45d5f7a8446177c6cc4ba"
   dependencies:
-    debounce "^1.2.0"
+    debounce "^1.2.1"
 
 react@>=14, react@^17.0.2:
   version "17.0.2"
@@ -8823,8 +8895,8 @@ source-map-resolve@^0.5.0, source-map-resolve@^0.5.2:
     urix "^0.1.0"
 
 source-map-support@^0.5.6, source-map-support@~0.5.12, source-map-support@~0.5.19:
-  version "0.5.19"
-  resolved "https://registry.npmjs.org/source-map-support/-/source-map-support-0.5.19.tgz"
+  version "0.5.21"
+  resolved "https://registry.yarnpkg.com/source-map-support/-/source-map-support-0.5.21.tgz#04fe7c7f9e1ed2d662233c28cb2b35b9f63f6e4f"
   dependencies:
     buffer-from "^1.0.0"
     source-map "^0.6.0"
@@ -9155,6 +9227,10 @@ supports-hyperlinks@^2.0.0:
     has-flag "^4.0.0"
     supports-color "^7.0.0"
 
+suspend-react@^0.0.8:
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/suspend-react/-/suspend-react-0.0.8.tgz#b0740c1386b4eb652f17affe4339915ee268bd31"
+
 svg-parser@^2.0.2:
   version "2.0.4"
   resolved "https://registry.npmjs.org/svg-parser/-/svg-parser-2.0.4.tgz"
@@ -9253,8 +9329,8 @@ terser-webpack-plugin@^1.4.3:
     worker-farm "^1.7.0"
 
 terser@^4.1.2, terser@^4.6.2, terser@^4.6.3:
-  version "4.8.0"
-  resolved "https://registry.npmjs.org/terser/-/terser-4.8.0.tgz"
+  version "4.8.1"
+  resolved "https://registry.yarnpkg.com/terser/-/terser-4.8.1.tgz#a00e5634562de2239fd404c649051bf6fc21144f"
   dependencies:
     commander "^2.20.0"
     source-map "~0.6.1"
@@ -9280,18 +9356,17 @@ text-table@0.2.0, text-table@^0.2.0:
   version "0.2.0"
   resolved "https://registry.npmjs.org/text-table/-/text-table-0.2.0.tgz"
 
-three-mesh-bvh@^0.5.2:
-  version "0.5.2"
-  resolved "https://registry.npmjs.org/three-mesh-bvh/-/three-mesh-bvh-0.5.2.tgz"
+three-mesh-bvh@^0.5.4:
+  version "0.5.14"
+  resolved "https://registry.yarnpkg.com/three-mesh-bvh/-/three-mesh-bvh-0.5.14.tgz#605654cf802b3e92ea7b18997535960d04344159"
 
-three-stdlib@^2.5.9:
-  version "2.5.9"
-  resolved "https://registry.npmjs.org/three-stdlib/-/three-stdlib-2.5.9.tgz"
+three-stdlib@^2.8.7:
+  version "2.12.1"
+  resolved "https://registry.yarnpkg.com/three-stdlib/-/three-stdlib-2.12.1.tgz#b63de05cf7f7803e630a7c0c5887e85ae06178ca"
   dependencies:
-    "@babel/runtime" "^7.14.6"
+    "@babel/runtime" "^7.16.7"
     "@webgpu/glslang" "^0.0.15"
-    "@webxr-input-profiles/motion-controllers" "^1.0.0"
-    chevrotain "^9.0.2"
+    chevrotain "^10.1.2"
     draco3d "^1.4.1"
     fflate "^0.6.9"
     ktx-parse "^0.2.1"
@@ -9300,9 +9375,9 @@ three-stdlib@^2.5.9:
     potpack "^1.0.1"
     zstddec "^0.0.2"
 
-three@^0.134.0:
-  version "0.134.0"
-  resolved "https://registry.npmjs.org/three/-/three-0.134.0.tgz"
+three@0.137.5:
+  version "0.137.5"
+  resolved "https://registry.yarnpkg.com/three/-/three-0.137.5.tgz#a1e34bedd0412f2d8797112973dfadac78022ce6"
 
 throat@^5.0.0:
   version "5.0.0"
@@ -9402,21 +9477,21 @@ tr46@~0.0.3:
   version "0.0.3"
   resolved "https://registry.npmjs.org/tr46/-/tr46-0.0.3.tgz"
 
-troika-three-text@^0.43.0:
-  version "0.43.0"
-  resolved "https://registry.npmjs.org/troika-three-text/-/troika-three-text-0.43.0.tgz"
+troika-three-text@^0.45.0:
+  version "0.45.1"
+  resolved "https://registry.yarnpkg.com/troika-three-text/-/troika-three-text-0.45.1.tgz#30378fd10ef4f1ab68347c13de6b167233753c9a"
   dependencies:
     bidi-js "^1.0.2"
-    troika-three-utils "^0.43.0"
-    troika-worker-utils "^0.43.0"
+    troika-three-utils "^0.45.0"
+    troika-worker-utils "^0.45.0"
 
-troika-three-utils@^0.43.0:
-  version "0.43.0"
-  resolved "https://registry.npmjs.org/troika-three-utils/-/troika-three-utils-0.43.0.tgz"
+troika-three-utils@^0.45.0:
+  version "0.45.0"
+  resolved "https://registry.yarnpkg.com/troika-three-utils/-/troika-three-utils-0.45.0.tgz#d624e4d2427275fd2750d542766635be37042920"
 
-troika-worker-utils@^0.43.0:
-  version "0.43.0"
-  resolved "https://registry.npmjs.org/troika-worker-utils/-/troika-worker-utils-0.43.0.tgz"
+troika-worker-utils@^0.45.0:
+  version "0.45.0"
+  resolved "https://registry.yarnpkg.com/troika-worker-utils/-/troika-worker-utils-0.45.0.tgz#94a7b5c7f6f54c81f229eafae2224259e182c010"
 
 tryer@^1.0.1:
   version "1.0.1"
