@@ -1,6 +1,5 @@
 import React from 'react';
 import { BuilderElement, Builder } from '@builder.io/sdk';
-import { withBuilder } from '../functions/with-builder';
 
 interface Props {
   code: string;
@@ -47,7 +46,7 @@ if (Builder.isBrowser && globalReplaceNodes) {
   }
 }
 
-class CustomCodeComponent extends React.Component<Props> {
+export class CustomCodeComponent extends React.Component<Props> {
   elementRef: Element | null = null;
   originalRef: Node | Element | null = null;
 
@@ -187,36 +186,3 @@ class CustomCodeComponent extends React.Component<Props> {
   }
 }
 
-export const CustomCode = withBuilder(CustomCodeComponent, {
-  name: 'Custom Code',
-  static: true,
-  requiredPermissions: ['editCode'],
-  inputs: [
-    {
-      name: 'code',
-      type: 'html',
-      required: true,
-      defaultValue: '<p>Hello there, I am custom HTML code!</p>',
-      code: true,
-    },
-    {
-      name: 'replaceNodes',
-      type: 'boolean',
-      helperText: 'Preserve server rendered dom nodes',
-      advanced: true,
-      ...(isShopify && {
-        defaultValue: true,
-      }),
-    },
-    {
-      name: 'scriptsClientOnly',
-      type: 'boolean',
-      helperText:
-        'Only print and run scripts on the client. Important when scripts influence DOM that could be replaced when client loads',
-      advanced: true,
-      ...(!isShopify && {
-        defaultValue: true,
-      }),
-    },
-  ],
-} as any);
