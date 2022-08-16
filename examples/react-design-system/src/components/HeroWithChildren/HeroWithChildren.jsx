@@ -1,6 +1,5 @@
 import React from 'react';
 import { Parallax, Background } from 'react-parallax';
-import { BuilderBlockComponent, Image } from '@builder.io/react';
 import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles(() => ({
