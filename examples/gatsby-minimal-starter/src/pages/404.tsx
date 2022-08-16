@@ -17,7 +17,7 @@ const Dev404: React.SFC = () => {
   ) : (
     <BuilderComponent
       model="page"
-      contentLoaded={content => {
+      contentLoaded={(content) => {
         if (!content) {
           setNotFound(true);
         }
