@@ -3,7 +3,10 @@ import { CONTENT as homepage } from './homepage';
 import { CONTENT as symbols } from './symbols';
 import { CONTENT as dataBindings } from './data-bindings';
 
-export const getContentForPathname = () => {
+// TO-DO: import real content type from SDKs
+type BuilderContent = Partial<{ data: { [index: string]: any } }>;
+
+export const getContentForPathname = (): BuilderContent | null => {
   switch (window.location.pathname) {
     case '/':
       return homepage;
