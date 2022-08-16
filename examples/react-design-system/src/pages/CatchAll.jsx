@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NotFound } from '../components/NotFound';
-import { BuilderComponent, Builder } from '@builder.io/react';
+import { BuilderComponent, useIsPreviewing } from '@builder.io/react';
 import { CircularProgress } from '@material-ui/core';
 
 // Match any page we don't have a hardcoded URL for and check
@@ -10,6 +10,7 @@ import { CircularProgress } from '@material-ui/core';
 //   Gatsby: https://github.com/BuilderIO/gatsby-starter-builder
 export const CatchAll = () => {
   const [notFound, setNotFound] = useState(false);
+  const isPreviewingInBuilder = useIsPreviewing()
 
   return (
     <>
@@ -17,7 +18,7 @@ export const CatchAll = () => {
         <BuilderComponent
           model="page"
           contentLoaded={content => {
-            if (!content && !Builder.isEditing) {
+            if (!content && !isPreviewingInBuilder) {
               setNotFound(true);
             }
           }}
