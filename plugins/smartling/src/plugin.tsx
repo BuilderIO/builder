@@ -283,6 +283,6 @@ function pickTranslationJob() {
 const transformProject = (project: Project): Resource => {
   return {
     id: project.projectId,
-    title: `${project.sourceLocaleDescription} - ${project.projectName}`,
+    title: project.projectName,
   };
 };
