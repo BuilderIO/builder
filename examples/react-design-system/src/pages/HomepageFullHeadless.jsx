@@ -554,7 +554,6 @@ const ProductsList1 = styled(ProductsList)`
 `;
 
 export function HomepageFullHeadless() {
-
   return (
     <>
       <BuilderContent modelName="homepage-headless-content">

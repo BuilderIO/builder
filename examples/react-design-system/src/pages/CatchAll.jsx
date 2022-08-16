@@ -10,7 +10,7 @@ import { CircularProgress } from '@material-ui/core';
 //   Gatsby: https://github.com/BuilderIO/gatsby-starter-builder
 export const CatchAll = () => {
   const [notFound, setNotFound] = useState(false);
-  const isPreviewingInBuilder = useIsPreviewing()
+  const isPreviewingInBuilder = useIsPreviewing();
 
   return (
     <>
