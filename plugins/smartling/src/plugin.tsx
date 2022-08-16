@@ -252,7 +252,7 @@ registerPlugin(
           return api.getProject(id).then(res => transformProject(res.project));
         },
         search(q = '') {
-          return api.getAllProjects().then(res => res.results.filter(proj => proj.projectName.includes(q)).map(transformProject));
+          return api.getAllProjects().then(res => res.results.filter(proj => proj.projectName.toLowerCase().includes(q.toLowerCase())).map(transformProject));
         },
         getRequestObject(id) {
           // todo update types, commerce-plugin-tools actually accepts strings, just needs an interface update
