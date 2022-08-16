@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import * as React from 'react';
 import { graphql } from 'gatsby';
 import { BuilderComponent, builder } from '@builder.io/react';
@@ -12,11 +13,7 @@ import '../components/Hero/Hero.builder';
 // TODO: enter your public API key
 builder.init('jdGaMusrVpYgdcAnAtgn');
 
-interface PageTemplateProps {
-  data: { allBuilderModels: { page: { content: any }[] } };
-}
-
-const PageTemplate: React.SFC<PageTemplateProps> = ({ data }) => {
+const PageTemplate = ({ data }) => {
   const content = data.allBuilderModels.page[0]?.content;
   return (
     <>

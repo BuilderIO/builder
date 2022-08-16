@@ -16,7 +16,7 @@
     "dev": "gatsby develop",
     "serve": "gatsby serve",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,md}\"",
-    "lint": "eslint 'src/**/*.{ts,tsx}'",
+    "lint": "eslint 'src/**/*.{js,jsx}'",
     "start": "npm run dev",
     "test": "npm run type-check && npm run lint",
     "type-check": "tsc"

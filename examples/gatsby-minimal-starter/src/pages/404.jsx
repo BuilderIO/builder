@@ -10,7 +10,7 @@ import '../components/Hero/Hero.builder';
 // TODO: enter your public API key
 builder.init('jdGaMusrVpYgdcAnAtgn');
 
-const Dev404: React.SFC = () => {
+const Dev404 = () => {
   const [notFound, setNotFound] = React.useState(false);
   return notFound ? (
     <NotFound /> // Your 404 content
