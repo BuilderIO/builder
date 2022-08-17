@@ -3,22 +3,7 @@ import { isEditing } from '../functions/is-editing.js';
 import { BuilderBlock } from '../types/builder-block.js';
 import BlockStyles from './render-block/block-styles.lite';
 import RenderBlock from './render-block/render-block.lite';
-import {
-  For,
-  Show,
-  useStore,
-  useMetadata,
-  useContext,
-} from '@builder.io/mitosis';
-
-// eslint-disable-next-line @builder.io/mitosis/only-default-function-and-imports
-useMetadata({
-  qwik: {
-    component: {
-      isLight: false,
-    },
-  },
-});
+import { For, Show, useStore, useContext } from '@builder.io/mitosis';
 
 export type RenderBlockProps = {
   blocks?: BuilderBlock[];

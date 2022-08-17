@@ -54,7 +54,7 @@ export const DoubleColumns = props => {
                   {col.text}
                 </Typography>
                 <Button size="small" color="textSecondary">
-                  Learn More >
+                  Learn More
                 </Button>
               </CardContent>
             </Card>

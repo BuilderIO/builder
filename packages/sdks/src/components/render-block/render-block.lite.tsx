@@ -40,7 +40,7 @@ export default function RenderBlock(props: RenderBlockProps) {
         block: props.block,
         state: props.context.state,
         context: props.context.context,
-        evaluateBindings: false,
+        shouldEvaluateBindings: false,
       }).component?.name;
 
       if (!componentName) {
@@ -80,7 +80,7 @@ export default function RenderBlock(props: RenderBlockProps) {
             block: props.block,
             state: props.context.state,
             context: props.context.context,
-            evaluateBindings: true,
+            shouldEvaluateBindings: true,
           });
     },
     get attributes() {

@@ -1,7 +1,4 @@
-import type {
-  BuilderRenderContext,
-  BuilderRenderState,
-} from '../context/builder.context.lite';
+import type { BuilderContextInterface } from '../context/builder.context.lite';
 import { isBrowser } from './is-browser.js';
 import { isEditing } from './is-editing.js';
 
@@ -12,10 +9,8 @@ export function evaluate({
   event,
 }: {
   code: string;
-  state: BuilderRenderState;
-  context: BuilderRenderContext;
   event?: Event;
-}): any {
+} & Pick<BuilderContextInterface, 'state' | 'context'>): any {
   if (code === '') {
     console.warn('Skipping evaluation of empty code block.');
     return;
