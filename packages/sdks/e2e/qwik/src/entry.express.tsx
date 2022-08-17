@@ -34,7 +34,7 @@ app.use(express.static(join(__dirname, '..', 'dist'), { index: false }));
 app.get('/*', async (req, res, next) => {
   try {
     // Render the Root component to a string
-    const result = await render({
+    const result = await render(req.url, {
       stream: res,
     });
 
