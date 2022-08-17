@@ -1,5 +1,4 @@
 import React from 'react';
-import { Image } from '@builder.io/react';
 import { Parallax, Background } from 'react-parallax';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';

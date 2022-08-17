@@ -18,9 +18,9 @@
   },
   "main": "src/index.js",
   "dependencies": {
-    "@builder.io/react": "^1.1.35",
-    "@builder.io/sdk": "^1.1.26",
-    "@builder.io/widgets": "^1.2.19",
+    "@builder.io/react": "^2.0.2",
+    "@builder.io/sdk": "^1.1.27",
+    "@builder.io/widgets": "^1.2.23",
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.56",
@@ -37,6 +37,7 @@
     "styled-components": "^5.2.1"
   },
   "devDependencies": {
+    "eslint": "^5.16.0",
     "typescript": "3.3.3"
   },
   "scripts": {
