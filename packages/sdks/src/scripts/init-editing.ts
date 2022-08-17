@@ -1,9 +1,8 @@
 import { TARGET } from '../constants/target.js';
 import { isBrowser } from '../functions/is-browser.js';
-import { isEditing } from '../functions/is-editing.js';
 import { register } from '../functions/register.js';
 
-const registerInsertMenu = () => {
+export const registerInsertMenu = () => {
   register('insertMenu', {
     name: '_default',
     default: true,
@@ -24,7 +23,7 @@ const registerInsertMenu = () => {
   });
 };
 
-const setupBrowserForEditing = () => {
+export const setupBrowserForEditing = () => {
   if (isBrowser()) {
     window.parent?.postMessage(
       {
@@ -96,8 +95,3 @@ const setupBrowserForEditing = () => {
     });
   }
 };
-
-if (isEditing()) {
-  registerInsertMenu();
-  setupBrowserForEditing();
-}

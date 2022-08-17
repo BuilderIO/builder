@@ -28,7 +28,29 @@ import {
   onUpdate,
   setContext,
   useStore,
+  useMetadata,
+  useRef,
 } from '@builder.io/mitosis';
+import {
+  registerInsertMenu,
+  setupBrowserForEditing,
+} from '../../scripts/init-editing.js';
+
+// eslint-disable-next-line @builder.io/mitosis/only-default-function-and-imports
+useMetadata({
+  qwik: {
+    component: {
+      useHostElement: true,
+    },
+    replace: {
+      '// QWIK-REPLACE: _useMutableProps':
+        '_useMutableProps(elementRef.current, true);',
+    },
+    imports: {
+      _useMutableProps: '@builder.io/qwik',
+    },
+  },
+});
 
 export type RenderContentProps = {
   content?: Nullable<BuilderContent>;
@@ -53,7 +75,9 @@ interface BuilderComponentStateChange {
 }
 
 export default function RenderContent(props: RenderContentProps) {
+  const elementRef = useRef<HTMLDivElement>();
   const state = useStore({
+    forceReRenderCount: 0,
     get useContent(): Nullable<BuilderContent> {
       const mergedContent: BuilderContent = {
         ...props.content,
@@ -255,6 +279,10 @@ export default function RenderContent(props: RenderContentProps) {
   onMount(() => {
     if (isBrowser()) {
       if (isEditing()) {
+        state.forceReRenderCount = state.forceReRenderCount + 1;
+        // QWIK-REPLACE: _useMutableProps
+        registerInsertMenu();
+        setupBrowserForEditing();
         Object.values(state.allRegisteredComponents).forEach(
           (registeredComponent) => {
             const message = createRegisterComponentMessage(registeredComponent);
@@ -330,6 +358,7 @@ export default function RenderContent(props: RenderContentProps) {
   return (
     <Show when={state.useContent}>
       <div
+        ref={elementRef}
         onClick={(event) => state.onClick(event)}
         builder-content-id={state.useContent?.id}
       >
@@ -339,7 +368,10 @@ export default function RenderContent(props: RenderContentProps) {
             customFonts={state.useContent?.data?.customFonts}
           />
         )}
-        <RenderBlocks blocks={state.useContent?.data?.blocks} />
+        <RenderBlocks
+          blocks={state.useContent?.data?.blocks}
+          key={state.forceReRenderCount}
+        />
       </div>
     </Show>
   );

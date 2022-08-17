@@ -1,4 +1,5 @@
 import type { ComponentInfo } from '../../types/components';
+import { markSerializable } from '../util';
 
 export const componentInfo: ComponentInfo = {
   name: 'Embed',
@@ -11,7 +12,7 @@ export const componentInfo: ComponentInfo = {
       required: true,
       defaultValue: '',
       helperText: 'e.g. enter a youtube url, google map, etc',
-      onChange(options) {
+      onChange: markSerializable((options: Map<string, any>) => {
         const url = options.get('url');
         if (url) {
           options.set('content', 'Loading...');
@@ -39,7 +40,7 @@ export const componentInfo: ComponentInfo = {
         } else {
           options.delete('content');
         }
-      },
+      }),
     },
     {
       name: 'content',

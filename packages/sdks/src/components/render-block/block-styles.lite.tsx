@@ -1,25 +1,33 @@
+import { Show, useMetadata, useStore } from '@builder.io/mitosis';
+import { getMaxWidthQueryForSize } from '../../constants/device-sizes.js';
 import { TARGET } from '../../constants/target.js';
-import BuilderContext from '../../context/builder.context.lite';
+import { BuilderContextInterface } from '../../context/builder.context.lite';
 import { getProcessedBlock } from '../../functions/get-processed-block.js';
+import { convertStyleMaptoCSS } from '../../helpers/css.js';
 import { BuilderBlock } from '../../types/builder-block.js';
 import RenderInlinedStyles from '../render-inlined-styles.lite';
-import { Show, useContext, useStore } from '@builder.io/mitosis';
-import { convertStyleMaptoCSS } from '../../helpers/css.js';
-import { getMaxWidthQueryForSize } from '../../constants/device-sizes.js';
+
+// eslint-disable-next-line @builder.io/mitosis/only-default-function-and-imports
+useMetadata({
+  qwik: {
+    component: {
+      isLight: true,
+    },
+  },
+});
 
 export type BlockStylesProps = {
   block: BuilderBlock;
+  context: BuilderContextInterface;
 };
 
 export default function BlockStyles(props: BlockStylesProps) {
-  const builderContext = useContext(BuilderContext);
-
   const state = useStore({
     get useBlock(): BuilderBlock {
       return getProcessedBlock({
         block: props.block,
-        state: builderContext.state,
-        context: builderContext.context,
+        state: props.context.state,
+        context: props.context.context,
         shouldEvaluateBindings: true,
       });
     },
