@@ -6,8 +6,17 @@ import { CONTENT as dataBindings } from './data-bindings';
 // TO-DO: import real content type from SDKs
 type BuilderContent = Partial<{ data: { [index: string]: any } }>;
 
-export const getContentForPathname = (): BuilderContent | null => {
-  switch (window.location.pathname) {
+export const getContentForPathname = (
+  pathname?: string
+): BuilderContent | null => {
+  if (!pathname) {
+    if (typeof window == 'object') {
+      pathname = window.location.pathname;
+    } else {
+      throw new Error('No pathname provided and window is not available');
+    }
+  }
+  switch (pathname) {
     case '/':
       return homepage;
     case '/columns':
