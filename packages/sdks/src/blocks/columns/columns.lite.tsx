@@ -2,6 +2,7 @@ import RenderBlocks from '../../components/render-blocks.lite';
 import { For, useStore } from '@builder.io/mitosis';
 import { JSX } from '@builder.io/mitosis/jsx-runtime';
 import { BuilderBlock } from '../../types/builder-block';
+import { markMutable } from '../../functions/mark-mutable';
 
 type Column = {
   blocks: any;
@@ -114,7 +115,7 @@ export default function Columns(props: ColumnProps) {
             key={index}
           >
             <RenderBlocks
-              blocks={column.blocks}
+              blocks={markMutable(column.blocks)}
               path={`component.options.columns.${index}.blocks`}
               parent={props.builderBlock.id}
             />

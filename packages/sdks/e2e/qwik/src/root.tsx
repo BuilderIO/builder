@@ -1,7 +1,8 @@
-import './global.css';
 import { Main } from './main';
 
-export const Root = (props: { url: string }) => {
+import './global.css';
+
+export default (props: { url: string }) => {
   return (
     <html>
       <head>

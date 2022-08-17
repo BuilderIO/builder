@@ -5,10 +5,10 @@ __metadata:
   version: 6
   cacheKey: 8
 
-"@builder.io/qwik@npm:0.0.100":
-  version: 0.0.100
-  resolution: "@builder.io/qwik@npm:0.0.100"
-  checksum: d845be35741dd57945fadc6a4da80036209d43f40641765c53c04617f73c0f9a372b3dfb4bc294f73e7b4eb3c13caa9b46256ba1ead9e092f34205ee54ae7a2b
+"@builder.io/qwik@npm:0.0.103":
+  version: 0.0.103
+  resolution: "@builder.io/qwik@npm:0.0.103"
+  checksum: 98363e910302a85d458b45f78d45033d728ce56b7fbd18a85e80decf2b6da98c75d6175ce239db33b7a088bda7cc73a54589b61b6d7ccfd755aae466dbd95f7d
   languageName: node
   linkType: hard
 
@@ -16,12 +16,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@builder.io/sdk-qwik@workspace:."
   dependencies:
-    "@builder.io/qwik": 0.0.100
+    "@builder.io/qwik": 0.0.103
     "@types/node": latest
     typescript: 4.7.4
     vite: 3.0.2
   peerDependencies:
-    "@builder.io/qwik": ^0.0.100
+    "@builder.io/qwik": 0.0.103
   languageName: unknown
   linkType: soft
 

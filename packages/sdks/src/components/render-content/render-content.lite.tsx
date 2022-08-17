@@ -35,6 +35,7 @@ import {
   registerInsertMenu,
   setupBrowserForEditing,
 } from '../../scripts/init-editing.js';
+import { markMutable } from '../../functions/mark-mutable.js';
 
 // eslint-disable-next-line @builder.io/mitosis/only-default-function-and-imports
 useMetadata({
@@ -146,6 +147,7 @@ export default function RenderContent(props: RenderContentProps) {
 
             if (key === props.model) {
               state.overrideContent = contentData;
+              state.forceReRenderCount = state.forceReRenderCount + 1; // This is a hack to force Qwik to re-render.
             }
             break;
           }
@@ -369,7 +371,7 @@ export default function RenderContent(props: RenderContentProps) {
           />
         )}
         <RenderBlocks
-          blocks={state.useContent?.data?.blocks}
+          blocks={markMutable(state.useContent?.data?.blocks)}
           key={state.forceReRenderCount}
         />
       </div>
