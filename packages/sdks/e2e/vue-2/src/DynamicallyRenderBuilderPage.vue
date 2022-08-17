@@ -6,7 +6,7 @@
 </template>
 <script lang="ts">
 import { RenderContent } from '@builder.io/sdk-vue/vue2';
-import { CONTENTS } from '@builder.io/sdks-e2e-tests/specs';
+import { getContentForPathname } from '@builder.io/sdks-e2e-tests/specs';
 
 export default {
   name: 'DynamicallyRenderBuilderPage',
@@ -15,20 +15,7 @@ export default {
   },
   computed: {
     content(): any {
-      // @ts-ignore
-      return this.getContent();
-    },
-  },
-  methods: {
-    getContent() {
-      switch (window.location.pathname) {
-        case '/':
-          return CONTENTS.HOME;
-        case '/columns':
-          return CONTENTS.COLUMNS;
-        default:
-          return null;
-      }
+      return getContentForPathname();
     },
   },
 };
