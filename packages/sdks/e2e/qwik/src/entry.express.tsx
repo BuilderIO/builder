@@ -34,7 +34,10 @@ app.use(express.static(join(__dirname, '..', 'dist'), { index: false }));
 app.get('/*', async (req, res, next) => {
   try {
     // Render the Root component to a string
-    const result = await render(req.url, {
+    const result = await render({
+      envData: {
+        url: String(new URL(req.url, `http://${req.headers.host}`)),
+      },
       stream: res,
     });
 

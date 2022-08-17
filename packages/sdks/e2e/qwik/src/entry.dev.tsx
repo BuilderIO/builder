@@ -10,6 +10,6 @@ import Root from './root';
  * - More code is transferred to the browser than in SSR mode.
  * - Optimizer/Serialization/Deserialization code is not exercised!
  */
-export default function (opts: RenderOptions) {
+export default function (url: string, opts: RenderOptions) {
   return render(document, <Root url={location.toString()} />, opts);
 }
