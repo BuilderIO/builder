@@ -59,13 +59,13 @@ Object {
 
 exports[`getTranslateableFields from content to match snapshot 1`] = `
 Object {
-  "blocks.1#component#options#title": Object {
-    "instructions": "Visit https://builder.io/fiddle/... for more details",
-    "value": "I am a heading!",
-  },
   "blocks.block-id#text": Object {
     "instructions": "This is a mobile only element",
     "value": "test",
+  },
+  "blocks.builder-15cd8202b8a3423d9fce69d71ee63510#component#options#title": Object {
+    "instructions": "Visit https://builder.io/fiddle/... for more details",
+    "value": "I am a heading!",
   },
   "metadata.title": Object {
     "instructions": "Visit https://builder.io/fiddle/... for more details",

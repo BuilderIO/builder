@@ -25,7 +25,7 @@ export function getTranslateableFields(
   }
 
   // metadata [content's localized custom fields]
-  traverse(customFields).forEach(function (el) {
+  traverse(customFields).forEach(function(el) {
     if (this.key && el && el['@type'] === localizedType) {
       results[`metadata.${this.path.join('#')}`] = {
         instructions: el.meta?.instructions || defaultInstructions,
@@ -35,12 +35,18 @@ export function getTranslateableFields(
   });
 
   // blocks
-  traverse(blocks).forEach(function (el) {
+  traverse(blocks).forEach(function(el) {
     if (this.key && el && el['@type'] === localizedType) {
-      results[`blocks.${this.path.join('#')}`] = {
-        instructions: el.meta?.instructions || defaultInstructions,
-        value: el[sourceLocaleId] || el.Default,
-      };
+      const blockPath = [...this.path];
+      const blockIndex = blockPath.shift();
+      if (blockIndex) {
+        const parsedBlockIndex = parseInt(blockIndex);
+        const blockId = blocks![parsedBlockIndex].id;
+        results[`blocks.${blockId}#${blockPath.join('#')}`] = {
+          instructions: el.meta?.instructions || defaultInstructions,
+          value: el[sourceLocaleId] || el.Default,
+        };
+      }
     }
     if (el && el.id && el.component?.name === 'Text' && !el.meta?.excludeFromTranslation) {
       results[`blocks.${el.id}#text`] = {
@@ -63,7 +69,7 @@ export function applyTranslation(
     blocks = JSON.parse(blocksString);
   }
 
-  traverse(customFields).forEach(function (el) {
+  traverse(customFields).forEach(function(el) {
     const path = this.path?.join('#');
     if (translation[`metadata.${path}`]) {
       this.update({
@@ -73,13 +79,19 @@ export function applyTranslation(
     }
   });
 
-  traverse(blocks).forEach(function (el) {
-    const path = this.path?.join('#');
-    if (translation[`blocks.${path}`]) {
-      this.update({
-        ...el,
-        [locale]: translation[`blocks.${path}`].value,
-      });
+  traverse(blocks).forEach(function(el) {
+    const blockPath = [...this.path];
+    const blockIndex = blockPath.shift();
+    if (blockIndex) {
+      const parsedBlockIndex = parseInt(blockIndex);
+      const blockId = blocks![parsedBlockIndex].id;
+      const path = blockPath.join('#');
+      if (translation[`blocks.${blockId}#${path}`]) {
+        this.update({
+          ...el,
+          [locale]: translation[`blocks.${blockId}#${path}`].value,
+        });
+      }
     }
 
     if (

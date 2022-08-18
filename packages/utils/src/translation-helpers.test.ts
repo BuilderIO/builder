@@ -85,8 +85,8 @@ test('applyTranslation from content to match snapshot', async () => {
 
   const translations = {
     'metadata.title': { value: 'salut' },
-    'blocks.block-id#text': { value: 'block-id' },
-    'blocks.1#component#options#title': { value: 'title translated' },
+    'blocks.block-id#text': { value: 'translated block-id' },
+    'blocks.builder-15cd8202b8a3423d9fce69d71ee63510#component#options#title': { value: 'translated title' },
   };
 
   const result = applyTranslation(content, translations, 'fr-FR');
