@@ -1,6 +1,7 @@
-import { BuilderContent, BuilderElement } from '@builder.io/sdk';
+import { BuilderContent } from '@builder.io/sdk';
 import traverse from 'traverse';
 import omit from 'lodash/omit';
+
 const localizedType = '@builder.io/core:LocalizedValue';
 
 export type TranslateableFields = {
@@ -35,7 +36,12 @@ export function getTranslateableFields(
 
   // blocks
   traverse(blocks).forEach(function (el) {
-    // TODO: localized custom components inputs
+    if (this.key && el && el['@type'] === localizedType) {
+      results[`blocks.${this.path.join('#')}`] = {
+        instructions: el.meta?.instructions || defaultInstructions,
+        value: el[sourceLocaleId] || el.Default,
+      };
+    }
     if (el && el.id && el.component?.name === 'Text' && !el.meta?.excludeFromTranslation) {
       results[`blocks.${el.id}#text`] = {
         value: el.component.options.text,
@@ -68,7 +74,14 @@ export function applyTranslation(
   });
 
   traverse(blocks).forEach(function (el) {
-    // TODO: localized custom components inputs
+    const path = this.path?.join('#');
+    if (translation[`blocks.${path}`]) {
+      this.update({
+        ...el,
+        [locale]: translation[`blocks.${path}`].value,
+      });
+    }
+
     if (
       el &&
       el.id &&

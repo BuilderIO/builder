@@ -23,6 +23,19 @@ test('getTranslateableFields from content to match snapshot', async () => {
             },
           },
         },
+        {
+          '@type': '@builder.io/sdk:Element',
+          'id': 'builder-15cd8202b8a3423d9fce69d71ee63510',
+          'component': {
+            'name': 'Heading',
+            'options': {
+              'title': {
+                '@type': '@builder.io/core:LocalizedValue',
+                'Default': 'I am a heading!'
+              }
+            }
+          }
+        },
       ],
     },
   };
@@ -53,6 +66,19 @@ test('applyTranslation from content to match snapshot', async () => {
             },
           },
         },
+        {
+          '@type': '@builder.io/sdk:Element',
+          'id': 'builder-15cd8202b8a3423d9fce69d71ee63510',
+          'component': {
+            'name': 'Heading',
+            'options': {
+              'title': {
+                '@type': '@builder.io/core:LocalizedValue',
+                'Default': 'I am a heading!'
+              }
+            }
+          }
+        },
       ],
     },
   };
@@ -60,6 +86,7 @@ test('applyTranslation from content to match snapshot', async () => {
   const translations = {
     'metadata.title': { value: 'salut' },
     'blocks.block-id#text': { value: 'block-id' },
+    'blocks.1#component#options#title': { value: 'title translated' },
   };
 
   const result = applyTranslation(content, translations, 'fr-FR');

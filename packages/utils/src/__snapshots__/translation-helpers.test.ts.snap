@@ -20,9 +20,27 @@ Object {
           "translated": true,
         },
       },
+      Object {
+        "@type": "@builder.io/sdk:Element",
+        "component": Object {
+          "name": "Heading",
+          "options": Object {
+            "title": Object {
+              "@type": "@builder.io/core:LocalizedValue",
+              "Default": "I am a heading!",
+              "fr-FR": "title translated",
+            },
+          },
+        },
+        "id": "builder-15cd8202b8a3423d9fce69d71ee63510",
+      },
     ],
     "state": Object {
       "translation": Object {
+        "blocks.1#component#options#title": Object {
+          "@type": "@builder.io/core:LocalizedValue",
+          "fr-FR": "title translated",
+        },
         "blocks.block-id#text": Object {
           "@type": "@builder.io/core:LocalizedValue",
           "fr-FR": "block-id",
@@ -41,6 +59,10 @@ Object {
 
 exports[`getTranslateableFields from content to match snapshot 1`] = `
 Object {
+  "blocks.1#component#options#title": Object {
+    "instructions": "Visit https://builder.io/fiddle/... for more details",
+    "value": "I am a heading!",
+  },
   "blocks.block-id#text": Object {
     "instructions": "This is a mobile only element",
     "value": "test",
