@@ -530,6 +530,10 @@ export interface Input {
    * to bubble up important inputs for locked groups, like text and images
    */
   bubble?: boolean;
+  /**
+   * Set this to `true` if you want this component to be translatable
+   */
+  localized?: boolean;
   /** @hidden */
   options?: { [key: string]: any };
   /**
