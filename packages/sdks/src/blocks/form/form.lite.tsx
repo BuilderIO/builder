@@ -4,6 +4,7 @@
 /* eslint-disable */
 import RenderBlock from '../../components/render-block/render-block.lite';
 import { isEditing } from '../../functions/is-editing.js';
+import BuilderBlocks from './builder-blocks.lite';
 import { For, Show, useRef, useStore } from '@builder.io/mitosis';
 
 /**
@@ -36,6 +37,8 @@ export interface FormProps {
 export type FormState = 'unsubmitted' | 'sending' | 'success' | 'error';
 
 export default function FormComponent(props: FormProps) {
+  const builderContext = useContext(BuilderContext);
+
   const state = useStore({
     formState: 'unsubmitted' as FormState,
     // TODO: separate response and error?
@@ -269,7 +272,7 @@ export default function FormComponent(props: FormProps) {
     >
       <Show when={props.builderBlock && props.builderBlock.children}>
         <For each={props.builderBlock?.children}>
-          {(block) => <RenderBlock block={block} />}
+          {(block) => <RenderBlock block={block} context={builderContext} />}
         </For>
       </Show>
 

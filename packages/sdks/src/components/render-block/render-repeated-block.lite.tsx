@@ -38,5 +38,5 @@ export default function RenderRepeatedBlock(props: Props) {
     },
   });
 
-  return <RenderBlock block={props.block} />;
+  return <RenderBlock block={props.block} context={props.repeatContext} />;
 }

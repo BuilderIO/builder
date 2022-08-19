@@ -42,7 +42,7 @@
     "prettier": "^2.5.0",
     "rollup": "2.60.2",
     "sisteransi": "^1.0.5",
-    "terser": "5.9.0",
+    "terser": "5.14.2",
     "typescript": "4.5.2",
     "yauzl": "^2.10.0",
     "commander": "^8.3.0",

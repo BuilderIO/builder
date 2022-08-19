@@ -19,27 +19,32 @@ const vueConfig = {
   asyncComponentImports: true,
 };
 
+const SRCSET_PLUGIN = () => ({
+  code: {
+    pre: (code) => {
+      // workaround until we resolve
+      // https://github.com/BuilderIO/mitosis/issues/526
+      code.replace('srcset', 'srcSet');
+      return code;
+    },
+  },
+});
 /**
  * @type {import('@builder.io/mitosis'.MitosisConfig)}
  */
 module.exports = {
   files: 'src/**',
-  targets: ['reactNative', 'vue2', 'vue3', 'solid', 'svelte'],
+  targets: ['reactNative', 'vue2', 'vue3', 'solid', 'svelte', 'react', 'qwik'],
   options: {
     vue2: vueConfig,
     vue3: vueConfig,
+    react: {
+      transpiler: { format: 'esm' },
+      plugins: [SRCSET_PLUGIN],
+      stylesType: 'style-tag',
+    },
     reactNative: {
-      plugins: [
-        () => ({
-          code: {
-            pre: (code) => {
-              // workaround until we resolve
-              // https://github.com/BuilderIO/mitosis/issues/526
-              code.replace('srcset=', 'srcSet=');
-            },
-          },
-        }),
-      ],
+      plugins: [SRCSET_PLUGIN],
     },
     svelte: {
       transpiler: { format: 'esm' },

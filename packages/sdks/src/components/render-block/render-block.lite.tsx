@@ -1,4 +1,5 @@
-import BuilderContext, {
+import {
+  BuilderContextInterface,
   RegisteredComponent,
 } from '../../context/builder.context.lite';
 import { getBlockActions } from '../../functions/get-block-actions.js';
@@ -13,42 +14,40 @@ import { evaluate } from '../../functions/evaluate.js';
 import BlockStyles from './block-styles.lite';
 import { isEmptyHtmlElement } from './render-block.helpers.js';
 import RenderComponent, { RenderComponentProps } from './render-component.lite';
-import {
-  For,
-  Show,
-  useContext,
-  useMetadata,
-  useStore,
-} from '@builder.io/mitosis';
+import { For, Show, useMetadata, useStore } from '@builder.io/mitosis';
 import { RepeatData } from './types.js';
 import RenderRepeatedBlock from './render-repeated-block.lite';
 
 export type RenderBlockProps = {
   block: BuilderBlock;
+  context: BuilderContextInterface;
 };
 
 // eslint-disable-next-line @builder.io/mitosis/only-default-function-and-imports
 useMetadata({
+  qwik: {
+    component: {
+      isLight: true,
+    },
+  },
   elementTag: 'state.tagName',
 });
 
 export default function RenderBlock(props: RenderBlockProps) {
-  const builderContext = useContext(BuilderContext);
-
   const state = useStore({
     get component(): Nullable<RegisteredComponent> {
       const componentName = getProcessedBlock({
         block: props.block,
-        state: builderContext.state,
-        context: builderContext.context,
-        evaluateBindings: false,
+        state: props.context.state,
+        context: props.context.context,
+        shouldEvaluateBindings: false,
       }).component?.name;
 
       if (!componentName) {
         return null;
       }
 
-      const ref = builderContext.registeredComponents[componentName];
+      const ref = props.context.registeredComponents[componentName];
 
       if (!ref) {
         // TODO: Public doc page with more info about this message
@@ -79,9 +78,9 @@ export default function RenderBlock(props: RenderBlockProps) {
         ? props.block
         : getProcessedBlock({
             block: props.block,
-            state: builderContext.state,
-            context: builderContext.context,
-            evaluateBindings: true,
+            state: props.context.state,
+            context: props.context.context,
+            shouldEvaluateBindings: true,
           });
     },
     get attributes() {
@@ -89,8 +88,8 @@ export default function RenderBlock(props: RenderBlockProps) {
         ...getBlockProperties(state.useBlock),
         ...getBlockActions({
           block: state.useBlock,
-          state: builderContext.state,
-          context: builderContext.context,
+          state: props.context.state,
+          context: props.context.context,
         }),
         style: getBlockStyles(state.useBlock),
       };
@@ -116,6 +115,7 @@ export default function RenderBlock(props: RenderBlockProps) {
         blockChildren: state.children,
         componentRef: state.componentRef,
         componentOptions: state.componentOptions,
+        context: props.context,
       };
     },
     get children() {
@@ -151,8 +151,8 @@ export default function RenderBlock(props: RenderBlockProps) {
 
       const itemsArray = evaluate({
         code: repeat.collection,
-        state: builderContext.state,
-        context: builderContext.context,
+        state: props.context.state,
+        context: props.context.context,
       });
 
       if (!Array.isArray(itemsArray)) {
@@ -165,9 +165,9 @@ export default function RenderBlock(props: RenderBlockProps) {
 
       const repeatArray = itemsArray.map<RepeatData>((item, index) => ({
         context: {
-          ...builderContext,
+          ...props.context,
           state: {
-            ...builderContext.state,
+            ...props.context.state,
             $index: index,
             $item: item,
             [itemNameToUse]: item,
@@ -184,7 +184,12 @@ export default function RenderBlock(props: RenderBlockProps) {
   return (
     <Show
       when={state.shouldWrap}
-      else={<RenderComponent {...state.renderComponentProps} />}
+      else={
+        <RenderComponent
+          {...state.renderComponentProps}
+          context={props.context}
+        />
+      }
     >
       <Show
         when={!isEmptyHtmlElement(state.tagName)}
@@ -221,12 +226,20 @@ export default function RenderBlock(props: RenderBlockProps) {
            */}
           <For each={state.childrenWithoutParentComponent}>
             {(child) => (
-              <RenderBlock key={'render-block-' + child.id} block={child} />
+              <RenderBlock
+                key={'render-block-' + child.id}
+                block={child}
+                context={props.context}
+              />
             )}
           </For>
           <For each={state.childrenWithoutParentComponent}>
             {(child) => (
-              <BlockStyles key={'block-style-' + child.id} block={child} />
+              <BlockStyles
+                key={'block-style-' + child.id}
+                block={child}
+                context={props.context}
+              />
             )}
           </For>
         </state.tagName>

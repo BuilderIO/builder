@@ -1,4 +1,5 @@
 import type { ComponentInfo } from '../../types/components';
+import { markSerializable } from '../util';
 
 export const componentInfo: ComponentInfo = {
   // TODO: ways to statically preprocess JSON for references, functions, etc
@@ -193,7 +194,7 @@ export const componentInfo: ComponentInfo = {
           ],
         },
       ],
-      onChange(options: Map<string, any>) {
+      onChange: markSerializable((options: Map<string, any>) => {
         function clearWidths() {
           columns.forEach((col) => {
             col.delete('width');
@@ -224,7 +225,7 @@ export const componentInfo: ComponentInfo = {
             }
           }
         }
-      },
+      }),
     },
     {
       name: 'space',

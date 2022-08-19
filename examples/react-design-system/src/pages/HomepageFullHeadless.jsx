@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import { NotFound } from '../components/NotFound';
-import { BuilderComponent, BuilderContent, Builder } from '@builder.io/react';
-import { CircularProgress } from '@material-ui/core';
+import { BuilderContent } from '@builder.io/react';
 import { ProductsList } from '../components/ProductsList/ProductsList';
 import styled from 'styled-components';
 
@@ -555,9 +553,7 @@ const ProductsList1 = styled(ProductsList)`
   margin-top: 20px;
 `;
 
-export function HomepageFullHeadless(props) {
-  const [notFound, setNotFound] = useState(false);
-
+export function HomepageFullHeadless() {
   return (
     <>
       <BuilderContent modelName="homepage-headless-content">

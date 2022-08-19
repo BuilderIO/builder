@@ -1,7 +1,4 @@
-import type {
-  BuilderRenderContext,
-  BuilderRenderState,
-} from '../context/builder.context.lite';
+import type { BuilderContextInterface } from '../context/builder.context.lite';
 import { BuilderBlock } from '../types/builder-block.js';
 import { evaluate } from './evaluate.js';
 import { set } from './set.js';
@@ -13,9 +10,7 @@ const evaluateBindings = ({
   state,
 }: {
   block: BuilderBlock;
-  state: BuilderRenderState;
-  context: BuilderRenderContext;
-}): BuilderBlock => {
+} & Pick<BuilderContextInterface, 'state' | 'context'>): BuilderBlock => {
   if (!block.bindings) {
     return block;
   }
@@ -34,22 +29,24 @@ const evaluateBindings = ({
   return copied;
 };
 
-export function getProcessedBlock(options: {
+export function getProcessedBlock({
+  block,
+  context,
+  shouldEvaluateBindings,
+  state,
+}: {
   block: BuilderBlock;
-  state: BuilderRenderState;
-  context: BuilderRenderContext;
   /**
    * In some cases, we want to avoid evaluating bindings and only want framework-specific block transformation. It is
    * also sometimes too early to consider bindings, e.g. when we might be looking at a repeated block.
    */
-  evaluateBindings: boolean;
-}): BuilderBlock {
-  const { state, context } = options;
-  const block = transformBlock(options.block);
+  shouldEvaluateBindings: boolean;
+} & Pick<BuilderContextInterface, 'state' | 'context'>): BuilderBlock {
+  const transformedBlock = transformBlock(block);
 
-  if (evaluateBindings) {
-    return evaluateBindings({ block, state, context });
+  if (shouldEvaluateBindings) {
+    return evaluateBindings({ block: transformedBlock, state, context });
   } else {
-    return block;
+    return transformedBlock;
   }
 }

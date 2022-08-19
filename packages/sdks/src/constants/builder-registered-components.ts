@@ -17,6 +17,8 @@ import { default as Video } from '../blocks/video/video.lite';
 import type { RegisteredComponent } from '../context/builder.context.lite';
 import { componentInfo as embedComponentInfo } from '../blocks/embed/component-info';
 import { default as embed } from '../blocks/embed/embed.lite';
+import { default as Img } from '../blocks/img/img.lite';
+import { componentInfo as imgComponentInfo } from '../blocks/img/component-info';
 
 /**
  * Returns a list of all registered components.
@@ -26,6 +28,7 @@ export const getDefaultRegisteredComponents: () => RegisteredComponent[] =
   () => [
     { component: Columns, ...columnsComponentInfo },
     { component: Image, ...imageComponentInfo },
+    { component: Img, ...imgComponentInfo },
     { component: Text, ...textComponentInfo },
     { component: Video, ...videoComponentInfo },
     { component: Symbol, ...symbolComponentInfo },

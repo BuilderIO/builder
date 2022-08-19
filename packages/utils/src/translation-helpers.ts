@@ -47,7 +47,7 @@ export function getTranslateableFields(
   return results;
 }
 
-export function appLyTranslation(
+export function applyTranslation(
   content: BuilderContent,
   translation: TranslateableFields,
   locale: string
