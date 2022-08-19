@@ -24,7 +24,7 @@ const PageTemplate = ({ data }) => {
         <h1>Gatsby Minimal Starter</h1>
       </header>
 
-      <BuilderComponent content={content} />
+      <BuilderComponent content={content} model="page" />
       <footer>
         <p>A Builder.io starter with Gatsby</p>
       </footer>
@@ -34,7 +34,7 @@ const PageTemplate = ({ data }) => {
 
 export default PageTemplate;
 export const pageQuery = graphql`
-  query ($path: String!) {
+  query($path: String!) {
     allBuilderModels {
       page(target: { urlPath: $path }, limit: 1, options: { cachebust: true }) {
         content
