@@ -1,5 +1,3 @@
-import '@builder.io/mitosis';
-
 export interface FragmentProps {
   maxWidth?: number;
   attributes?: any;
