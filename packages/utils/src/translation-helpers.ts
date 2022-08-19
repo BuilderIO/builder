@@ -25,7 +25,7 @@ export function getTranslateableFields(
   }
 
   // metadata [content's localized custom fields]
-  traverse(customFields).forEach(function(el) {
+  traverse(customFields).forEach(function (el) {
     if (this.key && el && el['@type'] === localizedType) {
       results[`metadata.${this.path.join('#')}`] = {
         instructions: el.meta?.instructions || defaultInstructions,
@@ -35,7 +35,7 @@ export function getTranslateableFields(
   });
 
   // blocks
-  traverse(blocks).forEach(function(el) {
+  traverse(blocks).forEach(function (el) {
     if (this.key && el && el['@type'] === localizedType) {
       const blockPath = [...this.path];
       const blockIndex = blockPath.shift();
@@ -69,7 +69,7 @@ export function applyTranslation(
     blocks = JSON.parse(blocksString);
   }
 
-  traverse(customFields).forEach(function(el) {
+  traverse(customFields).forEach(function (el) {
     const path = this.path?.join('#');
     if (translation[`metadata.${path}`]) {
       this.update({
@@ -79,7 +79,7 @@ export function applyTranslation(
     }
   });
 
-  traverse(blocks).forEach(function(el) {
+  traverse(blocks).forEach(function (el) {
     const blockPath = [...this.path];
     const blockIndex = blockPath.shift();
     if (blockIndex) {
@@ -87,9 +87,19 @@ export function applyTranslation(
       const blockId = blocks![parsedBlockIndex].id;
       const path = blockPath.join('#');
       if (translation[`blocks.${blockId}#${path}`]) {
-        this.update({
-          ...el,
-          [locale]: translation[`blocks.${blockId}#${path}`].value,
+        // TODO: Find a better way to extract the block node/context
+        const blockNodeContext = this.parent?.parent?.parent;
+        const blockNodeEl = blockNodeContext?.node;
+        blockNodeContext?.update({
+          ...blockNodeEl,
+          meta: {
+            ...blockNodeEl.meta,
+            translated: true,
+          },
+          bindings: {
+            ...blockNodeEl.bindings,
+            [blockPath.join('.')]: `state.translation['blocks.${blockId}#${path}'][state.locale || 'Default']`,
+          },
         });
       }
     }
