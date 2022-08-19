@@ -98,7 +98,9 @@ export function applyTranslation(
           },
           bindings: {
             ...blockNodeEl.bindings,
-            [blockPath.join('.')]: `state.translation['blocks.${blockId}#${path}'][state.locale || 'Default']`,
+            [blockPath.join(
+              '.'
+            )]: `state.translation['blocks.${blockId}#${path}'][state.locale || 'Default']`,
           },
         });
       }
