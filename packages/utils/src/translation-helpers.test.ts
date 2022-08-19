@@ -1,5 +1,5 @@
 import { BuilderContent } from '@builder.io/sdk';
-import { appLyTranslation, getTranslateableFields } from './translation-helpers';
+import { applyTranslation, getTranslateableFields } from './translation-helpers';
 
 test('getTranslateableFields from content to match snapshot', async () => {
   const content: BuilderContent = {
@@ -62,6 +62,6 @@ test('applyTranslation from content to match snapshot', async () => {
     'blocks.block-id#text': { value: 'block-id' },
   };
 
-  const result = appLyTranslation(content, translations, 'fr-FR');
+  const result = applyTranslation(content, translations, 'fr-FR');
   expect(result).toMatchSnapshot();
 });

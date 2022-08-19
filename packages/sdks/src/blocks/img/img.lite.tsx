@@ -3,7 +3,8 @@ import '@builder.io/mitosis';
 
 export interface ImgProps {
   attributes?: any;
-  imgSrc?: string;
+  imgSrc?: string; // TODO(misko): I think this is unused
+  image?: string;
   altText?: string;
   backgroundSize?: 'cover' | 'contain';
   backgroundPosition?:
@@ -25,10 +26,10 @@ export default function ImgComponent(props: ImgProps) {
         objectFit: props.backgroundSize || 'cover',
         objectPosition: props.backgroundPosition || 'center',
       }}
-      {...props.attributes}
       key={(isEditing() && props.imgSrc) || 'default-key'}
       alt={props.altText}
-      src={props.imgSrc}
+      src={props.imgSrc || props.image}
+      {...props.attributes}
     />
   );
 }
