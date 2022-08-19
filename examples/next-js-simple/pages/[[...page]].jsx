@@ -1,4 +1,3 @@
-import type { GetStaticPropsContext, InferGetStaticPropsType } from 'next'
 import { useRouter } from 'next/router'
 import { BuilderComponent, builder, useIsPreviewing } from '@builder.io/react'
 import DefaultErrorPage from 'next/error'
@@ -9,9 +8,7 @@ import '@builder.io/widgets/dist/lib/builder-widgets-async'
 
 builder.init(builderConfig.apiKey)
 
-export async function getStaticProps({
-  params,
-}: GetStaticPropsContext<{ page: string[] }>) {
+export async function getStaticProps({ params }) {
   const page =
     (await builder
       .get('page', {
@@ -44,9 +41,7 @@ export async function getStaticPaths() {
   }
 }
 
-export default function Page({
-  page,
-}: InferGetStaticPropsType<typeof getStaticProps>) {
+export default function Page({ page }) {
   const router = useRouter()
   const isPreviewingInBuilder = useIsPreviewing()
   const show404 = !page && !isPreviewingInBuilder
