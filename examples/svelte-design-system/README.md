@@ -6,9 +6,9 @@
 
 In this example we show how to integrate Svelte components with [Builder.io](https://builder.io). This is useful when you want to add the ability for your team to utilize custom components on the pages you build using the Builder editor, or even want to make it so people on your team can only build and edit your site's pages using your custom components.
 
-> ⚛️ For other basic examples see [here](https://github.com/BuilderIO/builder/tree/master/examples/svelte)
+> ⚛️ For other basic examples see [here](https://github.com/BuilderIO/builder/tree/main/examples/svelte)
 
-The source code for the custom components used in this demo are [here](src/components), and you can see how they are registered with Builder by looking at the files that end in `*.builder.js` ([this is an example](https://github.com/BuilderIO/builder/blob/master/examples/svelte-design-system/src/components/Button/Button.builder.js)). The logic for adding components to the Builder editor menu can be found [here](https://github.com/BuilderIO/builder/blob/master/examples/svelte-design-system/src/lib/Builder.svelte)
+The source code for the custom components used in this demo are [here](src/components), and you can see how they are registered with Builder by looking at the files that end in `*.builder.js` ([this is an example](https://github.com/BuilderIO/builder/blob/main/examples/svelte-design-system/src/components/Button/Button.builder.js)). The logic for adding components to the Builder editor menu can be found [here](https://github.com/BuilderIO/builder/blob/main/examples/svelte-design-system/src/lib/Builder.svelte)
 
 > 👉**Tip:** want to limit page building to only your components? Try [components only mode](https://builder.io/c/docs/guides/components-only-mode)
 

@@ -105,5 +105,5 @@ For an up-to-date complete examples check out the [Gatsby + Builder.io starter](
 ## Learn more
 
 - [Gatsby + Builder.io starter](https://github.com/BuilderIO/gatsby-starter-builder)
-- [Design system example](https://github.com/BuilderIO/builder/tree/master/examples/react-design-system)
+- [Design system example](https://github.com/BuilderIO/builder/tree/main/examples/react-design-system)
 - [Official docs](https://www.builder.io/c/docs/getting-started)

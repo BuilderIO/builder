@@ -2,7 +2,7 @@
 
 ### Quick start
 
-[Open this example in Codesandbox](https://codesandbox.io/s/github/BuilderIO/builder/tree/master/examples/react-multipage-funnel)
+[Open this example in Codesandbox](https://codesandbox.io/s/github/BuilderIO/builder/tree/main/examples/react-multipage-funnel)
 
 <a target="_blank" href="https://codesandbox.io/s/github/BuilderIO/builder/tree/main/examples/react-multipage-funnel">
   <img width="597" height="375" src="https://i.imgur.com/zue72Q0.jpg">
@@ -46,7 +46,7 @@ private key, copy the key for the next step.
 * Click the edit icon for the "Private keys" row
 * Copy the value of the auto-generated key, or create a new one with a name that's meaningful to you
 
-![Example of how to get your private key](https://raw.githubusercontent.com/BuilderIO/nextjs-shopify/master/docs/images/private-key-flow.png)
+![Example of how to get your private key](https://raw.githubusercontent.com/BuilderIO/nextjs-shopify/main/docs/images/private-key-flow.png)
 
 ### 3: Clone this repository and initialize a Builder.io space
 
