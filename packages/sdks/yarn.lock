@@ -1193,13 +1193,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis-cli@npm:0.0.17-73":
-  version: 0.0.17-73
-  resolution: "@builder.io/mitosis-cli@npm:0.0.17-73"
+"@builder.io/mitosis-cli@npm:dev":
+  version: 0.0.17-92
+  resolution: "@builder.io/mitosis-cli@npm:0.0.17-92"
   dependencies:
     "@babel/core": ^7.17.8
     "@babel/preset-typescript": ^7.16.7
-    "@builder.io/mitosis": 0.0.56-80
+    "@builder.io/mitosis": 0.0.56-101
     "@vue/compiler-sfc": ^3.1.5
     babel-preset-solid: ^1.3.13
     chalk: ^4.1.0
@@ -1207,6 +1207,7 @@ __metadata:
     dedent: ^0.7.0
     esbuild: ^0.12.16
     fast-glob: ^3.2.11
+    fp-ts: ^2.12.2
     fs-extra: ^9.1.0
     globby: ^11.0.2
     gluegun: latest
@@ -1219,13 +1220,13 @@ __metadata:
     vue-template-validator: ^1.1.5
   bin:
     mitosis: bin/mitosis
-  checksum: 61bc11bf14ef9af3085563c52ed5cb190001aabc5851c4384f9aeaa21d2ff32557c22bbd1e723f8c093483f50579e360ce4b2d67702eed42a93ccb3205b4bb47
+  checksum: 51fa16bff35e0f73b23e37383d0136c7471081cd74d9a476c22e1ba88b71e2364c2dadf73297dd560f4a3552f80e858c55bcb62b0170d931f3717fc1c0e0053c
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis@npm:0.0.56-80":
-  version: 0.0.56-80
-  resolution: "@builder.io/mitosis@npm:0.0.56-80"
+"@builder.io/mitosis@npm:0.0.56-101, @builder.io/mitosis@npm:dev":
+  version: 0.0.56-101
+  resolution: "@builder.io/mitosis@npm:0.0.56-101"
   dependencies:
     "@angular/compiler": ^11.2.11
     "@babel/core": 7.14.5
@@ -1257,7 +1258,7 @@ __metadata:
     typescript: ^4.7.3
     vue: ~2.6
     vue-template-compiler: ~2.6
-  checksum: 62e62954ee7a0db09ba776f28d5ccbe3fc916589eadc706245dc54db5c03733332154ee892db1e3d521208c25f946d4985944852caf86ac2df23fa82ab7cb0b5
+  checksum: 96ba87cf062e9da52e01d5f2b51101486116db6efdf61a33a58cbf850c86e26a4eced5c201a556a3275ea491e9c020f0f5b060e91f7846ddfdde984a8256a147
   languageName: node
   linkType: hard
 
@@ -1389,8 +1390,8 @@ __metadata:
   resolution: "@builder.io/sdks@workspace:."
   dependencies:
     "@builder.io/eslint-plugin-mitosis": dev
-    "@builder.io/mitosis": 0.0.56-80
-    "@builder.io/mitosis-cli": 0.0.17-73
+    "@builder.io/mitosis": dev
+    "@builder.io/mitosis-cli": dev
     "@playwright/test": ^1.24.0
     "@types/jest": ^27.4.1
     "@types/node-fetch": ^2.5.12
@@ -6306,7 +6307,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fp-ts@npm:^2.11.10":
+"fp-ts@npm:^2.11.10, fp-ts@npm:^2.12.2":
   version: 2.12.2
   resolution: "fp-ts@npm:2.12.2"
   checksum: 18c1975b5a5597d54d1905d322d2bdcf7c5aae3f1b48c2e13f5352cd10a7882a49bfe9681ed1f4392874f9b26dd29a997df6fa341a3731226e5737b0f9a49b38
