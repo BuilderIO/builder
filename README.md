@@ -349,16 +349,16 @@ Here are some examples we recommend for how to structure various pages on your s
 Builder.io gives you a ton more power and control than just page building. Check our guides on
 
 - [Custom models](https://builder.io/c/docs/guides/developers-with-models)
-- [Custom design systems in Builder.io](https://github.com/BuilderIO/builder/tree/master/examples/react-design-system)
+- [Custom design systems in Builder.io](https://github.com/BuilderIO/builder/tree/main/examples/react-design-system)
 - [SEO optimizing Builder.io content](https://builder.io/c/docs/seo)
 - [Custom React components in the visual editor](https://www.builder.io/c/docs/custom-react-components)
 - [Components only mode](https://www.builder.io/c/docs/guides/components-only-mode)
 
 Additional framework support:
 
-- [Gatsby](https://github.com/BuilderIO/builder/tree/master/examples/gatsby)
-- [Next.js](https://github.com/BuilderIO/builder/tree/master/examples/next-js)
-- [Angular](https://github.com/BuilderIO/builder/tree/master/packages/angular)
+- [Gatsby](https://github.com/BuilderIO/builder/tree/main/examples/gatsby)
+- [Next.js](https://github.com/BuilderIO/builder/tree/main/examples/next-js)
+- [Angular](https://github.com/BuilderIO/builder/tree/main/packages/angular)
 - [HTML API (for any framework)](https://builder.io/c/docs/html-api)
 
 As well as some handy power features like:
@@ -370,7 +370,7 @@ As well as some handy power features like:
 - [GraphQL API](https://builder.io/c/docs/graphql-api)
 - [Webhooks](https://builder.io/c/docs/webhooks)
 - [Targeting and scheduling content](https://builder.io/c/docs/guides/targeting-and-scheduling)
-- [Extending Builder.io with plugins](https://github.com/BuilderIO/builder/tree/master/plugins)
+- [Extending Builder.io with plugins](https://github.com/BuilderIO/builder/tree/main/plugins)
 
 ## Join the community!
 

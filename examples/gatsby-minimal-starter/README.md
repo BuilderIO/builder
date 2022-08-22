@@ -11,9 +11,9 @@ See:
 
 - For a more advanced example and a starter check out [gatsby-starter-builder](https://github.com/BuilderIO/gatsby-starter-builder)
 
-- [src/components/hero.builder.ts](src/components/hero.builder.ts) for an example of using a custom react component in the Builder.io visiaul editor. See a more rich example of a whole design system of components [here](https://github.com/BuilderIO/builder/tree/master/examples/react-design-system)
+- [src/components/hero.builder.ts](src/components/hero.builder.ts) for an example of using a custom react component in the Builder.io visiaul editor. See a more rich example of a whole design system of components [here](https://github.com/BuilderIO/builder/tree/main/examples/react-design-system)
 - [src/pages/example.tsx](src/pages/example.tsx) for using GraphQL to query and render Builder.io components and pages manually in parts of your Gatsby site and content
-- [@builder.io/gatsby](https://github.com/builderio/builder/tree/master/packages/gatsby) the plugin used in this example to generate pages dynamically.
+- [@builder.io/gatsby](https://github.com/builderio/builder/tree/main/packages/gatsby) the plugin used in this example to generate pages dynamically.
 - [gatsby-config.js](gatsby-config.js) to set your API key
 
 ## 🚀 Quick start

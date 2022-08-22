@@ -121,7 +121,7 @@ const MODEL_NAME = 'page';
 <BuilderComponent model={MODEL_NAME} content={builderJson} />
 ```
 
-See our guides for [Gatsby](https://github.com/BuilderIO/builder/tree/master/examples/gatsby) and [Next.js](https://github.com/BuilderIO/builder/tree/master/examples/next-js) for guides on using with those frameworks
+See our guides for [Gatsby](https://github.com/BuilderIO/builder/tree/main/examples/gatsby) and [Next.js](https://github.com/BuilderIO/builder/tree/main/examples/next-js) for guides on using with those frameworks
 
 
 #### Passing data and functions down
@@ -259,7 +259,7 @@ Page and section models in builder can be extended with [custom fields](https://
 
 #### Passing content manually
 
-This is useful for doing server side rendering, e.g. with [Gatsby](https://github.com/BuilderIO/builder/tree/master/examples/gatsby) and [Next.js](https://github.com/BuilderIO/builder/tree/master/examples/next-js) or via
+This is useful for doing server side rendering, e.g. with [Gatsby](https://github.com/BuilderIO/builder/tree/main/examples/gatsby) and [Next.js](https://github.com/BuilderIO/builder/tree/main/examples/next-js) or via
 loading data from other sources than our default APIs, such as data in your own database saved via [webhooks](https://www.builder.io/c/docs/webhooks)
 
 ```tsx
