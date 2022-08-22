@@ -1133,6 +1133,18 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@builder.io/e2e-solidjs@workspace:e2e/solidjs":
+  version: 0.0.0-use.local
+  resolution: "@builder.io/e2e-solidjs@workspace:e2e/solidjs"
+  dependencies:
+    "@builder.io/sdk-solid": "workspace:*"
+    solid-js: ^1.4.7
+    typescript: ^4.7.4
+    vite: ^3.0.0
+    vite-plugin-solid: ^2.3.0
+  languageName: unknown
+  linkType: soft
+
 "@builder.io/e2e-svelte@workspace:e2e/svelte":
   version: 0.0.0-use.local
   resolution: "@builder.io/e2e-svelte@workspace:e2e/svelte"
@@ -1194,12 +1206,12 @@ __metadata:
   linkType: hard
 
 "@builder.io/mitosis-cli@npm:dev":
-  version: 0.0.17-92
-  resolution: "@builder.io/mitosis-cli@npm:0.0.17-92"
+  version: 0.0.17-93
+  resolution: "@builder.io/mitosis-cli@npm:0.0.17-93"
   dependencies:
     "@babel/core": ^7.17.8
     "@babel/preset-typescript": ^7.16.7
-    "@builder.io/mitosis": 0.0.56-101
+    "@builder.io/mitosis": 0.0.56-102
     "@vue/compiler-sfc": ^3.1.5
     babel-preset-solid: ^1.3.13
     chalk: ^4.1.0
@@ -1220,13 +1232,13 @@ __metadata:
     vue-template-validator: ^1.1.5
   bin:
     mitosis: bin/mitosis
-  checksum: 51fa16bff35e0f73b23e37383d0136c7471081cd74d9a476c22e1ba88b71e2364c2dadf73297dd560f4a3552f80e858c55bcb62b0170d931f3717fc1c0e0053c
+  checksum: f4c48c1afe36618acf605564dfaf4c4d6c4bcc8d5fc725eedd83280ab0de514497bc92c6ed719557b20c75d8f397497a929d80582157ae37916f08dec5b03e1a
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis@npm:0.0.56-101, @builder.io/mitosis@npm:dev":
-  version: 0.0.56-101
-  resolution: "@builder.io/mitosis@npm:0.0.56-101"
+"@builder.io/mitosis@npm:0.0.56-102, @builder.io/mitosis@npm:dev":
+  version: 0.0.56-102
+  resolution: "@builder.io/mitosis@npm:0.0.56-102"
   dependencies:
     "@angular/compiler": ^11.2.11
     "@babel/core": 7.14.5
@@ -1258,7 +1270,7 @@ __metadata:
     typescript: ^4.7.3
     vue: ~2.6
     vue-template-compiler: ~2.6
-  checksum: 96ba87cf062e9da52e01d5f2b51101486116db6efdf61a33a58cbf850c86e26a4eced5c201a556a3275ea491e9c020f0f5b060e91f7846ddfdde984a8256a147
+  checksum: 8c7a3eaf430a202f63e19b2aa8757a164a4db0cfe09f128c245d5a63d936f85c5df628a0af73e352543ccb7765e54e12f0ae1f7cffa2dd556bd3972e58f7d70b
   languageName: node
   linkType: hard
 
@@ -1332,7 +1344,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@builder.io/sdk-solid@workspace:output/solid":
+"@builder.io/sdk-solid@workspace:*, @builder.io/sdk-solid@workspace:output/solid":
   version: 0.0.0-use.local
   resolution: "@builder.io/sdk-solid@workspace:output/solid"
   dependencies:
@@ -10434,7 +10446,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.1.10, postcss@npm:^8.4.13, postcss@npm:^8.4.14":
+"postcss@npm:^8.1.10, postcss@npm:^8.4.13, postcss@npm:^8.4.14, postcss@npm:^8.4.16":
   version: 8.4.16
   resolution: "postcss@npm:8.4.16"
   dependencies:
@@ -11222,7 +11234,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rollup@npm:>=2.59.0 <2.78.0":
+"rollup@npm:>=2.59.0 <2.78.0, rollup@npm:>=2.75.6 <2.77.0 || ~2.77.0":
   version: 2.77.3
   resolution: "rollup@npm:2.77.3"
   dependencies:
@@ -11723,7 +11735,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"solid-js@npm:^1.4.3":
+"solid-js@npm:^1.4.3, solid-js@npm:^1.4.7":
   version: 1.4.8
   resolution: "solid-js@npm:1.4.8"
   checksum: deb79463dab3af7889fffaa15f1be92be0c0732d46e74bd2848208d974389e967d69462eb940fbfc0cdbdf7d0a3677a7c9517da5fe6e2a25534e077b555d5704
@@ -12606,7 +12618,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:*, typescript@npm:4.7.4, typescript@npm:^4, typescript@npm:^4.5.5, typescript@npm:^4.6.4, typescript@npm:^4.7.3":
+"typescript@npm:*, typescript@npm:4.7.4, typescript@npm:^4, typescript@npm:^4.5.5, typescript@npm:^4.6.4, typescript@npm:^4.7.3, typescript@npm:^4.7.4":
   version: 4.7.4
   resolution: "typescript@npm:4.7.4"
   bin:
@@ -12616,7 +12628,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@*#~builtin<compat/typescript>, typescript@patch:typescript@4.7.4#~builtin<compat/typescript>, typescript@patch:typescript@^4#~builtin<compat/typescript>, typescript@patch:typescript@^4.5.5#~builtin<compat/typescript>, typescript@patch:typescript@^4.6.4#~builtin<compat/typescript>, typescript@patch:typescript@^4.7.3#~builtin<compat/typescript>":
+"typescript@patch:typescript@*#~builtin<compat/typescript>, typescript@patch:typescript@4.7.4#~builtin<compat/typescript>, typescript@patch:typescript@^4#~builtin<compat/typescript>, typescript@patch:typescript@^4.5.5#~builtin<compat/typescript>, typescript@patch:typescript@^4.6.4#~builtin<compat/typescript>, typescript@patch:typescript@^4.7.3#~builtin<compat/typescript>, typescript@patch:typescript@^4.7.4#~builtin<compat/typescript>":
   version: 4.7.4
   resolution: "typescript@patch:typescript@npm%3A4.7.4#~builtin<compat/typescript>::version=4.7.4&hash=bda367"
   bin:
@@ -12905,7 +12917,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-plugin-solid@npm:^2.2.6":
+"vite-plugin-solid@npm:^2.2.6, vite-plugin-solid@npm:^2.3.0":
   version: 2.3.0
   resolution: "vite-plugin-solid@npm:2.3.0"
   dependencies:
@@ -13010,6 +13022,38 @@ __metadata:
   bin:
     vite: bin/vite.js
   checksum: 5edf8afc132a598f82a1339aa503514a0e86f6264babe94531b9000d801f157c9a32ae022542404678acca43ee260ade04c4763c4b7b8d381a6b50511b4a1447
+  languageName: node
+  linkType: hard
+
+"vite@npm:^3.0.0":
+  version: 3.0.9
+  resolution: "vite@npm:3.0.9"
+  dependencies:
+    esbuild: ^0.14.47
+    fsevents: ~2.3.2
+    postcss: ^8.4.16
+    resolve: ^1.22.1
+    rollup: ">=2.75.6 <2.77.0 || ~2.77.0"
+  peerDependencies:
+    less: "*"
+    sass: "*"
+    stylus: "*"
+    terser: ^5.4.0
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  peerDependenciesMeta:
+    less:
+      optional: true
+    sass:
+      optional: true
+    stylus:
+      optional: true
+    terser:
+      optional: true
+  bin:
+    vite: bin/vite.js
+  checksum: 6341aa43579ae45f8a383bdc0c5041dea3dff98f14e0a546d6d884a864134b00082246a28d1de8adff0ce0dd92b468c7ade8f972ffe1ed97258671d63e0f16f7
   languageName: node
   linkType: hard
 
