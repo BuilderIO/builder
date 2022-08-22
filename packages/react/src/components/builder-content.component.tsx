@@ -186,6 +186,7 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
 
   subscribeToContent() {
     if (this.name !== '_inline') {
+      console.log(' here fetching content with ', this.options);
       // TODO:... using targeting...? express.request hmmm
       this.subscriptions.add(
         builder.queueGetContent(this.name, this.options).subscribe(
