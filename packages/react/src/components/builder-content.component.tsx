@@ -88,9 +88,6 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
     let options = {
       ...(this.props.options || ({} as GetContentOptions)),
     };
-    if (!options.key && this.props.content?.id) {
-      options.key = this.props.content.id;
-    }
     if (this.props.content && !options.initialContent?.length) {
       options.initialContent = [this.props.content];
     }
