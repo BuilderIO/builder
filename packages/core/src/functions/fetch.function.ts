@@ -6,7 +6,7 @@ export interface SimplifiedFetchOptions {
   headers?: { [key: string]: string };
   method?: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
   credentials?: 'include';
-  mode?: string;
+  mode?: RequestMode;
 }
 
 export interface SimpleFetchResponse {
@@ -90,11 +90,17 @@ export function tinyFetch(url: string, options: SimplifiedFetchOptions = {}) {
   });
 }
 
-export const fetch: typeof tinyFetch /* | typeof window.fetch */ =
-  typeof global === 'object' && typeof (global as any).fetch === 'function'
-    ? (global as any).fetch
-    : typeof window === 'undefined'
-    ? serverOnlyRequire('node-fetch')
-    : typeof window.fetch !== 'undefined'
-    ? window.fetch
-    : tinyFetch;
+export let fetch: typeof tinyFetch;
+
+// If fetch is defined, in the browser, via polyfill, or in a Cloudflare worker, use it.
+if (globalThis.fetch) {
+  fetch = globalThis.fetch as any;
+}
+
+// If fetch is not defined, in a Node.js environment, use node-fetch.
+if (typeof window === 'undefined') {
+  fetch ??= serverOnlyRequire('node-fetch');
+}
+
+// Otherwise, use tiny-fetch.
+fetch ??= tinyFetch;
