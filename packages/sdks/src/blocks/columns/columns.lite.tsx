@@ -32,15 +32,15 @@ export default function Columns(props: ColumnProps) {
       return props.columns || [];
     },
     getWidth(index: number) {
-      const columns = this.getColumns();
+      const columns = state.getColumns();
       return columns[index]?.width || 100 / columns.length;
     },
     getColumnCssWidth(index: number) {
-      const columns = this.getColumns();
-      const gutterSize = this.getGutterSize();
+      const columns = state.getColumns();
+      const gutterSize = state.getGutterSize();
       const subtractWidth =
         (gutterSize * (columns.length - 1)) / columns.length;
-      return `calc(${this.getWidth(index)}% - ${subtractWidth}px)`;
+      return `calc(${state.getWidth(index)}% - ${subtractWidth}px)`;
     },
 
     maybeApplyForTablet(
@@ -50,7 +50,7 @@ export default function Columns(props: ColumnProps) {
       return _stackColumnsAt === 'tablet' ? prop : 'inherit';
     },
 
-    get columnsCssVars(): any {
+    get columnsCssVars(): { [key: string]: string | undefined } {
       const flexDir =
         props.stackColumnsAt === 'never'
           ? 'inherit'
@@ -59,18 +59,18 @@ export default function Columns(props: ColumnProps) {
           : 'column';
       return {
         '--flex-dir': flexDir,
-        '--flex-dir-tablet': this.maybeApplyForTablet(flexDir),
+        '--flex-dir-tablet': state.maybeApplyForTablet(flexDir),
       };
     },
 
-    get columnCssVars() {
+    get columnCssVars(): { [key: string]: string | undefined } {
       const width = '100%';
       const marginLeft = '0';
       return {
         '--column-width': width,
         '--column-margin-left': marginLeft,
-        '--column-width-tablet': this.maybeApplyForTablet(width),
-        '--column-margin-left-tablet': this.maybeApplyForTablet(marginLeft),
+        '--column-width-tablet': state.maybeApplyForTablet(width),
+        '--column-margin-left-tablet': state.maybeApplyForTablet(marginLeft),
       };
     },
   });
@@ -89,7 +89,7 @@ export default function Columns(props: ColumnProps) {
           flexDirection: 'var(--flex-dir)',
         },
       }}
-      style={state.columnsCssVars}
+      style={state.columnsCssVars as JSX.CSS}
     >
       <For each={props.columns}>
         {(column, index) => (
