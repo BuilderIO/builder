@@ -3,6 +3,7 @@
     "target": "es5",
     "outDir": "dist",
     "module": "esnext",
+    "composite": true,
     "strict": true,
     "sourceMap": true,
     "skipLibCheck": true,
@@ -10,10 +11,21 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "declarationDir": "dist",
-    "lib": ["dom", "es5", "es2015.promise"],
+    "lib": [
+      "dom",
+      "es5",
+      "es2015.promise"
+    ],
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "typeRoots": ["./node_modules/@types"]
+    "typeRoots": [
+      "./node_modules/@types"
+    ]
   },
-  "include": ["./index.ts", "./src/**/*.ts", "./types.d.ts"]
+  "include": [
+    "./package.json",
+    "./index.ts",
+    "./src/**/*.ts",
+    "./types.d.ts"
+  ]
 }
