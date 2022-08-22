@@ -30,6 +30,7 @@ import { debounceNextTick } from '../functions/debonce-next-tick';
 import { throttle } from '../functions/throttle';
 import { BuilderMetaContext } from '../store/builder-meta';
 import { tryEval } from '../functions/try-eval';
+import { toError } from '../to-error';
 
 function pick<T, K extends keyof T>(obj: T, ...keys: K[]): Pick<T, K> {
   const ret: any = {};
@@ -87,8 +88,9 @@ function debounce(func: Function, wait: number, immediate = false) {
 
 const fontsLoaded = new Set();
 
-// TODO: get fetch from core JS....
-const fetch = Builder.isBrowser ? window.fetch : require('node-fetch');
+let fetch: typeof globalThis['fetch'];
+if (globalThis.fetch) fetch = globalThis.fetch;
+fetch ??= require('node-fetch');
 
 const sizeMap = {
   desktop: 'large',
@@ -1151,9 +1153,10 @@ export class BuilderComponent extends React.Component<
       try {
         const result = await fetch(url);
         json = await result.json();
-      } catch (err: any) {
+      } catch (err) {
+        const error = toError(err);
         if (this._errors) {
-          this._errors.push(err);
+          this._errors.push(error);
         }
         if (this._logs) {
           this._logs.push(`Fetch to ${url} errored in ${Date.now() - requestStart}ms`);
@@ -1341,7 +1344,8 @@ export class BuilderComponent extends React.Component<
 
           // TODO: allow exports = { } syntax?
           // TODO: do something with reuslt like view - methods, computed, actions, properties, template, etc etc
-        } catch (error: any) {
+        } catch (err) {
+          const error = toError(err);
           if (Builder.isBrowser) {
             console.warn(
               'Builder custom code error:',
