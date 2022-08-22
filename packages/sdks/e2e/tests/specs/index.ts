@@ -6,8 +6,12 @@ import { CONTENT as dataBindings } from './data-bindings';
 // TO-DO: import real content type from SDKs
 type BuilderContent = Partial<{ data: { [index: string]: any } }>;
 
-export const getContentForPathname = (): BuilderContent | null => {
-  switch (window.location.pathname) {
+const getPathnameFromWindow = () => window.location.pathname;
+
+export const getContentForPathname = (
+  pathname = getPathnameFromWindow()
+): BuilderContent | null => {
+  switch (pathname) {
     case '/':
       return homepage;
     case '/columns':
