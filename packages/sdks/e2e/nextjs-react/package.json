@@ -7,8 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "e2e": "../../node_modules/.bin/playwright test",
-    "serve": "yarn dev"
+    "e2e___": "../../node_modules/.bin/playwright test",
+    "serve": "yarn start"
   },
   "dependencies": {
     "@builder.io/sdk-react": "workspace:*",
