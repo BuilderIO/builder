@@ -1,5 +1,5 @@
 import type { ComponentInfo } from '../../types/components';
-import { markSerializable } from '../util';
+import { markSerializable } from '../util.js';
 
 export const componentInfo: ComponentInfo = {
   name: 'Embed',

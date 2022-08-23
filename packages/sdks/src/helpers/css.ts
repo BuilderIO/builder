@@ -1,4 +1,4 @@
-import { camelToKebabCase } from '../functions/camel-to-kebab-case';
+import { camelToKebabCase } from '../functions/camel-to-kebab-case.js';
 
 export const convertStyleMaptoCSS = (
   style: Partial<CSSStyleDeclaration>

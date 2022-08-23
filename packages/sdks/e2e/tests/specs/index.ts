@@ -6,7 +6,11 @@ import { CONTENT as dataBindings } from './data-bindings';
 // TO-DO: import real content type from SDKs
 type BuilderContent = Partial<{ data: { [index: string]: any } }>;
 
-const getPathnameFromWindow = () => window.location.pathname;
+function isBrowser(): boolean {
+  return typeof window !== 'undefined' && typeof document !== 'undefined';
+}
+
+const getPathnameFromWindow = () => isBrowser() && window.location.pathname;
 
 export const getContentForPathname = (
   pathname = getPathnameFromWindow()

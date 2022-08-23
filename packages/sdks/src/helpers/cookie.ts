@@ -1,6 +1,6 @@
-import { isBrowser } from '../functions/is-browser';
-import { CanTrack } from '../types/can-track';
-import { getTopLevelDomain } from './url';
+import { isBrowser } from '../functions/is-browser.js';
+import { CanTrack } from '../types/can-track.js';
+import { getTopLevelDomain } from './url.js';
 
 export const getCookie = ({
   name,

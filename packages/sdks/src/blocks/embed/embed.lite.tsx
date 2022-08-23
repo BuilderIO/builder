@@ -1,5 +1,5 @@
 import { onUpdate, useRef, useStore } from '@builder.io/mitosis';
-import { isJsScript } from './helpers';
+import { isJsScript } from './helpers.js';
 
 export interface EmbedProps {
   content: string;
