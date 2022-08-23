@@ -1,4 +1,4 @@
-import { isBrowser } from '../functions/is-browser';
+import { isBrowser } from '../functions/is-browser.js';
 
 const getLocalStorage = () =>
   isBrowser() && typeof localStorage !== 'undefined' ? localStorage : undefined;

@@ -88,10 +88,14 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
     let options = {
       ...(this.props.options || ({} as GetContentOptions)),
     };
-    if (!options.key && this.props.content?.id) {
+    if (!options.key && this.props.content?.id && !Builder.isEditing && !Builder.isPreviewing) {
       options.key = this.props.content.id;
     }
-    if (this.props.content && !options.initialContent?.length) {
+    if (
+      this.props.content &&
+      !options.initialContent?.length &&
+      (this.props.inline || !Builder.isPreviewing)
+    ) {
       options.initialContent = [this.props.content];
     }
 
@@ -165,7 +169,7 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
     // Temporary to test metrics diving in with bigquery and heatmaps
     // this.builder.autoTrack = true;
     // this.builder.env = 'development';
-    if (!this.props.inline || Builder.isEditing) {
+    if (!this.props.inline || Builder.isEditing || Builder.isPreviewing) {
       this.subscribeToContent();
     } else if (this.props.inline && this.options?.initialContent?.length) {
       const contentData = this.options.initialContent[0];

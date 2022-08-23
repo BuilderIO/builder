@@ -61,7 +61,7 @@ const createEvent = ({
   },
 });
 
-export function track(eventProps: EventProps) {
+export async function track(eventProps: EventProps) {
   if (!eventProps.canTrack) {
     return;
   }
@@ -82,5 +82,7 @@ export function track(eventProps: EventProps) {
       'content-type': 'application/json',
     },
     mode: 'cors',
+  }).catch((err) => {
+    console.error('Failed to track: ', err);
   });
 }
