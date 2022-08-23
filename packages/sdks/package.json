@@ -29,7 +29,7 @@
     "ci:test": "yarn run test",
     "ci:e2e-prep": "playwright install --with-deps",
     "ci:e2e-build": "yarn workspaces foreach -pt --include \"*/e2e*\" --verbose run build",
-    "ci:e2e": "yarn workspaces foreach --verbose run e2e",
+    "ci:e2e": "yarn workspaces foreach --exclude @builder.io/e2e-nextjs-react --verbose run e2e",
     "release-sdk": "bash ./scripts/release-sdk.sh",
     "release:dev:all": "yarn release-sdk svelte && yarn release-sdk react-native && yarn release-sdk solid && yarn release-sdk vue",
     "upgrade-example": "bash ./scripts/upgrade-example.sh",
