@@ -91,7 +91,11 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
     if (!options.key && this.props.content?.id && !Builder.isEditing && !Builder.isPreviewing) {
       options.key = this.props.content.id;
     }
-    if (this.props.content && !options.initialContent?.length) {
+    if (
+      this.props.content &&
+      !options.initialContent?.length &&
+      (this.props.inline || !Builder.isPreviewing)
+    ) {
       options.initialContent = [this.props.content];
     }
 
