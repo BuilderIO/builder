@@ -1,4 +1,4 @@
-import { BuilderElement } from './element';
+import type { BuilderElement } from './element';
 
 export interface Input {
   name: string;
