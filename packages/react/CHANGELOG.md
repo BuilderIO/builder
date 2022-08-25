@@ -1,5 +1,5 @@
 ### 2.0.3
-- Fix an issue with previewing drafts of a published data model rendered by `BuilderConten`.
+- Fix an issue with previewing drafts of a published data model rendered by `BuilderContent`.
 - Fix an issue with live editing on a `BuilderContent` containing a `BuilderComponent` of the same model.
 
 ### 2.0.2
