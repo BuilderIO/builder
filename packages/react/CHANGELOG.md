@@ -1,3 +1,7 @@
+### 2.0.3
+- Fix an issue with previewing drafts of a published data model rendered by `BuilderContent`.
+- Fix an issue with live editing on a `BuilderContent` containing a `BuilderComponent` of the same model.
+
 ### 2.0.2
 - Move React/React-dom to peer dependencies to fix installation warnings.
 - Add support for templated variables `{{foo}}` in `Text` block.
