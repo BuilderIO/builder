@@ -8,7 +8,7 @@
 </p>
 <br />
 <h3 align="center">
-  Drag and drop page builder and CMS for React, Vue, Angular, and more
+  Drag and drop Visual CMS for React, Vue, Angular, and more
 </h3>
 <p align="center">
   Integrate with any site or app. Drag and drop with the components already in your codebase.
@@ -23,7 +23,7 @@
 <br />
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/844291/168449314-8ec6f1b0-0ddd-4491-8edb-5fbb96774a69.gif" alt="Editor example" />
+  <img alt="Animation of Builder.io Visual Editor" src="https://user-images.githubusercontent.com/844291/186968488-6344adaa-38bb-422c-b728-10c529af993d.gif" >
 </p>
 
 <h4 align="center">
@@ -138,13 +138,6 @@ Using an API-driven UI allows you to:
 <br />
 <img src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F73868572aeff49bdbf00a32fea8c1126" />
 
-
-## Who uses Builder.io?
-
-<br />
-<p align="center">
-  <img width="600" src="https://user-images.githubusercontent.com/844291/143297932-686144d0-598c-49ad-8493-0bffdf45aec8.png" />
-</p>
 
 ## Try it out!
 
