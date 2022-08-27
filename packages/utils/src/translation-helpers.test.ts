@@ -26,12 +26,19 @@ test('getTranslateableFields from content to match snapshot', async () => {
         {
           '@type': '@builder.io/sdk:Element',
           id: 'builder-15cd8202b8a3423d9fce69d71ee63510',
+          meta: {
+            localizedTextInputs: ['heading'],
+          },
           component: {
             name: 'Heading',
             options: {
               heading: {
                 '@type': '@builder.io/core:LocalizedValue',
                 Default: 'I am a heading!',
+              },
+              imageFile: {
+                '@type': '@builder.io/core:LocalizedValue',
+                Default: 'www.example.com/img.png',
               },
             },
           },

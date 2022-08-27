@@ -41,11 +41,19 @@ export function getTranslateableFields(
       const blockIndex = blockPath.shift();
       if (blockIndex) {
         const parsedBlockIndex = parseInt(blockIndex);
-        const blockId = blocks![parsedBlockIndex].id;
-        results[`blocks.${blockId}#${blockPath.join('#')}`] = {
-          instructions: el.meta?.instructions || defaultInstructions,
-          value: el[sourceLocaleId] || el.Default,
-        };
+        const currentBlock = blocks![parsedBlockIndex];
+        const localizedTextInputs = currentBlock?.meta?.localizedTextInputs;
+        if (
+          localizedTextInputs &&
+          Array.isArray(localizedTextInputs) &&
+          localizedTextInputs.includes(this.key)
+        ) {
+          const blockId = currentBlock.id;
+          results[`blocks.${blockId}#${blockPath.join('#')}`] = {
+            instructions: el.meta?.instructions || defaultInstructions,
+            value: el[sourceLocaleId] || el.Default,
+          };
+        }
       }
     }
     if (el && el.id && el.component?.name === 'Text' && !el.meta?.excludeFromTranslation) {
