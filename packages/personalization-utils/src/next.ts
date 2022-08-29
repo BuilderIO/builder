@@ -14,7 +14,7 @@ export function getPersonlizedURL(
     },
   }
 ) {
-  const url = request.nextUrl;
+  const url = new URL(request.nextUrl);
   const query = Object.fromEntries(url.searchParams);
   const allCookies = Object.fromEntries(request.cookies.entries());
   const personlizedURL = new PersonalizedURL({
