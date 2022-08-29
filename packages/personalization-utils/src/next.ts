@@ -3,11 +3,13 @@ import { PersonalizedURL, PersonalizedURLOptions } from './personalized-url';
 import { getUserAttributes } from './utils';
 
 const tryJsonParse = (val: string) => {
+  let result = val;
   try {
-    return JSON.parse(val);
+    result = JSON.parse(val);
   } catch {
-    return val;
+    result = val;
   }
+  return result;
 };
 
 export function getPersonlizedURL(
