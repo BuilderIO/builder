@@ -8,17 +8,18 @@ npm install @builder.io/personalization-utils
 
 # How to start with personalized rewrites? 
 
-`PersonalizedURL` identifies the current personalization target based on attributes in cookies, headers, query, and origin URL path, it should be used in middleware in combination with a page path handler defined in `pages/builder/[rewrite].jsx`:
+`PersonalizedURL` identifies the current personalization target based on attributes in cookies, headers, query, and origin URL path, it should be used in middleware in combination with a page path handler defined in `pages/builder/[hash].jsx`:
 
 ```ts
-// in pages/builder/[rewrite].jsx
+import { getUserAttributesFromHash } from '@builder.io/personalization-utils/next'
+// in pages/builder/[hash].jsx
 export async function getStaticProps({ params }) {
-  const personlizedURL = PersonalizedURL.fromRewrite(params.rewrite);
+  const attributes = getUserAttributesFromHash(params.hash);
   const page =
     (await builder
       .get('page', {
         apiKey: builderConfig.apiKey,
-        userAttributes: personlizedURL.attributes,
+        userAttributes: attributes,
         cachebust: true,
       })
       .promise()) || null
@@ -41,40 +42,24 @@ export function getStaticPaths() {
   }
 }
 
-export default function Rewrite({ page }) {
-  return  <BuilderComponent renderLink={Link} model="page" content={page} />
+export default function Hash({ page }) {
+  return  <BuilderComponent model="page" content={page} />
 }
 ```
 
 Now that we have a path for rendering builder content ready, let's route to it in the middleware:
 ```ts
-import { NextResponse } from 'next/server'
-import { PersonalizedURL } from '@builder.io/personalization-utils'
+import { getPersonlizedURL } from '@builder.io/personalization-utils/next'
 
 const excludededPrefixes = ['/favicon', '/api'];
 
-export default function middleware(
-  request: NextFetchEvent
-) {
+export default function middleware(request) {
   const url = request.nextUrl
-  let response = NextResponse.next();
-  if (!excludededPrefixes.find(path => url.pathname?.startsWith(path))) {
-    const query = Object.fromEntries(url.searchParams);
-    const personlizedURL = new PersonalizedURL({
-      pathname: url.pathname,
-      attributes: {
-        // optionally add geo information to target by city/country in builder
-        city: request.geo?.city || '',
-        country: request.geo?.country || '',
-        // pass cookies and query [read all values for keys prefixed with `builder.userAttributes`], useful for studio tab navigation and assigning cookies to targeting groups
-        ...getUserAttributes({ ...request.cookies, ...query }),
-      }
-    })
-
-    url.pathname = personlizedURL.rewritePath();
-    response = NextResponse.rewrite(url);
+  if (shouldRewrite(url.pathname)) {
+    const personalizedURL = getPersonlizedURL(request)
+    return NextResponse.rewrite(personalizedURL)
   }
-  return response
+  return NextResponse.next();
 }
 
 ```
