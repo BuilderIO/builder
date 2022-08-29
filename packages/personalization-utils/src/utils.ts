@@ -1,5 +1,8 @@
 export const getUserAttributes = (attributes: Record<string, string>, cookiePrefix?: string) => {
-  const prefix = cookiePrefix || 'builder.userAttributes';
+  let prefix = cookiePrefix || 'builder.userAttributes';
+  if (prefix.endsWith('.')) {
+    prefix = prefix.slice(0, -1);
+  }
   return Object.keys(attributes)
     .filter(key => key.startsWith(prefix))
     .reduce((acc, key) => {

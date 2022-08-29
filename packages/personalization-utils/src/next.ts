@@ -2,6 +2,14 @@ import type { NextRequest } from 'next/server';
 import { PersonalizedURL, PersonalizedURLOptions } from './personalized-url';
 import { getUserAttributes } from './utils';
 
+const tryJsonParse = (val: string) => {
+  try {
+    return JSON.parse(val);
+  } catch {
+    return val;
+  }
+};
+
 export function getPersonlizedURL(
   request: NextRequest,
   options: {
@@ -12,7 +20,15 @@ export function getPersonlizedURL(
 ) {
   const url = new URL(request.nextUrl);
   const query = Object.fromEntries(url.searchParams);
-  const allCookies = Object.fromEntries(request.cookies.entries());
+  const allCookies = Array.from(request.cookies.entries()).reduce(
+    (acc, [key]) => ({
+      ...acc,
+      [key]: tryJsonParse(request.cookies.get(key)!),
+    }),
+    {}
+  );
+
+  const builderAttrs = getUserAttributes({ ...allCookies, ...query });
   const personlizedURL = new PersonalizedURL({
     pathname: url.pathname,
     // Buffer is not available in middleware environment as of next 12.2 , overriding with btoa
@@ -20,8 +36,9 @@ export function getPersonlizedURL(
       return btoa(url);
     },
     attributes: {
-      ...getUserAttributes({ ...allCookies, ...query }, options.cookiesPrefix),
       ...options.attributes,
+      ...getUserAttributes({ ...allCookies, ...query }, options.cookiesPrefix),
+      ...builderAttrs,
     },
     ...{
       prefix: request.nextUrl.pathname,
