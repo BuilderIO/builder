@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/personalization-utils",
-  "version": "1.0.5-7",
+  "version": "1.0.5-11",
   "description": "Utils for personalization at the edge",
   "main": "./dist/index.js",
   "scripts": {
@@ -12,7 +12,9 @@
   },
   "files": [
     "dist/**/*",
-    "src/**/*"
+    "src/**/*",
+    "next.js",
+    "next.d.ts"
   ],
   "devDependencies": {
     "@builder.io/sdk": "^1.1.20",

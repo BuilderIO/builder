@@ -1,1 +1,1 @@
-export * from 'dist/next.js'
+export * from './dist/next';
