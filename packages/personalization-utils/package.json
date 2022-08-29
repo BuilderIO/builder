@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/personalization-utils",
-  "version": "1.1.0",
+  "version": "1.1.1-7",
   "description": "Utils for personalization at the edge",
   "main": "./dist/index.js",
   "exports": {
@@ -38,7 +38,13 @@
   "dependencies": {
     "json-stringify-deterministic": "^1.0.6"
   },
+  "peerDependenciesMeta": {
+    "next": {
+      "optional": true
+    }
+  },
   "peerDependencies": {
-    "@builder.io/sdk": "^1.1.20"
+    "@builder.io/sdk": "^1.1.20",
+    "next": ">=12"
   }
 }
