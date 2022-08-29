@@ -1,8 +1,22 @@
 {
   "name": "@builder.io/personalization-utils",
-  "version": "1.0.5-11",
+  "version": "1.0.5-12",
   "description": "Utils for personalization at the edge",
   "main": "./dist/index.js",
+  "exports": {
+    ".": "./dist/index.js",
+    "./next": "./dist/next.js"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "dist/index.d.ts"
+      ],
+      "next": [
+        "dist/next.d.ts"
+      ]
+    }
+  },
   "scripts": {
     "build": "tsc",
     "prepublish": "npm run build",
@@ -12,9 +26,7 @@
   },
   "files": [
     "dist/**/*",
-    "src/**/*",
-    "next.js",
-    "next.d.ts"
+    "src/**/*"
   ],
   "devDependencies": {
     "@builder.io/sdk": "^1.1.20",
