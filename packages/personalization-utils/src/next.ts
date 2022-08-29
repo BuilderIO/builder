@@ -8,11 +8,7 @@ export function getPersonlizedURL(
     attributes?: Record<string, string>;
     urlConfig?: Partial<PersonalizedURLOptions>;
     cookiesPrefix?: string;
-  } = {
-    urlConfig: {
-      prefix: request.nextUrl.pathname,
-    },
-  }
+  } = {}
 ) {
   const url = new URL(request.nextUrl);
   const query = Object.fromEntries(url.searchParams);
@@ -27,7 +23,10 @@ export function getPersonlizedURL(
       ...getUserAttributes({ ...allCookies, ...query }, options.cookiesPrefix),
       ...options.attributes,
     },
-    ...options.urlConfig,
+    ...{
+      prefix: request.nextUrl.pathname,
+      ...options.urlConfig,
+    },
   });
   url.pathname = personlizedURL.rewritePath();
   return url;
