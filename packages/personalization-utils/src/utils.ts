@@ -1,7 +1,4 @@
-export const getUserAttributes = (
-  attributes: Record<string, string>,
-  cookiePrefix?: string
-) => {
+export const getUserAttributes = (attributes: Record<string, string>, cookiePrefix?: string) => {
   const prefix = cookiePrefix || 'builder.userAttributes';
   return Object.keys(attributes)
     .filter(key => key.startsWith(prefix))

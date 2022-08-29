@@ -26,7 +26,7 @@ export interface ContextMenuProps {
 export const ContextMenu: React.FC<ContextMenuProps> = ({
   targetingAttributes,
   attributesApiPath,
-  cookiesPrefix = 'builder.userAttributes'
+  cookiesPrefix = 'builder.userAttributes',
 }) => {
   const { x, y, menu, enableContextMenu } = useContextMenu();
   const [loading, setLoading] = useState(false);
