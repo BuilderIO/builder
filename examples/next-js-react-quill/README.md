@@ -1,6 +1,6 @@
 # Next.js + Builder.io Minimal Starter with React Quill
 
-This example walks you through using Builder.io with a minimal Next.js application.
+This example walks you through using Builder.io with a minimal Next.js application and React-Quill to customize your own rich text editor.
 
 ## Prerequisites
 
