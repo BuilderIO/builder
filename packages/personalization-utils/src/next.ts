@@ -4,7 +4,7 @@ import { getUserAttributes } from './utils';
 
 export function getPersonlizedURL(request: NextRequest) {
     // TODO: any needed type is coming as string, but it should be NextURL
-    const url = request.url as any;
+    const url = request.nextUrl;
     const query = Object.fromEntries(url.searchParams);
     const allCookies = Array.from(request.cookies.entries()).reduce((acc, [key]) => ({
       ...acc,
