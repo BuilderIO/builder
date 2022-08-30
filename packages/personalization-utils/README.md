@@ -8,7 +8,7 @@ npm install @builder.io/personalization-utils
 
 # How to start with personalized rewrites? 
 
- This utilitiy library help you encode/decode targeting attributes as parts of the URL to allow for caching (or statically generating) render results, it should be used in middleware in combination with a page path handler (for e.g a catch all page `pages/[[...path]].jsx`):
+ This utility library helps you encode/decode targeting attributes as parts of the URL to allow for caching (or statically generating) render results, it should be used in middleware in combination with a page path handler (for e.g a catch all page `pages/[[...path]].jsx`):
 
 ```ts
 import { parsePersonalizedURL } from '@builder.io/personalization-utils/next'
