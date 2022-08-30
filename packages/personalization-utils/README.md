@@ -8,18 +8,19 @@ npm install @builder.io/personalization-utils
 
 # How to start with personalized rewrites? 
 
-`PersonalizedURL` identifies the current personalization target based on attributes in cookies, headers, query, and origin URL path, it should be used in middleware in combination with a page path handler defined in `pages/builder/[hash].jsx`:
+ This utilitiy library help you encode/decode targeting attributes as parts of the URL to allow for caching (or statically generating) render results, it should be used in middleware in combination with a page path handler (for e.g a catch all page `pages/[[...path]].jsx`):
 
 ```ts
-import { getUserAttributesFromHash } from '@builder.io/personalization-utils/next'
-// in pages/builder/[hash].jsx
+import { parsePersonalizedURL } from '@builder.io/personalization-utils/next'
+// in pages/[[...path]].jsx
 export async function getStaticProps({ params }) {
-  const attributes = getUserAttributesFromHash(params.hash);
+  const { attributes } = parsePersonalizedURL(params?.path);
   const page =
     (await builder
       .get('page', {
         apiKey: builderConfig.apiKey,
         userAttributes: attributes,
+        // cachebust is not advised outside static rendering contexts.
         cachebust: true,
       })
       .promise()) || null
@@ -30,8 +31,8 @@ export async function getStaticProps({ params }) {
     },
     // Next.js will attempt to re-generate the page:
     // - When a request comes in
-    // - At most once every 5 seconds
-    revalidate: 5,
+    // - At most once every 1 second
+    revalidate: 1,
   }
 }
 
@@ -42,7 +43,7 @@ export function getStaticPaths() {
   }
 }
 
-export default function Hash({ page }) {
+export default function Path({ page }) {
   return  <BuilderComponent model="page" content={page} />
 }
 ```
