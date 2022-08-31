@@ -97,6 +97,9 @@ jobs:
       - name: Install browsers for Playwright
         run: yarn ci:e2e-prep
 
+      - name: Run pre-build steps
+        run: yarn ci:e2e-build:prep
+
       - name: Build E2E tests
         run: yarn ci:e2e-build
 
