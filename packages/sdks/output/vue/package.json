@@ -1,25 +1,25 @@
 {
   "name": "@builder.io/sdk-vue",
   "description": "Builder.io SDK for Vue",
-  "version": "0.0.1-71",
+  "version": "0.0.1-72",
   "dependencies": {
     "node-fetch": "^2.6.1"
   },
-  "main": "./vue2/src/index.js",
-  "module": "./vue2/src/index.js",
+  "main": "./dist/vue-2/sdk.js",
+  "module": "./dist/vue-2/sdk.js",
   "type": "module",
   "exports": {
     ".": {
-      "import": "./vue2/src/index.js",
-      "require": "./vue2/src/index.js"
+      "import": "./dist/vue-2/sdk.js",
+      "require": "./dist/vue-2/sdk.cjs"
     },
     "./vue2": {
-      "import": "./vue2/src/index.js",
-      "require": "./vue2/src/index.js"
+      "import": "./dist/vue-2/sdk.js",
+      "require": "./dist/vue-2/sdk.cjs"
     },
     "./vue3": {
-      "import": "./vue3/src/index.js",
-      "require": "./vue3/src/index.js"
+      "import": "./dist/vue-3/sdk.js",
+      "require": "./dist/vue-3/sdk.cjs"
     },
     "./nuxt": {
       "import": "./nuxt.js",
