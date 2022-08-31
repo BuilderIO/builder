@@ -3,7 +3,7 @@
   "private": true,
   "workspaces": [
     "e2e/*",
-    "output/*"
+    "output/**/*"
   ],
   "engines": {
     "yarn": ">= 3.0.0"
