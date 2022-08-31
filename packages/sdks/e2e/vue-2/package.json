@@ -3,8 +3,8 @@
   "private": true,
   "version": "0.0.1",
   "scripts": {
-    "rename-hack": "mv node_modules/@builder.io/sdk-vue/vue2/package.json node_modules/@builder.io/sdk-vue/vue2/--package.json",
-    "rename-hack:undo": "mv node_modules/@builder.io/sdk-vue/vue2/--package.json node_modules/@builder.io/sdk-vue/vue2/package.json",
+    "rename-hack": "mv ../../output/vue/vue2/package.json ../../output/vue/vue2/--package.json",
+    "rename-hack:undo": "mv ../../output/vue/vue2/--package.json ../../output/vue/vue2/package.json",
     "build": "tsc --noEmit && yarn rename-hack && vite build && yarn rename-hack:undo",
     "dev": "tsc --noEmit && vite",
     "e2e": "../../node_modules/.bin/playwright test",
