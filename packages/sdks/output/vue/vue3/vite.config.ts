@@ -24,4 +24,8 @@ export default defineConfig({
       },
     },
   },
+  resolve: {
+    // we must preserve symlinks for our sym-linked package to work properly
+    preserveSymlinks: true,
+  },
 });

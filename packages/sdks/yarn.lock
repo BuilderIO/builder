@@ -1053,13 +1053,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/standalone@npm:^7.18.12":
-  version: 7.18.13
-  resolution: "@babel/standalone@npm:7.18.13"
-  checksum: da010b1ef0d53f7888d01b3ef93aac9a17af5711979e7bc048b80bf08ae6dfa6b637bf92fee0c5753b4ff1bc3639a5b82925f9234d4e2150fc6d4d5c2ccc1f89
-  languageName: node
-  linkType: hard
-
 "@babel/template@npm:^7.0.0, @babel/template@npm:^7.14.5, @babel/template@npm:^7.18.10, @babel/template@npm:^7.18.6, @babel/template@npm:^7.3.3":
   version: 7.18.10
   resolution: "@babel/template@npm:7.18.10"
@@ -1389,7 +1382,6 @@ __metadata:
   resolution: "@builder.io/sdk-vue-2@workspace:output/vue/vue2"
   dependencies:
     "@types/node": ^16.11.45
-    "@vitejs/plugin-legacy": ^2.0.0
     "@vitejs/plugin-vue2": ^1.1.2
     "@vue/tsconfig": ^0.1.3
     npm-run-all: ^4.1.5
@@ -2966,22 +2958,6 @@ __metadata:
     "@typescript-eslint/types": 5.33.1
     eslint-visitor-keys: ^3.3.0
   checksum: 0d32a433450f61e97b5fa6b1e167f06ed395c200b16b4dbd4490a1c4941de420689b622f8a2486f5398806fb24f57b9fab901b4cbc8fdb8853f568264b3a182a
-  languageName: node
-  linkType: hard
-
-"@vitejs/plugin-legacy@npm:^2.0.0":
-  version: 2.0.1
-  resolution: "@vitejs/plugin-legacy@npm:2.0.1"
-  dependencies:
-    "@babel/standalone": ^7.18.12
-    core-js: ^3.24.1
-    magic-string: ^0.26.2
-    regenerator-runtime: ^0.13.9
-    systemjs: ^6.12.1
-  peerDependencies:
-    terser: ^5.4.0
-    vite: ^3.0.0
-  checksum: 5634886d90fedec8c722b5c49abd20441841e3e113319e11985a072459dac308b5ffc69ebb71ac65fb405b6946b3e802889a5d6620ed17f562963dfeedddf1e4
   languageName: node
   linkType: hard
 
@@ -4868,13 +4844,6 @@ __metadata:
   version: 1.2.7
   resolution: "core-js@npm:1.2.7"
   checksum: 0b76371bfa98708351cde580f9287e2360d2209920e738ae950ae74ad08639a2e063541020bf666c28778956fc356ed9fe56d962129c88a87a6a4a0612526c75
-  languageName: node
-  linkType: hard
-
-"core-js@npm:^3.24.1":
-  version: 3.25.0
-  resolution: "core-js@npm:3.25.0"
-  checksum: 5a72740bf5babaf2e6203da4c0e831a0b97c3fe6f21b4c1aa8601d3a927660a22128dd8f0e86ce84778c4e5372ab0fc03c7944afa7e215c7fb13b2c79d5d5504
   languageName: node
   linkType: hard
 
@@ -11141,7 +11110,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"regenerator-runtime@npm:^0.13.2, regenerator-runtime@npm:^0.13.4, regenerator-runtime@npm:^0.13.9":
+"regenerator-runtime@npm:^0.13.2, regenerator-runtime@npm:^0.13.4":
   version: 0.13.9
   resolution: "regenerator-runtime@npm:0.13.9"
   checksum: 65ed455fe5afd799e2897baf691ca21c2772e1a969d19bb0c4695757c2d96249eb74ee3553ea34a91062b2a676beedf630b4c1551cc6299afb937be1426ec55e
@@ -12529,13 +12498,6 @@ __metadata:
   version: 3.2.4
   resolution: "symbol-tree@npm:3.2.4"
   checksum: 6e8fc7e1486b8b54bea91199d9535bb72f10842e40c79e882fc94fb7b14b89866adf2fd79efa5ebb5b658bc07fb459ccce5ac0e99ef3d72f474e74aaf284029d
-  languageName: node
-  linkType: hard
-
-"systemjs@npm:^6.12.1":
-  version: 6.12.6
-  resolution: "systemjs@npm:6.12.6"
-  checksum: 0f476d599c903333e9ec6ceb2d39621473edcdd003db47466ab3b9f1ceba17900c98bf6de392b0a7548456b03b5c339468d0a3bca441b62d014dec2a4c18d005
   languageName: node
   linkType: hard
 
