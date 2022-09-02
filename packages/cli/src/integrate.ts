@@ -136,7 +136,6 @@ export async function integrateWithLocalCodebase(options: IntegrateOptions) {
 
   console.info(`
     --------------------------------------------------
-    --------------------------------------------------
     Congratulations! You've successfully integrated with Builder.io.
     
     • View/edit the integration file here: ${chalk.cyan(
@@ -149,20 +148,15 @@ export async function integrateWithLocalCodebase(options: IntegrateOptions) {
 
     • If you have a custom 404 page, you'll want to add it to the [...page].${extension} file. in place of the <DefaultErrorPage> component.
 
-    • Add your header and footer components to the [...page].${extension} file.
-
     • Register custom components for your team to use in Builder.io. We created an example custom component at the bottom of your [...page].${extension} file. You can find more information about custom components here:\nhttps://www.builder.io/c/docs/custom-react-components    
 
-    • Commit and deploy the code updates to your dev/staging site so your team members can test Builder.io. Alternatively, you can use ${chalk.green(
-      'Vercel'
-    )} or ${chalk.green('Netlify')} to quickly deploy your project for testing.
+    • Commit and deploy the code updates to your dev/staging site so your team members can test Builder.io.
 
     • Once you've deployed to a remote url, you'll want to edit the ${chalk.cyan(
       'previewUrl'
     )} property of your model here:
        ${chalk.cyan(`https://builder.io/models/${options.model}`)}
 
-    --------------------------------------------------
     --------------------------------------------------
 
     ${chalk.green(`We'd love to here from you! Please send us any feedback you have here:
