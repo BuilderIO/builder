@@ -111,11 +111,11 @@ const MyCustomComponent = props => (
 Builder.registerComponent(MyCustomComponent, {
   name: 'ExampleCustomComponent',
   inputs: [
-    { name: 'title', type: 'string', defaultValue: 'I am the title!' },
+    { name: 'title', type: 'string', defaultValue: 'I am a React component!' },
     {
       name: 'description',
       type: 'string',
-      defaultValue: 'I am the description!',
+      defaultValue: 'Find my source in /pages/[...page].js',
     },
   ],
 });
