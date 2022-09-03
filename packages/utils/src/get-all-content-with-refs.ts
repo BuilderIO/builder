@@ -7,9 +7,7 @@ export const isBuilderElement = (item: unknown): item is BuilderElement => {
 
 async function resolveRefs(content: any, apiKey: string) {
   const promises: Promise<void>[] = [];
-  const patches: unknown[] = [];
   const result = traverse(content).map(function (child) {
-    const path = this.path.join('/');
     if (child && child['@type'] === '@builder.io/core:Reference') {
       if (child.model) {
         promises.push(
@@ -17,11 +15,6 @@ async function resolveRefs(content: any, apiKey: string) {
             .then(res => res.json())
             .then(async value => {
               child.value = await resolveRefs(value, apiKey);
-              patches.push({
-                op: 'replace',
-                path: `/data/${path}/value`,
-                value,
-              });
             })
             .catch(err => {
               console.error(`Error fetching relationship ${child.id} (API key: ${apiKey}):`, err);
@@ -32,7 +25,7 @@ async function resolveRefs(content: any, apiKey: string) {
   });
 
   await Promise.all(promises);
-  return { content: result, patches };
+  return { content: result };
 }
 
 export async function getContentWithAllReferences(builderInstance: Builder, modelName: string) {
