@@ -26,17 +26,8 @@
   <img alt="Animation of Builder.io Visual Editor" src="https://user-images.githubusercontent.com/844291/186968488-6344adaa-38bb-422c-b728-10c529af993d.gif" >
 </p>
 
-<h4 align="center">
-  Quick start:
-</h4>
-<p align="center">
-<pre align="center" lang="bash">
-npm init builder.io@latest
-</pre>
-</p>
-
 <h5 align="center" valign="middle">
-  Or choose your framework:
+  Choose your framework:
 </h5>
 
 <p align="center" valign="middle">
@@ -141,13 +132,7 @@ Using an API-driven UI allows you to:
 
 ## Try it out!
 
-Use our CLI to get started with one command:
-
-<pre align="center" lang="bash">
-npm init builder.io@latest
-</pre>
-
-Or try out a [quick fiddle online](https://builder.io/fiddle/fb98adf93ad5467180329fdaa9711f27)
+Try out our [editor online](https://builder.io/demo)
 
 ## Get Started
 
