@@ -28,13 +28,9 @@ Object {
             "heading": Object {
               "@type": "@builder.io/core:LocalizedValue",
               "Default": "I am a heading!",
-              "de": Object {
-                "value": "german translated heading",
-              },
+              "de": "german translated heading",
               "en-US": "en-us headings!",
-              "fr-FR": Object {
-                "value": "french translated heading",
-              },
+              "fr-FR": "french translated heading",
             },
           },
         },

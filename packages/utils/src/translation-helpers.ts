@@ -123,7 +123,7 @@ export function applyTranslation(
                 ...el.component.options,
                 [key]: {
                   ...el.component.options[key],
-                  [locale]: translation[`blocks.${el.id}#${key}`],
+                  [locale]: translation[`blocks.${el.id}#${key}`].value,
                 },
               },
             },
