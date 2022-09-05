@@ -10,7 +10,7 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
-    "@builder.io/sdk-vue": "^0.0.1-70",
+    "@builder.io/sdk-vue": "^0.0.1-73",
     "vue": "^3.2.37"
   },
   "devDependencies": {

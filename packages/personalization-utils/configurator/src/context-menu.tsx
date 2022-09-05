@@ -20,11 +20,13 @@ export interface TargetingAttributes {
 export interface ContextMenuProps {
   targetingAttributes?: TargetingAttributes;
   attributesApiPath?: string;
+  cookiesPrefix?: string;
 }
 
 export const ContextMenu: React.FC<ContextMenuProps> = ({
   targetingAttributes,
   attributesApiPath,
+  cookiesPrefix = 'builder.userAttributes',
 }) => {
   const { x, y, menu, enableContextMenu } = useContextMenu();
   const [loading, setLoading] = useState(false);
@@ -51,13 +53,13 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
     init();
   }, []);
   const setCookie = (name: string, val: string) => () => {
-    Cookies.set(`builder.userAttributes.${name}`, val);
+    Cookies.set(`${cookiesPrefix}.${name}`, val);
     location.reload();
   };
 
   const reset = () => {
     Object.keys(Cookies.get())
-      .filter(key => key.startsWith('builder.userAttributes'))
+      .filter(key => key.startsWith(cookiesPrefix))
       .forEach(cookie => Cookies.remove(cookie));
     location.reload();
   };
@@ -82,7 +84,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
         return (
           <SubMenu key={index} label={`${attr} settings`}>
             {options ? (
-              <MenuRadioGroup value={Cookies.get(`builder.userAttributes.${attr}`)}>
+              <MenuRadioGroup value={Cookies.get(`${cookiesPrefix}.${attr}`)}>
                 {options.map(option => (
                   <MenuItem key={option} value={option} onClick={setCookie(attr, String(option))}>
                     {option}
@@ -104,7 +106,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
                       ref={ref}
                       name={attr}
                       type="text"
-                      defaultValue={Cookies.get(`builder.userAttributes.${attr}`)}
+                      defaultValue={Cookies.get(`${cookiesPrefix}.${attr}`)}
                     />
                   </form>
                 )}
