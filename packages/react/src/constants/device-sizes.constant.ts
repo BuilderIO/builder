@@ -36,3 +36,21 @@ export const sizes = {
     return 'large';
   },
 };
+
+export const useSizes = ({ small, medium }: { small?: number; medium?: number }) => {
+  if (small) {
+    sizes.small = {
+      max: small,
+      default: small / 2,
+      min: small / 2 - 1 || 0, // TODO: handle negative values?
+    };
+  }
+
+  if (medium) {
+    sizes.medium = {
+      max: medium,
+      default: sizes.small.max + 2,
+      min: sizes.small.max + 1,
+    };
+  }
+};

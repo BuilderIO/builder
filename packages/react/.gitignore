@@ -9,6 +9,7 @@ dist
 compiled
 .awcache
 .rpt2_cache
+.history
 
 docs/.nojekyll
 docs/classes

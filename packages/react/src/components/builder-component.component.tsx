@@ -18,7 +18,7 @@ import onChange from '../../lib/on-change';
 
 export { onChange };
 
-import { sizes } from '../constants/device-sizes.constant';
+import { sizes, useSizes } from '../constants/device-sizes.constant';
 import {
   BuilderAsyncRequestsContext,
   RequestOrPromise,
@@ -394,6 +394,8 @@ export class BuilderComponent extends React.Component<
 
   constructor(props: BuilderComponentProps) {
     super(props);
+
+    useSizes(props.content?.data?.breakpoints || {});
 
     // TODO: pass this all the way down - symbols, etc
     // this.asServer = Boolean(props.hydrate && Builder.isBrowser)
