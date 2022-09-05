@@ -1,11 +1,11 @@
 import { BuilderContent } from '@builder.io/sdk';
-import { applyTranslation, getTranslateableFields } from './translation-helpers';
+import { applyTranslation, getTranslateableFields, localizedType } from './translation-helpers';
 
 test('getTranslateableFields worksfrom content to match snapshot', async () => {
   const content: BuilderContent = {
     data: {
       title: {
-        '@type': '@builder.io/core:LocalizedValue',
+        '@type': localizedType,
         'en-US': 'Hello',
         Default: 'Test',
       },
@@ -33,12 +33,12 @@ test('getTranslateableFields worksfrom content to match snapshot', async () => {
             name: 'Heading',
             options: {
               heading: {
-                '@type': '@builder.io/core:LocalizedValue',
+                '@type': localizedType,
                 'en-US': 'en-us headings!',
                 Default: 'default heading!',
               },
               imageFile: {
-                '@type': '@builder.io/core:LocalizedValue',
+                '@type': localizedType,
                 Default: 'www.example.com/img.png',
               },
             },
@@ -59,7 +59,7 @@ test('applyTranslation from content to match snapshot', async () => {
   const content: BuilderContent = {
     data: {
       title: {
-        '@type': '@builder.io/core:LocalizedValue',
+        '@type': localizedType,
         'en-US': 'Hello',
         Default: 'Test',
       },
@@ -84,7 +84,7 @@ test('applyTranslation from content to match snapshot', async () => {
             name: 'Heading',
             options: {
               heading: {
-                '@type': '@builder.io/core:LocalizedValue',
+                '@type': localizedType,
                 'en-US': 'en-us headings!',
                 Default: 'I am a heading!',
               },

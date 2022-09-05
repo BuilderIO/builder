@@ -2,7 +2,7 @@ import { BuilderContent } from '@builder.io/sdk';
 import traverse from 'traverse';
 import omit from 'lodash/omit';
 
-const localizedType = '@builder.io/core:LocalizedValue';
+export const localizedType = '@builder.io/core:LocalizedValue';
 
 export type TranslateableFields = {
   [key: string]: {
@@ -36,20 +36,22 @@ export function getTranslateableFields(
 
   // blocks
   traverse(blocks).forEach(function (el) {
-    if (this.key && el && el['@type'] === localizedType) {
-      const localizedTextInputs = el.meta?.localizedTextInputs as string[];
+    if (this.key && el && el.meta?.localizedTextInputs) {
+      const localizedTextInputs = el.meta.localizedTextInputs as string[];
       if (localizedTextInputs && Array.isArray(localizedTextInputs)) {
-        localizedTextInputs.forEach(inputKey => {
-          const valueToBeTranslated =
-            el.component.options?.[inputKey]?.[sourceLocaleId] ||
-            el.component.options?.[inputKey]?.Default;
-          if (valueToBeTranslated) {
-            results[`blocks.${el.id}#${inputKey}`] = {
-              instructions: el.meta?.instructions || defaultInstructions,
-              value: valueToBeTranslated,
-            };
-          }
-        });
+        localizedTextInputs
+          .filter(input => el.component?.options?.[input]?.['@type'] === localizedType)
+          .forEach(inputKey => {
+            const valueToBeTranslated =
+              el.component.options?.[inputKey]?.[sourceLocaleId] ||
+              el.component.options?.[inputKey]?.Default;
+            if (valueToBeTranslated) {
+              results[`blocks.${el.id}#${inputKey}`] = {
+                instructions: el.meta?.instructions || defaultInstructions,
+                value: valueToBeTranslated,
+              };
+            }
+          });
       }
     }
     if (el && el.id && el.component?.name === 'Text' && !el.meta?.excludeFromTranslation) {
