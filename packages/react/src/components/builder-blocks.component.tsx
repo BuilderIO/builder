@@ -115,7 +115,7 @@ export class BuilderBlocks extends React.Component<BuilderBlocksProps, BuilderBl
             alignItems: 'stretch',
           }),
           ...this.props.style,
-        }}
+        } as any}
         onClick={() => {
           if (this.noBlocks) {
             this.onClickEmptyBlocks();
