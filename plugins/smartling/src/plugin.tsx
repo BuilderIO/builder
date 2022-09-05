@@ -225,7 +225,7 @@ registerPlugin(
     });
 
     registerContentAction({
-      label: 'Go to translation job',
+      label: 'View pending translation job',
       showIf(content, model) {
         const translationModel = getTranslationModel();
         return (
