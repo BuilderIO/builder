@@ -251,10 +251,6 @@ export class BuilderBlock extends React.Component<
           eval('debugger');
         }
         for (const patch of patches) {
-          // TODO: soehow mark this.block as a new object,
-          // e.g. access it's parent hm. maybe do the listning mutations
-          // on hte parent element not the child (or rather
-          // send the message to the parent)
           applyPatchWithMinimalMutationChain(this.props.block, patch, true);
         }
         this.setState({ updates: this.state.updates + 1 });

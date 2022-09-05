@@ -98,7 +98,6 @@ const sizeMap = {
   mobile: 'small',
 };
 
-
 const fetchCache: { [key: string]: any } = {};
 
 export interface BuilderComponentProps {
@@ -1358,22 +1357,22 @@ export class BuilderComponent extends React.Component<
               const builderModelRe = /builder\.io\/api\/v2\/([^\/\?]+)/i;
               const builderModelMatch = url.match(builderModelRe);
               const model = builderModelMatch && builderModelMatch[1];
-                this.handleRequest(key, finalUrl);
-                const currentSubscription = this.httpSubscriptionPerKey[key];
-                if (currentSubscription) {
-                  currentSubscription.unsubscribe();
-                }
+              this.handleRequest(key, finalUrl);
+              const currentSubscription = this.httpSubscriptionPerKey[key];
+              if (currentSubscription) {
+                currentSubscription.unsubscribe();
+              }
 
-                // TODO: fix this
-                const newSubscription = (this.httpSubscriptionPerKey[key] =
-                  this.onStateChange.subscribe(() => {
-                    const newUrl = this.evalExpression(url);
-                    if (newUrl !== finalUrl) {
-                      this.handleRequest(key, newUrl);
-                      this.lastHttpRequests[key] = newUrl;
-                    }
-                  }));
-                this.subscriptions.add(newSubscription);
+              // TODO: fix this
+              const newSubscription = (this.httpSubscriptionPerKey[key] =
+                this.onStateChange.subscribe(() => {
+                  const newUrl = this.evalExpression(url);
+                  if (newUrl !== finalUrl) {
+                    this.handleRequest(key, newUrl);
+                    this.lastHttpRequests[key] = newUrl;
+                  }
+                }));
+              this.subscriptions.add(newSubscription);
             } else {
               this.handleRequest(key, this.evalExpression(url));
             }

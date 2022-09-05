@@ -149,7 +149,7 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
           data: newData,
         });
         if (this.props.contentLoaded) {
-          this.props.contentLoaded(newData.data, this.state.data);
+          this.props.contentLoaded(newData.data, newData);
         }
         break;
       }
