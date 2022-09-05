@@ -1,7 +1,7 @@
 import { BuilderContent } from '@builder.io/sdk';
 import { applyTranslation, getTranslateableFields } from './translation-helpers';
 
-test('getTranslateableFields from content to match snapshot', async () => {
+test('getTranslateableFields worksfrom content to match snapshot', async () => {
   const content: BuilderContent = {
     data: {
       title: {
@@ -25,7 +25,7 @@ test('getTranslateableFields from content to match snapshot', async () => {
         },
         {
           '@type': '@builder.io/sdk:Element',
-          id: 'builder-15cd8202b8a3423d9fce69d71ee63510',
+          id: 'builder-custom-component-id',
           meta: {
             localizedTextInputs: ['heading'],
           },
@@ -34,7 +34,8 @@ test('getTranslateableFields from content to match snapshot', async () => {
             options: {
               heading: {
                 '@type': '@builder.io/core:LocalizedValue',
-                Default: 'I am a heading!',
+                'en-US': 'en-us headings!',
+                Default: 'default heading!',
               },
               imageFile: {
                 '@type': '@builder.io/core:LocalizedValue',
@@ -75,12 +76,16 @@ test('applyTranslation from content to match snapshot', async () => {
         },
         {
           '@type': '@builder.io/sdk:Element',
-          id: 'builder-15cd8202b8a3423d9fce69d71ee63510',
+          id: 'builder-custom-component-id',
+          meta: {
+            localizedTextInputs: ['heading'],
+          },
           component: {
             name: 'Heading',
             options: {
               heading: {
                 '@type': '@builder.io/core:LocalizedValue',
+                'en-US': 'en-us headings!',
                 Default: 'I am a heading!',
               },
             },
@@ -90,14 +95,22 @@ test('applyTranslation from content to match snapshot', async () => {
     },
   };
 
-  const translations = {
+  const frenchTranslations = {
     'metadata.title': { value: 'salut' },
-    'blocks.block-id#text': { value: 'translated block-id' },
-    'blocks.builder-15cd8202b8a3423d9fce69d71ee63510#component#options#heading': {
-      value: 'translated heading',
+    'blocks.block-id#text': { value: 'fench translated text' },
+    'blocks.builder-custom-component-id#heading': {
+      value: 'french translated heading',
+    },
+  };
+  const germanTranslations = {
+    'metadata.title': { value: 'hallo' },
+    'blocks.block-id#text': { value: 'german translatated' },
+    'blocks.builder-custom-component-id#heading': {
+      value: 'german translated heading',
     },
   };
 
-  const result = applyTranslation(content, translations, 'fr-FR');
+  let result = applyTranslation(content, frenchTranslations, 'fr-FR');
+  result = applyTranslation(result, germanTranslations, 'de');
   expect(result).toMatchSnapshot();
 });

@@ -37,23 +37,19 @@ export function getTranslateableFields(
   // blocks
   traverse(blocks).forEach(function (el) {
     if (this.key && el && el['@type'] === localizedType) {
-      const blockPath = [...this.path];
-      const blockIndex = blockPath.shift();
-      if (blockIndex) {
-        const parsedBlockIndex = parseInt(blockIndex);
-        const currentBlock = blocks![parsedBlockIndex];
-        const localizedTextInputs = currentBlock?.meta?.localizedTextInputs;
-        if (
-          localizedTextInputs &&
-          Array.isArray(localizedTextInputs) &&
-          localizedTextInputs.includes(this.key)
-        ) {
-          const blockId = currentBlock.id;
-          results[`blocks.${blockId}#${blockPath.join('#')}`] = {
-            instructions: el.meta?.instructions || defaultInstructions,
-            value: el[sourceLocaleId] || el.Default,
-          };
-        }
+      const localizedTextInputs = el.meta?.localizedTextInputs as string[];
+      if (localizedTextInputs && Array.isArray(localizedTextInputs)) {
+        localizedTextInputs.forEach(inputKey => {
+          const valueToBeTranslated =
+            el.component.options?.[inputKey]?.[sourceLocaleId] ||
+            el.component.options?.[inputKey]?.Default;
+          if (valueToBeTranslated) {
+            results[`blocks.${el.id}#${inputKey}`] = {
+              instructions: el.meta?.instructions || defaultInstructions,
+              value: valueToBeTranslated,
+            };
+          }
+        });
       }
     }
     if (el && el.id && el.component?.name === 'Text' && !el.meta?.excludeFromTranslation) {
@@ -88,32 +84,6 @@ export function applyTranslation(
   });
 
   traverse(blocks).forEach(function (el) {
-    const blockPath = [...this.path];
-    const blockIndex = blockPath.shift();
-    if (blockIndex) {
-      const parsedBlockIndex = parseInt(blockIndex);
-      const blockId = blocks![parsedBlockIndex].id;
-      const path = blockPath.join('#');
-      if (translation[`blocks.${blockId}#${path}`]) {
-        // TODO: Find a better way to extract the block node/context
-        const blockNodeContext = this.parent?.parent?.parent;
-        const blockNodeEl = blockNodeContext?.node;
-        blockNodeContext?.update({
-          ...blockNodeEl,
-          meta: {
-            ...blockNodeEl.meta,
-            translated: true,
-          },
-          bindings: {
-            ...blockNodeEl.bindings,
-            [blockPath.join(
-              '.'
-            )]: `state.translation['blocks.${blockId}#${path}'][state.locale || 'Default']`,
-          },
-        });
-      }
-    }
-
     if (
       el &&
       el.id &&
@@ -131,6 +101,34 @@ export function applyTranslation(
           ...el.bindings,
           'component.options.text': `state.translation['blocks.${el.id}#text'][state.locale || 'Default'] || \`${el.component.options.text}\``,
         },
+      });
+    }
+
+    // custom components
+    if (el && el.id && el.meta?.localizedTextInputs) {
+      // there's a localized input
+      const keys = el.meta?.localizedTextInputs as string[];
+
+      keys.forEach(key => {
+        if (translation[`blocks.${el.id}#${key}`]) {
+          this.update({
+            ...el,
+            meta: {
+              ...el.meta,
+              translated: true,
+            },
+            component: {
+              ...el.component,
+              options: {
+                ...el.component.options,
+                [key]: {
+                  ...el.component.options[key],
+                  [locale]: translation[`blocks.${el.id}#${key}`],
+                },
+              },
+            },
+          });
+        }
       });
     }
   });
