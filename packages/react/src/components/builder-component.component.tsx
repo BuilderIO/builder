@@ -98,31 +98,6 @@ const sizeMap = {
   mobile: 'small',
 };
 
-function decorator(fn: Function) {
-  return function argReceiver(...fnArgs: any[]) {
-    // Check if the decorator is being called without arguments (ex `@foo methodName() {}`)
-    if (fnArgs.length === 3) {
-      const [target, key, descriptor] = fnArgs;
-      if (descriptor && (descriptor.value || descriptor.get)) {
-        fnArgs = [];
-        return descriptorChecker(target, key, descriptor);
-      }
-    }
-
-    return descriptorChecker;
-
-    // descriptorChecker determines whether a method or getter is being decorated
-    // and replaces the appropriate key with the decorated function.
-    function descriptorChecker(target: any, key: any, descriptor: any) {
-      const descriptorKey = descriptor.value ? 'value' : 'get';
-      return {
-        ...descriptor,
-        [descriptorKey]: fn(descriptor[descriptorKey], ...fnArgs),
-      };
-    }
-  };
-}
-
 const fetchCache: { [key: string]: any } = {};
 
 export interface BuilderComponentProps {
@@ -1264,7 +1239,6 @@ export class BuilderComponent extends React.Component<
       this.notifyStateChange();
     }
 
-    // Unsubscribe all? TODO: maybe don't continuous fire when editing.....
     if (this.props.contentLoaded) {
       this.props.contentLoaded(data, content);
     }
@@ -1274,12 +1248,6 @@ export class BuilderComponent extends React.Component<
         data.state = {};
       }
 
-      // Maybe...
-      // if (data.context) {
-      //   Object.assign(this.state.context, data.context)
-      // }
-      // TODO: may not want this... or make sure anything overriden
-      // explitily sets to null
       data.inputs.forEach((input: any) => {
         if (input) {
           if (
@@ -1380,8 +1348,6 @@ export class BuilderComponent extends React.Component<
         for (const key in data.httpRequests) {
           const url: string | undefined = data.httpRequests[key];
           if (url && (!this.data[key] || Builder.isEditing)) {
-            // TODO: if Builder.isEditing and url patches https://builder.io/api/v2/content/{editingModel}
-            // Then use this.builder.get().subscribe(...)
             if (Builder.isBrowser) {
               const finalUrl = this.evalExpression(url);
               if (Builder.isEditing && this.lastHttpRequests[key] === finalUrl) {
@@ -1391,47 +1357,27 @@ export class BuilderComponent extends React.Component<
               const builderModelRe = /builder\.io\/api\/v2\/([^\/\?]+)/i;
               const builderModelMatch = url.match(builderModelRe);
               const model = builderModelMatch && builderModelMatch[1];
-              if (false && Builder.isEditing && model && this.builder.editingModel === model) {
-                this.handleRequest(key, finalUrl);
-                // TODO: fix this
-                // this.subscriptions.add(
-                //   this.builder.get(model).subscribe(data => {
-                //     this.state.update((state: any) => {
-                //       state[key] = data
-                //     })
-                //   })
-                // )
-              } else {
-                this.handleRequest(key, finalUrl);
-                const currentSubscription = this.httpSubscriptionPerKey[key];
-                if (currentSubscription) {
-                  currentSubscription.unsubscribe();
-                }
-
-                // TODO: fix this
-                const newSubscription = (this.httpSubscriptionPerKey[key] =
-                  this.onStateChange.subscribe(() => {
-                    const newUrl = this.evalExpression(url);
-                    if (newUrl !== finalUrl) {
-                      this.handleRequest(key, newUrl);
-                      this.lastHttpRequests[key] = newUrl;
-                    }
-                  }));
-                this.subscriptions.add(newSubscription);
+              this.handleRequest(key, finalUrl);
+              const currentSubscription = this.httpSubscriptionPerKey[key];
+              if (currentSubscription) {
+                currentSubscription.unsubscribe();
               }
+
+              // TODO: fix this
+              const newSubscription = (this.httpSubscriptionPerKey[key] =
+                this.onStateChange.subscribe(() => {
+                  const newUrl = this.evalExpression(url);
+                  if (newUrl !== finalUrl) {
+                    this.handleRequest(key, newUrl);
+                    this.lastHttpRequests[key] = newUrl;
+                  }
+                }));
+              this.subscriptions.add(newSubscription);
             } else {
               this.handleRequest(key, this.evalExpression(url));
             }
           }
         }
-
-        // @DEPRECATED
-        // for (const key in data.builderData) {
-        //   const url = data.builderData[key]
-        //   if (url && !this.data[key]) {
-        //     this.handleBuilderRequest(key, this.evalExpression(url))
-        //   }
-        // }
       }
     }
   };
