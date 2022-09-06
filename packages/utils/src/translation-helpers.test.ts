@@ -112,6 +112,5 @@ test('applyTranslation from content to match snapshot', async () => {
 
   let result = applyTranslation(content, frenchTranslations, 'fr-FR');
   result = applyTranslation(result, germanTranslations, 'de');
-  console.log(result.data?.blocks?.[1].component?.options.heading);
   expect(result).toMatchSnapshot();
 });
