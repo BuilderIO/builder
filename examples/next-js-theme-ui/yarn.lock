@@ -300,30 +300,27 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@builder.io/react@^2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@builder.io/react/-/react-2.0.1.tgz#0d730df8976fa855445ed846fe868d3ce877f5d7"
-  integrity sha512-rIys8I/l9W9Gr/2ILzw2XBKTYiyvbY1nwfKgeknS6N6AH+k7QIrj9QMWjkDRkT0dgnqhR0IVzY6CWanIfhxiEQ==
+"@builder.io/react@2.0.4":
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/@builder.io/react/-/react-2.0.4.tgz#6896d9f702f0bf947288ad7f8982b16e826f0954"
+  integrity sha512-zj4wKWqQ7wtqAITOTWzQcTewftu2ddOJZlJXgAIgI1fWIQPPA7xI5T9ZRwou/kinv90NNfTZ+xo5hKB1NsYseA==
   dependencies:
-    "@builder.io/sdk" "^1.1.26"
+    "@builder.io/sdk" "^1.1.27"
     "@emotion/core" "^10.0.17"
     hash-sum "^2.0.0"
     preact "^10.1.0"
-    react ">=17.0.1"
-    react-dom ">=17.0.1"
-    tslib "^2.4.0"
-    vm2 "^3.6.4"
+    vm2 "^3.9.10"
   optionalDependencies:
-    node-fetch "^2.3.0"
+    node-fetch "^2.6.1"
     prop-types "^15.7.2"
 
-"@builder.io/sdk@^1.1.26":
-  version "1.1.26"
-  resolved "https://registry.yarnpkg.com/@builder.io/sdk/-/sdk-1.1.26.tgz#1959edc7986af919a3b4b4dc91d17880bbdf2f14"
-  integrity sha512-tas5giE363Lv4f35xKPkRxDnPSyjzKo1zifGVuWJCztJJjUbNIe+vaRewitzqS3u+B8sWU0pHj2Id9R1Mtx6pA==
+"@builder.io/sdk@^1.1.27":
+  version "1.1.27"
+  resolved "https://registry.yarnpkg.com/@builder.io/sdk/-/sdk-1.1.27.tgz#383f595bbf3cfad91fd0a0f44d750947c30bcce2"
+  integrity sha512-vHtmDKDBYBLq6Xhh2qUaYk1/V3VL30z5jASAgY9+H37DXXfYdZbTxaLIRilOmn9YiCkrR32V8BPsiIRWWVwhxA==
   dependencies:
     hash-sum "^2.0.0"
-    node-fetch "^2.2.0"
+    node-fetch "^2.3.0"
     tslib "^1.10.0"
 
 "@builder.io/utils@^1.0.3":
@@ -5191,7 +5188,7 @@ node-fetch@^1.0.1:
     encoding "^0.1.11"
     is-stream "^1.0.1"
 
-node-fetch@^2.2.0, node-fetch@^2.3.0, node-fetch@^2.6.1:
+node-fetch@^2.3.0, node-fetch@^2.6.1:
   version "2.6.7"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.7.tgz#24de9fba827e3b4ae44dc8b20256a379160052ad"
   integrity sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==
@@ -5793,7 +5790,7 @@ react-dom@>=14:
     loose-envify "^1.1.0"
     scheduler "^0.21.0"
 
-react-dom@>=17.0.1, react-dom@^18.1.0:
+react-dom@^18.1.0:
   version "18.1.0"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-18.1.0.tgz#7f6dd84b706408adde05e1df575b3a024d7e8a2f"
   integrity sha512-fU1Txz7Budmvamp7bshe4Zi32d0ll7ect+ccxNu9FlObT605GOEB8BfO4tmRJ39R5Zj831VCpvQ05QPBW5yb+w==
@@ -5936,7 +5933,7 @@ react@>=14:
   dependencies:
     loose-envify "^1.1.0"
 
-react@>=17.0.1, react@^18.1.0:
+react@^18.1.0:
   version "18.1.0"
   resolved "https://registry.yarnpkg.com/react/-/react-18.1.0.tgz#6f8620382decb17fdc5cc223a115e2adbf104890"
   integrity sha512-4oL8ivCz5ZEPyclFQXaNksK3adutVS8l2xzZU0cqEFrE9Sb7fC0EFK5uEk74wIreL1DERyjvsU915j1pcT2uEQ==
@@ -6860,11 +6857,6 @@ tslib@^2.0.0, tslib@^2.0.3, tslib@^2.1.0, tslib@^2.2.0:
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.3.1.tgz#e8a335add5ceae51aa261d32a490158ef042ef01"
   integrity sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw==
 
-tslib@^2.4.0:
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.4.0.tgz#7cecaa7f073ce680a05847aa77be941098f36dc3"
-  integrity sha512-d6xOpEDfsi2CZVlPQzGeux8XMwLT9hssAsaPYExaQMuYskwb+x1x7J371tWlbBdWHroy99KnVB6qIkUbs5X3UQ==
-
 tsutils@^3.17.1:
   version "3.21.0"
   resolved "https://registry.yarnpkg.com/tsutils/-/tsutils-3.21.0.tgz#b48717d394cea6c1e096983eed58e9d61715b623"
@@ -7018,10 +7010,10 @@ validate-npm-package-license@^3.0.1:
     spdx-correct "^3.0.0"
     spdx-expression-parse "^3.0.0"
 
-vm2@^3.6.4:
-  version "3.9.9"
-  resolved "https://registry.yarnpkg.com/vm2/-/vm2-3.9.9.tgz#c0507bc5fbb99388fad837d228badaaeb499ddc5"
-  integrity sha512-xwTm7NLh/uOjARRBs8/95H0e8fT3Ukw5D/JJWhxMbhKzNh1Nu981jQKvkep9iKYNxzlVrdzD0mlBGkDKZWprlw==
+vm2@^3.9.10:
+  version "3.9.11"
+  resolved "https://registry.yarnpkg.com/vm2/-/vm2-3.9.11.tgz#a880f510a606481719ec3f9803b940c5805a06fe"
+  integrity sha512-PFG8iJRSjvvBdisowQ7iVF580DXb1uCIiGaXgm7tynMR1uTBlv7UJlB1zdv5KJ+Tmq1f0Upnj3fayoEOPpCBKg==
   dependencies:
     acorn "^8.7.0"
     acorn-walk "^8.2.0"

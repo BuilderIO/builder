@@ -14,7 +14,7 @@
     "singleQuote": true
   },
   "dependencies": {
-    "@builder.io/react": "^1.1.42",
+    "@builder.io/react": "^2.0.4",
     "@emotion/cache": "^11.5.0",
     "@emotion/react": "^11.5.0",
     "@emotion/server": "^11.4.0",
