@@ -86,7 +86,7 @@ export default function Page({ page }) {
 
       <div style={{ padding: 50, textAlign: 'center' }}>
         {/* Put your footer or main layout here */}
-        You footer
+        Your footer
       </div>
     </>
   );
