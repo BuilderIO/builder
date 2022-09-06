@@ -40,18 +40,23 @@ class SectionComponent extends React.Component<SectionProps, { inView?: boolean 
       if (typeof IntersectionObserver === 'undefined' || !this.ref) {
         this.setState({ inView: true });
       } else {
-        const observer = new IntersectionObserver((entries, observer) => {
-          entries.forEach(entry => {
-            if (entry.intersectionRatio > 0) {
-              this.setState({
-                inView: true,
-              });
-              if (this.ref) {
-                observer.unobserve(this.ref);
+        const observer = new IntersectionObserver(
+          (entries, observer) => {
+            entries.forEach(entry => {
+              if (entry.intersectionRatio > 0) {
+                this.setState({
+                  inView: true,
+                });
+                if (this.ref) {
+                  observer.unobserve(this.ref);
+                }
               }
-            }
-          });
-        });
+            });
+          },
+          {
+            rootMargin: '10px',
+          }
+        );
 
         observer.observe(this.ref);
 

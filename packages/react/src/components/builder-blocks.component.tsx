@@ -108,14 +108,16 @@ export class BuilderBlocks extends React.Component<BuilderBlocksProps, BuilderBl
         // TODO: only fi in iframe?
         builder-path={Builder.isIframe ? this.path : undefined}
         builder-parent-id={this.parentId}
-        css={{
-          ...(!this.props.emailMode && {
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'stretch',
-          }),
-          ...this.props.style,
-        }}
+        css={
+          {
+            ...(!this.props.emailMode && {
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'stretch',
+            }),
+            ...this.props.style,
+          } as any
+        }
         onClick={() => {
           if (this.noBlocks) {
             this.onClickEmptyBlocks();

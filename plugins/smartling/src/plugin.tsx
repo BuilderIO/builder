@@ -225,7 +225,7 @@ registerPlugin(
     });
 
     registerContentAction({
-      label: 'Go to translation job',
+      label: 'View pending translation job',
       showIf(content, model) {
         const translationModel = getTranslationModel();
         return (
@@ -251,8 +251,14 @@ registerPlugin(
         findById(id: string) {
           return api.getProject(id).then(res => transformProject(res.project));
         },
-        search() {
-          return api.getAllProjects().then(res => res.results.map(transformProject));
+        search(q = '') {
+          return api
+            .getAllProjects()
+            .then(res =>
+              res.results
+                .filter(proj => proj.projectName.toLowerCase().includes(q.toLowerCase()))
+                .map(transformProject)
+            );
         },
         getRequestObject(id) {
           // todo update types, commerce-plugin-tools actually accepts strings, just needs an interface update
@@ -283,6 +289,6 @@ function pickTranslationJob() {
 const transformProject = (project: Project): Resource => {
   return {
     id: project.projectId,
-    title: `${project.sourceLocaleDescription} - ${project.projectName}`,
+    title: project.projectName,
   };
 };
