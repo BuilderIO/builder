@@ -57,10 +57,10 @@
     "@babel/helper-validator-identifier" "^7.16.7"
     to-fast-properties "^2.0.0"
 
-"@builder.io/react@2.0.2":
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/@builder.io/react/-/react-2.0.2.tgz#77f11ae87f794de207ccde8af4d09167be14bc1d"
-  integrity sha512-0YVFSCUfG4bkcVxH45XjoXgvjVkKmxxMueLB6U8aAZimS+s4h5vzynPcCBDYe8SyfCjKY7B+971TVrh1zMjVdA==
+"@builder.io/react@2.0.4":
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/@builder.io/react/-/react-2.0.4.tgz#6896d9f702f0bf947288ad7f8982b16e826f0954"
+  integrity sha512-zj4wKWqQ7wtqAITOTWzQcTewftu2ddOJZlJXgAIgI1fWIQPPA7xI5T9ZRwou/kinv90NNfTZ+xo5hKB1NsYseA==
   dependencies:
     "@builder.io/sdk" "^1.1.27"
     "@emotion/core" "^10.0.17"
