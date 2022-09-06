@@ -278,7 +278,7 @@ export interface BuilderComponentProps {
   stopClickPropagationWhenEditing?: boolean;
 
   /**
-   * Locale code
+   * Locale code, should match one of the locales in your spaces locale, wll auto resolve the localized inputs to the localized value
    */
   locale?: string;
 }
