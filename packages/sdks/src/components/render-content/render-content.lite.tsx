@@ -18,7 +18,7 @@ import {
 } from '../../functions/register-component.js';
 import { track } from '../../functions/track.js';
 import { BuilderContent } from '../../types/builder-content.js';
-import { Dictionary, Nullable } from '../../types/typescript.js';
+import type { Dictionary, Nullable } from '../../types/typescript.js';
 import RenderBlocks from '../render-blocks.lite';
 import RenderContentStyles from './components/render-styles.lite';
 import {
