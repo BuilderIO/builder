@@ -1,6 +1,7 @@
 import { BuilderContent } from '@builder.io/sdk';
 import traverse from 'traverse';
 import omit from 'lodash/omit';
+import unescape from 'lodash/unescape';
 
 export const localizedType = '@builder.io/core:LocalizedValue';
 
@@ -80,7 +81,7 @@ export function applyTranslation(
     if (translation[`metadata.${path}`]) {
       this.update({
         ...el,
-        [locale]: translation[`metadata.${path}`].value,
+        [locale]: unescape(translation[`metadata.${path}`].value),
       });
     }
   });
@@ -125,7 +126,7 @@ export function applyTranslation(
                 ...el.component.options,
                 [key]: {
                   ...el.component.options[key],
-                  [locale]: translation[`blocks.${el.id}#${key}`].value,
+                  [locale]: unescape(translation[`blocks.${el.id}#${key}`].value),
                 },
               },
             },
@@ -142,7 +143,7 @@ export function applyTranslation(
         [key]: {
           '@type': localizedType,
           ...content.data!.state?.translation?.[key],
-          [locale]: translation[key].value,
+          [locale]: unescape(translation[key].value),
         },
       };
     }

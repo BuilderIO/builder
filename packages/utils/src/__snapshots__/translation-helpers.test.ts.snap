@@ -28,7 +28,7 @@ Object {
             "heading": Object {
               "@type": "@builder.io/core:LocalizedValue",
               "Default": "I am a heading!",
-              "de": "german translated heading",
+              "de": "\\"german heading\\"",
               "en-US": "en-us headings!",
               "fr-FR": "french translated heading",
             },
@@ -52,7 +52,7 @@ Object {
         },
         "blocks.builder-custom-component-id#heading": Object {
           "@type": "@builder.io/core:LocalizedValue",
-          "de": "german translated heading",
+          "de": "\\"german heading\\"",
           "fr-FR": "french translated heading",
         },
       },
@@ -68,7 +68,7 @@ Object {
 }
 `;
 
-exports[`getTranslateableFields worksfrom content to match snapshot 1`] = `
+exports[`getTranslateableFields from content to match snapshot 1`] = `
 Object {
   "blocks.block-id#text": Object {
     "instructions": "This is a mobile only element",

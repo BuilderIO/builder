@@ -1,7 +1,7 @@
 import { BuilderContent } from '@builder.io/sdk';
 import { applyTranslation, getTranslateableFields, localizedType } from './translation-helpers';
 
-test('getTranslateableFields worksfrom content to match snapshot', async () => {
+test('getTranslateableFields from content to match snapshot', async () => {
   const content: BuilderContent = {
     data: {
       title: {
@@ -106,11 +106,12 @@ test('applyTranslation from content to match snapshot', async () => {
     'metadata.title': { value: 'hallo' },
     'blocks.block-id#text': { value: 'german translatated' },
     'blocks.builder-custom-component-id#heading': {
-      value: 'german translated heading',
+      value: '&quot;german heading&quot;',
     },
   };
 
   let result = applyTranslation(content, frenchTranslations, 'fr-FR');
   result = applyTranslation(result, germanTranslations, 'de');
+  console.log(result.data?.blocks?.[1].component?.options.heading);
   expect(result).toMatchSnapshot();
 });
