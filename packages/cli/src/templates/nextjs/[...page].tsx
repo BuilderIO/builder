@@ -78,7 +78,7 @@ export default function Page({ page }) {
       </Head>
       <div style={{ padding: 50, textAlign: 'center' }}>
         {/* Put your header or main layout here */}
-        You header
+        Your header
       </div>
 
       {/* Render the Builder page */}
