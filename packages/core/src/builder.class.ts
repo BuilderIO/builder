@@ -1647,11 +1647,20 @@ export class Builder {
         preview,
         editing,
         frameEditing,
+        options,
         params: overrideParams,
       } = builder;
 
       if (userAttributes) {
         this.setUserAttributes(userAttributes);
+      }
+
+      if (options) {
+        // picking only locale and includeRefs
+        this.queryOptions = {
+          ...(options.locale && { locale: options.locale}),
+          ...(options.includeRefs && { includeRefs: options.includeRefs })
+        };
       }
 
       if (overrides) {
@@ -2006,6 +2015,8 @@ export class Builder {
   }
 
   protected overrides: { [key: string]: string } = {};
+  protected queryOptions: { [key: string]: string } = {};
+
   private getContentQueue: null | GetContentOptions[] = null;
   private priorContentQueue: null | GetContentOptions[] = null;
 
@@ -2211,6 +2222,7 @@ export class Builder {
       omit: queue[0].omit || 'meta.componentsUsed',
       apiKey: this.apiKey,
       ...queue[0].options,
+      ...this.queryOptions,
     };
     if (queue[0].fields) {
       queryParams.fields = queue[0].fields;
