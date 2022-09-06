@@ -1658,8 +1658,8 @@ export class Builder {
       if (options) {
         // picking only locale and includeRefs
         this.queryOptions = {
-          ...(options.locale && { locale: options.locale}),
-          ...(options.includeRefs && { includeRefs: options.includeRefs })
+          ...(options.locale && { locale: options.locale }),
+          ...(options.includeRefs && { includeRefs: options.includeRefs }),
         };
       }
 

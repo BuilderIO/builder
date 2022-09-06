@@ -18,7 +18,6 @@ const camelCaseToKebabCase = (str?: string) =>
 const kebabCaseToCamelCase = (str = '') =>
   str.replace(/-([a-z])/g, match => match[1].toUpperCase());
 
-
 const Device = { desktop: 0, tablet: 1, mobile: 2 };
 
 const voidElements = new Set([
@@ -454,9 +453,9 @@ export class BuilderBlock extends React.Component<
     }
 
     const innerComponentProperties = (options.component || options.options) && {
-        ...options.options,
-        ...(options.component.options || options.component.data),
-      };
+      ...options.options,
+      ...(options.component.options || options.component.data),
+    };
 
     const isVoid = voidElements.has(TagName);
 
