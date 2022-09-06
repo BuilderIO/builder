@@ -30,9 +30,9 @@
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
   },
   "devDependencies": {
-    "@sveltejs/adapter-auto": "1.0.0-next.70",
-    "@sveltejs/kit": "1.0.0-next.460",
-    "@sveltejs/package": "1.0.0-next.3",
+    "@sveltejs/adapter-auto": "1.0.0-next.71",
+    "@sveltejs/kit": "1.0.0-next.474",
+    "@sveltejs/package": "1.0.0-next.1",
     "svelte": "^3.44.0",
     "svelte-check": "^2.7.1",
     "svelte-preprocess": "^4.10.6",
