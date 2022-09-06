@@ -92,12 +92,12 @@ export function BuilderPage({ builderJson }) => {
     </td>
     <td align="center">
       <a href="https://builder.io/demo/commerce?demoHost=nextjs-edge-personalization-demo-git-editor-demo-builder-io.vercel.app&demoModel=commerce">
-        <img alt="Commmerce Example Screenshot" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F7da2d84826ff4f429f586114c4ddfb01" />
+        <img alt="Commmerce Example Screenshot" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fb0fd76663aaa4e2bb12dc455b40ea0ea" />
       </a>
     </td>    
     <td align="center">
       <a href="https://builder.io/demo/blog/example?demoHost=blog-example-builder-io.vercel.app&demoModel=blog-post&demoPath=/blog/example">
-        <img alt="Blog Example Screenshot" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Faba90f41a15f40dca00109f85e36414a" />
+        <img alt="Blog Example Screenshot" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ff490f7bd587441f68025df795e81d3fd" />
       </a>
     </td>        
   </tr>
