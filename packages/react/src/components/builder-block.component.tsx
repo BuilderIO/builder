@@ -11,12 +11,28 @@ import { BuilderStoreContext } from '../store/builder-store';
 import { applyPatchWithMinimalMutationChain } from '../functions/apply-patch-with-mutation';
 import { blockToHtmlString } from '../functions/block-to-html-string';
 import { Link } from './Link';
+import traverse from 'traverse';
 
 const camelCaseToKebabCase = (str?: string) =>
   str ? str.replace(/([A-Z])/g, g => `-${g[0].toLowerCase()}`) : '';
 
 const kebabCaseToCamelCase = (str = '') =>
   str.replace(/-([a-z])/g, match => match[1].toUpperCase());
+
+const localizedType = '@builder.io/core:LocalizedValue';
+const resolveLocalizedOptions = (options?: any, locale?: string) => {
+  if (!locale || !options) {
+    return options;
+  }
+
+  const result = traverse(options).map(function (el) {
+    if (el && el['@type'] === localizedType) {
+      this.update(el[locale] || el.Default);
+    }
+  });
+
+  return result;
+};
 
 const Device = { desktop: 0, tablet: 1, mobile: 2 };
 
@@ -452,10 +468,13 @@ export class BuilderBlock extends React.Component<
       }
     }
 
-    const innerComponentProperties = (options.component || options.options) && {
-      ...options.options,
-      ...(options.component.options || options.component.data),
-    };
+    const innerComponentProperties = resolveLocalizedOptions(
+      (options.component || options.options) && {
+        ...options.options,
+        ...(options.component.options || options.component.data),
+      },
+      this.privateState.state.locale
+    );
 
     const isVoid = voidElements.has(TagName);
 
