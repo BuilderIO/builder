@@ -45,6 +45,7 @@ module.exports = {
       plugins: [SRCSET_PLUGIN],
     },
     svelte: {
+      typescript: true,
       plugins: [
         () => ({
           json: {
