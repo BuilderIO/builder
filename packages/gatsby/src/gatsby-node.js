@@ -279,5 +279,5 @@ function getPaths(content) {
     urls = [urls];
   }
 
-  return urls;
+  return urls || [];
 }
