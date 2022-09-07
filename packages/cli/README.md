@@ -81,7 +81,7 @@ If you want don't want the catch-all at the route of your `pages` directory, you
 
 ```
 Usage:
-  $builder integrate [options]
+  $ builder integrate [options]
 
 integrate Builder.io with an existing codebase, currently supports Next.js
 

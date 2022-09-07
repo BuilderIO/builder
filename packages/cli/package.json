@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/cli",
-  "version": "1.2.1",
+  "version": "1.2.6",
   "description": "Official Builder.io CLI",
   "author": "Steve Sewell <steve@builder.io>",
   "keywords": [
@@ -42,7 +42,7 @@
     "typescript": "^3.9.7"
   },
   "dependencies": {
-    "@builder.io/react": "^2.0.1",
+    "@builder.io/react": "^2.0.4",
     "@types/traverse": "^0.6.32",
     "chalk": "^4.1.0",
     "clear": "^0.1.0",

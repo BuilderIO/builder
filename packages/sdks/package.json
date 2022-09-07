@@ -3,7 +3,7 @@
   "private": true,
   "workspaces": [
     "e2e/*",
-    "output/*"
+    "output/**/*"
   ],
   "engines": {
     "yarn": ">= 3.0.0"
@@ -28,16 +28,17 @@
     "ci:build": "yarn run typecheck && mitosis build && cd output/qwik/ && yarn install && yarn build.lib",
     "ci:test": "yarn run test",
     "ci:e2e-prep": "playwright install --with-deps",
+    "ci:e2e-build:prep": "yarn workspace @builder.io/sdk-vue run build",
     "ci:e2e-build": "yarn workspaces foreach -pt --include \"*/e2e*\" --verbose run build",
-    "ci:e2e": "yarn workspaces foreach --verbose run e2e",
+    "ci:e2e": "yarn workspaces foreach --exclude @builder.io/e2e-nextjs-react --verbose run e2e",
     "release-sdk": "bash ./scripts/release-sdk.sh",
     "release:dev:all": "yarn release-sdk svelte && yarn release-sdk react-native && yarn release-sdk solid && yarn release-sdk vue",
     "upgrade-example": "bash ./scripts/upgrade-example.sh",
     "upgrade-example:all": "yarn upgrade-example svelte && yarn upgrade-example react-native && yarn upgrade-example solid && yarn upgrade-example vue"
   },
   "dependencies": {
-    "@builder.io/mitosis": "0.0.56-80",
-    "@builder.io/mitosis-cli": "0.0.17-73",
+    "@builder.io/mitosis": "dev",
+    "@builder.io/mitosis-cli": "dev",
     "@playwright/test": "^1.24.0",
     "node-fetch": "^2.6.1",
     "seedrandom": "^3.0.5",
@@ -69,7 +70,7 @@
     }
   },
   "resolutions": {
-    "vue-template-compiler": "^2.7.8"
+    "vue-template-compiler": "^2.7.9"
   },
   "packageManager": "yarn@3.2.0"
 }

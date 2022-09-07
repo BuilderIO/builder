@@ -6,7 +6,7 @@ import { CircularProgress } from '@material-ui/core';
 // Match any page we don't have a hardcoded URL for and check
 // Builder for a matching page. Otherwise show our 404 page
 // For server side rendering see
-//   Next.js: https://github.com/BuilderIO/builder/tree/master/packages/react/examples/next-js
+//   Next.js: https://github.com/BuilderIO/builder/tree/main/packages/react/examples/next-js
 //   Gatsby: https://github.com/BuilderIO/gatsby-starter-builder
 export const CatchAll = () => {
   const [notFound, setNotFound] = useState(false);

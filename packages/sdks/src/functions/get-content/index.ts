@@ -19,7 +19,7 @@ export async function getContent(
 
 export const generateContentUrl = (options: GetContentOptions): URL => {
   const {
-    limit = 1,
+    limit = 30,
     userAttributes,
     query,
     noTraverse = false,

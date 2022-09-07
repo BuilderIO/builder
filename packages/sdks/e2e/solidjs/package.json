@@ -1,0 +1,22 @@
+{
+  "name": "@builder.io/e2e-solidjs",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "vite",
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview",
+    "e2e": "../../node_modules/.bin/playwright test"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^4.7.4",
+    "vite": "^3.0.0",
+    "vite-plugin-solid": "^2.3.0"
+  },
+  "dependencies": {
+    "@builder.io/sdk-solid": "workspace:*",
+    "solid-js": "^1.4.7"
+  }
+}

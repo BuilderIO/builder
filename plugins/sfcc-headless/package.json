@@ -75,7 +75,7 @@
     ]
   },
   "devDependencies": {
-    "@builder.io/react": "^1.1.29",
+    "@builder.io/react": "^2.0.4",
     "@commitlint/cli": "^7.1.2",
     "@commitlint/config-conventional": "^7.1.2",
     "@rollup/plugin-commonjs": "^19.0.1",

@@ -1,7 +1,7 @@
 import { Show, useStore } from '@builder.io/mitosis';
 import { JSX } from '@builder.io/mitosis/jsx-runtime';
-import { BuilderBlock } from '../../types/builder-block';
-import { getSrcSet } from './image.helpers';
+import type { BuilderBlock } from '../../types/builder-block.js';
+import { getSrcSet } from './image.helpers.js';
 
 export interface ImageProps {
   className?: string;

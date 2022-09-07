@@ -16,7 +16,7 @@ export const InsertMenu = () => {
       <div css={{ padding: 20, display: 'flex', flexWrap: 'wrap' }}>
         {/* 
           Alternatively use custom inert menu sections in your site code, like here 
-          https://github.com/BuilderIO/builder/blob/master/examples/react-design-system/src/builder-settings.js#L32:L32
+          https://github.com/BuilderIO/builder/blob/main/examples/react-design-system/src/builder-settings.js#L32:L32
 
           and render them via Builder.registry.insertMenu which is an array of the configs
           that you pass to Builder.register('insertMenu', { ... } )
