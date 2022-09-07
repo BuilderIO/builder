@@ -375,6 +375,11 @@ export interface GetContentOptions {
    */
   cache?: boolean;
   /**
+   * Set to the current locale in your application if you want localized inputs to be auto-resolved, should match one of the locales keys in your space settings
+   * Learn more about adding or removing locales [here](https://www.builder.io/c/docs/add-remove-locales)
+   */
+  locale?: string;
+  /**
    * @package
    *
    * Indicate that the fetch request is for preview purposes.

@@ -278,7 +278,8 @@ export interface BuilderComponentProps {
   stopClickPropagationWhenEditing?: boolean;
 
   /**
-   * Locale code, should match one of the locales in your spaces locale, wll auto resolve the localized inputs to the localized value
+   * Set to the current locale in your application if you want localized inputs to be auto-resolved, should match one of the locales keys in your space settings
+   * Learn more about adding or removing locales [here](https://www.builder.io/c/docs/add-remove-locales)
    */
   locale?: string;
 }
