@@ -17,7 +17,8 @@
     "test": "jest",
     "remove-symlinks": "./scripts/remove-resolutions.sh && yarn",
     "add-symlinks": "./scripts/add-resolutions.sh && yarn",
-    "upgrade-mitosis": "yarn up @builder.io/mitosis@dev @builder.io/mitosis-cli@dev",
+    "upgrade-mitosis:dev": "yarn up @builder.io/mitosis@dev @builder.io/mitosis-cli@dev",
+    "upgrade-mitosis": "yarn up @builder.io/mitosis @builder.io/mitosis-cli",
     "prettier": "prettier .",
     "lint": "yarn run prettier --write",
     "eslint": "eslint . --quiet",
@@ -38,6 +39,7 @@
     "upgrade-example:all": "yarn upgrade-example svelte && yarn upgrade-example react-native && yarn upgrade-example solid && yarn upgrade-example vue"
   },
   "dependencies": {
+    "@angular/compiler": "^14.2.1",
     "@builder.io/mitosis": "^0.0.56",
     "@builder.io/mitosis-cli": "^0.0.17",
     "@playwright/test": "^1.24.0",
