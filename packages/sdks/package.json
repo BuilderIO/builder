@@ -31,7 +31,7 @@
     "ci:e2e-prep": "playwright install --with-deps",
     "ci:e2e-build:prep": "yarn workspace @builder.io/sdk-vue run build",
     "ci:e2e-build": "yarn workspaces foreach -pt --include \"*/e2e*\" --verbose run build",
-    "ci:e2e": "yarn workspaces foreach --exclude @builder.io/e2e-nextjs-react --verbose run e2e",
+    "ci:e2e": "yarn workspaces foreach --exclude @builder.io/e2e-nextjs-react --exclude @builder.io/e2e-vue3 --verbose run e2e",
     "release-sdk": "bash ./scripts/release-sdk.sh",
     "release:dev:all": "yarn release-sdk svelte dev && yarn release-sdk react-native dev && yarn release-sdk solid dev && yarn release-sdk vue dev",
     "release:patch:all": "yarn release-sdk svelte patch && yarn release-sdk react-native patch && yarn release-sdk solid patch && yarn release-sdk vue patch",
