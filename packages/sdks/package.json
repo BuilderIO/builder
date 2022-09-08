@@ -32,7 +32,8 @@
     "ci:e2e-build": "yarn workspaces foreach -pt --include \"*/e2e*\" --verbose run build",
     "ci:e2e": "yarn workspaces foreach --exclude @builder.io/e2e-nextjs-react --verbose run e2e",
     "release-sdk": "bash ./scripts/release-sdk.sh",
-    "release:dev:all": "yarn release-sdk svelte && yarn release-sdk react-native && yarn release-sdk solid && yarn release-sdk vue",
+    "release:dev:all": "yarn release-sdk svelte dev && yarn release-sdk react-native dev && yarn release-sdk solid dev && yarn release-sdk vue dev",
+    "release:patch:all": "yarn release-sdk svelte patch && yarn release-sdk react-native patch && yarn release-sdk solid patch && yarn release-sdk vue patch",
     "upgrade-example": "bash ./scripts/upgrade-example.sh",
     "upgrade-example:all": "yarn upgrade-example svelte && yarn upgrade-example react-native && yarn upgrade-example solid && yarn upgrade-example vue"
   },
