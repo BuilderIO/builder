@@ -39,7 +39,6 @@
     "upgrade-example:all": "yarn upgrade-example svelte && yarn upgrade-example react-native && yarn upgrade-example solid && yarn upgrade-example vue"
   },
   "dependencies": {
-    "@angular/compiler": "^14.2.1",
     "@builder.io/mitosis": "^0.0.56",
     "@builder.io/mitosis-cli": "^0.0.17",
     "@playwright/test": "^1.24.0",
@@ -48,6 +47,7 @@
     "traverse": "^0.6.6"
   },
   "devDependencies": {
+    "@angular/compiler": "^14.2.1",
     "@builder.io/eslint-plugin-mitosis": "dev",
     "@types/jest": "^27.4.1",
     "@types/node-fetch": "^2.5.12",
