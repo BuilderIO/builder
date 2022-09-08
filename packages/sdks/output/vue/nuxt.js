@@ -8,6 +8,7 @@ export default function () {
     );
   }
 
+  // TO-DO: this is probably no longer working, given that we now bundle w `vite` and no longer have these folders.
   this.nuxt.hook('components:dirs', (dirs) => {
     // Add ./components dir to the list
     dirs.push({
