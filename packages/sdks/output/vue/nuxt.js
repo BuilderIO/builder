@@ -8,15 +8,16 @@ export default function () {
     );
   }
 
+  // TO-DO: this is probably no longer working, given that we now bundle w `vite` and no longer have these folders.
   this.nuxt.hook('components:dirs', (dirs) => {
     // Add ./components dir to the list
     dirs.push({
-      path: join(__dirname, 'vue2/src/components'),
+      path: join(__dirname, 'dist/vue-2/src/components'),
       prefix: 'builder',
     });
     // Add ./blocks dir to the list
     dirs.push({
-      path: join(__dirname, 'vue2/src/blocks'),
+      path: join(__dirname, 'dist/vue-2/src/blocks'),
       prefix: 'builder',
       pattern: '**/index.*',
     });

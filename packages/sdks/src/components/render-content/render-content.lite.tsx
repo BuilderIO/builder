@@ -195,18 +195,19 @@ export default function RenderContent(props: RenderContentProps) {
       );
     },
     handleRequest({ url, key }: { key: string; url: string }) {
-      const fetchAndSetState = async () => {
-        const fetch = await getFetch();
-        const response = await fetch(url);
-        const json = await response.json();
-
-        const newOverrideState = {
-          ...state.overrideState,
-          [key]: json,
-        };
-        state.overrideState = newOverrideState;
-      };
-      fetchAndSetState();
+      getFetch()
+        .then((fetch) => fetch(url))
+        .then((response) => response.json())
+        .then((json) => {
+          const newOverrideState = {
+            ...state.overrideState,
+            [key]: json,
+          };
+          state.overrideState = newOverrideState;
+        })
+        .catch((err) => {
+          console.log('error fetching dynamic data', url, err);
+        });
     },
     runHttpRequests() {
       const requests = state.useContent?.data?.httpRequests ?? {};
