@@ -42,6 +42,11 @@ export function evaluate({
       useCode
     )(builder, builder, state, context, event);
   } catch (e) {
-    console.warn('Builder custom code error: ', e);
+    console.warn(
+      'Builder custom code error: \n While Evaluating: \n ',
+      useCode,
+      '\n',
+      (e as any).message || e
+    );
   }
 }

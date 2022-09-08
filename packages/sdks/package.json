@@ -25,7 +25,7 @@
     "typecheck": "tsc --noEmit",
     "typecheck:watch": "yarn run typecheck --watch",
     "ci:lint": "yarn run prettier --check && yarn run eslint",
-    "ci:build": "yarn run typecheck && mitosis build",
+    "ci:build": "yarn run typecheck && mitosis build && cd output/qwik/ && yarn install && yarn build.lib",
     "ci:test": "yarn run test",
     "ci:e2e-prep": "playwright install --with-deps",
     "ci:e2e-build:prep": "yarn workspace @builder.io/sdk-vue run build",

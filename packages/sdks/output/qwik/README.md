@@ -30,8 +30,8 @@ npm add --save @builder.io/sdk-qwik
 Add Qwik SDK code to a particular route (such as `src/routes/index.tsx`)
 
 ```typscript
-import { component$, Host, Resource, useResource$ } from "@builder.io/qwik";
-import { DocumentHead, useLocation } from "@builder.io/qwik-city";
+import { component$, Resource, useResource$ } from "@builder.io/qwik";
+import { useLocation } from "@builder.io/qwik-city";
 import { getContent, RenderContent, getBuilderSearchParams } from "@builder.io/sdk-qwik";
 
 export const BUILDER_PUBLIC_API_KEY = "YOUR_API_KEY_GOES_HERE"; // ggignore
