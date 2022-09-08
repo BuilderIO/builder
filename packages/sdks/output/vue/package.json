@@ -5,7 +5,7 @@
     "vue2",
     "vue3"
   ],
-  "version": "0.0.1-73",
+  "version": "0.0.1",
   "dependencies": {
     "node-fetch": "^2.6.1"
   },
