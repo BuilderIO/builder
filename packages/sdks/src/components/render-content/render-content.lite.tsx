@@ -80,6 +80,9 @@ export default function RenderContent(props: RenderContentProps) {
   const state = useStore({
     forceReRenderCount: 0,
     get useContent(): Nullable<BuilderContent> {
+      if (!props.content && !state.overrideContent) {
+        return undefined;
+      }
       const mergedContent: BuilderContent = {
         ...props.content,
         ...state.overrideContent,
