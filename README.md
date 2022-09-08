@@ -91,7 +91,7 @@ export function BuilderPage({ builderJson }) => {
       </a>
     </td>
     <td align="center">
-      <a href="https://builder.io/demo/commerce?demoHost=nextjs-edge-personalization-demo-git-editor-demo-builder-io.vercel.app&demoModel=commerce">
+      <a href="https://builder.io/demo/commerce?demoHost=nextjs-edge-personalization-demo-git-editor-demo-builder-io.vercel.app&demoModel=page">
         <img alt="Commmerce Example Screenshot" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fb0fd76663aaa4e2bb12dc455b40ea0ea" />
       </a>
     </td>    
