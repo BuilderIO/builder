@@ -1313,6 +1313,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@builder.io/qwik@npm:0.0.108":
+  version: 0.0.108
+  resolution: "@builder.io/qwik@npm:0.0.108"
+  checksum: 1da63150370e00966e6c88b1a40fde7e59fd292ef488f2fae4bbe44160486e29dcb37aa1992ebfefc779edcc72bb83b61fce094da9e4c03d6322003db5416dc9
+  languageName: node
+  linkType: hard
+
 "@builder.io/react@npm:^1.1.50":
   version: 1.1.52
   resolution: "@builder.io/react@npm:1.1.52"
@@ -1343,12 +1350,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@builder.io/sdk-qwik@workspace:output/qwik"
   dependencies:
-    "@builder.io/qwik": 0.0.103
+    "@builder.io/qwik": 0.0.108
     "@types/node": latest
     typescript: 4.7.4
     vite: 3.0.2
   peerDependencies:
-    "@builder.io/qwik": 0.0.103
+    "@builder.io/qwik": 0.0.108
   languageName: unknown
   linkType: soft
 
