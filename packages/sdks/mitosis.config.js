@@ -24,8 +24,7 @@ const SRCSET_PLUGIN = () => ({
     pre: (code) => {
       // workaround until we resolve
       // https://github.com/BuilderIO/mitosis/issues/526
-      code.replace('srcset', 'srcSet');
-      return code;
+      return code.replace(/srcset=/g, 'srcSet=');
     },
   },
 });
@@ -44,6 +43,10 @@ module.exports = {
       stylesType: 'style-tag',
     },
     reactNative: {
+      plugins: [SRCSET_PLUGIN],
+    },
+    qwik: {
+      typescript: true,
       plugins: [SRCSET_PLUGIN],
     },
     svelte: {

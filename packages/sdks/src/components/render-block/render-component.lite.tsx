@@ -2,7 +2,7 @@ import { BuilderBlock } from '../../types/builder-block.js';
 import BlockStyles from './block-styles.lite';
 import RenderBlock from './render-block.lite';
 import { For, Show, useMetadata } from '@builder.io/mitosis';
-import { BuilderContextInterface } from '../../context/builder.context.lite';
+import { BuilderContextInterface } from '../../context/types.js';
 import { markPropsMutable } from '../../functions/mark-mutable.js';
 
 export interface RenderComponentProps {

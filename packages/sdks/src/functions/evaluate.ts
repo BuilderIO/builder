@@ -1,4 +1,4 @@
-import type { BuilderContextInterface } from '../context/builder.context.lite';
+import type { BuilderContextInterface } from '../context/types.js';
 import { isBrowser } from './is-browser.js';
 import { isEditing } from './is-editing.js';
 

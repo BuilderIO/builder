@@ -1,4 +1,4 @@
-import { RegisteredComponent } from '../context/builder.context.lite';
+import { RegisteredComponent } from '../context/types.js';
 import type { ComponentInfo, Input } from '../types/components.js';
 
 /**
