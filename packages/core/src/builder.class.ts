@@ -587,6 +587,10 @@ export interface Input {
   showIf?: ((options: Map<string, any>) => boolean) | string;
   /** @hidden */
   copyOnAdd?: boolean;
+  /**
+   * Use optionally with inputs of type `reference`. Restricts the content entry picker to a specific model by name.
+   */
+  model?: string;
 }
 
 /**
