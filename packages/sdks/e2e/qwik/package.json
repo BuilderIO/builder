@@ -22,7 +22,7 @@
     "e2e": "../../node_modules/.bin/playwright test"
   },
   "devDependencies": {
-    "@builder.io/qwik": "0.0.103",
+    "@builder.io/qwik": "0.0.108",
     "@builder.io/sdk-qwik": "workspace:*",
     "@builder.io/sdks-e2e-tests": "workspace:*",
     "@types/eslint": "8.4.5",
@@ -31,7 +31,7 @@
     "@typescript-eslint/eslint-plugin": "5.30.7",
     "@typescript-eslint/parser": "5.30.7",
     "eslint": "8.20.0",
-    "eslint-plugin-qwik": "0.0.103",
+    "eslint-plugin-qwik": "0.0.108",
     "express": "4.17.3",
     "node-fetch": "3.2.9",
     "prettier": "2.7.1",
