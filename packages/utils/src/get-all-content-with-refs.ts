@@ -5,33 +5,28 @@ export const isBuilderElement = (item: unknown): item is BuilderElement => {
   return Boolean((item as any)?.['@type'] === '@builder.io/sdk:Element');
 };
 
-async function resolveRefs(content: any, apiKey: string) {
+async function resolveRefs(content: any, apiKey: string, builderInstance: Builder) {
   const promises: Promise<void>[] = [];
   const result = traverse(content).map(function (child) {
     if (child && child['@type'] === '@builder.io/core:Reference') {
       if (child.model) {
         promises.push(
-          fetch(`https://cdn.builder.io/api/v2/content/${child.model}/${child.id}?apiKey=${apiKey}`)
-            .then(res => res.json())
-            .then(async value => {
-              child.value = await resolveRefs(value, apiKey);
-            })
-            .catch(err => {
-              console.error(`Error fetching relationship ${child.id} (API key: ${apiKey}):`, err);
-            })
+          builderInstance.getAll(child.model, { query: { id: child.id } }).then(async (value, ) => {
+            child.value = await resolveRefs(value, apiKey, builderInstance);
+          })
         );
       }
     }
   });
 
   await Promise.all(promises);
-  return { content: result };
+  return result;
 }
 
 export async function getContentWithAllReferences(builderInstance: Builder, modelName: string) {
-  const content: { results: BuilderContent[] } = await fetch(
-    `https://cdn.builder.io/api/v2/content/${modelName}?apiKey=${builderInstance.apiKey}`
-  ).then(res => res.json());
+  const content:BuilderContent[]  = await builderInstance.getAll(modelName, {
+    options: { noTargeting: true },
+  })
 
-  return await resolveRefs(content?.results, builderInstance.apiKey!);
+  return await resolveRefs(content, builderInstance.apiKey!, builderInstance);
 }
