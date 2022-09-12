@@ -199,6 +199,11 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
               data: match,
               loading: false,
             });
+            const isPreviewing = (builder.editingModel || builder.previewingModel) === this.name;
+            if (!this.props.inline && this.firstLoad && isPreviewing) {
+              this.firstLoad = false;
+              this.subscribeToContent();
+            }
 
             if (match && this.firstLoad) {
               this.firstLoad = false;
