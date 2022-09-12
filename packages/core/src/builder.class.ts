@@ -375,6 +375,11 @@ export interface GetContentOptions {
    */
   cache?: boolean;
   /**
+   * Set to the current locale in your application if you want localized inputs to be auto-resolved, should match one of the locales keys in your space settings
+   * Learn more about adding or removing locales [here](https://www.builder.io/c/docs/add-remove-locales)
+   */
+  locale?: string;
+  /**
    * @package
    *
    * Indicate that the fetch request is for preview purposes.
@@ -582,6 +587,10 @@ export interface Input {
   showIf?: ((options: Map<string, any>) => boolean) | string;
   /** @hidden */
   copyOnAdd?: boolean;
+  /**
+   * Use optionally with inputs of type `reference`. Restricts the content entry picker to a specific model by name.
+   */
+  model?: string;
 }
 
 /**
@@ -1647,11 +1656,20 @@ export class Builder {
         preview,
         editing,
         frameEditing,
+        options,
         params: overrideParams,
       } = builder;
 
       if (userAttributes) {
         this.setUserAttributes(userAttributes);
+      }
+
+      if (options) {
+        // picking only locale and includeRefs
+        this.queryOptions = {
+          ...(options.locale && { locale: options.locale }),
+          ...(options.includeRefs && { includeRefs: options.includeRefs }),
+        };
       }
 
       if (overrides) {
@@ -2006,6 +2024,8 @@ export class Builder {
   }
 
   protected overrides: { [key: string]: string } = {};
+  protected queryOptions: { [key: string]: string } = {};
+
   private getContentQueue: null | GetContentOptions[] = null;
   private priorContentQueue: null | GetContentOptions[] = null;
 
@@ -2211,6 +2231,7 @@ export class Builder {
       omit: queue[0].omit || 'meta.componentsUsed',
       apiKey: this.apiKey,
       ...queue[0].options,
+      ...this.queryOptions,
     };
     if (queue[0].fields) {
       queryParams.fields = queue[0].fields;

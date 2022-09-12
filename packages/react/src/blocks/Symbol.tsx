@@ -121,6 +121,7 @@ class SymbolComponent extends React.Component<SymbolProps> {
                 this.placeholder
               ) : (
                 <BuilderComponent
+                  {...(state.state?.locale && { locale: state.state.locale })}
                   isChild
                   ref={(ref: any) => (this.ref = ref)}
                   context={{ ...state.context, symbolId: this.props.builderBlock?.id }}

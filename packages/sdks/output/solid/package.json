@@ -3,10 +3,10 @@
   "version": "0.0.8-25",
   "description": "",
   "type": "module",
-  "main": "./src/solid-index.jsx",
-  "module": "./src/solid-index.jsx",
+  "main": "./solid-index.jsx",
+  "module": "./solid-index.jsx",
   "exports": {
-    ".": "./src/solid-index.jsx"
+    ".": "./solid-index.jsx"
   },
   "scripts": {
     "release:dev": "npm version prerelease --no-git-tag-version && npm publish --tag dev --access public"

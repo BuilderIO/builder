@@ -276,6 +276,12 @@ export interface BuilderComponentProps {
    * navigation to other pages unintended
    */
   stopClickPropagationWhenEditing?: boolean;
+
+  /**
+   * Set to the current locale in your application if you want localized inputs to be auto-resolved, should match one of the locales keys in your space settings
+   * Learn more about adding or removing locales [here](https://www.builder.io/c/docs/add-remove-locales)
+   */
+  locale?: string;
 }
 
 export interface BuilderComponentState {
@@ -840,7 +846,7 @@ export class BuilderComponent extends React.Component<
   get data() {
     const data = {
       ...(this.inlinedContent && this.inlinedContent.data?.state),
-      ...this.props.data,
+      ...this.externalState,
       ...this.state.state,
     };
     Object.assign(this.rootState, data);
@@ -851,7 +857,7 @@ export class BuilderComponent extends React.Component<
     // TODO: shallow diff
     if (this.props.data && prevProps.data !== this.props.data) {
       this.state.update((state: any) => {
-        Object.assign(state, this.props.data);
+        Object.assign(state, this.externalState);
       });
     }
 
@@ -891,6 +897,13 @@ export class BuilderComponent extends React.Component<
     return content;
   }
 
+  get externalState() {
+    return {
+      ...this.props.data,
+      ...(this.props.locale ? { locale: this.props.locale } : {}),
+    };
+  }
+
   get useContent() {
     return this.content || this.state.context.builderContent;
   }
@@ -899,7 +912,10 @@ export class BuilderComponent extends React.Component<
     const content = this.content;
 
     const dataString =
-      Builder.isBrowser && this.props.data && size(this.props.data) && hash(this.props.data);
+      Builder.isBrowser &&
+      this.externalState &&
+      size(this.externalState) &&
+      hash(this.externalState);
     let key = Builder.isEditing ? this.name : this.props.entry;
     if (key && !Builder.isEditing && dataString && dataString.length < 300) {
       key += ':' + dataString;
@@ -970,6 +986,7 @@ export class BuilderComponent extends React.Component<
                           !this.isPreviewing && { initialContent: [] }),
                         ...(this.props.url && { url: this.props.url }),
                         ...this.props.options,
+                        ...(this.props.locale ? { locale: this.props.locale } : {}),
                         ...(this.options.codegen && {
                           format: 'react',
                         }),
@@ -1271,7 +1288,7 @@ export class BuilderComponent extends React.Component<
           deviceSize: this.deviceSizeState,
           device: this.device,
           ...data.state,
-          ...this.props.data,
+          ...this.externalState,
         }),
       };
       if (this.mounted) {
