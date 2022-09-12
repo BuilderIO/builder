@@ -1,4 +1,4 @@
-import { BuilderContextInterface } from '../../context/builder.context.lite';
+import { BuilderContextInterface } from '../../context/types.js';
 import { BuilderBlock } from '../../types/builder-block.js';
 
 export interface RepeatData {

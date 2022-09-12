@@ -1,7 +1,7 @@
 import {
   BuilderContextInterface,
   RegisteredComponent,
-} from '../../context/builder.context.lite';
+} from '../../context/types.js';
 import { getBlockActions } from '../../functions/get-block-actions.js';
 import { getBlockComponentOptions } from '../../functions/get-block-component-options.js';
 import { getBlockProperties } from '../../functions/get-block-properties.js';

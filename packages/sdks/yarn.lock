@@ -1137,7 +1137,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@builder.io/e2e-qwik@workspace:e2e/qwik"
   dependencies:
-    "@builder.io/qwik": 0.0.103
+    "@builder.io/qwik": 0.0.108
     "@builder.io/sdk-qwik": "workspace:*"
     "@builder.io/sdks-e2e-tests": "workspace:*"
     "@types/eslint": 8.4.5
@@ -1146,7 +1146,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": 5.30.7
     "@typescript-eslint/parser": 5.30.7
     eslint: 8.20.0
-    eslint-plugin-qwik: 0.0.103
+    eslint-plugin-qwik: 0.0.108
     express: 4.17.3
     node-fetch: 3.2.9
     prettier: 2.7.1
@@ -1243,13 +1243,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis-cli@npm:^0.0.17":
-  version: 0.0.17
-  resolution: "@builder.io/mitosis-cli@npm:0.0.17"
+"@builder.io/mitosis-cli@npm:latest":
+  version: 0.0.19
+  resolution: "@builder.io/mitosis-cli@npm:0.0.19"
   dependencies:
     "@babel/core": ^7.17.8
     "@babel/preset-typescript": ^7.16.7
-    "@builder.io/mitosis": 0.0.56
+    "@builder.io/mitosis": 0.0.58
     "@vue/compiler-sfc": ^3.1.5
     babel-preset-solid: ^1.3.13
     chalk: ^4.1.0
@@ -1270,13 +1270,13 @@ __metadata:
     vue-template-validator: ^1.1.5
   bin:
     mitosis: bin/mitosis
-  checksum: dbda8ec1d3231b21a097e30afcf6beb3562296c6f5696d984756e0a2e630d789bb09602ad0a2ef0d187bfb792a1d2fee56ebaae6caac46d4183bd4d1213c4e6a
+  checksum: c9ff7cabc13d87b5f8a9648911272b6e46cef366796b124e0b0718623adbcdfa9c8feb61d89553b57a9826fab7a2873b8544e886a19e8f706f913515218461b9
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis@npm:0.0.56, @builder.io/mitosis@npm:^0.0.56":
-  version: 0.0.56
-  resolution: "@builder.io/mitosis@npm:0.0.56"
+"@builder.io/mitosis@npm:0.0.58, @builder.io/mitosis@npm:latest":
+  version: 0.0.58
+  resolution: "@builder.io/mitosis@npm:0.0.58"
   dependencies:
     "@angular/compiler": ^11.2.11
     "@babel/core": 7.14.5
@@ -1307,16 +1307,21 @@ __metadata:
     traverse: ^0.6.6
     typescript: ^4.7.3
     vue: ~2.6
-  peerDependencies:
-    vue-template-compiler: ~2.6
-  checksum: 4f6f775abb6daf595895a2cb932725a4237ca00d6def6bb86ab70d4b372a52a4a9650113ac84e9cdb6006d115fb7f858e1e90faa76889d664d2cbd5b5559e6be
+  checksum: 11f5d650dc4edec385b6f45923d31b0b9ce7057da11ea046289df964e8bb78f50967d3f9c39279bd5ecdacbf843281332d5fac939d4dc7862761a5a362216c4a
   languageName: node
   linkType: hard
 
-"@builder.io/qwik@npm:0.0.103":
-  version: 0.0.103
-  resolution: "@builder.io/qwik@npm:0.0.103"
-  checksum: 98363e910302a85d458b45f78d45033d728ce56b7fbd18a85e80decf2b6da98c75d6175ce239db33b7a088bda7cc73a54589b61b6d7ccfd755aae466dbd95f7d
+"@builder.io/qwik@BuilderIO/qwik-build#commit=08a6883d163f8eea8dc1710357b63b7ac01b2bef":
+  version: 0.0.108
+  resolution: "@builder.io/qwik@https://github.com/BuilderIO/qwik-build.git#commit=08a6883d163f8eea8dc1710357b63b7ac01b2bef"
+  checksum: d7dcb4e551ca5ae5159d9a6e11b86c8ccd2d275ee18455af44b3a0cef01cdd77b8a0d5cd081cc19ca11a8c52ab4999d0abca5e7e802c90dd01c997700d098cae
+  languageName: node
+  linkType: hard
+
+"@builder.io/qwik@npm:0.0.108":
+  version: 0.0.108
+  resolution: "@builder.io/qwik@npm:0.0.108"
+  checksum: 1da63150370e00966e6c88b1a40fde7e59fd292ef488f2fae4bbe44160486e29dcb37aa1992ebfefc779edcc72bb83b61fce094da9e4c03d6322003db5416dc9
   languageName: node
   linkType: hard
 
@@ -1350,12 +1355,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@builder.io/sdk-qwik@workspace:output/qwik"
   dependencies:
-    "@builder.io/qwik": 0.0.103
+    "@builder.io/qwik": "BuilderIO/qwik-build#commit=08a6883d163f8eea8dc1710357b63b7ac01b2bef"
     "@types/node": latest
     typescript: 4.7.4
     vite: 3.0.2
   peerDependencies:
-    "@builder.io/qwik": 0.0.103
+    "@builder.io/qwik": 0.0.108
   languageName: unknown
   linkType: soft
 
@@ -1475,8 +1480,8 @@ __metadata:
   dependencies:
     "@angular/compiler": ^14.2.1
     "@builder.io/eslint-plugin-mitosis": dev
-    "@builder.io/mitosis": ^0.0.56
-    "@builder.io/mitosis-cli": ^0.0.17
+    "@builder.io/mitosis": latest
+    "@builder.io/mitosis-cli": latest
     "@playwright/test": ^1.24.0
     "@types/jest": ^27.4.1
     "@types/node-fetch": ^2.5.12
@@ -6363,12 +6368,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-qwik@npm:0.0.103":
-  version: 0.0.103
-  resolution: "eslint-plugin-qwik@npm:0.0.103"
+"eslint-plugin-qwik@npm:0.0.108":
+  version: 0.0.108
+  resolution: "eslint-plugin-qwik@npm:0.0.108"
   peerDependencies:
     eslint: ">= 8"
-  checksum: 1901ad1d1fcd8436f5dfaba4f7483b95e8a0e980dd3032ab3b013f6083280bf09e9bedad8df305087447604abfb3c94aaaf538e1daadd67d234576ff02c74ff3
+  checksum: 2aa2fdd17e7ae54979fb740b6090bf92111937b5b976d4859c5cd7f62c3d4e4db3dff3d16fb35743c5b0bb86e02eb5e8e58d7767417af4a7b1b198fbfa9e20a0
   languageName: node
   linkType: hard
 

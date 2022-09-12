@@ -1,11 +1,12 @@
 import { getDefaultRegisteredComponents } from '../../constants/builder-registered-components.js';
 import { TARGET } from '../../constants/target.js';
-import BuilderContext, {
+import BuilderContext from '../../context/builder.context.lite';
+import {
   BuilderRenderContext,
   BuilderRenderState,
   RegisteredComponent,
   RegisteredComponents,
-} from '../../context/builder.context.lite';
+} from '../../context/types.js';
 import { evaluate } from '../../functions/evaluate.js';
 import { getContent } from '../../functions/get-content/index.js';
 import { getFetch } from '../../functions/get-fetch.js';
@@ -45,7 +46,7 @@ useMetadata({
     },
     replace: {
       '// QWIK-REPLACE: _useMutableProps':
-        '_useMutableProps(elementRef.current, true);',
+        'elementRef.current && _useMutableProps(elementRef.current, true);',
     },
     imports: {
       _useMutableProps: '@builder.io/qwik',
@@ -182,7 +183,7 @@ export default function RenderContent(props: RenderContentProps) {
         track({
           type: 'click',
           canTrack: state.canTrackToUse,
-          contentId: state.useContent.id,
+          contentId: state.useContent?.id,
           orgId: props.apiKey,
         });
       }
@@ -289,12 +290,12 @@ export default function RenderContent(props: RenderContentProps) {
         // QWIK-REPLACE: _useMutableProps
         registerInsertMenu();
         setupBrowserForEditing();
-        Object.values(state.allRegisteredComponents).forEach(
-          (registeredComponent) => {
-            const message = createRegisterComponentMessage(registeredComponent);
-            window.parent?.postMessage(message, '*');
-          }
-        );
+        Object.values<RegisteredComponent>(
+          state.allRegisteredComponents
+        ).forEach((registeredComponent) => {
+          const message = createRegisterComponentMessage(registeredComponent);
+          window.parent?.postMessage(message, '*');
+        });
         window.addEventListener('message', state.processMessage);
         window.addEventListener(
           'builder:component:stateChangeListenerActivated',
@@ -305,7 +306,7 @@ export default function RenderContent(props: RenderContentProps) {
         track({
           type: 'impression',
           canTrack: state.canTrackToUse,
-          contentId: state.useContent.id,
+          contentId: state.useContent?.id,
           orgId: props.apiKey,
         });
       }
