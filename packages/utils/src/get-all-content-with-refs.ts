@@ -11,7 +11,7 @@ async function resolveRefs(content: any, apiKey: string, builderInstance: Builde
     if (child && child['@type'] === '@builder.io/core:Reference') {
       if (child.model) {
         promises.push(
-          builderInstance.getAll(child.model, { query: { id: child.id } }).then(async (value, ) => {
+          builderInstance.getAll(child.model, { query: { id: child.id } }).then(async value => {
             child.value = await resolveRefs(value, apiKey, builderInstance);
           })
         );
@@ -24,9 +24,9 @@ async function resolveRefs(content: any, apiKey: string, builderInstance: Builde
 }
 
 export async function getContentWithAllReferences(builderInstance: Builder, modelName: string) {
-  const content:BuilderContent[]  = await builderInstance.getAll(modelName, {
+  const content: BuilderContent[] = await builderInstance.getAll(modelName, {
     options: { noTargeting: true },
-  })
+  });
 
   return await resolveRefs(content, builderInstance.apiKey!, builderInstance);
 }
