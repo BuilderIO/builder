@@ -46,7 +46,7 @@ useMetadata({
     },
     replace: {
       '// QWIK-REPLACE: _useMutableProps':
-        '_useMutableProps(elementRef.current!, true);',
+        'elementRef.current && _useMutableProps(elementRef.current, true);',
     },
     imports: {
       _useMutableProps: '@builder.io/qwik',
