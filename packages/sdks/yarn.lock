@@ -1189,7 +1189,7 @@ __metadata:
   dependencies:
     "@builder.io/sdk-svelte": "workspace:*"
     "@builder.io/sdks-e2e-tests": "workspace:*"
-    "@sveltejs/vite-plugin-svelte": ^1.0.0-next.49
+    "@sveltejs/vite-plugin-svelte": ^1.0.5
     "@tsconfig/svelte": ^3.0.0
     svelte: ^3.48.0
     svelte-check: ^2.8.0
@@ -2715,7 +2715,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sveltejs/vite-plugin-svelte@npm:^1.0.0-next.49, @sveltejs/vite-plugin-svelte@npm:^1.0.5":
+"@sveltejs/vite-plugin-svelte@npm:^1.0.5":
   version: 1.0.5
   resolution: "@sveltejs/vite-plugin-svelte@npm:1.0.5"
   dependencies:
