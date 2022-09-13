@@ -1314,7 +1314,7 @@ __metadata:
 "@builder.io/qwik@BuilderIO/qwik-build#commit=08a6883d163f8eea8dc1710357b63b7ac01b2bef":
   version: 0.0.108
   resolution: "@builder.io/qwik@https://github.com/BuilderIO/qwik-build.git#commit=08a6883d163f8eea8dc1710357b63b7ac01b2bef"
-  checksum: 873f4f5b3e5b05910b97772b7d52eef7ecd34d972d660d3abca9c63d29cff737eb3b2726149a64a55c7e3ca92e1ca426545a8f3f83264774e764af7417868c19
+  checksum: d7dcb4e551ca5ae5159d9a6e11b86c8ccd2d275ee18455af44b3a0cef01cdd77b8a0d5cd081cc19ca11a8c52ab4999d0abca5e7e802c90dd01c997700d098cae
   languageName: node
   linkType: hard
 
