@@ -23,7 +23,8 @@
   },
   "types": "./package/index.d.ts",
   "scripts": {
-    "release:dev": "npm version prerelease --no-git-tag-version && npm publish --tag dev --access public",
+    "release:patch": "yarn run build && npm version patch --no-git-tag-version && npm publish --access public",
+    "release:dev": "yarn run build && npm version prerelease --no-git-tag-version && npm publish --tag dev --access public",
     "dev": "vite dev",
     "build": "svelte-kit sync && svelte-package && rm package/package.json",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
