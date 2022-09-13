@@ -16,10 +16,8 @@ import { getGlobalThis } from './get-global-this.js';
  * - in Node environment bundling the `node-fetch` polyfill provides no benefit as
  *   we can just `require('node-fetch')` it.
  *
- * HACK: This hack is here to make sure that the bundler doesn't include `node-fetch`
- * in single-file-bundle.
+ * ENSURE: that the bundler does not bundle `node-fetch`.
  */
-const NODE_FETCH_URL = () => 'node-fetch';
 
 let fetch: typeof global.fetch | undefined = undefined;
 
@@ -28,9 +26,9 @@ export async function getFetch(): Promise<typeof global.fetch> {
   const globalFetch: typeof global.fetch = getGlobalThis().fetch;
 
   if (typeof globalFetch === 'undefined' && typeof global !== 'undefined') {
-    const nodeFetch = import(NODE_FETCH_URL()).then(
-      (d) => d.default
-    ) as Promise<typeof global.fetch>;
+    const nodeFetch = import(`node-fetch`).then((d) => d.default) as Promise<
+      typeof global.fetch
+    >;
     return (fetch = (nodeFetch as any).default || nodeFetch);
   }
 

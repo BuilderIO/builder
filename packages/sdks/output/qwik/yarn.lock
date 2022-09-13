@@ -5,10 +5,12 @@ __metadata:
   version: 6
   cacheKey: 8
 
-"@builder.io/qwik@BuilderIO/qwik-build#commit=08a6883d163f8eea8dc1710357b63b7ac01b2bef":
-  version: 0.0.108
-  resolution: "@builder.io/qwik@https://github.com/BuilderIO/qwik-build.git#commit=08a6883d163f8eea8dc1710357b63b7ac01b2bef"
-  checksum: d7dcb4e551ca5ae5159d9a6e11b86c8ccd2d275ee18455af44b3a0cef01cdd77b8a0d5cd081cc19ca11a8c52ab4999d0abca5e7e802c90dd01c997700d098cae
+"@builder.io/qwik@npm:0.0.108-dev20220914040446":
+  version: 0.0.108-dev20220914040446
+  resolution: "@builder.io/qwik@npm:0.0.108-dev20220914040446"
+  bin:
+    qwik: qwik.cjs
+  checksum: 6069b961b835d579e85b25626de85e58a0391c8608f209b43440629ccfa0411b324a60dc0dce3e372266dcf30d23fe3ce5212998e2c9bf4f6144be2a6b20a635
   languageName: node
   linkType: hard
 
@@ -16,7 +18,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@builder.io/sdk-qwik@workspace:."
   dependencies:
-    "@builder.io/qwik": "BuilderIO/qwik-build#commit=08a6883d163f8eea8dc1710357b63b7ac01b2bef"
+    "@builder.io/qwik": 0.0.108-dev20220914040446
     "@types/node": latest
     typescript: 4.7.4
     vite: 3.0.2
