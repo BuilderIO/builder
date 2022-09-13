@@ -5,7 +5,7 @@ export function markMutable<T>(value: T): T {
 }
 
 export function markPropsMutable<T>(props: T): T {
-  Object.keys(props).forEach((key) => {
+  Object.keys(props as object).forEach((key) => {
     (props as any)[key] = mutable((props as any)[key]);
   });
   return props;

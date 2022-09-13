@@ -1,7 +1,7 @@
-export function markMutable<T>(value: T): T {
+export function markMutable<T = any>(value: T): T {
   return value;
 }
 
-export function markPropsMutable<T>(props: T): T {
+export function markPropsMutable<T = any>(props: T): T {
   return props;
 }
