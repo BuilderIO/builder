@@ -40,8 +40,8 @@
     "upgrade-example:all": "yarn upgrade-example svelte && yarn upgrade-example react-native && yarn upgrade-example solid && yarn upgrade-example qwik && yarn upgrade-example react && yarn upgrade-example vue"
   },
   "dependencies": {
-    "@builder.io/mitosis": "^0.0.58",
-    "@builder.io/mitosis-cli": "^0.0.19",
+    "@builder.io/mitosis": "latest",
+    "@builder.io/mitosis-cli": "latest",
     "@playwright/test": "^1.24.0",
     "node-fetch": "^2.6.1",
     "seedrandom": "^3.0.5",
