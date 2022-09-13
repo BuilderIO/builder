@@ -199,11 +199,12 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
               data: match,
               loading: false,
             });
-            // when BuilderContent is wrapping a BuilderComponent of the same model, the builderComponent is passing initialContent on on the same key
+            // when BuilderContent is wrapping a BuilderComponent of the same model, the BuilderComponent is passing initialContent on the same key
             // causing the sdk to resolve this call to the initialContent instead of the previewed/edited content
-            // so we test here if the BuilderContent is being used directly ( not inlined ) and is being edited or previewed we get the content one more time
+            // so we test here if the BuilderContent is being used directly ( not inlined ) and it has initial content ( content prop ), we let the first render go through to show the initial content
+            // and we subscribe again to get the draft/editing content
             const isPreviewing = (builder.editingModel || builder.previewingModel) === this.name;
-            if (!this.props.inline && this.firstLoad && isPreviewing) {
+            if (!this.props.inline && this.props.content && this.firstLoad && isPreviewing) {
               this.firstLoad = false;
               this.subscriptions.unsubscribe();
               this.subscribeToContent();
