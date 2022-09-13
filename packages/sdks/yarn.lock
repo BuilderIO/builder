@@ -1151,7 +1151,7 @@ __metadata:
     node-fetch: 3.2.9
     prettier: 2.7.1
     typescript: ^4
-    vite: 3.0.2
+    vite: ^3.0.4
   languageName: unknown
   linkType: soft
 
@@ -1167,7 +1167,7 @@ __metadata:
     react-dom: ^18.2.0
     rimraf: ^3.0.2
     typescript: ^4
-    vite: ^2.9.13
+    vite: ^3.0.4
   languageName: unknown
   linkType: soft
 
@@ -1178,7 +1178,7 @@ __metadata:
     "@builder.io/sdk-solid": "workspace:*"
     solid-js: ^1.4.7
     typescript: ^4
-    vite: ^3.0.0
+    vite: ^3.0.4
     vite-plugin-solid: ^2.3.0
   languageName: unknown
   linkType: soft
@@ -1196,7 +1196,7 @@ __metadata:
     svelte-preprocess: ^4.10.7
     tslib: ^2.4.0
     typescript: ^4
-    vite: ^2.9.13
+    vite: ^3.0.4
   languageName: unknown
   linkType: soft
 
@@ -1208,7 +1208,7 @@ __metadata:
     "@builder.io/sdks-e2e-tests": "workspace:*"
     "@vitejs/plugin-vue2": ^1.1.2
     typescript: ^4
-    vite: ^2.9.13
+    vite: ^3.0.4
     vite-plugin-components: ^0.13.2
     vue: ^2.7
     vue-class-component: ^7.2.6
@@ -1225,7 +1225,7 @@ __metadata:
     "@builder.io/sdks-e2e-tests": "workspace:*"
     "@vitejs/plugin-vue": ^2.3.3
     typescript: ^4
-    vite: ^2.9.13
+    vite: ^3.0.4
     vue: ^3.2.37
     vue-tsc: ^0.38.2
   languageName: unknown
@@ -1358,7 +1358,7 @@ __metadata:
     "@builder.io/qwik": "BuilderIO/qwik-build#commit=08a6883d163f8eea8dc1710357b63b7ac01b2bef"
     "@types/node": latest
     typescript: ^4
-    vite: 3.0.2
+    vite: ^3.0.4
   peerDependencies:
     "@builder.io/qwik": 0.0.108
   languageName: unknown
@@ -1396,7 +1396,7 @@ __metadata:
     node-fetch: ^2.6.7
     solid-js: ^1.4.3
     solid-styled-components: ^0.27.6
-    vite: ^2.9.8
+    vite: ^3.0.4
     vite-plugin-solid: ^2.2.6
   peerDependencies:
     solid-js: ^1.4.3
@@ -1416,7 +1416,7 @@ __metadata:
     svelte-preprocess: ^4.10.6
     tslib: ^2.3.1
     typescript: ^4
-    vite: ^3.1.0-beta.1
+    vite: ^3.0.4
   languageName: unknown
   linkType: soft
 
@@ -1431,7 +1431,7 @@ __metadata:
     npm-run-all: ^4.1.5
     terser: ^5.14.2
     typescript: ^4
-    vite: ^3.0.2
+    vite: ^3.0.4
     vue: ^2.7.7
     vue-tsc: ^0.38.8
   languageName: unknown
@@ -6375,7 +6375,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild@npm:^0.14.27, esbuild@npm:^0.14.47, esbuild@npm:^0.14.48":
+"esbuild@npm:^0.14.48":
   version: 0.14.54
   resolution: "esbuild@npm:0.14.54"
   dependencies:
@@ -11719,7 +11719,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.1.10, postcss@npm:^8.4.13, postcss@npm:^8.4.14, postcss@npm:^8.4.16":
+"postcss@npm:^8.1.10, postcss@npm:^8.4.14, postcss@npm:^8.4.16":
   version: 8.4.16
   resolution: "postcss@npm:8.4.16"
   dependencies:
@@ -12560,34 +12560,6 @@ __metadata:
   dependencies:
     estree-walker: ^0.6.1
   checksum: 339fdf866d8f4ff6e408fa274c0525412f7edb01dc46b5ccda51f575b7e0d20ad72965773376fb5db95a77a7fcfcab97bf841ec08dbadf5d6b08af02b7a2cf5e
-  languageName: node
-  linkType: hard
-
-"rollup@npm:>=2.59.0 <2.78.0":
-  version: 2.77.3
-  resolution: "rollup@npm:2.77.3"
-  dependencies:
-    fsevents: ~2.3.2
-  dependenciesMeta:
-    fsevents:
-      optional: true
-  bin:
-    rollup: dist/bin/rollup
-  checksum: b179c68249584565ddb5664a241e8e48c293b2207718d885b08ee25797d98857a383f06b544bb89819407da5a71557f4713309a278f61c4778bb32b1d3321a1c
-  languageName: node
-  linkType: hard
-
-"rollup@npm:^2.75.6":
-  version: 2.79.0
-  resolution: "rollup@npm:2.79.0"
-  dependencies:
-    fsevents: ~2.3.2
-  dependenciesMeta:
-    fsevents:
-      optional: true
-  bin:
-    rollup: dist/bin/rollup
-  checksum: 166f1ffea1898e157003920065b3a328e7012ea6808860ee8fe5d1ce94804fcce9985c95a3c0f7fe9c611aff0d09a70f073f1d6f715c8faba28e4e40f71ee3bb
   languageName: node
   linkType: hard
 
@@ -14468,68 +14440,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:3.0.2":
-  version: 3.0.2
-  resolution: "vite@npm:3.0.2"
-  dependencies:
-    esbuild: ^0.14.47
-    fsevents: ~2.3.2
-    postcss: ^8.4.14
-    resolve: ^1.22.1
-    rollup: ^2.75.6
-  peerDependencies:
-    less: "*"
-    sass: "*"
-    stylus: "*"
-    terser: ^5.4.0
-  dependenciesMeta:
-    fsevents:
-      optional: true
-  peerDependenciesMeta:
-    less:
-      optional: true
-    sass:
-      optional: true
-    stylus:
-      optional: true
-    terser:
-      optional: true
-  bin:
-    vite: bin/vite.js
-  checksum: 10aebec0df89bbdba9a0c72dc35ec3ec5be0b50216fc7a1e04b5da11de244033b1cbe83a95b1af67be176fc09e05698387d3cc9dcbee64e009dd43811f8717e9
-  languageName: node
-  linkType: hard
-
-"vite@npm:^2.9.13, vite@npm:^2.9.8":
-  version: 2.9.15
-  resolution: "vite@npm:2.9.15"
-  dependencies:
-    esbuild: ^0.14.27
-    fsevents: ~2.3.2
-    postcss: ^8.4.13
-    resolve: ^1.22.0
-    rollup: ">=2.59.0 <2.78.0"
-  peerDependencies:
-    less: "*"
-    sass: "*"
-    stylus: "*"
-  dependenciesMeta:
-    fsevents:
-      optional: true
-  peerDependenciesMeta:
-    less:
-      optional: true
-    sass:
-      optional: true
-    stylus:
-      optional: true
-  bin:
-    vite: bin/vite.js
-  checksum: 5edf8afc132a598f82a1339aa503514a0e86f6264babe94531b9000d801f157c9a32ae022542404678acca43ee260ade04c4763c4b7b8d381a6b50511b4a1447
-  languageName: node
-  linkType: hard
-
-"vite@npm:^3.0.0, vite@npm:^3.0.2, vite@npm:^3.0.4, vite@npm:^3.1.0-beta.1":
+"vite@npm:^3.0.4":
   version: 3.1.0
   resolution: "vite@npm:3.1.0"
   dependencies:
