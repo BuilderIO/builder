@@ -1,11 +1,23 @@
 import { getGlobalThis } from './get-global-this.js';
 
 /**
- * The issue is that when building standalone bundle the bundler includes `node-fetch` as
- * inlined content. Instead ind those environments we want to use the global `fetch` function
- * and never include the `node-fetch` package.
+ * `node-fetch` is a polyfill for fetch.
  *
- * HACK: This hack is here to make sure that the bundler doesn't include `node-fetch` in browser bundle.
+ * There are two environments:
+ * 1. Node - in which case we may need to fetch `node-fetch` and use it.
+ * 2. Native (browser/deno/edge-workers) - in which case we can use the native
+ *   `fetch` function.
+ *
+ * PROBLEM:
+ * If we write `import('node-fetch')` the bundler will always bundle `node-fetch`
+ * because it does not know if it is needed. This is not what we want, because:
+ * - in native environments will now get `fetch` and the `node-fetch` polyfill is
+ *   not needed.
+ * - in Node environment bundling the `node-fetch` polyfill provides no benefit as
+ *   we can just `require('node-fetch')` it.
+ *
+ * HACK: This hack is here to make sure that the bundler doesn't include `node-fetch`
+ * in single-file-bundle.
  */
 const NODE_FETCH_URL = () => 'node-fetch';
 
