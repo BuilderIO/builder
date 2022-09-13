@@ -4,9 +4,9 @@
 
 In this example we show how to integrate react components with [Builder.io](https://builder.io). This is useful when you want to add the ability for your team to utilize custom components on the pages you build using the Builder editor, or even want to make it so people on your team can only build and edit your site's pages using your custom components.
 
-> ⚛️ For serve side rendered examples see our [Next.js](https://github.com/BuilderIO/builder/tree/master/examples/next-js) and [Gatsby](https://github.com/BuilderIO/gatsby-starter-builder) examples
+> ⚛️ For serve side rendered examples see our [Next.js](https://github.com/BuilderIO/builder/tree/main/examples/next-js) and [Gatsby](https://github.com/BuilderIO/gatsby-starter-builder) examples
 
-The source code for the custom components used in this demo are [here](src/components), and you can see how they are registered with Builder by looking at the files that end in `*.builder.js` ([this is an example](https://github.com/BuilderIO/builder/blob/master/examples/react-design-system/src/components/ProductsList/ProductsList.builder.js)). The logic for adding components to the Builder editor menu can be found [here](https://github.com/BuilderIO/builder/blob/master/examples/react-design-system/src/builder-settings.js)
+The source code for the custom components used in this demo are [here](src/components), and you can see how they are registered with Builder by looking at the files that end in `*.builder.js` ([this is an example](https://github.com/BuilderIO/builder/blob/main/examples/react-design-system/src/components/ProductsList/ProductsList.builder.js)). The logic for adding components to the Builder editor menu can be found [here](https://github.com/BuilderIO/builder/blob/main/examples/react-design-system/src/builder-settings.js)
 
 > 👉**Tip:** want to limit page building to only your components? Try [components only mode](https://builder.io/c/docs/guides/components-only-mode)
 

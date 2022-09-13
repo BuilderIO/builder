@@ -35,7 +35,8 @@ export class PersonalizedURL {
   rewritePath() {
     const stringified = stringify(this.options.attributes);
     const encoded = this.options.encode(stringified);
-    return `/${this.options.prefix}/${encoded}`;
+    const prefix = this.options.prefix;
+    return [prefix.startsWith('/') ? prefix.slice(1) : prefix, encoded].filter(Boolean).join('/');
   }
 
   static fromRewrite(rewrite: string, prefix = 'builder', decode = defaultOptions.decode) {

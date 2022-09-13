@@ -9,7 +9,7 @@
     "start": "next start"
   },
   "dependencies": {
-    "@builder.io/react": "^1.1.44",
+    "@builder.io/react": "^2.0.4",
     "@next/bundle-analyzer": "^10.2.3",
     "cheerio": "^1.0.0-rc.10",
     "next": "^11.1.1",

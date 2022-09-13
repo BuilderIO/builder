@@ -8,7 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@builder.io/sdk-vue": "^0.0.1-69",
+    "@builder.io/sdk-vue": "^0.0.1-72",
     "core-js": "^3.8.3",
     "path-browserify": "^1.0.1",
     "vue": "^2.6.14"

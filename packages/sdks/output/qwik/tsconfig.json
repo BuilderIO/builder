@@ -28,14 +28,7 @@
     // "rootDir": "./",                                  /* Specify the root folder within your source files. */
     "moduleResolution": "node" /* Specify how TypeScript looks up a file from a given module specifier. */,
     // "baseUrl": "./",                                  /* Specify the base directory to resolve non-relative module names. */
-    "paths": {
-      "@builder.io/qwik": [
-        "/users/misko/qwik-conference/node_modules/@builder.io/qwik"
-      ],
-      "@builder.io/qwik/jsx-runtime": [
-        "/users/misko/qwik-conference/node_modules/@builder.io/qwik/jsx-runtime"
-      ]
-    } /* Specify a set of entries that re-map imports to additional lookup locations. */,
+    "paths": {} /* Specify a set of entries that re-map imports to additional lookup locations. */,
     // "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */
     // "typeRoots": [],                                  /* Specify multiple folders that act like `./node_modules/@types`. */
     // "types": [],                                      /* Specify type package names to be included without being referenced in a source file. */
@@ -49,7 +42,7 @@
     // "maxNodeModuleJsDepth": 1,                        /* Specify the maximum folder depth used for checking JavaScript files from `node_modules`. Only applicable with `allowJs`. */
 
     /* Emit */
-    // "declaration": true,                              /* Generate .d.ts files from TypeScript and JavaScript files in your project. */
+    "declaration": true /* Generate .d.ts files from TypeScript and JavaScript files in your project. */,
     // "declarationMap": true,                           /* Create sourcemaps for d.ts files. */
     // "emitDeclarationOnly": true,                      /* Only output d.ts files and not JavaScript files. */
     // "sourceMap": true,                                /* Create source map files for emitted JavaScript files. */
@@ -70,7 +63,7 @@
     // "noEmitHelpers": true,                            /* Disable generating custom helper functions like `__extends` in compiled output. */
     // "noEmitOnError": true,                            /* Disable emitting files if any type checking errors are reported. */
     // "preserveConstEnums": true,                       /* Disable erasing `const enum` declarations in generated code. */
-    // "declarationDir": "./",                           /* Specify the output directory for generated declaration files. */
+    "declarationDir": "./types" /* Specify the output directory for generated declaration files. */,
     // "preserveValueImports": true,                     /* Preserve unused imported values in the JavaScript output that would otherwise be removed. */
 
     /* Interop Constraints */
@@ -105,6 +98,6 @@
     // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
   },
-  "include": ["types.d.ts", "src"],
-  "exclude": ["src/blocks/form/form.tsx"]
+  "include": ["types.d.ts", "types-hack.d.ts", "src"],
+  "exclude": ["src/blocks/form/form.tsx", "**/*.lite.tsx"]
 }

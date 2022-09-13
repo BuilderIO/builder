@@ -2,7 +2,7 @@ import logo from './logo.svg';
 import styles from './App.module.css';
 
 import { getContent, RenderContent } from '@builder.io/sdk-solid';
-import { createEffect } from 'solid-js';
+import { createEffect, createSignal } from 'solid-js';
 import { createMutable } from 'solid-js/store';
 
 // Enter your key here!
@@ -37,9 +37,7 @@ const CUSTOM_COMPONENTS = [
 ];
 
 function App() {
-  const state = createMutable({
-    content: null,
-  });
+  const [content, setContent] = createSignal(null);
 
   createEffect(() => {
     getContent({
@@ -49,7 +47,7 @@ function App() {
         urlPath: window.location.pathname,
       },
     }).then(content => {
-      state.content = content;
+      setContent(content);
     });
   });
 
@@ -59,12 +57,14 @@ function App() {
         <img src={logo} class={styles.logo} alt="logo" />
       </header>
       <div>
-        <RenderContent
-          model="page"
-          content={state.content}
-          apiKey={apiKey}
-          customComponents={CUSTOM_COMPONENTS}
-        />
+        {content() && (
+          <RenderContent
+            model="page"
+            content={content()}
+            apiKey={apiKey}
+            customComponents={CUSTOM_COMPONENTS}
+          />
+        )}
       </div>
     </div>
   );

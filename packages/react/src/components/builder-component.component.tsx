@@ -30,6 +30,7 @@ import { debounceNextTick } from '../functions/debonce-next-tick';
 import { throttle } from '../functions/throttle';
 import { BuilderMetaContext } from '../store/builder-meta';
 import { tryEval } from '../functions/try-eval';
+import { toError } from '../to-error';
 
 function pick<T, K extends keyof T>(obj: T, ...keys: K[]): Pick<T, K> {
   const ret: any = {};
@@ -87,39 +88,15 @@ function debounce(func: Function, wait: number, immediate = false) {
 
 const fontsLoaded = new Set();
 
-// TODO: get fetch from core JS....
-const fetch = Builder.isBrowser ? window.fetch : require('node-fetch');
+let fetch: typeof globalThis['fetch'];
+if (globalThis.fetch) fetch = globalThis.fetch;
+fetch ??= require('node-fetch');
 
 const sizeMap = {
   desktop: 'large',
   tablet: 'medium',
   mobile: 'small',
 };
-
-function decorator(fn: Function) {
-  return function argReceiver(...fnArgs: any[]) {
-    // Check if the decorator is being called without arguments (ex `@foo methodName() {}`)
-    if (fnArgs.length === 3) {
-      const [target, key, descriptor] = fnArgs;
-      if (descriptor && (descriptor.value || descriptor.get)) {
-        fnArgs = [];
-        return descriptorChecker(target, key, descriptor);
-      }
-    }
-
-    return descriptorChecker;
-
-    // descriptorChecker determines whether a method or getter is being decorated
-    // and replaces the appropriate key with the decorated function.
-    function descriptorChecker(target: any, key: any, descriptor: any) {
-      const descriptorKey = descriptor.value ? 'value' : 'get';
-      return {
-        ...descriptor,
-        [descriptorKey]: fn(descriptor[descriptorKey], ...fnArgs),
-      };
-    }
-  };
-}
 
 const fetchCache: { [key: string]: any } = {};
 
@@ -299,6 +276,12 @@ export interface BuilderComponentProps {
    * navigation to other pages unintended
    */
   stopClickPropagationWhenEditing?: boolean;
+
+  /**
+   * Set to the current locale in your application if you want localized inputs to be auto-resolved, should match one of the locales keys in your space settings
+   * Learn more about adding or removing locales [here](https://www.builder.io/c/docs/add-remove-locales)
+   */
+  locale?: string;
 }
 
 export interface BuilderComponentState {
@@ -863,7 +846,7 @@ export class BuilderComponent extends React.Component<
   get data() {
     const data = {
       ...(this.inlinedContent && this.inlinedContent.data?.state),
-      ...this.props.data,
+      ...this.externalState,
       ...this.state.state,
     };
     Object.assign(this.rootState, data);
@@ -874,7 +857,7 @@ export class BuilderComponent extends React.Component<
     // TODO: shallow diff
     if (this.props.data && prevProps.data !== this.props.data) {
       this.state.update((state: any) => {
-        Object.assign(state, this.props.data);
+        Object.assign(state, this.externalState);
       });
     }
 
@@ -914,6 +897,13 @@ export class BuilderComponent extends React.Component<
     return content;
   }
 
+  get externalState() {
+    return {
+      ...this.props.data,
+      ...(this.props.locale ? { locale: this.props.locale } : {}),
+    };
+  }
+
   get useContent() {
     return this.content || this.state.context.builderContent;
   }
@@ -922,7 +912,10 @@ export class BuilderComponent extends React.Component<
     const content = this.content;
 
     const dataString =
-      Builder.isBrowser && this.props.data && size(this.props.data) && hash(this.props.data);
+      Builder.isBrowser &&
+      this.externalState &&
+      size(this.externalState) &&
+      hash(this.externalState);
     let key = Builder.isEditing ? this.name : this.props.entry;
     if (key && !Builder.isEditing && dataString && dataString.length < 300) {
       key += ':' + dataString;
@@ -993,6 +986,7 @@ export class BuilderComponent extends React.Component<
                           !this.isPreviewing && { initialContent: [] }),
                         ...(this.props.url && { url: this.props.url }),
                         ...this.props.options,
+                        ...(this.props.locale ? { locale: this.props.locale } : {}),
                         ...(this.options.codegen && {
                           format: 'react',
                         }),
@@ -1151,9 +1145,10 @@ export class BuilderComponent extends React.Component<
       try {
         const result = await fetch(url);
         json = await result.json();
-      } catch (err: any) {
+      } catch (err) {
+        const error = toError(err);
         if (this._errors) {
-          this._errors.push(err);
+          this._errors.push(error);
         }
         if (this._logs) {
           this._logs.push(`Fetch to ${url} errored in ${Date.now() - requestStart}ms`);
@@ -1261,7 +1256,6 @@ export class BuilderComponent extends React.Component<
       this.notifyStateChange();
     }
 
-    // Unsubscribe all? TODO: maybe don't continuous fire when editing.....
     if (this.props.contentLoaded) {
       this.props.contentLoaded(data, content);
     }
@@ -1271,12 +1265,6 @@ export class BuilderComponent extends React.Component<
         data.state = {};
       }
 
-      // Maybe...
-      // if (data.context) {
-      //   Object.assign(this.state.context, data.context)
-      // }
-      // TODO: may not want this... or make sure anything overriden
-      // explitily sets to null
       data.inputs.forEach((input: any) => {
         if (input) {
           if (
@@ -1300,7 +1288,7 @@ export class BuilderComponent extends React.Component<
           deviceSize: this.deviceSizeState,
           device: this.device,
           ...data.state,
-          ...this.props.data,
+          ...this.externalState,
         }),
       };
       if (this.mounted) {
@@ -1341,7 +1329,8 @@ export class BuilderComponent extends React.Component<
 
           // TODO: allow exports = { } syntax?
           // TODO: do something with reuslt like view - methods, computed, actions, properties, template, etc etc
-        } catch (error: any) {
+        } catch (err) {
+          const error = toError(err);
           if (Builder.isBrowser) {
             console.warn(
               'Builder custom code error:',
@@ -1376,8 +1365,6 @@ export class BuilderComponent extends React.Component<
         for (const key in data.httpRequests) {
           const url: string | undefined = data.httpRequests[key];
           if (url && (!this.data[key] || Builder.isEditing)) {
-            // TODO: if Builder.isEditing and url patches https://builder.io/api/v2/content/{editingModel}
-            // Then use this.builder.get().subscribe(...)
             if (Builder.isBrowser) {
               const finalUrl = this.evalExpression(url);
               if (Builder.isEditing && this.lastHttpRequests[key] === finalUrl) {
@@ -1387,47 +1374,27 @@ export class BuilderComponent extends React.Component<
               const builderModelRe = /builder\.io\/api\/v2\/([^\/\?]+)/i;
               const builderModelMatch = url.match(builderModelRe);
               const model = builderModelMatch && builderModelMatch[1];
-              if (false && Builder.isEditing && model && this.builder.editingModel === model) {
-                this.handleRequest(key, finalUrl);
-                // TODO: fix this
-                // this.subscriptions.add(
-                //   this.builder.get(model).subscribe(data => {
-                //     this.state.update((state: any) => {
-                //       state[key] = data
-                //     })
-                //   })
-                // )
-              } else {
-                this.handleRequest(key, finalUrl);
-                const currentSubscription = this.httpSubscriptionPerKey[key];
-                if (currentSubscription) {
-                  currentSubscription.unsubscribe();
-                }
-
-                // TODO: fix this
-                const newSubscription = (this.httpSubscriptionPerKey[key] =
-                  this.onStateChange.subscribe(() => {
-                    const newUrl = this.evalExpression(url);
-                    if (newUrl !== finalUrl) {
-                      this.handleRequest(key, newUrl);
-                      this.lastHttpRequests[key] = newUrl;
-                    }
-                  }));
-                this.subscriptions.add(newSubscription);
+              this.handleRequest(key, finalUrl);
+              const currentSubscription = this.httpSubscriptionPerKey[key];
+              if (currentSubscription) {
+                currentSubscription.unsubscribe();
               }
+
+              // TODO: fix this
+              const newSubscription = (this.httpSubscriptionPerKey[key] =
+                this.onStateChange.subscribe(() => {
+                  const newUrl = this.evalExpression(url);
+                  if (newUrl !== finalUrl) {
+                    this.handleRequest(key, newUrl);
+                    this.lastHttpRequests[key] = newUrl;
+                  }
+                }));
+              this.subscriptions.add(newSubscription);
             } else {
               this.handleRequest(key, this.evalExpression(url));
             }
           }
         }
-
-        // @DEPRECATED
-        // for (const key in data.builderData) {
-        //   const url = data.builderData[key]
-        //   if (url && !this.data[key]) {
-        //     this.handleBuilderRequest(key, this.evalExpression(url))
-        //   }
-        // }
       }
     }
   };

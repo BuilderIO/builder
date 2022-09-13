@@ -8,17 +8,19 @@ npm install @builder.io/personalization-utils
 
 # How to start with personalized rewrites? 
 
-`PersonalizedURL` identifies the current personalization target based on attributes in cookies, headers, query, and origin URL path, it should be used in middleware in combination with a page path handler defined in `pages/builder/[rewrite].jsx`:
+ This utility library helps you encode/decode targeting attributes as parts of the URL to allow for caching (or statically generating) render results, it should be used in middleware in combination with a page path handler (for e.g a catch all page `pages/[[...path]].jsx`):
 
 ```ts
-// in pages/builder/[rewrite].jsx
+import { parsePersonalizedURL } from '@builder.io/personalization-utils/next'
+// in pages/[[...path]].jsx
 export async function getStaticProps({ params }) {
-  const personlizedURL = PersonalizedURL.fromRewrite(params.rewrite);
+  const { attributes } = parsePersonalizedURL(params?.path);
   const page =
     (await builder
       .get('page', {
         apiKey: builderConfig.apiKey,
-        userAttributes: personlizedURL.attributes,
+        userAttributes: attributes,
+        // cachebust is not advised outside static rendering contexts.
         cachebust: true,
       })
       .promise()) || null
@@ -29,8 +31,8 @@ export async function getStaticProps({ params }) {
     },
     // Next.js will attempt to re-generate the page:
     // - When a request comes in
-    // - At most once every 5 seconds
-    revalidate: 5,
+    // - At most once every 1 second
+    revalidate: 1,
   }
 }
 
@@ -41,40 +43,24 @@ export function getStaticPaths() {
   }
 }
 
-export default function Rewrite({ page }) {
-  return  <BuilderComponent renderLink={Link} model="page" content={page} />
+export default function Path({ page }) {
+  return  <BuilderComponent model="page" content={page} />
 }
 ```
 
 Now that we have a path for rendering builder content ready, let's route to it in the middleware:
 ```ts
-import { NextResponse } from 'next/server'
-import { PersonalizedURL } from '@builder.io/personalization-utils'
+import { getPersonlizedURL } from '@builder.io/personalization-utils/next'
 
 const excludededPrefixes = ['/favicon', '/api'];
 
-export default function middleware(
-  request: NextFetchEvent
-) {
+export default function middleware(request) {
   const url = request.nextUrl
-  let response = NextResponse.next();
-  if (!excludededPrefixes.find(path => url.pathname?.startsWith(path))) {
-    const query = Object.fromEntries(url.searchParams);
-    const personlizedURL = new PersonalizedURL({
-      pathname: url.pathname,
-      attributes: {
-        // optionally add geo information to target by city/country in builder
-        city: request.geo?.city || '',
-        country: request.geo?.country || '',
-        // pass cookies and query [read all values for keys prefixed with `builder.userAttributes`], useful for studio tab navigation and assigning cookies to targeting groups
-        ...getUserAttributes({ ...request.cookies, ...query }),
-      }
-    })
-
-    url.pathname = personlizedURL.rewritePath();
-    response = NextResponse.rewrite(url);
+  if (shouldRewrite(url.pathname)) {
+    const personalizedURL = getPersonlizedURL(request)
+    return NextResponse.rewrite(personalizedURL)
   }
-  return response
+  return NextResponse.next();
 }
 
 ```

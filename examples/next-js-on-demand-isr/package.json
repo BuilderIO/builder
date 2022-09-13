@@ -44,7 +44,7 @@
     ]
   },
   "dependencies": {
-    "@builder.io/react": "^2.0.2",
+    "@builder.io/react": "^2.0.4",
     "@builder.io/widgets": "^1.2.23",
     "cors": "^2.8.5",
     "next": "^12.2.2",

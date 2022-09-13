@@ -11,14 +11,17 @@ import { Animator } from './classes/animator.class';
 import { BuilderElement } from './types/element';
 import Cookies from './classes/cookies.class';
 import { omit } from './functions/omit.function';
-import { getTopLevelDomain } from './functions/get-top-level-domain';
 import serverOnlyRequire from './functions/server-only-require.function';
+import { getTopLevelDomain } from './functions/get-top-level-domain';
 import { BuilderContent } from './types/content';
 import { uuid } from './functions/uuid';
+import { parse as urlParse } from './url';
 
 // Do not change this to a require! It throws runtime errors - rollup
 // will preserve the `require` and throw runtime errors
 import hash from 'hash-sum';
+import { toError } from './functions/to-error';
+import { emptyUrl, UrlLike } from './url';
 
 export type Url = any;
 
@@ -57,15 +60,26 @@ function getQueryParam(url: string, variable: string): string | null {
 }
 
 const urlParser = {
-  parse(url: string) {
-    const parser = document.createElement('a') as any;
-    parser.href = url;
+  parse(url: string): UrlLike {
+    const el: HTMLAnchorElement = document.createElement('a') as any;
+    el.href = url;
     const out: any = {};
-    const props = 'username password host hostname port protocol origin pathname search hash'.split(
-      ' '
-    );
-    for (let i = props.length; i--; ) {
-      out[props[i]] = parser[props[i]];
+
+    const props = [
+      'username',
+      'password',
+      'host',
+      'hostname',
+      'port',
+      'protocol',
+      'origin',
+      'pathname',
+      'search',
+      'hash',
+    ] as const;
+
+    for (const prop of props) {
+      out[prop] = el[prop];
     }
 
     // IE 11 pathname handling workaround
@@ -82,11 +96,11 @@ const urlParser = {
   },
 };
 
-const parse = isReactNative
-  ? () => ({})
+const parse: (url: string) => UrlLike = isReactNative
+  ? () => emptyUrl()
   : typeof window === 'object'
   ? urlParser.parse
-  : serverOnlyRequire('url').parse;
+  : urlParse;
 
 function setCookie(name: string, value: string, expires?: Date) {
   try {
@@ -361,6 +375,11 @@ export interface GetContentOptions {
    */
   cache?: boolean;
   /**
+   * Set to the current locale in your application if you want localized inputs to be auto-resolved, should match one of the locales keys in your space settings
+   * Learn more about adding or removing locales [here](https://www.builder.io/c/docs/add-remove-locales)
+   */
+  locale?: string;
+  /**
    * @package
    *
    * Indicate that the fetch request is for preview purposes.
@@ -568,6 +587,10 @@ export interface Input {
   showIf?: ((options: Map<string, any>) => boolean) | string;
   /** @hidden */
   copyOnAdd?: boolean;
+  /**
+   * Use optionally with inputs of type `reference`. Restricts the content entry picker to a specific model by name.
+   */
+  model?: string;
 }
 
 /**
@@ -1633,11 +1656,20 @@ export class Builder {
         preview,
         editing,
         frameEditing,
+        options,
         params: overrideParams,
       } = builder;
 
       if (userAttributes) {
         this.setUserAttributes(userAttributes);
+      }
+
+      if (options) {
+        // picking only locale and includeRefs
+        this.queryOptions = {
+          ...(options.locale && { locale: options.locale }),
+          ...(options.includeRefs && { includeRefs: options.includeRefs }),
+        };
       }
 
       if (overrides) {
@@ -1845,8 +1877,8 @@ export class Builder {
               let error: Error | null = null;
               try {
                 result = fn.apply(this, args);
-              } catch (err: any) {
-                error = err;
+              } catch (err) {
+                error = toError(err);
               }
 
               if (error) {
@@ -1935,7 +1967,7 @@ export class Builder {
 
     // in ssr mode
     if (this.request) {
-      parsedLocation = parse(this.request.url);
+      parsedLocation = parse(this.request.url ?? '');
     } else if (typeof location === 'object') {
       // in the browser
       parsedLocation = parse(location.href);
@@ -1992,6 +2024,8 @@ export class Builder {
   }
 
   protected overrides: { [key: string]: string } = {};
+  protected queryOptions: { [key: string]: string } = {};
+
   private getContentQueue: null | GetContentOptions[] = null;
   private priorContentQueue: null | GetContentOptions[] = null;
 
@@ -2152,60 +2186,6 @@ export class Builder {
     return observable;
   }
 
-  requestUrl(
-    url: string,
-    options?: { headers: { [header: string]: number | string | string[] | undefined } }
-  ) {
-    if (Builder.isBrowser) {
-      return fetch(url, options as SimplifiedFetchOptions).then(res => res.json());
-    }
-    return new Promise((resolve, reject) => {
-      const parsedUrl = parse(url);
-      const module =
-        parsedUrl.protocol === 'http:' ? serverOnlyRequire('http') : serverOnlyRequire('https');
-      const requestOptions = {
-        host: parsedUrl.hostname,
-        port: parsedUrl.port,
-        path: parsedUrl.pathname + parsedUrl.search,
-        headers: { ...options?.headers },
-      };
-      module
-        .get(requestOptions, function (resp: any) {
-          let data = '';
-
-          // We are collecting textual data
-          resp.setEncoding('utf8');
-
-          // A chunk of data has been recieved.
-          resp.on('data', (chunk: string | Buffer) => {
-            data += chunk;
-          });
-
-          // The whole response has been received. Print out the result.
-          resp.on('end', () => {
-            try {
-              resolve(JSON.parse(data));
-            } catch (err) {
-              if ((err as any)?.name === 'SyntaxError') {
-                const jsonParseError = new Error(
-                  `[Builder.io] ERROR: invalid response.
-Request: ${JSON.stringify(requestOptions, null, 2)}
-Response Data: ${data}
-`
-                );
-                reject(jsonParseError);
-              }
-
-              reject(err);
-            }
-          });
-        })
-        .on('error', (error: any) => {
-          reject(error);
-        });
-    });
-  }
-
   get host() {
     switch (this.env) {
       case 'qa':
@@ -2251,6 +2231,7 @@ Response Data: ${data}
       omit: queue[0].omit || 'meta.componentsUsed',
       apiKey: this.apiKey,
       ...queue[0].options,
+      ...this.queryOptions,
     };
     if (queue[0].fields) {
       queryParams.fields = queue[0].fields;
@@ -2397,59 +2378,62 @@ Response Data: ${data}
       };
     }
 
-    const promise = this.requestUrl(
-      `${host}/api/v1/${format === 'solid' || format === 'react' ? 'codegen' : 'query'}/${
-        this.apiKey
-      }/${keyNames}` + (queryParams && hasParams ? `?${queryStr}` : ''),
-      requestOptions
-    ).then(
-      result => {
-        for (const options of queue) {
-          const keyName = options.key!;
-          if (options.model === this.blockContentLoading && !options.noEditorUpdates) {
-            continue;
-          }
+    const fn = format === 'solid' || format === 'react' ? 'codegen' : 'query';
 
-          const isEditingThisModel = this.editingModel === options.model;
-          if (isEditingThisModel && Builder.isEditing) {
-            parent.postMessage({ type: 'builder.updateContent', data: { options } }, '*');
-            // return;
-          }
-          const observer = this.observersByKey[keyName];
-          if (!observer) {
-            return;
-          }
-          const data = result[keyName];
-          const sorted = data; // sortBy(data, item => item.priority);
-          if (data) {
-            const testModifiedResults = Builder.isServer
-              ? sorted
-              : this.processResultsForTests(sorted);
-            observer.next(testModifiedResults);
-          } else {
-            const search = this.getLocation().search;
-            if ((search || '').includes('builder.preview=' + options.model)) {
-              const previewData = {
-                id: 'preview',
-                name: 'Preview',
-                data: {},
-              };
-              observer.next([previewData]);
+    const url =
+      `${host}/api/v1/${fn}/${this.apiKey}/${keyNames}` +
+      (queryParams && hasParams ? `?${queryStr}` : '');
+
+    const promise = fetch(url, requestOptions)
+      .then(res => res.json())
+      .then(
+        result => {
+          for (const options of queue) {
+            const keyName = options.key!;
+            if (options.model === this.blockContentLoading && !options.noEditorUpdates) {
+              continue;
             }
-            observer.next([]);
+
+            const isEditingThisModel = this.editingModel === options.model;
+            if (isEditingThisModel && Builder.isEditing) {
+              parent.postMessage({ type: 'builder.updateContent', data: { options } }, '*');
+              // return;
+            }
+            const observer = this.observersByKey[keyName];
+            if (!observer) {
+              return;
+            }
+            const data = result[keyName];
+            const sorted = data; // sortBy(data, item => item.priority);
+            if (data) {
+              const testModifiedResults = Builder.isServer
+                ? sorted
+                : this.processResultsForTests(sorted);
+              observer.next(testModifiedResults);
+            } else {
+              const search = this.getLocation().search;
+              if ((search || '').includes('builder.preview=' + options.model)) {
+                const previewData = {
+                  id: 'preview',
+                  name: 'Preview',
+                  data: {},
+                };
+                observer.next([previewData]);
+              }
+              observer.next([]);
+            }
+          }
+        },
+        err => {
+          for (const options of queue) {
+            const observer = this.observersByKey[options.key!];
+            if (!observer) {
+              return;
+            }
+            observer.error(err);
           }
         }
-      },
-      err => {
-        for (const options of queue) {
-          const observer = this.observersByKey[options.key!];
-          if (!observer) {
-            return;
-          }
-          observer.error(err);
-        }
-      }
-    );
+      );
 
     return promise;
   }

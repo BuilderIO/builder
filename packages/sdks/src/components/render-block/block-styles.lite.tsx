@@ -1,7 +1,7 @@
 import { Show, useMetadata, useStore } from '@builder.io/mitosis';
 import { getMaxWidthQueryForSize } from '../../constants/device-sizes.js';
 import { TARGET } from '../../constants/target.js';
-import { BuilderContextInterface } from '../../context/builder.context.lite';
+import { BuilderContextInterface } from '../../context/types.js';
 import { getProcessedBlock } from '../../functions/get-processed-block.js';
 import { convertStyleMaptoCSS } from '../../helpers/css.js';
 import { BuilderBlock } from '../../types/builder-block.js';

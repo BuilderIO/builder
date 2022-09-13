@@ -1,6 +1,6 @@
-import { getLocalStorageItem, setLocalStorageItem } from './localStorage';
-import { checkIsDefined } from './nullable';
-import { uuid } from './uuid';
+import { getLocalStorageItem, setLocalStorageItem } from './localStorage.js';
+import { checkIsDefined } from './nullable.js';
+import { uuid } from './uuid.js';
 
 const VISITOR_LOCAL_STORAGE_KEY = 'builderVisitorId';
 

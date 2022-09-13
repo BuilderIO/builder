@@ -1,8 +1,7 @@
 import { setContext } from '@builder.io/mitosis';
-import BuilderContext, {
-  BuilderContextInterface,
-} from '../../context/builder.context.lite';
-import { BuilderBlock } from '../../types/builder-block';
+import BuilderContext from '../../context/builder.context.lite';
+import type { BuilderContextInterface } from '../../context/types.js';
+import type { BuilderBlock } from '../../types/builder-block';
 import RenderBlock from './render-block.lite';
 
 type Props = {

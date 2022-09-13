@@ -1,5 +1,15 @@
 import { TARGET } from '../constants/target.js';
-import { Show, useStore } from '@builder.io/mitosis';
+import { Show, useStore, useMetadata } from '@builder.io/mitosis';
+
+// eslint-disable-next-line @builder.io/mitosis/only-default-function-and-imports
+useMetadata({
+  qwik: {
+    component: {
+      isLight: true,
+    },
+  },
+  elementTag: 'state.tagName',
+});
 
 interface Props {
   styles: string;

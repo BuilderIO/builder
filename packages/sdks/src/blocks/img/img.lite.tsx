@@ -1,5 +1,4 @@
 import { isEditing } from '../../functions/is-editing.js';
-import '@builder.io/mitosis';
 
 export interface ImgProps {
   attributes?: any;
