@@ -998,29 +998,27 @@
   version "0.2.3"
   resolved "https://registry.npmjs.org/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz"
 
-"@builder.io/react@^1.1.47":
-  version "1.1.47"
-  resolved "https://registry.npmjs.org/@builder.io/react/-/react-1.1.47.tgz"
+"@builder.io/react@2.0.4":
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/@builder.io/react/-/react-2.0.4.tgz#6896d9f702f0bf947288ad7f8982b16e826f0954"
+  integrity sha512-zj4wKWqQ7wtqAITOTWzQcTewftu2ddOJZlJXgAIgI1fWIQPPA7xI5T9ZRwou/kinv90NNfTZ+xo5hKB1NsYseA==
   dependencies:
-    "@builder.io/sdk" "^1.1.23"
+    "@builder.io/sdk" "^1.1.27"
     "@emotion/core" "^10.0.17"
     hash-sum "^2.0.0"
     preact "^10.1.0"
-    react ">=14"
-    react-dom ">=14"
-    tslib "^1.10.0"
-    vm2 "^3.6.4"
+    vm2 "^3.9.10"
   optionalDependencies:
-    create-react-context "^0.2.3"
-    node-fetch "^2.3.0"
+    node-fetch "^2.6.1"
     prop-types "^15.7.2"
 
-"@builder.io/sdk@^1.1.23":
-  version "1.1.23"
-  resolved "https://registry.npmjs.org/@builder.io/sdk/-/sdk-1.1.23.tgz"
+"@builder.io/sdk@^1.1.27":
+  version "1.1.27"
+  resolved "https://registry.yarnpkg.com/@builder.io/sdk/-/sdk-1.1.27.tgz#383f595bbf3cfad91fd0a0f44d750947c30bcce2"
+  integrity sha512-vHtmDKDBYBLq6Xhh2qUaYk1/V3VL30z5jASAgY9+H37DXXfYdZbTxaLIRilOmn9YiCkrR32V8BPsiIRWWVwhxA==
   dependencies:
     hash-sum "^2.0.0"
-    node-fetch "^2.2.0"
+    node-fetch "^2.3.0"
     tslib "^1.10.0"
 
 "@chevrotain/cst-dts-gen@^10.1.2":
@@ -2271,7 +2269,7 @@ arrify@^2.0.1:
   version "2.0.1"
   resolved "https://registry.npmjs.org/arrify/-/arrify-2.0.1.tgz"
 
-asap@~2.0.3, asap@~2.0.6:
+asap@~2.0.6:
   version "2.0.6"
   resolved "https://registry.npmjs.org/asap/-/asap-2.0.6.tgz"
 
@@ -3221,10 +3219,6 @@ core-js-pure@^3.0.0:
   version "3.9.0"
   resolved "https://registry.npmjs.org/core-js-pure/-/core-js-pure-3.9.0.tgz"
 
-core-js@^1.0.0:
-  version "1.2.7"
-  resolved "https://registry.npmjs.org/core-js/-/core-js-1.2.7.tgz"
-
 core-js@^2.4.0:
   version "2.6.12"
   resolved "https://registry.npmjs.org/core-js/-/core-js-2.6.12.tgz"
@@ -3293,13 +3287,6 @@ create-hmac@^1.1.0, create-hmac@^1.1.4, create-hmac@^1.1.7:
     ripemd160 "^2.0.0"
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
-
-create-react-context@^0.2.3:
-  version "0.2.3"
-  resolved "https://registry.npmjs.org/create-react-context/-/create-react-context-0.2.3.tgz"
-  dependencies:
-    fbjs "^0.8.0"
-    gud "^1.0.0"
 
 cross-spawn@7.0.3, cross-spawn@^7.0.0, cross-spawn@^7.0.2:
   version "7.0.3"
@@ -3890,12 +3877,6 @@ encodeurl@~1.0.2:
   version "1.0.2"
   resolved "https://registry.npmjs.org/encodeurl/-/encodeurl-1.0.2.tgz"
 
-encoding@^0.1.11:
-  version "0.1.13"
-  resolved "https://registry.npmjs.org/encoding/-/encoding-0.1.13.tgz"
-  dependencies:
-    iconv-lite "^0.6.2"
-
 end-of-stream@^1.0.0, end-of-stream@^1.1.0:
   version "1.4.4"
   resolved "https://registry.npmjs.org/end-of-stream/-/end-of-stream-1.4.4.tgz"
@@ -4428,18 +4409,6 @@ fb-watchman@^2.0.0:
   dependencies:
     bser "2.1.1"
 
-fbjs@^0.8.0:
-  version "0.8.18"
-  resolved "https://registry.npmjs.org/fbjs/-/fbjs-0.8.18.tgz"
-  dependencies:
-    core-js "^1.0.0"
-    isomorphic-fetch "^2.1.1"
-    loose-envify "^1.0.0"
-    object-assign "^4.1.0"
-    promise "^7.1.1"
-    setimmediate "^1.0.5"
-    ua-parser-js "^0.7.30"
-
 fflate@^0.6.9:
   version "0.6.10"
   resolved "https://registry.npmjs.org/fflate/-/fflate-0.6.10.tgz"
@@ -4801,10 +4770,6 @@ growly@^1.3.0:
   version "1.3.0"
   resolved "https://registry.npmjs.org/growly/-/growly-1.3.0.tgz"
 
-gud@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.npmjs.org/gud/-/gud-1.0.0.tgz"
-
 gzip-size@5.1.1:
   version "5.1.1"
   resolved "https://registry.npmjs.org/gzip-size/-/gzip-size-5.1.1.tgz"
@@ -5052,12 +5017,6 @@ iconv-lite@0.4.24:
   resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.4.24.tgz#2022b4b25fbddc21d2f524974a474aafe733908b"
   dependencies:
     safer-buffer ">= 2.1.2 < 3"
-
-iconv-lite@^0.6.2:
-  version "0.6.3"
-  resolved "https://registry.npmjs.org/iconv-lite/-/iconv-lite-0.6.3.tgz"
-  dependencies:
-    safer-buffer ">= 2.1.2 < 3.0.0"
 
 icss-utils@^4.0.0, icss-utils@^4.1.1:
   version "4.1.1"
@@ -5427,7 +5386,7 @@ is-root@2.1.0:
   version "2.1.0"
   resolved "https://registry.npmjs.org/is-root/-/is-root-2.1.0.tgz"
 
-is-stream@^1.0.1, is-stream@^1.1.0:
+is-stream@^1.1.0:
   version "1.1.0"
   resolved "https://registry.npmjs.org/is-stream/-/is-stream-1.1.0.tgz"
 
@@ -5486,13 +5445,6 @@ isobject@^2.0.0:
 isobject@^3.0.0, isobject@^3.0.1:
   version "3.0.1"
   resolved "https://registry.npmjs.org/isobject/-/isobject-3.0.1.tgz"
-
-isomorphic-fetch@^2.1.1:
-  version "2.2.1"
-  resolved "https://registry.npmjs.org/isomorphic-fetch/-/isomorphic-fetch-2.2.1.tgz"
-  dependencies:
-    node-fetch "^1.0.1"
-    whatwg-fetch ">=0.10.0"
 
 istanbul-lib-coverage@^3.0.0:
   version "3.0.0"
@@ -6214,7 +6166,7 @@ loglevel@^1.6.8:
   version "1.7.1"
   resolved "https://registry.npmjs.org/loglevel/-/loglevel-1.7.1.tgz"
 
-loose-envify@^1.0.0, loose-envify@^1.1.0, loose-envify@^1.4.0:
+loose-envify@^1.1.0, loose-envify@^1.4.0:
   version "1.4.0"
   resolved "https://registry.npmjs.org/loose-envify/-/loose-envify-1.4.0.tgz"
   dependencies:
@@ -6576,16 +6528,16 @@ no-case@^3.0.4:
     lower-case "^2.0.2"
     tslib "^2.0.3"
 
-node-fetch@^1.0.1:
-  version "1.7.3"
-  resolved "https://registry.npmjs.org/node-fetch/-/node-fetch-1.7.3.tgz"
-  dependencies:
-    encoding "^0.1.11"
-    is-stream "^1.0.1"
-
-node-fetch@^2.2.0, node-fetch@^2.3.0:
+node-fetch@^2.3.0:
   version "2.6.6"
   resolved "https://registry.npmjs.org/node-fetch/-/node-fetch-2.6.6.tgz"
+  dependencies:
+    whatwg-url "^5.0.0"
+
+node-fetch@^2.6.1:
+  version "2.6.7"
+  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.7.tgz#24de9fba827e3b4ae44dc8b20256a379160052ad"
+  integrity sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==
   dependencies:
     whatwg-url "^5.0.0"
 
@@ -7797,12 +7749,6 @@ promise-inflight@^1.0.1:
   version "1.0.1"
   resolved "https://registry.npmjs.org/promise-inflight/-/promise-inflight-1.0.1.tgz"
 
-promise@^7.1.1:
-  version "7.3.1"
-  resolved "https://registry.npmjs.org/promise/-/promise-7.3.1.tgz"
-  dependencies:
-    asap "~2.0.3"
-
 promise@^8.1.0:
   version "8.1.0"
   resolved "https://registry.npmjs.org/promise/-/promise-8.1.0.tgz"
@@ -7997,7 +7943,7 @@ react-dev-utils@^11.0.3:
     strip-ansi "6.0.0"
     text-table "0.2.0"
 
-react-dom@>=14, react-dom@^17.0.2:
+react-dom@^17.0.2:
   version "17.0.2"
   resolved "https://registry.npmjs.org/react-dom/-/react-dom-17.0.2.tgz"
   dependencies:
@@ -8108,7 +8054,7 @@ react-use-measure@^2.1.1:
   dependencies:
     debounce "^1.2.1"
 
-react@>=14, react@^17.0.2:
+react@^17.0.2:
   version "17.0.2"
   resolved "https://registry.npmjs.org/react/-/react-17.0.2.tgz"
   dependencies:
@@ -8472,7 +8418,7 @@ safe-regex@^1.1.0:
   dependencies:
     ret "~0.1.10"
 
-"safer-buffer@>= 2.1.2 < 3", "safer-buffer@>= 2.1.2 < 3.0.0", safer-buffer@^2.1.0:
+"safer-buffer@>= 2.1.2 < 3", safer-buffer@^2.1.0:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/safer-buffer/-/safer-buffer-2.1.2.tgz#44fa161b0187b9549dd84bb91802f9bd8385cd6a"
 
@@ -8635,7 +8581,7 @@ set-value@^2.0.0, set-value@^2.0.1:
     is-plain-object "^2.0.3"
     split-string "^3.0.1"
 
-setimmediate@^1.0.4, setimmediate@^1.0.5:
+setimmediate@^1.0.4:
   version "1.0.5"
   resolved "https://registry.npmjs.org/setimmediate/-/setimmediate-1.0.5.tgz"
 
@@ -9452,10 +9398,6 @@ typescript@^4.1.2:
   version "4.5.2"
   resolved "https://registry.npmjs.org/typescript/-/typescript-4.5.2.tgz"
 
-ua-parser-js@^0.7.30:
-  version "0.7.31"
-  resolved "https://registry.npmjs.org/ua-parser-js/-/ua-parser-js-0.7.31.tgz"
-
 unicode-canonical-property-names-ecmascript@^1.0.4:
   version "1.0.4"
   resolved "https://registry.npmjs.org/unicode-canonical-property-names-ecmascript/-/unicode-canonical-property-names-ecmascript-1.0.4.tgz"
@@ -9653,9 +9595,10 @@ vm-browserify@^1.0.1:
   version "1.1.2"
   resolved "https://registry.npmjs.org/vm-browserify/-/vm-browserify-1.1.2.tgz"
 
-vm2@^3.6.4:
-  version "3.9.8"
-  resolved "https://registry.yarnpkg.com/vm2/-/vm2-3.9.8.tgz#e99c000db042735cd2f94d8db6c42163a17be04e"
+vm2@^3.9.10:
+  version "3.9.11"
+  resolved "https://registry.yarnpkg.com/vm2/-/vm2-3.9.11.tgz#a880f510a606481719ec3f9803b940c5805a06fe"
+  integrity sha512-PFG8iJRSjvvBdisowQ7iVF580DXb1uCIiGaXgm7tynMR1uTBlv7UJlB1zdv5KJ+Tmq1f0Upnj3fayoEOPpCBKg==
   dependencies:
     acorn "^8.7.0"
     acorn-walk "^8.2.0"
@@ -9833,7 +9776,7 @@ whatwg-encoding@^1.0.5:
   dependencies:
     iconv-lite "0.4.24"
 
-whatwg-fetch@>=0.10.0, whatwg-fetch@^3.4.1:
+whatwg-fetch@^3.4.1:
   version "3.6.2"
   resolved "https://registry.npmjs.org/whatwg-fetch/-/whatwg-fetch-3.6.2.tgz"
 

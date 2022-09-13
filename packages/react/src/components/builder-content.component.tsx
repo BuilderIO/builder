@@ -140,17 +140,17 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
         if (location.href.includes('builder.debug=true')) {
           eval('debugger');
         }
+        let newData = this.state.data as any;
         for (const patch of patches) {
-          applyPatchWithMinimalMutationChain(this.state.data, patch);
+          newData = applyPatchWithMinimalMutationChain(newData, patch, false);
         }
         this.setState({
           updates: this.state.updates + 1,
-          data: this.state.data ? { ...this.state.data } : this.state.data,
+          data: newData,
         });
         if (this.props.contentLoaded) {
-          this.props.contentLoaded(this.state.data?.data, this.state.data);
+          this.props.contentLoaded(newData.data, newData);
         }
-
         break;
       }
     }

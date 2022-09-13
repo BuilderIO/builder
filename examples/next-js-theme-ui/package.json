@@ -44,7 +44,7 @@
     ]
   },
   "dependencies": {
-    "@builder.io/react": "^2.0.1",
+    "@builder.io/react": "2.0.4",
     "@builder.io/utils": "^1.0.3",
     "@builder.io/widgets": "^1.2.22",
     "@emotion/react": "^11.8.2",

@@ -135,37 +135,34 @@ export async function integrateWithLocalCodebase(options: IntegrateOptions) {
   }
 
   console.info(`
-    --------------------------------------------------
-    --------------------------------------------------
-    Congratulations! You've successfully integrated with Builder.io.
+
+  
+    ✨ Done! We've successfully integrated page building ✨
+
+    ${chalk.bold(
+      chalk.green(`
+    Next Steps:
+      • Start your dev server: \`npm run dev\`
+      ${options.content ? `• Then, open: ${chalk.cyan(builderContentUrl)}` : ''}
+    `)
+    )}
     
+    Additional notes:
     • View/edit the integration file here: ${chalk.cyan(
       path.join(getPathToPages(), filePath, `[...page].${extension}`)
     )}
-    ${options.content ? `• Builder content link: ${chalk.cyan(builderContentUrl)}` : ''}
-
-    ${chalk.bold('Next Steps:')}
-    • Start your dev server if it's not already running.
 
     • If you have a custom 404 page, you'll want to add it to the [...page].${extension} file. in place of the <DefaultErrorPage> component.
 
-    • Add your header and footer components to the [...page].${extension} file.
+    • Register custom components for your team to use: ${chalk.cyan(
+      'https://www.builder.io/c/docs/custom-react-components'
+    )}
 
-    • Register custom components for your team to use in Builder.io. We created an example custom component at the bottom of your [...page].${extension} file. You can find more information about custom components here:\nhttps://www.builder.io/c/docs/custom-react-components    
-
-    • Commit and deploy the code updates to your dev/staging site so your team members can test Builder.io. Alternatively, you can use ${chalk.green(
-      'Vercel'
-    )} or ${chalk.green('Netlify')} to quickly deploy your project for testing.
+    • Commit and deploy the code updates to your dev/staging site so your team members can test Builder.io.
 
     • Once you've deployed to a remote url, you'll want to edit the ${chalk.cyan(
       'previewUrl'
     )} property of your model here:
        ${chalk.cyan(`https://builder.io/models/${options.model}`)}
-
-    --------------------------------------------------
-    --------------------------------------------------
-
-    ${chalk.green(`We'd love to here from you! Please send us any feedback you have here:
-    https://docs.google.com/forms/d/e/1FAIpQLScBdpNELFPX6hvWO70WuQ5W1nW5jfMglSCcUZ5w-0saXfsbEA/viewform?usp=pp_url&entry.1994483577=${options.apiKey}`)}
   `);
 }

@@ -5,6 +5,7 @@ import { BuilderContent } from '../../types/builder-content.js';
 import { onMount, onUpdate, useContext, useStore } from '@builder.io/mitosis';
 import { Nullable } from '../../types/typescript.js';
 import { BuilderBlock } from '../../types/builder-block.js';
+import { markMutable } from '../../functions/mark-mutable';
 
 export interface SymbolInfo {
   model?: string;
@@ -64,12 +65,7 @@ export default function Symbol(props: SymbolProps) {
         state.content = response;
       });
     }
-  }, [
-    props.symbol?.content,
-    props.symbol?.model,
-    props.symbol?.entry,
-    state.content,
-  ]);
+  }, [props.symbol, state.content]);
 
   return (
     <div
@@ -80,14 +76,16 @@ export default function Symbol(props: SymbolProps) {
       <RenderContent
         apiKey={builderContext.apiKey!}
         context={builderContext.context}
-        customComponents={Object.values(builderContext.registeredComponents)}
-        data={{
+        customComponents={markMutable(
+          Object.values(builderContext.registeredComponents)
+        )}
+        data={markMutable({
           ...props.symbol?.data,
           ...builderContext.state,
           ...props.symbol?.content?.data?.state,
-        }}
+        })}
         model={props.symbol?.model}
-        content={state.content}
+        content={markMutable(state.content)}
       />
     </div>
   );
