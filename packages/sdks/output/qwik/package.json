@@ -15,9 +15,9 @@
   },
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "build.lib": "tsc && vite build --mode lib",
-    "release:patch": "yarn run build.lib && npm version patch --no-git-tag-version && npm publish --access public",
-    "release:dev": "yarn run build.lib && npm version prerelease --no-git-tag-version && npm publish --tag latest --access public"
+    "build": "tsc && vite build --mode lib",
+    "release:patch": "yarn run build && npm version patch --no-git-tag-version && npm publish --access public",
+    "release:dev": "yarn run build && npm version prerelease --no-git-tag-version && npm publish --tag latest --access public"
   },
   "devDependencies": {
     "@builder.io/qwik": "BuilderIO/qwik-build#commit=08a6883d163f8eea8dc1710357b63b7ac01b2bef",
