@@ -37,7 +37,7 @@
     "release:dev:all": "yarn release-sdk svelte dev && yarn release-sdk react-native dev && yarn release-sdk solid dev && yarn release-sdk vue dev",
     "release:patch:all": "yarn release-sdk svelte patch && yarn release-sdk react-native patch && yarn release-sdk solid patch && yarn release-sdk vue patch",
     "upgrade-example": "bash ./scripts/upgrade-example.sh",
-    "upgrade-example:all": "yarn upgrade-example svelte && yarn upgrade-example react-native && yarn upgrade-example solid && yarn upgrade-example vue"
+    "upgrade-example:all": "yarn upgrade-example svelte && yarn upgrade-example react-native && yarn upgrade-example solid && yarn upgrade-example qwik && yarn upgrade-example react && yarn upgrade-example vue"
   },
   "dependencies": {
     "@builder.io/mitosis": "^0.0.58",
