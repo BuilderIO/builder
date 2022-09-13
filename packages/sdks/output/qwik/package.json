@@ -20,12 +20,12 @@
     "release:dev": "yarn run build && npm version prerelease --no-git-tag-version && npm publish --tag latest --access public"
   },
   "devDependencies": {
-    "@builder.io/qwik": "BuilderIO/qwik-build#commit=08a6883d163f8eea8dc1710357b63b7ac01b2bef",
+    "@builder.io/qwik": "0.0.108-dev20220913212706",
     "@types/node": "latest",
     "typescript": "^4",
     "vite": "^3.0.4"
   },
   "peerDependencies": {
-    "@builder.io/qwik": "0.0.108"
+    "@builder.io/qwik": "0.0.108-dev20220913212706"
   }
 }
