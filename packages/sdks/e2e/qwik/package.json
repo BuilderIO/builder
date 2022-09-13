@@ -35,7 +35,7 @@
     "express": "4.17.3",
     "node-fetch": "3.2.9",
     "prettier": "2.7.1",
-    "typescript": "4.7.4",
+    "typescript": "^4",
     "vite": "3.0.2"
   }
 }
