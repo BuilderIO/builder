@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/sdk-qwik",
-  "version": "0.0.17",
+  "version": "0.0.19",
   "description": "Builder.io Qwik SDK",
   "type": "module",
   "main": "./lib/index.qwik.cjs",

@@ -11,6 +11,9 @@ export default defineConfig(() => {
         fileName: (format) => `index.qwik.${format === 'es' ? 'mjs' : 'cjs'}`,
       },
       minify: false,
+      rollupOptions: {
+        external: ['node-fetch'],
+      },
     },
     plugins: [qwikVite()],
   };
