@@ -14499,7 +14499,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-template-compiler@npm:^2.7.9":
+"vue-template-compiler@npm:^2.7.8":
   version: 2.7.10
   resolution: "vue-template-compiler@npm:2.7.10"
   dependencies:
