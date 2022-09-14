@@ -3,9 +3,7 @@
   "private": true,
   "version": "0.0.1",
   "scripts": {
-    "rename-hack": "mv ../../output/vue/vue3/package.json ../../output/vue/vue3/--package.json",
-    "rename-hack:undo": "mv ../../output/vue/vue3/--package.json ../../output/vue/vue3/package.json",
-    "build": "vue-tsc --noEmit && yarn rename-hack && vite build && yarn rename-hack:undo",
+    "build": "vue-tsc --noEmit vite build",
     "dev": "vue-tsc --noEmit && vite",
     "e2e": "../../node_modules/.bin/playwright test",
     "serve": "vite preview"
