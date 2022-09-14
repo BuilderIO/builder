@@ -8,24 +8,24 @@
   "dependencies": {
     "node-fetch": "^2.6.1"
   },
-  "main": "./dist/vue-2/sdk.js",
-  "module": "./dist/vue-2/sdk.js",
+  "main": "./packages/_vue2/dist/sdk.js",
+  "module": "./packages/_vue2/dist/sdk.js",
   "type": "module",
   "files": [
     "dist"
   ],
   "exports": {
     ".": {
-      "import": "./dist/vue-2/sdk.js",
-      "require": "./dist/vue-2/sdk.cjs"
+      "import": "./packages/_vue2/dist/sdk.js",
+      "require": "./packages/_vue2/dist/sdk.cjs"
     },
     "./vue2": {
-      "import": "./dist/vue-2/sdk.js",
-      "require": "./dist/vue-2/sdk.cjs"
+      "import": "./packages/_vue2/dist/sdk.js",
+      "require": "./packages/_vue2/dist/sdk.cjs"
     },
     "./vue3": {
-      "import": "./dist/vue-3/sdk.js",
-      "require": "./dist/vue-3/sdk.cjs"
+      "import": "./packages/_vue3/dist/sdk.js",
+      "require": "./packages/_vue3/dist/sdk.cjs"
     },
     "./nuxt": {
       "import": "./nuxt.js",
@@ -38,6 +38,8 @@
   },
   "scripts": {
     "clear-dist": "rm -rf dist && mkdir dist",
+    "add-debug": "bash ./scripts/add-debug.sh",
+    "remove-debug": "bash ./scripts/remove-debug.sh",
     "build": "yarn run clear-dist && yarn workspaces foreach run build",
     "release:patch": "yarn run build && npm version patch --no-git-tag-version && npm publish --access public",
     "release:dev": "yarn run build && npm version prerelease --no-git-tag-version && npm publish --tag dev --access public"
