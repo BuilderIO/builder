@@ -1,3 +1,4 @@
 # doing this for each SDK is getting tedious, and I'm lazy.
-echo "releasing $2 version of SDK $1";
-cd "output/$1" && npm run release:$2 && echo "released $1";
+VERSION=${2:-'patch'}    
+echo "releasing $VERSION version of SDK $1";
+cd "output/$1" && npm run release:$VERSION && echo "released $1";

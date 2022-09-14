@@ -1229,13 +1229,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis-cli@npm:latest":
-  version: 0.0.19
-  resolution: "@builder.io/mitosis-cli@npm:0.0.19"
+"@builder.io/mitosis-cli@npm:^0.0.20":
+  version: 0.0.20
+  resolution: "@builder.io/mitosis-cli@npm:0.0.20"
   dependencies:
     "@babel/core": ^7.17.8
     "@babel/preset-typescript": ^7.16.7
-    "@builder.io/mitosis": 0.0.58
+    "@builder.io/mitosis": 0.0.59
     "@vue/compiler-sfc": ^3.1.5
     babel-preset-solid: ^1.3.13
     chalk: ^4.1.0
@@ -1256,13 +1256,13 @@ __metadata:
     vue-template-validator: ^1.1.5
   bin:
     mitosis: bin/mitosis
-  checksum: c9ff7cabc13d87b5f8a9648911272b6e46cef366796b124e0b0718623adbcdfa9c8feb61d89553b57a9826fab7a2873b8544e886a19e8f706f913515218461b9
+  checksum: 8834910830eb7727e1fc1539d09253f7ec55e2e3261b510f62d7eee398fe9c1ae6a3d6e9efa0c6a01ac6582ee0430e379016b3240fa77bc803f4ac2825d9d3a2
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis@npm:0.0.58, @builder.io/mitosis@npm:latest":
-  version: 0.0.58
-  resolution: "@builder.io/mitosis@npm:0.0.58"
+"@builder.io/mitosis@npm:0.0.59, @builder.io/mitosis@npm:^0.0.59":
+  version: 0.0.59
+  resolution: "@builder.io/mitosis@npm:0.0.59"
   dependencies:
     "@angular/compiler": ^11.2.11
     "@babel/core": 7.14.5
@@ -1293,7 +1293,7 @@ __metadata:
     traverse: ^0.6.6
     typescript: ^4.7.3
     vue: ~2.6
-  checksum: 11f5d650dc4edec385b6f45923d31b0b9ce7057da11ea046289df964e8bb78f50967d3f9c39279bd5ecdacbf843281332d5fac939d4dc7862761a5a362216c4a
+  checksum: 465ced50cc4e4560fdaf01e72bac1963900ea3fb8a3e2295317643984c8aa6624dec8435783cd92eddeb044621cad57de9f1084ae9f9a78d35232e38b05ebf7c
   languageName: node
   linkType: hard
 
@@ -1410,9 +1410,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@builder.io/sdk-vue-2@workspace:output/vue/vue2":
+"@builder.io/sdk-vue-2@workspace:output/vue/packages/_vue2":
   version: 0.0.0-use.local
-  resolution: "@builder.io/sdk-vue-2@workspace:output/vue/vue2"
+  resolution: "@builder.io/sdk-vue-2@workspace:output/vue/packages/_vue2"
   dependencies:
     "@types/node": ^16.11.45
     "@vitejs/plugin-vue2": ^1.1.2
@@ -1427,9 +1427,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@builder.io/sdk-vue-3@workspace:output/vue/vue3":
+"@builder.io/sdk-vue-3@workspace:output/vue/packages/_vue3":
   version: 0.0.0-use.local
-  resolution: "@builder.io/sdk-vue-3@workspace:output/vue/vue3"
+  resolution: "@builder.io/sdk-vue-3@workspace:output/vue/packages/_vue3"
   dependencies:
     "@types/node": ^16.11.47
     "@vitejs/plugin-vue": ^3.0.1
@@ -1478,8 +1478,8 @@ __metadata:
   resolution: "@builder.io/sdks@workspace:."
   dependencies:
     "@builder.io/eslint-plugin-mitosis": dev
-    "@builder.io/mitosis": latest
-    "@builder.io/mitosis-cli": latest
+    "@builder.io/mitosis": ^0.0.59
+    "@builder.io/mitosis-cli": ^0.0.20
     "@playwright/test": ^1.24.0
     "@types/jest": ^27.4.1
     "@types/node-fetch": ^2.5.12
