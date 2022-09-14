@@ -9,8 +9,8 @@
     "build.client": "vite build",
     "build.ssr": "vite build --ssr src/entry.express.tsx",
     "dev": "vite",
-    "dev.debug": "node --inspect-brk node_modules/vite/bin/vite.js --mode ssr",
-    "dev.ssr": "node --inspect node_modules/vite/bin/vite.js --mode ssr",
+    "dev.debug": "vite --mode ssr",
+    "dev.ssr": "vite --mode ssr",
     "fmt": "prettier --write .",
     "fmt.check": "prettier --check .",
     "lint": "eslint \"src/**/*.ts*\"",
@@ -22,7 +22,7 @@
     "e2e": "../../node_modules/.bin/playwright test"
   },
   "devDependencies": {
-    "@builder.io/qwik": "0.0.108",
+    "@builder.io/qwik": "0.0.108-dev20220913220811",
     "@builder.io/sdk-qwik": "workspace:*",
     "@builder.io/sdks-e2e-tests": "workspace:*",
     "@types/eslint": "8.4.5",
@@ -35,7 +35,7 @@
     "express": "4.17.3",
     "node-fetch": "3.2.9",
     "prettier": "2.7.1",
-    "typescript": "4.7.4",
-    "vite": "3.0.2"
+    "typescript": "^4",
+    "vite": "^3.0.4"
   }
 }
