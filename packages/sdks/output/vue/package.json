@@ -2,8 +2,7 @@
   "name": "@builder.io/sdk-vue",
   "description": "Builder.io SDK for Vue",
   "workspaces": [
-    "vue2",
-    "vue3"
+    "packages/*"
   ],
   "version": "0.0.1",
   "dependencies": {
@@ -12,6 +11,9 @@
   "main": "./dist/vue-2/sdk.js",
   "module": "./dist/vue-2/sdk.js",
   "type": "module",
+  "files": [
+    "dist"
+  ],
   "exports": {
     ".": {
       "import": "./dist/vue-2/sdk.js",
