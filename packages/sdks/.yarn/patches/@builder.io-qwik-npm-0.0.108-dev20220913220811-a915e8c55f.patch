@@ -1,0 +1,41 @@
+diff --git a/core.cjs b/core.cjs
+index d0962d8abbea9c182e7935df56538f99e31ab4eb..860151056a3e65fa1d1965bdef008337f3018fd7 100644
+--- a/core.cjs
++++ b/core.cjs
+@@ -2914,21 +2914,23 @@
+         };
+         const getObjId = (obj) => {
+             let suffix = '';
+-            if (isObject(obj)) {
+-                if (isMutable(obj)) {
+-                    obj = obj.mut;
+-                    suffix = '%';
++            // waiting for PR to merge
++            // https://github.com/BuilderIO/qwik/pull/1232
++            if (isMutable(obj)) {
++                obj = obj.mut;
++                suffix = '%';
++            }
++            if (isPromise(obj)) {
++                const { value, resolved } = getPromiseValue(obj);
++                obj = value;
++                if (resolved) {
++                    suffix += '~';
+                 }
+-                if (isPromise(obj)) {
+-                    const { value, resolved } = getPromiseValue(obj);
+-                    obj = value;
+-                    if (resolved) {
+-                        suffix += '~';
+-                    }
+-                    else {
+-                        suffix += '_';
+-                    }
++                else {
++                    suffix += '_';
+                 }
++            }
++            if (isObject(obj)) {
+                 const target = getProxyTarget(obj);
+                 if (target) {
+                     suffix += '!';

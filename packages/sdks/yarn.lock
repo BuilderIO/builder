@@ -1306,6 +1306,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@builder.io/qwik@patch:@builder.io/qwik@npm:0.0.108-dev20220913220811#.yarn/patches/@builder.io-qwik-npm-0.0.108-dev20220913220811-a915e8c55f.patch::locator=%40builder.io%2Fsdks%40workspace%3A.":
+  version: 0.0.108-dev20220913220811
+  resolution: "@builder.io/qwik@patch:@builder.io/qwik@npm%3A0.0.108-dev20220913220811#.yarn/patches/@builder.io-qwik-npm-0.0.108-dev20220913220811-a915e8c55f.patch::version=0.0.108-dev20220913220811&hash=f1d0db&locator=%40builder.io%2Fsdks%40workspace%3A."
+  bin:
+    qwik: qwik.cjs
+  checksum: b17e7d525ae62c86a2c42ec9ea6406fdf7836b943d74c95756e50c616691653ff271a09c1159e7d6b823be1b4f575d473666d2e395ce1fe3e34932d75480197d
+  languageName: node
+  linkType: hard
+
 "@builder.io/react@npm:^1.1.50":
   version: 1.1.52
   resolution: "@builder.io/react@npm:1.1.52"
