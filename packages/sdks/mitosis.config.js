@@ -13,7 +13,6 @@ const isMitosisNode = (x) => x && x['@type'] === '@builder.io/mitosis/node';
  * @type {import('@builder.io/mitosis'.MitosisConfig['options']['vue'])}
  */
 const vueConfig = {
-  transpiler: { format: 'esm' },
   namePrefix: (path) => (path.includes('/blocks/') ? 'builder' : undefined),
   cssNamespace: getSeededId,
   asyncComponentImports: true,
@@ -38,7 +37,6 @@ module.exports = {
     vue2: vueConfig,
     vue3: vueConfig,
     react: {
-      transpiler: { format: 'esm' },
       plugins: [SRCSET_PLUGIN],
       stylesType: 'style-tag',
     },
@@ -50,7 +48,7 @@ module.exports = {
       plugins: [SRCSET_PLUGIN],
     },
     svelte: {
-      transpiler: { format: 'esm' },
+      typescript: true,
       plugins: [
         () => ({
           json: {

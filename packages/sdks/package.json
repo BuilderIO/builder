@@ -2,8 +2,9 @@
   "name": "@builder.io/sdks",
   "private": true,
   "workspaces": [
-    "e2e/*",
-    "output/**/*"
+    "output/**/*",
+    "output/*",
+    "e2e/*"
   ],
   "engines": {
     "yarn": ">= 3.0.0"
@@ -26,7 +27,8 @@
     "typecheck": "tsc --noEmit",
     "typecheck:watch": "yarn run typecheck --watch",
     "ci:lint": "yarn run prettier --check && yarn run eslint",
-    "ci:build": "yarn run typecheck && mitosis build && cd output/qwik/ && yarn install && yarn build.lib",
+    "build:outputs": "yarn workspaces foreach --include \"*/sdk-*\" --exclude @builder.io/sdk-vue-2 --exclude @builder.io/sdk-vue-3 --verbose run build",
+    "ci:build": "yarn run typecheck && mitosis build && yarn run build:outputs",
     "ci:test": "yarn run test",
     "ci:e2e-prep": "playwright install --with-deps",
     "ci:e2e-build:prep": "yarn workspace @builder.io/sdk-vue run build",
@@ -36,7 +38,7 @@
     "release:dev:all": "yarn release-sdk svelte dev && yarn release-sdk react-native dev && yarn release-sdk solid dev && yarn release-sdk vue dev",
     "release:patch:all": "yarn release-sdk svelte patch && yarn release-sdk react-native patch && yarn release-sdk solid patch && yarn release-sdk vue patch",
     "upgrade-example": "bash ./scripts/upgrade-example.sh",
-    "upgrade-example:all": "yarn upgrade-example svelte && yarn upgrade-example react-native && yarn upgrade-example solid && yarn upgrade-example vue"
+    "upgrade-example:all": "yarn upgrade-example svelte && yarn upgrade-example react-native && yarn upgrade-example solid && yarn upgrade-example qwik && yarn upgrade-example react && yarn upgrade-example vue"
   },
   "dependencies": {
     "@builder.io/mitosis": "latest",
@@ -47,7 +49,6 @@
     "traverse": "^0.6.6"
   },
   "devDependencies": {
-    "@angular/compiler": "^14.2.1",
     "@builder.io/eslint-plugin-mitosis": "dev",
     "@types/jest": "^27.4.1",
     "@types/node-fetch": "^2.5.12",
@@ -64,7 +65,7 @@
     "pinst": "^3.0.0",
     "prettier": "^2.5.0",
     "ts-jest": "^27.1.4",
-    "typescript": "^4.5.5",
+    "typescript": "^4",
     "watch": "^1.0.2"
   },
   "config": {
@@ -73,7 +74,7 @@
     }
   },
   "resolutions": {
-    "vue-template-compiler": "^2.7.9"
+    "@builder.io/qwik@0.0.108-dev20220913220811": "patch:@builder.io/qwik@npm:0.0.108-dev20220913220811#.yarn/patches/@builder.io-qwik-npm-0.0.108-dev20220913220811-a915e8c55f.patch"
   },
   "packageManager": "yarn@3.2.0"
 }
