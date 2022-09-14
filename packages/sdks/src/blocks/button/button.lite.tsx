@@ -9,24 +9,22 @@ export interface ButtonProps {
 
 export default function Button(props: ButtonProps) {
   return (
-    <>
-      <Show
-        when={props.link}
-        else={
-          <button css={{ all: 'unset' }} {...props.attributes}>
-            {props.text}
-          </button>
-        }
-      >
-        <a
-          {...props.attributes}
-          role="button"
-          href={props.link}
-          target={props.openLinkInNewTab ? '_blank' : undefined}
-        >
+    <Show
+      when={props.link}
+      else={
+        <button css={{ all: 'unset' }} {...props.attributes}>
           {props.text}
-        </a>
-      </Show>
-    </>
+        </button>
+      }
+    >
+      <a
+        {...props.attributes}
+        role="button"
+        href={props.link}
+        target={props.openLinkInNewTab ? '_blank' : undefined}
+      >
+        {props.text}
+      </a>
+    </Show>
   );
 }
