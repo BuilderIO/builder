@@ -3,10 +3,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "build": "run-s build-only copy",
-    "build-only": "vite build",
-    "type-check": "vue-tsc --noEmit",
-    "copy": "cp -r dist ../../dist/vue-2"
+    "build": "vite build",
+    "type-check": "vue-tsc --noEmit"
   },
   "dependencies": {
     "node-fetch": "^2.6.1",
