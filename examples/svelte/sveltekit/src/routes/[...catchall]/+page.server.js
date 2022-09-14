@@ -1,7 +1,5 @@
 import { getContent, getBuilderSearchParams } from '@builder.io/sdk-svelte';
-
-// TODO: enter your public API key
-const BUILDER_PUBLIC_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660'; // ggignore
+import { BUILDER_PUBLIC_API_KEY } from '../../apiKey';
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load(event) {

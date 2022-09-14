@@ -1,6 +1,7 @@
 <script>
 	import Counter from '../../lib/Counter.svelte';
 	import { isPreviewing, RenderContent } from '@builder.io/sdk-svelte';
+	import { BUILDER_PUBLIC_API_KEY } from '../../apiKey';
 
 	// Create an array of your custom components and their properties
 	const CUSTOM_COMPONENTS = [
@@ -22,10 +23,10 @@
 		}
 	];
 
-	// TODO: enter your public API key
-	const BUILDER_PUBLIC_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660'; // ggignore
-
+	// this data comes from the function in `+page.server.js`, which runs on the server only
 	export let data;
+
+	// we want to show unpublished content when in preview mode.
 	const canShowContent = data.content || isPreviewing();
 </script>
 
