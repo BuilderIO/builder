@@ -1410,9 +1410,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@builder.io/sdk-vue-2@workspace:output/vue/vue2":
+"@builder.io/sdk-vue-2@workspace:output/vue/packages/_vue2":
   version: 0.0.0-use.local
-  resolution: "@builder.io/sdk-vue-2@workspace:output/vue/vue2"
+  resolution: "@builder.io/sdk-vue-2@workspace:output/vue/packages/_vue2"
   dependencies:
     "@types/node": ^16.11.45
     "@vitejs/plugin-vue2": ^1.1.2
@@ -1427,9 +1427,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@builder.io/sdk-vue-3@workspace:output/vue/vue3":
+"@builder.io/sdk-vue-3@workspace:output/vue/packages/_vue3":
   version: 0.0.0-use.local
-  resolution: "@builder.io/sdk-vue-3@workspace:output/vue/vue3"
+  resolution: "@builder.io/sdk-vue-3@workspace:output/vue/packages/_vue3"
   dependencies:
     "@types/node": ^16.11.47
     "@vitejs/plugin-vue": ^3.0.1
