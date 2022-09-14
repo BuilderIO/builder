@@ -72,5 +72,8 @@
       "path": "git-cz"
     }
   },
+  "resolutions": {
+    "@builder.io/qwik@0.0.108-dev20220913220811": "patch:@builder.io/qwik@npm:0.0.108-dev20220913220811#.yarn/patches/@builder.io-qwik-npm-0.0.108-dev20220913220811-a915e8c55f.patch"
+  },
   "packageManager": "yarn@3.2.0"
 }
