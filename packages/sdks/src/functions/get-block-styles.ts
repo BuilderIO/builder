@@ -45,8 +45,6 @@ export function getBlockStyles(block: BuilderBlock) {
 
   const styles = getStyleForTarget(block.responsiveStyles);
 
-  console.log('rn styles', styles);
-
   sanitizeBlockStyles(styles);
 
   return styles;
