@@ -1,6 +1,7 @@
 // TO-DO: This file breaks due to this issue:
 // https://github.com/expo/web-examples/issues/73
 // For now, we do not import it elsewhere to avoid crashing Expo servers on web when importing the SDK.
+import * as React from 'react';
 import { View } from 'react-native';
 import ReactVideo from 'react-native-video';
 
