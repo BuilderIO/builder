@@ -1,4 +1,4 @@
-import type { BuilderContextInterface } from '../context/builder.context.lite';
+import type { BuilderContextInterface } from '../context/types.js';
 import { isBrowser } from './is-browser.js';
 import { isEditing } from './is-editing.js';
 
@@ -42,6 +42,11 @@ export function evaluate({
       useCode
     )(builder, builder, state, context, event);
   } catch (e) {
-    console.warn('Builder custom code error: ', e);
+    console.warn(
+      'Builder custom code error: \n While Evaluating: \n ',
+      useCode,
+      '\n',
+      (e as any).message || e
+    );
   }
 }

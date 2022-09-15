@@ -1,3 +1,7 @@
 .yarn/
 output/**/src
 .pnp.*
+
+**/.next
+
+**/dist

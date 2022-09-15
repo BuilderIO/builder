@@ -9,11 +9,30 @@ const getSeededId = () => {
 
 const isMitosisNode = (x) => x && x['@type'] === '@builder.io/mitosis/node';
 
+const kebabCase = (string) =>
+  string.replace(/([a-z0-9]|(?=[A-Z]))([A-Z])/g, '$1-$2').toLowerCase();
+
+/**
+ * @type {import('@builder.io/mitosis'.MitosisConfig['getTargetPath'])}
+ */
+const getTargetPath = (target) => {
+  switch (target) {
+    // we have to workaround a name collision, where the folder can't have the name of the `exports` property in package.json.
+    // crazy, crazy stuff.
+    case 'vue2':
+      return 'vue/packages/_vue2';
+    case 'vue':
+    case 'vue3':
+      return 'vue/packages/_vue3';
+    default:
+      return kebabCase(target);
+  }
+};
+
 /**
  * @type {import('@builder.io/mitosis'.MitosisConfig['options']['vue'])}
  */
 const vueConfig = {
-  transpiler: { format: 'esm' },
   namePrefix: (path) => (path.includes('/blocks/') ? 'builder' : undefined),
   cssNamespace: getSeededId,
   asyncComponentImports: true,
@@ -24,8 +43,7 @@ const SRCSET_PLUGIN = () => ({
     pre: (code) => {
       // workaround until we resolve
       // https://github.com/BuilderIO/mitosis/issues/526
-      code.replace('srcset', 'srcSet');
-      return code;
+      return code.replace(/srcset=/g, 'srcSet=');
     },
   },
 });
@@ -35,19 +53,23 @@ const SRCSET_PLUGIN = () => ({
 module.exports = {
   files: 'src/**',
   targets: ['reactNative', 'vue2', 'vue3', 'solid', 'svelte', 'react', 'qwik'],
+  getTargetPath,
   options: {
     vue2: vueConfig,
     vue3: vueConfig,
     react: {
-      transpiler: { format: 'esm' },
       plugins: [SRCSET_PLUGIN],
       stylesType: 'style-tag',
     },
     reactNative: {
       plugins: [SRCSET_PLUGIN],
     },
+    qwik: {
+      typescript: true,
+      plugins: [SRCSET_PLUGIN],
+    },
     svelte: {
-      transpiler: { format: 'esm' },
+      typescript: true,
       plugins: [
         () => ({
           json: {

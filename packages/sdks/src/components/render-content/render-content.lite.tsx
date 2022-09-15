@@ -1,11 +1,12 @@
 import { getDefaultRegisteredComponents } from '../../constants/builder-registered-components.js';
 import { TARGET } from '../../constants/target.js';
-import BuilderContext, {
+import BuilderContext from '../../context/builder.context.lite';
+import {
   BuilderRenderContext,
   BuilderRenderState,
   RegisteredComponent,
   RegisteredComponents,
-} from '../../context/builder.context.lite';
+} from '../../context/types.js';
 import { evaluate } from '../../functions/evaluate.js';
 import { getContent } from '../../functions/get-content/index.js';
 import { getFetch } from '../../functions/get-fetch.js';
@@ -18,7 +19,7 @@ import {
 } from '../../functions/register-component.js';
 import { track } from '../../functions/track.js';
 import { BuilderContent } from '../../types/builder-content.js';
-import { Dictionary, Nullable } from '../../types/typescript.js';
+import type { Dictionary, Nullable } from '../../types/typescript.js';
 import RenderBlocks from '../render-blocks.lite';
 import RenderContentStyles from './components/render-styles.lite';
 import {
@@ -35,6 +36,7 @@ import {
   registerInsertMenu,
   setupBrowserForEditing,
 } from '../../scripts/init-editing.js';
+import { markMutable } from '../../functions/mark-mutable.js';
 
 // eslint-disable-next-line @builder.io/mitosis/only-default-function-and-imports
 useMetadata({
@@ -44,7 +46,7 @@ useMetadata({
     },
     replace: {
       '// QWIK-REPLACE: _useMutableProps':
-        '_useMutableProps(elementRef.current, true);',
+        'elementRef.current && _useMutableProps(elementRef.current, true);',
     },
     imports: {
       _useMutableProps: '@builder.io/qwik',
@@ -79,6 +81,9 @@ export default function RenderContent(props: RenderContentProps) {
   const state = useStore({
     forceReRenderCount: 0,
     get useContent(): Nullable<BuilderContent> {
+      if (!props.content && !state.overrideContent) {
+        return undefined;
+      }
       const mergedContent: BuilderContent = {
         ...props.content,
         ...state.overrideContent,
@@ -146,6 +151,7 @@ export default function RenderContent(props: RenderContentProps) {
 
             if (key === props.model) {
               state.overrideContent = contentData;
+              state.forceReRenderCount = state.forceReRenderCount + 1; // This is a hack to force Qwik to re-render.
             }
             break;
           }
@@ -177,7 +183,7 @@ export default function RenderContent(props: RenderContentProps) {
         track({
           type: 'click',
           canTrack: state.canTrackToUse,
-          contentId: state.useContent.id,
+          contentId: state.useContent?.id,
           orgId: props.apiKey,
         });
       }
@@ -193,18 +199,19 @@ export default function RenderContent(props: RenderContentProps) {
       );
     },
     handleRequest({ url, key }: { key: string; url: string }) {
-      const fetchAndSetState = async () => {
-        const fetch = await getFetch();
-        const response = await fetch(url);
-        const json = await response.json();
-
-        const newOverrideState = {
-          ...state.overrideState,
-          [key]: json,
-        };
-        state.overrideState = newOverrideState;
-      };
-      fetchAndSetState();
+      getFetch()
+        .then((fetch) => fetch(url))
+        .then((response) => response.json())
+        .then((json) => {
+          const newOverrideState = {
+            ...state.overrideState,
+            [key]: json,
+          };
+          state.overrideState = newOverrideState;
+        })
+        .catch((err) => {
+          console.log('error fetching dynamic data', url, err);
+        });
     },
     runHttpRequests() {
       const requests = state.useContent?.data?.httpRequests ?? {};
@@ -283,12 +290,12 @@ export default function RenderContent(props: RenderContentProps) {
         // QWIK-REPLACE: _useMutableProps
         registerInsertMenu();
         setupBrowserForEditing();
-        Object.values(state.allRegisteredComponents).forEach(
-          (registeredComponent) => {
-            const message = createRegisterComponentMessage(registeredComponent);
-            window.parent?.postMessage(message, '*');
-          }
-        );
+        Object.values<RegisteredComponent>(
+          state.allRegisteredComponents
+        ).forEach((registeredComponent) => {
+          const message = createRegisterComponentMessage(registeredComponent);
+          window.parent?.postMessage(message, '*');
+        });
         window.addEventListener('message', state.processMessage);
         window.addEventListener(
           'builder:component:stateChangeListenerActivated',
@@ -299,7 +306,7 @@ export default function RenderContent(props: RenderContentProps) {
         track({
           type: 'impression',
           canTrack: state.canTrackToUse,
-          contentId: state.useContent.id,
+          contentId: state.useContent?.id,
           orgId: props.apiKey,
         });
       }
@@ -369,7 +376,7 @@ export default function RenderContent(props: RenderContentProps) {
           />
         )}
         <RenderBlocks
-          blocks={state.useContent?.data?.blocks}
+          blocks={markMutable(state.useContent?.data?.blocks)}
           key={state.forceReRenderCount}
         />
       </div>

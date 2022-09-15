@@ -20,7 +20,6 @@ const kebabCaseToCamelCase = (str = '') =>
   str.replace(/-([a-z])/g, match => match[1].toUpperCase());
 
 const Device = { desktop: 0, tablet: 1, mobile: 2 };
-const blocksMap: Record<string, BuilderElement> = {};
 
 const voidElements = new Set([
   'area',
@@ -134,7 +133,7 @@ export class BuilderBlock extends React.Component<
   }
 
   get block() {
-    return blocksMap[this.props.block.id!] || this.props.block;
+    return this.props.block;
   }
 
   get emotionCss() {
@@ -250,17 +249,11 @@ export class BuilderBlock extends React.Component<
         }
 
         if (location.href.includes('builder.debug=true')) {
-          this.eval('debugger');
+          eval('debugger');
         }
-        let newBlock = { ...this.block };
         for (const patch of patches) {
-          // TODO: soehow mark this.block as a new object,
-          // e.g. access it's parent hm. maybe do the listning mutations
-          // on hte parent element not the child (or rather
-          // send the message to the parent)
-          applyPatchWithMinimalMutationChain(newBlock, patch);
+          applyPatchWithMinimalMutationChain(this.props.block, patch, true);
         }
-        blocksMap[this.props.block.id!] = newBlock;
         this.setState({ updates: this.state.updates + 1 });
 
         break;

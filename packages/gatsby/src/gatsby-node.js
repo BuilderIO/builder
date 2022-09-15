@@ -74,20 +74,22 @@ const createPagesAsync = async (config, createPage, graphql, models, offsets) =>
     }
 
     for (const entry of entries) {
-      if (entry.content.data.url && entry.content.published === `published`) {
+      const paths = getPaths(entry.content);
+      if (paths.length > 0 && entry.content.published === `published`) {
         let mappedProps = {};
 
         if (config.mapEntryToContext) {
           mappedProps = await config.mapEntryToContext(entry, graphql);
         }
-
-        createPage({
-          path: entry.content.data.url,
-          component,
-          context: {
-            ...(config.globalContext || {}),
-            ...mappedProps,
-          },
+        paths.forEach(path => {
+          createPage({
+            path,
+            component,
+            context: {
+              ...(config.globalContext || {}),
+              ...mappedProps,
+            },
+          });
         });
       }
     }
@@ -268,4 +270,14 @@ function createSchemaNode({ id, typeName, fieldName, createContentDigest }) {
       ignoreType: true,
     },
   };
+}
+
+function getPaths(content) {
+  let urls = content?.query?.find(attribute => attribute.property === 'urlPath')?.value;
+
+  if (typeof urls === 'string') {
+    urls = [urls];
+  }
+
+  return urls || [];
 }

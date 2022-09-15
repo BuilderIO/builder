@@ -6,11 +6,14 @@ export default defineConfig(() => {
     build: {
       target: 'es2020',
       lib: {
-        entry: './src/index.js',
+        entry: './src/index.ts',
         formats: ['es', 'cjs'],
         fileName: (format) => `index.qwik.${format === 'es' ? 'mjs' : 'cjs'}`,
       },
       minify: false,
+      rollupOptions: {
+        external: ['node-fetch'],
+      },
     },
     plugins: [qwikVite()],
   };

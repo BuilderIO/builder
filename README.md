@@ -26,46 +26,6 @@
   <img alt="Animation of Builder.io Visual Editor" src="https://user-images.githubusercontent.com/844291/186968488-6344adaa-38bb-422c-b728-10c529af993d.gif" >
 </p>
 
-<h5 align="center" valign="middle">
-  Choose your framework:
-</h5>
-
-<p align="center" valign="middle">
-  &nbsp; <a title="REST API" target="_blank" href="https://www.builder.io/c/docs/developers?codeFramework=rest">
-    <img alt="REST API" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F7c16907175964f5dada038f6cceef77b" />
-  </a>&nbsp;
-  &nbsp; <a title="GraphQL"  target="_blank" href="https://www.builder.io/c/docs/developers?codeFramework=graphql">
-    <img alt="GraphQL" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fb739b409e5b94937b5b11e3cf62cfae4" />
-  </a>&nbsp;
-  &nbsp; <a title="Shopify"  target="_blank" href="https://apps.shopify.com/builder-2">
-    <img alt="Shopify" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F0f577e84eb4e4aa4a69d602dd376aa11" />
-  </a>&nbsp;
-  &nbsp;<a title="Figma" target="_blank" href="https://github.com/builderio/html-to-figma">
-    <img width="31" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ffb77e93c28e044178e4694cc939bf4cf" />
-  </a>&nbsp;&nbsp;
-  &nbsp; <a title="React"  target="_blank" href="https://www.builder.io/c/docs/developers?codeFramework=react">
-    <img alt="React" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F2f3409f4f8b64d5f880195061aa481ab" />
-  </a>&nbsp;
-  &nbsp; <a title="Next.js"  target="_blank" href="https://www.builder.io/c/docs/developers?codeFramework=next">
-    <img alt="Next.js9" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fc6a3c58c0bde4f43b1fd6a350f491bdf" />
-  </a>&nbsp;
-  &nbsp; <a title="Gatsby"  target="_blank" href="https://www.builder.io/c/docs/developers?codeFramework=gatsby">
-    <img alt="Gatsby" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F45e59fc603574e708dcb79e45ef72d02" />
-  </a>&nbsp;
-  &nbsp; <a title="Vue"  target="_blank" href="https://www.builder.io/c/docs/developers?codeFramework=vue">
-    <img alt="Vue" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F7cc6d5b6fc4045d5a9f9b12ddcc65407" />
-  </a>&nbsp;
-  &nbsp; <a title="Nuxt"  target="_blank" href="https://www.builder.io/c/docs/developers?codeFramework=nuxt">
-    <img alt="Nuxt" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F73f47f47e0cc46cd95dbf72c26728858" />
-  </a>&nbsp;
-  &nbsp; <a title="Angular"  target="_blank" href="https://www.builder.io/c/docs/developers?codeFramework=angular">
-    <img alt="Angular" width="45" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fa91e9e437203442d8ed481eef94a99dc" />
-  </a>&nbsp;
-  &nbsp; <a title="Webcomponents"  target="_blank" href="https://www.builder.io/c/docs/developers?codeFramework=webcomponents">
-    <img alt="Webcomponents" width="52" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F5613cb3536be4c108b32c34bf06f1c59" />
-  </a>&nbsp;
-</p>
-
 <br />
 
 <table style="width:100%;">
@@ -116,6 +76,33 @@ export function BuilderPage({ builderJson }) => {
   </tr>
 </table>
 
+## Try it out!
+
+<table>
+  <tr>
+    <td align="center">Editor Demo</td>
+    <td align="center">Commerce Example</td>
+    <td align="center">Blog Example</td>
+  </tr>
+  <tr>
+    <td align="center">
+      <a href="https://builder.io/demo">
+        <img alt="Editor Demo Screenshot" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F2c0e84d946a24b1ab6d9f16f20316ebc" />
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://builder.io/demo/commerce?demoHost=nextjs-edge-personalization-demo-git-editor-demo-builder-io.vercel.app&demoModel=page">
+        <img alt="Commmerce Example Screenshot" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fb0fd76663aaa4e2bb12dc455b40ea0ea" />
+      </a>
+    </td>    
+    <td align="center">
+      <a href="https://builder.io/demo/blog/example?demoHost=blog-example-builder-io.vercel.app&demoModel=blog-post&demoPath=/blog/example">
+        <img alt="Blog Example Screenshot" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ff490f7bd587441f68025df795e81d3fd" />
+      </a>
+    </td>        
+  </tr>
+</table>
+
 ## Why Builder.io?
 
 Hardcoding layouts for frequently changing content bottlenecks your team and makes releases messy
@@ -129,10 +116,6 @@ Using an API-driven UI allows you to:
 <br />
 <img src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F73868572aeff49bdbf00a32fea8c1126" />
 
-
-## Try it out!
-
-Try out our [editor online](https://builder.io/demo)
 
 ## Get Started
 

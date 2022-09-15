@@ -4,3 +4,5 @@ jest.config.js
 .eslintrc.js
 mitosis.config.js
 tsconfig.json
+**/vite.config.ts
+**/dist/**

@@ -2,8 +2,9 @@
   "name": "@builder.io/sdks",
   "private": true,
   "workspaces": [
-    "e2e/*",
-    "output/**/*"
+    "output/**/*",
+    "output/*",
+    "e2e/*"
   ],
   "engines": {
     "yarn": ">= 3.0.0"
@@ -11,13 +12,15 @@
   "scripts": {
     "prepare": "cd ../../ && npx husky install",
     "cz": "cz",
-    "mitosis": "./node_modules/@builder.io/mitosis-cli/bin/mitosis build",
-    "build": "yarn run mitosis",
-    "start": "watch 'yarn run mitosis' ./src ./overrides",
+    "build:mitosis": "./node_modules/@builder.io/mitosis-cli/bin/mitosis build",
+    "build:outputs": "yarn workspaces foreach --include \"*/sdk-*\" --exclude @builder.io/sdk-vue-2 --exclude @builder.io/sdk-vue-3 --verbose run build",
+    "build": "yarn run build:mitosis && yarn run build:outputs",
+    "start": "watch 'yarn run build:mitosis' ./src ./overrides",
     "test": "jest",
     "remove-symlinks": "./scripts/remove-resolutions.sh && yarn",
     "add-symlinks": "./scripts/add-resolutions.sh && yarn",
-    "upgrade-mitosis": "yarn up @builder.io/mitosis@dev @builder.io/mitosis-cli@dev",
+    "upgrade-mitosis:dev": "yarn up @builder.io/mitosis@dev @builder.io/mitosis-cli@dev",
+    "upgrade-mitosis": "yarn up @builder.io/mitosis @builder.io/mitosis-cli",
     "prettier": "prettier .",
     "lint": "yarn run prettier --write",
     "eslint": "eslint . --quiet",
@@ -25,20 +28,20 @@
     "typecheck": "tsc --noEmit",
     "typecheck:watch": "yarn run typecheck --watch",
     "ci:lint": "yarn run prettier --check && yarn run eslint",
-    "ci:build": "yarn run typecheck && mitosis build",
+    "ci:build": "yarn run typecheck && yarn run build",
     "ci:test": "yarn run test",
     "ci:e2e-prep": "playwright install --with-deps",
     "ci:e2e-build:prep": "yarn workspace @builder.io/sdk-vue run build",
     "ci:e2e-build": "yarn workspaces foreach -pt --include \"*/e2e*\" --verbose run build",
-    "ci:e2e": "yarn workspaces foreach --exclude @builder.io/e2e-nextjs-react --verbose run e2e",
+    "ci:e2e": "yarn workspaces foreach --exclude @builder.io/e2e-nextjs-react --exclude @builder.io/e2e-vue3 --verbose run e2e",
     "release-sdk": "bash ./scripts/release-sdk.sh",
-    "release:dev:all": "yarn release-sdk svelte && yarn release-sdk react-native && yarn release-sdk solid && yarn release-sdk vue",
+    "release:all": "bash ./scripts/loop-command.sh release-sdk \"svelte react-native solid qwik react vue\"",
     "upgrade-example": "bash ./scripts/upgrade-example.sh",
-    "upgrade-example:all": "yarn upgrade-example svelte && yarn upgrade-example react-native && yarn upgrade-example solid && yarn upgrade-example vue"
+    "upgrade-example:all": "bash ./scripts/loop-command.sh upgrade-example \"svelte react-native solid qwik react vue\""
   },
   "dependencies": {
-    "@builder.io/mitosis": "dev",
-    "@builder.io/mitosis-cli": "dev",
+    "@builder.io/mitosis": "^0.0.59",
+    "@builder.io/mitosis-cli": "^0.0.20",
     "@playwright/test": "^1.24.0",
     "node-fetch": "^2.6.1",
     "seedrandom": "^3.0.5",
@@ -61,7 +64,7 @@
     "pinst": "^3.0.0",
     "prettier": "^2.5.0",
     "ts-jest": "^27.1.4",
-    "typescript": "^4.5.5",
+    "typescript": "^4",
     "watch": "^1.0.2"
   },
   "config": {
@@ -70,7 +73,7 @@
     }
   },
   "resolutions": {
-    "vue-template-compiler": "^2.7.9"
+    "@builder.io/qwik@0.0.108-dev20220913220811": "patch:@builder.io/qwik@npm:0.0.108-dev20220913220811#.yarn/patches/@builder.io-qwik-npm-0.0.108-dev20220913220811-a915e8c55f.patch"
   },
   "packageManager": "yarn@3.2.0"
 }

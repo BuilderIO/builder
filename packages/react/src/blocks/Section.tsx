@@ -40,18 +40,23 @@ class SectionComponent extends React.Component<SectionProps, { inView?: boolean 
       if (typeof IntersectionObserver === 'undefined' || !this.ref) {
         this.setState({ inView: true });
       } else {
-        const observer = new IntersectionObserver((entries, observer) => {
-          entries.forEach(entry => {
-            if (entry.intersectionRatio > 0) {
-              this.setState({
-                inView: true,
-              });
-              if (this.ref) {
-                observer.unobserve(this.ref);
+        const observer = new IntersectionObserver(
+          (entries, observer) => {
+            entries.forEach(entry => {
+              if (entry.intersectionRatio > 0) {
+                this.setState({
+                  inView: true,
+                });
+                if (this.ref) {
+                  observer.unobserve(this.ref);
+                }
               }
-            }
-          });
-        });
+            });
+          },
+          {
+            rootMargin: '10px',
+          }
+        );
 
         observer.observe(this.ref);
 
@@ -140,7 +145,8 @@ export const Section = withBuilder(SectionComponent, {
       component: {
         name: 'Text',
         options: {
-          text: "<p><b>I am a section! My content keeps from getting too wide, so that it's easy to read even on big screens.</b></p><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur</p>",
+          text:
+            "<p><b>I am a section! My content keeps from getting too wide, so that it's easy to read even on big screens.</b></p><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur</p>",
         },
       },
     },

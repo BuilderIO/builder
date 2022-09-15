@@ -1,0 +1,41 @@
+{
+  "name": "@builder.io/e2e-qwik",
+  "description": "Blank Qwik starter app. Vite.js tooling. Express.js server. Prettier code formatter.",
+  "private": true,
+  "type-disable-for-playwright": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "build": "npm run typecheck && npm run build.client && npm run build.ssr",
+    "build.client": "vite build",
+    "build.ssr": "vite build --ssr src/entry.express.tsx",
+    "dev": "vite",
+    "dev.debug": "vite --mode ssr",
+    "dev.ssr": "vite --mode ssr",
+    "fmt": "prettier --write .",
+    "fmt.check": "prettier --check .",
+    "lint": "eslint \"src/**/*.ts*\"",
+    "serve.express": "node server/entry.express",
+    "serve-comment": "running in client mode until we can fixe serve.express",
+    "serve": "yarn dev.ssr",
+    "start": "npm run dev",
+    "typecheck": "tsc --noEmit",
+    "e2e": "../../node_modules/.bin/playwright test"
+  },
+  "devDependencies": {
+    "@builder.io/qwik": "0.0.108-dev20220913220811",
+    "@builder.io/sdk-qwik": "workspace:*",
+    "@builder.io/sdks-e2e-tests": "workspace:*",
+    "@types/eslint": "8.4.5",
+    "@types/express": "4.17.13",
+    "@types/node": "latest",
+    "@typescript-eslint/eslint-plugin": "5.30.7",
+    "@typescript-eslint/parser": "5.30.7",
+    "eslint": "8.20.0",
+    "eslint-plugin-qwik": "0.0.108",
+    "express": "4.17.3",
+    "node-fetch": "3.2.9",
+    "prettier": "2.7.1",
+    "typescript": "^4",
+    "vite": "^3.0.4"
+  }
+}

@@ -9,8 +9,6 @@ import { handleABTesting } from './ab-testing.js';
 
 export type GetContentOptions = import('./types.js').GetContentOptions;
 
-const fetch$ = getFetch();
-
 export async function getContent(
   options: GetContentOptions
 ): Promise<BuilderContent | null> {
@@ -63,7 +61,7 @@ export async function getAllContent(
 ): Promise<ContentResponse> {
   const url = generateContentUrl(options);
 
-  const fetch = await fetch$;
+  const fetch = await getFetch();
   const content: ContentResponse = await fetch(url.href).then((res) =>
     res.json()
   );
