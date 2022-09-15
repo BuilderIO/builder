@@ -11,6 +11,7 @@ const getStyleForTarget = (
     case 'reactNative': {
       return {
         ...(styles.large ? convertStyleObject(styles.large) : {}),
+        ...(styles.medium ? convertStyleObject(styles.medium) : {}),
         ...(styles.small ? convertStyleObject(styles.small) : {}),
       };
     }
