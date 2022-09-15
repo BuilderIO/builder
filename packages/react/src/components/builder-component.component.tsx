@@ -18,7 +18,7 @@ import onChange from '../../lib/on-change';
 
 export { onChange };
 
-import { sizes, useSizes } from '../constants/device-sizes.constant';
+import { getSizesForBreakpoints } from '../constants/device-sizes.constant';
 import {
   BuilderAsyncRequestsContext,
   RequestOrPromise,
@@ -74,11 +74,11 @@ const size = (thing: object) => Object.keys(thing).length;
 
 function debounce(func: Function, wait: number, immediate = false) {
   let timeout: any;
-  return function (this: any) {
+  return function(this: any) {
     const context = this;
     const args = arguments;
     clearTimeout(timeout);
-    timeout = setTimeout(function () {
+    timeout = setTimeout(function() {
       timeout = null;
       if (!immediate) func.apply(context, args);
     }, wait);
@@ -90,7 +90,7 @@ const fontsLoaded = new Set();
 
 let fetch: typeof globalThis['fetch'];
 if (globalThis.fetch) fetch = globalThis.fetch;
-fetch ??= require('node-fetch');
+// fetch ??= require('node-fetch');
 
 const sizeMap = {
   desktop: 'large',
@@ -380,6 +380,7 @@ export class BuilderComponent extends React.Component<
   private _asyncRequests?: RequestOrPromise[];
   private _errors?: Error[];
   private _logs?: string[];
+  private sizes: any;
 
   get element() {
     return this.ref;
@@ -395,7 +396,12 @@ export class BuilderComponent extends React.Component<
   constructor(props: BuilderComponentProps) {
     super(props);
 
-    useSizes(props.content?.data?.breakpoints || {});
+    let _content: any = this.inlinedContent;
+    if (_content && _content.content) {
+      _content = _content.content;
+    }
+
+    this.sizes = getSizesForBreakpoints(_content?.data?.breakpoints || {});
 
     // TODO: pass this all the way down - symbols, etc
     // this.asServer = Boolean(props.hydrate && Builder.isBrowser)
@@ -482,7 +488,7 @@ export class BuilderComponent extends React.Component<
   get deviceSizeState() {
     // TODO: use context to pass this down on server
     return Builder.isBrowser
-      ? sizes.getSizeForWidth(window.innerWidth)
+      ? this.sizes.getSizeForWidth(window.innerWidth)
       : sizeMap[this.device] || 'large';
   }
 
@@ -1036,7 +1042,7 @@ export class BuilderComponent extends React.Component<
                           const useBuilderState = (initialState: any) => {
                             const [, setTick] = React.useState(0);
                             const [state] = React.useState(() =>
-                              onChange(initialState, function () {
+                              onChange(initialState, function() {
                                 setTick(tick => tick + 1);
                               })
                             );
@@ -1411,14 +1417,15 @@ export class BuilderComponent extends React.Component<
                 }
 
                 // TODO: fix this
-                const newSubscription = (this.httpSubscriptionPerKey[key] =
-                  this.onStateChange.subscribe(() => {
-                    const newUrl = this.evalExpression(url);
-                    if (newUrl !== finalUrl) {
-                      this.handleRequest(key, newUrl);
-                      this.lastHttpRequests[key] = newUrl;
-                    }
-                  }));
+                const newSubscription = (this.httpSubscriptionPerKey[
+                  key
+                ] = this.onStateChange.subscribe(() => {
+                  const newUrl = this.evalExpression(url);
+                  if (newUrl !== finalUrl) {
+                    this.handleRequest(key, newUrl);
+                    this.lastHttpRequests[key] = newUrl;
+                  }
+                }));
                 this.subscriptions.add(newSubscription);
               }
             } else {

@@ -1,3 +1,5 @@
+import { fastClone } from 'src/functions/utils';
+
 export type Size = 'large' | 'medium' | 'small' | 'xsmall';
 export const sizeNames: Size[] = ['xsmall', 'small', 'medium', 'large'];
 
@@ -37,20 +39,38 @@ export const sizes = {
   },
 };
 
-export const useSizes = ({ small, medium }: { small?: number; medium?: number }) => {
-  if (small) {
-    sizes.small = {
-      max: small,
-      default: small / 2,
-      min: small / 2 - 1 || 0, // TODO: handle negative values?
-    };
+interface Breakpoints {
+  small: number;
+  medium: number;
+}
+
+export const getSizesForBreakpoints = ({ small, medium }: Breakpoints) => {
+  const newSizes = {
+    ...sizes, // Note: this helps get the function from sizes
+    ...fastClone(sizes), // Note: this helps to get a deep clone of fields like small, medium etc
+  };
+
+  if (!small || !medium) {
+    return newSizes;
   }
 
-  if (medium) {
-    sizes.medium = {
-      max: medium,
-      default: sizes.small.max + 2,
-      min: sizes.small.max + 1,
-    };
-  }
+  newSizes.small = {
+    max: small,
+    min: Math.floor(small / 2),
+    default: newSizes.small.min + 1, // TODO: handle negative values?
+  };
+
+  newSizes.medium = {
+    max: medium,
+    min: newSizes.small.max + 1,
+    default: newSizes.medium.min + 1,
+  };
+
+  newSizes.large = {
+    max: 2000, // TODO: decide upper limit
+    min: newSizes.medium.max + 1,
+    default: newSizes.large.min + 1,
+  };
+
+  return newSizes;
 };
