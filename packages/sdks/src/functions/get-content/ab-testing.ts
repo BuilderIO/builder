@@ -11,9 +11,7 @@ const getRandomTestGroupId = (
   let n = 0;
   const random = Math.random();
   for (const id in variations) {
-    const variation = variations[id];
-    const testRatio = variation.testRatio;
-
+    const testRatio = variations[id].testRatio;
     n += testRatio!;
 
     if (random < n) {
@@ -59,7 +57,7 @@ export const handleABTesting = (item: BuilderContent) => {
         testVariationId: variationValue.id,
         testVariationName:
           variationValue.name ||
-          (variationValue.id === item.id ? 'Default variation' : ''),
+          (variationValue.id === item.id ? 'Default' : ''),
       }
     : {
         testVariationId: item.id,
