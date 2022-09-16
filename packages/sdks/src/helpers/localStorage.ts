@@ -1,4 +1,5 @@
 import { isBrowser } from '../functions/is-browser.js';
+import { CanTrack } from '../types/can-track.js';
 
 const getLocalStorage = () =>
   isBrowser() && typeof localStorage !== 'undefined' ? localStorage : undefined;
@@ -8,8 +9,7 @@ export const getLocalStorageItem = ({
   canTrack,
 }: {
   key: string;
-  canTrack: boolean;
-}) => {
+} & CanTrack) => {
   try {
     if (canTrack) {
       return getLocalStorage()?.getItem(key);
@@ -27,8 +27,7 @@ export const setLocalStorageItem = ({
 }: {
   key: string;
   value: string;
-  canTrack: boolean;
-}) => {
+} & CanTrack) => {
   try {
     if (canTrack) {
       getLocalStorage()?.setItem(key, value);

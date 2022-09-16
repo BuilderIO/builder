@@ -1,10 +1,11 @@
+import { CanTrack } from '../types/can-track.js';
 import { getLocalStorageItem, setLocalStorageItem } from './localStorage.js';
 import { checkIsDefined } from './nullable.js';
 import { uuid } from './uuid.js';
 
 const VISITOR_LOCAL_STORAGE_KEY = 'builderVisitorId';
 
-export const getVisitorId = ({ canTrack }: { canTrack: boolean }) => {
+export const getVisitorId = ({ canTrack }: CanTrack) => {
   if (!canTrack) {
     return undefined;
   }
@@ -29,8 +30,7 @@ export const setVisitorId = ({
   canTrack,
 }: {
   id: string;
-  canTrack: boolean;
-}) =>
+} & CanTrack) =>
   setLocalStorageItem({
     key: VISITOR_LOCAL_STORAGE_KEY,
     value: id,

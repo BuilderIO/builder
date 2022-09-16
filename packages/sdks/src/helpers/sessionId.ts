@@ -27,5 +27,5 @@ export const setSessionId = ({
   canTrack,
 }: {
   id: string;
-  canTrack: boolean;
-}) => setCookie({ name: SESSION_LOCAL_STORAGE_KEY, value: id, canTrack });
+} & CanTrack) =>
+  setCookie({ name: SESSION_LOCAL_STORAGE_KEY, value: id, canTrack });
