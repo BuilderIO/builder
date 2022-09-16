@@ -1,9 +1,11 @@
 import { getMaxWidthQueryForSize } from '../constants/device-sizes.js';
+import { TARGET } from '../constants/target.js';
 import { BuilderBlock } from '../types/builder-block.js';
 import { convertStyleObject } from './convert-style-object.js';
 import { sanitizeBlockStyles } from './sanitize-styles.js';
 
 export function getBlockStyles(block: BuilderBlock) {
+  if (TARGET === ('qwik' as any)) return null;
   const styles = {
     ...convertStyleObject(block.responsiveStyles?.large),
     /**
