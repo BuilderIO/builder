@@ -1345,12 +1345,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@builder.io/sdk-qwik@workspace:output/qwik"
   dependencies:
-    "@builder.io/qwik": 0.0.108-dev20220913220811
     "@types/node": latest
     typescript: ^4
     vite: ^3.0.4
   peerDependencies:
-    "@builder.io/qwik": 0.0.108-dev20220913220811
+    "@builder.io/qwik": ">=0.0.108"
   languageName: unknown
   linkType: soft
 
