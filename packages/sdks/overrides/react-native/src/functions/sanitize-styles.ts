@@ -9,6 +9,7 @@ const normalizeNumber = (value: number): number | undefined => {
   if (Number.isNaN(value)) {
     return undefined;
   } else if (value < 0) {
+    // TODO: why are negative values not allowed?
     return 0;
   } else {
     return value;
@@ -40,8 +41,12 @@ export const sanitizeBlockStyles = (styles: Styles): Styles => {
       return acc;
     }
 
-    // Style properties like `"20px"` need to be numbers like `20` for react native
-    if (typeof propertyValue === 'string' && propertyValue.match(/^-?\d/)) {
+    // `px` units need to be stripped and replace with numbers
+    // https://regexr.com/6u5u1
+    if (
+      typeof propertyValue === 'string' &&
+      propertyValue.match(/^-?(\d*)(\.?)(\d*)*px/)
+    ) {
       const newValue = parseFloat(propertyValue);
       const normalizedValue = normalizeNumber(newValue);
 
