@@ -50,14 +50,14 @@ export default function Path({ page }) {
 
 Now that we have a path for rendering builder content ready, let's route to it in the middleware:
 ```ts
-import { getPersonlizedURL } from '@builder.io/personalization-utils/next'
+import { getPersonalizedURL } from '@builder.io/personalization-utils/next'
 
 const excludededPrefixes = ['/favicon', '/api'];
 
 export default function middleware(request) {
   const url = request.nextUrl
   if (shouldRewrite(url.pathname)) {
-    const personalizedURL = getPersonlizedURL(request)
+    const personalizedURL = getPersonalizedURL(request)
     return NextResponse.rewrite(personalizedURL)
   }
   return NextResponse.next();

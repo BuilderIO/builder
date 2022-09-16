@@ -12,7 +12,7 @@ const tryJsonParse = (val: string) => {
   return result;
 };
 
-export function getPersonlizedURL(
+export function getPersonalizedURL(
   request: NextRequest,
   options: {
     attributes?: Record<string, string>;
@@ -31,7 +31,7 @@ export function getPersonlizedURL(
   );
 
   const builderAttrs = getUserAttributes({ ...allCookies, ...query });
-  const personlizedURL = new PersonalizedURL({
+  const personalizedURL = new PersonalizedURL({
     pathname: url.pathname,
     // Buffer is not available in middleware environment as of next 12.2 , overriding with btoa
     encode: url => {
@@ -47,13 +47,13 @@ export function getPersonlizedURL(
       ...options.urlConfig,
     },
   });
-  url.pathname = personlizedURL.rewritePath();
+  url.pathname = personalizedURL.rewritePath();
   return url;
 }
 
 export function getUserAttributesFromHash(hash: string) {
-  const personlizedURL = PersonalizedURL.fromRewrite(hash);
-  return personlizedURL.options.attributes;
+  const personalizedURL = PersonalizedURL.fromRewrite(hash);
+  return personalizedURL.options.attributes;
 }
 
 export function parsePersonalizedURL(paths: string[]) {

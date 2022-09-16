@@ -4,26 +4,46 @@ import { BuilderBlock } from '../types/builder-block.js';
 import { convertStyleObject } from './convert-style-object.js';
 import { sanitizeBlockStyles } from './sanitize-styles.js';
 
-export function getBlockStyles(block: BuilderBlock) {
-  if (TARGET === ('qwik' as any)) return null;
-  const styles = {
-    ...convertStyleObject(block.responsiveStyles?.large),
-    /**
-     * TO-DO: remove?
-     */
-    ...(block as any).styles,
-  };
+const getStyleForTarget = (
+  styles: NonNullable<BuilderBlock['responsiveStyles']>
+) => {
+  switch (TARGET) {
+    case 'reactNative': {
+      return {
+        ...(styles.large ? convertStyleObject(styles.large) : {}),
+        ...(styles.medium ? convertStyleObject(styles.medium) : {}),
+        ...(styles.small ? convertStyleObject(styles.small) : {}),
+      };
+    }
+    default:
+      return {
+        ...(styles.large ? convertStyleObject(styles.large) : {}),
 
-  if (block.responsiveStyles?.medium) {
-    styles[getMaxWidthQueryForSize('medium')] = convertStyleObject(
-      block.responsiveStyles?.medium
-    );
+        ...(styles.medium
+          ? {
+              [getMaxWidthQueryForSize('medium')]: convertStyleObject(
+                styles.medium
+              ),
+            }
+          : {}),
+
+        ...(styles.small
+          ? {
+              [getMaxWidthQueryForSize('small')]: convertStyleObject(
+                styles.small
+              ),
+            }
+          : {}),
+      };
   }
-  if (block.responsiveStyles?.small) {
-    styles[getMaxWidthQueryForSize('small')] = convertStyleObject(
-      block.responsiveStyles?.small
-    );
+};
+
+export function getBlockStyles(block: BuilderBlock) {
+  if (!block.responsiveStyles) {
+    return {};
   }
+
+  const styles = getStyleForTarget(block.responsiveStyles);
 
   sanitizeBlockStyles(styles);
 

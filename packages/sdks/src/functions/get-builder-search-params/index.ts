@@ -14,7 +14,14 @@ export const convertSearchParamsToQueryObject = (
   return options;
 };
 
-export const getBuilderSearchParams = (options: QueryObject) => {
+export const getBuilderSearchParams = (
+  _options: QueryObject | URLSearchParams | undefined
+) => {
+  if (!_options) {
+    return {};
+  }
+  const options = normalizeSearchParams(_options);
+
   const newOptions: QueryObject = {};
   Object.keys(options).forEach((key) => {
     if (key.startsWith(BUILDER_SEARCHPARAMS_PREFIX)) {
@@ -30,7 +37,7 @@ export const getBuilderSearchParamsFromWindow = () => {
     return {};
   }
   const searchParams = new URLSearchParams(window.location.search);
-  return getBuilderSearchParams(convertSearchParamsToQueryObject(searchParams));
+  return getBuilderSearchParams(searchParams);
 };
 
 export const normalizeSearchParams = (

@@ -1,3 +1,4 @@
+import * as React from 'react';
 import type { BuilderBlock } from '../types/builder-block';
 import HTML from 'react-native-render-html';
 
