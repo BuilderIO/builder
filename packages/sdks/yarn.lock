@@ -1358,6 +1358,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@builder.io/sdk-react-native@workspace:output/react-native"
   dependencies:
+    "@react-native-cookies/cookies": ^6.2.1
     "@types/react-native-video": ^5.0.9
     react-native: ^0.64.3
     react-native-render-html: ^6.3.4
@@ -2544,6 +2545,17 @@ __metadata:
   bin:
     react-native: build/bin.js
   checksum: 369edf3234427f4de470a6ea7db2af426c62f9807b26cb00c9da23f0cbbd1de1dd22a1c318e6ed5980c6b86ea0e003725f164e506c77d1a6197b1aa387e0c26a
+  languageName: node
+  linkType: hard
+
+"@react-native-cookies/cookies@npm:^6.2.1":
+  version: 6.2.1
+  resolution: "@react-native-cookies/cookies@npm:6.2.1"
+  dependencies:
+    invariant: ^2.2.4
+  peerDependencies:
+    react-native: ">= 0.60.2"
+  checksum: 65ec7485952b719191cc3d131b1befdebdb0b422baaf655fd37ad6455ac05582a81b9d7f023ffa375a8787c30d33d1195dea46f633fb6cc09ccd2ae810795ce2
   languageName: node
   linkType: hard
 
