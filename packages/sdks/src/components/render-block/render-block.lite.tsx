@@ -201,48 +201,48 @@ export default function RenderBlock(props: RenderBlockProps) {
           <state.tagName {...state.attributes} />
         }
       >
-        <state.tagName {...state.attributes}>
-          {/**
-           * We can't use `Show`'s `when` prop to combine the below 2 `Show` components because Vue 2 won't
-           * support `v-if` && `v-for` in the same element in a way that allows for `v-else` to be used afterwards.
-           */}
-          <Show when={state.repeatItemData}>
-            <For each={state.repeatItemData}>
-              {(data, index) => (
-                <RenderRepeatedBlock
-                  key={index}
-                  repeatContext={data.context}
-                  block={data.block}
+        {/**
+         * We can't use `Show`'s `when` prop to combine the below 2 `Show` components because Vue 2 won't
+         * support `v-if` && `v-for` in the same element in a way that allows for `v-else` to be used afterwards.
+         */}
+        <Show when={state.repeatItemData}>
+          <For each={state.repeatItemData}>
+            {(data, index) => (
+              <RenderRepeatedBlock
+                key={index}
+                repeatContext={data.context}
+                block={data.block}
+              />
+            )}
+          </For>
+        </Show>
+        <Show when={!state.repeatItemData}>
+          <state.tagName {...state.attributes}>
+            <RenderComponent {...state.renderComponentProps} />
+            {/**
+             * We need to run two separate loops for content + styles to workaround the fact that Vue 2
+             * does not support multiple root elements.
+             */}
+            <For each={state.childrenWithoutParentComponent}>
+              {(child) => (
+                <RenderBlock
+                  key={'render-block-' + child.id}
+                  block={child}
+                  context={props.context}
                 />
               )}
             </For>
-          </Show>
-          <Show when={!state.repeatItemData}>
-            <RenderComponent {...state.renderComponentProps} />
-          </Show>
-          {/**
-           * We need to run two separate loops for content + styles to workaround the fact that Vue 2
-           * does not support multiple root elements.
-           */}
-          <For each={state.childrenWithoutParentComponent}>
-            {(child) => (
-              <RenderBlock
-                key={'render-block-' + child.id}
-                block={child}
-                context={props.context}
-              />
-            )}
-          </For>
-          <For each={state.childrenWithoutParentComponent}>
-            {(child) => (
-              <BlockStyles
-                key={'block-style-' + child.id}
-                block={child}
-                context={props.context}
-              />
-            )}
-          </For>
-        </state.tagName>
+            <For each={state.childrenWithoutParentComponent}>
+              {(child) => (
+                <BlockStyles
+                  key={'block-style-' + child.id}
+                  block={child}
+                  context={props.context}
+                />
+              )}
+            </For>
+          </state.tagName>
+        </Show>
       </Show>
     </Show>
   );
