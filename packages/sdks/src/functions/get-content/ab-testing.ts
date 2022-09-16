@@ -1,9 +1,8 @@
 import { BuilderContent } from '../../types/builder-content.js';
-
-const getStoredTestGroupId = (_id: string): string | undefined => {
-  // TO-DO: get from local storage/cookie
-  return undefined;
-};
+import {
+  getContentVariationCookie,
+  setContentVariationCookie,
+} from '../../helpers/ab-tests.js';
 
 const getRandomTestGroupId = (
   variations: NonNullable<BuilderContent['variations']>
@@ -32,7 +31,10 @@ const getContentVariation = (item: BuilderContent) => {
   }
 
   // try to find test variation in cookies/storage
-  const testGroupId = getStoredTestGroupId(item.id);
+  const testGroupId = getContentVariationCookie({
+    canTrack: true,
+    contentId: item.id,
+  });
   const variationValue = testGroupId ? item.variations[testGroupId] : undefined;
 
   if (variationValue) {
@@ -40,6 +42,15 @@ const getContentVariation = (item: BuilderContent) => {
   } else {
     // generate a random ID for this user and store it in cookies/storage
     const randomTestGroupId = getRandomTestGroupId(item.variations);
+
+    if (randomTestGroupId) {
+      setContentVariationCookie({
+        contentId: item.id,
+        value: randomTestGroupId,
+        canTrack: true,
+      });
+    }
+
     const randomVariationValue = randomTestGroupId
       ? item.variations[randomTestGroupId]
       : undefined;
