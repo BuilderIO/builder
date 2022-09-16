@@ -1,8 +1,9 @@
 import { isBrowser } from '../functions/is-browser.js';
 import { CanTrack } from '../types/can-track.js';
 import { getTopLevelDomain } from './url.js';
+import { getDocumentCookie, setDocumentCookie } from './document-cookie';
 
-export const getCookie = ({
+export const getCookie = async ({
   name,
   canTrack,
 }: {
@@ -13,11 +14,13 @@ export const getCookie = ({
       return undefined;
     }
 
+    const cookie = await getDocumentCookie();
+
     /**
      * Extracted from MDN docs
      * https://developer.mozilla.org/en-US/docs/Web/API/Document/cookie#example_2_get_a_sample_cookie_named_test2
      */
-    return document.cookie
+    return cookie
       .split('; ')
       .find((row) => row.startsWith(`${name}=`))
       ?.split('=')[1];
@@ -74,7 +77,7 @@ const createCookieString = ({
   return cookie;
 };
 
-export const setCookie = ({
+export const setCookie = async ({
   name,
   value,
   expires,
@@ -89,7 +92,7 @@ export const setCookie = ({
       return undefined;
     }
     const cookie = createCookieString({ name, value, expires });
-    document.cookie = cookie;
+    await setDocumentCookie(cookie);
   } catch (err) {
     console.warn('[COOKIE] SET error: ', err);
   }

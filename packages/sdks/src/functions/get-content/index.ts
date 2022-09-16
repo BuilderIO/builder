@@ -67,7 +67,7 @@ export async function getAllContent(
   );
 
   for (const item of content.results) {
-    handleABTesting(item);
+    await handleABTesting(item);
   }
 
   return content;

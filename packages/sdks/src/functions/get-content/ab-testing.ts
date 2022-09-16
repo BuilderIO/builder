@@ -21,7 +21,7 @@ const getRandomTestGroupId = (
   return undefined;
 };
 
-const getContentVariation = (item: BuilderContent) => {
+const getContentVariation = async (item: BuilderContent) => {
   if (
     !item.id ||
     !item.variations ||
@@ -31,7 +31,7 @@ const getContentVariation = (item: BuilderContent) => {
   }
 
   // try to find test variation in cookies/storage
-  const testGroupId = getContentVariationCookie({
+  const testGroupId = await getContentVariationCookie({
     canTrack: true,
     contentId: item.id,
   });
@@ -44,7 +44,7 @@ const getContentVariation = (item: BuilderContent) => {
     const randomTestGroupId = getRandomTestGroupId(item.variations);
 
     if (randomTestGroupId) {
-      setContentVariationCookie({
+      await setContentVariationCookie({
         contentId: item.id,
         value: randomTestGroupId,
         canTrack: true,
@@ -59,8 +59,8 @@ const getContentVariation = (item: BuilderContent) => {
   }
 };
 
-export const handleABTesting = (item: BuilderContent) => {
-  const variationValue = getContentVariation(item);
+export const handleABTesting = async (item: BuilderContent) => {
+  const variationValue = await getContentVariation(item);
 
   const newValues = variationValue
     ? {

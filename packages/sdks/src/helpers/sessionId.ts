@@ -5,12 +5,15 @@ import { uuid } from './uuid.js';
 
 const SESSION_LOCAL_STORAGE_KEY = 'builderSessionId';
 
-export const getSessionId = ({ canTrack }: CanTrack) => {
+export const getSessionId = async ({ canTrack }: CanTrack) => {
   if (!canTrack) {
     return undefined;
   }
 
-  const sessionId = getCookie({ name: SESSION_LOCAL_STORAGE_KEY, canTrack });
+  const sessionId = await getCookie({
+    name: SESSION_LOCAL_STORAGE_KEY,
+    canTrack,
+  });
 
   if (checkIsDefined(sessionId)) {
     return sessionId;
