@@ -32,7 +32,7 @@ export interface BuilderContent extends BuilderContentVariation {
   startDate?: number;
   endDate?: number;
   variations?: {
-    [id: string]: BuilderContentVariation | undefined;
+    [id: string]: BuilderContentVariation;
   };
   testVariationId?: string;
   testVariationName?: string;

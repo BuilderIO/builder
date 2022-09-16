@@ -1,44 +1,70 @@
-import { GetContentOptions } from './types.js';
 import { BuilderContent } from '../../types/builder-content.js';
 
-export const handleABTesting = (
-  item: BuilderContent,
-  testGroups: NonNullable<GetContentOptions['testGroups']>
+const getStoredTestGroupId = (_id: string): string | undefined => {
+  // TO-DO: get from local storage/cookie
+  return undefined;
+};
+
+const getRandomTestGroupId = (
+  variations: NonNullable<BuilderContent['variations']>
 ) => {
-  if (item.variations && Object.keys(item.variations).length) {
-    const testGroup = item.id ? testGroups[item.id] : undefined;
-    const variationValue = testGroup ? item.variations[testGroup] : undefined;
-    if (testGroup && variationValue) {
-      item.data = variationValue.data;
-      item.testVariationId = variationValue.id;
-      item.testVariationName = variationValue.name;
-    } else {
-      // TODO: a/b test iteration logic
-      let n = 0;
-      const random = Math.random();
-      let set = false;
-      for (const id in item.variations) {
-        const variation = item.variations[id]!;
-        const testRatio = variation.testRatio;
-        n += testRatio!;
-        if (random < n) {
-          const variationName =
-            variation.name ||
-            (variation.id === item.id ? 'Default variation' : '');
-          set = true;
-          Object.assign(item, {
-            data: variation.data,
-            testVariationId: variation.id,
-            testVariationName: variationName,
-          });
-        }
-      }
-      if (!set) {
-        Object.assign(item, {
-          testVariationId: item.id,
-          testVariationName: 'Default',
-        });
-      }
+  let n = 0;
+  const random = Math.random();
+  for (const id in variations) {
+    const variation = variations[id];
+    const testRatio = variation.testRatio;
+
+    n += testRatio!;
+
+    if (random < n) {
+      return id;
     }
   }
+
+  return undefined;
+};
+
+const getContentVariation = (item: BuilderContent) => {
+  if (
+    !item.id ||
+    !item.variations ||
+    Object.keys(item.variations).length === 0
+  ) {
+    return;
+  }
+
+  // try to find test variation in cookies/storage
+  const testGroupId = getStoredTestGroupId(item.id);
+  const variationValue = testGroupId ? item.variations[testGroupId] : undefined;
+
+  if (variationValue) {
+    return variationValue;
+  } else {
+    // generate a random ID for this user and store it in cookies/storage
+    const randomTestGroupId = getRandomTestGroupId(item.variations);
+    const randomVariationValue = randomTestGroupId
+      ? item.variations[randomTestGroupId]
+      : undefined;
+
+    return randomVariationValue;
+  }
+};
+
+export const handleABTesting = (item: BuilderContent) => {
+  const variationValue = getContentVariation(item);
+
+  const newValues = variationValue
+    ? {
+        data: variationValue.data,
+        testVariationId: variationValue.id,
+        testVariationName:
+          variationValue.name ||
+          (variationValue.id === item.id ? 'Default variation' : ''),
+      }
+    : {
+        testVariationId: item.id,
+        testVariationName: 'Default',
+      };
+
+  Object.assign(item, newValues);
 };

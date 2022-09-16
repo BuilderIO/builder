@@ -66,10 +66,8 @@ export async function getAllContent(
     res.json()
   );
 
-  if (options.testGroups) {
-    for (const item of content.results) {
-      handleABTesting(item, options.testGroups);
-    }
+  for (const item of content.results) {
+    handleABTesting(item);
   }
 
   return content;

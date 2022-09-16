@@ -3,8 +3,6 @@ export interface GetContentOptions {
   model: string;
   /** Your public API key */
   apiKey: string;
-  /** A/B test groups the current visitor is in. Key is the content ID, value is the variation ID */
-  testGroups?: Record<string, string> | null;
   /** Number of items to fetch. Default is 1 */
   limit?: number;
   /** User attributes to target on, such as { urlPath: '/foo', device: 'mobile', ...etc } */
