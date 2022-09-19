@@ -20,6 +20,10 @@ export interface Animation {
   easing?: string;
   // TODO: deprecate - only here because of an API bug
   id?: string;
+  // only apply in scrollInView
+  repeat?: boolean;
+  // only apply in scrollInView, how far from innerHeight
+  thresholdPrecent?: number;
 }
 
 export class Animator {
@@ -174,17 +178,24 @@ export class Animator {
       this.augmentAnimation(animation, element);
 
       let triggered = false;
+      let pendingAnimation = false;
       function immediateOnScroll() {
         if (!triggered && isScrolledIntoView(element)) {
           triggered = true;
+          pendingAnimation = true;
           setTimeout(() => {
             assign(element!.style, animation.steps[1].styles);
             document.removeEventListener('scroll', onScroll);
             setTimeout(() => {
+              pendingAnimation = false;
               element.style.transition = '';
               element.style.transitionDelay = '';
             }, (animation.duration * 1000 + (animation.delay || 0)) * 1000 + 100);
           });
+        }
+        else if (animation.repeat && triggered && !pendingAnimation && !isScrolledIntoView(element)) {
+          // we want to repeat the animation everytime the the element is out of vide and back again
+          triggered = false;
         }
       }
 
@@ -197,7 +208,7 @@ export class Animator {
 
         const windowHeight = window.innerHeight;
 
-        const thresholdPrecent = 0;
+        const thresholdPrecent = animation.thresholdPrecent || 0;
         const threshold = thresholdPrecent * windowHeight;
 
         // TODO: partial in view? or what if element is larger than screen itself
