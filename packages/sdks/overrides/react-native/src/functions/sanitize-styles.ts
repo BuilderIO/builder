@@ -41,19 +41,24 @@ export const sanitizeBlockStyles = (styles: Styles): Styles => {
       return acc;
     }
 
-    // `px` units need to be stripped and replaced with numbers
-    // https://regexr.com/6ualn
-    if (
-      typeof propertyValue === 'string' &&
-      propertyValue.match(/^-?(\d*)(\.?)(\d*)*px/)
-    ) {
-      const newValue = parseFloat(propertyValue);
-      const normalizedValue = normalizeNumber(newValue);
+    if (typeof propertyValue === 'string') {
+      // `px` units need to be stripped and replaced with numbers
+      // https://regexr.com/6ualn
+      const isPixelUnit = propertyValue.match(/^-?(\d*)(\.?)(\d*)*px$/);
 
-      if (normalizedValue) {
-        return { ...acc, [key]: normalizedValue };
-      } else {
-        return acc;
+      if (isPixelUnit) {
+        const newValue = parseFloat(propertyValue);
+        const normalizedValue = normalizeNumber(newValue);
+        if (normalizedValue) {
+          const extraUnit = propertyValue.endsWith('px') ? 'px' : '';
+          const valueWithUnit = `${normalizedValue}${extraUnit}`;
+          return { ...acc, [key]: valueWithUnit };
+        } else {
+          return acc;
+        }
+      } else if (propertyValue === '0') {
+        // 0 edge case needs to be handled
+        return { ...acc, [key]: 0 };
       }
     }
 
