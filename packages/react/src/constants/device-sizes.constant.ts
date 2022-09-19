@@ -1,4 +1,4 @@
-import { fastClone } from 'src/functions/utils';
+import { fastClone } from '../functions/utils';
 
 export type Size = 'large' | 'medium' | 'small' | 'xsmall';
 export const sizeNames: Size[] = ['xsmall', 'small', 'medium', 'large'];
