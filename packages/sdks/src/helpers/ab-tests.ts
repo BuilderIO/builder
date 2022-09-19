@@ -1,7 +1,7 @@
 import { CanTrack } from '../types/can-track.js';
 import { getCookie, setCookie } from './cookie.js';
 
-const BUILDER_STORE_PREFIX = 'builder.tests';
+const BUILDER_STORE_PREFIX = 'builderio.variations';
 
 const getContentTestKey = (id: string) => `${BUILDER_STORE_PREFIX}.${id}`;
 

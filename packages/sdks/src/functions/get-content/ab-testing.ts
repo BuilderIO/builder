@@ -6,6 +6,17 @@ import {
   getContentVariationCookie,
   setContentVariationCookie,
 } from '../../helpers/ab-tests.js';
+import type { Overwrite } from '../../types/typescript.js';
+
+type BuilderContentWithVariations = Overwrite<
+  BuilderContent,
+  Required<Pick<BuilderContent, 'variations' | 'id'>>
+>;
+
+const checkIsBuilderContentWithVariations = (
+  item: BuilderContent
+): item is BuilderContentWithVariations =>
+  !item.id || !item.variations || Object.keys(item.variations).length === 0;
 
 /**
  * Randomly assign a variation to this user and store it in cookies/storage
@@ -13,13 +24,12 @@ import {
 const getRandomVariationId = ({
   id,
   variations,
-}: {
-  id: string;
-  variations: NonNullable<BuilderContent['variations']>;
-}) => {
+}: BuilderContentWithVariations) => {
   let n = 0;
   const random = Math.random();
 
+  // loop over variations test ratios, incrementing a counter,
+  // until we find the variation that this user should be assigned to
   for (const id in variations) {
     const testRatio = variations[id].testRatio;
     n += testRatio!;
@@ -34,76 +44,81 @@ const getRandomVariationId = ({
   return id;
 };
 
-const getContent = ({
+const getTestFields = ({
   item,
   testGroupId,
 }: {
-  item: BuilderContent;
-  testGroupId: string | undefined;
-}): BuilderContentVariation | undefined => {
-  if (!testGroupId) {
-    return undefined;
-  } else if (testGroupId === item.id) {
-    return item;
+  item: BuilderContentWithVariations;
+  testGroupId: string;
+}): TestFields => {
+  const variationValue = item.variations[testGroupId];
+  if (
+    testGroupId === item.id ||
+    // handle edge-case where `testGroupId` points to non-existing variation
+    !variationValue
+  ) {
+    return {
+      testVariationId: item.id,
+      testVariationName: 'Default',
+    };
   } else {
-    return item.variations?.[testGroupId];
+    return {
+      data: variationValue.data,
+      testVariationId: variationValue.id,
+      testVariationName:
+        variationValue.name || (variationValue.id === item.id ? 'Default' : ''),
+    };
   }
 };
 
-const getContentVariation = async ({ item }: { item: BuilderContent }) => {
-  if (
-    !item.id ||
-    !item.variations ||
-    Object.keys(item.variations).length === 0
-  ) {
-    return;
-  }
+type TestFields = {
+  data?: BuilderContentVariation['data'];
+  testVariationId?: string;
+  testVariationName: string;
+};
 
+const getContentVariation = async ({
+  item,
+}: {
+  item: BuilderContentWithVariations;
+}): Promise<TestFields> => {
   // try to find test variation in cookies/storage
   const testGroupId = await getContentVariationCookie({
     canTrack: true,
     contentId: item.id,
   });
 
-  const variationValue = getContent({ item, testGroupId });
+  const testFields = testGroupId
+    ? getTestFields({ item, testGroupId })
+    : undefined;
 
-  if (variationValue) {
-    return variationValue;
+  if (testFields) {
+    return testFields;
   } else {
+    // if variation not found in storage, assign a random variation to this user
     const randomVariationId = getRandomVariationId({
       variations: item.variations,
       id: item.id,
     });
 
-    await setContentVariationCookie({
+    // store variation in cookies/storage
+    setContentVariationCookie({
       contentId: item.id,
       value: randomVariationId,
       canTrack: true,
+    }).catch((err) => {
+      console.error('could not store A/B test variation: ', err);
     });
 
-    const randomVariationValue = randomVariationId
-      ? item.variations[randomVariationId]
-      : undefined;
-
-    return randomVariationValue;
+    return getTestFields({ item, testGroupId: randomVariationId });
   }
 };
 
 export const handleABTesting = async ({ item }: { item: BuilderContent }) => {
+  if (!checkIsBuilderContentWithVariations(item)) {
+    return;
+  }
+
   const variationValue = await getContentVariation({ item });
-
-  const newValues = variationValue
-    ? {
-        data: variationValue.data,
-        testVariationId: variationValue.id,
-        testVariationName:
-          variationValue.name ||
-          (variationValue.id === item.id ? 'Default' : ''),
-      }
-    : {
-        testVariationId: item.id,
-        testVariationName: 'Default',
-      };
-
-  Object.assign(item, newValues);
+  Object.assign(item, variationValue);
 };
