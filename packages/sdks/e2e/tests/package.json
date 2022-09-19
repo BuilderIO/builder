@@ -5,5 +5,8 @@
   "version": "0.0.1",
   "devDependencies": {
     "@playwright/test": "^1.24.0"
+  },
+  "scripts": {
+    "build": "tsc"
   }
 }
