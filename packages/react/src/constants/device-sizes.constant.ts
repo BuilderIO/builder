@@ -40,8 +40,8 @@ export const sizes = {
 };
 
 interface Breakpoints {
-  small: number;
-  medium: number;
+  small?: number;
+  medium?: number;
 }
 
 export const getSizesForBreakpoints = ({ small, medium }: Breakpoints) => {
@@ -57,20 +57,23 @@ export const getSizesForBreakpoints = ({ small, medium }: Breakpoints) => {
   newSizes.small = {
     max: small,
     min: Math.floor(small / 2),
-    default: newSizes.small.min + 1, // TODO: handle negative values?
+    default: 0, // Note: For TS
   };
+  newSizes.small.default = newSizes.small.min + 1; // TODO: handle negative values?
 
   newSizes.medium = {
     max: medium,
     min: newSizes.small.max + 1,
-    default: newSizes.medium.min + 1,
+    default: 0, // Note: For TS
   };
+  newSizes.medium.default = newSizes.medium.min + 1; // TODO: handle negative values?
 
   newSizes.large = {
     max: 2000, // TODO: decide upper limit
     min: newSizes.medium.max + 1,
-    default: newSizes.large.min + 1,
+    default: 0, // Note: For TS
   };
+  newSizes.large.default = newSizes.large.min + 1; // TODO: handle negative values?
 
   return newSizes;
 };

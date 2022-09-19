@@ -18,7 +18,7 @@ import onChange from '../../lib/on-change';
 
 export { onChange };
 
-import { getSizesForBreakpoints } from '../constants/device-sizes.constant';
+import { getSizesForBreakpoints, sizes } from '../constants/device-sizes.constant';
 import {
   BuilderAsyncRequestsContext,
   RequestOrPromise,
@@ -361,7 +361,7 @@ export class BuilderComponent extends React.Component<
   private _asyncRequests?: RequestOrPromise[];
   private _errors?: Error[];
   private _logs?: string[];
-  private sizes: any;
+  private sizes: typeof sizes;
 
   get element() {
     return this.ref;
