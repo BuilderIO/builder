@@ -41,8 +41,8 @@ export const sanitizeBlockStyles = (styles: Styles): Styles => {
       return acc;
     }
 
-    // `px` units need to be stripped and replace with numbers
-    // https://regexr.com/6u5u1
+    // `px` units need to be stripped and replaced with numbers
+    // https://regexr.com/6ualn
     if (
       typeof propertyValue === 'string' &&
       propertyValue.match(/^-?(\d*)(\.?)(\d*)*px/)
@@ -51,10 +51,7 @@ export const sanitizeBlockStyles = (styles: Styles): Styles => {
       const normalizedValue = normalizeNumber(newValue);
 
       if (normalizedValue) {
-        const valueWithUnits = propertyValue.endsWith('%')
-          ? `${normalizedValue}%`
-          : '';
-        return { ...acc, [key]: valueWithUnits };
+        return { ...acc, [key]: normalizedValue };
       } else {
         return acc;
       }
