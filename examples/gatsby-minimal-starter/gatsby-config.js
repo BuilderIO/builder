@@ -1,4 +1,3 @@
-'use strict';
 const path = require('path');
 
 module.exports = {
@@ -11,11 +10,11 @@ module.exports = {
         publicAPIKey: 'jdGaMusrVpYgdcAnAtgn',
         useCache: false,
         // to allow editing on local host
-        custom404Dev: path.resolve('src/pages/404.tsx'),
+        custom404Dev: path.resolve('src/pages/404.jsx'),
         templates: {
           // Render every `page` model as a new page using the /page.tsx template
           // based on the URL provided in Builder.io
-          page: path.resolve('src/templates/page.tsx')
+          page: path.resolve('src/templates/page.jsx')
         }
       }
     }
