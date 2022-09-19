@@ -50,9 +50,7 @@ export const sanitizeBlockStyles = (styles: Styles): Styles => {
         const newValue = parseFloat(propertyValue);
         const normalizedValue = normalizeNumber(newValue);
         if (normalizedValue) {
-          const extraUnit = propertyValue.endsWith('px') ? 'px' : '';
-          const valueWithUnit = `${normalizedValue}${extraUnit}`;
-          return { ...acc, [key]: valueWithUnit };
+          return { ...acc, [key]: normalizedValue };
         } else {
           return acc;
         }
