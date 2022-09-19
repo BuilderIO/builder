@@ -31,7 +31,7 @@ const getRandomVariationId = ({
   // loop over variations test ratios, incrementing a counter,
   // until we find the variation that this user should be assigned to
   for (const id in variations) {
-    const testRatio = variations[id].testRatio;
+    const testRatio = variations[id]?.testRatio;
     n += testRatio!;
 
     if (random < n) {
