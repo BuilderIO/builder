@@ -73,7 +73,7 @@ const BuilderContent = ({ route }) => {
           customComponents={CUSTOM_COMPONENTS}
         />
       ) : (
-        <div>Not Found.</div>
+        <Text>Not Found.</Text>
       )}
       <StatusBar style="auto" />
     </View>
