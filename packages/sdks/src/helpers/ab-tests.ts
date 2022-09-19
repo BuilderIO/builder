@@ -1,6 +1,5 @@
 import { CanTrack } from '../types/can-track.js';
 import { getCookie, setCookie } from './cookie.js';
-import { uuid } from './uuid.js';
 
 const BUILDER_STORE_PREFIX = 'builder.tests';
 
@@ -11,8 +10,6 @@ export const getContentVariationCookie = ({
   canTrack,
 }: { contentId: string } & CanTrack) =>
   getCookie({ name: getContentTestKey(contentId), canTrack });
-
-export const createSessionId = () => uuid();
 
 export const setContentVariationCookie = ({
   contentId,

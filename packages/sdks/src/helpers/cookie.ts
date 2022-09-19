@@ -1,8 +1,10 @@
 import { isBrowser } from '../functions/is-browser.js';
 import { CanTrack } from '../types/can-track.js';
 import { getTopLevelDomain } from './url.js';
-import { getDocumentCookie, setDocumentCookie } from './document-cookie';
 
+/**
+ * NOTE: This function is `async` because its react-native override is async. Do not remove the `async` keyword!
+ */
 export const getCookie = async ({
   name,
   canTrack,
@@ -14,13 +16,11 @@ export const getCookie = async ({
       return undefined;
     }
 
-    const cookie = await getDocumentCookie();
-
     /**
      * Extracted from MDN docs
      * https://developer.mozilla.org/en-US/docs/Web/API/Document/cookie#example_2_get_a_sample_cookie_named_test2
      */
-    return cookie
+    return document.cookie
       .split('; ')
       .find((row) => row.startsWith(`${name}=`))
       ?.split('=')[1];
@@ -77,6 +77,9 @@ const createCookieString = ({
   return cookie;
 };
 
+/**
+ * NOTE: This function is `async` because its react-native override is async. Do not remove the `async` keyword!
+ */
 export const setCookie = async ({
   name,
   value,
@@ -92,7 +95,7 @@ export const setCookie = async ({
       return undefined;
     }
     const cookie = createCookieString({ name, value, expires });
-    await setDocumentCookie(cookie);
+    document.cookie = cookie;
   } catch (err) {
     console.warn('[COOKIE] SET error: ', err);
   }
