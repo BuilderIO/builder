@@ -1,7 +1,7 @@
 {
   "name": "@builder.io/sdk-react-native",
   "description": "Builder.io SDK for React Native",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "main": "src/index.js",
   "files": [
     "src"
