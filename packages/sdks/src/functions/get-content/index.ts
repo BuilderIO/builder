@@ -66,8 +66,11 @@ export async function getAllContent(
     res.json()
   );
 
-  for (const item of content.results) {
-    await handleABTesting({ item });
+  const canTrack = options.canTrack !== false;
+  if (canTrack) {
+    for (const item of content.results) {
+      await handleABTesting({ item, canTrack });
+    }
   }
 
   return content;

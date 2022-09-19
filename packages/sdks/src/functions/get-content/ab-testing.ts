@@ -7,6 +7,7 @@ import {
   setContentVariationCookie,
 } from '../../helpers/ab-tests.js';
 import type { Overwrite } from '../../types/typescript.js';
+import { CanTrack } from '../../types/can-track.js';
 
 type BuilderContentWithVariations = Overwrite<
   BuilderContent,
@@ -79,12 +80,13 @@ type TestFields = {
 
 const getContentVariation = async ({
   item,
+  canTrack,
 }: {
   item: BuilderContentWithVariations;
-}): Promise<TestFields> => {
+} & CanTrack): Promise<TestFields> => {
   // try to find test variation in cookies/storage
   const testGroupId = await getContentVariationCookie({
-    canTrack: true,
+    canTrack,
     contentId: item.id,
   });
 
@@ -105,7 +107,7 @@ const getContentVariation = async ({
     setContentVariationCookie({
       contentId: item.id,
       value: randomVariationId,
-      canTrack: true,
+      canTrack,
     }).catch((err) => {
       console.error('could not store A/B test variation: ', err);
     });
@@ -114,11 +116,14 @@ const getContentVariation = async ({
   }
 };
 
-export const handleABTesting = async ({ item }: { item: BuilderContent }) => {
+export const handleABTesting = async ({
+  item,
+  canTrack,
+}: { item: BuilderContent } & CanTrack) => {
   if (!checkIsBuilderContentWithVariations(item)) {
     return;
   }
 
-  const variationValue = await getContentVariation({ item });
+  const variationValue = await getContentVariation({ item, canTrack });
   Object.assign(item, variationValue);
 };
