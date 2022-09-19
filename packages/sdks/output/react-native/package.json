@@ -1,7 +1,7 @@
 {
   "name": "@builder.io/sdk-react-native",
   "description": "Builder.io SDK for React Native",
-  "version": "0.0.6-4",
+  "version": "0.0.6-5",
   "main": "src/index.js",
   "files": [
     "src"
@@ -11,16 +11,15 @@
     "release:dev": "npm version prerelease --no-git-tag-version && npm publish --tag dev --access public"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.17.10",
     "react-native-render-html": "^6.3.4",
     "react-native-storage": "^1.0.1",
     "react-native-video": "^5.1.1"
   },
   "peerDependencies": {
-    "@react-native-async-storage/async-storage": "^1.17.10",
     "react-native": "^0.64.3"
   },
   "devDependencies": {
-    "@react-native-async-storage/async-storage": "^1.17.10",
     "@types/react-native-video": "^5.0.9",
     "react-native": "^0.64.3"
   }
