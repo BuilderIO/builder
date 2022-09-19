@@ -48,7 +48,6 @@ export const getCookie = async ({
     const parsedName = name.replace(/_/g, '.');
 
     const data = await storage.load({ key: getStorageName(parsedName) });
-    console.log('loaded data: ', data.value);
 
     return data.value;
   } catch (err) {
@@ -72,7 +71,6 @@ export const setCookie = async ({
       return undefined;
     }
     await storage.save({ key: getStorageName(name), data: { value }, expires });
-    console.log('saved data: ', { key: name, data: { value }, expires });
   } catch (err) {
     console.warn('[COOKIE] SET error: ', err);
   }
