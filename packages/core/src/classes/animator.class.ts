@@ -185,17 +185,22 @@ export class Animator {
           pendingAnimation = true;
           setTimeout(() => {
             assign(element!.style, animation.steps[1].styles);
-            document.removeEventListener('scroll', onScroll);
+            if (!animation.repeat) {
+              document.removeEventListener('scroll', onScroll);
+            }
             setTimeout(() => {
               pendingAnimation = false;
-              element.style.transition = '';
-              element.style.transitionDelay = '';
-            }, (animation.duration * 1000 + (animation.delay || 0)) * 1000 + 100);
+              if (!animation.repeat) {
+                element.style.transition = '';
+                element.style.transitionDelay = '';  
+              }
+            }, (animation.duration + (animation.delay || 0)) * 1000 + 100);
           });
         }
         else if (animation.repeat && triggered && !pendingAnimation && !isScrolledIntoView(element)) {
           // we want to repeat the animation everytime the the element is out of vide and back again
           triggered = false;
+          assign(element!.style, animation.steps[0].styles);
         }
       }
 
