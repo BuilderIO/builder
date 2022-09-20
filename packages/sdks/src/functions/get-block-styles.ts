@@ -1,6 +1,6 @@
 import { getMaxWidthQueryForSize } from '../constants/device-sizes.js';
 import { TARGET } from '../constants/target.js';
-import { BuilderBlock } from '../types/builder-block.js';
+import type { BuilderBlock } from '../types/builder-block.js';
 import { convertStyleObject } from './convert-style-object.js';
 import { sanitizeBlockStyles } from './sanitize-styles.js';
 

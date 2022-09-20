@@ -1,7 +1,7 @@
 import { getDefaultRegisteredComponents } from '../../constants/builder-registered-components.js';
 import { TARGET } from '../../constants/target.js';
 import BuilderContext from '../../context/builder.context.lite';
-import {
+import type {
   BuilderRenderContext,
   BuilderRenderState,
   RegisteredComponent,
@@ -18,7 +18,7 @@ import {
   createRegisterComponentMessage,
 } from '../../functions/register-component.js';
 import { track } from '../../functions/track.js';
-import { BuilderContent } from '../../types/builder-content.js';
+import type { BuilderContent } from '../../types/builder-content.js';
 import type { Dictionary, Nullable } from '../../types/typescript.js';
 import RenderBlocks from '../render-blocks.lite';
 import RenderContentStyles from './components/render-styles.lite';

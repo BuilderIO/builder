@@ -1,4 +1,4 @@
-import { BuilderBlock } from '../types/builder-block';
+import type { BuilderBlock } from '../types/builder-block.js';
 
 function classStringToObject(str: string) {
   const obj = {};

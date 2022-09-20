@@ -1,4 +1,4 @@
-import {
+import type {
   BuilderContextInterface,
   RegisteredComponent,
 } from '../../context/types.js';
@@ -8,14 +8,15 @@ import { getBlockProperties } from '../../functions/get-block-properties.js';
 import { getBlockStyles } from '../../functions/get-block-styles.js';
 import { getBlockTag } from '../../functions/get-block-tag.js';
 import { getProcessedBlock } from '../../functions/get-processed-block.js';
-import { BuilderBlock } from '../../types/builder-block.js';
-import { Nullable } from '../../types/typescript.js';
+import type { BuilderBlock } from '../../types/builder-block.js';
+import type { Nullable } from '../../types/typescript.js';
 import { evaluate } from '../../functions/evaluate.js';
 import BlockStyles from './block-styles.lite';
 import { isEmptyHtmlElement } from './render-block.helpers.js';
-import RenderComponent, { RenderComponentProps } from './render-component.lite';
+import type { RenderComponentProps } from './render-component.lite';
+import RenderComponent from './render-component.lite';
 import { For, Show, useMetadata, useStore } from '@builder.io/mitosis';
-import { RepeatData } from './types.js';
+import type { RepeatData } from './types.js';
 import RenderRepeatedBlock from './render-repeated-block.lite';
 
 export type RenderBlockProps = {

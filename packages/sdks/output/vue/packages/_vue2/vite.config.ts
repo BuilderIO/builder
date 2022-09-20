@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [vue2()],
   build: {
     lib: {
-      entry: resolve(__dirname, 'src/index.js'),
+      entry: resolve(__dirname, 'src/index.ts'),
       fileName: 'sdk',
       formats: ['cjs', 'es'],
     },

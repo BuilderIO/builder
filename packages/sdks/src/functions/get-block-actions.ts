@@ -1,5 +1,5 @@
 import type { BuilderContextInterface } from '../context/types.js';
-import { BuilderBlock } from '../types/builder-block.js';
+import type { BuilderBlock } from '../types/builder-block.js';
 import { getEventHandlerName } from './event-handler-name.js';
 import { crateEventHandler } from './get-block-actions-handler.js';
 

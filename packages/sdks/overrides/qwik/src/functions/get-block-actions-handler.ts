@@ -1,5 +1,5 @@
 import type { BuilderContextInterface } from '../context/types.js';
-import { BuilderBlock } from '../types/builder-block.js';
+import type { BuilderBlock } from '../types/builder-block.js';
 import { evaluate } from './evaluate.js';
 import { $ } from '@builder.io/qwik';
 

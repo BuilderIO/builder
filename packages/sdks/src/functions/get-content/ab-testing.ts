@@ -1,4 +1,4 @@
-import {
+import type {
   BuilderContent,
   BuilderContentVariation,
 } from '../../types/builder-content.js';
@@ -7,7 +7,7 @@ import {
   setContentVariationCookie,
 } from '../../helpers/ab-tests.js';
 import type { Overwrite } from '../../types/typescript.js';
-import { CanTrack } from '../../types/can-track.js';
+import type { CanTrack } from '../../types/can-track.js';
 import { checkIsDefined } from '../../helpers/nullable.js';
 
 type BuilderContentWithVariations = Overwrite<

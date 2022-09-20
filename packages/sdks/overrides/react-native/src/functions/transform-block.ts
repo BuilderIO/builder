@@ -1,4 +1,4 @@
-import type { BuilderBlock } from '../types/builder-block';
+import type { BuilderBlock } from '../types/builder-block.js';
 
 export function transformBlock(block: BuilderBlock): BuilderBlock {
   // Map the DOM-based pixel format to a native compatible one.

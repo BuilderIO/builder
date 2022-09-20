@@ -33,15 +33,15 @@
     "ci:e2e-prep": "playwright install --with-deps",
     "ci:e2e-build:prep": "yarn workspace @builder.io/sdk-vue run build",
     "ci:e2e-build": "yarn workspaces foreach -pt --include \"*/e2e*\" --verbose run build",
-    "ci:e2e": "yarn workspaces foreach --exclude @builder.io/e2e-nextjs-react --exclude @builder.io/e2e-vue3  --exclude @builder.io/e2e-vue2 --verbose run e2e",
+    "ci:e2e": "yarn workspaces foreach --exclude @builder.io/e2e-nextjs-react --exclude @builder.io/e2e-vue2 --verbose run e2e",
     "release-sdk": "bash ./scripts/release-sdk.sh",
     "release:all": "bash ./scripts/loop-command.sh release-sdk \"svelte react-native solid qwik react vue\"",
     "upgrade-example": "bash ./scripts/upgrade-example.sh",
     "upgrade-example:all": "bash ./scripts/loop-command.sh upgrade-example \"svelte react-native solid qwik react vue\""
   },
   "dependencies": {
-    "@builder.io/mitosis": "^0.0.59",
-    "@builder.io/mitosis-cli": "^0.0.20",
+    "@builder.io/mitosis": "^0.0.60",
+    "@builder.io/mitosis-cli": "^0.0.21",
     "@playwright/test": "^1.24.0",
     "node-fetch": "^2.6.1",
     "seedrandom": "^3.0.5",

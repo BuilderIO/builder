@@ -1,4 +1,4 @@
-import { CanTrack } from '../types/can-track.js';
+import type { CanTrack } from '../types/can-track.js';
 import { getCookie, setCookie } from './cookie.js';
 
 const BUILDER_STORE_PREFIX = 'builderio.variations';
