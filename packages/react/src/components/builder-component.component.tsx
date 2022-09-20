@@ -18,7 +18,7 @@ import onChange from '../../lib/on-change';
 
 export { onChange };
 
-import { getSizesForBreakpoints, sizes } from '../constants/device-sizes.constant';
+import { getSizesForBreakpoints, Sizes } from '../constants/device-sizes.constant';
 import {
   BuilderAsyncRequestsContext,
   RequestOrPromise,
@@ -361,7 +361,7 @@ export class BuilderComponent extends React.Component<
   private _asyncRequests?: RequestOrPromise[];
   private _errors?: Error[];
   private _logs?: string[];
-  private sizes: typeof sizes;
+  private sizes: Sizes;
 
   get element() {
     return this.ref;
@@ -382,7 +382,7 @@ export class BuilderComponent extends React.Component<
       _content = _content.content;
     }
 
-    this.sizes = getSizesForBreakpoints(_content?.data?.breakpoints || {});
+    this.sizes = getSizesForBreakpoints(_content?.meta?.breakpoints || {});
 
     // TODO: pass this all the way down - symbols, etc
     // this.asServer = Boolean(props.hydrate && Builder.isBrowser)

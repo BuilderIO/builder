@@ -4,7 +4,7 @@ export type Size = 'large' | 'medium' | 'small' | 'xsmall';
 export const sizeNames: Size[] = ['xsmall', 'small', 'medium', 'large'];
 
 // TODO: put in @builder.io/core
-export const sizes = {
+const sizes = {
   xsmall: {
     min: 0,
     default: 0,
@@ -38,6 +38,7 @@ export const sizes = {
     return 'large';
   },
 };
+export type Sizes = typeof sizes;
 
 interface Breakpoints {
   small?: number;
@@ -54,26 +55,26 @@ export const getSizesForBreakpoints = ({ small, medium }: Breakpoints) => {
     return newSizes;
   }
 
+  const smallMin = Math.floor(small / 2);
   newSizes.small = {
     max: small,
-    min: Math.floor(small / 2),
-    default: 0, // Note: For TS
+    min: smallMin,
+    default: smallMin + 1,
   };
-  newSizes.small.default = newSizes.small.min + 1; // TODO: handle negative values?
 
+  const mediumMin = newSizes.small.max + 1;
   newSizes.medium = {
     max: medium,
-    min: newSizes.small.max + 1,
-    default: 0, // Note: For TS
+    min: mediumMin,
+    default: mediumMin + 1,
   };
-  newSizes.medium.default = newSizes.medium.min + 1; // TODO: handle negative values?
 
+  const largeMin = newSizes.medium.max + 1;
   newSizes.large = {
     max: 2000, // TODO: decide upper limit
-    min: newSizes.medium.max + 1,
-    default: 0, // Note: For TS
+    min: largeMin,
+    default: largeMin + 1,
   };
-  newSizes.large.default = newSizes.large.min + 1; // TODO: handle negative values?
 
   return newSizes;
 };
