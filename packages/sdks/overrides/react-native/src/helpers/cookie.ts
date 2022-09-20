@@ -1,5 +1,5 @@
-import { CanTrack } from '../types/can-track.js';
-import { OrgId } from './document-cookie';
+import type { CanTrack } from '../types/can-track.js';
+import type { OrgId } from './document-cookie';
 
 import Storage from 'react-native-storage';
 import { isBrowser } from '../functions/is-browser.js';
