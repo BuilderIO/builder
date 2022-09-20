@@ -192,12 +192,16 @@ export class Animator {
               pendingAnimation = false;
               if (!animation.repeat) {
                 element.style.transition = '';
-                element.style.transitionDelay = '';  
+                element.style.transitionDelay = '';
               }
             }, (animation.duration + (animation.delay || 0)) * 1000 + 100);
           });
-        }
-        else if (animation.repeat && triggered && !pendingAnimation && !isScrolledIntoView(element)) {
+        } else if (
+          animation.repeat &&
+          triggered &&
+          !pendingAnimation &&
+          !isScrolledIntoView(element)
+        ) {
           // we want to repeat the animation everytime the the element is out of vide and back again
           triggered = false;
           assign(element!.style, animation.steps[0].styles);
