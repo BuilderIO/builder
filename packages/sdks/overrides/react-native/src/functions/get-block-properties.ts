@@ -1,5 +1,5 @@
-import { BuilderBlock } from '../types/builder-block';
-import { isEditing } from './is-editing';
+import type { BuilderBlock } from '../types/builder-block.js';
+import { isEditing } from './is-editing.js';
 import { findDOMNode } from 'react-dom';
 
 export function getBlockProperties(block: BuilderBlock) {

@@ -1,7 +1,7 @@
 import RenderBlocks from '../../components/render-blocks.lite';
 import { For, useStore } from '@builder.io/mitosis';
-import { JSX } from '@builder.io/mitosis/jsx-runtime';
-import { BuilderBlock } from '../../types/builder-block';
+import type { JSX } from '@builder.io/mitosis/jsx-runtime';
+import type { BuilderBlock } from '../../types/builder-block';
 import { markMutable } from '../../functions/mark-mutable';
 
 type Column = {

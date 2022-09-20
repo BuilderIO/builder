@@ -1,4 +1,4 @@
-import { BuilderBlock } from './builder-block.js';
+import type { BuilderBlock } from './builder-block.js';
 
 // TODO
 type Input = any;

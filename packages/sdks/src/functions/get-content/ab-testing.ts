@@ -1,5 +1,5 @@
-import { GetContentOptions } from './types.js';
-import { BuilderContent } from '../../types/builder-content.js';
+import type { GetContentOptions } from './types.js';
+import type { BuilderContent } from '../../types/builder-content.js';
 
 export const handleABTesting = (
   item: BuilderContent,

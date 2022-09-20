@@ -1,5 +1,5 @@
-import { BuilderBlock } from '../types/builder-block.js';
-import { DeepPartial } from '../types/deep-partial.js';
+import type { BuilderBlock } from '../types/builder-block.js';
+import type { DeepPartial } from '../types/deep-partial.js';
 import { isBrowser } from './is-browser.js';
 
 export interface InsertMenuItem {
