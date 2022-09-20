@@ -13,7 +13,7 @@
     "prepare": "cd ../../ && npx husky install",
     "cz": "cz",
     "build:mitosis": "./node_modules/@builder.io/mitosis-cli/bin/mitosis build",
-    "build:outputs": "yarn workspaces foreach --include \"*/sdk-*\" --exclude @builder.io/sdk-vue-2 --verbose run build",
+    "build:outputs": "yarn workspaces foreach --include \"*/sdk-*\" --exclude @builder.io/sdk-vue-2 --exclude @builder.io/sdk-vue-3 --verbose run build",
     "build": "yarn run build:mitosis && yarn run build:outputs",
     "start": "watch 'yarn run build:mitosis' ./src ./overrides",
     "test": "jest",
