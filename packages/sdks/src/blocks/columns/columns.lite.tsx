@@ -1,8 +1,11 @@
 import RenderBlocks from '../../components/render-blocks.lite';
 import { For, useStore } from '@builder.io/mitosis';
-import type { JSX } from '@builder.io/mitosis/jsx-runtime';
 import type { BuilderBlock } from '../../types/builder-block';
 import { markMutable } from '../../functions/mark-mutable';
+
+type CSS = {
+  [key: string]: string;
+};
 
 type Column = {
   blocks: any;
@@ -44,9 +47,7 @@ export default function Columns(props: ColumnProps) {
       return `calc(${state.getWidth(index)}% - ${subtractWidth}px)`;
     },
 
-    maybeApplyForTablet(
-      prop: JSX.CSS['flexDirection']
-    ): JSX.CSS['flexDirection'] {
+    maybeApplyForTablet(prop: string | undefined): string | undefined {
       const _stackColumnsAt = props.stackColumnsAt || 'tablet';
       return _stackColumnsAt === 'tablet' ? prop : 'inherit';
     },
@@ -90,7 +91,7 @@ export default function Columns(props: ColumnProps) {
           flexDirection: 'var(--flex-dir)',
         },
       }}
-      style={state.columnsCssVars as JSX.CSS}
+      style={state.columnsCssVars as CSS}
     >
       <For each={props.columns}>
         {(column, index) => (
