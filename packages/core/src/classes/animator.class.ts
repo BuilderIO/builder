@@ -22,8 +22,8 @@ export interface Animation {
   id?: string;
   // only apply in scrollInView
   repeat?: boolean;
-  // only apply in scrollInView, how far from innerHeight
-  thresholdPrecent?: number;
+  // only apply in scrollInView, number from -1 to 1
+  thresholdPercent?: number;
 }
 
 export class Animator {
@@ -213,8 +213,8 @@ export class Animator {
 
         const windowHeight = window.innerHeight;
 
-        const thresholdPrecent = animation.thresholdPrecent || 0;
-        const threshold = thresholdPrecent * windowHeight;
+        const thresholdPercent = animation.thresholdPercent || 0;
+        const threshold = thresholdPercent * windowHeight;
 
         // TODO: partial in view? or what if element is larger than screen itself
         return (
