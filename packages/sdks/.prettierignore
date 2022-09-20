@@ -5,3 +5,5 @@ output/**/src
 **/.next
 
 **/dist
+
+overrides/react-native/src/blocks/**/*

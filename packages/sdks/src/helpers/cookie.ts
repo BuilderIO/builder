@@ -2,7 +2,10 @@ import { isBrowser } from '../functions/is-browser.js';
 import type { CanTrack } from '../types/can-track.js';
 import { getTopLevelDomain } from './url.js';
 
-export const getCookie = ({
+/**
+ * NOTE: This function is `async` because its react-native override is async. Do not remove the `async` keyword!
+ */
+export const getCookie = async ({
   name,
   canTrack,
 }: {
@@ -74,7 +77,10 @@ const createCookieString = ({
   return cookie;
 };
 
-export const setCookie = ({
+/**
+ * NOTE: This function is `async` because its react-native override is async. Do not remove the `async` keyword!
+ */
+export const setCookie = async ({
   name,
   value,
   expires,

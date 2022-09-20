@@ -33,7 +33,7 @@
     "ci:e2e-prep": "playwright install --with-deps",
     "ci:e2e-build:prep": "yarn workspace @builder.io/sdk-vue run build",
     "ci:e2e-build": "yarn workspaces foreach -pt --include \"*/e2e*\" --verbose run build",
-    "ci:e2e": "yarn workspaces foreach --exclude @builder.io/e2e-nextjs-react --verbose run e2e",
+    "ci:e2e": "yarn workspaces foreach --exclude @builder.io/e2e-nextjs-react --exclude @builder.io/e2e-vue2 --verbose run e2e",
     "release-sdk": "bash ./scripts/release-sdk.sh",
     "release:all": "bash ./scripts/loop-command.sh release-sdk \"svelte react-native solid qwik react vue\"",
     "upgrade-example": "bash ./scripts/upgrade-example.sh",

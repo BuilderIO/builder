@@ -2,13 +2,13 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { RenderContent, isPreviewing, getContent } from '@builder.io/sdk-react-native';
-import { LinkingOptions, NavigationContainer, RouteProp } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 // TO-DO: add your own public Builder API key here
 const BUILDER_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660'; // ggignore
 
-const linking: LinkingOptions<any> = {
+const linking = {
   prefixes: ['http://localhost:19006'],
   config: {
     screens: {
@@ -20,7 +20,7 @@ const linking: LinkingOptions<any> = {
 };
 
 // create a custom React component
-function CustomComponent(props: { text: string }) {
+function CustomComponent(props) {
   return (
     <>
       <Text>I am a custom component!</Text>
@@ -38,8 +38,8 @@ const CUSTOM_COMPONENTS = [
   },
 ];
 
-const BuilderContent = ({ route }: { route: RouteProp<any, 'Page'> }) => {
-  const [content, setContent] = useState<any>(undefined);
+const BuilderContent = ({ route }) => {
+  const [content, setContent] = useState(undefined);
 
   useEffect(() => {
     getContent({
@@ -50,12 +50,12 @@ const BuilderContent = ({ route }: { route: RouteProp<any, 'Page'> }) => {
         urlPath: route.path || '/',
       },
     })
-      .then((content: any) => {
+      .then(content => {
         if (content) {
           setContent(content);
         }
       })
-      .catch((err: any) => {
+      .catch(err => {
         console.log('something went wrong while fetching Builder Content: ', err);
       });
   }, []);
@@ -73,7 +73,7 @@ const BuilderContent = ({ route }: { route: RouteProp<any, 'Page'> }) => {
           customComponents={CUSTOM_COMPONENTS}
         />
       ) : (
-        <div>Not Found.</div>
+        <Text>Not Found.</Text>
       )}
       <StatusBar style="auto" />
     </View>

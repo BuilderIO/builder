@@ -22,12 +22,14 @@ type TrackingData = {
   sessionId: string | undefined;
 };
 
-const getTrackingEventData = ({ canTrack }: CanTrack): TrackingData => {
+const getTrackingEventData = async ({
+  canTrack,
+}: CanTrack): Promise<TrackingData> => {
   if (!canTrack) {
     return { visitorId: undefined, sessionId: undefined };
   }
 
-  const sessionId = getSessionId({ canTrack });
+  const sessionId = await getSessionId({ canTrack });
   const visitorId = getVisitorId({ canTrack });
 
   return {
@@ -45,17 +47,17 @@ type EventProperties = {
 
 export type EventProps = EventProperties & CanTrack;
 
-const createEvent = ({
+const createEvent = async ({
   type: eventType,
   canTrack,
   orgId,
   contentId,
   ...properties
-}: EventProps): Event => ({
+}: EventProps): Promise<Event> => ({
   type: eventType,
   data: {
     ...properties,
-    ...getTrackingEventData({ canTrack }),
+    ...(await getTrackingEventData({ canTrack })),
     ownerId: orgId,
     contentId,
   },
@@ -76,7 +78,7 @@ export async function track(eventProps: EventProps) {
   return fetch(`https://builder.io/api/v1/track`, {
     method: 'POST',
     body: JSON.stringify({
-      events: [createEvent(eventProps)],
+      events: [await createEvent(eventProps)],
     }),
     headers: {
       'content-type': 'application/json',

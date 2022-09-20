@@ -13,6 +13,7 @@ export default function Embed(props: EmbedProps) {
     scriptsRun: [] as string[],
     ranInitFn: false,
     findAndRunScripts() {
+      if (!elem || !elem.getElementsByTagName) return;
       const scripts = elem.getElementsByTagName('script');
       for (let i = 0; i < scripts.length; i++) {
         const script = scripts[i];
