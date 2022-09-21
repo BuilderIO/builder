@@ -40,7 +40,7 @@
     "@nguniversal/express-engine": "*"
   },
   "dependencies": {
-    "@builder.io/sdk": "^1.1.23-0"
+    "@builder.io/sdk": "^1.1.29"
   },
   "peerDependencies": {
     "@angular/common": ">= 2",

@@ -1,3 +1,7 @@
+### 1.1.29
+
+- added types for `override` option
+
 ### 1.1.27
 
 - improved logging during JSON.parse errors
