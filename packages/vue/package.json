@@ -16,7 +16,7 @@
   "main": "./dist/builder.common.js",
   "module": "./dist/builder.common.js",
   "dependencies": {
-    "@builder.io/sdk": "^1.1.26",
+    "@builder.io/sdk": "^1.1.29",
     "vue": "^2.6.11"
   },
   "devDependencies": {
