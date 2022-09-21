@@ -637,6 +637,8 @@ export interface Component {
    *
    * Default behaviors include special "virtual options", such as a custom
    * aspect ratio editor for Images, or a special column editor for Columns
+   * 
+   * Learn more about overriding built-in components here: https://www.builder.io/c/docs/custom-components-overriding
    */
   override?: boolean;
 
