@@ -26,6 +26,7 @@ Learn more about registering custom components [here](https://www.builder.io/c/d
 - [models](Component.md#models)
 - [name](Component.md#name)
 - [noWrap](Component.md#nowrap)
+- [override](Component.md#override)
 - [requiredPermissions](Component.md#requiredpermissions)
 - [requiresParent](Component.md#requiresparent)
 - [screenshot](Component.md#screenshot)
@@ -43,7 +44,7 @@ github.com/BuilderIO/builder/blob/master/examples/react-design-system/src/compon
 
 #### Defined in
 
-[builder.class.ts:635](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L635)
+[builder.class.ts:671](https://github.com/builderio/builder/blob/ee8e6f2d/packages/core/src/builder.class.ts#L671)
 
 ___
 
@@ -63,7 +64,7 @@ Specify restrictions direct children must match
 
 #### Defined in
 
-[builder.class.ts:669](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L669)
+[builder.class.ts:705](https://github.com/builderio/builder/blob/ee8e6f2d/packages/core/src/builder.class.ts#L705)
 
 ___
 
@@ -75,7 +76,7 @@ Default children
 
 #### Defined in
 
-[builder.class.ts:646](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L646)
+[builder.class.ts:682](https://github.com/builderio/builder/blob/ee8e6f2d/packages/core/src/builder.class.ts#L682)
 
 ___
 
@@ -101,7 +102,7 @@ defaultStyles: {
 
 #### Defined in
 
-[builder.class.ts:629](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L629)
+[builder.class.ts:665](https://github.com/builderio/builder/blob/ee8e6f2d/packages/core/src/builder.class.ts#L665)
 
 ___
 
@@ -113,7 +114,7 @@ Default options to merge in when creating this block
 
 #### Defined in
 
-[builder.class.ts:650](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L650)
+[builder.class.ts:686](https://github.com/builderio/builder/blob/ee8e6f2d/packages/core/src/builder.class.ts#L686)
 
 ___
 
@@ -125,7 +126,7 @@ Link to a documentation page for this component
 
 #### Defined in
 
-[builder.class.ts:591](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L591)
+[builder.class.ts:618](https://github.com/builderio/builder/blob/ee8e6f2d/packages/core/src/builder.class.ts#L618)
 
 ___
 
@@ -137,7 +138,7 @@ Hide your component in editor, useful for gradually deprecating components
 
 #### Defined in
 
-[builder.class.ts:656](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L656)
+[builder.class.ts:692](https://github.com/builderio/builder/blob/ee8e6f2d/packages/core/src/builder.class.ts#L692)
 
 ___
 
@@ -154,7 +155,7 @@ image: 'https://some-cdn.com/my-icon-for-this-component.png'
 
 #### Defined in
 
-[builder.class.ts:600](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L600)
+[builder.class.ts:627](https://github.com/builderio/builder/blob/ee8e6f2d/packages/core/src/builder.class.ts#L627)
 
 ___
 
@@ -167,7 +168,7 @@ that translate to this components props
 
 #### Defined in
 
-[builder.class.ts:611](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L611)
+[builder.class.ts:647](https://github.com/builderio/builder/blob/ee8e6f2d/packages/core/src/builder.class.ts#L647)
 
 ___
 
@@ -179,7 +180,7 @@ Passing a list of model names will restrict using the component to only the mode
 
 #### Defined in
 
-[builder.class.ts:664](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L664)
+[builder.class.ts:700](https://github.com/builderio/builder/blob/ee8e6f2d/packages/core/src/builder.class.ts#L700)
 
 ___
 
@@ -192,7 +193,7 @@ by registering a component with the same name, e.g. 'Text', to replace the built
 
 #### Defined in
 
-[builder.class.ts:585](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L585)
+[builder.class.ts:612](https://github.com/builderio/builder/blob/ee8e6f2d/packages/core/src/builder.class.ts#L612)
 
 ___
 
@@ -205,7 +206,23 @@ like here github.com/BuilderIO/builder/blob/master/packages/react/src/blocks/for
 
 #### Defined in
 
-[builder.class.ts:642](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L642)
+[builder.class.ts:678](https://github.com/builderio/builder/blob/ee8e6f2d/packages/core/src/builder.class.ts#L678)
+
+___
+
+### override
+
+• `Optional` **override**: `boolean`
+
+When overriding built-in components, if you don't want any special behavior that
+the original has, set this to `true` to skip the default behavior
+
+Default behaviors include special "virtual options", such as a custom
+aspect ratio editor for Images, or a special column editor for Columns
+
+#### Defined in
+
+[builder.class.ts:641](https://github.com/builderio/builder/blob/ee8e6f2d/packages/core/src/builder.class.ts#L641)
 
 ___
 
@@ -219,7 +236,7 @@ for more information on permissions in builder check https://www.builder.io/c/do
 
 #### Defined in
 
-[builder.class.ts:717](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L717)
+[builder.class.ts:753](https://github.com/builderio/builder/blob/ee8e6f2d/packages/core/src/builder.class.ts#L753)
 
 ___
 
@@ -239,7 +256,7 @@ Specify restrictions any parent must match
 
 #### Defined in
 
-[builder.class.ts:690](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L690)
+[builder.class.ts:726](https://github.com/builderio/builder/blob/ee8e6f2d/packages/core/src/builder.class.ts#L726)
 
 ___
 
@@ -252,7 +269,7 @@ use https://builder.io/upload to upload your screeshot, for easier resizing by B
 
 #### Defined in
 
-[builder.class.ts:605](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L605)
+[builder.class.ts:632](https://github.com/builderio/builder/blob/ee8e6f2d/packages/core/src/builder.class.ts#L632)
 
 ___
 
@@ -264,4 +281,4 @@ Custom tag name (for custom webcomponents only)
 
 #### Defined in
 
-[builder.class.ts:658](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L658)
+[builder.class.ts:694](https://github.com/builderio/builder/blob/ee8e6f2d/packages/core/src/builder.class.ts#L694)

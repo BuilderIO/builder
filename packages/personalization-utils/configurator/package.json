@@ -16,7 +16,7 @@
     "src/**/*"
   ],
   "devDependencies": {
-    "@builder.io/sdk": "^1.1.20",
+    "@builder.io/sdk": "^1.1.29",
     "@types/js-cookie": "^3.0.0",
     "@types/react": "^17.0.27",
     "@types/react-dom": "^17.0.9",

@@ -632,6 +632,17 @@ export interface Component {
   screenshot?: string;
 
   /**
+   * When overriding built-in components, if you don't want any special behavior that
+   * the original has, set this to `true` to skip the default behavior
+   *
+   * Default behaviors include special "virtual options", such as a custom
+   * aspect ratio editor for Images, or a special column editor for Columns
+   *
+   * Learn more about overriding built-in components here: https://www.builder.io/c/docs/custom-components-overriding
+   */
+  override?: boolean;
+
+  /**
    * Input schema for your component for users to fill in the options via a UI
    * that translate to this components props
    */
