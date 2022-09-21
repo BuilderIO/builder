@@ -21,8 +21,10 @@ Learn more about registering custom components [here](https://www.builder.io/c/d
 - [enum](Input.md#enum)
 - [friendlyName](Input.md#friendlyname)
 - [helperText](Input.md#helpertext)
+- [localized](Input.md#localized)
 - [max](Input.md#max)
 - [min](Input.md#min)
+- [model](Input.md#model)
 - [name](Input.md#name)
 - [regex](Input.md#regex)
 - [required](Input.md#required)
@@ -42,7 +44,7 @@ or more rarely used and don't need to be too prominent
 
 #### Defined in
 
-[builder.class.ts:556](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L556)
+[builder.class.ts:579](https://github.com/builderio/builder/blob/ee8e6f2d/packages/core/src/builder.class.ts#L579)
 
 ___
 
@@ -57,7 +59,7 @@ directly but will still be looking for how to add additional tabs
 
 #### Defined in
 
-[builder.class.ts:526](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L526)
+[builder.class.ts:545](https://github.com/builderio/builder/blob/ee8e6f2d/packages/core/src/builder.class.ts#L545)
 
 ___
 
@@ -71,7 +73,7 @@ to bubble up important inputs for locked groups, like text and images
 
 #### Defined in
 
-[builder.class.ts:532](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L532)
+[builder.class.ts:551](https://github.com/builderio/builder/blob/ee8e6f2d/packages/core/src/builder.class.ts#L551)
 
 ___
 
@@ -83,7 +85,7 @@ A default value to use
 
 #### Defined in
 
-[builder.class.ts:471](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L471)
+[builder.class.ts:490](https://github.com/builderio/builder/blob/ee8e6f2d/packages/core/src/builder.class.ts#L490)
 
 ___
 
@@ -95,7 +97,7 @@ For "text" input type, specifying an enum will show a dropdown of options instea
 
 #### Defined in
 
-[builder.class.ts:538](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L538)
+[builder.class.ts:561](https://github.com/builderio/builder/blob/ee8e6f2d/packages/core/src/builder.class.ts#L561)
 
 ___
 
@@ -107,7 +109,7 @@ A friendlier name to show in the UI if the component prop name is not ideal for 
 
 #### Defined in
 
-[builder.class.ts:467](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L467)
+[builder.class.ts:486](https://github.com/builderio/builder/blob/ee8e6f2d/packages/core/src/builder.class.ts#L486)
 
 ___
 
@@ -120,11 +122,23 @@ Additional text to render in the UI to give guidance on how to use this
 **`example`**
 ```js
 helperText: 'Be sure to use a proper URL, starting with "https://"'
-```
+111
 
 #### Defined in
 
-[builder.class.ts:492](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L492)
+[builder.class.ts:511](https://github.com/builderio/builder/blob/ee8e6f2d/packages/core/src/builder.class.ts#L511)
+
+___
+
+### localized
+
+• `Optional` **localized**: `boolean`
+
+Set this to `true` if you want this component to be translatable
+
+#### Defined in
+
+[builder.class.ts:555](https://github.com/builderio/builder/blob/ee8e6f2d/packages/core/src/builder.class.ts#L555)
 
 ___
 
@@ -136,7 +150,7 @@ Number field type validation maximum accepted input
 
 #### Defined in
 
-[builder.class.ts:510](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L510)
+[builder.class.ts:529](https://github.com/builderio/builder/blob/ee8e6f2d/packages/core/src/builder.class.ts#L529)
 
 ___
 
@@ -148,7 +162,19 @@ Number field type validation minimum accepted input
 
 #### Defined in
 
-[builder.class.ts:514](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L514)
+[builder.class.ts:533](https://github.com/builderio/builder/blob/ee8e6f2d/packages/core/src/builder.class.ts#L533)
+
+___
+
+### model
+
+• `Optional` **model**: `string`
+
+Use optionally with inputs of type `reference`. Restricts the content entry picker to a specific model by name.
+
+#### Defined in
+
+[builder.class.ts:593](https://github.com/builderio/builder/blob/ee8e6f2d/packages/core/src/builder.class.ts#L593)
 
 ___
 
@@ -160,7 +186,7 @@ This is the name of the component prop this input represents
 
 #### Defined in
 
-[builder.class.ts:465](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L465)
+[builder.class.ts:484](https://github.com/builderio/builder/blob/ee8e6f2d/packages/core/src/builder.class.ts#L484)
 
 ___
 
@@ -180,7 +206,7 @@ Regex field validation for all string types (text, longText, html, url, etc)
 
 #### Defined in
 
-[builder.class.ts:540](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L540)
+[builder.class.ts:563](https://github.com/builderio/builder/blob/ee8e6f2d/packages/core/src/builder.class.ts#L563)
 
 ___
 
@@ -192,7 +218,7 @@ Is this input mandatory or not
 
 #### Defined in
 
-[builder.class.ts:480](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L480)
+[builder.class.ts:499](https://github.com/builderio/builder/blob/ee8e6f2d/packages/core/src/builder.class.ts#L499)
 
 ___
 
@@ -204,7 +230,7 @@ Number field type step size when using arrows
 
 #### Defined in
 
-[builder.class.ts:518](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L518)
+[builder.class.ts:537](https://github.com/builderio/builder/blob/ee8e6f2d/packages/core/src/builder.class.ts#L537)
 
 ___
 
@@ -214,7 +240,7 @@ ___
 
 #### Defined in
 
-[builder.class.ts:483](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L483)
+[builder.class.ts:502](https://github.com/builderio/builder/blob/ee8e6f2d/packages/core/src/builder.class.ts#L502)
 
 ___
 
@@ -229,4 +255,4 @@ and you can create your own custom input types and associated editor UIs with [p
 
 #### Defined in
 
-[builder.class.ts:478](https://github.com/builderio/builder/blob/faf038e7/packages/core/src/builder.class.ts#L478)
+[builder.class.ts:497](https://github.com/builderio/builder/blob/ee8e6f2d/packages/core/src/builder.class.ts#L497)
