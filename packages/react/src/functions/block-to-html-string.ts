@@ -1,7 +1,11 @@
 import { BuilderElement } from '@builder.io/sdk';
 
 export const htmlEscape = (str: string) =>
-  str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
 
 // TODO: handle self closing tags
 // TODO: how allow components (e.g. react components) in templates?

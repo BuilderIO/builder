@@ -74,11 +74,11 @@ const size = (thing: object) => Object.keys(thing).length;
 
 function debounce(func: Function, wait: number, immediate = false) {
   let timeout: any;
-  return function (this: any) {
+  return function(this: any) {
     const context = this;
     const args = arguments;
     clearTimeout(timeout);
-    timeout = setTimeout(function () {
+    timeout = setTimeout(function() {
       timeout = null;
       if (!immediate) func.apply(context, args);
     }, wait);
@@ -88,9 +88,9 @@ function debounce(func: Function, wait: number, immediate = false) {
 
 const fontsLoaded = new Set();
 
-let fetch: typeof globalThis['fetch'];
+let fetch: typeof globalThis['fetch'] | undefined = undefined;
 if (globalThis.fetch) fetch = globalThis.fetch;
-fetch ??= require('node-fetch');
+fetch = fetch ?? require('node-fetch');
 
 const sizeMap = {
   desktop: 'large',
@@ -1034,7 +1034,7 @@ export class BuilderComponent extends React.Component<
                           const useBuilderState = (initialState: any) => {
                             const [, setTick] = React.useState(0);
                             const [state] = React.useState(() =>
-                              onChange(initialState, function () {
+                              onChange(initialState, function() {
                                 setTick(tick => tick + 1);
                               })
                             );
@@ -1389,14 +1389,15 @@ export class BuilderComponent extends React.Component<
               }
 
               // TODO: fix this
-              const newSubscription = (this.httpSubscriptionPerKey[key] =
-                this.onStateChange.subscribe(() => {
-                  const newUrl = this.evalExpression(url);
-                  if (newUrl !== finalUrl) {
-                    this.handleRequest(key, newUrl);
-                    this.lastHttpRequests[key] = newUrl;
-                  }
-                }));
+              const newSubscription = (this.httpSubscriptionPerKey[
+                key
+              ] = this.onStateChange.subscribe(() => {
+                const newUrl = this.evalExpression(url);
+                if (newUrl !== finalUrl) {
+                  this.handleRequest(key, newUrl);
+                  this.lastHttpRequests[key] = newUrl;
+                }
+              }));
               this.subscriptions.add(newSubscription);
             } else {
               this.handleRequest(key, this.evalExpression(url));
