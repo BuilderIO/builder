@@ -193,16 +193,16 @@ export default function RenderBlock(props: RenderBlockProps) {
         />
       }
     >
+      {/*
+       * Svelte is super finicky, and does not allow an empty HTML element (e.g. `img`) to have logic inside of it,
+       * _even_ if that logic ends up not rendering anything.
+       */}
       <Show when={isEmptyHtmlElement(state.tagName)}>
-        {/*
-         * Svelte is super finicky, and does not allow an empty HTML element (e.g. `img`) to have logic inside of it,
-         * _even_ if that logic ends up not rendering anything.
-         */}
         <state.tagName {...state.attributes} />
       </Show>
       <Show
         when={
-          isEmptyHtmlElement(state.tagName) &&
+          !isEmptyHtmlElement(state.tagName) &&
           TARGET === 'vue2' &&
           state.repeatItemData
         }
@@ -221,7 +221,7 @@ export default function RenderBlock(props: RenderBlockProps) {
       </Show>
       <Show
         when={
-          isEmptyHtmlElement(state.tagName) &&
+          !isEmptyHtmlElement(state.tagName) &&
           TARGET !== 'vue2' &&
           state.repeatItemData
         }
@@ -236,7 +236,7 @@ export default function RenderBlock(props: RenderBlockProps) {
           )}
         </For>
       </Show>
-      <Show when={isEmptyHtmlElement(state.tagName) && !state.repeatItemData}>
+      <Show when={!isEmptyHtmlElement(state.tagName) && !state.repeatItemData}>
         <state.tagName {...state.attributes}>
           <RenderComponent {...state.renderComponentProps} />
           {/**
