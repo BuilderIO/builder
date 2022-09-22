@@ -18,6 +18,7 @@ import RenderComponent from './render-component.lite';
 import { For, Show, useMetadata, useStore } from '@builder.io/mitosis';
 import type { RepeatData } from './types.js';
 import RenderRepeatedBlock from './render-repeated-block.lite';
+import { TARGET } from '../../constants/target.js';
 
 export type RenderBlockProps = {
   block: BuilderBlock;
@@ -192,21 +193,21 @@ export default function RenderBlock(props: RenderBlockProps) {
         />
       }
     >
+      {/*
+       * Svelte is super finicky, and does not allow an empty HTML element (e.g. `img`) to have logic inside of it,
+       * _even_ if that logic ends up not rendering anything.
+       */}
+      <Show when={isEmptyHtmlElement(state.tagName)}>
+        <state.tagName {...state.attributes} />
+      </Show>
       <Show
-        when={!isEmptyHtmlElement(state.tagName)}
-        else={
-          /**
-           * Svelte is super finicky, and does not allow an empty HTML element (e.g. `img`) to have logic inside of it,
-           * _even_ if that logic ends up not rendering anything.
-           */
-          <state.tagName {...state.attributes} />
+        when={
+          !isEmptyHtmlElement(state.tagName) &&
+          TARGET === 'vue2' &&
+          state.repeatItemData
         }
       >
-        {/**
-         * We can't use `Show`'s `when` prop to combine the below 2 `Show` components because Vue 2 won't
-         * support `v-if` && `v-for` in the same element in a way that allows for `v-else` to be used afterwards.
-         */}
-        <Show when={state.repeatItemData}>
+        <div class="vue2-root-element-workaround">
           <For each={state.repeatItemData}>
             {(data, index) => (
               <RenderRepeatedBlock
@@ -216,34 +217,51 @@ export default function RenderBlock(props: RenderBlockProps) {
               />
             )}
           </For>
-        </Show>
-        <Show when={!state.repeatItemData}>
-          <state.tagName {...state.attributes}>
-            <RenderComponent {...state.renderComponentProps} />
-            {/**
-             * We need to run two separate loops for content + styles to workaround the fact that Vue 2
-             * does not support multiple root elements.
-             */}
-            <For each={state.childrenWithoutParentComponent}>
-              {(child) => (
-                <RenderBlock
-                  key={'render-block-' + child.id}
-                  block={child}
-                  context={props.context}
-                />
-              )}
-            </For>
-            <For each={state.childrenWithoutParentComponent}>
-              {(child) => (
-                <BlockStyles
-                  key={'block-style-' + child.id}
-                  block={child}
-                  context={props.context}
-                />
-              )}
-            </For>
-          </state.tagName>
-        </Show>
+        </div>
+      </Show>
+      <Show
+        when={
+          !isEmptyHtmlElement(state.tagName) &&
+          TARGET !== 'vue2' &&
+          state.repeatItemData
+        }
+      >
+        <For each={state.repeatItemData}>
+          {(data, index) => (
+            <RenderRepeatedBlock
+              key={index}
+              repeatContext={data.context}
+              block={data.block}
+            />
+          )}
+        </For>
+      </Show>
+      <Show when={!isEmptyHtmlElement(state.tagName) && !state.repeatItemData}>
+        <state.tagName {...state.attributes}>
+          <RenderComponent {...state.renderComponentProps} />
+          {/**
+           * We need to run two separate loops for content + styles to workaround the fact that Vue 2
+           * does not support multiple root elements.
+           */}
+          <For each={state.childrenWithoutParentComponent}>
+            {(child) => (
+              <RenderBlock
+                key={'render-block-' + child.id}
+                block={child}
+                context={props.context}
+              />
+            )}
+          </For>
+          <For each={state.childrenWithoutParentComponent}>
+            {(child) => (
+              <BlockStyles
+                key={'block-style-' + child.id}
+                block={child}
+                context={props.context}
+              />
+            )}
+          </For>
+        </state.tagName>
       </Show>
     </Show>
   );
