@@ -103,7 +103,9 @@ export default function Columns(props: ColumnProps) {
             }}
             class="builder-column"
             css={{
-              flexGrow: '1',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'stretch',
               '@media (max-width: 991px)': {
                 width: 'var(--column-width-tablet) !important',
                 marginLeft: 'var(--column-margin-left-tablet) !important',
@@ -119,6 +121,7 @@ export default function Columns(props: ColumnProps) {
               blocks={markMutable(column.blocks)}
               path={`component.options.columns.${index}.blocks`}
               parent={props.builderBlock.id}
+              style={{ flexGrow: '1' }}
             />
           </div>
         )}
