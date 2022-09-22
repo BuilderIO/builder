@@ -88,9 +88,8 @@ function debounce(func: Function, wait: number, immediate = false) {
 
 const fontsLoaded = new Set();
 
-let fetch: typeof globalThis['fetch'] | undefined = undefined;
+let fetch: typeof globalThis['fetch'] = require('node-fetch');
 if (globalThis.fetch) fetch = globalThis.fetch;
-fetch = fetch ?? require('node-fetch');
 
 const sizeMap = {
   desktop: 'large',
