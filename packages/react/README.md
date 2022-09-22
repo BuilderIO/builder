@@ -29,7 +29,6 @@ See our full [getting started docs](https://www.builder.io/c/docs/developers), o
   </tr>
 </table>
 
-
 ## React API
 
 ### Simple example
@@ -54,7 +53,7 @@ const content = await builder
     }
   })
   .promise()
-  
+
 // Later, pass the fetched content to the BuilderComponent
 <BuilderComponent model={MODEL_NAME} content={content} />
 ```
@@ -69,21 +68,25 @@ For example, with Next.js, to render Builder as your homepage:
 export const getStaticProps = async () => {
   return {
     props: {
-      builderContent: await builder.get('page', {
-        userAttributes: {
-          urlPath: '/' // Fetch content targeted to the homepage ("/" url)
-        }
-      }).promise()
-    }
-  }
-}
+      builderContent: await builder
+        .get('page', {
+          userAttributes: {
+            urlPath: '/', // Fetch content targeted to the homepage ("/" url)
+          },
+        })
+        .promise(),
+    },
+  };
+};
 
 export default function MyHomePage({ builderContent }) {
-  return <>
-    <YourHeader />
-    <BuilderComponent model="page" content={builderContent} />
-    <YourFooter />
-  </>
+  return (
+    <>
+      <YourHeader />
+      <BuilderComponent model="page" content={builderContent} />
+      <YourFooter />
+    </>
+  );
 }
 ```
 
@@ -91,21 +94,23 @@ You can also allow dynamic page building (the ability to create new pages on new
 
 ### Registering Components
 
-One of Builder's most powerful features is registering your own components for use in the drag and drop editor. 
+One of Builder's most powerful features is registering your own components for use in the drag and drop editor.
 You can choose to have these compliment the built-in components, or to be the only components allowed to be used
 (e.g. via [components-only mode](https://www.builder.io/c/docs/guides/components-only-mode))
 
 ```tsx
 import { Builder } from '@builder.io/sdk-react';
 
-function MyHero(props) { /* Your own hero component in your codebase */ }
+function MyHero(props) {
+  /* Your own hero component in your codebase */
+}
 
 Builder.registerComponent(MyHero, {
   name: 'Hero',
   inputs: [
-    { name: 'title', type: 'string' } // Gets passed as the `title` prop to the Hero
-  ]
-})
+    { name: 'title', type: 'string' }, // Gets passed as the `title` prop to the Hero
+  ],
+});
 ```
 
 Learn more about [registering components in Builder](https://www.builder.io/c/docs/custom-react-components)
@@ -117,12 +122,11 @@ You can find the full [reference docs for the BuilderComponent props here](docs/
 ```tsx
 const MODEL_NAME = 'page';
 
-// Render 
-<BuilderComponent model={MODEL_NAME} content={builderJson} />
+// Render
+<BuilderComponent model={MODEL_NAME} content={builderJson} />;
 ```
 
 See our guides for [Gatsby](https://github.com/BuilderIO/builder/tree/main/examples/gatsby) and [Next.js](https://github.com/BuilderIO/builder/tree/main/examples/next-js) for guides on using with those frameworks
-
 
 #### Passing data and functions down
 
@@ -136,9 +140,10 @@ All data passed down is available in Builder [actions and bindings](https://www.
   model="page"
   data={{
     products: productsList,
-    foo: 'bar'
-  }} 
-  content={builderJson} />
+    foo: 'bar',
+  }}
+  content={builderJson}
+/>
 ```
 
 You can also pass down functions, complex data like custom objects and libraries you can use `context`. Similar to React context, context passes all the way down (e.g. through symbols, etc). This data is not observed for changes and mutations
@@ -149,8 +154,9 @@ You can also pass down functions, complex data like custom objects and libraries
   context={{
     addToCart: () => myService.addToCart(currentProduct),
     lodash: lodash,
-  }} 
-  content={builderJson} />
+  }}
+  content={builderJson}
+/>
 ```
 
 Context is available in [actions and bindings](https://www.builder.io/c/docs/guides/custom-code) as `context.*`, such as `context.lodash` or `context.myFunction()` in the example above
@@ -211,8 +217,8 @@ Although you can already fetch data models from our Content API directly and use
      return <Spinner />
    }
    return <>
-      /*pass values down to an example ThemeProvider, used as a wrapper in your application*/     
-       <ThemeProvider theme={data.theme} > 
+      /*pass values down to an example ThemeProvider, used as a wrapper in your application*/
+       <ThemeProvider theme={data.theme} >
            {props.children}
        </ThemeProvider>
    </>
@@ -232,7 +238,7 @@ export const getStaticProps = async () => {
 }
 
 export default function MyPage({ builderDataContent }) {
-  return <BuilderContent content={builderDataContent}>{data => 
+  return <BuilderContent content={builderDataContent}>{data =>
     <ThemeProvider theme={data.theme}>
       {/* ... more content ... */}
     </ThemeProvider>
@@ -240,20 +246,23 @@ export default function MyPage({ builderDataContent }) {
 }
 ```
 
-
 #### Usage with Page/Section Custom Fields
 
-Page and section models in builder can be extended with [custom fields](https://www.builder.io/c/docs/custom-fields).   To enable live editing / previewing on components that uses those custom fields, you can use BuilderContent to pass input data from the model to your components that are outside the rendered content
+Page and section models in builder can be extended with [custom fields](https://www.builder.io/c/docs/custom-fields). To enable live editing / previewing on components that uses those custom fields, you can use BuilderContent to pass input data from the model to your components that are outside the rendered content
 
-##### Example, passing Custom Field input: 
+##### Example, passing Custom Field input:
+
 ```tsx
-<BuilderContent model="landing-page">{ (data) => {
-       /*use your data here within your custom component*/
-        return <>
-           <FeaturedImage image={data.featuredImage} />
-           <BuilderComponent content={content} model="landing-page" />
-       </>
-   }}
+<BuilderContent model="landing-page">
+  {data => {
+    /*use your data here within your custom component*/
+    return (
+      <>
+        <FeaturedImage image={data.featuredImage} />
+        <BuilderComponent content={content} model="landing-page" />
+      </>
+    );
+  }}
 </BuilderContent>
 ```
 
@@ -271,6 +280,7 @@ if (content) {
 ```
 
 #### Advanced querying
+
 When using custom [models](https://www.builder.io/c/docs/guides/getting-started-with-models) and [fields](https://www.builder.io/c/docs/custom-fields) you can do more advanced filtering of your content with [queries](<(https://www.builder.io/c/docs/custom-fields)>)
 and [targeting](https://www.builder.io/c/docs/guides/targeting-and-scheduling)
 
