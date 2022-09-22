@@ -36,7 +36,7 @@ export const tryEval = (str?: string, data: any = {}, errors?: Error[]): any => 
         }`
       );
     }
-  } catch (error) {
+  } catch (error: any) {
     if (Builder.isBrowser) {
       console.warn('Could not compile javascript', error);
     } else {
@@ -61,7 +61,7 @@ export const tryEval = (str?: string, data: any = {}, errors?: Error[]): any => 
       }).run(value.replace(/(^|;)return /, '$1'));
       // tslint:enable:comment-format
     }
-  } catch (error) {
+  } catch (error: any) {
     if (errors) {
       errors.push(error);
     }

@@ -89,7 +89,7 @@ export function stringToFunction(
         `
       );
     }
-  } catch (error) {
+  } catch (error: any) {
     if (errors) {
       errors.push(error);
     }
