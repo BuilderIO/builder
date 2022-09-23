@@ -3,7 +3,7 @@ import { getMaxWidthQueryForSize } from '../../constants/device-sizes.js';
 import { TARGET } from '../../constants/target.js';
 import type { BuilderContextInterface } from '../../context/types.js';
 import { getProcessedBlock } from '../../functions/get-processed-block.js';
-import { convertStyleMaptoCSS } from '../../helpers/css.js';
+import { convertStyleMaptoCSS, createCssClass } from '../../helpers/css.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
 import RenderInlinedStyles from '../render-inlined-styles.lite';
 
@@ -39,27 +39,29 @@ export default function BlockStyles(props: BlockStylesProps) {
       const mediumStyles = styles?.medium;
       const smallStyles = styles?.small;
 
-      return `
-        ${
-          largeStyles
-            ? `.${state.useBlock.id} {${convertStyleMaptoCSS(largeStyles)}}`
-            : ''
-        }
-        ${
-          mediumStyles
-            ? `${getMaxWidthQueryForSize('medium')} {
-              .${state.useBlock.id} {${convertStyleMaptoCSS(mediumStyles)}}
-            }`
-            : ''
-        }
-        ${
-          smallStyles
-            ? `${getMaxWidthQueryForSize('small')} {
-              .${state.useBlock.id} {${convertStyleMaptoCSS(smallStyles)}}
-            }`
-            : ''
-        }
-      }`;
+      const className = state.useBlock.id!;
+
+      const largeStylesClass = largeStyles
+        ? createCssClass({ className, styles: largeStyles })
+        : '';
+
+      const mediumStylesClass = mediumStyles
+        ? createCssClass({
+            className,
+            styles: mediumStyles,
+            mediaQuery: getMaxWidthQueryForSize('medium'),
+          })
+        : '';
+
+      const smallStylesClass = smallStyles
+        ? createCssClass({
+            className,
+            styles: smallStyles,
+            mediaQuery: getMaxWidthQueryForSize('small'),
+          })
+        : '';
+
+      return [largeStylesClass, mediumStylesClass, smallStylesClass].join(' ');
     },
   });
   return (
@@ -68,7 +70,8 @@ export default function BlockStyles(props: BlockStylesProps) {
         TARGET === 'vue2' ||
         TARGET === 'vue3' ||
         TARGET === 'svelte' ||
-        TARGET === 'qwik'
+        TARGET === 'qwik' ||
+        state.css
       }
     >
       <RenderInlinedStyles styles={state.css} />
