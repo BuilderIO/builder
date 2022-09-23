@@ -10,13 +10,11 @@ async function resolveRefs(content: any, builderInstance: Builder, options?: Get
   const result = traverse(content).map(function (child) {
     if (child && child['@type'] === '@builder.io/core:Reference') {
       if (child.model) {
-        promises.push(
-          builderInstance
-            .getAll(child.model, { options: options || { query: { id: child.id } } })
-            .then(async value => {
-              child.value = await resolveRefs(value, builderInstance);
-            })
-        );
+        getContentWithAllReferences(
+          builderInstance,
+          child.model,
+          options || { query: { id: child.id } }
+        ).then(value => (child.value = value));
       }
     }
   });
@@ -30,7 +28,7 @@ export async function getContentWithAllReferences(
   modelName: string,
   options: GetContentOptions
 ) {
-  const content: BuilderContent[] = await builderInstance.getAll(modelName, options);
+  const content: BuilderContent = await builderInstance.get(modelName, options);
 
   return await resolveRefs(content, builderInstance, options);
 }
