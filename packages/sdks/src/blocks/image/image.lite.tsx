@@ -56,8 +56,7 @@ export default function Image(props: ImageProps) {
     },
   });
   return (
-    // This would ideally be a Fragment, but Vue2 doesn't support multiple root elements.
-    <div>
+    <Fragment>
       <picture>
         <Show when={state.webpSrcSet}>
           <source srcset={state.webpSrcSet} type="image/webp" />
@@ -133,6 +132,6 @@ export default function Image(props: ImageProps) {
           {props.children}
         </div>
       </Show>
-    </div>
+    </Fragment>
   );
 }

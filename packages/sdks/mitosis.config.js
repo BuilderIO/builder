@@ -56,7 +56,20 @@ module.exports = {
   targets: ['reactNative', 'vue2', 'vue3', 'solid', 'svelte', 'react', 'qwik'],
   getTargetPath,
   options: {
-    vue2: vueConfig,
+    vue2: {
+      ...vueConfig,
+      plugins: [
+        () => ({
+          json: {
+            pre: (json) => {
+              if (json.name === 'Image') {
+                json.children[0].name = 'div';
+              }
+            },
+          },
+        }),
+      ],
+    },
     vue3: vueConfig,
     react: {
       plugins: [SRCSET_PLUGIN],

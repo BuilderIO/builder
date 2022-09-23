@@ -16,7 +16,7 @@ export interface ImageProps {
 // TODO: support children by wrapping in a View
 export default function Image(props: ImageProps) {
   return props.aspectRatio ? (
-    <View style={{ position: 'relative' }}>
+    <React.Fragment>
       <ReactImage
         resizeMode={props.backgroundSize || 'contain'}
         style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }}
@@ -28,7 +28,7 @@ export default function Image(props: ImageProps) {
           paddingTop: props.aspectRatio * 100 + '%',
         }}
       />
-    </View>
+    </React.Fragment>
   ) : (
     <ReactImage
       resizeMode={props.backgroundSize || 'contain'}
