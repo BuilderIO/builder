@@ -1,4 +1,4 @@
-import { Show, useStore } from '@builder.io/mitosis';
+import { Show, useStore, Fragment } from '@builder.io/mitosis';
 import type { JSX } from '@builder.io/mitosis/jsx-runtime';
 import type { BuilderBlock } from '../../types/builder-block.js';
 import { getSrcSet } from './image.helpers.js';
@@ -56,7 +56,8 @@ export default function Image(props: ImageProps) {
     },
   });
   return (
-    <div css={{ position: 'relative' }}>
+    // This would ideally be a Fragment, but Vue2 doesn't support multiple root elements.
+    <div>
       <picture>
         <Show when={state.webpSrcSet}>
           <source srcset={state.webpSrcSet} type="image/webp" />
@@ -88,6 +89,8 @@ export default function Image(props: ImageProps) {
         />
         <source srcset={state.srcSetToUse} />
       </picture>
+
+      {/* preserve aspect ratio trick */}
       <Show
         when={
           props.aspectRatio &&
@@ -108,10 +111,12 @@ export default function Image(props: ImageProps) {
           }}
         />
       </Show>
+
       <Show when={props.builderBlock?.children?.length && props.fitContent}>
         {props.children}
       </Show>
 
+      {/* When `fitContent: false`, we wrap image children ssuch that they stretch across the entire image  */}
       <Show when={!props.fitContent}>
         <div
           css={{
