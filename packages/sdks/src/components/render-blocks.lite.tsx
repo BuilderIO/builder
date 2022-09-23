@@ -9,6 +9,7 @@ export type RenderBlockProps = {
   blocks?: BuilderBlock[];
   parent?: string;
   path?: string;
+  style?: Record<string, any>;
 };
 
 export default function RenderBlocks(props: RenderBlockProps) {
@@ -58,6 +59,7 @@ export default function RenderBlocks(props: RenderBlockProps) {
       dataSet={{
         class: state.className,
       }}
+      style={props.style}
       css={{
         display: 'flex',
         flexDirection: 'column',
