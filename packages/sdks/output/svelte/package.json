@@ -14,8 +14,12 @@
   },
   "main": "./package/index.js",
   "module": "./package/index.js",
-  "svelte": "./package/index.js",
+  "svelte": "./src/index.ts",
   "exports": {
+    "./src": {
+      "import": "./src/index.js",
+      "require": "./src/index.js"
+    },
     ".": {
       "import": "./package/index.js",
       "require": "./package/index.js"
