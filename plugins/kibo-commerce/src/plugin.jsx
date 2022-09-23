@@ -70,7 +70,6 @@ registerCommercePlugin(
           let products = await kiboClient.performSearch(searchOptions);
           const transformedProducts = products.items?.map(transformResource);
 
-          console.log(`---searchTerm: ${searchTerm}, res: ${JSON.stringify(transformedProducts)}`);
           return transformedProducts;
         },
 
@@ -105,9 +104,6 @@ registerCommercePlugin(
           let categories = await kiboClient.performSearch(searchOptions);
           const transformedCategories = categories.items?.map(transformResource);
 
-          console.log(
-            `---searchTerm: ${searchTerm}, res: ${JSON.stringify(transformedCategories)}`
-          );
           return transformedCategories;
         },
 
