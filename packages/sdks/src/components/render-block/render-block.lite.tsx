@@ -19,6 +19,7 @@ import { For, Show, useMetadata, useStore } from '@builder.io/mitosis';
 import type { RepeatData } from './types.js';
 import RenderRepeatedBlock from './render-repeated-block.lite';
 import { TARGET } from '../../constants/target.js';
+import { extractTextStyles } from '../../functions/extract-text-styles.js';
 
 export type RenderBlockProps = {
   block: BuilderBlock;
@@ -93,7 +94,10 @@ export default function RenderBlock(props: RenderBlockProps) {
           state: props.context.state,
           context: props.context.context,
         }),
-        style: getBlockStyles(state.useBlock),
+        style: getBlockStyles({
+          block: state.useBlock,
+          context: props.context,
+        }),
       };
     },
 
@@ -181,6 +185,26 @@ export default function RenderBlock(props: RenderBlockProps) {
 
       return repeatArray;
     },
+
+    get inheritedTextStyles() {
+      if (TARGET !== 'reactNative') {
+        return undefined;
+      }
+
+      const styles = getBlockStyles({
+        block: state.useBlock,
+        context: props.context,
+      });
+
+      return extractTextStyles(styles);
+    },
+
+    get childrenContext() {
+      return {
+        ...props.context,
+        inheritedTextStyles: state.inheritedTextStyles,
+      };
+    },
   });
 
   return (
@@ -248,7 +272,7 @@ export default function RenderBlock(props: RenderBlockProps) {
               <RenderBlock
                 key={'render-block-' + child.id}
                 block={child}
-                context={props.context}
+                context={state.childrenContext}
               />
             )}
           </For>
@@ -257,7 +281,7 @@ export default function RenderBlock(props: RenderBlockProps) {
               <BlockStyles
                 key={'block-style-' + child.id}
                 block={child}
-                context={props.context}
+                context={state.childrenContext}
               />
             )}
           </For>

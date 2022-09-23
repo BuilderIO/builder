@@ -18,4 +18,5 @@ export interface BuilderContextInterface {
   state: BuilderRenderState;
   apiKey: string | null;
   registeredComponents: RegisteredComponents;
+  inheritedStyles?: Record<string, unknown>;
 }
