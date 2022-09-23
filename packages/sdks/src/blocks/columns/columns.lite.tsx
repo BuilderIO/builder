@@ -1,8 +1,11 @@
 import RenderBlocks from '../../components/render-blocks.lite';
 import { For, useStore } from '@builder.io/mitosis';
-import { JSX } from '@builder.io/mitosis/jsx-runtime';
-import { BuilderBlock } from '../../types/builder-block';
+import type { BuilderBlock } from '../../types/builder-block';
 import { markMutable } from '../../functions/mark-mutable';
+
+type CSS = {
+  [key: string]: string;
+};
 
 type Column = {
   blocks: any;
@@ -44,9 +47,7 @@ export default function Columns(props: ColumnProps) {
       return `calc(${state.getWidth(index)}% - ${subtractWidth}px)`;
     },
 
-    maybeApplyForTablet(
-      prop: JSX.CSS['flexDirection']
-    ): JSX.CSS['flexDirection'] {
+    maybeApplyForTablet(prop: string | undefined): string | undefined {
       const _stackColumnsAt = props.stackColumnsAt || 'tablet';
       return _stackColumnsAt === 'tablet' ? prop : 'inherit';
     },
@@ -90,7 +91,7 @@ export default function Columns(props: ColumnProps) {
           flexDirection: 'var(--flex-dir)',
         },
       }}
-      style={state.columnsCssVars as JSX.CSS}
+      style={state.columnsCssVars as CSS}
     >
       <For each={props.columns}>
         {(column, index) => (
@@ -102,7 +103,9 @@ export default function Columns(props: ColumnProps) {
             }}
             class="builder-column"
             css={{
-              flexGrow: '1',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'stretch',
               '@media (max-width: 991px)': {
                 width: 'var(--column-width-tablet) !important',
                 marginLeft: 'var(--column-margin-left-tablet) !important',
@@ -118,6 +121,7 @@ export default function Columns(props: ColumnProps) {
               blocks={markMutable(column.blocks)}
               path={`component.options.columns.${index}.blocks`}
               parent={props.builderBlock.id}
+              style={{ flexGrow: '1' }}
             />
           </div>
         )}

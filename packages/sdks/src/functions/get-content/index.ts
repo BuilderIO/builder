@@ -1,5 +1,5 @@
 import { flatten } from '../../helpers/flatten.js';
-import { BuilderContent } from '../../types/builder-content.js';
+import type { BuilderContent } from '../../types/builder-content.js';
 import {
   getBuilderSearchParamsFromWindow,
   normalizeSearchParams,
@@ -66,9 +66,10 @@ export async function getAllContent(
     res.json()
   );
 
-  if (options.testGroups) {
+  const canTrack = options.canTrack !== false;
+  if (canTrack) {
     for (const item of content.results) {
-      handleABTesting(item, options.testGroups);
+      await handleABTesting({ item, canTrack });
     }
   }
 

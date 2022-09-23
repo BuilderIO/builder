@@ -1,3 +1,7 @@
+### 2.0.6
+
+- added types for `override` option
+
 ### 2.0.5
 - Add support for locale prop on `BuilderComponent` to auto-resolve localized inputs.
 - Use the latest core sdk version which addresss an issue with rendering in a middleware (also a shopify hydrogen issue, https://github.com/BuilderIO/builder/issues/610).

@@ -1,4 +1,4 @@
-import { BuilderBlock } from '../types/builder-block.js';
+import type { BuilderBlock } from '../types/builder-block.js';
 import { getProcessedBlock } from './get-processed-block.js';
 
 test('Can process bindings', () => {

@@ -33,6 +33,7 @@ const getTargetPath = (target) => {
  * @type {import('@builder.io/mitosis'.MitosisConfig['options']['vue'])}
  */
 const vueConfig = {
+  typescript: true,
   namePrefix: (path) => (path.includes('/blocks/') ? 'builder' : undefined),
   cssNamespace: getSeededId,
   asyncComponentImports: true,

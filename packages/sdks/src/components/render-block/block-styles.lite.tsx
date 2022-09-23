@@ -1,10 +1,10 @@
 import { Show, useMetadata, useStore } from '@builder.io/mitosis';
 import { getMaxWidthQueryForSize } from '../../constants/device-sizes.js';
 import { TARGET } from '../../constants/target.js';
-import { BuilderContextInterface } from '../../context/types.js';
+import type { BuilderContextInterface } from '../../context/types.js';
 import { getProcessedBlock } from '../../functions/get-processed-block.js';
 import { convertStyleMaptoCSS } from '../../helpers/css.js';
-import { BuilderBlock } from '../../types/builder-block.js';
+import type { BuilderBlock } from '../../types/builder-block.js';
 import RenderInlinedStyles from '../render-inlined-styles.lite';
 
 // eslint-disable-next-line @builder.io/mitosis/only-default-function-and-imports

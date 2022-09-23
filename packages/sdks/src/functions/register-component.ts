@@ -1,4 +1,4 @@
-import { RegisteredComponent } from '../context/types.js';
+import type { RegisteredComponent } from '../context/types.js';
 import type { ComponentInfo, Input } from '../types/components.js';
 
 /**

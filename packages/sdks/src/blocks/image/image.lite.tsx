@@ -1,5 +1,5 @@
 import { Show, useStore } from '@builder.io/mitosis';
-import { JSX } from '@builder.io/mitosis/jsx-runtime';
+import type { JSX } from '@builder.io/mitosis/jsx-runtime';
 import type { BuilderBlock } from '../../types/builder-block.js';
 import { getSrcSet } from './image.helpers.js';
 

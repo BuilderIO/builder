@@ -79,7 +79,7 @@
   "dependencies": {
     "@builder.io/app-context": "^1.0.0",
     "@builder.io/commerce-plugin-tools": "^0.2.0",
-    "@builder.io/sdk": "^1.1.26"
+    "@builder.io/sdk": "^1.1.29"
   },
   "devDependencies": {
     "@commitlint/cli": "^7.1.2",
