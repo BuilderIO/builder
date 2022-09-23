@@ -1351,7 +1351,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis@npm:0.0.62, @builder.io/mitosis@npm:^0.0.62":
+"@builder.io/mitosis@npm:0.0.62":
   version: 0.0.62
   resolution: "@builder.io/mitosis@npm:0.0.62"
   dependencies:
@@ -1385,6 +1385,43 @@ __metadata:
     typescript: ^4.7.3
     vue: ~2.6
   checksum: 61054866e7c1a87ab77c5192dff9ac008246851f4ca332eeea21b43276afe26582819758bab6ef772a4c363651b69311cdcc596e4c1f1551497e36d0bc4f9909
+  languageName: node
+  linkType: hard
+
+"@builder.io/mitosis@npm:^0.0.63":
+  version: 0.0.63
+  resolution: "@builder.io/mitosis@npm:0.0.63"
+  dependencies:
+    "@angular/compiler": ^11.2.11
+    "@babel/core": 7.14.5
+    "@babel/generator": ^7.14.3
+    "@babel/plugin-proposal-class-properties": ^7.13.0
+    "@babel/plugin-syntax-decorators": ^7.12.1
+    "@babel/plugin-syntax-jsx": ^7.12.1
+    "@babel/plugin-transform-react-jsx": ^7.13.12
+    "@babel/preset-typescript": ^7.13.0
+    "@builder.io/react": ^1.1.50
+    "@marko/compiler": ^5.22.4
+    "@marko/translator-default": ^5.21.4
+    axios: ^0.21.0
+    axios-cache-adapter: ^2.5.0
+    csstype: ^3.0.4
+    dedent: ^0.7.0
+    fp-ts: ^2.11.10
+    globby: ^11.0.2
+    hash-sum: ^2.0.0
+    json5: ^2.1.3
+    liquidjs: 9.6.0
+    lodash: ^4.17.20
+    marko: ^5.21.7
+    object-hash: ^2.0.3
+    prettier-plugin-marko: ^1.2.2
+    prettier-plugin-svelte: ^2.7.0
+    svelte: ^3.30.0
+    traverse: ^0.6.6
+    typescript: ^4.7.3
+    vue: ~2.6
+  checksum: c6fa9f8c6740dc122dc77d490fccf686e5e410fcf0200af2f759e2ed7a40163f6719c818e6061e4d53b237b1e9c741c1d1d48ae33bb74f7cb8c3a69eb3e7a738
   languageName: node
   linkType: hard
 
@@ -1572,7 +1609,7 @@ __metadata:
   resolution: "@builder.io/sdks@workspace:."
   dependencies:
     "@builder.io/eslint-plugin-mitosis": dev
-    "@builder.io/mitosis": ^0.0.62
+    "@builder.io/mitosis": ^0.0.63
     "@builder.io/mitosis-cli": ^0.0.23
     "@playwright/test": ^1.24.0
     "@types/jest": ^27.4.1
