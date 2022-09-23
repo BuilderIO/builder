@@ -1567,6 +1567,20 @@ export class Builder {
     }
     if (isBrowser) {
       this.bindMessageListeners();
+
+      if (Builder.isEditing) {
+        parent.postMessage(
+          {
+            type: 'builder.animatorOptions',
+            data: {
+              options: {
+                version: 2,
+              },
+            },
+          },
+          '*'
+        );
+      }
       // TODO: postmessage to parent the builder info for every package
       // type: 'builder.sdk', data: { name: '@builder.io/react', version: '0.1.23' }
       // (window as any).BUILDER_VERSION = Builder.VERSION;
