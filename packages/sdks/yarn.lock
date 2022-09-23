@@ -2906,6 +2906,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sveltejs/package@patch:@sveltejs/package@npm:1.0.0-next.1#.yarn/patches/@sveltejs-package-npm-1.0.0-next.1-2fd015530b.patch::locator=%40builder.io%2Fsdks%40workspace%3A.":
+  version: 1.0.0-next.1
+  resolution: "@sveltejs/package@patch:@sveltejs/package@npm%3A1.0.0-next.1#.yarn/patches/@sveltejs-package-npm-1.0.0-next.1-2fd015530b.patch::version=1.0.0-next.1&hash=28b2c1&locator=%40builder.io%2Fsdks%40workspace%3A."
+  dependencies:
+    chokidar: ^3.5.3
+    kleur: ^4.1.4
+    sade: ^1.8.1
+    svelte2tsx: ~0.5.10
+  peerDependencies:
+    svelte: ^3.44.0
+  bin:
+    svelte-package: svelte-package.js
+  checksum: bd8cc73d08478bd6942bf8ec9d3a151734371858c2a2794b948589e8c941cc147bb44d4ca153e0335f3fd1c8678a94fe0171dee875451f12d4e6fc4bf7e16e80
+  languageName: node
+  linkType: hard
+
 "@sveltejs/vite-plugin-svelte@npm:^1.0.5":
   version: 1.0.5
   resolution: "@sveltejs/vite-plugin-svelte@npm:1.0.5"

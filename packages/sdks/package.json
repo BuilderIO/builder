@@ -72,7 +72,8 @@
     }
   },
   "resolutions": {
-    "@builder.io/qwik@0.0.108-dev20220913220811": "patch:@builder.io/qwik@npm:0.0.108-dev20220913220811#.yarn/patches/@builder.io-qwik-npm-0.0.108-dev20220913220811-a915e8c55f.patch"
+    "@builder.io/qwik@0.0.108-dev20220913220811": "patch:@builder.io/qwik@npm:0.0.108-dev20220913220811#.yarn/patches/@builder.io-qwik-npm-0.0.108-dev20220913220811-a915e8c55f.patch",
+    "@sveltejs/package@1.0.0-next.1": "patch:@sveltejs/package@npm:1.0.0-next.1#.yarn/patches/@sveltejs-package-npm-1.0.0-next.1-2fd015530b.patch"
   },
   "packageManager": "yarn@3.2.0"
 }
