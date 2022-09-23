@@ -1,5 +1,7 @@
 ### 2.0.6
+- Add support for `threshold` and `repeat` options on `ScrollInView` animations.
 
+### 2.0.6
 - added types for `override` option
 
 ### 2.0.5
