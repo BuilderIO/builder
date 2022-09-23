@@ -40,7 +40,7 @@
   },
   "dependencies": {
     "@builder.io/mitosis": "^0.0.63",
-    "@builder.io/mitosis-cli": "^0.0.23",
+    "@builder.io/mitosis-cli": "^0.0.24",
     "@playwright/test": "^1.24.0",
     "node-fetch": "^2.6.1",
     "seedrandom": "^3.0.5",
