@@ -202,7 +202,7 @@ export class Animator {
           !pendingAnimation &&
           !isScrolledIntoView(element)
         ) {
-          // we want to repeat the animation everytime the the element is out of vide and back again
+          // we want to repeat the animation every time the the element is out of view and back again
           triggered = false;
           assign(element!.style, animation.steps[0].styles);
         }
