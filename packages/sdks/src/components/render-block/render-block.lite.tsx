@@ -2,7 +2,6 @@ import type {
   BuilderContextInterface,
   RegisteredComponent,
 } from '../../context/types.js';
-import BuilderContext from '../../context/builder.context.lite';
 import { getBlockActions } from '../../functions/get-block-actions.js';
 import { getBlockComponentOptions } from '../../functions/get-block-component-options.js';
 import { getBlockProperties } from '../../functions/get-block-properties.js';
@@ -15,18 +14,13 @@ import { evaluate } from '../../functions/evaluate.js';
 import BlockStyles from './block-styles.lite';
 import { isEmptyHtmlElement } from './render-block.helpers.js';
 import type { RenderComponentProps } from './render-component.lite';
-import RenderComponent from './render-component.lite';
-import {
-  For,
-  setContext,
-  Show,
-  useMetadata,
-  useStore,
-} from '@builder.io/mitosis';
+import { For, Show, useMetadata, useStore } from '@builder.io/mitosis';
 import type { RepeatData } from './types.js';
 import RenderRepeatedBlock from './render-repeated-block.lite';
 import { TARGET } from '../../constants/target.js';
 import { extractTextStyles } from '../../functions/extract-text-styles.js';
+import RenderComponentWithContext from './render-component-with-context.lite';
+import RenderComponent from './render-component.lite';
 
 export type RenderBlockProps = {
   block: BuilderBlock;
@@ -197,15 +191,21 @@ export default function RenderBlock(props: RenderBlockProps) {
         inheritedStyles: state.inheritedTextStyles,
       };
     },
-  });
 
-  setContext(BuilderContext, state.childrenContext);
+    get RenderComponentTag() {
+      if (TARGET === 'reactNative') {
+        return RenderComponentWithContext;
+      } else {
+        return RenderComponent;
+      }
+    },
+  });
 
   return (
     <Show
       when={state.shouldWrap}
       else={
-        <RenderComponent
+        <state.RenderComponentTag
           {...state.renderComponentProps}
           context={state.childrenContext}
         />
@@ -256,7 +256,7 @@ export default function RenderBlock(props: RenderBlockProps) {
       </Show>
       <Show when={!isEmptyHtmlElement(state.tagName) && !state.repeatItemData}>
         <state.tagName {...state.attributes}>
-          <RenderComponent {...state.renderComponentProps} />
+          <state.RenderComponentTag {...state.renderComponentProps} />
           {/**
            * We need to run two separate loops for content + styles to workaround the fact that Vue 2
            * does not support multiple root elements.
