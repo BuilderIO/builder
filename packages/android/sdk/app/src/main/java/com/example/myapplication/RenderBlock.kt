@@ -16,8 +16,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import kotlinx.serialization.json.JsonElement
 
-val metaDocRef = db.collection(collectionName).document("$docId:meta")
-
 fun dpToPixel(dp: Dp): Int {
     return dp.value.toInt() / 2
 }
@@ -35,17 +33,6 @@ fun RenderBlock(block: BuilderBlock) {
             )
             .background(getStyleColor(block, "backgroundColor", Color.Transparent))
             .fillMaxWidth()
-            .onGloballyPositioned { layoutCoordinates ->
-                if (isEditing) {
-                    Log.d(TAG, "Sending position $docId:meta")
-                    val bounds = layoutCoordinates.boundsInRoot()
-                    val blockId = block.id
-                    metaDocRef.update("blocks.$blockId.top", dpToPixel(bounds.top.dp))
-                    metaDocRef.update("blocks.$blockId.left", dpToPixel(bounds.left.dp))
-                    metaDocRef.update("blocks.$blockId.width", dpToPixel(bounds.width.dp))
-                    metaDocRef.update("blocks.$blockId.height", dpToPixel(bounds.height.dp))
-                }
-            }
             .padding(
                 getStyleInt(block, "paddingLeft").dp,
                 getStyleInt(block, "paddingTop").dp,
@@ -76,8 +63,6 @@ val components = mutableMapOf<String, ComponentFactory>()
 
 fun registerComponent(options: ComponentOptions, component: ComponentFactory) {
     _registerComponent(options, component)
-    val componentName = options.name;
-    metaDocRef.update("inputs.$componentName", options.inputs)
 }
 
 fun _registerComponent(options: ComponentOptions, component: ComponentFactory) {
