@@ -196,7 +196,7 @@ export default function RenderBlock(props: RenderBlockProps) {
       };
     },
 
-    get renderComponentTag() {
+    get renderComponentTag(): any {
       if (TARGET === 'reactNative') {
         return RenderComponentWithContext;
       } else if (TARGET === 'vue3') {
