@@ -57,6 +57,8 @@ const SRCSET_PLUGIN = () => ({
 });
 
 /**
+ * Replaces all uses of the native `Text` component with our own `BaseText` component that injects inherited CSS styles
+ * to `Text`, mimicking CSS inheritance.
  * @type {import('@builder.io/mitosis'.Plugin)}
  */
 const BASE_TEXT_PLUGIN = () => ({

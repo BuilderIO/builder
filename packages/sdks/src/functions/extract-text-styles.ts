@@ -23,6 +23,9 @@ const isTextStyle = (key: string) => {
   );
 };
 
+/**
+ * Extract styles that apply to text from a style object.
+ */
 export const extractTextStyles = (styles: Partial<CSSStyleDeclaration>) => {
   const textStyles: Partial<CSSStyleDeclaration> = {};
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

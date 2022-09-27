@@ -15,6 +15,7 @@ const getStyleForTarget = ({
   switch (TARGET) {
     case 'reactNative': {
       return {
+        // recursively apply inherited styles so that they can be passed down to children `Text` blocks
         ...context.inheritedStyles,
         ...(styles.large ? convertStyleObject(styles.large) : {}),
         ...(styles.medium ? convertStyleObject(styles.medium) : {}),
