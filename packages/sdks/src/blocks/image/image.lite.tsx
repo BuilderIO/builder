@@ -56,7 +56,7 @@ export default function Image(props: ImageProps) {
     },
   });
   return (
-    <div css={{ position: 'relative' }}>
+    <>
       <picture>
         <Show when={state.webpSrcSet}>
           <source srcset={state.webpSrcSet} type="image/webp" />
@@ -88,10 +88,12 @@ export default function Image(props: ImageProps) {
         />
         <source srcset={state.srcSetToUse} />
       </picture>
+
+      {/* preserve aspect ratio trick. Only applies when there are no children meant to fit the content width. */}
       <Show
         when={
           props.aspectRatio &&
-          !(props.fitContent && props.builderBlock?.children?.length)
+          !(props.builderBlock?.children?.length && props.fitContent)
         }
       >
         <div
@@ -108,11 +110,13 @@ export default function Image(props: ImageProps) {
           }}
         />
       </Show>
+
       <Show when={props.builderBlock?.children?.length && props.fitContent}>
         {props.children}
       </Show>
 
-      <Show when={!props.fitContent}>
+      {/* When `fitContent: false`, we wrap image children ssuch that they stretch across the entire image  */}
+      <Show when={!props.fitContent && props.children}>
         <div
           css={{
             display: 'flex',
@@ -128,6 +132,6 @@ export default function Image(props: ImageProps) {
           {props.children}
         </div>
       </Show>
-    </div>
+    </>
   );
 }

@@ -7,6 +7,10 @@ const getSeededId = () => {
   return Number(String(rngVal).split('.')[1]).toString(36);
 };
 
+/**
+ * @param {any} x
+ * @returns {x is import('@builder.io/mitosis').MitosisNode}
+ */
 const isMitosisNode = (x) => x && x['@type'] === '@builder.io/mitosis/node';
 
 const kebabCase = (string) =>
@@ -15,7 +19,7 @@ const kebabCase = (string) =>
 /**
  * @type {import('@builder.io/mitosis'.MitosisConfig['getTargetPath'])}
  */
-const getTargetPath = (target) => {
+const getTargetPath = ({ target }) => {
   switch (target) {
     // we have to workaround a name collision, where the folder can't have the name of the `exports` property in package.json.
     // crazy, crazy stuff.
@@ -39,6 +43,9 @@ const vueConfig = {
   asyncComponentImports: true,
 };
 
+/**
+ * @type {import('@builder.io/mitosis'.Plugin)}
+ */
 const SRCSET_PLUGIN = () => ({
   code: {
     pre: (code) => {
@@ -48,6 +55,26 @@ const SRCSET_PLUGIN = () => ({
     },
   },
 });
+
+/**
+ * Replaces all uses of the native `Text` component with our own `BaseText` component that injects inherited CSS styles
+ * to `Text`, mimicking CSS inheritance.
+ * @type {import('@builder.io/mitosis'.Plugin)}
+ */
+const BASE_TEXT_PLUGIN = () => ({
+  code: {
+    pre: (code) => {
+      if (code.includes('<Text>') && !code.includes('RenderInlinedStyles')) {
+        return `
+import BaseText from '../BaseText';
+${code.replace(/<(\/?)Text(.*?)>/g, '<$1BaseText$2>')}
+`;
+      }
+      return code;
+    },
+  },
+});
+
 /**
  * @type {import('@builder.io/mitosis'.MitosisConfig)}
  */
@@ -56,14 +83,27 @@ module.exports = {
   targets: ['reactNative', 'vue2', 'vue3', 'solid', 'svelte', 'react', 'qwik'],
   getTargetPath,
   options: {
-    vue2: vueConfig,
+    vue2: {
+      ...vueConfig,
+      plugins: [
+        () => ({
+          json: {
+            pre: (json) => {
+              if (json.name === 'Image') {
+                json.children[0].name = 'div';
+              }
+            },
+          },
+        }),
+      ],
+    },
     vue3: vueConfig,
     react: {
       plugins: [SRCSET_PLUGIN],
       stylesType: 'style-tag',
     },
     reactNative: {
-      plugins: [SRCSET_PLUGIN],
+      plugins: [SRCSET_PLUGIN, BASE_TEXT_PLUGIN],
     },
     qwik: {
       typescript: true,

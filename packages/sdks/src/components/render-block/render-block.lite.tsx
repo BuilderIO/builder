@@ -14,18 +14,19 @@ import { evaluate } from '../../functions/evaluate.js';
 import BlockStyles from './block-styles.lite';
 import { isEmptyHtmlElement } from './render-block.helpers.js';
 import type { RenderComponentProps } from './render-component.lite';
-import RenderComponent from './render-component.lite';
 import { For, Show, useMetadata, useStore } from '@builder.io/mitosis';
 import type { RepeatData } from './types.js';
 import RenderRepeatedBlock from './render-repeated-block.lite';
 import { TARGET } from '../../constants/target.js';
+import { extractTextStyles } from '../../functions/extract-text-styles.js';
+import RenderComponentWithContext from './render-component-with-context.lite';
+import RenderComponent from './render-component.lite';
 
 export type RenderBlockProps = {
   block: BuilderBlock;
   context: BuilderContextInterface;
 };
 
-// eslint-disable-next-line @builder.io/mitosis/only-default-function-and-imports
 useMetadata({
   qwik: {
     component: {
@@ -33,6 +34,7 @@ useMetadata({
     },
   },
   elementTag: 'state.tagName',
+  componentElementTag: 'state.renderComponentTag',
 });
 
 export default function RenderBlock(props: RenderBlockProps) {
@@ -61,17 +63,6 @@ export default function RenderBlock(props: RenderBlockProps) {
         return ref;
       }
     },
-    get componentInfo() {
-      if (state.component) {
-        const { component: _, ...info } = state.component;
-        return info;
-      } else {
-        return undefined;
-      }
-    },
-    get componentRef() {
-      return state.component?.component;
-    },
     get tagName() {
       return getBlockTag(state.useBlock);
     },
@@ -93,31 +84,30 @@ export default function RenderBlock(props: RenderBlockProps) {
           state: props.context.state,
           context: props.context.context,
         }),
-        style: getBlockStyles(state.useBlock),
+        style: getBlockStyles({
+          block: state.useBlock,
+          context: props.context,
+        }),
       };
     },
 
     get shouldWrap() {
-      return !state.componentInfo?.noWrap;
-    },
-
-    get componentOptions() {
-      return {
-        ...getBlockComponentOptions(state.useBlock),
-        /**
-         * These attributes are passed to the wrapper element when there is one. If `noWrap` is set to true, then
-         * they are provided to the component itself directly.
-         */
-        ...(state.shouldWrap ? {} : { attributes: state.attributes }),
-      };
+      return !state.component?.noWrap;
     },
 
     get renderComponentProps(): RenderComponentProps {
       return {
         blockChildren: state.children,
-        componentRef: state.componentRef,
-        componentOptions: state.componentOptions,
-        context: props.context,
+        componentRef: state.component?.component,
+        componentOptions: {
+          ...getBlockComponentOptions(state.useBlock),
+          /**
+           * These attributes are passed to the wrapper element when there is one. If `noWrap` is set to true, then
+           * they are provided to the component itself directly.
+           */
+          ...(state.shouldWrap ? {} : { attributes: state.attributes }),
+        },
+        context: state.childrenContext,
       };
     },
     get children() {
@@ -135,7 +125,7 @@ export default function RenderBlock(props: RenderBlockProps) {
        * blocks, and the children will be repeated within those blocks.
        */
       const shouldRenderChildrenOutsideRef =
-        !state.componentRef && !state.repeatItemData;
+        !state.component?.component && !state.repeatItemData;
 
       return shouldRenderChildrenOutsideRef ? state.children : [];
     },
@@ -181,17 +171,47 @@ export default function RenderBlock(props: RenderBlockProps) {
 
       return repeatArray;
     },
+
+    get inheritedTextStyles() {
+      if (TARGET !== 'reactNative') {
+        return {};
+      }
+
+      const styles = getBlockStyles({
+        block: state.useBlock,
+        context: props.context,
+      });
+
+      return extractTextStyles(styles);
+    },
+
+    get childrenContext(): BuilderContextInterface {
+      return {
+        apiKey: props.context.apiKey,
+        state: props.context.state,
+        content: props.context.content,
+        context: props.context.context,
+        registeredComponents: props.context.registeredComponents,
+        inheritedStyles: state.inheritedTextStyles,
+      };
+    },
+
+    get renderComponentTag(): any {
+      if (TARGET === 'reactNative') {
+        return RenderComponentWithContext;
+      } else if (TARGET === 'vue3') {
+        // vue3 expects a string for the component tag
+        return 'RenderComponent';
+      } else {
+        return RenderComponent;
+      }
+    },
   });
 
   return (
     <Show
       when={state.shouldWrap}
-      else={
-        <RenderComponent
-          {...state.renderComponentProps}
-          context={props.context}
-        />
-      }
+      else={<state.renderComponentTag {...state.renderComponentProps} />}
     >
       {/*
        * Svelte is super finicky, and does not allow an empty HTML element (e.g. `img`) to have logic inside of it,
@@ -238,7 +258,7 @@ export default function RenderBlock(props: RenderBlockProps) {
       </Show>
       <Show when={!isEmptyHtmlElement(state.tagName) && !state.repeatItemData}>
         <state.tagName {...state.attributes}>
-          <RenderComponent {...state.renderComponentProps} />
+          <state.renderComponentTag {...state.renderComponentProps} />
           {/**
            * We need to run two separate loops for content + styles to workaround the fact that Vue 2
            * does not support multiple root elements.
@@ -248,7 +268,7 @@ export default function RenderBlock(props: RenderBlockProps) {
               <RenderBlock
                 key={'render-block-' + child.id}
                 block={child}
-                context={props.context}
+                context={state.childrenContext}
               />
             )}
           </For>
@@ -257,7 +277,7 @@ export default function RenderBlock(props: RenderBlockProps) {
               <BlockStyles
                 key={'block-style-' + child.id}
                 block={child}
-                context={props.context}
+                context={state.childrenContext}
               />
             )}
           </For>

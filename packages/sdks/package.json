@@ -19,8 +19,8 @@
     "test": "jest",
     "remove-symlinks": "./scripts/remove-resolutions.sh && yarn",
     "add-symlinks": "./scripts/add-resolutions.sh && yarn",
-    "upgrade-mitosis:dev": "yarn up @builder.io/mitosis@dev @builder.io/mitosis-cli@dev",
-    "upgrade-mitosis": "yarn up @builder.io/mitosis @builder.io/mitosis-cli",
+    "upgrade-mitosis:dev": "yarn up @builder.io/mitosis@dev @builder.io/mitosis-cli@dev @builder.io/eslint-plugin-mitosis@dev",
+    "upgrade-mitosis": "yarn up @builder.io/mitosis @builder.io/mitosis-cli @builder.io/eslint-plugin-mitosis",
     "prettier": "prettier .",
     "lint": "yarn run prettier --write",
     "eslint": "eslint . --quiet",
@@ -39,15 +39,15 @@
     "upgrade-example:all": "bash ./scripts/loop-command.sh upgrade-example \"svelte react-native solid qwik react vue\""
   },
   "dependencies": {
-    "@builder.io/mitosis": "^0.0.63",
-    "@builder.io/mitosis-cli": "^0.0.24",
+    "@builder.io/mitosis": "^0.0.67",
+    "@builder.io/mitosis-cli": "^0.0.28",
     "@playwright/test": "^1.24.0",
     "node-fetch": "^2.6.1",
     "seedrandom": "^3.0.5",
     "traverse": "^0.6.6"
   },
   "devDependencies": {
-    "@builder.io/eslint-plugin-mitosis": "dev",
+    "@builder.io/eslint-plugin-mitosis": "^0.0.10",
     "@types/jest": "^27.4.1",
     "@types/node-fetch": "^2.5.12",
     "@typescript-eslint/eslint-plugin": "latest",
@@ -72,7 +72,8 @@
     }
   },
   "resolutions": {
-    "@builder.io/qwik@0.0.108-dev20220913220811": "patch:@builder.io/qwik@npm:0.0.108-dev20220913220811#.yarn/patches/@builder.io-qwik-npm-0.0.108-dev20220913220811-a915e8c55f.patch"
+    "@builder.io/qwik@0.0.108-dev20220913220811": "patch:@builder.io/qwik@npm:0.0.108-dev20220913220811#.yarn/patches/@builder.io-qwik-npm-0.0.108-dev20220913220811-a915e8c55f.patch",
+    "@sveltejs/package@1.0.0-next.1": "patch:@sveltejs/package@npm:1.0.0-next.1#.yarn/patches/@sveltejs-package-npm-1.0.0-next.1-2fd015530b.patch"
   },
   "packageManager": "yarn@3.2.0"
 }

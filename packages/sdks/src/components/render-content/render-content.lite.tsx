@@ -38,7 +38,6 @@ import {
 } from '../../scripts/init-editing.js';
 import { markMutable } from '../../functions/mark-mutable.js';
 
-// eslint-disable-next-line @builder.io/mitosis/only-default-function-and-imports
 useMetadata({
   qwik: {
     component: {
