@@ -1308,25 +1308,25 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@builder.io/eslint-plugin-mitosis@npm:^0.0.9":
-  version: 0.0.9
-  resolution: "@builder.io/eslint-plugin-mitosis@npm:0.0.9"
+"@builder.io/eslint-plugin-mitosis@npm:^0.0.10":
+  version: 0.0.10
+  resolution: "@builder.io/eslint-plugin-mitosis@npm:0.0.10"
   dependencies:
     "@babel/types": 7.12.6
     ts-pattern: ^3.3.5
   peerDependencies:
     eslint: ">=0.8.0"
-  checksum: 2cf6b16e88da91e6662ecf2d2e744ca2dec80623bf86ab2a083f8c4b3f9785a452df9d3b8ebe259733d5bb2020ce19299cfe5d5743fc112aecbf52f4c3fac7c6
+  checksum: 9ed1da287301e6043e5535b73289e934fec2b06395850ac24482899864e75446d219223321f52032498f7057af2be6eb29f55f035ce90e4722019836a2e9b95e
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis-cli@npm:^0.0.27":
-  version: 0.0.27
-  resolution: "@builder.io/mitosis-cli@npm:0.0.27"
+"@builder.io/mitosis-cli@npm:^0.0.28":
+  version: 0.0.28
+  resolution: "@builder.io/mitosis-cli@npm:0.0.28"
   dependencies:
     "@babel/core": ^7.17.8
     "@babel/preset-typescript": ^7.16.7
-    "@builder.io/mitosis": 0.0.66
+    "@builder.io/mitosis": 0.0.67
     "@vue/compiler-sfc": ^3.1.5
     babel-preset-solid: ^1.3.13
     chalk: ^4.1.0
@@ -1347,13 +1347,13 @@ __metadata:
     vue-template-validator: ^1.1.5
   bin:
     mitosis: bin/mitosis
-  checksum: ebe30cba540dcf1f6d012467b1bf5568e370ae5a103d6bff7627bdd362f166de311ee823c556651ea480fed38f4515e742f4c6a6bba2549b0886a282531b8a6c
+  checksum: 303c176751e2cc69c4078ecc40eadc5f81e151f514680e72673fed716db627d1ce6821422fd5f7410ea1bafad851b374c3ffbe8092cc50757c04d9e89088cee2
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis@npm:0.0.66, @builder.io/mitosis@npm:^0.0.66":
-  version: 0.0.66
-  resolution: "@builder.io/mitosis@npm:0.0.66"
+"@builder.io/mitosis@npm:0.0.67, @builder.io/mitosis@npm:^0.0.67":
+  version: 0.0.67
+  resolution: "@builder.io/mitosis@npm:0.0.67"
   dependencies:
     "@angular/compiler": ^11.2.11
     "@babel/core": 7.14.5
@@ -1384,7 +1384,7 @@ __metadata:
     traverse: ^0.6.6
     typescript: ^4.7.3
     vue: ~2.6
-  checksum: 164f3fdac965631d6022a4ab4f91ab53235aa96eeac58ada0f512732961c0e1549b1131113ad2784ef2461d23fa9e33e093b6545b535fc04acde1c1cb2f332f4
+  checksum: 8b76145fd5d0190b979d79d7ec00ee5d8e01efa3b6bd6e823bdd553fe307683cd6fe9ae3d13da178e4207a2fc504dc7a9efcfffcfc4432473f6898367f55fcad
   languageName: node
   linkType: hard
 
@@ -1571,9 +1571,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@builder.io/sdks@workspace:."
   dependencies:
-    "@builder.io/eslint-plugin-mitosis": ^0.0.9
-    "@builder.io/mitosis": ^0.0.66
-    "@builder.io/mitosis-cli": ^0.0.27
+    "@builder.io/eslint-plugin-mitosis": ^0.0.10
+    "@builder.io/mitosis": ^0.0.67
+    "@builder.io/mitosis-cli": ^0.0.28
     "@playwright/test": ^1.24.0
     "@types/jest": ^27.4.1
     "@types/node-fetch": ^2.5.12

@@ -39,15 +39,15 @@
     "upgrade-example:all": "bash ./scripts/loop-command.sh upgrade-example \"svelte react-native solid qwik react vue\""
   },
   "dependencies": {
-    "@builder.io/mitosis": "^0.0.66",
-    "@builder.io/mitosis-cli": "^0.0.27",
+    "@builder.io/mitosis": "^0.0.67",
+    "@builder.io/mitosis-cli": "^0.0.28",
     "@playwright/test": "^1.24.0",
     "node-fetch": "^2.6.1",
     "seedrandom": "^3.0.5",
     "traverse": "^0.6.6"
   },
   "devDependencies": {
-    "@builder.io/eslint-plugin-mitosis": "^0.0.9",
+    "@builder.io/eslint-plugin-mitosis": "^0.0.10",
     "@types/jest": "^27.4.1",
     "@types/node-fetch": "^2.5.12",
     "@typescript-eslint/eslint-plugin": "latest",
