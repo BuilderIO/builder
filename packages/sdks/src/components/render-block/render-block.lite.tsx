@@ -35,6 +35,7 @@ useMetadata({
     },
   },
   elementTag: 'state.tagName',
+  componentElementTag: 'state.renderComponentTag',
 });
 
 export default function RenderBlock(props: RenderBlockProps) {
@@ -107,7 +108,7 @@ export default function RenderBlock(props: RenderBlockProps) {
            */
           ...(state.shouldWrap ? {} : { attributes: state.attributes }),
         },
-        context: props.context,
+        context: state.childrenContext,
       };
     },
     get children() {
@@ -187,12 +188,16 @@ export default function RenderBlock(props: RenderBlockProps) {
 
     get childrenContext(): BuilderContextInterface {
       return {
-        ...props.context,
+        apiKey: props.context.apiKey,
+        state: props.context.state,
+        content: props.context.content,
+        context: props.context.context,
+        registeredComponents: props.context.registeredComponents,
         inheritedStyles: state.inheritedTextStyles,
       };
     },
 
-    get RenderComponentTag() {
+    get renderComponentTag() {
       if (TARGET === 'reactNative') {
         return RenderComponentWithContext;
       } else {
@@ -204,12 +209,7 @@ export default function RenderBlock(props: RenderBlockProps) {
   return (
     <Show
       when={state.shouldWrap}
-      else={
-        <state.RenderComponentTag
-          {...state.renderComponentProps}
-          context={state.childrenContext}
-        />
-      }
+      else={<state.renderComponentTag {...state.renderComponentProps} />}
     >
       {/*
        * Svelte is super finicky, and does not allow an empty HTML element (e.g. `img`) to have logic inside of it,
@@ -256,7 +256,7 @@ export default function RenderBlock(props: RenderBlockProps) {
       </Show>
       <Show when={!isEmptyHtmlElement(state.tagName) && !state.repeatItemData}>
         <state.tagName {...state.attributes}>
-          <state.RenderComponentTag {...state.renderComponentProps} />
+          <state.renderComponentTag {...state.renderComponentProps} />
           {/**
            * We need to run two separate loops for content + styles to workaround the fact that Vue 2
            * does not support multiple root elements.

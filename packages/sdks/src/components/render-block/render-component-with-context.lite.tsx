@@ -11,6 +11,25 @@ export default function RenderComponentWithContext(
    * a React Native need: CSS-style inheritance for Text blocks. So we're setting the context here, and making sure not to
    * render this component in Qwik.
    */
-  setContext(BuilderContext, props.context);
+  setContext(BuilderContext, {
+    get content() {
+      return props.context.content;
+    },
+    get state() {
+      return props.context.state;
+    },
+    get context() {
+      return props.context.context;
+    },
+    get apiKey() {
+      return props.context.apiKey;
+    },
+    get registeredComponents() {
+      return props.context.registeredComponents;
+    },
+    get inheritedStyles() {
+      return props.context.inheritedStyles;
+    },
+  });
   return <RenderComponent {...props} />;
 }
