@@ -3,7 +3,7 @@ import { getMaxWidthQueryForSize } from '../../constants/device-sizes.js';
 import { TARGET } from '../../constants/target.js';
 import type { BuilderContextInterface } from '../../context/types.js';
 import { getProcessedBlock } from '../../functions/get-processed-block.js';
-import { convertStyleMaptoCSS, createCssClass } from '../../helpers/css.js';
+import { createCssClass } from '../../helpers/css.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
 import RenderInlinedStyles from '../render-inlined-styles.lite';
 
