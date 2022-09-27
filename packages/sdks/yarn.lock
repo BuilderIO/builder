@@ -1320,13 +1320,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis-cli@npm:^0.0.24":
-  version: 0.0.24
-  resolution: "@builder.io/mitosis-cli@npm:0.0.24"
+"@builder.io/mitosis-cli@npm:^0.0.26":
+  version: 0.0.26
+  resolution: "@builder.io/mitosis-cli@npm:0.0.26"
   dependencies:
     "@babel/core": ^7.17.8
     "@babel/preset-typescript": ^7.16.7
-    "@builder.io/mitosis": 0.0.63
+    "@builder.io/mitosis": 0.0.65
     "@vue/compiler-sfc": ^3.1.5
     babel-preset-solid: ^1.3.13
     chalk: ^4.1.0
@@ -1347,13 +1347,13 @@ __metadata:
     vue-template-validator: ^1.1.5
   bin:
     mitosis: bin/mitosis
-  checksum: 2ed7f973575d3ffb7429f8e956eea93ff62fa0d223bc29399b73a6b2dd14d3a338e5e7ef5d2293368c155f151f71001f08520a196dd86a3bba01550e52386461
+  checksum: f6aa5e1ea4b4f6e7e6a4eaae3434caf91f063cadb556acc0356834de044d9d67e739c98f58bc9d8fa72234c95d9ee0708162764354456c80ae1d91278a64c6a9
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis@npm:0.0.63, @builder.io/mitosis@npm:^0.0.63":
-  version: 0.0.63
-  resolution: "@builder.io/mitosis@npm:0.0.63"
+"@builder.io/mitosis@npm:0.0.65, @builder.io/mitosis@npm:^0.0.65":
+  version: 0.0.65
+  resolution: "@builder.io/mitosis@npm:0.0.65"
   dependencies:
     "@angular/compiler": ^11.2.11
     "@babel/core": 7.14.5
@@ -1384,7 +1384,7 @@ __metadata:
     traverse: ^0.6.6
     typescript: ^4.7.3
     vue: ~2.6
-  checksum: c6fa9f8c6740dc122dc77d490fccf686e5e410fcf0200af2f759e2ed7a40163f6719c818e6061e4d53b237b1e9c741c1d1d48ae33bb74f7cb8c3a69eb3e7a738
+  checksum: afe9c6c8ba562bd0c388bc13c3251b80285b5f6c768ef1ad07b09d177b8ff513667b479de7bf29ee43d069f3b931914fc1b2b842e5286a0cb1f7debbcffad3fb
   languageName: node
   linkType: hard
 
@@ -1549,13 +1549,13 @@ __metadata:
   linkType: soft
 
 "@builder.io/sdk@npm:^1.1.26":
-  version: 1.1.28
-  resolution: "@builder.io/sdk@npm:1.1.28"
+  version: 1.1.30
+  resolution: "@builder.io/sdk@npm:1.1.30"
   dependencies:
     hash-sum: ^2.0.0
     node-fetch: ^2.3.0
     tslib: ^1.10.0
-  checksum: bb1d81e02fdbd980c88d1203a002734263f1321bdff51b50c87d59715cc279ecce478ef6f9b159a6422ab43f9f03a6a925a17f94e22183251f71fce008cc894d
+  checksum: 9b7d019aff09f7be3b29c76dc7f88508514adae63b84b13be6a06bc1db9f0fe1ac27f29ca77e9a0d5501ef2e4e7f82cb42f9266796a9325e442be14009d27e99
   languageName: node
   linkType: hard
 
@@ -1572,8 +1572,8 @@ __metadata:
   resolution: "@builder.io/sdks@workspace:."
   dependencies:
     "@builder.io/eslint-plugin-mitosis": dev
-    "@builder.io/mitosis": ^0.0.63
-    "@builder.io/mitosis-cli": ^0.0.24
+    "@builder.io/mitosis": ^0.0.65
+    "@builder.io/mitosis-cli": ^0.0.26
     "@playwright/test": ^1.24.0
     "@types/jest": ^27.4.1
     "@types/node-fetch": ^2.5.12
@@ -4536,6 +4536,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"babel-plugin-jsx-dom-expressions@npm:^0.34.10":
+  version: 0.34.11
+  resolution: "babel-plugin-jsx-dom-expressions@npm:0.34.11"
+  dependencies:
+    "@babel/helper-module-imports": 7.16.0
+    "@babel/plugin-syntax-jsx": ^7.16.5
+    "@babel/types": ^7.16.0
+    html-entities: 2.3.2
+  peerDependencies:
+    "@babel/core": ^7.0.0
+  checksum: ee0791ce26d94c06250fd12855b51ad821d0ea7393aae4157624e3a3c253409538cf02d1797948f44dcbe8aa62e558885d6579d141febc1639602a843b668a32
+  languageName: node
+  linkType: hard
+
 "babel-plugin-jsx-dom-expressions@npm:^0.34.5":
   version: 0.34.7
   resolution: "babel-plugin-jsx-dom-expressions@npm:0.34.7"
@@ -4547,20 +4561,6 @@ __metadata:
   peerDependencies:
     "@babel/core": ^7.0.0
   checksum: 21c6b8dc523ed6c958dd7c2fcaefed689b458524c57f97d5d588276de692d5e39bbe8ef68036fb689d7807ecec71bd75bc6c2847d95d1e3db9ac2d8d9869f04e
-  languageName: node
-  linkType: hard
-
-"babel-plugin-jsx-dom-expressions@npm:^0.34.7":
-  version: 0.34.10
-  resolution: "babel-plugin-jsx-dom-expressions@npm:0.34.10"
-  dependencies:
-    "@babel/helper-module-imports": 7.16.0
-    "@babel/plugin-syntax-jsx": ^7.16.5
-    "@babel/types": ^7.16.0
-    html-entities: 2.3.2
-  peerDependencies:
-    "@babel/core": ^7.0.0
-  checksum: ffc32943352cdaf3fe7fe05403906dfb00e3cb777b8660d72917f218b163ee8c99afbbde9717b9fe40b0cc3fa290eb559aed6e435790c4183779d420bf784f6f
   languageName: node
   linkType: hard
 
@@ -4708,13 +4708,13 @@ __metadata:
   linkType: hard
 
 "babel-preset-solid@npm:^1.3.13":
-  version: 1.5.5
-  resolution: "babel-preset-solid@npm:1.5.5"
+  version: 1.5.6
+  resolution: "babel-preset-solid@npm:1.5.6"
   dependencies:
-    babel-plugin-jsx-dom-expressions: ^0.34.7
+    babel-plugin-jsx-dom-expressions: ^0.34.10
   peerDependencies:
     "@babel/core": ^7.0.0
-  checksum: 45c0f605c84806e3a15864337e13214a76f6e3cb7b1b22e8ec5285ee26765523aef8d70e55317aeab10ee9809603101d85de6b6a47e8aab367336da093aac1a8
+  checksum: 0f57ba18c00761b59d07dc8f08dc41fdbe84870635e7d220a5cab64662dc4d1399953f48268a231db4e5765a8247eb39040369a1e4b1f5156a6e8a04ede2a83b
   languageName: node
   linkType: hard
 
@@ -12314,12 +12314,12 @@ __metadata:
   linkType: hard
 
 "prettier-plugin-svelte@npm:^2.7.0":
-  version: 2.7.0
-  resolution: "prettier-plugin-svelte@npm:2.7.0"
+  version: 2.7.1
+  resolution: "prettier-plugin-svelte@npm:2.7.1"
   peerDependencies:
     prettier: ^1.16.4 || ^2.0.0
     svelte: ^3.2.0
-  checksum: 4b38d0d856f5d9099ce64cbfaeffc941f4b408285eb8bb6c0624ba484b2cad99c90e82da00bd8ab55eeaa54caf8d0bd89af602cdf63f5b6e1f0b7e0a53672503
+  checksum: 803bead66d88c08742ac9df14ababb22bde95468bd4e87de1fb0ea9bfe91b72d17cedaa343e343b11d4e97d057d912fc75e39cf6ab9a5b8c46d51248327b083b
   languageName: node
   linkType: hard
 
@@ -14815,11 +14815,11 @@ __metadata:
   linkType: hard
 
 "uglify-js@npm:^3.5.1":
-  version: 3.17.1
-  resolution: "uglify-js@npm:3.17.1"
+  version: 3.17.2
+  resolution: "uglify-js@npm:3.17.2"
   bin:
     uglifyjs: bin/uglifyjs
-  checksum: 5e24ad48e096d309e77a462fa0508a9bfe33e2ab00e1bd21dc8bd5d035cf0b58063914bef1c6d6aca78e9e5bbe619714b142ffc646165702e3714f4cfbc7151c
+  checksum: 128233638176abe6cc0ec0f1dbae7bcb3f02edd78eb5c7752b4f379ec9d29032cd2edf06b2522dbeba0a1f05afb25f6eaffe638581da6d8554bd4c060d6622b1
   languageName: node
   linkType: hard
 

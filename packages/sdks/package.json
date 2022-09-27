@@ -39,8 +39,8 @@
     "upgrade-example:all": "bash ./scripts/loop-command.sh upgrade-example \"svelte react-native solid qwik react vue\""
   },
   "dependencies": {
-    "@builder.io/mitosis": "^0.0.63",
-    "@builder.io/mitosis-cli": "^0.0.24",
+    "@builder.io/mitosis": "^0.0.65",
+    "@builder.io/mitosis-cli": "^0.0.26",
     "@playwright/test": "^1.24.0",
     "node-fetch": "^2.6.1",
     "seedrandom": "^3.0.5",
