@@ -1,4 +1,4 @@
-import { Show, useStore, Fragment } from '@builder.io/mitosis';
+import { Show, useStore } from '@builder.io/mitosis';
 import type { JSX } from '@builder.io/mitosis/jsx-runtime';
 import type { BuilderBlock } from '../../types/builder-block.js';
 import { getSrcSet } from './image.helpers.js';
@@ -56,7 +56,7 @@ export default function Image(props: ImageProps) {
     },
   });
   return (
-    <Fragment>
+    <>
       <picture>
         <Show when={state.webpSrcSet}>
           <source srcset={state.webpSrcSet} type="image/webp" />
@@ -132,6 +132,6 @@ export default function Image(props: ImageProps) {
           {props.children}
         </div>
       </Show>
-    </Fragment>
+    </>
   );
 }
