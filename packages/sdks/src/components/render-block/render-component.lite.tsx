@@ -12,7 +12,6 @@ export interface RenderComponentProps {
   context: BuilderContextInterface;
 }
 
-// eslint-disable-next-line @builder.io/mitosis/only-default-function-and-imports
 useMetadata({
   qwik: {
     component: {

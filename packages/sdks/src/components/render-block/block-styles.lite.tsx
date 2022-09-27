@@ -7,7 +7,6 @@ import { createCssClass } from '../../helpers/css.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
 import RenderInlinedStyles from '../render-inlined-styles.lite';
 
-// eslint-disable-next-line @builder.io/mitosis/only-default-function-and-imports
 useMetadata({
   qwik: {
     component: {
