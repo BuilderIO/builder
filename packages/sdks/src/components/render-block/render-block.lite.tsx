@@ -69,17 +69,6 @@ export default function RenderBlock(props: RenderBlockProps) {
         return ref;
       }
     },
-    get componentInfo() {
-      if (state.component) {
-        const { component: _, ...info } = state.component;
-        return info;
-      } else {
-        return undefined;
-      }
-    },
-    get componentRef() {
-      return state.component?.component;
-    },
     get tagName() {
       return getBlockTag(state.useBlock);
     },
@@ -109,25 +98,21 @@ export default function RenderBlock(props: RenderBlockProps) {
     },
 
     get shouldWrap() {
-      return !state.componentInfo?.noWrap;
-    },
-
-    get componentOptions() {
-      return {
-        ...getBlockComponentOptions(state.useBlock),
-        /**
-         * These attributes are passed to the wrapper element when there is one. If `noWrap` is set to true, then
-         * they are provided to the component itself directly.
-         */
-        ...(state.shouldWrap ? {} : { attributes: state.attributes }),
-      };
+      return !state.component?.noWrap;
     },
 
     get renderComponentProps(): RenderComponentProps {
       return {
         blockChildren: state.children,
-        componentRef: state.componentRef,
-        componentOptions: state.componentOptions,
+        componentRef: state.component?.component,
+        componentOptions: {
+          ...getBlockComponentOptions(state.useBlock),
+          /**
+           * These attributes are passed to the wrapper element when there is one. If `noWrap` is set to true, then
+           * they are provided to the component itself directly.
+           */
+          ...(state.shouldWrap ? {} : { attributes: state.attributes }),
+        },
         context: props.context,
       };
     },
@@ -146,7 +131,7 @@ export default function RenderBlock(props: RenderBlockProps) {
        * blocks, and the children will be repeated within those blocks.
        */
       const shouldRenderChildrenOutsideRef =
-        !state.componentRef && !state.repeatItemData;
+        !state.component?.component && !state.repeatItemData;
 
       return shouldRenderChildrenOutsideRef ? state.children : [];
     },
@@ -214,26 +199,8 @@ export default function RenderBlock(props: RenderBlockProps) {
     },
   });
 
-  setContext(BuilderContext, {
-    get content() {
-      return state.childrenContext.content;
-    },
-    get state() {
-      return state.childrenContext.state;
-    },
-    get context() {
-      return state.childrenContext.context;
-    },
-    get apiKey() {
-      return state.childrenContext.apiKey;
-    },
-    get registeredComponents() {
-      return state.childrenContext.registeredComponents;
-    },
-    get inheritedStyles() {
-      return state.childrenContext.inheritedStyles;
-    },
-  });
+  setContext(BuilderContext, state.childrenContext);
+
   return (
     <Show
       when={state.shouldWrap}
