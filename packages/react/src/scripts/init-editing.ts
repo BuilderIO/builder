@@ -7,6 +7,7 @@ if (typeof window !== 'undefined') {
       data: {
         value: true,
         supportsPatchUpdates: 'v4',
+        supportsCustomBreakpoints: true,
         priorVersion: version,
       },
     },
