@@ -2,6 +2,7 @@ import type {
   BuilderContextInterface,
   RegisteredComponent,
 } from '../../context/types.js';
+import BuilderContext from '../../context/builder.context.lite';
 import { getBlockActions } from '../../functions/get-block-actions.js';
 import { getBlockComponentOptions } from '../../functions/get-block-component-options.js';
 import { getBlockProperties } from '../../functions/get-block-properties.js';
@@ -15,7 +16,13 @@ import BlockStyles from './block-styles.lite';
 import { isEmptyHtmlElement } from './render-block.helpers.js';
 import type { RenderComponentProps } from './render-component.lite';
 import RenderComponent from './render-component.lite';
-import { For, Show, useMetadata, useStore } from '@builder.io/mitosis';
+import {
+  For,
+  setContext,
+  Show,
+  useMetadata,
+  useStore,
+} from '@builder.io/mitosis';
 import type { RepeatData } from './types.js';
 import RenderRepeatedBlock from './render-repeated-block.lite';
 import { TARGET } from '../../constants/target.js';
@@ -188,7 +195,7 @@ export default function RenderBlock(props: RenderBlockProps) {
 
     get inheritedTextStyles() {
       if (TARGET !== 'reactNative') {
-        return undefined;
+        return {};
       }
 
       const styles = getBlockStyles({
@@ -199,21 +206,41 @@ export default function RenderBlock(props: RenderBlockProps) {
       return extractTextStyles(styles);
     },
 
-    get childrenContext() {
+    get childrenContext(): BuilderContextInterface {
       return {
         ...props.context,
-        inheritedTextStyles: state.inheritedTextStyles,
+        inheritedStyles: state.inheritedTextStyles,
       };
     },
   });
 
+  setContext(BuilderContext, {
+    get content() {
+      return state.childrenContext.content;
+    },
+    get state() {
+      return state.childrenContext.state;
+    },
+    get context() {
+      return state.childrenContext.context;
+    },
+    get apiKey() {
+      return state.childrenContext.apiKey;
+    },
+    get registeredComponents() {
+      return state.childrenContext.registeredComponents;
+    },
+    get inheritedStyles() {
+      return state.childrenContext.inheritedStyles;
+    },
+  });
   return (
     <Show
       when={state.shouldWrap}
       else={
         <RenderComponent
           {...state.renderComponentProps}
-          context={props.context}
+          context={state.childrenContext}
         />
       }
     >
