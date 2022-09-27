@@ -65,15 +65,7 @@ export default function BlockStyles(props: BlockStylesProps) {
     },
   });
   return (
-    <Show
-      when={
-        TARGET === 'vue2' ||
-        TARGET === 'vue3' ||
-        TARGET === 'svelte' ||
-        TARGET === 'qwik' ||
-        state.css
-      }
-    >
+    <Show when={TARGET !== 'reactNative' && state.css}>
       <RenderInlinedStyles styles={state.css} />
     </Show>
   );
