@@ -186,7 +186,7 @@ export class KiboCommerce {
   }
 
   async perfromProductSearch(searchOptions){
-    return await this.performSearch({gqlQuery:productSearchQuery, ...searchOptions})
+     return await this.performSearch({gqlQuery:productSearchQuery, ...searchOptions})
   }
 
   async getItemsByProductCode(pageSize, items = []) {
@@ -200,7 +200,7 @@ export class KiboCommerce {
   }
 
   async perfromCategorySearch(searchOptions){
-    return await this.performSearch({gqlQuery:categorySearchQuery, ...searchOptions})
+     return await this.performSearch({gqlQuery:categorySearchQuery, ...searchOptions})
   }
 
   async getItemsByCategoryCode(pageSize, items = []) {

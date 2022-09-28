@@ -69,10 +69,9 @@ registerCommercePlugin(
 
         async search(searchTerm) {
           const searchOptions = {
-            query: searchTerm,
-            filter: '',
-            pageSize: PAGE_SIZE,
-            startIndex: 1,
+            query: searchTerm ? `${searchTerm}`: "",
+            startIndex: 0,
+            pageSize: PAGE_SIZE  
           };
 
           let products = await kiboClient.perfromProductSearch(searchOptions);
@@ -91,10 +90,7 @@ registerCommercePlugin(
 
         async search(searchTerm) {
           const searchOptions = {
-            query: searchTerm,
-            filter: '',
-            pageSize: PAGE_SIZE,
-            startIndex: 1,
+            filter: searchTerm ? `categoryCode eq ${searchTerm}`: ""
           };
 
           let categories = await kiboClient.perfromCategorySearch(searchOptions);
