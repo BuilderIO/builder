@@ -105,10 +105,23 @@ export function stringToFunction(
   }
 
   const final = (...args: any[]) => {
-    try {
-      if (Builder.isBrowser) {
+    if (Builder.isBrowser) {
+      try {
         return fn(...args);
-      } else {
+      } catch (error: any) {
+        console.warn(
+          'Builder custom code error:',
+          error.message || error,
+          'in',
+          str,
+          error.stack || error
+        );
+        if (errors) {
+          errors.push(error);
+        }
+      }
+    } else {
+      try {
         // TODO: memoize on server
         // TODO: use something like this instead https://www.npmjs.com/package/rollup-plugin-strip-blocks
         // There must be something more widely used?
@@ -132,17 +145,7 @@ export function stringToFunction(
           },
         }).run(str.replace(/(^|;)return /, '$1'));
         // tslint:enable:comment-format
-      }
-    } catch (error: any) {
-      if (Builder.isBrowser) {
-        console.warn(
-          'Builder custom code error:',
-          error.message || error,
-          'in',
-          str,
-          error.stack || error
-        );
-      } else {
+      } catch (error: any) {
         if (process.env.DEBUG) {
           console.debug(
             'Builder custom code error:',
@@ -152,9 +155,9 @@ export function stringToFunction(
             error.stack || error
           );
         }
-      }
-      if (errors) {
-        errors.push(error);
+        if (errors) {
+          errors.push(error);
+        }
       }
     }
   };
