@@ -2,7 +2,7 @@ import currency from 'currency.js';
 
 export const productSearchQuery = /* GraphQL */ `
   query Search($query: String, $filter: String, $pageSize: Int, $startIndex: Int) {
-    productSearch(query: $query, filter: $filter, pageSize: $pageSize, startIndex: $startIndex) {
+   searchResult: productSearch(query: $query, filter: $filter, pageSize: $pageSize, startIndex: $startIndex) {
       items {
         productCode
         content {
@@ -19,6 +19,22 @@ export const productSearchQuery = /* GraphQL */ `
       totalCount
       pageSize
       startIndex
+    }
+  }
+`;
+
+export const categorySearchQuery = /* GraphQL */ `
+  query getCategories($filter: String) {
+    searchResult: categories(filter: $filter) {
+      items {
+        categoryCode
+        content {
+          name
+          categoryImages {
+            imageUrl       
+          }
+        }
+      }
     }
   }
 `;
@@ -157,22 +173,40 @@ export class KiboCommerce {
     };
   }
 
-  async performSearch({ query, filter, pageSize, startIndex }) {
+  async performSearch({ gqlQuery, query, filter, pageSize, startIndex }) {
     const headers = await this.getHeaders();
     const body = {
-      query: productSearchQuery,
+      query: gqlQuery,
       variables: { query, filter, pageSize, startIndex },
     };
     const params = { method: 'POST', ...headers, body: JSON.stringify(body) };
     const request = await fetch(this.graphQLUrl, params);
     const response = await request.json();
-    return response.data.productSearch;
+    return response.data.searchResult;
+  }
+
+  async perfromProductSearch(searchOptions){
+    return await this.performSearch({gqlQuery:productSearchQuery, ...searchOptions})
   }
 
   async getItemsByProductCode(pageSize, items = []) {
     const filter = items.map(productCode => `productCode eq ${productCode}`).join(' or ');
     try {
-      const result = await this.performSearch({ filter, pageSize });
+      const result = await this.performSearch({gqlQuery:productSearchQuery, filter, pageSize });
+      return result.items;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async perfromCategorySearch(searchOptions){
+    return await this.performSearch({gqlQuery:categorySearchQuery, ...searchOptions})
+  }
+
+  async getItemsByCategoryCode(pageSize, items = []) {
+    const filter = items.map(categoryCode => `categoryCode eq ${categoryCode}`).join(' or ');
+    try {
+      const result = await this.performSearch({gqlQuery:categorySearchQuery, filter, pageSize });
       return result.items;
     } catch (error) {
       console.error(error);

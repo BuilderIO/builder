@@ -40,7 +40,7 @@ registerCommercePlugin(
     const kiboClient = new KiboCommerce(config, {});
     const PAGE_SIZE = 16;
 
-    const transformResource = resource => ({
+    const transformProduct = resource => ({
       ...resource,
       id: resource?.productCode,
       title: resource?.content?.productName,
@@ -50,13 +50,21 @@ registerCommercePlugin(
       },
     });
 
+    const transformCategory = resource => ({
+      ...resource,
+      id: resource?.categoryCode,
+      title: resource?.content?.name,
+      handle: resource?.categoryCode,
+      image: {
+        src: resource?.content?.categoryImages[0]?.imageUrl,
+      },
+    });
+
     const service = {
       product: {
         async findById(productCode) {
           const products = await kiboClient.getItemsByProductCode(PAGE_SIZE, [productCode]);
-          const transformedProduct = transformResource(products[0]);
-
-          return transformedProduct;
+          return transformProduct(products[0]);
         },
 
         async search(searchTerm) {
@@ -67,30 +75,18 @@ registerCommercePlugin(
             startIndex: 1,
           };
 
-          let products = await kiboClient.performSearch(searchOptions);
-          const transformedProducts = products.items?.map(transformResource);
-
-          return transformedProducts;
+          let products = await kiboClient.perfromProductSearch(searchOptions);
+          return products.items?.map(transformProduct);
         },
 
         getRequestObject(productCode) {
-          return {
-            '@type': '@builder.io/core:Request',
-            request: {
-              url: `https://api.kibocommerce.com/products/${productCode}`,
-            },
-            options: {
-              product: productCode,
-            },
-          };
+          return productCode;
         },
       },
       category: {
-        async findById(productCode) {
-          const products = await kiboClient.getItemsByProductCode(PAGE_SIZE, [productCode]);
-          const transformedProduct = transformResource(products[0]);
-
-          return transformedProduct;
+        async findById(categoryCode) {
+          const categories = await kiboClient.getItemsByCategoryCode(PAGE_SIZE, [categoryCode]);
+          return transformCategory(categories[0]);
         },
 
         async search(searchTerm) {
@@ -101,22 +97,12 @@ registerCommercePlugin(
             startIndex: 1,
           };
 
-          let categories = await kiboClient.performSearch(searchOptions);
-          const transformedCategories = categories.items?.map(transformResource);
-
-          return transformedCategories;
+          let categories = await kiboClient.perfromCategorySearch(searchOptions);
+          return categories.items?.map(transformCategory); 
         },
 
         getRequestObject(categoryCode) {
-          return {
-            '@type': '@builder.io/core:Request',
-            request: {
-              url: `https://api.kibocommerce.com/category/${categoryCode}`,
-            },
-            options: {
-              category: categoryCode,
-            },
-          };
+          return categoryCode;
         },
       },
     };
