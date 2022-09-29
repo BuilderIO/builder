@@ -1,6 +1,6 @@
 import { registerCommercePlugin } from '@builder.io/commerce-plugin-tools';
 import pkg from '../package.json';
-import { KiboCommerce } from '../utils/kibocommerce';
+import { KiboClient } from '../utils/kibo-client';
 
 registerCommercePlugin(
   {
@@ -37,10 +37,10 @@ registerCommercePlugin(
     const clientId = settings.get('clientId');
 
     const config = { apiHost, authHost, sharedSecret, clientId };
-    const kiboClient = new KiboCommerce(config, {});
+    const kiboClient = new KiboClient(config, {});
     const PAGE_SIZE = 16;
 
-    const transformProduct = resource => ({
+    const transformProduct = (resource: any) => ({
       ...resource,
       id: resource?.productCode,
       title: resource?.content?.productName,
@@ -50,7 +50,7 @@ registerCommercePlugin(
       },
     });
 
-    const transformCategory = resource => ({
+    const transformCategory = (resource: any) => ({
       ...resource,
       id: resource?.categoryCode,
       title: resource?.content?.name,
@@ -62,49 +62,48 @@ registerCommercePlugin(
 
     const service = {
       product: {
-        async findById(productCode) {
+        async findById(productCode: string) {
           const products = await kiboClient.getItemsByProductCode([productCode]);
           return transformProduct(products[0]);
         },
-
-        async search(searchTerm) {
+        async search(searchTerm: string) {
           const searchOptions = {
-            query: searchTerm ? `${searchTerm}`: "",
+            query: searchTerm ? `${searchTerm}` : '',
             startIndex: 0,
-            pageSize: PAGE_SIZE  
+            pageSize: PAGE_SIZE,
           };
-
-          let products = await kiboClient.performProductSearch(searchOptions);
+          const products = await kiboClient.performProductSearch(searchOptions);
           return products.items?.map(transformProduct);
         },
-
-        getRequestObject(productCode) {
+        getRequestObject(productCode: string) {
           return productCode;
         },
       },
       category: {
-        async findById(categoryCode) {
-          const categories = await kiboClient.getItemsByCategoryCode( [categoryCode]);
+        async findById(categoryCode: string) {
+          const categories = await kiboClient.getItemsByCategoryCode([categoryCode]);
           return transformCategory(categories[0]);
         },
-
-        async search(searchTerm) {
+        async search(searchTerm: string) {
           const searchOptions = {
-            filter: searchTerm ? `content.name cont ${searchTerm} or categoryCode eq ${searchTerm}`: ""
+            filter: searchTerm
+              ? `content.name cont ${searchTerm} or categoryCode eq ${searchTerm}`
+              : '',
           };
 
-          let categories = await kiboClient.perfromCategorySearch(searchOptions);
-          return categories.items?.map(transformCategory); 
+          const categories = await kiboClient.performCategorySearch(searchOptions);
+          return categories.items?.map(transformCategory);
+        },
+        async findByHandle(handle: string) {
+          const searchOptions = {
+            filter: `content.slug eq ${handle}`,
+          };
+          const categories = await kiboClient.performCategorySearch(searchOptions);
+          const category = categories?.items?.[0];
+          return category && transformCategory(category);
         },
 
-        async findByHandle(handle) {
-            let searchOptions = {
-                filter: `content.slug eq ${handle}`
-            }
-            let categories =  await kiboClient.performCategorySearch(searchOptions)
-        },
-
-        getRequestObject(categoryCode) {
+        getRequestObject(categoryCode: string) {
           return categoryCode;
         },
       },
