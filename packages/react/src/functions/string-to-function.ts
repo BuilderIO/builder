@@ -47,7 +47,7 @@ Content item name: ${context.builderContent.name}
     }
   }
 
-  let message = `The Builder React SDK failed to execute the following data binding on the ${
+  let message = `The Builder React SDK failed to execute the following data binding code on the ${
     Builder.isServer ? 'server' : 'browser'
   }:
 
@@ -57,11 +57,11 @@ The error was
 
   ${error}
 
-You can inspect the binding and its code by visiting https://www.builder.io/content/${
+You can inspect the generated code listed above by visiting https://www.builder.io/content/${
     context.builderContent.id
   }/edit?activeDesignerTab=3&selectedBlock=${
     block.id
-  } and entering the JSON view for the selected block. You can enter the JSON view by right clicking on the block in the Layers tab or by pressing Cmd/Ctrl+E with the block selected.
+  } and entering the JSON view for the selected block by right clicking on the block in the Layers tab or by pressing Cmd/Ctrl+E with the block selected. You can also access the data binding itself from the Data tab.
 `;
 
   if (Builder.isServer) message = message.concat(`\n${debugInfo}`);
