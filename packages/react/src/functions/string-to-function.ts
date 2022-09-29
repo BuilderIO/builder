@@ -119,12 +119,14 @@ export function stringToFunction(
         // TODO: cache these for better performancs with new VmScript
         // tslint:disable:comment-format
         const { VM } = safeDynamicRequire('vm2');
-        const [state, event] = args;
+        const [state, event, _block, _builder, _Device, _update, _Builder, context] = args;
+
         return new VM({
           timeout: 100,
           sandbox: {
             ...state,
             ...{ state },
+            ...{ context },
             ...{ builder: api },
             event,
           },
