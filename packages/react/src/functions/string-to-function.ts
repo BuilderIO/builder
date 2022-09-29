@@ -14,6 +14,66 @@ type BuilderEvanFunction = (
   context?: object
 ) => any;
 
+const logError = ({
+  code,
+  error,
+  context,
+  block,
+  sandbox,
+}: {
+  code: string;
+  error: any;
+  context: any;
+  block: any;
+  sandbox?: any;
+}) => {
+  let debugInfo = `For a more detailed error message, restart your server with DEBUG=true set in your environment variables. If you're using npm, yarn, or a similar tool to run your development server, be sure to add DEBUG=true to your script in package.json so that your server can access the environment variable.
+`;
+
+  if (process.env.DEBUG) {
+    debugInfo = `***BEGIN DEBUG INFO***
+
+Block type: ${block.component.name}
+Block ID: ${block.id}
+Content item ID: ${context.builderContent.id}
+Content item name: ${context.builderContent.name}
+`;
+
+    if (Builder.isServer) {
+      if (sandbox) {
+        debugInfo = debugInfo.concat(`\nServer VM sandbox:\n\n${JSON.stringify(sandbox, null, 2)}\n`);
+      }
+      debugInfo = debugInfo.concat(`\nError stack trace:\n\n${error.stack}\n\n***END DEBUG INFO***\n`)
+    }
+  }
+
+  let message = `The Builder React SDK failed to execute the following data binding on the ${
+    Builder.isServer ? 'server' : 'browser'
+  }:
+
+  ${code}
+
+The error was
+
+  ${error}
+
+You can inspect the binding and its code by visiting https://www.builder.io/content/${
+    context.builderContent.id
+  }/edit?activeDesignerTab=3&selectedBlock=${
+    block.id
+  } and entering the JSON view for the selected block. You can enter the JSON view by right clicking on the block in the Layers tab or by pressing Cmd/Ctrl+E with the block selected.
+`;
+
+  if (Builder.isServer) message = message.concat(`\n${debugInfo}`);
+
+  console.error(error);
+  if (Builder.isServer) {
+    console.error(`\n${message}`);
+  } else {
+    console.error(message);
+  }
+};
+
 export const api = (state: any) => builder;
 
 export function stringToFunction(
@@ -109,18 +169,41 @@ export function stringToFunction(
       try {
         return fn(...args);
       } catch (error: any) {
-        console.warn(
-          'Builder custom code error:',
-          error.message || error,
-          'in',
-          str,
-          error.stack || error
-        );
+        logError({
+          code: str,
+          error: error,
+          context: args[7],
+          block: args[2],
+        });
+
         if (errors) {
           errors.push(error);
         }
       }
     } else {
+      // TODO: memoize on server
+      // TODO: use something like this instead https://www.npmjs.com/package/rollup-plugin-strip-blocks
+      // There must be something more widely used?
+      // TODO: regex for between comments instead so can still type check the code... e.g. //SERVER-START ... code ... //SERVER-END
+      // Below is a hack to get certain code to *only* load in the server build, to not screw with
+      // browser bundler's like rollup and webpack. Our rollup plugin strips these comments only
+      // for the server build
+      // TODO: cache these for better performancs with new VmScript
+      // tslint:disable:comment-format
+      const { VM } = safeDynamicRequire('vm2');
+      const [state, event, block, _builder, _Device, _update, _Builder, context] = args;
+      const sandbox = {
+        ...state,
+        ...{ state },
+        ...{ builder: api },
+        event,
+      };
+      const timeout = 100;
+      const vm = new VM({
+        timeout,
+        sandbox,
+      });
+
       try {
         // TODO: memoize on server
         // TODO: use something like this instead https://www.npmjs.com/package/rollup-plugin-strip-blocks
@@ -146,15 +229,14 @@ export function stringToFunction(
         }).run(str.replace(/(^|;)return /, '$1'));
         // tslint:enable:comment-format
       } catch (error: any) {
-        if (process.env.DEBUG) {
-          console.debug(
-            'Builder custom code error:',
-            error.message || error,
-            'in',
-            str,
-            error.stack || error
-          );
-        }
+        logError({
+          code: str,
+          error,
+          context,
+          block,
+          sandbox,
+        });
+
         if (errors) {
           errors.push(error);
         }
