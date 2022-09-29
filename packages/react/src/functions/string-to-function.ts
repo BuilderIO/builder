@@ -53,7 +53,7 @@ Content item name: ${context.builderContent.name}
 
   ${code}
 
-The error was
+The error thrown was:
 
   ${error}
 
