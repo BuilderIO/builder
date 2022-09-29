@@ -54,7 +54,7 @@ registerCommercePlugin(
       ...resource,
       id: resource?.categoryCode,
       title: resource?.content?.name,
-      handle: resource?.categoryCode,
+      handle: resource?.content?.slug,
       image: {
         src: resource?.content?.categoryImages[0]?.imageUrl,
       },
@@ -63,7 +63,7 @@ registerCommercePlugin(
     const service = {
       product: {
         async findById(productCode) {
-          const products = await kiboClient.getItemsByProductCode(PAGE_SIZE, [productCode]);
+          const products = await kiboClient.getItemsByProductCode([productCode]);
           return transformProduct(products[0]);
         },
 
@@ -74,7 +74,7 @@ registerCommercePlugin(
             pageSize: PAGE_SIZE  
           };
 
-          let products = await kiboClient.perfromProductSearch(searchOptions);
+          let products = await kiboClient.performProductSearch(searchOptions);
           return products.items?.map(transformProduct);
         },
 
@@ -84,17 +84,24 @@ registerCommercePlugin(
       },
       category: {
         async findById(categoryCode) {
-          const categories = await kiboClient.getItemsByCategoryCode(PAGE_SIZE, [categoryCode]);
+          const categories = await kiboClient.getItemsByCategoryCode( [categoryCode]);
           return transformCategory(categories[0]);
         },
 
         async search(searchTerm) {
           const searchOptions = {
-            filter: searchTerm ? `categoryCode eq ${searchTerm}`: ""
+            filter: searchTerm ? `content.name cont ${searchTerm} or categoryCode eq ${searchTerm}`: ""
           };
 
           let categories = await kiboClient.perfromCategorySearch(searchOptions);
           return categories.items?.map(transformCategory); 
+        },
+
+        async findByHandle(handle) {
+            let searchOptions = {
+                filter: `content.slug eq ${handle}`
+            }
+            let categories =  await kiboClient.performCategorySearch(searchOptions)
         },
 
         getRequestObject(categoryCode) {

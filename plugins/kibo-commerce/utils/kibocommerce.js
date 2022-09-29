@@ -30,6 +30,7 @@ export const categorySearchQuery = /* GraphQL */ `
         categoryCode
         content {
           name
+          slug
           categoryImages {
             imageUrl       
           }
@@ -185,14 +186,14 @@ export class KiboCommerce {
     return response.data.searchResult;
   }
 
-  async perfromProductSearch(searchOptions){
+  async performProductSearch(searchOptions){
      return await this.performSearch({gqlQuery:productSearchQuery, ...searchOptions})
   }
 
-  async getItemsByProductCode(pageSize, items = []) {
+  async getItemsByProductCode(items = []) {
     const filter = items.map(productCode => `productCode eq ${productCode}`).join(' or ');
     try {
-      const result = await this.performSearch({gqlQuery:productSearchQuery, filter, pageSize });
+      const result = await this.performSearch({gqlQuery:productSearchQuery, filter });
       return result.items;
     } catch (error) {
       console.error(error);
@@ -203,10 +204,10 @@ export class KiboCommerce {
      return await this.performSearch({gqlQuery:categorySearchQuery, ...searchOptions})
   }
 
-  async getItemsByCategoryCode(pageSize, items = []) {
+  async getItemsByCategoryCode(items = []) {
     const filter = items.map(categoryCode => `categoryCode eq ${categoryCode}`).join(' or ');
     try {
-      const result = await this.performSearch({gqlQuery:categorySearchQuery, filter, pageSize });
+      const result = await this.performSearch({gqlQuery:categorySearchQuery, filter });
       return result.items;
     } catch (error) {
       console.error(error);
