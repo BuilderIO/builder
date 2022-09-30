@@ -1,8 +1,27 @@
 import currency from 'currency.js';
 
+type PerformSearchParams = {
+  gqlQuery: string;
+  query?: string;
+  filter: string;
+  pageSize?: number;
+  startIndex?: number;
+};
+type KiboConfig = {
+  apiHost: string;
+  authHost: string;
+  clientId: string;
+  sharedSecret: string;
+};
+
 export const productSearchQuery = /* GraphQL */ `
   query Search($query: String, $filter: String, $pageSize: Int, $startIndex: Int) {
-   searchResult: productSearch(query: $query, filter: $filter, pageSize: $pageSize, startIndex: $startIndex) {
+    searchResult: productSearch(
+      query: $query
+      filter: $filter
+      pageSize: $pageSize
+      startIndex: $startIndex
+    ) {
       items {
         productCode
         content {
@@ -32,7 +51,7 @@ export const categorySearchQuery = /* GraphQL */ `
           name
           slug
           categoryImages {
-            imageUrl       
+            imageUrl
           }
         }
       }
@@ -48,7 +67,13 @@ export class APIAuthenticationHelper {
   _cache;
   authData;
 
-  constructor(clientId, sharedSecret, authHost, cacheKey, cache) {
+  constructor(
+    clientId: string,
+    sharedSecret: string,
+    authHost: string,
+    cacheKey: string,
+    cache: any
+  ) {
     this._clientId = clientId;
     this._sharedSecret = sharedSecret;
     this._authHost = authHost;
@@ -64,7 +89,7 @@ export class APIAuthenticationHelper {
     this.authData = authTicket;
   }
 
-  _buildFetchOptions(data) {
+  _buildFetchOptions(data: any) {
     return {
       method: 'POST',
       headers: {
@@ -74,7 +99,7 @@ export class APIAuthenticationHelper {
     };
   }
 
-  _calculateTicketExpiration(kiboAuthTicket) {
+  _calculateTicketExpiration(kiboAuthTicket: any) {
     //calculate how many milliseconds until auth expires
     const millisecsUntilExpiration = kiboAuthTicket.expires_in * 1000;
     kiboAuthTicket.expires_at = Date.now() + millisecsUntilExpiration;
@@ -85,7 +110,7 @@ export class APIAuthenticationHelper {
     return this.authData;
   }
 
-  async _setAuthTicket(kiboAuthTicket) {
+  async _setAuthTicket(kiboAuthTicket: any) {
     try {
       this._cache.set(this._cacheKey, JSON.stringify(kiboAuthTicket));
     } catch (error) {}
@@ -111,7 +136,7 @@ export class APIAuthenticationHelper {
     return authTicket;
   }
 
-  async refreshTicket(kiboAuthTicket) {
+  async refreshTicket(kiboAuthTicket: any) {
     // create oauth refresh fetch options
     const options = this._buildFetchOptions({
       client_id: this._clientId,
@@ -119,9 +144,15 @@ export class APIAuthenticationHelper {
       grant_type: 'client_credentials',
       refresh_token: kiboAuthTicket && kiboAuthTicket.refresh_token,
     });
-    const refreshedTicket = await (
-      await fetch(`https://${this._authHost}/api/platform/applications/authtickets/oauth`, options)
-    ).json();
+    const response = await fetch(
+      `https://${this._authHost}/api/platform/applications/authtickets/oauth`,
+      options
+    );
+    if (response.status >= 400) {
+      return this.authenticate();
+    }
+
+    const refreshedTicket = await response.json();
 
     this._calculateTicketExpiration(refreshedTicket);
 
@@ -146,13 +177,13 @@ export class APIAuthenticationHelper {
   }
 }
 
-export class KiboCommerce {
+export class KiboClient {
   graphQLUrl;
   authHelper;
-  constructor({ apiHost, authHost, clientId, sharedSecret, applicationId }, cache) {
+  constructor({ apiHost, authHost, clientId, sharedSecret }: KiboConfig, cache: any) {
     this.graphQLUrl = `https://${apiHost}/graphql`;
     this.authHelper = new APIAuthenticationHelper(
-      clientId || applicationId,
+      clientId,
       sharedSecret,
       authHost,
       `${apiHost}_auth`,
@@ -174,7 +205,7 @@ export class KiboCommerce {
     };
   }
 
-  async performSearch({ gqlQuery, query, filter, pageSize, startIndex }) {
+  async performSearch({ gqlQuery, query, filter, pageSize, startIndex }: PerformSearchParams) {
     const headers = await this.getHeaders();
     const body = {
       query: gqlQuery,
@@ -186,28 +217,28 @@ export class KiboCommerce {
     return response.data.searchResult;
   }
 
-  async performProductSearch(searchOptions){
-     return await this.performSearch({gqlQuery:productSearchQuery, ...searchOptions})
+  async performProductSearch(searchOptions: any) {
+    return await this.performSearch({ gqlQuery: productSearchQuery, ...searchOptions });
   }
 
-  async getItemsByProductCode(items = []) {
+  async getItemsByProductCode(items: string[] = []) {
     const filter = items.map(productCode => `productCode eq ${productCode}`).join(' or ');
     try {
-      const result = await this.performSearch({gqlQuery:productSearchQuery, filter });
+      const result = await this.performSearch({ gqlQuery: productSearchQuery, filter });
       return result.items;
     } catch (error) {
       console.error(error);
     }
   }
 
-  async perfromCategorySearch(searchOptions){
-     return await this.performSearch({gqlQuery:categorySearchQuery, ...searchOptions})
+  async performCategorySearch(searchOptions: any) {
+    return await this.performSearch({ gqlQuery: categorySearchQuery, ...searchOptions });
   }
 
-  async getItemsByCategoryCode(items = []) {
+  async getItemsByCategoryCode(items: string[] = []) {
     const filter = items.map(categoryCode => `categoryCode eq ${categoryCode}`).join(' or ');
     try {
-      const result = await this.performSearch({gqlQuery:categorySearchQuery, filter });
+      const result = await this.performSearch({ gqlQuery: categorySearchQuery, filter });
       return result.items;
     } catch (error) {
       console.error(error);
