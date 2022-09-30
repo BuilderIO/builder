@@ -205,28 +205,7 @@ export function stringToFunction(
       });
 
       try {
-        // TODO: memoize on server
-        // TODO: use something like this instead https://www.npmjs.com/package/rollup-plugin-strip-blocks
-        // There must be something more widely used?
-        // TODO: regex for between comments instead so can still type check the code... e.g. //SERVER-START ... code ... //SERVER-END
-        // Below is a hack to get certain code to *only* load in the server build, to not screw with
-        // browser bundler's like rollup and webpack. Our rollup plugin strips these comments only
-        // for the server build
-        // TODO: cache these for better performancs with new VmScript
-        // tslint:disable:comment-format
-        const { VM } = safeDynamicRequire('vm2');
-        const [state, event, _block, _builder, _Device, _update, _Builder, context] = args;
-
-        return new VM({
-          timeout: 100,
-          sandbox: {
-            ...state,
-            ...{ state },
-            ...{ context },
-            ...{ builder: api },
-            event,
-          },
-        }).run(str.replace(/(^|;)return /, '$1'));
+        return vm.run(str.replace(/(^|;)return /, '$1'));
         // tslint:enable:comment-format
       } catch (error: any) {
         logError({
