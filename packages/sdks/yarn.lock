@@ -1253,10 +1253,10 @@ __metadata:
   resolution: "@builder.io/e2e-solidjs@workspace:e2e/solidjs"
   dependencies:
     "@builder.io/sdk-solid": "workspace:*"
-    solid-js: ^1.4.7
+    solid-js: ^1.5.7
     typescript: ^4
-    vite: ^3.0.4
-    vite-plugin-solid: ^2.3.0
+    vite: ^3.1.4
+    vite-plugin-solid: ^2.3.9
   languageName: unknown
   linkType: soft
 
@@ -1476,12 +1476,12 @@ __metadata:
   dependencies:
     babel-preset-solid: ^1.3.17
     node-fetch: ^2.6.7
-    solid-js: ^1.4.3
+    solid-js: ^1.5.7
     solid-styled-components: ^0.27.6
     vite: ^3.0.4
     vite-plugin-solid: ^2.2.6
   peerDependencies:
-    solid-js: ^1.4.3
+    solid-js: ^1.5.7
   languageName: unknown
   linkType: soft
 
@@ -13713,12 +13713,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"solid-js@npm:^1.4.3, solid-js@npm:^1.4.7":
-  version: 1.5.4
-  resolution: "solid-js@npm:1.5.4"
+"solid-js@npm:^1.5.7":
+  version: 1.5.7
+  resolution: "solid-js@npm:1.5.7"
   dependencies:
     csstype: ^3.1.0
-  checksum: 0f0a188ad57df42857c3ed5e19d41d24da31f126f09ec9cda9527a99cf65c5753f18f098f6070547a4c01163e657a4c76431f1ac17fc8c98b4675ab83dd99c30
+  checksum: 3b8ddd0f35b5744fb532ea6f88fb846b15eff466056bf1394c93da4d27a6df6bd97042704eb06eca80d32dd8bac15349e4eee229439cfeb8aaa419429a43efdb
   languageName: node
   linkType: hard
 
@@ -15168,7 +15168,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-plugin-solid@npm:^2.2.6, vite-plugin-solid@npm:^2.3.0":
+"vite-plugin-solid@npm:^2.2.6":
   version: 2.3.0
   resolution: "vite-plugin-solid@npm:2.3.0"
   dependencies:
@@ -15181,6 +15181,22 @@ __metadata:
     solid-js: ^1.3.17
     vite: ^3.0.0
   checksum: c66f4fde74a5c921adcda4a090102840b22462997f0cdd4f020d86658dfe9071e5f6bdc30de016985955ef8abe9aff700822aa79f25dd159924b8a4eee6f1686
+  languageName: node
+  linkType: hard
+
+"vite-plugin-solid@npm:^2.3.9":
+  version: 2.3.9
+  resolution: "vite-plugin-solid@npm:2.3.9"
+  dependencies:
+    "@babel/core": ^7.18.6
+    "@babel/preset-typescript": ^7.18.6
+    babel-preset-solid: ^1.4.6
+    merge-anything: ^5.0.2
+    solid-refresh: ^0.4.1
+  peerDependencies:
+    solid-js: ^1.3.17
+    vite: ^3.0.0
+  checksum: fd23a8e9ee4371c1000f9736a27c68d0bde8e4238d793b779f77aa2ba29e15c9d418c5f45c3d00a43f73419fb94b88b0c5dfc6d970ce9cfc885b388c6bc0cfca
   languageName: node
   linkType: hard
 
@@ -15213,6 +15229,38 @@ __metadata:
   bin:
     vite: bin/vite.js
   checksum: 1a343e3d46450181f79f34ff49cca5ff59bb7472de51ea2c4a042aa076f597d27d25c49f48405e82f607af7d8c1c13a9e789402ccb1b23570132382132ec3903
+  languageName: node
+  linkType: hard
+
+"vite@npm:^3.1.4":
+  version: 3.1.4
+  resolution: "vite@npm:3.1.4"
+  dependencies:
+    esbuild: ^0.15.6
+    fsevents: ~2.3.2
+    postcss: ^8.4.16
+    resolve: ^1.22.1
+    rollup: ~2.78.0
+  peerDependencies:
+    less: "*"
+    sass: "*"
+    stylus: "*"
+    terser: ^5.4.0
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  peerDependenciesMeta:
+    less:
+      optional: true
+    sass:
+      optional: true
+    stylus:
+      optional: true
+    terser:
+      optional: true
+  bin:
+    vite: bin/vite.js
+  checksum: f3e532952b896ca7f746de0e51fc8c98ac482b2a5f0b89538ec89ac615f6edbfe45628fe4fbabab4c5fe07f6e4c2e624360af00d8c5c454af31771952b8c6e72
   languageName: node
   linkType: hard
 
