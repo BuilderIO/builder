@@ -516,7 +516,7 @@ export class BuilderBlock extends React.Component<
     // tslint:disable-next-line:comment-format
     ///REACT15ONLY finalOptions.className = finalOptions.class
 
-    if (Builder.isEditing) {
+    if (Builder.isEditing || !Builder.isBrowser) {
       // TODO: removed bc JS can add styles inline too?
       (finalOptions as any)['builder-inline-styles'] = !(options.attr && options.attr.style)
         ? ''
@@ -636,7 +636,13 @@ export class BuilderBlock extends React.Component<
 
     if (block.repeat && block.repeat.collection) {
       const collectionPath = block.repeat.collection;
-      const collectionName = last((collectionPath || '').trim().split('(')[0].trim().split('.'));
+      const collectionName = last(
+        (collectionPath || '')
+          .trim()
+          .split('(')[0]
+          .trim()
+          .split('.')
+      );
       const itemName = block.repeat.itemName || (collectionName ? collectionName + 'Item' : 'item');
       const array = this.stringToFunction(collectionPath)(
         state.state,
