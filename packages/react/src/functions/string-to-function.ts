@@ -20,12 +20,14 @@ const logError = ({
   context,
   block,
   sandbox,
+  type,
 }: {
   code: string;
   error: any;
   context: any;
   block: any;
   sandbox?: any;
+  type: string;
 }) => {
   let debugInfo = `For a more detailed error message, restart your server with DEBUG=true set in your environment variables. If you're using npm, yarn, or a similar tool to run your development server, be sure to add DEBUG=true to your script in package.json so that your server can access the environment variable.
 `;
@@ -47,7 +49,7 @@ Content item name: ${context.builderContent.name}
     }
   }
 
-  let message = `The Builder React SDK failed to execute the following data binding code on the ${
+  let message = `The Builder React SDK failed to execute the following ${type} code on the ${
     Builder.isServer ? 'server' : 'browser'
   }:
 
@@ -77,10 +79,11 @@ You can inspect the generated code listed above by visiting https://www.builder.
 export const api = (state: any) => builder;
 
 export function stringToFunction(
+  type: string,
   str: string,
   expression = true,
   errors?: Error[],
-  logs?: string[]
+  logs?: string[],
 ): BuilderEvanFunction {
   /* TODO: objedct */
   if (!str || !str.trim()) {
@@ -174,6 +177,7 @@ export function stringToFunction(
           error: error,
           context: args[7],
           block: args[2],
+          type,
         });
 
         if (errors) {
@@ -195,7 +199,6 @@ export function stringToFunction(
       const sandbox = {
         ...state,
         ...{ state },
-        ...{ context },
         ...{ builder: api },
         event,
       };
@@ -215,6 +218,7 @@ export function stringToFunction(
           context,
           block,
           sandbox,
+          type
         });
 
         if (errors) {

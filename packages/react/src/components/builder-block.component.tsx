@@ -128,8 +128,8 @@ export class BuilderBlock extends React.Component<
 
   // TODO: handle adding return if none provided
   // TODO: cache/memoize this (globally with LRU?)
-  stringToFunction(str: string, expression = true) {
-    return stringToFunction(str, expression, this._errors, this._logs);
+  stringToFunction(type: string, str: string, expression = true) {
+    return stringToFunction(type, str, expression, this._errors, this._logs);
   }
 
   get block() {
@@ -193,7 +193,7 @@ export class BuilderBlock extends React.Component<
   }
 
   eval(str: string) {
-    const fn = this.stringToFunction(str);
+    const fn = this.stringToFunction('eval', str);
     // TODO: only one root instance of this, don't rewrap every time...
     return fn(
       this.privateState.state,
@@ -288,7 +288,7 @@ export class BuilderBlock extends React.Component<
 
           if (key.startsWith('animations.')) {
             // TODO: this needs to run in getElement bc of local state per element for repeats
-            const value = this.stringToFunction(block.bindings[key]);
+            const value = this.stringToFunction('animation', block.bindings[key]);
             if (value !== undefined) {
               set(
                 options,
@@ -397,7 +397,7 @@ export class BuilderBlock extends React.Component<
           continue;
         }
 
-        const value = this.stringToFunction(block.bindings[key]);
+        const value = this.stringToFunction('data binding', block.bindings[key]);
         // TODO: pass block, etc
         set(
           options,
@@ -437,7 +437,7 @@ export class BuilderBlock extends React.Component<
               },
             });
           }
-          const fn = this.stringToFunction(value, false);
+          const fn = this.stringToFunction('event handling', value, false);
           // TODO: only one root instance of this, don't rewrap every time...
           return fn(
             useState,
@@ -644,7 +644,7 @@ export class BuilderBlock extends React.Component<
           .split('.')
       );
       const itemName = block.repeat.itemName || (collectionName ? collectionName + 'Item' : 'item');
-      const array = this.stringToFunction(collectionPath)(
+      const array = this.stringToFunction('repeat for each', collectionPath)(
         state.state,
         null,
         block,
