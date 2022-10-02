@@ -199,6 +199,7 @@ export function stringToFunction(
       const sandbox = {
         ...state,
         ...{ state },
+        ...{ context },
         ...{ builder: api },
         event,
       };
