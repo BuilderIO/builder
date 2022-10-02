@@ -516,7 +516,7 @@ export class BuilderBlock extends React.Component<
     // tslint:disable-next-line:comment-format
     ///REACT15ONLY finalOptions.className = finalOptions.class
 
-    if (Builder.isEditing || !Builder.isBrowser) {
+    if (Builder.isEditing || (!Builder.isBrowser && process.env.NODE_ENV !== 'production')) {
       // TODO: removed bc JS can add styles inline too?
       (finalOptions as any)['builder-inline-styles'] = !(options.attr && options.attr.style)
         ? ''
