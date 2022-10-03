@@ -1,7 +1,14 @@
+### 2.0.8
+
+- Fix SSR issue with hydration
+- Add support for custom breakpoints
+
 ### 2.0.6
+
 - Add support for `threshold` and `repeat` options on `ScrollInView` animations.
 
 ### 2.0.6
+
 - added types for `override` option
 
 ### 2.0.5
