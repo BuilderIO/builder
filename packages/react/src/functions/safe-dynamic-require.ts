@@ -8,9 +8,29 @@ const noop = () => null;
 export let safeDynamicRequire: typeof require;
 
 /*
- * The if condition below used to be if (typeof globalThis.require === "function"
+ * The if condition below used to be
+ *
+ *     if (typeof globalThis.require === "function")
+ *
  * That broke in case Builder was running on the server (Next, SSR use-cases) where
  * globalThis.require was undefined. Avoiding use of Builder.isServer for Cloudflare worker cases
+ * That said, if change it to
+ *
+ * if (typeof require === 'function') {
+ *   localSafeDynamicRequire = eval('require');
+ * }
+ *
+ * Then the TSC / rollup compiler over-optimizes and replaces the if condition with true always
+ * causing it to blow up on the client side. Hence this convoluted way of doing it.
+ *
+ * In Summary:
+ *
+ * 1. Node -> globalThis.require does not work
+ * 2. Client -> typeof require === 'function' does not work because of overoptimization by the compiler
+ * 3. Cloudflare edge -> only globalThis.require works
  */
-if (typeof require === 'function') safeDynamicRequire = eval('require');
+if (typeof globalThis.require === 'function' || Builder.isServer) {
+  safeDynamicRequire = eval('require');
+}
+
 safeDynamicRequire ??= noop as any;
