@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/react",
-  "version": "2.0.7",
+  "version": "2.0.8-4",
   "description": "",
   "keywords": [],
   "main": "dist/builder-react.cjs.js",
@@ -84,7 +84,7 @@
     "jest": "^28.1.3",
     "jest-environment-jsdom": "^28.1.3",
     "lint-staged": "^7.0.0",
-    "prettier": "^1.4.4",
+    "prettier": "^2.6.2",
     "prompt": "^1.0.0",
     "react": ">=16.8.0",
     "react-dom": ">=16.8.0",
