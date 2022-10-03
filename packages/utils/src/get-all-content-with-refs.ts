@@ -1,11 +1,7 @@
-import { BuilderContent, BuilderElement, Builder, GetContentOptions } from '@builder.io/sdk';
+import { BuilderContent, Builder, GetContentOptions } from '@builder.io/sdk';
 import traverse from 'traverse';
 
-export const isBuilderElement = (item: unknown): item is BuilderElement => {
-  return Boolean((item as any)?.['@type'] === '@builder.io/sdk:Element');
-};
-
-async function resolveRefs(content: any, builderInstance: Builder, options?: GetContentOptions) {
+async function resolveRefs(content: any, builderInstance: Builder) {
   const promises: Promise<void>[] = [];
   const result = traverse(content).map(function (child) {
     if (child && child['@type'] === '@builder.io/core:Reference') {
@@ -13,7 +9,7 @@ async function resolveRefs(content: any, builderInstance: Builder, options?: Get
         getContentWithAllReferences(
           builderInstance,
           child.model,
-          options || { query: { id: child.id } }
+          { query: { id: child.id } }
         ).then(value => (child.value = value));
       }
     }
@@ -28,7 +24,7 @@ export async function getContentWithAllReferences(
   modelName: string,
   options: GetContentOptions
 ) {
-  const content: BuilderContent = await builderInstance.get(modelName, options);
+  const content: BuilderContent = await builderInstance.get(modelName, options).toPromise();
 
-  return await resolveRefs(content, builderInstance, options);
+  return await resolveRefs(content, builderInstance);
 }
