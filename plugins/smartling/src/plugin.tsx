@@ -102,7 +102,7 @@ registerPlugin(
       label: 'Translate',
       showIf(selectedContentIds, content, model) {
         const translationModel = getTranslationModel();
-        if (model.name === translationModel.name) {
+        if (!model || model.name === translationModel.name) {
           return false;
         }
 
