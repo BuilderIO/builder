@@ -1,7 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import React, { useState, useEffect } from 'react';
-import { RenderContent, isPreviewing, getContent } from '@builder.io/sdk-react-native';
+import { Text } from 'react-native';
+import React, { Fragment } from 'react';
+import { getContentForPathname } from '@builder.io/sdks-e2e-tests';
+import { RenderContent } from '@builder.io/sdk-react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -39,34 +40,11 @@ const CUSTOM_COMPONENTS = [
 ];
 
 const BuilderContent = ({ route }) => {
-  const [content, setContent] = useState(undefined);
-
-  useEffect(() => {
-    getContent({
-      model: 'page',
-      apiKey: BUILDER_API_KEY,
-      options: route.params,
-      userAttributes: {
-        // urlPath: '/ab-test',
-        urlPath: route.path || '/',
-      },
-    })
-      .then(content => {
-        if (content) {
-          setContent(content);
-        }
-      })
-      .catch(err => {
-        console.log('something went wrong while fetching Builder Content: ', err);
-      });
-  }, []);
-
-  const shouldRenderBuilderContent = content || isPreviewing();
+  const content = getContentForPathname(route.path);
 
   return (
-    <View style={styles.container}>
-      <Text>Hello world from your React-Native codebase. Below is your Builder content:</Text>
-      {shouldRenderBuilderContent ? (
+    <Fragment>
+      {content ? (
         <RenderContent
           apiKey={BUILDER_API_KEY}
           model="page"
@@ -77,7 +55,7 @@ const BuilderContent = ({ route }) => {
         <Text>Not Found.</Text>
       )}
       <StatusBar style="auto" />
-    </View>
+    </Fragment>
   );
 };
 
@@ -97,13 +75,3 @@ const App = () => (
 );
 
 export default App;
-
-const styles = StyleSheet.create({
-  container: {
-    padding: 20,
-  },
-  photo: {
-    width: 50,
-    height: 50,
-  },
-});
