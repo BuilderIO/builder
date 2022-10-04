@@ -7,9 +7,5 @@
     "jsxImportSource": "@builder.io/mitosis",
     "skipLibCheck": true
   },
-  "include": [
-    "tests",
-    "specs",
-    "./shared.config.ts"
-  ]
+  "include": ["tests", "specs", "./shared.config.ts"]
 }
