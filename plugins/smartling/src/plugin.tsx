@@ -59,8 +59,66 @@ registerPlugin(
     noPreviewTypes: true,
   },
   async () => {
-    const pluginPrivateKey = await appState.globalState.getPluginPrivateKey(pkg.name);
-    const api = new SmartlingApi(pluginPrivateKey);
+    const api = new SmartlingApi();
+    registerEditorOnLoad(({ safeReaction }) => {
+      safeReaction(
+        () => {
+          return String(appState.designerState.editingContentModel?.lastUpdated || '');
+        },
+        async shoudlCheck => {
+          if (!shoudlCheck) {
+            return;
+          }
+          const translationStatus =
+            appState.designerState.editingContentModel.meta.get('translationStatus');
+          const translationRequested =
+            appState.designerState.editingContentModel.meta.get('translationRequested');
+
+          // check if there's pending translation
+          const isFresh =
+            appState.designerState.editingContentModel.lastUpdated > new Date(translationRequested);
+          if (!isFresh) {
+            return;
+          }
+          const content = fastClone(appState.designerState.editingContentModel);
+          const isPending = translationStatus === 'pending';
+          const projectId = content.meta?.translationBatch?.projectId;
+          if (isPending && projectId && content.published === 'published') {
+            const lastPublishedContent = await fetch(
+              `https://cdn.builder.io/api/v2/content/${appState.designerState.editingModel.name}/${content.id}?apiKey=${appState.user.apiKey}&cachebust=true`
+            ).then(res => res.json());
+            const res = await api.getProject(projectId);
+            const sourceLocale = res.project?.sourceLocaleId;
+            const translatableFields = getTranslateableFields(
+              lastPublishedContent,
+              sourceLocale,
+              ''
+            );
+            const currentRevision = hash(stringify(translatableFields), { encoding: 'base64' });
+            appState.designerState.editingContentModel.meta.set(
+              'translationRevisionLatest',
+              currentRevision
+            );
+            if (currentRevision !== content.meta.translationRevision) {
+              showOutdatedNotifications(async () => {
+                appState.globalState.showGlobalBlockingLoading('Contacting Smartling ....');
+                await api.updateTranslationFile({
+                  translationJobId: lastPublishedContent.meta.translationJobId,
+                  translationModel: getTranslationModel().name,
+                  contentId: lastPublishedContent.id,
+                  contentModel: appState.designerState.editingModel.name,
+                  preview: lastPublishedContent.meta.lastPreviewUrl,
+                });
+                appState.globalState.hideGlobalBlockingLoading();
+              });
+            }
+          }
+        },
+        {
+          fireImmediately: true,
+        }
+      );
+    });
 
     // assign locales to custom targeting attributes
     Builder.nextTick(async () => {
@@ -292,67 +350,6 @@ registerPlugin(
         const smartlingFile = `https://dashboard.smartling.com/app/projects/${translationBatch.projectId}/strings/jobs/${translationBatch.translationJobUid}`;
         window.open(smartlingFile, '_blank', 'noreferrer,noopener');
       },
-    });
-
-    registerEditorOnLoad(({ safeReaction }) => {
-      safeReaction(
-        () => {
-          return (
-            appState.designerState.editingContentModel
-          );
-        },
-        async shoudlCheck => {
-          if (!shoudlCheck) {
-            return;
-          }
-          const translationStatus = appState.designerState.editingContentModel.meta.get('translationStatus');
-          const translationRequested = appState.designerState.editingContentModel.meta.get('translationRequested');
-
-          // check if there's pending translation
-          const isFresh =
-            appState.designerState.editingContentModel.lastUpdated >
-            new Date(translationRequested);
-          if (!isFresh) {
-            return;
-          }
-          const content = fastClone(appState.designerState.editingContentModel);
-          const isPending = translationStatus === 'pending';
-          const projectId = content.meta?.translationBatch?.projectId;
-          if (isPending && projectId && content.published === 'published') {
-            const res = await api.getProject(projectId);
-            const sourceLocale = res.project?.sourceLocaleId;
-            const lastPublishedContent = await fetch(
-              `https://cdn.builder.io/api/v2/content/${appState.designerState.editingModel.name}/${content.id}?apiKey=${appState.user.apiKey}&cachebust=true`
-            ).then(res => res.json());
-            const translatableFields = getTranslateableFields(
-              lastPublishedContent,
-              sourceLocale,
-              ''
-            );
-            const currentRevision = hash(stringify(translatableFields), { encoding: 'base64' });
-            appState.designerState.editingContentModel.meta.set(
-              'translationRevisionLatest',
-              currentRevision
-            );
-            if (currentRevision !== content.meta.translationRevision) {
-              showOutdatedNotifications(async () => {
-                appState.globalState.showGlobalBlockingLoading('Contacting Smartling ....');
-                await api.updateTranslationFile({
-                  translationJobId: lastPublishedContent.meta.translationJobId,
-                  translationModel: getTranslationModel().name,
-                  contentId: lastPublishedContent.id,
-                  contentModel: appState.designerState.editingModel.name,
-                  preview: lastPublishedContent.meta.lastPreviewUrl,
-                });
-                appState.globalState.hideGlobalBlockingLoading();
-              });
-            }
-          }
-        },
-        {
-          fireImmediately: true,
-        }
-      );
     });
 
     Builder.registerEditor({
