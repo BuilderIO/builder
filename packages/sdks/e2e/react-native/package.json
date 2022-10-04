@@ -6,7 +6,11 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "build": "echo 'no need to build react-native.'",
+    "dev": "yarn run web",
+    "e2e": "../../node_modules/.bin/playwright test",
+    "serve": "yarn run web"
   },
   "dependencies": {
     "@builder.io/sdk-react-native": "workspace:*",
