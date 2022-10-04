@@ -34,6 +34,9 @@ export const setupBrowserForEditing = () => {
           // type: process.env.SDK_TYPE,
           // version: process.env.SDK_VERSION,
           supportsPatchUpdates: false,
+          // Supports builder-model="..." attribute which is needed to
+          // scope our '+ add block' button styling
+          supportsAddBlockScoping: true,
         },
       },
       '*'
