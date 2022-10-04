@@ -1,5 +1,5 @@
-import { CanTrack } from '../types/can-track.js';
-import { OrgId } from './document-cookie';
+import type { CanTrack } from '../types/can-track.js';
+import type { OrgId } from './document-cookie';
 
 import Storage from 'react-native-storage';
 import { isBrowser } from '../functions/is-browser.js';
@@ -48,7 +48,6 @@ export const getCookie = async ({
     const parsedName = name.replace(/_/g, '.');
 
     const data = await storage.load({ key: getStorageName(parsedName) });
-    console.log('loaded data: ', data.value);
 
     return data.value;
   } catch (err) {
@@ -72,7 +71,6 @@ export const setCookie = async ({
       return undefined;
     }
     await storage.save({ key: getStorageName(name), data: { value }, expires });
-    console.log('saved data: ', { key: name, data: { value }, expires });
   } catch (err) {
     console.warn('[COOKIE] SET error: ', err);
   }

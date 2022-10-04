@@ -1,3 +1,10 @@
+### 1.1.30
+- Add support for threhold and repeat inputs on `ScrollInvView` animations.
+
+### 1.1.29
+
+- added types for `override` option
+
 ### 1.1.27
 
 - improved logging during JSON.parse errors

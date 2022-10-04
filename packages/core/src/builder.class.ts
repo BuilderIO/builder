@@ -632,6 +632,17 @@ export interface Component {
   screenshot?: string;
 
   /**
+   * When overriding built-in components, if you don't want any special behavior that
+   * the original has, set this to `true` to skip the default behavior
+   *
+   * Default behaviors include special "virtual options", such as a custom
+   * aspect ratio editor for Images, or a special column editor for Columns
+   *
+   * Learn more about overriding built-in components here: https://www.builder.io/c/docs/custom-components-overriding
+   */
+  override?: boolean;
+
+  /**
    * Input schema for your component for users to fill in the options via a UI
    * that translate to this components props
    */
@@ -1556,6 +1567,20 @@ export class Builder {
     }
     if (isBrowser) {
       this.bindMessageListeners();
+
+      if (Builder.isEditing) {
+        parent.postMessage(
+          {
+            type: 'builder.animatorOptions',
+            data: {
+              options: {
+                version: 2,
+              },
+            },
+          },
+          '*'
+        );
+      }
       // TODO: postmessage to parent the builder info for every package
       // type: 'builder.sdk', data: { name: '@builder.io/react', version: '0.1.23' }
       // (window as any).BUILDER_VERSION = Builder.VERSION;

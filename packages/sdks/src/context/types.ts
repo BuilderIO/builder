@@ -1,6 +1,6 @@
-import { BuilderContent } from '../types/builder-content.js';
-import { ComponentInfo } from '../types/components.js';
-import { Dictionary, Nullable } from '../types/typescript.js';
+import type { BuilderContent } from '../types/builder-content.js';
+import type { ComponentInfo } from '../types/components.js';
+import type { Dictionary, Nullable } from '../types/typescript.js';
 
 export type RegisteredComponent = ComponentInfo & {
   component: any;
@@ -18,4 +18,6 @@ export interface BuilderContextInterface {
   state: BuilderRenderState;
   apiKey: string | null;
   registeredComponents: RegisteredComponents;
+  // Used to recursively store all CSS coming from a parent that would apply to a Text block
+  inheritedStyles: Record<string, unknown>;
 }

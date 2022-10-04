@@ -19,6 +19,8 @@ import { componentInfo as embedComponentInfo } from '../blocks/embed/component-i
 import { default as embed } from '../blocks/embed/embed.lite';
 import { default as Img } from '../blocks/img/img.lite';
 import { componentInfo as imgComponentInfo } from '../blocks/img/component-info.js';
+import { default as customCode } from '../blocks/custom-code/custom-code.lite';
+import { componentInfo as customCodeInfo } from '../blocks/custom-code/component-info.js';
 
 /**
  * Returns a list of all registered components.
@@ -36,4 +38,5 @@ export const getDefaultRegisteredComponents: () => RegisteredComponent[] =
     { component: Section, ...sectionComponentInfo },
     { component: Fragment, ...fragmentComponentInfo },
     { component: embed, ...embedComponentInfo },
+    { component: customCode, ...customCodeInfo },
   ];

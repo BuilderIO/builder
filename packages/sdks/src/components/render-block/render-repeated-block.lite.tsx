@@ -35,6 +35,9 @@ export default function RenderRepeatedBlock(props: Props) {
     get registeredComponents() {
       return props.repeatContext.registeredComponents;
     },
+    get inheritedStyles() {
+      return props.repeatContext.inheritedStyles;
+    },
   });
 
   return <RenderBlock block={props.block} context={props.repeatContext} />;

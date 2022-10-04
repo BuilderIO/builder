@@ -1,4 +1,4 @@
-import { CanTrack } from '../types/can-track.js';
+import type { CanTrack } from '../types/can-track.js';
 import { getLocalStorageItem, setLocalStorageItem } from './localStorage.js';
 import { checkIsDefined } from './nullable.js';
 import { uuid } from './uuid.js';

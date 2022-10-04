@@ -1,8 +1,10 @@
+import { fastClone } from '../functions/utils';
+
 export type Size = 'large' | 'medium' | 'small' | 'xsmall';
 export const sizeNames: Size[] = ['xsmall', 'small', 'medium', 'large'];
 
 // TODO: put in @builder.io/core
-export const sizes = {
+const sizes = {
   xsmall: {
     min: 0,
     default: 0,
@@ -35,4 +37,44 @@ export const sizes = {
     }
     return 'large';
   },
+};
+export type Sizes = typeof sizes;
+
+interface Breakpoints {
+  small?: number;
+  medium?: number;
+}
+
+export const getSizesForBreakpoints = ({ small, medium }: Breakpoints) => {
+  const newSizes = {
+    ...sizes, // Note: this helps get the function from sizes
+    ...fastClone(sizes), // Note: this helps to get a deep clone of fields like small, medium etc
+  };
+
+  if (!small || !medium) {
+    return newSizes;
+  }
+
+  const smallMin = Math.floor(small / 2);
+  newSizes.small = {
+    max: small,
+    min: smallMin,
+    default: smallMin + 1,
+  };
+
+  const mediumMin = newSizes.small.max + 1;
+  newSizes.medium = {
+    max: medium,
+    min: mediumMin,
+    default: mediumMin + 1,
+  };
+
+  const largeMin = newSizes.medium.max + 1;
+  newSizes.large = {
+    max: 2000, // TODO: decide upper limit
+    min: largeMin,
+    default: largeMin + 1,
+  };
+
+  return newSizes;
 };

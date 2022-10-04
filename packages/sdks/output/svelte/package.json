@@ -14,8 +14,12 @@
   },
   "main": "./package/index.js",
   "module": "./package/index.js",
-  "svelte": "./package/index.js",
+  "svelte": "./src/index.ts",
   "exports": {
+    "./src": {
+      "import": "./src/index.js",
+      "require": "./src/index.js"
+    },
     ".": {
       "import": "./package/index.js",
       "require": "./package/index.js"
@@ -26,7 +30,8 @@
     "release:patch": "yarn run build && npm version patch --no-git-tag-version && npm publish --access public",
     "release:dev": "yarn run build && npm version prerelease --no-git-tag-version && npm publish --tag dev --access public",
     "dev": "vite dev",
-    "build": "svelte-kit sync && svelte-package && rm package/package.json",
+    "build": "svelte-kit sync && svelte-package",
+    "build:watch": "svelte-kit sync && svelte-package --watch",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
   },

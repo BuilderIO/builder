@@ -1,4 +1,4 @@
-import { BuilderBlock } from '../types/builder-block.js';
+import type { BuilderBlock } from '../types/builder-block.js';
 
 export type TagName = string;
 

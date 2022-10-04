@@ -27,9 +27,6 @@ import androidx.lifecycle.lifecycleScope
 import com.example.myapplication.blocks.registerColumns
 import com.example.myapplication.blocks.registerImage
 import com.example.myapplication.blocks.registerText
-import com.google.firebase.firestore.SetOptions
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -39,8 +36,6 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import java.io.ByteArrayOutputStream
 
-
-val db = Firebase.firestore
 
 // TODO: move out of here
 var isEditing: Boolean = true
@@ -60,65 +55,6 @@ fun RenderContent(content: BuilderContent) {
     })
 
     KeepScreenOn()
-
-    if (isEditing) {
-        DisposableEffect(LocalLifecycleOwner.current) {
-            Log.d(TAG, "Init ran")
-            val docRef = db.collection(collectionName).document(docId)
-            val metaDocRef = db.collection(collectionName).document("$docId:meta")
-
-            val takeScreenshot: (Unit) -> Unit = debounce(
-                200L,
-                lifecycleOwner!!.lifecycleScope,
-            ) {
-                val window = (context as Activity).window
-                Log.d(TAG, "Init screenshot")
-                captureView(view, window) { screenshot ->
-                    // Convert bitmap to WEBP byteArray
-                    val byteArrayOutputStream = ByteArrayOutputStream()
-                    screenshot.compress(Bitmap.CompressFormat.WEBP, 60, byteArrayOutputStream)
-                    val byteArray: ByteArray = byteArrayOutputStream.toByteArray()
-
-                    val encoded = Base64.encodeToString(byteArray, Base64.DEFAULT)
-
-                    val data = hashMapOf(
-                        "screenshot" to encoded,
-                        "screenshotHeight" to dpToPixel(view.height.dp),
-                        "screenshotWidth" to dpToPixel(view.width.dp)
-                    )
-                    Log.d(TAG, "Send screenshot")
-                    metaDocRef.set(data, SetOptions.merge())
-                }
-            }
-
-            val ref = docRef.addSnapshotListener { snapshot, e ->
-                if (e != null) {
-                    Log.w(TAG, "Listen failed.", e)
-                    return@addSnapshotListener
-                }
-
-                if (snapshot != null && snapshot.exists()) {
-                    Log.d(TAG, "Got data")
-                    val gson = Gson();
-
-                    val now = System.currentTimeMillis()
-                    val json = gson.toJson(snapshot.data)
-                    val obj = Json {
-                        ignoreUnknownKeys = true
-                    }.decodeFromString<BuilderContent>(json)
-                    content = obj
-                    takeScreenshot(Unit)
-                    val timeDelta = System.currentTimeMillis() - now
-                    Log.d(TAG, "Update took $timeDelta ms")
-                } else {
-                    Log.d(TAG, "Current data: null")
-                }
-            }
-            onDispose {
-                ref.remove()
-            }
-        }
-    }
 
     Column {
         content?.data?.blocks?.forEach { block ->

@@ -69,4 +69,4 @@ You don't need to use Jetpack Compose to use this SDK, you can learn about inter
 
 ## TODO
 - Make final installable package
-- QR code based editing workflow (scan QR code in builder editor to connect your device and init editing)
+- Stress test the renderer against a larger variety of Builder content and ensure it renders as expected

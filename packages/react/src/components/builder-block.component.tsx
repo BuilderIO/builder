@@ -3,7 +3,7 @@
 import { Builder, builder, BuilderElement, Component } from '@builder.io/sdk';
 import { ClassNames, jsx } from '@emotion/core';
 import React from 'react';
-import { Size, sizeNames, sizes } from '../constants/device-sizes.constant';
+import { getSizesForBreakpoints, Size, sizeNames } from '../constants/device-sizes.constant';
 import { set } from '../functions/set';
 import { api, stringToFunction } from '../functions/string-to-function';
 import { BuilderAsyncRequestsContext, RequestOrPromise } from '../store/builder-async-requests';
@@ -11,6 +11,7 @@ import { BuilderStoreContext } from '../store/builder-store';
 import { applyPatchWithMinimalMutationChain } from '../functions/apply-patch-with-mutation';
 import { blockToHtmlString } from '../functions/block-to-html-string';
 import { Link } from './Link';
+import { fastClone } from '../functions/utils';
 
 const camelCaseToKebabCase = (str?: string) =>
   str ? str.replace(/([A-Z])/g, g => `-${g[0].toLowerCase()}`) : '';
@@ -61,9 +62,6 @@ const cssCase = (property: string) => {
 
   return str;
 };
-
-// TODO: pull from builer internal utils
-const fastClone = (obj: object) => JSON.parse(JSON.stringify(obj));
 
 // TODO: share these types in shared
 type ElementType = any;
@@ -166,7 +164,10 @@ export class BuilderBlock extends React.Component<
             );
           }
         } else {
-          styles[`@media only screen and (max-width: ${sizes[size].max}px)`] = {
+          const sizesPerBreakpoints = getSizesForBreakpoints(
+            this.privateState.context.builderContent?.meta?.breakpoints || {}
+          );
+          styles[`@media only screen and (max-width: ${sizesPerBreakpoints[size].max}px)`] = {
             '&.builder-block': self.responsiveStyles[size],
           };
         }

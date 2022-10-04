@@ -1,5 +1,5 @@
 import { isBrowser } from '../functions/is-browser.js';
-import { CanTrack } from '../types/can-track.js';
+import type { CanTrack } from '../types/can-track.js';
 import { getTopLevelDomain } from './url.js';
 
 /**

@@ -16,7 +16,7 @@
     "dev": "gatsby develop",
     "serve": "gatsby serve",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,md}\"",
-    "lint": "eslint 'src/**/*.{ts,tsx}'",
+    "lint": "eslint 'src/**/*.{js,jsx}'",
     "start": "npm run dev",
     "test": "npm run type-check && npm run lint",
     "type-check": "tsc"
@@ -25,9 +25,9 @@
     "node": ">=12.13.0"
   },
   "dependencies": {
-    "@builder.io/gatsby": "^3.0.0",
+    "@builder.io/gatsby": "^3.0.1",
     "@builder.io/react": "^2.0.4",
-    "@builder.io/widgets": "^1.0.16",
+    "@builder.io/widgets": "^1.2.23",
     "@material-ui/core": "^4.9.5",
     "classnames": "^2.2.6",
     "gatsby": "^4.8.0",

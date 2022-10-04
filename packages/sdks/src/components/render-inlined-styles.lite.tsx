@@ -1,7 +1,6 @@
 import { TARGET } from '../constants/target.js';
 import { Show, useStore, useMetadata } from '@builder.io/mitosis';
 
-// eslint-disable-next-line @builder.io/mitosis/only-default-function-and-imports
 useMetadata({
   qwik: {
     component: {

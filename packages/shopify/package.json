@@ -23,7 +23,7 @@
     "@babel/helper-plugin-utils": "^7.0.0",
     "@babel/preset-env": "^7.7.7",
     "@builder.io/react": "^2.0.4",
-    "@builder.io/sdk": "^1.1.26",
+    "@builder.io/sdk": "^1.1.29",
     "@testing-library/react": "^9.4.0",
     "@types/clean-css": "^4.2.1",
     "@types/csso": "^3.5.1",

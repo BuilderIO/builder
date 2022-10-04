@@ -18,7 +18,7 @@ import onChange from '../../lib/on-change';
 
 export { onChange };
 
-import { sizes } from '../constants/device-sizes.constant';
+import { getSizesForBreakpoints, Sizes } from '../constants/device-sizes.constant';
 import {
   BuilderAsyncRequestsContext,
   RequestOrPromise,
@@ -361,6 +361,7 @@ export class BuilderComponent extends React.Component<
   private _asyncRequests?: RequestOrPromise[];
   private _errors?: Error[];
   private _logs?: string[];
+  private sizes: Sizes;
 
   get element() {
     return this.ref;
@@ -375,6 +376,13 @@ export class BuilderComponent extends React.Component<
 
   constructor(props: BuilderComponentProps) {
     super(props);
+
+    let _content: any = this.inlinedContent;
+    if (_content && _content.content) {
+      _content = _content.content;
+    }
+
+    this.sizes = getSizesForBreakpoints(_content?.meta?.breakpoints || {});
 
     // TODO: pass this all the way down - symbols, etc
     // this.asServer = Boolean(props.hydrate && Builder.isBrowser)
@@ -461,7 +469,7 @@ export class BuilderComponent extends React.Component<
   get deviceSizeState() {
     // TODO: use context to pass this down on server
     return Builder.isBrowser
-      ? sizes.getSizeForWidth(window.innerWidth)
+      ? this.sizes.getSizeForWidth(window.innerWidth)
       : sizeMap[this.device] || 'large';
   }
 

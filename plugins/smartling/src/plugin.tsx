@@ -4,8 +4,8 @@ import {
 } from '@builder.io/commerce-plugin-tools';
 import pkg from '../package.json';
 import appState from '@builder.io/app-context';
-import isEqual from 'lodash/isEqual';
 import uniq from 'lodash/uniq';
+import isEqual from 'lodash/isEqual';
 import { getTranslationModelTemplate, getTranslationModel } from './model-template';
 import {
   registerBulkAction,
@@ -61,15 +61,18 @@ registerPlugin(
     // assign locales to custom targeting attributes
     Builder.nextTick(async () => {
       const projectResponse = await api.getAllProjects();
-      const allProjectsWithLocals = await Promise.all(
-        projectResponse.results.map(proj => api.getProject(proj.projectId).then(res => res.project))
-      );
-      const currentLocales = appState.user.organization.value.customTargetingAttributes
-        ?.get('locale')
-        ?.toJSON();
-
+      let allProjectsWithLocales: Project[] = [];
+      for (let index = 0; index < projectResponse.results.length; index++) {
+        // avoid exceeding rate limit of 5 requests per second from smartling
+        if (index % 5 === 0) {
+          await delay(1000);
+        }
+        allProjectsWithLocales.push(
+          await api.getProject(projectResponse.results[index].projectId).then(res => res.project)
+        );
+      }
       const smartlingLocales = uniq(
-        allProjectsWithLocals
+        allProjectsWithLocales
           .map(project =>
             project.targetLocales
               .filter(locale => locale.enabled)
@@ -78,6 +81,10 @@ registerPlugin(
           )
           .reduce((acc, val) => acc.concat(val), [])
       );
+
+      const currentLocales = appState.user.organization.value.customTargetingAttributes
+        ?.get('locale')
+        ?.toJSON();
 
       if (!isEqual(currentLocales?.enum, smartlingLocales)) {
         appState.user.organization.value.customTargetingAttributes.set('locale', {
@@ -292,3 +299,5 @@ const transformProject = (project: Project): Resource => {
     title: project.projectName,
   };
 };
+
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));

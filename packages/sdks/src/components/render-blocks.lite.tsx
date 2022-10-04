@@ -1,6 +1,6 @@
 import BuilderContext from '../context/builder.context.lite';
 import { isEditing } from '../functions/is-editing.js';
-import { BuilderBlock } from '../types/builder-block.js';
+import type { BuilderBlock } from '../types/builder-block.js';
 import BlockStyles from './render-block/block-styles.lite';
 import RenderBlock from './render-block/render-block.lite';
 import { For, Show, useStore, useContext } from '@builder.io/mitosis';
@@ -9,6 +9,7 @@ export type RenderBlockProps = {
   blocks?: BuilderBlock[];
   parent?: string;
   path?: string;
+  style?: Record<string, any>;
 };
 
 export default function RenderBlocks(props: RenderBlockProps) {
@@ -58,6 +59,7 @@ export default function RenderBlocks(props: RenderBlockProps) {
       dataSet={{
         class: state.className,
       }}
+      style={props.style}
       css={{
         display: 'flex',
         flexDirection: 'column',
