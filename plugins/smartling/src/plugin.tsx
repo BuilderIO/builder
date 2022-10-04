@@ -283,7 +283,7 @@ registerPlugin(
         return (
           content.published === 'published' &&
           model.name !== translationModel.name &&
-          enabledTranslationStatuses.includes(content.meta?.get('translationStatus'))
+          content.meta?.get('translationStatus') === 'pending'
         );
       },
       async onClick(content) {
