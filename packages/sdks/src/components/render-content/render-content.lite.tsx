@@ -51,6 +51,11 @@ useMetadata({
       _useMutableProps: '@builder.io/qwik',
     },
   },
+  solid: {
+    state: {
+      useContent: 'store',
+    },
+  },
 });
 
 export type RenderContentProps = {
