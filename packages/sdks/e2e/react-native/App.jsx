@@ -20,25 +20,6 @@ const linking = {
   },
 };
 
-// create a custom React component
-function CustomComponent(props) {
-  return (
-    <>
-      <Text>I am a custom component!</Text>
-      <Text>{props.text}</Text>
-    </>
-  );
-}
-
-// register your custom component with Builder
-const CUSTOM_COMPONENTS = [
-  {
-    component: CustomComponent,
-    name: 'Custom Component',
-    inputs: [{ name: 'text', type: 'string' }],
-  },
-];
-
 const BuilderContent = ({ route }) => {
   const content = getContentForPathname(route.path);
 
@@ -49,7 +30,6 @@ const BuilderContent = ({ route }) => {
           apiKey={BUILDER_API_KEY}
           model="page"
           content={content}
-          customComponents={CUSTOM_COMPONENTS}
         />
       ) : (
         <Text>Not Found.</Text>
