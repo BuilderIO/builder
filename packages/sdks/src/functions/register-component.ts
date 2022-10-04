@@ -1,5 +1,6 @@
 import type { RegisteredComponent } from '../context/types.js';
 import type { ComponentInfo, Input } from '../types/components.js';
+import { fastClone } from './fast-clone.js';
 
 /**
  * @deprecated.  Use the `customComponents` prop in RenderContent instead to provide your custom components to the builder SDK.
@@ -26,12 +27,6 @@ export const createRegisterComponentMessage = ({
   type: 'builder.registerComponent',
   data: prepareComponentInfoToSend(info),
 });
-
-/**
- * We need to serialize values to a string in case there are Proxy values, as is the case with SolidJS etc.
- */
-const fastClone = <T extends object>(obj: T): T =>
-  JSON.parse(JSON.stringify(obj));
 
 const serializeValue = (value: object): any =>
   typeof value === 'function' ? serializeFn(value) : fastClone(value);
