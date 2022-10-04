@@ -1652,7 +1652,7 @@ __metadata:
   resolution: "@builder.io/e2e-react-native@workspace:e2e/react-native"
   dependencies:
     "@babel/core": ^7.12.9
-    "@builder.io/sdk-react-native": latest
+    "@builder.io/sdk-react-native": "workspace:*"
     "@builder.io/sdks-e2e-tests": "workspace:*"
     "@expo/webpack-config": ^0.17.0
     "@react-navigation/native": ^6.0.13
@@ -1880,21 +1880,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@builder.io/sdk-react-native@npm:latest":
-  version: 0.0.9
-  resolution: "@builder.io/sdk-react-native@npm:0.0.9"
-  dependencies:
-    "@react-native-async-storage/async-storage": ^1.17.10
-    react-native-render-html: ^6.3.4
-    react-native-storage: ^1.0.1
-    react-native-video: ^5.1.1
-  peerDependencies:
-    react-native: ^0.64.3
-  checksum: 18fb68ead43de24b1688dc5dbdc556bc1d4bb9c7ed2cdd73f31246f0c147510c4645a93ae3e1b0f71f2db885b58dfdecd60ec53419d1a978cebbfde0b5173853
-  languageName: node
-  linkType: hard
-
-"@builder.io/sdk-react-native@workspace:output/react-native":
+"@builder.io/sdk-react-native@workspace:*, @builder.io/sdk-react-native@workspace:output/react-native":
   version: 0.0.0-use.local
   resolution: "@builder.io/sdk-react-native@workspace:output/react-native"
   dependencies:
