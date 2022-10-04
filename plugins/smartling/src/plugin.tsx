@@ -220,7 +220,7 @@ registerPlugin(
       },
     });
     registerContentAction({
-      label: 'Request an upated translation',
+      label: 'Request an updated translation',
       showIf(content, model) {
         const translationModel = getTranslationModel();
         return (
@@ -234,7 +234,7 @@ registerPlugin(
       async onClick(content) {
         appState.globalState.showGlobalBlockingLoading('Contacting Smartling ....');
         const lastPublishedContent = await fetch(
-          `https://cdn.builder.io/api/v2/content/${appState.designerState.editingModel.name}/${content.id}?apiKey=${appState.user.apiKey}&cachebust-true`
+          `https://cdn.builder.io/api/v2/content/${appState.designerState.editingModel.name}/${content.id}?apiKey=${appState.user.apiKey}&cachebust=true`
         ).then(res => res.json());
         await api.updateTranslationFile({
           translationJobId: lastPublishedContent.meta.translationJobId,
@@ -290,7 +290,7 @@ registerPlugin(
         const translationBatch = fastClone(content.meta).translationBatch;
         // https://dashboard.smartling.com/app/projects/0e6193784/strings/jobs/schqxtpcnxix
         const smartlingFile = `https://dashboard.smartling.com/app/projects/${translationBatch.projectId}/strings/jobs/${translationBatch.translationJobUid}`;
-        window.open(smartlingFile, '_blank', 'norerferrer,nofollow');
+        window.open(smartlingFile, '_blank', 'noreferrer,noopener');
       },
     });
 
@@ -315,10 +315,9 @@ registerPlugin(
           const projectId = content.meta?.translationBatch?.projectId;
           if (isPending && isFresh && projectId && content.published === 'published') {
             const res = await api.getProject(projectId);
-            await delay(1000);
             const sourceLocale = res.project?.sourceLocaleId;
             const lastPublishedContent = await fetch(
-              `https://cdn.builder.io/api/v2/content/${appState.designerState.editingModel.name}/${content.id}?apiKey=${appState.user.apiKey}&cachebust-true`
+              `https://cdn.builder.io/api/v2/content/${appState.designerState.editingModel.name}/${content.id}?apiKey=${appState.user.apiKey}&cachebust=true`
             ).then(res => res.json());
             const translatableFields = getTranslateableFields(
               lastPublishedContent,

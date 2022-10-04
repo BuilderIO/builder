@@ -50,7 +50,7 @@ export function showOutdatedNotifications(callback: () => void) {
         appState.snackBar.open = false;
       }}
     >
-      Request updated translation
+      Request an updated translation
     </Button>
   );
 }
