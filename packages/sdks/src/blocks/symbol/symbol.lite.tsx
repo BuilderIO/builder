@@ -2,7 +2,7 @@ import RenderContent from '../../components/render-content/render-content.lite';
 import BuilderContext from '../../context/builder.context.lite';
 import { getContent } from '../../functions/get-content/index.js';
 import type { BuilderContent } from '../../types/builder-content.js';
-import { onMount, onUpdate, useContext, useStore } from '@builder.io/mitosis';
+import { onUpdate, useContext, useStore } from '@builder.io/mitosis';
 import type { Nullable } from '../../types/typescript.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
 import { markMutable } from '../../functions/mark-mutable';
@@ -30,11 +30,10 @@ export default function Symbol(props: SymbolProps) {
 
   const state = useStore({
     className: 'builder-symbol',
-    content: null as Nullable<BuilderContent>,
-  });
-
-  onMount(() => {
-    state.content = props.symbol?.content;
+    fetchedContent: null as Nullable<BuilderContent>,
+    get contentToUse(): Nullable<BuilderContent> {
+      return props.symbol?.content || state.fetchedContent;
+    },
   });
 
   onUpdate(() => {
@@ -52,7 +51,7 @@ export default function Symbol(props: SymbolProps) {
     if (
       symbolToUse &&
       !symbolToUse.content &&
-      !state.content &&
+      !state.fetchedContent &&
       symbolToUse.model
     ) {
       getContent({
@@ -62,10 +61,10 @@ export default function Symbol(props: SymbolProps) {
           id: symbolToUse.entry,
         },
       }).then((response) => {
-        state.content = response;
+        state.fetchedContent = response;
       });
     }
-  }, [props.symbol, state.content]);
+  }, [props.symbol, state.fetchedContent]);
 
   return (
     <div
@@ -85,7 +84,7 @@ export default function Symbol(props: SymbolProps) {
           ...props.symbol?.content?.data?.state,
         })}
         model={props.symbol?.model}
-        content={markMutable(state.content)}
+        content={markMutable(state.contentToUse)}
       />
     </div>
   );
