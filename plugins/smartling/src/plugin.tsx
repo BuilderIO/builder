@@ -298,22 +298,27 @@ registerPlugin(
       safeReaction(
         () => {
           return (
-            appState.designerState.editingContentModel &&
-            appState.designerState.editingContentModel.lastUpdated
+            appState.designerState.editingContentModel
           );
         },
         async shoudlCheck => {
           if (!shoudlCheck) {
             return;
           }
-          const content = fastClone(appState.designerState.editingContentModel);
+          const translationStatus = appState.designerState.editingContentModel.meta.get('translationStatus');
+          const translationRequested = appState.designerState.editingContentModel.meta.get('translationRequested');
+
           // check if there's pending translation
-          const isPending = content.meta?.translationStatus === 'pending';
           const isFresh =
             appState.designerState.editingContentModel.lastUpdated >
-            new Date(content.meta.translationRequested);
+            new Date(translationRequested);
+          if (!isFresh) {
+            return;
+          }
+          const content = fastClone(appState.designerState.editingContentModel);
+          const isPending = translationStatus === 'pending';
           const projectId = content.meta?.translationBatch?.projectId;
-          if (isPending && isFresh && projectId && content.published === 'published') {
+          if (isPending && projectId && content.published === 'published') {
             const res = await api.getProject(projectId);
             const sourceLocale = res.project?.sourceLocaleId;
             const lastPublishedContent = await fetch(
