@@ -35,6 +35,21 @@ export function registerContextMenuAction(contextMenuAction: ContextMenuAction) 
   Builder.register('contextMenu.action', contextMenuAction);
 }
 
+export function registerEditorOnLoad(reactionCallback: (actions: ContentEditorActions) => void) {
+  Builder.register('editor.onLoad', reactionCallback);
+}
+
+interface ContentEditorActions {
+  updatePreviewUrl: (url: string) => void;
+  safeReaction<T>(
+    watchFunction: () => T,
+    reactionFunction: (arg: T) => void,
+    options?: {
+      fireImmediately: true;
+    }
+  ): void;
+}
+
 export interface CustomReactEditorProps<T = any> {
   value?: T;
   onChange(val: T | undefined): void;

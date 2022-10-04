@@ -19,7 +19,7 @@ export class SmartlingApi {
       apiKey: appState.user.apiKey,
     });
 
-    const baseUrl = new URL(`${appState.config.apiRoot()}/api/v1/smartling/${path}`);
+    const baseUrl = new URL(`http://localhost:4000/api/v1/smartling/${path}`);
     baseUrl.search = params.toString();
     return baseUrl.toString();
   }
@@ -78,6 +78,19 @@ export class SmartlingApi {
         id,
         model,
       }),
+    });
+  }
+
+  updateTranslationFile(options: {
+    translationJobId: string;
+    translationModel: string;
+    preview: string;
+    contentId: string;
+    contentModel: string;
+  }) {
+    return this.request('update-translation-file', {
+      method: 'POST',
+      body: JSON.stringify(options),
     });
   }
 }
