@@ -5,11 +5,10 @@
     "jsx": "preserve",
     "moduleResolution": "node",
     "jsxImportSource": "@builder.io/mitosis",
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "outDir": "dist"
   },
   "include": [
-    "tests",
     "specs",
-    "./shared.config.ts"
   ]
 }
