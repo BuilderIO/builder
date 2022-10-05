@@ -6,7 +6,7 @@
 </template>
 <script lang="ts">
 import { RenderContent } from '@builder.io/sdk-vue/vue2';
-import { getContentForPathname } from '@builder.io/sdks-e2e-tests/specs';
+import { getContentForPathname } from '@builder.io/sdks-e2e-tests';
 
 export default {
   name: 'DynamicallyRenderBuilderPage',

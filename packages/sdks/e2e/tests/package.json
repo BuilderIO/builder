@@ -3,7 +3,18 @@
   "description": "Workspace containing e2e tests for SDKs",
   "private": true,
   "version": "0.0.1",
+  "scripts": {
+    "build": "tsc --project tsconfig.build.json"
+  },
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "exports": {
+    ".": "./dist/index.js",
+    "./*": "./dist/*.js"
+  },
   "devDependencies": {
-    "@playwright/test": "^1.24.0"
+    "@playwright/test": "^1.24.0",
+    "typescript": "^4.8.4"
   }
 }

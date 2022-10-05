@@ -1,19 +1,33 @@
-import type { PlaywrightTestConfig } from '@playwright/test';
 import { devices } from '@playwright/test';
+import { targetContext } from './dist/tests/context.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-import { targetContext } from './tests/context';
+const getDirName = () => {
+  try {
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(__filename);
+    return __dirname;
+  } catch (error) {
+    return '.';
+  }
+};
 
 /**
+ * @typedef {import('@playwright/test').PlaywrightTestConfig}
  * See https://playwright.dev/docs/test-configuration.
+ * @param {string} packageName
+ * @param {number} port
+ * @return {PlaywrightTestConfig}
  */
-export function configFor(
-  packageName: string,
-  port: number
-): PlaywrightTestConfig {
+export function configFor(packageName, port) {
   targetContext.name = packageName;
 
+  const isReactNative = packageName.includes('react-native');
+  const portFlag = isReactNative ? '' : `--port=${port}`;
+
   return {
-    testDir: __dirname + '/tests',
+    testDir: getDirName() + '/tests',
     /* Maximum time one test can run for. */
     timeout: 30 * 1000,
     expect: {
@@ -28,7 +42,7 @@ export function configFor(
     /* Fail the build on CI if you accidentally left test.only in the source code. */
     forbidOnly: !!process.env.CI,
     /* Retry on CI only */
-    retries: process.env.CI ? 2 : 0,
+    retries: 2,
     /* Opt out of parallel tests on CI. */
     workers: process.env.CI ? 1 : undefined,
     /* Reporter to use. See https://playwright.dev/docs/test-reporters */
@@ -107,7 +121,7 @@ export function configFor(
     // also to test against "run dev" for a faster development cycle.
 
     webServer: {
-      command: `yarn workspace @builder.io/${packageName} run serve --port ${port}`,
+      command: `yarn workspace @builder.io/${packageName} run serve ${portFlag}`,
       port,
       reuseExistingServer: false,
     },

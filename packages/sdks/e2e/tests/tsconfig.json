@@ -2,9 +2,12 @@
   "compilerOptions": {
     "target": "ESNext",
     "strict": true,
+    "allowSyntheticDefaultImports": true,
     "jsx": "preserve",
     "moduleResolution": "node",
-    "jsxImportSource": "@builder.io/mitosis"
+    "module": "ESNext",
+    "jsxImportSource": "@builder.io/mitosis",
+    "skipLibCheck": true
   },
-  "include": ["tests", "./shared.config.ts"]
+  "include": ["tests", "src"]
 }
