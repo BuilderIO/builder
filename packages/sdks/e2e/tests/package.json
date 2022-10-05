@@ -17,8 +17,7 @@
     "./specs": {
       "import": "./dist/index.js",
       "require": "./dist/index.js"
-    },
-    "./shared.config": "./shared.config.js"
+    }
   },
   "devDependencies": {
     "@playwright/test": "^1.24.0",

@@ -1,7 +1,7 @@
-import { CONTENT as columns } from './columns';
-import { CONTENT as homepage } from './homepage';
-import { CONTENT as symbols } from './symbols';
-import { CONTENT as dataBindings } from './data-bindings';
+import { CONTENT as columns } from './columns.js';
+import { CONTENT as homepage } from './homepage.js';
+import { CONTENT as symbols } from './symbols.js';
+import { CONTENT as dataBindings } from './data-bindings.js';
 
 // TO-DO: import real content type from SDKs
 type BuilderContent = Partial<{ data: { [index: string]: any } }>;

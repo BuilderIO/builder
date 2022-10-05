@@ -1,7 +1,7 @@
 import type { Page } from '@playwright/test';
 import { test, expect } from '@playwright/test';
 
-import { targetContext } from './context';
+import { targetContext } from './context.js';
 
 // test.describe.configure({ mode: 'serial' });
 

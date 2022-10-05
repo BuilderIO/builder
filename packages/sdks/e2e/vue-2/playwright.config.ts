@@ -1,3 +1,3 @@
-import { configFor } from '@builder.io/sdks-e2e-tests/shared.config';
+import { configFor } from '@builder.io/sdks-e2e-tests';
 
 export default configFor('e2e-vue2', 7505);

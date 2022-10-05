@@ -1,6 +1,6 @@
 import { component$ } from '@builder.io/qwik';
 import { RenderContent } from '@builder.io/sdk-qwik';
-import { getContentForPathname } from '@builder.io/sdks-e2e-tests/specs';
+import { getContentForPathname } from '@builder.io/sdks-e2e-tests';
 
 export interface MainProps {
   url: string;

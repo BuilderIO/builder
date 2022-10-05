@@ -1,12 +1,9 @@
 {
+  "extends": "./tsconfig.json",
   "compilerOptions": {
-    "target": "ESNext",
-    "strict": true,
-    "jsx": "preserve",
-    "moduleResolution": "node",
-    "jsxImportSource": "@builder.io/mitosis",
-    "skipLibCheck": true,
-    "outDir": "dist"
+    "outDir": "dist",
   },
-  "include": ["specs"]
+  "include": [
+    "src"
+  ]
 }

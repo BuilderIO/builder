@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { RenderContent } from '@builder.io/sdk-react';
-import { getContentForPathname } from '@builder.io/sdks-e2e-tests/specs';
+import { getContentForPathname } from '@builder.io/sdks-e2e-tests';
 import { useRouter } from 'next/router';
 
 // TODO: enter your public API key

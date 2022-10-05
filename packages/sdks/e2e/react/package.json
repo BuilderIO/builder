@@ -2,6 +2,7 @@
   "name": "@builder.io/e2e-react",
   "private": true,
   "version": "0.0.1",
+  "type": "module",
   "scripts": {
     "build": "tsc --noEmit && vite build",
     "dev": "tsc --noEmit && vite",
