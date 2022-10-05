@@ -9,8 +9,5 @@
     "jsxImportSource": "@builder.io/mitosis",
     "skipLibCheck": true
   },
-  "include": [
-    "tests",
-    "src"
-  ]
+  "include": ["tests", "src"]
 }
