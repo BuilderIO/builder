@@ -372,6 +372,7 @@ export default function RenderContent(props: RenderContentProps) {
         ref={elementRef}
         onClick={(event) => state.onClick(event)}
         builder-content-id={state.useContent?.id}
+        builder-model={props.model}
       >
         {state.shouldRenderContentStyles && (
           <RenderContentStyles
