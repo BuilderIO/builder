@@ -47,9 +47,7 @@ test.describe(targetContext.name, () => {
   test('data-bindings', async ({ page }) => {
     await page.goto('/data-bindings');
 
-    await expect(
-      page.locator('.builder-text').filter({ hasText: `1234` }).first()
-    ).toBeVisible();
+    await expect(page.locator(`text="1234"`).first()).toBeVisible();
     await findTextInPage({
       page,
       text: 'The Hot Wheels™ Legends Tour is Back',

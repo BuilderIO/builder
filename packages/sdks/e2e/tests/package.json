@@ -10,14 +10,8 @@
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.js"
-    },
-    "./specs": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.js"
-    }
+    ".": "./dist/index.js",
+    "./*": "./dist/*.js"
   },
   "devDependencies": {
     "@playwright/test": "^1.24.0",
