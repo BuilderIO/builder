@@ -8,7 +8,13 @@ import { isEditing } from './is-editing.js';
 interface Event {
   type: 'click' | 'impression';
   data: {
+    /**
+     * (Optional) The content's ID. Useful if this event pertains to a specific piece of content.
+     */
     contentId?: string;
+    /**
+     * This is the ID of the space that the content belongs to.
+     */
     ownerId: string;
     metadata?: string;
     sessionId: string | undefined;
@@ -38,12 +44,19 @@ const getTrackingEventData = async ({
   };
 };
 
-type EventProperties = {
-  type: Event['type'];
-  orgId: Event['data']['ownerId'];
-  contentId: Event['data']['contentId'];
-  [index: string]: any;
-};
+type EventProperties = Pick<Event, 'type'> &
+  Pick<Event['data'], 'ownerId' | 'contentId'> & {
+    /**
+     * This is the ID of the space that the content belongs to.
+     */
+    orgId: Event['data']['ownerId'];
+    /**
+     * (Optional) metadata that you want to provide with your event.
+     */
+    metadata: {
+      [index: string]: any;
+    };
+  };
 
 export type EventProps = EventProperties & CanTrack;
 
@@ -52,11 +65,11 @@ const createEvent = async ({
   canTrack,
   orgId,
   contentId,
-  ...properties
+  metadata,
 }: EventProps): Promise<Event> => ({
   type: eventType,
   data: {
-    ...properties,
+    metadata: JSON.stringify(metadata),
     ...(await getTrackingEventData({ canTrack })),
     ownerId: orgId,
     contentId,
@@ -88,3 +101,6 @@ export async function track(eventProps: EventProps) {
     console.error('Failed to track: ', err);
   });
 }
+
+export const trackExternal = (args: EventProperties) =>
+  track({ ...args, canTrack: true });
