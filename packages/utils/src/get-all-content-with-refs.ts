@@ -24,6 +24,7 @@ export async function getContentWithAllReferences(
   modelName: string,
   options: GetContentOptions
 ) {
+
   const content: BuilderContent = await builderInstance.get(modelName, options).toPromise();
 
   return await resolveRefs(content, builderInstance);
