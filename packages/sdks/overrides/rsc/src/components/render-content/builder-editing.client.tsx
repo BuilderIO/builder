@@ -1,14 +1,36 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { setupBrowserForEditing } from '../../scripts/init-editing.js';
 import type { RegisteredComponent } from '../../context/types.js';
 import type { BuilderContent } from '../../types/builder-content.js';
+
+export type OnUpdateCallback = (content: BuilderContent) => void;
 
 export type BuilderEditingProps = {
   model: string;
   components?: RegisteredComponent[];
   children: any;
-  onUpdate?: (content: BuilderContent) => void;
+  onUpdate?: OnUpdateCallback;
 };
+
+export function getBuilderEditing({
+  onUpdate,
+  components,
+}: {
+  onUpdate: OnUpdateCallback;
+  components: RegisteredComponent[];
+}) {
+  return (props: { model: string; children: React.ReactNode }) => (
+    <BuilderEditing
+      model={props.model}
+      onUpdate={onUpdate}
+      children={props.children}
+      components={components.filter((cmp) => ({
+        ...cmp,
+        component: undefined,
+      }))}
+    />
+  );
+}
 
 export default function BuilderEditing(props: BuilderEditingProps) {
   useEffect(() => {
@@ -29,7 +51,7 @@ export default function BuilderEditing(props: BuilderEditingProps) {
     function onMessage(e: MessageEvent) {
       switch (e.data?.type) {
         case 'builder.contentUpdate': {
-          props.onUpdate(e.data.data);
+          props.onUpdate?.(e.data.data);
         }
       }
     }

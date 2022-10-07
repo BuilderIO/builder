@@ -1,0 +1,12 @@
+{
+  "port": 3000,
+  "workerFile": "dist/worker/index.js",
+  "assetsDir": "dist/client",
+  "buildCommand": "yarn build",
+  "modules": true,
+  "watch": true,
+  "buildWatchPaths": [
+    "./src"
+  ],
+  "autoReload": true
+}
