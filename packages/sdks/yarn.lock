@@ -14905,7 +14905,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "hydrogen-app@workspace:e2e/rsc"
   dependencies:
-    "@builder.io/sdk-react-native": "workspace:*"
+    "@builder.io/sdk-react": "workspace:*"
     "@builder.io/sdks-e2e-tests": "workspace:*"
     "@headlessui/react": ^1.7.0
     "@shopify/cli": 3.16.1

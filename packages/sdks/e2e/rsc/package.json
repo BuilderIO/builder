@@ -36,9 +36,8 @@
     "vite": "^2.9.13",
     "vitest": "^0.15.2"
   },
-  "prettier": "@shopify/prettier-config",
   "dependencies": {
-    "@builder.io/sdk-react-native": "workspace:*",
+    "@builder.io/sdk-react": "workspace:*",
     "@builder.io/sdks-e2e-tests": "workspace:*",
     "@headlessui/react": "^1.7.0",
     "@shopify/hydrogen": "^1.4.3",
