@@ -4,6 +4,8 @@ import {CUSTOM_COMPONENTS} from '../../routes/builder-demo.server'
 export const BuilderEditing = getBuilderEditing({
   components: CUSTOM_COMPONENTS,
   onUpdate: (content) => {
+    // On update, post to the server to be able to serve the latest draft
+    // in real time
     fetch('/api/builderData', {
       body: JSON.stringify(content),
       method: 'POST',

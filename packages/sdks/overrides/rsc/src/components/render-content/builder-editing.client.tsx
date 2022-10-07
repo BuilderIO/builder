@@ -12,24 +12,30 @@ export type BuilderEditingProps = {
   onUpdate?: OnUpdateCallback;
 };
 
-export function getBuilderEditing({
-  onUpdate,
-  components,
-}: {
+export function getBuilderEditing(options: {
   onUpdate: OnUpdateCallback;
-  components: RegisteredComponent[];
+  components?: RegisteredComponent[];
 }) {
-  return (props: { model: string; children: React.ReactNode }) => (
-    <BuilderEditing
-      model={props.model}
-      onUpdate={onUpdate}
-      children={props.children}
-      components={components.filter((cmp) => ({
-        ...cmp,
-        component: undefined,
-      }))}
-    />
-  );
+  return function BuilderEditingWrapper(props: {
+    model: string;
+    children: React.ReactNode;
+    components?: RegisteredComponent[];
+  }) {
+    const components = (options.components || []).concat(
+      props.components || []
+    );
+    return (
+      <BuilderEditing
+        model={props.model}
+        onUpdate={options.onUpdate}
+        children={props.children}
+        components={components.filter((cmp) => ({
+          ...cmp,
+          component: undefined,
+        }))}
+      />
+    );
+  };
 }
 
 export default function BuilderEditing(props: BuilderEditingProps) {
