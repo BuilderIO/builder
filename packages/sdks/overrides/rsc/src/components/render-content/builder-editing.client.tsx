@@ -1,14 +1,13 @@
 import { useEffect } from 'react';
 import { setupBrowserForEditing } from '../../scripts/init-editing.js';
+import type { RegisteredComponent } from '../../context/types.js';
 
 export type BuilderEditingProps = {
   model: string;
-  components?: Partial<BuilderComponent>[];
+  components?: RegisteredComponent[];
   children: any;
   onEditingUpdate?: (url: URL) => void;
 };
-
-let browserSetup = false;
 
 export default function BuilderEditing(props: BuilderEditingProps) {
   useEffect(() => {
