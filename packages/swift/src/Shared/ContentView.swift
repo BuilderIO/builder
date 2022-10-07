@@ -1,5 +1,4 @@
 import SwiftUI
-import SwiftyJSON
 
 
 struct ContentView: View {
@@ -17,8 +16,11 @@ struct ContentView: View {
     
     var body: some View {
         ScrollView {
-            RenderContent(content: $content.wrappedValue!)
+            if $content.wrappedValue != nil {
+                RenderContent(content: $content.wrappedValue!)
+            }
         }
+        
         Button("Reload") {
             fetchContent()
         }

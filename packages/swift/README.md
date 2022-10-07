@@ -12,7 +12,7 @@ Render Builder.io content to SwiftUI, including registering your SwiftUI compone
 
 See [ContentView.swift](./src/Shared/ContentView.swift) for a usage example
 
-```swift
+```swiçft
 struct ContentView: View {
     @State var content: BuilderContent? = nil
 
@@ -28,8 +28,11 @@ struct ContentView: View {
 
     var body: some View {
         ScrollView {
-            RenderContent(content: $content.wrappedValue!)
+            if $content.wrappedValue != nil {
+                RenderContent(content: $content.wrappedValue!)
+            }
         }
+
         Button("Reload") {
             fetchContent()
         }

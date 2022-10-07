@@ -89,7 +89,6 @@
 		AF15815A26B83DE000531EAD /* Tests macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF15815E26B83DE000531EAD /* Tests_macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOS.swift; sourceTree = "<group>"; };
 		AF15816026B83DE000531EAD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		AF7E5E5026BA0EA600AB0FF5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B52B583E91FB93CBCFDB4841 /* Pods-testing (macOS).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-testing (macOS).release.xcconfig"; path = "Target Support Files/Pods-testing (macOS)/Pods-testing (macOS).release.xcconfig"; sourceTree = "<group>"; };
 		EBB2D943D052A0F66C9E5D36 /* libPods-testing (macOS).a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-testing (macOS).a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF83C0DD6DDD34AE6F894C94 /* Pods_testing__iOS_.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_testing__iOS_.framework; sourceTree = BUILT_PRODUCTS_DIR; };
