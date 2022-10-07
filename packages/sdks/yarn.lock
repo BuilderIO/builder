@@ -1757,13 +1757,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis-cli@npm:^0.0.31":
-  version: 0.0.31
-  resolution: "@builder.io/mitosis-cli@npm:0.0.31"
+"@builder.io/mitosis-cli@npm:dev":
+  version: 0.0.32-0
+  resolution: "@builder.io/mitosis-cli@npm:0.0.32-0"
   dependencies:
     "@babel/core": ^7.17.8
     "@babel/preset-typescript": ^7.16.7
-    "@builder.io/mitosis": 0.0.70
+    "@builder.io/mitosis": 0.0.72-0
     "@vue/compiler-sfc": ^3.1.5
     babel-preset-solid: ^1.3.13
     chalk: ^4.1.0
@@ -1784,13 +1784,13 @@ __metadata:
     vue-template-validator: ^1.1.5
   bin:
     mitosis: bin/mitosis
-  checksum: 6d1a2e581f18f99c66bd704420d9c475199bfabb5690868910c981ae4eafd7ccf600a532fbed25236c33c4c14114c1ec115aede50f10242421cf5073ec7e696a
+  checksum: d0bdb83e9bfbab38103534b4bc3c5ab482f4694e8caf519079fe9b03505dc782f37bbf7d25ffa88a1da30ae791252ce6ff143d8dce02cfece55e0ce9926a8e7f
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis@npm:0.0.70, @builder.io/mitosis@npm:^0.0.70":
-  version: 0.0.70
-  resolution: "@builder.io/mitosis@npm:0.0.70"
+"@builder.io/mitosis@npm:0.0.72-0, @builder.io/mitosis@npm:dev":
+  version: 0.0.72-0
+  resolution: "@builder.io/mitosis@npm:0.0.72-0"
   dependencies:
     "@angular/compiler": ^11.2.11
     "@babel/core": 7.14.5
@@ -1821,7 +1821,7 @@ __metadata:
     traverse: ^0.6.6
     typescript: ^4.7.3
     vue: ~2.6
-  checksum: 6ec57245a943cfc970bc31ef2dbcfcd30b423105170013511487deffba6bd088b62615bad679dbd2de8322897f6bbac44e9ec41b3beb8ce3e426fed7137b9245
+  checksum: 39a4a40ee5ac5d55204b8170279801991e04b9ac31c11ecdffdf6d41e5d1002baeb55067703fd3932870ed7067d839859fbc0f9c15579a7dde56fdaf9dc6ff5f
   languageName: node
   linkType: hard
 
@@ -2012,8 +2012,8 @@ __metadata:
   resolution: "@builder.io/sdks@workspace:."
   dependencies:
     "@builder.io/eslint-plugin-mitosis": ^0.0.10
-    "@builder.io/mitosis": ^0.0.70
-    "@builder.io/mitosis-cli": ^0.0.31
+    "@builder.io/mitosis": dev
+    "@builder.io/mitosis-cli": dev
     "@playwright/test": ^1.24.0
     "@types/jest": ^27.4.1
     "@types/node-fetch": ^2.5.12
