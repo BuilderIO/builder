@@ -12,10 +12,14 @@ export async function api(
 ) {
   const body = await request.json();
 
+  // TODO: why not working
   await session?.set(
     `builderEditingContent:${body.key}`,
     JSON.stringify(body.data || null)
   );
+
+  // TODO: remove
+  builderEditingContentCache[body.key] = body.data || null;
 
   return {
     message: 'Done',

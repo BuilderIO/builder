@@ -3,6 +3,7 @@ import { useQuery, useSession, useUrl } from '@shopify/hydrogen';
 import { Layout } from '~/components/index.server';
 import { CUSTOM_COMPONENTS } from '../components/builder-components.server';
 import { BuilderEditing } from '../components/builder/builder-editing.client';
+import { builderEditingContentCache } from './api/builderData.server';
 
 const MODEL_NAME = 'demo';
 const BUILDER_PUBLIC_API_KEY = '';
@@ -13,7 +14,9 @@ export default function BuilderDemo() {
   const sessionData = useSession();
 
   const content = isEditing
-    ? JSON.parse(sessionData[`builderEditingContent:${MODEL_NAME}`] || 'null')
+    ? JSON.parse(
+        sessionData[`builderEditingContent:${MODEL_NAME}`] || 'null'
+      ) || builderEditingContentCache[MODEL_NAME]
     : useQuery([MODEL_NAME, pathname], async () => {
         return await getContent({
           model: MODEL_NAME,
@@ -24,7 +27,6 @@ export default function BuilderDemo() {
         }).promise();
       });
 
-  console.log('RenderContent', RenderContent)
   const serverContent = (
     <RenderContent
       model="demo"
@@ -32,6 +34,9 @@ export default function BuilderDemo() {
       customComponents={CUSTOM_COMPONENTS}
     />
   );
+
+  console.log('content', content, sessionData);
+
   return (
     <Layout>
       {isEditing ? (

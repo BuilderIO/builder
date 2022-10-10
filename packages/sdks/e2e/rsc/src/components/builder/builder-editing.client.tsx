@@ -8,8 +8,6 @@ import throttle from 'lodash.throttle';
 export function BuilderEditing(props: BuilderEditingProps) {
   const navigate = useNavigate();
 
-  console.log('BuilderEditingWrapper', BuilderEditingWrapper)
-
   return (
     <BuilderEditingWrapper
       {...props}
@@ -24,6 +22,7 @@ export function BuilderEditing(props: BuilderEditingProps) {
           fetch('/api/builderData', {
             body: JSON.stringify(content),
             method: 'POST',
+            credentials: 'same-origin',
             headers: {
               'Content-Type': 'application/json',
             },
