@@ -6,7 +6,7 @@ import { BuilderEditing } from '../components/builder/builder-editing.client';
 import { builderEditingContentCache } from './api/builderData.server';
 
 const MODEL_NAME = 'demo';
-const BUILDER_PUBLIC_API_KEY = '';
+const BUILDER_PUBLIC_API_KEY = '8c6ee4960b4d4f5fb8aebf5491b26ea5';
 
 export default function BuilderDemo() {
   const { searchParams, pathname } = useUrl();
@@ -24,10 +24,9 @@ export default function BuilderDemo() {
           userAttributes: {
             urlPath: pathname,
           },
-        }).promise();
-      });
+        });
+      }).data;
 
-  console.log('firstBlock', content?.data?.blocks?.[0]?.responsiveStyles?.large);
   const serverContent = (
     <RenderContent
       model="demo"

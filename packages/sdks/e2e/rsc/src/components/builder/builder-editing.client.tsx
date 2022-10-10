@@ -1,5 +1,5 @@
 import {
-  BuilderEditing as BuilderEditingWrapper,
+  BuilderEditingWrapper,
   BuilderEditingProps,
 } from '@builder.io/sdk-react/rsc';
 import { useNavigate } from '@shopify/hydrogen';

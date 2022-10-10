@@ -33,7 +33,7 @@ useMetadata({
       isLight: true,
     },
   },
-  elementTag: 'state.tagName',
+  elementTag: 'state.tag',
   componentElementTag: 'state.renderComponentTag',
 });
 
@@ -63,7 +63,7 @@ export default function RenderBlock(props: RenderBlockProps) {
         return ref;
       }
     },
-    get tagName() {
+    get tag() {
       return getBlockTag(state.useBlock);
     },
     get useBlock(): BuilderBlock {
@@ -217,12 +217,12 @@ export default function RenderBlock(props: RenderBlockProps) {
        * Svelte is super finicky, and does not allow an empty HTML element (e.g. `img`) to have logic inside of it,
        * _even_ if that logic ends up not rendering anything.
        */}
-      <Show when={isEmptyHtmlElement(state.tagName)}>
-        <state.tagName {...state.attributes} />
+      <Show when={isEmptyHtmlElement(state.tag)}>
+        <state.tag {...state.attributes} />
       </Show>
       <Show
         when={
-          !isEmptyHtmlElement(state.tagName) &&
+          !isEmptyHtmlElement(state.tag) &&
           TARGET === 'vue2' &&
           state.repeatItemData
         }
@@ -241,7 +241,7 @@ export default function RenderBlock(props: RenderBlockProps) {
       </Show>
       <Show
         when={
-          !isEmptyHtmlElement(state.tagName) &&
+          !isEmptyHtmlElement(state.tag) &&
           TARGET !== 'vue2' &&
           state.repeatItemData
         }
@@ -256,8 +256,8 @@ export default function RenderBlock(props: RenderBlockProps) {
           )}
         </For>
       </Show>
-      <Show when={!isEmptyHtmlElement(state.tagName) && !state.repeatItemData}>
-        <state.tagName {...state.attributes}>
+      <Show when={!isEmptyHtmlElement(state.tag) && !state.repeatItemData}>
+        <state.tag {...state.attributes}>
           <state.renderComponentTag {...state.renderComponentProps} />
           {/**
            * We need to run two separate loops for content + styles to workaround the fact that Vue 2
@@ -281,7 +281,7 @@ export default function RenderBlock(props: RenderBlockProps) {
               />
             )}
           </For>
-        </state.tagName>
+        </state.tag>
       </Show>
     </Show>
   );
