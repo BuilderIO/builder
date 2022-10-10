@@ -1827,13 +1827,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis-cli@npm:dev":
-  version: 0.0.32-0
-  resolution: "@builder.io/mitosis-cli@npm:0.0.32-0"
+"@builder.io/mitosis-cli@npm:0.0.32-3":
+  version: 0.0.32-3
+  resolution: "@builder.io/mitosis-cli@npm:0.0.32-3"
   dependencies:
     "@babel/core": ^7.17.8
     "@babel/preset-typescript": ^7.16.7
-    "@builder.io/mitosis": 0.0.72-0
+    "@builder.io/mitosis": 0.0.72-2
     "@vue/compiler-sfc": ^3.1.5
     babel-preset-solid: ^1.3.13
     chalk: ^4.1.0
@@ -1854,13 +1854,13 @@ __metadata:
     vue-template-validator: ^1.1.5
   bin:
     mitosis: bin/mitosis
-  checksum: d0bdb83e9bfbab38103534b4bc3c5ab482f4694e8caf519079fe9b03505dc782f37bbf7d25ffa88a1da30ae791252ce6ff143d8dce02cfece55e0ce9926a8e7f
+  checksum: 23181eb216bd0301d55832686e382a82ee6bb643fcb2aaa109780d59d222131fbc57eb7f74a949e2b3cd0754babe01a81a5cf2402c7cf8bcbe7e53983d9f084f
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis@npm:0.0.72-0, @builder.io/mitosis@npm:dev":
-  version: 0.0.72-0
-  resolution: "@builder.io/mitosis@npm:0.0.72-0"
+"@builder.io/mitosis@npm:0.0.72-2":
+  version: 0.0.72-2
+  resolution: "@builder.io/mitosis@npm:0.0.72-2"
   dependencies:
     "@angular/compiler": ^11.2.11
     "@babel/core": 7.14.5
@@ -1891,7 +1891,7 @@ __metadata:
     traverse: ^0.6.6
     typescript: ^4.7.3
     vue: ~2.6
-  checksum: 39a4a40ee5ac5d55204b8170279801991e04b9ac31c11ecdffdf6d41e5d1002baeb55067703fd3932870ed7067d839859fbc0f9c15579a7dde56fdaf9dc6ff5f
+  checksum: 8ce3219d24bfd0a5d85b58d2e3de294b12b8260f0eddec59f3a662e4fa6eef45b3f4b92468171367b113c7b737eeacfda56a615e6449aa6da7ba81c8a0b54f39
   languageName: node
   linkType: hard
 
@@ -2082,8 +2082,8 @@ __metadata:
   resolution: "@builder.io/sdks@workspace:."
   dependencies:
     "@builder.io/eslint-plugin-mitosis": ^0.0.10
-    "@builder.io/mitosis": dev
-    "@builder.io/mitosis-cli": dev
+    "@builder.io/mitosis": 0.0.72-2
+    "@builder.io/mitosis-cli": 0.0.32-3
     "@playwright/test": ^1.24.0
     "@types/jest": ^27.4.1
     "@types/node-fetch": ^2.5.12
@@ -5374,6 +5374,22 @@ __metadata:
   dependencies:
     "@types/node": "*"
   checksum: e009a2bfb50e90ca9b7c6e8f648f8464067271fd99116f881073fa6fa76dc8d0133181dd65e6614d5fb1220d671d67b0124aef7d97dc02d7e342ab143a47779d
+  languageName: node
+  linkType: hard
+
+"@types/lodash.throttle@npm:^4.1.7":
+  version: 4.1.7
+  resolution: "@types/lodash.throttle@npm:4.1.7"
+  dependencies:
+    "@types/lodash": "*"
+  checksum: 6e1b3836488fecbdc537b6ad9b3fe4855c7336b0fa388773cd57d486619f565a48cabc04b28677fd3819be3f2d13d2bb8f9d4428aa5632885c86cb99729bfd69
+  languageName: node
+  linkType: hard
+
+"@types/lodash@npm:*":
+  version: 4.14.186
+  resolution: "@types/lodash@npm:4.14.186"
+  checksum: ee0c1368a8100bb6efb88335107473a41928fc307ff1ef4ff1278868ccddba9c04c68c36d1ffe3a0392ef4a956e1955f7de3203ec09df4f1655dd1b88485c549
   languageName: node
   linkType: hard
 
@@ -14914,6 +14930,7 @@ __metadata:
     "@shopify/prettier-config": ^1.1.2
     "@tailwindcss/forms": ^0.5.2
     "@tailwindcss/typography": ^0.5.2
+    "@types/lodash.throttle": ^4.1.7
     "@types/react": ^18.0.14
     clsx: ^1.1.1
     eslint: ^8.18.0

@@ -1,1 +1,1 @@
-export * from '../components/render-content/builder-editing.client'
+export * from '../components/render-content/builder-editing'

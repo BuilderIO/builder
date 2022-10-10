@@ -41,6 +41,7 @@
     "@builder.io/sdks-e2e-tests": "workspace:*",
     "@headlessui/react": "^1.7.0",
     "@shopify/hydrogen": "^1.4.3",
+    "@types/lodash.throttle": "^4.1.7",
     "clsx": "^1.1.1",
     "graphql-tag": "^2.12.6",
     "lodash.throttle": "^4.1.1",

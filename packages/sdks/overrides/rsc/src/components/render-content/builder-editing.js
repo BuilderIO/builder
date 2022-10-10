@@ -3,7 +3,10 @@ import { setupBrowserForEditing } from '../../scripts/init-editing.js';
 import type { RegisteredComponent } from '../../context/types.js';
 import type { BuilderContent } from '../../types/builder-content.js';
 
-export type OnUpdateCallback = (content: BuilderContent) => void;
+export type OnUpdateCallback = (data: {
+  data: BuilderContent;
+  key: string;
+}) => void;
 
 export type BuilderEditingProps = {
   model: string;
@@ -44,7 +47,7 @@ export function getBuilderEditing(options: {
   };
 }
 
-export default function BuilderEditing(props: BuilderEditingProps) {
+export function BuilderEditing(props: BuilderEditingProps) {
   useEffect(() => {
     setupBrowserForEditing();
 
