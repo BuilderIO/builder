@@ -1,8 +1,12 @@
-import {Layout} from '~/components/index.server';
-import {RenderServerContent, getContent, RegisteredComponent} from '@builder.io/sdk-react/rsc';
-import {useUrl, useQuery} from '@shopify/hydrogen';
-import {builderEditingContentCache} from '../routes/api/builderData.server';
-import {BuilderEditing} from '../components/builder/builder-editing.client';
+import { Layout } from '~/components/index.server';
+import {
+  RenderServerContent,
+  getContent,
+  RegisteredComponent,
+} from '@builder.io/sdk-react/rsc';
+import { useUrl, useQuery, useSession } from '@shopify/hydrogen';
+import { builderEditingContentCache } from '../routes/api/builderData.server';
+import { BuilderEditing } from '../components/builder/builder-editing.client';
 import { Button, Heading, Section } from '../components/index';
 import { TopProducts } from '../components/sections/ProductSwimlane.server';
 import { SearchBlock } from '../components/search/SearchBlock.server';
@@ -13,7 +17,7 @@ const BUILDER_PUBLIC_API_KEY = '';
 
 export const CUSTOM_COMPONENTS: RegisteredComponent[] = [
   {
-    component: ({text, link}: any) => <Button>{text}</Button>,
+    component: ({ text, link }: any) => <Button>{text}</Button>,
     name: 'Button',
     inputs: [
       {
@@ -24,7 +28,7 @@ export const CUSTOM_COMPONENTS: RegisteredComponent[] = [
     ],
   },
   {
-    component: ({text}: any) => <Heading>{text}</Heading>,
+    component: ({ text }: any) => <Heading>{text}</Heading>,
     name: 'Heading',
     inputs: [
       {
@@ -62,7 +66,7 @@ export const CUSTOM_COMPONENTS: RegisteredComponent[] = [
     ],
   },
   {
-    component: ({heading, builderBlock, builderComponents}: any) => (
+    component: ({ heading, builderBlock, builderComponents }: any) => (
       <Section heading={heading}>
         {/* TODO: use context for components */}
         {builderBlock.children && (
@@ -85,13 +89,13 @@ export const CUSTOM_COMPONENTS: RegisteredComponent[] = [
   },
 ];
 
-
 export default function BuilderDemo() {
-  const {searchParams, pathname} = useUrl();
+  const { searchParams, pathname } = useUrl();
   const isEditing = searchParams.get('builder.editing') === 'true';
+  const sessionData = useSession();
 
   const content = isEditing
-    ? builderEditingContentCache.demo
+    ? sessionData[`builderEditingContent:${MODEL_NAME}`]
     : useQuery([MODEL_NAME, pathname], async () => {
         return await getContent({
           model: MODEL_NAME,

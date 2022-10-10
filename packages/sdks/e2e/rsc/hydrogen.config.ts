@@ -1,4 +1,4 @@
-import {defineConfig, CookieSessionStorage} from '@shopify/hydrogen/config';
+import {defineConfig, MemorySessionStorage} from '@shopify/hydrogen/config';
 
 export default defineConfig({
   shopify: {
@@ -18,7 +18,7 @@ export default defineConfig({
     // @ts-ignore
     storefrontId: Oxygen?.env?.PUBLIC_STOREFRONT_ID,
   },
-  session: CookieSessionStorage('__session', {
+  session: MemorySessionStorage('__session', {
     path: '/',
     httpOnly: true,
     secure: import.meta.env.PROD,

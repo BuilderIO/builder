@@ -14919,6 +14919,7 @@ __metadata:
     eslint: ^8.18.0
     eslint-plugin-hydrogen: ^0.12.2
     graphql-tag: ^2.12.6
+    lodash.throttle: ^4.1.1
     playwright: ^1.22.2
     postcss: ^8.4.14
     postcss-import: ^14.1.0

@@ -13,7 +13,13 @@ export type BuilderEditingProps = {
 };
 
 export function getBuilderEditing(options: {
+  /**
+   * Callback to run when updates are made in the visual editor
+   */
   onUpdate: OnUpdateCallback;
+  /**
+   * Registered custom components
+   */
   components?: RegisteredComponent[];
 }) {
   return function BuilderEditingWrapper(props: {
