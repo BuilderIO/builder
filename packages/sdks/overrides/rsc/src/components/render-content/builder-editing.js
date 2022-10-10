@@ -46,6 +46,7 @@ export function BuilderEditingWrapper(props: BuilderEditingProps) {
   }, [props.model]);
   return (
     <div
+      onMouseDown={(e) => e.preventDefault()}
       onClickCapture={(e) => {
         e.stopPropagation();
         e.preventDefault();
