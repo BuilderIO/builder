@@ -1,39 +1,46 @@
-# SwiftUI Builder.io SDK (WIP)
+# Builder.io SDK for iOS
 
-Render Builder.io content with SwiftUI, including registering your own custom SwiftUI components and using them in the drag + drop editor
-
-TODO
-
-- Docs
-- Make real importable package
-- More testing and refinement
+Render Builder.io content to SwiftUI, including registering your SwiftUI components
 
 ## Developing
 
-### Prerequisites
+1. Install XCode
+2. Open `./src/testing.xcworkspace` in XCode
+3. Build and run from Xcode
 
-Currently requires developing on a Mac
+## Usage
 
-### Install CocoaPods
+See [ContentView.swift](./src/Shared/ContentView.swift) for a usage example
 
-```bash
-sudo gem install cocoapods
+```swiçft
+struct ContentView: View {
+    @State var content: BuilderContent? = nil
+
+    init() {
+        fetchContent()
+    }
+
+    func fetchContent() {
+        getContent(model: "page", apiKey: "e084484c0e0241579f01abba29d9be10", url: "/") { content in
+            self.content = content
+        }
+    }
+
+    var body: some View {
+        ScrollView {
+            if $content.wrappedValue != nil {
+                RenderContent(content: $content.wrappedValue!)
+            }
+        }
+
+        Button("Reload") {
+            fetchContent()
+        }
+    }
+}
 ```
 
-### Install Dependencies
+## TODO
 
-```bash
-pod install
-```
-
-### Install Xcode
-
-You can install it from the App Store [here](https://apps.apple.com/us/app/xcode/id497799835?mt=12)
-
-### Open the workspace in Xcode
-
-In your mac, double click to open `src/testing.xcworkspace`
-
-### Build
-
-From the top nav menu in Xcode, choose `Product -> Build`
+- Make final installable package
+- Stress test the renderer against a larger variety of Builder content and ensure it renders as expected
