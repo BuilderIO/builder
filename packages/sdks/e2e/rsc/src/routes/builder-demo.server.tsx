@@ -27,6 +27,7 @@ export default function BuilderDemo() {
         }).promise();
       });
 
+  console.log('firstBlock', content?.data?.blocks?.[0]?.responsiveStyles?.large);
   const serverContent = (
     <RenderContent
       model="demo"
@@ -34,8 +35,6 @@ export default function BuilderDemo() {
       customComponents={CUSTOM_COMPONENTS}
     />
   );
-
-  console.log('content', content, sessionData);
 
   return (
     <Layout>

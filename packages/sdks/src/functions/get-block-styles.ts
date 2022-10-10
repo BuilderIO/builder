@@ -23,25 +23,8 @@ const getStyleForTarget = ({
       };
     }
     default:
-      return {
-        ...(styles.large ? convertStyleObject(styles.large) : {}),
-
-        ...(styles.medium
-          ? {
-              [getMaxWidthQueryForSize('medium')]: convertStyleObject(
-                styles.medium
-              ),
-            }
-          : {}),
-
-        ...(styles.small
-          ? {
-              [getMaxWidthQueryForSize('small')]: convertStyleObject(
-                styles.small
-              ),
-            }
-          : {}),
-      };
+      // By default we do not want inline styles
+      return {};
   }
 };
 
