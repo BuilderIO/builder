@@ -155,7 +155,7 @@ See our full [getting started docs](https://www.builder.io/c/docs/developers), o
 
 
 <a href="https://www.youtube.com/watch?v=FfrrigefdiY">
-  <img width="983" alt="Thumbnail to go to a video on how Builder works" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F5a98332583ac48db9af376b11a9b3d3c">
+  <img width="500" alt="Thumbnail to go to a video on how Builder works" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F5a98332583ac48db9af376b11a9b3d3c">
 </a>
  
 Learn more about <a href="https://www.builder.io/c/docs/how-builder-works-technical">how builder works here</a>
@@ -174,7 +174,12 @@ Some example SDK sizes from Bundlephobia:
 
 Importantly, there are no hacks here - no iframes, no unneeded client side code or rendering, our rule of thumb is we produce content just like if you wrote it by hand. Assets are optimized, DOM is minimized, and it's all native to your framework (so all React components if you use React, Svelte for Svelte, etc)
 
-See more about [how Builder works](https://www.builder.io/c/docs/how-builder-works-technical)
+See more about [how Builder works](https://www.builder.io/c/docs/how-builder-works-technical), or take a look at the [perf of our own site](https://pagespeed.web.dev/report?url=https%3A%2F%2Fwww.builder.io%2F) (built completely in Builder):
+
+<a href="https://pagespeed.web.dev/report?url=https%3A%2F%2Fwww.builder.io%2F">
+  <img width="700" alt="Screenshot of Builder.io site performance (96/100 on mobile pagespeed insights)" src="https://user-images.githubusercontent.com/844291/195188635-a437c25c-7cf3-45f9-8d3a-c357810d52ca.png">
+</a>
+
 
 
 ## How is the content structured?
