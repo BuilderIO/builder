@@ -29,7 +29,10 @@ export let safeDynamicRequire: typeof require;
  * 2. Client -> typeof require === 'function' does not work because of overoptimization by the compiler
  * 3. Cloudflare edge -> only globalThis.require works
  */
-if (typeof globalThis.require === 'function' || Builder.isServer) {
+if (
+  typeof globalThis.require === 'function' ||
+  (Builder.isServer && typeof require === 'function')
+) {
   safeDynamicRequire = eval('require');
 }
 
