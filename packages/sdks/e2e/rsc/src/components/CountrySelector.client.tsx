@@ -1,10 +1,10 @@
-import {useCallback, useState, Suspense} from 'react';
-import {useLocalization, fetchSync} from '@shopify/hydrogen';
+import { useCallback, useState, Suspense } from 'react';
+import { useLocalization, fetchSync } from '@shopify/hydrogen';
 // @ts-expect-error @headlessui/react incompatibility with node16 resolution
-import {Listbox} from '@headlessui/react';
+import { Listbox } from '@headlessui/react';
 
-import {IconCheck, IconCaret} from '~/components';
-import {useMemo} from 'react';
+import { IconCheck, IconCaret } from '~/components';
+import { useMemo } from 'react';
 import type {
   Country,
   CountryCode,
@@ -16,9 +16,9 @@ import type {
 export function CountrySelector() {
   const [listboxOpen, setListboxOpen] = useState(false);
   const {
-    country: {isoCode},
+    country: { isoCode },
   } = useLocalization();
-  const currentCountry = useMemo<{name: string; isoCode: CountryCode}>(() => {
+  const currentCountry = useMemo<{ name: string; isoCode: CountryCode }>(() => {
     const regionNamesInEnglish = new Intl.DisplayNames(['en'], {
       type: 'region',
     });
@@ -30,7 +30,7 @@ export function CountrySelector() {
   }, [isoCode]);
 
   const setCountry = useCallback<(country: Country) => void>(
-    ({isoCode: newIsoCode}) => {
+    ({ isoCode: newIsoCode }) => {
       const currentPath = window.location.pathname;
       let redirectPath;
 
@@ -39,7 +39,7 @@ export function CountrySelector() {
           redirectPath = `/${newIsoCode.toLowerCase()}${currentPath}`;
         } else {
           redirectPath = `/${newIsoCode.toLowerCase()}${currentPath.substring(
-            currentPath.indexOf('/', 1),
+            currentPath.indexOf('/', 1)
           )}`;
         }
       } else {
@@ -48,14 +48,14 @@ export function CountrySelector() {
 
       window.location.href = redirectPath;
     },
-    [currentCountry],
+    [currentCountry]
   );
 
   return (
     <div className="relative">
       <Listbox onChange={setCountry}>
         {/* @ts-expect-error @headlessui/react incompatibility with node16 resolution */}
-        {({open}) => {
+        {({ open }) => {
           setTimeout(() => setListboxOpen(open));
           return (
             <>
@@ -115,7 +115,7 @@ export function Countries({
     countries = response.json();
   } else {
     console.error(
-      `Unable to load available countries ${response.url} returned a ${response.status}`,
+      `Unable to load available countries ${response.url} returned a ${response.status}`
     );
   }
 
@@ -126,10 +126,10 @@ export function Countries({
       return (
         <Listbox.Option key={country.isoCode} value={country}>
           {/* @ts-expect-error @headlessui/react incompatibility with node16 resolution */}
-          {({active}) => (
+          {({ active }) => (
             <div
               className={`text-contrast dark:text-primary ${getClassName(
-                active,
+                active
               )}`}
             >
               {country.name}

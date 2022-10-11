@@ -1,4 +1,4 @@
-import {type Response as PlaywrightResponse} from 'playwright';
+import { type Response as PlaywrightResponse } from 'playwright';
 import {
   startHydrogenServer,
   type HydrogenServer,
@@ -40,7 +40,7 @@ describe('products', () => {
     // Make sure cart script loads
     await Promise.all([
       session.page.waitForResponse(
-        'https://cdn.shopify.com/shopifycloud/shop-js/v1.0/client.js',
+        'https://cdn.shopify.com/shopifycloud/shop-js/v1.0/client.js'
       ),
       session.visit(productUrl),
     ]);
@@ -50,7 +50,7 @@ describe('products', () => {
     // Click on add to cart button
     const [cartResponse] = await Promise.all([
       session.page.waitForResponse((response: PlaywrightResponse) =>
-        /graphql\.json/.test(response.url()),
+        /graphql\.json/.test(response.url())
       ),
       addToCartButton.click(),
     ]);

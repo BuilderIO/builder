@@ -1,5 +1,5 @@
-import {Image, Link} from '@shopify/hydrogen';
-import type {Article} from '@shopify/hydrogen/storefront-api-types';
+import { Image, Link } from '@shopify/hydrogen';
+import type { Article } from '@shopify/hydrogen/storefront-api-types';
 
 export function ArticleCard({
   blogHandle,

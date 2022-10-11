@@ -1,8 +1,8 @@
 // @ts-expect-error @headlessui/react incompatibility with node16 resolution
-import {Disclosure} from '@headlessui/react';
-import {Link} from '@shopify/hydrogen';
+import { Disclosure } from '@headlessui/react';
+import { Link } from '@shopify/hydrogen';
 
-import {Text, IconClose} from '~/components';
+import { Text, IconClose } from '~/components';
 
 export function ProductDetail({
   title,
@@ -16,7 +16,7 @@ export function ProductDetail({
   return (
     <Disclosure key={title} as="div" className="grid w-full gap-2">
       {/* @ts-expect-error @headlessui/react incompatibility with node16 resolution */}
-      {({open}) => (
+      {({ open }) => (
         <>
           <Disclosure.Button className="text-left">
             <div className="flex justify-between">
@@ -34,7 +34,7 @@ export function ProductDetail({
           <Disclosure.Panel className={'pb-4 pt-2 grid gap-2'}>
             <div
               className="prose dark:prose-invert"
-              dangerouslySetInnerHTML={{__html: content}}
+              dangerouslySetInnerHTML={{ __html: content }}
             />
             {learnMore && (
               <div className="">

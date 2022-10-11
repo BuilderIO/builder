@@ -1,5 +1,5 @@
-import {useRef} from 'react';
-import {useScroll} from 'react-use';
+import { useRef } from 'react';
+import { useScroll } from 'react-use';
 import {
   Link,
   useCart,
@@ -8,7 +8,7 @@ import {
   Money,
 } from '@shopify/hydrogen';
 
-import {Button, Text, CartLineItem, CartEmpty} from '~/components';
+import { Button, Text, CartLineItem, CartEmpty } from '~/components';
 
 export function CartDetails({
   layout,
@@ -17,9 +17,9 @@ export function CartDetails({
   layout: 'drawer' | 'page';
   onClose?: () => void;
 }) {
-  const {lines} = useCart();
+  const { lines } = useCart();
   const scrollRef = useRef(null);
-  const {y} = useScroll(scrollRef);
+  const { y } = useScroll(scrollRef);
 
   if (lines.length === 0) {
     return <CartEmpty onClose={onClose} layout={layout} />;
@@ -69,7 +69,7 @@ export function CartDetails({
 }
 
 function CartCheckoutActions() {
-  const {checkoutUrl} = useCart();
+  const { checkoutUrl } = useCart();
   return (
     <>
       <div className="grid gap-4">
@@ -87,7 +87,7 @@ function CartCheckoutActions() {
 }
 
 function OrderSummary() {
-  const {cost} = useCart();
+  const { cost } = useCart();
   return (
     <>
       <dl className="grid">

@@ -11,11 +11,11 @@ import type {
   Article,
   Blog as BlogType,
 } from '@shopify/hydrogen/storefront-api-types';
-import {Suspense} from 'react';
+import { Suspense } from 'react';
 
-import {ArticleCard, Grid, PageHeader} from '~/components';
-import {Layout} from '~/components/index.server';
-import {getImageLoadingPriority, PAGINATION_SIZE} from '~/lib/const';
+import { ArticleCard, Grid, PageHeader } from '~/components';
+import { Layout } from '~/components/index.server';
+import { getImageLoadingPriority, PAGINATION_SIZE } from '~/lib/const';
 
 const BLOG_HANDLE = 'Journal';
 
@@ -27,7 +27,7 @@ export default function Blog({
 
   return (
     <Layout>
-      <Seo type="page" data={{title: 'All Journals'}} />
+      <Seo type="page" data={{ title: 'All Journals' }} />
       <PageHeader heading={BLOG_HANDLE} className="gap-0">
         <Suspense>
           <JournalsGrid pageBy={pageBy} />
@@ -37,13 +37,13 @@ export default function Blog({
   );
 }
 
-function JournalsGrid({pageBy}: {pageBy: number}) {
+function JournalsGrid({ pageBy }: { pageBy: number }) {
   const {
-    language: {isoCode: languageCode},
-    country: {isoCode: countryCode},
+    language: { isoCode: languageCode },
+    country: { isoCode: countryCode },
   } = useLocalization();
 
-  const {data} = useShopQuery<{
+  const { data } = useShopQuery<{
     blog: BlogType;
   }>({
     query: BLOG_QUERY,
@@ -58,7 +58,7 @@ function JournalsGrid({pageBy}: {pageBy: number}) {
   const rawArticles = flattenConnection<Article>(data.blog.articles);
 
   const articles = rawArticles.map((article) => {
-    const {publishedAt} = article;
+    const { publishedAt } = article;
     return {
       ...article,
       publishedAt: new Intl.DateTimeFormat(`${languageCode}-${countryCode}`, {

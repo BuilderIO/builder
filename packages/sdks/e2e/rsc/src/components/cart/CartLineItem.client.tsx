@@ -7,13 +7,13 @@ import {
   Image,
   Link,
 } from '@shopify/hydrogen';
-import type {Image as ImageType} from '@shopify/hydrogen/storefront-api-types';
+import type { Image as ImageType } from '@shopify/hydrogen/storefront-api-types';
 
-import {Heading, IconRemove, Text} from '~/components';
+import { Heading, IconRemove, Text } from '~/components';
 
 export function CartLineItem() {
-  const {linesRemove} = useCart();
-  const {id: lineId, quantity, merchandise} = useCartLine();
+  const { linesRemove } = useCart();
+  const { id: lineId, quantity, merchandise } = useCartLine();
 
   return (
     <li key={lineId} className="flex gap-4">

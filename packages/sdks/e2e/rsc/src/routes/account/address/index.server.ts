@@ -1,4 +1,4 @@
-import {setDefaultAddress} from './[addressId].server';
+import { setDefaultAddress } from './[addressId].server';
 import {
   CacheNone,
   gql,
@@ -6,7 +6,7 @@ import {
   type HydrogenRequest,
 } from '@shopify/hydrogen';
 
-import {getApiErrorMessage} from '~/lib/utils';
+import { getApiErrorMessage } from '~/lib/utils';
 
 export interface Address {
   firstName?: string;
@@ -23,7 +23,7 @@ export interface Address {
 
 export async function api(
   request: HydrogenRequest,
-  {session, queryShop}: HydrogenApiRouteOptions,
+  { session, queryShop }: HydrogenApiRouteOptions
 ) {
   if (request.method !== 'POST') {
     return new Response(null, {
@@ -40,9 +40,9 @@ export async function api(
     });
   }
 
-  const {customerAccessToken} = await session.get();
+  const { customerAccessToken } = await session.get();
 
-  if (!customerAccessToken) return new Response(null, {status: 401});
+  if (!customerAccessToken) return new Response(null, { status: 401 });
 
   const {
     firstName,
@@ -71,7 +71,7 @@ export async function api(
   if (zip) address.zip = zip;
   if (phone) address.phone = phone;
 
-  const {data, errors} = await queryShop<{
+  const { data, errors } = await queryShop<{
     customerAddressCreate: any;
   }>({
     query: CREATE_ADDRESS_MUTATION,
@@ -85,22 +85,22 @@ export async function api(
 
   const error = getApiErrorMessage('customerAddressCreate', data, errors);
 
-  if (error) return new Response(JSON.stringify({error}), {status: 400});
+  if (error) return new Response(JSON.stringify({ error }), { status: 400 });
 
   if (isDefaultAddress) {
-    const {data: defaultDataResponse, errors} = await setDefaultAddress(
+    const { data: defaultDataResponse, errors } = await setDefaultAddress(
       queryShop,
       data.customerAddressCreate.customerAddress.id,
-      customerAccessToken,
+      customerAccessToken
     );
 
     const error = getApiErrorMessage(
       'customerDefaultAddressUpdate',
       defaultDataResponse,
-      errors,
+      errors
     );
 
-    if (error) return new Response(JSON.stringify({error}), {status: 400});
+    if (error) return new Response(JSON.stringify({ error }), { status: 400 });
   }
 
   return new Response(null);

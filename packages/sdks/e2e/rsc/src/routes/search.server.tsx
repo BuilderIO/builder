@@ -8,12 +8,12 @@ import {
   useUrl,
 } from '@shopify/hydrogen';
 
-import {PRODUCT_CARD_FRAGMENT} from '~/lib/fragments';
-import {ProductGrid, Section, Text} from '~/components';
-import {NoResultRecommendations, SearchPage} from '~/components/index.server';
-import {PAGINATION_SIZE} from '~/lib/const';
-import type {Collection} from '@shopify/hydrogen/storefront-api-types';
-import {Suspense} from 'react';
+import { PRODUCT_CARD_FRAGMENT } from '~/lib/fragments';
+import { ProductGrid, Section, Text } from '~/components';
+import { NoResultRecommendations, SearchPage } from '~/components/index.server';
+import { PAGINATION_SIZE } from '~/lib/const';
+import type { Collection } from '@shopify/hydrogen/storefront-api-types';
+import { Suspense } from 'react';
 
 export default function Search({
   pageBy = PAGINATION_SIZE,
@@ -23,16 +23,16 @@ export default function Search({
   params: HydrogenRouteProps['params'];
 }) {
   const {
-    language: {isoCode: languageCode},
-    country: {isoCode: countryCode},
+    language: { isoCode: languageCode },
+    country: { isoCode: countryCode },
   } = useLocalization();
 
-  const {handle} = params;
-  const {searchParams} = useUrl();
+  const { handle } = params;
+  const { searchParams } = useUrl();
 
   const searchTerm = searchParams.get('q');
 
-  const {data} = useShopQuery<any>({
+  const { data } = useShopQuery<any>({
     query: SEARCH_QUERY,
     variables: {
       handle,
@@ -71,7 +71,7 @@ export default function Search({
         <ProductGrid
           key="search"
           url={`/search?country=${countryCode}&q=${searchTerm}`}
-          collection={{products} as Collection}
+          collection={{ products } as Collection}
         />
       </Section>
     </SearchPage>
@@ -82,12 +82,12 @@ export default function Search({
 // @see templates/demo-store/src/components/product/ProductGrid.client.tsx
 export async function api(
   request: HydrogenRequest,
-  {params, queryShop}: HydrogenApiRouteOptions,
+  { params, queryShop }: HydrogenApiRouteOptions
 ) {
   if (request.method !== 'POST') {
     return new Response('Method not allowed', {
       status: 405,
-      headers: {Allow: 'POST'},
+      headers: { Allow: 'POST' },
     });
   }
 
@@ -95,7 +95,7 @@ export async function api(
   const cursor = url.searchParams.get('cursor');
   const country = url.searchParams.get('country');
   const searchTerm = url.searchParams.get('q');
-  const {handle} = params;
+  const { handle } = params;
 
   return await queryShop({
     query: PAGINATE_SEARCH_QUERY,

@@ -5,12 +5,12 @@ import {
   type HydrogenRequest,
 } from '@shopify/hydrogen';
 
-import {getApiErrorMessage} from '~/lib/utils';
-import type {Address} from './index.server';
+import { getApiErrorMessage } from '~/lib/utils';
+import type { Address } from './index.server';
 
 export async function api(
   request: HydrogenRequest,
-  {params, session, queryShop}: HydrogenApiRouteOptions,
+  { params, session, queryShop }: HydrogenApiRouteOptions
 ) {
   if (!session) {
     return new Response('Session storage not available.', {
@@ -18,9 +18,9 @@ export async function api(
     });
   }
 
-  const {customerAccessToken} = await session.get();
+  const { customerAccessToken } = await session.get();
 
-  if (!customerAccessToken) return new Response(null, {status: 401});
+  if (!customerAccessToken) return new Response(null, { status: 401 });
 
   if (request.method === 'PATCH')
     return updateAddress(customerAccessToken, request, params, queryShop);
@@ -38,9 +38,9 @@ export async function api(
 async function deleteAddress(
   customerAccessToken: string,
   params: HydrogenApiRouteOptions['params'],
-  queryShop: HydrogenApiRouteOptions['queryShop'],
+  queryShop: HydrogenApiRouteOptions['queryShop']
 ) {
-  const {data, errors} = await queryShop<{
+  const { data, errors } = await queryShop<{
     customerAddressDelete: any;
   }>({
     query: DELETE_ADDRESS_MUTATION,
@@ -54,7 +54,7 @@ async function deleteAddress(
 
   const error = getApiErrorMessage('customerAddressDelete', data, errors);
 
-  if (error) return new Response(JSON.stringify({error}), {status: 400});
+  if (error) return new Response(JSON.stringify({ error }), { status: 400 });
 
   return new Response(null);
 }
@@ -63,7 +63,7 @@ async function updateAddress(
   customerAccessToken: string,
   request: HydrogenRequest,
   params: HydrogenApiRouteOptions['params'],
-  queryShop: HydrogenApiRouteOptions['queryShop'],
+  queryShop: HydrogenApiRouteOptions['queryShop']
 ) {
   const {
     firstName,
@@ -92,7 +92,7 @@ async function updateAddress(
   if (zip) address.zip = zip;
   if (phone) address.phone = phone;
 
-  const {data, errors} = await queryShop<{
+  const { data, errors } = await queryShop<{
     customerAddressUpdate: any;
   }>({
     query: UPDATE_ADDRESS_MUTATION,
@@ -107,22 +107,22 @@ async function updateAddress(
 
   const error = getApiErrorMessage('customerAddressUpdate', data, errors);
 
-  if (error) return new Response(JSON.stringify({error}), {status: 400});
+  if (error) return new Response(JSON.stringify({ error }), { status: 400 });
 
   if (isDefaultAddress) {
-    const {data, errors} = await setDefaultAddress(
+    const { data, errors } = await setDefaultAddress(
       queryShop,
       decodeURIComponent(params.addressId),
-      customerAccessToken,
+      customerAccessToken
     );
 
     const error = getApiErrorMessage(
       'customerDefaultAddressUpdate',
       data,
-      errors,
+      errors
     );
 
-    if (error) return new Response(JSON.stringify({error}), {status: 400});
+    if (error) return new Response(JSON.stringify({ error }), { status: 400 });
   }
 
   return new Response(null);
@@ -131,7 +131,7 @@ async function updateAddress(
 export function setDefaultAddress(
   queryShop: HydrogenApiRouteOptions['queryShop'],
   addressId: string,
-  customerAccessToken: string,
+  customerAccessToken: string
 ) {
   return queryShop<{
     customerDefaultAddressUpdate: any;

@@ -1,12 +1,12 @@
-import {useState} from 'react';
+import { useState } from 'react';
 
-import {Text, Button} from '~/components';
+import { Text, Button } from '~/components';
 import {
   emailValidation,
   passwordValidation,
   useRenderServerComponents,
 } from '~/lib/utils';
-import {getInputStyleClasses} from '../../lib/styleUtils';
+import { getInputStyleClasses } from '../../lib/styleUtils';
 
 interface FormElements {
   firstName: HTMLInputElement;
@@ -42,7 +42,7 @@ export function AccountDetailsEdit({
   >(null);
   const [newPasswordError, setNewPasswordError] = useState<null | string>(null);
   const [newPassword2Error, setNewPassword2Error] = useState<null | string>(
-    null,
+    null
   );
   const [submitError, setSubmitError] = useState<null | string>(null);
 
@@ -50,7 +50,7 @@ export function AccountDetailsEdit({
   const renderServerComponents = useRenderServerComponents();
 
   async function onSubmit(
-    event: React.FormEvent<HTMLFormElement & FormElements>,
+    event: React.FormEvent<HTMLFormElement & FormElements>
   ) {
     event.preventDefault();
 
@@ -69,7 +69,7 @@ export function AccountDetailsEdit({
     // Only validate the password fields if the current password has a value
     if (event.currentTarget.currentPassword.value) {
       currentPasswordError = passwordValidation(
-        event.currentTarget.currentPassword,
+        event.currentTarget.currentPassword
       );
       if (currentPasswordError) {
         setCurrentPasswordError(currentPasswordError);

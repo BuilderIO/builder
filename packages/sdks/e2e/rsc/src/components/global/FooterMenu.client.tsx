@@ -1,14 +1,14 @@
 // @ts-expect-error @headlessui/react incompatibility with node16 resolution
-import {Disclosure} from '@headlessui/react';
-import {Link} from '@shopify/hydrogen';
+import { Disclosure } from '@headlessui/react';
+import { Link } from '@shopify/hydrogen';
 
-import {Heading, IconCaret} from '~/components';
-import type {EnhancedMenu, EnhancedMenuItem} from '~/lib/utils';
+import { Heading, IconCaret } from '~/components';
+import type { EnhancedMenu, EnhancedMenuItem } from '~/lib/utils';
 
 /**
  * A server component that specifies the content of the footer on the website
  */
-export function FooterMenu({menu}: {menu?: EnhancedMenu}) {
+export function FooterMenu({ menu }: { menu?: EnhancedMenu }) {
   const styles = {
     section: 'grid gap-4',
     nav: 'grid gap-2 pb-6',
@@ -20,7 +20,7 @@ export function FooterMenu({menu}: {menu?: EnhancedMenu}) {
         <section key={item.id} className={styles.section}>
           <Disclosure>
             {/* @ts-expect-error @headlessui/react incompatibility with node16 resolution */}
-            {({open}) => (
+            {({ open }) => (
               <>
                 <Disclosure.Button className="text-left md:cursor-default">
                   <Heading className="flex justify-between" size="lead" as="h3">

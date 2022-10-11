@@ -1,9 +1,9 @@
-import {useRef} from 'react';
-import {useScroll} from 'react-use';
-import {fetchSync} from '@shopify/hydrogen';
-import {Button, Text, ProductCard, Heading, Skeleton} from '~/components';
-import type {Product} from '@shopify/hydrogen/storefront-api-types';
-import {Suspense} from 'react';
+import { useRef } from 'react';
+import { useScroll } from 'react-use';
+import { fetchSync } from '@shopify/hydrogen';
+import { Button, Text, ProductCard, Heading, Skeleton } from '~/components';
+import type { Product } from '@shopify/hydrogen/storefront-api-types';
+import { Suspense } from 'react';
 
 export function CartEmpty({
   onClose,
@@ -13,7 +13,7 @@ export function CartEmpty({
   layout?: 'page' | 'drawer';
 }) {
   const scrollRef = useRef(null);
-  const {y} = useScroll(scrollRef);
+  const { y } = useScroll(scrollRef);
 
   const container = {
     drawer: `grid content-start gap-4 px-6 pb-8 transition overflow-y-scroll md:gap-12 md:px-12 h-screen-no-nav md:pb-12 ${
@@ -54,12 +54,12 @@ export function CartEmpty({
   );
 }
 
-function TopProducts({onClose}: {onClose?: () => void}) {
+function TopProducts({ onClose }: { onClose?: () => void }) {
   const response = fetchSync('/api/bestSellers');
 
   if (!response.ok) {
     console.error(
-      `Unable to load top products ${response.url} returned a ${response.status}`,
+      `Unable to load top products ${response.url} returned a ${response.status}`
     );
     return null;
   }

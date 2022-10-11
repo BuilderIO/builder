@@ -1,5 +1,5 @@
-import {CartDetails} from '~/components/cart';
-import {Drawer} from './Drawer.client';
+import { CartDetails } from '~/components/cart';
+import { Drawer } from './Drawer.client';
 
 export function CartDrawer({
   isOpen,

@@ -1,10 +1,15 @@
-import {Suspense} from 'react';
-import {useLocalization, useShopQuery, CacheLong, gql} from '@shopify/hydrogen';
-import type {Menu, Shop} from '@shopify/hydrogen/storefront-api-types';
+import { Suspense } from 'react';
+import {
+  useLocalization,
+  useShopQuery,
+  CacheLong,
+  gql,
+} from '@shopify/hydrogen';
+import type { Menu, Shop } from '@shopify/hydrogen/storefront-api-types';
 
-import {Header} from '~/components';
-import {Footer} from '~/components/index.server';
-import {parseMenu} from '~/lib/utils';
+import { Header } from '~/components';
+import { Footer } from '~/components/index.server';
+import { parseMenu } from '~/lib/utils';
 
 const HEADER_MENU_HANDLE = 'main-menu';
 const FOOTER_MENU_HANDLE = 'footer';
@@ -14,7 +19,7 @@ const SHOP_NAME_FALLBACK = 'Hydrogen';
 /**
  * A server component that defines a structure and organization of a page that can be used in different parts of the Hydrogen app
  */
-export function Layout({children}: {children: React.ReactNode}) {
+export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <div className="flex flex-col min-h-screen">
@@ -38,21 +43,21 @@ export function Layout({children}: {children: React.ReactNode}) {
 }
 
 function HeaderWithMenu() {
-  const {shopName, headerMenu} = useLayoutQuery();
+  const { shopName, headerMenu } = useLayoutQuery();
   return <Header title={shopName} menu={headerMenu} />;
 }
 
 function FooterWithMenu() {
-  const {footerMenu} = useLayoutQuery();
+  const { footerMenu } = useLayoutQuery();
   return <Footer menu={footerMenu} />;
 }
 
 function useLayoutQuery() {
   const {
-    language: {isoCode: languageCode},
+    language: { isoCode: languageCode },
   } = useLocalization();
 
-  const {data} = useShopQuery<{
+  const { data } = useShopQuery<{
     shop: Shop;
     headerMenu: Menu;
     footerMenu: Menu;
@@ -77,7 +82,7 @@ function useLayoutQuery() {
       - /blog/news/blog-post -> /news/blog-post
       - /collections/all -> /products
   */
-  const customPrefixes = {BLOG: '', CATALOG: 'products'};
+  const customPrefixes = { BLOG: '', CATALOG: 'products' };
 
   const headerMenu = data?.headerMenu
     ? parseMenu(data.headerMenu, customPrefixes)
@@ -87,7 +92,7 @@ function useLayoutQuery() {
     ? parseMenu(data.footerMenu, customPrefixes)
     : undefined;
 
-  return {footerMenu, headerMenu, shopName};
+  return { footerMenu, headerMenu, shopName };
 }
 
 const SHOP_QUERY = gql`

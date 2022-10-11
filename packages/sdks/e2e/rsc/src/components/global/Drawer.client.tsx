@@ -1,8 +1,8 @@
-import {Fragment, useState} from 'react';
+import { Fragment, useState } from 'react';
 // @ts-expect-error @headlessui/react incompatibility with node16 resolution
-import {Dialog, Transition} from '@headlessui/react';
+import { Dialog, Transition } from '@headlessui/react';
 
-import {Heading, IconClose} from '~/components';
+import { Heading, IconClose } from '~/components';
 
 /**
  * Drawer component that opens on user click.
@@ -96,7 +96,7 @@ function Drawer({
 /* Use for associating arialabelledby with the title*/
 Drawer.Title = Dialog.Title;
 
-export {Drawer};
+export { Drawer };
 
 export function useDrawer(openDefault = false) {
   const [isOpen, setIsOpen] = useState(openDefault);

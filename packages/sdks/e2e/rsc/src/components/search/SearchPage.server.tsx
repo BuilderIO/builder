@@ -1,5 +1,5 @@
-import {Heading, Input, PageHeader} from '~/components';
-import {Layout} from '~/components/index.server';
+import { Heading, Input, PageHeader } from '~/components';
+import { Layout } from '~/components/index.server';
 
 export function SearchPage({
   searchTerm,

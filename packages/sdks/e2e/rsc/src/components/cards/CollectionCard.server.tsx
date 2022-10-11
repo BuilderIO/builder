@@ -1,7 +1,7 @@
-import {Image, Link} from '@shopify/hydrogen';
-import type {Collection} from '@shopify/hydrogen/storefront-api-types';
+import { Image, Link } from '@shopify/hydrogen';
+import type { Collection } from '@shopify/hydrogen/storefront-api-types';
 
-import {Heading} from '~/components';
+import { Heading } from '~/components';
 
 export function CollectionCard({
   collection,

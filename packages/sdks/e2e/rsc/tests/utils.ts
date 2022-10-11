@@ -4,11 +4,11 @@ import {
   type Response as PlaywrightResponse,
 } from 'playwright';
 import '@shopify/hydrogen/web-polyfills';
-import type {Server} from 'http';
+import type { Server } from 'http';
 
 // `version` is only exported in Vite 3
 import * as vite from 'vite';
-const {createServer: createViteDevServer, version} = vite;
+const { createServer: createViteDevServer, version } = vite;
 
 export interface HydrogenSession {
   page: Page;
@@ -43,12 +43,12 @@ export async function startHydrogenServer(): Promise<HydrogenServer> {
     await app.server?.close();
   };
 
-  return {url, newPage, cleanUp, watchForUpdates: () => {}};
+  return { url, newPage, cleanUp, watchForUpdates: () => {} };
 }
 
 async function createNodeServer() {
   // @ts-ignore
-  const {createServer} = await import('../dist/node');
+  const { createServer } = await import('../dist/node');
   const app = (await createServer()).app;
   const server = app.listen(0) as Server;
   const port: number = await new Promise((resolve) => {
@@ -57,13 +57,13 @@ async function createNodeServer() {
     });
   });
 
-  return {server, port};
+  return { server, port };
 }
 
 async function createDevServer() {
   const isVite3 = version?.startsWith('3.');
   const app = await createViteDevServer({
-    [isVite3 ? 'optimizeDeps' : 'server']: {force: true},
+    [isVite3 ? 'optimizeDeps' : 'server']: { force: true },
     logLevel: 'silent',
   });
   const server = await app.listen(0);

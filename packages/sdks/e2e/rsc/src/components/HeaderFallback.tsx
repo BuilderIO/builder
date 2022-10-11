@@ -1,4 +1,4 @@
-export function HeaderFallback({isHome}: {isHome?: boolean}) {
+export function HeaderFallback({ isHome }: { isHome?: boolean }) {
   const styles = isHome
     ? 'bg-primary/80 dark:bg-contrast/60 text-contrast dark:text-primary shadow-darkHeader'
     : 'bg-contrast/80 text-primary';
@@ -19,7 +19,7 @@ export function HeaderFallback({isHome}: {isHome?: boolean}) {
   );
 }
 
-function Box({wide, isHome}: {wide?: boolean; isHome?: boolean}) {
+function Box({ wide, isHome }: { wide?: boolean; isHome?: boolean }) {
   return (
     <div
       className={`h-6 rounded-sm ${wide ? 'w-32' : 'w-16'} ${

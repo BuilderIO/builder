@@ -1,10 +1,10 @@
-import {useState} from 'react';
-import {useNavigate, Link} from '@shopify/hydrogen/client';
+import { useState } from 'react';
+import { useNavigate, Link } from '@shopify/hydrogen/client';
 
-import {emailValidation, passwordValidation} from '~/lib/utils';
+import { emailValidation, passwordValidation } from '~/lib/utils';
 
-import {callLoginApi} from './AccountLoginForm.client';
-import {getInputStyleClasses} from '../../lib/styleUtils';
+import { callLoginApi } from './AccountLoginForm.client';
+import { getInputStyleClasses } from '../../lib/styleUtils';
 
 interface FormElements {
   email: HTMLInputElement;
@@ -21,7 +21,7 @@ export function AccountCreateForm() {
   const [passwordError, setPasswordError] = useState<null | string>(null);
 
   async function onSubmit(
-    event: React.FormEvent<HTMLFormElement & FormElements>,
+    event: React.FormEvent<HTMLFormElement & FormElements>
   ) {
     event.preventDefault();
 
@@ -157,7 +157,7 @@ export async function callAccountCreateApi({
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({email, password, firstName, lastName}),
+      body: JSON.stringify({ email, password, firstName, lastName }),
     });
     if (res.status === 200) {
       return {};

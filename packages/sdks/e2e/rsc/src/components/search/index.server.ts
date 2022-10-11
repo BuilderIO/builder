@@ -1,2 +1,2 @@
-export {NoResultRecommendations} from './NoResultRecommendations.server';
-export {SearchPage} from './SearchPage.server';
+export { NoResultRecommendations } from './NoResultRecommendations.server';
+export { SearchPage } from './SearchPage.server';

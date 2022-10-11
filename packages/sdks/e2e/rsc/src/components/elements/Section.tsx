@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 
-import {Heading} from '~/components';
-import {missingClass} from '~/lib/utils';
+import { Heading } from '~/components';
+import { missingClass } from '~/lib/utils';
 
 export function Section({
   as: Component = 'section',
@@ -46,7 +46,7 @@ export function Section({
     displays[display],
     missingClass(className, '\\mp[xy]?-') && paddings[padding],
     dividers[divider],
-    className,
+    className
   );
 
   return (

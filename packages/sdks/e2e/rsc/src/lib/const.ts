@@ -4,7 +4,7 @@ export const ATTR_LOADING_EAGER = 'eager';
 
 export function getImageLoadingPriority(
   index: number,
-  maxEagerLoadCount = DEFAULT_GRID_IMG_LOAD_EAGER_COUNT,
+  maxEagerLoadCount = DEFAULT_GRID_IMG_LOAD_EAGER_COUNT
 ) {
   return index < maxEagerLoadCount ? ATTR_LOADING_EAGER : undefined;
 }

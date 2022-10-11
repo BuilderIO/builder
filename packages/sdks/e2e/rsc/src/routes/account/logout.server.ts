@@ -1,8 +1,11 @@
-import type {HydrogenApiRouteOptions, HydrogenRequest} from '@shopify/hydrogen';
+import type {
+  HydrogenApiRouteOptions,
+  HydrogenRequest,
+} from '@shopify/hydrogen';
 
 export async function api(
   request: HydrogenRequest,
-  {session}: HydrogenApiRouteOptions,
+  { session }: HydrogenApiRouteOptions
 ) {
   if (request.method !== 'POST') {
     return new Response('Post required to logout', {

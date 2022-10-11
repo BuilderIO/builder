@@ -1,20 +1,26 @@
-import {gql, useLocalization, useShopQuery, useUrl} from '@shopify/hydrogen';
+import { gql, useLocalization, useShopQuery, useUrl } from '@shopify/hydrogen';
 
-import type {Collection} from '@shopify/hydrogen/storefront-api-types';
-import {ProductGrid, Section} from '~/components';
-import {PRODUCT_CARD_FRAGMENT} from '~/lib/fragments';
+import type { Collection } from '@shopify/hydrogen/storefront-api-types';
+import { ProductGrid, Section } from '~/components';
+import { PRODUCT_CARD_FRAGMENT } from '~/lib/fragments';
 
-export function SearchBlock({search, count}: {search: string, count: number}) {
+export function SearchBlock({
+  search,
+  count,
+}: {
+  search: string;
+  count: number;
+}) {
   const {
-    language: {isoCode: languageCode},
-    country: {isoCode: countryCode},
+    language: { isoCode: languageCode },
+    country: { isoCode: countryCode },
   } = useLocalization();
 
-  const {searchParams} = useUrl();
+  const { searchParams } = useUrl();
 
   const searchTerm = search;
 
-  const {data} = useShopQuery<any>({
+  const { data } = useShopQuery<any>({
     query: SEARCH_QUERY,
     variables: {
       pageBy: count,
@@ -32,7 +38,7 @@ export function SearchBlock({search, count}: {search: string, count: number}) {
       <ProductGrid
         key="search"
         url={`/search?country=${countryCode}&q=${searchTerm}`}
-        collection={{products} as Collection}
+        collection={{ products } as Collection}
       />
     </Section>
   );

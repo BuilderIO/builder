@@ -1,8 +1,8 @@
-import {useMemo, useState} from 'react';
-import {useRenderServerComponents} from '~/lib/utils';
+import { useMemo, useState } from 'react';
+import { useRenderServerComponents } from '~/lib/utils';
 
-import {Button, Text} from '~/components';
-import {getInputStyleClasses} from '../../lib/styleUtils';
+import { Button, Text } from '~/components';
+import { getInputStyleClasses } from '../../lib/styleUtils';
 
 export function AccountAddressEdit({
   address,
@@ -323,7 +323,7 @@ export async function callUpdateAddressApi({
           zip,
           isDefaultAddress,
         }),
-      },
+      }
     );
     if (res.ok) {
       return {};

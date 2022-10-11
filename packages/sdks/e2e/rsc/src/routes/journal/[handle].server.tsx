@@ -7,24 +7,24 @@ import {
   CacheLong,
   type HydrogenRouteProps,
 } from '@shopify/hydrogen';
-import type {Blog} from '@shopify/hydrogen/storefront-api-types';
-import {Suspense} from 'react';
+import type { Blog } from '@shopify/hydrogen/storefront-api-types';
+import { Suspense } from 'react';
 
-import {CustomFont, PageHeader, Section} from '~/components';
-import {Layout, NotFound} from '~/components/index.server';
-import {ATTR_LOADING_EAGER} from '~/lib/const';
+import { CustomFont, PageHeader, Section } from '~/components';
+import { Layout, NotFound } from '~/components/index.server';
+import { ATTR_LOADING_EAGER } from '~/lib/const';
 
 const BLOG_HANDLE = 'journal';
 
-export default function Post({params, response}: HydrogenRouteProps) {
+export default function Post({ params, response }: HydrogenRouteProps) {
   response.cache(CacheLong());
   const {
-    language: {isoCode: languageCode},
-    country: {isoCode: countryCode},
+    language: { isoCode: languageCode },
+    country: { isoCode: countryCode },
   } = useLocalization();
 
-  const {handle} = params;
-  const {data} = useShopQuery<{
+  const { handle } = params;
+  const { data } = useShopQuery<{
     blog: Blog;
   }>({
     query: ARTICLE_QUERY,
@@ -39,14 +39,14 @@ export default function Post({params, response}: HydrogenRouteProps) {
     return <NotFound />;
   }
 
-  const {title, publishedAt, contentHtml, author} = data.blog.articleByHandle;
+  const { title, publishedAt, contentHtml, author } = data.blog.articleByHandle;
   const formattedDate = new Intl.DateTimeFormat(
     `${languageCode}-${countryCode}`,
     {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
-    },
+    }
   ).format(new Date(publishedAt));
 
   return (
@@ -78,7 +78,7 @@ export default function Post({params, response}: HydrogenRouteProps) {
           />
         )}
         <div
-          dangerouslySetInnerHTML={{__html: contentHtml}}
+          dangerouslySetInnerHTML={{ __html: contentHtml }}
           className="article"
         />
       </Section>

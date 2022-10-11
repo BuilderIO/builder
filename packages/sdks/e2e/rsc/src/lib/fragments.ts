@@ -1,4 +1,4 @@
-import {gql} from '@shopify/hydrogen';
+import { gql } from '@shopify/hydrogen';
 
 export const MEDIA_FRAGMENT = gql`
   fragment Media on Media {

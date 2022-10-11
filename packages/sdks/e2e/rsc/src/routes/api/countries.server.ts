@@ -1,14 +1,17 @@
-import {gql} from '@shopify/hydrogen';
-import type {HydrogenApiRouteOptions, HydrogenRequest} from '@shopify/hydrogen';
-import type {Localization} from '@shopify/hydrogen/storefront-api-types';
+import { gql } from '@shopify/hydrogen';
+import type {
+  HydrogenApiRouteOptions,
+  HydrogenRequest,
+} from '@shopify/hydrogen';
+import type { Localization } from '@shopify/hydrogen/storefront-api-types';
 
 export async function api(
   _request: HydrogenRequest,
-  {queryShop}: HydrogenApiRouteOptions,
+  { queryShop }: HydrogenApiRouteOptions
 ) {
   const {
     data: {
-      localization: {availableCountries},
+      localization: { availableCountries },
     },
   } = await queryShop<{
     localization: Localization;

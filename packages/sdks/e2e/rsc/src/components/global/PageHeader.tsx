@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 
-import {Heading} from '~/components';
+import { Heading } from '~/components';
 
 export function PageHeader({
   children,

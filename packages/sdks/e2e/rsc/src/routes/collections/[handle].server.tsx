@@ -1,4 +1,4 @@
-import {Suspense} from 'react';
+import { Suspense } from 'react';
 import {
   gql,
   type HydrogenRouteProps,
@@ -11,21 +11,21 @@ import {
   type HydrogenApiRouteOptions,
 } from '@shopify/hydrogen';
 
-import {PRODUCT_CARD_FRAGMENT} from '~/lib/fragments';
-import {PageHeader, ProductGrid, Section, Text} from '~/components';
-import {NotFound, Layout} from '~/components/index.server';
+import { PRODUCT_CARD_FRAGMENT } from '~/lib/fragments';
+import { PageHeader, ProductGrid, Section, Text } from '~/components';
+import { NotFound, Layout } from '~/components/index.server';
 
 const pageBy = 48;
 
-export default function Collection({params}: HydrogenRouteProps) {
-  const {handle} = params;
+export default function Collection({ params }: HydrogenRouteProps) {
+  const { handle } = params;
   const {
-    language: {isoCode: language},
-    country: {isoCode: country},
+    language: { isoCode: language },
+    country: { isoCode: country },
   } = useLocalization();
 
   const {
-    data: {collection},
+    data: { collection },
   } = useShopQuery({
     query: COLLECTION_QUERY,
     variables: {
@@ -79,19 +79,19 @@ export default function Collection({params}: HydrogenRouteProps) {
 // @see templates/demo-store/src/components/product/ProductGrid.client.tsx
 export async function api(
   request: HydrogenRequest,
-  {params, queryShop}: HydrogenApiRouteOptions,
+  { params, queryShop }: HydrogenApiRouteOptions
 ) {
   if (request.method !== 'POST') {
     return new Response('Method not allowed', {
       status: 405,
-      headers: {Allow: 'POST'},
+      headers: { Allow: 'POST' },
     });
   }
   const url = new URL(request.url);
 
   const cursor = url.searchParams.get('cursor');
   const country = url.searchParams.get('country');
-  const {handle} = params;
+  const { handle } = params;
 
   return await queryShop({
     query: PAGINATE_COLLECTION_QUERY,

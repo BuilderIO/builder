@@ -19,27 +19,27 @@ import type {
   Order,
   OrderLineItem,
 } from '@shopify/hydrogen/storefront-api-types';
-import {Suspense} from 'react';
+import { Suspense } from 'react';
 
-import {Text, PageHeader, Heading} from '~/components';
-import {Layout} from '~/components/index.server';
-import {statusMessage} from '~/lib/utils';
+import { Text, PageHeader, Heading } from '~/components';
+import { Layout } from '~/components/index.server';
+import { statusMessage } from '~/lib/utils';
 
-export default function OrderDetails({response}: HydrogenRouteProps) {
-  const {id} = useRouteParams();
+export default function OrderDetails({ response }: HydrogenRouteProps) {
+  const { id } = useRouteParams();
 
   response.cache(CacheNone());
 
   const {
-    language: {isoCode: languageCode},
-    country: {isoCode: countryCode},
+    language: { isoCode: languageCode },
+    country: { isoCode: countryCode },
   } = useLocalization();
-  const {customerAccessToken} = useSession();
+  const { customerAccessToken } = useSession();
 
   if (!customerAccessToken) return response.redirect('/account/login');
   if (!id) return response.redirect('/account/');
 
-  const {data} = useShopQuery<{
+  const { data } = useShopQuery<{
     customer?: Customer;
   }>({
     query: ORDER_QUERY,
@@ -60,7 +60,7 @@ export default function OrderDetails({response}: HydrogenRouteProps) {
 
   const lineItems = flattenConnection<OrderLineItem>(order.lineItems!);
   const discountApplications = flattenConnection<DiscountApplication>(
-    order.discountApplications as DiscountApplicationConnection,
+    order.discountApplications as DiscountApplicationConnection
   );
 
   const firstDiscount = discountApplications[0]?.value;
@@ -73,7 +73,7 @@ export default function OrderDetails({response}: HydrogenRouteProps) {
   return (
     <Layout>
       <Suspense>
-        <Seo type="noindex" data={{title: `Order ${order.name}`}} />
+        <Seo type="noindex" data={{ title: `Order ${order.name}` }} />
       </Suspense>
       <PageHeader heading={`Order detail`}>
         <Link to="/account">
@@ -358,7 +358,7 @@ const ORDER_QUERY = gql`
   fragment Image on Image {
     altText
     height
-    src: url(transform: {crop: CENTER, maxHeight: 96, maxWidth: 96, scale: 2})
+    src: url(transform: { crop: CENTER, maxHeight: 96, maxWidth: 96, scale: 2 })
     id
     width
   }

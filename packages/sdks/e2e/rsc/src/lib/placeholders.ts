@@ -3,11 +3,11 @@ const PLACEHOLDERS = {
   HEROS: [
     // primaryHero
     {
-      heading: {value: 'All Mountain All Season'},
+      heading: { value: 'All Mountain All Season' },
       byline: {
         value: 'The All New Hydrogen Snowboard Exclusively From Shopify',
       },
-      cta: {value: 'Shop Now →'},
+      cta: { value: 'Shop Now →' },
       handle: 'freestyle',
       spread: {
         reference: {
@@ -45,9 +45,9 @@ const PLACEHOLDERS = {
     },
     // secondaryHero
     {
-      heading: {value: 'The Winter 2022 Collection'},
-      byline: {value: 'Just Dropped'},
-      cta: {value: 'Shop Now →'},
+      heading: { value: 'The Winter 2022 Collection' },
+      byline: { value: 'Just Dropped' },
+      cta: { value: 'Shop Now →' },
       handle: 'winter-2022',
       spread: {
         reference: {
@@ -68,9 +68,9 @@ const PLACEHOLDERS = {
     },
     // tertiaryHero
     {
-      heading: {value: 'From the Slopes to the Chalet'},
+      heading: { value: 'From the Slopes to the Chalet' },
       byline: null,
-      cta: {value: 'Shop Now →'},
+      cta: { value: 'Shop Now →' },
       handle: 'backcountry',
       spread: {
         reference: {
@@ -203,11 +203,13 @@ export function getHeroPlaceholder(heros: any[]) {
     // otherwise the placeholder values
     const byLine =
       hero?.byLine || hero?.descriptionHtml
-        ? {value: hero.descriptionHtml}
+        ? { value: hero.descriptionHtml }
         : placeholder.byline;
 
     const heading =
-      hero?.heading || hero?.title ? {value: hero.title} : placeholder.heading;
+      hero?.heading || hero?.title
+        ? { value: hero.title }
+        : placeholder.heading;
 
     // merge hero placeholder with hero data
     return {

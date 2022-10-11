@@ -1,13 +1,13 @@
-import {useUrl} from '@shopify/hydrogen';
+import { useUrl } from '@shopify/hydrogen';
 
-import {Section, Heading, FooterMenu, CountrySelector} from '~/components';
-import type {EnhancedMenu} from '~/lib/utils';
+import { Section, Heading, FooterMenu, CountrySelector } from '~/components';
+import type { EnhancedMenu } from '~/lib/utils';
 
 /**
  * A server component that specifies the content of the footer on the website
  */
-export function Footer({menu}: {menu?: EnhancedMenu}) {
-  const {pathname} = useUrl();
+export function Footer({ menu }: { menu?: EnhancedMenu }) {
+  const { pathname } = useUrl();
 
   const localeMatch = /^\/([a-z]{2})(\/|$)/i.exec(pathname);
   const countryCode = localeMatch ? localeMatch[1] : null;

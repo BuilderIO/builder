@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 
-import {missingClass, formatText} from '~/lib/utils';
+import { missingClass, formatText } from '~/lib/utils';
 
 export function Heading({
   as: Component = 'h2',
@@ -34,7 +34,7 @@ export function Heading({
     missingClass(className, 'whitespace-') && 'whitespace-pre-wrap',
     missingClass(className, 'max-w-') && widths[width],
     missingClass(className, 'font-') && sizes[size],
-    className,
+    className
   );
 
   return (

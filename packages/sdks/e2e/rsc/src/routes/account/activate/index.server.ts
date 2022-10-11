@@ -5,7 +5,7 @@ import {
   type HydrogenRequest,
 } from '@shopify/hydrogen';
 
-import {getApiErrorMessage} from '~/lib/utils';
+import { getApiErrorMessage } from '~/lib/utils';
 
 /**
  * This API route is used by the form on `/account/activate/[id]/[activationToken]`
@@ -13,7 +13,7 @@ import {getApiErrorMessage} from '~/lib/utils';
  */
 export async function api(
   request: HydrogenRequest,
-  {session, queryShop}: HydrogenApiRouteOptions,
+  { session, queryShop }: HydrogenApiRouteOptions
 ) {
   if (!session) {
     return new Response('Session storage not available.', {
@@ -25,14 +25,14 @@ export async function api(
 
   if (!jsonBody?.id || !jsonBody?.password || !jsonBody?.activationToken) {
     return new Response(
-      JSON.stringify({error: 'Incorrect password or activation token.'}),
+      JSON.stringify({ error: 'Incorrect password or activation token.' }),
       {
         status: 400,
-      },
+      }
     );
   }
 
-  const {data, errors} = await queryShop<{
+  const { data, errors } = await queryShop<{
     customerActivate: any;
   }>({
     query: CUSTOMER_ACTIVATE_MUTATION,
@@ -50,7 +50,7 @@ export async function api(
   if (data?.customerActivate?.customerAccessToken?.accessToken) {
     await session.set(
       'customerAccessToken',
-      data.customerActivate.customerAccessToken.accessToken,
+      data.customerActivate.customerAccessToken.accessToken
     );
 
     return new Response(null, {
@@ -61,7 +61,7 @@ export async function api(
       JSON.stringify({
         error: getApiErrorMessage('customerActivate', data, errors),
       }),
-      {status: 401},
+      { status: 401 }
     );
   }
 }

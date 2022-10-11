@@ -1,5 +1,5 @@
-import {ClientAnalytics} from '@shopify/hydrogen';
-import {useEffect} from 'react';
+import { ClientAnalytics } from '@shopify/hydrogen';
+import { useEffect } from 'react';
 
 let init = false;
 
@@ -12,21 +12,21 @@ export function EventsListener() {
     // cart events
     ClientAnalytics.subscribe(
       ClientAnalytics.eventNames.ADD_TO_CART,
-      ({cart, prevCart}) => {
+      ({ cart, prevCart }) => {
         // emit ADD_TO_CART event to server
-      },
+      }
     );
     ClientAnalytics.subscribe(
       ClientAnalytics.eventNames.REMOVE_FROM_CART,
-      ({cart, prevCart}) => {
+      ({ cart, prevCart }) => {
         // emit REMOVE_FROM_CART event to server
-      },
+      }
     );
     ClientAnalytics.subscribe(
       ClientAnalytics.eventNames.UPDATE_CART,
-      ({cart, prevCart}) => {
+      ({ cart, prevCart }) => {
         // emit UPDATE_CART event to server
-      },
+      }
     );
 
     // other events...

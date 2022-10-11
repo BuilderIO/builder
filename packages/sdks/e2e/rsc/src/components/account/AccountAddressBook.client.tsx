@@ -1,8 +1,8 @@
-import {useState, useMemo, MouseEventHandler} from 'react';
+import { useState, useMemo, MouseEventHandler } from 'react';
 
-import {Text, Button} from '~/components/elements';
-import {Modal} from '../index';
-import {AccountAddressEdit, AccountDeleteAddress} from '../index';
+import { Text, Button } from '~/components/elements';
+import { Modal } from '../index';
+import { AccountAddressEdit, AccountDeleteAddress } from '../index';
 
 export function AccountAddressBook({
   addresses,
@@ -14,9 +14,9 @@ export function AccountAddressBook({
   const [editingAddress, setEditingAddress] = useState(null);
   const [deletingAddress, setDeletingAddress] = useState(null);
 
-  const {fullDefaultAddress, addressesWithoutDefault} = useMemo(() => {
+  const { fullDefaultAddress, addressesWithoutDefault } = useMemo(() => {
     const defaultAddressIndex = addresses.findIndex(
-      (address) => address.id === defaultAddress,
+      (address) => address.id === defaultAddress
     );
     return {
       addressesWithoutDefault: [
@@ -81,7 +81,7 @@ export function AccountAddressBook({
                   defaultAddress
                   setDeletingAddress={setDeletingAddress.bind(
                     null,
-                    fullDefaultAddress.originalId,
+                    fullDefaultAddress.originalId
                   )}
                   editAddress={editAddress}
                 />
@@ -92,7 +92,7 @@ export function AccountAddressBook({
                   address={address}
                   setDeletingAddress={setDeletingAddress.bind(
                     null,
-                    address.originalId,
+                    address.originalId
                   )}
                   editAddress={editAddress}
                 />

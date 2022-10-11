@@ -58,7 +58,7 @@ export function IconClose(props: IconProps) {
   );
 }
 
-export function IconArrow({direction = 'right'}: IconProps) {
+export function IconArrow({ direction = 'right' }: IconProps) {
   let rotate;
 
   switch (direction) {

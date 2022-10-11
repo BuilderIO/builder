@@ -1,7 +1,7 @@
-import {Suspense, useMemo} from 'react';
-import {gql, useShopQuery, useLocalization} from '@shopify/hydrogen';
-import {PRODUCT_CARD_FRAGMENT} from '~/lib/fragments';
-import {ProductCard, Section} from '~/components';
+import { Suspense, useMemo } from 'react';
+import { gql, useShopQuery, useLocalization } from '@shopify/hydrogen';
+import { PRODUCT_CARD_FRAGMENT } from '~/lib/fragments';
+import { ProductCard, Section } from '~/components';
 import type {
   Product,
   ProductConnection,
@@ -44,7 +44,7 @@ export function ProductSwimlane({
   );
 }
 
-function ProductCards({products}: {products: Product[]}) {
+function ProductCards({ products }: { products: Product[] }) {
   return (
     <>
       {products.map((product) => (
@@ -66,11 +66,11 @@ function RecommendedProducts({
   count: number;
 }) {
   const {
-    language: {isoCode: languageCode},
-    country: {isoCode: countryCode},
+    language: { isoCode: languageCode },
+    country: { isoCode: countryCode },
   } = useLocalization();
 
-  const {data: products} = useShopQuery<{
+  const { data: products } = useShopQuery<{
     recommended: Product[];
     additional: ProductConnection;
   }>({
@@ -87,7 +87,7 @@ function RecommendedProducts({
     .concat(products.additional.nodes)
     .filter(
       (value, index, array) =>
-        array.findIndex((value2) => value2.id === value.id) === index,
+        array.findIndex((value2) => value2.id === value.id) === index
     );
 
   const originalProduct = mergedProducts
@@ -99,9 +99,9 @@ function RecommendedProducts({
   return <ProductCards products={mergedProducts} />;
 }
 
-export function TopProducts({count}: {count: number}) {
+export function TopProducts({ count }: { count: number }) {
   const {
-    data: {products},
+    data: { products },
   } = useShopQuery({
     query: TOP_PRODUCTS_QUERY,
     variables: {
@@ -110,7 +110,7 @@ export function TopProducts({count}: {count: number}) {
   });
 
   return (
-    <div style={{display: 'flex', flexWrap: 'wrap', gap: 5}}>
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
       <ProductCards products={products.nodes} />
     </div>
   );

@@ -1,4 +1,4 @@
-import {Suspense} from 'react';
+import { Suspense } from 'react';
 import {
   CacheNone,
   Seo,
@@ -8,8 +8,8 @@ import {
   type HydrogenRouteProps,
 } from '@shopify/hydrogen';
 
-import {AccountRecoverForm} from '~/components';
-import {Layout} from '~/components/index.server';
+import { AccountRecoverForm } from '~/components';
+import { Layout } from '~/components/index.server';
 
 /**
  * A form for the user to fill out to _initiate_ a password reset.
@@ -17,13 +17,13 @@ import {Layout} from '~/components/index.server';
  * to reset their password. Clicking the link leads the user to the
  * page `/account/reset/[resetToken]`.
  */
-export default function AccountRecover({response}: HydrogenRouteProps) {
+export default function AccountRecover({ response }: HydrogenRouteProps) {
   response.cache(CacheNone());
 
   return (
     <Layout>
       <Suspense>
-        <Seo type="noindex" data={{title: 'Recover password'}} />
+        <Seo type="noindex" data={{ title: 'Recover password' }} />
       </Suspense>
       <AccountRecoverForm />
     </Layout>
@@ -32,12 +32,12 @@ export default function AccountRecover({response}: HydrogenRouteProps) {
 
 export async function api(
   request: HydrogenRequest,
-  {queryShop}: HydrogenApiRouteOptions,
+  { queryShop }: HydrogenApiRouteOptions
 ) {
   const jsonBody = await request.json();
 
   if (!jsonBody.email) {
-    return new Response(JSON.stringify({error: 'Email required'}), {
+    return new Response(JSON.stringify({ error: 'Email required' }), {
       status: 400,
     });
   }

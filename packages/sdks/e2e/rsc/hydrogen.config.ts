@@ -1,4 +1,4 @@
-import {defineConfig, MemorySessionStorage} from '@shopify/hydrogen/config';
+import { defineConfig, MemorySessionStorage } from '@shopify/hydrogen/config';
 
 export default defineConfig({
   shopify: {

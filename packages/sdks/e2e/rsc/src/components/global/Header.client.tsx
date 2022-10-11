@@ -1,5 +1,5 @@
-import {Link, useUrl, useCart} from '@shopify/hydrogen';
-import {useWindowScroll} from 'react-use';
+import { Link, useUrl, useCart } from '@shopify/hydrogen';
+import { useWindowScroll } from 'react-use';
 
 import {
   Heading,
@@ -10,17 +10,23 @@ import {
   Input,
 } from '~/components';
 
-import {CartDrawer} from './CartDrawer.client';
-import {MenuDrawer} from './MenuDrawer.client';
-import {useDrawer} from './Drawer.client';
+import { CartDrawer } from './CartDrawer.client';
+import { MenuDrawer } from './MenuDrawer.client';
+import { useDrawer } from './Drawer.client';
 
-import type {EnhancedMenu} from '~/lib/utils';
+import type { EnhancedMenu } from '~/lib/utils';
 
 /**
  * A client component that specifies the content of the header on the website
  */
-export function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
-  const {pathname} = useUrl();
+export function Header({
+  title,
+  menu,
+}: {
+  title: string;
+  menu?: EnhancedMenu;
+}) {
+  const { pathname } = useUrl();
 
   const localeMatch = /^\/([a-z]{2})(\/|$)/i.exec(pathname);
   const countryCode = localeMatch ? localeMatch[1] : undefined;
@@ -74,7 +80,7 @@ function MobileHeader({
   openCart: () => void;
   openMenu: () => void;
 }) {
-  const {y} = useWindowScroll();
+  const { y } = useWindowScroll();
 
   const styles = {
     button: 'relative flex items-center justify-center w-8 h-8',
@@ -149,7 +155,7 @@ function DesktopHeader({
   menu?: EnhancedMenu;
   title: string;
 }) {
-  const {y} = useWindowScroll();
+  const { y } = useWindowScroll();
 
   const styles = {
     button:
@@ -210,8 +216,8 @@ function DesktopHeader({
   );
 }
 
-function CartBadge({dark}: {dark: boolean}) {
-  const {totalQuantity} = useCart();
+function CartBadge({ dark }: { dark: boolean }) {
+  const { totalQuantity } = useCart();
 
   if (totalQuantity < 1) {
     return null;

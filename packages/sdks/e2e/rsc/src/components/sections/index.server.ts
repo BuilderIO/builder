@@ -1,1 +1,1 @@
-export {ProductSwimlane} from './ProductSwimlane.server';
+export { ProductSwimlane } from './ProductSwimlane.server';

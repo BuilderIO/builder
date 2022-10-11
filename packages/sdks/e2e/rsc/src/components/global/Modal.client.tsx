@@ -1,4 +1,4 @@
-import {IconClose} from '~/components';
+import { IconClose } from '~/components';
 
 export function Modal({
   children,

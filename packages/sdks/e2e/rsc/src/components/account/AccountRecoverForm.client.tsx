@@ -1,7 +1,7 @@
-import {useState} from 'react';
+import { useState } from 'react';
 
-import {emailValidation} from '~/lib/utils';
-import {getInputStyleClasses} from '../../lib/styleUtils';
+import { emailValidation } from '~/lib/utils';
+import { getInputStyleClasses } from '../../lib/styleUtils';
 
 interface FormElements {
   email: HTMLInputElement;
@@ -14,7 +14,7 @@ export function AccountRecoverForm() {
   const [emailError, setEmailError] = useState<string | null>(null);
 
   async function onSubmit(
-    event: React.FormEvent<HTMLFormElement & FormElements>,
+    event: React.FormEvent<HTMLFormElement & FormElements>
   ) {
     event.preventDefault();
 
@@ -118,7 +118,7 @@ export async function callAccountRecoverApi({
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({email, password, firstName, lastName}),
+      body: JSON.stringify({ email, password, firstName, lastName }),
     });
     if (res.status === 200) {
       return {};

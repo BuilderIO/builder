@@ -1,5 +1,5 @@
-import React, {useCallback} from 'react';
-import {useServerProps} from '@shopify/hydrogen';
+import React, { useCallback } from 'react';
+import { useServerProps } from '@shopify/hydrogen';
 import {
   Menu,
   MenuItem,
@@ -17,7 +17,7 @@ import typographicBase from 'typographic-base';
  * @returns function when called will cause the current page to re-render on the server
  */
 export function useRenderServerComponents() {
-  const {serverProps, setServerProps} = useServerProps();
+  const { serverProps, setServerProps } = useServerProps();
 
   return useCallback(() => {
     setServerProps('renderRsc', !serverProps.renderRsc);
@@ -42,9 +42,9 @@ export function formatText(input?: string | React.ReactNode) {
     return input;
   }
 
-  return typographicBase(input, {locale: 'en-us'}).replace(
+  return typographicBase(input, { locale: 'en-us' }).replace(
     /\s([^\s<]+)\s*$/g,
-    '\u00A0$1',
+    '\u00A0$1'
   );
 }
 
@@ -79,7 +79,7 @@ function resolveToFromType(
     type?: string;
   } = {
     customPrefixes: {},
-  },
+  }
 ) {
   if (!pathname || !type) return '';
 
@@ -149,7 +149,7 @@ function parseItem(customPrefixes = {}) {
     }
 
     // extract path from url because we don't need the origin on internal to attributes
-    const {pathname} = new URL(item.url);
+    const { pathname } = new URL(item.url);
 
     /*
       Currently the MenuAPI only returns online store urls e.g — xyz.myshopify.com/..
@@ -163,7 +163,7 @@ function parseItem(customPrefixes = {}) {
           ...item,
           isExternal: false,
           target: '_self',
-          to: resolveToFromType({type: item.type, customPrefixes, pathname}),
+          to: resolveToFromType({ type: item.type, customPrefixes, pathname }),
         }
       : // external links
         {
@@ -213,7 +213,7 @@ export function parseMenu(menu: Menu, customPrefixes = {}): EnhancedMenu {
 export function getApiErrorMessage(
   field: string,
   data: Record<string, any>,
-  errors: UserError[],
+  errors: UserError[]
 ) {
   if (errors?.length) return errors[0].message ?? errors[0];
   if (data?.[field]?.customerUserErrors?.length)

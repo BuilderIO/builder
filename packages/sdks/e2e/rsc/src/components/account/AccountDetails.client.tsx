@@ -1,7 +1,7 @@
-import {Seo} from '@shopify/hydrogen';
-import {useState} from 'react';
-import {Modal} from '../index';
-import {AccountDetailsEdit} from './AccountDetailsEdit.client';
+import { Seo } from '@shopify/hydrogen';
+import { useState } from 'react';
+import { Modal } from '../index';
+import { AccountDetailsEdit } from './AccountDetailsEdit.client';
 
 export function AccountDetails({
   firstName,
@@ -22,7 +22,7 @@ export function AccountDetails({
     <>
       {isEditing ? (
         <Modal close={close}>
-          <Seo type="noindex" data={{title: 'Account details'}} />
+          <Seo type="noindex" data={{ title: 'Account details' }} />
           <AccountDetailsEdit
             firstName={firstName}
             lastName={lastName}

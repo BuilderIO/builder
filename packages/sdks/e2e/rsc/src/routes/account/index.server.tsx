@@ -1,4 +1,4 @@
-import {Suspense} from 'react';
+import { Suspense } from 'react';
 import {
   CacheNone,
   flattenConnection,
@@ -12,8 +12,8 @@ import {
   type HydrogenApiRouteOptions,
 } from '@shopify/hydrogen';
 
-import {PRODUCT_CARD_FRAGMENT} from '~/lib/fragments';
-import {getApiErrorMessage} from '~/lib/utils';
+import { PRODUCT_CARD_FRAGMENT } from '~/lib/fragments';
+import { getApiErrorMessage } from '~/lib/utils';
 import {
   AccountAddressBook,
   AccountDetails,
@@ -22,7 +22,7 @@ import {
   LogoutButton,
   PageHeader,
 } from '~/components';
-import {Layout, ProductSwimlane} from '~/components/index.server';
+import { Layout, ProductSwimlane } from '~/components/index.server';
 import type {
   Collection,
   CollectionConnection,
@@ -33,18 +33,18 @@ import type {
   ProductConnection,
 } from '@shopify/hydrogen/storefront-api-types';
 
-export default function Account({response}: HydrogenRouteProps) {
+export default function Account({ response }: HydrogenRouteProps) {
   response.cache(CacheNone());
 
   const {
-    language: {isoCode: languageCode},
-    country: {isoCode: countryCode},
+    language: { isoCode: languageCode },
+    country: { isoCode: countryCode },
   } = useLocalization();
-  const {customerAccessToken} = useSession();
+  const { customerAccessToken } = useSession();
 
   if (!customerAccessToken) return response.redirect('/account/login');
 
-  const {data} = useShopQuery<{
+  const { data } = useShopQuery<{
     customer: Customer;
     featuredCollections: CollectionConnection;
     featuredProducts: ProductConnection;
@@ -58,7 +58,7 @@ export default function Account({response}: HydrogenRouteProps) {
     cache: CacheNone(),
   });
 
-  const {customer, featuredCollections, featuredProducts} = data;
+  const { customer, featuredCollections, featuredProducts } = data;
 
   if (!customer) return response.redirect('/account/login');
 
@@ -67,12 +67,12 @@ export default function Account({response}: HydrogenRouteProps) {
       ...address,
       id: address.id!.substring(0, address.id!.lastIndexOf('?')),
       originalId: address.id,
-    }),
+    })
   );
 
   const defaultAddress = customer?.defaultAddress?.id?.substring(
     0,
-    customer.defaultAddress.id.lastIndexOf('?'),
+    customer.defaultAddress.id.lastIndexOf('?')
   );
 
   return (
@@ -116,7 +116,7 @@ function AuthenticatedAccount({
   return (
     <Layout>
       <Suspense>
-        <Seo type="noindex" data={{title: 'Account details'}} />
+        <Seo type="noindex" data={{ title: 'Account details' }} />
       </Suspense>
       <PageHeader heading={heading}>
         <LogoutButton>Sign out</LogoutButton>
@@ -147,7 +147,7 @@ function AuthenticatedAccount({
 
 export async function api(
   request: HydrogenRequest,
-  {session, queryShop}: HydrogenApiRouteOptions,
+  { session, queryShop }: HydrogenApiRouteOptions
 ) {
   if (request.method !== 'PATCH' && request.method !== 'DELETE') {
     return new Response(null, {
@@ -164,11 +164,12 @@ export async function api(
     });
   }
 
-  const {customerAccessToken} = await session.get();
+  const { customerAccessToken } = await session.get();
 
-  if (!customerAccessToken) return new Response(null, {status: 401});
+  if (!customerAccessToken) return new Response(null, { status: 401 });
 
-  const {email, phone, firstName, lastName, newPassword} = await request.json();
+  const { email, phone, firstName, lastName, newPassword } =
+    await request.json();
 
   interface Customer {
     email?: string;
@@ -186,7 +187,7 @@ export async function api(
   if (lastName) customer.lastName = lastName;
   if (newPassword) customer.password = newPassword;
 
-  const {data, errors} = await queryShop<{customerUpdate: any}>({
+  const { data, errors } = await queryShop<{ customerUpdate: any }>({
     query: CUSTOMER_UPDATE_MUTATION,
     variables: {
       customer,
@@ -198,7 +199,7 @@ export async function api(
 
   const error = getApiErrorMessage('customerUpdate', data, errors);
 
-  if (error) return new Response(JSON.stringify({error}), {status: 400});
+  if (error) return new Response(JSON.stringify({ error }), { status: 400 });
 
   return new Response(null);
 }

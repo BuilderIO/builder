@@ -1,4 +1,4 @@
-import {useEffect, useCallback, useState} from 'react';
+import { useEffect, useCallback, useState } from 'react';
 
 import {
   useProductOptions,
@@ -10,13 +10,13 @@ import {
   ShopPayButton,
 } from '@shopify/hydrogen';
 
-import {Heading, Text, Button, ProductOptions} from '~/components';
+import { Heading, Text, Button, ProductOptions } from '~/components';
 
 export function ProductForm() {
-  const {pathname, search} = useUrl();
+  const { pathname, search } = useUrl();
   const [params, setParams] = useState(new URLSearchParams(search));
 
-  const {options, setSelectedOption, selectedOptions, selectedVariant} =
+  const { options, setSelectedOption, selectedOptions, selectedVariant } =
     useProductOptions();
 
   const isOutOfStock = !selectedVariant?.availableForSale || false;
@@ -30,23 +30,23 @@ export function ProductForm() {
   }, [params, search]);
 
   useEffect(() => {
-    (options as OptionWithValues[]).map(({name, values}) => {
+    (options as OptionWithValues[]).map(({ name, values }) => {
       if (!params) return;
       const currentValue = params.get(name.toLowerCase()) || null;
       if (currentValue) {
         const matchedValue = values.filter(
-          (value) => encodeURIComponent(value.toLowerCase()) === currentValue,
+          (value) => encodeURIComponent(value.toLowerCase()) === currentValue
         );
         setSelectedOption(name, matchedValue[0]);
       } else {
         params.set(
           encodeURIComponent(name.toLowerCase()),
-          encodeURIComponent(selectedOptions![name]!.toLowerCase()),
+          encodeURIComponent(selectedOptions![name]!.toLowerCase())
         ),
           window.history.replaceState(
             null,
             '',
-            `${pathname}?${params.toString()}`,
+            `${pathname}?${params.toString()}`
           );
       }
     });
@@ -58,24 +58,24 @@ export function ProductForm() {
       if (!params) return;
       params.set(
         encodeURIComponent(name.toLowerCase()),
-        encodeURIComponent(value.toLowerCase()),
+        encodeURIComponent(value.toLowerCase())
       );
       if (isBrowser()) {
         window.history.replaceState(
           null,
           '',
-          `${pathname}?${params.toString()}`,
+          `${pathname}?${params.toString()}`
         );
       }
     },
-    [setSelectedOption, params, pathname],
+    [setSelectedOption, params, pathname]
   );
 
   return (
     <form className="grid gap-10">
       {
         <div className="grid gap-4">
-          {(options as OptionWithValues[]).map(({name, values}) => {
+          {(options as OptionWithValues[]).map(({ name, values }) => {
             if (values.length === 1) {
               return null;
             }

@@ -1,7 +1,7 @@
-import type {Order} from '@shopify/hydrogen/storefront-api-types';
-import {Button, Text, OrderCard} from '~/components';
+import type { Order } from '@shopify/hydrogen/storefront-api-types';
+import { Button, Text, OrderCard } from '~/components';
 
-export function AccountOrderHistory({orders}: {orders: Order[]}) {
+export function AccountOrderHistory({ orders }: { orders: Order[] }) {
   return (
     <div className="mt-6">
       <div className="grid w-full gap-4 p-4 py-6 md:gap-8 md:p-8 lg:p-12">
@@ -27,7 +27,7 @@ function EmptyOrders() {
   );
 }
 
-function Orders({orders}: {orders: Order[]}) {
+function Orders({ orders }: { orders: Order[] }) {
   return (
     <ul className="grid-flow-row grid gap-2 gap-y-6 md:gap-4 lg:gap-6 grid-cols-1 false  sm:grid-cols-3">
       {orders.map((order) => (

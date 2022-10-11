@@ -1,8 +1,8 @@
-import {Suspense} from 'react';
-import {useRouteParams, Seo} from '@shopify/hydrogen';
+import { Suspense } from 'react';
+import { useRouteParams, Seo } from '@shopify/hydrogen';
 
-import {AccountPasswordResetForm} from '~/components';
-import {Layout} from '~/components/index.server';
+import { AccountPasswordResetForm } from '~/components';
+import { Layout } from '~/components/index.server';
 
 /**
  * This page shows a form for the user to enter a new password.
@@ -10,12 +10,12 @@ import {Layout} from '~/components/index.server';
  * they initiate a password reset from `/account/recover`.
  */
 export default function ResetPassword() {
-  const {id, resetToken} = useRouteParams();
+  const { id, resetToken } = useRouteParams();
 
   return (
     <Layout>
       <Suspense>
-        <Seo type="noindex" data={{title: 'Reset password'}} />
+        <Seo type="noindex" data={{ title: 'Reset password' }} />
       </Suspense>
       <AccountPasswordResetForm id={id} resetToken={resetToken} />
     </Layout>

@@ -6,17 +6,17 @@ import {
   gql,
   Link,
 } from '@shopify/hydrogen';
-import type {Shop} from '@shopify/hydrogen/storefront-api-types';
+import type { Shop } from '@shopify/hydrogen/storefront-api-types';
 
-import {PageHeader, Section, Heading} from '~/components';
-import {Layout, NotFound} from '~/components/index.server';
+import { PageHeader, Section, Heading } from '~/components';
+import { Layout, NotFound } from '~/components/index.server';
 
 export default function Policies() {
   const {
-    language: {isoCode: languageCode},
+    language: { isoCode: languageCode },
   } = useLocalization();
 
-  const {data} = useShopQuery<{
+  const { data } = useShopQuery<{
     shop: Shop;
   }>({
     query: POLICIES_QUERY,

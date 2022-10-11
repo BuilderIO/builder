@@ -1,4 +1,4 @@
-import {Suspense} from 'react';
+import { Suspense } from 'react';
 import {
   useShopQuery,
   CacheLong,
@@ -10,15 +10,15 @@ import {
   HydrogenApiRouteOptions,
 } from '@shopify/hydrogen';
 
-import {AccountLoginForm} from '~/components';
-import {Layout} from '~/components/index.server';
+import { AccountLoginForm } from '~/components';
+import { Layout } from '~/components/index.server';
 
-export default function Login({response}: HydrogenRouteProps) {
+export default function Login({ response }: HydrogenRouteProps) {
   response.cache(CacheNone());
 
   const {
     data: {
-      shop: {name},
+      shop: { name },
     },
   } = useShopQuery({
     query: SHOP_QUERY,
@@ -29,7 +29,7 @@ export default function Login({response}: HydrogenRouteProps) {
   return (
     <Layout>
       <Suspense>
-        <Seo type="noindex" data={{title: 'Login'}} />
+        <Seo type="noindex" data={{ title: 'Login' }} />
       </Suspense>
       <AccountLoginForm shopName={name} />
     </Layout>
@@ -46,22 +46,22 @@ const SHOP_QUERY = gql`
 
 export async function api(
   request: HydrogenRequest,
-  {session, queryShop}: HydrogenApiRouteOptions,
+  { session, queryShop }: HydrogenApiRouteOptions
 ) {
   if (!session) {
-    return new Response('Session storage not available.', {status: 400});
+    return new Response('Session storage not available.', { status: 400 });
   }
 
   const jsonBody = await request.json();
 
   if (!jsonBody.email || !jsonBody.password) {
     return new Response(
-      JSON.stringify({error: 'Incorrect email or password.'}),
-      {status: 400},
+      JSON.stringify({ error: 'Incorrect email or password.' }),
+      { status: 400 }
     );
   }
 
-  const {data, errors} = await queryShop<{customerAccessTokenCreate: any}>({
+  const { data, errors } = await queryShop<{ customerAccessTokenCreate: any }>({
     query: LOGIN_MUTATION,
     variables: {
       input: {
@@ -76,7 +76,7 @@ export async function api(
   if (data?.customerAccessTokenCreate?.customerAccessToken?.accessToken) {
     await session.set(
       'customerAccessToken',
-      data.customerAccessTokenCreate.customerAccessToken.accessToken,
+      data.customerAccessTokenCreate.customerAccessToken.accessToken
     );
 
     return new Response(null, {
@@ -87,7 +87,7 @@ export async function api(
       JSON.stringify({
         error: data?.customerAccessTokenCreate?.customerUserErrors ?? errors,
       }),
-      {status: 401},
+      { status: 401 }
     );
   }
 }

@@ -1,6 +1,6 @@
-import {useState} from 'react';
-import {useNavigate} from '@shopify/hydrogen/client';
-import {getInputStyleClasses} from '../../lib/styleUtils';
+import { useState } from 'react';
+import { useNavigate } from '@shopify/hydrogen/client';
+import { getInputStyleClasses } from '../../lib/styleUtils';
 
 interface FormElements {
   password: HTMLInputElement;
@@ -35,7 +35,7 @@ export function AccountPasswordResetForm({
       setPasswordError(
         form.password.validity.valueMissing
           ? 'Please enter a password'
-          : 'Passwords must be at least 6 characters',
+          : 'Passwords must be at least 6 characters'
       );
     }
 
@@ -44,7 +44,7 @@ export function AccountPasswordResetForm({
       setPasswordConfirmError(
         form.password.validity.valueMissing
           ? 'Please re-enter a password'
-          : 'Passwords must be at least 6 characters',
+          : 'Passwords must be at least 6 characters'
       );
     }
 
@@ -57,7 +57,7 @@ export function AccountPasswordResetForm({
   }
 
   async function onSubmit(
-    event: React.FormEvent<HTMLFormElement & FormElements>,
+    event: React.FormEvent<HTMLFormElement & FormElements>
   ) {
     event.preventDefault();
 
@@ -170,7 +170,7 @@ export async function callPasswordResetApi({
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({id, resetToken, password}),
+      body: JSON.stringify({ id, resetToken, password }),
     });
 
     if (res.ok) {

@@ -1,9 +1,9 @@
-import {gql, useShopQuery} from '@shopify/hydrogen';
+import { gql, useShopQuery } from '@shopify/hydrogen';
 
-import {PRODUCT_CARD_FRAGMENT} from '~/lib/fragments';
-import {FeaturedCollections} from '~/components';
-import {ProductSwimlane} from '~/components/index.server';
-import {PAGINATION_SIZE} from '~/lib/const';
+import { PRODUCT_CARD_FRAGMENT } from '~/lib/fragments';
+import { FeaturedCollections } from '~/components';
+import { ProductSwimlane } from '~/components/index.server';
+import { PAGINATION_SIZE } from '~/lib/const';
 
 export function NoResultRecommendations({
   country,
@@ -12,7 +12,7 @@ export function NoResultRecommendations({
   country: string;
   language: string;
 }) {
-  const {data} = useShopQuery<any>({
+  const { data } = useShopQuery<any>({
     query: SEARCH_NO_RESULTS_QUERY,
     variables: {
       country,

@@ -1,9 +1,12 @@
-import {useState, useRef, useEffect, useCallback} from 'react';
-import {Link, flattenConnection} from '@shopify/hydrogen';
+import { useState, useRef, useEffect, useCallback } from 'react';
+import { Link, flattenConnection } from '@shopify/hydrogen';
 
-import {Button, Grid, ProductCard} from '~/components';
-import {getImageLoadingPriority} from '~/lib/const';
-import type {Collection, Product} from '@shopify/hydrogen/storefront-api-types';
+import { Button, Grid, ProductCard } from '~/components';
+import { getImageLoadingPriority } from '~/lib/const';
+import type {
+  Collection,
+  Product,
+} from '@shopify/hydrogen/storefront-api-types';
 
 export function ProductGrid({
   url,
@@ -14,7 +17,7 @@ export function ProductGrid({
 }) {
   const nextButtonRef = useRef(null);
   const initialProducts = collection?.products?.nodes || [];
-  const {hasNextPage, endCursor} = collection?.products?.pageInfo ?? {};
+  const { hasNextPage, endCursor } = collection?.products?.pageInfo ?? {};
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [cursor, setCursor] = useState(endCursor ?? '');
   const [nextPage, setNextPage] = useState(hasNextPage);
@@ -29,15 +32,15 @@ export function ProductGrid({
     const response = await fetch(postUrl, {
       method: 'POST',
     });
-    const {data} = await response.json();
+    const { data } = await response.json();
 
     // ProductGrid can paginate collection, products and search routes
     // @ts-ignore TODO: Fix types
     const newProducts: Product[] = flattenConnection<Product>(
-      data?.collection?.products || data?.products || [],
+      data?.collection?.products || data?.products || []
     );
-    const {endCursor, hasNextPage} = data?.collection?.products?.pageInfo ||
-      data?.products?.pageInfo || {endCursor: '', hasNextPage: false};
+    const { endCursor, hasNextPage } = data?.collection?.products?.pageInfo ||
+      data?.products?.pageInfo || { endCursor: '', hasNextPage: false };
 
     setProducts([...products, ...newProducts]);
     setCursor(endCursor);
@@ -53,7 +56,7 @@ export function ProductGrid({
         }
       });
     },
-    [fetchProducts],
+    [fetchProducts]
   );
 
   useEffect(() => {

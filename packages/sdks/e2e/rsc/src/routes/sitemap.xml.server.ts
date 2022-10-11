@@ -20,9 +20,9 @@ interface SitemapQueryData {
 
 export async function api(
   request: HydrogenRequest,
-  {queryShop}: HydrogenApiRouteOptions,
+  { queryShop }: HydrogenApiRouteOptions
 ) {
-  const {data} = await queryShop<SitemapQueryData>({
+  const { data } = await queryShop<SitemapQueryData>({
     query: QUERY,
     variables: {
       language: 'EN',

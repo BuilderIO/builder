@@ -1,9 +1,9 @@
-import {useCallback, useState} from 'react';
+import { useCallback, useState } from 'react';
 // @ts-expect-error @headlessui/react incompatibility with node16 resolution
-import {Listbox} from '@headlessui/react';
-import {useProductOptions} from '@shopify/hydrogen';
+import { Listbox } from '@headlessui/react';
+import { useProductOptions } from '@shopify/hydrogen';
 
-import {Text, IconCheck, IconCaret} from '~/components';
+import { Text, IconCheck, IconCaret } from '~/components';
 
 export function ProductOptions({
   values,
@@ -30,7 +30,7 @@ function OptionsGrid({
   name: string;
   handleChange: (name: string, value: string) => void;
 }) {
-  const {selectedOptions} = useProductOptions();
+  const { selectedOptions } = useProductOptions();
 
   return (
     <>
@@ -74,20 +74,20 @@ function OptionsDropdown({
   handleChange: (name: string, value: string) => void;
 }) {
   const [listboxOpen, setListboxOpen] = useState(false);
-  const {selectedOptions} = useProductOptions();
+  const { selectedOptions } = useProductOptions();
 
   const updateSelectedOption = useCallback(
     (value: string) => {
       handleChange(name, value);
     },
-    [name, handleChange],
+    [name, handleChange]
   );
 
   return (
     <div className="relative w-full">
       <Listbox onChange={updateSelectedOption} value="">
         {/* @ts-expect-error @headlessui/react incompatibility with node16 resolution */}
-        {({open}) => {
+        {({ open }) => {
           setTimeout(() => setListboxOpen(open));
           return (
             <>
@@ -114,7 +114,7 @@ function OptionsDropdown({
                   return (
                     <Listbox.Option key={id} value={value}>
                       {/* @ts-expect-error @headlessui/react incompatibility with node16 resolution */}
-                      {({active}) => (
+                      {({ active }) => (
                         <div
                           className={`text-primary w-full p-2 transition rounded flex justify-start items-center text-left cursor-pointer ${
                             active ? 'bg-primary/10' : null

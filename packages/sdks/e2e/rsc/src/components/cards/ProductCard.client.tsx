@@ -7,9 +7,9 @@ import {
   useMoney,
 } from '@shopify/hydrogen';
 
-import {Text} from '~/components';
-import {isDiscounted, isNewArrival} from '~/lib/utils';
-import {getProductPlaceholder} from '~/lib/placeholders';
+import { Text } from '~/components';
+import { isDiscounted, isNewArrival } from '~/lib/utils';
+import { getProductPlaceholder } from '~/lib/placeholders';
 import type {
   MoneyV2,
   Product,
@@ -39,7 +39,7 @@ export function ProductCard({
     priceV2: price,
     compareAtPriceV2: compareAtPrice,
   } = flattenConnection<ProductVariant>(
-    cardData?.variants as ProductVariantConnection,
+    cardData?.variants as ProductVariantConnection
   )[0] || {};
 
   if (label) {
@@ -112,7 +112,7 @@ function CompareAtPrice({
   data: MoneyV2;
   className?: string;
 }) {
-  const {currencyNarrowSymbol, withoutTrailingZerosAndCurrency} =
+  const { currencyNarrowSymbol, withoutTrailingZerosAndCurrency } =
     useMoney(data);
 
   const styles = clsx('strike', className);

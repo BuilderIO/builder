@@ -1,15 +1,15 @@
-import {Suspense} from 'react';
-import {useShopQuery, useLocalization, gql, Seo} from '@shopify/hydrogen';
-import type {Collection} from '@shopify/hydrogen/storefront-api-types';
+import { Suspense } from 'react';
+import { useShopQuery, useLocalization, gql, Seo } from '@shopify/hydrogen';
+import type { Collection } from '@shopify/hydrogen/storefront-api-types';
 
-import {PageHeader, Section, Grid} from '~/components';
-import {Layout, CollectionCard} from '~/components/index.server';
-import {getImageLoadingPriority, PAGINATION_SIZE} from '~/lib/const';
+import { PageHeader, Section, Grid } from '~/components';
+import { Layout, CollectionCard } from '~/components/index.server';
+import { getImageLoadingPriority, PAGINATION_SIZE } from '~/lib/const';
 
 export default function Collections() {
   return (
     <Layout>
-      <Seo type="page" data={{title: 'All Collections'}} />
+      <Seo type="page" data={{ title: 'All Collections' }} />
       <PageHeader heading="Collections" />
       <Section>
         <Suspense>
@@ -22,11 +22,11 @@ export default function Collections() {
 
 function CollectionGrid() {
   const {
-    language: {isoCode: languageCode},
-    country: {isoCode: countryCode},
+    language: { isoCode: languageCode },
+    country: { isoCode: countryCode },
   } = useLocalization();
 
-  const {data} = useShopQuery<any>({
+  const { data } = useShopQuery<any>({
     query: COLLECTIONS_QUERY,
     variables: {
       pageBy: PAGINATION_SIZE,

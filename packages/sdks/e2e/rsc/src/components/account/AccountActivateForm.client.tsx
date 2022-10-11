@@ -1,6 +1,6 @@
-import {useState} from 'react';
-import {useNavigate} from '@shopify/hydrogen/client';
-import {getInputStyleClasses} from '../../lib/styleUtils';
+import { useState } from 'react';
+import { useNavigate } from '@shopify/hydrogen/client';
+import { getInputStyleClasses } from '../../lib/styleUtils';
 
 export function AccountActivateForm({
   id,
@@ -20,7 +20,7 @@ export function AccountActivateForm({
   >(null);
 
   function passwordValidation(
-    form: HTMLFormElement & {password: HTMLInputElement},
+    form: HTMLFormElement & { password: HTMLInputElement }
   ) {
     setPasswordError(null);
     setPasswordConfirmError(null);
@@ -32,7 +32,7 @@ export function AccountActivateForm({
       setPasswordError(
         form.password.validity.valueMissing
           ? 'Please enter a password'
-          : 'Passwords must be at least 6 characters',
+          : 'Passwords must be at least 6 characters'
       );
     }
 
@@ -41,7 +41,7 @@ export function AccountActivateForm({
       setPasswordConfirmError(
         form.password.validity.valueMissing
           ? 'Please re-enter a password'
-          : 'Passwords must be at least 6 characters',
+          : 'Passwords must be at least 6 characters'
       );
     }
 
@@ -54,7 +54,7 @@ export function AccountActivateForm({
   }
 
   async function onSubmit(
-    event: React.FormEvent<HTMLFormElement & {password: HTMLInputElement}>,
+    event: React.FormEvent<HTMLFormElement & { password: HTMLInputElement }>
   ) {
     event.preventDefault();
 
@@ -165,7 +165,7 @@ async function callActivateApi({
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({id, activationToken, password}),
+      body: JSON.stringify({ id, activationToken, password }),
     });
     if (res.ok) {
       return {};

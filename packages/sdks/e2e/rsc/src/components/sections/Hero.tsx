@@ -1,7 +1,7 @@
-import {Image, Link, Video} from '@shopify/hydrogen';
-import type {Media} from '@shopify/hydrogen/storefront-api-types';
+import { Image, Link, Video } from '@shopify/hydrogen';
+import type { Media } from '@shopify/hydrogen/storefront-api-types';
 
-import {Heading, Text} from '~/components';
+import { Heading, Text } from '~/components';
 
 interface Metafield {
   value: string;
@@ -110,7 +110,7 @@ function SpreadMedia({
   if (data.mediaContentType === 'VIDEO') {
     return (
       <Video
-        previewImageOptions={{scale, src: data.previewImage!.url}}
+        previewImageOptions={{ scale, src: data.previewImage!.url }}
         width={scale! * width}
         className="block object-cover w-full h-full"
         data={data}
@@ -134,7 +134,7 @@ function SpreadMedia({
         data={data.image}
         loading={loading}
         width={width}
-        loaderOptions={{scale, crop: 'center'}}
+        loaderOptions={{ scale, crop: 'center' }}
       />
     );
   }

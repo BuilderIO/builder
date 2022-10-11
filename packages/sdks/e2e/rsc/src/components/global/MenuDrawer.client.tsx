@@ -1,7 +1,7 @@
-import {EnhancedMenu} from '~/lib/utils';
-import {Text} from '~/components';
-import {Drawer} from './Drawer.client';
-import {Link} from '@shopify/hydrogen';
+import { EnhancedMenu } from '~/lib/utils';
+import { Text } from '~/components';
+import { Drawer } from './Drawer.client';
+import { Link } from '@shopify/hydrogen';
 
 export function MenuDrawer({
   isOpen,

@@ -1,4 +1,4 @@
-import {Suspense} from 'react';
+import { Suspense } from 'react';
 import renderHydrogen from '@shopify/hydrogen/entry-server';
 import {
   FileRoutes,
@@ -11,11 +11,11 @@ import {
   ShopifyProvider,
   CartProvider,
 } from '@shopify/hydrogen';
-import {HeaderFallback, EventsListener} from '~/components';
-import type {CountryCode} from '@shopify/hydrogen/storefront-api-types';
-import {DefaultSeo, NotFound} from '~/components/index.server';
+import { HeaderFallback, EventsListener } from '~/components';
+import type { CountryCode } from '@shopify/hydrogen/storefront-api-types';
+import { DefaultSeo, NotFound } from '~/components/index.server';
 
-function App({request}: HydrogenRouteProps) {
+function App({ request }: HydrogenRouteProps) {
   const pathname = new URL(request.normalizedUrl).pathname;
   const localeMatch = /^\/([a-z]{2})(\/|$)/i.exec(pathname);
   const countryCode = localeMatch ? (localeMatch[1] as CountryCode) : undefined;

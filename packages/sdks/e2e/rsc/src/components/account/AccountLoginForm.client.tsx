@@ -1,13 +1,13 @@
-import {useState} from 'react';
-import {useNavigate, Link} from '@shopify/hydrogen/client';
-import {getInputStyleClasses} from '../../lib/styleUtils';
+import { useState } from 'react';
+import { useNavigate, Link } from '@shopify/hydrogen/client';
+import { getInputStyleClasses } from '../../lib/styleUtils';
 
 interface FormElements {
   email: HTMLInputElement;
   password: HTMLInputElement;
 }
 
-export function AccountLoginForm({shopName}: {shopName: string}) {
+export function AccountLoginForm({ shopName }: { shopName: string }) {
   const navigate = useNavigate();
 
   const [hasSubmitError, setHasSubmitError] = useState(false);
@@ -40,7 +40,7 @@ export function AccountLoginForm({shopName}: {shopName: string}) {
   }
 
   async function checkPassword(
-    event: React.FormEvent<HTMLFormElement & FormElements>,
+    event: React.FormEvent<HTMLFormElement & FormElements>
   ) {
     const validity = event.currentTarget.password.validity;
     if (validity.valid) {
@@ -59,7 +59,7 @@ export function AccountLoginForm({shopName}: {shopName: string}) {
       setPasswordError(
         validity.valueMissing
           ? 'Please enter a password'
-          : 'Passwords must be at least 6 characters',
+          : 'Passwords must be at least 6 characters'
       );
     }
   }
@@ -123,7 +123,7 @@ export async function callLoginApi({
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({email, password}),
+      body: JSON.stringify({ email, password }),
     });
     if (res.ok) {
       return {};

@@ -1,1 +1,3 @@
-export function evaluate() { return null }
+export function evaluate() {
+  return null;
+}
