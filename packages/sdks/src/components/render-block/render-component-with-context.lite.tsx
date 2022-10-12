@@ -31,5 +31,12 @@ export default function RenderComponentWithContext(
       return props.context.inheritedStyles;
     },
   });
-  return <RenderComponent {...props} />;
+  return (
+    <RenderComponent
+      componentRef={props.componentRef}
+      componentOptions={props.componentOptions}
+      blockChildren={props.blockChildren}
+      context={props.context}
+    />
+  );
 }
