@@ -6,18 +6,10 @@
 //
 
 import SwiftUI
-import Firebase
-import FirebaseFirestore
 
 
 @main
 struct testingApp: App {
-    static var db = Firestore.firestore()
-    
-    init() {
-        FirebaseApp.configure()
-    }
-    
     var body: some Scene {
         WindowGroup {
             ContentView()

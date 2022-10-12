@@ -15,6 +15,7 @@
 </p>
 
 <p align="center">
+  <img alt="React SDK Size" src="https://img.shields.io/bundlephobia/minzip/@builder.io/sdk-react">
   <a href="https://github.com/prettier/prettier"><img alt="code style: prettier" src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg" /></a>
   <a href="https://github.com/builderio/builder/pulls"><img alt="PRs Welcome" src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" /></a>
   <a href="https://github.com/BuilderIO/builder"><img alt="License" src="https://img.shields.io/github/license/BuilderIO/builder" /></a>
@@ -154,10 +155,31 @@ See our full [getting started docs](https://www.builder.io/c/docs/developers), o
 
 
 <a href="https://www.youtube.com/watch?v=FfrrigefdiY">
-  <img width="983" alt="Thumbnail to go to a video on how Builder works" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F5a98332583ac48db9af376b11a9b3d3c">
+  <img width="500" alt="Thumbnail to go to a video on how Builder works" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F5a98332583ac48db9af376b11a9b3d3c">
 </a>
  
 Learn more about <a href="https://www.builder.io/c/docs/how-builder-works-technical">how builder works here</a>
+
+## How is the performance?
+
+Performance is our top priority. All content is delivered from the edge, renderable server side or statically, we [optimize the heck out of it](https://www.builder.io/blog/high-performance-no-code) and our SDKs are small and mighty. 
+
+Some example SDK sizes from Bundlephobia:
+
+|SDK|Size|
+|----|----|
+|React|![React Bundle Size](https://img.shields.io/bundlephobia/minzip/@builder.io/sdk-react)|
+|Vue|![Vue Bundle Size](https://img.shields.io/bundlephobia/minzip/@builder.io/sdk-vue)|
+|Qwik|![Vue Bundle Size](https://img.shields.io/bundlephobia/minzip/@builder.io/sdk-qwik)|
+
+Importantly, there are no hacks here - no iframes, no unneeded client side code or rendering, our rule of thumb is we produce content just like if you wrote it by hand. Assets are optimized, DOM is minimized, and it's all native to your framework (so all React components if you use React, Svelte for Svelte, etc)
+
+See more about [how Builder works](https://www.builder.io/c/docs/how-builder-works-technical), or take a look at the [perf of our own site](https://pagespeed.web.dev/report?url=https%3A%2F%2Fwww.builder.io%2F) (built completely in Builder):
+
+<a href="https://pagespeed.web.dev/report?url=https%3A%2F%2Fwww.builder.io%2F">
+  <img width="700" alt="Screenshot of Builder.io site performance (96/100 on mobile pagespeed insights)" src="https://user-images.githubusercontent.com/844291/195188635-a437c25c-7cf3-45f9-8d3a-c357810d52ca.png">
+</a>
+
 
 
 ## How is the content structured?

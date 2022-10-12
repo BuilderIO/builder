@@ -2,6 +2,7 @@
   "name": "@builder.io/e2e-vue3",
   "private": true,
   "version": "0.0.1",
+  "type": "module",
   "scripts": {
     "build": "vue-tsc --noEmit && vite build",
     "dev": "vue-tsc --noEmit && vite",

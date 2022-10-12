@@ -1,5 +1,5 @@
 import { devices } from '@playwright/test';
-import { targetContext } from './dist/tests/context.js';
+import { targetContext } from './src/tests/context.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -27,7 +27,7 @@ export function configFor(packageName, port) {
   const portFlag = isReactNative ? '' : `--port=${port}`;
 
   return {
-    testDir: getDirName() + '/tests',
+    testDir: getDirName() + '/src/tests',
     /* Maximum time one test can run for. */
     timeout: 30 * 1000,
     expect: {

@@ -89,7 +89,6 @@
 		AF15815A26B83DE000531EAD /* Tests macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF15815E26B83DE000531EAD /* Tests_macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOS.swift; sourceTree = "<group>"; };
 		AF15816026B83DE000531EAD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		AF7E5E5026BA0EA600AB0FF5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B52B583E91FB93CBCFDB4841 /* Pods-testing (macOS).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-testing (macOS).release.xcconfig"; path = "Target Support Files/Pods-testing (macOS)/Pods-testing (macOS).release.xcconfig"; sourceTree = "<group>"; };
 		EBB2D943D052A0F66C9E5D36 /* libPods-testing (macOS).a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-testing (macOS).a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF83C0DD6DDD34AE6F894C94 /* Pods_testing__iOS_.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_testing__iOS_.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -275,7 +274,6 @@
 				AF15813B26B83DE000531EAD /* Sources */,
 				AF15813C26B83DE000531EAD /* Frameworks */,
 				AF15813D26B83DE000531EAD /* Resources */,
-				02E293F322F253AE2660F793 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -297,7 +295,6 @@
 				AF15814326B83DE000531EAD /* Sources */,
 				AF15814426B83DE000531EAD /* Frameworks */,
 				AF15814526B83DE000531EAD /* Resources */,
-				959037CD59FB984CBE29383C /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -428,23 +425,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		02E293F322F253AE2660F793 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-testing (iOS)/Pods-testing (iOS)-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-testing (iOS)/Pods-testing (iOS)-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-testing (iOS)/Pods-testing (iOS)-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		72500D47A55E3B8126D3536F /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -465,23 +445,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		959037CD59FB984CBE29383C /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-testing (macOS)/Pods-testing (macOS)-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-testing (macOS)/Pods-testing (macOS)-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-testing (macOS)/Pods-testing (macOS)-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F39362739CC7EF83CA84E933 /* [CP] Check Pods Manifest.lock */ = {
