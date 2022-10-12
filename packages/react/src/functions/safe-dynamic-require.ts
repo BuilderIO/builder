@@ -25,7 +25,7 @@ export let safeDynamicRequire: typeof require;
  *
  * In Summary:
  *
- * 1. Node -> globalThis.require does not work, so we need to che
+ * 1. Node -> globalThis.require does not work
  * 2. Cloudflare edge -> only globalThis.require works
  */
 if (
