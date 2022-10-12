@@ -224,32 +224,7 @@ export default function RenderBlock(props: RenderBlockProps) {
       <Show when={isEmptyHtmlElement(state.tagName)}>
         <state.tagName {...state.attributes} />
       </Show>
-      <Show
-        when={
-          !isEmptyHtmlElement(state.tagName) &&
-          TARGET === 'vue2' &&
-          state.repeatItemData
-        }
-      >
-        <div class="vue2-root-element-workaround">
-          <For each={state.repeatItemData}>
-            {(data, index) => (
-              <RenderRepeatedBlock
-                key={index}
-                repeatContext={data.context}
-                block={data.block}
-              />
-            )}
-          </For>
-        </div>
-      </Show>
-      <Show
-        when={
-          !isEmptyHtmlElement(state.tagName) &&
-          TARGET !== 'vue2' &&
-          state.repeatItemData
-        }
-      >
+      <Show when={!isEmptyHtmlElement(state.tagName) && state.repeatItemData}>
         <For each={state.repeatItemData}>
           {(data, index) => (
             <RenderRepeatedBlock

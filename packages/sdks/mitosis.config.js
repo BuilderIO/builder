@@ -2,6 +2,21 @@ const traverse = require('traverse');
 const seedrandom = require('seedrandom');
 const rng = seedrandom('vue-sdk-seed');
 
+/**
+ * @typedef {import('@builder.io/mitosis')} Mitosis
+ * @typedef {import('@builder.io/mitosis').MitosisNode} MitosisNode
+ */
+
+/**
+ *
+ * @param {MitosisNode} node
+ */
+const filterEmptyTextNodes = (node) =>
+  !(
+    typeof node.properties._text === 'string' &&
+    !node.properties._text.trim().length
+  );
+
 const getSeededId = () => {
   const rngVal = rng();
   return Number(String(rngVal).split('.')[1]).toString(36);
@@ -91,6 +106,48 @@ module.exports = {
             pre: (json) => {
               if (json.name === 'Image') {
                 json.children[0].name = 'div';
+              }
+
+              if (json.name === 'RenderBlock') {
+                traverse(json).forEach(function (item) {
+                  if (!isMitosisNode(item)) {
+                    return;
+                  }
+
+                  const children = item.children.filter(filterEmptyTextNodes);
+
+                  /**
+                   * Hack to get around the fact that we can't have a v-for loop inside of a v-else in Vue 2.
+                   */
+                  if (
+                    item.name === 'Show' &&
+                    children.length === 1 &&
+                    children[0].name === 'For'
+                  ) {
+                    const forBlock = children[0];
+
+                    /**
+                     * @type {MitosisNode}
+                     */
+                    const divWorkaroundBlock = {
+                      '@type': '@builder.io/mitosis/node',
+                      name: 'div',
+                      meta: {},
+                      scope: {},
+                      children: [forBlock],
+                      bindings: {},
+                      properties: {
+                        class: 'vue2-root-element-workaround',
+                      },
+                    };
+                    const newItem = {
+                      ...item,
+                      children: [divWorkaroundBlock],
+                    };
+                    this.update(newItem);
+                    this.stop();
+                  }
+                });
               }
             },
           },
