@@ -121,7 +121,7 @@ export default function Columns(props: ColumnProps) {
               blocks={markMutable(column.blocks)}
               path={`component.options.columns.${index}.blocks`}
               parent={props.builderBlock.id}
-              style={{ flexGrow: '1' }}
+              styleProp={{ flexGrow: '1' }}
             />
           </div>
         )}

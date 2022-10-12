@@ -5,7 +5,12 @@ import dts from 'vite-plugin-dts';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue2(), dts({ insertTypesEntry: true })],
+  plugins: [
+    vue2(),
+    dts({ insertTypesEntry: true }),
+    // https://stackoverflow.com/a/72572426
+    // libCss(),
+  ],
   build: {
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),

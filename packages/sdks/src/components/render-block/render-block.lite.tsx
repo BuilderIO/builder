@@ -5,7 +5,6 @@ import type {
 import { getBlockActions } from '../../functions/get-block-actions.js';
 import { getBlockComponentOptions } from '../../functions/get-block-component-options.js';
 import { getBlockProperties } from '../../functions/get-block-properties.js';
-import { getBlockStyles } from '../../functions/get-block-styles.js';
 import { getBlockTag } from '../../functions/get-block-tag.js';
 import { getProcessedBlock } from '../../functions/get-processed-block.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
@@ -21,6 +20,7 @@ import { TARGET } from '../../constants/target.js';
 import { extractTextStyles } from '../../functions/extract-text-styles.js';
 import RenderComponentWithContext from './render-component-with-context.lite';
 import RenderComponent from './render-component.lite';
+import { getReactNativeBlockStyles } from '../../functions/get-react-native-block-styles.js';
 
 export type RenderBlockProps = {
   block: BuilderBlock;
@@ -84,10 +84,14 @@ export default function RenderBlock(props: RenderBlockProps) {
           state: props.context.state,
           context: props.context.context,
         }),
-        style: getBlockStyles({
-          block: state.useBlock,
-          context: props.context,
-        }),
+        ...(TARGET === 'reactNative'
+          ? {
+              style: getReactNativeBlockStyles({
+                block: state.useBlock,
+                context: props.context,
+              }),
+            }
+          : {}),
       };
     },
 
@@ -177,7 +181,7 @@ export default function RenderBlock(props: RenderBlockProps) {
         return {};
       }
 
-      const styles = getBlockStyles({
+      const styles = getReactNativeBlockStyles({
         block: state.useBlock,
         context: props.context,
       });
@@ -220,32 +224,7 @@ export default function RenderBlock(props: RenderBlockProps) {
       <Show when={isEmptyHtmlElement(state.tagName)}>
         <state.tagName {...state.attributes} />
       </Show>
-      <Show
-        when={
-          !isEmptyHtmlElement(state.tagName) &&
-          TARGET === 'vue2' &&
-          state.repeatItemData
-        }
-      >
-        <div class="vue2-root-element-workaround">
-          <For each={state.repeatItemData}>
-            {(data, index) => (
-              <RenderRepeatedBlock
-                key={index}
-                repeatContext={data.context}
-                block={data.block}
-              />
-            )}
-          </For>
-        </div>
-      </Show>
-      <Show
-        when={
-          !isEmptyHtmlElement(state.tagName) &&
-          TARGET !== 'vue2' &&
-          state.repeatItemData
-        }
-      >
+      <Show when={!isEmptyHtmlElement(state.tagName) && state.repeatItemData}>
         <For each={state.repeatItemData}>
           {(data, index) => (
             <RenderRepeatedBlock

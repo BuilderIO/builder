@@ -4,7 +4,7 @@
   "workspaces": [
     "packages/*"
   ],
-  "version": "0.0.2",
+  "version": "0.0.3-0",
   "dependencies": {
     "node-fetch": "^2.6.1"
   },
@@ -24,10 +24,12 @@
       "import": "./packages/_vue2/dist/sdk.js",
       "require": "./packages/_vue2/dist/sdk.cjs"
     },
+    "./vue2/css": "./packages/_vue2/dist/style.css",
     "./vue3": {
       "import": "./packages/_vue3/dist/sdk.js",
       "require": "./packages/_vue3/dist/sdk.cjs"
     },
+    "./vue3/css": "./packages/_vue3/dist/style.css",
     "./nuxt": {
       "import": "./nuxt.js",
       "require": "./nuxt.js"

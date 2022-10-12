@@ -1,3 +1,6 @@
+/**
+ * @type {import('@nuxt/types').NuxtOptions}
+ */
 export default {
   components: true,
 
@@ -16,6 +19,9 @@ export default {
     // This is needed because the package is an ESM module
     transpile: ['@builder.io/sdk-vue'],
   },
+
+  // We need to import the CSS for the SDK in the Nuxt Config here
+  css: ['@builder.io/sdk-vue/vue2/css'],
 
   server: { port: 3001 },
 }

@@ -37,11 +37,16 @@ export default function Video(props: VideoProps) {
         ...(props.playsInline === true ? { playsInline: true } : {}),
       };
     },
+    get spreadProps() {
+      return {
+        ...props.attributes,
+        ...state.videoProps,
+      };
+    },
   });
   return (
     <video
-      {...props.attributes}
-      {...state.videoProps}
+      {...state.spreadProps}
       style={{
         width: '100%',
         height: '100%',
