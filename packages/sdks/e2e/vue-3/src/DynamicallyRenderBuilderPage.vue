@@ -6,6 +6,7 @@
 </template>
 <script lang="ts">
 import { RenderContent } from '@builder.io/sdk-vue/vue3';
+import '@builder.io/sdk-vue/vue3/css';
 import { getContentForPathname } from '@builder.io/sdks-e2e-tests';
 
 export default {
