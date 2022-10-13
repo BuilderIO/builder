@@ -19,6 +19,10 @@ interface Event {
     metadata?: string;
     sessionId: string | undefined;
     visitorId: string | undefined;
+    /**
+     * (Optional) If running an A/B test, the ID of the variation that the user is in.
+     */
+    variationId?: string;
     [index: string]: any;
   };
 }
