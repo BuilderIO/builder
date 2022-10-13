@@ -45,15 +45,15 @@ const getTrackingEventData = async ({
 };
 
 type EventProperties = Pick<Event, 'type'> &
-  Pick<Event['data'], 'ownerId' | 'contentId'> & {
+  Pick<Event['data'], 'contentId'> & {
     /**
-     * This is the ID of the space that the content belongs to.
+     * Your organization's API key.
      */
-    orgId: Event['data']['ownerId'];
+    apiKey: Event['data']['ownerId'];
     /**
      * (Optional) metadata that you want to provide with your event.
      */
-    metadata: {
+    metadata?: {
       [index: string]: any;
     };
   };
@@ -63,7 +63,7 @@ export type EventProps = EventProperties & CanTrack;
 const createEvent = async ({
   type: eventType,
   canTrack,
-  orgId,
+  apiKey,
   contentId,
   metadata,
 }: EventProps): Promise<Event> => ({
@@ -71,7 +71,7 @@ const createEvent = async ({
   data: {
     metadata: JSON.stringify(metadata),
     ...(await getTrackingEventData({ canTrack })),
-    ownerId: orgId,
+    ownerId: apiKey,
     contentId,
   },
 });

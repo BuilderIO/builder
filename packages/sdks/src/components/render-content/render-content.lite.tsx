@@ -188,7 +188,7 @@ export default function RenderContent(props: RenderContentProps) {
           type: 'click',
           canTrack: state.canTrackToUse,
           contentId: state.useContent?.id,
-          orgId: props.apiKey,
+          apiKey: props.apiKey,
         });
       }
     },
@@ -311,7 +311,7 @@ export default function RenderContent(props: RenderContentProps) {
           type: 'impression',
           canTrack: state.canTrackToUse,
           contentId: state.useContent?.id,
-          orgId: props.apiKey,
+          apiKey: props.apiKey,
         });
       }
 
