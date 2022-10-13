@@ -184,11 +184,14 @@ export default function RenderContent(props: RenderContentProps) {
 
     onClick(_event: MouseEvent) {
       if (state.useContent) {
+        const variationId = state.useContent?.testVariationId;
+        const contentId = state.useContent?.id;
         _track({
           type: 'click',
           canTrack: state.canTrackToUse,
-          contentId: state.useContent?.id,
+          contentId,
           apiKey: props.apiKey,
+          variationId: variationId !== contentId ? variationId : undefined,
         });
       }
     },
@@ -314,9 +317,7 @@ export default function RenderContent(props: RenderContentProps) {
           canTrack: state.canTrackToUse,
           contentId,
           apiKey: props.apiKey,
-          metadata: {
-            variationId: variationId !== contentId ? variationId : undefined,
-          },
+          variationId: variationId !== contentId ? variationId : undefined,
         });
       }
 

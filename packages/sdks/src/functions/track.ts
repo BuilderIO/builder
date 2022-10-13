@@ -16,8 +16,17 @@ interface Event {
      * This is the ID of the space that the content belongs to.
      */
     ownerId: string;
+    /**
+     * Stringified JSON object containing any additional metadata you want to track.
+     */
     metadata?: string;
+    /**
+     * Session ID of the user. This is provided by the SDK by checking session storage.
+     */
     sessionId: string | undefined;
+    /**
+     * Visitor ID of the user. This is provided by the SDK by checking cookies.
+     */
     visitorId: string | undefined;
     /**
      * (Optional) If running an A/B test, the ID of the variation that the user is in.
@@ -49,7 +58,7 @@ const getTrackingEventData = async ({
 };
 
 type EventProperties = Pick<Event, 'type'> &
-  Pick<Event['data'], 'contentId'> & {
+  Pick<Event['data'], 'contentId' | 'variationId'> & {
     /**
      * Your organization's API key.
      */
@@ -73,17 +82,15 @@ const createEvent = async ({
   type: eventType,
   canTrack,
   apiKey,
-  contentId,
   metadata,
-  ...extraProperties
+  ...properties
 }: EventProps): Promise<Event> => ({
   type: eventType,
   data: {
-    ...extraProperties,
+    ...properties,
     metadata: JSON.stringify(metadata),
     ...(await getTrackingEventData({ canTrack })),
     ownerId: apiKey,
-    contentId,
   },
 });
 
