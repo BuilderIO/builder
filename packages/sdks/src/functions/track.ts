@@ -83,7 +83,7 @@ const createEvent = async ({
   },
 });
 
-export async function track(eventProps: EventProps) {
+export async function _track(eventProps: EventProps) {
   if (!eventProps.canTrack) {
     return;
   }
@@ -109,5 +109,5 @@ export async function track(eventProps: EventProps) {
   });
 }
 
-export const trackExternal = (args: EventProperties) =>
-  track({ ...args, canTrack: true });
+export const track = (args: EventProperties) =>
+  _track({ ...args, canTrack: true });
