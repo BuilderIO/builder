@@ -56,6 +56,11 @@ type EventProperties = Pick<Event, 'type'> &
     metadata?: {
       [index: string]: any;
     };
+
+    /**
+     * (Optional) Any additional (non-metadata) properties to add to the event.
+     */
+    [index: string]: any;
   };
 
 export type EventProps = EventProperties & CanTrack;
@@ -66,9 +71,11 @@ const createEvent = async ({
   apiKey,
   contentId,
   metadata,
+  ...extraProperties
 }: EventProps): Promise<Event> => ({
   type: eventType,
   data: {
+    ...extraProperties,
     metadata: JSON.stringify(metadata),
     ...(await getTrackingEventData({ canTrack })),
     ownerId: apiKey,

@@ -307,11 +307,16 @@ export default function RenderContent(props: RenderContentProps) {
         );
       }
       if (state.useContent) {
+        const variationId = state.useContent?.testVariationId;
+        const contentId = state.useContent?.id;
         track({
           type: 'impression',
           canTrack: state.canTrackToUse,
-          contentId: state.useContent?.id,
+          contentId,
           apiKey: props.apiKey,
+          metadata: {
+            variationId: variationId !== contentId ? variationId : undefined,
+          },
         });
       }
 
