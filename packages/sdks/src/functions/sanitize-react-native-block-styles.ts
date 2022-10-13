@@ -16,7 +16,7 @@ const normalizeNumber = (value: number): number | undefined => {
   }
 };
 
-export const sanitizeBlockStyles = (styles: Styles): Styles => {
+export const sanitizeReactNativeBlockStyles = (styles: Styles): Styles => {
   return Object.keys(styles).reduce<Styles>((acc, key): Styles => {
     const propertyValue = styles[key];
 

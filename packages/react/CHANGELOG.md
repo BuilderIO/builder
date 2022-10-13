@@ -1,3 +1,7 @@
+### 2.0.9
+
+- Fix for `require` is not defined bug on client side.
+
 ### 2.0.8
 
 - Fix SSR issue with hydration
