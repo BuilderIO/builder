@@ -1,3 +1,7 @@
+### 2.0.10
+- Fix issue with Hydrogen SSR.
+- Return null values in bindings when VM2 is not available on the server.
+
 ### 2.0.9
 
 - Fix for `require` is not defined bug on client side.
