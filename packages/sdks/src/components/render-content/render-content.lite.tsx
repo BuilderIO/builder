@@ -43,13 +43,6 @@ useMetadata({
     component: {
       useHostElement: true,
     },
-    replace: {
-      '// QWIK-REPLACE: _useMutableProps':
-        'elementRef.current && _useMutableProps(elementRef.current, true);',
-    },
-    imports: {
-      _useMutableProps: '@builder.io/qwik',
-    },
   },
   solid: {
     state: {
@@ -294,7 +287,6 @@ export default function RenderContent(props: RenderContentProps) {
     if (isBrowser()) {
       if (isEditing()) {
         state.forceReRenderCount = state.forceReRenderCount + 1;
-        // QWIK-REPLACE: _useMutableProps
         registerInsertMenu();
         setupBrowserForEditing();
         Object.values<RegisteredComponent>(
