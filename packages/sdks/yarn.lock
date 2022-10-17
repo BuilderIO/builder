@@ -1763,9 +1763,9 @@ __metadata:
     "@builder.io/sdk-react": "workspace:*"
     "@builder.io/sdks-e2e-tests": "workspace:*"
     "@headlessui/react": ^1.7.0
-    "@shopify/cli": 3.16.1
-    "@shopify/cli-hydrogen": 3.16.1
-    "@shopify/hydrogen": ^1.4.3
+    "@shopify/cli": 3.18.0
+    "@shopify/cli-hydrogen": 3.18.0
+    "@shopify/hydrogen": ^1.5.0
     "@shopify/prettier-config": ^1.1.2
     "@tailwindcss/forms": ^0.5.2
     "@tailwindcss/typography": ^0.5.2
@@ -1774,10 +1774,9 @@ __metadata:
     clsx: ^1.1.1
     eslint: ^8.18.0
     eslint-plugin-hydrogen: ^0.12.2
-    eslint-plugin-jest: ^27.1.2
     graphql-tag: ^2.12.6
     lodash.throttle: ^4.1.1
-    playwright: ^1.27.1
+    playwright: ^1.22.2
     postcss: ^8.4.14
     postcss-import: ^14.1.0
     postcss-preset-env: ^7.6.0
@@ -3937,10 +3936,56 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@oclif/core@npm:^1.2.0":
+  version: 1.19.0
+  resolution: "@oclif/core@npm:1.19.0"
+  dependencies:
+    "@oclif/linewrap": ^1.0.0
+    "@oclif/screen": ^3.0.2
+    ansi-escapes: ^4.3.2
+    ansi-styles: ^4.3.0
+    cardinal: ^2.1.1
+    chalk: ^4.1.2
+    clean-stack: ^3.0.1
+    cli-progress: ^3.10.0
+    debug: ^4.3.4
+    ejs: ^3.1.6
+    fs-extra: ^9.1.0
+    get-package-type: ^0.1.0
+    globby: ^11.1.0
+    hyperlinker: ^1.0.0
+    indent-string: ^4.0.0
+    is-wsl: ^2.2.0
+    js-yaml: ^3.14.1
+    natural-orderby: ^2.0.3
+    object-treeify: ^1.1.33
+    password-prompt: ^1.1.2
+    semver: ^7.3.7
+    string-width: ^4.2.3
+    strip-ansi: ^6.0.1
+    supports-color: ^8.1.1
+    supports-hyperlinks: ^2.2.0
+    tslib: ^2.3.1
+    widest-line: ^3.1.0
+    wrap-ansi: ^7.0.0
+  checksum: d524676e44a9af5e1385cadc9262d4e53e1c153b19cdbf9fd33e0dd4d8623f558310febf37148623b9fea3a9da5e50694c8ea713fd51be200324e5189e2f7425
+  languageName: node
+  linkType: hard
+
 "@oclif/linewrap@npm:^1.0.0":
   version: 1.0.0
   resolution: "@oclif/linewrap@npm:1.0.0"
   checksum: a072016a58b5e1331bbc21303ad5100fcda846ac4b181e344aec88bb24c5da09c416651e51313ffcc846a83514b74b8b987dd965982900f3edbb42b4e87cc246
+  languageName: node
+  linkType: hard
+
+"@oclif/plugin-commands@npm:^2.2.0":
+  version: 2.2.0
+  resolution: "@oclif/plugin-commands@npm:2.2.0"
+  dependencies:
+    "@oclif/core": ^1.2.0
+    lodash: ^4.17.11
+  checksum: 9b8e423b01d918b4fdb7a44c3c659e1657b6ad33921301c110080d35178b942cfecd7903d1ef301891d84881e721c1ab9f1de4ef9362a2536ca9e19b4145b095
   languageName: node
   linkType: hard
 
@@ -4512,12 +4557,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@shopify/cli-hydrogen@npm:3.16.1":
-  version: 3.16.1
-  resolution: "@shopify/cli-hydrogen@npm:3.16.1"
+"@shopify/cli-hydrogen@npm:3.18.0":
+  version: 3.18.0
+  resolution: "@shopify/cli-hydrogen@npm:3.18.0"
   dependencies:
     "@oclif/core": 1.9.2
-    "@shopify/cli-kit": 3.16.1
+    "@shopify/cli-kit": 3.18.0
     "@shopify/hydrogen": ^0.26.0
     "@shopify/mini-oxygen": ^0.2.0
     "@shopify/prettier-config": ^1.1.2
@@ -4528,71 +4573,7 @@ __metadata:
     prettier: ^2.6.1
     typescript: ^4.7.4
     vite: ^2.9.13
-  checksum: 43143706a83021e06e8f187774b796be9fa65d879e11279e20fe488f8fa1c072198853c02b8ace89cc7e9efe3b92bf29b822ba68f5433debd021a1d2ff03d499
-  conditions: (os=darwin | os=linux | os=win32)
-  languageName: node
-  linkType: hard
-
-"@shopify/cli-kit@npm:3.16.1":
-  version: 3.16.1
-  resolution: "@shopify/cli-kit@npm:3.16.1"
-  dependencies:
-    "@bugsnag/js": ^7.16.7
-    "@iarna/toml": ^2.2.5
-    "@oclif/core": 1.9.2
-    "@types/archiver": ^5.3.1
-    abort-controller: ^3.0.0
-    ansi-colors: ^4.1.1
-    archiver: ^5.3.1
-    change-case: ^4.1.2
-    color-json: ^2.0.1
-    commondir: ^1.0.1
-    conf: ^10.1.2
-    cross-zip: ^4.0.0
-    deepmerge: 4.2.2
-    del: ^6.0.0
-    env-paths: ^3.0.0
-    envfile: ^6.18.0
-    execa: ^6.0.0
-    fast-glob: ^3.2.11
-    find-process: ^1.4.7
-    find-up: ^6.2.0
-    find-versions: ^5.0.0
-    form-data: ^4.0.0
-    fs-extra: ^10.0.0
-    fuzzy: ^0.1.3
-    get-port-please: ^2.5.0
-    graphql: ^16.4.0
-    graphql-request: ^4.3.0
-    h3: ^0.7.21
-    inquirer: ^8.2.4
-    inquirer-autocomplete-prompt: ^2.0.0
-    is-interactive: ^2.0.0
-    js-yaml: ^4.1.0
-    keytar: ^7.9.0
-    kill-port-process: ^3.1.0
-    latest-version: ^6.0.0
-    liquidjs: ^9.36.0
-    listr2: ^4.0.5
-    log-update: ^4.0.0
-    macaddress: ^0.5.3
-    md5-file: ^5.0.0
-    node-fetch: ^3.2.4
-    open: ^8.4.0
-    pathe: 0.2.0
-    prettier: ^2.7.1
-    semver: ^7.3.6
-    simple-git: ^3.5.0
-    source-map-support: ^0.5.21
-    stacktracey: ^2.1.8
-    strip-ansi: ^7.0.1
-    tempy: ^3.0.0
-    term-size: ^3.0.1
-    terminal-link: ^3.0.0
-    ts-error: ^1.0.6
-    unique-string: ^3.0.0
-    zod: ^3.17.3
-  checksum: f2372221340dd9d075bf0e274710cf02205eeba32a502d4ed0a102d6ef28e52981bb742f15567102bd461d3fafdf951d998d55520282043fa30fe44253ad212b
+  checksum: 2d7a4bbe7a1cbfeadafb70455201b04fa08d4150fca0c8f93b3f9daae14ba4225cb195a72c8658407a5b6998f3f578d8fece14b3ede8a4327455bef897496ef3
   conditions: (os=darwin | os=linux | os=win32)
   languageName: node
   linkType: hard
@@ -4664,18 +4645,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@shopify/cli@npm:3.16.1":
-  version: 3.16.1
-  resolution: "@shopify/cli@npm:3.16.1"
+"@shopify/cli@npm:3.18.0":
+  version: 3.18.0
+  resolution: "@shopify/cli@npm:3.18.0"
   dependencies:
     "@oclif/core": 1.9.2
+    "@oclif/plugin-commands": ^2.2.0
     "@oclif/plugin-help": ^5.1.12
     "@oclif/plugin-plugins": ^2.1.0
-    "@shopify/cli-kit": 3.16.1
-    "@shopify/plugin-ngrok": ^3.16.1
+    "@shopify/cli-kit": 3.18.0
+    "@shopify/plugin-ngrok": ^3.18.0
   bin:
     shopify: bin/run.js
-  checksum: 250b8d48ee6e4017648311da2aec55544af8948220fa9198b481057aec3b2feca4b28322cac6385a6040074c9fecffd08399e409f6aed8c645eb2d4b957f9667
+  checksum: 2931670490703f1c90e77bd683e178be34494bb8ce8ebbba58e4aed313abe60f18ab41221f43a771e2f3c4a3b88d7c1845893530fb984cd81ccbb92e0e75b5a0
   conditions: (os=darwin | os=linux | os=win32)
   languageName: node
   linkType: hard
@@ -4725,7 +4707,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@shopify/hydrogen@npm:^1.4.3":
+"@shopify/hydrogen@npm:^1.5.0":
   version: 1.5.0
   resolution: "@shopify/hydrogen@npm:1.5.0"
   dependencies:
@@ -4820,7 +4802,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@shopify/plugin-ngrok@npm:^3.16.1":
+"@shopify/plugin-ngrok@npm:^3.18.0":
   version: 3.18.0
   resolution: "@shopify/plugin-ngrok@npm:3.18.0"
   dependencies:
@@ -11957,23 +11939,6 @@ __metadata:
     jest:
       optional: true
   checksum: 6d5fd5c95368f1ca2640389aeb7ce703d6202493c3ec6bdedb4eaca37233710508b0c75829e727765a16fd27029a466d34202bc7f2811c752038ccbbce224400
-  languageName: node
-  linkType: hard
-
-"eslint-plugin-jest@npm:^27.1.2":
-  version: 27.1.2
-  resolution: "eslint-plugin-jest@npm:27.1.2"
-  dependencies:
-    "@typescript-eslint/utils": ^5.10.0
-  peerDependencies:
-    "@typescript-eslint/eslint-plugin": ^5.0.0
-    eslint: ^7.0.0 || ^8.0.0
-  peerDependenciesMeta:
-    "@typescript-eslint/eslint-plugin":
-      optional: true
-    jest:
-      optional: true
-  checksum: b09833a38e13fd83d52da789fa11c8df5533b4bb896ed633f8f2422e4eefb8d7566dbc75ef1b894e16925135541a2dcb34fec4927cb89900ae7c55dce48a1e85
   languageName: node
   linkType: hard
 
@@ -20658,7 +20623,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"playwright@npm:^1.27.1":
+"playwright@npm:^1.22.2":
   version: 1.27.1
   resolution: "playwright@npm:1.27.1"
   dependencies:
