@@ -1713,7 +1713,7 @@ __metadata:
     node-fetch: 3.2.9
     prettier: 2.7.1
     typescript: ^4
-    vite: ^3.1.8
+    vite: ^3.0.4
   languageName: unknown
   linkType: soft
 
@@ -1752,7 +1752,7 @@ __metadata:
     react-dom: ^18.2.0
     rimraf: ^3.0.2
     typescript: ^4
-    vite: ^3.1.8
+    vite: ^3.0.4
   languageName: unknown
   linkType: soft
 
@@ -1788,7 +1788,7 @@ __metadata:
     tailwindcss: ^3.0.24
     typescript: ^4.7.2
     typographic-base: ^1.0.4
-    vite: ^3.1.8
+    vite: ^2.9.13
     vitest: ^0.15.2
   languageName: unknown
   linkType: soft
@@ -1800,7 +1800,7 @@ __metadata:
     "@builder.io/sdk-solid": "workspace:*"
     solid-js: ^1.5.7
     typescript: ^4
-    vite: ^3.1.8
+    vite: ^3.1.4
     vite-plugin-solid: ^2.3.9
   languageName: unknown
   linkType: soft
@@ -1818,7 +1818,7 @@ __metadata:
     svelte-preprocess: ^4.10.7
     tslib: ^2.4.0
     typescript: ^4
-    vite: ^3.1.8
+    vite: ^3.0.4
   languageName: unknown
   linkType: soft
 
@@ -1831,7 +1831,7 @@ __metadata:
     "@vitejs/plugin-vue2": ^1.1.2
     typescript: ^4
     unplugin-vue-components: ^0.22.7
-    vite: ^3.1.8
+    vite: ^3.0.4
     vue: ^2.7
     vue-class-component: ^7.2.6
     vue-property-decorator: ^9.1.2
@@ -1847,7 +1847,7 @@ __metadata:
     "@builder.io/sdks-e2e-tests": "workspace:*"
     "@vitejs/plugin-vue": ^2.3.3
     typescript: ^4
-    vite: ^3.1.8
+    vite: ^3.0.4
     vue: ^3.2.37
     vue-tsc: ^0.38.2
   languageName: unknown
@@ -1974,7 +1974,7 @@ __metadata:
   dependencies:
     "@types/node": latest
     typescript: ^4
-    vite: ^3.1.8
+    vite: ^3.0.4
   peerDependencies:
     "@builder.io/qwik": ">=0.0.108"
   languageName: unknown
@@ -2016,7 +2016,7 @@ __metadata:
     node-fetch: ^2.6.7
     solid-js: ^1.5.7
     solid-styled-components: ^0.27.6
-    vite: ^3.1.8
+    vite: ^3.0.4
     vite-plugin-solid: ^2.2.6
   peerDependencies:
     solid-js: ^1.5.7
@@ -2036,7 +2036,7 @@ __metadata:
     svelte-preprocess: ^4.10.6
     tslib: ^2.3.1
     typescript: ^4
-    vite: ^3.1.8
+    vite: ^3.0.4
   languageName: unknown
   linkType: soft
 
@@ -2051,7 +2051,7 @@ __metadata:
     npm-run-all: ^4.1.5
     terser: ^5.14.2
     typescript: ^4
-    vite: ^3.1.8
+    vite: ^3.0.4
     vite-plugin-dts: ^1.5.0
     vue: ^2.7.7
     vue-tsc: ^0.38.8
@@ -2068,7 +2068,7 @@ __metadata:
     node-fetch: ^2.6.1
     npm-run-all: ^4.1.5
     typescript: ^4
-    vite: ^3.1.8
+    vite: ^3.0.4
     vite-plugin-dts: ^1.5.0
     vue: ^3.2.37
     vue-tsc: ^0.39.5
@@ -26428,7 +26428,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^2.9.12 || ^3.0.0-0":
+"vite@npm:^2.9.12 || ^3.0.0-0, vite@npm:^3.0.4, vite@npm:^3.1.4":
   version: 3.1.6
   resolution: "vite@npm:3.1.6"
   dependencies:
@@ -26486,38 +26486,6 @@ __metadata:
   bin:
     vite: bin/vite.js
   checksum: 5edf8afc132a598f82a1339aa503514a0e86f6264babe94531b9000d801f157c9a32ae022542404678acca43ee260ade04c4763c4b7b8d381a6b50511b4a1447
-  languageName: node
-  linkType: hard
-
-"vite@npm:^3.1.8":
-  version: 3.1.8
-  resolution: "vite@npm:3.1.8"
-  dependencies:
-    esbuild: ^0.15.9
-    fsevents: ~2.3.2
-    postcss: ^8.4.16
-    resolve: ^1.22.1
-    rollup: ~2.78.0
-  peerDependencies:
-    less: "*"
-    sass: "*"
-    stylus: "*"
-    terser: ^5.4.0
-  dependenciesMeta:
-    fsevents:
-      optional: true
-  peerDependenciesMeta:
-    less:
-      optional: true
-    sass:
-      optional: true
-    stylus:
-      optional: true
-    terser:
-      optional: true
-  bin:
-    vite: bin/vite.js
-  checksum: 982696ad134577dd9915c4c3548ad36ddcf5dc6d341058548a670a13d860e4cdaaf2b320a59221f178018df089d148b9980e9a344316bef12b698a1c1abc7390
   languageName: node
   linkType: hard
 
