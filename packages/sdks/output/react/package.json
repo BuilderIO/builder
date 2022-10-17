@@ -11,7 +11,7 @@
     },
     "./rsc": {
       "import": "./packages/_rsc/src/index.js",
-      "require": "./packages/_rsc/src/index.cjs"
+      "require": "./packages/_rsc/src/index.js"
     }
   },
   "scripts": {
