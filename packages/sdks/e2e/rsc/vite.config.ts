@@ -1,4 +1,3 @@
-/// <reference types="vitest" />
 import { defineConfig } from 'vite';
 import hydrogen from '@shopify/hydrogen/plugin';
 
@@ -9,12 +8,5 @@ export default defineConfig({
   },
   optimizeDeps: {
     include: ['@headlessui/react', 'clsx', 'react-use', 'typographic-base'],
-  },
-  test: {
-    globals: true,
-    testTimeout: 10000,
-    hookTimeout: 10000,
-    maxThreads: 1,
-    minThreads: 1,
   },
 });
