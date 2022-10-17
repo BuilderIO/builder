@@ -1756,6 +1756,43 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@builder.io/e2e-rsc@workspace:e2e/rsc":
+  version: 0.0.0-use.local
+  resolution: "@builder.io/e2e-rsc@workspace:e2e/rsc"
+  dependencies:
+    "@builder.io/sdk-react": "workspace:*"
+    "@builder.io/sdks-e2e-tests": "workspace:*"
+    "@headlessui/react": ^1.7.0
+    "@shopify/cli": 3.16.1
+    "@shopify/cli-hydrogen": 3.16.1
+    "@shopify/hydrogen": ^1.4.3
+    "@shopify/prettier-config": ^1.1.2
+    "@tailwindcss/forms": ^0.5.2
+    "@tailwindcss/typography": ^0.5.2
+    "@types/lodash.throttle": ^4.1.7
+    "@types/react": ^18.0.14
+    clsx: ^1.1.1
+    eslint: ^8.18.0
+    eslint-plugin-hydrogen: ^0.12.2
+    eslint-plugin-jest: ^27.1.2
+    graphql-tag: ^2.12.6
+    lodash.throttle: ^4.1.1
+    playwright: ^1.27.1
+    postcss: ^8.4.14
+    postcss-import: ^14.1.0
+    postcss-preset-env: ^7.6.0
+    prettier: ^2.3.2
+    react: ^18.2.0
+    react-dom: ^18.2.0
+    react-use: ^17.4.0
+    tailwindcss: ^3.0.24
+    typescript: ^4.7.2
+    typographic-base: ^1.0.4
+    vite: ^2.9.13
+    vitest: ^0.15.2
+  languageName: unknown
+  linkType: soft
+
 "@builder.io/e2e-solidjs@workspace:e2e/solidjs":
   version: 0.0.0-use.local
   resolution: "@builder.io/e2e-solidjs@workspace:e2e/solidjs"
@@ -14611,43 +14648,6 @@ __metadata:
   checksum: c6ec4af63da2c9522da8674a20ad9b48362cc92704896cc8a58c6a2a39d797feb2b806f93fbd83a6d653fbdceb2c3b6e0b602c6b2e8565206ffc2882ef7db9e9
   languageName: node
   linkType: hard
-
-"hydrogen-app@workspace:e2e/rsc":
-  version: 0.0.0-use.local
-  resolution: "hydrogen-app@workspace:e2e/rsc"
-  dependencies:
-    "@builder.io/sdk-react": "workspace:*"
-    "@builder.io/sdks-e2e-tests": "workspace:*"
-    "@headlessui/react": ^1.7.0
-    "@shopify/cli": 3.16.1
-    "@shopify/cli-hydrogen": 3.16.1
-    "@shopify/hydrogen": ^1.4.3
-    "@shopify/prettier-config": ^1.1.2
-    "@tailwindcss/forms": ^0.5.2
-    "@tailwindcss/typography": ^0.5.2
-    "@types/lodash.throttle": ^4.1.7
-    "@types/react": ^18.0.14
-    clsx: ^1.1.1
-    eslint: ^8.18.0
-    eslint-plugin-hydrogen: ^0.12.2
-    eslint-plugin-jest: ^27.1.2
-    graphql-tag: ^2.12.6
-    lodash.throttle: ^4.1.1
-    playwright: ^1.27.1
-    postcss: ^8.4.14
-    postcss-import: ^14.1.0
-    postcss-preset-env: ^7.6.0
-    prettier: ^2.3.2
-    react: ^18.2.0
-    react-dom: ^18.2.0
-    react-use: ^17.4.0
-    tailwindcss: ^3.0.24
-    typescript: ^4.7.2
-    typographic-base: ^1.0.4
-    vite: ^2.9.13
-    vitest: ^0.15.2
-  languageName: unknown
-  linkType: soft
 
 "hyperlinker@npm:^1.0.0":
   version: 1.0.0
