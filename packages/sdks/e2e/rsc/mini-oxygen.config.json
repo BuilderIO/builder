@@ -5,8 +5,6 @@
   "buildCommand": "yarn build",
   "modules": true,
   "watch": true,
-  "buildWatchPaths": [
-    "./src"
-  ],
+  "buildWatchPaths": ["./src"],
   "autoReload": true
 }
