@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "private": true,
+  "type": "module",
   "engines": {
     "node": ">=16.14.0"
   },
