@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { setupBrowserForEditing } from '../../scripts/init-editing.js';
-import { getDefaultRegisteredComponents } from '../../constants/builder-registered-components.js';
 import type { RegisteredComponent } from '../../context/types.js';
 import type { BuilderContent } from '../../types/builder-content.js';
 

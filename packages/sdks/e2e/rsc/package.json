@@ -26,6 +26,7 @@
     "@types/react": "^18.0.14",
     "eslint": "^8.18.0",
     "eslint-plugin-hydrogen": "^0.12.2",
+    "eslint-plugin-jest": "^27.1.2",
     "playwright": "^1.22.2",
     "postcss": "^8.4.14",
     "postcss-import": "^14.1.0",
