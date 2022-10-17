@@ -4,14 +4,16 @@
   "private": true,
   "version": "0.0.1",
   "scripts": {
-    "build": "tsc --project tsconfig.build.json"
+    "build": "tsc"
   },
   "type": "module",
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
+  "main": "./dist/src/index.js",
+  "module": "./dist/src/index.js",
   "exports": {
-    ".": "./dist/index.js",
-    "./*": "./dist/*.js"
+    "./shared.config": "./dist/shared.config.js",
+    "./shared.config.js": "./dist/shared.config.js",
+    ".": "./dist/src/index.js",
+    "./*": "./dist/src/*.js"
   },
   "devDependencies": {
     "@playwright/test": "^1.24.0",

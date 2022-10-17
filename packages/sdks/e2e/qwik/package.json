@@ -2,6 +2,7 @@
   "name": "@builder.io/e2e-qwik",
   "description": "Blank Qwik starter app. Vite.js tooling. Express.js server. Prettier code formatter.",
   "private": true,
+  "type": "module",
   "type-disable-for-playwright": "module",
   "version": "0.0.1",
   "scripts": {

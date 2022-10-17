@@ -2,6 +2,7 @@
   "name": "@builder.io/e2e-svelte",
   "private": true,
   "version": "0.0.1",
+  "type": "module",
   "scripts": {
     "build": "yarn run check && vite build",
     "check": "svelte-check --tsconfig ./tsconfig.json",

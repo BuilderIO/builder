@@ -10,4 +10,4 @@ export * from './functions/register.js';
 export * from './functions/set-editor-settings.js';
 export * from './functions/get-content/index.js';
 export * from './functions/get-builder-search-params/index.js';
-export * from './constants/builder-registered-components.js';
+export { track } from './functions/track';

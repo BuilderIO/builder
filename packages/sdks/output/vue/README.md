@@ -14,24 +14,12 @@ To check the status of the SDK, look at [these tables](../../README.md#feature-i
 
 ## Version Support
 
-Legend:
-
-- ✅: implemented
-- 🏗: currently in progress
-- ⚠️: not-yet implemented
-- N/A : does not apply
-
-| Platform | Support |
-| -------- | ------- |
-| Vue 2    | 🏗       |
-| Nuxt 2   | 🏗       |
-| Vue 3    | 🏗       |
-| Nuxt 3   | ✅      |
+This SDK supports Vue >2.7, Vue 3+, Nuxt 2 & Nuxt 3.
 
 ## Getting Started
 
 ```
-npm install @builder.io/sdk-vue@dev
+npm install @builder.io/sdk-vue
 ```
 
 ## Usage
