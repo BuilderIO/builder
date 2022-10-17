@@ -1,21 +1,11 @@
 {
   "name": "@builder.io/e2e-rsc",
-  "description": "Demo store template for @shopify/hydrogen",
-  "version": "0.0.0",
-  "license": "MIT",
   "private": true,
-  "type": "module",
-  "engines": {
-    "node": ">=16.14.0"
-  },
+  "version": "0.0.0",
   "scripts": {
     "dev": "shopify hydrogen dev",
     "build": "shopify hydrogen build",
-    "preview": "shopify hydrogen preview",
-    "lint": "eslint --ext .js,.jsx,.ts,.tsx src",
-    "lint-ts": "tsc --noEmit",
-    "test": "WATCH=true vitest",
-    "test:ci": "yarn build -t node && vitest run",
+    "serve": "shopify hydrogen preview",
     "e2e": "../../node_modules/.bin/playwright test"
   },
   "devDependencies": {
