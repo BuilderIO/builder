@@ -2,6 +2,7 @@ import { CONTENT as columns } from './columns.js';
 import { CONTENT as homepage } from './homepage.js';
 import { CONTENT as symbols } from './symbols.js';
 import { CONTENT as dataBindings } from './data-bindings.js';
+import { CONTENT as customBreakpoints } from './custom-breakpoints.js';
 
 // TO-DO: import real content type from SDKs
 type BuilderContent = Partial<{ data: { [index: string]: any } }>;
@@ -24,6 +25,8 @@ export const getContentForPathname = (
       return symbols;
     case '/data-bindings':
       return dataBindings;
+    case '/custom-breakpoints':
+      return customBreakpoints;
     default:
       return null;
   }

@@ -12,6 +12,10 @@ export interface BuilderContentVariation {
     jsCode?: string;
     tsCode?: string;
     httpRequests?: { [key: string]: string };
+    breakpoints?: {
+      small: number;
+      medium: number;
+    };
     [key: string]: any;
   };
   name?: string;
