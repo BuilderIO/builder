@@ -101,7 +101,7 @@ export default function RenderBlock(props: RenderBlockProps) {
 
     get renderComponentProps(): RenderComponentProps {
       return {
-        blockChildren: state.children,
+        blockChildren: state.useChildren,
         componentRef: state.component?.component,
         componentOptions: {
           ...getBlockComponentOptions(state.useBlock),
@@ -114,7 +114,7 @@ export default function RenderBlock(props: RenderBlockProps) {
         context: state.childrenContext,
       };
     },
-    get children() {
+    get useChildren() {
       // TO-DO: When should `canHaveChildren` dictate rendering?
       // This is currently commented out because some Builder components (e.g. Box) do not have `canHaveChildren: true`,
       // but still receive and need to render children.
@@ -131,7 +131,7 @@ export default function RenderBlock(props: RenderBlockProps) {
       const shouldRenderChildrenOutsideRef =
         !state.component?.component && !state.repeatItemData;
 
-      return shouldRenderChildrenOutsideRef ? state.children : [];
+      return shouldRenderChildrenOutsideRef ? state.useChildren : [];
     },
 
     get repeatItemData(): RepeatData[] | undefined {
