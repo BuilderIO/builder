@@ -13,3 +13,6 @@ overrides/react-native/src/blocks/**/*
 
 output/qwik/types
 output/qwik/lib
+
+output/svelte/package
+output/svelte/.svelte-kit

@@ -23,10 +23,15 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
     noTraverse = false,
     model,
     apiKey,
+    includeRefs = true,
   } = options;
 
+  if (!apiKey) {
+    throw new Error('Missing API key');
+  }
+
   const url = new URL(
-    `https://cdn.builder.io/api/v2/content/${model}?apiKey=${apiKey}&limit=${limit}&noTraverse=${noTraverse}`
+    `https://cdn.builder.io/api/v2/content/${model}?apiKey=${apiKey}&limit=${limit}&noTraverse=${noTraverse}&includeRefs=${includeRefs}`
   );
 
   const queryOptions = {

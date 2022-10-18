@@ -40,6 +40,8 @@ const getTargetPath = ({ target }) => {
     // crazy, crazy stuff.
     case 'vue2':
       return 'vue/packages/_vue2';
+    case 'rsc':
+      return 'react/packages/_rsc';
     case 'vue':
     case 'vue3':
       return 'vue/packages/_vue3';
@@ -95,7 +97,16 @@ ${code.replace(/<(\/?)Text(.*?)>/g, '<$1BaseText$2>')}
  */
 module.exports = {
   files: 'src/**',
-  targets: ['reactNative', 'vue2', 'vue3', 'solid', 'svelte', 'react', 'qwik'],
+  targets: [
+    'reactNative',
+    'vue2',
+    'rsc',
+    'vue3',
+    'solid',
+    'svelte',
+    'react',
+    'qwik',
+  ],
   getTargetPath,
   options: {
     vue2: {
@@ -158,6 +169,9 @@ module.exports = {
     react: {
       plugins: [SRCSET_PLUGIN],
       stylesType: 'style-tag',
+    },
+    rsc: {
+      plugins: [SRCSET_PLUGIN],
     },
     reactNative: {
       plugins: [SRCSET_PLUGIN, BASE_TEXT_PLUGIN],

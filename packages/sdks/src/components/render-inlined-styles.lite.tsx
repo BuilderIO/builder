@@ -7,7 +7,7 @@ useMetadata({
       isLight: true,
     },
   },
-  elementTag: 'state.tagName',
+  elementTag: 'state.tag',
 });
 
 interface Props {
@@ -17,9 +17,9 @@ interface Props {
 export default function RenderInlinedStyles(props: Props) {
   const state = useStore({
     get injectedStyleScript(): string {
-      return `<${state.tagName}>${props.styles}</${state.tagName}>`;
+      return `<${state.tag}>${props.styles}</${state.tag}>`;
     },
-    get tagName(): string {
+    get tag(): string {
       // NOTE: we have to obfusctate the name of the tag due to a limitation in the svelte-preprocessor plugin.
       // https://github.com/sveltejs/vite-plugin-svelte/issues/315#issuecomment-1109000027
       return 'sty' + 'le';
@@ -32,7 +32,7 @@ export default function RenderInlinedStyles(props: Props) {
       else={
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        <state.tagName>{props.styles}</state.tagName>
+        <state.tag>{props.styles}</state.tag>
       }
     >
       {/**

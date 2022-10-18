@@ -23,7 +23,12 @@ export const registerInsertMenu = () => {
   });
 };
 
+let isSetupForEditing = false;
 export const setupBrowserForEditing = () => {
+  if (isSetupForEditing) {
+    return;
+  }
+  isSetupForEditing = true;
   if (isBrowser()) {
     window.parent?.postMessage(
       {

@@ -8,11 +8,30 @@ import { isEditing } from './is-editing.js';
 interface Event {
   type: 'click' | 'impression';
   data: {
+    /**
+     * (Optional) The content's ID. Useful if this event pertains to a specific piece of content.
+     */
     contentId?: string;
+    /**
+     * This is the ID of the space that the content belongs to.
+     */
     ownerId: string;
+    /**
+     * Stringified JSON object containing any additional metadata you want to track.
+     */
     metadata?: string;
+    /**
+     * Session ID of the user. This is provided by the SDK by checking session storage.
+     */
     sessionId: string | undefined;
+    /**
+     * Visitor ID of the user. This is provided by the SDK by checking cookies.
+     */
     visitorId: string | undefined;
+    /**
+     * (Optional) If running an A/B test, the ID of the variation that the user is in.
+     */
+    variationId?: string;
     [index: string]: any;
   };
 }
@@ -38,32 +57,44 @@ const getTrackingEventData = async ({
   };
 };
 
-type EventProperties = {
-  type: Event['type'];
-  orgId: Event['data']['ownerId'];
-  contentId: Event['data']['contentId'];
-  [index: string]: any;
-};
+type EventProperties = Pick<Event, 'type'> &
+  Pick<Event['data'], 'contentId' | 'variationId'> & {
+    /**
+     * Your organization's API key.
+     */
+    apiKey: Event['data']['ownerId'];
+    /**
+     * (Optional) metadata that you want to provide with your event.
+     */
+    metadata?: {
+      [index: string]: any;
+    };
+
+    /**
+     * (Optional) Any additional (non-metadata) properties to add to the event.
+     */
+    [index: string]: any;
+  };
 
 export type EventProps = EventProperties & CanTrack;
 
 const createEvent = async ({
   type: eventType,
   canTrack,
-  orgId,
-  contentId,
+  apiKey,
+  metadata,
   ...properties
 }: EventProps): Promise<Event> => ({
   type: eventType,
   data: {
     ...properties,
+    metadata: JSON.stringify(metadata),
     ...(await getTrackingEventData({ canTrack })),
-    ownerId: orgId,
-    contentId,
+    ownerId: apiKey,
   },
 });
 
-export async function track(eventProps: EventProps) {
+export async function _track(eventProps: EventProps) {
   if (!eventProps.canTrack) {
     return;
   }
@@ -88,3 +119,6 @@ export async function track(eventProps: EventProps) {
     console.error('Failed to track: ', err);
   });
 }
+
+export const track = (args: EventProperties) =>
+  _track({ ...args, canTrack: true });

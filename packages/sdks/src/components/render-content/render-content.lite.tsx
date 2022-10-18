@@ -17,7 +17,7 @@ import {
   components,
   createRegisterComponentMessage,
 } from '../../functions/register-component.js';
-import { track } from '../../functions/track.js';
+import { _track } from '../../functions/track.js';
 import type { BuilderContent } from '../../types/builder-content.js';
 import type { Dictionary, Nullable } from '../../types/typescript.js';
 import RenderBlocks from '../render-blocks.lite';
@@ -42,13 +42,6 @@ useMetadata({
   qwik: {
     component: {
       useHostElement: true,
-    },
-    replace: {
-      '// QWIK-REPLACE: _useMutableProps':
-        'elementRef.current && _useMutableProps(elementRef.current, true);',
-    },
-    imports: {
-      _useMutableProps: '@builder.io/qwik',
     },
   },
   solid: {
@@ -184,11 +177,14 @@ export default function RenderContent(props: RenderContentProps) {
 
     onClick(_event: MouseEvent) {
       if (state.useContent) {
-        track({
+        const variationId = state.useContent?.testVariationId;
+        const contentId = state.useContent?.id;
+        _track({
           type: 'click',
           canTrack: state.canTrackToUse,
-          contentId: state.useContent?.id,
-          orgId: props.apiKey,
+          contentId,
+          apiKey: props.apiKey,
+          variationId: variationId !== contentId ? variationId : undefined,
         });
       }
     },
@@ -291,7 +287,6 @@ export default function RenderContent(props: RenderContentProps) {
     if (isBrowser()) {
       if (isEditing()) {
         state.forceReRenderCount = state.forceReRenderCount + 1;
-        // QWIK-REPLACE: _useMutableProps
         registerInsertMenu();
         setupBrowserForEditing();
         Object.values<RegisteredComponent>(
@@ -307,11 +302,14 @@ export default function RenderContent(props: RenderContentProps) {
         );
       }
       if (state.useContent) {
-        track({
+        const variationId = state.useContent?.testVariationId;
+        const contentId = state.useContent?.id;
+        _track({
           type: 'impression',
           canTrack: state.canTrackToUse,
-          contentId: state.useContent?.id,
-          orgId: props.apiKey,
+          contentId,
+          apiKey: props.apiKey,
+          variationId: variationId !== contentId ? variationId : undefined,
         });
       }
 
