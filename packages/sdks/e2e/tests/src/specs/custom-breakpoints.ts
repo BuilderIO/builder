@@ -50,7 +50,7 @@ export const CONTENT = {
         component: {
           name: 'Text',
           options: {
-            text: '<p>BREAKPOINTS 500 - 800</p><p>501 - 800 RED</p><p>500 and below GREEN</p>',
+            text: '<div>BREAKPOINTS 500 - 800</div><div>501 - 800 RED</div><div>500 and below GREEN</div>',
           },
         },
         responsiveStyles: {

@@ -34,6 +34,8 @@
     "ci:e2e-build": "yarn workspace @builder.io/sdks-e2e-tests build && yarn workspaces foreach -pt --include \"*/e2e*\" --verbose run build",
     "ci:e2e": "yarn workspaces foreach --verbose run e2e",
     "ci:e2e:react": "yarn workspace @builder.io/e2e-react run e2e",
+    "ci:e2e:reactNative": "yarn workspace @builder.io/e2e-react-native run e2e",
+    "ci:e2e:nextjsReact": "yarn workspace @builder.io/e2e-nextjs-react run e2e",
     "release-sdk": "bash ./scripts/release-sdk.sh",
     "release:all": "bash ./scripts/loop-command.sh release-sdk \"svelte react-native solid qwik react vue\"",
     "upgrade-example": "bash ./scripts/upgrade-example.sh",

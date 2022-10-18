@@ -15,7 +15,7 @@ const getElementStyleValue = async ({
   locator: Locator;
   cssProperty: string;
 }) => {
-  return await locator.evaluate(
+  return locator.evaluate(
     (e, cssProperty) => getComputedStyle(e).getPropertyValue(cssProperty),
     cssProperty
   );
@@ -78,46 +78,124 @@ test.describe(targetContext.name, () => {
       medium: 800,
     },
     */
-    test('large desktop size', async ({ page }) => {
-      page.setViewportSize({ width: 801, height: 1000 });
-      await page.goto('/custom-breakpoints');
+    test.describe('when applied', () => {
+      test('large desktop size', async ({ page }) => {
+        page.setViewportSize({ width: 801, height: 1000 });
 
-      const breakpointsPara = page.locator(`p:has-text("BREAKPOINTS")`);
-      await expect(breakpointsPara).toBeVisible();
-      await expect(
-        await getElementStyleValue({
-          locator: breakpointsPara,
-          cssProperty: 'color',
-        })
-      ).toBe('rgb(0, 0, 0)'); // black text color
+        await page.goto('/custom-breakpoints');
+        const breakpointsPara = page.locator(`text=BREAKPOINTS 500 - 800`);
+        await expect(breakpointsPara).toBeVisible();
+
+        let expectedTextColor = 'rgb(0, 0, 0)'; // black text color
+        if (process.env.SDK === 'reactNative') {
+          expectedTextColor = 'rgb(65, 117, 5)'; // greenish text color
+        }
+
+        await expect(
+          await getElementStyleValue({
+            locator: breakpointsPara,
+            cssProperty: 'color',
+          })
+        ).toBe(expectedTextColor);
+      });
+
+      test('medium tablet size', async ({ page }) => {
+        page.setViewportSize({ width: 501, height: 1000 });
+
+        await page.goto('/custom-breakpoints');
+        const breakpointsPara = page.locator(`text=BREAKPOINTS 500 - 800`);
+        await expect(breakpointsPara).toBeVisible();
+
+        let expectedTextColor = 'rgb(208, 2, 27)'; // reddish text color
+        if (process.env.SDK === 'reactNative') {
+          expectedTextColor = 'rgb(65, 117, 5)'; // greenish text color
+        }
+
+        await expect(
+          await getElementStyleValue({
+            locator: breakpointsPara,
+            cssProperty: 'color',
+          })
+        ).toBe(expectedTextColor);
+      });
+
+      test('small mobile size', async ({ page }) => {
+        page.setViewportSize({ width: 500, height: 1000 });
+        await page.goto('/custom-breakpoints');
+
+        const breakpointsPara = page.locator(`text=BREAKPOINTS 500 - 800`);
+        await expect(breakpointsPara).toBeVisible();
+        await expect(
+          await getElementStyleValue({
+            locator: breakpointsPara,
+            cssProperty: 'color',
+          })
+        ).toBe('rgb(65, 117, 5)'); // greenish text color
+      });
     });
 
-    test('medium tablet size', async ({ page }) => {
-      page.setViewportSize({ width: 501, height: 1000 });
+    test.describe('when reset', () => {
+      /*
+        When no breakpoints are available, defaults are applied as
+        breakpoints: {
+          small: 640,
+          medium: 991,
+        }
+      */
+      test('large desktop size', async ({ page }) => {
+        page.setViewportSize({ width: 992, height: 1000 });
+        await page.goto('/custom-breakpoints-reset');
 
-      await page.goto('/custom-breakpoints');
-      const breakpointsPara = page.locator(`p:has-text("BREAKPOINTS")`);
-      await expect(breakpointsPara).toBeVisible();
-      await expect(
-        await getElementStyleValue({
-          locator: breakpointsPara,
-          cssProperty: 'color',
-        })
-      ).toBe('rgb(208, 2, 27)'); // reddish text color
-    });
+        const breakpointsPara = page.locator(`text=BREAKPOINTS 500 - 800`);
+        await expect(breakpointsPara).toBeVisible();
 
-    test('small mobile size', async ({ page }) => {
-      page.setViewportSize({ width: 500, height: 1000 });
-      await page.goto('/custom-breakpoints');
+        let expectedTextColor = 'rgb(0, 0, 0)'; // black text color
+        if (process.env.SDK === 'reactNative') {
+          expectedTextColor = 'rgb(65, 117, 5)'; // greenish text color
+        }
 
-      const breakpointsPara = page.locator(`p:has-text("BREAKPOINTS")`);
-      await expect(breakpointsPara).toBeVisible();
-      await expect(
-        await getElementStyleValue({
-          locator: breakpointsPara,
-          cssProperty: 'color',
-        })
-      ).toBe('rgb(65, 117, 5)'); // greenish text color
+        await expect(
+          await getElementStyleValue({
+            locator: breakpointsPara,
+            cssProperty: 'color',
+          })
+        ).toBe(expectedTextColor); // black text color
+      });
+
+      test('medium tablet size', async ({ page }) => {
+        page.setViewportSize({ width: 641, height: 1000 });
+
+        await page.goto('/custom-breakpoints-reset');
+        const breakpointsPara = page.locator(`text=BREAKPOINTS 500 - 800`);
+        await expect(breakpointsPara).toBeVisible();
+
+        let expectedTextColor = 'rgb(208, 2, 27)'; // reddish text color
+        if (process.env.SDK === 'reactNative') {
+          expectedTextColor = 'rgb(65, 117, 5)'; // greenish text color
+        }
+
+        await expect(
+          await getElementStyleValue({
+            locator: breakpointsPara,
+            cssProperty: 'color',
+          })
+        ).toBe(expectedTextColor);
+      });
+
+      test('small mobile size', async ({ page }) => {
+        page.setViewportSize({ width: 640, height: 1000 });
+        await page.goto('/custom-breakpoints-reset');
+
+        const breakpointsPara = page.locator(`text=BREAKPOINTS 500 - 800`);
+        await expect(breakpointsPara).toBeVisible();
+
+        await expect(
+          await getElementStyleValue({
+            locator: breakpointsPara,
+            cssProperty: 'color',
+          })
+        ).toBe('rgb(65, 117, 5)'); // greenish text color
+      });
     });
   });
 });
