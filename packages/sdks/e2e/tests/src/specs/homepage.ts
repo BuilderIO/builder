@@ -243,7 +243,10 @@ export const CONTENT = {
                 id: 'builder-9f8c7cff2faf4a48b1af350f66789fb6',
                 component: {
                   name: 'Core:Button',
-                  options: { text: 'Custom Breakpoints', link: '/custom-breakpoints' },
+                  options: {
+                    text: 'Custom Breakpoints',
+                    link: '/custom-breakpoints',
+                  },
                 },
                 responsiveStyles: {
                   large: {
