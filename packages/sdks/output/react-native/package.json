@@ -25,9 +25,6 @@
     "react-native": "^0.64.3",
     "react-native-url-polyfill": "^1.3.0"
   },
-  "resolutions": {
-    "minimist": "^1.2.7"
-  },
   "installConfig": {
     "hoistingLimits": "workspaces"
   }
