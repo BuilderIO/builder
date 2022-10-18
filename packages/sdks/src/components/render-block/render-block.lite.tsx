@@ -33,7 +33,7 @@ useMetadata({
       isLight: true,
     },
   },
-  elementTag: 'state.tagName',
+  elementTag: 'state.tag',
   componentElementTag: 'state.renderComponentTag',
 });
 
@@ -63,7 +63,7 @@ export default function RenderBlock(props: RenderBlockProps) {
         return ref;
       }
     },
-    get tagName() {
+    get tag() {
       return getBlockTag(state.useBlock);
     },
     get useBlock(): BuilderBlock {
@@ -101,7 +101,7 @@ export default function RenderBlock(props: RenderBlockProps) {
 
     get renderComponentProps(): RenderComponentProps {
       return {
-        blockChildren: state.children,
+        blockChildren: state.useChildren,
         componentRef: state.component?.component,
         componentOptions: {
           ...getBlockComponentOptions(state.useBlock),
@@ -114,7 +114,7 @@ export default function RenderBlock(props: RenderBlockProps) {
         context: state.childrenContext,
       };
     },
-    get children() {
+    get useChildren() {
       // TO-DO: When should `canHaveChildren` dictate rendering?
       // This is currently commented out because some Builder components (e.g. Box) do not have `canHaveChildren: true`,
       // but still receive and need to render children.
@@ -131,7 +131,7 @@ export default function RenderBlock(props: RenderBlockProps) {
       const shouldRenderChildrenOutsideRef =
         !state.component?.component && !state.repeatItemData;
 
-      return shouldRenderChildrenOutsideRef ? state.children : [];
+      return shouldRenderChildrenOutsideRef ? state.useChildren : [];
     },
 
     get repeatItemData(): RepeatData[] | undefined {
@@ -221,10 +221,10 @@ export default function RenderBlock(props: RenderBlockProps) {
        * Svelte is super finicky, and does not allow an empty HTML element (e.g. `img`) to have logic inside of it,
        * _even_ if that logic ends up not rendering anything.
        */}
-      <Show when={isEmptyHtmlElement(state.tagName)}>
-        <state.tagName {...state.attributes} />
+      <Show when={isEmptyHtmlElement(state.tag)}>
+        <state.tag {...state.attributes} />
       </Show>
-      <Show when={!isEmptyHtmlElement(state.tagName) && state.repeatItemData}>
+      <Show when={!isEmptyHtmlElement(state.tag) && state.repeatItemData}>
         <For each={state.repeatItemData}>
           {(data, index) => (
             <RenderRepeatedBlock
@@ -235,8 +235,8 @@ export default function RenderBlock(props: RenderBlockProps) {
           )}
         </For>
       </Show>
-      <Show when={!isEmptyHtmlElement(state.tagName) && !state.repeatItemData}>
-        <state.tagName {...state.attributes}>
+      <Show when={!isEmptyHtmlElement(state.tag) && !state.repeatItemData}>
+        <state.tag {...state.attributes}>
           <state.renderComponentTag {...state.renderComponentProps} />
           {/**
            * We need to run two separate loops for content + styles to workaround the fact that Vue 2
@@ -260,7 +260,7 @@ export default function RenderBlock(props: RenderBlockProps) {
               />
             )}
           </For>
-        </state.tagName>
+        </state.tag>
       </Show>
     </Show>
   );

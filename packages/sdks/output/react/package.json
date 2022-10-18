@@ -8,6 +8,10 @@
     ".": {
       "import": "./src/index.js",
       "require": "./src/index.js"
+    },
+    "./rsc": {
+      "import": "./packages/_rsc/src/index.js",
+      "require": "./packages/_rsc/src/index.js"
     }
   },
   "scripts": {

@@ -31,17 +31,17 @@
     "ci:build": "yarn run typecheck && yarn run build",
     "ci:test": "yarn run test",
     "ci:e2e-prep": "playwright install --with-deps",
-    "ci:e2e-build": "yarn workspace @builder.io/sdks-e2e-tests build && yarn workspaces foreach -pt --include \"*/e2e*\" --verbose run build",
-    "ci:e2e": "yarn workspaces foreach --verbose run e2e",
+    "ci:e2e-build": "yarn workspace @builder.io/sdks-e2e-tests build && yarn workspaces foreach -pt --include \"*/e2e*\" --exclude @builder.io/e2e-rsc --verbose run build",
+    "ci:e2e": "yarn workspaces foreach --exclude @builder.io/e2e-rsc --verbose run e2e",
     "release-sdk": "bash ./scripts/release-sdk.sh",
     "release:all": "bash ./scripts/loop-command.sh release-sdk \"svelte react-native solid qwik react vue\"",
     "upgrade-example": "bash ./scripts/upgrade-example.sh",
     "upgrade-example:all": "bash ./scripts/loop-command.sh upgrade-example \"svelte react-native solid qwik react vue\""
   },
   "dependencies": {
-    "@builder.io/mitosis": "^0.0.70",
-    "@builder.io/mitosis-cli": "^0.0.31",
-    "@playwright/test": "^1.24.0",
+    "@builder.io/mitosis": "^0.0.74",
+    "@builder.io/mitosis-cli": "^0.0.33",
+    "@playwright/test": "^1.27.1",
     "node-fetch": "^2.6.1",
     "seedrandom": "^3.0.5",
     "traverse": "^0.6.6"
@@ -72,7 +72,6 @@
     }
   },
   "resolutions": {
-    "@builder.io/qwik@0.0.108-dev20220913220811": "patch:@builder.io/qwik@npm:0.0.108-dev20220913220811#.yarn/patches/@builder.io-qwik-npm-0.0.108-dev20220913220811-a915e8c55f.patch",
     "@sveltejs/package@1.0.0-next.1": "patch:@sveltejs/package@npm:1.0.0-next.1#.yarn/patches/@sveltejs-package-npm-1.0.0-next.1-2fd015530b.patch"
   },
   "packageManager": "yarn@3.2.0"
