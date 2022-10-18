@@ -35,4 +35,4 @@ if (
   safeDynamicRequire = eval('require');
 }
 
-// safeDynamicRequire ??= noop as any;
+safeDynamicRequire ??= noop as any;
