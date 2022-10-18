@@ -1985,6 +1985,7 @@ __metadata:
   dependencies:
     "@react-native-async-storage/async-storage": ^1.17.10
     "@types/react-native-video": ^5.0.9
+    node-fetch: ^2.6.1
     react-native: ^0.64.3
     react-native-render-html: ^6.3.4
     react-native-storage: ^1.0.1
