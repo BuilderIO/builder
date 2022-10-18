@@ -38,10 +38,6 @@ export const CONTENT = {
   lastUpdateBy: null,
   modelId: '598b0e0699ec457e8a2dbcddabd0dc8b_9bf60dcd567a41cebc919b08e957749e',
   data: {
-    breakpoints: {
-      small: 500,
-      medium: 800,
-    },
     blocks: [
       {
         '@type': '@builder.io/sdk:Element',

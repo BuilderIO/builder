@@ -12,15 +12,18 @@ export interface BuilderContentVariation {
     jsCode?: string;
     tsCode?: string;
     httpRequests?: { [key: string]: string };
+    [key: string]: any;
+  };
+  name?: string;
+  testRatio?: number;
+  id?: string;
+  meta?: {
     breakpoints?: {
       small: number;
       medium: number;
     };
     [key: string]: any;
   };
-  name?: string;
-  testRatio?: number;
-  id?: string;
 }
 
 // TODO: separate full and partial versions

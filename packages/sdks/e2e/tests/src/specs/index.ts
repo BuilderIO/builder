@@ -33,7 +33,7 @@ export const getContentForPathname = (
       return customBreakpoints;
     case '/custom-breakpoints-reset':
       const contentWithoutBreakpoints = fastClone(customBreakpoints);
-      delete contentWithoutBreakpoints.data!.breakpoints;
+      delete contentWithoutBreakpoints.meta!.breakpoints;
       return contentWithoutBreakpoints;
     default:
       return null;

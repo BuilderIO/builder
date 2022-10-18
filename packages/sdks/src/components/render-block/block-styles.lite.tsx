@@ -39,7 +39,7 @@ export default function BlockStyles(props: BlockStylesProps) {
 
       const content = props.context.content;
       const sizesWithUpdatedBreakpoints = getSizesForBreakpoints(
-        content?.data?.breakpoints || {}
+        content?.meta?.breakpoints || {}
       );
 
       const largeStyles = styles?.large;
