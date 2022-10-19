@@ -10,7 +10,7 @@
 
 # SDKs
 ## new-gen (Mitosis-built)
-/packages/sdks/ @BuilderIO/sdks
+/packages/sdks/ @BuilderIO/sdks @samijaber
 ## old-gen
 /packages/react/ @BuilderIO/sdks
 /packages/vue/ @BuilderIO/sdks
