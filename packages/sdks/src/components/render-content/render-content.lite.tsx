@@ -284,6 +284,12 @@ export default function RenderContent(props: RenderContentProps) {
   });
 
   onMount(() => {
+    if (!props.apiKey) {
+      console.error(
+        '[Builder.io]: No API key provided to `RenderContent` component. This can cause issues. Please provide an API key using the `apiKey` prop.'
+      );
+    }
+
     if (isBrowser()) {
       if (isEditing()) {
         state.forceReRenderCount = state.forceReRenderCount + 1;
