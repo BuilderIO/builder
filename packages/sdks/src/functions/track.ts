@@ -95,6 +95,13 @@ const createEvent = async ({
 });
 
 export async function _track(eventProps: EventProps) {
+  if (!eventProps.apiKey) {
+    console.error(
+      '[Builder.io]: Missing API key for track call. Please provide your API key.'
+    );
+    return;
+  }
+
   if (!eventProps.canTrack) {
     return;
   }
