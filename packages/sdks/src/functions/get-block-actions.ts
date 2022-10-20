@@ -1,7 +1,7 @@
 import type { BuilderContextInterface } from '../context/types.js';
 import type { BuilderBlock } from '../types/builder-block.js';
 import { getEventHandlerName } from './event-handler-name.js';
-import { crateEventHandler } from './get-block-actions-handler.js';
+import { createEventHandler } from './get-block-actions-handler.js';
 
 type Actions = { [index: string]: (event: Event) => any };
 
@@ -19,7 +19,7 @@ export function getBlockActions(
       continue;
     }
     const value = optionActions[key];
-    obj[getEventHandlerName(key)] = crateEventHandler(value, options);
+    obj[getEventHandlerName(key)] = createEventHandler(value, options);
   }
   return obj;
 }
