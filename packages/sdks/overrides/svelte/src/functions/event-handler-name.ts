@@ -1,1 +1,1 @@
-export const getEventHandlerName = (key: string) => key;
+export const getEventHandlerName = (key: string) => `on:${key.toLowerCase()}`;
