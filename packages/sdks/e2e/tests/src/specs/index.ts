@@ -5,13 +5,16 @@ import { CONTENT as dataBindings } from './data-bindings.js';
 import { CONTENT as customBreakpoints } from './custom-breakpoints.js';
 
 // TO-DO: import real content type from SDKs
-type BuilderContent = Partial<{ data: { [index: string]: any } }>;
+type BuilderContent = Partial<{
+  data: { [index: string]: any };
+  meta?: { [index: string]: any };
+}>;
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
 }
 
-function fastClone(object: Object) {
+function fastClone<T extends object>(object: T): T {
   return JSON.parse(JSON.stringify(object));
 }
 
@@ -20,6 +23,7 @@ const getPathnameFromWindow = () => isBrowser() && window.location.pathname;
 export const getContentForPathname = (
   pathname = getPathnameFromWindow()
 ): BuilderContent | null => {
+  let contentWithoutBreakpoints = undefined;
   switch (pathname) {
     case '/':
       return homepage;
@@ -30,9 +34,11 @@ export const getContentForPathname = (
     case '/data-bindings':
       return dataBindings;
     case '/custom-breakpoints':
-      return customBreakpoints;
+      return customBreakpoints as BuilderContent;
     case '/custom-breakpoints-reset':
-      const contentWithoutBreakpoints = fastClone(customBreakpoints);
+      contentWithoutBreakpoints = fastClone(
+        customBreakpoints as BuilderContent
+      );
       delete contentWithoutBreakpoints.meta!.breakpoints;
       return contentWithoutBreakpoints;
     default:
