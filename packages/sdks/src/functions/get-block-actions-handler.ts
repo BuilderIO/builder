@@ -16,4 +16,5 @@ export const createEventHandler =
       context: options.context,
       state: options.state,
       event,
+      isExpression: false,
     });
