@@ -1,7 +1,7 @@
 import { getDefaultRegisteredComponents } from '../../constants/builder-registered-components.js';
 import { TARGET } from '../../constants/target.js';
-import BuilderContext from '../../context/builder.context.lite';
 import type {
+  BuilderContextInterface,
   BuilderRenderContext,
   BuilderRenderState,
   RegisteredComponent,
@@ -27,7 +27,6 @@ import {
   onMount,
   onUnMount,
   onUpdate,
-  setContext,
   useStore,
   useMetadata,
   useRef,
@@ -98,11 +97,13 @@ export default function RenderContent(props: RenderContentProps) {
     },
     overrideState: {} as BuilderRenderState,
     get contentState(): BuilderRenderState {
-      return {
+      const newLocal = {
         ...props.content?.data?.state,
         ...props.data,
         ...state.overrideState,
       };
+      console.log('content state re-evaluated', newLocal);
+      return newLocal;
     },
     get contextContext() {
       return props.context || {};
@@ -246,6 +247,33 @@ export default function RenderContent(props: RenderContentProps) {
           TARGET !== 'reactNative'
       );
     },
+
+    get contextToUse(): BuilderContextInterface {
+      return {
+        get content() {
+          return state.useContent;
+        },
+        get state() {
+          return new Proxy(state.contentState, {
+            set: (obj, prop: string, value) => {
+              console.log('setting', obj, prop, value);
+              obj[prop] = value;
+              return true;
+            },
+          });
+        },
+        get context() {
+          return state.contextContext;
+        },
+        get apiKey() {
+          return props.apiKey;
+        },
+        get registeredComponents() {
+          return state.allRegisteredComponents;
+        },
+        inheritedStyles: {},
+      };
+    },
   });
 
   // This currently doesn't do anything as `onCreate` is not implemented
@@ -260,27 +288,40 @@ export default function RenderContent(props: RenderContentProps) {
   //         state.update = state.update + 1;
   //       })
   //   );
-
   // TODO: inherit context here too
   // });
 
-  setContext(BuilderContext, {
-    get content() {
-      return state.useContent;
-    },
-    get state() {
-      return state.contentState;
-    },
-    get context() {
-      return state.contextContext;
-    },
-    get apiKey() {
-      return props.apiKey;
-    },
-    get registeredComponents() {
-      return state.allRegisteredComponents;
-    },
-  });
+  // setContext(BuilderContext, {
+  //   get content() {
+  //     return state.useContent;
+  //   },
+  //   get state() {
+  //     return new Proxy(state.contentState, {
+  //       set: (obj, prop: string, value) => {
+  //         console.log('setting', obj, prop, value);
+  //         obj[prop] = value;
+  //         return true;
+  //       },
+  //     });
+  //   },
+  //   get context() {
+  //     return state.contextContext;
+  //   },
+  //   get apiKey() {
+  //     return props.apiKey;
+  //   },
+  //   get registeredComponents() {
+  //     return state.allRegisteredComponents;
+  //   },
+  //   stateUpdater(key, val) {
+  //     const newOverrideState = {
+  //       ...state.overrideState,
+  //       [key]: val,
+  //     };
+  //     state.overrideState = newOverrideState;
+  //     console.log('stateUpdater after', key, val, state.overrideState);
+  //   },
+  // });
 
   onMount(() => {
     if (!props.apiKey) {
@@ -348,7 +389,7 @@ export default function RenderContent(props: RenderContentProps) {
 
   onUpdate(() => {
     state.evaluateJsCode();
-  }, [state.useContent?.data?.jsCode]);
+  }, [state.useContent?.data?.jsCode, state.contentState]);
 
   onUpdate(() => {
     state.runHttpRequests();
@@ -386,6 +427,7 @@ export default function RenderContent(props: RenderContentProps) {
         <RenderBlocks
           blocks={state.useContent?.data?.blocks}
           key={state.forceReRenderCount}
+          context={state.contextToUse}
         />
       </div>
     </Show>
