@@ -1,6 +1,7 @@
 import * as React from 'react';
 import type { BuilderBlock } from '../types/builder-block';
 import HTML from 'react-native-render-html';
+import BuilderContext from '../../context/builder.context';
 
 function camelToKebabCase(string: string) {
   return string.replace(/([a-z0-9]|(?=[A-Z]))([A-Z])/g, '$1-$2').toLowerCase();
@@ -35,8 +36,11 @@ function getBlockStyles(block: BuilderBlock) {
   return styles;
 }
 
-function getCss(block: BuilderBlock) {
-  const styleObject = pick(getBlockStyles(block), PICK_STYLES);
+function getCss(block: BuilderBlock, inheritedStyles: any) {
+  const styleObject = {
+    ...inheritedStyles,
+    ...pick(getBlockStyles(block), PICK_STYLES)
+  };
   if (!styleObject) {
     return '';
   }
@@ -57,10 +61,11 @@ export default function Text(props: {
   text: string;
   builderBlock: BuilderBlock;
 }) {
+  const builderContext = React.useContext(BuilderContext);
   return (
     <HTML
       source={{
-        html: `<div style="${getCss(props.builderBlock)}">${
+        html: `<div style="${getCss(props.builderBlock, builderContext.inheritedStyles)}">${
           props.text || ''
         }</div>`,
       }}
