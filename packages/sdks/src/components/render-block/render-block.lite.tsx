@@ -67,7 +67,7 @@ export default function RenderBlock(props: RenderBlockProps) {
       return getBlockTag(state.useBlock);
     },
     get useBlock(): BuilderBlock {
-      return state.repeatItemData
+      const newLocal = state.repeatItemData
         ? props.block
         : getProcessedBlock({
             block: props.block,
@@ -75,6 +75,8 @@ export default function RenderBlock(props: RenderBlockProps) {
             context: props.context.context,
             shouldEvaluateBindings: true,
           });
+      console.log('re-running useBlock', props.context.state);
+      return newLocal;
     },
     get actions() {
       return getBlockActions({
@@ -246,6 +248,7 @@ export default function RenderBlock(props: RenderBlockProps) {
       </Show>
       <Show when={!isEmptyHtmlElement(state.tag) && !state.repeatItemData}>
         <state.tag {...state.attributes} {...state.actions}>
+          {JSON.stringify(props.context.state)}
           <state.renderComponentTag {...state.renderComponentProps} />
           {/**
            * We need to run two separate loops for content + styles to workaround the fact that Vue 2
