@@ -17,9 +17,8 @@
 		AF15816426B83DE000531EAD /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF15813926B83DDF00531EAD /* ContentView.swift */; };
 		AF15816526B83DE000531EAD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF15813A26B83DE000531EAD /* Assets.xcassets */; };
 		AF15816626B83DE000531EAD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF15813A26B83DE000531EAD /* Assets.xcassets */; };
-		AF15817B26B8CEFE00531EAD /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = AF15817A26B8CEFE00531EAD /* SwiftyJSON */; };
 		AF7E5E5126BA0EA600AB0FF5 /* (null) in Resources */ = {isa = PBXBuildFile; };
-		C2A123842907BF8600515251 /* BuilderIOPackage in Frameworks */ = {isa = PBXBuildFile; productRef = C2A123832907BF8600515251 /* BuilderIOPackage */; };
+		C21CEE432907CFDC00A1D905 /* BuilderIOPackage in Frameworks */ = {isa = PBXBuildFile; productRef = C21CEE422907CFDC00A1D905 /* BuilderIOPackage */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +57,7 @@
 		AF15815E26B83DE000531EAD /* Tests_macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOS.swift; sourceTree = "<group>"; };
 		AF15816026B83DE000531EAD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B52B583E91FB93CBCFDB4841 /* Pods-testing (macOS).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-testing (macOS).release.xcconfig"; path = "Target Support Files/Pods-testing (macOS)/Pods-testing (macOS).release.xcconfig"; sourceTree = "<group>"; };
+		C21CEE412907CFCA00A1D905 /* BuilderIOPackage */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = BuilderIOPackage; path = ../sdk/BuilderIOPackage; sourceTree = "<group>"; };
 		EBB2D943D052A0F66C9E5D36 /* libPods-testing (macOS).a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-testing (macOS).a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF83C0DD6DDD34AE6F894C94 /* Pods_testing__iOS_.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_testing__iOS_.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -67,9 +67,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AF15817B26B8CEFE00531EAD /* SwiftyJSON in Frameworks */,
-				C2A123842907BF8600515251 /* BuilderIOPackage in Frameworks */,
 				A2E015EE4D9CD5AD8E0FDFA9 /* Pods_testing__iOS_.framework in Frameworks */,
+				C21CEE432907CFDC00A1D905 /* BuilderIOPackage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +111,7 @@
 		AF15813226B83DDF00531EAD = {
 			isa = PBXGroup;
 			children = (
+				C21CEE402907CFCA00A1D905 /* Packages */,
 				AF15813726B83DDF00531EAD /* Shared */,
 				AF15814126B83DE000531EAD /* iOS */,
 				AF15814826B83DE000531EAD /* macOS */,
@@ -179,6 +179,14 @@
 			path = "Tests macOS";
 			sourceTree = "<group>";
 		};
+		C21CEE402907CFCA00A1D905 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				C21CEE412907CFCA00A1D905 /* BuilderIOPackage */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
 		FA9AC8BA04E0370036E61A5E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -206,8 +214,7 @@
 			);
 			name = "testing (iOS)";
 			packageProductDependencies = (
-				AF15817A26B8CEFE00531EAD /* SwiftyJSON */,
-				C2A123832907BF8600515251 /* BuilderIOPackage */,
+				C21CEE422907CFDC00A1D905 /* BuilderIOPackage */,
 			);
 			productName = "testing (iOS)";
 			productReference = AF15813F26B83DE000531EAD /* testing.app */;
@@ -302,8 +309,6 @@
 			);
 			mainGroup = AF15813226B83DDF00531EAD;
 			packageReferences = (
-				AF15817926B8CEFE00531EAD /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
-				C2A123822907BF8600515251 /* XCRemoteSwiftPackageReference "BuilderIOPackage" */,
 			);
 			productRefGroup = AF15814026B83DE000531EAD /* Products */;
 			projectDirPath = "";
@@ -786,34 +791,9 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCRemoteSwiftPackageReference section */
-		AF15817926B8CEFE00531EAD /* XCRemoteSwiftPackageReference "SwiftyJSON" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/SwiftyJSON/SwiftyJSON";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.0.1;
-			};
-		};
-		C2A123822907BF8600515251 /* XCRemoteSwiftPackageReference "BuilderIOPackage" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/krishnavivekesmagico/BuilderIOPackage.git";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
 /* Begin XCSwiftPackageProductDependency section */
-		AF15817A26B8CEFE00531EAD /* SwiftyJSON */ = {
+		C21CEE422907CFDC00A1D905 /* BuilderIOPackage */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = AF15817926B8CEFE00531EAD /* XCRemoteSwiftPackageReference "SwiftyJSON" */;
-			productName = SwiftyJSON;
-		};
-		C2A123832907BF8600515251 /* BuilderIOPackage */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C2A123822907BF8600515251 /* XCRemoteSwiftPackageReference "BuilderIOPackage" */;
 			productName = BuilderIOPackage;
 		};
 /* End XCSwiftPackageProductDependency section */
