@@ -42,6 +42,7 @@ export const setupBrowserForEditing = () => {
           // Supports builder-model="..." attribute which is needed to
           // scope our '+ add block' button styling
           supportsAddBlockScoping: true,
+          supportsCustomBreakpoints: true,
         },
       },
       '*'
