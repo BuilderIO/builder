@@ -36,7 +36,6 @@ import {
   registerInsertMenu,
   setupBrowserForEditing,
 } from '../../scripts/init-editing.js';
-import { markMutable } from '../../functions/mark-mutable.js';
 
 useMetadata({
   qwik: {
@@ -379,7 +378,7 @@ export default function RenderContent(props: RenderContentProps) {
           />
         )}
         <RenderBlocks
-          blocks={markMutable(state.useContent?.data?.blocks)}
+          blocks={state.useContent?.data?.blocks}
           key={state.forceReRenderCount}
         />
       </div>
