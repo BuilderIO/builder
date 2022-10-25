@@ -1,5 +1,7 @@
 import { registerCommercePlugin } from '@builder.io/commerce-plugin-tools';
 import pkg from '../package.json';
+import { registerContentAction, registerContextMenuAction } from './plugin-helpers';
+import appState from '@builder.io/app-context';
 
 const authUrl = 'https://cloud.memsource.com/web/api2/v3/auth/login'
 const listProjectUrl = 'https://cloud.memsource.com/web/api2/v1/projects'
@@ -30,6 +32,58 @@ registerCommercePlugin(
 
     const baseAuthUrl = `https://cdn.builder.io/api/v1/proxy-api?url=${encodeURIComponent(authUrl)}`
     const baseListUrl = `https://cdn.builder.io/api/v1/proxy-api?url=${encodeURIComponent(listProjectUrl)}`
+
+
+    // right click menu option to exclude from trasnlations
+    const transcludedMetaKey = 'excludeFromTranslation';
+    registerContextMenuAction({
+      label: 'Exclude from future translations',
+      showIf(selectedElements) {
+        if (selectedElements.length !== 1) {
+          // todo maybe apply for multiple
+          return false;
+        }
+        const element = selectedElements[0];
+        const isExcluded = element.meta?.get(transcludedMetaKey);
+        return element.component?.name === 'Text' && !isExcluded;
+      },
+      onClick(elements) {
+        elements.forEach(el => el.meta.set('excludeFromTranslation', true));
+      },
+    });
+
+    registerContentAction({
+      label: 'Translate',
+      showIf(content, model) {
+        return (
+          content.published === 'published'
+        );
+      },
+      async onClick(content) {
+        // TODO: create a new project, send translation to memsource API
+        // save translation status to pending
+        await appState.updateLatestDraft({
+          id: content.id,
+          modelId: content.modelId,
+          meta: {
+            translationStatus: 'pending',
+          },
+        });
+      }
+    });
+
+    registerContentAction({
+      label: 'Apply translation',
+      showIf(content, model) {
+        return (
+          content.published === 'published'
+        );
+      },
+      async onClick(content) {
+        // TODO: read project id from meta content and get the translation and apply it
+      }
+    });
+
 
     const transformResource = (resource: any) => ({
       ...resource,

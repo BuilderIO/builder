@@ -76,9 +76,13 @@
     ]
   },
   "devDependencies": {
-    "@builder.io/react": "^2.0.4",
+    "@builder.io/react": "latest",
     "@commitlint/cli": "^7.1.2",
     "@commitlint/config-conventional": "^7.1.2",
+    "@emotion/core": "^10.0.22",
+    "@emotion/styled": "^10.0.23",
+    "@material-ui/core": "^3.9.2",
+    "@material-ui/icons": "^1.1.1",
     "@rollup/plugin-commonjs": "^19.0.1",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^13.0.2",
@@ -121,7 +125,6 @@
     "typescript": "^3.0.3"
   },
   "dependencies": {
-    "@builder.io/commerce-plugin-tools": "^0.2.1-4",
-    "@moltin/sdk": "^8.8.1"
+    "@builder.io/commerce-plugin-tools": "latest"
   }
 }
