@@ -1,7 +1,6 @@
 import { getDefaultRegisteredComponents } from '../../constants/builder-registered-components.js';
 import { TARGET } from '../../constants/target.js';
 import type {
-  BuilderContextInterface,
   BuilderRenderContext,
   BuilderRenderState,
   RegisteredComponent,
@@ -30,11 +29,13 @@ import {
   useStore,
   useMetadata,
   useRef,
+  setContext,
 } from '@builder.io/mitosis';
 import {
   registerInsertMenu,
   setupBrowserForEditing,
 } from '../../scripts/init-editing.js';
+import BuilderContext from '../../context/builder.context.lite.js';
 
 useMetadata({
   qwik: {
@@ -247,33 +248,6 @@ export default function RenderContent(props: RenderContentProps) {
           TARGET !== 'reactNative'
       );
     },
-
-    get contextToUse(): BuilderContextInterface {
-      return {
-        get content() {
-          return state.useContent;
-        },
-        get state() {
-          return new Proxy(state.contentState, {
-            set: (obj, prop: string, value) => {
-              console.log('setting', obj, prop, value);
-              obj[prop] = value;
-              return true;
-            },
-          });
-        },
-        get context() {
-          return state.contextContext;
-        },
-        get apiKey() {
-          return props.apiKey;
-        },
-        get registeredComponents() {
-          return state.allRegisteredComponents;
-        },
-        inheritedStyles: {},
-      };
-    },
   });
 
   // This currently doesn't do anything as `onCreate` is not implemented
@@ -291,37 +265,29 @@ export default function RenderContent(props: RenderContentProps) {
   // TODO: inherit context here too
   // });
 
-  // setContext(BuilderContext, {
-  //   get content() {
-  //     return state.useContent;
-  //   },
-  //   get state() {
-  //     return new Proxy(state.contentState, {
-  //       set: (obj, prop: string, value) => {
-  //         console.log('setting', obj, prop, value);
-  //         obj[prop] = value;
-  //         return true;
-  //       },
-  //     });
-  //   },
-  //   get context() {
-  //     return state.contextContext;
-  //   },
-  //   get apiKey() {
-  //     return props.apiKey;
-  //   },
-  //   get registeredComponents() {
-  //     return state.allRegisteredComponents;
-  //   },
-  //   stateUpdater(key, val) {
-  //     const newOverrideState = {
-  //       ...state.overrideState,
-  //       [key]: val,
-  //     };
-  //     state.overrideState = newOverrideState;
-  //     console.log('stateUpdater after', key, val, state.overrideState);
-  //   },
-  // });
+  setContext(BuilderContext, {
+    get content() {
+      return state.useContent;
+    },
+    get state() {
+      return new Proxy(state.contentState, {
+        set: (obj, prop: string, value) => {
+          console.log('setting', obj, prop, value);
+          obj[prop] = value;
+          return true;
+        },
+      });
+    },
+    get context() {
+      return state.contextContext;
+    },
+    get apiKey() {
+      return props.apiKey;
+    },
+    get registeredComponents() {
+      return state.allRegisteredComponents;
+    },
+  });
 
   onMount(() => {
     if (!props.apiKey) {
@@ -427,7 +393,6 @@ export default function RenderContent(props: RenderContentProps) {
         <RenderBlocks
           blocks={state.useContent?.data?.blocks}
           key={state.forceReRenderCount}
-          context={state.contextToUse}
         />
       </div>
     </Show>
