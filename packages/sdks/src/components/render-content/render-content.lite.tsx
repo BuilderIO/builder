@@ -21,6 +21,7 @@ import type { BuilderContent } from '../../types/builder-content.js';
 import type { Dictionary, Nullable } from '../../types/typescript.js';
 import RenderBlocks from '../render-blocks.lite';
 import RenderContentStyles from './components/render-styles.lite';
+import BuilderContext from '../../context/builder.context.lite';
 import {
   Show,
   onMount,
@@ -35,7 +36,6 @@ import {
   registerInsertMenu,
   setupBrowserForEditing,
 } from '../../scripts/init-editing.js';
-import BuilderContext from '../../context/builder.context.lite.js';
 
 useMetadata({
   qwik: {
@@ -98,13 +98,11 @@ export default function RenderContent(props: RenderContentProps) {
     },
     overrideState: {} as BuilderRenderState,
     get contentState(): BuilderRenderState {
-      const newLocal = {
+      return {
         ...props.content?.data?.state,
         ...props.data,
         ...state.overrideState,
       };
-      console.log('content state re-evaluated', newLocal);
-      return newLocal;
     },
     get contextContext() {
       return props.context || {};
