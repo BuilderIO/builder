@@ -1,6 +1,15 @@
 {
   "pins" : [
     {
+      "identity" : "builderiopackage",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/krishnavivekesmagico/BuilderIOPackage.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "ba43bfbdfb3ea5562ee75e6cad21572a8968a0cb"
+      }
+    },
+    {
       "identity" : "swiftyjson",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SwiftyJSON/SwiftyJSON",

@@ -1,5 +1,6 @@
 import SwiftUI
-
+import SwiftyJSON
+import BuilderIOPackage
 
 struct ContentView: View {
     @State var content: BuilderContent? = nil
@@ -9,7 +10,7 @@ struct ContentView: View {
     }
     
     func fetchContent() {
-        getContent(model: "page", apiKey: "e084484c0e0241579f01abba29d9be10", url: "/") { content in
+        Content.getContent(model: "page", apiKey: "e084484c0e0241579f01abba29d9be10", url: "/") { content in
             self.content = content
         }
     }
@@ -26,7 +27,6 @@ struct ContentView: View {
         }
     }
 }
-
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
