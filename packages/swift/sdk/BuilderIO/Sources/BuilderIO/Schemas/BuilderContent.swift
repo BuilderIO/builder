@@ -1,5 +1,5 @@
 // Schema for Builder content
-struct BuilderContent: Codable {
+public struct BuilderContent: Codable {
     var data = BuilderContentData()
     var screenshot: String? = nil
 }

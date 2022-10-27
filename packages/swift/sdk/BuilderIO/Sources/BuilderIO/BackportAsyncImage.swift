@@ -1,16 +1,12 @@
 import SwiftUI
 
 @available(iOS, deprecated: 15.0, renamed: "SwiftUI.AsyncImage")
-@available(macOS, deprecated: 12.0, renamed: "SwiftUI.AsyncImage")
-@available(tvOS, deprecated: 15.0, renamed: "SwiftUI.AsyncImage")
-@available(watchOS, deprecated: 8.0, renamed: "SwiftUI.AsyncImage")
+@available(iOS 14.0, *)
 public typealias AsyncImage = BackportAsyncImage
 
 
 @available(iOS, deprecated: 15.0, renamed: "SwiftUI.AsyncImagePhase")
-@available(macOS, deprecated: 12.0, renamed: "SwiftUI.AsyncImagePhase")
-@available(tvOS, deprecated: 15.0, renamed: "SwiftUI.AsyncImagePhase")
-@available(watchOS, deprecated: 8.0, renamed: "SwiftUI.AsyncImagePhase")
+@available(iOS 14.0, *)
 public enum AsyncImagePhase {
     case empty
     case success(Image)
@@ -37,9 +33,7 @@ public enum AsyncImagePhase {
 
 // Credit: https://github.com/yutailang0119/SBPAsyncImage/blob/main/Sources/SBPAsyncImage/BackportAsyncImage.swift
 @available(iOS, deprecated: 15.0, renamed: "SwiftUI.AsyncImage")
-@available(macOS, deprecated: 12.0, renamed: "SwiftUI.AsyncImage")
-@available(tvOS, deprecated: 15.0, renamed: "SwiftUI.AsyncImage")
-@available(watchOS, deprecated: 8.0, renamed: "SwiftUI.AsyncImage")
+@available(iOS 14.0, *)
 public struct BackportAsyncImage<Content: View>: View {
     private let url: URL?
     private let scale: CGFloat
@@ -53,6 +47,7 @@ public struct BackportAsyncImage<Content: View>: View {
         self.content = { $0.image ?? Image("") }
     }
 
+    @available(iOS 14.0, *)
     public init<I, P>(url: URL?,
                       scale: CGFloat = 1,
                       @ViewBuilder content: @escaping (Image) -> I,
@@ -69,6 +64,7 @@ public struct BackportAsyncImage<Content: View>: View {
         }
     }
 
+    @available(iOS 14.0, *)
     public init(url: URL?,
                 scale: CGFloat = 1,
                 transaction: Transaction = Transaction(),
@@ -79,6 +75,7 @@ public struct BackportAsyncImage<Content: View>: View {
         self.content = content
     }
 
+    @available(iOS 14.0, *)
     public var body: some View {
         if #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *) {
             ContentBody(url: url,
@@ -94,6 +91,7 @@ public struct BackportAsyncImage<Content: View>: View {
     }
 }
 
+@available(iOS 14.0, *)
 private final class Provider: ObservableObject {
     @Published var phase: AsyncImagePhase
 
@@ -138,7 +136,7 @@ private final class Provider: ObservableObject {
     }
 }
 
-@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
+@available(iOS 14.0, *)
 private struct ContentBody<Content: View>: View {
     @StateObject private var provider = Provider()
     private let url: URL?
@@ -168,9 +166,7 @@ private struct ContentBody<Content: View>: View {
 }
 
 @available(iOS, deprecated: 14.0)
-@available(macOS, deprecated: 11.0)
-@available(tvOS, deprecated: 14.0)
-@available(watchOS, deprecated: 7.0)
+@available(iOS 14.0, *)
 private struct ContentCompatBody<Content: View>: View {
     struct Body: View {
         @ObservedObject private var provider: Provider
@@ -191,12 +187,15 @@ private struct ContentCompatBody<Content: View>: View {
         }
     }
 
+    @available(iOS 14.0, *)
     @State private var provider = Provider()
     private let url: URL?
     private let scale: CGFloat
+    @available(iOS 14.0, *)
     private let transaction: Transaction
     private let content: (AsyncImagePhase) -> Content
 
+    @available(iOS 14.0, *)
     init(url: URL?,
          scale: CGFloat,
          transaction: Transaction,
@@ -207,6 +206,7 @@ private struct ContentCompatBody<Content: View>: View {
         self.content = content
     }
 
+    @available(iOS 14.0, *)
     var body: Body {
         Body(provider: provider,
              url: url,
@@ -216,6 +216,7 @@ private struct ContentCompatBody<Content: View>: View {
     }
 }
 
+/*
 struct BackportAsyncImage_Previews: PreviewProvider {
     static var url: URL? {
         URL(string: "http://httpbin.org/image/png")
@@ -258,3 +259,4 @@ struct BackportAsyncImage_Previews: PreviewProvider {
         }
     }
 }
+*/

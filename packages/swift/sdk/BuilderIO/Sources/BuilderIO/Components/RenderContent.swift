@@ -1,9 +1,10 @@
 import SwiftUI
 
-struct RenderContent: View {
+@available(iOS 14.0, macOS 10.15, *)
+public struct RenderContent: View {
     static var registered = false;
     
-    init(content: BuilderContent) {
+    public init(content: BuilderContent) {
         self.content = content
         if (!RenderContent.registered) {
             // TODO: move these out of here?
@@ -26,7 +27,7 @@ struct RenderContent: View {
     
     var content: BuilderContent
     
-    var body: some View {
+    public var body: some View {
         VStack(alignment: .leading) {
             RenderBlocks(blocks: content.data.blocks)
         }

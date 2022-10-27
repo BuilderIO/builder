@@ -18,7 +18,7 @@
 		AF15816526B83DE000531EAD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF15813A26B83DE000531EAD /* Assets.xcassets */; };
 		AF15816626B83DE000531EAD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF15813A26B83DE000531EAD /* Assets.xcassets */; };
 		AF7E5E5126BA0EA600AB0FF5 /* (null) in Resources */ = {isa = PBXBuildFile; };
-		C2E23F9F2909E61600066237 /* BuilderIO in Frameworks */ = {isa = PBXBuildFile; productRef = C2E23F9E2909E61600066237 /* BuilderIO */; };
+		C287B5DC2909EE21004B9FC7 /* BuilderIO in Frameworks */ = {isa = PBXBuildFile; productRef = C287B5DB2909EE21004B9FC7 /* BuilderIO */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,7 +57,7 @@
 		AF15815E26B83DE000531EAD /* Tests_macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOS.swift; sourceTree = "<group>"; };
 		AF15816026B83DE000531EAD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B52B583E91FB93CBCFDB4841 /* Pods-testing (macOS).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-testing (macOS).release.xcconfig"; path = "Target Support Files/Pods-testing (macOS)/Pods-testing (macOS).release.xcconfig"; sourceTree = "<group>"; };
-		C2E23F9D2909E5E400066237 /* BuilderIO */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = BuilderIO; path = ../sdk/BuilderIO; sourceTree = "<group>"; };
+		C287B5DA2909EE02004B9FC7 /* BuilderIO */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = BuilderIO; path = ../../packages/swift/sdk/BuilderIO; sourceTree = "<group>"; };
 		EBB2D943D052A0F66C9E5D36 /* libPods-testing (macOS).a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-testing (macOS).a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF83C0DD6DDD34AE6F894C94 /* Pods_testing__iOS_.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_testing__iOS_.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -67,7 +67,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C2E23F9F2909E61600066237 /* BuilderIO in Frameworks */,
+				C287B5DC2909EE21004B9FC7 /* BuilderIO in Frameworks */,
 				A2E015EE4D9CD5AD8E0FDFA9 /* Pods_testing__iOS_.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -111,7 +111,7 @@
 		AF15813226B83DDF00531EAD = {
 			isa = PBXGroup;
 			children = (
-				C2E23F9B2909E35B00066237 /* Packages */,
+				C287B5D92909EE02004B9FC7 /* Packages */,
 				AF15813726B83DDF00531EAD /* Shared */,
 				AF15814126B83DE000531EAD /* iOS */,
 				AF15814826B83DE000531EAD /* macOS */,
@@ -179,10 +179,10 @@
 			path = "Tests macOS";
 			sourceTree = "<group>";
 		};
-		C2E23F9B2909E35B00066237 /* Packages */ = {
+		C287B5D92909EE02004B9FC7 /* Packages */ = {
 			isa = PBXGroup;
 			children = (
-				C2E23F9D2909E5E400066237 /* BuilderIO */,
+				C287B5DA2909EE02004B9FC7 /* BuilderIO */,
 			);
 			name = Packages;
 			sourceTree = "<group>";
@@ -214,7 +214,7 @@
 			);
 			name = "testing (iOS)";
 			packageProductDependencies = (
-				C2E23F9E2909E61600066237 /* BuilderIO */,
+				C287B5DB2909EE21004B9FC7 /* BuilderIO */,
 			);
 			productName = "testing (iOS)";
 			productReference = AF15813F26B83DE000531EAD /* testing.app */;
@@ -792,7 +792,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		C2E23F9E2909E61600066237 /* BuilderIO */ = {
+		C287B5DB2909EE21004B9FC7 /* BuilderIO */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = BuilderIO;
 		};

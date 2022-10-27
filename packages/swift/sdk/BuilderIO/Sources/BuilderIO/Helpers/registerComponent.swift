@@ -11,7 +11,11 @@ func registerComponent(name: String, factory: @escaping BuilderBlockFactory) {
             return value
         } catch {
             print("Could not instantiate \(name): \(error)")
-            return Text("Builder block \(name) could not load")
+            if #available(iOS 14.0, *) {
+                return Text("Builder block \(name) could not load")
+            } else {
+                // Fallback on earlier versions
+            }
         }
     }
     componentDict[name] = useFactory

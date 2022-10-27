@@ -1,5 +1,6 @@
 import SwiftUI
 
+@available(iOS 14.0, macOS 10.15, *)
 struct BuilderText: View {
     var text: String
     
