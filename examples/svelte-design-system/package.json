@@ -36,7 +36,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@builder.io/sdk-svelte": "^0.0.6",
+		"@builder.io/sdk-svelte": "^0.0.7",
 		"@fontsource/fira-mono": "^4.5.0",
 		"cookie": "^0.4.1",
 		"svelte-parallax": "^0.5.2"
