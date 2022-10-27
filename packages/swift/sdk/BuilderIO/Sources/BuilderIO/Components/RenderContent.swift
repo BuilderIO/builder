@@ -14,6 +14,10 @@ public struct RenderContent: View {
             registerComponent(name: "Image", factory: { options in
                 return BuilderImage(image: options["image"].stringValue, backgroundSize: options["backgroundSize: <#T##String#>"].stringValue)
             })
+            registerComponent(name: "Core:Button", factory: { options in
+                return BuilderButton(text: options["text"].stringValue)
+//                return BuilderText(text: options["text"].stringValue)
+            })
             registerComponent(name: "Columns", factory: { options in
                 let decoder = JSONDecoder()
                 let jsonString = options["columns"].rawString()!
