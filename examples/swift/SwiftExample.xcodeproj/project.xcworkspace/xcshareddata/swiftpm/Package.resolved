@@ -1,0 +1,23 @@
+{
+  "pins" : [
+    {
+      "identity" : "builder-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/BuilderIO/builder-swift",
+      "state" : {
+        "branch" : "main",
+        "revision" : "2df41debc2a6e69309f94c0d48c621490c277457"
+      }
+    },
+    {
+      "identity" : "swiftyjson",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SwiftyJSON/SwiftyJSON.git",
+      "state" : {
+        "revision" : "b3dcd7dbd0d488e1a7077cb33b00f2083e382f07",
+        "version" : "5.0.1"
+      }
+    }
+  ],
+  "version" : 2
+}
