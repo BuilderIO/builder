@@ -228,7 +228,7 @@ module.exports = {
                * Workaround to dynamically provide event handlers to components/elements
                * https://svelte.dev/repl/1246699e266f41218a8eeb45b9b58b54?version=3.24.1
                */
-              const code = `
+              const filterCode = `
               const isEvent = attr => attr.startsWith('on:')
               const isNonEvent = attr => !attr.startsWith('on:')
 
@@ -241,6 +241,8 @@ module.exports = {
                 })
                 return validAttr
               }
+              `;
+              const code = `
               const setAttrs = (node, attrs) => {
                 const attrKeys = Object.keys(attrs)
             
@@ -291,7 +293,9 @@ module.exports = {
 
                 if (spreadBinding) {
                   const [key, value] = spreadBinding;
-                  json.hooks.preComponent = { code };
+                  json.hooks.preComponent = {
+                    code: [filterCode, code].join('\n'),
+                  };
                   item.bindings['use:setAttrs'] = {
                     code: `filterAttrs(${value.code}, isEvent)`,
                   };

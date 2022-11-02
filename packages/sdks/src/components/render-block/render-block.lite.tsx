@@ -1,5 +1,6 @@
 import type {
   BuilderContextInterface,
+  BuilderStateContext,
   RegisteredComponent,
 } from '../../context/types.js';
 import { getBlockActions } from '../../functions/get-block-actions.js';
@@ -25,6 +26,7 @@ import { getReactNativeBlockStyles } from '../../functions/get-react-native-bloc
 export type RenderBlockProps = {
   block: BuilderBlock;
   context: BuilderContextInterface;
+  contextState: BuilderStateContext;
 };
 
 useMetadata({
@@ -42,7 +44,7 @@ export default function RenderBlock(props: RenderBlockProps) {
     get component(): Nullable<RegisteredComponent> {
       const componentName = getProcessedBlock({
         block: props.block,
-        state: props.context.state,
+        state: props.contextState,
         context: props.context.context,
         shouldEvaluateBindings: false,
       }).component?.name;
@@ -71,17 +73,16 @@ export default function RenderBlock(props: RenderBlockProps) {
         ? props.block
         : getProcessedBlock({
             block: props.block,
-            state: props.context.state,
+            state: props.contextState,
             context: props.context.context,
             shouldEvaluateBindings: true,
           });
-      console.log('re-running useBlock', props.context.state);
       return newLocal;
     },
     get actions() {
       return getBlockActions({
         block: state.useBlock,
-        state: props.context.state,
+        state: props.contextState,
         context: props.context.context,
       });
     },
@@ -123,6 +124,7 @@ export default function RenderBlock(props: RenderBlockProps) {
               }),
         },
         context: state.childrenContext,
+        contextState: props.contextState,
       };
     },
     get useChildren() {
@@ -158,7 +160,7 @@ export default function RenderBlock(props: RenderBlockProps) {
 
       const itemsArray = evaluate({
         code: repeat.collection,
-        state: props.context.state,
+        state: props.contextState,
         context: props.context.context,
       });
 
@@ -174,7 +176,7 @@ export default function RenderBlock(props: RenderBlockProps) {
         context: {
           ...props.context,
           state: {
-            ...props.context.state,
+            ...props.contextState,
             $index: index,
             $item: item,
             [itemNameToUse]: item,
@@ -203,7 +205,6 @@ export default function RenderBlock(props: RenderBlockProps) {
     get childrenContext(): BuilderContextInterface {
       return {
         apiKey: props.context.apiKey,
-        state: props.context.state,
         content: props.context.content,
         context: props.context.context,
         registeredComponents: props.context.registeredComponents,
@@ -242,13 +243,13 @@ export default function RenderBlock(props: RenderBlockProps) {
               key={index}
               repeatContext={data.context}
               block={data.block}
+              repeatState={props.contextState}
             />
           )}
         </For>
       </Show>
       <Show when={!isEmptyHtmlElement(state.tag) && !state.repeatItemData}>
         <state.tag {...state.attributes} {...state.actions}>
-          {JSON.stringify(props.context.state)}
           <state.renderComponentTag {...state.renderComponentProps} />
           {/**
            * We need to run two separate loops for content + styles to workaround the fact that Vue 2
@@ -260,6 +261,7 @@ export default function RenderBlock(props: RenderBlockProps) {
                 key={'render-block-' + child.id}
                 block={child}
                 context={state.childrenContext}
+                contextState={props.contextState}
               />
             )}
           </For>
@@ -269,6 +271,7 @@ export default function RenderBlock(props: RenderBlockProps) {
                 key={'block-style-' + child.id}
                 block={child}
                 context={state.childrenContext}
+                contextState={props.contextState}
               />
             )}
           </For>
