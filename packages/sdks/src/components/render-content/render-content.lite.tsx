@@ -268,13 +268,7 @@ export default function RenderContent(props: RenderContentProps) {
       return state.useContent;
     },
     get state() {
-      return new Proxy(state.contentState, {
-        set: (obj, prop: string, value) => {
-          console.log('setting', obj, prop, value);
-          obj[prop] = value;
-          return true;
-        },
-      });
+      return state.contentState;
     },
     get context() {
       return state.contextContext;
