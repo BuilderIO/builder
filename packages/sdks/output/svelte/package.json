@@ -1,7 +1,7 @@
 {
   "name": "@builder.io/sdk-svelte",
   "description": "Builder.io SDK for Svelte",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "type": "module",
   "files": [
     "package",
@@ -15,7 +15,7 @@
   },
   "main": "./package/index.js",
   "module": "./package/index.js",
-  "svelte": "./src/index.ts",
+  "svelte": "./package/index.js",
   "exports": {
     "./src": {
       "import": "./src/index.js",
