@@ -105,7 +105,7 @@ module.exports = {
     'solid',
     'svelte',
     'react',
-    // 'qwik',
+    'qwik',
   ],
   getTargetPath,
   options: {
