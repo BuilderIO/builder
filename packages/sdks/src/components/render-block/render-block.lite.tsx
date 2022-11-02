@@ -121,7 +121,6 @@ export default function RenderBlock(props: RenderBlockProps) {
               }),
         },
         context: state.childrenContext,
-        contextState: props.context.state,
       };
     },
     get useChildren() {
@@ -202,6 +201,7 @@ export default function RenderBlock(props: RenderBlockProps) {
     get childrenContext(): BuilderContextInterface {
       return {
         apiKey: props.context.apiKey,
+        state: props.context.state,
         content: props.context.content,
         context: props.context.context,
         registeredComponents: props.context.registeredComponents,
@@ -240,7 +240,6 @@ export default function RenderBlock(props: RenderBlockProps) {
               key={index}
               repeatContext={data.context}
               block={data.block}
-              repeatState={props.context.state}
             />
           )}
         </For>
@@ -258,7 +257,6 @@ export default function RenderBlock(props: RenderBlockProps) {
                 key={'render-block-' + child.id}
                 block={child}
                 context={state.childrenContext}
-                contextState={props.context.state}
               />
             )}
           </For>
@@ -268,7 +266,6 @@ export default function RenderBlock(props: RenderBlockProps) {
                 key={'block-style-' + child.id}
                 block={child}
                 context={state.childrenContext}
-                contextState={props.context.state}
               />
             )}
           </For>
