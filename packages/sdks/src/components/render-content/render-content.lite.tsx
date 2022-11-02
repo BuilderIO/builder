@@ -1,6 +1,5 @@
 import { getDefaultRegisteredComponents } from '../../constants/builder-registered-components.js';
 import { TARGET } from '../../constants/target.js';
-import BuilderContext from '../../context/builder.context.lite';
 import type {
   BuilderRenderContext,
   BuilderRenderState,
@@ -22,15 +21,16 @@ import type { BuilderContent } from '../../types/builder-content.js';
 import type { Dictionary, Nullable } from '../../types/typescript.js';
 import RenderBlocks from '../render-blocks.lite';
 import RenderContentStyles from './components/render-styles.lite';
+import BuilderContext from '../../context/builder.context.lite';
 import {
   Show,
   onMount,
   onUnMount,
   onUpdate,
-  setContext,
   useStore,
   useMetadata,
   useRef,
+  setContext,
 } from '@builder.io/mitosis';
 import {
   registerInsertMenu,
@@ -260,7 +260,6 @@ export default function RenderContent(props: RenderContentProps) {
   //         state.update = state.update + 1;
   //       })
   //   );
-
   // TODO: inherit context here too
   // });
 
@@ -283,6 +282,12 @@ export default function RenderContent(props: RenderContentProps) {
   });
 
   onMount(() => {
+    if (!props.apiKey) {
+      console.error(
+        '[Builder.io]: No API key provided to `RenderContent` component. This can cause issues. Please provide an API key using the `apiKey` prop.'
+      );
+    }
+
     if (isBrowser()) {
       if (isEditing()) {
         state.forceReRenderCount = state.forceReRenderCount + 1;
@@ -342,7 +347,7 @@ export default function RenderContent(props: RenderContentProps) {
 
   onUpdate(() => {
     state.evaluateJsCode();
-  }, [state.useContent?.data?.jsCode]);
+  }, [state.useContent?.data?.jsCode, state.contentState]);
 
   onUpdate(() => {
     state.runHttpRequests();

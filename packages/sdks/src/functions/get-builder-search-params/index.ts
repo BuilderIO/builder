@@ -2,7 +2,7 @@ import { isBrowser } from '../is-browser.js';
 
 const BUILDER_SEARCHPARAMS_PREFIX = 'builder.';
 
-type QueryObject = Record<string, string>;
+type QueryObject = Record<string, string | string[]>;
 
 export const convertSearchParamsToQueryObject = (
   searchParams: URLSearchParams

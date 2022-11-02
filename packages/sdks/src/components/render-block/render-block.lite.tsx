@@ -76,14 +76,16 @@ export default function RenderBlock(props: RenderBlockProps) {
             shouldEvaluateBindings: true,
           });
     },
+    get actions() {
+      return getBlockActions({
+        block: state.useBlock,
+        state: props.context.state,
+        context: props.context.context,
+      });
+    },
     get attributes() {
       return {
         ...getBlockProperties(state.useBlock),
-        ...getBlockActions({
-          block: state.useBlock,
-          state: props.context.state,
-          context: props.context.context,
-        }),
         ...(TARGET === 'reactNative'
           ? {
               style: getReactNativeBlockStyles({
@@ -109,7 +111,14 @@ export default function RenderBlock(props: RenderBlockProps) {
            * These attributes are passed to the wrapper element when there is one. If `noWrap` is set to true, then
            * they are provided to the component itself directly.
            */
-          ...(state.shouldWrap ? {} : { attributes: state.attributes }),
+          ...(state.shouldWrap
+            ? {}
+            : {
+                attributes: {
+                  ...state.attributes,
+                  ...state.actions,
+                },
+              }),
         },
         context: state.childrenContext,
       };
@@ -222,7 +231,7 @@ export default function RenderBlock(props: RenderBlockProps) {
        * _even_ if that logic ends up not rendering anything.
        */}
       <Show when={isEmptyHtmlElement(state.tag)}>
-        <state.tag {...state.attributes} />
+        <state.tag {...state.attributes} {...state.actions} />
       </Show>
       <Show when={!isEmptyHtmlElement(state.tag) && state.repeatItemData}>
         <For each={state.repeatItemData}>
@@ -236,7 +245,7 @@ export default function RenderBlock(props: RenderBlockProps) {
         </For>
       </Show>
       <Show when={!isEmptyHtmlElement(state.tag) && !state.repeatItemData}>
-        <state.tag {...state.attributes}>
+        <state.tag {...state.attributes} {...state.actions}>
           <state.renderComponentTag {...state.renderComponentProps} />
           {/**
            * We need to run two separate loops for content + styles to workaround the fact that Vue 2
