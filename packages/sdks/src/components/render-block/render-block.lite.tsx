@@ -1,6 +1,5 @@
 import type {
   BuilderContextInterface,
-  BuilderStateContext,
   RegisteredComponent,
 } from '../../context/types.js';
 import { getBlockActions } from '../../functions/get-block-actions.js';
@@ -26,7 +25,6 @@ import { getReactNativeBlockStyles } from '../../functions/get-react-native-bloc
 export type RenderBlockProps = {
   block: BuilderBlock;
   context: BuilderContextInterface;
-  contextState: BuilderStateContext;
 };
 
 useMetadata({
@@ -44,7 +42,7 @@ export default function RenderBlock(props: RenderBlockProps) {
     get component(): Nullable<RegisteredComponent> {
       const componentName = getProcessedBlock({
         block: props.block,
-        state: props.contextState,
+        state: props.context.state,
         context: props.context.context,
         shouldEvaluateBindings: false,
       }).component?.name;
@@ -69,20 +67,19 @@ export default function RenderBlock(props: RenderBlockProps) {
       return getBlockTag(state.useBlock);
     },
     get useBlock(): BuilderBlock {
-      const newLocal = state.repeatItemData
+      return state.repeatItemData
         ? props.block
         : getProcessedBlock({
             block: props.block,
-            state: props.contextState,
+            state: props.context.state,
             context: props.context.context,
             shouldEvaluateBindings: true,
           });
-      return newLocal;
     },
     get actions() {
       return getBlockActions({
         block: state.useBlock,
-        state: props.contextState,
+        state: props.context.state,
         context: props.context.context,
       });
     },
@@ -124,7 +121,7 @@ export default function RenderBlock(props: RenderBlockProps) {
               }),
         },
         context: state.childrenContext,
-        contextState: props.contextState,
+        contextState: props.context.state,
       };
     },
     get useChildren() {
@@ -160,7 +157,7 @@ export default function RenderBlock(props: RenderBlockProps) {
 
       const itemsArray = evaluate({
         code: repeat.collection,
-        state: props.contextState,
+        state: props.context.state,
         context: props.context.context,
       });
 
@@ -176,7 +173,7 @@ export default function RenderBlock(props: RenderBlockProps) {
         context: {
           ...props.context,
           state: {
-            ...props.contextState,
+            ...props.context.state,
             $index: index,
             $item: item,
             [itemNameToUse]: item,
@@ -243,7 +240,7 @@ export default function RenderBlock(props: RenderBlockProps) {
               key={index}
               repeatContext={data.context}
               block={data.block}
-              repeatState={props.contextState}
+              repeatState={props.context.state}
             />
           )}
         </For>
@@ -261,7 +258,7 @@ export default function RenderBlock(props: RenderBlockProps) {
                 key={'render-block-' + child.id}
                 block={child}
                 context={state.childrenContext}
-                contextState={props.contextState}
+                contextState={props.context.state}
               />
             )}
           </For>
@@ -271,7 +268,7 @@ export default function RenderBlock(props: RenderBlockProps) {
                 key={'block-style-' + child.id}
                 block={child}
                 context={state.childrenContext}
-                contextState={props.contextState}
+                contextState={props.context.state}
               />
             )}
           </For>
