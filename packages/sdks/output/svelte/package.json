@@ -15,7 +15,7 @@
   },
   "main": "./package/index.js",
   "module": "./package/index.js",
-  "svelte": "./src/index.ts",
+  "svelte": "./package/index.js",
   "exports": {
     "./src": {
       "import": "./src/index.js",
