@@ -228,20 +228,6 @@ module.exports = {
                * Workaround to dynamically provide event handlers to components/elements
                * https://svelte.dev/repl/1246699e266f41218a8eeb45b9b58b54?version=3.24.1
                */
-              const filterCode = `
-              const isEvent = attr => attr.startsWith('on:')
-              const isNonEvent = attr => !attr.startsWith('on:')
-
-              const filterAttrs = (attrs, filter) => {
-                const validAttr = {}
-                Object.keys(attrs).forEach(attr => {
-                  if (filter(attr)) {
-                    validAttr[attr] = attrs[attr]
-                  }
-                })
-                return validAttr
-              }
-              `;
               const code = `
               const setAttrs = (node, attrs) => {
                 const attrKeys = Object.keys(attrs)
@@ -284,6 +270,26 @@ module.exports = {
               // handle case where we have no wrapper element, in which case the actions are passed as attributes to our
               // builder blocks.
               traverse(json).forEach(function (item) {
+                /**
+                 * Additional snippet of code that helps split up the attributes into event handlers and the rest.
+                 * we can then apply these filters in 2 bindings: one that uses the `setAttrs` action, and another that
+                 * provides the non-event-handler attribtues as they are, spread into the component
+                 */
+                const filterCode = `
+                  const isEvent = attr => attr.startsWith('on:')
+                  const isNonEvent = attr => !attr.startsWith('on:')
+
+                  const filterAttrs = (attrs, filter) => {
+                    const validAttr = {}
+                    Object.keys(attrs).forEach(attr => {
+                      if (filter(attr)) {
+                        validAttr[attr] = attrs[attr]
+                      }
+                    })
+                    return validAttr
+                  }
+              `;
+
                 if (!isMitosisNode(item)) {
                   return;
                 }
