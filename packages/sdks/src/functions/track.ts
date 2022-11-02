@@ -6,7 +6,12 @@ import { isBrowser } from './is-browser.js';
 import { isEditing } from './is-editing.js';
 
 interface Event {
-  type: 'click' | 'impression';
+  /**
+   * The type of your event.
+   *
+   * Examples: `click`, `conversion`, `pageview`, `impression`
+   */
+  type: string;
   data: {
     /**
      * (Optional) The content's ID. Useful if this event pertains to a specific piece of content.
