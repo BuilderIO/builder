@@ -94,7 +94,7 @@ jobs:
         run: yarn ci:lint
 
       - name: Build
-        run: yarn ci:build:mitosis
+        run: yarn build:mitosis
 
       - name: Run tests
         run: yarn ci:test
