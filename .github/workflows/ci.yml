@@ -79,8 +79,14 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '16.x'
-          cache: 'yarn'
-          cache-dependency-path: ./packages/sdks/yarn.lock
+
+
+    - name: Cache SDKs dependencies
+      id: cache-sdks-deps
+      uses: actions/cache@v3
+      with:
+        path: packages/sdks/.yarn/cache
+        key: sdks-deps-cache
 
       - name: Install dependencies
         run: yarn
