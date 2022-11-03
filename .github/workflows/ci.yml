@@ -133,7 +133,7 @@ jobs:
         run: yarn build:mitosis
 
       - name: Build SDK
-        run: yarn workspace ${{ matrix.sdk }} build
+        run: yarn workspace @builder.io/sdk-${{ matrix.sdk }} build
 
       - name: Install browsers for Playwright
         run: yarn e2e:install-playwright
