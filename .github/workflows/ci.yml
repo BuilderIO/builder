@@ -80,13 +80,12 @@ jobs:
         with:
           node-version: '16.x'
 
-
-    - name: Cache SDKs dependencies
-      id: cache-sdks-deps
-      uses: actions/cache@v3
-      with:
-        path: packages/sdks/.yarn/cache
-        key: sdks-deps-cache
+      - name: Cache SDKs
+        id: cache-primes
+        uses: actions/cache@v3
+        with:
+          path: prime-numbers
+          key: ${{ runner.os }}-primes
 
       - name: Install dependencies
         run: yarn
