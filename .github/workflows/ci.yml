@@ -64,7 +64,7 @@ jobs:
         run: npm run ci:test --if-present
         working-directory: packages/${{ matrix.package }}
 
-  build-sdks:
+  sdks-base:
     runs-on: ubuntu-latest
 
     defaults:
@@ -94,16 +94,55 @@ jobs:
         run: yarn ci:lint
 
       - name: Build
-        run: yarn ci:build
+        run: yarn build:mitosis
 
       - name: Run tests
         run: yarn ci:test
 
+  sdks-outputs:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        sdk: ['svelte', 'qwik', 'react-native', 'react', 'solid', 'vue']
+
+    defaults:
+      run:
+        working-directory: packages/sdks
+
+    steps:
+      - name: Setup
+        uses: actions/checkout@v2
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+
+      - name: Cache SDKs
+        id: cache-primes
+        uses: actions/cache@v3
+        with:
+          path: packages/sdks/.yarn/cache
+          key: sdks-cache-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: Build Mitosis
+        run: yarn build:mitosis
+
+      - name: Build SDK
+        run: yarn workspace @builder.io/sdk-${{ matrix.sdk }} build
+
       - name: Install browsers for Playwright
-        run: yarn ci:e2e-prep
+        run: yarn e2e:install-playwright
 
       - name: Build E2E tests
-        run: yarn ci:e2e-build
+        run: yarn e2e:build:specs
+
+      - name: Build E2E apps
+        run: yarn e2e:build:${{ matrix.sdk }}
 
       - name: Run E2E tests
-        run: yarn ci:e2e
+        run: yarn e2e:run:${{ matrix.sdk }}
