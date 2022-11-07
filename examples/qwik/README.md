@@ -1,42 +1,26 @@
-# Qwik App ⚡️
+# Builder.io example with Qwik
 
-- [Qwik Docs](https://qwik.builder.io/)
-- [Discord](https://qwik.builder.io/chat)
-- [Qwik GitHub](https://github.com/BuilderIO/qwik)
-- [@QwikDev](https://twitter.com/QwikDev)
-- [Vite](https://vitejs.dev/)
-- [Partytown](https://partytown.builder.io/)
-- [Mitosis](https://github.com/BuilderIO/mitosis)
-- [Builder.io](https://www.builder.io/)
+This example shows our [Qwik SDK](/packages/sdks/output/qwik) with Qwik + Qwikcity.
 
----
+## Builder.io Setup
 
-## Project Structure
+- log into builder.io
+- from your account page, copy your API key and paste it into BUILDER_API_KEY in `src/routes/[...index]/index.tsx`
+- open the Builder.io Visual Editor for the model named "page"
+- enter http://localhost:3000 in the URL bar to the top right of the preview in Builder
+- drag a component into the layers tab, and it will appear in the Editor!
 
-Inside your project, you'll see the following directory structure:
+Checkout this Loom for a visual walkthrough: https://www.loom.com/share/afd7c9a1f8f148959ea0396be42560fd (it's originally intended for React-Native, but all of the steps are still the exact same)
 
-```
-├── public/
-│   └── ...
-└── src/
-    ├── components/
-    │   └── ...
-    └── routes/
-        └── ...
-```
+## Status
 
-- `src/routes`: Provides the directory based routing, which can include a hierarchy of `layout.tsx` layout files, and an `index.tsx` file as the page. Additionally, `index.ts` files are endpoints. Please see the [routing docs](https://qwik.builder.io/qwikcity/routing/overview/) for more info.
+For the status of the SDK, look at [these tables](/packages/sdks/README.md#feature-implementation).
 
-- `src/components`: Recommended directory for components.
-
-- `public`: Any static assets, like images, can be placed in the public directory. Please see the [Vite public directory](https://vitejs.dev/guide/assets.html#the-public-directory) for more info.
-
-## Add Integrations
-
-Use the `npm run qwik add` command to add additional integrations. Some examples of integrations include: Cloudflare, Netlify or Vercel server, and the [Static Site Generator (SSG)](https://qwik.builder.io/qwikcity/static-site-generation/static-site-config/).
+## Build Setup
 
 ```shell
-npm run qwik add # or `yarn qwik add`
+# install dependencies
+npm install
 ```
 
 ## Development
@@ -44,7 +28,7 @@ npm run qwik add # or `yarn qwik add`
 Development mode uses [Vite's development server](https://vitejs.dev/). During development, the `dev` command will server-side render (SSR) the output.
 
 ```shell
-npm run dev # or `yarn dev`
+npm run dev
 ```
 
 > Note: during dev mode, Vite may request a significant number of `.js` files. This does not represent a Qwik production build.
@@ -54,7 +38,7 @@ npm run dev # or `yarn dev`
 The preview command will create a production build of the client modules, a production build of `src/entry.preview.tsx`, and run a local server. The preview server is only for convenience to locally preview a production build, and it should not be used as a production server.
 
 ```shell
-npm run preview # or `yarn preview`
+npm run preview
 ```
 
 ## Production
@@ -62,5 +46,5 @@ npm run preview # or `yarn preview`
 The production build will generate client and server modules by running both client and server build commands. Additionally, the build command will use Typescript to run a type check on the source code.
 
 ```shell
-npm run build # or `yarn build`
+npm run build
 ```
