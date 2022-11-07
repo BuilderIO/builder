@@ -7,7 +7,7 @@ struct BuilderBlock: Codable {
     var bindings: [String: String]? = [:]
     var children: [BuilderBlock]? = []
     var component: BuilderBlockComponent? = nil
-    var responsiveStyles: BuilderBlockResponsiveStyles? = BuilderBlockResponsiveStyles()
+    var responsiveStyles: BuilderBlockResponsiveStyles? = BuilderBlockResponsiveStyles() // for inner style of the component
 }
 
 struct BuilderBlockComponent: Codable {

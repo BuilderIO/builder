@@ -12,7 +12,11 @@ import SwiftUI
 struct testingApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            if #available(iOS 15.0, *) {
+                ContentView()
+            } else {
+                // Fallback on earlier versions
+            }
         }
     }
 }

@@ -1,8 +1,14 @@
 import SwiftUI
+import WebKit
 
-@available(iOS 14.0, macOS 10.15, *)
+@available(iOS 15.0, macOS 10.15, *)
 struct BuilderButton: View {
     var text: String
+    var urlStr: String?
+    var openInNewTab: Bool = false
+    var responsiveStyles: BuilderBlockResponsiveStyles? = BuilderBlockResponsiveStyles() // for outer style of the component
+
+    @State private var showWebView = false
     
     // TODO: actually handle HTML
     func getTextWithoutHtml(_ text: String) -> String {
@@ -15,21 +21,33 @@ struct BuilderButton: View {
         return ""
     }
     
-    var body: some View {        
+    var body: some View {
         HStack(spacing: 0) {
-            Button(getTextWithoutHtml(text)) {
+            Button(action: {
                 print(getTextWithoutHtml(text))
+                // print("responsiveStyles = \(String(describing: responsiveStyles))")
+                if let str = urlStr, let url = URL(string: str) {
+                    self.showWebView = !openInNewTab
+                    if openInNewTab == true {
+                        UIApplication.shared.open(url)
+                    }
+                }
+            }) {
+                Text(getTextWithoutHtml(text))
             }
-            .background(Color.init(hex: "3898EC"))
-            .foregroundColor(Color.white)
-            .padding(EdgeInsets(top: 15, leading: 25, bottom: 15, trailing: 25))
-            .multilineTextAlignment(.center)
+            .padding(EdgeInsets(top: 15, leading: 45, bottom: 15, trailing: 45)) // margin
+            .sheet(isPresented: $showWebView) {
+                if let str = urlStr, let url = URL(string: str) {
+                    WebView(url: url)
+                }
+            }
+//            .frame(maxWidth: .infinity)
         }
-        .frame(maxWidth: .infinity)
+//        .frame(maxWidth: .infinity)
     }
 }
 
-@available(iOS 13.0, *)
+@available(iOS 15.0, *)
 extension Color {
     init(hex: String) {
         let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
@@ -54,5 +72,21 @@ extension Color {
             blue:  Double(b) / 255,
             opacity: Double(a) / 255
         )
+    }
+}
+
+@available(iOS 15.0, *)
+struct WebView: UIViewRepresentable {
+    typealias UIViewType = WKWebView
+
+    var url: URL
+
+    func makeUIView(context: Context) -> WKWebView {
+        return WKWebView()
+    }
+
+    func updateUIView(_ webView: WKWebView, context: Context) {
+        let request = URLRequest(url: url)
+        webView.load(request)
     }
 }

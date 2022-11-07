@@ -13,10 +13,19 @@ public struct Content {
             }
             let decoder = JSONDecoder()
             let jsonString = String(data: data, encoding: .utf8)!
-            
+            print("jsonString = \(jsonString)")
             do {
                 let content = try decoder.decode(BuilderContentList.self, from: Data(jsonString.utf8))
-                callback(content.results[0])
+                if content.results.count>0 {
+                    callback(content.results[0])
+                    
+                    print("file = \(#file) \(#function) \(#line)")
+                    print("content.results[0].data.blocks[0] = \(String(describing: content.results[0].data.blocks[0]))")
+                    
+                    
+                    
+                    print("responsiveStyles = \(String(describing: content.results[0].data.blocks[0].responsiveStyles))")
+                }
             } catch {
                 print(error)
                 callback(nil)

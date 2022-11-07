@@ -1,9 +1,10 @@
 import SwiftUI
 
-@available(iOS 14.0, macOS 10.15, *)
+@available(iOS 15.0, macOS 10.15, *)
 struct BuilderText: View {
     var text: String
-    
+    var responsiveStyles: BuilderBlockResponsiveStyles? = BuilderBlockResponsiveStyles() // for outer style of the component
+
     // TODO: actually handle HTML
     func getTextWithoutHtml(_ text: String) -> String {
         if let regex = try? NSRegularExpression(pattern: "<.*?>") { // TODO: handle decimals

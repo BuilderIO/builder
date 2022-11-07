@@ -1,38 +1,53 @@
 import SwiftUI
 
-@available(iOS 14.0, macOS 10.15, *)
+@available(iOS 15.0, macOS 10.15, *)
 struct RenderBlock: View {
     var block: BuilderBlock
     var body: some View {
         let textAlignValue = getStyleValue("textAlign")
+//        let displayValue = getStyleValue("display")
+//        let flexDirection = getStyleValue("flexDirection")
+//        let position = getStyleValue("position")
+//        let flexShrink = getStyleValue("flexShrink")
+//        let boxSizing = getStyleValue("boxSizing")
+//        let marginTop = getStyleValue("marginTop")
+//        let appearance = getStyleValue("appearance")
+//        let color = getStyleValue("color")
+        let cornerRadius = getFloatValue(cssString:getStyleValue("borderRadius") ?? "0px") ?? 0
+//        let cursor = getStyleValue("cursor")
+//        let marginLeft = getStyleValue("marginLeft")
+//        let width = getStyleValue("width")
+//        let alignSelf = getStyleValue("alignSelf")
+//        let fontSize = getFloatValue(cssString: "fontSize") ?? 0.0
         VStack {
-            VStack(alignment: .leading) {
-                let name = block.component?.name
-                if name != nil {
-                    let factoryValue = componentDict[name!]
-                    if factoryValue != nil && block.component?.options! != nil {
-                        AnyView(_fromValue: factoryValue!(block.component!.options!))
-                    } else {
-                        let _ = print("Could not find component", name!)
+            if #available(iOS 16.0, *) {
+                VStack(alignment: .center) {
+                    let name = block.component?.name
+                    if name != nil {
+                        let factoryValue = componentDict[name!]
+                        //                    print("componentDict[name!] = \(componentDict[name!])")
+                        let _ = print("cornerRadius = \(cornerRadius)")
+                        
+                        if factoryValue != nil && block.component?.options! != nil {
+                            AnyView(_fromValue: factoryValue!(block.component!.options!))
+                        } else {
+                            let _ = print("Could not find component", name!)
+                        }
+                        
+                    } else if block.children != nil {
+                        RenderBlocks(blocks: block.children!)
                     }
-                    
-                } else if block.children != nil {
-                    RenderBlocks(blocks: block.children!)
                 }
+                .padding(EdgeInsets(top: getDirectionStyleValue("padding", "Top"), leading: getDirectionStyleValue("padding", "Left"), bottom: getDirectionStyleValue("padding", "Bottom"), trailing: getDirectionStyleValue("padding", "Right"))) // margin
+                .foregroundColor(getColor(propertyName: "color"))
+                .background(RoundedRectangle(cornerRadius: cornerRadius).fill(getColor(propertyName: "backgroundColor") ?? .black))
+                .multilineTextAlignment(textAlignValue == "center" ? .center : textAlignValue == "right" ? .trailing : .leading)
+                .font(.title)
+                .fontWeight(Font.Weight.bold)
+            } else {
+                // Fallback on earlier versions
             }
-            .padding(.leading, getDirectionStyleValue("padding", "Left"))
-            .padding(.top, getDirectionStyleValue("padding", "Top"))
-            .padding(.trailing,  getDirectionStyleValue("padding", "Right"))
-            .padding(.bottom,  getDirectionStyleValue("padding", "Bottom"))
-            .foregroundColor(getColor(propertyName: "color"))
-            .background(getColor(propertyName: "backgroundColor"))
-            .multilineTextAlignment(textAlignValue == "center" ? .center : textAlignValue == "right" ? .trailing : .leading)
         }
-        .padding(.leading, getDirectionStyleValue("margin", "Left"))
-        .padding(.top, getDirectionStyleValue("margin", "Top"))
-        .padding(.trailing,  getDirectionStyleValue("margin", "Right"))
-        .padding(.bottom,  getDirectionStyleValue("margin", "Bottom"))
-        
     }
     
     func getColor(propertyName: String) -> Color? {
@@ -46,15 +61,21 @@ struct RenderBlock: View {
                 return Color.white
             } else if value == "gray" {
                 return Color.gray
+            } else if value == "black" {
+                return Color.black
             }
             
             
             let allMatches = matchingStrings(string: value!, regex: "rgba\\((\\d+),\\s*(\\d+),\\s*(\\d+),\\s*(\\d+)\\)");
-            let matches = allMatches[0]
-            
-            if (matches.count > 3) {
-                return Color(red: Double(matches[1])! / 255, green: Double(matches[2])! / 255, blue: Double(matches[3])! / 255, opacity: Double(matches[4])!)
+            if allMatches.count>0 {
+                let matches = allMatches[0]
+                
+                if (matches.count > 3) {
+                    return Color(red: Double(matches[1])! / 255, green: Double(matches[2])! / 255, blue: Double(matches[3])! / 255, opacity: Double(matches[4])!)
+                }
             }
+        } else {
+            return Color.black
         }
         return nil
     }
@@ -78,7 +99,7 @@ struct RenderBlock: View {
             let newString = regex.stringByReplacingMatches(in: cssString, options: .withTransparentBounds, range: NSMakeRange(0, cssString.count ), withTemplate: "")
             
             if let number = NumberFormatter().number(from: newString) {
-                let float = CGFloat(number)
+                let float = CGFloat(truncating: number)
                 return float
             }
             
