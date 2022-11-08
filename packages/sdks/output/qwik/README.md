@@ -9,12 +9,6 @@ Installing the Qwik SDK is done in two steps:
 1. Set up Qwik-city project.
 2. Install the Qwik SDK into your Qwik-city project.
 
-## Usage
-
-You can see examples of using Builder.io:
-
-- with Qwik & Qwik-city [here](/examples/qwik)
-
 ### Set up Qwik-city project
 
 1. Follow the instructions on [Qwik-city](https://qwik.builder.io/qwikcity/overview)
@@ -38,7 +32,7 @@ Add Qwik SDK code to a particular route (such as `src/routes/index.tsx`)
 ```typscript
 import { component$, Resource, useResource$ } from "@builder.io/qwik";
 import { useLocation } from "@builder.io/qwik-city";
-import { getContent, RenderContent, getBuilderSearchParams } from "@builder.io/sdk-qwik";
+import { getContent, RenderContent, RegisteredComponent, getBuilderSearchParams } from "@builder.io/sdk-qwik";
 
 export const BUILDER_PUBLIC_API_KEY = "YOUR_API_KEY_GOES_HERE"; // ggignore
 export default component$(() => {
@@ -63,11 +57,45 @@ export default component$(() => {
           model="page"
           content={content}
           apiKey={BUILDER_PUBLIC_API_KEY}
+          // Optional: pass in a custom component registry
+          // customComponents={CUSTOM_COMPONENTS}
         />
       )}
     />
   );
 });
+
+// OPTIONAL: need to add custom components to your Qwik app
+
+export const MyFunComponent = component$((props: { text: string }) => {
+  const state = useStore({
+    count: 0,
+  });
+
+  return (
+    <div>
+      <h3>{props.text.toUpperCase()}</h3>
+      <p>{state.count}</p>
+      <button onClick$={() => state.count++}>Click me</button>
+    </div>
+  );
+});
+
+export const CUSTOM_COMPONENTS: RegisteredComponent[] = [
+  {
+    component: MyFunComponent,
+    name: 'MyFunComponent',
+    builtIn: true,
+    inputs: [
+      {
+        name: 'text',
+        type: 'string',
+        defaultValue: 'Hello world',
+      },
+    ],
+  },
+];
+
 ```
 
 ## Mitosis
