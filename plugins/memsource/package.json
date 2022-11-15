@@ -76,16 +76,21 @@
     ]
   },
   "devDependencies": {
+    "@babel/preset-react": "^7.18.6",
     "@builder.io/react": "latest",
+    "@builder.io/sdk": "^1.1.29",
+    "@builder.io/utils": "^1.1.7",
     "@commitlint/cli": "^7.1.2",
     "@commitlint/config-conventional": "^7.1.2",
     "@emotion/core": "^10.0.22",
     "@emotion/styled": "^10.0.23",
     "@material-ui/core": "^3.9.2",
     "@material-ui/icons": "^1.1.1",
+    "@rollup/plugin-babel": "^6.0.2",
     "@rollup/plugin-commonjs": "^19.0.1",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^13.0.2",
+    "@rollup/plugin-replace": "^5.0.1",
     "@types/jest": "^23.3.2",
     "@types/node": "^10.17.5",
     "@types/react": "^16.9.11",
@@ -107,6 +112,8 @@
     "replace-in-file": "^3.4.2",
     "rimraf": "^2.6.2",
     "rollup": "^2.53.2",
+    "rollup-plugin-auto-named-exports": "^1.0.0-beta.3",
+    "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-dts": "^3.0.2",
     "rollup-plugin-esbuild": "^4.5.0",
     "rollup-plugin-node-globals": "^1.4.0",
@@ -125,6 +132,9 @@
     "typescript": "^3.0.3"
   },
   "dependencies": {
-    "@builder.io/commerce-plugin-tools": "latest"
+    "@builder.io/commerce-plugin-tools": "latest",
+    "@types/lodash": "^4.14.182",
+    "lodash": "^4.17.21",
+    "traverse": "^0.6.7"
   }
 }

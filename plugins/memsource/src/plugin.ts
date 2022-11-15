@@ -2,9 +2,19 @@ import { registerCommercePlugin } from '@builder.io/commerce-plugin-tools';
 import pkg from '../package.json';
 import { registerContentAction, registerContextMenuAction } from './plugin-helpers';
 import appState from '@builder.io/app-context';
+import { getTranslateableFields } from '@builder.io/utils'
+import { createJob } from './memsource-utils';
 
 const authUrl = 'https://cloud.memsource.com/web/api2/v3/auth/login'
 const listProjectUrl = 'https://cloud.memsource.com/web/api2/v1/projects'
+
+const fastClone = (obj: any) => JSON.parse(JSON.stringify(obj))
+
+const headers = {
+  Accept: 'application/json; charset=utf-8',
+  'Content-Type': 'application/json',
+  'User-Agent': 'Builder.io/gustavohgs13@gmail.com'
+}
 
 registerCommercePlugin(
   {
@@ -24,6 +34,7 @@ registerCommercePlugin(
     ],
     ctaText: `Connect your Memsource account`,
   },
+  // @ts-ignore-next-line
   settings => {
     const basicCache = new Map();
 
@@ -31,7 +42,7 @@ registerCommercePlugin(
     const password = settings.get('password');
 
     const baseAuthUrl = `https://cdn.builder.io/api/v1/proxy-api?url=${encodeURIComponent(authUrl)}`
-    const baseListUrl = `https://cdn.builder.io/api/v1/proxy-api?url=${encodeURIComponent(listProjectUrl)}`
+    const baseProjectsUrl = `https://cdn.builder.io/api/v1/proxy-api?url=${encodeURIComponent(listProjectUrl)}`
 
 
     // right click menu option to exclude from trasnlations
@@ -55,11 +66,44 @@ registerCommercePlugin(
     registerContentAction({
       label: 'Translate',
       showIf(content, model) {
-        return (
-          content.published === 'published'
-        );
+        // return (
+        //   content.published === 'published'
+        // );
+        return true
       },
       async onClick(content) {
+        const tokenResponse = await fetch(baseAuthUrl, {
+          headers,
+          method: 'POST',
+          body: JSON.stringify({ userName: username, password })
+        }).then((res) => res.json())
+
+        const token = tokenResponse?.token
+
+        const project = await fetch(baseProjectsUrl, {
+          method: 'POST',
+          headers: {
+            ...headers,
+            Authorization: `ApiToken ${token}`
+          },
+          body: JSON.stringify({ name: `${content.modelName} - ${content.name}`, sourceLang: 'en', targetLangs: ['es'] })
+        }).then((res) => res.json())
+
+        const translateToSend = getTranslateableFields(
+          fastClone(content),
+          'en-US',
+          ''
+        );
+
+        // project.uid
+        // console.log('project created ', project?.uid)
+        console.log('CONTENT ', content)
+        console.log('content translation', translateToSend)
+
+        const JOB = await createJob(project?.uid, token, headers, { name: content.name, ...translateToSend })
+
+        console.log('created job ', JOB)
+      
         // TODO: create a new project, send translation to memsource API
         // save translation status to pending
         await appState.updateLatestDraft({
@@ -100,24 +144,19 @@ registerCommercePlugin(
 
         async search(search: string) {
           if (!search) return []
-          const headers = {
-            Accept: 'application/json; charset=utf-8',
-            'Content-Type': 'application/json',
-            'User-Agent': 'Builder.io/gustavo@builder.io'
-          }
 
           const tokenResponse = await fetch(baseAuthUrl, {
             headers,
             method: 'POST',
             body: JSON.stringify({ userName: username, password })
-          }).then((res1) => res1.json())
+          }).then((res) => res.json())
 
           // TOKEN FROM RESPONSE
           const token = tokenResponse?.token
 
           let queryParams = '?';
           queryParams += search ? `&name=${search}` : '';
-          const response: any = await fetch(`${baseListUrl}${queryParams}`, {
+          const response: any = await fetch(`${baseProjectsUrl}${queryParams}`, {
             headers: {
               ...headers,
               Authorization: `ApiToken ${token}`
