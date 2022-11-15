@@ -20,10 +20,12 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
-  plugins: ['@typescript-eslint', '@builder.io/mitosis'],
+  plugins: ['@typescript-eslint', '@builder.io/mitosis', 'unused-imports'],
   rules: {
     '@builder.io/mitosis/no-var-declaration-or-assignment-in-component': 'off',
     '@typescript-eslint/no-empty-interface': 'off',
+    '@typescript-eslint/no-empty-function': 'off',
+    'unused-imports/no-unused-imports': 'error',
     '@typescript-eslint/consistent-type-imports': [
       'error',
       { prefer: 'type-imports', disallowTypeAnnotations: false },

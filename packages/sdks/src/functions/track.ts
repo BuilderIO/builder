@@ -6,7 +6,12 @@ import { isBrowser } from './is-browser.js';
 import { isEditing } from './is-editing.js';
 
 interface Event {
-  type: 'click' | 'impression';
+  /**
+   * The type of your event.
+   *
+   * Examples: `click`, `conversion`, `pageview`, `impression`
+   */
+  type: string;
   data: {
     /**
      * (Optional) The content's ID. Useful if this event pertains to a specific piece of content.
@@ -95,6 +100,13 @@ const createEvent = async ({
 });
 
 export async function _track(eventProps: EventProps) {
+  if (!eventProps.apiKey) {
+    console.error(
+      '[Builder.io]: Missing API key for track call. Please provide your API key.'
+    );
+    return;
+  }
+
   if (!eventProps.canTrack) {
     return;
   }
