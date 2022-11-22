@@ -3,6 +3,10 @@ import type { BuilderBlock } from './builder-block.js';
 // TODO
 type Input = any;
 
+export interface Breakpoints {
+  small: number;
+  medium: number;
+}
 export interface BuilderContentVariation {
   data?: {
     title?: string;
@@ -18,10 +22,7 @@ export interface BuilderContentVariation {
   testRatio?: number;
   id?: string;
   meta?: {
-    breakpoints?: {
-      small: number;
-      medium: number;
-    };
+    breakpoints?: Breakpoints;
     [key: string]: any;
   };
 }

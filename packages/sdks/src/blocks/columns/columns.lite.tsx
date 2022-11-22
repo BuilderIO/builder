@@ -1,6 +1,8 @@
 import RenderBlocks from '../../components/render-blocks.lite';
 import { For, useStore } from '@builder.io/mitosis';
 import type { BuilderBlock } from '../../types/builder-block';
+import { getSizesForBreakpoints, SizeName } from '../../constants/device-sizes';
+import { Breakpoints } from '../../types/builder-content';
 
 type CSS = {
   [key: string]: string;
@@ -24,6 +26,8 @@ export interface ColumnProps {
   stackColumnsAt?: StackColumnsAt;
   // TODO: Implement this when support for dynamic CSS lands
   reverseColumnsWhenStacked?: boolean;
+
+  customBreakpoints?: Breakpoints;
 }
 
 export default function Columns(props: ColumnProps) {
@@ -74,24 +78,47 @@ export default function Columns(props: ColumnProps) {
         '--column-margin-left-tablet': state.maybeApplyForTablet(marginLeft),
       };
     },
+    getWidthForBreakpointSize(size: SizeName) {
+      const breakpointSizes = getSizesForBreakpoints(
+        props.customBreakpoints || {}
+      );
+
+      return breakpointSizes[size].max;
+    },
   });
 
+  // Note: had to use basic variable names like css1 and css2 coz
+  // somehow TS and prettier complained if any other name like
+  // 'cssColumnsStyles' was used.
+  const css1 = {
+    display: 'flex',
+    alignItems: 'stretch',
+    lineHeight: 'normal',
+    [`@media (max-width: ${state.getWidthForBreakpointSize('medium')}px)`]: {
+      flexDirection: 'var(--flex-dir-tablet)',
+      alignItems: 'stretch',
+    },
+    [`@media (max-width: ${state.getWidthForBreakpointSize('small')}px)`]: {
+      flexDirection: 'var(--flex-dir)',
+      alignItems: 'stretch',
+    },
+  } as CSS;
+
+  const css2 = {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    [`@media (max-width: ${state.getWidthForBreakpointSize('medium')}px)`]: {
+      width: 'var(--column-width-tablet) !important',
+      marginLeft: 'var(--column-margin-left-tablet) !important',
+    },
+    [`@media (max-width: ${state.getWidthForBreakpointSize('small')}px)`]: {
+      width: 'var(--column-width) !important',
+      marginLeft: 'var(--column-margin-left) !important',
+    },
+  } as CSS;
   return (
-    <div
-      class="builder-columns"
-      css={{
-        display: 'flex',
-        alignItems: 'stretch',
-        lineHeight: 'normal',
-        '@media (max-width: 991px)': {
-          flexDirection: 'var(--flex-dir-tablet)',
-        },
-        '@media (max-width: 639px)': {
-          flexDirection: 'var(--flex-dir)',
-        },
-      }}
-      style={state.columnsCssVars as CSS}
-    >
+    <div class="builder-columns" css={css1} style={state.columnsCssVars as CSS}>
       <For each={props.columns}>
         {(column, index) => (
           <div
@@ -101,19 +128,7 @@ export default function Columns(props: ColumnProps) {
               ...state.columnCssVars,
             }}
             class="builder-column"
-            css={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'stretch',
-              '@media (max-width: 991px)': {
-                width: 'var(--column-width-tablet) !important',
-                marginLeft: 'var(--column-margin-left-tablet) !important',
-              },
-              '@media (max-width: 639px)': {
-                width: 'var(--column-width) !important',
-                marginLeft: 'var(--column-margin-left) !important',
-              },
-            }}
+            css={css2}
             key={index}
           >
             <RenderBlocks
