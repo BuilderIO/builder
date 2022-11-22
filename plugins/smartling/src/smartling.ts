@@ -11,6 +11,9 @@ export type Project = {
 };
 
 export class SmartlingApi {
+  private privateKey?: string;
+  loaded?: Promise<void>;
+  resolveLoaded?: () => void;
   // TODO: basic cache
   getBaseUrl(path: string, search = {}) {
     const params = new URLSearchParams({
@@ -23,9 +26,20 @@ export class SmartlingApi {
     baseUrl.search = params.toString();
     return baseUrl.toString();
   }
-  constructor(private privateKey: string) {}
+  constructor() {
+    this.loaded = new Promise(resolve => (this.resolveLoaded = resolve));
+    this.init();
+  }
 
-  request(path: string, config?: RequestInit, search = {}) {
+  async init() {
+    this.privateKey = await appState.globalState.getPluginPrivateKey(pkg.name);
+    if (this.privateKey) {
+      this.resolveLoaded!();
+    }
+  }
+
+  async request(path: string, config?: RequestInit, search = {}) {
+    await this.loaded;
     return fetch(`${this.getBaseUrl(path, search)}`, {
       ...config,
       headers: {
@@ -78,6 +92,19 @@ export class SmartlingApi {
         id,
         model,
       }),
+    });
+  }
+
+  updateTranslationFile(options: {
+    translationJobId: string;
+    translationModel: string;
+    preview: string;
+    contentId: string;
+    contentModel: string;
+  }) {
+    return this.request('update-translation-file', {
+      method: 'POST',
+      body: JSON.stringify(options),
     });
   }
 }
