@@ -6,7 +6,7 @@ import { BuilderElement } from '@builder.io/sdk';
 import { BuilderBlocks } from '../components/builder-blocks.component';
 import { withBuilder } from '../functions/with-builder';
 import { Link } from '../components/Link';
-import { Breakpoints, getSizesForBreakpoints } from 'src/constants/device-sizes.constant';
+import { Breakpoints, getSizesForBreakpoints } from '../constants/device-sizes.constant';
 
 const DEFAULT_ASPECT_RATIO = 0.7004048582995948;
 

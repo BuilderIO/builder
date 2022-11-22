@@ -7,7 +7,7 @@ import { BuilderElement, Builder } from '@builder.io/sdk';
 import { BuilderMetaContext } from '../store/builder-meta';
 import { withBuilder } from '../functions/with-builder';
 import { throttle } from '../functions/throttle';
-import { Breakpoints, getSizesForBreakpoints } from 'src/constants/device-sizes.constant';
+import { Breakpoints, getSizesForBreakpoints } from '../constants/device-sizes.constant';
 
 // Taken from (and modified) the shopify theme script repo
 // https://github.com/Shopify/theme-scripts/blob/bcfb471f2a57d439e2f964a1bb65b67708cc90c3/packages/theme-images/images.js#L59
