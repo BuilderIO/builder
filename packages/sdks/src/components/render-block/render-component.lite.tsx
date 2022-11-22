@@ -3,7 +3,7 @@ import BlockStyles from './block-styles.lite';
 import RenderBlock from './render-block.lite';
 import { For, Show, useMetadata } from '@builder.io/mitosis';
 import type { BuilderContextInterface } from '../../context/types.js';
-import { Breakpoints } from '../../types/builder-content.js';
+import type { Breakpoints } from '../../types/builder-content.js';
 
 export interface RenderComponentProps {
   componentRef: any;

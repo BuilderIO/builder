@@ -1,8 +1,10 @@
 import RenderBlocks from '../../components/render-blocks.lite';
 import { For, useStore } from '@builder.io/mitosis';
 import type { BuilderBlock } from '../../types/builder-block';
-import { getSizesForBreakpoints, SizeName } from '../../constants/device-sizes';
-import { Breakpoints } from '../../types/builder-content';
+import { getSizesForBreakpoints } from '../../constants/device-sizes';
+import type { SizeName } from '../../constants/device-sizes';
+import type { Breakpoints } from '../../types/builder-content';
+import RenderInlinedStyles from '../../components/render-inlined-styles.lite';
 
 type CSS = {
   [key: string]: string;
@@ -78,6 +80,7 @@ export default function Columns(props: ColumnProps) {
         '--column-margin-left-tablet': state.maybeApplyForTablet(marginLeft),
       };
     },
+
     getWidthForBreakpointSize(size: SizeName) {
       const breakpointSizes = getSizesForBreakpoints(
         props.customBreakpoints || {}
@@ -85,40 +88,47 @@ export default function Columns(props: ColumnProps) {
 
       return breakpointSizes[size].max;
     },
+
+    get columnsStyles(): string {
+      return `
+        @media (max-width: ${state.getWidthForBreakpointSize('medium')}px) {
+          .${props.builderBlock.id}-breakpoints {
+            flex-direction: var(--flex-dir-tablet);
+            align-items: stretch,
+          }
+
+          .${props.builderBlock.id}-breakpoints > .builder-column {
+            width: var(--column-width-tablet) !important;
+            margin-left: var(--column-margin-left-tablet) !important;
+          }
+        }
+
+        @media (max-width: ${state.getWidthForBreakpointSize('small')}px) {
+          .${props.builderBlock.id}-breakpoints {
+            flex-direction: var(--flex-dir);
+            align-items: stretch;
+          }
+
+          .${props.builderBlock.id}-breakpoints > .builder-column {
+            width: var(--column-width) !important;
+            margin-left: var(--column-margin-left) !important;
+          }
+        },
+      `;
+    },
   });
 
-  // Note: had to use basic variable names like css1 and css2 coz
-  // somehow TS and prettier complained if any other name like
-  // 'cssColumnsStyles' was used.
-  const css1 = {
-    display: 'flex',
-    alignItems: 'stretch',
-    lineHeight: 'normal',
-    [`@media (max-width: ${state.getWidthForBreakpointSize('medium')}px)`]: {
-      flexDirection: 'var(--flex-dir-tablet)',
-      alignItems: 'stretch',
-    },
-    [`@media (max-width: ${state.getWidthForBreakpointSize('small')}px)`]: {
-      flexDirection: 'var(--flex-dir)',
-      alignItems: 'stretch',
-    },
-  } as CSS;
-
-  const css2 = {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'stretch',
-    [`@media (max-width: ${state.getWidthForBreakpointSize('medium')}px)`]: {
-      width: 'var(--column-width-tablet) !important',
-      marginLeft: 'var(--column-margin-left-tablet) !important',
-    },
-    [`@media (max-width: ${state.getWidthForBreakpointSize('small')}px)`]: {
-      width: 'var(--column-width) !important',
-      marginLeft: 'var(--column-margin-left) !important',
-    },
-  } as CSS;
   return (
-    <div class="builder-columns" css={css1} style={state.columnsCssVars as CSS}>
+    <div
+      class={`builder-columns ${props.builderBlock.id}-breakpoints`}
+      css={{
+        display: 'flex',
+        lineHeight: 'normal',
+      }}
+      style={state.columnsCssVars as CSS}
+    >
+      <RenderInlinedStyles styles={state.columnsStyles} />
+
       <For each={props.columns}>
         {(column, index) => (
           <div
@@ -128,7 +138,11 @@ export default function Columns(props: ColumnProps) {
               ...state.columnCssVars,
             }}
             class="builder-column"
-            css={css2}
+            css={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'stretch',
+            }}
             key={index}
           >
             <RenderBlocks
