@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/plugin-smartling",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "",
   "keywords": [],
   "main": "dist/plugin.system.js",
@@ -72,7 +72,7 @@
     ]
   },
   "devDependencies": {
-    "@builder.io/react": "^2.0.4",
+    "@builder.io/react": "^2.0.9",
     "@commitlint/cli": "^7.1.2",
     "@commitlint/config-conventional": "^7.1.2",
     "@emotion/core": "^10.0.22",
@@ -84,6 +84,7 @@
     "@rollup/plugin-node-resolve": "^13.0.2",
     "@types/jest": "^23.3.2",
     "@types/node": "^10.17.5",
+    "@types/object-hash": "^2.2.1",
     "@types/react": "^16.9.11",
     "@types/traverse": "^0.6.32",
     "@types/uuid": "^8.3.4",
@@ -125,7 +126,10 @@
   },
   "dependencies": {
     "@builder.io/commerce-plugin-tools": "^0.3.0",
+    "@builder.io/utils": "^1.1.7",
+    "fast-json-stable-stringify": "^2.1.0",
     "lodash": "^4.17.21",
+    "object-hash": "^3.0.0",
     "traverse": "^0.6.6",
     "uuid": "^8.3.2"
   }

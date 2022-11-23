@@ -1,5 +1,5 @@
 import type { ComponentInfo } from '../../types/components';
-import { markSerializable } from '../util.js';
+import { serializeFn } from '../util.js';
 
 export const componentInfo: ComponentInfo = {
   name: 'Embed',
@@ -12,7 +12,7 @@ export const componentInfo: ComponentInfo = {
       required: true,
       defaultValue: '',
       helperText: 'e.g. enter a youtube url, google map, etc',
-      onChange: markSerializable((options: Map<string, any>) => {
+      onChange: serializeFn((options: Map<string, any>) => {
         const url = options.get('url');
         if (url) {
           options.set('content', 'Loading...');

@@ -1,5 +1,8 @@
 import { Show, useMetadata, useStore } from '@builder.io/mitosis';
-import { getMaxWidthQueryForSize } from '../../constants/device-sizes.js';
+import {
+  getMaxWidthQueryForSize,
+  getSizesForBreakpoints,
+} from '../../constants/device-sizes.js';
 import { TARGET } from '../../constants/target.js';
 import type { BuilderContextInterface } from '../../context/types.js';
 import { getProcessedBlock } from '../../functions/get-processed-block.js';
@@ -34,6 +37,11 @@ export default function BlockStyles(props: BlockStylesProps) {
     get css(): string {
       const styles = state.useBlock.responsiveStyles;
 
+      const content = props.context.content;
+      const sizesWithUpdatedBreakpoints = getSizesForBreakpoints(
+        content?.meta?.breakpoints || {}
+      );
+
       const largeStyles = styles?.large;
       const mediumStyles = styles?.medium;
       const smallStyles = styles?.small;
@@ -48,7 +56,10 @@ export default function BlockStyles(props: BlockStylesProps) {
         ? createCssClass({
             className,
             styles: mediumStyles,
-            mediaQuery: getMaxWidthQueryForSize('medium'),
+            mediaQuery: getMaxWidthQueryForSize(
+              'medium',
+              sizesWithUpdatedBreakpoints
+            ),
           })
         : '';
 
@@ -56,7 +67,10 @@ export default function BlockStyles(props: BlockStylesProps) {
         ? createCssClass({
             className,
             styles: smallStyles,
-            mediaQuery: getMaxWidthQueryForSize('small'),
+            mediaQuery: getMaxWidthQueryForSize(
+              'small',
+              sizesWithUpdatedBreakpoints
+            ),
           })
         : '';
 

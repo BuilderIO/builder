@@ -5,7 +5,6 @@ import type {
 import { getBlockActions } from '../../functions/get-block-actions.js';
 import { getBlockComponentOptions } from '../../functions/get-block-component-options.js';
 import { getBlockProperties } from '../../functions/get-block-properties.js';
-import { getBlockStyles } from '../../functions/get-block-styles.js';
 import { getBlockTag } from '../../functions/get-block-tag.js';
 import { getProcessedBlock } from '../../functions/get-processed-block.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
@@ -21,6 +20,7 @@ import { TARGET } from '../../constants/target.js';
 import { extractTextStyles } from '../../functions/extract-text-styles.js';
 import RenderComponentWithContext from './render-component-with-context.lite';
 import RenderComponent from './render-component.lite';
+import { getReactNativeBlockStyles } from '../../functions/get-react-native-block-styles.js';
 
 export type RenderBlockProps = {
   block: BuilderBlock;
@@ -33,7 +33,7 @@ useMetadata({
       isLight: true,
     },
   },
-  elementTag: 'state.tagName',
+  elementTag: 'state.tag',
   componentElementTag: 'state.renderComponentTag',
 });
 
@@ -63,7 +63,7 @@ export default function RenderBlock(props: RenderBlockProps) {
         return ref;
       }
     },
-    get tagName() {
+    get tag() {
       return getBlockTag(state.useBlock);
     },
     get useBlock(): BuilderBlock {
@@ -76,18 +76,24 @@ export default function RenderBlock(props: RenderBlockProps) {
             shouldEvaluateBindings: true,
           });
     },
+    get actions() {
+      return getBlockActions({
+        block: state.useBlock,
+        state: props.context.state,
+        context: props.context.context,
+      });
+    },
     get attributes() {
       return {
         ...getBlockProperties(state.useBlock),
-        ...getBlockActions({
-          block: state.useBlock,
-          state: props.context.state,
-          context: props.context.context,
-        }),
-        style: getBlockStyles({
-          block: state.useBlock,
-          context: props.context,
-        }),
+        ...(TARGET === 'reactNative'
+          ? {
+              style: getReactNativeBlockStyles({
+                block: state.useBlock,
+                context: props.context,
+              }),
+            }
+          : {}),
       };
     },
 
@@ -97,7 +103,7 @@ export default function RenderBlock(props: RenderBlockProps) {
 
     get renderComponentProps(): RenderComponentProps {
       return {
-        blockChildren: state.children,
+        blockChildren: state.useChildren,
         componentRef: state.component?.component,
         componentOptions: {
           ...getBlockComponentOptions(state.useBlock),
@@ -105,12 +111,19 @@ export default function RenderBlock(props: RenderBlockProps) {
            * These attributes are passed to the wrapper element when there is one. If `noWrap` is set to true, then
            * they are provided to the component itself directly.
            */
-          ...(state.shouldWrap ? {} : { attributes: state.attributes }),
+          ...(state.shouldWrap
+            ? {}
+            : {
+                attributes: {
+                  ...state.attributes,
+                  ...state.actions,
+                },
+              }),
         },
         context: state.childrenContext,
       };
     },
-    get children() {
+    get useChildren() {
       // TO-DO: When should `canHaveChildren` dictate rendering?
       // This is currently commented out because some Builder components (e.g. Box) do not have `canHaveChildren: true`,
       // but still receive and need to render children.
@@ -127,7 +140,7 @@ export default function RenderBlock(props: RenderBlockProps) {
       const shouldRenderChildrenOutsideRef =
         !state.component?.component && !state.repeatItemData;
 
-      return shouldRenderChildrenOutsideRef ? state.children : [];
+      return shouldRenderChildrenOutsideRef ? state.useChildren : [];
     },
 
     get repeatItemData(): RepeatData[] | undefined {
@@ -177,7 +190,7 @@ export default function RenderBlock(props: RenderBlockProps) {
         return {};
       }
 
-      const styles = getBlockStyles({
+      const styles = getReactNativeBlockStyles({
         block: state.useBlock,
         context: props.context,
       });
@@ -217,35 +230,10 @@ export default function RenderBlock(props: RenderBlockProps) {
        * Svelte is super finicky, and does not allow an empty HTML element (e.g. `img`) to have logic inside of it,
        * _even_ if that logic ends up not rendering anything.
        */}
-      <Show when={isEmptyHtmlElement(state.tagName)}>
-        <state.tagName {...state.attributes} />
+      <Show when={isEmptyHtmlElement(state.tag)}>
+        <state.tag {...state.attributes} {...state.actions} />
       </Show>
-      <Show
-        when={
-          !isEmptyHtmlElement(state.tagName) &&
-          TARGET === 'vue2' &&
-          state.repeatItemData
-        }
-      >
-        <div class="vue2-root-element-workaround">
-          <For each={state.repeatItemData}>
-            {(data, index) => (
-              <RenderRepeatedBlock
-                key={index}
-                repeatContext={data.context}
-                block={data.block}
-              />
-            )}
-          </For>
-        </div>
-      </Show>
-      <Show
-        when={
-          !isEmptyHtmlElement(state.tagName) &&
-          TARGET !== 'vue2' &&
-          state.repeatItemData
-        }
-      >
+      <Show when={!isEmptyHtmlElement(state.tag) && state.repeatItemData}>
         <For each={state.repeatItemData}>
           {(data, index) => (
             <RenderRepeatedBlock
@@ -256,8 +244,8 @@ export default function RenderBlock(props: RenderBlockProps) {
           )}
         </For>
       </Show>
-      <Show when={!isEmptyHtmlElement(state.tagName) && !state.repeatItemData}>
-        <state.tagName {...state.attributes}>
+      <Show when={!isEmptyHtmlElement(state.tag) && !state.repeatItemData}>
+        <state.tag {...state.attributes} {...state.actions}>
           <state.renderComponentTag {...state.renderComponentProps} />
           {/**
            * We need to run two separate loops for content + styles to workaround the fact that Vue 2
@@ -281,7 +269,7 @@ export default function RenderBlock(props: RenderBlockProps) {
               />
             )}
           </For>
-        </state.tagName>
+        </state.tag>
       </Show>
     </Show>
   );

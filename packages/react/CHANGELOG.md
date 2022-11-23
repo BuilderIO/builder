@@ -1,7 +1,23 @@
+### 2.0.10
+
+- Fix issue with Hydrogen SSR.
+- Return null values in bindings when VM2 is not available on the server.
+
+### 2.0.9
+
+- Fix for `require` is not defined bug on client side.
+
+### 2.0.8
+
+- Fix SSR issue with hydration
+- Add support for custom breakpoints
+
 ### 2.0.6
+
 - Add support for `threshold` and `repeat` options on `ScrollInView` animations.
 
 ### 2.0.6
+
 - added types for `override` option
 
 ### 2.0.5

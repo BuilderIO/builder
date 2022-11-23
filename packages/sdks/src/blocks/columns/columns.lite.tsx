@@ -1,7 +1,6 @@
 import RenderBlocks from '../../components/render-blocks.lite';
 import { For, useStore } from '@builder.io/mitosis';
 import type { BuilderBlock } from '../../types/builder-block';
-import { markMutable } from '../../functions/mark-mutable';
 
 type CSS = {
   [key: string]: string;
@@ -118,10 +117,10 @@ export default function Columns(props: ColumnProps) {
             key={index}
           >
             <RenderBlocks
-              blocks={markMutable(column.blocks)}
+              blocks={column.blocks}
               path={`component.options.columns.${index}.blocks`}
               parent={props.builderBlock.id}
-              style={{ flexGrow: '1' }}
+              styleProp={{ flexGrow: '1' }}
             />
           </div>
         )}

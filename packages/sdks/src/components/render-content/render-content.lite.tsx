@@ -1,6 +1,5 @@
 import { getDefaultRegisteredComponents } from '../../constants/builder-registered-components.js';
 import { TARGET } from '../../constants/target.js';
-import BuilderContext from '../../context/builder.context.lite';
 import type {
   BuilderRenderContext,
   BuilderRenderState,
@@ -17,38 +16,36 @@ import {
   components,
   createRegisterComponentMessage,
 } from '../../functions/register-component.js';
-import { track } from '../../functions/track.js';
+import { _track } from '../../functions/track.js';
 import type { BuilderContent } from '../../types/builder-content.js';
 import type { Dictionary, Nullable } from '../../types/typescript.js';
 import RenderBlocks from '../render-blocks.lite';
 import RenderContentStyles from './components/render-styles.lite';
+import BuilderContext from '../../context/builder.context.lite';
 import {
   Show,
   onMount,
   onUnMount,
   onUpdate,
-  setContext,
   useStore,
   useMetadata,
   useRef,
+  setContext,
 } from '@builder.io/mitosis';
 import {
   registerInsertMenu,
   setupBrowserForEditing,
 } from '../../scripts/init-editing.js';
-import { markMutable } from '../../functions/mark-mutable.js';
 
 useMetadata({
   qwik: {
     component: {
       useHostElement: true,
     },
-    replace: {
-      '// QWIK-REPLACE: _useMutableProps':
-        'elementRef.current && _useMutableProps(elementRef.current, true);',
-    },
-    imports: {
-      _useMutableProps: '@builder.io/qwik',
+  },
+  solid: {
+    state: {
+      useContent: 'store',
     },
   },
 });
@@ -182,11 +179,14 @@ export default function RenderContent(props: RenderContentProps) {
 
     onClick(_event: MouseEvent) {
       if (state.useContent) {
-        track({
+        const variationId = state.useContent?.testVariationId;
+        const contentId = state.useContent?.id;
+        _track({
           type: 'click',
           canTrack: state.canTrackToUse,
-          contentId: state.useContent?.id,
-          orgId: props.apiKey,
+          contentId,
+          apiKey: props.apiKey,
+          variationId: variationId !== contentId ? variationId : undefined,
         });
       }
     },
@@ -263,7 +263,6 @@ export default function RenderContent(props: RenderContentProps) {
   //         state.update = state.update + 1;
   //       })
   //   );
-
   // TODO: inherit context here too
   // });
 
@@ -286,10 +285,15 @@ export default function RenderContent(props: RenderContentProps) {
   });
 
   onMount(() => {
+    if (!props.apiKey) {
+      console.error(
+        '[Builder.io]: No API key provided to `RenderContent` component. This can cause issues. Please provide an API key using the `apiKey` prop.'
+      );
+    }
+
     if (isBrowser()) {
       if (isEditing()) {
         state.forceReRenderCount = state.forceReRenderCount + 1;
-        // QWIK-REPLACE: _useMutableProps
         registerInsertMenu();
         setupBrowserForEditing({
           ...(props.locale ? { locale: props.locale } : {}),
@@ -308,11 +312,14 @@ export default function RenderContent(props: RenderContentProps) {
         );
       }
       if (state.useContent) {
-        track({
+        const variationId = state.useContent?.testVariationId;
+        const contentId = state.useContent?.id;
+        _track({
           type: 'impression',
           canTrack: state.canTrackToUse,
-          contentId: state.useContent?.id,
-          orgId: props.apiKey,
+          contentId,
+          apiKey: props.apiKey,
+          variationId: variationId !== contentId ? variationId : undefined,
         });
       }
 
@@ -346,7 +353,7 @@ export default function RenderContent(props: RenderContentProps) {
 
   onUpdate(() => {
     state.evaluateJsCode();
-  }, [state.useContent?.data?.jsCode]);
+  }, [state.useContent?.data?.jsCode, state.contentState]);
 
   onUpdate(() => {
     state.runHttpRequests();
@@ -373,6 +380,7 @@ export default function RenderContent(props: RenderContentProps) {
         ref={elementRef}
         onClick={(event) => state.onClick(event)}
         builder-content-id={state.useContent?.id}
+        builder-model={props.model}
       >
         {state.shouldRenderContentStyles && (
           <RenderContentStyles
@@ -381,7 +389,7 @@ export default function RenderContent(props: RenderContentProps) {
           />
         )}
         <RenderBlocks
-          blocks={markMutable(state.useContent?.data?.blocks)}
+          blocks={state.useContent?.data?.blocks}
           key={state.forceReRenderCount}
         />
       </div>

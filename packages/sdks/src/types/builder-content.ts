@@ -17,6 +17,13 @@ export interface BuilderContentVariation {
   name?: string;
   testRatio?: number;
   id?: string;
+  meta?: {
+    breakpoints?: {
+      small: number;
+      medium: number;
+    };
+    [key: string]: any;
+  };
 }
 
 // TODO: separate full and partial versions

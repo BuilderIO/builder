@@ -7,4 +7,4 @@ declare module '*.vue' {
   export default component;
 }
 
-declare module '@builder.io/sdk-vue/vue2';
+declare module '@builder.io/sdk-vue/vue3';

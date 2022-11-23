@@ -33,4 +33,9 @@ export interface GetContentOptions {
    * Defaults to `true`.
    */
   canTrack?: boolean;
+
+  /**
+   * Include references in the response. Defaults to `true`.
+   */
+  includeRefs?: boolean;
 }

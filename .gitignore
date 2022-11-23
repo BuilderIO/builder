@@ -14,6 +14,8 @@ yarn-error.log
 .build
 Pods/
 
+**/xcuserdata/*
+
 
 **/.pnp.*
 **/.yarn/*
