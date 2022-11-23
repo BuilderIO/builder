@@ -24,7 +24,12 @@ export const registerInsertMenu = () => {
 };
 
 let isSetupForEditing = false;
-export const setupBrowserForEditing = () => {
+export const setupBrowserForEditing = (
+  options: {
+    includeRefs?: boolean;
+    locale?: string;
+  } = {}
+) => {
   if (isSetupForEditing) {
     return;
   }
@@ -43,6 +48,16 @@ export const setupBrowserForEditing = () => {
           // scope our '+ add block' button styling
           supportsAddBlockScoping: true,
           supportsCustomBreakpoints: true,
+        },
+      },
+      '*'
+    );
+
+    window.parent?.postMessage(
+      {
+        type: 'builder.updateContent',
+        data: {
+          options,
         },
       },
       '*'
