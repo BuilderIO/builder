@@ -18,11 +18,6 @@ public struct Content {
                 let content = try decoder.decode(BuilderContentList.self, from: Data(jsonString.utf8))
                 if content.results.count>0 {
                     callback(content.results[0])
-                    /*
-                    print("file = \(#file) \(#function) \(#line)")
-                    print("content.results[0].data.blocks[0] = \(String(describing: content.results[0].data.blocks[0]))")
-                    print("responsiveStyles = \(String(describing: content.results[0].data.blocks[0].responsiveStyles))")
-                     */
                 }
             } catch {
                 print(error)

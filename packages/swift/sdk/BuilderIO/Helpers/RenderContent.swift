@@ -8,23 +8,21 @@ public struct RenderContent: View {
         self.content = content
         if (!RenderContent.registered) {
             // TODO: move these out of here?
-            var builderIds = [String]()
             registerComponent(name: "Text", factory: { options in
-                // print("Text \n titleString = "+options["text"].stringValue+" \n options = \(options)")
+                print("Text \n titleString = "+options["text"].stringValue+" \n options = \(options)")
                 return BuilderText(text: options["text"].stringValue)
             })
             registerComponent(name: "Image", factory: { options in
                 return BuilderImage(image: options["image"].stringValue, backgroundSize: options["backgroundSize: <#T##String#>"].stringValue)
             })
             registerComponent(name: "Core:Button", factory: { options in
-                // print("Core:Button \n titleString = "+options["text"].stringValue+" \n options = \(options) \n content.data = \(content.data)")
                 for block in content.data.blocks {
-                    if(options["text"] == block.component?.options?["text"] && !builderIds.contains(block.id)) {
-//                        builderIds.append(block.id)
+                    if(options["text"] == block.component?.options?["text"]) {
                         return BuilderButton(text: options["text"].stringValue, urlStr: options["link"].stringValue, openInNewTab: options["openLinkInNewTab"].boolValue, responsiveStyles: block.responsiveStyles)
                     }
-//                    builderIds.append(block.id)
                 }
+                
+                print("button text =  \(options["text"].stringValue) + responsiveStyles = \(content.data)")
                 // The below code will not be executed but written to avoid error.
                 return BuilderButton(text: options["text"].stringValue, urlStr: options["link"].stringValue, openInNewTab: options["openLinkInNewTab"].boolValue, responsiveStyles: content.data.blocks[0].responsiveStyles)
             })
@@ -33,23 +31,19 @@ public struct RenderContent: View {
                 let jsonString = options["columns"].rawString()!
                 let columns = try! decoder.decode([BuilderColumn].self, from: Data(jsonString.utf8))
                 return BuilderColumns(columns: columns, space: CGFloat(options["space"].floatValue))
-            })            
-            registerComponent(name: "Video", factory: { options in
-                for block in content.data.blocks {
-                    print("iteration options = \(String(describing: options))")
-                    print("iteration responsiveStyles = \(String(describing: block.responsiveStyles))")
-                    if !builderIds.contains(block.id) {
-                        builderIds.append(block.id)
-                        return BuilderVideo(videoURLString: options["video"].stringValue, responsiveStyles: block.responsiveStyles , options: options)
-                    }
-                    builderIds.append(block.id)
-                }
-                return BuilderVideo(videoURLString: options["video"].stringValue, responsiveStyles: content.data.blocks[0].responsiveStyles, options: options)
             })
             
+            registerComponent(name: "Video", factory: { options in
+                let decoder = JSONDecoder()
+                let jsonString = options["video"].rawString()!
+                print("video jsonString = \(jsonString)")
+//                let videoURL = try! decoder.decode([BuilderColumn].self, from: Data(jsonString.utf8))
+                
+                return BuilderVideo()
+            })
             RenderContent.registered = true
         }
-                              
+        
     }
     
     var content: BuilderContent
@@ -60,4 +54,3 @@ public struct RenderContent: View {
         }
     }
 }
-                              

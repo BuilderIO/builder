@@ -13,7 +13,7 @@ struct BuilderBlock: Codable {
 struct BuilderBlockComponent: Codable {
     var name: String
     var options: JSON? = [:]
-    var responsiveStyles: JSON? = [:]
+    var responsiveStyles: BuilderBlockResponsiveStyles? = BuilderBlockResponsiveStyles()
 }
 
 struct BuilderBlockResponsiveStyles: Codable {

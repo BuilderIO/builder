@@ -10,18 +10,17 @@ struct BuilderButton: View {
 
     @State private var showWebView = false
     
-    // TODO: actually handle HTML
-    func getTextWithoutHtml(_ text: String) -> String {
-        if let regex = try? NSRegularExpression(pattern: "<.*?>") { // TODO: handle decimals
-            let newString = regex.stringByReplacingMatches(in: text, options: .withTransparentBounds, range: NSMakeRange(0, text.count ), withTemplate: "")
-            
-            return newString
-        }
-        
-        return ""
-    }
-    
     var body: some View {
+        
+        let textAlignValue = getStyleValue("textAlign")
+        let marginLeft = getFloatValue(cssString:getStyleValue("marginLeft") ?? "0px") ?? 0
+        let marginTop = getFloatValue(cssString:getStyleValue("marginTop") ?? "0px") ?? 0
+        let marginRight = getFloatValue(cssString:getStyleValue("marginRight") ?? "0px") ?? 0
+        let marginBottom = getFloatValue(cssString:getStyleValue("marginBottom") ?? "0px") ?? 0
+        let cornerRadius = getFloatValue(cssString:getStyleValue("borderRadius") ?? "0px") ?? 0
+        let fontWeight = getFontWeight(weight: Int(getFloatValue(cssString:getStyleValue("fontWeight") ?? "300") ?? 30))
+        let fontSize = getFloatValue(cssString:getStyleValue("fontSize") ?? "20.0") ?? 0
+
         HStack(spacing: 0) {
             Button(action: {
                 print(getTextWithoutHtml(text))
@@ -35,44 +34,77 @@ struct BuilderButton: View {
             }) {
                 Text(getTextWithoutHtml(text))
             }
-            .padding(EdgeInsets(top: 15, leading: 45, bottom: 15, trailing: 45)) // margin
             .sheet(isPresented: $showWebView) {
                 if let str = urlStr, let url = URL(string: str) {
                     WebView(url: url)
                 }
             }
-//            .frame(maxWidth: .infinity)
+            .padding(EdgeInsets(top: getDirectionStyleValue("padding", "Top"), leading: getDirectionStyleValue("padding", "Left"), bottom: getDirectionStyleValue("padding", "Bottom"), trailing: getDirectionStyleValue("padding", "Right"))) // margin
+            .foregroundColor(getColor(propertyName: "color"))
+            .background(RoundedRectangle(cornerRadius: cornerRadius).fill(getColor(propertyName: "backgroundColor") ?? .black))
+            .multilineTextAlignment(textAlignValue == "center" ? .center : textAlignValue == "right" ? .trailing : .leading)
+            .font(.system(size: fontSize, weight: fontWeight, design: .default))
         }
-//        .frame(maxWidth: .infinity)
+        .padding(EdgeInsets(top: marginTop, leading: marginLeft, bottom: marginBottom, trailing: marginRight)) // margin
     }
-}
-
-@available(iOS 15.0, *)
-extension Color {
-    init(hex: String) {
-        let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
-        var int: UInt64 = 0
-        Scanner(string: hex).scanHexInt64(&int)
-        let a, r, g, b: UInt64
-        switch hex.count {
-        case 3: // RGB (12-bit)
-            (a, r, g, b) = (255, (int >> 8) * 17, (int >> 4 & 0xF) * 17, (int & 0xF) * 17)
-        case 6: // RGB (24-bit)
-            (a, r, g, b) = (255, int >> 16, int >> 8 & 0xFF, int & 0xFF)
-        case 8: // ARGB (32-bit)
-            (a, r, g, b) = (int >> 24, int >> 16 & 0xFF, int >> 8 & 0xFF, int & 0xFF)
-        default:
-            (a, r, g, b) = (1, 1, 1, 0)
+    
+    func getColor(propertyName: String) -> Color? {
+        let value = getStyles()?[propertyName]
+        if value != nil {
+            if value == "red" {
+                return Color.red
+            } else if value == "blue" {
+                return Color.blue
+            } else if value == "white" {
+                return Color.white
+            } else if value == "gray" {
+                return Color.gray
+            } else if value == "black" {
+                return Color.black
+            }
+            
+            
+            let allMatches = matchingStrings(string: value!, regex: "rgba\\((\\d+),\\s*(\\d+),\\s*(\\d+),\\s*(\\d+)\\)");
+            if allMatches.count>0 {
+                let matches = allMatches[0]
+                
+                if (matches.count > 3) {
+                    return Color(red: Double(matches[1])! / 255, green: Double(matches[2])! / 255, blue: Double(matches[3])! / 255, opacity: Double(matches[4])!)
+                }
+            }
+        } else {
+            return Color.black
         }
-
-        self.init(
-            .sRGB,
-            red: Double(r) / 255,
-            green: Double(g) / 255,
-            blue:  Double(b) / 255,
-            opacity: Double(a) / 255
-        )
+        return nil
     }
+    
+    func getStyleValue(_ property: String) -> String? {
+        let styles = getStyles()
+        return styles?[property]
+    }
+    
+    func getDirectionStyleValue(_ type: String, _ direction: String) -> CGFloat {
+        let styles = getStyles()
+        var paddingStr = styles?[type + direction]
+        if (paddingStr == nil) {
+            paddingStr = styles?[type] // TODO: handle muti value padding shorthand
+        }
+        if (paddingStr != nil) {
+            if let num = getFloatValue(cssString: paddingStr!) {
+                return num
+            }
+        }
+        
+        return 0
+    }
+    
+    func getStyles() -> [String:String]? {
+        let step1 = (responsiveStyles?.large ?? [:]).merging(responsiveStyles?.medium ?? [:]) { (_, new) in new }
+        let step2 = step1.merging(responsiveStyles?.small ?? [:]) { (_, new) in new }
+        
+        return step2
+    }
+
 }
 
 @available(iOS 15.0, *)

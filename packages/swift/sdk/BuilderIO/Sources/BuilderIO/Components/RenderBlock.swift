@@ -4,30 +4,13 @@ import SwiftUI
 struct RenderBlock: View {
     var block: BuilderBlock
     var body: some View {
-        let textAlignValue = getStyleValue("textAlign")
-//        let displayValue = getStyleValue("display")
-//        let flexDirection = getStyleValue("flexDirection")
-//        let position = getStyleValue("position")
-//        let flexShrink = getStyleValue("flexShrink")
-//        let boxSizing = getStyleValue("boxSizing")
-//        let marginTop = getStyleValue("marginTop")
-//        let appearance = getStyleValue("appearance")
-//        let color = getStyleValue("color")
-        let cornerRadius = getFloatValue(cssString:getStyleValue("borderRadius") ?? "0px") ?? 0
-//        let cursor = getStyleValue("cursor")
-//        let marginLeft = getStyleValue("marginLeft")
-//        let width = getStyleValue("width")
-//        let alignSelf = getStyleValue("alignSelf")
-//        let fontSize = getFloatValue(cssString: "fontSize") ?? 0.0
         VStack {
-            if #available(iOS 16.0, *) {
+            if #available(iOS 15.0, *) {
                 VStack(alignment: .center) {
                     let name = block.component?.name
+                    let _ = print("block.component?.name = \(String(describing: name))")
                     if name != nil {
                         let factoryValue = componentDict[name!]
-                        //                    print("componentDict[name!] = \(componentDict[name!])")
-                        let _ = print("cornerRadius = \(cornerRadius)")
-                        
                         if factoryValue != nil && block.component?.options! != nil {
                             AnyView(_fromValue: factoryValue!(block.component!.options!))
                         } else {
@@ -38,46 +21,39 @@ struct RenderBlock: View {
                         RenderBlocks(blocks: block.children!)
                     }
                 }
-                .padding(EdgeInsets(top: getDirectionStyleValue("padding", "Top"), leading: getDirectionStyleValue("padding", "Left"), bottom: getDirectionStyleValue("padding", "Bottom"), trailing: getDirectionStyleValue("padding", "Right"))) // margin
-                .foregroundColor(getColor(propertyName: "color"))
-                .background(RoundedRectangle(cornerRadius: cornerRadius).fill(getColor(propertyName: "backgroundColor") ?? .black))
-                .multilineTextAlignment(textAlignValue == "center" ? .center : textAlignValue == "right" ? .trailing : .leading)
-                .font(.title)
-                .fontWeight(Font.Weight.bold)
             } else {
                 // Fallback on earlier versions
             }
         }
     }
+}
+
+@available(iOS 15.0, *)
+extension View {
     
-    func getColor(propertyName: String) -> Color? {
-        let value = getStyles()?[propertyName]
-        if value != nil {
-            if value == "red" {
-                return Color.red
-            } else if value == "blue" {
-                return Color.blue
-            } else if value == "white" {
-                return Color.white
-            } else if value == "gray" {
-                return Color.gray
-            } else if value == "black" {
-                return Color.black
-            }
-            
-            
-            let allMatches = matchingStrings(string: value!, regex: "rgba\\((\\d+),\\s*(\\d+),\\s*(\\d+),\\s*(\\d+)\\)");
-            if allMatches.count>0 {
-                let matches = allMatches[0]
-                
-                if (matches.count > 3) {
-                    return Color(red: Double(matches[1])! / 255, green: Double(matches[2])! / 255, blue: Double(matches[3])! / 255, opacity: Double(matches[4])!)
-                }
-            }
-        } else {
-            return Color.black
+    func getFontWeight(weight:Int) -> Font.Weight {
+        switch(weight) {
+        case 100:
+            return Font.Weight.ultraLight
+        case 200:
+            return Font.Weight.thin
+        case 300:
+            return Font.Weight.light
+        case 400:
+            return Font.Weight.regular
+        case 500:
+            return Font.Weight.medium
+        case 600:
+            return Font.Weight.semibold
+        case 700:
+            return Font.Weight.bold
+        case 800:
+            return Font.Weight.heavy
+        case 900:
+            return Font.Weight.black
+        default:
+            return Font.Weight.ultraLight
         }
-        return nil
     }
     
     func matchingStrings(string: String, regex: String) -> [[String]] {
@@ -93,7 +69,6 @@ struct RenderBlock: View {
         }
     }
     
-    
     func getFloatValue(cssString: String) -> CGFloat? {
         if let regex = try? NSRegularExpression(pattern: "px$") { // TODO: handle decimals
             let newString = regex.stringByReplacingMatches(in: cssString, options: .withTransparentBounds, range: NSMakeRange(0, cssString.count ), withTemplate: "")
@@ -108,31 +83,43 @@ struct RenderBlock: View {
         return nil
     }
     
-    func getStyleValue(_ property: String) -> String? {
-        let styles = getStyles()
-        return styles?[property]
-    }
-    
-    func getDirectionStyleValue(_ type: String, _ direction: String) -> CGFloat {
-        let styles = getStyles()
-        var paddingStr = styles?[type + direction]
-        if (paddingStr == nil) {
-            paddingStr = styles?[type] // TODO: handle muti value padding shorthand
-        }
-        if (paddingStr != nil) {
-            if let num = getFloatValue(cssString: paddingStr!) {
-                return num
-            }
+    // TODO: actually handle HTML
+    func getTextWithoutHtml(_ text: String) -> String {
+        if let regex = try? NSRegularExpression(pattern: "<.*?>") { // TODO: handle decimals
+            let newString = regex.stringByReplacingMatches(in: text, options: .withTransparentBounds, range: NSMakeRange(0, text.count ), withTemplate: "")
+            
+            return newString
         }
         
-        return 0
+        return ""
     }
     
-    
-    func getStyles() -> [String:String]? {
-        let step1 = (block.responsiveStyles?.large ?? [:]).merging(block.responsiveStyles?.medium ?? [:]) { (_, new) in new }
-        let step2 = step1.merging(block.responsiveStyles?.small ?? [:]) { (_, new) in new }
-        
-        return step2
+}
+
+@available(iOS 15.0, *)
+extension Color {
+    init(hex: String) {
+        let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
+        var int: UInt64 = 0
+        Scanner(string: hex).scanHexInt64(&int)
+        let a, r, g, b: UInt64
+        switch hex.count {
+        case 3: // RGB (12-bit)
+            (a, r, g, b) = (255, (int >> 8) * 17, (int >> 4 & 0xF) * 17, (int & 0xF) * 17)
+        case 6: // RGB (24-bit)
+            (a, r, g, b) = (255, int >> 16, int >> 8 & 0xFF, int & 0xFF)
+        case 8: // ARGB (32-bit)
+            (a, r, g, b) = (int >> 24, int >> 16 & 0xFF, int >> 8 & 0xFF, int & 0xFF)
+        default:
+            (a, r, g, b) = (1, 1, 1, 0)
+        }
+
+        self.init(
+            .sRGB,
+            red: Double(r) / 255,
+            green: Double(g) / 255,
+            blue:  Double(b) / 255,
+            opacity: Double(a) / 255
+        )
     }
 }
