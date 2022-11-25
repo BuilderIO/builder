@@ -290,7 +290,7 @@ export interface BuilderComponentState {
   updates: number;
   context: any;
   key: number;
-  breakpoints?: Breakpoints
+  breakpoints?: Breakpoints;
 }
 
 function searchToObject(location: Location | Url) {
@@ -1038,9 +1038,9 @@ export class BuilderComponent extends React.Component<
                             ...fullData,
                             meta: {
                               ...(fullData.meta || {}),
-                              breakpoints: this.state.breakpoints || fullData.meta?.breakpoints
-                            }
-                          }
+                              breakpoints: this.state.breakpoints || fullData.meta?.breakpoints,
+                            },
+                          };
                           this.state.context.builderContent = fullData;
                         }
                         if (Builder.isBrowser) {
