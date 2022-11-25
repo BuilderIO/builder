@@ -12,7 +12,7 @@ export type GetContentOptions = import('./types.js').GetContentOptions;
 export async function getContent(
   options: GetContentOptions
 ): Promise<BuilderContent | null> {
-  return (await getAllContent({ ...options, single: true })) || null;
+  return (await getAllContent({ ...options, limit: 1 })).results[0] || null;
 }
 
 export const generateContentUrl = (options: GetContentOptions): URL => {
@@ -24,6 +24,7 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
     model,
     apiKey,
     includeRefs = true,
+    locale
   } = options;
 
   if (!apiKey) {
@@ -31,7 +32,7 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
   }
 
   const url = new URL(
-    `https://cdn.builder.io/api/v2/content/${model}?apiKey=${apiKey}&limit=${limit}&noTraverse=${noTraverse}&includeRefs=${includeRefs}`
+    `https://cdn.builder.io/api/v2/content/${model}?apiKey=${apiKey}&limit=${limit}&noTraverse=${noTraverse}&includeRefs=${includeRefs}${ locale ? `&locale=${locale}` : ''}`
   );
 
   const queryOptions = {

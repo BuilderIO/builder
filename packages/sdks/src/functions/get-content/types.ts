@@ -40,11 +40,6 @@ export interface GetContentOptions {
   includeRefs?: boolean;
 
   /**
-   * Returns a single content match
-   */
-  single?: boolean;
-
-  /**
    * If passed , the API will aut-resolve localized objects to the value of this locale key
    */
   locale?: string;
