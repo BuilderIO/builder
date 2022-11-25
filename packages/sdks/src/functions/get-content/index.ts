@@ -12,7 +12,7 @@ export type GetContentOptions = import('./types.js').GetContentOptions;
 export async function getContent(
   options: GetContentOptions
 ): Promise<BuilderContent | null> {
-  return (await getAllContent({ ...options, limit: 1 })).results[0] || null;
+  return (await getAllContent({ ...options, single: true })) || null;
 }
 
 export const generateContentUrl = (options: GetContentOptions): URL => {
