@@ -1034,13 +1034,10 @@ export class BuilderComponent extends React.Component<
                         }
 
                         if (fullData && fullData.id) {
-                          fullData = {
-                            ...fullData,
-                            meta: {
-                              ...(fullData.meta || {}),
-                              breakpoints: this.state.breakpoints || fullData.meta?.breakpoints,
-                            },
-                          };
+                          if (this.state.breakpoints) {
+                            fullData.meta = fullData.meta || {};
+                            fullData.meta.breakpoints = this.state.breakpoints;
+                          }
                           this.state.context.builderContent = fullData;
                         }
                         if (Builder.isBrowser) {
