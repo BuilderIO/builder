@@ -154,7 +154,6 @@ export default function RenderContent(props: RenderContentProps) {
               return;
             }
             state.breakpoints = breakpoints;
-            setContext(BuilderContext, state.getBuilderContext());
             state.forceReRenderCount = state.forceReRenderCount + 1; // This is a hack to force Qwik to re-render.
             break;
           }
@@ -269,26 +268,6 @@ export default function RenderContent(props: RenderContentProps) {
           TARGET !== 'reactNative'
       );
     },
-
-    getBuilderContext() {
-      return {
-        get content() {
-          return state.useContent;
-        },
-        get state() {
-          return state.contentState;
-        },
-        get context() {
-          return state.contextContext;
-        },
-        get apiKey() {
-          return props.apiKey;
-        },
-        get registeredComponents() {
-          return state.allRegisteredComponents;
-        },
-      };
-    },
   });
 
   // This currently doesn't do anything as `onCreate` is not implemented
@@ -306,7 +285,23 @@ export default function RenderContent(props: RenderContentProps) {
   // TODO: inherit context here too
   // });
 
-  setContext(BuilderContext, state.getBuilderContext());
+  setContext(BuilderContext, {
+    get content() {
+      return state.useContent;
+    },
+    get state() {
+      return state.contentState;
+    },
+    get context() {
+      return state.contextContext;
+    },
+    get apiKey() {
+      return props.apiKey;
+    },
+    get registeredComponents() {
+      return state.allRegisteredComponents;
+    },
+  });
 
   onMount(() => {
     if (!props.apiKey) {
