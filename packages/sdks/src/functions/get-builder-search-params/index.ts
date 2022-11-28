@@ -9,7 +9,7 @@ export const convertSearchParamsToQueryObject = (
 ): QueryObject => {
   const options: Record<string, string> = {};
   searchParams.forEach((value, key) => {
-    options[key.replace('options.', '')] = value;
+    options[key] = value;
   });
   return options;
 };
