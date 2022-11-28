@@ -17,7 +17,10 @@ import {
   createRegisterComponentMessage,
 } from '../../functions/register-component.js';
 import { _track } from '../../functions/track.js';
-import type { BuilderContent } from '../../types/builder-content.js';
+import type {
+  Breakpoints,
+  BuilderContent,
+} from '../../types/builder-content.js';
 import type { Dictionary, Nullable } from '../../types/typescript.js';
 import RenderBlocks from '../render-blocks.lite';
 import RenderContentStyles from './components/render-styles.lite';
@@ -76,6 +79,7 @@ export default function RenderContent(props: RenderContentProps) {
   const elementRef = useRef<HTMLDivElement>();
   const state = useStore({
     forceReRenderCount: 0,
+    overrideContent: null as Nullable<BuilderContent>,
     get useContent(): Nullable<BuilderContent> {
       if (!props.content && !state.overrideContent) {
         return undefined;
@@ -88,11 +92,19 @@ export default function RenderContent(props: RenderContentProps) {
           ...props.data,
           ...state.overrideContent?.data,
         },
+        meta: {
+          ...props.content?.meta,
+          ...state.overrideContent?.meta,
+          breakpoints:
+            state.breakpoints ||
+            state.overrideContent?.meta?.breakpoints ||
+            props.content?.meta?.breakpoints,
+        },
       };
       return mergedContent;
     },
-    overrideContent: null as Nullable<BuilderContent>,
     update: 0,
+    breakpoints: null as Nullable<Breakpoints>,
     get canTrackToUse(): boolean {
       return props.canTrack || true;
     },
@@ -135,6 +147,17 @@ export default function RenderContent(props: RenderContentProps) {
       const { data } = event;
       if (data) {
         switch (data.type) {
+          case 'builder.configureSdk': {
+            const messageContent = data.data;
+            const { breakpoints, contentId } = messageContent;
+            if (!contentId || contentId !== state.useContent?.id) {
+              return;
+            }
+            state.breakpoints = breakpoints;
+            setContext(BuilderContext, state.getBuilderContext());
+            state.forceReRenderCount = state.forceReRenderCount + 1; // This is a hack to force Qwik to re-render.
+            break;
+          }
           case 'builder.contentUpdate': {
             const messageContent = data.data;
             const key =
@@ -246,6 +269,26 @@ export default function RenderContent(props: RenderContentProps) {
           TARGET !== 'reactNative'
       );
     },
+
+    getBuilderContext() {
+      return {
+        get content() {
+          return state.useContent;
+        },
+        get state() {
+          return state.contentState;
+        },
+        get context() {
+          return state.contextContext;
+        },
+        get apiKey() {
+          return props.apiKey;
+        },
+        get registeredComponents() {
+          return state.allRegisteredComponents;
+        },
+      };
+    },
   });
 
   // This currently doesn't do anything as `onCreate` is not implemented
@@ -263,23 +306,7 @@ export default function RenderContent(props: RenderContentProps) {
   // TODO: inherit context here too
   // });
 
-  setContext(BuilderContext, {
-    get content() {
-      return state.useContent;
-    },
-    get state() {
-      return state.contentState;
-    },
-    get context() {
-      return state.contextContext;
-    },
-    get apiKey() {
-      return props.apiKey;
-    },
-    get registeredComponents() {
-      return state.allRegisteredComponents;
-    },
-  });
+  setContext(BuilderContext, state.getBuilderContext());
 
   onMount(() => {
     if (!props.apiKey) {
