@@ -1,4 +1,4 @@
-# Builder.io example with SvelteKit
+# Builder.io example with SvelteKit (+ localization)
 
 This example shows our [Svelte SDK](/packages/sdks/output/svelte) with SvelteKit.
 
