@@ -9,6 +9,12 @@ export const handle = async ({ event, resolve }) => {
 	const { url, request } = event;
 	const { pathname } = url;
 
+	if (pathname === '/favicon.ico') {
+		return new Response(undefined, {
+			status: 404
+		});
+	}
+
 	// If this request is a route request
 	if (routeRegex.test(pathname)) {
 		// Try to get locale from `pathname`.

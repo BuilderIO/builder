@@ -7,7 +7,6 @@ export async function load(event) {
 	const locale = getLocaleFromPathname(event.url.pathname);
 	// remove locale from the path to match multiple locales in same page if needed
 	const urlPath = event.url.pathname.replace(`/${locale}`, '') || '/';
-	console.log(' here ', { locale, urlPath });
 	// fetch your Builder content
 	const content = await getContent({
 		model: 'page',
@@ -20,6 +19,5 @@ export async function load(event) {
 		}
 	});
 
-	console.log(' here content , ', { content, locale });
 	return { content, locale };
 }
