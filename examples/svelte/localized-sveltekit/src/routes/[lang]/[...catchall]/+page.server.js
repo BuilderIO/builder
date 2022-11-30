@@ -19,6 +19,5 @@ export async function load(event) {
 		}
 	});
 
-
-	return { content, locale , ...(!content && { status: 404} )};
+	return { content, locale, ...(!content && { status: 404 }) };
 }
