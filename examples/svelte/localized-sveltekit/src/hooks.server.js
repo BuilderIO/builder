@@ -1,22 +1,12 @@
-import { getLocaleFromPathname } from './utils';
-const defaultLocale = 'en';
-// Match this with the locales defined in your builder space
-const supportedLocales = ['en', 'fr', 'de'];
-const routeRegex = new RegExp(/^\/[^.]*([?#].*)?$/);
+import { getLocaleFromPathname, defaultLocale, supportedLocales, isRoute } from './utils';
 
 /** @type {import('@sveltejs/kit').Handle} */
 export const handle = async ({ event, resolve }) => {
 	const { url, request } = event;
 	const { pathname } = url;
 
-	if (pathname === '/favicon.ico') {
-		return new Response(undefined, {
-			status: 404
-		});
-	}
-
 	// If this request is a route request
-	if (routeRegex.test(pathname)) {
+	if (isRoute(pathname)) {
 		// Try to get locale from `pathname`.
 		let locale = supportedLocales.find(
 			(l) => `${l}`.toLowerCase() === getLocaleFromPathname(pathname)

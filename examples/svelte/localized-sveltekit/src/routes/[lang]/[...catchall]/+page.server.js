@@ -19,5 +19,6 @@ export async function load(event) {
 		}
 	});
 
-	return { content, locale };
+
+	return { content, locale , ...(!content && { status: 404} )};
 }
