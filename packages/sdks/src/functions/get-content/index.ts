@@ -24,6 +24,7 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
     model,
     apiKey,
     includeRefs = true,
+    locale,
   } = options;
 
   if (!apiKey) {
@@ -31,7 +32,9 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
   }
 
   const url = new URL(
-    `https://cdn.builder.io/api/v2/content/${model}?apiKey=${apiKey}&limit=${limit}&noTraverse=${noTraverse}&includeRefs=${includeRefs}`
+    `https://cdn.builder.io/api/v2/content/${model}?apiKey=${apiKey}&limit=${limit}&noTraverse=${noTraverse}&includeRefs=${includeRefs}${
+      locale ? `&locale=${locale}` : ''
+    }`
   );
 
   const queryOptions = {
