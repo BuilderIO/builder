@@ -31,7 +31,7 @@ import { throttle } from '../functions/throttle';
 import { BuilderMetaContext } from '../store/builder-meta';
 import { tryEval } from '../functions/try-eval';
 import { toError } from '../to-error';
-import { getBuilderPixel } from 'src/functions/get-builder-pixel';
+import { getBuilderPixel } from '../functions/get-builder-pixel';
 
 function pick<T, K extends keyof T>(obj: T, ...keys: K[]): Pick<T, K> {
   const ret: any = {};
