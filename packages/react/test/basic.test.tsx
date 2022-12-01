@@ -181,15 +181,11 @@ describe('Content changes when new content provided', () => {
     );
     expect(testApi.getByText(textB)).toBeInTheDocument();
   });
-
 });
 
-
 describe('Builder Pixel', () => {
-
   it('Should be added automatically if missing in blocksString', () => {
-    const renderedBlock = reactTestRenderer
-      .create(
+    const renderedBlock = reactTestRenderer.create(
       <BuilderPage
         model="page"
         content={{
@@ -204,8 +200,7 @@ describe('Builder Pixel', () => {
   });
 
   it('Should be added automatically if missing in blocks array', () => {
-    const renderedBlock = reactTestRenderer
-      .create(
+    const renderedBlock = reactTestRenderer.create(
       <BuilderPage
         model="page"
         content={{
@@ -220,10 +215,8 @@ describe('Builder Pixel', () => {
     expect(renderedBlock).toMatchSnapshot();
   });
 
-
   it('Should not be added if already present in blocks array', () => {
-    const renderedBlock = reactTestRenderer
-      .create(
+    const renderedBlock = reactTestRenderer.create(
       <BuilderPage
         model="page"
         content={{
@@ -237,5 +230,4 @@ describe('Builder Pixel', () => {
 
     expect(renderedBlock).toMatchSnapshot();
   });
-
-})
+});
