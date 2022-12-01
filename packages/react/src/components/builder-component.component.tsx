@@ -1010,16 +1010,6 @@ export class BuilderComponent extends React.Component<
                         if (this.props.dataOnly) {
                           return null;
                         }
-                        const blocks = data.blocks || [];
-
-                        const hasPixel = blocks.find((block: BuilderElement) =>
-                          block.id?.startsWith('builder-pixel')
-                        );
-
-                        if (!hasPixel) {
-                          blocks.push(getBuilderPixel(builder.apiKey!));
-                        }
-
                         if (fullData && fullData.id) {
                           this.state.context.builderContent = fullData;
                         }
@@ -1078,6 +1068,16 @@ export class BuilderComponent extends React.Component<
                             useBuilderState,
                             ...finalizedComponents
                           );
+                        }
+
+                        const blocks = data?.blocks || [];
+
+                        const hasPixel = blocks.find((block: BuilderElement) =>
+                          block.id?.startsWith('builder-pixel')
+                        );
+
+                        if (data && !hasPixel) {
+                          blocks.push(getBuilderPixel(builder.apiKey!));
                         }
 
                         // TODO: loading option - maybe that is what the children is or component prop
