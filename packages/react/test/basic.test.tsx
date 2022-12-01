@@ -8,6 +8,8 @@ import { render } from '@testing-library/react';
 import { Builder, builder } from '@builder.io/sdk';
 import { BuilderPage } from '../src/builder-react';
 import { el, block } from './functions/render-block';
+import * as reactTestRenderer from 'react-test-renderer';
+import { getBuilderPixel } from '../src/functions/get-builder-pixel';
 
 builder.init('null');
 
@@ -178,5 +180,54 @@ describe('Content changes when new content provided', () => {
       />
     );
     expect(testApi.getByText(textB)).toBeInTheDocument();
+  });
+});
+
+describe('Builder Pixel', () => {
+  it('Should be added automatically if missing in blocksString', () => {
+    const renderedBlock = reactTestRenderer.create(
+      <BuilderPage
+        model="page"
+        content={{
+          id: 'id',
+          data: {
+            blocksString: '[]',
+          },
+        }}
+      />
+    );
+    expect(renderedBlock).toMatchSnapshot();
+  });
+
+  it('Should be added automatically if missing in blocks array', () => {
+    const renderedBlock = reactTestRenderer.create(
+      <BuilderPage
+        model="page"
+        content={{
+          id: 'id',
+          data: {
+            blocks: [],
+          },
+        }}
+      />
+    );
+
+    expect(renderedBlock).toMatchSnapshot();
+  });
+
+  it('Should not be added if already present in blocks array', () => {
+    const renderedBlock = reactTestRenderer.create(
+      <BuilderPage
+        model="page"
+        content={{
+          id: 'id',
+          data: {
+            blocks: [getBuilderPixel('null')],
+          },
+        }}
+      />
+    );
+
+    expect(renderedBlock).toMatchSnapshot();
   });
 });

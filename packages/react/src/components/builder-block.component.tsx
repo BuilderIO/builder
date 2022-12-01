@@ -479,6 +479,10 @@ export class BuilderBlock extends React.Component<
 
         let [key, value] = stylePieces;
 
+        if (!key) {
+          continue;
+        }
+
         if (stylePieces.length > 2) {
           value = stylePieces.slice(1).join(':');
         }

@@ -31,6 +31,7 @@ import { throttle } from '../functions/throttle';
 import { BuilderMetaContext } from '../store/builder-meta';
 import { tryEval } from '../functions/try-eval';
 import { toError } from '../to-error';
+import { getBuilderPixel } from '../functions/get-builder-pixel';
 
 function pick<T, K extends keyof T>(obj: T, ...keys: K[]): Pick<T, K> {
   const ret: any = {};
@@ -1009,7 +1010,6 @@ export class BuilderComponent extends React.Component<
                         if (this.props.dataOnly) {
                           return null;
                         }
-
                         if (fullData && fullData.id) {
                           this.state.context.builderContent = fullData;
                         }
@@ -1070,6 +1070,16 @@ export class BuilderComponent extends React.Component<
                           );
                         }
 
+                        const blocks = data?.blocks || [];
+
+                        const hasPixel = blocks.find((block: BuilderElement) =>
+                          block.id?.startsWith('builder-pixel')
+                        );
+
+                        if (data && !hasPixel) {
+                          blocks.push(getBuilderPixel(builder.apiKey!));
+                        }
+
                         // TODO: loading option - maybe that is what the children is or component prop
                         // TODO: get rid of all these wrapper divs
                         return data ? (
@@ -1105,7 +1115,7 @@ export class BuilderComponent extends React.Component<
                                   key={String(!!data?.blocks?.length)}
                                   emailMode={this.props.emailMode}
                                   fieldName="blocks"
-                                  blocks={data.blocks}
+                                  blocks={blocks}
                                 />
                               )}
                             </BuilderStoreContext.Provider>
