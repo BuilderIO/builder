@@ -30,11 +30,7 @@ exports[`Builder Pixel Should be added automatically if missing in blocks array 
           className="builder-block builder-pixel-4fzzzxjylrx css-1mvsfya"
           role="presentation"
           src="https://cdn.builder.io/api/v1/pixel?apiKey=null"
-          style={
-            Object {
-              "": undefined,
-            }
-          }
+          style={Object {}}
         />
       </div>
     </div>
@@ -72,11 +68,7 @@ exports[`Builder Pixel Should be added automatically if missing in blocksString 
           className="builder-block builder-pixel-4fzzzxjylrx css-1mvsfya"
           role="presentation"
           src="https://cdn.builder.io/api/v1/pixel?apiKey=null"
-          style={
-            Object {
-              "": undefined,
-            }
-          }
+          style={Object {}}
         />
       </div>
     </div>
@@ -114,11 +106,7 @@ exports[`Builder Pixel Should not be added if already present in blocks array 1`
           className="builder-block builder-pixel-4fzzzxjylrx css-1mvsfya"
           role="presentation"
           src="https://cdn.builder.io/api/v1/pixel?apiKey=null"
-          style={
-            Object {
-              "": undefined,
-            }
-          }
+          style={Object {}}
         />
       </div>
     </div>

@@ -24,11 +24,7 @@ exports[`Image Amp image 1`] = `
         <div
           builder-id="builder-1234"
           className="builder-block builder-1234 css-5gq5mq"
-          style={
-            Object {
-              "": undefined,
-            }
-          }
+          style={Object {}}
         >
           <amp-img
             className="builder-image css-yue2ks"
@@ -45,11 +41,7 @@ exports[`Image Amp image 1`] = `
           className="builder-block builder-pixel-4fzzzxjylrx css-1mvsfya"
           role="presentation"
           src="https://cdn.builder.io/api/v1/pixel?apiKey=null"
-          style={
-            Object {
-              "": undefined,
-            }
-          }
+          style={Object {}}
         />
       </div>
     </div>
@@ -161,11 +153,7 @@ exports[`Image with responsive styles 1`] = `
         <div
           builder-id="builder-1234"
           className="builder-block builder-1234 css-5gq5mq"
-          style={
-            Object {
-              "": undefined,
-            }
-          }
+          style={Object {}}
         >
           <picture>
             <img
@@ -185,11 +173,7 @@ exports[`Image with responsive styles 1`] = `
           className="builder-block builder-pixel-4fzzzxjylrx css-1mvsfya"
           role="presentation"
           src="https://cdn.builder.io/api/v1/pixel?apiKey=null"
-          style={
-            Object {
-              "": undefined,
-            }
-          }
+          style={Object {}}
         />
       </div>
     </div>
