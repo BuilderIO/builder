@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
 import React from 'react';
-import { Builder } from '@builder.io/sdk';
+import { Builder, BuilderElement } from '@builder.io/sdk';
 import { BuilderBlock } from './builder-block.component';
 // TODO: fetch these for user and send them with same response like graphql
 import { Size } from '../constants/device-sizes.constant';
@@ -35,7 +35,23 @@ export class BuilderBlocks extends React.Component<BuilderBlocksProps, BuilderBl
 
   get noBlocks() {
     const { blocks } = this.props;
-    return !(blocks && (blocks as any).length); // TODO: allow react nodes
+
+    if (!blocks || (blocks as any).length === 0) {
+      return true;
+    }
+
+    // could be containing just a pixel element, then consider it as empty or no-block
+    if ((blocks as any).length === 1) {
+      const firstBlock = (blocks as any)[0] as BuilderElement;
+
+      if (firstBlock?.id?.startsWith('builder-pixel-')) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    return false;
   }
   get path() {
     const pathPrefix = 'component.options.';
