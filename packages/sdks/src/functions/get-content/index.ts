@@ -60,6 +60,9 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
   return url;
 };
 
+/**
+ * TO-DO: Handle error responses.
+ */
 interface ContentResponse {
   results: BuilderContent[];
 }
@@ -75,7 +78,11 @@ export async function getAllContent(
   );
 
   const canTrack = options.canTrack !== false;
-  if (canTrack) {
+  if (
+    canTrack &&
+    // This makes sure we have a non-error response with the results array.
+    Array.isArray(content.results)
+  ) {
     for (const item of content.results) {
       await handleABTesting({ item, canTrack });
     }
