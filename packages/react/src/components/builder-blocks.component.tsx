@@ -35,23 +35,7 @@ export class BuilderBlocks extends React.Component<BuilderBlocksProps, BuilderBl
 
   get noBlocks() {
     const { blocks } = this.props;
-
-    if (!blocks || (blocks as any).length === 0) {
-      return true;
-    }
-
-    // could be containing just a pixel element, then consider it as empty or no-block
-    if ((blocks as any).length === 1) {
-      const firstBlock = (blocks as any)[0] as BuilderElement;
-
-      if (firstBlock?.id?.startsWith('builder-pixel-')) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-
-    return false;
+    return !(blocks && (blocks as any).length); // TODO: allow react nodes
   }
   get path() {
     const pathPrefix = 'component.options.';

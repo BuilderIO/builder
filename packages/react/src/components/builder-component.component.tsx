@@ -1076,7 +1076,7 @@ export class BuilderComponent extends React.Component<
                           block.id?.startsWith('builder-pixel')
                         );
 
-                        if (data && !hasPixel) {
+                        if (data && !hasPixel && !(Builder.isEditing || Builder.isPreviewing)) {
                           blocks.push(getBuilderPixel(builder.apiKey!));
                         }
 
