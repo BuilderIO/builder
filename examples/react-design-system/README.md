@@ -4,7 +4,7 @@
 
 In this example we show how to integrate react components with [Builder.io](https://builder.io). This is useful when you want to add the ability for your team to utilize custom components on the pages you build using the Builder editor, or even want to make it so people on your team can only build and edit your site's pages using your custom components.
 
-> ⚛️ For serve side rendered examples see our [Next.js](https://github.com/BuilderIO/builder/tree/main/examples/next-js) and [Gatsby](https://github.com/BuilderIO/gatsby-starter-builder) examples
+> ⚛️ For server side rendered examples see our [Next.js](https://github.com/BuilderIO/builder/tree/main/examples/next-js) and [Gatsby](https://github.com/BuilderIO/gatsby-starter-builder) examples
 
 The source code for the custom components used in this demo are [here](src/components), and you can see how they are registered with Builder by looking at the files that end in `*.builder.js` ([this is an example](https://github.com/BuilderIO/builder/blob/main/examples/react-design-system/src/components/ProductsList/ProductsList.builder.js)). The logic for adding components to the Builder editor menu can be found [here](https://github.com/BuilderIO/builder/blob/main/examples/react-design-system/src/builder-settings.js)
 
@@ -14,7 +14,7 @@ The source code for the custom components used in this demo are [here](src/compo
 
 ### To run the example Locally
 
-- [Sign in or create an account](https://builder.io)
+- [Sign in or create an account](https://builder.io/login)
 - Create a new page
 - Clone and start the project:
 
@@ -32,7 +32,7 @@ npm install
 
 <!-- TODO: link "private key" to a forum post or doc showing how to create that -->
 
-[Signup for Builder.io](builder.io/signup), then go to your [organization settings page](https://builder.io/account/organization?root=true), create a private key and copy it, then create your space and give it a name
+[Signup for Builder.io](https://builder.io/signup), then go to your [organization settings page](https://builder.io/account/organization?root=true), create a private key and copy it, then create your space and give it a name
 
 From the `examples/react-design-system` folder
 
