@@ -184,7 +184,7 @@ describe('Content changes when new content provided', () => {
 });
 
 describe('Builder Pixel', () => {
-  it('Should be added automatically if missing in blocksString', () => {
+  it('Should NOT be added if missing in blocksString', () => {
     const renderedBlock = reactTestRenderer.create(
       <BuilderPage
         model="page"
@@ -199,7 +199,7 @@ describe('Builder Pixel', () => {
     expect(renderedBlock).toMatchSnapshot();
   });
 
-  it('Should be added automatically if missing in blocks array', () => {
+  it('Should NOT be added if missing in blocks array', () => {
     const renderedBlock = reactTestRenderer.create(
       <BuilderPage
         model="page"
@@ -215,7 +215,7 @@ describe('Builder Pixel', () => {
     expect(renderedBlock).toMatchSnapshot();
   });
 
-  it('Should not be added if already present in blocks array', () => {
+  it('Should NOT be added again if already present in blocks array', () => {
     const renderedBlock = reactTestRenderer.create(
       <BuilderPage
         model="page"
@@ -223,6 +223,46 @@ describe('Builder Pixel', () => {
           id: 'id',
           data: {
             blocks: [getBuilderPixel('null')],
+          },
+        }}
+      />
+    );
+
+    expect(renderedBlock).toMatchSnapshot();
+  });
+
+  it('Should be added if pixel is missing and blocks array has other block(s)', () => {
+    const renderedBlock = reactTestRenderer.create(
+      <BuilderPage
+        model="page"
+        content={{
+          id: 'id',
+          data: {
+            blocks: [
+              {
+                '@type': '@builder.io/sdk:Element',
+                '@version': 2,
+                id: 'builder-270035a08d734ae88ea177daff3595c0',
+                component: {
+                  name: 'Text',
+                  options: {
+                    text: '<p>some text...</p>',
+                  },
+                },
+                responsiveStyles: {
+                  large: {
+                    display: 'flex',
+                    flexDirection: 'column',
+                    position: 'relative',
+                    flexShrink: '0',
+                    boxSizing: 'border-box',
+                    marginTop: '20px',
+                    lineHeight: 'normal',
+                    height: 'auto',
+                  },
+                },
+              },
+            ],
           },
         }}
       />
