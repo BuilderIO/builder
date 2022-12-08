@@ -84,7 +84,7 @@ export default function Image(props: ImageProps) {
             transition: 'opacity 0.2s ease-in-out',
           }}
           style={{
-            objectPosition: props.backgroundSize || 'center',
+            objectPosition: props.backgroundPosition || 'center',
             objectFit: props.backgroundSize || 'cover',
             ...state.aspectRatioCss,
           }}
