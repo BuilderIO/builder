@@ -40,7 +40,7 @@ const sizes = {
 };
 export type Sizes = typeof sizes;
 
-interface Breakpoints {
+export interface Breakpoints {
   small?: number;
   medium?: number;
 }
