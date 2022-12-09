@@ -14,7 +14,7 @@ const getDirName = () => {
 };
 
 /**
- * @typedef {import('@playwright/test').PlaywrightTestConfig}
+ * @typedef {import('@playwright/test').PlaywrightTestConfig} PlaywrightTestConfig
  * See https://playwright.dev/docs/test-configuration.
  * @param {string} packageName
  * @param {number} port
@@ -26,7 +26,10 @@ export function configFor(packageName, port) {
   const isReactNative = packageName.includes('react-native');
   const portFlag = isReactNative ? '' : `--port=${port}`;
 
-  return {
+  /**
+   * @type {PlaywrightTestConfig}
+   */
+  const config = {
     testDir: getDirName() + '/src/tests',
     /* Maximum time one test can run for. */
     timeout: 30 * 1000,
@@ -51,13 +54,14 @@ export function configFor(packageName, port) {
     use: {
       /* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
       actionTimeout: 0,
-      /* Base URL to use in actions like `await page.goto('/')`. */
-      // baseURL: 'http://localhost:3000',
 
       /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
       trace: 'on-first-retry',
 
+      /* Base URL to use in actions like `await page.goto('/')`. */
       baseURL: `http://localhost:${port}`,
+
+      // screenshot: 'on',
     },
 
     /* Configure projects for major browsers */
@@ -68,50 +72,6 @@ export function configFor(packageName, port) {
           ...devices['Desktop Chrome'],
         },
       },
-
-      // Turn on more browser in the future, at the cost of longer CI waits.
-
-      // {
-      //   name: 'firefox',
-      //   use: {
-      //     ...devices['Desktop Firefox'],
-      //   },
-      // },
-
-      // {
-      //   name: 'webkit',
-      //   use: {
-      //     ...devices['Desktop Safari'],
-      //   },
-      // },
-
-      /* Test against mobile viewports. */
-      // {
-      //   name: 'Mobile Chrome',
-      //   use: {
-      //     ...devices['Pixel 5'],
-      //   },
-      // },
-      // {
-      //   name: 'Mobile Safari',
-      //   use: {
-      //     ...devices['iPhone 12'],
-      //   },
-      // },
-
-      /* Test against branded browsers. */
-      // {
-      //   name: 'Microsoft Edge',
-      //   use: {
-      //     channel: 'msedge',
-      //   },
-      // },
-      // {
-      //   name: 'Google Chrome',
-      //   use: {
-      //     channel: 'chrome',
-      //   },
-      // },
     ],
 
     /* Folder for test artifacts such as screenshots, videos, traces, etc. */
@@ -126,4 +86,6 @@ export function configFor(packageName, port) {
       reuseExistingServer: false,
     },
   };
+
+  return config;
 }

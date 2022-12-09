@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
 import React, { Fragment } from 'react';
 import { getContentForPathname } from '@builder.io/sdks-e2e-tests';
 import { RenderContent } from '@builder.io/sdk-react-native';
@@ -42,16 +42,23 @@ const BuilderContent = ({ route }) => {
 const Stack = createNativeStackNavigator();
 
 const App = () => (
-  <NavigationContainer linking={linking} fallback={<Text>Loading...</Text>}>
-    <Stack.Navigator
-      initialRouteName="Page"
-      screenOptions={{ contentStyle: { backgroundColor: 'white' } }}
-    >
-      <Stack.Screen name="Page" options={{ headerShown: false }}>
-        {({ route }) => <BuilderContent route={route} />}
-      </Stack.Screen>
-    </Stack.Navigator>
-  </NavigationContainer>
+  <View
+    style={{
+      // mimick body stylesheets from the web
+      margin: 8,
+    }}
+  >
+    <NavigationContainer linking={linking} fallback={<Text>Loading...</Text>}>
+      <Stack.Navigator
+        initialRouteName="Page"
+        screenOptions={{ contentStyle: { backgroundColor: 'white' } }}
+      >
+        <Stack.Screen name="Page" options={{ headerShown: false }}>
+          {({ route }) => <BuilderContent route={route} />}
+        </Stack.Screen>
+      </Stack.Navigator>
+    </NavigationContainer>
+  </View>
 );
 
 export default App;

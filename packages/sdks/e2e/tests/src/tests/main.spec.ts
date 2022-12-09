@@ -71,6 +71,57 @@ test.describe(targetContext.name, () => {
     });
   });
 
+  test('image', async ({ page }) => {
+    await page.goto('/image');
+
+    const imageLocator = await page.locator('img');
+
+    const isRNSDK = process.env.SDK === 'reactNative';
+
+    const expected = [
+      // first img is a webp image. React Native SDK does not yet support webp.
+      ...(isRNSDK
+        ? []
+        : [
+            {
+              width: '604px',
+              height: '670.438px',
+              'object-fit': 'cover',
+            },
+          ]),
+      {
+        width: '1264px',
+        height: '240.156px',
+        // RN SDK does not support object-fit
+        'object-fit': isRNSDK ? 'fill' : 'cover',
+      },
+      {
+        width: '604px',
+        height: '120.797px',
+        // RN SDK does not support object-fit
+        'object-fit': isRNSDK ? 'fill' : 'contain',
+      },
+      {
+        width: '1880px',
+        height: '1245px',
+      },
+    ];
+
+    await expect(imageLocator).toHaveCount(expected.length);
+
+    expected.forEach(async (vals, index) => {
+      const image = imageLocator.nth(index);
+      for (const [key, value] of Object.entries(vals)) {
+        await expect(
+          await getElementStyleValue({
+            locator: image,
+            cssProperty: key,
+          })
+        ).toBe(value);
+      }
+    });
+  });
+
   test.describe('custom-breakpoints', () => {
     /* set breakpoint config in content -
     breakpoints: {
