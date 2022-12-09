@@ -74,3 +74,7 @@ You should now be using your local version of Mitosis.
 ## REMOVING SYM-LINKS
 
 **IMPORTANT:** remember to run `yarn run remove-symlinks` before you commit to your branch. This applies to `project/sdks`, but also any example that you symlink the SDKs to (i.e. vue-storefront or react-native examples)
+
+## Integration tests
+
+See [e2e/README.md](e2e/README.md)
