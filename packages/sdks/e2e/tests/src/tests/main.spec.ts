@@ -77,11 +77,16 @@ test.describe(targetContext.name, () => {
     const imageLocator = await page.locator('img');
 
     const expected = [
-      {
-        width: '604px',
-        height: '670.438px',
-        'object-fit': 'cover',
-      },
+      // first img is a webp image. React Native SDK does not yet support webp.
+      ...(process.env.SDK === 'reactNative'
+        ? []
+        : [
+            {
+              width: '604px',
+              height: '670.438px',
+              'object-fit': 'cover',
+            },
+          ]),
       {
         width: '1264px',
         height: '240.156px',
