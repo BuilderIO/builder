@@ -97,21 +97,10 @@ test.describe(targetContext.name, () => {
         height: '120.797px',
         'object-fit': 'contain',
       },
-      // There is currently a discrepancy, where RN will hardcode width & height props on the image when provided,
-      // whereas the web SDKs will not. Not sure which behavior is more correct.
-      ...(process.env.SDK === 'reactNative'
-        ? [
-            {
-              width: '1880px',
-              height: '1245px',
-            },
-          ]
-        : [
-            {
-              width: '1203.200px',
-              height: '796.797px',
-            },
-          ]),
+      {
+        width: '1880px',
+        height: '1245px',
+      },
     ];
 
     await expect(imageLocator).toHaveCount(expected.length);
