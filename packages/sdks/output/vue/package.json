@@ -4,7 +4,7 @@
   "workspaces": [
     "packages/*"
   ],
-  "version": "0.0.5",
+  "version": "0.0.6",
   "dependencies": {
     "node-fetch": "^2.6.1"
   },
