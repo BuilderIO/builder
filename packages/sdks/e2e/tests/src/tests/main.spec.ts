@@ -76,30 +76,33 @@ test.describe(targetContext.name, () => {
 
     const imageLocator = await page.locator('img');
 
-    // check that there are 3 images
-    await expect(imageLocator).toHaveCount(3);
-
-    const expected = {
-      0: {
+    const expected = [
+      {
         width: '604px',
         height: '670.438px',
         'object-fit': 'cover',
       },
-      1: {
+      {
         width: '1264px',
         height: '240.156px',
         'object-fit': 'cover',
       },
-      2: {
+      {
         width: '604px',
         height: '120.797px',
         'object-fit': 'contain',
       },
-    };
+      {
+        width: '1880px',
+        height: '1245px',
+      },
+    ];
 
-    for (const i of [0, 1, 2] as const) {
-      const image = imageLocator.nth(i);
-      for (const [key, value] of Object.entries(expected[i])) {
+    await expect(imageLocator).toHaveCount(expected.length);
+
+    expected.forEach(async (vals, index) => {
+      const image = imageLocator.nth(index);
+      for (const [key, value] of Object.entries(vals)) {
         await expect(
           await getElementStyleValue({
             locator: image,
@@ -107,7 +110,7 @@ test.describe(targetContext.name, () => {
           })
         ).toBe(value);
       }
-    }
+    });
   });
 
   test.describe('custom-breakpoints', () => {
