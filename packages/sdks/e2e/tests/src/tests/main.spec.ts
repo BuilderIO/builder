@@ -71,6 +71,45 @@ test.describe(targetContext.name, () => {
     });
   });
 
+  test('image', async ({ page }) => {
+    await page.goto('/image');
+
+    const imageLocator = await page.locator('img');
+
+    // check that there are 3 images
+    await expect(imageLocator).toHaveCount(3);
+
+    const expected = {
+      0: {
+        width: '604px',
+        height: '670.438px',
+        'object-fit': 'cover',
+      },
+      1: {
+        width: '1712px',
+        height: '325.273px',
+        'object-fit': 'cover',
+      },
+      2: {
+        width: '604px',
+        height: '120.797px',
+        'object-fit': 'contain',
+      },
+    };
+
+    for (const i of [0, 1, 2] as const) {
+      const image = imageLocator.nth(i);
+      for (const [key, value] of Object.entries(expected[i])) {
+        await expect(
+          await getElementStyleValue({
+            locator: image,
+            cssProperty: key,
+          })
+        ).toBe(value);
+      }
+    }
+  });
+
   test.describe('custom-breakpoints', () => {
     /* set breakpoint config in content -
     breakpoints: {

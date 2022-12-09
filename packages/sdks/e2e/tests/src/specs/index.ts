@@ -1,6 +1,7 @@
 import { CONTENT as columns } from './columns.js';
 import { CONTENT as homepage } from './homepage.js';
 import { CONTENT as symbols } from './symbols.js';
+import { CONTENT as image } from './image.js';
 import { CONTENT as dataBindings } from './data-bindings.js';
 import { CONTENT as customBreakpoints } from './custom-breakpoints.js';
 
@@ -31,6 +32,8 @@ export const getContentForPathname = (
       return columns;
     case '/symbols':
       return symbols;
+    case '/image':
+      return image;
     case '/data-bindings':
       return dataBindings;
     case '/custom-breakpoints':
