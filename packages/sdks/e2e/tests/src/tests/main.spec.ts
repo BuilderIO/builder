@@ -86,8 +86,8 @@ test.describe(targetContext.name, () => {
         'object-fit': 'cover',
       },
       1: {
-        width: '1712px',
-        height: '325.273px',
+        width: '1264px',
+        height: '240.156px',
         'object-fit': 'cover',
       },
       2: {
