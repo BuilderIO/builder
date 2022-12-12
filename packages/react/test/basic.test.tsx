@@ -184,22 +184,7 @@ describe('Content changes when new content provided', () => {
 });
 
 describe('Builder Pixel', () => {
-  it('Should NOT be added if missing in blocksString', () => {
-    const renderedBlock = reactTestRenderer.create(
-      <BuilderPage
-        model="page"
-        content={{
-          id: 'id',
-          data: {
-            blocksString: '[]',
-          },
-        }}
-      />
-    );
-    expect(renderedBlock).toMatchSnapshot();
-  });
-
-  it('Should NOT be added if missing in blocks array', () => {
+  it('Should NOT be added if blocks array is empty', () => {
     const renderedBlock = reactTestRenderer.create(
       <BuilderPage
         model="page"
