@@ -20,18 +20,47 @@ Object {
           "translated": true,
         },
       },
+      Object {
+        "@type": "@builder.io/sdk:Element",
+        "component": Object {
+          "name": "Heading",
+          "options": Object {
+            "heading": Object {
+              "@type": "@builder.io/core:LocalizedValue",
+              "Default": "I am a heading!",
+              "de": "\\"german heading\\"",
+              "en-US": "en-us headings!",
+              "fr-FR": "french translated heading",
+            },
+          },
+        },
+        "id": "builder-custom-component-id",
+        "meta": Object {
+          "localizedTextInputs": Array [
+            "heading",
+          ],
+          "translated": true,
+        },
+      },
     ],
     "state": Object {
       "translation": Object {
         "blocks.block-id#text": Object {
           "@type": "@builder.io/core:LocalizedValue",
-          "fr-FR": "block-id",
+          "de": "german translatated",
+          "fr-FR": "fench translated text",
+        },
+        "blocks.builder-custom-component-id#heading": Object {
+          "@type": "@builder.io/core:LocalizedValue",
+          "de": "\\"german heading\\"",
+          "fr-FR": "french translated heading",
         },
       },
     },
     "title": Object {
       "@type": "@builder.io/core:LocalizedValue",
       "Default": "Test",
+      "de": "hallo",
       "en-US": "Hello",
       "fr-FR": "salut",
     },
@@ -44,6 +73,10 @@ Object {
   "blocks.block-id#text": Object {
     "instructions": "This is a mobile only element",
     "value": "test",
+  },
+  "blocks.builder-custom-component-id#heading": Object {
+    "instructions": "Visit https://builder.io/fiddle/... for more details",
+    "value": "en-us headings!",
   },
   "metadata.title": Object {
     "instructions": "Visit https://builder.io/fiddle/... for more details",
