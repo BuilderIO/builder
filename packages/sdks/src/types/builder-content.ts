@@ -23,7 +23,7 @@ export interface BuilderContentVariation {
   testRatio?: number;
   id?: string;
   meta?: {
-    breakpoints: Nullable<Breakpoints>;
+    breakpoints?: Nullable<Breakpoints>;
     [key: string]: any;
   };
 }
