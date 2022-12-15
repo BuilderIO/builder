@@ -141,17 +141,9 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
           eval('debugger');
         }
         let newData = this.state.data as any;
-        if (data.data) {
-          for (const patch of patches) {
-            newData = applyPatchWithMinimalMutationChain(newData, patch, false);
-          }
+        for (const patch of patches) {
+          newData = applyPatchWithMinimalMutationChain(newData, patch, false);
         }
-
-        if (data.meta?.breakpoints) {
-          newData.meta = newData.meta || {};
-          newData.meta.breakpoints = data.meta?.breakpoints;
-        }
-
         this.setState({
           updates: this.state.updates + 1,
           data: newData,
