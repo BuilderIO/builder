@@ -151,7 +151,7 @@ export class BuilderContent<ContentType extends object = any> extends React.Comp
           newData.meta = newData.meta || {};
           newData.meta.breakpoints = data.meta?.breakpoints;
         }
-        
+
         this.setState({
           updates: this.state.updates + 1,
           data: newData,
