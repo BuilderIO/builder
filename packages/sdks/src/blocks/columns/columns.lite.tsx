@@ -1,6 +1,10 @@
 import RenderBlocks from '../../components/render-blocks.lite';
 import { For, useStore } from '@builder.io/mitosis';
 import type { BuilderBlock } from '../../types/builder-block';
+import { getSizesForBreakpoints } from '../../constants/device-sizes';
+import type { SizeName } from '../../constants/device-sizes';
+import type { Breakpoints } from '../../types/builder-content';
+import RenderInlinedStyles from '../../components/render-inlined-styles.lite';
 
 type CSS = {
   [key: string]: string;
@@ -24,6 +28,8 @@ export interface ColumnProps {
   stackColumnsAt?: StackColumnsAt;
   // TODO: Implement this when support for dynamic CSS lands
   reverseColumnsWhenStacked?: boolean;
+
+  customBreakpoints?: Breakpoints;
 }
 
 export default function Columns(props: ColumnProps) {
@@ -74,24 +80,61 @@ export default function Columns(props: ColumnProps) {
         '--column-margin-left-tablet': state.maybeApplyForTablet(marginLeft),
       };
     },
+
+    getWidthForBreakpointSize(size: SizeName) {
+      const breakpointSizes = getSizesForBreakpoints(
+        props.customBreakpoints || {}
+      );
+
+      return breakpointSizes[size].max;
+    },
+
+    get columnsStyles(): string {
+      return `
+        @media (max-width: ${state.getWidthForBreakpointSize('medium')}px) {
+          .${props.builderBlock.id}-breakpoints {
+            flex-direction: var(--flex-dir-tablet);
+            align-items: stretch,
+          }
+
+          .${props.builderBlock.id}-breakpoints > .builder-column {
+            width: var(--column-width-tablet) !important;
+            margin-left: var(--column-margin-left-tablet) !important;
+          }
+        }
+
+        @media (max-width: ${state.getWidthForBreakpointSize('small')}px) {
+          .${props.builderBlock.id}-breakpoints {
+            flex-direction: var(--flex-dir);
+            align-items: stretch;
+          }
+
+          .${props.builderBlock.id}-breakpoints > .builder-column {
+            width: var(--column-width) !important;
+            margin-left: var(--column-margin-left) !important;
+          }
+        },
+      `;
+    },
   });
 
   return (
     <div
-      class="builder-columns"
+      class={`builder-columns ${props.builderBlock.id}-breakpoints`}
       css={{
         display: 'flex',
-        alignItems: 'stretch',
         lineHeight: 'normal',
-        '@media (max-width: 991px)': {
-          flexDirection: 'var(--flex-dir-tablet)',
-        },
-        '@media (max-width: 639px)': {
-          flexDirection: 'var(--flex-dir)',
-        },
       }}
       style={state.columnsCssVars as CSS}
     >
+      {/**
+       * Need to use style tag for column and columns style instead of using the
+       * respective 'style' or 'css' attributes because the rules now contain
+       * "dynamic" media query values based on custom breakpoints.
+       * Adding them directly otherwise leads to Mitosis and TS errors.
+       */}
+      <RenderInlinedStyles styles={state.columnsStyles} />
+
       <For each={props.columns}>
         {(column, index) => (
           <div
@@ -105,14 +148,6 @@ export default function Columns(props: ColumnProps) {
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'stretch',
-              '@media (max-width: 991px)': {
-                width: 'var(--column-width-tablet) !important',
-                marginLeft: 'var(--column-margin-left-tablet) !important',
-              },
-              '@media (max-width: 639px)': {
-                width: 'var(--column-width) !important',
-                marginLeft: 'var(--column-margin-left) !important',
-              },
             }}
             key={index}
           >

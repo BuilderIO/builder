@@ -119,6 +119,7 @@ export default function RenderBlock(props: RenderBlockProps) {
                   ...state.actions,
                 },
               }),
+          customBreakpoints: state.childrenContext?.content?.meta?.breakpoints,
         },
         context: state.childrenContext,
       };
