@@ -157,6 +157,12 @@ export default function Columns(props: ColumnProps) {
       }}
     >
       <Show when={TARGET !== 'reactNative'}>
+        {/**
+         * Need to use style tag for column and columns style instead of using the
+         * respective 'style' or 'css' attributes because the rules now contain
+         * "dynamic" media query values based on custom breakpoints.
+         * Adding them directly otherwise leads to Mitosis and TS errors.
+         */}
         <RenderInlinedStyles styles={state.columnsStyles} />
       </Show>
 

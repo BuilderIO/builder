@@ -1,5 +1,4 @@
 /** @jsx jsx */
-
 import { Builder, builder, BuilderElement, Component } from '@builder.io/sdk';
 import { ClassNames, jsx } from '@emotion/core';
 import React from 'react';
@@ -478,6 +477,10 @@ export class BuilderBlock extends React.Component<
         }
 
         let [key, value] = stylePieces;
+
+        if (!key) {
+          continue;
+        }
 
         if (stylePieces.length > 2) {
           value = stylePieces.slice(1).join(':');

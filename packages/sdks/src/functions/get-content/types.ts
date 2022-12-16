@@ -38,4 +38,9 @@ export interface GetContentOptions {
    * Include references in the response. Defaults to `true`.
    */
   includeRefs?: boolean;
+
+  /**
+   * If provided, the API will auto-resolve localized objects to the value of this `locale` key.
+   */
+  locale?: string;
 }

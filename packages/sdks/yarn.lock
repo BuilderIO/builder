@@ -1975,7 +1975,7 @@ __metadata:
     typescript: ^4
     vite: ^3.0.4
   peerDependencies:
-    "@builder.io/qwik": ">=0.0.108"
+    "@builder.io/qwik": ">=0.13.3"
   languageName: unknown
   linkType: soft
 

@@ -24,6 +24,7 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
     model,
     apiKey,
     includeRefs = true,
+    locale,
   } = options;
 
   if (!apiKey) {
@@ -31,7 +32,9 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
   }
 
   const url = new URL(
-    `https://cdn.builder.io/api/v2/content/${model}?apiKey=${apiKey}&limit=${limit}&noTraverse=${noTraverse}&includeRefs=${includeRefs}`
+    `https://cdn.builder.io/api/v2/content/${model}?apiKey=${apiKey}&limit=${limit}&noTraverse=${noTraverse}&includeRefs=${includeRefs}${
+      locale ? `&locale=${locale}` : ''
+    }`
   );
 
   const queryOptions = {
@@ -57,6 +60,9 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
   return url;
 };
 
+/**
+ * TO-DO: Handle error responses.
+ */
 interface ContentResponse {
   results: BuilderContent[];
 }
@@ -72,7 +78,11 @@ export async function getAllContent(
   );
 
   const canTrack = options.canTrack !== false;
-  if (canTrack) {
+  if (
+    canTrack &&
+    // This makes sure we have a non-error response with the results array.
+    Array.isArray(content.results)
+  ) {
     for (const item of content.results) {
       await handleABTesting({ item, canTrack });
     }

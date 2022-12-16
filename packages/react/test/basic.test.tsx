@@ -8,6 +8,8 @@ import { render } from '@testing-library/react';
 import { Builder, builder } from '@builder.io/sdk';
 import { BuilderPage } from '../src/builder-react';
 import { el, block } from './functions/render-block';
+import * as reactTestRenderer from 'react-test-renderer';
+import { getBuilderPixel } from '../src/functions/get-builder-pixel';
 
 builder.init('null');
 
@@ -178,5 +180,94 @@ describe('Content changes when new content provided', () => {
       />
     );
     expect(testApi.getByText(textB)).toBeInTheDocument();
+  });
+});
+
+describe('Builder Pixel', () => {
+  it('Should NOT be added if missing in blocksString', () => {
+    const renderedBlock = reactTestRenderer.create(
+      <BuilderPage
+        model="page"
+        content={{
+          id: 'id',
+          data: {
+            blocksString: '[]',
+          },
+        }}
+      />
+    );
+    expect(renderedBlock).toMatchSnapshot();
+  });
+
+  it('Should NOT be added if missing in blocks array', () => {
+    const renderedBlock = reactTestRenderer.create(
+      <BuilderPage
+        model="page"
+        content={{
+          id: 'id',
+          data: {
+            blocks: [],
+          },
+        }}
+      />
+    );
+
+    expect(renderedBlock).toMatchSnapshot();
+  });
+
+  it('Should NOT be added again if already present in blocks array', () => {
+    const renderedBlock = reactTestRenderer.create(
+      <BuilderPage
+        model="page"
+        content={{
+          id: 'id',
+          data: {
+            blocks: [getBuilderPixel('null')],
+          },
+        }}
+      />
+    );
+
+    expect(renderedBlock).toMatchSnapshot();
+  });
+
+  it('Should be added if pixel is missing and blocks array has other block(s)', () => {
+    const renderedBlock = reactTestRenderer.create(
+      <BuilderPage
+        model="page"
+        content={{
+          id: 'id',
+          data: {
+            blocks: [
+              {
+                '@type': '@builder.io/sdk:Element',
+                '@version': 2,
+                id: 'builder-270035a08d734ae88ea177daff3595c0',
+                component: {
+                  name: 'Text',
+                  options: {
+                    text: '<p>some text...</p>',
+                  },
+                },
+                responsiveStyles: {
+                  large: {
+                    display: 'flex',
+                    flexDirection: 'column',
+                    position: 'relative',
+                    flexShrink: '0',
+                    boxSizing: 'border-box',
+                    marginTop: '20px',
+                    lineHeight: 'normal',
+                    height: 'auto',
+                  },
+                },
+              },
+            ],
+          },
+        }}
+      />
+    );
+
+    expect(renderedBlock).toMatchSnapshot();
   });
 });

@@ -7,6 +7,7 @@ import { BuilderElement, Builder } from '@builder.io/sdk';
 import { BuilderMetaContext } from '../store/builder-meta';
 import { withBuilder } from '../functions/with-builder';
 import { throttle } from '../functions/throttle';
+import { Breakpoints, getSizesForBreakpoints } from '../constants/device-sizes.constant';
 
 // Taken from (and modified) the shopify theme script repo
 // https://github.com/Shopify/theme-scripts/blob/bcfb471f2a57d439e2f964a1bb65b67708cc90c3/packages/theme-images/images.js#L59
@@ -92,7 +93,11 @@ export function getSrcSet(url: string): string {
   return url;
 }
 
-export const getSizes = (sizes: string, block: BuilderElement) => {
+export const getSizes = (
+  sizes: string,
+  block: BuilderElement,
+  contentBreakpoints: Breakpoints = {}
+) => {
   let useSizes = '';
 
   if (sizes) {
@@ -117,9 +122,10 @@ export const getSizes = (sizes: string, block: BuilderElement) => {
     let hasSmallOrMediumSize = false;
     const unitRegex = /^\d+/;
 
+    const breakpointSizes = getSizesForBreakpoints(contentBreakpoints);
     if (block.responsiveStyles?.small?.width?.match(unitRegex)) {
       hasSmallOrMediumSize = true;
-      const mediaQuery = '(max-width: 639px)';
+      const mediaQuery = `(max-width: ${breakpointSizes.small.max}px)`;
       const widthAndQuery = `${mediaQuery} ${block.responsiveStyles.small.width.replace(
         '%',
         'vw'
@@ -129,7 +135,7 @@ export const getSizes = (sizes: string, block: BuilderElement) => {
 
     if (block.responsiveStyles?.medium?.width?.match(unitRegex)) {
       hasSmallOrMediumSize = true;
-      const mediaQuery = '(max-width: 991px)';
+      const mediaQuery = `(max-width: ${breakpointSizes.medium.max}px)`;
       const widthAndQuery = `${mediaQuery} ${block.responsiveStyles.medium.width.replace(
         '%',
         'vw'
@@ -267,11 +273,15 @@ class ImageComponent extends React.Component<any, { imageLoaded: boolean; load: 
   }
 
   render() {
-    const { aspectRatio, lazy } = this.props;
+    const { aspectRatio, lazy, builderBlock, builderState } = this.props;
     const children = this.props.builderBlock && this.props.builderBlock.children;
 
     let srcset = this.props.srcset;
-    const sizes = getSizes(this.props.sizes, this.props.builderBlock);
+    const sizes = getSizes(
+      this.props.sizes,
+      builderBlock,
+      builderState?.context.builderContent?.meta?.breakpoints || {}
+    );
     const image = this.image;
 
     if (srcset && image && image.includes('builder.io/api/v1/image')) {
@@ -283,7 +293,7 @@ class ImageComponent extends React.Component<any, { imageLoaded: boolean; load: 
       srcset = this.getSrcSet();
     }
 
-    const isPixel = this.props.builderBlock?.id.startsWith('builder-pixel-');
+    const isPixel = builderBlock?.id.startsWith('builder-pixel-');
     const { fitContent } = this.props;
 
     return (

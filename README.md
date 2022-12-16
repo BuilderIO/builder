@@ -8,7 +8,7 @@
 </p>
 <br />
 <h3 align="center">
-  Drag and drop Visual CMS for React, Vue, Angular, and more
+  Drag and drop Visual CMS for React, Vue, Qwik, Angular, and more
 </h3>
 <p align="center">
   Integrate with any site or app. Drag and drop with the components already in your codebase.
@@ -24,7 +24,7 @@
 <br />
 
 <p align="center">
-  <img alt="Animation of Builder.io Visual Editor" src="https://user-images.githubusercontent.com/844291/186968488-6344adaa-38bb-422c-b728-10c529af993d.gif" >
+  <img alt="Animation of Builder.io Visual Editor" src="https://user-images.githubusercontent.com/844291/205193225-d3258fda-71d2-4665-a8de-696401bd340e.gif" >
 </p>
 
 <br />
@@ -77,6 +77,35 @@ export function BuilderPage({ builderJson }) => {
   </tr>
 </table>
 
+## Get Started
+
+See our full [getting started docs](https://www.builder.io/c/docs/developers), or jump right into integration. We generally recommend to start with page buliding as your initial integration:
+
+<table>
+  <tr>
+    <td align="center">Integrate Page Building</td>
+    <td align="center">Integrate Section Building</td>
+    <td align="center">Integrate CMS Data</td>
+  </tr>
+  <tr>
+    <td align="center">
+      <a href="https://www.builder.io/c/docs/integrating-builder-pages">
+        <img alt="CTA to integrate page buliding" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F48bbb0ef5efb4d19a95a3f09f83c98f0" />
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://www.builder.io/c/docs/integrate-section-building">
+        <img alt="CTA to integrate section buliding" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F9db93cd1a29443fca7b67c1f9f458356" />
+      </a>
+    </td>    
+    <td align="center">
+      <a href="https://www.builder.io/c/docs/integrate-cms-data">
+        <img alt="CTA to integrate CMS data" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F8df098759b0a4c89b8c25edec1f3c9eb" />
+      </a>
+    </td>        
+  </tr>
+</table>
+
 ## Try it out!
 
 <table>
@@ -118,34 +147,6 @@ Using an API-driven UI allows you to:
 <img src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F73868572aeff49bdbf00a32fea8c1126" />
 
 
-## Get Started
-
-See our full [getting started docs](https://www.builder.io/c/docs/developers), or jump right into integration. We generally recommend to start with page buliding as your initial integration:
-
-<table>
-  <tr>
-    <td align="center">Integrate Page Building</td>
-    <td align="center">Integrate Section Building</td>
-    <td align="center">Integrate CMS Data</td>
-  </tr>
-  <tr>
-    <td align="center">
-      <a href="https://www.builder.io/c/docs/integrating-builder-pages">
-        <img alt="CTA to integrate page buliding" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F48bbb0ef5efb4d19a95a3f09f83c98f0" />
-      </a>
-    </td>
-    <td align="center">
-      <a href="https://www.builder.io/c/docs/integrate-section-building">
-        <img alt="CTA to integrate section buliding" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F9db93cd1a29443fca7b67c1f9f458356" />
-      </a>
-    </td>    
-    <td align="center">
-      <a href="https://www.builder.io/c/docs/integrate-cms-data">
-        <img alt="CTA to integrate CMS data" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F8df098759b0a4c89b8c25edec1f3c9eb" />
-      </a>
-    </td>        
-  </tr>
-</table>
 
 
 ## How does it work?

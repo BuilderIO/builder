@@ -61,6 +61,8 @@ export type RenderContentProps = {
   apiKey: string;
   customComponents?: RegisteredComponent[];
   canTrack?: boolean;
+  locale?: string;
+  includeRefs?: boolean;
 };
 
 interface BuilderComponentStateChange {
@@ -113,6 +115,7 @@ export default function RenderContent(props: RenderContentProps) {
       return {
         ...props.content?.data?.state,
         ...props.data,
+        ...(props.locale ? { locale: props.locale } : {}),
         ...state.overrideState,
       };
     },
@@ -314,7 +317,10 @@ export default function RenderContent(props: RenderContentProps) {
       if (isEditing()) {
         state.forceReRenderCount = state.forceReRenderCount + 1;
         registerInsertMenu();
-        setupBrowserForEditing();
+        setupBrowserForEditing({
+          ...(props.locale ? { locale: props.locale } : {}),
+          ...(props.includeRefs ? { includeRefs: props.includeRefs } : {}),
+        });
         Object.values<RegisteredComponent>(
           state.allRegisteredComponents
         ).forEach((registeredComponent) => {

@@ -1,7 +1,7 @@
 import { isBrowser } from '../is-browser.js';
 
 const BUILDER_SEARCHPARAMS_PREFIX = 'builder.';
-
+const BUILDER_OPTIONS_PREFIX = 'options.';
 type QueryObject = Record<string, string | string[]>;
 
 export const convertSearchParamsToQueryObject = (
@@ -25,7 +25,9 @@ export const getBuilderSearchParams = (
   const newOptions: QueryObject = {};
   Object.keys(options).forEach((key) => {
     if (key.startsWith(BUILDER_SEARCHPARAMS_PREFIX)) {
-      const trimmedKey = key.replace(BUILDER_SEARCHPARAMS_PREFIX, '');
+      const trimmedKey = key
+        .replace(BUILDER_SEARCHPARAMS_PREFIX, '')
+        .replace(BUILDER_OPTIONS_PREFIX, '');
       newOptions[trimmedKey] = options[key];
     }
   });

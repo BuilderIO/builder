@@ -54,6 +54,20 @@ export default function Image(props: ImageProps) {
         return '';
       }
     },
+
+    get aspectRatioCss():
+      | Pick<JSX.CSS, 'position' | 'height' | 'width' | 'left' | 'top'>
+      | undefined {
+      const aspectRatioStyles = {
+        position: 'absolute',
+        height: '100%',
+        width: '100%',
+        left: '0px',
+        top: '0px',
+      };
+      const out = props.aspectRatio ? aspectRatioStyles : undefined;
+      return out;
+    },
   });
   return (
     <>
@@ -68,15 +82,11 @@ export default function Image(props: ImageProps) {
           css={{
             opacity: '1',
             transition: 'opacity 0.2s ease-in-out',
-            position: 'absolute',
-            height: '100%',
-            width: '100%',
-            top: '0px',
-            left: '0px',
           }}
           style={{
-            objectPosition: props.backgroundSize || 'center',
+            objectPosition: props.backgroundPosition || 'center',
             objectFit: props.backgroundSize || 'cover',
+            ...state.aspectRatioCss,
           }}
           class={
             'builder-image' + (props.className ? ' ' + props.className : '')

@@ -24,11 +24,7 @@ exports[`Image Amp image 1`] = `
         <div
           builder-id="builder-1234"
           className="builder-block builder-1234 css-5gq5mq"
-          style={
-            Object {
-              "": undefined,
-            }
-          }
+          style={Object {}}
         >
           <amp-img
             className="builder-image css-yue2ks"
@@ -39,6 +35,14 @@ exports[`Image Amp image 1`] = `
             srcSet="//cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash_100x100.jpg?v=1592506853 100w, //cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash_200x200.jpg?v=1592506853 200w, //cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash_400x400.jpg?v=1592506853 400w, //cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash_800x800.jpg?v=1592506853 800w, //cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash_1200x1200.jpg?v=1592506853 1200w, //cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash_1600x1600.jpg?v=1592506853 1600w, //cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash_2000x2000.jpg?v=1592506853 2000w, https://cdn.shopify.com/s/files/1/0374/6457/2041/products/valerie-elash-o1Ic6JdypmA-unsplash.jpg?v=1592506853"
           />
         </div>
+        <img
+          aria-hidden="true"
+          builder-id="builder-pixel-4fzzzxjylrx"
+          className="builder-block builder-pixel-4fzzzxjylrx css-1mvsfya"
+          role="presentation"
+          src="https://cdn.builder.io/api/v1/pixel?apiKey=null"
+          style={Object {}}
+        />
       </div>
     </div>
   </div>
@@ -149,11 +153,7 @@ exports[`Image with responsive styles 1`] = `
         <div
           builder-id="builder-1234"
           className="builder-block builder-1234 css-5gq5mq"
-          style={
-            Object {
-              "": undefined,
-            }
-          }
+          style={Object {}}
         >
           <picture>
             <img
@@ -167,6 +167,14 @@ exports[`Image with responsive styles 1`] = `
             />
           </picture>
         </div>
+        <img
+          aria-hidden="true"
+          builder-id="builder-pixel-4fzzzxjylrx"
+          className="builder-block builder-pixel-4fzzzxjylrx css-1mvsfya"
+          role="presentation"
+          src="https://cdn.builder.io/api/v1/pixel?apiKey=null"
+          style={Object {}}
+        />
       </div>
     </div>
   </div>

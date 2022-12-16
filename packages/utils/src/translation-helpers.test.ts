@@ -1,11 +1,11 @@
 import { BuilderContent } from '@builder.io/sdk';
-import { applyTranslation, getTranslateableFields } from './translation-helpers';
+import { applyTranslation, getTranslateableFields, localizedType } from './translation-helpers';
 
 test('getTranslateableFields from content to match snapshot', async () => {
   const content: BuilderContent = {
     data: {
       title: {
-        '@type': '@builder.io/core:LocalizedValue',
+        '@type': localizedType,
         'en-US': 'Hello',
         Default: 'Test',
       },
@@ -20,6 +20,27 @@ test('getTranslateableFields from content to match snapshot', async () => {
             name: 'Text',
             options: {
               text: 'test',
+            },
+          },
+        },
+        {
+          '@type': '@builder.io/sdk:Element',
+          id: 'builder-custom-component-id',
+          meta: {
+            localizedTextInputs: ['heading'],
+          },
+          component: {
+            name: 'Heading',
+            options: {
+              heading: {
+                '@type': localizedType,
+                'en-US': 'en-us headings!',
+                Default: 'default heading!',
+              },
+              imageFile: {
+                '@type': localizedType,
+                Default: 'www.example.com/img.png',
+              },
             },
           },
         },
@@ -38,7 +59,7 @@ test('applyTranslation from content to match snapshot', async () => {
   const content: BuilderContent = {
     data: {
       title: {
-        '@type': '@builder.io/core:LocalizedValue',
+        '@type': localizedType,
         'en-US': 'Hello',
         Default: 'Test',
       },
@@ -53,15 +74,43 @@ test('applyTranslation from content to match snapshot', async () => {
             },
           },
         },
+        {
+          '@type': '@builder.io/sdk:Element',
+          id: 'builder-custom-component-id',
+          meta: {
+            localizedTextInputs: ['heading'],
+          },
+          component: {
+            name: 'Heading',
+            options: {
+              heading: {
+                '@type': localizedType,
+                'en-US': 'en-us headings!',
+                Default: 'I am a heading!',
+              },
+            },
+          },
+        },
       ],
     },
   };
 
-  const translations = {
+  const frenchTranslations = {
     'metadata.title': { value: 'salut' },
-    'blocks.block-id#text': { value: 'block-id' },
+    'blocks.block-id#text': { value: 'fench translated text' },
+    'blocks.builder-custom-component-id#heading': {
+      value: 'french translated heading',
+    },
+  };
+  const germanTranslations = {
+    'metadata.title': { value: 'hallo' },
+    'blocks.block-id#text': { value: 'german translatated' },
+    'blocks.builder-custom-component-id#heading': {
+      value: '&quot;german heading&quot;',
+    },
   };
 
-  const result = applyTranslation(content, translations, 'fr-FR');
+  let result = applyTranslation(content, frenchTranslations, 'fr-FR');
+  result = applyTranslation(result, germanTranslations, 'de');
   expect(result).toMatchSnapshot();
 });
