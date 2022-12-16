@@ -120,8 +120,9 @@ export default function Columns(props: ColumnProps) {
   });
 
   return (
-    <div>
-      <Show when={TARGET === 'reactNative'}>
+    <Show
+      when={TARGET !== 'reactNative'}
+      else={
         <div
           class={`builder-columns ${props.builderBlock.id}-breakpoints`}
           css={{
@@ -160,45 +161,44 @@ export default function Columns(props: ColumnProps) {
             )}
           </For>
         </div>
-      </Show>
-      <Show when={TARGET !== 'reactNative'}>
-        <div
-          class={`builder-columns ${props.builderBlock.id}-breakpoints`}
-          css={{
-            display: 'flex',
-            lineHeight: 'normal',
-          }}
-          style={state.columnsCssVars as CSS}
-        >
-          <RenderInlinedStyles styles={state.columnsStyles} />
+      }
+    >
+      <div
+        class={`builder-columns ${props.builderBlock.id}-breakpoints`}
+        css={{
+          display: 'flex',
+          lineHeight: 'normal',
+        }}
+        style={state.columnsCssVars as CSS}
+      >
+        <RenderInlinedStyles styles={state.columnsStyles} />
 
-          <For each={props.columns}>
-            {(column, index) => (
-              <div
-                style={{
-                  width: state.getColumnCssWidth(index),
-                  marginLeft: `${index === 0 ? 0 : state.getGutterSize()}px`,
-                  ...state.columnCssVars,
-                }}
-                class="builder-column"
-                css={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'stretch',
-                }}
-                key={index}
-              >
-                <RenderBlocks
-                  blocks={column.blocks}
-                  path={`component.options.columns.${index}.blocks`}
-                  parent={props.builderBlock.id}
-                  styleProp={{ flexGrow: '1' }}
-                />
-              </div>
-            )}
-          </For>
-        </div>
-      </Show>
-    </div>
+        <For each={props.columns}>
+          {(column, index) => (
+            <div
+              style={{
+                width: state.getColumnCssWidth(index),
+                marginLeft: `${index === 0 ? 0 : state.getGutterSize()}px`,
+                ...state.columnCssVars,
+              }}
+              class="builder-column"
+              css={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'stretch',
+              }}
+              key={index}
+            >
+              <RenderBlocks
+                blocks={column.blocks}
+                path={`component.options.columns.${index}.blocks`}
+                parent={props.builderBlock.id}
+                styleProp={{ flexGrow: '1' }}
+              />
+            </div>
+          )}
+        </For>
+      </div>
+    </Show>
   );
 }
