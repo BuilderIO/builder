@@ -6,10 +6,7 @@ import type { SizeName } from '../../constants/device-sizes';
 import type { Breakpoints } from '../../types/builder-content';
 import RenderInlinedStyles from '../../components/render-inlined-styles.lite';
 import { TARGET } from '../../constants/target.js';
-
-type CSS = {
-  [key: string]: string;
-};
+import { convertStyleMapToCSS } from '../../helpers/css';
 
 type Column = {
   blocks: any;
@@ -90,115 +87,107 @@ export default function Columns(props: ColumnProps) {
       return breakpointSizes[size].max;
     },
 
+    get columnStyleObjects() {
+      return {
+        columns: {
+          small: {
+            flexDirection: 'var(--flex-dir)',
+            alignItems: 'stretch',
+          },
+          medium: {
+            flexDirection: 'var(--flex-dir-tablet)',
+            alignItems: 'stretch',
+          },
+        },
+        column: {
+          small: {
+            width: 'var(--column-width) !important',
+            marginLeft: 'var(--column-margin-left) !important',
+          },
+          medium: {
+            width: 'var(--column-width-tablet) !important',
+            marginLeft: 'var(--column-margin-left-tablet) !important',
+          },
+        },
+      };
+    },
+
     get columnsStyles(): string {
       return `
         @media (max-width: ${state.getWidthForBreakpointSize('medium')}px) {
           .${props.builderBlock.id}-breakpoints {
-            flex-direction: var(--flex-dir-tablet);
-            align-items: stretch,
+            ${convertStyleMapToCSS(state.columnStyleObjects.columns.medium)}
           }
 
           .${props.builderBlock.id}-breakpoints > .builder-column {
-            width: var(--column-width-tablet) !important;
-            margin-left: var(--column-margin-left-tablet) !important;
+            ${convertStyleMapToCSS(state.columnStyleObjects.column.medium)}
           }
         }
 
         @media (max-width: ${state.getWidthForBreakpointSize('small')}px) {
           .${props.builderBlock.id}-breakpoints {
-            flex-direction: var(--flex-dir);
-            align-items: stretch;
+            ${convertStyleMapToCSS(state.columnStyleObjects.columns.small)}
           }
 
           .${props.builderBlock.id}-breakpoints > .builder-column {
-            width: var(--column-width) !important;
-            margin-left: var(--column-margin-left) !important;
+            ${convertStyleMapToCSS(state.columnStyleObjects.column.small)}
           }
         },
       `;
     },
+
+    get reactNativeColumnsStyles() {
+      return this.columnStyleObjects.columns.small;
+    },
+    get reactNativeColumnStyles() {
+      return this.columnStyleObjects.column.small;
+    },
   });
 
   return (
-    <Show
-      when={TARGET !== 'reactNative'}
-      else={
-        <div
-          class={`builder-columns ${props.builderBlock.id}-breakpoints`}
-          css={{
-            display: 'flex',
-            lineHeight: 'normal',
-            alignItems: 'stretch',
-            flexDirection: 'var(--flex-dir)',
-          }}
-          style={state.columnsCssVars as CSS}
-        >
-          <For each={props.columns}>
-            {(column, index) => (
-              <div
-                style={{
-                  width: state.getColumnCssWidth(index),
-                  marginLeft: `${index === 0 ? 0 : state.getGutterSize()}px`,
-                  ...state.columnCssVars,
-                }}
-                class="builder-column"
-                css={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'stretch',
-                  width: 'var(--column-width) !important',
-                  marginLeft: 'var(--column-margin-left) !important',
-                }}
-                key={index}
-              >
-                <RenderBlocks
-                  blocks={column.blocks}
-                  path={`component.options.columns.${index}.blocks`}
-                  parent={props.builderBlock.id}
-                  styleProp={{ flexGrow: '1' }}
-                />
-              </div>
-            )}
-          </For>
-        </div>
-      }
+    <div
+      class={`builder-columns ${props.builderBlock.id}-breakpoints`}
+      css={{
+        display: 'flex',
+        lineHeight: 'normal',
+      }}
+      style={{
+        ...(TARGET === 'reactNative' ? state.reactNativeColumnsStyles : {}),
+        ...state.columnsCssVars,
+      }}
     >
-      <div
-        class={`builder-columns ${props.builderBlock.id}-breakpoints`}
-        css={{
-          display: 'flex',
-          lineHeight: 'normal',
-        }}
-        style={state.columnsCssVars as CSS}
-      >
+      <Show when={TARGET !== 'reactNative'}>
         <RenderInlinedStyles styles={state.columnsStyles} />
+      </Show>
 
-        <For each={props.columns}>
-          {(column, index) => (
-            <div
-              style={{
-                width: state.getColumnCssWidth(index),
-                marginLeft: `${index === 0 ? 0 : state.getGutterSize()}px`,
-                ...state.columnCssVars,
-              }}
-              class="builder-column"
-              css={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'stretch',
-              }}
-              key={index}
-            >
-              <RenderBlocks
-                blocks={column.blocks}
-                path={`component.options.columns.${index}.blocks`}
-                parent={props.builderBlock.id}
-                styleProp={{ flexGrow: '1' }}
-              />
-            </div>
-          )}
-        </For>
-      </div>
-    </Show>
+      <For each={props.columns}>
+        {(column, index) => (
+          <div
+            style={{
+              width: state.getColumnCssWidth(index),
+              marginLeft: `${index === 0 ? 0 : state.getGutterSize()}px`,
+              ...(TARGET === 'reactNative'
+                ? state.reactNativeColumnStyles
+                : {}),
+              ...state.columnCssVars,
+            }}
+            class="builder-column"
+            css={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'stretch',
+            }}
+            key={index}
+          >
+            <RenderBlocks
+              blocks={column.blocks}
+              path={`component.options.columns.${index}.blocks`}
+              parent={props.builderBlock.id}
+              styleProp={{ flexGrow: '1' }}
+            />
+          </div>
+        )}
+      </For>
+    </div>
   );
 }

@@ -1,6 +1,8 @@
 import { camelToKebabCase } from '../functions/camel-to-kebab-case.js';
 
-const convertStyleMaptoCSS = (style: Partial<CSSStyleDeclaration>): string => {
+export const convertStyleMapToCSS = (
+  style: Partial<CSSStyleDeclaration>
+): string => {
   const cssProps = Object.entries(style).map(([key, value]) => {
     if (typeof value === 'string') {
       return `${camelToKebabCase(key)}: ${value};`;
@@ -20,7 +22,7 @@ export const createCssClass = ({
   styles: Partial<CSSStyleDeclaration>;
 }) => {
   const cssClass = `.${className} {
-    ${convertStyleMaptoCSS(styles)}
+    ${convertStyleMapToCSS(styles)}
   }`;
 
   if (mediaQuery) {
