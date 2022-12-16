@@ -18,7 +18,7 @@ import onChange from '../../lib/on-change';
 
 export { onChange };
 
-import { getSizesForBreakpoints, Sizes } from '../constants/device-sizes.constant';
+import { Breakpoints, getSizesForBreakpoints, Sizes } from '../constants/device-sizes.constant';
 import {
   BuilderAsyncRequestsContext,
   RequestOrPromise,
@@ -291,6 +291,7 @@ export interface BuilderComponentState {
   updates: number;
   context: any;
   key: number;
+  breakpoints?: Breakpoints;
 }
 
 function searchToObject(location: Location | Url) {
@@ -477,6 +478,28 @@ export class BuilderComponent extends React.Component<
   messageListener = (event: MessageEvent) => {
     const info = event.data;
     switch (info.type) {
+      case 'builder.configureSdk': {
+        const data = info.data;
+
+        if (!data.contentId || data.contentId !== this.useContent?.id) {
+          return;
+        }
+
+        this.sizes = getSizesForBreakpoints(data.breakpoints || {});
+
+        this.setState({
+          state: Object.assign(this.rootState, {
+            deviceSize: this.deviceSizeState,
+            // TODO: will user attributes be ready here?
+            device: this.device,
+          }),
+          updates: ((this.state && this.state.updates) || 0) + 1,
+          breakpoints: data.breakpoints,
+        });
+
+        break;
+      }
+
       case 'builder.updateSpacer': {
         const data = info.data;
         const currentSpacer = this.rootState._spacer;
@@ -1011,6 +1034,10 @@ export class BuilderComponent extends React.Component<
                           return null;
                         }
                         if (fullData && fullData.id) {
+                          if (this.state.breakpoints) {
+                            fullData.meta = fullData.meta || {};
+                            fullData.meta.breakpoints = this.state.breakpoints;
+                          }
                           this.state.context.builderContent = fullData;
                         }
                         if (Builder.isBrowser) {

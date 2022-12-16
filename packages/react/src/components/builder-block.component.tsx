@@ -1,5 +1,4 @@
 /** @jsx jsx */
-
 import { Builder, builder, BuilderElement, Component } from '@builder.io/sdk';
 import { ClassNames, jsx } from '@emotion/core';
 import React from 'react';
