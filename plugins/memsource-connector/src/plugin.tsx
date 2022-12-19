@@ -39,8 +39,8 @@ registerPlugin(
             },
             {
               name: 'apiHost',
-              type: 'string'
-            }
+              type: 'string',
+            },
           ]
         : []),
     ],

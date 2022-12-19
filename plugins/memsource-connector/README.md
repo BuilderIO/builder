@@ -2,25 +2,27 @@
 
 ## Installation
 
-From the integrations tab, pick `Memsource`
+From the integrations tab, pick `Memsource`, it'll ask you for your memsource user name and password, make sure the user has a `Project Manager` role.
+![Memsource connector configuration screen](https://cdn.builder.io/api/v1/image/assets%2F802a1eea7c44430aa23d4b9c708d07ad%2F09e2e3cb090d4679ad10861931dc3f7b)
 
 ## Translating content
 What's being translated:
 - All text elements in builder content [you can exclude specific element by right click + `exclude from future translations`]
 - All custom fields in content that are marked as `localized`
+- All custom components inputs that are marked as `localized`
 
-From what language?
-The source language should match your smartling project source locale.
-
-To what languages?
-By default it'll request translations for all target locales configured in your project locales, you can use the targeting UI to limit the translation request to a subset of those locales.
 
 How To translate?
-- prepare translation jobs by adding contents to draft jobs by pressing translate in content options or content list options [todo screenshots]
-- once a translation job is ready for submission press `authorize`, this will send it to smartling.
-- You apply translations [pending or completed] at any time after authorization from the option `apply translation`
+- once done with preparing content, publish and you'll see a `Translate` action in the content options menu.
+![content options menu](https://cdn.builder.io/api/v1/image/assets%2F802a1eea7c44430aa23d4b9c708d07ad%2F846ed645d3bc478a923570c771aa9c47)
+
+![content translate action](https://cdn.builder.io/api/v1/image/assets%2F802a1eea7c44430aa23d4b9c708d07ad%2F1833fe32768143aeb029819dfbe625af)
+
+
+- it'll ask you for the source languate and target languages and create a project in memsource with those configuration.
+![pick project options](https://cdn.builder.io/api/v1/image/assets%2F802a1eea7c44430aa23d4b9c708d07ad%2F1833fe32768143aeb029819dfbe625af)
+- once the project is completed, press on `Apply Translation` to get the translated values into your content.
+- You can at any time restart the process by pressing on `Reset Translation`.
 
 Future work:
-- Automating the translation application on content once a job is completed in smartling.
-- Including custom components localized text inputs.
-
+- Automating the translation application on content once a project is completed in memsource.
