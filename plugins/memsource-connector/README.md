@@ -1,8 +1,8 @@
-# Builder.io Smartling Integration Plugin [Alpha]
+# Builder.io Memsource Integration Plugin
 
 ## Installation
 
-From the integrations tab, pick `smartling`
+From the integrations tab, pick `Memsource`
 
 ## Translating content
 What's being translated:

@@ -37,6 +37,10 @@ registerPlugin(
               name: 'callbackHost',
               type: 'string',
             },
+            {
+              name: 'apiHost',
+              type: 'string'
+            }
           ]
         : []),
     ],
@@ -44,7 +48,7 @@ registerPlugin(
     noPreviewTypes: true,
   },
   async settings => {
-    const api = new Memsource();
+    const api = new Memsource(settings.get('apiHost'));
     registerEditorOnLoad(({ safeReaction }) => {
       safeReaction(
         () => {

@@ -16,12 +16,12 @@ export class Memsource {
       pluginId: pkg.name,
       apiKey: appState.user.apiKey,
     });
-    const host = 'http://localhost:4000'; //${appState.config.apiRoot()}
+    const host = this.apiHost || 'https://cdn.builder.io';
     const baseUrl = new URL(`${host}/api/v1/memsource/${path}`);
     baseUrl.search = params.toString();
     return baseUrl.toString();
   }
-  constructor() {
+  constructor(private apiHost?: string) {
     this.loaded = new Promise(resolve => (this.resolveLoaded = resolve));
     this.init();
   }
