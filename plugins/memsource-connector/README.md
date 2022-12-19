@@ -16,7 +16,7 @@ How To translate?
 - once done with preparing content, publish and you'll see a `Translate` action in the content options menu.
 ![content options menu](https://cdn.builder.io/api/v1/image/assets%2F802a1eea7c44430aa23d4b9c708d07ad%2F846ed645d3bc478a923570c771aa9c47)
 
-![content translate action](https://cdn.builder.io/api/v1/image/assets%2F802a1eea7c44430aa23d4b9c708d07ad%2F1833fe32768143aeb029819dfbe625af)
+![content translate action](https://cdn.builder.io/api/v1/image/assets%2F802a1eea7c44430aa23d4b9c708d07ad%2Fce44072c7f3f442db58c41c14bddb30d)
 
 
 - it'll ask you for the source languate and target languages and create a project in memsource with those configuration.
