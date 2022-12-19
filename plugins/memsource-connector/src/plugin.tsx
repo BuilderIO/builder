@@ -27,7 +27,7 @@ registerPlugin(
       },
       {
         name: 'password',
-        type: 'string',
+        type: 'password',
         required: true,
       },
       // allow developer to override callback host , e.g ngrok for local development
