@@ -148,6 +148,42 @@ test.describe(targetContext.name, () => {
             cssProperty: 'color',
           })
         ).toBe(expectedTextColor);
+
+        const column2 = page.locator(`text=Column 2`);
+        await expect(column2).toBeVisible();
+
+        let expectedColumnTextColor = 'rgb(0, 0, 0)'; // black text color
+        if (process.env.SDK === 'reactNative') {
+          expectedColumnTextColor = 'rgb(126, 211, 33)'; // greenish text color
+        }
+
+        await expect(
+          await getElementStyleValue({
+            locator: column2,
+            cssProperty: 'color',
+          })
+        ).toBe(expectedColumnTextColor);
+
+        // Skipping this image test for react-native.
+        // Its difficult to locate the image in react-native as css selectors don't work as expected.
+        if (process.env.SDK !== 'reactNative') {
+          const image = page.locator(`.builder-block:has(img.builder-image)`);
+          await expect(image).toBeVisible();
+
+          const expectedImageCss: Record<string, string> = {
+            display: 'flex',
+            width: '785px',
+          };
+
+          for (const property of Object.keys(expectedImageCss)) {
+            await expect(
+              await getElementStyleValue({
+                locator: image,
+                cssProperty: property,
+              })
+            ).toBe(expectedImageCss[property]);
+          }
+        }
       });
 
       test('medium tablet size', async ({ page }) => {
@@ -168,6 +204,41 @@ test.describe(targetContext.name, () => {
             cssProperty: 'color',
           })
         ).toBe(expectedTextColor);
+
+        const column2 = page.locator(`text=Column 2`);
+        await expect(column2).toBeVisible();
+
+        let expectedColumnTextColor = 'rgb(223, 22, 22)'; // reddish text color
+        if (process.env.SDK === 'reactNative') {
+          expectedColumnTextColor = 'rgb(126, 211, 33)'; // greenish text color
+        }
+
+        await expect(
+          await getElementStyleValue({
+            locator: column2,
+            cssProperty: 'color',
+          })
+        ).toBe(expectedColumnTextColor);
+
+        // Skipping this image test for react-native.
+        // Its difficult to locate the image in react-native as css selectors don't work as expected.
+        if (process.env.SDK !== 'reactNative') {
+          const image = page.locator(`.builder-block:has(img.builder-image)`);
+          await expect(image).not.toBeVisible();
+
+          const expectedImageCss: Record<string, string> = {
+            display: 'none',
+          };
+
+          for (const property of Object.keys(expectedImageCss)) {
+            await expect(
+              await getElementStyleValue({
+                locator: image,
+                cssProperty: property,
+              })
+            ).toBe(expectedImageCss[property]);
+          }
+        }
       });
 
       test('small mobile size', async ({ page }) => {
@@ -182,6 +253,38 @@ test.describe(targetContext.name, () => {
             cssProperty: 'color',
           })
         ).toBe('rgb(65, 117, 5)'); // greenish text color
+
+        const column2 = page.locator(`text=Column 2`);
+        await expect(column2).toBeVisible();
+
+        await expect(
+          await getElementStyleValue({
+            locator: column2,
+            cssProperty: 'color',
+          })
+        ).toBe('rgb(126, 211, 33)'); // greenish text color
+
+        // Skipping this image test for react-native.
+        // Its difficult to locate the image in react-native as css selectors don't work as expected.
+        if (process.env.SDK !== 'reactNative') {
+          const image = page.locator(`.builder-block:has(img.builder-image)`);
+          await expect(image).toBeVisible();
+
+          const expectedImageCss: Record<string, string> = {
+            display: 'flex',
+            width: '121px',
+            'max-width': '250px',
+          };
+
+          for (const property of Object.keys(expectedImageCss)) {
+            await expect(
+              await getElementStyleValue({
+                locator: image,
+                cssProperty: property,
+              })
+            ).toBe(expectedImageCss[property]);
+          }
+        }
       });
     });
 
@@ -211,6 +314,42 @@ test.describe(targetContext.name, () => {
             cssProperty: 'color',
           })
         ).toBe(expectedTextColor); // black text color
+
+        const column2 = page.locator(`text=Column 2`);
+        await expect(column2).toBeVisible();
+
+        let expectedColumnTextColor = 'rgb(0, 0, 0)'; // black text color
+        if (process.env.SDK === 'reactNative') {
+          expectedColumnTextColor = 'rgb(126, 211, 33)'; // greenish text color
+        }
+
+        await expect(
+          await getElementStyleValue({
+            locator: column2,
+            cssProperty: 'color',
+          })
+        ).toBe(expectedColumnTextColor);
+
+        // Skipping this image test for react-native.
+        // Its difficult to locate the image in react-native as css selectors don't work as expected.
+        if (process.env.SDK !== 'reactNative') {
+          const image = page.locator(`.builder-block:has(img.builder-image)`);
+          await expect(image).toBeVisible();
+
+          const expectedImageCss: Record<string, string> = {
+            display: 'flex',
+            width: '976px',
+          };
+
+          for (const property of Object.keys(expectedImageCss)) {
+            await expect(
+              await getElementStyleValue({
+                locator: image,
+                cssProperty: property,
+              })
+            ).toBe(expectedImageCss[property]);
+          }
+        }
       });
 
       test('medium tablet size', async ({ page }) => {
@@ -231,6 +370,41 @@ test.describe(targetContext.name, () => {
             cssProperty: 'color',
           })
         ).toBe(expectedTextColor);
+
+        const column2 = page.locator(`text=Column 2`);
+        await expect(column2).toBeVisible();
+
+        let expectedColumnTextColor = 'rgb(223, 22, 22)'; // reddish text color
+        if (process.env.SDK === 'reactNative') {
+          expectedColumnTextColor = 'rgb(126, 211, 33)'; // greenish text color
+        }
+
+        await expect(
+          await getElementStyleValue({
+            locator: column2,
+            cssProperty: 'color',
+          })
+        ).toBe(expectedColumnTextColor);
+
+        // Skipping this image test for react-native.
+        // Its difficult to locate the image in react-native as css selectors don't work as expected.
+        if (process.env.SDK !== 'reactNative') {
+          const image = page.locator(`.builder-block:has(img.builder-image)`);
+          await expect(image).not.toBeVisible();
+
+          const expectedImageCss: Record<string, string> = {
+            display: 'none',
+          };
+
+          for (const property of Object.keys(expectedImageCss)) {
+            await expect(
+              await getElementStyleValue({
+                locator: image,
+                cssProperty: property,
+              })
+            ).toBe(expectedImageCss[property]);
+          }
+        }
       });
 
       test('small mobile size', async ({ page }) => {
@@ -246,6 +420,38 @@ test.describe(targetContext.name, () => {
             cssProperty: 'color',
           })
         ).toBe('rgb(65, 117, 5)'); // greenish text color
+
+        const column2 = page.locator(`text=Column 2`);
+        await expect(column2).toBeVisible();
+
+        await expect(
+          await getElementStyleValue({
+            locator: column2,
+            cssProperty: 'color',
+          })
+        ).toBe('rgb(126, 211, 33)'); // greenish text color
+
+        // Skipping this image test for react-native.
+        // Its difficult to locate the image in react-native as css selectors don't work as expected.
+        if (process.env.SDK !== 'reactNative') {
+          const image = page.locator(`.builder-block:has(img.builder-image)`);
+          await expect(image).toBeVisible();
+
+          const expectedImageCss: Record<string, string> = {
+            display: 'flex',
+            width: '156px',
+            'max-width': '250px',
+          };
+
+          for (const property of Object.keys(expectedImageCss)) {
+            await expect(
+              await getElementStyleValue({
+                locator: image,
+                cssProperty: property,
+              })
+            ).toBe(expectedImageCss[property]);
+          }
+        }
       });
     });
   });

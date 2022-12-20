@@ -6,9 +6,14 @@ import { CONTENT as dataBindings } from './data-bindings.js';
 import { CONTENT as customBreakpoints } from './custom-breakpoints.js';
 
 // TO-DO: import real content type from SDKs
+interface Breakpoints {
+  small: number;
+  medium: number;
+}
+type Nullable<T> = T | null | undefined;
 type BuilderContent = Partial<{
   data: { [index: string]: any };
-  meta?: { [index: string]: any };
+  meta?: { breakpoints?: Nullable<Breakpoints>; [index: string]: any };
 }>;
 
 function isBrowser(): boolean {

@@ -1,14 +1,12 @@
 import RenderBlocks from '../../components/render-blocks.lite';
-import { For, useStore } from '@builder.io/mitosis';
+import { For, Show, useStore } from '@builder.io/mitosis';
 import type { BuilderBlock } from '../../types/builder-block';
 import { getSizesForBreakpoints } from '../../constants/device-sizes';
 import type { SizeName } from '../../constants/device-sizes';
 import type { Breakpoints } from '../../types/builder-content';
 import RenderInlinedStyles from '../../components/render-inlined-styles.lite';
-
-type CSS = {
-  [key: string]: string;
-};
+import { TARGET } from '../../constants/target.js';
+import { convertStyleMapToCSS } from '../../helpers/css';
 
 type Column = {
   blocks: any;
@@ -89,32 +87,60 @@ export default function Columns(props: ColumnProps) {
       return breakpointSizes[size].max;
     },
 
+    get columnStyleObjects() {
+      return {
+        columns: {
+          small: {
+            flexDirection: 'var(--flex-dir)',
+            alignItems: 'stretch',
+          },
+          medium: {
+            flexDirection: 'var(--flex-dir-tablet)',
+            alignItems: 'stretch',
+          },
+        },
+        column: {
+          small: {
+            width: 'var(--column-width) !important',
+            marginLeft: 'var(--column-margin-left) !important',
+          },
+          medium: {
+            width: 'var(--column-width-tablet) !important',
+            marginLeft: 'var(--column-margin-left-tablet) !important',
+          },
+        },
+      };
+    },
+
     get columnsStyles(): string {
       return `
         @media (max-width: ${state.getWidthForBreakpointSize('medium')}px) {
           .${props.builderBlock.id}-breakpoints {
-            flex-direction: var(--flex-dir-tablet);
-            align-items: stretch,
+            ${convertStyleMapToCSS(state.columnStyleObjects.columns.medium)}
           }
 
           .${props.builderBlock.id}-breakpoints > .builder-column {
-            width: var(--column-width-tablet) !important;
-            margin-left: var(--column-margin-left-tablet) !important;
+            ${convertStyleMapToCSS(state.columnStyleObjects.column.medium)}
           }
         }
 
         @media (max-width: ${state.getWidthForBreakpointSize('small')}px) {
           .${props.builderBlock.id}-breakpoints {
-            flex-direction: var(--flex-dir);
-            align-items: stretch;
+            ${convertStyleMapToCSS(state.columnStyleObjects.columns.small)}
           }
 
           .${props.builderBlock.id}-breakpoints > .builder-column {
-            width: var(--column-width) !important;
-            margin-left: var(--column-margin-left) !important;
+            ${convertStyleMapToCSS(state.columnStyleObjects.column.small)}
           }
         },
       `;
+    },
+
+    get reactNativeColumnsStyles() {
+      return this.columnStyleObjects.columns.small;
+    },
+    get reactNativeColumnStyles() {
+      return this.columnStyleObjects.column.small;
     },
   });
 
@@ -125,15 +151,20 @@ export default function Columns(props: ColumnProps) {
         display: 'flex',
         lineHeight: 'normal',
       }}
-      style={state.columnsCssVars as CSS}
+      style={{
+        ...(TARGET === 'reactNative' ? state.reactNativeColumnsStyles : {}),
+        ...state.columnsCssVars,
+      }}
     >
-      {/**
-       * Need to use style tag for column and columns style instead of using the
-       * respective 'style' or 'css' attributes because the rules now contain
-       * "dynamic" media query values based on custom breakpoints.
-       * Adding them directly otherwise leads to Mitosis and TS errors.
-       */}
-      <RenderInlinedStyles styles={state.columnsStyles} />
+      <Show when={TARGET !== 'reactNative'}>
+        {/**
+         * Need to use style tag for column and columns style instead of using the
+         * respective 'style' or 'css' attributes because the rules now contain
+         * "dynamic" media query values based on custom breakpoints.
+         * Adding them directly otherwise leads to Mitosis and TS errors.
+         */}
+        <RenderInlinedStyles styles={state.columnsStyles} />
+      </Show>
 
       <For each={props.columns}>
         {(column, index) => (
@@ -141,6 +172,9 @@ export default function Columns(props: ColumnProps) {
             style={{
               width: state.getColumnCssWidth(index),
               marginLeft: `${index === 0 ? 0 : state.getGutterSize()}px`,
+              ...(TARGET === 'reactNative'
+                ? state.reactNativeColumnStyles
+                : {}),
               ...state.columnCssVars,
             }}
             class="builder-column"
