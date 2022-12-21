@@ -1864,13 +1864,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis-cli@npm:^0.0.33":
-  version: 0.0.33
-  resolution: "@builder.io/mitosis-cli@npm:0.0.33"
+"@builder.io/mitosis-cli@npm:0.0.36":
+  version: 0.0.36
+  resolution: "@builder.io/mitosis-cli@npm:0.0.36"
   dependencies:
     "@babel/core": ^7.17.8
     "@babel/preset-typescript": ^7.16.7
-    "@builder.io/mitosis": 0.0.74
+    "@builder.io/mitosis": 0.0.78
     "@vue/compiler-sfc": ^3.1.5
     babel-preset-solid: ^1.3.13
     chalk: ^4.1.0
@@ -1891,13 +1891,13 @@ __metadata:
     vue-template-validator: ^1.1.5
   bin:
     mitosis: bin/mitosis
-  checksum: 8bcff792c64da92680dc038b26d4202bc425591a7627a325112c92942ace292d664c6ca5ccfaa892f01e7d63492a42eee772ee493138b6a8c1eba10301d18534
+  checksum: 027eabff74e764b0f98be1bbfa5a81a50cebb990742bffff10dd850a8819120c4c0573ded5f615a4b68a73f2765aab89859875436d49d117e6a323dc0ce4e188
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis@npm:0.0.74, @builder.io/mitosis@npm:^0.0.74":
-  version: 0.0.74
-  resolution: "@builder.io/mitosis@npm:0.0.74"
+"@builder.io/mitosis@npm:0.0.78":
+  version: 0.0.78
+  resolution: "@builder.io/mitosis@npm:0.0.78"
   dependencies:
     "@angular/compiler": ^11.2.11
     "@babel/core": 7.14.5
@@ -1926,9 +1926,9 @@ __metadata:
     prettier-plugin-svelte: ^2.7.0
     svelte: ^3.30.0
     traverse: ^0.6.6
-    typescript: ^4.7.3
+    typescript: ^4.8.4
     vue: ~2.6
-  checksum: ef262005b9c9bfe25ca9d0523c444a0a56221081c05b03e2b72753a335b679b44734f5b62f6882472ef46f236fde56ed64ff0949e3a1c7b4432c2825f47ac4af
+  checksum: 10307e9ec62af37d0ce93bfa382168003293daf63c0649b751a453207501f76d6973570be71c60d7bd8f120ce1b7ef56539411525be80ab20b5ae8953f7a4853
   languageName: node
   linkType: hard
 
@@ -2111,8 +2111,8 @@ __metadata:
   resolution: "@builder.io/sdks@workspace:."
   dependencies:
     "@builder.io/eslint-plugin-mitosis": ^0.0.10
-    "@builder.io/mitosis": ^0.0.74
-    "@builder.io/mitosis-cli": ^0.0.33
+    "@builder.io/mitosis": 0.0.78
+    "@builder.io/mitosis-cli": 0.0.36
     "@playwright/test": ^1.27.1
     "@types/jest": ^27.4.1
     "@types/node-fetch": ^2.5.12
@@ -25888,7 +25888,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:*, typescript@npm:^4, typescript@npm:^4.6.4, typescript@npm:^4.7.2, typescript@npm:^4.7.3, typescript@npm:^4.7.4, typescript@npm:^4.8.4":
+"typescript@npm:*, typescript@npm:^4, typescript@npm:^4.6.4, typescript@npm:^4.7.2, typescript@npm:^4.7.4, typescript@npm:^4.8.4":
   version: 4.8.4
   resolution: "typescript@npm:4.8.4"
   bin:
@@ -25908,7 +25908,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@*#~builtin<compat/typescript>, typescript@patch:typescript@^4#~builtin<compat/typescript>, typescript@patch:typescript@^4.6.4#~builtin<compat/typescript>, typescript@patch:typescript@^4.7.2#~builtin<compat/typescript>, typescript@patch:typescript@^4.7.3#~builtin<compat/typescript>, typescript@patch:typescript@^4.7.4#~builtin<compat/typescript>, typescript@patch:typescript@^4.8.4#~builtin<compat/typescript>":
+"typescript@patch:typescript@*#~builtin<compat/typescript>, typescript@patch:typescript@^4#~builtin<compat/typescript>, typescript@patch:typescript@^4.6.4#~builtin<compat/typescript>, typescript@patch:typescript@^4.7.2#~builtin<compat/typescript>, typescript@patch:typescript@^4.7.4#~builtin<compat/typescript>, typescript@patch:typescript@^4.8.4#~builtin<compat/typescript>":
   version: 4.8.4
   resolution: "typescript@patch:typescript@npm%3A4.8.4#~builtin<compat/typescript>::version=4.8.4&hash=bda367"
   bin:
