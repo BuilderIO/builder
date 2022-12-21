@@ -70,6 +70,20 @@ test.describe(targetContext.name, () => {
       text: 'Mattel Certified by Great Place to Work and Named to Fast Company’s List of 100 Best Workplaces for Innovators',
     });
   });
+  test('data-binding-styles', async ({ page }) => {
+    await page.goto('/data-binding-styles');
+    const isRNSDK = process.env.SDK === 'reactNative';
+    if (isRNSDK) {
+      // styling is not yet implemented in RN SDK
+      return;
+    }
+    await expect(
+      await getElementStyleValue({
+        locator: page.locator(`text="This text should be red..."`),
+        cssProperty: 'color',
+      })
+    ).toBe('rgb(255, 0, 0)');
+  });
 
   /**
    * We are temporarily skipping this test because it relies on network requests.
