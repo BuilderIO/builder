@@ -72,7 +72,11 @@ test.describe(targetContext.name, () => {
   });
   test('data-binding-styles', async ({ page }) => {
     await page.goto('/data-binding-styles');
-
+    const isRNSDK = process.env.SDK === 'reactNative';
+    if (isRNSDK) {
+      // styling is not yet implemented in RN SDK
+      return;
+    }
     await expect(
       await getElementStyleValue({
         locator: page.locator(`text="This text should be red..."`),
