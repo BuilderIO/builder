@@ -5,6 +5,7 @@ import { findDOMNode } from 'react-dom';
 export function getBlockProperties(block: BuilderBlock) {
   return {
     ...block.properties,
+    style: block.style,
     ref: (ref) => {
       if (isEditing()) {
         const el = findDOMNode(ref);
