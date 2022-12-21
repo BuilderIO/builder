@@ -3919,43 +3919,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@oclif/core@npm:^1.16.5, @oclif/core@npm:^1.18.0":
-  version: 1.18.0
-  resolution: "@oclif/core@npm:1.18.0"
-  dependencies:
-    "@oclif/linewrap": ^1.0.0
-    "@oclif/screen": ^3.0.2
-    ansi-escapes: ^4.3.2
-    ansi-styles: ^4.3.0
-    cardinal: ^2.1.1
-    chalk: ^4.1.2
-    clean-stack: ^3.0.1
-    cli-progress: ^3.10.0
-    debug: ^4.3.4
-    ejs: ^3.1.6
-    fs-extra: ^9.1.0
-    get-package-type: ^0.1.0
-    globby: ^11.1.0
-    hyperlinker: ^1.0.0
-    indent-string: ^4.0.0
-    is-wsl: ^2.2.0
-    js-yaml: ^3.14.1
-    natural-orderby: ^2.0.3
-    object-treeify: ^1.1.33
-    password-prompt: ^1.1.2
-    semver: ^7.3.7
-    string-width: ^4.2.3
-    strip-ansi: ^6.0.1
-    supports-color: ^8.1.1
-    supports-hyperlinks: ^2.2.0
-    tslib: ^2.3.1
-    widest-line: ^3.1.0
-    wrap-ansi: ^7.0.0
-  checksum: 19d08e0f206a976ce809879c379691ea2e2d8871451c733d04ccb3af37b18be6751d079f5e26f5dc513a9be4f3b37ec1d4ab3b336cde518e4251569e24b6bc32
-  languageName: node
-  linkType: hard
-
-"@oclif/core@npm:^1.2.0":
+"@oclif/core@npm:^1.16.5, @oclif/core@npm:^1.18.0, @oclif/core@npm:^1.2.0":
   version: 1.19.0
   resolution: "@oclif/core@npm:1.19.0"
   dependencies:
