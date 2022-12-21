@@ -81,6 +81,10 @@ test.describe(targetContext.name, () => {
     ).toBe('rgb(255, 0, 0)');
   });
 
+  /**
+   * We are temporarily skipping this test because it relies on network requests.
+   * TO-DO: re-enable it once we have a way to mock network requests.
+   */
   test.skip('image', async ({ page }) => {
     await page.goto('/image');
 
