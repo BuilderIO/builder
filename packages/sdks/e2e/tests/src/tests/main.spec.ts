@@ -75,13 +75,13 @@ test.describe(targetContext.name, () => {
 
     await expect(
       await getElementStyleValue({
-        locator: page.locator(`text="This text should be red"`).first(),
+        locator: page.locator(`.builder-text`).first(),
         cssProperty: 'color',
       })
-    ).toBe('red');
+    ).toBe('rgb(255, 0, 0)');
   });
 
-  test('image', async ({ page }) => {
+  test.skip('image', async ({ page }) => {
     await page.goto('/image');
 
     const imageLocator = await page.locator('img');
