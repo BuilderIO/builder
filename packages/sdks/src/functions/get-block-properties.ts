@@ -1,10 +1,11 @@
+import { TARGET } from '../constants/target.js';
 import type { BuilderBlock } from '../types/builder-block.js';
 
 export function getBlockProperties(block: BuilderBlock) {
   return {
     ...block.properties,
     'builder-id': block.id,
-    style: toStyleAttribute(block.style),
+    style: TARGET === 'svelte' ? toStyleAttribute(block.style) : block.style,
     class: [block.id, 'builder-block', block.class, block.properties?.class]
       .filter(Boolean)
       .join(' '),
