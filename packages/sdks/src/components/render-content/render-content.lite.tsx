@@ -24,7 +24,7 @@ import type {
 import type { Dictionary, Nullable } from '../../types/typescript.js';
 import RenderBlocks from '../render-blocks.lite';
 import RenderContentStyles from './components/render-styles.lite';
-import BuilderContext from '../../context/builder.context.lite';
+import builderContext from '../../context/builder.context.lite';
 import {
   Show,
   onMount,
@@ -288,22 +288,15 @@ export default function RenderContent(props: RenderContentProps) {
   // TODO: inherit context here too
   // });
 
-  setContext(BuilderContext, {
-    get content() {
-      return state.useContent;
-    },
-    get state() {
-      return state.contentState;
-    },
-    get context() {
-      return state.contextContext;
-    },
-    get apiKey() {
-      return props.apiKey;
-    },
-    get registeredComponents() {
-      return state.allRegisteredComponents;
-    },
+  // This gets name `BuilderContext`, but vue code everywhere tries to inject `builderContext` (lowercase)
+  // where is this discrepancy coming from?
+  setContext(builderContext, {
+    // TO-DO: remove all getters, they're causing issues with Vue
+    content: state.useContent,
+    state: state.contentState,
+    context: state.contextContext,
+    apiKey: props.apiKey,
+    registeredComponents: state.allRegisteredComponents,
   });
 
   onMount(() => {
