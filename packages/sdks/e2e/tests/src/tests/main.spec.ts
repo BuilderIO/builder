@@ -71,7 +71,11 @@ test.describe(targetContext.name, () => {
     });
   });
 
-  test('image', async ({ page }) => {
+  /**
+   * We are temporarily skipping this test because it relies on network requests.
+   * TO-DO: re-enable it once we have a way to mock network requests.
+   */
+  test.skip('image', async ({ page }) => {
     await page.goto('/image');
 
     const imageLocator = await page.locator('img');
