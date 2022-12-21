@@ -18,7 +18,12 @@ import type { RepeatData } from './types.js';
 import RenderRepeatedBlock from './render-repeated-block.lite';
 import { TARGET } from '../../constants/target.js';
 import { extractTextStyles } from '../../functions/extract-text-styles.js';
+
+// we want to preserve this import because react-native output actually uses it.
+// we use a Mitosis plugin to use it instead of `RenderComponent` in the react-native output
+// eslint-disable-next-line unused-imports/no-unused-imports, @typescript-eslint/no-unused-vars
 import RenderComponentWithContext from './render-component-with-context.lite';
+
 import RenderComponent from './render-component.lite';
 import { getReactNativeBlockStyles } from '../../functions/get-react-native-block-styles.js';
 
@@ -34,7 +39,6 @@ useMetadata({
     },
   },
   elementTag: 'state.tag',
-  componentElementTag: 'state.renderComponentTag',
 });
 
 export default function RenderBlock(props: RenderBlockProps) {
@@ -209,23 +213,12 @@ export default function RenderBlock(props: RenderBlockProps) {
         inheritedStyles: state.inheritedTextStyles,
       };
     },
-
-    get renderComponentTag(): any {
-      if (TARGET === 'reactNative') {
-        return RenderComponentWithContext;
-      } else if (TARGET === 'vue3') {
-        // vue3 expects a string for the component tag
-        return 'RenderComponent';
-      } else {
-        return RenderComponent;
-      }
-    },
   });
 
   return (
     <Show
       when={state.shouldWrap}
-      else={<state.renderComponentTag {...state.renderComponentProps} />}
+      else={<RenderComponent {...state.renderComponentProps} />}
     >
       {/*
        * Svelte is super finicky, and does not allow an empty HTML element (e.g. `img`) to have logic inside of it,
@@ -247,7 +240,7 @@ export default function RenderBlock(props: RenderBlockProps) {
       </Show>
       <Show when={!isEmptyHtmlElement(state.tag) && !state.repeatItemData}>
         <state.tag {...state.attributes} {...state.actions}>
-          <state.renderComponentTag {...state.renderComponentProps} />
+          <RenderComponent {...state.renderComponentProps} />
           {/**
            * We need to run two separate loops for content + styles to workaround the fact that Vue 2
            * does not support multiple root elements.

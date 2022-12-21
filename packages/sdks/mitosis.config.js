@@ -58,6 +58,7 @@ const vueConfig = {
   namePrefix: (path) => (path.includes('/blocks/') ? 'builder' : undefined),
   cssNamespace: getSeededId,
   asyncComponentImports: true,
+  // api: 'composition',
 };
 
 /**
@@ -174,7 +175,27 @@ module.exports = {
       plugins: [SRCSET_PLUGIN],
     },
     reactNative: {
-      plugins: [SRCSET_PLUGIN, BASE_TEXT_PLUGIN],
+      plugins: [
+        SRCSET_PLUGIN,
+        BASE_TEXT_PLUGIN,
+        () => ({
+          json: {
+            pre: (json) => {
+              if (json.name === 'RenderBlock') {
+                traverse(json).forEach(function (item) {
+                  if (!isMitosisNode(item)) {
+                    return;
+                  }
+
+                  if (item.name === 'RenderComponent') {
+                    item.name = 'RenderComponentWithContext';
+                  }
+                });
+              }
+            },
+          },
+        }),
+      ],
     },
     qwik: {
       typescript: true,
