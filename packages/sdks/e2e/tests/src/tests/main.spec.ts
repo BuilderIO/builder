@@ -75,7 +75,7 @@ test.describe(targetContext.name, () => {
 
     await expect(
       await getElementStyleValue({
-        locator: page.locator(`.builder-text`).first(),
+        locator: page.locator(`text="This text should be red..."`),
         cssProperty: 'color',
       })
     ).toBe('rgb(255, 0, 0)');
