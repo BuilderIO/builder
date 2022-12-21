@@ -20,24 +20,12 @@ type Props = {
  */
 export default function RenderRepeatedBlock(props: Props) {
   setContext(BuilderContext, {
-    get content() {
-      return props.repeatContext.content;
-    },
-    get state() {
-      return props.repeatContext.state;
-    },
-    get context() {
-      return props.repeatContext.context;
-    },
-    get apiKey() {
-      return props.repeatContext.apiKey;
-    },
-    get registeredComponents() {
-      return props.repeatContext.registeredComponents;
-    },
-    get inheritedStyles() {
-      return props.repeatContext.inheritedStyles;
-    },
+    content: props.repeatContext.content,
+    state: props.repeatContext.state,
+    context: props.repeatContext.context,
+    apiKey: props.repeatContext.apiKey,
+    registeredComponents: props.repeatContext.registeredComponents,
+    inheritedStyles: props.repeatContext.inheritedStyles,
   });
 
   return <RenderBlock block={props.block} context={props.repeatContext} />;

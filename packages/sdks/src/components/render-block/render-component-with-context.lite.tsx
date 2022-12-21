@@ -12,24 +12,12 @@ export default function RenderComponentWithContext(
    * render this component in Qwik.
    */
   setContext(BuilderContext, {
-    get content() {
-      return props.context.content;
-    },
-    get state() {
-      return props.context.state;
-    },
-    get context() {
-      return props.context.context;
-    },
-    get apiKey() {
-      return props.context.apiKey;
-    },
-    get registeredComponents() {
-      return props.context.registeredComponents;
-    },
-    get inheritedStyles() {
-      return props.context.inheritedStyles;
-    },
+    content: props.context.content,
+    state: props.context.state,
+    context: props.context.context,
+    apiKey: props.context.apiKey,
+    registeredComponents: props.context.registeredComponents,
+    inheritedStyles: props.context.inheritedStyles,
   });
   return (
     <RenderComponent
