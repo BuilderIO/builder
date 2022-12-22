@@ -13,8 +13,10 @@ What's being translated:
 
 
 How To translate?
-- once done with preparing content, publish and you'll see a `Translate` action in the content options menu.
+- once done with preparing content, publish it, and press the triple dots options menu on the top left of the editor:
 ![content options menu](https://cdn.builder.io/api/v1/image/assets%2F802a1eea7c44430aa23d4b9c708d07ad%2F846ed645d3bc478a923570c771aa9c47)
+
+Then click Translate
 
 ![content translate action](https://cdn.builder.io/api/v1/image/assets%2F802a1eea7c44430aa23d4b9c708d07ad%2Fce44072c7f3f442db58c41c14bddb30d)
 

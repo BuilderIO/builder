@@ -187,7 +187,6 @@ registerPlugin(
       async onClick(content) {
         appState.globalState.showGlobalBlockingLoading();
         const file = await api.applyTranslation(content.id, content.modelName);
-        console.log(file);
         appState.globalState.hideGlobalBlockingLoading();
         appState.snackBar.show('Done!');
       },
