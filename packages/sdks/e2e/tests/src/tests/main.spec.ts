@@ -43,7 +43,6 @@ test.describe(targetContext.name, () => {
     await page.goto('/');
 
     const links = await page.locator('a');
-    await expect(links).toHaveCount(6);
 
     const columnsLink = await links.filter({
       hasText: 'Columns (with images) ',
@@ -96,12 +95,12 @@ test.describe(targetContext.name, () => {
 
     const expected = {
       borderTopLeftRadius: '20px',
-      borderTopRightRadius: '22px',
-      borderBottomRightRadius: '12px',
+      borderTopRightRadius: '220px',
+      borderBottomRightRadius: '20px',
       borderBottomLeftRadius: '20px',
     };
 
-    const locator = page.locator('h1').first();
+    const locator = page.locator('div').last();
 
     await expectStylesForElement({ expected, locator });
     // TODO: fix this
