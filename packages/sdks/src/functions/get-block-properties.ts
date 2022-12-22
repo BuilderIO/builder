@@ -31,6 +31,7 @@ function getStyleAttribute(
     case 'svelte':
     case 'vue2':
     case 'vue3':
+    case 'solid':
       return convertStyleMapToCSSArray(style).join(' ');
     case 'qwik':
     case 'reactNative':
