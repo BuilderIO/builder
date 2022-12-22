@@ -87,7 +87,12 @@ test.describe(targetContext.name, () => {
       ? '[data-class*=builder-blocks] > div'
       : '[class*=builder-blocks] > div';
 
-    const locator = page.locator(selector);
+    const locator = page
+      .locator(selector)
+      .filter({ hasText: 'Enter some text...' })
+      .last();
+
+    page.locator(selector).innerText;
 
     await expect(locator).toBeVisible();
 
@@ -111,7 +116,10 @@ test.describe(targetContext.name, () => {
       ? '[data-class*=builder-blocks] > div'
       : '[class*=builder-blocks] > div';
 
-    const locator = page.locator(selector).last();
+    const locator = page
+      .locator(selector)
+      .filter({ hasText: 'Enter some text...' })
+      .last();
 
     await expect(locator).toBeVisible();
 
