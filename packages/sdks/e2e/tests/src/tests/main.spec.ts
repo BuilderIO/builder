@@ -82,7 +82,12 @@ test.describe(targetContext.name, () => {
       'border-bottom-right-radius': '30px',
     };
 
-    const locator = page.locator('h1');
+    const isRNSDK = process.env.SDK === 'reactNative';
+    const selector = isRNSDK
+      ? '[data-class*=builder-blocks] > div'
+      : '[class*=builder-blocks] > div';
+
+    const locator = page.locator(selector);
 
     await expect(locator).toBeVisible();
 
@@ -101,7 +106,12 @@ test.describe(targetContext.name, () => {
       'border-bottom-right-radius': '40px',
     };
 
-    const locator = page.locator('h1');
+    const isRNSDK = process.env.SDK === 'reactNative';
+    const selector = isRNSDK
+      ? '[data-class*=builder-blocks] > div'
+      : '[class*=builder-blocks] > div';
+
+    const locator = page.locator(selector).last();
 
     await expect(locator).toBeVisible();
 
