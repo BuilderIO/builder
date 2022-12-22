@@ -17,10 +17,10 @@ export const CONTENT = {
           options: {
             symbol: {
               data: {
-                borderRadiusTopLeft: '20px',
+                borderRadiusTopLeft: '10px',
                 borderRadiusTopRight: '220px',
-                borderRadiusBottomLeft: '20px',
-                borderRadiusBottomRight: '20px',
+                borderRadiusBottomLeft: '30px',
+                borderRadiusBottomRight: '40px',
               },
               model: 'symbol',
               entry: 'f79d0ad6c4b7445394805e792e476356',
@@ -155,6 +155,7 @@ export const CONTENT = {
                     {
                       '@type': '@builder.io/sdk:Element',
                       '@version': 2,
+                      tagName: 'h1',
                       bindings: {
                         'style.borderTopLeftRadius':
                           'var _virtual_index=state.borderRadiusTopLeft;return _virtual_index',

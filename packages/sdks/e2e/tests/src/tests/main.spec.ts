@@ -15,10 +15,9 @@ const getElementStyleValue = async ({
   locator: Locator;
   cssProperty: string;
 }) => {
-  return locator.evaluate(
-    (e, cssProperty) => getComputedStyle(e).getPropertyValue(cssProperty),
-    cssProperty
-  );
+  return locator.evaluate((e, cssProperty) => {
+    return getComputedStyle(e).getPropertyValue(cssProperty);
+  }, cssProperty);
 };
 
 const expectStylesForElement = async ({
@@ -29,6 +28,11 @@ const expectStylesForElement = async ({
   expected: Record<string, string>;
 }) => {
   for (const property of Object.keys(expected)) {
+    // console.log('checking', { property, expected: expected[property] });
+    // const k = await locator.evaluate((e) => {
+    //   return getComputedStyle(e);
+    // });
+    // console.log(k, k.borderRadius, k.borderTopLeftRadius);
     await expect(
       await getElementStyleValue({
         locator,
@@ -77,13 +81,15 @@ test.describe(targetContext.name, () => {
     await page.goto('/content-bindings');
 
     const expected = {
-      borderTopLeftRadius: '20px',
-      borderTopRightRadius: '22px',
-      borderBottomRightRadius: '12px',
-      borderBottomLeftRadius: '20px',
+      'border-top-left-radius': '10px',
+      'border-top-right-radius': '22px',
+      'border-bottom-left-radius': '40px',
+      'border-bottom-right-radius': '30px',
     };
 
-    const locator = page.locator('h1').first();
+    const locator = page.locator('h1');
+
+    await expect(locator).toBeVisible();
 
     await expectStylesForElement({ expected, locator });
     // TODO: fix this
@@ -91,16 +97,18 @@ test.describe(targetContext.name, () => {
     // title: 'some special title'
   });
   test('symbol style bindings', async ({ page }) => {
-    await page.goto('/symbols-bindings');
+    await page.goto('/symbol-bindings');
 
     const expected = {
-      borderTopLeftRadius: '20px',
-      borderTopRightRadius: '220px',
-      borderBottomRightRadius: '20px',
-      borderBottomLeftRadius: '20px',
+      'border-top-left-radius': '10px',
+      'border-top-right-radius': '220px',
+      'border-bottom-left-radius': '30px',
+      'border-bottom-right-radius': '40px',
     };
 
-    const locator = page.locator('div').last();
+    const locator = page.locator('h1');
+
+    await expect(locator).toBeVisible();
 
     await expectStylesForElement({ expected, locator });
     // TODO: fix this

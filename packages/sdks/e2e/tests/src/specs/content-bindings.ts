@@ -5,10 +5,10 @@ export const CONTENT = {
     themeId: false,
     title: 'symbol-data-bindings',
     state: {
-      borderRadiusTopLeft: '20px',
+      borderRadiusTopLeft: '10px',
       borderRadiusTopRight: '22px',
-      borderRadiusBottomLeft: '20px',
-      borderRadiusBottomRight: '12px',
+      borderRadiusBottomLeft: '40px',
+      borderRadiusBottomRight: '30px',
     },
     blocks: [
       {
