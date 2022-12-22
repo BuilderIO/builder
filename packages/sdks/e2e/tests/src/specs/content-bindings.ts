@@ -14,7 +14,12 @@ export const CONTENT = {
       {
         '@type': '@builder.io/sdk:Element',
         '@version': 2,
-        tagName: 'h1',
+        component: {
+          name: 'Text',
+          options: {
+            text: 'Enter some text...',
+          },
+        },
         bindings: {
           'style.borderTopLeftRadius':
             'var _virtual_index=state.borderRadiusTopLeft;return _virtual_index',
