@@ -74,8 +74,39 @@ test.describe(targetContext.name, () => {
       )
       .isVisible();
   });
-  test('symbols with bindings', async ({ page }) => {
-    await page.goto('/symbols-binding-styles');
+  test('style bindings', async ({ page }) => {
+    await page.goto('/content-bindings');
+
+    const expected = {
+      borderTopLeftRadius: '20px',
+      borderTopRightRadius: '22px',
+      borderBottomRightRadius: '12px',
+      borderBottomLeftRadius: '20px',
+    };
+
+    const locator = page.locator('h1').first();
+
+    await expectStylesForElement({ expected, locator });
+    // TODO: fix this
+    // check the title is correct
+    // title: 'some special title'
+  });
+  test('symbol style bindings', async ({ page }) => {
+    await page.goto('/symbols-bindings');
+
+    const expected = {
+      borderTopLeftRadius: '20px',
+      borderTopRightRadius: '22px',
+      borderBottomRightRadius: '12px',
+      borderBottomLeftRadius: '20px',
+    };
+
+    const locator = page.locator('h1').first();
+
+    await expectStylesForElement({ expected, locator });
+    // TODO: fix this
+    // check the title is correct
+    // title: 'some special title'
   });
   test('data-bindings', async ({ page }) => {
     await page.goto('/data-bindings');
