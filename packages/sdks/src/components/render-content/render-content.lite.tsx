@@ -98,7 +98,7 @@ export default function RenderContent(props: RenderContentProps) {
           ...props.content?.meta,
           ...state.overrideContent?.meta,
           breakpoints:
-            state.breakpoints ||
+            state.useBreakpoints ||
             state.overrideContent?.meta?.breakpoints ||
             props.content?.meta?.breakpoints,
         },
@@ -106,7 +106,7 @@ export default function RenderContent(props: RenderContentProps) {
       return mergedContent;
     },
     update: 0,
-    breakpoints: null as Nullable<Breakpoints>,
+    useBreakpoints: null as Nullable<Breakpoints>,
     get canTrackToUse(): boolean {
       return props.canTrack || true;
     },
@@ -156,7 +156,7 @@ export default function RenderContent(props: RenderContentProps) {
             if (!contentId || contentId !== state.useContent?.id) {
               return;
             }
-            state.breakpoints = breakpoints;
+            state.useBreakpoints = breakpoints;
             state.forceReRenderCount = state.forceReRenderCount + 1; // This is a hack to force Qwik to re-render.
             break;
           }
