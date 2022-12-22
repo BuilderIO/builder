@@ -21,6 +21,23 @@ const getElementStyleValue = async ({
   );
 };
 
+const expectStylesForElement = async ({
+  expected,
+  locator,
+}: {
+  locator: Locator;
+  expected: Record<string, string>;
+}) => {
+  for (const property of Object.keys(expected)) {
+    await expect(
+      await getElementStyleValue({
+        locator,
+        cssProperty: property,
+      })
+    ).toBe(expected[property]);
+  }
+};
+
 test.describe(targetContext.name, () => {
   test('homepage', async ({ page }) => {
     await page.goto('/');
@@ -96,7 +113,7 @@ test.describe(targetContext.name, () => {
 
     const isRNSDK = process.env.SDK === 'reactNative';
 
-    const expected = [
+    const expected: Record<string, string>[] = [
       // first img is a webp image. React Native SDK does not yet support webp.
       ...(isRNSDK
         ? []
@@ -129,14 +146,7 @@ test.describe(targetContext.name, () => {
 
     expected.forEach(async (vals, index) => {
       const image = imageLocator.nth(index);
-      for (const [key, value] of Object.entries(vals)) {
-        await expect(
-          await getElementStyleValue({
-            locator: image,
-            cssProperty: key,
-          })
-        ).toBe(value);
-      }
+      await expectStylesForElement({ locator: image, expected: vals });
     });
   });
 
@@ -193,14 +203,10 @@ test.describe(targetContext.name, () => {
             width: '785px',
           };
 
-          for (const property of Object.keys(expectedImageCss)) {
-            await expect(
-              await getElementStyleValue({
-                locator: image,
-                cssProperty: property,
-              })
-            ).toBe(expectedImageCss[property]);
-          }
+          await expectStylesForElement({
+            locator: image,
+            expected: expectedImageCss,
+          });
         }
       });
 
@@ -248,14 +254,10 @@ test.describe(targetContext.name, () => {
             display: 'none',
           };
 
-          for (const property of Object.keys(expectedImageCss)) {
-            await expect(
-              await getElementStyleValue({
-                locator: image,
-                cssProperty: property,
-              })
-            ).toBe(expectedImageCss[property]);
-          }
+          await expectStylesForElement({
+            locator: image,
+            expected: expectedImageCss,
+          });
         }
       });
 
@@ -294,14 +296,10 @@ test.describe(targetContext.name, () => {
             'max-width': '250px',
           };
 
-          for (const property of Object.keys(expectedImageCss)) {
-            await expect(
-              await getElementStyleValue({
-                locator: image,
-                cssProperty: property,
-              })
-            ).toBe(expectedImageCss[property]);
-          }
+          await expectStylesForElement({
+            locator: image,
+            expected: expectedImageCss,
+          });
         }
       });
     });
@@ -359,14 +357,10 @@ test.describe(targetContext.name, () => {
             width: '976px',
           };
 
-          for (const property of Object.keys(expectedImageCss)) {
-            await expect(
-              await getElementStyleValue({
-                locator: image,
-                cssProperty: property,
-              })
-            ).toBe(expectedImageCss[property]);
-          }
+          await expectStylesForElement({
+            locator: image,
+            expected: expectedImageCss,
+          });
         }
       });
 
@@ -414,14 +408,10 @@ test.describe(targetContext.name, () => {
             display: 'none',
           };
 
-          for (const property of Object.keys(expectedImageCss)) {
-            await expect(
-              await getElementStyleValue({
-                locator: image,
-                cssProperty: property,
-              })
-            ).toBe(expectedImageCss[property]);
-          }
+          await expectStylesForElement({
+            locator: image,
+            expected: expectedImageCss,
+          });
         }
       });
 
@@ -461,14 +451,10 @@ test.describe(targetContext.name, () => {
             'max-width': '250px',
           };
 
-          for (const property of Object.keys(expectedImageCss)) {
-            await expect(
-              await getElementStyleValue({
-                locator: image,
-                cssProperty: property,
-              })
-            ).toBe(expectedImageCss[property]);
-          }
+          await expectStylesForElement({
+            locator: image,
+            expected: expectedImageCss,
+          });
         }
       });
     });
