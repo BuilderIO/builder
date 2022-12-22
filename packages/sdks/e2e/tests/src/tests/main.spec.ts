@@ -15,10 +15,26 @@ const getElementStyleValue = async ({
   locator: Locator;
   cssProperty: string;
 }) => {
-  return locator.evaluate(
-    (e, cssProperty) => getComputedStyle(e).getPropertyValue(cssProperty),
-    cssProperty
-  );
+  return locator.evaluate((e, cssProperty) => {
+    return getComputedStyle(e).getPropertyValue(cssProperty);
+  }, cssProperty);
+};
+
+const expectStylesForElement = async ({
+  expected,
+  locator,
+}: {
+  locator: Locator;
+  expected: Record<string, string>;
+}) => {
+  for (const property of Object.keys(expected)) {
+    await expect(
+      await getElementStyleValue({
+        locator,
+        cssProperty: property,
+      })
+    ).toBe(expected[property]);
+  }
 };
 
 test.describe(targetContext.name, () => {
@@ -26,7 +42,6 @@ test.describe(targetContext.name, () => {
     await page.goto('/');
 
     const links = await page.locator('a');
-    await expect(links).toHaveCount(6);
 
     const columnsLink = await links.filter({
       hasText: 'Columns (with images) ',
@@ -57,6 +72,62 @@ test.describe(targetContext.name, () => {
       )
       .isVisible();
   });
+  test('style bindings', async ({ page }) => {
+    await page.goto('/content-bindings');
+
+    const expected = {
+      'border-top-left-radius': '10px',
+      'border-top-right-radius': '22px',
+      'border-bottom-left-radius': '40px',
+      'border-bottom-right-radius': '30px',
+    };
+
+    const isRNSDK = process.env.SDK === 'reactNative';
+    const selector = isRNSDK
+      ? '[data-class*=builder-blocks] > div'
+      : '[class*=builder-blocks] > div';
+
+    const locator = page
+      .locator(selector)
+      .filter({ hasText: 'Enter some text...' })
+      .last();
+
+    page.locator(selector).innerText;
+
+    await expect(locator).toBeVisible();
+
+    await expectStylesForElement({ expected, locator });
+    // TODO: fix this
+    // check the title is correct
+    // title: 'some special title'
+  });
+  test('symbol style bindings', async ({ page }) => {
+    await page.goto('/symbol-bindings');
+
+    const expected = {
+      'border-top-left-radius': '10px',
+      'border-top-right-radius': '220px',
+      'border-bottom-left-radius': '30px',
+      'border-bottom-right-radius': '40px',
+    };
+
+    const isRNSDK = process.env.SDK === 'reactNative';
+    const selector = isRNSDK
+      ? '[data-class*=builder-blocks] > div'
+      : '[class*=builder-blocks] > div';
+
+    const locator = page
+      .locator(selector)
+      .filter({ hasText: 'Enter some text...' })
+      .last();
+
+    await expect(locator).toBeVisible();
+
+    await expectStylesForElement({ expected, locator });
+    // TODO: fix this
+    // check the title is correct
+    // title: 'some special title'
+  });
   test('data-bindings', async ({ page }) => {
     await page.goto('/data-bindings');
 
@@ -70,6 +141,20 @@ test.describe(targetContext.name, () => {
       text: 'Mattel Certified by Great Place to Work and Named to Fast Company’s List of 100 Best Workplaces for Innovators',
     });
   });
+  test('data-binding-styles', async ({ page }) => {
+    await page.goto('/data-binding-styles');
+    const isRNSDK = process.env.SDK === 'reactNative';
+    if (isRNSDK) {
+      // styling is not yet implemented in RN SDK
+      return;
+    }
+    await expect(
+      await getElementStyleValue({
+        locator: page.locator(`text="This text should be red..."`),
+        cssProperty: 'color',
+      })
+    ).toBe('rgb(255, 0, 0)');
+  });
 
   /**
    * We are temporarily skipping this test because it relies on network requests.
@@ -82,7 +167,7 @@ test.describe(targetContext.name, () => {
 
     const isRNSDK = process.env.SDK === 'reactNative';
 
-    const expected = [
+    const expected: Record<string, string>[] = [
       // first img is a webp image. React Native SDK does not yet support webp.
       ...(isRNSDK
         ? []
@@ -115,14 +200,7 @@ test.describe(targetContext.name, () => {
 
     expected.forEach(async (vals, index) => {
       const image = imageLocator.nth(index);
-      for (const [key, value] of Object.entries(vals)) {
-        await expect(
-          await getElementStyleValue({
-            locator: image,
-            cssProperty: key,
-          })
-        ).toBe(value);
-      }
+      await expectStylesForElement({ locator: image, expected: vals });
     });
   });
 
@@ -179,14 +257,10 @@ test.describe(targetContext.name, () => {
             width: '785px',
           };
 
-          for (const property of Object.keys(expectedImageCss)) {
-            await expect(
-              await getElementStyleValue({
-                locator: image,
-                cssProperty: property,
-              })
-            ).toBe(expectedImageCss[property]);
-          }
+          await expectStylesForElement({
+            locator: image,
+            expected: expectedImageCss,
+          });
         }
       });
 
@@ -234,14 +308,10 @@ test.describe(targetContext.name, () => {
             display: 'none',
           };
 
-          for (const property of Object.keys(expectedImageCss)) {
-            await expect(
-              await getElementStyleValue({
-                locator: image,
-                cssProperty: property,
-              })
-            ).toBe(expectedImageCss[property]);
-          }
+          await expectStylesForElement({
+            locator: image,
+            expected: expectedImageCss,
+          });
         }
       });
 
@@ -280,14 +350,10 @@ test.describe(targetContext.name, () => {
             'max-width': '250px',
           };
 
-          for (const property of Object.keys(expectedImageCss)) {
-            await expect(
-              await getElementStyleValue({
-                locator: image,
-                cssProperty: property,
-              })
-            ).toBe(expectedImageCss[property]);
-          }
+          await expectStylesForElement({
+            locator: image,
+            expected: expectedImageCss,
+          });
         }
       });
     });
@@ -345,14 +411,10 @@ test.describe(targetContext.name, () => {
             width: '976px',
           };
 
-          for (const property of Object.keys(expectedImageCss)) {
-            await expect(
-              await getElementStyleValue({
-                locator: image,
-                cssProperty: property,
-              })
-            ).toBe(expectedImageCss[property]);
-          }
+          await expectStylesForElement({
+            locator: image,
+            expected: expectedImageCss,
+          });
         }
       });
 
@@ -400,14 +462,10 @@ test.describe(targetContext.name, () => {
             display: 'none',
           };
 
-          for (const property of Object.keys(expectedImageCss)) {
-            await expect(
-              await getElementStyleValue({
-                locator: image,
-                cssProperty: property,
-              })
-            ).toBe(expectedImageCss[property]);
-          }
+          await expectStylesForElement({
+            locator: image,
+            expected: expectedImageCss,
+          });
         }
       });
 
@@ -447,14 +505,10 @@ test.describe(targetContext.name, () => {
             'max-width': '250px',
           };
 
-          for (const property of Object.keys(expectedImageCss)) {
-            await expect(
-              await getElementStyleValue({
-                locator: image,
-                cssProperty: property,
-              })
-            ).toBe(expectedImageCss[property]);
-          }
+          await expectStylesForElement({
+            locator: image,
+            expected: expectedImageCss,
+          });
         }
       });
     });

@@ -84,13 +84,15 @@ export default function RenderBlock(props: RenderBlockProps) {
       });
     },
     get attributes() {
+      const blockProperties = getBlockProperties(state.useBlock);
       return {
-        ...getBlockProperties(state.useBlock),
+        ...blockProperties,
         ...(TARGET === 'reactNative'
           ? {
               style: getReactNativeBlockStyles({
                 block: state.useBlock,
                 context: props.context,
+                blockStyles: blockProperties.style,
               }),
             }
           : {}),
@@ -194,6 +196,7 @@ export default function RenderBlock(props: RenderBlockProps) {
       const styles = getReactNativeBlockStyles({
         block: state.useBlock,
         context: props.context,
+        blockStyles: state.attributes.style,
       });
 
       return extractTextStyles(styles);

@@ -8,8 +8,11 @@
   "qwik": "./lib/index.qwik.mjs",
   "types": "./types/index.d.ts",
   "files": [
-    "lib",
-    "types"
+    "README.md",
+    "package.json",
+    "types-hacks.d.ts",
+    "types",
+    "lib"
   ],
   "exports": {
     ".": {

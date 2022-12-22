@@ -55,4 +55,5 @@ export interface BuilderBlock {
     itemName?: string;
   } | null;
   animations?: any[]; // TODO: type the animation spec
+  style?: Partial<CSSStyleDeclaration>;
 }
