@@ -1,7 +1,8 @@
 import { CONTENT as columns } from './columns.js';
 import { CONTENT as homepage } from './homepage.js';
 import { CONTENT as symbols } from './symbols.js';
-import { CONTENT as symbolsBindingStyles } from './symbols-binding-styles';
+import { CONTENT as contentBindings } from './content-bindings';
+import { CONTENT as symbolBindings } from './symbol-bindings';
 import { CONTENT as image } from './image.js';
 import { CONTENT as dataBindings } from './data-bindings.js';
 import { CONTENT as dataBindingStyles } from './data-binding-styles.js';
@@ -39,8 +40,10 @@ export const getContentForPathname = (
       return columns;
     case '/symbols':
       return symbols;
-    case '/symbols-binding-styles':
-      return symbolsBindingStyles;
+    case '/symbol-bindings':
+      return symbolBindings;
+    case '/content-bindings':
+      return contentBindings;
     case '/image':
       return image;
     case '/data-bindings':

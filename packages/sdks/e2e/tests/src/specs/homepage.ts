@@ -216,7 +216,39 @@ export const CONTENT = {
                   name: 'Core:Button',
                   options: {
                     text: 'Symbols (+ style bindings)',
-                    link: '/symbols-binding-styles',
+                    link: '/symbol-bindings',
+                  },
+                },
+                responsiveStyles: {
+                  large: {
+                    display: 'flex',
+                    flexDirection: 'column',
+                    position: 'relative',
+                    flexShrink: '0',
+                    boxSizing: 'border-box',
+                    marginTop: '20px',
+                    appearance: 'none',
+                    paddingTop: '15px',
+                    paddingBottom: '15px',
+                    paddingLeft: '25px',
+                    paddingRight: '25px',
+                    backgroundColor: '#3898EC',
+                    color: 'white',
+                    borderRadius: '4px',
+                    textAlign: 'center',
+                    cursor: 'pointer',
+                  },
+                },
+              },
+              {
+                '@type': '@builder.io/sdk:Element',
+                '@version': 2,
+                id: 'builder-12313213',
+                component: {
+                  name: 'Core:Button',
+                  options: {
+                    text: 'Style bindings',
+                    link: '/content-bindings',
                   },
                 },
                 responsiveStyles: {
