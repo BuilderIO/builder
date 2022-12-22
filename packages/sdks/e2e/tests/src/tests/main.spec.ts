@@ -28,11 +28,6 @@ const expectStylesForElement = async ({
   expected: Record<string, string>;
 }) => {
   for (const property of Object.keys(expected)) {
-    // console.log('checking', { property, expected: expected[property] });
-    // const k = await locator.evaluate((e) => {
-    //   return getComputedStyle(e);
-    // });
-    // console.log(k, k.borderRadius, k.borderTopLeftRadius);
     await expect(
       await getElementStyleValue({
         locator,
