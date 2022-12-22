@@ -9,7 +9,7 @@ export function getReactNativeBlockStyles({
 }: {
   block: BuilderBlock;
   context: BuilderContextInterface;
-  blockStyles: Partial<CSSStyleDeclaration> | undefined;
+  blockStyles: any;
 }): CSSStyleDeclaration | Record<string, string | undefined> {
   const responsiveStyles = block.responsiveStyles;
   if (!responsiveStyles) {

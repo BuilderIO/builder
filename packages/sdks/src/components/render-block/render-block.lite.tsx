@@ -196,6 +196,7 @@ export default function RenderBlock(props: RenderBlockProps) {
       const styles = getReactNativeBlockStyles({
         block: state.useBlock,
         context: props.context,
+        blockStyles: state.attributes.style,
       });
 
       return extractTextStyles(styles);
