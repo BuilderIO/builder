@@ -74,6 +74,9 @@ test.describe(targetContext.name, () => {
       )
       .isVisible();
   });
+  test('symbols with bindings', async ({ page }) => {
+    await page.goto('/symbols-binding-styles');
+  });
   test('data-bindings', async ({ page }) => {
     await page.goto('/data-bindings');
 
