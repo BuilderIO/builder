@@ -3,7 +3,7 @@ import HTML from 'react-native-render-html';
 import BuilderContext from '../../context/builder.context';
 
 /**
- * @typedef { import('../../../../../src/types/builder-block').BuilderBlock } BuilderBlock
+ * @typedef {{}} BuilderBlock
  */
 
 /**
