@@ -30,7 +30,7 @@
     "react-json-view": "^1.19.1",
     "react-parallax": "^3.0.3",
     "react-router-dom": "^5.0.1",
-    "react-scripts": "3.0.1",
+    "react-scripts": "5.0.1",
     "react-slick": "^0.25.2",
     "slick-carousel": "^1.8.1"
   },
@@ -39,8 +39,8 @@
     "@storybook/addon-actions": "^5.3.14",
     "@storybook/addon-links": "^5.3.14",
     "@storybook/addons": "^5.3.14",
-    "@storybook/preset-create-react-app": "^1.5.2",
-    "@storybook/react": "^5.3.14",
+    "@storybook/preset-create-react-app": "^4.1.2",
+    "@storybook/react": "^6.5.15",
     "typescript": "3.3.3"
   },
   "scripts": {
