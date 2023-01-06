@@ -341,14 +341,14 @@ export const CONTENT = {
             position: 'relative',
             flexShrink: '0',
             boxSizing: 'border-box',
-            color: 'rgba(255, 0, 0, 1)',
+            color: 'rgb(255, 0, 0)',
           },
           medium: {
             display: 'flex',
-            color: 'rgba(0, 255, 6, 1)',
+            color: 'rgb(0, 255, 6)',
           },
           small: {
-            color: 'cyan',
+            color: 'rgb(0, 255, 255)',
           },
         },
       },

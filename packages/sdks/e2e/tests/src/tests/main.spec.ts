@@ -98,7 +98,7 @@ test.describe(targetContext.name, () => {
       await expectStyleForElement({
         locator: firstSymbolText,
         cssProperty: 'color',
-        expectedValue: 'rgba(255, 0, 0, 1)',
+        expectedValue: 'rgb(255, 0, 0)',
       });
 
       // resize to tablet
@@ -106,7 +106,7 @@ test.describe(targetContext.name, () => {
       await expectStyleForElement({
         locator: firstSymbolText,
         cssProperty: 'color',
-        expectedValue: 'rgba(0, 255, 6, 1)',
+        expectedValue: 'rgb(0, 255, 6)',
       });
 
       // resize to mobile
@@ -116,7 +116,7 @@ test.describe(targetContext.name, () => {
     await expectStyleForElement({
       locator: firstSymbolText,
       cssProperty: 'color',
-      expectedValue: 'cyan',
+      expectedValue: 'rgb(0, 255, 255)',
     });
   });
   test('style bindings', async ({ page }) => {
