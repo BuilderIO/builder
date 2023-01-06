@@ -8,6 +8,8 @@ import { targetContext } from './context.js';
 const findTextInPage = ({ page, text }: { page: Page; text: string }) =>
   expect(page.locator(`text=${text}`)).toBeVisible();
 
+const isRNSDK = process.env.SDK === 'reactNative';
+
 const getElementStyleValue = async ({
   locator,
   cssProperty,
@@ -20,6 +22,22 @@ const getElementStyleValue = async ({
   }, cssProperty);
 };
 
+const expectStyleForElement = async ({
+  expectedValue,
+  locator,
+  cssProperty,
+}: {
+  locator: Locator;
+  cssProperty: string;
+  expectedValue: string;
+}) => {
+  await expect(
+    await getElementStyleValue({
+      locator,
+      cssProperty,
+    })
+  ).toBe(expectedValue);
+};
 const expectStylesForElement = async ({
   expected,
   locator,
@@ -28,12 +46,11 @@ const expectStylesForElement = async ({
   expected: Record<string, string>;
 }) => {
   for (const property of Object.keys(expected)) {
-    await expect(
-      await getElementStyleValue({
-        locator,
-        cssProperty: property,
-      })
-    ).toBe(expected[property]);
+    await expectStyleForElement({
+      cssProperty: property,
+      locator,
+      expectedValue: expected[property],
+    });
   }
 };
 
@@ -71,6 +88,41 @@ test.describe(targetContext.name, () => {
         '[src="https://cdn.builder.io/api/v1/image/assets%2Ff1a790f8c3204b3b8c5c1795aeac4660%2F4bce19c3d8f040b3a95e91000a98283e"]'
       )
       .isVisible();
+
+    const firstSymbolText = await page
+      .locator('text="Description of image:"')
+      .first();
+
+    // these are desktop and tablet styles, and will never show up in react native
+    if (!isRNSDK) {
+      // check desktop styles
+      await expectStyleForElement({
+        locator: firstSymbolText,
+        cssProperty: 'color',
+        expectedValue: 'rgb(255, 0, 0)',
+      });
+
+      // resize to tablet
+      await page.setViewportSize({ width: 930, height: 1000 });
+      await expectStyleForElement({
+        locator: firstSymbolText,
+        cssProperty: 'color',
+        expectedValue: 'rgb(0, 255, 6)',
+      });
+
+      // resize to mobile
+      await page.setViewportSize({ width: 400, height: 1000 });
+    }
+
+    // TO-DO: fix react native style inheritance for symbols->Text (using HTML renderer component), so we can unblock this.
+    if (!isRNSDK) {
+      // check mobile styles
+      await expectStyleForElement({
+        locator: firstSymbolText,
+        cssProperty: 'color',
+        expectedValue: 'rgb(0, 255, 255)',
+      });
+    }
   });
   test('style bindings', async ({ page }) => {
     await page.goto('/content-bindings');
@@ -82,7 +134,6 @@ test.describe(targetContext.name, () => {
       'border-bottom-right-radius': '30px',
     };
 
-    const isRNSDK = process.env.SDK === 'reactNative';
     const selector = isRNSDK
       ? '[data-class*=builder-blocks] > div'
       : '[class*=builder-blocks] > div';
@@ -111,7 +162,6 @@ test.describe(targetContext.name, () => {
       'border-bottom-right-radius': '40px',
     };
 
-    const isRNSDK = process.env.SDK === 'reactNative';
     const selector = isRNSDK
       ? '[data-class*=builder-blocks] > div'
       : '[class*=builder-blocks] > div';
@@ -143,17 +193,15 @@ test.describe(targetContext.name, () => {
   });
   test('data-binding-styles', async ({ page }) => {
     await page.goto('/data-binding-styles');
-    const isRNSDK = process.env.SDK === 'reactNative';
     if (isRNSDK) {
       // styling is not yet implemented in RN SDK
       return;
     }
-    await expect(
-      await getElementStyleValue({
-        locator: page.locator(`text="This text should be red..."`),
-        cssProperty: 'color',
-      })
-    ).toBe('rgb(255, 0, 0)');
+    await expectStyleForElement({
+      locator: page.locator(`text="This text should be red..."`),
+      cssProperty: 'color',
+      expectedValue: 'rgb(255, 0, 0)',
+    });
   });
 
   /**
@@ -164,8 +212,6 @@ test.describe(targetContext.name, () => {
     await page.goto('/image');
 
     const imageLocator = await page.locator('img');
-
-    const isRNSDK = process.env.SDK === 'reactNative';
 
     const expected: Record<string, string>[] = [
       // first img is a webp image. React Native SDK does not yet support webp.
@@ -224,12 +270,11 @@ test.describe(targetContext.name, () => {
           expectedTextColor = 'rgb(65, 117, 5)'; // greenish text color
         }
 
-        await expect(
-          await getElementStyleValue({
-            locator: breakpointsPara,
-            cssProperty: 'color',
-          })
-        ).toBe(expectedTextColor);
+        await expectStyleForElement({
+          locator: breakpointsPara,
+          cssProperty: 'color',
+          expectedValue: expectedTextColor,
+        });
 
         const column2 = page.locator(`text=Column 2`);
         await expect(column2).toBeVisible();
@@ -239,12 +284,11 @@ test.describe(targetContext.name, () => {
           expectedColumnTextColor = 'rgb(126, 211, 33)'; // greenish text color
         }
 
-        await expect(
-          await getElementStyleValue({
-            locator: column2,
-            cssProperty: 'color',
-          })
-        ).toBe(expectedColumnTextColor);
+        await expectStyleForElement({
+          locator: column2,
+          cssProperty: 'color',
+          expectedValue: expectedColumnTextColor,
+        });
 
         // Skipping this image test for react-native.
         // Its difficult to locate the image in react-native as css selectors don't work as expected.
@@ -276,12 +320,11 @@ test.describe(targetContext.name, () => {
           expectedTextColor = 'rgb(65, 117, 5)'; // greenish text color
         }
 
-        await expect(
-          await getElementStyleValue({
-            locator: breakpointsPara,
-            cssProperty: 'color',
-          })
-        ).toBe(expectedTextColor);
+        await expectStyleForElement({
+          locator: breakpointsPara,
+          cssProperty: 'color',
+          expectedValue: expectedTextColor,
+        });
 
         const column2 = page.locator(`text=Column 2`);
         await expect(column2).toBeVisible();
@@ -291,12 +334,11 @@ test.describe(targetContext.name, () => {
           expectedColumnTextColor = 'rgb(126, 211, 33)'; // greenish text color
         }
 
-        await expect(
-          await getElementStyleValue({
-            locator: column2,
-            cssProperty: 'color',
-          })
-        ).toBe(expectedColumnTextColor);
+        await expectStyleForElement({
+          locator: column2,
+          cssProperty: 'color',
+          expectedValue: expectedColumnTextColor,
+        });
 
         // Skipping this image test for react-native.
         // Its difficult to locate the image in react-native as css selectors don't work as expected.
@@ -321,22 +363,20 @@ test.describe(targetContext.name, () => {
 
         const breakpointsPara = page.locator(`text=BREAKPOINTS 500 - 800`);
         await expect(breakpointsPara).toBeVisible();
-        await expect(
-          await getElementStyleValue({
-            locator: breakpointsPara,
-            cssProperty: 'color',
-          })
-        ).toBe('rgb(65, 117, 5)'); // greenish text color
+        await expectStyleForElement({
+          locator: breakpointsPara,
+          cssProperty: 'color',
+          expectedValue: 'rgb(65, 117, 5)',
+        });
 
         const column2 = page.locator(`text=Column 2`);
         await expect(column2).toBeVisible();
 
-        await expect(
-          await getElementStyleValue({
-            locator: column2,
-            cssProperty: 'color',
-          })
-        ).toBe('rgb(126, 211, 33)'); // greenish text color
+        await expectStyleForElement({
+          locator: column2,
+          cssProperty: 'color',
+          expectedValue: 'rgb(126, 211, 33)', // greenish text color
+        });
 
         // Skipping this image test for react-native.
         // Its difficult to locate the image in react-native as css selectors don't work as expected.
@@ -378,12 +418,11 @@ test.describe(targetContext.name, () => {
           expectedTextColor = 'rgb(65, 117, 5)'; // greenish text color
         }
 
-        await expect(
-          await getElementStyleValue({
-            locator: breakpointsPara,
-            cssProperty: 'color',
-          })
-        ).toBe(expectedTextColor); // black text color
+        await expectStyleForElement({
+          locator: breakpointsPara,
+          cssProperty: 'color',
+          expectedValue: expectedTextColor, // black text color
+        });
 
         const column2 = page.locator(`text=Column 2`);
         await expect(column2).toBeVisible();
@@ -393,12 +432,11 @@ test.describe(targetContext.name, () => {
           expectedColumnTextColor = 'rgb(126, 211, 33)'; // greenish text color
         }
 
-        await expect(
-          await getElementStyleValue({
-            locator: column2,
-            cssProperty: 'color',
-          })
-        ).toBe(expectedColumnTextColor);
+        await expectStyleForElement({
+          locator: column2,
+          cssProperty: 'color',
+          expectedValue: expectedColumnTextColor,
+        });
 
         // Skipping this image test for react-native.
         // Its difficult to locate the image in react-native as css selectors don't work as expected.
@@ -430,12 +468,11 @@ test.describe(targetContext.name, () => {
           expectedTextColor = 'rgb(65, 117, 5)'; // greenish text color
         }
 
-        await expect(
-          await getElementStyleValue({
-            locator: breakpointsPara,
-            cssProperty: 'color',
-          })
-        ).toBe(expectedTextColor);
+        await expectStyleForElement({
+          locator: breakpointsPara,
+          cssProperty: 'color',
+          expectedValue: expectedTextColor,
+        });
 
         const column2 = page.locator(`text=Column 2`);
         await expect(column2).toBeVisible();
@@ -445,12 +482,11 @@ test.describe(targetContext.name, () => {
           expectedColumnTextColor = 'rgb(126, 211, 33)'; // greenish text color
         }
 
-        await expect(
-          await getElementStyleValue({
-            locator: column2,
-            cssProperty: 'color',
-          })
-        ).toBe(expectedColumnTextColor);
+        await expectStyleForElement({
+          locator: column2,
+          cssProperty: 'color',
+          expectedValue: expectedColumnTextColor,
+        });
 
         // Skipping this image test for react-native.
         // Its difficult to locate the image in react-native as css selectors don't work as expected.
@@ -476,22 +512,20 @@ test.describe(targetContext.name, () => {
         const breakpointsPara = page.locator(`text=BREAKPOINTS 500 - 800`);
         await expect(breakpointsPara).toBeVisible();
 
-        await expect(
-          await getElementStyleValue({
-            locator: breakpointsPara,
-            cssProperty: 'color',
-          })
-        ).toBe('rgb(65, 117, 5)'); // greenish text color
+        await expectStyleForElement({
+          locator: breakpointsPara,
+          cssProperty: 'color',
+          expectedValue: 'rgb(65, 117, 5)', // greenish text color
+        });
 
         const column2 = page.locator(`text=Column 2`);
         await expect(column2).toBeVisible();
 
-        await expect(
-          await getElementStyleValue({
-            locator: column2,
-            cssProperty: 'color',
-          })
-        ).toBe('rgb(126, 211, 33)'); // greenish text color
+        await expectStyleForElement({
+          locator: column2,
+          cssProperty: 'color',
+          expectedValue: 'rgb(126, 211, 33)', // greenish text color
+        });
 
         // Skipping this image test for react-native.
         // Its difficult to locate the image in react-native as css selectors don't work as expected.
