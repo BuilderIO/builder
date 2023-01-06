@@ -8,6 +8,8 @@ import { targetContext } from './context.js';
 const findTextInPage = ({ page, text }: { page: Page; text: string }) =>
   expect(page.locator(`text=${text}`)).toBeVisible();
 
+const isRNSDK = process.env.SDK === 'reactNative';
+
 const getElementStyleValue = async ({
   locator,
   cssProperty,
@@ -71,6 +73,39 @@ test.describe(targetContext.name, () => {
         '[src="https://cdn.builder.io/api/v1/image/assets%2Ff1a790f8c3204b3b8c5c1795aeac4660%2F4bce19c3d8f040b3a95e91000a98283e"]'
       )
       .isVisible();
+
+    const firstSymbolText = await page
+      .locator('text="Description of image:"')
+      .first();
+
+    if (!isRNSDK) {
+      // check desktop styles
+      await expect(
+        getElementStyleValue({
+          locator: firstSymbolText,
+          cssProperty: 'color',
+        })
+      ).toBe('rgba(255, 0, 0, 1)');
+
+      // resize to tablet
+      await page.setViewportSize({ width: 930, height: 1000 });
+      await expect(
+        getElementStyleValue({
+          locator: firstSymbolText,
+          cssProperty: 'color',
+        })
+      ).toBe('rgba(0, 255, 6, 1)');
+
+      // resize to mobile
+      await page.setViewportSize({ width: 400, height: 1000 });
+    }
+
+    await expect(
+      getElementStyleValue({
+        locator: firstSymbolText,
+        cssProperty: 'color',
+      })
+    ).toBe('cyan');
   });
   test('style bindings', async ({ page }) => {
     await page.goto('/content-bindings');
@@ -82,7 +117,6 @@ test.describe(targetContext.name, () => {
       'border-bottom-right-radius': '30px',
     };
 
-    const isRNSDK = process.env.SDK === 'reactNative';
     const selector = isRNSDK
       ? '[data-class*=builder-blocks] > div'
       : '[class*=builder-blocks] > div';
@@ -111,7 +145,6 @@ test.describe(targetContext.name, () => {
       'border-bottom-right-radius': '40px',
     };
 
-    const isRNSDK = process.env.SDK === 'reactNative';
     const selector = isRNSDK
       ? '[data-class*=builder-blocks] > div'
       : '[class*=builder-blocks] > div';
@@ -143,7 +176,6 @@ test.describe(targetContext.name, () => {
   });
   test('data-binding-styles', async ({ page }) => {
     await page.goto('/data-binding-styles');
-    const isRNSDK = process.env.SDK === 'reactNative';
     if (isRNSDK) {
       // styling is not yet implemented in RN SDK
       return;
@@ -164,8 +196,6 @@ test.describe(targetContext.name, () => {
     await page.goto('/image');
 
     const imageLocator = await page.locator('img');
-
-    const isRNSDK = process.env.SDK === 'reactNative';
 
     const expected: Record<string, string>[] = [
       // first img is a webp image. React Native SDK does not yet support webp.

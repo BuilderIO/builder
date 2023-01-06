@@ -348,7 +348,7 @@ export const CONTENT = {
             color: 'rgba(0, 255, 6, 1)',
           },
           small: {
-            display: 'none',
+            color: 'cyan',
           },
         },
       },
