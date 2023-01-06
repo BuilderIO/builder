@@ -29,7 +29,16 @@ export default function Symbol(props: SymbolProps) {
 
   const state = useStore({
     get className() {
-      return (props.attributes.class || '') + ' builder-symbol';
+      return [
+        props.attributes.class,
+        'builder-symbol',
+        props.symbol?.inline ? 'builder-inline-symbol' : undefined,
+        props.symbol?.dynamic || props.dynamic
+          ? 'builder-dynamic-symbol'
+          : undefined,
+      ]
+        .filter(Boolean)
+        .join(' ');
     },
     fetchedContent: null as Nullable<BuilderContent>,
     get contentToUse(): Nullable<BuilderContent> {
