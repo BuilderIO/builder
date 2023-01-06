@@ -5,6 +5,7 @@ import type { BuilderContent } from '../../types/builder-content.js';
 import { onUpdate, useContext, useStore } from '@builder.io/mitosis';
 import type { Nullable } from '../../types/typescript.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
+import { TARGET } from '../../constants/target';
 
 export interface SymbolInfo {
   model?: string;
@@ -30,7 +31,9 @@ export default function Symbol(props: SymbolProps) {
   const state = useStore({
     get className() {
       return [
-        props.attributes.class,
+        ...(TARGET === 'vue2' || TARGET === 'vue3'
+          ? Object.keys(props.attributes.class)
+          : [props.attributes.class]),
         'builder-symbol',
         props.symbol?.inline ? 'builder-inline-symbol' : undefined,
         props.symbol?.dynamic || props.dynamic
