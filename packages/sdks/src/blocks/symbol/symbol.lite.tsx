@@ -28,9 +28,7 @@ export default function Symbol(props: SymbolProps) {
   const builderContext = useContext(BuilderContext);
 
   const state = useStore({
-    className:
-      (props.attributes.class || props.attributes.className || '') +
-      ' builder-symbol',
+    className: (props.attributes.class || '') + ' builder-symbol',
     fetchedContent: null as Nullable<BuilderContent>,
     get contentToUse(): Nullable<BuilderContent> {
       return props.symbol?.content || state.fetchedContent;
