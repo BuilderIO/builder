@@ -72,7 +72,7 @@ export async function getAllContent(
 ): Promise<ContentResponse> {
   const url = generateContentUrl(options);
 
-  const fetch = await getFetch();
+  const fetch = getFetch();
   const content: ContentResponse = await fetch(url.href).then((res) =>
     res.json()
   );

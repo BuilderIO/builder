@@ -5,9 +5,6 @@
     "packages/*"
   ],
   "version": "0.0.7",
-  "dependencies": {
-    "node-fetch": "^2.6.1"
-  },
   "main": "./packages/_vue2/dist/sdk.js",
   "module": "./packages/_vue2/dist/sdk.js",
   "type": "module",

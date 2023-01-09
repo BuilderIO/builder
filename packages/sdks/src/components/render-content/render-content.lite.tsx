@@ -223,8 +223,7 @@ export default function RenderContent(props: RenderContentProps) {
       );
     },
     handleRequest({ url, key }: { key: string; url: string }) {
-      getFetch()
-        .then((fetch) => fetch(url))
+      getFetch()(url)
         .then((response) => response.json())
         .then((json) => {
           const newOverrideState = {
