@@ -1,4 +1,4 @@
-import { generateContentUrl } from '.';
+import { generateContentUrl } from './generate-content-url';
 
 const testKey = 'YJIGb4i01jvw0SRdL5Bt';
 const testModel = 'page';
