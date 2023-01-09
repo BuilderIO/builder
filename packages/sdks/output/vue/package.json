@@ -40,8 +40,9 @@
     "add-debug": "bash ./scripts/add-debug.sh",
     "remove-debug": "bash ./scripts/remove-debug.sh",
     "build": "yarn workspaces foreach run build",
-    "release:patch": "yarn run build && npm version patch --no-git-tag-version && npm publish --access public",
-    "release:dev": "yarn run build && npm version prerelease --no-git-tag-version && npm publish --tag dev --access public"
+    "release:patch": "yarn run build && npm version patch && npm publish",
+    "release:minor": "yarn run build && npm version minor && npm publish --tag minor",
+    "release:dev": "yarn run build && npm version prerelease && npm publish --tag dev"
   },
   "peerDependencies": {
     "vue": ">= 2"
