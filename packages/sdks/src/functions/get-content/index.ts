@@ -4,7 +4,7 @@ import {
   getBuilderSearchParamsFromWindow,
   normalizeSearchParams,
 } from '../get-builder-search-params/index.js';
-import { getFetch } from '../get-fetch.js';
+import { fetch } from '../get-fetch.js';
 import { handleABTesting } from './ab-testing.js';
 
 export type GetContentOptions = import('./types.js').GetContentOptions;
@@ -72,10 +72,8 @@ export async function getAllContent(
 ): Promise<ContentResponse> {
   const url = generateContentUrl(options);
 
-  const fetch = getFetch();
-  const content: ContentResponse = await fetch(url.href).then((res) =>
-    res.json()
-  );
+  const res = await fetch(url.href);
+  const content = await (res.json() as Promise<ContentResponse>);
 
   const canTrack = options.canTrack !== false;
   if (
