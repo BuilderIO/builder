@@ -24,7 +24,7 @@
     "typecheck": "tsc --noEmit",
     "build": "tsc && vite build --mode lib",
     "release:patch": "yarn run build && yarn version patch && npm publish --access public",
-    "release:dev": "yarn run build && npm version prerelease && npm publish --tag latest --access public"
+    "release:dev": "yarn run build && npm version prerelease && npm publish --tag dev --access public"
   },
   "devDependencies": {
     "@types/node": "latest",
