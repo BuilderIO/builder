@@ -1,4 +1,4 @@
-export function getGlobalThis(): any {
+export function getGlobalThis(): typeof global {
   if (typeof globalThis !== 'undefined') {
     return globalThis;
   }
@@ -11,5 +11,5 @@ export function getGlobalThis(): any {
   if (typeof self !== 'undefined') {
     return self;
   }
-  return null;
+  return globalThis;
 }

@@ -46,8 +46,5 @@
     "tslib": "^2.3.1",
     "typescript": "^4",
     "vite": "^3.0.4"
-  },
-  "dependencies": {
-    "node-fetch": "^2.6.1"
   }
 }
