@@ -1,3 +1,7 @@
+### 0.1.0
+
+🧨 Breaking change: we no longer provide a `node-fetch` polyfill. See [the docs](./README.md#fetch) for more information.
+
 ### 0.0.1-56
 
 - Feature: We now provide initial support for Vue 3.

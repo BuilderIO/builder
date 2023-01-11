@@ -1,7 +1,7 @@
 {
   "name": "@builder.io/sdk-svelte",
   "description": "Builder.io SDK for Svelte",
-  "version": "0.0.10",
+  "version": "0.1.1",
   "type": "module",
   "files": [
     "package",
@@ -29,7 +29,7 @@
   "types": "./package/index.d.ts",
   "scripts": {
     "release:patch": "yarn run build && npm version patch && npm publish",
-    "release:minor": "yarn run build && npm version minor && npm publish --tag minor",
+    "release:minor": "yarn run build && npm version minor && npm publish",
     "release:dev": "yarn run build && npm version prerelease && npm publish --tag dev",
     "dev": "vite dev",
     "build": "svelte-kit sync && svelte-package",

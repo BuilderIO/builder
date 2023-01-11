@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/sdk-solid",
-  "version": "0.0.23",
+  "version": "0.1.1",
   "description": "",
   "type": "module",
   "main": "./solid-index.jsx",
@@ -11,7 +11,7 @@
   "scripts": {
     "build": "echo 'no need to build solid SDK'",
     "release:patch": "yarn run build && npm version patch && npm publish",
-    "release:minor": "yarn run build && npm version minor && npm publish --tag minor",
+    "release:minor": "yarn run build && npm version minor && npm publish",
     "release:dev": "yarn run build && npm version prerelease && npm publish --tag dev"
   },
   "dependencies": {

@@ -4,7 +4,7 @@
   "workspaces": [
     "packages/*"
   ],
-  "version": "0.0.7",
+  "version": "0.1.1",
   "main": "./packages/_vue2/dist/sdk.js",
   "module": "./packages/_vue2/dist/sdk.js",
   "type": "module",
@@ -41,7 +41,7 @@
     "remove-debug": "bash ./scripts/remove-debug.sh",
     "build": "yarn workspaces foreach run build",
     "release:patch": "yarn run build && npm version patch && npm publish",
-    "release:minor": "yarn run build && npm version minor && npm publish --tag minor",
+    "release:minor": "yarn run build && npm version minor && npm publish",
     "release:dev": "yarn run build && npm version prerelease && npm publish --tag dev"
   },
   "peerDependencies": {

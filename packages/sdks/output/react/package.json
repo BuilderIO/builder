@@ -1,7 +1,7 @@
 {
   "name": "@builder.io/sdk-react",
   "description": "Builder.io SDK for React",
-  "version": "0.0.5",
+  "version": "0.1.1",
   "main": "src/index.js",
   "type": "module",
   "exports": {
@@ -17,7 +17,7 @@
   "scripts": {
     "build": "echo 'no need to build react SDK'",
     "release:patch": "yarn run build && npm version patch && npm publish",
-    "release:minor": "yarn run build && npm version minor && npm publish --tag minor",
+    "release:minor": "yarn run build && npm version minor && npm publish",
     "release:dev": "yarn run build && npm version prerelease && npm publish --tag dev"
   },
   "peerDependencies": {
