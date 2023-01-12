@@ -63,7 +63,12 @@ test.describe(targetContext.name, () => {
       const builderSessionCookie = cookies.find(
         (cookie) => cookie.name === 'builderSessionId'
       );
-      expect(builderSessionCookie).toBeDefined();
+
+      if (isRNSDK) {
+        expect(builderSessionCookie).toBeDefined();
+      } else {
+        expect(builderSessionCookie).toBeUndefined();
+      }
     });
     test('do not appear if canTrack=false', async ({ page, context }) => {
       await page.goto('/can-track-false');
