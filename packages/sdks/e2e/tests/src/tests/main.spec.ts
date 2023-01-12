@@ -65,9 +65,9 @@ test.describe(targetContext.name, () => {
       );
 
       if (isRNSDK) {
-        expect(builderSessionCookie).toBeDefined();
-      } else {
         expect(builderSessionCookie).toBeUndefined();
+      } else {
+        expect(builderSessionCookie).toBeDefined();
       }
     });
     test('do not appear if canTrack=false', async ({ page, context }) => {
