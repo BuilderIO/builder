@@ -30,7 +30,7 @@
     "ci:lint": "yarn run prettier --check && yarn run eslint",
     "ci:build": "yarn run typecheck && yarn run build",
     "ci:test": "yarn run test",
-    "e2e:install-playwright": "playwright install --with-deps",
+    "e2e:install-playwright": "playwright install chromium --with-deps",
     "e2e:build:specs": "yarn workspace @builder.io/sdks-e2e-tests build",
     "e2e:build:svelte": "yarn workspaces foreach --verbose --include \"@builder.io/e2e-svelte*\" run build",
     "e2e:build:react-native": "yarn workspaces foreach --verbose --include \"@builder.io/e2e-react-native*\" run build",
