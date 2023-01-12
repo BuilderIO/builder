@@ -55,6 +55,26 @@ const expectStylesForElement = async ({
 };
 
 test.describe(targetContext.name, () => {
+  test.describe('cookies', () => {
+    test('appear by default', async ({ page, context }) => {
+      await page.goto('/');
+
+      const cookies = await context.cookies();
+      const builderSessionCookie = cookies.find(
+        (cookie) => cookie.name === 'builderSessionId'
+      );
+      expect(builderSessionCookie).toBeDefined();
+    });
+    test('do not appear if canTrack=false', async ({ page, context }) => {
+      await page.goto('/can-track-false');
+
+      const cookies = await context.cookies();
+      const builderSessionCookie = cookies.find(
+        (cookie) => cookie.name === 'builderSessionId'
+      );
+      expect(builderSessionCookie).toBeUndefined();
+    });
+  });
   test('homepage', async ({ page }) => {
     await page.goto('/');
 
