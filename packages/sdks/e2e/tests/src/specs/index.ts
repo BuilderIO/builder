@@ -62,3 +62,23 @@ export const getContentForPathname = (
       return null;
   }
 };
+
+export const getProps = (
+  pathname = getPathnameFromWindow()
+): {
+  model: string;
+  content: BuilderContent;
+  apiKey: string;
+} | null => {
+  const content = getContentForPathname(pathname);
+
+  if (!content) {
+    return null;
+  }
+
+  return {
+    content,
+    apiKey: 'f1a790f8c3204b3b8c5c1795aeac4660',
+    model: 'page',
+  };
+};
