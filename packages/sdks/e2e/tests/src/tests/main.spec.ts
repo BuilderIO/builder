@@ -64,6 +64,7 @@ test.describe(targetContext.name, () => {
         (cookie) => cookie.name === 'builderSessionId'
       );
 
+      // react native sdk does not use cookies
       if (isRNSDK) {
         expect(builderSessionCookie).toBeUndefined();
       } else {
