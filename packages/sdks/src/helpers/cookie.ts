@@ -1,5 +1,6 @@
 import { isBrowser } from '../functions/is-browser.js';
 import type { CanTrack } from '../types/can-track.js';
+import { checkIsDefined } from './nullable.js';
 import { getTopLevelDomain } from './url.js';
 
 /**
@@ -40,7 +41,10 @@ type CookieConfiguration = Array<
 >;
 
 const stringifyCookie = (cookie: CookieConfiguration): string =>
-  cookie.map(([key, value]) => (value ? `${key}=${value}` : key)).join('; ');
+  cookie
+    .map(([key, value]) => (value ? `${key}=${value}` : key))
+    .filter(checkIsDefined)
+    .join('; ');
 
 const SECURE_CONFIG: CookieConfiguration = [
   ['secure', ''],
