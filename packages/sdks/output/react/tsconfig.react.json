@@ -1,9 +1,7 @@
 {
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "dist/react",
+    "outDir": "dist/react"
   },
-  "include": [
-    "./packages/react/src/**/*"
-  ]
+  "include": ["./packages/react/src/**/*"]
 }

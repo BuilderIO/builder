@@ -1,9 +1,7 @@
 {
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "dist/rsc",
+    "outDir": "dist/rsc"
   },
-  "include": [
-    "packages/rsc/src"
-  ]
+  "include": ["packages/rsc/src"]
 }
