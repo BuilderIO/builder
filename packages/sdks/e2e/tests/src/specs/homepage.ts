@@ -211,6 +211,70 @@ export const CONTENT = {
               {
                 '@type': '@builder.io/sdk:Element',
                 '@version': 2,
+                id: 'builder-asdf',
+                component: {
+                  name: 'Core:Button',
+                  options: {
+                    text: 'Symbols (+ style bindings)',
+                    link: '/symbol-bindings',
+                  },
+                },
+                responsiveStyles: {
+                  large: {
+                    display: 'flex',
+                    flexDirection: 'column',
+                    position: 'relative',
+                    flexShrink: '0',
+                    boxSizing: 'border-box',
+                    marginTop: '20px',
+                    appearance: 'none',
+                    paddingTop: '15px',
+                    paddingBottom: '15px',
+                    paddingLeft: '25px',
+                    paddingRight: '25px',
+                    backgroundColor: '#3898EC',
+                    color: 'white',
+                    borderRadius: '4px',
+                    textAlign: 'center',
+                    cursor: 'pointer',
+                  },
+                },
+              },
+              {
+                '@type': '@builder.io/sdk:Element',
+                '@version': 2,
+                id: 'builder-12313213',
+                component: {
+                  name: 'Core:Button',
+                  options: {
+                    text: 'Style bindings',
+                    link: '/content-bindings',
+                  },
+                },
+                responsiveStyles: {
+                  large: {
+                    display: 'flex',
+                    flexDirection: 'column',
+                    position: 'relative',
+                    flexShrink: '0',
+                    boxSizing: 'border-box',
+                    marginTop: '20px',
+                    appearance: 'none',
+                    paddingTop: '15px',
+                    paddingBottom: '15px',
+                    paddingLeft: '25px',
+                    paddingRight: '25px',
+                    backgroundColor: '#3898EC',
+                    color: 'white',
+                    borderRadius: '4px',
+                    textAlign: 'center',
+                    cursor: 'pointer',
+                  },
+                },
+              },
+              {
+                '@type': '@builder.io/sdk:Element',
+                '@version': 2,
                 id: 'builder-9f8c7cff2faf4a48b1af350f66789fb6',
                 component: {
                   name: 'Core:Button',
@@ -240,7 +304,7 @@ export const CONTENT = {
               {
                 '@type': '@builder.io/sdk:Element',
                 '@version': 2,
-                id: 'builder-9f8c7cff2faf4a48b1af350f66789fb6',
+                id: 'builder-9f8c7cff2faf4a48b1af350f66789klf',
                 component: {
                   name: 'Core:Button',
                   options: {

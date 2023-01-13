@@ -1,3 +1,12 @@
+### 0.1.1
+
+- Fix: respect when `canTrack` is set to `false`
+- Fix: issues sending session and visitor IDs with tracking events
+
+### 0.1.0
+
+🧨 Breaking change: we no longer provide a `node-fetch` polyfill. See [the docs](./README.md#fetch) for more information.
+
 ### 0.0.1-56
 
 🐛 Fix: image block `srcSet` was incorrectly set as `srcset`

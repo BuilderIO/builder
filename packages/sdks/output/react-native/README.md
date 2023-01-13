@@ -17,3 +17,7 @@ npm install @builder.io/sdk-react-native@dev
 ```
 
 Take a look at [our example repo](/examples/react-native) for how to use this SDK.
+
+## Fetch
+
+This Package uses fetch. See [these docs](https://github.com/BuilderIO/this-package-uses-fetch/blob/main/README.md) for more information.

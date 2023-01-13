@@ -1,8 +1,11 @@
 import { CONTENT as columns } from './columns.js';
 import { CONTENT as homepage } from './homepage.js';
 import { CONTENT as symbols } from './symbols.js';
+import { CONTENT as contentBindings } from './content-bindings';
+import { CONTENT as symbolBindings } from './symbol-bindings';
 import { CONTENT as image } from './image.js';
 import { CONTENT as dataBindings } from './data-bindings.js';
+import { CONTENT as dataBindingStyles } from './data-binding-styles.js';
 import { CONTENT as customBreakpoints } from './custom-breakpoints.js';
 
 // TO-DO: import real content type from SDKs
@@ -31,16 +34,23 @@ export const getContentForPathname = (
 ): BuilderContent | null => {
   let contentWithoutBreakpoints = undefined;
   switch (pathname) {
+    case '/can-track-false':
     case '/':
       return homepage;
     case '/columns':
       return columns;
     case '/symbols':
       return symbols;
+    case '/symbol-bindings':
+      return symbolBindings;
+    case '/content-bindings':
+      return contentBindings;
     case '/image':
       return image;
     case '/data-bindings':
       return dataBindings;
+    case '/data-binding-styles':
+      return dataBindingStyles;
     case '/custom-breakpoints':
       return customBreakpoints as BuilderContent;
     case '/custom-breakpoints-reset':
@@ -52,4 +62,32 @@ export const getContentForPathname = (
     default:
       return null;
   }
+};
+
+export const getProps = (
+  pathname = getPathnameFromWindow()
+): {
+  model: string;
+  content: BuilderContent;
+  apiKey: string;
+} | null => {
+  const content = getContentForPathname(pathname);
+
+  if (!content) {
+    return null;
+  }
+
+  const extraProps =
+    pathname === '/can-track-false'
+      ? {
+          canTrack: false,
+        }
+      : {};
+
+  return {
+    content,
+    apiKey: 'f1a790f8c3204b3b8c5c1795aeac4660',
+    model: 'page',
+    ...extraProps,
+  };
 };

@@ -2,19 +2,23 @@ import * as React from 'react';
 import { Image as ReactImage, View } from 'react-native';
 
 // Subset of Image props, many are irrelevant for native (such as altText, etc)
-export interface ImageProps {
-  image: string;
-  backgroundSize?: 'cover' | 'contain';
-  backgroundPosition?: string;
-  aspectRatio?: number;
-  width?: number;
-  height?: number;
-  // TODO: support children
-  children?: any;
-}
+/**
+ * @typedef {{
+ *   image: string;
+ *   backgroundSize?: 'cover' | 'contain';
+ *   backgroundPosition?: string;
+ *   aspectRatio?: number;
+ *   width?: number;
+ *   height?: number;
+ *   children?: any;
+ * }} ImageProps
+ */
 
 // TODO: support children by wrapping in a View
-export default function Image(props: ImageProps) {
+/**
+ * @param {ImageProps} props
+ */
+export default function Image(props) {
   const shouldRenderUnwrappedChildren =
     props.fitContent && props.builderBlock?.children?.length;
 

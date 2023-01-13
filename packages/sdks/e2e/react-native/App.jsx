@@ -1,13 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
 import { Text, View } from 'react-native';
 import React, { Fragment } from 'react';
-import { getContentForPathname } from '@builder.io/sdks-e2e-tests';
+import { getProps } from '@builder.io/sdks-e2e-tests';
 import { RenderContent } from '@builder.io/sdk-react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
-// TO-DO: add your own public Builder API key here
-const BUILDER_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660'; // ggignore
 
 const linking = {
   prefixes: ['http://localhost:19006'],
@@ -21,19 +18,11 @@ const linking = {
 };
 
 const BuilderContent = ({ route }) => {
-  const content = getContentForPathname(route.path);
+  const props = getProps(route.path);
 
   return (
     <Fragment>
-      {content ? (
-        <RenderContent
-          apiKey={BUILDER_API_KEY}
-          model="page"
-          content={content}
-        />
-      ) : (
-        <Text>Not Found.</Text>
-      )}
+      {props ? <RenderContent {...props} /> : <Text>Not Found.</Text>}
       <StatusBar style="auto" />
     </Fragment>
   );

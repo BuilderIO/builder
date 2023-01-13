@@ -5,7 +5,7 @@ import { uuid } from './uuid.js';
 
 const VISITOR_LOCAL_STORAGE_KEY = 'builderVisitorId';
 
-export const getVisitorId = ({ canTrack }: CanTrack) => {
+export const getVisitorId = ({ canTrack }: CanTrack): string | undefined => {
   if (!canTrack) {
     return undefined;
   }
@@ -20,6 +20,8 @@ export const getVisitorId = ({ canTrack }: CanTrack) => {
   } else {
     const newVisitorId = createVisitorId();
     setVisitorId({ id: newVisitorId, canTrack });
+
+    return newVisitorId;
   }
 };
 

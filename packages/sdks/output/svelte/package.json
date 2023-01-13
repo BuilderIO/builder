@@ -1,7 +1,7 @@
 {
   "name": "@builder.io/sdk-svelte",
   "description": "Builder.io SDK for Svelte",
-  "version": "0.0.9",
+  "version": "0.1.2",
   "type": "module",
   "files": [
     "package",
@@ -28,8 +28,9 @@
   },
   "types": "./package/index.d.ts",
   "scripts": {
-    "release:patch": "yarn run build && npm version patch --no-git-tag-version && npm publish --access public",
-    "release:dev": "yarn run build && npm version prerelease --no-git-tag-version && npm publish --tag dev --access public",
+    "release:patch": "yarn run build && npm version patch && npm publish",
+    "release:minor": "yarn run build && npm version minor && npm publish",
+    "release:dev": "yarn run build && npm version prerelease && npm publish --tag dev",
     "dev": "vite dev",
     "build": "svelte-kit sync && svelte-package",
     "build:watch": "svelte-kit sync && svelte-package --watch",
@@ -46,8 +47,5 @@
     "tslib": "^2.3.1",
     "typescript": "^4",
     "vite": "^3.0.4"
-  },
-  "dependencies": {
-    "node-fetch": "^2.6.1"
   }
 }
