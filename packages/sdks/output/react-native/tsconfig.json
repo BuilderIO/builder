@@ -10,8 +10,5 @@
     "emitDeclarationOnly": false,
     "noEmit": false
   },
-  "include": [
-    "src/**/*.js",
-    "src/**/*.jsx"
-  ],
+  "include": ["src/**/*.js", "src/**/*.jsx"]
 }
