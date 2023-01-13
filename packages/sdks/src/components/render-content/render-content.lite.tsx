@@ -39,6 +39,7 @@ import {
   registerInsertMenu,
   setupBrowserForEditing,
 } from '../../scripts/init-editing.js';
+import { checkIsDefined } from '../../helpers/nullable.js';
 
 useMetadata({
   qwik: {
@@ -108,7 +109,7 @@ export default function RenderContent(props: RenderContentProps) {
     update: 0,
     useBreakpoints: null as Nullable<Breakpoints>,
     get canTrackToUse(): boolean {
-      return props.canTrack || true;
+      return checkIsDefined(props.canTrack) ? props.canTrack : true;
     },
     overrideState: {} as BuilderRenderState,
     get contentState(): BuilderRenderState {

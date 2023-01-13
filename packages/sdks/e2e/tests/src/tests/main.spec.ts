@@ -1,4 +1,4 @@
-import type { Locator, Page } from '@playwright/test';
+import type { BrowserContext, Locator, Page } from '@playwright/test';
 import { test, expect } from '@playwright/test';
 
 import { targetContext } from './context.js';
@@ -54,7 +54,46 @@ const expectStylesForElement = async ({
   }
 };
 
+const getBuilderSessionIdCookie = async ({
+  context,
+}: {
+  context: BrowserContext;
+}) => {
+  const cookies = await context.cookies();
+  const builderSessionCookie = cookies.find(
+    (cookie) => cookie.name === 'builderSessionId'
+  );
+  return builderSessionCookie;
+};
+
 test.describe(targetContext.name, () => {
+  test.describe('cookies', () => {
+    test('do not appear if canTrack=false', async ({ page, context }) => {
+      // by waiting for network requests, we guarantee that impression tracking POST was (NOT) made,
+      // which guarantees that the cookie was set or not.
+      await page.goto('/can-track-false', { waitUntil: 'networkidle' });
+
+      const cookies = await context.cookies();
+      const builderSessionCookie = cookies.find(
+        (cookie) => cookie.name === 'builderSessionId'
+      );
+      expect(builderSessionCookie).toBeUndefined();
+    });
+    test('appear by default', async ({ page, context }) => {
+      // by waiting for network requests, we guarantee that impression tracking POST was made,
+      // which guarantees that the cookie was set
+      await page.goto('/', { waitUntil: 'networkidle' });
+
+      const builderSessionCookie = await getBuilderSessionIdCookie({ context });
+
+      // react native sdk does not use cookies
+      if (isRNSDK) {
+        expect(builderSessionCookie).toBeUndefined();
+      } else {
+        expect(builderSessionCookie).toBeDefined();
+      }
+    });
+  });
   test('homepage', async ({ page }) => {
     await page.goto('/');
 

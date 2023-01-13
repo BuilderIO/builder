@@ -1,1 +1,1 @@
-export { getContentForPathname } from './specs/index.js';
+export { getProps } from './specs/index.js';
