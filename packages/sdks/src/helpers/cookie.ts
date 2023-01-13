@@ -11,7 +11,7 @@ export const getCookie = async ({
   canTrack,
 }: {
   name: string;
-} & CanTrack) => {
+} & CanTrack): Promise<string | undefined> => {
   try {
     if (!canTrack) {
       return undefined;
@@ -27,6 +27,7 @@ export const getCookie = async ({
       ?.split('=')[1];
   } catch (err) {
     console.debug('[COOKIE] GET error: ', err);
+    return undefined;
   }
 };
 
@@ -93,10 +94,10 @@ export const setCookie = async ({
   name: string;
   value: string;
   expires?: Date;
-} & CanTrack) => {
+} & CanTrack): Promise<void> => {
   try {
     if (!canTrack) {
-      return undefined;
+      return;
     }
     const cookie = createCookieString({ name, value, expires });
     document.cookie = cookie;
