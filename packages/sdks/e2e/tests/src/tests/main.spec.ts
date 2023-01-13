@@ -68,21 +68,6 @@ const getBuilderSessionIdCookie = async ({
 
 test.describe(targetContext.name, () => {
   test.describe('cookies', () => {
-    test('appear by default', async ({ page, context }) => {
-      // by waiting for network requests, we guarantee that impression tracking POST was made,
-      // which guarantees that the cookie was set
-      await page.goto('/', { waitUntil: 'networkidle' });
-
-      const builderSessionCookie = await getBuilderSessionIdCookie({ context });
-
-      console.log({ builderSessionCookie });
-      // react native sdk does not use cookies
-      if (isRNSDK) {
-        expect(builderSessionCookie).toBeUndefined();
-      } else {
-        expect(builderSessionCookie).toBeDefined();
-      }
-    });
     test('do not appear if canTrack=false', async ({ page, context }) => {
       // by waiting for network requests, we guarantee that impression tracking POST was (NOT) made,
       // which guarantees that the cookie was set or not.
@@ -93,6 +78,20 @@ test.describe(targetContext.name, () => {
         (cookie) => cookie.name === 'builderSessionId'
       );
       expect(builderSessionCookie).toBeUndefined();
+    });
+    test('appear by default', async ({ page, context }) => {
+      // by waiting for network requests, we guarantee that impression tracking POST was made,
+      // which guarantees that the cookie was set
+      await page.goto('/', { waitUntil: 'networkidle' });
+
+      const builderSessionCookie = await getBuilderSessionIdCookie({ context });
+
+      // react native sdk does not use cookies
+      if (isRNSDK) {
+        expect(builderSessionCookie).toBeUndefined();
+      } else {
+        expect(builderSessionCookie).toBeDefined();
+      }
     });
   });
   test('homepage', async ({ page }) => {
