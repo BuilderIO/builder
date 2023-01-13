@@ -34,6 +34,7 @@ export const getContentForPathname = (
 ): BuilderContent | null => {
   let contentWithoutBreakpoints = undefined;
   switch (pathname) {
+    case '/can-track-false':
     case '/':
       return homepage;
     case '/columns':
@@ -61,4 +62,32 @@ export const getContentForPathname = (
     default:
       return null;
   }
+};
+
+export const getProps = (
+  pathname = getPathnameFromWindow()
+): {
+  model: string;
+  content: BuilderContent;
+  apiKey: string;
+} | null => {
+  const content = getContentForPathname(pathname);
+
+  if (!content) {
+    return null;
+  }
+
+  const extraProps =
+    pathname === '/can-track-false'
+      ? {
+          canTrack: false,
+        }
+      : {};
+
+  return {
+    content,
+    apiKey: 'f1a790f8c3204b3b8c5c1795aeac4660',
+    model: 'page',
+    ...extraProps,
+  };
 };

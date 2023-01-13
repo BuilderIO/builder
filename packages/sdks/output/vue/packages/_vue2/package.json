@@ -7,7 +7,6 @@
     "type-check": "vue-tsc --noEmit"
   },
   "dependencies": {
-    "node-fetch": "^2.6.1",
     "vue": "^2.7.7"
   },
   "devDependencies": {

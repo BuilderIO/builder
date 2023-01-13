@@ -8,7 +8,7 @@ import type {
 } from '../../context/types.js';
 import { evaluate } from '../../functions/evaluate.js';
 import { getContent } from '../../functions/get-content/index.js';
-import { getFetch } from '../../functions/get-fetch.js';
+import { fetch } from '../../functions/get-fetch.js';
 import { isBrowser } from '../../functions/is-browser.js';
 import { isEditing } from '../../functions/is-editing.js';
 import { isPreviewing } from '../../functions/is-previewing.js';
@@ -39,6 +39,7 @@ import {
   registerInsertMenu,
   setupBrowserForEditing,
 } from '../../scripts/init-editing.js';
+import { checkIsDefined } from '../../helpers/nullable.js';
 
 useMetadata({
   qwik: {
@@ -108,7 +109,7 @@ export default function RenderContent(props: RenderContentProps) {
     update: 0,
     useBreakpoints: null as Nullable<Breakpoints>,
     get canTrackToUse(): boolean {
-      return props.canTrack || true;
+      return checkIsDefined(props.canTrack) ? props.canTrack : true;
     },
     overrideState: {} as BuilderRenderState,
     get contentState(): BuilderRenderState {
@@ -223,8 +224,7 @@ export default function RenderContent(props: RenderContentProps) {
       );
     },
     handleRequest({ url, key }: { key: string; url: string }) {
-      getFetch()
-        .then((fetch) => fetch(url))
+      fetch(url)
         .then((response) => response.json())
         .then((json) => {
           const newOverrideState = {

@@ -1,5 +1,6 @@
 import { isBrowser } from '../functions/is-browser.js';
 import type { CanTrack } from '../types/can-track.js';
+import type { Nullable } from './nullable.js';
 
 const getLocalStorage = () =>
   isBrowser() && typeof localStorage !== 'undefined' ? localStorage : undefined;
@@ -9,7 +10,7 @@ export const getLocalStorageItem = ({
   canTrack,
 }: {
   key: string;
-} & CanTrack) => {
+} & CanTrack): Nullable<string> => {
   try {
     if (canTrack) {
       return getLocalStorage()?.getItem(key);
@@ -17,6 +18,7 @@ export const getLocalStorageItem = ({
     return undefined;
   } catch (err) {
     console.debug('[LocalStorage] GET error: ', err);
+    return undefined;
   }
 };
 

@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/sdk-qwik",
-  "version": "0.0.37",
+  "version": "0.1.2",
   "description": "Builder.io Qwik SDK",
   "type": "module",
   "main": "./lib/index.qwik.cjs",
@@ -23,8 +23,9 @@
   "scripts": {
     "typecheck": "tsc --noEmit",
     "build": "tsc && vite build --mode lib",
-    "release:patch": "yarn run build && yarn version patch && npm publish --access public",
-    "release:dev": "yarn run build && npm version prerelease && npm publish --tag latest --access public"
+    "release:patch": "yarn run build && npm version patch && npm publish",
+    "release:minor": "yarn run build && npm version minor && npm publish",
+    "release:dev": "yarn run build && npm version prerelease && npm publish --tag dev"
   },
   "devDependencies": {
     "@types/node": "latest",
