@@ -5,7 +5,13 @@ import { uuid } from './uuid.js';
 
 const SESSION_LOCAL_STORAGE_KEY = 'builderSessionId';
 
-const _getSessionId = async ({ canTrack }: CanTrack): Promise<string> => {
+export const getSessionId = async ({
+  canTrack,
+}: CanTrack): Promise<string | undefined> => {
+  if (!canTrack) {
+    return undefined;
+  }
+
   const sessionId = await getCookie({
     name: SESSION_LOCAL_STORAGE_KEY,
     canTrack,
@@ -19,18 +25,6 @@ const _getSessionId = async ({ canTrack }: CanTrack): Promise<string> => {
 
     return newSessionId;
   }
-};
-
-export const getSessionId = async ({
-  canTrack,
-}: CanTrack): Promise<string | undefined> => {
-  if (!canTrack) {
-    return undefined;
-  }
-
-  const sessionId = await _getSessionId({ canTrack });
-
-  return sessionId;
 };
 
 export const createSessionId = () => uuid();
