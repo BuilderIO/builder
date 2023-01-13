@@ -1,13 +1,27 @@
 import * as React from 'react';
-import type { BuilderBlock } from '../types/builder-block';
 import HTML from 'react-native-render-html';
 import BuilderContext from '../../context/builder.context';
 
-function camelToKebabCase(string: string) {
+/**
+ * @typedef {{}} BuilderBlock
+ */
+
+/**
+ * 
+ * @param {string} string 
+ * @returns {string}
+ */
+function camelToKebabCase(string) {
   return string.replace(/([a-z0-9]|(?=[A-Z]))([A-Z])/g, '$1-$2').toLowerCase();
 }
 
-function pick(object: object, keys: string[]) {
+/**
+ * 
+ * @param {object} object 
+ * @param {string[]} keys 
+ * @returns {object}
+ */
+function pick(object, keys) {
   return keys.reduce((obj, key) => {
     // eslint-disable-next-line no-prototype-builtins
     if (object && object.hasOwnProperty(key)) {
@@ -19,11 +33,15 @@ function pick(object: object, keys: string[]) {
 
 const PICK_STYLES = ['textAlign'];
 
-function getBlockStyles(block: BuilderBlock) {
+/**
+ * @param {BuilderBlock} block 
+ * @returns 
+ */
+function getBlockStyles(block) {
   // TODO: responsive CSS using react native viewport width hooks
-  const styles: any = {
+  const styles = {
     ...block.responsiveStyles?.large,
-    ...(block as any).styles,
+    ...(block).styles,
   };
 
   if (block.responsiveStyles?.medium) {
@@ -36,7 +54,13 @@ function getBlockStyles(block: BuilderBlock) {
   return styles;
 }
 
-function getCss(block: BuilderBlock, inheritedStyles: any) {
+/**
+ * 
+ * @param {BuilderBlock} block 
+ * @param {any} inheritedStyles 
+ * @returns 
+ */
+function getCss(block, inheritedStyles) {
   const styleObject = {
     ...inheritedStyles,
     ...pick(getBlockStyles(block), PICK_STYLES)
@@ -57,10 +81,12 @@ function getCss(block: BuilderBlock, inheritedStyles: any) {
   return str;
 }
 
-export default function Text(props: {
-  text: string;
-  builderBlock: BuilderBlock;
-}) {
+/**
+ * 
+ * @param {{ text: string; builderBlock: BuilderBlock}} props 
+ * @returns 
+ */
+export default function Text(props) {
   const builderContext = React.useContext(BuilderContext);
   return (
     <HTML

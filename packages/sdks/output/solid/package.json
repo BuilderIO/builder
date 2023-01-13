@@ -3,13 +3,13 @@
   "version": "0.1.2",
   "description": "",
   "type": "module",
-  "main": "./solid-index.jsx",
-  "module": "./solid-index.jsx",
+  "main": "./dist/sdk-solid.js",
+  "module": "./dist/sdk-solid.js",
   "exports": {
-    ".": "./solid-index.jsx"
+    ".": "./dist/sdk-solid.js"
   },
   "scripts": {
-    "build": "echo 'no need to build solid SDK'",
+    "build": "vite build",
     "release:patch": "yarn run build && npm version patch && npm publish",
     "release:minor": "yarn run build && npm version minor && npm publish",
     "release:dev": "yarn run build && npm version prerelease && npm publish --tag dev"
@@ -21,7 +21,6 @@
     "solid-js": "^1.5.7"
   },
   "devDependencies": {
-    "babel-preset-solid": "^1.3.17",
     "solid-js": "^1.5.7",
     "vite": "^3.0.4",
     "vite-plugin-solid": "^2.2.6"

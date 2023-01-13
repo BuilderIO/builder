@@ -6,33 +6,39 @@ import { View } from 'react-native';
 import ReactVideo from 'react-native-video';
 
 // Subset of Image props, many are irrelevant for native (such as altText, etc)
-export interface VideoProps {
-  attributes?: any;
-  video?: string;
-  autoPlay?: boolean;
-  controls?: boolean;
-  muted?: boolean;
-  loop?: boolean;
-  playsInline?: boolean;
-  aspectRatio?: number;
-  fit?: 'contain' | 'cover' | 'stretch';
-  position?:
-    | 'center'
-    | 'top'
-    | 'left'
-    | 'right'
-    | 'bottom'
-    | 'top left'
-    | 'top right'
-    | 'bottom left'
-    | 'bottom right';
-  posterImage?: string;
-  // TODO: support children
-  children?: any;
-}
+/**
+ * 
+ * @typedef {{
+ *   attributes?: any;
+ *   video?: string;
+ *   autoPlay?: boolean;
+ *   controls?: boolean;
+ *   muted?: boolean;
+ *   loop?: boolean;
+ *   playsInline?: boolean;
+ *   aspectRatio?: number;
+ *   fit?: 'contain' | 'cover' | 'stretch';
+ *   position?:
+ *     | 'center'
+ *     | 'top'
+ *     | 'left'
+ *     | 'right'
+ *     | 'bottom'
+ *     | 'top left'
+ *     | 'top right'
+ *     | 'bottom left'
+ *     | 'bottom right';
+ *   posterImage?: string;
+ *   children?: any;
+ * }} VideoProps
+ */
 
 // TODO: support children by wrapping in a View
-export default function Video(props: VideoProps) {
+
+/**
+ * @param {VideoProps} props
+ */
+export default function Video(props) {
   return (
     <View style={{ position: 'relative' }}>
       <ReactVideo
@@ -42,7 +48,7 @@ export default function Video(props: VideoProps) {
         repeat={props.loop}
         poster={props.posterImage}
         posterResizeMode={props.fit || 'contain'}
-        resizeMode={props.fit || ('contain' as any)}
+        resizeMode={props.fit || ('contain')}
         style={{
           position: 'absolute',
           top: 0,

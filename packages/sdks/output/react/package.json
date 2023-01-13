@@ -6,16 +6,18 @@
   "type": "module",
   "exports": {
     ".": {
-      "import": "./src/index.js",
-      "require": "./src/index.js"
+      "import": "./dist/react/index.js",
+      "require": "./dist/react/index.js"
     },
     "./rsc": {
-      "import": "./packages/_rsc/src/index.js",
-      "require": "./packages/_rsc/src/index.js"
+      "import": "./dist/rsc/index.js",
+      "require": "./dist/rsc/index.js"
     }
   },
   "scripts": {
-    "build": "echo 'no need to build react SDK'",
+    "build:react": "tsc -p ./tsconfig.react.json",
+    "build:rsc": "tsc -p ./tsconfig.rsc.json",
+    "build": "yarn run build:react && yarn run build:rsc",
     "release:patch": "yarn run build && npm version patch && npm publish",
     "release:minor": "yarn run build && npm version minor && npm publish",
     "release:dev": "yarn run build && npm version prerelease && npm publish --tag dev"
@@ -25,5 +27,8 @@
   },
   "devDependencies": {
     "react": "^18.2.0"
+  },
+  "dependencies": {
+    "typescript": "^4.9.4"
   }
 }
