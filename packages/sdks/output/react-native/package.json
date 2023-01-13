@@ -2,7 +2,12 @@
   "name": "@builder.io/sdk-react-native",
   "description": "Builder.io SDK for React Native",
   "version": "0.0.14",
-  "main": "dist/index.js",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "exports": {
+    ".": "./dist/index.js"
+  },
   "files": [
     "src",
     "dist"
