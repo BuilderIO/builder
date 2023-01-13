@@ -23,7 +23,7 @@ export default App;
 
 // we have this empty fn to force NextJS to opt out of static optimization
 // https://nextjs.org/docs/advanced-features/automatic-static-optimization
-export async function getServerSideProps(context) {
+export async function getServerSideProps() {
   return {
     props: {}, // will be passed to the page component as props
   };
