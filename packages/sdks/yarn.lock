@@ -2269,6 +2269,7 @@ __metadata:
   resolution: "@builder.io/sdk-react@workspace:output/react"
   dependencies:
     react: ^18.2.0
+    typescript: ^4.9.4
   peerDependencies:
     react: ^18.2.0
   languageName: unknown
