@@ -3,10 +3,10 @@
   "version": "0.1.2",
   "description": "",
   "type": "module",
-  "main": "./solid-index.jsx",
-  "module": "./solid-index.jsx",
+  "main": "./dist/sdk-solid.js",
+  "module": "./dist/sdk-solid.js",
   "exports": {
-    ".": "./solid-index.jsx"
+    ".": "./dist/sdk-solid.js"
   },
   "scripts": {
     "build": "vite build",
