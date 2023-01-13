@@ -2111,15 +2111,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@builder.io/eslint-plugin-mitosis@npm:^0.0.13":
-  version: 0.0.13
-  resolution: "@builder.io/eslint-plugin-mitosis@npm:0.0.13"
+"@builder.io/eslint-plugin-mitosis@npm:^0.0.14":
+  version: 0.0.14
+  resolution: "@builder.io/eslint-plugin-mitosis@npm:0.0.14"
   dependencies:
     "@babel/types": 7.12.6
     ts-pattern: ^3.3.5
   peerDependencies:
     eslint: ">=0.8.0"
-  checksum: 2420c746415e081bbd60864bba5383cdbccff859fce4b49682ffe61220aee06b6a8f89b205cb5107d9799d6bba1226b772a3dbe0e203c5e5c10fcc830d633467
+  checksum: 2ff881cda5b85feaf2001c02549d60cecea8557398d9b448d054eca622d31084ff34560e7b1231f77d1d66900350c8720dacc333eb81fc94af8921055cedc1fe
   languageName: node
   linkType: hard
 
@@ -2371,7 +2371,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@builder.io/sdks@workspace:."
   dependencies:
-    "@builder.io/eslint-plugin-mitosis": ^0.0.13
+    "@builder.io/eslint-plugin-mitosis": ^0.0.14
     "@builder.io/mitosis": ^0.0.84
     "@builder.io/mitosis-cli": ^0.0.42
     "@playwright/test": ^1.27.1
