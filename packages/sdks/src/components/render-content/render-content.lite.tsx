@@ -21,7 +21,7 @@ import type {
   Breakpoints,
   BuilderContent,
 } from '../../types/builder-content.js';
-import type { Dictionary, Nullable } from '../../types/typescript.js';
+import type { Nullable } from '../../types/typescript.js';
 import RenderBlocks from '../render-blocks.lite';
 import RenderContentStyles from './components/render-styles.lite';
 import builderContext from '../../context/builder.context.lite';
@@ -87,7 +87,8 @@ export default function RenderContent(props: RenderContentProps) {
       if (!props.content && !state.overrideContent) {
         return undefined;
       }
-      const mergedContent: BuilderContent = {
+
+      return {
         ...props.content,
         ...state.overrideContent,
         data: {
@@ -104,13 +105,10 @@ export default function RenderContent(props: RenderContentProps) {
             props.content?.meta?.breakpoints,
         },
       };
-      return mergedContent;
     },
     update: 0,
     useBreakpoints: null as Nullable<Breakpoints>,
-    get canTrackToUse(): boolean {
-      return checkIsDefined(props.canTrack) ? props.canTrack : true;
-    },
+    canTrackToUse: checkIsDefined(props.canTrack) ? props.canTrack : true,
     overrideState: {} as BuilderRenderState,
     get contentState(): BuilderRenderState {
       return {
@@ -120,32 +118,24 @@ export default function RenderContent(props: RenderContentProps) {
         ...state.overrideState,
       };
     },
-    get contextContext() {
-      return props.context || {};
-    },
+    contextContext: props.context || {},
 
-    get allRegisteredComponents(): RegisteredComponents {
-      const allComponentsArray = [
-        ...getDefaultRegisteredComponents(),
-        // While this `components` object is deprecated, we must maintain support for it.
-        // Since users are able to override our default components, we need to make sure that we do not break such
-        // existing usage.
-        // This is why we spread `components` after the default Builder.io components, but before the `props.customComponents`,
-        // which is the new standard way of providing custom components, and must therefore take precedence.
-        ...components,
-        ...(props.customComponents || []),
-      ];
-
-      const allComponents = allComponentsArray.reduce(
-        (acc, curr) => ({
-          ...acc,
-          [curr.name]: curr,
-        }),
-        {} as RegisteredComponents
-      );
-
-      return allComponents;
-    },
+    allRegisteredComponents: [
+      ...getDefaultRegisteredComponents(),
+      // While this `components` object is deprecated, we must maintain support for it.
+      // Since users are able to override our default components, we need to make sure that we do not break such
+      // existing usage.
+      // This is why we spread `components` after the default Builder.io components, but before the `props.customComponents`,
+      // which is the new standard way of providing custom components, and must therefore take precedence.
+      ...components,
+      ...(props.customComponents || []),
+    ].reduce(
+      (acc, curr) => ({
+        ...acc,
+        [curr.name]: curr,
+      }),
+      {} as RegisteredComponents
+    ),
 
     processMessage(event: MessageEvent): void {
       const { data } = event;
@@ -196,9 +186,7 @@ export default function RenderContent(props: RenderContentProps) {
         });
       }
     },
-    get httpReqsData(): Dictionary<any> {
-      return {};
-    },
+    httpReqsData: {},
 
     onClick(_event: MouseEvent) {
       if (state.useContent) {
@@ -241,7 +229,7 @@ export default function RenderContent(props: RenderContentProps) {
       const requests = state.useContent?.data?.httpRequests ?? {};
 
       Object.entries(requests).forEach(([key, url]) => {
-        if (url && (!state.httpReqsData[key] || isEditing())) {
+        if (url && (!(state.httpReqsData as any)[key] || isEditing())) {
           const evaluatedUrl = state.evalExpression(url);
           state.handleRequest({ url: evaluatedUrl, key });
         }
