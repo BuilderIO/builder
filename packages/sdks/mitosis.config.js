@@ -174,7 +174,24 @@ module.exports = {
       stylesType: 'style-tag',
     },
     rsc: {
-      plugins: [SRCSET_PLUGIN],
+      plugins: [
+        SRCSET_PLUGIN,
+        () => ({
+          json: {
+            pre: (json) => {
+              if (json.name === 'RenderContent') {
+                json.state.allRegisteredComponents.code =
+                  json.state.allRegisteredComponents.code.replace(
+                    'as RegisteredComponents',
+                    ''
+                  );
+              }
+
+              return json;
+            },
+          },
+        }),
+      ],
     },
     reactNative: {
       plugins: [
