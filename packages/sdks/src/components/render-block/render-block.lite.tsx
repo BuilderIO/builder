@@ -25,11 +25,6 @@ export type RenderBlockProps = {
 };
 
 useMetadata({
-  qwik: {
-    component: {
-      isLight: true,
-    },
-  },
   elementTag: 'state.tag',
 });
 
