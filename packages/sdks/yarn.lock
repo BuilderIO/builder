@@ -1958,7 +1958,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@builder.io/e2e-qwik@workspace:e2e/qwik"
   dependencies:
-    "@builder.io/qwik": ^0.11.1
+    "@builder.io/qwik": ^0.16.2
     "@builder.io/sdk-qwik": "workspace:*"
     "@builder.io/sdks-e2e-tests": "workspace:*"
     "@types/eslint": 8.4.5
@@ -2198,12 +2198,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@builder.io/qwik@npm:^0.11.1":
-  version: 0.11.1
-  resolution: "@builder.io/qwik@npm:0.11.1"
+"@builder.io/qwik@npm:^0.16.2":
+  version: 0.16.2
+  resolution: "@builder.io/qwik@npm:0.16.2"
+  peerDependencies:
+    undici: ^5.14.0
   bin:
     qwik: qwik.cjs
-  checksum: 417943dc8101beb3478fc49f088384adbbc325587b8d9a20842705073fa04f3a8e073ab6ce5e4edc9d7075bbc64038562c3e425bab471804e2c352052ecf6fd0
+  checksum: e83e0c99589ed68463bf674954df1ce63de8396dcc081f79e9abe5ec6a116182e947fa6a822f277c53afbd3b03841fbfc3b1cbc4d18a8465af438be98155e322
   languageName: node
   linkType: hard
 
