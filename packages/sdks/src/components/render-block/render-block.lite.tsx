@@ -16,12 +16,6 @@ import { For, Show, useMetadata, useStore } from '@builder.io/mitosis';
 import RenderRepeatedBlock from './render-repeated-block.lite';
 import { TARGET } from '../../constants/target.js';
 import { extractTextStyles } from '../../functions/extract-text-styles.js';
-
-// we want to preserve this import because react-native output actually uses it.
-// we use a Mitosis plugin to use it instead of `RenderComponent` in the react-native output
-// eslint-disable-next-line unused-imports/no-unused-imports, @typescript-eslint/no-unused-vars
-import RenderComponentWithContext from './render-component-with-context.lite';
-
 import RenderComponent from './render-component.lite';
 import { getReactNativeBlockStyles } from '../../functions/get-react-native-block-styles.js';
 
