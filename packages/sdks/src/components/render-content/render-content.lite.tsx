@@ -186,7 +186,7 @@ export default function RenderContent(props: RenderContentProps) {
         });
       }
     },
-    httpReqsData: {},
+    httpReqsData: {} as { [key: string]: any },
 
     onClick(_event: MouseEvent) {
       if (state.useContent) {
@@ -226,10 +226,11 @@ export default function RenderContent(props: RenderContentProps) {
         });
     },
     runHttpRequests() {
-      const requests = state.useContent?.data?.httpRequests ?? {};
+      const requests: { [key: string]: string } =
+        state.useContent?.data?.httpRequests ?? {};
 
       Object.entries(requests).forEach(([key, url]) => {
-        if (url && (!(state.httpReqsData as any)[key] || isEditing())) {
+        if (url && (!state.httpReqsData[key] || isEditing())) {
           const evaluatedUrl = state.evalExpression(url);
           state.handleRequest({ url: evaluatedUrl, key });
         }
