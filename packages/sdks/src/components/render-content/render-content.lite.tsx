@@ -288,8 +288,6 @@ export default function RenderContent(props: RenderContentProps) {
   // TODO: inherit context here too
   // });
 
-  // This gets name `BuilderContext`, but vue code everywhere tries to inject `builderContext` (lowercase)
-  // where is this discrepancy coming from?
   setContext(builderContext, {
     content: state.useContent,
     state: state.contentState,
