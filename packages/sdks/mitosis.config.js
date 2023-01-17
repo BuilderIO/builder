@@ -183,16 +183,49 @@ module.exports = {
         () => ({
           json: {
             pre: (json) => {
-              if (json.name === 'RenderBlock') {
-                traverse(json).forEach(function (item) {
-                  if (!isMitosisNode(item)) {
-                    return;
-                  }
-
-                  if (item.name === 'RenderComponent') {
-                    item.name = 'RenderComponentWithContext';
-                  }
+              /**
+               * We cannot set context in `RenderComponent` because it's a light Qwik component.
+               * We only need to set the context for a React Native need: CSS-style inheritance for Text blocks.
+               * So we're setting the context here, and making sure not to render this component in Qwik.
+               **/
+              if (json.name === 'RenderComponent') {
+                json.imports.push({
+                  imports: {
+                    BuilderContext: 'default',
+                  },
+                  path: '../../context/builder.context.lite',
                 });
+                json.context.set = {
+                  '../../context/builder.context.lite:default': {
+                    name: 'BuilderContext',
+                    value: {
+                      content: {
+                        code: 'props.context.content',
+                        type: 'property',
+                      },
+                      state: {
+                        code: 'props.context.state',
+                        type: 'property',
+                      },
+                      context: {
+                        code: 'props.context.context',
+                        type: 'property',
+                      },
+                      apiKey: {
+                        code: 'props.context.apiKey',
+                        type: 'property',
+                      },
+                      registeredComponents: {
+                        code: 'props.context.registeredComponents',
+                        type: 'property',
+                      },
+                      inheritedStyles: {
+                        code: 'props.context.inheritedStyles',
+                        type: 'property',
+                      },
+                    },
+                  },
+                };
               }
             },
           },
