@@ -186,7 +186,6 @@ module.exports = {
               /**
                * We cannot set context in `RenderComponent` because it's a light Qwik component.
                * We only need to set the context for a React Native need: CSS-style inheritance for Text blocks.
-               * So we're setting the context here, and making sure not to render this component in Qwik.
                **/
               if (json.name === 'RenderComponent') {
                 json.imports.push({
