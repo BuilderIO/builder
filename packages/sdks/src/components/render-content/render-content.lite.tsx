@@ -24,7 +24,7 @@ import type {
 import type { Dictionary, Nullable } from '../../types/typescript.js';
 import RenderBlocks from '../render-blocks.lite';
 import RenderContentStyles from './components/render-styles.lite';
-import BuilderContext from '../../context/builder.context.lite';
+import builderContext from '../../context/builder.context.lite';
 import {
   Show,
   onMount,
@@ -288,22 +288,12 @@ export default function RenderContent(props: RenderContentProps) {
   // TODO: inherit context here too
   // });
 
-  setContext(BuilderContext, {
-    get content() {
-      return state.useContent;
-    },
-    get state() {
-      return state.contentState;
-    },
-    get context() {
-      return state.contextContext;
-    },
-    get apiKey() {
-      return props.apiKey;
-    },
-    get registeredComponents() {
-      return state.allRegisteredComponents;
-    },
+  setContext(builderContext, {
+    content: state.useContent,
+    state: state.contentState,
+    context: state.contextContext,
+    apiKey: props.apiKey,
+    registeredComponents: state.allRegisteredComponents,
   });
 
   onMount(() => {
@@ -348,22 +338,33 @@ export default function RenderContent(props: RenderContentProps) {
       // override normal content in preview mode
       if (isPreviewing()) {
         const searchParams = new URL(location.href).searchParams;
+        const searchParamPreview = searchParams.get('builder.preview');
+        const previewApiKey =
+          searchParams.get('apiKey') || searchParams.get('builder.space');
+
+        /**
+         * Make sure that:
+         * - the preview model name is the same as the one we're rendering, since there can be multiple models rendered
+         *  at the same time, e.g. header/page/footer.
+         * - the API key is the same, since we don't want to preview content from other organizations.
+         *
+         * TO-DO: should we check that the preview item ID is the same as the initial one being rendered? Or would
+         * this break scenarios where the item is not published yet?
+         *
+         * TO-DO: should we only update the state when there is a change?
+         **/
         if (
-          props.model &&
-          searchParams.get('builder.preview') === props.model
+          searchParamPreview === props.model &&
+          previewApiKey === props.apiKey
         ) {
-          const previewApiKey =
-            searchParams.get('apiKey') || searchParams.get('builder.space');
-          if (previewApiKey) {
-            getContent({
-              model: props.model,
-              apiKey: previewApiKey,
-            }).then((content) => {
-              if (content) {
-                state.overrideContent = content;
-              }
-            });
-          }
+          getContent({
+            model: props.model,
+            apiKey: props.apiKey,
+          }).then((content) => {
+            if (content) {
+              state.overrideContent = content;
+            }
+          });
         }
       }
 

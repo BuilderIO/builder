@@ -65,11 +65,13 @@ export default function Symbol(props: SymbolProps) {
       symbolToUse &&
       !symbolToUse.content &&
       !state.fetchedContent &&
-      symbolToUse.model
+      symbolToUse.model &&
+      // This is a hack, we should not need to check for this, but it is needed for Svelte.
+      builderContext?.apiKey
     ) {
       getContent({
         model: symbolToUse.model,
-        apiKey: builderContext.apiKey!,
+        apiKey: builderContext.apiKey,
         query: {
           id: symbolToUse.entry,
         },

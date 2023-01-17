@@ -60,6 +60,7 @@ const vueConfig = {
   namePrefix: (path) => (path.includes('/blocks/') ? 'builder' : undefined),
   cssNamespace: getSeededId,
   asyncComponentImports: true,
+  // api: 'composition',
 };
 
 /**
@@ -176,7 +177,59 @@ module.exports = {
       plugins: [SRCSET_PLUGIN],
     },
     reactNative: {
-      plugins: [SRCSET_PLUGIN, BASE_TEXT_PLUGIN],
+      plugins: [
+        SRCSET_PLUGIN,
+        BASE_TEXT_PLUGIN,
+        () => ({
+          json: {
+            pre: (json) => {
+              /**
+               * We cannot set context in `RenderComponent` because it's a light Qwik component.
+               * We only need to set the context for a React Native need: CSS-style inheritance for Text blocks.
+               **/
+              if (json.name === 'RenderComponent') {
+                json.imports.push({
+                  imports: {
+                    BuilderContext: 'default',
+                  },
+                  path: '../../context/builder.context.lite',
+                });
+                json.context.set = {
+                  '../../context/builder.context.lite:default': {
+                    name: 'BuilderContext',
+                    value: {
+                      content: {
+                        code: 'props.context.content',
+                        type: 'property',
+                      },
+                      state: {
+                        code: 'props.context.state',
+                        type: 'property',
+                      },
+                      context: {
+                        code: 'props.context.context',
+                        type: 'property',
+                      },
+                      apiKey: {
+                        code: 'props.context.apiKey',
+                        type: 'property',
+                      },
+                      registeredComponents: {
+                        code: 'props.context.registeredComponents',
+                        type: 'property',
+                      },
+                      inheritedStyles: {
+                        code: 'props.context.inheritedStyles',
+                        type: 'property',
+                      },
+                    },
+                  },
+                };
+              }
+            },
+          },
+        }),
+      ],
     },
     qwik: {
       typescript: true,
@@ -185,6 +238,24 @@ module.exports = {
     svelte: {
       typescript: true,
       plugins: [
+        () => ({
+          json: {
+            pre: (json) => {
+              Object.keys(json.context.set).forEach((contextKey) => {
+                const setValue = json.context.set[contextKey];
+                if (setValue.name === 'builderContext') {
+                  Object.keys(setValue.value).forEach((valueKey) => {
+                    const value = setValue.value[valueKey];
+                    if (value && value.type === 'property') {
+                      value.code = `get ${valueKey}() {\n return ${value.code} \n}`;
+                      value.type = 'getter';
+                    }
+                  });
+                }
+              });
+            },
+          },
+        }),
         () => ({
           json: {
             pre: (json) => {
