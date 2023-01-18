@@ -188,7 +188,7 @@ export default function RenderContent(props: RenderContentProps) {
     },
     httpReqsData: {} as { [key: string]: any },
 
-    onClick(_event: MouseEvent) {
+    onClick(_event: any) {
       if (state.useContent) {
         const variationId = state.useContent?.testVariationId;
         const contentId = state.useContent?.id;
