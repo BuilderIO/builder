@@ -49,7 +49,8 @@ export const getUserAttributes = () => {
         isMobile.BlackBerry() ||
         isMobile.iOS() ||
         isMobile.Opera() ||
-        isMobile.Windows()
+        isMobile.Windows() ||
+        TARGET === 'reactNative'
       );
     },
   };
