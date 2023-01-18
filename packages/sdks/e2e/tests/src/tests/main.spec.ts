@@ -94,6 +94,57 @@ test.describe(targetContext.name, () => {
       }
     });
   });
+  test.describe('tracking', () => {
+    test('appear by default', async ({ page }) => {
+      const navigate = page.goto('/');
+      const trackingRequestPromise = page.waitForRequest(
+        (request) =>
+          request.url().includes('builder.io/api/v1/track') &&
+          request.method() === 'POST'
+      );
+
+      await navigate;
+      const trackingRequest = await trackingRequestPromise;
+
+      const data = trackingRequest.postDataJSON();
+
+      const expected = {
+        events: [
+          {
+            type: 'impression',
+            data: {
+              metadata: {},
+              userAttributes: {
+                device: 'desktop',
+              },
+            },
+          },
+        ],
+      };
+
+      if (isRNSDK) {
+        expected.events[0].data.userAttributes.device = 'mobile';
+      }
+
+      const ID_REGEX = /^[a-f0-9]{32}$/;
+
+      expect(data).toMatchObject(expected);
+      expect(data.events[0].data.sessionId).toMatch(ID_REGEX);
+      expect(data.events[0].data.visitorId).toMatch(ID_REGEX);
+      expect(data.events[0].data.ownerId).toMatch(ID_REGEX);
+
+      if (!isRNSDK) {
+        expect(data.events[0].data.metadata.url).toMatch(
+          /http:\/\/localhost:\d+\//
+        );
+        expect(data.events[0].data.userAttributes.urlPath).toMatch('/');
+        expect(data.events[0].data.userAttributes.host).toMatch(
+          /localhost:[\d]+/
+        );
+      }
+    });
+  });
+
   test('homepage', async ({ page }) => {
     await page.goto('/');
 

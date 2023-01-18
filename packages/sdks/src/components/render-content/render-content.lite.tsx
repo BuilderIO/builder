@@ -16,7 +16,7 @@ import {
   components,
   createRegisterComponentMessage,
 } from '../../functions/register-component.js';
-import { _track } from '../../functions/track.js';
+import { _track } from '../../functions/track/index.js';
 import type {
   Breakpoints,
   BuilderContent,
