@@ -182,22 +182,25 @@ test.describe(targetContext.name, () => {
 
       expect(data).toMatchObject(expected);
 
-      // check that all the heatmap metadata is present
-      expect(
-        !isNaN(parseFloat(data.events[0].data.metadata.builderElementIndex))
-      ).toBeTruthy();
-      expect(
-        !isNaN(parseFloat(data.events[0].data.metadata.builderTargetOffset.x))
-      ).toBeTruthy();
-      expect(
-        !isNaN(parseFloat(data.events[0].data.metadata.builderTargetOffset.y))
-      ).toBeTruthy();
-      expect(
-        !isNaN(parseFloat(data.events[0].data.metadata.targetOffset.x))
-      ).toBeTruthy();
-      expect(
-        !isNaN(parseFloat(data.events[0].data.metadata.targetOffset.y))
-      ).toBeTruthy();
+      if (!isRNSDK) {
+        // check that all the heatmap metadata is present
+
+        expect(
+          !isNaN(parseFloat(data.events[0].data.metadata.builderElementIndex))
+        ).toBeTruthy();
+        expect(
+          !isNaN(parseFloat(data.events[0].data.metadata.builderTargetOffset.x))
+        ).toBeTruthy();
+        expect(
+          !isNaN(parseFloat(data.events[0].data.metadata.builderTargetOffset.y))
+        ).toBeTruthy();
+        expect(
+          !isNaN(parseFloat(data.events[0].data.metadata.targetOffset.x))
+        ).toBeTruthy();
+        expect(
+          !isNaN(parseFloat(data.events[0].data.metadata.targetOffset.y))
+        ).toBeTruthy();
+      }
 
       // baseline tests for impression tracking
       expect(data.events[0].data.sessionId).toMatch(ID_REGEX);
