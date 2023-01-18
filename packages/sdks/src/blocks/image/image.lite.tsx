@@ -96,7 +96,6 @@ export default function Image(props: ImageProps) {
           srcset={state.srcSetToUse}
           sizes={props.sizes}
         />
-        <source srcset={state.srcSetToUse} />
       </picture>
 
       {/* preserve aspect ratio trick. Only applies when there are no children meant to fit the content width. */}
