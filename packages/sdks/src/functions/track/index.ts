@@ -1,9 +1,9 @@
-import { TARGET } from '../constants/target.js';
-import { getSessionId } from '../helpers/sessionId.js';
-import { getVisitorId } from '../helpers/visitorId.js';
-import type { CanTrack } from '../types/can-track.js';
-import { isBrowser } from './is-browser.js';
-import { isEditing } from './is-editing.js';
+import { TARGET } from '../../constants/target.js';
+import { getSessionId } from '../../helpers/sessionId.js';
+import { getVisitorId } from '../../helpers/visitorId.js';
+import type { CanTrack } from '../../types/can-track.js';
+import { isBrowser } from '../is-browser.js';
+import { isEditing } from '../is-editing.js';
 
 interface Event {
   /**
