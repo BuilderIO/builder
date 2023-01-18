@@ -1,9 +1,3 @@
-import { track } from '.';
-import { TARGET } from '../../constants/target';
-import { isBrowser } from '../is-browser';
-import { isEditing } from '../is-editing';
-import { isPreviewing } from '../is-previewing';
-
 function round(num: number) {
   return Math.round(num * 1000) / 1000;
 }
@@ -83,37 +77,4 @@ export const getInteractionPropertiesForEvent = (event: MouseEvent) => {
           : undefined,
     },
   };
-};
-
-export const trackInteraction = ({
-  contentId,
-  variationId,
-  event,
-  alreadyTrackedOne = false,
-}: {
-  contentId: string;
-  variationId?: string;
-  event: MouseEvent;
-  alreadyTrackedOne?: boolean;
-}) => {
-  if (
-    !(isBrowser() || TARGET === 'reactNative') ||
-    isPreviewing() ||
-    isEditing()
-  ) {
-    return;
-  }
-
-  const { metadata, targetBuilderElement } =
-    getInteractionPropertiesForEvent(event);
-
-  track({
-    type: 'click',
-    apiKey: '//TO-DO: Add your API key here',
-    contentId,
-    metadata,
-    variationId: variationId !== contentId ? variationId : undefined,
-    unique: !alreadyTrackedOne,
-    targetBuilderElement,
-  });
 };
