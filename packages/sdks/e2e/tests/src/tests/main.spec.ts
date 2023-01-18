@@ -126,21 +126,22 @@ test.describe(targetContext.name, () => {
         expected.events[0].data.userAttributes.device = 'mobile';
       }
 
-      console.log(JSON.stringify(data, null, 2));
-
       const ID_REGEX = /^[a-f0-9]{32}$/;
 
       expect(data).toMatchObject(expected);
       expect(data.events[0].data.sessionId).toMatch(ID_REGEX);
       expect(data.events[0].data.visitorId).toMatch(ID_REGEX);
       expect(data.events[0].data.ownerId).toMatch(ID_REGEX);
-      expect(data.events[0].data.metadata.url).toMatch(
-        /http:\/\/localhost:\d+\//
-      );
-      expect(data.events[0].data.userAttributes.urlPath).toMatch('/');
-      expect(data.events[0].data.userAttributes.host).toMatch(
-        /localhost:[\d]+/
-      );
+
+      if (!isRNSDK) {
+        expect(data.events[0].data.metadata.url).toMatch(
+          /http:\/\/localhost:\d+\//
+        );
+        expect(data.events[0].data.userAttributes.urlPath).toMatch('/');
+        expect(data.events[0].data.userAttributes.host).toMatch(
+          /localhost:[\d]+/
+        );
+      }
     });
   });
 
