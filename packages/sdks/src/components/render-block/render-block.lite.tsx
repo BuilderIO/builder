@@ -1,20 +1,18 @@
-import type {
-  BuilderContextInterface,
-  RegisteredComponent,
-} from '../../context/types.js';
+import type { BuilderContextInterface } from '../../context/types.js';
 import { getBlockActions } from '../../functions/get-block-actions.js';
 import { getBlockComponentOptions } from '../../functions/get-block-component-options.js';
 import { getBlockProperties } from '../../functions/get-block-properties.js';
 import { getBlockTag } from '../../functions/get-block-tag.js';
 import { getProcessedBlock } from '../../functions/get-processed-block.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
-import type { Nullable } from '../../types/typescript.js';
-import { evaluate } from '../../functions/evaluate.js';
 import BlockStyles from './block-styles.lite';
-import { isEmptyHtmlElement } from './render-block.helpers.js';
+import {
+  getComponent,
+  getRepeatItemData,
+  isEmptyHtmlElement,
+} from './render-block.helpers.js';
 import type { RenderComponentProps } from './render-component.lite';
 import { For, Show, useMetadata, useStore } from '@builder.io/mitosis';
-import type { RepeatData } from './types.js';
 import RenderRepeatedBlock from './render-repeated-block.lite';
 import { TARGET } from '../../constants/target.js';
 import { extractTextStyles } from '../../functions/extract-text-styles.js';
@@ -37,30 +35,7 @@ useMetadata({
 
 export default function RenderBlock(props: RenderBlockProps) {
   const state = useStore({
-    get component(): Nullable<RegisteredComponent> {
-      const componentName = getProcessedBlock({
-        block: props.block,
-        state: props.context.state,
-        context: props.context.context,
-        shouldEvaluateBindings: false,
-      }).component?.name;
-
-      if (!componentName) {
-        return null;
-      }
-
-      const ref = props.context.registeredComponents[componentName];
-
-      if (!ref) {
-        // TODO: Public doc page with more info about this message
-        console.warn(`
-          Could not find a registered component named "${componentName}". 
-          If you registered it, is the file that registered it imported by the file that needs to render it?`);
-        return undefined;
-      } else {
-        return ref;
-      }
-    },
+    component: getComponent({ block: props.block, context: props.context }),
     get tag() {
       return getBlockTag(state.useBlock);
     },
@@ -96,14 +71,9 @@ export default function RenderBlock(props: RenderBlockProps) {
           : {}),
       };
     },
-
-    get shouldWrap() {
-      return !state.component?.noWrap;
-    },
-
     get renderComponentProps(): RenderComponentProps {
       return {
-        blockChildren: state.useChildren,
+        blockChildren: state.useBlock.children ?? [],
         componentRef: state.component?.component,
         componentOptions: {
           ...getBlockComponentOptions(state.useBlock),
@@ -111,25 +81,13 @@ export default function RenderBlock(props: RenderBlockProps) {
            * These attributes are passed to the wrapper element when there is one. If `noWrap` is set to true, then
            * they are provided to the component itself directly.
            */
-          ...(state.shouldWrap
+          ...(!state.component?.noWrap
             ? {}
-            : {
-                attributes: {
-                  ...state.attributes,
-                  ...state.actions,
-                },
-              }),
+            : { attributes: { ...state.attributes, ...state.actions } }),
           customBreakpoints: state.childrenContext?.content?.meta?.breakpoints,
         },
         context: state.childrenContext,
       };
-    },
-    get useChildren() {
-      // TO-DO: When should `canHaveChildren` dictate rendering?
-      // This is currently commented out because some Builder components (e.g. Box) do not have `canHaveChildren: true`,
-      // but still receive and need to render children.
-      // return state.componentInfo?.canHaveChildren ? state.useBlock.children : [];
-      return state.useBlock.children ?? [];
     },
     get childrenWithoutParentComponent() {
       /**
@@ -141,80 +99,45 @@ export default function RenderBlock(props: RenderBlockProps) {
       const shouldRenderChildrenOutsideRef =
         !state.component?.component && !state.repeatItemData;
 
-      return shouldRenderChildrenOutsideRef ? state.useChildren : [];
+      return shouldRenderChildrenOutsideRef
+        ? state.useBlock.children ?? []
+        : [];
     },
 
-    get repeatItemData(): RepeatData[] | undefined {
-      /**
-       * we don't use `state.useBlock` here because the processing done within its logic includes evaluating the block's bindings,
-       * which will not work if there is a repeat.
-       */
-      const { repeat, ...blockWithoutRepeat } = props.block;
-
-      if (!repeat?.collection) {
-        return undefined;
-      }
-
-      const itemsArray = evaluate({
-        code: repeat.collection,
-        state: props.context.state,
-        context: props.context.context,
-      });
-
-      if (!Array.isArray(itemsArray)) {
-        return undefined;
-      }
-
-      const collectionName = repeat.collection.split('.').pop();
-      const itemNameToUse =
-        repeat.itemName || (collectionName ? collectionName + 'Item' : 'item');
-
-      const repeatArray = itemsArray.map<RepeatData>((item, index) => ({
-        context: {
-          ...props.context,
-          state: {
-            ...props.context.state,
-            $index: index,
-            $item: item,
-            [itemNameToUse]: item,
-            [`$${itemNameToUse}Index`]: index,
-          },
-        },
-        block: blockWithoutRepeat,
-      }));
-
-      return repeatArray;
-    },
-
-    get inheritedTextStyles() {
-      if (TARGET !== 'reactNative') {
-        return {};
-      }
-
-      const styles = getReactNativeBlockStyles({
-        block: state.useBlock,
-        context: props.context,
-        blockStyles: state.attributes.style,
-      });
-
-      return extractTextStyles(styles);
-    },
+    repeatItemData: getRepeatItemData({
+      block: props.block,
+      context: props.context,
+    }),
 
     get childrenContext(): BuilderContextInterface {
+      const getInheritedTextStyles = () => {
+        if (TARGET !== 'reactNative') {
+          return {};
+        }
+
+        return extractTextStyles(
+          getReactNativeBlockStyles({
+            block: state.useBlock,
+            context: props.context,
+            blockStyles: state.attributes.style,
+          })
+        );
+      };
+
       return {
         apiKey: props.context.apiKey,
         state: props.context.state,
         content: props.context.content,
         context: props.context.context,
         registeredComponents: props.context.registeredComponents,
-        inheritedStyles: state.inheritedTextStyles,
+        inheritedStyles: getInheritedTextStyles(),
       };
     },
   });
 
   return (
     <Show
-      when={state.shouldWrap}
+      when={!state.component?.noWrap}
       else={<RenderComponent {...state.renderComponentProps} />}
     >
       {/*

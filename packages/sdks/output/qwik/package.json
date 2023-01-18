@@ -28,6 +28,7 @@
     "release:dev": "yarn run build && npm version prerelease && npm publish --tag dev"
   },
   "devDependencies": {
+    "@builder.io/qwik": ">=0.13.3",
     "@types/node": "latest",
     "typescript": "^4",
     "vite": "^3.0.4"

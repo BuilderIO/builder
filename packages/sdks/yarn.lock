@@ -1958,7 +1958,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@builder.io/e2e-qwik@workspace:e2e/qwik"
   dependencies:
-    "@builder.io/qwik": ^0.11.1
+    "@builder.io/qwik": ^0.13.3
     "@builder.io/sdk-qwik": "workspace:*"
     "@builder.io/sdks-e2e-tests": "workspace:*"
     "@types/eslint": 8.4.5
@@ -2123,13 +2123,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis-cli@npm:^0.0.42":
-  version: 0.0.42
-  resolution: "@builder.io/mitosis-cli@npm:0.0.42"
+"@builder.io/mitosis-cli@npm:^0.0.43":
+  version: 0.0.43
+  resolution: "@builder.io/mitosis-cli@npm:0.0.43"
   dependencies:
     "@babel/core": ^7.17.8
     "@babel/preset-typescript": ^7.16.7
-    "@builder.io/mitosis": 0.0.84
+    "@builder.io/mitosis": 0.0.85
     "@vue/compiler-sfc": ^3.1.5
     babel-preset-solid: ^1.3.13
     chalk: ^4.1.0
@@ -2150,13 +2150,13 @@ __metadata:
     vue-template-validator: ^1.1.5
   bin:
     mitosis: bin/mitosis
-  checksum: d09f7a20c1be30d8f344fab7db51f781644fbf869006a4930d80fcb274c6a24c5ff93669d317b526f77b3a74bbd854c2f9b4f6239f11d2728b8606f5724c69c0
+  checksum: 11329e05641f718c9724ce166cd1f5310c02af5925894eb33223ddd00f8c51a27e8a9803acc5f1e6b58f037826e36e5f4e965d847b0bcdc378d77de888664346
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis@npm:0.0.84, @builder.io/mitosis@npm:^0.0.84":
-  version: 0.0.84
-  resolution: "@builder.io/mitosis@npm:0.0.84"
+"@builder.io/mitosis@npm:0.0.85, @builder.io/mitosis@npm:^0.0.85":
+  version: 0.0.85
+  resolution: "@builder.io/mitosis@npm:0.0.85"
   dependencies:
     "@angular/compiler": ^11.2.11
     "@babel/core": 7.14.5
@@ -2194,16 +2194,16 @@ __metadata:
     traverse: ^0.6.6
     typescript: ^4.8.4
     vue: ~2.6
-  checksum: f202fcfe311cac2042a62ebbb988080568ee5c0ca8cfcbc519b71679ad56507c955645b3bd95031b914944ea58f6c91cb010daabd8aafae2f08477d49b802fbd
+  checksum: 5838de8718aa12270dc273975100d7aee9351871a71a0b55d182dc0e5ff10e7f72de3286c482f86334ca6e86e3189b0cf0b7e7445a48f8b12d94de101db9709b
   languageName: node
   linkType: hard
 
-"@builder.io/qwik@npm:^0.11.1":
-  version: 0.11.1
-  resolution: "@builder.io/qwik@npm:0.11.1"
+"@builder.io/qwik@npm:>=0.13.3, @builder.io/qwik@npm:^0.13.3":
+  version: 0.13.3
+  resolution: "@builder.io/qwik@npm:0.13.3"
   bin:
     qwik: qwik.cjs
-  checksum: 417943dc8101beb3478fc49f088384adbbc325587b8d9a20842705073fa04f3a8e073ab6ce5e4edc9d7075bbc64038562c3e425bab471804e2c352052ecf6fd0
+  checksum: 81c95cec758802049201218bbfc79fe6d94c3616b31298c2a2ab39eb64ff18d23363b17557ca6651afe50bd6ff3c9b2b7b2526992b1b4b702113bded75158d04
   languageName: node
   linkType: hard
 
@@ -2237,6 +2237,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@builder.io/sdk-qwik@workspace:output/qwik"
   dependencies:
+    "@builder.io/qwik": ">=0.13.3"
     "@types/node": latest
     typescript: ^4
     vite: ^3.0.4
@@ -2372,8 +2373,8 @@ __metadata:
   resolution: "@builder.io/sdks@workspace:."
   dependencies:
     "@builder.io/eslint-plugin-mitosis": ^0.0.14
-    "@builder.io/mitosis": ^0.0.84
-    "@builder.io/mitosis-cli": ^0.0.42
+    "@builder.io/mitosis": ^0.0.85
+    "@builder.io/mitosis-cli": ^0.0.43
     "@playwright/test": ^1.27.1
     "@types/jest": ^27.4.1
     "@types/node-fetch": ^2.5.12

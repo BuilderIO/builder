@@ -5,6 +5,7 @@ const rng = seedrandom('vue-sdk-seed');
 /**
  * @typedef {import('@builder.io/mitosis')} Mitosis
  * @typedef {import('@builder.io/mitosis').MitosisNode} MitosisNode
+ * @typedef {import('@builder.io/mitosis').StateValue} StateValue
  */
 
 /**
@@ -24,7 +25,7 @@ const getSeededId = () => {
 
 /**
  * @param {any} x
- * @returns {x is import('@builder.io/mitosis').MitosisNode}
+ * @returns {x is MitosisNode}
  */
 const isMitosisNode = (x) => x && x['@type'] === '@builder.io/mitosis/node';
 
@@ -50,6 +51,15 @@ const getTargetPath = ({ target }) => {
     default:
       return kebabCase(target);
   }
+};
+
+/**
+ * @param {{value: StateValue, key: string}} args
+ */
+const convertPropertyStateValueToGetter = (args) => {
+  const { value, key } = args;
+  value.code = `get ${key}() {\n return ${value.code} \n}`;
+  value.type = 'getter';
 };
 
 /**
@@ -174,7 +184,24 @@ module.exports = {
       stylesType: 'style-tag',
     },
     rsc: {
-      plugins: [SRCSET_PLUGIN],
+      plugins: [
+        SRCSET_PLUGIN,
+        () => ({
+          json: {
+            pre: (json) => {
+              if (json.name === 'RenderContent') {
+                json.state.allRegisteredComponents.code =
+                  json.state.allRegisteredComponents.code.replace(
+                    'as RegisteredComponents',
+                    ''
+                  );
+              }
+
+              return json;
+            },
+          },
+        }),
+      ],
     },
     reactNative: {
       plugins: [
@@ -233,7 +260,31 @@ module.exports = {
     },
     qwik: {
       typescript: true,
-      plugins: [SRCSET_PLUGIN],
+      plugins: [
+        SRCSET_PLUGIN,
+        () => ({
+          json: {
+            pre: (json) => {
+              // We want to keep this component as a light component to avoid the overhead of a full component, which is
+              // a ton of HTML comments. Therefore, we convert these properties to getters so we don't have `useStore`
+              // calls in the component.
+              if (json.name === 'RenderBlock') {
+                convertPropertyStateValueToGetter({
+                  value: json.state['repeatItemData'],
+                  key: 'repeatItemData',
+                });
+
+                convertPropertyStateValueToGetter({
+                  value: json.state['component'],
+                  key: 'component',
+                });
+              }
+
+              return json;
+            },
+          },
+        }),
+      ],
     },
     svelte: {
       typescript: true,
@@ -247,8 +298,10 @@ module.exports = {
                   Object.keys(setValue.value).forEach((valueKey) => {
                     const value = setValue.value[valueKey];
                     if (value && value.type === 'property') {
-                      value.code = `get ${valueKey}() {\n return ${value.code} \n}`;
-                      value.type = 'getter';
+                      convertPropertyStateValueToGetter({
+                        value,
+                        key: valueKey,
+                      });
                     }
                   });
                 }

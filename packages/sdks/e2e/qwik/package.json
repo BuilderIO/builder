@@ -23,7 +23,7 @@
     "e2e": "../../node_modules/.bin/playwright test"
   },
   "devDependencies": {
-    "@builder.io/qwik": "^0.11.1",
+    "@builder.io/qwik": "^0.13.3",
     "@builder.io/sdk-qwik": "workspace:*",
     "@builder.io/sdks-e2e-tests": "workspace:*",
     "@types/eslint": "8.4.5",
