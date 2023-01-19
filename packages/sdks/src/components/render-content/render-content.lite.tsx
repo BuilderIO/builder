@@ -40,6 +40,7 @@ import {
   setupBrowserForEditing,
 } from '../../scripts/init-editing.js';
 import { checkIsDefined } from '../../helpers/nullable.js';
+import { getInteractionPropertiesForEvent } from '../../functions/track/interaction.js';
 
 useMetadata({
   qwik: {
@@ -188,7 +189,9 @@ export default function RenderContent(props: RenderContentProps) {
     },
     httpReqsData: {} as { [key: string]: any },
 
-    onClick(_event: any) {
+    clicked: false,
+
+    onClick(event: any) {
       if (state.useContent) {
         const variationId = state.useContent?.testVariationId;
         const contentId = state.useContent?.id;
@@ -198,7 +201,13 @@ export default function RenderContent(props: RenderContentProps) {
           contentId,
           apiKey: props.apiKey,
           variationId: variationId !== contentId ? variationId : undefined,
+          ...getInteractionPropertiesForEvent(event),
+          unique: !state.clicked,
         });
+      }
+
+      if (!state.clicked) {
+        state.clicked = true;
       }
     },
 

@@ -95,7 +95,7 @@ test.describe(targetContext.name, () => {
     });
   });
   test.describe('tracking', () => {
-    test('appear by default', async ({ page }) => {
+    test('POSTs correct impression data', async ({ page }) => {
       const navigate = page.goto('/');
       const trackingRequestPromise = page.waitForRequest(
         (request) =>
@@ -129,6 +129,80 @@ test.describe(targetContext.name, () => {
       const ID_REGEX = /^[a-f0-9]{32}$/;
 
       expect(data).toMatchObject(expected);
+      expect(data.events[0].data.sessionId).toMatch(ID_REGEX);
+      expect(data.events[0].data.visitorId).toMatch(ID_REGEX);
+      expect(data.events[0].data.ownerId).toMatch(ID_REGEX);
+
+      if (!isRNSDK) {
+        expect(data.events[0].data.metadata.url).toMatch(
+          /http:\/\/localhost:\d+\//
+        );
+        expect(data.events[0].data.userAttributes.urlPath).toMatch('/');
+        expect(data.events[0].data.userAttributes.host).toMatch(
+          /localhost:[\d]+/
+        );
+      }
+    });
+    test('POSTs correct click data', async ({ page }) => {
+      await page.goto('/', { waitUntil: 'networkidle' });
+      const trackingRequestPromise = page.waitForRequest(
+        (request) =>
+          request.url().includes('builder.io/api/v1/track') &&
+          request.method() === 'POST' &&
+          request.postDataJSON().events[0].type === 'click'
+      );
+
+      // click on an element
+      await page.click('text=SDK Feature testing project');
+
+      // get click tracking request
+      const trackingRequest = await trackingRequestPromise;
+
+      const data = trackingRequest.postDataJSON();
+
+      const expected = {
+        events: [
+          {
+            type: 'click',
+            data: {
+              metadata: {},
+              userAttributes: {
+                device: 'desktop',
+              },
+            },
+          },
+        ],
+      };
+
+      if (isRNSDK) {
+        expected.events[0].data.userAttributes.device = 'mobile';
+      }
+
+      const ID_REGEX = /^[a-f0-9]{32}$/;
+
+      expect(data).toMatchObject(expected);
+
+      if (!isRNSDK) {
+        // check that all the heatmap metadata is present
+
+        expect(
+          !isNaN(parseFloat(data.events[0].data.metadata.builderElementIndex))
+        ).toBeTruthy();
+        expect(
+          !isNaN(parseFloat(data.events[0].data.metadata.builderTargetOffset.x))
+        ).toBeTruthy();
+        expect(
+          !isNaN(parseFloat(data.events[0].data.metadata.builderTargetOffset.y))
+        ).toBeTruthy();
+        expect(
+          !isNaN(parseFloat(data.events[0].data.metadata.targetOffset.x))
+        ).toBeTruthy();
+        expect(
+          !isNaN(parseFloat(data.events[0].data.metadata.targetOffset.y))
+        ).toBeTruthy();
+      }
+
+      // baseline tests for impression tracking
       expect(data.events[0].data.sessionId).toMatch(ID_REGEX);
       expect(data.events[0].data.visitorId).toMatch(ID_REGEX);
       expect(data.events[0].data.ownerId).toMatch(ID_REGEX);
