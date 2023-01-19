@@ -3,12 +3,12 @@
 - Support Heatmaps
 - Support Insights data filtering by URL & Device
 
-### 0.1.1
+### 0.1.2
 
 - Fix: respect when `canTrack` is set to `false`
 - Fix: issues sending session and visitor IDs with tracking events
 
-### 0.1.0
+### 0.1.1
 
 🧨 Breaking change: we no longer provide a `node-fetch` polyfill. See [the docs](./README.md#fetch) for more information.
 
