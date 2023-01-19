@@ -405,7 +405,7 @@ module.exports = {
                   const isEvent = attr => attr.startsWith('on:')
                   const isNonEvent = attr => !attr.startsWith('on:')
 
-                  const filterAttrs = (attrs, filter) => {
+                  const filterAttrs = (attrs = {}, filter) => {
                     const validAttr = {}
                     Object.keys(attrs).forEach(attr => {
                       if (filter(attr)) {
