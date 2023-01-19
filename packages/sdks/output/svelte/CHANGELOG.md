@@ -1,3 +1,8 @@
+### 0.1.3
+
+- Support Heatmaps
+- Support Insights data filtering by URL & Device
+
 ### 0.1.1
 
 - Fix: respect when `canTrack` is set to `false`
