@@ -426,8 +426,8 @@ test.describe(targetContext.name, () => {
         page.setViewportSize({ width: 801, height: 1000 });
 
         await page.goto('/custom-breakpoints');
-        const breakpointsPara = page.locator(`text=BREAKPOINTS 500 - 800`);
-        await expect(breakpointsPara).toBeVisible();
+        const breakpointsParam = page.locator(`text=BREAKPOINTS 500 - 800`);
+        await expect(breakpointsParam).toBeVisible();
 
         let expectedTextColor = 'rgb(0, 0, 0)'; // black text color
         if (process.env.SDK === 'reactNative') {
@@ -435,7 +435,7 @@ test.describe(targetContext.name, () => {
         }
 
         await expectStyleForElement({
-          locator: breakpointsPara,
+          locator: breakpointsParam,
           cssProperty: 'color',
           expectedValue: expectedTextColor,
         });
@@ -708,6 +708,35 @@ test.describe(targetContext.name, () => {
             expected: expectedImageCss,
           });
         }
+      });
+    });
+  });
+
+  test.describe('Styles', () => {
+    test('should apply responsive styles correctly on tablet/mobile', async ({
+      page,
+    }) => {
+      await page.goto('/columns');
+
+      // switch to tablet view
+      page.setViewportSize({ width: 750, height: 1000 });
+
+      const selector = isRNSDK
+        ? // TODO for react-native, we need to find a better way to locate the element
+          'picture'
+        : 'picture';
+
+      const locator = page
+        .locator(selector)
+        .nth(1)
+        .locator('..')
+        .locator('..')
+        .locator('..');
+
+      await expectStyleForElement({
+        locator,
+        cssProperty: 'margin-left',
+        expectedValue: '0px',
       });
     });
   });
