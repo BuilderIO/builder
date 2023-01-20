@@ -2,7 +2,6 @@
   "name": "@builder.io/e2e-qwik",
   "private": true,
   "type": "module",
-  "type-disable-for-playwright": "module",
   "version": "0.0.1",
   "scripts": {
     "build": "npm run typecheck && npm run build.client && npm run build.ssr",

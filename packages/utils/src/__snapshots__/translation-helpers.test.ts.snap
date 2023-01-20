@@ -46,12 +46,12 @@ Object {
     "state": Object {
       "translation": Object {
         "blocks.block-id#text": Object {
-          "@type": "@builder.io/core:LocalizedValue",
+          "@type": "@builder.io/core:TranslatedValue",
           "de": "german translatated",
           "fr-FR": "fench translated text",
         },
         "blocks.builder-custom-component-id#heading": Object {
-          "@type": "@builder.io/core:LocalizedValue",
+          "@type": "@builder.io/core:TranslatedValue",
           "de": "\\"german heading\\"",
           "fr-FR": "french translated heading",
         },

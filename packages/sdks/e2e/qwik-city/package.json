@@ -1,6 +1,7 @@
 {
   "name": "@builder.io/e2e-qwik-city",
   "private": true,
+  "type": "module",
   "scripts": {
     "build": "qwik build",
     "build.client": "vite build",
@@ -15,6 +16,7 @@
     "preview": "qwik build preview && vite preview --open",
     "start": "vite --open --mode ssr",
     "qwik": "qwik",
+    "serve": "yarn run dev",
     "e2e": "../../node_modules/.bin/playwright test"
   },
   "devDependencies": {

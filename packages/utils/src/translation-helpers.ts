@@ -4,6 +4,7 @@ import omit from 'lodash/omit';
 import unescape from 'lodash/unescape';
 
 export const localizedType = '@builder.io/core:LocalizedValue';
+export const translatatedType = '@builder.io/core:TranslatedValue';
 
 export type TranslateableFields = {
   [key: string]: {
@@ -141,7 +142,7 @@ export function applyTranslation(
       return {
         ...acc,
         [key]: {
-          '@type': localizedType,
+          '@type': translatatedType,
           ...content.data!.state?.translation?.[key],
           [locale]: unescape(translation[key].value),
         },
