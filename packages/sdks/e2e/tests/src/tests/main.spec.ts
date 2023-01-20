@@ -721,13 +721,10 @@ test.describe(targetContext.name, () => {
       // switch to tablet view
       page.setViewportSize({ width: 750, height: 1000 });
 
-      const selector = isRNSDK
-        ? // TODO for react-native, we need to find a better way to locate the element
-          'picture'
-        : 'picture';
-
+      // check that the 2nd photo has a margin-left of 0px
+      // the desktop margin would typically be on its 3rd parent.
       const locator = page
-        .locator(selector)
+        .locator('picture')
         .nth(1)
         .locator('..')
         .locator('..')
