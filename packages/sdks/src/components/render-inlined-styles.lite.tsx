@@ -28,7 +28,7 @@ export default function RenderInlinedStyles(props: Props) {
 
   return (
     <Show
-      when={TARGET === 'svelte'}
+      when={TARGET === 'svelte' || TARGET === 'qwik'}
       else={
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
@@ -39,7 +39,10 @@ export default function RenderInlinedStyles(props: Props) {
        * We have a Svelte plugin that converts this `div` to a `Fragment`. We cannot directly use a "Fragment" here because
        * not all frameworks support providing properties to a "Fragment" (e.g. Solid)
        */}
-      <div innerHTML={state.injectedStyleScript} />
+      {/* 
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore */}
+      <state.tag innerHTML={props.styles} />
     </Show>
   );
 }

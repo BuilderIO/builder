@@ -284,6 +284,23 @@ module.exports = {
             },
           },
         }),
+        () => ({
+          json: {
+            pre: (json) => {
+              if (json.name === 'RenderInlinedStyles') {
+                traverse(json).forEach(function (item) {
+                  if (!isMitosisNode(item)) {
+                    return;
+                  }
+
+                  if (item.bindings.innerHTML) {
+                    item.name = 'style';
+                  }
+                });
+              }
+            },
+          },
+        }),
       ],
     },
     svelte: {
@@ -340,7 +357,7 @@ module.exports = {
                   }
 
                   if (item.bindings.innerHTML) {
-                    item.name = 'Fragment';
+                    item.name = 'style';
                   }
                 });
               }
