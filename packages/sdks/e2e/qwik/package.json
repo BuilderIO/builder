@@ -1,9 +1,7 @@
 {
   "name": "@builder.io/e2e-qwik",
-  "description": "Blank Qwik starter app. Vite.js tooling. Express.js server. Prettier code formatter.",
   "private": true,
   "type": "module",
-  "type-disable-for-playwright": "module",
   "version": "0.0.1",
   "scripts": {
     "build": "npm run typecheck && npm run build.client && npm run build.ssr",
@@ -23,7 +21,7 @@
     "e2e": "../../node_modules/.bin/playwright test"
   },
   "devDependencies": {
-    "@builder.io/qwik": "^0.13.3",
+    "@builder.io/qwik": "^0.16.2",
     "@builder.io/sdk-qwik": "workspace:*",
     "@builder.io/sdks-e2e-tests": "workspace:*",
     "@types/eslint": "8.4.5",
