@@ -9,3 +9,7 @@ tsconfig.json
 
 e2e/qwik/server/
 e2e/rsc/
+
+**/playwright-report/*
+**/test-results/*
+**/vite.config.ts.timestamp-*
