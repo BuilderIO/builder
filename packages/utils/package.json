@@ -1,12 +1,13 @@
 {
   "name": "@builder.io/utils",
-  "version": "1.1.7",
+  "version": "1.1.8",
   "description": "Utils for working with Builder.io content",
   "main": "./dist/index.js",
   "scripts": {
     "build": "tsc",
     "prepublish": "npm run build",
     "test": "jest",
+    "release:patch": "npm run build && npm version patch --no-git-tag-version && ALLOW_PUBLISH=true npm publish",
     "release:dev": "npm run build && npm version prerelease --no-git-tag-version && ALLOW_PUBLISH=true npm publish --tag dev"
   },
   "devDependencies": {
