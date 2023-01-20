@@ -357,7 +357,8 @@ module.exports = {
                   }
 
                   if (item.bindings.innerHTML) {
-                    item.name = 'style';
+                    item.name = 'Fragment';
+                    item.bindings.innerHTML.code = 'state.injectedStyleScript';
                   }
                 });
               }
