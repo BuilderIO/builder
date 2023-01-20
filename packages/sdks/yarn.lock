@@ -2123,13 +2123,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis-cli@npm:^0.0.43":
-  version: 0.0.43
-  resolution: "@builder.io/mitosis-cli@npm:0.0.43"
+"@builder.io/mitosis-cli@npm:^0.0.44":
+  version: 0.0.44
+  resolution: "@builder.io/mitosis-cli@npm:0.0.44"
   dependencies:
     "@babel/core": ^7.17.8
     "@babel/preset-typescript": ^7.16.7
-    "@builder.io/mitosis": 0.0.85
+    "@builder.io/mitosis": 0.0.86
     "@vue/compiler-sfc": ^3.1.5
     babel-preset-solid: ^1.3.13
     chalk: ^4.1.0
@@ -2150,13 +2150,13 @@ __metadata:
     vue-template-validator: ^1.1.5
   bin:
     mitosis: bin/mitosis
-  checksum: 11329e05641f718c9724ce166cd1f5310c02af5925894eb33223ddd00f8c51a27e8a9803acc5f1e6b58f037826e36e5f4e965d847b0bcdc378d77de888664346
+  checksum: e72d391d6c6c38bcac892e9a6a6a6fa002048e1e0ec2dc8429af8f24261e1ee7abd8af882dd86172fbf439cecb0429bd635afc6514f81e3c0fe7c523eba3a426
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis@npm:0.0.85, @builder.io/mitosis@npm:^0.0.85":
-  version: 0.0.85
-  resolution: "@builder.io/mitosis@npm:0.0.85"
+"@builder.io/mitosis@npm:0.0.86, @builder.io/mitosis@npm:^0.0.86":
+  version: 0.0.86
+  resolution: "@builder.io/mitosis@npm:0.0.86"
   dependencies:
     "@angular/compiler": ^11.2.11
     "@babel/core": 7.14.5
@@ -2194,7 +2194,7 @@ __metadata:
     traverse: ^0.6.6
     typescript: ^4.8.4
     vue: ~2.6
-  checksum: 5838de8718aa12270dc273975100d7aee9351871a71a0b55d182dc0e5ff10e7f72de3286c482f86334ca6e86e3189b0cf0b7e7445a48f8b12d94de101db9709b
+  checksum: 7770e1f58e694cd22e8d3f2f11fb53ee3ae670bfcb6c8007e6140b2bb1686ecc441fb67080d06ca5baa011989edfdd00b2738d247f0408ce2d23713f8157d7f0
   languageName: node
   linkType: hard
 
@@ -2373,8 +2373,8 @@ __metadata:
   resolution: "@builder.io/sdks@workspace:."
   dependencies:
     "@builder.io/eslint-plugin-mitosis": ^0.0.14
-    "@builder.io/mitosis": ^0.0.85
-    "@builder.io/mitosis-cli": ^0.0.43
+    "@builder.io/mitosis": ^0.0.86
+    "@builder.io/mitosis-cli": ^0.0.44
     "@playwright/test": ^1.27.1
     "@types/jest": ^27.4.1
     "@types/node-fetch": ^2.5.12
