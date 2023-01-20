@@ -9,6 +9,10 @@ Installing the Qwik SDK is done in two steps:
 1. Set up Qwik-city project.
 2. Install the Qwik SDK into your Qwik-city project.
 
+### Fetch
+
+This Package uses fetch. See [these docs](https://github.com/BuilderIO/this-package-uses-fetch/blob/main/README.md) for more information.
+
 ### Set up Qwik-city project
 
 1. Follow the instructions on [Qwik-city](https://qwik.builder.io/qwikcity/overview)

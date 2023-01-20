@@ -1,23 +1,26 @@
 {
   "name": "@builder.io/sdk-react",
   "description": "Builder.io SDK for React",
-  "version": "0.0.4",
+  "version": "0.1.3",
   "main": "src/index.js",
   "type": "module",
   "exports": {
     ".": {
-      "import": "./src/index.js",
-      "require": "./src/index.js"
+      "import": "./dist/react/index.js",
+      "require": "./dist/react/index.js"
     },
     "./rsc": {
-      "import": "./packages/_rsc/src/index.js",
-      "require": "./packages/_rsc/src/index.js"
+      "import": "./dist/rsc/index.js",
+      "require": "./dist/rsc/index.js"
     }
   },
   "scripts": {
-    "build": "echo 'no need to build react SDK'",
-    "release:patch": "npm version patch --no-git-tag-version && npm publish --access public",
-    "release:dev": "npm version prerelease --no-git-tag-version && npm publish --tag dev --access public"
+    "build:react": "tsc -p ./tsconfig.react.json",
+    "build:rsc": "tsc -p ./tsconfig.rsc.json",
+    "build": "yarn run build:react && yarn run build:rsc",
+    "release:patch": "yarn run build && npm version patch && npm publish",
+    "release:minor": "yarn run build && npm version minor && npm publish",
+    "release:dev": "yarn run build && npm version prerelease && npm publish --tag dev"
   },
   "peerDependencies": {
     "react": "^18.2.0"
@@ -26,6 +29,6 @@
     "react": "^18.2.0"
   },
   "dependencies": {
-    "node-fetch": "^2.6.1"
+    "typescript": "^4.9.4"
   }
 }

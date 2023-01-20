@@ -1,8 +1,13 @@
 import type { BuilderBlock } from './builder-block.js';
+import type { Nullable } from './typescript.js';
 
 // TODO
 type Input = any;
 
+export interface Breakpoints {
+  small: number;
+  medium: number;
+}
 export interface BuilderContentVariation {
   data?: {
     title?: string;
@@ -18,10 +23,7 @@ export interface BuilderContentVariation {
   testRatio?: number;
   id?: string;
   meta?: {
-    breakpoints?: {
-      small: number;
-      medium: number;
-    };
+    breakpoints?: Nullable<Breakpoints>;
     [key: string]: any;
   };
 }

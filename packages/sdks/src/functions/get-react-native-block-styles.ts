@@ -5,9 +5,11 @@ import { sanitizeReactNativeBlockStyles } from './sanitize-react-native-block-st
 export function getReactNativeBlockStyles({
   block,
   context,
+  blockStyles,
 }: {
   block: BuilderBlock;
   context: BuilderContextInterface;
+  blockStyles: any;
 }): CSSStyleDeclaration | Record<string, string | undefined> {
   const responsiveStyles = block.responsiveStyles;
   if (!responsiveStyles) {
@@ -20,6 +22,7 @@ export function getReactNativeBlockStyles({
     ...(responsiveStyles.large || {}),
     ...(responsiveStyles.medium || {}),
     ...(responsiveStyles.small || {}),
+    ...blockStyles,
   } as Record<string, string | number>;
 
   const newStyles = sanitizeReactNativeBlockStyles(

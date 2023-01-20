@@ -1,14 +1,23 @@
 import { camelToKebabCase } from '../functions/camel-to-kebab-case.js';
+import { checkIsDefined } from './nullable.js';
 
-const convertStyleMaptoCSS = (style: Partial<CSSStyleDeclaration>): string => {
+export const convertStyleMapToCSSArray = (
+  style: Partial<CSSStyleDeclaration>
+): string[] => {
   const cssProps = Object.entries(style).map(([key, value]) => {
     if (typeof value === 'string') {
       return `${camelToKebabCase(key)}: ${value};`;
+    } else {
+      return undefined;
     }
   });
 
-  return cssProps.join('\n');
+  return cssProps.filter(checkIsDefined);
 };
+
+export const convertStyleMapToCSS = (
+  style: Partial<CSSStyleDeclaration>
+): string => convertStyleMapToCSSArray(style).join('\n');
 
 export const createCssClass = ({
   mediaQuery,
@@ -20,7 +29,7 @@ export const createCssClass = ({
   styles: Partial<CSSStyleDeclaration>;
 }) => {
   const cssClass = `.${className} {
-    ${convertStyleMaptoCSS(styles)}
+    ${convertStyleMapToCSS(styles)}
   }`;
 
   if (mediaQuery) {

@@ -1,9 +1,11 @@
-import { TARGET } from '../constants/target.js';
-import { getSessionId } from '../helpers/sessionId.js';
-import { getVisitorId } from '../helpers/visitorId.js';
-import type { CanTrack } from '../types/can-track.js';
-import { isBrowser } from './is-browser.js';
-import { isEditing } from './is-editing.js';
+import { TARGET } from '../../constants/target.js';
+import { getSessionId } from '../../helpers/sessionId.js';
+import { getVisitorId } from '../../helpers/visitorId.js';
+import type { CanTrack } from '../../types/can-track.js';
+import type { Dictionary } from '../../types/typescript.js';
+import { isBrowser } from '../is-browser.js';
+import { isEditing } from '../is-editing.js';
+import { getUserAttributes } from './helpers.js';
 
 interface Event {
   /**
@@ -22,9 +24,9 @@ interface Event {
      */
     ownerId: string;
     /**
-     * Stringified JSON object containing any additional metadata you want to track.
+     * (Optional) metadata that you want to provide with your event.
      */
-    metadata?: string;
+    metadata?: Dictionary<any>;
     /**
      * Session ID of the user. This is provided by the SDK by checking session storage.
      */
@@ -63,18 +65,11 @@ const getTrackingEventData = async ({
 };
 
 type EventProperties = Pick<Event, 'type'> &
-  Pick<Event['data'], 'contentId' | 'variationId'> & {
+  Pick<Event['data'], 'contentId' | 'variationId' | 'metadata'> & {
     /**
      * Your organization's API key.
      */
     apiKey: Event['data']['ownerId'];
-    /**
-     * (Optional) metadata that you want to provide with your event.
-     */
-    metadata?: {
-      [index: string]: any;
-    };
-
     /**
      * (Optional) Any additional (non-metadata) properties to add to the event.
      */
@@ -93,8 +88,12 @@ const createEvent = async ({
   type: eventType,
   data: {
     ...properties,
-    metadata: JSON.stringify(metadata),
+    metadata: {
+      url: location.href,
+      ...metadata,
+    },
     ...(await getTrackingEventData({ canTrack })),
+    userAttributes: getUserAttributes(),
     ownerId: apiKey,
   },
 });

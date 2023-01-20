@@ -5,6 +5,7 @@ const rng = seedrandom('vue-sdk-seed');
 /**
  * @typedef {import('@builder.io/mitosis')} Mitosis
  * @typedef {import('@builder.io/mitosis').MitosisNode} MitosisNode
+ * @typedef {import('@builder.io/mitosis').StateValue} StateValue
  */
 
 /**
@@ -24,7 +25,7 @@ const getSeededId = () => {
 
 /**
  * @param {any} x
- * @returns {x is import('@builder.io/mitosis').MitosisNode}
+ * @returns {x is MitosisNode}
  */
 const isMitosisNode = (x) => x && x['@type'] === '@builder.io/mitosis/node';
 
@@ -40,14 +41,25 @@ const getTargetPath = ({ target }) => {
     // crazy, crazy stuff.
     case 'vue2':
       return 'vue/packages/_vue2';
-    case 'rsc':
-      return 'react/packages/_rsc';
     case 'vue':
     case 'vue3':
       return 'vue/packages/_vue3';
+    case 'rsc':
+      return 'react/packages/rsc';
+    case 'react':
+      return 'react/packages/react';
     default:
       return kebabCase(target);
   }
+};
+
+/**
+ * @param {{value: StateValue, key: string}} args
+ */
+const convertPropertyStateValueToGetter = (args) => {
+  const { value, key } = args;
+  value.code = `get ${key}() {\n return ${value.code} \n}`;
+  value.type = 'getter';
 };
 
 /**
@@ -58,6 +70,7 @@ const vueConfig = {
   namePrefix: (path) => (path.includes('/blocks/') ? 'builder' : undefined),
   cssNamespace: getSeededId,
   asyncComponentImports: true,
+  // api: 'composition',
 };
 
 /**
@@ -171,18 +184,131 @@ module.exports = {
       stylesType: 'style-tag',
     },
     rsc: {
-      plugins: [SRCSET_PLUGIN],
+      plugins: [
+        SRCSET_PLUGIN,
+        () => ({
+          json: {
+            pre: (json) => {
+              if (json.name === 'RenderContent') {
+                json.state.allRegisteredComponents.code =
+                  json.state.allRegisteredComponents.code.replace(
+                    'as RegisteredComponents',
+                    ''
+                  );
+              }
+
+              return json;
+            },
+          },
+        }),
+      ],
     },
     reactNative: {
-      plugins: [SRCSET_PLUGIN, BASE_TEXT_PLUGIN],
+      plugins: [
+        SRCSET_PLUGIN,
+        BASE_TEXT_PLUGIN,
+        () => ({
+          json: {
+            pre: (json) => {
+              /**
+               * We cannot set context in `RenderComponent` because it's a light Qwik component.
+               * We only need to set the context for a React Native need: CSS-style inheritance for Text blocks.
+               **/
+              if (json.name === 'RenderComponent') {
+                json.imports.push({
+                  imports: {
+                    BuilderContext: 'default',
+                  },
+                  path: '../../context/builder.context.lite',
+                });
+                json.context.set = {
+                  '../../context/builder.context.lite:default': {
+                    name: 'BuilderContext',
+                    value: {
+                      content: {
+                        code: 'props.context.content',
+                        type: 'property',
+                      },
+                      state: {
+                        code: 'props.context.state',
+                        type: 'property',
+                      },
+                      context: {
+                        code: 'props.context.context',
+                        type: 'property',
+                      },
+                      apiKey: {
+                        code: 'props.context.apiKey',
+                        type: 'property',
+                      },
+                      registeredComponents: {
+                        code: 'props.context.registeredComponents',
+                        type: 'property',
+                      },
+                      inheritedStyles: {
+                        code: 'props.context.inheritedStyles',
+                        type: 'property',
+                      },
+                    },
+                  },
+                };
+              }
+            },
+          },
+        }),
+      ],
     },
     qwik: {
       typescript: true,
-      plugins: [SRCSET_PLUGIN],
+      plugins: [
+        SRCSET_PLUGIN,
+        () => ({
+          json: {
+            pre: (json) => {
+              // We want to keep this component as a light component to avoid the overhead of a full component, which is
+              // a ton of HTML comments. Therefore, we convert these properties to getters so we don't have `useStore`
+              // calls in the component.
+              if (json.name === 'RenderBlock') {
+                convertPropertyStateValueToGetter({
+                  value: json.state['repeatItemData'],
+                  key: 'repeatItemData',
+                });
+
+                convertPropertyStateValueToGetter({
+                  value: json.state['component'],
+                  key: 'component',
+                });
+              }
+
+              return json;
+            },
+          },
+        }),
+      ],
     },
     svelte: {
       typescript: true,
       plugins: [
+        () => ({
+          json: {
+            pre: (json) => {
+              Object.keys(json.context.set).forEach((contextKey) => {
+                const setValue = json.context.set[contextKey];
+                if (setValue.name === 'builderContext') {
+                  Object.keys(setValue.value).forEach((valueKey) => {
+                    const value = setValue.value[valueKey];
+                    if (value && value.type === 'property') {
+                      convertPropertyStateValueToGetter({
+                        value,
+                        key: valueKey,
+                      });
+                    }
+                  });
+                }
+              });
+            },
+          },
+        }),
         () => ({
           json: {
             pre: (json) => {
@@ -279,7 +405,7 @@ module.exports = {
                   const isEvent = attr => attr.startsWith('on:')
                   const isNonEvent = attr => !attr.startsWith('on:')
 
-                  const filterAttrs = (attrs, filter) => {
+                  const filterAttrs = (attrs = {}, filter) => {
                     const validAttr = {}
                     Object.keys(attrs).forEach(attr => {
                       if (filter(attr)) {

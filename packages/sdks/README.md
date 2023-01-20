@@ -45,3 +45,7 @@ Legend:
 | View Current Draft             |                                                                              | ✅  |             | ✅           |                                  | ✅     |
 | Symbols                        |                                                                              | ✅  |             | ✅           |                                  | ✅     |
 | Custom styles                  |                                                                              | ✅  |             | ✅           | Those that React Native supports |
+
+## Fetch
+
+This Package uses fetch. See [these docs](https://github.com/BuilderIO/this-package-uses-fetch/blob/main/README.md) for more information.

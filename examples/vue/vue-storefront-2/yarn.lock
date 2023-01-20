@@ -1389,13 +1389,11 @@ __metadata:
   linkType: hard
 
 "@builder.io/sdk-vue@npm:latest":
-  version: 0.0.6
-  resolution: "@builder.io/sdk-vue@npm:0.0.6"
-  dependencies:
-    node-fetch: ^2.6.1
+  version: 0.1.3
+  resolution: "@builder.io/sdk-vue@npm:0.1.3"
   peerDependencies:
     vue: ">= 2"
-  checksum: 9db1010646c81ac5cb94f745cb030f1fe3589602e254c3faac5bf2f671d76007fef7f560e927c5901e9679890a037c031192ec7b8ab353db71de4daa4b1b79aa
+  checksum: 486e5758d97f52494b2973b70df0013fedc1bf0a00b4ef9befce5d3ea71457fd0189053efb32fad1820abdcb722af7451632729c59159a6abd3095c049790975
   languageName: node
   linkType: hard
 

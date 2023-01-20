@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/sdk-qwik",
-  "version": "0.0.37",
+  "version": "0.1.3",
   "description": "Builder.io Qwik SDK",
   "type": "module",
   "main": "./lib/index.qwik.cjs",
@@ -8,8 +8,11 @@
   "qwik": "./lib/index.qwik.mjs",
   "types": "./types/index.d.ts",
   "files": [
-    "lib",
-    "types"
+    "README.md",
+    "package.json",
+    "types-hacks.d.ts",
+    "types",
+    "lib"
   ],
   "exports": {
     ".": {
@@ -20,10 +23,12 @@
   "scripts": {
     "typecheck": "tsc --noEmit",
     "build": "tsc && vite build --mode lib",
-    "release:patch": "yarn run build && yarn version patch && npm publish --access public",
-    "release:dev": "yarn run build && npm version prerelease && npm publish --tag latest --access public"
+    "release:patch": "yarn run build && npm version patch && npm publish",
+    "release:minor": "yarn run build && npm version minor && npm publish",
+    "release:dev": "yarn run build && npm version prerelease && npm publish --tag dev"
   },
   "devDependencies": {
+    "@builder.io/qwik": ">=0.13.3",
     "@types/node": "latest",
     "typescript": "^4",
     "vite": "^3.0.4"
