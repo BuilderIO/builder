@@ -32,12 +32,20 @@ Object {
               "en-US": "en-us headings!",
               "fr-FR": "french translated heading",
             },
+            "subtitle": Object {
+              "@type": "@builder.io/core:LocalizedValue",
+              "Default": "I am a subtitle!",
+              "de": "german translated subtitle",
+              "en-US": "en-us subtitle!",
+              "fr-FR": "french translated subtitle",
+            },
           },
         },
         "id": "builder-custom-component-id",
         "meta": Object {
           "localizedTextInputs": Array [
             "heading",
+            "subtitle",
           ],
           "translated": true,
         },
@@ -54,6 +62,11 @@ Object {
           "@type": "@builder.io/core:TranslatedValue",
           "de": "\\"german heading\\"",
           "fr-FR": "french translated heading",
+        },
+        "blocks.builder-custom-component-id#subtitle": Object {
+          "@type": "@builder.io/core:TranslatedValue",
+          "de": "german translated subtitle",
+          "fr-FR": "french translated subtitle",
         },
       },
     },

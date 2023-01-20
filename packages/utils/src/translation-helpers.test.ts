@@ -78,7 +78,7 @@ test('applyTranslation from content to match snapshot', async () => {
           '@type': '@builder.io/sdk:Element',
           id: 'builder-custom-component-id',
           meta: {
-            localizedTextInputs: ['heading'],
+            localizedTextInputs: ['heading', 'subtitle'],
           },
           component: {
             name: 'Heading',
@@ -88,6 +88,12 @@ test('applyTranslation from content to match snapshot', async () => {
                 'en-US': 'en-us headings!',
                 Default: 'I am a heading!',
               },
+              subtitle: {
+                '@type': localizedType,
+                'en-US': 'en-us subtitle!',
+                Default: 'I am a subtitle!',
+              },
+
             },
           },
         },
@@ -101,6 +107,10 @@ test('applyTranslation from content to match snapshot', async () => {
     'blocks.builder-custom-component-id#heading': {
       value: 'french translated heading',
     },
+    'blocks.builder-custom-component-id#subtitle': {
+      value: 'french translated subtitle',
+    },
+
   };
   const germanTranslations = {
     'metadata.title': { value: 'hallo' },
@@ -108,6 +118,10 @@ test('applyTranslation from content to match snapshot', async () => {
     'blocks.builder-custom-component-id#heading': {
       value: '&quot;german heading&quot;',
     },
+    'blocks.builder-custom-component-id#subtitle': {
+      value: 'german translated subtitle',
+    },
+
   };
 
   let result = applyTranslation(content, frenchTranslations, 'fr-FR');
