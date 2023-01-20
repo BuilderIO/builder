@@ -27,11 +27,10 @@ function fastClone<T extends object>(object: T): T {
   return JSON.parse(JSON.stringify(object));
 }
 
-const getPathnameFromWindow = () => isBrowser() && window.location.pathname;
+const getPathnameFromWindow = (): string =>
+  isBrowser() ? window.location.pathname : '';
 
-export const getContentForPathname = (
-  pathname = getPathnameFromWindow()
-): BuilderContent | null => {
+const getContentForPathname = (pathname: string): BuilderContent | null => {
   let contentWithoutBreakpoints = undefined;
   switch (pathname) {
     case '/can-track-false':
@@ -64,6 +63,11 @@ export const getContentForPathname = (
   }
 };
 
+// remove trailing slash from pathname if it exists
+// unless it's the root path
+const normalizePathname = (pathname: string): string =>
+  pathname === '/' ? pathname : pathname.replace(/\/$/, '');
+
 export const getProps = (
   pathname = getPathnameFromWindow()
 ): {
@@ -71,7 +75,8 @@ export const getProps = (
   content: BuilderContent;
   apiKey: string;
 } | null => {
-  const content = getContentForPathname(pathname);
+  const normalizedPathname = normalizePathname(pathname);
+  const content = getContentForPathname(normalizedPathname);
 
   if (!content) {
     return null;
