@@ -355,7 +355,7 @@ module.exports = {
                * https://svelte.dev/repl/1246699e266f41218a8eeb45b9b58b54?version=3.24.1
                */
               const code = `
-              const setAttrs = (node, attrs) => {
+              const setAttrs = (node, attrs = {}) => {
                 const attrKeys = Object.keys(attrs)
             
                 const setup = attr => node.addEventListener(attr.substr(3), attrs[attr])
@@ -364,7 +364,7 @@ module.exports = {
                 attrKeys.map(setup)
             
                 return {
-                  update(attrs) {
+                  update(attrs = {}) {
                     const attrKeys = Object.keys(attrs)
                     attrKeys.map(teardown)
                     attrKeys.map(setup)
