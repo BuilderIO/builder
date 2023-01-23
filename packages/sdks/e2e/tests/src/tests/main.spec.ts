@@ -722,13 +722,21 @@ test.describe(targetContext.name, () => {
       page.setViewportSize({ width: 750, height: 1000 });
 
       // check that the 2nd photo has a margin-left of 0px
-      // the desktop margin would typically be on its 3rd parent.
-      const locator = page
-        .locator('picture')
-        .nth(1)
-        .locator('..')
-        .locator('..')
-        .locator('..');
+      // the desktop margin would typically be on its 3rd parent, except for React Native (4th)
+      const locator = isRNSDK
+        ? page
+            .locator('img')
+            .nth(1)
+            .locator('..')
+            .locator('..')
+            .locator('..')
+            .locator('..')
+        : page
+            .locator('picture')
+            .nth(1)
+            .locator('..')
+            .locator('..')
+            .locator('..');
 
       await expectStyleForElement({
         locator,
