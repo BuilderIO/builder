@@ -19,6 +19,7 @@
     "@expo/webpack-config": "^0.17.0",
     "@react-navigation/native": "^6.0.13",
     "@react-navigation/native-stack": "^6.9.0",
+    "babel-preset-expo": "^9.2.2",
     "expo": "~46.0.9",
     "expo-status-bar": "~1.4.0",
     "react": "18.0.0",
@@ -30,7 +31,9 @@
     "react-native-web": "~0.18.7"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.9"
+    "@babel/core": "^7.12.9",
+    "eas-cli": "^3.4.1",
+    "expo-cli": "^6.1.0"
   },
   "private": true,
   "installConfig": {
