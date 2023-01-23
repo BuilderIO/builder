@@ -5,7 +5,9 @@ import type { BuilderContent } from '@builder.io/sdk';
 import { builder, BuilderComponent, Builder } from '@builder.io/react';
 import Counter from '~/components/Counter';
 
-builder.init('8335d18816304315aebeb7e9532281ce');
+// ENSURE YOU REPLACE THE API KEY BELOW WITH YOUR OWN
+const BUILDER_API_KEY = '8335d18816304315aebeb7e9532281ce';
+builder.init(BUILDER_API_KEY);
 
 Builder.registerComponent(Counter, {
   name: 'Counter',
@@ -35,7 +37,7 @@ export const loader: LoaderFunction = async ({ params }) => {
 };
 
 export default function Page() {
-  const page = useLoaderData() as unknown as BuilderContent; // this is a workaround to set the page type as BuilderContent, a known issue with remix - https://github.com/remix-run/remix/issues/3931
+  const page = useLoaderData() as unknown as BuilderContent; // this is a workaround to set the page type as BuilderContent (from core builder/sdk), a known issue with remix - https://github.com/remix-run/remix/issues/3931
   return (
     <div>
       <BuilderComponent model="page" content={page} />
