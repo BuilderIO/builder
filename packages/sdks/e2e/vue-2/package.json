@@ -18,7 +18,6 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue2": "^1.1.2",
-    "typescript": "^4",
     "unplugin-vue-components": "^0.22.7",
     "vite": "^3.0.4",
     "vue-template-compiler": "^2.7.8"
