@@ -1,4 +1,9 @@
 workspaces:
-  - 'output/**/*'
+  # all direct sub-directories of `output`
   - 'output/*'
+  # these projects have sub-projects of their own.
+  # we don't use a wildcard `output/**/*` because the sveltekit packaging process generates a sub-project that we want
+  # to ignore.
+  - 'output/{react,vue}/*'
+  # all direct sub-directories of `e2e`
   - 'e2e/*'
