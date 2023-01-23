@@ -15,7 +15,7 @@
     "lint": "eslint \"src/**/*.ts*\"",
     "serve.express": "node server/entry.express",
     "serve-comment": "running in client mode until we can fixe serve.express",
-    "serve": "yarn dev.ssr",
+    "serve": "pnpm dev.ssr",
     "start": "npm run dev",
     "typecheck": "tsc --noEmit",
     "e2e": "../../node_modules/.bin/playwright test"

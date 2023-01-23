@@ -16,7 +16,7 @@
     "preview": "qwik build preview && vite preview --open",
     "start": "vite --open --mode ssr",
     "qwik": "qwik",
-    "serve": "yarn run dev",
+    "serve": "pnpm run dev",
     "e2e": "../../node_modules/.bin/playwright test"
   },
   "devDependencies": {

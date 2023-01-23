@@ -17,10 +17,10 @@
   "scripts": {
     "build:react": "tsc -p ./tsconfig.react.json",
     "build:rsc": "tsc -p ./tsconfig.rsc.json",
-    "build": "yarn run build:react && yarn run build:rsc",
-    "release:patch": "yarn run build && npm version patch && npm publish",
-    "release:minor": "yarn run build && npm version minor && npm publish",
-    "release:dev": "yarn run build && npm version prerelease && npm publish --tag dev"
+    "build": "pnpm run build:react && pnpm run build:rsc",
+    "release:patch": "pnpm run build && npm version patch && npm publish",
+    "release:minor": "pnpm run build && npm version minor && npm publish",
+    "release:dev": "pnpm run build && npm version prerelease && npm publish --tag dev"
   },
   "peerDependencies": {
     "react": "^18.2.0"

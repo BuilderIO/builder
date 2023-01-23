@@ -23,9 +23,9 @@
   "scripts": {
     "typecheck": "tsc --noEmit",
     "build": "tsc && vite build --mode lib",
-    "release:patch": "yarn run build && npm version patch && npm publish",
-    "release:minor": "yarn run build && npm version minor && npm publish",
-    "release:dev": "yarn run build && npm version prerelease && npm publish --tag dev"
+    "release:patch": "pnpm run build && npm version patch && npm publish",
+    "release:minor": "pnpm run build && npm version minor && npm publish",
+    "release:dev": "pnpm run build && npm version prerelease && npm publish --tag dev"
   },
   "devDependencies": {
     "@builder.io/qwik": "^0.16.2",

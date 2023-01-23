@@ -9,9 +9,9 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "build": "echo 'no need to build react-native.'",
-    "dev": "yarn run web",
+    "dev": "pnpm run web",
     "e2e": "SDK=reactNative ../../node_modules/.bin/playwright test",
-    "serve": "yarn run web"
+    "serve": "pnpm run web"
   },
   "dependencies": {
     "@builder.io/sdk-react-native": "workspace:*",

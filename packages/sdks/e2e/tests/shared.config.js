@@ -81,7 +81,7 @@ export function configFor(packageName, port) {
     // also to test against "run dev" for a faster development cycle.
 
     webServer: {
-      command: `yarn workspace @builder.io/${packageName} run serve ${portFlag}`,
+      command: `pnpm --filter @builder.io/${packageName} run serve ${portFlag}`,
       port,
       reuseExistingServer: false,
     },
