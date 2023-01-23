@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@builder.io/sdk-solid": "workspace:*",
+    "@builder.io/sdk-e2e-tests": "workspace:*",
     "solid-js": "^1.5.7"
   }
 }
