@@ -2,6 +2,11 @@
 
 This example uses [React SDK](/packages/react) with Remix [Remix Docs](https://remix.run/docs).
 
+## Screenshots 
+
+![remix-screenshot](screenshots/remix.png)
+![builder-screenshot](screenshots/builder.png)
+
 ## Builder.io Setup
 
 - log into builder.io
