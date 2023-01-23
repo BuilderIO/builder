@@ -80,24 +80,38 @@ jobs:
         with:
           node-version: '16.x'
 
-      - name: Cache SDKs
-        id: cache-primes
-        uses: actions/cache@v3
+      - uses: pnpm/action-setup@v2
+        name: Install pnpm
+        id: pnpm-install
         with:
-          path: packages/sdks/.yarn/cache
-          key: sdks-cache-${{ hashFiles('**/yarn.lock') }}
+          version: 7
+          run_install: false
+
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - uses: actions/cache@v3
+        name: Setup pnpm cache
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
 
       - name: Install dependencies
-        run: yarn
+        run: pnpm install
 
       - name: Run prettier
-        run: yarn ci:lint
+        run: pnpm ci:lint
 
       - name: Build
-        run: yarn build:mitosis
+        run: pnpm build:mitosis
 
       - name: Run tests
-        run: yarn ci:test
+        run: pnpm ci:test
 
   sdks-outputs:
     runs-on: ubuntu-latest
