@@ -1,0 +1,4 @@
+workspaces:
+  - 'output/**/*'
+  - 'output/*'
+  - 'e2e/*'
