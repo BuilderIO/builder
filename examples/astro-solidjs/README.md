@@ -16,7 +16,7 @@ npm install
 npm run dev
 ```
 
-3. Create an account with [Builder.io](https://builder.io/) if yuo don't already. 
+3. Create an account with [Builder.io](https://builder.io/) if you don't already. 
 
 4. Log into your account at [builder.io/login](https://builder.io/login)
 
