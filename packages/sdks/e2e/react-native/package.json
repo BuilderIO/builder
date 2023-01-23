@@ -1,6 +1,7 @@
 {
   "name": "@builder.io/e2e-react-native",
   "version": "1.0.0",
+  "private": true,
   "main": "node_modules/expo/AppEntry.js",
   "type": "module",
   "scripts": {
@@ -34,9 +35,5 @@
     "@babel/core": "^7.20.12",
     "eas-cli": "^3.4.1",
     "expo-cli": "^6.1.0"
-  },
-  "private": true,
-  "installConfig": {
-    "hoistingLimits": "workspaces"
   }
 }
