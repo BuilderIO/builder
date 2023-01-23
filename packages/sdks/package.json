@@ -14,7 +14,7 @@
     "upgrade-mitosis:dev": "pnpm up @builder.io/mitosis@dev @builder.io/mitosis-cli@dev @builder.io/eslint-plugin-mitosis@dev",
     "upgrade-mitosis": "pnpm up @builder.io/mitosis @builder.io/mitosis-cli @builder.io/eslint-plugin-mitosis",
     "prettier": "prettier .",
-    "lint": "pnpm run prettier --write",
+    "lint": "prettier --write .",
     "eslint": "eslint . --quiet",
     "eslint:watch": "watch 'pnpm run eslint' ./src ./overrides",
     "typecheck": "tsc --noEmit",

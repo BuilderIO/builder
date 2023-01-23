@@ -8,9 +8,7 @@
     "bradlc.vscode-tailwindcss",
     "esbenp.prettier-vscode"
   ],
-  "forwardPorts": [
-    3000
-  ],
+  "forwardPorts": [3000],
   "postCreateCommand": "pnpm install",
   "postStartCommand": "pnpm dev",
   "remoteUser": "node",
