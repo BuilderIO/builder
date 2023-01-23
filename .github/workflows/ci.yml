@@ -146,19 +146,19 @@ jobs:
         run: pnpm install
 
       - name: Build Mitosis
-        run: yarn build:mitosis
+        run: pnpm build:mitosis
 
       - name: Build SDK
-        run: yarn workspace @builder.io/sdk-${{ matrix.sdk }} build
+        run: pnpm --filter @builder.io/sdk-${{ matrix.sdk }} build
 
       - name: Install browsers for Playwright
-        run: yarn e2e:install-playwright
+        run: pnpm e2e:install-playwright
 
       - name: Build E2E tests
-        run: yarn e2e:build:specs
+        run: pnpm e2e:build:specs
 
       - name: Build E2E apps
-        run: yarn e2e:build:${{ matrix.sdk }}
+        run: pnpm e2e:build:${{ matrix.sdk }}
 
       - name: Run E2E tests
-        run: yarn e2e:run:${{ matrix.sdk }}
+        run: pnpm e2e:run:${{ matrix.sdk }}
