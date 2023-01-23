@@ -16,7 +16,6 @@ exports[`Builder Pixel Should NOT be added again if already present in blocks ar
     <div
       data-builder-component="page"
       data-builder-content-id="id"
-      data-builder-variation-id="id"
     >
       
       <div
@@ -54,7 +53,6 @@ exports[`Builder Pixel Should NOT be added if blocks array is empty 1`] = `
     <div
       data-builder-component="page"
       data-builder-content-id="id"
-      data-builder-variation-id="id"
     >
       
       <div
@@ -83,7 +81,6 @@ exports[`Builder Pixel Should be added if pixel is missing and blocks array has 
     <div
       data-builder-component="page"
       data-builder-content-id="id"
-      data-builder-variation-id="id"
     >
       
       <div
