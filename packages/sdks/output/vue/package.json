@@ -4,7 +4,7 @@
   "workspaces": [
     "packages/*"
   ],
-  "version": "0.1.3",
+  "version": "0.1.4",
   "main": "./packages/_vue2/dist/sdk.js",
   "module": "./packages/_vue2/dist/sdk.js",
   "type": "module",
