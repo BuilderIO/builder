@@ -30,7 +30,7 @@ importers:
       seedrandom: ^3.0.5
       traverse: ^0.6.6
       ts-jest: ^27.1.4
-      typescript: ^4
+      typescript: ^4.9.4
       watch: ^1.0.2
     dependencies:
       '@builder.io/mitosis': 0.0.86_prettier@2.8.3
@@ -39,6 +39,7 @@ importers:
       node-fetch: 2.6.8
       seedrandom: 3.0.5
       traverse: 0.6.7
+      typescript: 4.9.4
     devDependencies:
       '@builder.io/eslint-plugin-mitosis': 0.0.14_eslint@8.32.0
       '@types/jest': 27.5.2
@@ -57,7 +58,6 @@ importers:
       pinst: 3.0.0
       prettier: 2.8.3
       ts-jest: 27.1.5_5ae7deb910045f056c1e53bf3974bb32
-      typescript: 4.9.4
       watch: 1.0.2
 
   e2e/nextjs-react:
