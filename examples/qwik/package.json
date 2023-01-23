@@ -21,8 +21,8 @@
     "qwik": "qwik"
   },
   "devDependencies": {
-    "@builder.io/qwik": "0.12.1",
-    "@builder.io/qwik-city": "0.0.118",
+    "@builder.io/qwik": "^0.16.2",
+    "@builder.io/qwik-city": "^0.1.0-beta9",
     "@types/eslint": "8.4.8",
     "@types/node": "latest",
     "@typescript-eslint/eslint-plugin": "5.41.0",
@@ -36,6 +36,6 @@
     "vite-tsconfig-paths": "3.5.0"
   },
   "dependencies": {
-    "@builder.io/sdk-qwik": "^0.1.3"
+    "@builder.io/sdk-qwik": "^0.1.4-0"
   }
 }
