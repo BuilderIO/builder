@@ -46,27 +46,27 @@ When developing Qwik SDK you may need to change many different repos. For this r
 
   ```bash
   cd mitosis/packages/core
-  yarn start   # Will automatically build and run the SDK
+  pnpm start   # Will automatically build and run the SDK
   ```
 
 - Builder
 
   ```bash
   cd builder/packages/sdks
-  yarn build  # Will build the SDK by running mitosis on SDK inputs
+  pnpm build  # Will build the SDK by running mitosis on SDK inputs
   ```
 
 - Qwik
 
   ```bash
   cd qwik/
-  yarn build.full
+  pnpm build.full
   ```
 
 - Test App
   ```bash
   cd test/
-  yarn build.ssr
+  pnpm build.ssr
   ```
 
 ## Test application for Qwik SDK

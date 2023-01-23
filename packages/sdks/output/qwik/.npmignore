@@ -1,6 +1,5 @@
 src
 dist
-.yarn
 vite.config.ts
 tsconfig.json
 DEVELOPER.md

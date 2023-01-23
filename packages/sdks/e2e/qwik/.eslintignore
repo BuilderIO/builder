@@ -3,7 +3,7 @@
 *.
 .vscode/settings.json
 .history
-.yarn
+pnpm-lock.yaml
 bazel-*
 bazel-bin
 bazel-out

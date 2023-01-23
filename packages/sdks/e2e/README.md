@@ -9,13 +9,13 @@ To run an e2e test, first choose which SDK you want to test, and which e2e serve
 
 Now, run commands to listen to changes for the SDK code:
 
-- `yarn run start` at the root of the SDK project to run Mitosis' `build` command
-- If applicable, the command that builds your SDK of choice (e.g. `yarn run build:watch` for Svelte SDK)
+- `pnpm start` at the root of the SDK project to run Mitosis' `build` command
+- If applicable, the command that builds your SDK of choice (e.g. `pnpm build:watch` for Svelte SDK)
 
 And finally, run commands to listen to changes for the e2e specs & server:
 
-- `yarn run dev` in `packages/sdks/e2e/tests/src/specs` to listen to changes for the specs
-- `yarn run dev` in your E2E server of choice.
+- `pnpm dev` in `packages/sdks/e2e/tests/src/specs` to listen to changes for the specs
+- `pnpm dev` in your E2E server of choice.
 
 If you don't want to listen to changes on the SDK itself, then you only need to run the first 2 commands once.
 

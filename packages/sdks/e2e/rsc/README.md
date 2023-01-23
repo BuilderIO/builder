@@ -13,7 +13,7 @@ Hydrogen is a React framework and SDK that you can use to build fast and dynamic
 **Requirements:**
 
 - Node.js version 16.14.0 or higher
-- Yarn
+- pnpm
 
 To create a new Hydrogen app, run:
 

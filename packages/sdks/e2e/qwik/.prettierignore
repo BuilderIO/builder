@@ -3,7 +3,6 @@
 *.
 .vscode/settings.json
 .history
-.yarn
 dist
 dist-dev
 etc

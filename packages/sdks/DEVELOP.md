@@ -4,10 +4,10 @@
 
 ```bash
 # install
-yarn
+pnpm
 
 # start dev server
-yarn run start
+pnpm start
 ```
 
 You might need [jq](https://stedolan.github.io/jq/) for symlinking mitosis or the SDKs themselves to examples. You can install that with `brew install jq`.
@@ -28,13 +28,13 @@ The best way to test changes is to symlink the generated SDKs to one of our exam
 cd ../../examples/vue/vue-storefront-2
 
 # add sym-link
-yarn run setup-sdk-symlink
+pnpm setup-sdk-symlink
 
 # install
-yarn
+pnpm
 
 # run nuxt
-yarn run start
+pnpm start
 ```
 
 ### React-Native
@@ -44,13 +44,13 @@ yarn run start
 cd ../../examples/react-native
 
 # add sym-link
-yarn run setup-sdk-symlink
+pnpm setup-sdk-symlink
 
 # install
-yarn
+pnpm install
 
 # run Expo
-yarn run start
+pnpm start
 
 w # type `w` to launch web browser emulator
 i # type `i` to launch iOS simulator
@@ -58,7 +58,7 @@ i # type `i` to launch iOS simulator
 
 #### iOS Simulator
 
-One big caveat is that the iOS Simulator does not support sym-linked packages. To workaround this, you will have to copy the SDK folder. This means that you will need to manually do so every time you want a new change to be reflected. in the react-native example, there is a handy `yarn run cp-sdk` command to do that for you.
+One big caveat is that the iOS Simulator does not support sym-linked packages. To workaround this, you will have to copy the SDK folder. This means that you will need to manually do so every time you want a new change to be reflected. in the react-native example, there is a handy `pnpm cp-sdk` command to do that for you.
 
 ## Mitosis
 
@@ -66,14 +66,14 @@ All the above assumes you are using the latest version of Mitosis in production.
 
 - Clone and setup https://github.com/BuilderIO/mitosis/ as a sibling to this repo: (e.g. `my-code/builder/` and `my-code/mitosis`)
 - Follow its [setup steps](https://github.com/BuilderIO/mitosis/blob/main/developer.md)
-- run the `yarn run start` commands in both `mitosis/packages/core` and `mitosis/packages/cli`
-- Now, in this repo, run `yarn run add-symlinks`
+- run the `pnpm start` commands in both `mitosis/packages/core` and `mitosis/packages/cli`
+- Now, in this repo, run `pnpm add-symlinks`
 
 You should now be using your local version of Mitosis.
 
 ## REMOVING SYM-LINKS
 
-**IMPORTANT:** remember to run `yarn run remove-symlinks` before you commit to your branch. This applies to `project/sdks`, but also any example that you symlink the SDKs to (i.e. vue-storefront or react-native examples)
+**IMPORTANT:** remember to run `pnpm remove-symlinks` before you commit to your branch. This applies to `project/sdks`, but also any example that you symlink the SDKs to (i.e. vue-storefront or react-native examples)
 
 ## Integration tests
 

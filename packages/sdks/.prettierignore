@@ -1,4 +1,4 @@
-.yarn/
+pnpm-lock.yaml
 output/**/src
 .pnp.*
 
