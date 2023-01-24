@@ -1113,9 +1113,12 @@ export class BuilderComponent extends React.Component<
                           <div
                             data-builder-component={this.name}
                             data-builder-content-id={fullData.id}
-                            data-builder-variation-id={
-                              fullData.testVariationId || fullData.variationId || fullData.id
-                            }
+                            {...(this.isPreviewing
+                              ? {
+                                  'data-builder-variation-id':
+                                    fullData.testVariationId || fullData.variationId || fullData.id,
+                                }
+                              : {})}
                           >
                             {!codegen && this.getCss(data) && (
                               <style

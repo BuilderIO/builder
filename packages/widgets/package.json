@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/widgets",
-  "version": "1.2.23",
+  "version": "1.2.24-16",
   "description": "",
   "keywords": [],
   "main": "dist/builder-widgets.cjs.js",
@@ -124,7 +124,10 @@
     "tslint-config-standard": "^7.0.0",
     "typedoc": "^0.20.36",
     "typescript": "3.7.0-beta",
-    "validate-commit-msg": "^2.12.2"
+    "validate-commit-msg": "^2.12.2",
+    "next": "^12.1.0",
+    "react": "^17.0.2 || ^18.0.0-0",
+    "react-dom": "^17.0.2 || ^18.0.0-0"
   },
   "optionalDependencies": {
     "preact": "^8.4.2",
@@ -133,15 +136,15 @@
     "prop-types": "^15.7.2"
   },
   "peerDependencies": {
-    "@builder.io/react": ">=1.1.0"
+    "@builder.io/react": ">=1.1.0 || 2.0.13-7",
+    "next": ">= 12.1.0",
+    "react": ">=16.8",
+    "react-dom": ">=16.8"
   },
   "dependencies": {
     "@emotion/core": ">=10",
     "@emotion/styled": ">=10",
     "lodash-es": "^4.17.10",
-    "next": "^12.1.0",
-    "react": ">=14",
-    "react-dom": ">=14",
     "react-loadable": "^5.5.0",
     "react-masonry-component": "^6.2.1",
     "react-slick": "^0.28.1",
