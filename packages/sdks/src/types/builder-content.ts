@@ -1,8 +1,6 @@
 import type { BuilderBlock } from './builder-block.js';
+import { Input } from './components.js';
 import type { Nullable } from './typescript.js';
-
-// TODO
-type Input = any;
 
 export interface Breakpoints {
   small: number;
