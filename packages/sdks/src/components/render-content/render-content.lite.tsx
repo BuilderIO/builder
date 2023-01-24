@@ -112,7 +112,7 @@ export default function RenderContent(props: RenderContentProps) {
     canTrackToUse: checkIsDefined(props.canTrack) ? props.canTrack : true,
     overrideState: {} as BuilderRenderState,
     get contentState(): BuilderRenderState {
-      const stateToUse = {
+      const stateToUse: BuilderRenderState = {
         ...props.content?.data?.state,
         ...props.data,
         ...(props.locale ? { locale: props.locale } : {}),
@@ -127,7 +127,7 @@ export default function RenderContent(props: RenderContentProps) {
           state.useContent?.data?.state &&
           state.useContent.data.state[input.name] === undefined
         ) {
-          state.useContent.data.state[input.name] = input.defaultValue;
+          stateToUse[input.name] = input.defaultValue;
         }
       });
 
