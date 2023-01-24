@@ -44,6 +44,9 @@ export default function Page() {
   const page = useLoaderData() as unknown as BuilderContent; // this is a workaround to set the page type as BuilderContent (from core builder/sdk), a known issue with remix - https://github.com/remix-run/remix/issues/3931
   return (
     <div>
+      <header>
+        Remix + Builder Example
+      </header>
       <BuilderComponent model="page" content={page} />
     </div>
   );
