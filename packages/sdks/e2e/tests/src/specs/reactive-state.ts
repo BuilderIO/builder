@@ -143,7 +143,10 @@ export const CONTENT = {
                   {
                     '@type': '@builder.io/sdk:Element',
                     '@version': 2,
-                    actions: { click: 'state.reactiveValue+=1' },
+                    actions: {
+                      click:
+                        'console.log("button clicked. current state:",state.reactiveValue),state.reactiveValue+=1,console.log("new state:",state.reactiveValue)',
+                    },
                     id: 'builder-851b975ad853411fb09e6e3479f7a530',
                     meta: {
                       eventActions: {
