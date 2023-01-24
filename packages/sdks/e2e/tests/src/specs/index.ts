@@ -7,6 +7,7 @@ import { CONTENT as image } from './image.js';
 import { CONTENT as dataBindings } from './data-bindings.js';
 import { CONTENT as dataBindingStyles } from './data-binding-styles.js';
 import { CONTENT as customBreakpoints } from './custom-breakpoints.js';
+import { CONTENT as reactiveState } from './reactive-state';
 
 // TO-DO: import real content type from SDKs
 interface Breakpoints {
@@ -52,6 +53,8 @@ const getContentForPathname = (pathname: string): BuilderContent | null => {
       return dataBindingStyles;
     case '/custom-breakpoints':
       return customBreakpoints as BuilderContent;
+    case '/reactive-state':
+      return reactiveState;
     case '/custom-breakpoints-reset':
       contentWithoutBreakpoints = fastClone(
         customBreakpoints as BuilderContent

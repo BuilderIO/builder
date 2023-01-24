@@ -237,6 +237,22 @@ test.describe(targetContext.name, () => {
 
     await findTextInPage({ page, text: 'Stack at tablet' });
   });
+  test.describe('reactive state', () => {
+    test('shows default value', async ({ page }) => {
+      await page.goto('/reactive-state');
+
+      await findTextInPage({ page, text: '0' });
+    });
+    test('increments value correctly', async ({ page }) => {
+      await page.goto('/reactive-state');
+
+      await findTextInPage({ page, text: '0' });
+
+      await page.click('button');
+
+      await findTextInPage({ page, text: '1' });
+    });
+  });
   test('symbols', async ({ page }) => {
     await page.goto('/symbols');
 
