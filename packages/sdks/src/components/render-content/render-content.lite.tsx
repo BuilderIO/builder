@@ -100,29 +100,6 @@ export default function RenderContent(props: RenderContentProps) {
     setContextState: (newState: BuilderRenderState) => {
       state.contentState = newState;
     },
-    // TO-DO: replace with `contextState`
-    // get contentState(): BuilderRenderState {
-    //   const stateToUse: BuilderRenderState = {
-    //     ...props.content?.data?.state,
-    //     ...props.data,
-    //     ...(props.locale ? { locale: props.locale } : {}),
-    //     ...state.overrideState,
-    //   };
-
-    //   // set default values for content state inputs
-    //   state.useContent?.data?.inputs?.forEach((input) => {
-    //     if (
-    //       input.name &&
-    //       input.defaultValue !== undefined &&
-    //       state.useContent?.data?.state &&
-    //       state.useContent.data.state[input.name] === undefined
-    //     ) {
-    //       stateToUse[input.name] = input.defaultValue;
-    //     }
-    //   });
-
-    //   return stateToUse;
-    // },
     contextContext: props.context || {},
 
     allRegisteredComponents: [
