@@ -53,24 +53,24 @@ export default function RenderBlock(props: RenderBlockProps) {
           });
     },
     get proxyState() {
-      if (typeof Proxy !== 'undefined') {
-        const useState = new Proxy(props.context.state, {
-          set: (obj, prop: keyof BuilderRenderState, value) => {
-            // set the value on the state object, so that the event handler instantly gets the update.
-            obj[prop] = value;
-
-            // set the value in the context, so that the rest of the app gets the update.
-            props.context.setState(obj);
-            return true;
-          },
-        });
-        return useState;
+      if (typeof Proxy === 'undefined') {
+        console.error(
+          'no Proxy available in this environment, cannot proxy state.'
+        );
+        return props.context.state;
       }
 
-      console.error(
-        'no Proxy available in this environment, cannot proxy state.'
-      );
-      return props.context.state;
+      const useState = new Proxy(props.context.state, {
+        set: (obj, prop: keyof BuilderRenderState, value) => {
+          // set the value on the state object, so that the event handler instantly gets the update.
+          obj[prop] = value;
+
+          // set the value in the context, so that the rest of the app gets the update.
+          props.context.setState(obj);
+          return true;
+        },
+      });
+      return useState;
     },
     get actions() {
       return getBlockActions({
