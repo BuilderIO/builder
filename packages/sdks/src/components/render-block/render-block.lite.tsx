@@ -1,4 +1,7 @@
-import type { BuilderContextInterface } from '../../context/types.js';
+import type {
+  BuilderContextInterface,
+  BuilderRenderState,
+} from '../../context/types.js';
 import { getBlockActions } from '../../functions/get-block-actions.js';
 import { getBlockComponentOptions } from '../../functions/get-block-component-options.js';
 import { getBlockProperties } from '../../functions/get-block-properties.js';
@@ -49,10 +52,32 @@ export default function RenderBlock(props: RenderBlockProps) {
             shouldEvaluateBindings: true,
           });
     },
+    get proxyState() {
+      if (typeof Proxy !== 'undefined') {
+        const useState = new Proxy(props.context.state, {
+          set: (obj, prop: keyof BuilderRenderState, value) => {
+            console.log('proxy set', prop, value);
+            // set the value on the state object, so that the event handler instantly gets the update.
+            obj[prop] = value;
+
+            // set the value in the context, so that the rest of the app gets the update.
+            props.context.setState(obj);
+            return true;
+          },
+        });
+        console.log('proxy declared');
+        return useState;
+      }
+
+      console.error(
+        'no Proxy available in this environment, cannot proxy state.'
+      );
+      return props.context.state;
+    },
     get actions() {
       return getBlockActions({
         block: state.useBlock,
-        state: props.context.state,
+        state: state.proxyState,
         context: props.context.context,
       });
     },
@@ -129,6 +154,7 @@ export default function RenderBlock(props: RenderBlockProps) {
         state: props.context.state,
         content: props.context.content,
         context: props.context.context,
+        setState: props.context.setState,
         registeredComponents: props.context.registeredComponents,
         inheritedStyles: getInheritedTextStyles(),
       };

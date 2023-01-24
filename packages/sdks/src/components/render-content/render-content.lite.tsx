@@ -41,6 +41,11 @@ import {
 } from '../../scripts/init-editing.js';
 import { checkIsDefined } from '../../helpers/nullable.js';
 import { getInteractionPropertiesForEvent } from '../../functions/track/interaction.js';
+import {
+  RenderContentProps,
+  BuilderComponentStateChange,
+} from './render-content.types.js';
+import { getContextStateInitialValue } from './render-content.helpers.js';
 
 useMetadata({
   qwik: {
@@ -54,30 +59,6 @@ useMetadata({
     },
   },
 });
-
-export type RenderContentProps = {
-  content?: Nullable<BuilderContent>;
-  model?: string;
-  data?: { [key: string]: any };
-  context?: BuilderRenderContext;
-  apiKey: string;
-  customComponents?: RegisteredComponent[];
-  canTrack?: boolean;
-  locale?: string;
-  includeRefs?: boolean;
-};
-
-interface BuilderComponentStateChange {
-  state: BuilderRenderState;
-  ref: {
-    name?: string;
-    props?: {
-      builderBlock?: {
-        id?: string;
-      };
-    };
-  };
-}
 
 export default function RenderContent(props: RenderContentProps) {
   const elementRef = useRef<HTMLDivElement>();
@@ -110,29 +91,38 @@ export default function RenderContent(props: RenderContentProps) {
     update: 0,
     useBreakpoints: null as Nullable<Breakpoints>,
     canTrackToUse: checkIsDefined(props.canTrack) ? props.canTrack : true,
-    overrideState: {} as BuilderRenderState,
-    get contentState(): BuilderRenderState {
-      const stateToUse: BuilderRenderState = {
-        ...props.content?.data?.state,
-        ...props.data,
-        ...(props.locale ? { locale: props.locale } : {}),
-        ...state.overrideState,
-      };
-
-      // set default values for content state inputs
-      state.useContent?.data?.inputs?.forEach((input) => {
-        if (
-          input.name &&
-          input.defaultValue !== undefined &&
-          state.useContent?.data?.state &&
-          state.useContent.data.state[input.name] === undefined
-        ) {
-          stateToUse[input.name] = input.defaultValue;
-        }
-      });
-
-      return stateToUse;
+    // overrideState: {} as BuilderRenderState,
+    contentState: getContextStateInitialValue({
+      content: props.content,
+      data: props.data,
+      locale: props.locale,
+    }),
+    setContextState: (newState: BuilderRenderState) => {
+      state.contentState = newState;
     },
+    // TO-DO: replace with `contextState`
+    // get contentState(): BuilderRenderState {
+    //   const stateToUse: BuilderRenderState = {
+    //     ...props.content?.data?.state,
+    //     ...props.data,
+    //     ...(props.locale ? { locale: props.locale } : {}),
+    //     ...state.overrideState,
+    //   };
+
+    //   // set default values for content state inputs
+    //   state.useContent?.data?.inputs?.forEach((input) => {
+    //     if (
+    //       input.name &&
+    //       input.defaultValue !== undefined &&
+    //       state.useContent?.data?.state &&
+    //       state.useContent.data.state[input.name] === undefined
+    //     ) {
+    //       stateToUse[input.name] = input.defaultValue;
+    //     }
+    //   });
+
+    //   return stateToUse;
+    // },
     contextContext: props.context || {},
 
     allRegisteredComponents: [
@@ -238,11 +228,11 @@ export default function RenderContent(props: RenderContentProps) {
       fetch(url)
         .then((response) => response.json())
         .then((json) => {
-          const newOverrideState = {
-            ...state.overrideState,
+          const newState = {
+            ...state.contentState,
             [key]: json,
           };
-          state.overrideState = newOverrideState;
+          state.setContextState(newState);
         })
         .catch((err) => {
           console.log('error fetching dynamic data', url, err);
@@ -303,6 +293,7 @@ export default function RenderContent(props: RenderContentProps) {
   setContext(builderContext, {
     content: state.useContent,
     state: state.contentState,
+    setState: state.setContextState,
     context: state.contextContext,
     apiKey: props.apiKey,
     registeredComponents: state.allRegisteredComponents,
