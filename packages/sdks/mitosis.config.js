@@ -70,6 +70,44 @@ const vueConfig = {
   namePrefix: (path) => (path.includes('/blocks/') ? 'builder' : undefined),
   cssNamespace: getSeededId,
   asyncComponentImports: true,
+  plugins: [
+    () => ({
+      json: {
+        pre: (json) => {
+          if (json.name === 'RenderBlock') {
+            traverse(json).forEach(function (item) {
+              if (!isMitosisNode(item)) {
+                return;
+              }
+              const stateActions = item.bindings['state.actions'];
+              if (stateActions) {
+                item.bindings['state.actions'] = {
+                  ...stateActions,
+                  spreadType: 'event-handlers',
+                };
+              }
+            });
+          } else if (json.name === 'RenderComponent') {
+            traverse(json).forEach(function (item) {
+              if (
+                !isMitosisNode(item) ||
+                !item.bindings.is?.code.includes('props.componentRef')
+              ) {
+                return;
+              }
+
+              console.log('adding');
+              item.bindings['state.actions'] = {
+                code: 'props.componentOptions.attributes',
+                type: 'spread',
+                spreadType: 'event-handlers',
+              };
+            });
+          }
+        },
+      },
+    }),
+  ],
   // api: 'composition',
 };
 
@@ -125,6 +163,7 @@ module.exports = {
     vue2: {
       ...vueConfig,
       plugins: [
+        ...vueConfig.plugins,
         () => ({
           json: {
             pre: (json) => {
