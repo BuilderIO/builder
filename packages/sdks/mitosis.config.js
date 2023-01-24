@@ -96,7 +96,6 @@ const vueConfig = {
                 return;
               }
 
-              console.log('adding');
               item.bindings['state.actions'] = {
                 code: 'props.componentOptions.attributes',
                 type: 'spread',

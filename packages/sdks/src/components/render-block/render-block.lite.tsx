@@ -56,7 +56,6 @@ export default function RenderBlock(props: RenderBlockProps) {
       if (typeof Proxy !== 'undefined') {
         const useState = new Proxy(props.context.state, {
           set: (obj, prop: keyof BuilderRenderState, value) => {
-            console.log('proxy set', prop, value);
             // set the value on the state object, so that the event handler instantly gets the update.
             obj[prop] = value;
 
@@ -65,7 +64,6 @@ export default function RenderBlock(props: RenderBlockProps) {
             return true;
           },
         });
-        console.log('proxy declared');
         return useState;
       }
 
