@@ -104,7 +104,7 @@ export interface Input {
    */
   advanced?: boolean;
   /** @hidden */
-  onChange?: Function | string;
+  // onChange?: Function | string;
   /** @hidden */
   code?: boolean;
   /** @hidden */
