@@ -91,7 +91,6 @@ export default function RenderContent(props: RenderContentProps) {
     update: 0,
     useBreakpoints: null as Nullable<Breakpoints>,
     canTrackToUse: checkIsDefined(props.canTrack) ? props.canTrack : true,
-    // overrideState: {} as BuilderRenderState,
     contentState: getContextStateInitialValue({
       content: props.content,
       data: props.data,
