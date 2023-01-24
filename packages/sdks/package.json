@@ -22,7 +22,7 @@
     "upgrade-mitosis:dev": "yarn up @builder.io/mitosis@dev @builder.io/mitosis-cli@dev @builder.io/eslint-plugin-mitosis@dev",
     "upgrade-mitosis": "yarn up @builder.io/mitosis @builder.io/mitosis-cli @builder.io/eslint-plugin-mitosis",
     "prettier": "prettier .",
-    "lint": "yarn run prettier --write",
+    "lint": "yarn run prettier --write  && yarn run eslint --fix .",
     "eslint": "eslint . --quiet",
     "eslint:watch": "watch 'yarn run eslint' ./src ./overrides",
     "typecheck": "tsc --noEmit",

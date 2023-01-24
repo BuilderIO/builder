@@ -1,7 +1,6 @@
 import { getDefaultRegisteredComponents } from '../../constants/builder-registered-components.js';
 import { TARGET } from '../../constants/target.js';
 import type {
-  BuilderRenderContext,
   BuilderRenderState,
   RegisteredComponent,
   RegisteredComponents,
@@ -41,7 +40,7 @@ import {
 } from '../../scripts/init-editing.js';
 import { checkIsDefined } from '../../helpers/nullable.js';
 import { getInteractionPropertiesForEvent } from '../../functions/track/interaction.js';
-import {
+import type {
   RenderContentProps,
   BuilderComponentStateChange,
 } from './render-content.types.js';

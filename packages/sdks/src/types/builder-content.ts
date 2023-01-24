@@ -1,5 +1,5 @@
 import type { BuilderBlock } from './builder-block.js';
-import { Input } from './components.js';
+import type { Input } from './components.js';
 import type { Nullable } from './typescript.js';
 
 export interface Breakpoints {

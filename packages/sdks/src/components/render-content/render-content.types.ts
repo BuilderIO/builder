@@ -1,10 +1,10 @@
-import {
+import type {
   BuilderRenderContext,
   RegisteredComponent,
   BuilderRenderState,
 } from '../../context/types';
-import { BuilderContent } from '../../types/builder-content';
-import { Nullable } from '../../types/typescript';
+import type { BuilderContent } from '../../types/builder-content';
+import type { Nullable } from '../../types/typescript';
 
 export type RenderContentProps = {
   content?: Nullable<BuilderContent>;

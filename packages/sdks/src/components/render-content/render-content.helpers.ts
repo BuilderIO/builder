@@ -1,5 +1,5 @@
-import { BuilderRenderState } from '../../context/types';
-import { RenderContentProps } from './render-content.types';
+import type { BuilderRenderState } from '../../context/types';
+import type { RenderContentProps } from './render-content.types';
 
 export const getContextStateInitialValue = ({
   content,
