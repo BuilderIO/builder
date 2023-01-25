@@ -6,11 +6,7 @@ export const getContextStateInitialValue = ({
   data,
   locale,
 }: Pick<RenderContentProps, 'content' | 'data' | 'locale'>) => {
-  const stateToUse: BuilderRenderState = {
-    ...content?.data?.state,
-    ...data,
-    ...(locale ? { locale: locale } : {}),
-  };
+  const defaultValues: BuilderRenderState = {};
 
   // set default values for content state inputs
   content?.data?.inputs?.forEach((input) => {
@@ -20,9 +16,15 @@ export const getContextStateInitialValue = ({
       content?.data?.state &&
       content.data.state[input.name] === undefined
     ) {
-      stateToUse[input.name] = input.defaultValue;
+      defaultValues[input.name] = input.defaultValue;
     }
   });
 
-  return stateToUse;
+  const stateToUse: BuilderRenderState = {
+    ...content?.data?.state,
+    ...data,
+    ...(locale ? { locale: locale } : {}),
+  };
+
+  return { ...defaultValues, ...stateToUse };
 };
