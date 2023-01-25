@@ -5,8 +5,9 @@ import { targetContext } from './context.js';
 
 // test.describe.configure({ mode: 'serial' });
 
-const findTextInPage = ({ page, text }: { page: Page; text: string }) =>
-  expect(page.locator(`text=${text}`)).toBeVisible();
+const findTextInPage = async ({ page, text }: { page: Page; text: string }) => {
+  await page.locator(`text=${text}`).waitFor();
+};
 
 const isRNSDK = process.env.SDK === 'reactNative';
 
