@@ -1331,12 +1331,13 @@ export class BuilderComponent extends React.Component<
         ...this.state,
         updates: ((this.state && this.state.updates) || 0) + 1,
         state: Object.assign(this.rootState, {
+          // external state first (data and locale prop) to allow overriding those values in editor (which is in this.state.state)
+          ...this.externalState,
           ...this.state.state,
           location: this.locationState,
           deviceSize: this.deviceSizeState,
           device: this.device,
           ...data.state,
-          ...this.externalState,
         }),
       };
       if (this.mounted) {
