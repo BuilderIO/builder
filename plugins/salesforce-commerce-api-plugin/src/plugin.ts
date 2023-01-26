@@ -33,7 +33,13 @@ registerCommercePlugin(
       {
         name: 'proxy',
         type: 'string',
-        required: true,
+        required: false,
+      },
+      {
+        name: 'redirectURI',
+        type: 'string',
+        required: false,
+        helperText: 'redirectURI must be configured by SLAS admin',
       },
       {
         name: 'shortCode',
