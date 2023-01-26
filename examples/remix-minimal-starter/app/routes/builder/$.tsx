@@ -1,4 +1,5 @@
 import { BuilderComponent, builder, useIsPreviewing } from '@builder.io/react';
+import type { BuilderContent } from '@builder.io/sdk';
 import { useLoaderData } from '@remix-run/react';
 import type { LoaderFunction } from '@remix-run/node';
 import builderConfig from '../../../builderConfig.json';
@@ -15,12 +16,17 @@ export const loader: LoaderFunction = async ({ params }) => {
     })
     .toPromise();
 
-  return { page };
+  if (page) return page;
+
+  return {};
 };
 
-export default function Page(props: any) {
-  /* @ts-expect-error see https://github.com/BuilderIO/builder/issues/1387 */
-  const { page }: BuilderContent = useLoaderData<BuilderContent>();
+// this gives full compatibility to BuilderContent type and Remix starter
+// See: https://github.com/BuilderIO/builder/issues/1387#issuecomment-1397442797
+type BuilderContentRemix = Omit<BuilderContent, 'variations' | 'data'>;
+
+export default function Page() {
+  const page: BuilderContentRemix = useLoaderData<BuilderContentRemix>();
   const isPreviewingInBuilder = useIsPreviewing();
   const show404 = !page && !isPreviewingInBuilder;
 
@@ -30,7 +36,7 @@ export default function Page(props: any) {
 
   return (
     <div>
-      <h3>Welcome to the Builder side of your Remix app ;)</h3>
+      <h3>Welcome to the Builder.io + Remix starter</h3>
       <BuilderComponent model="page" content={page} />
     </div>
   );
