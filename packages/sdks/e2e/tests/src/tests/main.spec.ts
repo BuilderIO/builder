@@ -261,7 +261,6 @@ test.describe(targetContext.name, () => {
     await findTextInPage({ page, text: 'Stack at tablet' });
   });
   test.describe('reactive state', () => {
-    // reactive state only works in Vue, Solid & React, so we skip the other environments
     const defaultValueTest = excludeTestFor({
       reactNative: true,
     });
