@@ -46,14 +46,14 @@ Legend:
 | A/B Tests                      | ✅     |                                                                                                         |
 | A/B Tests with SSG/SSR Support | 🏗      | In Progress                                                                                             |
 | SSR                            | ✅     | Does not apply to React-Native.                                                                         |
-| Children for Custom Components | ✅     |
-| Dynamic Data Bindings          | ✅     |
-| View Current Draft             | ✅     |
-| Symbols                        | ✅     |
-| Custom styles                  | ✅     | Yes, (Those that React Native supports)                                                                 |
+| Children for Custom Components | ✅     |                                                                                                         |
+| Dynamic Data Bindings          | ✅     |                                                                                                         |
+| View Current Draft             | ✅     |                                                                                                         |
+| Symbols                        | ✅     |                                                                                                         |
+| Custom styles                  | ✅     | (For React Native, only the ones that it supports by default)                                           |
 | Heatmaps                       | ✅     |                                                                                                         |
 | Tracking/Analytics             | ✅     |                                                                                                         |
 | Animations                     | 🏗      | Custom animation components are supported, but Builder.io's "animations" tab is currently not supported |
-| Custom Actions/Events          | 🏗      | In progress                                                                                             |
-| Builder's global `state`       | 🏗      | In progress: `state` currently cannot be mutated or updated by custom code.                             |
+| Custom Actions/Events          | 🏗      | Works only in Vue SDK                                                                                   |
+| Builder's global `state`       | 🏗      | Works only in Vue SDK                                                                                   |
 | Widgets                        | 🏗      | In Progress                                                                                             |
