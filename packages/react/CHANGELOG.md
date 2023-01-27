@@ -1,3 +1,7 @@
+### 2.0.13
+- Fix hydration errors when a/b testing with react 18
+- Fix overriding state in editor's data tab.
+
 ### 2.0.10
 
 - Fix issue with Hydrogen SSR.

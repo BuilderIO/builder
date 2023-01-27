@@ -112,9 +112,17 @@ export function applyTranslation(
     if (el && el.id && el.meta?.localizedTextInputs) {
       // there's a localized input
       const keys = el.meta?.localizedTextInputs as string[];
+      let options = el.component.options;
 
       keys.forEach(key => {
         if (translation[`blocks.${el.id}#${key}`]) {
+          options = {
+            ...options,
+            [key]: {
+              ...el.component.options[key],
+              [locale]: unescape(translation[`blocks.${el.id}#${key}`].value),
+            },
+          };
           this.update({
             ...el,
             meta: {
@@ -123,13 +131,7 @@ export function applyTranslation(
             },
             component: {
               ...el.component,
-              options: {
-                ...el.component.options,
-                [key]: {
-                  ...el.component.options[key],
-                  [locale]: unescape(translation[`blocks.${el.id}#${key}`].value),
-                },
-              },
+              options,
             },
           });
         }
