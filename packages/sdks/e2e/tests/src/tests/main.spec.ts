@@ -9,7 +9,15 @@ const findTextInPage = async ({ page, text }: { page: Page; text: string }) => {
 
 import { z } from 'zod';
 
-const SdkEnum = z.enum(['reactNative', 'react', 'rsc', 'vue', 'solid', 'qwik']);
+const SdkEnum = z.enum([
+  'reactNative',
+  'react',
+  'rsc',
+  'vue',
+  'solid',
+  'qwik',
+  'svelte',
+]);
 type Sdk = z.infer<typeof SdkEnum>;
 
 const sdk = SdkEnum.parse(process.env.SDK);
@@ -259,12 +267,12 @@ test.describe(targetContext.name, () => {
       await findTextInPage({ page, text: '0' });
     });
 
-    // reactive state only works in Vue & Solid, so we skip the other environments
+    // reactive state only works in Vue, Solid & React, so we skip the other environments
     const reactiveStateTester = excludeTestFor({
       qwik: true,
-      react: true,
       reactNative: true,
       rsc: true,
+      svelte: true,
     });
 
     reactiveStateTester('increments value correctly', async ({ page }) => {
