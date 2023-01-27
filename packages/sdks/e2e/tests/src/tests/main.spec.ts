@@ -16,8 +16,13 @@ const sdk = SdkEnum.parse(process.env.SDK);
 
 const isRNSDK = sdk === 'reactNative';
 
-const onlyTestFor = (sdks: { [X in Sdk]?: boolean }) => {
-  return sdks[sdk] ? test : test.skip;
+/**
+ * Useful tool to skip tests when features aren't implemented in a specific output yet.
+ * We use the negative tense, so that the default behavior is to run the test, unless specifically omitted.
+ *
+ */
+const excludeTestFor = (sdks: { [X in Sdk]?: boolean }) => {
+  return sdks[sdk] ? test.skip : test;
 };
 
 const getElementStyleValue = async ({
@@ -254,10 +259,12 @@ test.describe(targetContext.name, () => {
       await findTextInPage({ page, text: '0' });
     });
 
-    // reactive state only works in Vue, so we skip the other environments
-    const reactiveStateTester = onlyTestFor({
-      vue: true,
-      solid: true,
+    // reactive state only works in Vue & Solid, so we skip the other environments
+    const reactiveStateTester = excludeTestFor({
+      qwik: true,
+      react: true,
+      reactNative: true,
+      rsc: true,
     });
 
     reactiveStateTester('increments value correctly', async ({ page }) => {
