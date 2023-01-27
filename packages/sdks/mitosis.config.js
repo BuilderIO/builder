@@ -74,35 +74,52 @@ const vueConfig = {
     () => ({
       json: {
         pre: (json) => {
-          if (json.name === 'RenderBlock') {
-            traverse(json).forEach(function (item) {
-              if (!isMitosisNode(item)) {
-                return;
-              }
-              const stateActions = item.bindings['state.actions'];
-              if (stateActions) {
-                item.bindings['state.actions'] = {
-                  ...stateActions,
-                  spreadType: 'event-handlers',
+          const FILTER_ATTRIBUTES_CODE = `
+          function filterAttrs(attrs = {}, isEvent) {
+            const eventPrefix = 'v-on:'
+            const hasPrefix = attr => attr.startsWith(eventPrefix)
+            const hasNoPrefix = attr => !attr.startsWith(eventPrefix)
+            const stripEvent = attr => attr.replace(eventPrefix, '')
+            return Object.keys(attrs).filter(isEvent ? hasPrefix : hasNoPrefix).reduce((acc, attr) => ({
+              ...acc,
+              [stripEvent(attr)]: attrs[attr]
+            }), {})
+          }`;
+
+          let hasFilterCode = false;
+
+          if (json.name === 'RenderBlock' || json.name === 'RenderComponent') {
+            return;
+          }
+
+          traverse(json).forEach(function (item) {
+            if (!isMitosisNode(item)) {
+              return;
+            }
+
+            if (item.bindings['props.attributes']) {
+              if (!hasFilterCode) {
+                hasFilterCode = true;
+                json.state['filterAttrs'] = {
+                  code: FILTER_ATTRIBUTES_CODE,
+                  type: 'function',
                 };
               }
-            });
-          } else if (json.name === 'RenderComponent') {
-            traverse(json).forEach(function (item) {
-              if (
-                !isMitosisNode(item) ||
-                !item.bindings.is?.code.includes('props.componentRef')
-              ) {
-                return;
-              }
 
-              item.bindings['state.actions'] = {
-                code: 'props.componentOptions.attributes',
+              item.bindings['___SPREAD1'] = {
+                code: 'filterAttrs(props.attributes,  false)',
+                type: 'spread',
+                spreadType: 'normal',
+              };
+              item.bindings['___SPREAD2'] = {
+                code: 'filterAttrs(props.attributes,  true)',
                 type: 'spread',
                 spreadType: 'event-handlers',
               };
-            });
-          }
+
+              delete item.bindings['props.attributes'];
+            }
+          });
         },
       },
     }),
