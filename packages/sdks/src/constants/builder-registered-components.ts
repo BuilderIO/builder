@@ -28,15 +28,15 @@ import { componentInfo as customCodeInfo } from '../blocks/custom-code/component
  */
 export const getDefaultRegisteredComponents: () => RegisteredComponent[] =
   () => [
+    { component: Button, ...buttonComponentInfo },
     { component: Columns, ...columnsComponentInfo },
+    { component: customCode, ...customCodeInfo },
+    { component: embed, ...embedComponentInfo },
+    { component: Fragment, ...fragmentComponentInfo },
     { component: Image, ...imageComponentInfo },
     { component: Img, ...imgComponentInfo },
+    { component: Section, ...sectionComponentInfo },
+    { component: Symbol, ...symbolComponentInfo },
     { component: Text, ...textComponentInfo },
     { component: Video, ...videoComponentInfo },
-    { component: Symbol, ...symbolComponentInfo },
-    { component: Button, ...buttonComponentInfo },
-    { component: Section, ...sectionComponentInfo },
-    { component: Fragment, ...fragmentComponentInfo },
-    { component: embed, ...embedComponentInfo },
-    { component: customCode, ...customCodeInfo },
   ];

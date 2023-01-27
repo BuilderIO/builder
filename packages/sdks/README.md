@@ -13,6 +13,10 @@ All the individual SDKs live in the [output](./output/) folder. The source Mitos
 
 To contribute, read our [DEVELOP](./DEVELOP.md) guide.
 
+## Fetch
+
+This Package uses fetch. See [these docs](https://github.com/BuilderIO/this-package-uses-fetch/blob/main/README.md) for more information.
+
 # Feature Implementation
 
 Legend:
@@ -22,30 +26,30 @@ Legend:
 - ⚠️: not-yet implemented
 - N/A : does not apply
 
-| Builder Blocks | Vue | Vue details | React-Native | React-Native details | Svelte | Svelte details | Solid (TBD) | Solid details |
-| -------------- | --- | ----------- | ------------ | -------------------- | ------ | -------------- | ----------- | ------------- |
-| Columns        | ✅  |             | ✅           |                      | ✅     |                |
-| Text           | ✅  |             | ✅           |                      | ✅     |                |
-| Image          | ✅  |             | ✅           |                      | ✅     |                |
-| Buttons        | ✅  |             | 🏗            |                      | ✅     |                |
-| Video          | ✅  |             | 🏗            |                      | ✅     |                |
-| Custom Code    | ✅  |             | ✅           |                      | ✅     |                |
-| Section        | ✅  |             | ✅           |                      | ✅     |                |
-| Form           | ✅  |             | ✅           |                      | ✅     |                |
-| Fragment       | ✅  |             | ✅           |                      | ✅     |                |
-| Input          | ✅  |             | ✅           |                      | ✅     |                |
+| Builder Blocks | Vue | React-Native | Svelte | Solid | Qwik |
+| -------------- | --- | ------------ | ------ | ----- | ---- |
+| Columns        | ✅  | ✅           | ✅     | ✅    | ✅   |
+| Text           | ✅  | ✅           | ✅     | ✅    | ✅   |
+| Image          | ✅  | ✅           | ✅     | ✅    | ✅   |
+| Button         | ✅  | ✅           | ✅     | ✅    | ✅   |
+| Video          | ✅  | 🏗            | ✅     | ✅    | ✅   |
+| Custom Code    | ✅  | ✅           | ✅     | ✅    | ✅   |
+| Section        | ✅  | ✅           | ✅     | ✅    | ✅   |
+| Fragment       | ✅  | ✅           | ✅     | ✅    | ✅   |
+| Form           | 🏗   | 🏗            | 🏗      | 🏗     | 🏗    |
+| Input          | 🏗   | 🏗            | 🏗      | 🏗     | 🏗    |
+| Select         | 🏗   | 🏗            | 🏗      | 🏗     | 🏗    |
+| Slot           | 🏗   | 🏗            | 🏗      | 🏗     | 🏗    |
 
-| Features                       | Details                                                                      | Vue | Vue details | React-Native | React-Native details             | Svelte | Svelte details |
-| ------------------------------ | ---------------------------------------------------------------------------- | --- | ----------- | ------------ | -------------------------------- | ------ | -------------- |
-| A/B Tests                      | No SSG support yet, which the React SDK has.                                 | 🏗   |             | 🏗            |                                  | 🏗      |
-| SSR                            |                                                                              | ✅  |             | N/A          |                                  | ✅     |
-| Children for Custom Components |                                                                              | ✅  |             | ✅           |                                  | ✅     |
-| Dynamic Data Bindings          |                                                                              | ✅  |             | ✅           |                                  | ✅     |
-| Animations                     | Custom animation components supported, but not Builder.io's "animations" tab | ⚠️  |             | ⚠️           |                                  | ⚠️     |
-| View Current Draft             |                                                                              | ✅  |             | ✅           |                                  | ✅     |
-| Symbols                        |                                                                              | ✅  |             | ✅           |                                  | ✅     |
-| Custom styles                  |                                                                              | ✅  |             | ✅           | Those that React Native supports |
-
-## Fetch
-
-This Package uses fetch. See [these docs](https://github.com/BuilderIO/this-package-uses-fetch/blob/main/README.md) for more information.
+| Features                       | Status | Details                                                                                                 |
+| ------------------------------ | ------ | ------------------------------------------------------------------------------------------------------- |
+| A/B Tests                      | 🏗      | Implemented, but do not have SSG support yet (which our React SDK has)                                  |
+| SSR                            | ✅     | Does not apply to React-Native.                                                                         |
+| Children for Custom Components | ✅     |
+| Dynamic Data Bindings          | ✅     |
+| View Current Draft             | ✅     |
+| Symbols                        | ✅     |
+| Custom styles                  | ✅     | Yes, (Those that React Native supports)                                                                 |
+| Animations                     | ⚠️     | Custom animation components are supported, but Builder.io's "animations" tab is currently not supported |
+| Custom Actions/Events          | 🏗      | In progress                                                                                             |
+| Builder's global `state`       | 🏗      | In progress: currently cannot be mutated or updated by custom code.                                     |
