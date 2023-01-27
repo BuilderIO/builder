@@ -1,4 +1,6 @@
 import type { BuilderRenderState } from '../../context/types';
+import { BuilderContent } from '../../types/builder-content';
+import { Nullable } from '../../types/typescript';
 import type { RenderContentProps } from './render-content.types';
 
 export const getContextStateInitialValue = ({
@@ -27,4 +29,20 @@ export const getContextStateInitialValue = ({
   };
 
   return { ...defaultValues, ...stateToUse };
+};
+
+export const getContentInitialValue = ({
+  content,
+  data,
+}: Pick<RenderContentProps, 'content' | 'data'>): Nullable<BuilderContent> => {
+  return !content
+    ? undefined
+    : {
+        ...content,
+        data: {
+          ...content?.data,
+          ...data,
+        },
+        meta: content?.meta,
+      };
 };
