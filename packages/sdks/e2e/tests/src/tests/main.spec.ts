@@ -3,13 +3,22 @@ import { test, expect } from '@playwright/test';
 
 import { targetContext } from './context.js';
 
-// test.describe.configure({ mode: 'serial' });
-
 const findTextInPage = async ({ page, text }: { page: Page; text: string }) => {
   await page.locator(`text=${text}`).waitFor();
 };
 
-const isRNSDK = process.env.SDK === 'reactNative';
+import { z } from 'zod';
+
+const SdkEnum = z.enum(['reactNative', 'react', 'rsc', 'vue', 'solid', 'qwik']);
+type Sdk = z.infer<typeof SdkEnum>;
+
+const sdk = SdkEnum.parse(process.env.SDK);
+
+const isRNSDK = sdk === 'reactNative';
+
+const onlyTestFor = (sdks: { [X in Sdk]?: boolean }) => {
+  return sdks[sdk] ? test : test.skip;
+};
 
 const getElementStyleValue = async ({
   locator,
@@ -244,7 +253,14 @@ test.describe(targetContext.name, () => {
 
       await findTextInPage({ page, text: '0' });
     });
-    test('increments value correctly', async ({ page }) => {
+
+    // reactive state only works in Vue, so we skip the other environments
+    const reactiveStateTester = onlyTestFor({
+      vue: true,
+      solid: true,
+    });
+
+    reactiveStateTester('increments value correctly', async ({ page }) => {
       await page.goto('/reactive-state');
 
       await findTextInPage({ page, text: '0' });
