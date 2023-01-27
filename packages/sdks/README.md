@@ -43,13 +43,17 @@ Legend:
 
 | Features                       | Status | Details                                                                                                 |
 | ------------------------------ | ------ | ------------------------------------------------------------------------------------------------------- |
-| A/B Tests                      | 🏗      | Implemented, but do not have SSG support yet (which our React SDK has)                                  |
+| A/B Tests                      | ✅     |                                                                                                         |
+| A/B Tests with SSG/SSR Support | 🏗      | In Progress                                                                                             |
 | SSR                            | ✅     | Does not apply to React-Native.                                                                         |
 | Children for Custom Components | ✅     |
 | Dynamic Data Bindings          | ✅     |
 | View Current Draft             | ✅     |
 | Symbols                        | ✅     |
 | Custom styles                  | ✅     | Yes, (Those that React Native supports)                                                                 |
-| Animations                     | ⚠️     | Custom animation components are supported, but Builder.io's "animations" tab is currently not supported |
+| Heatmaps                       | ✅     |                                                                                                         |
+| Tracking/Analytics             | ✅     |                                                                                                         |
+| Animations                     | 🏗      | Custom animation components are supported, but Builder.io's "animations" tab is currently not supported |
 | Custom Actions/Events          | 🏗      | In progress                                                                                             |
-| Builder's global `state`       | 🏗      | In progress: currently cannot be mutated or updated by custom code.                                     |
+| Builder's global `state`       | 🏗      | In progress: `state` currently cannot be mutated or updated by custom code.                             |
+| Widgets                        | 🏗      | In Progress                                                                                             |
