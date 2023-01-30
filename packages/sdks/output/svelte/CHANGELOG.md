@@ -1,3 +1,7 @@
+### 0.1.5
+
+- Feature: Global CSS Nesting (`&` operator) support
+
 ### 0.1.4
 
 No Changes.
