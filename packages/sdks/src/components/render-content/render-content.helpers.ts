@@ -25,7 +25,7 @@ export const getContextStateInitialValue = ({
   const stateToUse: BuilderRenderState = {
     ...content?.data?.state,
     ...data,
-    ...(locale ? { locale: locale } : {}),
+    ...(locale ? { locale } : {}),
   };
 
   return { ...defaultValues, ...stateToUse };
