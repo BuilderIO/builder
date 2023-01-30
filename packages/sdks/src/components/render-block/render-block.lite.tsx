@@ -66,7 +66,7 @@ export default function RenderBlock(props: RenderBlockProps) {
           obj[prop] = value;
 
           // set the value in the context, so that the rest of the app gets the update.
-          props.context.setState(obj);
+          props.context.setState?.(obj);
           return true;
         },
       });
