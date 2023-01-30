@@ -11,6 +11,7 @@ builder.init(builderConfig.apiKey)
 
 export async function getStaticProps({
   params,
+  locale,
 }: GetStaticPropsContext<{ page: string[] }>) {
   const page =
     (await builder
@@ -18,12 +19,16 @@ export async function getStaticProps({
         userAttributes: {
           urlPath: '/' + (params?.page?.join('/') || ''),
         },
+        options: {
+          locale
+        }
       })
       .toPromise()) || null
 
   return {
     props: {
       page,
+      locale,
     },
     // Next.js will attempt to re-generate the page:
     // - When a request comes in
@@ -46,6 +51,7 @@ export async function getStaticPaths() {
 
 export default function Page({
   page,
+  locale,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const router = useRouter()
   const isPreviewingInBuilder = useIsPreviewing()
@@ -64,7 +70,7 @@ export default function Page({
       {show404 ? (
         <DefaultErrorPage statusCode={404} />
       ) : (
-        <BuilderComponent model="page" content={page} />
+        <BuilderComponent model="page" content={page} locale={locale}/>
       )}
     </>
   )
