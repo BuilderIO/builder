@@ -16,6 +16,7 @@ export interface BuilderContextInterface {
   content: Nullable<BuilderContent>;
   context: BuilderRenderContext;
   state: BuilderRenderState;
+  setState?: (state: BuilderRenderState) => void;
   apiKey: string | null;
   registeredComponents: RegisteredComponents;
   // Used to recursively store all CSS coming from a parent that would apply to a Text block

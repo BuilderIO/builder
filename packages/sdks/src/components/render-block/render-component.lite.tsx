@@ -5,9 +5,17 @@ import { For, Show, useMetadata } from '@builder.io/mitosis';
 import type { BuilderContextInterface } from '../../context/types.js';
 import type { Breakpoints } from '../../types/builder-content.js';
 
+type ComponentOptions = {
+  [index: string]: any;
+  customBreakpoints?: Breakpoints;
+  attributes?: {
+    [index: string]: any;
+  };
+};
+
 export interface RenderComponentProps {
   componentRef: any;
-  componentOptions: any;
+  componentOptions: ComponentOptions;
   blockChildren: BuilderBlock[];
   context: BuilderContextInterface;
   customBreakpoints?: Breakpoints;

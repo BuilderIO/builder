@@ -17,7 +17,7 @@
     "start": "vite --open --mode ssr",
     "qwik": "qwik",
     "serve": "yarn run dev",
-    "e2e": "../../node_modules/.bin/playwright test"
+    "e2e": "SDK=qwik ../../node_modules/.bin/playwright test"
   },
   "devDependencies": {
     "@builder.io/qwik": "0.16.2",

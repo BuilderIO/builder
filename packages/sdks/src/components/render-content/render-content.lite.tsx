@@ -1,7 +1,6 @@
 import { getDefaultRegisteredComponents } from '../../constants/builder-registered-components.js';
 import { TARGET } from '../../constants/target.js';
 import type {
-  BuilderRenderContext,
   BuilderRenderState,
   RegisteredComponent,
   RegisteredComponents,
@@ -41,6 +40,14 @@ import {
 } from '../../scripts/init-editing.js';
 import { checkIsDefined } from '../../helpers/nullable.js';
 import { getInteractionPropertiesForEvent } from '../../functions/track/interaction.js';
+import type {
+  RenderContentProps,
+  BuilderComponentStateChange,
+} from './render-content.types.js';
+import {
+  getContentInitialValue,
+  getContextStateInitialValue,
+} from './render-content.helpers.js';
 
 useMetadata({
   qwik: {
@@ -55,71 +62,51 @@ useMetadata({
   },
 });
 
-export type RenderContentProps = {
-  content?: Nullable<BuilderContent>;
-  model?: string;
-  data?: { [key: string]: any };
-  context?: BuilderRenderContext;
-  apiKey: string;
-  customComponents?: RegisteredComponent[];
-  canTrack?: boolean;
-  locale?: string;
-  includeRefs?: boolean;
-};
-
-interface BuilderComponentStateChange {
-  state: BuilderRenderState;
-  ref: {
-    name?: string;
-    props?: {
-      builderBlock?: {
-        id?: string;
-      };
-    };
-  };
-}
-
 export default function RenderContent(props: RenderContentProps) {
   const elementRef = useRef<HTMLDivElement>();
   const state = useStore({
     forceReRenderCount: 0,
     overrideContent: null as Nullable<BuilderContent>,
-    get useContent(): Nullable<BuilderContent> {
-      if (!props.content && !state.overrideContent) {
-        return undefined;
-      }
-
-      return {
-        ...props.content,
-        ...state.overrideContent,
+    useContent: getContentInitialValue({
+      content: props.content,
+      data: props.data,
+    }),
+    mergeNewContent(newContent: BuilderContent) {
+      state.useContent = {
+        ...state.useContent,
+        ...newContent,
         data: {
-          ...props.content?.data,
-          ...props.data,
-          ...state.overrideContent?.data,
+          ...state.useContent?.data,
+          ...newContent?.data,
         },
         meta: {
-          ...props.content?.meta,
-          ...state.overrideContent?.meta,
+          ...state.useContent?.meta,
+          ...newContent?.meta,
           breakpoints:
-            state.useBreakpoints ||
-            state.overrideContent?.meta?.breakpoints ||
-            props.content?.meta?.breakpoints,
+            newContent?.meta?.breakpoints ||
+            state.useContent?.meta?.breakpoints,
+        },
+      };
+    },
+    setBreakpoints(breakpoints: Breakpoints) {
+      state.useContent = {
+        ...state.useContent,
+        meta: {
+          ...state.useContent?.meta,
+          breakpoints,
         },
       };
     },
     update: 0,
-    useBreakpoints: null as Nullable<Breakpoints>,
     canTrackToUse: checkIsDefined(props.canTrack) ? props.canTrack : true,
-    overrideState: {} as BuilderRenderState,
-    get contentState(): BuilderRenderState {
-      return {
-        ...props.content?.data?.state,
-        ...props.data,
-        ...(props.locale ? { locale: props.locale } : {}),
-        ...state.overrideState,
-      };
+    contentState: getContextStateInitialValue({
+      content: props.content,
+      data: props.data,
+      locale: props.locale,
+    }),
+    setContextState: (newState: BuilderRenderState) => {
+      state.contentState = newState;
     },
-    contextContext: props.context || {},
 
     allRegisteredComponents: [
       ...getDefaultRegisteredComponents(),
@@ -148,7 +135,9 @@ export default function RenderContent(props: RenderContentProps) {
             if (!contentId || contentId !== state.useContent?.id) {
               return;
             }
-            state.useBreakpoints = breakpoints;
+            if (breakpoints) {
+              state.setBreakpoints(breakpoints);
+            }
             state.forceReRenderCount = state.forceReRenderCount + 1; // This is a hack to force Qwik to re-render.
             break;
           }
@@ -163,7 +152,7 @@ export default function RenderContent(props: RenderContentProps) {
             const contentData = messageContent.data;
 
             if (key === props.model) {
-              state.overrideContent = contentData;
+              state.mergeNewContent(contentData);
               state.forceReRenderCount = state.forceReRenderCount + 1; // This is a hack to force Qwik to re-render.
             }
             break;
@@ -182,7 +171,7 @@ export default function RenderContent(props: RenderContentProps) {
       if (jsCode) {
         evaluate({
           code: jsCode,
-          context: state.contextContext,
+          context: props.context || {},
           state: state.contentState,
         });
       }
@@ -215,7 +204,7 @@ export default function RenderContent(props: RenderContentProps) {
       return expression.replace(/{{([^}]+)}}/g, (_match, group) =>
         evaluate({
           code: group,
-          context: state.contextContext,
+          context: props.context || {},
           state: state.contentState,
         })
       );
@@ -224,11 +213,11 @@ export default function RenderContent(props: RenderContentProps) {
       fetch(url)
         .then((response) => response.json())
         .then((json) => {
-          const newOverrideState = {
-            ...state.overrideState,
+          const newState = {
+            ...state.contentState,
             [key]: json,
           };
-          state.overrideState = newOverrideState;
+          state.setContextState(newState);
         })
         .catch((err) => {
           console.log('error fetching dynamic data', url, err);
@@ -289,7 +278,8 @@ export default function RenderContent(props: RenderContentProps) {
   setContext(builderContext, {
     content: state.useContent,
     state: state.contentState,
-    context: state.contextContext,
+    setState: state.setContextState,
+    context: props.context || {},
     apiKey: props.apiKey,
     registeredComponents: state.allRegisteredComponents,
   });
@@ -360,7 +350,7 @@ export default function RenderContent(props: RenderContentProps) {
             apiKey: props.apiKey,
           }).then((content) => {
             if (content) {
-              state.overrideContent = content;
+              state.mergeNewContent(content);
             }
           });
         }

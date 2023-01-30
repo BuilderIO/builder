@@ -22,7 +22,7 @@
     "upgrade-mitosis:dev": "yarn up @builder.io/mitosis@dev @builder.io/mitosis-cli@dev @builder.io/eslint-plugin-mitosis@dev",
     "upgrade-mitosis": "yarn up @builder.io/mitosis @builder.io/mitosis-cli @builder.io/eslint-plugin-mitosis",
     "prettier": "prettier .",
-    "lint": "yarn run prettier --write",
+    "lint": "yarn run prettier --write  && yarn run eslint --fix .",
     "eslint": "eslint . --quiet",
     "eslint:watch": "watch 'yarn run eslint' ./src ./overrides",
     "typecheck": "tsc --noEmit",
@@ -52,8 +52,8 @@
     "upgrade-example:all": "bash ./scripts/loop-command.sh upgrade-example \"svelte react-native solid qwik react vue\""
   },
   "dependencies": {
-    "@builder.io/mitosis": "^0.0.86",
-    "@builder.io/mitosis-cli": "^0.0.44",
+    "@builder.io/mitosis": "^0.0.88",
+    "@builder.io/mitosis-cli": "^0.0.46",
     "@playwright/test": "^1.27.1",
     "node-fetch": "^2.6.1",
     "seedrandom": "^3.0.5",

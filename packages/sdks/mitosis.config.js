@@ -70,6 +70,60 @@ const vueConfig = {
   namePrefix: (path) => (path.includes('/blocks/') ? 'builder' : undefined),
   cssNamespace: getSeededId,
   asyncComponentImports: true,
+  plugins: [
+    () => ({
+      json: {
+        pre: (json) => {
+          const FILTER_ATTRIBUTES_CODE = `
+          function filterAttrs(attrs = {}, isEvent) {
+            const eventPrefix = 'v-on:'
+            const hasPrefix = attr => attr.startsWith(eventPrefix)
+            const hasNoPrefix = attr => !attr.startsWith(eventPrefix)
+            const stripEvent = attr => attr.replace(eventPrefix, '')
+            return Object.keys(attrs).filter(isEvent ? hasPrefix : hasNoPrefix).reduce((acc, attr) => ({
+              ...acc,
+              [stripEvent(attr)]: attrs[attr]
+            }), {})
+          }`;
+
+          let hasFilterCode = false;
+
+          if (json.name === 'RenderBlock' || json.name === 'RenderComponent') {
+            return;
+          }
+
+          traverse(json).forEach(function (item) {
+            if (!isMitosisNode(item)) {
+              return;
+            }
+
+            if (item.bindings['props.attributes']) {
+              if (!hasFilterCode) {
+                hasFilterCode = true;
+                json.state['filterAttrs'] = {
+                  code: FILTER_ATTRIBUTES_CODE,
+                  type: 'function',
+                };
+              }
+
+              item.bindings['___SPREAD1'] = {
+                code: 'filterAttrs(props.attributes,  false)',
+                type: 'spread',
+                spreadType: 'normal',
+              };
+              item.bindings['___SPREAD2'] = {
+                code: 'filterAttrs(props.attributes,  true)',
+                type: 'spread',
+                spreadType: 'event-handlers',
+              };
+
+              delete item.bindings['props.attributes'];
+            }
+          });
+        },
+      },
+    }),
+  ],
   // api: 'composition',
 };
 
@@ -125,6 +179,7 @@ module.exports = {
     vue2: {
       ...vueConfig,
       plugins: [
+        ...vueConfig.plugins,
         () => ({
           json: {
             pre: (json) => {
@@ -279,6 +334,13 @@ module.exports = {
                   key: 'component',
                 });
               }
+
+              // For now, we exclude the `setState` function as Mitosis does not correctly know how to serialize it.
+              Object.values(json.context.set).forEach((context) => {
+                if (context.value['setState']) {
+                  delete context.value['setState'];
+                }
+              });
 
               return json;
             },

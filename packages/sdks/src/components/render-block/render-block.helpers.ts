@@ -40,7 +40,7 @@ export const getComponent = ({
   context: BuilderContextInterface;
 }) => {
   const componentName = getProcessedBlock({
-    block: block,
+    block,
     state: context.state,
     context: context.context,
     shouldEvaluateBindings: false,

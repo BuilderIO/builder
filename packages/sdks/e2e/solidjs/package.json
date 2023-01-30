@@ -8,7 +8,7 @@
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview",
-    "e2e": "../../node_modules/.bin/playwright test"
+    "e2e": "SDK=solid ../../node_modules/.bin/playwright test"
   },
   "license": "MIT",
   "devDependencies": {
