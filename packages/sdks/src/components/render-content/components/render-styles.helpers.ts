@@ -75,5 +75,5 @@ export const getCss = ({
   // Allow using `&` in custom CSS code like @emotion
   // E.g. `& .foobar { ... }` to scope CSS
   // TODO: handle if '&' is within a string like `content: "&"`
-  return cssCode?.replace(/&/g, `.builder-component-${contentId}`) || '';
+  return cssCode?.replace(/&/g, `div[builder-content-id="${contentId}"]`) || '';
 };

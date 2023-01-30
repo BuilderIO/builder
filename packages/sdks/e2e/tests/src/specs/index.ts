@@ -1,5 +1,6 @@
 import { CONTENT as columns } from './columns.js';
 import { CONTENT as homepage } from './homepage.js';
+import { CONTENT as cssNesting } from './css-nesting.js';
 import { CONTENT as symbols } from './symbols.js';
 import { CONTENT as contentBindings } from './content-bindings';
 import { CONTENT as symbolBindings } from './symbol-bindings';
@@ -37,6 +38,8 @@ const getContentForPathname = (pathname: string): BuilderContent | null => {
     case '/can-track-false':
     case '/':
       return homepage;
+    case '/css-nesting':
+      return cssNesting;
     case '/columns':
       return columns;
     case '/symbols':
