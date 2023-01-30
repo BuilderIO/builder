@@ -798,7 +798,11 @@ test.describe(targetContext.name, () => {
       });
     });
 
-    test('Should apply CSS nesting', async ({ page }) => {
+    const excludeReactNative = excludeTestFor({
+      reactNative: true,
+    });
+
+    excludeReactNative('Should apply CSS nesting', async ({ page }) => {
       await page.goto('./css-nesting');
 
       const blueText = page.locator('text=blue');
