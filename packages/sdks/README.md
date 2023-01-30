@@ -57,3 +57,5 @@ Legend:
 | Custom Actions/Events          | 🏗      | Works only in Vue SDK                                                                                   |
 | Builder's global `state`       | 🏗      | Works only in Vue SDK                                                                                   |
 | Widgets                        | 🏗      | In Progress                                                                                             |
+| Global Content Styles          | ✅     | Except React Native, which does not support global styles                                               |
+| CSS Nesting (`&` operator)     | ✅     | Except React Native, which does not support global styles                                               |

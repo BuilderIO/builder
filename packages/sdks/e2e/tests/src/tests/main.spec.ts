@@ -766,7 +766,7 @@ test.describe(targetContext.name, () => {
   });
 
   test.describe('Styles', () => {
-    test('should apply responsive styles correctly on tablet/mobile', async ({
+    test('Should apply responsive styles correctly on tablet/mobile', async ({
       page,
     }) => {
       await page.goto('/columns');
@@ -795,6 +795,28 @@ test.describe(targetContext.name, () => {
         locator,
         cssProperty: 'margin-left',
         expectedValue: '0px',
+      });
+    });
+
+    const excludeReactNative = excludeTestFor({
+      reactNative: true,
+    });
+
+    excludeReactNative('Should apply CSS nesting', async ({ page }) => {
+      await page.goto('./css-nesting');
+
+      const blueText = page.locator('text=blue');
+      await expectStyleForElement({
+        locator: blueText,
+        cssProperty: 'color',
+        expectedValue: 'rgb(0, 0, 255)',
+      });
+
+      const redText = page.locator('text=red');
+      await expectStyleForElement({
+        locator: redText,
+        cssProperty: 'color',
+        expectedValue: 'rgb(65, 117, 5)',
       });
     });
   });

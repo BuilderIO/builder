@@ -395,6 +395,7 @@ export default function RenderContent(props: RenderContentProps) {
       >
         {state.shouldRenderContentStyles && (
           <RenderContentStyles
+            contentId={state.useContent?.id}
             cssCode={state.useContent?.data?.cssCode}
             customFonts={state.useContent?.data?.customFonts}
           />
