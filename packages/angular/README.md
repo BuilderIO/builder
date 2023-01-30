@@ -1,9 +1,10 @@
 # Builder Angular SDK
 
+Use the Builder Angular SDK to use Angular with Builder. You can get started by heading over to Builder's official documentation or digging right into the code in this directory. The official documentation provides more explicit instructions, while this README shares more general pointers.
 
-## Integration
+## Option 1 (for those new to Angular): Use the Builder official documentation
 
-See our full [getting started docs](https://www.builder.io/c/docs/developers), or jump right into integration. We generally recommend to start with page buliding as your initial integration:
+For a step-by-step guide, see the Angular instructions in Builder's official [Integrating Pages](https://www.builder.io/c/docs/developers) documentation. While we recommend starting with Page building, you can also integrate sections and data:
 
 <table>
   <tr>
@@ -30,15 +31,19 @@ See our full [getting started docs](https://www.builder.io/c/docs/developers), o
   </tr>
 </table>
 
-## Usage
+## Option 2 (for the Angular aficionado): Use the brief notes below
 
-Install
+If instead, you prefer to dive right into the code, stay here for some pointers for using the Builder Angular SDK.
+
+### Usage
+
+Install:
 
 ```
 npm install @builder.io/angular
 ```
 
-Add the module
+Add the module:
 
 ```ts
 import { BuilderModule } from '@builder.io/angular';
@@ -53,7 +58,7 @@ export class MyAppModule { }
 
 > NOTE: You can get `YOUR_API_KEY` from https://builder.io/account/space.
 
-And then add the component wherever you like
+And then add the component wherever you like:
 
 ```html
 <!-- The model input can be any model of yours -->
@@ -65,12 +70,12 @@ And then add the component wherever you like
 
 Then, update your model's preview URL to enable on-site editing like in [this guide](https://www.builder.io/c/docs/guides/preview-url), and you are done!
 
-Next, see the below info for more advanced usage, as well as [this guide](https://www.builder.io/c/docs/guides/getting-started-with-models) for creating custom models,
-and [this guide](https://www.builder.io/c/docs/seo) for SEO optimizing your content (for angular use the data from the `load` output to get the custom field data)
+Next, see the below info for more advanced usage, as well as [Intro to Models](https://www.builder.io/c/docs/models-intro) for creating custom models,
+and [Search Enging Optimization](https://www.builder.io/c/docs/seo) for SEO optimizing your content. (For Angular use the data from the `load` output to get the custom field data.)
 
 ## Custom landing pages in your code
 
-Simply replace your 404 component with something like the below to allow creating new pages in Builder easily
+Replace your 404 component with something like the below to allow creating new pages in Builder easily:
 
 ```html
 <!-- The model input can be any model of yours -->
@@ -88,7 +93,7 @@ Simply replace your 404 component with something like the below to allow creatin
 
 ## Using custom fields
 
-[Custom fields](https://www.builder.io/c/docs/custom-fields) are a powerful feature when using [custom models](https://www.builder.io/c/docs/guides/getting-started-with-models), for all sorts of customization, such as [SEO optimization](https://www.builder.io/c/docs/seo) of your content
+[Custom fields](https://www.builder.io/c/docs/custom-fields) are a powerful feature when using customized [models](https://www.builder.io/c/docs/models-intro), for all sorts of customization, such as [SEO optimization](https://www.builder.io/c/docs/seo) of your content.
 
 ```html
 <builder-component model="page" (load)="contentLoaded($event)">
@@ -117,9 +122,9 @@ With section models you can use Builder.io components in/around existing pages (
 
 You can then use [queries](https://www.builder.io/c/docs/custom-fields) and [targeting](https://www.builder.io/c/docs/guides/targeting-and-scheduling) to customize what content loads where
 
-## Use your angular components in your Builder pages
+## Use your Angular components in your Builder pages
 
-You can drag and drop to add your angular components in the Builder editor with a simple tag like below:
+You can drag and drop to add your Angular components in the Builder editor with a minimal tag like below:
 
 ```ts
 import { BuilderBlock } from '@builder.io/angular';
@@ -145,7 +150,7 @@ export class CustomThing {
 }
 ```
 
-Note that custom Angular components use [angular elements](https://angular.io/guide/elements) and render in the browser only (no server-side rendering).
+Note that custom Angular components use [Angular elements](https://angular.io/guide/elements) and render in the browser only (no server-side rendering).
 
 If you need server-side rendering in reusable components with Builder, consider using [symbols](https://www.builder.io/c/docs/symbols)
 
