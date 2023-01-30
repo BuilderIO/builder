@@ -3,6 +3,10 @@ const bundleAnalyzer = require('@next/bundle-analyzer')({
 })
 
 module.exports = bundleAnalyzer({
+  i18n: {
+    locales: ['en', 'fr', 'de'],
+    defaultLocale: 'en',
+	},
   images: {
     domains: ['cdn.builder.io'],
   },
