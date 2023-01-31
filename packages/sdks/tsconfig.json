@@ -12,5 +12,9 @@
     // https://vitejs.dev/guide/features.html#isolatedmodules
     "isolatedModules": true
   },
-  "include": ["src", "typings"]
+  "include": [
+    "src",
+    "typings",
+    "vite.config.ts"
+  ],
 }

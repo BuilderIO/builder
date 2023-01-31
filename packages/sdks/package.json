@@ -8,7 +8,7 @@
     "build:outputs": "pnpm --filter \"*/sdk-*\" --filter=!@builder.io/sdk-vue-2 --filter=!@builder.io/sdk-vue-3 run build",
     "build": "pnpm build:mitosis && pnpm build:outputs",
     "start": "watch 'pnpm build:mitosis' ./src ./overrides",
-    "test": "jest",
+    "test": "vitest",
     "remove-symlinks": "./scripts/remove-resolutions.sh && pnpm",
     "add-symlinks": "./scripts/add-resolutions.sh && pnpm",
     "upgrade-mitosis:dev": "pnpm up @builder.io/mitosis@dev @builder.io/mitosis-cli@dev @builder.io/eslint-plugin-mitosis@dev",
@@ -51,11 +51,12 @@
     "node-fetch": "^2.6.1",
     "seedrandom": "^3.0.5",
     "traverse": "^0.6.6",
-    "typescript": "^4.9.4"
+    "typescript": "^4.9.4",
+    "vite": "^4.0.4",
+    "vitest": "^0.15.2"
   },
   "devDependencies": {
     "@builder.io/eslint-plugin-mitosis": "^0.0.14",
-    "@types/jest": "^27.4.1",
     "@types/node-fetch": "^2.5.12",
     "@typescript-eslint/eslint-plugin": "latest",
     "@typescript-eslint/parser": "latest",
@@ -66,11 +67,8 @@
     "eslint-plugin-unused-imports": "^2.0.0",
     "git-cz": "^4.8.0",
     "husky": "^7.0.4",
-    "jest": "^27.5.1",
-    "jest-fetch-mock": "^3.0.3",
     "pinst": "^3.0.0",
     "prettier": "^2.5.0",
-    "ts-jest": "^27.1.4",
     "watch": "^1.0.2"
   },
   "config": {
