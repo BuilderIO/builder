@@ -8,7 +8,8 @@
     // we don't use react-native, as that preserves the JSX tags
     "jsx": "react",
     "emitDeclarationOnly": false,
-    "noEmit": false
+    "noEmit": false,
+    "types": ["react-native"]
   },
   "include": ["src/**/*.js", "src/**/*.jsx"]
 }
