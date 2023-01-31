@@ -51,9 +51,7 @@
     "node-fetch": "^2.6.1",
     "seedrandom": "^3.0.5",
     "traverse": "^0.6.6",
-    "typescript": "^4.9.4",
-    "vite": "^4.0.4",
-    "vitest": "^0.15.2"
+    "typescript": "^4.9.4"
   },
   "devDependencies": {
     "@builder.io/eslint-plugin-mitosis": "^0.0.14",
@@ -69,6 +67,8 @@
     "husky": "^7.0.4",
     "pinst": "^3.0.0",
     "prettier": "^2.5.0",
+    "vite": "^4.0.4",
+    "vitest": "^0.15.2",
     "watch": "^1.0.2"
   },
   "config": {
