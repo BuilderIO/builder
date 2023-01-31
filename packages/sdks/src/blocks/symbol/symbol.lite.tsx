@@ -3,7 +3,6 @@ import BuilderContext from '../../context/builder.context.lite';
 import { getContent } from '../../functions/get-content/index.js';
 import type { BuilderContent } from '../../types/builder-content.js';
 import { onUpdate, useContext, useStore } from '@builder.io/mitosis';
-import type { Nullable } from '../../types/typescript.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
 import { TARGET } from '../../constants/target';
 
@@ -29,24 +28,19 @@ export default function Symbol(props: SymbolProps) {
   const builderContext = useContext(BuilderContext);
 
   const state = useStore({
-    get className() {
-      return [
-        ...(TARGET === 'vue2' || TARGET === 'vue3'
-          ? Object.keys(props.attributes.class)
-          : [props.attributes.class]),
-        'builder-symbol',
-        props.symbol?.inline ? 'builder-inline-symbol' : undefined,
-        props.symbol?.dynamic || props.dynamic
-          ? 'builder-dynamic-symbol'
-          : undefined,
-      ]
-        .filter(Boolean)
-        .join(' ');
-    },
-    fetchedContent: null as Nullable<BuilderContent>,
-    get contentToUse(): Nullable<BuilderContent> {
-      return props.symbol?.content || state.fetchedContent;
-    },
+    className: [
+      ...(TARGET === 'vue2' || TARGET === 'vue3'
+        ? Object.keys(props.attributes.class)
+        : [props.attributes.class]),
+      'builder-symbol',
+      props.symbol?.inline ? 'builder-inline-symbol' : undefined,
+      props.symbol?.dynamic || props.dynamic
+        ? 'builder-dynamic-symbol'
+        : undefined,
+    ]
+      .filter(Boolean)
+      .join(' '),
+    contentToUse: props.symbol?.content,
   });
 
   onUpdate(() => {
@@ -64,11 +58,12 @@ export default function Symbol(props: SymbolProps) {
     if (
       symbolToUse &&
       !symbolToUse.content &&
-      !state.fetchedContent &&
+      !state.contentToUse &&
       symbolToUse.model &&
       // This is a hack, we should not need to check for this, but it is needed for Svelte.
       builderContext?.apiKey
     ) {
+      console.log('condition was true, fetching');
       getContent({
         model: symbolToUse.model,
         apiKey: builderContext.apiKey,
@@ -76,10 +71,13 @@ export default function Symbol(props: SymbolProps) {
           id: symbolToUse.entry,
         },
       }).then((response) => {
-        state.fetchedContent = response;
+        console.log('response', response);
+        if (response) {
+          state.contentToUse = response;
+        }
       });
     }
-  }, [props.symbol, state.fetchedContent]);
+  }, [props.symbol]);
 
   return (
     <div
@@ -87,6 +85,7 @@ export default function Symbol(props: SymbolProps) {
       className={state.className}
       dataSet={{ class: state.className }}
     >
+      {JSON.stringify(state.contentToUse)}
       <RenderContent
         apiKey={builderContext.apiKey!}
         context={builderContext.context}
@@ -94,7 +93,7 @@ export default function Symbol(props: SymbolProps) {
         data={{
           ...props.symbol?.data,
           ...builderContext.state,
-          ...props.symbol?.content?.data?.state,
+          ...state.contentToUse?.data?.state,
         }}
         model={props.symbol?.model}
         content={state.contentToUse}
