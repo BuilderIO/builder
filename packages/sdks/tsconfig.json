@@ -10,7 +10,8 @@
     "forceConsistentCasingInFileNames": true,
     // needed to make sure vite/esbuild can bundle the code properly
     // https://vitejs.dev/guide/features.html#isolatedmodules
-    "isolatedModules": true
+    "isolatedModules": true,
+    "types": ["vitest/globals"]
   },
   "include": ["src", "typings", "vite.config.ts"]
 }
