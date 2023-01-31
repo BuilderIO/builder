@@ -89,7 +89,7 @@ export const CUSTOM_COMPONENTS: RegisteredComponent[] = [
   {
     component: MyFunComponent,
     name: 'MyFunComponent',
-    builtIn: true,
+
     inputs: [
       {
         name: 'text',
