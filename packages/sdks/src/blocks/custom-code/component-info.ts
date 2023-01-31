@@ -3,7 +3,7 @@ import type { ComponentInfo } from '../../types/components';
 export const componentInfo: ComponentInfo = {
   name: 'Custom Code',
   static: true,
-  builtIn: true,
+
   requiredPermissions: ['editCode'],
   inputs: [
     {

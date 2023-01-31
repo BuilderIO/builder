@@ -4,7 +4,7 @@ import { serializeFn } from '../util.js';
 export const componentInfo: ComponentInfo = {
   // TODO: ways to statically preprocess JSON for references, functions, etc
   name: 'Columns',
-  builtIn: true,
+
   inputs: [
     {
       name: 'columns',

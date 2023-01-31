@@ -4,7 +4,7 @@ import { serializeFn } from '../util.js';
 export const componentInfo: ComponentInfo = {
   name: 'Embed',
   static: true,
-  builtIn: true,
+
   inputs: [
     {
       name: 'url',

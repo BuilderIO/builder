@@ -2,7 +2,7 @@ import type { ComponentInfo } from '../../types/components';
 
 export const componentInfo: ComponentInfo = {
   name: 'Core:Button',
-  builtIn: true,
+
   image:
     'https://cdn.builder.io/api/v1/image/assets%2FIsxPKMo2gPRRKeakUztj1D6uqed2%2F81a15681c3e74df09677dfc57a615b13',
   defaultStyles: {
