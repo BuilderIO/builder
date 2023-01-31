@@ -68,7 +68,7 @@ export class Api {
       pluginId: this.pluginId,
       apiKey: this.apiKey,
     });
-    const root = 'https://qa.builder.io'; // todo when app is released to prodappState.config.apiRoot();
+    const root = appState.config.apiRoot();
     const baseUrl = new URL(`${root}/api/v1/sfcc-commerce/${path}`);
     baseUrl.search = params.toString();
     return baseUrl.toString();

@@ -1,5 +1,6 @@
 import { CONTENT as columns } from './columns.js';
 import { CONTENT as homepage } from './homepage.js';
+import { CONTENT as cssNesting } from './css-nesting.js';
 import { CONTENT as symbols } from './symbols.js';
 import { CONTENT as contentBindings } from './content-bindings';
 import { CONTENT as symbolBindings } from './symbol-bindings';
@@ -7,6 +8,7 @@ import { CONTENT as image } from './image.js';
 import { CONTENT as dataBindings } from './data-bindings.js';
 import { CONTENT as dataBindingStyles } from './data-binding-styles.js';
 import { CONTENT as customBreakpoints } from './custom-breakpoints.js';
+import { CONTENT as reactiveState } from './reactive-state';
 
 // TO-DO: import real content type from SDKs
 interface Breakpoints {
@@ -36,6 +38,8 @@ const getContentForPathname = (pathname: string): BuilderContent | null => {
     case '/can-track-false':
     case '/':
       return homepage;
+    case '/css-nesting':
+      return cssNesting;
     case '/columns':
       return columns;
     case '/symbols':
@@ -52,6 +56,8 @@ const getContentForPathname = (pathname: string): BuilderContent | null => {
       return dataBindingStyles;
     case '/custom-breakpoints':
       return customBreakpoints as BuilderContent;
+    case '/reactive-state':
+      return reactiveState;
     case '/custom-breakpoints-reset':
       contentWithoutBreakpoints = fastClone(
         customBreakpoints as BuilderContent

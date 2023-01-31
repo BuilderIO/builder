@@ -2,7 +2,7 @@ import type { ComponentInfo } from '../../types/components';
 
 export const componentInfo: ComponentInfo = {
   name: 'Form:Form',
-  builtIn: true,
+
   // editableTags: ['builder-form-error']
   defaults: {
     responsiveStyles: {

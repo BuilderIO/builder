@@ -4,7 +4,7 @@ export const componentInfo: ComponentInfo = {
   name: 'Symbol',
   noWrap: true,
   static: true,
-  builtIn: true,
+
   inputs: [
     {
       name: 'symbol',

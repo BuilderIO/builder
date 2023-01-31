@@ -26,6 +26,7 @@ module.exports = {
     '@typescript-eslint/no-empty-interface': 'off',
     '@typescript-eslint/no-empty-function': 'off',
     'unused-imports/no-unused-imports': 'error',
+    'object-shorthand': 'error',
     '@typescript-eslint/consistent-type-imports': [
       'error',
       { prefer: 'type-imports', disallowTypeAnnotations: false },

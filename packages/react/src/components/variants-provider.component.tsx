@@ -29,6 +29,7 @@ const variantsScript = (variantsString: string, contentId: string) =>
     variants.forEach(function (template) {
       document.querySelector('template[data-template-variant-id="' + template.id + '"]').remove();
     });
+    document.getElementById('variants-script-${contentId}').remove();
   }
 
   if (typeof document.createElement("template").content === 'undefined') {
@@ -127,6 +128,7 @@ export const VariantsProvider: React.SFC<VariantsProviderProps> = ({
     );
     const renderScript = () => (
       <script
+        id={`variants-script-${initialContent.id}`}
         dangerouslySetInnerHTML={{
           __html: variantsScript(variantsJson, initialContent.id!),
         }}

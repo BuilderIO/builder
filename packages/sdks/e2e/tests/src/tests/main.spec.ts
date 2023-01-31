@@ -3,12 +3,35 @@ import { test, expect } from '@playwright/test';
 
 import { targetContext } from './context.js';
 
-// test.describe.configure({ mode: 'serial' });
+const findTextInPage = async ({ page, text }: { page: Page; text: string }) => {
+  await page.locator(`text=${text}`).waitFor();
+};
 
-const findTextInPage = ({ page, text }: { page: Page; text: string }) =>
-  expect(page.locator(`text=${text}`)).toBeVisible();
+import { z } from 'zod';
 
-const isRNSDK = process.env.SDK === 'reactNative';
+const SdkEnum = z.enum([
+  'reactNative',
+  'react',
+  'rsc',
+  'vue',
+  'solid',
+  'qwik',
+  'svelte',
+]);
+type Sdk = z.infer<typeof SdkEnum>;
+
+const sdk = SdkEnum.parse(process.env.SDK);
+
+const isRNSDK = sdk === 'reactNative';
+
+/**
+ * Useful tool to skip tests when features aren't implemented in a specific output yet.
+ * We use the negative tense, so that the default behavior is to run the test, unless specifically omitted.
+ *
+ */
+const excludeTestFor = (sdks: { [X in Sdk]?: boolean }) => {
+  return sdks[sdk] ? test.skip : test;
+};
 
 const getElementStyleValue = async ({
   locator,
@@ -236,6 +259,36 @@ test.describe(targetContext.name, () => {
     await page.goto('/columns');
 
     await findTextInPage({ page, text: 'Stack at tablet' });
+  });
+  test.describe('reactive state', () => {
+    const defaultValueTest = excludeTestFor({
+      reactNative: true,
+    });
+
+    defaultValueTest('shows default value', async ({ page }) => {
+      await page.goto('/reactive-state');
+
+      await findTextInPage({ page, text: '0' });
+    });
+
+    // reactive state only works in Vue, Solid & React, so we skip the other environments
+    const reactiveStateTest = excludeTestFor({
+      qwik: true,
+      reactNative: true,
+      rsc: true,
+      svelte: true,
+      solid: true,
+    });
+
+    reactiveStateTest('increments value correctly', async ({ page }) => {
+      await page.goto('/reactive-state');
+
+      await findTextInPage({ page, text: '0' });
+
+      await page.click('button');
+
+      await findTextInPage({ page, text: '1' });
+    });
   });
   test('symbols', async ({ page }) => {
     await page.goto('/symbols');
@@ -713,7 +766,7 @@ test.describe(targetContext.name, () => {
   });
 
   test.describe('Styles', () => {
-    test('should apply responsive styles correctly on tablet/mobile', async ({
+    test('Should apply responsive styles correctly on tablet/mobile', async ({
       page,
     }) => {
       await page.goto('/columns');
@@ -742,6 +795,28 @@ test.describe(targetContext.name, () => {
         locator,
         cssProperty: 'margin-left',
         expectedValue: '0px',
+      });
+    });
+
+    const excludeReactNative = excludeTestFor({
+      reactNative: true,
+    });
+
+    excludeReactNative('Should apply CSS nesting', async ({ page }) => {
+      await page.goto('./css-nesting');
+
+      const blueText = page.locator('text=blue');
+      await expectStyleForElement({
+        locator: blueText,
+        cssProperty: 'color',
+        expectedValue: 'rgb(0, 0, 255)',
+      });
+
+      const redText = page.locator('text=red');
+      await expectStyleForElement({
+        locator: redText,
+        cssProperty: 'color',
+        expectedValue: 'rgb(65, 117, 5)',
       });
     });
   });
