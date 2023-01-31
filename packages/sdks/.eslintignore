@@ -2,7 +2,6 @@ node_modules
 output/
 .eslintrc.js
 mitosis.config.js
-tsconfig.json
 **/vite.config.ts
 **/dist/**
 
