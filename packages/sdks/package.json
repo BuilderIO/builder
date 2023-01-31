@@ -78,5 +78,10 @@
   },
   "resolutions": {
     "minimist": "^1.2.7"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "@sveltejs/package@1.0.0-next.1": "patches/@sveltejs__package@1.0.0-next.1.patch"
+    }
   }
 }
