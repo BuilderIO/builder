@@ -12,7 +12,7 @@
     "remove-symlinks": "./scripts/remove-resolutions.sh && pnpm i",
     "add-symlinks": "./scripts/add-resolutions.sh && pnpm i",
     "upgrade-mitosis:dev": "pnpm up @builder.io/mitosis@dev @builder.io/mitosis-cli@dev @builder.io/eslint-plugin-mitosis@dev",
-    "upgrade-mitosis": "pnpm up @builder.io/mitosis @builder.io/mitosis-cli @builder.io/eslint-plugin-mitosis",
+    "upgrade-mitosis": "pnpm up @builder.io/mitosis*@latest",
     "prettier": "prettier .",
     "prettier:check": "prettier --check .",
     "lint": "yarn run prettier --write . && yarn run eslint --fix .",
@@ -45,8 +45,8 @@
     "upgrade-example:all": "bash ./scripts/loop-command.sh upgrade-example \"svelte react-native solid qwik react vue\""
   },
   "dependencies": {
-    "@builder.io/mitosis": "^0.0.88",
-    "@builder.io/mitosis-cli": "^0.0.46",
+    "@builder.io/mitosis": "^0.0.89",
+    "@builder.io/mitosis-cli": "^0.0.48",
     "@playwright/test": "^1.27.1",
     "node-fetch": "^2.6.1",
     "seedrandom": "^3.0.5",
