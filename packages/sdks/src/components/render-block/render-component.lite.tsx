@@ -18,7 +18,6 @@ export interface RenderComponentProps {
   componentOptions: ComponentOptions;
   blockChildren: BuilderBlock[];
   context: BuilderContextInterface;
-  customBreakpoints?: Breakpoints;
 }
 
 useMetadata({

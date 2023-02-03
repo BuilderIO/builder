@@ -107,7 +107,6 @@ export default function RenderBlock(props: RenderBlockProps) {
           ...(!state.component?.noWrap
             ? {}
             : { attributes: { ...state.attributes, ...state.actions } }),
-          customBreakpoints: state.childrenContext?.content?.meta?.breakpoints,
         },
         context: state.childrenContext,
       };
