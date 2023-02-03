@@ -90,15 +90,22 @@ const vueConfig = {
           }
           `;
 
-          const STRIP_VON_CODE = `
-          function stripVOn(actions = {}) {
-            const eventPrefix = 'v-on:'
-            return Object.keys(actions).reduce((acc, attr) => ({
-              ...acc,
-              [stripEvent(attr)]: attrs[attr]
-            }), {})
+          if (json.name === 'RenderBlock') {
+            const STRIP_VON_CODE = `
+              function stripVOn(actions = {}) {
+                const eventPrefix = 'v-on:'
+                return Object.keys(actions).reduce((acc, attr) => ({
+                  ...acc,
+                  [stripEvent(attr)]: attrs[attr]
+                }), {})
+              }
+            `;
+
+            json.state['stripVOn'] = {
+              code: STRIP_VON_CODE,
+              type: 'function',
+            };
           }
-          `;
 
           let hasFilterCode = false;
 
@@ -109,14 +116,6 @@ const vueConfig = {
 
             if (json.name === 'RenderBlock') {
               if (item.bindings['state.actions']) {
-                if (!hasFilterCode) {
-                  hasFilterCode = true;
-                  json.state['stripVOn'] = {
-                    code: STRIP_VON_CODE,
-                    type: 'function',
-                  };
-                }
-
                 item.bindings['state.actions'] = {
                   code: `stripVOn(${item.bindings['state.actions'].code})`,
                   type: 'spread',

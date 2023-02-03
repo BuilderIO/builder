@@ -261,15 +261,6 @@ test.describe(targetContext.name, () => {
     await findTextInPage({ page, text: 'Stack at tablet' });
   });
 
-  // reactive state only works in Vue, Solid & React, so we skip the other environments
-  const reactiveStateTest = excludeTestFor({
-    qwik: true,
-    reactNative: true,
-    rsc: true,
-    svelte: true,
-    solid: true,
-  });
-
   test.describe('reactive state', () => {
     const defaultValueTest = excludeTestFor({
       reactNative: true,
@@ -279,6 +270,15 @@ test.describe(targetContext.name, () => {
       await page.goto('/reactive-state');
 
       await findTextInPage({ page, text: '0' });
+    });
+
+    // reactive state only works in Vue, Solid & React, so we skip the other environments
+    const reactiveStateTest = excludeTestFor({
+      qwik: true,
+      reactNative: true,
+      rsc: true,
+      svelte: true,
+      solid: true,
     });
 
     reactiveStateTest('increments value correctly', async ({ page }) => {
