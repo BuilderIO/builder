@@ -73,6 +73,9 @@ const vueConfig = {
   plugins: [
     () => ({
       json: {
+        // This plugin handles binding our actions to the `v-on:` Vue syntax:
+        // - in our block components, the actions will come through `props.attributes` and need to be filtered
+        // - in RenderBlock, the actions will be good to go from `state.actions`, and just need the `v-on:` prefix to be removed
         pre: (json) => {
           const FILTER_ATTRIBUTES_CODE = `
           function filterAttrs(attrs = {}, isEvent) {
@@ -84,7 +87,18 @@ const vueConfig = {
               ...acc,
               [stripEvent(attr)]: attrs[attr]
             }), {})
-          }`;
+          }
+          `;
+
+          const STRIP_VON_CODE = `
+          function stripVOn(actions = {}) {
+            const eventPrefix = 'v-on:'
+            return Object.keys(actions).reduce((acc, attr) => ({
+              ...acc,
+              [stripEvent(attr)]: attrs[attr]
+            }), {})
+          }
+          `;
 
           let hasFilterCode = false;
 
@@ -93,33 +107,49 @@ const vueConfig = {
               return;
             }
 
-            // in our block components, the actions will come through `props.attributes` and need to be filtered
-            // in RenderBlock, the actions will be good to go in `state.actions`, and just need the `v-on:` prefix to be removed
-            // using all of the `filterAttrs` logic is overkill for `state.actions`, but it's easier to just use the same code for now
-            ['props.attributes', 'state.actions'].forEach((key) => {
-              if (item.bindings[key]) {
+            if (json.name === 'RenderBlock') {
+              if (item.bindings['state.actions']) {
                 if (!hasFilterCode) {
                   hasFilterCode = true;
-                  json.state['filterAttrs'] = {
-                    code: FILTER_ATTRIBUTES_CODE,
+                  json.state['stripVOn'] = {
+                    code: STRIP_VON_CODE,
                     type: 'function',
                   };
                 }
 
-                item.bindings['___SPREAD1'] = {
-                  code: `filterAttrs(${key},  false)`,
-                  type: 'spread',
-                  spreadType: 'normal',
-                };
-                item.bindings['___SPREAD2'] = {
-                  code: `filterAttrs(${key},  true)`,
+                item.bindings['state.actions'] = {
+                  code: `stripVOn(${item.bindings['state.actions'].code})`,
                   type: 'spread',
                   spreadType: 'event-handlers',
                 };
-
-                delete item.bindings[key];
+              } else {
+                return;
               }
-            });
+            }
+
+            const key = 'props.attributes';
+            if (item.bindings[key]) {
+              if (!hasFilterCode) {
+                hasFilterCode = true;
+                json.state['filterAttrs'] = {
+                  code: FILTER_ATTRIBUTES_CODE,
+                  type: 'function',
+                };
+              }
+
+              item.bindings['___SPREAD1'] = {
+                code: `filterAttrs(${key},  false)`,
+                type: 'spread',
+                spreadType: 'normal',
+              };
+              item.bindings['___SPREAD2'] = {
+                code: `filterAttrs(${key},  true)`,
+                type: 'spread',
+                spreadType: 'event-handlers',
+              };
+
+              delete item.bindings[key];
+            }
           });
         },
       },
