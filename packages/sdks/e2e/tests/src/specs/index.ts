@@ -1,5 +1,4 @@
 import { CONTENT as columns } from './columns.js';
-import { CONTENT as columns } from './columns.js';
 import { CONTENT as reactiveToggle } from './reactive-toggle.js';
 import { CONTENT as homepage } from './homepage.js';
 import { CONTENT as cssNesting } from './css-nesting.js';
