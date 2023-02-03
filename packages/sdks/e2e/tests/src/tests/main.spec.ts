@@ -289,6 +289,16 @@ test.describe(targetContext.name, () => {
 
       await findTextInPage({ page, text: '1' });
     });
+
+    reactiveStateTest('updates UI when toggle changes', async ({ page }) => {
+      await page.goto('/reactive-toggle');
+
+      await findTextInPage({ page, text: 'nope' });
+
+      await page.click('button');
+
+      await findTextInPage({ page, text: 'hey' });
+    });
   });
   test('symbols', async ({ page }) => {
     await page.goto('/symbols');
