@@ -293,23 +293,38 @@ test.describe(targetContext.name, () => {
   });
   test.describe('Element Events', () => {
     reactiveStateTest('click works on button', async ({ page }) => {
-      await page.goto('/reactive-toggle');
+      await page.goto('/element-events');
 
-      await findTextInPage({ page, text: 'nope' });
+      // Get the next console log message
+      const msgPromise = page.waitForEvent('console');
 
       await page.click('button');
+      const msg = await msgPromise;
 
-      await findTextInPage({ page, text: 'hey' });
+      expect(msg.text()).toEqual('clicked button');
+    });
+    reactiveStateTest('click works on box', async ({ page }) => {
+      await page.goto('/element-events');
+
+      // Get the next console log message
+      const msgPromise = page.waitForEvent('console');
+
+      await page.getByText('clickable BOX').click();
+      const msg = await msgPromise;
+
+      expect(msg.text()).toEqual('clicked box');
     });
 
-    reactiveStateTest('click works on box', async ({ page }) => {
-      await page.goto('/reactive-toggle');
+    reactiveStateTest('click works on text', async ({ page }) => {
+      await page.goto('/element-events');
 
-      await findTextInPage({ page, text: 'nope' });
+      // Get the next console log message
+      const msgPromise = page.waitForEvent('console');
 
-      await page.click('clickable BOX');
+      await page.getByText('clickable text').click();
+      const msg = await msgPromise;
 
-      await findTextInPage({ page, text: 'hey' });
+      expect(msg.text()).toEqual('clicked text');
     });
   });
   test('symbols', async ({ page }) => {

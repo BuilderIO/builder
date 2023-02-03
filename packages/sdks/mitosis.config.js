@@ -88,37 +88,38 @@ const vueConfig = {
 
           let hasFilterCode = false;
 
-          if (json.name === 'RenderBlock' || json.name === 'RenderComponent') {
-            return;
-          }
-
           traverse(json).forEach(function (item) {
             if (!isMitosisNode(item)) {
               return;
             }
 
-            if (item.bindings['props.attributes']) {
-              if (!hasFilterCode) {
-                hasFilterCode = true;
-                json.state['filterAttrs'] = {
-                  code: FILTER_ATTRIBUTES_CODE,
-                  type: 'function',
+            // in our block components, the actions will come through `props.attributes` and need to be filtered
+            // in RenderBlock, the actions will be good to go in `state.actions`, and just need the `v-on:` prefix to be removed
+            // using all of the `filterAttrs` logic is overkill for `state.actions`, but it's easier to just use the same code for now
+            ['props.attributes', 'state.actions'].forEach((key) => {
+              if (item.bindings[key]) {
+                if (!hasFilterCode) {
+                  hasFilterCode = true;
+                  json.state['filterAttrs'] = {
+                    code: FILTER_ATTRIBUTES_CODE,
+                    type: 'function',
+                  };
+                }
+
+                item.bindings['___SPREAD1'] = {
+                  code: `filterAttrs(${key},  false)`,
+                  type: 'spread',
+                  spreadType: 'normal',
                 };
+                item.bindings['___SPREAD2'] = {
+                  code: `filterAttrs(${key},  true)`,
+                  type: 'spread',
+                  spreadType: 'event-handlers',
+                };
+
+                delete item.bindings[key];
               }
-
-              item.bindings['___SPREAD1'] = {
-                code: 'filterAttrs(props.attributes,  false)',
-                type: 'spread',
-                spreadType: 'normal',
-              };
-              item.bindings['___SPREAD2'] = {
-                code: 'filterAttrs(props.attributes,  true)',
-                type: 'spread',
-                spreadType: 'event-handlers',
-              };
-
-              delete item.bindings['props.attributes'];
-            }
+            });
           });
         },
       },

@@ -1,4 +1,5 @@
 import { CONTENT as columns } from './columns.js';
+import { CONTENT as elementEvents } from './element-events.js';
 import { CONTENT as reactiveToggle } from './reactive-toggle.js';
 import { CONTENT as homepage } from './homepage.js';
 import { CONTENT as cssNesting } from './css-nesting.js';
@@ -61,6 +62,8 @@ const getContentForPathname = (pathname: string): BuilderContent | null => {
       return reactiveState;
     case '/reactive-toggle':
       return reactiveToggle;
+    case '/element-events':
+      return elementEvents;
     case '/custom-breakpoints-reset':
       contentWithoutBreakpoints = fastClone(
         customBreakpoints as BuilderContent
