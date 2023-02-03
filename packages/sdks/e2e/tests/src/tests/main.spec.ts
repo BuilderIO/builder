@@ -260,6 +260,16 @@ test.describe(targetContext.name, () => {
 
     await findTextInPage({ page, text: 'Stack at tablet' });
   });
+
+  // reactive state only works in Vue, Solid & React, so we skip the other environments
+  const reactiveStateTest = excludeTestFor({
+    qwik: true,
+    reactNative: true,
+    rsc: true,
+    svelte: true,
+    solid: true,
+  });
+
   test.describe('reactive state', () => {
     const defaultValueTest = excludeTestFor({
       reactNative: true,
@@ -271,15 +281,6 @@ test.describe(targetContext.name, () => {
       await findTextInPage({ page, text: '0' });
     });
 
-    // reactive state only works in Vue, Solid & React, so we skip the other environments
-    const reactiveStateTest = excludeTestFor({
-      qwik: true,
-      reactNative: true,
-      rsc: true,
-      svelte: true,
-      solid: true,
-    });
-
     reactiveStateTest('increments value correctly', async ({ page }) => {
       await page.goto('/reactive-state');
 
@@ -289,13 +290,24 @@ test.describe(targetContext.name, () => {
 
       await findTextInPage({ page, text: '1' });
     });
-
-    reactiveStateTest('updates UI when toggle changes', async ({ page }) => {
+  });
+  test.describe('Element Events', () => {
+    reactiveStateTest('click works on button', async ({ page }) => {
       await page.goto('/reactive-toggle');
 
       await findTextInPage({ page, text: 'nope' });
 
       await page.click('button');
+
+      await findTextInPage({ page, text: 'hey' });
+    });
+
+    reactiveStateTest('click works on box', async ({ page }) => {
+      await page.goto('/reactive-toggle');
+
+      await findTextInPage({ page, text: 'nope' });
+
+      await page.click('clickable BOX');
 
       await findTextInPage({ page, text: 'hey' });
     });
