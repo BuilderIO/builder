@@ -3,11 +3,9 @@ import BlockStyles from './block-styles.lite';
 import RenderBlock from './render-block.lite';
 import { For, Show, useMetadata } from '@builder.io/mitosis';
 import type { BuilderContextInterface } from '../../context/types.js';
-import type { Breakpoints } from '../../types/builder-content.js';
 
 type ComponentOptions = {
   [index: string]: any;
-  customBreakpoints?: Breakpoints;
   attributes?: {
     [index: string]: any;
   };
