@@ -115,9 +115,10 @@ const vueConfig = {
             }
 
             if (json.name === 'RenderBlock') {
-              if (item.bindings['state.actions']) {
-                item.bindings['state.actions'] = {
-                  code: `stripVOn(${item.bindings['state.actions'].code})`,
+              const key = 'state.actions';
+              if (item.bindings[key]) {
+                item.bindings[key] = {
+                  code: `stripVOn(${item.bindings[key].code})`,
                   type: 'spread',
                   spreadType: 'event-handlers',
                 };
