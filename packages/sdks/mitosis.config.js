@@ -77,6 +77,7 @@ const vueConfig = {
         // - in our block components, the actions will come through `props.attributes` and need to be filtered
         // - in RenderBlock, the actions will be good to go from `state.actions`, and just need the `v-on:` prefix to be removed
         pre: (json) => {
+          // this function is injected into a component, so it can't use anything outside of itself
           function filterAttrs(attrs = {}, isEvent) {
             const eventPrefix = 'v-on:';
             const hasPrefix = (attr) => attr.startsWith(eventPrefix);
@@ -92,10 +93,10 @@ const vueConfig = {
                 {}
               );
           }
-
           const FILTER_ATTRIBUTES_CODE = filterAttrs.toString();
 
           if (json.name === 'RenderBlock') {
+            // this function is injected into a component, so it can't use anything outside of itself'
             function stripVOn(actions = {}) {
               const eventPrefix = 'v-on:';
               const stripEvent = (attr) => attr.replace(eventPrefix, '');
