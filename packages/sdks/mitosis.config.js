@@ -77,29 +77,37 @@ const vueConfig = {
         // - in our block components, the actions will come through `props.attributes` and need to be filtered
         // - in RenderBlock, the actions will be good to go from `state.actions`, and just need the `v-on:` prefix to be removed
         pre: (json) => {
-          const FILTER_ATTRIBUTES_CODE = `
           function filterAttrs(attrs = {}, isEvent) {
-            const eventPrefix = 'v-on:'
-            const hasPrefix = attr => attr.startsWith(eventPrefix)
-            const hasNoPrefix = attr => !attr.startsWith(eventPrefix)
-            const stripEvent = attr => attr.replace(eventPrefix, '')
-            return Object.keys(attrs).filter(isEvent ? hasPrefix : hasNoPrefix).reduce((acc, attr) => ({
-              ...acc,
-              [stripEvent(attr)]: attrs[attr]
-            }), {})
+            const eventPrefix = 'v-on:';
+            const hasPrefix = (attr) => attr.startsWith(eventPrefix);
+            const hasNoPrefix = (attr) => !attr.startsWith(eventPrefix);
+            const stripEvent = (attr) => attr.replace(eventPrefix, '');
+            return Object.keys(attrs)
+              .filter(isEvent ? hasPrefix : hasNoPrefix)
+              .reduce(
+                (acc, attr) => ({
+                  ...acc,
+                  [stripEvent(attr)]: attrs[attr],
+                }),
+                {}
+              );
           }
-          `;
+
+          const FILTER_ATTRIBUTES_CODE = filterAttrs.toString();
 
           if (json.name === 'RenderBlock') {
-            const STRIP_VON_CODE = `
-              function stripVOn(actions = {}) {
-                const eventPrefix = 'v-on:'
-                return Object.keys(actions).reduce((acc, attr) => ({
+            function stripVOn(actions = {}) {
+              const eventPrefix = 'v-on:';
+              const stripEvent = (attr) => attr.replace(eventPrefix, '');
+              return Object.keys(actions).reduce(
+                (acc, attr) => ({
                   ...acc,
-                  [stripEvent(attr)]: attrs[attr]
-                }), {})
-              }
-            `;
+                  [stripEvent(attr)]: attrs[attr],
+                }),
+                {}
+              );
+            }
+            const STRIP_VON_CODE = stripVOn.toString();
 
             json.state['stripVOn'] = {
               code: STRIP_VON_CODE,
