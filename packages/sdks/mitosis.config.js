@@ -6,6 +6,8 @@ const rng = seedrandom('vue-sdk-seed');
  * @typedef {import('@builder.io/mitosis')} Mitosis
  * @typedef {import('@builder.io/mitosis').MitosisNode} MitosisNode
  * @typedef {import('@builder.io/mitosis').StateValue} StateValue
+ * @typedef {import('@builder.io/mitosis').MitosisConfig} MitosisConfig
+ * @typedef {import('@builder.io/mitosis').Plugin} Plugin
  */
 
 /**
@@ -29,11 +31,14 @@ const getSeededId = () => {
  */
 const isMitosisNode = (x) => x && x['@type'] === '@builder.io/mitosis/node';
 
+/**
+ * @param {string} string
+ */
 const kebabCase = (string) =>
   string.replace(/([a-z0-9]|(?=[A-Z]))([A-Z])/g, '$1-$2').toLowerCase();
 
 /**
- * @type {import('@builder.io/mitosis'.MitosisConfig['getTargetPath'])}
+ * @type {MitosisConfig['getTargetPath']}
  */
 const getTargetPath = ({ target }) => {
   switch (target) {
@@ -54,50 +59,101 @@ const getTargetPath = ({ target }) => {
 };
 
 /**
- * @param {{value: StateValue, key: string}} args
+ * @param {{value: StateValue | undefined, key: string}} args
  */
 const convertPropertyStateValueToGetter = (args) => {
   const { value, key } = args;
+  if (!value) {
+    return;
+  }
   value.code = `get ${key}() {\n return ${value.code} \n}`;
   value.type = 'getter';
 };
 
 /**
- * @type {import('@builder.io/mitosis'.MitosisConfig['options']['vue'])}
+ * @type {MitosisConfig['options']['vue']}
  */
 const vueConfig = {
   typescript: true,
-  namePrefix: (path) => (path.includes('/blocks/') ? 'builder' : undefined),
+  namePrefix: (path) => (path.includes('/blocks/') ? 'builder' : ''),
   cssNamespace: getSeededId,
   asyncComponentImports: true,
   plugins: [
     () => ({
       json: {
+        // This plugin handles binding our actions to the `v-on:` Vue syntax:
+        // - in our block components, the actions will come through `props.attributes` and need to be filtered
+        // - in RenderBlock, the actions will be good to go from `state.actions`, and just need the `v-on:` prefix to be removed
         pre: (json) => {
-          const FILTER_ATTRIBUTES_CODE = `
+          // this function is injected into a component, so it can't use anything outside of itself
+          /**
+           *
+           * @param {{[index: string]: any}} attrs
+           * @param {boolean} isEvent
+           * @returns
+           */
           function filterAttrs(attrs = {}, isEvent) {
-            const eventPrefix = 'v-on:'
-            const hasPrefix = attr => attr.startsWith(eventPrefix)
-            const hasNoPrefix = attr => !attr.startsWith(eventPrefix)
-            const stripEvent = attr => attr.replace(eventPrefix, '')
-            return Object.keys(attrs).filter(isEvent ? hasPrefix : hasNoPrefix).reduce((acc, attr) => ({
-              ...acc,
-              [stripEvent(attr)]: attrs[attr]
-            }), {})
-          }`;
+            const eventPrefix = 'v-on:';
+            return Object.keys(attrs)
+              .filter((attr) => {
+                const isEventVal = attr.startsWith(eventPrefix);
+                return isEvent ? isEventVal : !isEventVal;
+              })
+              .reduce(
+                (acc, attr) => ({
+                  ...acc,
+                  [attr.replace(eventPrefix, '')]: attrs[attr],
+                }),
+                {}
+              );
+          }
+          const FILTER_ATTRIBUTES_CODE = filterAttrs.toString();
+
+          // this function is injected into a component, so it can't use anything outside of itself'
+          /**
+           * @param {{[index:string]: any}} actions
+           */
+          function stripVOn(actions = {}) {
+            return Object.keys(actions).reduce(
+              (acc, attr) => ({
+                ...acc,
+                [attr.replace('v-on:', '')]: actions[attr],
+              }),
+              {}
+            );
+          }
+
+          if (json.name === 'RenderBlock') {
+            const STRIP_VON_CODE = stripVOn.toString();
+
+            json.state['stripVOn'] = {
+              code: STRIP_VON_CODE,
+              type: 'function',
+            };
+          }
 
           let hasFilterCode = false;
-
-          if (json.name === 'RenderBlock' || json.name === 'RenderComponent') {
-            return;
-          }
 
           traverse(json).forEach(function (item) {
             if (!isMitosisNode(item)) {
               return;
             }
 
-            if (item.bindings['props.attributes']) {
+            if (json.name === 'RenderBlock') {
+              const key = 'state.actions';
+              if (item.bindings[key]) {
+                item.bindings[key] = {
+                  code: `stripVOn(${item.bindings[key].code})`,
+                  type: 'spread',
+                  spreadType: 'event-handlers',
+                };
+              } else {
+                return;
+              }
+            }
+
+            const key = 'props.attributes';
+            if (item.bindings[key]) {
               if (!hasFilterCode) {
                 hasFilterCode = true;
                 json.state['filterAttrs'] = {
@@ -107,28 +163,28 @@ const vueConfig = {
               }
 
               item.bindings['___SPREAD1'] = {
-                code: 'filterAttrs(props.attributes,  false)',
+                code: `filterAttrs(${key},  false)`,
                 type: 'spread',
                 spreadType: 'normal',
               };
               item.bindings['___SPREAD2'] = {
-                code: 'filterAttrs(props.attributes,  true)',
+                code: `filterAttrs(${key},  true)`,
                 type: 'spread',
                 spreadType: 'event-handlers',
               };
 
-              delete item.bindings['props.attributes'];
+              delete item.bindings[key];
             }
           });
         },
       },
     }),
   ],
-  // api: 'composition',
+  api: 'options',
 };
 
 /**
- * @type {import('@builder.io/mitosis'.Plugin)}
+ * @type {Plugin}
  */
 const SRCSET_PLUGIN = () => ({
   code: {
@@ -143,7 +199,7 @@ const SRCSET_PLUGIN = () => ({
 /**
  * Replaces all uses of the native `Text` component with our own `BaseText` component that injects inherited CSS styles
  * to `Text`, mimicking CSS inheritance.
- * @type {import('@builder.io/mitosis'.Plugin)}
+ * @type {Plugin}
  */
 const BASE_TEXT_PLUGIN = () => ({
   code: {
@@ -160,7 +216,7 @@ ${code.replace(/<(\/?)Text(.*?)>/g, '<$1BaseText$2>')}
 });
 
 /**
- * @type {import('@builder.io/mitosis'.MitosisConfig)}
+ * @type {MitosisConfig}
  */
 module.exports = {
   files: 'src/**',
@@ -179,7 +235,7 @@ module.exports = {
     vue2: {
       ...vueConfig,
       plugins: [
-        ...vueConfig.plugins,
+        ...(vueConfig?.plugins || []),
         () => ({
           json: {
             pre: (json) => {
@@ -245,8 +301,13 @@ module.exports = {
           json: {
             pre: (json) => {
               if (json.name === 'RenderContent') {
+                if (!json.state.allRegisteredComponents) {
+                  throw new Error(
+                    'allRegisteredComponents not found on RenderContent'
+                  );
+                }
                 json.state.allRegisteredComponents.code =
-                  json.state.allRegisteredComponents.code.replace(
+                  json.state.allRegisteredComponents?.code.replace(
                     'as RegisteredComponents',
                     ''
                   );
@@ -337,7 +398,7 @@ module.exports = {
 
               // For now, we exclude the `setState` function as Mitosis does not correctly know how to serialize it.
               Object.values(json.context.set).forEach((context) => {
-                if (context.value['setState']) {
+                if (context?.value?.['setState']) {
                   delete context.value['setState'];
                 }
               });
@@ -374,8 +435,8 @@ module.exports = {
               Object.keys(json.context.set).forEach((contextKey) => {
                 const setValue = json.context.set[contextKey];
                 if (setValue.name === 'builderContext') {
-                  Object.keys(setValue.value).forEach((valueKey) => {
-                    const value = setValue.value[valueKey];
+                  Object.keys(setValue.value || {}).forEach((valueKey) => {
+                    const value = setValue.value?.[valueKey];
                     if (value && value.type === 'property') {
                       convertPropertyStateValueToGetter({
                         value,
@@ -401,7 +462,11 @@ module.exports = {
                   }
 
                   if (item.name === tag) {
-                    item.bindings.this = { code: item.name };
+                    item.bindings.this = {
+                      type: 'single',
+                      ...item.bindings.this,
+                      code: item.name,
+                    };
                     item.name = 'svelte:element';
                   }
                 });
@@ -464,6 +529,7 @@ module.exports = {
                   if (item.bindings['state.actions']) {
                     item.bindings['use:setAttrs'] = {
                       code: item.bindings['state.actions'].code,
+                      type: 'single',
                     };
                     delete item.bindings['state.actions'];
                   }
@@ -500,16 +566,22 @@ module.exports = {
                   return;
                 }
                 const spreadBinding = Object.entries(item.bindings).find(
-                  ([_key, value]) => value.type === 'spread'
+                  ([_key, value]) => value?.type === 'spread'
                 );
 
                 if (spreadBinding) {
                   const [key, value] = spreadBinding;
+                  if (!value) {
+                    throw new Error(
+                      `Could not find spread binding for ${json.name}`
+                    );
+                  }
                   json.hooks.preComponent = {
                     code: [filterCode, code].join('\n'),
                   };
                   item.bindings['use:setAttrs'] = {
                     code: `filterAttrs(${value.code}, isEvent)`,
+                    type: 'single',
                   };
                   item.bindings[key] = {
                     ...value,
