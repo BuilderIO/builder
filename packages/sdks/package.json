@@ -63,6 +63,8 @@
     "@builder.io/eslint-plugin-mitosis": "^0.0.14",
     "@types/jest": "^27.4.1",
     "@types/node-fetch": "^2.5.12",
+    "@types/seedrandom": "^3.0.4",
+    "@types/traverse": "^0.6.32",
     "@typescript-eslint/eslint-plugin": "latest",
     "@typescript-eslint/parser": "latest",
     "commitizen": "^4.2.4",
