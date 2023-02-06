@@ -292,7 +292,7 @@ test.describe(targetContext.name, () => {
     });
   });
   test.describe('Element Events', () => {
-    reactiveStateTest('click works on button', async ({ page }) => {
+    test('click works on button', async ({ page }) => {
       await page.goto('/element-events');
 
       // Get the next console log message
@@ -303,7 +303,7 @@ test.describe(targetContext.name, () => {
 
       expect(msg.text()).toEqual('clicked button');
     });
-    reactiveStateTest('click works on box', async ({ page }) => {
+    test('click works on box', async ({ page }) => {
       await page.goto('/element-events');
 
       // Get the next console log message
@@ -315,7 +315,7 @@ test.describe(targetContext.name, () => {
       expect(msg.text()).toEqual('clicked box');
     });
 
-    reactiveStateTest('click works on text', async ({ page }) => {
+    test('click works on text', async ({ page }) => {
       await page.goto('/element-events');
 
       // Get the next console log message
