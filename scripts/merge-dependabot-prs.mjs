@@ -9,7 +9,7 @@
  * - merges all PRs
  */
 
-import { Octokit } from '@octokit/rest';
+import Octokit from '@octokit/rest';
 import { question } from 'zx';
 import { echo } from 'zx/experimental';
 
