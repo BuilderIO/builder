@@ -1,4 +1,9 @@
-import type { BrowserContext, Locator, Page } from '@playwright/test';
+import type {
+  BrowserContext,
+  ConsoleMessage,
+  Locator,
+  Page,
+} from '@playwright/test';
 import { test, expect } from '@playwright/test';
 
 import { targetContext } from './context.js';
@@ -292,11 +297,15 @@ test.describe(targetContext.name, () => {
     });
   });
   test.describe('Element Events', () => {
+    const filterConsoleMessages = (consoleMessage: ConsoleMessage) => {
+      const text = consoleMessage.text();
+      return text.startsWith('clicked');
+    };
     test('click works on button', async ({ page }) => {
       await page.goto('/element-events');
 
       // Get the next console log message
-      const msgPromise = page.waitForEvent('console');
+      const msgPromise = page.waitForEvent('console', filterConsoleMessages);
 
       await page.click('button');
       const msg = await msgPromise;
@@ -307,7 +316,7 @@ test.describe(targetContext.name, () => {
       await page.goto('/element-events');
 
       // Get the next console log message
-      const msgPromise = page.waitForEvent('console');
+      const msgPromise = page.waitForEvent('console', filterConsoleMessages);
 
       await page.getByText('clickable BOX').click();
       const msg = await msgPromise;
@@ -319,7 +328,7 @@ test.describe(targetContext.name, () => {
       await page.goto('/element-events');
 
       // Get the next console log message
-      const msgPromise = page.waitForEvent('console');
+      const msgPromise = page.waitForEvent('console', filterConsoleMessages);
 
       await page.getByText('clickable text').click();
       const msg = await msgPromise;
