@@ -76,7 +76,7 @@ async function approve() {
         pull_number: pr.number,
         event: 'APPROVE',
       });
-      if (resp.status !== 200) {
+      if (resp.status >= 300) {
         console.log(`Error approving ${pr.html_url}.`);
         // print details
         console.log(resp);
@@ -115,6 +115,8 @@ async function merge() {
 
   let hasError = false;
 
+  const dependabotRebasePRs = [];
+
   // Merge all PRs
   for (const pr of approvedPullRequests.items) {
     // merge the PR and print appropriate message
@@ -126,7 +128,7 @@ async function merge() {
         pull_number: pr.number,
         merge_method: 'squash',
       });
-      if (resp.status !== 200) {
+      if (resp.status >= 300) {
         hasError = true;
         console.log(`Error merging ${pr.html_url}`);
         // print details
@@ -139,6 +141,24 @@ async function merge() {
       console.log(`Error merging ${pr.html_url}`);
       // print details
       console.log(e);
+      if (e.message.includes('Pull Request is not mergeable')) {
+        dependabotRebasePRs.push(pr.html_url);
+      }
+    }
+  }
+
+  if (dependabotRebasePRs.length > 0) {
+    console.log(
+      `The following PRs need to be rebased by Dependabot: ${dependabotRebasePRs.join(',\n')}`
+    );
+    const confirm = await question(
+      `Would you like to ask Dependabot to rebase these PRs? (yes/no): `
+    );
+
+    if (confirm === 'yes') {
+      for (const pr of dependabotRebasePRs) {
+        await rebaseDependabot(pr);
+      }
     }
   }
 
@@ -151,6 +171,27 @@ async function merge() {
     if (confirm === 'yes') {
       await merge();
     }
+  }
+}
+
+/**
+ * sends a PR comment `@dependabot rebase` to the PR URL
+ */
+async function rebaseDependabot(prUrl) {
+  console.log(`Asking Dependabot to rebase: ${prUrl}`);
+  const prNumber = prUrl.split('/').pop();
+  const resp = await octokit.issues.createComment({
+    owner: 'BuilderIO',
+    repo: 'builder',
+    issue_number: prNumber,
+    body: '@dependabot rebase',
+  });
+  if (resp.status >= 500) {
+    console.log(`Error rebasing ${prUrl}`);
+    // print details
+    console.log(resp);
+  } else {
+    console.log(`Rebased ${prUrl}`);
   }
 }
 
