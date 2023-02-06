@@ -103,7 +103,7 @@ const vueConfig = {
               return Object.keys(actions).reduce(
                 (acc, attr) => ({
                   ...acc,
-                  [stripEvent(attr)]: attrs[attr],
+                  [stripEvent(attr)]: actions[attr],
                 }),
                 {}
               );
