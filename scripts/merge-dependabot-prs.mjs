@@ -9,7 +9,7 @@
  * - merges all PRs
  */
 
-import Octokit from '@octokit/rest';
+import { Octokit } from '@octokit/rest';
 import { question } from 'zx';
 import { echo } from 'zx/experimental';
 
@@ -23,6 +23,10 @@ const octokit = new Octokit({
 
 console.log('Welcome to the BuilderIO/builder dependabot PR merger!');
 console.log(`Using GITHUB_TOKEN: ${process.env.GITHUB_TOKEN}`);
+
+if (!process.env.GITHUB_TOKEN) {
+  throw new Error(`GITHUB_TOKEN not found in .env file`);
+}
 
 let query = '';
 async function getQuery() {
