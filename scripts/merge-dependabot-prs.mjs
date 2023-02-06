@@ -59,7 +59,7 @@ async function approve() {
   if (unapprovedPullRequests.total_count > 0) {
     // Confirm with the user
     let confirm = await question(
-      `Are you sure you want to approve these ${unapprovedPullRequests.total_count} pull requests? (yes/no)`
+      `Are you sure you want to approve these ${unapprovedPullRequests.total_count} pull requests? (yes/no): `
     );
 
     if (confirm !== 'yes') {
@@ -69,7 +69,7 @@ async function approve() {
     // Approve all PRs
     for (const pr of unapprovedPullRequests.items) {
       // approve the PR and print appropriate message
-      console.log(`Approving ${pr.html_url}`);
+      console.log(`Approving ${pr.html_url}...`);
       const resp = await octokit.pulls.createReview({
         owner: 'BuilderIO',
         repo: 'builder',
@@ -77,11 +77,11 @@ async function approve() {
         event: 'APPROVE',
       });
       if (resp.status !== 200) {
-        console.log(`Error approving ${pr.html_url}`);
+        console.log(`Error approving ${pr.html_url}.`);
         // print details
         console.log(resp);
       } else {
-        console.log(`Approved ${pr.html_url}`);
+        console.log(`Approved ${pr.html_url}.`);
       }
     }
   } else {
@@ -94,7 +94,7 @@ async function merge() {
   const approvedPullRequests = await getPRs({ isApproved: true });
 
   console.log(
-    `Found ${approvedPullRequests.total_count} approved pull requests matching the query:`
+    `Found ${approvedPullRequests.total_count} approved pull requests matching the query: `
   );
   approvedPullRequests.items.forEach(pr => {
     console.log(`${pr.html_url} || ${pr.title}`);
@@ -106,7 +106,7 @@ async function merge() {
 
   // Confirm with the user
   const confirm = await question(
-    `Are you sure you want to merge these ${approvedPullRequests.total_count} pull requests? (yes/no)`
+    `Are you sure you want to merge these ${approvedPullRequests.total_count} pull requests? (yes/no): `
   );
 
   if (confirm !== 'yes') {
@@ -145,7 +145,7 @@ async function merge() {
   if (hasError) {
     // ask them if they want to try again
     const confirm = await question(
-      `There was an error merging some PRs, would you like to try again? (yes/no)`
+      `There was an error merging some PRs, would you like to try again? (yes/no): `
     );
 
     if (confirm === 'yes') {
