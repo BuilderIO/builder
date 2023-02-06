@@ -1,3 +1,7 @@
+### 0.1.7
+
+- No changes.
+
 ### 0.1.6
 
 - Types: removed redundant `builtIn` field in `customComponents` prop types
