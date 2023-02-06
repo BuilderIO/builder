@@ -31,7 +31,7 @@
     "react-json-view": "^1.19.1",
     "react-parallax": "^3.0.3",
     "react-router-dom": "^5.0.1",
-    "react-scripts": "3.0.1",
+    "react-scripts": "5.0.1",
     "react-slick": "^0.25.2",
     "slick-carousel": "^1.8.1",
     "styled-components": "^5.2.1"
