@@ -13,9 +13,5 @@
     // https://vitejs.dev/guide/features.html#isolatedmodules
     "isolatedModules": true
   },
-  "include": [
-    "src",
-    "typings",
-    "mitosis.config.js"
-  ]
+  "include": ["src", "typings", "mitosis.config.js"]
 }
