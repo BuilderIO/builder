@@ -10,8 +10,8 @@
       <RenderContent
         model="page"
         :content="content"
-        :api-key="apiKey"
-        :customComponents="getRegisteredComponents()"
+        :api-key="BUILDER_PUBLIC_API_KEY"
+        :customComponents="REGISTERED_COMPONENTS"
       />
     </div>
     <div v-else>Content not Found</div>
@@ -27,7 +27,7 @@ import HelloWorldComponent from './components/HelloWorld.vue';
 const REGISTERED_COMPONENTS = [
   {
     component: HelloWorldComponent,
-    name: 'Hello World',
+    name: 'MyFunComponent',
     canHaveChildren: true,
     inputs: [
       {
@@ -55,8 +55,4 @@ const { data: content } = await useAsyncData('builderData', () =>
 );
 
 const canShowContent = computed(() => content || isPreviewing());
-
-function getRegisteredComponents() {
-  return REGISTERED_COMPONENTS;
-}
 </script>
