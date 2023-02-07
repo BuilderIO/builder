@@ -44,6 +44,7 @@ const BUILDER_PUBLIC_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660'; // ggignore
 
 const route = useRoute();
 
+// fetch builder content data
 const { data: content } = await useAsyncData('builderData', () =>
   getContent({
     model: 'page',
