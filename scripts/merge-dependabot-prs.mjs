@@ -36,7 +36,7 @@ async function getQuery() {
 
 const getPRs = async ({ isApproved }) => {
   const getQuery = isApproved =>
-    `repo:BuilderIO/builder is:open state:open author:app/dependabot type:pr ${query} review:${
+    `repo:BuilderIO/builder is:open state:open author:app/dependabot type:pr ${query} in:title review:${
       isApproved ? 'approved' : 'required'
     }`;
   const { data: pullRequests } = await octokit.search.issuesAndPullRequests({
@@ -115,6 +115,9 @@ async function merge() {
 
   let hasError = false;
 
+  /**
+   * @type {Octokit.SearchIssuesAndPullRequestsResponseItemsItem[]}
+   */
   const dependabotRebasePRs = [];
 
   // Merge all PRs
@@ -142,22 +145,24 @@ async function merge() {
       // print details
       console.log(e);
       if (e.message.includes('Pull Request is not mergeable')) {
-        dependabotRebasePRs.push(pr.html_url);
+        dependabotRebasePRs.push(pr);
       }
     }
   }
 
   if (dependabotRebasePRs.length > 0) {
-    console.log(
-      `The following PRs need to be rebased by Dependabot: ${dependabotRebasePRs.join(',\n')}`
-    );
+    console.log(`The following PRs need to be rebased by Dependabot: `);
+    dependabotRebasePRs.forEach(pr => {
+      console.log(`${pr.html_url} || ${pr.title}`);
+    });
+
     const confirm = await question(
       `Would you like to ask Dependabot to rebase these PRs? (yes/no): `
     );
 
     if (confirm === 'yes') {
       for (const pr of dependabotRebasePRs) {
-        await rebaseDependabot(pr);
+        await rebaseDependabot(pr.html_url);
       }
     }
   }
