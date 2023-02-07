@@ -31,3 +31,5 @@ Pods/
 
 .cache
 .rpt2_cache/
+
+.env
