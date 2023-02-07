@@ -11496,9 +11496,9 @@ __metadata:
   linkType: hard
 
 "decode-uri-component@npm:^0.2.0":
-  version: 0.2.0
-  resolution: "decode-uri-component@npm:0.2.0"
-  checksum: f3749344ab9305ffcfe4bfe300e2dbb61fc6359e2b736812100a3b1b6db0a5668cba31a05e4b45d4d63dbf1a18dfa354cd3ca5bb3ededddabb8cd293f4404f94
+  version: 0.2.2
+  resolution: "decode-uri-component@npm:0.2.2"
+  checksum: 95476a7d28f267292ce745eac3524a9079058bbb35767b76e3ee87d42e34cd0275d2eb19d9d08c3e167f97556e8a2872747f5e65cbebcac8b0c98d83e285f139
   languageName: node
   linkType: hard
 
@@ -16014,9 +16014,9 @@ __metadata:
   linkType: hard
 
 "http-cache-semantics@npm:^4.0.0, http-cache-semantics@npm:^4.1.0":
-  version: 4.1.0
-  resolution: "http-cache-semantics@npm:4.1.0"
-  checksum: 974de94a81c5474be07f269f9fd8383e92ebb5a448208223bfb39e172a9dbc26feff250192ecc23b9593b3f92098e010406b0f24bd4d588d631f80214648ed42
+  version: 4.1.1
+  resolution: "http-cache-semantics@npm:4.1.1"
+  checksum: 83ac0bc60b17a3a36f9953e7be55e5c8f41acc61b22583060e8dedc9dd5e3607c823a88d0926f9150e571f90946835c7fe150732801010845c72cd8bbff1a236
   languageName: node
   linkType: hard
 
@@ -18763,13 +18763,13 @@ __metadata:
   linkType: hard
 
 "loader-utils@npm:^1.1.0, loader-utils@npm:^1.2.3, loader-utils@npm:^1.4.0":
-  version: 1.4.0
-  resolution: "loader-utils@npm:1.4.0"
+  version: 1.4.2
+  resolution: "loader-utils@npm:1.4.2"
   dependencies:
     big.js: ^5.2.2
     emojis-list: ^3.0.0
     json5: ^1.0.1
-  checksum: d150b15e7a42ac47d935c8b484b79e44ff6ab4c75df7cc4cb9093350cf014ec0b17bdb60c5d6f91a37b8b218bd63b973e263c65944f58ca2573e402b9a27e717
+  checksum: eb6fb622efc0ffd1abdf68a2022f9eac62bef8ec599cf8adb75e94d1d338381780be6278534170e99edc03380a6d29bc7eb1563c89ce17c5fed3a0b17f1ad804
   languageName: node
   linkType: hard
 
@@ -26530,13 +26530,13 @@ __metadata:
   linkType: hard
 
 "simple-git@npm:^3.5.0":
-  version: 3.14.1
-  resolution: "simple-git@npm:3.14.1"
+  version: 3.16.0
+  resolution: "simple-git@npm:3.16.0"
   dependencies:
     "@kwsites/file-exists": ^1.1.1
     "@kwsites/promise-deferred": ^1.1.1
     debug: ^4.3.4
-  checksum: f9d2282e1483f8f42325a7e80803389eb540101a88968bf9fd277c1eade8621d4c24dcf2677be5d611df8716934fb4c9676356052ac03e2fcec7517b4b922e8b
+  checksum: fd28eb43be39d158d2c321cd34eb00f61c365513478ff2bb31f4da06315dcd018e03c6ece9f99558f3fd8834171072850aed1376bf50f8d922b0e2dadede0c2d
   languageName: node
   linkType: hard
 
