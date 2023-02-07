@@ -2,7 +2,7 @@
   <div id="home">
     <div>Hello world from your Vue project. Below is Builder Content:</div>
 
-    <div v-if="canShowContent">
+    <div v-if="content || isPreviewing()">
       <div>
         page title:
         {{ content?.data?.title || 'Unpublished' }}
@@ -53,6 +53,4 @@ const { data: content } = await useAsyncData('builderData', () =>
     },
   })
 );
-
-const canShowContent = computed(() => content || isPreviewing());
 </script>
