@@ -15,7 +15,7 @@
     "upgrade-mitosis": "pnpm up @builder.io/mitosis*@latest",
     "prettier": "prettier .",
     "prettier:check": "prettier --check .",
-    "lint": "yarn run prettier --write . && yarn run eslint --fix .",
+    "lint": "pnpm prettier --write . && pnpm eslint --fix .",
     "eslint": "eslint . --quiet",
     "eslint:watch": "watch 'pnpm eslint' ./src ./overrides",
     "typecheck": "tsc --noEmit",
