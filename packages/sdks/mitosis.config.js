@@ -244,6 +244,9 @@ module.exports = {
               }
 
               if (json.name === 'RenderBlock') {
+                // drop the wrapper `Show`, move its condition to the root `<template>`
+                json.children = json.children[0].children;
+
                 traverse(json).forEach(function (item) {
                   if (!isMitosisNode(item)) {
                     return;
@@ -284,6 +287,15 @@ module.exports = {
                   }
                 });
               }
+            },
+          },
+          code: {
+            pre: (code) => {
+              // bring back if condition from the wrapper `Show` block we removed in the JSON pre plugin above.
+              return code.replace(
+                '<template>',
+                '<template v-if="canShowBlock()">'
+              );
             },
           },
         }),
