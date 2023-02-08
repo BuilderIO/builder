@@ -445,6 +445,16 @@ test.describe(targetContext.name, () => {
     // check the title is correct
     // title: 'some special title'
   });
+  test.describe('show-hide-if', () => {
+    test('show/hide if works on static conditions', async ({ page }) => {
+      await page.goto('/show-hide-if');
+
+      await findTextInPage({ page, text: 'this always appears' });
+      await expect(page.locator('body')).not.toContainText(
+        'this never appears'
+      );
+    });
+  });
   test('data-bindings', async ({ page }) => {
     await page.goto('/data-bindings');
 
