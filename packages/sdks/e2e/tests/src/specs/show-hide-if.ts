@@ -98,7 +98,7 @@ export const CONTENT = {
             component: {
               name: 'Text',
               options: {
-                text: '<span style="display: block;" class="builder-paragraph">odd clicks</span>',
+                text: '<span style="display: block;" class="builder-paragraph">even clicks</span>',
               },
             },
             responsiveStyles: {
@@ -118,9 +118,9 @@ export const CONTENT = {
             '@type': '@builder.io/sdk:Element',
             '@version': 2,
             bindings: {
-              show: 'var _virtual_index=state.clicks%2==1;return _virtual_index',
+              hide: 'var _virtual_index=state.clicks%2==0;return _virtual_index',
             },
-            layerName: 'this shows for odd clicks...',
+            layerName: 'odd clicks',
             id: 'builder-a5335b4cc7e64cef8a15b464cc881e88',
             meta: {
               previousId: 'builder-f9f97e80aa8b42069323f91f4fddf269',
@@ -128,7 +128,7 @@ export const CONTENT = {
             component: {
               name: 'Text',
               options: {
-                text: '<span style="display: block;" class="builder-paragraph">even clicks</span>',
+                text: '<span style="display: block;" class="builder-paragraph">odd clicks</span>',
               },
             },
             responsiveStyles: {
