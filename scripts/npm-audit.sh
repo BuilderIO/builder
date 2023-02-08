@@ -15,6 +15,10 @@ for dir in ./{examples,packages}/*; do
     # use node version if .nvmrc exists
     if [ -f .nvmrc ]; then
       nvm use
+    else # use node 16 / npm 7+ if lockfile version is 2
+      if [ "$(jq -r '.lockfileVersion' package-lock.json)" = "2" ]; then
+        nvm use 16
+      fi
     fi
 
     # use yarn if yarn.lock exists
