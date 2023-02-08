@@ -1,12 +1,12 @@
 import RenderBlocks from '../../components/render-blocks.lite';
-import { For, Show, useStore } from '@builder.io/mitosis';
+import { For, Show, useContext, useStore } from '@builder.io/mitosis';
 import type { BuilderBlock } from '../../types/builder-block';
 import { getSizesForBreakpoints } from '../../constants/device-sizes';
 import type { SizeName } from '../../constants/device-sizes';
-import type { Breakpoints } from '../../types/builder-content';
 import RenderInlinedStyles from '../../components/render-inlined-styles.lite';
 import { TARGET } from '../../constants/target.js';
 import { convertStyleMapToCSS } from '../../helpers/css';
+import BuilderContext from '../../context/builder.context.lite';
 
 type Column = {
   blocks: any;
@@ -26,11 +26,11 @@ export interface ColumnProps {
   stackColumnsAt?: StackColumnsAt;
   // TODO: Implement this when support for dynamic CSS lands
   reverseColumnsWhenStacked?: boolean;
-
-  customBreakpoints?: Breakpoints;
 }
 
 export default function Columns(props: ColumnProps) {
+  const builderContext = useContext(BuilderContext);
+
   const state = useStore({
     getGutterSize(): number {
       return typeof props.space === 'number' ? props.space || 0 : 20;
@@ -81,7 +81,7 @@ export default function Columns(props: ColumnProps) {
 
     getWidthForBreakpointSize(size: SizeName) {
       const breakpointSizes = getSizesForBreakpoints(
-        props.customBreakpoints || {}
+        builderContext.content?.meta?.breakpoints || {}
       );
 
       return breakpointSizes[size].max;
