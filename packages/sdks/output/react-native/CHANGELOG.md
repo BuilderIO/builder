@@ -1,3 +1,7 @@
+### 0.1.9
+
+- Fix: Section component
+
 ### 0.1.8
 
 - Added support for "Show If" & "Hide If" dynamic bindings to elements.
