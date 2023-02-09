@@ -296,7 +296,7 @@ module.exports = {
           },
           code: {
             pre: (code) => {
-              if (!code.includes('name: "render-block"')) {
+              if (!code.includes("name: 'render-block'")) {
                 return code;
               }
 
