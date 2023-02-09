@@ -31,7 +31,6 @@
   "devDependencies": {
     "@tsconfig/react-native": "^2.0.3",
     "@types/react-native-video": "^5.0.9",
-    "react-native": "^0.64.3",
     "react-native-url-polyfill": "^1.3.0",
     "typescript": "^4.9.4"
   }
