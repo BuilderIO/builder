@@ -2136,13 +2136,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis-cli@npm:^0.0.46":
-  version: 0.0.46
-  resolution: "@builder.io/mitosis-cli@npm:0.0.46"
+"@builder.io/mitosis-cli@npm:^0.0.49":
+  version: 0.0.49
+  resolution: "@builder.io/mitosis-cli@npm:0.0.49"
   dependencies:
     "@babel/core": ^7.17.8
     "@babel/preset-typescript": ^7.16.7
-    "@builder.io/mitosis": 0.0.88
+    "@builder.io/mitosis": 0.0.90
     "@vue/compiler-sfc": ^3.1.5
     babel-preset-solid: ^1.3.13
     chalk: ^4.1.0
@@ -2159,17 +2159,18 @@ __metadata:
     lodash: ^4.17.21
     micromatch: ^4.0.4
     parse5: ^3.0.3
+    prettier: ^2.6.1
     vue-template-es2015-compiler: ^1.9.1
     vue-template-validator: ^1.1.5
   bin:
     mitosis: bin/mitosis
-  checksum: 01c93a61706eed2a0ea30abbe9875a1105f547781fb1c0171e8f9fb7ffeeef65dd80cff510b83253d01fa5ff0e83aeb7c590e5cf6b05e35c5f12c1e9bd53bacc
+  checksum: 57ff965c84b4b6c3a3e750fc01f36190c54e93398d66f3625451b2e3a74670f080feca168f8f11081a4a5acf919c4c0ad219b8145c4d906411ce6bcdafa3388f
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis@npm:0.0.88, @builder.io/mitosis@npm:^0.0.88":
-  version: 0.0.88
-  resolution: "@builder.io/mitosis@npm:0.0.88"
+"@builder.io/mitosis@npm:0.0.90, @builder.io/mitosis@npm:^0.0.90":
+  version: 0.0.90
+  resolution: "@builder.io/mitosis@npm:0.0.90"
   dependencies:
     "@angular/compiler": ^11.2.11
     "@babel/core": 7.14.5
@@ -2207,7 +2208,7 @@ __metadata:
     traverse: ^0.6.6
     typescript: ^4.8.4
     vue: ~2.6
-  checksum: 8bf3bb3a02dd0153285a4c07bfbfa2cdfc98f58dfc2fcacc535942a3122d54cbf2574903f42cd64969b95e81eb2994f55e4bf6da08c130fda0da4c04437180b8
+  checksum: 603c150682911e5b4a7df008bf594431550212510eab93bbfb719e9fa012873ed56babfd5871dc705133801ac5737713b5ba0ba298155e813d5162229606a906
   languageName: node
   linkType: hard
 
@@ -2400,8 +2401,8 @@ __metadata:
   resolution: "@builder.io/sdks@workspace:."
   dependencies:
     "@builder.io/eslint-plugin-mitosis": ^0.0.14
-    "@builder.io/mitosis": ^0.0.88
-    "@builder.io/mitosis-cli": ^0.0.46
+    "@builder.io/mitosis": ^0.0.90
+    "@builder.io/mitosis-cli": ^0.0.49
     "@playwright/test": ^1.27.1
     "@types/jest": ^27.4.1
     "@types/node-fetch": ^2.5.12
