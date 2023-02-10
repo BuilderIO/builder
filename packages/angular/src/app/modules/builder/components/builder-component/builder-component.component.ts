@@ -17,6 +17,7 @@ import { BuilderComponentService } from './builder-component.service';
 import { GetContentOptions, Builder } from '@builder.io/sdk';
 import { Subscription, BehaviorSubject } from 'rxjs';
 import { BuilderService } from '../../services/builder.service';
+import { ANGULAR_LATEST_VERSION, SCRIPT_ID } from '../../utils/constants';
 
 function omit<T extends object>(obj: T, ...values: (keyof T)[]): Partial<T> {
   const newObject = Object.assign({}, obj);
