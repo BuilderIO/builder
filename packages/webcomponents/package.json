@@ -8,7 +8,7 @@
   "unpkg": "dist/system/builder-webcomponents-async.js",
   "module": "dist/builder-webcomponents.es5.js",
   "typings": "dist/types/builder-webcomponents.d.ts",
-  "author": "Steve Sewell <steve@builder.io",
+  "author": "Steve Sewell <steve@builder.io>",
   "repository": {
     "type": "git",
     "url": "https://github.com/BuilderIO/builder"
@@ -143,8 +143,8 @@
   },
   "//": "TODO: make all of these optional dependencies, simple mode doesn't require",
   "dependencies": {
-    "@builder.io/react": "^2.0.4",
-    "@builder.io/sdk": "^1.1.29",
+    "@builder.io/react": "^2.0.13",
+    "@builder.io/sdk": "^1.1.30",
     "@builder.io/shopify": "^1.3.42-3",
     "@builder.io/widgets": "^1.2.21-0",
     "@emotion/core": "^10.0.22",
