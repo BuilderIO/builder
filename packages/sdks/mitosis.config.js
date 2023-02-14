@@ -244,12 +244,20 @@ module.exports = {
               }
 
               if (json.name === 'RenderBlock') {
+                // drop the wrapper `Show`, move its condition to the root `<template>`
+                json.children = json.children[0].children;
+
                 traverse(json).forEach(function (item) {
                   if (!isMitosisNode(item)) {
                     return;
                   }
 
                   const children = item.children.filter(filterEmptyTextNodes);
+
+                  // add back wrapper `Show`'s condition for Vue 2
+                  if (item.name === 'Show' && item.bindings.when) {
+                    item.bindings.when.code += '&& state.canShowBlock';
+                  }
 
                   /**
                    * Hack to get around the fact that we can't have a v-for loop inside of a v-else in Vue 2.
@@ -284,6 +292,24 @@ module.exports = {
                   }
                 });
               }
+            },
+          },
+          code: {
+            pre: (code) => {
+              if (!code.includes("name: 'render-block'")) {
+                return code;
+              }
+
+              // 2 edge cases for the wrapper Show's condition need to be hardcoded for now
+              return code
+                .replace(
+                  '<component v-else ',
+                  '<component v-else-if="canShowBlock" '
+                )
+                .replace(
+                  'v-if="!Boolean(!component?.noWrap && canShowBlock)"',
+                  'v-if="!Boolean(!component?.noWrap) && canShowBlock"'
+                );
             },
           },
         }),

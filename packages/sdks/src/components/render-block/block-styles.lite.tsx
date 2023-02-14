@@ -7,6 +7,7 @@ import { TARGET } from '../../constants/target.js';
 import type { BuilderContextInterface } from '../../context/types.js';
 import { getProcessedBlock } from '../../functions/get-processed-block.js';
 import { createCssClass } from '../../helpers/css.js';
+import { checkIsDefined } from '../../helpers/nullable.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
 import RenderInlinedStyles from '../render-inlined-styles.lite';
 
@@ -32,6 +33,17 @@ export default function BlockStyles(props: BlockStylesProps) {
         context: props.context.context,
         shouldEvaluateBindings: true,
       });
+    },
+
+    get canShowBlock() {
+      // only render styles for blocks that are visible
+      if (checkIsDefined(state.useBlock.hide)) {
+        return !state.useBlock.hide;
+      }
+      if (checkIsDefined(state.useBlock.show)) {
+        return state.useBlock.show;
+      }
+      return true;
     },
 
     get css(): string {
@@ -78,7 +90,7 @@ export default function BlockStyles(props: BlockStylesProps) {
     },
   });
   return (
-    <Show when={TARGET !== 'reactNative' && state.css}>
+    <Show when={TARGET !== 'reactNative' && state.css && state.canShowBlock}>
       <RenderInlinedStyles styles={state.css} />
     </Show>
   );

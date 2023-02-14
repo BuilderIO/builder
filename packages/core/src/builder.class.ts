@@ -2211,6 +2211,16 @@ export class Builder {
     return observable;
   }
 
+  // this is needed to satisfy the Angular SDK, which used to rely on the more complex version of `requestUrl`.
+  // even though we only use `fetch()` now, we prefer to keep the old behavior and use the `fetch` that comes from
+  // the core SDK for consistency
+  requestUrl(
+    url: string,
+    options?: { headers: { [header: string]: number | string | string[] | undefined } }
+  ) {
+    return fetch(url, options as SimplifiedFetchOptions).then(res => res.json());
+  }
+
   get host() {
     switch (this.env) {
       case 'qa':

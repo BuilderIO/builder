@@ -21,6 +21,7 @@ import { TARGET } from '../../constants/target.js';
 import { extractTextStyles } from '../../functions/extract-text-styles.js';
 import RenderComponent from './render-component.lite';
 import { getReactNativeBlockStyles } from '../../functions/get-react-native-block-styles.js';
+import { checkIsDefined } from '../../helpers/nullable.js';
 
 export type RenderBlockProps = {
   block: BuilderBlock;
@@ -51,6 +52,15 @@ export default function RenderBlock(props: RenderBlockProps) {
             context: props.context.context,
             shouldEvaluateBindings: true,
           });
+    },
+    get canShowBlock() {
+      if (checkIsDefined(state.useBlock.hide)) {
+        return !state.useBlock.hide;
+      }
+      if (checkIsDefined(state.useBlock.show)) {
+        return state.useBlock.show;
+      }
+      return true;
     },
     get proxyState() {
       if (typeof Proxy === 'undefined') {
@@ -159,54 +169,56 @@ export default function RenderBlock(props: RenderBlockProps) {
   });
 
   return (
-    <Show
-      when={!state.component?.noWrap}
-      else={<RenderComponent {...state.renderComponentProps} />}
-    >
-      {/*
-       * Svelte is super finicky, and does not allow an empty HTML element (e.g. `img`) to have logic inside of it,
-       * _even_ if that logic ends up not rendering anything.
-       */}
-      <Show when={isEmptyHtmlElement(state.tag)}>
-        <state.tag {...state.attributes} {...state.actions} />
-      </Show>
-      <Show when={!isEmptyHtmlElement(state.tag) && state.repeatItemData}>
-        <For each={state.repeatItemData}>
-          {(data, index) => (
-            <RenderRepeatedBlock
-              key={index}
-              repeatContext={data.context}
-              block={data.block}
-            />
-          )}
-        </For>
-      </Show>
-      <Show when={!isEmptyHtmlElement(state.tag) && !state.repeatItemData}>
-        <state.tag {...state.attributes} {...state.actions}>
-          <RenderComponent {...state.renderComponentProps} />
-          {/**
-           * We need to run two separate loops for content + styles to workaround the fact that Vue 2
-           * does not support multiple root elements.
-           */}
-          <For each={state.childrenWithoutParentComponent}>
-            {(child) => (
-              <RenderBlock
-                key={'render-block-' + child.id}
-                block={child}
-                context={state.childrenContext}
+    <Show when={state.canShowBlock}>
+      <Show
+        when={!state.component?.noWrap}
+        else={<RenderComponent {...state.renderComponentProps} />}
+      >
+        {/*
+         * Svelte is super finicky, and does not allow an empty HTML element (e.g. `img`) to have logic inside of it,
+         * _even_ if that logic ends up not rendering anything.
+         */}
+        <Show when={isEmptyHtmlElement(state.tag)}>
+          <state.tag {...state.attributes} {...state.actions} />
+        </Show>
+        <Show when={!isEmptyHtmlElement(state.tag) && state.repeatItemData}>
+          <For each={state.repeatItemData}>
+            {(data, index) => (
+              <RenderRepeatedBlock
+                key={index}
+                repeatContext={data.context}
+                block={data.block}
               />
             )}
           </For>
-          <For each={state.childrenWithoutParentComponent}>
-            {(child) => (
-              <BlockStyles
-                key={'block-style-' + child.id}
-                block={child}
-                context={state.childrenContext}
-              />
-            )}
-          </For>
-        </state.tag>
+        </Show>
+        <Show when={!isEmptyHtmlElement(state.tag) && !state.repeatItemData}>
+          <state.tag {...state.attributes} {...state.actions}>
+            <RenderComponent {...state.renderComponentProps} />
+            {/**
+             * We need to run two separate loops for content + styles to workaround the fact that Vue 2
+             * does not support multiple root elements.
+             */}
+            <For each={state.childrenWithoutParentComponent}>
+              {(child) => (
+                <RenderBlock
+                  key={'render-block-' + child.id}
+                  block={child}
+                  context={state.childrenContext}
+                />
+              )}
+            </For>
+            <For each={state.childrenWithoutParentComponent}>
+              {(child) => (
+                <BlockStyles
+                  key={'block-style-' + child.id}
+                  block={child}
+                  context={state.childrenContext}
+                />
+              )}
+            </For>
+          </state.tag>
+        </Show>
       </Show>
     </Show>
   );
