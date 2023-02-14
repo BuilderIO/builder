@@ -38,6 +38,15 @@ const excludeTestFor = (sdks: { [X in Sdk]?: boolean }) => {
   return sdks[sdk] ? test.skip : test;
 };
 
+// reactive state only works in Vue & React, so we skip the other environments
+const reactiveStateTest = excludeTestFor({
+  qwik: true,
+  reactNative: true,
+  rsc: true,
+  svelte: true,
+  solid: true,
+});
+
 const getElementStyleValue = async ({
   locator,
   cssProperty,
@@ -277,15 +286,6 @@ test.describe(targetContext.name, () => {
       await findTextInPage({ page, text: '0' });
     });
 
-    // reactive state only works in Vue, Solid & React, so we skip the other environments
-    const reactiveStateTest = excludeTestFor({
-      qwik: true,
-      reactNative: true,
-      rsc: true,
-      svelte: true,
-      solid: true,
-    });
-
     reactiveStateTest('increments value correctly', async ({ page }) => {
       await page.goto('/reactive-state');
 
@@ -444,6 +444,28 @@ test.describe(targetContext.name, () => {
     // TODO: fix this
     // check the title is correct
     // title: 'some special title'
+  });
+  test.describe('show-hide-if', () => {
+    test('works on static conditions', async ({ page }) => {
+      await page.goto('/show-hide-if');
+
+      await findTextInPage({ page, text: 'this always appears' });
+      await expect(page.locator('body')).not.toContainText(
+        'this never appears'
+      );
+    });
+
+    reactiveStateTest('works on reactive conditions', async ({ page }) => {
+      await page.goto('/show-hide-if');
+
+      await findTextInPage({ page, text: 'even clicks' });
+      await expect(page.locator('body')).not.toContainText('odd clicks');
+
+      await page.locator('text=Click me!').click();
+
+      await findTextInPage({ page, text: 'odd clicks' });
+      await expect(page.locator('body')).not.toContainText('even clicks');
+    });
   });
   test('data-bindings', async ({ page }) => {
     await page.goto('/data-bindings');

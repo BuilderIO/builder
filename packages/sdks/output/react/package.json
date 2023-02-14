@@ -1,7 +1,7 @@
 {
   "name": "@builder.io/sdk-react",
   "description": "Builder.io SDK for React",
-  "version": "0.1.7",
+  "version": "0.1.9",
   "main": "src/index.js",
   "type": "module",
   "exports": {
@@ -26,9 +26,7 @@
     "react": "^18.2.0"
   },
   "devDependencies": {
-    "react": "^18.2.0"
-  },
-  "dependencies": {
+    "react": "^18.2.0",
     "typescript": "^4.9.4"
   }
 }

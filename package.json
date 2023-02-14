@@ -4,6 +4,7 @@
     "@builder.io/block-publish": "^1.1.2",
     "@typescript-eslint/parser": "^4.28.3",
     "babel-preset-solid": "^1.0.1",
+    "dotenv": "^16.0.3",
     "lerna": "^3.20.2",
     "tslib": "^2.2.0",
     "typescript": "^4.0.0"
@@ -38,6 +39,7 @@
   },
   "dependencies": {
     "husky": "^7.0.4",
+    "octokit": "^2.0.14",
     "pinst": "^3.0.0",
     "prettier": "^2.6.2",
     "zx": "^5.1.0"

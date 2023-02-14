@@ -34,38 +34,43 @@ npm add --save @builder.io/sdk-qwik
 Add Qwik SDK code to a particular route (such as `src/routes/index.tsx`)
 
 ```typscript
-import { component$, Resource, useResource$ } from "@builder.io/qwik";
-import { useLocation } from "@builder.io/qwik-city";
-import { getContent, RenderContent, RegisteredComponent, getBuilderSearchParams } from "@builder.io/sdk-qwik";
+import { component$ } from "@builder.io/qwik";
+import { loader$ } from "@builder.io/qwik-city";
+import {
+  getBuilderSearchParams,
+  getContent,
+  RenderContent,
+} from "@builder.io/sdk-qwik";
 
 export const BUILDER_PUBLIC_API_KEY = "YOUR_API_KEY_GOES_HERE"; // ggignore
-export default component$(() => {
-  const location = useLocation();
-  const builderContentRsrc = useResource$<any>(() => {
-    return getContent({
-      model: "page",
-      apiKey: BUILDER_PUBLIC_API_KEY,
-      options: getBuilderSearchParams(location.query),
-      userAttributes: {
-        urlPath: location.pathname || "/",
-      },
-    });
-  });
+export const MODEL = 'page';
 
+export const builderContentLoader = loader$(({ url }) => {
+  return getContent({
+    model: MODEL,
+    apiKey: BUILDER_PUBLIC_API_KEY,
+    options: {
+      ...getBuilderSearchParams(url.searchParams),
+      cachebust: true,
+    },
+    userAttributes: {
+      urlPath: url.pathname || "/",
+    },
+  });
+});
+
+export default component$(() => {
+  const builderContent = builderContentLoader.use();
   return (
-    <Resource
-      resource={builderContentRsrc}
-      onPending={() => <div>Loading...</div>}
-      onResolved={(content) => (
-        <RenderContent
-          model="page"
-          content={content}
-          apiKey={BUILDER_PUBLIC_API_KEY}
-          // Optional: pass in a custom component registry
-          // customComponents={CUSTOM_COMPONENTS}
-        />
-      )}
-    />
+    <div>
+      <RenderContent
+        model={MODEL}
+        content={builderContent.value}
+        apiKey={BUILDER_PUBLIC_API_KEY}
+        // Optional: pass in a custom component registry
+        // customComponents={CUSTOM_COMPONENTS}
+      />
+    </div>
   );
 });
 
