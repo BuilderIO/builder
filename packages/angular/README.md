@@ -41,6 +41,7 @@ Install:
 
 ```
 npm install @builder.io/angular
+npm install @angular/elements
 ```
 
 Add the module:
