@@ -2211,6 +2211,13 @@ export class Builder {
     return observable;
   }
 
+  requestUrl(
+    url: string,
+    options?: { headers: { [header: string]: number | string | string[] | undefined } }
+  ) {
+    return fetch(url, options as SimplifiedFetchOptions).then(res => res.json());
+  }
+
   get host() {
     switch (this.env) {
       case 'qa':
