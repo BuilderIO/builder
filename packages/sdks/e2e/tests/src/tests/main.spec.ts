@@ -480,6 +480,11 @@ test.describe(targetContext.name, () => {
       text: 'Mattel Certified by Great Place to Work and Named to Fast Company’s List of 100 Best Workplaces for Innovators',
     });
   });
+  test('text-blocks', async ({ page }) => {
+    await page.goto('/text-blocks');
+
+    await findTextInPage({ page, text: 'This is a text block' });
+  });
   test('data-binding-styles', async ({ page }) => {
     await page.goto('/data-binding-styles');
     if (isRNSDK) {

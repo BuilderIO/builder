@@ -11,6 +11,7 @@ import { CONTENT as dataBindingStyles } from './data-binding-styles.js';
 import { CONTENT as customBreakpoints } from './custom-breakpoints.js';
 import { CONTENT as reactiveState } from './reactive-state';
 import { CONTENT as showHideIf } from './show-hide-if';
+import { CONTENT as textBlock } from './text-block';
 
 // TO-DO: import real content type from SDKs
 interface Breakpoints {
@@ -64,6 +65,8 @@ const getContentForPathname = (pathname: string): BuilderContent | null => {
       return elementEvents;
     case '/show-hide-if':
       return showHideIf;
+    case '/text-block':
+      return textBlock;
     case '/custom-breakpoints-reset':
       contentWithoutBreakpoints = fastClone(
         customBreakpoints as BuilderContent

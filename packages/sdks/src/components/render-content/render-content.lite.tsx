@@ -393,13 +393,11 @@ export default function RenderContent(props: RenderContentProps) {
         builder-content-id={state.useContent?.id}
         builder-model={props.model}
       >
-        {state.shouldRenderContentStyles && (
-          <RenderContentStyles
-            contentId={state.useContent?.id}
-            cssCode={state.useContent?.data?.cssCode}
-            customFonts={state.useContent?.data?.customFonts}
-          />
-        )}
+        <RenderContentStyles
+          contentId={state.useContent?.id}
+          cssCode={state.useContent?.data?.cssCode}
+          customFonts={state.useContent?.data?.customFonts}
+        />
         <RenderBlocks
           blocks={state.useContent?.data?.blocks}
           key={state.forceReRenderCount}
