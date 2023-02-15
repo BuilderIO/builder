@@ -31,8 +31,7 @@ function fastClone<T extends object>(object: T): T {
   return JSON.parse(JSON.stringify(object));
 }
 
-const getPathnameFromWindow = (): string =>
-  isBrowser() ? window.location.pathname : '';
+const getPathnameFromWindow = (): string => (isBrowser() ? window.location.pathname : '');
 
 const getContentForPathname = (pathname: string): BuilderContent | null => {
   let contentWithoutBreakpoints = undefined;
@@ -65,9 +64,7 @@ const getContentForPathname = (pathname: string): BuilderContent | null => {
     case '/show-hide-if':
       return showHideIf;
     case '/custom-breakpoints-reset':
-      contentWithoutBreakpoints = fastClone(
-        customBreakpoints as BuilderContent
-      );
+      contentWithoutBreakpoints = fastClone(customBreakpoints as BuilderContent);
       delete contentWithoutBreakpoints.meta!.breakpoints;
       return contentWithoutBreakpoints;
     default:

@@ -41,8 +41,7 @@ export const CONTENT = {
             '@type': '@builder.io/sdk:Element',
             '@version': 2,
             bindings: {
-              'component.options.text':
-                'var _virtual_index=state.a;return _virtual_index',
+              'component.options.text': 'var _virtual_index=state.a;return _virtual_index',
             },
             id: 'builder-10ddd88e45f84799821131a3ee9ceff5',
             component: {
@@ -111,8 +110,7 @@ export const CONTENT = {
             '@type': '@builder.io/sdk:Element',
             '@version': 2,
             bindings: {
-              'component.options.text':
-                'var _virtual_index=state.a;return _virtual_index',
+              'component.options.text': 'var _virtual_index=state.a;return _virtual_index',
             },
             id: 'builder-26eb0da975d04faaa9fb5e87a5563a04',
             component: {
@@ -297,8 +295,7 @@ export const CONTENT = {
                     lazy: false,
                     fitContent: true,
                     aspectRatio: 0.7041,
-                    sizes:
-                      '(max-width: 638px) 16vw, (max-width: 998px) 11vw, 8vw',
+                    sizes: '(max-width: 638px) 16vw, (max-width: 998px) 11vw, 8vw',
                   },
                 },
                 responsiveStyles: {
@@ -621,8 +618,7 @@ export const CONTENT = {
             excerpt: '',
             handle:
               'mattel-certified-by-great-place-to-work-and-named-to-fast-companys-list-of-100-best-workplaces-for-innovators',
-            seo_description:
-              'By Amy Thompson, EVP and Chief People Officer, Mattel',
+            seo_description: 'By Amy Thompson, EVP and Chief People Officer, Mattel',
             seo_title:
               'Mattel Certified by Great Place to Work and Named to Fast Company’s List of 100 Best Workplaces for Innovators',
             tags: [],

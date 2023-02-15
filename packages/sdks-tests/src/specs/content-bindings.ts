@@ -29,8 +29,7 @@ export const CONTENT = {
             'var _virtual_index=state.borderRadiusBottomLeft;return _virtual_index',
           'style.borderBottomRightRadius':
             'var _virtual_index=state.borderRadiusBottomRight;return _virtual_index',
-          title:
-            'var _virtual_index="some special title";return _virtual_index',
+          title: 'var _virtual_index="some special title";return _virtual_index',
           height: 'var _virtual_index=30;return _virtual_index',
         },
         code: {
