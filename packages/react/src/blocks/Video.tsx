@@ -136,13 +136,13 @@ class VideoComponent extends React.Component<{
                   position: 'absolute',
                 }
               : null),
-            ...(this.lazyLoad && {
-              // For lazy loaded videos write the source to an attribute to save
-              // what video will ultimately load, for cases like an RSS feed where
-              // you want to force the video to load, you can do so manually
-              'data-src': this.props.video,
-            })
           }}
+          {...(this.lazyLoad && {
+            // For lazy loaded videos write the source to an attribute to save
+            // what video will ultimately load, for cases like an RSS feed where
+            // you want to force the video to load, you can do so manually
+            'data-src': this.props.video,
+          })}
         >
           {(!this.lazyLoad || this.state.load) && (
             <source type="video/mp4" src={this.props.video} />
