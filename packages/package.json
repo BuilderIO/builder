@@ -1,0 +1,12 @@
+{
+  "name": "all-sdks-mono-repo",
+  "private": true,
+  "workspaces": [
+    "sdks/**/*",
+    "sdks-tests/*"
+  ],
+  "engines": {
+    "yarn": ">= 3.0.0"
+  },
+  "packageManager": "yarn@3.2.0"
+}
