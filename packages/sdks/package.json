@@ -6,9 +6,6 @@
     "output/*",
     "e2e/*"
   ],
-  "engines": {
-    "yarn": ">= 3.0.0"
-  },
   "scripts": {
     "prepare": "cd ../../ && npx husky install",
     "cz": "cz",
@@ -86,11 +83,5 @@
     "commitizen": {
       "path": "git-cz"
     }
-  },
-  "resolutions": {
-    "@sveltejs/package@1.0.0-next.1": "patch:@sveltejs/package@npm:1.0.0-next.1#.yarn/patches/@sveltejs-package-npm-1.0.0-next.1-2fd015530b.patch",
-    "minimist": "^1.2.7",
-    "json5": "2.2.1"
-  },
-  "packageManager": "yarn@3.2.0"
+  }
 }
