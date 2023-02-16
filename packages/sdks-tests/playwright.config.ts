@@ -29,7 +29,7 @@ const packageName = sdk;
 targetContext.name = packageName;
 
 const isReactNative = packageName.includes('react-native');
-const port = isReactNative ? 19006 : 5000;
+const port = isReactNative ? 19006 : 5173;
 const portFlag = isReactNative ? '' : `--port=${port}`;
 
 export default defineConfig({

@@ -9,5 +9,4 @@ export default defineConfig({
   optimizeDeps: {
     include: ['@headlessui/react', 'clsx', 'react-use', 'typographic-base'],
   },
-  server: { port: 5000 },
 });
