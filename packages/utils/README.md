@@ -219,10 +219,21 @@ note: This can break content if the transformation was incorrect, recommend dupl
 ```ts
 import { setPixelAlt } from '@builder.io/utils';
 
-async function fetchBuilderContent(url) {
-  const content = await builder.get('page', { url: url }).promise();
-  setPixelAlt(content, 'Alt text for pixel image');
-  return content;
+export async function getServerSideProps({
+  params,
+}) {
+  const page =
+    (await builder
+      .get(mode, ....)
+      .toPromise()) || null
+     
+  setPixelAlt(page, 'pixel tag from builder')
+  
+  return {
+    props: {
+      page,
+    },
+  }
 }
 ```
 note: Pixels will have `alt` by default in next API verison (`v3`);
