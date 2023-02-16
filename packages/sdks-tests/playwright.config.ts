@@ -29,8 +29,17 @@ const packageName = sdk;
 targetContext.name = packageName;
 
 const isReactNative = packageName.includes('react-native');
-const port = isReactNative ? 19006 : 5173;
-const portFlag = isReactNative ? '' : `--port=${port}`;
+
+const things = WEB_SERVERS[sdk].map((packageName, i) => {
+  const port = isReactNative ? 19006 : 1234 + i;
+  const portFlag = isReactNative ? '' : `--port=${port}`;
+
+  return {
+    port,
+    packageName,
+    portFlag,
+  };
+});
 
 export default defineConfig({
   testDir: getDirName() + '/src/tests',
@@ -61,21 +70,17 @@ export default defineConfig({
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
 
-    /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: `http://localhost:${port}`,
-
     // screenshot: 'on',
   },
 
   /* Configure projects for major browsers */
-  projects: [
-    {
-      name: 'chromium',
-      use: {
-        ...devices['Desktop Chrome'],
-      },
+  projects: things.map(({ packageName, port, portFlag }) => ({
+    name: `Chromium - ${packageName}`,
+    use: {
+      ...devices['Desktop Chrome'],
+      baseURL: `http://localhost:${port}`,
     },
-  ],
+  })),
 
   /* Folder for test artifacts such as screenshots, videos, traces, etc. */
   // outputDir: 'test-results/',
@@ -83,7 +88,7 @@ export default defineConfig({
   // This is set up for E2E testing of the compiled output; it might be useful
   // also to test against "run dev" for a faster development cycle.
 
-  webServer: WEB_SERVERS[sdk].map(packageName => ({
+  webServer: things.map(({ packageName, port, portFlag }) => ({
     command: `yarn workspace @builder.io/${packageName} run serve ${portFlag}`,
     port,
     reuseExistingServer: false,
