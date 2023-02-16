@@ -5,7 +5,8 @@
   "version": "0.0.1",
   "scripts": {
     "build": "tsc",
-    "dev": "tsc -w"
+    "dev": "tsc -w",
+    "test": "playwright test"
   },
   "type": "module",
   "main": "./dist/src/index.js",

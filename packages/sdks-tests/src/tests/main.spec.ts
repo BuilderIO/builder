@@ -1,18 +1,11 @@
 import type { BrowserContext, ConsoleMessage, Locator, Page } from '@playwright/test';
 import { test, expect } from '@playwright/test';
-
 import { targetContext } from './context.js';
+import { sdk, Sdk } from './sdk.js';
 
 const findTextInPage = async ({ page, text }: { page: Page; text: string }) => {
   await page.locator(`text=${text}`).waitFor();
 };
-
-import { z } from 'zod';
-
-const SdkEnum = z.enum(['reactNative', 'react', 'rsc', 'vue', 'solid', 'qwik', 'svelte']);
-type Sdk = z.infer<typeof SdkEnum>;
-
-const sdk = SdkEnum.parse(process.env.SDK);
 
 const isRNSDK = sdk === 'reactNative';
 
