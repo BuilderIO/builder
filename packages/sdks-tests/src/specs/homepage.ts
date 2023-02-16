@@ -408,8 +408,7 @@ export const CONTENT = {
             handle: 'mattels-statement-on-commitment-to-the-black-community',
             seo_description:
               'Today, we are introducing a corporate program called Play Fair, which articulates the actions we will take both at the corporate-level and through our brands.',
-            seo_title:
-              'Mattel’s Statement on Commitment to the Black Community',
+            seo_title: 'Mattel’s Statement on Commitment to the Black Community',
             tags: [],
             thumbnail: {
               _version: 1,
@@ -557,8 +556,7 @@ export const CONTENT = {
                 url: 'https://images.contentstack.io/v3/assets/bltc12136c3b9f23503/blt96c26bb7927b4d25/621866c24a11fe16c5d5f41a/Dr._20Maya_20Angelou_203.jpg',
               },
             ],
-            handle:
-              'barbieR-honors-dr-maya-angelou-as-latest-inspiring-womenTM-doll',
+            handle: 'barbieR-honors-dr-maya-angelou-as-latest-inspiring-womenTM-doll',
             tags: [],
             thumbnail: {
               _version: 1,
@@ -584,8 +582,7 @@ export const CONTENT = {
               },
               url: 'https://images.contentstack.io/v3/assets/bltc12136c3b9f23503/bltdd4183e4685dbaa9/621866accebcf871adef79fb/Dr._Maya_Angelou_1_thmb.jpg',
             },
-            title:
-              'Barbie® Honors Dr. Maya Angelou as Latest Inspiring Women™ Doll',
+            title: 'Barbie® Honors Dr. Maya Angelou as Latest Inspiring Women™ Doll',
             updated_at: '2022-02-25T05:18:59.152Z',
             updated_by: 'bltb6a9c9902d7c6922',
             publish_details: {
@@ -686,8 +683,7 @@ export const CONTENT = {
                 url: 'https://images.contentstack.io/v3/assets/bltc12136c3b9f23503/bltce7a45a798dcc4cd/62186a5956d85d0bdf397051/View-Master_Press_Image_1_150212.jpg',
               },
             ],
-            handle:
-              'mattel-collaborates-with-google-to-reimagine-the-iconic-view-master-toy',
+            handle: 'mattel-collaborates-with-google-to-reimagine-the-iconic-view-master-toy',
             tags: [],
             thumbnail: {
               _version: 1,
@@ -713,8 +709,7 @@ export const CONTENT = {
               },
               url: 'https://images.contentstack.io/v3/assets/bltc12136c3b9f23503/bltd06efaf1383b53aa/62186a58c26211183116933a/View-Master_Press_Image_1_150212_thmb.jpg',
             },
-            title:
-              'Mattel Collaborates with Google to Reimagine the Iconic View-Master Toy',
+            title: 'Mattel Collaborates with Google to Reimagine the Iconic View-Master Toy',
             updated_at: '2022-02-25T05:34:17.634Z',
             updated_by: 'bltb6a9c9902d7c6922',
             publish_details: {

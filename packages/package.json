@@ -1,0 +1,18 @@
+{
+  "name": "all-sdks-mono-repo",
+  "description": "This mono-repo includes the new SDKs and their integration tests.",
+  "private": true,
+  "workspaces": [
+    "sdks-tests",
+    "sdks"
+  ],
+  "engines": {
+    "yarn": ">= 3.0.0"
+  },
+  "resolutions": {
+    "@sveltejs/package@1.0.0-next.1": "patch:@sveltejs/package@npm:1.0.0-next.1#.yarn/patches/@sveltejs-package-npm-1.0.0-next.1-2fd015530b.patch",
+    "minimist": "^1.2.7",
+    "json5": "2.2.1"
+  },
+  "packageManager": "yarn@3.4.1"
+}

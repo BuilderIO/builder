@@ -12,5 +12,8 @@
     "declaration": true,
     "allowJs": true
   },
-  "include": ["src", "./shared.config.js"]
+  "include": [
+    "src",
+    "./playwright.config.ts"
+  ]
 }

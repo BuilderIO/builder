@@ -8,8 +8,7 @@ export const CONTENT = {
     },
     hasLinks: false,
     kind: 'page',
-    originalContentId:
-      '598b0e0699ec457e8a2dbcddabd0dc8b_c293f45703c74bfa890786b4967fc098',
+    originalContentId: '598b0e0699ec457e8a2dbcddabd0dc8b_c293f45703c74bfa890786b4967fc098',
     winningTest: null,
   },
   createdDate: 1668786952389,

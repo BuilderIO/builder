@@ -18,8 +18,7 @@ export const CONTENT = {
                     '@type': '@builder.io/sdk:Element',
                     '@version': 2,
                     actions: {
-                      click:
-                        'state.text="hello",console.log("state after",state)',
+                      click: 'state.text="hello",console.log("state after",state)',
                     },
                     code: {
                       actions: {
@@ -155,8 +154,7 @@ export const CONTENT = {
                         '@version': 2,
                         id: 'builder-a2a05284857141948dd7d43fd9ed32e3',
                         meta: {
-                          previousId:
-                            'builder-67d21c1987ea46e8ab5a6e1e2f942c11',
+                          previousId: 'builder-67d21c1987ea46e8ab5a6e1e2f942c11',
                         },
                         component: {
                           name: 'Text',

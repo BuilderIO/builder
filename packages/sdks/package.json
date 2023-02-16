@@ -6,13 +6,10 @@
     "output/*",
     "e2e/*"
   ],
-  "engines": {
-    "yarn": ">= 3.0.0"
-  },
   "scripts": {
     "prepare": "cd ../../ && npx husky install",
     "cz": "cz",
-    "build:mitosis": "./node_modules/@builder.io/mitosis-cli/bin/mitosis build",
+    "build:mitosis": "../node_modules/@builder.io/mitosis-cli/bin/mitosis build",
     "build:outputs": "yarn workspaces foreach --include \"*/sdk-*\" --exclude @builder.io/sdk-vue-2 --exclude @builder.io/sdk-vue-3 --verbose run build",
     "build": "yarn run build:mitosis && yarn run build:outputs",
     "start": "watch 'yarn run build:mitosis' ./src ./overrides",
@@ -32,20 +29,22 @@
     "ci:test": "yarn run test",
     "e2e:install-playwright": "playwright install chromium --with-deps",
     "e2e:build:specs": "yarn workspace @builder.io/sdks-e2e-tests build",
+    "e2e:build": "yarn workspace @builder.io/sdks-e2e-tests run build",
     "e2e:build:svelte": "yarn workspaces foreach --verbose --include \"@builder.io/e2e-svelte*\" run build",
     "e2e:build:react-native": "yarn workspaces foreach --verbose --include \"@builder.io/e2e-react-native*\" run build",
     "e2e:build:solid": "yarn workspaces foreach --verbose --include \"@builder.io/e2e-solid*\" run build",
     "e2e:build:qwik": "yarn workspaces foreach --verbose --include \"@builder.io/e2e-qwik*\" run build",
     "e2e:build:react": "yarn workspaces foreach --verbose --include \"@builder.io/e2e?(-nextjs)-react\" run build",
     "e2e:build:vue": "yarn workspaces foreach --verbose --include \"@builder.io/e2e-vue*\" run build",
-    "e2e:run:svelte": "yarn workspaces foreach --verbose --include \"@builder.io/e2e-svelte*\" run e2e",
-    "e2e:run:react-native": "yarn workspaces foreach --verbose --include \"@builder.io/e2e-react-native*\" run e2e",
-    "e2e:run:solid": "yarn workspaces foreach --verbose --include \"@builder.io/e2e-solid*\" run e2e",
-    "e2e:run:qwik": "yarn workspaces foreach --verbose --include \"@builder.io/e2e-qwik*\" run e2e",
-    "e2e:run:react": "yarn workspaces foreach --verbose --include \"@builder.io/e2e?(-nextjs)-react\" run e2e",
-    "e2e:run:vue": "yarn workspaces foreach --verbose --include \"@builder.io/e2e-vue*\" run e2e",
+    "e2e:run": "yarn workspace @builder.io/sdks-e2e-tests run test",
+    "e2e:run:svelte": "SDK=svelte yarn e2e:run",
+    "e2e:run:react-native": "SDK=reactNative yarn e2e:run",
+    "e2e:run:solid": "SDK=solid yarn e2e:run",
+    "e2e:run:qwik": "SDK=qwik yarn e2e:run",
+    "e2e:run:react": "SDK=react yarn e2e:run",
+    "e2e:run:vue": "SDK=vue yarn e2e:run",
     "e2e:build:all": "yarn workspaces foreach --exclude @builder.io/e2e-rsc --verbose run build",
-    "e2e:run:all": "yarn workspaces foreach --exclude @builder.io/e2e-rsc --verbose run e2e",
+    "e2e:run:all": "yarn run-s e2e:run:*",
     "release-sdk": "bash ./scripts/release-sdk.sh",
     "release:all": "bash ./scripts/loop-command.sh release-sdk \"svelte react-native solid qwik react vue\"",
     "upgrade-example": "bash ./scripts/upgrade-example.sh",
@@ -76,21 +75,16 @@
     "husky": "^7.0.4",
     "jest": "^27.5.1",
     "jest-fetch-mock": "^3.0.3",
+    "npm-run-all": "^4.1.5",
     "pinst": "^3.0.0",
     "prettier": "^2.5.0",
     "ts-jest": "^27.1.4",
-    "typescript": "^4",
+    "typescript": "4.1.5",
     "watch": "^1.0.2"
   },
   "config": {
     "commitizen": {
       "path": "git-cz"
     }
-  },
-  "resolutions": {
-    "@sveltejs/package@1.0.0-next.1": "patch:@sveltejs/package@npm:1.0.0-next.1#.yarn/patches/@sveltejs-package-npm-1.0.0-next.1-2fd015530b.patch",
-    "minimist": "^1.2.7",
-    "json5": "2.2.1"
-  },
-  "packageManager": "yarn@3.2.0"
+  }
 }

@@ -1,31 +1,11 @@
-import type {
-  BrowserContext,
-  ConsoleMessage,
-  Locator,
-  Page,
-} from '@playwright/test';
+import type { BrowserContext, ConsoleMessage, Locator, Page } from '@playwright/test';
 import { test, expect } from '@playwright/test';
-
 import { targetContext } from './context.js';
+import { sdk, Sdk } from './sdk.js';
 
 const findTextInPage = async ({ page, text }: { page: Page; text: string }) => {
   await page.locator(`text=${text}`).waitFor();
 };
-
-import { z } from 'zod';
-
-const SdkEnum = z.enum([
-  'reactNative',
-  'react',
-  'rsc',
-  'vue',
-  'solid',
-  'qwik',
-  'svelte',
-]);
-type Sdk = z.infer<typeof SdkEnum>;
-
-const sdk = SdkEnum.parse(process.env.SDK);
 
 const isRNSDK = sdk === 'reactNative';
 
@@ -91,15 +71,9 @@ const expectStylesForElement = async ({
   }
 };
 
-const getBuilderSessionIdCookie = async ({
-  context,
-}: {
-  context: BrowserContext;
-}) => {
+const getBuilderSessionIdCookie = async ({ context }: { context: BrowserContext }) => {
   const cookies = await context.cookies();
-  const builderSessionCookie = cookies.find(
-    (cookie) => cookie.name === 'builderSessionId'
-  );
+  const builderSessionCookie = cookies.find(cookie => cookie.name === 'builderSessionId');
   return builderSessionCookie;
 };
 
@@ -111,9 +85,7 @@ test.describe(targetContext.name, () => {
       await page.goto('/can-track-false', { waitUntil: 'networkidle' });
 
       const cookies = await context.cookies();
-      const builderSessionCookie = cookies.find(
-        (cookie) => cookie.name === 'builderSessionId'
-      );
+      const builderSessionCookie = cookies.find(cookie => cookie.name === 'builderSessionId');
       expect(builderSessionCookie).toBeUndefined();
     });
     test('appear by default', async ({ page, context }) => {
@@ -135,9 +107,7 @@ test.describe(targetContext.name, () => {
     test('POSTs correct impression data', async ({ page }) => {
       const navigate = page.goto('/');
       const trackingRequestPromise = page.waitForRequest(
-        (request) =>
-          request.url().includes('builder.io/api/v1/track') &&
-          request.method() === 'POST'
+        request => request.url().includes('builder.io/api/v1/track') && request.method() === 'POST'
       );
 
       await navigate;
@@ -171,19 +141,15 @@ test.describe(targetContext.name, () => {
       expect(data.events[0].data.ownerId).toMatch(ID_REGEX);
 
       if (!isRNSDK) {
-        expect(data.events[0].data.metadata.url).toMatch(
-          /http:\/\/localhost:\d+\//
-        );
+        expect(data.events[0].data.metadata.url).toMatch(/http:\/\/localhost:\d+\//);
         expect(data.events[0].data.userAttributes.urlPath).toMatch('/');
-        expect(data.events[0].data.userAttributes.host).toMatch(
-          /localhost:[\d]+/
-        );
+        expect(data.events[0].data.userAttributes.host).toMatch(/localhost:[\d]+/);
       }
     });
     test('POSTs correct click data', async ({ page }) => {
       await page.goto('/', { waitUntil: 'networkidle' });
       const trackingRequestPromise = page.waitForRequest(
-        (request) =>
+        request =>
           request.url().includes('builder.io/api/v1/track') &&
           request.method() === 'POST' &&
           request.postDataJSON().events[0].type === 'click'
@@ -222,21 +188,11 @@ test.describe(targetContext.name, () => {
       if (!isRNSDK) {
         // check that all the heatmap metadata is present
 
-        expect(
-          !isNaN(parseFloat(data.events[0].data.metadata.builderElementIndex))
-        ).toBeTruthy();
-        expect(
-          !isNaN(parseFloat(data.events[0].data.metadata.builderTargetOffset.x))
-        ).toBeTruthy();
-        expect(
-          !isNaN(parseFloat(data.events[0].data.metadata.builderTargetOffset.y))
-        ).toBeTruthy();
-        expect(
-          !isNaN(parseFloat(data.events[0].data.metadata.targetOffset.x))
-        ).toBeTruthy();
-        expect(
-          !isNaN(parseFloat(data.events[0].data.metadata.targetOffset.y))
-        ).toBeTruthy();
+        expect(!isNaN(parseFloat(data.events[0].data.metadata.builderElementIndex))).toBeTruthy();
+        expect(!isNaN(parseFloat(data.events[0].data.metadata.builderTargetOffset.x))).toBeTruthy();
+        expect(!isNaN(parseFloat(data.events[0].data.metadata.builderTargetOffset.y))).toBeTruthy();
+        expect(!isNaN(parseFloat(data.events[0].data.metadata.targetOffset.x))).toBeTruthy();
+        expect(!isNaN(parseFloat(data.events[0].data.metadata.targetOffset.y))).toBeTruthy();
       }
 
       // baseline tests for impression tracking
@@ -245,13 +201,9 @@ test.describe(targetContext.name, () => {
       expect(data.events[0].data.ownerId).toMatch(ID_REGEX);
 
       if (!isRNSDK) {
-        expect(data.events[0].data.metadata.url).toMatch(
-          /http:\/\/localhost:\d+\//
-        );
+        expect(data.events[0].data.metadata.url).toMatch(/http:\/\/localhost:\d+\//);
         expect(data.events[0].data.userAttributes.urlPath).toMatch('/');
-        expect(data.events[0].data.userAttributes.host).toMatch(
-          /localhost:[\d]+/
-        );
+        expect(data.events[0].data.userAttributes.host).toMatch(/localhost:[\d]+/);
       }
     });
   });
@@ -356,9 +308,7 @@ test.describe(targetContext.name, () => {
       )
       .isVisible();
 
-    const firstSymbolText = await page
-      .locator('text="Description of image:"')
-      .first();
+    const firstSymbolText = await page.locator('text="Description of image:"').first();
 
     // these are desktop and tablet styles, and will never show up in react native
     if (!isRNSDK) {
@@ -405,10 +355,7 @@ test.describe(targetContext.name, () => {
       ? '[data-class*=builder-blocks] > div'
       : '[class*=builder-blocks] > div';
 
-    const locator = page
-      .locator(selector)
-      .filter({ hasText: 'Enter some text...' })
-      .last();
+    const locator = page.locator(selector).filter({ hasText: 'Enter some text...' }).last();
 
     page.locator(selector).innerText;
 
@@ -433,10 +380,7 @@ test.describe(targetContext.name, () => {
       ? '[data-class*=builder-blocks] > div'
       : '[class*=builder-blocks] > div';
 
-    const locator = page
-      .locator(selector)
-      .filter({ hasText: 'Enter some text...' })
-      .last();
+    const locator = page.locator(selector).filter({ hasText: 'Enter some text...' }).last();
 
     await expect(locator).toBeVisible();
 
@@ -450,9 +394,7 @@ test.describe(targetContext.name, () => {
       await page.goto('/show-hide-if');
 
       await findTextInPage({ page, text: 'this always appears' });
-      await expect(page.locator('body')).not.toContainText(
-        'this never appears'
-      );
+      await expect(page.locator('body')).not.toContainText('this never appears');
     });
 
     reactiveStateTest('works on reactive conditions', async ({ page }) => {
@@ -838,9 +780,7 @@ test.describe(targetContext.name, () => {
   });
 
   test.describe('Styles', () => {
-    test('Should apply responsive styles correctly on tablet/mobile', async ({
-      page,
-    }) => {
+    test('Should apply responsive styles correctly on tablet/mobile', async ({ page }) => {
       await page.goto('/columns');
 
       // switch to tablet view
@@ -849,19 +789,8 @@ test.describe(targetContext.name, () => {
       // check that the 2nd photo has a margin-left of 0px
       // the desktop margin would typically be on its 3rd parent, except for React Native (4th)
       const locator = isRNSDK
-        ? page
-            .locator('img')
-            .nth(1)
-            .locator('..')
-            .locator('..')
-            .locator('..')
-            .locator('..')
-        : page
-            .locator('picture')
-            .nth(1)
-            .locator('..')
-            .locator('..')
-            .locator('..');
+        ? page.locator('img').nth(1).locator('..').locator('..').locator('..').locator('..')
+        : page.locator('picture').nth(1).locator('..').locator('..').locator('..');
 
       await expectStyleForElement({
         locator,
