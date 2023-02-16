@@ -29,5 +29,5 @@ test('Set Alt on pixel properties', async () => {
     },
   };
   const result = setPixelAlt(content, 'Alt text');
-  expect(result.data!.blocks![0].properties.alt).toBe('Alt text');
+  expect(result.data?.blocks?.[0].properties?.alt).toBe('Alt text');
 });

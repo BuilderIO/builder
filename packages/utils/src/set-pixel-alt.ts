@@ -5,7 +5,7 @@ const isBuilderPixel = (item: unknown): item is BuilderElement => {
   return (item as any).id?.startsWith('builder-pixel');
 };
 
-export function setPixelAlt(content: BuilderContent, alt: string) {
+export function setPixelAlt(content: BuilderContent, alt: string): BuilderContent {
   return traverse(content).map(function (item) {
     if (isBuilderPixel(item)) {
       this.update({
