@@ -16,7 +16,7 @@ const getDirName = () => {
 
 const WEB_SERVERS: Record<Sdk, string[]> = {
   reactNative: ['e2e-react-native'],
-  solid: ['e2e-solid'],
+  solid: ['e2e-solidjs'],
   qwik: ['e2e-qwik', 'e2e-qwik-city'],
   react: ['e2e-nextjs-react', 'e2e-react'],
   vue: ['e2e-vue2', 'e2e-vue3'],
@@ -28,7 +28,7 @@ const packageName = sdk;
 
 targetContext.name = packageName;
 
-const isReactNative = packageName.includes('react-native');
+const isReactNative = packageName === 'reactNative';
 
 const things = WEB_SERVERS[sdk].map((packageName, i) => {
   const port = isReactNative ? 19006 : 1234 + i;
