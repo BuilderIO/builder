@@ -6,7 +6,7 @@ const isBuilderPixel = (item: unknown): item is BuilderElement => {
 };
 
 export function setPixelAlt(content: BuilderContent, alt: string): BuilderContent {
-  return traverse(content).map(function (item) {
+  return traverse(content).forEach(function (item) {
     if (isBuilderPixel(item)) {
       this.update({
         ...item,

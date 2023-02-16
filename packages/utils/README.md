@@ -221,7 +221,8 @@ import { setPixelAlt } from '@builder.io/utils';
 
 async function fetchBuilderContent(url) {
   const content = await builder.get('page', { url: url }).promise();
-  return setPixelAlt(content, 'Alt text for pixel image');
+  setPixelAlt(content, 'Alt text for pixel image');
+  return content;
 }
 ```
 note: Pixels will have `alt` by default in next API verison (`v3`);
