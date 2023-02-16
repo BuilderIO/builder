@@ -19,7 +19,7 @@ const WEB_SERVERS: Record<Sdk, string[]> = {
   solid: ['e2e-solid'],
   qwik: ['e2e-qwik', 'e2e-qwik-city'],
   react: ['e2e-nextjs-react', 'e2e-react'],
-  vue: ['e2e-vue-2', 'e2e-vue-3', 'e2e-vue-nuxt-3'],
+  vue: ['e2e-vue2', 'e2e-vue3'],
   svelte: ['e2e-svelte'],
   rsc: [],
 };
@@ -88,9 +88,12 @@ export default defineConfig({
   // This is set up for E2E testing of the compiled output; it might be useful
   // also to test against "run dev" for a faster development cycle.
 
-  webServer: things.map(({ packageName, port, portFlag }) => ({
-    command: `yarn workspace @builder.io/${packageName} run serve ${portFlag}`,
-    port,
-    reuseExistingServer: false,
-  })),
+  webServer: things.map(({ packageName, port, portFlag }) => {
+    const server = {
+      command: `yarn workspace @builder.io/${packageName} run serve ${portFlag}`,
+      port,
+      reuseExistingServer: false,
+    };
+    return server;
+  }),
 });
