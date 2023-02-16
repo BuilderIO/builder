@@ -209,3 +209,19 @@ function updateGridToSlider(builderContent) {
 ```
 
 note: This can break content if the transformation was incorrect, recommend duplicating content and testing on non-live duplicates.
+
+## setPixelAlt
+
+`setPixelAlt` will set `alt` on All Builder pixels in a content
+
+### Example
+
+```ts
+import { setPixelAlt } from '@builder.io/utils';
+
+async function fetchBuilderContent(url) {
+  const content = await builder.get('page', { url: url }).promise();
+  return setPixelAlt(content, 'Alt text for pixel image');
+}
+```
+note: Pixels will have `alt` by default in next API verison (`v3`);
