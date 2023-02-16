@@ -8,7 +8,7 @@
 </p>
 <br />
 <h3 align="center">
-  Drag and drop Visual CMS for React, Vue, Qwik, Angular, and more
+  The <i>Visual</i> Headless CMS
 </h3>
 <p align="center">
   Integrate with any site or app. Drag and drop with the components already in your codebase.
