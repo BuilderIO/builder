@@ -212,7 +212,7 @@ note: This can break content if the transformation was incorrect, recommend dupl
 
 ## setPixelProperties
 
-`setPixelProperties` will set `alt` on All Builder pixels in a content
+`setPixelProperties` allows you to add more pixel element properties, for example , `alt`
 
 ### Example
 
