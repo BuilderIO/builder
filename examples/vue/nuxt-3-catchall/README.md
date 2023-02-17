@@ -11,7 +11,7 @@ For the status of the SDK, look at [these tables](/packages/sdks/README.md#featu
 ## Builder.io Setup
 
 - log into builder.io
-- from your account page, copy your API key and paste it into `BUILDER_PUBLIC_API_KEY` in [app.vue](./app.vue)
+- from your account page, copy your API key and paste it into `BUILDER_PUBLIC_API_KEY` in [[...app].vue](./pages/%5B...app%5D.vue)
 - open the Builder.io Visual Editor for the model named "page"
 - enter http://localhost:3000 in the URL bar to the top right of the preview in Builder
 - drag a component into the layers tab, and it will appear in the Editor!
