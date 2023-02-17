@@ -210,14 +210,14 @@ function updateGridToSlider(builderContent) {
 
 note: This can break content if the transformation was incorrect, recommend duplicating content and testing on non-live duplicates.
 
-## setPixelAlt
+## setPixelProperties
 
-`setPixelAlt` will set `alt` on All Builder pixels in a content
+`setPixelProperties` will set `alt` on All Builder pixels in a content
 
 ### Example
 
 ```ts
-import { setPixelAlt } from '@builder.io/utils';
+import { setPixelProperties } from '@builder.io/utils';
 
 export async function getServerSideProps({
   params,
@@ -227,7 +227,7 @@ export async function getServerSideProps({
       .get(mode, ....)
       .toPromise()) || null
      
-  setPixelAlt(page, 'pixel tag from builder')
+  setPixelProperties(page, { alt: 'pixel tag from builder' })
   
   return {
     props: {
