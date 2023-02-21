@@ -188,4 +188,4 @@ jobs:
         run: yarn workspace @builder.io/react-tests build
 
       - name: Run E2E tests
-        run: yarn e2e:run:oldReact
+        run: yarn workspace @builder.io/sdks e2e:run:old-react

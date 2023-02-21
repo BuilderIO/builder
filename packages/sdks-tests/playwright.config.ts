@@ -24,7 +24,7 @@ const WEB_SERVERS: Record<Sdk, string[]> = {
   rsc: [],
   oldReact: [
     // 'old-e2e-react',
-    'old-e2e-nextjs-react',
+    'e2e-old-nextjs',
   ],
 };
 
@@ -44,6 +44,8 @@ const things = WEB_SERVERS[sdk].map((packageName, i) => {
     portFlag,
   };
 });
+
+console.log({ sdk, things, packageName });
 
 export default defineConfig({
   testDir: getDirName() + '/src/tests',

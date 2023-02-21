@@ -1,5 +1,5 @@
 {
-  "name": "react-tests",
+  "name": "@builder.io/react-tests",
   "description": "This mono-repo includes the new SDKs and their integration tests.",
   "private": true,
   "workspaces": [

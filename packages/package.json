@@ -8,9 +8,6 @@
     "react",
     "react-tests"
   ],
-  "scripts": {
-    "e2e:build:old-react": "yarn workspace "
-  },
   "engines": {
     "yarn": ">= 3.0.0"
   },

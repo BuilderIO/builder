@@ -2025,6 +2025,12 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@builder.io/react-tests@workspace:react-tests":
+  version: 0.0.0-use.local
+  resolution: "@builder.io/react-tests@workspace:react-tests"
+  languageName: unknown
+  linkType: soft
+
 "@builder.io/react@npm:^1.1.50":
   version: 1.1.52
   resolution: "@builder.io/react@npm:1.1.52"
@@ -28065,12 +28071,6 @@ __metadata:
   checksum: e6b5c6ed2a0bde2c34f1ab9523ff9bc4c141a271daf730d6b852374e83acc0155d58ab71a318251e953ebfa65b8bebb9c5dce3eba1ccfcbef7cc4e1e8261c401
   languageName: node
   linkType: hard
-
-"react-tests@workspace:react-tests":
-  version: 0.0.0-use.local
-  resolution: "react-tests@workspace:react-tests"
-  languageName: unknown
-  linkType: soft
 
 "react-universal-interface@npm:^0.6.2":
   version: 0.6.2
