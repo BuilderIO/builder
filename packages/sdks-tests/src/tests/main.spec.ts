@@ -274,11 +274,8 @@ test.describe(targetContext.name, () => {
       // Get the next console log message
       const msgPromise = page.waitForEvent('console', filterConsoleMessages);
 
-      if (isRNSDK) {
-        await page.getByText('Click me!').click();
-      } else {
-        await page.click('button');
-      }
+      await page.getByText('Click me!').click();
+
       const msg = await msgPromise;
 
       expect(msg.text()).toEqual('clicked button');
