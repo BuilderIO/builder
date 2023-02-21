@@ -15,7 +15,7 @@ builder.init(getAPIKey());
 type StaticProps = { index: string[] };
 
 export async function getStaticProps(x: GetStaticPropsContext<StaticProps>) {
-  return { props: getProps('/' + x.params.index?.join('/') || '') };
+  return { props: getProps(x.params.index ? `/${x.params.index.join('/')}` : '/') };
 }
 
 export function getStaticPaths(): GetStaticPathsResult<StaticProps> {

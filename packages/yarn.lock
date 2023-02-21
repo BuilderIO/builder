@@ -1708,7 +1708,7 @@ __metadata:
   dependencies:
     "@builder.io/react": "workspace:*"
     "@builder.io/sdks-e2e-tests": "workspace:*"
-    "@types/react": ^18.0.14
+    "@types/react": ^16.4.1
     "@types/react-dom": ^18.0.5
     next: ^12.2.5
     react: ^18.2.0
