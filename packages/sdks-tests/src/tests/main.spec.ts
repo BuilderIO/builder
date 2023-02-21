@@ -223,7 +223,7 @@ test.describe(targetContext.name, () => {
     });
   });
 
-  test('homepage', async ({ page }) => {
+  test('homepage - client-side navigation', async ({ page }) => {
     await page.goto('/');
 
     const links = await page.locator('a');
