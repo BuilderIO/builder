@@ -8,7 +8,7 @@
 </p>
 <br />
 <h3 align="center">
-  Drag and drop Visual CMS for React, Vue, Qwik, Angular, and more
+  The <i>Visual</i> Headless CMS
 </h3>
 <p align="center">
   Integrate with any site or app. Drag and drop with the components already in your codebase.
@@ -85,7 +85,7 @@ See our full [getting started docs](https://www.builder.io/c/docs/developers), o
   <tr>
     <td align="center">Integrate Page Building</td>
     <td align="center">Integrate Section Building</td>
-    <td align="center">Integrate CMS Data</td>
+    <td align="center">Integrate Structured Data</td>
   </tr>
   <tr>
     <td align="center">
