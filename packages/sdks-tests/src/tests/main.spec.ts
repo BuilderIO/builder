@@ -18,13 +18,27 @@ const excludeTestFor = (sdks: { [X in Sdk]?: boolean }) => {
   return sdks[sdk] ? test.skip : test;
 };
 
-// reactive state only works in Vue & React, so we skip the other environments
+/**
+ * reactive state only works in:
+ * - Vue
+ * - React
+ * - old React
+ *
+ * so we skip the other environments.
+ */
 const reactiveStateTest = excludeTestFor({
   qwik: true,
   reactNative: true,
   rsc: true,
   svelte: true,
   solid: true,
+});
+
+/**
+ * We exclude some new tests from old React until we fix them.
+ */
+const testExcludeOldReact = excludeTestFor({
+  oldReact: true,
 });
 
 const getElementStyleValue = async ({
@@ -146,7 +160,8 @@ test.describe(targetContext.name, () => {
         expect(data.events[0].data.userAttributes.host).toMatch(/localhost:[\d]+/);
       }
     });
-    test('POSTs correct click data', async ({ page }) => {
+
+    testExcludeOldReact('POSTs correct click data', async ({ page }) => {
       await page.goto('/', { waitUntil: 'networkidle' });
       const trackingRequestPromise = page.waitForRequest(
         request =>
@@ -243,7 +258,7 @@ test.describe(targetContext.name, () => {
 
       await findTextInPage({ page, text: '0' });
 
-      await page.click('button');
+      await page.getByText('Increment Number').click();
 
       await findTextInPage({ page, text: '1' });
     });
