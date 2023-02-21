@@ -1717,9 +1717,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@builder.io/e2e-old-react-vite@workspace:react-tests/react-vite":
+"@builder.io/e2e-old-react@workspace:react-tests/react-vite":
   version: 0.0.0-use.local
-  resolution: "@builder.io/e2e-old-react-vite@workspace:react-tests/react-vite"
+  resolution: "@builder.io/e2e-old-react@workspace:react-tests/react-vite"
   dependencies:
     "@builder.io/sdk-react": "workspace:*"
     "@builder.io/sdks-e2e-tests": "workspace:*"
