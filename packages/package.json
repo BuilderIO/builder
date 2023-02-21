@@ -4,7 +4,9 @@
   "private": true,
   "workspaces": [
     "sdks-tests",
-    "sdks"
+    "sdks",
+    "react",
+    "react-tests"
   ],
   "engines": {
     "yarn": ">= 3.0.0"

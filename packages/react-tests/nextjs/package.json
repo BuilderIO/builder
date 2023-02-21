@@ -1,0 +1,25 @@
+{
+  "name": "@builder.io/e2e-old-nextjs",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "serve": "yarn start"
+  },
+  "dependencies": {
+    "@builder.io/react": "workspace:*",
+    "@builder.io/sdks-e2e-tests": "workspace:*",
+    "next": "^12.2.5",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^16.4.1",
+    "@types/react-dom": "^18.0.5",
+    "typescript": "^4"
+  }
+}

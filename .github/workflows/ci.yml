@@ -29,7 +29,7 @@ jobs:
     strategy:
       matrix:
         node-version: [12]
-        package: ['core', 'webcomponents', 'react', 'widgets']
+        package: ['core', 'webcomponents', 'widgets']
 
     steps:
       - uses: actions/checkout@v2
@@ -125,7 +125,7 @@ jobs:
         id: cache-primes
         uses: actions/cache@v3
         with:
-          path: packages/sdks/.yarn/cache
+          path: packages/.yarn/cache
           key: sdks-cache-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install dependencies
@@ -138,7 +138,7 @@ jobs:
         run: yarn workspace @builder.io/sdk-${{ matrix.sdk }} build
 
       - name: Install browsers for Playwright
-        run: yarn e2e:install-playwright
+        run: yarn workspace @builder.io/sdks-e2e-tests install-playwright
 
       - name: Build E2E tests
         run: yarn e2e:build:specs
@@ -148,3 +148,44 @@ jobs:
 
       - name: Run E2E tests
         run: yarn e2e:run:${{ matrix.sdk }}
+
+  old-react-sdk:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: packages
+
+    steps:
+      - name: Setup
+        uses: actions/checkout@v2
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+
+      - name: Cache SDKs
+        id: cache-primes
+        uses: actions/cache@v3
+        with:
+          path: packages/.yarn/cache
+          key: sdks-cache-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: Build SDK
+        run: yarn workspace @builder.io/react build
+
+      - name: Install browsers for Playwright
+        run: yarn workspace @builder.io/sdks-e2e-tests install-playwright
+
+      - name: Build E2E tests
+        run: yarn workspace @builder.io/sdks-e2e-tests build
+
+      - name: Build E2E apps
+        run: yarn workspace @builder.io/react-tests build
+
+      - name: Run E2E tests
+        run: yarn workspace @builder.io/sdks e2e:run:old-react

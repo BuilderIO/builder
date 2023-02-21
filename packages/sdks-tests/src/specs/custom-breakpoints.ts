@@ -1,3 +1,5 @@
+import { BuilderContent } from './types';
+
 export const CONTENT = {
   meta: {
     lastPreviewUrl:
@@ -223,3 +225,15 @@ export const CONTENT = {
   lastUpdatedBy: 'iWvU0fXytRMIvtgMTkEhA0Xnsn43',
   name: 'all custom breakpoints cases',
 };
+
+function fastClone<T extends object>(object: T): T {
+  return JSON.parse(JSON.stringify(object));
+}
+
+const getResetContent = () => {
+  const contentWithoutBreakpoints = fastClone(CONTENT as BuilderContent);
+  delete contentWithoutBreakpoints.meta!.breakpoints;
+  return contentWithoutBreakpoints;
+};
+
+export const CONTENT_RESET = getResetContent();

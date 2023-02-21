@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsc -w",
-    "test": "playwright test"
+    "test": "playwright test",
+    "install-playwright": "playwright install chromium --with-deps"
   },
   "type": "module",
   "main": "./dist/src/index.js",

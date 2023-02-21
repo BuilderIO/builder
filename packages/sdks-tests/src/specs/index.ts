@@ -8,74 +8,51 @@ import { CONTENT as symbolBindings } from './symbol-bindings';
 import { CONTENT as image } from './image.js';
 import { CONTENT as dataBindings } from './data-bindings.js';
 import { CONTENT as dataBindingStyles } from './data-binding-styles.js';
-import { CONTENT as customBreakpoints } from './custom-breakpoints.js';
+import {
+  CONTENT as customBreakpoints,
+  CONTENT_RESET as customBreakpointsReset,
+} from './custom-breakpoints.js';
 import { CONTENT as reactiveState } from './reactive-state';
 import { CONTENT as showHideIf } from './show-hide-if';
-
-// TO-DO: import real content type from SDKs
-interface Breakpoints {
-  small: number;
-  medium: number;
-}
-type Nullable<T> = T | null | undefined;
-type BuilderContent = Partial<{
-  data: { [index: string]: any };
-  meta?: { breakpoints?: Nullable<Breakpoints>; [index: string]: any };
-}>;
+import { BuilderContent } from './types.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
 }
 
-function fastClone<T extends object>(object: T): T {
-  return JSON.parse(JSON.stringify(object));
-}
-
 const getPathnameFromWindow = (): string => (isBrowser() ? window.location.pathname : '');
 
-const getContentForPathname = (pathname: string): BuilderContent | null => {
-  let contentWithoutBreakpoints = undefined;
-  switch (pathname) {
-    case '/can-track-false':
-    case '/':
-      return homepage;
-    case '/css-nesting':
-      return cssNesting;
-    case '/columns':
-      return columns;
-    case '/symbols':
-      return symbols;
-    case '/symbol-bindings':
-      return symbolBindings;
-    case '/content-bindings':
-      return contentBindings;
-    case '/image':
-      return image;
-    case '/data-bindings':
-      return dataBindings;
-    case '/data-binding-styles':
-      return dataBindingStyles;
-    case '/custom-breakpoints':
-      return customBreakpoints as BuilderContent;
-    case '/reactive-state':
-      return reactiveState;
-    case '/element-events':
-      return elementEvents;
-    case '/show-hide-if':
-      return showHideIf;
-    case '/custom-breakpoints-reset':
-      contentWithoutBreakpoints = fastClone(customBreakpoints as BuilderContent);
-      delete contentWithoutBreakpoints.meta!.breakpoints;
-      return contentWithoutBreakpoints;
-    default:
-      return null;
-  }
-};
+const pages = {
+  '/': homepage,
+  '/can-track-false': homepage,
+  '/css-nesting': cssNesting,
+  '/columns': columns,
+  '/symbols': symbols,
+  '/symbol-bindings': symbolBindings,
+  '/content-bindings': contentBindings,
+  '/image': image,
+  '/data-bindings': dataBindings,
+  '/data-binding-styles': dataBindingStyles,
+  '/custom-breakpoints': customBreakpoints,
+  '/reactive-state': reactiveState,
+  '/element-events': elementEvents,
+  '/show-hide-if': showHideIf,
+  '/custom-breakpoints-reset': customBreakpointsReset,
+} as const;
+
+export type Path = keyof typeof pages;
+
+export const ALL_PATHNAMES = Object.keys(pages);
+
+const getContentForPathname = (pathname: string): BuilderContent | null =>
+  pages[pathname as keyof typeof pages] || null;
 
 // remove trailing slash from pathname if it exists
 // unless it's the root path
 const normalizePathname = (pathname: string): string =>
   pathname === '/' ? pathname : pathname.replace(/\/$/, '');
+
+export const getAPIKey = (): string => 'f1a790f8c3204b3b8c5c1795aeac4660';
 
 export const getProps = (
   _pathname = getPathnameFromWindow()
@@ -100,7 +77,7 @@ export const getProps = (
 
   return {
     content,
-    apiKey: 'f1a790f8c3204b3b8c5c1795aeac4660',
+    apiKey: getAPIKey(),
     model: 'page',
     ...extraProps,
   };

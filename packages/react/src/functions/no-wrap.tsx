@@ -35,6 +35,8 @@ export const noWrap = <P extends object>(Component: React.ComponentType<P>) => {
       ...props,
       ...props.attributes,
     };
+    // getting type errors due to `@types/react` version mismatches. Can safely ignore.
+    // @ts-ignore
     return <Component {...finalProps} ref={ref} />;
   });
   (HOC as any).builderOptions = {
