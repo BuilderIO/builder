@@ -8,8 +8,6 @@
   // this data comes from the function in `+page.server.ts`, which runs on the server only
   export let data: any;
 
-  const props = data.props;
-
   const CUSTOM_COMPONENTS: RegisteredComponent[] = [
     {
       name: 'Counter',
@@ -27,8 +25,15 @@
 </script>
 
 <main>
-  {#if props}
-    <RenderContent {...props} customComponents={CUSTOM_COMPONENTS} />
+  {#if data.props}
+    {#key data.props}
+      <RenderContent
+        content={data.props.content}
+        model={data.props.model}
+        apiKey={data.props.apiKey}
+        customComponents={CUSTOM_COMPONENTS}
+      />
+    {/key}
   {:else}
     Content Not Found
   {/if}
