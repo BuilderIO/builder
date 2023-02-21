@@ -19,7 +19,7 @@
       (click)="onClick($event)"
       (contentLoad)="load.next($event)"
       (contentError)="error.next($event)"
-      *builderModel="model; let content; let loading = loading"
+      *builderModel="model; let content; let loading = loading; let meta = meta;"
     >
       <builder-blocks
         *ngIf="content"
@@ -29,6 +29,7 @@
         [prerender]="prerender"
         [options]="options"
         [blocks]="content.blocks || content"
+        [breakpoints]="(content.meta && content.meta.breakpoints) || (meta && meta.breakpoints) || undefined"
       ></builder-blocks>
       <ng-content *ngIf="loading"></ng-content>
     </builder-content>

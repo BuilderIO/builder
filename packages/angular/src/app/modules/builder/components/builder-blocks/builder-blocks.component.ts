@@ -22,6 +22,8 @@ export class BuilderBlocksComponent {
   // @deprecated
   @Input() field = '';
 
+  @Input() breakpoints: any;
+
   constructor(private domSanitizer: DomSanitizer, private builder: BuilderService) {}
 
   private lastInnerHtml = '';
@@ -69,6 +71,15 @@ export class BuilderBlocksComponent {
 
     const css = this.blocks.css;
     let html = this.blocks.html;
+    if (this.breakpoints) {
+      if (this.breakpoints.small) {
+        html = html.replace(/max-width:640/g, `max-width:${this.breakpoints.small}`);
+      }
+      if (this.breakpoints.medium) {
+        html = html.replace(/max-width:991/g, `max-width:${this.breakpoints.medium}`);
+      }
+    }
+
     if (css) {
       html = `<style class="builder-styles">${css}</style>` + html;
     }

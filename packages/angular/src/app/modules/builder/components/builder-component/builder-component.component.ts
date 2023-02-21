@@ -17,6 +17,7 @@ import { BuilderComponentService } from './builder-component.service';
 import { GetContentOptions, Builder } from '@builder.io/sdk';
 import { Subscription, BehaviorSubject } from 'rxjs';
 import { BuilderService } from '../../services/builder.service';
+import { ANGULAR_LATEST_VERSION, SCRIPT_ID } from '../../utils/constants';
 
 function omit<T extends object>(obj: T, ...values: (keyof T)[]): Partial<T> {
   const newObject = Object.assign({}, obj);
@@ -109,7 +110,6 @@ export class BuilderComponentComponent implements OnDestroy, OnInit, OnChanges {
   ) {}
 
   async ensureWCScriptLoaded() {
-    const SCRIPT_ID = 'builder-wc-script';
     if (!Builder.isBrowser || wcScriptInserted || document.getElementById(SCRIPT_ID)) {
       return;
     }
@@ -125,8 +125,6 @@ export class BuilderComponentComponent implements OnDestroy, OnInit, OnChanges {
       return null;
     }
     const script = document.createElement('script');
-    // TODO remove hardcoded version, maybe a release tag?
-    const ANGULAR_LATEST_VERSION = '1.3.47';
     const wcVersion = getQueryParam(location.href, 'builder.wcVersion') || ANGULAR_LATEST_VERSION;
     script.id = SCRIPT_ID;
     // TODO: detect builder.wcVersion and if customEleemnts exists and do
