@@ -1,7 +1,16 @@
 import type { BrowserContext, ConsoleMessage, Locator, Page } from '@playwright/test';
-import { test, expect } from '@playwright/test';
+import { test as base, expect } from '@playwright/test';
 import { targetContext } from './context.js';
 import { sdk, Sdk } from './sdk.js';
+
+type TestOptions = {
+  packageName: string;
+};
+
+const test = base.extend<TestOptions>({
+  // this is provided by `playwright.config.ts`
+  packageName: ['', { option: true }],
+});
 
 const findTextInPage = async ({ page, text }: { page: Page; text: string }) => {
   await page.locator(`text=${text}`).waitFor();
@@ -223,7 +232,12 @@ test.describe(targetContext.name, () => {
     });
   });
 
-  test('homepage', async ({ page }) => {
+  test('homepage - client-side navigation', async ({ page, packageName }, use) => {
+    // client-side navigation is broken in e2e-sveltekit
+    if (packageName === 'e2e-sveltekit') {
+      return;
+    }
+
     await page.goto('/');
 
     const links = await page.locator('a');
