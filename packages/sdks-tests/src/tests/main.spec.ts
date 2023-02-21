@@ -501,7 +501,7 @@ test.describe(targetContext.name, () => {
     },
     */
     test.describe('when applied', () => {
-      test('large desktop size', async ({ page }) => {
+      testExcludeOldReact('large desktop size', async ({ page }) => {
         page.setViewportSize({ width: 801, height: 1000 });
 
         await page.goto('/custom-breakpoints');
@@ -551,7 +551,7 @@ test.describe(targetContext.name, () => {
         }
       });
 
-      test('medium tablet size', async ({ page }) => {
+      testExcludeOldReact('medium tablet size', async ({ page }) => {
         page.setViewportSize({ width: 501, height: 1000 });
 
         await page.goto('/custom-breakpoints');
