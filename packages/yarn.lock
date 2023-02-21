@@ -1702,6 +1702,39 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@builder.io/e2e-old-nextjs@workspace:react-tests/nextjs":
+  version: 0.0.0-use.local
+  resolution: "@builder.io/e2e-old-nextjs@workspace:react-tests/nextjs"
+  dependencies:
+    "@builder.io/react": "workspace:*"
+    "@builder.io/sdks-e2e-tests": "workspace:*"
+    "@types/react": ^18.0.14
+    "@types/react-dom": ^18.0.5
+    next: ^12.2.5
+    react: ^18.2.0
+    react-dom: ^18.2.0
+    rimraf: ^3.0.2
+    typescript: ^4
+  languageName: unknown
+  linkType: soft
+
+"@builder.io/e2e-old-react-vite@workspace:react-tests/react-vite":
+  version: 0.0.0-use.local
+  resolution: "@builder.io/e2e-old-react-vite@workspace:react-tests/react-vite"
+  dependencies:
+    "@builder.io/sdk-react": "workspace:*"
+    "@builder.io/sdks-e2e-tests": "workspace:*"
+    "@types/react": ^18.0.14
+    "@types/react-dom": ^18.0.5
+    "@vitejs/plugin-react": ^1.3.0
+    react: ^18.2.0
+    react-dom: ^18.2.0
+    rimraf: ^3.0.2
+    typescript: ^4
+    vite: ^3.0.4
+  languageName: unknown
+  linkType: soft
+
 "@builder.io/e2e-qwik-city@workspace:sdks/e2e/qwik-city":
   version: 0.0.0-use.local
   resolution: "@builder.io/e2e-qwik-city@workspace:sdks/e2e/qwik-city"
@@ -2019,7 +2052,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@builder.io/react@workspace:react":
+"@builder.io/react@workspace:*, @builder.io/react@workspace:react":
   version: 0.0.0-use.local
   resolution: "@builder.io/react@workspace:react"
   dependencies:
@@ -28033,6 +28066,12 @@ __metadata:
   checksum: e6b5c6ed2a0bde2c34f1ab9523ff9bc4c141a271daf730d6b852374e83acc0155d58ab71a318251e953ebfa65b8bebb9c5dce3eba1ccfcbef7cc4e1e8261c401
   languageName: node
   linkType: hard
+
+"react-tests@workspace:react-tests":
+  version: 0.0.0-use.local
+  resolution: "react-tests@workspace:react-tests"
+  languageName: unknown
+  linkType: soft
 
 "react-universal-interface@npm:^0.6.2":
   version: 0.6.2

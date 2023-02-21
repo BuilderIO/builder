@@ -1,1 +1,1 @@
-export { getProps } from './specs/index.js';
+export { getProps, getAPIKey } from './specs/index.js';
