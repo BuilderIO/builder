@@ -6,7 +6,7 @@ import type {
   GetStaticPropsContext,
   InferGetStaticPropsType,
 } from 'next';
-import { BuilderComponent, builder, useIsPreviewing } from '@builder.io/react';
+import { BuilderComponent, builder } from '@builder.io/react';
 import DefaultErrorPage from 'next/error';
 import Head from 'next/head';
 import { useEffect } from 'react';
@@ -39,8 +39,6 @@ builder.canTrack = false;
 
 export default function Page(props: PageProps) {
   const router = useRouter();
-  const isPreviewingInBuilder = useIsPreviewing();
-  const show404 = !props.content && !isPreviewingInBuilder;
 
   // only enable tracking if we're not in the `/can-track-false` test route
   useEffect(() => {
@@ -59,11 +57,7 @@ export default function Page(props: PageProps) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         {!props.content && <meta name="robots" content="noindex" />}
       </Head>
-      {show404 ? (
-        <DefaultErrorPage statusCode={404} />
-      ) : (
-        <BuilderComponent model="page" content={props.content} />
-      )}
+      {!props ? <DefaultErrorPage statusCode={404} /> : <BuilderComponent {...props} />}
     </>
   );
 }
