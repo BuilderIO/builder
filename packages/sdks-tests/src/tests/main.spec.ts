@@ -232,12 +232,7 @@ test.describe(targetContext.name, () => {
     });
   });
 
-  test('homepage - client-side navigation', async ({ page, packageName }, use) => {
-    // client-side navigation is broken in e2e-sveltekit
-    if (packageName === 'e2e-sveltekit') {
-      return;
-    }
-
+  test('homepage - client-side navigation', async ({ page }) => {
     await page.goto('/');
 
     const links = await page.locator('a');
