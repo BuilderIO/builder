@@ -27,12 +27,7 @@
 <main>
   {#if data.props}
     {#key data.props}
-      <RenderContent
-        content={data.props.content}
-        model={data.props.model}
-        apiKey={data.props.apiKey}
-        customComponents={CUSTOM_COMPONENTS}
-      />
+      <RenderContent {...data.props} customComponents={CUSTOM_COMPONENTS} />
     {/key}
   {:else}
     Content Not Found
