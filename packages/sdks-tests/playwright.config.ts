@@ -22,7 +22,10 @@ const WEB_SERVERS: Record<Sdk, string[]> = {
   vue: ['e2e-vue2', 'e2e-vue3'],
   svelte: ['e2e-svelte'],
   rsc: [],
-  oldReact: ['old-e2e-react', 'old-e2e-nextjs-react'],
+  oldReact: [
+    // 'old-e2e-react',
+    'old-e2e-nextjs-react',
+  ],
 };
 
 const packageName = sdk;
