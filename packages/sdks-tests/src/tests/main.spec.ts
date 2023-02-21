@@ -799,11 +799,14 @@ test.describe(targetContext.name, () => {
       });
     });
 
-    const excludeReactNative = excludeTestFor({
+    const excludeReactNativeAndOldReact = excludeTestFor({
+      // we don't support CSS nesting in RN.
       reactNative: true,
+      // old React SDK should support CSS nesting, but it seems to not be implemented properly.
+      oldReact: true,
     });
 
-    excludeReactNative('Should apply CSS nesting', async ({ page }) => {
+    excludeReactNativeAndOldReact('Should apply CSS nesting', async ({ page }) => {
       await page.goto('./css-nesting');
 
       const blueText = page.locator('text=blue');

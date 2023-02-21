@@ -45,8 +45,6 @@ const things = WEB_SERVERS[sdk].map((packageName, i) => {
   };
 });
 
-console.log({ sdk, things, packageName });
-
 export default defineConfig({
   testDir: getDirName() + '/src/tests',
   /* Maximum time one test can run for. */

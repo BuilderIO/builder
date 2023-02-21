@@ -9,6 +9,7 @@ import type {
 import { BuilderComponent, builder, useIsPreviewing } from '@builder.io/react';
 import DefaultErrorPage from 'next/error';
 import Head from 'next/head';
+import { useEffect } from 'react';
 
 builder.init(getAPIKey());
 
@@ -33,10 +34,20 @@ export function getStaticPaths(): GetStaticPathsResult<StaticProps> {
 
 type PageProps = InferGetStaticPropsType<typeof getStaticProps>;
 
+// default to not tracking, and re-enable when appropriate
+builder.canTrack = false;
+
 export default function Page(props: PageProps) {
   const router = useRouter();
   const isPreviewingInBuilder = useIsPreviewing();
   const show404 = !props.content && !isPreviewingInBuilder;
+
+  // only enable tracking if we're not in the `/can-track-false` test route
+  useEffect(() => {
+    if (!router.asPath.includes('can-track-false')) {
+      builder.canTrack = true;
+    }
+  }, []);
 
   if (router.isFallback) {
     return <h1>Loading...</h1>;
