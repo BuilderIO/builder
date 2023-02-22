@@ -209,3 +209,31 @@ function updateGridToSlider(builderContent) {
 ```
 
 note: This can break content if the transformation was incorrect, recommend duplicating content and testing on non-live duplicates.
+
+## setPixelProperties
+
+`setPixelProperties` allows you to add more pixel element properties, for example , `alt`
+
+### Example
+
+```ts
+import { setPixelProperties } from '@builder.io/utils';
+
+export async function getServerSideProps({
+  params,
+}) {
+  const page =
+    (await builder
+      .get(mode, ....)
+      .toPromise()) || null
+     
+  setPixelProperties(page, { alt: 'pixel tag from builder' })
+  
+  return {
+    props: {
+      page,
+    },
+  }
+}
+```
+note: Pixels will have `alt` by default in next API verison (`v3`);

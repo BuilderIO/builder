@@ -418,7 +418,6 @@ module.exports = {
                 }
 
                 if (item.name === 'View') {
-                  console.log('found a view');
                   item.name = 'ScrollView';
                 }
               });

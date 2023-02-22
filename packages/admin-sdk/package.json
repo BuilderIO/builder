@@ -28,7 +28,7 @@
     "@types/fs-extra": "^9.0.5",
     "@types/node": "12.19.8",
     "@types/node-fetch": "^2.5.7",
-    "ava": "^2.2.0",
+    "ava": "^5.2.0",
     "nodemon": "^2.0.6",
     "pkg": "^4.4.9",
     "rimraf": "^2.6.3",

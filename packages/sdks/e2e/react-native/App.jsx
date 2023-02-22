@@ -22,7 +22,14 @@ const BuilderContent = ({ route }) => {
 
   return (
     <Fragment>
-      {props ? <RenderContent {...props} /> : <Text>Not Found.</Text>}
+      <View
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
+        {props ? <RenderContent {...props} /> : <Text>Not Found.</Text>}
+      </View>
       <StatusBar style="auto" />
     </Fragment>
   );
