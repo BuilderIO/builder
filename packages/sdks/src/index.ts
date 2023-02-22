@@ -1,5 +1,4 @@
 export * from './index-helpers/top-of-file.js';
-import './scripts/init-editing.js';
 
 export * from './index-helpers/blocks-exports.js';
 
