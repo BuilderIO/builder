@@ -20,16 +20,14 @@ const WEB_SERVERS: Record<Sdk, string[]> = {
   qwik: ['e2e-qwik', 'e2e-qwik-city'],
   react: ['e2e-nextjs-react', 'e2e-react'],
   vue: ['e2e-vue2', 'e2e-vue3'],
-  svelte: ['e2e-svelte'],
+  svelte: ['e2e-svelte', 'e2e-sveltekit'],
   rsc: [],
   oldReact: ['e2e-old-react', 'e2e-old-nextjs'],
 };
 
-const packageName = sdk;
+targetContext.name = sdk;
 
-targetContext.name = packageName;
-
-const isReactNative = packageName === 'reactNative';
+const isReactNative = sdk === 'reactNative';
 
 const things = WEB_SERVERS[sdk].map((packageName, i) => {
   const port = isReactNative ? 19006 : 1234 + i;
@@ -80,6 +78,10 @@ export default defineConfig({
     use: {
       ...devices['Desktop Chrome'],
       baseURL: `http://localhost:${port}`,
+      /**
+       * This provides the package name to the test as a variable to check which exact server the test is running.
+       */
+      packageName,
     },
   })),
 
