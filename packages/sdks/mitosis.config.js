@@ -398,6 +398,32 @@ module.exports = {
             },
           },
         }),
+        () => ({
+          json: {
+            pre: (json) => {
+              if (
+                json.name !== 'RenderBlocks' &&
+                json.name !== 'RenderContent'
+              ) {
+                return;
+              }
+
+              /**
+               * We need the ScrollView for the `RenderBlocks` and `RenderComponent` components to be able to scroll
+               * through the whole page.
+               */
+              traverse(json).forEach(function (item) {
+                if (!isMitosisNode(item)) {
+                  return;
+                }
+
+                if (item.name === 'View') {
+                  item.name = 'ScrollView';
+                }
+              });
+            },
+          },
+        }),
       ],
     },
     qwik: {
