@@ -373,7 +373,7 @@ test.describe(targetContext.name, () => {
     };
 
     const selector = isRNSDK
-      ? '[data-class*=builder-blocks] > div'
+      ? '[data-class*=builder-blocks] > div > div'
       : '[class*=builder-blocks] > div';
 
     const locator = page.locator(selector).filter({ hasText: 'Enter some text...' }).last();
@@ -398,7 +398,7 @@ test.describe(targetContext.name, () => {
     };
 
     const selector = isRNSDK
-      ? '[data-class*=builder-blocks] > div'
+      ? '[data-class*=builder-blocks] > div > div'
       : '[class*=builder-blocks] > div';
 
     const locator = page.locator(selector).filter({ hasText: 'Enter some text...' }).last();
