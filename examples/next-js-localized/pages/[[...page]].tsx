@@ -21,8 +21,8 @@ export async function getStaticProps({
           urlPath: '/' + (params?.page?.join('/') || ''),
         },
         options: {
-          locale
-        }
+          locale,
+        },
       })
       .toPromise()) || null
 
@@ -71,7 +71,7 @@ export default function Page({
       {show404 ? (
         <DefaultErrorPage statusCode={404} />
       ) : (
-        <BuilderComponent model="page" content={page} locale={locale}/>
+        <BuilderComponent model="page" content={page} locale={locale} />
       )}
     </>
   )
