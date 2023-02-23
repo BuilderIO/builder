@@ -7,6 +7,7 @@ type TestOptions = {
   packageName: string;
 };
 
+// https://github.com/microsoft/playwright/issues/14854#issuecomment-1155667859
 async function screenshotOnFailure({ page }: { page: Page }, testInfo: TestInfo) {
   if (testInfo.status !== testInfo.expectedStatus) {
     // Get a unique place for the screenshot.
