@@ -854,7 +854,7 @@ test.describe(targetContext.name, () => {
         expectedValue: 'rgb(0, 0, 255)',
       });
 
-      const redText = page.locator('text=red');
+      const redText = page.locator('text=green');
       await expectStyleForElement({
         locator: redText,
         cssProperty: 'color',
