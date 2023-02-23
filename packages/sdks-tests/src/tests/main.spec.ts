@@ -73,11 +73,9 @@ const getElementStyleValue = async ({
   locator: Locator;
   cssProperty: string;
 }) => {
-  const styles = await locator.evaluate(e => JSON.parse(JSON.stringify(getComputedStyle(e))));
-
-  const styleValue = styles[cssProperty];
-
-  return styleValue;
+  return locator.evaluate((e, cssProperty) => {
+    return getComputedStyle(e).getPropertyValue(cssProperty);
+  }, cssProperty);
 };
 
 const expectStyleForElement = async ({
@@ -89,7 +87,12 @@ const expectStyleForElement = async ({
   cssProperty: string;
   expectedValue: string;
 }) => {
-  await expect(await getElementStyleValue({ locator, cssProperty })).toBe(expectedValue);
+  await expect(
+    await getElementStyleValue({
+      locator,
+      cssProperty,
+    })
+  ).toBe(expectedValue);
 };
 const expectStylesForElement = async ({
   expected,
