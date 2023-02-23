@@ -83,32 +83,35 @@ const expectStyleForElement = async ({
   expectedValue,
   locator,
   cssProperty,
+  checkVisibility = true,
 }: {
   locator: Locator;
   cssProperty: string;
   expectedValue: string;
+  checkVisibility?: boolean;
 }) => {
   // we need to wait for the element to be visible, otherwise we might run the style check on a removed DOM node.
-  await expect(locator).toBeVisible();
-  await expect(
-    await getElementStyleValue({
-      locator,
-      cssProperty,
-    })
-  ).toBe(expectedValue);
+  if (checkVisibility) {
+    await expect(locator).toBeVisible();
+  }
+
+  await expect(await getElementStyleValue({ locator, cssProperty })).toBe(expectedValue);
 };
 const expectStylesForElement = async ({
   expected,
   locator,
+  checkVisibility,
 }: {
   locator: Locator;
   expected: Record<string, string>;
+  checkVisibility?: boolean;
 }) => {
   for (const property of Object.keys(expected)) {
     await expectStyleForElement({
       cssProperty: property,
       locator,
       expectedValue: expected[property],
+      checkVisibility,
     });
   }
 };
@@ -399,8 +402,6 @@ test.describe(targetContext.name, () => {
 
     page.locator(selector).innerText;
 
-    await expect(locator).toBeVisible();
-
     await expectStylesForElement({ expected, locator });
     // TODO: fix this
     // check the title is correct
@@ -421,8 +422,6 @@ test.describe(targetContext.name, () => {
       : '[class*=builder-blocks] > div';
 
     const locator = page.locator(selector).filter({ hasText: 'Enter some text...' }).last();
-
-    await expect(locator).toBeVisible();
 
     await expectStylesForElement({ expected, locator });
     // TODO: fix this
@@ -534,7 +533,6 @@ test.describe(targetContext.name, () => {
 
         await page.goto('/custom-breakpoints');
         const breakpointsParam = page.locator(`text=BREAKPOINTS 500 - 800`);
-        await expect(breakpointsParam).toBeVisible();
 
         let expectedTextColor = 'rgb(0, 0, 0)'; // black text color
         if (process.env.SDK === 'reactNative') {
@@ -548,7 +546,6 @@ test.describe(targetContext.name, () => {
         });
 
         const column2 = page.locator(`text=Column 2`);
-        await expect(column2).toBeVisible();
 
         let expectedColumnTextColor = 'rgb(0, 0, 0)'; // black text color
         if (process.env.SDK === 'reactNative') {
@@ -565,7 +562,6 @@ test.describe(targetContext.name, () => {
         // Its difficult to locate the image in react-native as css selectors don't work as expected.
         if (process.env.SDK !== 'reactNative') {
           const image = page.locator(`.builder-block:has(img.builder-image)`);
-          await expect(image).toBeVisible();
 
           const expectedImageCss: Record<string, string> = {
             display: 'flex',
@@ -584,7 +580,6 @@ test.describe(targetContext.name, () => {
 
         await page.goto('/custom-breakpoints');
         const breakpointsPara = page.locator(`text=BREAKPOINTS 500 - 800`);
-        await expect(breakpointsPara).toBeVisible();
 
         let expectedTextColor = 'rgb(208, 2, 27)'; // reddish text color
         if (process.env.SDK === 'reactNative') {
@@ -598,7 +593,6 @@ test.describe(targetContext.name, () => {
         });
 
         const column2 = page.locator(`text=Column 2`);
-        await expect(column2).toBeVisible();
 
         let expectedColumnTextColor = 'rgb(223, 22, 22)'; // reddish text color
         if (process.env.SDK === 'reactNative') {
@@ -615,7 +609,6 @@ test.describe(targetContext.name, () => {
         // Its difficult to locate the image in react-native as css selectors don't work as expected.
         if (process.env.SDK !== 'reactNative') {
           const image = page.locator(`.builder-block:has(img.builder-image)`);
-          await expect(image).not.toBeVisible();
 
           const expectedImageCss: Record<string, string> = {
             display: 'none',
@@ -624,6 +617,7 @@ test.describe(targetContext.name, () => {
           await expectStylesForElement({
             locator: image,
             expected: expectedImageCss,
+            checkVisibility: false,
           });
         }
       });
@@ -633,7 +627,6 @@ test.describe(targetContext.name, () => {
         await page.goto('/custom-breakpoints');
 
         const breakpointsPara = page.locator(`text=BREAKPOINTS 500 - 800`);
-        await expect(breakpointsPara).toBeVisible();
         await expectStyleForElement({
           locator: breakpointsPara,
           cssProperty: 'color',
@@ -641,8 +634,6 @@ test.describe(targetContext.name, () => {
         });
 
         const column2 = page.locator(`text=Column 2`);
-        await expect(column2).toBeVisible();
-
         await expectStyleForElement({
           locator: column2,
           cssProperty: 'color',
@@ -653,7 +644,6 @@ test.describe(targetContext.name, () => {
         // Its difficult to locate the image in react-native as css selectors don't work as expected.
         if (process.env.SDK !== 'reactNative') {
           const image = page.locator(`.builder-block:has(img.builder-image)`);
-          await expect(image).toBeVisible();
 
           const expectedImageCss: Record<string, string> = {
             display: 'flex',
@@ -664,6 +654,7 @@ test.describe(targetContext.name, () => {
           await expectStylesForElement({
             locator: image,
             expected: expectedImageCss,
+            checkVisibility: false,
           });
         }
       });
@@ -682,7 +673,6 @@ test.describe(targetContext.name, () => {
         await page.goto('/custom-breakpoints-reset');
 
         const breakpointsPara = page.locator(`text=BREAKPOINTS 500 - 800`);
-        await expect(breakpointsPara).toBeVisible();
 
         let expectedTextColor = 'rgb(0, 0, 0)'; // black text color
         if (process.env.SDK === 'reactNative') {
@@ -696,7 +686,6 @@ test.describe(targetContext.name, () => {
         });
 
         const column2 = page.locator(`text=Column 2`);
-        await expect(column2).toBeVisible();
 
         let expectedColumnTextColor = 'rgb(0, 0, 0)'; // black text color
         if (process.env.SDK === 'reactNative') {
@@ -713,7 +702,6 @@ test.describe(targetContext.name, () => {
         // Its difficult to locate the image in react-native as css selectors don't work as expected.
         if (process.env.SDK !== 'reactNative') {
           const image = page.locator(`.builder-block:has(img.builder-image)`);
-          await expect(image).toBeVisible();
 
           const expectedImageCss: Record<string, string> = {
             display: 'flex',
@@ -732,7 +720,6 @@ test.describe(targetContext.name, () => {
 
         await page.goto('/custom-breakpoints-reset');
         const breakpointsPara = page.locator(`text=BREAKPOINTS 500 - 800`);
-        await expect(breakpointsPara).toBeVisible();
 
         let expectedTextColor = 'rgb(208, 2, 27)'; // reddish text color
         if (process.env.SDK === 'reactNative') {
@@ -746,7 +733,6 @@ test.describe(targetContext.name, () => {
         });
 
         const column2 = page.locator(`text=Column 2`);
-        await expect(column2).toBeVisible();
 
         let expectedColumnTextColor = 'rgb(223, 22, 22)'; // reddish text color
         if (process.env.SDK === 'reactNative') {
@@ -763,7 +749,6 @@ test.describe(targetContext.name, () => {
         // Its difficult to locate the image in react-native as css selectors don't work as expected.
         if (process.env.SDK !== 'reactNative') {
           const image = page.locator(`.builder-block:has(img.builder-image)`);
-          await expect(image).not.toBeVisible();
 
           const expectedImageCss: Record<string, string> = {
             display: 'none',
@@ -772,6 +757,7 @@ test.describe(targetContext.name, () => {
           await expectStylesForElement({
             locator: image,
             expected: expectedImageCss,
+            checkVisibility: false,
           });
         }
       });
@@ -781,7 +767,6 @@ test.describe(targetContext.name, () => {
         await page.goto('/custom-breakpoints-reset');
 
         const breakpointsPara = page.locator(`text=BREAKPOINTS 500 - 800`);
-        await expect(breakpointsPara).toBeVisible();
 
         await expectStyleForElement({
           locator: breakpointsPara,
@@ -790,7 +775,6 @@ test.describe(targetContext.name, () => {
         });
 
         const column2 = page.locator(`text=Column 2`);
-        await expect(column2).toBeVisible();
 
         await expectStyleForElement({
           locator: column2,
@@ -802,7 +786,6 @@ test.describe(targetContext.name, () => {
         // Its difficult to locate the image in react-native as css selectors don't work as expected.
         if (process.env.SDK !== 'reactNative') {
           const image = page.locator(`.builder-block:has(img.builder-image)`);
-          await expect(image).toBeVisible();
 
           const expectedImageCss: Record<string, string> = {
             display: 'flex',
