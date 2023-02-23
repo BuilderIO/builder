@@ -1,4 +1,4 @@
-import type { BrowserContext, ConsoleMessage, Locator, Page } from '@playwright/test';
+import type { BrowserContext, TestInfo, ConsoleMessage, Locator, Page } from '@playwright/test';
 import { test as base, expect } from '@playwright/test';
 import { targetContext } from './context.js';
 import { sdk, Sdk } from './sdk.js';
@@ -7,10 +7,26 @@ type TestOptions = {
   packageName: string;
 };
 
+async function screenshotOnFailure({ page }: { page: Page }, testInfo: TestInfo) {
+  if (testInfo.status !== testInfo.expectedStatus) {
+    // Get a unique place for the screenshot.
+    const screenshotPath = testInfo.outputPath(`failure.png`);
+    // Add it to the report.
+    testInfo.attachments.push({
+      name: 'screenshot',
+      path: screenshotPath,
+      contentType: 'image/png',
+    });
+    // Take the screenshot itself.
+    await page.screenshot({ path: screenshotPath, timeout: 5000 });
+  }
+}
+
 const test = base.extend<TestOptions>({
   // this is provided by `playwright.config.ts`
   packageName: ['', { option: true }],
 });
+test.afterEach(screenshotOnFailure);
 
 const findTextInPage = async ({ page, text }: { page: Page; text: string }) => {
   await page.locator(`text=${text}`).waitFor();
