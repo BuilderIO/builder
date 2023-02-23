@@ -88,6 +88,8 @@ const expectStyleForElement = async ({
   cssProperty: string;
   expectedValue: string;
 }) => {
+  // we need to wait for the element to be visible, otherwise we might run the style check on a removed DOM node.
+  await expect(locator).toBeVisible();
   await expect(
     await getElementStyleValue({
       locator,
