@@ -42,15 +42,6 @@ const things = WEB_SERVERS[sdk].map((packageName, i) => {
 
 export default defineConfig({
   testDir: getDirName() + '/src/tests',
-  /* Maximum time one test can run for. */
-  timeout: 30 * 1000,
-  expect: {
-    /**
-     * Maximum time expect() should wait for the condition to be met.
-     * For example in `await expect(locator).toHaveText();`
-     */
-    timeout: 5000,
-  },
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -61,20 +52,16 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
+
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    /* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
-    actionTimeout: 0,
-
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
-
-    // screenshot: 'on',
   },
 
   /* Configure projects for major browsers */
   projects: things.map(({ packageName, port, portFlag }) => ({
-    name: `Chromium - ${packageName}`,
+    name: packageName,
     use: {
       ...devices['Desktop Chrome'],
       baseURL: `http://localhost:${port}`,
@@ -84,12 +71,6 @@ export default defineConfig({
       packageName,
     },
   })),
-
-  /* Folder for test artifacts such as screenshots, videos, traces, etc. */
-  // outputDir: 'test-results/',
-
-  // This is set up for E2E testing of the compiled output; it might be useful
-  // also to test against "run dev" for a faster development cycle.
 
   webServer: things.map(({ packageName, port, portFlag }) => {
     const server = {
