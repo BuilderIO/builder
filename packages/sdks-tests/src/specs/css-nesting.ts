@@ -49,7 +49,7 @@ export const CONTENT = {
                 component: {
                   name: 'Text',
                   options: {
-                    text: '<span style="display: block;" class="builder-paragraph">text inside 2 boxes in red</span>',
+                    text: '<span style="display: block;" class="builder-paragraph">text inside 2 boxes in green</span>',
                   },
                 },
                 responsiveStyles: {
