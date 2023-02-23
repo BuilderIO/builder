@@ -66,18 +66,20 @@ const testExcludeOldReact = excludeTestFor({
   oldReact: true,
 });
 
+type CSSKey = keyof CSSStyleDeclaration;
+
 const getElementStyleValue = async ({
   locator,
   cssProperty,
 }: {
   locator: Locator;
-  cssProperty: string;
+  cssProperty: CSSKey;
 }) => {
   const styles = await locator.evaluate(e => JSON.parse(JSON.stringify(getComputedStyle(e))));
+  const prop = styles[cssProperty];
+  console.log('getting style for ', { cssProperty, value: styles[cssProperty], prop });
 
-  const styleValue = styles[cssProperty];
-
-  return styleValue;
+  return prop;
 };
 
 const expectStyleForElement = async ({
@@ -86,23 +88,26 @@ const expectStyleForElement = async ({
   cssProperty,
 }: {
   locator: Locator;
-  cssProperty: string;
+  cssProperty: CSSKey;
   expectedValue: string;
 }) => {
   await expect(await getElementStyleValue({ locator, cssProperty })).toBe(expectedValue);
 };
+
+type ExpectedStyles = Partial<Record<CSSKey, string>>;
+
 const expectStylesForElement = async ({
   expected,
   locator,
 }: {
   locator: Locator;
-  expected: Record<string, string>;
+  expected: ExpectedStyles;
 }) => {
-  for (const property of Object.keys(expected)) {
+  for (const [cssProperty, expectedValue] of Object.entries(expected)) {
     await expectStyleForElement({
-      cssProperty: property,
+      cssProperty: cssProperty as CSSKey,
       locator,
-      expectedValue: expected[property],
+      expectedValue: expectedValue as string,
     });
   }
 };
@@ -378,11 +383,11 @@ test.describe(targetContext.name, () => {
   test('style bindings', async ({ page }) => {
     await page.goto('/content-bindings');
 
-    const expected = {
-      'border-top-left-radius': '10px',
-      'border-top-right-radius': '22px',
-      'border-bottom-left-radius': '40px',
-      'border-bottom-right-radius': '30px',
+    const expected: ExpectedStyles = {
+      borderTopLeftRadius: '10px',
+      borderTopRightRadius: '22px',
+      borderBottomLeftRadius: '40px',
+      borderBottomRightRadius: '30px',
     };
 
     const selector = isRNSDK
@@ -828,7 +833,7 @@ test.describe(targetContext.name, () => {
 
       await expectStyleForElement({
         locator,
-        cssProperty: 'margin-left',
+        cssProperty: 'marginLeft',
         expectedValue: '0px',
       });
     });
