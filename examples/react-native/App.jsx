@@ -66,12 +66,19 @@ const BuilderContent = ({ route }) => {
     <View style={styles.container}>
       <Text>Hello world from your React-Native codebase. Below is your Builder content:</Text>
       {shouldRenderBuilderContent ? (
-        <RenderContent
-          apiKey={BUILDER_API_KEY}
-          model="page"
-          content={content}
-          customComponents={CUSTOM_COMPONENTS}
-        />
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+        >
+          <RenderContent
+            apiKey={BUILDER_API_KEY}
+            model="page"
+            content={content}
+            customComponents={CUSTOM_COMPONENTS}
+          />
+        </View>
       ) : (
         <Text>Not Found.</Text>
       )}
