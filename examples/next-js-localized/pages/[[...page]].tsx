@@ -12,7 +12,7 @@ builder.init(builderConfig.apiKey)
 
 export async function getStaticProps({
   params,
-  locale,
+  locale, // Get active locale from context
 }: GetStaticPropsContext<{ page: string[] }>) {
   const page =
     (await builder
@@ -21,7 +21,7 @@ export async function getStaticProps({
           urlPath: '/' + (params?.page?.join('/') || ''),
         },
         options: {
-          locale,
+          locale, // Automatically resolve the locale on localized inputs at build time
         },
       })
       .toPromise()) || null
@@ -71,6 +71,7 @@ export default function Page({
       {show404 ? (
         <DefaultErrorPage statusCode={404} />
       ) : (
+        // Pass active locale to preview resolved locale content client-side in Visual Editor
         <BuilderComponent model="page" content={page} locale={locale} />
       )}
     </>

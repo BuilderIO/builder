@@ -4,6 +4,8 @@ const bundleAnalyzer = require('@next/bundle-analyzer')({
 
 module.exports = bundleAnalyzer({
   i18n: {
+    // configure sub-path internationalized routing
+    // https://nextjs.org/docs/advanced-features/i18n-routing
     locales: ['en', 'fr', 'de'],
     defaultLocale: 'en',
   },
