@@ -1,7 +1,7 @@
 {
   "name": "@builder.io/sdk-react",
   "description": "Builder.io SDK for React",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "main": "src/index.js",
   "type": "module",
   "exports": {

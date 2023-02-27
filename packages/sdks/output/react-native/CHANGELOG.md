@@ -1,3 +1,7 @@
+### 0.1.10
+
+- Fix: Builder Content blocks are now wrapped in `ScrollView` instead of `View` to allow scrolling.
+
 ### 0.1.9
 
 - Fix: Section component
