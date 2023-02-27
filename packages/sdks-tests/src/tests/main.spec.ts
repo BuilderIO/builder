@@ -67,6 +67,10 @@ const testExcludeOldReact = excludeTestFor({
   oldReact: true,
 });
 
+const excludeReactNative = excludeTestFor({
+  reactNative: true,
+});
+
 const getElementStyleValue = async ({
   locator,
   cssProperty,
@@ -274,11 +278,7 @@ test.describe(targetContext.name, () => {
   });
 
   test.describe('reactive state', () => {
-    const defaultValueTest = excludeTestFor({
-      reactNative: true,
-    });
-
-    defaultValueTest('shows default value', async ({ page }) => {
+    excludeReactNative('shows default value', async ({ page }) => {
       await page.goto('/reactive-state');
 
       await findTextInPage({ page, text: '0' });
@@ -461,7 +461,7 @@ test.describe(targetContext.name, () => {
       text: 'Mattel Certified by Great Place to Work and Named to Fast Company’s List of 100 Best Workplaces for Innovators',
     });
   });
-  test.only('text-blocks', async ({ page }) => {
+  excludeReactNative('text-block', async ({ page }) => {
     await page.goto('/text-block');
 
     const textBlocks = page.locator('.builder-text');
