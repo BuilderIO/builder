@@ -257,7 +257,7 @@ test.describe(targetContext.name, () => {
   test('homepage - client-side navigation', async ({ page }) => {
     await page.goto('/');
 
-    const links = await page.locator('a');
+    const links = page.locator('a');
 
     const columnsLink = await links.filter({
       hasText: 'Columns (with images) ',
@@ -461,10 +461,53 @@ test.describe(targetContext.name, () => {
       text: 'Mattel Certified by Great Place to Work and Named to Fast Company’s List of 100 Best Workplaces for Innovators',
     });
   });
-  test('text-blocks', async ({ page }) => {
-    await page.goto('/text-blocks');
+  test.only('text-blocks', async ({ page }) => {
+    await page.goto('/text-block');
 
-    await findTextInPage({ page, text: 'This is a text block' });
+    const textBlocks = page.locator('.builder-text');
+
+    await expect(textBlocks).toHaveCount(3);
+
+    const paragraphClasses = await textBlocks.nth(0).locator('*').all();
+    const soloPTag = await textBlocks.nth(1).locator('*').first();
+    const pTags = await textBlocks.nth(2).locator('*').all();
+
+    const NO_MARGIN_STYLES = {
+      'margin-top': '0px',
+      'margin-bottom': '0px',
+      'margin-left': '0px',
+      'margin-right': '0px',
+    };
+
+    for (const child of paragraphClasses) {
+      await expectStylesForElement({
+        locator: child,
+        expected: NO_MARGIN_STYLES,
+      });
+    }
+    await expectStylesForElement({
+      locator: soloPTag,
+      expected: NO_MARGIN_STYLES,
+    });
+
+    const [firstPTag, ...otherPTags] = pTags;
+
+    await expectStylesForElement({
+      locator: firstPTag,
+      expected: NO_MARGIN_STYLES,
+    });
+
+    for (const child of otherPTags) {
+      await expectStylesForElement({
+        locator: child,
+        expected: {
+          'margin-top': '16px',
+          'margin-bottom': '16px',
+          'margin-left': '0px',
+          'margin-right': '0px',
+        },
+      });
+    }
   });
   test('data-binding-styles', async ({ page }) => {
     await page.goto('/data-binding-styles');
@@ -486,7 +529,7 @@ test.describe(targetContext.name, () => {
   test.skip('image', async ({ page }) => {
     await page.goto('/image');
 
-    const imageLocator = await page.locator('img');
+    const imageLocator = page.locator('img');
 
     const expected: Record<string, string>[] = [
       // first img is a webp image. React Native SDK does not yet support webp.
