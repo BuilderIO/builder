@@ -2491,6 +2491,10 @@ __metadata:
   resolution: "@builder.io/sdks-e2e-tests@workspace:sdks-tests"
   dependencies:
     "@playwright/test": ^1.27.1
+    "@typescript-eslint/eslint-plugin": latest
+    "@typescript-eslint/parser": latest
+    eslint: ^8.12.0
+    eslint-plugin-unused-imports: ^2.0.0
     typescript: ^4.8.4
     zod: ^3.20.2
   languageName: unknown
