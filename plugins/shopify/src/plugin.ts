@@ -14,14 +14,19 @@ registerCommercePlugin(
       {
         name: 'storefrontAccessToken',
         type: 'string',
-        helperText:
-          'Required to sync, index, and cache your storefront product data to avoid rate limits',
+        helperText: 'Required to fetch storefront product data',
         required: true,
       },
       {
         name: 'storeDomain',
         type: 'text',
         helperText: 'Your entire store domain, such as "your-store.myshopify.com"',
+        required: true,
+      },
+      {
+        name: 'apiVersion',
+        type: 'text',
+        helperText: 'Your Shopify API version, such as "2020-04"',
         required: true,
       },
     ],
@@ -31,9 +36,10 @@ registerCommercePlugin(
     const client = Client.buildClient({
       storefrontAccessToken: settings.get('storefrontAccessToken'),
       domain: settings.get('storeDomain'),
+      apiVersion: settings.get('apiVersion') || '2020-07',
     });
 
-    const service = {
+    const service: any = {
       product: {
         async findById(id: string) {
           return client.product.fetch(id);
@@ -48,7 +54,8 @@ registerCommercePlugin(
           });
         },
 
-        getRequestObject(id: string) {
+        getRequestObject(rawId: string) {
+          const id = encodeURIComponent(rawId);
           return {
             '@type': '@builder.io/core:Request' as const,
             request: {
@@ -76,7 +83,8 @@ registerCommercePlugin(
           });
         },
 
-        getRequestObject(id: string) {
+        getRequestObject(rawId: string) {
+          const id = encodeURIComponent(rawId);
           return {
             '@type': '@builder.io/core:Request' as const,
             request: {
@@ -92,7 +100,7 @@ registerCommercePlugin(
       },
     };
 
-    appState.registerDataPlugin(getDataConfig(service));
+    appState.registerDataPlugin(getDataConfig(service as any));
 
     return service;
   }
