@@ -2158,13 +2158,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis-cli@npm:^0.0.50":
-  version: 0.0.50
-  resolution: "@builder.io/mitosis-cli@npm:0.0.50"
+"@builder.io/mitosis-cli@npm:^0.0.51":
+  version: 0.0.51
+  resolution: "@builder.io/mitosis-cli@npm:0.0.51"
   dependencies:
     "@babel/core": ^7.17.8
     "@babel/preset-typescript": ^7.16.7
-    "@builder.io/mitosis": 0.0.91
+    "@builder.io/mitosis": 0.0.92
     "@vue/compiler-sfc": ^3.1.5
     babel-preset-solid: ^1.3.13
     chalk: ^4.1.0
@@ -2186,13 +2186,13 @@ __metadata:
     vue-template-validator: ^1.1.5
   bin:
     mitosis: bin/mitosis
-  checksum: 6d823293ed1b4fb6f84bc14be640fedd6ba29c5b5a6e4b0cf176dcc1c9e840d400c1a6af9d9e07bdfce018ce02ea3731f9c44e11194f3ae0b8c6ab92bc6ea8a4
+  checksum: 83f3bcb44c76c8d6d5a0dbbe86beb477b8b109fff506e0d30d3db9f793a5ba6f5d45eddf0c290743df65ac1eb63c5d5b461d370ddd0f3e7ad099f796e17b7562
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis@npm:0.0.91, @builder.io/mitosis@npm:^0.0.91":
-  version: 0.0.91
-  resolution: "@builder.io/mitosis@npm:0.0.91"
+"@builder.io/mitosis@npm:0.0.92, @builder.io/mitosis@npm:^0.0.92":
+  version: 0.0.92
+  resolution: "@builder.io/mitosis@npm:0.0.92"
   dependencies:
     "@angular/compiler": ^11.2.11
     "@babel/core": 7.14.5
@@ -2230,7 +2230,7 @@ __metadata:
     traverse: ^0.6.6
     typescript: ^4.8.4
     vue: ~2.6
-  checksum: 99d3e7ff1f7ffb01ad7f3a6aad1e4dfdf10989f3ce3ae7045bd4fda7668ae41a34a7233e9d7d2b19ef8c7f232ff55694f7b86c740446107e2a7d4d2e2e69a1e5
+  checksum: 06dc55a298170ba808a88bcd209fe8415dfe05cbffb2cabea35ff14f402e208ef64b83007e8b712750030f296b0f33190befd42e8852881afa630558bcba0c4b
   languageName: node
   linkType: hard
 
@@ -2491,6 +2491,10 @@ __metadata:
   resolution: "@builder.io/sdks-e2e-tests@workspace:sdks-tests"
   dependencies:
     "@playwright/test": ^1.27.1
+    "@typescript-eslint/eslint-plugin": latest
+    "@typescript-eslint/parser": latest
+    eslint: ^8.12.0
+    eslint-plugin-unused-imports: ^2.0.0
     typescript: ^4.8.4
     zod: ^3.20.2
   languageName: unknown
@@ -2501,8 +2505,8 @@ __metadata:
   resolution: "@builder.io/sdks@workspace:sdks"
   dependencies:
     "@builder.io/eslint-plugin-mitosis": ^0.0.14
-    "@builder.io/mitosis": ^0.0.91
-    "@builder.io/mitosis-cli": ^0.0.50
+    "@builder.io/mitosis": ^0.0.92
+    "@builder.io/mitosis-cli": ^0.0.51
     "@playwright/test": ^1.27.1
     "@types/jest": ^27.4.1
     "@types/node-fetch": ^2.5.12
