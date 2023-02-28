@@ -1,7 +1,8 @@
 import type { BrowserContext, TestInfo, ConsoleMessage, Locator, Page } from '@playwright/test';
 import { test as base, expect } from '@playwright/test';
 import { targetContext } from './context.js';
-import { sdk, Sdk } from './sdk.js';
+import type { Sdk } from './sdk.js';
+import { sdk } from './sdk.js';
 
 type TestOptions = {
   packageName: string;
@@ -267,7 +268,7 @@ test.describe(targetContext.name, () => {
       hasText: 'Columns (with images) ',
     });
 
-    expect(columnsLink).toHaveCount(1);
+    await expect(columnsLink).toHaveCount(1);
     await columnsLink.click();
     await findTextInPage({ page, text: 'Stack at tablet' });
   });
@@ -562,10 +563,12 @@ test.describe(targetContext.name, () => {
 
     await expect(imageLocator).toHaveCount(expected.length);
 
-    expected.forEach(async (vals, index) => {
-      const image = imageLocator.nth(index);
-      await expectStylesForElement({ locator: image, expected: vals });
-    });
+    const expectedVals = expected.map((val, i) => ({ val, i }));
+
+    for (const { val, i } of Object.values(expectedVals)) {
+      const image = imageLocator.nth(i);
+      await expectStylesForElement({ locator: image, expected: val });
+    }
   });
 
   test.describe('custom-breakpoints', () => {
@@ -577,7 +580,7 @@ test.describe(targetContext.name, () => {
     */
     test.describe('when applied', () => {
       testExcludeOldReact('large desktop size', async ({ page }) => {
-        page.setViewportSize({ width: 801, height: 1000 });
+        await page.setViewportSize({ width: 801, height: 1000 });
 
         await page.goto('/custom-breakpoints');
         const breakpointsParam = page.locator(`text=BREAKPOINTS 500 - 800`);
@@ -624,7 +627,7 @@ test.describe(targetContext.name, () => {
       });
 
       testExcludeOldReact('medium tablet size', async ({ page }) => {
-        page.setViewportSize({ width: 501, height: 1000 });
+        await page.setViewportSize({ width: 501, height: 1000 });
 
         await page.goto('/custom-breakpoints');
         const breakpointsPara = page.locator(`text=BREAKPOINTS 500 - 800`);
@@ -671,7 +674,7 @@ test.describe(targetContext.name, () => {
       });
 
       test('small mobile size', async ({ page }) => {
-        page.setViewportSize({ width: 500, height: 1000 });
+        await page.setViewportSize({ width: 500, height: 1000 });
         await page.goto('/custom-breakpoints');
 
         const breakpointsPara = page.locator(`text=BREAKPOINTS 500 - 800`);
@@ -717,7 +720,7 @@ test.describe(targetContext.name, () => {
         }
       */
       test('large desktop size', async ({ page }) => {
-        page.setViewportSize({ width: 992, height: 1000 });
+        await page.setViewportSize({ width: 992, height: 1000 });
         await page.goto('/custom-breakpoints-reset');
 
         const breakpointsPara = page.locator(`text=BREAKPOINTS 500 - 800`);
@@ -764,7 +767,7 @@ test.describe(targetContext.name, () => {
       });
 
       test('medium tablet size', async ({ page }) => {
-        page.setViewportSize({ width: 641, height: 1000 });
+        await page.setViewportSize({ width: 641, height: 1000 });
 
         await page.goto('/custom-breakpoints-reset');
         const breakpointsPara = page.locator(`text=BREAKPOINTS 500 - 800`);
@@ -811,7 +814,7 @@ test.describe(targetContext.name, () => {
       });
 
       test('small mobile size', async ({ page }) => {
-        page.setViewportSize({ width: 640, height: 1000 });
+        await page.setViewportSize({ width: 640, height: 1000 });
         await page.goto('/custom-breakpoints-reset');
 
         const breakpointsPara = page.locator(`text=BREAKPOINTS 500 - 800`);
@@ -855,7 +858,7 @@ test.describe(targetContext.name, () => {
       await page.goto('/columns');
 
       // switch to tablet view
-      page.setViewportSize({ width: 750, height: 1000 });
+      await page.setViewportSize({ width: 750, height: 1000 });
 
       // check that the 2nd photo has a margin-left of 0px
       // the desktop margin would typically be on its 3rd parent, except for React Native (4th)
