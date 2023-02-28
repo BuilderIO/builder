@@ -1,3 +1,7 @@
+### 0.1.11
+
+- Fix: Builder blocks no longer add a redundant `Text` wrapper around their `children`.
+
 ### 0.1.10
 
 - Fix: Builder Content blocks are now wrapped in `ScrollView` instead of `View` to allow scrolling.
