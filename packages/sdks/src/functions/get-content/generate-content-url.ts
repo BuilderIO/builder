@@ -15,6 +15,7 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
     apiKey,
     includeRefs = true,
     locale,
+    offset = 0
   } = options;
 
   if (!apiKey) {
@@ -22,7 +23,7 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
   }
 
   const url = new URL(
-    `https://cdn.builder.io/api/v2/content/${model}?apiKey=${apiKey}&limit=${limit}&noTraverse=${noTraverse}&includeRefs=${includeRefs}${
+    `https://cdn.builder.io/api/v2/content/${model}?apiKey=${apiKey}&limit=${limit}&offset=${offset}&noTraverse=${noTraverse}&includeRefs=${includeRefs}${
       locale ? `&locale=${locale}` : ''
     }`
   );

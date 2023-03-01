@@ -43,4 +43,9 @@ export interface GetContentOptions {
    * If provided, the API will auto-resolve localized objects to the value of this `locale` key.
    */
   locale?: string;
+
+  /**
+   * Add offset param to paginate through content results
+   */
+  offset?: number;
 }
