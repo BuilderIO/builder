@@ -15,7 +15,7 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
     apiKey,
     includeRefs = true,
     locale,
-    offset = 0
+    offset = 0,
   } = options;
 
   if (!apiKey) {
