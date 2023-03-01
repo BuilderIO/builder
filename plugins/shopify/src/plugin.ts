@@ -27,7 +27,6 @@ registerCommercePlugin(
         name: 'apiVersion',
         type: 'text',
         helperText: 'Your Shopify API version, such as "2020-04"',
-        required: true,
       },
     ],
     ctaText: `Connect your shopify custom app`,
@@ -54,8 +53,7 @@ registerCommercePlugin(
           });
         },
 
-        getRequestObject(rawId: string) {
-          const id = encodeURIComponent(rawId);
+        getRequestObject(id: string) {
           return {
             '@type': '@builder.io/core:Request' as const,
             request: {
@@ -83,8 +81,7 @@ registerCommercePlugin(
           });
         },
 
-        getRequestObject(rawId: string) {
-          const id = encodeURIComponent(rawId);
+        getRequestObject(id: string) {
           return {
             '@type': '@builder.io/core:Request' as const,
             request: {
