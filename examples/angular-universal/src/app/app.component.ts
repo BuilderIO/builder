@@ -1,6 +1,8 @@
 import { BuilderBlock } from '@builder.io/angular';
 import { Component, Input } from '@angular/core';
-import { GetContentOptions } from '@builder.io/sdk';
+import { RESPONSE } from '@nguniversal/express-engine/tokens';
+import { Optional, Inject } from '@angular/core';
+import { Response } from 'express';
 
 @Component({
   selector: 'custom-thing',
@@ -36,16 +38,24 @@ export class AppComponent {
     },
   };
 
+  constructor(
+    @Optional()
+    @Inject(RESPONSE)
+    private response: Response
+  ) {}
+
   data = {
     property: 'hello',
     fn: (text: string) => alert(text),
   };
 
-  load(event: any) {
-    console.log('load', event);
+  load(content?: any) {
+    if (!content && this.response) {
+      this.response.status(404);
+    }
   }
 
   error(event: any) {
-    console.log('error', event);
+    console.log('error loading content', event);
   }
 }
