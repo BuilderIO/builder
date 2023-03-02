@@ -43,4 +43,9 @@ export interface GetContentOptions {
    * If provided, the API will auto-resolve localized objects to the value of this `locale` key.
    */
   locale?: string;
+
+  /**
+   * If provided, we will use that version of query API for fetching content.
+   */
+  apiVersion?: 'v1' | 'v2' | 'v3';
 }

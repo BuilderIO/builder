@@ -1,8 +1,5 @@
 import { flatten } from '../../helpers/flatten.js';
-import {
-  getBuilderSearchParamsFromWindow,
-  normalizeSearchParams,
-} from '../get-builder-search-params/index.js';
+import { getBuilderSearchParamsFromWindow, normalizeSearchParams, } from '../get-builder-search-params/index.js';
 import type { GetContentOptions } from './types.js';
 
 export const generateContentUrl = (options: GetContentOptions): URL => {
@@ -15,14 +12,19 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
     apiKey,
     includeRefs = true,
     locale,
+    apiVersion = 'v2',
   } = options;
 
   if (!apiKey) {
     throw new Error('Missing API key');
   }
 
+  if (!['v1', 'v2', 'v3'].includes(apiVersion)) {
+    throw new Error('Invalid apiVersion value');
+  }
+
   const url = new URL(
-    `https://cdn.builder.io/api/v2/content/${model}?apiKey=${apiKey}&limit=${limit}&noTraverse=${noTraverse}&includeRefs=${includeRefs}${
+    `https://cdn.builder.io/api/${apiVersion}/content/${model}?apiKey=${apiKey}&limit=${limit}&noTraverse=${noTraverse}&includeRefs=${includeRefs}${
       locale ? `&locale=${locale}` : ''
     }`
   );
