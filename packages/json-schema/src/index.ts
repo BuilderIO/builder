@@ -41,11 +41,11 @@ export interface BuilderElement {
   class?: string;
   children?: BuilderElement[];
   responsiveStyles?: {
-    large?: Partial<CSSStyleDeclaration>;
-    medium?: Partial<CSSStyleDeclaration>;
-    small?: Partial<CSSStyleDeclaration>;
+    large?: Record<keyof CSSStyleDeclaration, string>;
+    medium?: Record<keyof CSSStyleDeclaration, string>;
+    small?: Record<keyof CSSStyleDeclaration, string>;
     /** @deprecated */
-    xsmall?: Partial<CSSStyleDeclaration>;
+    xsmall?: Record<keyof CSSStyleDeclaration, string>;
   };
   component?: {
     name: string;
