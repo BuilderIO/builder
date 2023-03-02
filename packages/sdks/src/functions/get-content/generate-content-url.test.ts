@@ -15,7 +15,6 @@ const options = {
 };
 
 describe('Generate Content URL', () => {
-
   test('generates the proper value for a simple query', () => {
     const output = generateContentUrl({
       apiKey: testKey,
@@ -41,7 +40,7 @@ describe('Generate Content URL', () => {
       model: testModel,
       query: { id: testId },
       options,
-      apiVersion: 'v2'
+      apiVersion: 'v2',
     });
     expect(output).toMatchSnapshot();
   });
@@ -52,7 +51,7 @@ describe('Generate Content URL', () => {
       model: testModel,
       query: { id: testId },
       options,
-      apiVersion: 'v3'
+      apiVersion: 'v3',
     });
     expect(output).toMatchSnapshot();
   });
@@ -65,9 +64,8 @@ describe('Generate Content URL', () => {
         query: { id: testId },
         options,
         // @ts-ignore Need this ignore as TS itself was complaining about invalid type
-        apiVersion: 'INVALID_API_VERSION'
+        apiVersion: 'INVALID_API_VERSION',
       });
     }).toThrow('Invalid apiVersion value');
   });
-
 });
