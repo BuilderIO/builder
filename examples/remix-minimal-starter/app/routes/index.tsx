@@ -3,8 +3,8 @@ export default function Index() {
     <div style={{ fontFamily: 'system-ui, sans-serif', lineHeight: '1.4' }}>
       <h1>Welcome to Remix + Builder.io Starter</h1>
       <h4>
-        This is index static route for remix pages, to visit your Builder.io pages, publish some and
-        have fun!
+        This is the index static route for Remix pages. To see your Builder.io content, make sure to
+        create and publish a page at builder.io/content.
       </h4>
       <ul>
         <li>

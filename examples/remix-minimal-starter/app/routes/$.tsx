@@ -34,15 +34,13 @@ export function CatchBoundary() {
   return (
     <html>
       <head>
-        <title>Oops!</title>
+        <title>Error: {caught.status}</title>
         <Meta />
         <Links />
       </head>
       <body>
         <h3>
-          <p>
-            {caught.status} {caught.statusText}
-          </p>
+          Error: {caught.status} - {caught.statusText}
         </h3>
         <p>
           Make sure you have this page published on{' '}
