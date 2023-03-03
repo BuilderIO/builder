@@ -56,6 +56,20 @@ describe('Generate Content URL', () => {
     expect(output).toMatchSnapshot();
   });
 
+  test('throw error when trying to generate content url with apiVersion as v1', () => {
+    expect(() => {
+      generateContentUrl({
+        apiKey: testKey,
+        model: testModel,
+        query: { id: testId },
+        options,
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore Need this ignore as TS itself was complaining about invalid type
+        apiVersion: 'v1',
+      });
+    }).toThrow(`Invalid apiVersion: expected 'v2' or 'v3', received 'v1'`);
+  });
+
   test('throw error when trying to generate content url with an invalid apiVersion value', () => {
     expect(() => {
       generateContentUrl({
@@ -63,9 +77,12 @@ describe('Generate Content URL', () => {
         model: testModel,
         query: { id: testId },
         options,
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore Need this ignore as TS itself was complaining about invalid type
         apiVersion: 'INVALID_API_VERSION',
       });
-    }).toThrow('Invalid apiVersion value');
+    }).toThrow(
+      `Invalid apiVersion: expected 'v2' or 'v3', received 'INVALID_API_VERSION'`
+    );
   });
 });

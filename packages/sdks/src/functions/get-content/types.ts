@@ -47,5 +47,5 @@ export interface GetContentOptions {
   /**
    * If provided, we will use that version of query API for fetching content.
    */
-  apiVersion?: 'v1' | 'v2' | 'v3';
+  apiVersion?: 'v2' | 'v3';
 }
