@@ -8,7 +8,7 @@
 </p>
 <br />
 <h3 align="center">
-  The <i>Visual</i> Headless CMS
+  The Drag & Drop Headless CMS
 </h3>
 <p align="center">
   Integrate with any site or app. Drag and drop with the components already in your codebase.
