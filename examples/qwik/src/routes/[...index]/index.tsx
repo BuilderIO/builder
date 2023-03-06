@@ -1,5 +1,5 @@
-import { component$, Resource, useResource$, useStore } from '@builder.io/qwik';
-import { DocumentHead, useLocation } from '@builder.io/qwik-city';
+import { component$, useStore } from '@builder.io/qwik';
+import { DocumentHead, routeLoader$ } from '@builder.io/qwik-city';
 import { getContent, RegisteredComponent, RenderContent } from '@builder.io/sdk-qwik';
 
 // Enter your key here!
@@ -23,7 +23,6 @@ export const CUSTOM_COMPONENTS: RegisteredComponent[] = [
   {
     component: MyFunComponent,
     name: 'MyFunComponent',
-    builtIn: true,
     inputs: [
       {
         name: 'text',
@@ -34,33 +33,40 @@ export const CUSTOM_COMPONENTS: RegisteredComponent[] = [
   },
 ];
 
-export default component$(() => {
-  const { pathname } = useLocation();
+export const useBuilderContentLoader = routeLoader$(async event => {
+  // Example database call using the id param
+  // The database could return null if the product is not found
+  const data = await getContent({
+    model: 'page',
+    apiKey: apiKey,
+    userAttributes: { urlPath: event.url.pathname },
+  });
 
-  const builderContent = useResource$(() =>
-    getContent({
-      model: 'page',
-      apiKey: apiKey,
-      userAttributes: { urlPath: pathname },
-    })
-  );
+  if (!data) {
+    throw event.error(404, 'page not found');
+
+    // if you want to handle the 404 in the component, you can do this instead:
+    // event.status(404);
+  }
+
+  return data;
+});
+
+export default component$(() => {
+  const content = useBuilderContentLoader();
+
+  // if using `event.status(404)`, you can check for the 404 here
+  // if (content === null) {
+  //   return <h1>Page not found</h1>;
+  // }
 
   return (
-    <div>
-      <Resource
-        value={builderContent}
-        onPending={() => <>Loading...</>}
-        onRejected={error => <>Error: {error.message}</>}
-        onResolved={content => (
-          <RenderContent
-            model="page"
-            content={content}
-            apiKey={apiKey}
-            customComponents={CUSTOM_COMPONENTS}
-          />
-        )}
-      />
-    </div>
+    <RenderContent
+      model="page"
+      content={content.value}
+      apiKey={apiKey}
+      customComponents={CUSTOM_COMPONENTS}
+    />
   );
 });
 
