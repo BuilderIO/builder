@@ -6,7 +6,7 @@ interface JSONObject {
 
 interface JSONArray extends Array<JSONValue> {}
 
-export type SerializableCSSStyleDeclaration = Partial<Record<keyof CSSStyleDeclaration, string>>
+export type SerializableCSSStyleDeclaration = Partial<Record<keyof CSSStyleDeclaration, string>>;
 
 /**
  * An object representing an element in Builder
