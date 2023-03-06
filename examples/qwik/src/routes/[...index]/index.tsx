@@ -34,8 +34,6 @@ export const CUSTOM_COMPONENTS: RegisteredComponent[] = [
 ];
 
 export const useBuilderContentLoader = routeLoader$(async event => {
-  // Example database call using the id param
-  // The database could return null if the product is not found
   const data = await getContent({
     model: 'page',
     apiKey: apiKey,
@@ -45,7 +43,7 @@ export const useBuilderContentLoader = routeLoader$(async event => {
   if (!data) {
     throw event.error(404, 'page not found');
 
-    // if you want to handle the 404 in the component, you can do this instead:
+    // if you want to handle the 404 in the component, you can do this instead of throwing `event.error()`
     // event.status(404);
   }
 
@@ -55,7 +53,7 @@ export const useBuilderContentLoader = routeLoader$(async event => {
 export default component$(() => {
   const content = useBuilderContentLoader();
 
-  // if using `event.status(404)`, you can check for the 404 here
+  // if using `event.status(404)`, uncomment these lines:
   // if (content === null) {
   //   return <h1>Page not found</h1>;
   // }
