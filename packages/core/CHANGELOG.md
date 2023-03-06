@@ -1,3 +1,6 @@
+### 1.1.33
+- Use correct types for CSSStyleDeclaration, fixes remix type check.
+
 ### 1.1.30
 - Add support for threhold and repeat inputs on `ScrollInvView` animations.
 
