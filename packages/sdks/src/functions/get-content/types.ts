@@ -45,7 +45,9 @@ export interface GetContentOptions {
   locale?: string;
 
   /**
-   * If provided, we will use that version of query API for fetching content.
+   * If provided, sets the Builder API version used to fetch content.
+   *
+   * Defaults to `v2`.
    */
   apiVersion?: 'v2' | 'v3';
 }

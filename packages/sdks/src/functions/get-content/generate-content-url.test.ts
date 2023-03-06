@@ -1,4 +1,5 @@
 import { generateContentUrl } from './generate-content-url';
+import type { GetContentOptions } from './types';
 
 const testKey = 'YJIGb4i01jvw0SRdL5Bt';
 const testModel = 'page';
@@ -63,9 +64,7 @@ describe('Generate Content URL', () => {
         model: testModel,
         query: { id: testId },
         options,
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore Need this ignore as TS itself was complaining about invalid type
-        apiVersion: 'v1',
+        apiVersion: 'v1' as GetContentOptions['apiVersion'],
       });
     }).toThrow(`Invalid apiVersion: expected 'v2' or 'v3', received 'v1'`);
   });
@@ -77,9 +76,7 @@ describe('Generate Content URL', () => {
         model: testModel,
         query: { id: testId },
         options,
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore Need this ignore as TS itself was complaining about invalid type
-        apiVersion: 'INVALID_API_VERSION',
+        apiVersion: 'INVALID_API_VERSION' as GetContentOptions['apiVersion'],
       });
     }).toThrow(
       `Invalid apiVersion: expected 'v2' or 'v3', received 'INVALID_API_VERSION'`
