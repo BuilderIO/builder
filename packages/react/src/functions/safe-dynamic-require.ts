@@ -32,7 +32,11 @@ if (
   typeof globalThis?.require === 'function' ||
   (Builder.isServer && typeof require === 'function')
 ) {
-  safeDynamicRequire = eval('require');
+  if (globalThis?.require) {
+    safeDynamicRequire = globalThis.require;
+  } else {
+    safeDynamicRequire = require;
+  }
 }
 
 safeDynamicRequire ??= noop as any;
