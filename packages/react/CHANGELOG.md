@@ -1,5 +1,5 @@
 ### 2.0.15
-- Use correct types for CSSProperties, fixes remix type checks.
+- Use correct types for `responsiveStyles`, fixes remix type checks.
 
 ### 2.0.13
 - Fix hydration errors when a/b testing with react 18
