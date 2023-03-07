@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import { Switch, Route, BrowserRouter, Link } from 'react-router-dom';
 import { BuilderComponent, builder } from '@builder.io/react';
 
+import './index.css';
+
 builder.init('bb209db71e62412dbe0114bdae18fd15');
 
 function App() {
