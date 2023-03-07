@@ -43,4 +43,11 @@ export interface GetContentOptions {
    * If provided, the API will auto-resolve localized objects to the value of this `locale` key.
    */
   locale?: string;
+
+  /**
+   * If provided, sets the Builder API version used to fetch content.
+   *
+   * Defaults to `v2`.
+   */
+  apiVersion?: 'v2' | 'v3';
 }
