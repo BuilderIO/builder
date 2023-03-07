@@ -1,0 +1,30 @@
+body {
+  font-family: sans-serif;
+}
+
+header {
+  display: flex;
+  padding: 10px;
+}
+
+.links {
+  margin: auto;
+}
+
+main {
+  padding: 10px;
+}
+
+.logo {
+  font-size: 18px;
+  letter-spacing: 2px;
+}
+
+.link {
+  margin-right: 15px;
+}
+
+.loading {
+  padding: 50px;
+  text-align: center;
+}
