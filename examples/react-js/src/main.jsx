@@ -1,11 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { Switch, Route, BrowserRouter, Link } from 'react-router-dom';
-import { BuilderComponent } from '@builder.io/react';
+import { BuilderComponent, builder } from '@builder.io/react';
 
-import './index.css';
+builder.init('bb209db71e62412dbe0114bdae18fd15');
 
 function App() {
+  const [allPages, setAllPages] = useState([]);
+
+  useEffect(() => {
+    async function getStaticProps() {
+      const pages = await builder.getAll('page', {
+        fields: 'data.url,name',
+        options: { noTargeting: true },
+      });
+      setAllPages(pages);
+    }
+    getStaticProps();
+  }, []);
+
   return (
     <BrowserRouter>
       <header>
@@ -17,12 +30,13 @@ function App() {
           <Link className="link" to="/about">
             About
           </Link>
-          <Link className="link" to="/page-1">
-            Page 1
-          </Link>
-          <Link className="link" to="/page-2">
-            Page 2
-          </Link>
+          {allPages.map(page => {
+            return (
+              <Link className="link" to={page.data.url}>
+                {page.name}
+              </Link>
+            );
+          })}
           <Link className="link" to="/404">
             404
           </Link>
