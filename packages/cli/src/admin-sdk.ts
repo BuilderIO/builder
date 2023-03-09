@@ -4,7 +4,6 @@ import { kebabCase, omit } from 'lodash';
 import chalk from 'chalk';
 import { readAsJson, getFiles, getDirectories, replaceField, updateIdsMap, replaceIds } from './utils';
 import cliProgress from 'cli-progress';
-import traverse from 'traverse';
 
 const MULTIBAR = new cliProgress.MultiBar(
   {
