@@ -99,6 +99,46 @@ export const importSpace = async (
   MULTIBAR.stop();
 };
 
+export const addModel = async (privateKey: string, directory: string, model: string) => {
+  const graphqlClient = createGraphqlClient(privateKey);
+  const spaceSettings = await readAsJson(`${directory}/settings.json`);
+
+  try {
+    const {settings: { parentOrganization: organizationId }} = await graphqlClient.chain.query.settings.execute()
+    const spaceModelIdsMap = updateIdsMap(spaceSettings.cloneInfo.modelIdMap, organizationId);
+
+    const upload = async (modelName: string, organizationId: string, spaceId: string, graphqlClient: any) => {
+      const modelProgress = MULTIBAR.create(1, 0, { name: modelName });
+      const body = replaceField(
+        await readAsJson(`${directory}/${modelName}/schema.model.json`),
+        organizationId,
+        spaceId
+      );
+
+      modelProgress.increment(1, {
+        name: `${modelName}: uploading`,
+      });
+
+      const model = await graphqlClient.chain.mutation
+        .addModel({ body: replaceIds(body, spaceModelIdsMap) })
+        .execute({ id: true, name: true });
+
+      modelProgress.stop();
+      
+      return model
+    }
+
+    await upload(model, organizationId, spaceSettings.id, graphqlClient)
+  } catch (e) {
+    console.log(`\r\n\r\n`);
+    console.error(chalk.red('Error adding model'));
+    console.error(e);
+    process.exit();
+  }
+
+  MULTIBAR.stop();
+}
+
 export const newSpace = async (
   privateKey: string,
   directory: string,

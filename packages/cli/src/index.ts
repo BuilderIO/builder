@@ -2,7 +2,7 @@
 
 import program from 'commander';
 import chalk from 'chalk';
-import { importSpace, newSpace } from './admin-sdk';
+import { importSpace, newSpace, addModel } from './admin-sdk';
 import { integrateWithLocalCodebase } from './integrate';
 const figlet = require('figlet');
 
@@ -50,5 +50,15 @@ program
   .action(async options => {
     await integrateWithLocalCodebase(options);
   });
+
+program
+  .command('add-model')
+  .description('Add a Builder model to an existing space')
+  .option('-k,--key <key>', 'Private key')
+  .option('-i,--input <input>', 'Path to folder default to ./builder', './builder')
+  .option('-m,--model <model>', 'name of the model that you want to add')
+  .action(options => {
+    addModel(options.key, options.input, options.model)
+  })
 
 program.parse(process.argv);
