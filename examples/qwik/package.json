@@ -21,8 +21,8 @@
     "qwik": "qwik"
   },
   "devDependencies": {
-    "@builder.io/qwik": "^0.16.2",
-    "@builder.io/qwik-city": "^0.1.0-beta9",
+    "@builder.io/qwik": "^0.20.1",
+    "@builder.io/qwik-city": "^0.5.2",
     "@types/eslint": "8.4.8",
     "@types/node": "latest",
     "@typescript-eslint/eslint-plugin": "5.41.0",
@@ -32,7 +32,7 @@
     "node-fetch": "3.2.10",
     "prettier": "2.7.1",
     "typescript": "4.8.4",
-    "vite": "3.2.1",
+    "vite": "^4.1.4",
     "vite-tsconfig-paths": "3.5.0"
   },
   "dependencies": {
