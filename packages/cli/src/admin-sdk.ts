@@ -2,9 +2,8 @@ import { createClient } from './autogen/client/createClient';
 import fse from 'fs-extra';
 import { kebabCase, omit } from 'lodash';
 import chalk from 'chalk';
-import { readAsJson, getFiles, getDirectories, replaceField } from './utils';
+import { readAsJson, getFiles, getDirectories, replaceField, updateIdsMap, replaceIds } from './utils';
 import cliProgress from 'cli-progress';
-import { createHash } from 'crypto';
 import traverse from 'traverse';
 
 const MULTIBAR = new cliProgress.MultiBar(
@@ -120,40 +119,8 @@ export const newSpace = async (
       .execute();
     const newSpaceAdminClient = createGraphqlClient(newSpacePrivateKey.key);
 
-    const spaceModelIdsMap = (Object.values(spaceSettings.cloneInfo.modelIdMap) as string[]).reduce<
-      Record<string, string>
-    >(
-      (modelMap, id) => ({
-        ...modelMap,
-        [id]: createHash('sha256')
-          .update(id + organization.id)
-          .digest('hex'),
-      }),
-      {}
-    );
-    const spaceContentIdsMap = (
-      Object.values(spaceSettings.cloneInfo.contentIdMap) as string[]
-    ).reduce<Record<string, string>>(
-      (contenIdMap, id) => ({
-        ...contenIdMap,
-        [id]: createHash('sha256')
-          .update(id + organization.id)
-          .digest('hex'),
-      }),
-      {}
-    );
-    const replaceIds = (obj: any) =>
-      traverse(obj).map(function (field) {
-        // we keep meta props as is for debugging puprposes
-        if (this.key?.includes('@')) {
-          return;
-        }
-        if (spaceModelIdsMap[field]) {
-          this.update(spaceModelIdsMap[field]);
-        } else if (spaceContentIdsMap[field]) {
-          this.update(spaceContentIdsMap[field]);
-        }
-      });
+    const spaceModelIdsMap = updateIdsMap(spaceSettings.cloneInfo.modelIdMap, organization.id);
+    const spaceContentIdsMap = updateIdsMap(spaceSettings.cloneInfo.contentIdMap, organization.id);
 
     const models = await getDirectories(`${directory}`);
     const modelsPromises = models.map(async ({ name: modelName }) => {
@@ -163,7 +130,7 @@ export const newSpace = async (
         spaceSettings.id
       );
       const model = await newSpaceAdminClient.chain.mutation
-        .addModel({ body: replaceIds(body) })
+        .addModel({ body: replaceIds(body, spaceModelIdsMap, spaceContentIdsMap) })
         .execute({ id: true, name: true });
       if (model) {
         const content = (await getFiles(`${directory}/${modelName}`)).filter(
