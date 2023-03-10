@@ -1,6 +1,9 @@
-# Next.js 13 + Builder.io Simple Starter
+# Next.js 13 (Experimental) + Builder.io Simple Starter
 
-This example walks you through using Builder.io with a simple Next.js version >= 13 application.
+This example walks you through using Builder.io with an experimental version of  Next.js >= 13 application. 
+
+### 🏗️ Experimental
+This starter includes the `app` folder structure which of you can find more details [here](https://beta.nextjs.org/docs/app-directory-roadmap)
 
 ## Prerequisites
 

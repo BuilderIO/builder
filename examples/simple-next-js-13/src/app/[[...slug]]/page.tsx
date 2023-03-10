@@ -3,7 +3,7 @@ import { builder, Builder } from '@builder.io/sdk';
 Builder.isReact = true;
 // ✅ This pattern works. You can pass a Server Component
 // as a child or prop of a Client Component.
-import ClientComponent from './ClientComponent';
+import BuilderPage from './ClientComponent';
 import builderConfig from '../../../builderConfig.json';
 
 builder.init(builderConfig.apiKey);
@@ -38,9 +38,7 @@ export default async function Page(props: any) {
   }
   return (
     <>
-      <ClientComponent builderContent={content.page}>
-        <h1>Header from server</h1>
-      </ClientComponent>
+      <BuilderPage builderContent={content.page} />
     </>
   );
 }
