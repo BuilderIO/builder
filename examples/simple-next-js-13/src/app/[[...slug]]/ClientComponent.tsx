@@ -1,10 +1,10 @@
 'use client';
 import { BuilderComponent, builder } from '@builder.io/react';
-import builderConfig from '../../../builderConfig.json'
+import builderConfig from '../../../builderConfig.json';
 
-builder.init(builderConfig.apiKey)
+builder.init(builderConfig.apiKey);
 
-export default function ClientComponent({children, builderContent}: any) {
+export default function ClientComponent({ children, builderContent }: any) {
   return (
     <>
       {children}
