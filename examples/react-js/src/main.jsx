@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { Switch, Route, BrowserRouter, Link } from 'react-router-dom';
-import { BuilderComponent, builder } from '@builder.io/react';
+import { BuilderComponent, builder, useIsPreviewing } from '@builder.io/react';
 
 import './index.css';
 
-builder.init('bb209db71e62412dbe0114bdae18fd15');
+// Put your API key here
+builder.init('YOUR_API_KEY');
 
 function App() {
   const [allPages, setAllPages] = useState([]);
@@ -48,33 +49,45 @@ function App() {
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/about" exact component={About} />
-          <Route render={({ location }) => <CatchallPage key={location.key} />} />
+          <Route render={({ location }) => <CatchAllRoute key={location.key} />} />
         </Switch>
       </div>
     </BrowserRouter>
   );
 }
 
-class CatchallPage extends React.Component {
-  state = { notFound: false };
+export default function CatchAllRoute() {
+  const isPreviewingInBuilder = useIsPreviewing();
+  const [notFound, setNotFound] = useState(false);
+  const [content, setContent] = useState(null);
 
-  render() {
-    return !this.state.notFound ? (
-      <BuilderComponent
-        apiKey="bb209db71e62412dbe0114bdae18fd15"
-        model="page"
-        contentLoaded={content => {
-          if (!content) {
-            this.setState({ notFound: true });
-          }
-        }}
-      >
-        <div className="loading">Loading...</div>
-      </BuilderComponent>
-    ) : (
-      <NotFound /> // Your 404 content
-    );
+  // get the page content from Builder
+  useEffect(() => {
+    async function fetchContent() {
+      const content = await builder
+        .get('page', {
+          url: window.location.pathname,
+        })
+        .promise();
+
+      setContent(content);
+      setNotFound(!content);
+    }
+    fetchContent();
+  }, []);
+
+  // if no page is found, return a 404 page
+  if (notFound && !isPreviewingInBuilder) {
+    return <NotFound />; // Your 404 content
   }
+
+  // return the page when found
+  return (
+    <>
+      {/* Render the Builder page */}
+      <BuilderComponent model="page" content={content} />
+    </>
+  );
 }
 
 const Home = () => <h1>I am the homepage!</h1>;
