@@ -72,6 +72,7 @@ export default function Symbol(props: SymbolProps) {
       getContent({
         model: symbolToUse.model,
         apiKey: builderContext.apiKey,
+        apiVersion: builderContext.apiVersion,
         query: {
           id: symbolToUse.entry,
         },
@@ -88,6 +89,7 @@ export default function Symbol(props: SymbolProps) {
       dataSet={{ class: state.className }}
     >
       <RenderContent
+        apiVersion={builderContext.apiVersion}
         apiKey={builderContext.apiKey!}
         context={builderContext.context}
         customComponents={Object.values(builderContext.registeredComponents)}

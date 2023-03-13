@@ -5,6 +5,7 @@ import type {
 } from '../../context/types';
 import type { BuilderContent } from '../../types/builder-content';
 import type { Nullable } from '../../types/typescript';
+import type { ApiVersion } from '../../types/api-version';
 
 export type RenderContentProps = {
   content?: Nullable<BuilderContent>;
@@ -12,6 +13,7 @@ export type RenderContentProps = {
   data?: { [key: string]: any };
   context?: BuilderRenderContext;
   apiKey: string;
+  apiVersion?: ApiVersion;
   customComponents?: RegisteredComponent[];
   canTrack?: boolean;
   locale?: string;
