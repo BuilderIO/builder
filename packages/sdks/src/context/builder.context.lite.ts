@@ -7,7 +7,7 @@ export default createContext<BuilderContextInterface>({
   state: {},
   setState: () => {},
   apiKey: null,
-  apiVersion: 'v2',
+  apiVersion: undefined,
   registeredComponents: {},
   inheritedStyles: {},
 });
