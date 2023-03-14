@@ -76,7 +76,7 @@ export default function Symbol(props: SymbolProps) {
           }
         })
         .catch((err) => {
-          console.error('could not fetch symbol content', err);
+          console.error('[Builder.io]: Could not fetch symbol content: ', err);
         })
         .finally(() => {
           state.isFetching = false;
