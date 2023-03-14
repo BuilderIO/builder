@@ -274,6 +274,7 @@ export default function RenderContent(props: RenderContentProps) {
     setState: state.setContextState,
     context: props.context || {},
     apiKey: props.apiKey,
+    apiVersion: props.apiVersion,
     registeredComponents: state.allRegisteredComponents,
   });
 
@@ -341,6 +342,7 @@ export default function RenderContent(props: RenderContentProps) {
           getContent({
             model: props.model,
             apiKey: props.apiKey,
+            apiVersion: props.apiVersion,
           }).then((content) => {
             if (content) {
               state.mergeNewContent(content);
