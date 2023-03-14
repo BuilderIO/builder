@@ -23,8 +23,14 @@ async function getBuilderContent(urlPath: string) {
   };
 }
 
+interface PageProps {
+  params: {
+    slug: string;
+  };
+}
+
 // Pages are Server Components by default
-export default async function Page(props: any) {
+export default async function Page(props: PageProps) {
   const urlPath = '/'.concat(props?.params?.slug || '');
   const content = await getBuilderContent(urlPath);
 

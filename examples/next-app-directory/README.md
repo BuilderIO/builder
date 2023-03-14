@@ -1,4 +1,4 @@
-# Next.js 13 (Experimental) + Builder.io Simple Starter
+# Next.js experimental app directory + Builder.io starter
 
 This example walks you through using Builder.io with an experimental version of  Next.js >= 13 application. 
 
