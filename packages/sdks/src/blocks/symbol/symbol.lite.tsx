@@ -2,7 +2,7 @@ import RenderContent from '../../components/render-content/render-content.lite';
 import BuilderContext from '../../context/builder.context.lite';
 import { getContent } from '../../functions/get-content/index.js';
 import type { BuilderContent } from '../../types/builder-content.js';
-import { onMount, onUpdate, useContext, useStore } from '@builder.io/mitosis';
+import { onUpdate, useContext, useStore } from '@builder.io/mitosis';
 import type { BuilderBlock } from '../../types/builder-block.js';
 import { TARGET } from '../../constants/target';
 
