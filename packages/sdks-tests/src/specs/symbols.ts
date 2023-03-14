@@ -723,4 +723,18 @@ export const CONTENT = {
     'https://cdn.builder.io/api/v1/image/assets%2Ff1a790f8c3204b3b8c5c1795aeac4660%2Fb4c208dab77d489386f78e8cf43f5feb',
   firstPublished: 1649431689632,
   rev: 'q440q0er5p',
+} as const;
+
+const splitUpContent = () => {
+  const CONTENT_CLONE = JSON.parse(JSON.stringify(CONTENT));
+  const FIRST_SYMBOL_CONTENT = CONTENT_CLONE.data.blocks[1].component.options.symbol.content;
+  const SECOND_SYMBOL_CONTENT = CONTENT_CLONE.data.blocks[2].component.options.symbol.content;
+  // remove both symbol content from content
+  delete CONTENT_CLONE.data.blocks[1].component.options.symbol.content;
+  delete CONTENT_CLONE.data.blocks[2].component.options.symbol.content;
+
+  return { CONTENT_WITHOUT_SYMBOLS: CONTENT_CLONE, FIRST_SYMBOL_CONTENT, SECOND_SYMBOL_CONTENT };
 };
+
+export const { CONTENT_WITHOUT_SYMBOLS, FIRST_SYMBOL_CONTENT, SECOND_SYMBOL_CONTENT } =
+  splitUpContent();
