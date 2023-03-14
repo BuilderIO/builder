@@ -2,7 +2,7 @@ import RenderContent from '../../components/render-content/render-content.lite';
 import BuilderContext from '../../context/builder.context.lite';
 import { getContent } from '../../functions/get-content/index.js';
 import type { BuilderContent } from '../../types/builder-content.js';
-import { onUpdate, useContext, useStore } from '@builder.io/mitosis';
+import { onMount, onUpdate, useContext, useStore } from '@builder.io/mitosis';
 import type { BuilderBlock } from '../../types/builder-block.js';
 import { TARGET } from '../../constants/target';
 
@@ -41,11 +41,10 @@ export default function Symbol(props: SymbolProps) {
       .filter(Boolean)
       .join(' '),
     contentToUse: props.symbol?.content,
+    isFetching: false,
   });
 
   onUpdate(() => {
-    const symbolToUse = props.symbol;
-
     /**
      * If:
      * - we have a symbol prop
@@ -56,27 +55,32 @@ export default function Symbol(props: SymbolProps) {
      * then we want to re-fetch the symbol content.
      */
     if (
-      symbolToUse &&
-      !symbolToUse.content &&
+      !state.isFetching &&
       !state.contentToUse &&
-      symbolToUse.model &&
+      props.symbol?.model &&
       // This is a hack, we should not need to check for this, but it is needed for Svelte.
       builderContext?.apiKey
     ) {
-      console.log('condition was true, fetching');
+      state.isFetching = true;
       getContent({
-        model: symbolToUse.model,
+        model: props.symbol.model,
         apiKey: builderContext.apiKey,
         apiVersion: builderContext.apiVersion,
         query: {
-          id: symbolToUse.entry,
+          id: props.symbol.entry,
         },
-      }).then((response) => {
-        console.log('response', response);
-        if (response) {
-          state.contentToUse = response;
-        }
-      });
+      })
+        .then((response) => {
+          if (response) {
+            state.contentToUse = response;
+          }
+        })
+        .catch((err) => {
+          console.error('could not fetch symbol content', err);
+        })
+        .finally(() => {
+          state.isFetching = false;
+        });
     }
   }, [props.symbol]);
 
@@ -86,8 +90,9 @@ export default function Symbol(props: SymbolProps) {
       className={state.className}
       dataSet={{ class: state.className }}
     >
-      {JSON.stringify(state.contentToUse)}
       <RenderContent
+        // the `key` is used to force a re-render when the content changes (for Vue, possibly others too)
+        key={state.contentToUse?.id}
         apiVersion={builderContext.apiVersion}
         apiKey={builderContext.apiKey!}
         context={builderContext.context}
