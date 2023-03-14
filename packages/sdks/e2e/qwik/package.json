@@ -17,8 +17,7 @@
     "serve-comment": "running in client mode until we can fixe serve.express",
     "serve": "yarn dev.ssr",
     "start": "npm run dev",
-    "typecheck": "tsc --noEmit",
-    "e2e": "SDK=qwik ../../node_modules/.bin/playwright test"
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "@builder.io/qwik": "^0.16.2",

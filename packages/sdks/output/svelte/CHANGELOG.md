@@ -1,3 +1,23 @@
+### 0.1.11
+
+- No changes.
+
+### 0.1.10
+
+- Fix: Text blocks styles (remove initial top padding)
+
+### 0.1.9
+
+- No changes.
+
+### 0.1.8
+
+- Added support for "Show If" & "Hide If" dynamic bindings to elements.
+
+### 0.1.7
+
+- No changes.
+
 ### 0.1.6
 
 - Types: removed redundant `builtIn` field in `customComponents` prop types

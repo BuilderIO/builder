@@ -8,7 +8,6 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "e2e": "SDK=react ../../node_modules/.bin/playwright test",
     "serve": "yarn start"
   },
   "dependencies": {

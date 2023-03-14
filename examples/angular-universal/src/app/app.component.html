@@ -1,5 +1,11 @@
 <h1>This is App Component!</h1>
 <a routerLink="/a">Link A</a>
 <a routerLink="/b">Link B</a>
-<builder-component [options]="options" [data]="data" model="page"></builder-component>
+<builder-component
+  (load)="load($event)"
+  [options]="options"
+  (error)="error($event)"
+  [data]="data"
+  model="page"
+></builder-component>
 <router-outlet></router-outlet>

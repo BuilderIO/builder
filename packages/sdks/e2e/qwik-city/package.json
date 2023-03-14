@@ -16,8 +16,7 @@
     "preview": "qwik build preview && vite preview --open",
     "start": "vite --open --mode ssr",
     "qwik": "qwik",
-    "serve": "yarn run dev",
-    "e2e": "SDK=qwik ../../node_modules/.bin/playwright test"
+    "serve": "yarn run dev"
   },
   "devDependencies": {
     "@builder.io/qwik": "0.16.2",

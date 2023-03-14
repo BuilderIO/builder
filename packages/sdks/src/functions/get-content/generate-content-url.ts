@@ -15,14 +15,21 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
     apiKey,
     includeRefs = true,
     locale,
+    apiVersion = 'v2',
   } = options;
 
   if (!apiKey) {
     throw new Error('Missing API key');
   }
 
+  if (!['v2', 'v3'].includes(apiVersion)) {
+    throw new Error(
+      `Invalid apiVersion: expected 'v2' or 'v3', received '${apiVersion}'`
+    );
+  }
+
   const url = new URL(
-    `https://cdn.builder.io/api/v2/content/${model}?apiKey=${apiKey}&limit=${limit}&noTraverse=${noTraverse}&includeRefs=${includeRefs}${
+    `https://cdn.builder.io/api/${apiVersion}/content/${model}?apiKey=${apiKey}&limit=${limit}&noTraverse=${noTraverse}&includeRefs=${includeRefs}${
       locale ? `&locale=${locale}` : ''
     }`
   );

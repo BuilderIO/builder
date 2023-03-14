@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/angular",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "main": "dist/bundles/builder.io-angular.umd.js",
   "module": "dist/fesm5/builder.io-angular.js",
   "es2015": "dist/fesm2015/builder.io-angular.js",
@@ -40,7 +40,7 @@
     "@nguniversal/express-engine": "*"
   },
   "dependencies": {
-    "@builder.io/sdk": "^1.1.29"
+    "@builder.io/sdk": "^1.1.31"
   },
   "peerDependencies": {
     "@angular/common": ">= 2",
@@ -87,7 +87,7 @@
     "karma-jasmine-html-reporter": "^1.4.0",
     "ng-packagr": "^14.0.0",
     "protractor": "^7.0.0",
-    "ts-loader": "^5.3.0",
+    "ts-loader": "^9.4.2",
     "ts-node": "^7.0.1",
     "tslint": "^5.11.0",
     "typescript": "4.6.2",

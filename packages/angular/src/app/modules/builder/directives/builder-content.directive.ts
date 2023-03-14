@@ -298,6 +298,7 @@ export class BuilderContentDirective implements OnInit, OnDestroy {
             this.renderer.setAttribute(rootNode, 'builder-content-entry-id', match.id);
             this.match = match;
             viewRef.context.$implicit = match.data;
+            viewRef.context.meta = match.meta;
             // viewRef.context.results = result.map(item => ({ ...item.data, $id: item.id }));
             if (!hydrate && this.builder.autoTrack) {
               this.builder.trackImpression(match.id, match.variationId, undefined, {
@@ -362,4 +363,5 @@ export class BuilderContentContext {
   model?: string;
   loading = true;
   results: any[] = [];
+  meta?: any;
 }

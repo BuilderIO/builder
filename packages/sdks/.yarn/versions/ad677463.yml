@@ -1,4 +1,0 @@
-undecided:
-  - "@builder.io/sdk-react-native"
-  - "@builder.io/sdk-solid"
-  - "@builder.io/sdk-svelte"

@@ -1,3 +1,23 @@
+### 0.1.11
+
+- Fix: Builder blocks no longer add a redundant `Text` wrapper around their `children`.
+
+### 0.1.10
+
+- Fix: Builder Content blocks are now wrapped in `ScrollView` instead of `View` to allow scrolling.
+
+### 0.1.9
+
+- Fix: Section component
+
+### 0.1.8
+
+- Added support for "Show If" & "Hide If" dynamic bindings to elements.
+
+### 0.1.7
+
+- No changes.
+
 ### 0.1.6
 
 - Types: removed redundant `builtIn` field in `customComponents` prop types

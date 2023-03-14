@@ -6,6 +6,8 @@ interface JSONObject {
 
 interface JSONArray extends Array<JSONValue> {}
 
+export type SerializableCSSStyleDeclaration = Partial<Record<keyof CSSStyleDeclaration, string>>;
+
 /**
  * An object representing an element in Builder
  */
@@ -21,11 +23,11 @@ export interface BuilderElement {
   class?: string;
   children?: BuilderElement[];
   responsiveStyles?: {
-    large?: Partial<CSSStyleDeclaration>;
-    medium?: Partial<CSSStyleDeclaration>;
-    small?: Partial<CSSStyleDeclaration>;
+    large?: SerializableCSSStyleDeclaration;
+    medium?: SerializableCSSStyleDeclaration;
+    small?: SerializableCSSStyleDeclaration;
     /** @deprecated */
-    xsmall?: Partial<CSSStyleDeclaration>;
+    xsmall?: SerializableCSSStyleDeclaration;
   };
   component?: {
     name: string;
