@@ -54,7 +54,6 @@ export function CatchBoundary() {
   );
 }
 
-
 export default function Page() {
   const page: BuilderContent = useLoaderData<BuilderContent>();
 
