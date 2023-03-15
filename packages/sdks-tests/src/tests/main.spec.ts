@@ -395,7 +395,7 @@ test.describe(targetContext.name, () => {
 
     let x = 0;
     await page.route(
-      'https://cdn.builder.io/api/v2/content/symbol',
+      /.*cdn\.builder\.io\/api\/v(\d)\/content\/symbol.*/,
       route => {
         x++;
         return route.fulfill({
