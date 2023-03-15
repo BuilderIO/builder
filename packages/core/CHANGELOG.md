@@ -1,3 +1,7 @@
+### 1.1.34
+- Use correct types for enum, fixes remix type checks.
+- Use fetch fallback safely, fixes issues on Salesforce managed runtime.
+
 ### 1.1.33
 - Use correct types for `responsiveStyles`, fixes remix type checks.
 

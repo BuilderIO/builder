@@ -31,7 +31,7 @@ function promiseResolve<T>(value: T) {
 }
 
 // Adapted from https://raw.githubusercontent.com/developit/unfetch/master/src/index.mjs
-export function tinyFetch(url: string, options: SimplifiedFetchOptions = {}) {
+function tinyFetch(url: string, options: SimplifiedFetchOptions = {}) {
   return new Promise<SimpleFetchResponse>((resolve, reject) => {
     const request = new XMLHttpRequest();
 
@@ -90,17 +90,25 @@ export function tinyFetch(url: string, options: SimplifiedFetchOptions = {}) {
   });
 }
 
-export let fetch: typeof tinyFetch;
+export function getFetch() {
+  // If fetch is defined, in the browser, via polyfill, or in a Cloudflare worker, use it.
+  let _fetch: typeof fetch | undefined = undefined;
+  if (globalThis.fetch) {
+    _fetch ??= globalThis.fetch as any;
+  } else if (typeof window === 'undefined') {
+    // If fetch is not defined, in a Node.js environment, use node-fetch.
+    try {
+      // node-fetch@^3 is ESM only, and will throw error on require.
+      _fetch ??= serverOnlyRequire('node-fetch');
+    } catch (e) {
+      // If node-fetch is not installed, use tiny-fetch.
+      console.warn(
+        'node-fetch is not installed. consider polyfilling fetch or installing node-fetch.'
+      );
+      console.warn(e);
+    }
+  }
 
-// If fetch is defined, in the browser, via polyfill, or in a Cloudflare worker, use it.
-if (globalThis.fetch) {
-  fetch = globalThis.fetch as any;
+  // Otherwise, use tiny-fetch.
+  return _fetch ?? tinyFetch;
 }
-
-// If fetch is not defined, in a Node.js environment, use node-fetch.
-if (typeof window === 'undefined') {
-  fetch ??= serverOnlyRequire('node-fetch');
-}
-
-// Otherwise, use tiny-fetch.
-fetch ??= tinyFetch;

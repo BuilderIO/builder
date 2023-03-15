@@ -1,3 +1,6 @@
+### 2.0.16
+- Safe access to node-fetch and process.env.
+
 ### 2.0.15
 - Use correct types for `responsiveStyles`, fixes remix type checks.
 

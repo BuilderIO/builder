@@ -2294,7 +2294,7 @@ __metadata:
   resolution: "@builder.io/react@workspace:react"
   dependencies:
     "@builder.io/block-publish": ^1.1.2
-    "@builder.io/sdk": ^1.1.33
+    "@builder.io/sdk": 1.1.34-2
     "@emotion/core": ^10.0.17
     "@testing-library/jest-dom": ^5.16.4
     "@testing-library/react": ^12.1.5
@@ -2475,6 +2475,17 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@builder.io/sdk@npm:1.1.34-2":
+  version: 1.1.34-2
+  resolution: "@builder.io/sdk@npm:1.1.34-2"
+  dependencies:
+    hash-sum: ^2.0.0
+    node-fetch: ^2.3.0
+    tslib: ^1.10.0
+  checksum: 896e470b8db6c28e22642b9a24a57e4fbd7228e1b7fccbeb9e0ce287a1fc148929a6498b192ad02151abdcf70ba13856b4d89b66679d968e6c5a3261cd7cfcd6
+  languageName: node
+  linkType: hard
+
 "@builder.io/sdk@npm:^1.1.26":
   version: 1.1.31
   resolution: "@builder.io/sdk@npm:1.1.31"
@@ -2483,17 +2494,6 @@ __metadata:
     node-fetch: ^2.3.0
     tslib: ^1.10.0
   checksum: 593a420da504a338d7a62df9789f5ba00330eb32402ed7a2b2c40ddcfe9472888443b43b8d30213f96affd511e8734da71a0a5275883bef780fe086d6dd0ddff
-  languageName: node
-  linkType: hard
-
-"@builder.io/sdk@npm:^1.1.33":
-  version: 1.1.33
-  resolution: "@builder.io/sdk@npm:1.1.33"
-  dependencies:
-    hash-sum: ^2.0.0
-    node-fetch: ^2.3.0
-    tslib: ^1.10.0
-  checksum: a1046239e31425cda347ebb9c725439a3b68330b67f6b0f5776529cea205a1f9e9db559333545e3429116788057954a129ac53faa7141b9e6c0aae9077c4d4a2
   languageName: node
   linkType: hard
 
