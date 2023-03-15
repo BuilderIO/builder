@@ -41,7 +41,6 @@ export default function Symbol(props: SymbolProps) {
       .filter(Boolean)
       .join(' '),
     contentToUse: props.symbol?.content,
-    isFetching: false,
   });
 
   onUpdate(() => {
@@ -55,13 +54,11 @@ export default function Symbol(props: SymbolProps) {
      * then we want to re-fetch the symbol content.
      */
     if (
-      !state.isFetching &&
       !state.contentToUse &&
       props.symbol?.model &&
       // This is a hack, we should not need to check for this, but it is needed for Svelte.
       builderContext?.apiKey
     ) {
-      state.isFetching = true;
       getContent({
         model: props.symbol.model,
         apiKey: builderContext.apiKey,
@@ -77,9 +74,6 @@ export default function Symbol(props: SymbolProps) {
         })
         .catch((err) => {
           console.error('[Builder.io]: Could not fetch symbol content: ', err);
-        })
-        .finally(() => {
-          state.isFetching = false;
         });
     }
   }, [props.symbol]);
