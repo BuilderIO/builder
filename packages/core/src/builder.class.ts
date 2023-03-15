@@ -4,14 +4,13 @@ import { nextTick } from './functions/next-tick.function';
 import { QueryString } from './classes/query-string.class';
 import { version } from '../package.json';
 import { BehaviorSubject } from './classes/observable.class';
-import { fetch, SimplifiedFetchOptions } from './functions/fetch.function';
+import { getFetch, SimplifiedFetchOptions } from './functions/fetch.function';
 import { assign } from './functions/assign.function';
 import { throttle } from './functions/throttle.function';
 import { Animator } from './classes/animator.class';
 import { BuilderElement } from './types/element';
 import Cookies from './classes/cookies.class';
 import { omit } from './functions/omit.function';
-import serverOnlyRequire from './functions/server-only-require.function';
 import { getTopLevelDomain } from './functions/get-top-level-domain';
 import { BuilderContent } from './types/content';
 import { uuid } from './functions/uuid';
@@ -558,7 +557,7 @@ export interface Input {
   /**
    * For "text" input type, specifying an enum will show a dropdown of options instead
    */
-  enum?: string[] | { label: string; value: any; helperText?: string }[];
+  enum?: string[] | { label: string; value: string | number | boolean; helperText?: string }[];
   /** Regex field validation for all string types (text, longText, html, url, etc) */
   regex?: {
     /** pattern to test, like "^\/[a-z]$" */
@@ -1150,7 +1149,7 @@ export class Builder {
 
     const host = this.host;
 
-    fetch(`${host}/api/v1/track`, {
+    getFetch()(`${host}/api/v1/track`, {
       method: 'POST',
       body: JSON.stringify({ events }),
       headers: {
@@ -2218,7 +2217,7 @@ export class Builder {
     url: string,
     options?: { headers: { [header: string]: number | string | string[] | undefined } }
   ) {
-    return fetch(url, options as SimplifiedFetchOptions).then(res => res.json());
+    return getFetch()(url, options as SimplifiedFetchOptions).then(res => res.json());
   }
 
   get host() {
@@ -2419,7 +2418,7 @@ export class Builder {
       `${host}/api/v1/${fn}/${this.apiKey}/${keyNames}` +
       (queryParams && hasParams ? `?${queryStr}` : '');
 
-    const promise = fetch(url, requestOptions)
+    const promise = getFetch()(url, requestOptions)
       .then(res => res.json())
       .then(
         result => {

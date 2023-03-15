@@ -1388,7 +1388,7 @@ export class BuilderComponent extends React.Component<
               error.stack
             );
           } else {
-            if (process.env.DEBUG) {
+            if (process?.env?.DEBUG) {
               console.debug(
                 'Builder custom code error:',
                 error.message,
