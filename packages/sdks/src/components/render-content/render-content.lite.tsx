@@ -358,6 +358,12 @@ export default function RenderContent(props: RenderContentProps) {
   });
 
   onUpdate(() => {
+    if (props.content) {
+      state.mergeNewContent(props.content);
+    }
+  }, [props.content]);
+
+  onUpdate(() => {
     state.evaluateJsCode();
   }, [state.useContent?.data?.jsCode, state.contentState]);
 

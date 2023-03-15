@@ -90,11 +90,7 @@ export default function Symbol(props: SymbolProps) {
       className={state.className}
       dataSet={{ class: state.className }}
     >
-      {/*
-       * the `key` is used to force a re-render when the content changes (for Vue, possibly others too)
-       */}
       <RenderContent
-        key={state.contentToUse?.id}
         apiVersion={builderContext.apiVersion}
         apiKey={builderContext.apiKey!}
         context={builderContext.context}
