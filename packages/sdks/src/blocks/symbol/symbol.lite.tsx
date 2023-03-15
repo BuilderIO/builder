@@ -2,7 +2,7 @@ import RenderContent from '../../components/render-content/render-content.lite';
 import BuilderContext from '../../context/builder.context.lite';
 import { getContent } from '../../functions/get-content/index.js';
 import type { BuilderContent } from '../../types/builder-content.js';
-import { onUpdate, useContext, useStore } from '@builder.io/mitosis';
+import { onMount, onUpdate, useContext, useStore } from '@builder.io/mitosis';
 import type { BuilderBlock } from '../../types/builder-block.js';
 import { TARGET } from '../../constants/target';
 
@@ -41,42 +41,52 @@ export default function Symbol(props: SymbolProps) {
       .filter(Boolean)
       .join(' '),
     contentToUse: props.symbol?.content,
+    fetchContent: async () => {
+      /**
+       * If:
+       * - we have a symbol prop
+       * - yet it does not have any content
+       * - and we have not already stored content from before
+       * - and it has a model name
+       *
+       * then we want to re-fetch the symbol content.
+       */
+      if (
+        !state.contentToUse &&
+        props.symbol?.model &&
+        // This is a hack, we should not need to check for this, but it is needed for Svelte.
+        builderContext?.apiKey
+      ) {
+        getContent({
+          model: props.symbol.model,
+          apiKey: builderContext.apiKey,
+          apiVersion: builderContext.apiVersion,
+          query: {
+            id: props.symbol.entry,
+          },
+        })
+          .then((response) => {
+            if (response) {
+              state.contentToUse = response;
+            }
+          })
+          .catch((err) => {
+            console.error(
+              '[Builder.io]: Could not fetch symbol content: ',
+              err
+            );
+          });
+      }
+    },
   });
 
   onUpdate(() => {
-    /**
-     * If:
-     * - we have a symbol prop
-     * - yet it does not have any content
-     * - and we have not already stored content from before
-     * - and it has a model name
-     *
-     * then we want to re-fetch the symbol content.
-     */
-    if (
-      !state.contentToUse &&
-      props.symbol?.model &&
-      // This is a hack, we should not need to check for this, but it is needed for Svelte.
-      builderContext?.apiKey
-    ) {
-      getContent({
-        model: props.symbol.model,
-        apiKey: builderContext.apiKey,
-        apiVersion: builderContext.apiVersion,
-        query: {
-          id: props.symbol.entry,
-        },
-      })
-        .then((response) => {
-          if (response) {
-            state.contentToUse = response;
-          }
-        })
-        .catch((err) => {
-          console.error('[Builder.io]: Could not fetch symbol content: ', err);
-        });
-    }
+    state.fetchContent();
   }, [props.symbol]);
+
+  onMount(() => {
+    state.fetchContent();
+  });
 
   return (
     <div
