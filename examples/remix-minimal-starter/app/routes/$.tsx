@@ -54,12 +54,8 @@ export function CatchBoundary() {
   );
 }
 
-// this gives full compatibility to BuilderContent type and Remix starter
-// See: https://github.com/BuilderIO/builder/issues/1387#issuecomment-1397442797
-type BuilderContentRemix = Omit<BuilderContent, 'variations' | 'data'>;
-
 export default function Page() {
-  const page: BuilderContentRemix = useLoaderData<BuilderContentRemix>();
+  const page: BuilderContent = useLoaderData<BuilderContent>();
 
   return (
     <div>

@@ -241,7 +241,7 @@ test.describe(targetContext.name, () => {
 
       if (!isRNSDK) {
         expect(data.events[0].data.metadata.url).toMatch(/http:\/\/localhost:\d+\//);
-        expect(data.events[0].data.userAttributes.urlPath).toMatch('/');
+        expect(data.events[0].data.userAttributes.urlPath).toBe('/');
         expect(data.events[0].data.userAttributes.host).toMatch(/localhost:[\d]+/);
       }
     });
@@ -302,7 +302,7 @@ test.describe(targetContext.name, () => {
 
       if (!isRNSDK) {
         expect(data.events[0].data.metadata.url).toMatch(/http:\/\/localhost:\d+\//);
-        expect(data.events[0].data.userAttributes.urlPath).toMatch('/');
+        expect(data.events[0].data.userAttributes.urlPath).toBe('/');
         expect(data.events[0].data.userAttributes.host).toMatch(/localhost:[\d]+/);
       }
     });
