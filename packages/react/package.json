@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/react",
-  "version": "2.0.16-1",
+  "version": "2.0.16",
   "description": "",
   "keywords": [],
   "main": "dist/builder-react.cjs.js",
@@ -34,10 +34,10 @@
     "report-coverage": "cat ./coverage/lcov.info≈ | coveralls",
     "commit": "git-cz",
     "release": "yarn build && npm publish",
-    "release:major": "yarn build && npm version major && npm publish",
-    "release:patch": "yarn build && npm version patch && npm publish",
-    "release:nightly": "yarn build && npm version prerelease && npm publish --tag nightly",
-    "release:dev": "yarn build && npm version prerelease && npm publish --tag dev",
+    "release:major": "yarn build && yarn version major && yarn npm publish",
+    "release:patch": "yarn build && yarn version patch && yarn npm publish",
+    "release:nightly": "yarn build && yarn version prerelease && yarn npm publish --tag nightly",
+    "release:dev": "yarn build && yarn version prerelease && yarn npm publish --tag dev",
     "semantic-release": "semantic-release",
     "semantic-release-prepare": "ts-node tools/semantic-release-prepare",
     "precommit": "lint-staged",
@@ -121,7 +121,7 @@
     "react-dom": ">=16.8.0"
   },
   "dependencies": {
-    "@builder.io/sdk": "1.1.34-2",
+    "@builder.io/sdk": "1.1.34",
     "@emotion/core": "^10.0.17",
     "hash-sum": "^2.0.0",
     "preact": "^10.1.0",

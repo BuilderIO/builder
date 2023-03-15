@@ -10,8 +10,7 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@builder.io/react": "^2.0.2-7",
-    "@builder.io/sdk": "^1.1.30",
+    "@builder.io/react": "^2.0.16",
     "@remix-run/express": "^1.11.1",
     "@remix-run/node": "^1.11.1",
     "@remix-run/react": "^1.11.1",
