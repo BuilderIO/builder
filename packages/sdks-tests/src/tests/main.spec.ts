@@ -1,11 +1,60 @@
 import type { BrowserContext, TestInfo, ConsoleMessage, Locator, Page } from '@playwright/test';
 import { test as base, expect } from '@playwright/test';
+import { FIRST_SYMBOL_CONTENT, SECOND_SYMBOL_CONTENT } from '../specs/symbols.js';
 import { targetContext } from './context.js';
 import type { Sdk } from './sdk.js';
 import { sdk } from './sdk.js';
 
 type TestOptions = {
   packageName: string;
+};
+
+const testSymbols = async (page: Page) => {
+  await findTextInPage({ page, text: 'special test description' });
+  await page
+    .locator(
+      '[src="https://cdn.builder.io/api/v1/image/assets%2Ff1a790f8c3204b3b8c5c1795aeac4660%2F32b835cd8f62400085961dcf3f3b37a2"]'
+    )
+    .isVisible();
+  await findTextInPage({ page, text: 'default description' });
+  await page
+    .locator(
+      '[src="https://cdn.builder.io/api/v1/image/assets%2Ff1a790f8c3204b3b8c5c1795aeac4660%2F4bce19c3d8f040b3a95e91000a98283e"]'
+    )
+    .isVisible();
+
+  const firstSymbolText = await page.locator('text="Description of image:"').first();
+
+  // these are desktop and tablet styles, and will never show up in react native
+  if (!isRNSDK) {
+    // check desktop styles
+    await expectStyleForElement({
+      locator: firstSymbolText,
+      cssProperty: 'color',
+      expectedValue: 'rgb(255, 0, 0)',
+    });
+
+    // resize to tablet
+    await page.setViewportSize({ width: 930, height: 1000 });
+    await expectStyleForElement({
+      locator: firstSymbolText,
+      cssProperty: 'color',
+      expectedValue: 'rgb(0, 255, 6)',
+    });
+
+    // resize to mobile
+    await page.setViewportSize({ width: 400, height: 1000 });
+  }
+
+  // TO-DO: fix react native style inheritance for symbols->Text (using HTML renderer component), so we can unblock this.
+  if (!isRNSDK) {
+    // check mobile styles
+    await expectStyleForElement({
+      locator: firstSymbolText,
+      cssProperty: 'color',
+      expectedValue: 'rgb(0, 255, 255)',
+    });
+  }
 };
 
 // https://github.com/microsoft/playwright/issues/14854#issuecomment-1155667859
@@ -339,51 +388,25 @@ test.describe(targetContext.name, () => {
   test('symbols', async ({ page }) => {
     await page.goto('/symbols');
 
-    await findTextInPage({ page, text: 'special test description' });
-    await page
-      .locator(
-        '[src="https://cdn.builder.io/api/v1/image/assets%2Ff1a790f8c3204b3b8c5c1795aeac4660%2F32b835cd8f62400085961dcf3f3b37a2"]'
-      )
-      .isVisible();
-    await findTextInPage({ page, text: 'default description' });
-    await page
-      .locator(
-        '[src="https://cdn.builder.io/api/v1/image/assets%2Ff1a790f8c3204b3b8c5c1795aeac4660%2F4bce19c3d8f040b3a95e91000a98283e"]'
-      )
-      .isVisible();
+    await testSymbols(page);
+  });
+  test('symbols without content', async ({ page }) => {
+    await page.goto('/symbols-without-content');
 
-    const firstSymbolText = await page.locator('text="Description of image:"').first();
+    let x = 0;
+    await page.route(
+      /.*cdn\.builder\.io\/api\/v(\d)\/content\/symbol.*/,
+      route => {
+        x++;
+        return route.fulfill({
+          status: 200,
+          body: x === 0 ? FIRST_SYMBOL_CONTENT : SECOND_SYMBOL_CONTENT,
+        });
+      },
+      { times: 2 }
+    );
 
-    // these are desktop and tablet styles, and will never show up in react native
-    if (!isRNSDK) {
-      // check desktop styles
-      await expectStyleForElement({
-        locator: firstSymbolText,
-        cssProperty: 'color',
-        expectedValue: 'rgb(255, 0, 0)',
-      });
-
-      // resize to tablet
-      await page.setViewportSize({ width: 930, height: 1000 });
-      await expectStyleForElement({
-        locator: firstSymbolText,
-        cssProperty: 'color',
-        expectedValue: 'rgb(0, 255, 6)',
-      });
-
-      // resize to mobile
-      await page.setViewportSize({ width: 400, height: 1000 });
-    }
-
-    // TO-DO: fix react native style inheritance for symbols->Text (using HTML renderer component), so we can unblock this.
-    if (!isRNSDK) {
-      // check mobile styles
-      await expectStyleForElement({
-        locator: firstSymbolText,
-        cssProperty: 'color',
-        expectedValue: 'rgb(0, 255, 255)',
-      });
-    }
+    await testSymbols(page);
   });
   test('style bindings', async ({ page }) => {
     await page.goto('/content-bindings');
