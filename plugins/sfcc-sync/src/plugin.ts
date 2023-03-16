@@ -56,7 +56,8 @@ Builder.register('plugin', {
       friendlyName: 'Disable preview URL updates',
       type: 'boolean',
       advanced: true,
-      helperText: 'by default the preview URL will be updated to match the SFCC preview URL, disable this if you want to use your own preview URL',
+      helperText:
+        'by default the preview URL will be updated to match the SFCC preview URL, disable this if you want to use your own preview URL',
     },
   ],
 
