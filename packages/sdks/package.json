@@ -46,7 +46,7 @@
     "e2e:build:all": "yarn workspaces foreach --exclude @builder.io/e2e-rsc --verbose run build",
     "e2e:run:all": "yarn run-s e2e:run:*",
     "release-sdk": "bash ./scripts/release-sdk.sh",
-    "release:all": "bash ./scripts/loop-command.sh release-sdk \"svelte react-native solid qwik react vue\"",
+    "release:all": "yarn build:mitosis && bash ./scripts/loop-command.sh release-sdk \"svelte react-native solid qwik react vue\"",
     "upgrade-example": "bash ./scripts/upgrade-example.sh",
     "upgrade-example:all": "bash ./scripts/loop-command.sh upgrade-example \"svelte react-native solid qwik react vue\""
   },
