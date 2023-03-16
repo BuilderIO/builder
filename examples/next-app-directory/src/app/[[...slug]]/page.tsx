@@ -3,7 +3,7 @@ import { builder, Builder } from '@builder.io/sdk';
 Builder.isReact = true;
 // ✅ This pattern works. You can pass a Server Component
 // as a child or prop of a Client Component.
-import BuilderPage from './ClientComponent';
+import BuilderPage from './BuilderPage';
 import builderConfig from '../../../builderConfig.json';
 
 builder.init(builderConfig.apiKey);
