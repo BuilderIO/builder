@@ -2,6 +2,7 @@
 
 - Fix: `RenderContent` not re-rendering when its `content` updates. This fixes Symbol rendering in the visual editor.
 - Feature: `RenderContent` and `getContent` now have an `apiVersion` field that can be set to `v2` or `v3` to target specific Builder API versions. Current default is `v2`
+- Fix: Visual Editor drag'n'drop experience
 
 ### 0.1.11
 
