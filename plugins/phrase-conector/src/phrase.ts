@@ -5,7 +5,7 @@ export type Project = {
   uid: string;
 };
 
-export class Memsource {
+export class Phrase {
   private privateKey?: string;
   loaded?: Promise<void>;
   resolveLoaded?: () => void;

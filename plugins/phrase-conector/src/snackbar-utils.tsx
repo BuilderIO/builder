@@ -71,7 +71,7 @@ export function showOutdatedNotifications(callback: () => void) {
 interface Props {
   onChoose: (val: { sourceLang: string; targetLangs: string[] } | null) => void;
 }
-const lsKey = 'memsource.sourceLang';
+const lsKey = 'phrase.sourceLang';
 
 const safeLsGet = (key: string) => {
   try {
@@ -89,7 +89,7 @@ const safeLsSet = (key: string, value: string) => {
   }
 };
 
-const MemsourceConfigurationEditor: React.FC<Props> = props => {
+const PhraseConfigurationEditor: React.FC<Props> = props => {
   const store = useLocalStore(() => ({
     targetLangs: [] as string[],
     get availableLangs(): string[] {
@@ -179,7 +179,7 @@ export async function getLangPicks(): Promise<{
 } | null> {
   return new Promise(async resolve => {
     const destroy = await appState.globalState.openDialog(
-      React.createElement(MemsourceConfigurationEditor, {
+      React.createElement(PhraseConfigurationEditor, {
         onChoose: val => {
           resolve(val);
           destroy();
