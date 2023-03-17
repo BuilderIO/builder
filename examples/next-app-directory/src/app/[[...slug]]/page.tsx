@@ -25,13 +25,13 @@ async function getBuilderContent(urlPath: string) {
 
 interface PageProps {
   params: {
-    slug: string;
+    slug: string[];
   };
 }
 
 // Pages are Server Components by default
 export default async function Page(props: PageProps) {
-  const urlPath = '/'.concat(props?.params?.slug || '');
+  const urlPath = '/' + (props.params?.slug?.join('/') || '');
   const content = await getBuilderContent(urlPath);
 
   if (!content.page) {
