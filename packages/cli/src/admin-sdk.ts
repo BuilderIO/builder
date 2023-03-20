@@ -77,7 +77,7 @@ export const importSpace = async (
       );
       await Promise.all(
         content.map(async (entry, index) => {
-          let filename = `${directory}/${modelName}/${kebabCase(entry.name)}-${index}.json`;
+          const filename = `${directory}/${modelName}/${kebabCase(entry.name)}-${index}.json`;
           await fse.outputFile(filename, JSON.stringify(entry, undefined, 2));
           modelProgress.increment(1, { name: ` ${modelName}: ${filename} ` });
         })
@@ -110,12 +110,6 @@ export const newSpace = async (
 
   const spaceSettings = await readAsJson(`${directory}/settings.json`);
   try {
-    console.log('Calling create space with', {
-      settings: {
-        ...omit(spaceSettings, 'cloneInfo'),
-        name: name || spaceSettings.name,
-      },
-    });
     const { organization, privateKey: newSpacePrivateKey } = await graphqlClient.chain.mutation
       .createSpace({
         settings: {
