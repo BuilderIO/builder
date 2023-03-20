@@ -181,71 +181,70 @@ test.describe('Blocks', () => {
   });
 
   test.describe('Columns', () => {
-    excludeReactNative('renders columns', async ({ page }) => {
-      await page.goto('/columns');
+    type ColumnTypes =
+      | 'stackAtTablet'
+      | 'stackAtTabletReverse'
+      | 'stackAtMobile'
+      | 'stackAtMobileReverse'
+      | 'neverStack';
 
-      const columns = page.locator('.builder-columns');
+    type Size = 'mobile' | 'tablet' | 'desktop';
 
-      await expect(columns).toHaveCount(5);
+    const sizes: Record<Size, { width: number; height: number }> = {
+      mobile: { width: 300, height: 700 },
+      tablet: { width: 930, height: 700 },
+      desktop: { width: 1200, height: 700 },
+    };
 
-      type ColumnTypes =
-        | 'stackAtTablet'
-        | 'stackAtTabletReverse'
-        | 'stackAtMobile'
-        | 'stackAtMobileReverse'
-        | 'neverStack';
+    const expected: Record<ColumnTypes, Record<Size, ExpectedStyles> & { index: number }> = {
+      stackAtTablet: {
+        index: 0,
+        mobile: { 'flex-direction': 'column' },
+        tablet: { 'flex-direction': 'column' },
+        desktop: { 'flex-direction': 'row' },
+      },
+      stackAtTabletReverse: {
+        index: 1,
+        mobile: { 'flex-direction': 'column-reverse' },
+        tablet: { 'flex-direction': 'column-reverse' },
+        desktop: { 'flex-direction': 'row' },
+      },
+      stackAtMobile: {
+        index: 2,
+        mobile: { 'flex-direction': 'column' },
+        tablet: { 'flex-direction': 'row' },
+        desktop: { 'flex-direction': 'row' },
+      },
+      stackAtMobileReverse: {
+        index: 3,
+        mobile: { 'flex-direction': 'column-reverse' },
+        tablet: { 'flex-direction': 'row' },
+        desktop: { 'flex-direction': 'row' },
+      },
+      neverStack: {
+        index: 4,
+        mobile: { 'flex-direction': 'row' },
+        tablet: { 'flex-direction': 'row' },
+        desktop: { 'flex-direction': 'row' },
+      },
+    };
 
-      type Size = 'mobile' | 'tablet' | 'desktop';
-
-      const sizes: Record<Size, { width: number; height: number }> = {
-        mobile: { width: 300, height: 700 },
-        tablet: { width: 930, height: 700 },
-        desktop: { width: 1200, height: 700 },
-      };
-
-      const expected: Record<ColumnTypes, Record<Size, ExpectedStyles> & { index: number }> = {
-        stackAtTablet: {
-          index: 0,
-          mobile: { 'flex-direction': 'column' },
-          tablet: { 'flex-direction': 'column' },
-          desktop: { 'flex-direction': 'row' },
-        },
-        stackAtTabletReverse: {
-          index: 1,
-          mobile: { 'flex-direction': 'column-reverse' },
-          tablet: { 'flex-direction': 'column-reverse' },
-          desktop: { 'flex-direction': 'row' },
-        },
-        stackAtMobile: {
-          index: 2,
-          mobile: { 'flex-direction': 'column' },
-          tablet: { 'flex-direction': 'row' },
-          desktop: { 'flex-direction': 'row' },
-        },
-        stackAtMobileReverse: {
-          index: 3,
-          mobile: { 'flex-direction': 'column-reverse' },
-          tablet: { 'flex-direction': 'row' },
-          desktop: { 'flex-direction': 'row' },
-        },
-        neverStack: {
-          index: 4,
-          mobile: { 'flex-direction': 'row' },
-          tablet: { 'flex-direction': 'row' },
-          desktop: { 'flex-direction': 'row' },
-        },
-      };
-
-      for (const [sizeName, size] of Object.entries(sizes)) {
-        await page.setViewportSize(size);
-
+    for (const [sizeName, size] of Object.entries(sizes)) {
+      test.describe(sizeName, () => {
         for (const styles of Object.values(expected)) {
-          await expectStylesForElement({
-            locator: columns.nth(styles.index),
-            expected: styles[sizeName as Size],
+          test(sizeName, async ({ page }) => {
+            await page.setViewportSize(size);
+            await page.goto('/columns');
+            const columns = page.locator('.builder-columns');
+
+            await expect(columns).toHaveCount(5);
+            await expectStylesForElement({
+              locator: columns.nth(styles.index),
+              expected: styles[sizeName as Size],
+            });
           });
         }
-      }
-    });
+      });
+    }
   });
 });
