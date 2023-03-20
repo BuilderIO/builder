@@ -77,7 +77,7 @@ export const importSpace = async (
       );
       await Promise.all(
         content.map(async (entry, index) => {
-          const filename = `${directory}/${modelName}/${kebabCase(entry.name)}.json`;
+          const filename = `${directory}/${modelName}/${kebabCase(entry.name)}-${index}.json`;
           await fse.outputFile(filename, JSON.stringify(entry, undefined, 2));
           modelProgress.increment(1, { name: ` ${modelName}: ${filename} ` });
         })
