@@ -33,14 +33,11 @@ export default function Columns(props: ColumnProps) {
     gutterSize: typeof props.space === 'number' ? props.space || 0 : 20,
     cols: props.columns || [],
     getWidth(index: number) {
-      const columns = state.cols;
-      return columns[index]?.width || 100 / columns.length;
+      return state.cols[index]?.width || 100 / state.cols.length;
     },
     getColumnCssWidth(index: number) {
-      const columns = state.cols;
-      const gutterSize = state.gutterSize;
       const subtractWidth =
-        (gutterSize * (columns.length - 1)) / columns.length;
+        (state.gutterSize * (state.cols.length - 1)) / state.cols.length;
       return `calc(${state.getWidth(index)}% - ${subtractWidth}px)`;
     },
 
@@ -49,23 +46,23 @@ export default function Columns(props: ColumnProps) {
       return _stackColumnsAt === 'tablet' ? prop : 'inherit';
     },
 
-    flexDirection:
-      props.stackColumnsAt === 'never'
-        ? 'inherit'
-        : props.reverseColumnsWhenStacked
-        ? 'column-reverse'
-        : 'column',
-
     get columnsCssVars(): { [key: string]: string } {
+      const flexDir =
+        props.stackColumnsAt === 'never'
+          ? 'inherit'
+          : props.reverseColumnsWhenStacked
+          ? 'column-reverse'
+          : 'column';
+
       if (TARGET === 'reactNative') {
         return {
-          flexDirection: state.flexDirection,
+          flexDirection: flexDir,
         };
       }
 
       return {
-        '--flex-dir': state.flexDirection,
-        '--flex-dir-tablet': state.maybeApplyForTablet(state.flexDirection),
+        '--flex-dir': flexDir,
+        '--flex-dir-tablet': state.maybeApplyForTablet(flexDir),
       };
     },
 
