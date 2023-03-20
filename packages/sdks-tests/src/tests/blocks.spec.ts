@@ -181,4 +181,59 @@ test.describe('Blocks', () => {
     await expect(x).toBe(2);
   });
 
+  test.describe('Columns', () => {
+    test('renders columns', async ({ page }) => {
+      await page.goto('/columns');
+
+      const columns = page.locator('.builder-columns');
+
+      await expect(columns).toHaveCount(5);
+
+      if (isRNSDK) {
+        return;
+      }
+
+      type ColumnTypes = 'stackAtTablet';
+      // | 'stackAtTablet-reverse'
+      // | 'stackAtMobile'
+      // | 'stackAtMobile-reverse'
+      // | 'neverStack';
+
+      type Size = 'mobile' | 'tablet' | 'desktop';
+
+      const sizes: Record<Size, { width: number; height: number }> = {
+        mobile: { width: 604, height: 670 },
+        tablet: { width: 930, height: 1000 },
+        desktop: { width: 1880, height: 1000 },
+      };
+
+      const expected: {
+        [K in ColumnTypes]: { [T in Size]: Record<string, string> } & { index: number };
+      } = {
+        stackAtTablet: {
+          index: 0,
+          mobile: {
+            'flex-direction': 'row',
+          },
+          tablet: {
+            'flex-direction': 'column',
+          },
+          desktop: {
+            'flex-direction': 'column',
+          },
+        },
+      };
+
+      for (const [sizeName, size] of Object.entries(sizes)) {
+        await page.setViewportSize(size);
+
+        for (const styles of Object.values(expected)) {
+          await expectStylesForElement({
+            locator: columns.nth(styles.index),
+            expected: styles[sizeName as Size],
+          });
+        }
+      }
+    });
+  });
 });
