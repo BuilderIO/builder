@@ -231,8 +231,8 @@ test.describe('Blocks', () => {
 
     for (const [sizeName, size] of Object.entries(sizes)) {
       test.describe(sizeName, () => {
-        for (const styles of Object.values(expected)) {
-          test(sizeName, async ({ page }) => {
+        for (const [columnType, styles] of Object.entries(expected)) {
+          test(columnType, async ({ page }) => {
             await page.setViewportSize(size);
             await page.goto('/columns');
             const columns = page.locator('.builder-columns');
