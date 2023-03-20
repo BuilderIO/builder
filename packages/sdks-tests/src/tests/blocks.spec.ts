@@ -181,16 +181,12 @@ test.describe('Blocks', () => {
   });
 
   test.describe('Columns', () => {
-    test('renders columns', async ({ page }) => {
+    excludeReactNative('renders columns', async ({ page }) => {
       await page.goto('/columns');
 
       const columns = page.locator('.builder-columns');
 
       await expect(columns).toHaveCount(5);
-
-      if (isRNSDK) {
-        return;
-      }
 
       type ColumnTypes =
         | 'stackAtTablet'
