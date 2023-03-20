@@ -102,13 +102,15 @@ export const expectStyleForElement = async ({
   await expect(await getElementStyleValue({ locator, cssProperty })).toBe(expectedValue);
 };
 
+export type ExpectedStyles = Record<string, string>;
+
 export const expectStylesForElement = async ({
   expected,
   locator,
   checkVisibility,
 }: {
   locator: Locator;
-  expected: Record<string, string>;
+  expected: ExpectedStyles;
   checkVisibility?: boolean;
 }) => {
   for (const property of Object.keys(expected)) {

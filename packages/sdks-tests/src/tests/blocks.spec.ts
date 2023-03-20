@@ -1,6 +1,7 @@
 import { expect } from '@playwright/test';
 import type { Page } from '@playwright/test';
 import { FIRST_SYMBOL_CONTENT, SECOND_SYMBOL_CONTENT } from '../specs/symbols.js';
+import type { ExpectedStyles } from './helpers.js';
 import {
   test,
   findTextInPage,
@@ -191,34 +192,51 @@ test.describe('Blocks', () => {
         return;
       }
 
-      type ColumnTypes = 'stackAtTablet';
-      // | 'stackAtTablet-reverse'
-      // | 'stackAtMobile'
-      // | 'stackAtMobile-reverse'
-      // | 'neverStack';
+      type ColumnTypes =
+        | 'stackAtTablet'
+        | 'stackAtTabletReverse'
+        | 'stackAtMobile'
+        | 'stackAtMobileReverse'
+        | 'neverStack';
 
       type Size = 'mobile' | 'tablet' | 'desktop';
 
       const sizes: Record<Size, { width: number; height: number }> = {
-        mobile: { width: 604, height: 670 },
-        tablet: { width: 930, height: 1000 },
-        desktop: { width: 1880, height: 1000 },
+        mobile: { width: 300, height: 700 },
+        tablet: { width: 930, height: 700 },
+        desktop: { width: 1200, height: 700 },
       };
 
-      const expected: {
-        [K in ColumnTypes]: { [T in Size]: Record<string, string> } & { index: number };
-      } = {
+      const expected: Record<ColumnTypes, Record<Size, ExpectedStyles> & { index: number }> = {
         stackAtTablet: {
           index: 0,
-          mobile: {
-            'flex-direction': 'column',
-          },
-          tablet: {
-            'flex-direction': 'column',
-          },
-          desktop: {
-            'flex-direction': 'row',
-          },
+          mobile: { 'flex-direction': 'column' },
+          tablet: { 'flex-direction': 'column' },
+          desktop: { 'flex-direction': 'row' },
+        },
+        stackAtTabletReverse: {
+          index: 1,
+          mobile: { 'flex-direction': 'column-reverse' },
+          tablet: { 'flex-direction': 'column-reverse' },
+          desktop: { 'flex-direction': 'row' },
+        },
+        stackAtMobile: {
+          index: 2,
+          mobile: { 'flex-direction': 'column' },
+          tablet: { 'flex-direction': 'row' },
+          desktop: { 'flex-direction': 'row' },
+        },
+        stackAtMobileReverse: {
+          index: 3,
+          mobile: { 'flex-direction': 'column-reverse' },
+          tablet: { 'flex-direction': 'row' },
+          desktop: { 'flex-direction': 'row' },
+        },
+        neverStack: {
+          index: 4,
+          mobile: { 'flex-direction': 'row' },
+          tablet: { 'flex-direction': 'row' },
+          desktop: { 'flex-direction': 'row' },
         },
       };
 
