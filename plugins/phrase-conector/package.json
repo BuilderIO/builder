@@ -1,6 +1,6 @@
 {
-  "name": "@builder.io/plugin-memsource-connector",
-  "version": "0.0.3",
+  "name": "@builder.io/plugin-phrase-connector",
+  "version": "0.0.4",
   "description": "",
   "keywords": [],
   "main": "dist/plugin.system.js",

@@ -7,7 +7,7 @@ import {
   fastClone,
   registerEditorOnLoad,
 } from './plugin-helpers';
-import { Memsource, Project } from './memsource';
+import { Phrase, Project } from './phrase';
 import { showJobNotification, showOutdatedNotifications, getLangPicks } from './snackbar-utils';
 import { getTranslateableFields } from '@builder.io/utils';
 import hash from 'object-hash';
@@ -17,7 +17,7 @@ const enabledTranslationStatuses = ['pending', 'local'];
 
 registerPlugin(
   {
-    name: 'Memsource',
+    name: 'Phrase',
     id: pkg.name,
     settings: [
       {
@@ -44,11 +44,11 @@ registerPlugin(
           ]
         : []),
     ],
-    ctaText: `Connect your Memsource account`,
+    ctaText: `Connect your Phrase account`,
     noPreviewTypes: true,
   },
   async settings => {
-    const api = new Memsource(settings.get('apiHost'));
+    const api = new Phrase(settings.get('apiHost'));
     registerEditorOnLoad(({ safeReaction }) => {
       safeReaction(
         () => {
@@ -88,7 +88,7 @@ registerPlugin(
             );
             if (currentRevision !== content.meta.translationRevision) {
               showOutdatedNotifications(async () => {
-                appState.globalState.showGlobalBlockingLoading('Contacting Memsource ....');
+                appState.globalState.showGlobalBlockingLoading('Contacting Phrase ....');
                 // TODO maybe just delete old project and re-request a new one.
                 appState.globalState.hideGlobalBlockingLoading();
               });
@@ -147,7 +147,7 @@ registerPlugin(
         const contentId = content.id;
         const picks = await getLangPicks();
         if (picks) {
-          appState.globalState.showGlobalBlockingLoading('Contacting Memsource ....');
+          appState.globalState.showGlobalBlockingLoading('Contacting Phrase ....');
           const { project } = await api.createJob(
             contentId,
             model,
@@ -171,7 +171,7 @@ registerPlugin(
         );
       },
       async onClick(content) {
-        appState.globalState.showGlobalBlockingLoading('Contacting Memsource ....');
+        appState.globalState.showGlobalBlockingLoading('Contacting Phrase ....');
         // TODO
         appState.globalState.hideGlobalBlockingLoading();
       },
