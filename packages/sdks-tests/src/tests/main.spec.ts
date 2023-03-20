@@ -3,7 +3,6 @@ import { expect } from '@playwright/test';
 import { targetContext } from './context.js';
 import {
   excludeReactNative,
-  excludeTestFor,
   expectStyleForElement,
   expectStylesForElement,
   findTextInPage,
@@ -15,133 +14,140 @@ import {
 } from './helpers';
 
 test.describe(targetContext.name, () => {
-  test.describe('cookies', () => {
-    test('do not appear if canTrack=false', async ({ page, context }) => {
-      // by waiting for network requests, we guarantee that impression tracking POST was (NOT) made,
-      // which guarantees that the cookie was set or not.
-      await page.goto('/can-track-false', { waitUntil: 'networkidle' });
+  test.describe('Tracking', () => {
+    test.describe('cookies', () => {
+      test('do not appear if canTrack=false', async ({ page, context }) => {
+        // by waiting for network requests, we guarantee that impression tracking POST was (NOT) made,
+        // which guarantees that the cookie was set or not.
+        await page.goto('/can-track-false', { waitUntil: 'networkidle' });
 
-      const cookies = await context.cookies();
-      const builderSessionCookie = cookies.find(cookie => cookie.name === 'builderSessionId');
-      expect(builderSessionCookie).toBeUndefined();
+        const cookies = await context.cookies();
+        const builderSessionCookie = cookies.find(cookie => cookie.name === 'builderSessionId');
+        expect(builderSessionCookie).toBeUndefined();
+      });
+      excludeReactNative('appear by default', async ({ page, context }) => {
+        // by waiting for network requests, we guarantee that impression tracking POST was made,
+        // which guarantees that the cookie was set
+        await page.goto('/', { waitUntil: 'networkidle' });
+
+        const builderSessionCookie = await getBuilderSessionIdCookie({ context });
+
+        expect(builderSessionCookie).toBeDefined();
+      });
     });
-    excludeReactNative('appear by default', async ({ page, context }) => {
-      // by waiting for network requests, we guarantee that impression tracking POST was made,
-      // which guarantees that the cookie was set
-      await page.goto('/', { waitUntil: 'networkidle' });
+    test.describe('POST data', () => {
+      test('POSTs correct impression data', async ({ page }) => {
+        const navigate = page.goto('/');
+        const trackingRequestPromise = page.waitForRequest(
+          request =>
+            request.url().includes('builder.io/api/v1/track') && request.method() === 'POST'
+        );
 
-      const builderSessionCookie = await getBuilderSessionIdCookie({ context });
+        await navigate;
+        const trackingRequest = await trackingRequestPromise;
 
-      expect(builderSessionCookie).toBeDefined();
-    });
-  });
-  test.describe('tracking', () => {
-    test('POSTs correct impression data', async ({ page }) => {
-      const navigate = page.goto('/');
-      const trackingRequestPromise = page.waitForRequest(
-        request => request.url().includes('builder.io/api/v1/track') && request.method() === 'POST'
-      );
+        const data = trackingRequest.postDataJSON();
 
-      await navigate;
-      const trackingRequest = await trackingRequestPromise;
-
-      const data = trackingRequest.postDataJSON();
-
-      const expected = {
-        events: [
-          {
-            type: 'impression',
-            data: {
-              metadata: {},
-              userAttributes: {
-                device: 'desktop',
+        const expected = {
+          events: [
+            {
+              type: 'impression',
+              data: {
+                metadata: {},
+                userAttributes: {
+                  device: 'desktop',
+                },
               },
             },
-          },
-        ],
-      };
+          ],
+        };
 
-      if (isRNSDK) {
-        expected.events[0].data.userAttributes.device = 'mobile';
-      }
+        if (isRNSDK) {
+          expected.events[0].data.userAttributes.device = 'mobile';
+        }
 
-      const ID_REGEX = /^[a-f0-9]{32}$/;
+        const ID_REGEX = /^[a-f0-9]{32}$/;
 
-      expect(data).toMatchObject(expected);
-      expect(data.events[0].data.sessionId).toMatch(ID_REGEX);
-      expect(data.events[0].data.visitorId).toMatch(ID_REGEX);
-      expect(data.events[0].data.ownerId).toMatch(ID_REGEX);
+        expect(data).toMatchObject(expected);
+        expect(data.events[0].data.sessionId).toMatch(ID_REGEX);
+        expect(data.events[0].data.visitorId).toMatch(ID_REGEX);
+        expect(data.events[0].data.ownerId).toMatch(ID_REGEX);
 
-      if (!isRNSDK) {
-        expect(data.events[0].data.metadata.url).toMatch(/http:\/\/localhost:\d+\//);
-        expect(data.events[0].data.userAttributes.urlPath).toBe('/');
-        expect(data.events[0].data.userAttributes.host).toMatch(/localhost:[\d]+/);
-      }
-    });
+        if (!isRNSDK) {
+          expect(data.events[0].data.metadata.url).toMatch(/http:\/\/localhost:\d+\//);
+          expect(data.events[0].data.userAttributes.urlPath).toBe('/');
+          expect(data.events[0].data.userAttributes.host).toMatch(/localhost:[\d]+/);
+        }
+      });
 
-    testExcludeOldReact('POSTs correct click data', async ({ page }) => {
-      await page.goto('/', { waitUntil: 'networkidle' });
-      const trackingRequestPromise = page.waitForRequest(
-        request =>
-          request.url().includes('builder.io/api/v1/track') &&
-          request.method() === 'POST' &&
-          request.postDataJSON().events[0].type === 'click'
-      );
+      testExcludeOldReact('POSTs correct click data', async ({ page }) => {
+        await page.goto('/', { waitUntil: 'networkidle' });
+        const trackingRequestPromise = page.waitForRequest(
+          request =>
+            request.url().includes('builder.io/api/v1/track') &&
+            request.method() === 'POST' &&
+            request.postDataJSON().events[0].type === 'click'
+        );
 
-      // click on an element
-      await page.click('text=SDK Feature testing project');
+        // click on an element
+        await page.click('text=SDK Feature testing project');
 
-      // get click tracking request
-      const trackingRequest = await trackingRequestPromise;
+        // get click tracking request
+        const trackingRequest = await trackingRequestPromise;
 
-      const data = trackingRequest.postDataJSON();
+        const data = trackingRequest.postDataJSON();
 
-      const expected = {
-        events: [
-          {
-            type: 'click',
-            data: {
-              metadata: {},
-              userAttributes: {
-                device: 'desktop',
+        const expected = {
+          events: [
+            {
+              type: 'click',
+              data: {
+                metadata: {},
+                userAttributes: {
+                  device: 'desktop',
+                },
               },
             },
-          },
-        ],
-      };
+          ],
+        };
 
-      if (isRNSDK) {
-        expected.events[0].data.userAttributes.device = 'mobile';
-      }
+        if (isRNSDK) {
+          expected.events[0].data.userAttributes.device = 'mobile';
+        }
 
-      const ID_REGEX = /^[a-f0-9]{32}$/;
+        const ID_REGEX = /^[a-f0-9]{32}$/;
 
-      expect(data).toMatchObject(expected);
+        expect(data).toMatchObject(expected);
 
-      if (!isRNSDK) {
-        // check that all the heatmap metadata is present
+        if (!isRNSDK) {
+          // check that all the heatmap metadata is present
 
-        expect(!isNaN(parseFloat(data.events[0].data.metadata.builderElementIndex))).toBeTruthy();
-        expect(!isNaN(parseFloat(data.events[0].data.metadata.builderTargetOffset.x))).toBeTruthy();
-        expect(!isNaN(parseFloat(data.events[0].data.metadata.builderTargetOffset.y))).toBeTruthy();
-        expect(!isNaN(parseFloat(data.events[0].data.metadata.targetOffset.x))).toBeTruthy();
-        expect(!isNaN(parseFloat(data.events[0].data.metadata.targetOffset.y))).toBeTruthy();
-      }
+          expect(!isNaN(parseFloat(data.events[0].data.metadata.builderElementIndex))).toBeTruthy();
+          expect(
+            !isNaN(parseFloat(data.events[0].data.metadata.builderTargetOffset.x))
+          ).toBeTruthy();
+          expect(
+            !isNaN(parseFloat(data.events[0].data.metadata.builderTargetOffset.y))
+          ).toBeTruthy();
+          expect(!isNaN(parseFloat(data.events[0].data.metadata.targetOffset.x))).toBeTruthy();
+          expect(!isNaN(parseFloat(data.events[0].data.metadata.targetOffset.y))).toBeTruthy();
+        }
 
-      // baseline tests for impression tracking
-      expect(data.events[0].data.sessionId).toMatch(ID_REGEX);
-      expect(data.events[0].data.visitorId).toMatch(ID_REGEX);
-      expect(data.events[0].data.ownerId).toMatch(ID_REGEX);
+        // baseline tests for impression tracking
+        expect(data.events[0].data.sessionId).toMatch(ID_REGEX);
+        expect(data.events[0].data.visitorId).toMatch(ID_REGEX);
+        expect(data.events[0].data.ownerId).toMatch(ID_REGEX);
 
-      if (!isRNSDK) {
-        expect(data.events[0].data.metadata.url).toMatch(/http:\/\/localhost:\d+\//);
-        expect(data.events[0].data.userAttributes.urlPath).toBe('/');
-        expect(data.events[0].data.userAttributes.host).toMatch(/localhost:[\d]+/);
-      }
+        if (!isRNSDK) {
+          expect(data.events[0].data.metadata.url).toMatch(/http:\/\/localhost:\d+\//);
+          expect(data.events[0].data.userAttributes.urlPath).toBe('/');
+          expect(data.events[0].data.userAttributes.host).toMatch(/localhost:[\d]+/);
+        }
+      });
     });
   });
 
-  test('homepage - client-side navigation', async ({ page }) => {
+  test('Client-side navigation', async ({ page }) => {
     await page.goto('/');
 
     const links = page.locator('a');
@@ -155,160 +161,100 @@ test.describe(targetContext.name, () => {
     await findTextInPage({ page, text: 'Stack at tablet' });
   });
 
-  test.describe('Reactive State', () => {
-    excludeReactNative('shows default value', async ({ page }) => {
-      await page.goto('/reactive-state');
-
-      await findTextInPage({ page, text: '0' });
-    });
-
-    reactiveStateTest('increments value correctly', async ({ page }) => {
-      await page.goto('/reactive-state');
-
-      await findTextInPage({ page, text: '0' });
-
-      await page.getByText('Increment Number').click();
-
-      await findTextInPage({ page, text: '1' });
-    });
-  });
-  test.describe('Element Events', () => {
-    const filterConsoleMessages = (consoleMessage: ConsoleMessage) => {
-      const text = consoleMessage.text();
-      return text.startsWith('clicked');
-    };
-    test('click works on button', async ({ page }) => {
-      await page.goto('/element-events');
-
-      // Get the next console log message
-      const msgPromise = page.waitForEvent('console', filterConsoleMessages);
-
-      await page.getByText('Click me!').click();
-
-      const msg = await msgPromise;
-
-      expect(msg.text()).toEqual('clicked button');
-    });
-    test('click works on box', async ({ page }) => {
-      await page.goto('/element-events');
-
-      // Get the next console log message
-      const msgPromise = page.waitForEvent('console', filterConsoleMessages);
-
-      await page.getByText('clickable BOX').click();
-      const msg = await msgPromise;
-
-      expect(msg.text()).toEqual('clicked box');
-    });
-
-    test('click works on text', async ({ page }) => {
-      await page.goto('/element-events');
-
-      // Get the next console log message
-      const msgPromise = page.waitForEvent('console', filterConsoleMessages);
-
-      await page.getByText('clickable text').click();
-      const msg = await msgPromise;
-
-      expect(msg.text()).toEqual('clicked text');
-    });
-  });
-
-  test.describe('Style Bindings', () => {
-    test('Content', async ({ page }) => {
-      await page.goto('/content-bindings');
-
-      const expected = {
-        'border-top-left-radius': '10px',
-        'border-top-right-radius': '22px',
-        'border-bottom-left-radius': '40px',
-        'border-bottom-right-radius': '30px',
-      };
-
-      const selector = isRNSDK
-        ? '[data-class*=builder-blocks] > div > div'
-        : '[class*=builder-blocks] > div';
-
-      const locator = page.locator(selector).filter({ hasText: 'Enter some text...' }).last();
-
-      page.locator(selector).innerText;
-
-      await expectStylesForElement({ expected, locator });
-      // TODO: fix this
-      // check the title is correct
-      // title: 'some special title'
-    });
-    test('Symbol', async ({ page }) => {
-      await page.goto('/symbol-bindings');
-
-      const expected = {
-        'border-top-left-radius': '10px',
-        'border-top-right-radius': '220px',
-        'border-bottom-left-radius': '30px',
-        'border-bottom-right-radius': '40px',
-      };
-
-      const selector = isRNSDK
-        ? '[data-class*=builder-blocks] > div > div'
-        : '[class*=builder-blocks] > div';
-
-      const locator = page.locator(selector).filter({ hasText: 'Enter some text...' }).last();
-
-      await expectStylesForElement({ expected, locator });
-      // TODO: fix this
-      // check the title is correct
-      // title: 'some special title'
-    });
-  });
-
-  test.describe('Show If & Hide If', () => {
-    test('works on static conditions', async ({ page }) => {
-      await page.goto('/show-hide-if');
-
-      await findTextInPage({ page, text: 'this always appears' });
-      await expect(page.locator('body')).not.toContainText('this never appears');
-    });
-
-    reactiveStateTest('works on reactive conditions', async ({ page }) => {
-      await page.goto('/show-hide-if');
-
-      await findTextInPage({ page, text: 'even clicks' });
-      await expect(page.locator('body')).not.toContainText('odd clicks');
-
-      await page.locator('text=Click me!').click();
-
-      await findTextInPage({ page, text: 'odd clicks' });
-      await expect(page.locator('body')).not.toContainText('even clicks');
-    });
-  });
-  test('data-bindings', async ({ page }) => {
-    await page.goto('/data-bindings');
-
-    await expect(page.locator(`text="1234"`).first()).toBeVisible();
-    await findTextInPage({
-      page,
-      text: 'The Hot Wheels™ Legends Tour is Back',
-    });
-    await findTextInPage({
-      page,
-      text: 'Mattel Certified by Great Place to Work and Named to Fast Company’s List of 100 Best Workplaces for Innovators',
-    });
-  });
-
-  test('data-binding-styles', async ({ page }) => {
-    await page.goto('/data-binding-styles');
-    if (isRNSDK) {
-      // styling is not yet implemented in RN SDK
-      return;
-    }
-    await expectStyleForElement({
-      locator: page.locator(`text="This text should be red..."`),
-      cssProperty: 'color',
-      expectedValue: 'rgb(255, 0, 0)',
-    });
-  });
-
   test.describe('Features', () => {
+    test.describe('Reactive State', () => {
+      excludeReactNative('shows default value', async ({ page }) => {
+        await page.goto('/reactive-state');
+
+        await findTextInPage({ page, text: '0' });
+      });
+
+      reactiveStateTest('increments value correctly', async ({ page }) => {
+        await page.goto('/reactive-state');
+
+        await findTextInPage({ page, text: '0' });
+
+        await page.getByText('Increment Number').click();
+
+        await findTextInPage({ page, text: '1' });
+      });
+    });
+    test.describe('Element Events', () => {
+      const filterConsoleMessages = (consoleMessage: ConsoleMessage) => {
+        const text = consoleMessage.text();
+        return text.startsWith('clicked');
+      };
+      test('click works on button', async ({ page }) => {
+        await page.goto('/element-events');
+
+        // Get the next console log message
+        const msgPromise = page.waitForEvent('console', filterConsoleMessages);
+
+        await page.getByText('Click me!').click();
+
+        const msg = await msgPromise;
+
+        expect(msg.text()).toEqual('clicked button');
+      });
+      test('click works on box', async ({ page }) => {
+        await page.goto('/element-events');
+
+        // Get the next console log message
+        const msgPromise = page.waitForEvent('console', filterConsoleMessages);
+
+        await page.getByText('clickable BOX').click();
+        const msg = await msgPromise;
+
+        expect(msg.text()).toEqual('clicked box');
+      });
+
+      test('click works on text', async ({ page }) => {
+        await page.goto('/element-events');
+
+        // Get the next console log message
+        const msgPromise = page.waitForEvent('console', filterConsoleMessages);
+
+        await page.getByText('clickable text').click();
+        const msg = await msgPromise;
+
+        expect(msg.text()).toEqual('clicked text');
+      });
+    });
+
+    test.describe('Show If & Hide If', () => {
+      test('works on static conditions', async ({ page }) => {
+        await page.goto('/show-hide-if');
+
+        await findTextInPage({ page, text: 'this always appears' });
+        await expect(page.locator('body')).not.toContainText('this never appears');
+      });
+
+      reactiveStateTest('works on reactive conditions', async ({ page }) => {
+        await page.goto('/show-hide-if');
+
+        await findTextInPage({ page, text: 'even clicks' });
+        await expect(page.locator('body')).not.toContainText('odd clicks');
+
+        await page.locator('text=Click me!').click();
+
+        await findTextInPage({ page, text: 'odd clicks' });
+        await expect(page.locator('body')).not.toContainText('even clicks');
+      });
+    });
+    test('Dynamic Data Bindings', async ({ page }) => {
+      await page.goto('/data-bindings');
+
+      await expect(page.locator(`text="1234"`).first()).toBeVisible();
+      await findTextInPage({
+        page,
+        text: 'The Hot Wheels™ Legends Tour is Back',
+      });
+      await findTextInPage({
+        page,
+        text: 'Mattel Certified by Great Place to Work and Named to Fast Company’s List of 100 Best Workplaces for Innovators',
+      });
+    });
+
     test.describe('Custom Breakpoints', () => {
       /* set breakpoint config in content -
     breakpoints: {
@@ -588,54 +534,6 @@ test.describe(targetContext.name, () => {
             });
           }
         });
-      });
-    });
-  });
-
-  test.describe('Styles', () => {
-    test('Should apply responsive styles correctly on tablet/mobile', async ({ page }) => {
-      await page.goto('/columns');
-
-      await findTextInPage({ page, text: 'Stack at tablet' });
-
-      // switch to tablet view
-      await page.setViewportSize({ width: 750, height: 1000 });
-
-      // check that the 2nd photo has a margin-left of 0px
-      // the desktop margin would typically be on its 3rd parent, except for React Native (4th)
-      const locator = isRNSDK
-        ? page.locator('img').nth(1).locator('..').locator('..').locator('..').locator('..')
-        : page.locator('picture').nth(1).locator('..').locator('..').locator('..');
-
-      await expectStyleForElement({
-        locator,
-        cssProperty: 'margin-left',
-        expectedValue: '0px',
-      });
-    });
-
-    const excludeReactNativeAndOldReact = excludeTestFor({
-      // we don't support CSS nesting in RN.
-      reactNative: true,
-      // old React SDK should support CSS nesting, but it seems to not be implemented properly.
-      oldReact: true,
-    });
-
-    excludeReactNativeAndOldReact('Should apply CSS nesting', async ({ page }) => {
-      await page.goto('./css-nesting');
-
-      const blueText = page.locator('text=blue');
-      await expectStyleForElement({
-        locator: blueText,
-        cssProperty: 'color',
-        expectedValue: 'rgb(0, 0, 255)',
-      });
-
-      const redText = page.locator('text=green');
-      await expectStyleForElement({
-        locator: redText,
-        cssProperty: 'color',
-        expectedValue: 'rgb(65, 117, 5)',
       });
     });
   });
