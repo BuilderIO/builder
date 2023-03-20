@@ -449,11 +449,11 @@ module.exports = {
               }
 
               // For now, we exclude the `setState` function as Mitosis does not correctly know how to serialize it.
-              Object.values(json.context.set).forEach((context) => {
-                if (context?.value?.['setState']) {
-                  delete context.value['setState'];
-                }
-              });
+              // Object.values(json.context.set).forEach((context) => {
+              //   if (context?.value?.['setState']) {
+              //     delete context.value['setState'];
+              //   }
+              // });
 
               return json;
             },
