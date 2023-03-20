@@ -1739,8 +1739,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@builder.io/e2e-qwik-city@workspace:sdks/e2e/qwik-city"
   dependencies:
-    "@builder.io/qwik": 0.16.2
-    "@builder.io/qwik-city": 0.0.128
+    "@builder.io/qwik": ^0.23.0
+    "@builder.io/qwik-city": latest
     "@builder.io/sdk-qwik": "workspace:*"
     "@builder.io/sdks-e2e-tests": "workspace:*"
     "@types/eslint": 8.4.10
@@ -1763,7 +1763,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@builder.io/e2e-qwik@workspace:sdks/e2e/qwik"
   dependencies:
-    "@builder.io/qwik": ^0.16.2
+    "@builder.io/qwik": ^0.23.0
     "@builder.io/sdk-qwik": "workspace:*"
     "@builder.io/sdks-e2e-tests": "workspace:*"
     "@types/eslint": 8.4.5
@@ -2020,26 +2020,29 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@builder.io/qwik-city@npm:0.0.128":
-  version: 0.0.128
-  resolution: "@builder.io/qwik-city@npm:0.0.128"
+"@builder.io/qwik-city@npm:latest":
+  version: 0.6.3
+  resolution: "@builder.io/qwik-city@npm:0.6.3"
   dependencies:
-    "@mdx-js/mdx": 2.1.5
+    "@mdx-js/mdx": 2.3.0
     "@types/mdx": 2.0.3
     source-map: 0.7.4
-    vfile: 5.3.6
-  checksum: 9e6b224c389a10052efd98d814cbd497173616764930cf25bb8b847565da028a51ca03b3708ad8dbbb0e870cf7fd22150bd4c0f2462704eb67f878daa5914607
+    vfile: 5.3.7
+    zod: ^3.21.4
+  peerDependencies:
+    "@builder.io/qwik": ">=0.22.0"
+  checksum: cc52b35570dd29b23186c066072d0558dc52a542ab63506db02d45e206df173dd3d60a49a282fa33e337e46c9b2c459307f717f1d2bcb6339a89fe08b38d7f5f
   languageName: node
   linkType: hard
 
-"@builder.io/qwik@npm:0.16.2, @builder.io/qwik@npm:^0.16.2":
-  version: 0.16.2
-  resolution: "@builder.io/qwik@npm:0.16.2"
+"@builder.io/qwik@npm:^0.23.0":
+  version: 0.23.0
+  resolution: "@builder.io/qwik@npm:0.23.0"
   peerDependencies:
     undici: ^5.14.0
   bin:
     qwik: qwik.cjs
-  checksum: e83e0c99589ed68463bf674954df1ce63de8396dcc081f79e9abe5ec6a116182e947fa6a822f277c53afbd3b03841fbfc3b1cbc4d18a8465af438be98155e322
+  checksum: 642ea0e655c974ec4e87df68d2a5fc6d07366fc455e031d43369417e5732e2b82ba77dfad06428a7331620684d2701673b404c2ab564c859cbd567f81754c748
   languageName: node
   linkType: hard
 
@@ -2151,7 +2154,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@builder.io/sdk-qwik@workspace:sdks/output/qwik"
   dependencies:
-    "@builder.io/qwik": ^0.16.2
+    "@builder.io/qwik": ^0.23.0
     "@types/node": latest
     typescript: ^4
     vite: ^3.0.4
@@ -4107,9 +4110,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@marko/compiler@npm:^5.22.4, @marko/compiler@npm:^5.26.0":
-  version: 5.26.0
-  resolution: "@marko/compiler@npm:5.26.0"
+"@marko/compiler@npm:^5.22.4, @marko/compiler@npm:^5.27.1":
+  version: 5.27.1
+  resolution: "@marko/compiler@npm:5.27.1"
   dependencies:
     "@babel/code-frame": ^7.16.0
     "@babel/core": ^7.16.0
@@ -4124,7 +4127,7 @@ __metadata:
     "@marko/babel-utils": ^5.21.4
     complain: ^1.6.0
     he: ^1.2.0
-    htmljs-parser: ^5.1.5
+    htmljs-parser: ^5.4.3
     jsesc: ^3.0.2
     lasso-package-root: ^1.0.1
     raptor-regexp: ^1.0.1
@@ -4133,13 +4136,13 @@ __metadata:
     self-closing-tags: ^1.0.1
     strip-ansi: ^6.0.0
     strip-json-comments: ^3.1.1
-  checksum: 15c6d5297dbb88c5a95ce688ce6658b2ecf1927512436178a4adea7db8495d932995916ed2709021256884e818b2f598856fcc2bc33f4cf7df8c307534cbe5b4
+  checksum: db905908bb4f6b0c71a574e84e222e3ed734bf8613707731a955412d9aa9f908921551d3ef56bd14823c0d872c3bfe8af6758814dcef647b10825b2995b0473f
   languageName: node
   linkType: hard
 
-"@marko/translator-default@npm:^5.21.4, @marko/translator-default@npm:^5.24.0":
-  version: 5.24.0
-  resolution: "@marko/translator-default@npm:5.24.0"
+"@marko/translator-default@npm:^5.21.4, @marko/translator-default@npm:^5.25.1":
+  version: 5.25.1
+  resolution: "@marko/translator-default@npm:5.25.1"
   dependencies:
     "@babel/runtime": ^7.16.0
     "@marko/babel-utils": ^5.21.4
@@ -4149,13 +4152,13 @@ __metadata:
   peerDependencies:
     "@marko/compiler": ^5.16.1
     marko: ^5.17.2
-  checksum: d05fb28a3a97934f322fef8755f1e7ea6f6c74a70324a4a4dd8fadd7ecda904aa07152985c5f507eb20268dffb022e17056b0ebd02f2cc9d60d4cc79d34c9c8b
+  checksum: 3d91b57a913876b799982796696596d06a251db939c0860033ed9cc5db4eb81e810d9fa56f903309a424a92045a7cbbc55ceb0291421e2c1e6a986e1da166c0c
   languageName: node
   linkType: hard
 
-"@mdx-js/mdx@npm:2.1.5":
-  version: 2.1.5
-  resolution: "@mdx-js/mdx@npm:2.1.5"
+"@mdx-js/mdx@npm:2.3.0":
+  version: 2.3.0
+  resolution: "@mdx-js/mdx@npm:2.3.0"
   dependencies:
     "@types/estree-jsx": ^1.0.0
     "@types/mdx": ^2.0.0
@@ -4174,7 +4177,7 @@ __metadata:
     unist-util-stringify-position: ^3.0.0
     unist-util-visit: ^4.0.0
     vfile: ^5.0.0
-  checksum: 51b8b40aafbbeee618fd289ef6e0311e28e2598c514016aefb094237fa9cdf3e1c1407267a08dc7f8da9673de354b5b946f3ceb7ba5735bdf869d18c2a49117d
+  checksum: d918766a326502ec0b54adee61dc2930daf5b748acb9107f9bfd1ab0dbc4d7b1a4d0dbb9e21da9dd2a9fc2f9950b2973a43c6ba62d3a72eb67a30f6c953e5be8
   languageName: node
   linkType: hard
 
@@ -17214,10 +17217,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"graceful-fs@npm:4.2.10, graceful-fs@npm:4.X, graceful-fs@npm:^4.0.0, graceful-fs@npm:^4.1.11, graceful-fs@npm:^4.1.15, graceful-fs@npm:^4.1.2, graceful-fs@npm:^4.1.3, graceful-fs@npm:^4.1.6, graceful-fs@npm:^4.1.9, graceful-fs@npm:^4.2.0, graceful-fs@npm:^4.2.10, graceful-fs@npm:^4.2.4, graceful-fs@npm:^4.2.6, graceful-fs@npm:^4.2.9":
+"graceful-fs@npm:4.2.10, graceful-fs@npm:^4.1.11, graceful-fs@npm:^4.1.15, graceful-fs@npm:^4.1.2, graceful-fs@npm:^4.1.3, graceful-fs@npm:^4.1.6, graceful-fs@npm:^4.1.9, graceful-fs@npm:^4.2.0, graceful-fs@npm:^4.2.10, graceful-fs@npm:^4.2.4, graceful-fs@npm:^4.2.6, graceful-fs@npm:^4.2.9":
   version: 4.2.10
   resolution: "graceful-fs@npm:4.2.10"
   checksum: 3f109d70ae123951905d85032ebeae3c2a5a7a997430df00ea30df0e3a6c60cf6689b109654d6fdacd28810a053348c4d14642da1d075049e6be1ba5216218da
+  languageName: node
+  linkType: hard
+
+"graceful-fs@npm:4.X, graceful-fs@npm:^4.0.0":
+  version: 4.2.11
+  resolution: "graceful-fs@npm:4.2.11"
+  checksum: ac85f94da92d8eb6b7f5a8b20ce65e43d66761c55ce85ac96df6865308390da45a8d3f0296dd3a663de65d30ba497bd46c696cc1e248c72b13d6d567138a4fc7
   languageName: node
   linkType: hard
 
@@ -17823,10 +17833,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"htmljs-parser@npm:^5.1.5":
-  version: 5.4.2
-  resolution: "htmljs-parser@npm:5.4.2"
-  checksum: 789f21c2d1e5a43956d39c50c36a4a976d0e2eea1be2e5cfca6040e465a8d408a4567b823ed1b6471a9d1669c87c4e7a7fa0ded3615b07308ac22143a2f6748d
+"htmljs-parser@npm:^5.4.3":
+  version: 5.4.3
+  resolution: "htmljs-parser@npm:5.4.3"
+  checksum: 4d3f264415d63c2aa06b046cb3eeaad699cd2a22ce6cf5fdb734fb0ca9167c8cc0101865954ddc04a9250c40eb71d6acc66bda5d8dc1d0d545c0304871aff420
   languageName: node
   linkType: hard
 
@@ -22467,11 +22477,11 @@ __metadata:
   linkType: hard
 
 "marko@npm:^5.21.7":
-  version: 5.24.0
-  resolution: "marko@npm:5.24.0"
+  version: 5.25.1
+  resolution: "marko@npm:5.25.1"
   dependencies:
-    "@marko/compiler": ^5.26.0
-    "@marko/translator-default": ^5.24.0
+    "@marko/compiler": ^5.27.1
+    "@marko/translator-default": ^5.25.1
     app-module-path: ^2.2.0
     argly: ^1.2.0
     browser-refresh-client: 1.1.4
@@ -22485,7 +22495,7 @@ __metadata:
     warp10: ^2.0.1
   bin:
     markoc: bin/markoc
-  checksum: 9427a5109e392b7ad84abb69bc74636d5e2783467b489e38a16a578787d715be807eac690d7d3c46b5a8bb19a549b16f8b35aa8eec88cc931fba369c10dab04e
+  checksum: 72b3090911ba0bdcdc6a90dedc480751d24074eda2c403eb3c31f8931df810cbc64b3d9bdbb0256a519ec40f1cd59fa4c55772b1c479a26aad1b83999b9a34f0
   languageName: node
   linkType: hard
 
@@ -27350,12 +27360,12 @@ __metadata:
   linkType: hard
 
 "prettier-plugin-marko@npm:^1.2.2":
-  version: 1.3.1
-  resolution: "prettier-plugin-marko@npm:1.3.1"
+  version: 1.4.1
+  resolution: "prettier-plugin-marko@npm:1.4.1"
   peerDependencies:
     "@marko/compiler": ^5.20.5
     prettier: ^2
-  checksum: 881351539f5c596835e08857387b175e5f3856868bb87b235d8d1485f72b20828a3501e0b6b8c9d4cdf3a2b5427445b3b27cbadbe79c452882092ee90b5c0e01
+  checksum: 7ddea9852fb85bba52fb3d3911f1c99c6f9ee8e715decfcb1f07394b202e7b41180fb69fdc9c555aac020adfaaf0a73a03f18296b10a7c9cf985dd2fe781eff7
   languageName: node
   linkType: hard
 
@@ -31711,7 +31721,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"svelte@npm:^3.30.0, svelte@npm:^3.44.0, svelte@npm:^3.48.0, svelte@npm:^3.54.0":
+"svelte@npm:^3.30.0":
+  version: 3.57.0
+  resolution: "svelte@npm:3.57.0"
+  checksum: ae8e807c583935c5adb4e921789ab1339a5c7af5102388a7101d3258dc4af7dbe6579358d423e10622177d78ad9218f654ae98234150e5abe084ad26b4d7e319
+  languageName: node
+  linkType: hard
+
+"svelte@npm:^3.44.0, svelte@npm:^3.48.0, svelte@npm:^3.54.0":
   version: 3.56.0
   resolution: "svelte@npm:3.56.0"
   checksum: d691364416632265dd0bbba23021f5766c5c4f905389978dc73c9c1261141479a7aed9f0bce5e0bde87d7f566e89f18476d95d2299bcac57f165dc7dab3a6095
@@ -34034,19 +34051,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vfile@npm:5.3.6":
-  version: 5.3.6
-  resolution: "vfile@npm:5.3.6"
-  dependencies:
-    "@types/unist": ^2.0.0
-    is-buffer: ^2.0.0
-    unist-util-stringify-position: ^3.0.0
-    vfile-message: ^3.0.0
-  checksum: 1aa5efff510bc6621ff8a7dc6513110529a11a8d665b44f169cc2a2b6bfa4f312efa00bfe86ca20e506538ff2915c8e538a664bd02a06419421ff964844fbe94
-  languageName: node
-  linkType: hard
-
-"vfile@npm:^5.0.0":
+"vfile@npm:5.3.7, vfile@npm:^5.0.0":
   version: 5.3.7
   resolution: "vfile@npm:5.3.7"
   dependencies:
@@ -35616,7 +35621,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:^3.17.3, zod@npm:^3.20.2":
+"zod@npm:^3.17.3, zod@npm:^3.20.2, zod@npm:^3.21.4":
   version: 3.21.4
   resolution: "zod@npm:3.21.4"
   checksum: f185ba87342ff16f7a06686767c2b2a7af41110c7edf7c1974095d8db7a73792696bcb4a00853de0d2edeb34a5b2ea6a55871bc864227dace682a0a28de33e1f
