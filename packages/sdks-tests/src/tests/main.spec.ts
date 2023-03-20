@@ -1,180 +1,18 @@
-import type { BrowserContext, TestInfo, ConsoleMessage, Locator, Page } from '@playwright/test';
-import { test as base, expect } from '@playwright/test';
-import { FIRST_SYMBOL_CONTENT, SECOND_SYMBOL_CONTENT } from '../specs/symbols.js';
+import type { ConsoleMessage } from '@playwright/test';
+import { expect } from '@playwright/test';
 import { targetContext } from './context.js';
-import type { Sdk } from './sdk.js';
-import { sdk } from './sdk.js';
-
-type TestOptions = {
-  packageName: string;
-};
-
-const testSymbols = async (page: Page) => {
-  await findTextInPage({ page, text: 'special test description' });
-  await page
-    .locator(
-      '[src="https://cdn.builder.io/api/v1/image/assets%2Ff1a790f8c3204b3b8c5c1795aeac4660%2F32b835cd8f62400085961dcf3f3b37a2"]'
-    )
-    .isVisible();
-  await findTextInPage({ page, text: 'default description' });
-  await page
-    .locator(
-      '[src="https://cdn.builder.io/api/v1/image/assets%2Ff1a790f8c3204b3b8c5c1795aeac4660%2F4bce19c3d8f040b3a95e91000a98283e"]'
-    )
-    .isVisible();
-
-  const firstSymbolText = await page.locator('text="Description of image:"').first();
-
-  // these are desktop and tablet styles, and will never show up in react native
-  if (!isRNSDK) {
-    // check desktop styles
-    await expectStyleForElement({
-      locator: firstSymbolText,
-      cssProperty: 'color',
-      expectedValue: 'rgb(255, 0, 0)',
-    });
-
-    // resize to tablet
-    await page.setViewportSize({ width: 930, height: 1000 });
-    await expectStyleForElement({
-      locator: firstSymbolText,
-      cssProperty: 'color',
-      expectedValue: 'rgb(0, 255, 6)',
-    });
-
-    // resize to mobile
-    await page.setViewportSize({ width: 400, height: 1000 });
-  }
-
-  // TO-DO: fix react native style inheritance for symbols->Text (using HTML renderer component), so we can unblock this.
-  if (!isRNSDK) {
-    // check mobile styles
-    await expectStyleForElement({
-      locator: firstSymbolText,
-      cssProperty: 'color',
-      expectedValue: 'rgb(0, 255, 255)',
-    });
-  }
-};
-
-// https://github.com/microsoft/playwright/issues/14854#issuecomment-1155667859
-async function screenshotOnFailure({ page }: { page: Page }, testInfo: TestInfo) {
-  if (testInfo.status !== testInfo.expectedStatus) {
-    // Get a unique place for the screenshot.
-    const screenshotPath = testInfo.outputPath(`failure.png`);
-    // Add it to the report.
-    testInfo.attachments.push({
-      name: 'screenshot',
-      path: screenshotPath,
-      contentType: 'image/png',
-    });
-    // Take the screenshot itself.
-    await page.screenshot({ path: screenshotPath, timeout: 5000 });
-  }
-}
-
-const test = base.extend<TestOptions>({
-  // this is provided by `playwright.config.ts`
-  packageName: ['', { option: true }],
-});
-test.afterEach(screenshotOnFailure);
-
-const findTextInPage = async ({ page, text }: { page: Page; text: string }) => {
-  await page.locator(`text=${text}`).waitFor();
-};
-
-const isRNSDK = sdk === 'reactNative';
-
-/**
- * Useful tool to skip tests when features aren't implemented in a specific output yet.
- * We use the negative tense, so that the default behavior is to run the test, unless specifically omitted.
- *
- */
-const excludeTestFor = (sdks: { [X in Sdk]?: boolean }) => {
-  return sdks[sdk] ? test.skip : test;
-};
-
-/**
- * reactive state only works in:
- * - Vue
- * - React
- * - old React
- *
- * so we skip the other environments.
- */
-const reactiveStateTest = excludeTestFor({
-  qwik: true,
-  reactNative: true,
-  rsc: true,
-  svelte: true,
-  solid: true,
-});
-
-/**
- * We exclude some new tests from old React until we fix them.
- */
-const testExcludeOldReact = excludeTestFor({
-  oldReact: true,
-});
-
-const excludeReactNative = excludeTestFor({
-  reactNative: true,
-});
-
-const getElementStyleValue = async ({
-  locator,
-  cssProperty,
-}: {
-  locator: Locator;
-  cssProperty: string;
-}) => {
-  return locator.evaluate((e, cssProperty) => {
-    return getComputedStyle(e).getPropertyValue(cssProperty);
-  }, cssProperty);
-};
-
-const expectStyleForElement = async ({
-  expectedValue,
-  locator,
-  cssProperty,
-  checkVisibility = true,
-}: {
-  locator: Locator;
-  cssProperty: string;
-  expectedValue: string;
-  checkVisibility?: boolean;
-}) => {
-  // we need to wait for the element to be visible, otherwise we might run the style check on a removed DOM node.
-  if (checkVisibility) {
-    await expect(locator).toBeVisible();
-  }
-
-  await expect(await getElementStyleValue({ locator, cssProperty })).toBe(expectedValue);
-};
-const expectStylesForElement = async ({
-  expected,
-  locator,
-  checkVisibility,
-}: {
-  locator: Locator;
-  expected: Record<string, string>;
-  checkVisibility?: boolean;
-}) => {
-  for (const property of Object.keys(expected)) {
-    await expectStyleForElement({
-      cssProperty: property,
-      locator,
-      expectedValue: expected[property],
-      checkVisibility,
-    });
-  }
-};
-
-const getBuilderSessionIdCookie = async ({ context }: { context: BrowserContext }) => {
-  const cookies = await context.cookies();
-  const builderSessionCookie = cookies.find(cookie => cookie.name === 'builderSessionId');
-  return builderSessionCookie;
-};
+import {
+  excludeReactNative,
+  excludeTestFor,
+  expectStyleForElement,
+  expectStylesForElement,
+  findTextInPage,
+  getBuilderSessionIdCookie,
+  isRNSDK,
+  reactiveStateTest,
+  test,
+  testExcludeOldReact,
+} from './helpers';
 
 test.describe(targetContext.name, () => {
   test.describe('cookies', () => {
@@ -187,19 +25,14 @@ test.describe(targetContext.name, () => {
       const builderSessionCookie = cookies.find(cookie => cookie.name === 'builderSessionId');
       expect(builderSessionCookie).toBeUndefined();
     });
-    test('appear by default', async ({ page, context }) => {
+    excludeReactNative('appear by default', async ({ page, context }) => {
       // by waiting for network requests, we guarantee that impression tracking POST was made,
       // which guarantees that the cookie was set
       await page.goto('/', { waitUntil: 'networkidle' });
 
       const builderSessionCookie = await getBuilderSessionIdCookie({ context });
 
-      // react native sdk does not use cookies
-      if (isRNSDK) {
-        expect(builderSessionCookie).toBeUndefined();
-      } else {
-        expect(builderSessionCookie).toBeDefined();
-      }
+      expect(builderSessionCookie).toBeDefined();
     });
   });
   test.describe('tracking', () => {
@@ -321,13 +154,8 @@ test.describe(targetContext.name, () => {
     await columnsLink.click();
     await findTextInPage({ page, text: 'Stack at tablet' });
   });
-  test('columns', async ({ page }) => {
-    await page.goto('/columns');
 
-    await findTextInPage({ page, text: 'Stack at tablet' });
-  });
-
-  test.describe('reactive state', () => {
+  test.describe('Reactive State', () => {
     excludeReactNative('shows default value', async ({ page }) => {
       await page.goto('/reactive-state');
 
@@ -385,74 +213,55 @@ test.describe(targetContext.name, () => {
       expect(msg.text()).toEqual('clicked text');
     });
   });
-  test('symbols', async ({ page }) => {
-    await page.goto('/symbols');
 
-    await testSymbols(page);
+  test.describe('Style Bindings', () => {
+    test('Content', async ({ page }) => {
+      await page.goto('/content-bindings');
+
+      const expected = {
+        'border-top-left-radius': '10px',
+        'border-top-right-radius': '22px',
+        'border-bottom-left-radius': '40px',
+        'border-bottom-right-radius': '30px',
+      };
+
+      const selector = isRNSDK
+        ? '[data-class*=builder-blocks] > div > div'
+        : '[class*=builder-blocks] > div';
+
+      const locator = page.locator(selector).filter({ hasText: 'Enter some text...' }).last();
+
+      page.locator(selector).innerText;
+
+      await expectStylesForElement({ expected, locator });
+      // TODO: fix this
+      // check the title is correct
+      // title: 'some special title'
+    });
+    test('Symbol', async ({ page }) => {
+      await page.goto('/symbol-bindings');
+
+      const expected = {
+        'border-top-left-radius': '10px',
+        'border-top-right-radius': '220px',
+        'border-bottom-left-radius': '30px',
+        'border-bottom-right-radius': '40px',
+      };
+
+      const selector = isRNSDK
+        ? '[data-class*=builder-blocks] > div > div'
+        : '[class*=builder-blocks] > div';
+
+      const locator = page.locator(selector).filter({ hasText: 'Enter some text...' }).last();
+
+      await expectStylesForElement({ expected, locator });
+      // TODO: fix this
+      // check the title is correct
+      // title: 'some special title'
+    });
   });
-  test('symbols without content', async ({ page }) => {
-    await page.goto('/symbols-without-content');
 
-    let x = 0;
-    await page.route(
-      /.*cdn\.builder\.io\/api\/v(\d)\/content\/symbol.*/,
-      route => {
-        x++;
-        return route.fulfill({
-          status: 200,
-          body: x === 0 ? FIRST_SYMBOL_CONTENT : SECOND_SYMBOL_CONTENT,
-        });
-      },
-      { times: 2 }
-    );
-
-    await testSymbols(page);
-  });
-  test('style bindings', async ({ page }) => {
-    await page.goto('/content-bindings');
-
-    const expected = {
-      'border-top-left-radius': '10px',
-      'border-top-right-radius': '22px',
-      'border-bottom-left-radius': '40px',
-      'border-bottom-right-radius': '30px',
-    };
-
-    const selector = isRNSDK
-      ? '[data-class*=builder-blocks] > div > div'
-      : '[class*=builder-blocks] > div';
-
-    const locator = page.locator(selector).filter({ hasText: 'Enter some text...' }).last();
-
-    page.locator(selector).innerText;
-
-    await expectStylesForElement({ expected, locator });
-    // TODO: fix this
-    // check the title is correct
-    // title: 'some special title'
-  });
-  test('symbol style bindings', async ({ page }) => {
-    await page.goto('/symbol-bindings');
-
-    const expected = {
-      'border-top-left-radius': '10px',
-      'border-top-right-radius': '220px',
-      'border-bottom-left-radius': '30px',
-      'border-bottom-right-radius': '40px',
-    };
-
-    const selector = isRNSDK
-      ? '[data-class*=builder-blocks] > div > div'
-      : '[class*=builder-blocks] > div';
-
-    const locator = page.locator(selector).filter({ hasText: 'Enter some text...' }).last();
-
-    await expectStylesForElement({ expected, locator });
-    // TODO: fix this
-    // check the title is correct
-    // title: 'some special title'
-  });
-  test.describe('show-hide-if', () => {
+  test.describe('Show If & Hide If', () => {
     test('works on static conditions', async ({ page }) => {
       await page.goto('/show-hide-if');
 
@@ -485,54 +294,7 @@ test.describe(targetContext.name, () => {
       text: 'Mattel Certified by Great Place to Work and Named to Fast Company’s List of 100 Best Workplaces for Innovators',
     });
   });
-  excludeReactNative('text-block', async ({ page }) => {
-    await page.goto('/text-block');
 
-    const textBlocks = page.locator('.builder-text');
-
-    await expect(textBlocks).toHaveCount(3);
-
-    const paragraphClasses = await textBlocks.nth(0).locator('*').all();
-    const soloPTag = await textBlocks.nth(1).locator('*').first();
-    const pTags = await textBlocks.nth(2).locator('*').all();
-
-    const NO_MARGIN_STYLES = {
-      'margin-top': '0px',
-      'margin-bottom': '0px',
-      'margin-left': '0px',
-      'margin-right': '0px',
-    };
-
-    for (const child of paragraphClasses) {
-      await expectStylesForElement({
-        locator: child,
-        expected: NO_MARGIN_STYLES,
-      });
-    }
-    await expectStylesForElement({
-      locator: soloPTag,
-      expected: NO_MARGIN_STYLES,
-    });
-
-    const [firstPTag, ...otherPTags] = pTags;
-
-    await expectStylesForElement({
-      locator: firstPTag,
-      expected: NO_MARGIN_STYLES,
-    });
-
-    for (const child of otherPTags) {
-      await expectStylesForElement({
-        locator: child,
-        expected: {
-          'margin-top': '16px',
-          'margin-bottom': '16px',
-          'margin-left': '0px',
-          'margin-right': '0px',
-        },
-      });
-    }
-  });
   test('data-binding-styles', async ({ page }) => {
     await page.goto('/data-binding-styles');
     if (isRNSDK) {
@@ -546,332 +308,286 @@ test.describe(targetContext.name, () => {
     });
   });
 
-  /**
-   * We are temporarily skipping this test because it relies on network requests.
-   * TO-DO: re-enable it once we have a way to mock network requests.
-   */
-  test.skip('image', async ({ page }) => {
-    await page.goto('/image');
-
-    const imageLocator = page.locator('img');
-
-    const expected: Record<string, string>[] = [
-      // first img is a webp image. React Native SDK does not yet support webp.
-      ...(isRNSDK
-        ? []
-        : [
-            {
-              width: '604px',
-              height: '670.438px',
-              'object-fit': 'cover',
-            },
-          ]),
-      {
-        width: '1264px',
-        height: '240.156px',
-        // RN SDK does not support object-fit
-        'object-fit': isRNSDK ? 'fill' : 'cover',
-      },
-      {
-        width: '604px',
-        height: '120.797px',
-        // RN SDK does not support object-fit
-        'object-fit': isRNSDK ? 'fill' : 'contain',
-      },
-      {
-        width: '1880px',
-        height: '1245px',
-      },
-    ];
-
-    await expect(imageLocator).toHaveCount(expected.length);
-
-    const expectedVals = expected.map((val, i) => ({ val, i }));
-
-    for (const { val, i } of Object.values(expectedVals)) {
-      const image = imageLocator.nth(i);
-      await expectStylesForElement({ locator: image, expected: val });
-    }
-  });
-
-  test.describe('custom-breakpoints', () => {
-    /* set breakpoint config in content -
+  test.describe('Features', () => {
+    test.describe('Custom Breakpoints', () => {
+      /* set breakpoint config in content -
     breakpoints: {
       small: 500,
       medium: 800,
     },
     */
-    test.describe('when applied', () => {
-      testExcludeOldReact('large desktop size', async ({ page }) => {
-        await page.setViewportSize({ width: 801, height: 1000 });
+      test.describe('when applied', () => {
+        testExcludeOldReact('large desktop size', async ({ page }) => {
+          await page.setViewportSize({ width: 801, height: 1000 });
 
-        await page.goto('/custom-breakpoints');
-        const breakpointsParam = page.locator(`text=BREAKPOINTS 500 - 800`);
+          await page.goto('/custom-breakpoints');
+          const breakpointsParam = page.locator(`text=BREAKPOINTS 500 - 800`);
 
-        let expectedTextColor = 'rgb(0, 0, 0)'; // black text color
-        if (process.env.SDK === 'reactNative') {
-          expectedTextColor = 'rgb(65, 117, 5)'; // greenish text color
-        }
+          let expectedTextColor = 'rgb(0, 0, 0)'; // black text color
+          if (process.env.SDK === 'reactNative') {
+            expectedTextColor = 'rgb(65, 117, 5)'; // greenish text color
+          }
 
-        await expectStyleForElement({
-          locator: breakpointsParam,
-          cssProperty: 'color',
-          expectedValue: expectedTextColor,
-        });
-
-        const column2 = page.locator(`text=Column 2`);
-
-        let expectedColumnTextColor = 'rgb(0, 0, 0)'; // black text color
-        if (process.env.SDK === 'reactNative') {
-          expectedColumnTextColor = 'rgb(126, 211, 33)'; // greenish text color
-        }
-
-        await expectStyleForElement({
-          locator: column2,
-          cssProperty: 'color',
-          expectedValue: expectedColumnTextColor,
-        });
-
-        // Skipping this image test for react-native.
-        // Its difficult to locate the image in react-native as css selectors don't work as expected.
-        if (process.env.SDK !== 'reactNative') {
-          const image = page.locator(`.builder-block:has(img.builder-image)`);
-
-          const expectedImageCss: Record<string, string> = {
-            display: 'flex',
-            width: '785px',
-          };
-
-          await expectStylesForElement({
-            locator: image,
-            expected: expectedImageCss,
+          await expectStyleForElement({
+            locator: breakpointsParam,
+            cssProperty: 'color',
+            expectedValue: expectedTextColor,
           });
-        }
+
+          const column2 = page.locator(`text=Column 2`);
+
+          let expectedColumnTextColor = 'rgb(0, 0, 0)'; // black text color
+          if (process.env.SDK === 'reactNative') {
+            expectedColumnTextColor = 'rgb(126, 211, 33)'; // greenish text color
+          }
+
+          await expectStyleForElement({
+            locator: column2,
+            cssProperty: 'color',
+            expectedValue: expectedColumnTextColor,
+          });
+
+          // Skipping this image test for react-native.
+          // Its difficult to locate the image in react-native as css selectors don't work as expected.
+          if (process.env.SDK !== 'reactNative') {
+            const image = page.locator(`.builder-block:has(img.builder-image)`);
+
+            const expectedImageCss: Record<string, string> = {
+              display: 'flex',
+              width: '785px',
+            };
+
+            await expectStylesForElement({
+              locator: image,
+              expected: expectedImageCss,
+            });
+          }
+        });
+
+        testExcludeOldReact('medium tablet size', async ({ page }) => {
+          await page.setViewportSize({ width: 501, height: 1000 });
+
+          await page.goto('/custom-breakpoints');
+          const breakpointsPara = page.locator(`text=BREAKPOINTS 500 - 800`);
+
+          let expectedTextColor = 'rgb(208, 2, 27)'; // reddish text color
+          if (process.env.SDK === 'reactNative') {
+            expectedTextColor = 'rgb(65, 117, 5)'; // greenish text color
+          }
+
+          await expectStyleForElement({
+            locator: breakpointsPara,
+            cssProperty: 'color',
+            expectedValue: expectedTextColor,
+          });
+
+          const column2 = page.locator(`text=Column 2`);
+
+          let expectedColumnTextColor = 'rgb(223, 22, 22)'; // reddish text color
+          if (process.env.SDK === 'reactNative') {
+            expectedColumnTextColor = 'rgb(126, 211, 33)'; // greenish text color
+          }
+
+          await expectStyleForElement({
+            locator: column2,
+            cssProperty: 'color',
+            expectedValue: expectedColumnTextColor,
+          });
+
+          // Skipping this image test for react-native.
+          // Its difficult to locate the image in react-native as css selectors don't work as expected.
+          if (process.env.SDK !== 'reactNative') {
+            const image = page.locator(`.builder-block:has(img.builder-image)`);
+
+            const expectedImageCss: Record<string, string> = {
+              display: 'none',
+            };
+
+            await expectStylesForElement({
+              locator: image,
+              expected: expectedImageCss,
+              checkVisibility: false,
+            });
+          }
+        });
+
+        test('small mobile size', async ({ page }) => {
+          await page.setViewportSize({ width: 500, height: 1000 });
+          await page.goto('/custom-breakpoints');
+
+          const breakpointsPara = page.locator(`text=BREAKPOINTS 500 - 800`);
+          await expectStyleForElement({
+            locator: breakpointsPara,
+            cssProperty: 'color',
+            expectedValue: 'rgb(65, 117, 5)',
+          });
+
+          const column2 = page.locator(`text=Column 2`);
+          await expectStyleForElement({
+            locator: column2,
+            cssProperty: 'color',
+            expectedValue: 'rgb(126, 211, 33)', // greenish text color
+          });
+
+          // Skipping this image test for react-native.
+          // Its difficult to locate the image in react-native as css selectors don't work as expected.
+          if (process.env.SDK !== 'reactNative') {
+            const image = page.locator(`.builder-block:has(img.builder-image)`);
+
+            const expectedImageCss: Record<string, string> = {
+              display: 'flex',
+              width: '121px',
+              'max-width': '250px',
+            };
+
+            await expectStylesForElement({
+              locator: image,
+              expected: expectedImageCss,
+              checkVisibility: false,
+            });
+          }
+        });
       });
 
-      testExcludeOldReact('medium tablet size', async ({ page }) => {
-        await page.setViewportSize({ width: 501, height: 1000 });
-
-        await page.goto('/custom-breakpoints');
-        const breakpointsPara = page.locator(`text=BREAKPOINTS 500 - 800`);
-
-        let expectedTextColor = 'rgb(208, 2, 27)'; // reddish text color
-        if (process.env.SDK === 'reactNative') {
-          expectedTextColor = 'rgb(65, 117, 5)'; // greenish text color
-        }
-
-        await expectStyleForElement({
-          locator: breakpointsPara,
-          cssProperty: 'color',
-          expectedValue: expectedTextColor,
-        });
-
-        const column2 = page.locator(`text=Column 2`);
-
-        let expectedColumnTextColor = 'rgb(223, 22, 22)'; // reddish text color
-        if (process.env.SDK === 'reactNative') {
-          expectedColumnTextColor = 'rgb(126, 211, 33)'; // greenish text color
-        }
-
-        await expectStyleForElement({
-          locator: column2,
-          cssProperty: 'color',
-          expectedValue: expectedColumnTextColor,
-        });
-
-        // Skipping this image test for react-native.
-        // Its difficult to locate the image in react-native as css selectors don't work as expected.
-        if (process.env.SDK !== 'reactNative') {
-          const image = page.locator(`.builder-block:has(img.builder-image)`);
-
-          const expectedImageCss: Record<string, string> = {
-            display: 'none',
-          };
-
-          await expectStylesForElement({
-            locator: image,
-            expected: expectedImageCss,
-            checkVisibility: false,
-          });
-        }
-      });
-
-      test('small mobile size', async ({ page }) => {
-        await page.setViewportSize({ width: 500, height: 1000 });
-        await page.goto('/custom-breakpoints');
-
-        const breakpointsPara = page.locator(`text=BREAKPOINTS 500 - 800`);
-        await expectStyleForElement({
-          locator: breakpointsPara,
-          cssProperty: 'color',
-          expectedValue: 'rgb(65, 117, 5)',
-        });
-
-        const column2 = page.locator(`text=Column 2`);
-        await expectStyleForElement({
-          locator: column2,
-          cssProperty: 'color',
-          expectedValue: 'rgb(126, 211, 33)', // greenish text color
-        });
-
-        // Skipping this image test for react-native.
-        // Its difficult to locate the image in react-native as css selectors don't work as expected.
-        if (process.env.SDK !== 'reactNative') {
-          const image = page.locator(`.builder-block:has(img.builder-image)`);
-
-          const expectedImageCss: Record<string, string> = {
-            display: 'flex',
-            width: '121px',
-            'max-width': '250px',
-          };
-
-          await expectStylesForElement({
-            locator: image,
-            expected: expectedImageCss,
-            checkVisibility: false,
-          });
-        }
-      });
-    });
-
-    test.describe('when reset', () => {
-      /*
+      test.describe('when reset', () => {
+        /*
         When no breakpoints are available, defaults are applied as
         breakpoints: {
           small: 640,
           medium: 991,
         }
       */
-      test('large desktop size', async ({ page }) => {
-        await page.setViewportSize({ width: 992, height: 1000 });
-        await page.goto('/custom-breakpoints-reset');
+        test('large desktop size', async ({ page }) => {
+          await page.setViewportSize({ width: 992, height: 1000 });
+          await page.goto('/custom-breakpoints-reset');
 
-        const breakpointsPara = page.locator(`text=BREAKPOINTS 500 - 800`);
+          const breakpointsPara = page.locator(`text=BREAKPOINTS 500 - 800`);
 
-        let expectedTextColor = 'rgb(0, 0, 0)'; // black text color
-        if (process.env.SDK === 'reactNative') {
-          expectedTextColor = 'rgb(65, 117, 5)'; // greenish text color
-        }
+          let expectedTextColor = 'rgb(0, 0, 0)'; // black text color
+          if (process.env.SDK === 'reactNative') {
+            expectedTextColor = 'rgb(65, 117, 5)'; // greenish text color
+          }
 
-        await expectStyleForElement({
-          locator: breakpointsPara,
-          cssProperty: 'color',
-          expectedValue: expectedTextColor, // black text color
-        });
-
-        const column2 = page.locator(`text=Column 2`);
-
-        let expectedColumnTextColor = 'rgb(0, 0, 0)'; // black text color
-        if (process.env.SDK === 'reactNative') {
-          expectedColumnTextColor = 'rgb(126, 211, 33)'; // greenish text color
-        }
-
-        await expectStyleForElement({
-          locator: column2,
-          cssProperty: 'color',
-          expectedValue: expectedColumnTextColor,
-        });
-
-        // Skipping this image test for react-native.
-        // Its difficult to locate the image in react-native as css selectors don't work as expected.
-        if (process.env.SDK !== 'reactNative') {
-          const image = page.locator(`.builder-block:has(img.builder-image)`);
-
-          const expectedImageCss: Record<string, string> = {
-            display: 'flex',
-            width: '976px',
-          };
-
-          await expectStylesForElement({
-            locator: image,
-            expected: expectedImageCss,
+          await expectStyleForElement({
+            locator: breakpointsPara,
+            cssProperty: 'color',
+            expectedValue: expectedTextColor, // black text color
           });
-        }
-      });
 
-      test('medium tablet size', async ({ page }) => {
-        await page.setViewportSize({ width: 641, height: 1000 });
+          const column2 = page.locator(`text=Column 2`);
 
-        await page.goto('/custom-breakpoints-reset');
-        const breakpointsPara = page.locator(`text=BREAKPOINTS 500 - 800`);
+          let expectedColumnTextColor = 'rgb(0, 0, 0)'; // black text color
+          if (process.env.SDK === 'reactNative') {
+            expectedColumnTextColor = 'rgb(126, 211, 33)'; // greenish text color
+          }
 
-        let expectedTextColor = 'rgb(208, 2, 27)'; // reddish text color
-        if (process.env.SDK === 'reactNative') {
-          expectedTextColor = 'rgb(65, 117, 5)'; // greenish text color
-        }
-
-        await expectStyleForElement({
-          locator: breakpointsPara,
-          cssProperty: 'color',
-          expectedValue: expectedTextColor,
-        });
-
-        const column2 = page.locator(`text=Column 2`);
-
-        let expectedColumnTextColor = 'rgb(223, 22, 22)'; // reddish text color
-        if (process.env.SDK === 'reactNative') {
-          expectedColumnTextColor = 'rgb(126, 211, 33)'; // greenish text color
-        }
-
-        await expectStyleForElement({
-          locator: column2,
-          cssProperty: 'color',
-          expectedValue: expectedColumnTextColor,
-        });
-
-        // Skipping this image test for react-native.
-        // Its difficult to locate the image in react-native as css selectors don't work as expected.
-        if (process.env.SDK !== 'reactNative') {
-          const image = page.locator(`.builder-block:has(img.builder-image)`);
-
-          const expectedImageCss: Record<string, string> = {
-            display: 'none',
-          };
-
-          await expectStylesForElement({
-            locator: image,
-            expected: expectedImageCss,
-            checkVisibility: false,
+          await expectStyleForElement({
+            locator: column2,
+            cssProperty: 'color',
+            expectedValue: expectedColumnTextColor,
           });
-        }
-      });
 
-      test('small mobile size', async ({ page }) => {
-        await page.setViewportSize({ width: 640, height: 1000 });
-        await page.goto('/custom-breakpoints-reset');
+          // Skipping this image test for react-native.
+          // Its difficult to locate the image in react-native as css selectors don't work as expected.
+          if (process.env.SDK !== 'reactNative') {
+            const image = page.locator(`.builder-block:has(img.builder-image)`);
 
-        const breakpointsPara = page.locator(`text=BREAKPOINTS 500 - 800`);
+            const expectedImageCss: Record<string, string> = {
+              display: 'flex',
+              width: '976px',
+            };
 
-        await expectStyleForElement({
-          locator: breakpointsPara,
-          cssProperty: 'color',
-          expectedValue: 'rgb(65, 117, 5)', // greenish text color
+            await expectStylesForElement({
+              locator: image,
+              expected: expectedImageCss,
+            });
+          }
         });
 
-        const column2 = page.locator(`text=Column 2`);
+        test('medium tablet size', async ({ page }) => {
+          await page.setViewportSize({ width: 641, height: 1000 });
 
-        await expectStyleForElement({
-          locator: column2,
-          cssProperty: 'color',
-          expectedValue: 'rgb(126, 211, 33)', // greenish text color
-        });
+          await page.goto('/custom-breakpoints-reset');
+          const breakpointsPara = page.locator(`text=BREAKPOINTS 500 - 800`);
 
-        // Skipping this image test for react-native.
-        // Its difficult to locate the image in react-native as css selectors don't work as expected.
-        if (process.env.SDK !== 'reactNative') {
-          const image = page.locator(`.builder-block:has(img.builder-image)`);
+          let expectedTextColor = 'rgb(208, 2, 27)'; // reddish text color
+          if (process.env.SDK === 'reactNative') {
+            expectedTextColor = 'rgb(65, 117, 5)'; // greenish text color
+          }
 
-          const expectedImageCss: Record<string, string> = {
-            display: 'flex',
-            width: '156px',
-            'max-width': '250px',
-          };
-
-          await expectStylesForElement({
-            locator: image,
-            expected: expectedImageCss,
+          await expectStyleForElement({
+            locator: breakpointsPara,
+            cssProperty: 'color',
+            expectedValue: expectedTextColor,
           });
-        }
+
+          const column2 = page.locator(`text=Column 2`);
+
+          let expectedColumnTextColor = 'rgb(223, 22, 22)'; // reddish text color
+          if (process.env.SDK === 'reactNative') {
+            expectedColumnTextColor = 'rgb(126, 211, 33)'; // greenish text color
+          }
+
+          await expectStyleForElement({
+            locator: column2,
+            cssProperty: 'color',
+            expectedValue: expectedColumnTextColor,
+          });
+
+          // Skipping this image test for react-native.
+          // Its difficult to locate the image in react-native as css selectors don't work as expected.
+          if (process.env.SDK !== 'reactNative') {
+            const image = page.locator(`.builder-block:has(img.builder-image)`);
+
+            const expectedImageCss: Record<string, string> = {
+              display: 'none',
+            };
+
+            await expectStylesForElement({
+              locator: image,
+              expected: expectedImageCss,
+              checkVisibility: false,
+            });
+          }
+        });
+
+        test('small mobile size', async ({ page }) => {
+          await page.setViewportSize({ width: 640, height: 1000 });
+          await page.goto('/custom-breakpoints-reset');
+
+          const breakpointsPara = page.locator(`text=BREAKPOINTS 500 - 800`);
+
+          await expectStyleForElement({
+            locator: breakpointsPara,
+            cssProperty: 'color',
+            expectedValue: 'rgb(65, 117, 5)', // greenish text color
+          });
+
+          const column2 = page.locator(`text=Column 2`);
+
+          await expectStyleForElement({
+            locator: column2,
+            cssProperty: 'color',
+            expectedValue: 'rgb(126, 211, 33)', // greenish text color
+          });
+
+          // Skipping this image test for react-native.
+          // Its difficult to locate the image in react-native as css selectors don't work as expected.
+          if (process.env.SDK !== 'reactNative') {
+            const image = page.locator(`.builder-block:has(img.builder-image)`);
+
+            const expectedImageCss: Record<string, string> = {
+              display: 'flex',
+              width: '156px',
+              'max-width': '250px',
+            };
+
+            await expectStylesForElement({
+              locator: image,
+              expected: expectedImageCss,
+            });
+          }
+        });
       });
     });
   });
@@ -879,6 +595,8 @@ test.describe(targetContext.name, () => {
   test.describe('Styles', () => {
     test('Should apply responsive styles correctly on tablet/mobile', async ({ page }) => {
       await page.goto('/columns');
+
+      await findTextInPage({ page, text: 'Stack at tablet' });
 
       // switch to tablet view
       await page.setViewportSize({ width: 750, height: 1000 });
