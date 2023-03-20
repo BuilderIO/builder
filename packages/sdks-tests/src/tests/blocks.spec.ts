@@ -213,13 +213,13 @@ test.describe('Blocks', () => {
         stackAtTablet: {
           index: 0,
           mobile: {
-            'flex-direction': 'row',
+            'flex-direction': 'column',
           },
           tablet: {
             'flex-direction': 'column',
           },
           desktop: {
-            'flex-direction': 'column',
+            'flex-direction': 'row',
           },
         },
       };
