@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/cli",
-  "version": "1.2.6",
+  "version": "1.2.8",
   "description": "Official Builder.io CLI",
   "author": "Steve Sewell <steve@builder.io>",
   "keywords": [
