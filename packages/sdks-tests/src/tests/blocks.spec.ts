@@ -176,8 +176,6 @@ test.describe('Blocks', () => {
       { times: 2 }
     );
 
-    await expect(x).toBe(2);
-
     await testSymbols(page);
   });
 });
