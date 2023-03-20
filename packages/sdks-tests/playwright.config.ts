@@ -2,7 +2,8 @@ import { defineConfig, devices } from '@playwright/test';
 import { targetContext } from './src/tests/context.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { sdk, Sdk } from './src/tests/sdk.js';
+import type { Sdk } from './src/tests/sdk.js';
+import { sdk } from './src/tests/sdk.js';
 
 const getDirName = () => {
   try {
@@ -42,6 +43,7 @@ const things = WEB_SERVERS[sdk].map((packageName, i) => {
 
 export default defineConfig({
   testDir: getDirName() + '/src/tests',
+  // testMatch: '**/*.ts',
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */

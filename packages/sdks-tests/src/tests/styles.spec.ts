@@ -6,7 +6,7 @@ import {
   expectStylesForElement,
   findTextInPage,
   excludeTestFor,
-} from './helpers';
+} from './helpers.js';
 
 test.describe('Styles', () => {
   excludeReactNative('data-binding-styles', async ({ page }) => {

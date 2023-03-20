@@ -11,7 +11,7 @@ import {
   reactiveStateTest,
   test,
   testExcludeOldReact,
-} from './helpers';
+} from './helpers.js';
 
 test.describe(targetContext.name, () => {
   test.describe('Tracking', () => {

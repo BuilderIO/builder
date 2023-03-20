@@ -1,6 +1,6 @@
 import { expect } from '@playwright/test';
 import type { Page } from '@playwright/test';
-import { FIRST_SYMBOL_CONTENT, SECOND_SYMBOL_CONTENT } from '../specs/symbols';
+import { FIRST_SYMBOL_CONTENT, SECOND_SYMBOL_CONTENT } from '../specs/symbols.js';
 import {
   test,
   findTextInPage,
@@ -8,7 +8,7 @@ import {
   expectStyleForElement,
   excludeReactNative,
   expectStylesForElement,
-} from './helpers';
+} from './helpers.js';
 
 const testSymbols = async (page: Page) => {
   await findTextInPage({ page, text: 'special test description' });
