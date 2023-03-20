@@ -1,6 +1,7 @@
 import { expect } from '@playwright/test';
 import type { Page } from '@playwright/test';
 import { FIRST_SYMBOL_CONTENT, SECOND_SYMBOL_CONTENT } from '../specs/symbols.js';
+import type { ExpectedStyles } from './helpers.js';
 import {
   test,
   findTextInPage,
@@ -177,5 +178,74 @@ test.describe('Blocks', () => {
     );
 
     await testSymbols(page);
+  });
+
+  test.describe('Columns', () => {
+    excludeReactNative('renders columns', async ({ page }) => {
+      await page.goto('/columns');
+
+      const columns = page.locator('.builder-columns');
+
+      await expect(columns).toHaveCount(5);
+
+      type ColumnTypes =
+        | 'stackAtTablet'
+        | 'stackAtTabletReverse'
+        | 'stackAtMobile'
+        | 'stackAtMobileReverse'
+        | 'neverStack';
+
+      type Size = 'mobile' | 'tablet' | 'desktop';
+
+      const sizes: Record<Size, { width: number; height: number }> = {
+        mobile: { width: 300, height: 700 },
+        tablet: { width: 930, height: 700 },
+        desktop: { width: 1200, height: 700 },
+      };
+
+      const expected: Record<ColumnTypes, Record<Size, ExpectedStyles> & { index: number }> = {
+        stackAtTablet: {
+          index: 0,
+          mobile: { 'flex-direction': 'column' },
+          tablet: { 'flex-direction': 'column' },
+          desktop: { 'flex-direction': 'row' },
+        },
+        stackAtTabletReverse: {
+          index: 1,
+          mobile: { 'flex-direction': 'column-reverse' },
+          tablet: { 'flex-direction': 'column-reverse' },
+          desktop: { 'flex-direction': 'row' },
+        },
+        stackAtMobile: {
+          index: 2,
+          mobile: { 'flex-direction': 'column' },
+          tablet: { 'flex-direction': 'row' },
+          desktop: { 'flex-direction': 'row' },
+        },
+        stackAtMobileReverse: {
+          index: 3,
+          mobile: { 'flex-direction': 'column-reverse' },
+          tablet: { 'flex-direction': 'row' },
+          desktop: { 'flex-direction': 'row' },
+        },
+        neverStack: {
+          index: 4,
+          mobile: { 'flex-direction': 'row' },
+          tablet: { 'flex-direction': 'row' },
+          desktop: { 'flex-direction': 'row' },
+        },
+      };
+
+      for (const [sizeName, size] of Object.entries(sizes)) {
+        await page.setViewportSize(size);
+
+        for (const styles of Object.values(expected)) {
+          await expectStylesForElement({
+            locator: columns.nth(styles.index),
+            expected: styles[sizeName as Size],
+          });
+        }
+      }
+    });
   });
 });

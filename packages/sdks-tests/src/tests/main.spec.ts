@@ -270,7 +270,7 @@ test.describe(targetContext.name, () => {
           const breakpointsParam = page.locator(`text=BREAKPOINTS 500 - 800`);
 
           let expectedTextColor = 'rgb(0, 0, 0)'; // black text color
-          if (process.env.SDK === 'reactNative') {
+          if (isRNSDK) {
             expectedTextColor = 'rgb(65, 117, 5)'; // greenish text color
           }
 
@@ -283,7 +283,7 @@ test.describe(targetContext.name, () => {
           const column2 = page.locator(`text=Column 2`);
 
           let expectedColumnTextColor = 'rgb(0, 0, 0)'; // black text color
-          if (process.env.SDK === 'reactNative') {
+          if (isRNSDK) {
             expectedColumnTextColor = 'rgb(126, 211, 33)'; // greenish text color
           }
 
@@ -295,7 +295,7 @@ test.describe(targetContext.name, () => {
 
           // Skipping this image test for react-native.
           // Its difficult to locate the image in react-native as css selectors don't work as expected.
-          if (process.env.SDK !== 'reactNative') {
+          if (!isRNSDK) {
             const image = page.locator(`.builder-block:has(img.builder-image)`);
 
             const expectedImageCss: Record<string, string> = {
@@ -317,7 +317,7 @@ test.describe(targetContext.name, () => {
           const breakpointsPara = page.locator(`text=BREAKPOINTS 500 - 800`);
 
           let expectedTextColor = 'rgb(208, 2, 27)'; // reddish text color
-          if (process.env.SDK === 'reactNative') {
+          if (isRNSDK) {
             expectedTextColor = 'rgb(65, 117, 5)'; // greenish text color
           }
 
@@ -330,7 +330,7 @@ test.describe(targetContext.name, () => {
           const column2 = page.locator(`text=Column 2`);
 
           let expectedColumnTextColor = 'rgb(223, 22, 22)'; // reddish text color
-          if (process.env.SDK === 'reactNative') {
+          if (isRNSDK) {
             expectedColumnTextColor = 'rgb(126, 211, 33)'; // greenish text color
           }
 
@@ -342,7 +342,7 @@ test.describe(targetContext.name, () => {
 
           // Skipping this image test for react-native.
           // Its difficult to locate the image in react-native as css selectors don't work as expected.
-          if (process.env.SDK !== 'reactNative') {
+          if (!isRNSDK) {
             const image = page.locator(`.builder-block:has(img.builder-image)`);
 
             const expectedImageCss: Record<string, string> = {
@@ -377,7 +377,7 @@ test.describe(targetContext.name, () => {
 
           // Skipping this image test for react-native.
           // Its difficult to locate the image in react-native as css selectors don't work as expected.
-          if (process.env.SDK !== 'reactNative') {
+          if (!isRNSDK) {
             const image = page.locator(`.builder-block:has(img.builder-image)`);
 
             const expectedImageCss: Record<string, string> = {
@@ -410,7 +410,7 @@ test.describe(targetContext.name, () => {
           const breakpointsPara = page.locator(`text=BREAKPOINTS 500 - 800`);
 
           let expectedTextColor = 'rgb(0, 0, 0)'; // black text color
-          if (process.env.SDK === 'reactNative') {
+          if (isRNSDK) {
             expectedTextColor = 'rgb(65, 117, 5)'; // greenish text color
           }
 
@@ -423,7 +423,7 @@ test.describe(targetContext.name, () => {
           const column2 = page.locator(`text=Column 2`);
 
           let expectedColumnTextColor = 'rgb(0, 0, 0)'; // black text color
-          if (process.env.SDK === 'reactNative') {
+          if (isRNSDK) {
             expectedColumnTextColor = 'rgb(126, 211, 33)'; // greenish text color
           }
 
@@ -435,7 +435,7 @@ test.describe(targetContext.name, () => {
 
           // Skipping this image test for react-native.
           // Its difficult to locate the image in react-native as css selectors don't work as expected.
-          if (process.env.SDK !== 'reactNative') {
+          if (!isRNSDK) {
             const image = page.locator(`.builder-block:has(img.builder-image)`);
 
             const expectedImageCss: Record<string, string> = {
@@ -457,7 +457,7 @@ test.describe(targetContext.name, () => {
           const breakpointsPara = page.locator(`text=BREAKPOINTS 500 - 800`);
 
           let expectedTextColor = 'rgb(208, 2, 27)'; // reddish text color
-          if (process.env.SDK === 'reactNative') {
+          if (isRNSDK) {
             expectedTextColor = 'rgb(65, 117, 5)'; // greenish text color
           }
 
@@ -470,7 +470,7 @@ test.describe(targetContext.name, () => {
           const column2 = page.locator(`text=Column 2`);
 
           let expectedColumnTextColor = 'rgb(223, 22, 22)'; // reddish text color
-          if (process.env.SDK === 'reactNative') {
+          if (isRNSDK) {
             expectedColumnTextColor = 'rgb(126, 211, 33)'; // greenish text color
           }
 
@@ -482,7 +482,7 @@ test.describe(targetContext.name, () => {
 
           // Skipping this image test for react-native.
           // Its difficult to locate the image in react-native as css selectors don't work as expected.
-          if (process.env.SDK !== 'reactNative') {
+          if (!isRNSDK) {
             const image = page.locator(`.builder-block:has(img.builder-image)`);
 
             const expectedImageCss: Record<string, string> = {
@@ -519,7 +519,7 @@ test.describe(targetContext.name, () => {
 
           // Skipping this image test for react-native.
           // Its difficult to locate the image in react-native as css selectors don't work as expected.
-          if (process.env.SDK !== 'reactNative') {
+          if (!isRNSDK) {
             const image = page.locator(`.builder-block:has(img.builder-image)`);
 
             const expectedImageCss: Record<string, string> = {
