@@ -1,3 +1,7 @@
+### 0.1.13
+
+- Fix: Columns block styling & `stackColumnsAt` prop
+
 ### 0.1.12
 
 - Fix: `RenderContent` not re-rendering when its `content` updates. This fixes Symbol rendering in the visual editor.
