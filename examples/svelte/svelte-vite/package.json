@@ -23,7 +23,7 @@
   },
   "type": "module",
   "dependencies": {
-    "@builder.io/sdk-svelte": "^0.1.14",
+    "@builder.io/sdk-svelte": "^0.1.15",
     "svelte-preprocess": "^4.10.7"
   }
 }
