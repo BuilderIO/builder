@@ -89,16 +89,15 @@ export default function Columns(props: ColumnProps) {
     },
 
     columnCssVars(index: number): Dictionary<string> {
-      const width = state.getColumnCssWidth(index);
-      const gutter = `${index === 0 ? 0 : state.gutterSize}px`;
+      const gutter = index === 0 ? 0 : state.gutterSize;
 
       if (TARGET === 'reactNative') {
         return {
-          width,
           marginLeft: props.stackColumnsAt === 'never' ? gutter : 0,
-        } as Dictionary<string>;
+        } as any as Dictionary<string>;
       }
 
+      const width = state.getColumnCssWidth(index);
       const mobileWidth = '100%';
       const mobileMarginLeft = 0;
 
@@ -121,7 +120,7 @@ export default function Columns(props: ColumnProps) {
           stackedStyle: mobileMarginLeft,
           desktopStyle: gutter,
         }),
-      } as Dictionary<string>;
+      } as any as Dictionary<string>;
     },
 
     getWidthForBreakpointSize(size: SizeName) {
