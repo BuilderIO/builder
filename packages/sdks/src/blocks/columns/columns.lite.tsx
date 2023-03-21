@@ -136,6 +136,7 @@ export default function Columns(props: ColumnProps) {
         lineHeight: 'normal',
       }}
       style={state.columnsCssVars}
+      dataSet={{ 'builder-block-name': 'builder-columns' }}
     >
       <Show when={TARGET !== 'reactNative'}>
         {/**

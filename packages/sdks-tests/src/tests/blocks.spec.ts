@@ -235,7 +235,9 @@ test.describe('Blocks', () => {
           test(columnType, async ({ page }) => {
             await page.setViewportSize(size);
             await page.goto('/columns');
-            const columns = page.locator('.builder-columns');
+            const columns = isRNSDK
+              ? page.locator('[data-builder-block-name=builder-columns]')
+              : page.locator('.builder-columns');
 
             await expect(columns).toHaveCount(5);
             await expectStylesForElement({
