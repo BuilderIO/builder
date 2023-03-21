@@ -172,7 +172,11 @@ Some example SDK sizes from Bundlephobia:
 |React|![React Bundle Size](https://img.shields.io/bundlephobia/minzip/@builder.io/react)|
 |new React (beta)|![new React Bundle Size](https://img.shields.io/bundlephobia/minzip/@builder.io/sdk-react)|
 |Vue|![Vue Bundle Size](https://img.shields.io/bundlephobia/minzip/@builder.io/sdk-vue)|
-|Qwik|![Vue Bundle Size](https://img.shields.io/bundlephobia/minzip/@builder.io/sdk-qwik)|
+|Qwik|![Qwik Bundle Size](https://img.shields.io/bundlephobia/minzip/@builder.io/sdk-qwik)|
+|Svelte|![Svelte Bundle Size](https://img.shields.io/bundlephobia/minzip/@builder.io/sdk-svelte)|
+|SolidJS|![SolidJS Bundle Size](https://img.shields.io/bundlephobia/minzip/@builder.io/sdk-solid)|
+|React Native|![React Native Bundle Size](https://img.shields.io/bundlephobia/minzip/@builder.io/sdk-react-native)|
+
 
 Importantly, there are no hacks here - no iframes, no unneeded client side code or rendering, our rule of thumb is we produce content just like if you wrote it by hand. Assets are optimized, DOM is minimized, and it's all native to your framework (so all React components if you use React, Svelte for Svelte, etc)
 
