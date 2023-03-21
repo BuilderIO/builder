@@ -101,7 +101,7 @@ export default function Columns(props: ColumnProps) {
 
       return {
         width,
-        marginLeft: gutter,
+        'margin-left': gutter,
         '--column-width-mobile': state.getMobileStyle({
           stackedStyle: mobileWidth,
           desktopStyle: width,
