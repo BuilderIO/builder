@@ -1944,13 +1944,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis-cli@npm:^0.0.51":
-  version: 0.0.51
-  resolution: "@builder.io/mitosis-cli@npm:0.0.51"
+"@builder.io/mitosis-cli@npm:^0.0.52":
+  version: 0.0.52
+  resolution: "@builder.io/mitosis-cli@npm:0.0.52"
   dependencies:
     "@babel/core": ^7.17.8
     "@babel/preset-typescript": ^7.16.7
-    "@builder.io/mitosis": 0.0.92
+    "@builder.io/mitosis": 0.0.93
     "@vue/compiler-sfc": ^3.1.5
     babel-preset-solid: ^1.3.13
     chalk: ^4.1.0
@@ -1972,13 +1972,13 @@ __metadata:
     vue-template-validator: ^1.1.5
   bin:
     mitosis: bin/mitosis
-  checksum: 83f3bcb44c76c8d6d5a0dbbe86beb477b8b109fff506e0d30d3db9f793a5ba6f5d45eddf0c290743df65ac1eb63c5d5b461d370ddd0f3e7ad099f796e17b7562
+  checksum: 25ac769be9c280eafda65d5d70f4aa4379404421777459cf4ea814979a8a088621565b87c31dc90543e6c9b7a498d9ca9ec083edf72a951af41bdbab7afe323a
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis@npm:0.0.92, @builder.io/mitosis@npm:^0.0.92":
-  version: 0.0.92
-  resolution: "@builder.io/mitosis@npm:0.0.92"
+"@builder.io/mitosis@npm:0.0.93, @builder.io/mitosis@npm:^0.0.93":
+  version: 0.0.93
+  resolution: "@builder.io/mitosis@npm:0.0.93"
   dependencies:
     "@angular/compiler": ^11.2.11
     "@babel/core": 7.14.5
@@ -2009,6 +2009,7 @@ __metadata:
     object-hash: ^2.0.3
     postcss-load-config: ^4.0.1
     prettier-plugin-marko: ^1.2.2
+    prettier-plugin-organize-imports: 2.3.4
     prettier-plugin-svelte: ^2.7.0
     sass: ^1.56.1
     svelte: ^3.30.0
@@ -2016,7 +2017,7 @@ __metadata:
     traverse: ^0.6.6
     typescript: ^4.8.4
     vue: ~2.6
-  checksum: 06dc55a298170ba808a88bcd209fe8415dfe05cbffb2cabea35ff14f402e208ef64b83007e8b712750030f296b0f33190befd42e8852881afa630558bcba0c4b
+  checksum: 3e80b9480bbf3b248642aeba0fe40113511914585d79e0d1a37e75e77d7cfdc0ff3863c6b75779fd98d56276fd7731575e08a88659e6881e794fc19d796ec577
   languageName: node
   linkType: hard
 
@@ -2291,8 +2292,8 @@ __metadata:
   resolution: "@builder.io/sdks@workspace:sdks"
   dependencies:
     "@builder.io/eslint-plugin-mitosis": ^0.0.14
-    "@builder.io/mitosis": ^0.0.92
-    "@builder.io/mitosis-cli": ^0.0.51
+    "@builder.io/mitosis": ^0.0.93
+    "@builder.io/mitosis-cli": ^0.0.52
     "@playwright/test": ^1.27.1
     "@types/jest": ^27.4.1
     "@types/node-fetch": ^2.5.12
@@ -27356,6 +27357,16 @@ __metadata:
     "@marko/compiler": ^5.20.5
     prettier: ^2
   checksum: 881351539f5c596835e08857387b175e5f3856868bb87b235d8d1485f72b20828a3501e0b6b8c9d4cdf3a2b5427445b3b27cbadbe79c452882092ee90b5c0e01
+  languageName: node
+  linkType: hard
+
+"prettier-plugin-organize-imports@npm:2.3.4":
+  version: 2.3.4
+  resolution: "prettier-plugin-organize-imports@npm:2.3.4"
+  peerDependencies:
+    prettier: ">=2.0"
+    typescript: ">=2.9"
+  checksum: 2298fcae0f16fd1a095cc3a33ba5d51b679b291518d404ad5eaca56fdcfbd55d35e26c5adffcb8664bfb45c2339b551b385cf03f48888c46d0348843d96024e1
   languageName: node
   linkType: hard
 
