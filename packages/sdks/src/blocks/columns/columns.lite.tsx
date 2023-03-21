@@ -49,7 +49,7 @@ export default function Columns(props: ColumnProps) {
     get columnsCssVars(): { [key: string]: string } {
       const flexDir =
         props.stackColumnsAt === 'never'
-          ? 'inherit'
+          ? 'row'
           : props.reverseColumnsWhenStacked
           ? 'column-reverse'
           : 'column';
@@ -66,9 +66,9 @@ export default function Columns(props: ColumnProps) {
       };
     },
 
-    get columnCssVars(): { [key: string]: string } {
-      const width = '100%';
-      const marginLeft = '0';
+    columnCssVars(index: number): { [key: string]: string } {
+      const width = state.getColumnCssWidth(index);
+      const marginLeft = `${index === 0 ? 0 : state.gutterSize}px`;
 
       if (TARGET === 'reactNative') {
         return {
@@ -77,11 +77,17 @@ export default function Columns(props: ColumnProps) {
         };
       }
 
+      const mobileWidth = '100%';
+      const mobileMarginLeft = '0';
+
       return {
-        '--column-width': width,
-        '--column-margin-left': marginLeft,
-        '--column-width-tablet': state.maybeApplyForTablet(width),
-        '--column-margin-left-tablet': state.maybeApplyForTablet(marginLeft),
+        width,
+        marginLeft,
+        '--column-width-mobile': mobileWidth,
+        '--column-margin-left-mobile': mobileMarginLeft,
+        '--column-width-tablet': state.maybeApplyForTablet(mobileWidth),
+        '--column-margin-left-tablet':
+          state.maybeApplyForTablet(mobileMarginLeft),
       };
     },
 
@@ -114,8 +120,8 @@ export default function Columns(props: ColumnProps) {
           }
 
           .${props.builderBlock.id}-breakpoints > .builder-column {
-            width: var(--column-width) !important;
-            margin-left: var(--column-margin-left) !important;
+            width: var(--column-width--mobile) !important;
+            margin-left: var(--column-margin-left--mobile) !important;
           }
         },
       `;
@@ -144,11 +150,7 @@ export default function Columns(props: ColumnProps) {
       <For each={props.columns}>
         {(column, index) => (
           <div
-            style={{
-              width: state.getColumnCssWidth(index),
-              marginLeft: `${index === 0 ? 0 : state.gutterSize}px`,
-              ...state.columnCssVars,
-            }}
+            style={state.columnCssVars(index)}
             class="builder-column"
             css={{
               display: 'flex',
