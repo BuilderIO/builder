@@ -66,23 +66,15 @@ export default function Columns(props: ColumnProps) {
       };
     },
 
-    columnCssVars(index: number): { [key: string]: string } {
-      const width = state.getColumnCssWidth(index);
-      const marginLeft = `${index === 0 ? 0 : state.gutterSize}px`;
-
+    get columnCssVars(): { [key: string]: string } {
       if (TARGET === 'reactNative') {
-        return {
-          width,
-          marginLeft,
-        };
+        return {};
       }
 
       const mobileWidth = '100%';
       const mobileMarginLeft = '0';
 
       return {
-        width,
-        marginLeft,
         '--column-width-mobile': mobileWidth,
         '--column-margin-left-mobile': mobileMarginLeft,
         '--column-width-tablet': state.maybeApplyForTablet(mobileWidth),
@@ -151,7 +143,11 @@ export default function Columns(props: ColumnProps) {
       <For each={props.columns}>
         {(column, index) => (
           <div
-            style={state.columnCssVars(index)}
+            style={{
+              width: state.getColumnCssWidth(index),
+              marginLeft: `${index === 0 ? 0 : state.gutterSize}px`,
+              ...state.columnCssVars,
+            }}
             class="builder-column"
             css={{
               display: 'flex',
