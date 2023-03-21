@@ -181,71 +181,110 @@ test.describe('Blocks', () => {
   });
 
   test.describe('Columns', () => {
-    excludeReactNative('renders columns', async ({ page }) => {
-      await page.goto('/columns');
+    type ColumnTypes =
+      | 'stackAtTablet'
+      | 'stackAtTabletReverse'
+      | 'stackAtMobile'
+      | 'stackAtMobileReverse'
+      | 'neverStack';
 
-      const columns = page.locator('.builder-columns');
+    type SizeName = 'mobile' | 'tablet' | 'desktop';
+    type Size = {
+      width: number;
+      height: number;
+    };
 
-      await expect(columns).toHaveCount(5);
+    const sizes: Record<SizeName, Size> = {
+      mobile: { width: 300, height: 700 },
+      tablet: { width: 930, height: 700 },
+      desktop: { width: 1200, height: 700 },
+    };
 
-      type ColumnTypes =
-        | 'stackAtTablet'
-        | 'stackAtTabletReverse'
-        | 'stackAtMobile'
-        | 'stackAtMobileReverse'
-        | 'neverStack';
+    type ColStyles = {
+      columns: ExpectedStyles;
+      column: ExpectedStyles;
+    };
 
-      type Size = 'mobile' | 'tablet' | 'desktop';
+    const ROW: ColStyles = {
+      columns: {
+        'flex-direction': 'row',
+      },
+      column: {
+        'margin-left': '20px',
+      },
+    };
 
-      const sizes: Record<Size, { width: number; height: number }> = {
-        mobile: { width: 300, height: 700 },
-        tablet: { width: 930, height: 700 },
-        desktop: { width: 1200, height: 700 },
-      };
+    const NO_MARGIN = {
+      column: { 'margin-left': '0px' },
+    };
 
-      const expected: Record<ColumnTypes, Record<Size, ExpectedStyles> & { index: number }> = {
-        stackAtTablet: {
-          index: 0,
-          mobile: { 'flex-direction': 'column' },
-          tablet: { 'flex-direction': 'column' },
-          desktop: { 'flex-direction': 'row' },
-        },
-        stackAtTabletReverse: {
-          index: 1,
-          mobile: { 'flex-direction': 'column-reverse' },
-          tablet: { 'flex-direction': 'column-reverse' },
-          desktop: { 'flex-direction': 'row' },
-        },
-        stackAtMobile: {
-          index: 2,
-          mobile: { 'flex-direction': 'column' },
-          tablet: { 'flex-direction': 'row' },
-          desktop: { 'flex-direction': 'row' },
-        },
-        stackAtMobileReverse: {
-          index: 3,
-          mobile: { 'flex-direction': 'column-reverse' },
-          tablet: { 'flex-direction': 'row' },
-          desktop: { 'flex-direction': 'row' },
-        },
-        neverStack: {
-          index: 4,
-          mobile: { 'flex-direction': 'row' },
-          tablet: { 'flex-direction': 'row' },
-          desktop: { 'flex-direction': 'row' },
-        },
-      };
+    const expected: Record<ColumnTypes, Record<SizeName, ColStyles> & { index: number }> = {
+      stackAtTablet: {
+        index: 0,
+        mobile: { columns: { 'flex-direction': 'column' }, ...NO_MARGIN },
+        tablet: { columns: { 'flex-direction': 'column' }, ...NO_MARGIN },
+        desktop: ROW,
+      },
+      stackAtTabletReverse: {
+        index: 1,
+        mobile: { columns: { 'flex-direction': 'column-reverse' }, ...NO_MARGIN },
+        tablet: { columns: { 'flex-direction': 'column-reverse' }, ...NO_MARGIN },
+        desktop: ROW,
+      },
+      stackAtMobile: {
+        index: 2,
+        mobile: { columns: { 'flex-direction': 'column' }, ...NO_MARGIN },
+        tablet: ROW,
+        desktop: ROW,
+      },
+      stackAtMobileReverse: {
+        index: 3,
+        mobile: { columns: { 'flex-direction': 'column-reverse' }, ...NO_MARGIN },
+        tablet: ROW,
+        desktop: ROW,
+      },
+      neverStack: {
+        index: 4,
+        mobile: ROW,
+        tablet: ROW,
+        desktop: ROW,
+      },
+    };
 
-      for (const [sizeName, size] of Object.entries(sizes)) {
-        await page.setViewportSize(size);
+    for (const entry of Object.entries(sizes)) {
+      const [sizeName, size] = entry as [SizeName, Size];
 
-        for (const styles of Object.values(expected)) {
-          await expectStylesForElement({
-            locator: columns.nth(styles.index),
-            expected: styles[sizeName as Size],
+      // only test mobile for RN
+      if (isRNSDK && sizeName !== 'mobile') {
+        return;
+      }
+
+      test.describe(sizeName, () => {
+        for (const [columnType, styles] of Object.entries(expected)) {
+          test(columnType, async ({ page }) => {
+            await page.setViewportSize(size);
+            await page.goto('/columns');
+            const columns = isRNSDK
+              ? page.locator('[data-builder-block-name=builder-columns]')
+              : page.locator('.builder-columns');
+
+            await expect(columns).toHaveCount(5);
+            await expectStylesForElement({
+              locator: columns.nth(styles.index),
+              expected: styles[sizeName].columns,
+            });
+
+            const secondColumn = isRNSDK
+              ? columns.nth(styles.index).locator('[data-builder-block-name=builder-column]')
+              : columns.nth(styles.index).locator('.builder-column');
+
+            await expectStylesForElement({
+              locator: secondColumn.nth(1),
+              expected: styles[sizeName].column,
+            });
           });
         }
-      }
-    });
+      });
+    }
   });
 });
