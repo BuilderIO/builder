@@ -1,5 +1,3 @@
-// export interface CustomAttributes
-
 import type { JSX as JSXType } from '@builder.io/mitosis/jsx-runtime';
 
 declare module '@builder.io/mitosis/jsx-runtime' {
