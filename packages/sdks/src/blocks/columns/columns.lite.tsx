@@ -46,35 +46,43 @@ export default function Columns(props: ColumnProps) {
       return _stackColumnsAt === 'tablet' ? prop : 'inherit';
     },
 
-    get columnsCssVars(): { [key: string]: string } {
-      const flexDir =
-        props.stackColumnsAt === 'never'
-          ? 'row'
-          : props.reverseColumnsWhenStacked
-          ? 'column-reverse'
-          : 'column';
+    flexDir:
+      props.stackColumnsAt === 'never'
+        ? 'row'
+        : props.reverseColumnsWhenStacked
+        ? 'column-reverse'
+        : 'column',
 
+    get columnsCssVars(): { [key: string]: string } {
       if (TARGET === 'reactNative') {
         return {
-          flexDirection: flexDir,
+          flexDirection: state.flexDir,
         };
       }
 
       return {
-        '--flex-dir': flexDir,
-        '--flex-dir-tablet': state.maybeApplyForTablet(flexDir),
+        '--flex-dir': state.flexDir,
+        '--flex-dir-tablet': state.maybeApplyForTablet(state.flexDir),
       };
     },
 
-    get columnCssVars(): { [key: string]: string } {
+    columnCssVars(index: number): { [key: string]: string } {
+      const width = state.getColumnCssWidth(index);
+      const rowMarginLeft = `${index === 0 ? 0 : state.gutterSize}px`;
+
       if (TARGET === 'reactNative') {
-        return {};
+        return {
+          width,
+          marginLeft: props.stackColumnsAt === 'never' ? rowMarginLeft : '0',
+        };
       }
 
       const mobileWidth = '100%';
       const mobileMarginLeft = '0';
 
       return {
+        width,
+        marginLeft: rowMarginLeft,
         '--column-width-mobile': mobileWidth,
         '--column-margin-left-mobile': mobileMarginLeft,
         '--column-width-tablet': state.maybeApplyForTablet(mobileWidth),
@@ -143,12 +151,9 @@ export default function Columns(props: ColumnProps) {
       <For each={props.columns}>
         {(column, index) => (
           <div
-            style={{
-              width: state.getColumnCssWidth(index),
-              marginLeft: `${index === 0 ? 0 : state.gutterSize}px`,
-              ...state.columnCssVars,
-            }}
+            style={state.columnCssVars(index)}
             class="builder-column"
+            dataSet={{ 'builder-block-name': 'builder-column' }}
             css={{
               display: 'flex',
               flexDirection: 'column',
