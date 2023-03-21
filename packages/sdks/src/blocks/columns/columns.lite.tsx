@@ -32,6 +32,7 @@ export default function Columns(props: ColumnProps) {
   const state = useStore({
     gutterSize: typeof props.space === 'number' ? props.space || 0 : 20,
     cols: props.columns || [],
+    stackAt: props.stackColumnsAt || 'tablet',
     getWidth(index: number) {
       return state.cols[index]?.width || 100 / state.cols.length;
     },
@@ -41,9 +42,14 @@ export default function Columns(props: ColumnProps) {
       return `calc(${state.getWidth(index)}% - ${subtractWidth}px)`;
     },
 
-    maybeApplyForTablet(prop: string): string {
-      const _stackColumnsAt = props.stackColumnsAt || 'tablet';
-      return _stackColumnsAt === 'tablet' ? prop : 'inherit';
+    getTabletStyle({
+      stackedStyle,
+      desktopStyle,
+    }: {
+      stackedStyle: string;
+      desktopStyle: string;
+    }): string {
+      return state.stackAt === 'tablet' ? stackedStyle : desktopStyle;
     },
 
     flexDir:
@@ -62,18 +68,21 @@ export default function Columns(props: ColumnProps) {
 
       return {
         '--flex-dir': state.flexDir,
-        '--flex-dir-tablet': state.maybeApplyForTablet(state.flexDir),
+        '--flex-dir-tablet': state.getTabletStyle({
+          stackedStyle: state.flexDir,
+          desktopStyle: 'row',
+        }),
       };
     },
 
     columnCssVars(index: number): { [key: string]: string } {
       const width = state.getColumnCssWidth(index);
-      const rowMarginLeft = `${index === 0 ? 0 : state.gutterSize}px`;
+      const gutter = `${index === 0 ? 0 : state.gutterSize}px`;
 
       if (TARGET === 'reactNative') {
         return {
           width,
-          marginLeft: props.stackColumnsAt === 'never' ? rowMarginLeft : '0',
+          marginLeft: props.stackColumnsAt === 'never' ? gutter : '0',
         };
       }
 
@@ -82,12 +91,17 @@ export default function Columns(props: ColumnProps) {
 
       return {
         width,
-        marginLeft: rowMarginLeft,
+        marginLeft: gutter,
         '--column-width-mobile': mobileWidth,
         '--column-margin-left-mobile': mobileMarginLeft,
-        '--column-width-tablet': state.maybeApplyForTablet(mobileWidth),
-        '--column-margin-left-tablet':
-          state.maybeApplyForTablet(mobileMarginLeft),
+        '--column-width-tablet': state.getTabletStyle({
+          stackedStyle: mobileWidth,
+          desktopStyle: width,
+        }),
+        '--column-margin-left-tablet': state.getTabletStyle({
+          stackedStyle: mobileMarginLeft,
+          desktopStyle: gutter,
+        }),
       };
     },
 

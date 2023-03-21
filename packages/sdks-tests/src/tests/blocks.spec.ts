@@ -200,36 +200,54 @@ test.describe('Blocks', () => {
       desktop: { width: 1200, height: 700 },
     };
 
-    const expected: Record<ColumnTypes, Record<SizeName, ExpectedStyles> & { index: number }> = {
+    type ColStyles = {
+      columns: ExpectedStyles;
+      column: ExpectedStyles;
+    };
+
+    const ROW: ColStyles = {
+      columns: {
+        'flex-direction': 'row',
+      },
+      column: {
+        'margin-left': '20px',
+      },
+    };
+
+    const NO_MARGIN = {
+      column: { 'margin-left': '0px' },
+    };
+
+    const expected: Record<ColumnTypes, Record<SizeName, ColStyles> & { index: number }> = {
       stackAtTablet: {
         index: 0,
-        mobile: { 'flex-direction': 'column' },
-        tablet: { 'flex-direction': 'column' },
-        desktop: { 'flex-direction': 'row' },
+        mobile: { columns: { 'flex-direction': 'column' }, ...NO_MARGIN },
+        tablet: { columns: { 'flex-direction': 'column' }, ...NO_MARGIN },
+        desktop: ROW,
       },
       stackAtTabletReverse: {
         index: 1,
-        mobile: { 'flex-direction': 'column-reverse' },
-        tablet: { 'flex-direction': 'column-reverse' },
-        desktop: { 'flex-direction': 'row' },
+        mobile: { columns: { 'flex-direction': 'column-reverse' }, ...NO_MARGIN },
+        tablet: { columns: { 'flex-direction': 'column-reverse' }, ...NO_MARGIN },
+        desktop: ROW,
       },
       stackAtMobile: {
         index: 2,
-        mobile: { 'flex-direction': 'column' },
-        tablet: { 'flex-direction': 'row' },
-        desktop: { 'flex-direction': 'row' },
+        mobile: { columns: { 'flex-direction': 'column' }, ...NO_MARGIN },
+        tablet: ROW,
+        desktop: ROW,
       },
       stackAtMobileReverse: {
         index: 3,
-        mobile: { 'flex-direction': 'column-reverse' },
-        tablet: { 'flex-direction': 'row' },
-        desktop: { 'flex-direction': 'row' },
+        mobile: { columns: { 'flex-direction': 'column-reverse' }, ...NO_MARGIN },
+        tablet: ROW,
+        desktop: ROW,
       },
       neverStack: {
         index: 4,
-        mobile: { 'flex-direction': 'row' },
-        tablet: { 'flex-direction': 'row' },
-        desktop: { 'flex-direction': 'row' },
+        mobile: ROW,
+        tablet: ROW,
+        desktop: ROW,
       },
     };
 
@@ -253,7 +271,16 @@ test.describe('Blocks', () => {
             await expect(columns).toHaveCount(5);
             await expectStylesForElement({
               locator: columns.nth(styles.index),
-              expected: styles[sizeName],
+              expected: styles[sizeName].columns,
+            });
+
+            const secondColumn = isRNSDK
+              ? columns.nth(styles.index).locator('[data-builder-block-name=builder-column]')
+              : columns.nth(styles.index).locator('.builder-column');
+
+            await expectStylesForElement({
+              locator: secondColumn.nth(1),
+              expected: styles[sizeName].column,
             });
           });
         }
