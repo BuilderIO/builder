@@ -1,3 +1,7 @@
+### 0.1.14
+
+- Fix: Columns styles causing crash due to `number` values being written as `string`s.
+
 ### 0.1.13
 
 - Fix: Columns block styling & `stackColumnsAt` prop
