@@ -167,13 +167,13 @@ Performance is our top priority. All content is delivered from the edge, rendera
 
 Some example SDK sizes from Bundlephobia:
 
-|SDK|Size|
-|----|----|
-|React|![React Bundle Size](https://img.shields.io/bundlephobia/minzip/@builder.io/react)|
-|new React (beta)|![new React Bundle Size](https://img.shields.io/bundlephobia/minzip/@builder.io/sdk-react)|
-|Vue|![Vue Bundle Size](https://img.shields.io/bundlephobia/minzip/@builder.io/sdk-vue)|
-|Qwik|![Qwik Bundle Size](https://img.shields.io/bundlephobia/minzip/@builder.io/sdk-qwik)|
-|SolidJS|![SolidJS Bundle Size](https://img.shields.io/bundlephobia/minzip/@builder.io/sdk-solid)|
+|SDK| Package name |Size|
+|----|----|----|
+|React|`@builder.io/react`|![React Bundle Size](https://img.shields.io/bundlephobia/minzip/@builder.io/react)|
+|(BETA) new React|`@builder.io/sdk-react`|![new React Bundle Size](https://img.shields.io/bundlephobia/minzip/@builder.io/sdk-react)|
+|Vue|`@builder.io/sdk-vue`|![Vue Bundle Size](https://img.shields.io/bundlephobia/minzip/@builder.io/sdk-vue)|
+|Qwik|`@builder.io/sdk-qwik`|![Qwik Bundle Size](https://img.shields.io/bundlephobia/minzip/@builder.io/sdk-qwik)|
+|SolidJS|`@builder.io/sdk-solid`|![SolidJS Bundle Size](https://img.shields.io/bundlephobia/minzip/@builder.io/sdk-solid)|
 
 
 Importantly, there are no hacks here - no iframes, no unneeded client side code or rendering, our rule of thumb is we produce content just like if you wrote it by hand. Assets are optimized, DOM is minimized, and it's all native to your framework (so all React components if you use React, Svelte for Svelte, etc)
