@@ -6,11 +6,14 @@ import type { SizeName } from '../../constants/device-sizes';
 import RenderInlinedStyles from '../../components/render-inlined-styles.lite';
 import { TARGET } from '../../constants/target.js';
 import BuilderContext from '../../context/builder.context.lite';
+import type { Dictionary } from '../../types/typescript';
 
 type Column = {
   blocks: BuilderBlock[];
   width?: number;
 };
+
+type CSSVal = string | number;
 
 type StackColumnsAt = 'tablet' | 'mobile' | 'never';
 
@@ -46,9 +49,9 @@ export default function Columns(props: ColumnProps) {
       stackedStyle,
       desktopStyle,
     }: {
-      stackedStyle: string;
-      desktopStyle: string;
-    }): string {
+      stackedStyle: CSSVal;
+      desktopStyle: CSSVal;
+    }): CSSVal {
       return state.stackAt === 'tablet' ? stackedStyle : desktopStyle;
     },
 
@@ -56,9 +59,9 @@ export default function Columns(props: ColumnProps) {
       stackedStyle,
       desktopStyle,
     }: {
-      stackedStyle: string;
-      desktopStyle: string;
-    }): string {
+      stackedStyle: CSSVal;
+      desktopStyle: CSSVal;
+    }): CSSVal {
       return state.stackAt === 'never' ? desktopStyle : stackedStyle;
     },
 
@@ -69,11 +72,11 @@ export default function Columns(props: ColumnProps) {
         ? 'column-reverse'
         : 'column',
 
-    get columnsCssVars(): { [key: string]: string } {
+    get columnsCssVars(): Dictionary<string> {
       if (TARGET === 'reactNative') {
         return {
           flexDirection: state.flexDir,
-        };
+        } as Dictionary<string>;
       }
 
       return {
@@ -82,22 +85,22 @@ export default function Columns(props: ColumnProps) {
           stackedStyle: state.flexDir,
           desktopStyle: 'row',
         }),
-      };
+      } as Dictionary<string>;
     },
 
-    columnCssVars(index: number): { [key: string]: string } {
+    columnCssVars(index: number): Dictionary<string> {
       const width = state.getColumnCssWidth(index);
       const gutter = `${index === 0 ? 0 : state.gutterSize}px`;
 
       if (TARGET === 'reactNative') {
         return {
           width,
-          marginLeft: props.stackColumnsAt === 'never' ? gutter : '0',
-        };
+          marginLeft: props.stackColumnsAt === 'never' ? gutter : 0,
+        } as Dictionary<string>;
       }
 
       const mobileWidth = '100%';
-      const mobileMarginLeft = '0';
+      const mobileMarginLeft = 0;
 
       return {
         width,
@@ -118,7 +121,7 @@ export default function Columns(props: ColumnProps) {
           stackedStyle: mobileMarginLeft,
           desktopStyle: gutter,
         }),
-      };
+      } as Dictionary<string>;
     },
 
     getWidthForBreakpointSize(size: SizeName) {
