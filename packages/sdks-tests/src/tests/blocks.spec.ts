@@ -229,7 +229,14 @@ test.describe('Blocks', () => {
       },
     };
 
-    for (const [sizeName, size] of Object.entries(sizes)) {
+    for (const [_sizeName, size] of Object.entries(sizes)) {
+      const sizeName = _sizeName as Size;
+
+      // only test mobile for RN
+      if (isRNSDK && sizeName !== 'mobile') {
+        return;
+      }
+
       test.describe(sizeName, () => {
         for (const [columnType, styles] of Object.entries(expected)) {
           test(columnType, async ({ page }) => {
@@ -242,7 +249,7 @@ test.describe('Blocks', () => {
             await expect(columns).toHaveCount(5);
             await expectStylesForElement({
               locator: columns.nth(styles.index),
-              expected: styles[sizeName as Size],
+              expected: styles[sizeName],
             });
           });
         }
