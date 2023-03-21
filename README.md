@@ -169,7 +169,8 @@ Some example SDK sizes from Bundlephobia:
 
 |SDK|Size|
 |----|----|
-|React|![React Bundle Size](https://img.shields.io/bundlephobia/minzip/@builder.io/sdk-react)|
+|React|![React Bundle Size](https://img.shields.io/bundlephobia/minzip/@builder.io/react)|
+|new React (beta)|![new React Bundle Size](https://img.shields.io/bundlephobia/minzip/@builder.io/sdk-react)|
 |Vue|![Vue Bundle Size](https://img.shields.io/bundlephobia/minzip/@builder.io/sdk-vue)|
 |Qwik|![Vue Bundle Size](https://img.shields.io/bundlephobia/minzip/@builder.io/sdk-qwik)|
 
