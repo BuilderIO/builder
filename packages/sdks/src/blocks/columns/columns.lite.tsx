@@ -89,29 +89,29 @@ export default function Columns(props: ColumnProps) {
     },
 
     columnCssVars(index: number): Dictionary<string> {
-      const width = state.getColumnCssWidth(index);
-      const gutter = `${index === 0 ? 0 : state.gutterSize}px`;
+      const gutter = index === 0 ? 0 : state.gutterSize;
 
       if (TARGET === 'reactNative') {
         return {
-          width,
           marginLeft: props.stackColumnsAt === 'never' ? gutter : 0,
-        } as Dictionary<string>;
+        } as any as Dictionary<string>;
       }
 
+      const width = state.getColumnCssWidth(index);
+      const gutterPixels = `${state.gutterSize}px`;
       const mobileWidth = '100%';
       const mobileMarginLeft = 0;
 
       return {
         width,
-        'margin-left': gutter,
+        'margin-left': gutterPixels,
         '--column-width-mobile': state.getMobileStyle({
           stackedStyle: mobileWidth,
           desktopStyle: width,
         }),
         '--column-margin-left-mobile': state.getMobileStyle({
           stackedStyle: mobileMarginLeft,
-          desktopStyle: gutter,
+          desktopStyle: gutterPixels,
         }),
         '--column-width-tablet': state.getTabletStyle({
           stackedStyle: mobileWidth,
@@ -119,9 +119,9 @@ export default function Columns(props: ColumnProps) {
         }),
         '--column-margin-left-tablet': state.getTabletStyle({
           stackedStyle: mobileMarginLeft,
-          desktopStyle: gutter,
+          desktopStyle: gutterPixels,
         }),
-      } as Dictionary<string>;
+      } as any as Dictionary<string>;
     },
 
     getWidthForBreakpointSize(size: SizeName) {
