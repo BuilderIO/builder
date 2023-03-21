@@ -52,6 +52,16 @@ export default function Columns(props: ColumnProps) {
       return state.stackAt === 'tablet' ? stackedStyle : desktopStyle;
     },
 
+    getMobileStyle({
+      stackedStyle,
+      desktopStyle,
+    }: {
+      stackedStyle: string;
+      desktopStyle: string;
+    }): string {
+      return state.stackAt === 'never' ? desktopStyle : stackedStyle;
+    },
+
     flexDir:
       props.stackColumnsAt === 'never'
         ? 'row'
@@ -92,8 +102,14 @@ export default function Columns(props: ColumnProps) {
       return {
         width,
         marginLeft: gutter,
-        '--column-width-mobile': mobileWidth,
-        '--column-margin-left-mobile': mobileMarginLeft,
+        '--column-width-mobile': state.getMobileStyle({
+          stackedStyle: mobileWidth,
+          desktopStyle: width,
+        }),
+        '--column-margin-left-mobile': state.getMobileStyle({
+          stackedStyle: mobileMarginLeft,
+          desktopStyle: gutter,
+        }),
         '--column-width-tablet': state.getTabletStyle({
           stackedStyle: mobileWidth,
           desktopStyle: width,
@@ -134,8 +150,8 @@ export default function Columns(props: ColumnProps) {
           }
 
           .${props.builderBlock.id}-breakpoints > .builder-column {
-            width: var(--column-width--mobile) !important;
-            margin-left: var(--column-margin-left--mobile) !important;
+            width: var(--column-width-mobile) !important;
+            margin-left: var(--column-margin-left-mobile) !important;
           }
         },
       `;
