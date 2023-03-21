@@ -188,15 +188,19 @@ test.describe('Blocks', () => {
       | 'stackAtMobileReverse'
       | 'neverStack';
 
-    type Size = 'mobile' | 'tablet' | 'desktop';
+    type SizeName = 'mobile' | 'tablet' | 'desktop';
+    type Size = {
+      width: number;
+      height: number;
+    };
 
-    const sizes: Record<Size, { width: number; height: number }> = {
+    const sizes: Record<SizeName, Size> = {
       mobile: { width: 300, height: 700 },
       tablet: { width: 930, height: 700 },
       desktop: { width: 1200, height: 700 },
     };
 
-    const expected: Record<ColumnTypes, Record<Size, ExpectedStyles> & { index: number }> = {
+    const expected: Record<ColumnTypes, Record<SizeName, ExpectedStyles> & { index: number }> = {
       stackAtTablet: {
         index: 0,
         mobile: { 'flex-direction': 'column' },
@@ -229,8 +233,8 @@ test.describe('Blocks', () => {
       },
     };
 
-    for (const [_sizeName, size] of Object.entries(sizes)) {
-      const sizeName = _sizeName as Size;
+    for (const entry of Object.entries(sizes)) {
+      const [sizeName, size] = entry as [SizeName, Size];
 
       // only test mobile for RN
       if (isRNSDK && sizeName !== 'mobile') {
