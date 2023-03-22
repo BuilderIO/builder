@@ -7,15 +7,21 @@ import type { GetContentOptions } from './types.js';
 export async function getContent(
   options: GetContentOptions
 ): Promise<BuilderContent | null> {
-  return (await getAllContent({ ...options, limit: 1 })).results[0] || null;
+  const allContent = await getAllContent({ ...options, limit: 1 });
+  if ('status' in allContent) {
+    return null;
+  }
+  return allContent?.results[0] || null;
 }
 
-/**
- * TO-DO: Handle error responses.
- */
-interface ContentResponse {
-  results: BuilderContent[];
-}
+type ContentResponse =
+  | {
+      results: BuilderContent[];
+    }
+  | {
+      status: number;
+      message: string;
+    };
 
 export async function getAllContent(
   options: GetContentOptions
@@ -25,16 +31,27 @@ export async function getAllContent(
   const res = await fetch(url.href);
   const content = await (res.json() as Promise<ContentResponse>);
 
-  const canTrack = options.canTrack !== false;
-  if (
-    canTrack &&
-    // This makes sure we have a non-error response with the results array.
-    Array.isArray(content.results)
-  ) {
-    for (const item of content.results) {
-      await handleABTesting({ item, canTrack });
-    }
+  if ('status' in content) {
+    console.error('[Builder.io]: Error fetching data. ', content.message);
+    return content;
   }
 
-  return content;
+  const canTrack = options.canTrack !== false;
+  try {
+    if (
+      canTrack &&
+      // This makes sure we have a non-error response with the results array.
+      Array.isArray(content.results)
+    ) {
+      for (const item of content.results) {
+        await handleABTesting({ item, canTrack });
+      }
+    }
+  } catch (e) {
+    console.error('[Builder.io]: Could not setup A/B testing. ', e);
+  }
+
+  console.log('xyz', { contentAfter: content });
+
+  return content || [];
 }
