@@ -10,6 +10,7 @@ import {
   excludeReactNative,
   expectStylesForElement,
 } from './helpers.js';
+import { sdk } from './sdk.js';
 
 const testSymbols = async (page: Page) => {
   await findTextInPage({ page, text: 'special test description' });
@@ -164,7 +165,12 @@ test.describe('Blocks', () => {
   test('symbols without content', async ({ page }) => {
     let x = 0;
 
-    await page.route(/https:\/\/cdn\.builder\.io\/api\/v(\d)\/content\/symbol\.*/, route => {
+    const url =
+      sdk === 'oldReact'
+        ? 'https://cdn.builder.io/api/v1/query/abcd/symbol*'
+        : /https:\/\/cdn\.builder\.io\/api\/v(\d)\/content\/symbol\.*/;
+
+    await page.route(url, route => {
       x++;
       return route.fulfill({
         status: 200,
