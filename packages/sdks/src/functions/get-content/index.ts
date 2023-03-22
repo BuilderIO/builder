@@ -31,8 +31,8 @@ export async function getAllContent(
   const res = await fetch(url.href);
   const content = await (res.json() as Promise<ContentResponse>);
 
-  if ('status' in content) {
-    console.error('[Builder.io]: Error fetching data. ', content.message);
+  if ('status' in content && !('results' in content)) {
+    console.error('[Builder.io]: Error fetching data. ', content, options);
     return content;
   }
 
