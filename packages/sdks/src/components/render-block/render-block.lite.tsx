@@ -85,7 +85,7 @@ export default function RenderBlock(props: RenderBlockProps) {
     get actions() {
       return getBlockActions({
         block: state.useBlock,
-        state: state.proxyState,
+        state: TARGET === 'qwik' ? props.context.state : state.proxyState,
         context: props.context.context,
       });
     },

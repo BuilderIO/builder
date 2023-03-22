@@ -2022,8 +2022,8 @@ __metadata:
   linkType: hard
 
 "@builder.io/qwik-city@npm:latest":
-  version: 0.6.3
-  resolution: "@builder.io/qwik-city@npm:0.6.3"
+  version: 0.6.6
+  resolution: "@builder.io/qwik-city@npm:0.6.6"
   dependencies:
     "@mdx-js/mdx": 2.3.0
     "@types/mdx": 2.0.3
@@ -2032,7 +2032,7 @@ __metadata:
     zod: ^3.21.4
   peerDependencies:
     "@builder.io/qwik": ">=0.22.0"
-  checksum: cc52b35570dd29b23186c066072d0558dc52a542ab63506db02d45e206df173dd3d60a49a282fa33e337e46c9b2c459307f717f1d2bcb6339a89fe08b38d7f5f
+  checksum: 9d1091a1fd713aabc0f7ffaa03884788dca647ce523b5f2360132230a7d02926832a1d93657a47afa872f601596373ef9542887b29b3cee7777f30a9165f04cb
   languageName: node
   linkType: hard
 

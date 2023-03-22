@@ -55,7 +55,7 @@ const getContentForPathname = (pathname: string): BuilderContent | null =>
 const normalizePathname = (pathname: string): string =>
   pathname === '/' ? pathname : pathname.replace(/\/$/, '');
 
-export const getAPIKey = (): string => 'f1a790f8c3204b3b8c5c1795aeac4660';
+export const getAPIKey = (): string => 'abcd';
 
 export const getProps = (
   _pathname = getPathnameFromWindow()
