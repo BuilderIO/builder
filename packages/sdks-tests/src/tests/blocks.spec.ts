@@ -163,7 +163,8 @@ test.describe('Blocks', () => {
   });
   test('symbols without content', async ({ page }) => {
     let x = 0;
-    await page.route('https://cdn.builder.io/api/v2/content/symbol?*', route => {
+
+    await page.route(/https:\/\/cdn\.builder\.io\/api\/v(\d)\/content\/symbol\.*/, route => {
       x++;
       return route.fulfill({
         status: 200,
