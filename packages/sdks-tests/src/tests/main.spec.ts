@@ -136,7 +136,7 @@ test.describe(targetContext.name, () => {
         // baseline tests for impression tracking
         expect(data.events[0].data.sessionId).toMatch(ID_REGEX);
         expect(data.events[0].data.visitorId).toMatch(ID_REGEX);
-        expect(data.events[0].data.ownerId).toMatch(ID_REGEX);
+        expect(data.events[0].data.ownerId).toMatch(/abcd/);
 
         if (!isRNSDK) {
           expect(data.events[0].data.metadata.url).toMatch(/http:\/\/localhost:\d+\//);
