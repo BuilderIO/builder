@@ -162,22 +162,22 @@ test.describe('Blocks', () => {
     await testSymbols(page);
   });
   test('symbols without content', async ({ page }) => {
+    let x = 0;
+    await page.route('https://cdn.builder.io/api/v2/content/symbol?*', route => {
+      x++;
+      return route.fulfill({
+        status: 200,
+        json: {
+          results: [x === 0 ? FIRST_SYMBOL_CONTENT : SECOND_SYMBOL_CONTENT],
+        },
+      });
+    });
+
     await page.goto('/symbols-without-content');
 
-    let x = 0;
-    await page.route(
-      /.*cdn\.builder\.io\/api\/v(\d)\/content\/symbol.*/,
-      route => {
-        x++;
-        return route.fulfill({
-          status: 200,
-          body: x === 0 ? FIRST_SYMBOL_CONTENT : SECOND_SYMBOL_CONTENT,
-        });
-      },
-      { times: 2 }
-    );
-
     await testSymbols(page);
+
+    await expect(x).toBeGreaterThanOrEqual(2);
   });
 
   test.describe('Columns', () => {
