@@ -10,6 +10,7 @@ import {
   excludeReactNative,
   expectStylesForElement,
 } from './helpers.js';
+import { sdk } from './sdk.js';
 
 const testSymbols = async (page: Page) => {
   await findTextInPage({ page, text: 'special test description' });
@@ -162,22 +163,34 @@ test.describe('Blocks', () => {
     await testSymbols(page);
   });
   test('symbols without content', async ({ page }) => {
+    let x = 0;
+
+    const urlMatch =
+      sdk === 'oldReact'
+        ? 'https://cdn.builder.io/api/v1/query/abcd/symbol*'
+        : /https:\/\/cdn\.builder\.io\/api\/v(\d)\/content\/symbol\.*/;
+
+    await page.route(urlMatch, route => {
+      x++;
+
+      const url = new URL(route.request().url());
+
+      const keyName =
+        sdk === 'oldReact' ? decodeURIComponent(url.pathname).split('/').reverse()[0] : 'results';
+
+      return route.fulfill({
+        status: 200,
+        json: {
+          [keyName]: [x === 0 ? FIRST_SYMBOL_CONTENT : SECOND_SYMBOL_CONTENT],
+        },
+      });
+    });
+
     await page.goto('/symbols-without-content');
 
-    let x = 0;
-    await page.route(
-      /.*cdn\.builder\.io\/api\/v(\d)\/content\/symbol.*/,
-      route => {
-        x++;
-        return route.fulfill({
-          status: 200,
-          body: x === 0 ? FIRST_SYMBOL_CONTENT : SECOND_SYMBOL_CONTENT,
-        });
-      },
-      { times: 2 }
-    );
-
     await testSymbols(page);
+
+    await expect(x).toBeGreaterThanOrEqual(2);
   });
 
   test.describe('Columns', () => {
