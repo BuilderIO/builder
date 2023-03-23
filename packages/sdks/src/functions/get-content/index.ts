@@ -8,10 +8,11 @@ export async function getContent(
   options: GetContentOptions
 ): Promise<BuilderContent | null> {
   const allContent = await getAllContent({ ...options, limit: 1 });
-  if ('status' in allContent) {
-    return null;
+  if ('results' in allContent) {
+    return allContent?.results[0] || null;
   }
-  return allContent?.results[0] || null;
+
+  return null;
 }
 
 type ContentResponse =
