@@ -165,17 +165,23 @@ test.describe('Blocks', () => {
   test('symbols without content', async ({ page }) => {
     let x = 0;
 
-    const url =
+    const urlMatch =
       sdk === 'oldReact'
         ? 'https://cdn.builder.io/api/v1/query/abcd/symbol*'
         : /https:\/\/cdn\.builder\.io\/api\/v(\d)\/content\/symbol\.*/;
 
-    await page.route(url, route => {
+    await page.route(urlMatch, route => {
       x++;
+
+      const url = new URL(route.request().url());
+
+      const keyName =
+        sdk === 'oldReact' ? decodeURIComponent(url.pathname).split('/').reverse()[0] : 'results';
+
       return route.fulfill({
         status: 200,
         json: {
-          results: [x === 0 ? FIRST_SYMBOL_CONTENT : SECOND_SYMBOL_CONTENT],
+          [keyName]: [x === 0 ? FIRST_SYMBOL_CONTENT : SECOND_SYMBOL_CONTENT],
         },
       });
     });
