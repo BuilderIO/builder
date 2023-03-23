@@ -51,5 +51,5 @@ export async function getAllContent(
     console.error('[Builder.io]: Could not setup A/B testing. ', e);
   }
 
-  return content || [];
+  return content;
 }
