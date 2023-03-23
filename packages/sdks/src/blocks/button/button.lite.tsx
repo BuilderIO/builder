@@ -12,7 +12,16 @@ export default function Button(props: ButtonProps) {
     <Show
       when={props.link}
       else={
-        <button css={{ all: 'unset' }} {...props.attributes}>
+        <button
+          css={{ all: 'unset' }}
+          class={
+            /**
+             * We have to explicitly provide `class` so that Mitosis knows to merge it with `css`.
+             */
+            props.attributes.class
+          }
+          {...props.attributes}
+        >
           {props.text}
         </button>
       }
