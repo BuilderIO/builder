@@ -14,7 +14,12 @@ export default function Button(props: ButtonProps) {
       else={
         <button
           css={{ all: 'unset' }}
-          class={props.attributes.class}
+          class={
+            /**
+             * We have to explicitly provide `class` so that Mitosis knows to merge it with `css`.
+             */
+            props.attributes.class
+          }
           {...props.attributes}
         >
           {props.text}
