@@ -12,7 +12,11 @@ export default function Button(props: ButtonProps) {
     <Show
       when={props.link}
       else={
-        <button css={{ all: 'unset' }} {...props.attributes}>
+        <button
+          css={{ all: 'unset' }}
+          class={props.attributes.class}
+          {...props.attributes}
+        >
           {props.text}
         </button>
       }
