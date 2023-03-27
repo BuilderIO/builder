@@ -35,6 +35,5 @@ export function CatchBoundary() {
 export default function Page() {
   const props = useLoaderData<ReturnType<typeof getProps>>();
 
-  console.log('props', props);
   return props?.content ? <BuilderComponent {...props} /> : <div>Content Not Found.</div>;
 }

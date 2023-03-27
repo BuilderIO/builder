@@ -26,4 +26,5 @@ export type PackageName =
   | 'e2e-svelte'
   | 'e2e-sveltekit'
   | 'e2e-old-react'
+  | 'e2e-old-react-remix'
   | 'e2e-old-nextjs';
