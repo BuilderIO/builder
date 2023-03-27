@@ -1,12 +1,17 @@
 import { Links, Meta, Scripts, useCatch, useLoaderData, useParams } from '@remix-run/react';
 import type { LoaderFunction } from '@remix-run/node';
-import { BuilderComponent, builder } from '@builder.io/react';
+import { BuilderComponent, builder, Builder } from '@builder.io/react';
 import { getAPIKey, getProps } from '@builder.io/sdks-e2e-tests';
 import { useEffect } from 'react';
+import { getCustomComponents } from '@builder.io/sdks-tests-custom-components/output/react/src/index';
 
 builder.init(getAPIKey());
 
-export const loader: LoaderFunction = async ({ params }) => getProps(`/${params.slug || ''}`);
+export const loader: LoaderFunction = async ({ params }) => {
+  const path = `/${params.slug || ''}`;
+  const props = { ...getProps(path), customComponents: getCustomComponents(path) };
+  return { props: props };
+};
 
 export function CatchBoundary() {
   const caught = useCatch();
@@ -34,8 +39,14 @@ export function CatchBoundary() {
 }
 
 export default function Page() {
-  const props = useLoaderData<ReturnType<typeof getProps>>();
+  const props = useLoaderData<
+    ReturnType<typeof getProps> & { customComponents: ReturnType<typeof getCustomComponents> }
+  >();
   const params = useParams();
+
+  props.customComponents.forEach(({ component, ...info }) => {
+    Builder.registerComponent(component, info);
+  });
 
   // only enable tracking if we're not in the `/can-track-false` test route
   useEffect(() => {

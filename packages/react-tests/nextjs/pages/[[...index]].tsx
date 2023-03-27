@@ -42,7 +42,10 @@ builder.canTrack = false;
 export default function Page(props: PageProps) {
   const router = useRouter();
 
-  props.customComponents.map(Builder.registerComponent(BuilderComponent, {}));
+  props.customComponents.forEach(({ component, ...info }) => {
+    Builder.registerComponent(component, info);
+  });
+
   // only enable tracking if we're not in the `/can-track-false` test route
   useEffect(() => {
     if (!router.asPath.includes('can-track-false')) {

@@ -1,13 +1,18 @@
 import { getAPIKey, getProps } from '@builder.io/sdks-e2e-tests';
-import { BuilderComponent, builder } from '@builder.io/react';
+import { BuilderComponent, builder, Builder } from '@builder.io/react';
 import { useEffect } from 'react';
+import { getCustomComponents } from '@builder.io/sdks-tests-custom-components/output/react/src/index';
 
 builder.init(getAPIKey());
 // default to not tracking, and re-enable when appropriate
 builder.canTrack = false;
 
 function App() {
-  const props = getProps();
+  const props = { ...getProps(), customComponents: getCustomComponents() };
+
+  props.customComponents.forEach(({ component, ...info }) => {
+    Builder.registerComponent(component, info);
+  });
 
   // only enable tracking if we're not in the `/can-track-false` test route
   useEffect(() => {
