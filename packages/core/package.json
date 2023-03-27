@@ -59,7 +59,7 @@
     "rollup-plugin-uglify": "^3.0.0",
     "typedoc": "^0.22.15",
     "typedoc-plugin-markdown": "^3.12.1",
-    "typescript": "^4.6.4"
+    "typescript": "^4.7.4"
   },
   "dependencies": {
     "hash-sum": "^2.0.0",
