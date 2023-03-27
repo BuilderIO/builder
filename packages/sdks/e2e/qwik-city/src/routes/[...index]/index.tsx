@@ -9,14 +9,13 @@ export interface MainProps {
 }
 export default component$(() => {
   const { pathname } = useLocation();
-
-  const contentProps = {
-    ...getProps(pathname),
-    customComponents: getCustomComponents(pathname),
-  };
+  const contentProps = getProps(pathname);
 
   return contentProps ? (
-    <RenderContent {...contentProps} />
+    <RenderContent
+      {...contentProps}
+      customComponents={getCustomComponents(pathname)}
+    />
   ) : (
     <div>Content Not Found</div>
   );
