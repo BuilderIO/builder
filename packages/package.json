@@ -6,7 +6,8 @@
     "sdks-tests",
     "sdks",
     "react",
-    "react-tests"
+    "react-tests",
+    "core"
   ],
   "engines": {
     "yarn": ">= 3.0.0"
