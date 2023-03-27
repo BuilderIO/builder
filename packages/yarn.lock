@@ -1806,6 +1806,7 @@ __metadata:
     "@builder.io/qwik-city": 0.0.128
     "@builder.io/sdk-qwik": "workspace:*"
     "@builder.io/sdks-e2e-tests": "workspace:*"
+    "@builder.io/sdks-tests-custom-components": "workspace:*"
     "@types/eslint": 8.4.10
     "@types/node": ^18.11.18
     "@types/node-fetch": latest
@@ -2354,16 +2355,18 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@builder.io/sdks-tests-custom-components@workspace:sdks-tests-custom-components":
+"@builder.io/sdks-tests-custom-components@workspace:*, @builder.io/sdks-tests-custom-components@workspace:sdks-tests-custom-components":
   version: 0.0.0-use.local
   resolution: "@builder.io/sdks-tests-custom-components@workspace:sdks-tests-custom-components"
   dependencies:
     "@builder.io/mitosis": ^0.0.93
     "@builder.io/mitosis-cli": ^0.0.52
+    "@builder.io/sdks": "workspace:*"
+    watch: ^1.0.2
   languageName: unknown
   linkType: soft
 
-"@builder.io/sdks@workspace:sdks":
+"@builder.io/sdks@workspace:*, @builder.io/sdks@workspace:sdks":
   version: 0.0.0-use.local
   resolution: "@builder.io/sdks@workspace:sdks"
   dependencies:
