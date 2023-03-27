@@ -2354,6 +2354,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@builder.io/sdks-tests-custom-components@workspace:sdks-tests-custom-components":
+  version: 0.0.0-use.local
+  resolution: "@builder.io/sdks-tests-custom-components@workspace:sdks-tests-custom-components"
+  dependencies:
+    "@builder.io/mitosis": ^0.0.93
+    "@builder.io/mitosis-cli": ^0.0.52
+  languageName: unknown
+  linkType: soft
+
 "@builder.io/sdks@workspace:sdks":
   version: 0.0.0-use.local
   resolution: "@builder.io/sdks@workspace:sdks"

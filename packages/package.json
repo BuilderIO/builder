@@ -4,6 +4,7 @@
   "private": true,
   "workspaces": [
     "sdks-tests",
+    "sdks-tests-custom-components",
     "sdks",
     "react",
     "react-tests",

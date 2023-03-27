@@ -1,0 +1,22 @@
+{
+  "name": "@builder.io/sdks-tests-custom-components",
+  "description": "Mitosis codebase containing custom components used for SDK tests",
+  "private": true,
+  "scripts": {
+    "build": "mitosis build"
+  },
+  "exports": {
+    "reactNative": "./output/react-native/src/index.ts",
+    "vue2": "./output/vue/vue2/src/index.ts",
+    "vue3": "./output/vue/vue3/src/index.ts",
+    "rsc": "./output/rsc/src/index.ts",
+    "solid": "./output/solid/src/index.ts",
+    "svelte": "./output/svelte/src/index.ts",
+    "react": "./output/react/src/index.ts",
+    "qwik": "./output/qwik/src/index.ts"
+  },
+  "dependencies": {
+    "@builder.io/mitosis": "^0.0.93",
+    "@builder.io/mitosis-cli": "^0.0.52"
+  }
+}
