@@ -536,5 +536,22 @@ test.describe(targetContext.name, () => {
         });
       });
     });
+
+    test.describe('Custom Components', () => {
+      test('Overrides Builder Button', async ({ page }) => {
+        await page.goto('/custom-core-button/');
+
+        const links = page.locator('a');
+
+        for (const link of await links.all()) {
+          await expectStyleForElement({
+            locator: link,
+            cssProperty: 'color',
+            // check cyan color from custom component
+            expectedValue: 'rgb(0, 255, 255)',
+          });
+        }
+      });
+    });
   });
 });

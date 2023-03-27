@@ -25,6 +25,7 @@ const getPathnameFromWindow = (): string => (isBrowser() ? window.location.pathn
 
 const pages = {
   '/': homepage,
+  '/custom-core-button': homepage,
   '/can-track-false': homepage,
   '/css-nesting': cssNesting,
   '/columns': columns,
