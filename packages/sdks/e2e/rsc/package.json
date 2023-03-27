@@ -29,6 +29,7 @@
   "dependencies": {
     "@builder.io/sdk-react": "workspace:*",
     "@builder.io/sdks-e2e-tests": "workspace:*",
+    "@builder.io/sdks-tests-custom-components": "workspace:*",
     "@headlessui/react": "^1.7.0",
     "@shopify/hydrogen": "^1.5.0",
     "@types/lodash.throttle": "^4.1.7",
