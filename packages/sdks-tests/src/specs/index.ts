@@ -73,6 +73,7 @@ export const getProps = (
   model: string;
   content: BuilderContent;
   apiKey: string;
+  apiVersion?: 'v1' | 'v2' | 'v3';
 } | null => {
   const pathname = normalizePathname(_pathname);
   const content = getContentForPathname(pathname);

@@ -9,6 +9,10 @@ builder.canTrack = false;
 function App() {
   const props = getProps();
 
+  if (props?.apiVersion) {
+    builder.apiVersion = props?.apiVersion;
+  }
+
   // only enable tracking if we're not in the `/can-track-false` test route
   useEffect(() => {
     if (!window.location.pathname.includes('can-track-false')) {
