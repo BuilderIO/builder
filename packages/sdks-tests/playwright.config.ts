@@ -76,7 +76,7 @@ export default defineConfig({
 
   webServer: things.map(({ packageName, port, portFlag }) => {
     const server = {
-      command: `yarn workspace @builder.io/${packageName} run serve ${portFlag}`,
+      command: `PORT=${port} yarn workspace @builder.io/${packageName} run serve ${portFlag}`,
       port,
       reuseExistingServer: false,
     };
