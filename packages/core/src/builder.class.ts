@@ -2115,6 +2115,8 @@ export class Builder {
       );
       instance.setUserAttributes(this.getUserAttributes());
     } else {
+      // NOTE: All these are when .init is not called and the customer
+      // directly calls .get on the singleton instance of Builder
       if (options.apiKey && !this.apiKey) {
         this.apiKey = options.apiKey;
       }
@@ -2448,6 +2450,8 @@ export class Builder {
     }
 
     const fn = format === 'solid' || format === 'react' ? 'codegen' : 'query';
+
+    // NOTE: this is a hack to get around the fact that the codegen endpoint is not yet available in v3
     const apiVersionBasedOnFn = fn === 'query' ? this.apiVersion : 'v1';
     const url =
       `${host}/api/${apiVersionBasedOnFn}/${fn}/${this.apiKey}/${keyNames}` +
@@ -2634,6 +2638,8 @@ export class Builder {
       );
       instance.setUserAttributes(this.getUserAttributes());
     } else {
+      // NOTE: All these are when .init is not called and the customer
+      // directly calls .get on the singleton instance of Builder
       if (options.apiKey && !this.apiKey) {
         this.apiKey = options.apiKey;
       }
