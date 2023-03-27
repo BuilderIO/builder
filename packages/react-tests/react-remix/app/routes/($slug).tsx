@@ -1,7 +1,8 @@
-import { Links, Meta, Scripts, useCatch, useLoaderData } from '@remix-run/react';
+import { Links, Meta, Scripts, useCatch, useLoaderData, useParams } from '@remix-run/react';
 import type { LoaderFunction } from '@remix-run/node';
 import { BuilderComponent, builder } from '@builder.io/react';
 import { getAPIKey, getProps } from '@builder.io/sdks-e2e-tests';
+import { useEffect } from 'react';
 
 builder.init(getAPIKey());
 
@@ -34,6 +35,14 @@ export function CatchBoundary() {
 
 export default function Page() {
   const props = useLoaderData<ReturnType<typeof getProps>>();
+  const params = useParams();
+
+  // only enable tracking if we're not in the `/can-track-false` test route
+  useEffect(() => {
+    if (!params.slug?.includes('can-track-false')) {
+      builder.canTrack = true;
+    }
+  }, []);
 
   return props?.content ? <BuilderComponent {...props} /> : <div>Content Not Found.</div>;
 }
