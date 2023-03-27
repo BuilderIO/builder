@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "strict": true,
-    "target": "es5",
+    "target": "ESNext",
     "jsx": "preserve",
     "jsxImportSource": "@builder.io/mitosis",
     "esModuleInterop": true,

@@ -1,9 +1,8 @@
 <script lang="ts">
   import { RenderContent } from '@builder.io/sdk-svelte';
-  import { getProps } from '@builder.io/sdks-e2e-tests';
-  import { getCustomComponents } from '@builder.io/sdks-tests-custom-components/output/svelte/src/index';
+  import { getAllProps } from './helper';
 
-  $: props = { ...getProps(), customComponents: getCustomComponents() };
+  $: props = getAllProps();
 </script>
 
 <svelte:head>
