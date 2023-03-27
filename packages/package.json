@@ -6,7 +6,8 @@
     "sdks-tests",
     "sdks",
     "react",
-    "react-tests"
+    "react-tests",
+    "core"
   ],
   "engines": {
     "yarn": ">= 3.0.0"
@@ -14,7 +15,8 @@
   "resolutions": {
     "@sveltejs/package@1.0.0-next.1": "patch:@sveltejs/package@npm:1.0.0-next.1#.yarn/patches/@sveltejs-package-npm-1.0.0-next.1-2fd015530b.patch",
     "minimist": "^1.2.7",
-    "json5": "2.2.1"
+    "json5": "2.2.1",
+    "@builder.io/react": "workspace:*"
   },
   "packageManager": "yarn@3.4.1"
 }
