@@ -1,10 +1,10 @@
 import { test as base, expect } from '@playwright/test';
 import type { Page, TestInfo, Locator, BrowserContext } from '@playwright/test';
-import type { Sdk } from './sdk';
+import type { PackageName, Sdk } from './sdk';
 import { sdk } from './sdk.js';
 
 type TestOptions = {
-  packageName: string;
+  packageName: PackageName;
 };
 
 // https://github.com/microsoft/playwright/issues/14854#issuecomment-1155667859
