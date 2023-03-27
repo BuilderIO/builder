@@ -2294,7 +2294,6 @@ __metadata:
     rollup-plugin-node-globals: ^1.3.0
     rollup-plugin-node-resolve: ^3.3.0
     rollup-plugin-sourcemaps: ^0.4.2
-    rollup-plugin-typescript: ^0.8.1
     rollup-plugin-typescript2: ^0.13.0
     rollup-plugin-uglify: ^3.0.0
     tslib: ^1.10.0
@@ -11709,13 +11708,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"compare-versions@npm:2.0.1":
-  version: 2.0.1
-  resolution: "compare-versions@npm:2.0.1"
-  checksum: f1abfe05e22392208f1445465dd7a39145cbd0d36e5b8f0fe75feccd5482bed779400dc9ef22d0a2e5b46bea14988e582845608aee7a4504f407b148f6a6c909
-  languageName: node
-  linkType: hard
-
 "compare-versions@npm:^3.4.0":
   version: 3.6.0
   resolution: "compare-versions@npm:3.6.0"
@@ -15426,13 +15418,6 @@ __metadata:
   version: 2.0.2
   resolution: "estree-walker@npm:2.0.2"
   checksum: 6151e6f9828abe2259e57f5fd3761335bb0d2ebd76dc1a01048ccee22fabcfef3c0859300f6d83ff0d1927849368775ec5a6d265dde2f6de5a1be1721cd94efc
-  languageName: node
-  linkType: hard
-
-"estree-walker@npm:^0.2.1":
-  version: 0.2.1
-  resolution: "estree-walker@npm:0.2.1"
-  checksum: eea29a6ab063bf0d456b4d6f3fabd6bb0d3806116c07e3735070a569dd69348ed812af582135fda407606a696a64d309c5f7f7a0fd981696c1548c1f4bb3409b
   languageName: node
   linkType: hard
 
@@ -30309,35 +30294,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rollup-plugin-typescript@npm:^0.8.1":
-  version: 0.8.1
-  resolution: "rollup-plugin-typescript@npm:0.8.1"
-  dependencies:
-    compare-versions: 2.0.1
-    object-assign: ^4.0.1
-    rollup-pluginutils: ^1.3.1
-    tippex: ^2.1.1
-    typescript: ^1.8.9
-  checksum: df531cec25b302742d0c94222fd49cebb63608d3dd97e5cb7f5cf61b420ce7c3d41f732f239253faedac964acf1bc76207354d877bdd48650d24be77ea5f016a
-  languageName: node
-  linkType: hard
-
 "rollup-plugin-uglify@npm:^3.0.0":
   version: 3.0.0
   resolution: "rollup-plugin-uglify@npm:3.0.0"
   dependencies:
     uglify-es: ^3.3.7
   checksum: a98115ad9388c2d2d1a27f593dbd23f1245b3c0759475344d6520963d9dd530d886347968b95b6fa7e7f68bed4ff5caed0716e0a6e2a7b94de6c6051eb710d9f
-  languageName: node
-  linkType: hard
-
-"rollup-pluginutils@npm:^1.3.1":
-  version: 1.5.2
-  resolution: "rollup-pluginutils@npm:1.5.2"
-  dependencies:
-    estree-walker: ^0.2.1
-    minimatch: ^3.0.2
-  checksum: 8c669c0b3d2126d4bea1f03b7ae0b44bf16799f02c43549d254933af746d215186ed17077ad025aa137a0c548c98b8f502da805ae5ab9ae1775185965805ce2a
   languageName: node
   linkType: hard
 
@@ -33115,13 +33077,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tippex@npm:^2.1.1":
-  version: 2.3.1
-  resolution: "tippex@npm:2.3.1"
-  checksum: 87792c94913a56d82c2e72961b1aa8b2a756bbb3e7d030d50668c5aef7eab5e2c0500aa7c2651d870286af9248b77aeb75e633eb082bd5ebba8abbb4e828f47a
-  languageName: node
-  linkType: hard
-
 "tmp@npm:^0.0.33":
   version: 0.0.33
   resolution: "tmp@npm:0.0.33"
@@ -33913,16 +33868,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^1.8.9":
-  version: 1.8.10
-  resolution: "typescript@npm:1.8.10"
-  bin:
-    tsc: ./bin/tsc
-    tsserver: ./bin/tsserver
-  checksum: 0f29e6f8416a01fea1069481ddf4b66420420c02ba407a26cae28bc378b57b25ed1bb3ab086fc4078ac9b7aece9ecc50a625bd9835d39532c8b18941d8b9897f
-  languageName: node
-  linkType: hard
-
 "typescript@npm:^3.8.3":
   version: 3.9.10
   resolution: "typescript@npm:3.9.10"
@@ -33970,16 +33915,6 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 3e2ab0772908676d9b9cb83398c70003a3b08e1c6b3b122409df9f4b520f2fdaefa20c3d7d57dce283fed760ac94b3ce94d4a7fa875127b67852904425a1f0dc
-  languageName: node
-  linkType: hard
-
-"typescript@patch:typescript@^1.8.9#~builtin<compat/typescript>":
-  version: 1.8.10
-  resolution: "typescript@patch:typescript@npm%3A1.8.10#~builtin<compat/typescript>::version=1.8.10&hash=3bafbf"
-  bin:
-    tsc: ./bin/tsc
-    tsserver: ./bin/tsserver
-  checksum: edebec852efa28de66aefff0fb68bc66040501fbce6d76a483d760f87fac412ce9d41029650dcf9a8777cdb57662e49d8918674d559af9572417e88cae3f98c9
   languageName: node
   linkType: hard
 
