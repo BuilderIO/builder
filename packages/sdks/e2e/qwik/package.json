@@ -20,7 +20,7 @@
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
-    "@builder.io/qwik": "^0.23.0",
+    "@builder.io/qwik": "BuilderIO/qwik-build#2c316f37c4c91a8f2c285b412e8ec995d60041cc",
     "@builder.io/sdk-qwik": "workspace:*",
     "@builder.io/sdks-e2e-tests": "workspace:*",
     "@types/eslint": "8.4.5",
