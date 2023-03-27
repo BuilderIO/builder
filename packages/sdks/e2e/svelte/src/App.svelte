@@ -1,27 +1,9 @@
 <script lang="ts">
-  import {
-    RenderContent,
-    type RegisteredComponent,
-  } from '@builder.io/sdk-svelte';
+  import { RenderContent } from '@builder.io/sdk-svelte';
   import { getProps } from '@builder.io/sdks-e2e-tests';
-  import Counter from './Counter.svelte';
+  import { getCustomComponents } from '@builder.io/sdks-tests-custom-components/output/svelte/src/index';
 
-  $: props = getProps();
-
-  const CUSTOM_COMPONENTS: RegisteredComponent[] = [
-    {
-      name: 'Counter',
-      component: Counter,
-      image: 'https://cdn-icons-png.flaticon.com/512/6134/6134688.png',
-      inputs: [
-        {
-          name: 'count',
-          type: 'number',
-          defaultValue: 0,
-        },
-      ],
-    },
-  ];
+  $: props = { ...getProps(), customComponents: getCustomComponents() };
 </script>
 
 <svelte:head>
@@ -30,7 +12,7 @@
 
 <main>
   {#if props}
-    <RenderContent {...props} customComponents={CUSTOM_COMPONENTS} />
+    <RenderContent {...props} />
   {:else}
     Content Not Found
   {/if}

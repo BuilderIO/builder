@@ -17,7 +17,6 @@ export const getCustomComponents = (_pathname = getPathnameFromWindow()): Regist
 
   switch (pathname) {
     case '/custom-core-button':
-      console.log('custom-core-button returned');
       return [{ component: Button, name: 'Core:Button' }];
     default:
       return [];
