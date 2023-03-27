@@ -4,7 +4,8 @@
   "private": true,
   "workspaces": [
     "react-vite",
-    "nextjs"
+    "nextjs",
+    "react-remix"
   ],
   "scripts": {
     "build": "yarn workspaces foreach -pt run build"
