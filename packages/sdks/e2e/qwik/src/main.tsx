@@ -8,12 +8,13 @@ export interface MainProps {
 }
 export const Main = component$((props: MainProps) => {
   const pathname = new URL(props.url).pathname;
-  const contentProps = {
-    ...getProps(pathname),
-    customComponents: getCustomComponents(pathname),
-  };
+  const contentProps = getProps(pathname);
+
   return contentProps ? (
-    <RenderContent {...contentProps} />
+    <RenderContent
+      {...contentProps}
+      customComponents={getCustomComponents(pathname)}
+    />
   ) : (
     <div>Content Not Found</div>
   );
