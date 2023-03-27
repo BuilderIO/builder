@@ -343,11 +343,15 @@ test.describe('Blocks', () => {
         ? 'https://cdn.builder.io/api/v3/query/abcd/symbol*'
         : /.*cdn\.builder\.io\/api\/v3\/content\/symbol.*/;
 
+      console.log("urlMatch", urlMatch);
+      console.log("isOldReactSDK", isOldReactSDK);
+
       await page.route(urlMatch, route => {
         x++;
 
         const url = new URL(route.request().url());
-
+        console.log("route", route);
+        console.log("x", x);
         const keyName = isOldReactSDK
           ? decodeURIComponent(url.pathname).split('/').reverse()[0]
           : 'results';
@@ -361,6 +365,8 @@ test.describe('Blocks', () => {
       });
 
       await page.goto('/api-version-v3');
+
+      await expect(x).toBeGreaterThanOrEqual(2);
 
       await testSymbols(page);
 
