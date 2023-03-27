@@ -2,7 +2,7 @@ import { defineConfig, devices } from '@playwright/test';
 import { targetContext } from './src/tests/context.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import type { Sdk } from './src/tests/sdk.js';
+import type { PackageName, Sdk } from './src/tests/sdk.js';
 import { sdk } from './src/tests/sdk.js';
 
 const getDirName = () => {
@@ -15,7 +15,7 @@ const getDirName = () => {
   }
 };
 
-const WEB_SERVERS: Record<Sdk, string[]> = {
+const WEB_SERVERS: Record<Sdk, PackageName[]> = {
   reactNative: ['e2e-react-native'],
   solid: ['e2e-solidjs'],
   qwik: ['e2e-qwik', 'e2e-qwik-city'],

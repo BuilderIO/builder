@@ -16,6 +16,8 @@ function App() {
     }
   }, []);
 
+  // issues with react types incompatibility (v16 vs v17 vs v18?)
+  // @ts-ignore
   return props ? <BuilderComponent {...props} /> : <div>Content Not Found</div>;
 }
 
