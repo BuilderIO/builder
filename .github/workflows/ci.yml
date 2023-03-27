@@ -93,6 +93,12 @@ jobs:
       - name: Run prettier
         run: yarn ci:lint
 
+      - name: Build Core
+        run: yarn workspace @builder.io/sdk ci:build
+
+      - name: Build SDK
+        run: yarn workspace @builder.io/react build
+
       - name: Build
         run: yarn build:mitosis
 
@@ -130,6 +136,12 @@ jobs:
 
       - name: Install dependencies
         run: yarn
+
+      - name: Build Core
+        run: yarn workspace @builder.io/sdk ci:build
+
+      - name: Build SDK
+        run: yarn workspace @builder.io/react build
 
       - name: Build Mitosis
         run: yarn build:mitosis
