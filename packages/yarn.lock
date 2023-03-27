@@ -2081,7 +2081,7 @@ __metadata:
   resolution: "@builder.io/react@workspace:react"
   dependencies:
     "@builder.io/block-publish": ^1.1.2
-    "@builder.io/sdk": 1.1.34
+    "@builder.io/sdk": "workspace:*"
     "@emotion/core": ^10.0.17
     "@testing-library/jest-dom": ^5.16.4
     "@testing-library/react": ^12.1.5
@@ -2262,7 +2262,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@builder.io/sdk@1.1.34, @builder.io/sdk@^1.1.26, @builder.io/sdk@workspace:core":
+"@builder.io/sdk@^1.1.26, @builder.io/sdk@workspace:*, @builder.io/sdk@workspace:core":
   version: 0.0.0-use.local
   resolution: "@builder.io/sdk@workspace:core"
   dependencies:
