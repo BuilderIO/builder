@@ -108,8 +108,8 @@ export const CUSTOM_COMPONENTS: RegisteredComponent[] = [
 ```
 
 ### [Beta] Guide to use API Version v3 to query for content
-For using API Version `v3`, you need to add `apiVersion: 'v3'` to the `getContent` function and in the `RenderContent` tag. For example:
 
+For using API Version `v3`, you need to add `apiVersion: 'v3'` to the `getContent` function and in the `RenderContent` tag. For example:
 
 ```typscript
 import { component$ } from "@builder.io/qwik";
@@ -153,14 +153,16 @@ export default component$(() => {
 });
 
 ```
+
 #### Reasons to switch to API Version v3
+
 - Better, more scalable infra: Query v3 is built on global scale infrastructure to ensure fast response times and high availability
 - Ability to ship more features, faster: Query V3 will allow us to keep shipping the latest features to our customers without breaking fundamental flows. These will be shipped only to Query V3 and not to the older versions of the query API
 
 _Coming soon..._
+
 - Better support for localization: Some of the newer features of localization and querying based on it will be better supported in Query V3
 - Support multi-level nested references: Query V3 will allow you to query, resolve, and return content that has nested references of other contents and symbols.
-
 
 ## Mitosis
 

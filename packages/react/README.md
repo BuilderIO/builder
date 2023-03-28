@@ -330,45 +330,14 @@ To use the lite package, you change all your imports from `@buidler/react` to `@
 ### [Beta] Guide to use API Version v3 to query for content
 For using API Version `v3`, you need to pass apiVersion as "v3" in the init function. For example:
 
-```typscript
-import React, { useEffect, useState } from 'react';
-import { BuilderComponent, builder } from '@builder.io/react';
+```js
+import { builder } from '@builder.io/react';
 
-const BUILDER_PUBLIC_API_KEY = "YOUR_API_KEY_GOES_HERE";
-const MODEL = "page";
+Builder.init("YOUR_API_KEY_GOES_HERE", undefined, undefined, undefined, undefined, 'v3');
 
-// Put your API key here
-builder.init(BUILDER_PUBLIC_API_KEY, undefined, undefined, undefined, undefined, "v3");
+// OR
 
-export default function App() {
-  const [notFound, setNotFound] = useState(false);
-  const [content, setContent] = useState(null);
-
-  // get the page content from Builder
-  useEffect(() => {
-    async function fetchContent() {
-      const content = await builder
-        .get(MODEL)
-        .promise();
-      setContent(content);
-      setNotFound(!content);
-    }
-    fetchContent();
-  }, []);
-
-  // if no page is found, return a 404 page
-  if (notFound) {
-    return <h1>No page found for this URL, did you publish it?</h1>; // Your 404 content
-  }
-
-  // return the page when found
-  return (
-    <>
-      {/* Render the Builder page */}
-      <BuilderComponent model={MODEL} content={content} />
-    </>
-  );
-}
+builder.apiVersion = 'v3';
 
 ```
 
