@@ -1,1 +1,1 @@
-export { getProps, getAPIKey, ALL_PATHNAMES, GetPropsType } from './specs/index.js';
+export { getProps, getAPIKey, ALL_PATHNAMES } from './specs/index.js';
