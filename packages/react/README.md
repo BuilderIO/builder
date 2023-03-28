@@ -326,3 +326,57 @@ To use the lite package, you change all your imports from `@buidler/react` to `@
     import '@builder.io/react/dist/lib/src/blocks/Columns';
 
 ```
+
+### [Beta] Guide to use API Version v3 to query for content
+For using API Version `v3`, you need to pass apiVersion as "v3" in the init function. For example:
+
+```typscript
+import React, { useEffect, useState } from 'react';
+import { BuilderComponent, builder } from '@builder.io/react';
+
+const BUILDER_PUBLIC_API_KEY = "YOUR_API_KEY_GOES_HERE";
+const MODEL = "page";
+
+// Put your API key here
+builder.init(BUILDER_PUBLIC_API_KEY, undefined, undefined, undefined, undefined, "v3");
+
+export default function App() {
+  const [notFound, setNotFound] = useState(false);
+  const [content, setContent] = useState(null);
+
+  // get the page content from Builder
+  useEffect(() => {
+    async function fetchContent() {
+      const content = await builder
+        .get(MODEL)
+        .promise();
+      setContent(content);
+      setNotFound(!content);
+    }
+    fetchContent();
+  }, []);
+
+  // if no page is found, return a 404 page
+  if (notFound) {
+    return <h1>No page found for this URL, did you publish it?</h1>; // Your 404 content
+  }
+
+  // return the page when found
+  return (
+    <>
+      {/* Render the Builder page */}
+      <BuilderComponent model={MODEL} content={content} />
+    </>
+  );
+}
+
+```
+
+#### Reasons to switch to API Version v3
+- Better, more scalable infra: Query v3 is built on global scale infrastructure to ensure fast response times and high availability
+- Ability to ship more features, faster: Query V3 will allow us to keep shipping the latest features to our customers without breaking fundamental flows. These will be shipped only to Query V3 and not to the older versions of the query API
+
+_Coming soon..._
+- Better support for localization: Some of the newer features of localization and querying based on it will be better supported in Query V3
+- Support multi-level nested references: Query V3 will allow you to query, resolve, and return content that has nested references of other contents and symbols.
+
