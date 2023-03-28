@@ -1,0 +1,16 @@
+{
+  "name": "@builder.io/sdks-tests-custom-components",
+  "description": "Mitosis codebase containing custom components used for SDK tests",
+  "private": true,
+  "scripts": {
+    "start": "watch 'yarn run build' ./src",
+    "build": "mitosis build"
+  },
+  "type": "module",
+  "dependencies": {
+    "@builder.io/mitosis": "^0.0.93",
+    "@builder.io/mitosis-cli": "^0.0.52",
+    "@builder.io/sdks": "workspace:*",
+    "watch": "^1.0.2"
+  }
+}

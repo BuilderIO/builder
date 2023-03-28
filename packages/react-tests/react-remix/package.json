@@ -10,6 +10,7 @@
   "dependencies": {
     "@builder.io/react": "workspace:*",
     "@builder.io/sdks-e2e-tests": "workspace:*",
+    "@builder.io/sdks-tests-custom-components": "workspace:*",
     "@remix-run/node": "^1.14.3",
     "@remix-run/react": "^1.14.3",
     "@remix-run/serve": "^1.14.3",

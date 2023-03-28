@@ -3,6 +3,7 @@
 import { RenderContent } from '@builder.io/sdk-react';
 import { getProps } from '@builder.io/sdks-e2e-tests';
 import { useRouter } from 'next/router';
+import { getCustomComponents } from '@builder.io/sdks-tests-custom-components/output/react/src/index';
 
 const getPathname = (x: string) => {
   if (x === '/[[...index]]') {
@@ -15,7 +16,11 @@ const getPathname = (x: string) => {
 function App() {
   const router = useRouter();
 
-  const props = getProps(getPathname(router.asPath));
+  const path = getPathname(router.asPath);
+  const props = {
+    ...getProps(path),
+    customComponents: getCustomComponents(path),
+  };
   return props ? <RenderContent {...props} /> : <div>Content Not Found</div>;
 }
 

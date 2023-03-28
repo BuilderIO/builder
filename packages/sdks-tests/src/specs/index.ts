@@ -25,6 +25,7 @@ const getPathnameFromWindow = (): string => (isBrowser() ? window.location.pathn
 
 const pages = {
   '/': homepage,
+  '/custom-core-button': homepage,
   '/api-version-v1': CONTENT_WITHOUT_SYMBOLS,
   '/api-version-v2': CONTENT_WITHOUT_SYMBOLS,
   '/api-version-v3': CONTENT_WITHOUT_SYMBOLS,

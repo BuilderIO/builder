@@ -2,6 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { Text, View } from 'react-native';
 import React, { Fragment } from 'react';
 import { getProps } from '@builder.io/sdks-e2e-tests';
+import { getCustomComponents } from '@builder.io/sdks-tests-custom-components/output/react/src/index';
 import { RenderContent } from '@builder.io/sdk-react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -19,6 +20,7 @@ const linking = {
 
 const BuilderContent = ({ route }) => {
   const props = getProps(route.path);
+  const components = getCustomComponents(route.path);
 
   return (
     <Fragment>
@@ -28,7 +30,11 @@ const BuilderContent = ({ route }) => {
           flexDirection: 'column',
         }}
       >
-        {props ? <RenderContent {...props} /> : <Text>Not Found.</Text>}
+        {props ? (
+          <RenderContent {...props} customComponents={components} />
+        ) : (
+          <Text>Not Found.</Text>
+        )}
       </View>
       <StatusBar style="auto" />
     </Fragment>

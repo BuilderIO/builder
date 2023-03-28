@@ -23,6 +23,7 @@
     "@builder.io/qwik": "^0.16.2",
     "@builder.io/sdk-qwik": "workspace:*",
     "@builder.io/sdks-e2e-tests": "workspace:*",
+    "@builder.io/sdks-tests-custom-components": "workspace:*",
     "@types/eslint": "8.4.5",
     "@types/express": "4.17.13",
     "@types/node": "latest",

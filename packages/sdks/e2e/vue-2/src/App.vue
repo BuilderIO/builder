@@ -9,6 +9,8 @@ import { RenderContent } from '@builder.io/sdk-vue';
 import '@builder.io/sdk-vue/vue2/css';
 import { getProps } from '@builder.io/sdks-e2e-tests';
 
+import { getCustomComponents } from '@builder.io/sdks-tests-custom-components/output/vue/vue2/src/index';
+
 export default {
   name: 'DynamicallyRenderBuilderPage',
   components: {
@@ -16,7 +18,7 @@ export default {
   },
   computed: {
     props() {
-      return getProps();
+      return { ...getProps(), customComponents: getCustomComponents() };
     },
   },
 };
