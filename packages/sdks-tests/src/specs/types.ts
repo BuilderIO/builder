@@ -8,3 +8,4 @@ export type BuilderContent = Partial<{
   data: { [index: string]: any };
   meta?: { breakpoints?: Nullable<Breakpoints>; [index: string]: any };
 }>;
+export type ApiVersion = 'v1' | 'v2' | 'v3';

@@ -15,7 +15,7 @@ import {
 import { CONTENT as reactiveState } from './reactive-state';
 import { CONTENT as showHideIf } from './show-hide-if';
 import { CONTENT as textBlock } from './text-block';
-import type { BuilderContent } from './types.js';
+import type { ApiVersion, BuilderContent } from './types.js';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -73,7 +73,7 @@ export const getProps = (
   model: string;
   content: BuilderContent;
   apiKey: string;
-  apiVersion?: 'v1' | 'v2' | 'v3';
+  apiVersion?: ApiVersion;
 } | null => {
   const pathname = normalizePathname(_pathname);
   const content = getContentForPathname(pathname);
