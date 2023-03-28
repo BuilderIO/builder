@@ -1,0 +1,7 @@
+// tsconfig.json
+{
+    "compilerOptions": {
+      "jsx": "preserve",
+      "jsxImportSource": "@builder.io/mitosis"
+    }
+  }
