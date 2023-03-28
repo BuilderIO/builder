@@ -37,6 +37,10 @@ export default function Page() {
   const props = useLoaderData<ReturnType<typeof getProps>>();
   const params = useParams();
 
+  if (props?.apiVersion) {
+    builder.apiVersion = props?.apiVersion;
+  }
+
   // only enable tracking if we're not in the `/can-track-false` test route
   useEffect(() => {
     if (!params.slug?.includes('can-track-false')) {
