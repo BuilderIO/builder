@@ -40,10 +40,17 @@ builder.canTrack = false;
 export default function Page(props: PageProps) {
   const router = useRouter();
 
+  if (props?.apiVersion) {
+    builder.apiVersion = props?.apiVersion;
+  }
+
   // only enable tracking if we're not in the `/can-track-false` test route
   useEffect(() => {
     if (!router.asPath.includes('can-track-false')) {
       builder.canTrack = true;
+    }
+    if (router.asPath.includes('api-version-v3')) {
+      builder.apiVersion = 'v3';
     }
   }, []);
 
