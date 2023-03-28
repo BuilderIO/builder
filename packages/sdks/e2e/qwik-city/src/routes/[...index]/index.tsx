@@ -6,7 +6,6 @@ import { getProps } from '@builder.io/sdks-e2e-tests';
 export interface MainProps {
   url: string;
 }
-export const BUILDER_PUBLIC_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660'; // ggignore
 export default component$(() => {
   const { pathname } = useLocation();
 

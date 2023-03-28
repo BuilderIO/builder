@@ -1,0 +1,34 @@
+{
+  "name": "@builder.io/e2e-old-react-remix",
+  "private": true,
+  "scripts": {
+    "build": "remix build",
+    "dev": "remix dev",
+    "serve": "remix-serve build",
+    "typecheck": "tsc"
+  },
+  "dependencies": {
+    "@builder.io/react": "workspace:*",
+    "@builder.io/sdks-e2e-tests": "workspace:*",
+    "@remix-run/node": "^1.14.3",
+    "@remix-run/react": "^1.14.3",
+    "@remix-run/serve": "^1.14.3",
+    "isbot": "^3.6.5",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@remix-run/dev": "^1.14.3",
+    "@remix-run/eslint-config": "^1.14.3",
+    "@types/react": "^18.0.25",
+    "@types/react-dom": "^18.0.8",
+    "eslint": "^8.27.0",
+    "typescript": "^4.8.4"
+  },
+  "engines": {
+    "node": ">=14"
+  },
+  "installConfig": {
+    "hoistingLimits": "workspaces"
+  }
+}

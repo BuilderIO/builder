@@ -14,6 +14,10 @@ interface ContentEditorActions {
 }
 
 export const onContentEditorLoad = ({ safeReaction, updatePreviewUrl }: ContentEditorActions) => {
+  const pluginSettings = appState.user.organization.value.settings.plugins?.get(pkg.name);
+  if (pluginSettings?.get('disableURLUpdates')) {
+    return;
+  }
   safeReaction(
     () =>
       appState.designerState.editingContentModel?.meta.get('sfccPreviewOptions') ||

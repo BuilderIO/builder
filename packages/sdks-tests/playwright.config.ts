@@ -2,7 +2,8 @@ import { defineConfig, devices } from '@playwright/test';
 import { targetContext } from './src/tests/context.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { sdk, Sdk } from './src/tests/sdk.js';
+import type { PackageName, Sdk } from './src/tests/sdk.js';
+import { sdk } from './src/tests/sdk.js';
 
 const getDirName = () => {
   try {
@@ -14,7 +15,7 @@ const getDirName = () => {
   }
 };
 
-const WEB_SERVERS: Record<Sdk, string[]> = {
+const WEB_SERVERS: Record<Sdk, PackageName[]> = {
   reactNative: ['e2e-react-native'],
   solid: ['e2e-solidjs'],
   qwik: ['e2e-qwik', 'e2e-qwik-city'],
@@ -22,7 +23,7 @@ const WEB_SERVERS: Record<Sdk, string[]> = {
   vue: ['e2e-vue2', 'e2e-vue3'],
   svelte: ['e2e-svelte', 'e2e-sveltekit'],
   rsc: [],
-  oldReact: ['e2e-old-react', 'e2e-old-nextjs'],
+  oldReact: ['e2e-old-react', 'e2e-old-nextjs', 'e2e-old-react-remix'],
 };
 
 targetContext.name = sdk;
@@ -42,6 +43,7 @@ const things = WEB_SERVERS[sdk].map((packageName, i) => {
 
 export default defineConfig({
   testDir: getDirName() + '/src/tests',
+  // testMatch: '**/*.ts',
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -60,7 +62,7 @@ export default defineConfig({
   },
 
   /* Configure projects for major browsers */
-  projects: things.map(({ packageName, port, portFlag }) => ({
+  projects: things.map(({ packageName, port }) => ({
     name: packageName,
     use: {
       ...devices['Desktop Chrome'],
@@ -74,7 +76,7 @@ export default defineConfig({
 
   webServer: things.map(({ packageName, port, portFlag }) => {
     const server = {
-      command: `yarn workspace @builder.io/${packageName} run serve ${portFlag}`,
+      command: `PORT=${port} yarn workspace @builder.io/${packageName} run serve ${portFlag}`,
       port,
       reuseExistingServer: false,
     };

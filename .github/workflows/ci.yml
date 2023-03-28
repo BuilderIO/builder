@@ -29,7 +29,7 @@ jobs:
     strategy:
       matrix:
         node-version: [12]
-        package: ['core', 'webcomponents', 'widgets']
+        package: ['webcomponents', 'widgets']
 
     steps:
       - uses: actions/checkout@v2
@@ -93,6 +93,12 @@ jobs:
       - name: Run prettier
         run: yarn ci:lint
 
+      - name: Build Core
+        run: yarn workspace @builder.io/sdk ci:build
+
+      - name: Build SDK
+        run: yarn workspace @builder.io/react build
+
       - name: Build
         run: yarn build:mitosis
 
@@ -131,6 +137,12 @@ jobs:
       - name: Install dependencies
         run: yarn
 
+      - name: Build Core
+        run: yarn workspace @builder.io/sdk ci:build
+
+      - name: Build SDK
+        run: yarn workspace @builder.io/react build
+
       - name: Build Mitosis
         run: yarn build:mitosis
 
@@ -148,6 +160,35 @@ jobs:
 
       - name: Run E2E tests
         run: yarn e2e:run:${{ matrix.sdk }}
+
+  core-sdk:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: packages
+
+    steps:
+      - name: Setup
+        uses: actions/checkout@v2
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+
+      - name: Cache SDKs
+        id: cache-primes
+        uses: actions/cache@v3
+        with:
+          path: packages/.yarn/cache
+          key: sdks-cache-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: Build Core
+        run: yarn workspace @builder.io/sdk ci:build
 
   old-react-sdk:
     runs-on: ubuntu-latest
@@ -174,6 +215,9 @@ jobs:
 
       - name: Install dependencies
         run: yarn
+
+      - name: Build Core
+        run: yarn workspace @builder.io/sdk ci:build
 
       - name: Build SDK
         run: yarn workspace @builder.io/react build

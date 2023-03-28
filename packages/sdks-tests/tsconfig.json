@@ -6,14 +6,13 @@
     "jsx": "preserve",
     "moduleResolution": "node",
     "module": "ESNext",
-    "jsxImportSource": "@builder.io/mitosis",
     "skipLibCheck": true,
     "outDir": "dist",
     "declaration": true,
     "allowJs": true
   },
   "include": [
-    "src",
+    "src/**/*",
     "./playwright.config.ts"
   ]
 }

@@ -1,3 +1,20 @@
+### 0.1.15
+
+- No changes.
+
+### 0.1.14
+
+- No changes.
+
+### 0.1.13
+
+- Fix: Columns block styling & `stackColumnsAt` prop
+
+### 0.1.12
+
+- Fix: `RenderContent` not re-rendering when its `content` updates. This fixes Symbol rendering in the visual editor.
+- Feature: `RenderContent` and `getContent` now have an `apiVersion` field that can be set to `v2` or `v3` to target specific Builder API versions. Current default is `v2`
+
 ### 0.1.11
 
 - No changes.
