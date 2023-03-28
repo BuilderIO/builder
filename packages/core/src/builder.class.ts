@@ -21,6 +21,8 @@ import { parse as urlParse } from './url';
 import hash from 'hash-sum';
 import { toError } from './functions/to-error';
 import { emptyUrl, UrlLike } from './url';
+import type { ApiVersion } from './types/api-version';
+import { DEFAULT_API_VERSION } from './types/api-version';
 
 export type Url = any;
 
@@ -446,6 +448,8 @@ export interface GetContentOptions {
    * content thinking they should updates when they actually shouldn't.
    */
   noEditorUpdates?: boolean;
+
+  apiVersion?: ApiVersion;
 }
 
 export type Class = {
@@ -1194,6 +1198,17 @@ export class Builder {
     }
   }
 
+  get apiVersion() {
+    return this.apiVersion$.value;
+  }
+
+  set apiVersion(apiVersion: ApiVersion | undefined) {
+    if (this.apiVersion !== apiVersion) {
+      this.apiVersion$.next(apiVersion);
+    }
+  }
+
+  private apiVersion$ = new BehaviorSubject<ApiVersion | undefined>(undefined);
   private canTrack$ = new BehaviorSubject(!this.browserTrackingDisabled);
   private apiKey$ = new BehaviorSubject<string | null>(null);
   private authToken$ = new BehaviorSubject<string | null>(null);
@@ -1545,7 +1560,8 @@ export class Builder {
     protected request?: IncomingMessage,
     protected response?: ServerResponse,
     forceNewInstance = false,
-    authToken: string | null = null
+    authToken: string | null = null,
+    apiVersion?: ApiVersion
   ) {
     // TODO: use a window variable for this perhaps, e.g. bc webcomponents may be loading builder twice
     // with it's and react (use rollup build to fix)
@@ -1560,6 +1576,9 @@ export class Builder {
 
     if (apiKey) {
       this.apiKey = apiKey;
+    }
+    if (apiVersion) {
+      this.apiVersion = apiVersion;
     }
     if (authToken) {
       this.authToken = authToken;
@@ -1963,7 +1982,8 @@ export class Builder {
     canTrack = this.defaultCanTrack,
     req?: IncomingMessage,
     res?: ServerResponse,
-    authToken?: string
+    authToken?: string | null,
+    apiVersion?: ApiVersion
   ) {
     if (req) {
       this.request = req;
@@ -1975,6 +1995,9 @@ export class Builder {
     this.apiKey = apiKey;
     if (authToken) {
       this.authToken = authToken;
+    }
+    if (apiVersion) {
+      this.apiVersion = apiVersion;
     }
     return this;
   }
@@ -2087,15 +2110,21 @@ export class Builder {
         options.req,
         options.res,
         undefined,
-        options.authToken || this.authToken
+        options.authToken || this.authToken,
+        options.apiVersion || this.apiVersion
       );
       instance.setUserAttributes(this.getUserAttributes());
     } else {
+      // NOTE: All these are when .init is not called and the customer
+      // directly calls .get on the singleton instance of Builder
       if (options.apiKey && !this.apiKey) {
         this.apiKey = options.apiKey;
       }
       if (options.authToken && !this.authToken) {
         this.authToken = options.authToken;
+      }
+      if (options.apiVersion && !this.apiVersion) {
+        this.apiVersion = options.apiVersion;
       }
     }
     return instance.queueGetContent(modelName, options).map(
@@ -2249,6 +2278,14 @@ export class Builder {
       throw new Error(
         `Fetching content failed, expected apiKey to be defined instead got: ${this.apiKey}`
       );
+    }
+
+    if (this.apiVersion) {
+      if (!['v1', 'v3'].includes(this.apiVersion)) {
+        throw new Error(`Invalid apiVersion: expected 'v1' or 'v3', received '${this.apiVersion}'`);
+      }
+    } else {
+      this.apiVersion = DEFAULT_API_VERSION;
     }
 
     if (!usePastQueue && !this.getContentQueue) {
@@ -2414,8 +2451,10 @@ export class Builder {
 
     const fn = format === 'solid' || format === 'react' ? 'codegen' : 'query';
 
+    // NOTE: this is a hack to get around the fact that the codegen endpoint is not yet available in v3
+    const apiVersionBasedOnFn = fn === 'query' ? this.apiVersion : 'v1';
     const url =
-      `${host}/api/v1/${fn}/${this.apiKey}/${keyNames}` +
+      `${host}/api/${apiVersionBasedOnFn}/${fn}/${this.apiKey}/${keyNames}` +
       (queryParams && hasParams ? `?${queryStr}` : '');
 
     const promise = getFetch()(url, requestOptions)
@@ -2589,11 +2628,23 @@ export class Builder {
   ): Promise<BuilderContent[]> {
     let instance: Builder = this;
     if (!Builder.isBrowser) {
-      instance = new Builder(options.apiKey || this.apiKey, options.req, options.res);
+      instance = new Builder(
+        options.apiKey || this.apiKey,
+        options.req,
+        options.res,
+        false,
+        null,
+        options.apiVersion
+      );
       instance.setUserAttributes(this.getUserAttributes());
     } else {
+      // NOTE: All these are when .init is not called and the customer
+      // directly calls .get on the singleton instance of Builder
       if (options.apiKey && !this.apiKey) {
         this.apiKey = options.apiKey;
+      }
+      if (options.apiVersion && !this.apiVersion) {
+        this.apiVersion = options.apiVersion;
       }
     }
 
@@ -2603,7 +2654,7 @@ export class Builder {
         ...options,
         key:
           options.key ||
-          // Make the key include all options so we don't reuse cache for the same conent fetched
+          // Make the key include all options, so we don't reuse cache for the same content fetched
           // with different options
           Builder.isBrowser
             ? `${modelName}:${hash(omit(options, 'initialContent', 'req', 'res'))}`
