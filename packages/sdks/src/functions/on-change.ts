@@ -13,7 +13,7 @@ export function onChange<T extends object = any>(obj: T, cb: () => void): T {
       }
       const value = Reflect.get(target, key);
       if (value && typeof value === 'object') {
-        if (value[onChangeProxySymbol]) {
+        if ((value as any)[onChangeProxySymbol]) {
           return value;
         }
         return onChange(value, cb);

@@ -158,6 +158,7 @@ export default function RenderBlock(props: RenderBlockProps) {
 
       return {
         apiKey: props.context.apiKey,
+        apiVersion: props.context.apiVersion,
         state: props.context.state,
         content: props.context.content,
         context: props.context.context,
