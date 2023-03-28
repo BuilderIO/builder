@@ -1,5 +1,5 @@
-import { getAPIKey, getProps } from '@builder.io/sdks-e2e-tests';
-import { BuilderComponent, builder } from '@builder.io/react';
+import { getAPIKey, getProps, GetPropsType } from '@builder.io/sdks-e2e-tests';
+import { BuilderComponent, builder, ApiVersion } from '@builder.io/react';
 import { useEffect } from 'react';
 
 builder.init(getAPIKey());
@@ -7,7 +7,7 @@ builder.init(getAPIKey());
 builder.canTrack = false;
 
 function App() {
-  const props = getProps();
+  const props = getProps() as GetPropsType & { apiVersion: ApiVersion };
 
   if (props?.apiVersion) {
     builder.apiVersion = props?.apiVersion;

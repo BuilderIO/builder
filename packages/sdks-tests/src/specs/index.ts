@@ -66,14 +66,13 @@ const normalizePathname = (pathname: string): string =>
   pathname === '/' ? pathname : pathname.replace(/\/$/, '');
 
 export const getAPIKey = (): string => 'abcd';
-
-export const getProps = (
-  _pathname = getPathnameFromWindow()
-): {
+export interface GetPropsType {
   model: string;
   content: BuilderContent;
   apiKey: string;
-} | null => {
+}
+
+export const getProps = (_pathname = getPathnameFromWindow()): GetPropsType | null => {
   const pathname = normalizePathname(_pathname);
   const content = getContentForPathname(pathname);
 
