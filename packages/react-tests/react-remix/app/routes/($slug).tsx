@@ -48,6 +48,10 @@ export default function Page() {
     Builder.registerComponent(component, info);
   });
 
+  if (props?.apiVersion) {
+    builder.apiVersion = props?.apiVersion;
+  }
+
   // only enable tracking if we're not in the `/can-track-false` test route
   useEffect(() => {
     if (!params.slug?.includes('can-track-false')) {

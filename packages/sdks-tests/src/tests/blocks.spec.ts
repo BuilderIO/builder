@@ -9,6 +9,9 @@ import {
   expectStyleForElement,
   excludeReactNative,
   expectStylesForElement,
+  testOnlyOldReact,
+  testExcludeOldReact,
+  isOldReactSDK,
 } from './helpers.js';
 import { sdk } from './sdk.js';
 
@@ -299,5 +302,123 @@ test.describe('Blocks', () => {
         }
       });
     }
+  });
+
+  test.describe('Test ApiVersion', () => {
+    test('apiVersion in SDKs is not set', async ({ page }) => {
+      let x = 0;
+
+      const urlMatch = isOldReactSDK
+        ? 'https://cdn.builder.io/api/v1/query/abcd/symbol*'
+        : /.*cdn\.builder\.io\/api\/v2\/content\/symbol.*/;
+
+      await page.route(urlMatch, route => {
+        x++;
+
+        const url = new URL(route.request().url());
+
+        const keyName = isOldReactSDK
+          ? decodeURIComponent(url.pathname).split('/').reverse()[0]
+          : 'results';
+
+        return route.fulfill({
+          status: 200,
+          json: {
+            [keyName]: [x === 0 ? FIRST_SYMBOL_CONTENT : SECOND_SYMBOL_CONTENT],
+          },
+        });
+      });
+
+      await page.goto('/api-version-default');
+
+      await testSymbols(page);
+
+      await expect(x).toBeGreaterThanOrEqual(2);
+    });
+
+    test('apiVersion in SDKs is set to v3', async ({ page }) => {
+      let x = 0;
+
+      const urlMatch = isOldReactSDK
+        ? 'https://cdn.builder.io/api/v3/query/abcd/symbol*'
+        : /.*cdn\.builder\.io\/api\/v3\/content\/symbol.*/;
+
+      await page.route(urlMatch, route => {
+        x++;
+
+        const url = new URL(route.request().url());
+
+        const keyName = isOldReactSDK
+          ? decodeURIComponent(url.pathname).split('/').reverse()[0]
+          : 'results';
+
+        return route.fulfill({
+          status: 200,
+          json: {
+            [keyName]: [x === 0 ? FIRST_SYMBOL_CONTENT : SECOND_SYMBOL_CONTENT],
+          },
+        });
+      });
+
+      await page.goto('/api-version-v3');
+
+      await testSymbols(page);
+
+      await expect(x).toBeGreaterThanOrEqual(2);
+    });
+
+    testOnlyOldReact('apiVersion in old react is set to v1', async ({ page }) => {
+      let x = 0;
+
+      const urlMatch = 'https://cdn.builder.io/api/v1/query/abcd/symbol*';
+
+      await page.route(urlMatch, route => {
+        x++;
+
+        const url = new URL(route.request().url());
+
+        const keyName = decodeURIComponent(url.pathname).split('/').reverse()[0];
+
+        return route.fulfill({
+          status: 200,
+          json: {
+            [keyName]: [x === 0 ? FIRST_SYMBOL_CONTENT : SECOND_SYMBOL_CONTENT],
+          },
+        });
+      });
+
+      await page.goto('/api-version-v1');
+
+      await testSymbols(page);
+
+      await expect(x).toBeGreaterThanOrEqual(2);
+    });
+
+    testExcludeOldReact('apiVersion in new SDKs is set to v2', async ({ page }) => {
+      let x = 0;
+
+      const urlMatch = /.*cdn\.builder\.io\/api\/v2\/content\/symbol.*/;
+
+      await page.route(urlMatch, route => {
+        x++;
+
+        const url = new URL(route.request().url());
+
+        const keyName = 'results';
+
+        return route.fulfill({
+          status: 200,
+          json: {
+            [keyName]: [x === 0 ? FIRST_SYMBOL_CONTENT : SECOND_SYMBOL_CONTENT],
+          },
+        });
+      });
+
+      await page.goto('/api-version-v2');
+
+      await testSymbols(page);
+
+      await expect(x).toBeGreaterThanOrEqual(2);
+    });
   });
 });

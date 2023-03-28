@@ -26,6 +26,10 @@ const getPathnameFromWindow = (): string => (isBrowser() ? window.location.pathn
 const pages = {
   '/': homepage,
   '/custom-core-button': homepage,
+  '/api-version-v1': CONTENT_WITHOUT_SYMBOLS,
+  '/api-version-v2': CONTENT_WITHOUT_SYMBOLS,
+  '/api-version-v3': CONTENT_WITHOUT_SYMBOLS,
+  '/api-version-default': CONTENT_WITHOUT_SYMBOLS,
   '/can-track-false': homepage,
   '/css-nesting': cssNesting,
   '/columns': columns,
@@ -42,6 +46,12 @@ const pages = {
   '/show-hide-if': showHideIf,
   '/custom-breakpoints-reset': customBreakpointsReset,
   '/text-block': textBlock,
+} as const;
+
+const apiVersionPathToProp = {
+  '/api-version-v1': { apiVersion: 'v1' },
+  '/api-version-v2': { apiVersion: 'v2' },
+  '/api-version-v3': { apiVersion: 'v3' },
 } as const;
 
 export type Path = keyof typeof pages;
@@ -79,10 +89,14 @@ export const getProps = (
         }
       : {};
 
+  const extraApiVersionProp =
+    apiVersionPathToProp[pathname as keyof typeof apiVersionPathToProp] ?? {};
+
   return {
     content,
     apiKey: getAPIKey(),
     model: 'page',
     ...extraProps,
+    ...extraApiVersionProp,
   };
 };

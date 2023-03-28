@@ -326,3 +326,26 @@ To use the lite package, you change all your imports from `@buidler/react` to `@
     import '@builder.io/react/dist/lib/src/blocks/Columns';
 
 ```
+
+### [Beta] Guide to use API Version v3 to query for content
+For using API Version `v3`, you need to pass apiVersion as "v3" in the init function. For example:
+
+```js
+import { builder } from '@builder.io/react';
+
+Builder.init("YOUR_API_KEY_GOES_HERE", undefined, undefined, undefined, undefined, 'v3');
+
+// OR
+
+builder.apiVersion = 'v3';
+
+```
+
+#### Reasons to switch to API Version v3
+- Better, more scalable infra: Query v3 is built on global scale infrastructure to ensure fast response times and high availability
+- Ability to ship more features, faster: Query V3 will allow us to keep shipping the latest features to our customers without breaking fundamental flows. These will be shipped only to Query V3 and not to the older versions of the query API
+
+_Coming soon..._
+- Better support for localization: Some of the newer features of localization and querying based on it will be better supported in Query V3
+- Support multi-level nested references: Query V3 will allow you to query, resolve, and return content that has nested references of other contents and symbols.
+
