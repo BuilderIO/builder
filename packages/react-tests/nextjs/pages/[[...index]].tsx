@@ -37,7 +37,7 @@ type PageProps = InferGetStaticPropsType<typeof getStaticProps>;
 // default to not tracking, and re-enable when appropriate
 builder.canTrack = false;
 
-export default function Page(props: PageProps & {apiVersion: any}) {
+export default function Page(props: PageProps & { apiVersion: any }) {
   const router = useRouter();
 
   if (props?.apiVersion) {
