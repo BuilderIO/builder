@@ -2,13 +2,13 @@ import { z } from 'zod';
 
 export const SdkEnum = z.enum([
   'oldReact',
-  'reactNative',
-  'react',
-  'rsc',
-  'vue',
-  'solid',
   'qwik',
+  'react',
+  'reactNative',
+  'rsc',
+  'solid',
   'svelte',
+  'vue',
 ]);
 export type Sdk = z.infer<typeof SdkEnum>;
 

@@ -29,6 +29,7 @@
     "ci:test": "yarn run test",
     "e2e:build:specs": "yarn workspace @builder.io/sdks-e2e-tests build",
     "e2e:build": "yarn workspace @builder.io/sdks-e2e-tests run build",
+    "e2e:build:old-react": "yarn workspace @builder.io/react-tests build",
     "e2e:build:svelte": "yarn workspaces foreach --verbose --include \"@builder.io/e2e-svelte*\" run build",
     "e2e:build:react-native": "yarn workspaces foreach --verbose --include \"@builder.io/e2e-react-native*\" run build",
     "e2e:build:solid": "yarn workspaces foreach --verbose --include \"@builder.io/e2e-solid*\" run build",
@@ -79,7 +80,7 @@
     "pinst": "^3.0.0",
     "prettier": "^2.5.0",
     "ts-jest": "^27.1.4",
-    "typescript": "4.1.5",
+    "typescript": "^4",
     "watch": "^1.0.2"
   },
   "config": {

@@ -7,7 +7,11 @@ builder.init(getAPIKey());
 builder.canTrack = false;
 
 function App() {
-  const props = getProps();
+  const props = getProps() as any;
+
+  if (props?.apiVersion) {
+    builder.apiVersion = props?.apiVersion;
+  }
 
   // only enable tracking if we're not in the `/can-track-false` test route
   useEffect(() => {

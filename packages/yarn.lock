@@ -2384,7 +2384,7 @@ __metadata:
     seedrandom: ^3.0.5
     traverse: ^0.6.6
     ts-jest: ^27.1.4
-    typescript: 4.1.5
+    typescript: ^4
     watch: ^1.0.2
   languageName: unknown
   linkType: soft
@@ -36014,16 +36014,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:4.1.5":
-  version: 4.1.5
-  resolution: "typescript@npm:4.1.5"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: af660e69aa5184520dfa57362dcf7fd1b26d08b869d76b3bd58dcc04058a757983f470cd61ded824ab01fa08a81d58c7f607d8e360f4e550664b9439d04f8e41
-  languageName: node
-  linkType: hard
-
 "typescript@npm:4.9.4":
   version: 4.9.4
   resolution: "typescript@npm:4.9.4"
@@ -36061,16 +36051,6 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: ab417a2f398380c90a6cf5a5f74badd17866adf57f1165617d6a551f059c3ba0a3e4da0d147b3ac5681db9ac76a303c5876394b13b3de75fdd5b1eaa06181c9d
-  languageName: node
-  linkType: hard
-
-"typescript@patch:typescript@4.1.5#~builtin<compat/typescript>":
-  version: 4.1.5
-  resolution: "typescript@patch:typescript@npm%3A4.1.5#~builtin<compat/typescript>::version=4.1.5&hash=4a8eb8"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: fde897357ff6bb729323dc6d58753193d0d8e3d90ea66081f9a4eb798e1056a3a47a49c666a7bccdf93e37780ed0913b78de83a766c6da85b73bad3ed34470d0
   languageName: node
   linkType: hard
 
