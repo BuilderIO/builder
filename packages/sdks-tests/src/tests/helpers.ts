@@ -34,6 +34,7 @@ export const findTextInPage = async ({ page, text }: { page: Page; text: string 
 };
 
 export const isRNSDK = sdk === 'reactNative';
+export const isOldReactSDK = sdk === 'oldReact';
 
 /**
  * Useful tool to skip tests when features aren't implemented in a specific output yet.
@@ -65,6 +66,19 @@ export const reactiveStateTest = excludeTestFor({
  */
 export const testExcludeOldReact = excludeTestFor({
   oldReact: true,
+});
+
+/**
+ * We exclude some tests from SDKs which are not from old React.
+ */
+export const testOnlyOldReact = excludeTestFor({
+  qwik: true,
+  react: true,
+  reactNative: true,
+  rsc: true,
+  solid: true,
+  svelte: true,
+  vue: true,
 });
 
 export const excludeReactNative = excludeTestFor({
