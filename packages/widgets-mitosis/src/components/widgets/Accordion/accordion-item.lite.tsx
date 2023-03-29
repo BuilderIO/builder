@@ -1,7 +1,9 @@
-import { Show, useStore } from '@builder.io/mitosis';
+import { Show, useStore, useContext, For } from '@builder.io/mitosis';
 // these elements needs to be migrated from @builder.io/sdks
 import { BuilderElement } from '../../../types/element';
 import RenderBlocks from '../../render-blocks.lite';
+import RenderBlock from '../../render-block.lite';
+import BuilderContext from '../../../context';
 
 export interface AccordionItem {
   state: any;
@@ -10,13 +12,14 @@ export interface AccordionItem {
   index: number;
   openGridItemOrder: number | null;
   onlyOneAtATime: boolean;
-  // fromChildren = false
+  fromChildren : boolean;
 }
 
 export default function AccordionItem(props: any) {
   const state = useStore({
     isOpen: props.state.open.indexOf(props.index) !== -1,
   });
+  const context = useContext(BuilderContext)
   return (
     <div key={props.index}>
       <div
@@ -51,7 +54,24 @@ export default function AccordionItem(props: any) {
           }
         }}
       >
-        <RenderBlocks blocks={props.titleBlocks} path={`items.${props.index}.title`} />
+        {
+          props.fromChildren ? 
+          (
+            <For each={props.titleBlocks}>
+              {(block:any, index) => (
+                <RenderBlock
+                  key={index}
+                  block={{
+                    ...block,
+                    repeat: null,
+                  }}
+                  context = {context}
+                />
+              )}
+            </For>
+          ) :  
+         <RenderBlocks blocks={props.titleBlocks} path={`items.${props.index}.title`} />
+        }
       </div>
       <Show when={state.isOpen}>
         <div
@@ -68,7 +88,23 @@ export default function AccordionItem(props: any) {
           //     }),
           // }}
         >
-          <RenderBlocks blocks={props.detailBlocks} path={`items.${props.index}.detail`} />
+          {
+            props.fromChildren ? (
+              <For each={props.detailBlocks}>
+                {(block:any, index) => (
+                  <RenderBlock
+                    key={index}
+                    block={{
+                      ...block,
+                      repeat: null,
+                    }}
+                    context = {context}
+                 />
+                )}
+              </For>
+            ) : 
+            <RenderBlocks blocks={props.detailBlocks} path={`items.${props.index}.detail`} />
+          }
         </div>
       </Show>
     </div>
