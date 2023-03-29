@@ -92,9 +92,9 @@ export default function Accordion(props: AccordionProps) {
       }}
     >
       <Show when={props.useChildrenForItems && props.builderBlock && props.builderBlock.children}>
-        <For each = {props.builderBlock.children}>
-          {(block:any, index) => (
-            <AccordionItem 
+        <For each={props.builderBlock.children}>
+          {(block: any, index) => (
+            <AccordionItem
               state={state}
               titleBlocks={block.children ? block.children[0] : []}
               detailBlocks={block.children ? block.children[1] : []}
@@ -106,10 +106,10 @@ export default function Accordion(props: AccordionProps) {
           )}
         </For>
       </Show>
-      <Show when={!props.useChildrenForItems && props.items}>   
+      <Show when={!props.useChildrenForItems && props.items}>
         <For each={props.items}>
           {(item, index) => (
-            <AccordionItem 
+            <AccordionItem
               state={state}
               titleBlocks={item.title}
               detailBlocks={item.detail}

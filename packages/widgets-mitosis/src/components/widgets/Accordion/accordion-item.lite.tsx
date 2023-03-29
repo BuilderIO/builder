@@ -12,14 +12,14 @@ export interface AccordionItem {
   index: number;
   openGridItemOrder: number | null;
   onlyOneAtATime: boolean;
-  fromChildren : boolean;
+  fromChildren: boolean;
 }
 
 export default function AccordionItem(props: any) {
   const state = useStore({
     isOpen: props.state.open.indexOf(props.index) !== -1,
   });
-  const context = useContext(BuilderContext)
+  const context = useContext(BuilderContext);
   return (
     <div key={props.index}>
       <div
@@ -54,24 +54,22 @@ export default function AccordionItem(props: any) {
           }
         }}
       >
-        {
-          props.fromChildren ? 
-          (
-            <For each={props.titleBlocks}>
-              {(block:any, index) => (
-                <RenderBlock
-                  key={index}
-                  block={{
-                    ...block,
-                    repeat: null,
-                  }}
-                  context = {context}
-                />
-              )}
-            </For>
-          ) :  
-         <RenderBlocks blocks={props.titleBlocks} path={`items.${props.index}.title`} />
-        }
+        {props.fromChildren ? (
+          <For each={props.titleBlocks}>
+            {(block: any, index) => (
+              <RenderBlock
+                key={index}
+                block={{
+                  ...block,
+                  repeat: null,
+                }}
+                context={context}
+              />
+            )}
+          </For>
+        ) : (
+          <RenderBlocks blocks={props.titleBlocks} path={`items.${props.index}.title`} />
+        )}
       </div>
       <Show when={state.isOpen}>
         <div
@@ -88,23 +86,22 @@ export default function AccordionItem(props: any) {
           //     }),
           // }}
         >
-          {
-            props.fromChildren ? (
-              <For each={props.detailBlocks}>
-                {(block:any, index) => (
-                  <RenderBlock
-                    key={index}
-                    block={{
-                      ...block,
-                      repeat: null,
-                    }}
-                    context = {context}
-                 />
-                )}
-              </For>
-            ) : 
+          {props.fromChildren ? (
+            <For each={props.detailBlocks}>
+              {(block: any, index) => (
+                <RenderBlock
+                  key={index}
+                  block={{
+                    ...block,
+                    repeat: null,
+                  }}
+                  context={context}
+                />
+              )}
+            </For>
+          ) : (
             <RenderBlocks blocks={props.detailBlocks} path={`items.${props.index}.detail`} />
-          }
+          )}
         </div>
       </Show>
     </div>
