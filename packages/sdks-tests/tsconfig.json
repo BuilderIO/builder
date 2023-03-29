@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
+    "target": "ES5",
     "strict": true,
     "allowSyntheticDefaultImports": true,
     "jsx": "preserve",

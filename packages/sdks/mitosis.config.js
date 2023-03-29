@@ -391,6 +391,10 @@ module.exports = {
                         code: 'props.context.inheritedStyles',
                         type: 'property',
                       },
+                      apiVersion: {
+                        code: 'props.context.apiVersion',
+                        type: 'property',
+                      },
                     },
                   },
                 };

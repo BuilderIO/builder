@@ -1,3 +1,18 @@
+### 2.0.17
+- Add new `apiVersion` property to toggle between Builder API versions. Defaults to `v1`. Possible values: `v1` and `v3`.
+
+You can set the apiVersion using `builder.init` or `builder.apiVersion`:
+
+```js
+import { builder } from '@builder.io/react';
+
+Builder.init("YOUR_BUILDER_PUBLIC_KEY", undefined, undefined, undefined, undefined, 'v3');
+
+// OR
+
+builder.apiVersion = 'v3';
+```
+
 ### 2.0.16
 - Safe access to node-fetch and process.env.
 
