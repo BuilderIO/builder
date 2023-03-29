@@ -48,13 +48,15 @@ const pages = {
   '/text-block': textBlock,
 } as const;
 
-const apiVersionPathToProp = {
+export type Path = keyof typeof pages;
+
+type ApiVersionPaths = Extract<Path, '/api-version-v1' | '/api-version-v2' | '/api-version-v3'>;
+
+const apiVersionPathToProp: Record<ApiVersionPaths, { apiVersion: 'v1' | 'v2' | 'v3' }> = {
   '/api-version-v1': { apiVersion: 'v1' },
   '/api-version-v2': { apiVersion: 'v2' },
   '/api-version-v3': { apiVersion: 'v3' },
-} as const;
-
-export type Path = keyof typeof pages;
+};
 
 export const ALL_PATHNAMES = Object.keys(pages);
 

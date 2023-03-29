@@ -29,7 +29,6 @@ module.exports = {
     vue3: vueConfig,
     react: {
       stylesType: 'style-tag',
-      typescript: true,
     },
     reactNative: {
       typescript: true,

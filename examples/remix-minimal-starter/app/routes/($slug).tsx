@@ -4,14 +4,18 @@ import { Builder } from '@builder.io/sdk';
 import { Links, Meta, Scripts, useCatch, useLoaderData } from '@remix-run/react';
 import type { LoaderFunction } from '@remix-run/node';
 import builderConfig from '../../builderConfig.json';
+import { Button } from '../components/Button/Button';
 
 builder.init(builderConfig.apiKey);
+Builder.registerComponent(Button, {
+  name: 'Core:Button',
+});
 
 export const loader: LoaderFunction = async ({ params }) => {
   const page = await builder
     .get('page', {
       userAttributes: {
-        urlPath: `/${params['*']}`,
+        urlPath: `/${params.slug || ''}`,
       },
     })
     .toPromise();
