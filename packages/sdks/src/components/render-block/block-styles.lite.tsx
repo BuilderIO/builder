@@ -58,7 +58,11 @@ export default function BlockStyles(props: BlockStylesProps) {
       const mediumStyles = styles?.medium;
       const smallStyles = styles?.small;
 
-      const className = state.useBlock.id!;
+      const className = state.useBlock.id;
+
+      if (!className) {
+        return '';
+      }
 
       const largeStylesClass = largeStyles
         ? createCssClass({ className, styles: largeStyles })
