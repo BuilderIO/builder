@@ -6,7 +6,7 @@ You can set the apiVersion using `builder.init` or `builder.apiVersion`:
 ```js
 import { builder } from '@builder.io/react';
 
-Builder.init("YOUR_BUILDER_PUBLIC_KEY", undefined, undefined, undefined, undefined, 'v3');
+builder.init("YOUR_BUILDER_PUBLIC_KEY", undefined, undefined, undefined, undefined, 'v3');
 
 // OR
 
