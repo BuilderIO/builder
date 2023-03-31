@@ -1,7 +1,4 @@
-import type {
-  BuilderContextInterface,
-  BuilderRenderState,
-} from '../../context/types.js';
+import type { BuilderContextInterface } from '../../context/types.js';
 import { getBlockActions } from '../../functions/get-block-actions.js';
 import { getBlockComponentOptions } from '../../functions/get-block-component-options.js';
 import { getBlockProperties } from '../../functions/get-block-properties.js';
@@ -11,6 +8,7 @@ import type { BuilderBlock } from '../../types/builder-block.js';
 import BlockStyles from './block-styles.lite';
 import {
   getComponent,
+  getProxyState,
   getRepeatItemData,
   isEmptyHtmlElement,
 } from './render-block.helpers.js';
@@ -62,26 +60,7 @@ export default function RenderBlock(props: RenderBlockProps) {
       }
       return true;
     },
-    get proxyState() {
-      if (typeof Proxy === 'undefined') {
-        console.error(
-          'no Proxy available in this environment, cannot proxy state.'
-        );
-        return props.context.state;
-      }
-
-      const useState = new Proxy(props.context.state, {
-        set: (obj, prop: keyof BuilderRenderState, value) => {
-          // set the value on the state object, so that the event handler instantly gets the update.
-          obj[prop] = value;
-
-          // set the value in the context, so that the rest of the app gets the update.
-          props.context.setState?.(obj);
-          return true;
-        },
-      });
-      return useState;
-    },
+    proxyState: getProxyState(props.context),
     get actions() {
       return getBlockActions({
         block: state.useBlock,
