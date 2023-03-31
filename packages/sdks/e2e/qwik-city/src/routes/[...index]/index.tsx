@@ -10,7 +10,6 @@ export default component$(() => {
   const { pathname } = useLocation();
 
   const contentProps = getProps(pathname);
-  console.log({ pathname, contentProps });
   return contentProps ? (
     <RenderContent {...contentProps} />
   ) : (
