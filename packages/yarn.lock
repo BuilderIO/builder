@@ -2120,12 +2120,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis-cli@npm:^0.0.54":
-  version: 0.0.54
-  resolution: "@builder.io/mitosis-cli@npm:0.0.54"
+"@builder.io/mitosis-cli@npm:^0.0.55":
+  version: 0.0.55
+  resolution: "@builder.io/mitosis-cli@npm:0.0.55"
   dependencies:
     "@babel/core": ^7.17.8
-    "@builder.io/mitosis": 0.0.95
+    "@builder.io/mitosis": 0.0.96
     "@vue/compiler-sfc": ^3.1.5
     babel-preset-solid: ^1.3.13
     chalk: ^4.1.0
@@ -2147,13 +2147,13 @@ __metadata:
     vue-template-validator: ^1.1.5
   bin:
     mitosis: bin/mitosis
-  checksum: a3558c23b8da23809961bd92a2c3f3fc6f41f43e08557ed4f0191b0e91bf2cdeb38cb10c05f317c30f64d8b772d58b9dc7f75a6a0acee000b8170f18ca6d009c
+  checksum: 3a344a25f78e9eec14bd5b9c1bbf50c8309caccd50859a6766ef85ce12bfe082dcce1bf3c9eaed331165ec34f81d32fb1d798b116f6e3e238e3d1a841d5067c6
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis@npm:0.0.95, @builder.io/mitosis@npm:^0.0.95":
-  version: 0.0.95
-  resolution: "@builder.io/mitosis@npm:0.0.95"
+"@builder.io/mitosis@npm:0.0.96, @builder.io/mitosis@npm:^0.0.96":
+  version: 0.0.96
+  resolution: "@builder.io/mitosis@npm:0.0.96"
   dependencies:
     "@angular/compiler": ^11.2.11
     "@babel/core": 7.14.5
@@ -2192,7 +2192,7 @@ __metadata:
     traverse: ^0.6.6
     typescript: ^4.8.4
     vue: ~2.6
-  checksum: 1b4b7cd07c81e732f8532f7ed407a9c5466a13ae1f8dd258e41245d3267a7965b1b40e75476ec3f7d9d171dd36315f20a62c3194c5ffff4d74eaf492d527002a
+  checksum: aa23c27c9efb0027df1c638fc18aa2cc6000c248cf656c833e1703b3763e71d6969dcb84e5ec358f72be128ff339cc28bcc5c0207c4d2ff3d5d58e67c023f9de
   languageName: node
   linkType: hard
 
@@ -2474,8 +2474,8 @@ __metadata:
   resolution: "@builder.io/sdks@workspace:sdks"
   dependencies:
     "@builder.io/eslint-plugin-mitosis": ^0.0.14
-    "@builder.io/mitosis": ^0.0.95
-    "@builder.io/mitosis-cli": ^0.0.54
+    "@builder.io/mitosis": ^0.0.96
+    "@builder.io/mitosis-cli": ^0.0.55
     "@playwright/test": ^1.27.1
     "@types/jest": ^27.4.1
     "@types/node-fetch": ^2.5.12
