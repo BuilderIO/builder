@@ -1,5 +1,5 @@
 {
-  "name": "@builder.io/e2e-qwik",
+  "name": "@builder.io/e2e-do-not-run-qwik",
   "description": "Create a reusable Qwik component library",
   "private": true,
   "type": "module",
