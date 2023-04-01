@@ -5,13 +5,14 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build" : "npm exec mitosis build"
+    "build": "npm exec mitosis build"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@builder.io/mitosis": "^0.0.93",
     "@builder.io/mitosis-cli": "^0.0.52",
+    "@glidejs/glide": "^3.6.0",
     "prettier": ">=2.0.0 <3.0.0"
   }
 }
