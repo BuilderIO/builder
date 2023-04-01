@@ -1845,6 +1845,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@builder.io/e2e-do-not-run-qwik@workspace:sdks/e2e/qwik":
+  version: 0.0.0-use.local
+  resolution: "@builder.io/e2e-do-not-run-qwik@workspace:sdks/e2e/qwik"
+  dependencies:
+    "@builder.io/qwik": 0.100.0
+    "@builder.io/sdk-qwik": "workspace:*"
+    "@builder.io/sdks-e2e-tests": "workspace:*"
+    "@types/eslint": 8.21.3
+    "@types/node": ^18.15.9
+    "@typescript-eslint/eslint-plugin": 5.56.0
+    "@typescript-eslint/parser": 5.56.0
+    eslint: 8.36.0
+    eslint-plugin-qwik: latest
+    prettier: 2.8.7
+    typescript: 5.0.2
+    undici: 5.21.0
+    vite: 4.2.1
+  languageName: unknown
+  linkType: soft
+
 "@builder.io/e2e-nextjs-react@workspace:sdks/e2e/nextjs-react":
   version: 0.0.0-use.local
   resolution: "@builder.io/e2e-nextjs-react@workspace:sdks/e2e/nextjs-react"
@@ -1934,26 +1954,6 @@ __metadata:
     undici: 5.14.0
     vite: 4.0.3
     vite-tsconfig-paths: 3.5.0
-  languageName: unknown
-  linkType: soft
-
-"@builder.io/e2e-qwik@workspace:sdks/e2e/qwik":
-  version: 0.0.0-use.local
-  resolution: "@builder.io/e2e-qwik@workspace:sdks/e2e/qwik"
-  dependencies:
-    "@builder.io/qwik": 0.100.0
-    "@builder.io/sdk-qwik": "workspace:*"
-    "@builder.io/sdks-e2e-tests": "workspace:*"
-    "@types/eslint": 8.21.3
-    "@types/node": ^18.15.9
-    "@typescript-eslint/eslint-plugin": 5.56.0
-    "@typescript-eslint/parser": 5.56.0
-    eslint: 8.36.0
-    eslint-plugin-qwik: latest
-    prettier: 2.8.7
-    typescript: 5.0.2
-    undici: 5.21.0
-    vite: 4.2.1
   languageName: unknown
   linkType: soft
 
