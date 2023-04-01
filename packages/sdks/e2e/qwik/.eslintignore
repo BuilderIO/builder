@@ -12,6 +12,7 @@ bazel-testlogs
 dist
 dist-dev
 lib
+lib-types
 etc
 external
 node_modules
