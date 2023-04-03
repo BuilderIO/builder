@@ -452,9 +452,6 @@ module.exports = {
                 });
               }
 
-              // TO-DO: give useStore the `{ deep: true }` option for RenderContent.
-              //
-
               // TO-DO: remove this:
               // For now, we exclude the `setState` function as Mitosis does not correctly know how to serialize it.
               Object.values(json.context.set).forEach((context) => {
