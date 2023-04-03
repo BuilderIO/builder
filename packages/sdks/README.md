@@ -26,37 +26,42 @@ Legend:
 - ⚠️: not-yet implemented
 - N/A : does not apply
 
-| Builder Blocks | Vue | React-Native | Svelte | Solid | Qwik |
-| -------------- | --- | ------------ | ------ | ----- | ---- |
-| Columns        | ✅  | ✅           | ✅     | ✅    | ✅   |
-| Text           | ✅  | ✅           | ✅     | ✅    | ✅   |
-| Image          | ✅  | ✅           | ✅     | ✅    | ✅   |
-| Button         | ✅  | ✅           | ✅     | ✅    | ✅   |
-| Video          | ✅  | 🏗            | ✅     | ✅    | ✅   |
-| Custom Code    | ✅  | ✅           | ✅     | ✅    | ✅   |
-| Section        | ✅  | ✅           | ✅     | ✅    | ✅   |
-| Fragment       | ✅  | ✅           | ✅     | ✅    | ✅   |
-| Form           | 🏗   | 🏗            | 🏗      | 🏗     | 🏗    |
-| Input          | 🏗   | 🏗            | 🏗      | 🏗     | 🏗    |
-| Select         | 🏗   | 🏗            | 🏗      | 🏗     | 🏗    |
-| Slot           | 🏗   | 🏗            | 🏗      | 🏗     | 🏗    |
+## Builder Blocks
 
-| Features                       | Status | Details                                                                                                 |
-| ------------------------------ | ------ | ------------------------------------------------------------------------------------------------------- |
-| A/B Tests                      | ✅     |                                                                                                         |
-| A/B Tests with SSG/SSR Support | 🏗      | In Progress                                                                                             |
-| SSR                            | ✅     | Does not apply to React-Native.                                                                         |
-| Children for Custom Components | ✅     |                                                                                                         |
-| Dynamic Data Bindings          | ✅     |                                                                                                         |
-| View Current Draft             | ✅     |                                                                                                         |
-| Symbols                        | ✅     |                                                                                                         |
-| Custom styles                  | ✅     | (For React Native, only the ones that it supports by default)                                           |
-| Custom fonts                   | ✅     | (except For React Native)                                                                               |
-| Heatmaps                       | ✅     |                                                                                                         |
-| Tracking/Analytics             | ✅     |                                                                                                         |
-| Animations                     | 🏗      | Custom animation components are supported, but Builder.io's "animations" tab is currently not supported |
-| Custom Actions/Events          | 🏗      | Works only in Vue SDK                                                                                   |
-| Builder's global `state`       | 🏗      | Works only in Vue SDK                                                                                   |
-| Widgets                        | 🏗      | In Progress                                                                                             |
-| Global Content Styles          | ✅     | Except React Native, which does not support global styles                                               |
-| CSS Nesting (`&` operator)     | ✅     | Except React Native, which does not support global styles                                               |
+| Builder Blocks | Vue | React-Native | Svelte | Solid | Qwik | React |
+| -------------- | --- | ------------ | ------ | ----- | ---- | ----- |
+| Columns        | ✅  | ✅           | ✅     | ✅    | ✅   | ✅    |
+| Text           | ✅  | ✅           | ✅     | ✅    | ✅   | ✅    |
+| Image          | ✅  | ✅           | ✅     | ✅    | ✅   | ✅    |
+| Button         | ✅  | ✅           | ✅     | ✅    | ✅   | ✅    |
+| Video          | ✅  | 🏗            | ✅     | ✅    | ✅   | ✅    |
+| Custom Code    | ✅  | ✅           | ✅     | ✅    | ✅   | ✅    |
+| Section        | ✅  | ✅           | ✅     | ✅    | ✅   | ✅    |
+| Fragment       | ✅  | ✅           | ✅     | ✅    | ✅   | ✅    |
+| Form           | 🏗   | 🏗            | 🏗      | 🏗     | 🏗    | 🏗     |
+| Input          | 🏗   | 🏗            | 🏗      | 🏗     | 🏗    | 🏗     |
+| Select         | 🏗   | 🏗            | 🏗      | 🏗     | 🏗    | 🏗     |
+| Slot           | 🏗   | 🏗            | 🏗      | 🏗     | 🏗    | 🏗     |
+
+## Features
+
+| Features                       | Vue | React-Native        | Svelte | Solid | Qwik | React | Details                                                                                                 |
+| ------------------------------ | --- | ------------------- | ------ | ----- | ---- | ----- | ------------------------------------------------------------------------------------------------------- |
+| A/B Tests                      | ✅  | ✅                  | ✅     | ✅    | ✅   | ✅    |                                                                                                         |
+| A/B Tests with SSG/SSR Support | 🏗   | ❌ (Does not apply) | 🏗      | 🏗     | 🏗    | 🏗     |                                                                                                         |
+| SSR                            | ✅  | ❌ (Does not apply) | ✅     | ✅    | ✅   | ✅    |                                                                                                         |
+| Children for Custom Components | ✅  | ✅                  | ✅     | ✅    | ✅   | ✅    |                                                                                                         |
+| Dynamic Data Bindings          | ✅  | ✅                  | ✅     | ✅    | ✅   | ✅    |                                                                                                         |
+| View Current Draft             | ✅  | ✅                  | ✅     | ✅    | ✅   | ✅    |                                                                                                         |
+| Symbols                        | ✅  | ✅                  | ✅     | ✅    | ✅   | ✅    |                                                                                                         |
+| Custom styles                  | ✅  | ✅                  | ✅     | ✅    | ✅   | ✅    |                                                                                                         |
+| Custom fonts                   | ✅  | ❌                  | ✅     | ✅    | ✅   | ✅    |                                                                                                         |
+| Heatmaps                       | ✅  | ✅                  | ✅     | ✅    | ✅   | ✅    |                                                                                                         |
+| Tracking/Analytics             | ✅  | ✅                  | ✅     | ✅    | ✅   | ✅    |                                                                                                         |
+| Animations                     | 🏗   | 🏗                   | 🏗      | 🏗     | 🏗    | 🏗     | Custom animation components are supported, but Builder.io's "animations" tab is currently not supported |
+| Custom Actions/Events          | ✅  | 🏗                   | 🏗      | 🏗     | 🏗    | ✅    |                                                                                                         |
+| Builder's global `state`       | ✅  | 🏗                   | 🏗      | 🏗     | 🏗    | ✅    |
+|                                |
+| Widgets                        | 🏗   | 🏗                   | 🏗      | 🏗     | 🏗    | 🏗     |                                                                                                         |
+| Global Content Styles          | ✅  | ❌                  | ✅     | ✅    | ✅   | ✅    |                                                                                                         |
+| CSS Nesting (`&` operator)     | ✅  | ❌                  | ✅     | ✅    | ✅   | ✅    |                                                                                                         |
