@@ -60,8 +60,8 @@ Legend:
 | Tracking/Analytics             | ✅  | ✅                  | ✅     | ✅    | ✅   | ✅    |                                                                                                         |
 | Animations                     | 🏗   | 🏗                   | 🏗      | 🏗     | 🏗    | 🏗     | Custom animation components are supported, but Builder.io's "animations" tab is currently not supported |
 | Custom Actions/Events          | ✅  | 🏗                   | 🏗      | 🏗     | 🏗    | ✅    |                                                                                                         |
-| Builder's global `state`       | ✅  | 🏗                   | 🏗      | 🏗     | ✅   |
-| 🏗                              |     |
+| Builder's global `state`       | ✅  | 🏗                   | 🏗      | 🏗     | 🏗    | ✅    |
+|                                |
 | Widgets                        | 🏗   | 🏗                   | 🏗      | 🏗     | 🏗    | 🏗     |                                                                                                         |
 | Global Content Styles          | ✅  | ❌                  | ✅     | ✅    | ✅   | ✅    |                                                                                                         |
 | CSS Nesting (`&` operator)     | ✅  | ❌                  | ✅     | ✅    | ✅   | ✅    |                                                                                                         |
