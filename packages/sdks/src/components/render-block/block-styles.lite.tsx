@@ -1,4 +1,4 @@
-import { Show, useMetadata, useStore } from '@builder.io/mitosis';
+import { Show, useStore } from '@builder.io/mitosis';
 import {
   getMaxWidthQueryForSize,
   getSizesForBreakpoints,
@@ -10,14 +10,6 @@ import { createCssClass } from '../../helpers/css.js';
 import { checkIsDefined } from '../../helpers/nullable.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
 import RenderInlinedStyles from '../render-inlined-styles.lite';
-
-useMetadata({
-  qwik: {
-    component: {
-      isLight: true,
-    },
-  },
-});
 
 export type BlockStylesProps = {
   block: BuilderBlock;

@@ -2,11 +2,6 @@ import { TARGET } from '../constants/target.js';
 import { Show, useStore, useMetadata } from '@builder.io/mitosis';
 
 useMetadata({
-  qwik: {
-    component: {
-      isLight: true,
-    },
-  },
   elementTag: 'state.tag',
 });
 
