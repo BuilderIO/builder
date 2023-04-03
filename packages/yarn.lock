@@ -2151,52 +2151,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis@npm:0.0.96":
-  version: 0.0.96
-  resolution: "@builder.io/mitosis@npm:0.0.96"
-  dependencies:
-    "@angular/compiler": ^11.2.11
-    "@babel/core": 7.14.5
-    "@babel/generator": ^7.14.3
-    "@babel/plugin-proposal-class-properties": ^7.13.0
-    "@babel/plugin-syntax-decorators": ^7.12.1
-    "@babel/plugin-syntax-typescript": ^7.20.0
-    "@babel/plugin-transform-react-jsx": ^7.13.12
-    "@babel/preset-typescript": ^7.13.0
-    "@builder.io/react": ^1.1.50
-    "@marko/compiler": ^5.22.4
-    "@marko/translator-default": ^5.21.4
-    astring: ^1.8.3
-    axios: ^0.21.0
-    axios-cache-adapter: ^2.5.0
-    coffeescript: ^2.7.0
-    csstype: ^3.0.4
-    dedent: ^0.7.0
-    fp-ts: ^2.11.10
-    globby: ^11.0.2
-    hash-sum: ^2.0.0
-    ignore-loader: ^0.1.2
-    json5: ^2.1.3
-    liquidjs: 9.6.0
-    lodash: ^4.17.20
-    marko: ^5.21.7
-    module: ^1.2.5
-    object-hash: ^2.0.3
-    postcss-load-config: ^4.0.1
-    prettier-plugin-marko: ^1.2.2
-    prettier-plugin-organize-imports: 2.3.4
-    prettier-plugin-svelte: ^2.10.0
-    sass: ^1.56.1
-    svelte: ^3.30.0
-    svelte-preprocess: ^4.10.7
-    traverse: ^0.6.6
-    typescript: ^4.8.4
-    vue: ~2.6
-  checksum: aa23c27c9efb0027df1c638fc18aa2cc6000c248cf656c833e1703b3763e71d6969dcb84e5ec358f72be128ff339cc28bcc5c0207c4d2ff3d5d58e67c023f9de
-  languageName: node
-  linkType: hard
-
-"@builder.io/mitosis@npm:^0.0.97-0":
+"@builder.io/mitosis@npm:0.0.97-0":
   version: 0.0.97-0
   resolution: "@builder.io/mitosis@npm:0.0.97-0"
   dependencies:
