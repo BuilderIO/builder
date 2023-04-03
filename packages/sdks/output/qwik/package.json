@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/sdk-qwik",
-  "version": "0.1.15",
+  "version": "0.1.16",
   "description": "Builder.io Qwik SDK",
   "type": "module",
   "main": "./lib/index.qwik.cjs",
@@ -28,7 +28,7 @@
     "release:dev": "yarn run build && npm version prerelease && npm publish --tag dev"
   },
   "devDependencies": {
-    "@builder.io/qwik": "BuilderIO/qwik-build#2c316f37c4c91a8f2c285b412e8ec995d60041cc",
+    "@builder.io/qwik": "^0.100.0",
     "@types/node": "latest",
     "typescript": "^4",
     "vite": "^3.0.4"

@@ -4,11 +4,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "tsc": "tsc",
     "build": "tsc && vite build",
     "serve": "vite preview"
   },
   "dependencies": {
-    "@builder.io/sdk-react": "workspace:*",
+    "@builder.io/react": "workspace:*",
     "@builder.io/sdks-e2e-tests": "workspace:*",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"

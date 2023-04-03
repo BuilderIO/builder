@@ -108,9 +108,7 @@ export default function Image(props: ImageProps) {
         <div
           class="builder-image-sizer"
           style={{
-            paddingTop:
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-              props.aspectRatio! * 100 + '%',
+            paddingTop: props.aspectRatio! * 100 + '%',
           }}
           css={{
             width: '100%',

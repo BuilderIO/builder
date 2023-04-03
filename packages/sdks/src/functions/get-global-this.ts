@@ -1,7 +1,6 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
+type Global = typeof global | typeof window | typeof self | typeof globalThis;
 
-export function getGlobalThis(): typeof global {
+export function getGlobalThis(): Global {
   if (typeof globalThis !== 'undefined') {
     return globalThis;
   }
