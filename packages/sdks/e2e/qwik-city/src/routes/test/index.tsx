@@ -21,7 +21,7 @@ type Context = {
 };
 export const builderContext = createContextId<Context>('Builder');
 
-export const getBindings = (context) => {
+export const getBindings = (context: any) => {
   const binding = {
     [context.content.data.buttonSetter.path + '$']: $(() =>
       evaluate(context.content.data.buttonSetter.code, context.state)()
@@ -30,7 +30,7 @@ export const getBindings = (context) => {
   return binding;
 };
 
-export const ButtonWithProxy = component$((props) => {
+export const ButtonWithProxy = component$((_props) => {
   const context = useContext(builderContext);
 
   const bindings = useComputed$(() => getBindings(context));
@@ -57,7 +57,7 @@ export const TextContent = component$(
   }
 );
 
-export const getB = (context) => {
+export const getB = (context: any) => {
   return {
     [context.content.data.textGetter.path]: evaluate(
       context.content.data.textGetter.code,
@@ -65,7 +65,7 @@ export const getB = (context) => {
     ),
   };
 };
-export const RenderBlock = component$((props) => {
+export const RenderBlock = component$((_props: any) => {
   const context = useContext(builderContext);
 
   const bindings = useComputed$(() => getB(context));
@@ -108,7 +108,7 @@ export default component$(() => {
         },
       },
     },
-    { recursive: true }
+    { reactive: true }
   );
 
   useContextProvider(
