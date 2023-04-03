@@ -46,15 +46,15 @@ export const excludeTestFor = (sdks: { [X in Sdk]?: boolean }) => {
 };
 
 /**
- * reactive state only works in:
+ * reactive state works in:
  * - Vue
  * - React
  * - old React
+ * - Qwik
  *
  * so we skip the other environments.
  */
 export const reactiveStateTest = excludeTestFor({
-  qwik: true,
   reactNative: true,
   rsc: true,
   svelte: true,
