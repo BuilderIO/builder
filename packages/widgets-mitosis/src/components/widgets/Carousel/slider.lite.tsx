@@ -1,14 +1,13 @@
 // npm install @glidejs/glide
 import Glide from '@glidejs/glide/dist/glide.modular.esm'
 import '@glidejs/glide/dist/css/glide.core.min.css'
-import { For, onMount , Show, useStore} from '@builder.io/mitosis'
+import { For, onMount , Show, useStore, useContext} from '@builder.io/mitosis'
+
 // these elements needs to be migrated from @builder.io/sdks
 import { BuilderElement } from '../../../types/element';
 import RenderBlocks from '../../render-blocks.lite';
 import RenderBlock from '../../render-block.lite';
 import BuilderContext from '../../../context';
-import { useContext } from '@builder.io/mitosis';
-type BuilderBlockType = BuilderElement;
 
 export interface SliderProps {
     builderBlock : any,
@@ -51,8 +50,7 @@ export default function Slider(props : SliderProps) {
                 <div className="glide__slides">
                     <Show when={props.useChildrenForSlides && props.builderBlock && props.builderBlock.children}>
                         <For each={props.builderBlock.children}>
-                            {(block : BuilderElement, index : number) => {
-                                return (
+                            {(block : BuilderElement, index : number) => (
                                     <div className="glide__slide" key={index}>
                                         <RenderBlock 
                                             block = {block}
@@ -61,13 +59,12 @@ export default function Slider(props : SliderProps) {
                                         />
                                     </div>
                                 )
-                            }}
+                            }
                         </For>
                     </Show>
                     <Show when={!props.useChildrenForSlides && props.slides}>
                         <For each={props.slides}>
-                            {(slide : any, index : number) => {
-                                return (
+                            {(slide : any, index : number) =>  (
                                     <div className="glide__slide" key={index}>
                                         <RenderBlocks 
                                             key={index}
@@ -76,7 +73,7 @@ export default function Slider(props : SliderProps) {
                                         />
                                     </div>
                                 )
-                            }}
+                            }
                         </For>
                     </Show>  
                 </div>
