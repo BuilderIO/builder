@@ -2,7 +2,6 @@ import type { BuilderContextInterface } from '../../context/types.js';
 import { getBlockActions } from '../../functions/get-block-actions.js';
 import { getBlockComponentOptions } from '../../functions/get-block-component-options.js';
 import { getBlockProperties } from '../../functions/get-block-properties.js';
-import { getBlockTag } from '../../functions/get-block-tag.js';
 import { getProcessedBlock } from '../../functions/get-processed-block.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
 import BlockStyles from './block-styles.lite';
@@ -47,9 +46,7 @@ export default function RenderBlock(props: RenderBlockProps) {
             shouldEvaluateBindings: true,
           });
     },
-    get tag() {
-      return getBlockTag(state.useBlock);
-    },
+    tag: props.block.tagName || 'div',
     get canShowBlock() {
       if (checkIsDefined(state.useBlock.hide)) {
         return !state.useBlock.hide;
