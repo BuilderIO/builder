@@ -2,8 +2,17 @@
 import Glide from '@glidejs/glide/dist/glide.modular.esm'
 import '@glidejs/glide/dist/css/glide.core.min.css'
 import { For, onMount , Show, useStore} from '@builder.io/mitosis'
+// these elements needs to be migrated from @builder.io/sdks
+import { BuilderElement } from '../../../types/element';
+import RenderBlocks from '../../render-blocks.lite';
+import RenderBlock from '../../render-block.lite';
+import BuilderContext from '../../../context';
+import { useContext } from '@builder.io/mitosis';
+type BuilderBlockType = BuilderElement;
 
 export interface SliderProps {
+    builderBlock : any,
+    useChildrenForSlides : boolean,
     slides: any[],
     prevArrow : any,
     frontArrow : any,
@@ -13,6 +22,8 @@ export interface SliderProps {
 }
 
 export default function Slider(props : SliderProps) {
+    const context = useContext(BuilderContext);
+
     const store = useStore({
         glide : new Glide('.glide', {
             type: 'slider',
@@ -38,13 +49,36 @@ export default function Slider(props : SliderProps) {
             {/* SLIDES */}
              <div className="glide__track" data-glide-el="track">
                 <div className="glide__slides">
-                    <For each = {props.slides}>
-                        {(slide, index) => (
-                            <div className="glide__slide" key={index}>
-                                {slide}
-                            </div>
-                        )}
-                    </For>
+                    <Show when={props.useChildrenForSlides && props.builderBlock && props.builderBlock.children}>
+                        <For each={props.builderBlock.children}>
+                            {(block : BuilderElement, index : number) => {
+                                return (
+                                    <div className="glide__slide" key={index}>
+                                        <RenderBlock 
+                                            block = {block}
+                                            key = {block.id}
+                                            context = {context}
+                                        />
+                                    </div>
+                                )
+                            }}
+                        </For>
+                    </Show>
+                    <Show when={!props.useChildrenForSlides && props.slides}>
+                        <For each={props.slides}>
+                            {(slide : any, index : number) => {
+                                return (
+                                    <div className="glide__slide" key={index}>
+                                        <RenderBlocks 
+                                            key={index}
+                                            path={`component.options.slides.${index}.content`}
+                                            blocks={slide.content}
+                                        />
+                                    </div>
+                                )
+                            }}
+                        </For>
+                    </Show>  
                 </div>
             </div>
             {/* DOTS */}
@@ -59,8 +93,12 @@ export default function Slider(props : SliderProps) {
             </Show>
            {/* CONTROLS */}
             <div data-glide-el="controls">
-                <div onClick={store.prevArrowFn}>{props.prevArrow}</div>
-                <div onClick={store.nextArrowFn}>{props.frontArrow}</div>
+                <div onClick={store.prevArrowFn}>
+                    <RenderBlocks path="component.options.prevButton" blocks={props.prevArrow} />
+                </div>
+                <div onClick={store.nextArrowFn}>
+                    <RenderBlocks path="component.options.nextButton" blocks={props.frontArrow} />
+                </div>
             </div>
         </div>
     )
