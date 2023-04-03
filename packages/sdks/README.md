@@ -26,6 +26,8 @@ Legend:
 - ⚠️: not-yet implemented
 - N/A : does not apply
 
+## Builder Blocks
+
 | Builder Blocks | Vue | React-Native | Svelte | Solid | Qwik | React |
 | -------------- | --- | ------------ | ------ | ----- | ---- | ----- |
 | Columns        | ✅  | ✅           | ✅     | ✅    | ✅   | ✅    |
@@ -40,6 +42,8 @@ Legend:
 | Input          | 🏗   | 🏗            | 🏗      | 🏗     | 🏗    | 🏗     |
 | Select         | 🏗   | 🏗            | 🏗      | 🏗     | 🏗    | 🏗     |
 | Slot           | 🏗   | 🏗            | 🏗      | 🏗     | 🏗    | 🏗     |
+
+## Features
 
 | Features                       | Vue | React-Native        | Svelte | Solid | Qwik | React | Details                                                                                                 |
 | ------------------------------ | --- | ------------------- | ------ | ----- | ---- | ----- | ------------------------------------------------------------------------------------------------------- |
