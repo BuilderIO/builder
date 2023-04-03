@@ -38,9 +38,10 @@ useMetadata({
 export default function RenderBlock(props: RenderBlockProps) {
   const state = useStore({
     component: getComponent({ block: props.block, context: props.context }),
-    get tag() {
-      return getBlockTag(state.useBlock);
-    },
+    repeatItemData: getRepeatItemData({
+      block: props.block,
+      context: props.context,
+    }),
     get useBlock(): BuilderBlock {
       return state.repeatItemData
         ? props.block
@@ -50,6 +51,9 @@ export default function RenderBlock(props: RenderBlockProps) {
             context: props.context.context,
             shouldEvaluateBindings: true,
           });
+    },
+    get tag() {
+      return getBlockTag(state.useBlock);
     },
     get canShowBlock() {
       if (checkIsDefined(state.useBlock.hide)) {
@@ -83,23 +87,7 @@ export default function RenderBlock(props: RenderBlockProps) {
           : {}),
       };
     },
-    get renderComponentProps(): RenderComponentProps {
-      return {
-        blockChildren: state.useBlock.children ?? [],
-        componentRef: state.component?.component,
-        componentOptions: {
-          ...getBlockComponentOptions(state.useBlock),
-          /**
-           * These attributes are passed to the wrapper element when there is one. If `noWrap` is set to true, then
-           * they are provided to the component itself directly.
-           */
-          ...(!state.component?.noWrap
-            ? {}
-            : { attributes: { ...state.attributes, ...state.actions } }),
-        },
-        context: state.childrenContext,
-      };
-    },
+
     get childrenWithoutParentComponent() {
       /**
        * When there is no `componentRef`, there might still be children that need to be rendered. In this case,
@@ -114,11 +102,6 @@ export default function RenderBlock(props: RenderBlockProps) {
         ? state.useBlock.children ?? []
         : [];
     },
-
-    repeatItemData: getRepeatItemData({
-      block: props.block,
-      context: props.context,
-    }),
 
     get childrenContext(): BuilderContextInterface {
       const getInheritedTextStyles = () => {
@@ -144,6 +127,24 @@ export default function RenderBlock(props: RenderBlockProps) {
         setState: props.context.setState,
         registeredComponents: props.context.registeredComponents,
         inheritedStyles: getInheritedTextStyles(),
+      };
+    },
+
+    get renderComponentProps(): RenderComponentProps {
+      return {
+        blockChildren: state.useBlock.children ?? [],
+        componentRef: state.component?.component,
+        componentOptions: {
+          ...getBlockComponentOptions(state.useBlock),
+          /**
+           * These attributes are passed to the wrapper element when there is one. If `noWrap` is set to true, then
+           * they are provided to the component itself directly.
+           */
+          ...(!state.component?.noWrap
+            ? {}
+            : { attributes: { ...state.attributes, ...state.actions } }),
+        },
+        context: state.childrenContext,
       };
     },
   });

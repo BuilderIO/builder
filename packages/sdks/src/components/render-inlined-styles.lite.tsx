@@ -16,13 +16,13 @@ interface Props {
 
 export default function RenderInlinedStyles(props: Props) {
   const state = useStore({
-    get injectedStyleScript(): string {
-      return `<${state.tag}>${props.styles}</${state.tag}>`;
-    },
     get tag(): string {
       // NOTE: we have to obfusctate the name of the tag due to a limitation in the svelte-preprocessor plugin.
       // https://github.com/sveltejs/vite-plugin-svelte/issues/315#issuecomment-1109000027
       return 'sty' + 'le';
+    },
+    get injectedStyleScript(): string {
+      return `<${state.tag}>${props.styles}</${state.tag}>`;
     },
   });
 
