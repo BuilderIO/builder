@@ -220,7 +220,7 @@ export default function RenderContent(props: RenderContentProps) {
           state.setContextState(newState);
         })
         .catch((err) => {
-          console.log('error fetching dynamic data', url, err);
+          console.error('error fetching dynamic data', url, err);
         });
     },
     runHttpRequests() {

@@ -19,8 +19,8 @@
     "serve": "yarn run dev"
   },
   "devDependencies": {
-    "@builder.io/qwik": "0.16.2",
-    "@builder.io/qwik-city": "0.0.128",
+    "@builder.io/qwik": "^0.100.0",
+    "@builder.io/qwik-city": "^0.100.0",
     "@builder.io/sdk-qwik": "workspace:*",
     "@builder.io/sdks-e2e-tests": "workspace:*",
     "@types/eslint": "8.4.10",

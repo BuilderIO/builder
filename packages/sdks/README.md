@@ -51,7 +51,7 @@ Legend:
 | View Current Draft             | ✅     |                                                                                                         |
 | Symbols                        | ✅     |                                                                                                         |
 | Custom styles                  | ✅     | (For React Native, only the ones that it supports by default)                                           |
-| Custom fonts                  | ✅     | (except For React Native)                                           |
+| Custom fonts                   | ✅     | (except For React Native)                                                                               |
 | Heatmaps                       | ✅     |                                                                                                         |
 | Tracking/Analytics             | ✅     |                                                                                                         |
 | Animations                     | 🏗      | Custom animation components are supported, but Builder.io's "animations" tab is currently not supported |

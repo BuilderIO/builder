@@ -56,7 +56,7 @@ const BuilderContent = ({ route }) => {
         }
       })
       .catch(err => {
-        console.log('something went wrong while fetching Builder Content: ', err);
+        console.error('something went wrong while fetching Builder Content: ', err);
       });
   }, []);
 

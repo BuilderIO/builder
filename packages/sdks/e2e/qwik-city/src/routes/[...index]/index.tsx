@@ -7,10 +7,9 @@ export interface MainProps {
   url: string;
 }
 export default component$(() => {
-  const { pathname } = useLocation();
+  const { url } = useLocation();
 
-  const contentProps = getProps(pathname);
-  console.log({ pathname, contentProps });
+  const contentProps = getProps(url.pathname);
   return contentProps ? (
     <RenderContent {...contentProps} />
   ) : (
