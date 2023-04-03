@@ -51,9 +51,7 @@ import { TARGET } from '../../constants/target.js';
 
 useMetadata({
   qwik: {
-    component: {
-      useHostElement: true,
-    },
+    hasDeepStore: true,
   },
   solid: {
     state: {
