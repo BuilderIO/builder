@@ -3,9 +3,7 @@ import { BuilderElement } from '../../../types/element';
 type BuilderBlockType = BuilderElement;
 
 interface CarouselProps {
-  slides: Array<
-    any | { content: BuilderBlockType[] } 
-  >;
+  slides: Array<any | { content: BuilderBlockType[] }>;
   builderBlock: BuilderBlockType;
   nextButton?: BuilderBlockType[];
   prevButton?: BuilderBlockType[];
@@ -16,16 +14,16 @@ interface CarouselProps {
 }
 
 export default function Carousel(props: CarouselProps) {
-    return (
-       <Slider
-            builderBlock = {props.builderBlock}
-            useChildrenForSlides = {props.useChildrenForSlides}
-            slides = {props.slides}
-            autoplay = {props.autoplay}
-            autoplaySpeed = { props.autoplaySpeed ? props.autoplaySpeed * 1000 : undefined}
-            dots = {!props.hideDots}
-            prevArrow={props.prevButton}
-            frontArrow={props.nextButton}
-       /> 
-    )
+  return (
+    <Slider
+      builderBlock={props.builderBlock}
+      useChildrenForSlides={props.useChildrenForSlides}
+      slides={props.slides}
+      autoplay={props.autoplay}
+      autoplaySpeed={props.autoplaySpeed ? props.autoplaySpeed * 1000 : undefined}
+      dots={!props.hideDots}
+      prevArrow={props.prevButton}
+      frontArrow={props.nextButton}
+    />
+  );
 }
