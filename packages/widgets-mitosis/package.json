@@ -13,6 +13,7 @@
     "@builder.io/mitosis": "^0.0.93",
     "@builder.io/mitosis-cli": "^0.0.52",
     "@glidejs/glide": "^3.6.0",
+    "masonry-layout": "^4.2.2",
     "prettier": ">=2.0.0 <3.0.0"
   }
 }

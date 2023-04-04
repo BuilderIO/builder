@@ -4,12 +4,14 @@ specifiers:
   '@builder.io/mitosis': ^0.0.93
   '@builder.io/mitosis-cli': ^0.0.52
   '@glidejs/glide': ^3.6.0
+  masonry-layout: ^4.2.2
   prettier: '>=2.0.0 <3.0.0'
 
 dependencies:
   '@builder.io/mitosis': 0.0.93_prettier@2.8.7
   '@builder.io/mitosis-cli': 0.0.52
   '@glidejs/glide': 3.6.0
+  masonry-layout: 4.2.2
   prettier: 2.8.7
 
 packages:
@@ -1559,6 +1561,10 @@ packages:
       clone: 1.0.4
     dev: false
 
+  /desandro-matches-selector/2.0.2:
+    resolution: {integrity: sha512-+1q0nXhdzg1IpIJdMKalUwvvskeKnYyEe3shPRwedNcWtnhEKT3ZxvFjzywHDeGcKViIxTCAoOYQWP1qD7VNyg==}
+    dev: false
+
   /detect-indent/6.1.0:
     resolution: {integrity: sha512-reYkTUJAZb9gUuZ2RvVCNhVHdg62RHnJ7WJl8ftMi4diZ6NWlciOzQN88pUhSELEwflJht4oQDv0F0BMlwaYtA==}
     engines: {node: '>=8'}
@@ -1660,6 +1666,10 @@ packages:
 
   /estree-walker/2.0.2:
     resolution: {integrity: sha512-Rfkk/Mp/DL7JVje3u18FxFujQlTNR2q6QfMSMB7AvCBx91NGj/ba3kCfza0f6dVDbw7YlRf/nDrn7pQrCCyQ/w==}
+    dev: false
+
+  /ev-emitter/1.1.1:
+    resolution: {integrity: sha512-ipiDYhdQSCZ4hSbX4rMW+XzNKMD1prg/sTvoVmSLkuQ1MVlwjJQQA+sW8tMYR3BLUr9KjodFV4pvzunvRhd33Q==}
     dev: false
 
   /events-light/1.0.5:
@@ -1791,6 +1801,12 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: false
 
+  /fizzy-ui-utils/2.0.7:
+    resolution: {integrity: sha512-CZXDVXQ1If3/r8s0T+v+qVeMshhfcuq0rqIFgJnrtd+Bu8GmDmqMjntjUePypVtjHXKJ6V4sw9zeyox34n9aCg==}
+    dependencies:
+      desandro-matches-selector: 2.0.2
+    dev: false
+
   /follow-redirects/1.15.2:
     resolution: {integrity: sha512-VQLG33o04KaQ8uYi2tVNbdrWp1QWxNNea+nmIB4EVM28v0hmP17z7aG1+wAkNzVq4KeXTq3221ye5qTJP91JwA==}
     engines: {node: '>=4.0'}
@@ -1865,6 +1881,10 @@ packages:
   /gensync/1.0.0-beta.2:
     resolution: {integrity: sha512-3hN7NaskYvMDLQY55gnW3NQ+mesEAepTqlg+VEbj7zzqEMBVNhzcGYYeqFo/TlYz6eQiFcp1HcsCZO+nGgS8zg==}
     engines: {node: '>=6.9.0'}
+    dev: false
+
+  /get-size/2.0.3:
+    resolution: {integrity: sha512-lXNzT/h/dTjTxRbm9BXb+SGxxzkm97h/PCIKtlN/CBCxxmkkIVV21udumMS93MuVTDX583gqc94v3RjuHmI+2Q==}
     dev: false
 
   /get-stream/6.0.1:
@@ -2589,6 +2609,13 @@ packages:
       - supports-color
     dev: false
 
+  /masonry-layout/4.2.2:
+    resolution: {integrity: sha512-iGtAlrpHNyxaR19CvKC3npnEcAwszXoyJiI8ARV2ePi7fmYhIud25MHK8Zx4P0LCC4d3TNO9+rFa1KoK1OEOaA==}
+    dependencies:
+      get-size: 2.0.3
+      outlayer: 2.1.1
+    dev: false
+
   /math-random/1.0.4:
     resolution: {integrity: sha512-rUxjysqif/BZQH2yhd5Aaq7vXMSx9NdEsQcyA07uEzIvxgI7zIr33gGsh+RU0/XjmQpCW7RsVof1vlkvQVCK5A==}
     dev: false
@@ -2835,6 +2862,14 @@ packages:
     engines: {node: '>=0.10.0'}
     dependencies:
       lcid: 1.0.0
+    dev: false
+
+  /outlayer/2.1.1:
+    resolution: {integrity: sha512-+GplXsCQ3VrbGujAeHEzP9SXsBmJxzn/YdDSQZL0xqBmAWBmortu2Y9Gwdp9J0bgDQ8/YNIPMoBM13nTwZfAhw==}
+    dependencies:
+      ev-emitter: 1.1.1
+      fizzy-ui-utils: 2.0.7
+      get-size: 2.0.3
     dev: false
 
   /param-case/2.1.1:
