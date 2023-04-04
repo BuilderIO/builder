@@ -23,25 +23,25 @@ export interface SliderProps {
 export default function Slider(props: SliderProps) {
   const context = useContext(BuilderContext);
 
-  const store = useStore({
+  const state = useStore({
     glide: new Glide('.glide', {
       type: 'slider',
       startAt: 0,
       autoplay: props.autoplay ? props.autoplaySpeed * 1000 : undefined,
     }),
     prevArrowFn: () => {
-      store.glide.go('<');
+      state.glide.go('<');
     },
     nextArrowFn: () => {
-      store.glide.go('>');
+      state.glide.go('>');
     },
   });
 
   onMount(() => {
-    store.glide.on('mount:after', () => {
+    state.glide.on('mount:after', () => {
       console.log('slider mounted!');
     });
-    store.glide.mount();
+    state.glide.mount();
   });
   return (
     <div className="glide">
@@ -79,17 +79,17 @@ export default function Slider(props: SliderProps) {
         <div class="glide__bullets" data-glide-el="controls[nav]">
           <For each={props.slides}>
             {(_, index) => (
-              <button class="glide__bullet" onClick={() => (store.glide.index = index)}></button>
+              <button class="glide__bullet" onClick={() => (state.glide.index = index)}></button>
             )}
           </For>
         </div>
       </Show>
       {/* CONTROLS */}
       <div data-glide-el="controls">
-        <div onClick={store.prevArrowFn}>
+        <div onClick={state.prevArrowFn}>
           <RenderBlocks path="component.options.prevButton" blocks={props.prevArrow} />
         </div>
-        <div onClick={store.nextArrowFn}>
+        <div onClick={state.nextArrowFn}>
           <RenderBlocks path="component.options.nextButton" blocks={props.frontArrow} />
         </div>
       </div>
