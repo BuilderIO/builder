@@ -9,7 +9,7 @@ import { builder } from '@builder.io/react';
 builder.init("YOUR_BUILDER_PUBLIC_KEY");
 builder.apiVersion = 'v1';
 ```
-More details on the Builder API Versions visit [this link](https://www.builder.io/c/docs/guides/api-versions).
+More details on the Builder API Versions visit [this link](https://www.builder.io/c/docs/content-api-versions).
 
 ### 2.0.17
 - Add new `apiVersion` property to toggle between Builder API versions. Defaults to `v1`. Possible values: `v1` and `v3`.

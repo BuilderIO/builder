@@ -10,7 +10,7 @@ In case you feel the need to use our older API Version `v2`, reach out to us at 
 ```js
 getContent({ apiVersion: "v2" })
 ```
-More details on the Builder API Versions visit [this link](https://www.builder.io/c/docs/guides/api-versions).
+More details on the Builder API Versions visit [this link](https://www.builder.io/c/docs/content-api-versions).
 
 ### 0.1.16
 
