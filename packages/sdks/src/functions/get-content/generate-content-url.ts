@@ -4,6 +4,7 @@ import {
   normalizeSearchParams,
 } from '../get-builder-search-params/index.js';
 import type { GetContentOptions } from './types.js';
+import { DEFAULT_API_VERSION } from '../../types/api-version';
 
 export const generateContentUrl = (options: GetContentOptions): URL => {
   const {
@@ -15,7 +16,7 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
     apiKey,
     includeRefs = true,
     locale,
-    apiVersion = 'v2',
+    apiVersion = DEFAULT_API_VERSION,
   } = options;
 
   if (!apiKey) {
