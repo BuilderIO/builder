@@ -1,5 +1,5 @@
 ### 2.1.0
-- Make `v3` as the default `apiVersion` to fetch Builder content.
+- Sets the default `apiVersion` to `v3`.
 
 In case you feel the need to use our older API Version `v1`, reach out to us at support@builder.io first. But you can override the default by setting `apiVersion` explicitly to `v1` as follows:
 
