@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/react",
-  "version": "2.0.17",
+  "version": "2.1.0",
   "description": "",
   "keywords": [],
   "main": "dist/builder-react.cjs.js",
@@ -35,6 +35,7 @@
     "commit": "git-cz",
     "release": "yarn build && npm publish",
     "release:major": "yarn build && yarn version major && yarn npm publish",
+    "release:minor": "yarn build && yarn version minor && yarn npm publish",
     "release:patch": "yarn build && yarn version patch && yarn npm publish",
     "release:nightly": "yarn build && yarn version prerelease && yarn npm publish --tag nightly",
     "release:dev": "yarn build && yarn version prerelease && yarn npm publish --tag dev",
