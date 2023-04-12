@@ -35,6 +35,16 @@ describe('Generate Content URL', () => {
     expect(output).toMatchSnapshot();
   });
 
+  test('generate content url with apiVersion as default', () => {
+    const output = generateContentUrl({
+      apiKey: testKey,
+      model: testModel,
+      query: { id: testId },
+      options,
+    });
+    expect(output).toMatchSnapshot();
+  });
+
   test('generate content url with apiVersion as v2', () => {
     const output = generateContentUrl({
       apiKey: testKey,

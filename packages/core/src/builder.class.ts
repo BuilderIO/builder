@@ -2634,7 +2634,7 @@ export class Builder {
         options.res,
         false,
         null,
-        options.apiVersion
+        options.apiVersion || this.apiVersion
       );
       instance.setUserAttributes(this.getUserAttributes());
     } else {

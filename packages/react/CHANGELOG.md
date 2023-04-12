@@ -1,3 +1,16 @@
+### 2.1.0
+- Sets the default `apiVersion` to `v3`.
+
+In case you feel the need to use our older API Version `v1`, reach out to us at support@builder.io first. But you can override the default by setting `apiVersion` explicitly to `v1` as follows:
+
+```js
+import { builder } from '@builder.io/react';
+
+builder.init("YOUR_BUILDER_PUBLIC_KEY");
+builder.apiVersion = 'v1';
+```
+More details on the Builder API Versions visit [this link](https://www.builder.io/c/docs/content-api-versions).
+
 ### 2.0.17
 - Add new `apiVersion` property to toggle between Builder API versions. Defaults to `v1`. Possible values: `v1` and `v3`.
 
@@ -6,10 +19,7 @@ You can set the apiVersion using `builder.init` or `builder.apiVersion`:
 ```js
 import { builder } from '@builder.io/react';
 
-Builder.init("YOUR_BUILDER_PUBLIC_KEY", undefined, undefined, undefined, undefined, 'v3');
-
-// OR
-
+builder.init("YOUR_BUILDER_PUBLIC_KEY");
 builder.apiVersion = 'v3';
 ```
 
