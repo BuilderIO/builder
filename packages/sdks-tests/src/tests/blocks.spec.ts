@@ -402,6 +402,8 @@ test.describe('Blocks', () => {
       await page.route(urlMatch, route => {
         x++;
 
+        const url = new URL(route.request().url());
+
         const keyName = 'results';
 
         return route.fulfill({
