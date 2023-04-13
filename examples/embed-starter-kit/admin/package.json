@@ -14,7 +14,7 @@
     "singleQuote": true
   },
   "dependencies": {
-    "@auth0/nextjs-auth0": "^1.6.1",
+    "@auth0/nextjs-auth0": "^2.2.1",
     "@builder.io/admin-sdk": "0.0.5-2",
     "@builder.io/embedded-app": "0.0.1",
     "@material-ui/core": "^4.12.3",
