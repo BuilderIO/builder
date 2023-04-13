@@ -22,8 +22,7 @@
     "_install": "npm install",
     "lint": "tslint  --project tsconfig.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
     "prebuild": "rimraf dist",
-    "tsc": "tsc --project tsconfig.json",
-    "build": "tsc && rollup -c rollup.config.ts && typedoc --out docs --target es6 --theme minimal --mode file src && npm run build:unpkg:dist",
+    "build": "tsc --module commonjs && rollup -c rollup.config.ts && typedoc --out docs --target es6 --theme minimal --mode file src && npm run build:unpkg:dist",
     "build:unpkg:dist": "ts-node -O '{\"module\": \"commonjs\"}' tools/make-unpkg-dist.ts",
     "start": "SERVE=true rollup -c rollup.config.ts -w",
     "test": "jest watch",
@@ -135,7 +134,7 @@
     "tslint-config-prettier": "^1.18.0",
     "tslint-config-standard": "^9.0.0",
     "typedoc": "^0.15.4",
-    "typescript": "^5.0.4"
+    "typescript": "^3.7.3"
   },
   "optionalDependencies": {
     "@builder.io/email": "^1.2.26",

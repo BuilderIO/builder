@@ -538,8 +538,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
       const getReactPromise = importReact(); // TODO: only import what needed based on what comes back
       const getWidgetsPromise = importWidgets();
       const getShopifyPromise = isShopify ? importShopify() : null;
-      // TO-DO: double-check return type of this promise
-      const getShopifyJsPromise = isShopify ? (importShopifyJs() as Promise<any>) : null;
+      const getShopifyJsPromise = isShopify ? importShopifyJs() : null;
       // TODO: only load shopify if needed
 
       let emailPromise: Promise<any> | null = null;
