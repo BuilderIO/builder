@@ -36,7 +36,7 @@
     "@builder.io/sdk": "^1.1.29",
     "@types/json5": "0.0.30",
     "@types/lodash": "^4.14.149",
-    "json5": "^2.1.2",
+    "json5": "^2.2.2",
     "lodash": "^4.17.15",
     "prettier": "^2.0.2"
   },
