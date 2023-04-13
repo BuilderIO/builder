@@ -1,3 +1,4 @@
+import { logger } from '../../helpers/logger.js';
 import type { BuilderContent } from '../../types/builder-content.js';
 import { fetch } from '../get-fetch.js';
 import { handleABTesting } from './ab-testing.js';
@@ -33,7 +34,7 @@ export async function getAllContent(
   const content = await (res.json() as Promise<ContentResponse>);
 
   if ('status' in content && !('results' in content)) {
-    console.error('[Builder.io]: Error fetching data. ', content, options);
+    logger.error('Error fetching data. ', content, options);
     return content;
   }
 
@@ -49,7 +50,7 @@ export async function getAllContent(
       }
     }
   } catch (e) {
-    console.error('[Builder.io]: Could not setup A/B testing. ', e);
+    logger.error('Could not setup A/B testing. ', e);
   }
 
   return content;
