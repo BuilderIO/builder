@@ -21,7 +21,7 @@ function wrapHistoryPropertyWithCustomEvent(property: 'pushState' | 'replaceStat
   try {
     const anyHistory = history;
     const originalFunction = anyHistory[property];
-    anyHistory[property] = function (this: History) {
+    anyHistory[property] = function(this: History) {
       let rv = originalFunction.apply(this, arguments as any);
       let event = new CustomEvent(property, {
         detail: {
@@ -781,8 +781,7 @@ if (Builder.isBrowser && !customElements.get(componentName)) {
   customElements.define('builder-init', BuilderInit);
 }
 
-type BuilderBlocksProps =
-  import('@builder.io/react/dist/types/src/components/builder-blocks.component').BuilderBlocksProps;
+type BuilderBlocksProps = import('@builder.io/react/dist/types/src/components/builder-blocks.component').BuilderBlocksProps;
 
 if (Builder.isBrowser && !customElements.get('builder-blocks-slot')) {
   class BuilderBlocksSlot extends HTMLElement {
