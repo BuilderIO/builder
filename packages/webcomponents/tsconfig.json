@@ -2,8 +2,12 @@
   "compilerOptions": {
     "moduleResolution": "node",
     "target": "es5",
-    "module": "esnext",
-    "lib": ["es5", "dom", "es2015.promise"],
+    "module": "CommonJS",
+    "lib": [
+      "es5",
+      "dom",
+      "es2015.promise"
+    ],
     "strict": true,
     "sourceMap": true,
     "declaration": true,
@@ -14,7 +18,13 @@
     "skipLibCheck": true,
     "declarationDir": "dist/types",
     "outDir": "dist/lib",
-    "typeRoots": ["node_modules/@types"]
   },
-  "include": ["src"]
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "./node_modules/@builder.io/shopify/js/**/*.ts"
+  ]
 }
