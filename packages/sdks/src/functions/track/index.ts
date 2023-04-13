@@ -1,4 +1,5 @@
 import { TARGET } from '../../constants/target.js';
+import { logger } from '../../helpers/logger.js';
 import { getSessionId } from '../../helpers/sessionId.js';
 import { getVisitorId } from '../../helpers/visitorId.js';
 import type { CanTrack } from '../../types/can-track.js';
@@ -100,8 +101,8 @@ const createEvent = async ({
 
 export async function _track(eventProps: EventProps) {
   if (!eventProps.apiKey) {
-    console.error(
-      '[Builder.io]: Missing API key for track call. Please provide your API key.'
+    logger.error(
+      'Missing API key for track call. Please provide your API key.'
     );
     return;
   }
