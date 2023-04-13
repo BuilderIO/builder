@@ -13,7 +13,7 @@
     "serve": "yarn start"
   },
   "devDependencies": {
-    "@builder.io/qwik": "0.100.0",
+    "@builder.io/qwik": "^0.101.0",
     "@builder.io/sdk-qwik": "workspace:*",
     "@builder.io/sdks-e2e-tests": "workspace:*",
     "@types/eslint": "8.21.3",
