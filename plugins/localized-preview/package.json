@@ -104,7 +104,7 @@
     "react-dom": "^17.0.0",
     "replace-in-file": "^3.4.2",
     "rimraf": "^2.6.2",
-    "semantic-release": "^15.9.16",
+    "semantic-release": "^21.0.1",
     "shelljs": "^0.8.3",
     "source-map-loader": "^0.2.4",
     "style-loader": "^1.2.1",
