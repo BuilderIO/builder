@@ -13,19 +13,18 @@ import Octokit from '@octokit/rest';
 import { question } from 'zx';
 import { echo } from 'zx/experimental';
 
-// load the GITHUB_TOKEN from .env file
+// load the GITHUB_TOKEN_X from .env file
 require('dotenv').config();
 
 // authenticate Octokit with a personal access token
 const octokit = new Octokit({
-  auth: process.env.GITHUB_TOKEN,
+  auth: process.env.GITHUB_TOKEN_X,
 });
 
 console.log('Welcome to the BuilderIO/builder dependabot PR merger!');
-console.log(`Using GITHUB_TOKEN: ${process.env.GITHUB_TOKEN}`);
 
-if (!process.env.GITHUB_TOKEN) {
-  throw new Error(`GITHUB_TOKEN not found in .env file`);
+if (!process.env.GITHUB_TOKEN_X) {
+  throw new Error(`GITHUB_TOKEN_X not found in .env file`);
 }
 
 let query = '';
@@ -41,7 +40,9 @@ const getPRs = async ({ isApproved }) => {
     }`;
   const { data: pullRequests } = await octokit.search.issuesAndPullRequests({
     q: getQuery(isApproved),
+    per_page: 100,
   });
+
   return pullRequests;
 };
 
@@ -66,8 +67,11 @@ async function approve() {
       throw new Error(`Script aborted.`);
     }
 
-    // Approve all PRs
-    for (const pr of unapprovedPullRequests.items) {
+    /**
+     *
+     * @param {Octokit.SearchIssuesAndPullRequestsResponseItemsItem} pr
+     */
+    const processPr = async pr => {
       // approve the PR and print appropriate message
       console.log(`Approving ${pr.html_url}...`);
       const resp = await octokit.pulls.createReview({
@@ -83,7 +87,19 @@ async function approve() {
       } else {
         console.log(`Approved ${pr.html_url}.`);
       }
-    }
+
+      try {
+        // enable auto-merge
+        await $`gh pr merge ${pr.number} --auto --squash`;
+        console.log(`Enabled auto-merge for ${pr.html_url}.`);
+      } catch (e) {
+        console.log(`Error auto-merging ${pr.html_url}.`);
+        // print details
+        console.log(e);
+      }
+    };
+
+    await Promise.all(unapprovedPullRequests.items.map(processPr));
   } else {
     echo`No unapproved PRs found, skipping approval step`;
   }
@@ -203,7 +219,27 @@ async function rebaseDependabot(prUrl) {
 async function main() {
   await getQuery();
   await approve();
-  await merge();
+  // await merge();
 }
+
+let x = null;
+octokit.actions
+  .listRepoWorkflowRuns({ owner: 'BuilderIO', repo: 'builder', branch: 'main' })
+  .then(k => (x = k));
+
+const cancelWorkflowRun2 = async workflow => {
+  try {
+    await octokit.request('POST /repos/BuilderIO/builder/actions/runs/{run_id}/cancel', {
+      run_id: workflow.id,
+    });
+    console.log('cancelled workflow:', workflow.id);
+  } catch (error) {
+    console.error('could not cancel workflow:', workflow.id);
+  }
+};
+
+octokit
+  .request('GET /repos/BuilderIO/builder/actions/runs?status=queued&branch=main&per_page=10')
+  .then(x => x.data.workflow_runs.map(cancelWorkflowRun2));
 
 main();
