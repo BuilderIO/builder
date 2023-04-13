@@ -1,3 +1,7 @@
+### 0.2.1
+
+Feature: Added support for reactive `state` values in JS code blocks provided by user.
+
 ### 0.2.0
 
 - Sets the default `apiVersion` to `v3`.
