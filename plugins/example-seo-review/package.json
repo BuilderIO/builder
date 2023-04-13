@@ -97,7 +97,7 @@
     "i": "^0.3.6",
     "jest": "^23.6.0",
     "jest-config": "^23.6.0",
-    "lint-staged": "^8.0.0",
+    "lint-staged": "^13.2.0",
     "mobx": "^6.6.1",
     "mobx-react": "^7.5.1",
     "mobx-state-tree": "^5.1.5",
