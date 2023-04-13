@@ -2,7 +2,7 @@
   "compilerOptions": {
     "moduleResolution": "node",
     "target": "es5",
-    "module": "ESNext",
+    "module": "CommonJS",
     "lib": [
       "es5",
       "dom",
@@ -25,5 +25,6 @@
   "exclude": [
     "node_modules",
     "dist",
+    "./node_modules/@builder.io/shopify/js/**/*.ts"
   ]
 }
