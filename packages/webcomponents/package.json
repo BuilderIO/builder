@@ -23,7 +23,7 @@
     "lint": "tslint  --project tsconfig.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
     "prebuild": "rimraf dist",
     "tsc": "tsc --project tsconfig.json --module commonjs",
-    "build": "tsc && rollup -c rollup.config.ts && typedoc --out docs --target es6 --theme minimal --mode file src && npm run build:unpkg:dist",
+    "build": "npm run tsc && rollup -c rollup.config.ts && typedoc --out docs --target es6 --theme minimal --mode file src && npm run build:unpkg:dist",
     "build:unpkg:dist": "ts-node -O '{\"module\": \"commonjs\"}' tools/make-unpkg-dist.ts",
     "start": "SERVE=true rollup -c rollup.config.ts -w",
     "test": "jest watch",
