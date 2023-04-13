@@ -1,6 +1,7 @@
 import { serializeFn } from '../blocks/util.js';
 import type { RegisteredComponent } from '../context/types.js';
-import type { ComponentInfo, Input } from '../types/components.js';
+import type { ComponentInfo } from '../types/components.js';
+import type { Input } from '../types/input.js';
 import { fastClone } from './fast-clone.js';
 
 /**
@@ -37,14 +38,13 @@ const prepareComponentInfoToSend = ({
   ...info
 }: ComponentInfo): ComponentInfo => ({
   ...fastClone(info),
-  inputs: inputs?.map(
-    (input): Input =>
-      Object.entries(input).reduce(
-        (acc, [key, value]) => ({
-          ...acc,
-          [key]: serializeValue(value),
-        }),
-        {} as Input
-      )
+  inputs: inputs?.map((input) =>
+    Object.entries(input).reduce(
+      (acc, [key, value]) => ({
+        ...acc,
+        [key]: serializeValue(value),
+      }),
+      {} as Input
+    )
   ),
 });
