@@ -2288,7 +2288,7 @@ __metadata:
     typedoc-plugin-markdown: ^3.13.3
     typescript: ^4.7.4
     validate-commit-msg: ^2.12.2
-    vm2: ^3.9.10
+    vm2: ^3.9.16
   peerDependencies:
     react: ">=16.8.0"
     react-dom: ">=16.8.0"
@@ -37437,7 +37437,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vm2@npm:^3.9.10, vm2@npm:^3.9.8":
+"vm2@npm:^3.9.16":
+  version: 3.9.16
+  resolution: "vm2@npm:3.9.16"
+  dependencies:
+    acorn: ^8.7.0
+    acorn-walk: ^8.2.0
+  bin:
+    vm2: bin/vm2
+  checksum: 646b45dca721acb3c8e4ae0742129f13612972387911c2475f3c06ac2b4232000cab0bdaaa65d97d6ea8dc70880e039542618b1b3d04adea79cd94803cbc4ab3
+  languageName: node
+  linkType: hard
+
+"vm2@npm:^3.9.8":
   version: 3.9.14
   resolution: "vm2@npm:3.9.14"
   dependencies:

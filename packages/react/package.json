@@ -126,7 +126,7 @@
     "@emotion/core": "^10.0.17",
     "hash-sum": "^2.0.0",
     "preact": "^10.1.0",
-    "vm2": "^3.9.10"
+    "vm2": "^3.9.16"
   },
   "installConfig": {
     "hoistingLimits": "workspaces"
