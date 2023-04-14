@@ -3,7 +3,7 @@ echo "looping cmd \"$1\" over args \"$2\"";
 
 for i in $2; do
   echo "running $1 on $i";
-  yarn run $1 $i
+  yarn run $1 $i;
   # use this line to run these loop commands in parallel
   # yarn run $1 $i &
 done
