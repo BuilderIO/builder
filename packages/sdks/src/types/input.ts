@@ -117,4 +117,9 @@ export interface Input {
    * Use optionally with inputs of type `reference`. Restricts the content entry picker to a specific model by name.
    */
   model?: string;
+
+  valueType?: {
+    type?: string;
+  };
+  onChange?: ((options: Map<string, any>) => void | Promise<void>) | string;
 }
