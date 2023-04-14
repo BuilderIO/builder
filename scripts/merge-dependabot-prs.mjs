@@ -35,9 +35,7 @@ async function getQuery() {
 
 const getPRs = async ({ isApproved }) => {
   const getQuery = isApproved =>
-    `repo:BuilderIO/builder is:open state:open author:app/dependabot type:pr ${query} in:title review:${
-      isApproved ? 'approved' : 'required'
-    }`;
+    `repo:BuilderIO/builder is:open state:open author:app/dependabot type:pr ${query} in:title `;
   const { data: pullRequests } = await octokit.search.issuesAndPullRequests({
     q: getQuery(isApproved),
     per_page: 100,
@@ -57,52 +55,53 @@ async function approve() {
     console.log(`${pr.html_url} || ${pr.title}`);
   });
 
-  if (unapprovedPullRequests.total_count > 0) {
-    // Confirm with the user
-    let confirm = await question(
-      `Are you sure you want to approve these ${unapprovedPullRequests.total_count} pull requests? (yes/no): `
-    );
-
-    if (confirm !== 'yes') {
-      throw new Error(`Script aborted.`);
-    }
-
-    /**
-     *
-     * @param {Octokit.SearchIssuesAndPullRequestsResponseItemsItem} pr
-     */
-    const processPr = async pr => {
-      // approve the PR and print appropriate message
-      console.log(`Approving ${pr.html_url}...`);
-      const resp = await octokit.pulls.createReview({
-        owner: 'BuilderIO',
-        repo: 'builder',
-        pull_number: pr.number,
-        event: 'APPROVE',
-      });
-      if (resp.status >= 300) {
-        console.log(`Error approving ${pr.html_url}.`);
-        // print details
-        console.log(resp);
-      } else {
-        console.log(`Approved ${pr.html_url}.`);
-      }
-
-      try {
-        // enable auto-merge
-        await $`gh pr merge ${pr.number} --auto --squash`;
-        console.log(`Enabled auto-merge for ${pr.html_url}.`);
-      } catch (e) {
-        console.log(`Error auto-merging ${pr.html_url}.`);
-        // print details
-        console.log(e);
-      }
-    };
-
-    await Promise.all(unapprovedPullRequests.items.map(processPr));
-  } else {
+  if (unapprovedPullRequests.total_count === 0) {
     echo`No unapproved PRs found, skipping approval step`;
+    return;
   }
+
+  // Confirm with the user
+  let confirm = await question(
+    `Are you sure you want to approve these ${unapprovedPullRequests.total_count} pull requests? (yes/no): `
+  );
+
+  if (confirm !== 'yes') {
+    throw new Error(`Script aborted.`);
+  }
+
+  /**
+   *
+   * @param {Octokit.SearchIssuesAndPullRequestsResponseItemsItem} pr
+   */
+  const processPr = async pr => {
+    try {
+      // enable auto-merge
+      await $`gh pr merge ${pr.number} --auto --squash`;
+      console.log(`Enabled auto-merge for ${pr.html_url}.`);
+    } catch (e) {
+      console.log(`Error auto-merging ${pr.html_url}.`);
+      // print details
+      console.log(e);
+    }
+    // approve the PR and print appropriate message
+    console.log(`Approving ${pr.html_url}...`);
+
+    const resp = await octokit.pulls.createReview({
+      owner: 'BuilderIO',
+      repo: 'builder',
+      pull_number: pr.number,
+      event: 'APPROVE',
+    });
+    if (resp.status >= 300) {
+      console.log(`Error approving ${pr.html_url}.`);
+      // print details
+      console.log(resp);
+    } else {
+      console.log(`Approved ${pr.html_url}.`);
+    }
+  };
+
+  await Promise.all(unapprovedPullRequests.items.map(processPr));
 }
 
 async function merge() {
@@ -136,8 +135,7 @@ async function merge() {
    */
   const dependabotRebasePRs = [];
 
-  // Merge all PRs
-  for (const pr of approvedPullRequests.items) {
+  const mergePr = async pr => {
     // merge the PR and print appropriate message
     console.log(`Merging ${pr.html_url}`);
     try {
@@ -164,7 +162,10 @@ async function merge() {
         dependabotRebasePRs.push(pr);
       }
     }
-  }
+  };
+
+  // Merge all PRs
+  await Promise.all(approvedPullRequests.items.map(mergePr));
 
   if (dependabotRebasePRs.length > 0) {
     console.log(`The following PRs need to be rebased by Dependabot: `);
@@ -218,28 +219,30 @@ async function rebaseDependabot(prUrl) {
 
 async function main() {
   await getQuery();
-  await approve();
-  // await merge();
+  // await approve();
+  await merge();
 }
 
-let x = null;
-octokit.actions
-  .listRepoWorkflowRuns({ owner: 'BuilderIO', repo: 'builder', branch: 'main' })
-  .then(k => (x = k));
+async function workflowStuff() {
+  let x = null;
+  octokit.actions
+    .listRepoWorkflowRuns({ owner: 'BuilderIO', repo: 'builder', branch: 'main' })
+    .then(k => (x = k));
 
-const cancelWorkflowRun2 = async workflow => {
-  try {
-    await octokit.request('POST /repos/BuilderIO/builder/actions/runs/{run_id}/cancel', {
-      run_id: workflow.id,
-    });
-    console.log('cancelled workflow:', workflow.id);
-  } catch (error) {
-    console.error('could not cancel workflow:', workflow.id);
-  }
-};
+  const cancelWorkflowRun2 = async workflow => {
+    try {
+      await octokit.request('POST /repos/BuilderIO/builder/actions/runs/{run_id}/cancel', {
+        run_id: workflow.id,
+      });
+      console.log('cancelled workflow:', workflow.id);
+    } catch (error) {
+      console.error('could not cancel workflow:', workflow.id);
+    }
+  };
 
-octokit
-  .request('GET /repos/BuilderIO/builder/actions/runs?status=queued&branch=main&per_page=10')
-  .then(x => x.data.workflow_runs.map(cancelWorkflowRun2));
+  octokit
+    .request('GET /repos/BuilderIO/builder/actions/runs?status=queued&branch=main&per_page=10')
+    .then(x => x.data.workflow_runs.map(cancelWorkflowRun2));
+}
 
 main();
