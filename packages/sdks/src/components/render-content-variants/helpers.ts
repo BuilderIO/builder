@@ -1,54 +1,40 @@
-import type { BuilderContentVariation } from '../../types/builder-content';
-
-export function getData(content: BuilderContentVariation) {
-  if (typeof content?.data === 'undefined') {
-    return undefined;
-  }
-
-  const { blocks, blocksString } = content.data;
-  const hasBlocks = Array.isArray(blocks) || typeof blocksString === 'string';
-  const newData: any = {
-    ...content.data,
-    ...(hasBlocks && { blocks: blocks || JSON.parse(blocksString) }),
-  };
-
-  delete newData.blocksString;
-  return newData;
-}
-
 const REPLACE_CONTENT_ID = 'REPLACE_CONTENT_ID';
 const REPLACE_VARIANTS_JSON = 'REPLACE_VARIANTS_JSON';
 
-type Variant = {
+type VariantData = {
   id: string;
   testRatio?: number;
 };
 
 const variantScriptFn = function () {
-  // TO-DO: fix Builder noTrack check
-  if (window.builderNoTrack || !navigator.cookieEnabled) {
+  // TO-DO: redundant check?
+  if (!navigator.cookieEnabled) {
     return;
   }
 
   const contentId = REPLACE_CONTENT_ID as unknown as string;
-  const variants = REPLACE_VARIANTS_JSON as unknown as Variant[];
+  const variants = REPLACE_VARIANTS_JSON as unknown as VariantData[];
 
   const templateSelectorById = (id: string) =>
     `template[data-template-variant-id="${id}"]`;
 
   function removeVariants() {
-    variants.forEach(function (template) {
+    // remove each variant
+    variants.forEach((template) => {
       const el = document.querySelector(templateSelectorById(template.id));
       if (el) {
         el.remove();
       }
     });
+    // remove this script itself
     const el = document.getElementById(`variants-script-${contentId}`);
     if (el) {
       el.remove();
     }
   }
 
+  // TO-DO: what is this check doing?
+  // seems like a template polyfill check
   if (typeof document.createElement('template').content === 'undefined') {
     removeVariants();
     return;
@@ -83,42 +69,64 @@ const variantScriptFn = function () {
   const cookieName = `builder.tests.${contentId}`;
   const variantInCookie = getCookie(cookieName);
   const availableIDs = variants.map((vr) => vr.id).concat(contentId);
-  let variantId;
-  if (availableIDs.indexOf(variantInCookie) > -1) {
-    variantId = variantInCookie;
-  }
-  if (!variantId) {
+
+  function getAndSetVariantId(): string {
+    // cookie already exists
+    if (variantInCookie && availableIDs.indexOf(variantInCookie) > -1) {
+      return variantInCookie;
+    }
+
+    // no cookie exists, find variant
     let n = 0;
     const random = Math.random();
     for (let i = 0; i < variants.length; i++) {
       const variant = variants[i];
       const testRatio = variant.testRatio;
-      n += testRatio;
+      n += testRatio!;
       if (random < n) {
         setCookie(cookieName, variant.id);
-        variantId = variant.id;
-        break;
+        return variant.id;
       }
     }
-    if (!variantId) {
-      variantId = contentId;
-      setCookie(cookieName, contentId);
-    }
+
+    // no variant found, assign default content
+    setCookie(cookieName, contentId);
+    return contentId;
   }
-  if (variantId && variantId !== contentId) {
+  const variantId = getAndSetVariantId();
+
+  if (variantId !== contentId) {
     const winningTemplate = document.querySelector<HTMLTemplateElement>(
       templateSelectorById(variantId)
     );
-    if (winningTemplate) {
-      const parentNode = winningTemplate.parentNode;
-      if (parentNode && winningTemplate.content.firstChild) {
-        const newParent = parentNode.cloneNode(false);
-        newParent.appendChild(winningTemplate.content.firstChild);
+    if (!winningTemplate) {
+      return;
+    }
 
-        if (parentNode.parentNode) {
-          parentNode.parentNode.replaceChild(newParent, parentNode);
-        }
-      }
+    /**
+     * grandparent
+     *   -> parent
+     *    -> template1
+     *      -> builder-content
+     *    -> template2
+     *
+     * grandparent
+     *  -> parent
+     *   -> builder-content
+     *
+     *
+     *
+     */
+
+    const templatesParent = winningTemplate.parentNode;
+    const winningBuilderContent = winningTemplate.content.firstChild;
+    if (templatesParent) {
+      // shallow clone template parent, and replace all children with winning template content
+      const newParent = templatesParent.cloneNode(false);
+      newParent.appendChild(winningBuilderContent!);
+
+      // replace template parent with new parent
+      templatesParent.parentNode!.replaceChild(newParent, templatesParent);
     }
   } else if (variants.length > 0) {
     removeVariants();
@@ -126,7 +134,7 @@ const variantScriptFn = function () {
 };
 
 export const getVariantsScriptString = (
-  variants: Variant[],
+  variants: VariantData[],
   contentId: string
 ) =>
   variantScriptFn

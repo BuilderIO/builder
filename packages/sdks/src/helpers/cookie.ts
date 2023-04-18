@@ -3,15 +3,14 @@ import type { CanTrack } from '../types/can-track.js';
 import { checkIsDefined } from './nullable.js';
 import { getTopLevelDomain } from './url.js';
 
-/**
- * NOTE: This function is `async` because its react-native override is async. Do not remove the `async` keyword!
- */
-export const getCookie = async ({
+type GetCookieArgs = {
+  name: string;
+} & CanTrack;
+
+export const getCookieSync = ({
   name,
   canTrack,
-}: {
-  name: string;
-} & CanTrack): Promise<string | undefined> => {
+}: GetCookieArgs): string | undefined => {
   try {
     if (!canTrack) {
       return undefined;
@@ -30,6 +29,10 @@ export const getCookie = async ({
     return undefined;
   }
 };
+/**
+ * NOTE: This function is `async` because its react-native override is async. Do not remove the `async` keyword!
+ */
+export const getCookie = async (args: GetCookieArgs) => getCookieSync(args);
 
 type CookieConfiguration = Array<
   | ['expires', string]

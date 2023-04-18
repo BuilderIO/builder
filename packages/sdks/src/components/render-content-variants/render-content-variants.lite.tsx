@@ -1,131 +1,105 @@
-import { Fragment, Show, useStore } from '@builder.io/mitosis';
+import { For, Show, useStore } from '@builder.io/mitosis';
 import { isBrowser } from '../../functions/is-browser';
-import type { BuilderContent } from '../../types/builder-content';
-import { getData, getVariantsScriptString } from './helpers';
+import { getVariantsScriptString } from './helpers';
+import RenderContent from '../render-content/render-content.lite';
+import { handleABTesting } from '../../functions/get-content/ab-testing';
+import type { RenderContentProps } from '../render-content/render-content.types';
+import { checkIsDefined } from '../../helpers/nullable';
 
-interface VariantsProviderProps {
-  initialContent: BuilderContent;
-  children: (
-    variants: BuilderContent[],
-    renderScript?: () => JSX.Element
-  ) => JSX.Element;
-}
+type VariantsProviderProps = RenderContentProps;
 
 export default function RenderContentVariants(props: VariantsProviderProps) {
   const state = useStore({
     variantScriptStr: getVariantsScriptString(
-      Object.entries(props.initialContent.variations || {}).map(
-        ([item, value]) => ({
-          id: item,
-          testRatio: value?.testRatio,
-        })
-      ),
-      props.initialContent.id!
+      Object.values(props.content?.variations || {}).map((value) => ({
+        id: value.id!,
+        testRatio: value.testRatio,
+      })),
+      props.content?.id || ''
     ),
 
     variants: [
-      ...Object.entries(props.initialContent.variations!).map(
-        ([id, value]): BuilderContent => ({
-          ...value,
-          id,
-          data: getData(value!),
-        })
-      ),
-      props.initialContent,
+      ...Object.values(props.content?.variations || {}),
+      props.content,
     ],
 
     // figure out how to replace this logic with the one we already have written elsewhere to grab variants
-    getVariantId: () => {
-      const cookieName = `builder.tests.${props.initialContent.id}`;
-      // can probably reuse other variant selector logic here
-      let variantId: string | null = builder.getCookie(cookieName);
+    // getVariantId: () => {
+    //   const cookieName = `builder.tests.${props.initialContent.id}`;
+    //   // can probably reuse other variant selector logic here
+    //   let variantId: string | null = builder.getCookie(cookieName);
 
-      if (!variantId && isBrowser()) {
-        let n = 0;
-        const random = Math.random();
-        for (let i = 0; i < state.variants.length; i++) {
-          const variant = state.variants[i];
-          const testRatio = variant.testRatio;
-          n += testRatio!;
-          if (random < n) {
-            builder.setCookie(cookieName, variant.id);
-            variantId = variant.id!;
-            break;
-          }
-        }
+    //   if (!variantId && isBrowser()) {
+    //     let n = 0;
+    //     const random = Math.random();
+    //     for (let i = 0; i < state.variants.length; i++) {
+    //       const variant = state.variants[i];
+    //       const testRatio = variant.testRatio;
+    //       n += testRatio!;
+    //       if (random < n) {
+    //         builder.setCookie(cookieName, variant.id);
+    //         variantId = variant.id!;
+    //         break;
+    //       }
+    //     }
 
-        // can remove since variants now includes initialContent
-        if (!variantId) {
-          // render initial content when no winning variation
-          variantId = props.initialContent.id!;
-          builder.setCookie(cookieName, variantId);
-        }
-      }
+    //     // can remove since variants now includes initialContent
+    //     if (!variantId) {
+    //       // render initial content when no winning variation
+    //       variantId = props.initialContent.id!;
+    //       builder.setCookie(cookieName, variantId);
+    //     }
+    //   }
 
-      return variantId;
+    //   return variantId;
+    // },
+
+    get contentToUse() {
+      // doesn't work now because async
+      handleABTesting({
+        item: props.content!,
+        canTrack: checkIsDefined(props.canTrack) ? props.canTrack : true,
+      });
+
+      return props.content;
     },
 
-    // TO-DO: refactor this logic to match RenderContent. maybe reuse RenderContent?
-    // either way this needs to become a Mitosis component that is called here
-    renderContentChild: (content: BuilderContent, index: number) => {
-      // default Variation is at the end, wrap the rest with template
-      const Tag = index === state.variants.length - 1 ? Fragment : 'template';
-      return (
-        <Fragment key={String(content?.id! + index)}>
-          {Tag !== 'template' && renderScript?.()}
-          <Tag
-            key={String(content?.id! + index)}
-            {...(Tag === 'template' && {
-              'data-template-variant-id': content?.id,
-            })}
-          >
-            <TagName
-              {...(index === 0 &&
-                !this.props.dataOnly && {
-                  ref: (ref: any) => (this.ref = ref),
-                })}
-              className="builder-content"
-              onClick={(event) => {}}
-              builder-content-id={content?.id}
-              builder-model={this.name}
-            >
-              {this.props.children(
-                content?.data! as any,
-                this.props.inline ? false : loading,
-                useData
-              )}
-            </TagName>
-          </Tag>
-        </Fragment>
-      );
-    },
-
-    shouldRenderInitialContent:
-      (isBrowser() && !builder.canTrack) ||
-      !Object.keys(props.initialContent?.variations || {}).length,
+    shouldRenderVariants:
+      ((isBrowser() && props.canTrack) || !isBrowser()) &&
+      Object.keys(props.content?.variations || {}).length > 0,
   });
 
   return (
     <Show
-      when={state.shouldRenderInitialContent}
+      when={state.shouldRenderVariants}
       else={
-        <Show
-          when={!isBrowser()}
-          else={state.renderContentChild(
-            state.variants.find((item) => item.id === state.getVariantId())!,
-            0
-          )}
-        >
-          {/* render script that will remove non-winning variants */}
-          <script
-            id={`variants-script-${props.initialContent.id}`}
-            innerHTML={state.variantScriptStr}
-          ></script>
-          {state.variants.map(state.renderContentChild)}
-        </Show>
+        <RenderContent
+          content={state.contentToUse}
+          apiKey={props.apiKey}
+          apiVersion={props.apiVersion}
+          canTrack={props.canTrack}
+          customComponents={props.customComponents}
+        />
       }
     >
-      {state.renderContentChild(props.initialContent, 0)}
+      {/* render script that will remove non-winning variants */}
+      <script
+        id={`variants-script-${props.content?.id}`}
+        innerHTML={state.variantScriptStr}
+      ></script>
+      <For each={state.variants}>
+        {(variant) => (
+          <template key={variant?.id} data-template-variant-id={variant?.id}>
+            <RenderContent
+              content={variant}
+              apiKey={props.apiKey}
+              apiVersion={props.apiVersion}
+              canTrack={props.canTrack}
+              customComponents={props.customComponents}
+            />
+          </template>
+        )}
+      </For>
     </Show>
   );
 }

@@ -8,5 +8,9 @@ declare module '@builder.io/mitosis/jsx-runtime' {
        */
       dataSet?: Record<string, string>;
     }
+
+    declare interface IntrinsicElements {
+      template: HTMLAttributes;
+    }
   }
 }
