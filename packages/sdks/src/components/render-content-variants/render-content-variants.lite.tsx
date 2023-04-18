@@ -2,9 +2,9 @@ import { For, Show, useStore } from '@builder.io/mitosis';
 import { isBrowser } from '../../functions/is-browser';
 import { getVariantsScriptString } from './helpers';
 import RenderContent from '../render-content/render-content.lite';
-import { handleABTesting } from '../../functions/get-content/ab-testing';
 import type { RenderContentProps } from '../render-content/render-content.types';
 import { checkIsDefined } from '../../helpers/nullable';
+import { handleABTestingSync } from '../../helpers/ab-tests';
 
 type VariantsProviderProps = RenderContentProps;
 
@@ -23,46 +23,10 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
       props.content,
     ],
 
-    // figure out how to replace this logic with the one we already have written elsewhere to grab variants
-    // getVariantId: () => {
-    //   const cookieName = `builder.tests.${props.initialContent.id}`;
-    //   // can probably reuse other variant selector logic here
-    //   let variantId: string | null = builder.getCookie(cookieName);
-
-    //   if (!variantId && isBrowser()) {
-    //     let n = 0;
-    //     const random = Math.random();
-    //     for (let i = 0; i < state.variants.length; i++) {
-    //       const variant = state.variants[i];
-    //       const testRatio = variant.testRatio;
-    //       n += testRatio!;
-    //       if (random < n) {
-    //         builder.setCookie(cookieName, variant.id);
-    //         variantId = variant.id!;
-    //         break;
-    //       }
-    //     }
-
-    //     // can remove since variants now includes initialContent
-    //     if (!variantId) {
-    //       // render initial content when no winning variation
-    //       variantId = props.initialContent.id!;
-    //       builder.setCookie(cookieName, variantId);
-    //     }
-    //   }
-
-    //   return variantId;
-    // },
-
-    get contentToUse() {
-      // doesn't work now because async
-      handleABTesting({
-        item: props.content!,
-        canTrack: checkIsDefined(props.canTrack) ? props.canTrack : true,
-      });
-
-      return props.content;
-    },
+    contentToUse: handleABTestingSync({
+      item: props.content!,
+      canTrack: checkIsDefined(props.canTrack) ? props.canTrack : true,
+    }),
 
     shouldRenderVariants:
       ((isBrowser() && props.canTrack) || !isBrowser()) &&

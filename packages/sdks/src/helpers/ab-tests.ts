@@ -1,5 +1,5 @@
 import type { CanTrack } from '../types/can-track.js';
-import { getCookie, setCookie } from './cookie.js';
+import { getCookie, getCookieSync, setCookie } from './cookie.js';
 import type {
   BuilderContent,
   BuilderContentVariation,
@@ -16,6 +16,12 @@ const getContentVariationCookie = ({
   canTrack,
 }: { contentId: string } & CanTrack) =>
   getCookie({ name: getContentTestKey(contentId), canTrack });
+
+const getContentVariationCookieSync = ({
+  contentId,
+  canTrack,
+}: { contentId: string } & CanTrack) =>
+  getCookieSync({ name: getContentTestKey(contentId), canTrack });
 
 const setContentVariationCookie = ({
   contentId,
@@ -90,25 +96,13 @@ type TestFields = {
   testVariationName: string;
 };
 
-const getContentVariation = async ({
+const getTestFields = ({
   item,
-  canTrack,
+  testGroupId,
 }: {
   item: BuilderContentWithVariations;
-} & CanTrack): Promise<TestFields> => {
-  // try to find test variation in cookies/storage
-  // if not found, assign a random variation to this user and store it in cookies/storage
-  const testGroupId =
-    (await getContentVariationCookie({
-      canTrack,
-      contentId: item.id,
-    })) ||
-    getAndSetVariantId({
-      variations: item.variations,
-      id: item.id,
-      canTrack,
-    });
-
+  testGroupId: string;
+}): TestFields => {
   const variationValue = item.variations[testGroupId];
   if (
     testGroupId === item.id ||
@@ -129,8 +123,32 @@ const getContentVariation = async ({
   }
 };
 
-// TO-DO: make this synchronous
-// need to revert react-native hack of making this function async...
+export const handleABTestingSync = ({
+  item,
+  canTrack,
+}: { item: BuilderContent } & CanTrack) => {
+  if (!checkIsBuilderContentWithVariations(item)) {
+    return;
+  }
+
+  const testGroupId =
+    getContentVariationCookieSync({
+      canTrack,
+      contentId: item.id,
+    }) ||
+    getAndSetVariantId({
+      variations: item.variations,
+      id: item.id,
+      canTrack,
+    });
+
+  const variationValue = getTestFields({ item, testGroupId });
+  return {
+    ...item,
+    ...variationValue,
+  };
+};
+
 export const handleABTesting = async ({
   item,
   canTrack,
@@ -139,6 +157,17 @@ export const handleABTesting = async ({
     return;
   }
 
-  const variationValue = await getContentVariation({ item, canTrack });
+  const testGroupId =
+    (await getContentVariationCookie({
+      canTrack,
+      contentId: item.id,
+    })) ||
+    getAndSetVariantId({
+      variations: item.variations,
+      id: item.id,
+      canTrack,
+    });
+
+  const variationValue = getTestFields({ item, testGroupId });
   Object.assign(item, variationValue);
 };
