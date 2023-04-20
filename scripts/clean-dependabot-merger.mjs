@@ -10,6 +10,7 @@ const prsStr =
  */
 const prs = JSON.parse(prsStr.stdout);
 
+// exclude `BuilderIO/builder-internal` PRs
 const cleanedPrs = prs.filter(pr => pr.url.includes('BuilderIO/builder/pull'));
 
 for (const pr of cleanedPrs) {
