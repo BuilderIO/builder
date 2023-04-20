@@ -546,6 +546,18 @@ module.exports = {
                   }
                 });
               }
+              if (json.name === 'RenderContentVariants') {
+                traverse(json).forEach(function (item) {
+                  if (!isMitosisNode(item)) {
+                    return;
+                  }
+
+                  if (item.name === 'script') {
+                    this.remove();
+                    this.stop();
+                  }
+                });
+              }
             },
           },
         }),

@@ -1,10 +1,11 @@
-import { For, Show, useStore } from '@builder.io/mitosis';
+import { For, Show, onInit, useStore } from '@builder.io/mitosis';
 import { isBrowser } from '../../functions/is-browser';
 import { getVariantsScriptString } from './helpers';
 import RenderContent from '../render-content/render-content.lite';
 import type { RenderContentProps } from '../render-content/render-content.types';
 import { checkIsDefined } from '../../helpers/nullable';
 import { handleABTestingSync } from '../../helpers/ab-tests';
+import { TARGET } from '../../constants/target';
 
 type VariantsProviderProps = RenderContentProps;
 
@@ -31,6 +32,20 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
     shouldRenderVariants:
       ((isBrowser() && props.canTrack) || !isBrowser()) &&
       Object.keys(props.content?.variations || {}).length > 0,
+  });
+
+  onInit(() => {
+    if (TARGET === 'svelte' && state.shouldRenderVariants) {
+      // get first template in loop
+      const template = document.querySelector(
+        `template[data-template-variant-id="${state.variants[0]?.id}"]`
+      );
+      // create and append script as sibling of template
+      const script = document.createElement('script');
+      script.id = `variants-script-${props.content?.id}`;
+      script.innerHTML = state.variantScriptStr;
+      template?.parentNode?.insertBefore(script, template);
+    }
   });
 
   return (
