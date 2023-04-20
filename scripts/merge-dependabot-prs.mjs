@@ -44,6 +44,23 @@ const getPRs = async ({ isApproved }) => {
   return pullRequests;
 };
 
+/**
+ *
+ * @param {Octokit.SearchIssuesAndPullRequestsResponseItemsItem} pr
+ */
+const autoMerge = async pr => {
+  try {
+    await $`gh pr review ${pr.number} --approve`;
+    // enable auto-merge
+    await $`gh pr merge ${pr.number} --auto --squash`;
+    console.log(`Enabled auto-merge for ${pr.html_url}.`);
+  } catch (e) {
+    console.log(`Error auto-merging ${pr.html_url}.`);
+    // print details
+    console.log(e);
+  }
+};
+
 async function approve() {
   // List all unapproved PRs that match the query
   const unapprovedPullRequests = await getPRs({ isApproved: false });
@@ -74,15 +91,7 @@ async function approve() {
    * @param {Octokit.SearchIssuesAndPullRequestsResponseItemsItem} pr
    */
   const processPr = async pr => {
-    try {
-      // enable auto-merge
-      await $`gh pr merge ${pr.number} --auto --squash`;
-      console.log(`Enabled auto-merge for ${pr.html_url}.`);
-    } catch (e) {
-      console.log(`Error auto-merging ${pr.html_url}.`);
-      // print details
-      console.log(e);
-    }
+    autoMerge(pr);
     // approve the PR and print appropriate message
     console.log(`Approving ${pr.html_url}...`);
 
@@ -219,8 +228,8 @@ async function rebaseDependabot(prUrl) {
 
 async function main() {
   await getQuery();
-  // await approve();
-  await merge();
+  await approve();
+  // await merge();
 }
 
 async function workflowStuff() {
