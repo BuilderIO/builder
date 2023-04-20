@@ -27,9 +27,9 @@ const mergePrs = async () => {
   for (const pr of prs) {
     echo`merging PR: ${pr.url}: ${pr.title}`;
     try {
-      const out1 = await $`gh pr review ${pr.number} --approve`;
+      await $`gh pr review ${pr.number} --approve`;
       // enable auto-merge
-      const out2 = await $`gh pr merge ${pr.number} --auto --squash`;
+      await $`gh pr merge ${pr.number} --auto --squash`;
     } catch (error) {
       echo`ERROR merging PR: ${pr.url}: ${pr.title}`;
       echo`ERROR: ${error}`;
@@ -37,13 +37,13 @@ const mergePrs = async () => {
   }
 };
 
-const rebasePrs = async () => {
+const messageDependabot = async (command = 'rebase') => {
   const prs = await getPrs();
   for (const pr of prs) {
     echo`commenting on PR: ${pr.url}: ${pr.title}`;
     try {
       // comment on the PR with `@dependabot rebase`
-      const out1 = await $`gh pr comment ${pr.number} --body="@dependabot rebase"`;
+      await $`gh pr comment ${pr.number} --body="@dependabot ${command}"`;
     } catch (error) {
       echo`ERROR commenting on PR: ${pr.url}: ${pr.title}`;
       echo`ERROR: ${error}`;
@@ -52,11 +52,13 @@ const rebasePrs = async () => {
 };
 
 const main = async () => {
-  const action = await question('What do you want to do? [merge/rebase]: ');
+  const action = await question('What do you want to do? [merge/msg]: ');
   if (action === 'merge') {
     await mergePrs();
-  } else if (action === 'rebase') {
-    await rebasePrs();
+  } else if (action === 'msg') {
+    // get msg from user
+    const command = await question('What do you want to say to dependabot? [rebase]: ');
+    await messageDependabot(command);
   } else {
     console.log('Unknown action');
   }
