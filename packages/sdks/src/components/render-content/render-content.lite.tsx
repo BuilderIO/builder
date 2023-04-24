@@ -48,6 +48,7 @@ import {
   getContextStateInitialValue,
 } from './render-content.helpers.js';
 import { TARGET } from '../../constants/target.js';
+import { logger } from '../../helpers/logger.js';
 
 useMetadata({
   qwik: {
@@ -278,8 +279,8 @@ export default function RenderContent(props: RenderContentProps) {
 
   onMount(() => {
     if (!props.apiKey) {
-      console.error(
-        '[Builder.io]: No API key provided to `RenderContent` component. This can cause issues. Please provide an API key using the `apiKey` prop.'
+      logger.error(
+        'No API key provided to `RenderContent` component. This can cause issues. Please provide an API key using the `apiKey` prop.'
       );
     }
 
