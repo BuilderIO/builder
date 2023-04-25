@@ -109,5 +109,4 @@ describe('Generate Content URL', () => {
     });
     expect(output).toMatchSnapshot();
   });
-
 });

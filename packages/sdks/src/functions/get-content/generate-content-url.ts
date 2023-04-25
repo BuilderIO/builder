@@ -31,7 +31,9 @@ export const generateContentUrl = (options: GetContentOptions): URL => {
   }
 
   const url = new URL(
-    `https://cdn.builder.io/api/${apiVersion}/content/${model}?apiKey=${apiKey}&limit=${limit}&noTraverse=${noTraverse}&includeRefs=${includeRefs}${locale ? `&locale=${locale}` : ''}${enrich ? `&enrich=${enrich}` : ''}`
+    `https://cdn.builder.io/api/${apiVersion}/content/${model}?apiKey=${apiKey}&limit=${limit}&noTraverse=${noTraverse}&includeRefs=${includeRefs}${
+      locale ? `&locale=${locale}` : ''
+    }${enrich ? `&enrich=${enrich}` : ''}`
   );
 
   const queryOptions = {
