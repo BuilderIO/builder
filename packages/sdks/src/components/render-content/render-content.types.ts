@@ -18,6 +18,7 @@ export type RenderContentProps = {
   canTrack?: boolean;
   locale?: string;
   includeRefs?: boolean;
+  enrich?: boolean;
 };
 
 export interface BuilderComponentStateChange {

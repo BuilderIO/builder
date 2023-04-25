@@ -40,6 +40,11 @@ export interface GetContentOptions {
   includeRefs?: boolean;
 
   /**
+   * Include multilevel references in the response.
+   */
+  enrich?: boolean;
+
+  /**
    * If provided, the API will auto-resolve localized objects to the value of this `locale` key.
    */
   locale?: string;

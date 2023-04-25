@@ -301,6 +301,10 @@ export interface GetContentOptions {
    */
   includeRefs?: boolean;
   /**
+   * Include multilevel references in the response.
+   */
+  enrich?: boolean;
+  /**
    * How long in seconds content should be cached for. Sets the max-age of the cache-control header
    * response header.
    *
@@ -1708,10 +1712,11 @@ export class Builder {
       }
 
       if (options) {
-        // picking only locale and includeRefs
+        // picking only locale, includeRefs, and enrich for now
         this.queryOptions = {
           ...(options.locale && { locale: options.locale }),
           ...(options.includeRefs && { includeRefs: options.includeRefs }),
+          ...(options.enrich && { enrich: options.enrich }),
         };
       }
 
