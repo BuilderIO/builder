@@ -1,4 +1,4 @@
-import { Show, useMetadata, useStore } from '@builder.io/mitosis';
+import { Show, useStore } from '@builder.io/mitosis';
 import {
   getMaxWidthQueryForSize,
   getSizesForBreakpoints,
@@ -10,14 +10,6 @@ import { createCssClass } from '../../helpers/css.js';
 import { checkIsDefined } from '../../helpers/nullable.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
 import RenderInlinedStyles from '../render-inlined-styles.lite';
-
-useMetadata({
-  qwik: {
-    component: {
-      isLight: true,
-    },
-  },
-});
 
 export type BlockStylesProps = {
   block: BuilderBlock;
@@ -58,7 +50,11 @@ export default function BlockStyles(props: BlockStylesProps) {
       const mediumStyles = styles?.medium;
       const smallStyles = styles?.small;
 
-      const className = state.useBlock.id!;
+      const className = state.useBlock.id;
+
+      if (!className) {
+        return '';
+      }
 
       const largeStylesClass = largeStyles
         ? createCssClass({ className, styles: largeStyles })

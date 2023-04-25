@@ -1,16 +1,13 @@
-import type {
-  BuilderContextInterface,
-  BuilderRenderState,
-} from '../../context/types.js';
+import type { BuilderContextInterface } from '../../context/types.js';
 import { getBlockActions } from '../../functions/get-block-actions.js';
 import { getBlockComponentOptions } from '../../functions/get-block-component-options.js';
 import { getBlockProperties } from '../../functions/get-block-properties.js';
-import { getBlockTag } from '../../functions/get-block-tag.js';
 import { getProcessedBlock } from '../../functions/get-processed-block.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
 import BlockStyles from './block-styles.lite';
 import {
   getComponent,
+  getProxyState,
   getRepeatItemData,
   isEmptyHtmlElement,
 } from './render-block.helpers.js';
@@ -29,20 +26,16 @@ export type RenderBlockProps = {
 };
 
 useMetadata({
-  qwik: {
-    component: {
-      isLight: true,
-    },
-  },
   elementTag: 'state.tag',
 });
 
 export default function RenderBlock(props: RenderBlockProps) {
   const state = useStore({
     component: getComponent({ block: props.block, context: props.context }),
-    get tag() {
-      return getBlockTag(state.useBlock);
-    },
+    repeatItemData: getRepeatItemData({
+      block: props.block,
+      context: props.context,
+    }),
     get useBlock(): BuilderBlock {
       return state.repeatItemData
         ? props.block
@@ -53,6 +46,7 @@ export default function RenderBlock(props: RenderBlockProps) {
             shouldEvaluateBindings: true,
           });
     },
+    tag: props.block.tagName || 'div',
     get canShowBlock() {
       if (checkIsDefined(state.useBlock.hide)) {
         return !state.useBlock.hide;
@@ -62,30 +56,11 @@ export default function RenderBlock(props: RenderBlockProps) {
       }
       return true;
     },
-    get proxyState() {
-      if (typeof Proxy === 'undefined') {
-        console.error(
-          'no Proxy available in this environment, cannot proxy state.'
-        );
-        return props.context.state;
-      }
-
-      const useState = new Proxy(props.context.state, {
-        set: (obj, prop: keyof BuilderRenderState, value) => {
-          // set the value on the state object, so that the event handler instantly gets the update.
-          obj[prop] = value;
-
-          // set the value in the context, so that the rest of the app gets the update.
-          props.context.setState?.(obj);
-          return true;
-        },
-      });
-      return useState;
-    },
+    proxyState: getProxyState(props.context),
     get actions() {
       return getBlockActions({
         block: state.useBlock,
-        state: state.proxyState,
+        state: TARGET === 'qwik' ? props.context.state : state.proxyState,
         context: props.context.context,
       });
     },
@@ -104,23 +79,7 @@ export default function RenderBlock(props: RenderBlockProps) {
           : {}),
       };
     },
-    get renderComponentProps(): RenderComponentProps {
-      return {
-        blockChildren: state.useBlock.children ?? [],
-        componentRef: state.component?.component,
-        componentOptions: {
-          ...getBlockComponentOptions(state.useBlock),
-          /**
-           * These attributes are passed to the wrapper element when there is one. If `noWrap` is set to true, then
-           * they are provided to the component itself directly.
-           */
-          ...(!state.component?.noWrap
-            ? {}
-            : { attributes: { ...state.attributes, ...state.actions } }),
-        },
-        context: state.childrenContext,
-      };
-    },
+
     get childrenWithoutParentComponent() {
       /**
        * When there is no `componentRef`, there might still be children that need to be rendered. In this case,
@@ -135,11 +94,6 @@ export default function RenderBlock(props: RenderBlockProps) {
         ? state.useBlock.children ?? []
         : [];
     },
-
-    repeatItemData: getRepeatItemData({
-      block: props.block,
-      context: props.context,
-    }),
 
     get childrenContext(): BuilderContextInterface {
       const getInheritedTextStyles = () => {
@@ -165,6 +119,24 @@ export default function RenderBlock(props: RenderBlockProps) {
         setState: props.context.setState,
         registeredComponents: props.context.registeredComponents,
         inheritedStyles: getInheritedTextStyles(),
+      };
+    },
+
+    get renderComponentProps(): RenderComponentProps {
+      return {
+        blockChildren: state.useBlock.children ?? [],
+        componentRef: state.component?.component,
+        componentOptions: {
+          ...getBlockComponentOptions(state.useBlock),
+          /**
+           * These attributes are passed to the wrapper element when there is one. If `noWrap` is set to true, then
+           * they are provided to the component itself directly.
+           */
+          ...(!state.component?.noWrap
+            ? {}
+            : { attributes: { ...state.attributes, ...state.actions } }),
+        },
+        context: state.childrenContext,
       };
     },
   });

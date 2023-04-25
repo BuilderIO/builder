@@ -5,6 +5,7 @@ import type { BuilderContent } from '../../types/builder-content.js';
 import { onMount, onUpdate, useContext, useStore } from '@builder.io/mitosis';
 import type { BuilderBlock } from '../../types/builder-block.js';
 import { TARGET } from '../../constants/target';
+import { logger } from '../../helpers/logger';
 
 export interface SymbolInfo {
   model?: string;
@@ -71,10 +72,7 @@ export default function Symbol(props: SymbolProps) {
             }
           })
           .catch((err) => {
-            console.error(
-              '[Builder.io]: Could not fetch symbol content: ',
-              err
-            );
+            logger.error('Could not fetch symbol content: ', err);
           });
       }
     },

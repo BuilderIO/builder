@@ -47,7 +47,7 @@ export interface GetContentOptions {
   /**
    * If provided, sets the Builder API version used to fetch content.
    *
-   * Defaults to `v2`.
+   * Defaults to `v3`.
    */
   apiVersion?: 'v2' | 'v3';
 }
