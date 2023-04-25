@@ -47,7 +47,6 @@ export default function RenderBlock(props: RenderBlockProps) {
     },
     tag: props.block.tagName || 'div',
     get canShowBlock() {
-      if (checkIsDefined(state.useBlock.hide)) {
       if ('hide' in state.useBlock) {
         return !state.useBlock.hide;
       }
