@@ -4,7 +4,7 @@ import type { BuilderBlock } from '../types/builder-block.js';
 import { transformBlockProperties } from './transform-block-properties.js';
 
 const extractRelevantRootBlockProperties = (block: BuilderBlock) => {
-  // currently we are only spreading `href` and `linkUrl` properties.
+  // currently we are only spreading the `href` property
   // TO-DO: potentially spread all properties from block, but only if they are not already defined by BuilderBlock
 
   // const {
