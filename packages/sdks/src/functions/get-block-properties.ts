@@ -33,7 +33,7 @@ const extractRelevantRootBlockProperties = (block: BuilderBlock) => {
   //   ...remainingBlockProperties
   // } = block;
 
-  return { href: (block as any).href, linkUrl: (block as any).linkUrl };
+  return { href: (block as any).href };
 };
 
 export function getBlockProperties(block: BuilderBlock) {

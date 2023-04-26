@@ -541,5 +541,18 @@ test.describe(targetContext.name, () => {
         });
       });
     });
+
+    test.describe('Link URL', () => {
+      test('renders with static value', async ({ page }) => {
+        await page.goto('/link-url');
+
+        await page.locator(`a[href="/static-url"`).waitFor();
+      });
+      test('renders with dynamic value', async ({ page }) => {
+        await page.goto('/link-url');
+
+        await page.locator(`a[href="/dynamic-url"`).waitFor();
+      });
+    });
   });
 });

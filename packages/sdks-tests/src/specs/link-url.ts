@@ -37,7 +37,7 @@ export const CONTENT = {
       {
         '@type': '@builder.io/sdk:Element',
         '@version': 2,
-        bindings: { href: 'var _virtual_index="/testing";return _virtual_index' },
+        bindings: { href: 'var _virtual_index="/dynamic-url";return _virtual_index' },
         tagName: 'a',
         id: 'builder-07d107e354c44096a5101b2f3a09a458',
         component: {
