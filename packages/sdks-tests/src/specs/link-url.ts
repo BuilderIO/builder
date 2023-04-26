@@ -37,16 +37,13 @@ export const CONTENT = {
       {
         '@type': '@builder.io/sdk:Element',
         '@version': 2,
-        bindings: {
-          'properties.href': 'var _virtual_index="/dynamic-url-test";return _virtual_index',
-        },
+        bindings: { href: 'var _virtual_index="/testing";return _virtual_index' },
         tagName: 'a',
-        id: 'builder-02f94b50906b4df1b964062a9d990fff',
-        meta: { previousId: 'builder-d76507862649430f8b26abe5187492e2' },
+        id: 'builder-07d107e354c44096a5101b2f3a09a458',
         component: {
           name: 'Text',
           options: {
-            text: '<span style="display: block;" class="builder-paragraph">dynamic url</span>',
+            text: '<span style="display: block;" class="builder-paragraph">Dynamic URL</span>',
           },
         },
         responsiveStyles: {
@@ -59,8 +56,8 @@ export const CONTENT = {
             marginTop: '20px',
             lineHeight: 'normal',
             height: 'auto',
-            pointerEvents: 'auto',
             cursor: 'pointer',
+            pointerEvents: 'auto',
           },
         },
       },
@@ -80,7 +77,7 @@ export const CONTENT = {
   published: 'published',
   firstPublished: 1682442349809,
   testRatio: 1,
-  lastUpdated: 1682442349810,
+  lastUpdated: 1682538658564,
   createdDate: 1682441658988,
   createdBy: 'OcOewqA7uqVVlVfqY453F8vgcc33',
   meta: {
@@ -92,5 +89,5 @@ export const CONTENT = {
   variations: {},
   name: 'link-url',
   id: '9491791938664a6ca6e5126ad9288cd5',
-  rev: 'v9aboe87guh',
+  rev: 'b43pab22lz',
 };
