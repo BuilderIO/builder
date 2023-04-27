@@ -35,7 +35,7 @@ export async function getAllContent(
     const content = await (res.json() as Promise<ContentResponse>);
 
     if ('status' in content && !('results' in content)) {
-      logger.error('Error fetching data. ', content, options);
+      logger.error('Error fetching data. ', { url, content, options });
       return content;
     }
 

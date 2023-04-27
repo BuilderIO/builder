@@ -1865,6 +1865,21 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@builder.io/e2e-nextjs-react-app-dir@workspace:sdks/e2e/nextjs-react-app-dir":
+  version: 0.0.0-use.local
+  resolution: "@builder.io/e2e-nextjs-react-app-dir@workspace:sdks/e2e/nextjs-react-app-dir"
+  dependencies:
+    "@builder.io/sdk-react": "workspace:*"
+    "@builder.io/sdks-e2e-tests": "workspace:*"
+    "@types/react": ^18.0.14
+    "@types/react-dom": ^18.0.5
+    next: ^12.2.5
+    react: ^18.2.0
+    react-dom: ^18.2.0
+    typescript: ^4
+  languageName: unknown
+  linkType: soft
+
 "@builder.io/e2e-nextjs-react@workspace:sdks/e2e/nextjs-react":
   version: 0.0.0-use.local
   resolution: "@builder.io/e2e-nextjs-react@workspace:sdks/e2e/nextjs-react"
@@ -1876,7 +1891,6 @@ __metadata:
     next: ^12.2.5
     react: ^18.2.0
     react-dom: ^18.2.0
-    rimraf: ^3.0.2
     typescript: ^4
   languageName: unknown
   linkType: soft
@@ -1990,7 +2004,6 @@ __metadata:
     "@vitejs/plugin-react": ^1.3.0
     react: ^18.2.0
     react-dom: ^18.2.0
-    rimraf: ^3.0.2
     typescript: ^4
     vite: ^3.0.4
   languageName: unknown
