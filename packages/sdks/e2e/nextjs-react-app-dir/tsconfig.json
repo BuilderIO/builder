@@ -4,7 +4,5 @@
     // workaround to get `@builder.io/sdk-react` types to work.
     "moduleResolution": "nodenext"
   },
-  "exclude": [
-    "typings.d.ts"
-  ]
+  "exclude": ["typings.d.ts"]
 }
