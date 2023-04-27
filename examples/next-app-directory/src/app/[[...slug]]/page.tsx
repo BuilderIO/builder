@@ -1,21 +1,17 @@
-import { builder, Builder } from '@builder.io/sdk';
+import { getContent } from '@builder.io/sdk-react/get-content';
 
-Builder.isReact = true;
 // ✅ This pattern works. You can pass a Server Component
 // as a child or prop of a Client Component.
 import BuilderPage from './BuilderPage';
 import builderConfig from '../../../builderConfig.json';
 
-builder.init(builderConfig.apiKey);
-
 async function getBuilderContent(urlPath: string) {
-  const page = await builder
-    .get('page', {
-      userAttributes: {
-        urlPath,
-      },
-    })
-    .toPromise();
+  const page = await getContent({
+    apiKey: builderConfig.apiKey,
+    model: 'page',
+    userAttributes: { urlPath },
+  });
+
   // The return value is *not* serialized
   // You can return Date, Map, Set, etc.
   return {
@@ -42,11 +38,7 @@ export default async function Page(props: PageProps) {
       </>
     );
   }
-  return (
-    <>
-      <BuilderPage builderContent={content.page} />
-    </>
-  );
+  return <BuilderPage builderContent={content.page} />;
 }
 
 export const revalidate = 4;
