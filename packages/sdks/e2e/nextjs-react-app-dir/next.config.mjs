@@ -1,12 +1,12 @@
 /**
  * @type {import('next').NextConfig}
  */
-const nextConfig = {
+export default {
   experimental: {
     externalDir: true,
     appDir: true,
   },
+  typescript: {
+    tsconfigPath: './tsconfig.nextjs.json',
+  },
 };
-
-// eslint-disable-next-line no-undef
-module.exports = nextConfig;

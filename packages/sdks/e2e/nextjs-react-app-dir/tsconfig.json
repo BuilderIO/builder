@@ -1,25 +1,15 @@
 {
+  "extends": "./tsconfig.nextjs.json",
   "compilerOptions": {
-    "target": "es5",
-    "moduleResolution": "nodenext",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "strict": false,
-    "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
-    "incremental": true,
-    "esModuleInterop": true,
-    "module": "esnext",
-    "isolatedModules": true,
-    "jsx": "preserve",
-    "resolveJsonModule": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ]
+    // workaround to get `@builder.io/sdk-react` types to work.
+    "moduleResolution": "nodenext"
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
+  "include": [
+    // this removes `typings.d.ts` from the list of files to be compiled,
+    // as it has a fallback for React SDK types.
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
 }
