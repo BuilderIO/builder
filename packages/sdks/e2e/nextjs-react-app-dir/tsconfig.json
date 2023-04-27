@@ -4,9 +4,5 @@
     // workaround to get `@builder.io/sdk-react` types to work.
     "moduleResolution": "nodenext"
   },
-  // this removes `typings.d.ts` from the list of files to be compiled,
-  // as it has a fallback for React SDK types.
-  "exclude": [
-    "typings.d.ts"
-  ]
+  "exclude": ["typings.d.ts"]
 }

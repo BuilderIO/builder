@@ -11,7 +11,7 @@ export interface ImageProps {
   height?: number;
   width?: number;
   altText?: string;
-  backgroundSize?: string;
+  backgroundSize?: 'cover' | 'contain';
   backgroundPosition?: string;
   srcset?: string;
   aspectRatio?: number;
@@ -56,7 +56,9 @@ export default function Image(props: ImageProps) {
     },
 
     get aspectRatioCss():
-      | Pick<JSX.CSS, 'position' | 'height' | 'width' | 'left' | 'top'>
+      | (Pick<JSX.CSS, 'position' | 'height' | 'width' | 'left' | 'top'> & {
+          position: 'absolute';
+        })
       | undefined {
       const aspectRatioStyles = {
         position: 'absolute',
@@ -64,7 +66,7 @@ export default function Image(props: ImageProps) {
         width: '100%',
         left: '0px',
         top: '0px',
-      };
+      } as const;
       const out = props.aspectRatio ? aspectRatioStyles : undefined;
       return out;
     },

@@ -1,22 +1,11 @@
-import { getContent } from '@builder.io/sdk-react/server';
+import { getProps } from '@builder.io/sdks-e2e-tests';
 
 // ✅ This pattern works. You can pass a Server Component
 // as a child or prop of a Client Component.
 import BuilderPage from './BuilderPage';
-import { API_KEY } from '../../builderConfig';
 
-async function getBuilderContent(urlPath: string) {
-  const page = await getContent({
-    apiKey: API_KEY,
-    model: 'page',
-    userAttributes: { urlPath },
-  });
-
-  // The return value is *not* serialized
-  // You can return Date, Map, Set, etc.
-  return {
-    page: page || null,
-  };
+function getBuilderContent(urlPath: string) {
+  return getProps(urlPath);
 }
 
 interface PageProps {
@@ -28,9 +17,9 @@ interface PageProps {
 // Pages are Server Components by default
 export default async function Page(props: PageProps) {
   const urlPath = '/' + (props.params?.slug?.join('/') || '');
-  const content = await getBuilderContent(urlPath);
+  const builderProps = getBuilderContent(urlPath);
 
-  if (!content.page) {
+  if (!builderProps.content) {
     return (
       <>
         <h1>404</h1>
@@ -38,7 +27,7 @@ export default async function Page(props: PageProps) {
       </>
     );
   }
-  return <BuilderPage builderContent={content.page} />;
+  return <BuilderPage builderProps={builderProps} />;
 }
 
 export const revalidate = 4;

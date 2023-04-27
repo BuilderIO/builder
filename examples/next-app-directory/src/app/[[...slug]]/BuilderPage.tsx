@@ -1,14 +1,12 @@
 'use client';
-import { BuilderComponent, builder } from '@builder.io/react';
-import { BuilderContent } from '@builder.io/sdk';
-import builderConfig from '../../../builderConfig.json';
-
-builder.init(builderConfig.apiKey);
+import { API_KEY } from '../../builderConfig';
+import { RenderContent } from '@builder.io/sdk-react';
+import { ComponentProps } from 'react';
 
 interface BuilderPageProps {
-  builderContent: BuilderContent;
+  builderContent: ComponentProps<typeof RenderContent>;
 }
 
 export default function BuilderPage({ builderContent }: BuilderPageProps) {
-  return <BuilderComponent model="page" content={builderContent} />;
+  return <RenderContent apiKey={API_KEY} model="page" content={builderContent} />;
 }

@@ -1,23 +1,20 @@
 {
   "name": "@builder.io/sdk-react",
   "description": "Builder.io SDK for React",
-  "version": "0.2.2",
-  "main": "src/index.js",
+  "version": "0.2.3-4",
   "type": "module",
+  "files": [
+    "dist"
+  ],
   "exports": {
-    ".": {
-      "import": "./dist/react/index.js",
-      "require": "./dist/react/index.js"
-    },
-    "./rsc": {
-      "import": "./dist/rsc/index.js",
-      "require": "./dist/rsc/index.js"
-    }
+    ".": "./dist/sdk/index.js",
+    "./server": "./dist/sdk/functions/get-content/index.js"
   },
   "scripts": {
-    "build:react": "tsc -p ./tsconfig.react.json",
-    "build:rsc": "tsc -p ./tsconfig.rsc.json",
-    "build": "yarn run build:react && yarn run build:rsc",
+    "build:types:server": "tsc -p ./tsconfig.server.json",
+    "build:types:sdk": "tsc -p ./tsconfig.sdk.json",
+    "build:types": "yarn build:types:sdk",
+    "build": "yarn build:types",
     "release:patch": "yarn run build && npm version patch && npm publish",
     "release:minor": "yarn run build && npm version minor && npm publish",
     "release:dev": "yarn run build && npm version prerelease && npm publish --tag dev"
@@ -26,7 +23,11 @@
     "react": "^18.2.0"
   },
   "devDependencies": {
+    "@vitejs/plugin-react": "^4.0.0",
     "react": "^18.2.0",
-    "typescript": "^4.9.4"
+    "rollup-plugin-preserve-directives": "^0.1.0",
+    "typescript": "^4.9.4",
+    "vite": "^4.3.3",
+    "vite-plugin-dts": "^2.3.0"
   }
 }

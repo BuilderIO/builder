@@ -275,6 +275,7 @@ export default function RenderContent(props: RenderContentProps) {
     apiKey: props.apiKey,
     apiVersion: props.apiVersion,
     registeredComponents: state.allRegisteredComponents,
+    inheritedStyles: {},
   });
 
   onMount(() => {
