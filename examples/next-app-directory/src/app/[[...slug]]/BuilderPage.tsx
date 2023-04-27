@@ -1,5 +1,5 @@
 'use client';
-import { API_KEY } from '@/builderConfig';
+import { API_KEY } from '../../builderConfig';
 import { RenderContent } from '@builder.io/sdk-react';
 import { ComponentProps } from 'react';
 
