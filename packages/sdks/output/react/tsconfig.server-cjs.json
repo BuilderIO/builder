@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outFile": "./dist/index.server.cts",
+    "module": "CommonJS"
+  },
+  "include": [
+    "./packages/react/src/functions/get-content/**/*"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outFile": "./dist/index.server.ts",
+    "module": "ESNext"
+  },
+  "include": [
+    "./packages/react/src/**/*"
+  ]
+}

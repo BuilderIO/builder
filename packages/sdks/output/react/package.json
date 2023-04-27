@@ -1,24 +1,24 @@
 {
   "name": "@builder.io/sdk-react",
   "description": "Builder.io SDK for React",
-  "version": "0.2.2",
-  "main": "src/index.js",
+  "version": "0.2.3-3",
   "type": "module",
   "exports": {
     ".": {
-      "import": "./dist/react/index.js",
-      "require": "./dist/react/index.js"
+      "import": "./dist/sdk.mjs",
+      "require": "./dist/sdk.cjs"
     },
-    "./get-content": "./dist/react/functions/get-content/index.js",
-    "./rsc": {
-      "import": "./dist/rsc/index.js",
-      "require": "./dist/rsc/index.js"
+    "./server": {
+      "import": "./dist/server.mjs",
+      "require": "./dist/server.cjs"
     }
   },
   "scripts": {
-    "build:react": "tsc -p ./tsconfig.react.json",
-    "build:rsc": "tsc -p ./tsconfig.rsc.json",
-    "build": "yarn run build:react && yarn run build:rsc",
+    "build:types:server": "tsc -p ./tsconfig.server-cjs.json && tsc -p ./tsconfig.server-esm.json",
+    "build:types:sdk": "tsc -p ./tsconfig.react-cjs.json && tsc -p ./tsconfig.react-esm.json",
+    "build:types": "yarn build:types:sdk && yarn build:types:server",
+    "build:js": "vite build",
+    "build": "yarn build:js && yarn build:types",
     "release:patch": "yarn run build && npm version patch && npm publish",
     "release:minor": "yarn run build && npm version minor && npm publish",
     "release:dev": "yarn run build && npm version prerelease && npm publish --tag dev"
@@ -27,7 +27,11 @@
     "react": "^18.2.0"
   },
   "devDependencies": {
+    "@vitejs/plugin-react": "^4.0.0",
     "react": "^18.2.0",
-    "typescript": "^4.9.4"
+    "rollup-plugin-preserve-directives": "^0.1.0",
+    "typescript": "^4.9.4",
+    "vite": "^4.3.3",
+    "vite-plugin-dts": "^2.3.0"
   }
 }

@@ -321,9 +321,11 @@ module.exports = {
     },
     vue3: vueConfig,
     react: {
+      typescript: true,
       plugins: [
         SRCSET_PLUGIN,
         () => ({
+          // Needed for next v13 to work
           code: {
             pre: (code) => {
               return `'use client';\n${code}`;
