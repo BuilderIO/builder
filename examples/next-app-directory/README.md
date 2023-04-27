@@ -1,8 +1,9 @@
 # Next.js experimental app directory + Builder.io starter
 
-This example walks you through using Builder.io with an experimental version of  Next.js >= 13 application. 
+This example walks you through using Builder.io with an experimental version of Next.js >= 13 application.
 
 ### 🏗️ Experimental
+
 This starter includes the `app` folder structure which of you can find more details [here](https://beta.nextjs.org/docs/app-directory-roadmap)
 
 ## Prerequisites
@@ -88,6 +89,7 @@ Now that you have a new space, the next step is connecting "My Next.js App" with
 To connect your Builder.io space and your application, set the model preview URL and get your API key as follows:
 
 #### Setting the model preview URL
+
 To enable Builder to open your site in the visual editor, you will need to provide a URL that we can open which has the Builder rendering component in it.
 
 Go to the [/models](https://builder.io/models) page in Builder and choose your **page** model.
@@ -104,15 +106,7 @@ In the [Account settings](https://builder.io/account/space), copy your Public AP
 
 ![Image showing where to get your API Key](https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F761e521019724d8bbd59ed0d5f079c8e)
 
-
-In your code editor, configure `builderConfig.json` with the [Public API Key](https://builder.io/account/space) by adding a line to each file as follows, but using your Public API Key that you copied in the previous step.
-   For example:
-
-   ```shell
-   ...
-   "apiKey": "Your api key goes here" <-- replace this with your API Key
-   ...
-   ```
+In your code editor, configure [`./src/builderConfig.ts`](./src/builderConfig.ts) with the [Public API Key](https://builder.io/account/space) by replacing the value of `API_KEY`.
 
 ## Running your application
 
