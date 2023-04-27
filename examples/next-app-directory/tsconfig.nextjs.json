@@ -13,7 +13,6 @@
     "module": "esnext",
     "isolatedModules": true,
     "jsx": "preserve",
-    "resolveJsonModule": true,
     "plugins": [
       {
         "name": "next"
