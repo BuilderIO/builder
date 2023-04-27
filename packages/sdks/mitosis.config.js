@@ -345,14 +345,12 @@ module.exports = {
           code: {
             pre: (code) => {
               if (code.includes('RenderInlinedStyles')) {
-                console.log('code', code);
+                // fixes some type issues
+                code = code.replace(
+                  `return 'sty' + 'le'`,
+                  `return 'style' as \'style\'`
+                );
               }
-              // fixes some type issues
-              code = code.replace(
-                `return 'sty' + 'le'`,
-                `return 'style' as \'style\'`
-              );
-
               // Needed for next v13 to work
               return `'use client';\n${code}`;
             },

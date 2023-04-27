@@ -3,6 +3,9 @@
   "description": "Builder.io SDK for React",
   "version": "0.2.3-4",
   "type": "module",
+  "files": [
+    "dist"
+  ],
   "exports": {
     ".": "./dist/sdk/index.js",
     "./server": "./dist/sdk/functions/get-content/index.js"
