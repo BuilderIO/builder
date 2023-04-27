@@ -13,8 +13,7 @@
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
+    "moduleResolution": "nodenext",
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
@@ -27,10 +26,10 @@
       "@/*": [
         "./src/*"
       ]
-    }
+    },
+    "resolveJsonModule": true
   },
   "include": [
-    "typings.d.ts",
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",

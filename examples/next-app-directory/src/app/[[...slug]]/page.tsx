@@ -1,13 +1,13 @@
-import { getContent } from '@builder.io/sdk-react/get-content';
+import { getContent } from '@builder.io/sdk-react/server';
 
 // ✅ This pattern works. You can pass a Server Component
 // as a child or prop of a Client Component.
 import BuilderPage from './BuilderPage';
-import builderConfig from '../../../builderConfig.json';
+import { API_KEY } from '@/builderConfig';
 
 async function getBuilderContent(urlPath: string) {
   const page = await getContent({
-    apiKey: builderConfig.apiKey,
+    apiKey: API_KEY,
     model: 'page',
     userAttributes: { urlPath },
   });
