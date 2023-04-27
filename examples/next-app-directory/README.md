@@ -43,7 +43,7 @@ This example provides you with a ready-made application that you can copy locall
 1. Change into the example application by using the `cd` command:
 
    ```shell
-   cd builder/examples/simple-next-js-13
+   cd builder/examples/next-app-directory
    ```
 
 1. Open this directory in your favorite code editor.
@@ -106,7 +106,7 @@ In the [Account settings](https://builder.io/account/space), copy your Public AP
 
 ![Image showing where to get your API Key](https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F761e521019724d8bbd59ed0d5f079c8e)
 
-In your code editor, configure [`./src/builderConfig.ts`](./src/builderConfig.ts) with the [Public API Key](https://builder.io/account/space) by replacing the value of `API_KEY`.
+In your code editor, configure [`./src/builderConfig.js`](./src/builderConfig.js) with the [Public API Key](https://builder.io/account/space) by replacing the value of `API_KEY`.
 
 ## Running your application
 
