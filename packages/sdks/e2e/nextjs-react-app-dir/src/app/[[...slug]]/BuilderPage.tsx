@@ -1,4 +1,4 @@
-use client';
+'use client';
 import type { RenderContentProps } from '@builder.io/sdk-react';
 import { RenderContent } from '@builder.io/sdk-react';
 
