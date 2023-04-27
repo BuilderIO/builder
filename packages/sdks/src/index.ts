@@ -12,3 +12,4 @@ export * from './functions/get-builder-search-params/index.js';
 export { track } from './functions/track/index.js';
 export type { RegisteredComponent } from './context/types';
 export type { ComponentInfo } from './types/components';
+export type { RenderContentProps } from './components/render-content/render-content.types.js';

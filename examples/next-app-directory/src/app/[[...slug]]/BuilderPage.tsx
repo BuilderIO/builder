@@ -1,10 +1,10 @@
 'use client';
-import { API_KEY } from '../../builderConfig';
+
 import { RenderContent } from '@builder.io/sdk-react';
-import { ComponentProps } from 'react';
+import { API_KEY } from '../../builderConfig.js';
 
 interface BuilderPageProps {
-  builderContent: ComponentProps<typeof RenderContent>;
+  builderContent: any;
 }
 
 export default function BuilderPage({ builderContent }: BuilderPageProps) {

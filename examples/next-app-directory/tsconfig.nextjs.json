@@ -2,7 +2,11 @@
   "compilerOptions": {
     "target": "es5",
     "moduleResolution": "node",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
@@ -17,7 +21,8 @@
       {
         "name": "next"
       }
-    ]
+    ],
+    "resolveJsonModule": true
   },
   "include": [
     "typings.d.ts",
@@ -26,5 +31,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }
