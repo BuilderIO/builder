@@ -1,3 +1,9 @@
+### 0.2.2
+
+- Fix: dynamic bindings for Link URLs.
+- Fix: previewing content that includes a symbol whose `model` property is a `page`.
+- Fix: "Show If"/"Hide If" bindings when the initial value is `undefined`.
+
 ### 0.2.1
 
 Feature: Added support for reactive `state` values in JS code blocks provided by user.
