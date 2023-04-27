@@ -1,10 +1,10 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outFile": "./dist/index.server.ts",
+    "outDir": "./dist/server",
     "module": "ESNext"
   },
   "include": [
-    "./packages/react/src/**/*"
+    "./packages/react/src/functions/get-content/**/*"
   ]
 }

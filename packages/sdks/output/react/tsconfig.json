@@ -18,9 +18,11 @@
     "resolveJsonModule": true,
     "jsx": "react",
     "declaration": true,
-    "emitDeclarationOnly": true
   },
   "include": [
     "./packages/react/src/**/*"
+  ],
+  "exclude": [
+    "./packages/react/src/blocks/form/form.tsx"
   ]
 }

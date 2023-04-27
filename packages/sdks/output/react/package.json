@@ -4,21 +4,14 @@
   "version": "0.2.3-3",
   "type": "module",
   "exports": {
-    ".": {
-      "import": "./dist/sdk.mjs",
-      "require": "./dist/sdk.cjs"
-    },
-    "./server": {
-      "import": "./dist/server.mjs",
-      "require": "./dist/server.cjs"
-    }
+    ".": "./dist/sdk/index.js",
+    "./server": "./dist/sdk/functions/get-content/index.js"
   },
   "scripts": {
-    "build:types:server": "tsc -p ./tsconfig.server-cjs.json && tsc -p ./tsconfig.server-esm.json",
-    "build:types:sdk": "tsc -p ./tsconfig.react-cjs.json && tsc -p ./tsconfig.react-esm.json",
-    "build:types": "yarn build:types:sdk && yarn build:types:server",
-    "build:js": "vite build",
-    "build": "yarn build:js && yarn build:types",
+    "build:types:server": "tsc -p ./tsconfig.server.json",
+    "build:types:sdk": "tsc -p ./tsconfig.sdk.json",
+    "build:types": "yarn build:types:sdk",
+    "build": "yarn build:types",
     "release:patch": "yarn run build && npm version patch && npm publish",
     "release:minor": "yarn run build && npm version minor && npm publish",
     "release:dev": "yarn run build && npm version prerelease && npm publish --tag dev"
