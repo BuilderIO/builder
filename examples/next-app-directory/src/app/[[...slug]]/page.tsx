@@ -1,9 +1,8 @@
 import { getContent } from '@builder.io/sdk-react/server';
 
-// ✅ This pattern works. You can pass a Server Component
-// as a child or prop of a Client Component.
+// if you use VSCode and see a TS error for the line below, you can safely ignore it.
 import BuilderPage from './BuilderPage';
-import { API_KEY } from '../../builderConfig';
+import { API_KEY } from '../../builderConfig.js';
 
 async function getBuilderContent(urlPath: string) {
   const page = await getContent({
