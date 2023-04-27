@@ -4,7 +4,5 @@
     "outDir": "./dist/sdk",
     "module": "ESNext"
   },
-  "include": [
-    "./packages/react/src/**/*"
-  ]
+  "include": ["./packages/react/src/**/*"]
 }
