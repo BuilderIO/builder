@@ -35,7 +35,7 @@ targetContext.name = sdk;
 const isReactNative = sdk === 'reactNative';
 
 const things = WEB_SERVERS[sdk].map((packageName, i) => {
-  const port = isReactNative ? 19006 : 1234 + i;
+  const port = isReactNative ? 19006 : 1111 + i;
   const portFlag = isReactNative ? '' : `--port=${port}`;
 
   return {

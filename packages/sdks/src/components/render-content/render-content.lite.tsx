@@ -319,7 +319,10 @@ export default function RenderContent(props: RenderContentProps) {
       // override normal content in preview mode
       if (isPreviewing()) {
         const searchParams = new URL(location.href).searchParams;
-        const searchParamPreview = searchParams.get('builder.preview');
+        const searchParamPreviewModel = searchParams.get('builder.preview');
+        const searchParamPreviewId = searchParams.get(
+          `builder.preview.${searchParamPreviewModel}`
+        );
         const previewApiKey =
           searchParams.get('apiKey') || searchParams.get('builder.space');
 
@@ -328,15 +331,14 @@ export default function RenderContent(props: RenderContentProps) {
          * - the preview model name is the same as the one we're rendering, since there can be multiple models rendered
          *  at the same time, e.g. header/page/footer.
          * - the API key is the same, since we don't want to preview content from other organizations.
-         *
-         * TO-DO: should we check that the preview item ID is the same as the initial one being rendered? Or would
-         * this break scenarios where the item is not published yet?
+         * - if there is content, that the preview ID is the same as that of the one we receive.
          *
          * TO-DO: should we only update the state when there is a change?
          **/
         if (
-          searchParamPreview === props.model &&
-          previewApiKey === props.apiKey
+          searchParamPreviewModel === props.model &&
+          previewApiKey === props.apiKey &&
+          (!props.content || searchParamPreviewId === props.content.id)
         ) {
           getContent({
             model: props.model,

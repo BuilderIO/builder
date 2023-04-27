@@ -18,7 +18,6 @@ import { TARGET } from '../../constants/target.js';
 import { extractTextStyles } from '../../functions/extract-text-styles.js';
 import RenderComponent from './render-component.lite';
 import { getReactNativeBlockStyles } from '../../functions/get-react-native-block-styles.js';
-import { checkIsDefined } from '../../helpers/nullable.js';
 
 export type RenderBlockProps = {
   block: BuilderBlock;
@@ -48,10 +47,10 @@ export default function RenderBlock(props: RenderBlockProps) {
     },
     tag: props.block.tagName || 'div',
     get canShowBlock() {
-      if (checkIsDefined(state.useBlock.hide)) {
+      if ('hide' in state.useBlock) {
         return !state.useBlock.hide;
       }
-      if (checkIsDefined(state.useBlock.show)) {
+      if ('show' in state.useBlock) {
         return state.useBlock.show;
       }
       return true;
