@@ -321,7 +321,16 @@ module.exports = {
     },
     vue3: vueConfig,
     react: {
-      plugins: [SRCSET_PLUGIN],
+      plugins: [
+        SRCSET_PLUGIN,
+        () => ({
+          code: {
+            pre: (code) => {
+              return `'use client';\n${code}`;
+            },
+          },
+        }),
+      ],
       stylesType: 'style-tag',
     },
     rsc: {

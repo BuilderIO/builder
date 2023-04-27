@@ -9,6 +9,7 @@
       "import": "./dist/react/index.js",
       "require": "./dist/react/index.js"
     },
+    "./get-content": "./dist/react/functions/get-content/index.js",
     "./rsc": {
       "import": "./dist/rsc/index.js",
       "require": "./dist/rsc/index.js"
