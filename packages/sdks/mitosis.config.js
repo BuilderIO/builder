@@ -96,6 +96,10 @@ const vueConfig = {
             const eventPrefix = 'v-on:';
             return Object.keys(attrs)
               .filter((attr) => {
+                if (!attrs[attr]) {
+                  return false;
+                }
+
                 const isEventVal = attr.startsWith(eventPrefix);
                 return isEvent ? isEventVal : !isEventVal;
               })
