@@ -1,9 +1,9 @@
-'use client';
+use client';
+import type { RenderContentProps } from '@builder.io/sdk-react';
 import { RenderContent } from '@builder.io/sdk-react';
-import type { ComponentProps } from 'react';
 
 interface BuilderPageProps {
-  builderProps: ComponentProps<typeof RenderContent>;
+  builderProps: RenderContentProps;
 }
 
 export default function BuilderPage({ builderProps }: BuilderPageProps) {
