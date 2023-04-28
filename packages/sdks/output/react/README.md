@@ -8,7 +8,7 @@ NOTE: it is still in Beta. For the stable React v1 SDK [go here](../../../react/
 
 To use the SDK, you need to:
 
-- fetch the builder data using `getContent`: you can see how to use it here https://www.builder.io/c/docs/learning, and how it differs from the React V1 SDK's `builder.get()` function.
+- fetch the builder data using `getContent`: you can see how to use it here https://www.builder.io/c/docs/content-api, and how it differs from the React V1 SDK's `builder.get()` function.
 - pass that data to the `RenderContent` component, along with the following properties:
 
 ```ts
