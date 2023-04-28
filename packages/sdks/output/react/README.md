@@ -1,14 +1,17 @@
 # Builder.io React SDK v2 (BETA)
 
-This is the React v2 SDK.
+This is the React v2 SDK, `@builder.io/sdk-react`.
 
-NOTE: it is still in Beta. For the stable React v1 SDK [go here](../../../react/).
+NOTE: it is still in Beta. For the stable React v1 SDK [go here](../../../react/), i.e. `builder.io/react`.
 
 ## API Reference
 
 To use the SDK, you need to:
 
 - fetch the builder data using `getContent`: you can see how to use it here https://www.builder.io/c/docs/content-api, and how it differs from the React V1 SDK's `builder.get()` function.
+
+NOTE: if you are using the SDK in next v13's app directory, you will have to import `getContent` from @builder.io/sdk-react/server`. this is a special import that guarantees you don't import any client components with your data fetching.
+
 - pass that data to the `RenderContent` component, along with the following properties:
 
 ```ts
@@ -76,7 +79,7 @@ To check the status of the SDK, look at [these tables](../../README.md#feature-i
 ## Getting Started
 
 ```
-npm install @builder.io/sdk-react@dev
+npm install @builder.io/sdk-react
 ```
 
 ## Examples
