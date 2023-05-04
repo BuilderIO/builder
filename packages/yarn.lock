@@ -1849,7 +1849,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@builder.io/e2e-do-not-run-qwik@workspace:sdks/e2e/qwik"
   dependencies:
-    "@builder.io/qwik": ^0.101.0
+    "@builder.io/qwik": ^1.0.0
     "@builder.io/sdk-qwik": "workspace:*"
     "@builder.io/sdks-e2e-tests": "workspace:*"
     "@types/eslint": 8.21.3
@@ -1952,8 +1952,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@builder.io/e2e-qwik-city@workspace:sdks/e2e/qwik-city"
   dependencies:
-    "@builder.io/qwik": ^0.101.0
-    "@builder.io/qwik-city": ^0.101.0
+    "@builder.io/qwik": ^1.0.0
+    "@builder.io/qwik-city": ^1.0.0
     "@builder.io/sdk-qwik": "workspace:*"
     "@builder.io/sdks-e2e-tests": "workspace:*"
     "@types/eslint": 8.4.10
@@ -2210,29 +2210,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@builder.io/qwik-city@npm:^0.101.0":
-  version: 0.101.0
-  resolution: "@builder.io/qwik-city@npm:0.101.0"
+"@builder.io/qwik-city@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@builder.io/qwik-city@npm:1.0.0"
   dependencies:
     "@mdx-js/mdx": 2.3.0
-    "@types/mdx": 2.0.4
+    "@types/mdx": 2.0.5
     source-map: 0.7.4
     vfile: 5.3.7
     zod: ^3.21.4
-  peerDependencies:
-    "@builder.io/qwik": ">=0.22.0"
-  checksum: f717fb967deeb225cfe279e565019feb56f80ba4317cbdad61480d38acbd40f5bfdcefe202b36aa1bfae6eece77681eddc63835cac2ca4ad91e6feacdd728534
+  checksum: 92f357cff9898b57dc7f8b555d6151575f6881d440f7bb504b4ac343848bfeca80e27d9b042a6c31c76f11af4fbe760eea0b6cd52db915105ad6a67b75a213ed
   languageName: node
   linkType: hard
 
-"@builder.io/qwik@npm:^0.101.0":
-  version: 0.101.0
-  resolution: "@builder.io/qwik@npm:0.101.0"
+"@builder.io/qwik@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@builder.io/qwik@npm:1.0.0"
   peerDependencies:
     undici: ^5.14.0
   bin:
     qwik: qwik.cjs
-  checksum: d72da25bcfb3b63f3c796a82704ee150e5f82ea99f4f3c5ccb495f86f414141414b309f75dbe8998cb8a381ec474cc1994059a461459b5b6a46c63449ceda243
+  checksum: be34673463183b8f4dd5150531e17b25651a3d95f50322c7376adf3e96bb5efab0160717b37ef717d9e9281ca810240adc46ae1a47a3baf55d8b54de9218d49f
   languageName: node
   linkType: hard
 
@@ -2318,12 +2316,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@builder.io/sdk-qwik@workspace:sdks/output/qwik"
   dependencies:
-    "@builder.io/qwik": ^0.101.0
+    "@builder.io/qwik": ^1.0.0
     "@types/node": latest
     typescript: ^4
     vite: ^3.0.4
   peerDependencies:
-    "@builder.io/qwik": ">=0.13.3"
+    "@builder.io/qwik": ">=1.0.0"
   languageName: unknown
   linkType: soft
 
@@ -7859,10 +7857,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/mdx@npm:2.0.4":
-  version: 2.0.4
-  resolution: "@types/mdx@npm:2.0.4"
-  checksum: 79e011ea17751741f69fa0a8bada8c596ca273c5510d4b37e8fa0dd8b5f93c6b8eb4a351da426454df7b4ddbaa8dfc3aae88562417300b968cc8964afac3a6ca
+"@types/mdx@npm:2.0.5":
+  version: 2.0.5
+  resolution: "@types/mdx@npm:2.0.5"
+  checksum: 1069baff0b2d0fb0bc724748e2386af626cc30f8ef99e680afb4dee566ed0aeabd31cea774212a7033f491e594a0acc234116078b252cba94ac413f91eb585a3
   languageName: node
   linkType: hard
 
