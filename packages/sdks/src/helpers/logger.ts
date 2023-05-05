@@ -1,6 +1,6 @@
 const MSG_PREFIX = '[Builder.io]: ';
 export const logger = {
-  log: (...message: any[]) => console.log(MSG_PREFIX + message),
-  error: (...message: any[]) => console.error(MSG_PREFIX + message),
-  warn: (...message: any[]) => console.warn(MSG_PREFIX + message),
+  log: (...message: any[]) => console.log(MSG_PREFIX, ...message),
+  error: (...message: any[]) => console.error(MSG_PREFIX, ...message),
+  warn: (...message: any[]) => console.warn(MSG_PREFIX, ...message),
 };

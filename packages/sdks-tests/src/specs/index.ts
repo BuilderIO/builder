@@ -4,7 +4,9 @@ import { CONTENT as homepage } from './homepage.js';
 import { CONTENT as cssNesting } from './css-nesting.js';
 import { CONTENT as symbols, CONTENT_WITHOUT_SYMBOLS } from './symbols.js';
 import { CONTENT as contentBindings } from './content-bindings';
+import { CONTENT as linkUrl } from './link-url.js';
 import { CONTENT as symbolBindings } from './symbol-bindings';
+import { CONTENT as symbolWithInputBinding } from './symbol-with-input-binding.js';
 import { CONTENT as image } from './image.js';
 import { CONTENT as dataBindings } from './data-bindings.js';
 import { CONTENT as dataBindingStyles } from './data-binding-styles.js';
@@ -35,6 +37,8 @@ const pages = {
   '/symbols': symbols,
   '/symbols-without-content': CONTENT_WITHOUT_SYMBOLS,
   '/symbol-bindings': symbolBindings,
+  '/link-url': linkUrl,
+  '/symbol-with-input-binding': symbolWithInputBinding,
   '/content-bindings': contentBindings,
   '/image': image,
   '/data-bindings': dataBindings,

@@ -27,6 +27,7 @@ export default function RenderRepeatedBlock(props: Props) {
     apiKey: props.repeatContext.apiKey,
     registeredComponents: props.repeatContext.registeredComponents,
     inheritedStyles: props.repeatContext.inheritedStyles,
+    apiVersion: props.repeatContext.apiVersion,
   });
 
   return <RenderBlock block={props.block} context={props.repeatContext} />;

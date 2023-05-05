@@ -1,7 +1,0 @@
-{
-  "extends": "./tsconfig.base.json",
-  "compilerOptions": {
-    "outDir": "dist/rsc"
-  },
-  "include": ["packages/rsc/src"]
-}
