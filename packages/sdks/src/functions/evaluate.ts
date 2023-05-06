@@ -1,6 +1,18 @@
-import type { BuilderContextInterface } from '../context/types.js';
+import type {
+  BuilderContextInterface,
+  BuilderRenderState,
+} from '../context/types.js';
 import { isBrowser } from './is-browser.js';
 import { isEditing } from './is-editing.js';
+
+/**
+ * Special property which allows chaining of states.
+ *
+ * This is used when a child state (from a repeat block) creates locals which should not be in the actual state.
+ *
+ * It is used to allow the evaluate() function to access the state of the parent block during assignments.
+ */
+export const PROTO_STATE = '$$proto$state$$';
 
 export function evaluate({
   code,
@@ -45,7 +57,7 @@ export function evaluate({
       'context',
       'event',
       useCode
-    )(builder, builder, state, context, event);
+    )(builder, builder, flattenState(state), context, event);
   } catch (e) {
     console.warn(
       'Builder custom code error: \n While Evaluating: \n ',
@@ -54,4 +66,41 @@ export function evaluate({
       e
     );
   }
+}
+
+export function flattenState(state: BuilderRenderState) {
+  return new Proxy(state as Record<string | symbol, any>, {
+    get: (target, prop) => {
+      if (prop === PROTO_STATE) {
+        return undefined;
+      }
+      while (target) {
+        if (prop in target) return target[prop];
+        target = target[PROTO_STATE];
+      }
+      return undefined;
+    },
+    set: (target, prop, value) => {
+      if (prop === PROTO_STATE) {
+        return false;
+      }
+      let parentTarget = target;
+      do {
+        target = parentTarget;
+        parentTarget = parentTarget[PROTO_STATE];
+        if (!parentTarget || prop in target) {
+          target[prop] = value;
+          return true;
+        }
+      } while (parentTarget);
+      target = target[PROTO_STATE];
+      return true;
+    },
+    has: (target, prop) => {
+      if (prop === PROTO_STATE) {
+        return false;
+      }
+      return prop in target;
+    },
+  });
 }

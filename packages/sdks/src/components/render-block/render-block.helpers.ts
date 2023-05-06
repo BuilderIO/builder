@@ -2,7 +2,7 @@ import type {
   BuilderContextInterface,
   BuilderRenderState,
 } from '../../context/types';
-import { evaluate } from '../../functions/evaluate';
+import { PROTO_STATE, evaluate } from '../../functions/evaluate';
 import { getProcessedBlock } from '../../functions/get-processed-block';
 import type { BuilderBlock } from '../../types/builder-block';
 import type { RepeatData } from './types';
@@ -101,7 +101,7 @@ export const getRepeatItemData = ({
     context: {
       ...context,
       state: {
-        ...context.state,
+        [PROTO_STATE]: context.state,
         $index: index,
         $item: item,
         [itemNameToUse]: item,
