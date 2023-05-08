@@ -150,11 +150,11 @@ const variantScriptFn = function main(
       //   `div[builder-content-id="${contentId}"]`
       // );
 
-      console.log('replaceChild', {
-        templatesParent: templatesParent.innerHTML,
-        contentId,
-        content: winningTemplate.content,
-      });
+      // console.log('replaceChild', {
+      //   templatesParent: templatesParent.innerHTML,
+      //   contentId,
+      //   content: winningTemplate.content,
+      // });
 
       templatesParent.replaceChildren(
         // we have to take the first child element, because certain frameworks (like Qwik) add comment nodes
