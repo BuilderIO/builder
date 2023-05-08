@@ -32,6 +32,7 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
       canTrack: props.canTrack,
       content: props.content,
     }),
+    ScriptTag: 'script',
   });
 
   onInit(() => {
@@ -84,10 +85,10 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
         customComponents={props.customComponents}
       />
       {/* render script that will remove non-winning variants */}
-      <script
+      <state.ScriptTag
         id={`variants-script-${props.content?.id}`}
         innerHTML={state.variantScriptStr}
-      ></script>
+      ></state.ScriptTag>
     </Show>
   );
 }

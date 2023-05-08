@@ -12,5 +12,10 @@ declare module '@builder.io/mitosis/jsx-runtime' {
     declare interface IntrinsicElements {
       template: HTMLAttributes;
     }
+
+    declare interface IntrinsicAttributes {
+      id?: string;
+      innerHTML?: string;
+    }
   }
 }
