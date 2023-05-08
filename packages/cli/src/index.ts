@@ -14,7 +14,18 @@ program
   .option('-k,--key <key>', 'Private Key')
   .option('-d,--debug', 'print debugging information')
   .option('-o,--output <output>', 'Path to folder default to ./builder', './builder')
-  .option('-l,--limit <limit>', 'Maximum number of content entries to request, default is 100')
+  .option(
+    '-l,--limit <limit>',
+    'Maximum number of content entries to request, default is 100',
+    (value) => {
+      const parsedValue = parseInt(value);
+      if (isNaN(parsedValue)) {
+        console.error(chalk.red('Error: provided value for `limit` option must be a number'));
+        process.exit(1);
+      }
+      return parsedValue;
+    }
+  )
   .action(options => {
     importSpace(options.key, options.output, options.debug, options.limit || 100);
   });
