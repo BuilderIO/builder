@@ -19,15 +19,14 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
       props.content?.id || ''
     ),
 
-    variants: [
-      ...Object.values(props.content?.variations || {}),
-      props.content,
-    ],
-
-    contentToUse: handleABTestingSync({
-      item: props.content!,
-      canTrack: checkIsDefined(props.canTrack) ? props.canTrack : true,
-    }),
+    contentToUse:
+      ((isBrowser() && props.canTrack) || !isBrowser()) &&
+      Object.keys(props.content?.variations || {}).length > 0
+        ? undefined
+        : handleABTestingSync({
+            item: props.content!,
+            canTrack: checkIsDefined(props.canTrack) ? props.canTrack : true,
+          }),
 
     shouldRenderVariants:
       ((isBrowser() && props.canTrack) || !isBrowser()) &&
@@ -37,14 +36,15 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
   onInit(() => {
     if (TARGET === 'svelte' && state.shouldRenderVariants) {
       // get first template in loop
-      const template = document.querySelector(
+      const templates = document.querySelectorAll(
         `template[data-template-variant-id="${state.variants[0]?.id}"]`
       );
+      const lastTemplate = templates[templates.length - 1];
       // create and append script as sibling of template
       const script = document.createElement('script');
       script.id = `variants-script-${props.content?.id}`;
       script.innerHTML = state.variantScriptStr;
-      template?.parentNode?.insertBefore(script, template);
+      lastTemplate?.parentNode?.append(script, lastTemplate);
     }
   });
 
@@ -61,12 +61,7 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
         />
       }
     >
-      {/* render script that will remove non-winning variants */}
-      <script
-        id={`variants-script-${props.content?.id}`}
-        innerHTML={state.variantScriptStr}
-      ></script>
-      <For each={state.variants}>
+      <For each={Object.values(props.content!.variations!)}>
         {(variant) => (
           <template key={variant?.id} data-template-variant-id={variant?.id}>
             <RenderContent
@@ -79,6 +74,18 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
           </template>
         )}
       </For>
+      {/* render script that will remove non-winning variants */}
+      <script
+        id={`variants-script-${props.content?.id}`}
+        innerHTML={state.variantScriptStr}
+      ></script>
+      <RenderContent
+        content={state.contentToUse}
+        apiKey={props.apiKey}
+        apiVersion={props.apiVersion}
+        canTrack={props.canTrack}
+        customComponents={props.customComponents}
+      />
     </Show>
   );
 }

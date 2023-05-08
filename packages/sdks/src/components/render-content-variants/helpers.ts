@@ -1,34 +1,40 @@
-const REPLACE_CONTENT_ID = 'REPLACE_CONTENT_ID';
-const REPLACE_VARIANTS_JSON = 'REPLACE_VARIANTS_JSON';
-
 type VariantData = {
   id: string;
   testRatio?: number;
 };
 
-const variantScriptFn = function () {
+const variantScriptFn = function main(
+  contentId: string,
+  variants: VariantData[]
+) {
+  console.log(
+    'Running variant script',
+    JSON.stringify({ contentId, variants })
+  );
+
   // TO-DO: redundant check?
   if (!navigator.cookieEnabled) {
+    console.log('Cookies are disabled, skipping variant script');
     return;
   }
-
-  const contentId = REPLACE_CONTENT_ID as unknown as string;
-  const variants = REPLACE_VARIANTS_JSON as unknown as VariantData[];
 
   const templateSelectorById = (id: string) =>
     `template[data-template-variant-id="${id}"]`;
 
-  function removeVariants() {
+  function removeTemplates() {
+    console.log('Removing variants');
     // remove each variant
     variants.forEach((template) => {
       const el = document.querySelector(templateSelectorById(template.id));
       if (el) {
+        console.log('Removing variant', template.id);
         el.remove();
       }
     });
     // remove this script itself
     const el = document.getElementById(`variants-script-${contentId}`);
     if (el) {
+      console.log('Removing variant script');
       el.remove();
     }
   }
@@ -36,7 +42,8 @@ const variantScriptFn = function () {
   // TO-DO: what is this check doing?
   // seems like a template polyfill check
   if (typeof document.createElement('template').content === 'undefined') {
-    removeVariants();
+    console.log('Template polyfill not found, skipping variant script');
+    removeTemplates();
     return;
   }
 
@@ -66,11 +73,11 @@ const variantScriptFn = function () {
     }
     return null;
   }
-  const cookieName = `builder.tests.${contentId}`;
-  const variantInCookie = getCookie(cookieName);
-  const availableIDs = variants.map((vr) => vr.id).concat(contentId);
 
   function getAndSetVariantId(): string {
+    const cookieName = `builder.tests.${contentId}`;
+    const variantInCookie = getCookie(cookieName);
+    const availableIDs = variants.map((vr) => vr.id).concat(contentId);
     // cookie already exists
     if (variantInCookie && availableIDs.indexOf(variantInCookie) > -1) {
       return variantInCookie;
@@ -96,10 +103,14 @@ const variantScriptFn = function () {
   const variantId = getAndSetVariantId();
 
   if (variantId !== contentId) {
+    console.log('Variant found', variantId);
     const winningTemplate = document.querySelector<HTMLTemplateElement>(
       templateSelectorById(variantId)
     );
+    console.log('winningTemplate', winningTemplate);
     if (!winningTemplate) {
+      console.log('No template found for variant', variantId);
+      console.log('selector: ', templateSelectorById(variantId));
       return;
     }
 
@@ -119,26 +130,54 @@ const variantScriptFn = function () {
      */
 
     const templatesParent = winningTemplate.parentNode;
-    const winningBuilderContent = winningTemplate.content.firstChild;
     if (templatesParent) {
-      // shallow clone template parent, and replace all children with winning template content
-      const newParent = templatesParent.cloneNode(false);
-      newParent.appendChild(winningBuilderContent!);
+      // find child of templatesParent that is a div with builder-content-id attribute equal to contentId
+      const defaultContent = templatesParent.querySelector<HTMLDivElement>(
+        `div[builder-content-id="${contentId}"]`
+      );
 
-      // replace template parent with new parent
-      templatesParent.parentNode!.replaceChild(newParent, templatesParent);
+      templatesParent.replaceChild(
+        // we have to take the first child element, because certain frameworks (like Qwik) add comment nodes
+        winningTemplate.content.firstElementChild!,
+        defaultContent!
+      );
+
+      /**
+       * TO-DO:
+       * - figure out why this isn't even running in the react example
+       * - then test that it does work correctly
+       * - then look into hydration mismatch in nextjs
+       */
+
+      // OLD CODE THAT DOESNT WORK
+      // console.log('Replacing templates parent with winning template');
+      // // shallow clone template parent, and replace all children with winning template content
+      // const newParent = templatesParent.cloneNode(false);
+      // console.log('templatesParent', templatesParent);
+      // console.log('newParent', newParent);
+      // newParent.appendChild(winningBuilderContent!);
+
+      // console.log('newParent after transform', newParent);
+      // console.log('parentNode before', templatesParent.parentNode.html);
+      // // replace template parent with new parent
+      // templatesParent.parentNode!.replaceChild(newParent, templatesParent);
+      // console.log('parentNode after', templatesParent.parentNode);
     }
   } else if (variants.length > 0) {
-    removeVariants();
+    console.log('No variant found, removing all variants');
   }
+  removeTemplates();
+  console.log('Variant script complete');
 };
 
 export const getVariantsScriptString = (
   variants: VariantData[],
   contentId: string
-) =>
-  variantScriptFn
-    .toString()
-    .replace(REPLACE_CONTENT_ID, contentId)
-    .replace(REPLACE_VARIANTS_JSON, JSON.stringify(variants))
-    .replace(/\s+/g, ' ');
+) => {
+  const fnStr = variantScriptFn.toString().replace(/\s+/g, ' ');
+
+  return `
+  ${fnStr}
+  main("${contentId}", ${JSON.stringify(variants)})
+  `;
+};
