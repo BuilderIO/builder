@@ -1,6 +1,6 @@
 import { component$ } from '@builder.io/qwik';
 import { useLocation } from '@builder.io/qwik-city';
-import { RenderContent } from '@builder.io/sdk-qwik';
+import { RenderContentVariants } from '@builder.io/sdk-qwik';
 import { getProps } from '@builder.io/sdks-e2e-tests';
 
 export interface MainProps {
@@ -11,7 +11,8 @@ export default component$(() => {
 
   const contentProps = getProps(url.pathname);
   return contentProps ? (
-    <RenderContent {...contentProps} />
+    // <RenderContent {...contentProps} />
+    <RenderContentVariants {...contentProps} />
   ) : (
     <div>Content Not Found</div>
   );
