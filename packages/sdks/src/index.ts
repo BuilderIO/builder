@@ -17,3 +17,4 @@ export { track } from './functions/track/index.js';
 
 export type { RegisteredComponent } from './context/types';
 export type { ComponentInfo } from './types/components';
+export type { RenderContentProps } from './components/render-content/render-content.types.js';

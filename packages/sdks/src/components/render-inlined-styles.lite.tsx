@@ -13,7 +13,7 @@ export default function RenderInlinedStyles(props: Props) {
     get tag(): string {
       // NOTE: we have to obfuscate the name of the tag due to a limitation in the svelte-preprocessor plugin.
       // https://github.com/sveltejs/vite-plugin-svelte/issues/315#issuecomment-1109000027
-      return 'sty' + 'le';
+      return ('sty' + 'le') as any;
     },
     get injectedStyleScript(): string {
       // used by 'svelte' in mitosis.config.js plugin to convert this to a Fragment

@@ -1,21 +1,16 @@
-import { builder, Builder } from '@builder.io/sdk';
+import { getContent } from '@builder.io/sdk-react/server';
 
-Builder.isReact = true;
-// ✅ This pattern works. You can pass a Server Component
-// as a child or prop of a Client Component.
+// if you use VSCode and see a TS error for the line below, you can safely ignore it.
 import BuilderPage from './BuilderPage';
-import builderConfig from '../../../builderConfig.json';
-
-builder.init(builderConfig.apiKey);
+import { API_KEY } from '../../builderConfig.js';
 
 async function getBuilderContent(urlPath: string) {
-  const page = await builder
-    .get('page', {
-      userAttributes: {
-        urlPath,
-      },
-    })
-    .toPromise();
+  const page = await getContent({
+    apiKey: API_KEY,
+    model: 'page',
+    userAttributes: { urlPath },
+  });
+
   // The return value is *not* serialized
   // You can return Date, Map, Set, etc.
   return {
@@ -42,11 +37,7 @@ export default async function Page(props: PageProps) {
       </>
     );
   }
-  return (
-    <>
-      <BuilderPage builderContent={content.page} />
-    </>
-  );
+  return <BuilderPage builderContent={content.page} />;
 }
 
 export const revalidate = 4;

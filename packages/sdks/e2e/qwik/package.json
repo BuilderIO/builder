@@ -13,7 +13,7 @@
     "serve": "yarn start"
   },
   "devDependencies": {
-    "@builder.io/qwik": "^0.101.0",
+    "@builder.io/qwik": "^1.0.0",
     "@builder.io/sdk-qwik": "workspace:*",
     "@builder.io/sdks-e2e-tests": "workspace:*",
     "@types/eslint": "8.21.3",
@@ -24,7 +24,7 @@
     "eslint-plugin-qwik": "latest",
     "prettier": "2.8.7",
     "typescript": "5.0.2",
-    "undici": "5.21.0",
+    "undici": "5.19.1",
     "vite": "4.2.1"
   }
 }

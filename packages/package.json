@@ -17,7 +17,7 @@
     "minimist": "^1.2.7",
     "json5": "2.2.1",
     "@builder.io/react": "workspace:*",
-    "@builder.io/mitosis": "0.0.97-0"
+    "@builder.io/mitosis": "0.0.98-0"
   },
   "packageManager": "yarn@3.4.1"
 }

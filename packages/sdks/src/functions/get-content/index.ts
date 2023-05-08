@@ -42,7 +42,7 @@ export async function getAllContent(
     const content = await (res.json() as Promise<ContentResponse>);
 
     if (!checkContentHasResults(content)) {
-      logger.error('Error fetching data. ', content, options);
+      logger.error('Error fetching data. ', { url, content, options });
       return content;
     }
 

@@ -7,12 +7,14 @@
     "skipLibCheck": true,
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
-    "strict": true,
+    // "strict": true,
     "forceConsistentCasingInFileNames": true,
     "module": "ESNext",
     "moduleResolution": "Node",
     "resolveJsonModule": true,
-    "isolatedModules": true,
-    "jsx": "react"
-  }
+    "jsx": "react",
+    "declaration": true
+  },
+  "include": ["./packages/react/src/**/*"],
+  "exclude": ["./packages/react/src/blocks/form/form.tsx"]
 }

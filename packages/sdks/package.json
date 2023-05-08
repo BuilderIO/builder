@@ -34,7 +34,7 @@
     "e2e:build:react-native": "yarn workspaces foreach --verbose --include \"@builder.io/e2e-react-native*\" run build",
     "e2e:build:solid": "yarn workspaces foreach --verbose --include \"@builder.io/e2e-solid*\" run build",
     "e2e:build:qwik": "yarn workspaces foreach --verbose --include \"@builder.io/e2e-qwik*\" run build",
-    "e2e:build:react": "yarn workspaces foreach --verbose --include \"@builder.io/e2e?(-nextjs)-react\" run build",
+    "e2e:build:react": "yarn workspaces foreach --verbose --include \"@builder.io/e2e?(-*)-react\" run build",
     "e2e:build:vue": "yarn workspaces foreach --verbose --include \"@builder.io/e2e-vue*\" run build",
     "e2e:run": "yarn workspace @builder.io/sdks-e2e-tests run test",
     "e2e:run:svelte": "SDK=svelte yarn e2e:run",
@@ -52,8 +52,8 @@
     "upgrade-example:all": "bash ./scripts/loop-command.sh upgrade-example \"svelte react-native solid qwik react vue\""
   },
   "dependencies": {
-    "@builder.io/mitosis": "^0.0.97-0",
-    "@builder.io/mitosis-cli": "^0.0.55",
+    "@builder.io/mitosis": "^0.0.98",
+    "@builder.io/mitosis-cli": "^0.0.57",
     "@playwright/test": "^1.27.1",
     "node-fetch": "^2.6.1",
     "seedrandom": "^3.0.5",
