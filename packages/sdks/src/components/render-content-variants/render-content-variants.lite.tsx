@@ -1,6 +1,5 @@
 import { For, Show, onInit, useStore } from '@builder.io/mitosis';
-import { isBrowser } from '../../functions/is-browser';
-import { getVariantsScriptString } from './helpers';
+import { checkShouldRunVariants, getVariantsScriptString } from './helpers';
 import RenderContent from '../render-content/render-content.lite';
 import type { RenderContentProps } from '../render-content/render-content.types';
 import { checkIsDefined } from '../../helpers/nullable';
@@ -19,25 +18,27 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
       props.content?.id || ''
     ),
 
-    contentToUse:
-      ((isBrowser() && props.canTrack) || !isBrowser()) &&
-      Object.keys(props.content?.variations || {}).length > 0
-        ? undefined
-        : handleABTestingSync({
-            item: props.content!,
-            canTrack: checkIsDefined(props.canTrack) ? props.canTrack : true,
-          }),
+    contentToUse: checkShouldRunVariants({
+      canTrack: props.canTrack,
+      content: props.content,
+    })
+      ? undefined
+      : handleABTestingSync({
+          item: props.content!,
+          canTrack: checkIsDefined(props.canTrack) ? props.canTrack : true,
+        }),
 
-    shouldRenderVariants:
-      ((isBrowser() && props.canTrack) || !isBrowser()) &&
-      Object.keys(props.content?.variations || {}).length > 0,
+    shouldRenderVariants: checkShouldRunVariants({
+      canTrack: props.canTrack,
+      content: props.content,
+    }),
   });
 
   onInit(() => {
     if (TARGET === 'svelte' && state.shouldRenderVariants) {
       // get first template in loop
       const templates = document.querySelectorAll(
-        `template[data-template-variant-id="${state.variants[0]?.id}"]`
+        `template[data-template-variant-id="${props.content?.variations?.[0]?.id}"]`
       );
       const lastTemplate = templates[templates.length - 1];
       // create and append script as sibling of template
@@ -53,7 +54,7 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
       when={state.shouldRenderVariants}
       else={
         <RenderContent
-          content={state.contentToUse}
+          content={props.content}
           apiKey={props.apiKey}
           apiVersion={props.apiVersion}
           canTrack={props.canTrack}
@@ -74,18 +75,19 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
           </template>
         )}
       </For>
-      {/* render script that will remove non-winning variants */}
-      <script
-        id={`variants-script-${props.content?.id}`}
-        innerHTML={state.variantScriptStr}
-      ></script>
+
       <RenderContent
-        content={state.contentToUse}
+        content={props.content}
         apiKey={props.apiKey}
         apiVersion={props.apiVersion}
         canTrack={props.canTrack}
         customComponents={props.customComponents}
       />
+      {/* render script that will remove non-winning variants */}
+      <script
+        id={`variants-script-${props.content?.id}`}
+        innerHTML={state.variantScriptStr}
+      ></script>
     </Show>
   );
 }

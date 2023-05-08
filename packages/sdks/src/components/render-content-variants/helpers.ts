@@ -1,3 +1,17 @@
+import { isBrowser } from '../../functions/is-browser';
+import type { Nullable } from '../../helpers/nullable';
+import type { BuilderContent } from '../../types/builder-content';
+
+export const checkShouldRunVariants = ({
+  canTrack,
+  content,
+}: {
+  canTrack: Nullable<boolean>;
+  content: Nullable<BuilderContent>;
+}) =>
+  ((isBrowser() && canTrack) || !isBrowser()) &&
+  Object.keys(content?.variations || {}).length > 0;
+
 type VariantData = {
   id: string;
   testRatio?: number;
@@ -132,14 +146,19 @@ const variantScriptFn = function main(
     const templatesParent = winningTemplate.parentNode;
     if (templatesParent) {
       // find child of templatesParent that is a div with builder-content-id attribute equal to contentId
-      const defaultContent = templatesParent.querySelector<HTMLDivElement>(
-        `div[builder-content-id="${contentId}"]`
-      );
+      // const defaultContent = templatesParent.querySelector<HTMLDivElement>(
+      //   `div[builder-content-id="${contentId}"]`
+      // );
 
-      templatesParent.replaceChild(
+      console.log('replaceChild', {
+        templatesParent: templatesParent.innerHTML,
+        contentId,
+        content: winningTemplate.content,
+      });
+
+      templatesParent.replaceChildren(
         // we have to take the first child element, because certain frameworks (like Qwik) add comment nodes
-        winningTemplate.content.firstElementChild!,
-        defaultContent!
+        winningTemplate.content.firstElementChild!
       );
 
       /**

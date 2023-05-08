@@ -55,8 +55,32 @@ export const CONTENT = {
       testRatio: 0.5,
       createdDate: 1674501850607,
       data: {
-        blocksString:
-          '[{"@type":"@builder.io/sdk:Element","@version":2,"id":"builder-c4533f51068b4e55b68fc6a15259b42c","meta":{"previousId":"builder-5215ea54178e4bad81513e236f096de1"},"component":{"name":"Text","options":{"text":"<span style=\\"display: block;\\" class=\\"builder-paragraph\\">hello world variation 1</span>"}},"responsiveStyles":{"large":{"display":"flex","flexDirection":"column","position":"relative","flexShrink":"0","boxSizing":"border-box","marginTop":"20px","lineHeight":"normal","height":"auto"}}}]',
+        blocks: [
+          {
+            '@type': '@builder.io/sdk:Element',
+            '@version': 2,
+            id: 'builder-c4533f51068b4e55b68fc6a15259b42c',
+            meta: { previousId: 'builder-5215ea54178e4bad81513e236f096de1' },
+            component: {
+              name: 'Text',
+              options: {
+                text: '<span style="display: block;" class="builder-paragraph">hello world variation 1</span>',
+              },
+            },
+            responsiveStyles: {
+              large: {
+                display: 'flex',
+                flexDirection: 'column',
+                position: 'relative',
+                flexShrink: '0',
+                boxSizing: 'border-box',
+                marginTop: '20px',
+                lineHeight: 'normal',
+                height: 'auto',
+              },
+            },
+          },
+        ],
         themeId: false,
         title: 'a-b-test-basic',
       },
