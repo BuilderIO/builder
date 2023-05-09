@@ -32,7 +32,7 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
       canTrack: props.canTrack,
       content: props.content,
     }),
-    ScriptTag: 'script',
+    ScriptTag: 'script' as const,
   });
 
   onInit(() => {

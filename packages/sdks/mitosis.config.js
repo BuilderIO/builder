@@ -201,6 +201,25 @@ const SRCSET_PLUGIN = () => ({
 });
 
 /**
+ * @type {Plugin}
+ */
+const AS_CONST_PLUGIN = () => ({
+  code: {
+    post: (code) => {
+      if (code.includes('RenderContentVariants')) {
+        // fixes some type issues
+        code = code.replace(
+          `useState(() => "script")`,
+          `useState(() => "script" as const)`
+        );
+      }
+      // Needed for next v13 to work
+      return `'use client';\n${code}`;
+    },
+  },
+});
+
+/**
  * Replaces all uses of the native `Text` component with our own `BaseText` component that injects inherited CSS styles
  * to `Text`, mimicking CSS inheritance.
  * @type {Plugin}
@@ -324,6 +343,7 @@ module.exports = {
       typescript: true,
       plugins: [
         SRCSET_PLUGIN,
+        AS_CONST_PLUGIN,
         () => ({
           json: {
             pre: (json) => {
@@ -362,6 +382,7 @@ module.exports = {
     rsc: {
       plugins: [
         SRCSET_PLUGIN,
+        AS_CONST_PLUGIN,
         () => ({
           json: {
             pre: (json) => {
@@ -387,6 +408,7 @@ module.exports = {
     reactNative: {
       plugins: [
         SRCSET_PLUGIN,
+        AS_CONST_PLUGIN,
         BASE_TEXT_PLUGIN,
         () => ({
           json: {
