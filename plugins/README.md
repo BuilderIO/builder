@@ -1,11 +1,11 @@
 # Builder.io plugins
 
-Extend the Builder.io editor funcionality! Plugins can provide everything from enhanced UIs, to integrations with other platforms and services
+For step-by-step instructions on using and making plugins with Builder, see the official documentation, starting with [Intro to Plugins](https://www.builder.io/c/docs/plugins-intro).
 
-For an example plugin and docs on how to create and run one see our [Example plugin](rich-text)
+Example plugins:
 
-Or to see a fully fleshed out plugin examples take a look at our [Cloudinary](cloudinary), [Shopify](shopify), [async dropdown](async-dropdown), [rich text](rich-text), or [campaign app](example-app-campaign-builder) plugins
-
-See our [plugin docs](https://www.builder.io/c/docs/extending/plugins) for info on what plugins can do and how to create them
-
-<img src="https://imgur.com/vpNzMud.gif" alt="Plugin example">
+- [Rich text](rich-text)
+- [Cloudinary](cloudinary)
+- [Shopify](shopify)
+- [Async dropdown](async-dropdown)
+- [Campaign app](example-app-campaign-builder)

@@ -5,7 +5,12 @@ import dts from 'vite-plugin-dts';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue(), dts({ insertTypesEntry: true })],
+  plugins: [
+    vue(),
+    dts({ insertTypesEntry: true }),
+    // https://stackoverflow.com/a/72572426
+    // libCss(),
+  ],
   build: {
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
@@ -15,7 +20,7 @@ export default defineConfig({
     rollupOptions: {
       // make sure to externalize deps that shouldn't be bundled
       // into your library
-      external: ['vue', 'node-fetch'],
+      external: ['vue'],
       output: {
         // Provide global variables to use in the UMD build
         // for externalized deps
@@ -24,9 +29,5 @@ export default defineConfig({
         },
       },
     },
-  },
-  resolve: {
-    // we must preserve symlinks for our sym-linked package to work properly
-    preserveSymlinks: true,
   },
 });

@@ -22,13 +22,15 @@ export function getPersonalizedURL(
 ) {
   const url = new URL(request.nextUrl);
   const query = Object.fromEntries(url.searchParams);
-  const allCookies = Array.from(request.cookies.entries()).reduce(
-    (acc, [key]) => ({
-      ...acc,
-      [key]: tryJsonParse(request.cookies.get(key)!),
-    }),
-    {}
-  );
+  const allCookies: Record<string, any> = {};
+  for (const cookie of request.cookies) {
+    const key = cookie[0];
+    const value = request.cookies.get(key)?.value;
+    if (value) {
+      const parsedCookie = tryJsonParse(value);
+      allCookies[key] = parsedCookie;
+    }
+  }
 
   const builderAttrs = getUserAttributes({ ...allCookies, ...query });
   const personalizedURL = new PersonalizedURL({

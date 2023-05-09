@@ -3,11 +3,17 @@ import BlockStyles from './block-styles.lite';
 import RenderBlock from './render-block.lite';
 import { For, Show, useMetadata } from '@builder.io/mitosis';
 import type { BuilderContextInterface } from '../../context/types.js';
-import { markPropsMutable } from '../../functions/mark-mutable.js';
+
+type ComponentOptions = {
+  [index: string]: any;
+  attributes?: {
+    [index: string]: any;
+  };
+};
 
 export interface RenderComponentProps {
   componentRef: any;
-  componentOptions: any;
+  componentOptions: ComponentOptions;
   blockChildren: BuilderBlock[];
   context: BuilderContextInterface;
 }
@@ -23,7 +29,7 @@ useMetadata({
 export default function RenderComponent(props: RenderComponentProps) {
   return (
     <Show when={props.componentRef}>
-      <props.componentRef {...markPropsMutable(props.componentOptions)}>
+      <props.componentRef {...props.componentOptions}>
         {/**
          * We need to run two separate loops for content + styles to workaround the fact that Vue 2
          * does not support multiple root elements.

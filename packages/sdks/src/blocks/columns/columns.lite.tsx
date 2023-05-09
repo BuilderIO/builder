@@ -1,17 +1,19 @@
 import RenderBlocks from '../../components/render-blocks.lite';
-import { For, useStore } from '@builder.io/mitosis';
+import { For, Show, useContext, useStore } from '@builder.io/mitosis';
 import type { BuilderBlock } from '../../types/builder-block';
-import { markMutable } from '../../functions/mark-mutable';
-
-type CSS = {
-  [key: string]: string;
-};
+import { getSizesForBreakpoints } from '../../constants/device-sizes';
+import type { SizeName } from '../../constants/device-sizes';
+import RenderInlinedStyles from '../../components/render-inlined-styles.lite';
+import { TARGET } from '../../constants/target.js';
+import BuilderContext from '../../context/builder.context.lite';
+import type { Dictionary } from '../../types/typescript';
 
 type Column = {
-  blocks: any;
-  // TODO: Implement this when support for dynamic CSS lands
+  blocks: BuilderBlock[];
   width?: number;
 };
+
+type CSSVal = string | number;
 
 type StackColumnsAt = 'tablet' | 'mobile' | 'never';
 
@@ -28,100 +30,175 @@ export interface ColumnProps {
 }
 
 export default function Columns(props: ColumnProps) {
+  const builderContext = useContext(BuilderContext);
+
   const state = useStore({
-    getGutterSize(): number {
-      return typeof props.space === 'number' ? props.space || 0 : 20;
-    },
-    getColumns() {
-      return props.columns || [];
-    },
+    gutterSize: typeof props.space === 'number' ? props.space || 0 : 20,
+    cols: props.columns || [],
+    stackAt: props.stackColumnsAt || 'tablet',
     getWidth(index: number) {
-      const columns = state.getColumns();
-      return columns[index]?.width || 100 / columns.length;
+      return state.cols[index]?.width || 100 / state.cols.length;
     },
     getColumnCssWidth(index: number) {
-      const columns = state.getColumns();
-      const gutterSize = state.getGutterSize();
       const subtractWidth =
-        (gutterSize * (columns.length - 1)) / columns.length;
+        (state.gutterSize * (state.cols.length - 1)) / state.cols.length;
       return `calc(${state.getWidth(index)}% - ${subtractWidth}px)`;
     },
 
-    maybeApplyForTablet(prop: string | undefined): string | undefined {
-      const _stackColumnsAt = props.stackColumnsAt || 'tablet';
-      return _stackColumnsAt === 'tablet' ? prop : 'inherit';
+    getTabletStyle({
+      stackedStyle,
+      desktopStyle,
+    }: {
+      stackedStyle: CSSVal;
+      desktopStyle: CSSVal;
+    }): CSSVal {
+      return state.stackAt === 'tablet' ? stackedStyle : desktopStyle;
     },
 
-    get columnsCssVars(): { [key: string]: string | undefined } {
-      const flexDir =
-        props.stackColumnsAt === 'never'
-          ? 'inherit'
-          : props.reverseColumnsWhenStacked
-          ? 'column-reverse'
-          : 'column';
-      return {
-        '--flex-dir': flexDir,
-        '--flex-dir-tablet': state.maybeApplyForTablet(flexDir),
-      };
+    getMobileStyle({
+      stackedStyle,
+      desktopStyle,
+    }: {
+      stackedStyle: CSSVal;
+      desktopStyle: CSSVal;
+    }): CSSVal {
+      return state.stackAt === 'never' ? desktopStyle : stackedStyle;
     },
 
-    get columnCssVars(): { [key: string]: string | undefined } {
-      const width = '100%';
-      const marginLeft = '0';
+    flexDir:
+      props.stackColumnsAt === 'never'
+        ? 'row'
+        : props.reverseColumnsWhenStacked
+        ? 'column-reverse'
+        : 'column',
+
+    get columnsCssVars(): Dictionary<string> {
+      if (TARGET === 'reactNative') {
+        return {
+          flexDirection: state.flexDir,
+        } as Dictionary<string>;
+      }
+
       return {
-        '--column-width': width,
-        '--column-margin-left': marginLeft,
-        '--column-width-tablet': state.maybeApplyForTablet(width),
-        '--column-margin-left-tablet': state.maybeApplyForTablet(marginLeft),
-      };
+        '--flex-dir': state.flexDir,
+        '--flex-dir-tablet': state.getTabletStyle({
+          stackedStyle: state.flexDir,
+          desktopStyle: 'row',
+        }),
+      } as Dictionary<string>;
+    },
+
+    columnCssVars(index: number): Dictionary<string> {
+      const gutter = index === 0 ? 0 : state.gutterSize;
+
+      if (TARGET === 'reactNative') {
+        return {
+          marginLeft: props.stackColumnsAt === 'never' ? gutter : 0,
+        } as any as Dictionary<string>;
+      }
+
+      const width = state.getColumnCssWidth(index);
+      const gutterPixels = `${state.gutterSize}px`;
+      const mobileWidth = '100%';
+      const mobileMarginLeft = 0;
+
+      return {
+        width,
+        'margin-left': gutterPixels,
+        '--column-width-mobile': state.getMobileStyle({
+          stackedStyle: mobileWidth,
+          desktopStyle: width,
+        }),
+        '--column-margin-left-mobile': state.getMobileStyle({
+          stackedStyle: mobileMarginLeft,
+          desktopStyle: gutterPixels,
+        }),
+        '--column-width-tablet': state.getTabletStyle({
+          stackedStyle: mobileWidth,
+          desktopStyle: width,
+        }),
+        '--column-margin-left-tablet': state.getTabletStyle({
+          stackedStyle: mobileMarginLeft,
+          desktopStyle: gutterPixels,
+        }),
+      } as any as Dictionary<string>;
+    },
+
+    getWidthForBreakpointSize(size: SizeName) {
+      const breakpointSizes = getSizesForBreakpoints(
+        builderContext.content?.meta?.breakpoints || {}
+      );
+
+      return breakpointSizes[size].max;
+    },
+
+    get columnsStyles(): string {
+      return `
+        @media (max-width: ${state.getWidthForBreakpointSize('medium')}px) {
+          .${props.builderBlock.id}-breakpoints {
+            flex-direction: var(--flex-dir-tablet);
+            align-items: stretch;
+          }
+
+          .${props.builderBlock.id}-breakpoints > .builder-column {
+            width: var(--column-width-tablet) !important;
+            margin-left: var(--column-margin-left-tablet) !important;
+          }
+        }
+
+        @media (max-width: ${state.getWidthForBreakpointSize('small')}px) {
+          .${props.builderBlock.id}-breakpoints {
+            flex-direction: var(--flex-dir);
+            align-items: stretch;
+          }
+
+          .${props.builderBlock.id}-breakpoints > .builder-column {
+            width: var(--column-width-mobile) !important;
+            margin-left: var(--column-margin-left-mobile) !important;
+          }
+        },
+      `;
     },
   });
 
   return (
     <div
-      class="builder-columns"
+      class={`builder-columns ${props.builderBlock.id}-breakpoints`}
       css={{
         display: 'flex',
-        alignItems: 'stretch',
         lineHeight: 'normal',
-        '@media (max-width: 991px)': {
-          flexDirection: 'var(--flex-dir-tablet)',
-        },
-        '@media (max-width: 639px)': {
-          flexDirection: 'var(--flex-dir)',
-        },
       }}
-      style={state.columnsCssVars as CSS}
+      style={state.columnsCssVars}
+      dataSet={{ 'builder-block-name': 'builder-columns' }}
     >
+      <Show when={TARGET !== 'reactNative'}>
+        {/**
+         * Need to use style tag for column and columns style instead of using the
+         * respective 'style' or 'css' attributes because the rules now contain
+         * "dynamic" media query values based on custom breakpoints.
+         * Adding them directly otherwise leads to Mitosis and TS errors.
+         */}
+        <RenderInlinedStyles styles={state.columnsStyles} />
+      </Show>
+
       <For each={props.columns}>
         {(column, index) => (
           <div
-            style={{
-              width: state.getColumnCssWidth(index),
-              marginLeft: `${index === 0 ? 0 : state.getGutterSize()}px`,
-              ...state.columnCssVars,
-            }}
+            style={state.columnCssVars(index)}
             class="builder-column"
+            dataSet={{ 'builder-block-name': 'builder-column' }}
             css={{
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'stretch',
-              '@media (max-width: 991px)': {
-                width: 'var(--column-width-tablet) !important',
-                marginLeft: 'var(--column-margin-left-tablet) !important',
-              },
-              '@media (max-width: 639px)': {
-                width: 'var(--column-width) !important',
-                marginLeft: 'var(--column-margin-left) !important',
-              },
             }}
             key={index}
           >
             <RenderBlocks
-              blocks={markMutable(column.blocks)}
+              blocks={column.blocks}
               path={`component.options.columns.${index}.blocks`}
               parent={props.builderBlock.id}
-              style={{ flexGrow: '1' }}
+              styleProp={{ flexGrow: '1' }}
             />
           </div>
         )}

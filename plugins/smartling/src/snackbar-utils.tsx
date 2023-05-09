@@ -28,3 +28,29 @@ export function showJobNotification(jobId: string) {
     </Button>
   );
 }
+
+export function showOutdatedNotifications(callback: () => void) {
+  appState.snackBar.show(
+    <div css={{ display: 'flex', alignItems: 'center' }}>Contant has new strings!</div>,
+    6000,
+    <Button
+      color="primary"
+      css={{
+        pointerEvents: 'auto',
+        ...(appState.document.small && {
+          width: 'calc(100vw - 90px)',
+          marginRight: 45,
+          marginTop: 10,
+          marginBottom: 10,
+        }),
+      }}
+      variant="contained"
+      onClick={async () => {
+        callback();
+        appState.snackBar.open = false;
+      }}
+    >
+      Request an updated translation
+    </Button>
+  );
+}

@@ -5,11 +5,14 @@
     "jsx": "preserve",
     "jsxImportSource": "@builder.io/mitosis",
     "esModuleInterop": true,
+    "lib": ["dom"],
     "skipLibCheck": true,
+    "noImplicitReturns": true,
     "forceConsistentCasingInFileNames": true,
+    "checkJs": true,
     // needed to make sure vite/esbuild can bundle the code properly
     // https://vitejs.dev/guide/features.html#isolatedmodules
     "isolatedModules": true
   },
-  "include": ["src", "typings"]
+  "include": ["src", "typings", "mitosis.config.js"]
 }

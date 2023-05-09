@@ -1,7 +1,10 @@
-import { BuilderContent, BuilderElement } from '@builder.io/sdk';
+import { BuilderContent } from '@builder.io/sdk';
 import traverse from 'traverse';
 import omit from 'lodash/omit';
-const localizedType = '@builder.io/core:LocalizedValue';
+import unescape from 'lodash/unescape';
+
+export const localizedType = '@builder.io/core:LocalizedValue';
+export const translatatedType = '@builder.io/core:TranslatedValue';
 
 export type TranslateableFields = {
   [key: string]: {
@@ -35,7 +38,24 @@ export function getTranslateableFields(
 
   // blocks
   traverse(blocks).forEach(function (el) {
-    // TODO: localized custom components inputs
+    if (this.key && el && el.meta?.localizedTextInputs) {
+      const localizedTextInputs = el.meta.localizedTextInputs as string[];
+      if (localizedTextInputs && Array.isArray(localizedTextInputs)) {
+        localizedTextInputs
+          .filter(input => el.component?.options?.[input]?.['@type'] === localizedType)
+          .forEach(inputKey => {
+            const valueToBeTranslated =
+              el.component.options?.[inputKey]?.[sourceLocaleId] ||
+              el.component.options?.[inputKey]?.Default;
+            if (valueToBeTranslated) {
+              results[`blocks.${el.id}#${inputKey}`] = {
+                instructions: el.meta?.instructions || defaultInstructions,
+                value: valueToBeTranslated,
+              };
+            }
+          });
+      }
+    }
     if (el && el.id && el.component?.name === 'Text' && !el.meta?.excludeFromTranslation) {
       results[`blocks.${el.id}#text`] = {
         value: el.component.options.text,
@@ -62,13 +82,12 @@ export function applyTranslation(
     if (translation[`metadata.${path}`]) {
       this.update({
         ...el,
-        [locale]: translation[`metadata.${path}`].value,
+        [locale]: unescape(translation[`metadata.${path}`].value),
       });
     }
   });
 
   traverse(blocks).forEach(function (el) {
-    // TODO: localized custom components inputs
     if (
       el &&
       el.id &&
@@ -88,6 +107,36 @@ export function applyTranslation(
         },
       });
     }
+
+    // custom components
+    if (el && el.id && el.meta?.localizedTextInputs) {
+      // there's a localized input
+      const keys = el.meta?.localizedTextInputs as string[];
+      let options = el.component.options;
+
+      keys.forEach(key => {
+        if (translation[`blocks.${el.id}#${key}`]) {
+          options = {
+            ...options,
+            [key]: {
+              ...el.component.options[key],
+              [locale]: unescape(translation[`blocks.${el.id}#${key}`].value),
+            },
+          };
+          this.update({
+            ...el,
+            meta: {
+              ...el.meta,
+              translated: true,
+            },
+            component: {
+              ...el.component,
+              options,
+            },
+          });
+        }
+      });
+    }
   });
 
   const translationState = Object.keys(translation).reduce((acc, key) => {
@@ -95,9 +144,9 @@ export function applyTranslation(
       return {
         ...acc,
         [key]: {
-          '@type': localizedType,
+          '@type': translatatedType,
           ...content.data!.state?.translation?.[key],
-          [locale]: translation[key].value,
+          [locale]: unescape(translation[key].value),
         },
       };
     }

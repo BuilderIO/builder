@@ -3,7 +3,7 @@ import type { ComponentInfo } from '../../types/components';
 export const componentInfo: ComponentInfo = {
   name: 'Video',
   canHaveChildren: true,
-  builtIn: true,
+
   defaultStyles: {
     minHeight: '20px',
     minWidth: '20px',

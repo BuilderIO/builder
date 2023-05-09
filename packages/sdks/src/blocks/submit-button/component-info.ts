@@ -2,7 +2,7 @@ import type { ComponentInfo } from '../../types/components';
 
 export const componentInfo: ComponentInfo = {
   name: 'Form:SubmitButton',
-  builtIn: true,
+
   image:
     'https://cdn.builder.io/api/v1/image/assets%2FIsxPKMo2gPRRKeakUztj1D6uqed2%2Fdf2820ffed1f4349a94c40b3221f5b98',
   defaultStyles: {

@@ -23,7 +23,17 @@ export const registerInsertMenu = () => {
   });
 };
 
-export const setupBrowserForEditing = () => {
+let isSetupForEditing = false;
+export const setupBrowserForEditing = (
+  options: {
+    includeRefs?: boolean;
+    locale?: string;
+  } = {}
+) => {
+  if (isSetupForEditing) {
+    return;
+  }
+  isSetupForEditing = true;
   if (isBrowser()) {
     window.parent?.postMessage(
       {
@@ -37,6 +47,17 @@ export const setupBrowserForEditing = () => {
           // Supports builder-model="..." attribute which is needed to
           // scope our '+ add block' button styling
           supportsAddBlockScoping: true,
+          supportsCustomBreakpoints: true,
+        },
+      },
+      '*'
+    );
+
+    window.parent?.postMessage(
+      {
+        type: 'builder.updateContent',
+        data: {
+          options,
         },
       },
       '*'

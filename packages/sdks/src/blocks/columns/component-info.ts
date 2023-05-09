@@ -1,10 +1,10 @@
 import type { ComponentInfo } from '../../types/components';
-import { markSerializable } from '../util.js';
+import { serializeFn } from '../util.js';
 
 export const componentInfo: ComponentInfo = {
   // TODO: ways to statically preprocess JSON for references, functions, etc
   name: 'Columns',
-  builtIn: true,
+
   inputs: [
     {
       name: 'columns',
@@ -194,7 +194,7 @@ export const componentInfo: ComponentInfo = {
           ],
         },
       ],
-      onChange: markSerializable((options: Map<string, any>) => {
+      onChange: serializeFn((options: Map<string, any>) => {
         function clearWidths() {
           columns.forEach((col) => {
             col.delete('width');

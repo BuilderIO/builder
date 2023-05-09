@@ -10,7 +10,8 @@ export const getUserAttributes = (attributes: Record<string, string>, cookiePref
       const sanitizedKey = key.split(`${prefix}.`)[1];
       return {
         ...acc,
-        ...(typeof value !== 'undefined' && { [sanitizedKey]: value }),
+        ...(typeof value !== 'undefined' &&
+          typeof sanitizedKey !== 'undefined' && { [sanitizedKey]: value }),
       };
     }, {});
 };

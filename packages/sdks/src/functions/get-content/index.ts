@@ -1,77 +1,62 @@
-import { flatten } from '../../helpers/flatten.js';
+import { logger } from '../../helpers/logger.js';
 import type { BuilderContent } from '../../types/builder-content.js';
-import {
-  getBuilderSearchParamsFromWindow,
-  normalizeSearchParams,
-} from '../get-builder-search-params/index.js';
-import { getFetch } from '../get-fetch.js';
+import { fetch } from '../get-fetch.js';
 import { handleABTesting } from './ab-testing.js';
-
-export type GetContentOptions = import('./types.js').GetContentOptions;
+import { generateContentUrl } from './generate-content-url.js';
+import type { GetContentOptions } from './types.js';
 
 export async function getContent(
   options: GetContentOptions
 ): Promise<BuilderContent | null> {
-  return (await getAllContent({ ...options, limit: 1 })).results[0] || null;
+  const allContent = await getAllContent({ ...options, limit: 1 });
+  if (allContent && 'results' in allContent) {
+    return allContent?.results[0] || null;
+  }
+
+  return null;
 }
 
-export const generateContentUrl = (options: GetContentOptions): URL => {
-  const {
-    limit = 30,
-    userAttributes,
-    query,
-    noTraverse = false,
-    model,
-    apiKey,
-  } = options;
-
-  const url = new URL(
-    `https://cdn.builder.io/api/v2/content/${model}?apiKey=${apiKey}&limit=${limit}&noTraverse=${noTraverse}`
-  );
-
-  const queryOptions = {
-    ...getBuilderSearchParamsFromWindow(),
-    ...normalizeSearchParams(options.options || {}),
-  };
-
-  const flattened = flatten(queryOptions);
-  for (const key in flattened) {
-    url.searchParams.set(key, String(flattened[key]));
-  }
-
-  if (userAttributes) {
-    url.searchParams.set('userAttributes', JSON.stringify(userAttributes));
-  }
-  if (query) {
-    const flattened = flatten({ query });
-    for (const key in flattened) {
-      url.searchParams.set(key, JSON.stringify((flattened as any)[key]));
+type ContentResponse =
+  | {
+      results: BuilderContent[];
     }
-  }
-
-  return url;
-};
-
-interface ContentResponse {
-  results: BuilderContent[];
-}
+  | {
+      status: number;
+      message: string;
+    };
 
 export async function getAllContent(
   options: GetContentOptions
-): Promise<ContentResponse> {
-  const url = generateContentUrl(options);
+): Promise<ContentResponse | null> {
+  try {
+    const url = generateContentUrl(options);
 
-  const fetch = await getFetch();
-  const content: ContentResponse = await fetch(url.href).then((res) =>
-    res.json()
-  );
+    const res = await fetch(url.href);
+    const content = await (res.json() as Promise<ContentResponse>);
 
-  const canTrack = options.canTrack !== false;
-  if (canTrack) {
-    for (const item of content.results) {
-      await handleABTesting({ item, canTrack });
+    if ('status' in content && !('results' in content)) {
+      logger.error('Error fetching data. ', { url, content, options });
+      return content;
     }
-  }
 
-  return content;
+    const canTrack = options.canTrack !== false;
+    try {
+      if (
+        canTrack &&
+        // This makes sure we have a non-error response with the results array.
+        Array.isArray(content.results)
+      ) {
+        for (const item of content.results) {
+          await handleABTesting({ item, canTrack });
+        }
+      }
+    } catch (e) {
+      logger.error('Could not setup A/B testing. ', e);
+    }
+
+    return content;
+  } catch (error) {
+    logger.error('Error fetching data. ', error);
+    return null;
+  }
 }

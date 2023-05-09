@@ -5,7 +5,9 @@ import { uuid } from './uuid.js';
 
 const SESSION_LOCAL_STORAGE_KEY = 'builderSessionId';
 
-export const getSessionId = async ({ canTrack }: CanTrack) => {
+export const getSessionId = async ({
+  canTrack,
+}: CanTrack): Promise<string | undefined> => {
   if (!canTrack) {
     return undefined;
   }
@@ -20,6 +22,8 @@ export const getSessionId = async ({ canTrack }: CanTrack) => {
   } else {
     const newSessionId = createSessionId();
     setSessionId({ id: newSessionId, canTrack });
+
+    return newSessionId;
   }
 };
 

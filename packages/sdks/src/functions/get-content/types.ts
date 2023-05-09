@@ -33,4 +33,21 @@ export interface GetContentOptions {
    * Defaults to `true`.
    */
   canTrack?: boolean;
+
+  /**
+   * Include references in the response. Defaults to `true`.
+   */
+  includeRefs?: boolean;
+
+  /**
+   * If provided, the API will auto-resolve localized objects to the value of this `locale` key.
+   */
+  locale?: string;
+
+  /**
+   * If provided, sets the Builder API version used to fetch content.
+   *
+   * Defaults to `v3`.
+   */
+  apiVersion?: 'v2' | 'v3';
 }

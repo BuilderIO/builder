@@ -122,7 +122,7 @@ Additional text to render in the UI to give guidance on how to use this
 **`example`**
 ```js
 helperText: 'Be sure to use a proper URL, starting with "https://"'
-111
+```
 
 #### Defined in
 

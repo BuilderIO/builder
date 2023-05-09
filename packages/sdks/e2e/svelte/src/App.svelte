@@ -1,11 +1,27 @@
-<script>
-  import { RenderContent } from '@builder.io/sdk-svelte';
-  import { getContentForPathname } from '@builder.io/sdks-e2e-tests/specs';
+<script lang="ts">
+  import {
+    RenderContent,
+    type RegisteredComponent,
+  } from '@builder.io/sdk-svelte';
+  import { getProps } from '@builder.io/sdks-e2e-tests';
+  import Counter from './Counter.svelte';
 
-  // TODO: enter your public API key
-  const BUILDER_PUBLIC_API_KEY = 'f1a790f8c3204b3b8c5c1795aeac4660'; // ggignore
+  $: props = getProps();
 
-  $: content = getContentForPathname();
+  const CUSTOM_COMPONENTS: RegisteredComponent[] = [
+    {
+      name: 'Counter',
+      component: Counter,
+      image: 'https://cdn-icons-png.flaticon.com/512/6134/6134688.png',
+      inputs: [
+        {
+          name: 'count',
+          type: 'number',
+          defaultValue: 0,
+        },
+      ],
+    },
+  ];
 </script>
 
 <svelte:head>
@@ -13,8 +29,8 @@
 </svelte:head>
 
 <main>
-  {#if content}
-    <RenderContent model="page" {content} apiKey={BUILDER_PUBLIC_API_KEY} />
+  {#if props}
+    <RenderContent {...props} customComponents={CUSTOM_COMPONENTS} />
   {:else}
     Content Not Found
   {/if}

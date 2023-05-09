@@ -8,13 +8,14 @@
 </p>
 <br />
 <h3 align="center">
-  Drag and drop Visual CMS for React, Vue, Angular, and more
+  The Drag & Drop Headless CMS
 </h3>
 <p align="center">
   Integrate with any site or app. Drag and drop with the components already in your codebase.
 </p>
 
 <p align="center">
+  <img alt="React SDK Size" src="https://img.shields.io/bundlephobia/minzip/@builder.io/sdk-react">
   <a href="https://github.com/prettier/prettier"><img alt="code style: prettier" src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg" /></a>
   <a href="https://github.com/builderio/builder/pulls"><img alt="PRs Welcome" src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" /></a>
   <a href="https://github.com/BuilderIO/builder"><img alt="License" src="https://img.shields.io/github/license/BuilderIO/builder" /></a>
@@ -23,7 +24,7 @@
 <br />
 
 <p align="center">
-  <img alt="Animation of Builder.io Visual Editor" src="https://user-images.githubusercontent.com/844291/186968488-6344adaa-38bb-422c-b728-10c529af993d.gif" >
+  <img alt="Animation of Builder.io Visual Editor" src="https://user-images.githubusercontent.com/844291/205193225-d3258fda-71d2-4665-a8de-696401bd340e.gif" >
 </p>
 
 <br />
@@ -76,6 +77,35 @@ export function BuilderPage({ builderJson }) => {
   </tr>
 </table>
 
+## Get Started
+
+See our full [getting started docs](https://www.builder.io/c/docs/developers), or jump right into integration. We generally recommend to start with page buliding as your initial integration:
+
+<table>
+  <tr>
+    <td align="center">Integrate Page Building</td>
+    <td align="center">Integrate Section Building</td>
+    <td align="center">Integrate Structured Data</td>
+  </tr>
+  <tr>
+    <td align="center">
+      <a href="https://www.builder.io/c/docs/integrating-builder-pages">
+        <img alt="CTA to integrate page buliding" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F48bbb0ef5efb4d19a95a3f09f83c98f0" />
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://www.builder.io/c/docs/integrate-section-building">
+        <img alt="CTA to integrate section buliding" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F9db93cd1a29443fca7b67c1f9f458356" />
+      </a>
+    </td>    
+    <td align="center">
+      <a href="https://www.builder.io/c/docs/integrate-cms-data">
+        <img alt="CTA to integrate CMS data" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F8df098759b0a4c89b8c25edec1f3c9eb" />
+      </a>
+    </td>        
+  </tr>
+</table>
+
 ## Try it out!
 
 <table>
@@ -117,34 +147,6 @@ Using an API-driven UI allows you to:
 <img src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F73868572aeff49bdbf00a32fea8c1126" />
 
 
-## Get Started
-
-See our full [getting started docs](https://www.builder.io/c/docs/developers), or jump right into integration. We generally recommend to start with page buliding as your initial integration:
-
-<table>
-  <tr>
-    <td align="center">Integrate Page Building</td>
-    <td align="center">Integrate Section Building</td>
-    <td align="center">Integrate CMS Data</td>
-  </tr>
-  <tr>
-    <td align="center">
-      <a href="https://www.builder.io/c/docs/integrating-builder-pages">
-        <img alt="CTA to integrate page buliding" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F48bbb0ef5efb4d19a95a3f09f83c98f0" />
-      </a>
-    </td>
-    <td align="center">
-      <a href="https://www.builder.io/c/docs/integrate-section-building">
-        <img alt="CTA to integrate section buliding" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F9db93cd1a29443fca7b67c1f9f458356" />
-      </a>
-    </td>    
-    <td align="center">
-      <a href="https://www.builder.io/c/docs/integrate-cms-data">
-        <img alt="CTA to integrate CMS data" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F8df098759b0a4c89b8c25edec1f3c9eb" />
-      </a>
-    </td>        
-  </tr>
-</table>
 
 
 ## How does it work?
@@ -154,10 +156,31 @@ See our full [getting started docs](https://www.builder.io/c/docs/developers), o
 
 
 <a href="https://www.youtube.com/watch?v=FfrrigefdiY">
-  <img width="983" alt="Thumbnail to go to a video on how Builder works" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F5a98332583ac48db9af376b11a9b3d3c">
+  <img width="500" alt="Thumbnail to go to a video on how Builder works" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F5a98332583ac48db9af376b11a9b3d3c">
 </a>
  
 Learn more about <a href="https://www.builder.io/c/docs/how-builder-works-technical">how builder works here</a>
+
+## How is the performance?
+
+Performance is our top priority. All content is delivered from the edge, renderable server side or statically, we [optimize the heck out of it](https://www.builder.io/blog/high-performance-no-code) and our SDKs are small and mighty. 
+
+Some example SDK sizes from Bundlephobia:
+
+|SDK|Size|
+|----|----|
+|React|![React Bundle Size](https://img.shields.io/bundlephobia/minzip/@builder.io/sdk-react)|
+|Vue|![Vue Bundle Size](https://img.shields.io/bundlephobia/minzip/@builder.io/sdk-vue)|
+|Qwik|![Vue Bundle Size](https://img.shields.io/bundlephobia/minzip/@builder.io/sdk-qwik)|
+
+Importantly, there are no hacks here - no iframes, no unneeded client side code or rendering, our rule of thumb is we produce content just like if you wrote it by hand. Assets are optimized, DOM is minimized, and it's all native to your framework (so all React components if you use React, Svelte for Svelte, etc)
+
+See more about [how Builder works](https://www.builder.io/c/docs/how-builder-works-technical), or take a look at the [perf of our own site](https://pagespeed.web.dev/report?url=https%3A%2F%2Fwww.builder.io%2F) (built completely in Builder):
+
+<a href="https://pagespeed.web.dev/report?url=https%3A%2F%2Fwww.builder.io%2F">
+  <img width="700" alt="Screenshot of Builder.io site performance (96/100 on mobile pagespeed insights)" src="https://user-images.githubusercontent.com/844291/195188635-a437c25c-7cf3-45f9-8d3a-c357810d52ca.png">
+</a>
+
 
 
 ## How is the content structured?

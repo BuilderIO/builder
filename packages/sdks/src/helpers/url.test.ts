@@ -13,4 +13,11 @@ describe('getTopLevelDomain', () => {
     const output = getTopLevelDomain('www.example.co.uk');
     expect(output).toBe('example.co.uk');
   });
+  test('handles localhost', () => {
+    const output = getTopLevelDomain('localhost');
+    expect(output).toBe('localhost');
+
+    const output2 = getTopLevelDomain('127.0.0.1');
+    expect(output2).toBe('127.0.0.1');
+  });
 });

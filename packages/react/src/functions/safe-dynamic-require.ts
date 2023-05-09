@@ -26,11 +26,30 @@ export let safeDynamicRequire: typeof require;
  * In Summary:
  *
  * 1. Node -> globalThis.require does not work
- * 2. Client -> typeof require === 'function' does not work because of overoptimization by the compiler
- * 3. Cloudflare edge -> only globalThis.require works
+ * 2. Cloudflare edge -> only globalThis.require works
  */
-if (typeof globalThis.require === 'function' || Builder.isServer) {
-  safeDynamicRequire = eval('require');
+if (
+  typeof globalThis?.require === 'function' ||
+  (Builder.isServer && typeof require === 'function')
+) {
+  try {
+    /*
+      This is a hack to get around webpack bundling the require function, which is not available in the browser
+      Needs to be eval'd to avoid webpack bundling it
+    */
+    safeDynamicRequire = eval('require');
+  } catch (e) {
+    /* 
+      This is a patch for enviornments where eval is not allowed, like Shopify-hydrogen storefront
+      Relevant issue : https://github.com/BuilderIO/builder-shopify-hydrogen/issues/12
+    */
+    if (globalThis?.require) {
+      safeDynamicRequire = globalThis.require;
+    } else {
+      // @ts-ignore
+      safeDynamicRequire = noop;
+    }
+  }
 }
 
 safeDynamicRequire ??= noop as any;

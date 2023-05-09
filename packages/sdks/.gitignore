@@ -1,1 +1,5 @@
 **/playwright-report/*
+
+**/test-results/*
+
+**/vite.config.ts.timestamp-*

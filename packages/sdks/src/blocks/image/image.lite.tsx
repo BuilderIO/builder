@@ -11,7 +11,7 @@ export interface ImageProps {
   height?: number;
   width?: number;
   altText?: string;
-  backgroundSize?: string;
+  backgroundSize?: 'cover' | 'contain';
   backgroundPosition?: string;
   srcset?: string;
   aspectRatio?: number;
@@ -54,6 +54,22 @@ export default function Image(props: ImageProps) {
         return '';
       }
     },
+
+    get aspectRatioCss():
+      | (Pick<JSX.CSS, 'position' | 'height' | 'width' | 'left' | 'top'> & {
+          position: 'absolute';
+        })
+      | undefined {
+      const aspectRatioStyles = {
+        position: 'absolute',
+        height: '100%',
+        width: '100%',
+        left: '0px',
+        top: '0px',
+      } as const;
+      const out = props.aspectRatio ? aspectRatioStyles : undefined;
+      return out;
+    },
   });
   return (
     <>
@@ -68,15 +84,11 @@ export default function Image(props: ImageProps) {
           css={{
             opacity: '1',
             transition: 'opacity 0.2s ease-in-out',
-            position: 'absolute',
-            height: '100%',
-            width: '100%',
-            top: '0px',
-            left: '0px',
           }}
           style={{
-            objectPosition: props.backgroundSize || 'center',
+            objectPosition: props.backgroundPosition || 'center',
             objectFit: props.backgroundSize || 'cover',
+            ...state.aspectRatioCss,
           }}
           class={
             'builder-image' + (props.className ? ' ' + props.className : '')
@@ -86,7 +98,6 @@ export default function Image(props: ImageProps) {
           srcset={state.srcSetToUse}
           sizes={props.sizes}
         />
-        <source srcset={state.srcSetToUse} />
       </picture>
 
       {/* preserve aspect ratio trick. Only applies when there are no children meant to fit the content width. */}
@@ -99,9 +110,7 @@ export default function Image(props: ImageProps) {
         <div
           class="builder-image-sizer"
           style={{
-            paddingTop:
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-              props.aspectRatio! * 100 + '%',
+            paddingTop: props.aspectRatio! * 100 + '%',
           }}
           css={{
             width: '100%',

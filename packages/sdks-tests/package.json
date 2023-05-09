@@ -1,0 +1,32 @@
+{
+  "name": "@builder.io/sdks-e2e-tests",
+  "description": "Workspace containing e2e tests for SDKs",
+  "private": true,
+  "version": "0.0.1",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc -w",
+    "test": "playwright test",
+    "install-playwright": "playwright install chromium --with-deps"
+  },
+  "type": "module",
+  "main": "./dist/src/index.js",
+  "module": "./dist/src/index.js",
+  "exports": {
+    "./shared.config": "./dist/shared.config.js",
+    "./shared.config.js": "./dist/shared.config.js",
+    ".": "./dist/src/index.js",
+    "./*": "./dist/src/*.js"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.27.1",
+    "@typescript-eslint/eslint-plugin": "latest",
+    "@typescript-eslint/parser": "latest",
+    "eslint": "^8.12.0",
+    "eslint-plugin-unused-imports": "^2.0.0",
+    "typescript": "^4.8.4"
+  },
+  "dependencies": {
+    "zod": "^3.20.2"
+  }
+}

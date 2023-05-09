@@ -9,6 +9,10 @@ Installing the Qwik SDK is done in two steps:
 1. Set up Qwik-city project.
 2. Install the Qwik SDK into your Qwik-city project.
 
+### Fetch
+
+This Package uses fetch. See [these docs](https://github.com/BuilderIO/this-package-uses-fetch/blob/main/README.md) for more information.
+
 ### Set up Qwik-city project
 
 1. Follow the instructions on [Qwik-city](https://qwik.builder.io/qwikcity/overview)
@@ -30,39 +34,135 @@ npm add --save @builder.io/sdk-qwik
 Add Qwik SDK code to a particular route (such as `src/routes/index.tsx`)
 
 ```typscript
-import { component$, Resource, useResource$ } from "@builder.io/qwik";
-import { useLocation } from "@builder.io/qwik-city";
-import { getContent, RenderContent, getBuilderSearchParams } from "@builder.io/sdk-qwik";
+import { component$ } from "@builder.io/qwik";
+import { loader$ } from "@builder.io/qwik-city";
+import {
+  getBuilderSearchParams,
+  getContent,
+  RenderContent,
+} from "@builder.io/sdk-qwik";
 
 export const BUILDER_PUBLIC_API_KEY = "YOUR_API_KEY_GOES_HERE"; // ggignore
+export const MODEL = 'page';
+
+export const builderContentLoader = loader$(({ url }) => {
+  return getContent({
+    model: MODEL,
+    apiKey: BUILDER_PUBLIC_API_KEY,
+    options: {
+      ...getBuilderSearchParams(url.searchParams),
+      cachebust: true,
+    },
+    userAttributes: {
+      urlPath: url.pathname || "/",
+    },
+  });
+});
+
 export default component$(() => {
-  const location = useLocation();
-  const builderContentRsrc = useResource$<any>(() => {
-    return getContent({
-      model: "page",
-      apiKey: BUILDER_PUBLIC_API_KEY,
-      options: getBuilderSearchParams(location.query),
-      userAttributes: {
-        urlPath: location.pathname || "/",
-      },
-    });
+  const builderContent = builderContentLoader.use();
+  return (
+    <div>
+      <RenderContent
+        model={MODEL}
+        content={builderContent.value}
+        apiKey={BUILDER_PUBLIC_API_KEY}
+        // Optional: pass in a custom component registry
+        // customComponents={CUSTOM_COMPONENTS}
+      />
+    </div>
+  );
+});
+
+// OPTIONAL: need to add custom components to your Qwik app
+
+export const MyFunComponent = component$((props: { text: string }) => {
+  const state = useStore({
+    count: 0,
   });
 
   return (
-    <Resource
-      resource={builderContentRsrc}
-      onPending={() => <div>Loading...</div>}
-      onResolved={(content) => (
-        <RenderContent
-          model="page"
-          content={content}
-          apiKey={BUILDER_PUBLIC_API_KEY}
-        />
-      )}
-    />
+    <div>
+      <h3>{props.text.toUpperCase()}</h3>
+      <p>{state.count}</p>
+      <button onClick$={() => state.count++}>Click me</button>
+    </div>
   );
 });
+
+export const CUSTOM_COMPONENTS: RegisteredComponent[] = [
+  {
+    component: MyFunComponent,
+    name: 'MyFunComponent',
+
+    inputs: [
+      {
+        name: 'text',
+        type: 'string',
+        defaultValue: 'Hello world',
+      },
+    ],
+  },
+];
+
 ```
+
+### [Beta] Guide to use API Version v3 to query for content
+
+For using API Version `v3`, you need to add `apiVersion: 'v3'` to the `getContent` function and in the `RenderContent` tag. For example:
+
+```typscript
+import { component$ } from "@builder.io/qwik";
+import { loader$ } from "@builder.io/qwik-city";
+import {
+  getBuilderSearchParams,
+  getContent,
+  RenderContent,
+} from "@builder.io/sdk-qwik";
+
+export const BUILDER_PUBLIC_API_KEY = "YOUR_API_KEY_GOES_HERE";
+export const MODEL = "page";
+
+export const builderContentLoader = loader$(({ url }) => {
+  return getContent({
+    model: MODEL,
+    apiKey: BUILDER_PUBLIC_API_KEY,
+    apiVersion: "v3",
+    options: {
+      ...getBuilderSearchParams(url.searchParams),
+      cachebust: true,
+    },
+    userAttributes: {
+      urlPath: url.pathname || "/",
+    },
+  });
+});
+
+export default component$(() => {
+  const builderContent = builderContentLoader.use();
+  return (
+    <div>
+      <RenderContent
+        model={MODEL}
+        content={builderContent.value}
+        apiKey={BUILDER_PUBLIC_API_KEY}
+        apiVersion="v3"
+      />
+    </div>
+  );
+});
+
+```
+
+#### Reasons to switch to API Version v3
+
+- Better, more scalable infra: Query v3 is built on global scale infrastructure to ensure fast response times and high availability
+- Ability to ship more features, faster: Query V3 will allow us to keep shipping the latest features to our customers without breaking fundamental flows. These will be shipped only to Query V3 and not to the older versions of the query API
+
+_Coming soon..._
+
+- Better support for localization: Some of the newer features of localization and querying based on it will be better supported in Query V3
+- Support multi-level nested references: Query V3 will allow you to query, resolve, and return content that has nested references of other contents and symbols.
 
 ## Mitosis
 

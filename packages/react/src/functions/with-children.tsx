@@ -34,6 +34,8 @@ export const withChildren = <P extends object>(Component: React.ComponentType<P>
           props.builderBlock.children.map(child => <BuilderBlock key={child.id} block={child} />));
 
       return (
+        // getting type errors due to `@types/react` version mismatches. Can safely ignore.
+        // @ts-ignore
         <Component {...props} ref={ref}>
           {children}
         </Component>

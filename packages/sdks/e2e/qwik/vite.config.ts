@@ -4,5 +4,8 @@ import { qwikVite } from '@builder.io/qwik/optimizer';
 export default defineConfig(() => {
   return {
     plugins: [qwikVite()],
+    server: {
+      port: 3000,
+    },
   };
 });

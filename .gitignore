@@ -14,6 +14,8 @@ yarn-error.log
 .build
 Pods/
 
+**/xcuserdata/*
+
 
 **/.pnp.*
 **/.yarn/*
@@ -29,3 +31,5 @@ Pods/
 
 .cache
 .rpt2_cache/
+
+.env

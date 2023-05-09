@@ -1,3 +1,47 @@
+### 2.1.0
+- Sets the default `apiVersion` to `v3`.
+
+In case you feel the need to use our older API Version `v1`, reach out to us at support@builder.io first. But you can override the default by setting `apiVersion` explicitly to `v1` as follows:
+
+```js
+import { builder } from '@builder.io/react';
+
+builder.init("YOUR_BUILDER_PUBLIC_KEY");
+builder.apiVersion = 'v1';
+```
+More details on the Builder API Versions visit [this link](https://www.builder.io/c/docs/content-api-versions).
+
+### 2.0.17
+- Add new `apiVersion` property to toggle between Builder API versions. Defaults to `v1`. Possible values: `v1` and `v3`.
+
+You can set the apiVersion using `builder.init` or `builder.apiVersion`:
+
+```js
+import { builder } from '@builder.io/react';
+
+builder.init("YOUR_BUILDER_PUBLIC_KEY");
+builder.apiVersion = 'v3';
+```
+
+### 2.0.16
+- Safe access to node-fetch and process.env.
+
+### 2.0.15
+- Use correct types for `responsiveStyles`, fixes remix type checks.
+
+### 2.0.13
+- Fix hydration errors when a/b testing with react 18
+- Fix overriding state in editor's data tab.
+
+### 2.0.10
+
+- Fix issue with Hydrogen SSR.
+- Return null values in bindings when VM2 is not available on the server.
+
+### 2.0.9
+
+- Fix for `require` is not defined bug on client side.
+
 ### 2.0.8
 
 - Fix SSR issue with hydration

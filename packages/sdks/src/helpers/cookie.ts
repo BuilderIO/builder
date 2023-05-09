@@ -1,5 +1,6 @@
 import { isBrowser } from '../functions/is-browser.js';
 import type { CanTrack } from '../types/can-track.js';
+import { checkIsDefined } from './nullable.js';
 import { getTopLevelDomain } from './url.js';
 
 /**
@@ -10,7 +11,7 @@ export const getCookie = async ({
   canTrack,
 }: {
   name: string;
-} & CanTrack) => {
+} & CanTrack): Promise<string | undefined> => {
   try {
     if (!canTrack) {
       return undefined;
@@ -26,6 +27,7 @@ export const getCookie = async ({
       ?.split('=')[1];
   } catch (err) {
     console.debug('[COOKIE] GET error: ', err);
+    return undefined;
   }
 };
 
@@ -40,7 +42,10 @@ type CookieConfiguration = Array<
 >;
 
 const stringifyCookie = (cookie: CookieConfiguration): string =>
-  cookie.map(([key, value]) => (value ? `${key}=${value}` : key)).join('; ');
+  cookie
+    .map(([key, value]) => (value ? `${key}=${value}` : key))
+    .filter(checkIsDefined)
+    .join('; ');
 
 const SECURE_CONFIG: CookieConfiguration = [
   ['secure', ''],
@@ -89,10 +94,10 @@ export const setCookie = async ({
   name: string;
   value: string;
   expires?: Date;
-} & CanTrack) => {
+} & CanTrack): Promise<void> => {
   try {
     if (!canTrack) {
-      return undefined;
+      return;
     }
     const cookie = createCookieString({ name, value, expires });
     document.cookie = cookie;

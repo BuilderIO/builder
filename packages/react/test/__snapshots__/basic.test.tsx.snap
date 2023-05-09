@@ -1,0 +1,121 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Builder Pixel Should NOT be added again if already present in blocks array 1`] = `
+<div
+  className="builder-component builder-component-id"
+  data-name="page"
+  data-source="Rendered by Builder.io"
+  onClick={[Function]}
+>
+  <div
+    builder-content-id="id"
+    builder-model="page"
+    className="builder-content"
+    onClick={[Function]}
+  >
+    <div
+      data-builder-component="page"
+      data-builder-content-id="id"
+    >
+      
+      <div
+        builder-type="blocks"
+        className="builder-blocks css-h47494"
+        onClick={[Function]}
+      >
+        <img
+          aria-hidden="true"
+          builder-id="builder-pixel-4fzzzxjylrx"
+          className="builder-block builder-pixel-4fzzzxjylrx css-1mvsfya"
+          role="presentation"
+          src="https://cdn.builder.io/api/v1/pixel?apiKey=null"
+          style={Object {}}
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Builder Pixel Should NOT be added if blocks array is empty 1`] = `
+<div
+  className="builder-component builder-component-id"
+  data-name="page"
+  data-source="Rendered by Builder.io"
+  onClick={[Function]}
+>
+  <div
+    builder-content-id="id"
+    builder-model="page"
+    className="builder-content"
+    onClick={[Function]}
+  >
+    <div
+      data-builder-component="page"
+      data-builder-content-id="id"
+    >
+      
+      <div
+        builder-type="blocks"
+        className="builder-blocks no-blocks css-h47494"
+        onClick={[Function]}
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Builder Pixel Should be added if pixel is missing and blocks array has other block(s) 1`] = `
+<div
+  className="builder-component builder-component-id"
+  data-name="page"
+  data-source="Rendered by Builder.io"
+  onClick={[Function]}
+>
+  <div
+    builder-content-id="id"
+    builder-model="page"
+    className="builder-content"
+    onClick={[Function]}
+  >
+    <div
+      data-builder-component="page"
+      data-builder-content-id="id"
+    >
+      
+      <div
+        builder-type="blocks"
+        className="builder-blocks css-h47494"
+        onClick={[Function]}
+      >
+        <div
+          builder-id="builder-270035a08d734ae88ea177daff3595c0"
+          className="builder-block builder-270035a08d734ae88ea177daff3595c0 builder-has-component css-hgfgng"
+          style={Object {}}
+        >
+          <span
+            className="builder-text css-1qggkls"
+            dangerouslySetInnerHTML={
+              Object {
+                "__html": "<p>some text...</p>",
+              }
+            }
+            onBlur={[Function]}
+            onFocus={[Function]}
+            onInput={[Function]}
+            onKeyDown={[Function]}
+          />
+        </div>
+        <img
+          aria-hidden="true"
+          builder-id="builder-pixel-4fzzzxjylrx"
+          className="builder-block builder-pixel-4fzzzxjylrx css-1mvsfya"
+          role="presentation"
+          src="https://cdn.builder.io/api/v1/pixel?apiKey=null"
+          style={Object {}}
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;

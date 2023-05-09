@@ -1,15 +1,12 @@
 import { getDefaultRegisteredComponents } from '../../constants/builder-registered-components.js';
-import { TARGET } from '../../constants/target.js';
-import BuilderContext from '../../context/builder.context.lite';
 import type {
-  BuilderRenderContext,
   BuilderRenderState,
   RegisteredComponent,
   RegisteredComponents,
 } from '../../context/types.js';
 import { evaluate } from '../../functions/evaluate.js';
 import { getContent } from '../../functions/get-content/index.js';
-import { getFetch } from '../../functions/get-fetch.js';
+import { fetch } from '../../functions/get-fetch.js';
 import { isBrowser } from '../../functions/is-browser.js';
 import { isEditing } from '../../functions/is-editing.js';
 import { isPreviewing } from '../../functions/is-previewing.js';
@@ -17,39 +14,45 @@ import {
   components,
   createRegisterComponentMessage,
 } from '../../functions/register-component.js';
-import { track } from '../../functions/track.js';
-import type { BuilderContent } from '../../types/builder-content.js';
-import type { Dictionary, Nullable } from '../../types/typescript.js';
+import { _track } from '../../functions/track/index.js';
+import type {
+  Breakpoints,
+  BuilderContent,
+} from '../../types/builder-content.js';
+import type { Nullable } from '../../types/typescript.js';
 import RenderBlocks from '../render-blocks.lite';
 import RenderContentStyles from './components/render-styles.lite';
+import builderContext from '../../context/builder.context.lite';
 import {
   Show,
   onMount,
   onUnMount,
   onUpdate,
-  setContext,
   useStore,
   useMetadata,
   useRef,
+  setContext,
 } from '@builder.io/mitosis';
 import {
   registerInsertMenu,
   setupBrowserForEditing,
 } from '../../scripts/init-editing.js';
-import { markMutable } from '../../functions/mark-mutable.js';
+import { checkIsDefined } from '../../helpers/nullable.js';
+import { getInteractionPropertiesForEvent } from '../../functions/track/interaction.js';
+import type {
+  RenderContentProps,
+  BuilderComponentStateChange,
+} from './render-content.types.js';
+import {
+  getContentInitialValue,
+  getContextStateInitialValue,
+} from './render-content.helpers.js';
+import { TARGET } from '../../constants/target.js';
+import { logger } from '../../helpers/logger.js';
 
 useMetadata({
   qwik: {
-    component: {
-      useHostElement: true,
-    },
-    replace: {
-      '// QWIK-REPLACE: _useMutableProps':
-        'elementRef.current && _useMutableProps(elementRef.current, true);',
-    },
-    imports: {
-      _useMutableProps: '@builder.io/qwik',
-    },
+    hasDeepStore: true,
   },
   solid: {
     state: {
@@ -58,91 +61,85 @@ useMetadata({
   },
 });
 
-export type RenderContentProps = {
-  content?: Nullable<BuilderContent>;
-  model?: string;
-  data?: { [key: string]: any };
-  context?: BuilderRenderContext;
-  apiKey: string;
-  customComponents?: RegisteredComponent[];
-  canTrack?: boolean;
-};
-
-interface BuilderComponentStateChange {
-  state: BuilderRenderState;
-  ref: {
-    name?: string;
-    props?: {
-      builderBlock?: {
-        id?: string;
-      };
-    };
-  };
-}
-
 export default function RenderContent(props: RenderContentProps) {
   const elementRef = useRef<HTMLDivElement>();
   const state = useStore({
     forceReRenderCount: 0,
-    get useContent(): Nullable<BuilderContent> {
-      if (!props.content && !state.overrideContent) {
-        return undefined;
-      }
-      const mergedContent: BuilderContent = {
-        ...props.content,
-        ...state.overrideContent,
+    overrideContent: null as Nullable<BuilderContent>,
+    useContent: getContentInitialValue({
+      content: props.content,
+      data: props.data,
+    }),
+    mergeNewContent(newContent: BuilderContent) {
+      state.useContent = {
+        ...state.useContent,
+        ...newContent,
         data: {
-          ...props.content?.data,
-          ...props.data,
-          ...state.overrideContent?.data,
+          ...state.useContent?.data,
+          ...newContent?.data,
+        },
+        meta: {
+          ...state.useContent?.meta,
+          ...newContent?.meta,
+          breakpoints:
+            newContent?.meta?.breakpoints ||
+            state.useContent?.meta?.breakpoints,
         },
       };
-      return mergedContent;
     },
-    overrideContent: null as Nullable<BuilderContent>,
-    update: 0,
-    get canTrackToUse(): boolean {
-      return props.canTrack || true;
-    },
-    overrideState: {} as BuilderRenderState,
-    get contentState(): BuilderRenderState {
-      return {
-        ...props.content?.data?.state,
-        ...props.data,
-        ...state.overrideState,
+    setBreakpoints(breakpoints: Breakpoints) {
+      state.useContent = {
+        ...state.useContent,
+        meta: {
+          ...state.useContent?.meta,
+          breakpoints,
+        },
       };
     },
-    get contextContext() {
-      return props.context || {};
+    update: 0,
+    canTrackToUse: checkIsDefined(props.canTrack) ? props.canTrack : true,
+    contentState: getContextStateInitialValue({
+      content: props.content,
+      data: props.data,
+      locale: props.locale,
+    }),
+    setContextState: (newState: BuilderRenderState) => {
+      state.contentState = newState;
     },
 
-    get allRegisteredComponents(): RegisteredComponents {
-      const allComponentsArray = [
-        ...getDefaultRegisteredComponents(),
-        // While this `components` object is deprecated, we must maintain support for it.
-        // Since users are able to override our default components, we need to make sure that we do not break such
-        // existing usage.
-        // This is why we spread `components` after the default Builder.io components, but before the `props.customComponents`,
-        // which is the new standard way of providing custom components, and must therefore take precedence.
-        ...components,
-        ...(props.customComponents || []),
-      ];
-
-      const allComponents = allComponentsArray.reduce(
-        (acc, curr) => ({
-          ...acc,
-          [curr.name]: curr,
-        }),
-        {} as RegisteredComponents
-      );
-
-      return allComponents;
-    },
+    allRegisteredComponents: [
+      ...getDefaultRegisteredComponents(),
+      // While this `components` object is deprecated, we must maintain support for it.
+      // Since users are able to override our default components, we need to make sure that we do not break such
+      // existing usage.
+      // This is why we spread `components` after the default Builder.io components, but before the `props.customComponents`,
+      // which is the new standard way of providing custom components, and must therefore take precedence.
+      ...components,
+      ...(props.customComponents || []),
+    ].reduce(
+      (acc, curr) => ({
+        ...acc,
+        [curr.name]: curr,
+      }),
+      {} as RegisteredComponents
+    ),
 
     processMessage(event: MessageEvent): void {
       const { data } = event;
       if (data) {
         switch (data.type) {
+          case 'builder.configureSdk': {
+            const messageContent = data.data;
+            const { breakpoints, contentId } = messageContent;
+            if (!contentId || contentId !== state.useContent?.id) {
+              return;
+            }
+            if (breakpoints) {
+              state.setBreakpoints(breakpoints);
+            }
+            state.forceReRenderCount = state.forceReRenderCount + 1; // This is a hack to force Qwik to re-render.
+            break;
+          }
           case 'builder.contentUpdate': {
             const messageContent = data.data;
             const key =
@@ -154,7 +151,7 @@ export default function RenderContent(props: RenderContentProps) {
             const contentData = messageContent.data;
 
             if (key === props.model) {
-              state.overrideContent = contentData;
+              state.mergeNewContent(contentData);
               state.forceReRenderCount = state.forceReRenderCount + 1; // This is a hack to force Qwik to re-render.
             }
             break;
@@ -173,23 +170,32 @@ export default function RenderContent(props: RenderContentProps) {
       if (jsCode) {
         evaluate({
           code: jsCode,
-          context: state.contextContext,
+          context: props.context || {},
           state: state.contentState,
         });
       }
     },
-    get httpReqsData(): Dictionary<any> {
-      return {};
-    },
+    httpReqsData: {} as { [key: string]: any },
 
-    onClick(_event: MouseEvent) {
+    clicked: false,
+
+    onClick(event: any) {
       if (state.useContent) {
-        track({
+        const variationId = state.useContent?.testVariationId;
+        const contentId = state.useContent?.id;
+        _track({
           type: 'click',
           canTrack: state.canTrackToUse,
-          contentId: state.useContent?.id,
-          orgId: props.apiKey,
+          contentId,
+          apiKey: props.apiKey,
+          variationId: variationId !== contentId ? variationId : undefined,
+          ...getInteractionPropertiesForEvent(event),
+          unique: !state.clicked,
         });
+      }
+
+      if (!state.clicked) {
+        state.clicked = true;
       }
     },
 
@@ -197,28 +203,28 @@ export default function RenderContent(props: RenderContentProps) {
       return expression.replace(/{{([^}]+)}}/g, (_match, group) =>
         evaluate({
           code: group,
-          context: state.contextContext,
+          context: props.context || {},
           state: state.contentState,
         })
       );
     },
     handleRequest({ url, key }: { key: string; url: string }) {
-      getFetch()
-        .then((fetch) => fetch(url))
+      fetch(url)
         .then((response) => response.json())
         .then((json) => {
-          const newOverrideState = {
-            ...state.overrideState,
+          const newState = {
+            ...state.contentState,
             [key]: json,
           };
-          state.overrideState = newOverrideState;
+          state.setContextState(newState);
         })
         .catch((err) => {
-          console.log('error fetching dynamic data', url, err);
+          console.error('error fetching dynamic data', url, err);
         });
     },
     runHttpRequests() {
-      const requests = state.useContent?.data?.httpRequests ?? {};
+      const requests: { [key: string]: string } =
+        state.useContent?.data?.httpRequests ?? {};
 
       Object.entries(requests).forEach(([key, url]) => {
         if (url && (!state.httpReqsData[key] || isEditing())) {
@@ -244,13 +250,6 @@ export default function RenderContent(props: RenderContentProps) {
         );
       }
     },
-    get shouldRenderContentStyles(): boolean {
-      return Boolean(
-        (state.useContent?.data?.cssCode ||
-          state.useContent?.data?.customFonts?.length) &&
-          TARGET !== 'reactNative'
-      );
-    },
   });
 
   // This currently doesn't do anything as `onCreate` is not implemented
@@ -265,35 +264,35 @@ export default function RenderContent(props: RenderContentProps) {
   //         state.update = state.update + 1;
   //       })
   //   );
-
   // TODO: inherit context here too
   // });
 
-  setContext(BuilderContext, {
-    get content() {
-      return state.useContent;
-    },
-    get state() {
-      return state.contentState;
-    },
-    get context() {
-      return state.contextContext;
-    },
-    get apiKey() {
-      return props.apiKey;
-    },
-    get registeredComponents() {
-      return state.allRegisteredComponents;
-    },
+  setContext(builderContext, {
+    content: state.useContent,
+    state: state.contentState,
+    setState: state.setContextState,
+    context: props.context || {},
+    apiKey: props.apiKey,
+    apiVersion: props.apiVersion,
+    registeredComponents: state.allRegisteredComponents,
+    inheritedStyles: {},
   });
 
   onMount(() => {
+    if (!props.apiKey) {
+      logger.error(
+        'No API key provided to `RenderContent` component. This can cause issues. Please provide an API key using the `apiKey` prop.'
+      );
+    }
+
     if (isBrowser()) {
       if (isEditing()) {
         state.forceReRenderCount = state.forceReRenderCount + 1;
-        // QWIK-REPLACE: _useMutableProps
         registerInsertMenu();
-        setupBrowserForEditing();
+        setupBrowserForEditing({
+          ...(props.locale ? { locale: props.locale } : {}),
+          ...(props.includeRefs ? { includeRefs: props.includeRefs } : {}),
+        });
         Object.values<RegisteredComponent>(
           state.allRegisteredComponents
         ).forEach((registeredComponent) => {
@@ -307,33 +306,50 @@ export default function RenderContent(props: RenderContentProps) {
         );
       }
       if (state.useContent) {
-        track({
+        const variationId = state.useContent?.testVariationId;
+        const contentId = state.useContent?.id;
+        _track({
           type: 'impression',
           canTrack: state.canTrackToUse,
-          contentId: state.useContent?.id,
-          orgId: props.apiKey,
+          contentId,
+          apiKey: props.apiKey,
+          variationId: variationId !== contentId ? variationId : undefined,
         });
       }
 
       // override normal content in preview mode
       if (isPreviewing()) {
         const searchParams = new URL(location.href).searchParams;
+        const searchParamPreviewModel = searchParams.get('builder.preview');
+        const searchParamPreviewId = searchParams.get(
+          `builder.preview.${searchParamPreviewModel}`
+        );
+        const previewApiKey =
+          searchParams.get('apiKey') || searchParams.get('builder.space');
+
+        /**
+         * Make sure that:
+         * - the preview model name is the same as the one we're rendering, since there can be multiple models rendered
+         *  at the same time, e.g. header/page/footer.
+         * - the API key is the same, since we don't want to preview content from other organizations.
+         * - if there is content, that the preview ID is the same as that of the one we receive.
+         *
+         * TO-DO: should we only update the state when there is a change?
+         **/
         if (
-          props.model &&
-          searchParams.get('builder.preview') === props.model
+          searchParamPreviewModel === props.model &&
+          previewApiKey === props.apiKey &&
+          (!props.content || searchParamPreviewId === props.content.id)
         ) {
-          const previewApiKey =
-            searchParams.get('apiKey') || searchParams.get('builder.space');
-          if (previewApiKey) {
-            getContent({
-              model: props.model,
-              apiKey: previewApiKey,
-            }).then((content) => {
-              if (content) {
-                state.overrideContent = content;
-              }
-            });
-          }
+          getContent({
+            model: props.model,
+            apiKey: props.apiKey,
+            apiVersion: props.apiVersion,
+          }).then((content) => {
+            if (content) {
+              state.mergeNewContent(content);
+            }
+          });
         }
       }
 
@@ -344,8 +360,14 @@ export default function RenderContent(props: RenderContentProps) {
   });
 
   onUpdate(() => {
+    if (props.content) {
+      state.mergeNewContent(props.content);
+    }
+  }, [props.content]);
+
+  onUpdate(() => {
     state.evaluateJsCode();
-  }, [state.useContent?.data?.jsCode]);
+  }, [state.useContent?.data?.jsCode, state.contentState]);
 
   onUpdate(() => {
     state.runHttpRequests();
@@ -374,14 +396,15 @@ export default function RenderContent(props: RenderContentProps) {
         builder-content-id={state.useContent?.id}
         builder-model={props.model}
       >
-        {state.shouldRenderContentStyles && (
+        <Show when={TARGET !== 'reactNative'}>
           <RenderContentStyles
+            contentId={state.useContent?.id}
             cssCode={state.useContent?.data?.cssCode}
             customFonts={state.useContent?.data?.customFonts}
           />
-        )}
+        </Show>
         <RenderBlocks
-          blocks={markMutable(state.useContent?.data?.blocks)}
+          blocks={state.useContent?.data?.blocks}
           key={state.forceReRenderCount}
         />
       </div>

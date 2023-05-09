@@ -1,26 +1,23 @@
-import type {
-  BuilderContextInterface,
-  RegisteredComponent,
-} from '../../context/types.js';
+import type { BuilderContextInterface } from '../../context/types.js';
 import { getBlockActions } from '../../functions/get-block-actions.js';
 import { getBlockComponentOptions } from '../../functions/get-block-component-options.js';
 import { getBlockProperties } from '../../functions/get-block-properties.js';
-import { getBlockStyles } from '../../functions/get-block-styles.js';
-import { getBlockTag } from '../../functions/get-block-tag.js';
 import { getProcessedBlock } from '../../functions/get-processed-block.js';
 import type { BuilderBlock } from '../../types/builder-block.js';
-import type { Nullable } from '../../types/typescript.js';
-import { evaluate } from '../../functions/evaluate.js';
 import BlockStyles from './block-styles.lite';
-import { isEmptyHtmlElement } from './render-block.helpers.js';
+import {
+  getComponent,
+  getProxyState,
+  getRepeatItemData,
+  isEmptyHtmlElement,
+} from './render-block.helpers.js';
 import type { RenderComponentProps } from './render-component.lite';
 import { For, Show, useMetadata, useStore } from '@builder.io/mitosis';
-import type { RepeatData } from './types.js';
 import RenderRepeatedBlock from './render-repeated-block.lite';
 import { TARGET } from '../../constants/target.js';
 import { extractTextStyles } from '../../functions/extract-text-styles.js';
-import RenderComponentWithContext from './render-component-with-context.lite';
 import RenderComponent from './render-component.lite';
+import { getReactNativeBlockStyles } from '../../functions/get-react-native-block-styles.js';
 
 export type RenderBlockProps = {
   block: BuilderBlock;
@@ -28,44 +25,16 @@ export type RenderBlockProps = {
 };
 
 useMetadata({
-  qwik: {
-    component: {
-      isLight: true,
-    },
-  },
-  elementTag: 'state.tagName',
-  componentElementTag: 'state.renderComponentTag',
+  elementTag: 'state.tag',
 });
 
 export default function RenderBlock(props: RenderBlockProps) {
   const state = useStore({
-    get component(): Nullable<RegisteredComponent> {
-      const componentName = getProcessedBlock({
-        block: props.block,
-        state: props.context.state,
-        context: props.context.context,
-        shouldEvaluateBindings: false,
-      }).component?.name;
-
-      if (!componentName) {
-        return null;
-      }
-
-      const ref = props.context.registeredComponents[componentName];
-
-      if (!ref) {
-        // TODO: Public doc page with more info about this message
-        console.warn(`
-          Could not find a registered component named "${componentName}". 
-          If you registered it, is the file that registered it imported by the file that needs to render it?`);
-        return undefined;
-      } else {
-        return ref;
-      }
-    },
-    get tagName() {
-      return getBlockTag(state.useBlock);
-    },
+    component: getComponent({ block: props.block, context: props.context }),
+    repeatItemData: getRepeatItemData({
+      block: props.block,
+      context: props.context,
+    }),
     get useBlock(): BuilderBlock {
       return state.repeatItemData
         ? props.block
@@ -76,47 +45,40 @@ export default function RenderBlock(props: RenderBlockProps) {
             shouldEvaluateBindings: true,
           });
     },
+    tag: props.block.tagName || 'div',
+    get canShowBlock() {
+      if ('hide' in state.useBlock) {
+        return !state.useBlock.hide;
+      }
+      if ('show' in state.useBlock) {
+        return state.useBlock.show;
+      }
+      return true;
+    },
+    proxyState: getProxyState(props.context),
+    get actions() {
+      return getBlockActions({
+        block: state.useBlock,
+        state: TARGET === 'qwik' ? props.context.state : state.proxyState,
+        context: props.context.context,
+      });
+    },
     get attributes() {
+      const blockProperties = getBlockProperties(state.useBlock);
       return {
-        ...getBlockProperties(state.useBlock),
-        ...getBlockActions({
-          block: state.useBlock,
-          state: props.context.state,
-          context: props.context.context,
-        }),
-        style: getBlockStyles({
-          block: state.useBlock,
-          context: props.context,
-        }),
+        ...blockProperties,
+        ...(TARGET === 'reactNative'
+          ? {
+              style: getReactNativeBlockStyles({
+                block: state.useBlock,
+                context: props.context,
+                blockStyles: blockProperties.style,
+              }),
+            }
+          : {}),
       };
     },
 
-    get shouldWrap() {
-      return !state.component?.noWrap;
-    },
-
-    get renderComponentProps(): RenderComponentProps {
-      return {
-        blockChildren: state.children,
-        componentRef: state.component?.component,
-        componentOptions: {
-          ...getBlockComponentOptions(state.useBlock),
-          /**
-           * These attributes are passed to the wrapper element when there is one. If `noWrap` is set to true, then
-           * they are provided to the component itself directly.
-           */
-          ...(state.shouldWrap ? {} : { attributes: state.attributes }),
-        },
-        context: state.childrenContext,
-      };
-    },
-    get children() {
-      // TO-DO: When should `canHaveChildren` dictate rendering?
-      // This is currently commented out because some Builder components (e.g. Box) do not have `canHaveChildren: true`,
-      // but still receive and need to render children.
-      // return state.componentInfo?.canHaveChildren ? state.useBlock.children : [];
-      return state.useBlock.children ?? [];
-    },
     get childrenWithoutParentComponent() {
       /**
        * When there is no `componentRef`, there might still be children that need to be rendered. In this case,
@@ -127,107 +89,71 @@ export default function RenderBlock(props: RenderBlockProps) {
       const shouldRenderChildrenOutsideRef =
         !state.component?.component && !state.repeatItemData;
 
-      return shouldRenderChildrenOutsideRef ? state.children : [];
-    },
-
-    get repeatItemData(): RepeatData[] | undefined {
-      /**
-       * we don't use `state.useBlock` here because the processing done within its logic includes evaluating the block's bindings,
-       * which will not work if there is a repeat.
-       */
-      const { repeat, ...blockWithoutRepeat } = props.block;
-
-      if (!repeat?.collection) {
-        return undefined;
-      }
-
-      const itemsArray = evaluate({
-        code: repeat.collection,
-        state: props.context.state,
-        context: props.context.context,
-      });
-
-      if (!Array.isArray(itemsArray)) {
-        return undefined;
-      }
-
-      const collectionName = repeat.collection.split('.').pop();
-      const itemNameToUse =
-        repeat.itemName || (collectionName ? collectionName + 'Item' : 'item');
-
-      const repeatArray = itemsArray.map<RepeatData>((item, index) => ({
-        context: {
-          ...props.context,
-          state: {
-            ...props.context.state,
-            $index: index,
-            $item: item,
-            [itemNameToUse]: item,
-            [`$${itemNameToUse}Index`]: index,
-          },
-        },
-        block: blockWithoutRepeat,
-      }));
-
-      return repeatArray;
-    },
-
-    get inheritedTextStyles() {
-      if (TARGET !== 'reactNative') {
-        return {};
-      }
-
-      const styles = getBlockStyles({
-        block: state.useBlock,
-        context: props.context,
-      });
-
-      return extractTextStyles(styles);
+      return shouldRenderChildrenOutsideRef
+        ? state.useBlock.children ?? []
+        : [];
     },
 
     get childrenContext(): BuilderContextInterface {
+      const getInheritedTextStyles = () => {
+        if (TARGET !== 'reactNative') {
+          return {};
+        }
+
+        return extractTextStyles(
+          getReactNativeBlockStyles({
+            block: state.useBlock,
+            context: props.context,
+            blockStyles: state.attributes.style,
+          })
+        );
+      };
+
       return {
         apiKey: props.context.apiKey,
+        apiVersion: props.context.apiVersion,
         state: props.context.state,
         content: props.context.content,
         context: props.context.context,
+        setState: props.context.setState,
         registeredComponents: props.context.registeredComponents,
-        inheritedStyles: state.inheritedTextStyles,
+        inheritedStyles: getInheritedTextStyles(),
       };
     },
 
-    get renderComponentTag(): any {
-      if (TARGET === 'reactNative') {
-        return RenderComponentWithContext;
-      } else if (TARGET === 'vue3') {
-        // vue3 expects a string for the component tag
-        return 'RenderComponent';
-      } else {
-        return RenderComponent;
-      }
+    get renderComponentProps(): RenderComponentProps {
+      return {
+        blockChildren: state.useBlock.children ?? [],
+        componentRef: state.component?.component,
+        componentOptions: {
+          ...getBlockComponentOptions(state.useBlock),
+          /**
+           * These attributes are passed to the wrapper element when there is one. If `noWrap` is set to true, then
+           * they are provided to the component itself directly.
+           */
+          ...(!state.component?.noWrap
+            ? {}
+            : { attributes: { ...state.attributes, ...state.actions } }),
+        },
+        context: state.childrenContext,
+      };
     },
   });
 
   return (
-    <Show
-      when={state.shouldWrap}
-      else={<state.renderComponentTag {...state.renderComponentProps} />}
-    >
-      {/*
-       * Svelte is super finicky, and does not allow an empty HTML element (e.g. `img`) to have logic inside of it,
-       * _even_ if that logic ends up not rendering anything.
-       */}
-      <Show when={isEmptyHtmlElement(state.tagName)}>
-        <state.tagName {...state.attributes} />
-      </Show>
+    <Show when={state.canShowBlock}>
       <Show
-        when={
-          !isEmptyHtmlElement(state.tagName) &&
-          TARGET === 'vue2' &&
-          state.repeatItemData
-        }
+        when={!state.component?.noWrap}
+        else={<RenderComponent {...state.renderComponentProps} />}
       >
-        <div class="vue2-root-element-workaround">
+        {/*
+         * Svelte is super finicky, and does not allow an empty HTML element (e.g. `img`) to have logic inside of it,
+         * _even_ if that logic ends up not rendering anything.
+         */}
+        <Show when={isEmptyHtmlElement(state.tag)}>
+          <state.tag {...state.attributes} {...state.actions} />
+        </Show>
+        <Show when={!isEmptyHtmlElement(state.tag) && state.repeatItemData}>
           <For each={state.repeatItemData}>
             {(data, index) => (
               <RenderRepeatedBlock
@@ -237,51 +163,34 @@ export default function RenderBlock(props: RenderBlockProps) {
               />
             )}
           </For>
-        </div>
-      </Show>
-      <Show
-        when={
-          !isEmptyHtmlElement(state.tagName) &&
-          TARGET !== 'vue2' &&
-          state.repeatItemData
-        }
-      >
-        <For each={state.repeatItemData}>
-          {(data, index) => (
-            <RenderRepeatedBlock
-              key={index}
-              repeatContext={data.context}
-              block={data.block}
-            />
-          )}
-        </For>
-      </Show>
-      <Show when={!isEmptyHtmlElement(state.tagName) && !state.repeatItemData}>
-        <state.tagName {...state.attributes}>
-          <state.renderComponentTag {...state.renderComponentProps} />
-          {/**
-           * We need to run two separate loops for content + styles to workaround the fact that Vue 2
-           * does not support multiple root elements.
-           */}
-          <For each={state.childrenWithoutParentComponent}>
-            {(child) => (
-              <RenderBlock
-                key={'render-block-' + child.id}
-                block={child}
-                context={state.childrenContext}
-              />
-            )}
-          </For>
-          <For each={state.childrenWithoutParentComponent}>
-            {(child) => (
-              <BlockStyles
-                key={'block-style-' + child.id}
-                block={child}
-                context={state.childrenContext}
-              />
-            )}
-          </For>
-        </state.tagName>
+        </Show>
+        <Show when={!isEmptyHtmlElement(state.tag) && !state.repeatItemData}>
+          <state.tag {...state.attributes} {...state.actions}>
+            <RenderComponent {...state.renderComponentProps} />
+            {/**
+             * We need to run two separate loops for content + styles to workaround the fact that Vue 2
+             * does not support multiple root elements.
+             */}
+            <For each={state.childrenWithoutParentComponent}>
+              {(child) => (
+                <RenderBlock
+                  key={'render-block-' + child.id}
+                  block={child}
+                  context={state.childrenContext}
+                />
+              )}
+            </For>
+            <For each={state.childrenWithoutParentComponent}>
+              {(child) => (
+                <BlockStyles
+                  key={'block-style-' + child.id}
+                  block={child}
+                  context={state.childrenContext}
+                />
+              )}
+            </For>
+          </state.tag>
+        </Show>
       </Show>
     </Show>
   );

@@ -71,11 +71,8 @@ setTimeout(() => {
 
         if (!orderWasTracked) {
           const checkout: Partial<Checkout> = {
-            ...Shopify.checkout,
-            email: undefined,
-            shipping_address: undefined,
-            billing_address: undefined,
-            credit_card: undefined,
+            order_id: Shopify.checkout.order_id,
+            currency: Shopify.checkout.currency,
           };
 
           builder.setCookie(trackedOrdersCookieKey, 'true', datePlusMinutes(60));

@@ -2,10 +2,10 @@
   "name": "@builder.io/e2e-vue2",
   "private": true,
   "version": "0.0.1",
+  "type": "module",
   "scripts": {
     "build": "tsc --noEmit && vite build",
     "dev": "tsc --noEmit && vite",
-    "e2e": "../../node_modules/.bin/playwright test",
     "serve": "vite preview"
   },
   "dependencies": {
