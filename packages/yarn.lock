@@ -2474,7 +2474,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@builder.io/sdks-e2e-tests@workspace:sdks-tests"
   dependencies:
-    "@builder.io/sdks": "workspace:*"
     "@playwright/test": ^1.27.1
     "@typescript-eslint/eslint-plugin": latest
     "@typescript-eslint/parser": latest
@@ -2485,7 +2484,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@builder.io/sdks@workspace:*, @builder.io/sdks@workspace:sdks":
+"@builder.io/sdks@workspace:sdks":
   version: 0.0.0-use.local
   resolution: "@builder.io/sdks@workspace:sdks"
   dependencies:
