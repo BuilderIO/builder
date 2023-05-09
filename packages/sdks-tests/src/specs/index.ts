@@ -99,5 +99,5 @@ export const getProps = (_pathname = getPathnameFromWindow()) => {
     ...extraApiVersionProp,
   } satisfies Omit<RenderContentProps, 'apiVersion'> & { apiVersion?: 'v1' | 'v2' | 'v3' };
 
-  return props as any;
+  return props as Omit<RenderContentProps, 'apiVersion'> & { apiVersion?: 'v2' };
 };
