@@ -5,6 +5,7 @@ import type { RenderContentProps } from '../render-content/render-content.types'
 import { checkIsDefined } from '../../helpers/nullable';
 import { handleABTestingSync } from '../../helpers/ab-tests';
 import { TARGET } from '../../constants/target';
+import { isBrowser } from '../../functions/is-browser';
 
 type VariantsProviderProps = RenderContentProps;
 
@@ -36,7 +37,7 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
   });
 
   onInit(() => {
-    if (TARGET === 'svelte' && state.shouldRenderVariants) {
+    if (isBrowser() && TARGET === 'svelte' && state.shouldRenderVariants) {
       // get first template in loop
       const templates = document.querySelectorAll(
         `template[data-template-variant-id="${props.content?.variations?.[0]?.id}"]`
