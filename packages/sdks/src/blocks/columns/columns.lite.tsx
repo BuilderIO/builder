@@ -98,7 +98,7 @@ export default function Columns(props: ColumnProps) {
       }
 
       const width = state.getColumnCssWidth(index);
-      const gutterPixels = `${state.gutterSize}px`;
+      const gutterPixels = `${gutter}px`;
       const mobileWidth = '100%';
       const mobileMarginLeft = 0;
 
