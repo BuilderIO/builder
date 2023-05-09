@@ -230,32 +230,30 @@ test.describe('Blocks', () => {
       },
     };
 
-    const NO_MARGIN = {
-      column: { 'margin-left': '0px' },
-    };
+    const NO_MARGIN = { 'margin-left': '0px' };
 
     const expected: Record<ColumnTypes, Record<SizeName, ColStyles> & { index: number }> = {
       stackAtTablet: {
         index: 0,
-        mobile: { columns: { 'flex-direction': 'column' }, ...NO_MARGIN },
-        tablet: { columns: { 'flex-direction': 'column' }, ...NO_MARGIN },
+        mobile: { columns: { 'flex-direction': 'column' }, column: NO_MARGIN },
+        tablet: { columns: { 'flex-direction': 'column' }, column: NO_MARGIN },
         desktop: ROW,
       },
       stackAtTabletReverse: {
         index: 1,
-        mobile: { columns: { 'flex-direction': 'column-reverse' }, ...NO_MARGIN },
-        tablet: { columns: { 'flex-direction': 'column-reverse' }, ...NO_MARGIN },
+        mobile: { columns: { 'flex-direction': 'column-reverse' }, column: NO_MARGIN },
+        tablet: { columns: { 'flex-direction': 'column-reverse' }, column: NO_MARGIN },
         desktop: ROW,
       },
       stackAtMobile: {
         index: 2,
-        mobile: { columns: { 'flex-direction': 'column' }, ...NO_MARGIN },
+        mobile: { columns: { 'flex-direction': 'column' }, column: NO_MARGIN },
         tablet: ROW,
         desktop: ROW,
       },
       stackAtMobileReverse: {
         index: 3,
-        mobile: { columns: { 'flex-direction': 'column-reverse' }, ...NO_MARGIN },
+        mobile: { columns: { 'flex-direction': 'column-reverse' }, column: NO_MARGIN },
         tablet: ROW,
         desktop: ROW,
       },
