@@ -118,7 +118,7 @@ export function stringToFunction(
         // for the server build
         // TODO: cache these for better performancs with new VmScript
         // tslint:disable:comment-format
-        const { VM } = safeDynamicRequire('vm2');
+        const { VM } = safeDynamicRequire('vm2') as typeof import('vm2');
         const [state, event, _block, _builder, _Device, _update, _Builder, context] = args;
 
         return new VM({
