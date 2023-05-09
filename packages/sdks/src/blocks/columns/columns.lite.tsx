@@ -20,12 +20,8 @@ type StackColumnsAt = 'tablet' | 'mobile' | 'never';
 export interface ColumnProps {
   columns?: Column[];
   builderBlock: BuilderBlock;
-
-  // TODO: Implement this when support for dynamic CSS lands
   space?: number;
-  // TODO: Implement this when support for dynamic CSS lands
   stackColumnsAt?: StackColumnsAt;
-  // TODO: Implement this when support for dynamic CSS lands
   reverseColumnsWhenStacked?: boolean;
 }
 
