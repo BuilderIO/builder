@@ -1,5 +1,3 @@
-export { RenderContentProps } from '@builder.io/sdks/src';
-
 // TO-DO: import real content type from SDKs
 export interface Breakpoints {
   small: number;

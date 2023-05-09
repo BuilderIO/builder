@@ -4,18 +4,12 @@
     "strict": true,
     "allowSyntheticDefaultImports": true,
     "jsx": "preserve",
-    "jsxImportSource": "@builder.io/mitosis",
     "moduleResolution": "node",
     "module": "ESNext",
     "skipLibCheck": true,
     "outDir": "dist",
     "declaration": true,
     "allowJs": true,
-    "paths": {
-      "@builder.io/sdks": [
-        "../sdks"
-      ]
-    }
   },
   "include": [
     "src/**/*",
