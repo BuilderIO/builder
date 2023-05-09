@@ -7,7 +7,7 @@ import type { BuilderContent } from '../../types/builder-content';
 import type { Nullable } from '../../types/typescript';
 import type { ApiVersion } from '../../types/api-version';
 
-export type RenderContentProps = {
+export interface RenderContentProps {
   content?: Nullable<BuilderContent>;
   model?: string;
   data?: { [key: string]: any };
@@ -18,7 +18,7 @@ export type RenderContentProps = {
   canTrack?: boolean;
   locale?: string;
   includeRefs?: boolean;
-};
+}
 
 export interface BuilderComponentStateChange {
   state: BuilderRenderState;
