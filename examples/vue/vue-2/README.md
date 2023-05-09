@@ -5,7 +5,7 @@ This example shows our [Vue SDK](/packages/sdks/output/vue) with Vue 2.
 ## Builder.io Setup
 
 - log into builder.io
-- from your account page, copy your API key and paste it into BUILDER_API_KEY in `DynamicallyRenderBuilderPage.vue`
+- from your account page, copy your API key and paste it into BUILDER_API_KEY in `BuilderView.vue`
 - open the Builder.io Visual Editor for the model named "page"
 - enter http://localhost:3000 in the URL bar to the top right of the preview in Builder
 - drag a component into the layers tab, and it will appear in the Editor!
