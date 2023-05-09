@@ -9,10 +9,15 @@
     "skipLibCheck": true,
     "outDir": "dist",
     "declaration": true,
-    "allowJs": true
+    "allowJs": true,
+    "paths": {
+      "@builder.io/sdks": [
+        "../sdks/src"
+      ]
+    }
   },
   "include": [
     "src/**/*",
     "./playwright.config.ts"
-  ]
+  ],
 }

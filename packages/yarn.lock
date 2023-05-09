@@ -2058,23 +2058,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@builder.io/e2e-svelte-old@workspace:sdks/e2e/svelte-old":
-  version: 0.0.0-use.local
-  resolution: "@builder.io/e2e-svelte-old@workspace:sdks/e2e/svelte-old"
-  dependencies:
-    "@builder.io/sdk-svelte": "workspace:*"
-    "@builder.io/sdks-e2e-tests": "workspace:*"
-    "@sveltejs/vite-plugin-svelte": ^1.0.5
-    "@tsconfig/svelte": ^3.0.0
-    svelte: ^3.59.1
-    svelte-check: ^3.3.2
-    svelte-preprocess: ^4.10.7
-    tslib: ^2.4.0
-    typescript: ^4
-    vite: ^3.0.4
-  languageName: unknown
-  linkType: soft
-
 "@builder.io/e2e-svelte@workspace:sdks/e2e/svelte":
   version: 0.0.0-use.local
   resolution: "@builder.io/e2e-svelte@workspace:sdks/e2e/svelte"
@@ -2491,17 +2474,18 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@builder.io/sdks-e2e-tests@workspace:sdks-tests"
   dependencies:
+    "@builder.io/sdks": "workspace:*"
     "@playwright/test": ^1.27.1
     "@typescript-eslint/eslint-plugin": latest
     "@typescript-eslint/parser": latest
     eslint: ^8.12.0
     eslint-plugin-unused-imports: ^2.0.0
-    typescript: ^4.8.4
+    typescript: ^4.9
     zod: ^3.20.2
   languageName: unknown
   linkType: soft
 
-"@builder.io/sdks@workspace:sdks":
+"@builder.io/sdks@workspace:*, @builder.io/sdks@workspace:sdks":
   version: 0.0.0-use.local
   resolution: "@builder.io/sdks@workspace:sdks"
   dependencies:
@@ -7213,23 +7197,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sveltejs/vite-plugin-svelte@npm:^1.0.5":
-  version: 1.4.0
-  resolution: "@sveltejs/vite-plugin-svelte@npm:1.4.0"
-  dependencies:
-    debug: ^4.3.4
-    deepmerge: ^4.2.2
-    kleur: ^4.1.5
-    magic-string: ^0.26.7
-    svelte-hmr: ^0.15.1
-    vitefu: ^0.2.2
-  peerDependencies:
-    svelte: ^3.44.0
-    vite: ^3.0.0
-  checksum: a5bb66fbf3bba7a9f1a21e66e2b3daed548f0b465c082c83cd4473035139b1defc82de20fc6e841ec5061e92a818249bd90ef997f73b6cd4afc9299aaf5b179c
-  languageName: node
-  linkType: hard
-
 "@sveltejs/vite-plugin-svelte@npm:^2.0.3, @sveltejs/vite-plugin-svelte@npm:^2.1.1":
   version: 2.2.0
   resolution: "@sveltejs/vite-plugin-svelte@npm:2.2.0"
@@ -7425,13 +7392,6 @@ __metadata:
   version: 2.0.3
   resolution: "@tsconfig/react-native@npm:2.0.3"
   checksum: 757edb4435a12d4ece9cf61c010df3dab771fbf6065c5b03445ecf440398df641d2859fc3ace3790a1f07eca990f54d16912fab59f144090871bf70612f47a80
-  languageName: node
-  linkType: hard
-
-"@tsconfig/svelte@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "@tsconfig/svelte@npm:3.0.0"
-  checksum: 92986428a6aa87d5db9377de65cd7bd6bf73367bc3ec03bb06faba7db2ac51c45470402212914bbc76c00efa08e1116e9d269aea38274e04dbb183705dbb7a09
   languageName: node
   linkType: hard
 
@@ -9908,6 +9868,8 @@ __metadata:
 "all-sdks-mono-repo@workspace:.":
   version: 0.0.0-use.local
   resolution: "all-sdks-mono-repo@workspace:."
+  dependencies:
+    prettier: ^2.8.8
   languageName: unknown
   linkType: soft
 
@@ -24942,7 +24904,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"magic-string@npm:^0.26.1, magic-string@npm:^0.26.7":
+"magic-string@npm:^0.26.1":
   version: 0.26.7
   resolution: "magic-string@npm:0.26.7"
   dependencies:
@@ -30431,7 +30393,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:>=2.0.0 <3.0.0":
+"prettier@npm:>=2.0.0 <3.0.0, prettier@npm:^2.8.8":
   version: 2.8.8
   resolution: "prettier@npm:2.8.8"
   bin:
@@ -36490,7 +36452,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^4, typescript@npm:^4.6.4, typescript@npm:^4.7.2, typescript@npm:^4.7.4, typescript@npm:^4.8.4, typescript@npm:^4.9.3, typescript@npm:^4.9.4":
+"typescript@npm:^4, typescript@npm:^4.6.4, typescript@npm:^4.7.2, typescript@npm:^4.7.4, typescript@npm:^4.8.4, typescript@npm:^4.9, typescript@npm:^4.9.3, typescript@npm:^4.9.4":
   version: 4.9.5
   resolution: "typescript@npm:4.9.5"
   bin:
@@ -36550,7 +36512,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@^4#~builtin<compat/typescript>, typescript@patch:typescript@^4.6.4#~builtin<compat/typescript>, typescript@patch:typescript@^4.7.2#~builtin<compat/typescript>, typescript@patch:typescript@^4.7.4#~builtin<compat/typescript>, typescript@patch:typescript@^4.8.4#~builtin<compat/typescript>, typescript@patch:typescript@^4.9.3#~builtin<compat/typescript>, typescript@patch:typescript@^4.9.4#~builtin<compat/typescript>":
+"typescript@patch:typescript@^4#~builtin<compat/typescript>, typescript@patch:typescript@^4.6.4#~builtin<compat/typescript>, typescript@patch:typescript@^4.7.2#~builtin<compat/typescript>, typescript@patch:typescript@^4.7.4#~builtin<compat/typescript>, typescript@patch:typescript@^4.8.4#~builtin<compat/typescript>, typescript@patch:typescript@^4.9#~builtin<compat/typescript>, typescript@patch:typescript@^4.9.3#~builtin<compat/typescript>, typescript@patch:typescript@^4.9.4#~builtin<compat/typescript>":
   version: 4.9.5
   resolution: "typescript@patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=23ec76"
   bin:
@@ -37965,7 +37927,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vitefu@npm:^0.2.2, vitefu@npm:^0.2.3, vitefu@npm:^0.2.4":
+"vitefu@npm:^0.2.3, vitefu@npm:^0.2.4":
   version: 0.2.4
   resolution: "vitefu@npm:0.2.4"
   peerDependencies:

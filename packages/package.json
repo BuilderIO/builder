@@ -19,5 +19,8 @@
     "@builder.io/react": "workspace:*",
     "@builder.io/mitosis": "0.0.98-0"
   },
-  "packageManager": "yarn@3.4.1"
+  "packageManager": "yarn@3.4.1",
+  "devDependencies": {
+    "prettier": "^2.8.8"
+  }
 }
