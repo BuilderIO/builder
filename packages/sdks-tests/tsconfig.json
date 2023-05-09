@@ -4,6 +4,7 @@
     "strict": true,
     "allowSyntheticDefaultImports": true,
     "jsx": "preserve",
+    "jsxImportSource": "@builder.io/mitosis",
     "moduleResolution": "node",
     "module": "ESNext",
     "skipLibCheck": true,
@@ -12,12 +13,13 @@
     "allowJs": true,
     "paths": {
       "@builder.io/sdks": [
-        "../sdks/src"
+        "../sdks"
       ]
     }
   },
   "include": [
     "src/**/*",
-    "./playwright.config.ts"
+    "./playwright.config.ts",
+    "../sdks/typings/**/*"
   ],
 }
