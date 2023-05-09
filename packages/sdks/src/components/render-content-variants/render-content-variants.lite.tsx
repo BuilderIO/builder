@@ -1,4 +1,4 @@
-import { For, Show, onInit, useStore } from '@builder.io/mitosis';
+import { For, Show, onInit, useMetadata, useStore } from '@builder.io/mitosis';
 import { checkShouldRunVariants, getVariantsScriptString } from './helpers';
 import RenderContent from '../render-content/render-content.lite';
 import type { RenderContentProps } from '../render-content/render-content.types';
@@ -8,6 +8,10 @@ import { TARGET } from '../../constants/target';
 import { isBrowser } from '../../functions/is-browser';
 
 type VariantsProviderProps = RenderContentProps;
+
+useMetadata({
+  elementTag: 'state.ScriptTag',
+});
 
 export default function RenderContentVariants(props: VariantsProviderProps) {
   const state = useStore({
@@ -19,6 +23,7 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
       props.content?.id || ''
     ),
 
+    canTrackToUse: checkIsDefined(props.canTrack) ? props.canTrack : true,
     contentToUse: checkShouldRunVariants({
       canTrack: props.canTrack,
       content: props.content,
@@ -56,7 +61,14 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
       when={state.shouldRenderVariants}
       else={
         <RenderContent
-          content={props.content}
+          content={
+            props.content
+              ? handleABTestingSync({
+                  item: props.content,
+                  canTrack: state.canTrackToUse,
+                })
+              : props.content
+          }
           apiKey={props.apiKey}
           apiVersion={props.apiVersion}
           canTrack={props.canTrack}
