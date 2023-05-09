@@ -91,7 +91,7 @@ export const getProps = (_pathname = getPathnameFromWindow()) => {
   const extraApiVersionProp =
     apiVersionPathToProp[pathname as keyof typeof apiVersionPathToProp] ?? {};
 
-  const k = {
+  const props = {
     content,
     apiKey: getAPIKey(),
     model: 'page',
@@ -99,5 +99,5 @@ export const getProps = (_pathname = getPathnameFromWindow()) => {
     ...extraApiVersionProp,
   } satisfies Omit<RenderContentProps, 'apiVersion'> & { apiVersion?: 'v1' | 'v2' | 'v3' };
 
-  return k;
+  return props;
 };
