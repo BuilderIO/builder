@@ -170,7 +170,7 @@ test.describe('Blocks', () => {
 
     const urlMatch =
       sdk === 'oldReact'
-        ? 'https://cdn.builder.io/api/v3/query/abcd/symbol*'
+        ? 'https://cdn.builder.io/api/v1/query/abcd/symbol*'
         : /https:\/\/cdn\.builder\.io\/api\/v3\/content\/symbol\.*/;
 
     await page.route(urlMatch, route => {
@@ -313,7 +313,7 @@ test.describe('Blocks', () => {
       let x = 0;
 
       const urlMatch = isOldReactSDK
-        ? 'https://cdn.builder.io/api/v3/query/abcd/symbol*'
+        ? 'https://cdn.builder.io/api/v1/query/abcd/symbol*'
         : /.*cdn\.builder\.io\/api\/v3\/content\/symbol.*/;
 
       await page.route(urlMatch, route => {
