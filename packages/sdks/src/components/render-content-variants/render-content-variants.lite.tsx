@@ -29,21 +29,6 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
     TemplateTag: 'template' as const,
   });
 
-  // onInit(() => {
-  //   if (isBrowser() && TARGET === 'svelte' && state.shouldRenderVariants) {
-  //     // get first template in loop
-  //     const templates = document.querySelectorAll(
-  //       `template[data-template-variant-id="${props.content?.variations?.[0]?.id}"]`
-  //     );
-  //     const lastTemplate = templates[templates.length - 1];
-  //     // create and append script as sibling of template
-  //     const script = document.createElement('script');
-  //     script.id = `variants-script-${props.content?.id}`;
-  //     script.innerHTML = state.variantScriptStr;
-  //     lastTemplate?.parentNode?.append(script, lastTemplate);
-  //   }
-  // });
-
   return (
     <Show
       when={state.shouldRenderVariants}
