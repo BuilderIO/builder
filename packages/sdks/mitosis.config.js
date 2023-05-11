@@ -208,10 +208,15 @@ const AS_CONST_PLUGIN = () => ({
     post: (code) => {
       if (code.includes('RenderContentVariants')) {
         // fixes some type issues
-        code = code.replace(
-          `useState(() => "script")`,
-          `useState(() => "script" as const)`
-        );
+        code = code
+          .replace(
+            `useState(() => "script")`,
+            `useState(() => "script" as const)`
+          )
+          .replace(
+            `useState(() => "template")`,
+            `useState(() => "template" as const)`
+          );
       }
       // Needed for next v13 to work
       return `'use client';\n${code}`;

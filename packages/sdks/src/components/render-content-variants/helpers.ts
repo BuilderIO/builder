@@ -37,14 +37,6 @@ const variantScriptFn = function main(
 ) {
   console.log('hey variant script', JSON.stringify({ contentId, variants }));
 
-  /**
-   * TO-DO: redundant check?
-   */
-  if (!navigator.cookieEnabled) {
-    console.log('Cookies are disabled, skipping variant script');
-    return;
-  }
-
   const templateSelectorById = (id: string) =>
     `template[data-template-variant-id="${id}"]`;
 
@@ -69,6 +61,15 @@ const variantScriptFn = function main(
       console.log('Removing variant script');
       el.remove();
     }
+  }
+
+  /**
+   * TO-DO: redundant check?
+   */
+  if (!navigator.cookieEnabled) {
+    console.log('Cookies are disabled, skipping variant script');
+    removeTemplates();
+    return;
   }
 
   /**
@@ -154,21 +155,6 @@ const variantScriptFn = function main(
       return;
     }
 
-    /**
-     * grandparent
-     *   -> parent
-     *    -> template1
-     *      -> builder-content
-     *    -> template2
-     *
-     * grandparent
-     *  -> parent
-     *   -> builder-content
-     *
-     *
-     *
-     */
-
     const templatesParent = winningTemplate.parentNode!;
     /**
      * Create a shallow clone of the parent of all templates (and the default content)
@@ -198,14 +184,6 @@ const variantScriptFn = function main(
      * Since `RenderContentVariants will replace its parent, the rest of the content will be removed.
      */
     templatesParent.parentNode!.replaceChild(newParent, templatesParent);
-
-    /**
-     * console.log('replaceChild', {
-     *   templatesParent: templatesParent.innerHTML,
-     *   contentId,
-     *   content: winningTemplate.content,
-     * });
-     */
 
     /**
        * TO-DO:
