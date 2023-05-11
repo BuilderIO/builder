@@ -28,9 +28,6 @@
   },
   "types": "./package/index.d.ts",
   "scripts": {
-    "release:patch": "yarn run build && npm version patch && npm publish",
-    "release:minor": "yarn run build && npm version minor && npm publish",
-    "release:dev": "yarn run build && npm version prerelease && npm publish --tag dev",
     "dev": "vite dev",
     "build": "svelte-kit sync && svelte-package",
     "build:watch": "svelte-kit sync && svelte-package --watch",

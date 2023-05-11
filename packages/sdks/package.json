@@ -46,10 +46,14 @@
     "e2e:run:old-react": "SDK=oldReact yarn e2e:run",
     "e2e:build:all": "yarn workspaces foreach --exclude @builder.io/e2e-rsc --verbose run build",
     "e2e:run:all": "yarn run-s e2e:run:*",
+    "loop": "bash ./scripts/loop-command.sh",
     "release-sdk": "bash ./scripts/release-sdk.sh",
-    "release:all": "yarn build:mitosis && bash ./scripts/loop-command.sh release-sdk \"svelte react-native solid qwik react vue\"",
+    "release:all:patch": "yarn build:mitosis && yarn loop release-sdk patch",
+    "release:all:minor": "yarn build:mitosis && yarn loop release-sdk minor",
+    "release:all:dev": "yarn build:mitosis && yarn loop release-sdk dev",
+    "set-sdk-version": "bash ./scripts/set-sdk-version.sh",
     "upgrade-example": "bash ./scripts/upgrade-example.sh",
-    "upgrade-example:all": "bash ./scripts/loop-command.sh upgrade-example \"svelte react-native solid qwik react vue\""
+    "upgrade-example:all": "yarn loop upgrade-example latest"
   },
   "dependencies": {
     "@builder.io/mitosis": "^0.0.98",
