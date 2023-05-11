@@ -574,12 +574,14 @@ module.exports = {
                 json.meta.useMetadata && json.meta.useMetadata.elementTag;
 
               if (tag) {
+                const tagArr = Array.isArray(tag) ? tag : [tag];
+
                 traverse(json).forEach(function (item) {
                   if (!isMitosisNode(item)) {
                     return;
                   }
 
-                  if (item.name === tag) {
+                  if (tagArr.includes(item.name)) {
                     item.bindings.this = {
                       type: 'single',
                       ...item.bindings.this,

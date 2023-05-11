@@ -4,7 +4,7 @@ import type {
   BuilderContent,
   BuilderContentVariation,
 } from '../types/builder-content.js';
-import type { Overwrite } from '../types/typescript.js';
+import type { Nullable, Overwrite } from '../types/typescript.js';
 import { checkIsDefined } from '../helpers/nullable.js';
 
 const BUILDER_STORE_PREFIX = 'builderio.variations';
@@ -126,9 +126,13 @@ const getTestFields = ({
 export const handleABTestingSync = ({
   item,
   canTrack,
-}: { item: BuilderContent } & CanTrack) => {
+}: { item: Nullable<BuilderContent> } & CanTrack): Nullable<BuilderContent> => {
+  if (!item) {
+    return undefined;
+  }
+
   if (!checkIsBuilderContentWithVariations(item)) {
-    return;
+    return item;
   }
 
   const testGroupId =
@@ -152,9 +156,9 @@ export const handleABTestingSync = ({
 export const handleABTesting = async ({
   item,
   canTrack,
-}: { item: BuilderContent } & CanTrack) => {
+}: { item: BuilderContent } & CanTrack): Promise<BuilderContent> => {
   if (!checkIsBuilderContentWithVariations(item)) {
-    return;
+    return item;
   }
 
   const testGroupId =
@@ -169,5 +173,8 @@ export const handleABTesting = async ({
     });
 
   const variationValue = getTestFields({ item, testGroupId });
-  Object.assign(item, variationValue);
+  return {
+    ...item,
+    ...variationValue,
+  };
 };

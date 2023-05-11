@@ -8,9 +8,23 @@ export const checkShouldRunVariants = ({
 }: {
   canTrack: Nullable<boolean>;
   content: Nullable<BuilderContent>;
-}) =>
-  ((isBrowser() && canTrack) || !isBrowser()) &&
-  Object.keys(content?.variations || {}).length > 0;
+}) => {
+  const hasVariants = Object.keys(content?.variations || {}).length > 0;
+
+  if (!hasVariants) {
+    return false;
+  }
+
+  if (!canTrack) {
+    return false;
+  }
+
+  if (isBrowser()) {
+    return false;
+  }
+
+  return true;
+};
 
 type VariantData = {
   id: string;
@@ -155,30 +169,45 @@ const variantScriptFn = function main(
      *
      */
 
-    const templatesParent = winningTemplate.parentNode;
-    if (templatesParent) {
-      /**
-       * 
-      * find child of templatesParent that is a div with builder-content-id attribute equal to contentId
-      * const defaultContent = templatesParent.querySelector<HTMLDivElement>(
-      *   `div[builder-content-id="${contentId}"]`
-      * );
+    const templatesParent = winningTemplate.parentNode!;
+    /**
+     * Create a shallow clone of the parent of all templates (and the default content)
+     */
+    const newParent = templatesParent.cloneNode(false);
 
-      * console.log('replaceChild', {
-      *   templatesParent: templatesParent.innerHTML,
-      *   contentId,
-      *   content: winningTemplate.content,
-      * });
-      */
+    /**
+     * Append only the winning variant to the new parent
+     */
+    newParent.appendChild(winningTemplate.content.firstElementChild!);
 
-      templatesParent.replaceChildren(
-        /**
-         * we have to take the first child element, because certain frameworks (like Qwik) add comment nodes
-         */
-        winningTemplate.content.firstElementChild!
-      );
+    /**
+     * Replace the old parent with the new one.
+     *
+     * NOTE: replacing the old parent with the new one means that any other children of that parent will be removed.
+     *
+     * ```jsx
+     *  <div>
+     *    <div>
+     *      <h1>Page Title</h1>
+     *      <RenderContentVariants />
+     *      <footer>Footer Content</foote>
+     *    </div>
+     *  </div>
+     * ```
+     *
+     * Since `RenderContentVariants will replace its parent, the rest of the content will be removed.
+     */
+    templatesParent.parentNode!.replaceChild(newParent, templatesParent);
 
-      /**
+    /**
+     * console.log('replaceChild', {
+     *   templatesParent: templatesParent.innerHTML,
+     *   contentId,
+     *   content: winningTemplate.content,
+     * });
+     */
+
+    /**
        * TO-DO:
        * - figure out why this isn't even running in the react example
        * - then test that it does work correctly
@@ -199,7 +228,6 @@ const variantScriptFn = function main(
       * templatesParent.parentNode!.replaceChild(newParent, templatesParent);
       * console.log('parentNode after', templatesParent.parentNode);
       */
-    }
   } else if (variants.length > 0) {
     console.log('No variant found, removing all variants');
   }

@@ -1,4 +1,5 @@
 import { targetContext } from './context.js';
+import { expect } from '@playwright/test';
 import { findTextInPage, test } from './helpers.js';
 
 const CONTENT_ID = '1d326d78efb04ce38467dd8f5160fab6';
@@ -15,6 +16,7 @@ test.describe(targetContext.name, () => {
         },
       ]);
       await page.goto('/ab-test');
+      await expect(page.locator('body')).not.toContainText('hello world variation 1');
       await findTextInPage({ page, text: 'default' });
     });
     test('Render variant w/ SSR', async ({ page, baseURL }) => {
@@ -26,6 +28,7 @@ test.describe(targetContext.name, () => {
         },
       ]);
       await page.goto('/ab-test');
+      await expect(page.locator('body')).not.toContainText('default');
       await findTextInPage({ page, text: 'hello world variation 1' });
     });
   });
