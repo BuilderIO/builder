@@ -12,10 +12,7 @@
     }
   },
   "scripts": {
-    "build": "echo 'no need to build solid SDK'",
-    "release:patch": "yarn run build && npm version patch && npm publish",
-    "release:minor": "yarn run build && npm version minor && npm publish",
-    "release:dev": "yarn run build && npm version prerelease && npm publish --tag dev"
+    "build": "echo 'no need to build solid SDK'"
   },
   "dependencies": {
     "solid-styled-components": "^0.27.6"

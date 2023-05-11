@@ -14,10 +14,7 @@
     "build:types:server": "tsc -p ./tsconfig.server.json",
     "build:types:sdk": "tsc -p ./tsconfig.sdk.json",
     "build:types": "yarn build:types:sdk",
-    "build": "yarn build:types",
-    "release:patch": "yarn run build && npm version patch && npm publish",
-    "release:minor": "yarn run build && npm version minor && npm publish",
-    "release:dev": "yarn run build && npm version prerelease && npm publish --tag dev"
+    "build": "yarn build:types"
   },
   "peerDependencies": {
     "react": "^18.2.0"

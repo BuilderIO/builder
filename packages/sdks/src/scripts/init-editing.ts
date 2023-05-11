@@ -1,3 +1,4 @@
+import { SDK_VERSION } from '../constants/sdk-version.js';
 import { TARGET } from '../constants/target.js';
 import { isBrowser } from '../functions/is-browser.js';
 import { register } from '../functions/register.js';
@@ -40,6 +41,7 @@ export const setupBrowserForEditing = (
         type: 'builder.sdkInfo',
         data: {
           target: TARGET,
+          version: SDK_VERSION,
           // TODO: compile these in
           // type: process.env.SDK_TYPE,
           // version: process.env.SDK_VERSION,
