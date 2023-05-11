@@ -410,8 +410,12 @@ module.exports = {
                         code: 'props.context.content',
                         type: 'property',
                       },
-                      state: {
-                        code: 'props.context.state',
+                      rootState: {
+                        code: 'props.context.rootState',
+                        type: 'property',
+                      },
+                      localState: {
+                        code: 'props.context.localState',
                         type: 'property',
                       },
                       context: {
