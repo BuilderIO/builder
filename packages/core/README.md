@@ -1,6 +1,6 @@
-# Builder Core
+# Builder Core SDK
 
-## Getting Started
+This SDK is largely a wrapper over our [Content API](https://www.builder.io/c/docs/content-api)
 
 ```javascript
 import { builder } from '@builder.io/sdk';
@@ -41,4 +41,6 @@ builder.canTrack = false;
 
 View all options for `builder.get` [here](./docs/interfaces/GetContentOptions.md)
 
-If you have questions or comments, don't hesitate to reach out by creating an issue or emailing support@builder.io
+Learn more about how to use the Builder core SDK:
+- [Content API](https://www.builder.io/c/docs/content-api)
+- [Querying Cheatsheet](https://www.builder.io/c/docs/querying)
