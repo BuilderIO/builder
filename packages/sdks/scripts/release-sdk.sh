@@ -6,9 +6,9 @@ VERSION=${2:-'patch'}
 LOOP=${3:-'not-loop'}
 
 if [[ "$VERSION" != 'dev' && "$LOOP" == 'not-loop' ]]; then
-  echo "Error: cannot release $VERSION version of one SDK. You must release all SDKs at once to keep them in sync."
-  echo "Error: only 'dev' versions are allowed to be done on an individual basis."
-  echo "Error: please run 'yarn release:all' to release all SDKs."
+  echo "Error: cannot release $VERSION version of only one SDK. You must release all SDKs at once to keep them in sync."
+  echo "Error: only 'dev' versions are allowed to be released on a per-SDK basis."
+  echo "Error: please run 'yarn release:all:$VERSION' to release all SDKs, or 'yarn release-sdk $1 dev' to release a dev version of $1."
   echo "Exiting."
   exit 1
 fi

@@ -1,8 +1,9 @@
 #!/bin/bash
+
 # This file updates all `sdk-version.ts` and `sdk-version.js` files in an SDK to the current npm package version.
+# It stores the package version that is sent to the visual editor.
 #
-# This is important to do after running `npm version` (which bumps the version number), but before publishing the
-# new version of the package.
+# This script must execute after `npm version` (which bumps the version number), but before `npm publish`.
 
 set -o nounset
 
