@@ -1,4 +1,4 @@
-import { For, useMetadata, useStore } from '@builder.io/mitosis';
+import { For, useMetadata, useStore, Show } from '@builder.io/mitosis';
 import { checkShouldRunVariants, getVariantsScriptString } from './helpers';
 import RenderContent from '../render-content/render-content.lite';
 import type { RenderContentProps } from '../render-content/render-content.types';
