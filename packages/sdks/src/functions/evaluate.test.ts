@@ -1,26 +1,21 @@
-import { PROTO_STATE, flattenState } from './evaluate';
+import { flattenState } from './evaluate';
 
 describe('flatten state', () => {
   it('should behave normally when no PROTO_STATE', () => {
-    const state = { foo: 'bar' };
-    const flattened = flattenState(state);
+    const localState = {};
+    const rootState = { foo: 'bar' };
+    const flattened = flattenState(rootState, localState, undefined);
     expect(flattened.foo).toEqual('bar');
     flattened.foo = 'baz';
-    expect(state.foo).toEqual('baz');
-  });
-
-  it('should write to root', () => {
-    const state = { [PROTO_STATE]: { foo: 'baz' } };
-    const flattened = flattenState(state);
-    flattened.foo = 'bar';
-    flattened.other = 'other';
-    expect(state).toEqual({ [PROTO_STATE]: { foo: 'bar', other: 'other' } });
+    expect(rootState.foo).toEqual('baz');
   });
 
   it('should shadow write ', () => {
-    const state = { foo: 'foo', [PROTO_STATE]: { foo: 'baz' } };
-    const flattened = flattenState(state);
-    flattened.foo = 'bar';
-    expect(state).toEqual({ foo: 'bar', [PROTO_STATE]: { foo: 'baz' } });
+    const rootState = { foo: 'foo' };
+    const localState = { foo: 'baz' };
+    const flattened = flattenState(rootState, localState, undefined);
+    expect(() => (flattened.foo = 'bar')).toThrow(
+      'Writing to local state is not allowed as it is read-only.'
+    );
   });
 });

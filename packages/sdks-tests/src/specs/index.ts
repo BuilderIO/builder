@@ -64,7 +64,6 @@ export type Path = keyof typeof pages;
 export const ALL_PATHNAMES = Object.keys(pages);
 
 const getContentForPathname = (pathname: string): BuilderContent | null => {
-  console.log('pathname', pathname);
   return pages[pathname as keyof typeof pages] || null;
 };
 
