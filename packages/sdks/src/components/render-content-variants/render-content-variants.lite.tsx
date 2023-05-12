@@ -45,7 +45,7 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
         />
       }
     >
-      <For each={Object.values(props.content!.variations!)}>
+      <For each={Object.values(props.content!.variations || [])}>
         {(variant) => (
           <state.TemplateTag
             key={variant?.id}
