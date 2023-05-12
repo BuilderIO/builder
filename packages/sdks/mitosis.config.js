@@ -203,7 +203,7 @@ const SRCSET_PLUGIN = () => ({
 /**
  * @type {Plugin}
  */
-const AS_CONST_PLUGIN = () => ({
+const REACT_FIXES_PLUGIN = () => ({
   code: {
     post: (code) => {
       if (code.includes('RenderContentVariants')) {
@@ -267,6 +267,7 @@ module.exports = {
         () => ({
           json: {
             pre: (json) => {
+              // TO-DO: should be able to remove this once vue2 fragment workaround is merged.
               if (json.name === 'Image') {
                 json.children[0].name = 'div';
               }
@@ -348,7 +349,7 @@ module.exports = {
       typescript: true,
       plugins: [
         SRCSET_PLUGIN,
-        AS_CONST_PLUGIN,
+        REACT_FIXES_PLUGIN,
         () => ({
           json: {
             pre: (json) => {
@@ -367,19 +368,6 @@ module.exports = {
               });
             },
           },
-          code: {
-            pre: (code) => {
-              if (code.includes('RenderInlinedStyles')) {
-                // fixes some type issues
-                code = code.replace(
-                  `return 'sty' + 'le'`,
-                  `return 'style' as \'style\'`
-                );
-              }
-              // Needed for next v13 to work
-              return `'use client';\n${code}`;
-            },
-          },
         }),
       ],
       stylesType: 'style-tag',
@@ -387,7 +375,7 @@ module.exports = {
     rsc: {
       plugins: [
         SRCSET_PLUGIN,
-        AS_CONST_PLUGIN,
+        REACT_FIXES_PLUGIN,
         () => ({
           json: {
             pre: (json) => {
@@ -413,7 +401,7 @@ module.exports = {
     reactNative: {
       plugins: [
         SRCSET_PLUGIN,
-        AS_CONST_PLUGIN,
+        REACT_FIXES_PLUGIN,
         BASE_TEXT_PLUGIN,
         () => ({
           json: {
