@@ -7,31 +7,24 @@ import type {
 import type { Nullable, Overwrite } from '../types/typescript.js';
 import { checkIsDefined } from '../helpers/nullable.js';
 
+// TO-DO: merge this with `builder.tests` cookie from variants script
 const BUILDER_STORE_PREFIX = 'builderio.variations';
 
 const getContentTestKey = (id: string) => `${BUILDER_STORE_PREFIX}.${id}`;
 
-const getContentVariationCookie = ({
-  contentId,
-  canTrack,
-}: { contentId: string } & CanTrack) =>
-  getCookie({ name: getContentTestKey(contentId), canTrack });
+const getContentVariationCookie = ({ contentId }: { contentId: string }) =>
+  getCookie({ name: getContentTestKey(contentId), canTrack: true });
 
-const getContentVariationCookieSync = ({
-  contentId,
-  canTrack,
-}: { contentId: string } & CanTrack) =>
-  getCookieSync({ name: getContentTestKey(contentId), canTrack });
+const getContentVariationCookieSync = ({ contentId }: { contentId: string }) =>
+  getCookieSync({ name: getContentTestKey(contentId), canTrack: true });
 
 const setContentVariationCookie = ({
   contentId,
-  canTrack,
   value,
 }: {
   contentId: string;
   value: string;
-} & CanTrack) =>
-  setCookie({ name: getContentTestKey(contentId), value, canTrack });
+}) => setCookie({ name: getContentTestKey(contentId), value, canTrack: true });
 
 type BuilderContentWithVariations = Overwrite<
   BuilderContent,
@@ -71,10 +64,7 @@ const getRandomVariationId = ({
   return id;
 };
 
-const getAndSetVariantId = ({
-  canTrack,
-  ...args
-}: BuilderContentWithVariations & CanTrack) => {
+const getAndSetVariantId = (args: BuilderContentWithVariations) => {
   // if variation not found in storage, assign a random variation to this user
   const randomVariationId = getRandomVariationId(args);
 
@@ -82,7 +72,6 @@ const getAndSetVariantId = ({
   setContentVariationCookie({
     contentId: args.id,
     value: randomVariationId,
-    canTrack,
   }).catch((err) => {
     console.error('could not store A/B test variation: ', err);
   });
@@ -127,6 +116,10 @@ export const handleABTestingSync = ({
   item,
   canTrack,
 }: { item: Nullable<BuilderContent> } & CanTrack): Nullable<BuilderContent> => {
+  if (!canTrack) {
+    return item;
+  }
+
   if (!item) {
     return undefined;
   }
@@ -137,13 +130,11 @@ export const handleABTestingSync = ({
 
   const testGroupId =
     getContentVariationCookieSync({
-      canTrack,
       contentId: item.id,
     }) ||
     getAndSetVariantId({
       variations: item.variations,
       id: item.id,
-      canTrack,
     });
 
   const variationValue = getTestFields({ item, testGroupId });
@@ -157,19 +148,21 @@ export const handleABTesting = async ({
   item,
   canTrack,
 }: { item: BuilderContent } & CanTrack): Promise<BuilderContent> => {
+  if (!canTrack) {
+    return item;
+  }
+
   if (!checkIsBuilderContentWithVariations(item)) {
     return item;
   }
 
   const testGroupId =
     (await getContentVariationCookie({
-      canTrack,
       contentId: item.id,
     })) ||
     getAndSetVariantId({
       variations: item.variations,
       id: item.id,
-      canTrack,
     });
 
   const variationValue = getTestFields({ item, testGroupId });

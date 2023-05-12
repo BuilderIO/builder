@@ -31,6 +31,10 @@ type VariantData = {
   testRatio?: number;
 };
 
+/**
+ * NOTE: when this function is stringified, single-line comments (i.e. starting with `//`) can cause weird issues.
+ * Make sure to write multi-line comments only (i.e. wrapped in /* and *\/).
+ */
 const variantScriptFn = function main(
   contentId: string,
   variants: VariantData[]
@@ -82,34 +86,32 @@ const variantScriptFn = function main(
     return;
   }
 
-  function setCookie(name: string, value: string, days?: number) {
-    let expires = '';
-    if (days) {
-      const date = new Date();
-      date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-      expires = '; expires=' + date.toUTCString();
-    }
-    document.cookie =
-      name +
-      '=' +
-      (value || '') +
-      expires +
-      '; path=/' +
-      '; Secure; SameSite=None';
-  }
-
-  function getCookie(name: string) {
-    const nameEQ = name + '=';
-    const ca = document.cookie.split(';');
-    for (let i = 0; i < ca.length; i++) {
-      let c = ca[i];
-      while (c.charAt(0) == ' ') c = c.substring(1, c.length);
-      if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
-    }
-    return null;
-  }
-
   function getAndSetVariantId(): string {
+    function setCookie(name: string, value: string, days?: number) {
+      let expires = '';
+      if (days) {
+        const date = new Date();
+        date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+        expires = '; expires=' + date.toUTCString();
+      }
+      document.cookie =
+        name +
+        '=' +
+        (value || '') +
+        expires +
+        '; path=/' +
+        '; Secure; SameSite=None';
+    }
+    function getCookie(name: string) {
+      const nameEQ = name + '=';
+      const ca = document.cookie.split(';');
+      for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+      }
+      return null;
+    }
     const cookieName = `builder.tests.${contentId}`;
     const variantInCookie = getCookie(cookieName);
     const availableIDs = variants.map((vr) => vr.id).concat(contentId);
@@ -184,28 +186,6 @@ const variantScriptFn = function main(
      * Since `RenderContentVariants will replace its parent, the rest of the content will be removed.
      */
     templatesParent.parentNode!.replaceChild(newParent, templatesParent);
-
-    /**
-       * TO-DO:
-       * - figure out why this isn't even running in the react example
-       * - then test that it does work correctly
-       * - then look into hydration mismatch in nextjs
-       
-
-      * OLD CODE THAT DOESNT WORK
-      * console.log('Replacing templates parent with winning template');
-      * * shallow clone template parent, and replace all children with winning template content
-      * const newParent = templatesParent.cloneNode(false);
-      * console.log('templatesParent', templatesParent);
-      * console.log('newParent', newParent);
-      * newParent.appendChild(winningBuilderContent!);
-
-      * console.log('newParent after transform', newParent);
-      * console.log('parentNode before', templatesParent.parentNode.html);
-      * * replace template parent with new parent
-      * templatesParent.parentNode!.replaceChild(newParent, templatesParent);
-      * console.log('parentNode after', templatesParent.parentNode);
-      */
   } else if (variants.length > 0) {
     console.log('No variant found, removing all variants');
   }
