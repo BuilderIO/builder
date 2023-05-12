@@ -32,8 +32,8 @@ type VariantData = {
 };
 
 /**
- * NOTE: when this function is stringified, single-line comments (i.e. starting with `//`) can cause weird issues.
- * Make sure to write multi-line comments only (i.e. wrapped in /* and *\/).
+ * NOTE: when this function is stringified, single-line comments can cause weird issues when compiled by Sveltekit.
+ * Make sure to write multi-line comments only.
  */
 const variantScriptFn = function main(
   contentId: string,
@@ -107,8 +107,9 @@ const variantScriptFn = function main(
       const ca = document.cookie.split(';');
       for (let i = 0; i < ca.length; i++) {
         let c = ca[i];
-        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
-        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+        while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) === 0)
+          return c.substring(nameEQ.length, c.length);
       }
       return null;
     }
@@ -118,7 +119,7 @@ const variantScriptFn = function main(
     /**
      * cookie already exists
      */
-    if (variantInCookie && availableIDs.indexOf(variantInCookie) > -1) {
+    if (variantInCookie && availableIDs.includes(variantInCookie)) {
       return variantInCookie;
     }
 
@@ -145,52 +146,65 @@ const variantScriptFn = function main(
   }
   const variantId = getAndSetVariantId();
 
-  if (variantId !== contentId) {
-    console.log('Variant found', variantId);
-    const winningTemplate = document.querySelector<HTMLTemplateElement>(
-      templateSelectorById(variantId)
-    );
-    console.log('winningTemplate', winningTemplate);
-    if (!winningTemplate) {
-      console.log('No template found for variant', variantId);
-      console.log('selector: ', templateSelectorById(variantId));
-      return;
-    }
-
-    const templatesParent = winningTemplate.parentNode!;
-    /**
-     * Create a shallow clone of the parent of all templates (and the default content)
-     */
-    const newParent = templatesParent.cloneNode(false);
-
-    /**
-     * Append only the winning variant to the new parent
-     */
-    newParent.appendChild(winningTemplate.content.firstElementChild!);
-
-    /**
-     * Replace the old parent with the new one.
-     *
-     * NOTE: replacing the old parent with the new one means that any other children of that parent will be removed.
-     *
-     * ```jsx
-     *  <div>
-     *    <div>
-     *      <h1>Page Title</h1>
-     *      <RenderContentVariants />
-     *      <footer>Footer Content</foote>
-     *    </div>
-     *  </div>
-     * ```
-     *
-     * Since `RenderContentVariants will replace its parent, the rest of the content will be removed.
-     */
-    templatesParent.parentNode!.replaceChild(newParent, templatesParent);
-  } else if (variants.length > 0) {
-    console.log('No variant found, removing all variants');
+  if (variantId === contentId) {
+    console.log('chose default variant. Removing templates');
+    removeTemplates();
+    return;
   }
+
+  console.log('Variant found', variantId);
+  const winningTemplate = document.querySelector<HTMLTemplateElement>(
+    templateSelectorById(variantId)
+  );
+  console.log('winningTemplate', winningTemplate);
+
+  if (!winningTemplate) {
+    console.log('No template found for variant', variantId);
+    console.log('selector: ', templateSelectorById(variantId));
+
+    /**
+     * TO-DO: what do in this case? throw? warn?
+     */
+    return;
+  }
+
+  const templatesParent = winningTemplate.parentNode!;
+  /**
+   * Create a shallow clone of the parent of all templates (and the default content)
+   */
+  const newParent = templatesParent.cloneNode(false);
+
+  /**
+   * Append only the winning variant to the new parent
+   */
+  newParent.appendChild(winningTemplate.content.firstElementChild!);
+
+  /**
+   * Replace the old parent with the new one.
+   *
+   * NOTE: replacing the old parent with the new one means that any other children of that parent will be removed.
+   *
+   * ```jsx
+   *  <div>                               <-- templatesParent.parentNode
+   *    <div>                             <-- templatesParent
+   *      <h1>Page Title</h1>             <-- will disappear?
+   *      <RenderContentVariants>
+   *        <template>...</template>
+   *        <template>...</template>
+   *        <template>...</template>
+   *        <script />                    <-- this script
+   *      </RenderContentVariants>
+   *      <footer>Footer Content</foote>  <-- will disappear?
+   *    </div>
+   *  </div>
+   * ```
+   *
+   * Since `RenderContentVariants will replace its parent, the rest of the content will be removed.
+   */
+  templatesParent.parentNode!.replaceChild(newParent, templatesParent);
+
+  console.log('Variant script complete. Removing templates');
   removeTemplates();
-  console.log('Variant script complete');
 };
 
 export const getVariantsScriptString = (
