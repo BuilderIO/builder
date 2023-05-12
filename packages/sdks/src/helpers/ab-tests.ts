@@ -7,8 +7,7 @@ import type {
 import type { Nullable, Overwrite } from '../types/typescript.js';
 import { checkIsDefined } from '../helpers/nullable.js';
 
-// TO-DO: merge this with `builder.tests` cookie from variants script
-const BUILDER_STORE_PREFIX = 'builderio.variations';
+const BUILDER_STORE_PREFIX = 'builder.tests';
 
 const getContentTestKey = (id: string) => `${BUILDER_STORE_PREFIX}.${id}`;
 
