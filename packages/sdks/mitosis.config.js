@@ -325,20 +325,19 @@ module.exports = {
           },
           code: {
             pre: (code) => {
-              if (!code.includes("name: 'render-block'")) {
-                return code;
+              if (code.includes("name: 'render-block'")) {
+                // 2 edge cases for the wrapper Show's condition need to be hardcoded for now
+                return code
+                  .replace(
+                    '<component v-else ',
+                    '<component v-else-if="canShowBlock" '
+                  )
+                  .replace(
+                    'v-if="!Boolean(!component?.noWrap && canShowBlock)"',
+                    'v-if="!Boolean(!component?.noWrap) && canShowBlock"'
+                  );
               }
-
-              // 2 edge cases for the wrapper Show's condition need to be hardcoded for now
-              return code
-                .replace(
-                  '<component v-else ',
-                  '<component v-else-if="canShowBlock" '
-                )
-                .replace(
-                  'v-if="!Boolean(!component?.noWrap && canShowBlock)"',
-                  'v-if="!Boolean(!component?.noWrap) && canShowBlock"'
-                );
+              return code;
             },
           },
         }),
@@ -602,18 +601,18 @@ module.exports = {
                   }
                 });
               }
-              if (json.name === 'RenderContentVariants') {
-                traverse(json).forEach(function (item) {
-                  if (!isMitosisNode(item)) {
-                    return;
-                  }
+              // if (json.name === 'RenderContentVariants') {
+              //   traverse(json).forEach(function (item) {
+              //     if (!isMitosisNode(item)) {
+              //       return;
+              //     }
 
-                  if (item.name === 'script') {
-                    this.remove();
-                    this.stop();
-                  }
-                });
-              }
+              //     if (item.name === 'script') {
+              //       this.remove();
+              //       this.stop();
+              //     }
+              //   });
+              // }
             },
           },
         }),
