@@ -31,6 +31,7 @@ export const getCookieSync = ({
 };
 /**
  * NOTE: This function is `async` because its react-native override is async. Do not remove the `async` keyword!
+ * The sync version is only safe to use in code blocks that `react-native` is guaranteed not to not run.
  */
 export const getCookie = async (args: GetCookieArgs) => getCookieSync(args);
 

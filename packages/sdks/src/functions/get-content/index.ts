@@ -1,4 +1,5 @@
 import { handleABTesting } from '../../helpers/ab-tests.js';
+import { getDefaultCanTrack } from '../../helpers/canTrack.js';
 import { logger } from '../../helpers/logger.js';
 import type { BuilderContent } from '../../types/builder-content.js';
 import { fetch } from '../get-fetch.js';
@@ -46,7 +47,12 @@ export async function getAllContent(
       return content;
     }
 
-    const canTrack = options.canTrack !== false;
+    /**
+     * Do we still want to do this in here at all?
+     *
+     * Might be needed for client-side navigations
+     */
+    const canTrack = getDefaultCanTrack(options.canTrack);
     try {
       if (
         isBrowser() &&
