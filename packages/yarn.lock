@@ -2373,9 +2373,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis@npm:0.0.101, @builder.io/mitosis@npm:^0.0.101":
-  version: 0.0.101
-  resolution: "@builder.io/mitosis@npm:0.0.101"
+"@builder.io/mitosis@npm:0.0.102":
+  version: 0.0.102
+  resolution: "@builder.io/mitosis@npm:0.0.102"
   dependencies:
     "@angular/compiler": ^11.2.11
     "@babel/core": 7.14.5
@@ -2414,7 +2414,7 @@ __metadata:
     traverse: ^0.6.6
     typescript: ^4.8.4
     vue: ~2.6
-  checksum: d9354d4beacf641f781180ca27582d6797623c37b34d4280a37411067ed113adf5156bd19b779a75e38a4c334d5e35a10d6e18dfbde3cfa479fd07a600df2ecd
+  checksum: 2e60f3951053750a46b0698d30f74148652e2bfe7fdc328cbf24612173f1d410500d9feb4e27ee719975359645f5678158604f6e1587264a670940c3deab8296
   languageName: node
   linkType: hard
 
@@ -2698,7 +2698,7 @@ __metadata:
   resolution: "@builder.io/sdks@workspace:sdks"
   dependencies:
     "@builder.io/eslint-plugin-mitosis": ^0.0.14
-    "@builder.io/mitosis": ^0.0.101
+    "@builder.io/mitosis": ^0.0.102
     "@builder.io/mitosis-cli": ^0.0.60
     "@types/jest": ^27.4.1
     "@types/node-fetch": ^2.5.12
