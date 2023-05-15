@@ -1,7 +1,7 @@
 {
   "name": "@builder.io/sdk-react",
   "description": "Builder.io SDK for React",
-  "version": "0.2.3",
+  "version": "0.3.1",
   "type": "module",
   "files": [
     "dist"
