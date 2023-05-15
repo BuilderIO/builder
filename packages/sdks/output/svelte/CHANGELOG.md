@@ -4,6 +4,7 @@
 - Fix: Columns block: removed redundant margin-left in first column.
 
 ### 0.3.0
+
 - No Changes.
 
 ### 0.2.3

@@ -5,6 +5,7 @@
 - Fix: dynamic action bindings in repeated data.
 
 ### 0.3.0
+
 - No Changes.
 
 ### 0.2.3
