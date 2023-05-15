@@ -56,8 +56,8 @@
     "upgrade-example:all": "yarn loop upgrade-example latest"
   },
   "dependencies": {
-    "@builder.io/mitosis": "^0.0.102",
-    "@builder.io/mitosis-cli": "^0.0.60",
+    "@builder.io/mitosis": "^0.0.103",
+    "@builder.io/mitosis-cli": "^0.0.61",
     "node-fetch": "^2.6.1",
     "seedrandom": "^3.0.5",
     "traverse": "^0.6.6"

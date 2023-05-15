@@ -2342,12 +2342,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis-cli@npm:^0.0.60":
-  version: 0.0.60
-  resolution: "@builder.io/mitosis-cli@npm:0.0.60"
+"@builder.io/mitosis-cli@npm:^0.0.61":
+  version: 0.0.61
+  resolution: "@builder.io/mitosis-cli@npm:0.0.61"
   dependencies:
     "@babel/core": ^7.17.8
-    "@builder.io/mitosis": 0.0.101
+    "@builder.io/mitosis": 0.0.103
     "@vue/compiler-sfc": ^3.1.5
     babel-preset-solid: ^1.3.13
     chalk: ^4.1.0
@@ -2369,13 +2369,13 @@ __metadata:
     vue-template-validator: ^1.1.5
   bin:
     mitosis: bin/mitosis
-  checksum: 099c7bd0051cd2c1a3b3e125f54d1849b839decb7e2298c783e1747507cf829fdc57711c34cf7bddeaed4f84f72eb3daa6fd60d952d2c5abe95090d80b723391
+  checksum: 1f496dca54d1ff5c1d7b570d9490cf2170111143b33ed99aebdd235eb525cf3c4dbc60725d5c5e55b374c3724e62d79b7994e3a1c62a7ac3e7f67ba2a1c75298
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis@npm:0.0.102":
-  version: 0.0.102
-  resolution: "@builder.io/mitosis@npm:0.0.102"
+"@builder.io/mitosis@npm:0.0.103, @builder.io/mitosis@npm:^0.0.103":
+  version: 0.0.103
+  resolution: "@builder.io/mitosis@npm:0.0.103"
   dependencies:
     "@angular/compiler": ^11.2.11
     "@babel/core": 7.14.5
@@ -2414,7 +2414,7 @@ __metadata:
     traverse: ^0.6.6
     typescript: ^4.8.4
     vue: ~2.6
-  checksum: 2e60f3951053750a46b0698d30f74148652e2bfe7fdc328cbf24612173f1d410500d9feb4e27ee719975359645f5678158604f6e1587264a670940c3deab8296
+  checksum: 4ab0949ad22c877919b104f28574cb341c014854df66158c9565b6b0998cf93e208f35317dcd5c4b825e3f244c14395802f37dafc50c2fe2113af43eac88a2f5
   languageName: node
   linkType: hard
 
@@ -2698,8 +2698,8 @@ __metadata:
   resolution: "@builder.io/sdks@workspace:sdks"
   dependencies:
     "@builder.io/eslint-plugin-mitosis": ^0.0.14
-    "@builder.io/mitosis": ^0.0.102
-    "@builder.io/mitosis-cli": ^0.0.60
+    "@builder.io/mitosis": ^0.0.103
+    "@builder.io/mitosis-cli": ^0.0.61
     "@types/jest": ^27.4.1
     "@types/node-fetch": ^2.5.12
     "@types/seedrandom": ^3.0.4
