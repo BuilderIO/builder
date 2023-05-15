@@ -14,7 +14,7 @@ import { componentInfo as textComponentInfo } from '../blocks/text/component-inf
 import { default as Text } from '../blocks/text/text.lite';
 // import { componentInfo as videoComponentInfo } from '../blocks/video/component-info';
 // import { default as Video } from '../blocks/video/video.lite';
-import type { RegisteredComponent } from '../context/builder.context.lite';
+import type { RegisteredComponent } from '../context/types.js';
 
 /**
  * Returns a list of all registered components.

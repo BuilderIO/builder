@@ -203,7 +203,7 @@ const SRCSET_PLUGIN = () => ({
 /**
  * @type {Plugin}
  */
-const REACT_FIXES_PLUGIN = () => ({
+const REACT_TYPESCRIPT_FIXES_PLUGIN = () => ({
   code: {
     post: (code) => {
       if (code.includes('RenderContentVariants')) {
@@ -218,6 +218,18 @@ const REACT_FIXES_PLUGIN = () => ({
             `useState(() => "template" as const)`
           );
       }
+
+      return code;
+    },
+  },
+});
+
+/**
+ * @type {Plugin}
+ */
+const REACT_NEXT_V13_PLUGIN = () => ({
+  code: {
+    post: (code) => {
       // Needed for next v13 to work
       return `'use client';\n${code}`;
     },
@@ -348,7 +360,8 @@ module.exports = {
       typescript: true,
       plugins: [
         SRCSET_PLUGIN,
-        REACT_FIXES_PLUGIN,
+        REACT_NEXT_V13_PLUGIN,
+        REACT_TYPESCRIPT_FIXES_PLUGIN,
         () => ({
           json: {
             pre: (json) => {
@@ -374,7 +387,7 @@ module.exports = {
     rsc: {
       plugins: [
         SRCSET_PLUGIN,
-        REACT_FIXES_PLUGIN,
+        REACT_NEXT_V13_PLUGIN,
         () => ({
           json: {
             pre: (json) => {
@@ -400,7 +413,7 @@ module.exports = {
     reactNative: {
       plugins: [
         SRCSET_PLUGIN,
-        REACT_FIXES_PLUGIN,
+        REACT_NEXT_V13_PLUGIN,
         BASE_TEXT_PLUGIN,
         () => ({
           json: {
