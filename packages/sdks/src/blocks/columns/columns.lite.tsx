@@ -20,12 +20,8 @@ type StackColumnsAt = 'tablet' | 'mobile' | 'never';
 export interface ColumnProps {
   columns?: Column[];
   builderBlock: BuilderBlock;
-
-  // TODO: Implement this when support for dynamic CSS lands
   space?: number;
-  // TODO: Implement this when support for dynamic CSS lands
   stackColumnsAt?: StackColumnsAt;
-  // TODO: Implement this when support for dynamic CSS lands
   reverseColumnsWhenStacked?: boolean;
 }
 
@@ -98,7 +94,7 @@ export default function Columns(props: ColumnProps) {
       }
 
       const width = state.getColumnCssWidth(index);
-      const gutterPixels = `${state.gutterSize}px`;
+      const gutterPixels = `${gutter}px`;
       const mobileWidth = '100%';
       const mobileMarginLeft = 0;
 

@@ -36,6 +36,6 @@
     "vite-tsconfig-paths": "3.5.0"
   },
   "dependencies": {
-    "@builder.io/sdk-qwik": "^0.2.3"
+    "@builder.io/sdk-qwik": "^0.3.1"
   }
 }

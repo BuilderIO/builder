@@ -8,7 +8,10 @@ type Actions = { [index: string]: (event: Event) => any };
 export function getBlockActions(
   options: {
     block: BuilderBlock;
-  } & Pick<BuilderContextInterface, 'state' | 'context'>
+  } & Pick<
+    BuilderContextInterface,
+    'localState' | 'context' | 'rootState' | 'rootSetState'
+  >
 ): Actions {
   const obj: Actions = {};
   const optionActions = options.block.actions ?? {};

@@ -103,8 +103,8 @@ export default function RenderContent(props: RenderContentProps) {
       data: props.data,
       locale: props.locale,
     }),
-    setContextState: (newState: BuilderRenderState) => {
-      state.contentState = newState;
+    contentSetState: (newRootState: BuilderRenderState) => {
+      state.contentState = newRootState;
     },
 
     allRegisteredComponents: [
@@ -171,7 +171,9 @@ export default function RenderContent(props: RenderContentProps) {
         evaluate({
           code: jsCode,
           context: props.context || {},
-          state: state.contentState,
+          localState: undefined,
+          rootState: state.contentState,
+          rootSetState: state.contentSetState,
         });
       }
     },
@@ -204,7 +206,9 @@ export default function RenderContent(props: RenderContentProps) {
         evaluate({
           code: group,
           context: props.context || {},
-          state: state.contentState,
+          localState: undefined,
+          rootState: state.contentState,
+          rootSetState: state.contentSetState,
         })
       );
     },
@@ -216,7 +220,7 @@ export default function RenderContent(props: RenderContentProps) {
             ...state.contentState,
             [key]: json,
           };
-          state.setContextState(newState);
+          state.contentSetState(newState);
         })
         .catch((err) => {
           console.error('error fetching dynamic data', url, err);
@@ -269,8 +273,9 @@ export default function RenderContent(props: RenderContentProps) {
 
   setContext(builderContext, {
     content: state.useContent,
-    state: state.contentState,
-    setState: state.setContextState,
+    localState: undefined,
+    rootState: state.contentState,
+    rootSetState: TARGET === 'qwik' ? undefined : state.contentSetState,
     context: props.context || {},
     apiKey: props.apiKey,
     apiVersion: props.apiVersion,

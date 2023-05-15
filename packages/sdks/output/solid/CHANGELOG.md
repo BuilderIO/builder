@@ -1,3 +1,12 @@
+### 0.3.1
+
+- Feature: Added SDK version to data sent to visual editor for improved debugging.
+- Fix: Columns block: removed redundant margin-left in first column.
+
+### 0.3.0
+
+- No Changes.
+
 ### 0.2.3
 
 - No Changes.
