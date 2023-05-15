@@ -4,7 +4,10 @@ import { evaluate } from './evaluate.js';
 
 type Options = {
   block: BuilderBlock;
-} & Pick<BuilderContextInterface, 'state' | 'context'>;
+} & Pick<
+  BuilderContextInterface,
+  'localState' | 'context' | 'rootState' | 'rootSetState'
+>;
 
 type EventHandler = (event: Event) => any;
 
@@ -14,7 +17,9 @@ export const createEventHandler =
     evaluate({
       code: value,
       context: options.context,
-      state: options.state,
+      localState: options.localState,
+      rootState: options.rootState,
+      rootSetState: options.rootSetState,
       event,
       isExpression: false,
     });

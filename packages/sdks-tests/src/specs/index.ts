@@ -17,6 +17,7 @@ import {
 import { CONTENT as reactiveState } from './reactive-state';
 import { CONTENT as showHideIf } from './show-hide-if';
 import { CONTENT as textBlock } from './text-block';
+import { CONTENT as stateBinding } from './state-binding';
 import type { BuilderContent } from './types.js';
 
 function isBrowser(): boolean {
@@ -49,6 +50,7 @@ const pages = {
   '/show-hide-if': showHideIf,
   '/custom-breakpoints-reset': customBreakpointsReset,
   '/text-block': textBlock,
+  '/state-binding': stateBinding,
 } as const;
 
 const apiVersionPathToProp = {
@@ -61,8 +63,9 @@ export type Path = keyof typeof pages;
 
 export const ALL_PATHNAMES = Object.keys(pages);
 
-const getContentForPathname = (pathname: string): BuilderContent | null =>
-  pages[pathname as keyof typeof pages] || null;
+const getContentForPathname = (pathname: string): BuilderContent | null => {
+  return pages[pathname as keyof typeof pages] || null;
+};
 
 // remove trailing slash from pathname if it exists
 // unless it's the root path
