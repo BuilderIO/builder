@@ -2373,9 +2373,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@builder.io/mitosis@npm:0.0.103, @builder.io/mitosis@npm:^0.0.103":
-  version: 0.0.103
-  resolution: "@builder.io/mitosis@npm:0.0.103"
+"@builder.io/mitosis@npm:0.0.104-0":
+  version: 0.0.104-0
+  resolution: "@builder.io/mitosis@npm:0.0.104-0"
   dependencies:
     "@angular/compiler": ^11.2.11
     "@babel/core": 7.14.5
@@ -2414,7 +2414,7 @@ __metadata:
     traverse: ^0.6.6
     typescript: ^4.8.4
     vue: ~2.6
-  checksum: 4ab0949ad22c877919b104f28574cb341c014854df66158c9565b6b0998cf93e208f35317dcd5c4b825e3f244c14395802f37dafc50c2fe2113af43eac88a2f5
+  checksum: f68cc3449e9f9f0723a333128cdd81125c6f40b98bd1ee60a0cb286617261e8c1fd3a022c943e8aa30c67214c0a33654048870347eb9fdbfdd190fa4ad18f686
   languageName: node
   linkType: hard
 
