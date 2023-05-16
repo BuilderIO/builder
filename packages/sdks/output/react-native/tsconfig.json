@@ -10,8 +10,5 @@
     "emitDeclarationOnly": false,
     "noEmit": false
   },
-  "include": [
-    "typings/*.d.ts",
-    "src/**/*",
-  ]
+  "include": ["typings/*.d.ts", "src/**/*"]
 }
