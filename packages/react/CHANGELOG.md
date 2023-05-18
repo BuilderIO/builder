@@ -1,3 +1,6 @@
+### 2.2.0
+- Sets the default `apiVersion` to `v1`.
+
 ### 2.1.0
 - Sets the default `apiVersion` to `v3`.
 
