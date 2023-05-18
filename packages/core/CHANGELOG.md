@@ -1,3 +1,6 @@
+### 1.3.0
+- `apiVersion` property now defaults to `v1`.
+
 ### 1.2.0
 - `apiVersion` property now defaults to `v3`.
 
