@@ -400,6 +400,7 @@ export default function RenderContent(props: RenderContentProps) {
         onClick={(event) => state.onClick(event)}
         builder-content-id={state.useContent?.id}
         builder-model={props.model}
+        className={props.classNameProp}
       >
         <Show when={TARGET !== 'reactNative'}>
           <RenderContentStyles

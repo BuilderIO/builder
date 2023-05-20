@@ -47,12 +47,12 @@ export async function getAllContent(
       return content;
     }
 
-    /**
-     * Do we still want to do this in here at all?
-     *
-     * Might be needed for client-side navigations
-     */
     const canTrack = getDefaultCanTrack(options.canTrack);
+
+    /**
+     * For client-side navigations, it is ideal to handle AB testing at this point instead of using our
+     * complex `template` variants approach, which is only needed for SSR'd content.
+     */
     try {
       if (
         isBrowser() &&

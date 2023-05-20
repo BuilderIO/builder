@@ -6,6 +6,7 @@ useMetadata({
 
 interface Props {
   styles: string;
+  id?: string;
 }
 
 export default function RenderInlinedStyles(props: Props) {
@@ -28,6 +29,6 @@ export default function RenderInlinedStyles(props: Props) {
      *
      * eslint-disable-next-line @typescript-eslint/ban-ts-comment
      * @ts-ignore */
-    <state.tag innerHTML={props.styles} />
+    <state.tag innerHTML={props.styles} id={props.id} />
   );
 }

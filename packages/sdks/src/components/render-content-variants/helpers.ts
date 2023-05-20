@@ -1,6 +1,8 @@
+import { TARGET } from '../../constants/target';
 import { isBrowser } from '../../functions/is-browser';
 import type { Nullable } from '../../helpers/nullable';
 import type { BuilderContent } from '../../types/builder-content';
+import type { Target } from '../../types/targets';
 
 export const checkShouldRunVariants = ({
   canTrack,
@@ -37,7 +39,8 @@ type VariantData = {
  */
 const variantScriptFn = function main(
   contentId: string,
-  variants: VariantData[]
+  variants: VariantData[],
+  target: Target
 ) {
   function templateSelectorById(id: string) {
     return `template[data-template-variant-id="${id}"]`;
@@ -57,6 +60,64 @@ const variantScriptFn = function main(
     }
   }
 
+  function getAndSetVariantId(): string {
+    function setCookie(name: string, value: string, days?: number) {
+      let expires = '';
+      if (days) {
+        const date = new Date();
+        date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+        expires = '; expires=' + date.toUTCString();
+      }
+      document.cookie =
+        name +
+        '=' +
+        (value || '') +
+        expires +
+        '; path=/' +
+        '; Secure; SameSite=None';
+    }
+    function getCookie(name: string) {
+      const nameEQ = name + '=';
+      const ca = document.cookie.split(';');
+      for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) === 0)
+          return c.substring(nameEQ.length, c.length);
+      }
+      return null;
+    }
+    const cookieName = `builder.tests.${contentId}`;
+    const variantInCookie = getCookie(cookieName);
+    const availableIDs = variants.map((vr) => vr.id).concat(contentId);
+    /**
+     * cookie already exists
+     */
+    if (variantInCookie && availableIDs.includes(variantInCookie)) {
+      return variantInCookie;
+    }
+
+    /**
+     * no cookie exists, find variant
+     */
+    let n = 0;
+    const random = Math.random();
+    for (let i = 0; i < variants.length; i++) {
+      const variant = variants[i];
+      const testRatio = variant.testRatio;
+      n += testRatio!;
+      if (random < n) {
+        setCookie(cookieName, variant.id);
+        return variant.id;
+      }
+    }
+
+    /**
+     * no variant found, assign default content
+     */
+    setCookie(cookieName, contentId);
+    return contentId;
+  }
   /**
    * Replace the old parent with the new one.
    *
@@ -79,7 +140,7 @@ const variantScriptFn = function main(
    *
    * Since `RenderContentVariants will replace its parent, the rest of the content will be removed.
    */
-  function injectVariant() {
+  function injectVariantTemplate() {
     if (!navigator.cookieEnabled) {
       return;
     }
@@ -92,64 +153,6 @@ const variantScriptFn = function main(
       return;
     }
 
-    function getAndSetVariantId(): string {
-      function setCookie(name: string, value: string, days?: number) {
-        let expires = '';
-        if (days) {
-          const date = new Date();
-          date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-          expires = '; expires=' + date.toUTCString();
-        }
-        document.cookie =
-          name +
-          '=' +
-          (value || '') +
-          expires +
-          '; path=/' +
-          '; Secure; SameSite=None';
-      }
-      function getCookie(name: string) {
-        const nameEQ = name + '=';
-        const ca = document.cookie.split(';');
-        for (let i = 0; i < ca.length; i++) {
-          let c = ca[i];
-          while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-          if (c.indexOf(nameEQ) === 0)
-            return c.substring(nameEQ.length, c.length);
-        }
-        return null;
-      }
-      const cookieName = `builder.tests.${contentId}`;
-      const variantInCookie = getCookie(cookieName);
-      const availableIDs = variants.map((vr) => vr.id).concat(contentId);
-      /**
-       * cookie already exists
-       */
-      if (variantInCookie && availableIDs.includes(variantInCookie)) {
-        return variantInCookie;
-      }
-
-      /**
-       * no cookie exists, find variant
-       */
-      let n = 0;
-      const random = Math.random();
-      for (let i = 0; i < variants.length; i++) {
-        const variant = variants[i];
-        const testRatio = variant.testRatio;
-        n += testRatio!;
-        if (random < n) {
-          setCookie(cookieName, variant.id);
-          return variant.id;
-        }
-      }
-
-      /**
-       * no variant found, assign default content
-       */
-      setCookie(cookieName, contentId);
-      return contentId;
-    }
     const variantId = getAndSetVariantId();
 
     if (variantId === contentId) {
@@ -174,9 +177,73 @@ const variantScriptFn = function main(
     templatesParent.parentNode!.replaceChild(newParent, templatesParent);
   }
 
-  injectVariant();
+  function handleQwik() {
+    /**
+     *  If we are using Qwik, then we don't want to remove any elements. Instead:
+     *    - we don't wrap anything in `template`
+     *    - we give every RenderContent a className unique to it
+     *    - on the server, we set `display: none` and `hidden` attrs for all variants except default
+     *
+     *  Then, on the client, this blocking script will:
+     *    - choose the winning variant
+     *      - if it's the default one, do nothing
+     *      - if it's a variant, then
+     *        - make the variant visible by tweaking its CSS to `display: visible`
+     *        - make the default content invisible by tweaking its CSS
+     *
+     *
+     */
+    if (!navigator.cookieEnabled) {
+      return;
+    }
 
-  removeTemplatesAndScript();
+    /**
+     * TO-DO: what is this check doing?
+     * seems like a template polyfill check
+     */
+    if (typeof document.createElement('template').content === 'undefined') {
+      return;
+    }
+
+    const variantId = getAndSetVariantId();
+
+    if (variantId === contentId) {
+      return;
+    }
+
+    const newStyleStr = variants
+      .concat({ id: contentId })
+      .filter((variant) => variant.id !== variantId)
+      .map((value) => {
+        return `.variant-${value.id} {  display: none; }
+        `;
+      })
+      .join('');
+
+    const styleEl = document.getElementById(
+      `variants-styles-${contentId}`
+    ) as HTMLStyleElement;
+
+    // check if this actually updates the style
+    styleEl.innerHTML = newStyleStr;
+
+    // then, we need to make the HTML changes...which we can't do if the script is blocking before the HTML tags?
+    // is CSS sufficient to hide content rendering-, a11y- and SEO-wise?
+    // if not, I dont think we can use HTML, unless there's a way to batch DOM changes. If there is, then we can batch
+    // the following changes:
+    //  - set `hidden` HTML attr to default content
+    //  - remove `hidden` HTML attr from winning variant
+    // If not...we can probably do this in qwik?
+
+    return;
+  }
+
+  if (target !== 'qwik') {
+    injectVariantTemplate();
+    removeTemplatesAndScript();
+  } else {
+    handleQwik();
+  }
 };
 
 export const getVariantsScriptString = (
@@ -187,6 +254,6 @@ export const getVariantsScriptString = (
 
   return `
   ${fnStr}
-  main("${contentId}", ${JSON.stringify(variants)})
+  main("${contentId}", ${JSON.stringify(variants)}, "${TARGET}")
   `;
 };
