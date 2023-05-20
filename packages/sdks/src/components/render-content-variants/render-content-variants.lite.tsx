@@ -80,7 +80,8 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
             id={`variants-styles-${props.content?.id}`}
           />
           {/**
-           * For Qwik, we have the script tag before anything else
+           * For Qwik, we have the script tag before anything else because it updates the CSS inlined right above,
+           * and must update it before any of the contents render
            */}
           <state.ScriptTag
             id={`variants-script-${props.content?.id}`}
