@@ -4,6 +4,9 @@
 ### 1.3.0
 - `apiVersion` property now defaults to `v1`.
 
+### 1.2.0
+- `apiVersion` property now defaults to `v3`.
+
 ### 1.1.35
 - Add new `apiVersion` property to toggle between Builder API versions. Defaults to `v1`. Possible values: `v1` and `v3`.
 
