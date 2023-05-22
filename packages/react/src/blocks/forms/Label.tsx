@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import { BuilderElement } from '@builder.io/sdk';
 import { BuilderBlockComponent } from '../../builder-react';
