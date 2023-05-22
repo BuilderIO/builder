@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import { Builder } from '@builder.io/sdk';
 import { safeDynamicRequire } from './safe-dynamic-require';
 

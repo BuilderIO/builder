@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import React from 'react';
 import { BuilderElement } from '@builder.io/sdk';
 import { withBuilder } from '../functions/with-builder';

@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import * as React from 'react';
 import { BuilderElement, Builder } from '@builder.io/sdk';
 
