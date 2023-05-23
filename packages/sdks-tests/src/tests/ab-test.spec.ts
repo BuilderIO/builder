@@ -23,7 +23,7 @@ test.describe(targetContext.name, () => {
       await findTextInPage({ page, text: 'default' });
     });
 
-    test.only('Render variant w/ SSR', async ({ page, context, baseURL }) => {
+    test('Render variant w/ SSR', async ({ page, context, baseURL }) => {
       await context.addCookies([
         {
           name: `builder.tests.${CONTENT_ID}`,
