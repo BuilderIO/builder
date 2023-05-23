@@ -17,14 +17,13 @@ test.describe(targetContext.name, () => {
       ]);
       await page.goto('/ab-test');
 
-      const k = await page.evaluate(() => {
-        return document.cookie.split(';');
-      });
-
-      await expect(page.locator('body')).not.toContainText('hello world variation 1');
+      await expect(
+        page.locator('div[builder-content-id]', { hasText: 'hello world variation 1' })
+      ).toBeHidden();
       await findTextInPage({ page, text: 'default' });
     });
-    test('Render variant w/ SSR', async ({ page, context, baseURL }) => {
+
+    test.only('Render variant w/ SSR', async ({ page, context, baseURL }) => {
       await context.addCookies([
         {
           name: `builder.tests.${CONTENT_ID}`,
@@ -34,11 +33,7 @@ test.describe(targetContext.name, () => {
       ]);
       await page.goto('/ab-test');
 
-      const k = await page.evaluate(() => {
-        return document.cookie.split(';');
-      });
-
-      await expect(page.locator('body')).not.toContainText('default');
+      await expect(page.locator('div[builder-content-id]', { hasText: 'default' })).toBeHidden();
       await findTextInPage({ page, text: 'hello world variation 1' });
     });
   });

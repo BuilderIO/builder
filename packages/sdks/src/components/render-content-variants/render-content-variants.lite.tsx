@@ -28,7 +28,7 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
     }),
     inlineQwikStyle: Object.values(props.content?.variations || {})
       .map((value) => {
-        return `.variant-${value.id} {  display: none; }
+        return `.variant-${value.id} { display: none; }
         `;
       })
       .join(''),
