@@ -2304,6 +2304,10 @@ export class Builder {
       ...queue[0].options,
       ...this.queryOptions,
     };
+
+    if (queue[0].locale) {
+      queryParams.locale = queue[0].locale;
+    }
     if (queue[0].fields) {
       queryParams.fields = queue[0].fields;
     }
