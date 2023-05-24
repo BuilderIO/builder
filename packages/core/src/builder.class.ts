@@ -2379,12 +2379,6 @@ export class Builder {
       }
     }
 
-    if (!Builder.isReact) {
-      // TODO: remove me once v1 page editors converted to v2
-      // queryParams.extractCss = true;
-      queryParams.prerender = true;
-    }
-
     for (const options of queue) {
       if (options.format) {
         queryParams.format = options.format;

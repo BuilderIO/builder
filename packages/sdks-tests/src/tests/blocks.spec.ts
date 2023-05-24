@@ -230,32 +230,30 @@ test.describe('Blocks', () => {
       },
     };
 
-    const NO_MARGIN = {
-      column: { 'margin-left': '0px' },
-    };
+    const NO_LEFT_MARGIN = { 'margin-left': '0px' };
 
     const expected: Record<ColumnTypes, Record<SizeName, ColStyles> & { index: number }> = {
       stackAtTablet: {
         index: 0,
-        mobile: { columns: { 'flex-direction': 'column' }, ...NO_MARGIN },
-        tablet: { columns: { 'flex-direction': 'column' }, ...NO_MARGIN },
+        mobile: { columns: { 'flex-direction': 'column' }, column: NO_LEFT_MARGIN },
+        tablet: { columns: { 'flex-direction': 'column' }, column: NO_LEFT_MARGIN },
         desktop: ROW,
       },
       stackAtTabletReverse: {
         index: 1,
-        mobile: { columns: { 'flex-direction': 'column-reverse' }, ...NO_MARGIN },
-        tablet: { columns: { 'flex-direction': 'column-reverse' }, ...NO_MARGIN },
+        mobile: { columns: { 'flex-direction': 'column-reverse' }, column: NO_LEFT_MARGIN },
+        tablet: { columns: { 'flex-direction': 'column-reverse' }, column: NO_LEFT_MARGIN },
         desktop: ROW,
       },
       stackAtMobile: {
         index: 2,
-        mobile: { columns: { 'flex-direction': 'column' }, ...NO_MARGIN },
+        mobile: { columns: { 'flex-direction': 'column' }, column: NO_LEFT_MARGIN },
         tablet: ROW,
         desktop: ROW,
       },
       stackAtMobileReverse: {
         index: 3,
-        mobile: { columns: { 'flex-direction': 'column-reverse' }, ...NO_MARGIN },
+        mobile: { columns: { 'flex-direction': 'column-reverse' }, column: NO_LEFT_MARGIN },
         tablet: ROW,
         desktop: ROW,
       },
@@ -272,7 +270,7 @@ test.describe('Blocks', () => {
 
       // only test mobile for RN
       if (isRNSDK && sizeName !== 'mobile') {
-        return;
+        test.skip();
       }
 
       test.describe(sizeName, () => {
@@ -290,12 +288,18 @@ test.describe('Blocks', () => {
               expected: styles[sizeName].columns,
             });
 
-            const secondColumn = isRNSDK
+            const columnLocator = isRNSDK
               ? columns.nth(styles.index).locator('[data-builder-block-name=builder-column]')
               : columns.nth(styles.index).locator('.builder-column');
 
+            // first column should never have left margin
             await expectStylesForElement({
-              locator: secondColumn.nth(1),
+              locator: columnLocator.nth(0),
+              expected: NO_LEFT_MARGIN,
+            });
+
+            await expectStylesForElement({
+              locator: columnLocator.nth(1),
               expected: styles[sizeName].column,
             });
           });
@@ -401,8 +405,6 @@ test.describe('Blocks', () => {
 
       await page.route(urlMatch, route => {
         x++;
-
-        const url = new URL(route.request().url());
 
         const keyName = 'results';
 

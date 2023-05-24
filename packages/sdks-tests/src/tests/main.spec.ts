@@ -19,7 +19,7 @@ test.describe(targetContext.name, () => {
       test('do not appear if canTrack=false', async ({ page, context, packageName }) => {
         // TO-DO: figure out why Remix fails this test
         if (packageName === 'e2e-old-react-remix') {
-          return;
+          test.skip();
         }
 
         // by waiting for network requests, we guarantee that impression tracking POST was (NOT) made,
@@ -539,6 +539,22 @@ test.describe(targetContext.name, () => {
             });
           }
         });
+      });
+    });
+
+    test.describe('Link URL', () => {
+      test('renders with static value', async ({ page }) => {
+        await page.goto('/link-url');
+
+        await page.locator(`a[href="/static-url"]`).waitFor();
+      });
+      test('renders with dynamic value', async ({ page, packageName }) => {
+        if (packageName === 'e2e-old-nextjs') {
+          test.skip();
+        }
+        await page.goto('/link-url');
+
+        await page.locator(`a[href="/dynamic-url"]`).waitFor();
       });
     });
   });

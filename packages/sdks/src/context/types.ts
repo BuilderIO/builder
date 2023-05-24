@@ -16,8 +16,23 @@ export type BuilderRenderContext = Record<string, unknown>;
 export interface BuilderContextInterface {
   content: Nullable<BuilderContent>;
   context: BuilderRenderContext;
-  state: BuilderRenderState;
-  setState?: (state: BuilderRenderState) => void;
+  /**
+   * The state of the application.
+   *
+   * NOTE: see `localState` below to understand how it is different from `rootState`.
+   */
+  rootState: BuilderRenderState;
+  /**
+   * Some frameworks have a `setState` function which needs to be invoked to notify
+   * the framework of state change. (other frameworks don't in which case it is `undefined')
+   */
+  rootSetState: ((rootState: BuilderRenderState) => void) | undefined;
+  /**
+   * The local state of the current component. This is different from `rootState` in that
+   * it can be a child state created by a repeater containing local state.
+   * The `rootState` is where all of the state mutations are actually stored.
+   */
+  localState: BuilderRenderState | undefined;
   apiKey: string | null;
   apiVersion: ApiVersion | undefined;
   registeredComponents: RegisteredComponents;

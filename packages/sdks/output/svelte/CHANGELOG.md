@@ -1,3 +1,22 @@
+### 0.3.1
+
+- Feature: Added SDK version to data sent to visual editor for improved debugging.
+- Fix: Columns block: removed redundant margin-left in first column.
+
+### 0.3.0
+
+- No Changes.
+
+### 0.2.3
+
+- No Changes.
+
+### 0.2.2
+
+- Fix: dynamic bindings for Link URLs.
+- Fix: previewing content that includes a symbol whose `model` property is a `page`.
+- Fix: "Show If"/"Hide If" bindings when the initial value is `undefined`.
+
 ### 0.2.1
 
 - No Changes.

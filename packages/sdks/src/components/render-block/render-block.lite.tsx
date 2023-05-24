@@ -7,7 +7,6 @@ import type { BuilderBlock } from '../../types/builder-block.js';
 import BlockStyles from './block-styles.lite';
 import {
   getComponent,
-  getProxyState,
   getRepeatItemData,
   isEmptyHtmlElement,
 } from './render-block.helpers.js';
@@ -18,7 +17,6 @@ import { TARGET } from '../../constants/target.js';
 import { extractTextStyles } from '../../functions/extract-text-styles.js';
 import RenderComponent from './render-component.lite';
 import { getReactNativeBlockStyles } from '../../functions/get-react-native-block-styles.js';
-import { checkIsDefined } from '../../helpers/nullable.js';
 
 export type RenderBlockProps = {
   block: BuilderBlock;
@@ -32,35 +30,40 @@ useMetadata({
 export default function RenderBlock(props: RenderBlockProps) {
   const state = useStore({
     component: getComponent({ block: props.block, context: props.context }),
-    repeatItemData: getRepeatItemData({
-      block: props.block,
-      context: props.context,
-    }),
+    get repeatItem() {
+      return getRepeatItemData({
+        block: props.block,
+        context: props.context,
+      });
+    },
     get useBlock(): BuilderBlock {
-      return state.repeatItemData
+      return state.repeatItem
         ? props.block
         : getProcessedBlock({
             block: props.block,
-            state: props.context.state,
+            localState: props.context.localState,
+            rootState: props.context.rootState,
+            rootSetState: props.context.rootSetState,
             context: props.context.context,
             shouldEvaluateBindings: true,
           });
     },
     tag: props.block.tagName || 'div',
     get canShowBlock() {
-      if (checkIsDefined(state.useBlock.hide)) {
+      if ('hide' in state.useBlock) {
         return !state.useBlock.hide;
       }
-      if (checkIsDefined(state.useBlock.show)) {
+      if ('show' in state.useBlock) {
         return state.useBlock.show;
       }
       return true;
     },
-    proxyState: getProxyState(props.context),
     get actions() {
       return getBlockActions({
         block: state.useBlock,
-        state: TARGET === 'qwik' ? props.context.state : state.proxyState,
+        rootState: props.context.rootState,
+        rootSetState: props.context.rootSetState,
+        localState: props.context.localState,
         context: props.context.context,
       });
     },
@@ -88,7 +91,7 @@ export default function RenderBlock(props: RenderBlockProps) {
        * blocks, and the children will be repeated within those blocks.
        */
       const shouldRenderChildrenOutsideRef =
-        !state.component?.component && !state.repeatItemData;
+        !state.component?.component && !state.repeatItem;
 
       return shouldRenderChildrenOutsideRef
         ? state.useBlock.children ?? []
@@ -113,10 +116,11 @@ export default function RenderBlock(props: RenderBlockProps) {
       return {
         apiKey: props.context.apiKey,
         apiVersion: props.context.apiVersion,
-        state: props.context.state,
+        localState: props.context.localState,
+        rootState: props.context.rootState,
+        rootSetState: props.context.rootSetState,
         content: props.context.content,
         context: props.context.context,
-        setState: props.context.setState,
         registeredComponents: props.context.registeredComponents,
         inheritedStyles: getInheritedTextStyles(),
       };
@@ -154,8 +158,8 @@ export default function RenderBlock(props: RenderBlockProps) {
         <Show when={isEmptyHtmlElement(state.tag)}>
           <state.tag {...state.attributes} {...state.actions} />
         </Show>
-        <Show when={!isEmptyHtmlElement(state.tag) && state.repeatItemData}>
-          <For each={state.repeatItemData}>
+        <Show when={!isEmptyHtmlElement(state.tag) && state.repeatItem}>
+          <For each={state.repeatItem}>
             {(data, index) => (
               <RenderRepeatedBlock
                 key={index}
@@ -165,7 +169,7 @@ export default function RenderBlock(props: RenderBlockProps) {
             )}
           </For>
         </Show>
-        <Show when={!isEmptyHtmlElement(state.tag) && !state.repeatItemData}>
+        <Show when={!isEmptyHtmlElement(state.tag) && !state.repeatItem}>
           <state.tag {...state.attributes} {...state.actions}>
             <RenderComponent {...state.renderComponentProps} />
             {/**

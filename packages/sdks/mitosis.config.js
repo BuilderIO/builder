@@ -96,6 +96,10 @@ const vueConfig = {
             const eventPrefix = 'v-on:';
             return Object.keys(attrs)
               .filter((attr) => {
+                if (!attrs[attr]) {
+                  return false;
+                }
+
                 const isEventVal = attr.startsWith(eventPrefix);
                 return isEvent ? isEventVal : !isEventVal;
               })
@@ -317,7 +321,42 @@ module.exports = {
     },
     vue3: vueConfig,
     react: {
-      plugins: [SRCSET_PLUGIN],
+      typescript: true,
+      plugins: [
+        SRCSET_PLUGIN,
+        () => ({
+          json: {
+            pre: (json) => {
+              traverse(json).forEach(function (item) {
+                if (!isMitosisNode(item)) {
+                  return;
+                }
+
+                if (item.bindings['dataSet']) {
+                  delete item.bindings['dataSet'];
+                }
+
+                if (item.properties['dataSet']) {
+                  delete item.properties['dataSet'];
+                }
+              });
+            },
+          },
+          code: {
+            pre: (code) => {
+              if (code.includes('RenderInlinedStyles')) {
+                // fixes some type issues
+                code = code.replace(
+                  `return 'sty' + 'le'`,
+                  `return 'style' as \'style\'`
+                );
+              }
+              // Needed for next v13 to work
+              return `'use client';\n${code}`;
+            },
+          },
+        }),
+      ],
       stylesType: 'style-tag',
     },
     rsc: {
@@ -371,8 +410,12 @@ module.exports = {
                         code: 'props.context.content',
                         type: 'property',
                       },
-                      state: {
-                        code: 'props.context.state',
+                      rootState: {
+                        code: 'props.context.rootState',
+                        type: 'property',
+                      },
+                      localState: {
+                        code: 'props.context.localState',
                         type: 'property',
                       },
                       context: {

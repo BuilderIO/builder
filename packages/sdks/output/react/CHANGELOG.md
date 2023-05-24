@@ -1,3 +1,25 @@
+### 0.3.1
+
+- Feature: Added SDK version to data sent to visual editor for improved debugging.
+- Fix: Columns block: removed redundant margin-left in first column.
+- Fix: dynamic action bindings in repeated data.
+
+### 0.3.0
+
+- No Changes.
+
+### 0.2.3
+
+- Feature: Added TS types to package.
+- Feature: Added support for the NextJS app directory.
+- Feature: added `'use client'` directives above all components.
+
+### 0.2.2
+
+- Fix: dynamic bindings for Link URLs.
+- Fix: previewing content that includes a symbol whose `model` property is a `page`.
+- Fix: "Show If"/"Hide If" bindings when the initial value is `undefined`.
+
 ### 0.2.1
 
 - No Changes.

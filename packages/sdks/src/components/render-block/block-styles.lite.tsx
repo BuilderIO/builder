@@ -21,7 +21,9 @@ export default function BlockStyles(props: BlockStylesProps) {
     get useBlock(): BuilderBlock {
       return getProcessedBlock({
         block: props.block,
-        state: props.context.state,
+        localState: props.context.localState,
+        rootState: props.context.rootState,
+        rootSetState: props.context.rootSetState,
         context: props.context.context,
         shouldEvaluateBindings: true,
       });
