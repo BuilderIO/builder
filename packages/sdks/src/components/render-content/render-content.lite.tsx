@@ -255,7 +255,6 @@ export default function RenderContent(props: RenderContentProps) {
         );
       }
     },
-    ScriptTag: 'script' as const,
     scriptStr: getRenderContentScriptString({
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
       contentId: props.content?.id!,
@@ -410,7 +409,7 @@ export default function RenderContent(props: RenderContentProps) {
         className={props.classNameProp}
         {...(props.hideContent ? { hidden: true, 'aria-hidden': true } : {})}
       >
-        <state.ScriptTag innerHTML={state.scriptStr}></state.ScriptTag>
+        <script innerHTML={state.scriptStr}></script>
         <Show when={TARGET !== 'reactNative'}>
           <RenderContentStyles
             contentId={state.useContent?.id}
