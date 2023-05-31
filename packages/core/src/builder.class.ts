@@ -2304,6 +2304,10 @@ export class Builder {
       ...queue[0].options,
       ...this.queryOptions,
     };
+
+    if (queue[0].locale) {
+      queryParams.locale = queue[0].locale;
+    }
     if (queue[0].fields) {
       queryParams.fields = queue[0].fields;
     }
@@ -2372,12 +2376,6 @@ export class Builder {
           queryParams[`overrides.${key}`] = this.overrides[key];
         }
       }
-    }
-
-    if (!Builder.isReact) {
-      // TODO: remove me once v1 page editors converted to v2
-      // queryParams.extractCss = true;
-      queryParams.prerender = true;
     }
 
     for (const options of queue) {

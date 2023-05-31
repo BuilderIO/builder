@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { jsx, css } from '@emotion/core';

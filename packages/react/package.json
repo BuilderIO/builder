@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/react",
-  "version": "2.1.0",
+  "version": "3.0.2",
   "description": "",
   "keywords": [],
   "main": "dist/builder-react.cjs.js",
@@ -126,7 +126,7 @@
     "@emotion/core": "^10.0.17",
     "hash-sum": "^2.0.0",
     "preact": "^10.1.0",
-    "vm2": "^3.9.17"
+    "vm2": "^3.9.18"
   },
   "installConfig": {
     "hoistingLimits": "workspaces"
