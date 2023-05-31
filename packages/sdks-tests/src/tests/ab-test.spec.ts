@@ -33,7 +33,9 @@ test.describe(targetContext.name, () => {
       ]);
       await page.goto('/ab-test');
 
-      await expect(page.locator('div[builder-content-id]', { hasText: 'default' })).toBeHidden();
+      await expect(
+        page.locator('div[builder-content-id]', { hasText: 'hello world default' })
+      ).toBeHidden();
       await findTextInPage({ page, text: 'hello world variation 1' });
     });
   });
