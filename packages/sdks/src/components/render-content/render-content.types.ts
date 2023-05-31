@@ -24,6 +24,7 @@ export interface RenderContentProps {
   classNameProp?: string;
   hideContent?: boolean;
   parentContentId?: string;
+  isSsrAbTest: boolean;
 }
 
 export interface BuilderComponentStateChange {

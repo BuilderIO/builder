@@ -143,7 +143,7 @@ const variantScriptFn2 = function bldrCntntScrpt(
   const cookieName = `builder.tests.${defaultContentId}`;
   const variantId = getCookie(cookieName);
 
-  // get parent div by searching on `builder-content-id` attr
+  /** get parent div by searching on `builder-content-id` attr */
   const parentDiv = document.querySelector(
     `[builder-content-id="${variantContentId}"]`
   );
@@ -157,12 +157,12 @@ const variantScriptFn2 = function bldrCntntScrpt(
 
   if (variantId === variantContentId) {
     if (variantIsDefaultContent) {
-      // the default content is already visible, no need to do anything
+      /** the default content is already visible, no need to do anything */
       console.log('default content is already visible, no need to do anything');
       return;
     }
 
-    // this is the winning variant and not already visible: remove `hidden` and `aria-hidden` attr
+    /** this is the winning variant and not already visible: remove `hidden` and `aria-hidden` attr */
 
     console.log(
       'this is the winning variant and not already visible: remove `hidden` and `aria-hidden` attr'
@@ -172,13 +172,14 @@ const variantScriptFn2 = function bldrCntntScrpt(
   } else {
     if (variantIsDefaultContent) {
       console.log('this is not the winning variant, add `hidden` attr');
-      // this is not the winning variant, add `hidden` attr
+      /** this is not the winning variant, add `hidden` attr */
       parentDiv?.setAttribute('hidden', 'true');
       parentDiv?.setAttribute('aria-hidden', 'true');
     }
 
-    // This is not the winning variant, and it's not the default content.
-    // There's no need to hide it, because it's already hidden.
+    /** This is not the winning variant, and it's not the default content.
+     * There's no need to hide it, because it's already hidden.
+     */
     console.log(
       "This is not the winning variant, and it's not the default content. There's no need to hide it, because it's already hidden."
     );
@@ -193,13 +194,10 @@ export const getVariantsScriptString = (
   contentId: string
 ) => {
   const fnStr = variantScriptFn.toString().replace(/\s+/g, ' ');
-  const fnStr2 = variantScriptFn2.toString().replace(/\s+/g, ' ');
 
   return `
   ${fnStr}
   bldrAbTest("${contentId}", ${JSON.stringify(variants)})
-
-  ${fnStr2}
   `;
 };
 
@@ -210,5 +208,9 @@ export const getRenderContentScriptString = ({
   contentId: string;
   parentContentId: string;
 }) => {
-  return `bldrCntntScrpt("${contentId}", "${parentContentId}")`;
+  const fnStr2 = variantScriptFn2.toString().replace(/\s+/g, ' ');
+
+  return `
+  ${fnStr2}
+  bldrCntntScrpt("${contentId}", "${parentContentId}")`;
 };

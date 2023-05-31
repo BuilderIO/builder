@@ -409,7 +409,9 @@ export default function RenderContent(props: RenderContentProps) {
         className={props.classNameProp}
         {...(props.hideContent ? { hidden: true, 'aria-hidden': true } : {})}
       >
-        <script innerHTML={state.scriptStr}></script>
+        <Show when={props.isSsrAbTest}>
+          <script innerHTML={state.scriptStr}></script>
+        </Show>
         <Show when={TARGET !== 'reactNative'}>
           <RenderContentStyles
             contentId={state.useContent?.id}
