@@ -219,8 +219,6 @@ export const CONTENT = {
   createdBy: '4FFFg0MNRJT0z0nW4uUizDHfHJV2',
   meta: {
     kind: 'page',
-    lastPreviewUrl:
-      'https://svelte-vite-example.vercel.app/a-b-test-basic-s?builder.space=f1a790f8c3204b3b8c5c1795aeac4660&builder.cachebust=true&builder.preview=page&builder.noCache=true&__builder_editing__=true&builder.overrides.page=1d326d78efb04ce38467dd8f5160fab6&builder.overrides.1d326d78efb04ce38467dd8f5160fab6=1d326d78efb04ce38467dd8f5160fab6&builder.overrides.page:/a-b-test-basic-s=1d326d78efb04ce38467dd8f5160fab6',
     hasLinks: false,
   },
   variations: {

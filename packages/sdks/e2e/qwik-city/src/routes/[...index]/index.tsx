@@ -9,7 +9,6 @@ import {
   useContext,
   useSignal,
   useStore,
-  useTask$,
 } from '@builder.io/qwik';
 type Props = { data: string };
 
@@ -54,8 +53,6 @@ const RenderContent2 = component$<Props>((props) => {
   );
 });
 
-import { manifest } from '@qwik-client-manifest';
-import { renderToString } from '@builder.io/qwik/server';
 import { useLocation } from '@builder.io/qwik-city';
 
 export default component$(() => {
@@ -70,29 +67,29 @@ export default component$(() => {
     count: useSignal(0),
   });
 
-  useTask$(async () => {
-    console.log('in-app manifest', { manifest });
-    // console.log('useTask$', global.SYMBOL_MAPPER);
-    const result = await renderToString(
-      <template>
-        <RenderContent2 data={state.data} />
-      </template>,
-      {
-        containerTagName: 'div',
-        manifest: global.MANIFEST,
-        symbolMapper: global.SYMBOL_MAPPER,
-      }
-    );
+  // useTask$(async () => {
+  //   console.log('in-app manifest', { manifest });
+  //   // console.log('useTask$', global.SYMBOL_MAPPER);
+  //   const result = await renderToString(
+  //     <template>
+  //       <RenderContent2 data={state.data} />
+  //     </template>,
+  //     {
+  //       containerTagName: 'div',
+  //       manifest: global.MANIFEST,
+  //       symbolMapper: global.SYMBOL_MAPPER,
+  //     }
+  //   );
 
-    containerStr.value = result.html;
-  });
+  //   containerStr.value = result.html;
+  // });
 
   const contentProps = getProps(url.pathname);
-  // return contentProps ? (
-  //   <RenderContent {...contentProps} />
-  // ) : (
-  //   <div>Content Not Found</div>
-  // );
+  return contentProps ? (
+    <RenderContent {...contentProps} />
+  ) : (
+    <div>Content Not Found</div>
+  );
   useStyles$(`
     .div2 {
       border: 1px solid blue;

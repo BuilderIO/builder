@@ -1,8 +1,6 @@
-import { TARGET } from '../../constants/target';
 import { isBrowser } from '../../functions/is-browser';
 import type { Nullable } from '../../helpers/nullable';
 import type { BuilderContent } from '../../types/builder-content';
-import type { Target } from '../../types/targets';
 
 export const checkShouldRunVariants = ({
   canTrack,
@@ -37,29 +35,10 @@ type VariantData = {
  * NOTE: when this function is stringified, single-line comments can cause weird issues when compiled by Sveltekit.
  * Make sure to write multi-line comments only.
  */
-const variantScriptFn = function main(
+const variantScriptFn = function bldrAbTest(
   contentId: string,
-  variants: VariantData[],
-  target: Target
+  variants: VariantData[]
 ) {
-  function templateSelectorById(id: string) {
-    return `template[data-template-variant-id="${id}"]`;
-  }
-
-  function removeTemplatesAndScript() {
-    variants.forEach((template) => {
-      const el = document.querySelector(templateSelectorById(template.id));
-      if (el) {
-        el.remove();
-      }
-    });
-
-    const el = document.getElementById(`variants-script-${contentId}`);
-    if (el) {
-      el.remove();
-    }
-  }
-
   function getAndSetVariantId(): string {
     function setCookie(name: string, value: string, days?: number) {
       let expires = '';
@@ -118,166 +97,118 @@ const variantScriptFn = function main(
     setCookie(cookieName, contentId);
     return contentId;
   }
-  /**
-   * Replace the old parent with the new one.
-   *
-   * NOTE: replacing the old parent with the new one means that any other children of that parent will be removed.
-   *
-   * ```jsx
-   *  <div>                               <-- templatesParent.parentNode
-   *    <div>                             <-- templatesParent
-   *      <h1>Page Title</h1>             <-- will disappear?
-   *      <RenderContentVariants>
-   *        <style>
-   *          .a { display: none; }
-   *          .c { display: none; }
-   *          .default { display: none; }
-   *        </style>
-   *        <div class="a" hidden>A</div>
-   *        <div class="b" hidden>B</div>
-   *        <div class="c" hidden>C</div>
-   *        <script />                    <-- this script
-   *        <div class="default">Default Content</div>
-   *      </RenderContentVariants>
-   *      <footer>Footer Content</foote>  <-- will disappear?
-   *    </div>
-   *  </div>
-   * ```
-   *
-   * ```jsx
-   *  <div>
-   *    <div>B</div>
-   *  </div>
-   * ```
-   *
-   * Since `RenderContentVariants will replace its parent, the rest of the content will be removed.
-   */
-  function injectVariantTemplate() {
-    if (!navigator.cookieEnabled) {
-      return;
-    }
 
-    /**
-     * TO-DO: what is this check doing?
-     * seems like a template polyfill check
-     */
-    if (typeof document.createElement('template').content === 'undefined') {
-      return;
-    }
+  const winningVariantId = getAndSetVariantId();
 
-    const variantId = getAndSetVariantId();
+  // update styles to hide all variants except the winning variant
+  const newStyleStr = variants
+    .concat({ id: contentId })
+    .filter((variant) => variant.id !== winningVariantId)
+    .map((value) => {
+      return `.variant-${value.id} {  display: none; }
+    `;
+    })
+    .join('');
 
-    if (variantId === contentId) {
-      return;
-    }
+  const styleEl = document.getElementById(
+    `variants-styles-${contentId}`
+  ) as HTMLStyleElement;
 
-    const winningTemplate = document.querySelector<HTMLTemplateElement>(
-      templateSelectorById(variantId)
-    );
-
-    if (!winningTemplate) {
-      /**
-       * TO-DO: what do in this case? throw? warn?
-       */
-      return;
-    }
-
-    const templatesParent = winningTemplate.parentNode!;
-    const newParent = templatesParent.cloneNode(false);
-    newParent.appendChild(winningTemplate.content.firstElementChild!);
-
-    templatesParent.parentNode!.replaceChild(newParent, templatesParent);
-  }
-
-  function handleQwik() {
-    /**
-     *  If we are using Qwik, then we don't want to remove any elements. Instead:
-     *    - we don't wrap anything in `template`
-     *    - we give every RenderContent a className unique to it
-     *    - on the server, we set `display: none` and `hidden` attrs for all variants except default
-     *
-     *  Then, on the client, this blocking script will:
-     *    - choose the winning variant
-     *      - if it's the default one, do nothing
-     *      - if it's a variant, then
-     *        - make the variant visible by tweaking its CSS to `display: visible`
-     *        - make the default content invisible by tweaking its CSS
-     *
-     *
-     */
-    if (!navigator.cookieEnabled) {
-      return;
-    }
-
-    /**
-     * TO-DO: what is this check doing?
-     * seems like a template polyfill check
-     */
-    if (typeof document.createElement('template').content === 'undefined') {
-      return;
-    }
-
-    const variantId = getAndSetVariantId();
-
-    if (variantId === contentId) {
-      return;
-    }
-
-    const newStyleStr = variants
-      .concat({ id: contentId })
-      .filter((variant) => variant.id !== variantId)
-      .map((value) => {
-        return `.variant-${value.id} {  display: none; }
-        `;
-      })
-      .join('');
-
-    const styleEl = document.getElementById(
-      `variants-styles-${contentId}`
-    ) as HTMLStyleElement;
-
-    // check if this actually updates the style
-    styleEl.innerHTML = newStyleStr;
-
-    // then, we need to make the HTML changes...which we can't do if the script is blocking before the HTML tags?
-    // is CSS sufficient to hide content rendering-, a11y- and SEO-wise?
-    // if not, I dont think we can use HTML, unless there's a way to batch DOM changes. If there is, then we can batch
-    // the following changes:
-    //  - set `hidden` HTML attr to default content
-    //  - remove `hidden` HTML attr from winning variant
-    // If not...we can probably do this in qwik?
-
-    return;
-  }
-
-  if (target !== 'qwik') {
-    injectVariantTemplate();
-    removeTemplatesAndScript();
-  } else {
-    injectVariantTemplate();
-    removeTemplatesAndScript();
-    // handleQwik();
-  }
+  // TO-DO: check if this actually updates the style
+  styleEl.innerHTML = newStyleStr;
 };
 
 /**
- *
- * <div hidden=true aria-hidden=true style="display: none;">Some Content</div>
- *
- * we have hidden=true attr set to all templates. We need to:
- *
- * - remove the `hidden=true` attr from the winning variant
- * - add the `hidden=true` attr to the default content ---> how do I do that??
+ * NOTE: when this function is stringified, single-line comments can cause weird issues when compiled by Sveltekit.
+ * Make sure to write multi-line comments only.
  */
+const variantScriptFn2 = function bldrCntntScrpt(
+  variantContentId: string,
+  defaultContentId: string
+) {
+  if (!navigator.cookieEnabled) {
+    return;
+  }
+
+  function getCookie(name: string) {
+    const nameEQ = name + '=';
+    const ca = document.cookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+      if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+  }
+  const cookieName = `builder.tests.${defaultContentId}`;
+  const variantId = getCookie(cookieName);
+
+  // get parent div by searching on `builder-content-id` attr
+  const parentDiv = document.querySelector(
+    `[builder-content-id="${variantContentId}"]`
+  );
+
+  console.log('checking variant', {
+    variantId,
+    variantContentId,
+    defaultContentId,
+  });
+  const variantIsDefaultContent = variantContentId === defaultContentId;
+
+  if (variantId === variantContentId) {
+    if (variantIsDefaultContent) {
+      // the default content is already visible, no need to do anything
+      console.log('default content is already visible, no need to do anything');
+      return;
+    }
+
+    // this is the winning variant and not already visible: remove `hidden` and `aria-hidden` attr
+
+    console.log(
+      'this is the winning variant and not already visible: remove `hidden` and `aria-hidden` attr'
+    );
+    parentDiv?.removeAttribute('hidden');
+    parentDiv?.removeAttribute('aria-hidden');
+  } else {
+    if (variantIsDefaultContent) {
+      console.log('this is not the winning variant, add `hidden` attr');
+      // this is not the winning variant, add `hidden` attr
+      parentDiv?.setAttribute('hidden', 'true');
+      parentDiv?.setAttribute('aria-hidden', 'true');
+    }
+
+    // This is not the winning variant, and it's not the default content.
+    // There's no need to hide it, because it's already hidden.
+    console.log(
+      "This is not the winning variant, and it's not the default content. There's no need to hide it, because it's already hidden."
+    );
+    return;
+  }
+
+  return;
+};
 
 export const getVariantsScriptString = (
   variants: VariantData[],
   contentId: string
 ) => {
   const fnStr = variantScriptFn.toString().replace(/\s+/g, ' ');
+  const fnStr2 = variantScriptFn2.toString().replace(/\s+/g, ' ');
 
   return `
   ${fnStr}
-  main("${contentId}", ${JSON.stringify(variants)}, "${TARGET}")
+  bldrAbTest("${contentId}", ${JSON.stringify(variants)})
+
+  ${fnStr2}
   `;
+};
+
+export const getRenderContentScriptString = ({
+  parentContentId,
+  contentId,
+}: {
+  contentId: string;
+  parentContentId: string;
+}) => {
+  return `bldrCntntScrpt("${contentId}", "${parentContentId}")`;
 };

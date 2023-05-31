@@ -49,6 +49,7 @@ import {
 } from './render-content.helpers.js';
 import { TARGET } from '../../constants/target.js';
 import { logger } from '../../helpers/logger.js';
+import { getRenderContentScriptString } from '../render-content-variants/helpers.js';
 
 useMetadata({
   qwik: {
@@ -254,6 +255,12 @@ export default function RenderContent(props: RenderContentProps) {
         );
       }
     },
+    ScriptTag: 'script' as const,
+    scriptStr: getRenderContentScriptString({
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
+      contentId: props.content?.id!,
+      parentContentId: props.parentContentId!,
+    }),
   });
 
   // This currently doesn't do anything as `onCreate` is not implemented
@@ -401,8 +408,9 @@ export default function RenderContent(props: RenderContentProps) {
         builder-content-id={state.useContent?.id}
         builder-model={props.model}
         className={props.classNameProp}
-        {...(props.hide ? { hidden: true, 'aria-hidden': true } : {})}
+        {...(props.hideContent ? { hidden: true, 'aria-hidden': true } : {})}
       >
+        <state.ScriptTag innerHTML={state.scriptStr}></state.ScriptTag>
         <Show when={TARGET !== 'reactNative'}>
           <RenderContentStyles
             contentId={state.useContent?.id}
