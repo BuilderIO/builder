@@ -100,7 +100,7 @@ const variantScriptFn = function bldrAbTest(
 
   const winningVariantId = getAndSetVariantId();
 
-  // update styles to hide all variants except the winning variant
+  /* update styles to hide all variants except the winning variant */
   const newStyleStr = variants
     .concat({ id: contentId })
     .filter((variant) => variant.id !== winningVariantId)
@@ -114,7 +114,7 @@ const variantScriptFn = function bldrAbTest(
     `variants-styles-${contentId}`
   ) as HTMLStyleElement;
 
-  // TO-DO: check if this actually updates the style
+  /* TO-DO: check if this actually updates the style */
   styleEl.innerHTML = newStyleStr;
 };
 
