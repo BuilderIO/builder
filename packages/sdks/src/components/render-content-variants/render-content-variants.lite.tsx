@@ -30,6 +30,16 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
       canTrack: getDefaultCanTrack(props.canTrack),
       content: props.content,
     }),
+
+    /**
+     * TO-DO: maybe replace this with a style="display: none" on the divs to avoid React hydration issues?
+     * Or maybe we can remove the display: none altogether since we're hiding the variants with HTML `hidden` attribute.
+     *
+     * Currently we get:
+     * Warning: Prop `dangerouslySetInnerHTML` did not match.
+     *  Server: ".variant-1d326d78efb04ce38467dd8f5160fab6 { display: none; } "
+     *  Client: ".variant-d50b5d04edf640f195a7c42ebdb159b2 { display: none; } "
+     */
     hideVariantsStyleString: getVariants(props.content)
       .map((value) => `.variant-${value.id} { display: none; } `)
       .join(''),
