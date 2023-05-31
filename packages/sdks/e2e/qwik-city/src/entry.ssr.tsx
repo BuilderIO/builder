@@ -16,10 +16,6 @@ import { manifest } from '@qwik-client-manifest';
 import Root from './root';
 
 export default function (opts: RenderToStreamOptions) {
-  // temporarily needed for containers to work
-  global.SYMBOL_MAPPER = opts.symbolMapper;
-  global.MANIFEST = opts.manifest;
-
   return renderToStream(<Root />, {
     manifest,
     ...opts,
