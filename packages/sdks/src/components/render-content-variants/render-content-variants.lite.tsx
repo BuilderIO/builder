@@ -4,6 +4,7 @@ import RenderContent from '../render-content/render-content.lite';
 import type { RenderContentProps } from '../render-content/render-content.types';
 import { getDefaultCanTrack } from '../../helpers/canTrack';
 import RenderInlinedStyles from '../render-inlined-styles.lite';
+import { handleABTestingSync } from '../../helpers/ab-tests';
 
 type VariantsProviderProps = RenderContentProps;
 
@@ -30,6 +31,16 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
       .join(''),
 
     ScriptTag: 'script' as const,
+
+    contentToRender: checkShouldRunVariants({
+      canTrack: getDefaultCanTrack(props.canTrack),
+      content: props.content,
+    })
+      ? props.content
+      : handleABTestingSync({
+          item: props.content,
+          canTrack: getDefaultCanTrack(props.canTrack),
+        }),
   });
 
   return (
@@ -60,7 +71,7 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
         </For>
       </Show>
       <RenderContent
-        content={props.content}
+        content={state.contentToRender}
         apiKey={props.apiKey}
         apiVersion={props.apiVersion}
         canTrack={props.canTrack}
