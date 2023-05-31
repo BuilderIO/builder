@@ -4,6 +4,9 @@ import { findTextInPage, test } from './helpers.js';
 const CONTENT_ID = '1d326d78efb04ce38467dd8f5160fab6';
 const VARIANT_ID = 'd50b5d04edf640f195a7c42ebdb159b2';
 
+// Forbid retries as A/B tests are not deterministic, and we don't want to give any leeway to flakiness.
+test.describe.configure({ retries: 0 });
+
 test.describe('A/B tests', () => {
   test('Render default w/ SSR', async ({ page, context, baseURL }) => {
     await context.addCookies([

@@ -1,4 +1,3 @@
-import { isBrowser } from '../../functions/is-browser';
 import type { Nullable } from '../../helpers/nullable';
 import type { BuilderContent } from '../../types/builder-content';
 
@@ -19,10 +18,6 @@ export const checkShouldRunVariants = ({
   }
 
   if (!canTrack) {
-    return false;
-  }
-
-  if (isBrowser()) {
     return false;
   }
 

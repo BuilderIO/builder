@@ -1,4 +1,4 @@
-import { For, useMetadata, useStore, Show } from '@builder.io/mitosis';
+import { For, useMetadata, useStore, Show, onMount } from '@builder.io/mitosis';
 import {
   checkShouldRunVariants,
   getVariants,
@@ -47,6 +47,15 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
         }),
   });
 
+  /**
+   * This is needed for hydration-based frameworks like React, so that:
+   * - the first client-side render is the same as the server-side render (`shouldRenderVariants` starts as `true`)
+   * - subsequent client-side renders are different from the server-side render (`shouldRenderVariants` is set to `false`)
+   */
+  onMount(() => {
+    state.shouldRenderVariants = false;
+  });
+
   return (
     <>
       <Show when={state.shouldRenderVariants}>
@@ -71,7 +80,7 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
               customComponents={props.customComponents}
               hideContent
               parentContentId={props.content?.id}
-              isSsrAbTest={state.shouldRenderVariants}
+              isSsrAbTest
             />
           )}
         </For>
