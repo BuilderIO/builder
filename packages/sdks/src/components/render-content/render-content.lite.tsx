@@ -401,6 +401,7 @@ export default function RenderContent(props: RenderContentProps) {
         builder-content-id={state.useContent?.id}
         builder-model={props.model}
         className={props.classNameProp}
+        {...(props.hide ? { hidden: true, 'aria-hidden': true } : {})}
       >
         <Show when={TARGET !== 'reactNative'}>
           <RenderContentStyles

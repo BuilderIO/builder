@@ -128,13 +128,25 @@ const variantScriptFn = function main(
    *    <div>                             <-- templatesParent
    *      <h1>Page Title</h1>             <-- will disappear?
    *      <RenderContentVariants>
-   *        <template>...</template>
-   *        <template>...</template>
-   *        <template>...</template>
+   *        <style>
+   *          .a { display: none; }
+   *          .c { display: none; }
+   *          .default { display: none; }
+   *        </style>
+   *        <div class="a" hidden>A</div>
+   *        <div class="b" hidden>B</div>
+   *        <div class="c" hidden>C</div>
    *        <script />                    <-- this script
+   *        <div class="default">Default Content</div>
    *      </RenderContentVariants>
    *      <footer>Footer Content</foote>  <-- will disappear?
    *    </div>
+   *  </div>
+   * ```
+   *
+   * ```jsx
+   *  <div>
+   *    <div>B</div>
    *  </div>
    * ```
    *
@@ -242,9 +254,21 @@ const variantScriptFn = function main(
     injectVariantTemplate();
     removeTemplatesAndScript();
   } else {
-    handleQwik();
+    injectVariantTemplate();
+    removeTemplatesAndScript();
+    // handleQwik();
   }
 };
+
+/**
+ *
+ * <div hidden=true aria-hidden=true style="display: none;">Some Content</div>
+ *
+ * we have hidden=true attr set to all templates. We need to:
+ *
+ * - remove the `hidden=true` attr from the winning variant
+ * - add the `hidden=true` attr to the default content ---> how do I do that??
+ */
 
 export const getVariantsScriptString = (
   variants: VariantData[],
