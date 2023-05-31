@@ -2,6 +2,9 @@ import { isBrowser } from '../../functions/is-browser';
 import type { Nullable } from '../../helpers/nullable';
 import type { BuilderContent } from '../../types/builder-content';
 
+export const getVariants = (content: Nullable<BuilderContent>) =>
+  Object.values(content?.variations || {});
+
 export const checkShouldRunVariants = ({
   canTrack,
   content,
@@ -9,7 +12,7 @@ export const checkShouldRunVariants = ({
   canTrack: Nullable<boolean>;
   content: Nullable<BuilderContent>;
 }) => {
-  const hasVariants = Object.keys(content?.variations || {}).length > 0;
+  const hasVariants = getVariants(content).length > 0;
 
   if (!hasVariants) {
     return false;

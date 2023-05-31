@@ -1,5 +1,9 @@
 import { For, useMetadata, useStore, Show } from '@builder.io/mitosis';
-import { checkShouldRunVariants, getVariantsScriptString } from './helpers';
+import {
+  checkShouldRunVariants,
+  getVariants,
+  getVariantsScriptString,
+} from './helpers';
 import RenderContent from '../render-content/render-content.lite';
 import type { RenderContentProps } from '../render-content/render-content.types';
 import { getDefaultCanTrack } from '../../helpers/canTrack';
@@ -15,7 +19,7 @@ useMetadata({
 export default function RenderContentVariants(props: VariantsProviderProps) {
   const state = useStore({
     variantScriptStr: getVariantsScriptString(
-      Object.values(props.content?.variations || {}).map((value) => ({
+      getVariants(props.content).map((value) => ({
         id: value.id!,
         testRatio: value.testRatio,
       })),
@@ -26,7 +30,7 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
       canTrack: getDefaultCanTrack(props.canTrack),
       content: props.content,
     }),
-    hideVariantsStyleString: Object.values(props.content?.variations || {})
+    hideVariantsStyleString: getVariants(props.content)
       .map((value) => `.variant-${value.id} { display: none; } `)
       .join(''),
 
@@ -56,9 +60,10 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
           innerHTML={state.variantScriptStr}
         ></state.ScriptTag>
 
-        <For each={Object.values(props.content!.variations || [])}>
+        <For each={getVariants(props.content)}>
           {(variant) => (
             <RenderContent
+              key={variant.id}
               content={variant}
               apiKey={props.apiKey}
               apiVersion={props.apiVersion}
