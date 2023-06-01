@@ -13,9 +13,10 @@ test.describe('A/B tests', () => {
       {
         name: `builder.tests.${CONTENT_ID}`,
         value: CONTENT_ID,
-        url: new URL(baseURL!).toString() + 'ab-test',
+        url: baseURL,
       },
     ]);
+
     await page.goto('/ab-test');
 
     await findTextInPage({ page, text: 'hello world default' });
@@ -29,9 +30,10 @@ test.describe('A/B tests', () => {
       {
         name: `builder.tests.${CONTENT_ID}`,
         value: VARIANT_ID,
-        url: new URL(baseURL || 'http://localhost:3000').toString() + '/ab-test',
+        url: baseURL,
       },
     ]);
+
     await page.goto('/ab-test');
 
     await findTextInPage({ page, text: 'hello world variation 1' });

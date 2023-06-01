@@ -87,6 +87,7 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
         </For>
       </Show>
       <RenderContent
+        model={props.model}
         content={state.contentToRender}
         apiKey={props.apiKey}
         apiVersion={props.apiVersion}
