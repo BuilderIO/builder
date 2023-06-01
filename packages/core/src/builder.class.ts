@@ -272,7 +272,12 @@ export interface UserAttributes {
   operatingSystem?: string;
 }
 
-export interface GetContentOptions {
+type AllowEnrich =
+  | { apiVersion?: Extract<ApiVersion, 'v1'> }
+  | { apiVersion?: Extract<ApiVersion, 'v3'>; enrich?: boolean; }
+  | { apiVersion?: never; enrich?: boolean; };
+
+export type GetContentOptions = AllowEnrich & {
   /**
    * User attribute key value pairs to be used for targeting
    * https://www.builder.io/c/docs/custom-targeting-attributes
@@ -301,10 +306,6 @@ export interface GetContentOptions {
    * @deprecated use `enrich` instead
    */
   includeRefs?: boolean;
-  /**
-   * Include multilevel references in the response.
-   */
-  enrich?: boolean;
   /**
    * How long in seconds content should be cached for. Sets the max-age of the cache-control header
    * response header.
@@ -453,8 +454,6 @@ export interface GetContentOptions {
    * content thinking they should updates when they actually shouldn't.
    */
   noEditorUpdates?: boolean;
-
-  apiVersion?: ApiVersion;
 }
 
 export type Class = {
