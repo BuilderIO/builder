@@ -77,17 +77,16 @@ const normalizePathname = (pathname: string): string =>
 export const getAPIKey = (): string => 'abcd';
 
 export const getProps = async (
-  _pathname = getPathnameFromWindow()
-): Promise<{
-  model: string;
-  content: BuilderContent;
-  apiKey: string;
-  // eslint-disable-next-line @typescript-eslint/require-await
-} | null> => {
+  _pathname = getPathnameFromWindow(),
+  contentProcessor: (
+    options: any,
+    content: { results: BuilderContent[] }
+  ) => Promise<BuilderContent[]>
+) => {
   const pathname = normalizePathname(_pathname);
-  const content = getContentForPathname(pathname);
+  const _content = getContentForPathname(pathname);
 
-  if (!content) {
+  if (!_content) {
     return null;
   }
 
@@ -102,12 +101,13 @@ export const getProps = async (
     apiVersionPathToProp[pathname as keyof typeof apiVersionPathToProp] ?? {};
 
   const props = {
-    content,
     apiKey: getAPIKey(),
     model: 'page',
     ...extraProps,
     ...extraApiVersionProp,
   };
 
-  return props as any;
+  const content = (await contentProcessor(props, { results: [_content] }))[0];
+
+  return { ...props, content } as any;
 };
