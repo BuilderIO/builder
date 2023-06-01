@@ -203,30 +203,6 @@ const SRCSET_PLUGIN = () => ({
 /**
  * @type {Plugin}
  */
-const REACT_TYPESCRIPT_FIXES_PLUGIN = () => ({
-  code: {
-    post: (code) => {
-      if (code.includes('RenderContentVariants')) {
-        // fixes some type issues
-        code = code
-          .replace(
-            `useState(() => "script")`,
-            `useState(() => "script" as const)`
-          )
-          .replace(
-            `useState(() => "template")`,
-            `useState(() => "template" as const)`
-          );
-      }
-
-      return code;
-    },
-  },
-});
-
-/**
- * @type {Plugin}
- */
 const REACT_NEXT_V13_PLUGIN = () => ({
   code: {
     post: (code) => {
@@ -361,7 +337,6 @@ module.exports = {
       plugins: [
         SRCSET_PLUGIN,
         REACT_NEXT_V13_PLUGIN,
-        REACT_TYPESCRIPT_FIXES_PLUGIN,
         () => ({
           json: {
             pre: (json) => {
@@ -600,36 +575,6 @@ module.exports = {
                   }
                 });
               }
-            },
-          },
-        }),
-        () => ({
-          json: {
-            pre: (json) => {
-              if (json.name === 'RenderInlinedStyles') {
-                traverse(json).forEach(function (item) {
-                  if (!isMitosisNode(item)) {
-                    return;
-                  }
-
-                  if (item.bindings.innerHTML) {
-                    item.name = 'Fragment';
-                    item.bindings.innerHTML.code = 'state.injectedStyleScript';
-                  }
-                });
-              }
-              // if (json.name === 'RenderContentVariants') {
-              //   traverse(json).forEach(function (item) {
-              //     if (!isMitosisNode(item)) {
-              //       return;
-              //     }
-
-              //     if (item.name === 'script') {
-              //       this.remove();
-              //       this.stop();
-              //     }
-              //   });
-              // }
             },
           },
         }),

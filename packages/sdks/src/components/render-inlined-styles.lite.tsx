@@ -1,4 +1,4 @@
-import { useStore, useMetadata } from '@builder.io/mitosis';
+import { useMetadata } from '@builder.io/mitosis';
 
 useMetadata({
   elementTag: 'state.tag',
@@ -10,18 +10,6 @@ interface Props {
 }
 
 export default function RenderInlinedStyles(props: Props) {
-  const state = useStore({
-    get tag(): string {
-      // NOTE: we have to obfuscate the name of the tag due to a limitation in the svelte-preprocessor plugin.
-      // https://github.com/sveltejs/vite-plugin-svelte/issues/315#issuecomment-1109000027
-      return ('sty' + 'le') as any;
-    },
-    get injectedStyleScript(): string {
-      // used by 'svelte' in mitosis.config.js plugin to convert this to a Fragment
-      return `<${state.tag}>${props.styles}</${state.tag}>`;
-    },
-  });
-
   return (
     /**
      * We have a Svelte plugin that converts this `div` to a `Fragment`. We cannot directly use a "Fragment" here because
@@ -29,6 +17,6 @@ export default function RenderInlinedStyles(props: Props) {
      *
      * eslint-disable-next-line @typescript-eslint/ban-ts-comment
      * @ts-ignore */
-    <state.tag innerHTML={props.styles} id={props.id} />
+    <style innerHTML={props.styles} id={props.id} />
   );
 }

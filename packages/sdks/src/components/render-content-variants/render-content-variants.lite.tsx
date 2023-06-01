@@ -44,8 +44,6 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
       .map((value) => `.variant-${value.id} { display: none; } `)
       .join(''),
 
-    ScriptTag: 'script' as const,
-
     contentToRender: checkShouldRunVariants({
       canTrack: getDefaultCanTrack(props.canTrack),
       content: props.content,
@@ -65,10 +63,10 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
           styles={state.hideVariantsStyleString}
         />
         {/* Sets cookie for all `RenderContent` to read */}
-        <state.ScriptTag
+        <script
           id={`variants-script-${props.content?.id}`}
           innerHTML={state.variantScriptStr}
-        ></state.ScriptTag>
+        ></script>
 
         <For each={getVariants(props.content)}>
           {(variant) => (
