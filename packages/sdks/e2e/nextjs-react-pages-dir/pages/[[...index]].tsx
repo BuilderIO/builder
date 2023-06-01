@@ -1,25 +1,38 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { RenderContent } from '@builder.io/sdk-react';
-import { getProps } from '@builder.io/sdks-e2e-tests';
-import { GetServerSideProps } from 'next';
+import { ALL_PATHNAMES, getProps } from '@builder.io/sdks-e2e-tests';
+import {
+  GetStaticPropsContext,
+  GetStaticPathsResult,
+  InferGetStaticPropsType,
+} from 'next';
 
-function App({ builderProps }) {
-  return builderProps ? (
-    <RenderContent {...builderProps} />
-  ) : (
-    <div>Content Not Found</div>
-  );
+export async function getStaticProps(x: GetStaticPropsContext<StaticProps>) {
+  return {
+    props: await getProps(
+      x.params.index ? `/${x.params.index.join('/')}` : '/'
+    ),
+  };
 }
 
-export default App;
+type StaticProps = { index: string[] };
 
-// we have this empty fn to force NextJS to opt out of static optimization
-// https://nextjs.org/docs/advanced-features/automatic-static-optimization
-export const getServerSideProps: GetServerSideProps = async (k) => {
+export function getStaticPaths(): GetStaticPathsResult<StaticProps> {
   return {
-    props: {
-      builderProps: await getProps(k.resolvedUrl),
-    },
+    paths: ALL_PATHNAMES.map((path) => {
+      const output: StaticProps = {
+        index: path === '/' ? null : path.split('/').filter(Boolean),
+      };
+
+      return { params: output };
+    }),
+    fallback: true,
   };
-};
+}
+
+type PageProps = InferGetStaticPropsType<typeof getStaticProps>;
+
+export default function Page(props: PageProps & { apiVersion: any }) {
+  return props ? <RenderContent {...props} /> : <div>Content Not Found</div>;
+}
