@@ -1,6 +1,8 @@
+import { TARGET } from '../../constants/target';
 import { isBrowser } from '../../functions/is-browser';
 import type { Nullable } from '../../helpers/nullable';
 import type { BuilderContent } from '../../types/builder-content';
+import type { Target } from '../../types/targets';
 
 export const getVariants = (content: Nullable<BuilderContent>) =>
   Object.values(content?.variations || {});
@@ -40,7 +42,8 @@ type VariantData = {
  */
 const variantScriptFn = function bldrAbTest(
   contentId: string,
-  variants: VariantData[]
+  variants: VariantData[],
+  target: Target
 ) {
   function getAndSetVariantId(): string {
     function setCookie(name: string, value: string, days?: number) {
@@ -98,27 +101,39 @@ const variantScriptFn = function bldrAbTest(
      * no variant found, assign default content
      */
     setCookie(cookieName, contentId);
+
     return contentId;
   }
 
   const winningVariantId = getAndSetVariantId();
 
-  /* update styles to hide all variants except the winning variant */
-  const newStyleStr = variants
-    .concat({ id: contentId })
-    .filter((variant) => variant.id !== winningVariantId)
-    .map((value) => {
-      return `.variant-${value.id} {  display: none; }
-    `;
-    })
-    .join('');
-
   const styleEl = document.getElementById(
     `variants-styles-${contentId}`
   ) as HTMLStyleElement;
 
-  /* TO-DO: check if this actually updates the style */
-  styleEl.innerHTML = newStyleStr;
+  /**
+   * For React to work, we need hydration to match SSR, so we completely remove this node and the styles tag.
+   */
+  if (target === 'react' || target === 'reactNative') {
+    styleEl.remove();
+    const thisScriptEl = document.getElementById(
+      `variants-script-${contentId}`
+    );
+    thisScriptEl?.remove();
+  } else {
+    /* update styles to hide all variants except the winning variant */
+    const newStyleStr = variants
+      .concat({ id: contentId })
+      .filter((variant) => variant.id !== winningVariantId)
+      .map((value) => {
+        return `.variant-${value.id} {  display: none; }
+        `;
+      })
+      .join('');
+
+    /* TO-DO: check if this actually updates the style */
+    styleEl.innerHTML = newStyleStr;
+  }
 };
 
 /**
@@ -127,7 +142,8 @@ const variantScriptFn = function bldrAbTest(
  */
 const variantScriptFn2 = function bldrCntntScrpt(
   variantContentId: string,
-  defaultContentId: string
+  defaultContentId: string,
+  target: Target
 ) {
   if (!navigator.cookieEnabled) {
     return;
@@ -175,9 +191,18 @@ const variantScriptFn2 = function bldrCntntScrpt(
   } else {
     if (variantIsDefaultContent) {
       console.log('this is not the winning variant, add `hidden` attr');
-      /** this is not the winning variant, add `hidden` attr */
-      parentDiv?.setAttribute('hidden', 'true');
-      parentDiv?.setAttribute('aria-hidden', 'true');
+
+      if (target === 'react' || target === 'reactNative') {
+        /**
+         * For React to work, we need to support hydration, in which case the first CSR will have none of the hidden variants.
+         * So we completely remove that node.
+         */
+        parentDiv?.remove();
+      } else {
+        /** this is not the winning variant, add `hidden` attr */
+        parentDiv?.setAttribute('hidden', 'true');
+        parentDiv?.setAttribute('aria-hidden', 'true');
+      }
     }
 
     /** This is not the winning variant, and it's not the default content.
@@ -200,7 +225,7 @@ export const getVariantsScriptString = (
 
   return `
   ${fnStr}
-  bldrAbTest("${contentId}", ${JSON.stringify(variants)})
+  bldrAbTest("${contentId}", ${JSON.stringify(variants)}, "${TARGET}")
   `;
 };
 
@@ -215,5 +240,5 @@ export const getRenderContentScriptString = ({
 
   return `
   ${fnStr2}
-  bldrCntntScrpt("${contentId}", "${parentContentId}")`;
+  bldrCntntScrpt("${contentId}", "${parentContentId}", "${TARGET}")`;
 };
