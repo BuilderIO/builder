@@ -274,8 +274,8 @@ export interface UserAttributes {
 
 type AllowEnrich =
   | { apiVersion?: Extract<ApiVersion, 'v1'> }
-  | { apiVersion?: Extract<ApiVersion, 'v3'>; enrich?: boolean; }
-  | { apiVersion?: never; enrich?: boolean; };
+  | { apiVersion?: Extract<ApiVersion, 'v3'>; enrich?: boolean }
+  | { apiVersion?: never; enrich?: boolean };
 
 export type GetContentOptions = AllowEnrich & {
   /**
@@ -454,7 +454,7 @@ export type GetContentOptions = AllowEnrich & {
    * content thinking they should updates when they actually shouldn't.
    */
   noEditorUpdates?: boolean;
-}
+};
 
 export type Class = {
   name?: string;
