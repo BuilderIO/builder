@@ -18,10 +18,10 @@ test.describe('A/B tests', () => {
     ]);
     await page.goto('/ab-test');
 
+    await findTextInPage({ page, text: 'hello world default' });
     await expect(
       page.locator('div[builder-content-id]', { hasText: 'hello world variation 1' })
     ).toBeHidden();
-    await findTextInPage({ page, text: 'hello world default' });
   });
 
   test('Render variant w/ SSR', async ({ page, context, baseURL }) => {
@@ -34,9 +34,9 @@ test.describe('A/B tests', () => {
     ]);
     await page.goto('/ab-test');
 
+    await findTextInPage({ page, text: 'hello world variation 1' });
     await expect(
       page.locator('div[builder-content-id]', { hasText: 'hello world default' })
     ).toBeHidden();
-    await findTextInPage({ page, text: 'hello world variation 1' });
   });
 });
