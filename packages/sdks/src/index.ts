@@ -11,7 +11,11 @@ export type { InsertMenuConfig, InsertMenuItem } from './functions/register.js';
 export { setEditorSettings } from './functions/set-editor-settings.js';
 export type { Settings } from './functions/set-editor-settings.js';
 
-export { getAllContent, getContent } from './functions/get-content/index.js';
+export {
+  getAllContent,
+  getContent,
+  processContentResult,
+} from './functions/get-content/index.js';
 
 export { track } from './functions/track/index.js';
 
