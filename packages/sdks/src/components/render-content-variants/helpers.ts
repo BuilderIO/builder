@@ -222,9 +222,11 @@ export const getVariantsScriptString = (
   contentId: string
 ) => {
   const fnStr = variantScriptFn.toString().replace(/\s+/g, ' ');
+  const fnStr2 = variantScriptFn2.toString().replace(/\s+/g, ' ');
 
   return `
   ${fnStr}
+  ${fnStr2}
   bldrAbTest("${contentId}", ${JSON.stringify(variants)}, "${TARGET}")
   `;
 };
@@ -236,9 +238,6 @@ export const getRenderContentScriptString = ({
   contentId: string;
   parentContentId: string;
 }) => {
-  const fnStr2 = variantScriptFn2.toString().replace(/\s+/g, ' ');
-
   return `
-  ${fnStr2}
   bldrCntntScrpt("${contentId}", "${parentContentId}", "${TARGET}")`;
 };
