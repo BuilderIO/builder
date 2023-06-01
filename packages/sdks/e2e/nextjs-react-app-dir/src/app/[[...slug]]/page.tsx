@@ -4,8 +4,8 @@ import { getProps } from '@builder.io/sdks-e2e-tests';
 // as a child or prop of a Client Component.
 import BuilderPage from './BuilderPage';
 
-function getBuilderContent(urlPath: string) {
-  return getProps(urlPath);
+async function getBuilderContent(urlPath: string) {
+  return await getProps(urlPath);
 }
 
 interface PageProps {
@@ -17,7 +17,7 @@ interface PageProps {
 // Pages are Server Components by default
 export default async function Page(props: PageProps) {
   const urlPath = '/' + (props.params?.slug?.join('/') || '');
-  const builderProps = getBuilderContent(urlPath);
+  const builderProps = await getBuilderContent(urlPath);
 
   if (!builderProps.content) {
     return (

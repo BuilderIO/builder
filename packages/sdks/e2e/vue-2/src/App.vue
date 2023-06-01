@@ -14,10 +14,14 @@ export default {
   components: {
     'builder-render-content': RenderContent,
   },
-  computed: {
-    props() {
-      return getProps();
-    },
+  data: () => ({
+    canShowContent: false,
+    props: {} as any,
+  }),
+  mounted() {
+    getProps().then((props) => {
+      this.props = props;
+    });
   },
 };
 </script>

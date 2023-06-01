@@ -14,6 +14,7 @@ module.exports = {
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
+    project: './tsconfig.json',
     ecmaFeatures: {
       jsx: true,
     },
@@ -35,5 +36,12 @@ module.exports = {
       'error',
       { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
     ],
+
+    // Note: you must disable the base rule as it can report incorrect errors
+    'require-await': 'off',
+    '@typescript-eslint/require-await': 'error',
+
+    '@typescript-eslint/no-misused-promises': 'error',
+    '@typescript-eslint/no-floating-promises': 'error',
   },
 };

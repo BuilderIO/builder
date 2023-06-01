@@ -8,16 +8,20 @@ export default {
   components: {
     'builder-render-content': RenderContent,
   },
-  computed: {
-    props() {
-      return getProps();
-    },
+  data: () => ({
+    canShowContent: false,
+    props: {} as any,
+  }),
+  mounted() {
+    getProps().then((props) => {
+      this.props = props;
+    });
   },
 };
 </script>
 
 <template>
-  <div v-if="props">
+  <div v-if="props.content">
     <builder-render-content v-bind="props" />
   </div>
   <div v-else>Content not Found</div>
