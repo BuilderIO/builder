@@ -17,7 +17,6 @@ export default App;
 // we have this empty fn to force NextJS to opt out of static optimization
 // https://nextjs.org/docs/advanced-features/automatic-static-optimization
 export const getServerSideProps: GetServerSideProps = async (k) => {
-  console.log('getServerSideProps', k.resolvedUrl);
   return {
     props: {
       builderProps: await getProps(k.resolvedUrl),
