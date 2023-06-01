@@ -74,13 +74,14 @@ const normalizePathname = (pathname: string): string =>
 
 export const getAPIKey = (): string => 'abcd';
 
-export const getProps = (
+export const getProps = async (
   _pathname = getPathnameFromWindow()
-): {
+): Promise<{
   model: string;
   content: BuilderContent;
   apiKey: string;
-} | null => {
+  // eslint-disable-next-line @typescript-eslint/require-await
+} | null> => {
   const pathname = normalizePathname(_pathname);
   const content = getContentForPathname(pathname);
 

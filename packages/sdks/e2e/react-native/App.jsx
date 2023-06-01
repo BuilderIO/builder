@@ -18,7 +18,13 @@ const linking = {
 };
 
 const BuilderContent = ({ route }) => {
-  const props = getProps(route.path);
+  const [props, setProps] = useState(undefined);
+
+  useEffect(() => {
+    getProps().then((resp) => {
+      setProps(resp);
+    });
+  }, []);
 
   return (
     <Fragment>
