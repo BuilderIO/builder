@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { Text, View } from 'react-native';
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { getProps } from '@builder.io/sdks-e2e-tests';
 import { RenderContent } from '@builder.io/sdk-react-native';
 import { NavigationContainer } from '@react-navigation/native';
