@@ -5,11 +5,7 @@
     "dev": "nuxt",
     "build": "nuxt build",
     "serve": "nuxt start",
-    "generate": "nuxt generate",
-    "lint:js": "eslint --ext \".js,.ts,.vue\" --ignore-path .gitignore .",
-    "lint:prettier": "prettier --check .",
-    "lint": "yarn lint:js && yarn lint:prettier",
-    "lintfix": "prettier --write --list-different . && yarn lint:js --fix"
+    "generate": "nuxt generate"
   },
   "dependencies": {
     "@builder.io/sdk-vue": "workspace:*",
@@ -26,11 +22,9 @@
     "@nuxt/typescript-build": "^2.1.0",
     "@nuxtjs/eslint-config-typescript": "^11.0.0",
     "@nuxtjs/eslint-module": "^3.1.0",
-    "eslint": "^8.24.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-nuxt": "^4.0.0",
-    "eslint-plugin-vue": "^9.5.1",
-    "prettier": "^2.7.1"
+    "eslint-plugin-vue": "^9.5.1"
   },
   "installConfig": {
     "hoistingLimits": "workspaces"

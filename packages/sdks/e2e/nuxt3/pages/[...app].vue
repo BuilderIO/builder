@@ -5,7 +5,9 @@ import { getProps } from '@builder.io/sdks-e2e-tests';
 
 const route = useRoute();
 
-const { data: props } = await useAsyncData('builderData', () => getProps(route.path));
+const { data: props } = await useAsyncData('builderData', () =>
+  getProps(route.path)
+);
 </script>
 
 <template>

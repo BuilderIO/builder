@@ -4,6 +4,8 @@ output/**/src
 
 **/.next
 **/.nuxt
+**/.output
+**/vite.config.ts.timestamp-*
 
 **/dist
 
