@@ -408,6 +408,15 @@ export default function RenderContent(props: RenderContentProps) {
         builder-content-id={state.useContent?.id}
         builder-model={props.model}
         className={props.classNameProp}
+        {...(TARGET === 'reactNative'
+          ? {
+              dataSet: {
+                // currently, we can't set the actual ID here.
+                // we don't need it right now, we just need to identify content divs for testing.
+                'builder-content-id': '',
+              },
+            }
+          : {})}
         {...(props.hideContent ? { hidden: true, 'aria-hidden': true } : {})}
       >
         <Show when={props.isSsrAbTest}>
