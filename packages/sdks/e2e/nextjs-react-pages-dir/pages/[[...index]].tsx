@@ -2,7 +2,7 @@
 // @ts-ignore
 import { RenderContent } from '@builder.io/sdk-react';
 import { ALL_PATHNAMES, getProps } from '@builder.io/sdks-e2e-tests';
-import {
+import type {
   GetStaticPropsContext,
   GetStaticPathsResult,
   InferGetStaticPropsType,
