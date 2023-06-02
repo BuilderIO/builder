@@ -22,6 +22,7 @@ export type PackageName =
   | 'e2e-nextjs-react'
   | 'e2e-nextjs-app-dir-react'
   | 'e2e-react'
+  | 'e2e-react-remix'
   | 'e2e-vue2'
   | 'e2e-vue3'
   | 'e2e-svelte'
