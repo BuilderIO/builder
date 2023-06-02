@@ -15,3 +15,5 @@ e2e/rsc/
 **/playwright-report/*
 **/test-results/*
 **/vite.config.ts.timestamp-*
+
+**/.solid
