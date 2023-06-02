@@ -3,6 +3,7 @@ output/**/src
 .pnp.*
 
 **/.next
+**/.nuxt
 
 **/dist
 
