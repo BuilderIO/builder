@@ -4,6 +4,8 @@ import { findTextInPage, isRNSDK, test } from './helpers.js';
 const CONTENT_ID = '1d326d78efb04ce38467dd8f5160fab6';
 const VARIANT_ID = 'd50b5d04edf640f195a7c42ebdb159b2';
 
+const COOKIE_NAME = `${isRNSDK ? 'builderio.' : ''}builder.tests.${CONTENT_ID}`;
+
 // Forbid retries as A/B tests are not deterministic, and we don't want to give any leeway to flakiness.
 test.describe.configure({ retries: 0 });
 
@@ -11,7 +13,7 @@ test.describe('A/B tests', () => {
   test('Render default w/ SSR', async ({ page, context, baseURL }) => {
     await context.addCookies([
       {
-        name: `${isRNSDK ? 'builderio.' : ''}builder.tests.${CONTENT_ID}`,
+        name: COOKIE_NAME,
         value: CONTENT_ID,
         url: baseURL,
       },
@@ -28,7 +30,7 @@ test.describe('A/B tests', () => {
   test('Render variant w/ SSR', async ({ page, context, baseURL }) => {
     await context.addCookies([
       {
-        name: `builder.tests.${CONTENT_ID}`,
+        name: COOKIE_NAME,
         value: VARIANT_ID,
         url: baseURL,
       },
