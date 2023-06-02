@@ -19,3 +19,5 @@ output/qwik/lib
 
 output/svelte/package
 output/svelte/.svelte-kit
+
+**/.solid
