@@ -1,4 +1,4 @@
-import type { Component} from 'solid-js';
+import type { Component } from 'solid-js';
 import { createEffect, createSignal } from 'solid-js';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
