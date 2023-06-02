@@ -78,13 +78,11 @@ export const getAPIKey = (): string => 'abcd';
 
 type ContentResponse = { results: BuilderContent[] };
 
-export const getProps = async ({
-  pathname: _pathname = getPathnameFromWindow(),
-  processContentResult,
-}: {
+export const getProps = async (args: {
   pathname?: string;
   processContentResult?: (options: any, content: ContentResponse) => Promise<ContentResponse>;
-}) => {
+} = {}) => {
+  const { pathname: _pathname = getPathnameFromWindow(), processContentResult } = args;
   const pathname = normalizePathname(_pathname);
   const _content = getContentForPathname(pathname);
 
