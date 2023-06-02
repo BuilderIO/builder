@@ -24,6 +24,7 @@ export type PackageName =
   | 'e2e-react'
   | 'e2e-vue2'
   | 'e2e-vue3'
+  | 'e2e-vue-nuxt3'
   | 'e2e-svelte'
   | 'e2e-sveltekit'
   | 'e2e-old-react'
