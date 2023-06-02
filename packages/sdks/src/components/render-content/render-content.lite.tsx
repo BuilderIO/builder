@@ -297,6 +297,7 @@ export default function RenderContent(props: RenderContentProps) {
         setupBrowserForEditing({
           ...(props.locale ? { locale: props.locale } : {}),
           ...(props.includeRefs ? { includeRefs: props.includeRefs } : {}),
+          ...(props.enrich ? { enrich: props.enrich } : {}),
         });
         Object.values<RegisteredComponent>(
           state.allRegisteredComponents

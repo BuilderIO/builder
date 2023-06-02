@@ -272,7 +272,12 @@ export interface UserAttributes {
   operatingSystem?: string;
 }
 
-export interface GetContentOptions {
+type AllowEnrich =
+  | { apiVersion?: Extract<ApiVersion, 'v1'> }
+  | { apiVersion?: Extract<ApiVersion, 'v3'>; enrich?: boolean }
+  | { apiVersion?: never; enrich?: boolean };
+
+export type GetContentOptions = AllowEnrich & {
   /**
    * User attribute key value pairs to be used for targeting
    * https://www.builder.io/c/docs/custom-targeting-attributes
@@ -298,6 +303,7 @@ export interface GetContentOptions {
   /**
    * Follow references. If you use the `reference` field to pull in other content without this
    * enabled we will not fetch that content for the final response.
+   * @deprecated use `enrich` instead
    */
   includeRefs?: boolean;
   /**
@@ -448,9 +454,7 @@ export interface GetContentOptions {
    * content thinking they should updates when they actually shouldn't.
    */
   noEditorUpdates?: boolean;
-
-  apiVersion?: ApiVersion;
-}
+};
 
 export type Class = {
   name?: string;
@@ -1708,10 +1712,11 @@ export class Builder {
       }
 
       if (options) {
-        // picking only locale and includeRefs
+        // picking only locale, includeRefs, and enrich for now
         this.queryOptions = {
           ...(options.locale && { locale: options.locale }),
           ...(options.includeRefs && { includeRefs: options.includeRefs }),
+          ...(options.enrich && { enrich: options.enrich }),
         };
       }
 

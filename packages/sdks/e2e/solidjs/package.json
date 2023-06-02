@@ -1,6 +1,5 @@
 {
   "name": "@builder.io/e2e-solidjs",
-  "version": "0.0.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -17,6 +16,7 @@
   },
   "dependencies": {
     "@builder.io/sdk-solid": "workspace:*",
+    "@builder.io/sdks-e2e-tests": "workspace:*",
     "solid-js": "^1.5.7"
   }
 }

@@ -23,6 +23,7 @@ export interface GetContentOptions {
   /**
    * If set to `true`, it will lazy load symbols/references.
    * If set to `false`, it will render the entire content tree eagerly.
+   * @deprecated use `enrich` instead
    */
   noTraverse?: boolean;
 
@@ -36,8 +37,14 @@ export interface GetContentOptions {
 
   /**
    * Include references in the response. Defaults to `true`.
+   * @deprecated use `enrich` instead
    */
   includeRefs?: boolean;
+
+  /**
+   * Include multilevel references in the response.
+   */
+  enrich?: boolean;
 
   /**
    * If provided, the API will auto-resolve localized objects to the value of this `locale` key.
