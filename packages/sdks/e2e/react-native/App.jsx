@@ -17,11 +17,15 @@ const linking = {
   },
 };
 
+/**
+ *
+ * @param {RouteProp<ParamListBase, "Page">} props
+ */
 const BuilderContent = ({ route }) => {
   const [props, setProps] = useState(undefined);
 
   useEffect(() => {
-    getProps().then((resp) => {
+    getProps(route.path || '/').then((resp) => {
       setProps(resp);
     });
   }, []);
