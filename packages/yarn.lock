@@ -2765,6 +2765,27 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@builder.io/e2e-react-remix@workspace:sdks/e2e/react-remix":
+  version: 0.0.0-use.local
+  resolution: "@builder.io/e2e-react-remix@workspace:sdks/e2e/react-remix"
+  dependencies:
+    "@builder.io/sdk-react": "workspace:*"
+    "@builder.io/sdks-e2e-tests": "workspace:*"
+    "@remix-run/dev": ^1.14.3
+    "@remix-run/eslint-config": ^1.14.3
+    "@remix-run/node": ^1.14.3
+    "@remix-run/react": ^1.14.3
+    "@remix-run/serve": ^1.14.3
+    "@types/react": ^18.0.25
+    "@types/react-dom": ^18.0.8
+    eslint: ^8.27.0
+    isbot: ^3.6.5
+    react: ^18.2.0
+    react-dom: ^18.2.0
+    typescript: ^4.8.4
+  languageName: unknown
+  linkType: soft
+
 "@builder.io/e2e-react@workspace:sdks/e2e/react":
   version: 0.0.0-use.local
   resolution: "@builder.io/e2e-react@workspace:sdks/e2e/react"
