@@ -17,7 +17,9 @@ export type RenderContentProps = {
   customComponents?: RegisteredComponent[];
   canTrack?: boolean;
   locale?: string;
+  /** @deprecated use `enrich` instead **/
   includeRefs?: boolean;
+  enrich?: boolean;
 };
 
 export interface BuilderComponentStateChange {
