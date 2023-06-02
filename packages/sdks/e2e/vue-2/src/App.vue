@@ -8,20 +8,20 @@
 import { RenderContent } from '@builder.io/sdk-vue';
 import '@builder.io/sdk-vue/vue2/css';
 import { getProps } from '@builder.io/sdks-e2e-tests';
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   name: 'DynamicallyRenderBuilderPage',
   components: {
     'builder-render-content': RenderContent,
   },
-  data: () => ({
-    canShowContent: false,
-    props: {} as any,
-  }),
+  data() {
+    return { props: {} as any };
+  },
   mounted() {
     getProps().then((props) => {
       this.props = props;
     });
   },
-};
+});
 </script>
