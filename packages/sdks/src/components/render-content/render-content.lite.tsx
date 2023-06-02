@@ -49,6 +49,7 @@ import {
 } from './render-content.helpers.js';
 import { TARGET } from '../../constants/target.js';
 import { logger } from '../../helpers/logger.js';
+import { wrapComponentRef } from './wrap-component-ref.js';
 
 useMetadata({
   qwik: {
@@ -117,9 +118,13 @@ export default function RenderContent(props: RenderContentProps) {
       ...components,
       ...(props.customComponents || []),
     ].reduce(
-      (acc, curr) => ({
+      (acc, { component, ...curr }) => ({
         ...acc,
-        [curr.name]: curr,
+        [curr.name]: {
+          component:
+            TARGET === 'vue3' ? wrapComponentRef(component) : component,
+          ...curr,
+        },
       }),
       {} as RegisteredComponents
     ),
