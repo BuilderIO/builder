@@ -1,4 +1,4 @@
-import { For, useMetadata, useStore, Show } from '@builder.io/mitosis';
+import { For, useStore, Show } from '@builder.io/mitosis';
 import {
   checkShouldRunVariants,
   getVariants,
@@ -11,10 +11,6 @@ import RenderInlinedStyles from '../render-inlined-styles.lite';
 import { handleABTestingSync } from '../../helpers/ab-tests';
 
 type VariantsProviderProps = RenderContentProps;
-
-useMetadata({
-  elementTag: ['state.ScriptTag', 'state.TemplateTag'],
-});
 
 export default function RenderContentVariants(props: VariantsProviderProps) {
   const state = useStore({
