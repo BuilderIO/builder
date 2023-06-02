@@ -8,6 +8,8 @@ tsconfig.json
 **/dist/**
 
 e2e/qwik/server/
+e2e/qwik/lib-types/
+e2e/qwik-city/server/
 e2e/rsc/
 
 **/playwright-report/*
