@@ -3,6 +3,9 @@ output/**/src
 .pnp.*
 
 **/.next
+**/.nuxt
+**/.output
+**/vite.config.ts.timestamp-*
 
 **/dist
 
@@ -16,3 +19,5 @@ output/qwik/lib
 
 output/svelte/package
 output/svelte/.svelte-kit
+
+**/.solid

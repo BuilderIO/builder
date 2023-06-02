@@ -27,6 +27,7 @@ export const registerInsertMenu = () => {
 let isSetupForEditing = false;
 export const setupBrowserForEditing = (
   options: {
+    enrich?: boolean;
     includeRefs?: boolean;
     locale?: string;
   } = {}

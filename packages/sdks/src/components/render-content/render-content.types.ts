@@ -17,6 +17,7 @@ export interface RenderContentProps {
   customComponents?: RegisteredComponent[];
   canTrack?: boolean;
   locale?: string;
+  /** @deprecated use `enrich` instead **/
   includeRefs?: boolean;
   /**
    * TO-DO: improve qwik generator to not remap this name for non-HTML tags, then name it `className`
@@ -25,6 +26,7 @@ export interface RenderContentProps {
   hideContent?: boolean;
   parentContentId?: string;
   isSsrAbTest?: boolean;
+  enrich?: boolean;
 }
 
 export interface BuilderComponentStateChange {
