@@ -1,4 +1,3 @@
-import { TARGET } from '../../constants/target';
 import { isBrowser } from '../../functions/is-browser';
 import type { Nullable } from '../../helpers/nullable';
 import type { BuilderContent } from '../../types/builder-content';
@@ -40,10 +39,10 @@ type VariantData = {
  * NOTE: when this function is stringified, single-line comments can cause weird issues when compiled by Sveltekit.
  * Make sure to write multi-line comments only.
  */
-const variantScriptFn = function bldrAbTest(
+function bldrAbTest(
   contentId: string,
   variants: VariantData[],
-  target: Target
+  isHydrationTarget: boolean
 ) {
   function getAndSetVariantId(): string {
     function setCookie(name: string, value: string, days?: number) {
@@ -114,7 +113,7 @@ const variantScriptFn = function bldrAbTest(
   /**
    * For React to work, we need hydration to match SSR, so we completely remove this node and the styles tag.
    */
-  if (target === 'react' || target === 'reactNative') {
+  if (isHydrationTarget) {
     styleEl.remove();
     const thisScriptEl = document.getElementById(
       `variants-script-${contentId}`
@@ -134,16 +133,16 @@ const variantScriptFn = function bldrAbTest(
     /* TO-DO: check if this actually updates the style */
     styleEl.innerHTML = newStyleStr;
   }
-};
+}
 
 /**
  * NOTE: when this function is stringified, single-line comments can cause weird issues when compiled by Sveltekit.
  * Make sure to write multi-line comments only.
  */
-const variantScriptFn2 = function bldrCntntScrpt(
+function bldrCntntScrpt(
   variantContentId: string,
   defaultContentId: string,
-  target: Target
+  isHydrationTarget: boolean
 ) {
   if (!navigator.cookieEnabled) {
     return;
@@ -192,7 +191,7 @@ const variantScriptFn2 = function bldrCntntScrpt(
     if (variantIsDefaultContent) {
       console.log('this is not the winning variant, add `hidden` attr');
 
-      if (target === 'react' || target === 'reactNative') {
+      if (isHydrationTarget) {
         /**
          * For React to work, we need to support hydration, in which case the first CSR will have none of the hidden variants.
          * So we completely remove that node.
@@ -215,19 +214,36 @@ const variantScriptFn2 = function bldrCntntScrpt(
   }
 
   return;
-};
+}
+
+const isHydrationTarget = (target: Target) =>
+  target === 'react' ||
+  target === 'reactNative' ||
+  target === 'vue3' ||
+  target === 'vue2';
+
+/**
+ * We hardcode explicit function names here, because the `.toString()` of a function can change depending on the bundler.
+ * Some bundlers will minify the fn name, etc.
+ *
+ * So we hardcode the function names here, and then use those names in the script string to make sure the function names are consistent.
+ */
+const AB_TEST_FN_NAME = 'bldrAbTest';
+const CONTENT_FN_NAME = 'bldrCntntScrpt';
 
 export const getVariantsScriptString = (
   variants: VariantData[],
   contentId: string
 ) => {
-  const fnStr = variantScriptFn.toString().replace(/\s+/g, ' ');
-  const fnStr2 = variantScriptFn2.toString().replace(/\s+/g, ' ');
+  const fnStr = bldrAbTest.toString().replace(/\s+/g, ' ');
+  const fnStr2 = bldrCntntScrpt.toString().replace(/\s+/g, ' ');
 
   return `
-  ${fnStr}
-  ${fnStr2}
-  bldrAbTest("${contentId}", ${JSON.stringify(variants)}, "${TARGET}")
+  const ${AB_TEST_FN_NAME} = ${fnStr}
+  const ${CONTENT_FN_NAME} = ${fnStr2}
+  ${AB_TEST_FN_NAME}("${contentId}", ${JSON.stringify(
+    variants
+  )}, ${isHydrationTarget})
   `;
 };
 
@@ -239,5 +255,5 @@ export const getRenderContentScriptString = ({
   parentContentId: string;
 }) => {
   return `
-  bldrCntntScrpt("${contentId}", "${parentContentId}", "${TARGET}")`;
+  ${CONTENT_FN_NAME}("${contentId}", "${parentContentId}", ${isHydrationTarget})`;
 };
