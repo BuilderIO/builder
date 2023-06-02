@@ -17,7 +17,7 @@ const getDirName = () => {
 
 const WEB_SERVERS: Record<Sdk, PackageName[]> = {
   reactNative: ['e2e-react-native'],
-  solid: ['e2e-solidjs'],
+  solid: ['e2e-solidjs', 'e2e-solid-start'],
   qwik: [
     // 'e2e-qwik',
 
