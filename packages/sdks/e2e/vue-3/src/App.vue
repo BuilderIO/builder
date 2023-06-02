@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { RenderContent } from '@builder.io/sdk-vue/vue3';
+import { RenderContent, processContentResult } from '@builder.io/sdk-vue/vue3';
 import '@builder.io/sdk-vue/vue3/css';
 import { getProps } from '@builder.io/sdks-e2e-tests';
 
@@ -13,7 +13,7 @@ export default defineComponent({
     return { props: {} as any };
   },
   mounted() {
-    getProps().then((props) => {
+    getProps({ processContentResult }).then((props) => {
       this.props = props;
     });
   },

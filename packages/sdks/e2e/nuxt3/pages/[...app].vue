@@ -1,12 +1,12 @@
 <script setup>
-import { RenderContent } from '@builder.io/sdk-vue/vue3';
+import { RenderContent, processContentResult } from '@builder.io/sdk-vue/vue3';
 import '@builder.io/sdk-vue/vue3/css';
 import { getProps } from '@builder.io/sdks-e2e-tests';
 
 const route = useRoute();
 
 const { data: props } = await useAsyncData('builderData', () =>
-  getProps(route.path)
+  getProps({ pathname: route.path, processContentResult })
 );
 </script>
 

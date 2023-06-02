@@ -1,6 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import { RenderContent } from '@builder.io/sdk-react';
+import { RenderContent, processContentResult } from '@builder.io/sdk-react';
 import { ALL_PATHNAMES, getProps } from '@builder.io/sdks-e2e-tests';
 import type {
   GetStaticPropsContext,
@@ -10,9 +10,10 @@ import type {
 
 export async function getStaticProps(x: GetStaticPropsContext<StaticProps>) {
   return {
-    props: await getProps(
-      x.params.index ? `/${x.params.index.join('/')}` : '/'
-    ),
+    props: await getProps({
+      pathname: x.params.index ? `/${x.params.index.join('/')}` : '/',
+      processContentResult,
+    }),
   };
 }
 

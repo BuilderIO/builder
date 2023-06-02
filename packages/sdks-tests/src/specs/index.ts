@@ -76,13 +76,16 @@ const normalizePathname = (pathname: string): string =>
 
 export const getAPIKey = (): string => 'abcd';
 
-export const getProps = async (
-  _pathname = getPathnameFromWindow(),
-  contentProcessor: (
+export const getProps = async ({
+  pathname: _pathname = getPathnameFromWindow(),
+  processContentResult,
+}: {
+  pathname?: string;
+  processContentResult?: (
     options: any,
-    content: { results: BuilderContent[] }
-  ) => Promise<BuilderContent[]>
-) => {
+    content: { results: object[] }
+  ) => Promise<BuilderContent[]>;
+}) => {
   const pathname = normalizePathname(_pathname);
   const _content = getContentForPathname(pathname);
 
@@ -107,7 +110,9 @@ export const getProps = async (
     ...extraApiVersionProp,
   };
 
-  const content = (await contentProcessor(props, { results: [_content] }))[0];
+  const content = processContentResult
+    ? (await processContentResult(props, { results: [_content] }))[0]
+    : _content;
 
   return { ...props, content } as any;
 };

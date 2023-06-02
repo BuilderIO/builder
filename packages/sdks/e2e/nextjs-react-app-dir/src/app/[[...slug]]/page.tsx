@@ -6,7 +6,7 @@ import { processContentResult } from '@builder.io/sdk-react/server';
 import BuilderPage from './BuilderPage';
 
 async function getBuilderContent(urlPath: string) {
-  return await getProps(urlPath, processContentResult);
+  return await getProps({ pathname: urlPath, processContentResult });
 }
 
 interface PageProps {
