@@ -6,7 +6,12 @@
   import { getProps } from '@builder.io/sdks-e2e-tests';
   import Counter from './Counter.svelte';
 
-  $: props = getProps();
+  let props = undefined;
+  const fetch = async () => {
+    props = await getProps();
+  };
+
+  fetch();
 
   const CUSTOM_COMPONENTS: RegisteredComponent[] = [
     {

@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 
 builder.init(getAPIKey());
 
-export const loader: LoaderFunction = async ({ params }) => getProps(`/${params.slug || ''}`);
+export const loader: LoaderFunction = async ({ params }) => await getProps(`/${params.slug || ''}`);
 
 export function CatchBoundary() {
   const caught = useCatch();

@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { Text, View } from 'react-native';
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { getProps } from '@builder.io/sdks-e2e-tests';
 import { RenderContent } from '@builder.io/sdk-react-native';
 import { NavigationContainer } from '@react-navigation/native';
@@ -17,8 +17,18 @@ const linking = {
   },
 };
 
+/**
+ *
+ * @param {RouteProp<ParamListBase, "Page">} props
+ */
 const BuilderContent = ({ route }) => {
-  const props = getProps(route.path);
+  const [props, setProps] = useState(undefined);
+
+  useEffect(() => {
+    getProps(route.path || '/').then((resp) => {
+      setProps(resp);
+    });
+  }, []);
 
   return (
     <Fragment>

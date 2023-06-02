@@ -2,6 +2,7 @@
  * @type {import('eslint').Linter.Config}
  */
 module.exports = {
+  // root: true,
   env: {
     browser: true,
     node: true,
@@ -13,7 +14,9 @@ module.exports = {
     'plugin:@builder.io/mitosis/recommended',
   ],
   parser: '@typescript-eslint/parser',
+  // ignorePatterns: ['overrides/**/*'],
   parserOptions: {
+    // project: './tsconfig.json',
     ecmaFeatures: {
       jsx: true,
     },
@@ -35,5 +38,12 @@ module.exports = {
       'error',
       { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
     ],
+
+    // Note: you must disable the base rule as it can report incorrect errors
+    // 'require-await': 'off',
+    // '@typescript-eslint/require-await': 'error',
+
+    // '@typescript-eslint/no-misused-promises': 'error',
+    // '@typescript-eslint/no-floating-promises': 'error',
   },
 };

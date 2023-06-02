@@ -1881,9 +1881,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@builder.io/e2e-nextjs-react@workspace:sdks/e2e/nextjs-react":
+"@builder.io/e2e-nextjs-react@workspace:sdks/e2e/nextjs-react-pages-dir":
   version: 0.0.0-use.local
-  resolution: "@builder.io/e2e-nextjs-react@workspace:sdks/e2e/nextjs-react"
+  resolution: "@builder.io/e2e-nextjs-react@workspace:sdks/e2e/nextjs-react-pages-dir"
   dependencies:
     "@builder.io/sdk-react": "workspace:*"
     "@builder.io/sdks-e2e-tests": "workspace:*"
