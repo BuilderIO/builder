@@ -44,8 +44,9 @@
     "e2e:run:react": "SDK=react yarn e2e:run",
     "e2e:run:vue": "SDK=vue yarn e2e:run",
     "e2e:run:old-react": "SDK=oldReact yarn e2e:run",
-    "e2e:build:all": "yarn workspaces foreach --exclude @builder.io/e2e-rsc --verbose run build",
-    "e2e:run:all": "yarn run-s e2e:run:*",
+    "e2e:build:all": "yarn workspaces foreach --include \"@builder.io/e2e-*\" --exclude @builder.io/e2e-rsc --verbose run build",
+    "e2e:run:all": "SDK=all yarn e2e:run",
+    "e2e:run:allNew": "SDK=allNew yarn e2e:run",
     "loop": "bash ./scripts/loop-command.sh",
     "release-sdk": "bash ./scripts/release-sdk.sh",
     "release:all:patch": "yarn build:mitosis && yarn loop release-sdk patch",
@@ -56,9 +57,8 @@
     "upgrade-example:all": "yarn loop upgrade-example latest"
   },
   "dependencies": {
-    "@builder.io/mitosis": "^0.0.98",
-    "@builder.io/mitosis-cli": "^0.0.57",
-    "@playwright/test": "^1.27.1",
+    "@builder.io/mitosis": "^0.0.106",
+    "@builder.io/mitosis-cli": "^0.0.64",
     "node-fetch": "^2.6.1",
     "seedrandom": "^3.0.5",
     "traverse": "^0.6.6"

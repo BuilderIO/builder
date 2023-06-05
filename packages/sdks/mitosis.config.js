@@ -201,6 +201,18 @@ const SRCSET_PLUGIN = () => ({
 });
 
 /**
+ * @type {Plugin}
+ */
+const REACT_NEXT_V13_PLUGIN = () => ({
+  code: {
+    post: (code) => {
+      // Needed for next v13 to work
+      return `'use client';\n${code}`;
+    },
+  },
+});
+
+/**
  * Replaces all uses of the native `Text` component with our own `BaseText` component that injects inherited CSS styles
  * to `Text`, mimicking CSS inheritance.
  * @type {Plugin}
@@ -243,6 +255,7 @@ module.exports = {
         () => ({
           json: {
             pre: (json) => {
+              // TO-DO: should be able to remove this once vue2 fragment workaround is merged.
               if (json.name === 'Image') {
                 json.children[0].name = 'div';
               }
@@ -300,20 +313,19 @@ module.exports = {
           },
           code: {
             pre: (code) => {
-              if (!code.includes("name: 'render-block'")) {
-                return code;
+              if (code.includes("name: 'render-block'")) {
+                // 2 edge cases for the wrapper Show's condition need to be hardcoded for now
+                return code
+                  .replace(
+                    '<component v-else ',
+                    '<component v-else-if="canShowBlock" '
+                  )
+                  .replace(
+                    'v-if="!Boolean(!component?.noWrap && canShowBlock)"',
+                    'v-if="!Boolean(!component?.noWrap) && canShowBlock"'
+                  );
               }
-
-              // 2 edge cases for the wrapper Show's condition need to be hardcoded for now
-              return code
-                .replace(
-                  '<component v-else ',
-                  '<component v-else-if="canShowBlock" '
-                )
-                .replace(
-                  'v-if="!Boolean(!component?.noWrap && canShowBlock)"',
-                  'v-if="!Boolean(!component?.noWrap) && canShowBlock"'
-                );
+              return code;
             },
           },
         }),
@@ -324,6 +336,7 @@ module.exports = {
       typescript: true,
       plugins: [
         SRCSET_PLUGIN,
+        REACT_NEXT_V13_PLUGIN,
         () => ({
           json: {
             pre: (json) => {
@@ -342,19 +355,6 @@ module.exports = {
               });
             },
           },
-          code: {
-            pre: (code) => {
-              if (code.includes('RenderInlinedStyles')) {
-                // fixes some type issues
-                code = code.replace(
-                  `return 'sty' + 'le'`,
-                  `return 'style' as \'style\'`
-                );
-              }
-              // Needed for next v13 to work
-              return `'use client';\n${code}`;
-            },
-          },
         }),
       ],
       stylesType: 'style-tag',
@@ -362,6 +362,7 @@ module.exports = {
     rsc: {
       plugins: [
         SRCSET_PLUGIN,
+        REACT_NEXT_V13_PLUGIN,
         () => ({
           json: {
             pre: (json) => {
@@ -387,6 +388,7 @@ module.exports = {
     reactNative: {
       plugins: [
         SRCSET_PLUGIN,
+        REACT_NEXT_V13_PLUGIN,
         BASE_TEXT_PLUGIN,
         () => ({
           json: {
@@ -556,36 +558,20 @@ module.exports = {
                 json.meta.useMetadata && json.meta.useMetadata.elementTag;
 
               if (tag) {
+                const tagArr = Array.isArray(tag) ? tag : [tag];
+
                 traverse(json).forEach(function (item) {
                   if (!isMitosisNode(item)) {
                     return;
                   }
 
-                  if (item.name === tag) {
+                  if (tagArr.includes(item.name)) {
                     item.bindings.this = {
                       type: 'single',
                       ...item.bindings.this,
                       code: item.name,
                     };
                     item.name = 'svelte:element';
-                  }
-                });
-              }
-            },
-          },
-        }),
-        () => ({
-          json: {
-            pre: (json) => {
-              if (json.name === 'RenderInlinedStyles') {
-                traverse(json).forEach(function (item) {
-                  if (!isMitosisNode(item)) {
-                    return;
-                  }
-
-                  if (item.bindings.innerHTML) {
-                    item.name = 'Fragment';
-                    item.bindings.innerHTML.code = 'state.injectedStyleScript';
                   }
                 });
               }

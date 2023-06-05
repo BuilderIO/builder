@@ -24,7 +24,7 @@ export type RenderBlockProps = {
 };
 
 useMetadata({
-  elementTag: 'state.tag',
+  elementTag: 'state.Tag',
 });
 
 export default function RenderBlock(props: RenderBlockProps) {
@@ -48,7 +48,7 @@ export default function RenderBlock(props: RenderBlockProps) {
             shouldEvaluateBindings: true,
           });
     },
-    tag: props.block.tagName || 'div',
+    Tag: props.block.tagName || 'div',
     get canShowBlock() {
       if ('hide' in state.useBlock) {
         return !state.useBlock.hide;
@@ -155,10 +155,10 @@ export default function RenderBlock(props: RenderBlockProps) {
          * Svelte is super finicky, and does not allow an empty HTML element (e.g. `img`) to have logic inside of it,
          * _even_ if that logic ends up not rendering anything.
          */}
-        <Show when={isEmptyHtmlElement(state.tag)}>
-          <state.tag {...state.attributes} {...state.actions} />
+        <Show when={isEmptyHtmlElement(state.Tag)}>
+          <state.Tag {...state.attributes} {...state.actions} />
         </Show>
-        <Show when={!isEmptyHtmlElement(state.tag) && state.repeatItem}>
+        <Show when={!isEmptyHtmlElement(state.Tag) && state.repeatItem}>
           <For each={state.repeatItem}>
             {(data, index) => (
               <RenderRepeatedBlock
@@ -169,8 +169,8 @@ export default function RenderBlock(props: RenderBlockProps) {
             )}
           </For>
         </Show>
-        <Show when={!isEmptyHtmlElement(state.tag) && !state.repeatItem}>
-          <state.tag {...state.attributes} {...state.actions}>
+        <Show when={!isEmptyHtmlElement(state.Tag) && !state.repeatItem}>
+          <state.Tag {...state.attributes} {...state.actions}>
             <RenderComponent {...state.renderComponentProps} />
             {/**
              * We need to run two separate loops for content + styles to workaround the fact that Vue 2
@@ -194,7 +194,7 @@ export default function RenderBlock(props: RenderBlockProps) {
                 />
               )}
             </For>
-          </state.tag>
+          </state.Tag>
         </Show>
       </Show>
     </Show>

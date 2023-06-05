@@ -1,14 +1,17 @@
+import { getProps } from '@builder.io/sdks-e2e-tests';
+import { RenderContent, processContentResult } from '@builder.io/sdk-qwik';
 import { component$ } from '@builder.io/qwik';
 import { routeLoader$ } from '@builder.io/qwik-city';
-import { RenderContent } from '@builder.io/sdk-qwik';
-import { getProps } from '@builder.io/sdks-e2e-tests';
 
 export interface MainProps {
   url: string;
 }
 
 export const useBuilderContentLoader = routeLoader$(async (event) => {
-  const data = await getProps(event.url.pathname);
+  const data = await getProps({
+    pathname: event.url.pathname,
+    processContentResult,
+  });
 
   if (!data) {
     event.status(404);

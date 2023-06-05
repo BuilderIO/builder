@@ -10,5 +10,5 @@
     "emitDeclarationOnly": false,
     "noEmit": false
   },
-  "include": ["src/**/*.js", "src/**/*.jsx"]
+  "include": ["typings/*.d.ts", "src/**/*"]
 }

@@ -9,6 +9,14 @@ export const SdkEnum = z.enum([
   'solid',
   'svelte',
   'vue',
+  /**
+   * Run all tests, including old React SDK.
+   */
+  'all',
+  /**
+   * Run all tests except for old React SDK.
+   */
+  'allNew',
 ]);
 export type Sdk = z.infer<typeof SdkEnum>;
 

@@ -49,6 +49,7 @@ import {
 } from './render-content.helpers.js';
 import { TARGET } from '../../constants/target.js';
 import { logger } from '../../helpers/logger.js';
+import { getRenderContentScriptString } from '../render-content-variants/helpers.js';
 import { wrapComponentRef } from './wrap-component-ref.js';
 
 useMetadata({
@@ -259,6 +260,11 @@ export default function RenderContent(props: RenderContentProps) {
         );
       }
     },
+    scriptStr: getRenderContentScriptString({
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
+      contentId: props.content?.id!,
+      parentContentId: props.parentContentId!,
+    }),
   });
 
   // This currently doesn't do anything as `onCreate` is not implemented
@@ -406,7 +412,21 @@ export default function RenderContent(props: RenderContentProps) {
         onClick={(event) => state.onClick(event)}
         builder-content-id={state.useContent?.id}
         builder-model={props.model}
+        className={props.classNameProp}
+        {...(TARGET === 'reactNative'
+          ? {
+              dataSet: {
+                // currently, we can't set the actual ID here.
+                // we don't need it right now, we just need to identify content divs for testing.
+                'builder-content-id': '',
+              },
+            }
+          : {})}
+        {...(props.hideContent ? { hidden: true, 'aria-hidden': true } : {})}
       >
+        <Show when={props.isSsrAbTest}>
+          <script innerHTML={state.scriptStr}></script>
+        </Show>
         <Show when={TARGET !== 'reactNative'}>
           <RenderContentStyles
             contentId={state.useContent?.id}

@@ -13,7 +13,7 @@
     "@builder.io/sdk-react": "workspace:*",
     "@builder.io/sdks-e2e-tests": "workspace:*",
     "eslint-config-next": "^13",
-    "next": "^13",
+    "next": "^13.4.4",
     "react": "^18",
     "react-dom": "^18"
   },

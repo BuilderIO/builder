@@ -10,6 +10,7 @@ import { CONTENT as symbolWithInputBinding } from './symbol-with-input-binding.j
 import { CONTENT as image } from './image.js';
 import { CONTENT as dataBindings } from './data-bindings.js';
 import { CONTENT as dataBindingStyles } from './data-binding-styles.js';
+import { CONTENT as abTest } from './ab-test.js';
 import {
   CONTENT as customBreakpoints,
   CONTENT_RESET as customBreakpointsReset,
@@ -44,6 +45,7 @@ const pages = {
   '/image': image,
   '/data-bindings': dataBindings,
   '/data-binding-styles': dataBindingStyles,
+  '/ab-test': abTest,
   '/custom-breakpoints': customBreakpoints,
   '/reactive-state': reactiveState,
   '/element-events': elementEvents,
@@ -74,18 +76,19 @@ const normalizePathname = (pathname: string): string =>
 
 export const getAPIKey = (): string => 'abcd';
 
-export const getProps = async (
-  _pathname = getPathnameFromWindow()
-): Promise<{
-  model: string;
-  content: BuilderContent;
-  apiKey: string;
-  // eslint-disable-next-line @typescript-eslint/require-await
-} | null> => {
-  const pathname = normalizePathname(_pathname);
-  const content = getContentForPathname(pathname);
+type ContentResponse = { results: BuilderContent[] };
 
-  if (!content) {
+export const getProps = async (
+  args: {
+    pathname?: string;
+    processContentResult?: (options: any, content: ContentResponse) => Promise<ContentResponse>;
+  } = {}
+) => {
+  const { pathname: _pathname = getPathnameFromWindow(), processContentResult } = args;
+  const pathname = normalizePathname(_pathname);
+  const _content = getContentForPathname(pathname);
+
+  if (!_content) {
     return null;
   }
 
@@ -99,11 +102,16 @@ export const getProps = async (
   const extraApiVersionProp =
     apiVersionPathToProp[pathname as keyof typeof apiVersionPathToProp] ?? {};
 
-  return {
-    content,
+  const props = {
     apiKey: getAPIKey(),
     model: 'page',
     ...extraProps,
     ...extraApiVersionProp,
   };
+
+  const content = processContentResult
+    ? (await processContentResult(props, { results: [_content] })).results[0]
+    : _content;
+
+  return { ...props, content } as any;
 };

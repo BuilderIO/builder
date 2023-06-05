@@ -2,7 +2,6 @@
   "name": "@builder.io/sdks-e2e-tests",
   "description": "Workspace containing e2e tests for SDKs",
   "private": true,
-  "version": "0.0.1",
   "scripts": {
     "build": "tsc",
     "dev": "tsc -w",
@@ -19,12 +18,12 @@
     "./*": "./dist/src/*.js"
   },
   "devDependencies": {
-    "@playwright/test": "^1.27.1",
+    "@playwright/test": "^1.34.3",
     "@typescript-eslint/eslint-plugin": "latest",
     "@typescript-eslint/parser": "latest",
     "eslint": "^8.12.0",
     "eslint-plugin-unused-imports": "^2.0.0",
-    "typescript": "^4.8.4"
+    "typescript": "^4.9"
   },
   "dependencies": {
     "zod": "^3.20.2"
