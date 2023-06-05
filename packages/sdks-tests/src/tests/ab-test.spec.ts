@@ -52,7 +52,7 @@ const setCookies = ({
 // Forbid retries as A/B tests are not deterministic, and we don't want to give any leeway to flakiness.
 test.describe.configure({ retries: 0 });
 
-test.describe.only('A/B tests', () => {
+test.describe('A/B tests', () => {
   const TRIES = 10;
   // loop 10 times to check for flakiness
   Array.from({ length: TRIES }).forEach((_, i) => {
