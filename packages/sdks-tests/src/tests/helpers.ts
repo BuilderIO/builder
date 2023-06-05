@@ -1,5 +1,12 @@
 import { test as base, expect } from '@playwright/test';
-import type { Page, TestInfo, Locator, BrowserContext } from '@playwright/test';
+import type {
+  Page,
+  TestInfo,
+  Locator,
+  BrowserContext,
+  PlaywrightTestArgs,
+  PlaywrightWorkerArgs,
+} from '@playwright/test';
 import type { PackageName, Sdk } from './sdk';
 import { sdk } from './sdk.js';
 
@@ -8,8 +15,11 @@ type TestOptions = {
 };
 
 // https://github.com/microsoft/playwright/issues/14854#issuecomment-1155667859
-async function screenshotOnFailure({ page }: { page: Page }, testInfo: TestInfo) {
-  if (testInfo.status !== testInfo.expectedStatus) {
+async function screenshotOnFailure(
+  { page }: PlaywrightTestArgs & PlaywrightWorkerArgs,
+  testInfo: TestInfo
+) {
+  if (testInfo.status !== testInfo.expectedStatus && !process.env.CI) {
     // Get a unique place for the screenshot.
     const screenshotPath = testInfo.outputPath(`failure.png`);
     // Add it to the report.
