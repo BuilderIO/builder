@@ -1,3 +1,4 @@
+import type { Browser } from '@playwright/test';
 import { expect } from '@playwright/test';
 import { findTextInPage, isRNSDK, test } from './helpers.js';
 
@@ -7,46 +8,69 @@ const VARIANT_ID = 'd50b5d04edf640f195a7c42ebdb159b2';
 const COOKIE_NAME = `builder.tests.${CONTENT_ID}`;
 const SELECTOR = isRNSDK ? 'div[data-builder-content-id]' : 'div[builder-content-id]';
 
-const setRNStorage = ({ name, value }: { name: string; value: string }) => {
-  localStorage.setItem(
-    `builderio.${name}`,
-    JSON.stringify({
-      rawData: { value },
-      // add long expiry
-      expires: Date.now() + 1000 * 60 * 60 * 24 * 365 * 10,
-    })
-  );
+const setCookies = ({
+  cookies,
+  baseURL,
+  browser,
+}: {
+  browser: Browser;
+  baseURL: string;
+  cookies: { name: string; value: string }[];
+}) => {
+  return browser.newPage({
+    storageState: isRNSDK
+      ? {
+          origins: [
+            {
+              origin: new URL(baseURL).origin,
+              localStorage: cookies.map(({ name, value }) => ({
+                name: `builderio.${name}`,
+                value: JSON.stringify({
+                  rawData: { value },
+                  // add long expiry
+                  expires: Date.now() + 1000 * 60 * 60 * 24 * 365 * 10,
+                }),
+              })),
+            },
+          ],
+          cookies: [],
+        }
+      : {
+          cookies: cookies.map(
+            cookie =>
+              ({
+                name: cookie.name,
+                value: cookie.value,
+                url: baseURL,
+              } as any)
+          ),
+          origins: [],
+        },
+  });
 };
 
 // Forbid retries as A/B tests are not deterministic, and we don't want to give any leeway to flakiness.
 test.describe.configure({ retries: 0 });
 
-test.describe('A/B tests', () => {
+test.describe.only('A/B tests', () => {
   const TRIES = 10;
   // loop 10 times to check for flakiness
   Array.from({ length: TRIES }).forEach((_, i) => {
-    test(`#${i}/${TRIES}: Render default w/ SSR`, async ({
-      page,
-      context,
-      baseURL,
-      packageName,
-    }) => {
+    test(`#${i}/${TRIES}: Render default w/ SSR`, async ({ baseURL, packageName, browser }) => {
+      if (!baseURL) {
+        throw new Error('Missing baseURL');
+      }
+
       // SSR A/B tests do not seem to work on old NextJS. Likely a config issue.
       if (packageName === 'e2e-old-nextjs') {
         test.skip();
       }
 
-      if (isRNSDK) {
-        await page.addInitScript(setRNStorage, { name: COOKIE_NAME, value: CONTENT_ID });
-      } else {
-        await context.addCookies([
-          {
-            name: COOKIE_NAME,
-            value: CONTENT_ID,
-            url: baseURL,
-          },
-        ]);
-      }
+      const page = await setCookies({
+        baseURL,
+        browser,
+        cookies: [{ name: COOKIE_NAME, value: CONTENT_ID }],
+      });
 
       await page.goto('/ab-test');
 
@@ -54,28 +78,21 @@ test.describe('A/B tests', () => {
       await expect(page.locator(SELECTOR, { hasText: 'hello world variation 1' })).toBeHidden();
     });
 
-    test(`#${i}/${TRIES}: Render variant w/ SSR`, async ({
-      page,
-      context,
-      baseURL,
-      packageName,
-    }) => {
+    test(`#${i}/${TRIES}: Render variant w/ SSR`, async ({ browser, baseURL, packageName }) => {
+      if (!baseURL) {
+        throw new Error('Missing baseURL');
+      }
+
       // SSR A/B tests do not seem to work on old NextJS. Likely a config issue.
       if (packageName === 'e2e-old-nextjs') {
         test.skip();
       }
 
-      if (isRNSDK) {
-        await page.addInitScript(setRNStorage, { name: COOKIE_NAME, value: VARIANT_ID });
-      } else {
-        await context.addCookies([
-          {
-            name: COOKIE_NAME,
-            value: VARIANT_ID,
-            url: baseURL,
-          },
-        ]);
-      }
+      const page = await setCookies({
+        baseURL,
+        browser,
+        cookies: [{ name: COOKIE_NAME, value: VARIANT_ID }],
+      });
 
       await page.goto('/ab-test');
 
