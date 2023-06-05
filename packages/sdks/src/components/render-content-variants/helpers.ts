@@ -166,31 +166,20 @@ function bldrCntntScrpt(
     `[builder-content-id="${variantContentId}"]`
   );
 
-  console.log('checking variant', {
-    variantId,
-    variantContentId,
-    defaultContentId,
-  });
   const variantIsDefaultContent = variantContentId === defaultContentId;
 
   if (variantId === variantContentId) {
     if (variantIsDefaultContent) {
       /** the default content is already visible, no need to do anything */
-      console.log('default content is already visible, no need to do anything');
       return;
     }
 
     /** this is the winning variant and not already visible: remove `hidden` and `aria-hidden` attr */
 
-    console.log(
-      'this is the winning variant and not already visible: remove `hidden` and `aria-hidden` attr'
-    );
     parentDiv?.removeAttribute('hidden');
     parentDiv?.removeAttribute('aria-hidden');
   } else {
     if (variantIsDefaultContent) {
-      console.log('this is not the winning variant, add `hidden` attr');
-
       if (isHydrationTarget) {
         /**
          * For React to work, we need to support hydration, in which case the first CSR will have none of the hidden variants.
@@ -207,9 +196,6 @@ function bldrCntntScrpt(
     /** This is not the winning variant, and it's not the default content.
      * There's no need to hide it, because it's already hidden.
      */
-    console.log(
-      "This is not the winning variant, and it's not the default content. There's no need to hide it, because it's already hidden."
-    );
     return;
   }
 
