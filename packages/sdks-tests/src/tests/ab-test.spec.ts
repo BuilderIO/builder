@@ -40,6 +40,7 @@ const setCookies = ({
             const newCookie = {
               name: cookie.name,
               value: cookie.value,
+              // this is valid but types seem to be mismatched.
               url: baseURL,
             } as any;
             return newCookie;
