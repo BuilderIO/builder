@@ -11,33 +11,37 @@ const SELECTOR = isRNSDK ? 'div[data-builder-content-id]' : 'div[builder-content
 test.describe.configure({ retries: 0 });
 
 test.describe('A/B tests', () => {
-  test('Render default w/ SSR', async ({ page, context, baseURL }) => {
-    await context.addCookies([
-      {
-        name: COOKIE_NAME,
-        value: CONTENT_ID,
-        url: baseURL,
-      },
-    ]);
+  const TRIES = 10;
+  // loop 10 times to check for flakiness
+  Array.from({ length: TRIES }).forEach((_, i) => {
+    test(`#${i}/${TRIES}: Render default w/ SSR`, async ({ page, context, baseURL }) => {
+      await context.addCookies([
+        {
+          name: COOKIE_NAME,
+          value: CONTENT_ID,
+          url: baseURL,
+        },
+      ]);
 
-    await page.goto('/ab-test');
+      await page.goto('/ab-test');
 
-    await findTextInPage({ page, text: 'hello world default' });
-    await expect(page.locator(SELECTOR, { hasText: 'hello world variation 1' })).toBeHidden();
-  });
+      await findTextInPage({ page, text: 'hello world default' });
+      await expect(page.locator(SELECTOR, { hasText: 'hello world variation 1' })).toBeHidden();
+    });
 
-  test('Render variant w/ SSR', async ({ page, context, baseURL }) => {
-    await context.addCookies([
-      {
-        name: COOKIE_NAME,
-        value: VARIANT_ID,
-        url: baseURL,
-      },
-    ]);
+    test(`#${i}/${TRIES}: Render variant w/ SSR`, async ({ page, context, baseURL }) => {
+      await context.addCookies([
+        {
+          name: COOKIE_NAME,
+          value: VARIANT_ID,
+          url: baseURL,
+        },
+      ]);
 
-    await page.goto('/ab-test');
+      await page.goto('/ab-test');
 
-    await findTextInPage({ page, text: 'hello world variation 1' });
-    await expect(page.locator(SELECTOR, { hasText: 'hello world default' })).toBeHidden();
+      await findTextInPage({ page, text: 'hello world variation 1' });
+      await expect(page.locator(SELECTOR, { hasText: 'hello world default' })).toBeHidden();
+    });
   });
 });
