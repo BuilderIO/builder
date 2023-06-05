@@ -6,6 +6,7 @@ import type {
 } from '../types/builder-content.js';
 import type { Nullable, Overwrite } from '../types/typescript.js';
 import { checkIsDefined } from '../helpers/nullable.js';
+import { logger } from './logger.js';
 
 const BUILDER_STORE_PREFIX = 'builder.tests';
 
@@ -72,7 +73,7 @@ const getAndSetVariantId = (args: BuilderContentWithVariations) => {
     contentId: args.id,
     value: randomVariationId,
   }).catch((err) => {
-    console.error('could not store A/B test variation: ', err);
+    logger.error('could not store A/B test variation: ', err);
   });
 
   return randomVariationId;
@@ -155,10 +156,12 @@ export const handleABTesting = async ({
     return item;
   }
 
+  const cookieValue = await getContentVariationCookie({
+    contentId: item.id,
+  });
+
   const testGroupId =
-    (await getContentVariationCookie({
-      contentId: item.id,
-    })) ||
+    cookieValue ||
     getAndSetVariantId({
       variations: item.variations,
       id: item.id,
