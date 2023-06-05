@@ -1,5 +1,6 @@
 import { isBrowser } from '../functions/is-browser.js';
 import type { CanTrack } from '../types/can-track.js';
+import { logger } from './logger.js';
 import { checkIsDefined } from './nullable.js';
 import { getTopLevelDomain } from './url.js';
 
@@ -24,8 +25,8 @@ export const getCookieSync = ({
       .split('; ')
       .find((row) => row.startsWith(`${name}=`))
       ?.split('=')[1];
-  } catch (err) {
-    console.debug('[COOKIE] GET error: ', err);
+  } catch (err: any) {
+    logger.warn('[COOKIE] GET error: ', err?.message || err);
     return undefined;
   }
 };
@@ -105,7 +106,7 @@ export const setCookie = async ({
     }
     const cookie = createCookieString({ name, value, expires });
     document.cookie = cookie;
-  } catch (err) {
-    console.warn('[COOKIE] SET error: ', err);
+  } catch (err: any) {
+    logger.warn('[COOKIE] SET error: ', err?.message || err);
   }
 };
