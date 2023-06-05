@@ -37,7 +37,7 @@ test.describe('A/B tests', () => {
       }
 
       if (isRNSDK) {
-        await context.addInitScript(setRNStorage, { name: COOKIE_NAME, value: CONTENT_ID });
+        await page.addInitScript(setRNStorage, { name: COOKIE_NAME, value: CONTENT_ID });
       } else {
         await context.addCookies([
           {
@@ -47,6 +47,7 @@ test.describe('A/B tests', () => {
           },
         ]);
       }
+
       await page.goto('/ab-test');
 
       await findTextInPage({ page, text: 'hello world default' });
@@ -65,7 +66,7 @@ test.describe('A/B tests', () => {
       }
 
       if (isRNSDK) {
-        await context.addInitScript(setRNStorage, { name: COOKIE_NAME, value: VARIANT_ID });
+        await page.addInitScript(setRNStorage, { name: COOKIE_NAME, value: VARIANT_ID });
       } else {
         await context.addCookies([
           {
