@@ -36,14 +36,14 @@ const setCookies = ({
           cookies: [],
         }
       : {
-          cookies: cookies.map(
-            cookie =>
-              ({
-                name: cookie.name,
-                value: cookie.value,
-                url: baseURL,
-              } as any)
-          ),
+          cookies: cookies.map(cookie => {
+            const newCookie = {
+              name: cookie.name,
+              value: cookie.value,
+              url: baseURL,
+            } as any;
+            return newCookie;
+          }),
           origins: [],
         },
   });
