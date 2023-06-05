@@ -8,7 +8,7 @@ const VARIANT_ID = 'd50b5d04edf640f195a7c42ebdb159b2';
 const COOKIE_NAME = `builder.tests.${CONTENT_ID}`;
 const SELECTOR = isRNSDK ? 'div[data-builder-content-id]' : 'div[builder-content-id]';
 
-const setCookies = ({
+const createContextWithCookies = async ({
   cookies,
   baseURL,
   browser,
@@ -17,7 +17,7 @@ const setCookies = ({
   baseURL: string;
   cookies: { name: string; value: string }[];
 }) => {
-  return browser.newPage({
+  const context = await browser.newContext({
     storageState: isRNSDK
       ? {
           origins: [
@@ -48,6 +48,8 @@ const setCookies = ({
           origins: [],
         },
   });
+
+  return context;
 };
 
 // Forbid retries as A/B tests are not deterministic, and we don't want to give any leeway to flakiness.
@@ -67,11 +69,13 @@ test.describe('A/B tests', () => {
         test.skip();
       }
 
-      const page = await setCookies({
+      const context = await createContextWithCookies({
         baseURL,
         browser,
         cookies: [{ name: COOKIE_NAME, value: CONTENT_ID }],
       });
+
+      const page = await context.newPage();
 
       await page.goto('/ab-test');
 
@@ -89,11 +93,13 @@ test.describe('A/B tests', () => {
         test.skip();
       }
 
-      const page = await setCookies({
+      const context = await createContextWithCookies({
         baseURL,
         browser,
         cookies: [{ name: COOKIE_NAME, value: VARIANT_ID }],
       });
+
+      const page = await context.newPage();
 
       await page.goto('/ab-test');
 
