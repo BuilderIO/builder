@@ -56,10 +56,10 @@ const createContextWithCookies = async ({
 test.describe.configure({ retries: 0 });
 
 test.describe('A/B tests', () => {
-  const TRIES = 10;
-  // loop 10 times to check for flakiness
-  for (let i = 1; i <= TRIES; i++) {
-    test(`#${i}/${TRIES}: Render default w/ SSR`, async ({ baseURL, packageName, browser }) => {
+  let i = 0;
+  const runTests = () => {
+    i++;
+    test(`#${i}: Render default w/ SSR`, async ({ baseURL, packageName, browser }) => {
       if (!baseURL) {
         throw new Error('Missing baseURL');
       }
@@ -86,7 +86,7 @@ test.describe('A/B tests', () => {
       await context.close();
     });
 
-    test(`#${i}/${TRIES}: Render variant w/ SSR`, async ({ browser, baseURL, packageName }) => {
+    test(`#${i}: Render variant w/ SSR`, async ({ browser, baseURL, packageName }) => {
       if (!baseURL) {
         throw new Error('Missing baseURL');
       }
@@ -112,5 +112,18 @@ test.describe('A/B tests', () => {
       // Gracefully close up everything
       await context.close();
     });
-  }
+  };
+
+  // Manually run tests 10 times to ensure we don't have any flakiness.
+  // Having a for-loop here causes issues with the test runner in React Native for some reason.
+  runTests();
+  runTests();
+  runTests();
+  runTests();
+  runTests();
+  runTests();
+  runTests();
+  runTests();
+  runTests();
+  runTests();
 });
