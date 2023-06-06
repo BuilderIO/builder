@@ -1,3 +1,7 @@
+### 0.4.0
+
+- Feature: A/B tests are now rendered correctly during server-side rendering (SSR) when applicable. This behaviour is backwards compatible with previous versions.
+
 ### 0.3.1
 
 - Feature: Added SDK version to data sent to visual editor for improved debugging.

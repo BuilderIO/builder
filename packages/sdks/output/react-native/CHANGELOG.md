@@ -1,3 +1,7 @@
+### 0.4.0
+
+- No changes.
+
 ### 0.3.1
 
 - Feature: Added SDK version to data sent to visual editor for improved debugging.
