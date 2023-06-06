@@ -84,7 +84,6 @@ test.describe('A/B tests', () => {
 
       // Gracefully close up everything
       await context.close();
-      await browser.close();
     });
 
     test(`#${i}/${TRIES}: Render variant w/ SSR`, async ({ browser, baseURL, packageName }) => {
@@ -112,7 +111,6 @@ test.describe('A/B tests', () => {
 
       // Gracefully close up everything
       await context.close();
-      await browser.close();
     });
   }
 });
