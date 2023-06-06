@@ -11,14 +11,12 @@
 		AF15816326B83DE000531EAD /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF15813926B83DDF00531EAD /* ContentView.swift */; };
 		AF15816526B83DE000531EAD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF15813A26B83DE000531EAD /* Assets.xcassets */; };
 		AF7E5E5126BA0EA600AB0FF5 /* (null) in Resources */ = {isa = PBXBuildFile; };
-		E35D9E4E450D61D9105F274C /* Pods_SwiftExample__iOS_.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E3D14A158BF9DCAEEAA09D8 /* Pods_SwiftExample__iOS_.framework */; };
 		E414A22E290FF2920018A728 /* BuilderIO in Frameworks */ = {isa = PBXBuildFile; productRef = E414A22D290FF2920018A728 /* BuilderIO */; };
+		E4CC63852A2F0CA8008A399E /* HeroComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4CC63842A2F0CA8008A399E /* HeroComponent.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		2C49A3DB675E8F68DB9EC1DC /* Pods-SwiftExample (iOS).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftExample (iOS).release.xcconfig"; path = "Target Support Files/Pods-SwiftExample (iOS)/Pods-SwiftExample (iOS).release.xcconfig"; sourceTree = "<group>"; };
-		3E3D14A158BF9DCAEEAA09D8 /* Pods_SwiftExample__iOS_.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftExample__iOS_.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		51E6A6AC229D7FE28CED47E5 /* Pods-Swift SDK Example (iOS).debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Swift SDK Example (iOS).debug.xcconfig"; path = "Target Support Files/Pods-Swift SDK Example (iOS)/Pods-Swift SDK Example (iOS).debug.xcconfig"; sourceTree = "<group>"; };
 		88A76566BC4B71D5E2FB16C8 /* Pods-SwiftExample (iOS).debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftExample (iOS).debug.xcconfig"; path = "Target Support Files/Pods-SwiftExample (iOS)/Pods-SwiftExample (iOS).debug.xcconfig"; sourceTree = "<group>"; };
 		AF15813826B83DDF00531EAD /* testingApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = testingApp.swift; sourceTree = "<group>"; };
 		AF15813926B83DDF00531EAD /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -27,8 +25,7 @@
 		AF15814226B83DE000531EAD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AF15815326B83DE000531EAD /* Tests_iOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_iOS.swift; sourceTree = "<group>"; };
 		AF15815526B83DE000531EAD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CC7AE9A43A6318B2C2068C3A /* Pods-Swift SDK Example (iOS).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Swift SDK Example (iOS).release.xcconfig"; path = "Target Support Files/Pods-Swift SDK Example (iOS)/Pods-Swift SDK Example (iOS).release.xcconfig"; sourceTree = "<group>"; };
-		EBB2D943D052A0F66C9E5D36 /* libPods-testing (macOS).a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-testing (macOS).a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E4CC63842A2F0CA8008A399E /* HeroComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroComponent.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -37,7 +34,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				E414A22E290FF2920018A728 /* BuilderIO in Frameworks */,
-				E35D9E4E450D61D9105F274C /* Pods_SwiftExample__iOS_.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -47,8 +43,6 @@
 		71FBD8CA1E6297C177018390 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				51E6A6AC229D7FE28CED47E5 /* Pods-Swift SDK Example (iOS).debug.xcconfig */,
-				CC7AE9A43A6318B2C2068C3A /* Pods-Swift SDK Example (iOS).release.xcconfig */,
 				88A76566BC4B71D5E2FB16C8 /* Pods-SwiftExample (iOS).debug.xcconfig */,
 				2C49A3DB675E8F68DB9EC1DC /* Pods-SwiftExample (iOS).release.xcconfig */,
 			);
@@ -73,6 +67,7 @@
 				AF15813826B83DDF00531EAD /* testingApp.swift */,
 				AF15813926B83DDF00531EAD /* ContentView.swift */,
 				AF15813A26B83DE000531EAD /* Assets.xcassets */,
+				E4CC63842A2F0CA8008A399E /* HeroComponent.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -105,8 +100,6 @@
 		FA9AC8BA04E0370036E61A5E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				EBB2D943D052A0F66C9E5D36 /* libPods-testing (macOS).a */,
-				3E3D14A158BF9DCAEEAA09D8 /* Pods_SwiftExample__iOS_.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -213,6 +206,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AF15816326B83DE000531EAD /* ContentView.swift in Sources */,
+				E4CC63852A2F0CA8008A399E /* HeroComponent.swift in Sources */,
 				AF15816126B83DE000531EAD /* testingApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -345,7 +339,7 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = iOS/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -369,7 +363,7 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = iOS/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -412,7 +406,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/BuilderIO/builder-swift";
 			requirement = {
-				branch = main;
+				branch = "shyam-custom-components";
 				kind = branch;
 			};
 		};
