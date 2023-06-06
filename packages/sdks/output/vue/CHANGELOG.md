@@ -1,6 +1,6 @@
-### 0.3.2
+### 0.4.0
 
-- Feature: Support for A/B tests in server-side rendered (SSR) content.
+- Feature: A/B tests are now rendered correctly during server-side rendering (SSR) when applicable. This behaviour is backwards compatible with previous versions.
 - Fix: memory leak caused by passing reactive component references.
 
 ### 0.3.1
