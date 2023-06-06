@@ -10,13 +10,15 @@
 		AF15816126B83DE000531EAD /* testingApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF15813826B83DDF00531EAD /* testingApp.swift */; };
 		AF15816326B83DE000531EAD /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF15813926B83DDF00531EAD /* ContentView.swift */; };
 		AF15816526B83DE000531EAD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF15813A26B83DE000531EAD /* Assets.xcassets */; };
-		AF7E5E5126BA0EA600AB0FF5 /* (null) in Resources */ = {isa = PBXBuildFile; };
+		AF7E5E5126BA0EA600AB0FF5 /* BuildFile in Resources */ = {isa = PBXBuildFile; };
+		DB24C7D37B2327134650DA43 /* Pods_SwiftExample__iOS_.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 58AFCF3ABC5E867D90F2A19A /* Pods_SwiftExample__iOS_.framework */; };
 		E414A22E290FF2920018A728 /* BuilderIO in Frameworks */ = {isa = PBXBuildFile; productRef = E414A22D290FF2920018A728 /* BuilderIO */; };
 		E4CC63852A2F0CA8008A399E /* HeroComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4CC63842A2F0CA8008A399E /* HeroComponent.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		2C49A3DB675E8F68DB9EC1DC /* Pods-SwiftExample (iOS).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftExample (iOS).release.xcconfig"; path = "Target Support Files/Pods-SwiftExample (iOS)/Pods-SwiftExample (iOS).release.xcconfig"; sourceTree = "<group>"; };
+		58AFCF3ABC5E867D90F2A19A /* Pods_SwiftExample__iOS_.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftExample__iOS_.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		88A76566BC4B71D5E2FB16C8 /* Pods-SwiftExample (iOS).debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftExample (iOS).debug.xcconfig"; path = "Target Support Files/Pods-SwiftExample (iOS)/Pods-SwiftExample (iOS).debug.xcconfig"; sourceTree = "<group>"; };
 		AF15813826B83DDF00531EAD /* testingApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = testingApp.swift; sourceTree = "<group>"; };
 		AF15813926B83DDF00531EAD /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -34,6 +36,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E414A22E290FF2920018A728 /* BuilderIO in Frameworks */,
+				DB24C7D37B2327134650DA43 /* Pods_SwiftExample__iOS_.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,6 +103,7 @@
 		FA9AC8BA04E0370036E61A5E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				58AFCF3ABC5E867D90F2A19A /* Pods_SwiftExample__iOS_.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -169,7 +173,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AF15816526B83DE000531EAD /* Assets.xcassets in Resources */,
-				AF7E5E5126BA0EA600AB0FF5 /* (null) in Resources */,
+				AF7E5E5126BA0EA600AB0FF5 /* BuildFile in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -406,7 +410,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/BuilderIO/builder-swift";
 			requirement = {
-				branch = "shyam-custom-components";
+				branch = main;
 				kind = branch;
 			};
 		};
