@@ -88,11 +88,11 @@ export default defineConfig({
   })),
 
   webServer: things.map(({ packageName, port, portFlag }) => {
-    const server = {
+    return {
       command: `PORT=${port} yarn workspace @builder.io/${packageName} run serve ${portFlag}`,
       port,
       reuseExistingServer: false,
+      ...(packageName === 'e2e-react-native' ? { timeout: 120 * 1000 } : {}),
     };
-    return server;
   }),
 });

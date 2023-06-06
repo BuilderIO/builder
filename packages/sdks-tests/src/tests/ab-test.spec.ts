@@ -75,13 +75,6 @@ test.describe('A/B tests', () => {
         test.skip();
       }
 
-      /**
-       * The first RN test is flaky. I don't know why...so we just skip it for now.
-       */
-      if (isRNSDK && i === 1) {
-        test.skip();
-      }
-
       const context = await createContextWithCookies({
         baseURL,
         browser,
