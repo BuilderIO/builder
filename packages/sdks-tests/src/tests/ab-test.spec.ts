@@ -56,10 +56,16 @@ const createContextWithCookies = async ({
 test.describe.configure({ retries: 0 });
 
 test.describe('A/B tests', () => {
-  let i = 0;
-  const runTests = () => {
-    i++;
-    test(`#${i}: Render default w/ SSR`, async ({ baseURL, packageName, browser }) => {
+  const TRIES = 10;
+
+  // Manually run tests 10 times to ensure we don't have any flakiness.
+  for (let i = 1; i <= TRIES; i++) {
+    test(`#${i}/${TRIES}: Render default w/ SSR`, async ({
+      page: _page,
+      baseURL,
+      packageName,
+      browser,
+    }) => {
       if (!baseURL) {
         throw new Error('Missing baseURL');
       }
@@ -67,6 +73,14 @@ test.describe('A/B tests', () => {
       // SSR A/B tests do not seem to work on old NextJS. Likely a config issue.
       if (packageName === 'e2e-old-nextjs') {
         test.skip();
+      }
+
+      /**
+       * The first RN test is flaky. We make sure that the server is able to render the page correctly before running
+       * the test.
+       */
+      if (isRNSDK && i === 1) {
+        await _page.goto('/ab-test');
       }
 
       const context = await createContextWithCookies({
@@ -86,7 +100,7 @@ test.describe('A/B tests', () => {
       await context.close();
     });
 
-    test(`#${i}: Render variant w/ SSR`, async ({ browser, baseURL, packageName }) => {
+    test(`#${i}/${TRIES}: Render variant w/ SSR`, async ({ browser, baseURL, packageName }) => {
       if (!baseURL) {
         throw new Error('Missing baseURL');
       }
@@ -112,18 +126,5 @@ test.describe('A/B tests', () => {
       // Gracefully close up everything
       await context.close();
     });
-  };
-
-  // Manually run tests 10 times to ensure we don't have any flakiness.
-  // Having a for-loop here causes issues with the test runner in React Native for some reason.
-  runTests();
-  runTests();
-  runTests();
-  runTests();
-  runTests();
-  runTests();
-  runTests();
-  runTests();
-  runTests();
-  runTests();
+  }
 });
