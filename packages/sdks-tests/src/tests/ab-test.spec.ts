@@ -77,6 +77,11 @@ test.describe('A/B tests', () => {
         test.skip();
       }
 
+      // React Native is slow for this particular test. Increasing timeout helps.
+      if (packageName === 'e2e-react-native') {
+        test.slow();
+      }
+
       const context = await createContextWithCookies({
         baseURL,
         browser,
@@ -109,6 +114,11 @@ test.describe('A/B tests', () => {
       // SSR A/B tests do not seem to work on old NextJS. Likely a config issue.
       if (packageName === 'e2e-old-nextjs') {
         test.skip();
+      }
+
+      // React Native is slow for this particular test. Increasing timeout helps.
+      if (packageName === 'e2e-react-native') {
+        test.slow();
       }
 
       const context = await createContextWithCookies({
