@@ -1,3 +1,7 @@
+### 0.3.2
+
+- Feature: Support for A/B tests in server-side rendered (SSR) content.
+
 ### 0.3.1
 
 - Feature: Added SDK version to data sent to visual editor for improved debugging.
