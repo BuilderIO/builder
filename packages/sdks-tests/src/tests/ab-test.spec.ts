@@ -100,6 +100,7 @@ test.describe('A/B tests', () => {
       baseURL,
       packageName,
       context: _context,
+      page: _page,
     }) => {
       if (!baseURL) {
         throw new Error('Missing baseURL');
