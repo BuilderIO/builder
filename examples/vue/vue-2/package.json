@@ -7,7 +7,7 @@
     "preview": "vite preview --port 4173"
   },
   "dependencies": {
-    "@builder.io/sdk-vue": "^0.3.2-0",
+    "@builder.io/sdk-vue": "^0.4.0",
     "vue": "^2.7.7",
     "vue-router": "^3.5.4"
   },
