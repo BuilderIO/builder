@@ -58,7 +58,7 @@ test.describe.configure({ retries: 0 });
 test.describe('A/B tests', () => {
   const TRIES = 10;
   // loop 10 times to check for flakiness
-  Array.from({ length: TRIES }).forEach((_, i) => {
+  for (let i = 1; i <= TRIES; i++) {
     test(`#${i}/${TRIES}: Render default w/ SSR`, async ({ baseURL, packageName, browser }) => {
       if (!baseURL) {
         throw new Error('Missing baseURL');
@@ -81,6 +81,10 @@ test.describe('A/B tests', () => {
 
       await findTextInPage({ page, text: 'hello world default' });
       await expect(page.locator(SELECTOR, { hasText: 'hello world variation 1' })).toBeHidden();
+
+      // Gracefully close up everything
+      await context.close();
+      await browser.close();
     });
 
     test(`#${i}/${TRIES}: Render variant w/ SSR`, async ({ browser, baseURL, packageName }) => {
@@ -105,6 +109,10 @@ test.describe('A/B tests', () => {
 
       await findTextInPage({ page, text: 'hello world variation 1' });
       await expect(page.locator(SELECTOR, { hasText: 'hello world default' })).toBeHidden();
+
+      // Gracefully close up everything
+      await context.close();
+      await browser.close();
     });
-  });
+  }
 });
