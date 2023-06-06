@@ -84,7 +84,10 @@ test.describe('A/B tests', () => {
         context: _context,
       });
 
-      const page = await context.newPage();
+      let page = _page;
+      if (!isRNSDK) {
+        page = await context.newPage();
+      }
 
       await page.goto('/ab-test');
 
@@ -114,7 +117,10 @@ test.describe('A/B tests', () => {
         context: _context,
       });
 
-      const page = await context.newPage();
+      let page = _page;
+      if (!isRNSDK) {
+        page = await context.newPage();
+      }
 
       await page.goto('/ab-test');
 
