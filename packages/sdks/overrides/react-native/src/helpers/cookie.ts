@@ -71,7 +71,15 @@ export const setCookie = async ({
     if (!canTrack) {
       return undefined;
     }
-    await storage.save({ key: getStorageName(name), data: { value }, expires });
+
+    const expiresInMs = expires
+      ? { expires: expires.getTime() - new Date().getTime() }
+      : {};
+    await storage.save({
+      key: getStorageName(name),
+      data: { value },
+      ...expiresInMs,
+    });
   } catch (err: any) {
     if (err?.name !== 'NotFoundError') {
       logger.warn('[COOKIE] SET error: ', err?.message || err);
