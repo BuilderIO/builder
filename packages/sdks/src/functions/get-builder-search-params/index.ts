@@ -14,6 +14,12 @@ export const convertSearchParamsToQueryObject = (
   return options;
 };
 
+/**
+ * Receives a `URLSearchParams` object or a regular query object, and returns the subset of query params that are
+ * relevant to the Builder SDK.
+ *
+ * @returns
+ */
 export const getBuilderSearchParams = (
   _options: QueryObject | URLSearchParams | undefined
 ) => {
