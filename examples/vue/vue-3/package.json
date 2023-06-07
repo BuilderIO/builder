@@ -10,7 +10,7 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
-    "@builder.io/sdk-vue": "^0.2.3",
+    "@builder.io/sdk-vue": "^0.4.0",
     "vue": "^3.2.37"
   },
   "devDependencies": {
@@ -26,7 +26,7 @@
     "npm-run-all": "^4.1.5",
     "prettier": "^2.5.1",
     "typescript": "~4.7.4",
-    "vite": "^2.9.12",
+    "vite": "^2.9.16",
     "vue-tsc": "^0.38.1"
   }
 }

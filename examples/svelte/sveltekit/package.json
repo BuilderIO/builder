@@ -18,10 +18,10 @@
 		"prettier": "^2.6.2",
 		"prettier-plugin-svelte": "^2.7.0",
 		"svelte": "^3.44.0",
-		"vite": "^3.1.0"
+		"vite": "^3.2.7"
 	},
 	"type": "module",
 	"dependencies": {
-		"@builder.io/sdk-svelte": "^0.2.3"
+		"@builder.io/sdk-svelte": "^0.4.0"
 	}
 }

@@ -54,8 +54,6 @@ export default function RenderBlocks(props: RenderBlockProps) {
       class={state.className}
       builder-path={props.path}
       builder-parent-id={props.parent}
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       dataSet={{
         class: state.className,
       }}

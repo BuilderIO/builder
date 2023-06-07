@@ -49,6 +49,8 @@ import {
 } from './render-content.helpers.js';
 import { TARGET } from '../../constants/target.js';
 import { logger } from '../../helpers/logger.js';
+import { getRenderContentScriptString } from '../render-content-variants/helpers.js';
+import { wrapComponentRef } from './wrap-component-ref.js';
 
 useMetadata({
   qwik: {
@@ -103,8 +105,8 @@ export default function RenderContent(props: RenderContentProps) {
       data: props.data,
       locale: props.locale,
     }),
-    setContextState: (newState: BuilderRenderState) => {
-      state.contentState = newState;
+    contentSetState: (newRootState: BuilderRenderState) => {
+      state.contentState = newRootState;
     },
 
     allRegisteredComponents: [
@@ -117,9 +119,13 @@ export default function RenderContent(props: RenderContentProps) {
       ...components,
       ...(props.customComponents || []),
     ].reduce(
-      (acc, curr) => ({
+      (acc, { component, ...curr }) => ({
         ...acc,
-        [curr.name]: curr,
+        [curr.name]: {
+          component:
+            TARGET === 'vue3' ? wrapComponentRef(component) : component,
+          ...curr,
+        },
       }),
       {} as RegisteredComponents
     ),
@@ -171,7 +177,9 @@ export default function RenderContent(props: RenderContentProps) {
         evaluate({
           code: jsCode,
           context: props.context || {},
-          state: state.contentState,
+          localState: undefined,
+          rootState: state.contentState,
+          rootSetState: state.contentSetState,
         });
       }
     },
@@ -204,7 +212,9 @@ export default function RenderContent(props: RenderContentProps) {
         evaluate({
           code: group,
           context: props.context || {},
-          state: state.contentState,
+          localState: undefined,
+          rootState: state.contentState,
+          rootSetState: state.contentSetState,
         })
       );
     },
@@ -216,7 +226,7 @@ export default function RenderContent(props: RenderContentProps) {
             ...state.contentState,
             [key]: json,
           };
-          state.setContextState(newState);
+          state.contentSetState(newState);
         })
         .catch((err) => {
           console.error('error fetching dynamic data', url, err);
@@ -250,6 +260,11 @@ export default function RenderContent(props: RenderContentProps) {
         );
       }
     },
+    scriptStr: getRenderContentScriptString({
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
+      contentId: props.content?.id!,
+      parentContentId: props.parentContentId!,
+    }),
   });
 
   // This currently doesn't do anything as `onCreate` is not implemented
@@ -269,8 +284,9 @@ export default function RenderContent(props: RenderContentProps) {
 
   setContext(builderContext, {
     content: state.useContent,
-    state: state.contentState,
-    setState: state.setContextState,
+    localState: undefined,
+    rootState: state.contentState,
+    rootSetState: TARGET === 'qwik' ? undefined : state.contentSetState,
     context: props.context || {},
     apiKey: props.apiKey,
     apiVersion: props.apiVersion,
@@ -292,6 +308,7 @@ export default function RenderContent(props: RenderContentProps) {
         setupBrowserForEditing({
           ...(props.locale ? { locale: props.locale } : {}),
           ...(props.includeRefs ? { includeRefs: props.includeRefs } : {}),
+          ...(props.enrich ? { enrich: props.enrich } : {}),
         });
         Object.values<RegisteredComponent>(
           state.allRegisteredComponents
@@ -395,7 +412,21 @@ export default function RenderContent(props: RenderContentProps) {
         onClick={(event) => state.onClick(event)}
         builder-content-id={state.useContent?.id}
         builder-model={props.model}
+        className={props.classNameProp}
+        {...(TARGET === 'reactNative'
+          ? {
+              dataSet: {
+                // currently, we can't set the actual ID here.
+                // we don't need it right now, we just need to identify content divs for testing.
+                'builder-content-id': '',
+              },
+            }
+          : {})}
+        {...(props.hideContent ? { hidden: true, 'aria-hidden': true } : {})}
       >
+        <Show when={props.isSsrAbTest}>
+          <script innerHTML={state.scriptStr}></script>
+        </Show>
         <Show when={TARGET !== 'reactNative'}>
           <RenderContentStyles
             contentId={state.useContent?.id}

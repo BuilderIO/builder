@@ -1,6 +1,6 @@
 ## General Info
 
-- `packages/sdks/e2e/tests/src/specs` contains the playwright tests, and the playwright config used for all e2e tests.
+- `packages/sdks-tests/src` contain the playwright tests, and the playwright config used for all e2e tests.
 - all other packages at `packages/sdks/e2e/**` represent different servers that all consume the same `e2e/tests` specs.
 
 ## Setup

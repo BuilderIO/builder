@@ -19,11 +19,11 @@
     "prettier-plugin-svelte": "^2.5.0",
     "svelte": "^3.52.0",
     "typescript": "~4.6.2",
-    "vite": "^3.0.2"
+    "vite": "^3.2.7"
   },
   "type": "module",
   "dependencies": {
-    "@builder.io/sdk-svelte": "^0.2.3",
+    "@builder.io/sdk-svelte": "^0.4.0",
     "svelte-preprocess": "^4.10.7"
   }
 }

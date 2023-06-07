@@ -1,3 +1,17 @@
+### 0.4.0
+
+- Feature: A/B tests are now rendered correctly during server-side rendering (SSR) when applicable. This behaviour is backwards compatible with previous versions.
+
+### 0.3.1
+
+- Feature: Added SDK version to data sent to visual editor for improved debugging.
+- Fix: Columns block: removed redundant margin-left in first column.
+- Fix: dynamic action bindings in repeated data.
+
+### 0.3.0
+
+- Updated `qwik` to `v1.0.0`
+
 ### 0.2.3
 
 - No Changes.

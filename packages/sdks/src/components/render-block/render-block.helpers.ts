@@ -1,7 +1,4 @@
-import type {
-  BuilderContextInterface,
-  BuilderRenderState,
-} from '../../context/types';
+import type { BuilderContextInterface } from '../../context/types';
 import { evaluate } from '../../functions/evaluate';
 import { getProcessedBlock } from '../../functions/get-processed-block';
 import type { BuilderBlock } from '../../types/builder-block';
@@ -44,7 +41,9 @@ export const getComponent = ({
 }) => {
   const componentName = getProcessedBlock({
     block,
-    state: context.state,
+    localState: context.localState,
+    rootState: context.rootState,
+    rootSetState: context.rootSetState,
     context: context.context,
     shouldEvaluateBindings: false,
   }).component?.name;
@@ -85,7 +84,9 @@ export const getRepeatItemData = ({
 
   const itemsArray = evaluate({
     code: repeat.collection,
-    state: context.state,
+    localState: context.localState,
+    rootState: context.rootState,
+    rootSetState: context.rootSetState,
     context: context.context,
   });
 
@@ -100,8 +101,8 @@ export const getRepeatItemData = ({
   const repeatArray = itemsArray.map<RepeatData>((item, index) => ({
     context: {
       ...context,
-      state: {
-        ...context.state,
+      localState: {
+        ...context.localState,
         $index: index,
         $item: item,
         [itemNameToUse]: item,
@@ -112,27 +113,4 @@ export const getRepeatItemData = ({
   }));
 
   return repeatArray;
-};
-
-export const getProxyState = (
-  context: BuilderContextInterface
-): BuilderContextInterface['state'] => {
-  if (typeof Proxy === 'undefined') {
-    console.error(
-      'no Proxy available in this environment, cannot proxy state.'
-    );
-    return context.state;
-  }
-
-  const useState = new Proxy(context.state, {
-    set: (obj, prop: keyof BuilderRenderState, value) => {
-      // set the value on the state object, so that the event handler instantly gets the update.
-      obj[prop] = value;
-
-      // set the value in the context, so that the rest of the app gets the update.
-      context.setState?.(obj);
-      return true;
-    },
-  });
-  return useState;
 };

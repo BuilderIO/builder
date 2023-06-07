@@ -1,11 +1,12 @@
 import { getProps } from '@builder.io/sdks-e2e-tests';
+import { processContentResult } from '@builder.io/sdk-react/server';
 
 // ✅ This pattern works. You can pass a Server Component
 // as a child or prop of a Client Component.
 import BuilderPage from './BuilderPage';
 
-function getBuilderContent(urlPath: string) {
-  return getProps(urlPath);
+async function getBuilderContent(urlPath: string) {
+  return await getProps({ pathname: urlPath, processContentResult });
 }
 
 interface PageProps {
@@ -17,7 +18,7 @@ interface PageProps {
 // Pages are Server Components by default
 export default async function Page(props: PageProps) {
   const urlPath = '/' + (props.params?.slug?.join('/') || '');
-  const builderProps = getBuilderContent(urlPath);
+  const builderProps = await getBuilderContent(urlPath);
 
   if (!builderProps.content) {
     return (

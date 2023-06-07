@@ -1,13 +1,19 @@
 import { getAPIKey, getProps } from '@builder.io/sdks-e2e-tests';
 import { BuilderComponent, builder } from '@builder.io/react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 builder.init(getAPIKey());
 // default to not tracking, and re-enable when appropriate
 builder.canTrack = false;
 
 function App() {
-  const props = getProps() as any;
+  const [props, setProps] = useState<any>(undefined);
+
+  useEffect(() => {
+    getProps().then(resp => {
+      setProps(resp);
+    });
+  }, []);
 
   if (props?.apiVersion) {
     builder.apiVersion = props?.apiVersion;

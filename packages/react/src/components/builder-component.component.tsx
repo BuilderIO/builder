@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { jsx, css } from '@emotion/core';
@@ -89,7 +90,7 @@ function debounce(func: Function, wait: number, immediate = false) {
 
 const fontsLoaded = new Set();
 
-let fetch: typeof globalThis['fetch'];
+let fetch: (typeof globalThis)['fetch'];
 if (globalThis.fetch) fetch = globalThis.fetch;
 fetch ??= require('node-fetch');
 

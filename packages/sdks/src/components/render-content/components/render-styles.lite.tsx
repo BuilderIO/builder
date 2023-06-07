@@ -28,7 +28,7 @@ ${getFontCss({ customFonts: props.customFonts })}
   text-align: inherit;
   font-family: inherit;
 }
-`,
+`.trim(),
   });
 
   return <RenderInlinedStyles styles={state.injectedStyles} />;

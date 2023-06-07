@@ -8,10 +8,15 @@ import { transformBlock } from './transform-block.js';
 const evaluateBindings = ({
   block,
   context,
-  state,
+  localState,
+  rootState,
+  rootSetState,
 }: {
   block: BuilderBlock;
-} & Pick<BuilderContextInterface, 'state' | 'context'>): BuilderBlock => {
+} & Pick<
+  BuilderContextInterface,
+  'localState' | 'context' | 'rootState' | 'rootSetState'
+>): BuilderBlock => {
   if (!block.bindings) {
     return block;
   }
@@ -24,7 +29,13 @@ const evaluateBindings = ({
 
   for (const binding in block.bindings) {
     const expression = block.bindings[binding];
-    const value = evaluate({ code: expression, state, context });
+    const value = evaluate({
+      code: expression,
+      localState,
+      rootState,
+      rootSetState,
+      context,
+    });
     set(copied, binding, value);
   }
 
@@ -35,7 +46,9 @@ export function getProcessedBlock({
   block,
   context,
   shouldEvaluateBindings,
-  state,
+  localState,
+  rootState,
+  rootSetState,
 }: {
   block: BuilderBlock;
   /**
@@ -43,11 +56,20 @@ export function getProcessedBlock({
    * also sometimes too early to consider bindings, e.g. when we might be looking at a repeated block.
    */
   shouldEvaluateBindings: boolean;
-} & Pick<BuilderContextInterface, 'state' | 'context'>): BuilderBlock {
+} & Pick<
+  BuilderContextInterface,
+  'localState' | 'context' | 'rootState' | 'rootSetState'
+>): BuilderBlock {
   const transformedBlock = transformBlock(block);
 
   if (shouldEvaluateBindings) {
-    return evaluateBindings({ block: transformedBlock, state, context });
+    return evaluateBindings({
+      block: transformedBlock,
+      localState,
+      rootState,
+      rootSetState,
+      context,
+    });
   } else {
     return transformedBlock;
   }

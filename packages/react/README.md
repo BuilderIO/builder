@@ -330,17 +330,16 @@ import '@builder.io/react/dist/lib/src/blocks/Button';
 import '@builder.io/react/dist/lib/src/blocks/Columns';
 ```
 
-### [Beta] Guide to use API Version v3 to query for content
+### Guide to use API Version v3 to query for content
 
 For using API Version `v3`, you need to pass apiVersion as "v3" in the init function. For example:
 
 ```js
 import { builder } from '@builder.io/react';
 
-Builder.init('YOUR_API_KEY_GOES_HERE', undefined, undefined, undefined, undefined, 'v3');
-
-// OR
-
+// First, initialize the SDK with your API key
+builder.init('YOUR_API_KEY_GOES_HERE');
+// Then, set the API version to v3
 builder.apiVersion = 'v3';
 ```
 

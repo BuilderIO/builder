@@ -10,6 +10,7 @@ import { CONTENT as symbolWithInputBinding } from './symbol-with-input-binding.j
 import { CONTENT as image } from './image.js';
 import { CONTENT as dataBindings } from './data-bindings.js';
 import { CONTENT as dataBindingStyles } from './data-binding-styles.js';
+import { CONTENT as abTest } from './ab-test.js';
 import {
   CONTENT as customBreakpoints,
   CONTENT_RESET as customBreakpointsReset,
@@ -17,6 +18,7 @@ import {
 import { CONTENT as reactiveState } from './reactive-state';
 import { CONTENT as showHideIf } from './show-hide-if';
 import { CONTENT as textBlock } from './text-block';
+import { CONTENT as stateBinding } from './state-binding';
 import type { BuilderContent } from './types.js';
 
 function isBrowser(): boolean {
@@ -43,12 +45,14 @@ const pages = {
   '/image': image,
   '/data-bindings': dataBindings,
   '/data-binding-styles': dataBindingStyles,
+  '/ab-test': abTest,
   '/custom-breakpoints': customBreakpoints,
   '/reactive-state': reactiveState,
   '/element-events': elementEvents,
   '/show-hide-if': showHideIf,
   '/custom-breakpoints-reset': customBreakpointsReset,
   '/text-block': textBlock,
+  '/state-binding': stateBinding,
 } as const;
 
 const apiVersionPathToProp = {
@@ -61,8 +65,9 @@ export type Path = keyof typeof pages;
 
 export const ALL_PATHNAMES = Object.keys(pages);
 
-const getContentForPathname = (pathname: string): BuilderContent | null =>
-  pages[pathname as keyof typeof pages] || null;
+const getContentForPathname = (pathname: string): BuilderContent | null => {
+  return pages[pathname as keyof typeof pages] || null;
+};
 
 // remove trailing slash from pathname if it exists
 // unless it's the root path
@@ -71,17 +76,19 @@ const normalizePathname = (pathname: string): string =>
 
 export const getAPIKey = (): string => 'abcd';
 
-export const getProps = (
-  _pathname = getPathnameFromWindow()
-): {
-  model: string;
-  content: BuilderContent;
-  apiKey: string;
-} | null => {
-  const pathname = normalizePathname(_pathname);
-  const content = getContentForPathname(pathname);
+type ContentResponse = { results: BuilderContent[] };
 
-  if (!content) {
+export const getProps = async (
+  args: {
+    pathname?: string;
+    processContentResult?: (options: any, content: ContentResponse) => Promise<ContentResponse>;
+  } = {}
+) => {
+  const { pathname: _pathname = getPathnameFromWindow(), processContentResult } = args;
+  const pathname = normalizePathname(_pathname);
+  const _content = getContentForPathname(pathname);
+
+  if (!_content) {
     return null;
   }
 
@@ -95,11 +102,16 @@ export const getProps = (
   const extraApiVersionProp =
     apiVersionPathToProp[pathname as keyof typeof apiVersionPathToProp] ?? {};
 
-  return {
-    content,
+  const props = {
     apiKey: getAPIKey(),
     model: 'page',
     ...extraProps,
     ...extraApiVersionProp,
   };
+
+  const content = processContentResult
+    ? (await processContentResult(props, { results: [_content] })).results[0]
+    : _content;
+
+  return { ...props, content } as any;
 };

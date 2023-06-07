@@ -1,17 +1,17 @@
 import { isBrowser } from '../functions/is-browser.js';
 import type { CanTrack } from '../types/can-track.js';
+import { logger } from './logger.js';
 import { checkIsDefined } from './nullable.js';
 import { getTopLevelDomain } from './url.js';
 
-/**
- * NOTE: This function is `async` because its react-native override is async. Do not remove the `async` keyword!
- */
-export const getCookie = async ({
+type GetCookieArgs = {
+  name: string;
+} & CanTrack;
+
+export const getCookieSync = ({
   name,
   canTrack,
-}: {
-  name: string;
-} & CanTrack): Promise<string | undefined> => {
+}: GetCookieArgs): string | undefined => {
   try {
     if (!canTrack) {
       return undefined;
@@ -25,11 +25,16 @@ export const getCookie = async ({
       .split('; ')
       .find((row) => row.startsWith(`${name}=`))
       ?.split('=')[1];
-  } catch (err) {
-    console.debug('[COOKIE] GET error: ', err);
+  } catch (err: any) {
+    logger.warn('[COOKIE] GET error: ', err?.message || err);
     return undefined;
   }
 };
+/**
+ * NOTE: This function is `async` because its react-native override is async. Do not remove the `async` keyword!
+ * The sync version is only safe to use in code blocks that `react-native` is guaranteed not to not run.
+ */
+export const getCookie = async (args: GetCookieArgs) => getCookieSync(args);
 
 type CookieConfiguration = Array<
   | ['expires', string]
@@ -101,7 +106,7 @@ export const setCookie = async ({
     }
     const cookie = createCookieString({ name, value, expires });
     document.cookie = cookie;
-  } catch (err) {
-    console.warn('[COOKIE] SET error: ', err);
+  } catch (err: any) {
+    logger.warn('[COOKIE] SET error: ', err?.message || err);
   }
 };

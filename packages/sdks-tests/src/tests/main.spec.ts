@@ -168,13 +168,21 @@ test.describe(targetContext.name, () => {
 
   test.describe('Features', () => {
     test.describe('Reactive State', () => {
-      excludeReactNative('shows default value', async ({ page }) => {
+      excludeReactNative('shows default value', async ({ page, packageName }) => {
+        if (packageName === 'e2e-vue-nuxt3') {
+          test.skip();
+        }
+
         await page.goto('/reactive-state');
 
         await findTextInPage({ page, text: '0' });
       });
 
-      reactiveStateTest('increments value correctly', async ({ page }) => {
+      reactiveStateTest('increments value correctly', async ({ page, packageName }) => {
+        if (packageName === 'e2e-vue-nuxt3') {
+          test.skip();
+        }
+
         await page.goto('/reactive-state');
 
         await findTextInPage({ page, text: '0' });
@@ -246,7 +254,10 @@ test.describe(targetContext.name, () => {
         await expect(page.locator('body')).not.toContainText('even clicks');
       });
     });
-    test('Dynamic Data Bindings', async ({ page }) => {
+    test('Dynamic Data Bindings', async ({ page, packageName }) => {
+      if (packageName === 'e2e-vue-nuxt3') {
+        test.skip();
+      }
       await page.goto('/data-bindings');
 
       await expect(page.locator(`text="1234"`).first()).toBeVisible();

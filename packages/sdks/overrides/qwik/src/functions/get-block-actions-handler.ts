@@ -7,14 +7,16 @@ export function createEventHandler(
   value: string,
   options: { block: BuilderBlock } & Pick<
     BuilderContextInterface,
-    'state' | 'context'
+    'localState' | 'context' | 'rootState' | 'rootSetState'
   >
 ): (event: Event) => any {
   return $((event: Event) =>
     evaluate({
       code: value,
       context: options.context,
-      state: options.state,
+      localState: options.localState,
+      rootState: options.rootState,
+      rootSetState: options.rootSetState,
       event,
     })
   );

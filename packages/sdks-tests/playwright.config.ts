@@ -15,16 +15,16 @@ const getDirName = () => {
   }
 };
 
-const WEB_SERVERS: Record<Sdk, PackageName[]> = {
+const WEB_SERVERS: Record<Exclude<Sdk, 'all' | 'allNew'>, PackageName[]> = {
   reactNative: ['e2e-react-native'],
-  solid: ['e2e-solidjs'],
+  solid: ['e2e-solidjs', 'e2e-solid-start'],
   qwik: [
     // 'e2e-qwik',
 
     'e2e-qwik-city',
   ],
   react: ['e2e-nextjs-react', 'e2e-react', 'e2e-nextjs-app-dir-react'],
-  vue: ['e2e-vue2', 'e2e-vue3'],
+  vue: ['e2e-vue2', 'e2e-vue3', 'e2e-vue-nuxt3', 'e2e-vue-nuxt2'],
   svelte: ['e2e-svelte', 'e2e-sveltekit'],
   rsc: [],
   oldReact: ['e2e-old-react', 'e2e-old-nextjs', 'e2e-old-react-remix'],
@@ -32,9 +32,18 @@ const WEB_SERVERS: Record<Sdk, PackageName[]> = {
 
 targetContext.name = sdk;
 
-const isReactNative = sdk === 'reactNative';
+const packagesToRun =
+  sdk === 'all'
+    ? Object.values(WEB_SERVERS).flat()
+    : sdk === 'allNew'
+    ? Object.entries(WEB_SERVERS)
+        .filter(([k]) => k !== 'oldReact')
+        .map(([, v]) => v)
+        .flat()
+    : WEB_SERVERS[sdk];
 
-const things = WEB_SERVERS[sdk].map((packageName, i) => {
+const things = packagesToRun.map((packageName, i) => {
+  const isReactNative = packageName === 'e2e-react-native';
   const port = isReactNative ? 19006 : 1111 + i;
   const portFlag = isReactNative ? '' : `--port=${port}`;
 

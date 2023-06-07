@@ -21,8 +21,9 @@ type Props = {
 export default function RenderRepeatedBlock(props: Props) {
   setContext(BuilderContext, {
     content: props.repeatContext.content,
-    state: props.repeatContext.state,
-    setState: props.repeatContext.setState,
+    localState: props.repeatContext.localState,
+    rootState: props.repeatContext.rootState,
+    rootSetState: props.repeatContext.rootSetState,
     context: props.repeatContext.context,
     apiKey: props.repeatContext.apiKey,
     registeredComponents: props.repeatContext.registeredComponents,

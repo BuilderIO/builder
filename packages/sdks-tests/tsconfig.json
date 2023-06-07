@@ -9,10 +9,11 @@
     "skipLibCheck": true,
     "outDir": "dist",
     "declaration": true,
-    "allowJs": true
+    "allowJs": true,
   },
   "include": [
     "src/**/*",
-    "./playwright.config.ts"
-  ]
+    "./playwright.config.ts",
+    "../sdks/typings/**/*"
+  ],
 }

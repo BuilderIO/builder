@@ -99,7 +99,7 @@ export default function Symbol(props: SymbolProps) {
         customComponents={Object.values(builderContext.registeredComponents)}
         data={{
           ...props.symbol?.data,
-          ...builderContext.state,
+          ...builderContext.localState,
           ...state.contentToUse?.data?.state,
         }}
         model={props.symbol?.model}
