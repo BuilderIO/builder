@@ -1,5 +1,4 @@
 import type { CanTrack } from '../types/can-track.js';
-import type { OrgId } from './document-cookie';
 import { logger } from './logger.js';
 
 import Storage from 'react-native-storage';
@@ -38,8 +37,7 @@ export const getCookie = async ({
   canTrack,
 }: {
   name: string;
-} & CanTrack &
-  OrgId) => {
+} & CanTrack) => {
   try {
     if (!canTrack) {
       return undefined;
@@ -51,7 +49,7 @@ export const getCookie = async ({
     const data = await storage.load({ key: getStorageName(parsedName) });
 
     return data.value;
-  } catch (err) {
+  } catch (err: any) {
     if (err?.name !== 'NotFoundError') {
       logger.warn('[COOKIE] GET error: ', err?.message || err);
     }
@@ -68,14 +66,13 @@ export const setCookie = async ({
   name: string;
   value: string;
   expires?: Date;
-} & CanTrack &
-  OrgId) => {
+} & CanTrack) => {
   try {
     if (!canTrack) {
       return undefined;
     }
     await storage.save({ key: getStorageName(name), data: { value }, expires });
-  } catch (err) {
+  } catch (err: any) {
     if (err?.name !== 'NotFoundError') {
       logger.warn('[COOKIE] SET error: ', err?.message || err);
     }

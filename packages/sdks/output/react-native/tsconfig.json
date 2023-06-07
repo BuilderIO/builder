@@ -7,8 +7,18 @@
     "outDir": "dist",
     // we don't use react-native, as that preserves the JSX tags
     "jsx": "react",
-    "emitDeclarationOnly": false,
-    "noEmit": false
+    "noEmit": false,
+    "declaration": true,
+    "noImplicitAny": false,
+    "lib": [
+      "es2019",
+      // TO-DO: this is to silence type errors, but technically DOM code should be behind type-guards to make sure we're not trying to access `window` in
+      // a react-native app on iOS/Android.
+      "dom",
+    ],
   },
-  "include": ["typings/*.d.ts", "src/**/*"]
+  "include": [
+    "typings/*.d.ts",
+    "src/**/*"
+  ]
 }
