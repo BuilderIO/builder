@@ -1,8 +1,8 @@
-import type { BuilderBlock } from '../types/builder-block.js';
 import { isEditing } from './is-editing.js';
 import { findDOMNode } from 'react-dom';
 
-export function transformBlockProperties(block: BuilderBlock) {
+export function transformBlockProperties<T extends { id?: string }>(block: T) {
+  // TO-DO: is this working?
   block.ref = (ref) => {
     if (isEditing()) {
       const el = findDOMNode(ref);
