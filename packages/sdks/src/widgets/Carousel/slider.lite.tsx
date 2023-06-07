@@ -1,4 +1,3 @@
-// npm install @glidejs/glide
 import Glide from '@glidejs/glide/dist/glide.modular.esm';
 import '@glidejs/glide/dist/css/glide.core.min.css';
 import { For, onMount, Show, useStore, useContext } from '@builder.io/mitosis';
@@ -91,7 +90,7 @@ export default function Slider(props: SliderProps) {
       </Show>
       {/* CONTROLS */}
       <div data-glide-el="controls">
-        <div onClick={state.prevArrowFn}>
+        <div onClick={() => state.prevArrowFn()}>
           <RenderBlocks
             path="component.options.prevButton"
             blocks={props.prevArrow}

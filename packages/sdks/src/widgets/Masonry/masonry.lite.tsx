@@ -1,5 +1,4 @@
 import 'masonry-layout/dist/masonry.pkgd.min.js';
-// these elements needs to be migrated from @builder.io/sdks
 import type { BuilderElement } from '../../types/element';
 import RenderBlocks from '../../components/render-blocks.lite';
 import RenderBlock from '../../components/render-block/render-block.lite';
@@ -28,49 +27,52 @@ export default function MasonryComponent(props: MasonryProps) {
         className="grid"
         data-masonry={`{ "columnWidth": ${props.columnWidth}, "itemSelector": ".grid-item" }`}
       >
-        {props.useChildrenForTiles ? (
-          <Show when={props.builderBlock && props.builderBlock.children}>
-            <For each={props.builderBlock.children}>
-              {(block: BuilderElement, index: number) => (
-                <div
-                  key={index}
-                  className="grid-item"
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'stretch',
-                    width: props.columnWidth,
-                  }}
-                >
-                  <RenderBlock block={block} context={context} id={block.id} />
-                </div>
-              )}
-            </For>
-          </Show>
-        ) : (
-          <Show when={props.tiles}>
-            <For each={props.tiles}>
-              {(tile, index) => (
-                <div
-                  key={index}
-                  className="grid-item"
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'stretch',
-                    width: props.columnWidth,
-                  }}
-                >
-                  <RenderBlocks
-                    blocks={(tile as any).content || tile}
-                    path={`component.options.tiles.${index}.content`}
-                    parent={props.builderBlock && props.builderBlock.id}
-                  />
-                </div>
-              )}
-            </For>
-          </Show>
-        )}
+        <Show
+          when={
+            props.useChildrenForTiles &&
+            props.builderBlock &&
+            props.builderBlock.children
+          }
+        >
+          <For each={props.builderBlock.children}>
+            {(block: BuilderElement, index: number) => (
+              <div
+                key={index}
+                className="grid-item"
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'stretch',
+                  width: props.columnWidth,
+                }}
+              >
+                <RenderBlock block={block} context={context} id={block.id} />
+              </div>
+            )}
+          </For>
+        </Show>
+        <Show when={!props.useChildrenForTiles && props.tiles}>
+          <For each={props.tiles}>
+            {(tile, index) => (
+              <div
+                key={index}
+                className="grid-item"
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'stretch',
+                  width: props.columnWidth,
+                }}
+              >
+                <RenderBlocks
+                  blocks={(tile as any).content || tile}
+                  path={`component.options.tiles.${index}.content`}
+                  parent={props.builderBlock && props.builderBlock.id}
+                />
+              </div>
+            )}
+          </For>
+        </Show>
       </div>
     </div>
   );

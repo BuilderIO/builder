@@ -3468,6 +3468,7 @@ __metadata:
     "@builder.io/eslint-plugin-mitosis": ^0.0.14
     "@builder.io/mitosis": ^0.0.106
     "@builder.io/mitosis-cli": ^0.0.64
+    "@glidejs/glide": ^3.6.0
     "@types/jest": ^27.4.1
     "@types/node-fetch": ^2.5.12
     "@types/seedrandom": ^3.0.4
@@ -3483,6 +3484,7 @@ __metadata:
     husky: ^7.0.4
     jest: ^27.5.1
     jest-fetch-mock: ^3.0.3
+    masonry-layout: ^4.2.2
     node-fetch: ^2.6.1
     npm-run-all: ^4.1.5
     pinst: ^3.0.0
@@ -5555,6 +5557,13 @@ __metadata:
   version: 1.1.3
   resolution: "@gar/promisify@npm:1.1.3"
   checksum: 4059f790e2d07bf3c3ff3e0fec0daa8144fe35c1f6e0111c9921bd32106adaa97a4ab096ad7dab1e28ee6a9060083c4d1a4ada42a7f5f3f7a96b8812e2b757c1
+  languageName: node
+  linkType: hard
+
+"@glidejs/glide@npm:^3.6.0":
+  version: 3.6.0
+  resolution: "@glidejs/glide@npm:3.6.0"
+  checksum: e2c8332f03dee891be5a310c9483355492093392efb35b5040d9678cd84d2dc067609a890cbf78f6824307f315e5f7e36940a5dc291c1c2ad653d43d62c7291d
   languageName: node
   linkType: hard
 
@@ -18099,6 +18108,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"desandro-matches-selector@npm:^2.0.0":
+  version: 2.0.2
+  resolution: "desandro-matches-selector@npm:2.0.2"
+  checksum: 30979e6b45d7720d259d4db11ec026fcbee242deee5ec0944c265d7e386a7358ab29f7417cbc3631830d0dbe6e827940dee31f789ed865dba22880d209fc9f8e
+  languageName: node
+  linkType: hard
+
 "destr@npm:^1.1.1, destr@npm:^1.2.2":
   version: 1.2.2
   resolution: "destr@npm:1.2.2"
@@ -20989,6 +21005,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ev-emitter@npm:^1.0.0":
+  version: 1.1.1
+  resolution: "ev-emitter@npm:1.1.1"
+  checksum: 3dd78a7620701ef8095794f611dd251bdd9023badf322b3d6fa5e10a660c50e83eec5ee5bbc7654682635cf7b8858c94e2c77e1d10bdc188a2b0593436403476
+  languageName: node
+  linkType: hard
+
 "eval@npm:0.1.6":
   version: 0.1.6
   resolution: "eval@npm:0.1.6"
@@ -22184,6 +22207,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"fizzy-ui-utils@npm:^2.0.0":
+  version: 2.0.7
+  resolution: "fizzy-ui-utils@npm:2.0.7"
+  dependencies:
+    desandro-matches-selector: ^2.0.0
+  checksum: 001e54effa22c4f62728b90a25e8eb5477057ab53d0184e1c3231bbdfc7c34e278418fbcaf7d63c75ede823d82e61245e668ce8cba90e1c5699de960188c654f
+  languageName: node
+  linkType: hard
+
 "flat-cache@npm:^3.0.4":
   version: 3.0.4
   resolution: "flat-cache@npm:3.0.4"
@@ -22816,6 +22848,13 @@ __metadata:
   version: 6.1.2
   resolution: "get-port@npm:6.1.2"
   checksum: e3c3d591492a11393455ef220f24c812a28f7da56ec3e4a2512d931a1f196d42850b50ac6138349a44622eda6dc3c0ccd8495cd91376d968e2d9e6f6f849e0a9
+  languageName: node
+  linkType: hard
+
+"get-size@npm:^2.0.2":
+  version: 2.0.3
+  resolution: "get-size@npm:2.0.3"
+  checksum: 18d5a5fdb3f541db8b1e6ad46a5411d4bb7da3061d2ef7e544db3bbce7a13543f05c91fd40c7f68b4bc4bc035c160fed23c45514cde7d5fb18de1cce10208b19
   languageName: node
   linkType: hard
 
@@ -29338,6 +29377,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"masonry-layout@npm:^4.2.2":
+  version: 4.2.2
+  resolution: "masonry-layout@npm:4.2.2"
+  dependencies:
+    get-size: ^2.0.2
+    outlayer: ^2.1.0
+  checksum: b947029b8fdfb384d17d7749d80a4f00f88d885acea04d77e1fefd36827cc2a345fd40d9ccddf720ed9323e133d8ea498125eece91d2c8517f69fd4e9e1bbdf4
+  languageName: node
+  linkType: hard
+
 "math-random@npm:^1.0.1":
   version: 1.0.4
   resolution: "math-random@npm:1.0.4"
@@ -32941,6 +32990,17 @@ __metadata:
   version: 0.8.0
   resolution: "outdent@npm:0.8.0"
   checksum: 72b7c1a287674317ea477999ec24e73a9eda21de35eb9429218f4a5bab899e964afaee7508265898118fee5cbee1d79397916b66dd8aeee285cd948ea5b1f562
+  languageName: node
+  linkType: hard
+
+"outlayer@npm:^2.1.0":
+  version: 2.1.1
+  resolution: "outlayer@npm:2.1.1"
+  dependencies:
+    ev-emitter: ^1.0.0
+    fizzy-ui-utils: ^2.0.0
+    get-size: ^2.0.2
+  checksum: a8b69d07bad6b498ea1956f89a4bae6d38414d81a5feeae6af06cd8206a1bf47db82f664dc3ccd13b8d2c5886a6cded4a4642d0fafcbbd80f68873b7eb9f4153
   languageName: node
   linkType: hard
 

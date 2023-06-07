@@ -53,7 +53,15 @@ export default function AccordionItem(props: any) {
           }
         }}
       >
-        {props.fromChildren ? (
+        <Show
+          when={props.fromChildren && props.titleBlocks.length}
+          else={
+            <RenderBlocks
+              blocks={props.titleBlocks}
+              path={`items.${props.index}.title`}
+            />
+          }
+        >
           <For each={props.titleBlocks}>
             {(block: any, index) => (
               <RenderBlock
@@ -66,12 +74,7 @@ export default function AccordionItem(props: any) {
               />
             )}
           </For>
-        ) : (
-          <RenderBlocks
-            blocks={props.titleBlocks}
-            path={`items.${props.index}.title`}
-          />
-        )}
+        </Show>
       </div>
       <Show when={state.isOpen}>
         <div
@@ -88,7 +91,15 @@ export default function AccordionItem(props: any) {
           //     }),
           // }}
         >
-          {props.fromChildren ? (
+          <Show
+            when={props.fromChildren && props.detailBlocks.length}
+            else={
+              <RenderBlocks
+                blocks={props.detailBlocks}
+                path={`items.${props.index}.detail`}
+              />
+            }
+          >
             <For each={props.detailBlocks}>
               {(block: any, index) => (
                 <RenderBlock
@@ -101,12 +112,7 @@ export default function AccordionItem(props: any) {
                 />
               )}
             </For>
-          ) : (
-            <RenderBlocks
-              blocks={props.detailBlocks}
-              path={`items.${props.index}.detail`}
-            />
-          )}
+          </Show>
         </div>
       </Show>
     </div>
