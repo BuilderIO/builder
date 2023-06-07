@@ -6,7 +6,7 @@ export function transformBlockProperties(block: BuilderBlock) {
   block.ref = (ref) => {
     if (isEditing()) {
       const el = findDOMNode(ref);
-      if (el && !(el instanceof Text)) {
+      if (block.id && el && !(el instanceof Text)) {
         el.setAttribute('builder-id', block.id);
         el.classList.add(block.id);
       }
