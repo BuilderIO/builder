@@ -31,7 +31,8 @@ export const getDefaultRegisteredComponents: () => RegisteredComponent[] =
     // { component: Video, ...videoComponentInfo },
 
     // TO-DO: These components are not yet supported on React Native.
-    // { component: Embed, ...embedComponentINfo },
+    // { component: Embed, ...x}
+    // { component: CustomCode, ...x}
 
     { component: Symbol, ...symbolComponentInfo },
     { component: Button, ...buttonComponentInfo },
