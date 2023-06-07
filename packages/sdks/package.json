@@ -61,7 +61,9 @@
     "@builder.io/mitosis-cli": "^0.0.64",
     "node-fetch": "^2.6.1",
     "seedrandom": "^3.0.5",
-    "traverse": "^0.6.6"
+    "traverse": "^0.6.6",
+    "@glidejs/glide": "^3.6.0",
+    "masonry-layout": "^4.2.2"
   },
   "devDependencies": {
     "@builder.io/eslint-plugin-mitosis": "^0.0.14",
