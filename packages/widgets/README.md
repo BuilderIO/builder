@@ -4,35 +4,39 @@ Adds widgets for Builder.io editing, such as carousels, tabs, accordions, etc.
 
 ## How to use it
 
-First, install the package
+First, install the package:
 
 ```bash
 npm install @builder.io/widgets
 ```
 
-When using the React SDK, just
+When using the React SDK, import:
 
 ```ts
 import '@builder.io/widgets';
 ```
 
-Anywhere that you render a `<BuilderComponent ... />`, and now the widgets will register and be available in the editor and when rendering (including server side)
+When you import widgets wherever you render a `<BuilderComponent ... />`, the widgets register and are available in the Visual Editor and when rendering (including server-side).
 
 ## Example
 
-See here for a real [working example in our next.js example repo](/examples/next-js-simple/pages/%5B%5B...page%5D%5D.tsx)
+For a working example, check out [Builder's Next.js example](/examples/next-js-simple/pages/%5B%5B...page%5D%5D.tsx).
 
 ## Lazy Loading
-Instead of importing the root `@builder.io/widgets` which synchronously registers all components, you can asynchrnously import only the widgets used in builder content:
 
-#### With Next.js
-To only dynamically import widgets in next.js:
+Instead of importing the root `@builder.io/widgets`, which synchronously registers all components, you can asynchronously import only the widgets used in your Builder content.
+
+### With Next.js
+
+To dynamically import widgets in Next.js, use the following import statement:
+
 ```
 import '@builder.io/widgets/dist/lib/builder-widgets-async'
 ```
 
-#### Other Frameworks
-You'd want to lazy load the widget components explicitly. To do so, , you can register them with your lazy loading library of choice, for e.g  [Loadable](https://github.com/jamiebuilds/react-loadable), and these components will only load when used in content, as needed.
+### Frameworks other than Next.js
+
+Lazy load the widget components explicitly by registering them with your lazy loading library of choice; for example, [Loadable](https://github.com/jamiebuilds/react-loadable), and only the specified components will load when used in content, as needed.
 
 ```ts
 import { Builder } from '@builder.io/react';
@@ -47,8 +51,12 @@ Builder.registerComponent(
 );
 ```
 
-You can also use this same methodology with [Suspense](https://reactjs.org/docs/concurrent-mode-suspense.html) as well.
+You can also use this same methodology with [Suspense](https://react.dev/reference/react/Suspense) as well.
+
+## More information
+
+For more detail, read the official Builder widgets documentation, [Using Widgets](https://www.builder.io/c/docs/widgets).
 
 ## Help and troubleshooting
 
-Questions or feedback - contact us at help@builder.io, we are happy to help!
+If you have questions or feedback, contact us at <help@builder.io>. We are happy to help!
