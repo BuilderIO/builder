@@ -17,6 +17,8 @@ export {
   processContentResult,
 } from './functions/get-content/index.js';
 
+export { getBuilderSearchParams } from './functions/get-builder-search-params/index.js';
+
 export { track } from './functions/track/index.js';
 
 export type { RegisteredComponent } from './context/types';

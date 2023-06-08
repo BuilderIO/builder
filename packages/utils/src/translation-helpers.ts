@@ -4,7 +4,6 @@ import omit from 'lodash/omit';
 import unescape from 'lodash/unescape';
 
 export const localizedType = '@builder.io/core:LocalizedValue';
-export const translatatedType = '@builder.io/core:TranslatedValue';
 
 export type TranslateableFields = {
   [key: string]: {
@@ -95,15 +94,28 @@ export function applyTranslation(
       !el.meta?.excludeFromTranslation &&
       translation[`blocks.${el.id}#text`]
     ) {
+      const localizedValues =
+        typeof el.component.options?.text === 'string'
+          ? {
+              Default: el.component.options.text,
+            }
+          : el.component.options.text;
+
       this.update({
         ...el,
         meta: {
           ...el.meta,
           translated: true,
+          // this tells the editor that this is a forced localized input similar to clicking the globe icon
+          'transformed.text': 'localized',
         },
-        bindings: {
-          ...el.bindings,
-          'component.options.text': `state.translation['blocks.${el.id}#text'][state.locale || 'Default'] || \`${el.component.options.text}\``,
+        options: {
+          ...el.component.options,
+          text: {
+            '@type': localizedType,
+            ...localizedValues,
+            [locale]: unescape(translation[`blocks.${el.id}#text`].value),
+          },
         },
       });
     }
@@ -138,26 +150,6 @@ export function applyTranslation(
       });
     }
   });
-
-  const translationState = Object.keys(translation).reduce((acc, key) => {
-    if (key.startsWith('blocks.')) {
-      return {
-        ...acc,
-        [key]: {
-          '@type': translatatedType,
-          ...content.data!.state?.translation?.[key],
-          [locale]: unescape(translation[key].value),
-        },
-      };
-    }
-
-    return acc;
-  }, {});
-
-  content.data!.state = {
-    ...content.data!.state,
-    translation: translationState,
-  };
 
   content.data = {
     ...omit(content.data, 'blocksString'),

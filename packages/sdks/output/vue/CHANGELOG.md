@@ -1,7 +1,13 @@
+### 0.4.1
+
+- Fix: bring back `getBuilderSearchParams` export that was accidentally removed.
+
 ### 0.4.0
 
 - Feature: A/B tests are now rendered correctly during server-side rendering (SSR) when applicable. This behaviour is backwards compatible with previous versions.
 - Fix: memory leak caused by passing reactive component references.
+- Feature: Add support for `enrich` API flag.
+- Mark `noTraverse` and `includeRefs` as deprecated.- Fix: memory leak caused by passing reactive component references.
 
 ### 0.3.1
 

@@ -1,4 +1,4 @@
-import type { Browser } from '@playwright/test';
+import type { Browser, BrowserContext } from '@playwright/test';
 import { expect } from '@playwright/test';
 import { findTextInPage, isRNSDK, test } from './helpers.js';
 
@@ -12,54 +12,62 @@ const createContextWithCookies = async ({
   cookies,
   baseURL,
   browser,
+  context,
 }: {
   browser: Browser;
   baseURL: string;
   cookies: { name: string; value: string }[];
+  context: BrowserContext;
 }) => {
-  const context = await browser.newContext({
-    storageState: isRNSDK
-      ? {
-          origins: [
-            {
-              origin: new URL(baseURL).origin,
-              localStorage: cookies.map(({ name, value }) => ({
-                name: `builderio.${name}`,
-                value: JSON.stringify({
-                  rawData: { value },
-                  // add long expiry
-                  expires: Date.now() + 1000 * 60 * 60 * 24 * 365 * 10,
-                }),
-              })),
-            },
-          ],
-          cookies: [],
-        }
-      : {
-          cookies: cookies.map(cookie => {
-            const newCookie = {
-              name: cookie.name,
-              value: cookie.value,
-              // this is valid but types seem to be mismatched.
-              url: baseURL,
-            } as any;
-            return newCookie;
-          }),
-          origins: [],
-        },
+  if (isRNSDK) {
+    context.addInitScript(
+      items => {
+        items.map(({ name, value }) => {
+          window.localStorage.setItem(name, value);
+        });
+      },
+      cookies.map(({ name, value }) => ({
+        name: `builderio.${name}`,
+        value: JSON.stringify({
+          rawData: { value },
+          // add long expiry
+          expires: Date.now() + 1000 * 60 * 60 * 24 * 365 * 10,
+        }),
+      }))
+    );
+    return context;
+  }
+  return await browser.newContext({
+    storageState: {
+      cookies: cookies.map(cookie => {
+        const newCookie = {
+          name: cookie.name,
+          value: cookie.value,
+          // this is valid but types seem to be mismatched.
+          url: baseURL,
+        } as any;
+        return newCookie;
+      }),
+      origins: [],
+    },
   });
-
-  return context;
 };
 
 // Forbid retries as A/B tests are not deterministic, and we don't want to give any leeway to flakiness.
 test.describe.configure({ retries: 0 });
 
 test.describe('A/B tests', () => {
-  let i = 0;
-  const runTests = () => {
-    i++;
-    test(`#${i}: Render default w/ SSR`, async ({ baseURL, packageName, browser }) => {
+  const TRIES = 10;
+
+  // Manually run tests 10 times to ensure we don't have any flakiness.
+  for (let i = 1; i <= TRIES; i++) {
+    test(`#${i}/${TRIES}: Render default w/ SSR`, async ({
+      page: _page,
+      baseURL,
+      packageName,
+      browser,
+      context: _context,
+    }) => {
       if (!baseURL) {
         throw new Error('Missing baseURL');
       }
@@ -67,26 +75,38 @@ test.describe('A/B tests', () => {
       // SSR A/B tests do not seem to work on old NextJS. Likely a config issue.
       if (packageName === 'e2e-old-nextjs') {
         test.skip();
+      }
+
+      // React Native is slow for this particular test. Increasing timeout helps.
+      if (packageName === 'e2e-react-native') {
+        test.slow();
       }
 
       const context = await createContextWithCookies({
         baseURL,
         browser,
         cookies: [{ name: COOKIE_NAME, value: CONTENT_ID }],
+        context: _context,
       });
 
-      const page = await context.newPage();
+      let page = _page;
+      if (!isRNSDK) {
+        page = await context.newPage();
+      }
 
       await page.goto('/ab-test');
 
       await findTextInPage({ page, text: 'hello world default' });
       await expect(page.locator(SELECTOR, { hasText: 'hello world variation 1' })).toBeHidden();
-
-      // Gracefully close up everything
-      await context.close();
     });
 
-    test(`#${i}: Render variant w/ SSR`, async ({ browser, baseURL, packageName }) => {
+    test(`#${i}/${TRIES}: Render variant w/ SSR`, async ({
+      browser,
+      baseURL,
+      packageName,
+      context: _context,
+      page: _page,
+    }) => {
       if (!baseURL) {
         throw new Error('Missing baseURL');
       }
@@ -96,34 +116,27 @@ test.describe('A/B tests', () => {
         test.skip();
       }
 
+      // React Native is slow for this particular test. Increasing timeout helps.
+      if (packageName === 'e2e-react-native') {
+        test.slow();
+      }
+
       const context = await createContextWithCookies({
         baseURL,
         browser,
         cookies: [{ name: COOKIE_NAME, value: VARIANT_ID }],
+        context: _context,
       });
 
-      const page = await context.newPage();
+      let page = _page;
+      if (!isRNSDK) {
+        page = await context.newPage();
+      }
 
       await page.goto('/ab-test');
 
       await findTextInPage({ page, text: 'hello world variation 1' });
       await expect(page.locator(SELECTOR, { hasText: 'hello world default' })).toBeHidden();
-
-      // Gracefully close up everything
-      await context.close();
     });
-  };
-
-  // Manually run tests 10 times to ensure we don't have any flakiness.
-  // Having a for-loop here causes issues with the test runner in React Native for some reason.
-  runTests();
-  runTests();
-  runTests();
-  runTests();
-  runTests();
-  runTests();
-  runTests();
-  runTests();
-  runTests();
-  runTests();
+  }
 });
