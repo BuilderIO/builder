@@ -1,3 +1,7 @@
+### 2.0.3
+- Feature: Add support for `enrich` API flag.
+- Mark `includeRefs` as deprecated.
+
 ### 2.0.0
 - `apiVersion` property now defaults to `v3`.
 
