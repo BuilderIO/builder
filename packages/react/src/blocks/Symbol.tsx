@@ -106,6 +106,7 @@ class SymbolComponent extends React.Component<SymbolProps> {
     return (
       <BuilderStoreContext.Consumer key={(model || 'no model') + ':' + (entry || 'no entry')}>
         {state => {
+          const builderComponentKey = this.props.inheritState ? `${key}_${state?.state?.locale || 'Default'}`: key;
           return (
             <TagName
               data-model={model}
@@ -135,7 +136,8 @@ class SymbolComponent extends React.Component<SymbolProps> {
                   renderLink={state.renderLink}
                   inlineContent={symbol?.inline}
                   {...(content && { content })}
-                  options={{ key, noEditorUpdates: true }}
+                  key={builderComponentKey}
+                  options={{ key: builderComponentKey, noEditorUpdates: true }}
                   codegen={!!content?.data?.blocksJs}
                   hydrate={state.state?._hydrate}
                   builderBlock={this.props.builderBlock}
