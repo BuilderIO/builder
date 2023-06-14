@@ -61,13 +61,13 @@ export const excludeTestFor = (sdks: { [X in Sdk]?: boolean }) => {
  * - React
  * - old React
  * - Qwik
+ * - Svelte
  *
  * so we skip the other environments.
  */
 export const reactiveStateTest = excludeTestFor({
   reactNative: true,
   rsc: true,
-  svelte: true,
   solid: true,
 });
 
