@@ -19,18 +19,18 @@
 </script>
 
 <script lang="ts">
-  import { getContext, onMount } from "svelte";
+  import { getContext, onMount } from 'svelte';
 
-  import RenderContent from "../../components/render-content/render-content.svelte";
-  import BuilderContext from "../../context/builder.context.js";
-  import { getContent } from "../../functions/get-content/index.js";
-  import type { BuilderContent } from "../../types/builder-content.js";
-  import type { BuilderBlock } from "../../types/builder-block.js";
-  import { TARGET } from "../../constants/target";
-  import { logger } from "../../helpers/logger";
+  import RenderContent from '../../components/render-content/render-content.svelte';
+  import BuilderContext from '../../context/builder.context.js';
+  import { getContent } from '../../functions/get-content/index.js';
+  import type { BuilderContent } from '../../types/builder-content.js';
+  import type { BuilderBlock } from '../../types/builder-block.js';
+  import { TARGET } from '../../constants/target';
+  import { logger } from '../../helpers/logger';
 
-  const isEvent = (attr) => attr.startsWith("on:");
-  const isNonEvent = (attr) => !attr.startsWith("on:");
+  const isEvent = (attr) => attr.startsWith('on:');
+  const isNonEvent = (attr) => !attr.startsWith('on:');
   const filterAttrs = (attrs = {}, filter) => {
     const validAttr = {};
     Object.keys(attrs).forEach((attr) => {
@@ -58,9 +58,9 @@
     };
   };
 
-  export let attributes: SymbolProps["attributes"];
-  export let symbol: SymbolProps["symbol"];
-  export let dynamic: SymbolProps["dynamic"];
+  export let attributes: SymbolProps['attributes'];
+  export let symbol: SymbolProps['symbol'];
+  export let dynamic: SymbolProps['dynamic'];
 
   let builderContext = getContext(BuilderContext.key);
 
@@ -94,21 +94,21 @@
           }
         })
         .catch((err) => {
-          logger.error("Could not fetch symbol content: ", err);
+          logger.error('Could not fetch symbol content: ', err);
         });
     }
   }
 
   let className = [
-    ...(TARGET === "vue2" || TARGET === "vue3"
+    ...(TARGET === 'vue2' || TARGET === 'vue3'
       ? Object.keys(attributes.class)
       : [attributes.class]),
-    "builder-symbol",
-    symbol?.inline ? "builder-inline-symbol" : undefined,
-    symbol?.dynamic || dynamic ? "builder-dynamic-symbol" : undefined,
+    'builder-symbol',
+    symbol?.inline ? 'builder-inline-symbol' : undefined,
+    symbol?.dynamic || dynamic ? 'builder-dynamic-symbol' : undefined,
   ]
     .filter(Boolean)
-    .join(" ");
+    .join(' ');
   let contentToUse = symbol?.content;
 
   onMount(() => {

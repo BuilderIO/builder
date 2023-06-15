@@ -11,10 +11,10 @@
 </script>
 
 <script lang="ts">
-  import { isEditing } from "../../functions/is-editing.js";
+  import { isEditing } from '../../functions/is-editing.js';
 
-  const isEvent = (attr) => attr.startsWith("on:");
-  const isNonEvent = (attr) => !attr.startsWith("on:");
+  const isEvent = (attr) => attr.startsWith('on:');
+  const isNonEvent = (attr) => !attr.startsWith('on:');
   const filterAttrs = (attrs = {}, filter) => {
     const validAttr = {};
     Object.keys(attrs).forEach((attr) => {
@@ -42,18 +42,18 @@
     };
   };
 
-  export let attributes: FormInputProps["attributes"];
-  export let defaultValue: FormInputProps["defaultValue"];
-  export let placeholder: FormInputProps["placeholder"];
-  export let type: FormInputProps["type"];
-  export let name: FormInputProps["name"];
-  export let value: FormInputProps["value"];
-  export let required: FormInputProps["required"];
+  export let attributes: FormInputProps['attributes'];
+  export let defaultValue: FormInputProps['defaultValue'];
+  export let placeholder: FormInputProps['placeholder'];
+  export let type: FormInputProps['type'];
+  export let name: FormInputProps['name'];
+  export let value: FormInputProps['value'];
+  export let required: FormInputProps['required'];
 </script>
 
 <input
   {...filterAttrs(attributes, isNonEvent)}
-  key={isEditing() && defaultValue ? defaultValue : "default-key"}
+  key={isEditing() && defaultValue ? defaultValue : 'default-key'}
   {placeholder}
   {type}
   {name}

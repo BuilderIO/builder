@@ -9,8 +9,8 @@
 </script>
 
 <script lang="ts">
-  const isEvent = (attr) => attr.startsWith("on:");
-  const isNonEvent = (attr) => !attr.startsWith("on:");
+  const isEvent = (attr) => attr.startsWith('on:');
+  const isNonEvent = (attr) => !attr.startsWith('on:');
   const filterAttrs = (attrs = {}, filter) => {
     const validAttr = {};
     Object.keys(attrs).forEach((attr) => {
@@ -38,11 +38,11 @@
     };
   };
 
-  export let attributes: TextareaProps["attributes"];
-  export let placeholder: TextareaProps["placeholder"];
-  export let name: TextareaProps["name"];
-  export let value: TextareaProps["value"];
-  export let defaultValue: TextareaProps["defaultValue"];
+  export let attributes: TextareaProps['attributes'];
+  export let placeholder: TextareaProps['placeholder'];
+  export let name: TextareaProps['name'];
+  export let value: TextareaProps['value'];
+  export let defaultValue: TextareaProps['defaultValue'];
 </script>
 
 <textarea

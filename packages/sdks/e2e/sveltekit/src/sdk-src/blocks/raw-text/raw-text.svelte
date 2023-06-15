@@ -7,10 +7,10 @@
 </script>
 
 <script lang="ts">
-  export let attributes: RawTextProps["attributes"];
-  export let text: RawTextProps["text"];
+  export let attributes: RawTextProps['attributes'];
+  export let text: RawTextProps['text'];
 </script>
 
 <span class={attributes?.class || attributes?.className}
-  >{@html text || ""}</span
+  >{@html text || ''}</span
 >

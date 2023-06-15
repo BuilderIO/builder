@@ -7,14 +7,14 @@
 </script>
 
 <script lang="ts">
-  import RenderInlinedStyles from "../../render-inlined-styles.svelte";
-  import type { CustomFont } from "./render-styles.helpers";
-  import { getCss } from "./render-styles.helpers";
-  import { getFontCss } from "./render-styles.helpers";
+  import RenderInlinedStyles from '../../render-inlined-styles.svelte';
+  import type { CustomFont } from './render-styles.helpers';
+  import { getCss } from './render-styles.helpers';
+  import { getFontCss } from './render-styles.helpers';
 
-  export let cssCode: Props["cssCode"];
-  export let contentId: Props["contentId"];
-  export let customFonts: Props["customFonts"];
+  export let cssCode: Props['cssCode'];
+  export let contentId: Props['contentId'];
+  export let customFonts: Props['customFonts'];
 
   let injectedStyles = `
 ${getCss({

@@ -10,25 +10,25 @@
     aspectRatio?: number;
     width?: number;
     height?: number;
-    fit?: "contain" | "cover" | "fill";
+    fit?: 'contain' | 'cover' | 'fill';
     position?:
-      | "center"
-      | "top"
-      | "left"
-      | "right"
-      | "bottom"
-      | "top left"
-      | "top right"
-      | "bottom left"
-      | "bottom right";
+      | 'center'
+      | 'top'
+      | 'left'
+      | 'right'
+      | 'bottom'
+      | 'top left'
+      | 'top right'
+      | 'bottom left'
+      | 'bottom right';
     posterImage?: string;
     lazyLoad?: boolean;
   }
 </script>
 
 <script lang="ts">
-  const isEvent = (attr) => attr.startsWith("on:");
-  const isNonEvent = (attr) => !attr.startsWith("on:");
+  const isEvent = (attr) => attr.startsWith('on:');
+  const isNonEvent = (attr) => !attr.startsWith('on:');
   const filterAttrs = (attrs = {}, filter) => {
     const validAttr = {};
     Object.keys(attrs).forEach((attr) => {
@@ -56,20 +56,20 @@
     };
   };
 
-  export let autoPlay: VideoProps["autoPlay"];
-  export let muted: VideoProps["muted"];
-  export let controls: VideoProps["controls"];
-  export let loop: VideoProps["loop"];
-  export let playsInline: VideoProps["playsInline"];
-  export let attributes: VideoProps["attributes"];
-  export let fit: VideoProps["fit"];
-  export let position: VideoProps["position"];
-  export let video: VideoProps["video"];
-  export let posterImage: VideoProps["posterImage"];
+  export let autoPlay: VideoProps['autoPlay'];
+  export let muted: VideoProps['muted'];
+  export let controls: VideoProps['controls'];
+  export let loop: VideoProps['loop'];
+  export let playsInline: VideoProps['playsInline'];
+  export let attributes: VideoProps['attributes'];
+  export let fit: VideoProps['fit'];
+  export let position: VideoProps['position'];
+  export let video: VideoProps['video'];
+  export let posterImage: VideoProps['posterImage'];
 
   function mitosis_styling(node, vars) {
     Object.entries(vars || {}).forEach(([p, v]) => {
-      if (p.startsWith("--")) {
+      if (p.startsWith('--')) {
         node.style.setProperty(p, v);
       } else {
         node.style[p] = v;
@@ -116,8 +116,8 @@
 
 <video
   use:mitosis_styling={{
-    width: "100%",
-    height: "100%",
+    width: '100%',
+    height: '100%',
     ...attributes?.style,
     objectFit: fit,
     objectPosition: position,
@@ -126,7 +126,7 @@
     borderRadius: 1,
   }}
   {...filterAttrs(spreadProps(), isNonEvent)}
-  src={video || "no-src"}
+  src={video || 'no-src'}
   poster={posterImage}
   use:setAttrs={filterAttrs(spreadProps(), isEvent)}
 />

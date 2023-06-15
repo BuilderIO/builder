@@ -1,52 +1,52 @@
 <script lang="ts">
-  import { onDestroy, onMount, setContext } from "svelte";
+  import { onDestroy, onMount, setContext } from 'svelte';
 
-  import { getDefaultRegisteredComponents } from "../../constants/builder-registered-components.js";
+  import { getDefaultRegisteredComponents } from '../../constants/builder-registered-components.js';
   import type {
     BuilderRenderState,
     RegisteredComponent,
     RegisteredComponents,
-  } from "../../context/types.js";
-  import { evaluate } from "../../functions/evaluate.js";
-  import { getContent } from "../../functions/get-content/index.js";
-  import { fetch } from "../../functions/get-fetch.js";
-  import { isBrowser } from "../../functions/is-browser.js";
-  import { isEditing } from "../../functions/is-editing.js";
-  import { isPreviewing } from "../../functions/is-previewing.js";
+  } from '../../context/types.js';
+  import { evaluate } from '../../functions/evaluate.js';
+  import { getContent } from '../../functions/get-content/index.js';
+  import { fetch } from '../../functions/get-fetch.js';
+  import { isBrowser } from '../../functions/is-browser.js';
+  import { isEditing } from '../../functions/is-editing.js';
+  import { isPreviewing } from '../../functions/is-previewing.js';
   import {
     components,
     createRegisterComponentMessage,
-  } from "../../functions/register-component.js";
-  import { _track } from "../../functions/track/index.js";
+  } from '../../functions/register-component.js';
+  import { _track } from '../../functions/track/index.js';
   import type {
     Breakpoints,
     BuilderContent,
-  } from "../../types/builder-content.js";
-  import type { Nullable } from "../../types/typescript.js";
-  import RenderBlocks from "../render-blocks.svelte";
-  import RenderContentStyles from "./components/render-styles.svelte";
-  import builderContext from "../../context/builder.context.js";
+  } from '../../types/builder-content.js';
+  import type { Nullable } from '../../types/typescript.js';
+  import RenderBlocks from '../render-blocks.svelte';
+  import RenderContentStyles from './components/render-styles.svelte';
+  import builderContext from '../../context/builder.context.js';
   import {
     registerInsertMenu,
     setupBrowserForEditing,
-  } from "../../scripts/init-editing.js";
-  import { checkIsDefined } from "../../helpers/nullable.js";
-  import { getInteractionPropertiesForEvent } from "../../functions/track/interaction.js";
+  } from '../../scripts/init-editing.js';
+  import { checkIsDefined } from '../../helpers/nullable.js';
+  import { getInteractionPropertiesForEvent } from '../../functions/track/interaction.js';
   import type {
     RenderContentProps,
     BuilderComponentStateChange,
-  } from "./render-content.types.js";
+  } from './render-content.types.js';
   import {
     getContentInitialValue,
     getContextStateInitialValue,
-  } from "./render-content.helpers.js";
-  import { TARGET } from "../../constants/target.js";
-  import { logger } from "../../helpers/logger.js";
-  import { getRenderContentScriptString } from "../render-content-variants/helpers.js";
-  import { wrapComponentRef } from "./wrap-component-ref.js";
+  } from './render-content.helpers.js';
+  import { TARGET } from '../../constants/target.js';
+  import { logger } from '../../helpers/logger.js';
+  import { getRenderContentScriptString } from '../render-content-variants/helpers.js';
+  import { wrapComponentRef } from './wrap-component-ref.js';
 
-  const isEvent = (attr) => attr.startsWith("on:");
-  const isNonEvent = (attr) => !attr.startsWith("on:");
+  const isEvent = (attr) => attr.startsWith('on:');
+  const isNonEvent = (attr) => !attr.startsWith('on:');
   const filterAttrs = (attrs = {}, filter) => {
     const validAttr = {};
     Object.keys(attrs).forEach((attr) => {
@@ -74,21 +74,21 @@
     };
   };
 
-  export let content: RenderContentProps["content"];
-  export let data: RenderContentProps["data"];
-  export let canTrack: RenderContentProps["canTrack"];
-  export let locale: RenderContentProps["locale"];
-  export let customComponents: RenderContentProps["customComponents"];
-  export let model: RenderContentProps["model"];
-  export let context: RenderContentProps["context"];
-  export let apiKey: RenderContentProps["apiKey"];
-  export let parentContentId: RenderContentProps["parentContentId"];
-  export let hideContent: RenderContentProps["hideContent"];
-  export let classNameProp: RenderContentProps["classNameProp"];
-  export let isSsrAbTest: RenderContentProps["isSsrAbTest"];
-  export let includeRefs: RenderContentProps["includeRefs"];
-  export let enrich: RenderContentProps["enrich"];
-  export let apiVersion: RenderContentProps["apiVersion"];
+  export let content: RenderContentProps['content'];
+  export let data: RenderContentProps['data'];
+  export let canTrack: RenderContentProps['canTrack'];
+  export let locale: RenderContentProps['locale'];
+  export let customComponents: RenderContentProps['customComponents'];
+  export let model: RenderContentProps['model'];
+  export let context: RenderContentProps['context'];
+  export let apiKey: RenderContentProps['apiKey'];
+  export let parentContentId: RenderContentProps['parentContentId'];
+  export let hideContent: RenderContentProps['hideContent'];
+  export let classNameProp: RenderContentProps['classNameProp'];
+  export let isSsrAbTest: RenderContentProps['isSsrAbTest'];
+  export let includeRefs: RenderContentProps['includeRefs'];
+  export let enrich: RenderContentProps['enrich'];
+  export let apiVersion: RenderContentProps['apiVersion'];
 
   function mergeNewContent(newContent: BuilderContent) {
     useContent = {
@@ -122,7 +122,7 @@
     const { data } = event;
     if (data) {
       switch (data.type) {
-        case "builder.configureSdk": {
+        case 'builder.configureSdk': {
           const messageContent = data.data;
           const { breakpoints, contentId } = messageContent;
           if (!contentId || contentId !== useContent?.id) {
@@ -134,7 +134,7 @@
           forceReRenderCount = forceReRenderCount + 1; // This is a hack to force Qwik to re-render.
           break;
         }
-        case "builder.contentUpdate": {
+        case 'builder.contentUpdate': {
           const messageContent = data.data;
           const key =
             messageContent.key ||
@@ -149,7 +149,7 @@
 
           break;
         }
-        case "builder.patchUpdates": {
+        case 'builder.patchUpdates': {
           // TODO
           break;
         }
@@ -174,7 +174,7 @@
       const variationId = useContent?.testVariationId;
       const contentId = useContent?.id;
       _track({
-        type: "click",
+        type: 'click',
         canTrack: canTrackToUse,
         contentId,
         apiKey: apiKey,
@@ -209,7 +209,7 @@
         contentSetState(newState);
       })
       .catch((err) => {
-        console.error("error fetching dynamic data", url, err);
+        console.error('error fetching dynamic data', url, err);
       });
   }
   function runHttpRequests() {
@@ -230,7 +230,7 @@
     if (isEditing()) {
       window.dispatchEvent(
         new CustomEvent<BuilderComponentStateChange>(
-          "builder:component:stateChange",
+          'builder:component:stateChange',
           {
             detail: {
               state: contentState,
@@ -272,7 +272,7 @@
     (acc, { component, ...curr }) => ({
       ...acc,
       [curr.name]: {
-        component: TARGET === "vue3" ? wrapComponentRef(component) : component,
+        component: TARGET === 'vue3' ? wrapComponentRef(component) : component,
         ...curr,
       },
     }),
@@ -289,7 +289,7 @@
   onMount(() => {
     if (!apiKey) {
       logger.error(
-        "No API key provided to `RenderContent` component. This can cause issues. Please provide an API key using the `apiKey` prop."
+        'No API key provided to `RenderContent` component. This can cause issues. Please provide an API key using the `apiKey` prop.'
       );
     }
     if (isBrowser()) {
@@ -316,12 +316,12 @@
         Object.values<RegisteredComponent>(allRegisteredComponents).forEach(
           (registeredComponent) => {
             const message = createRegisterComponentMessage(registeredComponent);
-            window.parent?.postMessage(message, "*");
+            window.parent?.postMessage(message, '*');
           }
         );
-        window.addEventListener("message", processMessage);
+        window.addEventListener('message', processMessage);
         window.addEventListener(
-          "builder:component:stateChangeListenerActivated",
+          'builder:component:stateChangeListenerActivated',
           emitStateUpdate
         );
       }
@@ -329,7 +329,7 @@
         const variationId = useContent?.testVariationId;
         const contentId = useContent?.id;
         _track({
-          type: "impression",
+          type: 'impression',
           canTrack: canTrackToUse,
           contentId,
           apiKey: apiKey,
@@ -340,12 +340,12 @@
       // override normal content in preview mode
       if (isPreviewing()) {
         const searchParams = new URL(location.href).searchParams;
-        const searchParamPreviewModel = searchParams.get("builder.preview");
+        const searchParamPreviewModel = searchParams.get('builder.preview');
         const searchParamPreviewId = searchParams.get(
           `builder.preview.${searchParamPreviewModel}`
         );
         const previewApiKey =
-          searchParams.get("apiKey") || searchParams.get("builder.space");
+          searchParams.get('apiKey') || searchParams.get('builder.space');
 
         /**
          * Make sure that:
@@ -408,7 +408,7 @@
       return contentState;
     },
     get rootSetState() {
-      return TARGET === "qwik" || TARGET === "svelte"
+      return TARGET === 'qwik' || TARGET === 'svelte'
         ? undefined
         : contentSetState;
     },
@@ -431,9 +431,9 @@
 
   onDestroy(() => {
     if (isBrowser()) {
-      window.removeEventListener("message", processMessage);
+      window.removeEventListener('message', processMessage);
       window.removeEventListener(
-        "builder:component:stateChangeListenerActivated",
+        'builder:component:stateChangeListenerActivated',
         emitStateUpdate
       );
     }
@@ -449,12 +449,12 @@
     builder-content-id={useContent?.id}
     builder-model={model}
     {...filterAttrs(
-      TARGET === "reactNative"
+      TARGET === 'reactNative'
         ? {
             dataSet: {
               // currently, we can't set the actual ID here.
               // we don't need it right now, we just need to identify content divs for testing.
-              "builder-content-id": "",
+              'builder-content-id': '',
             },
           }
         : {},
@@ -463,17 +463,17 @@
     {...hideContent
       ? {
           hidden: true,
-          "aria-hidden": true,
+          'aria-hidden': true,
         }
       : {}}
     class={classNameProp}
     use:setAttrs={filterAttrs(
-      TARGET === "reactNative"
+      TARGET === 'reactNative'
         ? {
             dataSet: {
               // currently, we can't set the actual ID here.
               // we don't need it right now, we just need to identify content divs for testing.
-              "builder-content-id": "",
+              'builder-content-id': '',
             },
           }
         : {},
@@ -481,10 +481,10 @@
     )}
   >
     {#if isSsrAbTest}
-      <svelte:element this={"script"}>{@html scriptStr}</svelte:element>
+      <svelte:element this={'script'}>{@html scriptStr}</svelte:element>
     {/if}
 
-    {#if TARGET !== "reactNative"}
+    {#if TARGET !== 'reactNative'}
       <RenderContentStyles
         contentId={useContent?.id}
         cssCode={useContent?.data?.cssCode}

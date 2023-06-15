@@ -9,17 +9,17 @@
   import {
     getMaxWidthQueryForSize,
     getSizesForBreakpoints,
-  } from "../../constants/device-sizes.js";
-  import { TARGET } from "../../constants/target.js";
-  import type { BuilderContextInterface } from "../../context/types.js";
-  import { getProcessedBlock } from "../../functions/get-processed-block.js";
-  import { createCssClass } from "../../helpers/css.js";
-  import { checkIsDefined } from "../../helpers/nullable.js";
-  import type { BuilderBlock } from "../../types/builder-block.js";
-  import RenderInlinedStyles from "../render-inlined-styles.svelte";
+  } from '../../constants/device-sizes.js';
+  import { TARGET } from '../../constants/target.js';
+  import type { BuilderContextInterface } from '../../context/types.js';
+  import { getProcessedBlock } from '../../functions/get-processed-block.js';
+  import { createCssClass } from '../../helpers/css.js';
+  import { checkIsDefined } from '../../helpers/nullable.js';
+  import type { BuilderBlock } from '../../types/builder-block.js';
+  import RenderInlinedStyles from '../render-inlined-styles.svelte';
 
-  export let block: BlockStylesProps["block"];
-  export let context: BlockStylesProps["context"];
+  export let block: BlockStylesProps['block'];
+  export let context: BlockStylesProps['context'];
 
   $: useBlock = () => {
     return getProcessedBlock({
@@ -52,38 +52,38 @@
     const smallStyles = styles?.small;
     const className = useBlock().id;
     if (!className) {
-      return "";
+      return '';
     }
     const largeStylesClass = largeStyles
       ? createCssClass({
           className,
           styles: largeStyles,
         })
-      : "";
+      : '';
     const mediumStylesClass = mediumStyles
       ? createCssClass({
           className,
           styles: mediumStyles,
           mediaQuery: getMaxWidthQueryForSize(
-            "medium",
+            'medium',
             sizesWithUpdatedBreakpoints
           ),
         })
-      : "";
+      : '';
     const smallStylesClass = smallStyles
       ? createCssClass({
           className,
           styles: smallStyles,
           mediaQuery: getMaxWidthQueryForSize(
-            "small",
+            'small',
             sizesWithUpdatedBreakpoints
           ),
         })
-      : "";
-    return [largeStylesClass, mediumStylesClass, smallStylesClass].join(" ");
+      : '';
+    return [largeStylesClass, mediumStylesClass, smallStylesClass].join(' ');
   };
 </script>
 
-{#if TARGET !== "reactNative" && css() && canShowBlock()}
+{#if TARGET !== 'reactNative' && css() && canShowBlock()}
   <RenderInlinedStyles styles={css()} />
 {/if}

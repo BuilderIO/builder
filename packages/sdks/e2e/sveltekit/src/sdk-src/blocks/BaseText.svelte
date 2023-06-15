@@ -5,15 +5,15 @@
 </script>
 
 <script lang="ts">
-  import { getContext } from "svelte";
+  import { getContext } from 'svelte';
 
-  import BuilderContext from "../context/builder.context.js";
+  import BuilderContext from '../context/builder.context.js';
 
-  export let text: BaseTextProps["text"];
+  export let text: BaseTextProps['text'];
 
   function mitosis_styling(node, vars) {
     Object.entries(vars || {}).forEach(([p, v]) => {
-      if (p.startsWith("--")) {
+      if (p.startsWith('--')) {
         node.style.setProperty(p, v);
       } else {
         node.style[p] = v;

@@ -16,15 +16,15 @@
 </script>
 
 <script lang="ts">
-  import { setContext } from "svelte";
+  import { setContext } from 'svelte';
 
-  import BuilderContext from "../../context/builder.context.js";
-  import type { BuilderContextInterface } from "../../context/types.js";
-  import type { BuilderBlock } from "../../types/builder-block";
-  import RenderBlock from "./render-block.svelte";
+  import BuilderContext from '../../context/builder.context.js';
+  import type { BuilderContextInterface } from '../../context/types.js';
+  import type { BuilderBlock } from '../../types/builder-block';
+  import RenderBlock from './render-block.svelte';
 
-  export let block: Props["block"];
-  export let repeatContext: Props["repeatContext"];
+  export let block: Props['block'];
+  export let repeatContext: Props['repeatContext'];
 
   setContext(BuilderContext.key, {
     content: repeatContext.content,

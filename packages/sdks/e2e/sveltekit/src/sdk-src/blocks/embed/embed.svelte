@@ -5,18 +5,18 @@
 </script>
 
 <script lang="ts">
-  import { isJsScript } from "./helpers.js";
+  import { isJsScript } from './helpers.js';
 
-  export let content: EmbedProps["content"];
+  export let content: EmbedProps['content'];
 
   function findAndRunScripts() {
     if (!elem || !elem.getElementsByTagName) return;
-    const scripts = elem.getElementsByTagName("script");
+    const scripts = elem.getElementsByTagName('script');
     for (let i = 0; i < scripts.length; i++) {
       const script = scripts[i];
       if (script.src && !scriptsInserted.includes(script.src)) {
         scriptsInserted.push(script.src);
-        const newScript = document.createElement("script");
+        const newScript = document.createElement('script');
         newScript.async = true;
         newScript.src = script.src;
         document.head.appendChild(newScript);
@@ -25,7 +25,7 @@
           scriptsRun.push(script.innerText);
           new Function(script.innerText)();
         } catch (error) {
-          console.warn("`Embed`: Error running script:", error);
+          console.warn('`Embed`: Error running script:', error);
         }
       }
     }

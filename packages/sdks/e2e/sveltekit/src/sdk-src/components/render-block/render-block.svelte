@@ -6,24 +6,24 @@
 </script>
 
 <script lang="ts">
-  import type { BuilderContextInterface } from "../../context/types.js";
-  import { getBlockActions } from "../../functions/get-block-actions.js";
-  import { getBlockComponentOptions } from "../../functions/get-block-component-options.js";
-  import { getBlockProperties } from "../../functions/get-block-properties.js";
-  import { getProcessedBlock } from "../../functions/get-processed-block.js";
-  import type { BuilderBlock } from "../../types/builder-block.js";
-  import BlockStyles from "./block-styles.svelte";
+  import type { BuilderContextInterface } from '../../context/types.js';
+  import { getBlockActions } from '../../functions/get-block-actions.js';
+  import { getBlockComponentOptions } from '../../functions/get-block-component-options.js';
+  import { getBlockProperties } from '../../functions/get-block-properties.js';
+  import { getProcessedBlock } from '../../functions/get-processed-block.js';
+  import type { BuilderBlock } from '../../types/builder-block.js';
+  import BlockStyles from './block-styles.svelte';
   import {
     getComponent,
     getRepeatItemData,
     isEmptyHtmlElement,
-  } from "./render-block.helpers.js";
-  import type { RenderComponentProps } from "./render-component.svelte";
-  import RenderRepeatedBlock from "./render-repeated-block.svelte";
-  import { TARGET } from "../../constants/target.js";
-  import { extractTextStyles } from "../../functions/extract-text-styles.js";
-  import RenderComponent from "./render-component.svelte";
-  import { getReactNativeBlockStyles } from "../../functions/get-react-native-block-styles.js";
+  } from './render-block.helpers.js';
+  import type { RenderComponentProps } from './render-component.svelte';
+  import RenderRepeatedBlock from './render-repeated-block.svelte';
+  import { TARGET } from '../../constants/target.js';
+  import { extractTextStyles } from '../../functions/extract-text-styles.js';
+  import RenderComponent from './render-component.svelte';
+  import { getReactNativeBlockStyles } from '../../functions/get-react-native-block-styles.js';
 
   const setAttrs = (node, attrs = {}) => {
     const attrKeys = Object.keys(attrs);
@@ -43,8 +43,8 @@
     };
   };
 
-  export let block: RenderBlockProps["block"];
-  export let context: RenderBlockProps["context"];
+  export let block: RenderBlockProps['block'];
+  export let context: RenderBlockProps['context'];
 
   $: repeatItem = () => {
     return getRepeatItemData({
@@ -65,10 +65,10 @@
         });
   };
   $: canShowBlock = () => {
-    if ("hide" in useBlock()) {
+    if ('hide' in useBlock()) {
       return !useBlock().hide;
     }
-    if ("show" in useBlock()) {
+    if ('show' in useBlock()) {
       return useBlock().show;
     }
     return true;
@@ -86,7 +86,7 @@
     const blockProperties = getBlockProperties(useBlock());
     return {
       ...blockProperties,
-      ...(TARGET === "reactNative"
+      ...(TARGET === 'reactNative'
         ? {
             style: getReactNativeBlockStyles({
               block: useBlock(),
@@ -110,7 +110,7 @@
   };
   $: childrenContext = () => {
     const getInheritedTextStyles = () => {
-      if (TARGET !== "reactNative") {
+      if (TARGET !== 'reactNative') {
         return {};
       }
       return extractTextStyles(
@@ -160,7 +160,7 @@
     block: block,
     context: context,
   });
-  let Tag = block.tagName || "div";
+  let Tag = block.tagName || 'div';
 </script>
 
 {#if canShowBlock()}
@@ -179,11 +179,11 @@
       <svelte:element this={Tag} {...attributes()} use:setAttrs={actions()}>
         <RenderComponent {...renderComponentProps()} />
 
-        {#each childrenWithoutParentComponent() as child ("render-block-" + child.id)}
+        {#each childrenWithoutParentComponent() as child ('render-block-' + child.id)}
           <svelte:self block={child} context={childrenContext()} />
         {/each}
 
-        {#each childrenWithoutParentComponent() as child ("block-style-" + child.id)}
+        {#each childrenWithoutParentComponent() as child ('block-style-' + child.id)}
           <BlockStyles block={child} context={childrenContext()} />
         {/each}
       </svelte:element>

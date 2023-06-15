@@ -6,7 +6,7 @@
 
   type CSSVal = string | number;
 
-  type StackColumnsAt = "tablet" | "mobile" | "never";
+  type StackColumnsAt = 'tablet' | 'mobile' | 'never';
 
   export interface ColumnProps {
     columns?: Column[];
@@ -18,26 +18,26 @@
 </script>
 
 <script lang="ts">
-  import { getContext } from "svelte";
+  import { getContext } from 'svelte';
 
-  import RenderBlocks from "../../components/render-blocks.svelte";
-  import type { BuilderBlock } from "../../types/builder-block";
-  import { getSizesForBreakpoints } from "../../constants/device-sizes";
-  import type { SizeName } from "../../constants/device-sizes";
-  import RenderInlinedStyles from "../../components/render-inlined-styles.svelte";
-  import { TARGET } from "../../constants/target.js";
-  import BuilderContext from "../../context/builder.context.js";
-  import type { Dictionary } from "../../types/typescript";
+  import RenderBlocks from '../../components/render-blocks.svelte';
+  import type { BuilderBlock } from '../../types/builder-block';
+  import { getSizesForBreakpoints } from '../../constants/device-sizes';
+  import type { SizeName } from '../../constants/device-sizes';
+  import RenderInlinedStyles from '../../components/render-inlined-styles.svelte';
+  import { TARGET } from '../../constants/target.js';
+  import BuilderContext from '../../context/builder.context.js';
+  import type { Dictionary } from '../../types/typescript';
 
-  export let space: ColumnProps["space"];
-  export let columns: ColumnProps["columns"];
-  export let stackColumnsAt: ColumnProps["stackColumnsAt"];
-  export let reverseColumnsWhenStacked: ColumnProps["reverseColumnsWhenStacked"];
-  export let builderBlock: ColumnProps["builderBlock"];
+  export let space: ColumnProps['space'];
+  export let columns: ColumnProps['columns'];
+  export let stackColumnsAt: ColumnProps['stackColumnsAt'];
+  export let reverseColumnsWhenStacked: ColumnProps['reverseColumnsWhenStacked'];
+  export let builderBlock: ColumnProps['builderBlock'];
 
   function mitosis_styling(node, vars) {
     Object.entries(vars || {}).forEach(([p, v]) => {
-      if (p.startsWith("--")) {
+      if (p.startsWith('--')) {
         node.style.setProperty(p, v);
       } else {
         node.style[p] = v;
@@ -61,7 +61,7 @@
     stackedStyle: CSSVal;
     desktopStyle: CSSVal;
   }) {
-    return stackAt === "tablet" ? stackedStyle : desktopStyle;
+    return stackAt === 'tablet' ? stackedStyle : desktopStyle;
   }
   function getMobileStyle({
     stackedStyle,
@@ -70,35 +70,35 @@
     stackedStyle: CSSVal;
     desktopStyle: CSSVal;
   }) {
-    return stackAt === "never" ? desktopStyle : stackedStyle;
+    return stackAt === 'never' ? desktopStyle : stackedStyle;
   }
   function columnCssVars(index: number) {
     const gutter = index === 0 ? 0 : gutterSize;
-    if (TARGET === "reactNative") {
+    if (TARGET === 'reactNative') {
       return {
-        marginLeft: stackColumnsAt === "never" ? gutter : 0,
+        marginLeft: stackColumnsAt === 'never' ? gutter : 0,
       } as any as Dictionary<string>;
     }
     const width = getColumnCssWidth(index);
     const gutterPixels = `${gutter}px`;
-    const mobileWidth = "100%";
+    const mobileWidth = '100%';
     const mobileMarginLeft = 0;
     return {
       width,
-      "margin-left": gutterPixels,
-      "--column-width-mobile": getMobileStyle({
+      'margin-left': gutterPixels,
+      '--column-width-mobile': getMobileStyle({
         stackedStyle: mobileWidth,
         desktopStyle: width,
       }),
-      "--column-margin-left-mobile": getMobileStyle({
+      '--column-margin-left-mobile': getMobileStyle({
         stackedStyle: mobileMarginLeft,
         desktopStyle: gutterPixels,
       }),
-      "--column-width-tablet": getTabletStyle({
+      '--column-width-tablet': getTabletStyle({
         stackedStyle: mobileWidth,
         desktopStyle: width,
       }),
-      "--column-margin-left-tablet": getTabletStyle({
+      '--column-margin-left-tablet': getTabletStyle({
         stackedStyle: mobileMarginLeft,
         desktopStyle: gutterPixels,
       }),
@@ -111,22 +111,22 @@
     return breakpointSizes[size].max;
   }
   $: columnsCssVars = () => {
-    if (TARGET === "reactNative") {
+    if (TARGET === 'reactNative') {
       return {
         flexDirection: flexDir,
       } as Dictionary<string>;
     }
     return {
-      "--flex-dir": flexDir,
-      "--flex-dir-tablet": getTabletStyle({
+      '--flex-dir': flexDir,
+      '--flex-dir-tablet': getTabletStyle({
         stackedStyle: flexDir,
-        desktopStyle: "row",
+        desktopStyle: 'row',
       }),
     } as Dictionary<string>;
   };
   $: columnsStyles = () => {
     return `
-        @media (max-width: ${getWidthForBreakpointSize("medium")}px) {
+        @media (max-width: ${getWidthForBreakpointSize('medium')}px) {
           .${builderBlock.id}-breakpoints {
             flex-direction: var(--flex-dir-tablet);
             align-items: stretch;
@@ -138,7 +138,7 @@
           }
         }
 
-        @media (max-width: ${getWidthForBreakpointSize("small")}px) {
+        @media (max-width: ${getWidthForBreakpointSize('small')}px) {
           .${builderBlock.id}-breakpoints {
             flex-direction: var(--flex-dir);
             align-items: stretch;
@@ -152,25 +152,25 @@
       `;
   };
 
-  let gutterSize = typeof space === "number" ? space || 0 : 20;
+  let gutterSize = typeof space === 'number' ? space || 0 : 20;
   let cols = columns || [];
-  let stackAt = stackColumnsAt || "tablet";
+  let stackAt = stackColumnsAt || 'tablet';
   let flexDir =
-    stackColumnsAt === "never"
-      ? "row"
+    stackColumnsAt === 'never'
+      ? 'row'
       : reverseColumnsWhenStacked
-      ? "column-reverse"
-      : "column";
+      ? 'column-reverse'
+      : 'column';
 </script>
 
 <div
   use:mitosis_styling={columnsCssVars()}
-  class={`builder-columns ${builderBlock.id}-breakpoints` + " div"}
+  class={`builder-columns ${builderBlock.id}-breakpoints` + ' div'}
   dataSet={{
-    "builder-block-name": "builder-columns",
+    'builder-block-name': 'builder-columns',
   }}
 >
-  {#if TARGET !== "reactNative"}
+  {#if TARGET !== 'reactNative'}
     <RenderInlinedStyles styles={columnsStyles()} />
   {/if}
 
@@ -179,7 +179,7 @@
       use:mitosis_styling={columnCssVars(index)}
       class="builder-column div-2"
       dataSet={{
-        "builder-block-name": "builder-column",
+        'builder-block-name': 'builder-column',
       }}
     >
       <RenderBlocks
@@ -187,7 +187,7 @@
         path={`component.options.columns.${index}.blocks`}
         parent={builderBlock.id}
         styleProp={{
-          flexGrow: "1",
+          flexGrow: '1',
         }}
       />
     </div>

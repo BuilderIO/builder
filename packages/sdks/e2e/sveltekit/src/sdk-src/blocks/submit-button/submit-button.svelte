@@ -6,8 +6,8 @@
 </script>
 
 <script lang="ts">
-  const isEvent = (attr) => attr.startsWith("on:");
-  const isNonEvent = (attr) => !attr.startsWith("on:");
+  const isEvent = (attr) => attr.startsWith('on:');
+  const isNonEvent = (attr) => !attr.startsWith('on:');
   const filterAttrs = (attrs = {}, filter) => {
     const validAttr = {};
     Object.keys(attrs).forEach((attr) => {
@@ -35,8 +35,8 @@
     };
   };
 
-  export let attributes: ButtonProps["attributes"];
-  export let text: ButtonProps["text"];
+  export let attributes: ButtonProps['attributes'];
+  export let text: ButtonProps['text'];
 </script>
 
 <button

@@ -8,8 +8,8 @@
 </script>
 
 <script lang="ts">
-  const isEvent = (attr) => attr.startsWith("on:");
-  const isNonEvent = (attr) => !attr.startsWith("on:");
+  const isEvent = (attr) => attr.startsWith('on:');
+  const isNonEvent = (attr) => !attr.startsWith('on:');
   const filterAttrs = (attrs = {}, filter) => {
     const validAttr = {};
     Object.keys(attrs).forEach((attr) => {
@@ -37,10 +37,10 @@
     };
   };
 
-  export let attributes: ButtonProps["attributes"];
-  export let text: ButtonProps["text"];
-  export let link: ButtonProps["link"];
-  export let openLinkInNewTab: ButtonProps["openLinkInNewTab"];
+  export let attributes: ButtonProps['attributes'];
+  export let text: ButtonProps['text'];
+  export let link: ButtonProps['link'];
+  export let openLinkInNewTab: ButtonProps['openLinkInNewTab'];
 </script>
 
 {#if link}
@@ -48,7 +48,7 @@
     role="button"
     {...filterAttrs(attributes, isNonEvent)}
     href={link}
-    target={openLinkInNewTab ? "_blank" : undefined}
+    target={openLinkInNewTab ? '_blank' : undefined}
     use:setAttrs={filterAttrs(attributes, isEvent)}
   >
     {text}
@@ -56,7 +56,7 @@
 {:else}
   <button
     class={/** * We have to explicitly provide `class` so that Mitosis knows to merge it with `css`. */
-    attributes.class + " button"}
+    attributes.class + ' button'}
     {...filterAttrs(attributes, isNonEvent)}
     use:setAttrs={filterAttrs(attributes, isEvent)}
   >

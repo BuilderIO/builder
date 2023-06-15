@@ -7,26 +7,26 @@
     checkShouldRunVariants,
     getVariants,
     getVariantsScriptString,
-  } from "./helpers";
-  import RenderContent from "../render-content/render-content.svelte";
-  import type { RenderContentProps } from "../render-content/render-content.types";
-  import { getDefaultCanTrack } from "../../helpers/canTrack";
-  import RenderInlinedStyles from "../render-inlined-styles.svelte";
-  import { handleABTestingSync } from "../../helpers/ab-tests";
+  } from './helpers';
+  import RenderContent from '../render-content/render-content.svelte';
+  import type { RenderContentProps } from '../render-content/render-content.types';
+  import { getDefaultCanTrack } from '../../helpers/canTrack';
+  import RenderInlinedStyles from '../render-inlined-styles.svelte';
+  import { handleABTestingSync } from '../../helpers/ab-tests';
 
-  export let content: VariantsProviderProps["content"];
-  export let canTrack: VariantsProviderProps["canTrack"];
-  export let apiKey: VariantsProviderProps["apiKey"];
-  export let apiVersion: VariantsProviderProps["apiVersion"];
-  export let customComponents: VariantsProviderProps["customComponents"];
-  export let model: VariantsProviderProps["model"];
+  export let content: VariantsProviderProps['content'];
+  export let canTrack: VariantsProviderProps['canTrack'];
+  export let apiKey: VariantsProviderProps['apiKey'];
+  export let apiVersion: VariantsProviderProps['apiVersion'];
+  export let customComponents: VariantsProviderProps['customComponents'];
+  export let model: VariantsProviderProps['model'];
 
   let variantScriptStr = getVariantsScriptString(
     getVariants(content).map((value) => ({
       id: value.id!,
       testRatio: value.testRatio,
     })),
-    content?.id || ""
+    content?.id || ''
   );
   let shouldRenderVariants = checkShouldRunVariants({
     canTrack: getDefaultCanTrack(canTrack),
@@ -34,7 +34,7 @@
   });
   let hideVariantsStyleString = getVariants(content)
     .map((value) => `.variant-${value.id} { display: none; } `)
-    .join("");
+    .join('');
   let contentToRender = checkShouldRunVariants({
     canTrack: getDefaultCanTrack(canTrack),
     content: content,
@@ -52,7 +52,7 @@
     styles={hideVariantsStyleString}
   />
 
-  <svelte:element this={"script"} id={`variants-script-${content?.id}`}
+  <svelte:element this={'script'} id={`variants-script-${content?.id}`}
     >{@html variantScriptStr}</svelte:element
   >
 

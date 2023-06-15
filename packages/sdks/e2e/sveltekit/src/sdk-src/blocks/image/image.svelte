@@ -7,7 +7,7 @@
     height?: number;
     width?: number;
     altText?: string;
-    backgroundSize?: "cover" | "contain";
+    backgroundSize?: 'cover' | 'contain';
     backgroundPosition?: string;
     srcset?: string;
     aspectRatio?: number;
@@ -20,25 +20,25 @@
 </script>
 
 <script lang="ts">
-  import type { BuilderBlock } from "../../types/builder-block.js";
-  import { getSrcSet } from "./image.helpers.js";
+  import type { BuilderBlock } from '../../types/builder-block.js';
+  import { getSrcSet } from './image.helpers.js';
 
-  export let image: ImageProps["image"];
-  export let src: ImageProps["src"];
-  export let srcset: ImageProps["srcset"];
-  export let noWebp: ImageProps["noWebp"];
-  export let aspectRatio: ImageProps["aspectRatio"];
-  export let altText: ImageProps["altText"];
-  export let backgroundPosition: ImageProps["backgroundPosition"];
-  export let backgroundSize: ImageProps["backgroundSize"];
-  export let className: ImageProps["className"];
-  export let sizes: ImageProps["sizes"];
-  export let builderBlock: ImageProps["builderBlock"];
-  export let fitContent: ImageProps["fitContent"];
+  export let image: ImageProps['image'];
+  export let src: ImageProps['src'];
+  export let srcset: ImageProps['srcset'];
+  export let noWebp: ImageProps['noWebp'];
+  export let aspectRatio: ImageProps['aspectRatio'];
+  export let altText: ImageProps['altText'];
+  export let backgroundPosition: ImageProps['backgroundPosition'];
+  export let backgroundSize: ImageProps['backgroundSize'];
+  export let className: ImageProps['className'];
+  export let sizes: ImageProps['sizes'];
+  export let builderBlock: ImageProps['builderBlock'];
+  export let fitContent: ImageProps['fitContent'];
 
   function mitosis_styling(node, vars) {
     Object.entries(vars || {}).forEach(([p, v]) => {
-      if (p.startsWith("--")) {
+      if (p.startsWith('--')) {
         node.style.setProperty(p, v);
       } else {
         node.style[p] = v;
@@ -57,9 +57,9 @@
     ) {
       return srcset;
     }
-    if (srcset && image?.includes("builder.io/api/v1/image")) {
-      if (!srcset.includes(image.split("?")[0])) {
-        console.debug("Removed given srcset");
+    if (srcset && image?.includes('builder.io/api/v1/image')) {
+      if (!srcset.includes(image.split('?')[0])) {
+        console.debug('Removed given srcset');
         return getSrcSet(url);
       }
     } else if (image && !srcset) {
@@ -69,18 +69,18 @@
   };
   $: webpSrcSet = () => {
     if (srcSetToUse?.()?.match(/builder\.io/) && !noWebp) {
-      return srcSetToUse().replace(/\?/g, "?format=webp&");
+      return srcSetToUse().replace(/\?/g, '?format=webp&');
     } else {
-      return "";
+      return '';
     }
   };
   $: aspectRatioCss = () => {
     const aspectRatioStyles = {
-      position: "absolute",
-      height: "100%",
-      width: "100%",
-      left: "0px",
-      top: "0px",
+      position: 'absolute',
+      height: '100%',
+      width: '100%',
+      left: '0px',
+      top: '0px',
     } as const;
     const out = aspectRatio ? aspectRatioStyles : undefined;
     return out;
@@ -93,14 +93,14 @@
   {/if}
   <img
     use:mitosis_styling={{
-      objectPosition: backgroundPosition || "center",
-      objectFit: backgroundSize || "cover",
+      objectPosition: backgroundPosition || 'center',
+      objectFit: backgroundSize || 'cover',
       ...aspectRatioCss(),
     }}
     loading="lazy"
     alt={altText}
-    role={altText ? "presentation" : undefined}
-    class={"builder-image" + (className ? " " + className : "") + " img"}
+    role={altText ? 'presentation' : undefined}
+    class={'builder-image' + (className ? ' ' + className : '') + ' img'}
     src={image}
     srcset={srcSetToUse()}
     {sizes}
@@ -110,7 +110,7 @@
 {#if aspectRatio && !(builderBlock?.children?.length && fitContent)}
   <div
     use:mitosis_styling={{
-      paddingTop: aspectRatio * 100 + "%",
+      paddingTop: aspectRatio * 100 + '%',
     }}
     class="builder-image-sizer div"
   />

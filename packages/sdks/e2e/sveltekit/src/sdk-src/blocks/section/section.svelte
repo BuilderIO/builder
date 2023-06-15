@@ -8,8 +8,8 @@
 </script>
 
 <script lang="ts">
-  const isEvent = (attr) => attr.startsWith("on:");
-  const isNonEvent = (attr) => !attr.startsWith("on:");
+  const isEvent = (attr) => attr.startsWith('on:');
+  const isNonEvent = (attr) => !attr.startsWith('on:');
   const filterAttrs = (attrs = {}, filter) => {
     const validAttr = {};
     Object.keys(attrs).forEach((attr) => {
@@ -37,12 +37,12 @@
     };
   };
 
-  export let attributes: SectionProps["attributes"];
-  export let maxWidth: SectionProps["maxWidth"];
+  export let attributes: SectionProps['attributes'];
+  export let maxWidth: SectionProps['maxWidth'];
 
   function mitosis_styling(node, vars) {
     Object.entries(vars || {}).forEach(([p, v]) => {
-      if (p.startsWith("--")) {
+      if (p.startsWith('--')) {
         node.style.setProperty(p, v);
       } else {
         node.style[p] = v;
@@ -53,16 +53,16 @@
 
 <section
   use:mitosis_styling={{
-    width: "100%",
-    alignSelf: "stretch",
+    width: '100%',
+    alignSelf: 'stretch',
     flexGrow: 1,
-    boxSizing: "border-box",
+    boxSizing: 'border-box',
     maxWidth: maxWidth || 1200,
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "stretch",
-    marginLeft: "auto",
-    marginRight: "auto",
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    marginLeft: 'auto',
+    marginRight: 'auto',
   }}
   {...filterAttrs(attributes, isNonEvent)}
   use:setAttrs={filterAttrs(attributes, isEvent)}
