@@ -402,17 +402,13 @@
     get localState() {
       return undefined;
     },
-    get rootState() {
-      return getContextStateInitialValue({
-        content: content,
-        data: data,
-        locale: locale,
-      });
-    },
+    rootState: getContextStateInitialValue({
+      content: content,
+      data: data,
+      locale: locale,
+    }),
     get rootSetState() {
-      return TARGET === 'qwik' || TARGET === 'svelte'
-        ? undefined
-        : contentSetState;
+      return TARGET === 'qwik' ? undefined : contentSetState;
     },
     get context() {
       return context || {};
