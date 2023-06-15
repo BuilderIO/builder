@@ -50,12 +50,12 @@
   } from '../../context/builder.context.js';
   import { getContext } from 'svelte';
 
-  const builderStore = getContext<BuilderStore>(builderContext.key);
+  const context = getContext<BuilderStore>(builderContext.key);
 
   $: repeatItem = () => {
     return getRepeatItemData({
       block: block,
-      context: $builderStore,
+      context: $context,
     });
   };
   $: useBlock = () => {
@@ -63,10 +63,10 @@
       ? block
       : getProcessedBlock({
           block: block,
-          localState: $builderStore.localState,
-          rootState: $builderStore.rootState,
-          rootSetState: $builderStore.rootSetState,
-          context: $builderStore.context,
+          localState: $context.localState,
+          rootState: $context.rootState,
+          rootSetState: $context.rootSetState,
+          context: $context.context,
           shouldEvaluateBindings: true,
         });
   };
@@ -82,10 +82,10 @@
   $: actions = () => {
     return getBlockActions({
       block: useBlock(),
-      rootState: $builderStore.rootState,
-      rootSetState: $builderStore.rootSetState,
-      localState: $builderStore.localState,
-      context: $builderStore.context,
+      rootState: $context.rootState,
+      rootSetState: $context.rootSetState,
+      localState: $context.localState,
+      context: $context.context,
     });
   };
   $: attributes = () => {
@@ -96,7 +96,7 @@
         ? {
             style: getReactNativeBlockStyles({
               block: useBlock(),
-              context: $builderStore,
+              context: $context,
               blockStyles: blockProperties.style,
             }),
           }
@@ -122,20 +122,20 @@
       return extractTextStyles(
         getReactNativeBlockStyles({
           block: useBlock(),
-          context: $builderStore,
+          context: $context,
           blockStyles: attributes().style,
         })
       );
     };
     return {
-      apiKey: $builderStore.apiKey,
-      apiVersion: $builderStore.apiVersion,
-      localState: $builderStore.localState,
-      rootState: $builderStore.rootState,
-      rootSetState: $builderStore.rootSetState,
-      content: $builderStore.content,
-      context: $builderStore.context,
-      registeredComponents: $builderStore.registeredComponents,
+      apiKey: $context.apiKey,
+      apiVersion: $context.apiVersion,
+      localState: $context.localState,
+      rootState: $context.rootState,
+      rootSetState: $context.rootSetState,
+      content: $context.content,
+      context: $context.context,
+      registeredComponents: $context.registeredComponents,
       inheritedStyles: getInheritedTextStyles(),
     };
   };
@@ -164,7 +164,7 @@
 
   let component = getComponent({
     block: block,
-    context: $builderStore,
+    context: $context,
   });
   let Tag = block.tagName || 'div';
 </script>
