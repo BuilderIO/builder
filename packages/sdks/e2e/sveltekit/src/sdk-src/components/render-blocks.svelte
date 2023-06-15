@@ -10,7 +10,9 @@
 <script lang="ts">
   import { getContext } from 'svelte';
 
-  import BuilderContext from '../context/builder.context.js';
+  import BuilderContext, {
+    type BuilderStore,
+  } from '../context/builder.context.js';
   import { isEditing } from '../functions/is-editing.js';
   import type { BuilderBlock } from '../types/builder-block.js';
   import BlockStyles from './render-block/block-styles.svelte';
@@ -31,7 +33,7 @@
     });
   }
 
-  let builderContext = getContext(BuilderContext.key);
+  let builderContext = getContext<BuilderStore>(BuilderContext.key);
 
   function onClick() {
     if (isEditing() && !blocks?.length) {
@@ -69,9 +71,9 @@
 <div
   use:mitosis_styling={styleProp}
   class={className() + ' div'}
-  builder-path={path}
-  builder-parent-id={parent}
-  dataSet={{
+  data-builder-path={path}
+  data-builder-parent-id={parent}
+  data-dataSet={{
     class: className(),
   }}
   on:click={(event) => {
@@ -80,16 +82,19 @@
   on:mouseenter={(event) => {
     onMouseEnter();
   }}
+  on:keypress={(event) => {
+    onMouseEnter();
+  }}
 >
   {#if blocks}
     {#each blocks as block ('render-block-' + block.id)}
-      <RenderBlock {block} context={builderContext} />
+      <RenderBlock {block} />
     {/each}
   {/if}
 
   {#if blocks}
     {#each blocks as block ('block-style-' + block.id)}
-      <BlockStyles {block} context={builderContext} />
+      <BlockStyles {block} context={$builderContext} />
     {/each}
   {/if}
 </div>

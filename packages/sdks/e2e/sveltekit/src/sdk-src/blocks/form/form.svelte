@@ -337,7 +337,7 @@
 >
   {#if builderBlock && builderBlock.children}
     {#each builderBlock?.children as block}
-      <RenderBlock {block} context={builderContext} />
+      <RenderBlock {block} builderStore={builderContext} />
     {/each}
   {/if}
 

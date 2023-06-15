@@ -22,7 +22,9 @@
   import { getContext, onMount } from 'svelte';
 
   import RenderContent from '../../components/render-content/render-content.svelte';
-  import BuilderContext from '../../context/builder.context.js';
+  import BuilderContext, {
+    type BuilderStore,
+  } from '../../context/builder.context.js';
   import { getContent } from '../../functions/get-content/index.js';
   import type { BuilderContent } from '../../types/builder-content.js';
   import type { BuilderBlock } from '../../types/builder-block.js';
@@ -62,7 +64,7 @@
   export let symbol: SymbolProps['symbol'];
   export let dynamic: SymbolProps['dynamic'];
 
-  let builderContext = getContext(BuilderContext.key);
+  let builderContext = getContext<BuilderStore>(BuilderContext.key);
 
   function fetchContent() {
     /**
@@ -78,12 +80,12 @@
       !contentToUse &&
       symbol?.model &&
       // This is a hack, we should not need to check for this, but it is needed for Svelte.
-      builderContext?.apiKey
+      $builderContext?.apiKey
     ) {
       getContent({
         model: symbol.model,
-        apiKey: builderContext.apiKey,
-        apiVersion: builderContext.apiVersion,
+        apiKey: $builderContext.apiKey,
+        apiVersion: $builderContext.apiVersion,
         query: {
           id: symbol.entry,
         },
@@ -123,20 +125,20 @@
 
 <div
   {...filterAttrs(attributes, isNonEvent)}
-  dataSet={{
+  data-dataSet={{
     class: className,
   }}
   class={className}
   use:setAttrs={filterAttrs(attributes, isEvent)}
 >
   <RenderContent
-    apiVersion={builderContext.apiVersion}
-    apiKey={builderContext.apiKey}
-    context={builderContext.context}
-    customComponents={Object.values(builderContext.registeredComponents)}
+    apiVersion={$builderContext.apiVersion}
+    apiKey={$builderContext.apiKey}
+    context={$builderContext.context}
+    customComponents={Object.values($builderContext.registeredComponents)}
     data={{
       ...symbol?.data,
-      ...builderContext.localState,
+      ...$builderContext.localState,
       ...contentToUse?.data?.state,
     }}
     model={symbol?.model}

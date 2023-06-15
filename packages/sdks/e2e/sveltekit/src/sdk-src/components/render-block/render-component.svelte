@@ -29,7 +29,7 @@
 {#if componentRef}
   <svelte:component this={componentRef} {...componentOptions}>
     {#each blockChildren as child ('render-block-' + child.id)}
-      <RenderBlock block={child} {context} />
+      <RenderBlock block={child} builderStore={context} />
     {/each}
 
     {#each blockChildren as child ('block-style-' + child.id)}

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onDestroy, onMount, setContext } from 'svelte';
+  import { getContext, onDestroy, onMount, setContext } from 'svelte';
 
   import { getDefaultRegisteredComponents } from '../../constants/builder-registered-components.js';
   import type {
@@ -25,7 +25,9 @@
   import type { Nullable } from '../../types/typescript.js';
   import RenderBlocks from '../render-blocks.svelte';
   import RenderContentStyles from './components/render-styles.svelte';
-  import builderContext from '../../context/builder.context.js';
+  import builderContext, {
+    type BuilderStore,
+  } from '../../context/builder.context.js';
   import {
     registerInsertMenu,
     setupBrowserForEditing,
@@ -44,6 +46,7 @@
   import { logger } from '../../helpers/logger.js';
   import { getRenderContentScriptString } from '../render-content-variants/helpers.js';
   import { wrapComponentRef } from './wrap-component-ref.js';
+  import { writable } from 'svelte/store';
 
   const isEvent = (attr) => attr.startsWith('on:');
   const isNonEvent = (attr) => !attr.startsWith('on:');
@@ -116,7 +119,7 @@
     };
   }
   function contentSetState(newRootState: BuilderRenderState) {
-    contentState = newRootState;
+    $builderStore.rootState = newRootState;
   }
   function processMessage(event: MessageEvent) {
     const { data } = event;
@@ -164,7 +167,7 @@
         code: jsCode,
         context: context || {},
         localState: undefined,
-        rootState: contentState,
+        rootState: $builderStore.rootState,
         rootSetState: contentSetState,
       });
     }
@@ -193,7 +196,7 @@
         code: group,
         context: context || {},
         localState: undefined,
-        rootState: contentState,
+        rootState: $builderStore.rootState,
         rootSetState: contentSetState,
       })
     );
@@ -203,7 +206,7 @@
       .then((response) => response.json())
       .then((json) => {
         const newState = {
-          ...contentState,
+          ...$builderStore.rootState,
           [key]: json,
         };
         contentSetState(newState);
@@ -233,7 +236,7 @@
           'builder:component:stateChange',
           {
             detail: {
-              state: contentState,
+              state: $builderStore.rootState,
               ref: {
                 name: model,
               },
@@ -254,11 +257,6 @@
   });
   let update = 0;
   let canTrackToUse = checkIsDefined(canTrack) ? canTrack : true;
-  let contentState = getContextStateInitialValue({
-    content: content,
-    data: data,
-    locale: locale,
-  });
   let allRegisteredComponents = [
     ...getDefaultRegisteredComponents(),
     // While this `components` object is deprecated, we must maintain support for it.
@@ -378,26 +376,26 @@
     }
   });
 
-  function onUpdateFn_0() {
+  function onUpdateFn_0(..._args: any[]) {
     if (content) {
       mergeNewContent(content);
     }
   }
   $: onUpdateFn_0(...[content]);
-  function onUpdateFn_1() {
+  function onUpdateFn_1(..._args: any[]) {
     evaluateJsCode();
   }
-  $: onUpdateFn_1(...[useContent?.data?.jsCode, contentState]);
-  function onUpdateFn_2() {
+  $: onUpdateFn_1(...[useContent?.data?.jsCode, $builderStore.rootState]);
+  function onUpdateFn_2(..._args: any[]) {
     runHttpRequests();
   }
   $: onUpdateFn_2(...[useContent?.data?.httpRequests]);
-  function onUpdateFn_3() {
+  function onUpdateFn_3(..._args: any[]) {
     emitStateUpdate();
   }
-  $: onUpdateFn_3(...[contentState]);
+  $: onUpdateFn_3(...[$builderStore.rootState]);
 
-  setContext(builderContext.key, {
+  const builderStore = writable({
     get content() {
       return useContent;
     },
@@ -405,7 +403,11 @@
       return undefined;
     },
     get rootState() {
-      return contentState;
+      return getContextStateInitialValue({
+        content: content,
+        data: data,
+        locale: locale,
+      });
     },
     get rootSetState() {
       return TARGET === 'qwik' || TARGET === 'svelte'
@@ -428,6 +430,8 @@
       return {};
     },
   });
+  setContext(builderContext.key, builderStore);
+  // setContext(builderContext.key, contextVal);
 
   onDestroy(() => {
     if (isBrowser()) {
@@ -446,8 +450,8 @@
     on:click={(event) => {
       onClick(event);
     }}
-    builder-content-id={useContent?.id}
-    builder-model={model}
+    data-builder-content-id={useContent?.id}
+    data-builder-model={model}
     {...filterAttrs(
       TARGET === 'reactNative'
         ? {
@@ -491,6 +495,6 @@
         customFonts={useContent?.data?.customFonts}
       />
     {/if}
-    <RenderBlocks blocks={useContent?.data?.blocks} key={forceReRenderCount} />
+    <RenderBlocks blocks={useContent?.data?.blocks} />
   </div>
 {/if}
