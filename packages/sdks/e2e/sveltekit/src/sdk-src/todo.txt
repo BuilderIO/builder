@@ -1,0 +1,17 @@
+- [ ] let Mitosis known a piece of Context is reactive
+  - [ ] its type should be wrapped in `Writable` wherever needed...
+  - [ ] `setContext` args are wrapped in `writable()`
+  - [ ] `getContext` usage is prefixed with `$`
+    - [ ] find a way to exclude certain `getContext` assignments from being prefixed with `$`, 
+    because we sometimes want to pass the store around as an argument.
+- [ ] `render-block`: 
+  - [ ] `childrenContext` should be replaced with just `context`. The workaround is only needed for ReactNative anyways.
+- [ ] `render-repeated-block`: 
+  - [ ] wrap in `writable()`, 
+  - [ ] pass the store as an argument.
+- [ ] `render-content`:
+  - [ ] instantiate writable store var
+  - [ ] remove `contentState` state and access store var `rootState` instead
+  - [ ] remove `getter` for `rootState`
+- [ ] `context.js`: 
+  - [ ] initialize context with `writable()`
