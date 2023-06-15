@@ -12,7 +12,7 @@ export const componentInfo: ComponentInfo = {
       name: 'image',
       bubble: true,
       type: 'file',
-      allowedFileTypes: ['jpeg', 'jpg', 'png', 'svg'],
+      allowedFileTypes: ['jpeg', 'jpg', 'png', 'svg', 'gif', 'webp'],
       required: true,
     },
   ],
