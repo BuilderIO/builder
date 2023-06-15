@@ -125,7 +125,7 @@
 
 <div
   {...filterAttrs(attributes, isNonEvent)}
-  data-dataSet={{
+  dataSet={{
     class: className,
   }}
   class={className}

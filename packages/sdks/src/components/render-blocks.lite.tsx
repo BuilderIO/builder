@@ -67,6 +67,8 @@ export default function RenderBlocks(props: RenderBlockProps) {
       onClick={(event) => state.onClick()}
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       onMouseEnter={(event) => state.onMouseEnter()}
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      onKeyPress={(event) => state.onClick()}
     >
       {/**
        * We need to run two separate loops for content + styles to workaround the fact that Vue 2

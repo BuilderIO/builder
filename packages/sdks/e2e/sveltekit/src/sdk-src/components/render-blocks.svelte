@@ -71,9 +71,9 @@
 <div
   use:mitosis_styling={styleProp}
   class={className() + ' div'}
-  data-builder-path={path}
-  data-builder-parent-id={parent}
-  data-dataSet={{
+  builder-path={path}
+  builder-parent-id={parent}
+  dataSet={{
     class: className(),
   }}
   on:click={(event) => {
