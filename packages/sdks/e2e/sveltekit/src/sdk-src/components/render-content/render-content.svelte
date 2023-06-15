@@ -427,7 +427,6 @@
     },
   });
   setContext(builderContext.key, builderStore);
-  // setContext(builderContext.key, contextVal);
 
   onDestroy(() => {
     if (isBrowser()) {

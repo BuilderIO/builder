@@ -22,21 +22,13 @@
   import type { BuilderContextInterface } from '../../context/types.js';
   import type { BuilderBlock } from '../../types/builder-block';
   import RenderBlock from './render-block.svelte';
+  import { writable } from 'svelte/store';
 
   export let block: Props['block'];
   export let repeatContext: Props['repeatContext'];
 
-  setContext(BuilderContext.key, {
-    content: repeatContext.content,
-    localState: repeatContext.localState,
-    rootState: repeatContext.rootState,
-    rootSetState: repeatContext.rootSetState,
-    context: repeatContext.context,
-    apiKey: repeatContext.apiKey,
-    registeredComponents: repeatContext.registeredComponents,
-    inheritedStyles: repeatContext.inheritedStyles,
-    apiVersion: repeatContext.apiVersion,
-  });
+  const store = writable(repeatContext);
+  setContext(BuilderContext.key, store);
 </script>
 
-<RenderBlock {block} context={repeatContext} />
+<RenderBlock {block} context={store} />

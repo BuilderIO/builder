@@ -1,7 +1,7 @@
 <script context="module" lang="ts">
   export type RenderBlockProps = {
     block: BuilderBlock;
-    context: BuilderContextInterface;
+    context: BuilderStore;
   };
 </script>
 
@@ -24,6 +24,7 @@
   import { extractTextStyles } from '../../functions/extract-text-styles.js';
   import RenderComponent from './render-component.svelte';
   import { getReactNativeBlockStyles } from '../../functions/get-react-native-block-styles.js';
+  import type { BuilderStore } from 'src/sdk-src/context/builder.context.js';
 
   const setAttrs = (node, attrs = {}) => {
     const attrKeys = Object.keys(attrs);
@@ -45,13 +46,6 @@
 
   export let block: RenderBlockProps['block'];
   export let context: RenderBlockProps['context'];
-
-  import builderContext, {
-    type BuilderStore,
-  } from '../../context/builder.context.js';
-  import { getContext } from 'svelte';
-
-  // const context = getContext<BuilderStore>(builderContext.key);
 
   $: repeatItem = () => {
     return getRepeatItemData({
