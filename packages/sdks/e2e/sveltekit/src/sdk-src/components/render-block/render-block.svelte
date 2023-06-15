@@ -122,17 +122,7 @@
         })
       );
     };
-    return {
-      apiKey: $context.apiKey,
-      apiVersion: $context.apiVersion,
-      localState: $context.localState,
-      rootState: $context.rootState,
-      rootSetState: $context.rootSetState,
-      content: $context.content,
-      context: $context.context,
-      registeredComponents: $context.registeredComponents,
-      inheritedStyles: getInheritedTextStyles(),
-    };
+    return context;
   };
   $: renderComponentProps = () => {
     return {
