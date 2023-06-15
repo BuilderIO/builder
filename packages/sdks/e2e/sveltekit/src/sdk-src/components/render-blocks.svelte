@@ -94,7 +94,7 @@
 
   {#if blocks}
     {#each blocks as block ('block-style-' + block.id)}
-      <BlockStyles {block} context={$builderContext} />
+      <BlockStyles {block} context={builderContext} />
     {/each}
   {/if}
 </div>

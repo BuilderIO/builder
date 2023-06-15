@@ -445,8 +445,8 @@
     on:click={(event) => {
       onClick(event);
     }}
-    data-builder-content-id={useContent?.id}
-    data-builder-model={model}
+    builder-content-id={useContent?.id}
+    builder-model={model}
     {...filterAttrs(
       TARGET === 'reactNative'
         ? {
