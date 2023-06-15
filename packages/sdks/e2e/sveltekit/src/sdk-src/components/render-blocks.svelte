@@ -88,7 +88,7 @@
 >
   {#if blocks}
     {#each blocks as block ('render-block-' + block.id)}
-      <RenderBlock {block} />
+      <RenderBlock {block} context={builderContext} />
     {/each}
   {/if}
 

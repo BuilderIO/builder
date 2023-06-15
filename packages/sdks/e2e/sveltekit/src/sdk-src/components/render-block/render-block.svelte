@@ -44,13 +44,14 @@
   };
 
   export let block: RenderBlockProps['block'];
+  export let context: RenderBlockProps['context'];
 
   import builderContext, {
     type BuilderStore,
   } from '../../context/builder.context.js';
   import { getContext } from 'svelte';
 
-  const context = getContext<BuilderStore>(builderContext.key);
+  // const context = getContext<BuilderStore>(builderContext.key);
 
   $: repeatItem = () => {
     return getRepeatItemData({

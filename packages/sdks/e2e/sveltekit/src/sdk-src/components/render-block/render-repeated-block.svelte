@@ -39,4 +39,4 @@
   });
 </script>
 
-<RenderBlock {block} builderStore={repeatContext} />
+<RenderBlock {block} context={repeatContext} />
