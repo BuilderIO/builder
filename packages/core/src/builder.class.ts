@@ -21,8 +21,7 @@ import { parse as urlParse } from './url';
 import hash from 'hash-sum';
 import { toError } from './functions/to-error';
 import { emptyUrl, UrlLike } from './url';
-import type { ApiVersion } from './types/api-version';
-import { DEFAULT_API_VERSION } from './types/api-version';
+import { DEFAULT_API_VERSION, ApiVersion } from './types/api-version';
 
 export type Url = any;
 
