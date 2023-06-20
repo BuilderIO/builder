@@ -11,7 +11,13 @@ import {
   isEmptyHtmlElement,
 } from './render-block.helpers.js';
 import type { RenderComponentProps } from './render-component.lite';
-import { For, Show, useMetadata, useStore } from '@builder.io/mitosis';
+import {
+  For,
+  Show,
+  useMetadata,
+  useStore,
+  useTarget,
+} from '@builder.io/mitosis';
 import RenderRepeatedBlock from './render-repeated-block.lite';
 import { TARGET } from '../../constants/target.js';
 import { extractTextStyles } from '../../functions/extract-text-styles.js';
@@ -99,31 +105,28 @@ export default function RenderBlock(props: RenderBlockProps) {
     },
 
     get childrenContext(): BuilderContextInterface {
-      const getInheritedTextStyles = () => {
-        if (TARGET !== 'reactNative') {
-          return {};
-        }
+      const childContext = useTarget({
+        reactNative: {
+          apiKey: props.context.apiKey,
+          apiVersion: props.context.apiVersion,
+          localState: props.context.localState,
+          rootState: props.context.rootState,
+          rootSetState: props.context.rootSetState,
+          content: props.context.content,
+          context: props.context.context,
+          registeredComponents: props.context.registeredComponents,
+          inheritedStyles: extractTextStyles(
+            getReactNativeBlockStyles({
+              block: state.useBlock,
+              context: props.context,
+              blockStyles: state.attributes.style,
+            })
+          ),
+        },
+        default: props.context,
+      });
 
-        return extractTextStyles(
-          getReactNativeBlockStyles({
-            block: state.useBlock,
-            context: props.context,
-            blockStyles: state.attributes.style,
-          })
-        );
-      };
-
-      return {
-        apiKey: props.context.apiKey,
-        apiVersion: props.context.apiVersion,
-        localState: props.context.localState,
-        rootState: props.context.rootState,
-        rootSetState: props.context.rootSetState,
-        content: props.context.content,
-        context: props.context.context,
-        registeredComponents: props.context.registeredComponents,
-        inheritedStyles: getInheritedTextStyles(),
-      };
+      return childContext;
     },
 
     get renderComponentProps(): RenderComponentProps {
