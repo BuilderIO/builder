@@ -1,3 +1,6 @@
+### 2.0.4
+- change the way we import ApiVersion type
+
 ### 2.0.3
 - Feature: Add support for `enrich` API flag.
 - Mark `includeRefs` as deprecated.
