@@ -1,11 +1,13 @@
 <script context="module" lang="ts">
   export type RenderBlockProps = {
     block: BuilderBlock;
-    context: BuilderStore;
+    context: Signal<BuilderContextInterface>;
   };
 </script>
 
 <script lang="ts">
+  import { writable } from 'svelte/store';
+
   import type { BuilderContextInterface } from '../../context/types.js';
   import { getBlockActions } from '../../functions/get-block-actions.js';
   import { getBlockComponentOptions } from '../../functions/get-block-component-options.js';
@@ -24,13 +26,15 @@
   import { extractTextStyles } from '../../functions/extract-text-styles.js';
   import RenderComponent from './render-component.svelte';
   import { getReactNativeBlockStyles } from '../../functions/get-react-native-block-styles.js';
-  import type { BuilderStore } from 'src/sdk-src/context/builder.context.js';
 
   const setAttrs = (node, attrs = {}) => {
     const attrKeys = Object.keys(attrs);
+
     const setup = (attr) => node.addEventListener(attr.substr(3), attrs[attr]);
+
     const teardown = (attr) =>
       node.removeEventListener(attr.substr(3), attrs[attr]);
+
     attrKeys.map(setup);
     return {
       update(attrs = {}) {
@@ -38,6 +42,7 @@
         attrKeys.map(teardown);
         attrKeys.map(setup);
       },
+
       destroy() {
         attrKeys.map(teardown);
       },
@@ -53,6 +58,7 @@
       context: $context,
     });
   };
+
   $: useBlock = () => {
     return repeatItem()
       ? block
@@ -65,15 +71,19 @@
           shouldEvaluateBindings: true,
         });
   };
+
   $: canShowBlock = () => {
     if ('hide' in useBlock()) {
       return !useBlock().hide;
     }
+
     if ('show' in useBlock()) {
       return useBlock().show;
     }
+
     return true;
   };
+
   $: actions = () => {
     return getBlockActions({
       block: useBlock(),
@@ -83,6 +93,7 @@
       context: $context.context,
     });
   };
+
   $: attributes = () => {
     const blockProperties = getBlockProperties(useBlock());
     return {
@@ -98,6 +109,7 @@
         : {}),
     };
   };
+
   $: childrenWithoutParentComponent = () => {
     /**
      * When there is no `componentRef`, there might still be children that need to be rendered. In this case,
@@ -109,27 +121,14 @@
       !component?.component && !repeatItem();
     return shouldRenderChildrenOutsideRef ? useBlock().children ?? [] : [];
   };
-  $: childrenContext = () => {
-    const getInheritedTextStyles = () => {
-      if (TARGET !== 'reactNative') {
-        return {};
-      }
-      return extractTextStyles(
-        getReactNativeBlockStyles({
-          block: useBlock(),
-          context: $context,
-          blockStyles: attributes().style,
-        })
-      );
-    };
-    return context;
-  };
+
   $: renderComponentProps = () => {
     return {
       blockChildren: useBlock().children ?? [],
       componentRef: component?.component,
       componentOptions: {
         ...getBlockComponentOptions(useBlock()),
+
         /**
          * These attributes are passed to the wrapper element when there is one. If `noWrap` is set to true, then
          * they are provided to the component itself directly.
@@ -137,13 +136,10 @@
         ...(!component?.noWrap
           ? {}
           : {
-              attributes: {
-                ...attributes(),
-                ...actions(),
-              },
+              attributes: { ...attributes(), ...actions() },
             }),
       },
-      context: childrenContext(),
+      context: childrenContext,
     };
   };
 
@@ -152,6 +148,7 @@
     context: $context,
   });
   let Tag = block.tagName || 'div';
+  let childrenContext = writable($context);
 </script>
 
 {#if canShowBlock()}
@@ -171,11 +168,11 @@
         <RenderComponent {...renderComponentProps()} />
 
         {#each childrenWithoutParentComponent() as child ('render-block-' + child.id)}
-          <svelte:self block={child} context={childrenContext()} />
+          <svelte:self block={child} context={childrenContext} />
         {/each}
 
         {#each childrenWithoutParentComponent() as child ('block-style-' + child.id)}
-          <BlockStyles block={child} context={childrenContext()} />
+          <BlockStyles block={child} context={$childrenContext} />
         {/each}
       </svelte:element>
     {/if}

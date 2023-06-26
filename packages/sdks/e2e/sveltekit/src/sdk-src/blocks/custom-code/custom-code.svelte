@@ -15,12 +15,15 @@
     // TODO: Move this function to standalone one in '@builder.io/utils'
     if (elem && elem.getElementsByTagName && typeof window !== 'undefined') {
       const scripts = elem.getElementsByTagName('script');
+
       for (let i = 0; i < scripts.length; i++) {
         const script = scripts[i];
+
         if (script.src) {
           if (scriptsInserted.includes(script.src)) {
             continue;
           }
+
           scriptsInserted.push(script.src);
           const newScript = document.createElement('script');
           newScript.async = true;
@@ -37,6 +40,7 @@
           if (scriptsRun.includes(script.innerText)) {
             continue;
           }
+
           try {
             scriptsRun.push(script.innerText);
             new Function(script.innerText)();

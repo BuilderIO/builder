@@ -10,7 +10,7 @@
     componentRef: any;
     componentOptions: ComponentOptions;
     blockChildren: BuilderBlock[];
-    context: BuilderContextInterface;
+    context: Signal<BuilderContextInterface>;
   }
 </script>
 
@@ -33,7 +33,7 @@
     {/each}
 
     {#each blockChildren as child ('block-style-' + child.id)}
-      <BlockStyles block={child} {context} />
+      <BlockStyles block={child} context={$context} />
     {/each}
   </svelte:component>
 {/if}

@@ -32,6 +32,7 @@ import {
   useMetadata,
   useRef,
   setContext,
+  useState,
 } from '@builder.io/mitosis';
 import {
   registerInsertMenu,
@@ -282,21 +283,26 @@ export default function RenderContent(props: RenderContentProps) {
   // TODO: inherit context here too
   // });
 
-  setContext(builderContext, {
-    content: state.useContent,
-    // those 2 pieces of state have to be created in a separate context for Svelte, so that it can be a `writable()` store
-    localState: undefined,
-    rootState: state.contentState,
-    rootSetState:
-      TARGET === 'qwik' || TARGET === 'svelte'
-        ? undefined
-        : state.contentSetState,
-    context: props.context || {},
-    apiKey: props.apiKey,
-    apiVersion: props.apiVersion,
-    registeredComponents: state.allRegisteredComponents,
-    inheritedStyles: {},
-  });
+  const [builderContextSignal] = useState(
+    {
+      content: state.useContent,
+      // those 2 pieces of state have to be created in a separate context for Svelte, so that it can be a `writable()` store
+      localState: undefined,
+      rootState: state.contentState,
+      rootSetState:
+        TARGET === 'qwik' || TARGET === 'svelte'
+          ? undefined
+          : state.contentSetState,
+      context: props.context || {},
+      apiKey: props.apiKey,
+      apiVersion: props.apiVersion,
+      registeredComponents: state.allRegisteredComponents,
+      inheritedStyles: {},
+    },
+    { reactive: true }
+  );
+
+  setContext(builderContext, builderContextSignal);
 
   onMount(() => {
     if (!props.apiKey) {

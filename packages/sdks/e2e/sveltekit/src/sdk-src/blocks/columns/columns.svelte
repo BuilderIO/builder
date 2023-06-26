@@ -50,10 +50,12 @@
   function getWidth(index: number) {
     return cols[index]?.width || 100 / cols.length;
   }
+
   function getColumnCssWidth(index: number) {
     const subtractWidth = (gutterSize * (cols.length - 1)) / cols.length;
     return `calc(${getWidth(index)}% - ${subtractWidth}px)`;
   }
+
   function getTabletStyle({
     stackedStyle,
     desktopStyle,
@@ -63,6 +65,7 @@
   }) {
     return stackAt === 'tablet' ? stackedStyle : desktopStyle;
   }
+
   function getMobileStyle({
     stackedStyle,
     desktopStyle,
@@ -72,13 +75,16 @@
   }) {
     return stackAt === 'never' ? desktopStyle : stackedStyle;
   }
+
   function columnCssVars(index: number) {
     const gutter = index === 0 ? 0 : gutterSize;
+
     if (TARGET === 'reactNative') {
       return {
         marginLeft: stackColumnsAt === 'never' ? gutter : 0,
       } as any as Dictionary<string>;
     }
+
     const width = getColumnCssWidth(index);
     const gutterPixels = `${gutter}px`;
     const mobileWidth = '100%';
@@ -104,9 +110,10 @@
       }),
     } as any as Dictionary<string>;
   }
+
   function getWidthForBreakpointSize(size: SizeName) {
     const breakpointSizes = getSizesForBreakpoints(
-      builderContext.content?.meta?.breakpoints || {}
+      $builderContext.content?.meta?.breakpoints || {}
     );
     return breakpointSizes[size].max;
   }
@@ -116,6 +123,7 @@
         flexDirection: flexDir,
       } as Dictionary<string>;
     }
+
     return {
       '--flex-dir': flexDir,
       '--flex-dir-tablet': getTabletStyle({
@@ -124,6 +132,7 @@
       }),
     } as Dictionary<string>;
   };
+
   $: columnsStyles = () => {
     return `
         @media (max-width: ${getWidthForBreakpointSize('medium')}px) {

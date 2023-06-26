@@ -12,8 +12,10 @@
   function findAndRunScripts() {
     if (!elem || !elem.getElementsByTagName) return;
     const scripts = elem.getElementsByTagName('script');
+
     for (let i = 0; i < scripts.length; i++) {
       const script = scripts[i];
+
       if (script.src && !scriptsInserted.includes(script.src)) {
         scriptsInserted.push(script.src);
         const newScript = document.createElement('script');

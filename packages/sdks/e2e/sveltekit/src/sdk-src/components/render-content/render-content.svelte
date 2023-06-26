@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { getContext, onDestroy, onMount, setContext } from 'svelte';
+  import { onDestroy, onMount, setContext } from 'svelte';
+  import { writable } from 'svelte/store';
 
   import { getDefaultRegisteredComponents } from '../../constants/builder-registered-components.js';
   import type {
@@ -25,9 +26,7 @@
   import type { Nullable } from '../../types/typescript.js';
   import RenderBlocks from '../render-blocks.svelte';
   import RenderContentStyles from './components/render-styles.svelte';
-  import builderContext, {
-    type BuilderStore,
-  } from '../../context/builder.context.js';
+  import builderContext from '../../context/builder.context.js';
   import {
     registerInsertMenu,
     setupBrowserForEditing,
@@ -46,10 +45,11 @@
   import { logger } from '../../helpers/logger.js';
   import { getRenderContentScriptString } from '../render-content-variants/helpers.js';
   import { wrapComponentRef } from './wrap-component-ref.js';
-  import { writable } from 'svelte/store';
 
   const isEvent = (attr) => attr.startsWith('on:');
+
   const isNonEvent = (attr) => !attr.startsWith('on:');
+
   const filterAttrs = (attrs = {}, filter) => {
     const validAttr = {};
     Object.keys(attrs).forEach((attr) => {
@@ -59,11 +59,15 @@
     });
     return validAttr;
   };
+
   const setAttrs = (node, attrs = {}) => {
     const attrKeys = Object.keys(attrs);
+
     const setup = (attr) => node.addEventListener(attr.substr(3), attrs[attr]);
+
     const teardown = (attr) =>
       node.removeEventListener(attr.substr(3), attrs[attr]);
+
     attrKeys.map(setup);
     return {
       update(attrs = {}) {
@@ -71,6 +75,7 @@
         attrKeys.map(teardown);
         attrKeys.map(setup);
       },
+
       destroy() {
         attrKeys.map(teardown);
       },
@@ -86,21 +91,18 @@
   export let context: RenderContentProps['context'];
   export let apiKey: RenderContentProps['apiKey'];
   export let parentContentId: RenderContentProps['parentContentId'];
+  export let apiVersion: RenderContentProps['apiVersion'];
   export let hideContent: RenderContentProps['hideContent'];
   export let classNameProp: RenderContentProps['classNameProp'];
   export let isSsrAbTest: RenderContentProps['isSsrAbTest'];
   export let includeRefs: RenderContentProps['includeRefs'];
   export let enrich: RenderContentProps['enrich'];
-  export let apiVersion: RenderContentProps['apiVersion'];
 
   function mergeNewContent(newContent: BuilderContent) {
     useContent = {
       ...useContent,
       ...newContent,
-      data: {
-        ...useContent?.data,
-        ...newContent?.data,
-      },
+      data: { ...useContent?.data, ...newContent?.data },
       meta: {
         ...useContent?.meta,
         ...newContent?.meta,
@@ -109,34 +111,37 @@
       },
     };
   }
+
   function setBreakpoints(breakpoints: Breakpoints) {
-    useContent = {
-      ...useContent,
-      meta: {
-        ...useContent?.meta,
-        breakpoints,
-      },
-    };
+    useContent = { ...useContent, meta: { ...useContent?.meta, breakpoints } };
   }
+
   function contentSetState(newRootState: BuilderRenderState) {
-    $builderStore.rootState = newRootState;
+    contentState = newRootState;
   }
+
   function processMessage(event: MessageEvent) {
     const { data } = event;
+
     if (data) {
       switch (data.type) {
         case 'builder.configureSdk': {
           const messageContent = data.data;
           const { breakpoints, contentId } = messageContent;
+
           if (!contentId || contentId !== useContent?.id) {
             return;
           }
+
           if (breakpoints) {
             setBreakpoints(breakpoints);
           }
+
           forceReRenderCount = forceReRenderCount + 1; // This is a hack to force Qwik to re-render.
+
           break;
         }
+
         case 'builder.contentUpdate': {
           const messageContent = data.data;
           const key =
@@ -145,6 +150,7 @@
             messageContent.entry ||
             messageContent.modelName;
           const contentData = messageContent.data;
+
           if (key === model) {
             mergeNewContent(contentData);
             forceReRenderCount = forceReRenderCount + 1; // This is a hack to force Qwik to re-render.
@@ -152,6 +158,7 @@
 
           break;
         }
+
         case 'builder.patchUpdates': {
           // TODO
           break;
@@ -159,23 +166,27 @@
       }
     }
   }
+
   function evaluateJsCode() {
     // run any dynamic JS code attached to content
     const jsCode = useContent?.data?.jsCode;
+
     if (jsCode) {
       evaluate({
         code: jsCode,
         context: context || {},
         localState: undefined,
-        rootState: $builderStore.rootState,
+        rootState: contentState,
         rootSetState: contentSetState,
       });
     }
   }
+
   function onClick(event: any) {
     if (useContent) {
       const variationId = useContent?.testVariationId;
       const contentId = useContent?.id;
+
       _track({
         type: 'click',
         canTrack: canTrackToUse,
@@ -186,35 +197,36 @@
         unique: !clicked,
       });
     }
+
     if (!clicked) {
       clicked = true;
     }
   }
+
   function evalExpression(expression: string) {
     return expression.replace(/{{([^}]+)}}/g, (_match, group) =>
       evaluate({
         code: group,
         context: context || {},
         localState: undefined,
-        rootState: $builderStore.rootState,
+        rootState: contentState,
         rootSetState: contentSetState,
       })
     );
   }
+
   function handleRequest({ url, key }: { key: string; url: string }) {
     fetch(url)
       .then((response) => response.json())
       .then((json) => {
-        const newState = {
-          ...$builderStore.rootState,
-          [key]: json,
-        };
+        const newState = { ...contentState, [key]: json };
         contentSetState(newState);
       })
       .catch((err) => {
         console.error('error fetching dynamic data', url, err);
       });
   }
+
   function runHttpRequests() {
     const requests: {
       [key: string]: string;
@@ -229,6 +241,7 @@
       }
     });
   }
+
   function emitStateUpdate() {
     if (isEditing()) {
       window.dispatchEvent(
@@ -236,7 +249,7 @@
           'builder:component:stateChange',
           {
             detail: {
-              state: $builderStore.rootState,
+              state: contentState,
               ref: {
                 name: model,
               },
@@ -257,9 +270,13 @@
   });
   let update = 0;
   let canTrackToUse = checkIsDefined(canTrack) ? canTrack : true;
+  let contentState = getContextStateInitialValue({
+    content: content,
+    data: data,
+    locale: locale,
+  });
   let allRegisteredComponents = [
-    ...getDefaultRegisteredComponents(),
-    // While this `components` object is deprecated, we must maintain support for it.
+    ...getDefaultRegisteredComponents(), // While this `components` object is deprecated, we must maintain support for it.
     // Since users are able to override our default components, we need to make sure that we do not break such
     // existing usage.
     // This is why we spread `components` after the default Builder.io components, but before the `props.customComponents`,
@@ -283,6 +300,19 @@
     contentId: content?.id!,
     parentContentId: parentContentId!,
   });
+  let builderContextSignal = writable({
+    content: useContent,
+    // those 2 pieces of state have to be created in a separate context for Svelte, so that it can be a `writable()` store
+    localState: undefined,
+    rootState: contentState,
+    rootSetState:
+      TARGET === 'qwik' || TARGET === 'svelte' ? undefined : contentSetState,
+    context: context || {},
+    apiKey: apiKey,
+    apiVersion: apiVersion,
+    registeredComponents: allRegisteredComponents,
+    inheritedStyles: {},
+  });
 
   onMount(() => {
     if (!apiKey) {
@@ -290,6 +320,7 @@
         'No API key provided to `RenderContent` component. This can cause issues. Please provide an API key using the `apiKey` prop.'
       );
     }
+
     if (isBrowser()) {
       if (isEditing()) {
         forceReRenderCount = forceReRenderCount + 1;
@@ -323,9 +354,11 @@
           emitStateUpdate
         );
       }
+
       if (useContent) {
         const variationId = useContent?.testVariationId;
         const contentId = useContent?.id;
+
         _track({
           type: 'impression',
           canTrack: canTrackToUse,
@@ -333,9 +366,8 @@
           apiKey: apiKey,
           variationId: variationId !== contentId ? variationId : undefined,
         });
-      }
+      } // override normal content in preview mode
 
-      // override normal content in preview mode
       if (isPreviewing()) {
         const searchParams = new URL(location.href).searchParams;
         const searchParamPreviewModel = searchParams.get('builder.preview');
@@ -344,7 +376,6 @@
         );
         const previewApiKey =
           searchParams.get('apiKey') || searchParams.get('builder.space');
-
         /**
          * Make sure that:
          * - the preview model name is the same as the one we're rendering, since there can be multiple models rendered
@@ -354,6 +385,7 @@
          *
          * TO-DO: should we only update the state when there is a change?
          **/
+
         if (
           searchParamPreviewModel === model &&
           previewApiKey === apiKey &&
@@ -370,63 +402,33 @@
           });
         }
       }
+
       evaluateJsCode();
       runHttpRequests();
       emitStateUpdate();
     }
   });
 
-  function onUpdateFn_0(..._args: any[]) {
+  function onUpdateFn_0() {
     if (content) {
       mergeNewContent(content);
     }
   }
   $: onUpdateFn_0(...[content]);
-  function onUpdateFn_1(..._args: any[]) {
+  function onUpdateFn_1() {
     evaluateJsCode();
   }
-  $: onUpdateFn_1(...[useContent?.data?.jsCode, $builderStore.rootState]);
-  function onUpdateFn_2(..._args: any[]) {
+  $: onUpdateFn_1(...[useContent?.data?.jsCode, contentState]);
+  function onUpdateFn_2() {
     runHttpRequests();
   }
   $: onUpdateFn_2(...[useContent?.data?.httpRequests]);
-  function onUpdateFn_3(..._args: any[]) {
+  function onUpdateFn_3() {
     emitStateUpdate();
   }
-  $: onUpdateFn_3(...[$builderStore.rootState]);
+  $: onUpdateFn_3(...[contentState]);
 
-  const builderStore = writable({
-    get content() {
-      return useContent;
-    },
-    get localState() {
-      return undefined;
-    },
-    rootState: getContextStateInitialValue({
-      content: content,
-      data: data,
-      locale: locale,
-    }),
-    get rootSetState() {
-      return TARGET === 'qwik' ? undefined : contentSetState;
-    },
-    get context() {
-      return context || {};
-    },
-    get apiKey() {
-      return apiKey;
-    },
-    get apiVersion() {
-      return apiVersion;
-    },
-    get registeredComponents() {
-      return allRegisteredComponents;
-    },
-    get inheritedStyles() {
-      return {};
-    },
-  });
-  setContext(builderContext.key, builderStore);
+  setContext(builderContext, builderContextSignal);
 
   onDestroy(() => {
     if (isBrowser()) {
@@ -490,6 +492,6 @@
         customFonts={useContent?.data?.customFonts}
       />
     {/if}
-    <RenderBlocks blocks={useContent?.data?.blocks} />
+    <RenderBlocks blocks={useContent?.data?.blocks} key={forceReRenderCount} />
   </div>
 {/if}

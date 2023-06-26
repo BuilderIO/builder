@@ -22,9 +22,7 @@
   import { getContext, onMount } from 'svelte';
 
   import RenderContent from '../../components/render-content/render-content.svelte';
-  import BuilderContext, {
-    type BuilderStore,
-  } from '../../context/builder.context.js';
+  import BuilderContext from '../../context/builder.context.js';
   import { getContent } from '../../functions/get-content/index.js';
   import type { BuilderContent } from '../../types/builder-content.js';
   import type { BuilderBlock } from '../../types/builder-block.js';
@@ -32,7 +30,9 @@
   import { logger } from '../../helpers/logger';
 
   const isEvent = (attr) => attr.startsWith('on:');
+
   const isNonEvent = (attr) => !attr.startsWith('on:');
+
   const filterAttrs = (attrs = {}, filter) => {
     const validAttr = {};
     Object.keys(attrs).forEach((attr) => {
@@ -42,11 +42,15 @@
     });
     return validAttr;
   };
+
   const setAttrs = (node, attrs = {}) => {
     const attrKeys = Object.keys(attrs);
+
     const setup = (attr) => node.addEventListener(attr.substr(3), attrs[attr]);
+
     const teardown = (attr) =>
       node.removeEventListener(attr.substr(3), attrs[attr]);
+
     attrKeys.map(setup);
     return {
       update(attrs = {}) {
@@ -54,6 +58,7 @@
         attrKeys.map(teardown);
         attrKeys.map(setup);
       },
+
       destroy() {
         attrKeys.map(teardown);
       },
@@ -64,7 +69,7 @@
   export let symbol: SymbolProps['symbol'];
   export let dynamic: SymbolProps['dynamic'];
 
-  let builderContext = getContext<BuilderStore>(BuilderContext.key);
+  let builderContext = getContext(BuilderContext.key);
 
   function fetchContent() {
     /**
@@ -78,8 +83,7 @@
      */
     if (
       !contentToUse &&
-      symbol?.model &&
-      // This is a hack, we should not need to check for this, but it is needed for Svelte.
+      symbol?.model && // This is a hack, we should not need to check for this, but it is needed for Svelte.
       $builderContext?.apiKey
     ) {
       getContent({

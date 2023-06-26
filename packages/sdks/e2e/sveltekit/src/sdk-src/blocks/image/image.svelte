@@ -49,14 +49,15 @@
   $: srcSetToUse = () => {
     const imageToUse = image || src;
     const url = imageToUse;
+
     if (
-      !url ||
-      // We can auto add srcset for cdn.builder.io and shopify
+      !url || // We can auto add srcset for cdn.builder.io and shopify
       // images, otherwise you can supply this prop manually
       !(url.match(/builder\.io/) || url.match(/cdn\.shopify\.com/))
     ) {
       return srcset;
     }
+
     if (srcset && image?.includes('builder.io/api/v1/image')) {
       if (!srcset.includes(image.split('?')[0])) {
         console.debug('Removed given srcset');
@@ -65,8 +66,10 @@
     } else if (image && !srcset) {
       return getSrcSet(url);
     }
+
     return getSrcSet(url);
   };
+
   $: webpSrcSet = () => {
     if (srcSetToUse?.()?.match(/builder\.io/) && !noWebp) {
       return srcSetToUse().replace(/\?/g, '?format=webp&');
@@ -74,6 +77,7 @@
       return '';
     }
   };
+
   $: aspectRatioCss = () => {
     const aspectRatioStyles = {
       position: 'absolute',

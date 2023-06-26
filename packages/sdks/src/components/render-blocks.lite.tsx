@@ -91,7 +91,7 @@ export default function RenderBlocks(props: RenderBlockProps) {
             <BlockStyles
               key={'block-style-' + block.id}
               block={block}
-              context={builderContext}
+              context={builderContext.value}
             />
           )}
         </For>

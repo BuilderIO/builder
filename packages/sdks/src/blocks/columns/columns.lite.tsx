@@ -122,7 +122,7 @@ export default function Columns(props: ColumnProps) {
 
     getWidthForBreakpointSize(size: SizeName) {
       const breakpointSizes = getSizesForBreakpoints(
-        builderContext.content?.meta?.breakpoints || {}
+        builderContext.value.content?.meta?.breakpoints || {}
       );
 
       return breakpointSizes[size].max;

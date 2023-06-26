@@ -8,7 +8,6 @@
    * This component was copied over from the old SDKs and has a lot of code pointing to invalid functions/env vars. It needs
    * to be cleaned up before the component can actually be usable.
    */
-
   interface BuilderElement {}
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -20,7 +19,6 @@
    * This component was copied over from the old SDKs and has a lot of code pointing to invalid functions/env vars. It needs
    * to be cleaned up before the component can actually be usable.
    */
-
   export interface FormProps {
     attributes?: any;
     name?: string;
@@ -53,7 +51,6 @@
    * This component was copied over from the old SDKs and has a lot of code pointing to invalid functions/env vars. It needs
    * to be cleaned up before the component can actually be usable.
    */
-
   export type FormState = 'unsubmitted' | 'sending' | 'success' | 'error';
 </script>
 
@@ -65,7 +62,9 @@
   import { isEditing } from '../../functions/is-editing.js';
 
   const isEvent = (attr) => attr.startsWith('on:');
+
   const isNonEvent = (attr) => !attr.startsWith('on:');
+
   const filterAttrs = (attrs = {}, filter) => {
     const validAttr = {};
     Object.keys(attrs).forEach((attr) => {
@@ -75,11 +74,15 @@
     });
     return validAttr;
   };
+
   const setAttrs = (node, attrs = {}) => {
     const attrKeys = Object.keys(attrs);
+
     const setup = (attr) => node.addEventListener(attr.substr(3), attrs[attr]);
+
     const teardown = (attr) =>
       node.removeEventListener(attr.substr(3), attrs[attr]);
+
     attrKeys.map(setup);
     return {
       update(attrs = {}) {
@@ -87,6 +90,7 @@
         attrKeys.map(teardown);
         attrKeys.map(setup);
       },
+
       destroy() {
         attrKeys.map(teardown);
       },
@@ -120,6 +124,7 @@
     }
   ) {
     const sendWithJs = sendWithJs || sendSubmissionsTo === 'email';
+
     if (sendSubmissionsTo === 'zapier') {
       event.preventDefault();
     } else if (sendWithJs) {
@@ -127,13 +132,13 @@
         event.preventDefault();
         return;
       }
+
       event.preventDefault();
       const el = event.currentTarget;
       const headers = customHeaders || {};
       let body: any;
-      const formData = new FormData(el);
+      const formData = new FormData(el); // TODO: maybe support null
 
-      // TODO: maybe support null
       const formPairs: {
         key: string;
         value: File | boolean | number | string | FileList;
@@ -144,6 +149,7 @@
         .map((el) => {
           let value: any;
           const key = (el as HTMLImageElement).name;
+
           if (el instanceof HTMLInputElement) {
             if (el.type === 'radio') {
               if (el.checked) {
@@ -157,6 +163,7 @@
               value = el.checked;
             } else if (el.type === 'number' || el.type === 'range') {
               const num = el.valueAsNumber;
+
               if (!isNaN(num)) {
                 value = num;
               }
@@ -169,15 +176,18 @@
           } else {
             value = (el as HTMLInputElement).value;
           }
+
           return {
             key,
             value,
           };
         });
       let contentType = contentType;
+
       if (sendSubmissionsTo === 'email') {
         contentType = 'multipart/form-data';
       }
+
       Array.from(formPairs).forEach(({ value }) => {
         if (
           value instanceof File ||
@@ -186,11 +196,10 @@
         ) {
           contentType = 'multipart/form-data';
         }
-      });
-
-      // TODO: send as urlEncoded or multipart by default
+      }); // TODO: send as urlEncoded or multipart by default
       // because of ease of use and reliability in browser API
       // for encoding the form?
+
       if (contentType !== 'application/json') {
         body = formData;
       } else {
@@ -201,6 +210,7 @@
         });
         body = JSON.stringify(json);
       }
+
       if (contentType && contentType !== 'multipart/form-data') {
         if (
           /* Zapier doesn't allow content-type header to be sent from browsers */
@@ -209,17 +219,21 @@
           headers['content-type'] = contentType;
         }
       }
+
       const presubmitEvent = new CustomEvent('presubmit', {
         detail: {
           body,
         },
       });
+
       if (formRef) {
         formRef.dispatchEvent(presubmitEvent);
+
         if (presubmitEvent.defaultPrevented) {
           return;
         }
       }
+
       formState = 'sending';
       const formUrl = `${
         builder.env === 'dev' ? 'http://localhost:5000' : 'https://builder.io'
@@ -227,9 +241,8 @@
         sendSubmissionsToEmail || ''
       )}&name=${encodeURIComponent(name || '')}`;
       fetch(
-        sendSubmissionsTo === 'email'
-          ? formUrl
-          : action! /* TODO: throw error if no action URL */,
+        sendSubmissionsTo === 'email' ? formUrl : action!,
+        /* TODO: throw error if no action URL */
         {
           body,
           headers,
@@ -239,25 +252,31 @@
         async (res) => {
           let body;
           const contentType = res.headers.get('content-type');
+
           if (contentType && contentType.indexOf('application/json') !== -1) {
             body = await res.json();
           } else {
             body = await res.text();
           }
+
           if (!res.ok && errorMessagePath) {
             /* TODO: allow supplying an error formatter function */
             let message = get(body, errorMessagePath);
+
             if (message) {
               if (typeof message !== 'string') {
                 /* TODO: ideally convert json to yaml so it woul dbe like
            error: - email has been taken */
                 message = JSON.stringify(message);
               }
+
               formErrorMessage = message;
             }
           }
+
           responseData = body;
           formState = res.ok ? 'success' : 'error';
+
           if (res.ok) {
             const submitSuccessEvent = new CustomEvent('submit:success', {
               detail: {
@@ -265,18 +284,21 @@
                 body,
               },
             });
+
             if (formRef) {
               formRef.dispatchEvent(submitSuccessEvent);
+
               if (submitSuccessEvent.defaultPrevented) {
                 return;
               }
               /* TODO: option to turn this on/off? */
+
               if (resetFormOnSubmit !== false) {
                 formRef.reset();
               }
             }
-
             /* TODO: client side route event first that can be preventDefaulted */
+
             if (successUrl) {
               if (formRef) {
                 const event = new CustomEvent('route', {
@@ -285,6 +307,7 @@
                   },
                 });
                 formRef.dispatchEvent(event);
+
                 if (!event.defaultPrevented) {
                   location.href = successUrl;
                 }
@@ -300,12 +323,15 @@
               error: err,
             },
           });
+
           if (formRef) {
             formRef.dispatchEvent(submitErrorEvent);
+
             if (submitErrorEvent.defaultPrevented) {
               return;
             }
           }
+
           responseData = err;
           formState = 'error';
         }

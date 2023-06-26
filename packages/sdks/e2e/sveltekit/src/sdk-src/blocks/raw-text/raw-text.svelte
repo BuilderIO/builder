@@ -1,8 +1,7 @@
 <script context="module" lang="ts">
   export interface RawTextProps {
     attributes?: any;
-    text?: string;
-    // builderBlock?: any;
+    text?: string; // builderBlock?: any;
   }
 </script>
 

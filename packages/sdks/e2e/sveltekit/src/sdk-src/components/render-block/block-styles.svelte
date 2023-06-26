@@ -1,9 +1,7 @@
 <script context="module" lang="ts">
-  import type { BuilderStore } from 'src/sdk-src/context/builder.context.js';
-
   export type BlockStylesProps = {
     block: BuilderBlock;
-    context: BuilderStore;
+    context: BuilderContextInterface;
   };
 </script>
 
@@ -26,26 +24,30 @@
   $: useBlock = () => {
     return getProcessedBlock({
       block: block,
-      localState: $context.localState,
-      rootState: $context.rootState,
-      rootSetState: $context.rootSetState,
-      context: $context.context,
+      localState: context.localState,
+      rootState: context.rootState,
+      rootSetState: context.rootSetState,
+      context: context.context,
       shouldEvaluateBindings: true,
     });
   };
+
   $: canShowBlock = () => {
     // only render styles for blocks that are visible
     if (checkIsDefined(useBlock().hide)) {
       return !useBlock().hide;
     }
+
     if (checkIsDefined(useBlock().show)) {
       return useBlock().show;
     }
+
     return true;
   };
+
   $: css = () => {
     const styles = useBlock().responsiveStyles;
-    const content = $context.content;
+    const content = context.content;
     const sizesWithUpdatedBreakpoints = getSizesForBreakpoints(
       content?.meta?.breakpoints || {}
     );
@@ -53,9 +55,11 @@
     const mediumStyles = styles?.medium;
     const smallStyles = styles?.small;
     const className = useBlock().id;
+
     if (!className) {
       return '';
     }
+
     const largeStylesClass = largeStyles
       ? createCssClass({
           className,

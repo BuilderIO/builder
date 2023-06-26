@@ -24,4 +24,6 @@
   let builderContext = getContext(BuilderContext.key);
 </script>
 
-<span use:mitosis_styling={$builderContext.inheritedStyles}>{text}</span>
+<span use:mitosis_styling={$builderContext.inheritedStyles}>
+  {text}
+</span>
