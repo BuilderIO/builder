@@ -14,6 +14,7 @@ import {
   isOldReactSDK,
 } from './helpers.js';
 import { sdk } from './sdk.js';
+import { DEFAULT_TEXT_SYMBOL, FRENCH_TEXT_SYMBOL } from '../specs/symbol-with-locale';
 
 const testSymbols = async (page: Page) => {
   await findTextInPage({ page, text: 'special test description' });
@@ -192,6 +193,39 @@ test.describe('Blocks', () => {
     await page.goto('/symbols-without-content');
 
     await testSymbols(page);
+
+    await expect(x).toBeGreaterThanOrEqual(2);
+  });
+
+  testOnlyOldReact('symbols refresh on locale change', async ({ page }) => {
+    let x = 0;
+
+    const urlMatch =
+      sdk === 'oldReact'
+        ? 'https://cdn.builder.io/api/v3/query/abcd/symbol*'
+        : /https:\/\/cdn\.builder\.io\/api\/v3\/content\/symbol\.*/;
+
+    await page.route(urlMatch, route => {
+      x++;
+
+      const url = new URL(route.request().url());
+
+      const keyName =
+        sdk === 'oldReact' ? decodeURIComponent(url.pathname).split('/').reverse()[0] : 'results';
+
+      return route.fulfill({
+        status: 200,
+        json: {
+          [keyName]: [x === 1 ? DEFAULT_TEXT_SYMBOL: FRENCH_TEXT_SYMBOL],
+        },
+      });
+    });
+
+    await page.goto('/symbol-with-locale');
+
+    await page.click('text=click');
+
+    await page.waitForSelector('text=French text');
 
     await expect(x).toBeGreaterThanOrEqual(2);
   });
