@@ -121,7 +121,7 @@
     fetchContent();
   });
 
-  function onUpdateFn_0() {
+  function onUpdateFn_0(..._args: any[]) {
     fetchContent();
   }
   $: onUpdateFn_0(...[symbol]);

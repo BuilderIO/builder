@@ -39,7 +39,7 @@
   let scriptsRun = [];
   let ranInitFn = false;
 
-  function onUpdateFn_0() {
+  function onUpdateFn_0(..._args: any[]) {
     if (elem && !ranInitFn) {
       ranInitFn = true;
       findAndRunScripts();

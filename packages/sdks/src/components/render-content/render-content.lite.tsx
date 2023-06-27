@@ -101,13 +101,8 @@ export default function RenderContent(props: RenderContentProps) {
     },
     update: 0,
     canTrackToUse: checkIsDefined(props.canTrack) ? props.canTrack : true,
-    contentState: getContextStateInitialValue({
-      content: props.content,
-      data: props.data,
-      locale: props.locale,
-    }),
     contentSetState: (newRootState: BuilderRenderState) => {
-      state.contentState = newRootState;
+      builderContextSignal.value.rootState = newRootState;
     },
 
     allRegisteredComponents: [
@@ -179,7 +174,7 @@ export default function RenderContent(props: RenderContentProps) {
           code: jsCode,
           context: props.context || {},
           localState: undefined,
-          rootState: state.contentState,
+          rootState: builderContextSignal.value.rootState,
           rootSetState: state.contentSetState,
         });
       }
@@ -214,7 +209,7 @@ export default function RenderContent(props: RenderContentProps) {
           code: group,
           context: props.context || {},
           localState: undefined,
-          rootState: state.contentState,
+          rootState: builderContextSignal.value.rootState,
           rootSetState: state.contentSetState,
         })
       );
@@ -224,7 +219,7 @@ export default function RenderContent(props: RenderContentProps) {
         .then((response) => response.json())
         .then((json) => {
           const newState = {
-            ...state.contentState,
+            ...builderContextSignal.value.rootState,
             [key]: json,
           };
           state.contentSetState(newState);
@@ -251,7 +246,7 @@ export default function RenderContent(props: RenderContentProps) {
             'builder:component:stateChange',
             {
               detail: {
-                state: state.contentState,
+                state: builderContextSignal.value.rootState,
                 ref: {
                   name: props.model,
                 },
@@ -288,7 +283,11 @@ export default function RenderContent(props: RenderContentProps) {
       content: state.useContent,
       // those 2 pieces of state have to be created in a separate context for Svelte, so that it can be a `writable()` store
       localState: undefined,
-      rootState: state.contentState,
+      rootState: getContextStateInitialValue({
+        content: props.content,
+        data: props.data,
+        locale: props.locale,
+      }),
       rootSetState:
         TARGET === 'qwik' || TARGET === 'svelte'
           ? undefined
@@ -394,7 +393,7 @@ export default function RenderContent(props: RenderContentProps) {
 
   onUpdate(() => {
     state.evaluateJsCode();
-  }, [state.useContent?.data?.jsCode, state.contentState]);
+  }, [state.useContent?.data?.jsCode, builderContextSignal.value.rootState]);
 
   onUpdate(() => {
     state.runHttpRequests();
@@ -402,7 +401,7 @@ export default function RenderContent(props: RenderContentProps) {
 
   onUpdate(() => {
     state.emitStateUpdate();
-  }, [state.contentState]);
+  }, [builderContextSignal.value.rootState]);
 
   onUnMount(() => {
     if (isBrowser()) {

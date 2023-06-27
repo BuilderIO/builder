@@ -85,12 +85,12 @@
   export let content: RenderContentProps['content'];
   export let data: RenderContentProps['data'];
   export let canTrack: RenderContentProps['canTrack'];
-  export let locale: RenderContentProps['locale'];
   export let customComponents: RenderContentProps['customComponents'];
   export let model: RenderContentProps['model'];
   export let context: RenderContentProps['context'];
   export let apiKey: RenderContentProps['apiKey'];
   export let parentContentId: RenderContentProps['parentContentId'];
+  export let locale: RenderContentProps['locale'];
   export let apiVersion: RenderContentProps['apiVersion'];
   export let hideContent: RenderContentProps['hideContent'];
   export let classNameProp: RenderContentProps['classNameProp'];
@@ -117,7 +117,7 @@
   }
 
   function contentSetState(newRootState: BuilderRenderState) {
-    contentState = newRootState;
+    $builderContextSignal.rootState = newRootState;
   }
 
   function processMessage(event: MessageEvent) {
@@ -176,7 +176,7 @@
         code: jsCode,
         context: context || {},
         localState: undefined,
-        rootState: contentState,
+        rootState: $builderContextSignal.rootState,
         rootSetState: contentSetState,
       });
     }
@@ -209,7 +209,7 @@
         code: group,
         context: context || {},
         localState: undefined,
-        rootState: contentState,
+        rootState: $builderContextSignal.rootState,
         rootSetState: contentSetState,
       })
     );
@@ -219,7 +219,7 @@
     fetch(url)
       .then((response) => response.json())
       .then((json) => {
-        const newState = { ...contentState, [key]: json };
+        const newState = { ...$builderContextSignal.rootState, [key]: json };
         contentSetState(newState);
       })
       .catch((err) => {
@@ -249,7 +249,7 @@
           'builder:component:stateChange',
           {
             detail: {
-              state: contentState,
+              state: $builderContextSignal.rootState,
               ref: {
                 name: model,
               },
@@ -270,11 +270,6 @@
   });
   let update = 0;
   let canTrackToUse = checkIsDefined(canTrack) ? canTrack : true;
-  let contentState = getContextStateInitialValue({
-    content: content,
-    data: data,
-    locale: locale,
-  });
   let allRegisteredComponents = [
     ...getDefaultRegisteredComponents(), // While this `components` object is deprecated, we must maintain support for it.
     // Since users are able to override our default components, we need to make sure that we do not break such
@@ -304,7 +299,11 @@
     content: useContent,
     // those 2 pieces of state have to be created in a separate context for Svelte, so that it can be a `writable()` store
     localState: undefined,
-    rootState: contentState,
+    rootState: getContextStateInitialValue({
+      content: content,
+      data: data,
+      locale: locale,
+    }),
     rootSetState:
       TARGET === 'qwik' || TARGET === 'svelte' ? undefined : contentSetState,
     context: context || {},
@@ -409,24 +408,26 @@
     }
   });
 
-  function onUpdateFn_0() {
+  function onUpdateFn_0(..._args: any[]) {
     if (content) {
       mergeNewContent(content);
     }
   }
   $: onUpdateFn_0(...[content]);
-  function onUpdateFn_1() {
+  function onUpdateFn_1(..._args: any[]) {
     evaluateJsCode();
   }
-  $: onUpdateFn_1(...[useContent?.data?.jsCode, contentState]);
-  function onUpdateFn_2() {
+  $: onUpdateFn_1(
+    ...[useContent?.data?.jsCode, $builderContextSignal.rootState]
+  );
+  function onUpdateFn_2(..._args: any[]) {
     runHttpRequests();
   }
   $: onUpdateFn_2(...[useContent?.data?.httpRequests]);
-  function onUpdateFn_3() {
+  function onUpdateFn_3(..._args: any[]) {
     emitStateUpdate();
   }
-  $: onUpdateFn_3(...[contentState]);
+  $: onUpdateFn_3(...[$builderContextSignal.rootState]);
 
   setContext(builderContext, builderContextSignal);
 
