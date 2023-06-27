@@ -429,7 +429,7 @@
   }
   $: onUpdateFn_3(...[$builderContextSignal.rootState]);
 
-  setContext(builderContext, builderContextSignal);
+  setContext(builderContext.key, builderContextSignal);
 
   onDestroy(() => {
     if (isBrowser()) {

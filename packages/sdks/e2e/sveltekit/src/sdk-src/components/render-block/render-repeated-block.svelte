@@ -33,7 +33,7 @@
 
   let store = writable(repeatContext);
 
-  setContext(BuilderContext, store);
+  setContext(BuilderContext.key, store);
 </script>
 
 <RenderBlock {block} context={store} />
