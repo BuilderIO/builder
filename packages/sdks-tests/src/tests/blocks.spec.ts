@@ -197,7 +197,7 @@ test.describe('Blocks', () => {
     await expect(x).toBeGreaterThanOrEqual(2);
   });
 
-  testOnlyOldReact('symbols refresh on locale change', async ({ page }) => {
+  test('symbols refresh on locale change', async ({ page }) => {
     let x = 0;
 
     const urlMatch =
