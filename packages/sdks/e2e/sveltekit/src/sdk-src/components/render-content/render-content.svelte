@@ -304,8 +304,7 @@
       data: data,
       locale: locale,
     }),
-    rootSetState:
-      TARGET === 'qwik' || TARGET === 'svelte' ? undefined : contentSetState,
+    rootSetState: TARGET === 'qwik' ? undefined : contentSetState,
     context: context || {},
     apiKey: apiKey,
     apiVersion: apiVersion,

@@ -288,10 +288,7 @@ export default function RenderContent(props: RenderContentProps) {
         data: props.data,
         locale: props.locale,
       }),
-      rootSetState:
-        TARGET === 'qwik' || TARGET === 'svelte'
-          ? undefined
-          : state.contentSetState,
+      rootSetState: TARGET === 'qwik' ? undefined : state.contentSetState,
       context: props.context || {},
       apiKey: props.apiKey,
       apiVersion: props.apiVersion,
