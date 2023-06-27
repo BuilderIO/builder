@@ -166,11 +166,7 @@ test.describe('Blocks', () => {
 
     await testSymbols(page);
   });
-  test('symbols without content', async ({ page, packageName }) => {
-    if (packageName === 'e2e-qwik-city') {
-      test.skip();
-      return;
-    }
+  test('symbols without content', async ({ page }) => {
     let x = 0;
 
     const urlMatch =
@@ -201,7 +197,12 @@ test.describe('Blocks', () => {
     await expect(x).toBeGreaterThanOrEqual(2);
   });
 
-  test.only('symbols refresh on locale change', async ({ page }) => {
+  test('symbols refresh on locale change', async ({ page, packageName }) => {
+    if (packageName === 'e2e-qwik-city') {
+      test.skip();
+      return;
+    }
+
     let x = 0;
 
     const urlMatch =
