@@ -368,26 +368,6 @@ module.exports = {
       plugins: [
         SRCSET_PLUGIN,
         REACT_NEXT_V13_PLUGIN,
-        () => ({
-          json: {
-            pre: (json) => {
-              if (json.name === 'RenderContent') {
-                if (!json.state.allRegisteredComponents) {
-                  throw new Error(
-                    'allRegisteredComponents not found on RenderContent'
-                  );
-                }
-                json.state.allRegisteredComponents.code =
-                  json.state.allRegisteredComponents?.code.replace(
-                    'as RegisteredComponents',
-                    ''
-                  );
-              }
-
-              return json;
-            },
-          },
-        }),
       ],
     },
     reactNative: {
