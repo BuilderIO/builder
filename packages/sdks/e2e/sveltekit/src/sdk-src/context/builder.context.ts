@@ -1,7 +1,8 @@
 const key = Symbol();
+import { writable } from 'svelte/store';
 
 export default {
-  Builder: {
+  Builder: writable({
     content: null,
     context: {},
     localState: undefined,
@@ -11,6 +12,6 @@ export default {
     apiVersion: undefined,
     registeredComponents: {},
     inheritedStyles: {},
-  },
+  }),
   key,
 };

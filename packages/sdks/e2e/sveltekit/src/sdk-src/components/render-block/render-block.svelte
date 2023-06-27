@@ -1,7 +1,7 @@
 <script context="module" lang="ts">
   export type RenderBlockProps = {
     block: BuilderBlock;
-    context: Signal<BuilderContextInterface>;
+    context: Writable<BuilderContextInterface>;
   };
 </script>
 
@@ -26,6 +26,7 @@
   import { extractTextStyles } from '../../functions/extract-text-styles.js';
   import RenderComponent from './render-component.svelte';
   import { getReactNativeBlockStyles } from '../../functions/get-react-native-block-styles.js';
+  import { Writable } from 'svelte/store';
 
   const setAttrs = (node, attrs = {}) => {
     const attrKeys = Object.keys(attrs);

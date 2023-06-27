@@ -10,7 +10,7 @@
     componentRef: any;
     componentOptions: ComponentOptions;
     blockChildren: BuilderBlock[];
-    context: Signal<BuilderContextInterface>;
+    context: Writable<BuilderContextInterface>;
   }
 </script>
 
@@ -19,6 +19,7 @@
   import BlockStyles from './block-styles.svelte';
   import RenderBlock from './render-block.svelte';
   import type { BuilderContextInterface } from '../../context/types.js';
+  import { Writable } from 'svelte/store';
 
   export let componentRef: RenderComponentProps['componentRef'];
   export let componentOptions: RenderComponentProps['componentOptions'];
