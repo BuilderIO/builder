@@ -216,7 +216,7 @@ test.describe('Blocks', () => {
       return route.fulfill({
         status: 200,
         json: {
-          [keyName]: [x === 1 ? DEFAULT_TEXT_SYMBOL: FRENCH_TEXT_SYMBOL],
+          [keyName]: [x === 1 ? DEFAULT_TEXT_SYMBOL : FRENCH_TEXT_SYMBOL],
         },
       });
     });
