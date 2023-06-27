@@ -365,10 +365,7 @@ module.exports = {
       stylesType: 'style-tag',
     },
     rsc: {
-      plugins: [
-        SRCSET_PLUGIN,
-        REACT_NEXT_V13_PLUGIN,
-      ],
+      plugins: [SRCSET_PLUGIN, REACT_NEXT_V13_PLUGIN],
     },
     reactNative: {
       plugins: [

@@ -109,7 +109,10 @@ export default function RenderContent(props: RenderContentProps) {
           case 'builder.configureSdk': {
             const messageContent = data.data;
             const { breakpoints, contentId } = messageContent;
-            if (!contentId || contentId !== builderContextSignal.value.content?.id) {
+            if (
+              !contentId ||
+              contentId !== builderContextSignal.value.content?.id
+            ) {
               return;
             }
             if (breakpoints) {
@@ -267,7 +270,10 @@ export default function RenderContent(props: RenderContentProps) {
         data: props.data,
         locale: props.locale,
       }),
-      rootSetState: useTarget({ qwik: undefined, default: state.contentSetState}),
+      rootSetState: useTarget({
+        qwik: undefined,
+        default: state.contentSetState,
+      }),
       context: props.context || {},
       apiKey: props.apiKey,
       apiVersion: props.apiVersion,
@@ -388,7 +394,10 @@ export default function RenderContent(props: RenderContentProps) {
 
   onUpdate(() => {
     state.evaluateJsCode();
-  }, [builderContextSignal.value.content?.data?.jsCode, builderContextSignal.value.rootState]);
+  }, [
+    builderContextSignal.value.content?.data?.jsCode,
+    builderContextSignal.value.rootState,
+  ]);
 
   onUpdate(() => {
     state.runHttpRequests();
