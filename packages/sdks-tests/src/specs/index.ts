@@ -79,14 +79,19 @@ const normalizePathname = (pathname: string): string =>
 export const getAPIKey = (): string => 'abcd';
 
 type ContentResponse = { results: BuilderContent[] };
+type FetchContent = { results: {
+  content: BuilderContent;
+  model: string;
+  apiKey: string;
+}[] }
 
 export const getProps = async (
   args: {
     pathname?: string;
-    processContentResult?: (options: any, content: ContentResponse) => Promise<ContentResponse>;
+    _processContentResult?: (options: any, content: ContentResponse) => Promise<FetchContent>;
   } = {}
 ) => {
-  const { pathname: _pathname = getPathnameFromWindow(), processContentResult } = args;
+  const { pathname: _pathname = getPathnameFromWindow(), _processContentResult } = args;
   const pathname = normalizePathname(_pathname);
   const _content = getContentForPathname(pathname);
 
@@ -104,16 +109,26 @@ export const getProps = async (
   const extraApiVersionProp =
     apiVersionPathToProp[pathname as keyof typeof apiVersionPathToProp] ?? {};
 
-  const props = {
+  const options = {
     apiKey: getAPIKey(),
     model: 'page',
     ...extraProps,
     ...extraApiVersionProp,
+  }
+
+  const content = _processContentResult
+    ? (await _processContentResult(options, { results: [_content] })).results[0]
+    : {
+      apiKey: getAPIKey(),
+      model: 'page',
+      content: _content as BuilderContent,
+    };
+
+
+
+  return {
+    content,
+    ...extraProps,
+    ...extraApiVersionProp,
   };
-
-  const content = processContentResult
-    ? (await processContentResult(props, { results: [_content] })).results[0]
-    : _content;
-
-  return { ...props, content } as any;
 };

@@ -58,7 +58,7 @@ import { BuilderComponent, builder } from '@builder.io/react'
 &nbsp;
 builder.init('YOUR_KEY')
 &nbsp;
-export const getStaticProps = async () => ({ 
+export const getStaticProps = async () => ({
 &nbsp;&nbsp;props: {
 &nbsp;&nbsp;&nbsp;&nbsp;builderJson: await builder.get('page', { url: '/' }).promise()
 &nbsp;&nbsp;}
@@ -97,12 +97,12 @@ See our full [getting started docs](https://www.builder.io/c/docs/developers), o
       <a href="https://www.builder.io/c/docs/integrate-section-building">
         <img alt="CTA to integrate section buliding" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F9db93cd1a29443fca7b67c1f9f458356" />
       </a>
-    </td>    
+    </td>
     <td align="center">
       <a href="https://www.builder.io/c/docs/integrate-cms-data">
         <img alt="CTA to integrate CMS data" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F8df098759b0a4c89b8c25edec1f3c9eb" />
       </a>
-    </td>        
+    </td>
   </tr>
 </table>
 
@@ -133,12 +133,12 @@ Try the code in your browser with the [Builder playground](https://www.builder.i
       <a href="https://builder.io/demo/commerce?demoHost=nextjs-edge-personalization-demo-git-editor-demo-builder-io.vercel.app&demoModel=page">
         <img alt="Commmerce Example Screenshot" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fb0fd76663aaa4e2bb12dc455b40ea0ea" />
       </a>
-    </td>    
+    </td>
     <td align="center">
       <a href="https://builder.io/demo/blog/example?demoHost=blog-example-builder-io.vercel.app&demoModel=blog-post&demoPath=/blog/example">
         <img alt="Blog Example Screenshot" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Ff490f7bd587441f68025df795e81d3fd" />
       </a>
-    </td>        
+    </td>
   </tr>
 </table>
 
@@ -167,12 +167,12 @@ Using an API-driven UI allows you to:
 <a href="https://www.youtube.com/watch?v=FfrrigefdiY">
   <img width="500" alt="Thumbnail to go to a video on how Builder works" src="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F5a98332583ac48db9af376b11a9b3d3c">
 </a>
- 
+
 Learn more about <a href="https://www.builder.io/c/docs/how-builder-works-technical">how builder works here</a>
 
 ## How is the performance?
 
-Performance is our top priority. All content is delivered from the edge, renderable server side or statically, we [optimize the heck out of it](https://www.builder.io/blog/high-performance-no-code) and our SDKs are small and mighty. 
+Performance is our top priority. All content is delivered from the edge, renderable server side or statically, we [optimize the heck out of it](https://www.builder.io/blog/high-performance-no-code) and our SDKs are small and mighty.
 
 Some example SDK sizes from Bundlephobia:
 
@@ -369,7 +369,7 @@ As well as some handy power features like:
 
 Questions? Requests? Feedback? Chat with us in our [official forum](https://forum.builder.io)!
 
-## Troubleshooting and feedback
+## Troubleshooting and Feedback
 
 Problems? Requests? Open an [issue](https://github.com/BuilderIO/builder/issues). We always want to hear feedback and interesting new use cases and are happy to help.
 

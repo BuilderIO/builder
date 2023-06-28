@@ -12,9 +12,11 @@ export { setEditorSettings } from './functions/set-editor-settings.js';
 export type { Settings } from './functions/set-editor-settings.js';
 
 export {
+  fetchAllContent,
+  fetchContent,
   getAllContent,
   getContent,
-  processContentResult,
+  _processContentResult
 } from './functions/get-content/index.js';
 
 export { getBuilderSearchParams } from './functions/get-builder-search-params/index.js';
@@ -23,4 +25,9 @@ export { track } from './functions/track/index.js';
 
 export type { RegisteredComponent } from './context/types';
 export type { ComponentInfo } from './types/components';
-export type { RenderContentProps } from './components/render-content/render-content.types.js';
+export type { VariantRenderContentProps as RenderContentProps } from './components/render-content-variants/render-content-variants.types.js';
+export type {
+  FetchContent,
+  FetchResults,
+  GetContentOptions
+} from './functions/get-content/types.js';

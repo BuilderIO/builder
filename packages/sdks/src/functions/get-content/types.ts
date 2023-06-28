@@ -1,6 +1,11 @@
+import type { BuilderContent } from "../../types/builder-content";
+
 export interface GetContentOptions {
   /** The model to get content for */
   model: string;
+
+  /** Current URL */
+  url: URL;
 
   /** Your public API key */
   apiKey: string;
@@ -58,3 +63,35 @@ export interface GetContentOptions {
    */
   apiVersion?: 'v2' | 'v3';
 }
+
+
+export interface FetchContentError {
+  ok: false;
+  reason: string;
+  apiKey: string;
+  model: string;
+  content: null;
+}
+
+export interface FetchContentSuccess {
+  ok: true;
+  apiKey: string;
+  model: string;
+  content: BuilderContent;
+}
+
+export type FetchContent = FetchContentError | FetchContentSuccess;
+
+export interface FetchResultsSuccess {
+  ok: true;
+  results: FetchContentSuccess[];
+}
+
+export interface FetchResultsError {
+  ok: false;
+  status: number;
+  reason: string;
+}
+
+export type FetchResults = FetchResultsError | FetchResultsSuccess;
+
