@@ -1,3 +1,6 @@
+### 3.0.5
+- Fix: Pass locale from parent state to Symbols
+
 ### 3.0.4
 - Chore: update `@builder.io/core` to `^2.0.4` to fix import issue
 
