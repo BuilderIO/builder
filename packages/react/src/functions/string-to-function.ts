@@ -143,13 +143,15 @@ export function stringToFunction(
           error.stack || error
         );
       } else {
-        console.debug(
-          'Builder custom code error:',
-          error.message || error,
-          'in',
-          str,
-          error.stack || error
-        );
+        if (global?.process?.env?.DEBUG) {
+          console.debug(
+            'Builder custom code error:',
+            error.message || error,
+            'in',
+            str,
+            error.stack || error
+          );
+        }
       }
       if (errors) {
         errors.push(error);
