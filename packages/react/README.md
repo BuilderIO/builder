@@ -1,6 +1,6 @@
 # Builder.io React SDK
 
-NOTE: for Next v13 app directory support, you will need to use our beta version of the SDK. You can find more about it [here](../sdks/outputs/react).
+NOTE: for Next v13 app directory support, you will need to use our beta version of the SDK. You can find more about it [here](../sdks/output/react).
 
 ## Integration
 
