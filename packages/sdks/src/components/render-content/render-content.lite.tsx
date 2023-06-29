@@ -263,7 +263,6 @@ export default function RenderContent(props: RenderContentProps) {
         content: props.content,
         data: props.data,
       }),
-      // those 2 pieces of state have to be created in a separate context for Svelte, so that it can be a `writable()` store
       localState: undefined,
       rootState: getContextStateInitialValue({
         content: props.content,
