@@ -235,11 +235,6 @@ ${code.replace(/<(\/?)Text(.*?)>/g, '<$1BaseText$2>')}
  * @type {MitosisConfig}
  */
 module.exports = {
-  parserOptions: {
-    jsx: {
-      tsConfigFilePath: __dirname + '/tsconfig.json',
-    },
-  },
   files: 'src/**',
   targets: [
     'reactNative',
