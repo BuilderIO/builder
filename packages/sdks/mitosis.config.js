@@ -331,7 +331,7 @@ module.exports = {
         }),
       ],
     },
-    vue3: vueConfig,
+    vue3: { ...vueConfig, asyncComponentImports: false },
     react: {
       typescript: true,
       plugins: [

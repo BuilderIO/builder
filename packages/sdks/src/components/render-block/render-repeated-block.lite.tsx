@@ -11,10 +11,12 @@ type Props = {
 };
 
 useMetadata({
-  vue: {
-    asyncComponentImports: true
-  }
-})
+  options: {
+    vue: {
+      asyncComponentImports: true,
+    },
+  },
+});
 
 /**
  * We can't make this a generic `ProvideContext` function because Vue 2 won't support root slots, e.g.

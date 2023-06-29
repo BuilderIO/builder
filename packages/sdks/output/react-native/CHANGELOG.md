@@ -4,7 +4,6 @@
 
 ### 0.4.1
 
-
 - Fix: bring back `getBuilderSearchParams` export that was accidentally removed.
 
 ### 0.4.0

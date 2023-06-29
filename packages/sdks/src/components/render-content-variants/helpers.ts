@@ -209,8 +209,7 @@ const getIsHydrationTarget = (target: Target) =>
   target === 'vue3' ||
   target === 'vue2';
 
-
-const isHydrationTarget = getIsHydrationTarget(TARGET)
+const isHydrationTarget = getIsHydrationTarget(TARGET);
 
 /**
  * We hardcode explicit function names here, because the `.toString()` of a function can change depending on the bundler.
