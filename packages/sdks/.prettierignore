@@ -21,3 +21,5 @@ output/svelte/package
 output/svelte/.svelte-kit
 
 **/.solid
+
+e2e/sveltekit/.svelte-kit

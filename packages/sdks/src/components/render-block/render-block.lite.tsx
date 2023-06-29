@@ -11,7 +11,15 @@ import {
   isEmptyHtmlElement,
 } from './render-block.helpers.js';
 import type { RenderComponentProps } from './render-component.lite';
-import { For, Show, useMetadata, useStore } from '@builder.io/mitosis';
+import type { Signal } from '@builder.io/mitosis';
+import {
+  For,
+  Show,
+  useMetadata,
+  useState,
+  useStore,
+  useTarget,
+} from '@builder.io/mitosis';
 import RenderRepeatedBlock from './render-repeated-block.lite';
 import { TARGET } from '../../constants/target.js';
 import { extractTextStyles } from '../../functions/extract-text-styles.js';
@@ -20,20 +28,24 @@ import { getReactNativeBlockStyles } from '../../functions/get-react-native-bloc
 
 export type RenderBlockProps = {
   block: BuilderBlock;
-  context: BuilderContextInterface;
+  context: Signal<BuilderContextInterface>;
 };
 
 useMetadata({
   elementTag: 'state.Tag',
+  context: {},
 });
 
 export default function RenderBlock(props: RenderBlockProps) {
   const state = useStore({
-    component: getComponent({ block: props.block, context: props.context }),
+    component: getComponent({
+      block: props.block,
+      context: props.context.value,
+    }),
     get repeatItem() {
       return getRepeatItemData({
         block: props.block,
-        context: props.context,
+        context: props.context.value,
       });
     },
     get useBlock(): BuilderBlock {
@@ -41,10 +53,10 @@ export default function RenderBlock(props: RenderBlockProps) {
         ? props.block
         : getProcessedBlock({
             block: props.block,
-            localState: props.context.localState,
-            rootState: props.context.rootState,
-            rootSetState: props.context.rootSetState,
-            context: props.context.context,
+            localState: props.context.value.localState,
+            rootState: props.context.value.rootState,
+            rootSetState: props.context.value.rootSetState,
+            context: props.context.value.context,
             shouldEvaluateBindings: true,
           });
     },
@@ -61,10 +73,10 @@ export default function RenderBlock(props: RenderBlockProps) {
     get actions() {
       return getBlockActions({
         block: state.useBlock,
-        rootState: props.context.rootState,
-        rootSetState: props.context.rootSetState,
-        localState: props.context.localState,
-        context: props.context.context,
+        rootState: props.context.value.rootState,
+        rootSetState: props.context.value.rootSetState,
+        localState: props.context.value.localState,
+        context: props.context.value.context,
       });
     },
     get attributes() {
@@ -75,7 +87,7 @@ export default function RenderBlock(props: RenderBlockProps) {
           ? {
               style: getReactNativeBlockStyles({
                 block: state.useBlock,
-                context: props.context,
+                context: props.context.value,
                 blockStyles: blockProperties.style,
               }),
             }
@@ -98,34 +110,6 @@ export default function RenderBlock(props: RenderBlockProps) {
         : [];
     },
 
-    get childrenContext(): BuilderContextInterface {
-      const getInheritedTextStyles = () => {
-        if (TARGET !== 'reactNative') {
-          return {};
-        }
-
-        return extractTextStyles(
-          getReactNativeBlockStyles({
-            block: state.useBlock,
-            context: props.context,
-            blockStyles: state.attributes.style,
-          })
-        );
-      };
-
-      return {
-        apiKey: props.context.apiKey,
-        apiVersion: props.context.apiVersion,
-        localState: props.context.localState,
-        rootState: props.context.rootState,
-        rootSetState: props.context.rootSetState,
-        content: props.context.content,
-        context: props.context.context,
-        registeredComponents: props.context.registeredComponents,
-        inheritedStyles: getInheritedTextStyles(),
-      };
-    },
-
     get renderComponentProps(): RenderComponentProps {
       return {
         blockChildren: state.useBlock.children ?? [],
@@ -140,10 +124,34 @@ export default function RenderBlock(props: RenderBlockProps) {
             ? {}
             : { attributes: { ...state.attributes, ...state.actions } }),
         },
-        context: state.childrenContext,
+        context: childrenContext,
       };
     },
   });
+
+  const [childrenContext] = useState(
+    useTarget({
+      reactNative: {
+        apiKey: props.context.value.apiKey,
+        apiVersion: props.context.value.apiVersion,
+        localState: props.context.value.localState,
+        rootState: props.context.value.rootState,
+        rootSetState: props.context.value.rootSetState,
+        content: props.context.value.content,
+        context: props.context.value.context,
+        registeredComponents: props.context.value.registeredComponents,
+        inheritedStyles: extractTextStyles(
+          getReactNativeBlockStyles({
+            block: state.useBlock,
+            context: props.context.value,
+            blockStyles: state.attributes.style,
+          })
+        ),
+      },
+      default: props.context.value,
+    }),
+    { reactive: true }
+  );
 
   return (
     <Show when={state.canShowBlock}>
@@ -181,7 +189,7 @@ export default function RenderBlock(props: RenderBlockProps) {
                 <RenderBlock
                   key={'render-block-' + child.id}
                   block={child}
-                  context={state.childrenContext}
+                  context={childrenContext}
                 />
               )}
             </For>
@@ -190,7 +198,7 @@ export default function RenderBlock(props: RenderBlockProps) {
                 <BlockStyles
                   key={'block-style-' + child.id}
                   block={child}
-                  context={state.childrenContext}
+                  context={childrenContext.value}
                 />
               )}
             </For>

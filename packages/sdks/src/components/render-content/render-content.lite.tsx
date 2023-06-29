@@ -32,6 +32,7 @@ import {
   useMetadata,
   useRef,
   setContext,
+  useState,
 } from '@builder.io/mitosis';
 import {
   registerInsertMenu,
@@ -51,6 +52,7 @@ import { TARGET } from '../../constants/target.js';
 import { logger } from '../../helpers/logger.js';
 import { getRenderContentScriptString } from '../render-content-variants/helpers.js';
 import { wrapComponentRef } from './wrap-component-ref.js';
+import { useTarget } from '@builder.io/mitosis';
 
 useMetadata({
   qwik: {
@@ -68,67 +70,37 @@ export default function RenderContent(props: RenderContentProps) {
   const state = useStore({
     forceReRenderCount: 0,
     overrideContent: null as Nullable<BuilderContent>,
-    useContent: getContentInitialValue({
-      content: props.content,
-      data: props.data,
-    }),
     mergeNewContent(newContent: BuilderContent) {
-      state.useContent = {
-        ...state.useContent,
+      builderContextSignal.value.content = {
+        ...builderContextSignal.value.content,
         ...newContent,
         data: {
-          ...state.useContent?.data,
+          ...builderContextSignal.value.content?.data,
           ...newContent?.data,
         },
         meta: {
-          ...state.useContent?.meta,
+          ...builderContextSignal.value.content?.meta,
           ...newContent?.meta,
           breakpoints:
             newContent?.meta?.breakpoints ||
-            state.useContent?.meta?.breakpoints,
+            builderContextSignal.value.content?.meta?.breakpoints,
         },
       };
     },
     setBreakpoints(breakpoints: Breakpoints) {
-      state.useContent = {
-        ...state.useContent,
+      builderContextSignal.value.content = {
+        ...builderContextSignal.value.content,
         meta: {
-          ...state.useContent?.meta,
+          ...builderContextSignal.value.content?.meta,
           breakpoints,
         },
       };
     },
     update: 0,
     canTrackToUse: checkIsDefined(props.canTrack) ? props.canTrack : true,
-    contentState: getContextStateInitialValue({
-      content: props.content,
-      data: props.data,
-      locale: props.locale,
-    }),
     contentSetState: (newRootState: BuilderRenderState) => {
-      state.contentState = newRootState;
+      builderContextSignal.value.rootState = newRootState;
     },
-
-    allRegisteredComponents: [
-      ...getDefaultRegisteredComponents(),
-      // While this `components` object is deprecated, we must maintain support for it.
-      // Since users are able to override our default components, we need to make sure that we do not break such
-      // existing usage.
-      // This is why we spread `components` after the default Builder.io components, but before the `props.customComponents`,
-      // which is the new standard way of providing custom components, and must therefore take precedence.
-      ...components,
-      ...(props.customComponents || []),
-    ].reduce(
-      (acc, { component, ...curr }) => ({
-        ...acc,
-        [curr.name]: {
-          component:
-            TARGET === 'vue3' ? wrapComponentRef(component) : component,
-          ...curr,
-        },
-      }),
-      {} as RegisteredComponents
-    ),
 
     processMessage(event: MessageEvent): void {
       const { data } = event;
@@ -137,7 +109,10 @@ export default function RenderContent(props: RenderContentProps) {
           case 'builder.configureSdk': {
             const messageContent = data.data;
             const { breakpoints, contentId } = messageContent;
-            if (!contentId || contentId !== state.useContent?.id) {
+            if (
+              !contentId ||
+              contentId !== builderContextSignal.value.content?.id
+            ) {
               return;
             }
             if (breakpoints) {
@@ -172,13 +147,13 @@ export default function RenderContent(props: RenderContentProps) {
 
     evaluateJsCode() {
       // run any dynamic JS code attached to content
-      const jsCode = state.useContent?.data?.jsCode;
+      const jsCode = builderContextSignal.value.content?.data?.jsCode;
       if (jsCode) {
         evaluate({
           code: jsCode,
           context: props.context || {},
           localState: undefined,
-          rootState: state.contentState,
+          rootState: builderContextSignal.value.rootState,
           rootSetState: state.contentSetState,
         });
       }
@@ -188,9 +163,9 @@ export default function RenderContent(props: RenderContentProps) {
     clicked: false,
 
     onClick(event: any) {
-      if (state.useContent) {
-        const variationId = state.useContent?.testVariationId;
-        const contentId = state.useContent?.id;
+      if (builderContextSignal.value.content) {
+        const variationId = builderContextSignal.value.content?.testVariationId;
+        const contentId = builderContextSignal.value.content?.id;
         _track({
           type: 'click',
           canTrack: state.canTrackToUse,
@@ -213,7 +188,7 @@ export default function RenderContent(props: RenderContentProps) {
           code: group,
           context: props.context || {},
           localState: undefined,
-          rootState: state.contentState,
+          rootState: builderContextSignal.value.rootState,
           rootSetState: state.contentSetState,
         })
       );
@@ -223,7 +198,7 @@ export default function RenderContent(props: RenderContentProps) {
         .then((response) => response.json())
         .then((json) => {
           const newState = {
-            ...state.contentState,
+            ...builderContextSignal.value.rootState,
             [key]: json,
           };
           state.contentSetState(newState);
@@ -234,7 +209,7 @@ export default function RenderContent(props: RenderContentProps) {
     },
     runHttpRequests() {
       const requests: { [key: string]: string } =
-        state.useContent?.data?.httpRequests ?? {};
+        builderContextSignal.value.content?.data?.httpRequests ?? {};
 
       Object.entries(requests).forEach(([key, url]) => {
         if (url && (!state.httpReqsData[key] || isEditing())) {
@@ -250,7 +225,7 @@ export default function RenderContent(props: RenderContentProps) {
             'builder:component:stateChange',
             {
               detail: {
-                state: state.contentState,
+                state: builderContextSignal.value.rootState,
                 ref: {
                   name: props.model,
                 },
@@ -282,17 +257,51 @@ export default function RenderContent(props: RenderContentProps) {
   // TODO: inherit context here too
   // });
 
-  setContext(builderContext, {
-    content: state.useContent,
-    localState: undefined,
-    rootState: state.contentState,
-    rootSetState: TARGET === 'qwik' ? undefined : state.contentSetState,
-    context: props.context || {},
-    apiKey: props.apiKey,
-    apiVersion: props.apiVersion,
-    registeredComponents: state.allRegisteredComponents,
-    inheritedStyles: {},
-  });
+  const [builderContextSignal] = useState(
+    {
+      content: getContentInitialValue({
+        content: props.content,
+        data: props.data,
+      }),
+      localState: undefined,
+      rootState: getContextStateInitialValue({
+        content: props.content,
+        data: props.data,
+        locale: props.locale,
+      }),
+      rootSetState: useTarget({
+        qwik: undefined,
+        default: state.contentSetState,
+      }),
+      context: props.context || {},
+      apiKey: props.apiKey,
+      apiVersion: props.apiVersion,
+      registeredComponents: [
+        ...getDefaultRegisteredComponents(),
+        // While this `components` object is deprecated, we must maintain support for it.
+        // Since users are able to override our default components, we need to make sure that we do not break such
+        // existing usage.
+        // This is why we spread `components` after the default Builder.io components, but before the `props.customComponents`,
+        // which is the new standard way of providing custom components, and must therefore take precedence.
+        ...components,
+        ...(props.customComponents || []),
+      ].reduce(
+        (acc, { component, ...curr }) => ({
+          ...acc,
+          [curr.name]: {
+            component:
+              TARGET === 'vue3' ? wrapComponentRef(component) : component,
+            ...curr,
+          },
+        }),
+        {} as RegisteredComponents
+      ),
+      inheritedStyles: {},
+    },
+    { reactive: true }
+  );
+
+  setContext(builderContext, builderContextSignal);
 
   onMount(() => {
     if (!props.apiKey) {
@@ -311,7 +320,7 @@ export default function RenderContent(props: RenderContentProps) {
           ...(props.enrich ? { enrich: props.enrich } : {}),
         });
         Object.values<RegisteredComponent>(
-          state.allRegisteredComponents
+          builderContextSignal.value.registeredComponents
         ).forEach((registeredComponent) => {
           const message = createRegisterComponentMessage(registeredComponent);
           window.parent?.postMessage(message, '*');
@@ -322,9 +331,9 @@ export default function RenderContent(props: RenderContentProps) {
           state.emitStateUpdate
         );
       }
-      if (state.useContent) {
-        const variationId = state.useContent?.testVariationId;
-        const contentId = state.useContent?.id;
+      if (builderContextSignal.value.content) {
+        const variationId = builderContextSignal.value.content?.testVariationId;
+        const contentId = builderContextSignal.value.content?.id;
         _track({
           type: 'impression',
           canTrack: state.canTrackToUse,
@@ -384,15 +393,18 @@ export default function RenderContent(props: RenderContentProps) {
 
   onUpdate(() => {
     state.evaluateJsCode();
-  }, [state.useContent?.data?.jsCode, state.contentState]);
+  }, [
+    builderContextSignal.value.content?.data?.jsCode,
+    builderContextSignal.value.rootState,
+  ]);
 
   onUpdate(() => {
     state.runHttpRequests();
-  }, [state.useContent?.data?.httpRequests]);
+  }, [builderContextSignal.value.content?.data?.httpRequests]);
 
   onUpdate(() => {
     state.emitStateUpdate();
-  }, [state.contentState]);
+  }, [builderContextSignal.value.rootState]);
 
   onUnMount(() => {
     if (isBrowser()) {
@@ -406,11 +418,11 @@ export default function RenderContent(props: RenderContentProps) {
 
   // TODO: `else` message for when there is no content passed, or maybe a console.log
   return (
-    <Show when={state.useContent}>
+    <Show when={builderContextSignal.value.content}>
       <div
         ref={elementRef}
         onClick={(event) => state.onClick(event)}
-        builder-content-id={state.useContent?.id}
+        builder-content-id={builderContextSignal.value.content?.id}
         builder-model={props.model}
         className={props.classNameProp}
         {...(TARGET === 'reactNative'
@@ -429,13 +441,13 @@ export default function RenderContent(props: RenderContentProps) {
         </Show>
         <Show when={TARGET !== 'reactNative'}>
           <RenderContentStyles
-            contentId={state.useContent?.id}
-            cssCode={state.useContent?.data?.cssCode}
-            customFonts={state.useContent?.data?.customFonts}
+            contentId={builderContextSignal.value.content?.id}
+            cssCode={builderContextSignal.value.content?.data?.cssCode}
+            customFonts={builderContextSignal.value.content?.data?.customFonts}
           />
         </Show>
         <RenderBlocks
-          blocks={state.useContent?.data?.blocks}
+          blocks={builderContextSignal.value.content?.data?.blocks}
           key={state.forceReRenderCount}
         />
       </div>

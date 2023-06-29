@@ -1,4 +1,4 @@
-import { setContext } from '@builder.io/mitosis';
+import { useState, setContext } from '@builder.io/mitosis';
 import BuilderContext from '../../context/builder.context.lite';
 import type { BuilderContextInterface } from '../../context/types.js';
 import type { BuilderBlock } from '../../types/builder-block';
@@ -19,17 +19,9 @@ type Props = {
  * ```
  */
 export default function RenderRepeatedBlock(props: Props) {
-  setContext(BuilderContext, {
-    content: props.repeatContext.content,
-    localState: props.repeatContext.localState,
-    rootState: props.repeatContext.rootState,
-    rootSetState: props.repeatContext.rootSetState,
-    context: props.repeatContext.context,
-    apiKey: props.repeatContext.apiKey,
-    registeredComponents: props.repeatContext.registeredComponents,
-    inheritedStyles: props.repeatContext.inheritedStyles,
-    apiVersion: props.repeatContext.apiVersion,
-  });
+  const [store] = useState(props.repeatContext, { reactive: true });
 
-  return <RenderBlock block={props.block} context={props.repeatContext} />;
+  setContext(BuilderContext, store);
+
+  return <RenderBlock block={props.block} context={store} />;
 }
