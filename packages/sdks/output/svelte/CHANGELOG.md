@@ -1,3 +1,7 @@
+### 0.4.2
+
+- Feature: Added support for mutating Builder's `state` in custom element events and custom user code.
+
 ### 0.4.1
 
 - Fix: bring back `getBuilderSearchParams` export that was accidentally removed.
