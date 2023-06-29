@@ -9,12 +9,6 @@ type Props = {
   repeatContext: BuilderContextInterface;
 };
 
-// useMetadata({
-//   reactiveValues: {
-//     state: ['store'],
-//   },
-// });
-
 /**
  * We can't make this a generic `ProvideContext` function because Vue 2 won't support root slots, e.g.
  *
