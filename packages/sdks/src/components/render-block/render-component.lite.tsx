@@ -25,6 +25,9 @@ useMetadata({
       isLight: true,
     },
   },
+  vue: {
+    asyncComponentImports: true,
+  }
 });
 
 export default function RenderComponent(props: RenderComponentProps) {

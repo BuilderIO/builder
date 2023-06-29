@@ -75,7 +75,7 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
               customComponents={props.customComponents}
               hideContent
               parentContentId={props.content?.id}
-              isSsrAbTest={state.shouldRenderVariants}
+              isSsrAbTest
             />
           )}
         </For>
@@ -89,7 +89,7 @@ export default function RenderContentVariants(props: VariantsProviderProps) {
         customComponents={props.customComponents}
         classNameProp={`variant-${props.content?.id}`}
         parentContentId={props.content?.id}
-        isSsrAbTest={state.shouldRenderVariants}
+        isSsrAbTest={false}
       />
     </>
   );
