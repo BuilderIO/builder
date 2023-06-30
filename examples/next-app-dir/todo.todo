@@ -1,2 +1,6 @@
 - remove all `.js` extensions from `import` statements: https://github.com/vercel/next.js/discussions/32237
 - fix `isPreviewing()` to receive URL as parameter, so that we can check preview mode on the server side.
+
+- RenderContentVariants:
+  - RSCify: remove all unnecessary `useState()` calls
+

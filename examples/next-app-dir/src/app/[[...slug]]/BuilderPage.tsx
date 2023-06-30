@@ -1,5 +1,3 @@
-'use client'
-
 import { RenderContent } from '../../sdk-src'
 import { API_KEY } from '../../builderConfig'
 import { componentInfo } from '@/components/MyTextBox/component-info'

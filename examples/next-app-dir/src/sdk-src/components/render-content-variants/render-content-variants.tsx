@@ -1,6 +1,4 @@
-'use client'
 import * as React from 'react'
-import { useState } from 'react'
 
 type VariantsProviderProps = RenderContentProps
 import {
@@ -15,40 +13,32 @@ import RenderInlinedStyles from '../render-inlined-styles'
 import { handleABTestingSync } from '../../helpers/ab-tests'
 
 function RenderContentVariants(props: VariantsProviderProps) {
-  const [variantScriptStr, setVariantScriptStr] = useState(() =>
-    getVariantsScriptString(
-      getVariants(props.content).map((value) => ({
-        id: value.id!,
-        testRatio: value.testRatio,
-      })),
-      props.content?.id || ''
-    )
+  const variantScriptStr = getVariantsScriptString(
+    getVariants(props.content).map((value) => ({
+      id: value.id!,
+      testRatio: value.testRatio,
+    })),
+    props.content?.id || ''
   )
 
-  const [shouldRenderVariants, setShouldRenderVariants] = useState(() =>
-    checkShouldRunVariants({
-      canTrack: getDefaultCanTrack(props.canTrack),
-      content: props.content,
-    })
-  )
+  const shouldRenderVariants = checkShouldRunVariants({
+    canTrack: getDefaultCanTrack(props.canTrack),
+    content: props.content,
+  })
 
-  const [hideVariantsStyleString, setHideVariantsStyleString] = useState(() =>
-    getVariants(props.content)
-      .map((value) => `.variant-${value.id} { display: none; } `)
-      .join('')
-  )
+  const hideVariantsStyleString = getVariants(props.content)
+    .map((value) => `.variant-${value.id} { display: none; } `)
+    .join('')
 
-  const [contentToRender, setContentToRender] = useState(() =>
-    checkShouldRunVariants({
-      canTrack: getDefaultCanTrack(props.canTrack),
-      content: props.content,
-    })
-      ? props.content
-      : handleABTestingSync({
-          item: props.content,
-          canTrack: getDefaultCanTrack(props.canTrack),
-        })
-  )
+  const contentToRender = checkShouldRunVariants({
+    canTrack: getDefaultCanTrack(props.canTrack),
+    content: props.content,
+  })
+    ? props.content
+    : handleABTestingSync({
+        item: props.content,
+        canTrack: getDefaultCanTrack(props.canTrack),
+      })
 
   return (
     <>
