@@ -118,7 +118,7 @@ export async function _track(eventProps: EventProps) {
     return;
   }
 
-  return fetch(`https://builder.io/api/v1/track`, {
+  return fetch(`https://cdn.builder.io/api/v1/track`, {
     method: 'POST',
     body: JSON.stringify({
       events: [await createEvent(eventProps)],
