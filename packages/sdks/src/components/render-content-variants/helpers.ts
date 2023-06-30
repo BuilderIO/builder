@@ -1,3 +1,4 @@
+import { TARGET } from '../../constants/target';
 import { isBrowser } from '../../functions/is-browser';
 import type { Nullable } from '../../helpers/nullable';
 import type { BuilderContent } from '../../types/builder-content';
@@ -202,11 +203,13 @@ function bldrCntntScrpt(
   return;
 }
 
-const isHydrationTarget = (target: Target) =>
+const getIsHydrationTarget = (target: Target) =>
   target === 'react' ||
   target === 'reactNative' ||
   target === 'vue3' ||
   target === 'vue2';
+
+const isHydrationTarget = getIsHydrationTarget(TARGET);
 
 /**
  * We hardcode explicit function names here, because the `.toString()` of a function can change depending on the bundler.

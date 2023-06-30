@@ -3,11 +3,20 @@ import BuilderContext from '../../context/builder.context.lite';
 import type { BuilderContextInterface } from '../../context/types.js';
 import type { BuilderBlock } from '../../types/builder-block';
 import RenderBlock from './render-block.lite';
+import { useMetadata } from '@builder.io/mitosis';
 
 type Props = {
   block: BuilderBlock;
   repeatContext: BuilderContextInterface;
 };
+
+useMetadata({
+  options: {
+    vue3: {
+      asyncComponentImports: true,
+    },
+  },
+});
 
 /**
  * We can't make this a generic `ProvideContext` function because Vue 2 won't support root slots, e.g.
