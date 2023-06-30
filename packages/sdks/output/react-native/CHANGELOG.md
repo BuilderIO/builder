@@ -1,3 +1,7 @@
+### 0.4.4
+
+- Fix: tracking URL from `builder.io/api/v1/track` to `cdn.builder.io/api/v1/track` for improved reliability.
+
 ### 0.4.3
 
 - Fix: SSR A/B test environment check (`isHydrationTarget`) now accurately checks current environment.
